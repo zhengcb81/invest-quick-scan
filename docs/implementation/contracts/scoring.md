@@ -1,0 +1,77 @@
+# 评分回复、可用等级与三值规则契约规范（Task C03）
+
+**契约版本**：1.0.0  
+**任务编号**：C03（Stage M0，Owner: `iqs`）  
+**关联约束**：I05, I06, I15, I17, I19  
+**验收场景**：SC-02, SC-03, SC-04, SC-05, SC-06, SC-07, SC-09, RULE-01, RULE-02, RULE-03  
+**Schema 定义**：  
+- [`schemas/quick_scan/score.schema.json`](file:///C:/Users/郑曾波/Projects/invest-quick-scan/schemas/quick_scan/score.schema.json)  
+- [`schemas/quick_scan/rule.schema.json`](file:///C:/Users/郑曾波/Projects/invest-quick-scan/schemas/quick_scan/rule.schema.json)  
+
+---
+
+## 一、 评分数值与空值契约（SC-02, SC-03, SC-04）
+
+1. **严格 1—10 整数分（SC-03, I05）**：
+   * 仅接受 1 到 10 之间的严格整数。
+   * **非法数值一律拒绝**：禁止 0、11、负数、浮点数（如 1.5）、布尔值（true/false）、字符串（如 `"8"`, `"NaN"`）或未解析文本。
+2. **Nullable 与传输层默认 5 分隔离（SC-02）**：
+   * 当状态为 `insufficient_evidence`、`unknown`、`not_applicable` 或 `error` 时，正式打分字段 `score` **必须为 `null`**。
+   * 旧版上游传输若在顶层填入了兼容值（如 `legacy_transport_score = 5`），只允许在旧协议反序列化时暂存，**绝对禁止将其计入任何均分、规则判定或恢复优势**。
+3. **内外分数与题目 ID 一致性检查（SC-04）**：
+   * 若外层传递分数与内层 JSON 结构自报分数冲突（如外层 5 内层 8），或实际回答的题目 ID 与预期待办 ID 不一致（如答非所问），系统必须**明确报错并丢弃该题答案**，严禁按列表位置推测匹配。
+
+---
+
+## 二、 资格等级与防自签机制（SC-05, SC-06, I15）
+
+1. **四级检查等级（Check Levels）**：
+   * `unverified_model_output`：模型原始输出（未经运行层回执核实）。
+   * `execution_verified`：经 StockQA 运行层回执核实（确认 API 成功调用、提供商真实搜索执行）。
+   * `screening_audited`：快扫层已完成事实与评分合规审核。
+   * `formal_research_accepted`：进入深度研究并经由正式证据资格认证（仅由 StockWiki / invest-core 授予）。
+2. **严禁模型自签资格（SC-05, SC-06）**：
+   * 模型在返回内容中自行声称包含 `accepted_ids`、`search_verified=true` 或伪造检查等级的，**一律视作无效声明**。
+   * 旧版 2.1 严格画像在未获独立人工/运行审核前，状态保持 `review_pending`，不得自动升格。
+
+---
+
+## 三、 有效覆盖率计算公式（SC-07）
+
+$$\text{覆盖率} = \frac{\text{有效已打分题目数 (valid\_scored)}}{\text{总题目数 (selected)} - \text{已核实不适用题目数 (audited\_na)}}$$
+
+* **已审核 N/A（audited_na）**：经核实不适用题（如银行不测工业存货周转天数），可从分母排除（例如 10 题中 7 题打分，1 题已审核 N/A，覆盖率为 $\frac{7}{10-1} = \frac{7}{9} \approx 77.8\%$）。
+* **未审核 N/A 与 Unknown**：未审核的 N/A 与所有未知（unknown）题目**绝对不得从分母中扣减**，覆盖率仍为 $\frac{7}{10} = 70.0\%$。
+
+---
+
+## 四、 三值逻辑规则与关键风险一票否决（RULE-01, RULE-02, RULE-03, SC-09）
+
+### 1. 字段阈值比较（RULE-01）
+* 对得分 $S=8$：
+  * 条件 `> 8` 判定为 `fail`；
+  * 条件 `>= 8` 判定为 `pass`。
+
+### 2. 三值逻辑真值表（RULE-02）
+规则输出分为三种状态：`pass`（满足）、`fail`（不满足）、`unknown`（数据缺失或待核实）。
+
+* **合取操作 `ALL(A, B)`（失败优先）**：
+  * $\text{fail} \land X = \text{fail}$（只要有一项明确失败，整体即失败）；
+  * $\text{unknown} \land \text{pass} = \text{unknown}$；
+  * $\text{unknown} \land \text{unknown} = \text{unknown}$；
+  * $\text{pass} \land \text{pass} = \text{pass}$。
+* **析取操作 `ANY(A, B)`（通过优先）**：
+  * $\text{pass} \lor X = \text{pass}$（只要有一项明确满足，整体即通过）；
+  * $\text{unknown} \lor \text{fail} = \text{unknown}$；
+  * $\text{unknown} \lor \text{unknown} = \text{unknown}$；
+  * $\text{fail} \lor \text{fail} = \text{fail}$。
+* **否定操作 `NOT(A)`**：
+  * $\neg \text{pass} = \text{fail}$，$\neg \text{fail} = \text{pass}$，$\neg \text{unknown} = \text{unknown}$。
+
+### 3. 关键风险关口强制判定（SC-09, RULE-02）
+* 若策略中定义了 `critical_gates`（例如资金链断裂风险题 $\le 3$ 判定为风险）：
+  * **Critical Gate 优先执行**：若触发关键风险，整体筛选结果强制为 `fail` 并附带风险详情，**任何复合 `ANY` 规则或高平均分均不可豁免**。
+
+### 4. 异常输入与缺失处理（RULE-03）
+* 缺失、过期或不可比字段评估为 `unknown`；
+* 空的 `all: []` 或 `any: []`、未知操作符等直接抛出配置异常（`ValueError`），严禁默认返回 pass。

@@ -1,5 +1,22 @@
 # 进度记录
 
+## 2026-09-22：Task C03 评分回复与三值规则契约冻结
+- 实施任务 C03 完成（Stage M0，Owner: iqs）。
+- 交付规范文档 docs/implementation/contracts/scoring.md，冻结评分回复、检查等级与三值逻辑真值表规范（I05, I06, I15, I17, I19）。
+- 交付 JSON Schema schemas/quick_scan/score.schema.json 与 schemas/quick_scan/rule.schema.json。
+- 交付自动化单元测试 tests/test_scoring_and_rules_contract.py，全量覆盖关联场景：
+  - `SC-02`：nullable score 与旧传输层默认 5 分彻底隔离，不进入正式均分；
+  - `SC-03`：严格 1-10 整数分，拒绝非法边界值（0, 11, 浮点, bool, 字符串）；
+  - `SC-04`：内外分数冲突或问题 ID 答非所问时明确报错，拒绝位置猜测；
+  - `SC-05` & `SC-06`：模型自报 accepted_ids 或 search_verified 无法自签资格，保持 unverified_model_output；
+  - `SC-07`：经审核 N/A 可从分母排除（7/9），未审核 N/A 和 unknown 不扣减分母（7/10）；
+  - `SC-09` & `RULE-02`：三值逻辑真值表（all: fail>unknown>pass; any: pass>unknown>fail）及 critical risk 优先一票否决；
+  - `RULE-01`：字段阈值比较（>8 失败，>=8 通过）；
+  - `RULE-03`：缺失字段评定为 unknown，空 all/any 规则抛出配置错误。
+- 执行 pytest 测试全量 116 项通过（101 subtests, 0 fail, 0 skip, 0 warnings）。
+- 交付完成回执 docs/implementation/contracts/receipt-C03.json。
+- 下一步进入 C04 任务（冻结字段时效、待办键与状态转移契约）。
+
 ## 2026-09-22：Task C02 指标映射与证据口径契约冻结
 - 实施任务 C02 完成（Stage M0，Owner: iqs）。
 - 交付规范文档 docs/implementation/contracts/metrics.md，冻结指标定义、可比性范围与证据口径规范（I05, I06, I07, I08, I20）。

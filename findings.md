@@ -1,5 +1,13 @@
 # 设计调研与证据
 
+## 2026-09-22：Task C03 评分与规则契约证据
+- 评分与规则契约已固化：schemas/quick_scan/score.schema.json, schemas/quick_scan/rule.schema.json 与 docs/implementation/contracts/scoring.md。
+- 传输默认5分隔离（SC-02, SC-03, SC-04）：实现 ParsedAnswer Schema，非打分状态强制 score=null，旧传输 5 分字段隔离于 legacy_transport_score；非法值全部拒绝；内外分冲突与错题明确拦截。
+- 防自签资格机制（SC-05, SC-06）：模型输出内容不能自行宣称 accepted_ids 或 search_verified=true；未经独立审核的画像保持 review_pending。
+- 覆盖率计算口径（SC-07）：仅经审核的 N/A 允许从分母剔除（7/9），未审核 N/A 和未知项保留在分母（7/10）。
+- 三值逻辑真值表与一票否决（RULE-01, RULE-02, RULE-03, SC-09）：ALL 失败优先、ANY 通过优先；任何关键风险关口未满足时强制触发 fail 致命风险拦截，复合 OR 规则不可绕过；缺失字段评估为 unknown，空规则报错。
+- 测试覆盖：tests/test_scoring_and_rules_contract.py 8项测试全部通过，全量 116 项通过。
+
 ## 2026-09-22：Task C02 指标映射与证据口径证据
 - 证据与口径契约已固化：schemas/quick_scan/metric.schema.json 与 docs/implementation/contracts/metrics.md。
 - 诊断不进均分（SC-08）：变质测试验证追加满分10分的杜邦/五力/恢复诊断题后，质量、成长、估值三个维度的原有均分绝对不变。

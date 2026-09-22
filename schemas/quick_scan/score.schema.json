@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://invest-quick-scan.local/schemas/quick_scan/score.schema.json",
+  "title": "QuickScanScoreContract",
+  "description": "评分回复、置信度与可用性等级契约（Task C03，契约版本 1.0.0）",
+  "type": "object",
+  "definitions": {
+    "ScoreStatus": {
+      "type": "string",
+      "enum": ["scored", "unknown", "insufficient_evidence", "not_applicable", "error"]
+    },
+    "CheckLevel": {
+      "type": "string",
+      "enum": ["unverified_model_output", "execution_verified", "screening_audited", "formal_research_accepted"]
+    },
+    "ValidScore": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "仅允许1到10之间的整数。禁止0、11、浮点数、布尔值或字符串形式（I05, SC-03）。"
+    },
+    "ParsedAnswer": {
+      "type": "object",
+      "required": [
+        "question_id",
+        "status",
+        "score",
+        "description",
+        "check_level"
+      ],
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "status": { "$ref": "#/definitions/ScoreStatus" },
+        "score": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 10,
+          "description": "正式得分。若status为insufficient_evidence, unknown, not_applicable或error，必须为null（SC-02）。"
+        },
+        "legacy_transport_score": {
+          "type": ["integer", "null"],
+          "description": "仅供旧版StockQA外层传输兼容读取，严禁用于均分计算或白名单筛选（SC-02）。"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_urls": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "published_date": {
+          "type": ["string", "null"]
+        },
+        "information_as_of": {
+          "type": ["string", "null"]
+        },
+        "check_level": { "$ref": "#/definitions/CheckLevel" },
+        "critical_risk_flag": {
+          "type": "boolean",
+          "default": false
+        },
+        "is_audited_na": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否经人工/规则核实为合规不适用。只有经审核的N/A才可从分母排除（SC-07）。"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/definitions/ParsedAnswer" }
+  ]
+}
