@@ -1,0 +1,295 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://invest-quick-scan.local/schemas/quick_scan/identity.schema.json",
+  "title": "QuickScanIdentityContract",
+  "description": "公司、证券、分部与大股票池名单身份契约（Task C01，契约版本 1.0.0）",
+  "type": "object",
+  "definitions": {
+    "Market": {
+      "type": "string",
+      "enum": ["CN", "HK", "US"]
+    },
+    "Exchange": {
+      "type": "string",
+      "enum": ["SZSE", "SSE", "BSE", "HKEX", "NASDAQ", "NYSE", "AMEX", "OTHER"]
+    },
+    "SecurityType": {
+      "type": "string",
+      "enum": ["ordinary", "adr", "gdr", "preferred", "cdr"]
+    },
+    "ListingStatus": {
+      "type": "string",
+      "enum": ["active", "suspended", "delisted", "pending_listing"]
+    },
+    "Segment": {
+      "type": "object",
+      "required": ["segment_id", "segment_name"],
+      "properties": {
+        "segment_id": {
+          "type": "string",
+          "pattern": "^SEG_[A-Za-z0-9_]+$"
+        },
+        "segment_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revenue_share_pct": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "description": {
+          "type": ["string", "null"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Security": {
+      "type": "object",
+      "required": [
+        "security_id",
+        "entity_id",
+        "market",
+        "exchange",
+        "ticker",
+        "currency",
+        "security_type",
+        "listing_status"
+      ],
+      "properties": {
+        "security_id": {
+          "type": "string",
+          "pattern": "^SEC_[A-Za-z0-9_.]+$"
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[A-Za-z0-9_]+$"
+        },
+        "market": { "$ref": "#/definitions/Market" },
+        "exchange": { "$ref": "#/definitions/Exchange" },
+        "ticker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "security_type": { "$ref": "#/definitions/SecurityType" },
+        "adr_ratio": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "description": "1份ADR对应的普通股股数。若未获得经核实的官方存托凭证折算比率，必须为null，严禁推测或臆测。"
+        },
+        "ordinary_security_ref": {
+          "type": ["string", "null"],
+          "description": "ADR对应的基础普通股security_id"
+        },
+        "listing_status": { "$ref": "#/definitions/ListingStatus" },
+        "aliases": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "VerifiedIssuerBridge": {
+      "type": "object",
+      "required": [
+        "bridge_id",
+        "entity_id",
+        "security_ids",
+        "verified_same_issuer",
+        "verification_source",
+        "verified_at"
+      ],
+      "properties": {
+        "bridge_id": {
+          "type": "string",
+          "pattern": "^BRG_[A-Za-z0-9_]+$"
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[A-Za-z0-9_]+$"
+        },
+        "security_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^SEC_[A-Za-z0-9_.]+$"
+          },
+          "uniqueItems": true
+        },
+        "verified_same_issuer": {
+          "type": "boolean",
+          "description": "是否经权威机构/官方年报核实为同一独立法人发行人。同名、同品牌、同代码字符串均不构成合并证据。"
+        },
+        "verification_source": {
+          "type": "string",
+          "minLength": 1,
+          "description": "核实证据来源（如 exchange_filing, regulatory_master, manual_audit）"
+        },
+        "verified_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": ["string", "null"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Entity": {
+      "type": "object",
+      "required": [
+        "entity_id",
+        "canonical_name",
+        "incorporation_country",
+        "securities",
+        "segments"
+      ],
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[A-Za-z0-9_]+$"
+        },
+        "canonical_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "incorporation_country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$"
+        },
+        "company_wiki_ref": {
+          "type": ["string", "null"],
+          "description": "company-wiki中的实体ID或路径。若不存在，必须为null，不强制前置建档（ID-04）。"
+        },
+        "formal_stockwiki_profile": {
+          "type": ["string", "null"],
+          "description": "StockWiki正式建档ID。若不存在，必须为null，不强制前置建档（ID-04）。"
+        },
+        "securities": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/Security" },
+          "description": "该独立实体旗下发行的所有交易证券（如A股、H股、ADR）"
+        },
+        "segments": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Segment" },
+          "default": []
+        },
+        "aliases": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "MembershipStatus": {
+      "type": "string",
+      "enum": ["active", "logically_removed", "nominated", "candidate"]
+    },
+    "UniverseMember": {
+      "type": "object",
+      "required": [
+        "entity_id",
+        "membership_status",
+        "manual_pin",
+        "added_at",
+        "version"
+      ],
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[A-Za-z0-9_]+$"
+        },
+        "membership_status": { "$ref": "#/definitions/MembershipStatus" },
+        "manual_pin": {
+          "type": "boolean",
+          "description": "用户手动置顶/锁定保护标记。若为true，无论分数高低均不得自动退池（I16）。"
+        },
+        "added_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "added_reason": {
+          "type": ["string", "null"]
+        },
+        "removed_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "removal_reason": {
+          "type": ["string", "null"]
+        },
+        "restored_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "restoration_reason": {
+          "type": ["string", "null"]
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "UniverseManifest": {
+      "type": "object",
+      "required": [
+        "manifest_version",
+        "updated_at",
+        "total_entities",
+        "active_entities",
+        "members"
+      ],
+      "properties": {
+        "manifest_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "soft_target_capacity": {
+          "type": "integer",
+          "default": 2000,
+          "description": "股票池软目标容量（如2000家）。扩容不挤出原有成员（UNI-04）。"
+        },
+        "total_entities": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "active_entities": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "manual_pinned_count": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "members": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/UniverseMember" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/definitions/Entity" },
+    { "$ref": "#/definitions/Security" },
+    { "$ref": "#/definitions/VerifiedIssuerBridge" },
+    { "$ref": "#/definitions/UniverseMember" },
+    { "$ref": "#/definitions/UniverseManifest" }
+  ]
+}

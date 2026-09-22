@@ -1,5 +1,13 @@
 # 设计调研与证据
 
+## 2026-09-22：Task C01 身份契约证据与验证
+- 身份契约已固化：schemas/quick_scan/identity.schema.json 与 docs/implementation/contracts/identity.md。
+- 实体多挂牌与母子分离验证（ID-01, ID-02）：比亚迪 A/H 样例验证了同 Entity 下 2 只证券（CNY 与 HKD），经营问题 1 次问答，估值独立分发；同品牌母子实体经 verified_same_issuer=false 强制保持为 2 个独立 Entity。
+- 边界防猜验证（ID-03）：ADR 存托凭证未核实折算比例时强约束为 adr_ratio=null，禁止臆测换算比率，而实体经营事实可安全复用。
+- 轻资产与无前置依赖验证（ID-04）：快扫实体在 company_wiki_ref 与 formal_stockwiki_profile 为 null 时结构完全合法，不产生外部目录建档或 worker 爬虫前置依赖。
+- 动态大池版本与软限制验证（UNI-04）：股票池扩容至 2,003 家（>2,000）不自动淘汰老公司，删除采取逻辑移除，恢复必须伴随理由并递增版本。
+- 测试覆盖：tests/test_identity_contract.py 5项测试全部通过，全量 102 项通过。
+
 ## 2026-09-22：Task P00 接口与行为基线核实
 - 目标仓库 commit hash：StockQAbyLLM=`3c685dda28f67a00bd653ad257a121d3b8edebb8`，StockWiki=`f5b8526c78ef0bc7df27885da043ce5a2534fffb`，company-wiki=`f39bd5a64224cd0c7aa098f23f64bf3811fa8939`，invest-quick-scan=`85162ec`。
 - 依赖可用性：CodeGraph不可用（8080端口Transport closed），确认使用本地只读文件检查替代（BASE-02）。

@@ -1,5 +1,19 @@
 # 进度记录
 
+## 2026-09-22：Task C01 身份与名单契约冻结
+- 实施任务 C01 完成（Stage M0，Owner: iqs）。
+- 交付规范文档 docs/implementation/contracts/identity.md，冻结 Entity / Security / Segment 三层分层契约（I04）。
+- 交付 JSON Schema schemas/quick_scan/identity.schema.json，覆盖 Entity, Security, Segment, VerifiedIssuerBridge, UniverseMember, UniverseManifest。
+- 交付自动化单元测试 tests/test_identity_contract.py，全量覆盖关联场景：
+  - `ID-01`：A/H 双重挂牌实体经营题生成 1 份待办、估值题针对 CNY/HKD 独立生成；
+  - `ID-02`：母子公司虽同品牌但非同一发行人时严禁合并，保持双实体；
+  - `ID-03`：ADR 未核实比例时 adr_ratio=null，严禁推测换算比率，实体经营画像安全复用；
+  - `ID-04`：无 company-wiki 条目和 formal profile 时允许独立准入，无前置建档依赖；
+  - `UNI-04`：2,000 家大池扩容至 2,003 家不自动挤出，退池为逻辑移除，恢复保留审计理由与版本递增。
+- 执行 pytest 测试全量 102 项通过（101 subtests, 0 fail, 0 skip, 0 warnings）。
+- 交付完成回执 docs/implementation/contracts/receipt-C01.json。
+- 下一步进入 C02 任务（冻结指标映射及优势/变化证据口径契约）。
+
 ## 2026-09-22：Task P00 接口核实与基线报告
 - 实施任务P00完成（Stage M0，Owner: iqs）。
 - Git 初始化完成，记录了项目初始基线（commit `85162ec`）。
