@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "energy_transition",
+  "kind": "industries",
+  "name": "新能源设备、发电与储能",
+  "applies_when": "光伏、风电、储能等；与实际制造或运营行业模板互补，避免重复题。",
+  "questions": [
+    {
+      "id": "ENERGY_TRANSITION_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "在较少补贴与合理竞争价格下，项目或产品经济性是否成立？",
+      "evidence": [
+        "度电或全生命周期成本",
+        "补贴",
+        "利用率",
+        "衰减"
+      ],
+      "anchors": {
+        "1": "离开补贴即缺乏经济性",
+        "5": "部分场景平价但回收偏慢",
+        "10": "多场景无激进补贴假设也具可验证回报"
+      },
+      "metric_id": "score.energy_transition_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "ENERGY_TRANSITION_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "技术、质量或成本优势能否穿越快速扩产与迭代？",
+      "evidence": [
+        "良率",
+        "寿命",
+        "成本曲线",
+        "替代技术"
+      ],
+      "anchors": {
+        "1": "同质扩产且路线可能落后",
+        "5": "当前具竞争力但迭代优势未明",
+        "10": "多代产品性能成本领先且质量有长期验证"
+      },
+      "metric_id": "score.energy_transition_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "ENERGY_TRANSITION_03",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "贸易限制、并网消纳和原料波动是否会阻断变现？",
+      "evidence": [
+        "出口限制",
+        "并网",
+        "弃电",
+        "原料来源"
+      ],
+      "anchors": {
+        "1": "关键市场或项目变现路径受阻",
+        "5": "存在瓶颈但部分可缓解",
+        "10": "主要约束已解决或替代路径可验证"
+      },
+      "metric_id": "score.energy_transition_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "ENERGY_TRANSITION_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "扩产或在手项目有多少能转成可收款的有效需求？",
+      "evidence": [
+        "有效订单",
+        "取消条款",
+        "融资",
+        "终端投产"
+      ],
+      "anchors": {
+        "1": "名义订单大但缺融资或交付条件",
+        "5": "部分需求可兑现但过剩压力存在",
+        "10": "订单、终端投资与现金回收形成可靠链条"
+      },
+      "metric_id": "score.energy_transition_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

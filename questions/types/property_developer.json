@@ -1,0 +1,157 @@
+{
+  "version": "3.0.0",
+  "module_id": "property_developer",
+  "kind": "types",
+  "name": "房地产开发商",
+  "applies_when": "以土地开发、项目销售、预售交付为主要经济活动。",
+  "questions": [
+    {
+      "id": "PROPERTY_DEVELOPER_01",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "剔除受限预售资金后，现金能否覆盖交付与到期债务？",
+      "evidence": [
+        "可动用现金",
+        "保交付成本",
+        "到期债",
+        "担保与表外义务"
+      ],
+      "anchors": {
+        "1": "可用资金不足且交付或偿债面临中断",
+        "5": "正常回款可覆盖，压力下紧张",
+        "10": "压力回款下仍能覆盖交付与刚性债务"
+      },
+      "replaces": [
+        "IQS_16"
+      ],
+      "critical": true,
+      "metric_id": "score.property_developer_01",
+      "construct_id": "IQS_16",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_DEVELOPER_02",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "交付和回款之后的项目现金利润是否真实可持续？",
+      "evidence": [
+        "回款与结转",
+        "土地款",
+        "施工款",
+        "合作方分配"
+      ],
+      "anchors": {
+        "1": "账面利润无法回笼或项目整体现金亏损",
+        "5": "大部分项目可回收但现金回报一般",
+        "10": "完整项目周期现金回报可靠且可重复"
+      },
+      "replaces": [
+        "IQS_11"
+      ],
+      "metric_id": "score.property_developer_02",
+      "construct_id": "IQS_11",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_DEVELOPER_03",
+      "dimension": "business",
+      "priority": 1,
+      "question": "按当前去化与售价计算，存量项目的全成本经济性如何？",
+      "evidence": [
+        "土地成本",
+        "建安税费",
+        "去化率",
+        "价格折让"
+      ],
+      "anchors": {
+        "1": "降价也难覆盖全成本",
+        "5": "主要项目覆盖成本但余量有限",
+        "10": "保守售价与去化下仍有合理利润和周转"
+      },
+      "replaces": [
+        "IQS_03"
+      ],
+      "metric_id": "score.property_developer_03",
+      "construct_id": "IQS_03",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_DEVELOPER_04",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "存货、合作项目与担保披露能否反映真实资产净值？",
+      "evidence": [
+        "存货减值",
+        "少数权益",
+        "合联营往来",
+        "担保"
+      ],
+      "anchors": {
+        "1": "重大减值或隐性义务未反映",
+        "5": "主要风险可估但透明度一般",
+        "10": "资产与义务可穿透，估值审慎且损失及时确认"
+      },
+      "replaces": [
+        "IQS_12"
+      ],
+      "critical": true,
+      "metric_id": "score.property_developer_04",
+      "construct_id": "IQS_12",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_DEVELOPER_05",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "公司交付、拿地和项目节奏是否受现金回报纪律约束？",
+      "evidence": [
+        "交付记录",
+        "土地投入",
+        "售价验证",
+        "项目停复工"
+      ],
+      "anchors": {
+        "1": "盲目扩张或频繁延期",
+        "5": "交付基本正常但拿地纪律一般",
+        "10": "交付可靠且能在低回报环境收缩投入"
+      },
+      "metric_id": "score.property_developer_05",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_DEVELOPER_06",
+      "dimension": "valuation",
+      "priority": 2,
+      "question": "扣除交付、债务和少数权益后，股东剩余价值是否支持价格？",
+      "evidence": [
+        "项目压力变现值",
+        "优先债权",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "优先义务可能耗尽剩余价值",
+        "5": "基准变现可支持价格但缓冲有限",
+        "10": "保守变现和全部义务下仍有明显余量"
+      },
+      "replaces": [
+        "IQS_22"
+      ],
+      "metric_id": "score.property_developer_06",
+      "construct_id": "IQS_22",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "construction",
+  "kind": "industries",
+  "name": "建筑、工程与项目承包",
+  "applies_when": "以大型合同、施工、工程总包和长期项目结算为主。",
+  "questions": [
+    {
+      "id": "CONSTRUCTION_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "扣除变更、索赔与保修后，订单利润的可靠性如何？",
+      "evidence": [
+        "固定价合同",
+        "变更索赔",
+        "保修",
+        "历史完工毛利"
+      ],
+      "anchors": {
+        "1": "在手订单包含大量低估成本或难确认索赔",
+        "5": "主要合同可盈利但结算波动",
+        "10": "报价与完工利润可靠，风险条款可控"
+      },
+      "metric_id": "score.construction_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONSTRUCTION_02",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "项目结算、应收和预付款能否形成真实现金回报？",
+      "evidence": [
+        "合同资产",
+        "账龄",
+        "业主信用",
+        "保函与受限现金"
+      ],
+      "anchors": {
+        "1": "利润依赖未结算索赔且回款持续恶化",
+        "5": "部分占款较大但整体可回收",
+        "10": "全周期结算与现金回报可靠，受限资金可解释"
+      },
+      "metric_id": "score.construction_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONSTRUCTION_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "工程进度、采购和分包质量控制如何？",
+      "evidence": [
+        "超支延期",
+        "分包违约",
+        "事故",
+        "交付"
+      ],
+      "anchors": {
+        "1": "频繁超支延期或质量事故",
+        "5": "多数项目按计划完成但波动明显",
+        "10": "复杂项目持续按合理预算和质量交付"
+      },
+      "metric_id": "score.construction_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONSTRUCTION_04",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "业主、地域与担保责任集中风险是否可承受？",
+      "evidence": [
+        "单一业主",
+        "海外收款",
+        "履约担保",
+        "追索"
+      ],
+      "anchors": {
+        "1": "单一违约可造成重大无法承受损失",
+        "5": "集中风险存在但有一定缓冲",
+        "10": "风险分散或保障可靠，担保责任与资本匹配"
+      },
+      "metric_id": "score.construction_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

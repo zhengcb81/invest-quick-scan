@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "user-model-order-v1",
+  "execution_owner": "StockQAbyLLM",
+  "configured": false,
+  "dispatch": {
+    "max_in_flight_total": 4,
+    "max_questions_per_pack": 4,
+    "one_entity_per_pack": true,
+    "separate_score_and_fact_packs": true,
+    "on_preferred_capacity_full": "wait",
+    "speculative_racing": false
+  },
+  "budget": {
+    "currency": "USD",
+    "max_cost": 0,
+    "max_requests": 0,
+    "reset_on_restart": false
+  },
+  "quota_groups": [
+    {
+      "id": "account_a",
+      "max_in_flight": 2,
+      "window_seconds_hint": 18000,
+      "unknown_reset_cooldown_seconds": 900
+    },
+    {
+      "id": "account_b",
+      "max_in_flight": 2,
+      "window_seconds_hint": null,
+      "unknown_reset_cooldown_seconds": 900
+    }
+  ],
+  "models": [
+    {
+      "id": "first_choice",
+      "enabled": false,
+      "provider_config_ref": "REPLACE_WITH_STOCKQA_CONFIG_A",
+      "model": "REPLACE_WITH_MODEL_A",
+      "quota_group": "account_a",
+      "max_in_flight": 2
+    },
+    {
+      "id": "second_choice",
+      "enabled": false,
+      "provider_config_ref": "REPLACE_WITH_STOCKQA_CONFIG_B",
+      "model": "REPLACE_WITH_MODEL_B",
+      "quota_group": "account_b",
+      "max_in_flight": 2
+    },
+    {
+      "id": "third_choice",
+      "enabled": false,
+      "provider_config_ref": "REPLACE_WITH_STOCKQA_CONFIG_C",
+      "model": "REPLACE_WITH_MODEL_C",
+      "quota_group": "account_a",
+      "max_in_flight": 1
+    }
+  ],
+  "fallback": {
+    "on_quota_exhausted": "cooldown_group_then_next",
+    "on_rate_limit": "respect_retry_after_then_next",
+    "on_auth_error": "disable_route_then_next",
+    "on_timeout": "reconcile_receipt_before_retry",
+    "on_low_score": "accept",
+    "on_unknown_answer": "accept_with_gap",
+    "max_attempts_per_dispatch_round": 3
+  },
+  "resume": {
+    "success_checkpoint": "per_question",
+    "replay_outbox_before_dispatch": true,
+    "preserve_uncertain_requests": true,
+    "persist_cooldowns_and_budget": true
+  }
+}

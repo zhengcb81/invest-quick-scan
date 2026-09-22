@@ -1,0 +1,4033 @@
+{
+  "version": "1.4.0",
+  "status": "implementation_plan_not_product_completion",
+  "stage_order": [
+    "M0",
+    "M1",
+    "M2",
+    "M3",
+    "M4",
+    "M5",
+    "M6"
+  ],
+  "repositories": {
+    "iqs": {
+      "name": "invest-quick-scan",
+      "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "role": "问题、契约、规划与审查资料"
+    },
+    "stockqa": {
+      "name": "StockQAbyLLM",
+      "root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "role": "问答执行和持久化运行"
+    },
+    "stockwiki": {
+      "name": "StockWiki",
+      "root": "C:/Users/郑曾波/Projects/StockWiki",
+      "role": "名单、权威观察库和查询"
+    },
+    "theme": {
+      "name": "analyze-theme-value-chain",
+      "root": "C:/Users/郑曾波/Projects/local-skills/analyze-theme-value-chain",
+      "role": "主题研究消费者"
+    },
+    "industry": {
+      "name": "industry-research",
+      "root": "C:/Users/郑曾波/Projects/local-skills/industry-research",
+      "role": "行业研究消费者"
+    }
+  },
+  "invariant_ids": [
+    "I01",
+    "I02",
+    "I03",
+    "I04",
+    "I05",
+    "I06",
+    "I07",
+    "I08",
+    "I09",
+    "I10",
+    "I11",
+    "I12",
+    "I13",
+    "I14",
+    "I15",
+    "I16",
+    "I17",
+    "I18",
+    "I19",
+    "I20",
+    "I21",
+    "I22",
+    "I23",
+    "I24",
+    "I25",
+    "I26",
+    "I27",
+    "I28"
+  ],
+  "common_read_first": [
+    "docs/implementation/README.md",
+    "docs/implementation/decision-register.md",
+    "docs/implementation/test-strategy.md",
+    "docs/implementation/review-and-handoff.md"
+  ],
+  "global_boundaries": [
+    "一次只在owner仓库实施；外部项目只读检查不代表允许写入。",
+    "执行前核实真实路径和AGENTS；proposed路径先确认再创建。",
+    "不改模型密钥、不新增文档采集或第二套LLM客户端。",
+    "不删除用户数据或无关更改；不减弱固定预期来让测试通过。",
+    "所有生产任务当前均未因本计划而完成；实际状态只由带证据的任务回执记录。"
+  ],
+  "known_offline_commands": [
+    {
+      "owner": "iqs",
+      "command": "python -X utf8 scripts/question_sets.py validate",
+      "scope": "已有题库结构校验，不证明真实搜索"
+    },
+    {
+      "owner": "iqs",
+      "command": "python -X utf8 -m unittest discover -s tests -p test_question_sets.py -v",
+      "scope": "已有行为/兼容基线，必须报告skip和允许旧5分的观察性测试"
+    },
+    {
+      "owner": "iqs",
+      "command": "python -X utf8 -m unittest discover -s tests -p test_implementation_plan.py -v",
+      "scope": "本实施包读取与校验工具自身，不验证产品任务"
+    },
+    {
+      "owner": "iqs",
+      "command": "python -X utf8 scripts/standard_answers.py validate-library",
+      "scope": "本地61题事实库与标准协议校验，不证明生产facts接通"
+    },
+    {
+      "owner": "iqs",
+      "command": "python -X utf8 scripts/model_policy.py --input examples/model-policy.template.json",
+      "scope": "用户模板离线结构检查，不验证可用额度、不发模型请求"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "P00",
+      "stage": "M0",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "核实接口、测试入口和现有行为基线",
+      "depends_on": [],
+      "invariants": [
+        "I17",
+        "I18"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/stockqa-integration.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/baselines/（新增：仅脱敏接口/命令/快照报告）"
+      ],
+      "steps": [
+        "读取目标仓库AGENTS及当前源码；记录commit或文件hash和未提交变更。",
+        "核实StockQA解析、搜索、AnswerGenerator、ProviderCascade的真实调用链与测试入口；CodeGraph不可用时记录替代方式。",
+        "记录题库3.0/事实1.0、旧27项及新增标准化测试，以及仍允许5/8的旧观察性断言；区分已知缺陷、失败和skip。"
+      ],
+      "deliverables": [
+        "接口/命令/版本清单",
+        "已有行为与待修缺陷清单"
+      ],
+      "case_ids": [
+        "BASE-01",
+        "BASE-02"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "C01",
+      "stage": "M0",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "冻结公司、证券、分部与名单身份契约",
+      "depends_on": [
+        "P00"
+      ],
+      "invariants": [
+        "I03",
+        "I04",
+        "I16",
+        "I18"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/identity*（新增契约）",
+        "docs/implementation/contracts/identity.md（新增）"
+      ],
+      "steps": [
+        "定义entity/security/segment、经核实桥接与有效期；不猜ADR比例。",
+        "定义成员版本、manual_pin、逻辑移除、提名和上市状态；成员以entity为单位。",
+        "提供AH同实体、母子分离、无company-wiki条目等正反交换样例。",
+        "冻结自动准入/手工pin与禁止自动恢复、公司桥接来源、成员变更和扫描意图的单一StockWiki写入协议。"
+      ],
+      "deliverables": [
+        "身份/名单schema与版本",
+        "身份样例与错误语义"
+      ],
+      "case_ids": [
+        "ID-01",
+        "ID-02",
+        "ID-03",
+        "ID-04",
+        "UNI-04"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "C02",
+      "stage": "M0",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "冻结指标映射及优势/变化证据口径",
+      "depends_on": [
+        "P00"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I07",
+        "I08",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/durability-and-change-design.md",
+        "references/scoring.md",
+        "references/routing.md",
+        "references/recovery-watch.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/metric*（新增）",
+        "docs/implementation/contracts/metrics.md（新增）"
+      ],
+      "steps": [
+        "逐一映射24核心判断、类型替代、行业/阶段题；记录scope/cohort与版本兼容性。",
+        "登记诊断不计均分及关键风险替代，避免同名不同口径强合。",
+        "对照优势有效条件/迁移/净股东受益草案，形成最多三道诊断的取舍记录；此卡不改生产题库。",
+        "复核已实现3.0构念元数据、固定24核心汇总、行业/生命周期口径与三个题义修订；旧2.1汇总不迁移。"
+      ],
+      "deliverables": [
+        "稳定metric映射",
+        "方法修订决策及受影响问题清单"
+      ],
+      "case_ids": [
+        "SC-08",
+        "SC-09",
+        "SC-10",
+        "SC-11",
+        "DUR-01",
+        "DUR-02",
+        "DUR-03"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "C03",
+      "stage": "M0",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "冻结评分回复、可用等级和三值规则",
+      "depends_on": [
+        "C01",
+        "C02"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I15",
+        "I17",
+        "I19"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/scoring.md",
+        "references/routing.md",
+        "references/recovery-watch.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/score*（新增）",
+        "schemas/quick_scan/rule*（新增）",
+        "docs/implementation/contracts/scoring.md（新增）"
+      ],
+      "steps": [
+        "定义nullable整数/状态/错误码及来源/搜索/检查分别记录。",
+        "严格模式与screening显式分版；v2外层兼容5只留兼容读取，不入正式分。",
+        "固定N/A、未知、缺维度、critical gate和all/any真值表；非法空规则报配置错误。"
+      ],
+      "deliverables": [
+        "评分/检查/规则schema",
+        "真值表与兼容迁移说明"
+      ],
+      "case_ids": [
+        "SC-02",
+        "SC-03",
+        "SC-04",
+        "SC-05",
+        "SC-06",
+        "SC-07",
+        "SC-09",
+        "RULE-01",
+        "RULE-02",
+        "RULE-03"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "C04",
+      "stage": "M0",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "冻结字段时效、待办键与状态转移",
+      "depends_on": [
+        "C01",
+        "C03"
+      ],
+      "invariants": [
+        "I08",
+        "I09",
+        "I12"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/work*（新增）",
+        "docs/implementation/contracts/freshness-and-jobs.md（新增）"
+      ],
+      "steps": [
+        "区分信息/来源/回答/导入/检查时间，固定UTC与到期边界。",
+        "定义语义/路由兼容、刷新代次、任务键和请求缓存键；换run不新增逻辑题。",
+        "列领取租约、result_ready/delivered/unknown/uncertain的合法转移、取消和恢复条件。",
+        "冻结run/scan/observation及复用引用，UTC执行时间和来源信息时间分开；不以导入刷新历史。"
+      ],
+      "deliverables": [
+        "新鲜度/任务schema",
+        "状态图及禁止转移样例"
+      ],
+      "case_ids": [
+        "TIME-01",
+        "TIME-02",
+        "TIME-03",
+        "TIME-04",
+        "TIME-05",
+        "TIME-06",
+        "TIME-07",
+        "TIME-08",
+        "JOB-01",
+        "JOB-08"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "C05",
+      "stage": "M0",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "冻结有序模型、故障分类及费用边界",
+      "depends_on": [
+        "P00",
+        "C04"
+      ],
+      "invariants": [
+        "I02",
+        "I10",
+        "I11",
+        "I19"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/stockqa-integration.md",
+        "docs/system-contract.md",
+        "references/standard-output.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "schemas/model-policy.schema.json、examples/model-policy.template.json及契约适配（扩展已有模板，无密钥）",
+        "docs/implementation/contracts/providers-and-budget.md（新增）"
+      ],
+      "steps": [
+        "对齐StockQA有序提供商/模型与能力配置；固定成功即停和故障冷却语义。",
+        "区分429/5xx/认证/坏请求/结构失败/正常unknown；一个重试预算拥有者。",
+        "定义原子费用预留、实际消耗、未知结果、搜索收费和策略热更新记录；不把示例价格当实际价格。",
+        "分开primary fallback和显式comparison；冻结实际模型未知值、独立请求、共同输入与对照预算。",
+        "复核现有model-policy.schema.json及可填写JSON模板，冻结三层并发、共享账户五小时额度、组级熔断、逐题防重与单探针契约；不得另建矛盾策略。"
+      ],
+      "deliverables": [
+        "执行策略/费用契约",
+        "错误分类表和计价配置要求"
+      ],
+      "case_ids": [
+        "LLM-03",
+        "LLM-04",
+        "LLM-05",
+        "LLM-06",
+        "LLM-10",
+        "BUD-01",
+        "BUD-02",
+        "BUD-03",
+        "BUD-04",
+        "PAR-01",
+        "PAR-02",
+        "PAR-03",
+        "PAR-06",
+        "PAR-07",
+        "PAR-08"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "C06",
+      "stage": "M0",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "冻结交换包、导入ACK与消费者接口",
+      "depends_on": [
+        "C01",
+        "C03",
+        "C04",
+        "C05"
+      ],
+      "invariants": [
+        "I01",
+        "I03",
+        "I12",
+        "I13",
+        "I14",
+        "I15",
+        "I18"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/implementation/results-ui.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/exchange*（新增）",
+        "schemas/quick_scan/query*（新增）",
+        "docs/implementation/contracts/exchange-and-query.md（新增）"
+      ],
+      "steps": [
+        "定义生产者/消费者版本、不可变键/hash、兼容错误、ACK与来源限制。",
+        "定义capabilities/coverage、分页search/get_profiles/candidate_set、范围补扫及提名/冲突反馈。",
+        "采用已提供facts/score标准schema和样板，记录兼容范围；记录深研现有契约版本，不伪造正式manifest/span或强接DAG。",
+        "冻结结果UI所需的稳定entity链接、分页快照/游标、单页上限、评分依据/状态和历史可比性字段；保存视图引用规则版本，页面不另算评分。",
+        "冻结两库水位/ACK/回放和三维比较接口，声明每类权威数据及data_root，不共享可写库。"
+      ],
+      "deliverables": [
+        "交换/查询schema与样例",
+        "版本兼容与拥有者说明"
+      ],
+      "case_ids": [
+        "DB-02",
+        "DB-03",
+        "DB-06",
+        "DB-07",
+        "QUERY-01",
+        "QUERY-02",
+        "QUERY-04",
+        "FACT-01",
+        "CONS-05"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "C07",
+      "stage": "M0",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "冻结跨项目部署、启动生命周期与就绪协议",
+      "depends_on": [
+        "C06",
+        "P00"
+      ],
+      "invariants": [
+        "I02",
+        "I03",
+        "I18",
+        "I22",
+        "I23",
+        "I24",
+        "I25",
+        "I26"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/deployment*（新增）",
+        "docs/implementation/contracts/launch-and-release.md（新增）"
+      ],
+      "steps": [
+        "固定StockWiki统一setup/doctor/plan/start/status/stop/resume语义及StockQA公开控制/配置接口。",
+        "定义release_set、进程/workspace身份、实际资源/技能加载hash、版本能力握手和就绪等级。",
+        "明确首次配置、无付费doctor、重复点击/预算不重置、端口冲突、关闭页面与停止的区别；给各owner分配协议端点。"
+      ],
+      "deliverables": [
+        "部署/生命周期/状态schema",
+        "公开调用与配置拥有者矩阵",
+        "G6完整就绪证据要求"
+      ],
+      "case_ids": [
+        "DEPLOY-02",
+        "DEPLOY-04",
+        "START-02",
+        "START-03",
+        "START-05",
+        "START-09",
+        "START-11",
+        "E2E-04",
+        "E2E-05"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "G0",
+      "stage": "M0",
+      "owner": "iqs",
+      "kind": "review",
+      "title": "审查并冻结最小契约",
+      "depends_on": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07"
+      ],
+      "invariants": [
+        "I01",
+        "I04",
+        "I05",
+        "I08",
+        "I12",
+        "I17",
+        "I18"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/reviews/G0/（新增审查记录）"
+      ],
+      "steps": [
+        "逐项核对契约与固定约束，检查引用和样例的正反预期。",
+        "检查每个接口恰好一个写入拥有者，跨仓不共享可写内部状态。",
+        "记录所有未定值/版本与阻塞项；固定契约hash后放行实现任务。"
+      ],
+      "deliverables": [
+        "G0审查与问题关闭记录",
+        "冻结契约hash清单"
+      ],
+      "case_ids": [
+        "REV-01",
+        "REV-02",
+        "REV-03",
+        "BASE-02"
+      ],
+      "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q01",
+      "stage": "M1",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "修复8分传递与原生空分数",
+      "depends_on": [
+        "G0"
+      ],
+      "invariants": [
+        "I02",
+        "I05",
+        "I17"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/stockqa-integration.md"
+      ],
+      "allowed_changes": [
+        "src/providers/llm_response_parser.py（核实后修改）",
+        "src/services/answer_generator.py（核实后修改）",
+        "src/core/models.py（核实后修改）",
+        "tests/对应解析和生成器测试"
+      ],
+      "steps": [
+        "沿真实SearchResult→AnswerGenerator链修复固定5分和异常默认值。",
+        "新增nullable状态/错误透传；明确旧兼容路径，不把bool和字符串当整数。",
+        "将上游回归断言固定为8；失败与缺证据分别保留null。"
+      ],
+      "deliverables": [
+        "评分传递修复",
+        "解析/生成器真实接口测试"
+      ],
+      "case_ids": [
+        "SC-01",
+        "SC-02",
+        "SC-03",
+        "SC-04"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q02",
+      "stage": "M1",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "接通首个提供商真实搜索与执行凭据",
+      "depends_on": [
+        "Q01"
+      ],
+      "invariants": [
+        "I02",
+        "I19"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/stockqa-integration.md"
+      ],
+      "allowed_changes": [
+        "src/providers/llm_client.py（核实后修改）",
+        "所选提供商已有适配层（P00核实）",
+        "tests/搜索请求与metadata测试"
+      ],
+      "steps": [
+        "按当时厂商官方接口核实搜索参数/工具事件，不仅修改prompt。",
+        "统一保存request_id与原始必要执行metadata；不支持的能力返回不可用。",
+        "在传输边界mock正反响应，检查缺执行凭据时不放行。"
+      ],
+      "deliverables": [
+        "首个提供商搜索适配",
+        "搜索receipt与不可用状态测试"
+      ],
+      "case_ids": [
+        "LLM-01",
+        "LLM-02",
+        "LLM-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q03",
+      "stage": "M1",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "统一异步与CLI的结构化结果语义",
+      "depends_on": [
+        "Q01",
+        "Q02"
+      ],
+      "invariants": [
+        "I02",
+        "I05",
+        "I19"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/stockqa-integration.md"
+      ],
+      "allowed_changes": [
+        "P00核实的异步提供商/客户端",
+        "main_with_llm.py",
+        "tests/异步及CLI契约测试"
+      ],
+      "steps": [
+        "同步、异步与CLI共用回复/搜索解析，不复制一套评分规则。",
+        "从CLI或真实公共入口驱动同一8分/null样例并检查每题ID/实体/来源。",
+        "错误输出和成功输出使用相同schema版本，禁止只看进程退出码判断题目成功。"
+      ],
+      "deliverables": [
+        "同步/异步/CLI一致透传",
+        "端到端入口回归"
+      ],
+      "case_ids": [
+        "SC-01",
+        "SC-02",
+        "SC-04",
+        "LLM-02",
+        "LLM-07"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q04",
+      "stage": "M1",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "接入用户排序的模型策略",
+      "depends_on": [
+        "Q03",
+        "C05"
+      ],
+      "invariants": [
+        "I02",
+        "I10",
+        "I11"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/stockqa-integration.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "src/utils/llm_integration.py及P00核实调用方",
+        "StockQA已有配置接口（不输出密钥）",
+        "tests/有序模型策略测试"
+      ],
+      "steps": [
+        "复用ProviderCascade，支持提供商/模型对和能力预检；确认实际调用方使用它。",
+        "实现有限失败切换与成功停止，正常低分/unknown不切换。",
+        "记录策略版本和最终模型；默认新运行生效，热更新有边界记录。",
+        "导入用户数组顺序，首选仅槽满时等待；变更版本在已记录边界对未派发任务生效，保留在途版本且不使已成功题失效。"
+      ],
+      "deliverables": [
+        "生产调用链中的有序策略",
+        "顺序/低分/配置错误测试"
+      ],
+      "case_ids": [
+        "LLM-03",
+        "LLM-04",
+        "LLM-06",
+        "LLM-10",
+        "PAR-03",
+        "PAR-08"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q05",
+      "stage": "M1",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "约束日志/缓存内容及完整请求键",
+      "depends_on": [
+        "Q03",
+        "Q04"
+      ],
+      "invariants": [
+        "I01",
+        "I02",
+        "I08",
+        "I19"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/stockqa-integration.md"
+      ],
+      "allowed_changes": [
+        "现有日志/请求缓存/交换序列化入口（P00核实）",
+        "tests/内容边界和缓存隔离测试"
+      ],
+      "steps": [
+        "所有成功、失败、调试路径只保存允许的结构化字段，短依据限长。",
+        "清除payload正文/密钥内容；外部答案文本不能成为工具指令或执行策略。",
+        "请求缓存区分模型、实体/证券、题义、截止日等参数；不在此层决定字段fresh。"
+      ],
+      "deliverables": [
+        "日志/缓存字段白名单",
+        "内容泄漏与缓存串用反例测试"
+      ],
+      "case_ids": [
+        "LLM-08",
+        "LLM-09",
+        "DB-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "S01",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "实现metric与作用层编排，不改变旧经济含义",
+      "depends_on": [
+        "G0"
+      ],
+      "invariants": [
+        "I04",
+        "I06",
+        "I07",
+        "I08",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/scoring.md",
+        "references/routing.md",
+        "references/recovery-watch.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "scripts/question_sets.py",
+        "questions/catalog.json",
+        "questions/中C02明确列出的模块",
+        "tests/test_question_sets.py",
+        "references/中的相关说明"
+      ],
+      "steps": [
+        "本skill已实现3.0元数据和固定构念离线汇总；核查并接入冻结生产契约，不重建另一套映射。",
+        "将C02映射带入manifest并保持核心替代关系；证券题单独标scope。",
+        "保留诊断不计分、关键标记与周期/阶段独立；旧manifest原样读取。",
+        "更新生成的兼容导出，防止手工修改main_questions.json成为第二源。"
+      ],
+      "deliverables": [
+        "版本化manifest/metric映射实现",
+        "路由与汇总回归测试"
+      ],
+      "case_ids": [
+        "SC-08",
+        "SC-09",
+        "SC-10",
+        "SC-11",
+        "REC-04",
+        "MATRIX-07"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "S02",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "接入新回复与screening模式，保留旧strict",
+      "depends_on": [
+        "S01",
+        "Q03",
+        "G0"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I07",
+        "I15",
+        "I17",
+        "I19"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/scoring.md",
+        "references/routing.md",
+        "references/recovery-watch.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "scripts/question_sets.py",
+        "references/scoring.md",
+        "references/stockqa-integration.md",
+        "tests/test_question_sets.py"
+      ],
+      "steps": [
+        "按C03显式选择新screening协议，禁止自动填旧accepted_ids。",
+        "校验来自执行器的搜索/实体/问题/时期，保留reported与正式采用状态。",
+        "将本项目旧兼容测试从容许5/8改成修复后严格8；无StockQA时关键集成验收不能靠skip。"
+      ],
+      "deliverables": [
+        "兼容适配与模式说明",
+        "跨仓真实类导入的严格回归"
+      ],
+      "case_ids": [
+        "SC-01",
+        "SC-02",
+        "SC-05",
+        "SC-06",
+        "SC-07",
+        "SC-09",
+        "REC-04",
+        "LLM-02"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "S03",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "落实已审查的优势条件与变化诊断取舍",
+      "depends_on": [
+        "G0",
+        "S01"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I07",
+        "I08"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/durability-and-change-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "questions/中C02批准的题目模块",
+        "references/buy-side-questions.md",
+        "references/common-framework.md",
+        "tests/test_question_sets.py"
+      ],
+      "steps": [
+        "只落实C02/G0批准的题义/依据变化；未批准新题则不擅自加入。",
+        "必要诊断按实质变化触发，保持机会、侵蚀、净效果分别展示，不做新总分。",
+        "改动题目/锚点就显式升版并记录受影响字段；不迁移旧答案成新题结果。"
+      ],
+      "deliverables": [
+        "方法修订或保留原题的明确决策结果",
+        "受影响题目与兼容性回归"
+      ],
+      "case_ids": [
+        "DUR-01",
+        "DUR-02",
+        "DUR-03",
+        "SC-08",
+        "TIME-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "L01",
+      "stage": "M1",
+      "owner": "stockqa",
+      "kind": "live",
+      "title": "执行10家公司真实搜索探针与小样本",
+      "depends_on": [
+        "Q04",
+        "Q05",
+        "S02",
+        "S03"
+      ],
+      "invariants": [
+        "I01",
+        "I05",
+        "I10",
+        "I11",
+        "I17",
+        "I19"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockQA试点运行目录（新增轻量结果与运行回执）"
+      ],
+      "steps": [
+        "先冻结10个独立公司样本、实体/证券作用层、提供商顺序和金额上限。",
+        "先跑单题，再小样本逐题执行，保存搜索与来源/费用记录。",
+        "统计失败/unknown/来源缺口及真实8分传递；不使用mock结果充数。"
+      ],
+      "deliverables": [
+        "10家公司实际试点包",
+        "调用/费用/失败报告"
+      ],
+      "case_ids": [
+        "LIVE-01",
+        "LIVE-02",
+        "SC-01",
+        "LLM-01",
+        "LLM-02",
+        "BUD-04"
+      ],
+      "test_binding": "先完成离线校验，固定样本/策略/预算，再通过真实生产入口执行；保存每项case的实际请求/调用记录与结果。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "停止新派发并保存任务/已返回结果/费用回执；禁止删除记录后重新跑来制造成功率。"
+    },
+    {
+      "id": "G1",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "review",
+      "title": "审查联网真实性、分数链与轻资产边界",
+      "depends_on": [
+        "L01",
+        "S02",
+        "Q05"
+      ],
+      "invariants": [
+        "I01",
+        "I05",
+        "I15",
+        "I17",
+        "I19"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/reviews/G1/（新增）"
+      ],
+      "steps": [
+        "核对真实生产调用证据、分数/null逐层传递和保存内容。",
+        "抽查来源支持与信息日期，不能把search receipt当事实真实性证明。",
+        "审查关键skip、宽松断言和未关闭错误；记录放行或明确返工卡。"
+      ],
+      "deliverables": [
+        "G1审查记录",
+        "进入60家阶段的范围说明"
+      ],
+      "case_ids": [
+        "REV-01",
+        "REV-02",
+        "REV-03",
+        "LIVE-02",
+        "SC-01",
+        "LLM-08"
+      ],
+      "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "W01",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "建立轻量身份与quick_scan数据库迁移",
+      "depends_on": [
+        "G0",
+        "C01",
+        "C06"
+      ],
+      "invariants": [
+        "I03",
+        "I04",
+        "I15",
+        "I21"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "StockWiki新增quick_scan存储/迁移命名空间（先核实布局）",
+        "tests/迁移与身份引用测试"
+      ],
+      "steps": [
+        "新增实体/证券/成员与后续观察所需最小表，复用现有数据库约定。",
+        "旧ticker目录和正式分类保持兼容，仅显式映射。",
+        "从空库与旧库升级并重复执行；无company-wiki也能用。"
+      ],
+      "deliverables": [
+        "最小存储与迁移",
+        "旧状态保护测试"
+      ],
+      "case_ids": [
+        "DB-01",
+        "ID-01",
+        "ID-02",
+        "ID-04",
+        "DB-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W02",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现主档导入与跨挂牌候选核实",
+      "depends_on": [
+        "W01"
+      ],
+      "invariants": [
+        "I04",
+        "I16",
+        "I18"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "quick_scan名单导入/身份解析适配层（新增）",
+        "tests/身份与导入测试"
+      ],
+      "steps": [
+        "复用可用的只读证券主档或CSV/JSON快照，保留来源版本与记录ID。",
+        "区分证券类别、代码歧义和待核实桥接，提供preview与确定性错误。",
+        "核实ADR/股类映射缺失时阻止证券级复用；同名不合并。"
+      ],
+      "deliverables": [
+        "导入与身份解析入口",
+        "可解释歧义报告"
+      ],
+      "case_ids": [
+        "ID-01",
+        "ID-02",
+        "ID-03",
+        "UNI-02",
+        "UNI-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W03",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现手工增删、保留与成员版本",
+      "depends_on": [
+        "W02"
+      ],
+      "invariants": [
+        "I04",
+        "I16",
+        "I21"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "quick_scan universe命令/API（新增）",
+        "tests/成员维护测试"
+      ],
+      "steps": [
+        "实现add/add_security/remove/restore/pin/unpin/list/diff/explain。",
+        "唯一对象的用户加入直接产生版本，重复加入幂等；歧义只挂起相关对象。",
+        "保留更名/退出/挂牌失效历史，不让低分或单挂牌退市误停实体。"
+      ],
+      "deliverables": [
+        "名单维护小工具",
+        "成员版本与审计记录"
+      ],
+      "case_ids": [
+        "UNI-03",
+        "UNI-04",
+        "UNI-05",
+        "ID-05",
+        "ID-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W04",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现可重现的分层候选构建",
+      "depends_on": [
+        "W02",
+        "W03"
+      ],
+      "invariants": [
+        "I04",
+        "I16",
+        "I18"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "quick_scan候选构建与coverage报告（新增）",
+        "tests/候选分层测试"
+      ],
+      "steps": [
+        "按固定种子/行业市场缺口、manual_pin、可用规模流动性排序，稳定ID打破平局。",
+        "60/25/15通过配置表达；未知行业/指标留缺失，不自动调用LLM。",
+        "输出去重后数量、证券类型/市场重叠、入池理由及不足项；允许先生成候选名单。"
+      ],
+      "deliverables": [
+        "分层候选与版本化输入报告",
+        "可重现名单测试"
+      ],
+      "case_ids": [
+        "UNI-01",
+        "UNI-02",
+        "UNI-04",
+        "UNI-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W05",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现不可变问答观察的事务导入",
+      "depends_on": [
+        "W01",
+        "G1"
+      ],
+      "invariants": [
+        "I03",
+        "I05",
+        "I08",
+        "I12",
+        "I15",
+        "I21"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "quick_scan观察/检查/回执表与导入入口（新增）",
+        "tests/导入事务与历史测试"
+      ],
+      "steps": [
+        "按C06校验schema、对象、不可变键与hash；不把模型自报审核字段升级。",
+        "同包幂等；同键异hash隔离冲突；更正追加关系，不覆盖旧观察。",
+        "保存原始时点、题义和来源引用；失败事务不得变成部分合格快照。"
+      ],
+      "deliverables": [
+        "事务导入与历史记录",
+        "幂等/冲突/资格测试"
+      ],
+      "case_ids": [
+        "DB-02",
+        "DB-03",
+        "DB-04",
+        "DB-06",
+        "SC-05",
+        "SC-06",
+        "STORE-01",
+        "STORE-02"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W06",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现逐字段新鲜度与缺口计划器",
+      "depends_on": [
+        "W05",
+        "C04",
+        "S01"
+      ],
+      "invariants": [
+        "I08",
+        "I09",
+        "I12"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "quick_scan可用性/缺口计划模块（新增）",
+        "tests/时效/版本/事件测试"
+      ],
+      "steps": [
+        "按身份、题义/锚点、路由、信息时期、检查等级、事件和TTL决定可用性。",
+        "返回复用ID与逐字段失效原因，区分unknown冷却和有效覆盖。",
+        "生成缺口清单但不发模型请求；只补新增/失效题，不重写原答案。"
+      ],
+      "deliverables": [
+        "fresh/missing/stale/冷却计划器",
+        "固定时钟与增量测试"
+      ],
+      "case_ids": [
+        "TIME-01",
+        "TIME-02",
+        "TIME-03",
+        "TIME-04",
+        "TIME-05",
+        "TIME-06",
+        "TIME-07",
+        "TIME-08",
+        "LLM-09"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W07",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现可解释的三值规则引擎",
+      "depends_on": [
+        "W05",
+        "W06",
+        "C03"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I09",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "quick_scan规则schema解析与查询模块（新增）",
+        "tests/三值规则与gate测试"
+      ],
+      "steps": [
+        "解析all/any/比较符/作用层/可比组/检查等级，非法规则明确报错。",
+        "按固定真值表计算逐条件结果；critical gate独立覆盖普通组合。",
+        "冻结规则版本与引用观察ID，阈值改变仅重新筛选。"
+      ],
+      "deliverables": [
+        "规则引擎与逐条件解释",
+        "边界/三值/跨类型测试"
+      ],
+      "case_ids": [
+        "RULE-01",
+        "RULE-02",
+        "RULE-03",
+        "RULE-04",
+        "SC-09",
+        "SC-11"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W08",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "接入独立恢复观察与公司简表",
+      "depends_on": [
+        "W05",
+        "W07",
+        "S02"
+      ],
+      "invariants": [
+        "I06",
+        "I07",
+        "I15"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "quick_scan恢复观察投影/简表（新增）",
+        "tests/恢复查询及展示测试"
+      ],
+      "steps": [
+        "消费既有recovery_watch政策版本和有效答案，不复制另一套偷偷变阈值的判断。",
+        "质量为空时仍显示优势、低分、催化、资金/摊薄/结构风险与缺口。",
+        "提供质量/恢复/所有相关入口，默认不先按质量删大池。"
+      ],
+      "deliverables": [
+        "恢复观察查询/简表",
+        "低谷与高风险正反例"
+      ],
+      "case_ids": [
+        "REC-01",
+        "REC-02",
+        "REC-03",
+        "REC-04",
+        "RULE-04"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W09",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现基础只读查询与冻结候选导出",
+      "depends_on": [
+        "W04",
+        "W06",
+        "W07",
+        "W08"
+      ],
+      "invariants": [
+        "I03",
+        "I08",
+        "I13",
+        "I14"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/implementation/results-ui.md"
+      ],
+      "allowed_changes": [
+        "quick_scan capabilities/coverage/search/get_profiles/export接口（新增）",
+        "tests/查询分页与快照测试"
+      ],
+      "steps": [
+        "提供实体/证券、粗分类、评分/恢复、日期、模型、检查等级和缺口。",
+        "按稳定排序分页，清楚标facts_available=false与库覆盖。",
+        "导出candidate_set固定规则/查询/观察ID和命中原因，后续更新不改旧集合。",
+        "满足results-ui.md的50条默认/100条上限与固定快照分页；返回安全呈现所需短依据/来源及口径标识，详情按需读取。"
+      ],
+      "deliverables": [
+        "基础查询与候选导出",
+        "空结果/分页/快照测试"
+      ],
+      "case_ids": [
+        "QUERY-01",
+        "QUERY-02",
+        "QUERY-03",
+        "ID-04",
+        "RULE-04"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "L02",
+      "stage": "M2",
+      "owner": "iqs",
+      "kind": "live",
+      "title": "执行60家公司评分校准与规则稳定性评估",
+      "depends_on": [
+        "G1",
+        "W07",
+        "W08",
+        "W09"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I07",
+        "I17",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "校准运行目录与小型报告（新增，不复制公司文档）"
+      ],
+      "steps": [
+        "固定60家公司分类型/市场样本与20家重复子集，纳入已配置的备用模型。",
+        "冻结锚点/规则后由StockQA运行，按完整样本报告有效、unknown、失败及7/8/9边界。",
+        "核查重大事实错误、恢复/结构/资金反例，按测试策略判定而非择优运行。"
+      ],
+      "deliverables": [
+        "校准集与费用/稳定性报告",
+        "问题修订或通过建议"
+      ],
+      "case_ids": [
+        "LIVE-03",
+        "LIVE-04",
+        "REC-01",
+        "REC-02",
+        "REC-03",
+        "SC-11"
+      ],
+      "test_binding": "先完成离线校验，固定样本/策略/预算，再通过真实生产入口执行；保存每项case的实际请求/调用记录与结果。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "停止新派发并保存任务/已返回结果/费用回执；禁止删除记录后重新跑来制造成功率。"
+    },
+    {
+      "id": "W13",
+      "stage": "M2",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现自动发现、准入与成员增量意图",
+      "depends_on": [
+        "W03",
+        "W04",
+        "C01"
+      ],
+      "invariants": [
+        "I01",
+        "I03",
+        "I12",
+        "I13",
+        "I17",
+        "I27",
+        "I28"
+      ],
+      "read_first": [
+        "docs/system-contract.md",
+        "references/standard-output.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan名单/维护服务与持久化",
+        "tests/本卡场景与故障注入"
+      ],
+      "steps": [
+        "提供discover/nominate/evaluate/apply-auto工具及设置，候选来源复用主档/研究提名；需要LLM的发现只能提交StockQA预算请求。",
+        "按身份/上市范围/用户排除/有效挂牌/配额原子准入，manual_pin和用户移出不会被自动维护覆盖。",
+        "持久化成员版本、维护期间键、名额及扫描意图；并发/崩溃/重启幂等，扫描执行留给已有调度器。"
+      ],
+      "deliverables": [
+        "实现自动发现、准入与成员增量意图的公开工具与版本化接口",
+        "精确场景测试、故障恢复与审查记录"
+      ],
+      "case_ids": [
+        "MAINT-01",
+        "MAINT-02",
+        "MAINT-03",
+        "MAINT-04",
+        "MAINT-05",
+        "MAINT-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "G2",
+      "stage": "M2",
+      "owner": "iqs",
+      "kind": "review",
+      "title": "审查评分闭环和校准门槛",
+      "depends_on": [
+        "L02",
+        "W03",
+        "W04",
+        "W09",
+        "W13"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I07",
+        "I16",
+        "I17",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/reviews/G2/（新增）"
+      ],
+      "steps": [
+        "复算固定样本的规则边界/覆盖分母，抽查模型和类型比较。",
+        "检查大池维护不依赖高分、低谷观察独立、未知不伪装中等。",
+        "确认校准门槛及全部阻塞问题关闭，允许进入200家运行验证。"
+      ],
+      "deliverables": [
+        "G2审查与返工追踪",
+        "可用比较组清单"
+      ],
+      "case_ids": [
+        "REV-01",
+        "REV-02",
+        "REV-03",
+        "LIVE-04",
+        "UNI-05",
+        "SC-07"
+      ],
+      "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q06",
+      "stage": "M3",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "实现持久化逻辑待办与领取租约",
+      "depends_on": [
+        "G2",
+        "C04"
+      ],
+      "invariants": [
+        "I02",
+        "I12"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockQA持久化任务存储（新增，复用现有运行设施）",
+        "tests/任务键/租约并发测试"
+      ],
+      "steps": [
+        "将逐题逻辑键、状态和领取令牌落盘，原子创建/领取。",
+        "多run同代次引用一个待办；租约过期恢复并拒绝旧worker迟到覆盖。",
+        "记录合法状态转换与异常，不用聊天文本作为唯一断点。",
+        "primary逻辑键不含fallback模型/运行ID，记录pack/attempt/prompt hash；租约到期先区分未发送与结果不明，不盲目重发。"
+      ],
+      "deliverables": [
+        "任务存储与租约",
+        "并发/非法转移测试"
+      ],
+      "case_ids": [
+        "JOB-01",
+        "JOB-02",
+        "JOB-08",
+        "PAR-05"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q07",
+      "stage": "M3",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "实现逐题检查点、部分回复与取消恢复",
+      "depends_on": [
+        "Q06",
+        "Q03"
+      ],
+      "invariants": [
+        "I05",
+        "I12",
+        "I17"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockQA任务worker/检查点（新增或扩展）",
+        "tests/部分回复和故障注入测试"
+      ],
+      "steps": [
+        "每题返回即校验持久化；pack内成功题留存，只补失败/漏题。",
+        "停止派发/取消与正在运行请求分开；崩溃检查已存结果和未知请求。",
+        "默认逐题；pack质量未达对照门槛则保持禁用，不为省调用损失题目质量。",
+        "部分包成功逐题持久化，仅重组漏题；默认每请求一题，包内多题须通过质量对照后启用，cap只是上限；每包同一实体且评分/事实分开。"
+      ],
+      "deliverables": [
+        "检查点/取消/恢复实现",
+        "4成功2待补及崩溃矩阵测试"
+      ],
+      "case_ids": [
+        "JOB-03",
+        "JOB-04",
+        "JOB-05",
+        "LLM-07",
+        "PAR-04",
+        "PAR-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q08",
+      "stage": "M3",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "持久化故障冷却并统一重试拥有者",
+      "depends_on": [
+        "Q06",
+        "Q04",
+        "C05"
+      ],
+      "invariants": [
+        "I02",
+        "I10",
+        "I11"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockQA既有HTTP/cascade与持久化健康状态",
+        "tests/冷却/退避/故障分类测试"
+      ],
+      "steps": [
+        "HTTP与LLM层共享尝试预算，尊重Retry-After并给故障模型全局冷却。",
+        "跨进程恢复冷却和有限健康探测；备用成功不是首选恢复证据。",
+        "所有允许模型不可用就记录下次可重试时间并停止派发。",
+        "识别确认的五小时额度拒绝与普通429，按共享账户组持久化熔断/重置来源；未知恢复时间用有界单探针，恢复前跳过同组其他路由。"
+      ],
+      "deliverables": [
+        "单一重试/冷却机制",
+        "重启与恢复首选测试"
+      ],
+      "case_ids": [
+        "LLM-03",
+        "LLM-04",
+        "LLM-05",
+        "LLM-06",
+        "LLM-10",
+        "BUD-02",
+        "PAR-02",
+        "PAR-07"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q09",
+      "stage": "M3",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "实现并发派发上限、费用预留与预算停止",
+      "depends_on": [
+        "Q06",
+        "C05"
+      ],
+      "invariants": [
+        "I11",
+        "I12"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockQA实际计价/耗用账本与派发入口",
+        "tests/并发预算与未知费用测试",
+        "StockQA持久化派发槽及并发上限协调，复用既有异步/批次设施"
+      ],
+      "steps": [
+        "使用实际计价版本和搜索费用，派发前原子预留。",
+        "成功/失败/备用共用账本，结果不明保留预留直至核对。",
+        "达到金额/请求/时间上限停止新派发，已运行回执继续结算。",
+        "实现跨worker的全局/组/路由三层在途槽，和题目领取/预算预留协调；未完成领取不得发送，崩溃和迟到回执不能超发或重复结算。"
+      ],
+      "deliverables": [
+        "费用账本与预算闸门",
+        "并发/备用/未知费用测试"
+      ],
+      "case_ids": [
+        "BUD-01",
+        "BUD-02",
+        "BUD-03",
+        "BUD-04",
+        "JOB-05",
+        "PAR-01",
+        "PAR-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q10",
+      "stage": "M3",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "实现结果outbox与投递回执消费",
+      "depends_on": [
+        "Q07",
+        "Q09",
+        "C06"
+      ],
+      "invariants": [
+        "I01",
+        "I12"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockQA轻量outbox/投递接口（新增）",
+        "tests/结果交付与ACK测试"
+      ],
+      "steps": [
+        "持久化result_ready并产生版本化轻量包，投递失败只重投。",
+        "接受匹配item/hash的ACK后才delivered；重复ACK幂等。",
+        "独立问答可在StockWiki不可用时完成，不创建第二主画像库。",
+        "续扫先对账和重投已回答结果，保留原尝试时间/实际模型；不得因公司未全完成而重问已成功题。"
+      ],
+      "deliverables": [
+        "持久化outbox及ACK消费",
+        "投递失败不重问测试"
+      ],
+      "case_ids": [
+        "JOB-07",
+        "JOB-08",
+        "DB-07",
+        "LLM-08",
+        "PAR-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "W10",
+      "stage": "M3",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "提供导入ACK与执行状态只读投影",
+      "depends_on": [
+        "W05",
+        "Q10",
+        "C06"
+      ],
+      "invariants": [
+        "I03",
+        "I12",
+        "I18"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan导入ACK/运行状态展示",
+        "tests/跨仓投递集成测试"
+      ],
+      "steps": [
+        "事务导入完成才生成对应item/hash回执；错误回执不伪装成功。",
+        "runtime jobs只作外层启动/查看，问答级重试以StockQA为准。",
+        "显示已回答待入库、失败/未知与有效覆盖，不把执行次数当公司数。"
+      ],
+      "deliverables": [
+        "导入回执接口与状态投影",
+        "生产者/消费者闭环测试"
+      ],
+      "case_ids": [
+        "DB-02",
+        "DB-03",
+        "JOB-07",
+        "JOB-08"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W11",
+      "stage": "M3",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "接通有范围与预算的定向补扫",
+      "depends_on": [
+        "W06",
+        "W09",
+        "W10",
+        "Q06"
+      ],
+      "invariants": [
+        "I09",
+        "I13",
+        "I18"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan request_refresh及runtime外层入口",
+        "tests/范围补扫与版本测试"
+      ],
+      "steps": [
+        "查询缺口后生成实体/字段白名单任务，复用同一个StockQA执行入口。",
+        "有效项不提交，预算和用户模型策略由执行器统一落实。",
+        "新增成员进入增量，消费者不能直接写SQLite或隐式刷新全池。"
+      ],
+      "deliverables": [
+        "补扫提交/状态接口",
+        "3家公司定向与越界反例测试"
+      ],
+      "case_ids": [
+        "QUERY-04",
+        "TIME-05",
+        "JOB-06",
+        "DB-07"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "W12",
+      "stage": "M3",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现备份、保留策略与恢复操作说明",
+      "depends_on": [
+        "W05",
+        "G2"
+      ],
+      "invariants": [
+        "I01",
+        "I08",
+        "I21"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan备份/恢复与保留策略入口",
+        "tests/备份恢复/历史保护测试",
+        "StockWiki运维文档"
+      ],
+      "steps": [
+        "使用数据库支持的一致性备份方式，保存规则/词表/检查/成员版本。",
+        "在临时空目录演练恢复，核对历史dataset与当前视图。",
+        "只按策略清理临时调试/交换副本；不删除权威历史或把原件下载当恢复步骤。",
+        "两库恢复核对ACK与备份水位，保留可重放交换记录；余额不确定时停收费，不抹去后续费用。"
+      ],
+      "deliverables": [
+        "备份恢复工具与手册",
+        "可重现恢复检查"
+      ],
+      "case_ids": [
+        "DB-05",
+        "DB-04",
+        "REV-04",
+        "LLM-08",
+        "STORE-03"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "L03",
+      "stage": "M3",
+      "owner": "stockqa",
+      "kind": "live",
+      "title": "执行200家公司可靠性与成本试点",
+      "depends_on": [
+        "Q08",
+        "Q09",
+        "W11",
+        "W10",
+        "W12"
+      ],
+      "invariants": [
+        "I01",
+        "I11",
+        "I12",
+        "I17",
+        "I21"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockQA 200家公司试点目录与状态/费用记录"
+      ],
+      "steps": [
+        "冻结样本与预算，先运行离线故障矩阵，再开展真实批次。",
+        "至少主动中断/恢复一次，验证已答未入库、重复导入和数据库恢复。",
+        "报告实际费用、等待/覆盖/未知；pack若启用须对照逐题基线，否则明确仍逐题。"
+      ],
+      "deliverables": [
+        "200家公司试点与恢复报告",
+        "全池预算估计输入"
+      ],
+      "case_ids": [
+        "LIVE-05",
+        "JOB-04",
+        "JOB-07",
+        "BUD-01",
+        "BUD-03",
+        "DB-05"
+      ],
+      "test_binding": "先完成离线校验，固定样本/策略/预算，再通过真实生产入口执行；保存每项case的实际请求/调用记录与结果。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "停止新派发并保存任务/已返回结果/费用回执；禁止删除记录后重新跑来制造成功率。"
+    },
+    {
+      "id": "G3",
+      "stage": "M3",
+      "owner": "iqs",
+      "kind": "review",
+      "title": "审查批次可靠性并放行评分扩容",
+      "depends_on": [
+        "L03",
+        "W11"
+      ],
+      "invariants": [
+        "I01",
+        "I09",
+        "I10",
+        "I11",
+        "I12",
+        "I17",
+        "I21"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/reviews/G3/（新增）"
+      ],
+      "steps": [
+        "检查崩溃点、租约、费用预留及导入ACK证据，独立复核重复/丢题统计。",
+        "验证未知请求没有被写成零成本或成功；回退/备份恢复有实际结果。 W12的实际备份恢复验收必须先于本关口，不能延后到全池上线。",
+        "确认真实评分闭环可运行，允许按预算扩评分及启动M4事实实现。"
+      ],
+      "deliverables": [
+        "G3审查",
+        "评分扩容与事实阶段范围"
+      ],
+      "case_ids": [
+        "REV-01",
+        "REV-02",
+        "REV-03",
+        "REV-04",
+        "JOB-02",
+        "BUD-03",
+        "DB-05"
+      ],
+      "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "F01",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "审查并接入已提供的61题事实问卷与标准路由",
+      "depends_on": [
+        "G3",
+        "C06"
+      ],
+      "invariants": [
+        "I01",
+        "I14",
+        "I15"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "questions/事实专用模块与catalog扩展（新增）",
+        "scripts/question_sets.py",
+        "tests/事实题路由/协议测试"
+      ],
+      "steps": [
+        "事实题库1.0.0及离线编排已由用户本轮要求提供；本卡审查覆盖与契约并完成生产接入，不能将离线通过当G4已验收。",
+        "按类型/行业问产品、材料、设备、应用、客户供应商、商业化与实质性。",
+        "未知和未披露明确留空，不补无来源名单，不返回假分数。",
+        "保留分部、关系方向、证据/否定/日期；评分问卷及旧版本兼容。"
+      ],
+      "deliverables": [
+        "事实问卷和编排",
+        "非评分协议/路由测试"
+      ],
+      "case_ids": [
+        "FACT-01",
+        "FACT-02",
+        "FACT-05",
+        "SC-06",
+        "MATRIX-08"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "F02",
+      "stage": "M4",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "透传facts回复并复用同一执行器",
+      "depends_on": [
+        "G3",
+        "F01",
+        "Q10"
+      ],
+      "invariants": [
+        "I01",
+        "I02",
+        "I05",
+        "I14"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockQA结构化回复/解析入口",
+        "tests/facts响应与任务兼容测试"
+      ],
+      "steps": [
+        "原生支持response_kind=facts，score字段不必存在。",
+        "搜索receipt、费用、校验、续扫和outbox复用既有链，不新开事实专用客户端。",
+        "确保事实错误/未知不进入评分表或制造5分。"
+      ],
+      "deliverables": [
+        "facts透传",
+        "评分/事实兼容回归"
+      ],
+      "case_ids": [
+        "FACT-01",
+        "FACT-05",
+        "SC-02",
+        "LLM-08",
+        "JOB-03"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "F03",
+      "stage": "M4",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现版本化术语、短词和别名",
+      "depends_on": [
+        "G3",
+        "C06"
+      ],
+      "invariants": [
+        "I08",
+        "I13",
+        "I14"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan terms/aliases迁移与查询",
+        "tests/词表/短词查询测试"
+      ],
+      "steps": [
+        "建立最小中英术语和别名，保留原始表述、词表版本。",
+        "AI/液冷等短词走精确术语匹配，不能只依赖trigram。",
+        "名称相似但经济关系不同不强并，词义变化保留版本。"
+      ],
+      "deliverables": [
+        "术语表与检索接口",
+        "短词/别名/语义边界测试"
+      ],
+      "case_ids": [
+        "FACT-04",
+        "FACT-05",
+        "QUERY-02"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "F04",
+      "stage": "M4",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现带方向/分部/时期的事实关系导入",
+      "depends_on": [
+        "F02",
+        "F03",
+        "W05"
+      ],
+      "invariants": [
+        "I03",
+        "I08",
+        "I14",
+        "I15"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan事实/关系表和导入",
+        "tests/关系导入/冲突测试"
+      ],
+      "steps": [
+        "保存生产、使用、应用、供货等方向与商业化/依据/日期，不推导未披露收入比例。",
+        "同实体不同分部保持隔离；否认、过期、推断和冲突有独立状态。",
+        "更正追加，不把自己的下游报告升级成新独立来源。"
+      ],
+      "deliverables": [
+        "事实关系存储与冲突记录",
+        "方向/分部/独立性测试"
+      ],
+      "case_ids": [
+        "FACT-01",
+        "FACT-02",
+        "FACT-03",
+        "FACT-05",
+        "CONS-05"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "F05",
+      "stage": "M4",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现严格与探索两种关系检索",
+      "depends_on": [
+        "F03",
+        "F04",
+        "W09"
+      ],
+      "invariants": [
+        "I07",
+        "I13",
+        "I14",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan主题关系检索和候选导出",
+        "tests/主题查询正反例"
+      ],
+      "steps": [
+        "按术语、关系方向、同分部、商业化、时点与证据过滤。",
+        "strict排除未核实/研发/否认等不合条件对象，explore明确标待验证。",
+        "支持可选质量/恢复交集，不默认剔除低谷公司，显示命中路径与覆盖限制。"
+      ],
+      "deliverables": [
+        "关系检索与可解释候选",
+        "液冷/AI及非AI主题正反例"
+      ],
+      "case_ids": [
+        "FACT-02",
+        "FACT-03",
+        "FACT-04",
+        "FACT-05",
+        "RULE-04",
+        "QUERY-02"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "Q11",
+      "stage": "M4",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "实现显式模型对照与完整执行标记",
+      "depends_on": [
+        "F02",
+        "Q09",
+        "Q10",
+        "C05"
+      ],
+      "invariants": [
+        "I01",
+        "I03",
+        "I12",
+        "I13",
+        "I17",
+        "I27",
+        "I28"
+      ],
+      "read_first": [
+        "docs/system-contract.md",
+        "references/standard-output.md",
+        "docs/universe-and-operations-design.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockQA任务/策略/比较组公开协议",
+        "tests/本卡场景与故障注入"
+      ],
+      "steps": [
+        "日常primary仍有序fallback；显式comparison在共同输入/截止日下为指定模型各建可恢复子任务，设置数量/金额上限。",
+        "按请求记录requested/resolved/revision、provider、UTC开始/回答时间、prompt/manifest hash、搜索回执与比较组；实际值未知保留null。",
+        "对照共享StockQA预算/冷却和outbox；不可用模型留缺口，不自动换成另一个模型冒充指定对照。",
+        "指定模型的对照请求可以并行，但共享全局/账户/路由槽和总预算；不可用模型留缺口，不能fallback冒充。"
+      ],
+      "deliverables": [
+        "实现显式模型对照与完整执行标记的公开工具与版本化接口",
+        "精确场景测试、故障恢复与审查记录"
+      ],
+      "case_ids": [
+        "MATRIX-04",
+        "MATRIX-05",
+        "MATRIX-06",
+        "PAR-01",
+        "PAR-03"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "T01",
+      "stage": "M4",
+      "owner": "theme",
+      "kind": "implementation",
+      "title": "接入主题研究第5/6步的快扫查询",
+      "depends_on": [
+        "G3",
+        "F05",
+        "W11"
+      ],
+      "invariants": [
+        "I13",
+        "I15",
+        "I18",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "SKILL.md",
+        "references/中第5/6步对应协议（先核实）",
+        "消费适配及测试（新增，不复制LLM客户端）"
+      ],
+      "steps": [
+        "主题先独立拆完整产业链，再查库找各环节候选并复用合适基础字段。",
+        "缺口仅对指定实体/字段补扫；保留池外领导者发现与提名。",
+        "主题收入证据、情景预测和原验证器继续有效，快扫分数不替代模型输入。"
+      ],
+      "deliverables": [
+        "主题消费适配",
+        "查询复用/池外/预算反例"
+      ],
+      "case_ids": [
+        "CONS-01",
+        "CONS-02",
+        "QUERY-04",
+        "CONS-05"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "T02",
+      "stage": "M4",
+      "owner": "industry",
+      "kind": "implementation",
+      "title": "接入行业研究第6步的统一实体查询",
+      "depends_on": [
+        "G3",
+        "F05",
+        "W11"
+      ],
+      "invariants": [
+        "I13",
+        "I14",
+        "I15",
+        "I18",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "SKILL.md",
+        "modules/company-evaluation.md（核实后修改）",
+        "对应消费适配与测试（新增）"
+      ],
+      "steps": [
+        "行业框架完成后先按术语/行业映射查公司，不再要求已有companies目录。",
+        "按实际截止日和财务期间补缺，去掉硬编码2025的调用假设。",
+        "保留原行业框架PDF流程和独立量表，不向快扫库复制文档或直接写入评分。"
+      ],
+      "deliverables": [
+        "行业消费适配",
+        "无目录/口径/范围反例"
+      ],
+      "case_ids": [
+        "CONS-03",
+        "CONS-04",
+        "QUERY-04",
+        "SC-11"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "W14",
+      "stage": "M4",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现扫描快照与公司时间模型比较查询",
+      "depends_on": [
+        "F04",
+        "Q11",
+        "W09",
+        "C06"
+      ],
+      "invariants": [
+        "I01",
+        "I03",
+        "I12",
+        "I13",
+        "I17",
+        "I27",
+        "I28"
+      ],
+      "read_first": [
+        "docs/system-contract.md",
+        "references/standard-output.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan快照和比较查询",
+        "tests/本卡场景与故障注入"
+      ],
+      "steps": [
+        "每次scan保存不可变观察引用与名单/方法/路由/策略版本；复用旧回答不新建时间和模型。",
+        "提供company/time/model查询和不可比原因，沿用标准契约的单位/期间/语义/cohort检查；区分primary与comparison，不平均或选最高。",
+        "旧缺元数据标unattributed，关系未被再次搜到不自动终止；事实内嵌指标未对齐只并排显示。"
+      ],
+      "deliverables": [
+        "实现扫描快照与公司时间模型比较查询的公开工具与版本化接口",
+        "精确场景测试、故障恢复与审查记录"
+      ],
+      "case_ids": [
+        "MATRIX-01",
+        "MATRIX-02",
+        "MATRIX-03",
+        "MATRIX-05",
+        "MATRIX-06",
+        "STORE-04"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "L04",
+      "stage": "M4",
+      "owner": "stockwiki",
+      "kind": "live",
+      "title": "验证事实采集与两个消费者的完整链路",
+      "depends_on": [
+        "F05",
+        "T01",
+        "T02",
+        "W14"
+      ],
+      "invariants": [
+        "I01",
+        "I13",
+        "I14",
+        "I17",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki事实/主题试点数据集与消费验收报告"
+      ],
+      "steps": [
+        "在既有200家样本逐步补事实，先固定AI硬件与一个非AI主题的人工标注正反例。",
+        "通过两个真实技能入口查库/补缺/输出候选，检查方向、分部、池外、覆盖。",
+        "报告strict精确率、探索召回及未核实比例，不能用未知真值凑分母。"
+      ],
+      "deliverables": [
+        "事实检索标注集与指标",
+        "两个消费者的实际交接证据"
+      ],
+      "case_ids": [
+        "LIVE-07",
+        "FACT-02",
+        "FACT-03",
+        "FACT-04",
+        "FACT-05",
+        "CONS-01",
+        "CONS-02",
+        "CONS-03",
+        "CONS-04",
+        "CONS-05"
+      ],
+      "test_binding": "先完成离线校验，固定样本/策略/预算，再通过真实生产入口执行；保存每项case的实际请求/调用记录与结果。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "G4",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "review",
+      "title": "审查事实检索与研究联动",
+      "depends_on": [
+        "L04"
+      ],
+      "invariants": [
+        "I01",
+        "I13",
+        "I14",
+        "I15",
+        "I17",
+        "I20"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/reviews/G4/（新增）"
+      ],
+      "steps": [
+        "检查两主题正反例与指标、原始关系方向和未核实比例。",
+        "确认只补缺口、无强制目录/下载、池外发现不自动加大池。",
+        "确认没有把行业分数合并为IQS或用回流报告自证；关闭问题再放行完整事实能力。"
+      ],
+      "deliverables": [
+        "G4审查",
+        "已验证事实域/词表/消费者版本"
+      ],
+      "case_ids": [
+        "REV-01",
+        "REV-02",
+        "REV-03",
+        "CONS-04",
+        "CONS-05",
+        "QUERY-04"
+      ],
+      "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "O01",
+      "stage": "M5",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "形成约2000家公司候选版本与覆盖检查",
+      "depends_on": [
+        "W04",
+        "G3",
+        "W13"
+      ],
+      "invariants": [
+        "I04",
+        "I16"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "StockWiki版本化名单与分层覆盖报告"
+      ],
+      "steps": [
+        "导入实际可用主档/种子与用户固定成员，按已定规则形成候选版本。",
+        "核对独立实体/挂牌/市场重叠/规模行业分布、待分类与特殊情形保留。",
+        "显示新增/移除建议与依据；不因本卡完成自动启动收费全池。"
+      ],
+      "deliverables": [
+        "约2000家候选版本",
+        "覆盖、歧义、差异与不足报告"
+      ],
+      "case_ids": [
+        "UNI-01",
+        "UNI-02",
+        "UNI-04",
+        "UNI-05",
+        "UNI-06",
+        "ID-01"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "O02",
+      "stage": "M5",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "实现全池公平调度与增量维护",
+      "depends_on": [
+        "G3",
+        "Q06",
+        "Q09",
+        "O01"
+      ],
+      "invariants": [
+        "I09",
+        "I11",
+        "I12",
+        "I16"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockQA已有队列的全池调度策略",
+        "tests/公平性与增量负载测试"
+      ],
+      "steps": [
+        "每轮冻结名单版本并读取缺口，普通对象保留首次覆盖/最久未更新份额。",
+        "风险与用户新增可以优先，但持续热点不能使普通对象永久等待。",
+        "达到额度保留待办，下轮合入新成员和到期字段；报告实体/题/证券层分别统计。",
+        "接收成员增量意图并按持久化到期键公平续扫；常驻等待不发空查询，断电后不重置预算或逐周期无限追赶。",
+        "并行不同公司的独立题目/已批准小包，共享持久化槽和熔断；所有模型不可用时持久化waiting_for_provider与恢复点，不循环扫空队列。"
+      ],
+      "deliverables": [
+        "公平调度与覆盖统计",
+        "持续入队/新增/预算负载测试"
+      ],
+      "case_ids": [
+        "UNI-07",
+        "JOB-05",
+        "JOB-06",
+        "TIME-05",
+        "BUD-01",
+        "PAR-01",
+        "PAR-05",
+        "PAR-07"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "O04",
+      "stage": "M5",
+      "owner": "stockqa",
+      "kind": "live",
+      "title": "按预算分批扩大全池评分覆盖",
+      "depends_on": [
+        "O01",
+        "O02",
+        "W12",
+        "G3"
+      ],
+      "invariants": [
+        "I01",
+        "I10",
+        "I11",
+        "I12",
+        "I16",
+        "I17"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockQA全池运行目录与费用/覆盖报告"
+      ],
+      "steps": [
+        "按100—200家公司分批运行，复用新鲜字段，保留全量待办状态。",
+        "持续核对失败/unknown/费用与公平覆盖，模型版本变更先过校准。",
+        "本卡交付评分覆盖；事实若未G4明确未上线，不把已尝试当全部有有效分。"
+      ],
+      "deliverables": [
+        "全池评分运行与接续状态",
+        "实际覆盖/费用/质量缺口报告"
+      ],
+      "case_ids": [
+        "LIVE-06",
+        "UNI-07",
+        "JOB-06",
+        "BUD-02",
+        "TIME-04"
+      ],
+      "test_binding": "先完成离线校验，固定样本/策略/预算，再通过真实生产入口执行；保存每项case的实际请求/调用记录与结果。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "停止新派发并保存任务/已返回结果/费用回执；禁止删除记录后重新跑来制造成功率。"
+    },
+    {
+      "id": "U01",
+      "stage": "M5",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现企业列表、分项筛选与稳定导航",
+      "depends_on": [
+        "W09",
+        "W11"
+      ],
+      "invariants": [
+        "I01",
+        "I03",
+        "I07",
+        "I13",
+        "I14",
+        "I15"
+      ],
+      "read_first": [
+        "docs/implementation/results-ui.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki既有Web页面/路由/查询呈现层；先核实真实布局",
+        "StockWiki浏览器测试与临时SQLite fixture"
+      ],
+      "steps": [
+        "复用既有查询层，按entity_id展示公司；提供名称/代码/别名、市场/行业/阶段、分项AND/OR规则及独立恢复/数据状态视图。",
+        "服务端默认50条、至多100条分页，稳定查询快照与并列排序；保存筛选和返回上下文，跳转稳定公司链接。",
+        "只查询现有结果，显示规则命中/未知原因；无结果/无命中/查询错误各有状态。"
+      ],
+      "deliverables": [
+        "可浏览的股票池列表与保存筛选",
+        "身份/分页/零模型调用浏览器测试"
+      ],
+      "case_ids": [
+        "UI-01",
+        "UI-02",
+        "UI-08",
+        "UI-09"
+      ],
+      "test_binding": "在真实StockWiki服务与临时SQLite上通过浏览器操作并断言DOM值、导航与请求范围；仅模型网络边界可stub，不以HTTP 200或独立helper替代UI。",
+      "completion": [
+        "关联case均有真实浏览器结果、测试选择器、固定fixture和截图；关键skip/未运行不能放行。",
+        "核对页面与查询接口语义一致、浏览零模型调用；提交实际快照及独立审查，截图只证明布局。"
+      ],
+      "rollback": "回退或禁用当前页面入口；保留权威数据库、名单、观察、已保存规则和费用账本，不修改其他仓库。"
+    },
+    {
+      "id": "U02",
+      "stage": "M5",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现企业评分详情、依据和恢复观察",
+      "depends_on": [
+        "U01"
+      ],
+      "invariants": [
+        "I01",
+        "I03",
+        "I07",
+        "I13",
+        "I14",
+        "I15"
+      ],
+      "read_first": [
+        "docs/implementation/results-ui.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki既有Web页面/路由/查询呈现层；先核实真实布局",
+        "StockWiki浏览器测试与临时SQLite fixture"
+      ],
+      "steps": [
+        "按通用/类型/行业/阶段/诊断呈现题目、原分/状态、依据、日期、模型及版本；复用已验证汇总和替代关系。",
+        "展示优势、变化判断、关键风险与恢复条件，保留原低分；未就绪字段明确缺失，不临时生成摘要。",
+        "安全呈现来源与短文本，区分未知/过期/N/A/置信度；已存结果无需company目录或执行器在线。"
+      ],
+      "deliverables": [
+        "企业评分详情与依据展开",
+        "缺失/过期/恢复/安全呈现浏览器测试"
+      ],
+      "case_ids": [
+        "UI-01",
+        "UI-03",
+        "UI-04",
+        "UI-05",
+        "UI-06",
+        "UI-10"
+      ],
+      "test_binding": "在真实StockWiki服务与临时SQLite上通过浏览器操作并断言DOM值、导航与请求范围；仅模型网络边界可stub，不以HTTP 200或独立helper替代UI。",
+      "completion": [
+        "关联case均有真实浏览器结果、测试选择器、固定fixture和截图；关键skip/未运行不能放行。",
+        "核对页面与查询接口语义一致、浏览零模型调用；提交实际快照及独立审查，截图只证明布局。"
+      ],
+      "rollback": "回退或禁用当前页面入口；保留权威数据库、名单、观察、已保存规则和费用账本，不修改其他仓库。"
+    },
+    {
+      "id": "O05",
+      "stage": "M5",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "提供名单、筛选、公司卡片与研究入口",
+      "depends_on": [
+        "O04",
+        "W09",
+        "W11",
+        "U02"
+      ],
+      "invariants": [
+        "I03",
+        "I07",
+        "I13",
+        "I14",
+        "I15"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/implementation/results-ui.md"
+      ],
+      "allowed_changes": [
+        "StockWiki现有页面/CLI视图（按真实接口扩展）",
+        "tests/用户流程与能力状态测试"
+      ],
+      "steps": [
+        "组装U01/U02已验收结果UI与名单维护/研究导航；完整结果浏览必须有Web页面，不能仅交CLI。",
+        "按capabilities开放已验收功能；事实检索与研究接线由U03在G4后完成。",
+        "公司详情从权威轻量库呈现，无需正式wiki目录；浏览不自动调用LLM。"
+      ],
+      "deliverables": [
+        "名单/评分列表/企业详情的一致Web导航",
+        "名单维护与能力状态流程测试"
+      ],
+      "case_ids": [
+        "QUERY-01",
+        "QUERY-02",
+        "QUERY-04",
+        "REC-04",
+        "ID-04",
+        "DB-06"
+      ],
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
+    },
+    {
+      "id": "G5",
+      "stage": "M5",
+      "owner": "iqs",
+      "kind": "review",
+      "title": "按能力范围审查交付与运维接续",
+      "depends_on": [
+        "O04",
+        "O05",
+        "W12"
+      ],
+      "invariants": [
+        "I01",
+        "I04",
+        "I09",
+        "I11",
+        "I12",
+        "I14",
+        "I16",
+        "I17",
+        "I21"
+      ],
+      "read_first": [
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/implementation/results-ui.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/reviews/G5/（新增）"
+      ],
+      "steps": [
+        "核对约2000家独立公司覆盖而非证券数，分别报告fresh/unknown/待办/失败。",
+        "评分交付要求G3与扩容证据；完整事实/消费者交付另外要求G4，未通过不得统称全部完成。",
+        "从用户操作复核增补、续扫、预算停止和恢复手册，记录下一维护入口。",
+        "实际浏览U01/U02结果页面，核对分数、依据、恢复观察、缺失与时效；仅CLI或静态样图不能通过结果UI验收。"
+      ],
+      "deliverables": [
+        "分能力交付审查",
+        "实际范围、缺口和运维交接"
+      ],
+      "case_ids": [
+        "REV-01",
+        "REV-02",
+        "REV-03",
+        "REV-04",
+        "LIVE-06",
+        "UNI-04",
+        "QUERY-02",
+        "UI-03",
+        "UI-04",
+        "UI-08"
+      ],
+      "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
+      "completion": [
+        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+      ],
+      "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "X01",
+      "stage": "M6",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "提供公开本地执行/能力/生命周期入口",
+      "depends_on": [
+        "C07",
+        "G3",
+        "Q10",
+        "Q08",
+        "Q09"
+      ],
+      "invariants": [
+        "I02",
+        "I12",
+        "I18",
+        "I22",
+        "I24"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockQA公开quick_scan控制入口（新增，P00核实布局）",
+        "已有worker/任务运行入口适配",
+        "tests/跨进程协议和生命周期测试"
+      ],
+      "steps": [
+        "让StockWiki通过结构化参数/公开CLI或本地协议调用capabilities/start/status/stop/resume/outbox/ack，不导入私有内部模块。",
+        "在独立解释器/cwd启动既有执行器，复用逐题任务/重试/费用；日志与机器协议输出分离。",
+        "返回真实组件/工作区/运行ID和版本；校验输入作用层与幂等启动，不引入第二任务队列。"
+      ],
+      "deliverables": [
+        "可调用公开控制接口",
+        "运行/能力/身份握手回执",
+        "公共入口协议测试"
+      ],
+      "case_ids": [
+        "DEPLOY-08",
+        "START-02",
+        "START-04",
+        "START-08",
+        "JOB-07",
+        "JOB-08"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X02",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "接入StockQA跨进程控制与能力握手",
+      "depends_on": [
+        "X01",
+        "W11",
+        "C07"
+      ],
+      "invariants": [
+        "I02",
+        "I03",
+        "I12",
+        "I18",
+        "I22",
+        "I24"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan执行桥接与runtime adapter",
+        "tests/真实子进程/协议/导入测试"
+      ],
+      "steps": [
+        "使用注册的StockQA解释器/公开入口传结构化参数，固定超时/错误码/日志边界。",
+        "核对workspace与协议/能力，导入StockQA已有结果后才规划新增缺口。",
+        "UI/runtime仅读取问答状态并调用控制入口，不复制费用/逐题重试；正式研究任务不会被顺带运行。"
+      ],
+      "deliverables": [
+        "公开执行器桥接",
+        "握手/错误/等待导入状态",
+        "进程边界集成测试"
+      ],
+      "case_ids": [
+        "DEPLOY-02",
+        "DEPLOY-08",
+        "START-05",
+        "START-06",
+        "START-10",
+        "DB-07"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X03",
+      "stage": "M6",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "提供脱敏配置接口与可计费连接探针",
+      "depends_on": [
+        "X01",
+        "Q04",
+        "Q09",
+        "C07"
+      ],
+      "invariants": [
+        "I02",
+        "I10",
+        "I11",
+        "I25"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockQA配置读取/校验/写入公开入口",
+        "搜索探针与费用入口适配",
+        "tests/配置/doctor/探针测试"
+      ],
+      "steps": [
+        "返回模型顺序、能力、配置/价格版本、凭据存在性及预算剩余；不返回密钥。",
+        "经本项目写入器修改策略，显式保留用户设置和策略版本，不让StockWiki直接改配置文件。",
+        "本地doctor不发模型请求；显式真实连接/搜索探针沿同一预算与回执链。",
+        "公开导入model-policy模板和脱敏生效策略/版本/组级健康状态，不在skill或UI另存运行优先级。"
+      ],
+      "deliverables": [
+        "配置查询/修改协议",
+        "本地检查与真实探针分离",
+        "密钥/费用/策略一致性测试"
+      ],
+      "case_ids": [
+        "START-09",
+        "START-11",
+        "START-12",
+        "DEPLOY-07",
+        "BUD-04",
+        "LLM-10",
+        "PAR-08"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X04",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现首次设置入口和持久化扫描profile",
+      "depends_on": [
+        "X02",
+        "X03",
+        "W03",
+        "W09",
+        "C07"
+      ],
+      "invariants": [
+        "I03",
+        "I04",
+        "I10",
+        "I11",
+        "I25"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan设置UI/CLI和profile schema",
+        "tests/首次设置/缺项定位测试"
+      ],
+      "steps": [
+        "识别组件路径/解释器、选择名单，调用StockQA配置接口设置顺序和预算；不要求用户编辑多份JSON。",
+        "保存名单/字段策略和模型policy引用；凭据/模型策略仍归StockQA。",
+        "缺路径/名单/凭据/预算时定位具体设置项，已有库只读可用；保存过程可重入且不默认启动付费扫描。",
+        "统一设置data_root、自动准入模式/范围/周期/配额和预算引用，密钥仍由StockQA拥有。",
+        "首次设置提供可下载/填写的model-policy JSON或等价表单，模型排序、共享账户组、并发上限和预算由用户设定；不要求用户同时维护Excel与JSON。"
+      ],
+      "deliverables": [
+        "setup入口",
+        "配置profile与安装定位记录",
+        "无效/缺失/重复设置测试"
+      ],
+      "case_ids": [
+        "START-11",
+        "START-12",
+        "DEPLOY-01",
+        "DEPLOY-02",
+        "DEPLOY-07",
+        "PAR-08"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X05",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现启动/附着/停止/续扫生命周期",
+      "depends_on": [
+        "X02",
+        "X04",
+        "O02",
+        "W12",
+        "C07"
+      ],
+      "invariants": [
+        "I09",
+        "I11",
+        "I12",
+        "I23",
+        "I24"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan启动协调与已有runtime生命周期",
+        "tests/并发启动/进程身份/恢复测试"
+      ],
+      "steps": [
+        "原子判定同workspace/profile已运行则附着；核实进程身份，不只看端口或PID。",
+        "只启动快扫必要组件，预检后先补导入再提交缺口；全部有效返回no_work。",
+        "stop停止新派发并保存进行中状态，关闭页面不删除进程/任务；重启沿用费用账本与旧待办。",
+        "单次/可选continuous共用生命周期；维护时钟触发StockWiki准入及StockQA待办，关机后接续且只管本workspace。"
+      ],
+      "deliverables": [
+        "单一生命周期服务",
+        "幂等启动及可恢复状态机",
+        "重复点击/崩溃/预算/旧PID测试"
+      ],
+      "case_ids": [
+        "START-01",
+        "START-02",
+        "START-03",
+        "START-04",
+        "START-05",
+        "START-07",
+        "START-08",
+        "START-10",
+        "MAINT-04",
+        "MAINT-05"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X06",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "接通统一按钮、CLI和Windows快捷方式",
+      "depends_on": [
+        "X05",
+        "X04",
+        "C07",
+        "O05"
+      ],
+      "invariants": [
+        "I13",
+        "I23",
+        "I24",
+        "I25"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/implementation/results-ui.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockWiki快扫页面和CLI公开入口",
+        "StockWiki薄启动脚本/快捷方式生成入口（新增）",
+        "tests/用户入口与Windows参数测试"
+      ],
+      "steps": [
+        "页面、quick-scan-start/resume CLI与快捷方式只调用同一X05逻辑。",
+        "快捷方式绑定安装后的绝对解释器/脚本，支持中文/空格/任意cwd；后台辅助进程隐藏窗口，启动时打开真实状态页。",
+        "展示运行/导入/unknown/费用和缺项；按钮不调用通用scheduler-cycle，不要求每次重输配置或确认口令。",
+        "统一入口提供企业列表/详情与扫描进度导航，已完成公司可直接查看结果；设置/运行页不替代结果界面。",
+        "状态页显示当前模型顺位、并发数、冷却组/预计恢复点、待补题和结果不明项，区分系统等待与任务失败。"
+      ],
+      "deliverables": [
+        "单一用户操作入口",
+        "状态展示与可重开页面",
+        "快捷方式/CLI/UI一致性测试"
+      ],
+      "case_ids": [
+        "DEPLOY-03",
+        "START-02",
+        "START-03",
+        "START-05",
+        "START-06",
+        "START-07",
+        "START-11",
+        "E2E-02",
+        "PAR-07",
+        "PAR-08"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "U03",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "接通企业事实、可比历史与完整结果浏览",
+      "depends_on": [
+        "U02",
+        "G4",
+        "X06",
+        "W14"
+      ],
+      "invariants": [
+        "I01",
+        "I03",
+        "I07",
+        "I13",
+        "I14",
+        "I15"
+      ],
+      "read_first": [
+        "docs/implementation/results-ui.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/system-contract.md",
+        "references/standard-output.md"
+      ],
+      "allowed_changes": [
+        "StockWiki既有Web页面/路由/查询呈现层；先核实真实布局",
+        "StockWiki浏览器测试与临时SQLite fixture"
+      ],
+      "steps": [
+        "在同一企业详情启用G4事实关系页，展示方向、阶段、分部/时期及来源，连接同细分候选和两个研究入口。",
+        "基于已有观察显示历史；只比较同口径分数，变更题义不强行连线；更新所选字段先调用既有缺口预览。",
+        "接通运行↔企业结果导航，覆盖桌面/窄屏与键盘流程；真实浏览器和数据库验证零费用浏览及显式补扫范围。",
+        "简洁显示公司/时间/模型三种对照，标不可比原因/版本变更与原分；同页访问自动维护记录及手动加公司。"
+      ],
+      "deliverables": [
+        "事实关系及历史视图",
+        "结果与运行双向导航",
+        "桌面/窄屏/键盘实际操作验收"
+      ],
+      "case_ids": [
+        "UI-07",
+        "UI-10",
+        "UI-11",
+        "UI-12",
+        "UI-06",
+        "MATRIX-02",
+        "MATRIX-03",
+        "MATRIX-05"
+      ],
+      "test_binding": "在真实StockWiki服务与临时SQLite上通过浏览器操作并断言DOM值、导航与请求范围；仅模型网络边界可stub，不以HTTP 200或独立helper替代UI。",
+      "completion": [
+        "关联case均有真实浏览器结果、测试选择器、固定fixture和截图；关键skip/未运行不能放行。",
+        "核对页面与查询接口语义一致、浏览零模型调用；提交实际快照及独立审查，截图只证明布局。"
+      ],
+      "rollback": "回退或禁用当前页面入口；保留权威数据库、名单、观察、已保存规则和费用账本，不修改其他仓库。"
+    },
+    {
+      "id": "X07",
+      "stage": "M6",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "产出配套发布清单和题库/技能加载清单",
+      "depends_on": [
+        "C07",
+        "G4",
+        "G5",
+        "X06",
+        "X03"
+      ],
+      "invariants": [
+        "I08",
+        "I14",
+        "I15",
+        "I22",
+        "I26"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/release-set schema与生成说明",
+        "只读题库/契约发布工件与内容hash工具（新增）",
+        "发布检查测试（仅读组件元数据）"
+      ],
+      "steps": [
+        "汇总各项目实际代码/协议/题库/查询/配置schema版本与hash，生成可用于X08的候选配套清单。",
+        "记录两个消费者源入口、拟安装/宿主加载入口和查询契约；源更新不算已加载更新。",
+        "清单只包含工件定位/版本/恢复/回执引用，无密钥/公司文档；最终release_set在X08—X11实测后固化，不能提前标G6。"
+      ],
+      "deliverables": [
+        "候选release_set及schema",
+        "只读题库/契约/消费技能工件清单",
+        "实际加载/版本核对要求"
+      ],
+      "case_ids": [
+        "DEPLOY-04",
+        "DEPLOY-07",
+        "DEPLOY-08",
+        "E2E-04",
+        "E2E-05"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X08",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现可重入的配套安装与注册编排",
+      "depends_on": [
+        "X07",
+        "X04",
+        "X06",
+        "X03",
+        "C07"
+      ],
+      "invariants": [
+        "I01",
+        "I18",
+        "I21",
+        "I22",
+        "I24",
+        "I25"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki公开安装/setup编排与安装记录",
+        "各拥有者安装/注册接口的调用适配",
+        "tests/干净部署/重复安装/路径测试"
+      ],
+      "steps": [
+        "从经核实的候选release_set定位各自解释器和依赖，调用拥有者安装/迁移入口；不直接写另一仓私有配置/库。",
+        "复用宿主技能安装/注册机制并核实实际加载路径/hash；为X06生成可用快捷方式。",
+        "安装可重入；正常start不自动拉新代码/升级依赖/破坏性迁移。明确当前安装组合和故障步骤，保留用户数据。"
+      ],
+      "deliverables": [
+        "安装与首次setup闭环",
+        "安装/资源加载回执",
+        "从任意cwd可用的启动入口"
+      ],
+      "case_ids": [
+        "DEPLOY-01",
+        "DEPLOY-02",
+        "DEPLOY-03",
+        "DEPLOY-04",
+        "DEPLOY-07",
+        "DEPLOY-08",
+        "START-11"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X09",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "建立真实组件的离线端到端联调",
+      "depends_on": [
+        "X08",
+        "X06",
+        "X02",
+        "G4",
+        "G5",
+        "U03"
+      ],
+      "invariants": [
+        "I01",
+        "I02",
+        "I12",
+        "I13",
+        "I17",
+        "I26"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/implementation/results-ui.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "StockWiki跨项目端到端测试与临时部署fixture",
+        "联调报告/启动trace（脱敏轻量）"
+      ],
+      "steps": [
+        "使用真实组件进程、独立环境、SQLite、题库及实际消费入口；只在模型网络边界使用stub。",
+        "从setup/快捷方式或等价实际入口完成扫描、导入、查询、加公司、停止/续扫、两个技能查询与范围补扫。",
+        "测试重复点击、预算耗尽、已答未入库、旧PID/端口冲突、company-wiki停用，记录生产入口调用路径。",
+        "使用真实浏览器走企业列表→筛选→详情→来源/事实→返回及进度→结果，断言具体值/范围和浏览零模型调用，留布局截图。",
+        "以两worker+受控网络stub验证真实并发/组共享额度/部分包/迟到回执/重启不重问；记录每次发送唯一键和费用变化，不能只检查最终汇总。"
+      ],
+      "deliverables": [
+        "离线全链测试套件",
+        "真实组件/入口trace与错误矩阵"
+      ],
+      "case_ids": [
+        "E2E-01",
+        "E2E-02",
+        "E2E-05",
+        "START-02",
+        "START-03",
+        "START-04",
+        "START-05",
+        "START-08",
+        "START-10",
+        "QUERY-04",
+        "UI-02",
+        "UI-06",
+        "UI-11",
+        "UI-12",
+        "MAINT-02",
+        "MAINT-04",
+        "STORE-03",
+        "MATRIX-04",
+        "PAR-01",
+        "PAR-02",
+        "PAR-04",
+        "PAR-05",
+        "PAR-06",
+        "PAR-07",
+        "PAR-08"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X11",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "验证配套升级、版本隔离与回退",
+      "depends_on": [
+        "X09",
+        "X08",
+        "W12",
+        "C07"
+      ],
+      "invariants": [
+        "I08",
+        "I11",
+        "I12",
+        "I21",
+        "I22"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki配套版本切换/升级编排",
+        "tests/协议不兼容/迁移失败/回退测试",
+        "各拥有者恢复接口适配"
+      ],
+      "steps": [
+        "升级前停止派发、处理进行中请求、保存outbox/预算并做一致性备份。",
+        "核对组件协议与schema兼容，模拟单组件升级和迁移中断；只采用配套已验证组合。",
+        "安全降级不可行时保持只读/待修，不覆盖升级后数据或费用；按实际组件接口恢复并重验。"
+      ],
+      "deliverables": [
+        "配套升级回退流程",
+        "迁移/版本故障注入证据",
+        "支持组合与恢复边界"
+      ],
+      "case_ids": [
+        "DEPLOY-04",
+        "DEPLOY-05",
+        "DEPLOY-06",
+        "START-03",
+        "BUD-03",
+        "DB-05",
+        "REV-04"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X10",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "live",
+      "title": "经同一启动入口完成有限真实全链验收",
+      "depends_on": [
+        "X09",
+        "X11",
+        "G4",
+        "G5"
+      ],
+      "invariants": [
+        "I01",
+        "I10",
+        "I11",
+        "I13",
+        "I17",
+        "I19",
+        "I26"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockWiki实际安装/一键启动试点记录",
+        "跨组件搜索/费用/ACK/查询证据索引"
+      ],
+      "steps": [
+        "固定小样本/多挂牌/新增对象、模型顺序及预算，从已安装快捷方式或同一UI入口启动。",
+        "验证真实搜索、原样评分/null、导入与查询、停止/恢复、重复点击和两个实际加载的研究消费者。",
+        "记录安装组合/加载hash及实际收费，不能手工启动另一个项目或复制答案来补齐产品路径。"
+      ],
+      "deliverables": [
+        "一键入口真实试点回执",
+        "实际组件/搜索/费用/消费者验收报告"
+      ],
+      "case_ids": [
+        "E2E-03",
+        "E2E-04",
+        "E2E-05",
+        "START-01",
+        "START-02",
+        "START-05",
+        "START-08",
+        "START-09"
+      ],
+      "test_binding": "先验证配套安装与离线联调，再经实际同一启动入口在已配置预算内运行；保留真实组件/搜索/费用/导入/消费回执。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "X12",
+      "stage": "M6",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "交付各仓操作、维护和支持组合手册",
+      "depends_on": [
+        "X10",
+        "X11",
+        "X07"
+      ],
+      "invariants": [
+        "I18",
+        "I21",
+        "I22",
+        "I25",
+        "I26"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/交付操作与组件支持记录",
+        "面向用户及后续模型的短操作卡"
+      ],
+      "steps": [
+        "据实际安装结果补充首次设置、启动/继续/停止、增公司、查询和技能联动步骤，不保留未验证示例命令。",
+        "记录配套版本、真实加载位置、故障定位、升级回退和数据/配置备份归属。",
+        "区分installed/offline_ready/live_verified/full_release_verified，将支持组合与全部G回执关联；日常操作无需多个终端或重复配置。"
+      ],
+      "deliverables": [
+        "用户操作卡与故障恢复手册",
+        "各项目交接索引",
+        "待G6审核的完整配套交付清单"
+      ],
+      "case_ids": [
+        "DEPLOY-02",
+        "DEPLOY-06",
+        "E2E-04",
+        "E2E-05",
+        "REV-01",
+        "REV-02"
+      ],
+      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "G6",
+      "stage": "M6",
+      "owner": "iqs",
+      "kind": "review",
+      "title": "最终审查完整跨项目交付与一键开启",
+      "depends_on": [
+        "G4",
+        "G5",
+        "X10",
+        "X11",
+        "X12"
+      ],
+      "invariants": [
+        "I01",
+        "I03",
+        "I11",
+        "I12",
+        "I14",
+        "I17",
+        "I22",
+        "I23",
+        "I24",
+        "I25",
+        "I26"
+      ],
+      "read_first": [
+        "docs/implementation/one-click-launch.md",
+        "docs/implementation/cross-project-delivery.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md",
+        "docs/implementation/results-ui.md",
+        "docs/system-contract.md",
+        "references/standard-output.md",
+        "references/model-policy.md",
+        "examples/model-policy.template.json",
+        "schemas/model-policy.schema.json"
+      ],
+      "allowed_changes": [
+        "docs/implementation/reviews/G6/（新增）"
+      ],
+      "steps": [
+        "核查完整release_set及各组件实际安装/技能加载版本，确认G0—G5、X系列和真实全链证据齐备。",
+        "复核首次设置后一键启动、重复启动幂等、停止/续扫、预算不重置、无资料采集与两个消费者。",
+        "有任何模块未接上、只有离线stub或仅评分通过时不宣布整个计划完成；审查最终快照并给出可运行支持组合。",
+        "审查真实结果UI而非仅状态页：评分/依据/恢复/历史/事实与筛选可用，桌面/窄屏和浏览器操作证据齐备。",
+        "从设置→手工加入→自动准入→增量扫描→三维结果查看审查完整流程；外部接线/在线验证未做不能被本地题库测试替代。",
+        "核查用户顺位配置模板、并行限制、五小时额度fallback、逐题接续和结果不明对账的真实实现/测试，配置离线通过不能代替调度器验收。"
+      ],
+      "deliverables": [
+        "G6完整发布审查",
+        "full_release_verified对应的实际配套工件/证据"
+      ],
+      "case_ids": [
+        "E2E-02",
+        "E2E-03",
+        "E2E-04",
+        "E2E-05",
+        "DEPLOY-04",
+        "START-03",
+        "START-05",
+        "REV-01",
+        "REV-02",
+        "UI-10",
+        "UI-11",
+        "UI-12",
+        "MAINT-02",
+        "MATRIX-03",
+        "STORE-03",
+        "PAR-01",
+        "PAR-02",
+        "PAR-04",
+        "PAR-05",
+        "PAR-07",
+        "PAR-08"
+      ],
+      "test_binding": "审查精确release_set、所有依赖回执、实际安装加载位置、源码/测试和原始结果；UI可打开与helper测试不能替代整个系统验收。",
+      "completion": [
+        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+      ],
+      "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    }
+  ],
+  "release_requirements": {
+    "final_gate": "G6",
+    "required_gates": [
+      "G0",
+      "G1",
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "required_tasks": [
+      "C07",
+      "X01",
+      "X02",
+      "X03",
+      "X04",
+      "X05",
+      "X06",
+      "X07",
+      "X08",
+      "X09",
+      "X10",
+      "X11",
+      "X12",
+      "U01",
+      "U02",
+      "U03",
+      "W13",
+      "Q11",
+      "W14"
+    ],
+    "required_components": [
+      "iqs",
+      "stockqa",
+      "stockwiki",
+      "theme",
+      "industry"
+    ],
+    "optional_components": [
+      "company-wiki"
+    ],
+    "runtime_entry_owner": "stockwiki",
+    "runtime_config_owner": "stockqa",
+    "offline_e2e_task": "X09",
+    "live_e2e_task": "X10",
+    "complete_requires_all_tasks": true
+  }
+}

@@ -1,0 +1,905 @@
+{
+  "example_only": true,
+  "notice": "全部公司、模型、数值、搜索回执均为虚构fixture；未运行真实搜索，不可用于投资。",
+  "score_build_inputs": {
+    "manifest": {
+      "answer_format": "standard-1",
+      "template_version": "3.0.0",
+      "method_id": "core-constructs-v1/context-1",
+      "profile": {
+        "company": "示例工业设备股份有限公司（虚构）",
+        "ticker": "EXAMPLE",
+        "exchange": "EXAMPLE_EXCHANGE",
+        "security_class": "ordinary",
+        "as_of": "2026-09-22",
+        "quote_date": "2026-09-18",
+        "reporting_currency": "CNY",
+        "quote_currency": "CNY",
+        "accounting_standard": "示例口径",
+        "fiscal_year_end": "12-31",
+        "company_type": "operating",
+        "industry_modules": [
+          "industrial"
+        ],
+        "stage": "mature",
+        "cycle_sensitive": true,
+        "cycle_position": "示例：不明，需要检索验证",
+        "overlays": [
+          "cross_border"
+        ],
+        "diagnostic_modules": [],
+        "diagnostic_rationale": {},
+        "routing_confidence": "high",
+        "routing_rationale": "纯离线示例：假设已有工业设备收入，核心业务成熟，订单受资本开支周期影响且具有跨境经营。不是对真实公司的判断。",
+        "routing_sources": [
+          {
+            "title": "虚构示例，不可用于真实画像",
+            "url": "https://example.com/",
+            "published_at": "2026-09-01"
+          }
+        ],
+        "example_only": true,
+        "entity_id": "EXAMPLE_ENTITY_A",
+        "security_id": "EXAMPLE_SECURITY_A"
+      },
+      "questions": [
+        {
+          "id": "IQS_01",
+          "dimension": "business",
+          "priority": 1,
+          "question": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+          "evidence": [
+            "客户实际解决的问题",
+            "总使用成本",
+            "独立客户复购与付费",
+            "停止使用的后果"
+          ],
+          "anchors": {
+            "1": "产品价值不足，主要靠补贴或推销维持需求",
+            "5": "客户价值成立但可轻易替换、支付意愿一般",
+            "10": "客户价值清楚且有行为证据，付费与复购可持续"
+          },
+          "metric_id": "score.iqs_01",
+          "construct_id": "IQS_01",
+          "comparison_role": "core",
+          "rubric_version": "1.0.0",
+          "scope": "entity",
+          "module_id": "common",
+          "prompt": "[IQS_01] 对象与口径={\"company\": \"示例工业设备股份有限公司（虚构）\", \"ticker\": \"EXAMPLE\", \"exchange\": \"EXAMPLE_EXCHANGE\", \"security_class\": \"ordinary\", \"as_of\": \"2026-09-22\", \"quote_date\": \"2026-09-18\", \"reporting_currency\": \"CNY\", \"quote_currency\": \"CNY\", \"accounting_standard\": \"示例口径\", \"fiscal_year_end\": \"12-31\", \"company_type\": \"operating\", \"industry_modules\": [\"industrial\"], \"stage\": \"mature\", \"cycle_sensitive\": true, \"cycle_position\": \"示例：不明，需要检索验证\", \"entity_id\": \"EXAMPLE_ENTITY_A\", \"security_id\": \"EXAMPLE_SECURITY_A\"}\n客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？\n证据关注：客户实际解决的问题；总使用成本；独立客户复购与付费；停止使用的后果\n评分锚点：1分=产品价值不足，主要靠补贴或推销维持需求；5分=客户价值成立但可轻易替换、支付意愿一般；10分=客户价值清楚且有行为证据，付费与复购可持续。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；说明供产销流程、自制/外包边界、计费单位和瓶颈，按主要业务分部描述。；列维护更新、提效和现金分配安排；无第二曲线如实记录。；列工艺/装备环节、耗材和售后收入、客户资本开支与验收方式。；周期中点必须说明历史区间/供给结构是否仍可比；产能永久过剩/技术替代不能归因暂时周期。\n\n实际联网搜索，仅用截止日前可得来源。不要下载公司文档。只输出符合下列schema的JSON；不使用score/description外层兼容包装。response_kind=score。事实不评分且score=null；未披露用insufficient_evidence，不等同不存在。已知部分可以answered+coverage.partial，并列缺项；关系和数值逐条绑定evidence_ids。canonical_entity_id/taxonomy_id只有已知主档映射才填，否则null，不自行创造。时间和模型由执行器另附，不在答案中自报执行回执。metrics使用明确单位、币种、期间和current/normalized/stress/forward口径；禁止混用。\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"question_id\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":80},\"response_kind\":{\"enum\":[\"score\",\"fact\"]},\"status\":{\"enum\":[\"scored\",\"answered\",\"insufficient_evidence\",\"not_applicable\",\"search_unavailable\"]},\"score\":{\"anyOf\":[{\"type\":\"integer\",\"minimum\":1,\"maximum\":10},{\"type\":\"null\"}]},\"summary\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":800},\"information_as_of\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"period_start\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"period_end\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"basis\":{\"enum\":[\"current\",\"trailing\",\"normalized\",\"stress\",\"forward\",\"not_applicable\"]},\"trend\":{\"enum\":[\"improving\",\"stable\",\"deteriorating\",\"uncertain\",\"not_applicable\"]},\"confidence\":{\"enum\":[\"high\",\"medium\",\"low\"]},\"metrics\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"metric_id\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":120},\"value\":{\"anyOf\":[{\"type\":\"number\"},{\"type\":\"null\"}]},\"unit\":{\"enum\":[\"percent\",\"ratio\",\"currency\",\"currency_per_share\",\"count\",\"days\",\"months\",\"years\",\"units\",\"other\"]},\"currency\":{\"anyOf\":[{\"type\":\"string\",\"pattern\":\"^[A-Z]{3}$\"},{\"type\":\"null\"}]},\"unit_detail\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":80},{\"type\":\"null\"}]},\"period_start\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"period_end\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"basis\":{\"enum\":[\"current\",\"trailing\",\"normalized\",\"stress\",\"forward\",\"not_applicable\"]},\"definition\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":350},\"evidence_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":60},\"maxItems\":10}},\"required\":[\"metric_id\",\"value\",\"unit\",\"currency\",\"unit_detail\",\"period_start\",\"period_end\",\"basis\",\"definition\",\"evidence_ids\"],\"additionalProperties\":false},\"maxItems\":24},\"items\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":180},\"canonical_entity_id\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":120},{\"type\":\"null\"}]},\"aliases\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":100},\"maxItems\":8},\"relation\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":80},\"segment\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":150},{\"type\":\"null\"}]},\"role\":{\"enum\":[\"producer\",\"user\",\"supplier\",\"customer\",\"channel\",\"manager\",\"owner\",\"peer\",\"industry\",\"other\"]},\"commercial_stage\":{\"enum\":[\"research\",\"pilot\",\"qualified\",\"commercial\",\"discontinued\",\"unknown\",\"not_applicable\"]},\"description\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":500},\"valid_from\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"valid_to\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"taxonomy_id\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":120},{\"type\":\"null\"}]},\"metrics\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"metric_id\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":120},\"value\":{\"anyOf\":[{\"type\":\"number\"},{\"type\":\"null\"}]},\"unit\":{\"enum\":[\"percent\",\"ratio\",\"currency\",\"currency_per_share\",\"count\",\"days\",\"months\",\"years\",\"units\",\"other\"]},\"currency\":{\"anyOf\":[{\"type\":\"string\",\"pattern\":\"^[A-Z]{3}$\"},{\"type\":\"null\"}]},\"unit_detail\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":80},{\"type\":\"null\"}]},\"period_start\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"period_end\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"basis\":{\"enum\":[\"current\",\"trailing\",\"normalized\",\"stress\",\"forward\",\"not_applicable\"]},\"definition\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":350},\"evidence_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":60},\"maxItems\":10}},\"required\":[\"metric_id\",\"value\",\"unit\",\"currency\",\"unit_detail\",\"period_start\",\"period_end\",\"basis\",\"definition\",\"evidence_ids\"],\"additionalProperties\":false},\"maxItems\":12},\"evidence_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":60},\"maxItems\":10},\"confidence\":{\"enum\":[\"high\",\"medium\",\"low\"]}},\"required\":[\"name\",\"canonical_entity_id\",\"aliases\",\"relation\",\"segment\",\"role\",\"commercial_stage\",\"description\",\"valid_from\",\"valid_to\",\"taxonomy_id\",\"metrics\",\"evidence_ids\",\"confidence\"],\"additionalProperties\":false},\"maxItems\":20},\"evidence\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":60},\"title\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":200},\"url\":{\"type\":\"string\",\"format\":\"uri\",\"pattern\":\"^https?://\",\"maxLength\":1800},\"published_at\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"claim\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":400}},\"required\":[\"id\",\"title\",\"url\",\"published_at\",\"claim\"],\"additionalProperties\":false},\"maxItems\":20},\"counterevidence\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":600},\"watch_triggers\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":200},\"maxItems\":8},\"missing_fields\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":160},\"maxItems\":20},\"coverage\":{\"type\":\"object\",\"properties\":{\"status\":{\"enum\":[\"partial\",\"complete_for_scope\",\"unknown\",\"not_applicable\"]},\"reason\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":350}},\"required\":[\"status\",\"reason\"],\"additionalProperties\":false}},\"required\":[\"question_id\",\"response_kind\",\"status\",\"score\",\"summary\",\"information_as_of\",\"period_start\",\"period_end\",\"basis\",\"trend\",\"confidence\",\"metrics\",\"items\",\"evidence\",\"counterevidence\",\"watch_triggers\",\"missing_fields\",\"coverage\"],\"additionalProperties\":false,\"$id\":\"urn:iqs:answer-content:1\"}\n数值指标尽量使用以下固定ID/单位/定义；没有数据则metrics=[]。其他指标只用custom.*，不可自动数值比较：{\"financial.revenue\":{\"unit\":\"currency\",\"definition\":\"对外营业收入，须注明总额/净额和合并范围\"},\"financial.operating_margin\":{\"unit\":\"percent\",\"definition\":\"营业利润/营业收入，说明调整项目\"},\"financial.net_margin\":{\"unit\":\"percent\",\"definition\":\"净利润/营业收入，说明归属口径\"},\"financial.roic\":{\"unit\":\"percent\",\"definition\":\"税后经营利润/平均投入资本，说明商誉和资本调整\"},\"financial.roe\":{\"unit\":\"percent\",\"definition\":\"归属普通股净利润/平均普通股权益，说明负/近零权益\"},\"financial.fcf\":{\"unit\":\"currency\",\"definition\":\"经营现金流减必要资本投入，列维护/增长/租赁口径\"},\"financial.net_debt\":{\"unit\":\"currency\",\"definition\":\"有息债务减可用现金，不套客户存款\"},\"financial.diluted_eps\":{\"unit\":\"currency_per_share\",\"definition\":\"归属普通股的摊薄每股收益\"},\"financial.capex\":{\"unit\":\"currency\",\"definition\":\"资本支出，区分维护与增长\"},\"financial.cash_runway\":{\"unit\":\"months\",\"definition\":\"可用资金相对可核实消耗的期限，注明假设\"},\"operating.repeat_purchase_share\":{\"unit\":\"percent\",\"definition\":\"期间重复采购客户数/期间采购客户数，不等同收入留存\"},\"operating.net_revenue_retention\":{\"unit\":\"percent\",\"definition\":\"同一客户批次期末收入/期初收入，说明扩张/流失范围\"},\"operating.capacity_utilization\":{\"unit\":\"percent\",\"definition\":\"实际产出/可用产能，同口径产品与期间\"},\"operating.inventory_days\":{\"unit\":\"days\",\"definition\":\"平均库存/匹配期间销货成本折算天数\"},\"operating.receivable_days\":{\"unit\":\"days\",\"definition\":\"平均应收/匹配收入折算天数\"},\"operating.occupancy\":{\"unit\":\"percent\",\"definition\":\"已出租面积或可用单元占比，注明分母\"},\"bank.cet1_ratio\":{\"unit\":\"percent\",\"definition\":\"核心一级资本/风险加权资产，注明当地监管口径\"},\"insurance.combined_ratio\":{\"unit\":\"percent\",\"definition\":\"赔付与费用占已赚保费比例，财险适用\"},\"property.affo\":{\"unit\":\"currency\",\"definition\":\"调整后可分配运营现金，披露调整及归属范围\"},\"relationship.revenue_share\":{\"unit\":\"percent\",\"definition\":\"指定客户/产品/地区收入占明确总收入分母的比例\"},\"relationship.ownership_share\":{\"unit\":\"percent\",\"definition\":\"持股占指定类别或总股本比例，注明日期\"},\"business.segment_revenue\":{\"unit\":\"currency\",\"definition\":\"指定业务分部收入，说明对外与内部抵销\"},\"business.employees\":{\"unit\":\"count\",\"definition\":\"人员数量，注明期末/平均及员工/外包范围\"}}"
+        }
+      ]
+    },
+    "answers": {
+      "IQS_01": {
+        "question_id": "IQS_01",
+        "response_kind": "score",
+        "status": "scored",
+        "score": 8,
+        "summary": "虚构示例：核心客户持续采购，但客户集中仍需关注。",
+        "information_as_of": "2026-09-01",
+        "period_start": "2026-01-01",
+        "period_end": "2026-06-30",
+        "basis": "current",
+        "trend": "stable",
+        "confidence": "medium",
+        "metrics": [
+          {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          }
+        ],
+        "items": [],
+        "evidence": [
+          {
+            "id": "e1",
+            "title": "虚构示例，不是实际公司证据",
+            "url": "https://example.invalid/company",
+            "published_at": "2026-09-01",
+            "claim": "仅用于离线验证标准输出。"
+          }
+        ],
+        "counterevidence": "虚构示例：尚缺分客户采购历史。",
+        "watch_triggers": [
+          "跟踪客户复购和供货状态"
+        ],
+        "missing_fields": [
+          "客户收入占比"
+        ],
+        "coverage": {
+          "status": "partial",
+          "reason": "离线样例仅覆盖少量字段，不代表完整公司画像。"
+        }
+      }
+    },
+    "receipts": {
+      "manifest_sha256": "6b646ea48366031996fc8f8a28797fffec5628774f309ee118d81e1ad08f7c5b",
+      "run_id": "EXAMPLE_RUN_A",
+      "scan_id": "EXAMPLE_SCAN_A",
+      "inputset_id": "EXAMPLE_INPUT_V1",
+      "task_mode": "comparison",
+      "comparison_group_id": "EXAMPLE_GROUP",
+      "requests": {
+        "IQS_01": {
+          "provider": "EXAMPLE_PROVIDER",
+          "model_requested": "EXAMPLE_MODEL_A",
+          "model_resolved": "EXAMPLE_MODEL_A",
+          "model_revision": "fixture-1",
+          "request_id": "EXAMPLE_REQUEST",
+          "attempt_id": "EXAMPLE_ATTEMPT",
+          "started_at": "2026-09-22T09:00:00Z",
+          "answered_at": "2026-09-22T09:01:00Z",
+          "search_status": "executed",
+          "search_receipt_id": "OFFLINE_FIXTURE_NOT_SEARCH_PROOF",
+          "prompt_sha256": "df4c4ce3fe63a2bc556d61d7dda50357a93673f10ebbc178ece9ffff7845ad18"
+        }
+      }
+    }
+  },
+  "fact_build_inputs": {
+    "manifest": {
+      "answer_format": "standard-1",
+      "template_version": "1.0.0",
+      "method_id": "facts-1",
+      "profile": {
+        "company": "示例工业设备股份有限公司（虚构）",
+        "ticker": "EXAMPLE",
+        "exchange": "EXAMPLE_EXCHANGE",
+        "security_class": "ordinary",
+        "as_of": "2026-09-22",
+        "quote_date": "2026-09-18",
+        "reporting_currency": "CNY",
+        "quote_currency": "CNY",
+        "accounting_standard": "示例口径",
+        "fiscal_year_end": "12-31",
+        "company_type": "operating",
+        "industry_modules": [
+          "industrial"
+        ],
+        "stage": "mature",
+        "cycle_sensitive": true,
+        "cycle_position": "示例：不明，需要检索验证",
+        "overlays": [
+          "cross_border"
+        ],
+        "diagnostic_modules": [],
+        "diagnostic_rationale": {},
+        "routing_confidence": "high",
+        "routing_rationale": "纯离线示例：假设已有工业设备收入，核心业务成熟，订单受资本开支周期影响且具有跨境经营。不是对真实公司的判断。",
+        "routing_sources": [
+          {
+            "title": "虚构示例，不可用于真实画像",
+            "url": "https://example.com/",
+            "published_at": "2026-09-01"
+          }
+        ],
+        "example_only": true,
+        "entity_id": "EXAMPLE_ENTITY_A",
+        "security_id": "EXAMPLE_SECURITY_A"
+      },
+      "questions": [
+        {
+          "id": "FACT_10",
+          "field_id": "facts.customers",
+          "module_id": "facts_common",
+          "priority": 1,
+          "question": "客户与客户群：分别列已确认客户名称、未披露名称的客户类别和最终用户；渠道商不等同终端客户，未披露不写成不存在。",
+          "relations": [
+            "sells_to"
+          ],
+          "applies": {
+            "all": true
+          },
+          "max_items": 20,
+          "response_kind": "fact",
+          "scope": "entity",
+          "rubric_version": "1.0.0",
+          "construct_id": null,
+          "prompt": "[FACT_10] 对象与口径={\"company\": \"示例工业设备股份有限公司（虚构）\", \"entity_id\": \"EXAMPLE_ENTITY_A\", \"ticker\": \"EXAMPLE\", \"exchange\": \"EXAMPLE_EXCHANGE\", \"security_id\": \"EXAMPLE_SECURITY_A\", \"security_class\": \"ordinary\", \"as_of\": \"2026-09-22\", \"company_type\": \"operating\", \"industry_modules\": [\"industrial\"], \"stage\": \"mature\", \"cycle_sensitive\": true, \"cycle_position\": \"示例：不明，需要检索验证\"}。客户与客户群：分别列已确认客户名称、未披露名称的客户类别和最终用户；渠道商不等同终端客户，未披露不写成不存在。\n关系只可用['sells_to']；最多20条。\n实际联网搜索，仅用截止日前可得来源。不要下载公司文档。只输出符合下列schema的JSON；不使用score/description外层兼容包装。response_kind=fact。事实不评分且score=null；未披露用insufficient_evidence，不等同不存在。已知部分可以answered+coverage.partial，并列缺项；关系和数值逐条绑定evidence_ids。canonical_entity_id/taxonomy_id只有已知主档映射才填，否则null，不自行创造。时间和模型由执行器另附，不在答案中自报执行回执。metrics使用明确单位、币种、期间和current/normalized/stress/forward口径；禁止混用。\n{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\",\"properties\":{\"question_id\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":80},\"response_kind\":{\"enum\":[\"score\",\"fact\"]},\"status\":{\"enum\":[\"scored\",\"answered\",\"insufficient_evidence\",\"not_applicable\",\"search_unavailable\"]},\"score\":{\"anyOf\":[{\"type\":\"integer\",\"minimum\":1,\"maximum\":10},{\"type\":\"null\"}]},\"summary\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":800},\"information_as_of\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"period_start\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"period_end\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"basis\":{\"enum\":[\"current\",\"trailing\",\"normalized\",\"stress\",\"forward\",\"not_applicable\"]},\"trend\":{\"enum\":[\"improving\",\"stable\",\"deteriorating\",\"uncertain\",\"not_applicable\"]},\"confidence\":{\"enum\":[\"high\",\"medium\",\"low\"]},\"metrics\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"metric_id\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":120},\"value\":{\"anyOf\":[{\"type\":\"number\"},{\"type\":\"null\"}]},\"unit\":{\"enum\":[\"percent\",\"ratio\",\"currency\",\"currency_per_share\",\"count\",\"days\",\"months\",\"years\",\"units\",\"other\"]},\"currency\":{\"anyOf\":[{\"type\":\"string\",\"pattern\":\"^[A-Z]{3}$\"},{\"type\":\"null\"}]},\"unit_detail\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":80},{\"type\":\"null\"}]},\"period_start\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"period_end\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"basis\":{\"enum\":[\"current\",\"trailing\",\"normalized\",\"stress\",\"forward\",\"not_applicable\"]},\"definition\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":350},\"evidence_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":60},\"maxItems\":10}},\"required\":[\"metric_id\",\"value\",\"unit\",\"currency\",\"unit_detail\",\"period_start\",\"period_end\",\"basis\",\"definition\",\"evidence_ids\"],\"additionalProperties\":false},\"maxItems\":24},\"items\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":180},\"canonical_entity_id\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":120},{\"type\":\"null\"}]},\"aliases\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":100},\"maxItems\":8},\"relation\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":80},\"segment\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":150},{\"type\":\"null\"}]},\"role\":{\"enum\":[\"producer\",\"user\",\"supplier\",\"customer\",\"channel\",\"manager\",\"owner\",\"peer\",\"industry\",\"other\"]},\"commercial_stage\":{\"enum\":[\"research\",\"pilot\",\"qualified\",\"commercial\",\"discontinued\",\"unknown\",\"not_applicable\"]},\"description\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":500},\"valid_from\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"valid_to\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"taxonomy_id\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":120},{\"type\":\"null\"}]},\"metrics\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"metric_id\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":120},\"value\":{\"anyOf\":[{\"type\":\"number\"},{\"type\":\"null\"}]},\"unit\":{\"enum\":[\"percent\",\"ratio\",\"currency\",\"currency_per_share\",\"count\",\"days\",\"months\",\"years\",\"units\",\"other\"]},\"currency\":{\"anyOf\":[{\"type\":\"string\",\"pattern\":\"^[A-Z]{3}$\"},{\"type\":\"null\"}]},\"unit_detail\":{\"anyOf\":[{\"type\":\"string\",\"minLength\":1,\"maxLength\":80},{\"type\":\"null\"}]},\"period_start\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"period_end\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"basis\":{\"enum\":[\"current\",\"trailing\",\"normalized\",\"stress\",\"forward\",\"not_applicable\"]},\"definition\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":350},\"evidence_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":60},\"maxItems\":10}},\"required\":[\"metric_id\",\"value\",\"unit\",\"currency\",\"unit_detail\",\"period_start\",\"period_end\",\"basis\",\"definition\",\"evidence_ids\"],\"additionalProperties\":false},\"maxItems\":12},\"evidence_ids\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":60},\"maxItems\":10},\"confidence\":{\"enum\":[\"high\",\"medium\",\"low\"]}},\"required\":[\"name\",\"canonical_entity_id\",\"aliases\",\"relation\",\"segment\",\"role\",\"commercial_stage\",\"description\",\"valid_from\",\"valid_to\",\"taxonomy_id\",\"metrics\",\"evidence_ids\",\"confidence\"],\"additionalProperties\":false},\"maxItems\":20},\"evidence\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":60},\"title\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":200},\"url\":{\"type\":\"string\",\"format\":\"uri\",\"pattern\":\"^https?://\",\"maxLength\":1800},\"published_at\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}]},\"claim\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":400}},\"required\":[\"id\",\"title\",\"url\",\"published_at\",\"claim\"],\"additionalProperties\":false},\"maxItems\":20},\"counterevidence\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":600},\"watch_triggers\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":200},\"maxItems\":8},\"missing_fields\":{\"type\":\"array\",\"items\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":160},\"maxItems\":20},\"coverage\":{\"type\":\"object\",\"properties\":{\"status\":{\"enum\":[\"partial\",\"complete_for_scope\",\"unknown\",\"not_applicable\"]},\"reason\":{\"type\":\"string\",\"minLength\":1,\"maxLength\":350}},\"required\":[\"status\",\"reason\"],\"additionalProperties\":false}},\"required\":[\"question_id\",\"response_kind\",\"status\",\"score\",\"summary\",\"information_as_of\",\"period_start\",\"period_end\",\"basis\",\"trend\",\"confidence\",\"metrics\",\"items\",\"evidence\",\"counterevidence\",\"watch_triggers\",\"missing_fields\",\"coverage\"],\"additionalProperties\":false,\"$id\":\"urn:iqs:answer-content:1\"}\n数值指标尽量使用以下固定ID/单位/定义；没有数据则metrics=[]。其他指标只用custom.*，不可自动数值比较：{\"financial.revenue\":{\"unit\":\"currency\",\"definition\":\"对外营业收入，须注明总额/净额和合并范围\"},\"financial.operating_margin\":{\"unit\":\"percent\",\"definition\":\"营业利润/营业收入，说明调整项目\"},\"financial.net_margin\":{\"unit\":\"percent\",\"definition\":\"净利润/营业收入，说明归属口径\"},\"financial.roic\":{\"unit\":\"percent\",\"definition\":\"税后经营利润/平均投入资本，说明商誉和资本调整\"},\"financial.roe\":{\"unit\":\"percent\",\"definition\":\"归属普通股净利润/平均普通股权益，说明负/近零权益\"},\"financial.fcf\":{\"unit\":\"currency\",\"definition\":\"经营现金流减必要资本投入，列维护/增长/租赁口径\"},\"financial.net_debt\":{\"unit\":\"currency\",\"definition\":\"有息债务减可用现金，不套客户存款\"},\"financial.diluted_eps\":{\"unit\":\"currency_per_share\",\"definition\":\"归属普通股的摊薄每股收益\"},\"financial.capex\":{\"unit\":\"currency\",\"definition\":\"资本支出，区分维护与增长\"},\"financial.cash_runway\":{\"unit\":\"months\",\"definition\":\"可用资金相对可核实消耗的期限，注明假设\"},\"operating.repeat_purchase_share\":{\"unit\":\"percent\",\"definition\":\"期间重复采购客户数/期间采购客户数，不等同收入留存\"},\"operating.net_revenue_retention\":{\"unit\":\"percent\",\"definition\":\"同一客户批次期末收入/期初收入，说明扩张/流失范围\"},\"operating.capacity_utilization\":{\"unit\":\"percent\",\"definition\":\"实际产出/可用产能，同口径产品与期间\"},\"operating.inventory_days\":{\"unit\":\"days\",\"definition\":\"平均库存/匹配期间销货成本折算天数\"},\"operating.receivable_days\":{\"unit\":\"days\",\"definition\":\"平均应收/匹配收入折算天数\"},\"operating.occupancy\":{\"unit\":\"percent\",\"definition\":\"已出租面积或可用单元占比，注明分母\"},\"bank.cet1_ratio\":{\"unit\":\"percent\",\"definition\":\"核心一级资本/风险加权资产，注明当地监管口径\"},\"insurance.combined_ratio\":{\"unit\":\"percent\",\"definition\":\"赔付与费用占已赚保费比例，财险适用\"},\"property.affo\":{\"unit\":\"currency\",\"definition\":\"调整后可分配运营现金，披露调整及归属范围\"},\"relationship.revenue_share\":{\"unit\":\"percent\",\"definition\":\"指定客户/产品/地区收入占明确总收入分母的比例\"},\"relationship.ownership_share\":{\"unit\":\"percent\",\"definition\":\"持股占指定类别或总股本比例，注明日期\"},\"business.segment_revenue\":{\"unit\":\"currency\",\"definition\":\"指定业务分部收入，说明对外与内部抵销\"},\"business.employees\":{\"unit\":\"count\",\"definition\":\"人员数量，注明期末/平均及员工/外包范围\"}}"
+        }
+      ]
+    },
+    "answers": {
+      "FACT_10": {
+        "question_id": "FACT_10",
+        "response_kind": "fact",
+        "status": "answered",
+        "score": null,
+        "summary": "虚构示例：核心客户持续采购，但客户集中仍需关注。",
+        "information_as_of": "2026-09-01",
+        "period_start": "2026-01-01",
+        "period_end": "2026-06-30",
+        "basis": "current",
+        "trend": "stable",
+        "confidence": "medium",
+        "metrics": [],
+        "items": [
+          {
+            "name": "示例工业客户（虚构）",
+            "canonical_entity_id": null,
+            "aliases": [],
+            "relation": "sells_to",
+            "segment": "示例分部",
+            "role": "customer",
+            "commercial_stage": "commercial",
+            "description": "虚构客户关系，未提供交易规模。",
+            "valid_from": "2026-01-01",
+            "valid_to": null,
+            "taxonomy_id": null,
+            "metrics": [],
+            "evidence_ids": [
+              "e1"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "e1",
+            "title": "虚构示例，不是实际公司证据",
+            "url": "https://example.invalid/company",
+            "published_at": "2026-09-01",
+            "claim": "仅用于离线验证标准输出。"
+          }
+        ],
+        "counterevidence": "虚构示例：尚缺分客户采购历史。",
+        "watch_triggers": [
+          "跟踪客户复购和供货状态"
+        ],
+        "missing_fields": [
+          "客户收入占比"
+        ],
+        "coverage": {
+          "status": "partial",
+          "reason": "离线样例仅覆盖少量字段，不代表完整公司画像。"
+        }
+      }
+    },
+    "receipts": {
+      "manifest_sha256": "49e71094dfa7ee5091d119335ac3257f5fe97e5175b50eb3a7982b44cbfe9fd7",
+      "run_id": "EXAMPLE_RUN_A",
+      "scan_id": "EXAMPLE_SCAN_A",
+      "inputset_id": "EXAMPLE_INPUT_V1",
+      "task_mode": "comparison",
+      "comparison_group_id": "EXAMPLE_GROUP",
+      "requests": {
+        "FACT_10": {
+          "provider": "EXAMPLE_PROVIDER",
+          "model_requested": "EXAMPLE_MODEL_A",
+          "model_resolved": "EXAMPLE_MODEL_A",
+          "model_revision": "fixture-1",
+          "request_id": "EXAMPLE_REQUEST",
+          "attempt_id": "EXAMPLE_ATTEMPT",
+          "started_at": "2026-09-22T09:00:00Z",
+          "answered_at": "2026-09-22T09:01:00Z",
+          "search_status": "executed",
+          "search_receipt_id": "OFFLINE_FIXTURE_NOT_SEARCH_PROOF",
+          "prompt_sha256": "f2cfd43143e9fc1ef6683c81a318e80933f5b2fe89539a496c89f7422709cc13"
+        }
+      }
+    }
+  },
+  "observations": {
+    "company_a": {
+      "schema_version": "1.0.0",
+      "entity_id": "EXAMPLE_ENTITY_A",
+      "security_id": null,
+      "segment_id": null,
+      "field_id": "score.iqs_01",
+      "construct_id": "IQS_01",
+      "question_id": "IQS_01",
+      "question_version": "1.0.0",
+      "template_version": "3.0.0",
+      "method_id": "core-constructs-v1/context-1/f879a5efdf9c935b",
+      "scope": "entity",
+      "cohort": {
+        "company_type": "operating",
+        "industries": [
+          "industrial"
+        ],
+        "stage": "mature",
+        "subtype": null
+      },
+      "information_cutoff": "2026-09-22",
+      "run_id": "EXAMPLE_RUN_A",
+      "scan_id": "EXAMPLE_SCAN_A",
+      "inputset_id": "EXAMPLE_INPUT_V1",
+      "task_mode": "comparison",
+      "comparison_group_id": "EXAMPLE_GROUP",
+      "observed_at": "2026-09-22T09:01:00Z",
+      "execution": {
+        "provider": "EXAMPLE_PROVIDER",
+        "model_requested": "EXAMPLE_MODEL_A",
+        "model_resolved": "EXAMPLE_MODEL_A",
+        "model_revision": "fixture-1",
+        "request_id": "EXAMPLE_REQUEST",
+        "attempt_id": "EXAMPLE_ATTEMPT",
+        "started_at": "2026-09-22T09:00:00Z",
+        "answered_at": "2026-09-22T09:01:00Z",
+        "search_status": "executed",
+        "search_receipt_id": "OFFLINE_FIXTURE_NOT_SEARCH_PROOF",
+        "prompt_sha256": "df4c4ce3fe63a2bc556d61d7dda50357a93673f10ebbc178ece9ffff7845ad18"
+      },
+      "answer": {
+        "question_id": "IQS_01",
+        "response_kind": "score",
+        "status": "scored",
+        "score": 8,
+        "summary": "虚构示例：核心客户持续采购，但客户集中仍需关注。",
+        "information_as_of": "2026-09-01",
+        "period_start": "2026-01-01",
+        "period_end": "2026-06-30",
+        "basis": "current",
+        "trend": "stable",
+        "confidence": "medium",
+        "metrics": [
+          {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          }
+        ],
+        "items": [],
+        "evidence": [
+          {
+            "id": "e1",
+            "title": "虚构示例，不是实际公司证据",
+            "url": "https://example.invalid/company",
+            "published_at": "2026-09-01",
+            "claim": "仅用于离线验证标准输出。"
+          }
+        ],
+        "counterevidence": "虚构示例：尚缺分客户采购历史。",
+        "watch_triggers": [
+          "跟踪客户复购和供货状态"
+        ],
+        "missing_fields": [
+          "客户收入占比"
+        ],
+        "coverage": {
+          "status": "partial",
+          "reason": "离线样例仅覆盖少量字段，不代表完整公司画像。"
+        }
+      },
+      "evidence_review_status": "unreviewed",
+      "observation_id": "obs_cb5587db404db78c8a49b0d3669611c1bc4006eac3f4b3ca611266d62a491d0c"
+    },
+    "company_b": {
+      "schema_version": "1.0.0",
+      "entity_id": "EXAMPLE_ENTITY_B",
+      "security_id": null,
+      "segment_id": null,
+      "field_id": "score.iqs_01",
+      "construct_id": "IQS_01",
+      "question_id": "IQS_01",
+      "question_version": "1.0.0",
+      "template_version": "3.0.0",
+      "method_id": "core-constructs-v1/context-1/f879a5efdf9c935b",
+      "scope": "entity",
+      "cohort": {
+        "company_type": "operating",
+        "industries": [
+          "industrial"
+        ],
+        "stage": "mature",
+        "subtype": null
+      },
+      "information_cutoff": "2026-09-22",
+      "run_id": "EXAMPLE_RUN_B",
+      "scan_id": "EXAMPLE_SCAN_B",
+      "inputset_id": "EXAMPLE_INPUT_V1",
+      "task_mode": "comparison",
+      "comparison_group_id": "EXAMPLE_GROUP",
+      "observed_at": "2026-09-22T09:01:00Z",
+      "execution": {
+        "provider": "EXAMPLE_PROVIDER",
+        "model_requested": "EXAMPLE_MODEL_A",
+        "model_resolved": "EXAMPLE_MODEL_A",
+        "model_revision": "fixture-1",
+        "request_id": "EXAMPLE_REQUEST_company_b",
+        "attempt_id": "EXAMPLE_ATTEMPT_company_b",
+        "started_at": "2026-09-22T09:00:00Z",
+        "answered_at": "2026-09-22T09:01:00Z",
+        "search_status": "executed",
+        "search_receipt_id": "OFFLINE_FIXTURE_NOT_SEARCH_PROOF",
+        "prompt_sha256": "db281f2a5cbc58a52bfaa8d370886431049f75829510fb447edc3eeb57efad7d"
+      },
+      "answer": {
+        "question_id": "IQS_01",
+        "response_kind": "score",
+        "status": "scored",
+        "score": 8,
+        "summary": "虚构示例：核心客户持续采购，但客户集中仍需关注。",
+        "information_as_of": "2026-09-01",
+        "period_start": "2026-01-01",
+        "period_end": "2026-06-30",
+        "basis": "current",
+        "trend": "stable",
+        "confidence": "medium",
+        "metrics": [
+          {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          }
+        ],
+        "items": [],
+        "evidence": [
+          {
+            "id": "e1",
+            "title": "虚构示例，不是实际公司证据",
+            "url": "https://example.invalid/company",
+            "published_at": "2026-09-01",
+            "claim": "仅用于离线验证标准输出。"
+          }
+        ],
+        "counterevidence": "虚构示例：尚缺分客户采购历史。",
+        "watch_triggers": [
+          "跟踪客户复购和供货状态"
+        ],
+        "missing_fields": [
+          "客户收入占比"
+        ],
+        "coverage": {
+          "status": "partial",
+          "reason": "离线样例仅覆盖少量字段，不代表完整公司画像。"
+        }
+      },
+      "evidence_review_status": "unreviewed",
+      "observation_id": "obs_3814da75919e6747f4a240b7b04cf5777b35472752b6ff20806a9003a84fdada"
+    },
+    "previous_scan": {
+      "schema_version": "1.0.0",
+      "entity_id": "EXAMPLE_ENTITY_A",
+      "security_id": null,
+      "segment_id": null,
+      "field_id": "score.iqs_01",
+      "construct_id": "IQS_01",
+      "question_id": "IQS_01",
+      "question_version": "1.0.0",
+      "template_version": "3.0.0",
+      "method_id": "core-constructs-v1/context-1/f879a5efdf9c935b",
+      "scope": "entity",
+      "cohort": {
+        "company_type": "operating",
+        "industries": [
+          "industrial"
+        ],
+        "stage": "mature",
+        "subtype": null
+      },
+      "information_cutoff": "2026-09-20",
+      "run_id": "EXAMPLE_OLD_RUN",
+      "scan_id": "EXAMPLE_OLD_SCAN",
+      "inputset_id": "EXAMPLE_INPUT_V1",
+      "task_mode": "comparison",
+      "comparison_group_id": "EXAMPLE_GROUP",
+      "observed_at": "2026-09-20T09:01:00Z",
+      "execution": {
+        "provider": "EXAMPLE_PROVIDER",
+        "model_requested": "EXAMPLE_MODEL_A",
+        "model_resolved": "EXAMPLE_MODEL_A",
+        "model_revision": "fixture-1",
+        "request_id": "EXAMPLE_REQUEST_previous_scan",
+        "attempt_id": "EXAMPLE_ATTEMPT_previous_scan",
+        "started_at": "2026-09-20T09:00:00Z",
+        "answered_at": "2026-09-20T09:01:00Z",
+        "search_status": "executed",
+        "search_receipt_id": "OFFLINE_FIXTURE_NOT_SEARCH_PROOF",
+        "prompt_sha256": "bd65c21d74f5fb8185e84339411326b60774ba7258aa9e91d7170724c5fa2cbd"
+      },
+      "answer": {
+        "question_id": "IQS_01",
+        "response_kind": "score",
+        "status": "scored",
+        "score": 7,
+        "summary": "虚构示例：核心客户持续采购，但客户集中仍需关注。",
+        "information_as_of": "2026-09-01",
+        "period_start": "2026-01-01",
+        "period_end": "2026-06-30",
+        "basis": "current",
+        "trend": "stable",
+        "confidence": "medium",
+        "metrics": [
+          {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          }
+        ],
+        "items": [],
+        "evidence": [
+          {
+            "id": "e1",
+            "title": "虚构示例，不是实际公司证据",
+            "url": "https://example.invalid/company",
+            "published_at": "2026-09-01",
+            "claim": "仅用于离线验证标准输出。"
+          }
+        ],
+        "counterevidence": "虚构示例：尚缺分客户采购历史。",
+        "watch_triggers": [
+          "跟踪客户复购和供货状态"
+        ],
+        "missing_fields": [
+          "客户收入占比"
+        ],
+        "coverage": {
+          "status": "partial",
+          "reason": "离线样例仅覆盖少量字段，不代表完整公司画像。"
+        }
+      },
+      "evidence_review_status": "unreviewed",
+      "observation_id": "obs_a5883af21f1fb92af7d9b245e6659422253b9e07e6883a30222f4750a89735d7"
+    },
+    "model_b": {
+      "schema_version": "1.0.0",
+      "entity_id": "EXAMPLE_ENTITY_A",
+      "security_id": null,
+      "segment_id": null,
+      "field_id": "score.iqs_01",
+      "construct_id": "IQS_01",
+      "question_id": "IQS_01",
+      "question_version": "1.0.0",
+      "template_version": "3.0.0",
+      "method_id": "core-constructs-v1/context-1/f879a5efdf9c935b",
+      "scope": "entity",
+      "cohort": {
+        "company_type": "operating",
+        "industries": [
+          "industrial"
+        ],
+        "stage": "mature",
+        "subtype": null
+      },
+      "information_cutoff": "2026-09-22",
+      "run_id": "EXAMPLE_MODEL_RUN_B",
+      "scan_id": "EXAMPLE_SCAN_A",
+      "inputset_id": "EXAMPLE_INPUT_V1",
+      "task_mode": "comparison",
+      "comparison_group_id": "EXAMPLE_GROUP",
+      "observed_at": "2026-09-22T09:01:00Z",
+      "execution": {
+        "provider": "EXAMPLE_PROVIDER",
+        "model_requested": "EXAMPLE_MODEL_B",
+        "model_resolved": "EXAMPLE_MODEL_B",
+        "model_revision": "fixture-1",
+        "request_id": "EXAMPLE_REQUEST_model_b",
+        "attempt_id": "EXAMPLE_ATTEMPT_model_b",
+        "started_at": "2026-09-22T09:00:00Z",
+        "answered_at": "2026-09-22T09:01:00Z",
+        "search_status": "executed",
+        "search_receipt_id": "OFFLINE_FIXTURE_NOT_SEARCH_PROOF",
+        "prompt_sha256": "df4c4ce3fe63a2bc556d61d7dda50357a93673f10ebbc178ece9ffff7845ad18"
+      },
+      "answer": {
+        "question_id": "IQS_01",
+        "response_kind": "score",
+        "status": "scored",
+        "score": 6,
+        "summary": "虚构示例：核心客户持续采购，但客户集中仍需关注。",
+        "information_as_of": "2026-09-01",
+        "period_start": "2026-01-01",
+        "period_end": "2026-06-30",
+        "basis": "current",
+        "trend": "stable",
+        "confidence": "medium",
+        "metrics": [
+          {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          }
+        ],
+        "items": [],
+        "evidence": [
+          {
+            "id": "e1",
+            "title": "虚构示例，不是实际公司证据",
+            "url": "https://example.invalid/company",
+            "published_at": "2026-09-01",
+            "claim": "仅用于离线验证标准输出。"
+          }
+        ],
+        "counterevidence": "虚构示例：尚缺分客户采购历史。",
+        "watch_triggers": [
+          "跟踪客户复购和供货状态"
+        ],
+        "missing_fields": [
+          "客户收入占比"
+        ],
+        "coverage": {
+          "status": "partial",
+          "reason": "离线样例仅覆盖少量字段，不代表完整公司画像。"
+        }
+      },
+      "evidence_review_status": "unreviewed",
+      "observation_id": "obs_34553c1b9331d1627bcad65cf674f7577d55b7e4c06c88d15aa8daacaed040c0"
+    },
+    "customer_fact": {
+      "schema_version": "1.0.0",
+      "entity_id": "EXAMPLE_ENTITY_A",
+      "security_id": null,
+      "segment_id": null,
+      "field_id": "facts.customers",
+      "construct_id": null,
+      "question_id": "FACT_10",
+      "question_version": "1.0.0",
+      "template_version": "1.0.0",
+      "method_id": "facts-1/7978e030d1ad4ea9",
+      "scope": "entity",
+      "cohort": {
+        "company_type": "operating",
+        "industries": [
+          "industrial"
+        ],
+        "stage": "mature",
+        "subtype": null
+      },
+      "information_cutoff": "2026-09-22",
+      "run_id": "EXAMPLE_RUN_A",
+      "scan_id": "EXAMPLE_SCAN_A",
+      "inputset_id": "EXAMPLE_INPUT_V1",
+      "task_mode": "comparison",
+      "comparison_group_id": "EXAMPLE_GROUP",
+      "observed_at": "2026-09-22T09:01:00Z",
+      "execution": {
+        "provider": "EXAMPLE_PROVIDER",
+        "model_requested": "EXAMPLE_MODEL_A",
+        "model_resolved": "EXAMPLE_MODEL_A",
+        "model_revision": "fixture-1",
+        "request_id": "EXAMPLE_REQUEST",
+        "attempt_id": "EXAMPLE_ATTEMPT",
+        "started_at": "2026-09-22T09:00:00Z",
+        "answered_at": "2026-09-22T09:01:00Z",
+        "search_status": "executed",
+        "search_receipt_id": "OFFLINE_FIXTURE_NOT_SEARCH_PROOF",
+        "prompt_sha256": "f2cfd43143e9fc1ef6683c81a318e80933f5b2fe89539a496c89f7422709cc13"
+      },
+      "answer": {
+        "question_id": "FACT_10",
+        "response_kind": "fact",
+        "status": "answered",
+        "score": null,
+        "summary": "虚构示例：核心客户持续采购，但客户集中仍需关注。",
+        "information_as_of": "2026-09-01",
+        "period_start": "2026-01-01",
+        "period_end": "2026-06-30",
+        "basis": "current",
+        "trend": "stable",
+        "confidence": "medium",
+        "metrics": [],
+        "items": [
+          {
+            "name": "示例工业客户（虚构）",
+            "canonical_entity_id": null,
+            "aliases": [],
+            "relation": "sells_to",
+            "segment": "示例分部",
+            "role": "customer",
+            "commercial_stage": "commercial",
+            "description": "虚构客户关系，未提供交易规模。",
+            "valid_from": "2026-01-01",
+            "valid_to": null,
+            "taxonomy_id": null,
+            "metrics": [],
+            "evidence_ids": [
+              "e1"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "evidence": [
+          {
+            "id": "e1",
+            "title": "虚构示例，不是实际公司证据",
+            "url": "https://example.invalid/company",
+            "published_at": "2026-09-01",
+            "claim": "仅用于离线验证标准输出。"
+          }
+        ],
+        "counterevidence": "虚构示例：尚缺分客户采购历史。",
+        "watch_triggers": [
+          "跟踪客户复购和供货状态"
+        ],
+        "missing_fields": [
+          "客户收入占比"
+        ],
+        "coverage": {
+          "status": "partial",
+          "reason": "离线样例仅覆盖少量字段，不代表完整公司画像。"
+        }
+      },
+      "evidence_review_status": "unreviewed",
+      "observation_id": "obs_8b7506bf68b46cdd4eaae42eacf833274e347dd5263436951a9955854296499a"
+    }
+  },
+  "comparisons": {
+    "company": {
+      "axis": "company",
+      "comparable": true,
+      "reasons": [],
+      "warnings": [
+        "结构可比不等于来源已核验；不输出平均分或真值。"
+      ],
+      "left_observation_id": "obs_cb5587db404db78c8a49b0d3669611c1bc4006eac3f4b3ca611266d62a491d0c",
+      "right_observation_id": "obs_3814da75919e6747f4a240b7b04cf5777b35472752b6ff20806a9003a84fdada",
+      "score_difference": 0,
+      "metrics": [
+        {
+          "metric_id": "operating.repeat_purchase_share",
+          "left": {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          },
+          "right": {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          },
+          "comparable": true
+        }
+      ],
+      "left_items": [],
+      "right_items": []
+    },
+    "time": {
+      "axis": "time",
+      "comparable": true,
+      "reasons": [],
+      "warnings": [
+        "结构可比不等于来源已核验；不输出平均分或真值。"
+      ],
+      "left_observation_id": "obs_a5883af21f1fb92af7d9b245e6659422253b9e07e6883a30222f4750a89735d7",
+      "right_observation_id": "obs_cb5587db404db78c8a49b0d3669611c1bc4006eac3f4b3ca611266d62a491d0c",
+      "score_difference": 1,
+      "metrics": [
+        {
+          "metric_id": "operating.repeat_purchase_share",
+          "left": {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          },
+          "right": {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          },
+          "comparable": true
+        }
+      ],
+      "left_items": [],
+      "right_items": []
+    },
+    "model": {
+      "axis": "model",
+      "comparable": true,
+      "reasons": [],
+      "warnings": [
+        "结构可比不等于来源已核验；不输出平均分或真值。"
+      ],
+      "left_observation_id": "obs_cb5587db404db78c8a49b0d3669611c1bc4006eac3f4b3ca611266d62a491d0c",
+      "right_observation_id": "obs_34553c1b9331d1627bcad65cf674f7577d55b7e4c06c88d15aa8daacaed040c0",
+      "score_difference": -2,
+      "metrics": [
+        {
+          "metric_id": "operating.repeat_purchase_share",
+          "left": {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          },
+          "right": {
+            "metric_id": "operating.repeat_purchase_share",
+            "value": 82,
+            "unit": "percent",
+            "currency": null,
+            "unit_detail": null,
+            "period_start": "2026-01-01",
+            "period_end": "2026-06-30",
+            "basis": "current",
+            "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+            "evidence_ids": [
+              "e1"
+            ]
+          },
+          "comparable": true
+        }
+      ],
+      "left_items": [],
+      "right_items": []
+    }
+  }
+}

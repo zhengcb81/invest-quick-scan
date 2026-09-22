@@ -1,0 +1,74 @@
+{
+  "version": "3.0.0",
+  "module_id": "concentrated",
+  "kind": "overlays",
+  "name": "客户、供应或产品集中",
+  "applies_when": "单一客户、供应商、产品或产地对存续或利润有重大影响。",
+  "questions": [
+    {
+      "id": "CONCENTRATED_01",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "集中对象中断或流失时，公司能否在可承受时间内替代？",
+      "evidence": [
+        "替代认证",
+        "客户迁移",
+        "合同",
+        "库存"
+      ],
+      "anchors": {
+        "1": "单一中断即可长期停摆",
+        "5": "可替代但成本时间较大",
+        "10": "替代已验证且过渡成本与时间可承受"
+      },
+      "metric_id": "score.concentrated_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONCENTRATED_02",
+      "dimension": "business",
+      "priority": 2,
+      "question": "集中关系中的定价、付款与风险承担是否公平？",
+      "evidence": [
+        "议价",
+        "独家",
+        "取消",
+        "付款与索赔"
+      ],
+      "anchors": {
+        "1": "强势对手把主要风险转嫁给公司",
+        "5": "条款可维持但议价一般",
+        "10": "双方依赖平衡且条款保护经济回报"
+      },
+      "metric_id": "score.concentrated_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONCENTRATED_03",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "降低集中度的扩展是否有真实进展和合理回报？",
+      "evidence": [
+        "新增独立客户",
+        "第二产品",
+        "替代来源"
+      ],
+      "anchors": {
+        "1": "分散计划长期无进展或亏损换收入",
+        "5": "已有试点但规模与回报未明",
+        "10": "新增来源已有可持续收入和回报验证"
+      },
+      "metric_id": "score.concentrated_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "version": "3.0.0",
+  "module_id": "validation",
+  "kind": "stages",
+  "name": "研发与验证期",
+  "applies_when": "核心产品尚处技术、临床或工程可行性验证；不因早期身份自动高分。",
+  "questions": [
+    {
+      "id": "VALIDATION_01",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "下一个关键里程碑是否能实质降低商业失败概率？",
+      "evidence": [
+        "里程碑终点",
+        "独立验证",
+        "时间窗口"
+      ],
+      "anchors": {
+        "1": "目标模糊或即使完成也不减少核心风险",
+        "5": "能减少部分风险但证据强度有限",
+        "10": "可测量的关键终点能显著验证核心商业假设"
+      },
+      "metric_id": "score.validation_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "VALIDATION_02",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "验证计划是否具有可靠设计、资源和停止标准？",
+      "evidence": [
+        "试验设计",
+        "预算",
+        "外部合作",
+        "终止条件"
+      ],
+      "anchors": {
+        "1": "计划不可检验且无限追加投入",
+        "5": "计划合理但资源或停止条件不完善",
+        "10": "设计可靠、资源到位且失败时能有纪律终止"
+      },
+      "metric_id": "score.validation_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "VALIDATION_03",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "主要失败路径是否存在可承受的替代选择？",
+      "evidence": [
+        "技术备选",
+        "项目权利",
+        "退出成本",
+        "剩余现金"
+      ],
+      "anchors": {
+        "1": "单一失败即失去全部经营选择",
+        "5": "有备选但代价大或未经验证",
+        "10": "失败路径已界定且可转向有证据的备选"
+      },
+      "metric_id": "score.validation_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "VALIDATION_04",
+      "dimension": "governance",
+      "priority": 2,
+      "question": "管理层是否如实区分验证结果、商业愿景与融资宣传？",
+      "evidence": [
+        "前期承诺",
+        "失败披露",
+        "终点变更",
+        "关联融资"
+      ],
+      "anchors": {
+        "1": "选择性披露或反复移动目标",
+        "5": "披露基本完整但叙事偏乐观",
+        "10": "正反结果透明且承诺与证据严格对应"
+      },
+      "metric_id": "score.validation_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

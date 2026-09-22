@@ -1,0 +1,98 @@
+{
+  "version": "3.0.0",
+  "module_id": "agriculture",
+  "kind": "industries",
+  "name": "农业、养殖与农产品",
+  "applies_when": "种植、养殖、种业及农业服务；区分商品价格与生物效率。",
+  "questions": [
+    {
+      "id": "AGRICULTURE_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "中周期售价下，生物效率和投入成本能否支撑回报？",
+      "evidence": [
+        "单产",
+        "料肉比",
+        "饲料或肥料",
+        "死亡率"
+      ],
+      "anchors": {
+        "1": "合理价格下成本明显偏高",
+        "5": "生物效率与成本接近行业",
+        "10": "效率与成本优势跨多个生产周期验证"
+      },
+      "metric_id": "score.agriculture_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "AGRICULTURE_02",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "疫病、气候和生物安全冲击的损失是否可承受？",
+      "evidence": [
+        "防疫",
+        "地域分散",
+        "天气",
+        "保险",
+        "历史损失"
+      ],
+      "anchors": {
+        "1": "单次冲击可重创存续且防御薄弱",
+        "5": "有防护但损失与恢复不确定",
+        "10": "防御和恢复措施经验证，资金能承受冲击"
+      },
+      "metric_id": "score.agriculture_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "AGRICULTURE_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "扩产是否维持质量、效率与周转纪律？",
+      "evidence": [
+        "新场爬坡",
+        "繁育",
+        "库存",
+        "扩产预算"
+      ],
+      "anchors": {
+        "1": "扩产导致效率下降与现金失控",
+        "5": "多数扩产达标但回报一般",
+        "10": "新批次维持成熟效率且现金投入有纪律"
+      },
+      "metric_id": "score.agriculture_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "AGRICULTURE_04",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "生物资产和存货计量是否反映真实可实现收益？",
+      "evidence": [
+        "估值假设",
+        "减值",
+        "死亡损失",
+        "销售现金"
+      ],
+      "anchors": {
+        "1": "公允价值或库存掩盖持续损失",
+        "5": "计量基本合理但受价格影响大",
+        "10": "调整透明且生产、销售与现金数据相互印证"
+      },
+      "metric_id": "score.agriculture_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "version": "3.0.0",
+  "module_id": "auto",
+  "kind": "industries",
+  "name": "汽车、零部件与动力电池",
+  "applies_when": "整车、关键零件、电池；按实际环节判断，不把销量等同盈利。",
+  "questions": [
+    {
+      "id": "AUTO_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "扣除促销、质保和研发后，产品全生命周期单位回报如何？",
+      "evidence": [
+        "净售价",
+        "材料",
+        "促销",
+        "质保",
+        "平台摊销"
+      ],
+      "anchors": {
+        "1": "销量靠亏损促销且生命周期难回本",
+        "5": "成熟产品可盈利但价格压力明显",
+        "10": "保守价格下产品周期回报仍健康"
+      },
+      "metric_id": "score.auto_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "AUTO_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "产品、制造或客户定点优势能否跨车型或技术周期延续？",
+      "evidence": [
+        "平台复用",
+        "客户定点",
+        "质量",
+        "技术路线"
+      ],
+      "anchors": {
+        "1": "优势依赖单款或落后路线",
+        "5": "现有竞争力尚可，跨周期未明",
+        "10": "多代产品或客户项目验证持久优势"
+      },
+      "metric_id": "score.auto_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "AUTO_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "产能、存货与渠道周转能否承受需求和价格波动？",
+      "evidence": [
+        "产能利用",
+        "渠道库存",
+        "降价减值",
+        "供应付款"
+      ],
+      "anchors": {
+        "1": "过剩产能与库存消耗大量现金",
+        "5": "周转可控但压力下利润脆弱",
+        "10": "合理利用率下仍有现金缓冲且渠道健康"
+      },
+      "metric_id": "score.auto_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "AUTO_04",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "安全事故、召回及关键原料依赖的损失是否可控？",
+      "evidence": [
+        "召回",
+        "责任准备",
+        "原料来源",
+        "替代工艺"
+      ],
+      "anchors": {
+        "1": "重大安全或供应风险威胁经营",
+        "5": "基本可控但尾部暴露明显",
+        "10": "质量管控、准备和替代供给经验证"
+      },
+      "metric_id": "score.auto_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

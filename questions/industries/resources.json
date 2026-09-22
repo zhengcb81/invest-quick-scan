@@ -1,0 +1,99 @@
+{
+  "version": "3.0.0",
+  "module_id": "resources",
+  "kind": "industries",
+  "name": "矿业、油气与资源开采",
+  "applies_when": "开采、勘探、上游油气；区分储量、资源量和未开发项目。",
+  "questions": [
+    {
+      "id": "RESOURCES_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "在保守中周期商品价格下，全维持成本后的回报如何？",
+      "evidence": [
+        "现金成本",
+        "维持投入",
+        "税费",
+        "复垦",
+        "运输"
+      ],
+      "anchors": {
+        "1": "合理价格下无法覆盖全维持成本",
+        "5": "处于成本曲线中部且回报一般",
+        "10": "成本优势可靠，低价环境仍有现金余量"
+      },
+      "metric_id": "score.resources_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RESOURCES_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "资源品质、权属和可采年限是否提供可持续优势？",
+      "evidence": [
+        "储量类别",
+        "品位",
+        "矿权",
+        "衰减",
+        "储量替换"
+      ],
+      "anchors": {
+        "1": "资源耗竭或权属不稳且补充困难",
+        "5": "资源可用但品质或年限一般",
+        "10": "优质可经济开采资源、稳固权属与合理寿命"
+      },
+      "metric_id": "score.resources_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RESOURCES_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "开发扩产的预算、产量和投产时间兑现度如何？",
+      "evidence": [
+        "建设进度",
+        "超支",
+        "回收率",
+        "投产爬坡"
+      ],
+      "anchors": {
+        "1": "反复超支且产量严重不达标",
+        "5": "项目大多可交付但有波动",
+        "10": "多项目按合理预算和产能兑现"
+      },
+      "metric_id": "score.resources_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RESOURCES_04",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "环境许可、产地和尾矿等重大责任是否可承受？",
+      "evidence": [
+        "许可",
+        "复垦准备",
+        "社区协议",
+        "事故记录"
+      ],
+      "anchors": {
+        "1": "关键许可或责任威胁存续",
+        "5": "义务可估但部分压力较大",
+        "10": "主要责任已计入成本且治理与资金充分"
+      },
+      "metric_id": "score.resources_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "version": "3.0.0",
+  "module_id": "pre_revenue",
+  "kind": "types",
+  "name": "商业化前企业",
+  "applies_when": "核心价值依赖尚未规模商业化的研发、许可、资源开发或技术项目。",
+  "questions": [
+    {
+      "id": "PRE_REVENUE_01",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "现有可动用资金能否支持到下一个实质去风险里程碑？",
+      "evidence": [
+        "现金消耗",
+        "承诺投入",
+        "里程碑时间",
+        "融资可得性"
+      ],
+      "anchors": {
+        "1": "资金在重要验证前耗尽且融资困难",
+        "5": "可到近期节点但后续仍有明显融资需求",
+        "10": "压力预算下足以跨越关键验证并保留缓冲"
+      },
+      "replaces": [
+        "IQS_16"
+      ],
+      "critical": true,
+      "metric_id": "score.pre_revenue_01",
+      "construct_id": "IQS_16",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PRE_REVENUE_02",
+      "dimension": "business",
+      "priority": 1,
+      "question": "核心产品或项目的商业可行性获得了多强的独立验证？",
+      "evidence": [
+        "外部试验",
+        "客户测试",
+        "技术经济性",
+        "支付意愿"
+      ],
+      "anchors": {
+        "1": "主要为内部叙事且关键假设被反证",
+        "5": "技术有部分验证但商业经济性未明",
+        "10": "关键技术与支付经济性均有独立、可重复验证"
+      },
+      "replaces": [
+        "IQS_03"
+      ],
+      "metric_id": "score.pre_revenue_02",
+      "construct_id": "IQS_03",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PRE_REVENUE_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "资金消耗的效率和可调整性如何？",
+      "evidence": [
+        "研发或项目进度",
+        "预算",
+        "固定承诺",
+        "退出成本"
+      ],
+      "anchors": {
+        "1": "投入增多但证据无进展且无法收缩",
+        "5": "预算大致匹配进展，调整余量有限",
+        "10": "每阶段投入带来可验证进展且能及时终止无效项目"
+      },
+      "replaces": [
+        "IQS_11"
+      ],
+      "metric_id": "score.pre_revenue_03",
+      "construct_id": "IQS_11",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PRE_REVENUE_04",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "技术或监管成功后，商业化路径是否具备现实执行条件？",
+      "evidence": [
+        "生产放大",
+        "许可",
+        "渠道",
+        "伙伴承诺"
+      ],
+      "anchors": {
+        "1": "关键环节缺失且短期不可获得",
+        "5": "路径合理但伙伴或产能未落定",
+        "10": "必要环节有经过验证的执行安排与资源"
+      },
+      "replaces": [
+        "IQS_20"
+      ],
+      "metric_id": "score.pre_revenue_04",
+      "construct_id": "IQS_20",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PRE_REVENUE_05",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "核心知识产权、许可和项目权利能否保护未来收益？",
+      "evidence": [
+        "权属",
+        "许可条款",
+        "侵权争议",
+        "项目使用权"
+      ],
+      "anchors": {
+        "1": "关键权利缺失或严重受制于他方",
+        "5": "权利基本具备但边界或期限有约束",
+        "10": "核心权利清晰稳固且覆盖商业化价值期"
+      },
+      "metric_id": "score.pre_revenue_05",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PRE_REVENUE_06",
+      "dimension": "valuation",
+      "priority": 2,
+      "question": "考虑成功概率、失败损失与后续摊薄后，当前价格余地如何？",
+      "evidence": [
+        "里程碑情景",
+        "现金",
+        "融资股数",
+        "概率依据",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "价格近似假定成功且忽略融资摊薄",
+        "5": "价格对应合理风险情景但证据有限",
+        "10": "透明保守概率和摊薄下仍有余地，非套用盈利PE"
+      },
+      "replaces": [
+        "IQS_22"
+      ],
+      "metric_id": "score.pre_revenue_06",
+      "construct_id": "IQS_22",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

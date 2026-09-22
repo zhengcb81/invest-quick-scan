@@ -1,0 +1,153 @@
+{
+  "version": "3.0.0",
+  "module_id": "capital_markets",
+  "kind": "types",
+  "name": "券商、资管与交易基础设施",
+  "applies_when": "按资管费、经纪、交易、自营、交易所或支付清算的真实盈利权重判断。",
+  "questions": [
+    {
+      "id": "CAPITAL_MARKETS_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "按收费、交易/做市或交易所清算的实质业务，计入全成本、风险及资本占用后，单位经济是否成立？",
+      "evidence": [
+        "按收费/自营做市/交易所清算分部",
+        "净费率或风险调整收益",
+        "客户资产与自有资金分开",
+        "对冲、尾部损失与资本占用"
+      ],
+      "anchors": {
+        "1": "核心业务全成本或风险调整后损毁资本，靠峰值行情掩盖",
+        "5": "常态全成本和必要风险资本可覆盖，回报余量一般",
+        "10": "经多期压力验证，核心业务在完整成本及风险资本后仍有可靠回报"
+      },
+      "replaces": [
+        "IQS_03"
+      ],
+      "metric_id": "score.capital_markets_01",
+      "construct_id": "IQS_03",
+      "comparison_role": "core",
+      "rubric_version": "2.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CAPITAL_MARKETS_02",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "满足客户资产隔离与监管要求后，自有资金是否安全充足？",
+      "evidence": [
+        "净资本",
+        "保证金",
+        "客户资金隔离",
+        "流动性压力"
+      ],
+      "anchors": {
+        "1": "隔离缺陷或自有资本无法承压",
+        "5": "符合要求但压力缓冲普通",
+        "10": "客户资产隔离可靠，自有资本与流动性充裕"
+      },
+      "replaces": [
+        "IQS_16"
+      ],
+      "critical": true,
+      "metric_id": "score.capital_markets_02",
+      "construct_id": "IQS_16",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CAPITAL_MARKETS_03",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "可持续盈利能否转化为母公司可分配资金？",
+      "evidence": [
+        "自有现金",
+        "资本留存",
+        "业绩费回拨",
+        "子公司上缴"
+      ],
+      "anchors": {
+        "1": "账面盈利受限或依赖客户资金",
+        "5": "可形成分配但波动较大",
+        "10": "排除客户资金后长期稳定产生可分配现金"
+      },
+      "replaces": [
+        "IQS_11"
+      ],
+      "metric_id": "score.capital_markets_03",
+      "construct_id": "IQS_11",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CAPITAL_MARKETS_04",
+      "dimension": "moat",
+      "priority": 2,
+      "question": "客户资产或交易流量的留存是否具有结构性优势？",
+      "evidence": [
+        "自然净流入",
+        "费率压力",
+        "转换成本",
+        "竞争份额"
+      ],
+      "anchors": {
+        "1": "客户持续外流且费用率承压",
+        "5": "流量稳定但差异有限",
+        "10": "净流入和留存经周期验证且费率合理"
+      },
+      "metric_id": "score.capital_markets_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CAPITAL_MARKETS_05",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "尾部市场、清算和受托责任风险是否可控？",
+      "evidence": [
+        "杠杆",
+        "对手方",
+        "风控违约",
+        "赔付或追索"
+      ],
+      "anchors": {
+        "1": "尾部风险集中且控制失效",
+        "5": "风险限额存在但极端期未经验证",
+        "10": "多次压力下风险限额与客户保护有效"
+      },
+      "metric_id": "score.capital_markets_05",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CAPITAL_MARKETS_06",
+      "dimension": "valuation",
+      "priority": 2,
+      "question": "以正常化而非牛市峰值收益看，价格余地如何？",
+      "evidence": [
+        "正常化费收入与自营损益",
+        "资本消耗",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "便宜假象依靠牛市峰值",
+        "5": "估值对应正常盈利水平",
+        "10": "保守正常盈利和压力资本下仍有余地"
+      },
+      "replaces": [
+        "IQS_22"
+      ],
+      "metric_id": "score.capital_markets_06",
+      "construct_id": "IQS_22",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

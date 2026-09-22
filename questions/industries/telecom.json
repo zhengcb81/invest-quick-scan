@@ -1,0 +1,98 @@
+{
+  "version": "3.0.0",
+  "module_id": "telecom",
+  "kind": "industries",
+  "name": "电信运营与通信基础设施",
+  "applies_when": "运营商、铁塔、光纤和通信租赁资产。",
+  "questions": [
+    {
+      "id": "TELECOM_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "扣除网络维护、频谱和获客后，客户经济回报如何？",
+      "evidence": [
+        "ARPU",
+        "流失",
+        "维护资本",
+        "频谱",
+        "获客回收"
+      ],
+      "anchors": {
+        "1": "客户增长无法覆盖网络与获客成本",
+        "5": "存量经济性稳定但新增长回报一般",
+        "10": "全成本客户回报可靠且资本投入有纪律"
+      },
+      "metric_id": "score.telecom_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "TELECOM_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "网络覆盖、频谱或站址是否形成真实竞争壁垒？",
+      "evidence": [
+        "网络质量",
+        "频谱权利",
+        "站址",
+        "批发依赖"
+      ],
+      "anchors": {
+        "1": "覆盖或资产劣势难以弥补",
+        "5": "资源接近同业，价格竞争明显",
+        "10": "难复制资源带来长期质量或成本优势"
+      },
+      "metric_id": "score.telecom_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "TELECOM_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "技术升级与竞争价格下，自由现金能否持续？",
+      "evidence": [
+        "资本开支周期",
+        "现金分配",
+        "租赁",
+        "价格趋势"
+      ],
+      "anchors": {
+        "1": "升级与价格战持续吞噬现金",
+        "5": "大体可覆盖升级但余量有限",
+        "10": "合理升级和竞争压力下仍有稳健现金"
+      },
+      "metric_id": "score.telecom_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "TELECOM_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "新增网络或服务需求能否带来可获得的增量回报？",
+      "evidence": [
+        "流量变现",
+        "企业合同",
+        "共享租户",
+        "新增资本回报"
+      ],
+      "anchors": {
+        "1": "流量增长只增成本不增回报",
+        "5": "部分新需求可变现",
+        "10": "合同与单位经济证明新增需求提升回报"
+      },
+      "metric_id": "score.telecom_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

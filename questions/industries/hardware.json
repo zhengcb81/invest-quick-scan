@@ -1,0 +1,96 @@
+{
+  "version": "3.0.0",
+  "module_id": "hardware",
+  "kind": "industries",
+  "name": "硬件、通信设备与消费电子",
+  "applies_when": "终端、网络设备、计算设备与系统集成。",
+  "questions": [
+    {
+      "id": "HARDWARE_01",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "产品差异、生态或渠道是否足以避免纯价格竞争？",
+      "evidence": [
+        "同档性能成本",
+        "品牌复购",
+        "软硬协同",
+        "份额"
+      ],
+      "anchors": {
+        "1": "完全同质且必须持续降价",
+        "5": "有差异但生命周期短",
+        "10": "差异价值被客户验证且跨产品代际保持"
+      },
+      "metric_id": "score.hardware_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HARDWARE_02",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "新品和存货周期中的现金与利润损失是否可控？",
+      "evidence": [
+        "库存账龄",
+        "退货",
+        "渠道库存",
+        "减值"
+      ],
+      "anchors": {
+        "1": "渠道压货且库存反复大额损失",
+        "5": "库存可控但换代期有明显波动",
+        "10": "需求预测与库存纪律可靠，换代损失小"
+      },
+      "metric_id": "score.hardware_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HARDWARE_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "研发、供应采购和量产交付是否可靠协同？",
+      "evidence": [
+        "新品延期",
+        "质量返修",
+        "成本下降",
+        "关键元件"
+      ],
+      "anchors": {
+        "1": "研发延期与质量问题反复发生",
+        "5": "大多按计划交付但局部短板",
+        "10": "多代产品按质量和成本目标规模交付"
+      },
+      "metric_id": "score.hardware_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HARDWARE_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "替换周期与新用途是否提供有支付能力的增量需求？",
+      "evidence": [
+        "装机更新",
+        "客户预算",
+        "新增用途付费"
+      ],
+      "anchors": {
+        "1": "需求结构性减少且新品无支付验证",
+        "5": "更新需求稳定，新增用途尚早",
+        "10": "明确预算与产品验证支撑持续新增需求"
+      },
+      "metric_id": "score.hardware_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

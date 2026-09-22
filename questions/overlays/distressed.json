@@ -1,0 +1,75 @@
+{
+  "version": "3.0.0",
+  "module_id": "distressed",
+  "kind": "overlays",
+  "name": "财务困境与持续经营压力",
+  "applies_when": "违约、重大契约压力、重整、持续经营疑虑或融资中断。",
+  "questions": [
+    {
+      "id": "DISTRESSED_01",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "在已落实而非计划中的融资下，近期存续资金是否足够？",
+      "evidence": [
+        "承诺融资",
+        "到期义务",
+        "受限现金",
+        "现金消耗"
+      ],
+      "anchors": {
+        "1": "刚性支付缺口未有落实资金",
+        "5": "暂时覆盖但高度依赖新增安排",
+        "10": "已落实资金覆盖压力需求并保留缓冲"
+      },
+      "metric_id": "score.distressed_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DISTRESSED_02",
+      "dimension": "valuation",
+      "priority": 1,
+      "question": "债权顺序、重整和摊薄后，现有普通股是否有可信剩余价值？",
+      "evidence": [
+        "优先债权",
+        "清算或重整",
+        "新增股数",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "保守回收下普通股可能无剩余",
+        "5": "基准情景有剩余但对假设敏感",
+        "10": "保守义务与摊薄下仍有可信剩余及价格余地"
+      },
+      "metric_id": "score.distressed_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    },
+    {
+      "id": "DISTRESSED_03",
+      "dimension": "governance",
+      "priority": 2,
+      "question": "危机处置是否透明并公平保护现有普通股东？",
+      "evidence": [
+        "重整条款",
+        "关联债权",
+        "资产转移",
+        "披露"
+      ],
+      "anchors": {
+        "1": "选择性转移资产或隐瞒关键安排",
+        "5": "主要程序透明但权利保护有限",
+        "10": "条款与冲突充分披露且公平处置有证据"
+      },
+      "metric_id": "score.distressed_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

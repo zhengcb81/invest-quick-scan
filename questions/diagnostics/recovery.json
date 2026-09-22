@@ -1,0 +1,101 @@
+{
+  "version": "3.0.0",
+  "module_id": "recovery",
+  "kind": "diagnostics",
+  "name": "低谷与恢复潜力诊断",
+  "applies_when": "周期下行或低谷、经营暂时困难、修复或衰退性质待辨别时追加；识别值得关注的特征，不调高当前质量分。",
+  "questions": [
+    {
+      "id": "RECOVERY_01",
+      "dimension": "business",
+      "priority": 1,
+      "aggregation": "diagnostic",
+      "question": "造成当前低谷的主要原因，有多大程度是可逆的周期或可修复的经营问题，而非需求、技术或经济性永久受损？",
+      "evidence": [
+        "区分行业周期、公司执行失误与结构性衰退，允许混合原因",
+        "历史周期与本次供需、替代技术的差异",
+        "低谷前表现是否依赖不可持续的高价或补贴",
+        "明确可逆判断的反证，股价跌幅不能作为恢复依据"
+      ],
+      "anchors": {
+        "1": "需求或经济性结构性受损，恢复依赖已消失的条件",
+        "5": "可修复与结构性因素并存，恢复范围和条件仍不确定",
+        "10": "主要问题有可验证的可逆机制，关键需求和正常经营经济性仍成立"
+      },
+      "metric_id": "score.recovery_01",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RECOVERY_02",
+      "dimension": "moat",
+      "priority": 1,
+      "aggregation": "diagnostic",
+      "question": "经历低谷后，公司仍实际掌握多少能够支撑恢复的优质客户、技术、成本位置、渠道、团队或关键资产？",
+      "evidence": [
+        "相对同业的客户留存、技术资格、成本曲线或渠道位置",
+        "关键人才流失、维护投入不足、被迫出售资产与客户转移",
+        "优势是否仍属于上市实体，恢复是否需要重新购买或重建",
+        "区分历史荣誉、账面资产和目前可投入经营的优势"
+      ],
+      "anchors": {
+        "1": "核心优势或资产已不可逆流失，重建代价接近另起炉灶",
+        "5": "保留部分有用能力，但恢复需明显补投入或重新赢回客户",
+        "10": "关键能力和客户关系仍完好可用，低谷中相对竞争位置稳固"
+      },
+      "metric_id": "score.recovery_02",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RECOVERY_03",
+      "dimension": "execution",
+      "priority": 1,
+      "aggregation": "diagnostic",
+      "question": "未来恢复的触发机制、先后顺序与可观察里程碑，有多少实际证据支持，而非仅靠等待景气或管理层承诺？",
+      "evidence": [
+        "周期企业观察库存消化、供给退出、价差、订单与利用率，不能把价格短弹当供需出清",
+        "经营修复观察旧问题处置、新产品验证、交付和现金改善的传导",
+        "催化发生的条件、合理时间范围及延误风险",
+        "下次复问应看到什么、何时未出现应降低判断；不伪造精确反转日期"
+      ],
+      "anchors": {
+        "1": "改善机制缺乏依据或关键指标持续反向，只有口号或短期股价反弹",
+        "5": "存在具体路径和部分领先信号，持续性、顺序或执行仍待验证",
+        "10": "多项独立经营证据支持修复机制，里程碑连续兑现且可被后续结果证伪"
+      },
+      "metric_id": "score.recovery_03",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RECOVERY_04",
+      "dimension": "governance",
+      "priority": 1,
+      "aggregation": "diagnostic",
+      "question": "即使业务恢复，扣除等待期损耗、修复投入、债务优先权和潜在摊薄后，改善成果能否实质留给现有普通股东？",
+      "evidence": [
+        "恢复所需时间内的现金消耗、修复资本和融资条件",
+        "债权优先级、重组条款、可转债、增发及上市实体保留权益",
+        "债务转移、核心资产出售或利益输送是否掏空恢复后的股权",
+        "评价恢复成果归属，不等于当前股票便宜；无报价时不捏造估值"
+      ],
+      "anchors": {
+        "1": "改善很可能主要归债权人、新股东或外部实体，现有普通股权益显著受损",
+        "5": "普通股可能受益，但修复成本、等待损耗或摊薄仍明显",
+        "10": "保守修复成本和已知融资安排下，现有普通股仍保留大部分可持续改善成果"
+      },
+      "metric_id": "score.recovery_04",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

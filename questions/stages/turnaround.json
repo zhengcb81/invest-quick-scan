@@ -1,0 +1,98 @@
+{
+  "version": "3.0.0",
+  "module_id": "turnaround",
+  "kind": "stages",
+  "name": "转型与困境修复期",
+  "applies_when": "经营恶化后依靠产品、成本、债务或治理修复改变结果。",
+  "questions": [
+    {
+      "id": "TURNAROUND_01",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "修复措施是否已经带来可验证的领先经营改善？",
+      "evidence": [
+        "订单质量",
+        "留存",
+        "成本",
+        "交付",
+        "现金"
+      ],
+      "anchors": {
+        "1": "只有口号，关键指标继续恶化",
+        "5": "局部改善但尚未贯穿经营链",
+        "10": "多个领先指标和现金均支持持续修复"
+      },
+      "metric_id": "score.turnaround_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "TURNAROUND_02",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "公司是否有足够资金和时间完成修复？",
+      "evidence": [
+        "可用现金",
+        "债务展期",
+        "修复投入",
+        "时间表"
+      ],
+      "anchors": {
+        "1": "修复完成前资金大概率耗尽",
+        "5": "有时间但依赖融资或资产出售",
+        "10": "保守修复时间下资金和债务安排仍充足"
+      },
+      "metric_id": "score.turnaround_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "TURNAROUND_03",
+      "dimension": "governance",
+      "priority": 2,
+      "question": "导致困境的决策机制是否发生实质变化？",
+      "evidence": [
+        "管理责任",
+        "激励",
+        "预算",
+        "退出旧业务"
+      ],
+      "anchors": {
+        "1": "原有失败机制未变",
+        "5": "部分调整但责任和激励仍不完整",
+        "10": "责任、激励与资源配置已具体改变并有兑现"
+      },
+      "metric_id": "score.turnaround_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "TURNAROUND_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "修复后的业务是否有可持续需求而非一次性反弹？",
+      "evidence": [
+        "客户回归",
+        "复购",
+        "产品竞争",
+        "行业需求"
+      ],
+      "anchors": {
+        "1": "只剩低基数或会计反弹，核心需求与经济性已结构性受损",
+        "5": "核心需求尚在但持续性待验证",
+        "10": "真实需求与竞争力支撑修复后的持续经营"
+      },
+      "metric_id": "score.turnaround_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

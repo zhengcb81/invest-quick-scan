@@ -1,0 +1,93 @@
+{
+  "version": "3.0.0",
+  "module_id": "other",
+  "kind": "industries",
+  "name": "未覆盖行业的经营关键点",
+  "applies_when": "仅当其他行业均不匹配；明确覆盖缺口，不能据此声称已完成行业深评。",
+  "questions": [
+    {
+      "id": "OTHER_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "这个行业最关键的单位产出，在完整成本后是否创造经济价值？",
+      "evidence": [
+        "明确行业计量单元",
+        "全成本",
+        "现金回收"
+      ],
+      "anchors": {
+        "1": "关键单元长期毁损价值",
+        "5": "大致覆盖成本但回报普通",
+        "10": "有明确数据证明单元持续创造价值"
+      },
+      "metric_id": "score.other_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "OTHER_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "本行业最稀缺的能力或资源，公司是否拥有且能保留收益？",
+      "evidence": [
+        "约束资源",
+        "可替代性",
+        "权益归属"
+      ],
+      "anchors": {
+        "1": "缺乏关键资源且无法获取",
+        "5": "资源够用但无优势",
+        "10": "稀缺资源可控且收益由公司保留"
+      },
+      "metric_id": "score.other_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "OTHER_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "行业核心交付或质量指标能否证实公司的执行能力？",
+      "evidence": [
+        "行业关键指标",
+        "历史兑现",
+        "同行基准"
+      ],
+      "anchors": {
+        "1": "指标长期落后且问题未纠正",
+        "5": "满足基本水平",
+        "10": "多个周期保持可靠表现与合理效率"
+      },
+      "metric_id": "score.other_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "OTHER_04",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "行业最主要的失效机制是否得到有效控制？",
+      "evidence": [
+        "实际失败案例",
+        "公司暴露",
+        "防御与资金缓冲"
+      ],
+      "anchors": {
+        "1": "主要失效风险已出现且无应对",
+        "5": "风险可识别但缓冲有限",
+        "10": "具体措施和压力记录证明风险可控"
+      },
+      "metric_id": "score.other_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

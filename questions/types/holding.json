@@ -1,0 +1,161 @@
+{
+  "version": "3.0.0",
+  "module_id": "holding",
+  "kind": "types",
+  "name": "控股集团与多业务公司",
+  "applies_when": "两个及以上经济实质差异明显的业务，或母公司以持股、投资收益为主。",
+  "questions": [
+    {
+      "id": "HOLDING_01",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "母公司可用现金与子公司可上缴现金能否覆盖母公司义务？",
+      "evidence": [
+        "母公司债务",
+        "子公司分红限制",
+        "交叉担保",
+        "受限现金"
+      ],
+      "anchors": {
+        "1": "合并现金掩盖母公司资金缺口",
+        "5": "正常分红覆盖，但压力依赖处置",
+        "10": "母公司资金独立稳健，压力下上缴和融资仍可靠"
+      },
+      "replaces": [
+        "IQS_16"
+      ],
+      "critical": true,
+      "metric_id": "score.holding_01",
+      "construct_id": "IQS_16",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HOLDING_02",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "剔除公允价值波动后，集团可实现现金收益质量如何？",
+      "evidence": [
+        "股息上缴",
+        "处置现金",
+        "重复计量",
+        "必要注资"
+      ],
+      "anchors": {
+        "1": "收益主要来自不可兑现的估值变化",
+        "5": "有经常现金收益但需补贴部分业务",
+        "10": "经常可实现现金充足且无需反复救助低效业务"
+      },
+      "replaces": [
+        "IQS_11"
+      ],
+      "metric_id": "score.holding_02",
+      "construct_id": "IQS_11",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HOLDING_03",
+      "dimension": "business",
+      "priority": 1,
+      "question": "集团组合在真实资本占用下的经济回报如何？",
+      "evidence": [
+        "分部回报",
+        "总部费用",
+        "交叉补贴",
+        "少数权益"
+      ],
+      "anchors": {
+        "1": "优质业务长期补贴低效业务",
+        "5": "组合回报普通、协同部分成立",
+        "10": "各主要资本用途创造回报且协同可验证"
+      },
+      "replaces": [
+        "IQS_03"
+      ],
+      "metric_id": "score.holding_03",
+      "construct_id": "IQS_03",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HOLDING_04",
+      "dimension": "governance",
+      "priority": 2,
+      "question": "总部能否在不同业务间有效配置资本并退出失败投资？",
+      "evidence": [
+        "分部投入与回报",
+        "退出",
+        "关联交易",
+        "投资纪律"
+      ],
+      "anchors": {
+        "1": "持续救助低效业务或利益输送",
+        "5": "资本配置有优劣但可解释",
+        "10": "投入与退出纪律长期提升每股经济价值"
+      },
+      "replaces": [
+        "IQS_14"
+      ],
+      "metric_id": "score.holding_04",
+      "construct_id": "IQS_14",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HOLDING_05",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "控股结构、债权顺序和分部披露是否足够可穿透？",
+      "evidence": [
+        "股权层级",
+        "交叉持股",
+        "合联营负债",
+        "分部信息"
+      ],
+      "anchors": {
+        "1": "结构掩盖负债或重复计算价值",
+        "5": "主要结构可理解但部分不透明",
+        "10": "权益、义务与分部经营均可核实并避免重复计算"
+      },
+      "replaces": [
+        "IQS_12"
+      ],
+      "critical": true,
+      "metric_id": "score.holding_05",
+      "construct_id": "IQS_12",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HOLDING_06",
+      "dimension": "valuation",
+      "priority": 2,
+      "question": "扣除母公司债务、税费与少数权益后，组合折价是否可信？",
+      "evidence": [
+        "持股比例",
+        "可比估值",
+        "变现税费",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "折价来自高估资产或遗漏义务",
+        "5": "保守调整后价格接近价值",
+        "10": "可核实资产与全部义务下仍有明显折价与实现路径"
+      },
+      "replaces": [
+        "IQS_22"
+      ],
+      "metric_id": "score.holding_06",
+      "construct_id": "IQS_22",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

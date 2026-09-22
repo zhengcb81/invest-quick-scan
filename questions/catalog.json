@@ -1,0 +1,390 @@
+{
+  "version": "3.0.0",
+  "scope": "scored",
+  "modules": [
+    {
+      "id": "common",
+      "kind": "common",
+      "name": "买方通用核心问题",
+      "path": "questions/common.json",
+      "applies_when": "所有上市经营实体；先问24个决策问题，类型模板只替换特定会计与业务口径。",
+      "question_count": 24
+    },
+    {
+      "id": "operating",
+      "kind": "types",
+      "name": "一般经营公司",
+      "path": "questions/types/operating.json",
+      "applies_when": "非金融、非地产资产主体、非控股平台，且已有实质商业收入。",
+      "question_count": 4
+    },
+    {
+      "id": "bank",
+      "kind": "types",
+      "name": "银行与信贷机构",
+      "path": "questions/types/bank.json",
+      "applies_when": "以贷款、存款或有息金融资产负债为主要利润来源；不将客户存款当普通企业债务。",
+      "question_count": 6
+    },
+    {
+      "id": "insurer",
+      "kind": "types",
+      "name": "保险公司",
+      "path": "questions/types/insurer.json",
+      "applies_when": "寿险、财险、再保险及综合保险；按实质业务分别解释指标。",
+      "question_count": 6
+    },
+    {
+      "id": "capital_markets",
+      "kind": "types",
+      "name": "券商、资管与交易基础设施",
+      "path": "questions/types/capital_markets.json",
+      "applies_when": "按资管费、经纪、交易、自营、交易所或支付清算的真实盈利权重判断。",
+      "question_count": 6
+    },
+    {
+      "id": "property_owner",
+      "kind": "types",
+      "name": "REIT与持有型不动产",
+      "path": "questions/types/property_owner.json",
+      "applies_when": "主要依靠长期持有物业、资产运营或租金，按当地REIT制度与经济口径判断。",
+      "question_count": 6
+    },
+    {
+      "id": "property_developer",
+      "kind": "types",
+      "name": "房地产开发商",
+      "path": "questions/types/property_developer.json",
+      "applies_when": "以土地开发、项目销售、预售交付为主要经济活动。",
+      "question_count": 6
+    },
+    {
+      "id": "holding",
+      "kind": "types",
+      "name": "控股集团与多业务公司",
+      "path": "questions/types/holding.json",
+      "applies_when": "两个及以上经济实质差异明显的业务，或母公司以持股、投资收益为主。",
+      "question_count": 6
+    },
+    {
+      "id": "pre_revenue",
+      "kind": "types",
+      "name": "商业化前企业",
+      "path": "questions/types/pre_revenue.json",
+      "applies_when": "核心价值依赖尚未规模商业化的研发、许可、资源开发或技术项目。",
+      "question_count": 6
+    },
+    {
+      "id": "software",
+      "kind": "industries",
+      "name": "软件、SaaS与IT服务",
+      "path": "questions/industries/software.json",
+      "applies_when": "按订阅、许可证、实施或人力服务收入占比解释，不能默认都是SaaS。",
+      "question_count": 4
+    },
+    {
+      "id": "internet",
+      "kind": "industries",
+      "name": "互联网平台、电商与数字内容",
+      "path": "questions/industries/internet.json",
+      "applies_when": "匹配、广告、交易抽佣、内容订阅或流量分发平台。",
+      "question_count": 4
+    },
+    {
+      "id": "semiconductors",
+      "kind": "industries",
+      "name": "半导体与电子零部件",
+      "path": "questions/industries/semiconductors.json",
+      "applies_when": "设计、制造、封测、设备、材料、电子元件；以实际环节解释指标。",
+      "question_count": 4
+    },
+    {
+      "id": "hardware",
+      "kind": "industries",
+      "name": "硬件、通信设备与消费电子",
+      "path": "questions/industries/hardware.json",
+      "applies_when": "终端、网络设备、计算设备与系统集成。",
+      "question_count": 4
+    },
+    {
+      "id": "industrial",
+      "kind": "industries",
+      "name": "工业制造、自动化与专业设备",
+      "path": "questions/industries/industrial.json",
+      "applies_when": "资本品、机械、自动化、航空航天和国防装备等。",
+      "question_count": 4
+    },
+    {
+      "id": "auto",
+      "kind": "industries",
+      "name": "汽车、零部件与动力电池",
+      "path": "questions/industries/auto.json",
+      "applies_when": "整车、关键零件、电池；按实际环节判断，不把销量等同盈利。",
+      "question_count": 4
+    },
+    {
+      "id": "consumer",
+      "kind": "industries",
+      "name": "消费品牌、食品饮料与日用品",
+      "path": "questions/industries/consumer.json",
+      "applies_when": "以品牌、复购与渠道覆盖驱动的实体消费品。",
+      "question_count": 4
+    },
+    {
+      "id": "retail",
+      "kind": "industries",
+      "name": "零售、餐饮与连锁服务",
+      "path": "questions/industries/retail.json",
+      "applies_when": "门店、电商零售和加盟系统；区分自营与加盟经济性。",
+      "question_count": 4
+    },
+    {
+      "id": "healthcare",
+      "kind": "industries",
+      "name": "制药、生物科技与医疗服务",
+      "path": "questions/industries/healthcare.json",
+      "applies_when": "药品、创新疗法、医院及医疗服务；按商业化阶段选择合适证据。",
+      "question_count": 4
+    },
+    {
+      "id": "medtech",
+      "kind": "industries",
+      "name": "医疗器械、诊断与生命科学工具",
+      "path": "questions/industries/medtech.json",
+      "applies_when": "设备、耗材、IVD、实验室工具与医疗供应链。",
+      "question_count": 4
+    },
+    {
+      "id": "resources",
+      "kind": "industries",
+      "name": "矿业、油气与资源开采",
+      "path": "questions/industries/resources.json",
+      "applies_when": "开采、勘探、上游油气；区分储量、资源量和未开发项目。",
+      "question_count": 4
+    },
+    {
+      "id": "materials",
+      "kind": "industries",
+      "name": "化工、钢铁、建材与纸业",
+      "path": "questions/industries/materials.json",
+      "applies_when": "流程工业与大宗材料；用正常化价差和利用率评价。",
+      "question_count": 4
+    },
+    {
+      "id": "utilities",
+      "kind": "industries",
+      "name": "公用事业与受监管基础设施",
+      "path": "questions/industries/utilities.json",
+      "applies_when": "电、水、燃气、收费基础设施；竞争发电另按市场敞口解释。",
+      "question_count": 4
+    },
+    {
+      "id": "telecom",
+      "kind": "industries",
+      "name": "电信运营与通信基础设施",
+      "path": "questions/industries/telecom.json",
+      "applies_when": "运营商、铁塔、光纤和通信租赁资产。",
+      "question_count": 4
+    },
+    {
+      "id": "transport",
+      "kind": "industries",
+      "name": "运输、物流、航运与航空",
+      "path": "questions/industries/transport.json",
+      "applies_when": "运力、路线网络和仓配服务；区分运价周期与结构性增长。",
+      "question_count": 4
+    },
+    {
+      "id": "energy_transition",
+      "kind": "industries",
+      "name": "新能源设备、发电与储能",
+      "path": "questions/industries/energy_transition.json",
+      "applies_when": "光伏、风电、储能等；与实际制造或运营行业模板互补，避免重复题。",
+      "question_count": 4
+    },
+    {
+      "id": "agriculture",
+      "kind": "industries",
+      "name": "农业、养殖与农产品",
+      "path": "questions/industries/agriculture.json",
+      "applies_when": "种植、养殖、种业及农业服务；区分商品价格与生物效率。",
+      "question_count": 4
+    },
+    {
+      "id": "professional_services",
+      "kind": "industries",
+      "name": "专业服务、外包与人力服务",
+      "path": "questions/industries/professional_services.json",
+      "applies_when": "咨询、检测、工程服务、教育培训及人力交付等。",
+      "question_count": 4
+    },
+    {
+      "id": "construction",
+      "kind": "industries",
+      "name": "建筑、工程与项目承包",
+      "path": "questions/industries/construction.json",
+      "applies_when": "以大型合同、施工、工程总包和长期项目结算为主。",
+      "question_count": 4
+    },
+    {
+      "id": "leisure_media",
+      "kind": "industries",
+      "name": "文旅、酒店、游戏与媒体娱乐",
+      "path": "questions/industries/leisure_media.json",
+      "applies_when": "体验、内容与知识产权变现；区分单款项目与持续服务。",
+      "question_count": 4
+    },
+    {
+      "id": "other",
+      "kind": "industries",
+      "name": "未覆盖行业的经营关键点",
+      "path": "questions/industries/other.json",
+      "applies_when": "仅当其他行业均不匹配；明确覆盖缺口，不能据此声称已完成行业深评。",
+      "question_count": 4
+    },
+    {
+      "id": "validation",
+      "kind": "stages",
+      "name": "研发与验证期",
+      "path": "questions/stages/validation.json",
+      "applies_when": "核心产品尚处技术、临床或工程可行性验证；不因早期身份自动高分。",
+      "question_count": 4
+    },
+    {
+      "id": "commercialization",
+      "kind": "stages",
+      "name": "初步商业化期",
+      "path": "questions/stages/commercialization.json",
+      "applies_when": "已形成初始付费或准入，尚未证明跨客户批次复制。",
+      "question_count": 4
+    },
+    {
+      "id": "scaling",
+      "kind": "stages",
+      "name": "快速扩张期",
+      "path": "questions/stages/scaling.json",
+      "applies_when": "产品与需求已有验证，正在显著增加客户、产能或地域。",
+      "question_count": 4
+    },
+    {
+      "id": "mature",
+      "kind": "stages",
+      "name": "成熟经营期",
+      "path": "questions/stages/mature.json",
+      "applies_when": "核心业务现金与份额相对稳定，增长以更新、提效和分配为主。",
+      "question_count": 4
+    },
+    {
+      "id": "cyclical",
+      "kind": "stages",
+      "name": "周期经营阶段",
+      "path": "questions/stages/cyclical.json",
+      "applies_when": "商品、运价、库存、信贷或资本开支周期主导近年变化；记录当前周期位置但不对位置本身打高低分。",
+      "question_count": 4
+    },
+    {
+      "id": "turnaround",
+      "kind": "stages",
+      "name": "转型与困境修复期",
+      "path": "questions/stages/turnaround.json",
+      "applies_when": "经营恶化后依靠产品、成本、债务或治理修复改变结果。",
+      "question_count": 4
+    },
+    {
+      "id": "declining",
+      "kind": "stages",
+      "name": "结构性收缩与收获期",
+      "path": "questions/stages/declining.json",
+      "applies_when": "核心需求长期下降；不强行要求高速增长，单独评价收缩过程的现金回报。",
+      "question_count": 4
+    },
+    {
+      "id": "cross_border",
+      "kind": "overlays",
+      "name": "跨境经营与汇率敞口",
+      "path": "questions/overlays/cross_border.json",
+      "applies_when": "跨境经营、关键供应或收入与成本币种显著错配。",
+      "question_count": 3
+    },
+    {
+      "id": "controlled",
+      "kind": "overlays",
+      "name": "控股股东、国资或家族主导",
+      "path": "questions/overlays/controlled.json",
+      "applies_when": "存在实质控制人；所有权身份本身不构成加分或扣分。",
+      "question_count": 3
+    },
+    {
+      "id": "listing_structure",
+      "kind": "overlays",
+      "name": "ADR、VIE与特殊股权结构",
+      "path": "questions/overlays/listing_structure.json",
+      "applies_when": "存托凭证、协议控制、双重股权或跨地挂牌导致权利与经济利益分离。",
+      "question_count": 3
+    },
+    {
+      "id": "concentrated",
+      "kind": "overlays",
+      "name": "客户、供应或产品集中",
+      "path": "questions/overlays/concentrated.json",
+      "applies_when": "单一客户、供应商、产品或产地对存续或利润有重大影响。",
+      "question_count": 3
+    },
+    {
+      "id": "acquisitive",
+      "kind": "overlays",
+      "name": "并购驱动增长",
+      "path": "questions/overlays/acquisitive.json",
+      "applies_when": "并购是主要增长与资本用途之一。",
+      "question_count": 3
+    },
+    {
+      "id": "subsidized",
+      "kind": "overlays",
+      "name": "补贴、政府订单或许可依赖",
+      "path": "questions/overlays/subsidized.json",
+      "applies_when": "财政补贴、税收优惠、政府付款或特许许可决定主要经济性。",
+      "question_count": 3
+    },
+    {
+      "id": "distressed",
+      "kind": "overlays",
+      "name": "财务困境与持续经营压力",
+      "path": "questions/overlays/distressed.json",
+      "applies_when": "违约、重大契约压力、重整、持续经营疑虑或融资中断。",
+      "question_count": 3
+    },
+    {
+      "id": "recent_listing",
+      "kind": "overlays",
+      "name": "新上市、分拆与短历史",
+      "path": "questions/overlays/recent_listing.json",
+      "applies_when": "可比公开经营历史较短或最近发生重大分拆与重组。",
+      "question_count": 3
+    },
+    {
+      "id": "dupont",
+      "kind": "diagnostics",
+      "name": "杜邦回报来源诊断",
+      "path": "questions/diagnostics/dupont.json",
+      "applies_when": "ROE变动或质量无法由核心题解释时选用；仅在因子具经济含义时评分，不进入汇总。",
+      "question_count": 7
+    },
+    {
+      "id": "porter",
+      "kind": "diagnostics",
+      "name": "五力与利润池诊断",
+      "path": "questions/diagnostics/porter.json",
+      "applies_when": "竞争结构或价值链利润归属不清时选用；明确真实市场边界，不进入汇总。",
+      "question_count": 5
+    },
+    {
+      "id": "recovery",
+      "kind": "diagnostics",
+      "name": "低谷与恢复潜力诊断",
+      "path": "questions/diagnostics/recovery.json",
+      "applies_when": "周期低谷、经营暂时困难、修复或衰退性质待辨别时追加；独立观察，不进入质量均分。",
+      "question_count": 4
+    }
+  ]
+}

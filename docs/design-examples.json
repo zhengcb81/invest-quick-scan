@@ -1,0 +1,513 @@
+{
+  "context": {
+    "example_only": true,
+    "schema_status": "design_draft_not_runtime_contract",
+    "note": "全部公司、证券、分数、来源、检查记录均为虚构；示例不可导入生产白名单，不证明真实联网或来源已核验。",
+    "as_of": "2026-09-19",
+    "run_id": "demo-run-001",
+    "dataset_id": "demo-dataset-001",
+    "question_bank_version": "2.0.0",
+    "metric_map_version": "draft-1",
+    "model": "DEMO_MODEL",
+    "search_receipt": {
+      "provider_request_id": "DEMO_REQUEST_NOT_REAL",
+      "execution_status": "simulated_only"
+    },
+    "stored_content_policy": {
+      "allowed": [
+        "structured_answers",
+        "brief_rationale",
+        "counterevidence",
+        "citation_urls",
+        "dates",
+        "model_and_question_versions",
+        "usage_and_check_metadata"
+      ],
+      "forbidden": [
+        "filings",
+        "pdfs",
+        "webpage_html",
+        "webpage_fulltext",
+        "document_embeddings"
+      ],
+      "external_document_store_required": false
+    }
+  },
+  "entities": [
+    {
+      "entity_id": "DEMO_ENTITY_A",
+      "name": "示例设备公司甲（虚构）",
+      "identity_status": "simulated_only",
+      "company_wiki_ref": null,
+      "formal_stockwiki_research_profile_required": false
+    },
+    {
+      "entity_id": "DEMO_ENTITY_B",
+      "name": "示例设备使用者乙（虚构）",
+      "identity_status": "simulated_only",
+      "company_wiki_ref": null,
+      "formal_stockwiki_research_profile_required": false
+    },
+    {
+      "entity_id": "DEMO_ENTITY_C",
+      "name": "示例研发公司丙（虚构）",
+      "identity_status": "simulated_only",
+      "company_wiki_ref": null,
+      "formal_stockwiki_research_profile_required": false
+    }
+  ],
+  "securities": [
+    {
+      "security_id": "DEMO_SECURITY_A_CN",
+      "entity_id": "DEMO_ENTITY_A",
+      "market": "CN",
+      "exchange": "DEMO_EXCHANGE_CN",
+      "ticker": "DEMO_TICKER_CN",
+      "currency": "CNY"
+    },
+    {
+      "security_id": "DEMO_SECURITY_A_HK",
+      "entity_id": "DEMO_ENTITY_A",
+      "market": "HK",
+      "exchange": "DEMO_EXCHANGE_HK",
+      "ticker": "DEMO_TICKER_HK",
+      "currency": "HKD"
+    }
+  ],
+  "entity_security_reuse": {
+    "entity_id": "DEMO_ENTITY_A",
+    "business_scores_reused_for": [
+      "DEMO_SECURITY_A_CN",
+      "DEMO_SECURITY_A_HK"
+    ],
+    "valuation_policy": "每只证券独立回答，报价、币种或权益映射不明则unknown；本示例没有任何估值或报价数据。"
+  },
+  "citation_refs": [
+    {
+      "citation_id": "DEMO_CITATION_1",
+      "url": "https://example.invalid/demo-source",
+      "title": "虚构来源占位符，不能用于真实证据",
+      "published_at": "2026-09-01",
+      "source_attribution": "simulated_only",
+      "document_body_stored": false
+    }
+  ],
+  "score_observations": [
+    {
+      "observation_id": "DEMO_SCORE_05",
+      "entity_id": "DEMO_ENTITY_A",
+      "security_id": null,
+      "scope": "entity",
+      "metric_id": "competitive.durability",
+      "question_id": "IQS_05",
+      "rubric_version": "2.0.0",
+      "cohort": "industrial_mature_demo",
+      "status": "scored",
+      "score": 9,
+      "check_level": "independently_checked",
+      "check_record_id": "DEMO_CHECK_NOT_REAL",
+      "as_of": "2026-09-19",
+      "observed_at": "2026-09-19T10:00:00Z",
+      "valid_until": "2026-12-18",
+      "rationale": "优势具有可观察的客户黏性与成本证据。",
+      "counterevidence": "替代方案可能缩小领先幅度。",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    },
+    {
+      "observation_id": "DEMO_SCORE_12",
+      "entity_id": "DEMO_ENTITY_A",
+      "security_id": null,
+      "scope": "entity",
+      "metric_id": "financial.reporting_integrity",
+      "question_id": "IQS_12",
+      "rubric_version": "2.0.0",
+      "cohort": "industrial_mature_demo",
+      "status": "scored",
+      "score": 8,
+      "check_level": "independently_checked",
+      "check_record_id": "DEMO_CHECK_NOT_REAL",
+      "as_of": "2026-09-19",
+      "observed_at": "2026-09-19T10:00:00Z",
+      "valid_until": "2026-12-18",
+      "rationale": "主要财务口径一致且未发现未解释的大额差异。",
+      "counterevidence": "部分复杂交易需要进一步核实。",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    },
+    {
+      "observation_id": "DEMO_SCORE_13",
+      "entity_id": "DEMO_ENTITY_A",
+      "security_id": null,
+      "scope": "entity",
+      "metric_id": "governance.minority_fairness",
+      "question_id": "IQS_13",
+      "rubric_version": "2.0.0",
+      "cohort": "industrial_mature_demo",
+      "status": "scored",
+      "score": 8,
+      "check_level": "independently_checked",
+      "check_record_id": "DEMO_CHECK_NOT_REAL",
+      "as_of": "2026-09-19",
+      "observed_at": "2026-09-19T10:00:00Z",
+      "valid_until": "2026-12-18",
+      "rationale": "普通股东权益的历史记录总体良好。",
+      "counterevidence": "控制权结构仍需持续关注。",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    },
+    {
+      "observation_id": "DEMO_SCORE_16",
+      "entity_id": "DEMO_ENTITY_A",
+      "security_id": null,
+      "scope": "entity",
+      "metric_id": "risk.funding_resilience",
+      "question_id": "IQS_16",
+      "rubric_version": "2.0.0",
+      "cohort": "industrial_mature_demo",
+      "status": "scored",
+      "score": 8,
+      "check_level": "independently_checked",
+      "check_record_id": "DEMO_CHECK_NOT_REAL",
+      "as_of": "2026-09-19",
+      "observed_at": "2026-09-19T10:00:00Z",
+      "valid_until": "2026-12-18",
+      "rationale": "示例压力假设下的两年刚性义务有覆盖。",
+      "counterevidence": "融资或经营环境显著变化会使判断失效。",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    }
+  ],
+  "rule": {
+    "rule_id": "demo_competition_and_resilience",
+    "version": "draft-1",
+    "description": "仅演示四个字段规则，不能代表完整24题质量白名单；所有阈值为示例。",
+    "scope": "entity",
+    "allowed_cohorts": [
+      "industrial_mature_demo"
+    ],
+    "required_metric_map_version": "draft-1",
+    "required_rubric_version": "2.0.0",
+    "missing_policy": "unknown",
+    "expired_policy": "unknown",
+    "not_applicable_policy": "unknown",
+    "allowed_statuses": [
+      "scored"
+    ],
+    "allowed_check_levels": [
+      "independently_checked"
+    ],
+    "all": [
+      {
+        "metric_id": "competitive.durability",
+        "op": ">",
+        "value": 8
+      },
+      {
+        "metric_id": "financial.reporting_integrity",
+        "op": ">=",
+        "value": 6
+      },
+      {
+        "metric_id": "governance.minority_fairness",
+        "op": ">=",
+        "value": 6
+      },
+      {
+        "metric_id": "risk.funding_resilience",
+        "op": ">=",
+        "value": 6
+      }
+    ]
+  },
+  "expected_rule_cases": [
+    {
+      "case_id": "all_four_valid",
+      "entity_id": "DEMO_ENTITY_A",
+      "change": null,
+      "expected": "pass",
+      "reason": "9>8；三项关键评分均≥6，且满足本示例的检查等级与时效。"
+    },
+    {
+      "case_id": "strict_boundary",
+      "entity_id": "DEMO_ENTITY_A",
+      "change": {
+        "metric_id": "competitive.durability",
+        "score": 8
+      },
+      "expected": "fail",
+      "reason": "8不大于8。"
+    },
+    {
+      "case_id": "missing_critical",
+      "entity_id": "DEMO_ENTITY_A",
+      "change": {
+        "metric_id": "risk.funding_resilience",
+        "score": null,
+        "status": "insufficient_evidence"
+      },
+      "expected": "unknown",
+      "reason": "不能把未知变成5分，其他条件通过也不能入围。"
+    },
+    {
+      "case_id": "weak_check",
+      "entity_id": "DEMO_ENTITY_A",
+      "change": {
+        "metric_id": "governance.minority_fairness",
+        "check_level": "screening_checked"
+      },
+      "expected": "unknown",
+      "reason": "未达到该规则要求的独立检查等级。"
+    },
+    {
+      "case_id": "stale_critical",
+      "entity_id": "DEMO_ENTITY_A",
+      "change": {
+        "metric_id": "financial.reporting_integrity",
+        "valid_until": "2026-09-18"
+      },
+      "expected": "unknown",
+      "reason": "评分日期过期，保留原分但不用于当前入围。"
+    }
+  ],
+  "terms": [
+    {
+      "term_id": "product.liquid_cooling_equipment",
+      "name_zh": "液冷设备",
+      "aliases": [
+        "液冷",
+        "liquid cooling equipment"
+      ]
+    },
+    {
+      "term_id": "application.ai_server",
+      "name_zh": "AI服务器",
+      "aliases": [
+        "AI server",
+        "人工智能服务器"
+      ]
+    },
+    {
+      "term_id": "theme.ai_hardware",
+      "name_zh": "AI硬件",
+      "aliases": [
+        "AI hardware"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "relation_id": "DEMO_REL_A1",
+      "entity_id": "DEMO_ENTITY_A",
+      "segment_id": "DEMO_SEGMENT_A1",
+      "relation_type": "produces",
+      "object_term_id": "product.liquid_cooling_equipment",
+      "assertion_status": "affirmed",
+      "commercial_stage": "mass_production",
+      "evidence_basis": "company_disclosed",
+      "check_level": "independently_checked",
+      "revenue_exposure": {
+        "value": null,
+        "unit": "percent",
+        "period": null,
+        "status": "not_disclosed"
+      },
+      "as_of": "2026-09-19",
+      "valid_until": "2027-03-18",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    },
+    {
+      "relation_id": "DEMO_REL_A2",
+      "entity_id": "DEMO_ENTITY_A",
+      "segment_id": "DEMO_SEGMENT_A1",
+      "relation_type": "serves_application",
+      "object_term_id": "application.ai_server",
+      "assertion_status": "affirmed",
+      "commercial_stage": "mass_production",
+      "evidence_basis": "company_disclosed",
+      "check_level": "independently_checked",
+      "revenue_exposure": {
+        "value": null,
+        "unit": "percent",
+        "period": null,
+        "status": "not_disclosed"
+      },
+      "as_of": "2026-09-19",
+      "valid_until": "2027-03-18",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    },
+    {
+      "relation_id": "DEMO_REL_B1",
+      "entity_id": "DEMO_ENTITY_B",
+      "segment_id": "DEMO_SEGMENT_B1",
+      "relation_type": "uses_equipment",
+      "object_term_id": "product.liquid_cooling_equipment",
+      "assertion_status": "affirmed",
+      "commercial_stage": "mass_production",
+      "evidence_basis": "company_disclosed",
+      "check_level": "independently_checked",
+      "revenue_exposure": {
+        "value": null,
+        "unit": "percent",
+        "period": null,
+        "status": "not_disclosed"
+      },
+      "as_of": "2026-09-19",
+      "valid_until": "2027-03-18",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    },
+    {
+      "relation_id": "DEMO_REL_B2",
+      "entity_id": "DEMO_ENTITY_B",
+      "segment_id": "DEMO_SEGMENT_B1",
+      "relation_type": "serves_application",
+      "object_term_id": "application.ai_server",
+      "assertion_status": "affirmed",
+      "commercial_stage": "mass_production",
+      "evidence_basis": "company_disclosed",
+      "check_level": "independently_checked",
+      "revenue_exposure": {
+        "value": null,
+        "unit": "percent",
+        "period": null,
+        "status": "not_disclosed"
+      },
+      "as_of": "2026-09-19",
+      "valid_until": "2027-03-18",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    },
+    {
+      "relation_id": "DEMO_REL_C1",
+      "entity_id": "DEMO_ENTITY_C",
+      "segment_id": "DEMO_SEGMENT_C1",
+      "relation_type": "produces",
+      "object_term_id": "product.liquid_cooling_equipment",
+      "assertion_status": "affirmed",
+      "commercial_stage": "research",
+      "evidence_basis": "company_disclosed",
+      "check_level": "independently_checked",
+      "revenue_exposure": {
+        "value": null,
+        "unit": "percent",
+        "period": null,
+        "status": "not_disclosed"
+      },
+      "as_of": "2026-09-19",
+      "valid_until": "2027-03-18",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    },
+    {
+      "relation_id": "DEMO_REL_C2",
+      "entity_id": "DEMO_ENTITY_C",
+      "segment_id": "DEMO_SEGMENT_C1",
+      "relation_type": "serves_application",
+      "object_term_id": "application.ai_server",
+      "assertion_status": "affirmed",
+      "commercial_stage": "research",
+      "evidence_basis": "company_disclosed",
+      "check_level": "independently_checked",
+      "revenue_exposure": {
+        "value": null,
+        "unit": "percent",
+        "period": null,
+        "status": "not_disclosed"
+      },
+      "as_of": "2026-09-19",
+      "valid_until": "2027-03-18",
+      "citation_ids": [
+        "DEMO_CITATION_1"
+      ]
+    }
+  ],
+  "theme_query": {
+    "query_id": "demo_ai_server_cooling_producers",
+    "version": "draft-1",
+    "as_of": "2026-09-19",
+    "require_same_entity_and_segment": true,
+    "all_relations": [
+      {
+        "relation_type": "produces",
+        "object_term_id": "product.liquid_cooling_equipment"
+      },
+      {
+        "relation_type": "serves_application",
+        "object_term_id": "application.ai_server"
+      }
+    ],
+    "allowed_assertion_statuses": [
+      "affirmed"
+    ],
+    "allowed_commercial_stages": [
+      "mass_production"
+    ],
+    "allowed_evidence_bases": [
+      "company_disclosed",
+      "independent_report"
+    ],
+    "allowed_check_levels": [
+      "independently_checked"
+    ],
+    "revenue_exposure_policy": "不设收入占比阈值，结果明确显示未披露；若用户要求占比阈值，则本例甲应为unknown。",
+    "scoring_rule_ref": "demo_competition_and_resilience@draft-1",
+    "expected_matches": [
+      {
+        "entity_id": "DEMO_ENTITY_A",
+        "security_ids": [
+          "DEMO_SECURITY_A_CN",
+          "DEMO_SECURITY_A_HK"
+        ],
+        "relation_ids": [
+          "DEMO_REL_A1",
+          "DEMO_REL_A2"
+        ],
+        "reason": "同一分部生产相关设备并服务AI服务器，量产；示例评分规则通过。"
+      }
+    ],
+    "expected_exclusions": [
+      {
+        "entity_id": "DEMO_ENTITY_B",
+        "reason": "uses_equipment不能满足produces；未评价其他条件。"
+      },
+      {
+        "entity_id": "DEMO_ENTITY_C",
+        "reason": "research不满足mass_production；未评价其他条件。"
+      }
+    ]
+  },
+  "deep_research_handoff": {
+    "artifact_kind": "screening_leads_only",
+    "entity_id": "DEMO_ENTITY_A",
+    "security_ids": [
+      "DEMO_SECURITY_A_CN",
+      "DEMO_SECURITY_A_HK"
+    ],
+    "dataset_id": "demo-dataset-001",
+    "rule_ref": "demo_competition_and_resilience@draft-1",
+    "citation_ids": [
+      "DEMO_CITATION_1"
+    ],
+    "next_questions": [
+      "核实液冷设备对收入与利润的实际贡献。",
+      "检验竞争优势在价格下降情景下是否保持。",
+      "按具体挂牌证券重新检查价格隐含预期。"
+    ],
+    "formal_evidence_accepted": false,
+    "source_manifest_ids": [],
+    "evidence_span_ids": [],
+    "note": "不含公司文档、不含收入预测、不自动进入正式模型；正式研究重新验证所需输入。"
+  }
+}

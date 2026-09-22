@@ -1,0 +1,555 @@
+{
+  "version": "3.0.0",
+  "module_id": "common",
+  "kind": "common",
+  "name": "买方通用核心问题",
+  "applies_when": "所有上市经营实体；先问24个决策问题，类型模板只替换特定会计与业务口径。",
+  "questions": [
+    {
+      "id": "IQS_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+      "evidence": [
+        "客户实际解决的问题",
+        "总使用成本",
+        "独立客户复购与付费",
+        "停止使用的后果"
+      ],
+      "anchors": {
+        "1": "产品价值不足，主要靠补贴或推销维持需求",
+        "5": "客户价值成立但可轻易替换、支付意愿一般",
+        "10": "客户价值清楚且有行为证据，付费与复购可持续"
+      },
+      "metric_id": "score.iqs_01",
+      "construct_id": "IQS_01",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_02",
+      "dimension": "business",
+      "priority": 1,
+      "question": "现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？",
+      "evidence": [
+        "客户留存或重复需求",
+        "订单取消与履约",
+        "获客维护成本",
+        "不只看合同名义期限"
+      ],
+      "anchors": {
+        "1": "每期收入都需高成本重新购买且可见性很低",
+        "5": "有稳定存量但仍需较多投入维持",
+        "10": "存量需求、履约与收款可预测且维护成本合理，不限订阅模式"
+      },
+      "metric_id": "score.iqs_02",
+      "construct_id": "IQS_02",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_03",
+      "dimension": "business",
+      "priority": 1,
+      "question": "成熟产品、客户或项目在计入全部必要成本后，单位经济是否成立？",
+      "evidence": [
+        "获客交付维护售后",
+        "退货与损失",
+        "资本占用",
+        "补贴和总部成本分摊"
+      ],
+      "anchors": {
+        "1": "成熟单元仍持续毁损价值，放大规模无法解决",
+        "5": "全成本后可盈利，但回报或回收期一般",
+        "10": "不同成熟批次均有可靠全成本回报，规模增加不会扩大隐性亏损"
+      },
+      "metric_id": "score.iqs_03",
+      "construct_id": "IQS_03",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_04",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "行业的供需和价值链分配，是否允许这家公司长期留下合理利润？",
+      "evidence": [
+        "供给扩张与退出",
+        "价格纪律",
+        "客户和供应商议价",
+        "利润池归属"
+      ],
+      "anchors": {
+        "1": "过剩竞争或强势交易方长期挤走公司利润",
+        "5": "能留下合理利润但容易被新增供给或交易方侵蚀",
+        "10": "供给纪律或差异价值使公司持续保留合理利润，不唯市场集中度"
+      },
+      "metric_id": "score.iqs_04",
+      "construct_id": "IQS_04",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_05",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "公司最主要的竞争优势是否有实际证据，而且对手难以用合理成本复制？",
+      "evidence": [
+        "同等投入的性能成本",
+        "转换障碍",
+        "规模或网络机制",
+        "对手复制与客户选择"
+      ],
+      "anchors": {
+        "1": "缺少可验证优势，对手可迅速复制或低价替代",
+        "5": "有优势，但竞争者数年内可能追上",
+        "10": "优势机制和经济回报均有长期证据，复制代价显著且不依赖口号"
+      },
+      "metric_id": "score.iqs_05",
+      "construct_id": "IQS_05",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_06",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "公司的竞争地位有多稳固，变化趋势是否支持这种稳固性？单列增强/稳定/恶化，不因上升速度本身加分。",
+      "evidence": [
+        "剔除补贴后的经济份额",
+        "相对价格与回报",
+        "客户迁移",
+        "替代方案进展",
+        "趋势improving/stable/deteriorating与竞争地位强度分开"
+      ],
+      "anchors": {
+        "1": "关键份额/客户与盈利能力持续受侵蚀，缺少有效防御",
+        "5": "地位可维持但优势普通或容易受冲击，改善尚未证明持久",
+        "10": "在竞争压力下长期保持关键客户和经济利益，优势稳固且无实质侵蚀证据"
+      },
+      "metric_id": "score.iqs_06",
+      "construct_id": "IQS_06",
+      "comparison_role": "core",
+      "rubric_version": "2.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_07",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "管理层过去对经营目标和重大项目的承诺，兑现得如何？",
+      "evidence": [
+        "过去三至五年承诺与实际",
+        "承诺难度",
+        "延期和纠偏",
+        "有无移动目标"
+      ],
+      "anchors": {
+        "1": "反复失约、转移口径或回避责任",
+        "5": "大体兑现合理目标，部分偏差可解释",
+        "10": "合理且有挑战的目标持续兑现，失败披露和纠正及时"
+      },
+      "metric_id": "score.iqs_07",
+      "construct_id": "IQS_07",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_08",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "扩大规模或遇到需求波动时，公司能否保持交付质量与成本纪律？",
+      "evidence": [
+        "扩张批次",
+        "质量事故",
+        "交付周期",
+        "固定成本弹性",
+        "爬坡损失"
+      ],
+      "anchors": {
+        "1": "规模或需求变化就导致质量和成本失控",
+        "5": "正常经营可靠，但扩张或波动时瓶颈明显",
+        "10": "多个扩张或压力周期证实质量、交付与成本可以同步受控"
+      },
+      "metric_id": "score.iqs_08",
+      "construct_id": "IQS_08",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_09",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "组织能力是否足以延续，而不过度依赖少数关键个人？",
+      "evidence": [
+        "核心岗位梯队",
+        "人员流失",
+        "接班",
+        "制度化研发和销售",
+        "授权记录"
+      ],
+      "anchors": {
+        "1": "核心个人流失即可破坏经营且没有接班能力",
+        "5": "岗位基本齐备，但关键能力仍依赖少数人",
+        "10": "人才与流程已形成可复制组织能力，关键人员更替有成功记录"
+      },
+      "metric_id": "score.iqs_09",
+      "construct_id": "IQS_09",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_10",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？",
+      "evidence": [
+        "中周期税后经营回报与投入资本",
+        "金融企业适用的权益资本回报",
+        "商誉租赁与研发调整",
+        "资本成本区间"
+      ],
+      "anchors": {
+        "1": "正常经营回报长期低于合理资金成本，或高回报主要来自失真分母与激进杠杆",
+        "5": "回报大致覆盖合理资金成本，优势有限",
+        "10": "可比且保守口径下长期赚取明显超额回报，非依赖周期峰值或少投必要资本"
+      },
+      "metric_id": "score.iqs_10",
+      "construct_id": "IQS_10",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_11",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "账面经营成果有多少能在必要再投入后，转成股东可获得的现金或可分配资本？",
+      "evidence": [
+        "经营现金与利润核对",
+        "维护性投入",
+        "正常营运资本",
+        "金融监管资本留存",
+        "一次性占款释放"
+      ],
+      "anchors": {
+        "1": "利润不能兑现，现金主要来自延付、出售或少做必要投入",
+        "5": "中周期可形成真实可分配资源，但转化一般",
+        "10": "多年真实转化强，必要维护和资本留存后仍有可靠余量"
+      },
+      "metric_id": "score.iqs_11",
+      "construct_id": "IQS_11",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_12",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "资产、负债和利润的披露，是否足以可信地反映真实经济状况？",
+      "evidence": [
+        "审计与监管事项",
+        "应收存货或金融资产质量",
+        "费用资本化",
+        "表外义务",
+        "非经常调整"
+      ],
+      "anchors": {
+        "1": "重大失真、隐性义务或审计疑虑未解决",
+        "5": "主要口径可解释，但调整与估计不确定性较多",
+        "10": "关键口径透明且资产、利润、现金相互印证，风险确认及时"
+      },
+      "critical": true,
+      "metric_id": "score.iqs_12",
+      "construct_id": "IQS_12",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_13",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "管理层和控制人是否有公平对待普通股东的实际记录？",
+      "evidence": [
+        "关联交易",
+        "资金占用",
+        "控制权与现金权",
+        "资产转移",
+        "少数股东保护"
+      ],
+      "anchors": {
+        "1": "存在重大侵占、利益输送或权利缺陷且未解决",
+        "5": "基本权益受保护，但制衡或交易公平性仍有疑问",
+        "10": "长期交易与治理记录证明普通股东能公平分享经济利益"
+      },
+      "critical": true,
+      "metric_id": "score.iqs_13",
+      "construct_id": "IQS_13",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_14",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "历次再投资、并购、分红和回购，是否真正增加了每股经济价值？",
+      "evidence": [
+        "投入后的实际回报",
+        "并购减值",
+        "回购价格",
+        "全部摊薄股数",
+        "失败项目退出"
+      ],
+      "anchors": {
+        "1": "规模扩大却反复毁损每股价值，低回报投入长期不退出",
+        "5": "主要配置回报接近要求，成功失败并存",
+        "10": "配置纪律经多个周期验证，敢于停止低效扩张并提升每股价值"
+      },
+      "metric_id": "score.iqs_14",
+      "construct_id": "IQS_14",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_15",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "薪酬、股权激励和监督机制，是否鼓励长期每股回报而非短期做大数字？",
+      "evidence": [
+        "考核指标",
+        "稀释",
+        "管理层实际风险承担",
+        "追索约束",
+        "董事会监督记录"
+      ],
+      "anchors": {
+        "1": "激励鼓励做量、冒险或持续稀释，监督无效",
+        "5": "激励基本合理，但指标与股东回报并不完全一致",
+        "10": "激励与真实长期每股回报一致，稀释可控且监督能纠正问题"
+      },
+      "metric_id": "score.iqs_15",
+      "construct_id": "IQS_15",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_16",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？",
+      "evidence": [
+        "可用现金",
+        "保守经营流入",
+        "债务租赁和承诺投入",
+        "担保",
+        "资本与契约约束"
+      ],
+      "anchors": {
+        "1": "存在未落实资金覆盖的刚性缺口，可能被迫违约或严重摊薄",
+        "5": "正常情景可覆盖，压力情景依赖融资或资产出售",
+        "10": "保守压力下仍有落实的资金与资本缓冲，可履约并维护核心业务"
+      },
+      "critical": true,
+      "metric_id": "score.iqs_16",
+      "construct_id": "IQS_16",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_17",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "失去关键客户、供应来源、产地或系统时，公司能否在可承受代价内恢复？",
+      "evidence": [
+        "关键依赖及经济影响",
+        "替代认证与周期",
+        "客户流失情景",
+        "库存或合同保护"
+      ],
+      "anchors": {
+        "1": "单点失效可长期破坏经营，缺乏可行替代",
+        "5": "存在替代但过渡时间、成本或损失较大",
+        "10": "替代和恢复措施有验证，过渡损失与时间可承受；分散本身不自动高分"
+      },
+      "metric_id": "score.iqs_17",
+      "construct_id": "IQS_17",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_18",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "最可能永久损害核心业务价值的外部变化，公司是否有可验证的防御能力？",
+      "evidence": [
+        "最重要的一至两项技术替代、监管许可、产品责任、环境或商业模式失效",
+        "暴露和应对"
+      ],
+      "anchors": {
+        "1": "核心价值已面临重大不可逆损害，缺少可行防御",
+        "5": "风险可识别且有应对，但有效性与缓冲尚未充分验证",
+        "10": "主要失效路径的暴露有限或防御经验证，能在压力下保持核心价值"
+      },
+      "metric_id": "score.iqs_18",
+      "construct_id": "IQS_18",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_19",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "未来三至五年，公司真正能触达且客户付得起的新增需求有多大？",
+      "evidence": [
+        "具体客户预算",
+        "可进入市场",
+        "渗透与替代边界",
+        "量价分解",
+        "避免直接套用宏大TAM"
+      ],
+      "anchors": {
+        "1": "可触达需求持续萎缩或没有支付基础",
+        "5": "可触达需求温和增长，增量空间有限",
+        "10": "有支付与渠道证据支持的显著增量空间，边界和约束清楚"
+      },
+      "metric_id": "score.iqs_19",
+      "construct_id": "IQS_19",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_20",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "未来增长的主要驱动，是否已经有从客户需求到收入和利润的转化证据？",
+      "evidence": [
+        "自然量价与并购汇率拆分",
+        "订单或产品验证",
+        "客户采用",
+        "收入确认",
+        "过去转化"
+      ],
+      "anchors": {
+        "1": "增长主要依赖叙事、并表或无法核实的远期假设",
+        "5": "一条合理路径有部分验证，但兑现仍不确定",
+        "10": "主要驱动有连续可核实的转化链，收入增长能够形成真实盈利"
+      },
+      "metric_id": "score.iqs_20",
+      "construct_id": "IQS_20",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_21",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "新增投入是否仍能获得有吸引力的回报，而且存在足够长的再投资空间？",
+      "evidence": [
+        "增量而非历史资本回报",
+        "新批次经济性",
+        "人才与融资约束",
+        "饱和边界",
+        "摊薄影响"
+      ],
+      "anchors": {
+        "1": "增长越快价值和资金缺口越大",
+        "5": "有可盈利机会，但回报、空间或资源约束明显",
+        "10": "增量投入回报高且已验证，足够空间和合理融资支持持续每股价值增长"
+      },
+      "metric_id": "score.iqs_21",
+      "construct_id": "IQS_21",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "IQS_22",
+      "dimension": "valuation",
+      "priority": 1,
+      "question": "当前价格隐含的增长、利润率和资本回报要求，是否在证据支持的能力范围内？",
+      "evidence": [
+        "报价日与股权边界",
+        "适用估值",
+        "反推基本面要求",
+        "资本结构",
+        "可比差异"
+      ],
+      "anchors": {
+        "1": "需要多项激进假设同时成立才能支持价格",
+        "5": "价格大致对应可实现的基准情景，余地一般",
+        "10": "保守且有证据的经营表现即可支持价格，并有合理余地"
+      },
+      "metric_id": "score.iqs_22",
+      "construct_id": "IQS_22",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    },
+    {
+      "id": "IQS_23",
+      "dimension": "valuation",
+      "priority": 1,
+      "question": "在有依据的悲观情景下，普通股永久损失的可能性和幅度是否可承受？",
+      "evidence": [
+        "周期正常化",
+        "资产可回收性",
+        "债权顺序",
+        "摊薄",
+        "业务失效",
+        "情景依据"
+      ],
+      "anchors": {
+        "1": "轻微不及预期或合理压力就可能造成重大永久损失",
+        "5": "有一定缓冲，但明显不利情景仍可能重创权益",
+        "10": "保守收益或回收价值与完整义务分析支持较强缓冲，不依赖强行反弹"
+      },
+      "metric_id": "score.iqs_23",
+      "construct_id": "IQS_23",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    },
+    {
+      "id": "IQS_24",
+      "dimension": "valuation",
+      "priority": 1,
+      "question": "基本面价值通过什么机制、在多长时间内转成普通股东的实际回报，这条路径是否可靠？",
+      "evidence": [
+        "可持续每股现金或盈利增长",
+        "分红",
+        "合理回购",
+        "资产释放",
+        "汇出限制",
+        "持有时间与机会成本"
+      ],
+      "anchors": {
+        "1": "价值长期无法归属或兑现给普通股东，且资金不断被消耗或稀释",
+        "5": "有合理回报路径，但时间、约束或资金分配仍不明确",
+        "10": "持续每股价值累积或现金分配机制可靠，期限可接受；不要求必须有短期催化剂"
+      },
+      "metric_id": "score.iqs_24",
+      "construct_id": "IQS_24",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

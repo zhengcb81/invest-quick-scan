@@ -1,0 +1,181 @@
+{
+  "version": "3.0.0",
+  "module_id": "dupont",
+  "kind": "diagnostics",
+  "name": "杜邦回报来源诊断",
+  "applies_when": "ROE变动或质量无法由核心题解释时选用；仅在因子具经济含义时评分，不进入汇总。",
+  "questions": [
+    {
+      "id": "DUPONT_01",
+      "dimension": "financial",
+      "priority": 1,
+      "framework": "dupont",
+      "factor": "roe",
+      "aggregation": "diagnostic",
+      "question": "杜邦总览：公司的ROE水平、来源与可持续性如何？",
+      "evidence": [
+        "同口径净利润与平均权益",
+        "三至五年ROE",
+        "同业与周期位置"
+      ],
+      "anchors": {
+        "1": "回报长期不足或主要靠会计及杠杆假象",
+        "5": "ROE合理但来源质量和持续性普通",
+        "10": "稳健经营因素支撑持续良好ROE而非激进杠杆"
+      },
+      "metric_id": "score.dupont_01",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DUPONT_02",
+      "dimension": "business",
+      "priority": 1,
+      "framework": "dupont",
+      "factor": "net_margin",
+      "aggregation": "diagnostic",
+      "question": "杜邦三因素·净利率：每单位收入转为真实净利润的能力如何？",
+      "evidence": [
+        "净利润/收入",
+        "一次性损益",
+        "产品组合",
+        "同业净利率"
+      ],
+      "anchors": {
+        "1": "净利率持续恶化或主要靠非经常项目",
+        "5": "正常化净利率接近合理同业",
+        "10": "同口径正常化净利率稳健优秀且现金支持"
+      },
+      "metric_id": "score.dupont_02",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DUPONT_03",
+      "dimension": "execution",
+      "priority": 1,
+      "framework": "dupont",
+      "factor": "asset_turnover",
+      "aggregation": "diagnostic",
+      "question": "杜邦三因素·总资产周转率：资产使用效率和改善质量如何？",
+      "evidence": [
+        "收入/平均总资产",
+        "闲置与在建资产",
+        "并购和租赁口径"
+      ],
+      "anchors": {
+        "1": "资产沉淀严重，周转持续恶化",
+        "5": "相对同商业模式公司效率一般",
+        "10": "在不透支维护或质量下，资产效率持续领先"
+      },
+      "metric_id": "score.dupont_03",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DUPONT_04",
+      "dimension": "financial",
+      "priority": 1,
+      "framework": "dupont",
+      "factor": "equity_multiplier",
+      "aggregation": "diagnostic",
+      "question": "杜邦三因素·权益乘数：资本结构对股东回报的贡献是否稳健？",
+      "evidence": [
+        "平均总资产/平均总权益",
+        "债务与经营负债",
+        "资本缓冲"
+      ],
+      "anchors": {
+        "1": "高杠杆或过小权益制造高ROE且风险失控",
+        "5": "杠杆与行业匹配但压力缓冲一般",
+        "10": "资本使用合理且压力下稳健，不以高倍数本身加分"
+      },
+      "metric_id": "score.dupont_04",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DUPONT_05",
+      "dimension": "business",
+      "priority": 1,
+      "framework": "dupont",
+      "factor": "operating_margin",
+      "aggregation": "diagnostic",
+      "question": "杜邦五因素·经营利润率：核心经营在融资和所得税前的盈利质量如何？",
+      "evidence": [
+        "EBIT/收入",
+        "毛利",
+        "销售研发管理费用",
+        "经营与非经营调整"
+      ],
+      "anchors": {
+        "1": "核心经营亏损或持续恶化",
+        "5": "正常化经营盈利符合行业平均",
+        "10": "核心经营利润率稳健且改善源于真实定价或效率"
+      },
+      "metric_id": "score.dupont_05",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DUPONT_06",
+      "dimension": "financial",
+      "priority": 1,
+      "framework": "dupont",
+      "factor": "interest_burden",
+      "aggregation": "diagnostic",
+      "question": "杜邦五因素·利息负担系数：融资费用侵蚀利润的程度是否可控？",
+      "evidence": [
+        "EBT/EBIT",
+        "净利息",
+        "利息覆盖",
+        "再融资成本"
+      ],
+      "anchors": {
+        "1": "融资吞噬经营成果且压力下不可覆盖",
+        "5": "利息消耗可承受但存在再定价压力",
+        "10": "融资负担适当且压力下可覆盖，接近1不是唯一依据"
+      },
+      "metric_id": "score.dupont_06",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DUPONT_07",
+      "dimension": "financial",
+      "priority": 1,
+      "framework": "dupont",
+      "factor": "tax_burden",
+      "aggregation": "diagnostic",
+      "question": "杜邦五因素·税负系数：税后利润保留比例是否合理且可持续？",
+      "evidence": [
+        "净利润/EBT",
+        "实际与法定税率",
+        "递延税",
+        "优惠到期"
+      ],
+      "anchors": {
+        "1": "利润靠不可持续税收益或面临重大追缴",
+        "5": "税负接近适用水平但有部分波动",
+        "10": "税负来源透明稳定，优惠可验证且税务风险可控"
+      },
+      "metric_id": "score.dupont_07",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "healthcare",
+  "kind": "industries",
+  "name": "制药、生物科技与医疗服务",
+  "applies_when": "药品、创新疗法、医院及医疗服务；按商业化阶段选择合适证据。",
+  "questions": [
+    {
+      "id": "HEALTHCARE_01",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "临床价值、知识产权或服务质量能否支撑经济竞争力？",
+      "evidence": [
+        "临床终点",
+        "标准疗法比较",
+        "专利期限",
+        "治疗质量"
+      ],
+      "anchors": {
+        "1": "相对现有方案缺乏价值或权利薄弱",
+        "5": "有临床价值但替代或保护有限",
+        "10": "独立证据支持显著价值且收益保护期合理"
+      },
+      "metric_id": "score.healthcare_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HEALTHCARE_02",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "研发或诊疗扩张转为实际支付收入的路径有多可靠？",
+      "evidence": [
+        "试验阶段",
+        "审批",
+        "医保或支付",
+        "临床采用"
+      ],
+      "anchors": {
+        "1": "关键验证失败或无可行支付路径",
+        "5": "有进展但审批与支付仍有重大不确定性",
+        "10": "临床、准入、支付与采用证据形成可信链条"
+      },
+      "metric_id": "score.healthcare_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HEALTHCARE_03",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "专利到期、集采或支付方控费对利润的影响是否可承受？",
+      "evidence": [
+        "收入集中",
+        "到期曲线",
+        "价格谈判",
+        "替代管线"
+      ],
+      "anchors": {
+        "1": "核心利润即将受损且无替代",
+        "5": "部分可对冲但过渡压力明显",
+        "10": "保守价格下组合与成本仍可支撑盈利"
+      },
+      "metric_id": "score.healthcare_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "HEALTHCARE_04",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "质量体系、试验执行或诊疗运营能否满足监管要求？",
+      "evidence": [
+        "GxP检查",
+        "试验招募",
+        "不良事件",
+        "诊疗事故"
+      ],
+      "anchors": {
+        "1": "重大反复违规或执行失败",
+        "5": "基本合规但延期或质量波动",
+        "10": "多期合规与交付可靠且问题处理透明"
+      },
+      "metric_id": "score.healthcare_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

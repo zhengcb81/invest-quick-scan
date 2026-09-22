@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "transport",
+  "kind": "industries",
+  "name": "运输、物流、航运与航空",
+  "applies_when": "运力、路线网络和仓配服务；区分运价周期与结构性增长。",
+  "questions": [
+    {
+      "id": "TRANSPORT_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "正常化运价、载运率和燃料成本下，单元经济如何？",
+      "evidence": [
+        "单位收入成本",
+        "载运率",
+        "燃料",
+        "租赁"
+      ],
+      "anchors": {
+        "1": "中周期无法覆盖完整成本",
+        "5": "基本覆盖但回报受运价波动",
+        "10": "合理低载运率下仍有结构性成本优势"
+      },
+      "metric_id": "score.transport_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "TRANSPORT_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "路线、网络密度或运营资源是否提供持续优势？",
+      "evidence": [
+        "航权时刻",
+        "枢纽",
+        "仓网密度",
+        "客户合同"
+      ],
+      "anchors": {
+        "1": "资源同质且易被增量运力侵蚀",
+        "5": "网络有用但差异普通",
+        "10": "稀缺资源或密度带来可验证成本与服务优势"
+      },
+      "metric_id": "score.transport_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "TRANSPORT_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "运力扩张、租赁与债务承诺是否能承受低谷？",
+      "evidence": [
+        "订单运力",
+        "租赁付款",
+        "船机更新",
+        "债务到期"
+      ],
+      "anchors": {
+        "1": "低谷出现刚性资金缺口",
+        "5": "正常经营可覆盖但低谷受压",
+        "10": "保守运价下仍覆盖维护与刚性义务"
+      },
+      "metric_id": "score.transport_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "TRANSPORT_04",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "准时率、安全和资产周转是否支持服务承诺？",
+      "evidence": [
+        "延误",
+        "事故",
+        "周转",
+        "货损赔付"
+      ],
+      "anchors": {
+        "1": "事故或延误持续损害客户与成本",
+        "5": "服务大致达标",
+        "10": "长期安全可靠且资产效率优良"
+      },
+      "metric_id": "score.transport_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

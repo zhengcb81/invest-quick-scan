@@ -1,0 +1,75 @@
+{
+  "version": "3.0.0",
+  "module_id": "cross_border",
+  "kind": "overlays",
+  "name": "跨境经营与汇率敞口",
+  "applies_when": "跨境经营、关键供应或收入与成本币种显著错配。",
+  "questions": [
+    {
+      "id": "CROSS_BORDER_01",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "汇率、关税和跨境资金限制的净敞口是否可承受？",
+      "evidence": [
+        "收入成本币种",
+        "套保",
+        "关税",
+        "汇出限制"
+      ],
+      "anchors": {
+        "1": "净敞口可能导致资金或利润重大失衡",
+        "5": "部分自然对冲但压力仍大",
+        "10": "净敞口清晰且经营或金融对冲实际有效"
+      },
+      "metric_id": "score.cross_border_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CROSS_BORDER_02",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "跨市场经营的本地化和交付能力是否已验证？",
+      "evidence": [
+        "当地渠道",
+        "服务",
+        "许可",
+        "产品调整"
+      ],
+      "anchors": {
+        "1": "海外收入依赖短期代理且服务失控",
+        "5": "部分市场站稳但复制性一般",
+        "10": "多个市场有本地能力与持续客户验证"
+      },
+      "metric_id": "score.cross_border_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CROSS_BORDER_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "跨境税务、现金归集与少数权益是否影响每股可得回报？",
+      "evidence": [
+        "税率",
+        "转移限制",
+        "现金位置",
+        "权益"
+      ],
+      "anchors": {
+        "1": "合并利润难以归属于或汇给普通股东",
+        "5": "有明确税费或汇出限制",
+        "10": "可得回报口径透明且资金回流路径可靠"
+      },
+      "metric_id": "score.cross_border_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

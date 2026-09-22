@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "utilities",
+  "kind": "industries",
+  "name": "公用事业与受监管基础设施",
+  "applies_when": "电、水、燃气、收费基础设施；竞争发电另按市场敞口解释。",
+  "questions": [
+    {
+      "id": "UTILITIES_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "监管定价或长期合同能否覆盖全生命周期合理成本？",
+      "evidence": [
+        "准许回报",
+        "调价滞后",
+        "燃料传导",
+        "实际收款"
+      ],
+      "anchors": {
+        "1": "成本长期不能回收",
+        "5": "大体覆盖成本但有滞后或政策折扣",
+        "10": "成本与合理回报可回收，历史执行稳定"
+      },
+      "metric_id": "score.utilities_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "UTILITIES_02",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "必要更新与扩建投入能否取得相应资金和回报？",
+      "evidence": [
+        "维护开支",
+        "资本计划",
+        "融资",
+        "监管资产确认"
+      ],
+      "anchors": {
+        "1": "高投入未获回收机制且融资紧张",
+        "5": "投入大致匹配融资与未来回报",
+        "10": "投入纪律清楚且获合理回报与可持续融资"
+      },
+      "metric_id": "score.utilities_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "UTILITIES_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "资产可用率、服务可靠性和损耗管理如何？",
+      "evidence": [
+        "停运",
+        "线损",
+        "事故",
+        "维护计划"
+      ],
+      "anchors": {
+        "1": "可靠性差且维护不足",
+        "5": "达到基本服务水平",
+        "10": "可靠性与效率长期优于适当同业"
+      },
+      "metric_id": "score.utilities_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "UTILITIES_04",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "能源转型、气候或特许权到期造成的资产损失是否可控？",
+      "evidence": [
+        "资产剩余寿命",
+        "特许续期",
+        "转型投入",
+        "灾害"
+      ],
+      "anchors": {
+        "1": "大量资产可能搁浅且成本不可回收",
+        "5": "可逐步调整但存在回收风险",
+        "10": "转型与续期路径明确且保守情景可承受"
+      },
+      "metric_id": "score.utilities_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

@@ -1,0 +1,2075 @@
+{
+  "version": "1.4.0",
+  "status": "acceptance_specifications_not_runtime_results",
+  "example_only": true,
+  "defaults": {
+    "clock": "2026-09-22T00:00:00Z",
+    "network": "disabled_except_explicit_live_cases",
+    "entities": "fictional_E_identifiers_unless_live_sample_manifest",
+    "evidence": "URLs_and_small_structured_records_only"
+  },
+  "cases": [
+    {
+      "id": "DEPLOY-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "干净的授权部署目录，各组件源码/包及经审查release_set齐备；无用户数据目录。",
+      "when": "通过唯一setup入口安装并检查。",
+      "then": [
+        "创建必要轻量目录并调用拥有者迁移/注册；准确记录实际解释器/组件hash/配置版本，不要求用户手工复制交换文件。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DEPLOY-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": "缺少StockQA、版本不兼容、schema待迁移或安装路径不可写。",
+      "when": "运行本地doctor/start。",
+      "then": [
+        "定位具体组件与原因；不派发模型、不自动破坏性迁移、不把仅UI可打开当ready。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DEPLOY-03",
+      "kind": "boundary",
+      "level": "integration",
+      "given": {
+        "path": "C:/测试 用户/研究 项目/StockWiki",
+        "cwd": "unrelated_directory",
+        "port": "already_bound_by_unrelated_process"
+      },
+      "when": "从安装后的快捷方式启动。",
+      "then": [
+        "路径和参数正确传递；无需手动cd/激活venv；不杀无关进程，采用经配置的端口策略并打开实际地址。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DEPLOY-04",
+      "kind": "negative",
+      "level": "integration",
+      "given": "源技能/题库已更新，但实际安装/加载入口仍是旧hash；组件都自报同一版本号。",
+      "when": "做版本与加载握手。",
+      "then": [
+        "检测实际hash/来源不匹配并阻止相应写入或能力放行；不能仅按版本名认为兼容。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DEPLOY-05",
+      "kind": "fault",
+      "level": "integration",
+      "given": "升级中迁移失败，或只升级StockQA使协议与StockWiki不匹配。",
+      "when": "执行配套升级/回退。",
+      "then": [
+        "保持一致版本或明确只读/待修状态；保留任务/outbox/观察/预算，不自动用不兼容组件运行。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DEPLOY-06",
+      "kind": "fault",
+      "level": "integration",
+      "given": "升级后已有新观察和费用消耗；旧schema不能安全降级。",
+      "when": "请求回退。",
+      "then": [
+        "不得覆盖新数据或重置费用；按受支持的恢复路径处理，不以删除数据库解决。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DEPLOY-07",
+      "kind": "negative",
+      "level": "integration",
+      "given": "安装清单含真实密钥、公司文件夹，或试图直接覆盖另一仓私有配置/数据库。",
+      "when": "审查安装工件并执行受控安装测试。",
+      "then": [
+        "拒绝越界内容/动作；通过各组件公开配置迁移接口，密钥只归StockQA；安装包不含公司原件。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DEPLOY-08",
+      "kind": "positive",
+      "level": "integration",
+      "given": "StockWiki/StockQA使用不同venv；同名模块存在；宿主加载两个研究技能。",
+      "when": "按release_set运行并输出组件定位回执。",
+      "then": [
+        "各组件实际解释器/cwd/hash正确，未依赖当前shell的sys.path或PATH巧合；消费者确实调用共同查询接口。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "全部适用字段有效，无pending outbox，无运行中任务。",
+      "when": "点击启动。",
+      "then": [
+        "返回no_work并显示现有结果；LLM请求数0，不自动新建付费刷新代次。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-02",
+      "kind": "fault",
+      "level": "integration",
+      "given": "同workspace/profile已有运行，两个页面和快捷方式几乎同时启动。",
+      "when": "并发调用start。",
+      "then": [
+        "附着同一逻辑运行；只一个有效worker/领取者，预算不复制，重复点击不多收费。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-03",
+      "kind": "negative",
+      "level": "integration",
+      "given": "持久化预算已耗尽；用户关闭页面、重启worker再点击start。",
+      "when": "启动/续扫。",
+      "then": [
+        "仍budget_exhausted；不创建新run重置额度；只有已授权的额度调整/期间分配才增加预算。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-04",
+      "kind": "fault",
+      "level": "integration",
+      "given": "PID文件陈旧或PID被其他程序复用，端口也可能属于其他workspace。",
+      "when": "启动/停止服务。",
+      "then": [
+        "验证进程与workspace握手；不附着错误进程，不终止无关进程；只管理确认归属的组件。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-05",
+      "kind": "negative",
+      "level": "integration",
+      "given": "company-wiki服务未运行，但已核实身份可用；正式研究队列有待执行下载任务。",
+      "when": "启动快扫。",
+      "then": [
+        "快扫正常使用既有身份；来源下载、通用scheduler-cycle和正式研究队列调用数均0。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-06",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "UI健康但StockQA不可用或协议不匹配；数据库可查询。",
+      "when": "打开状态页。",
+      "then": [
+        "可读已有画像，但显示failed_component/version_mismatch，不能显示扫描已运行或完整ready。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-07",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "有界扫描运行中；关闭浏览器后再打开。",
+      "when": "读取状态并等待已派发请求完成。",
+      "then": [
+        "视图关闭不丢进度；仍同运行/同预算；恢复页面显示真实执行和导入状态。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-08",
+      "kind": "fault",
+      "level": "integration",
+      "given": "有正在进行请求和未派发待办；用户stop，随后程序崩溃并resume。",
+      "when": "执行停止/重启链。",
+      "then": [
+        "停止后无新派发；已有结果/结果不明/费用预留保留；resume先恢复回执与outbox，不重新问已答题。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-09",
+      "kind": "negative",
+      "level": "integration",
+      "given": "凭据存在但未做真实搜索探针。",
+      "when": "先运行doctor，再显式运行有预算的连接测试。",
+      "then": [
+        "doctor网络模型调用0；测试按StockQA账本计费并保留真实搜索receipt，不能把存在密钥等同联网已验证。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-10",
+      "kind": "fault",
+      "level": "integration",
+      "given": "StockQA已有结果尚未ACK；StockWiki恢复；一些题在库中暂时缺失。",
+      "when": "点击继续。",
+      "then": [
+        "先导入已有结果再计算缺口；已回答题不被误重新提交；waiting_import与running区分。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-11",
+      "kind": "negative",
+      "level": "integration",
+      "given": "名单为空/未选择、模型顺序未设或预算缺失。",
+      "when": "点击启动并完成首次配置。",
+      "then": [
+        "准确定位缺项，设置由拥有者保存；默认不派发、不用示例配置；配置齐备后可从同入口继续。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "START-12",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "用户在统一设置页改变模型顺序；StockWiki有配置缓存，StockQA有权威版本。",
+      "when": "保存并开始后续任务。",
+      "then": [
+        "通过StockQA接口修改并返回新版本；StockWiki不另存可变模型配置，旧运行按热更新规则处理。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "E2E-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "干净临时配置，真实StockWiki/StockQA进程、真实SQLite、真实题库和消费者；仅LLM网络边界stub。",
+      "when": "通过setup/start扫描、导入、查询、加公司、停止/续扫、主题/行业查询。",
+      "then": [
+        "全链无需手工搬文件或改sys.path；公共入口确实连到真实模块；来源采集调用0，结果/预算/ACK可追踪。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "E2E-02",
+      "kind": "negative",
+      "level": "review",
+      "given": "只测helper或使用假StockQA/假数据库/未加载的消费函数，页面HTTP返回200。",
+      "when": "评估一键开启验收。",
+      "then": [
+        "拒绝作为整体验收；必须提供实际组件/入口/安装加载证据，UI健康不替代执行健康。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "E2E-03",
+      "kind": "positive",
+      "level": "live",
+      "given": "配套组件已通过离线联调，用户模型顺序与有限预算明确。",
+      "when": "从同一个实际快捷方式/启动入口运行小样本，包含多挂牌及追加对象，并通过实际消费技能查询。",
+      "then": [
+        "保存真实搜索、最终模型、费用、导入ACK、复用/续扫和消费查询记录；不额外手工启动其他项目，不拿stub结果当live。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "E2E-04",
+      "kind": "negative",
+      "level": "review",
+      "given": "评分G5通过，但事实/消费者G4缺失，或某组件安装hash与审查快照不符。",
+      "when": "请求G6完整发布。",
+      "then": [
+        "不能标整个计划完成/完整一键开启；指出缺少关口或不匹配工件，已验证评分范围可单独说明。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "E2E-05",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "系统状态依次为installed、offline_ready、live_verified、full_release_verified。",
+      "when": "核对证据与展示。",
+      "then": [
+        "只有相应安装、真实联调/搜索和G6证据允许升级状态；文件存在/端口打开/模型自述不能越级。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LIVE-07",
+      "kind": "positive",
+      "level": "live",
+      "given": "评分闭环G3已通过；既有200家公司样本；AI硬件与一个非AI主题的预先标注关系样本及有限预算。",
+      "when": "通过真实StockQA事实回复、StockWiki关系导入与两个消费技能入口运行试点。",
+      "then": [
+        "保存实际搜索/调用/费用与逐关系来源，不用纯stub代替事实联网采集。",
+        "按固定标注集报告strict精确率、探索召回、未知真值与关键反例；两消费入口有查询/定向补扫/池外发现记录。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "BASE-01",
+      "kind": "positive",
+      "level": "review",
+      "given": "现有评分题库3.0（48模块/222题）、事实题库1.0（61题）、标准输出工具；旧2.1运行和上游5/8观察性测试仍保留。",
+      "when": "记录目标仓库提交或文件hash、命令、退出码与skip数量。",
+      "then": [
+        "保留原始基线报告，不把题库validate当真实联网验收。",
+        "记录StockQA兼容测试仍容许AnswerGenerator输出5或8这一已知宽松断言。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "BASE-02",
+      "kind": "negative",
+      "level": "review",
+      "given": "外部仓库不存在、CodeGraph不可用，或测试入口与计划不一致。",
+      "when": "执行实施前核查。",
+      "then": [
+        "记录不可用依赖和实际发现；使用允许的只读替代核查。",
+        "不发明接口/测试命令、不将skip算通过、不写另一套客户端。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "ID-01",
+      "kind": "positive",
+      "level": "contract",
+      "given": {
+        "entities": [
+          "E1"
+        ],
+        "securities": [
+          [
+            "S_CN",
+            "E1",
+            "CNY"
+          ],
+          [
+            "S_HK",
+            "E1",
+            "HKD"
+          ]
+        ],
+        "verified_link": true
+      },
+      "when": "构建经营题与报价题待办。",
+      "then": [
+        {
+          "entity_count": 1,
+          "security_count": 2,
+          "business_answers_per_question": 1,
+          "valuation_scopes": [
+            "S_CN",
+            "S_HK"
+          ]
+        }
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "ID-02",
+      "kind": "negative",
+      "level": "contract",
+      "given": {
+        "entities": [
+          "PARENT",
+          "LISTED_SUB"
+        ],
+        "same_brand": true,
+        "verified_same_issuer": false
+      },
+      "when": "解析/去重候选。",
+      "then": [
+        "保留两个实体；同名、同品牌、相同ticker字符串都不能作为跨市场合并证据。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "ID-03",
+      "kind": "boundary",
+      "level": "contract",
+      "given": {
+        "adr_ratio": null,
+        "security_currency": "USD",
+        "ordinary_currency": "HKD"
+      },
+      "when": "尝试复用证券价格/权益判断。",
+      "then": [
+        "证券层unknown并说明缺失；经营画像可在经核实同发行人后复用，不猜ADR比例。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "ID-04",
+      "kind": "positive",
+      "level": "integration",
+      "given": {
+        "company_wiki_ref": null,
+        "formal_stockwiki_profile": null,
+        "verified_identity": true
+      },
+      "when": "导入并查询轻量画像。",
+      "then": [
+        "可以执行/查询；不创建原件目录，不要求来源worker或正式证据建档。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "ID-05",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "E1更名或ticker变化，有效期及证据明确。",
+      "when": "更新别名并按新旧代码查询历史。",
+      "then": [
+        "entity_id和旧观察ID稳定；保留有效期；不给历史答案改公司ID。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "ID-06",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "E1有S_CN和S_HK；仅S_CN退市。",
+      "when": "维护挂牌状态。",
+      "then": [
+        "S_CN失效历史保留，E1仍可扫描；S_HK报价不受错误停用影响。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": {
+        "provider_score": 8,
+        "inner_score": 8,
+        "id": "IQS_05"
+      },
+      "when": "通过真实解析器→AnswerGenerator→CLI/交换包→消费者。",
+      "then": [
+        "每层正式score均为8；断言必须等于8，不能接受(5,8)或只验证类型。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": {
+        "status": "insufficient_evidence",
+        "score": null,
+        "legacy_transport_score": 5
+      },
+      "when": "解析旧兼容与新原生nullable回复。",
+      "then": [
+        "正式score保持null；旧外层5仅在明确旧协议内允许，永不入均分、规则和恢复优势。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-03",
+      "kind": "boundary",
+      "level": "unit",
+      "given": {
+        "invalid_scores": [
+          true,
+          false,
+          0,
+          11,
+          1.5,
+          "8",
+          "NaN"
+        ],
+        "valid_scores": [
+          1,
+          5,
+          10
+        ]
+      },
+      "when": "校验scored回复。",
+      "then": [
+        "非法值全部拒绝且不猜分；三种有效边界原样通过。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-04",
+      "kind": "negative",
+      "level": "contract",
+      "given": {
+        "outer_score": 5,
+        "inner_score": 8,
+        "expected_id": "IQS_05",
+        "actual_id": "IQS_06"
+      },
+      "when": "分别构造内外分数不符与答错问题的回复。",
+      "then": [
+        "各自明确报错；不能按列表位置补ID或择一分数。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-05",
+      "kind": "negative",
+      "level": "integration",
+      "given": "模型答案自带accepted_ids、search_verified=true或伪造check_level。",
+      "when": "导入新screening和旧strict两条路径。",
+      "then": [
+        "不能由回复自行授予资格；原reported_score可保留，正式采用依赖运行/检查记录。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-06",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "同一旧2.1严格画像，无独立review；新screening协议另有版本。",
+      "when": "升级适配器并重新读取旧画像。",
+      "then": [
+        "旧strict仍review_pending；不会自动填accepted_ids或升级为正式accepted。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-07",
+      "kind": "boundary",
+      "level": "unit",
+      "given": {
+        "selected": 10,
+        "valid_scored": 7,
+        "unknown": 2,
+        "na": 1
+      },
+      "when": "分别设N/A经审核与未审核计算覆盖率。",
+      "then": [
+        "已审核N/A可从适用分母排除得到7/9；未审核保持7/10。未知不删分母，低置信度不算有效。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-08",
+      "kind": "metamorphic",
+      "level": "unit",
+      "given": "同一组有效非诊断答案，追加杜邦、五力、恢复诊断且全部10分。",
+      "when": "计算维度与质量/成长/估值。",
+      "then": [
+        "所有原汇总不变；诊断只增独立展示与完整率。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-09",
+      "kind": "negative",
+      "level": "unit",
+      "given": {
+        "other_scores": 10,
+        "critical_score": 3,
+        "critical_question": "effective replacement for IQS_16"
+      },
+      "when": "计算质量与任意OR筛选规则。",
+      "then": [
+        "质量分为null，风险显著展示；关键风险不能被均分或OR规则绕过。N/A/未知关键题也不算通过。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-10",
+      "kind": "positive",
+      "level": "unit",
+      "given": "经营类型8类×生命周期6类，周期另设；已有路由模块。",
+      "when": "参数化编排并检查manifest。",
+      "then": [
+        "24个核心判断或其明确替代均覆盖；关键标记传递；无重复ID；mature可同时cycle_sensitive；无理由不加杜邦/五力。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "SC-11",
+      "kind": "negative",
+      "level": "contract",
+      "given": "银行回报与工业ROIC同名但经济口径不同，或行业看好程度与公司质量分数混用。",
+      "when": "生成metric映射和跨公司比较。",
+      "then": [
+        "不同metric/cohort或标不可比；不能仅按名称统一、自动排名或换标签混分。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "REC-01",
+      "kind": "positive",
+      "level": "unit",
+      "given": {
+        "recovery": [
+          7,
+          8,
+          4,
+          7
+        ],
+        "funding": 7,
+        "critical_cleared": true,
+        "low_current_profit": 3
+      },
+      "when": "应用现有recovery-watch-1；再只将催化4改为7。",
+      "then": [
+        "先potential_watch，再recovery_evidence_watch；原低分、质量汇总不因催化上调而改变。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "REC-02",
+      "kind": "negative",
+      "level": "unit",
+      "given": {
+        "recovery": [
+          8,
+          9,
+          10,
+          2
+        ],
+        "funding": 2
+      },
+      "when": "生成恢复观察及公司卡片。",
+      "then": [
+        "high_risk_watch；保留优势，同时显示资金/普通股风险；不放入高质量白名单。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "REC-03",
+      "kind": "negative",
+      "level": "unit",
+      "given": {
+        "recovery": [
+          2,
+          2,
+          9,
+          8
+        ],
+        "funding": 8
+      },
+      "when": "生成恢复观察。",
+      "then": [
+        "structural_risk_watch；高催化不能把结构性衰退说成周期重启。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "REC-04",
+      "kind": "negative",
+      "level": "integration",
+      "given": "quality_score=null，但有合格恢复观察；另一个对象只存在未审核reported_score=9。",
+      "when": "查询所有相关/质量/恢复三个入口。",
+      "then": [
+        "第一对象在恢复和未设质量过滤的主题入口可见；第二对象不能凭reported_score成为已验证优势。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DUR-01",
+      "kind": "positive",
+      "level": "review",
+      "given": "品牌/渠道/规模优势各有业务范围、成立条件和反证；变化影响其获利机制。",
+      "when": "审查问题映射和轻量依据字段。",
+      "then": [
+        "问清客户需求、替代方式、利润归属和优势前提；不默认有AI标签就有优势。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DUR-02",
+      "kind": "negative",
+      "level": "review",
+      "given": "旧业务受替代，新业务收入增长，但转型投入/旧利润流失/股权摊薄更大。",
+      "when": "审查新旧业务净效果问题。",
+      "then": [
+        "同时呈现机会和损害，不用收入增速代替普通股持续受益，不产生精确预测或新的机械总分。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DUR-03",
+      "kind": "boundary",
+      "level": "review",
+      "given": "没有实质产业变化或缺乏迁移证据。",
+      "when": "决定是否增加最多三道按需诊断。",
+      "then": [
+        "不适用/未知分开；可通过增强原题依据解决时不加重复题；若改题必须版本化且留决定依据。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "TIME-01",
+      "kind": "positive",
+      "level": "unit",
+      "given": {
+        "now": "2026-09-22T00:00:00Z",
+        "valid_until": "2026-09-23T00:00:00Z",
+        "compatible": true
+      },
+      "when": "计算缺口计划。",
+      "then": [
+        "无新事件且检查等级达标则复用原observation_id；API新增请求数为0。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "TIME-02",
+      "kind": "boundary",
+      "level": "unit",
+      "given": {
+        "valid_until": "2026-09-22T00:00:00Z",
+        "times": [
+          "2026-09-21T23:59:59Z",
+          "2026-09-22T00:00:00Z",
+          "2026-09-22T00:00:01Z"
+        ]
+      },
+      "when": "按UTC计算TTL。",
+      "then": [
+        {
+          "expected": [
+            "fresh",
+            "stale",
+            "stale"
+          ]
+        }
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "TIME-03",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "旧观察information_as_of=2026-03-01，已过期；今天重新导入或复核。",
+      "when": "更新imported_at或checked_at。",
+      "then": [
+        "原信息时间和有效性不变；不得自动续期。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "TIME-04",
+      "kind": "negative",
+      "level": "unit",
+      "given": {
+        "score": null,
+        "status": "insufficient_evidence",
+        "next_retry_at": "2026-09-25T00:00:00Z",
+        "now": "2026-09-22T00:00:00Z"
+      },
+      "when": "规划本次扫描。",
+      "then": [
+        "标deferred_unknown；暂不派发、不算有效覆盖；冷却结束后可重新入队。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "TIME-05",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "24题有效，白名单阈值从>8改>=8；之后新增3题。",
+      "when": "依次重新筛选与生成缺口。",
+      "then": [
+        "阈值修改API调用0；新增题只生成3个待办，旧观察日期/文本不改。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "TIME-06",
+      "kind": "negative",
+      "level": "unit",
+      "given": "只有风险题过期；或一个适用题锚点变化；或路由新增一个实质业务。",
+      "when": "分别规划刷新。",
+      "then": [
+        "只刷新失效/新增适用部分；理由包含TTL/语义/路由；不因全局题库版本字符串变化重问全部。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "TIME-07",
+      "kind": "negative",
+      "level": "contract",
+      "given": {
+        "cutoff": "2026-06-30",
+        "published_at": "2026-07-15",
+        "fiscal_period": "FY2025"
+      },
+      "when": "执行严格历史时点查询。",
+      "then": [
+        "来源虽描述FY2025也不能越过公布日；不将今天LLM回溯当6月已知。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "TIME-08",
+      "kind": "negative",
+      "level": "unit",
+      "given": "TTL尚未到，但已知发布新一期结果或业务出售；另一个观察没有实际信息日期。",
+      "when": "计算字段可用性。",
+      "then": [
+        "相关字段提前失效；缺日期的观察不能用导入时间补造fresh。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "厂商真实搜索开关/工具事件经适配器解析，与request_id关联。",
+      "when": "发起有上限探针并导出回复。",
+      "then": [
+        "保留搜索执行receipt与逐题引用；实际metadata和模型文本分开。此case真实放行须live证据。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": "提示词写请搜索；模型说已搜索且给URL；传输没有搜索执行证据。",
+      "when": "判定回复可用性。",
+      "then": [
+        "search_unavailable或待验证，不得标成有效联网评分。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-03",
+      "kind": "positive",
+      "level": "integration",
+      "given": {
+        "order": [
+          "A",
+          "B",
+          "C"
+        ],
+        "outcomes": {
+          "A": "429",
+          "B": "valid_score_8"
+        }
+      },
+      "when": "执行一次逻辑题，A已达本次有限重试上限。",
+      "then": [
+        {
+          "attempt_order": [
+            "A",
+            "B"
+          ],
+          "calls_to_C": 0,
+          "score": 8
+        }
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-04",
+      "kind": "negative",
+      "level": "integration",
+      "given": {
+        "order": [
+          "A",
+          "B",
+          "C"
+        ],
+        "outcomes": {
+          "A": [
+            "valid_score_2",
+            "insufficient_evidence"
+          ]
+        }
+      },
+      "when": "分别运行低分与unknown两次独立题。",
+      "then": [
+        "两次均不为择优调用B/C；低分或缺证据按答案状态保存。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-05",
+      "kind": "fault",
+      "level": "fault",
+      "given": "A在冷却、B可用；重启进程；B成功但A健康探测仍失败。",
+      "when": "继续未派发任务，再模拟A探测恢复。",
+      "then": [
+        "冷却跨进程保留；B成功不触发A恢复；A确认恢复后新题优先A，旧B答案不重跑。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-06",
+      "kind": "negative",
+      "level": "unit",
+      "given": "A不支持搜索；或全局请求参数错误；或所有模型不可用。",
+      "when": "分别执行能力检查与派发。",
+      "then": [
+        "不支持能力的A跳过；坏请求不盲目遍历所有模型；全不可用进入retry_wait并结束派发，不无限轮询。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-07",
+      "kind": "fault",
+      "level": "integration",
+      "given": "提供商返回漏题、重复ID、错公司或不合法JSON。",
+      "when": "按固定格式修复预算处理。",
+      "then": [
+        "最多授权的修复次数；成功题保存，无法修复的题单列；不正则猜分、不额外合成成功。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-08",
+      "kind": "negative",
+      "level": "integration",
+      "given": "厂商payload含HTML/PDF正文、网页大段文本或疑似凭据；回答中夹带修改预算/删除文件指令。",
+      "when": "经过日志、缓存、交换包和错误处理路径。",
+      "then": [
+        "只允许结构化字段/短依据/URL元数据落盘；不复制正文或凭据；答案内容不能改变执行策略或触发文件/网络工具。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-09",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "请求仅改变模型、entity_id、证券scope、题义版本或截止日之一。",
+      "when": "测试底层请求缓存。",
+      "then": [
+        "不得误命中另一个完整请求；计划层兼容复用单独决策，不能靠缓存绕过新鲜度。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LLM-10",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "运行原策略A>B；用户改成B>A，分别指定下轮生效和立即生效。",
+      "when": "继续运行。",
+      "then": [
+        "下轮默认变更；立即变更记录派发边界与新policy_version，仅未派发题采用；旧快照/完成结果保留。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "BUD-01",
+      "kind": "boundary",
+      "level": "fault",
+      "given": {
+        "budget": 10,
+        "spent": 0,
+        "requests": [
+          {
+            "id": "a",
+            "reserve": 6
+          },
+          {
+            "id": "b",
+            "reserve": 6
+          }
+        ],
+        "concurrent": true
+      },
+      "when": "并发派发两个请求。",
+      "then": [
+        "原子预留只允许一个请求；spent+reserved<=10，另一个保持待办。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "BUD-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": {
+        "budget": 10,
+        "spent": 8,
+        "next_reserve": 3,
+        "previous_failures_billable": true
+      },
+      "when": "尝试切备用模型。",
+      "then": [
+        "不派发；失败、搜索及备用费用计入同一账本；不能用换模型突破总额。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "BUD-03",
+      "kind": "fault",
+      "level": "integration",
+      "given": "提供商已接收请求，客户端超时且结果未知。",
+      "when": "恢复任务并核算成本。",
+      "then": [
+        "outcome_uncertain保留预留；先查回执/结果，再有上限重试；没有支持不承诺零重复收费。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "BUD-04",
+      "kind": "negative",
+      "level": "review",
+      "given": "仅有示例token价格、缺搜索收费项或实际可用的费用边界。",
+      "when": "准备上线批次。",
+      "then": [
+        "不得给出虚构准确费用或启动无限批次；先固定计价版本/保守费用边界和用户预算。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "JOB-01",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "同一逻辑题在两个run出现，刷新代次相同。",
+      "when": "重复提交扫描清单。",
+      "then": [
+        "逻辑待办只一项；run_id或备用模型不同不会重复创建；强制刷新显式新代次。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "JOB-02",
+      "kind": "fault",
+      "level": "fault",
+      "given": "两个worker抢同一待办；随后旧租约过期，新worker领取。",
+      "when": "同时领取/提交，并让旧worker迟到。",
+      "then": [
+        "同一有效租约只一个执行者；旧租约提交不能覆盖新结果，冲突有记录。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "JOB-03",
+      "kind": "fault",
+      "level": "fault",
+      "given": "6题pack，4题成功、1题缺失、1题结构失败。",
+      "when": "中断并恢复。",
+      "then": [
+        "4题结果持久化；只补2题；不会将pack整体丢弃或视为全成功。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "JOB-04",
+      "kind": "fault",
+      "level": "fault",
+      "given": "分别在派发前、请求发出后、结果持久化后、导入ACK前崩溃。",
+      "when": "用故障注入逐点重启。",
+      "then": [
+        "派发前无费用；发出后不明单列；已存结果不再问；未ACK只重导入；无静默丢任务。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "JOB-05",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "达到本轮时间/请求上限，仍有正在运行请求；随后用户取消一个未运行对象。",
+      "when": "停止派发并继续下一轮。",
+      "then": [
+        "不再发新请求；已发结果仍可保存；待办保留；取消是状态变更不删除历史。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "JOB-06",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "旧轮次名单V1未完成；用户添加E_NEW得到V2。",
+      "when": "继续扫描。",
+      "then": [
+        "旧任务不重建，新增实体并入增量；版本和覆盖范围可追踪。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "JOB-07",
+      "kind": "positive",
+      "level": "integration",
+      "given": "StockQA已有result_ready，StockWiki导入失败后重试成功。",
+      "when": "投递outbox并收到ACK。",
+      "then": [
+        "重试期间LLM调用新增0；ACK之前不标delivered，重复ACK幂等。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "JOB-08",
+      "kind": "negative",
+      "level": "integration",
+      "given": "import ACK使用了其他item/hash；或调用方要求任意非法状态跳转。",
+      "when": "更新执行状态。",
+      "then": [
+        "拒绝错误ACK/非法转移；原待办与回执保留，不伪造delivered。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DB-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "临时数据库含旧正式分类与ticker目录；未建quick_scan。",
+      "when": "执行新增迁移两次。",
+      "then": [
+        "独立命名空间可用；迁移幂等；旧正式状态/目录未改变。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DB-02",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "相同observation/item键和hash的包导入两次。",
+      "when": "统计观察和筛选结果。",
+      "then": [
+        "只一份权威观察；原信息时间不改；可返回原导入回执。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DB-03",
+      "kind": "negative",
+      "level": "integration",
+      "given": "同一不可变键但不同payload hash；或引用不存在实体/问题。",
+      "when": "事务导入。",
+      "then": [
+        "冲突/约束错误明确；不last-write-wins；失败事务不留下半份合格数据。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DB-04",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "为旧观察追加更正，当前查询选择新记录；已有冻结dataset引用旧记录。",
+      "when": "查询当前和历史dataset。",
+      "then": [
+        "当前反映更正；历史仍引用旧ID/口径；更正记录保留原因和关系。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DB-05",
+      "kind": "fault",
+      "level": "integration",
+      "given": "写入过程中通过受支持方式备份数据库/配置，再在空临时目录恢复。",
+      "when": "运行完整性与历史查询校验。",
+      "then": [
+        "恢复后成员、观察、规则、检查与dataset可重现；不能仅复制运行中主db文件忽略WAL。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DB-06",
+      "kind": "negative",
+      "level": "integration",
+      "given": "模型回复携带虚构source_manifest/EvidenceSpan或formal accepted状态。",
+      "when": "导入quick_scan。",
+      "then": [
+        "不创建正式来源工件、不提升accepted资格、不跨写company-wiki。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "DB-07",
+      "kind": "positive",
+      "level": "integration",
+      "given": "StockWiki未运行，StockQA已有轻量交换包。",
+      "when": "独立执行问答并查看导出；之后恢复导入。",
+      "then": [
+        "问答不依赖StockWiki服务；导入可后补；不同时维护另一份可编辑画像主库。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UNI-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "固定候选快照、种子等级、行业/市场配置与稳定ID。",
+      "when": "两次生成分层候选名单。",
+      "then": [
+        "成员、排序、理由、规则版本一致；独立公司总数与各市场覆盖/证券数分开。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UNI-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": "候选中有ETF/测试证券、同名不同实体、缺行业标签、当前亏损但符合范围的公司。",
+      "when": "校验与构建候选。",
+      "then": [
+        "按显式证券范围处理；未知行业进待分类；亏损不自动排除；身份歧义不强并。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UNI-03",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "E1已存在，用户再次添加其相同证券或另一经核实挂牌。",
+      "when": "执行add/add_security。",
+      "then": [
+        "不增加重复实体；挂牌可新增；手工保留标记有效；不重新请求全部经营题。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UNI-04",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "2000家公司含manual_pin；新增3家；随后移除和恢复其中一家。",
+      "when": "维护成员版本。",
+      "then": [
+        "允许2003；不自动挤出旧公司；移除仅逻辑状态，恢复保留历史与理由。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UNI-05",
+      "kind": "negative",
+      "level": "integration",
+      "given": "公司评分降到2，或研究技能发现池外新公司。",
+      "when": "执行名单维护/nominate。",
+      "then": [
+        "低分不自动退池；池外公司进入建议列表，不未经既定规则自动成为长期成员。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UNI-06",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "行业候选不足或多挂牌重叠导致独立公司未达目标。",
+      "when": "输出初始名单报告。",
+      "then": [
+        "明确空缺与重叠；不重复凑数、不捏造ticker、不强行用无效证券填满。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UNI-07",
+      "kind": "fault",
+      "level": "integration",
+      "given": "任务持续加入热点，另有长期未首次扫描的普通实体。",
+      "when": "用固定时钟与持续入队负载测试公平调度。",
+      "then": [
+        "按配置份额能处理普通队列；报告最长等待与首次覆盖，不能只运行高分/热点。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "RULE-01",
+      "kind": "boundary",
+      "level": "unit",
+      "given": {
+        "score": 8,
+        "conditions": [
+          ">8",
+          ">=8"
+        ]
+      },
+      "when": "执行字段阈值规则。",
+      "then": [
+        {
+          "expected": [
+            "fail",
+            "pass"
+          ]
+        }
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "RULE-02",
+      "kind": "boundary",
+      "level": "unit",
+      "given": {
+        "values": [
+          "pass",
+          "fail",
+          "unknown"
+        ]
+      },
+      "when": "参数化测试all/any的9种两两组合及嵌套组合。",
+      "then": [
+        "all中fail优先、再unknown；any中pass优先、再unknown；另行应用critical gate，不能绕过。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "RULE-03",
+      "kind": "negative",
+      "level": "unit",
+      "given": "需要字段为null、N/A、过期、检查级别不足或cohort不兼容。",
+      "when": "评估同一策略；再传空all/any或未知操作符。",
+      "then": [
+        "前组为unknown并解释；空/非法规则为配置错误，不默认为通过或忽略条件。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "RULE-04",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "规则变化但dataset观察ID不变；另一查询没有设置质量条件。",
+      "when": "重新筛选并查主题。",
+      "then": [
+        "不调用LLM；解释逐项命中原因；没有质量条件的查询不暗中排除恢复或低分对象。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "QUERY-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "200个轻量实体，包含粗分类/评分/恢复，无完整事实关系。",
+      "when": "分页search/get_profiles/coverage。",
+      "then": [
+        "分页无重漏，返回实体证券映射/观察日期/引用/检查等级；facts_available=false。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "QUERY-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": "查询无命中、缺字段或超出库覆盖地区/行业。",
+      "when": "返回查询结果。",
+      "then": [
+        "empty与coverage_gap/unknown明确；不宣称全市场没有公司或公司没有该业务。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "QUERY-03",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "将命中候选导出为dataset，后续画像更新。",
+      "when": "复看原candidate_set。",
+      "then": [
+        "入选参数、观察ID和原理由稳定；当前数据可以另查，不改历史候选。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "QUERY-04",
+      "kind": "negative",
+      "level": "integration",
+      "given": "消费者请求补3家各2个字段，其中部分有效；调用方尝试范围外实体或写SQL。",
+      "when": "提交request_refresh。",
+      "then": [
+        "仅允许范围内缺口，费用上限适用；禁止直接写库或扩成全池；有效字段复用。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "FACT-01",
+      "kind": "positive",
+      "level": "contract",
+      "given": "一条产品/设备/材料/应用关系，具有entity、segment、方向、状态、依据和日期。",
+      "when": "通过事实回复与关系导入。",
+      "then": [
+        "不要求score；保留原始表述、术语ID、商业化、来源及未知收入占比。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "FACT-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": "对称词命中，但分别是生产者/设备使用者/研发者/已否认合作/关系过期。",
+      "when": "查询严格量产供应商池。",
+      "then": [
+        "仅满足方向、状态、时点与依据的生产者入围；其余不能靠关键词误入。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "FACT-03",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "E1分部A生产液冷，分部B服务AI且与A无连接。",
+      "when": "查询为AI服务器生产液冷设备的同分部关系。",
+      "then": [
+        "不能把跨分部两个事实拼成已证实的业务关系。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "FACT-04",
+      "kind": "positive",
+      "level": "integration",
+      "given": {
+        "terms": [
+          "AI",
+          "液冷",
+          "liquid cooling",
+          "人工智能服务器"
+        ]
+      },
+      "when": "执行短词与别名检索。",
+      "then": [
+        "受控词/别名能召回，不依赖仅支持3字以上的索引；返回实际命中路径。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "FACT-05",
+      "kind": "negative",
+      "level": "integration",
+      "given": "新旧断言冲突，或模型仅推断供应商但没有披露。",
+      "when": "导入并查询strict/explore两种模式。",
+      "then": [
+        "冲突保留并待复核；推断在探索模式标明，不升级为确认关系，不编造客户名单。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "CONS-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "主题已独立拆链，库内有相关候选与有效基础数据。",
+      "when": "主题技能第5/6步接入。",
+      "then": [
+        "先查询复用，再定向补缺；原主题收入证据、领导者覆盖和情景模型要求保留。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "CONS-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": "关键环节库内空缺，存在池外领导者。",
+      "when": "完成主题研究候选发现。",
+      "then": [
+        "继续池外研究；提名不自动加长期名单；不能以大池边界宣布完整链条已覆盖。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "CONS-03",
+      "kind": "positive",
+      "level": "integration",
+      "given": "行业框架已生成；公司在快扫库有entity但没有companies目录。",
+      "when": "行业技能第6步评估。",
+      "then": [
+        "可查画像进入候选；用实际截止日/财务期间补缺；行业PDF流程不传递成快扫依赖。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "CONS-04",
+      "kind": "negative",
+      "level": "integration",
+      "given": "行业评分7代表看好，IQS某质量项7含义不同；查询返回过期数据。",
+      "when": "组合行业报告。",
+      "then": [
+        "分别保留量表与日期，不直接合分；过期可作线索但关键结论需补证。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "CONS-05",
+      "kind": "negative",
+      "level": "integration",
+      "given": "下游报告引用观察O1，后续快扫再次搜索到这份报告。",
+      "when": "评估其为新增证据。",
+      "then": [
+        "保留origin_task/upstream_observation_ids；不视为O1的第二个独立支持来源。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LIVE-01",
+      "kind": "positive",
+      "level": "live",
+      "given": "已配置模型顺序、真实计价与有限预算，10个独立公司覆盖三市场和特殊类型。",
+      "when": "运行最小真实联网试点。",
+      "then": [
+        "保留实际搜索/模型/请求/费用回执、逐题来源与失败；至少一个请求经真实生产路径；不以mock替代。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LIVE-02",
+      "kind": "negative",
+      "level": "live",
+      "given": "未配置额度、搜索不可用或没有可核实来源，试点未完成。",
+      "when": "判定G1。",
+      "then": [
+        "不得通过；已完成离线工作保留，提交具体未运行批次与阻塞原因，不造真实记录。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LIVE-03",
+      "kind": "positive",
+      "level": "live",
+      "given": "60家公司、20家重复样本、将启用的备用模型和已固定锚点/规则。",
+      "when": "执行评分校准与边界抽查。",
+      "then": [
+        "分类型/模型报告覆盖、unknown、有效比较差异与入围变化；按test-strategy门槛判定，不择优删样本。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LIVE-04",
+      "kind": "negative",
+      "level": "review",
+      "given": "重复样本只报共同成功子集；7/8/9边界不稳或关键错误未修；临时调整分母达标。",
+      "when": "审查G2校准报告。",
+      "then": [
+        "不放行；保留完整样本和失败状态，修改锚点/能力后按版本重测受影响组。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LIVE-05",
+      "kind": "positive",
+      "level": "live",
+      "given": "200家公司，预算与运行范围冻结，注入至少一次中断并恢复。",
+      "when": "运行并核对持久化账本/导入/备份。",
+      "then": [
+        "覆盖、缺证据、失败、费用和等待分别报告；恢复不遗漏逻辑题；成本按实际调用估算扩容。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "LIVE-06",
+      "kind": "positive",
+      "level": "live",
+      "given": "约2000个独立公司候选版本；按100—200家公司分批，并保留普通对象覆盖份额。",
+      "when": "执行扩容与维护报告。",
+      "then": [
+        "报告实体/证券/市场重叠及各字段有效/尝试/待办；只对已经通过的评分/事实能力宣告交付。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "REV-01",
+      "kind": "positive",
+      "level": "review",
+      "given": "任务有目标快照、所有case真实映射/结果、依赖回执、最新版本审查、已关闭阻塞问题。",
+      "when": "审查完成回执。",
+      "then": [
+        "可标verified；保留可重现命令、输出路径、审查结论与下一任务。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "REV-02",
+      "kind": "negative",
+      "level": "review",
+      "given": "回执声称通过但日志缺失/空白/样例、case未运行或关键skip；审查后又修改源码。",
+      "when": "审查任务完成状态。",
+      "then": [
+        "保留review_pending或needs_revision；不让自报通过/旧审查放行新实现。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "REV-03",
+      "kind": "negative",
+      "level": "review",
+      "given": "为过关修改固定预期、删除负例、mock整个被测决策或用脚本自证输出。",
+      "when": "审查测试代码与diff。",
+      "then": [
+        "要求恢复独立预期和实际目标调用；语义变更须单独决策，不能把通过率当正确性。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "REV-04",
+      "kind": "fault",
+      "level": "review",
+      "given": "迁移后异常、数据损坏或发布回退；历史研究记录有后续写入。",
+      "when": "审查和演练回退。",
+      "then": [
+        "先备份并按受支持迁移/版本回退；不盲目删除库或覆盖后续数据；受影响任务重新验收。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "E1有A/H/ADR三个代码和中英文别名，E2名称相似；都无company-wiki目录。",
+      "when": "在真实页面逐个搜索代码/别名并打开详情。",
+      "then": [
+        "E1始终一行且导航到同entity_id，全部挂牌可见；证券价格/币种按所选证券显示，不合并为公司价格。",
+        "无目录仍可浏览，查询路径新增模型调用和来源下载均为0。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": "E1指定指标有效8分，E2为null，其他规则不限制；固定名单与时钟。",
+      "when": "页面条件依次选>8与>=8，保存视图、重开并对照查询接口。",
+      "then": [
+        ">8时E1未命中，>=8时E1命中；E2始终待核实而非合格。",
+        "重开保留规则含义及版本，页面与接口结果一致；不调用LLM。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-03",
+      "kind": "negative",
+      "level": "integration",
+      "given": "同公司存在当前8分、过期8分、未知、不适用和低置信度观察。",
+      "when": "打开详情并用有效分数筛选。",
+      "then": [
+        "分别展示真实状态与日期，不将null填0/5、不将N/A混同缺数；过期值可查看但不默认入当前有效筛选。",
+        "置信度和公司分数分列；信息日期与入库时间分别显示。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-04",
+      "kind": "negative",
+      "level": "integration",
+      "given": "E1质量3分、恢复观察有效且存在流动性风险；E2质量未知但恢复观察有效。",
+      "when": "切换全部公司、质量白名单和恢复观察，再看详情。",
+      "then": [
+        "全部公司和恢复观察可见E1/E2；质量白名单遵守原规则，不凭恢复标记放行。",
+        "详情保留原分与风险、剩余优势和兑现条件，不将低谷描述直接换算高分。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-05",
+      "kind": "positive",
+      "level": "integration",
+      "given": "银行样例使用现金题替代，包含核心/行业题、杜邦/五力诊断及各题依据。",
+      "when": "打开分组评分表并展开替代题。",
+      "then": [
+        "替代题显示对应关系，不重复计入原题；每题显示分数/状态、短依据、日期、模型及版本。",
+        "汇总严格复用已验证指标，诊断不混入质量均分，不生成新万能总分。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-06",
+      "kind": "negative",
+      "level": "integration",
+      "given": "短依据含<script>哨兵和HTML标签；来源含合法https、javascript:与data:；配置密钥另有哨兵。",
+      "when": "在浏览器渲染依据并检查来源链接与页面/URL。",
+      "then": [
+        "文本转义且脚本不执行，仅安全HTTP(S)可跳转；不内嵌或下载目标全文。",
+        "页面、URL、前端持久化不出现密钥哨兵；合法短依据和来源保留。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-07",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "同口径先后7/8分，另有9分来自新版题义；旧事实刚重新入库。",
+      "when": "在详情选择历史观察对照。",
+      "then": [
+        "7到8显示+1并标信息日期；新题义9分与旧版不可直接比较，不画同口径增长。",
+        "重新入库不改变事实日期或有效性；历史缺失如实展示。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-08",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "真实临时库有2000个独立实体及重叠挂牌；固定快照筛选命中137家公司，过程中另一连接导入新观察。",
+      "when": "按50条分页遍历三页，测试相同分数排序和主动刷新。",
+      "then": [
+        "固定快照页数与行数为50/50/37，137个entity_id无重复/漏项，排序用稳定并列键；更新提示刷新，不静默混页。",
+        "单次列表至多100条、不携带全部题目和依据；记录环境/响应耗时，浏览产生0次LLM请求。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-09",
+      "kind": "fault",
+      "level": "integration",
+      "given": "已有保存筛选、第二页、指定证券的详情链接，另有新公司无结果；查询故障可注入。",
+      "when": "刷新、浏览器后退、复制链接打开，并访问无结果公司/不存在实体及故障页。",
+      "then": [
+        "筛选/分页/证券上下文保留，稳定链接指向正确实体；加载、无数据、无命中、无实体和错误状态分清。",
+        "故障不伪装空股票池或删除已有数据；已有结果仍按可用查询能力显示。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-10",
+      "kind": "negative",
+      "level": "integration",
+      "given": "评分已验收而facts能力未启用；另一情景facts已启用但StockQA离线。",
+      "when": "切换评分/事实页并尝试显式补扫入口。",
+      "then": [
+        "facts未就绪显示原因，不编造关系或阻止评分浏览；执行器离线但库可读时已有评分/事实仍可浏览。",
+        "补扫说明缺项/故障，不暗中改用记忆回答或全池扫描。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-11",
+      "kind": "positive",
+      "level": "integration",
+      "given": "相同设备词分别关联生产者E1、使用者E2、仅在研E3；事实能力和研究消费者已验收。",
+      "when": "筛选关系、进入同细分候选，再点击研究交接与所选字段缺口预览。",
+      "then": [
+        "方向、阶段、分部/时期及来源明确；生产者过滤不包含纯使用者/仅在研，预览仅列所选实体/字段。",
+        "交接范围与用户所选一致；查看事实、跳转、预览不收费，只有显式发起才走已有预算与执行接口。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "UI-12",
+      "kind": "positive",
+      "level": "integration",
+      "given": "真实StockWiki服务/临时库含中文长名、长依据、空值和风险状态；运行有已导入与待导入结果。",
+      "when": "在1366x768与390x844浏览器视口，键盘完成筛选→详情→来源→返回，并从进度进入结果。",
+      "then": [
+        "焦点与文字状态可见，长内容不遮挡操作；窄屏卡片/受控滚动可用，颜色不是唯一提示。",
+        "结果显示已入库观察，待导入不伪装当前有效；详情和运行双向导航可用，截图附实际DOM/导航断言。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MAINT-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "唯一挂牌公司由用户输入代码，已有另一挂牌别名。",
+      "when": "手动add并重复执行。",
+      "then": [
+        "只形成一个entity成员和一次有效变更，manual_pin保留，经营扫描不重复。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MAINT-02",
+      "kind": "positive",
+      "level": "integration",
+      "given": "已保存auto_admit_verified策略且配额剩余2；3个有来源的新候选，其中2个身份唯一。",
+      "when": "执行自动评估和准入。",
+      "then": [
+        "核实的2个自动加入并原子记录增量扫描意图；歧义对象留候选，无须每次人工确认。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MAINT-03",
+      "kind": "negative",
+      "level": "integration",
+      "given": "候选为同名不同公司、ETF、未上市供应商及被用户移除公司。",
+      "when": "自动维护。",
+      "then": [
+        "全部不自动入池，不发扫描；分别返回身份/类型/上市/用户排除原因，保留提名记录。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MAINT-04",
+      "kind": "fault",
+      "level": "fault",
+      "given": "多个来源同一实体提名，两个维护进程并发执行；准入后进程中断。",
+      "when": "恢复维护与派发意图。",
+      "then": [
+        "成员/准入名额/增量意图各只计一次，崩溃不丢新增意图，也不重复花额度。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MAINT-05",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "关机错过3个维护周期，预算已耗尽，旧全池有待办。",
+      "when": "continuous重启，随后用户补充明确额度。",
+      "then": [
+        "合并处理到期主档维护，预算耗尽不发问；补充后沿用旧待办与新增意图，普通公司不饥饿。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MAINT-06",
+      "kind": "negative",
+      "level": "integration",
+      "given": "manual_pin公司当前质量低分；同实体一挂牌退市另一仍有效。",
+      "when": "维护名单。",
+      "then": [
+        "不因低分或单挂牌退市移出整个实体，保留历史成员与挂牌有效期。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "STORE-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "两个运行子目录、独立SQLite和版本化交换包，company-wiki无该公司。",
+      "when": "完成问答→outbox→导入→ACK。",
+      "then": [
+        "权威状态各归拥有者，结果可查且无公司文档目录；UI/主题/行业均查同一个StockWiki观察。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "STORE-02",
+      "kind": "fault",
+      "level": "fault",
+      "given": "StockWiki导入成功但ACK丢失；另一个副本相同ID不同payload。",
+      "when": "重放交换包。",
+      "then": [
+        "同ID同hash幂等；同ID异hash拒绝并留冲突，不覆盖观察，不重新发LLM。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "STORE-03",
+      "kind": "fault",
+      "level": "fault",
+      "given": "恢复两库到不同水位，存在已付费请求、未ACK结果和新观察。",
+      "when": "协调恢复并核对回放水位。",
+      "then": [
+        "先重放安全交换数据和对账，保留新观察及费用；不能把旧备份余额当未花额度；不确定时停收费派发。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "STORE-04",
+      "kind": "negative",
+      "level": "integration",
+      "given": "新扫描复用旧模型A回答，另有模型B比较回答但未指定为主结论。",
+      "when": "生成快照和默认最新视图。",
+      "then": [
+        "快照引用旧observation_id并保留旧时间/模型；比较回答不自动覆盖primary或按最高分胜出。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MATRIX-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "同字段/版本/方法/期间/cohort/模型的两家公司。",
+      "when": "横向查看。",
+      "then": [
+        "固定字段并排，数值单位和来源可追，只有口径对齐项给差值，不跨行业强排名。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MATRIX-02",
+      "kind": "negative",
+      "level": "integration",
+      "given": "银行与工业企业、当前与正常化、CNY与USD或不同会计期间。",
+      "when": "横向或指标比较。",
+      "then": [
+        "标具体口径差异，保留原值，不自动换汇、相减或硬合排名。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MATRIX-03",
+      "kind": "negative",
+      "level": "integration",
+      "given": "同公司两次扫描间模型/锚点/方法变更或年度换半年。",
+      "when": "沿时间轴查看。",
+      "then": [
+        "差异处断开可比趋势，显示方法/模型/期间变化，不称为经营改善。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MATRIX-04",
+      "kind": "positive",
+      "level": "integration",
+      "given": "同问题输入集/比较组显式请求模型A和B；模型输出不同。",
+      "when": "在统一预算下运行对照并查询。",
+      "then": [
+        "每个模型有独立子任务/请求/时间/观察，原分均保留；不沿用fallback成功即停来漏掉被要求的对照。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MATRIX-05",
+      "kind": "negative",
+      "level": "integration",
+      "given": "日常A失败后B成功，或两模型答案信息日期不同/来源集不同。",
+      "when": "尝试模型对照。",
+      "then": [
+        "普通fallback不当受控对照；信息时点不齐禁直接差分，来源不同标检索混杂，不平均成真值。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MATRIX-06",
+      "kind": "negative",
+      "level": "integration",
+      "given": "模型自称型号/时间/已搜索，但缺对应执行回执或hash不匹配。",
+      "when": "构造/导入观察。",
+      "then": [
+        "拒绝伪造执行元数据；遗留缺失保留unknown/null，不补造现在时间或默认模型。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MATRIX-07",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "24核心构念均5，新增上下文题均10；quick/full题数不同。",
+      "when": "计算新版质量分。",
+      "then": [
+        "两者均为5，附加题独立显示；关键风险和恢复观察不被移除；旧汇总按原版本保存。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "MATRIX-08",
+      "kind": "negative",
+      "level": "integration",
+      "given": "供应商未公开，另有已知设备品种；同名但不同证券实体；事实模型尝试输出5分。",
+      "when": "编排事实并校验输出。",
+      "then": [
+        "提示含明确身份，事实score恒null；未知供应方不填行业龙头/假关系，设备使用与生产分开。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "PAR-01",
+      "kind": "boundary",
+      "level": "integration",
+      "given": {
+        "workers": 2,
+        "global_limit": 4,
+        "groups": {
+          "A": 2,
+          "B": 2
+        },
+        "route_limit": 1,
+        "pending_distinct_questions": 20
+      },
+      "when": "使用可阻塞网络stub并发派发，捕获真实发送开始/结束时间与持久化预留；跨两个进程重复执行。",
+      "then": [
+        "任意时点全局在途≤4、各组≤2、各路由≤1，且独立问题存在发送时间重叠，不能用串行冒充并发。",
+        "领取槽、逻辑题与预算失败不发网络请求；程序崩溃不能只丢失内存计数而超发。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "PAR-02",
+      "kind": "fault",
+      "level": "integration",
+      "given": {
+        "order": [
+          "A-model1",
+          "A-model2",
+          "B-model1"
+        ],
+        "quota_groups": {
+          "A": [
+            "A-model1",
+            "A-model2"
+          ],
+          "B": [
+            "B-model1"
+          ]
+        },
+        "reset_at": "2026-09-22T05:00:00Z"
+      },
+      "when": "第一请求收到可确认的A组五小时额度拒绝；另有worker准备派发。随后对照运行仅有普通429/Retry-After的情形。",
+      "then": [
+        "持久化A组冷却至提供商reset_at，并通知其他worker；未派发请求按顺序跳过两个A路由，仅尝试B。",
+        "A已发请求仍接受回执/记账；普通429不编造五小时剩余额度或reset_at，按短期限流策略处理。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "PAR-03",
+      "kind": "negative",
+      "level": "integration",
+      "given": {
+        "order": [
+          "A",
+          "B"
+        ],
+        "A_capacity": 1,
+        "A_in_flight": 1,
+        "A_health": "healthy",
+        "B_in_flight": 0
+      },
+      "when": "下一primary逻辑题到达，A只有并发槽满，没有故障或额度拒绝。",
+      "then": [
+        "等待A空槽；B发送计数为0，不能为了吞吐擅改用户优先级，也不能同一primary题向A/B抢答。",
+        "A完成后派发待办并记录A；显式comparison必须另有比较组和预算，不能混用此逻辑题键。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "PAR-04",
+      "kind": "fault",
+      "level": "integration",
+      "given": {
+        "pack_questions": [
+          "q1",
+          "q2",
+          "q3",
+          "q4",
+          "q5",
+          "q6"
+        ],
+        "valid_returns": [
+          "q1",
+          "q2",
+          "q3",
+          "q4"
+        ],
+        "pack_cap_for_fixture": 6
+      },
+      "when": "题包返回后崩溃，重启并改用下一可用模型续扫。",
+      "then": [
+        "q1—q4各有唯一成功检查点与原执行时间/模型；只重组q5/q6，原4题发送次数不增加。",
+        "新包ID不产生6个新逻辑题；保留每个attempt/pack/prompt hash，混合模型的公司快照逐字段显示来源。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "PAR-05",
+      "kind": "fault",
+      "level": "integration",
+      "given": "两个worker/两个run同时收到同一公司、刷新代次、字段和题义的primary待办；随后重复点击start。",
+      "when": "使用真实持久化存储和同步屏障争抢同一逻辑键；模拟租约过期但请求结果不明。",
+      "then": [
+        "仅一个成功领取且至多一次原始网络发送；fallback或run_id不使同代次变成新题。",
+        "租约到期不直接证明请求未发出；先对账或进入outcome_uncertain；已完成新鲜题在重启时新增发送0。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "PAR-06",
+      "kind": "fault",
+      "level": "integration",
+      "given": "发送后超时但可能已计费；另有题已成功写outbox但StockWiki的ACK丢失。",
+      "when": "重启worker，提供迟到有效回执并恢复导入接口。",
+      "then": [
+        "结果不明请求保留预算预留，先查回执，不立即并行重发备用；对账成功后落原结果并仅结算一次。",
+        "outbox重投仅调用导入，不调用LLM；StockWiki重复ACK与观察幂等。无法确认的请求保留明确状态和恢复动作，不伪造成功。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "PAR-07",
+      "kind": "fault",
+      "level": "integration",
+      "given": "全部模型组都在冷却；一组有明确恢复时间，一组恢复时间未知；已经消耗部分预算。",
+      "when": "反复start/重启，再将虚拟时钟推进到探测点，两个worker同时尝试恢复。",
+      "then": [
+        "waiting_for_provider及待办持久化，已知恢复点和未知标记准确显示，冷却期间发送0且预算不重置。",
+        "到期每组仅一个半开探针，失败有界延后，成功后才释放正常并发；不存在忙轮询或多进程探针风暴。",
+        "单轮尝试耗尽后仅到持久化retry_eligible_at或新的有效恢复事件才创建下一轮；重启/点击不重开尝试轮，总预算不变，已成功逻辑题不再入队。"
+      ],
+      "status": "specified_not_executed"
+    },
+    {
+      "id": "PAR-08",
+      "kind": "negative",
+      "level": "integration",
+      "given": "用户填model-policy模板，顺序A/B/C；A/C共享账户组。存在已完成结果、在途A请求和未派发待办。",
+      "when": "通过StockWiki设置调用StockQA唯一配置写入器改成B/A/C；另测试占位符、重复路由、未知组、非法并发与缺预算。",
+      "then": [
+        "导入严格校验并生成新policy版本；非法配置不部分生效、不输出密钥。",
+        "按明确边界使新版本作用于未派发待办，已在途请求保留原policy；成功题不失效、不因顺序变更自动重问。",
+        "UI、CLI与执行器读取同一StockQA生效版本，不维护两份独立优先级。"
+      ],
+      "status": "specified_not_executed"
+    }
+  ]
+}

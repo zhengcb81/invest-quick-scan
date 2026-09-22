@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "mature",
+  "kind": "stages",
+  "name": "成熟经营期",
+  "applies_when": "核心业务现金与份额相对稳定，增长以更新、提效和分配为主。",
+  "questions": [
+    {
+      "id": "MATURE_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "成熟业务的需求与现金创造能否在合理期限内维持？",
+      "evidence": [
+        "复购",
+        "资产维护",
+        "替代趋势",
+        "核心客户"
+      ],
+      "anchors": {
+        "1": "存量需求持续流失且维护不足",
+        "5": "稳定但有缓慢侵蚀压力",
+        "10": "核心需求与资产维护支持持久现金创造"
+      },
+      "metric_id": "score.mature_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "MATURE_02",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "当高回报扩张机会减少时，资本配置是否及时转向每股价值？",
+      "evidence": [
+        "无效扩张",
+        "分配",
+        "回购价格",
+        "收缩投入"
+      ],
+      "anchors": {
+        "1": "为规模继续低回报扩张",
+        "5": "分配与再投资基本合理",
+        "10": "能主动停止低效投入并持续增加每股价值"
+      },
+      "metric_id": "score.mature_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "MATURE_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "效率改善是否具有持续性且未透支服务或维护？",
+      "evidence": [
+        "成本下降来源",
+        "服务质量",
+        "维护",
+        "人效"
+      ],
+      "anchors": {
+        "1": "靠削减必要投入制造短期利润",
+        "5": "可获得渐进效率改善",
+        "10": "结构性提效持续且质量与资产状态良好"
+      },
+      "metric_id": "score.mature_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "MATURE_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "第二增长路径是否有独立证据且不会侵蚀核心现金？ 若没有第二曲线且公司主动停止低效扩张、合理返还资本，本题可not_applicable，不因不追新业务扣分；资本纪律在MATURE_02评估。",
+      "evidence": [
+        "新业务客户",
+        "投入上限",
+        "回报",
+        "退出"
+      ],
+      "anchors": {
+        "1": "高成本追热点且反复失败",
+        "5": "有试验但成功仍不确定",
+        "10": "有限投入已经验证可持续新增回报"
+      },
+      "metric_id": "score.mature_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "2.0.0",
+      "scope": "entity"
+    }
+  ]
+}

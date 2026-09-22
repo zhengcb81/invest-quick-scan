@@ -1,0 +1,96 @@
+{
+  "version": "3.0.0",
+  "module_id": "scaling",
+  "kind": "stages",
+  "name": "快速扩张期",
+  "applies_when": "产品与需求已有验证，正在显著增加客户、产能或地域。",
+  "questions": [
+    {
+      "id": "SCALING_01",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "增量客户或产能的回报能否维持，扩张是否接近边界？",
+      "evidence": [
+        "边际批次",
+        "产能利用",
+        "获客成本",
+        "渗透率"
+      ],
+      "anchors": {
+        "1": "扩张越快边际回报越差",
+        "5": "多数增量仍可盈利但效率下降",
+        "10": "边际回报稳定且可服务空间有证据"
+      },
+      "metric_id": "score.scaling_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SCALING_02",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "组织、供应与系统是否跟得上增长速度？",
+      "evidence": [
+        "管理跨度",
+        "系统故障",
+        "交付",
+        "人才"
+      ],
+      "anchors": {
+        "1": "增长已造成持续质量和控制失效",
+        "5": "总体能跟上但瓶颈显现",
+        "10": "多次扩张证明组织能力与增长匹配"
+      },
+      "metric_id": "score.scaling_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SCALING_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "增长的现金消耗与融资方式是否保护每股价值？",
+      "evidence": [
+        "营运资本",
+        "扩张投入",
+        "融资条款",
+        "股数"
+      ],
+      "anchors": {
+        "1": "规模增长主要由高代价融资维持",
+        "5": "资金可得但摊薄或利息较大",
+        "10": "融资代价合理且增量每股回报明确"
+      },
+      "metric_id": "score.scaling_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SCALING_04",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "扩张速度下降时，公司是否有调整投入的能力？",
+      "evidence": [
+        "固定承诺",
+        "闲置成本",
+        "可取消项目"
+      ],
+      "anchors": {
+        "1": "需求稍减即出现巨大固定成本缺口",
+        "5": "可调整部分投入但成本较高",
+        "10": "投入分阶段且需求放缓时能有序收缩"
+      },
+      "metric_id": "score.scaling_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

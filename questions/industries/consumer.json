@@ -1,0 +1,96 @@
+{
+  "version": "3.0.0",
+  "module_id": "consumer",
+  "kind": "industries",
+  "name": "消费品牌、食品饮料与日用品",
+  "applies_when": "以品牌、复购与渠道覆盖驱动的实体消费品。",
+  "questions": [
+    {
+      "id": "CONSUMER_01",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "品牌能否持续带来真实复购和合理价格溢价？",
+      "evidence": [
+        "同品类价差",
+        "复购",
+        "降价依赖",
+        "消费者调查"
+      ],
+      "anchors": {
+        "1": "品牌弱化且必须降价维持销量",
+        "5": "品牌被认知但溢价或复购一般",
+        "10": "多时期复购与溢价稳定且不靠过度促销"
+      },
+      "metric_id": "score.consumer_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONSUMER_02",
+      "dimension": "business",
+      "priority": 1,
+      "question": "渠道出货能否转化为终端销售与回款？",
+      "evidence": [
+        "终端动销",
+        "经销商库存",
+        "退货",
+        "应收账期"
+      ],
+      "anchors": {
+        "1": "压货支撑收入且渠道资金紧张",
+        "5": "渠道基本健康但库存波动",
+        "10": "终端需求、渠道库存和现金回款持续匹配"
+      },
+      "metric_id": "score.consumer_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONSUMER_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "新品、渠道与地域扩张是否具有可复制回报？",
+      "evidence": [
+        "新品存活",
+        "单渠道利润",
+        "营销投放回报"
+      ],
+      "anchors": {
+        "1": "扩张靠营销堆量且多数失败",
+        "5": "部分新品成功但复制性一般",
+        "10": "多批次扩张在全成本后创造稳定回报"
+      },
+      "metric_id": "score.consumer_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONSUMER_04",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "食品安全、品质和原材料波动是否可管理？",
+      "evidence": [
+        "质量事故",
+        "追溯",
+        "投入品涨价",
+        "保险准备"
+      ],
+      "anchors": {
+        "1": "严重品质问题或成本冲击无法吸收",
+        "5": "基本管控合格但成本传导一般",
+        "10": "质量体系可靠且合理传导或吸收成本"
+      },
+      "metric_id": "score.consumer_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}
