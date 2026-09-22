@@ -1,5 +1,15 @@
 # 进度记录
 
+## 2026-09-22：Task P00 接口核实与基线报告
+- 实施任务P00完成（Stage M0，Owner: iqs）。
+- Git 初始化完成，记录了项目初始基线（commit `85162ec`）。
+- 核实外部仓库 commit hash 与状态：StockQAbyLLM (`3c685dda`)、StockWiki (`f5b8526c`)、company-wiki (`f39bd5a6`)。
+- 确认外部依赖与替代路径：CodeGraph 8080端口未开启（Transport closed），采用本地只读文本与代码结构检索替代（BASE-02）。
+- 核实 StockQA 调用链与已知缺陷：AnswerGenerator 第58-61行固定 answer_score = 5 覆写模型返回的8分；LLMClient 仅传递基础参数未携带搜索工具/开关；ProviderCascade 当前为内存状态（BASE-01）。
+- 核实本地题库规模（评分3.0共48模块222题，事实1.0共61题），运行 pytest 97 项测试全部通过（101 subtests, 0 skip）；记录了 test_question_sets.py:282 的 5/8 观察性断言。
+- 交付产物：docs/implementation/baselines/baseline-report-2026-09-22.md 及完成回执 receipt-P00.json。
+- 下一步进入 C01 任务（定义跨项目公司/证券两层身份及统一标识规范）。
+
 ## 2026-09-22：全局复核与题库标准化
 - Phase 11完成；读取skill-creator并恢复planning-with-files，核查真实接口，保持外部仓库只读。
 - 交付事实61题、评分3.0的字段/口径优化、固定24核心汇总、标准答案/不可变观察/三维比较、可重放虚构样板及用户模型顺序模板。模型配置只离线校验，未实现重复的LLM运行器。

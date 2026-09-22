@@ -1,0 +1,64 @@
+{
+  "task_id": "P00",
+  "status": "implementation_complete",
+  "owner": "iqs",
+  "plan_version": "1.4.0",
+  "plan_sha256": "24FC0CFBFAD86AF1B6A87B00420F22FE9AAAD0F76BEFFD7608D216E8766A7F6B",
+  "case_catalog_sha256": "1B4B4F8CD4F1CC47AA071087E6463C6F7CBA3A9EFEB0DB4074D580E3B73DF525",
+  "implementation_snapshot": {
+    "commit": "85162ec",
+    "repos": {
+      "invest-quick-scan": "85162ec",
+      "StockQAbyLLM": "3c685dda28f67a00bd653ad257a121d3b8edebb8",
+      "StockWiki": "f5b8526c78ef0bc7df27885da043ce5a2534fffb",
+      "company-wiki": "f39bd5a64224cd0c7aa098f23f64bf3811fa8939"
+    }
+  },
+  "dependency_receipts": [],
+  "changed_files": [
+    "docs/implementation/baselines/baseline-report-2026-09-22.md",
+    "docs/implementation/baselines/receipt-P00.json"
+  ],
+  "contract_changes": [],
+  "checks": [
+    {
+      "case_id": "BASE-01",
+      "kind": "review",
+      "selector": "docs/implementation/baselines/baseline-report-2026-09-22.md",
+      "command": "pytest -q",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 97,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/baselines/baseline-report-2026-09-22.md",
+      "explanation": "核实了题库规模与97项离线测试全过基线；记录了AnswerGenerator固定5分及test_question_sets.py第282行5/8观察断言。"
+    },
+    {
+      "case_id": "BASE-02",
+      "kind": "review",
+      "selector": "docs/implementation/baselines/baseline-report-2026-09-22.md",
+      "command": "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8080')\"",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/baselines/baseline-report-2026-09-22.md",
+      "explanation": "核实CodeGraph服务不可达（Transport closed），明确使用本地只读文件检查替代；未发明接口或未授权写入。"
+    }
+  ],
+  "review": {
+    "reviewer": null,
+    "snapshot": "85162ec",
+    "result": "pending",
+    "findings": []
+  },
+  "rollback_evidence": "删除 docs/implementation/baselines/ 目录即可回退本任务改动，不影响既有题库与测试",
+  "open_issues": [
+    "StockQA AnswerGenerator 仍强制覆盖分数为5，需由 Q01 修复",
+    "StockQA LLMClient 尚未携带真实搜索参数，需由 Q02 修复"
+  ],
+  "next_task": "C01",
+  "resume_from": "C01"
+}

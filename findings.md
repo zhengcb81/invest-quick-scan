@@ -1,5 +1,12 @@
 # 设计调研与证据
 
+## 2026-09-22：Task P00 接口与行为基线核实
+- 目标仓库 commit hash：StockQAbyLLM=`3c685dda28f67a00bd653ad257a121d3b8edebb8`，StockWiki=`f5b8526c78ef0bc7df27885da043ce5a2534fffb`，company-wiki=`f39bd5a64224cd0c7aa098f23f64bf3811fa8939`，invest-quick-scan=`85162ec`。
+- 依赖可用性：CodeGraph不可用（8080端口Transport closed），确认使用本地只读文件检查替代（BASE-02）。
+- StockQA缺陷核查：已直接在 `src/services/answer_generator.py`（58-61行）定位 `answer_score = 5` 强行覆写模型分数的代码；在 `src/providers/llm_client.py` 确认请求体未携带真实搜索参数（BASE-01）。
+- 本地离线基线：`pytest -q` 运行 97 项测试全部通过（101 subtests, 0 fail, 0 skip）；`tests/test_question_sets.py:282` 处的 `assertIn(answer.score, (5, 8))` 作为上游缺陷观察保留。
+- 交付基线报告 docs/implementation/baselines/baseline-report-2026-09-22.md 及完成回执 docs/implementation/baselines/receipt-P00.json。
+
 ## 2026-09-22：全局复核与标准化
 - 已落实全局契约：StockWiki单一用户入口/名单/不可变观察与查询，StockQA唯一模型配置/任务/账户额度/费用/outbox，company-wiki只读可选关联；统一data_root下独立拥有者子目录，不共享可写数据库。
 - 本地已实现61道事实题及类型/行业/阶段路由、评分3.0的稳定字段/口径/细分类、固定24核心汇总、标准schema和执行回执绑定、公司×时间×模型可比性检查与虚构样板。所有新增调用辅助均为离线，不复制上游客户端。
