@@ -1,5 +1,14 @@
 # 设计调研与证据
 
+## 2026-09-22：Task C02 指标映射与证据口径证据
+- 证据与口径契约已固化：schemas/quick_scan/metric.schema.json 与 docs/implementation/contracts/metrics.md。
+- 诊断不进均分（SC-08）：变质测试验证追加满分10分的杜邦/五力/恢复诊断题后，质量、成长、估值三个维度的原有均分绝对不变。
+- 关键风险一票否决（SC-09）：IQS_16 或对应现金流替代题得分 <= 3 时，强制阻断质量通过，复合 OR 规则不可绕过。
+- 全覆盖与替代映射（SC-10）：通用核心题库保持完整 24 道买方题结构。
+- 跨群不可比性约束（SC-11）：银行资本回报（bank.cet1_ratio / bank.roe）与工业投入回报（financial.roic）被严格标记为不可直接排名混比。
+- 优势条件与净效果口径（DUR-01, DUR-02, DUR-03）：强制要求优势成立前提、反向证伪证据以及新旧业务交替下的股东净经济效果核算，严禁概念热词盲目加分。
+- 测试覆盖：tests/test_metrics_contract.py 6项测试全部通过，全量 108 项通过。
+
 ## 2026-09-22：Task C01 身份契约证据与验证
 - 身份契约已固化：schemas/quick_scan/identity.schema.json 与 docs/implementation/contracts/identity.md。
 - 实体多挂牌与母子分离验证（ID-01, ID-02）：比亚迪 A/H 样例验证了同 Entity 下 2 只证券（CNY 与 HKD），经营问题 1 次问答，估值独立分发；同品牌母子实体经 verified_same_issuer=false 强制保持为 2 个独立 Entity。

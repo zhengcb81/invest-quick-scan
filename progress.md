@@ -1,5 +1,20 @@
 # 进度记录
 
+## 2026-09-22：Task C02 指标映射与证据口径契约冻结
+- 实施任务 C02 完成（Stage M0，Owner: iqs）。
+- 交付规范文档 docs/implementation/contracts/metrics.md，冻结指标定义、可比性范围与证据口径规范（I05, I06, I07, I08, I20）。
+- 交付 JSON Schema schemas/quick_scan/metric.schema.json，覆盖 MetricRegistryEntry, QuestionMetricMapping, MetricContractBundle。
+- 交付自动化单元测试 tests/test_metrics_contract.py，全量覆盖关联场景：
+  - `SC-08`：变质测试验证追加满分10分的杜邦、五力、恢复诊断题，质量/成长/估值均分严格不变；
+  - `SC-09`：关键风险题（IQS_16等）得分<=3时一票否决质量门槛，不可被均分或OR规则绕过；
+  - `SC-10`：核验通用核心模块包含完整24道买方核心题；
+  - `SC-11`：跨群体指标（银行ROE与工业ROIC）判定为不可比，禁止跨行业混分混排；
+  - `DUR-01` & `DUR-02`：护城河与变化证据要求说明前提与反证，新业务增长需核算股东净经济效果；
+  - `DUR-03`：按需诊断规则遵循精简原则，not_applicable直接跳过，避免冗余题目。
+- 执行 pytest 测试全量 108 项通过（101 subtests, 0 fail, 0 skip, 0 warnings）。
+- 交付完成回执 docs/implementation/contracts/receipt-C02.json。
+- 下一步进入 C03 任务（冻结评分回复、可用等级和三值规则契约）。
+
 ## 2026-09-22：Task C01 身份与名单契约冻结
 - 实施任务 C01 完成（Stage M0，Owner: iqs）。
 - 交付规范文档 docs/implementation/contracts/identity.md，冻结 Entity / Security / Segment 三层分层契约（I04）。

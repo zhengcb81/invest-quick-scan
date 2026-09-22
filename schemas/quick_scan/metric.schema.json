@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://invest-quick-scan.local/schemas/quick_scan/metric.schema.json",
+  "title": "QuickScanMetricContract",
+  "description": "指标映射、证据口径与可比性契约（Task C02，契约版本 1.0.0）",
+  "type": "object",
+  "definitions": {
+    "AggregationRole": {
+      "type": "string",
+      "enum": ["quality_core", "growth_core", "valuation_core", "diagnostic_only"]
+    },
+    "ComparabilityScope": {
+      "type": "string",
+      "enum": ["cross_cohort_comparable", "within_cohort_only", "non_comparable"]
+    },
+    "Cohort": {
+      "type": "string",
+      "enum": ["all", "operating", "bank", "insurer", "property_developer", "property_owner", "capital_markets", "holding", "pre_revenue", "cyclical"]
+    },
+    "MetricRegistryEntry": {
+      "type": "object",
+      "required": ["metric_id", "unit", "definition", "cohort", "comparability_scope"],
+      "properties": {
+        "metric_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+\\.[a-z0-9_]+$"
+        },
+        "unit": {
+          "type": "string",
+          "enum": ["currency", "percent", "days", "months", "count", "currency_per_share", "score_1_to_10", "ratio"]
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 5
+        },
+        "cohort": { "$ref": "#/definitions/Cohort" },
+        "comparability_scope": { "$ref": "#/definitions/ComparabilityScope" },
+        "critical_risk_flag": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "QuestionMetricMapping": {
+      "type": "object",
+      "required": [
+        "question_id",
+        "dimension",
+        "aggregation_role",
+        "critical_risk"
+      ],
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "primary_metric_ref": {
+          "type": ["string", "null"],
+          "pattern": "^[a-z0-9_]+\\.[a-z0-9_]+$"
+        },
+        "dimension": {
+          "type": "string",
+          "enum": ["quality", "growth", "valuation", "recovery_watch", "dupont", "porter", "fact"]
+        },
+        "aggregation_role": { "$ref": "#/definitions/AggregationRole" },
+        "critical_risk": {
+          "type": "boolean",
+          "description": "若为true，得分<=3或严重证据缺口直接构成重大风险标记，不可被加权均分或OR规则掩盖（I06, SC-09）。"
+        },
+        "replacement_for": {
+          "type": ["string", "null"],
+          "description": "所替代的通用核心题目ID（例如IQS_11或IQS_16的特定行业替代）"
+        },
+        "evidence_demands": {
+          "type": "object",
+          "properties": {
+            "require_durability_conditions": { "type": "boolean", "default": false },
+            "require_net_economic_effect": { "type": "boolean", "default": false },
+            "counter_evidence_required": { "type": "boolean", "default": true }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "MetricContractBundle": {
+      "type": "object",
+      "required": [
+        "contract_version",
+        "updated_at",
+        "metrics",
+        "question_mappings"
+      ],
+      "properties": {
+        "contract_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "metrics": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/MetricRegistryEntry" }
+        },
+        "question_mappings": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/QuestionMetricMapping" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/definitions/MetricRegistryEntry" },
+    { "$ref": "#/definitions/QuestionMetricMapping" },
+    { "$ref": "#/definitions/MetricContractBundle" }
+  ]
+}
