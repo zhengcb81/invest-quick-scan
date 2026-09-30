@@ -415,7 +415,7 @@ Status: complete_for_planning_only
 ### 当前下一动作
 
 - Q03首轮快照回归通过166项后，独立复核发现一个P1：JSON数组/对象类型的`status`使parser抛`TypeError`，导致公开CLI丢弃已完成搜索回执。已按TDD修复并补事件级回执断言，完整Q03隔离回归170项通过；两轮独立只读复核均未发现未解决项，最终复核匹配三份当前SHA。Q03解析与结果回执路径的任务级验收已通过。初始报告parser单测SHA有单字符笔误，已更正；精确命令、SHA与审查边界见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。该任务级验收不代表G1/全项目、其他模型或跨仓链路完成。
-- QA-04 已由用户交给其他 harness，IQS 总控不并发写 StockQA。当前下一项：按更新后的 SW-IDENT 卡只读核验 StockWiki W01–W03 剩余 case，同时以 `72531b5` 公共 CLI 产物做 G2b 独立 golden/来源/正反例验收；SW-IDENT 尚未分派，不代改 StockWiki。其他 IQS 总控本地工作可继续，S06 仍待真实 ACK/历史样本。
+- QA-04 已由用户交给其他 harness，IQS 总控不并发写 StockQA。`72531b5` 的 provisional Entity owner golden 已由总控独立验证并留档；**当前下一项**是补 IQS 自有四态 mapping DTO 消费合同和真实 owner DTO 正反例，再判定 G2b 剩余门。SW-IDENT 尚未分派，不代改 StockWiki；S06 仍待真实 ACK/历史样本。
 
 ## 2026-09-29 — S06 路由执行门与测试owner修复
 
@@ -639,7 +639,7 @@ Status: complete_for_local_IQS_lane_scope_external_G2b_remains_open
 - [x] 独立复审收尾：README、测试策略和Phase 12历史状态移除过期活动回执门；归档manifest完整性增加固定SHA/条目数/分类测试；verify_live集成样例改用独立活动策略fixture并验证过期revision被拒绝。
 - [x] 补充施工卡工作树增量快照：792基线→843当前状态路径，53新增、22哈希变化、2个计划退役路径；逐文件哈希与两份原哈希归档映射见`docs/implementation/reviews/IQS-lane/worktree-inventory-delta-2026-09-29.json`。快照明确排除自身与其后的最终规划改动，忽略文件未枚举。
 - [x] 按施工卡第1—4步逐项交叉核对并完成最终隔离回归：205 tests / 351 subtests / 0 skips；107 tasks / 366 cases / G6计划校验有效；测试临时根已清理，无网络/API/下载。最终报告见`docs/implementation/reviews/IQS-lane/construction-card-closeout-2026-09-29.md`，原始日志见`docs/implementation/contracts/validation-IQS-card-closeout-2026-09-29.txt`。
-- [ ] 施工卡第5步/G2b：等待StockWiki真实身份snapshot/mapping DTO与producer serializer golden，通过其公开接口做跨仓正例验收。合成本地夹具不替代producer golden；本步骤未获跨仓写授权且本仓无可验真实产物。
+- [ ] 施工卡第5步/G2b：StockWiki `72531b5` 的真实 owner CLI 现已输出 provisional Entity 2.1.0 golden；IQS 总控独立冻结原始字节、复现 SHA、核 owner read context、跑 IQS CLI 正例/五个负例与近名歧义 probe，见 `G2b-owner-acceptance-2026-09-30.md`。剩余四态 mapping DTO 的 IQS 消费校验/golden，以及有实际 owner 产物时的 verified/多挂牌/AnalysisSubject 路径尚未完成；整门保持 partial，不伪造生产者正例。
 
 本阶段按用户选择施工卡优先，C01—C07旧receipt刷新保持暂停；这些材料已作为历史工件保留，当前里程碑状态以`task_plan.md`、`progress.md`和大节点审查为准。
 
@@ -670,7 +670,8 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] 为 TH-01/IN-02 定义只读预研、handoff 与留档接口：harness 只返回 Markdown+标准 JSON；IQS 总控核验后以内容 hash 命名保存，并维护 JSON Schema 校验的不可变索引。当前索引为空，未伪造预研结果；T01/T02 仍待 G3/F05/W11、生产 query/golden 和写授权。
 - [x] 按用户要求把两条预研所需的只读步骤、字段/接口核查、完整 Markdown+JSON 交接与总控归档规则直接嵌入 TH-01/IN-02 各自文档；交给独立 harness 时无需依赖聊天上下文。报告仍未执行，索引保持空。
 - [x] 收到 StockWiki `master@72531b5` 后更新 SW-IDENT：W04 owner `identity-export-g2b`、receipt、market registry 已实现；本包改为 W01–W03 逐 case 验收与最小缺口修复，G2b 最终签收由 IQS 总控。四个 StockWiki 定向文件在隔离环境 64 passed；旧 `c8cfb2e` 缺 context 诊断只作历史记录。
-- [ ] IQS 总控从 StockWiki 公开 CLI 独立生成并冻结真实 owner golden，核验 SHA、owner context、跨仓正反例及临时根清理；再决定 G2b 状态。SW-IDENT 尚未分派，不借此次更新扩展 StockWiki 写授权。
+- [x] IQS 总控从 StockWiki 公开 CLI 独立生成并冻结 provisional Entity golden：两套隔离 owner store 导出字节相同、SHA 与 owner 记录一致，owner receipt/source/MIC 公开读核验及 IQS CLI 正例/五个负例通过，临时根清理；当前只签收此 slice。SW-IDENT 尚未分派，不借此次更新扩展 StockWiki 写授权。
+- [ ] 补 IQS 自有四态 mapping DTO 消费合同/真实 owner DTO golden 与正反例，按施工卡完成 G2b 的剩余接口签收；verified/多挂牌/AnalysisSubject 若无真实 owner 产物只能标未覆盖，不能由 provisional fixture 推断。
 - [x] 将总控遗留的 handoff intake RED 测试补成只读 `scripts/parallel_handoff_cli.py`：只验证 schema、package/lane/task、声明路径与临时根清理，不认证用户授权或测试事实；拒绝重复 JSON key、跨仓路径、未清理根和只读包变更。
 
 ### 2026-09-30 — 本地检查点与规划文件同步
@@ -678,7 +679,7 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] 将当前 invest-quick-scan 本地工作树进度提交为 `eb462d48321f3247eabf18daa57a4d4606405ca4`；共849个文件。提交涵盖本地实现、题库/发布物、契约、测试及已完成阶段证据，不代表所有跨项目任务完成。
 - [x] 更新施工卡实施摘要与G2b交接：步骤1—4随检查点提交，版本/CLI/golden格式与测试记录不变；G2b仍需StockWiki真实公开DTO/serializer golden。
 - [x] 计划校验复跑有效：107 tasks / 366 acceptance cases / G6；`tests/test_implementation_plan.py` 为80 passed / 53 subtests。
-- [ ] 继续等待StockWiki producer golden以完成G2b；S06仍等待真实StockQA→StockWiki事务ACK、router 2.1真实历史样本和获批跨仓端到端验证。C01—C07回执刷新继续暂停。
+- [ ] StockWiki provisional Entity producer golden 已验；G2b 仍需四态 mapping DTO 的 IQS 消费验收。S06 仍等待真实 StockQA→StockWiki 事务 ACK、router 2.1 真实历史样本和跨仓端到端验证。C01—C07 回执刷新继续暂停。
 - [x] 第二笔提交 `5aec24044aabdbf5187725e51066cd21fc39bc33` 同步了实施摘要、handoff和进度记录；本次再同步 `task_plan.md`、`findings.md` 与 `progress.md`，不改外仓。
 
 ### 2026-09-30 — Q02 MiMo 实际搜索验收

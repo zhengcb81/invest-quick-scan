@@ -1280,3 +1280,10 @@
 - 更新 SW-IDENT 包、包索引、总控并行计划及 G2b handoff：旧 `c8cfb2e` 缺 owner receipt/registry 的诊断标为历史；W01–W03 仍按任务 case 重新判定，不重造 W04。G2b 由“等待 producer 实现”改为“总控跨仓签收待办”。QA-04 已由其他 harness 实施，SW-IDENT 尚未分派。
 - 本仓交接 JSON 只读预检器先以 5 个公开子进程反例 RED（CLI 尚不存在），随后实现 `scripts/parallel_handoff_cli.py`，补跨仓自述路径与合法声明文件两例。它给出 `handoff_shape_and_declared_scope_only`，不把自述内容当作可签收证据；正式签收仍核对提交/hash、授权和 owner golden。
 - 预检 CLI、并行包与计划合并回归 **96 passed / 53 subtests / 11.11s**；计划 validator 仍为107 tasks/366 cases/G6 valid；`git diff --check`通过。RED/GREEN/合并回归的三个 pytest 临时根已删除，无网络/API或外仓写入。
+
+## 2026-09-30 — G2b owner provisional Entity 跨仓验收 slice
+
+- 新增 IQS 总控公开路径验收脚本与冻结 golden。通过 StockWiki `72531b5` owner store API 在两套隔离根种入相同合成 fixture，再调用其公开 `identity-export-g2b` CLI；两份 2,765 字节 canonical JSON 完全相同，SHA `0efc2c04daa7b6345078410a5df5ae0aa5bec9098b1523d7c25f9f60f53e5d2f` 与 owner W04 记录一致。首次计算差异 `3476f252…` 是 Windows CLI 末尾 CRLF 仅去 LF 所致；修正后 owner E2E fixture 也独立复现预期 SHA，未保存错误 golden。
+- 总控从 owner 公共读路径核对 Entity/receipt/source binding/MIC，IQS 公共 CLI 正例 exit 0、五个逐字段负例 exit 2。另用 StockWiki 公共 snapshot/mapping API 对两条带“中微公司/中微半导体”**合成标签**的 fixture Entity 验证无 source 时 ambiguous/unmerged，有精确 source key 时只映射一个；不代表真实公司身份结论。
+- 本仓冻结 fixture 回归加原 CLI 边界 **8 passed**；跨仓脚本正常运行两次并确认临时 owner 根删除，pytest 临时根已删除。无联网、API、下载或外仓写入。详见 `docs/implementation/reviews/IQS-lane/G2b-owner-acceptance-2026-09-30.md`。四态 mapping DTO 尚无 IQS 自有消费 validator/golden；整 G2b 暂记 partial。
+- 合并本批黄金样本/身份 CLI/并行计划回归最终 **97 passed / 53 subtests / 9.66s**；计划 validator 107 tasks/366 cases/G6 valid；跨仓复跑同 SHA/同正反例，两个 pytest 临时根已清理，`git diff --check` 通过。

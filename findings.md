@@ -1140,3 +1140,9 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - Owner 施工记录提供 provisional 单证券/单挂牌 golden SHA `0efc2c04daa7b6345078410a5df5ae0aa5bec9098b1523d7c25f9f60f53e5d2f`；IQS 只读运行四个 StockWiki 定向测试文件 64 passed，含真实 CLI 跨仓正例和 17 个单字段负例。该 fixture 使用 synthetic evidence URL，不是 verified issuer、多挂牌桥接或 AnalysisSubject 产物。W01–W03 的身份歧义、名单资格、迁移等 case 仍需逐项证据；最终 G2b 签收需总控独立复现 owner golden 与 provenance，不能仅照 owner closure 宣称完成。
 - SW-IDENT 的精确 StockWiki 旧授权不涵盖新 W04 模块/测试。施工卡已改为先只读验收、后在授权路径最小修复；若真实缺口要求写新路径须另取精确授权。QA-04 已委派，SW-IDENT 尚未分派，避免同仓双写。
 - 多 harness handoff JSON 需要先做低成本格式/声明范围筛查，但不能把 worker 自述的授权、测试或来源变成事实。公开只读 CLI 只做确定性的语法、schema、包 owner/task、路径和临时根清理检查，保留人工/总控的快照与 producer 核验。
+
+## 2026-09-30 — G2b 公共 producer 可复现，完整门仍有映射 DTO 缺口
+
+- StockWiki `72531b5` 的 `identity-export-g2b` 公开 CLI 在两套隔离 owner stores 上输出完全相同的 provisional Entity 请求。冻结字节 SHA 与 owner W04 施工记录精确一致；owner store API 返回的 active receipt、source binding、market registry 与请求中的 exact-key 引用逐项一致。IQS CLI 成功消费，五个单字段篡改均拒绝。
+- 初次 hash 不一致只因 Windows stdout 末尾 CRLF，不能把平台换行纳入 canonical JSON 内容；脚本现精确去除终端换行。冻结文件不含换行，2,765 字节。
+- StockWiki mapping DTO 1.0.0 的 public builder 对两个近名合成标签保持两个 Entity 并返回 ambiguous；精确 source key 映射单一 Entity。但 IQS 目前没有独立四态 mapping DTO consumer validator，也没有 mapping DTO owner golden 归档；施工卡完整 G2b 不能仅凭 provisional Entity 请求签收。verified、多挂牌和 AnalysisSubject 缺 owner 实际样本时不应合成正例。
