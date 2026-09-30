@@ -413,8 +413,8 @@ Status: complete_for_planning_only
 
 ### 当前下一动作
 
-- Q03 parser/service/runner/model/main CLI及公开quick-scan/QA pipeline当前快照定向回归已在StockQA唯一TEMP/CWD/basetemp执行并通过166项；前后HEAD、55项Git状态完全一致，临时根已清理。当前准确命令与14个源码/测试SHA见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。
-- 下一步只做对该14文件快照的独立只读复核，重点检查Q03固定反例、当前修改后的公开CLI调用链和Q02依赖；不访问网络、不读密钥、不改StockQA。若复审无阻塞，再关闭Q03的任务级验收并转到Q04剩余策略边界。
+- Q03首轮快照回归通过166项后，独立复核发现一个P1：JSON数组/对象类型的`status`使parser抛`TypeError`，导致公开CLI丢弃已完成搜索回执。已按TDD修复并补事件级回执断言，完整Q03隔离回归170项通过；两轮独立只读复核均未发现未解决项，最终复核匹配三份当前SHA。Q03解析与结果回执路径的任务级验收已通过。初始报告parser单测SHA有单字符笔误，已更正；精确命令、SHA与审查边界见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。该任务级验收不代表G1/全项目、其他模型或跨仓链路完成。
+- 当前下一步进入Q04剩余运行语义：先沿StockQA公开CLI和adapter追踪`OrderedSearchProviderCascade`的实际构造/调用路径，再围绕PAR-11同路由槽满等待及LLM-10运行中policy revision边界补行为测试；不要把旧`ProviderCascade`或配置保存单测当作生产路由接线证据。不访问网络、不读密钥、不修改未报备的StockQA文件。
 
 ## 2026-09-29 — S06 路由执行门与测试owner修复
 

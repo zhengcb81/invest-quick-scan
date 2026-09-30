@@ -2,7 +2,7 @@
 
 Date: 2026-09-30 (UTC)
 Owner repository: StockQAbyLLM, branch `master`, HEAD `3c685dda28f67a00bd653ad257a121d3b8edebb8`; tested files were the working tree, not HEAD alone.
-Status: **Focused offline regression passed; independent review of this exact snapshot is pending.**
+Status: **Q03 parser/result-path task-level acceptance verified on the fixed working-tree snapshot. The independent review found one parser edge defect, which was fixed; the expanded regression passed and final independent read-only follow-up found no P0/P1/P2. This does not close G1, other providers, cost/source-support evidence, or cross-repository gates.**
 
 ## Scope and execution
 
@@ -27,7 +27,7 @@ After Q02's first-provider task-level acceptance, ran the Q03 parser/result path
 | `src/services/answer_generator.py` | `B59840DA063D00D7BCAAB4BA960B88797F6466A4EAD868BA0A7110E4D8FD44F4` |
 | `tests/integration/test_qa_pipeline.py` | `002374F669C3D73059EC954403057C82CBCAF7271C608B6D6D91972E7C67ADDC` |
 | `tests/integration/test_quick_scan_cli.py` | `2D146FACE169DD130722DFF182982BCDA9FF7AC9CBCE022F80CE310EA553DD90` |
-| `tests/unit/test_llm_response_parser.py` | `3BF0D736CCE8696CAA2F70AD201A3C7BEA1CDA118CE43EC8C10252A174A8259` |
+| `tests/unit/test_llm_response_parser.py` | `3BF0D736CCE8696CAA2F70AD201A3C7BEEA1CDA118CE43EC8C10252A174A8259` |
 | `tests/unit/test_llm_runner.py` | `098A060E54AB6F2612EAA8B05CDBDA68DDA03F1CE95318FF60C8C6F74F94BB33` |
 | `tests/unit/test_main_with_llm.py` | `76E70CB411B8430B29AF7B45C2D90FE24EF26921E435B6A35C2717805BC24DE8` |
 | `tests/unit/test_models.py` | `3719D9DB38524D4F4144986C8A0F5EF2C9F01C0F10E9F116B048F159653500CA` |
@@ -35,6 +35,28 @@ After Q02's first-provider task-level acceptance, ran the Q03 parser/result path
 
 ## Review handoff and limits
 
-The earlier Q01/Q03 r2 review at `docs/implementation/reviews/Q01-Q03/r2-follow-up-review.md` approved the fixed parser cases at its then-current snapshot. The parser, answer generator, runner, and parser unit-test hashes still match that report, but `test_quick_scan_cli.py` and other owner files have since changed. Its conclusion is useful prior evidence, not a review of this current snapshot. The next action is a new read-only review bound to the hashes above. No task-receipt v2 artifact is created or refreshed because that workflow was retired on 2026-09-29.
+The earlier Q01/Q03 r2 review at `docs/implementation/reviews/Q01-Q03/r2-follow-up-review.md` approved the fixed parser cases at its then-current snapshot. The parser, answer generator, runner, and parser unit-test hashes still matched that report at the first Q03 current-snapshot run, but `test_quick_scan_cli.py` and other owner files had since changed. Its conclusion is useful prior evidence, not a review of that full snapshot. The new review was completed and its P1 finding plus final follow-up are recorded below. No task-receipt v2 artifact is created or refreshed because that workflow was retired on 2026-09-29.
 
 This batch does not exercise live search, prove a cited URL supports a claim, measure provider cost, or close cross-repository identity/observation delivery.
+
+## Follow-up: independent-review P1 fix (2026-09-30)
+
+The read-only review found that model JSON containing `"status": []` or `"status": {}` raised `TypeError` during set membership. The provider's generic exception path then discarded completed search execution metadata, and the public quick-scan result could report `not_attempted` with no source receipt. The parser now checks that `status` is a string before checking allowed values; malformed values return the normal invalid-answer path. Provider code was not changed because that path already retains metadata when parsing returns `None`.
+
+TDD evidence:
+
+- RED: parser unit and public CLI integration regressions for array/object statuses produced 4 failures on the old code. The CLI showed `status=error` and failed the receipt-retention assertions. Temporary roots were removed.
+- GREEN: all four focused cases passed after the parser fix. The public result has a null score and `unknown` answer state while retaining request ID `req_e2e_01`, response ID `resp_e2e_01`, `search_status=executed`, search-call receipt `ws_e2e_01`, and the fixture source URL. The test also asserts the serialized `web_search_calls` event ID, completion status, action type, and source URL list.
+- Expanded Q03 regression batch: **170 passed in 4.52s**, exit 0, no skips. Same isolated TEMP/CWD/basertemp and disabled provider credentials/live opt-in; no network/API call. Temporary root removed. StockQA HEAD and 55-entry Git status remained unchanged.
+
+Only these StockQA working-tree files changed for the fix:
+
+| File | Current SHA-256 |
+|---|---|
+| `src/providers/llm_response_parser.py` | `EBBB2794389314029E0121A0794594F28D1BB3C33645075D38A092CC88C079B6` |
+| `tests/unit/test_llm_response_parser.py` | `7025CE37F6BF19E19853E1D869A1045732B6DB1496EF5D43B3F555C25E69AD58` |
+| `tests/integration/test_quick_scan_cli.py` | `D34F8D8B046361C0139AEDF2A9E2B1AB3B9F22C32F534069696443031C63C116` |
+
+The independent review also identified a transcription error in the initial report's parser-unit SHA. Before these tests were added, the actual executed-file SHA was `3BF0D736CCE8696CAA2F70AD201A3C7BEEA1CDA118CE43EC8C10252A174A8259`; the original table omitted one `E`. The original table above now records the corrected old snapshot hash; the current hash is listed separately.
+
+The fixed code was independently reviewed with no P0/P1 findings. A suggested P2 assertion for the `web_search_calls` event was added and the expanded suite rerun. A final independent read-only check matched all three current file hashes and confirmed that the assertion matches the fixture and serializer; no P0/P1/P2 remains for this task-level scope. The change does not close G1, other providers, cost/source-support evidence, or cross-repository acceptance gates.

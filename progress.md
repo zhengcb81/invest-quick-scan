@@ -1225,4 +1225,15 @@
 - Q03的Q02前置现已完成任务级验收。我在StockQAbyLLM只读核对现有工作树与CodeGraph后，在唯一TEMP/CWD/basetemp执行parser、answer-service、runner、models、main CLI、QuickScan CLI和QA pipeline测试：**166 passed / 4.91s**。
 - 命令隔离了第三方`base_url`插件、项目coverage/cache addopts及所有live/API凭证变量；HTTP边界使用测试fixture，未做任何真实网络/API调用。独立临时根清理完成，StockQA HEAD未变化且Git status仍为55项。
 - 关键快照SHA：`llm_response_parser.py`=`9D5EB7D58DACFED1DFFB605ECA504D8A9EC6B6C39A5E2F4341D0A9B6F58AA867`；`answer_generator.py`=`B59840DA063D00D7BCAAB4BA960B88797F6466A4EAD868BA0A7110E4D8FD44F4`；`llm_runner.py`=`E63FDD5890DBCE16A057D0140170E3E1E95C9227E45BD8CC1CD14ABCD8ED0ACC`；`test_quick_scan_cli.py`=`2D146FACE169DD130722DFF182982BCDA9FF7AC9CBCE022F80CE310EA553DD90`。完整14文件清单及复现命令见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。
-- Q03精确快照的独立复审尚未完成；在其结论出来前不改标verified、不改StockQA，也不触碰历史receipt。无复审之外的产品失败。
+- 首轮166项测试通过时，Q03独立复核仍待完成；该状态已由本节后续的P1修复及最终复核结果取代，不再是当前状态。
+
+## 2026-09-30 — Q03复核缺陷的TDD修复
+
+- 独立复核提出P1：parser对JSON `status`直接执行集合成员判断；`[]`和`{}`引发`TypeError`，provider异常路径返回error并丢失已完成搜索的response与来源回执。核对CodeGraph调用图和实现后确认只需在parser拒绝非字符串状态，不需要改provider行为。
+- 按TDD先加parser单测和公开CLI集成反例。旧实现RED：4个新增用例失败，复现TypeError、状态被记作error以及receipt丢失；隔离TEMP/CWD/basertemp根已清理。修复后GREEN：4项全通过，CLI保持score=null/status=unknown，并保留request ID、response ID、`search_status=executed`、search receipt ID、search-call事件及source URL。
+- 完整Q03七文件隔离回归：**170 passed / 4.52s**，退出码0、无skip、未调用网络/API；所有provider key与live opt-in变量从子进程环境移除，独立临时根已删除。StockQA HEAD仍为`3c685dda28f67a00bd653ad257a121d3b8edebb8`，Git status仍55项。
+- 本次仅改StockQA `src/providers/llm_response_parser.py`、`tests/unit/test_llm_response_parser.py`、`tests/integration/test_quick_scan_cli.py`。修复后SHA分别为`EBBB2794389314029E0121A0794594F28D1BB3C33645075D38A092CC88C079B6`、`7025CE37F6BF19E19853E1D869A1045732B6DB1496EF5D43B3F555C25E69AD58`、`D34F8D8B046361C0139AEDF2A9E2B1AB3B9F22C32F534069696443031C63C116`。未提交StockQA脏工作树。
+- 独立follow-up确认修复快照无P0/P1：类型guard使畸形答案走普通invalid-answer分支；同步/异步provider都保留原metadata，CLI只发一次请求并记录主要search/source receipts。review建议补`web_search_calls`事件列表断言后已加入并重跑完整170项成功；最终follow-up再次确认新增断言与fixture/serializer吻合，当前三个SHA匹配，无P0/P1/P2。
+- 修正validation报告中首轮测试使用的parser单测SHA笔误：原执行前实际hash是`3BF0D736CCE8696CAA2F70AD201A3C7BEEA1CDA118CE43EC8C10252A174A8259`；当前修改后的SHA已在报告addendum单列。Q03解析/公开结果回执路径的任务级验收现标记通过，限制仍是该项不证明G1、其他provider、费用或跨仓链路。
+- 当前下一项切换为Q04：沿公开CLI与adapter检查有序cascade动态构造/调用，再验证PAR-11同路由槽满等待和LLM-10运行中policy revision边界。旧receipt机制继续退役，不刷新C01—C07回执。
+- 本轮同步planning-with-files后，使用仓库实际的无配置pytest入口两次验证`tests/test_implementation_plan.py`：最近一次为**80 passed / 53 subtests passed / 18.89s**；临时根清理、`git diff --check`通过。第一次误用不存在的`pyproject.toml`，pytest在配置加载阶段未执行测试；改用`--rootdir`和仓库默认配置后通过。

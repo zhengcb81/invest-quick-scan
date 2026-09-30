@@ -1094,3 +1094,15 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - Q03依赖Q02现已解除；StockQA CodeGraph已索引，结构检查确认`LLMResponseParser`、`AnswerGenerator`和公共QuickScan CLI测试入口。StockQA根未发现`AGENTS.md`。
 - Q03 r2独立报告对parser、answer generator、runner及parser单测的哈希仍相符；公共CLI集成测试、models及其他被Q02/Q04改动的文件需要以新快照重新核对，不能沿用旧review做当前放行结论。
 - 当前快照隔离聚焦测试覆盖parser、service、runner、models、main CLI、public quick-scan CLI和QA pipeline，共166 passed；StockQA HEAD和55项Git状态前后相同，唯一本轮TEMP/CWD/basetemp已清理。独立复核为下一步；详见`validation-Q03-current-snapshot-2026-09-30.md`。
+
+## Q04 next-task preflight
+
+- CodeGraph确认用户排序策略落在`OrderedSearchProviderCascade`，而历史`ProviderCascade`仍为独立的状态式类；对`OrderedSearchProviderCascade`本体的调用者查询返回none。CodeGraph另显示`save_quick_scan_model_policy`已有原子保存、顺序快照及无效配置拒绝的单测。
+- 因此Q04后续不能仅以cascade类或配置单测证明公开派发链已接通。Q03复审通过后，先沿StockQA CLI/adapter追查cascade构造者与实际调用路径，并验证PAR-11槽满等待和LLM-10运行中policy revision范围；确认实际缺口后再在StockQA已授权范围实施。此处是结构索引发现，调用图对动态构造/别名为best-effort，尚未仅凭它判定生产接线缺失。
+
+## 2026-09-30 — Q03复核发现与修复
+
+- 独立复核发现LLM JSON中的`status`可能是数组或对象；直接对其做set成员判断会抛`TypeError`。异常处理会把已收到的搜索回答降为通用错误，从而丢失request/response/search-call/source回执，并可能导致重复请求。该问题位于未信任模型输出的解析边界，修复应拒绝非字符串状态并返回普通无效答案，不改变provider路由。
+- RED确认：新增parser unit与public CLI集成反例共4个场景在旧代码上失败；集成结果为`error`且无法保留搜索/来源回执。修复后反例全通过，invalid answer仍是unknown/null，已有execution metadata完整序列化。完整Q03七文件离线回归170 passed。
+- 首份Q03验证报告把当时parser单测SHA少记一个`E`；原测试执行前实际SHA为`3BF0D736CCE8696CAA2F70AD201A3C7BEEA1CDA118CE43EC8C10252A174A8259`。报告已更正旧快照记录，并单列本次修复hash，避免混淆两个测试快照。
+- 修复只触及StockQA parser源码、parser单测、公开CLI集成测试。provider无需修改，因为parser安全返回`None`后原逻辑已保留HTTP/search metadata。无live/API/network，外仓HEAD和Git状态条目数不变；固定SHA、命令与清理信息记在validation报告。最终独立复核逐项匹配当前三个SHA，确认新增`web_search_calls`事件列表断言与fixture及serializer一致，无P0/P1/P2。
