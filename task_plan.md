@@ -635,3 +635,11 @@ Status: complete_for_local_IQS_lane_scope_external_G2b_remains_open
 - [ ] 施工卡第5步/G2b：等待StockWiki真实身份snapshot/mapping DTO与producer serializer golden，通过其公开接口做跨仓正例验收。合成本地夹具不替代producer golden；本步骤未获跨仓写授权且本仓无可验真实产物。
 
 本阶段按用户选择施工卡优先，C01—C07旧receipt刷新保持暂停；这些材料已作为历史工件保留，当前里程碑状态以`task_plan.md`、`progress.md`和大节点审查为准。
+
+### 2026-09-30 — 本地检查点与规划文件同步
+
+- [x] 将当前 invest-quick-scan 本地工作树进度提交为 `eb462d48321f3247eabf18daa57a4d4606405ca4`；共849个文件。提交涵盖本地实现、题库/发布物、契约、测试及已完成阶段证据，不代表所有跨项目任务完成。
+- [x] 更新施工卡实施摘要与G2b交接：步骤1—4随检查点提交，版本/CLI/golden格式与测试记录不变；G2b仍需StockWiki真实公开DTO/serializer golden。
+- [x] 计划校验复跑有效：107 tasks / 366 acceptance cases / G6；`tests/test_implementation_plan.py` 为80 passed / 53 subtests。
+- [ ] 继续等待StockWiki producer golden以完成G2b；S06仍等待真实StockQA→StockWiki事务ACK、router 2.1真实历史样本和获批跨仓端到端验证。C01—C07回执刷新继续暂停。
+- [x] 第二笔提交 `5aec24044aabdbf5187725e51066cd21fc39bc33` 同步了实施摘要、handoff和进度记录；本次再同步 `task_plan.md`、`findings.md` 与 `progress.md`，不改外仓。

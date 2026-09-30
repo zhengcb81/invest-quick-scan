@@ -1071,3 +1071,10 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 
 - IQS施工卡步骤1—4已交付；不再重复实现。G2b需要StockWiki真实公共serializer/API产物，producer provenance由owner接口测试证明，IQS CLI只证明schema和语义一致性。
 - 交接要求、版本/命令/现有测试证据、Entity/AnalysisSubject golden封装和跨仓正反例集中在`docs/implementation/reviews/IQS-lane/G2b-handoff-2026-09-29.md`。StockWiki golden未到前保持pending，不使用IQS合成夹具冒充实际producer结果。
+
+## 2026-09-30 — 提交与状态记录
+
+- 本地检查点 `eb462d48321f3247eabf18daa57a4d4606405ca4` 将849个当前IQS仓库文件纳入版本控制，基于 `25b8d14316c06390450e5a1d8883583bfd039d0d`。提交包括较早完成的本地实现与审查记录，以及施工卡步骤1—4和S06本地修复；不得把整体提交数误读为所有计划任务完成。
+- 提交后计划校验为107 tasks / 366 acceptance cases / G6 valid，计划测试80 passed / 53 subtests；施工卡收尾205 passed / 351 subtests / 0 skips与S06聚焦回归57 passed / 0 skipped已有对应隔离日志。
+- 交接状态同步提交为 `5aec24044aabdbf5187725e51066cd21fc39bc33`。G2b继续pending（等待StockWiki真实DTO/golden），S06继续partial（等待真实事务ACK及跨仓样本）；未写外仓、未刷新C01—C07回执。
+- 提交检查中的空白提示来自多份Markdown双空格硬换行与文件末尾空行；这轮没有全局格式化历史审查材料。Git工作区在两笔提交后干净；`.pytest_cache`因访问权限警告未纳入跟踪。

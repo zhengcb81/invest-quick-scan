@@ -1203,4 +1203,5 @@
 - 已将当前完成的 invest-quick-scan 本地交付提交为 `eb462d48321f3247eabf18daa57a4d4606405ca4`（`Checkpoint completed local quick-scan work`），共849个文件；提交包括题库与可组合路由实现、契约/工具、隔离测试和实施/审查证据。
 - 提交后复跑计划校验为107 tasks / 366 acceptance cases / G6 valid，`tests/test_implementation_plan.py`为80 passed / 53 subtests。施工卡步骤1—4已有205 passed / 351 subtests / 0 skips记录，S06本地修复57 passed / 0 skipped记录。
 - 仅完成本仓检查点提交；G2b仍等待StockWiki真实DTO/golden，S06仍等待StockQA→StockWiki事务ACK及跨仓真实样本。没有修改外仓、刷新C01—C07回执或宣称关闭这些门槛。
-- 同步更新IQS lane实施摘要与G2b交接文档，明确提交边界和待办；文档更新另行提交。
+- 同步更新IQS lane实施摘要与G2b交接文档，明确提交边界和待办；对应提交为 `5aec24044aabdbf5187725e51066cd21fc39bc33`。
+- 随后更新 `task_plan.md`、`findings.md` 与本进度文件，记录两笔提交、验证结果及仍未关闭的跨仓门槛。
