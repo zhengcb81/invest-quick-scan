@@ -1,0 +1,284 @@
+{
+  "task_id": "Q04",
+  "status": "implementation_partial",
+  "owner": "stockqa",
+  "plan_version": "1.6.2",
+  "plan_sha256": "55DBB8D63A27A8D8A8ACD37C46322CD0FBDCE2D5113CEEC3E416E16AA401AC0F",
+  "case_catalog_sha256": "38642BFDBEA9C3BEBB7272D13EED6D3C4C85BEBC99D5A9C7B372CC7400E557FA",
+  "implementation_snapshot": {
+    "commit": "3c685dda28f67a00bd653ad257a121d3b8edebb8",
+    "file_hashes": {
+      "StockQAbyLLM/.gitignore": "3B1043A72691DF59C077F0DB4297096ABB21D482E3421C550DB3F239D9059550",
+      "StockQAbyLLM/src/config/llm_config.py": "DD9257762DFDC0EC54538C653DCB057D58962901210607BDCB7D944A74D2B350",
+      "StockQAbyLLM/src/runners/llm_runner.py": "579CDE5A1FB21604E0A2BDCA5667C880E45E78864602E2BD664F23A2DBEDD2A4",
+      "StockQAbyLLM/src/utils/llm_integration.py": "144212285E8E7BDDFAEE30907CE2D493471677DADF43591246C6701E31C2DC7C",
+      "StockQAbyLLM/src/providers/llm_client.py": "207AE40383DA230AD544116DFB13CABC1963FADA117EE9C0670F601DFEAF099F",
+      "StockQAbyLLM/src/providers/llm_provider.py": "542376B016C80F4175B93DBE9CE793391357A72767E650467F1DEEE546C27A97",
+      "StockQAbyLLM/src/config/quick_scan_model_policy.schema.json": "E6188237EF0FD07C4EE63C1EAB25AB250426BA7C12E6D0BC71A9D4AB1D7D0455",
+      "StockQAbyLLM/tests/unit/test_llm_config.py": "B82B96FC9FA094664F91AE22885CC164108E67CC7C18E12D7B35C936DC5ED5CE",
+      "StockQAbyLLM/tests/unit/test_llm_integration.py": "D03B9DADB0A52F7F1D434F201F19AE43DE9B4DEF35AA61483DF81D5E25290860",
+      "StockQAbyLLM/tests/integration/test_quick_scan_cli.py": "939D91EFCDFDD54A574C6001364B20D71D02C9E9FF37FD8F13833F8B9C337AD2",
+      "docs/implementation/contracts/validation-Q04-schema-mismatch-red-r4-2026-09-24.log": "A039A11BE3B80012099C393A6EA7B4C4D3686F5902DAE37305536A9F63108B3E",
+      "docs/implementation/contracts/validation-Q04-schema-mismatch-green-r4-2026-09-24.log": "08446E6FF0A242C6603EBBB7E5B5106A801F3482D221ECD41BF29BB17865D02D",
+      "docs/implementation/contracts/validation-Q04-stockqa-targeted-final-r4-2026-09-24.log": "5E97508A494D8984E9B21F1C8AF03BFAD1ECBCC5566026ABE912086364FA6E2A"
+    }
+  },
+  "dependency_receipts": [
+    "docs/implementation/contracts/receipt-C05.json"
+  ],
+  "changed_files": [
+    "StockQAbyLLM/.gitignore",
+    "StockQAbyLLM/src/config/llm_config.py",
+    "StockQAbyLLM/src/config/quick_scan_model_policy.schema.json",
+    "StockQAbyLLM/src/providers/llm_client.py",
+    "StockQAbyLLM/src/runners/llm_runner.py",
+    "StockQAbyLLM/src/utils/llm_integration.py",
+    "StockQAbyLLM/tests/integration/test_quick_scan_cli.py",
+    "StockQAbyLLM/tests/unit/test_llm_config.py",
+    "StockQAbyLLM/tests/unit/test_llm_integration.py"
+  ],
+  "contract_changes": [
+    "读取并校验可选的有序quick_scan_model_policy；保留用户路由顺序与策略版本指纹，按StockQA现有provider配置过滤禁用或凭据不可用的路由。",
+    "保存策略时拒绝凭据字段，并使用同目录临时文件原子替换配置；运行中的LLMRunner固定run-start快照，新策略默认下一次运行生效。",
+    "require-search公开CLI实际使用逐题provider/model级有序fallback；只对明确可恢复HTTP失败切换，能力不支持时发送前跳过，正常低分/unknown回答立即停止；记录策略版本、尝试路由和实际模型。",
+    "已配置策略的单题请求只使用一个有界dispatch预算，不把普通格式修复/transport重试再乘到fallback尝试上。"
+  ],
+  "checks": [
+    {
+      "case_id": "LLM-03, LLM-04, LLM-06(partial)",
+      "kind": "external_automated",
+      "selector": "StockQAbyLLM/tests/unit/test_llm_integration.py and StockQAbyLLM/tests/integration/test_quick_scan_cli.py",
+      "command": "python -B -X utf8 -m pytest --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP root>/pytest-temp --no-cov -p no:cacheprovider <StockQAbyLLM>/tests/unit/test_llm_integration.py <StockQAbyLLM>/tests/integration/test_quick_scan_cli.py",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed_with_partial_case_coverage",
+      "exit_code": 0,
+      "executed_count": 60,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q04-stockqa-targeted-final-r2-2026-09-24.log",
+      "output_sha256": "ADD8A1AD723286E4237BD94F0F07A45AB145F85E43EC8AA0BF27F4B3F78E5FE3",
+      "explanation": "公开CLI以Session.post mock隔离HTTP边界，验证429 fallback成功、服务器失败attempt上限、低分/unknown停止、HTTP400不fallback及不支持search的route发送前跳过；不包含LLM-06全路由耗尽后retry_wait语义。"
+    },
+    {
+      "case_id": "LLM-10(next-run snapshot only)",
+      "kind": "external_automated",
+      "selector": "StockQAbyLLM/tests/unit/test_llm_config.py::saved policy ordering/version snapshot tests",
+      "command": "See targeted suite above.",
+      "result": "passed_with_partial_case_coverage",
+      "exit_code": 0,
+      "executed_count": 56,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q04-stockqa-targeted-final-r2-2026-09-24.log",
+      "output_sha256": "ADD8A1AD723286E4237BD94F0F07A45AB145F85E43EC8AA0BF27F4B3F78E5FE3",
+      "explanation": "验证保存顺序、策略版本和默认下一运行生效；未验证单次run中的立即变更及未派发题派发边界。"
+    },
+    {
+      "case_id": "PAR-03, PAR-08",
+      "kind": "not_executed",
+      "selector": "StockQA shared-capacity scheduling and StockWiki settings-to-dispatch integration",
+      "result": "open",
+      "skipped_count": null,
+      "explanation": "当前Q04候选没有跨worker/共享账户并发槽等待，也没有同一run热更新派发边界或StockWiki唯一配置写入闭环；不得将离线单题测试视为通过。"
+    },
+    {
+      "case_id": "Q04-remediation-final-r3",
+      "kind": "external_automated",
+      "selector": "StockQAbyLLM/tests/unit/test_llm_config.py; tests/unit/test_llm_integration.py; tests/integration/test_quick_scan_cli.py",
+      "command": "python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP root>/pytest <three authorized test files>",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 131,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q04-stockqa-targeted-final-r3-2026-09-24.log",
+      "output_sha256": "9AAAD87C77E0D11BAFB62949F4F79A2874C9EF961CB51FB15B1DB4CF91EBC76E",
+      "explanation": "隔离回归验证完整v2策略读写失败关闭、429 Retry-After秒数/HTTP日期处理且不保存原始header、配额组同run冷却、401认证路由同run禁用、5xx受总attempt预算约束，并确认preferred run envelope与实际回答route分开记录。Session.post为mock，没有真实LLM/provider网络请求；CWD/TEMP/TMP/basetemp均为唯一临时根，结束时已删除。"
+    },
+    {
+      "case_id": "Q04-schema-mismatch-r4-red",
+      "kind": "external_automated",
+      "selector": "StockQAbyLLM/tests/unit/test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed",
+      "command": "python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP root>/pytest <new regression selector>",
+      "cwd": "<unique system TEMP root>",
+      "result": "expected_red_reproduced_before_fix",
+      "exit_code": 1,
+      "executed_count": 20,
+      "failed_count": 20,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q04-schema-mismatch-red-r4-2026-09-24.log",
+      "output_sha256": "A039A11BE3B80012099C393A6EA7B4C4D3686F5902DAE37305536A9F63108B3E",
+      "explanation": "覆盖verified_rate_card pricing_ref缺失/空值、各200字符schema上限以及启用comparison零预算；修复前20个load/save案例均复现为接受非法策略。隔离临时根已删除。"
+    },
+    {
+      "case_id": "Q04-schema-mismatch-r4-green",
+      "kind": "external_automated",
+      "selector": "Same 20 parameter cases after validator and fixture correction",
+      "command": "python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP root>/pytest <new regression selector>",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 20,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q04-schema-mismatch-green-r4-2026-09-24.log",
+      "output_sha256": "08446E6FF0A242C6603EBBB7E5B5106A801F3482D221ECD41BF29BB17865D02D",
+      "explanation": "所有schema负例在读取和保存策略时均失败关闭，且保存路径字节不变。测试fixture使用符合schema的user_cap/pricing_ref。隔离临时根已删除。"
+    },
+    {
+      "case_id": "Q04-schema-fixture-r4",
+      "kind": "static_check",
+      "selector": "StockQA schema Draft 2020-12 validation for unit and public CLI complete policy fixtures",
+      "command": "Draft202012Validator(...).iter_errors(_quick_scan_policy()) and _ordered_policy()",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 2,
+      "explanation": "两个实际测试策略fixture均通过StockQA quick_scan_model_policy.schema.json校验；运行环境未引入或写入项目依赖。"
+    },
+    {
+      "case_id": "Q04-remediation-final-r4",
+      "kind": "external_automated",
+      "selector": "StockQAbyLLM/tests/unit/test_llm_config.py; tests/unit/test_llm_integration.py; tests/integration/test_quick_scan_cli.py",
+      "command": "python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP root>/pytest <three authorized test files>",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 151,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q04-stockqa-targeted-final-r4-2026-09-24.log",
+      "output_sha256": "5E97508A494D8984E9B21F1C8AF03BFAD1ECBCC5566026ABE912086364FA6E2A",
+      "explanation": "同一日志记录Black 8 files unchanged、两个完整policy fixture通过Draft 2020-12 schema校验、151项隔离测试和git diff --check通过。Session.post为mock，无真实网络/LLM调用或费用。唯一TEMP/CWD/basetemp根已删除。"
+    },
+    {
+      "case_id": "format_and_diff_hygiene",
+      "kind": "static_check",
+      "selector": "Black on 8 authorized StockQA source/test paths; git diff --check on authorized existing paths including exact .gitignore exception",
+      "command": "black --check --no-cache <8 authorized source/test paths>; git -c safe.directory=<StockQAbyLLM> diff --check -- <authorized paths>",
+      "result": "passed",
+      "exit_code": 0,
+      "explanation": "Black reports 8 files unchanged; git diff --check exits 0. .gitignore only gains an exact negation for src/config/quick_scan_model_policy.schema.json, and Git status now shows that schema as untracked/eligible for normal version control."
+    },
+    {
+      "case_id": "LLM-06 route-recovery post-r4 isolated recheck",
+      "kind": "external_automated",
+      "selector": "StockQAbyLLM/tests/unit/test_llm_integration.py; StockQAbyLLM/tests/integration/test_quick_scan_cli.py",
+      "command": "python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov --rootdir=<unique TEMP sandbox> --basetemp=<same sandbox>/pytest-temp <two selected files>",
+      "cwd": "<unique TEMP copy of StockQAbyLLM>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 75,
+      "skipped_count": 0,
+      "network_used": false,
+      "output_path": "docs/implementation/contracts/validation-Q04-route-suite-sandbox-r5-2026-09-25.log",
+      "output_sha256": "B8DC01D35B90147AF2ED4FE484A01FBAC452EFED40FD2F75E352961D36552CD0",
+      "explanation": "Corrected isolated-CWD rerun passed all 75 unit and CLI cases; credential variables were removed from the test process and the unique TEMP sandbox was cleaned. git diff --check on the three authorized route-recovery files also passed. Offline/mock evidence only."
+    }
+  ],
+  "review": {
+    "reviewer": "/root/q04_independent_review",
+    "snapshot": {
+      "StockQAbyLLM HEAD": "3c685dda28f67a00bd653ad257a121d3b8edebb8",
+      "sha256_by_file": {
+        "StockQAbyLLM/.gitignore": "3B1043A72691DF59C077F0DB4297096ABB21D482E3421C550DB3F239D9059550",
+        "StockQAbyLLM/src/config/llm_config.py": "DD9257762DFDC0EC54538C653DCB057D58962901210607BDCB7D944A74D2B350",
+        "StockQAbyLLM/src/runners/llm_runner.py": "579CDE5A1FB21604E0A2BDCA5667C880E45E78864602E2BD664F23A2DBEDD2A4",
+        "StockQAbyLLM/src/utils/llm_integration.py": "144212285E8E7BDDFAEE30907CE2D493471677DADF43591246C6701E31C2DC7C",
+        "StockQAbyLLM/src/providers/llm_client.py": "207AE40383DA230AD544116DFB13CABC1963FADA117EE9C0670F601DFEAF099F",
+        "StockQAbyLLM/src/providers/llm_provider.py": "542376B016C80F4175B93DBE9CE793391357A72767E650467F1DEEE546C27A97",
+        "StockQAbyLLM/src/config/quick_scan_model_policy.schema.json": "E6188237EF0FD07C4EE63C1EAB25AB250426BA7C12E6D0BC71A9D4AB1D7D0455",
+        "StockQAbyLLM/tests/unit/test_llm_config.py": "B82B96FC9FA094664F91AE22885CC164108E67CC7C18E12D7B35C936DC5ED5CE",
+        "StockQAbyLLM/tests/unit/test_llm_integration.py": "D03B9DADB0A52F7F1D434F201F19AE43DE9B4DEF35AA61483DF81D5E25290860",
+        "StockQAbyLLM/tests/integration/test_quick_scan_cli.py": "1AB925583B035DBE2FF28F38518A6825F738435FA610AAC7827519A49C9BE692",
+        "docs/implementation/contracts/validation-Q04-schema-mismatch-red-r4-2026-09-24.log": "A039A11BE3B80012099C393A6EA7B4C4D3686F5902DAE37305536A9F63108B3E",
+        "docs/implementation/contracts/validation-Q04-schema-mismatch-green-r4-2026-09-24.log": "08446E6FF0A242C6603EBBB7E5B5106A801F3482D221ECD41BF29BB17865D02D",
+        "docs/implementation/contracts/validation-Q04-stockqa-targeted-final-r4-2026-09-24.log": "5E97508A494D8984E9B21F1C8AF03BFAD1ECBCC5566026ABE912086364FA6E2A"
+      }
+    },
+    "result": "verified_for_authorized_B1_B2_scope",
+    "findings": [],
+    "report_path": "docs/implementation/reviews/Q04/final-r4-review.md",
+    "report_sha256": "F61AD1B64652F0F72112AFAC72BD27D4AF46F8F08EB9A00095E9549867C59100",
+    "r4_followup": "passed",
+    "limitations": [
+      "Q04整体仍partial：PAR-03跨进程容量/共享配额协调、LLM-06持久化retry_wait/有界恢复、LLM-10运行中热更新派发边界、PAR-08 StockWiki设置闭环未实施或未验证。",
+      "应用validator比JSON Schema更严格地要求required_capabilities同时含web_search和structured_output；独立review认为该差异符合quick-scan执行要求且非阻断。",
+      "schema现为Git可见的untracked文件，尚未stage；未提交StockQA任何修改。"
+    ],
+    "validation_logs": {
+      "targeted_pytest_sha256": "5E97508A494D8984E9B21F1C8AF03BFAD1ECBCC5566026ABE912086364FA6E2A",
+      "independent_pytest_sha256": "53F657BF22D006FE3F5890D8756F1B5D9E4628DAA034790E07ABB99CD6ACBB92",
+      "independent_schema_fixture_sha256": "63ECAB95EA6E245155A7CEA43923CD75E4D2616382E1A9DA061A6EAECD9FAAB5"
+    },
+    "history": [
+      {
+        "result": "needs_revision",
+        "report_path": "docs/implementation/reviews/Q04/follow-up-review.md",
+        "report_sha256": "4CBB3172D9332C2C16982E4A4E610F7CEE4BC124FC7AE4A430C3163B889DC263",
+        "summary": "B2通过；B1因pricing_ref条件、200字符上限和comparison正预算三项schema差异需修订，schema被*.json忽略。"
+      },
+      {
+        "result": "verified_for_authorized_B1_B2_scope",
+        "report_path": "docs/implementation/reviews/Q04/final-r4-review.md",
+        "report_sha256": "F61AD1B64652F0F72112AFAC72BD27D4AF46F8F08EB9A00095E9549867C59100",
+        "summary": "r3三项finding关闭；最终151项定向测试通过；只验证此次授权文件和离线边界。"
+      }
+    ]
+  },
+  "rollback_evidence": "The current StockQA working tree contains other user/process edits and must not be reverted as a whole. The 75-case offline recheck copied only src and two selected test files into a unique TEMP sandbox; it removed all test credential variables and cleaned the sandbox. MiniMax probes included a direct successful web_search on api.minimaxi.com, text-only output on api.minimax.cn, and HTTP 401 on api.minimax.io. DeepSeek's Anthropic-compatible route returned live search results but reported two searches despite max_uses=1. These direct API probes did not modify repository files. No StockQA change was staged or committed.",
+  "open_issues": [
+    "PAR-03: preferred model capacity slots and shared quota windows are not coordinated atomically across workers.",
+    "LLM-06: provider dispatch now reports bounded retry_wait_recommended/scheduled=false and applies in-process quota/rate-limit cooldowns, but durable retry scheduling, a persisted next_retry_at, restart recovery, and half-open probes remain unimplemented.",
+    "LLM-10: policy hot-reload boundaries for in-flight versus not-yet-dispatched questions remain unimplemented/unverified.",
+    "PAR-08: StockWiki UI/CLI/runner settings flow to the StockQA effective policy is not implemented; no StockWiki files were written.",
+    "Q02 LLM-01: no complete live StockQA E2E with a valid search-capable provider receipt has been completed. Direct MiniMax and DeepSeek provider search probes are evidence only, not the StockQA public CLI path; DeepSeek max_uses behavior also needs investigation."
+  ],
+  "next_task": "Continue Q04 durable retry/persistence, cross-process quotas, policy hot-reload boundary and StockWiki configuration ownership as separate verified changes; retain live provider search as a separate Q02 gate.",
+  "resume_from": "B1/B2 policy validation remains verified for its r4 snapshot. Route-recovery r7 four-file fixes are independently verified for the offline fallback/receipt scope with 114 isolated tests; Q04 remains partial for persistent retry scheduling, cross-process quotas, hot reload and StockWiki integration.",
+  "post_review_shared_changes": {
+    "task": "Q01/Q03 r2 remediation: preserve consistent nested answers and prevent metadata fallback on duplicate-key JSON",
+    "files": {
+      "StockQAbyLLM/src/providers/llm_response_parser.py": "9D5EB7D58DACFED1DFFB605ECA504D8A9EC6B6C39A5E2F4341D0A9B6F58AA867",
+      "StockQAbyLLM/tests/unit/test_llm_response_parser.py": "3BF0D736CCE8696CAA2F70AD201A3C7BEEA1CDA118CE43EC8C10252A174A8259",
+      "StockQAbyLLM/tests/integration/test_quick_scan_cli.py": "E242EC7E6B1EA82C6AD056A644CC091901ACEBA3633E525EE2093B0D75955843"
+    },
+    "validation_log": "docs/implementation/contracts/validation-Q01-Q03-regression-final-r3-2026-09-24.log",
+    "validation_log_sha256": "DB02BABCAC96766874A09AED514C35A1BDD9EAB6D695CD97785B1DA09D4F44F7",
+    "result": "276_passed_including_Q04_policy_and_fallback_tests; local_full_suite_222_passed_139_subtests",
+    "explanation": "Later Q01/Q03-authorized edits reused Q04 shared CLI test path and changed parser. Historical Q04 r4 review hashes remain under review.snapshot/history; this section binds current bytes and rerun suite."
+  },
+  "route_recovery_follow_up": {
+    "implementation_candidate": {
+      "StockQAbyLLM/src/utils/llm_integration.py": "3C7F254FC23BC07417B706009272663E1966A96D6871ED76F7B481942D0A48C3",
+      "StockQAbyLLM/tests/unit/test_llm_integration.py": "735603575B8D1791C242F18368FE97A65011230B86AF0E2B6C1CB32934450290",
+      "StockQAbyLLM/tests/integration/test_quick_scan_cli.py": "0D61D7856707D3F20F0F7425C7F2A41389839F36E365D2772F434FF07FFAEF6A"
+    },
+    "independent_review": "r6_needs_revision; r7_verified_for_four_file_offline_scope",
+    "validation_output_path": "docs/implementation/contracts/validation-Q04-route-suite-sandbox-r6-2026-09-25.log",
+    "validation_output_sha256": "EE73A025BB66B8A5D4A1A00EE2ECA29C6259DCAA13AF9E5601D7682416646766",
+    "scope_note": "The r6 candidate retains nonblocking quota/rate-limit cooldowns, per-run route suppression, runtime-search failure fallback, uncertain timeout receipts, and retry_wait_recommended with scheduled=false; it also retries a short Retry-After once per route, capped at 2 seconds, before falling back. Isolated tests and Black/diff checks pass. Persistent scheduling, public JSON dispatch_outcome serialization, cross-process quota coordination, and StockWiki integration remain open.",
+    "r7_remediation": {
+      "status": "verified_for_four_file_offline_scope",
+      "implementation_sha256": {
+        "StockQAbyLLM/src/utils/llm_integration.py": "484EEC0A246C93DF0D38EAB2A6DAE33B4E76EA43BD8CC46178B50B9749136581",
+        "StockQAbyLLM/src/core/models.py": "16C4A24C2204DF83E9AEC75706AA85EFC697306D8188846AFC47DE930BE3F589",
+        "StockQAbyLLM/tests/unit/test_llm_integration.py": "DBA955A39DFEC02D33859383EBA10C9351C87E07486DB931A4FB8F06C59A9518",
+        "StockQAbyLLM/tests/unit/test_models.py": "8DD428176294246F774B1592D8A0C48B98E1765B08A7220BA5F5A2F6BDEA8BDC"
+      },
+      "independent_tests": "114 passed in 3.16s; production cascade-to-public-result probes passed",
+      "review_report": "docs/implementation/reviews/Q04/r7-independent-review-2026-09-26.md",
+      "review_report_sha256": "DA7A6A010E1F616FBE74D9D00CDAA9E32D90248857825BA43FB28DDC0D797A65",
+      "network_used": false,
+      "scope_note": "Closes r6 findings: a successful backup after primary failure, terminal no_results insufficient_evidence, and public dispatch_outcome serialization. Does not implement durable retry, cross-worker quota, policy hot reload, StockWiki configuration, or live Q02 provider search."
+    },
+    "history": [
+      {
+        "candidate": "r5",
+        "implementation_sha256": {
+          "StockQAbyLLM/src/utils/llm_integration.py": "4380658FE7E43CAF6CC339D79F6B3F8EB84757FA25A28F5CF27025964C200186",
+          "StockQAbyLLM/tests/unit/test_llm_integration.py": "B8FA6202DE435F4BD9D383D16658BF3A690BA14DB934F60D8586756F890CD21B",
+          "StockQAbyLLM/tests/integration/test_quick_scan_cli.py": "0D61D7856707D3F20F0F7425C7F2A41389839F36E365D2772F434FF07FFAEF6A"
+        },
+        "review_result": "needs_revision",
+        "review_report": "docs/implementation/reviews/Q04/route-recovery-r5-review.md",
+        "finding_addressed_in_r6": "Short Retry-After should receive one bounded wait/retry before routing to the next provider; long waits remain nonblocking fallback."
+      }
+    ]
+  }
+}

@@ -1,0 +1,1184 @@
+Expected-red schema mismatch regressions
+CWD/TEMP/TMP: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6
+
+FFFFFFFFFFFFFFFFFFFF                                                     [100%]
+================================== FAILURES ===================================
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-200_0] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B4DF40>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints0')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCCE00>
+message = '200', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints0\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints0\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-200_1] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38EAC8D0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints1')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCCEA0>
+message = '200', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: '200'
+E         Actual message: 'models[0].quota_group引用不存在的组: account-a'
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints1\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints1\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-200_2] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38EAD250>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints2')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCCF40>
+message = '200', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints2\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints2\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-200_3] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38BF2E40>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints3')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCCFE0>
+message = '200', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: '200'
+E         Actual message: '模型策略引用了不存在的StockQA提供商配置: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints3\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints3\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-200_4] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38BF3000>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints4')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD080>
+message = '200', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints4\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints4\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-200_5] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38FB5F70>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints5')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD120>
+message = '200', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: '200'
+E         Actual message: 'models[0].quota_group引用不存在的组: qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints5\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints5\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-pricing_ref0] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38FB6F90>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints6')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD1C0>
+message = 'pricing_ref', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints6\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints6\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-pricing_ref1] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B91B80>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints7')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD260>
+message = 'pricing_ref', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints7\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints7\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-comparison.max_cost] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B92030>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints8')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD300>
+message = 'comparison.max_cost', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints8\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints8\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[load-<lambda>-comparison.max_requests] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B92080>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints9')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD3A0>
+message = 'comparison.max_requests', operation = 'load'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints9\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints9\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-200_0] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B920D0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints10')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCCE00>
+message = '200', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints10\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints10\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-200_1] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B92120>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints11')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCCEA0>
+message = '200', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: '200'
+E         Actual message: 'models[0].quota_group引用不存在的组: account-a'
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints11\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints11\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-200_2] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B921C0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints12')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCCF40>
+message = '200', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints12\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints12\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-200_3] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B91AE0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints13')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCCFE0>
+message = '200', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: '200'
+E         Actual message: '模型策略引用了不存在的StockQA提供商配置: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints13\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints13\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-200_4] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B91B30>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints14')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD080>
+message = '200', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints14\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints14\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-200_5] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B914F0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints15')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD120>
+message = '200', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: '200'
+E         Actual message: 'models[0].quota_group引用不存在的组: qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints15\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints15\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-pricing_ref0] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B92210>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints16')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD1C0>
+message = 'pricing_ref', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints16\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints16\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-pricing_ref1] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B923A0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints17')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD260>
+message = 'pricing_ref', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints17\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints17\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-comparison.max_cost] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B92440>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints18')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD300>
+message = 'comparison.max_cost', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints18\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints18\llm_apis.json
+_ TestQuickScanModelPolicy.test_policy_schema_constraints_fail_closed[save-<lambda>-comparison.max_requests] _
+
+self = <tests.unit.test_llm_config.TestQuickScanModelPolicy object at 0x000001ED38B924E0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq04red88a0dfe6/pytest/test_policy_schema_constraints19')
+mutate = <function TestQuickScanModelPolicy.<lambda> at 0x000001ED38BCD3A0>
+message = 'comparison.max_requests', operation = 'save'
+
+    @pytest.mark.parametrize(
+        "mutate, message",
+        [
+            (lambda p: p.update(policy_id="p" * 201), "200"),
+            (lambda p: p["quota_groups"][0].update(id="g" * 201), "200"),
+            (lambda p: p["models"][0].update(id="r" * 201), "200"),
+            (lambda p: p["models"][0].update(provider_config_ref="x" * 201), "200"),
+            (lambda p: p["models"][0].update(model="m" * 201), "200"),
+            (lambda p: p["models"][0].update(quota_group="q" * 201), "200"),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=None
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["cost_policy"].update(
+                    pricing_basis="verified_rate_card", pricing_ref=""
+                ),
+                "pricing_ref",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=0, max_requests=1),
+                "comparison.max_cost",
+            ),
+            (
+                lambda p: p["comparison"].update(enabled=True, max_cost=1, max_requests=0),
+                "comparison.max_requests",
+            ),
+        ],
+    )
+    @pytest.mark.parametrize("operation", ["load", "save"])
+    def test_policy_schema_constraints_fail_closed(self, tmp_path, mutate, message, operation):
+        policy = _quick_scan_policy()
+        mutate(policy)
+        initial = _llm_config_content(policy if operation == "load" else None)
+        path = tmp_path / "llm_apis.json"
+        path.write_text(json.dumps(initial), encoding="utf-8")
+        before = path.read_bytes()
+        manager = LLMConfig(str(path))
+    
+>       with pytest.raises(ValueError, match=message):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py:722: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints19\llm_apis.json
+------------------------------ Captured log call ------------------------------
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq04red88a0dfe6\pytest\test_policy_schema_constraints19\llm_apis.json
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-200_0]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-200_1]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-200_2]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-200_3]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-200_4]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-200_5]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-pricing_ref0]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-pricing_ref1]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-comparison.max_cost]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[load-<lambda>-comparison.max_requests]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-200_0]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-200_1]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-200_2]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-200_3]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-200_4]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-200_5]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-pricing_ref0]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-pricing_ref1]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-comparison.max_cost]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_config.py::TestQuickScanModelPolicy::test_policy_schema_constraints_fail_closed[save-<lambda>-comparison.max_requests]
+20 failed in 1.02s
+
+Pytest exit (expected nonzero before fix): 1
+
+Temporary root removed: True
+

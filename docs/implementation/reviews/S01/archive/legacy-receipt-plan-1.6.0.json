@@ -1,0 +1,59 @@
+{
+  "task_id": "S01",
+  "status": "verified",
+  "owner": "iqs",
+  "plan_version": "1.6.0",
+  "dependency_receipts": ["docs/implementation/reviews/G0/independent-final-review.md"],
+  "implementation_snapshot": {
+    "scripts/question_sets.py": "A49BDB7BF23F99B0724BA7EC01BCAA6023A8DE37E6EF65BCED5D1A51EBF760EC",
+    "questions/catalog.json": "4C830DD60A27B019E3A86215241EBD9B886241E7C25AF791E406081E9AFF285C",
+    "tests/test_question_sets.py": "8BD50F4C647470D4B97A67C66B970FD4351DBBB6BB2991C9D97F4FD303100EDE",
+    "references/scoring.md": "C3A7AB99829E38DBE558AB89267D42C11025139FC3189BDA883D3CB0D68E43E7"
+  },
+  "checks": [
+    {"case_id":"SC-08","result":"passed","selector":"test_optional_diagnostics_do_not_change_any_dimension_or_quality_score"},
+    {"case_id":"SC-09","result":"passed","selector":"test_critical_failure_cannot_be_averaged_away and test_critical_unknown_and_inapplicable_are_not_treated_as_cleared"},
+    {"case_id":"SC-10","result":"passed","selector":"test_quick_covers_core_judgments_without_automatic_dupont_or_porter"},
+    {"case_id":"SC-11","result":"passed","selector":"test_s01_type_replacements_keep_construct_and_scope plus tests/test_metrics_contract.py"},
+    {"case_id":"REC-04","result":"specified_not_executed","selector":"requires StockWiki all/quality/recovery query entry points; local recovery-watch tests are supporting unit evidence only"},
+    {"case_id":"MATRIX-07","result":"passed","selector":"test_s01_context_questions_cannot_change_core_construct_summary"}
+  ],
+  "validation": {
+    "targeted": "40 passed, 76 subtests passed",
+    "full": "192 passed, 112 subtests passed",
+    "raw_logs": [
+      {
+        "path": "docs/implementation/contracts/validation-S01-targeted-2026-09-24.log",
+        "sha256": "72A39DE9395E490EA231F0C203882CBA9320CFFEFEFAE91FD86B565D982C968A"
+      },
+      {
+        "path": "docs/implementation/contracts/validation-S01-full-2026-09-24.log",
+        "sha256": "743419DD96BCE3B6E458CBBBBEFD640B0F2D4554CD1EB23EC1419401DE3BBB92"
+      }
+    ],
+    "skipped": 0,
+    "network_used": false,
+    "product_tests_executed": false
+  },
+  "review": {
+    "reviewer": "/root/g0_independent_review",
+    "result": "verified_for_local_implementation_scope",
+    "reviewed_receipt_sha256": "EA5541B511D5881F9F7222BBCD538C1E08C1DE234CB7F2FC74A88D069078A96C",
+    "findings": [],
+    "reports": [
+      {
+        "path": "docs/implementation/reviews/S01/independent-closure-review.md",
+        "sha256": "7D4B65D3850AB0AAF6A56042C349000C7312D2440AAC5B04C71EF2A251074A67"
+      },
+      {
+        "path": "docs/implementation/reviews/S01/independent-closure-addendum.md",
+        "sha256": "EFC93DA7327CF40D74E655151AE4A8485FCF9387AA02DDE5488BCB77816B57A4"
+      },
+      {
+        "path": "docs/implementation/reviews/S01/independent-raw-log-addendum.md",
+        "sha256": "51C1814F54E06C1754A0A08B600E551CB829668D0A138CAF36FAC7AB775D0AFA"
+      }
+    ]
+  },
+  "scope_statement": "S01 changes only local manifest metric/aggregation mapping. It does not implement StockQA runtime, StockWiki storage/UI, real providers or E2E-06."
+}

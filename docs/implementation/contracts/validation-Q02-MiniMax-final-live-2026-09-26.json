@@ -1,0 +1,55 @@
+{
+  "task_id": "Q02",
+  "status": "latest_code_live_not_verified",
+  "date": "2026-09-26",
+  "provider": "minimax",
+  "model": "MiniMax-M3",
+  "test": "tests/live/test_live_quick_scan.py::test_live_minimax_search_runs_public_company_through_cli_and_cleans_local_artifacts",
+  "subject": "Microsoft Corporation",
+  "question_count": 1,
+  "final_source_sha256": "9977B097B1EB8870C0DA7FD8F61E6D7318A63C050FF6E506C1D8B9724DECBD3B",
+  "final_live_test_sha256": "6E655FFFAB6A39EB8F85DE8A7A92F838FD85C7A6E85CDF5FE4C8D97029F282D7",
+  "attempts": [
+    {
+      "environment": "default_restricted_sandbox",
+      "result": "failed_before_http",
+      "http_status_code": null,
+      "failure_type": "ConnectionError",
+      "temporary_workspace_cleaned": true
+    },
+    {
+      "environment": "default_restricted_sandbox_with_sanitized_diagnostics",
+      "result": "failed_before_http",
+      "http_status_code": null,
+      "failure_type": "ConnectionError",
+      "temporary_workspace_cleaned": true
+    },
+    {
+      "environment": "approved_network_escalation",
+      "result": "provider_responded_search_unverified",
+      "http_status_code": 200,
+      "response_status": "completed",
+      "actual_model": "MiniMax-M3",
+      "search_status": "unverified",
+      "temporary_workspace_cleaned": true
+    },
+    {
+      "environment": "approved_network_escalation_sanitized_diagnostic_retry",
+      "result": "provider_responded_search_unverified",
+      "http_status_code": 200,
+      "response_status": "completed",
+      "actual_model": "MiniMax-M3",
+      "search_status": "unverified",
+      "temporary_workspace_cleaned": true,
+      "test_time_utc": "2026-09-26T08:16:41Z"
+    }
+  ],
+  "interpretation": "The two restricted-sandbox errors do not prove provider failure. Two approved-network responses were HTTP 200/completed but had no validated completed search/source chain, so the live acceptance test correctly failed closed. MiniMax's official Responses API reference lists tool_choice auto/none; the current MiniMax request declares web_search and omits tool_choice, matching its Server Tools example. A prior live success is recorded separately under validation-Q02-MiniMax-cli-live-2026-09-26.json, on earlier source bytes; it does not verify this final revision.",
+  "official_documentation": [
+    "https://platform.minimax.io/docs/guides/server-tools",
+    "https://platform.minimax.io/docs/api-reference/responses-create"
+  ],
+  "test_environment_side_effect": "The StockQA pytest configuration regenerated pre-existing ignored .coverage, coverage.xml, and htmlcov in the StockQA working tree. Their prior bytes were not captured, so they were preserved rather than deleted. Subsequent tests must disable coverage output or run in an isolated copy.",
+  "credentials_recorded": false,
+  "raw_model_response_recorded": false
+}

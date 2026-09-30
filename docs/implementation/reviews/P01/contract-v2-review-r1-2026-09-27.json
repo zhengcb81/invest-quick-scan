@@ -1,0 +1,10 @@
+{
+  "reviewer_id": "codex-q09_budget_design_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "Read-only follow-up review by a separate subagent; the reviewer did not author or modify the reviewed contract, schema, CLI, example, or tests.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "45cf7893c862907a6c8dd0507033248f79a5074c801207a85139d68e6c300346",
+  "open_findings": [],
+  "summary": "The contract now states that the current receipt-v2 verifier blocks every non-passed assertion, including not_applicable. Conditional waivers require a versioned schema, case, approval-evidence, and validator extension. This matches the unchanged schema's status representation, the CLI's pass-only close behavior, and the existing tests."
+}

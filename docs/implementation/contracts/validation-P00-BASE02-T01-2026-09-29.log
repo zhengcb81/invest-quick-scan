@@ -1,0 +1,40 @@
+P00 BASE-02.T01 read-only repository + CodeGraph snapshot
+Captured 2026-09-29 UTC; external Git was invoked with per-command safe.directory and --no-optional-locks; no Git config was changed.
+
+invest-quick-scan: HEAD=25b8d14316c06390450e5a1d8883583bfd039d0d; tracked_changed=47; untracked_entries=444
+  main_questions.json sha256=1a21260b972784e94870006e4f47c74c4ad5804ce21269f10fabd2e2ffb7fc9b
+  questions/catalog.json sha256=252dab9e3f71868a71147ecb7dac64cc187d7d56002b28b266a74f406facaf10
+  scripts/question_sets.py sha256=486e6d547cb8cb1b9f383b459657fada0d3253f005895193c95690de2c7684ab
+  scripts/standard_answers.py sha256=2134ae322a70fb0008321e67f0f98eae26ecf695eb6d469689f244d75eeaea56
+  scripts/task_receipts.py sha256=a917c30d219218dd2ff32e07d6e84cfff799865a5de0ae62e90666ee0b1e9ffb
+  tests/test_question_sets.py sha256=fe20e9b7403f5e5a864262e07e85a8b793d70703f968439944bcbd02a012fadc
+
+StockQAbyLLM: HEAD=3c685dda28f67a00bd653ad257a121d3b8edebb8; tracked_changed=28; untracked_entries=27
+  src/config/json_config_manager.py sha256=6653e92b8e46c2ffcb0dfeb55540e4dd8655c74dd1ad38d8651fee7df497bb75
+  src/providers/llm_client.py sha256=c762f12d44251682bfee43de5ca1ad2a4c64c1c4f73b25bd91776be3813f7d88
+  src/providers/llm_provider.py sha256=03b6d303311f211ff4d0aa7fd95c8bda749446cdd558ee51812bcadcb737fcaf
+  src/providers/llm_response_parser.py sha256=9d5eb7d58dacfed1dffb605eca504d8a9ec6b6c39a5e2f4341d0a9b6f58aa867
+  src/runners/llm_runner.py sha256=e63fdd5890dbce16a057d0140170e3e1e95c9227e45bd8cc1cd14abcd8ed0acc
+  src/services/answer_generator.py sha256=b59840da063d00d7bcaab4ba960b88797f6466a4ead868ba0a7110e4d8fd44f4
+  src/services/search_service.py sha256=cf49ee56a6fdfc9df07316d43da2fb3f86231afeddbb3d3814589ca4d5b16f26
+  src/utils/llm_integration.py sha256=be56dc6a56070aae7b0b53ead4a807c7de141190efee1e9204f9daf48087b040
+  src/utils/quick_scan_provider_health.py sha256=7727fae30c07d08accb3412a2245966e293b58f3f35f071f85f43fed2a95ecf9
+  src/utils/quick_scan_work_store.py sha256=859f7e4cd1266915bb8e301fe208164c09776c2c22e14ea69d0b515be6266ce8
+
+StockWiki: HEAD=f5b8526c78ef0bc7df27885da043ce5a2534fffb; tracked_changed=1; untracked_entries=3
+  stockwiki/quick_scan_store.py sha256=6b4da0e7827a265614b9ee18fa20635669addf99cf66314b33898884bcdcfa34
+  tests/test_quick_scan_store.py sha256=7880f9e22343dcf0ff52acf373bca9d53c5cde76e87bb66ef9cf1a54f0dfad20
+  stockwiki/crosslink.py sha256=483ec094cdba928c0afd40ccc11ff9b7b601e368e025ba8a9f887694391b07eb
+
+company-wiki: HEAD=25aa51b104a90ace5ca05191ed3190f9d35b813a; tracked_changed=50; untracked_entries=3
+  src/company_wiki/source_catalog/security_identity.py sha256=656cb235ceebbc6788342e80e74200d324d95e182481ca924aec9333c8f30eac
+  src/company_wiki/source_catalog/identity_cli.py sha256=989cf4181f7c8b2084663058fcd84a526c5d03a577cc668983a49dd87d1572a2
+
+CodeGraph status tool snapshots:
+  invest-quick-scan: 53 files / 1,660 nodes / 3,540 edges; healthy.
+  StockQAbyLLM: 111 files / 2,322 nodes / 5,817 edges; healthy.
+  StockWiki: 262 files / 4,490 nodes / 6,922 edges; healthy.
+  company-wiki: 627 files / 13,033 nodes / 24,954 edges; healthy.
+Known current StockWiki quick_scan_store.py and its tests are untracked and absent from CodeGraph search/index; exact known paths were read directly after querying CodeGraph.
+StockQAbyLLM has no root AGENTS.md. StockWiki and company-wiki root AGENTS.md were read; they are recorded in the dated baseline.
+No external tests, live search/API, document download, security-master refresh, or external writes were performed.

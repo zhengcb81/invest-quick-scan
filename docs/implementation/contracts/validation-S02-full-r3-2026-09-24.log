@@ -1,0 +1,26 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: C:\Users\郑曾波\Projects\invest-quick-scan
+plugins: Faker-40.19.1, asyncio-1.3.0, base-url-2.1.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 220 items
+
+tests\test_deployment_contract.py .............                          [  5%]
+tests\test_exchange_and_query_contract.py ..............                 [ 12%]
+tests\test_freshness_and_jobs_contract.py ...............                [ 19%]
+tests\test_g0_manifest.py ....                                           [ 20%]
+tests\test_g0_regressions.py .......                                     [ 24%]
+tests\test_identity_contract.py .....                                    [ 26%]
+tests\test_implementation_plan.py ...................................... [ 43%]
+...                                                                      [ 45%]
+tests\test_live_e2e_sandbox.py .................                         [ 52%]
+tests\test_metrics_contract.py ......                                    [ 55%]
+tests\test_model_policy.py .........                                     [ 59%]
+tests\test_providers_and_budget_contract.py ................             [ 66%]
+tests\test_question_sets.py ............................................ [ 86%]
+.                                                                        [ 87%]
+tests\test_scoring_and_rules_contract.py ........                        [ 90%]
+tests\test_standard_answers.py ....................                      [100%]
+
+============================ 220 passed in 26.97s =============================

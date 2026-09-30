@@ -1,0 +1,80 @@
+.F.FFF......... [100%]
+================================== FAILURES ===================================
+_____ test_current_scope_can_render_a_complete_self_consistent_candidate ______
+
+    def test_current_scope_can_render_a_complete_self_consistent_candidate():
+>       assert manifest.verify(manifest.render()) == []
+E       AssertionError: assert ['hash mismat...26-09-29.log'] == []
+E         
+E         Left contains one more item: 'hash mismatch: docs/implementation/contracts/validation-IQS-LANE-implementation-plan-tests-r2-2026-09-29.log'
+E         Use -v to get more diff
+
+tests\test_g0_manifest.py:29: AssertionError
+________________________ test_changed_hash_is_detected ________________________
+
+    def test_changed_hash_is_detected():
+        value = copy.deepcopy(manifest.render())
+        path = next(iter(value["artifact_hashes"]))
+        value["artifact_hashes"][path] = "0" * 64
+>       assert manifest.verify(value) == [f"hash mismatch: {path}"]
+E       AssertionError: assert ['hash mismat...26-09-29.log'] == ['hash mismatch: SKILL.md']
+E         
+E         Left contains one more item: 'hash mismatch: docs/implementation/contracts/validation-IQS-LANE-implementation-plan-tests-r2-2026-09-29.log'
+E         Use -v to get more diff
+
+tests\test_g0_manifest.py:46: AssertionError
+____________ test_persistent_test_fixtures_are_in_candidate_scope _____________
+
+    def test_persistent_test_fixtures_are_in_candidate_scope():
+        fixture_paths = {
+            path.relative_to(ROOT).as_posix()
+            for path in (ROOT / "tests/fixtures").glob("**/*")
+            if path.is_file()
+        }
+        candidate = manifest.render()
+        assert fixture_paths
+        assert fixture_paths.issubset(candidate["artifact_hashes"])
+>       assert manifest.verify(candidate) == []
+E       AssertionError: assert ['hash mismat...26-09-29.log'] == []
+E         
+E         Left contains one more item: 'hash mismatch: docs/implementation/contracts/validation-IQS-LANE-implementation-plan-tests-r2-2026-09-29.log'
+E         Use -v to get more diff
+
+tests\test_g0_manifest.py:58: AssertionError
+______ test_every_g0_read_first_input_is_in_declared_scope_and_manifest _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000011F13A9EC40>
+
+    def test_every_g0_read_first_input_is_in_declared_scope_and_manifest(monkeypatch):
+        plan = json.loads((ROOT / "docs/implementation/tasks.json").read_text(encoding="utf-8"))
+        g0 = next(task for task in plan["tasks"] if task["id"] == "G0")
+        required = set(g0["read_first"])
+        candidate = manifest.render()
+        assert required == {
+            "docs/stock-pool-design.md",
+            "docs/universe-and-operations-design.md",
+        }
+        assert required.issubset(candidate["artifact_hashes"])
+>       assert manifest.verify(candidate) == []
+E       AssertionError: assert ['hash mismat...26-09-29.log'] == []
+E         
+E         Left contains one more item: 'hash mismatch: docs/implementation/contracts/validation-IQS-LANE-implementation-plan-tests-r2-2026-09-29.log'
+E         Use -v to get more diff
+
+tests\test_g0_manifest.py:71: AssertionError
+============================== warnings summary ===============================
+..\..\..\..\Miniconda\Lib\site-packages\_pytest\cacheprovider.py:469
+  C:\Miniconda\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path C:\Users\֣����\Projects\invest-quick-scan\.pytest_cache\v\cache\nodeids: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\Projects\\invest-quick-scan\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+..\..\..\..\Miniconda\Lib\site-packages\_pytest\cacheprovider.py:423
+  C:\Miniconda\Lib\site-packages\_pytest\cacheprovider.py:423: PytestCacheWarning: could not create cache path C:\Users\֣����\Projects\invest-quick-scan\.pytest_cache\v\cache\lastfailed: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\Projects\\invest-quick-scan\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_g0_manifest.py::test_current_scope_can_render_a_complete_self_consistent_candidate
+FAILED tests/test_g0_manifest.py::test_changed_hash_is_detected - AssertionEr...
+FAILED tests/test_g0_manifest.py::test_persistent_test_fixtures_are_in_candidate_scope
+FAILED tests/test_g0_manifest.py::test_every_g0_read_first_input_is_in_declared_scope_and_manifest
+4 failed, 11 passed, 2 warnings, 186 subtests passed in 11.50s

@@ -1,0 +1,486 @@
+{
+  "example_only": true,
+  "notice": "所有标识、版本、散列、路径、运行状态均为虚构；不对应实际安装/成功运行/费用回执。",
+  "release_set": {
+    "schema_version": "1.0.0",
+    "release_set_id": "REL_FIXTURE_1",
+    "created_at": "2026-09-23T12:00:00Z",
+    "components": [
+      {
+        "component_id": "iqs",
+        "required": true,
+        "version": "1.4.0",
+        "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000001",
+        "source_ref": "fixture:iqs",
+        "entrypoint": {
+          "kind": "module",
+          "value": "fixture://iqs"
+        },
+        "interpreter": {
+          "python_version": "3.11",
+          "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000b",
+          "dependency_lock_sha256": "0000000000000000000000000000000000000000000000000000000000000015"
+        },
+        "contract_versions": {
+          "identity_schema": "1.0.0",
+          "answer_schema": "1.0.0",
+          "observation_schema": "1.0.0",
+          "question_catalog": "1.0.0",
+          "metric_schema": "1.0.0",
+          "score_schema": "1.0.0",
+          "rule_schema": "1.0.0",
+          "work_schema": "1.0.0",
+          "model_policy_schema": "2.0.0",
+          "exchange_schema": "1.0.0",
+          "query_schema": "1.0.0",
+          "deployment_schema": "1.0.0"
+        },
+        "capabilities": [
+          "quick_scan.read",
+          "quick_scan.lifecycle"
+        ]
+      },
+      {
+        "component_id": "stockqa",
+        "required": true,
+        "version": "1.4.0",
+        "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+        "source_ref": "fixture:stockqa",
+        "entrypoint": {
+          "kind": "module",
+          "value": "fixture://stockqa"
+        },
+        "interpreter": {
+          "python_version": "3.10",
+          "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000c",
+          "dependency_lock_sha256": "0000000000000000000000000000000000000000000000000000000000000016"
+        },
+        "contract_versions": {
+          "identity_schema": "1.0.0",
+          "answer_schema": "1.0.0",
+          "observation_schema": "1.0.0",
+          "question_catalog": "1.0.0",
+          "metric_schema": "1.0.0",
+          "score_schema": "1.0.0",
+          "rule_schema": "1.0.0",
+          "work_schema": "1.0.0",
+          "model_policy_schema": "2.0.0",
+          "exchange_schema": "1.0.0",
+          "query_schema": "1.0.0",
+          "deployment_schema": "1.0.0"
+        },
+        "capabilities": [
+          "quick_scan.read",
+          "quick_scan.lifecycle"
+        ]
+      },
+      {
+        "component_id": "stockwiki",
+        "required": true,
+        "version": "1.4.0",
+        "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+        "source_ref": "fixture:stockwiki",
+        "entrypoint": {
+          "kind": "cli",
+          "value": "fixture://stockwiki"
+        },
+        "interpreter": {
+          "python_version": "3.11",
+          "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000d",
+          "dependency_lock_sha256": "0000000000000000000000000000000000000000000000000000000000000017"
+        },
+        "contract_versions": {
+          "identity_schema": "1.0.0",
+          "answer_schema": "1.0.0",
+          "observation_schema": "1.0.0",
+          "question_catalog": "1.0.0",
+          "metric_schema": "1.0.0",
+          "score_schema": "1.0.0",
+          "rule_schema": "1.0.0",
+          "work_schema": "1.0.0",
+          "model_policy_schema": "2.0.0",
+          "exchange_schema": "1.0.0",
+          "query_schema": "1.0.0",
+          "deployment_schema": "1.0.0"
+        },
+        "capabilities": [
+          "quick_scan.read",
+          "quick_scan.lifecycle"
+        ]
+      },
+      {
+        "component_id": "theme",
+        "required": true,
+        "version": "1.4.0",
+        "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000004",
+        "source_ref": "fixture:theme",
+        "entrypoint": {
+          "kind": "skill",
+          "value": "fixture://theme"
+        },
+        "interpreter": {
+          "python_version": "3.11",
+          "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000e",
+          "dependency_lock_sha256": "0000000000000000000000000000000000000000000000000000000000000018"
+        },
+        "contract_versions": {
+          "identity_schema": "1.0.0",
+          "answer_schema": "1.0.0",
+          "observation_schema": "1.0.0",
+          "question_catalog": "1.0.0",
+          "metric_schema": "1.0.0",
+          "score_schema": "1.0.0",
+          "rule_schema": "1.0.0",
+          "work_schema": "1.0.0",
+          "model_policy_schema": "2.0.0",
+          "exchange_schema": "1.0.0",
+          "query_schema": "1.0.0",
+          "deployment_schema": "1.0.0"
+        },
+        "capabilities": [
+          "quick_scan.read",
+          "quick_scan.lifecycle"
+        ]
+      },
+      {
+        "component_id": "industry",
+        "required": true,
+        "version": "1.4.0",
+        "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000005",
+        "source_ref": "fixture:industry",
+        "entrypoint": {
+          "kind": "skill",
+          "value": "fixture://industry"
+        },
+        "interpreter": {
+          "python_version": "3.11",
+          "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000f",
+          "dependency_lock_sha256": "0000000000000000000000000000000000000000000000000000000000000019"
+        },
+        "contract_versions": {
+          "identity_schema": "1.0.0",
+          "answer_schema": "1.0.0",
+          "observation_schema": "1.0.0",
+          "question_catalog": "1.0.0",
+          "metric_schema": "1.0.0",
+          "score_schema": "1.0.0",
+          "rule_schema": "1.0.0",
+          "work_schema": "1.0.0",
+          "model_policy_schema": "2.0.0",
+          "exchange_schema": "1.0.0",
+          "query_schema": "1.0.0",
+          "deployment_schema": "1.0.0"
+        },
+        "capabilities": [
+          "quick_scan.read",
+          "quick_scan.lifecycle"
+        ]
+      },
+      {
+        "component_id": "company_wiki",
+        "required": false,
+        "version": "0.1.0",
+        "artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000006",
+        "source_ref": "fixture:company_wiki",
+        "entrypoint": {
+          "kind": "module",
+          "value": "fixture://company_wiki"
+        },
+        "interpreter": {
+          "python_version": "3.10",
+          "executable_sha256": "0000000000000000000000000000000000000000000000000000000000000010",
+          "dependency_lock_sha256": "000000000000000000000000000000000000000000000000000000000000001a"
+        },
+        "contract_versions": {
+          "identity_schema": "1.0.0",
+          "answer_schema": "1.0.0",
+          "observation_schema": "1.0.0",
+          "question_catalog": "1.0.0",
+          "metric_schema": "1.0.0",
+          "score_schema": "1.0.0",
+          "rule_schema": "1.0.0",
+          "work_schema": "1.0.0",
+          "model_policy_schema": "2.0.0",
+          "exchange_schema": "1.0.0",
+          "query_schema": "1.0.0",
+          "deployment_schema": "1.0.0"
+        },
+        "capabilities": [
+          "quick_scan.read",
+          "quick_scan.lifecycle"
+        ]
+      }
+    ],
+    "required_gates": [
+      "G0",
+      "G1",
+      "G2",
+      "G3",
+      "G4",
+      "G5",
+      "G6"
+    ],
+    "required_consumers": [
+      "theme",
+      "industry"
+    ],
+    "optional_components": [
+      "company_wiki"
+    ],
+    "rollback_set_id": null,
+    "manifest_sha256": "5dfc87073d6447c200da6c531d29f886122afee7d6d7375ef8bf06a0b7b691c7"
+  },
+  "requests": [
+    {
+      "message_type": "request",
+      "schema_version": "1.0.0",
+      "request_id": "REQ_DOCTOR_FIXTURE",
+      "workspace_id": "WS_FIXTURE",
+      "profile_id": "PROFILE_FIXTURE",
+      "operation": "doctor",
+      "expected_release_set_id": "REL_FIXTURE_1",
+      "idempotency_key": "doctor:WS_FIXTURE:PROFILE_FIXTURE",
+      "requested_at": "2026-09-23T12:00:00Z",
+      "payload": {
+        "network_calls": false,
+        "paid_calls": false,
+        "mutating": false
+      }
+    },
+    {
+      "message_type": "request",
+      "schema_version": "1.0.0",
+      "request_id": "REQ_LIVE_FIXTURE",
+      "workspace_id": "WS_FIXTURE",
+      "profile_id": "PROFILE_FIXTURE",
+      "operation": "verify_live",
+      "expected_release_set_id": "REL_FIXTURE_1",
+      "idempotency_key": "live:WS_FIXTURE:PROFILE_FIXTURE",
+      "requested_at": "2026-09-23T12:00:00Z",
+      "payload": {
+        "external_action": "execute_one_live_search_probe",
+        "policy_revision": "POLICY_FIXTURE_V2",
+        "budget_cap": {
+          "max_model_requests": 1,
+          "max_search_requests": 1,
+          "max_input_tokens": 4096,
+          "max_output_tokens": 1024
+        }
+      }
+    }
+  ],
+  "responses": [
+    {
+      "message_type": "response",
+      "schema_version": "1.0.0",
+      "request_id": "REQ_DOCTOR_FIXTURE",
+      "workspace_id": "WS_FIXTURE",
+      "profile_id": "PROFILE_FIXTURE",
+      "operation": "doctor",
+      "responded_at": "2026-09-23T12:00:01Z",
+      "result": {
+        "status": "accepted",
+        "readiness": "offline_ready",
+        "run_id": null,
+        "attached_to_existing": false,
+        "process_spawned": false,
+        "dispatch_started": false,
+        "paid_calls_started": false,
+        "network_calls_started": false,
+        "generic_research_scheduler_started": false,
+        "source_pipeline_started": false,
+        "unowned_process_terminated": false,
+        "readiness_evidence": {
+          "level": "offline_ready",
+          "release_set_id": "REL_FIXTURE_1",
+          "manifest_sha256": "5dfc87073d6447c200da6c531d29f886122afee7d6d7375ef8bf06a0b7b691c7",
+          "checked_at": "2026-09-23T12:00:00Z",
+          "all_required_component_hashes_match": true,
+          "setup_complete": true,
+          "doctor_passed": true,
+          "live_search_receipt_id": null,
+          "paid_usage_receipt_id": null,
+          "gate_evidence": [],
+          "loaded_consumers": [
+            "theme",
+            "industry"
+          ]
+        },
+        "components": [
+          {
+            "component_id": "iqs",
+            "expected_version": "1.4.0",
+            "actual_version": "1.4.0",
+            "expected_artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000001",
+            "actual_loaded_sha256": "0000000000000000000000000000000000000000000000000000000000000001",
+            "status": "healthy",
+            "source_root": "C:\\虚构路径\\项目 源码",
+            "loaded_root": "C:\\虚构路径\\已加载\\iqs",
+            "entrypoint": "fixture://iqs",
+            "executable_path": "C:\\虚构 Python\\python.exe",
+            "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000b",
+            "working_directory": "C:\\虚构路径\\项目 源码",
+            "python_version": "3.11",
+            "contract_versions": {
+              "identity_schema": "1.0.0",
+              "answer_schema": "1.0.0",
+              "observation_schema": "1.0.0",
+              "question_catalog": "1.0.0",
+              "metric_schema": "1.0.0",
+              "score_schema": "1.0.0",
+              "rule_schema": "1.0.0",
+              "work_schema": "1.0.0",
+              "model_policy_schema": "2.0.0",
+              "exchange_schema": "1.0.0",
+              "query_schema": "1.0.0",
+              "deployment_schema": "1.0.0"
+            },
+            "capabilities": [
+              "quick_scan.read",
+              "quick_scan.lifecycle"
+            ],
+            "process_identity": null
+          },
+          {
+            "component_id": "stockqa",
+            "expected_version": "1.4.0",
+            "actual_version": "1.4.0",
+            "expected_artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "actual_loaded_sha256": "0000000000000000000000000000000000000000000000000000000000000002",
+            "status": "healthy",
+            "source_root": "C:\\虚构路径\\项目 源码",
+            "loaded_root": "C:\\虚构路径\\已加载\\stockqa",
+            "entrypoint": "fixture://stockqa",
+            "executable_path": "C:\\虚构 Python\\python.exe",
+            "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000c",
+            "working_directory": "C:\\虚构路径\\项目 源码",
+            "python_version": "3.10",
+            "contract_versions": {
+              "identity_schema": "1.0.0",
+              "answer_schema": "1.0.0",
+              "observation_schema": "1.0.0",
+              "question_catalog": "1.0.0",
+              "metric_schema": "1.0.0",
+              "score_schema": "1.0.0",
+              "rule_schema": "1.0.0",
+              "work_schema": "1.0.0",
+              "model_policy_schema": "2.0.0",
+              "exchange_schema": "1.0.0",
+              "query_schema": "1.0.0",
+              "deployment_schema": "1.0.0"
+            },
+            "capabilities": [
+              "quick_scan.read",
+              "quick_scan.lifecycle"
+            ],
+            "process_identity": null
+          },
+          {
+            "component_id": "stockwiki",
+            "expected_version": "1.4.0",
+            "actual_version": "1.4.0",
+            "expected_artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "actual_loaded_sha256": "0000000000000000000000000000000000000000000000000000000000000003",
+            "status": "healthy",
+            "source_root": "C:\\虚构路径\\项目 源码",
+            "loaded_root": "C:\\虚构路径\\已加载\\stockwiki",
+            "entrypoint": "fixture://stockwiki",
+            "executable_path": "C:\\虚构 Python\\python.exe",
+            "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000d",
+            "working_directory": "C:\\虚构路径\\项目 源码",
+            "python_version": "3.11",
+            "contract_versions": {
+              "identity_schema": "1.0.0",
+              "answer_schema": "1.0.0",
+              "observation_schema": "1.0.0",
+              "question_catalog": "1.0.0",
+              "metric_schema": "1.0.0",
+              "score_schema": "1.0.0",
+              "rule_schema": "1.0.0",
+              "work_schema": "1.0.0",
+              "model_policy_schema": "2.0.0",
+              "exchange_schema": "1.0.0",
+              "query_schema": "1.0.0",
+              "deployment_schema": "1.0.0"
+            },
+            "capabilities": [
+              "quick_scan.read",
+              "quick_scan.lifecycle"
+            ],
+            "process_identity": null
+          },
+          {
+            "component_id": "theme",
+            "expected_version": "1.4.0",
+            "actual_version": "1.4.0",
+            "expected_artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000004",
+            "actual_loaded_sha256": "0000000000000000000000000000000000000000000000000000000000000004",
+            "status": "healthy",
+            "source_root": "C:\\虚构路径\\项目 源码",
+            "loaded_root": "C:\\虚构路径\\已加载\\theme",
+            "entrypoint": "fixture://theme",
+            "executable_path": "C:\\虚构 Python\\python.exe",
+            "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000e",
+            "working_directory": "C:\\虚构路径\\项目 源码",
+            "python_version": "3.11",
+            "contract_versions": {
+              "identity_schema": "1.0.0",
+              "answer_schema": "1.0.0",
+              "observation_schema": "1.0.0",
+              "question_catalog": "1.0.0",
+              "metric_schema": "1.0.0",
+              "score_schema": "1.0.0",
+              "rule_schema": "1.0.0",
+              "work_schema": "1.0.0",
+              "model_policy_schema": "2.0.0",
+              "exchange_schema": "1.0.0",
+              "query_schema": "1.0.0",
+              "deployment_schema": "1.0.0"
+            },
+            "capabilities": [
+              "quick_scan.read",
+              "quick_scan.lifecycle"
+            ],
+            "process_identity": null
+          },
+          {
+            "component_id": "industry",
+            "expected_version": "1.4.0",
+            "actual_version": "1.4.0",
+            "expected_artifact_sha256": "0000000000000000000000000000000000000000000000000000000000000005",
+            "actual_loaded_sha256": "0000000000000000000000000000000000000000000000000000000000000005",
+            "status": "healthy",
+            "source_root": "C:\\虚构路径\\项目 源码",
+            "loaded_root": "C:\\虚构路径\\已加载\\industry",
+            "entrypoint": "fixture://industry",
+            "executable_path": "C:\\虚构 Python\\python.exe",
+            "executable_sha256": "000000000000000000000000000000000000000000000000000000000000000f",
+            "working_directory": "C:\\虚构路径\\项目 源码",
+            "python_version": "3.11",
+            "contract_versions": {
+              "identity_schema": "1.0.0",
+              "answer_schema": "1.0.0",
+              "observation_schema": "1.0.0",
+              "question_catalog": "1.0.0",
+              "metric_schema": "1.0.0",
+              "score_schema": "1.0.0",
+              "rule_schema": "1.0.0",
+              "work_schema": "1.0.0",
+              "model_policy_schema": "2.0.0",
+              "exchange_schema": "1.0.0",
+              "query_schema": "1.0.0",
+              "deployment_schema": "1.0.0"
+            },
+            "capabilities": [
+              "quick_scan.read",
+              "quick_scan.lifecycle"
+            ],
+            "process_identity": null
+          }
+        ],
+        "error_code": null,
+        "message": "纯虚构doctor示例；无网络/付费/进程启动。"
+      }
+    }
+  ]
+}

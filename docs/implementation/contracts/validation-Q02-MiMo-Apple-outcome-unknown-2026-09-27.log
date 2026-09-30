@@ -1,0 +1,6 @@
+Date: 2026-09-27
+Company: Apple Inc. (issuer:US0378331005)
+Provider/model: MiMo / mimo-v2.6-flash
+Run: one public StockQA CLI invocation in a unique temporary CWD/TEMP/TMP root.
+Result: wrapper raised FileNotFoundError while opening the expected result.json after subprocess.run returned. The wrapper did not persist the child return code/stdout/stderr or any response receipt, so it cannot establish whether the provider accepted or completed the request. Classify as outcome_unknown; do not retry this logical question.
+Cleanup: Python TemporaryDirectory exited while unwinding the exception; the isolated root was removed. No answer, source URLs, raw provider payload, API key, webpage, or filing was saved.

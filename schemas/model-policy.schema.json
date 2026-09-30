@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "schema_version": {
-      "const": "1.0.0"
+      "const": "2.0.0"
     },
     "policy_id": {
       "type": "string",
@@ -35,6 +35,13 @@
         "separate_score_and_fact_packs": {
           "const": true
         },
+        "required_capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": ["web_search", "structured_output"]
+          }
+        },
         "on_preferred_capacity_full": {
           "const": "wait"
         },
@@ -47,6 +54,7 @@
         "max_questions_per_pack",
         "one_entity_per_pack",
         "separate_score_and_fact_packs",
+        "required_capabilities",
         "on_preferred_capacity_full",
         "speculative_racing"
       ],
@@ -67,6 +75,10 @@
           "type": "integer",
           "minimum": 0
         },
+        "max_cost_per_attempt": {
+          "type": "number",
+          "minimum": 0
+        },
         "reset_on_restart": {
           "const": false
         }
@@ -75,7 +87,56 @@
         "currency",
         "max_cost",
         "max_requests",
+        "max_cost_per_attempt",
         "reset_on_restart"
+      ],
+      "additionalProperties": false
+    },
+    "cost_policy": {
+      "type": "object",
+      "properties": {
+        "pricing_basis": {
+          "enum": ["verified_rate_card", "user_cap"]
+        },
+        "pricing_ref": {
+          "type": ["string", "null"],
+          "minLength": 1
+        },
+        "include_search_charges": {
+          "const": true
+        },
+        "include_failed_attempts": {
+          "const": true
+        },
+        "reserve_before_dispatch": {
+          "const": true
+        },
+        "unknown_actual_cost_action": {
+          "const": "retain_reservation_and_pause"
+        }
+      },
+      "required": [
+        "pricing_basis",
+        "pricing_ref",
+        "include_search_charges",
+        "include_failed_attempts",
+        "reserve_before_dispatch",
+        "unknown_actual_cost_action"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "pricing_basis": {"const": "verified_rate_card"}
+            },
+            "required": ["pricing_basis"]
+          },
+          "then": {
+            "properties": {
+              "pricing_ref": {"type": "string", "minLength": 1}
+            }
+          }
+        }
       ],
       "additionalProperties": false
     },
@@ -103,13 +164,17 @@
             "type": "integer",
             "minimum": 1,
             "maximum": 86400
+        },
+        "half_open_probe_limit": {
+          "const": 1
           }
         },
         "required": [
           "id",
           "max_in_flight",
           "window_seconds_hint",
-          "unknown_reset_cooldown_seconds"
+          "unknown_reset_cooldown_seconds",
+          "half_open_probe_limit"
         ],
         "additionalProperties": false
       }
@@ -169,8 +234,20 @@
         "on_rate_limit": {
           "const": "respect_retry_after_then_next"
         },
+        "on_server_error": {
+          "const": "bounded_retry_then_next"
+        },
         "on_auth_error": {
           "const": "disable_route_then_next"
+        },
+        "on_invalid_request": {
+          "const": "stop_without_fallback"
+        },
+        "on_malformed_response": {
+          "const": "bounded_retry_then_next"
+        },
+        "on_missing_capability": {
+          "const": "skip_before_dispatch"
         },
         "on_timeout": {
           "const": "reconcile_receipt_before_retry"
@@ -181,6 +258,9 @@
         "on_unknown_answer": {
           "const": "accept_with_gap"
         },
+        "on_fallback_success": {
+          "const": "stop_dispatch_keep_primary_health"
+        },
         "max_attempts_per_dispatch_round": {
           "type": "integer",
           "minimum": 1,
@@ -190,11 +270,50 @@
       "required": [
         "on_quota_exhausted",
         "on_rate_limit",
+        "on_server_error",
         "on_auth_error",
+        "on_invalid_request",
+        "on_malformed_response",
+        "on_missing_capability",
         "on_timeout",
         "on_low_score",
         "on_unknown_answer",
+        "on_fallback_success",
         "max_attempts_per_dispatch_round"
+      ],
+      "additionalProperties": false
+    },
+    "comparison": {
+      "type": "object",
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "max_models_per_question": {"type": "integer", "minimum": 2, "maximum": 8},
+        "max_cost": {"type": "number", "minimum": 0},
+        "max_requests": {"type": "integer", "minimum": 0},
+        "same_input_and_cutoff_required": {"const": true},
+        "separate_from_primary_fallback": {"const": true}
+      },
+      "required": [
+        "enabled",
+        "max_models_per_question",
+        "max_cost",
+        "max_requests",
+        "same_input_and_cutoff_required",
+        "separate_from_primary_fallback"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {"enabled": {"const": true}},
+            "required": ["enabled"]
+          },
+          "then": {
+            "properties": {
+              "max_cost": {"exclusiveMinimum": 0},
+              "max_requests": {"minimum": 1}
+            }
+          }
+        }
       ],
       "additionalProperties": false
     },
@@ -230,10 +349,37 @@
     "configured",
     "dispatch",
     "budget",
+    "cost_policy",
     "quota_groups",
     "models",
     "fallback",
+    "comparison",
     "resume"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {"configured": {"const": true}},
+        "required": ["configured"]
+      },
+      "then": {
+        "properties": {
+          "budget": {
+            "properties": {
+              "max_cost": {"exclusiveMinimum": 0},
+              "max_requests": {"minimum": 1},
+              "max_cost_per_attempt": {"exclusiveMinimum": 0}
+            }
+          },
+          "models": {
+            "contains": {
+              "properties": {"enabled": {"const": true}},
+              "required": ["enabled"]
+            }
+          }
+        }
+      }
+    }
   ],
   "additionalProperties": false
 }

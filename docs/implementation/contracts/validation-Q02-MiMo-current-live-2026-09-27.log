@@ -1,0 +1,95 @@
+UTC started: 2026-09-27T20:45:55.717486+00:00
+UTC ended: 2026-09-27T20:46:04.881228+00:00
+Command: python -B -X utf8 -m pytest -q -rs -o addopts= -p no:cacheprovider --rootdir=<StockQAbyLLM> --basetemp=<isolated TEMP>/pytest-basetemp tests/live/test_live_quick_scan.py::test_live_mimo_search_runs_public_company_through_cli_and_cleans_local_artifacts
+Network: one explicitly selected live provider E2E; no downloads.
+Exit code: 1
+
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_live_mimo_search_runs_public_company_through_cli_and_cleans_local_artifacts _
+
+    @pytest.mark.live
+    @pytest.mark.skipif(
+        os.environ.get("STOCKQA_RUN_LIVE_E2E") != "1" or not os.environ.get("MIMO_API_KEY"),
+        reason="Set STOCKQA_RUN_LIVE_E2E=1 and MIMO_API_KEY for one MiMo web-search E2E",
+    )
+    def test_live_mimo_search_runs_public_company_through_cli_and_cleans_local_artifacts():
+        """Verify MiMo emits URL-citation search evidence through the public CLI."""
+        repo_root = Path(__file__).resolve().parents[2]
+        original_cwd = Path.cwd()
+        endpoint = os.environ.get(
+            "STOCKQA_MIMO_BASE_URL", "https://api.xiaomimimo.com/v1"
+        ).rstrip("/")
+        model = os.environ.get("STOCKQA_MIMO_MODEL", "mimo-v2.6-flash")
+    
+        with tempfile.TemporaryDirectory(prefix="stockqa-live-mimo-") as temporary_root:
+            sandbox = Path(temporary_root).resolve()
+            (sandbox / "logs").mkdir()
+            questions_path = sandbox / "questions.json"
+            questions_path.write_text(
+                json.dumps({"categories": [{"category": "quality", "questions": [{
+                    "question_id": "IQS_05",
+                    "text": (
+                        "Force one web search for Microsoft's latest official quarterly "
+                        "earnings release. Rate whether Microsoft has a durable enterprise "
+                        "software distribution advantage from 1 to 10. Return strict JSON "
+                        "with question_id IQS_05, status, score or null, and a concise "
+                        "description. Do not include markdown."
+                    ),
+                }]}]}, ensure_ascii=False),
+                encoding="utf-8",
+            )
+            (sandbox / "llm_apis.json").write_text(
+                json.dumps({"default_provider": "mimo", "providers": {"mimo": {
+                    "enabled": True,
+                    "api_key": "",
+                    "model": model,
+                    "base_url": endpoint,
+                    "max_retries": 1,
+                    "format_repair_budget": 0,
+                    "timeout": 160,
+                }}}),
+                encoding="utf-8",
+            )
+            child_env = os.environ.copy()
+            child_env["PYTHONPATH"] = str(repo_root) + os.pathsep + child_env.get("PYTHONPATH", "")
+            child_env["PYTHONDONTWRITEBYTECODE"] = "1"
+            output_path = sandbox / "result.json"
+            command = [
+                sys.executable, "-X", "utf8", str(repo_root / "main_with_llm.py"),
+                "--company", "Microsoft Corporation", "--entity-id", "issuer:US5949181045",
+                "--provider", "mimo", "--config", str(questions_path),
+                "--output", str(output_path), "--require-search",
+            ]
+            try:
+                completed = subprocess.run(
+                    command, cwd=sandbox, env=child_env, capture_output=True,
+                    text=True, encoding="utf-8", errors="replace", timeout=180, check=False,
+                )
+            finally:
+                assert Path.cwd() == original_cwd
+    
+            result = json.loads(output_path.read_text(encoding="utf-8"))
+            answer = result["answers"]["IQS_05"]
+            receipt = result["execution_receipts"]["IQS_05"]
+            safe_summary = {
+                "cli_returncode": completed.returncode,
+                "answer_status": answer.get("status"),
+                "http_status_code": receipt.get("http_status_code"),
+                "actual_model": receipt.get("actual_model"),
+                "search_status": receipt.get("search_status"),
+                "search_call_count": len(receipt.get("web_search_calls", [])),
+                "source_count": len(receipt.get("source_urls", [])),
+                "response_id_present": bool(receipt.get("response_id")),
+                "search_receipt_id_present": bool(receipt.get("search_receipt_id")),
+            }
+            safe_text = json.dumps(safe_summary, sort_keys=True)
+>           assert completed.returncode == 0, safe_text
+E           AssertionError: {"actual_model": null, "answer_status": "error", "cli_returncode": 1, "http_status_code": null, "response_id_present": false, "search_call_count": 0, "search_receipt_id_present": false, "search_status": "unverified", "source_count": 0}
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\main_with_l...imo-vblc6brb\\result.json\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\n", stderr='').returncode
+
+..\..\..\..\Projects\StockQAbyLLM\tests\live\test_live_quick_scan.py:534: AssertionError
+1 failed in 8.48s
+
+--- STDERR ---

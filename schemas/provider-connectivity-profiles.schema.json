@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Provider connectivity profiles",
+  "type": "object",
+  "properties": {
+    "$schema": {"type": "string"},
+    "schema_version": {"const": "1.1.0"},
+    "inventory_id": {"type": "string", "minLength": 1, "maxLength": 120},
+    "as_of": {"type": "string", "format": "date"},
+    "purpose": {"type": "string", "minLength": 1, "maxLength": 500},
+    "credential_policy": {
+      "type": "object",
+      "properties": {
+        "secret_values_included": {"const": false},
+        "credential_reference_format": {"const": "environment_variable_name_only"}
+      },
+      "required": ["secret_values_included", "credential_reference_format"],
+      "additionalProperties": false
+    },
+    "priority_policy_ref": {"type": "string", "minLength": 1, "maxLength": 200},
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/profile"}
+    }
+  },
+  "required": ["$schema", "schema_version", "inventory_id", "as_of", "purpose", "credential_policy", "priority_policy_ref", "profiles"],
+  "additionalProperties": false,
+  "$defs": {
+    "profile": {
+      "type": "object",
+      "properties": {
+        "profile_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,99}$"},
+        "provider": {"enum": ["mimo", "minimax", "deepseek"]},
+        "service_tier": {"type": "string", "minLength": 1, "maxLength": 120},
+        "endpoint": {"$ref": "#/$defs/endpoint"},
+        "model": {"type": "string", "minLength": 1, "maxLength": 120},
+        "credential_env": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*_(API_KEY|PLAN_API_KEY)$"},
+        "capabilities": {"$ref": "#/$defs/capabilities"},
+        "usage_note": {"type": "string", "minLength": 1, "maxLength": 1200},
+        "probes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/probe"}
+        },
+        "documentation": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/reference"}
+        }
+      },
+      "required": ["profile_id", "provider", "service_tier", "endpoint", "model", "credential_env", "capabilities", "usage_note", "probes", "documentation"],
+      "additionalProperties": false
+    },
+    "endpoint": {
+      "type": "object",
+      "properties": {
+        "url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "protocol": {"enum": ["openai_chat_completions", "openai_responses", "anthropic_messages"]},
+        "region": {"type": "string", "minLength": 1, "maxLength": 120}
+      },
+      "required": ["url", "protocol", "region"],
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "text_generation": {"enum": ["passed", "not_verified"]},
+        "provider_web_search_documentation": {"enum": ["supported", "unsupported", "not_documented"]},
+        "provider_web_search_probe": {"enum": ["passed", "not_attempted", "not_demonstrated", "failed_feature_gate", "credential_rejected", "unsupported_tool_ignored"]},
+        "function_tool_calling": {"enum": ["supported", "not_verified"]},
+        "requires_external_search_runner": {"type": "boolean"},
+        "stockqa_cli_e2e": {"enum": ["not_run", "passed", "passed_prior_revision_latest_unverified"]},
+        "stockqa_cli_e2e_evidence_path": {"type": "string", "pattern": "^docs/implementation/contracts/validation-"},
+        "stockqa_cli_e2e_latest_evidence_path": {"type": "string", "pattern": "^docs/implementation/contracts/validation-"}
+      },
+      "required": ["text_generation", "provider_web_search_documentation", "provider_web_search_probe", "function_tool_calling", "requires_external_search_runner", "stockqa_cli_e2e"],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {"properties": {"stockqa_cli_e2e": {"enum": ["passed", "passed_prior_revision_latest_unverified"]}}, "required": ["stockqa_cli_e2e"]},
+          "then": {"required": ["stockqa_cli_e2e_evidence_path"]}
+        },
+        {
+          "if": {"properties": {"stockqa_cli_e2e": {"const": "passed_prior_revision_latest_unverified"}}, "required": ["stockqa_cli_e2e"]},
+          "then": {"required": ["stockqa_cli_e2e_latest_evidence_path"]}
+        }
+      ]
+    },
+    "probe": {
+      "type": "object",
+      "properties": {
+        "kind": {"enum": ["text_generation", "web_search"]},
+        "status": {"enum": ["passed", "failed", "unsupported"]},
+        "checked_at": {"type": "string", "format": "date"},
+        "http_status": {"type": ["integer", "null"], "minimum": 100, "maximum": 599},
+        "response_status": {"type": ["string", "null"], "maxLength": 80},
+        "search_calls": {"type": "integer", "minimum": 0},
+        "citation_annotations": {"type": "integer", "minimum": 0},
+        "input_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "output_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "total_tokens": {"type": ["integer", "null"], "minimum": 0},
+        "server_tool_use_count": {"type": "integer", "minimum": 0},
+        "web_search_result_blocks": {"type": "integer", "minimum": 0},
+        "requested_max_uses": {"type": "integer", "minimum": 1},
+        "max_uses_respected": {"type": "boolean"},
+        "source_urls": {
+          "type": "array",
+          "items": {"type": "string", "format": "uri", "pattern": "^https://"}
+        },
+        "evidence_path": {"type": "string", "pattern": "^docs/implementation/contracts/validation-"},
+        "note": {"type": "string", "minLength": 1, "maxLength": 600}
+      },
+      "required": ["kind", "status", "checked_at", "http_status", "response_status", "search_calls", "citation_annotations", "input_tokens", "output_tokens", "total_tokens", "evidence_path", "note"],
+      "additionalProperties": false
+    },
+    "reference": {
+      "type": "object",
+      "properties": {
+        "title": {"type": "string", "minLength": 1, "maxLength": 160},
+        "url": {"type": "string", "format": "uri", "pattern": "^https://"}
+      },
+      "required": ["title", "url"],
+      "additionalProperties": false
+    }
+  }
+}

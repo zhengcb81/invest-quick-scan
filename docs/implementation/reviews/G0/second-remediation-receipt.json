@@ -1,0 +1,30 @@
+{
+  "receipt_type": "G0_second_independent_review_remediation",
+  "created_date": "2026-09-23",
+  "status": "ready_for_third_independent_review",
+  "plan_version": "1.6.0",
+  "plan_sha256": "DD92496E092981F31B429417BA0D905FD47ADDCCA9DBAC21F20FBA7D8AD0C7E4",
+  "acceptance_cases_sha256": "786B37894B38EFB8655F1501C392251FEC4E8ED55BD081D2727F0BC2A57BF7AF",
+  "independent_re_review_path": "docs/implementation/reviews/G0/independent-re-review.md",
+  "independent_re_review_sha256": "AF05998242C812486D62A86671C273809A89187DAA3483444D3EFDEDC17ADE38",
+  "finding_closures": [
+    {"id":"RR-01","status":"fixed_pending_review","evidence":"typed immutable receipt mapping bound to entity/question/observation/exact level/issuer/active status plus replay tests"},
+    {"id":"RR-02","status":"fixed_pending_review","evidence":"G0-G6 exact static set, per-gate manifest hash and response-to-release semantic validator plus attack tests"},
+    {"id":"RR-03","status":"fixed_pending_review","evidence":"CompositeRule-only recursion, wrapped leaves and schema-valid evaluator regression"},
+    {"id":"RR-04","status":"fixed_pending_review","evidence":"sorted complete-scope frozen manifest generator, set-equality verifier and omission/extra/hash mutation tests"}
+  ],
+  "validation": {
+    "full_pytest": "184 passed, 108 subtests passed",
+    "targeted": "31 passed",
+    "plan": {"planning_valid":true,"tasks":73,"acceptance_cases":172,"product_tests_executed":false},
+    "log_path": "docs/implementation/reviews/G0/second-remediation-validation-2026-09-23.log"
+  },
+  "live_e2e": {
+    "case_id": "E2E-06",
+    "status": "specified_not_executed",
+    "reason": "Requires downstream owner implementations, credentials/network budget and explicit external-repository write authorization.",
+    "isolation_contract": "unique temporary workspace/SQLite/download roots, pre-state oracle, run manifest, guarded hash-matched cleanup and post-state zero-drift assertion"
+  },
+  "external_writes": false,
+  "review": {"reviewer":null,"result":"pending","findings":[]}
+}

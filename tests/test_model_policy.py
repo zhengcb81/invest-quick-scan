@@ -23,7 +23,7 @@ class ModelPolicyTests(unittest.TestCase):
     def configured_policy(self):
         p = copy.deepcopy(self.policy)
         p['configured'] = True
-        p['budget'].update(max_cost=10, max_requests=20)
+        p['budget'].update(max_cost=10, max_requests=20, max_cost_per_attempt=2)
         for i, model in enumerate(p['models']):
             model.update(enabled=True, provider_config_ref=f'user_config_{i}', model=f'user_model_{i}')
         return p
@@ -52,7 +52,7 @@ class ModelPolicyTests(unittest.TestCase):
             with self.subTest(change=change):
                 p = self.configured_policy()
                 change(p)
-                with self.assertRaises(ValueError):
+                with self.assertRaises((ValueError, ValidationError)):
                     mp.validate_policy(p)
 
     def test_duplicate_routes_or_groups_and_unknown_group_rejected(self):

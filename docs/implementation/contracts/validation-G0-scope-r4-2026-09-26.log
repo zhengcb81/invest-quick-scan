@@ -1,0 +1,13 @@
+G0 current candidate scope regression r4; run_id=2a06fa06-91dc-4331-b977-19751538b690
+temporary_root=C:/Users/郑曾波/AppData/Local/Temp/iqs-g0-scope-r4-2a06fa0691dc4331b97719751538b690
+command=python -B -X utf8 -m pytest --rootdir <repo> --basetemp <unique-temp> --no-cov -p no:cacheprovider -q tests/test_g0_manifest.py tests/test_implementation_plan.py tests/test_g0_regressions.py
+exit_code=0
+cleanup_verified=true
+temporary_root_removed=true
+......................................................................................... [ 94%]
+.....                                                                    [100%]
+94 passed, 55 subtests passed in 33.75s
+
+plan_command=python -B -X utf8 scripts/implementation_plan.py validate
+plan_exit_code=0
+{"planning_valid": true, "tasks": 103, "acceptance_cases": 327, "final_release_gate": "G6", "product_tests_executed": false}

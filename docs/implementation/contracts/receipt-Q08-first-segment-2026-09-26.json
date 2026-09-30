@@ -1,0 +1,32 @@
+{
+  "task_id": "Q08",
+  "plan_version": "1.7.4",
+  "owner": "stockqa",
+  "status": "implementation_partial",
+  "scope": "Persistent provider-group and route cooldown, cross-process single half-open probe, restart-safe conservative delay, and one transport POST per paid search attempt",
+  "authorization": "User authorized modifications anywhere in StockQAbyLLM with advance notice; exact repair files and purpose were reported before this follow-up write.",
+  "follow_up_source_sha256": {
+    "StockQAbyLLM/src/utils/http_client.py": "15bf417fbdabb9e883a54db814ba1bde6a1512a677bc4ff2bd8cc94868a77323",
+    "StockQAbyLLM/src/utils/quick_scan_provider_health.py": "7727fae30c07d08accb3412a2245966e293b58f3f35f071f85f43fed2a95ecf9",
+    "StockQAbyLLM/tests/unit/test_http_client.py": "f2f22560691be1ddae72cb982177ac1c988863ca405b7af014a334ff804291fb",
+    "StockQAbyLLM/tests/unit/test_llm_client.py": "9ea4ca1ec77494dac2fab752cc2be1a452c8dbbb94d3c06f77697d2ea5d141ac",
+    "StockQAbyLLM/tests/unit/test_quick_scan_provider_health.py": "f6bc1e036ef9e4945a731c33febfa3694afcec3db453921a04cf4670b8605268"
+  },
+  "checks": {
+    "fixed_counterexamples": "4 passed: POST 429/500 retry policy, one actual mocked transport POST with Retry-After 18000, later short route 429, and later unknown group quota refusal",
+    "stockqa_offline_unit_and_integration": "617 passed, zero skipped",
+    "first_segment_independent_follow_up": "194 selected tests passed; original two P1 and one P2 findings closed",
+    "temporary_workspace_cleaned": true,
+    "live_api_used": false
+  },
+  "independent_review": {
+    "report_path": "docs/implementation/reviews/Q08/first-segment-follow-up-independent-review-2026-09-26.md",
+    "report_sha256": "E6976C3CDDC16E4C0ACC0A3FAEF042DB15E5967F8A16EABD74C5FA248B700504",
+    "decision": "no_remaining_P0_P1_P2_in_first_segment"
+  },
+  "limits": [
+    "Q06 persistent work item/lease and per-question success checkpoints remain open.",
+    "Q09 budget ledger and policy hot update remain open.",
+    "This receipt does not claim a live provider search or the full Q08 task is verified."
+  ]
+}

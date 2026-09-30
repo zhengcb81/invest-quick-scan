@@ -1,0 +1,16 @@
+
+=================================== ERRORS ====================================
+_______________ ERROR collecting tests/unit/test_llm_client.py ________________
+ImportError while importing test module 'C:\Users\郑曾波\Projects\StockQAbyLLM\tests\unit\test_llm_client.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Miniconda\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_client.py:9: in <module>
+    from src.providers.llm_client import (
+E   ImportError: cannot import name 'SearchCapabilityUnavailable' from 'src.providers.llm_client' (C:\Users\郑曾波\Projects\StockQAbyLLM\src\providers\llm_client.py)
+=========================== short test summary info ===========================
+ERROR ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_client.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.95s

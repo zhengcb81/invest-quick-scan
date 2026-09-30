@@ -1,0 +1,76 @@
+{
+  "version": "3.0.0",
+  "module_id": "acquisitive",
+  "kind": "overlays",
+  "name": "并购驱动增长",
+  "applies_when": "并购是主要增长与资本用途之一。",
+  "questions": [
+    {
+      "id": "ACQUISITIVE_01",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "剔除商誉与融资叙事，并购实际是否增加每股经济价值？",
+      "evidence": [
+        "收购对价",
+        "后续现金",
+        "整合",
+        "减值",
+        "摊薄"
+      ],
+      "anchors": {
+        "1": "高价收购反复减值且每股价值下降",
+        "5": "部分交易成功，整体回报一般",
+        "10": "多个收购批次创造可核实的每股回报"
+      },
+      "metric_id": "score.acquisitive_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "ACQUISITIVE_02",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "并购整合是否保住客户、人才和协同收益？",
+      "evidence": [
+        "人员留存",
+        "客户流失",
+        "系统整合",
+        "协同兑现"
+      ],
+      "anchors": {
+        "1": "整合破坏核心资产且协同落空",
+        "5": "多数可整合但协同普通",
+        "10": "客户人才稳定且真实协同持续兑现"
+      },
+      "metric_id": "score.acquisitive_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "ACQUISITIVE_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "并购后的债务、或有对价和商誉风险是否可承受？",
+      "evidence": [
+        "债务期限",
+        "对赌",
+        "商誉",
+        "压力现金"
+      ],
+      "anchors": {
+        "1": "义务被低估且压力现金不足",
+        "5": "杠杆可控但减值或支付压力存在",
+        "10": "保守协同下仍可履约且估值与义务透明"
+      },
+      "metric_id": "score.acquisitive_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

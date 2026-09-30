@@ -1,0 +1,139 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+rootdir: C:\Users\郑曾波\Projects\StockQAbyLLM
+configfile: pyproject.toml
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 11 items
+
+..\..\..\..\Projects\StockQAbyLLM::test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[unknown-strict] PASSED [  9%]
+..\..\..\..\Projects\StockQAbyLLM::test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[unknown-fallback] PASSED [ 18%]
+..\..\..\..\Projects\StockQAbyLLM::test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[score_conflict-strict] PASSED [ 27%]
+..\..\..\..\Projects\StockQAbyLLM::test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[score_conflict-fallback] PASSED [ 36%]
+..\..\..\..\Projects\StockQAbyLLM::test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[id_conflict-strict] PASSED [ 45%]
+..\..\..\..\Projects\StockQAbyLLM::test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[id_conflict-fallback] PASSED [ 54%]
+..\..\..\..\Projects\StockQAbyLLM::test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[duplicate-strict] PASSED [ 63%]
+..\..\..\..\Projects\StockQAbyLLM::test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[duplicate-fallback] PASSED [ 72%]
+..\..\..\..\Projects\StockQAbyLLM::test_nonanswer_json_description_is_still_native_prose PASSED [ 81%]
+..\..\..\..\Projects\StockQAbyLLM::test_r1_regex_must_not_promote_nested_object_from_duplicate_key_response FAILED [ 90%]
+..\..\..\..\Projects\StockQAbyLLM::test_valid_existing_structured_description_remains_compatible_through_cli FAILED [100%]
+
+================================== FAILURES ===================================
+__ test_r1_regex_must_not_promote_nested_object_from_duplicate_key_response ___
+
+    def test_r1_regex_must_not_promote_nested_object_from_duplicate_key_response():
+        content = ('{"question_id":"IQS_06","question_id":"IQS_05","score":8,'
+                   '"description":"ambiguous outer",'
+                   '"metadata":{"question_id":"IQS_05","score":9,"description":"not the answer"}}')
+>       assert LLMResponseParser().parse_structured_response(
+            content, expected_question_id='IQS_05') is None
+E       assert ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) is None
+E        +  where ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) = parse_structured_response('{"question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous outer","metadata":{"question_id":"IQS_05","score":9,"description":"not the answer"}}', expected_question_id='IQS_05')
+E        +    where parse_structured_response = <src.providers.llm_response_parser.LLMResponseParser object at 0x000001A05DC5A150>.parse_structured_response
+E        +      where <src.providers.llm_response_parser.LLMResponseParser object at 0x000001A05DC5A150> = LLMResponseParser()
+
+..\..\..\..\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_r1_followup.py:36: AssertionError
+---------------------------- Captured stdout call -----------------------------
+WARNING - LLM返回的JSON包含重复字段
+WARNING - 无法直接解析JSON，尝试从文本中提取
+INFO - 成功解析LLM响应（正则提取），评分: 9/10
+------------------------------ Captured log call ------------------------------
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:141 LLM返回的JSON包含重复字段
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:119 无法直接解析JSON，尝试从文本中提取
+INFO     src.providers.llm_response_parser:llm_response_parser.py:234 成功解析LLM响应（正则提取），评分: 9/10
+__ test_valid_existing_structured_description_remains_compatible_through_cli __
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A05DB5B490>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-r1-followup-3vek0h5f/pytest/test_valid_existing_structured0')
+
+    def test_valid_existing_structured_description_remains_compatible_through_cli(monkeypatch, tmp_path):
+        # This complete, agreeing structured description is the currently documented IQS
+        # legacy/screening shape, not an inner/outer conflict. This oracle is unchanged
+        # from the pre-r1 consumer success criterion and intentionally detects migration breakage.
+        inner = dict(id='IQS_05', status='scored', score=8, confidence='high',
+                     rationale='Fictional source supports the assessment', information_as_of='2026-09-24',
+                     period_start=None, period_end=None, basis='current',
+                     evidence=[dict(claim='Fictional review evidence', title='Offline fixture',
+                                    url='https://example.invalid/review', published_at=None, period='not_applicable')],
+                     counterevidence='Fictional contrary evidence', sensitivity='Fictional downside', metrics={})
+        answer, exit_code, calls = invoke(monkeypatch, tmp_path, outer(8, json.dumps(inner), status='scored'))
+>       assert answer['score'] == 8, 'A valid supported consumer shape must not regress to an unknown answer'
+E       AssertionError: A valid supported consumer shape must not regress to an unknown answer
+E       assert None == 8
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_r1_followup.py:51: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fictional Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-r1-followup-3vek0h5f\pytest\test_valid_existing_structured0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-r1-followup-3vek0h5f\pytest\test_valid_existing_structured0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-r1-followup-3vek0h5f\pytest\test_valid_existing_structured0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: Fictional issuer moat; this is an offline review f...INFO - LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO - 正在调用 openai API... (尝试 1/1)
+WARNING - LLM返回的description包含未选择的嵌套答案协议
+INFO - LLM答案生成完成 (状态: unknown)
+INFO - [1/1] 处理成功
+
+[1/1] 进度: 100.0% - [OK] 完成: Fictional issuer moat; this is an offline review f...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fictional Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] Fictional issuer moat; this is an offline review fixture.
+──────────────────────────────────────────────────────────────────────
+Score: —
+
+无法验证结构化评分回答及目标公司身份。
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-r1-followup-3vek0h5f\pytest\test_valid_existing_structured0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 0
+[INFO] 未评分问题: 1
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-r1-followup-3vek0h5f\pytest\test_valid_existing_structured0\result.json
+ERROR - Quick-scan contains 1 failed question(s); partial results were saved.
+------------------------------ Captured log call ------------------------------
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-r1-followup-3vek0h5f\pytest\test_valid_existing_structured0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:110 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:113 LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO     src.providers.llm_provider:llm_provider.py:181 正在调用 openai API... (尝试 1/1)
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:190 LLM返回的description包含未选择的嵌套答案协议
+INFO     src.providers.llm_provider:llm_provider.py:81 LLM答案生成完成 (状态: unknown)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-r1-followup-3vek0h5f\pytest\test_valid_existing_structured0\result.json
+- generated xml file: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-r1-followup-3vek0h5f\junit.xml -
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM::test_r1_regex_must_not_promote_nested_object_from_duplicate_key_response
+FAILED ..\..\..\..\Projects\StockQAbyLLM::test_valid_existing_structured_description_remains_compatible_through_cli
+========================= 2 failed, 9 passed in 0.70s =========================

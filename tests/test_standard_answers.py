@@ -54,6 +54,26 @@ def fixture(fact=False):
     return manifest, {q['id']: content(q, fact)}, receipt
 
 
+def published_fixture(*, entity_id='EXAMPLE_ENTITY_A', company='示例工业设备股份有限公司（虚构）',
+                      ticker='EXAMPLE'):
+    profile = {**fixture()[0]['profile'], 'entity_id': entity_id, 'company': company,
+               'ticker': ticker}
+    with tempfile.TemporaryDirectory(prefix='iqs-published-standard-') as tmp:
+        qs.compose(profile, 'quick', tmp, 'standard-1')
+        manifest = qs.read_json(Path(tmp) / 'manifest.json')
+    question = manifest['questions'][0]
+    receipt = dict(manifest_sha256=sa.digest(manifest), run_id='EXAMPLE_RUN_A',
+                   scan_id='EXAMPLE_SCAN_A', inputset_id='EXAMPLE_INPUT_V1',
+                   task_mode='comparison', comparison_group_id='EXAMPLE_GROUP',
+                   requests={question['id']: dict(provider='EXAMPLE_PROVIDER', model_requested='EXAMPLE_MODEL_A',
+                       model_resolved='EXAMPLE_MODEL_A', model_revision='fixture-1',
+                       request_id='EXAMPLE_REQUEST', attempt_id='EXAMPLE_ATTEMPT',
+                       started_at='2026-09-22T09:00:00Z', answered_at='2026-09-22T09:01:00Z',
+                       search_status='executed', search_receipt_id='OFFLINE_FIXTURE_NOT_SEARCH_PROOF',
+                       prompt_sha256=hashlib.sha256(question['prompt'].encode()).hexdigest())})
+    return manifest, {question['id']: content(question)}, receipt
+
+
 def rehash(record):
     record['observation_id'] = 'obs_' + sa.digest({k: v for k, v in record.items() if k != 'observation_id'})
     return record
@@ -218,6 +238,74 @@ class StandardAnswerTests(unittest.TestCase):
         r['requests'][q['id']]['prompt_sha256'] = hashlib.sha256(q['prompt'].encode()).hexdigest()
         second = sa.build_observations(m, a, r)['observations'][0]
         self.assertIn('method_id_changed', sa.compare(first, second, 'time')['reasons'])
+
+    def test_published_same_method_is_comparable_across_company_identity(self):
+        first = sa.build_observations(*published_fixture())['observations'][0]
+        second = sa.build_observations(*published_fixture(
+            entity_id='EXAMPLE_ENTITY_B', company='另一家虚构工业设备公司', ticker='EXAMPLE_B'))['observations'][0]
+        self.assertNotEqual(first['execution']['prompt_sha256'], second['execution']['prompt_sha256'])
+        self.assertEqual(first['method_id'], second['method_id'])
+        self.assertTrue(sa.compare(first, second, 'company')['comparable'])
+
+    def test_published_manifest_forgery_fails_before_observation_even_with_new_receipt_hash(self):
+        manifest, answers, receipts = published_fixture()
+        forged = copy.deepcopy(manifest)
+        question = forged['questions'][0]
+        question['question'] += ' 伪造额外的评分条件。'
+        question['prompt'] = sa.standard_prompt(question, forged['profile'])
+        question['prompt_sha256'] = hashlib.sha256(question['prompt'].encode()).hexdigest()
+        forged_receipts = copy.deepcopy(receipts)
+        forged_receipts['manifest_sha256'] = sa.digest(forged)
+        forged_receipts['requests'][question['id']]['prompt_sha256'] = question['prompt_sha256']
+        with self.assertRaises(ValueError):
+            sa.build_observations(forged, answers, forged_receipts)
+
+    def test_published_observation_rejects_forged_or_removed_package_binding(self):
+        record = sa.build_observations(*published_fixture())['observations'][0]
+        self.assertEqual(record['schema_version'], '1.1.0')
+        self.assertTrue(record['method_id'].startswith('module-locked-v1/'))
+        with self.assertRaisesRegex(ValueError, 'independently stored observation ID'):
+            sa.validate_observation(record, require_published=True)
+        self.assertEqual(sa.validate_observation(record, require_published=True,
+                         expected_observation_id=record['observation_id']), record)
+        forged = copy.deepcopy(record)
+        forged['module_package_id'] = 'pkg_' + '0' * 64
+        rehash(forged)
+        with self.assertRaisesRegex(ValueError, 'module package unavailable'):
+            sa.validate_observation(forged)
+        stripped = copy.deepcopy(record)
+        del stripped['module_release_id']
+        rehash(stripped)
+        with self.assertRaisesRegex(ValueError, 'complete module package binding'):
+            sa.validate_observation(stripped)
+
+        false_semantic = copy.deepcopy(record)
+        false_semantic['question_semantic_sha256'] = 'f' * 64
+        false_semantic['method_id'] = false_semantic['method_id'][:-16] + 'f' * 16
+        rehash(false_semantic)
+        with self.assertRaisesRegex(ValueError, 'semantic fingerprint'):
+            sa.validate_observation(false_semantic)
+
+        all_binding_removed = copy.deepcopy(record)
+        for key in ('module_package_id', 'module_release_id',
+                    'question_definition_sha256', 'question_semantic_sha256'):
+            del all_binding_removed[key]
+        rehash(all_binding_removed)
+        with self.assertRaisesRegex(ValueError, 'published observation missing package binding'):
+            sa.validate_observation(all_binding_removed)
+
+        rewritten = copy.deepcopy(record)
+        rewritten['answer']['score'] = 7
+        rehash(rewritten)
+        with self.assertRaisesRegex(ValueError, 'immutable stored identity'):
+            sa.validate_observation(rewritten, require_published=True,
+                                    expected_observation_id=record['observation_id'])
+
+        legacy = self.record()
+        self.assertEqual(sa.validate_observation(legacy), legacy)
+        with self.assertRaisesRegex(ValueError, 'published ingest'):
+            sa.validate_observation(legacy, require_published=True,
+                                    expected_observation_id=legacy['observation_id'])
 
     def test_canonical_units_and_unmapped_metric_comparison(self):
         m, a, r = fixture(); answer = next(iter(a.values()))

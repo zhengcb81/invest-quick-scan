@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "review_id": "S01-current-snapshot-read-only-review-2026-09-27",
+  "reviewer_id": "agent:/root/q04_retry_design_review",
+  "reviewer_role": "independent read-only S01/C06 milestone reviewer",
+  "independent": true,
+  "separation_basis": "Separate review agent; did not implement or modify the reviewed source, tests, receipts, or validation logs.",
+  "outcome": "needs_revision",
+  "implementation_snapshot_sha256": "1de2ce503f49f1c0fb93cedba94585e23a63e1cb6625bf6412318866c1887c7c",
+  "snapshot_files": [
+    {
+      "path": "questions/catalog.json",
+      "sha256": "252dab9e3f71868a71147ecb7dac64cc187d7d56002b28b266a74f406facaf10"
+    },
+    {
+      "path": "scripts/question_sets.py",
+      "sha256": "515775284dad1fdb014c9cd883d078a623085bd37e6640dc4a52ce446c689433"
+    },
+    {
+      "path": "tests/test_question_sets.py",
+      "sha256": "a97b0fb4766f139b42a09a0a5763a110783865e337ab3ddc8e4714321dbd1c86"
+    }
+  ],
+  "review_scope": [
+    "S01 legacy recovery-map validation and compatibility",
+    "S01 metric mapping and recovery-watch behavior relevant to the recent S05/S06 changes"
+  ],
+  "checks": {
+    "snapshot_binding": "All three supplied S01 file hashes matched the current files.",
+    "legacy_one_sided_drift": "The current tests cover top-level map drift and missing question-level replacement metadata; these paths flag replacement_mapping_unverified.",
+    "core_summary_isolation": "The recovery-watch mapping does not change the legacy core summary.",
+    "combined_rewrite": "Not closed: an internally consistent rewrite of both question-level replaces metadata and manifest.replacements can pass the legacy validator."
+  },
+  "findings": [
+    {
+      "id": "S01-R1",
+      "severity": "P2",
+      "status": "open",
+      "title": "Legacy recovery mapping can be rewritten consistently and still be trusted",
+      "evidence": [
+        "scripts/question_sets.py:67 returns no authoritative metric mapping when metric_contract_version is absent.",
+        "scripts/question_sets.py:851-882 rebuilds replacements from question metadata and compares the result with manifest.replacements, but does not bind legacy question metadata to a canonical legacy release or restrict a recovery base to its intended replacement.",
+        "scripts/question_sets.py:885-915 uses the resulting mapping in recovery_watch for weak_current_ids and runway scoring.",
+        "tests/test_question_sets.py:448-474 checks one-sided top-level drift and missing metadata, but not a coordinated rewrite.",
+        "For example, changing BANK_03.replaces to include both IQS_11 and IQS_08 and changing the legacy top-level map to match can map both recovery dimensions to one answer while satisfying the current consistency and base-coverage checks."
+      ],
+      "impact": "The legacy core summary remains unchanged, but recovery_watch can report a misleading weakness or recovery status from the wrong mapped question.",
+      "recommended_resolution": "Bind legacy recovery mappings to a frozen, verifiable legacy question-set snapshot or hash; otherwise fail closed to needs_verification. Add a negative test that rewrites both mapping sources consistently and confirms the mapping is not trusted."
+    }
+  ],
+  "shared_test_evidence": [
+    {
+      "path": "docs/implementation/contracts/validation-S01-C06-freshness-2026-09-27.log",
+      "sha256": "a4755562c4ce6311847a592806a46e63910d66b266b813c716a1ab8fb152629a",
+      "reported_result": "87 passed, 173 subtests",
+      "run_by": "implementer",
+      "reviewer_reran": false
+    },
+    {
+      "path": "docs/implementation/contracts/validation-S01-metrics-selectors-2026-09-27.log",
+      "sha256": "42205984a8a0efefc5176dbe4de3aa144d771989232d0e67d4b9795e9eb465e5",
+      "reported_result": "3 passed",
+      "run_by": "implementer",
+      "reviewer_reran": false
+    }
+  ],
+  "execution": {
+    "review_mode": "read-only",
+    "reviewer_ran_tests": false,
+    "network_or_api_used": false,
+    "implementation_or_receipt_files_modified": false
+  }
+}

@@ -52,11 +52,12 @@ StockWiki控制页面/启动生命周期，问答级领取、限流、重试、�
 
 - StockWiki代码/运行接口版本和quick_scan schema版本。
 - StockQA代码/执行协议版本、支持能力、费用/任务状态schema版本。
+- StockQA答案schema、answer parser及证据解释release ID/hash；逐题运行receipt须记录实际加载hash。
 - invest-quick-scan题库、路由、metric/rubric、交换契约和脚本版本/hash。
 - 主题与行业消费技能的源版本、实际加载入口与内容hash、查询契约版本。
 - 各组件依赖锁定/解释器、配置schema、升级兼容范围、通过的G0—G6回执和恢复说明。
 
-这里的发布清单保存版本与引用，不保存密钥、公司文档或第二份可编辑名单。同样叫0.1.0但文件hash不同，不能当已验证组合。开发目录的题库或技能更新后，必须核实实际执行器/宿主加载的正是新版本；“源文件改了”不等于“正在使用的技能已更新”。
+这里的发布清单保存版本与引用，不保存密钥、公司文档或第二份可编辑名单。同样叫0.1.0但文件hash不同，不能当已验证组合。解析器/答案schema/证据解释属于真实运行组件，不能只靠V16 envelope提到能力；X07只生成候选清单并固定Q14实际release ID/hash，X08核实实际安装hash，X09逐题对照运行receipt。候选包在X09隔离测试profile中即便作为test-only active指针，也不能激活生产指针或允许真实收费POST。生产扫描要求workspace/profile当前active ReleaseSet及所有组件具备新派发资格；“源文件改了”不等于“正在使用的技能已更新”。
 
 安装器由StockWiki提供薄编排入口，复用各项目已有安装能力；缺少的安装/自检能力补在相应项目。安装按已核实组件清单执行，不盲目git pull或全量升级用户其他项目。先核对路径与拟变更，再在授权的部署目录安装所需依赖，调用各自拥有者的迁移/注册接口。代码安装允许使用包管理器，不改变公司画像仅靠联网问答的边界。
 
@@ -83,10 +84,10 @@ StockWiki控制页面/启动生命周期，问答级领取、限流、重试、�
 
 ## 5. 点击一次后发生什么
 
-1. 定位已配置workspace、profile与release_set，取得启动互斥锁；核对实际进程/工作区标识，不能只看PID文件或端口存在。
-2. 执行本地预检：组件能力/版本、schema、名单、凭据存在性、预算和必要写路径。不满足则进入可查看的具体状态，尚未派发模型。
+1. 定位已配置workspace、profile与active release_set指针，取得启动互斥锁；候选release_set只可dry-run预览；核对实际进程/工作区标识，不能只看PID文件或端口存在。
+2. 执行本地恢复预检：确认能够安全读取账本、核对身份和处理旧outbox；与新release/新派发的兼容性分开判定。新组件不兼容不能阻断旧冻结attempt的结算，但不得创建新的generation/work、费用预留或模型请求。
 3. 如果已有同工作区运行，附着其状态；否则只启动快扫需要的StockWiki页面/协调组件与StockQA worker。已有正确实例复用；不杀占用端口的无关程序。
-4. 优先投递StockQA已完成但未入库的结果并等待ACK；再计算权威库中的有效项和缺口，避免已答未入库的题被重新派发。
+4. 先按原冻结recipe与attempt receipt幂等导入StockQA已完成但未入库的结果并结算/ACK；再计算权威库中的有效项和缺口。每次真实POST前，StockQA先耐久写入本地`send_intent_prepared`，再调用StockWiki W16的`consume_dispatch_permit`；W16在owner事务中重新核对active指针、组件派发资格与精确attempt，并原子消费permit、写入耐久`dispatch_commit`。只有与当前work/attempt/recipe匹配的commit回执才授权一次POST。consume前资格变化或崩溃时POST为0、permit不可重放；commit后若无法证明未发送则标记`outcome_unknown`，只允许同attempt对账，不得fallback或创建新attempt。新release门关闭时只完成旧账本恢复，不能转而派发新版本题目。
 5. 按冻结名单/题库/策略版本提交剩余逻辑题，StockQA在统一预算下执行。路由先于公司问题，下一阶段事实也复用同一执行器。
 6. 状态页显示独立公司数、题目/证券层任务、复用、已尝试、有效、unknown、待办/冷却/失败、等待导入、实际及预留费用。HTTP页面可打开不等于扫描已启动。
 7. 到达本次时长/请求/金额边界后停止新派发，保存进行中/结果不明请求；按钮变为可解释的继续/配置入口。

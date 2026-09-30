@@ -1,0 +1,13 @@
+Q06 synchronous transport boundary grouped regression
+UTC: 2026-09-27 07:14:02 UTC
+Command: python -m pytest -q -p pytest_asyncio.plugin -p no:cacheprovider -o addopts= --basetemp=<automatically-cleaned temporary directory>
+Tests: tests/unit/test_llm_client.py, tests/unit/test_llm_provider.py, tests/unit/test_llm_integration.py, tests/unit/test_llm_response_parser.py, tests/unit/test_quick_scan_work_store.py, tests/unit/test_quick_scan_work_transport.py, tests/integration/test_quick_scan_cli.py
+Live API enabled: no
+Provider API-key environment variables: removed from child process
+Exit code: 0
+
+........................................................................ [ 27%]
+........................................................................ [ 54%]
+........................................................................ [ 81%]
+................................................                         [100%]
+264 passed in 18.89s

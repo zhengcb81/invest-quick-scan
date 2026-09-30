@@ -1,0 +1,99 @@
+{
+  "version": "3.0.0",
+  "module_id": "leisure_media",
+  "kind": "industries",
+  "name": "文旅、酒店、游戏与媒体娱乐",
+  "applies_when": "体验、内容与知识产权变现；区分单款项目与持续服务。",
+  "questions": [
+    {
+      "id": "LEISURE_MEDIA_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "按完整内容或物业周期计算，经济回报是否可靠？",
+      "evidence": [
+        "内容制作",
+        "获客",
+        "分成",
+        "入住率",
+        "维护"
+      ],
+      "anchors": {
+        "1": "少数爆款掩盖大量不可回收投入",
+        "5": "组合大致盈利但波动较大",
+        "10": "多批次内容或物业全成本回报可验证"
+      },
+      "metric_id": "score.leisure_media_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "LEISURE_MEDIA_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "IP、品牌、位置或社区能否形成重复需求？",
+      "evidence": [
+        "回访",
+        "续作",
+        "会员",
+        "位置",
+        "竞争供给"
+      ],
+      "anchors": {
+        "1": "需求依赖短期热点且替代容易",
+        "5": "有品牌或IP但重复性一般",
+        "10": "重复需求与差异价值跨多个周期持续"
+      },
+      "metric_id": "score.leisure_media_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "LEISURE_MEDIA_03",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "内容许可、渠道依赖与消费冲击的损失是否可控？",
+      "evidence": [
+        "审批",
+        "平台抽成",
+        "出行限制",
+        "固定成本"
+      ],
+      "anchors": {
+        "1": "单一渠道或限制可使业务长期中断",
+        "5": "有冲击敞口但可调整部分成本",
+        "10": "权利与渠道多元，压力下现金和成本可调"
+      },
+      "metric_id": "score.leisure_media_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "LEISURE_MEDIA_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "新增内容或项目的成功概率是否有可复制依据？",
+      "evidence": [
+        "历史项目命中",
+        "预订",
+        "留存",
+        "预算回收"
+      ],
+      "anchors": {
+        "1": "扩张依赖未经验证的爆款假设",
+        "5": "有成功经验但复制性有限",
+        "10": "多批次验证支持扩张且失败成本有界"
+      },
+      "metric_id": "score.leisure_media_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

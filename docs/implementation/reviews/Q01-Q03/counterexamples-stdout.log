@@ -1,0 +1,413 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+rootdir: C:\Users\郑曾波\Projects\StockQAbyLLM
+configfile: pyproject.toml
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 13 items
+
+..\..\..\..\Projects\StockQAbyLLM::test_sc01_real_cli_preserves_native_eight PASSED [  7%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc02_real_cli_preserves_native_unknown_null PASSED [ 15%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc02_legacy_inner_unknown_transport_five_never_becomes_scored FAILED [ 23%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc04_inner_outer_score_mismatch_is_not_a_scored_answer FAILED [ 30%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc04_wrong_inner_question_id_is_not_a_scored_answer FAILED [ 38%]
+..\..\..\..\Projects\StockQAbyLLM::test_llm07_conflicting_duplicate_json_question_ids_do_not_choose_last FAILED [ 46%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc03_invalid_score_real_cli_is_never_adopted[True] PASSED [ 53%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc03_invalid_score_real_cli_is_never_adopted[False] PASSED [ 61%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc03_invalid_score_real_cli_is_never_adopted[0] PASSED [ 69%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc03_invalid_score_real_cli_is_never_adopted[11] PASSED [ 76%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc03_invalid_score_real_cli_is_never_adopted[1.5] PASSED [ 84%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc03_invalid_score_real_cli_is_never_adopted[8] PASSED [ 92%]
+..\..\..\..\Projects\StockQAbyLLM::test_sc03_invalid_score_real_cli_is_never_adopted[NaN] PASSED [100%]
+
+================================== FAILURES ===================================
+_____ test_sc02_legacy_inner_unknown_transport_five_never_becomes_scored ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023F841130B0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-counterexamples-82crc9sy/pytest/test_sc02_legacy_inner_unknown0')
+
+    def test_sc02_legacy_inner_unknown_transport_five_never_becomes_scored(monkeypatch, tmp_path):
+        inner = json.dumps({'id': 'IQS_05', 'status': 'insufficient_evidence', 'score': None,
+                            'confidence': 'medium', 'rationale': 'No disclosed evidence'})
+        answer, _, _ = invoke(monkeypatch, tmp_path, outer(5, inner))
+>       assert answer['score'] is None, 'SC-02: legacy transport 5 must never become the formal score'
+E       AssertionError: SC-02: legacy transport 5 must never become the formal score
+E       assert 5 is None
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_acceptance_counterexamples.py:61: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fictional Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc02_legacy_inner_unknown0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc02_legacy_inner_unknown0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc02_legacy_inner_unknown0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: Fictional issuer moat; this is an offline review f...INFO - LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 5/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/1] 处理成功
+
+[1/1] 进度: 100.0% - [OK] 完成: Fictional issuer moat; this is an offline review f...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fictional Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] Fictional issuer moat; this is an offline review fixture.
+──────────────────────────────────────────────────────────────────────
+Score: 5/10
+
+{"id": "IQS_05", "status": "insufficient_evidence", "score": null, "confidence": "medium", "rationale": "No disclosed evidence"}
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc02_legacy_inner_unknown0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc02_legacy_inner_unknown0\result.json
+[OK] 平均评分: 5.0/10
+[OK] 评分分布: {5: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:244 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:246 公司分析 - Fictional Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:247 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc02_legacy_inner_unknown0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:308 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:309 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc02_legacy_inner_unknown0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:310 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc02_legacy_inner_unknown0\result.json
+
+INFO     src.config.llm_config:llm_config.py:41 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:110 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:113 LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO     src.providers.llm_provider:llm_provider.py:181 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 5/10
+INFO     src.providers.llm_provider:llm_provider.py:81 LLM答案生成完成 (状态: scored)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc02_legacy_inner_unknown0\result.json
+INFO     src.runners.llm_runner:llm_runner.py:409 
+Question processing completed.
+_________ test_sc04_inner_outer_score_mismatch_is_not_a_scored_answer _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023F83F17DF0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-counterexamples-82crc9sy/pytest/test_sc04_inner_outer_score_mi0')
+
+    def test_sc04_inner_outer_score_mismatch_is_not_a_scored_answer(monkeypatch, tmp_path):
+        inner = json.dumps({'id': 'IQS_05', 'status': 'scored', 'score': 8,
+                            'confidence': 'medium', 'rationale': 'Fictional inner eight'})
+        answer, _, _ = invoke(monkeypatch, tmp_path, outer(5, inner))
+>       assert answer['score'] is None, 'SC-04: outer 5 / inner 8 must fail closed'
+E       AssertionError: SC-04: outer 5 / inner 8 must fail closed
+E       assert 5 is None
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_acceptance_counterexamples.py:69: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fictional Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_inner_outer_score_mi0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_inner_outer_score_mi0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_inner_outer_score_mi0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: Fictional issuer moat; this is an offline review f...INFO - LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 5/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/1] 处理成功
+
+[1/1] 进度: 100.0% - [OK] 完成: Fictional issuer moat; this is an offline review f...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fictional Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] Fictional issuer moat; this is an offline review fixture.
+──────────────────────────────────────────────────────────────────────
+Score: 5/10
+
+{"id": "IQS_05", "status": "scored", "score": 8, "confidence": "medium", "rationale": "Fictional inner eight"}
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_inner_outer_score_mi0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_inner_outer_score_mi0\result.json
+[OK] 平均评分: 5.0/10
+[OK] 评分分布: {5: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:244 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:246 公司分析 - Fictional Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:247 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_inner_outer_score_mi0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:308 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:309 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_inner_outer_score_mi0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:310 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_inner_outer_score_mi0\result.json
+
+INFO     src.config.llm_config:llm_config.py:41 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:110 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:113 LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO     src.providers.llm_provider:llm_provider.py:181 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 5/10
+INFO     src.providers.llm_provider:llm_provider.py:81 LLM答案生成完成 (状态: scored)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_inner_outer_score_mi0\result.json
+INFO     src.runners.llm_runner:llm_runner.py:409 
+Question processing completed.
+__________ test_sc04_wrong_inner_question_id_is_not_a_scored_answer ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023F83F17F00>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-counterexamples-82crc9sy/pytest/test_sc04_wrong_inner_question0')
+
+    def test_sc04_wrong_inner_question_id_is_not_a_scored_answer(monkeypatch, tmp_path):
+        inner = json.dumps({'id': 'IQS_06', 'status': 'scored', 'score': 8,
+                            'confidence': 'medium', 'rationale': 'Fictional answer to a different question'})
+        answer, _, _ = invoke(monkeypatch, tmp_path, outer(8, inner))
+>       assert answer['score'] is None, 'SC-04: conflicting nested question identity must fail closed'
+E       AssertionError: SC-04: conflicting nested question identity must fail closed
+E       assert 8 is None
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_acceptance_counterexamples.py:76: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fictional Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_wrong_inner_question0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_wrong_inner_question0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_wrong_inner_question0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: Fictional issuer moat; this is an offline review f...INFO - LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/1] 处理成功
+
+[1/1] 进度: 100.0% - [OK] 完成: Fictional issuer moat; this is an offline review f...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fictional Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] Fictional issuer moat; this is an offline review fixture.
+──────────────────────────────────────────────────────────────────────
+Score: 8/10
+
+{"id": "IQS_06", "status": "scored", "score": 8, "confidence": "medium", "rationale": "Fictional answer to a different question"}
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_wrong_inner_question0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_wrong_inner_question0\result.json
+[OK] 平均评分: 8.0/10
+[OK] 评分分布: {8: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:244 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:246 公司分析 - Fictional Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:247 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_wrong_inner_question0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:308 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:309 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_wrong_inner_question0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:310 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_wrong_inner_question0\result.json
+
+INFO     src.config.llm_config:llm_config.py:41 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:110 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:113 LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO     src.providers.llm_provider:llm_provider.py:181 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:81 LLM答案生成完成 (状态: scored)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_sc04_wrong_inner_question0\result.json
+INFO     src.runners.llm_runner:llm_runner.py:409 
+Question processing completed.
+____ test_llm07_conflicting_duplicate_json_question_ids_do_not_choose_last ____
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023F840C0C50>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-counterexamples-82crc9sy/pytest/test_llm07_conflicting_duplica0')
+
+    def test_llm07_conflicting_duplicate_json_question_ids_do_not_choose_last(monkeypatch, tmp_path):
+        text = ('{"entity_id":"issuer:review-fixture","company_name":"Fictional Fixture Corp",'
+                '"question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous ID"}')
+        answer, _, calls = invoke(monkeypatch, tmp_path, text)
+>       assert answer['score'] is None, 'LLM-07: repeated conflicting IDs must be rejected, not overwritten by json.loads'
+E       AssertionError: LLM-07: repeated conflicting IDs must be rejected, not overwritten by json.loads
+E       assert 8 is None
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_acceptance_counterexamples.py:83: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fictional Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_llm07_conflicting_duplica0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_llm07_conflicting_duplica0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_llm07_conflicting_duplica0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: Fictional issuer moat; this is an offline review f...INFO - LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/1] 处理成功
+
+[1/1] 进度: 100.0% - [OK] 完成: Fictional issuer moat; this is an offline review f...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fictional Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] Fictional issuer moat; this is an offline review fixture.
+──────────────────────────────────────────────────────────────────────
+Score: 8/10
+
+ambiguous ID
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_llm07_conflicting_duplica0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_llm07_conflicting_duplica0\result.json
+[OK] 平均评分: 8.0/10
+[OK] 评分分布: {8: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:244 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:246 公司分析 - Fictional Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:247 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_llm07_conflicting_duplica0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:308 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:309 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_llm07_conflicting_duplica0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:310 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_llm07_conflicting_duplica0\result.json
+
+INFO     src.config.llm_config:llm_config.py:41 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:110 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:113 LLMProvider initialized (provider: openai, model: fixture-model, api_key: offl...ture)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: Fictional issuer moat; this is an offline review f...
+INFO     src.providers.llm_provider:llm_provider.py:181 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:81 LLM答案生成完成 (状态: scored)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\pytest\test_llm07_conflicting_duplica0\result.json
+INFO     src.runners.llm_runner:llm_runner.py:409 
+Question processing completed.
+- generated xml file: C:\Users\郑曾波\AppData\Local\Temp\stockqa-readonly-review-counterexamples-82crc9sy\junit.xml -
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM::test_sc02_legacy_inner_unknown_transport_five_never_becomes_scored
+FAILED ..\..\..\..\Projects\StockQAbyLLM::test_sc04_inner_outer_score_mismatch_is_not_a_scored_answer
+FAILED ..\..\..\..\Projects\StockQAbyLLM::test_sc04_wrong_inner_question_id_is_not_a_scored_answer
+FAILED ..\..\..\..\Projects\StockQAbyLLM::test_llm07_conflicting_duplicate_json_question_ids_do_not_choose_last
+========================= 4 failed, 9 passed in 2.38s =========================

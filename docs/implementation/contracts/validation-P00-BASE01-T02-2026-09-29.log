@@ -1,0 +1,185 @@
+BASE-01.T02: isolated offline CLI integration (every scored answer exactly 8) plus parser unknown/null assertion. No real network/provider request.
+COMMAND: C:\Miniconda\python.exe -B -X utf8 -m unittest discover -s tests -p test_question_sets.py -k test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline -v
+test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline (test_question_sets.QuestionSetTests.test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline) ... INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\main_questions.json
+INFO - 成功从JSON配置加载 24 个问题
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\p00-isolation-20260929-a2uqkptv\iqs-stockqa-s02-7pcq36jg\composed-screening\questions.json
+INFO - 成功从JSON配置加载 31 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: fixture-model, api_key: TEST...ONLY)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 31 个问题
+INFO - LLM处理问题: [IQS_01] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/31] 处理成功
+INFO - LLM处理问题: [IQS_02] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [2/31] 处理成功
+INFO - LLM处理问题: [OPERATING_02] 对象与口径={"company": "示例工业设备股份有限公司（虚构）...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [3/31] 处理成功
+INFO - LLM处理问题: [INDUSTRIAL_02] 对象与口径={"company": "示例工业设备股份有限公司（虚构...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [4/31] 处理成功
+INFO - LLM处理问题: [MATURE_01] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", ...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [5/31] 处理成功
+INFO - LLM处理问题: [IQS_04] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [6/31] 处理成功
+INFO - LLM处理问题: [IQS_05] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [7/31] 处理成功
+INFO - LLM处理问题: [IQS_06] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [8/31] 处理成功
+INFO - LLM处理问题: [INDUSTRIAL_01] 对象与口径={"company": "示例工业设备股份有限公司（虚构...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [9/31] 处理成功
+INFO - LLM处理问题: [IQS_07] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [10/31] 处理成功
+INFO - LLM处理问题: [IQS_08] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [11/31] 处理成功
+INFO - LLM处理问题: [IQS_09] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [12/31] 处理成功
+INFO - LLM处理问题: [IQS_10] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [13/31] 处理成功
+INFO - LLM处理问题: [IQS_12] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [14/31] 处理成功
+INFO - LLM处理问题: [OPERATING_01] 对象与口径={"company": "示例工业设备股份有限公司（虚构）...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [15/31] 处理成功
+INFO - LLM处理问题: [CYCLICAL_01] 对象与口径={"company": "示例工业设备股份有限公司（虚构）"...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [16/31] 处理成功
+INFO - LLM处理问题: [IQS_13] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [17/31] 处理成功
+INFO - LLM处理问题: [IQS_14] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [18/31] 处理成功
+INFO - LLM处理问题: [IQS_15] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [19/31] 处理成功
+INFO - LLM处理问题: [MATURE_02] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", ...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [20/31] 处理成功
+INFO - LLM处理问题: [IQS_16] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [21/31] 处理成功
+INFO - LLM处理问题: [IQS_17] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [22/31] 处理成功
+INFO - LLM处理问题: [IQS_18] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [23/31] 处理成功
+INFO - LLM处理问题: [CYCLICAL_02] 对象与口径={"company": "示例工业设备股份有限公司（虚构）"...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [24/31] 处理成功
+INFO - LLM处理问题: [CROSS_BORDER_01] 对象与口径={"company": "示例工业设备股份有限公司（...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [25/31] 处理成功
+INFO - LLM处理问题: [IQS_19] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [26/31] 处理成功
+INFO - LLM处理问题: [IQS_20] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [27/31] 处理成功
+INFO - LLM处理问题: [IQS_21] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [28/31] 处理成功
+INFO - LLM处理问题: [IQS_22] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [29/31] 处理成功
+INFO - LLM处理问题: [IQS_23] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [30/31] 处理成功
+INFO - LLM处理问题: [IQS_24] 对象与口径={"company": "示例工业设备股份有限公司（虚构）", "ti...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [31/31] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\p00-isolation-20260929-a2uqkptv\iqs-stockqa-s02-7pcq36jg\stockqa-result.json
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 1.280s
+
+OK
+
+EXIT_CODE=0
+COMMAND: C:\Miniconda\python.exe -B -X utf8 -c import os,sys,json; from pathlib import Path; repo=Path(os.environ['USERPROFILE'])/'Projects'/'StockQAbyLLM'; os.chdir(os.environ['TEMP']); sys.path.insert(0,str(repo)); from src.providers.llm_response_parser import LLMResponseParser; a=LLMResponseParser().parse_structured_response(json.dumps({'question_id':'Q_UNKNOWN','entity_id':'ENTITY_FIXTURE','company_name':'Offline Fixture','status':'unknown','score':None,'description':'insufficient basis'}), expected_question_id='Q_UNKNOWN', expected_entity_id='ENTITY_FIXTURE', expected_company_name='Offline Fixture', strict_json_only=True); assert a is not None and a.status=='unknown' and a.score is None; print('explicit unknown status remains unknown with null score: PASS')
+explicit unknown status remains unknown with null score: PASS
+
+EXIT_CODE=0
+sandbox entries before outer cleanup=['logs']
+outer_temp_root_removed=True
+external_git_status_unchanged=True
+external_source_hashes_unchanged=True

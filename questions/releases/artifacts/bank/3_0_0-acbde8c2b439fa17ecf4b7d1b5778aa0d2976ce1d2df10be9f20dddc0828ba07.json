@@ -1,0 +1,156 @@
+{
+  "version": "3.0.0",
+  "module_id": "bank",
+  "kind": "types",
+  "name": "银行与信贷机构",
+  "applies_when": "以贷款、存款或有息金融资产负债为主要利润来源；不将客户存款当普通企业债务。",
+  "questions": [
+    {
+      "id": "BANK_01",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "监管资本与流动性缓冲能否承受合理信用和融资压力？",
+      "evidence": [
+        "当地适用的资本充足率",
+        "流动性",
+        "压力测试",
+        "融资到期"
+      ],
+      "anchors": {
+        "1": "缓冲不足或存在重大融资缺口",
+        "5": "达标但压力后余量有限",
+        "10": "压力后仍有充分资本和稳定流动性来源"
+      },
+      "replaces": [
+        "IQS_16"
+      ],
+      "critical": true,
+      "metric_id": "score.bank_01",
+      "construct_id": "IQS_16",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "BANK_02",
+      "dimension": "business",
+      "priority": 1,
+      "question": "扣除预期信用损失、运营与资本成本后的信贷收益如何？",
+      "evidence": [
+        "风险调整收益",
+        "中周期信用成本",
+        "风险定价"
+      ],
+      "anchors": {
+        "1": "收益靠低估信用损失或资本成本",
+        "5": "风险调整后回报普通",
+        "10": "跨周期风险定价可靠且资本回报持续优异"
+      },
+      "replaces": [
+        "IQS_03"
+      ],
+      "metric_id": "score.bank_02",
+      "construct_id": "IQS_03",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "BANK_03",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "盈利在满足资本留存要求后，能否持续形成可分配资本？",
+      "evidence": [
+        "资本内生增厚",
+        "风险加权资产增速",
+        "分红约束"
+      ],
+      "anchors": {
+        "1": "盈利不足以补充必要资本",
+        "5": "可覆盖资本消耗但分配余量有限",
+        "10": "资本生成持续超过合理增长消耗，分配稳健"
+      },
+      "replaces": [
+        "IQS_11"
+      ],
+      "metric_id": "score.bank_03",
+      "construct_id": "IQS_11",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "BANK_04",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "资产质量指标能否真实反映潜在信用损失？",
+      "evidence": [
+        "逾期迁徙",
+        "重组展期",
+        "拨备",
+        "抵押物",
+        "行业集中"
+      ],
+      "anchors": {
+        "1": "损失被展期掩盖且拨备不足",
+        "5": "问题可见且拨备大致匹配",
+        "10": "穿透风险充分、确认及时、拨备能承受压力"
+      },
+      "replaces": [
+        "IQS_12"
+      ],
+      "critical": true,
+      "metric_id": "score.bank_04",
+      "construct_id": "IQS_12",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "BANK_05",
+      "dimension": "moat",
+      "priority": 2,
+      "question": "低成本且稳定的负债或客户资源是否构成优势？",
+      "evidence": [
+        "存款成本与留存",
+        "无保险或大户占比",
+        "资金来源"
+      ],
+      "anchors": {
+        "1": "依赖高成本易流失资金",
+        "5": "融资结构普通，价格竞争明显",
+        "10": "稳定且分散的低成本资金有长期客户关系支持"
+      },
+      "metric_id": "score.bank_05",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "BANK_06",
+      "dimension": "valuation",
+      "priority": 2,
+      "question": "基于正常化股东回报与资产质量的估值是否留有余地？",
+      "evidence": [
+        "可持续ROE与股权成本",
+        "P/B",
+        "坏账调整",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "折价仍不足覆盖低回报或隐藏损失",
+        "5": "估值匹配可持续回报和风险",
+        "10": "保守损失与资本约束下仍有可信价格余地"
+      },
+      "replaces": [
+        "IQS_22"
+      ],
+      "metric_id": "score.bank_06",
+      "construct_id": "IQS_22",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

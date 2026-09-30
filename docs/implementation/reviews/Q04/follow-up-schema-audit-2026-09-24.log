@@ -1,0 +1,8 @@
+schema_semantically_equal_to_workspace_contract= True
+manual_accepts / schema_errors[verified_rate_card with null pricing_ref]= 1
+  $.cost_policy.pricing_ref None is not of type 'string'
+manual_accepts / schema_errors[policy_id length 201]= 1
+  $.policy_id 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' is too long
+manual_accepts / schema_errors[enabled comparison with zero budget]= 2
+  $.comparison.max_cost 0 is less than or equal to the minimum of 0
+  $.comparison.max_requests 0 is less than the minimum of 1

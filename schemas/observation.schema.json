@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "schema_version": {
-      "const": "1.0.0"
+      "enum": ["1.0.0", "1.1.0"]
     },
     "observation_id": {
       "type": "string",
@@ -69,6 +69,25 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 40
+    },
+    "module_package_id": {
+      "type": "string",
+      "pattern": "^pkg_[a-f0-9]{64}$"
+    },
+    "module_release_id": {
+      "type": "string",
+      "pattern": "^modrel_[a-f0-9]{64}$"
+    },
+    "question_definition_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "question_semantic_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "cycle_sensitive": {
+      "type": "boolean"
     },
     "method_id": {
       "type": "string",
@@ -294,6 +313,14 @@
     "execution",
     "answer",
     "evidence_review_status"
+  ],
+  "allOf": [
+    {
+      "if": {"properties": {"schema_version": {"const": "1.1.0"}}, "required": ["schema_version"]},
+      "then": {"required": ["module_package_id", "module_release_id",
+                            "question_definition_sha256", "question_semantic_sha256",
+                            "cycle_sensitive"]}
+    }
   ],
   "additionalProperties": false,
   "$id": "urn:iqs:observation:1"

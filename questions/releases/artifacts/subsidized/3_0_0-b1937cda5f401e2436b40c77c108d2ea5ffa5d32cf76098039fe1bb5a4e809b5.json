@@ -1,0 +1,75 @@
+{
+  "version": "3.0.0",
+  "module_id": "subsidized",
+  "kind": "overlays",
+  "name": "补贴、政府订单或许可依赖",
+  "applies_when": "财政补贴、税收优惠、政府付款或特许许可决定主要经济性。",
+  "questions": [
+    {
+      "id": "SUBSIDIZED_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "优惠减少或政府付款延迟时，业务经济性是否仍可维持？",
+      "evidence": [
+        "补贴占比",
+        "真实收款",
+        "无补贴利润",
+        "付款时长"
+      ],
+      "anchors": {
+        "1": "失去优惠即无法经营",
+        "5": "部分业务独立成立但回报下降",
+        "10": "核心经济性在保守政策和收款条件下仍成立"
+      },
+      "metric_id": "score.subsidized_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SUBSIDIZED_02",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "关键许可、优惠或政府合同续期的可预见性如何？",
+      "evidence": [
+        "期限",
+        "续期条件",
+        "历史执行",
+        "替代市场"
+      ],
+      "anchors": {
+        "1": "即将失效且续期依据弱",
+        "5": "有续期依据但条款可能显著改变",
+        "10": "规则和执行记录可靠且对变化有缓冲"
+      },
+      "metric_id": "score.subsidized_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SUBSIDIZED_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "政策性应收与履约投入是否具有可靠现金回收？",
+      "evidence": [
+        "账龄",
+        "预算来源",
+        "验收",
+        "垫资"
+      ],
+      "anchors": {
+        "1": "应收长期滚动且资金来源不清",
+        "5": "有回款但滞后与占款明显",
+        "10": "付款来源、验收与回款历史相互印证"
+      },
+      "metric_id": "score.subsidized_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

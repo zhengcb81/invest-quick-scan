@@ -1,0 +1,11 @@
+Q02 MiMo web-search live probe (sanitized)
+Date: 2026-09-25
+Authorization: User asked to test MiMo after supplying the configured environment-variable name, model, and endpoint.
+Credential handling: MIMO_PLAN_API_KEY was read from the process environment for the Authorization header; its value was not printed, logged, or persisted.
+Endpoint: https://token-plan-cn.xiaomimimo.com/v1/chat/completions
+Requested model: mimo-v2.6-flash
+Request: One company fact question, web_search tool enabled, force_search=true, max_keyword=1, max_completion_tokens=300.
+Result: HTTP 400, Param Incorrect.
+Sanitized provider error: web search tool found in the request body, but webSearchEnabled is false.
+Outcome: No model answer, no source annotations, and no web_search_usage receipt were returned. This is a failed configuration probe, not an LLM-01 pass. Billing of rejected requests was not independently observable.
+Local or external repository files changed by the request: none.

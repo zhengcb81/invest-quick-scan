@@ -1,0 +1,16 @@
+Q04 route-recovery isolated recheck (2026-09-25 UTC)
+
+Selected files:
+- StockQAbyLLM/tests/unit/test_llm_integration.py
+- StockQAbyLLM/tests/integration/test_quick_scan_cli.py
+
+Command: python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov --rootdir=<unique TEMP sandbox> --basetemp=<same sandbox>/pytest-temp <the two selected files>
+Working directory: unique temporary copy of StockQAbyLLM, not the source repository.
+Environment: MiniMax, MiMo, and OpenAI credential variables cleared in the test process; no live network request.
+Result: 75 passed in 5.00s; exit code 0.
+Cleanup: unique temporary sandbox verified under system TEMP and removed after test completion.
+Diff hygiene: git diff --check on the three authorized route-recovery paths exited 0.
+
+Harness note: the first attempt was collected from the main workspace and failed to add the temporary copy to sys.path (2 collection errors; no tests executed). The sandbox was removed. The corrected run changed CWD to the isolated copy and passed all 75 tests; that successful run is the validation result above.
+
+This run verifies offline mocked behavior only. It does not verify real MiniMax search, durable retry scheduling, cross-process quota coordination, or StockWiki integration.

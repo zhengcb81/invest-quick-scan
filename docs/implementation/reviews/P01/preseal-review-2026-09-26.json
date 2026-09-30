@@ -1,0 +1,56 @@
+{
+  "reviewer_id": "agent:/root/p01_receipt_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "separate read-only sub-agent; did not implement or modify reviewed files",
+  "outcome": "rejected",
+  "implementation_snapshot_sha256": "0359dede364b5d0d4741fa4df7a6f415a482560635a47bde10592d9a079d014a",
+  "open_findings": [
+    {"id": "P01-RV-01", "severity": "P2"},
+    {"id": "P01-RV-02", "severity": "P2"},
+    {"id": "P01-RV-03", "severity": "P2"}
+  ],
+  "finding_details": [
+    {
+      "id": "P01-RV-01",
+      "severity": "P2",
+      "file": "scripts/task_receipts.py",
+      "lines": "511-524, 704-712",
+      "title": "Malformed historical manifest can escape as an uncaught TypeError",
+      "scenario": "A well-formed JSON manifest has files=[{\"path\": []}] (or a dict-valued path). The P00 path-set comprehension tries to insert that unhashable value into a set at line 511. The historical-context handler catches only ReceiptError, and verify_receipt/main also catch only ReceiptError, so the verifier terminates with a traceback instead of returning a structured blocked result.",
+      "effect": "A malformed manifest does not fail closed through the verifier's promised JSON status contract.",
+      "recommendation": "Validate every manifest entry and path type before set construction, and convert malformed manifest shapes to a stable ReceiptError; add an isolated negative test."
+    },
+    {
+      "id": "P01-RV-02",
+      "severity": "P2",
+      "file": "scripts/task_receipts.py",
+      "lines": "370-460, 612-659",
+      "title": "Per-case sidecar status can remain a passing claim when validation blocks",
+      "scenario": "Set a case result status to passed and one child assertion status to failed. The assertion is projected as blocked and the task is blocked, but the case projection at line 637 still emits status=passed without labeling it as reported_status or providing an aggregate validation_status. Separately, the log is read and hashed in _audit_assertion and then read again in _validate_assertion; if it changes between reads, the sidecar can retain a passed assertion/hash projection while the authoritative second check adds a blocking error.",
+      "effect": "Consumers of the detached per-case audit projection can see an unqualified passed status alongside a blocked validation result, or a projected assertion status that differs from the evidence read used for eligibility.",
+      "recommendation": "Label case status as reported_status and derive a separate validation_status from the final blockers; reuse one captured log read for both eligibility and projection, or reconcile the projection with the final authoritative check. Add conflicting-status and controlled mutation regression cases."
+    },
+    {
+      "id": "P01-RV-03",
+      "severity": "P2",
+      "file": "docs/implementation/contracts/task-receipts.md; schemas/quick_scan/task-receipt.schema.json",
+      "lines": "contract 60-64; schema 26-57, 68-100",
+      "title": "Contract promises compatibility-window evidence that strict v2 schema cannot represent",
+      "scenario": "The contract says compatibility evidence in a receipt binds producer/consumer release IDs and hashes, action, UTC test time, and a validity window. The core schema has no compatibility evidence property and rejects additional properties, so a receipt containing those promised fields cannot validate.",
+      "effect": "The written v2 contract and executable schema disagree on whether compatibility-window evidence can be stored and checked.",
+      "recommendation": "Either explicitly mark this section as a future contract outside v2, or add a versioned schema shape and verifier checks before treating the rule as active."
+    }
+  ],
+  "review_scope": {
+    "files": [
+      "schemas/quick_scan/task-receipt.schema.json",
+      "scripts/task_receipts.py",
+      "tests/test_task_receipts.py",
+      "examples/quick_scan/task-receipt-v2-example.json",
+      "docs/implementation/contracts/task-receipts.md"
+    ],
+    "requirements_read": ["P01", "RCPT-01", "RCPT-02", "RCPT-03"],
+    "execution": "Read-only source and test inspection only; did not run tests, receipt-recorded commands, or network/API calls."
+  }
+}

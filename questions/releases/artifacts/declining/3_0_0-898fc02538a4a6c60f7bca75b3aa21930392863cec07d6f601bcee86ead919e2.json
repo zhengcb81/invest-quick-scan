@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "declining",
+  "kind": "stages",
+  "name": "结构性收缩与收获期",
+  "applies_when": "核心需求长期下降；不强行要求高速增长，单独评价收缩过程的现金回报。",
+  "questions": [
+    {
+      "id": "DECLINING_01",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "收入收缩过程中，现金释放能否覆盖必要义务？",
+      "evidence": [
+        "现金收回",
+        "维护",
+        "关停",
+        "养老金或债务"
+      ],
+      "anchors": {
+        "1": "现金减少快于义务且出现缺口",
+        "5": "短期可覆盖但终局余量不明",
+        "10": "保守收缩下仍能有序履约并释放现金"
+      },
+      "metric_id": "score.declining_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DECLINING_02",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "管理层是否按股东利益收缩投入和退出低效资产？",
+      "evidence": [
+        "停止扩产",
+        "资产处置",
+        "回款",
+        "分配"
+      ],
+      "anchors": {
+        "1": "否认衰退并持续追加低效投入",
+        "5": "部分调整但退出不够及时",
+        "10": "明确收缩纪律且可实现现金公平回到股东"
+      },
+      "metric_id": "score.declining_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DECLINING_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "退出、转产或收缩能否控制成本与责任？",
+      "evidence": [
+        "关停赔偿",
+        "资产变现",
+        "复垦",
+        "客户承诺"
+      ],
+      "anchors": {
+        "1": "退出成本失控且责任未识别",
+        "5": "主要责任已识别但执行待验证",
+        "10": "退出成本有资金覆盖且执行记录可靠"
+      },
+      "metric_id": "score.declining_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "DECLINING_04",
+      "dimension": "valuation",
+      "priority": 2,
+      "question": "保守剩余现金和终止成本是否足以支持当前价格？",
+      "evidence": [
+        "衰减路径",
+        "剩余现金",
+        "终止义务",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "价格依靠不现实复苏或遗漏退出成本",
+        "5": "保守回收大致对应价格",
+        "10": "充分计入衰退与退出义务后仍有回收余地"
+      },
+      "metric_id": "score.declining_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

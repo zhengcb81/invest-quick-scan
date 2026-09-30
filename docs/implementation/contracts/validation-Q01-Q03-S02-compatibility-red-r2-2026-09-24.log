@@ -1,0 +1,15 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ QuestionSetTests.test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline _
+..\..\..\..\Projects\invest-quick-scan\tests\test_question_sets.py:727: in test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline
+    score, description = parser().parse_response(json.dumps(raw))
+    ^^^^^^^^^^^^^^^^^^
+E   TypeError: cannot unpack non-iterable NoneType object
+---------------------------- Captured stdout call -----------------------------
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\main_questions.json
+INFO - 成功从JSON配置加载 24 个问题
+WARNING - LLM返回的description包含未选择的嵌套答案协议
+WARNING - 无法直接解析JSON，尝试从文本中提取
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\invest-quick-scan\tests\test_question_sets.py::QuestionSetTests::test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline
+1 failed in 0.82s

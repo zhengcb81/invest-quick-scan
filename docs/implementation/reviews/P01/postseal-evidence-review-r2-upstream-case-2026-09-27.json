@@ -1,0 +1,387 @@
+{
+  "schema_version": "1.0",
+  "review_id": "P01-POSTSEAL-EVIDENCE-R2-UPSTREAM-CASE",
+  "review_type": "P01 post-seal evidence review",
+  "reviewer_id": "agent:/root/s04_mod14_review",
+  "reviewer_role": "independent post-seal evidence reviewer",
+  "independent": true,
+  "separation_basis": "Read-only review by a separate sub-agent; did not author or modify the sealed receipt, detached sidecar, self-check log, pre-seal review, implementation snapshot, assertion logs, or regression log.",
+  "outcome": "approved",
+  "open_findings": [],
+  "reviewed_at_utc": "2026-09-26T23:30:14Z",
+  "bindings": {
+    "receipt_raw_sha256": "f230d6f14bce8d2913f86c994f10e89feb282e3771271451e8a14bd7b7a043e6",
+    "receipt_core_sha256": "42f3f8e540cd236dc4aa02f188ded03515fb11ec6e1374ea78dd490674f68ebf",
+    "detached_sidecar_sha256": "4c6ee779eff5dbcebbf4efa18dff55b970f2bcaa723b33d9623b7295de49b825",
+    "self_check_log_sha256": "6d402568d761f05d6c3c072876b927a94866f0a79f5bbacdb042053fcfc5a942",
+    "preseal_review_sha256": "378a1416f193a578ba84394e05849266941731ae5b63a0a9c8170aa9c560b0c5",
+    "validator_sha256": "a917c30d219218dd2ff32e07d6e84cfff799865a5de0ae62e90666ee0b1e9ffb",
+    "regression_log_sha256": "8933c4258588e08db3bab81fad2211968579632d72123c03101cda9e6bfe2a3d"
+  },
+  "verification": {
+    "receipt_hash_valid": true,
+    "canonical_core_hash_valid": true,
+    "sidecar_hash_valid": true,
+    "sidecar_receipt_binding_valid": true,
+    "sidecar_core_binding_valid": true,
+    "sidecar_validator_binding_valid": true,
+    "sidecar_eligible_to_close": true,
+    "sidecar_blockers": [],
+    "self_check_log_bindings_valid": true,
+    "preseal_review_report_binding_valid": true,
+    "preseal_reviewer_binding_matches_receipt": true,
+    "preseal_outcome": "approved",
+    "preseal_open_findings": [],
+    "implementation_snapshot_sha256": "017318f72c0994b69f7a19355b629a6f2460d8fc2e2f6c74b47e1744222d905a",
+    "implementation_snapshot_files_match": true,
+    "atomic_assertion_count": 18,
+    "atomic_assertions_passed": 18,
+    "assertion_case_distribution": {
+      "RCPT-01": 6,
+      "RCPT-02": 8,
+      "RCPT-03": 4
+    },
+    "unique_assertion_log_count": 14,
+    "unique_isolated_run_count": 14,
+    "skip_count_total": 0,
+    "all_cleanup_verified": true,
+    "all_assertion_logs_hash_valid": true,
+    "assertion_log_manifest": [
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_absolute_traversal_sensitive_and_symlink_escape_paths_are_rejected.log",
+        "sha256": "e62c2eb072b0efd0da30d71e8a9384fb72f4e6213c3901317aa964d72e8f9fe9",
+        "assertion_ids": [
+          "RCPT-02.A06"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_absolute_traversal_sensitive_and_symlink_escape_paths_are_rejected"
+        ],
+        "run_id": "1c8cb98e-3379-4201-8189-2d626b6e6b55",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_case_and_assertion_sets_are_exact_and_derived_ids_are_stable.log",
+        "sha256": "7dadfc9b53db5808f6163bd65e06031dc32625acf9671a8d9da61126bfa1e3bf",
+        "assertion_ids": [
+          "RCPT-01.A01"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_case_and_assertion_sets_are_exact_and_derived_ids_are_stable"
+        ],
+        "run_id": "138f9b5b-3429-4acd-b143-a0105b9a5f8e",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_core_tamper_duplicate_and_unexpected_assertions_fail_closed.log",
+        "sha256": "07a89b1f664ff36f0db18a56b7b14933ad243994a59a665fb2d74fb77f8bfbc6",
+        "assertion_ids": [
+          "RCPT-02.A01"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_core_tamper_duplicate_and_unexpected_assertions_fail_closed"
+        ],
+        "run_id": "06e4db0e-193f-4676-ac00-4a2bf41a9a1b",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_detached_sidecar_does_not_mutate_core_and_core_rejects_postseal_review.log",
+        "sha256": "afea7c441ce78c9191145ca608959e4abda5a386998e263b16eb0c8813150a8e",
+        "assertion_ids": [
+          "RCPT-03.A03"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_detached_sidecar_does_not_mutate_core_and_core_rejects_postseal_review"
+        ],
+        "run_id": "5505c8c3-4a74-4c53-8e60-3fdb8911f530",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_historical_p00_manifest_is_context_only_and_hash_locked.log",
+        "sha256": "d67c71b7c76935d792705210e3c2c748cb5021a46122350963d668f903b240c4",
+        "assertion_ids": [
+          "RCPT-03.A01"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_historical_p00_manifest_is_context_only_and_hash_locked"
+        ],
+        "run_id": "91940368-5f23-4fd3-bcfd-3a9af2a5c34a",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_legacy_or_missing_current_dependency_never_satisfies_close_gate.log",
+        "sha256": "8f21659b9fd282c184f293aea4b752c7e6f05e561f7016532f5bff8d0e4eb08b",
+        "assertion_ids": [
+          "RCPT-03.A02",
+          "RCPT-03.A04"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_legacy_or_missing_current_dependency_never_satisfies_close_gate",
+          "tests/test_task_receipts.py::test_legacy_or_missing_current_dependency_never_satisfies_close_gate"
+        ],
+        "run_id": "9685f844-ce52-4f7b-ba81-e66169904381",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_legacy_v1_remains_historical_and_unchanged.log",
+        "sha256": "f97afb327c16c73f3ce513999f101e50662a2952fb26e2489986606806a948ef",
+        "assertion_ids": [
+          "RCPT-02.A07"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_legacy_v1_remains_historical_and_unchanged"
+        ],
+        "run_id": "c666530e-cf7d-40b9-8762-5a883bab1e7f",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_missing_empty_tampered_logs_exit_status_and_skips_block.log",
+        "sha256": "c589ac40f0b0f8f538c6c673aa3d4d55e0fdcfa6a318ac110e3a78928d7030a3",
+        "assertion_ids": [
+          "RCPT-02.A04"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_missing_empty_tampered_logs_exit_status_and_skips_block"
+        ],
+        "run_id": "73f95f40-d4de-4ddf-92f5-45b9abe51d54",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_review_forgery_self_review_and_review_cycle_are_rejected.log",
+        "sha256": "089112435399598975295dc06c691c8b55e7e08a68ecc6b8f92f09856a953f39",
+        "assertion_ids": [
+          "RCPT-01.A04",
+          "RCPT-02.A05"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_review_forgery_self_review_and_review_cycle_are_rejected",
+          "tests/test_task_receipts.py::test_review_forgery_self_review_and_review_cycle_are_rejected"
+        ],
+        "run_id": "fd9ad539-8aa0-41d4-ac72-ab212817903e",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_snapshot_change_makes_preseal_review_stale.log",
+        "sha256": "58ee534981160d45ce9ca526031b04004f8b190ce912c5bda3dea7913c748caf",
+        "assertion_ids": [
+          "RCPT-02.A03"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_snapshot_change_makes_preseal_review_stale"
+        ],
+        "run_id": "61712346-a86a-408d-b1a6-641086ed2467",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_task_case_and_global_boundary_changes_stale_receipt.log",
+        "sha256": "cd12e391a1d5b780fa48f541152361fcc9f9714bd9b076c7dafeb1e7ad94b26f",
+        "assertion_ids": [
+          "RCPT-02.A02"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_task_case_and_global_boundary_changes_stale_receipt"
+        ],
+        "run_id": "858ca028-bd68-42ec-92b9-2c7a99c90a8d",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_unrelated_plan_and_catalog_additions_do_not_stale_owner_hashes.log",
+        "sha256": "fb3d367bc7ef723ad01d2f2b1717afc6d736a1566a5162825fce2ab4af2d477a",
+        "assertion_ids": [
+          "RCPT-01.A05"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_unrelated_plan_and_catalog_additions_do_not_stale_owner_hashes"
+        ],
+        "run_id": "ea48e963-9984-4963-b419-53b65e330183",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_valid_receipt_and_schema_are_accepted.log",
+        "sha256": "951200cc52bb7b264c3bd50fb52733194821d9b189bed8d99d80cdf2ee35a34d",
+        "assertion_ids": [
+          "RCPT-01.A02",
+          "RCPT-01.A03"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_valid_receipt_and_schema_are_accepted",
+          "tests/test_task_receipts.py::test_valid_receipt_and_schema_are_accepted"
+        ],
+        "run_id": "8c37ce2f-5fc5-46b4-a829-0e4268e4e78a",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/validation-P01-r3-test_verifier_does_not_execute_recorded_commands_or_write_inputs_or_emit_secrets.log",
+        "sha256": "5b063285a3161d1e4ba0f02dc6a426e06393cf9c465a70246317152ff217e7f7",
+        "assertion_ids": [
+          "RCPT-01.A06",
+          "RCPT-02.A08"
+        ],
+        "selectors": [
+          "tests/test_task_receipts.py::test_verifier_does_not_execute_recorded_commands_or_write_inputs_or_emit_secrets",
+          "tests/test_task_receipts.py::test_verifier_does_not_execute_recorded_commands_or_write_inputs_or_emit_secrets"
+        ],
+        "run_id": "08070b19-6300-49c8-95b6-c7dfd4ee5c18",
+        "exit_code": 0,
+        "skip_count": 0,
+        "isolated": true,
+        "cleanup_verified": true,
+        "cleanup_leftovers": [],
+        "network_mode": "none",
+        "request_count": 0,
+        "fees_usd": "0",
+        "test_output": "Ran 1 test; OK"
+      }
+    ],
+    "reported_total_regression": {
+      "source": "docs/implementation/contracts/validation-P01-upstream-case-regression-r3-2026-09-27.log",
+      "sha256": "8933c4258588e08db3bab81fad2211968579632d72123c03101cda9e6bfe2a3d",
+      "reported_result": "29 tests passed; recorded in the supplied log, not rerun by the reviewer.",
+      "observed_test_entries": 29,
+      "observed_summary": "Ran 29 tests; OK",
+      "hash_matches_review_report": true,
+      "rerun_by_this_reviewer": false
+    },
+    "superseded_prior_postseal_review": {
+      "path": "docs/implementation/reviews/P01/postseal-evidence-review-r1-2026-09-26.json",
+      "sha256": "5c6a9759c458d763a5a8d2ee33c1e45732e489ad8eaa63cc95dc646168b8c588",
+      "applies_to_current_seal": false,
+      "reason": "The prior r1 report binds the preceding receipt core and sidecar hashes; this r2 report binds the current re-sealed artifacts."
+    }
+  },
+  "review_scope": [
+    "Recomputed the canonical P01 receipt core hash and verified the raw receipt file hash.",
+    "Verified detached sidecar file hash, bindings to the receipt file/core/current validator, eligible_to_close status, and empty blocker list.",
+    "Verified self-check log hash and recorded core/exit/skip/isolation/cleanup/network evidence.",
+    "Verified the receipt-bound pre-seal review report hash, reviewer identity/role/independence/outcome/open findings, and implementation snapshot binding.",
+    "Checked all 18 atomic assertion records against 14 unique r3 logs, including SHA-256, unique run IDs, exit=0, skip=0, isolated execution, cleanup success, and no-network/zero-fee metadata.",
+    "Verified the full regression log SHA-256 and its recorded 29 passing tests against the pre-seal review claim; did not rerun the test suite."
+  ],
+  "execution": {
+    "mode": "read-only evidence review",
+    "product_tests_run_by_reviewer": false,
+    "network_or_api_calls": false,
+    "receipt_recorded_commands_executed": false,
+    "reviewed_artifacts_modified": false,
+    "only_write": "docs/implementation/reviews/P01/postseal-evidence-review-r2-upstream-case-2026-09-27.json",
+    "receipt_sidecar_and_logs_modified": false
+  },
+  "read_only_boundary": "This review read and hashed existing files and parsed recorded metadata only. It did not run product tests, execute commands recorded in logs, or access network/API services. The receipt, sidecar, self-check log, pre-seal report, implementation files, assertion logs, and regression log were not modified. This detached report is not referenced by the receipt or sidecar."
+}

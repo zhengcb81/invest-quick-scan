@@ -1,0 +1,45 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_ test_consistent_nested_scoring_protocol_remains_compatible_with_screening_consumer _
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:266: in test_consistent_nested_scoring_protocol_remains_compatible_with_screening_consumer
+    assert parsed is not None
+E   assert None is not None
+---------------------------- Captured stdout call -----------------------------
+WARNING - LLM返回的description包含未选择的嵌套答案协议
+WARNING - 无法直接解析JSON，尝试从文本中提取
+WARNING - LLM返回的description包含未选择的嵌套答案协议
+------------------------------ Captured log call ------------------------------
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:190 LLM返回的description包含未选择的嵌套答案协议
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:119 无法直接解析JSON，尝试从文本中提取
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:190 LLM返回的description包含未选择的嵌套答案协议
+_ test_duplicate_outer_keys_cannot_fall_back_to_nested_metadata_answer[direct-object] _
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:292: in test_duplicate_outer_keys_cannot_fall_back_to_nested_metadata_answer
+    assert parser.parse_structured_response(content, expected_question_id="IQS_05") is None
+E   assert ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) is None
+E    +  where ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) = parse_structured_response('{"question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous outer answer","metadata":{"question_id":"IQS_05","score":9,"description":"not the answer"}}', expected_question_id='IQS_05')
+E    +    where parse_structured_response = <src.providers.llm_response_parser.LLMResponseParser object at 0x0000023C9E812850>.parse_structured_response
+---------------------------- Captured stdout call -----------------------------
+WARNING - LLM返回的JSON包含重复字段
+WARNING - 无法直接解析JSON，尝试从文本中提取
+INFO - 成功解析LLM响应（正则提取），评分: 9/10
+------------------------------ Captured log call ------------------------------
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:141 LLM返回的JSON包含重复字段
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:119 无法直接解析JSON，尝试从文本中提取
+INFO     src.providers.llm_response_parser:llm_response_parser.py:234 成功解析LLM响应（正则提取），评分: 9/10
+_ test_duplicate_outer_keys_cannot_fall_back_to_nested_metadata_answer[markdown-wrapped-object] _
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:292: in test_duplicate_outer_keys_cannot_fall_back_to_nested_metadata_answer
+    assert parser.parse_structured_response(content, expected_question_id="IQS_05") is None
+E   assert ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) is None
+E    +  where ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) = parse_structured_response('Model response:\n```json\n{"question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous outer answer","metadata":{"question_id":"IQS_05","score":9,"description":"not the answer"}}\n```', expected_question_id='IQS_05')
+E    +    where parse_structured_response = <src.providers.llm_response_parser.LLMResponseParser object at 0x0000023CA110DF90>.parse_structured_response
+---------------------------- Captured stdout call -----------------------------
+WARNING - 无法直接解析JSON，尝试从文本中提取
+INFO - 成功解析LLM响应（正则提取），评分: 9/10
+------------------------------ Captured log call ------------------------------
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:119 无法直接解析JSON，尝试从文本中提取
+INFO     src.providers.llm_response_parser:llm_response_parser.py:234 成功解析LLM响应（正则提取），评分: 9/10
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_consistent_nested_scoring_protocol_remains_compatible_with_screening_consumer
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_duplicate_outer_keys_cannot_fall_back_to_nested_metadata_answer[direct-object]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_duplicate_outer_keys_cannot_fall_back_to_nested_metadata_answer[markdown-wrapped-object]
+3 failed in 0.72s

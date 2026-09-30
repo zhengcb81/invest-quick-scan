@@ -1,0 +1,82 @@
+...........E... [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_g0_candidate_omits_actual_descendant_validation_files _
+
+path = '\\\\?\\C:\\Users\\֣����\\AppData\\Local\\Temp\\iqs-g0-r3-5015a0e660c4443cbe8cd61f1c09545e'
+onexc = functools.partial(<function on_rm_rf_error at 0x0000023C57A59760>, start_path=WindowsPath('//?/C:/Users/֣����/AppData/Local/Temp/iqs-g0-r3-5015a0e660c4443cbe8cd61f1c09545e'))
+
+    def _rmtree_unsafe(path, onexc):
+        def onerror(err):
+            if not isinstance(err, FileNotFoundError):
+                onexc(os.scandir, err.filename, err)
+        results = os.walk(path, topdown=False, onerror=onerror, followlinks=os._walk_symlinks_as_files)
+        for dirpath, dirnames, filenames in results:
+            for name in dirnames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.rmdir(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.rmdir, fullname, err)
+            for name in filenames:
+                fullname = os.path.join(dirpath, name)
+                try:
+>                   os.unlink(fullname)
+E                   PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '\\\\?\\C:\\Users\\֣����\\AppData\\Local\\Temp\\iqs-g0-r3-5015a0e660c4443cbe8cd61f1c09545e\\stdout.txt'
+
+C:\Miniconda\Lib\shutil.py:625: PermissionError
+
+During handling of the above exception, another exception occurred:
+
+fixturedef = <FixtureDef argname='tmp_path' scope='function' baseid=''>
+request = <SubRequest 'tmp_path' for <Function test_g0_candidate_omits_actual_descendant_validation_files>>
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -> object | None:
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+>               return (yield)
+                        ^^^^^
+
+C:\Miniconda\Lib\site-packages\pytest_asyncio\plugin.py:728: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\shutil.py:790: in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = '\\\\?\\C:\\Users\\֣����\\AppData\\Local\\Temp\\iqs-g0-r3-5015a0e660c4443cbe8cd61f1c09545e'
+onexc = functools.partial(<function on_rm_rf_error at 0x0000023C57A59760>, start_path=WindowsPath('//?/C:/Users/֣����/AppData/Local/Temp/iqs-g0-r3-5015a0e660c4443cbe8cd61f1c09545e'))
+
+    def _rmtree_unsafe(path, onexc):
+        def onerror(err):
+            if not isinstance(err, FileNotFoundError):
+                onexc(os.scandir, err.filename, err)
+        results = os.walk(path, topdown=False, onerror=onerror, followlinks=os._walk_symlinks_as_files)
+        for dirpath, dirnames, filenames in results:
+            for name in dirnames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.rmdir(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+                    onexc(os.rmdir, fullname, err)
+            for name in filenames:
+                fullname = os.path.join(dirpath, name)
+                try:
+                    os.unlink(fullname)
+                except FileNotFoundError:
+                    continue
+                except OSError as err:
+>                   onexc(os.unlink, fullname, err)
+E                   PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '\\\\?\\C:\\Users\\֣����\\AppData\\Local\\Temp\\iqs-g0-r3-5015a0e660c4443cbe8cd61f1c09545e\\stdout.txt'
+
+C:\Miniconda\Lib\shutil.py:629: PermissionError
+=========================== short test summary info ===========================
+ERROR tests/test_g0_manifest.py::test_g0_candidate_omits_actual_descendant_validation_files
+14 passed, 1 error, 186 subtests passed in 13.83s

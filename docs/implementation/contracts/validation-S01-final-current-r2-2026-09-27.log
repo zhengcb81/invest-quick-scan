@@ -1,0 +1,21 @@
+RUN_ID=s01-40b1daae8c854fb082a3d9144d8f4314
+COMMAND=python -B -X utf8 -m pytest -p no:cacheprovider -p pytest_asyncio.plugin --basetemp C:\Users\郑曾波\AppData\Local\Temp\iqs-s01-receipt-s01-40b1daae8c854fb082a3d9144d8f4314\pytest tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_manifest_remains_readable_without_new_mapping tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages tests/test_metrics_contract.py::MetricsContractTests::test_sc_10_core_manifest_coverage_and_replacements tests/test_metrics_contract.py::MetricsContractTests::test_sc_11_cross_cohort_incomparability -vv
+TEMP_ROOT=C:\Users\郑曾波\AppData\Local\Temp\iqs-s01-receipt-s01-40b1daae8c854fb082a3d9144d8f4314
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+rootdir: C:\Users\郑曾波\Projects\invest-quick-scan
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 6 items
+
+tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output 
+tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output PASSED [ 16%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping 
+tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping PASSED [ 33%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_manifest_remains_readable_without_new_mapping PASSED [ 50%]
+tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages PASSED [ 66%]
+tests/test_metrics_contract.py::MetricsContractTests::test_sc_10_core_manifest_coverage_and_replacements PASSED [ 83%]
+tests/test_metrics_contract.py::MetricsContractTests::test_sc_11_cross_cohort_incomparability PASSED [100%]
+
+==================== 6 passed, 4 subtests passed in 1.16s =====================
+TEMP_CLEANUP_VERIFIED=True
+EXIT_CODE=0

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="11" time="0.677" timestamp="2026-09-24T22:53:16.840733+01:00" hostname="DESKTOP-156V213"><testcase classname="" name="test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[unknown-strict]" time="0.002" /><testcase classname="" name="test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[unknown-fallback]" time="0.002" /><testcase classname="" name="test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[score_conflict-strict]" time="0.002" /><testcase classname="" name="test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[score_conflict-fallback]" time="0.001" /><testcase classname="" name="test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[id_conflict-strict]" time="0.001" /><testcase classname="" name="test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[id_conflict-fallback]" time="0.001" /><testcase classname="" name="test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[duplicate-strict]" time="0.001" /><testcase classname="" name="test_r0_fixed_cases_fail_closed_in_direct_and_regex_modes[duplicate-fallback]" time="0.001" /><testcase classname="" name="test_nonanswer_json_description_is_still_native_prose" time="0.001" /><testcase classname="" name="test_r1_regex_must_not_promote_nested_object_from_duplicate_key_response" time="0.001"><failure message="assert ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) is None&#10; +  where ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) = parse_structured_response('{&quot;question_id&quot;:&quot;IQS_06&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;score&quot;:8,&quot;description&quot;:&quot;ambiguous outer&quot;,&quot;metadata&quot;:{&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;score&quot;:9,&quot;description&quot;:&quot;not the answer&quot;}}', expected_question_id='IQS_05')&#10; +    where parse_structured_response = &lt;src.providers.llm_response_parser.LLMResponseParser object at 0x000001A05DC5A150&gt;.parse_structured_response&#10; +      where &lt;src.providers.llm_response_parser.LLMResponseParser object at 0x000001A05DC5A150&gt; = LLMResponseParser()">def test_r1_regex_must_not_promote_nested_object_from_duplicate_key_response():
+        content = ('{"question_id":"IQS_06","question_id":"IQS_05","score":8,'
+                   '"description":"ambiguous outer",'
+                   '"metadata":{"question_id":"IQS_05","score":9,"description":"not the answer"}}')
+&gt;       assert LLMResponseParser().parse_structured_response(
+            content, expected_question_id='IQS_05') is None
+E       assert ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) is None
+E        +  where ParsedLLMAnswer(score=9, description='not the answer', status='scored', question_id='IQS_05', entity_id=None, company_name=None) = parse_structured_response('{"question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous outer","metadata":{"question_id":"IQS_05","score":9,"description":"not the answer"}}', expected_question_id='IQS_05')
+E        +    where parse_structured_response = &lt;src.providers.llm_response_parser.LLMResponseParser object at 0x000001A05DC5A150&gt;.parse_structured_response
+E        +      where &lt;src.providers.llm_response_parser.LLMResponseParser object at 0x000001A05DC5A150&gt; = LLMResponseParser()
+
+..\..\..\..\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_r1_followup.py:36: AssertionError</failure></testcase><testcase classname="" name="test_valid_existing_structured_description_remains_compatible_through_cli" time="0.057"><failure message="AssertionError: A valid supported consumer shape must not regress to an unknown answer&#10;assert None == 8">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A05DB5B490&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-r1-followup-3vek0h5f/pytest/test_valid_existing_structured0')
+
+    def test_valid_existing_structured_description_remains_compatible_through_cli(monkeypatch, tmp_path):
+        # This complete, agreeing structured description is the currently documented IQS
+        # legacy/screening shape, not an inner/outer conflict. This oracle is unchanged
+        # from the pre-r1 consumer success criterion and intentionally detects migration breakage.
+        inner = dict(id='IQS_05', status='scored', score=8, confidence='high',
+                     rationale='Fictional source supports the assessment', information_as_of='2026-09-24',
+                     period_start=None, period_end=None, basis='current',
+                     evidence=[dict(claim='Fictional review evidence', title='Offline fixture',
+                                    url='https://example.invalid/review', published_at=None, period='not_applicable')],
+                     counterevidence='Fictional contrary evidence', sensitivity='Fictional downside', metrics={})
+        answer, exit_code, calls = invoke(monkeypatch, tmp_path, outer(8, json.dumps(inner), status='scored'))
+&gt;       assert answer['score'] == 8, 'A valid supported consumer shape must not regress to an unknown answer'
+E       AssertionError: A valid supported consumer shape must not regress to an unknown answer
+E       assert None == 8
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_r1_followup.py:51: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,403 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: C:\Users\郑曾波\Projects\invest-quick-scan
+plugins: Faker-40.19.1, asyncio-1.3.0, base-url-2.1.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 38 items
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_freshness_and_jobs_contract.py . [  2%]
+...F...........                                                          [ 42%]
+..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py . [ 44%]
+..............                                                    [ 81%]
+..\..\..\..\Projects\invest-quick-scan\tests\test_g0_regressions.py ...F [ 92%]
+...                                                                      [100%]
+
+================================== FAILURES ===================================
+_ FreshnessAndJobsContractTests.test_job_08_uncertain_attempt_must_exist_once_and_transition_uses_work_item _
+
+self = <test_freshness_and_jobs_contract.FreshnessAndJobsContractTests testMethod=test_job_08_uncertain_attempt_must_exist_once_and_transition_uses_work_item>
+
+    def test_job_08_uncertain_attempt_must_exist_once_and_transition_uses_work_item(self):
+        base = {
+            "work_item_id": "WORK_1", "entity_id": "ENT_A", "question_id": "IQS_01", "generation": 1,
+            "scope": "entity", "scope_id": "ENT_A", "question_fingerprint": "a" * 64,
+            "routing_fingerprint": "b" * 64, "request_cache_key": "REQ_" + "d" * 64,
+            "status": "uncertain", "uncertain_attempt_id": "ATTEMPT_1",
+            "run_ids": ["RUN_1"], "scan_ids": ["SCAN_1"],
+            "attempts": [{"attempt_id": "ATTEMPT_1", "provider": "fixture",
+                           "model_requested": "fixture-model", "started_at": "2026-09-22T00:00:00Z"}],
+            "created_at": "2026-09-22T00:00:00Z", "updated_at": "2026-09-22T00:01:00Z"
+        }
+        cv.validate_work_item(base)
+>       self.assertTrue(wc.transition_work_item(
+                        ^^^^^^^^^^^^^^^^^^^^^^^
+            base, "pending", confirmed_not_sent=True,
+            reconciled_attempt_id="ATTEMPT_1", reconciliation_outcome="not_sent"))
+E       AttributeError: module 'work_contract' has no attribute 'transition_work_item'
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_freshness_and_jobs_contract.py:182: AttributeError
+_ ExchangeAndQueryContractTests.test_exchange_public_validator_rejects_any_stale_content_address (invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) _
+
+self = <test_exchange_and_query_contract.ExchangeAndQueryContractTests testMethod=test_exchange_public_validator_rejects_any_stale_content_address>
+
+    def test_exchange_public_validator_rejects_any_stale_content_address(self):
+        tampered = []
+    
+        observation_changed = copy.deepcopy(PACKAGE)
+        observation_changed["items"][0]["observation"]["answer"]["summary"] += " altered"
+        tampered.append(observation_changed)
+    
+        payload_hash_changed = copy.deepcopy(PACKAGE)
+        payload_hash_changed["items"][0]["payload_sha256"] = "f" * 64
+        tampered.append(payload_hash_changed)
+    
+        observation_id_changed = copy.deepcopy(PACKAGE)
+        observation_id_changed["items"][0]["observation_id"] = "obs_" + "a" * 64
+        tampered.append(observation_id_changed)
+    
+        item_id_changed = copy.deepcopy(PACKAGE)
+        item_id_changed["items"][0]["item_id"] = "itm_" + "a" * 64
+        tampered.append(item_id_changed)
+    
+        metadata_changed = copy.deepcopy(PACKAGE)
+        metadata_changed["producer"]["component_version"] = "9.9.9"
+        tampered.append(metadata_changed)
+    
+        package_hash_changed = copy.deepcopy(PACKAGE)
+        package_hash_changed["package_sha256"] = "f" * 64
+        tampered.append(package_hash_changed)
+    
+        package_id_changed = copy.deepcopy(PACKAGE)
+        package_id_changed["package_id"] = "pkg_" + "a" * 64
+        tampered.append(package_id_changed)
+    
+        for invalid in tampered:
+>           with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: ValueError not raised
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py:280: AssertionError
+_ ExchangeAndQueryContractTests.test_exchange_public_validator_rejects_any_stale_content_address (invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) _
+
+self = <test_exchange_and_query_contract.ExchangeAndQueryContractTests testMethod=test_exchange_public_validator_rejects_any_stale_content_address>
+
+    def test_exchange_public_validator_rejects_any_stale_content_address(self):
+        tampered = []
+    
+        observation_changed = copy.deepcopy(PACKAGE)
+        observation_changed["items"][0]["observation"]["answer"]["summary"] += " altered"
+        tampered.append(observation_changed)
+    
+        payload_hash_changed = copy.deepcopy(PACKAGE)
+        payload_hash_changed["items"][0]["payload_sha256"] = "f" * 64
+        tampered.append(payload_hash_changed)
+    
+        observation_id_changed = copy.deepcopy(PACKAGE)
+        observation_id_changed["items"][0]["observation_id"] = "obs_" + "a" * 64
+        tampered.append(observation_id_changed)
+    
+        item_id_changed = copy.deepcopy(PACKAGE)
+        item_id_changed["items"][0]["item_id"] = "itm_" + "a" * 64
+        tampered.append(item_id_changed)
+    
+        metadata_changed = copy.deepcopy(PACKAGE)
+        metadata_changed["producer"]["component_version"] = "9.9.9"
+        tampered.append(metadata_changed)
+    
+        package_hash_changed = copy.deepcopy(PACKAGE)
+        package_hash_changed["package_sha256"] = "f" * 64
+        tampered.append(package_hash_changed)
+    
+        package_id_changed = copy.deepcopy(PACKAGE)
+        package_id_changed["package_id"] = "pkg_" + "a" * 64
+        tampered.append(package_id_changed)
+    
+        for invalid in tampered:
+>           with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: ValueError not raised
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py:280: AssertionError
+_ ExchangeAndQueryContractTests.test_exchange_public_validator_rejects_any_stale_content_address (invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) _
+
+self = <test_exchange_and_query_contract.ExchangeAndQueryContractTests testMethod=test_exchange_public_validator_rejects_any_stale_content_address>
+
+    def test_exchange_public_validator_rejects_any_stale_content_address(self):
+        tampered = []
+    
+        observation_changed = copy.deepcopy(PACKAGE)
+        observation_changed["items"][0]["observation"]["answer"]["summary"] += " altered"
+        tampered.append(observation_changed)
+    
+        payload_hash_changed = copy.deepcopy(PACKAGE)
+        payload_hash_changed["items"][0]["payload_sha256"] = "f" * 64
+        tampered.append(payload_hash_changed)
+    
+        observation_id_changed = copy.deepcopy(PACKAGE)
+        observation_id_changed["items"][0]["observation_id"] = "obs_" + "a" * 64
+        tampered.append(observation_id_changed)
+    
+        item_id_changed = copy.deepcopy(PACKAGE)
+        item_id_changed["items"][0]["item_id"] = "itm_" + "a" * 64
+        tampered.append(item_id_changed)
+    
+        metadata_changed = copy.deepcopy(PACKAGE)
+        metadata_changed["producer"]["component_version"] = "9.9.9"
+        tampered.append(metadata_changed)
+    
+        package_hash_changed = copy.deepcopy(PACKAGE)
+        package_hash_changed["package_sha256"] = "f" * 64
+        tampered.append(package_hash_changed)
+    
+        package_id_changed = copy.deepcopy(PACKAGE)
+        package_id_changed["package_id"] = "pkg_" + "a" * 64
+        tampered.append(package_id_changed)
+    
+        for invalid in tampered:
+>           with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: ValueError not raised
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py:280: AssertionError
+_ ExchangeAndQueryContractTests.test_exchange_public_validator_rejects_any_stale_content_address (invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) _
+
+self = <test_exchange_and_query_contract.ExchangeAndQueryContractTests testMethod=test_exchange_public_validator_rejects_any_stale_content_address>
+
+    def test_exchange_public_validator_rejects_any_stale_content_address(self):
+        tampered = []
+    
+        observation_changed = copy.deepcopy(PACKAGE)
+        observation_changed["items"][0]["observation"]["answer"]["summary"] += " altered"
+        tampered.append(observation_changed)
+    
+        payload_hash_changed = copy.deepcopy(PACKAGE)
+        payload_hash_changed["items"][0]["payload_sha256"] = "f" * 64
+        tampered.append(payload_hash_changed)
+    
+        observation_id_changed = copy.deepcopy(PACKAGE)
+        observation_id_changed["items"][0]["observation_id"] = "obs_" + "a" * 64
+        tampered.append(observation_id_changed)
+    
+        item_id_changed = copy.deepcopy(PACKAGE)
+        item_id_changed["items"][0]["item_id"] = "itm_" + "a" * 64
+        tampered.append(item_id_changed)
+    
+        metadata_changed = copy.deepcopy(PACKAGE)
+        metadata_changed["producer"]["component_version"] = "9.9.9"
+        tampered.append(metadata_changed)
+    
+        package_hash_changed = copy.deepcopy(PACKAGE)
+        package_hash_changed["package_sha256"] = "f" * 64
+        tampered.append(package_hash_changed)
+    
+        package_id_changed = copy.deepcopy(PACKAGE)
+        package_id_changed["package_id"] = "pkg_" + "a" * 64
+        tampered.append(package_id_changed)
+    
+        for invalid in tampered:
+>           with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: ValueError not raised
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py:280: AssertionError
+_ ExchangeAndQueryContractTests.test_exchange_public_validator_rejects_any_stale_content_address (invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': '9.9.9', 'build_id': 'OFFLI... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) _
+
+self = <test_exchange_and_query_contract.ExchangeAndQueryContractTests testMethod=test_exchange_public_validator_rejects_any_stale_content_address>
+
+    def test_exchange_public_validator_rejects_any_stale_content_address(self):
+        tampered = []
+    
+        observation_changed = copy.deepcopy(PACKAGE)
+        observation_changed["items"][0]["observation"]["answer"]["summary"] += " altered"
+        tampered.append(observation_changed)
+    
+        payload_hash_changed = copy.deepcopy(PACKAGE)
+        payload_hash_changed["items"][0]["payload_sha256"] = "f" * 64
+        tampered.append(payload_hash_changed)
+    
+        observation_id_changed = copy.deepcopy(PACKAGE)
+        observation_id_changed["items"][0]["observation_id"] = "obs_" + "a" * 64
+        tampered.append(observation_id_changed)
+    
+        item_id_changed = copy.deepcopy(PACKAGE)
+        item_id_changed["items"][0]["item_id"] = "itm_" + "a" * 64
+        tampered.append(item_id_changed)
+    
+        metadata_changed = copy.deepcopy(PACKAGE)
+        metadata_changed["producer"]["component_version"] = "9.9.9"
+        tampered.append(metadata_changed)
+    
+        package_hash_changed = copy.deepcopy(PACKAGE)
+        package_hash_changed["package_sha256"] = "f" * 64
+        tampered.append(package_hash_changed)
+    
+        package_id_changed = copy.deepcopy(PACKAGE)
+        package_id_changed["package_id"] = "pkg_" + "a" * 64
+        tampered.append(package_id_changed)
+    
+        for invalid in tampered:
+>           with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: ValueError not raised
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py:280: AssertionError
+_ ExchangeAndQueryContractTests.test_exchange_public_validator_rejects_any_stale_content_address (invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) _
+
+self = <test_exchange_and_query_contract.ExchangeAndQueryContractTests testMethod=test_exchange_public_validator_rejects_any_stale_content_address>
+
+    def test_exchange_public_validator_rejects_any_stale_content_address(self):
+        tampered = []
+    
+        observation_changed = copy.deepcopy(PACKAGE)
+        observation_changed["items"][0]["observation"]["answer"]["summary"] += " altered"
+        tampered.append(observation_changed)
+    
+        payload_hash_changed = copy.deepcopy(PACKAGE)
+        payload_hash_changed["items"][0]["payload_sha256"] = "f" * 64
+        tampered.append(payload_hash_changed)
+    
+        observation_id_changed = copy.deepcopy(PACKAGE)
+        observation_id_changed["items"][0]["observation_id"] = "obs_" + "a" * 64
+        tampered.append(observation_id_changed)
+    
+        item_id_changed = copy.deepcopy(PACKAGE)
+        item_id_changed["items"][0]["item_id"] = "itm_" + "a" * 64
+        tampered.append(item_id_changed)
+    
+        metadata_changed = copy.deepcopy(PACKAGE)
+        metadata_changed["producer"]["component_version"] = "9.9.9"
+        tampered.append(metadata_changed)
+    
+        package_hash_changed = copy.deepcopy(PACKAGE)
+        package_hash_changed["package_sha256"] = "f" * 64
+        tampered.append(package_hash_changed)
+    
+        package_id_changed = copy.deepcopy(PACKAGE)
+        package_id_changed["package_id"] = "pkg_" + "a" * 64
+        tampered.append(package_id_changed)
+    
+        for invalid in tampered:
+>           with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: ValueError not raised
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py:280: AssertionError
+_ ExchangeAndQueryContractTests.test_exchange_public_validator_rejects_any_stale_content_address (invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) _
+
+self = <test_exchange_and_query_contract.ExchangeAndQueryContractTests testMethod=test_exchange_public_validator_rejects_any_stale_content_address>
+
+    def test_exchange_public_validator_rejects_any_stale_content_address(self):
+        tampered = []
+    
+        observation_changed = copy.deepcopy(PACKAGE)
+        observation_changed["items"][0]["observation"]["answer"]["summary"] += " altered"
+        tampered.append(observation_changed)
+    
+        payload_hash_changed = copy.deepcopy(PACKAGE)
+        payload_hash_changed["items"][0]["payload_sha256"] = "f" * 64
+        tampered.append(payload_hash_changed)
+    
+        observation_id_changed = copy.deepcopy(PACKAGE)
+        observation_id_changed["items"][0]["observation_id"] = "obs_" + "a" * 64
+        tampered.append(observation_id_changed)
+    
+        item_id_changed = copy.deepcopy(PACKAGE)
+        item_id_changed["items"][0]["item_id"] = "itm_" + "a" * 64
+        tampered.append(item_id_changed)
+    
+        metadata_changed = copy.deepcopy(PACKAGE)
+        metadata_changed["producer"]["component_version"] = "9.9.9"
+        tampered.append(metadata_changed)
+    
+        package_hash_changed = copy.deepcopy(PACKAGE)
+        package_hash_changed["package_sha256"] = "f" * 64
+        tampered.append(package_hash_changed)
+    
+        package_id_changed = copy.deepcopy(PACKAGE)
+        package_id_changed["package_id"] = "pkg_" + "a" * 64
+        tampered.append(package_id_changed)
+    
+        for invalid in tampered:
+>           with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: ValueError not raised
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py:280: AssertionError
+____ G0RegressionTests.test_g0_05_release_and_readiness_cannot_self_attest ____
+
+self = <test_g0_regressions.G0RegressionTests testMethod=test_g0_05_release_and_readiness_cannot_self_attest>
+
+    def test_g0_05_release_and_readiness_cannot_self_attest(self):
+        release = copy.deepcopy(DEPLOYMENT_EXAMPLES["release_set"])
+        release["components"][0] = {"component_id": "iqs", "required": True}
+        body = {key: value for key, value in release.items() if key != "manifest_sha256"}
+        release["manifest_sha256"] = ec.canonical_sha256(body)
+        self.assertEqual(dc.validate_release_set(release), (False, "invalid_manifest"))
+    
+        response = copy.deepcopy(DEPLOYMENT_EXAMPLES["responses"][0])
+        result = response["result"]
+        result["readiness"] = "full_release_verified"
+        evidence = result["readiness_evidence"]
+        evidence.update(level="full_release_verified", all_required_component_hashes_match=False,
+                        setup_complete=False, doctor_passed=False,
+                        live_search_receipt_id=None, paid_usage_receipt_id=None,
+                        gate_evidence=[], loaded_consumers=[])
+        with self.assertRaises(ValidationError):
+            Draft202012Validator(DEPLOYMENT, format_checker=FormatChecker()).validate(response)
+    
+        release = copy.deepcopy(DEPLOYMENT_EXAMPLES["release_set"])
+        response = copy.deepcopy(DEPLOYMENT_EXAMPLES["responses"][0])
+        result, evidence = response["result"], response["result"]["readiness_evidence"]
+        result["readiness"] = evidence["level"] = "full_release_verified"
+        evidence.update(
+            release_set_id=release["release_set_id"],
+            manifest_sha256=release["manifest_sha256"],
+            live_search_receipt_id="LIVE_OK", paid_usage_receipt_id="PAID_OK",
+            gate_evidence=[{
+                "gate_id": gate, "status": "passed",
+                "receipt_sha256": format(index + 1, "064x"),
+                "release_set_id": release["release_set_id"],
+                "manifest_sha256": release["manifest_sha256"],
+            } for index, gate in enumerate(dc.REQUIRED_GATES)],
+            loaded_consumers=list(dc.REQUIRED_CONSUMERS),
+        )
+        dc.validate_readiness_response(response, release_set=release)
+        attacks = []
+        duplicate = copy.deepcopy(response)
+        duplicate["result"]["readiness_evidence"]["gate_evidence"] = [
+            copy.deepcopy(evidence["gate_evidence"][0]) for _ in dc.REQUIRED_GATES
+        ]
+        attacks.append(duplicate)
+        wrong_release = copy.deepcopy(response)
+        wrong_release["result"]["readiness_evidence"]["gate_evidence"][0]["release_set_id"] = "REL_WRONG"
+        attacks.append(wrong_release)
+        wrong_manifest = copy.deepcopy(response)
+        wrong_manifest["result"]["readiness_evidence"]["gate_evidence"][0]["manifest_sha256"] = "f" * 64
+        attacks.append(wrong_manifest)
+        duplicate_consumer = copy.deepcopy(response)
+        duplicate_consumer["result"]["readiness_evidence"]["loaded_consumers"] = ["theme", "theme"]
+        attacks.append(duplicate_consumer)
+        bad_component_hash = copy.deepcopy(response)
+        bad_component_hash["result"]["components"][0]["actual_loaded_sha256"] = "a" * 64
+        attacks.append(bad_component_hash)
+        missing_component = copy.deepcopy(response)
+        missing_component["result"]["components"].pop()
+        attacks.append(missing_component)
+        for attack in attacks:
+>           with self.assertRaises((ValidationError, ValueError)):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: (<class 'jsonschema.exceptions.ValidationError'>, <class 'ValueError'>) not raised
+
+..\..\..\..\Projects\invest-quick-scan\tests\test_g0_regressions.py:177: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\invest-quick-scan\tests\test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_job_08_uncertain_attempt_must_exist_once_and_transition_uses_work_item
+SUBFAILED(invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) ..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address
+SUBFAILED(invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) ..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address
+SUBFAILED(invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) ..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address
+SUBFAILED(invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) ..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address
+SUBFAILED(invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': '9.9.9', 'build_id': 'OFFLI... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) ..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address
+SUBFAILED(invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) ..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address
+SUBFAILED(invalid={'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': 'fixture-only', 'build_id':... 'StockWiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-09-23T12:00:00Z', ...}) ..\..\..\..\Projects\invest-quick-scan\tests\test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address
+FAILED ..\..\..\..\Projects\invest-quick-scan\tests\test_g0_regressions.py::G0RegressionTests::test_g0_05_release_and_readiness_cannot_self_attest
+======================== 9 failed, 36 passed in 6.79s =========================

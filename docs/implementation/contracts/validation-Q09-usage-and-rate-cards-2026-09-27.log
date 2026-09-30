@@ -1,0 +1,66 @@
+Q09 provider usage normalization, local rate-card resolver, and runner integration
+Date: 2026-09-27
+Owner implementation: StockQAbyLLM (user-authorized external repository scope)
+
+Scope
+- Normalize same-response usage counters for OpenAI Responses, Anthropic Messages, and MiMo Chat Completions into the allowlisted quick-scan-usage-v1 receipt.
+- Persist only normalized counters; reject malformed/unknown usage fields and never persist raw provider payloads.
+- Add an empty, no-key local rate-card template/schema and exact-match Decimal resolver. No vendor pricing is hardcoded.
+- Load the resolver from the configured StockQA config directory and pass it through the existing Q09 budget binding in the public runner.
+- Count provider-reported same-response web-search calls only where the protocol provides an explicit usage/event counter. This does not represent Brave/Tavily API usage.
+
+Isolation and privacy
+- Unit/integration tests used mocked HTTP/provider responses and temporary SQLite/config roots; no real API, key, external search service, or document download was used.
+- Temporary roots were removed after each test process. `STOCKQA_RUN_LIVE_E2E=0`.
+- Missing, malformed, or unmatched price/usage data stays unknown and retains the conservative budget reserve; no estimates are substituted.
+- No active provider rate cards or prices are installed. `examples/quick_scan_rate_cards.template.json` is intentionally empty and contains no credentials.
+
+Verification
+- Focused initial set: 182 passed.
+- Expanded affected suite: 418 assertions passed when split into two isolated processes with `ResourceWarning` and `PytestUnraisableExceptionWarning` treated as errors: provider/runner group 285 passed; budget group 133 passed. Both processes exited cleanly with no warnings.
+- A single-process run also completed all 418 assertions but exited 1 during pytest-asyncio Windows event-loop-policy teardown: tracemalloc located the unclosed Proactor socketpair at pytest-asyncio's temporary loop-policy fixture. This is recorded as a harness limitation; the same tests pass in the two strict isolated groups above. No product assertion failed.
+- `ruff check --no-cache`, `black --check --no-cache`, JSON parsing, schema/template structural checks, and scoped `git diff --check` passed.
+- One CLI E2E used a mocked provider response to exercise parser -> receipt sanitizer -> public runner -> exact rate-card calculation -> persisted budget settlement (256,850 micros). It did not contact a live provider.
+
+Current review snapshot SHA-256
+- `.gitignore`: `8444B83853A185BDE860851F4A52D9D0BCA6DD6258E30082C60496FE2093327F`
+- `src/providers/llm_client.py`: `5D312302AAB173CEE6FE3A4225B7BD91273F5468CA691E9AFC4F7804B652521C`
+- `src/utils/quick_scan_work_store.py`: `8D0139E3C2BC4E3F5F0A7C5FDF378F9DD6E0FEC034878A758716FCFADDC7C3C6`
+- `src/utils/quick_scan_cost_resolver.py`: `4B1C4711D5A95A572765E4C1F13C2BC92D4334D1E8BA2110B407CCE75D2FA5DF`
+- `src/runners/llm_runner.py`: `E63FDD5890DBCE16A057D0140170E3E1E95C9227E45BD8CC1CD14ABCD8ED0ACC`
+- `tests/unit/test_llm_client.py`: `BC294F3C43E8385C99BDB8807185AFB98E85B19E723BB780E87A0F4E311D9886`
+- `tests/unit/test_quick_scan_work_store.py`: `3A58AADD7E60A1116763CF84369EADE45170963DEFAF5E1C833A3EB2D1264CD6`
+- `tests/unit/test_quick_scan_cost_resolver.py`: `ECFD6F6AF85C2D63EE42E2F9E0D2AD5FB40844F4236BB389484969F406A87108`
+- `tests/integration/test_quick_scan_cli.py`: `BA4817474BEBF3BAFA7415471B578DAF826285D6385450D9E3AE54E407D20E15`
+- `src/config/quick_scan_rate_cards.schema.json`: `790B1BF387443D758DBDD3F2720B4410EA9624A3FDB24DB22388BEC763E1392E`
+- `examples/quick_scan_rate_cards.template.json`: `48B81663DA3A588038561020B75817657C3E59D2BEAC9F609B436485EA77781C`
+- `docs/quick_scan_rate_cards.md`: `1CCE94B354933558BE3EA2271CA8A8F931E2C603E3BA9A43BC143CF3C9DD3BD9`
+
+Remaining gates
+- Independent review of this exact snapshot is pending. Do not close Q09 until it returns and remaining production configuration/wiring gates are met.
+- User plan information for Brave (50 requests/second, unlimited monthly request count) and Tavily (1,000 monthly credits) is account-provided and not independently verified. These search-provider budgets are separate from model token/search pricing and from this resolver. Do not convert Tavily credits to request counts without verified plan rules.
+- No current account-specific provider prices have been entered. Until users add verified cards and usage evidence, production settlement remains unknown-cost/fail-closed.
+
+Follow-up: review findings and corrected snapshot (2026-09-27)
+- The independent design review of the initial snapshot reported three P2 findings: idless Responses search events could undercount; JSON numeric rate literals passed through binary float and could lose precision before micro-ceiling; and reconciliation replay did not bind the terminal outcome.
+- Corrected search usage handling: count classifiable Responses search events without requiring an event ID. If an event cannot be classified, or explicit provider usage is below the observed event count, leave usage unknown rather than settling a false zero/undercount.
+- Corrected rate arithmetic: parse JSON float literals directly as Decimal; reject overlarge precision/exponents; convert exact decimal coefficients/exponents to integer arithmetic for calculation and ledger ceiling. No binary-float conversion or process-context Decimal rounding is used in settlement.
+- Corrected outcome replay: work-store schema v4 adds an immutable terminal-outcome ledger. Replaying the same outcome is idempotent; replaying a changed outcome is rejected. Existing settled rows upgraded from older schemas are labeled `legacy_unverified` because their terminal outcome was never stored.
+- Red regressions reproduced the three review findings before remediation. Final strict isolated runs: provider/runner **371 passed**; budget/store **86 passed** (457 total). Both used separate temporary roots, treated `ResourceWarning` and `PytestUnraisableExceptionWarning` as errors, disabled live E2E and removed API-key variables, exited with code 0, and cleaned their roots.
+- `ruff check` passed; `black --check --no-cache` reported seven files unchanged; rate-card schema/template JSON parsing passed; scoped `git diff --check` passed. No live API, web-search provider, or document download was used.
+
+Corrected snapshot SHA-256
+- `src/providers/llm_client.py`: `5D410CCBEE307E62A4C9999B681957822EB8EC6EE5ED89284D71FA5116CFFA8F`
+- `src/utils/quick_scan_cost_resolver.py`: `EFAD8808C236C056071075A22C828B6366143AE98E2DBAE4BCBADA6EEFE79535`
+- `src/utils/quick_scan_work_store.py`: `66FF215358CFF222476C07CFD9874333CA8A62617861574FD69DFC06CB0B216B`
+- `src/runners/llm_runner.py`: `E63FDD5890DBCE16A057D0140170E3E1E95C9227E45BD8CC1CD14ABCD8ED0ACC`
+- `src/config/quick_scan_rate_cards.schema.json`: `790B1BF387443D758DBDD3F2720B4410EA9624A3FDB24DB22388BEC763E1392E`
+- `examples/quick_scan_rate_cards.template.json`: `48B81663DA3A588038561020B75817657C3E59D2BEAC9F609B436485EA77781C`
+- `tests/unit/test_llm_client.py`: `4BBC4EF78CFC250AB7419173B48BC3C37B200D62E2071669D277E19859770A81`
+- `tests/unit/test_quick_scan_cost_resolver.py`: `2A9988D65FDB6A7D4F6FE8285D2D8678536E04AC2A9B21CDCC325EDF1A1228FE`
+- `tests/unit/test_quick_scan_budget.py`: `EF4A48BFEA940AFB035BD6C5715733C61D45AB15799BA472C0DF46EF746D021B`
+- `tests/unit/test_quick_scan_work_store.py`: `05300EF9BA8046559EB1CB2EFFA2275BEA3DDFD5D719084A0F0AE55FE2214873`
+- `tests/integration/test_quick_scan_cli.py`: `BA4817474BEBF3BAFA7415471B578DAF826285D6385450D9E3AE54E407D20E15`
+- `docs/quick_scan_rate_cards.md`: `ADAD414AB26465B256EB8668B74EB7D2065CCE81AFE2DD50237C70265FCAFC0C`
+
+Follow-up independent review confirmed the eight core source/test/doc hashes above and found no actionable P0–P2 findings; see `docs/implementation/reviews/Q09/followup-review-2026-09-27.md`. Q09 remains partial: no account-specific price cards have been configured or invoice-reconciled, and production rollout gates remain open.

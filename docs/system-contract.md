@@ -35,9 +35,27 @@
 | 验收后的不可变观察、事实关系、扫描快照、规则/视图、查询投影 | StockWiki quick_scan | UI及研究技能查询同一库；接受程度与结构有效性分开 |
 | 财报等文档、source_manifest/EvidenceSpan | company-wiki | 可选身份/已有来源关联；快扫不写文档、不伪造正式来源工件 |
 
+### 身份解析补充：发行人、证券、挂牌分层
+
+`entity_id`代表法律发行人，由StockWiki随机生成并永久稳定；它不等同于快扫经营分析的报告范围。每个快扫分析范围由独立的`analysis_subject_id + analysis_subject_revision`标识，并显式记录主发行人、报告范围类型和有来源/有效期的成员关系；集团控制关系不自动代表并表。公司名、简称、品牌和ticker只是带来源/辖区/语言/有效时间的非唯一声明。外部编号按scheme、签发机构、辖区和作用层命名空间化；CNINFO `orgId`、Dayu ticker-derived ID等仅是来源内crosswalk。证券类别使用独立`security_id`，交易场所代码使用独立`listing_id`；精确挂牌键至少包括venue/MIC、本地代码和有效时间。模糊名称或LLM建议只可生成候选，`unresolved/conflicted`对象不进入付费扫描；只有可追溯的权威发行人映射或经审计的手工决定才能连接跨市场挂牌。名称更改、ticker改码、报告范围变化、合并/拆分通过追加事件与revision表达，旧观察的subject、issuer、security、listing、时间、模型和分数不可改写。
+
+并表范围不能靠成员issuer已登记、集团控制关系或membership上的URL字符串证明；新Work须取得owner核验、精确绑定`analysis_subject_id@revision`及完整范围摘要的trusted reporting-perimeter receipt。身份和主体事件要匹配前后快照，受影响ID集合精确对应实际变化。市场代码由owner控制的ISO辖区/MIC注册表校验，MIC必须属于声明辖区；缺目录或目录不确认时失败关闭。LLM联网检索可提供候选披露证据，但不能自行创建可信映射、并表回执或身份归并。
+
 代码目录与数据目录分离。setup选择一个工作区data_root，下面分别由StockWiki和StockQA管理独立运行子目录/SQLite；用户可用统一工作区备份入口，但不能共享可写SQLite。示例布局为`data_root/{workspace_id}/stockwiki/`与`.../stockqa/`，最终按各仓现有路径约定冻结。Git仓库存schema、题库、虚构fixture，不存2,000家公司运行库、密钥和outbox。company-wiki的公司目录不是成员名单，也不是快扫主存储。
 
 数据流程：问答成功→StockQA持久化内容/执行回执→outbox→StockWiki按observation_id和payload hash事务导入→持久化ACK→StockQA确认投递。收到同ID异hash报冲突；失败只重传，不重新问模型。`latest`、排名、主题候选和UI表格均是可重建投影，不产生第二套可编辑公司事实。用户纠错形成新修订/裁决事件，保留原观察。
+
+```mermaid
+flowchart LR
+    SWID[StockWiki 身份与名单] -->|已核验身份快照 / 缺口| IQS[quick-scan 题库与路由]
+    IQS -->|锁定的题包与 recipe| QA[StockQA 待办 / 模型 / 搜索]
+    QA -->|逐题答案、执行回执、检查点| IQSOUT[标准观察与交换契约]
+    IQSOUT -->|不可变 package| SWSTORE[StockWiki 观察库 / ACK]
+    SWSTORE -->|只读查询 / 刷新预览| CONSUMERS[UI、主题研究、行业研究]
+    SWSTORE -.->|精确 ACK| QA
+```
+
+每条箭头都是版本化的输入/输出契约；实现只能调用拥有者公开入口，不能导入另一仓私有模块、共用可写数据库或自行推断对方的状态。身份、模型派发、持久观察和研究查询分别有唯一写入者。契约测试验证字段/版本和拒绝语义，集成测试跨一条或相邻两条公开边界；只有X09/X10真实组件验收才能证明整张图已运行，虚构夹具不能替代真实搜索、身份事务或StockWiki ACK。
 
 扫描快照保存scan_id、名单/题库/路由/策略/方法版本、起止时间、作用范围，以及每题使用的observation_id。一次扫描可复用旧观察：快照引用旧ID，保留原回答日期和模型；不能把它包装为本次新回答。部分扫描保存已完成和缺口，下次运行只补缺；固定时间轴可查看“当时快照”，也可查看“后来修订的已知事实”，两者不同。
 

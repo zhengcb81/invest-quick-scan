@@ -1,0 +1,20 @@
+Q04 post-r4 route-recovery candidate r6 validation (sanitized)
+Date: 2026-09-25
+
+Scope snapshot:
+- StockQAbyLLM/src/utils/llm_integration.py SHA-256: 3C7F254FC23BC07417B706009272663E1966A96D6871ED76F7B481942D0A48C3
+- StockQAbyLLM/tests/unit/test_llm_integration.py SHA-256: 735603575B8D1791C242F18368FE97A65011230B86AF0E2B6C1CB32934450290
+- StockQAbyLLM/tests/integration/test_quick_scan_cli.py SHA-256: 0D61D7856707D3F20F0F7425C7F2A41389839F36E365D2772F434FF07FFAEF6A
+
+Formatting and diff checks:
+- Black --check --no-cache on the two files with formatting changes: passed; 2 files unchanged.
+- git diff --check on the two changed files: exit 0.
+
+Isolated tests:
+- Copied src/, main_with_llm.py, tests/unit/test_llm_integration.py, and tests/integration/test_quick_scan_cli.py into one unique system TEMP sandbox.
+- Removed all *_API_KEY variables and STOCKQA_RUN_LIVE_E2E from the test subprocess; PYTHONDONTWRITEBYTECODE=1; pytest cache and coverage plugins disabled.
+- Command: python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov --rootdir=<sandbox> --basetemp=<sandbox>/.pytest-temp tests/unit/test_llm_integration.py tests/integration/test_quick_scan_cli.py
+- Result: 76 passed in 3.34s; no network or provider request.
+- Cleanup: TemporaryDirectory removed the sandbox; SANDBOX_REMOVED=True; a follow-up search found no stockqa_q04_r6_* directories.
+
+Coverage includes the short Retry-After single inline retry regression and existing long Retry-After nonblocking fallback. Independent read-only follow-up review of these exact hashes is pending. Persistent retry scheduling, cross-process quota coordination, public serialization of dispatch_outcome, and StockWiki integration are not established by this run.

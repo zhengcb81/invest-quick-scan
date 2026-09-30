@@ -1,0 +1,93 @@
+{
+  "fixture_version": "1.0.0",
+  "purpose": "Frozen representative S04 legacy route decision. The second route is intentionally invalid because it carries a RouteV2-only field.",
+  "release_id": "modrel_e6de3da6f01780b9ed4710c387e618766ce2c0d412e0979e8c01aa8b12419643",
+  "valid_route": {
+    "schema_version": "1.0.0",
+    "release_id": "modrel_e6de3da6f01780b9ed4710c387e618766ce2c0d412e0979e8c01aa8b12419643",
+    "router_version": "1.0.0",
+    "entity_id": "E1",
+    "as_of": "2026-09-01",
+    "decided_at": "2026-09-26T12:00:00Z",
+    "status": "resolved",
+    "module_decisions": [
+      {
+        "module_id": "common",
+        "module_version": "3.0.0",
+        "decision": "selected",
+        "basis": "deterministic",
+        "confidence": "high",
+        "rationale": "All companies",
+        "sources": [
+          {
+            "title": "Fictional official business page",
+            "url": "https://example.com/business",
+            "published_at": "2026-09-01"
+          }
+        ]
+      },
+      {
+        "module_id": "semiconductors",
+        "module_version": "3.0.0",
+        "decision": "selected",
+        "basis": "manual",
+        "confidence": "high",
+        "rationale": "Business scope reviewed",
+        "sources": [],
+        "manual_override": {
+          "actor": "analyst",
+          "reason": "Revenue mix reviewed",
+          "valid_until": "2026-10-01T00:00:00Z"
+        }
+      }
+    ],
+    "decision_id": "route_d245d720a62883f651adb29fc06b97ad0824679495b7a6f9edfb33c2fd9d7d74"
+  },
+  "invalid_route_with_v2_only_field": {
+    "schema_version": "1.0.0",
+    "release_id": "modrel_e6de3da6f01780b9ed4710c387e618766ce2c0d412e0979e8c01aa8b12419643",
+    "router_version": "1.0.0",
+    "entity_id": "E1",
+    "as_of": "2026-09-01",
+    "decided_at": "2026-09-26T12:00:00Z",
+    "status": "resolved",
+    "module_decisions": [
+      {
+        "module_id": "common",
+        "module_version": "3.0.0",
+        "decision": "selected",
+        "basis": "deterministic",
+        "confidence": "high",
+        "rationale": "All companies",
+        "sources": [
+          {
+            "title": "Fictional official business page",
+            "url": "https://example.com/business",
+            "published_at": "2026-09-01"
+          }
+        ]
+      },
+      {
+        "module_id": "semiconductors",
+        "module_version": "3.0.0",
+        "decision": "selected",
+        "basis": "manual",
+        "confidence": "high",
+        "rationale": "Business scope reviewed",
+        "sources": [],
+        "manual_override": {
+          "actor": "analyst",
+          "reason": "Revenue mix reviewed",
+          "valid_until": "2026-10-01T00:00:00Z"
+        }
+      }
+    ],
+    "classification_confidence": {
+      "status": "scored",
+      "score": 8,
+      "minimum_score": 6,
+      "llm_candidates_eligible": true
+    },
+    "decision_id": "route_45689ce284fe6653f81549a78ec3d69d8a8b507f0f388fa28164737cf082221d"
+  }
+}

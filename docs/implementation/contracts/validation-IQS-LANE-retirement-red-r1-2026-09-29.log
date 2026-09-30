@@ -1,0 +1,1034 @@
+exit_code=1
+C:\Miniconda\python.exe -X utf8 -m unittest discover -s tests -p test_implementation_plan.py -v
+test_active_release_set_and_pre_post_fence_are_in_final_path (test_implementation_plan.ImplementationPlanTests.test_active_release_set_and_pre_post_fence_are_in_final_path) ... ERROR
+test_atomic_assertion_bindings_are_validated_and_stable (test_implementation_plan.ImplementationPlanTests.test_atomic_assertion_bindings_are_validated_and_stable) ... ERROR
+test_case_family_allows_e2e_but_not_malformed_ids (test_implementation_plan.ImplementationPlanTests.test_case_family_allows_e2e_but_not_malformed_ids) ... ERROR
+test_case_needs_input_and_action (test_implementation_plan.ImplementationPlanTests.test_case_needs_input_and_action) ... ERROR
+test_case_owner_prerequisites_must_be_closed_before_owner_completion (test_implementation_plan.ImplementationPlanTests.test_case_owner_prerequisites_must_be_closed_before_owner_completion) ... ERROR
+test_case_requires_tasks_must_be_known_and_well_formed (test_implementation_plan.ImplementationPlanTests.test_case_requires_tasks_must_be_known_and_well_formed) ... ERROR
+test_cli_filters_cross_project_launch_tasks (test_implementation_plan.ImplementationPlanTests.test_cli_filters_cross_project_launch_tasks) ... ERROR
+test_cli_missing_or_corrupt_plan_is_error_not_empty_success (test_implementation_plan.ImplementationPlanTests.test_cli_missing_or_corrupt_plan_is_error_not_empty_success) ... ok
+test_cli_stage_filter_only_returns_requested_stage (test_implementation_plan.ImplementationPlanTests.test_cli_stage_filter_only_returns_requested_stage) ... ERROR
+test_cli_validation_does_not_claim_product_tests (test_implementation_plan.ImplementationPlanTests.test_cli_validation_does_not_claim_product_tests) ... ERROR
+test_compatibility_window_tasks_remain_in_the_delivery_graph_without_receipt_gate (test_implementation_plan.ImplementationPlanTests.test_compatibility_window_tasks_remain_in_the_delivery_graph_without_receipt_gate) ... FAIL
+test_complete_release_cannot_disable_all_tasks_requirement (test_implementation_plan.ImplementationPlanTests.test_complete_release_cannot_disable_all_tasks_requirement) ... ERROR
+test_complete_release_cannot_drop_a_consumer (test_implementation_plan.ImplementationPlanTests.test_complete_release_cannot_drop_a_consumer) ... ERROR
+test_complete_ui_cannot_be_claimed_before_ui_tasks (test_implementation_plan.ImplementationPlanTests.test_complete_ui_cannot_be_claimed_before_ui_tasks) ... ERROR
+test_component_evolution_cannot_be_dropped_from_final_release (test_implementation_plan.ImplementationPlanTests.test_component_evolution_cannot_be_dropped_from_final_release) ... ERROR
+test_component_evolution_extensions_are_mandatory_and_owner_scoped (test_implementation_plan.ImplementationPlanTests.test_component_evolution_extensions_are_mandatory_and_owner_scoped) ... ok
+test_composable_evolution_is_in_release_without_blocking_scoring_on_facts (test_implementation_plan.ImplementationPlanTests.test_composable_evolution_is_in_release_without_blocking_scoring_on_facts) ... ok
+test_current_package_is_valid_but_not_product_evidence (test_implementation_plan.ImplementationPlanTests.test_current_package_is_valid_but_not_product_evidence) ... ERROR
+test_dependency_cycle_is_rejected_without_recursion_loop (test_implementation_plan.ImplementationPlanTests.test_dependency_cycle_is_rejected_without_recursion_loop) ... ERROR
+test_duplicate_case_is_rejected (test_implementation_plan.ImplementationPlanTests.test_duplicate_case_is_rejected) ... ERROR
+test_duplicate_task_is_rejected (test_implementation_plan.ImplementationPlanTests.test_duplicate_task_is_rejected) ... ERROR
+test_each_case_has_one_completion_owner_and_only_downstream_regression_refs (test_implementation_plan.ImplementationPlanTests.test_each_case_has_one_completion_owner_and_only_downstream_regression_refs) ... ok
+test_every_implementation_and_review_card_must_own_a_local_case (test_implementation_plan.ImplementationPlanTests.test_every_implementation_and_review_card_must_own_a_local_case) ... ERROR
+test_evolution_cases_and_live_boundary_are_explicit (test_implementation_plan.ImplementationPlanTests.test_evolution_cases_and_live_boundary_are_explicit) ... ok
+test_explicit_oracle_is_required (test_implementation_plan.ImplementationPlanTests.test_explicit_oracle_is_required) ... ERROR
+test_fact_mode_requires_stockwiki_ingest_ack_owner (test_implementation_plan.ImplementationPlanTests.test_fact_mode_requires_stockwiki_ingest_ack_owner) ... ERROR
+test_facts_cannot_start_without_score_reliability_gate (test_implementation_plan.ImplementationPlanTests.test_facts_cannot_start_without_score_reliability_gate) ... ERROR
+test_final_gate_must_cover_all_task_branches (test_implementation_plan.ImplementationPlanTests.test_final_gate_must_cover_all_task_branches) ... ERROR
+test_first_search_provider_does_not_wait_for_later_durable_retry_gate (test_implementation_plan.ImplementationPlanTests.test_first_search_provider_does_not_wait_for_later_durable_retry_gate) ... ok
+test_forward_acceptance_dependencies_cannot_mark_local_tasks_complete (test_implementation_plan.ImplementationPlanTests.test_forward_acceptance_dependencies_cannot_mark_local_tasks_complete) ... ERROR
+test_future_stage_dependency_is_rejected (test_implementation_plan.ImplementationPlanTests.test_future_stage_dependency_is_rejected) ... ERROR
+test_happy_path_only_task_is_rejected (test_implementation_plan.ImplementationPlanTests.test_happy_path_only_task_is_rejected) ... ERROR
+test_launch_configuration_owner_cannot_drift (test_implementation_plan.ImplementationPlanTests.test_launch_configuration_owner_cannot_drift) ... ERROR
+test_launch_contract_is_frozen_before_g0 (test_implementation_plan.ImplementationPlanTests.test_launch_contract_is_frozen_before_g0) ... ERROR
+test_launch_packet_contains_new_invariant_definitions (test_implementation_plan.ImplementationPlanTests.test_launch_packet_contains_new_invariant_definitions) ... ok
+test_live_cleanup_case_cannot_be_claimed_by_offline_gate (test_implementation_plan.ImplementationPlanTests.test_live_cleanup_case_cannot_be_claimed_by_offline_gate) ... ERROR
+test_live_launch_cannot_point_to_offline_suite (test_implementation_plan.ImplementationPlanTests.test_live_launch_cannot_point_to_offline_suite) ... ERROR
+test_live_task_cannot_be_satisfied_by_mock_cases_only (test_implementation_plan.ImplementationPlanTests.test_live_task_cannot_be_satisfied_by_mock_cases_only) ... ERROR
+test_malformed_kind_has_validation_error_instead_of_type_error (test_implementation_plan.ImplementationPlanTests.test_malformed_kind_has_validation_error_instead_of_type_error) ... ERROR
+test_malformed_top_level_has_actionable_error (test_implementation_plan.ImplementationPlanTests.test_malformed_top_level_has_actionable_error) ... ok
+test_missing_review_gate_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_review_gate_is_rejected) ... ERROR
+test_missing_scope_or_steps_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_scope_or_steps_is_rejected) ... 
+  test_missing_scope_or_steps_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_scope_or_steps_is_rejected) (key='allowed_changes') ... ERROR
+  test_missing_scope_or_steps_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_scope_or_steps_is_rejected) (key='steps') ... ERROR
+  test_missing_scope_or_steps_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_scope_or_steps_is_rejected) (key='deliverables') ... ERROR
+  test_missing_scope_or_steps_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_scope_or_steps_is_rejected) (key='case_ids') ... ERROR
+test_missing_unknown_and_forward_case_owners_are_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_unknown_and_forward_case_owners_are_rejected) ... ERROR
+test_modular_cases_have_failure_oracles_and_are_not_results (test_implementation_plan.ImplementationPlanTests.test_modular_cases_have_failure_oracles_and_are_not_results) ... ok
+test_modular_question_work_is_in_final_delivery_chain (test_implementation_plan.ImplementationPlanTests.test_modular_question_work_is_in_final_delivery_chain) ... ok
+test_module_archive_graph_legacy_trust_and_composition_closure_are_explicit (test_implementation_plan.ImplementationPlanTests.test_module_archive_graph_legacy_trust_and_composition_closure_are_explicit) ... ok
+test_one_click_dispatch_requires_recipe_runtime_and_store (test_implementation_plan.ImplementationPlanTests.test_one_click_dispatch_requires_recipe_runtime_and_store) ... ERROR
+test_orphan_case_is_rejected (test_implementation_plan.ImplementationPlanTests.test_orphan_case_is_rejected) ... ERROR
+test_owner_task_cannot_claim_downstream_integration_cases (test_implementation_plan.ImplementationPlanTests.test_owner_task_cannot_claim_downstream_integration_cases) ... ERROR
+test_p00_historical_receipt_artifacts_are_preserved_but_not_new_write_targets (test_implementation_plan.ImplementationPlanTests.test_p00_historical_receipt_artifacts_are_preserved_but_not_new_write_targets) ... FAIL
+test_packet_refuses_missing_invariant_definition (test_implementation_plan.ImplementationPlanTests.test_packet_refuses_missing_invariant_definition) ... ok
+test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) ... 
+  test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) (case='EVO-67') ... ERROR
+  test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) (case='EVO-69') ... ERROR
+  test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) (case='EVO-70') ... ERROR
+  test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) (case='EVO-71') ... ERROR
+test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) ... ERROR
+test_public_paid_entry_cannot_bypass_impact_plan_application (test_implementation_plan.ImplementationPlanTests.test_public_paid_entry_cannot_bypass_impact_plan_application) ... ERROR
+test_published_observation_ingest_cannot_downgrade_to_legacy (test_implementation_plan.ImplementationPlanTests.test_published_observation_ingest_cannot_downgrade_to_legacy) ... ok
+test_recovery_is_available_before_two_hundred_company_pilot (test_implementation_plan.ImplementationPlanTests.test_recovery_is_available_before_two_hundred_company_pilot) ... ok
+test_release_cannot_end_at_scoring_only_gate (test_implementation_plan.ImplementationPlanTests.test_release_cannot_end_at_scoring_only_gate) ... ERROR
+test_release_cannot_omit_facts_gate (test_implementation_plan.ImplementationPlanTests.test_release_cannot_omit_facts_gate) ... ERROR
+test_release_set_cannot_omit_parser_release_or_actual_hash_case (test_implementation_plan.ImplementationPlanTests.test_release_set_cannot_omit_parser_release_or_actual_hash_case) ... ERROR
+test_retired_task_receipt_workflow_is_absent_from_active_plan (test_implementation_plan.ImplementationPlanTests.test_retired_task_receipt_workflow_is_absent_from_active_plan) ... FAIL
+test_route_work_includes_policy_archive_and_mandatory_risk_budget (test_implementation_plan.ImplementationPlanTests.test_route_work_includes_policy_archive_and_mandatory_risk_budget) ... ok
+test_s03_change_allowlist_names_real_question_sources (test_implementation_plan.ImplementationPlanTests.test_s03_change_allowlist_names_real_question_sources) ... ok
+test_s06_confidence_gate_has_exact_local_scope_and_atomic_cases (test_implementation_plan.ImplementationPlanTests.test_s06_confidence_gate_has_exact_local_scope_and_atomic_cases) ... ok
+test_s07_prompt_dependency_boundary_has_unit_integration_and_e2e_cases (test_implementation_plan.ImplementationPlanTests.test_s07_prompt_dependency_boundary_has_unit_integration_and_e2e_cases) ... ok
+test_s08_question_library_boundary_has_unit_integration_and_e2e_cases (test_implementation_plan.ImplementationPlanTests.test_s08_question_library_boundary_has_unit_integration_and_e2e_cases) ... ok
+test_s09_fingerprint_contract_has_unit_integration_and_e2e_cases (test_implementation_plan.ImplementationPlanTests.test_s09_fingerprint_contract_has_unit_integration_and_e2e_cases) ... ok
+test_s10_manifest_and_selection_boundaries_have_unit_integration_and_e2e_cases (test_implementation_plan.ImplementationPlanTests.test_s10_manifest_and_selection_boundaries_have_unit_integration_and_e2e_cases) ... ok
+test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) ... 
+  test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='V01') ... ERROR
+  test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='V08') ... ERROR
+  test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='V09') ... ERROR
+  test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='V10') ... ERROR
+  test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='O04') ... ERROR
+  test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='G5') ... ERROR
+test_search_batch_benchmark_is_a_gated_live_experiment (test_implementation_plan.ImplementationPlanTests.test_search_batch_benchmark_is_a_gated_live_experiment) ... ok
+test_self_cycle_is_rejected (test_implementation_plan.ImplementationPlanTests.test_self_cycle_is_rejected) ... ERROR
+test_show_is_bounded_and_contains_real_oracles (test_implementation_plan.ImplementationPlanTests.test_show_is_bounded_and_contains_real_oracles) ... ok
+test_show_unknown_task_never_guesses (test_implementation_plan.ImplementationPlanTests.test_show_unknown_task_never_guesses) ... ok
+test_spec_cannot_claim_a_passed_test (test_implementation_plan.ImplementationPlanTests.test_spec_cannot_claim_a_passed_test) ... ERROR
+test_task_spec_cannot_duplicate_completion_state (test_implementation_plan.ImplementationPlanTests.test_task_spec_cannot_duplicate_completion_state) ... ERROR
+test_two_phase_dispatch_contract_is_consistent_across_current_docs (test_implementation_plan.ImplementationPlanTests.test_two_phase_dispatch_contract_is_consistent_across_current_docs) ... ok
+test_unknown_case_reference_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_case_reference_is_rejected) ... ERROR
+test_unknown_dependency_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_dependency_is_rejected) ... ERROR
+test_unknown_invariant_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_invariant_is_rejected) ... ERROR
+test_unknown_or_multiple_owner_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_or_multiple_owner_is_rejected) ... 
+  test_unknown_or_multiple_owner_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_or_multiple_owner_is_rejected) (owner='company-wiki-writer') ... ERROR
+  test_unknown_or_multiple_owner_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_or_multiple_owner_is_rejected) (owner=['iqs', 'stockwiki']) ... ERROR
+test_versioned_answer_parser_cannot_be_owned_by_quick_scan (test_implementation_plan.ImplementationPlanTests.test_versioned_answer_parser_cannot_be_owned_by_quick_scan) ... ERROR
+test_versions_must_align (test_implementation_plan.ImplementationPlanTests.test_versions_must_align) ... ERROR
+
+======================================================================
+ERROR: test_active_release_set_and_pre_post_fence_are_in_final_path (test_implementation_plan.ImplementationPlanTests.test_active_release_set_and_pre_post_fence_are_in_final_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 515, in test_active_release_set_and_pre_post_fence_are_in_final_path
+    self.rejected("X05 must depend on Q15 before any public paid dispatch")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_atomic_assertion_bindings_are_validated_and_stable (test_implementation_plan.ImplementationPlanTests.test_atomic_assertion_bindings_are_validated_and_stable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 308, in test_atomic_assertion_bindings_are_validated_and_stable
+    self.rejected("MOD-14: duplicate assertion ID")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_case_family_allows_e2e_but_not_malformed_ids (test_implementation_plan.ImplementationPlanTests.test_case_family_allows_e2e_but_not_malformed_ids)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 709, in test_case_family_allows_e2e_but_not_malformed_ids
+    self.assertEqual(ip.validate_package(self.plan, self.cases), [])
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_case_needs_input_and_action (test_implementation_plan.ImplementationPlanTests.test_case_needs_input_and_action)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 635, in test_case_needs_input_and_action
+    self.rejected("input/precondition")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_case_owner_prerequisites_must_be_closed_before_owner_completion (test_implementation_plan.ImplementationPlanTests.test_case_owner_prerequisites_must_be_closed_before_owner_completion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 86, in test_case_owner_prerequisites_must_be_closed_before_owner_completion
+    self.rejected("EVO-82: owner X09 is missing prerequisite task(s): X11")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_case_requires_tasks_must_be_known_and_well_formed (test_implementation_plan.ImplementationPlanTests.test_case_requires_tasks_must_be_known_and_well_formed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 488, in test_case_requires_tasks_must_be_known_and_well_formed
+    self.rejected("LLM-01: requires unknown task(s) NO_SUCH_TASK")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_cli_filters_cross_project_launch_tasks (test_implementation_plan.ImplementationPlanTests.test_cli_filters_cross_project_launch_tasks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 696, in test_cli_filters_cross_project_launch_tasks
+    code = ip.main(['list', '--stage', 'M6', '--owner', 'stockqa'])
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 448, in main
+    errors = validate_package(plan, catalog)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_cli_stage_filter_only_returns_requested_stage (test_implementation_plan.ImplementationPlanTests.test_cli_stage_filter_only_returns_requested_stage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 768, in test_cli_stage_filter_only_returns_requested_stage
+    code = ip.main(["list", "--stage", "M0"])
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 448, in main
+    errors = validate_package(plan, catalog)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_cli_validation_does_not_claim_product_tests (test_implementation_plan.ImplementationPlanTests.test_cli_validation_does_not_claim_product_tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 759, in test_cli_validation_does_not_claim_product_tests
+    code = ip.main(["validate"])
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 448, in main
+    errors = validate_package(plan, catalog)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_complete_release_cannot_disable_all_tasks_requirement (test_implementation_plan.ImplementationPlanTests.test_complete_release_cannot_disable_all_tasks_requirement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 687, in test_complete_release_cannot_disable_all_tasks_requirement
+    self.rejected('complete release must include all tasks')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_complete_release_cannot_drop_a_consumer (test_implementation_plan.ImplementationPlanTests.test_complete_release_cannot_drop_a_consumer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 683, in test_complete_release_cannot_drop_a_consumer
+    self.rejected('every required component and consumer')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_complete_ui_cannot_be_claimed_before_ui_tasks (test_implementation_plan.ImplementationPlanTests.test_complete_ui_cannot_be_claimed_before_ui_tasks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 567, in test_complete_ui_cannot_be_claimed_before_ui_tasks
+    self.rejected("V11 API contract cannot claim U03/U04")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_component_evolution_cannot_be_dropped_from_final_release (test_implementation_plan.ImplementationPlanTests.test_component_evolution_cannot_be_dropped_from_final_release)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 433, in test_component_evolution_cannot_be_dropped_from_final_release
+    self.rejected("G6 must include component lifecycle, impact consumer, parser and upgrade rehearsal")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_current_package_is_valid_but_not_product_evidence (test_implementation_plan.ImplementationPlanTests.test_current_package_is_valid_but_not_product_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 35, in test_current_package_is_valid_but_not_product_evidence
+    self.assertEqual(ip.validate_package(self.plan, self.cases), [])
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_dependency_cycle_is_rejected_without_recursion_loop (test_implementation_plan.ImplementationPlanTests.test_dependency_cycle_is_rejected_without_recursion_loop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 587, in test_dependency_cycle_is_rejected_without_recursion_loop
+    self.rejected("dependency cycle")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_duplicate_case_is_rejected (test_implementation_plan.ImplementationPlanTests.test_duplicate_case_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 579, in test_duplicate_case_is_rejected
+    self.rejected("duplicate case")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_duplicate_task_is_rejected (test_implementation_plan.ImplementationPlanTests.test_duplicate_task_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 575, in test_duplicate_task_is_rejected
+    self.rejected("duplicate task P00")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_every_implementation_and_review_card_must_own_a_local_case (test_implementation_plan.ImplementationPlanTests.test_every_implementation_and_review_card_must_own_a_local_case)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 93, in test_every_implementation_and_review_card_must_own_a_local_case
+    self.rejected("O01: must own at least one acceptance case")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_explicit_oracle_is_required (test_implementation_plan.ImplementationPlanTests.test_explicit_oracle_is_required)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 630, in test_explicit_oracle_is_required
+    self.rejected("missing explicit expected result")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_fact_mode_requires_stockwiki_ingest_ack_owner (test_implementation_plan.ImplementationPlanTests.test_fact_mode_requires_stockwiki_ingest_ack_owner)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 571, in test_fact_mode_requires_stockwiki_ingest_ack_owner
+    self.rejected("V15: fact-enabled chain misses")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_facts_cannot_start_without_score_reliability_gate (test_implementation_plan.ImplementationPlanTests.test_facts_cannot_start_without_score_reliability_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 603, in test_facts_cannot_start_without_score_reliability_gate
+    self.rejected("F01: full facts work must depend on G3")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_final_gate_must_cover_all_task_branches (test_implementation_plan.ImplementationPlanTests.test_final_gate_must_cover_all_task_branches)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 671, in test_final_gate_must_cover_all_task_branches
+    self.rejected('G6 leaves unfinished task branches: Z01')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_forward_acceptance_dependencies_cannot_mark_local_tasks_complete (test_implementation_plan.ImplementationPlanTests.test_forward_acceptance_dependencies_cannot_mark_local_tasks_complete)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 477, in test_forward_acceptance_dependencies_cannot_mark_local_tasks_complete
+    self.rejected("W01: case ID-04 is owned by W09, which is outside its dependency closure")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_future_stage_dependency_is_rejected (test_implementation_plan.ImplementationPlanTests.test_future_stage_dependency_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 595, in test_future_stage_dependency_is_rejected
+    self.rejected("later stage")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_happy_path_only_task_is_rejected (test_implementation_plan.ImplementationPlanTests.test_happy_path_only_task_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 640, in test_happy_path_only_task_is_rejected
+    self.rejected("W01: needs a negative or fault case")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_launch_configuration_owner_cannot_drift (test_implementation_plan.ImplementationPlanTests.test_launch_configuration_owner_cannot_drift)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 691, in test_launch_configuration_owner_cannot_drift
+    self.rejected('ownership must stay StockWiki/StockQA')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_launch_contract_is_frozen_before_g0 (test_implementation_plan.ImplementationPlanTests.test_launch_contract_is_frozen_before_g0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 675, in test_launch_contract_is_frozen_before_g0
+    self.rejected('G0 must freeze launch contract C07')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_live_cleanup_case_cannot_be_claimed_by_offline_gate (test_implementation_plan.ImplementationPlanTests.test_live_cleanup_case_cannot_be_claimed_by_offline_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 560, in test_live_cleanup_case_cannot_be_claimed_by_offline_gate
+    self.rejected("X09 offline E2E cannot claim E2E-06")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_live_launch_cannot_point_to_offline_suite (test_implementation_plan.ImplementationPlanTests.test_live_launch_cannot_point_to_offline_suite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 679, in test_live_launch_cannot_point_to_offline_suite
+    self.rejected('live_e2e_task must bind the actual M6 live path')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_live_task_cannot_be_satisfied_by_mock_cases_only (test_implementation_plan.ImplementationPlanTests.test_live_task_cannot_be_satisfied_by_mock_cases_only)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 644, in test_live_task_cannot_be_satisfied_by_mock_cases_only
+    self.rejected("L01: live task needs a live case")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_malformed_kind_has_validation_error_instead_of_type_error (test_implementation_plan.ImplementationPlanTests.test_malformed_kind_has_validation_error_instead_of_type_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 728, in test_malformed_kind_has_validation_error_instead_of_type_error
+    self.rejected("invalid task kind")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_missing_review_gate_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_review_gate_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 599, in test_missing_review_gate_is_rejected
+    self.rejected("missing review gate G2")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_missing_scope_or_steps_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_scope_or_steps_is_rejected) (key='allowed_changes')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 616, in test_missing_scope_or_steps_is_rejected
+    self.rejected(key)
+    ~~~~~~~~~~~~~^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_missing_scope_or_steps_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_scope_or_steps_is_rejected) (key='steps')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 616, in test_missing_scope_or_steps_is_rejected
+    self.rejected(key)
+    ~~~~~~~~~~~~~^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_missing_scope_or_steps_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_scope_or_steps_is_rejected) (key='deliverables')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 616, in test_missing_scope_or_steps_is_rejected
+    self.rejected(key)
+    ~~~~~~~~~~~~~^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_missing_scope_or_steps_is_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_scope_or_steps_is_rejected) (key='case_ids')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 616, in test_missing_scope_or_steps_is_rejected
+    self.rejected(key)
+    ~~~~~~~~~~~~~^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_missing_unknown_and_forward_case_owners_are_rejected (test_implementation_plan.ImplementationPlanTests.test_missing_unknown_and_forward_case_owners_are_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 74, in test_missing_unknown_and_forward_case_owners_are_rejected
+    self.rejected("LLM-18: missing owner_task")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_one_click_dispatch_requires_recipe_runtime_and_store (test_implementation_plan.ImplementationPlanTests.test_one_click_dispatch_requires_recipe_runtime_and_store)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 556, in test_one_click_dispatch_requires_recipe_runtime_and_store
+    self.rejected("X05 must depend on V09 and V10")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_orphan_case_is_rejected (test_implementation_plan.ImplementationPlanTests.test_orphan_case_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 626, in test_orphan_case_is_rejected
+    self.rejected("orphan acceptance case UNUSED-01")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_owner_task_cannot_claim_downstream_integration_cases (test_implementation_plan.ImplementationPlanTests.test_owner_task_cannot_claim_downstream_integration_cases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 470, in test_owner_task_cannot_claim_downstream_integration_cases
+    self.rejected("W16 owner-local case EVO-67 cannot require downstream X05/X09 integration")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) (case='EVO-67')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 463, in test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases
+    self.rejected("X09 must depend on X05 and exercise legacy settlement, parser receipt, and concurrency/forged-plan behavior through the installed public path")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) (case='EVO-69')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 463, in test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases
+    self.rejected("X09 must depend on X05 and exercise legacy settlement, parser receipt, and concurrency/forged-plan behavior through the installed public path")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) (case='EVO-70')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 463, in test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases
+    self.rejected("X09 must depend on X05 and exercise legacy settlement, parser receipt, and concurrency/forged-plan behavior through the installed public path")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases) (case='EVO-71')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 463, in test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases
+    self.rejected("X09 must depend on X05 and exercise legacy settlement, parser receipt, and concurrency/forged-plan behavior through the installed public path")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases (test_implementation_plan.ImplementationPlanTests.test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 466, in test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases
+    self.rejected("W16 must cover atomic apply, old settlement, deterministic-plan rejection, candidate gating, active-pointer CAS")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_public_paid_entry_cannot_bypass_impact_plan_application (test_implementation_plan.ImplementationPlanTests.test_public_paid_entry_cannot_bypass_impact_plan_application)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 437, in test_public_paid_entry_cannot_bypass_impact_plan_application
+    self.rejected("X05 must consume W16 and X09 must safely settle frozen legacy attempts")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_release_cannot_end_at_scoring_only_gate (test_implementation_plan.ImplementationPlanTests.test_release_cannot_end_at_scoring_only_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 660, in test_release_cannot_end_at_scoring_only_gate
+    self.rejected('complete release must end at G6')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_release_cannot_omit_facts_gate (test_implementation_plan.ImplementationPlanTests.test_release_cannot_omit_facts_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 664, in test_release_cannot_omit_facts_gate
+    self.rejected('including facts/consumers G4')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_release_set_cannot_omit_parser_release_or_actual_hash_case (test_implementation_plan.ImplementationPlanTests.test_release_set_cannot_omit_parser_release_or_actual_hash_case)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 447, in test_release_set_cannot_omit_parser_release_or_actual_hash_case
+    self.rejected("X07 release set must bind V16, V17, W16 and Q14 parser releases")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='V01')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 552, in test_scoring_only_graph_cannot_silently_depend_on_facts
+    self.rejected(f"{tid}: scoring-only delivery must not depend on F06 or G4")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='V08')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 552, in test_scoring_only_graph_cannot_silently_depend_on_facts
+    self.rejected(f"{tid}: scoring-only delivery must not depend on F06 or G4")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='V09')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 552, in test_scoring_only_graph_cannot_silently_depend_on_facts
+    self.rejected(f"{tid}: scoring-only delivery must not depend on F06 or G4")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='V10')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 552, in test_scoring_only_graph_cannot_silently_depend_on_facts
+    self.rejected(f"{tid}: scoring-only delivery must not depend on F06 or G4")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='O04')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 552, in test_scoring_only_graph_cannot_silently_depend_on_facts
+    self.rejected(f"{tid}: scoring-only delivery must not depend on F06 or G4")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_scoring_only_graph_cannot_silently_depend_on_facts (test_implementation_plan.ImplementationPlanTests.test_scoring_only_graph_cannot_silently_depend_on_facts) (task='G5')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 552, in test_scoring_only_graph_cannot_silently_depend_on_facts
+    self.rejected(f"{tid}: scoring-only delivery must not depend on F06 or G4")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_self_cycle_is_rejected (test_implementation_plan.ImplementationPlanTests.test_self_cycle_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 591, in test_self_cycle_is_rejected
+    self.rejected("dependency cycle")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_spec_cannot_claim_a_passed_test (test_implementation_plan.ImplementationPlanTests.test_spec_cannot_claim_a_passed_test)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 648, in test_spec_cannot_claim_a_passed_test
+    self.rejected("cannot contain claimed test results")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_task_spec_cannot_duplicate_completion_state (test_implementation_plan.ImplementationPlanTests.test_task_spec_cannot_duplicate_completion_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 652, in test_task_spec_cannot_duplicate_completion_state
+    self.rejected("execution status belongs in task_plan.md/progress.md")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_unknown_case_reference_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_case_reference_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 620, in test_unknown_case_reference_is_rejected
+    self.rejected("unknown case MISSING-99")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_unknown_dependency_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_dependency_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 583, in test_unknown_dependency_is_rejected
+    self.rejected("unknown dependency")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_unknown_invariant_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_invariant_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 719, in test_unknown_invariant_is_rejected
+    self.rejected("unknown invariant I99")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_unknown_or_multiple_owner_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_or_multiple_owner_is_rejected) (owner='company-wiki-writer')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 609, in test_unknown_or_multiple_owner_is_rejected
+    self.rejected("unknown or multiple owners")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_unknown_or_multiple_owner_is_rejected (test_implementation_plan.ImplementationPlanTests.test_unknown_or_multiple_owner_is_rejected) (owner=['iqs', 'stockwiki'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 609, in test_unknown_or_multiple_owner_is_rejected
+    self.rejected("unknown or multiple owners")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_versioned_answer_parser_cannot_be_owned_by_quick_scan (test_implementation_plan.ImplementationPlanTests.test_versioned_answer_parser_cannot_be_owned_by_quick_scan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 545, in test_versioned_answer_parser_cannot_be_owned_by_quick_scan
+    self.rejected("Q14 answer parser/version metadata must remain StockQA-owned")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+ERROR: test_versions_must_align (test_implementation_plan.ImplementationPlanTests.test_versions_must_align)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 656, in test_versions_must_align
+    self.rejected("same nonempty version")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 31, in rejected
+    errors = ip.validate_package(self.plan, self.cases)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\implementation_plan.py", line 187, in validate_package
+    for consumer, prerequisite in allowed_context_edges:
+                                  ^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'allowed_context_edges' is not defined
+
+======================================================================
+FAIL: test_compatibility_window_tasks_remain_in_the_delivery_graph_without_receipt_gate (test_implementation_plan.ImplementationPlanTests.test_compatibility_window_tasks_remain_in_the_delivery_graph_without_receipt_gate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 317, in test_compatibility_window_tasks_remain_in_the_delivery_graph_without_receipt_gate
+    self.assertNotIn("P01", required)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 'P01' unexpectedly found in {'U03', 'V07', 'V01', 'X05', 'Q13', 'V06', 'V11', 'V05', 'V12', 'C07', 'S06', 'F06', 'X07', 'V09', 'Q14', 'X11', 'X03', 'U04', 'V16', 'W15', 'V10', 'X12', 'V08', 'X08', 'B01', 'S04', 'S05', 'X06', 'V02', 'Q11', 'X10', 'X02', 'P01', 'Q15', 'V04', 'V13', 'V17', 'W14', 'W16', 'X09', 'U01', 'S07', 'S08', 'S09', 'V15', 'X04', 'X01', 'V18', 'V14', 'V03', 'U02', 'W13'}
+
+======================================================================
+FAIL: test_p00_historical_receipt_artifacts_are_preserved_but_not_new_write_targets (test_implementation_plan.ImplementationPlanTests.test_p00_historical_receipt_artifacts_are_preserved_but_not_new_write_targets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 53, in test_p00_historical_receipt_artifacts_are_preserved_but_not_new_write_targets
+    self.assertNotIn("receipt-P00.json", allowed)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'receipt-P00.json' unexpectedly found in 'docs/implementation/baselines/baseline-report-????-??-??.md（仅新增当次脱敏基线报告；不修改legacy/、旧P00 v1或历史P01 manifest）\ndocs/implementation/contracts/receipt-P00.json（新增当前P00 v2回执，旧v1只读保留在baselines目录）\ndocs/implementation/contracts/validation-P00-*.json（新增只读校验sidecar）\ndocs/implementation/contracts/validation-P00-*.log（新增隔离验证日志）\ndocs/implementation/reviews/P00/（新增当前实现快照对应的独立审查报告）\ntests/test_implementation_plan.py（验证P00当前回执工件路径清单）'
+
+======================================================================
+FAIL: test_retired_task_receipt_workflow_is_absent_from_active_plan (test_implementation_plan.ImplementationPlanTests.test_retired_task_receipt_workflow_is_absent_from_active_plan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_implementation_plan.py", line 43, in test_retired_task_receipt_workflow_is_absent_from_active_plan
+    self.assertNotIn("P01", task_ids)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 'P01' unexpectedly found in {'U03', 'V01', 'S02', 'F02', 'V05', 'W12', 'C03', 'Q07', 'O02', 'V08', 'B01', 'S04', 'C06', 'Q10', 'Q11', 'L04', 'P01', 'W03', 'W14', 'U01', 'S09', 'W02', 'Q02', 'F04', 'V07', 'V06', 'V11', 'G5', 'Q08', 'W10', 'S06', 'X07', 'V09', 'C01', 'Q01', 'X03', 'W01', 'S10', 'X12', 'X08', 'T01', 'G4', 'G2', 'V04', 'W09', 'W11', 'X04', 'W04', 'S01', 'U02', 'Q13', 'P00', 'L03', 'F06', 'Q14', 'X11', 'U04', 'O05', 'W15', 'G0', 'C05', 'L02', 'S05', 'V02', 'X10', 'G1', 'X02', 'Q15', 'W06', 'V13', 'Q04', 'V17', 'W16', 'X09', 'G6', 'Q09', 'V15', 'O01', 'L01', 'V18', 'S03', 'V14', 'Q03', 'V03', 'C07', 'G3', 'C02', 'X05', 'V12', 'W07', 'Q05', 'Q06', 'T02', 'F03', 'Q12', 'V16', 'V10', 'W08', 'X06', 'W05', 'F01', 'S07', 'S08', 'F05', 'O04', 'X01', 'C04', 'W13'}
+
+----------------------------------------------------------------------
+Ran 80 tests in 0.723s
+
+FAILED (failures=3, errors=65)

@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "review_id": "C01-preseal-review-r2-2026-09-26",
+  "reviewer_id": "agent:/root/p01_receipt_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "Separate read-only sub-agent; did not implement or modify the C01 contract, validator, test, or evidence.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "14d9d5c4b5c0f6e5f9b24e7848e69adf5f3cf189d26a6db19b2d5ff9d7b06c45",
+  "open_findings": [],
+  "review_scope": [
+    "C01 task card and ID-02 negative acceptance oracle",
+    "The revised test_id_02_parent_subsidiary_cannot_merge_without_verified_issuer selector",
+    "Public cv.validate_entity implementation and trusted identity/source evidence contract",
+    "The three-file C01 snapshot and isolated C01 identity regression log"
+  ],
+  "reviewed_inputs": [
+    {
+      "path": "docs/implementation/contracts/identity.md",
+      "sha256": "2680af14ec3e6d1e086b14cf61211d6f649cf3dae7c18a7654498dac57321c50"
+    },
+    {
+      "path": "schemas/quick_scan/identity.schema.json",
+      "sha256": "228745aa45474e5670d7801d1baa8211dd7ce8bc911a96c611ff0294abe7f1f3"
+    },
+    {
+      "path": "tests/test_identity_contract.py",
+      "sha256": "95d155d17cb883a1af3668c076a3219401bda71146466f405fd53b9c9d2ef19f"
+    }
+  ],
+  "checks": {
+    "snapshot_binding": "Verified by recomputing the canonical C01 snapshot over the original three owner-allowlisted paths; it matches implementation_snapshot_sha256.",
+    "id_02_semantic_oracle": "The test retains the VerifiedIssuerBridge schema check, then constructs a two-security candidate Entity and the matching owner-held issuer receipt/source bindings. It changes only same_legal_issuer to false, calls the public cv.validate_entity validator, and asserts rejection with the exact-issuer-evidence failure. The decisive behavior is implemented by the public validator, not by an if branch in the test.",
+    "id_02_sufficiency": "Approved for the C01 identity-contract scope: the rejected candidate cannot be accepted as one Entity without positive exact issuer evidence, so same-name/brand cues cannot authorize the merge. This is a fail-closed contract validation test; it does not claim an automatic deduplication engine or persistent two-row write behavior, which are outside this C01 test boundary.",
+    "fixture_linkage": "The unverified bridge fixture is schema-checked separately; the negative public-validator assertion uses a distinct but internally matching candidate and owner-held receipt, so the assertion is not caused by unrelated mismatched security IDs.",
+    "execution_evidence": "The existing isolated log reports run_id dedaf7c1-3c0e-4cd3-91b7-269270f03dfa, 16 passed, 31 subtests passed, 0 skips and exit 0. Its SHA-256 is 5017a5ca3bc720fb5874cbbc66765e1d5b53142465f369c19d0461454e3e274a. The unique pytest temporary root named in the log is absent."
+  },
+  "execution": {
+    "review_mode": "read-only",
+    "reviewer_ran_tests": false,
+    "reviewer_ran_scripts": false,
+    "network_or_api_used": false,
+    "external_repositories_modified": false,
+    "implementation_or_plan_files_modified": false,
+    "reviewed_test_evidence_rerun": false
+  }
+}

@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.0.0",
-  "policy_id": "user-model-order-v1",
+  "schema_version": "2.0.0",
+  "policy_id": "user-model-order-template-v2",
   "execution_owner": "StockQAbyLLM",
   "configured": false,
   "dispatch": {
@@ -8,6 +8,7 @@
     "max_questions_per_pack": 4,
     "one_entity_per_pack": true,
     "separate_score_and_fact_packs": true,
+    "required_capabilities": ["web_search", "structured_output"],
     "on_preferred_capacity_full": "wait",
     "speculative_racing": false
   },
@@ -15,20 +16,31 @@
     "currency": "USD",
     "max_cost": 0,
     "max_requests": 0,
+    "max_cost_per_attempt": 0,
     "reset_on_restart": false
+  },
+  "cost_policy": {
+    "pricing_basis": "user_cap",
+    "pricing_ref": null,
+    "include_search_charges": true,
+    "include_failed_attempts": true,
+    "reserve_before_dispatch": true,
+    "unknown_actual_cost_action": "retain_reservation_and_pause"
   },
   "quota_groups": [
     {
       "id": "account_a",
       "max_in_flight": 2,
       "window_seconds_hint": 18000,
-      "unknown_reset_cooldown_seconds": 900
+      "unknown_reset_cooldown_seconds": 900,
+      "half_open_probe_limit": 1
     },
     {
       "id": "account_b",
       "max_in_flight": 2,
       "window_seconds_hint": null,
-      "unknown_reset_cooldown_seconds": 900
+      "unknown_reset_cooldown_seconds": 900,
+      "half_open_probe_limit": 1
     }
   ],
   "models": [
@@ -60,11 +72,24 @@
   "fallback": {
     "on_quota_exhausted": "cooldown_group_then_next",
     "on_rate_limit": "respect_retry_after_then_next",
+    "on_server_error": "bounded_retry_then_next",
     "on_auth_error": "disable_route_then_next",
+    "on_invalid_request": "stop_without_fallback",
+    "on_malformed_response": "bounded_retry_then_next",
+    "on_missing_capability": "skip_before_dispatch",
     "on_timeout": "reconcile_receipt_before_retry",
     "on_low_score": "accept",
     "on_unknown_answer": "accept_with_gap",
+    "on_fallback_success": "stop_dispatch_keep_primary_health",
     "max_attempts_per_dispatch_round": 3
+  },
+  "comparison": {
+    "enabled": false,
+    "max_models_per_question": 2,
+    "max_cost": 0,
+    "max_requests": 0,
+    "same_input_and_cutoff_required": true,
+    "separate_from_primary_fallback": true
   },
   "resume": {
     "success_checkpoint": "per_question",

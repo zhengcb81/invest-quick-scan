@@ -1,0 +1,23 @@
+{
+  "suite": "S03 current receipt regression selectors",
+  "exit_code": 0,
+  "selectors": [
+    "tests/test_question_sets.py::QuestionSetTests::test_s03_advantage_prompts_include_scope_conditions_and_falsifiers",
+    "tests/test_question_sets.py::QuestionSetTests::test_s03_growth_prompts_require_net_effect_after_legacy_loss_and_financing",
+    "tests/test_question_sets.py::QuestionSetTests::test_s03_pre_revenue_replacement_keeps_growth_construct_and_net_economics",
+    "tests/test_question_sets.py::QuestionSetTests::test_s03_does_not_add_unapproved_bridge_questions_or_auto_diagnostics",
+    "tests/test_question_sets.py::QuestionSetTests::test_s03_previous_metric_manifest_is_not_reinterpreted_under_new_rubrics",
+    "tests/test_question_sets.py::QuestionSetTests::test_optional_diagnostics_do_not_change_any_dimension_or_quality_score",
+    "tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages",
+    "tests/test_metrics_contract.py::MetricsContractTests::test_dur_01_and_dur_02_evidence_demands",
+    "tests/test_metrics_contract.py::MetricsContractTests::test_dur_03_diagnostic_addition_rules"
+  ],
+  "outer_temp_cleaned": true,
+  "temporary_leftover_paths_before_cleanup": [],
+  "live_api_used": false
+}
+
+$ C:\Miniconda\python.exe -B -X utf8 -m pytest -q -p no:cacheprovider -o tmp_path_retention_policy=none tests/test_question_sets.py::QuestionSetTests::test_s03_advantage_prompts_include_scope_conditions_and_falsifiers tests/test_question_sets.py::QuestionSetTests::test_s03_growth_prompts_require_net_effect_after_legacy_loss_and_financing tests/test_question_sets.py::QuestionSetTests::test_s03_pre_revenue_replacement_keeps_growth_construct_and_net_economics tests/test_question_sets.py::QuestionSetTests::test_s03_does_not_add_unapproved_bridge_questions_or_auto_diagnostics tests/test_question_sets.py::QuestionSetTests::test_s03_previous_metric_manifest_is_not_reinterpreted_under_new_rubrics tests/test_question_sets.py::QuestionSetTests::test_optional_diagnostics_do_not_change_any_dimension_or_quality_score tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages tests/test_metrics_contract.py::MetricsContractTests::test_dur_01_and_dur_02_evidence_demands tests/test_metrics_contract.py::MetricsContractTests::test_dur_03_diagnostic_addition_rules
+.........                                                            [100%]
+9 passed, 4 subtests passed in 0.74s
+

@@ -1,0 +1,584 @@
+{
+  "schema_version": "2.0",
+  "core": {
+    "task_id": "P01",
+    "plan_version": "1.10.13",
+    "plan_sha256": "26a028772b69751f4d71b7a7910c6bd71c67f13dbb597ae946df27b7a36df7fa",
+    "case_catalog_sha256": "d5786aa0e8ae1690ad58299f4cb76a0ddba4217e08218c7aea7db27093c25c9a",
+    "hash_algorithm": "canonical-json-sha256-v1",
+    "task_spec_sha256": "5b4b0aa26286a08dbaef941ad412ef5d9b12a06d4ef55e067a3eefe0bc4bc3eb",
+    "owned_case_bundle_sha256": "694af02f58b3f0d4df6661514a3bcb2466c5f891a855df1c653d9c45c8d01e7a",
+    "global_boundaries_sha256": "61b52329b266485ce055345e33344326ff97d8cfad6b7d9b7140d47a3da9c1ab",
+    "implementation_author_id": "codex:/root",
+    "case_results": [
+      {
+        "case_id": "RCPT-01",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "RCPT-01.A01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_case_and_assertion_sets_are_exact_and_derived_ids_are_stable",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_case_and_assertion_sets_are_exact_and_derived_ids_are_stable -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_case_and_assertion_sets_are_exact_and_derived_ids_are_stable.log",
+              "sha256": "7dadfc9b53db5808f6163bd65e06031dc32625acf9671a8d9da61126bfa1e3bf"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "138f9b5b-3429-4acd-b143-a0105b9a5f8e",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-01.A02",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_valid_receipt_and_schema_are_accepted",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_valid_receipt_and_schema_are_accepted -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_valid_receipt_and_schema_are_accepted.log",
+              "sha256": "951200cc52bb7b264c3bd50fb52733194821d9b189bed8d99d80cdf2ee35a34d"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "8c37ce2f-5fc5-46b4-a829-0e4268e4e78a",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-01.A03",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_valid_receipt_and_schema_are_accepted",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_valid_receipt_and_schema_are_accepted -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_valid_receipt_and_schema_are_accepted.log",
+              "sha256": "951200cc52bb7b264c3bd50fb52733194821d9b189bed8d99d80cdf2ee35a34d"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "8c37ce2f-5fc5-46b4-a829-0e4268e4e78a",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-01.A04",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_review_forgery_self_review_and_review_cycle_are_rejected",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_review_forgery_self_review_and_review_cycle_are_rejected -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_review_forgery_self_review_and_review_cycle_are_rejected.log",
+              "sha256": "089112435399598975295dc06c691c8b55e7e08a68ecc6b8f92f09856a953f39"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "fd9ad539-8aa0-41d4-ac72-ab212817903e",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-01.A05",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_unrelated_plan_and_catalog_additions_do_not_stale_owner_hashes",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_unrelated_plan_and_catalog_additions_do_not_stale_owner_hashes -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_unrelated_plan_and_catalog_additions_do_not_stale_owner_hashes.log",
+              "sha256": "fb3d367bc7ef723ad01d2f2b1717afc6d736a1566a5162825fce2ab4af2d477a"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "ea48e963-9984-4963-b419-53b65e330183",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-01.A06",
+            "status": "passed",
+            "test_stage": "integration",
+            "selector": "tests/test_task_receipts.py::test_verifier_does_not_execute_recorded_commands_or_write_inputs_or_emit_secrets",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_verifier_does_not_execute_recorded_commands_or_write_inputs_or_emit_secrets -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_verifier_does_not_execute_recorded_commands_or_write_inputs_or_emit_secrets.log",
+              "sha256": "5b063285a3161d1e4ba0f02dc6a426e06393cf9c465a70246317152ff217e7f7"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "08070b19-6300-49c8-95b6-c7dfd4ee5c18",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "RCPT-02",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "RCPT-02.A01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_core_tamper_duplicate_and_unexpected_assertions_fail_closed",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_core_tamper_duplicate_and_unexpected_assertions_fail_closed -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_core_tamper_duplicate_and_unexpected_assertions_fail_closed.log",
+              "sha256": "07a89b1f664ff36f0db18a56b7b14933ad243994a59a665fb2d74fb77f8bfbc6"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "06e4db0e-193f-4676-ac00-4a2bf41a9a1b",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-02.A02",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_task_case_and_global_boundary_changes_stale_receipt",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_task_case_and_global_boundary_changes_stale_receipt -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_task_case_and_global_boundary_changes_stale_receipt.log",
+              "sha256": "cd12e391a1d5b780fa48f541152361fcc9f9714bd9b076c7dafeb1e7ad94b26f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "858ca028-bd68-42ec-92b9-2c7a99c90a8d",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-02.A03",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_snapshot_change_makes_preseal_review_stale",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_snapshot_change_makes_preseal_review_stale -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_snapshot_change_makes_preseal_review_stale.log",
+              "sha256": "58ee534981160d45ce9ca526031b04004f8b190ce912c5bda3dea7913c748caf"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "61712346-a86a-408d-b1a6-641086ed2467",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-02.A04",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_missing_empty_tampered_logs_exit_status_and_skips_block",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_missing_empty_tampered_logs_exit_status_and_skips_block -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_missing_empty_tampered_logs_exit_status_and_skips_block.log",
+              "sha256": "c589ac40f0b0f8f538c6c673aa3d4d55e0fdcfa6a318ac110e3a78928d7030a3"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "73f95f40-d4de-4ddf-92f5-45b9abe51d54",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-02.A05",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_review_forgery_self_review_and_review_cycle_are_rejected",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_review_forgery_self_review_and_review_cycle_are_rejected -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_review_forgery_self_review_and_review_cycle_are_rejected.log",
+              "sha256": "089112435399598975295dc06c691c8b55e7e08a68ecc6b8f92f09856a953f39"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "fd9ad539-8aa0-41d4-ac72-ab212817903e",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-02.A06",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_absolute_traversal_sensitive_and_symlink_escape_paths_are_rejected",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_absolute_traversal_sensitive_and_symlink_escape_paths_are_rejected -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_absolute_traversal_sensitive_and_symlink_escape_paths_are_rejected.log",
+              "sha256": "e62c2eb072b0efd0da30d71e8a9384fb72f4e6213c3901317aa964d72e8f9fe9"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "1c8cb98e-3379-4201-8189-2d626b6e6b55",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-02.A07",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_legacy_v1_remains_historical_and_unchanged",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_legacy_v1_remains_historical_and_unchanged -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_legacy_v1_remains_historical_and_unchanged.log",
+              "sha256": "f97afb327c16c73f3ce513999f101e50662a2952fb26e2489986606806a948ef"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "c666530e-cf7d-40b9-8762-5a883bab1e7f",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-02.A08",
+            "status": "passed",
+            "test_stage": "integration",
+            "selector": "tests/test_task_receipts.py::test_verifier_does_not_execute_recorded_commands_or_write_inputs_or_emit_secrets",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_verifier_does_not_execute_recorded_commands_or_write_inputs_or_emit_secrets -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_verifier_does_not_execute_recorded_commands_or_write_inputs_or_emit_secrets.log",
+              "sha256": "5b063285a3161d1e4ba0f02dc6a426e06393cf9c465a70246317152ff217e7f7"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "08070b19-6300-49c8-95b6-c7dfd4ee5c18",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "RCPT-03",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "RCPT-03.A01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_historical_p00_manifest_is_context_only_and_hash_locked",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_historical_p00_manifest_is_context_only_and_hash_locked -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_historical_p00_manifest_is_context_only_and_hash_locked.log",
+              "sha256": "d67c71b7c76935d792705210e3c2c748cb5021a46122350963d668f903b240c4"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "91940368-5f23-4fd3-bcfd-3a9af2a5c34a",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-03.A02",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_legacy_or_missing_current_dependency_never_satisfies_close_gate",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_legacy_or_missing_current_dependency_never_satisfies_close_gate -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_legacy_or_missing_current_dependency_never_satisfies_close_gate.log",
+              "sha256": "8f21659b9fd282c184f293aea4b752c7e6f05e561f7016532f5bff8d0e4eb08b"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "9685f844-ce52-4f7b-ba81-e66169904381",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-03.A03",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_detached_sidecar_does_not_mutate_core_and_core_rejects_postseal_review",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_detached_sidecar_does_not_mutate_core_and_core_rejects_postseal_review -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_detached_sidecar_does_not_mutate_core_and_core_rejects_postseal_review.log",
+              "sha256": "afea7c441ce78c9191145ca608959e4abda5a386998e263b16eb0c8813150a8e"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5505c8c3-4a74-4c53-8e60-3fdb8911f530",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-03.A04",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::test_legacy_or_missing_current_dependency_never_satisfies_close_gate",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_task_receipts.py -k test_legacy_or_missing_current_dependency_never_satisfies_close_gate -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-r3-test_legacy_or_missing_current_dependency_never_satisfies_close_gate.log",
+              "sha256": "8f21659b9fd282c184f293aea4b752c7e6f05e561f7016532f5bff8d0e4eb08b"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "9685f844-ce52-4f7b-ba81-e66169904381",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique per-selector temporary root was empty after the test and removed by its owner."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline receipt regression; no network/API request was made."
+            }
+          },
+          {
+            "assertion_id": "RCPT-03.A05",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_task_receipts.py::TaskReceiptTests::test_p00_p01_current_receipt_artifacts_are_allowlisted_without_replacing_legacy_baseline",
+            "command": "python -B -X utf8 -m pytest --rootdir=. -p no:cacheprovider -q tests/test_task_receipts.py::TaskReceiptTests::test_p00_p01_current_receipt_artifacts_are_allowlisted_without_replacing_legacy_baseline",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-P01-RCPT03-A05-2026-09-29.log",
+              "sha256": "bc8e445bf591213ad64a08082ccf0ffa0dbc5336170ad985374ab0b71ed603b8"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "61f857af-9ec7-41d5-9d84-b818a60b89ad",
+              "cleanup_verified": true,
+              "cleanup_summary": "The selector completed using its per-test temporary fixture; teardown removed the fixture root."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline P00/P01 allowlist and legacy-hash regression; no network or API request."
+            }
+          }
+        ]
+      }
+    ],
+    "implementation_snapshot": [
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/task-receipts.md",
+        "sha256": "00ee7b3d7443064eb650d6610e279ba6b9ded5ce8941303af5b19437e5c31d9f"
+      },
+      {
+        "root_id": "iqs",
+        "path": "examples/quick_scan/task-receipt-v2-example.json",
+        "sha256": "bef5081098d09b240580d093764dc8b45c58bb1ad2eadddc1823a1b410998941"
+      },
+      {
+        "root_id": "iqs",
+        "path": "schemas/quick_scan/task-receipt.schema.json",
+        "sha256": "c6e0f1d7e329b2108ad608ea194ff8f6c0d37294c8b1ae9d38a90a512768284e"
+      },
+      {
+        "root_id": "iqs",
+        "path": "scripts/task_receipts.py",
+        "sha256": "a917c30d219218dd2ff32e07d6e84cfff799865a5de0ae62e90666ee0b1e9ffb"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/test_task_receipts.py",
+        "sha256": "98899b4a951e06eeb94cbe5906a0a83cd2bae0c9294f84e5ef6ea8580a41dc26"
+      }
+    ],
+    "implementation_snapshot_sha256": "6cbc52ee7015724e721702e1526eb8fc44262c0c5e72001885890195cede4f6a",
+    "independent_review": {
+      "report": {
+        "root_id": "iqs",
+        "path": "docs/implementation/reviews/P01/preseal-review-independent-r8-2026-09-28.json",
+        "sha256": "d30cdc9f3dc69076b226feaadde2657ecc4980a3620ab76fa0182db37edfd241"
+      },
+      "reviewer_id": "agent:/root/p01_revalidation_review",
+      "reviewer_role": "independent implementation reviewer",
+      "independent": true,
+      "separation_basis": "Separate read-only review sub-agent; did not implement or modify the verifier, schema, example, tests, contract, plan, acceptance cases, or evidence. Re-reviewed the corrected P00/P01 artifact paths and assertions; reports r6 and r7 remain preserved as prior review history.",
+      "outcome": "approved",
+      "implementation_snapshot_sha256": "6cbc52ee7015724e721702e1526eb8fc44262c0c5e72001885890195cede4f6a",
+      "open_findings": []
+    },
+    "dependency_evidence": [
+      {
+        "task_id": "P00",
+        "kind": "historical_context",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/baselines/P00-context-manifest.json",
+          "sha256": "8b97ddaf8cf8bffb23d2beb7f9650ad067c9b08bf1ef5c4d0fdc4272481450fc"
+        },
+        "status": "context_only"
+      }
+    ],
+    "referenced_case_bundle_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "core_sha256": "11714c14554f82f4a7a08cbbf9fd8f6ba1e38a758d6c0d02ff174d19a700aff9"
+}

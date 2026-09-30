@@ -1,0 +1,33 @@
+{
+  "task_id": "S06",
+  "plan_version": "1.7.4",
+  "owner": "iqs",
+  "status": "verified_for_local_offline_route_scope",
+  "scope": "Versioned modular route decision, source-bound model candidates, trusted-fact priority, mandatory recovery dispatch, archived route and manifest read compatibility, and new-export guard",
+  "source_snapshot_sha256": {
+    "scripts/routing.py": "44987334d38a8d731259663f94b5eecaa16bf4607a0600ad60e6c8a138344712",
+    "scripts/question_sets.py": "134e2e72e3d83d11f42daed64de2570972686f3a1ae7614aab1f86ca27c389ee",
+    "schemas/quick_scan/route-decision.schema.json": "1bca5d2b470b29007e06417acb9b8451e589506942755caab461afc593a4265d",
+    "tests/test_routing.py": "bb98fb80b135cbb945c54c53c3e8dc1226e2983d1bfaabe8eaec3999c98083dc",
+    "tests/fixtures/s06_router_20_search_route.json": "956d4345b38c9aab35cee77584c3380b893d8bfdd847f49f5c6221b85575a77e",
+    "references/routing.md": "14997f6976a69567a006874bafffd94e847ef4f869f350878868ce647305d972"
+  },
+  "checks": {
+    "route_compose_and_module_contract": "94 passed, 127 subtests passed, zero skipped",
+    "independent_selected_cases": "20 passed, zero skipped",
+    "old_release_files_changed": 0,
+    "current_pointer": "remains S05",
+    "temporary_workspace_cleaned": true,
+    "live_api_used": false
+  },
+  "independent_review": {
+    "report_path": "docs/implementation/reviews/S06/independent-final-review-2026-09-26.md",
+    "report_sha256": "28fcfca7563dea80daeb56b89a0427a7a2ac669e780a047f51cd1731b0797b65",
+    "decision": "verified_for_local_offline_route_scope"
+  },
+  "limits": [
+    "The v2 candidate module package is not activated as the current production package.",
+    "Actual StockQA web-search receipts, persistent Q06 jobs, W02/W03 identity admission and W05 observations have not completed end-to-end acceptance.",
+    "This receipt does not declare the cross-project S06 production workflow ready."
+  ]
+}

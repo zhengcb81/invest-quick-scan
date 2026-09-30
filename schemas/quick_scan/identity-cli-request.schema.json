@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://invest-quick-scan.local/schemas/quick_scan/identity-cli-request.schema.json",
+  "title": "QuickScan Identity Contract CLI Request 1.0.0",
+  "description": "Public read-only request envelope for Identity Contract Package 2.2.0. Caller-supplied trust context is validated for shape and consistency only; this CLI does not authenticate its authority.",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["schema_version", "object_type", "payload", "trusted_context"],
+      "properties": {
+        "schema_version": {"const": "2.2.0"},
+        "object_type": {"const": "entity"},
+        "payload": {
+          "anyOf": [
+            {"$ref": "https://invest-quick-scan.local/schemas/quick_scan/identity.schema.json#/definitions/ProvisionalEntityV21"},
+            {"$ref": "https://invest-quick-scan.local/schemas/quick_scan/identity.schema.json#/definitions/VerifiedEntityV21"}
+          ]
+        },
+        "trusted_context": {"$ref": "#/definitions/EntityTrustedContext"}
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["schema_version", "object_type", "payload", "trusted_context"],
+      "properties": {
+        "schema_version": {"const": "2.2.0"},
+        "object_type": {"const": "analysis_subject"},
+        "payload": {
+          "$ref": "https://invest-quick-scan.local/schemas/quick_scan/identity.schema.json#/definitions/AnalysisSubjectV10"
+        },
+        "trusted_context": {"$ref": "#/definitions/AnalysisSubjectTrustedContext"}
+      },
+      "additionalProperties": false
+    }
+  ],
+  "definitions": {
+    "EntityTrustedContext": {
+      "type": "object",
+      "required": ["market_registry", "identity_receipts", "source_bindings"],
+      "properties": {
+        "market_registry": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          }
+        },
+        "identity_receipts": {
+          "type": "object",
+          "additionalProperties": {"type": "object"}
+        },
+        "source_bindings": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "https://invest-quick-scan.local/schemas/quick_scan/identity.schema.json#/definitions/SourceBindingV21"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnalysisSubjectTrustedContext": {
+      "type": "object",
+      "required": ["issuer_states", "listing_to_issuer", "reporting_perimeter_receipts"],
+      "properties": {
+        "issuer_states": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {"enum": ["provisional", "verified"]}
+        },
+        "listing_to_issuer": {
+          "type": "object",
+          "additionalProperties": {"type": "string", "minLength": 1}
+        },
+        "reporting_perimeter_receipts": {
+          "type": "object",
+          "additionalProperties": {"type": "object"}
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

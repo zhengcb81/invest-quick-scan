@@ -1,0 +1,38 @@
+{
+  "receipt_type": "G0_independent_review_remediation",
+  "created_date": "2026-09-23",
+  "status": "ready_for_independent_re_review",
+  "plan_version": "1.5.0",
+  "plan_sha256": "B79165011746B7639C300A190D068F0625A9AD3AA8A1AAB9F08C0EC3E1D963B4",
+  "acceptance_cases_sha256": "9272881EC0E50E73BFF143164BCA7E27D9F09A34E9E44567F14B21EEDC2960BC",
+  "reviewed_snapshot_sha256": "D0D9912E36B30531622D63160D4B5288C0D00BE57008F6EA8D8FBA811AF0F8C",
+  "independent_review_path": "docs/implementation/reviews/G0/independent-review.md",
+  "independent_review_sha256": "6E9BA1B29E543E9B91AC9387CFE7FCB3C8C53EDB0E3CD38B42F044A5E906C8AD",
+  "review_decision": "needs_revision",
+  "finding_closures": [
+    {"id":"G0-01","status":"fixed_pending_re_review","evidence":["score status/score conditional schema","trusted check_level_receipt_id semantic validation","tests/test_g0_regressions.py"]},
+    {"id":"G0-02","status":"fixed_pending_re_review","evidence":["entity, universe and work-item cross-object validation","tests/test_identity_contract.py","tests/test_g0_regressions.py"]},
+    {"id":"G0-03","status":"fixed_pending_re_review","evidence":["C01-C03 tests call scripts/contract_validation.py","C05-C07 bind only *-CONTRACT-* cases","runtime cases remain downstream"]},
+    {"id":"G0-04","status":"fixed_pending_re_review","evidence":["exchange v1.0.0 extensions maxItems=0","document escape regression"]},
+    {"id":"G0-05","status":"fixed_pending_re_review","evidence":["schema-first release validation","conditional readiness evidence","self-attestation regression"]},
+    {"id":"G0-06","status":"fixed_pending_re_review","evidence":["query status/coverage/score lineage/profile entity semantic validation"]},
+    {"id":"G0-07","status":"fixed_pending_re_review","evidence":["diagnostic-only schema conditions","nonempty exclusive CompositeRule"]},
+    {"id":"G0-08","status":"fixed_pending_re_review","evidence":["recursive complete acyclic lineage closure validation"]},
+    {"id":"G0-09","status":"fixed_pending_re_review","evidence":["regenerated candidate snapshot","corrected company-wiki issuer-index observation"]}
+  ],
+  "validation": {
+    "command": "python -X utf8 -m pytest -q -p no:cacheprovider",
+    "result": "passed",
+    "tests_passed": 181,
+    "subtests_passed": 108,
+    "skipped": 0,
+    "output_path": "docs/implementation/reviews/G0/remediation-full-test-2026-09-23.log",
+    "output_sha256": "0DFFF6259A37C496EF3ED81889521C55B2AFE0B2DA640C10406C1046C2ABB3A4",
+    "plan_validation": {"planning_valid":true,"tasks":73,"acceptance_cases":171,"final_release_gate":"G6","product_tests_executed":false},
+    "schema_self_check_passed": 11,
+    "json_parse_passed": 34
+  },
+  "scope_statement": "All evidence is local and offline. It proves contract/schema/reference-validator behavior only; it does not claim live providers, databases, processes, UI, search or cross-repository integration.",
+  "external_writes": false,
+  "review": {"reviewer":null,"result":"pending","findings":[]}
+}

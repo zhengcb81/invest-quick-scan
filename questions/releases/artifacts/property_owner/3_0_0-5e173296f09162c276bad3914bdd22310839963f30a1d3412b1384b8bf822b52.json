@@ -1,0 +1,153 @@
+{
+  "version": "3.0.0",
+  "module_id": "property_owner",
+  "kind": "types",
+  "name": "REIT与持有型不动产",
+  "applies_when": "主要依靠长期持有物业、资产运营或租金，按当地REIT制度与经济口径判断。",
+  "questions": [
+    {
+      "id": "PROPERTY_OWNER_01",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "扣除维护、租赁激励和必要翻新后，经常性现金分配覆盖如何？",
+      "evidence": [
+        "租金现金",
+        "维护开支",
+        "当地FFO/AFFO调整",
+        "分配"
+      ],
+      "anchors": {
+        "1": "靠借款或出售资产维持经常性分配",
+        "5": "正常租金大致覆盖必要投入与分配",
+        "10": "保守调整后现金覆盖稳健并留有余量"
+      },
+      "replaces": [
+        "IQS_11"
+      ],
+      "metric_id": "score.property_owner_01",
+      "construct_id": "IQS_11",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_OWNER_02",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "债务到期、抵押限制与利率变化下的资金韧性如何？",
+      "evidence": [
+        "净债务",
+        "抵押资产",
+        "固定利率比例",
+        "到期结构"
+      ],
+      "anchors": {
+        "1": "短期再融资或契约风险显著",
+        "5": "正常环境可续借，压力缓冲一般",
+        "10": "到期分散且压力利率下仍有充足缓冲"
+      },
+      "replaces": [
+        "IQS_16"
+      ],
+      "critical": true,
+      "metric_id": "score.property_owner_02",
+      "construct_id": "IQS_16",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_OWNER_03",
+      "dimension": "business",
+      "priority": 1,
+      "question": "物业组合在完整租赁周期中的经济吸引力如何？",
+      "evidence": [
+        "同店净经营收益",
+        "出租率",
+        "续租价差",
+        "租约到期"
+      ],
+      "anchors": {
+        "1": "租金和出租率结构性恶化",
+        "5": "资产回报稳定但增长与定价普通",
+        "10": "优质租户需求支撑稳健租金和全周期回报"
+      },
+      "replaces": [
+        "IQS_03"
+      ],
+      "metric_id": "score.property_owner_03",
+      "construct_id": "IQS_03",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_OWNER_04",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "开发、改造或收购能否提升每股可分配价值？",
+      "evidence": [
+        "增量现金收益",
+        "建设预算",
+        "融资与增发成本"
+      ],
+      "anchors": {
+        "1": "扩张增厚规模却摊薄每股现金",
+        "5": "增量回报勉强覆盖综合资金成本",
+        "10": "实际项目持续提升每股现金与资产质量"
+      },
+      "metric_id": "score.property_owner_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_OWNER_05",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "租户、物业用途与地域集中风险能否被消化？",
+      "evidence": [
+        "大租户信用",
+        "空置再出租期",
+        "用途替代",
+        "灾害"
+      ],
+      "anchors": {
+        "1": "单一暴露可导致长时间现金中断",
+        "5": "有集中度但能逐步再出租",
+        "10": "租户与用途风险可控且再出租记录可靠"
+      },
+      "metric_id": "score.property_owner_05",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROPERTY_OWNER_06",
+      "dimension": "valuation",
+      "priority": 2,
+      "question": "保守租金、资本化率和净债务下，股价是否留出余地？",
+      "evidence": [
+        "现金收益率",
+        "可比交易",
+        "资本化率",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "仅激进升值或低利率假设支持价格",
+        "5": "价格接近审慎资产与现金价值",
+        "10": "压力资本化率与租金下仍有可信折价"
+      },
+      "replaces": [
+        "IQS_22"
+      ],
+      "metric_id": "score.property_owner_06",
+      "construct_id": "IQS_22",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

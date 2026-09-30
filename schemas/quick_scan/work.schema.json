@@ -1,0 +1,660 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://invest-quick-scan.local/schemas/quick_scan/work.schema.json",
+  "title": "QuickScanWorkAndFreshnessContract",
+  "description": "C04 structural contract. Does not implement persistence, providers, retries, or ACK delivery.",
+  "type": "object",
+  "definitions": {
+    "UtcTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|\\+00:00)$"
+    },
+    "NullableUtcTimestamp": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/UtcTimestamp"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "InformationDate": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date"
+        },
+        {
+          "$ref": "#/definitions/UtcTimestamp"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ObservationTimeMeta": {
+      "type": "object",
+      "required": [
+        "information_as_of",
+        "published_at",
+        "valid_until",
+        "answer_started_at",
+        "answered_at",
+        "imported_at",
+        "checked_at",
+        "event_invalidated_at",
+        "response_status",
+        "check_level"
+      ],
+      "properties": {
+        "information_as_of": {
+          "$ref": "#/definitions/InformationDate"
+        },
+        "published_at": {
+          "$ref": "#/definitions/NullableUtcTimestamp"
+        },
+        "valid_until": {
+          "$ref": "#/definitions/NullableUtcTimestamp"
+        },
+        "answer_started_at": {
+          "$ref": "#/definitions/NullableUtcTimestamp"
+        },
+        "answered_at": {
+          "$ref": "#/definitions/NullableUtcTimestamp"
+        },
+        "imported_at": {
+          "$ref": "#/definitions/UtcTimestamp"
+        },
+        "checked_at": {
+          "$ref": "#/definitions/NullableUtcTimestamp"
+        },
+        "event_invalidated_at": {
+          "$ref": "#/definitions/NullableUtcTimestamp"
+        },
+        "response_status": {
+          "enum": [
+            "scored",
+            "answered",
+            "not_applicable",
+            "insufficient_evidence",
+            "search_unavailable"
+          ]
+        },
+        "check_level": {
+          "enum": [
+            "unverified_model_output",
+            "execution_verified",
+            "screening_audited",
+            "formal_research_accepted"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "description": "Information date may be unknown; null information_as_of or valid_until is never fresh. Import/check time never renews the observation."
+    },
+    "WorkItemStatus": {
+      "type": "string",
+      "enum": ["pending", "leased", "uncertain", "result_ready", "delivered", "failed", "cancelled"]
+    },
+    "Scope": {
+      "type": "string",
+      "enum": [
+        "entity",
+        "security",
+        "segment"
+      ]
+    },
+    "AttemptRef": {
+      "type": "object",
+      "required": [
+        "attempt_id",
+        "provider",
+        "model_requested",
+        "started_at"
+      ],
+      "properties": {
+        "attempt_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "model_requested": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "model_resolved": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "started_at": {
+          "$ref": "#/definitions/UtcTimestamp"
+        },
+        "answered_at": {
+          "$ref": "#/definitions/NullableUtcTimestamp"
+        },
+        "request_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "prompt_hash": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "WorkItem": {
+      "type": "object",
+      "required": [
+        "work_item_id",
+        "entity_id",
+        "question_id",
+        "generation",
+        "scope",
+        "scope_id",
+        "question_fingerprint",
+        "routing_fingerprint",
+        "request_cache_key",
+        "status",
+        "run_ids",
+        "scan_ids",
+        "attempts",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "schema_version": {
+          "enum": ["1.0.0", "2.0.0"],
+          "description": "Absent/1.0.0 is historical read only; 2.0.0 requires the identity-bound write validator."
+        },
+        "work_item_id": {
+          "type": "string",
+          "pattern": "^WORK_[A-Za-z0-9_.-]+$"
+        },
+        "entity_id": {
+          "type": "string",
+      "pattern": "^ENT_[A-Za-z0-9_]+$"
+        },
+        "question_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]{1,160}$"
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "identity_revision": {"type": "integer", "minimum": 1},
+        "source_binding_version": {"type": "integer", "minimum": 1},
+        "identity_state": {"enum": ["provisional", "verified"]},
+        "source_binding_refs": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^BND_[A-Za-z0-9_]+$"}
+        },
+        "scope": {
+          "$ref": "#/definitions/Scope"
+        },
+        "scope_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]{1,160}$",
+          "description": "entity scope uses entity_id; security/segment scopes use their stable IDs."
+        },
+        "question_fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "routing_fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "request_cache_key": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^REQ_[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/definitions/WorkItemStatus"
+        },
+        "lease_token": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lease_expires_at": {
+          "$ref": "#/definitions/NullableUtcTimestamp"
+        },
+        "observation_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observation_hash": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next_retry_at": {
+          "$ref": "#/definitions/NullableUtcTimestamp"
+        },
+        "error_category": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "run_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        "scan_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          }
+        },
+        "attempts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AttemptRef"
+          }
+        },
+    "uncertain_attempt_id": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The exact attempt whose external outcome must be reconciled before retry."
+    },
+    "response_status": {
+      "oneOf": [
+        {"type":"string","enum":["scored","answered","not_applicable","insufficient_evidence","search_unavailable"]},
+        {"type":"null"}
+      ],
+      "description":"Answer disposition; independent from request and delivery status."
+    },
+        "created_at": {
+          "$ref": "#/definitions/UtcTimestamp"
+        },
+        "updated_at": {
+          "$ref": "#/definitions/UtcTimestamp"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {"properties": {"schema_version": {"const": "2.0.0"}}, "required": ["schema_version"]},
+          "then": {"required": ["identity_revision", "source_binding_version", "identity_state", "source_binding_refs"]},
+          "else": {"not": {"anyOf": [
+            {"required": ["identity_revision"]}, {"required": ["source_binding_version"]},
+            {"required": ["identity_state"]}, {"required": ["source_binding_refs"]}
+          ]}}
+        },
+        {
+      "if": {
+        "properties": {
+          "scope": {
+            "const": "security"
+          }
+        },
+        "required": [
+          "scope"
+        ]
+      },
+      "then": {
+        "properties": {
+          "scope_id": {
+            "pattern": "^SEC_[A-Za-z0-9_.]+$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "scope": {
+            "const": "segment"
+          }
+        },
+        "required": [
+          "scope"
+        ]
+      },
+      "then": {
+        "properties": {
+          "scope_id": {
+            "pattern": "^SEG_[A-Za-z0-9_]+$"
+          }
+        }
+      }
+    },
+    {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "leased"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "lease_token": {
+                "type": "string"
+              },
+              "lease_expires_at": {
+                "$ref": "#/definitions/UtcTimestamp"
+              }
+            },
+            "required": [
+              "lease_token",
+              "lease_expires_at"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "uncertain"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attempts": {
+                "minItems": 1
+              },
+              "request_cache_key": {
+                "type": "string"
+          },
+          "uncertain_attempt_id": {
+            "type": "string"
+              }
+            },
+            "required": [
+          "request_cache_key",
+          "uncertain_attempt_id"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "result_ready"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "observation_ref": {
+                "type": "string"
+              },
+              "observation_hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "observation_ref",
+              "observation_hash"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "delivered"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "observation_ref": {
+                "type": "string"
+              },
+              "observation_hash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "observation_ref",
+              "observation_hash"
+            ]
+          }
+        },
+    {
+          "if": {
+            "properties": {
+          "status": {
+            "enum": ["result_ready", "delivered"]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+          "response_status": {
+            "type": "string"
+              }
+            },
+            "required": [
+          "response_status"
+            ]
+          }
+        },
+    {
+      "if": {
+        "properties": {
+          "response_status": {
+            "enum": ["insufficient_evidence", "search_unavailable"]
+          }
+        },
+        "required": ["response_status"]
+      },
+      "then": {
+        "properties": {
+          "next_retry_at": {
+            "$ref": "#/definitions/UtcTimestamp"
+          }
+        },
+        "required": ["next_retry_at"]
+      }
+    },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "failed"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "error_category": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "error_category"
+            ]
+          }
+        }
+      ],
+      "description": "Legacy work key has five fields. V2 also binds identity_revision, source_binding_version, identity_state, and ordered source_binding_refs; neither key includes run, scan, model, or attempt."
+    },
+    "ImportAck": {
+      "type": "object",
+      "required": [
+        "work_item_id",
+        "observation_hash",
+        "ack_status",
+        "received_at"
+      ],
+      "properties": {
+        "work_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "observation_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "ack_status": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "rejected_hash_mismatch",
+            "rejected_unknown_item"
+          ]
+        },
+        "received_at": {
+          "$ref": "#/definitions/UtcTimestamp"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/definitions/ObservationTimeMeta"
+    },
+    {
+      "$ref": "#/definitions/WorkItem"
+    },
+    {
+      "$ref": "#/definitions/ImportAck"
+    }
+  ],
+  "x-allowed-transitions": {
+    "pending": [
+      "leased",
+      "cancelled"
+    ],
+    "leased": [
+      "result_ready",
+      "uncertain",
+      "pending",
+      "failed"
+    ],
+    "uncertain": [
+      "result_ready",
+      "failed",
+      "pending"
+    ],
+    "result_ready": [
+      "delivered"
+    ],
+    "delivered": [],
+    "failed": [
+      "pending",
+      "cancelled"
+    ],
+    "cancelled": []
+  },
+  "x-transition-preconditions": {
+    "leased->pending": "Only when it is proven no provider request was sent.",
+    "uncertain->pending": "Only after reconciliation proves the request was not sent or charged.",
+    "uncertain->result_ready": "Only with the reconciled/late response bound to the original attempt.",
+    "delivered_unknown->new_work": "Only at/after next_retry_at, with the field refresh generation incremented; deferred_unknown is a scheduling decision, not a mutable request/delivery state.",
+    "failed->pending": "Only when retry is eligible and the original attempt is terminal.",
+    "result_ready->delivered": "Only after ACK work_item_id and observation_hash both match and ack_status is accepted; otherwise stay result_ready."
+  }
+}

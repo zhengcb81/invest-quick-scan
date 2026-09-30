@@ -1,0 +1,165 @@
+{
+  "example_only": true,
+  "notice": "全部ID/公司/观测/费用均为虚构fixture；没有StockWiki/StockQA真实请求或数据库写入。",
+  "requests": [
+    {
+      "message_type": "request",
+      "schema_version": "1.0.0",
+      "request_id": "REQ_FIXTURE_SEARCH",
+      "consumer_id": "analyze-theme-value-chain",
+      "operation": "search",
+      "requested_at": "2026-09-23T12:00:00Z",
+      "payload": {
+        "filters": {
+          "query_text": "工业示例",
+          "markets": [
+            "CN"
+          ],
+          "score_logic": "all",
+          "score_conditions": [
+            {
+              "field_id": "score.iqs_01",
+              "operator": "gte",
+              "value": 8
+            }
+          ]
+        },
+        "page_size": 50,
+        "snapshot_id": null,
+        "cursor": null,
+        "sort": {
+          "field": "canonical_name",
+          "field_id": null,
+          "direction": "asc"
+        }
+      }
+    },
+    {
+      "message_type": "request",
+      "schema_version": "1.0.0",
+      "request_id": "REQ_FIXTURE_REFRESH",
+      "consumer_id": "industry-research",
+      "operation": "request_refresh",
+      "requested_at": "2026-09-23T12:02:00Z",
+      "payload": {
+        "snapshot_id": "SNAP_FIXTURE_1",
+        "entity_ids": [
+          "ENT_EXAMPLE_A"
+        ],
+        "field_ids": [
+          "score.iqs_01",
+          "FACT_10"
+        ],
+        "consumer_task_id": "FIXTURE_THEME_TASK",
+        "reason": "虚构示例：只预览一个实体的两个字段缺口。"
+      }
+    }
+  ],
+  "responses": [
+    {
+      "message_type": "response",
+      "schema_version": "1.0.0",
+      "request_id": "REQ_FIXTURE_SEARCH",
+      "operation": "search",
+      "response_at": "2026-09-23T12:00:01Z",
+      "result": {
+        "status": "partial",
+        "query_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+        "snapshot_id": "SNAP_FIXTURE_1",
+        "page_size": 50,
+        "next_cursor": null,
+        "items": [
+          {
+            "entity_id": "ENT_EXAMPLE_A",
+            "canonical_name": "虚构工业示例公司",
+            "aliases": [
+              "示例公司"
+            ],
+            "securities": [
+              {
+                "security_id": "SEC_EXAMPLE_CN",
+                "market": "CN",
+                "exchange": "SSE",
+                "ticker": "600000",
+                "listing_status": "active"
+              }
+            ],
+            "company_type": "operating",
+            "industries": [
+              "industrial"
+            ],
+            "stage": "mature",
+            "score_refs": [
+              {
+                "field_id": "score.iqs_01",
+                "status": "scored",
+                "score": 8,
+                "information_as_of": "2026-09-22",
+                "observed_at": "2026-09-22T09:01:00Z",
+                "observation_id": "obs_8a49c27be1056b06786e7d7dc3556330de57b03b17abaee9f0c56a09f11177c8",
+                "model_resolved": "fixture-model",
+                "check_level": "execution_verified"
+              }
+            ],
+            "recovery_watch_status": "watch",
+            "facts_available": false,
+            "last_observed_at": "2026-09-22T09:01:00Z"
+          }
+        ],
+        "coverage": {
+          "status": "partial",
+          "requested_markets": [
+            "CN"
+          ],
+          "covered_markets": [
+            "CN"
+          ],
+          "requested_field_ids": [
+            "score.iqs_01",
+            "FACT_10"
+          ],
+          "covered_field_ids": [
+            "score.iqs_01"
+          ],
+          "missing_field_ids": [
+            "FACT_10"
+          ],
+          "scores_available": true,
+          "facts_available": false,
+          "reason": "纯虚构fixture：评分字段已覆盖，事实能力尚未开放。"
+        },
+        "watermark": {
+          "store_id": "FIXTURE_STORE",
+          "snapshot_id": "SNAP_FIXTURE_1",
+          "member_sequence": 2,
+          "observation_sequence": 1,
+          "ack_sequence": 1,
+          "read_at": "2026-09-23T12:00:00Z"
+        }
+      }
+    },
+    {
+      "message_type": "response",
+      "schema_version": "1.0.0",
+      "request_id": "REQ_FIXTURE_REFRESH",
+      "operation": "request_refresh",
+      "response_at": "2026-09-23T12:02:01Z",
+      "result": {
+        "preview_id": "PREVIEW_FIXTURE_1",
+        "status": "preview_ready",
+        "scope_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "policy_version": "POLICY_FIXTURE_V2",
+        "estimated_max_cost": 0.25,
+        "reused_field_ids": [
+          "score.iqs_01"
+        ],
+        "eligible_field_ids": [
+          "FACT_10"
+        ],
+        "rejected_scope": [],
+        "requires_user_confirmation": true,
+        "dispatch_started": false
+      }
+    }
+  ]
+}

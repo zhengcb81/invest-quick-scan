@@ -1,0 +1,98 @@
+{
+  "version": "3.0.0",
+  "module_id": "professional_services",
+  "kind": "industries",
+  "name": "专业服务、外包与人力服务",
+  "applies_when": "咨询、检测、工程服务、教育培训及人力交付等。",
+  "questions": [
+    {
+      "id": "PROFESSIONAL_SERVICES_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "扣除人力、获客与闲置成本后，合同回报是否健康？",
+      "evidence": [
+        "收费",
+        "利用率",
+        "薪酬",
+        "获客",
+        "回款"
+      ],
+      "anchors": {
+        "1": "靠低价接单且全成本亏损",
+        "5": "多数合同覆盖成本但回报一般",
+        "10": "合理利用率下合同回报可靠且现金回收好"
+      },
+      "metric_id": "score.professional_services_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROFESSIONAL_SERVICES_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "专业资质、客户信任或流程能力能否限制同质竞争？",
+      "evidence": [
+        "续单",
+        "资质",
+        "结果质量",
+        "价格溢价"
+      ],
+      "anchors": {
+        "1": "服务易替代且主要比低价",
+        "5": "有客户关系但人员可携走业务",
+        "10": "机构能力与资质保护客户价值和长期回报"
+      },
+      "metric_id": "score.professional_services_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROFESSIONAL_SERVICES_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "人才招聘、培养和留存能否支持一致交付？",
+      "evidence": [
+        "关键人员流失",
+        "培训",
+        "项目复盘",
+        "质量"
+      ],
+      "anchors": {
+        "1": "人员流失持续破坏交付",
+        "5": "现有团队稳定但扩张瓶颈明显",
+        "10": "人才系统可复制且扩张不牺牲交付质量"
+      },
+      "metric_id": "score.professional_services_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PROFESSIONAL_SERVICES_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "服务扩张能否突破单纯增加工时的约束？",
+      "evidence": [
+        "产品化",
+        "自动化",
+        "跨客户复用",
+        "每人产出"
+      ],
+      "anchors": {
+        "1": "收入只能靠更低价更多人且边际恶化",
+        "5": "规模效率有限但可维持",
+        "10": "复用与技术提升产出，增量回报有验证"
+      },
+      "metric_id": "score.professional_services_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

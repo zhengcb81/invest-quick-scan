@@ -1,0 +1,70 @@
+{
+  "task_id": "S04",
+  "status": "verified_for_local_contract_scope",
+  "owner": "iqs",
+  "plan_version": "1.7.0",
+  "dependency_receipts": [
+    "docs/implementation/reviews/G0/independent-final-review.md",
+    "docs/implementation/contracts/receipt-S01.json"
+  ],
+  "changed_files": [
+    "schemas/quick_scan/question-module.schema.json",
+    "schemas/quick_scan/module-release.schema.json",
+    "schemas/quick_scan/route-decision.schema.json",
+    "scripts/module_contract.py",
+    "tests/test_module_contract.py",
+    "docs/implementation/contracts/question-modules.md"
+  ],
+  "implementation_snapshot": {
+    "schemas/quick_scan/question-module.schema.json": "AE74E817C82846540882894A57C0750619ECAE3541CED04ABB5B0F89C8564B72",
+    "schemas/quick_scan/module-release.schema.json": "D4510401446A56613451B1C83ACE3AD2A3037D32BFB0B489CA33D5A9763FF0A4",
+    "schemas/quick_scan/route-decision.schema.json": "2AC2FA46D445779D30F7CAFCF834CD69DF0FA9BCC9CD5722BD6BAF3799306071",
+    "scripts/module_contract.py": "069D14199239BBFC0B38AAD88F360228D5FC0A2F6CA324C037850FD2FA183A97",
+    "tests/test_module_contract.py": "9FE357723BD6B991C66E49661AD5A6A355B2D0A5312BF040C02174FED871A56D",
+    "docs/implementation/contracts/question-modules.md": "CEA312558B43D14BF2BD08B3B3CF47C6B963E5584A6445B482B319374CB4748D"
+  },
+  "checks": [
+    {
+      "case_id": "MOD-02",
+      "scope": "offline contract",
+      "result": "passed",
+      "evidence": "Same-ID question changes and duplicate core replacement rejected; historical content remains immutable."
+    },
+    {
+      "case_id": "MOD-03",
+      "scope": "offline semantic fingerprint only",
+      "result": "partial",
+      "evidence": "Unrelated module does not change per-question fingerprint; actual manifest/comparison chain belongs to S05."
+    },
+    {
+      "case_id": "MOD-04",
+      "scope": "offline registry only",
+      "result": "partial",
+      "evidence": "Missing scoring context, activation evidence, dependency, duplicate ID and auto-selected lens fail; real routing/export entry belongs to S05/S06."
+    },
+    {
+      "case_id": "MOD-07",
+      "scope": "synthetic release/archive only",
+      "result": "partial",
+      "evidence": "Synthetic old archive reads and missing/tampered bytes fail; actual historical manifest loader belongs to S05."
+    }
+  ],
+  "validation": {
+    "full": "246 passed, 148 subtests passed",
+    "full_command": "python -X utf8 -m pytest -p no:cacheprovider tests -q",
+    "full_output_path": "docs/implementation/contracts/validation-S04-final-full-2026-09-26.log",
+    "full_output_sha256": "5FACD077F4E115C841778F816034575D8592E56EAB20EA2C3D7CAF759654CEAC",
+    "question_library": "48 modules, 222 scored questions; validation passed",
+    "implementation_plan": "81 tasks, 187 cases, G6; validation passed",
+    "skipped": 0,
+    "network_used": false
+  },
+  "review": {
+    "reviewer": "/root/question_audit",
+    "result": "no_remaining_P0_P1_P2_in_S04_offline_contract_scope",
+    "independent_tests": "14 passed; 22 additional in-memory behavior checks passed",
+    "report_path": "docs/implementation/reviews/S04/independent-review.md",
+    "report_sha256": "ABA80AFEDAF9C237FAC3A53683FD3F8E7F83CD0504A78958A35A8C5520F1786B"
+  },
+  "scope_statement": "S04 validates the offline module/release/route-decision contract. S05/S06 must connect trusted archives, runtime timestamps and actual manifests before product MOD cases can be closed."
+}

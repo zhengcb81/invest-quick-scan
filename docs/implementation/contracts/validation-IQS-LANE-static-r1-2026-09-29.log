@@ -1,0 +1,3 @@
+exit_code=0
+C:\Miniconda\python.exe -B -X utf8 -c "import ast,json; from pathlib import Path; from jsonschema import Draft7Validator; root=Path('.'); [ast.parse((root/p).read_text(encoding='utf-8')) for p in ['scripts/identity_contract_cli.py','tests/test_identity_contract_cli.py']]; [Draft7Validator.check_schema(json.loads((root/p).read_text(encoding='utf-8'))) for p in ['schemas/quick_scan/identity-cli-request.schema.json','schemas/quick_scan/identity.schema.json']]; print('AST parse and Draft 7 schemas: OK')"
+AST parse and Draft 7 schemas: OK

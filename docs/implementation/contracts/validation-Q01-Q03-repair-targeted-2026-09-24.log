@@ -1,0 +1,156 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: C:\Users\郑曾波\Projects\StockQAbyLLM
+configfile: pyproject.toml
+plugins: anyio-4.13.0, Faker-40.19.1, asyncio-1.3.0, base-url-2.1.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 144 items
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_models.py ............ [  8%]
+......................                                                   [ 23%]
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py . [ 24%]
+..................                                                       [ 36%]
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_client.py ........ [ 42%]
+.........                                                                [ 48%]
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_qa_engine.py ......... [ 54%]
+...                                                                      [ 56%]
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_services.py .......... [ 63%]
+......                                                                   [ 68%]
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_search_provider.py ... [ 70%]
+.........                                                                [ 76%]
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_batch_processor.py ..  [ 77%]
+..\..\..\..\Projects\StockQAbyLLM\tests\integration\test_json_config.py . [ 78%]
+.................                                                        [ 90%]
+..\..\..\..\Projects\StockQAbyLLM\tests\integration\test_qa_pipeline.py . [ 90%]
+.......                                                                  [ 95%]
+..\..\..\..\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py . [ 96%]
+...F                                                                     [ 99%]
+..\..\..\..\Projects\StockQAbyLLM\tests\live\test_live_quick_scan.py s   [100%]
+
+================================== FAILURES ===================================
+_ test_public_cli_preserves_good_answer_and_returns_failure_for_unrepaired_item _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C58E1360D0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba/pytest-tmp/test_public_cli_preserves_good0')
+
+    def test_public_cli_preserves_good_answer_and_returns_failure_for_unrepaired_item(
+        monkeypatch, tmp_path
+    ):
+        responses = [
+            _response(
+                content='{"question_id":"IQS_05","score":8,"description":"valid answer"}',
+                request_id="req_good",
+                response_id="resp_good",
+                search_call_id="ws_good",
+            ),
+            _response(
+                content='{"question_id":"IQS_05","score":9,"description":"wrong item id"}',
+                request_id="req_bad",
+                response_id="resp_bad",
+                search_call_id="ws_bad",
+            ),
+            _response(
+                content='{"question_id":"IQS_05","score":10,"description":"still wrong item id"}',
+                request_id="req_failed_repair",
+                response_id="resp_failed_repair",
+                search_call_id="ws_failed_repair",
+            ),
+        ]
+        exit_code, output_file, session = _invoke(
+            monkeypatch,
+            tmp_path,
+            repair_budget=1,
+            question_count=2,
+            responses=responses,
+        )
+    
+>       assert exit_code == 1
+E       assert 0 == 1
+
+C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py:268: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba\pytest-tmp\test_public_cli_preserves_good0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba\pytest-tmp\test_public_cli_preserves_good0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba\pytest-tmp\test_public_cli_preserves_good0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: 公司的核心优势是否持久？...INFO - LLM处理问题: 公司的核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/1] 处理成功
+
+[1/1] 进度: 100.0% - [OK] 完成: 公司的核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 8/10
+
+valid answer
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba\pytest-tmp\test_public_cli_preserves_good0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba\pytest-tmp\test_public_cli_preserves_good0\result.json
+[OK] 平均评分: 8.0/10
+[OK] 评分分布: {8: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:244 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:246 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:247 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba\pytest-tmp\test_public_cli_preserves_good0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:308 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:309 配置文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba\pytest-tmp\test_public_cli_preserves_good0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:310 输出文件: C:\Users\郑曾波\AppData\Local\Temp\stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba\pytest-tmp\test_public_cli_preserves_good0\result.json
+
+INFO     src.config.llm_config:llm_config.py:41 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:108 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:111 LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: 公司的核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:155 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:144 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM答案生成完成 (状态: scored)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\stockqa-q01-q03-repair-6e1ce6c21a484ea3b836569b927c1aba\pytest-tmp\test_public_cli_preserves_good0\result.json
+INFO     src.runners.llm_runner:llm_runner.py:408 
+Question processing completed.
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py::test_public_cli_preserves_good_answer_and_returns_failure_for_unrepaired_item
+================== 1 failed, 142 passed, 1 skipped in 5.17s ===================

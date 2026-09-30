@@ -1,0 +1,12 @@
+Q02 MiMo pay-as-you-go web-search live probe (sanitized)
+Date: 2026-09-25
+Credential handling: MIMO_API_KEY was read from the process environment for the Authorization header; its value was not printed, logged, or persisted.
+Endpoint: https://api.xiaomimimo.com/v1/chat/completions
+Requested model: mimo-v2.6-flash
+Request: One company fact question; web_search enabled; force_search=true; max_keyword=1; max_completion_tokens=220.
+Result: HTTP 200; returned model mimo-v2.6-flash; finish_reason=length.
+Search receipt: One URL citation: Microsoft 2025 Annual Report — https://www.microsoft.com/investor/reports/ar25/index.html
+Usage: web_search tool_usage=1, page_usage=1.
+Response limitation: No answer text was returned at this low completion-token cap. The probe proves a real search source was returned, not a complete company answer or StockQA CLI E2E.
+Local or external repository files changed by the request: none.
+Follow-up (thinking disabled, 512 completion tokens): HTTP 200; finish_reason=stop; answer: “Based on the official annual report, Microsoft's fiscal year 2025 ended on June 30, 2025.”; one citation to Microsoft 2025 Annual Report; web_search tool_usage=1 and page_usage=1. The response answered the fiscal year end date but omitted the requested revenue figure, so this remains a provider/search smoke test rather than a full quick-scan answer-quality test.

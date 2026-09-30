@@ -11,8 +11,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PLAN_DIR = ROOT / "docs" / "implementation"
 KINDS = {"contract", "implementation", "review", "live"}
-CASE_KINDS = {"positive", "negative", "boundary", "fault", "metamorphic"}
-LEVELS = {"contract", "unit", "integration", "fault", "live", "review"}
+CASE_KINDS = {"positive", "negative", "boundary", "fault", "race", "metamorphic"}
+LEVELS = {"contract", "unit", "integration", "e2e", "fault", "live", "review"}
 STAGES = [f"M{i}" for i in range(7)]
 
 
@@ -68,9 +68,11 @@ def validate_package(plan: dict, catalog: dict) -> list[str]:
             errors.append(f"plan.{field} must be a nonempty string list")
 
     case_map: dict[str, dict] = {}
+    assertion_ids: set[str] = set()
     for case in cases:
         cid = case.get("id")
-        if not isinstance(cid, str) or not re.fullmatch(r"[A-Z][A-Z0-9]*-\d{2}", cid):
+        if not isinstance(cid, str) or not re.fullmatch(
+                r"[A-Z][A-Z0-9]*(?:-[A-Z][A-Z0-9]*)*-\d{2}", cid):
             errors.append("case has invalid ID")
             continue
         if cid in case_map:
@@ -85,12 +87,43 @@ def validate_package(plan: dict, catalog: dict) -> list[str]:
             errors.append(f"{cid}: missing input/precondition")
         if not isinstance(case.get("when"), str) or not case["when"].strip():
             errors.append(f"{cid}: missing action")
+        required_tasks = case.get("requires_tasks", [])
+        if (not isinstance(required_tasks, list)
+                or any(not isinstance(tid, str) or not tid.strip() for tid in required_tasks)
+                or len(required_tasks) != len(set(required_tasks))):
+            errors.append(f"{cid}: requires_tasks must be unique task IDs")
         expected = case.get("then")
         if (not isinstance(expected, list) or not expected
                 or any(not isinstance(x, (str, dict, list)) or not x for x in expected)):
             errors.append(f"{cid}: missing explicit expected result")
+        assertions = case.get("assertions")
+        if assertions is not None:
+            if not isinstance(assertions, list) or not assertions:
+                errors.append(f"{cid}: assertions must be a nonempty array when provided")
+            else:
+                expected_ids = [f"{cid}.A{index:02d}" for index in range(1, len(assertions) + 1)]
+                actual_ids = []
+                for assertion in assertions:
+                    if not isinstance(assertion, dict):
+                        errors.append(f"{cid}: each assertion must be an object")
+                        continue
+                    aid = assertion.get("id")
+                    if not isinstance(aid, str) or not aid.strip():
+                        errors.append(f"{cid}: assertion missing id")
+                    else:
+                        actual_ids.append(aid)
+                        if aid in assertion_ids:
+                            errors.append(f"{cid}: duplicate assertion ID {aid}")
+                        assertion_ids.add(aid)
+                    for field in ("entrypoint", "expected"):
+                        if not isinstance(assertion.get(field), str) or not assertion[field].strip():
+                            errors.append(f"{cid}: assertion missing {field}")
+                if actual_ids != expected_ids:
+                    errors.append(f"{cid}: assertion IDs must be ordered {expected_ids}")
 
     task_map: dict[str, dict] = {}
+    if "historical_context_edges" in plan:
+        errors.append("historical_context_edges are retired with task-receipt workflow")
     for task in tasks:
         tid = task.get("id")
         if not isinstance(tid, str) or not re.fullmatch(r"[A-Z]\d{1,2}", tid):
@@ -111,11 +144,13 @@ def validate_package(plan: dict, catalog: dict) -> list[str]:
         if not isinstance(kind, str) or kind not in KINDS or stage not in stages:
             errors.append(f"{tid}: invalid task kind or stage")
         if "status" in task:
-            errors.append(f"{tid}: completion status belongs in evidence receipts, not this spec")
+            errors.append(f"{tid}: execution status belongs in task_plan.md/progress.md, not this spec")
         deps = task.get("depends_on")
         if (not isinstance(deps, list) or any(not isinstance(d, str) for d in deps)
                 or len(deps) != len(set(deps))):
             errors.append(f"{tid}: dependencies must be unique string IDs")
+        if "historical_context_dependencies" in task:
+            errors.append(f"{tid}: historical_context_dependencies are retired with task-receipt workflow")
         if string_list(task.get("invariants")):
             for iid in task["invariants"]:
                 if iid not in invariants:
@@ -170,6 +205,60 @@ def validate_package(plan: dict, catalog: dict) -> list[str]:
 
     for tid in task_map:
         walk(tid)
+    # Every oracle has one completion owner. Other task cards may list the
+    # oracle as a downstream regression check, but a prerequisite card must
+    # never be forced to complete a behavior implemented later in the DAG.
+    for cid, case in case_map.items():
+        owner = case.get("owner_task")
+        if not isinstance(owner, str) or not owner.strip():
+            errors.append(f"{cid}: missing owner_task")
+            continue
+        if owner not in task_map:
+            errors.append(f"{cid}: unknown owner_task {owner}")
+            continue
+        if cid not in task_map[owner].get("case_ids", []):
+            errors.append(f"{cid}: owner_task {owner} must reference the case")
+        owner_ancestors = set(dependency_ids(task_map, owner))
+        requirements = case.get("requires_tasks", [])
+        if (isinstance(requirements, list)
+                and all(isinstance(tid, str) and tid.strip() for tid in requirements)):
+            if owner in requirements:
+                errors.append(f"{cid}: owner_task is implicit; requires_tasks must list prerequisites only")
+            missing = set(requirements) - owner_ancestors
+            if missing:
+                errors.append(
+                    f"{cid}: owner {owner} is missing prerequisite task(s): {', '.join(sorted(missing))}"
+                )
+        for tid, task in task_map.items():
+            if cid not in task.get("case_ids", []):
+                continue
+            if tid != owner and owner not in dependency_ids(task_map, tid):
+                errors.append(
+                    f"{tid}: case {cid} is owned by {owner}, which is outside its dependency closure"
+                )
+    for tid, task in task_map.items():
+        owned = [cid for cid, case in case_map.items() if case.get("owner_task") == tid]
+        if not owned:
+            errors.append(f"{tid}: must own at least one acceptance case")
+    for cid, case in case_map.items():
+        requirements = case.get("requires_tasks", [])
+        if (not isinstance(requirements, list)
+                or any(not isinstance(tid, str) or not tid.strip() for tid in requirements)
+                or len(requirements) != len(set(requirements))):
+            continue
+        unknown = set(requirements) - set(task_map)
+        if unknown:
+            errors.append(f"{cid}: requires unknown task(s) {', '.join(sorted(unknown))}")
+            continue
+        for tid, task in task_map.items():
+            if cid not in task.get("case_ids", []):
+                continue
+            available = set(dependency_ids(task_map, tid)) | {tid}
+            missing = set(requirements) - available
+            if missing:
+                errors.append(
+                    f"{tid}: case {cid} requires task(s) first: {', '.join(sorted(missing))}"
+                )
     for index in range(len(STAGES)):
         gate = task_map.get(f"G{index}")
         if not gate or gate.get("kind") != "review" or gate.get("stage") != f"M{index}":
@@ -201,6 +290,94 @@ def validate_package(plan: dict, catalog: dict) -> list[str]:
         errors.append("launch and model configuration ownership must stay StockWiki/StockQA")
     if "G0" in task_map and "C07" not in dependency_ids(task_map, "G0"):
         errors.append("G0 must freeze launch contract C07 before implementation")
+    # Scoring-only expansion must remain possible before the optional facts chain.
+    for tid in ("V01", "V08", "V09", "V10", "O04", "G5"):
+        if tid in task_map and ({"F06", "G4"} & set(dependency_ids(task_map, tid))):
+            errors.append(f"{tid}: scoring-only delivery must not depend on F06 or G4")
+    if "X05" in task_map and not {"V09", "V10"} <= set(task_map["X05"].get("depends_on", [])):
+        errors.append("X05 must depend on V09 and V10 before one-click paid dispatch")
+    if "X09" in task_map and "E2E-06" in task_map["X09"].get("case_ids", []):
+        errors.append("X09 offline E2E cannot claim E2E-06 live acceptance")
+    if "X10" in task_map and "E2E-06" not in task_map["X10"].get("case_ids", []):
+        errors.append("X10 live E2E must own E2E-06 acceptance")
+    if "V11" in task_map and "EVO-21" in task_map["V11"].get("case_ids", []):
+        errors.append("V11 API contract cannot claim U03/U04 complete UI acceptance")
+    for tid in ("U03", "U04", "X09"):
+        if tid in task_map and "EVO-21" not in task_map[tid].get("case_ids", []):
+            errors.append(f"{tid} must cover EVO-21 complete UI acceptance")
+    for tid, prerequisites in (("V13", {"F06", "V03"}),
+                               ("V14", {"V13", "V09", "F02"}),
+                               ("V15", {"V13", "V14", "V10", "F04", "W05"}),
+                               ("V11", {"V15"})):
+        if tid in task_map and not prerequisites <= set(dependency_ids(task_map, tid)):
+            errors.append(f"{tid}: fact-enabled chain misses {', '.join(sorted(prerequisites))}")
+    for tid, prerequisites in (("V16", {"G3", "S04", "S05", "V01", "C06", "C07"}),
+                               ("V17", {"G3", "V01", "V05", "V10", "V16"}),
+                               ("W16", {"G3", "V16", "V17", "V10", "W15", "W12"}),
+                               ("Q14", {"G3", "V16", "Q01", "Q03", "Q04", "Q12", "Q13", "C06"}),
+                               ("Q15", {"G3", "Q06", "Q08", "Q14", "W16", "C07"}),
+                               ("V18", {"G5", "V16", "V17", "W16", "Q14", "Q15", "V12", "X09"})):
+        if tid in task_map and not prerequisites <= set(dependency_ids(task_map, tid)):
+            errors.append(f"{tid}: evolution chain misses {', '.join(sorted(prerequisites))}")
+    if "G6" in task_map:
+        evolution_tasks = {"V16", "V17", "W16", "V18", "Q14", "Q15"}
+        if not evolution_tasks <= set(dependency_ids(task_map, "G6")):
+            errors.append("G6 must include component lifecycle, impact consumer, parser and upgrade rehearsal tasks")
+        if not {"EVO-79", "EVO-80", "EVO-81", "EVO-82"} <= set(task_map["G6"].get("case_ids", [])):
+            errors.append("G6 must review component-eligibility races and safe retry/fallback end to end")
+    if "Q14" in task_map and task_map["Q14"].get("owner") != "stockqa":
+        errors.append("Q14 answer parser/version metadata must remain StockQA-owned")
+    if "W16" in task_map and task_map["W16"].get("owner") != "stockwiki":
+        errors.append("W16 impact-plan application must remain StockWiki-owned")
+    if "X05" in task_map and "W16" in task_map:
+        if ("W16" not in task_map["X05"].get("depends_on", [])
+                or "EVO-67" not in task_map.get("X09", {}).get("case_ids", [])):
+            errors.append("X05 must consume W16 and X09 must safely settle frozen legacy attempts through the installed public path")
+    if "X07" in task_map and "W16" in task_map:
+        required_release_inputs = {"V16", "V17", "W16", "Q14"}
+        if not required_release_inputs <= set(task_map["X07"].get("depends_on", [])):
+            errors.append("X07 release set must bind V16, V17, W16 and Q14 parser releases")
+        if "EVO-64" not in task_map["X07"].get("case_ids", []):
+            errors.append("X07 must validate candidate parser/schema/evidence hashes before installation")
+        if {"DEPLOY-07", "DEPLOY-08", "E2E-04", "E2E-05", "EVO-68", "EVO-69"} & set(task_map["X07"].get("case_ids", [])):
+            errors.append("X07 cannot claim installation, runtime consumer or final readiness evidence before X08/X09")
+    if "X08" in task_map and "X07" in task_map:
+        if ("X07" not in task_map["X08"].get("depends_on", [])
+                or "EVO-68" not in task_map["X08"].get("case_ids", [])
+                or bool({"EVO-69", "EVO-70", "EVO-71"} & set(task_map["X08"].get("case_ids", [])))):
+            errors.append("X08 must verify installed parser/schema/evidence hashes against X07's candidate release set")
+    if "X09" in task_map and "W16" in task_map:
+        if ("W16" not in task_map["X09"].get("depends_on", [])
+                or "X05" not in task_map["X09"].get("depends_on", [])
+                or "Q14" not in task_map["X09"].get("depends_on", [])
+                or not {"EVO-67", "EVO-69", "EVO-70", "EVO-71", "EVO-72", "EVO-74", "EVO-80", "EVO-81", "EVO-82"}
+                <= set(task_map["X09"].get("case_ids", []))):
+            errors.append("X09 must depend on X05 and exercise legacy settlement, parser receipt, and concurrency/forged-plan behavior through the installed public path")
+    if "W16" in task_map:
+        w16_cases = set(task_map["W16"].get("case_ids", []))
+        if "EVO-67" in w16_cases:
+            errors.append("W16 owner-local case EVO-67 cannot require downstream X05/X09 integration")
+        if not {"EVO-63", "EVO-65", "EVO-66", "EVO-73", "EVO-75", "EVO-79"} <= w16_cases:
+            errors.append("W16 must cover atomic apply, old settlement, deterministic-plan rejection, candidate gating, active-pointer CAS, and component eligibility CAS")
+        for cid in w16_cases & set(case_map):
+            case = case_map[cid]
+            trigger = f"{case.get('given', '')} {case.get('when', '')}"
+            if "X05" in trigger or "X09" in trigger:
+                errors.append(f"W16 owner-local case {cid} cannot require downstream X05/X09 integration")
+    if "Q15" in task_map:
+        if task_map["Q15"].get("owner") != "stockqa" or not {"LLM-17", "EVO-76", "EVO-81"} <= set(task_map["Q15"].get("case_ids", [])):
+            errors.append("Q15 must own the StockQA pre-POST release fence, permit linearization, and attempt ledger")
+        for tid in ("X05", "X09"):
+            if tid in task_map and "Q15" not in dependency_ids(task_map, tid):
+                errors.append(f"{tid} must depend on Q15 before any public paid dispatch")
+    if "X05" in task_map:
+        if not {"EVO-72", "EVO-74"} <= set(task_map.get("X09", {}).get("case_ids", [])):
+            errors.append("X09 must cover full-entry legacy recovery and candidate-start rejection")
+    if "X07" in task_map:
+        if not {"EVO-64"} <= set(task_map["X07"].get("case_ids", [])):
+            errors.append("X07 must check candidate artifacts only")
+        if {"EVO-68", "EVO-69", "EVO-70", "EVO-71", "EVO-72", "EVO-74", "EVO-76", "EVO-78"} & set(task_map["X07"].get("case_ids", [])):
+            errors.append("X07 cannot claim installed, runtime, dispatch, recovery, or rollback evidence")
     if "G6" in task_map:
         all_predecessors = set(dependency_ids(task_map, "G6"))
         missing = set(task_map) - all_predecessors - {"G6"}

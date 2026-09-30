@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "review_id": "S05-MOD17-2026-09-27",
+  "plan_version": "1.9.9",
+  "task_id": "S05",
+  "reviewer_id": "agent:/root/s05_legacy_review",
+  "reviewer_role": "independent read-only implementation reviewer",
+  "independent": true,
+  "separation_basis": "A separate authorized review sub-agent performed the implementation and follow-up review without editing the reviewed implementation or tests.",
+  "scope": "Pinned legacy baseline integrity; raw artifact hash binding for current catalog, publication, and historical package loading; caller-asserted legacy rejection; preserved legacy read compatibility; release/catalog path symlink and Windows junction boundaries.",
+  "implementation_snapshot": [
+    {
+      "root_id": "iqs",
+      "path": "schemas/quick_scan/module-legacy-baseline.json",
+      "sha256": "0a128fa569efae7c1b06948a142fb67dead78812d1ccfce6087de21753f28ab3"
+    },
+    {
+      "root_id": "iqs",
+      "path": "scripts/module_registry.py",
+      "sha256": "9e45a224a6ace21d9c33010eba2e2c5abdd0eff74adfe8510f003cb8b88a38ce"
+    },
+    {
+      "root_id": "iqs",
+      "path": "scripts/question_sets.py",
+      "sha256": "1bf5719677a7f212251710f38deda2ffff04b10b61db8781410c68bba91b1e5d"
+    },
+    {
+      "root_id": "iqs",
+      "path": "tests/test_module_registry.py",
+      "sha256": "bdf0b7b1a8b6228ffa5b0aca86221309d29216921b62bd5d898a86f36593900e"
+    },
+    {
+      "root_id": "iqs",
+      "path": "tests/test_routing.py",
+      "sha256": "5bc21f8c8481bc310d670c0d3df9d8b57886112b800556a3065f8e2b8dfd58cb"
+    }
+  ],
+  "implementation_snapshot_sha256": "347abeb0b3ea6a9b4930ac24cf62790f2f263af347f0561bd37c8e1a45133333",
+  "initial_finding": {
+    "severity": "P2",
+    "summary": "Parent-directory symlinks beneath the configured root could bypass archive/catalog symlink checks.",
+    "resolution": "Added descendant component checks for symlinks and Windows junctions; a temporary isolated questions-directory junction regression passed."
+  },
+  "follow_up_review": "The reviewer confirmed the path fix and additional positive/negative tests; no actionable findings remain.",
+  "outcome": "approved",
+  "open_findings": [],
+  "review_limitations": "Static independent review only. The implementation test run is separately captured in validation-S05-MOD17-module-registry-2026-09-27.log; the reviewer did not run tests or live API calls."
+}

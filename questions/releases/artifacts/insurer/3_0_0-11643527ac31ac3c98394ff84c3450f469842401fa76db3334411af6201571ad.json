@@ -1,0 +1,155 @@
+{
+  "version": "3.0.0",
+  "module_id": "insurer",
+  "kind": "types",
+  "name": "保险公司",
+  "applies_when": "寿险、财险、再保险及综合保险；按实质业务分别解释指标。",
+  "questions": [
+    {
+      "id": "INSURER_01",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "偿付能力、资本质量与资产负债匹配能否承受压力？",
+      "evidence": [
+        "当地偿付口径",
+        "久期币种错配",
+        "流动性",
+        "再保风险"
+      ],
+      "anchors": {
+        "1": "偿付缺口或错配威胁承诺兑现",
+        "5": "达标但利率或赔付压力下缓冲有限",
+        "10": "压力后仍有资本余量且匹配纪律可靠"
+      },
+      "replaces": [
+        "IQS_16"
+      ],
+      "critical": true,
+      "metric_id": "score.insurer_01",
+      "construct_id": "IQS_16",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INSURER_02",
+      "dimension": "business",
+      "priority": 1,
+      "question": "剔除投资行情掩盖后，保险业务的全周期经济回报如何？",
+      "evidence": [
+        "财险综合成本率",
+        "寿险新业务经济性",
+        "续期与获客成本"
+      ],
+      "anchors": {
+        "1": "承保或保单经济性持续亏损",
+        "5": "多数业务回报一般且有波动",
+        "10": "多个批次承保或保单回报优异且不依赖冒险投资"
+      },
+      "replaces": [
+        "IQS_03"
+      ],
+      "metric_id": "score.insurer_02",
+      "construct_id": "IQS_03",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INSURER_03",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "满足存量保单责任和资本要求后，能否持续产生可汇出利润？",
+      "evidence": [
+        "可分配盈余",
+        "资本释放",
+        "子公司汇款",
+        "分红约束"
+      ],
+      "anchors": {
+        "1": "利润无法释放或需持续注资",
+        "5": "资本生成足够但可汇出受限",
+        "10": "可汇出资本长期稳定且不侵蚀偿付缓冲"
+      },
+      "replaces": [
+        "IQS_11"
+      ],
+      "metric_id": "score.insurer_03",
+      "construct_id": "IQS_11",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INSURER_04",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "准备金、精算假设与利润确认是否审慎可信？",
+      "evidence": [
+        "赔付发展",
+        "退保",
+        "贴现假设",
+        "合同服务边际或当地口径"
+      ],
+      "anchors": {
+        "1": "反复不利发展或激进假设掩盖损失",
+        "5": "假设合理但敏感性或透明度普通",
+        "10": "历史估计可靠，压力敏感性充分披露"
+      },
+      "replaces": [
+        "IQS_12"
+      ],
+      "critical": true,
+      "metric_id": "score.insurer_04",
+      "construct_id": "IQS_12",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INSURER_05",
+      "dimension": "moat",
+      "priority": 2,
+      "question": "保险客户留存、风险选择与渠道是否构成可持续优势？",
+      "evidence": [
+        "续保续期",
+        "渠道依赖",
+        "风险选择数据"
+      ],
+      "anchors": {
+        "1": "靠高佣金吸引差风险且留存差",
+        "5": "渠道与风险选择接近行业",
+        "10": "低摩擦优质渠道与风险识别持续保护收益"
+      },
+      "metric_id": "score.insurer_05",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INSURER_06",
+      "dimension": "valuation",
+      "priority": 2,
+      "question": "以可分配收益和保单责任调整后，估值是否合理？",
+      "evidence": [
+        "适用的经济价值或盈利口径",
+        "资本约束",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "账面折价无法抵补责任低估",
+        "5": "价格匹配审慎调整后的价值",
+        "10": "保守责任与资本假设下仍有显著价格余地"
+      },
+      "replaces": [
+        "IQS_22"
+      ],
+      "metric_id": "score.insurer_06",
+      "construct_id": "IQS_22",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

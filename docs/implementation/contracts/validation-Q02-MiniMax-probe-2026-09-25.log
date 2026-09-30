@@ -1,0 +1,37 @@
+Direct MiniMax live smoke probes (2026-09-25 UTC)
+
+Credential handling: MINIMAX_API_KEY was read from the restarted Codex process environment. The value was never printed, persisted, or copied to a file.
+
+Probe A — China OpenAI-compatible endpoint
+- Endpoint: https://api.minimax.cn/v1/responses
+- Requested model: MiniMax-M3
+- HTTP status: 200; response status: completed; response ID present
+- Usage: 796 input tokens, 199 output tokens, 995 total tokens
+- Output items: message only
+- web_search_call count: 0; URL citation annotation count: 0
+- The model text named a Microsoft 2025 annual-report URL, but without a search-call receipt or citation annotation this does not prove web_search ran.
+- Result: text-generation smoke passed; real web-search verification failed/unsupported on this route.
+
+Probe B — international Server Tools endpoint
+- Endpoint: https://api.minimax.io/v1/responses
+- Requested model: MiniMax-M3; tools: [{"type":"web_search"}]
+- HTTP status: 401; error type: authorized_error; message: invalid api key (2049)
+- No response ID, model output, search call, or usage receipt returned.
+- Result: current key was rejected by the documented Server Tools API endpoint. A region/platform credential mismatch is a plausible explanation, not yet proven.
+
+Probe C — mainland-compatible endpoint selected after checking public developer reports
+- Endpoint: https://api.minimaxi.com/v1/responses
+- Requested model: MiniMax-M3; tools: [{"type":"web_search"}]
+- HTTP status: 200; response status: completed; response ID present
+- Output item types: message, web_search_call, message
+- web_search_call: 1; status: completed; query: "Microsoft 2025 annual report FY2025 revenue official"
+- Search sources included Microsoft's official FY2025 earnings page and annual-report page. The model answered FY2025 revenue of $281.7 billion and cited the Microsoft investor-relations page.
+- Usage: 9,739 input tokens, 263 output tokens, 10,002 total tokens. The response provided token usage but no monetary charge receipt.
+- Result: direct MiniMax-M3 live web_search verified on this Mainland-compatible host; StockQA CLI E2E remains untested.
+
+All requests used a small public-company lookup prompt. No StockQA CLI or local provider adapter was involved. Probe A returned token usage; Probe B returned no usage receipt; Probe C returned token usage but no monetary charge receipt.
+
+Documentation checked:
+- https://platform.minimax.cn/docs/guides/text-generation
+- https://platform.minimax.io/docs/guides/server-tools
+- The text-generation docs list https://api.minimax.cn/v1 as the OpenAI-compatible base URL. The Server Tools docs list https://api.minimax.io/v1/responses for Responses API web_search and describe the expected web_search_call and URL citation receipts.

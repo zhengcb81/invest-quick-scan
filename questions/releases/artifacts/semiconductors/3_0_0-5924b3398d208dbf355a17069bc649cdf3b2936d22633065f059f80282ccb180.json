@@ -1,0 +1,96 @@
+{
+  "version": "3.0.0",
+  "module_id": "semiconductors",
+  "kind": "industries",
+  "name": "半导体与电子零部件",
+  "applies_when": "设计、制造、封测、设备、材料、电子元件；以实际环节解释指标。",
+  "questions": [
+    {
+      "id": "SEMICONDUCTORS_01",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "技术、良率、认证或设计导入是否构成可持续壁垒？",
+      "evidence": [
+        "性能成本",
+        "良率",
+        "design-in周期",
+        "替代供应商"
+      ],
+      "anchors": {
+        "1": "同质可替代且竞争导致持续丢单",
+        "5": "技术达到主流但壁垒有限",
+        "10": "关键能力经量产和客户认证验证且难以替代"
+      },
+      "metric_id": "score.semiconductors_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SEMICONDUCTORS_02",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "正常化需求下，产能或研发投入能否取得合理回报？",
+      "evidence": [
+        "利用率",
+        "库存",
+        "资本或研发强度",
+        "中周期回报"
+      ],
+      "anchors": {
+        "1": "仅峰值景气盈利，常态回报不足",
+        "5": "常态可覆盖投入但余量有限",
+        "10": "保守利用率下仍有良好全周期回报"
+      },
+      "metric_id": "score.semiconductors_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SEMICONDUCTORS_03",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "出口限制、核心设备或单一代工依赖是否可承受？",
+      "evidence": [
+        "许可范围",
+        "产地",
+        "代工设备依赖",
+        "备选验证"
+      ],
+      "anchors": {
+        "1": "关键供给或市场可能中断且无可用替代",
+        "5": "依赖存在且替代成本高",
+        "10": "关键限制可控或替代已验证，损失有缓冲"
+      },
+      "metric_id": "score.semiconductors_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SEMICONDUCTORS_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "新产品与扩产能否转成可验证的客户份额和收入？",
+      "evidence": [
+        "量产进度",
+        "客户认证",
+        "产能与订单匹配"
+      ],
+      "anchors": {
+        "1": "扩产领先需求且认证路径薄弱",
+        "5": "项目有客户兴趣但量产仍有不确定性",
+        "10": "认证、良率与客户需求形成可核实转化链"
+      },
+      "metric_id": "score.semiconductors_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

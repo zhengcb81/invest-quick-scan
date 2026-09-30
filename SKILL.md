@@ -21,6 +21,8 @@ description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快
 
 新版评分仅以24个核心构念及类型替代题汇总可比质量分，行业/阶段/属性题保留为专题评分，不因追加题数改变核心权重。使用[统一行业与阶段口径](questions/scoring-contexts.json)，分清当前、正常化、压力和未来假设；新增题义/口径与旧结果不直接连成趋势。
 
+模块独立扩题、证据化路由、发布版本锁与增量补扫的后续实施见[组合式题库设计](docs/modular-question-bank-design.md)及S04—S06/Q13/W15/F06/U04任务卡。现有组合能力可直接使用；设计中的独立升级契约和跨仓接线尚未完成。
+
 事实画像读[标准输出与事实题库](references/standard-output.md)，按需编排[facts.json](questions/facts.json)中的61题。供应商、客户、设备、材料、上下游、第一/第二曲线及管理层均有稳定字段与关系约束，未知留空、不评分。题库已可离线使用，生产facts执行/入库仍须F02/F04接线。
 
 ## 执行
@@ -34,7 +36,7 @@ description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快
 
 标准模式用`standard_answers.py build`绑定manifest/题面/执行回执，不能交给旧normalize。独立来源审核仍不可省；结构通过默认为unreviewed。存入StockWiki不可变观察，由每次scan快照引用新旧observation_id，保留原时间和模型。比较前检查[全局契约](docs/system-contract.md)，不将模型换代、回溯回答或重新导入解释成公司变化。
 
-模型顺序由用户填写[配置模板](examples/model-policy.template.json)，数组顺序即优先级；配置与运行状态归StockQA。并行独立题目/获准题包，遵守全局、账户组和单模型上限；共享五小时额度拒绝、逐题检查点及结果不明处理见[模型策略](references/model-policy.md)。本地仅做配置校验，生产并行/接续仍须实施Q04/Q06—Q10。
+模型顺序由用户填写[配置模板](examples/model-policy.template.json)，数组顺序即优先级；配置与运行状态归StockQA。各模型的接口、能力和脱敏探针记录在[提供商连接配置](examples/provider-connectivity-profiles.json)，其中只记录环境变量名，不保存密钥值；该文件是连通性目录，不代表StockQA端到端验收，也不自动决定顺序或启用派发。并行独立题目/获准题包，遵守全局、账户组和单模型上限；共享五小时额度拒绝、逐题检查点及结果不明处理见[模型策略](references/model-policy.md)。本地仅做配置校验，生产并行/接续仍须实施Q04/Q06—Q10。
 
 ## 本地命令
 
@@ -53,4 +55,4 @@ python scripts/question_sets.py normalize --manifest "runs/example/manifest.json
 
 修改评分问题编辑questions/源JSON，再运行common命令更新兼容导出；事实编辑facts.json，并运行standard_answers.py validate-library。prompt引用的统一口径/schema必须进入manifest hash，不能只更新文字而不记录版本。
 
-当前评分题库3.0.0含222题，核心仍24题，事实题库1.0.0含61题。新manifest为3.0、标准观察为1.0.0；旧2.1运行保持原汇总，缺执行元数据标legacy_unattributed，不补造时间或模型。股票池数据库、持续运行与生产UI仍按实施路线开发；本skill的离线代码不是外部运行平台。
+当前评分catalog 3.2.0含222题，核心仍24题，事实题库1.0.0含61题。新manifest为3.0、标准观察为1.0.0；旧2.1运行保持原汇总，缺执行元数据标legacy_unattributed，不补造时间或模型。股票池数据库、持续运行与生产UI仍按实施路线开发；本skill的离线代码不是外部运行平台。

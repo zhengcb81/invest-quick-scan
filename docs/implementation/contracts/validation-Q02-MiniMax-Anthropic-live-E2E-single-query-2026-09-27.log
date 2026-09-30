@@ -1,0 +1,34 @@
+Q02 MiniMax-M3 Anthropic Messages live E2E — bounded single-query follow-up
+Date: 2026-09-27
+Execution: isolated temporary cwd and pytest basetemp; MINIMAX_API_KEY present in process environment, value never recorded; STOCKQA_RUN_LIVE_E2E=1; only this live selector invoked; one bounded request; no source response body, prompt response, source URL, or credential persisted.
+
+Official request references checked:
+- https://platform.minimax.cn/docs/guides/server-tools (Anthropic Messages API /anthropic/v1/messages, web_search server tool)
+- https://platform.minimax.cn/docs/guides/text-generation (MiniMax-M3, Anthropic-compatible base URL)
+- https://docs.anthropic.com/zh-CN/docs/agents-and-tools/tool-use/web-search-tool (tool choice/search events/pause_turn semantics)
+
+Scoped StockQA working-tree snapshot SHA-256:
+- src/providers/llm_client.py: 37ffb11da08ab7d06a98476136c033ee644826cb2849485fd5a60d222a9aa827
+- tests/unit/test_llm_client.py: 0dd495db0fda750f1d8ce1c16568b2a6bdd70771da5ed35f8307d1e4fd40c916
+- tests/integration/test_quick_scan_cli.py: b3bce32634ef13fd863285567c7e7c1c88feae067e35b0f6b9552069b44d937c
+- tests/live/test_live_quick_scan.py: 92af27ece17bef04ff20f5ec1fc95d4f2df5e57b5fd5a8506ce95ce76f92c8f6
+
+Offline verification on this implementation snapshot:
+- Isolated tests/unit/test_llm_client.py + tests/integration/test_quick_scan_cli.py: 110 passed, 0 skipped, 2.05s.
+- pytest-base-url autoload was disabled after the first isolated run exposed a third-party session/function fixture scope collision; PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 and pytest_asyncio.plugin were used for the passing rerun.
+- git diff --check passed for the four scoped files.
+- Isolated temporary directory was absent after the passing offline run.
+
+Live diagnostic attempt 1 (forced tool, original multi-evidence question):
+- Public CLI reached MiniMax-M3; HTTP 200; response_status=pause_turn; search_status=unverified.
+- Safe receipt summary: 2 calls, first completed with 10 URLs, second pending with 0 URLs, source_count=10, no final search_receipt_id. Parser correctly refused to certify an incomplete turn.
+- This demonstrates actual server search activity, but not a completed CLI search receipt.
+
+Live diagnostic attempt 2 (forced tool, prompt constrained to exactly one query for the official FY2025 annual report):
+- Selector: tests/live/test_live_quick_scan.py::test_live_minimax_anthropic_search_runs_public_company_through_cli_and_cleans_local_artifacts
+- Command shape: python -m pytest -p no:cacheprovider -o addopts= -q --tb=short --basetemp=<temporary> <selector>; isolated temporary cwd; key redacted from captured output.
+- Result: exit_code=0; 1 passed; 6.09s. All assertions passed: provider/requested/actual model, response and attempt identifiers, search_status=executed, exactly one correlated completed web_search call, matching search receipt ID and nonempty source URLs, and UTC answered_at. The test allows either a scored answer or insufficient_evidence; this result certifies search execution/receipt, not an investment rating.
+- Inner live sandbox assertion passed; outer temporary directory was absent after process exit.
+- Pytest emitted a non-fatal Windows GBK decode warning from its subprocess reader after the passing assertion. This is a test-harness output-decoding warning, not a provider/CLI failure; preserve it as an open test-harness limitation.
+
+Conclusion: the MiniMax Anthropic Messages endpoint can complete a real web_search through the public StockQA CLI when the tool is explicitly selected and the test asks for one search. Multi-search pause_turn continuation remains intentionally unverified; the parser failed closed on attempt 1. This evidence does not close Q02 until the latest StockQA snapshot is independently reviewed and its task receipt is renewed. Do not count the earlier unverified runs as passing evidence.

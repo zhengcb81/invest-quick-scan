@@ -1,0 +1,177 @@
+{
+  "task_id": "C03",
+  "status": "implementation_complete",
+  "owner": "iqs",
+  "plan_version": "1.4.0",
+  "plan_sha256": "24FC0CFBFAD86AF1B6A87B00420F22FE9AAAD0F76BEFFD7608D216E8766A7F6B",
+  "case_catalog_sha256": "1B4B4F8CD4F1CC47AA071087E6463C6F7CBA3A9EFEB0DB4074D580E3B73DF525",
+  "implementation_snapshot": {
+    "commit": "be3d651",
+    "file_hashes": {
+      "schemas/quick_scan/score.schema.json": "7DFDBFD8B8A42A3F6F0119E8D3E50194FF8CF21B494B5ED12323769CFE1FD87F",
+      "schemas/quick_scan/rule.schema.json": "8BFB6F78114B8D8F4A5993065C9E93C53CB023E70D4EF8364757261DAA7BD00C",
+      "docs/implementation/contracts/scoring.md": "B87924671814257F7BAB00D764A46D64584BB98F55BDAD9000C54B4212C6DB5B",
+      "tests/test_scoring_and_rules_contract.py": "E055C437B83932F67A351C77D6105E38B3D86F6DC2E5A02E4D11AA89B2828A47"
+    }
+  },
+  "dependency_receipts": [
+    "docs/implementation/contracts/receipt-C01.json",
+    "docs/implementation/contracts/receipt-C02.json"
+  ],
+  "changed_files": [
+    "schemas/quick_scan/score.schema.json",
+    "schemas/quick_scan/rule.schema.json",
+    "docs/implementation/contracts/scoring.md",
+    "tests/test_scoring_and_rules_contract.py",
+    "docs/implementation/contracts/receipt-C03.json"
+  ],
+  "contract_changes": [
+    "新增评分解析(ParsedAnswer)与检查等级(CheckLevel)Schema，明确nullable score与旧传输5分隔离",
+    "新增筛选规则(FieldThresholdCondition, CompositeRule, ScreeningPolicy)Schema",
+    "规定三值逻辑真值表（all: fail>unknown>pass; any: pass>unknown>fail）",
+    "规定关键风险关口强制判定（SC-09, RULE-02），禁止被ANY规则或高均分绕过",
+    "规定模型不得自签accepted_ids或check_level，未审核N/A不得扣减覆盖率分母"
+  ],
+  "checks": [
+    {
+      "case_id": "SC-02",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_sc_02_nullable_score_isolation_from_legacy_transport",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_sc_02",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证证据不足时score保持为null，旧外层默认5分仅在legacy传输字段隔离读取，不进入正式打分。"
+    },
+    {
+      "case_id": "SC-03",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_sc_03_valid_and_invalid_score_boundaries",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_sc_03",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证1到10之外的非法值（0, 11, 浮点, bool, 字符串）全部被拒绝，有效边界值（1, 5, 10）原样通过。"
+    },
+    {
+      "case_id": "SC-04",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_sc_04_mismatched_outer_inner_scores_and_id_mismatch",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_sc_04",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证内外分数冲突（如外层5内层8）或问题ID不符时明确抛出异常，拒绝位置对齐猜测。"
+    },
+    {
+      "case_id": "SC-05",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_sc_05_and_sc_06_model_cannot_self_grant_check_level",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_sc_05",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证模型自报accepted_ids或伪造check_level时被强制降级为unverified_model_output，禁止自签资格。"
+    },
+    {
+      "case_id": "SC-06",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_sc_05_and_sc_06_model_cannot_self_grant_check_level",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_sc_05",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证未经独立审核的画像保持review_pending，不自动填写accepted_ids。"
+    },
+    {
+      "case_id": "SC-07",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_sc_07_coverage_rate_with_audited_na",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_sc_07",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证经审核N/A可从分母排除得到7/9，未审核N/A和unknown不可扣减分母保持7/10。"
+    },
+    {
+      "case_id": "SC-09",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_rule_02_three_valued_logic_and_critical_gate",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_rule_02",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证关键风险关口优先执行，即使ANY规则满足也强制判定为fail。"
+    },
+    {
+      "case_id": "RULE-01",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_rule_01_field_threshold_conditions",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_rule_01",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证得分8在>8下为fail，在>=8下为pass。"
+    },
+    {
+      "case_id": "RULE-02",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_rule_02_three_valued_logic_and_critical_gate",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_rule_02",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证三值逻辑真值表ALL（fail优先）与ANY（pass优先）的完整9种组合判定。"
+    },
+    {
+      "case_id": "RULE-03",
+      "kind": "automated",
+      "selector": "tests/test_scoring_and_rules_contract.py::ScoringAndRulesContractTests::test_rule_03_missing_fields_and_invalid_empty_rules",
+      "command": "pytest tests/test_scoring_and_rules_contract.py -k test_rule_03",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证缺失字段评估为unknown，空all规则抛出配置错误异常。"
+    }
+  ],
+  "review": {
+    "reviewer": null,
+    "snapshot": "be3d651",
+    "result": "pending",
+    "findings": []
+  },
+  "rollback_evidence": "删除 schemas/quick_scan/score.schema.json, schemas/quick_scan/rule.schema.json, docs/implementation/contracts/scoring.md, tests/test_scoring_and_rules_contract.py 即可完全回退",
+  "open_issues": [],
+  "next_task": "C04",
+  "resume_from": "C04"
+}

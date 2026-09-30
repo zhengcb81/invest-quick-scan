@@ -1,0 +1,217 @@
+{
+  "schema_version": "2.0",
+  "core": {
+    "task_id": "G0",
+    "plan_version": "1.9.8",
+    "plan_sha256": "c03175fe2def61eda4dc974816b2bd42b1b09bf042b52ee730924d7d6d31b2f3",
+    "case_catalog_sha256": "5c305c9252f01e9200e20d241753720c8cb4f816c78beec3cf159c9d4e3bc6af",
+    "hash_algorithm": "canonical-json-sha256-v1",
+    "task_spec_sha256": "fd2ca7db6dc3533894042dec09e05bd00a431ca899da6b418c7f02da376996f5",
+    "owned_case_bundle_sha256": "8ef5ca32e81ce21f73869387892fd09c4f41fc78dc2847492199297c84989777",
+    "global_boundaries_sha256": "d05c77a2814f1f1d296963f709727c71969c5ee102d2848e0e770059e4874b54",
+    "implementation_author_id": "agent:/root",
+    "case_results": [
+      {
+        "case_id": "REV-01",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "REV-01.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_g0_manifest.py::test_current_scope_can_render_a_complete_self_consistent_candidate",
+            "command": "python -B -X utf8 -m pytest --rootdir \"C:\\Users\\郑曾波\\Projects\\invest-quick-scan\" --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-g0-r7-8a43f950-ad0d-457e-9667-ea17d5818354\\pytest\" -p no:cacheprovider tests/test_g0_manifest.py tests/test_implementation_plan.py tests/test_g0_regressions.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-G0-owner-r7-2026-09-26.log",
+              "sha256": "c0c384333ca462ce3c1acbb409b373fc8a288d2a846abd1760b0e2f47da5caf4"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "8a43f950-ad0d-457e-9667-ea17d5818354",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique pytest root C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-g0-r7-8a43f950-ad0d-457e-9667-ea17d5818354 was verified removed after the batched G0/plan regression."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local tests and plan validator; no provider, API, or external network request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "REV-02",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "REV-02.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_g0_manifest.py::test_manifest_rejects_stale_version_or_tampered_scope_declaration",
+            "command": "python -B -X utf8 -m pytest --rootdir \"C:\\Users\\郑曾波\\Projects\\invest-quick-scan\" --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-g0-r7-8a43f950-ad0d-457e-9667-ea17d5818354\\pytest\" -p no:cacheprovider tests/test_g0_manifest.py tests/test_implementation_plan.py tests/test_g0_regressions.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-G0-owner-r7-2026-09-26.log",
+              "sha256": "c0c384333ca462ce3c1acbb409b373fc8a288d2a846abd1760b0e2f47da5caf4"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "8a43f950-ad0d-457e-9667-ea17d5818354",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique pytest root C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-g0-r7-8a43f950-ad0d-457e-9667-ea17d5818354 was verified removed after the batched G0/plan regression."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local tests and plan validator; no provider, API, or external network request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "REV-03",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "REV-03.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_g0_manifest.py::test_mutable_journals_and_postseal_g0_artifacts_are_excluded",
+            "command": "python -B -X utf8 -m pytest --rootdir \"C:\\Users\\郑曾波\\Projects\\invest-quick-scan\" --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-g0-r7-8a43f950-ad0d-457e-9667-ea17d5818354\\pytest\" -p no:cacheprovider tests/test_g0_manifest.py tests/test_implementation_plan.py tests/test_g0_regressions.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-G0-owner-r7-2026-09-26.log",
+              "sha256": "c0c384333ca462ce3c1acbb409b373fc8a288d2a846abd1760b0e2f47da5caf4"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "8a43f950-ad0d-457e-9667-ea17d5818354",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique pytest root C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-g0-r7-8a43f950-ad0d-457e-9667-ea17d5818354 was verified removed after the batched G0/plan regression."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local tests and plan validator; no provider, API, or external network request."
+            }
+          }
+        ]
+      }
+    ],
+    "implementation_snapshot": [
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/reviews/G0/candidate-snapshot.json",
+        "sha256": "e6ada748839aee76c725653cc04af52789ccf63fe8fbeef20756587f414c2e7a"
+      }
+    ],
+    "implementation_snapshot_sha256": "d866b852a703648de62982ca80ec81571a3ff2cef878ab9ab7b45b6dcb956a38",
+    "independent_review": {
+      "report": {
+        "root_id": "iqs",
+        "path": "docs/implementation/reviews/G0/independent-final-review.json",
+        "sha256": "39dd352897420febe53059bb2e62a56390562d86b0c7080a2648ab1faecfe33e"
+      },
+      "reviewer_id": "agent:/root/g0_current_review",
+      "reviewer_role": "independent G0 milestone reviewer",
+      "independent": true,
+      "separation_basis": "Read-only independent sub-agent reviewer; did not implement or modify the candidate, plan, tests, receipts, or evidence. The only writes are these two manifest-excluded final-review outputs.",
+      "outcome": "approved",
+      "implementation_snapshot_sha256": "d866b852a703648de62982ca80ec81571a3ff2cef878ab9ab7b45b6dcb956a38",
+      "open_findings": []
+    },
+    "dependency_evidence": [
+      {
+        "task_id": "C01",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C01.json",
+          "sha256": "cdb55699cefbc887c44e32e60d243aac112b5b87a401aee957c37a587496c14b"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C02",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C02.json",
+          "sha256": "5782ab8b9c75b9e1b9de55095cfbab4c4db6a10fb874f51429dc420c27294fc5"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C03",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C03.json",
+          "sha256": "04605521cb400fbba16b6ee1ed438ddd5054ccb30f3f2c440e83da976df7a179"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C04",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C04.json",
+          "sha256": "d1678203f12c093be7adc6fbdfb11ce2839f51221084d2143cdae57306ea2394"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C05",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C05.json",
+          "sha256": "681f2113c9ccaccb906b82906c5ff53d64cc3867b1763775efb466bd15589c42"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C06",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C06.json",
+          "sha256": "14f6f8f11efbf5c4463c0807c1cf31d81873e33a63f0eb4545c677471de0adfb"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C07",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C07.json",
+          "sha256": "e57eadc73eb0feceb573233d421002b881220b10db36475b0f5f802e9e95317a"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "P01",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-P01.json",
+          "sha256": "bd63693a2b1c9d4616f6d534ad95d7a86b9a59caf00c655922713c21ca27e84b"
+        },
+        "status": "eligible_to_close"
+      }
+    ]
+  },
+  "core_sha256": "fc0f170294bdf71bec7cafdc69ba19ea8157be596a8f9860d916747435b88e7d"
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "review_id": "P00-preseal-review-r1-2026-09-26",
+  "reviewer_id": "agent:/root/p01_receipt_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "Separate read-only sub-agent; did not implement or modify the reviewed report, evidence, source files, or external repositories.",
+  "subject": {
+    "path": "docs/implementation/baselines/baseline-report-2026-09-26.md",
+    "sha256": "b2e9a681abf3e01fc23425bb2381d2136daddd204145f99d89b3016d47fa9491",
+    "implementation_snapshot_sha256": "d29f893cea770fc598954ab6bf087c50e3dc3c3296d8b41d5daccc9d9012e05d"
+  },
+  "outcome": "approved",
+  "review_scope": [
+    "P00 task card and BASE-01/BASE-02 acceptance contracts",
+    "P01-locked P00 historical context manifest and legacy-context verification evidence",
+    "P00 baseline report and validation evidence logs",
+    "All 17 source hashes listed in the report, recomputed against the named local repository paths",
+    "Historical 5/8 assertion versus current Q01/S02 strict score 8 and unknown/null behavior",
+    "External-repository read-only boundary, CodeGraph index state, and offline-test versus real-search boundaries"
+  ],
+  "checks": {
+    "historical_vs_current_scoring": {
+      "result": "verified",
+      "details": "The report identifies the old 5-or-8 assertion as historical and states the current Q01/S02 regression requires 8 while unknown remains null. The strict-score log shows the isolated CLI-path fixture produced score 8; it does not claim real web search."
+    },
+    "external_repository_boundary": {
+      "result": "verified",
+      "details": "The report records no external tests or writes, identifies the blocked --help probe as failing before CLI parsing due to denied logger-file creation, and reports no file created."
+    },
+    "codegraph_state": {
+      "result": "verified",
+      "details": "The recorded four-index counts match the read-only CodeGraph status results; the report also discloses that recently added untracked quick-scan files are absent from the StockQA/StockWiki indexes."
+    },
+    "test_and_search_boundaries": {
+      "result": "verified",
+      "details": "Offline validation and the local in-memory HTTP fixture are distinguished from live search. The report states no live model/API request was made and leaves Q02 partial because the latest MiniMax result did not establish a completed search chain."
+    },
+    "historical_context": {
+      "result": "verified",
+      "details": "The P01 context manifest is status=context_only, contains only the two locked historical P00 paths and hashes, and explicitly states it cannot satisfy a current dependency or close gate. The legacy-context log reports both hashes match."
+    },
+    "source_hashes": {
+      "expected_count": 17,
+      "verified_count": 17,
+      "all_match": true,
+      "evidence": "docs/implementation/contracts/validation-P00-source-hashes-r1.log; all 17 paths were independently rehashed and matched the logged SHA-256 values."
+    }
+  },
+  "execution": {
+    "read_only": true,
+    "tests_run_by_reviewer": false,
+    "validation_scripts_run_by_reviewer": false,
+    "network_or_api_used": false,
+    "receipt_commands_executed": false,
+    "external_repositories_modified": false,
+    "reviewed_implementation_files_modified": false
+  },
+  "open_findings": []
+}

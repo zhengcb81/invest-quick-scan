@@ -1,5 +1,11 @@
 # 评分与回答协议
 
+## 3.1 metric与作用层
+
+每次`compose`生成的manifest都固定`metric_contract_version`和逐题`question_metric_mappings`。映射来自题库元数据并由C02 `metric.schema.json`校验：质量、成长、估值分别使用`quality_core`、`growth_core`、`valuation_core`，杜邦、五力和恢复题只能是`diagnostic_only`。证券作用域与实体作用域在manifest中显式分离；估值题以及挂牌权利、流动性等确属证券层的问题可使用security scope，不能把一个挂牌地的结论套到同实体另一证券。类型替代题保留`replacement_for`对应的24个核心构念。旧manifest仍按其原`aggregation_policy`读取，不回写或重新解释历史分数。
+
+`main_questions.json`只是通用题的兼容导出，题库模块和生成manifest才是权威来源；不得手工修改兼容导出来建立第二套metric映射。
+
 ## 单题
 
 - 1—10 整数，越高越有利于持续经济回报。题目各自定义 1／5／10 锚点；2—4 和 6—9 按证据位置插值，不能机械把 5 当缺省答案。
@@ -39,6 +45,14 @@
 
 `normalize` 仅接受符合 manifest 的精确问题文本、ID 和内层协议。原始回复、无法解析、上游报错或默认值保留为错误，不进行正则猜分。外层分数与内层不符直接拒绝，因而上游“全部写成5”的问题不会悄悄通过。
 
+## 新 screening-1 协议
+
+快扫执行必须显式运行`compose --answer-format screening-1`。该模式输出带稳定`question_id`的StockQA结构化JSON问题，并只接受`stockqa.quick_scan_result/1.0.0`执行结果；不得把它自动改写成旧版`accepted_ids`审核文件，也不能把`standard-1`观察输入伪装成旧`score/description`答案。screening-1内层`description`必须是JSON对象字符串，含`id/status/score/confidence/rationale/information_as_of/period_start/period_end/basis/evidence/counterevidence/sensitivity/metrics`；内外题目ID、状态和分数必须一致，非评分状态的分数为null。
+
+导入器接收版本化screening bundle：`schema_version=invest-quick-scan.screening-import/1.0.0`、当前manifest的规范SHA-256、每个题目prompt的SHA-256，以及StockQA公共CLI原样输出。每题执行回执必须由StockQA公开结果带回其实际输入题目SHA-256，并与manifest prompt逐字节匹配；全量完成回执不能由本地bundle包装器伪造。导入会核对实体ID/名称、question ID、信息截止日、日期期间、可打开HTTP(S)来源、search receipt ID与唯一已完成搜索调用、最终attempt字段链和证据来源与该调用的绑定、执行模型与时间。任何回答自报`accepted_ids`、`search_verified`或高级check level都不会授权；内层出现自签字段会使该题不适用screening。来源、时间或执行回执不合格时仍保留`reported_score/reported_status`供排查，但正式screening `score`为空。
+
+通过这些结构与执行校验的结果标`screening_checked`，对应C03的`screening_audited`级别，并在本导入结果中留下绑定entity/question/observation的本地检查回执。该分数可用于快筛比较；`formal_research_status`仍固定为`not_accepted`，不会写入StockWiki或替代正式证据接受。低置信度的分数保留为reported值但不参与汇总；N/A先按unknown保留在覆盖率分母中，只有独立审核后才能从分母剔除。
+
 ## 验证与覆盖率
 
 模型不能自行证明执行过搜索，也不能自行批准自己的证据。运行者检查实际搜索配置／调用记录，以及每个来源是否支持 claim 后，另写审核文件：
@@ -53,7 +67,7 @@
 }
 ```
 
-审核文件是运行者的记录，不是加密证明。不要把上述示例当已验证结果。无审核时保留 `reported_score`，正式 score 为 null、状态为 review_pending；未审核的 N/A 也不能用来减少覆盖率分母。
+审核文件是旧strict协议运行者的记录，不是加密证明。不要把上述示例当已验证结果。旧strict无审核时保留 `reported_score`，正式 score 为 null、状态为 review_pending；未审核的 N/A 也不能用来减少覆盖率分母。新screening-1不接收该文件，使用自己的执行/检查回执。
 
 经审核的N/A从适用题分母剔除；未知、错误、缺题、待审核留在分母中。置信度low的评分可展示为初步观点，但正式score留空，不进入汇总。每维 `coverage = 已验证有效评分题数 / 适用评分题数`。另报全部已选问题（含可选诊断）的完整率，不能用少数高分掩盖重大空白。
 
@@ -71,4 +85,4 @@
 
 2.1版本另输出`recovery_watch`，规则和状态见[恢复观察](recovery-watch.md)。新增4道1—10分恢复诊断不进入任何维度均分；已验证的优势和恢复依据可在质量分低或为null时展示。原低分、关键风险、未审核状态保持不变，不把“可能反转”当成分数上调理由。
 
-当前仍使用本页独立审核协议；观察标记只使用有效score，不使用reported_score绕过审核。公司既可质量白名单不通过，又在恢复观察中显示优势；资金不足、结构性受损或普通股难获益要与优势同时展示。进入质量白名单与保留研究线索是不同结果。
+旧strict画像仍使用本页独立审核协议；screening-1可以为满足条件的有效答案填入screening score，但绝不设置正式深研接受。观察标记不使用reported_score绕过相应协议。公司既可质量白名单不通过，又在恢复观察中显示优势；资金不足、结构性受损或普通股难获益要与优势同时展示。进入质量白名单与保留研究线索是不同结果。

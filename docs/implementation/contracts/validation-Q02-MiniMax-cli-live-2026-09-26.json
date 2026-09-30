@@ -1,0 +1,48 @@
+{
+  "evidence_kind": "sanitized_implementer_execution_summary",
+  "executed_at": "2026-09-26",
+  "executor": "/root/q02_minimax_cli",
+  "repository": "StockQAbyLLM",
+  "selector": "tests/live/test_live_quick_scan.py::test_live_minimax_search_runs_public_company_through_cli_and_cleans_local_artifacts",
+  "target": {
+    "company": "Microsoft",
+    "question_count": 1,
+    "route_count": 1,
+    "model": "MiniMax-M3",
+    "endpoint": "https://api.minimaxi.com/v1/responses"
+  },
+  "runs": [
+    {
+      "sequence": 1,
+      "result": "failed",
+      "search_status": "unverified",
+      "explanation": "The original prompt did not yield a verifiable completed search event in the public CLI result."
+    },
+    {
+      "sequence": 2,
+      "result": "passed",
+      "reported_duration_seconds": 9.55,
+      "reported_pytest": "1 passed",
+      "search_status": "executed",
+      "assertions": [
+        "public StockQA CLI path",
+        "one company and one question",
+        "MiniMax-M3 resolved provider",
+        "nonempty local attempt ID and provider response ID",
+        "completed web_search_call and nonempty source URLs from the same response",
+        "nonempty search receipt ID",
+        "unique temporary root cleaned"
+      ],
+      "explanation": "The revised prompt explicitly requested the current official FY2025 annual report. Since prompt and parser changed between runs, success cannot be attributed to parser changes alone."
+    }
+  ],
+  "limits": {
+    "independent_live_rerun": false,
+    "provider_request_id_may_be_null": true,
+    "monetary_cost_receipt": false,
+    "raw_response_persisted": false,
+    "api_key_value_persisted": false,
+    "durable_retry_verified": false,
+    "full_pool_verified": false
+  }
+}

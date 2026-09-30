@@ -1,13 +1,17 @@
 """Automated tests for Metrics, Comparability and Evidence Semantics Contract (Task C02).
-Covers scenarios: SC-08, SC-09, SC-10, SC-11, DUR-01, DUR-02, DUR-03.
+Covers scenarios: SC-08, SC-09, SC-10, SC-11, SC-15, DUR-01, DUR-02, DUR-03.
 """
 import json
 from pathlib import Path
+import sys
 import unittest
 import jsonschema
 from jsonschema import validate, ValidationError
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+import contract_validation as cv
+import question_sets as qs
 SCHEMA_PATH = ROOT / "schemas/quick_scan/metric.schema.json"
 CATALOG_PATH = ROOT / "questions/catalog.json"
 
@@ -26,43 +30,21 @@ class MetricsContractTests(unittest.TestCase):
 
     def test_sc_08_metamorphic_diagnostics_never_alter_core_averages(self):
         """SC-08: Adding diagnostic answers (Dupont, Porter, Recovery) with score 10 never alters quality/growth/valuation averages."""
-        core_answers = {
-            "IQS_01": {"score": 8, "aggregation_role": "quality_core"},
-            "IQS_02": {"score": 7, "aggregation_role": "quality_core"},
-            "IQS_03": {"score": 9, "aggregation_role": "quality_core"},
-            "IQS_GROWTH_01": {"score": 6, "aggregation_role": "growth_core"},
-            "IQS_VALUATION_01": {"score": 5, "aggregation_role": "valuation_core"}
-        }
-
-        def compute_aggregates(answers):
-            quality = [v["score"] for v in answers.values() if v["aggregation_role"] == "quality_core"]
-            growth = [v["score"] for v in answers.values() if v["aggregation_role"] == "growth_core"]
-            valuation = [v["score"] for v in answers.values() if v["aggregation_role"] == "valuation_core"]
-            diagnostics = [v["score"] for v in answers.values() if v["aggregation_role"] == "diagnostic_only"]
-            return {
-                "quality_avg": sum(quality) / len(quality) if quality else None,
-                "growth_avg": sum(growth) / len(growth) if growth else None,
-                "valuation_avg": sum(valuation) / len(valuation) if valuation else None,
-                "diagnostics_count": len(diagnostics)
-            }
-
-        baseline = compute_aggregates(core_answers)
-
-        # Append diagnostics with score 10
-        with_diagnostics = dict(core_answers)
-        with_diagnostics["DUPONT_01"] = {"score": 10, "aggregation_role": "diagnostic_only"}
-        with_diagnostics["PORTER_01"] = {"score": 10, "aggregation_role": "diagnostic_only"}
-        with_diagnostics["RECOVERY_01"] = {"score": 10, "aggregation_role": "diagnostic_only"}
-
-        after = compute_aggregates(with_diagnostics)
-
-        # Core averages strictly invariant
-        self.assertEqual(baseline["quality_avg"], after["quality_avg"])
-        self.assertEqual(baseline["growth_avg"], after["growth_avg"])
-        self.assertEqual(baseline["valuation_avg"], after["valuation_avg"])
-        # Only diagnostics count increments
-        self.assertEqual(baseline["diagnostics_count"], 0)
-        self.assertEqual(after["diagnostics_count"], 3)
+        def record(qid, dimension, score, aggregation="scored"):
+            return {"id":qid, "dimension":dimension, "score":score, "status":"scored",
+                    "aggregation":aggregation, "critical":False}
+        core = [record("IQS_01","customer_quality",8), record("IQS_02","customer_quality",7),
+                record("IQS_03","customer_quality",9), record("IQS_GROWTH_01","growth",6),
+                record("IQS_VALUATION_01","valuation",5)]
+        baseline = qs.summarize(core)
+        diagnostics = [record("DUPONT_01","profit_quality",10,"diagnostic"),
+                       record("PORTER_01","industry_structure",10,"diagnostic"),
+                       record("RECOVERY_01","growth",10,"diagnostic")]
+        after = qs.summarize(core + diagnostics)
+        self.assertEqual(baseline["dimensions"], after["dimensions"])
+        self.assertEqual(baseline["quality_score"], after["quality_score"])
+        self.assertEqual(baseline["growth_score"], after["growth_score"])
+        self.assertEqual(baseline["valuation_score"], after["valuation_score"])
 
     def test_sc_09_critical_risk_cannot_be_averaged_or_bypassed(self):
         """SC-09: Critical risk score <= 3 (e.g. IQS_16 or bank cash replacement) flags critical risk, cannot be bypassed."""
@@ -129,15 +111,40 @@ class MetricsContractTests(unittest.TestCase):
         self.validate_type("MetricRegistryEntry", bank_metric)
         self.validate_type("MetricRegistryEntry", industrial_metric)
 
-        def can_compare(m1, m2):
-            if m1["cohort"] != m2["cohort"] and (
-                m1["comparability_scope"] != "cross_cohort_comparable" or
-                m2["comparability_scope"] != "cross_cohort_comparable"
-            ):
-                return False
-            return True
+        self.assertFalse(cv.metrics_comparable(bank_metric, industrial_metric))
 
-        self.assertFalse(can_compare(bank_metric, industrial_metric))
+    def test_sc_15_unknown_diagnostics_and_critical_risk_remain_separate(self):
+        """SC-15: Unknown stays in coverage denominator; diagnostics do not enter core dimensions; critical risk stays explicit."""
+        dimensions = list(qs.DIMENSIONS)
+        core = []
+        for index in range(1, 25):
+            dimension = dimensions[(index - 1) // 3]
+            core.append({
+                "id": f"IQS_{index:02}",
+                "construct_id": f"IQS_{index:02}",
+                "comparison_role": "core",
+                "dimension": dimension,
+                "score": None if index == 1 else (3 if index == 2 else 8),
+                "status": "unknown" if index == 1 else "scored",
+                "aggregation": "scored",
+                "critical": index == 2,
+            })
+
+        baseline = qs.summarize(core, policy="core-constructs-v1")
+        with_diagnostic = qs.summarize(core + [{
+            "id": "DUPONT_01", "construct_id": None,
+            "comparison_role": "diagnostic", "dimension": "growth",
+            "score": 10, "status": "scored", "aggregation": "diagnostic",
+            "critical": False,
+        }], policy="core-constructs-v1")
+
+        self.assertEqual(baseline["dimensions"], with_diagnostic["dimensions"])
+        self.assertEqual(baseline["growth_score"], with_diagnostic["growth_score"])
+        self.assertEqual(baseline["dimensions"]["business"]["applicable"], 3)
+        self.assertEqual(baseline["dimensions"]["business"]["valid"], 2)
+        self.assertEqual(baseline["dimensions"]["business"]["coverage"], round(2 / 3, 4))
+        self.assertIn({"id": "IQS_02", "kind": "material_concern", "status": "scored", "score": 3},
+                      baseline["critical_issues"])
 
     def test_dur_01_and_dur_02_evidence_demands(self):
         """DUR-01 & DUR-02: Mapping requires durability preconditions and net economic effect without keyword bonuses."""
@@ -177,18 +184,9 @@ class MetricsContractTests(unittest.TestCase):
 
     def test_dur_03_diagnostic_addition_rules(self):
         """DUR-03: Unknown vs N/A separation, no unneeded duplicate questions."""
-        def evaluate_diagnostic_trigger(has_unanswered_risk, evidence_status):
-            if evidence_status == "not_applicable":
-                return "skip_diagnostic"
-            if evidence_status == "unknown":
-                return "needs_verification"
-            if has_unanswered_risk:
-                return "trigger_diagnostic"
-            return "skip_diagnostic"
-
-        self.assertEqual(evaluate_diagnostic_trigger(True, "not_applicable"), "skip_diagnostic")
-        self.assertEqual(evaluate_diagnostic_trigger(True, "unknown"), "needs_verification")
-        self.assertEqual(evaluate_diagnostic_trigger(True, "valid"), "trigger_diagnostic")
+        self.assertEqual(cv.diagnostic_decision(has_unanswered_risk=True, evidence_status="not_applicable"), "skip_diagnostic")
+        self.assertEqual(cv.diagnostic_decision(has_unanswered_risk=True, evidence_status="unknown"), "needs_verification")
+        self.assertEqual(cv.diagnostic_decision(has_unanswered_risk=True, evidence_status="valid"), "trigger_diagnostic")
 
 
 if __name__ == "__main__":

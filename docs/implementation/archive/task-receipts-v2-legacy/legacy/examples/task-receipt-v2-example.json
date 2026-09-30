@@ -1,0 +1,73 @@
+{
+  "schema_version": "2.0",
+  "core": {
+    "task_id": "DEMO01",
+    "plan_version": "example-1",
+    "plan_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "case_catalog_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "hash_algorithm": "canonical-json-sha256-v1",
+    "task_spec_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "owned_case_bundle_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "referenced_case_bundle_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "global_boundaries_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "implementation_author_id": "implementer-example",
+    "case_results": [
+      {
+        "case_id": "DEMO-01",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "DEMO-01.A01",
+            "status": "passed",
+            "test_stage": "unit",
+            "selector": "tests/test_example.py::test_example",
+            "command": "python -X utf8 -m unittest discover -s tests -p test_example.py -v",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-DEMO01-example.log",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "example-run-001",
+              "cleanup_verified": true,
+              "cleanup_summary": "Temporary directory removed."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "No network adapter configured."
+            }
+          }
+        ]
+      }
+    ],
+    "implementation_snapshot": [
+      {
+        "root_id": "iqs",
+        "path": "scripts/example.py",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "implementation_snapshot_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "independent_review": {
+      "report": {
+        "root_id": "iqs",
+        "path": "docs/implementation/reviews/DEMO01/example-preseal-review.json",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "reviewer_id": "reviewer-example",
+      "reviewer_role": "independent reviewer",
+      "independent": true,
+      "separation_basis": "Separate author identity.",
+      "outcome": "approved",
+      "implementation_snapshot_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "open_findings": []
+    },
+    "dependency_evidence": []
+  },
+  "core_sha256": "43ec5d15dba356b4bd1b5da449c6f36976140f7cf9a952a61d3989250c5640a6"
+}

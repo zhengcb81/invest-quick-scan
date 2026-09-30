@@ -1,6 +1,6 @@
 # 固定约束与需要显式决策的边界
 
-2026-09-22。本表将已讨论设计变为实施边界；正式schema和路径由C系列任务落盘后经G0审查。本地评分题库现为3.0.0（48模块222题），事实1.0.0含61题，标准输出/离线比较已实现；外部执行/入库/UI与在线验收仍未完成。
+2026-09-26，计划版本1.10.9。本表将已讨论设计变为实施边界；正式schema和路径由C系列任务落盘后经G0审查。本地评分题库现为3.2.0（48模块222题），事实1.0.0含61题，标准输出/离线比较已实现；外部执行/入库/UI与在线验收仍未完成。
 
 | ID | 约束 | 验收时如何识别偏离 |
 |---|---|---|
@@ -32,6 +32,34 @@
 | I26 | 完整交付必须G6及全部组件/消费者的真实全链证据 | 只有UI健康、helper/stub测试或只有评分G5，不能宣称整套计划已完成或完整一键可用 |
 | I27 | 公司、时间、模型比较保留不可变观察和实际执行元数据 | 模型/期间/题义不同不得伪装经营变化；复用旧回答不改时间；缺失标签不补造 |
 | I28 | 自动准入依据已保存策略、真实身份及期间配额，由StockWiki唯一写入 | 自动维护不覆盖manual_pin或用户排除，不因低分清池；发现用LLM亦计统一预算 |
+| I29 | 每次付费派发前解析并冻结跨owner的ScanRecipe；旧run不随热更新换口径 | 题包/路由/评分尺/刷新/模型能力/预算hash缺失或冲突时仍发包、长批次中途静默换方案均须拒绝 |
+| I30 | 评分尺与筛选lens独立发布，名单/综合分是可重建派生视图 | 新权重或阈值覆盖旧观察/旧名单、不同题篮套同一>8门槛、主题OR绕过质量critical gate均不允许 |
+| I31 | 事实关系本体与词表映射分层，原词和方向/角色/时期不可改写 | 用新别名回填旧事实、把使用设备映射为制造设备、歧义词直接进入strict产业链结果均须拒绝 |
+| I32 | 字段刷新和提供商搜索能力各有版本且逐题预检 | 词表/筛选变化导致全池重问、未知搜索能力仍计分、HTTP 5xx/超时当明确未执行后立刻换模型均不允许 |
+| I33 | 查询/安装按实际加载hash与能力协商保持旧版只读、跨版本写入受控 | 旧客户端缺新能力返回空集合、升级失败删库、只凭版本名允许混搭写入均不允许 |
+| I34 | 每个演进组件由唯一owner发布不可变release ID/hash；component生命周期与workspace/profile的活动ReleaseSet指针分开管理 | 同ID覆盖内容、多个仓库同时编辑权威定义、candidate创建生产付费任务或退役后删除历史均不允许 |
+| I35 | 组合只解析经登记的声明式组件；LLM路由只能提议，不能自激活或绕过人工覆盖/必答风险题 | 任意插件代码、无证据自动分类激活、模糊路由猜行业或静默删困境题均不允许 |
+| I36 | 兼容性按历史读取、投影、新写入、付费派发、迁移分别协商并在副作用前检查 | semver相同但schema/hash不匹配仍写入、未知能力空列表/伪成功或请求后才拒绝均不允许 |
+| I37 | 组件依赖图必须给出精确受影响公司/字段和处理动作；影响未知就待审/阻断 | 新题触发全池扫描、阈值升级重问、依赖不全猜测无影响或自动删除对象均不允许 |
+| I38 | 有限答案、原始观察、答案解析/证据解释和派生分分别版本化且可追溯 | 解析器升版覆写旧答案/分数、无来源补造证据、把模型差异伪装成公司变化均不允许 |
+| I39 | 快扫轻资产边界同时适用于演进回放和解析升级 | 为复解析保存完整HTTP/search正文、网页/财报文档或密钥均不允许；缺字段回unknown/needs_review |
+| I40 | 候选release需通过冻结cohort的正反、兼容、影响范围和回退演练才可推广 | 仅schema校验或新版本冒烟通过就全池激活、缺周期低谷样本或回退丢账本均不允许 |
+| I41 | 跨仓release_set锁定StockQA答案schema、parser、证据解释的实际加载release ID/hash | 漏锁解析组件或实际运行回执hash与安装包不符时，拒绝新派发并保持历史可读 |
+| I42 | W16只接受固定、已锁hash的V17实现对当前权威快照确定性重算的plan | 本阶段不接受调用方自签plan或未定义信任根的签名回执；不能授权新增字段或扩大至全池 |
+| I43 | 兼容升级先安全结算旧冻结attempt，再决定是否准入新work；多worker应用用owner事务CAS/唯一约束 | 缺新release只阻断新generation/work/费用/HTTP；不能挡旧outbox对账，竞态也不能重复创建generation/费用 |
+| I44 | candidate ReleaseSet只可只读预览；生产新generation/work/派发必须来自active ReleaseSet | 仅安装、候选状态或版本字符串不能放行生产任务；旧attempt结算仍按原recipe执行 |
+| I45 | W16 CAS绑定完整输入快照、active ReleaseSet ID/status/manifest hash/pointer revision、V17实现hash、身份/成员/范围revision、recipe和字段generation | 预检后任一输入或活动指针变化都须拒绝旧plan，不能重复产生work、费用预留或POST |
+| I46 | W16唯一拥有dispatch fence与consume回执；StockQA先耐久写入本地`send_intent_prepared`，再调用`consume_dispatch_permit`；W16单次consume事务复核active指针/组件资格并绑定attempt；仅耐久`dispatch_commit` receipt授权一次POST | permit签发或本地准备不等于POST授权；consume前资格变化/崩溃时POST为0且permit不可重放；consume后至传输前崩溃若无法证明未发送则outcome_unknown、不可重试；已提交commit只允许该attempt一次POST结算 |
+| I47 | component lifecycle事件单调追加，workspace/profile active ReleaseSet指针单独原子切换；指针切换不自动改变组件release状态；回退只可选仍具新派发资格的兼容包 | 不可将deprecated/retired状态静默复活；不合资格回退只读并阻断新work，保留历史和旧attempt结算 |
+| I48 | 每个验收case有唯一owner_task；每个任务卡至少拥有一个本地case；其他任务只能在依赖闭包中回归引用 | 局部schema/题库测试不能冒充真实导入、UI、live或全链验收；前置卡不得因后续case未完成而被误报为全链完成 |
+| I49 | W16在应用V17影响计划及consume dispatch permit时绑定精确active ReleaseSet组件集合、每个组件的lifecycle/dispatch_eligibility revision、状态与manifest hash | active指针不变但任一组件资格修订时，旧预检不得创建generation/work/费用/outbox/permit/POST；CAS无副作用失败 |
+| I50 | 每个work最多一个有效或结果不明attempt/permit；attempt_id由StockQA单调生成；只有确认未发送或已对账的retryable终态拒绝才可创建下一attempt | outcome_unknown/consume后无法证明未发送时阻断fallback/新attempt；新attempt使用新permit并重新核验资格和预算；成功后立即停止顺位 |
+| I51 | 兼容声明绑定精确producer/consumer release和单一动作；UTC支持窗口为左闭右开，`valid_until_utc=null`必须显式声明`non_expiring` | 窗口边界、动作隔离、无效/重叠区间均需固定测试；过期限制对应动作，不删除或重释旧观察；无历史reader则`needs_review` |
+| I54 | issuer、安全证券与交易挂牌分别标识；issuer ID不透明不由名称/ticker派生；alias非唯一，外部编号必须带scheme/签发机构/辖区；歧义或强冲突不得自动归并或新派发 | 同简称/同品牌、裸ticker、跨来源orgId、未核实CIK不能合并；名称-only无entity/work；证券/挂牌范围被压扁、身份重写旧观察均不允许 |
+| I55 | AnalysisSubject独立标识经营报告范围；并表成员必须由owner权威回执精确绑定subject revision、主发行人、成员/角色/有效期与来源；主体事件必须匹配前后快照与精确affected IDs；市场辖区和MIC来自受控注册表 | 发行人存在、母子关系、URL文本或LLM输出不能自证并表；事件不能跨绑Listing/Security或漏报差异；格式像ISO代码、但注册表未知的市场/MIC组合必须失败关闭 |
+| I56 | 真实搜索/打包对照必须冻结匹配输入、gold和量化质量门槛；搜索结果只以限长、与模型输入一致且可追溯的短证据context注入并视为不可信数据，精确snippet仅临时保留并在审查后按manifest清理；缓存冷/热/失效需正交归因，盲评抽样与相对逐题基线容忍度预注册，时延按实际样本量报告，真实费用及MiniMax套餐quota/现金分开核算 | 混用模型/题义/信息截止时间的配对结果、把URL或search receipt当作正确性证明、持久化完整网页、将缓存收益误计为打包收益、样本不足仍报告稳定p90、漏算失败费用或虚构MiniMax单位价均不允许 |
+
+I55 是 C01/C04/C06/W02/W03/W05 等身份生产/消费任务的有界不变量，已在这些任务卡显式引用；它不放入全计划 `global_boundaries`，以免无关题库、UI、模型任务受到身份字段变更的重审影响。新任务触碰 subject、Work/Observation 身份或挂牌映射时必须显式引用 I55；只重验相关任务和依赖链。
 
 ## 已固定的默认语义
 
@@ -42,6 +70,11 @@
 - 关键风险沿用当前IQS_12/13/16及实际类型替代；有效1—3为重大问题，缺失/低置信度/未审核/N/A为未解。此默认不因新增screening模式而降低。
 - 旧严格审核和新screening可用性分别显式标识；没有迁移契约不自动提升资格。事实、来源和模型回答状态分别记录，不能合成一个success布尔值。
 - 用户顺序和预算只读自StockQA。默认策略变更用于新运行；要求热更新时记录派发边界和策略版本，不影响已派发或已完成题。
+- `scoring_only` 的已解析方案显式无事实包，不等待F06；事实能力以后作为可选扩展发布。每个run锁定recipe，正在发送/已完成的work不随新策略改变，升级只生成受影响字段的新代次或重建无模型费用的派生投影。
+- 早于ScanRecipe的真实旧run/work/observation标`legacy_without_recipe`，只读复用有证据且兼容的旧答；不得补签虚构recipe。旧未决请求先依据执行/费用账本对账，证据不足标`needs_review`且不自动POST或重扣费。
+- 新版本准入前先按旧冻结recipe与原attempt/receipt完成安全、幂等结算；兼容门关闭仅禁止新增work/费用预留/模型POST，不可阻断旧已答未ACK结果导入。W16只从当前权威快照用固定hash的V17实现确定性重算，并在同一事务内CAS校验输入水位；本阶段不接受未定义的可信回执替代重算。
+- X07只生成候选release_set及候选工件锁；X08安装并核对实际安装hash；X09核对隔离运行时实际加载hash。逐题回执中的解析版本必须与已加载锁匹配；版本号相同但内容hash不同仍视为不兼容。
+- 兼容窗口按精确release对/动作分别记录`valid_from_utc`和`valid_until_utc`，判定`start <= now < end`；结束时刻恰好到期。读取、投影重建、新写、付费派发、迁移、回退不共用隐含宽泛授权。时间或动作不明确则失败关闭，过期历史读取只可用仍明确支持的reader，不得重新解释观察。
 - 名单按独立公司计数，市场覆盖数允许重叠；父子上市主体独立保留。60/25/15是候选构建的可调起点，不是收益模型或强制行业配额。
 
 ## G0前必须形成的决策工件
@@ -58,3 +91,6 @@
 实现者可决定局部命名、函数分解、索引等技术细节，并记录理由。改变上述语义时提交一页变更记录：旧规则、新规则、必要性、受影响任务/测试、数据迁移和回退方式。更新场景预期需要解释业务含义变化，不能仅写“原测试失败”。
 
 G0由实施负责人安排设计审查，不要求每个命名都向用户请示。涉及用户已明确偏好或新增费用/范围时，遵循已有授权；没有答案的依赖只挂起相关任务，继续可独立推进的工作。
+
+
+I56 仅由 B01 搜索/打包benchmark与其下游 L03 试点引用，不加入全局边界。完整实验冻结条件与报告字段见[LLM搜索交接和打包基准](experiments/llm-search-and-batching-benchmark.md)。它不改变对其他live样本的选择权限，也不能单凭三市场小样本宣布普遍最优。

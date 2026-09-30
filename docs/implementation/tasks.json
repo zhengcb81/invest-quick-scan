@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.10.15",
   "status": "implementation_plan_not_product_completion",
   "stage_order": [
     "M0",
@@ -65,7 +65,35 @@
     "I25",
     "I26",
     "I27",
-    "I28"
+    "I28",
+    "I29",
+    "I30",
+    "I31",
+    "I32",
+    "I33",
+    "I34",
+    "I35",
+    "I36",
+    "I37",
+    "I38",
+    "I39",
+    "I40",
+    "I41",
+    "I42",
+    "I43",
+    "I44",
+    "I45",
+    "I46",
+    "I47",
+    "I48",
+    "I49",
+    "I50",
+    "I51",
+    "I52",
+    "I53",
+    "I54",
+    "I55",
+    "I56"
   ],
   "common_read_first": [
     "docs/implementation/README.md",
@@ -78,7 +106,17 @@
     "执行前核实真实路径和AGENTS；proposed路径先确认再创建。",
     "不改模型密钥、不新增文档采集或第二套LLM客户端。",
     "不删除用户数据或无关更改；不减弱固定预期来让测试通过。",
-    "所有生产任务当前均未因本计划而完成；实际状态只由带证据的任务回执记录。"
+    "本计划只描述范围与验收条件，不自动标记实现完成；当前状态、受影响测试和未解项记录在task_plan.md/progress.md。",
+    "可变策略按owner发布独立版本；运行前解析并锁定ScanRecipe，原答/费用/身份历史不改写，跨口径结果不可静默比较。",
+    "升级阻断只约束新generation/work/费用预留/派发；旧recipe已发送请求必须按冻结receipt安全对账和幂等结算。",
+    "安装release_set绑定每个实际加载组件的release ID/hash，包括StockQA答案schema、parser与证据解释；不能只声明版本号。",
+    "V17计划仅由已锁定的固定实现从当前权威快照确定性重算；本阶段不接受自签/外部签名计划作为替代信任根。candidate ReleaseSet只读预览，生产新generation/work/费用/POST要求active ReleaseSet。",
+    "W16唯一拥有dispatch fence请求/回执schema；StockQA先耐久写入send_intent_prepared，再调用StockWiki W16 consume_dispatch_permit；W16在owner事务中复核active指针与组件资格并消费绑定具体work/attempt/recipe的一次性permit；只有耐久dispatch_commit receipt授权一次provider POST。consume前资格变化/崩溃时POST为0且permit不可重放；consume后若不能证明未发送则outcome_unknown，禁止重试/新attempt；只有明确未发送或已对账的retryable终态才可重新核验资格/预算并用单调attempt派发。",
+    "回退切换workspace/profile active ReleaseSet指针与组件生命周期分离；指针切换不隐式改变组件release状态，deprecated须由owner显式发布；只有仍具新派发资格的已验证包可接收新work，过期/退役包仅允许历史读取与原attempt结算。",
+    "验收case必须区分owner本地可执行范围与后置全链入口；跨任务集成case声明requires_tasks，前置卡未依赖该任务时不得把它列为完成门或用局部结果标作全案通过。",
+    "兼容矩阵每一条都绑定精确producer/consumer release与动作，UTC窗口按[start,end)判定；缺少边界/歧义时失败关闭，过期不删除或重释历史观察。",
+    "每个实施批次在progress.md记录当前HEAD、变更路径、受影响测试/命令/结果、样本SHA、临时测试根清理结果及未解项；只在G0—G6等大节点或高影响边界变化时做独立审查。历史任务回执不作为当前状态门。",
+    "Issuer IDs are opaque and immutable; alias strings and ticker values are non-unique claims, source identifiers are namespaced, and issuer/security/listing identity resolution fails closed on ambiguity."
   ],
   "known_offline_commands": [
     {
@@ -105,6 +143,11 @@
       "owner": "iqs",
       "command": "python -X utf8 scripts/model_policy.py --input examples/model-policy.template.json",
       "scope": "用户模板离线结构检查，不验证可用额度、不发模型请求"
+    },
+    {
+      "owner": "iqs",
+      "command": "python -X utf8 -m unittest discover -s tests -p test_freshness_and_jobs_contract.py -v",
+      "scope": "C04纯规则与结构化契约回归，不验证外部数据库/队列/LLM执行"
     }
   ],
   "tasks": [
@@ -125,12 +168,15 @@
         "references/stockqa-integration.md"
       ],
       "allowed_changes": [
-        "docs/implementation/baselines/（新增：仅脱敏接口/命令/快照报告）"
+        "docs/implementation/baselines/baseline-report-????-??-??.md（仅新增当次脱敏基线报告；不修改legacy/、旧P00 v1或历史P01 manifest）",
+        "docs/implementation/contracts/validation-P00-*.log（新增隔离验证日志；不生成任务回执）",
+        "docs/implementation/tasks.json、docs/implementation/acceptance-cases.json（只限基线范围记录）",
+        "task_plan.md、progress.md、findings.md（记录接口基线、HEAD、实际检查与未解项）"
       ],
       "steps": [
         "读取目标仓库AGENTS及当前源码；记录commit或文件hash和未提交变更。",
         "核实StockQA解析、搜索、AnswerGenerator、ProviderCascade的真实调用链与测试入口；CodeGraph不可用时记录替代方式。",
-        "记录题库3.0/事实1.0、旧27项及新增标准化测试，以及仍允许5/8的旧观察性断言；区分已知缺陷、失败和skip。"
+        "记录评分题库、事实题库、旧版行为和新增标准化测试；保留早期5/8宽松断言作为历史缺陷，并核实Q01/S02已将当前回归收紧为8且unknown仍为null；区分已知缺陷、已修复行为、失败和skip。"
       ],
       "deliverables": [
         "接口/命令/版本清单",
@@ -142,8 +188,8 @@
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
-        "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
-        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+        "所列基线检查有实际结果；关键skip/未运行单独报告，不宣称跨仓或产品路径已完成。",
+        "记录当前HEAD、变更路径、复现命令、结果摘要、样本SHA和未解事项；C01—C07纳入G0同组验收。"
       ],
       "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
     },
@@ -160,7 +206,9 @@
         "I03",
         "I04",
         "I16",
-        "I18"
+        "I18",
+        "I54",
+        "I55"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -170,29 +218,68 @@
       ],
       "allowed_changes": [
         "schemas/quick_scan/identity*（新增契约）",
-        "docs/implementation/contracts/identity.md（新增）"
+        "docs/implementation/contracts/identity.md（新增）",
+        "docs/system-contract.md（身份与并表信任边界）",
+        "docs/implementation/decision-register.md（I55及作用范围）",
+        "tests/test_identity_contract.py（新增契约测试）",
+        "scripts/contract_validation.py (new identity writer and historical reader semantics)",
+        "tests/test_g0_regressions.py (compatibility oracle for the changed identity entry point)",
+        "schemas/quick_scan/identity-cli-request.schema.json（新增版本化公开请求信封）",
+        "scripts/identity_contract_cli.py（只读公开JSON校验CLI）",
+        "tests/test_identity_contract_cli.py（隔离子进程CLI验收）",
+        "docs/implementation/reviews/IQS-lane/worktree-inventory-2026-09-29.*（活动工件基线）"
       ],
       "steps": [
         "定义entity/security/segment、经核实桥接与有效期；不猜ADR比例。",
         "定义成员版本、manual_pin、逻辑移除、提名和上市状态；成员以entity为单位。",
         "提供AH同实体、母子分离、无company-wiki条目等正反交换样例。",
-        "冻结自动准入/手工pin与禁止自动恢复、公司桥接来源、成员变更和扫描意图的单一StockWiki写入协议。"
+        "冻结自动准入/手工pin与禁止自动恢复、公司桥接来源、成员变更和扫描意图的单一StockWiki写入协议。",
+        "Define opaque issuer IDs, namespaced issuer identifier claims, non-unique effective-dated aliases, and a deterministic ambiguity state machine.",
+        "Publish identity schema 2.1.0 with Entity/Security/Listing layers; retain v2.0.0 only through explicit historical-read compatibility.",
+        "Define sourced corporate relationship and append-only identity-event contracts; keep group relationships distinct from issuer equivalence and bind each event to exactly one identity revision increment.",
+        "Define AnalysisSubject v1 independently from issuer Entity v2.1, including scope kind, primary issuer, evidence-backed temporal memberships, provisional exact-listing scope, and append-only scope revisions.",
+        "Require a trusted owner reporting-perimeter receipt for every consolidated subject; bind exact subject ID/revision, primary issuer, member roles/effective intervals, coverage, source and canonical snapshot hash. Issuer verification or a membership URL alone is insufficient.",
+        "Validate AnalysisSubject and issuer events against immutable before/after snapshots; old/new values, one-step revisions and affected issuer/security/listing sets must exactly explain the change.",
+        "Require a versioned owner ISO/MIC registry for every new identity write; reject unknown jurisdictions, unregistered MICs and MIC/market mismatches.",
+        "Publish a versioned read-only JSON validation CLI for identity package 2.2.0; validate Entity 2.1.0 and AnalysisSubject 1.0.0 against this repository schema/reference contracts without authenticating or inventing StockWiki authority.",
+        "Enforce bounded input, duplicate-key rejection, one-line non-echoing JSON output, stable error codes/JSON Pointers, exit 0 for valid, 2 for invalid content and 3 for unsupported package version; test through real subprocess calls and leave input bytes unchanged."
       ],
       "deliverables": [
         "身份/名单schema与版本",
-        "身份样例与错误语义"
+        "身份样例与错误语义",
+        "Identity-resolution contract and versioned compatibility tests for issuer, security, listing, identifiers, aliases, and ambiguity.",
+        "Strict relationship/event contracts and semantic tests for immutable identity revision history.",
+        "Independent reporting-scope schema, semantic validator, compatibility boundary, and acceptance tests proving issuer and analysis subject are never conflated.",
+        "Trusted reporting-perimeter receipt and exact AnalysisSubject event transition checks, with fabricated/self-asserted membership and wrong-target regressions.",
+        "Owner-supplied ISO/MIC registry validation with invalid-market and cross-jurisdiction MIC regressions.",
+        "Versioned CLI request schema, public validator entry point, and subprocess positive/negative/unknown-version/size/duplicate-key regression tests; synthetic fixtures are explicitly not StockWiki producer goldens."
       ],
       "case_ids": [
         "ID-01",
         "ID-02",
         "ID-03",
-        "ID-04",
-        "UNI-04"
+        "ID-08",
+        "ID-09",
+        "ID-10",
+        "ID-11",
+        "ID-18",
+        "ID-19",
+        "ID-20",
+        "ID-21",
+        "ID-22",
+        "ID-24",
+        "ID-25",
+        "ID-26",
+        "ID-27",
+        "ID-28",
+        "ID-29",
+        "ID-30"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
         "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
-        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+        "提交实现快照、变更文件、复现命令和测试摘要；C01—C07在G0准备中纳入同一批独立审查，不为每张小卡单独重复全量审查；当前状态与未解项记录在progress.md；仅在G0等大节点按组审查关闭。",
+        "The public CLI validates both Entity and AnalysisSubject payloads with caller-supplied reference context, reports contract consistency only, never claims trusted owner authenticity, does not write inputs, and meets its stable stdout/exit-code contract."
       ],
       "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
     },
@@ -224,7 +311,8 @@
       ],
       "allowed_changes": [
         "schemas/quick_scan/metric*（新增）",
-        "docs/implementation/contracts/metrics.md（新增）"
+        "docs/implementation/contracts/metrics.md（新增）",
+        "tests/test_metrics_contract.py（新增契约测试）"
       ],
       "steps": [
         "逐一映射24核心判断、类型替代、行业/阶段题；记录scope/cohort与版本兼容性。",
@@ -238,17 +326,17 @@
       ],
       "case_ids": [
         "SC-08",
-        "SC-09",
         "SC-10",
         "SC-11",
         "DUR-01",
         "DUR-02",
-        "DUR-03"
+        "DUR-03",
+        "SC-15"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
         "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
-        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+        "提交实现快照、变更文件、复现命令和测试摘要；C01—C07在G0准备中纳入同一批独立审查，不为每张小卡单独重复全量审查；当前状态与未解项记录在progress.md；仅在G0等大节点按组审查关闭。"
       ],
       "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
     },
@@ -281,7 +369,8 @@
       "allowed_changes": [
         "schemas/quick_scan/score*（新增）",
         "schemas/quick_scan/rule*（新增）",
-        "docs/implementation/contracts/scoring.md（新增）"
+        "docs/implementation/contracts/scoring.md（新增）",
+        "tests/test_scoring_and_rules_contract.py（新增契约测试）"
       ],
       "steps": [
         "定义nullable整数/状态/错误码及来源/搜索/检查分别记录。",
@@ -293,21 +382,15 @@
         "真值表与兼容迁移说明"
       ],
       "case_ids": [
-        "SC-02",
         "SC-03",
         "SC-04",
-        "SC-05",
-        "SC-06",
         "SC-07",
-        "SC-09",
-        "RULE-01",
-        "RULE-02",
-        "RULE-03"
+        "SC-16"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
         "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
-        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+        "提交实现快照、变更文件、复现命令和测试摘要；C01—C07在G0准备中纳入同一批独立审查，不为每张小卡单独重复全量审查；当前状态与未解项记录在progress.md；仅在G0等大节点按组审查关闭。"
       ],
       "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
     },
@@ -324,27 +407,44 @@
       "invariants": [
         "I08",
         "I09",
-        "I12"
+        "I12",
+        "I54",
+        "I55"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
         "docs/universe-and-operations-design.md",
         "docs/system-contract.md",
-        "references/standard-output.md"
+        "references/standard-output.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/contracts/identity.md",
+        "docs/implementation/contracts/scoring.md",
+        "schemas/observation.schema.json"
       ],
       "allowed_changes": [
-        "schemas/quick_scan/work*（新增）",
-        "docs/implementation/contracts/freshness-and-jobs.md（新增）"
+        "schemas/quick_scan/work.schema.json（更新时间/作用范围/任务状态契约）",
+        "scripts/work_contract.py（仅新增无网络/无存储的参考判定函数）",
+        "docs/implementation/contracts/freshness-and-jobs.md（更新）",
+        "tests/test_freshness_and_jobs_contract.py（测试契约参考函数及真实JSON Schema）",
+        "docs/implementation/contracts/receipt-C04.json（完成回执）",
+        "docs/implementation/contracts/validation-C04-2026-09-23.log（脱敏虚构fixture测试输出）",
+        "docs/implementation/acceptance-cases.json、docs/implementation/tasks.json与根目录planning-with-files记录（仅本卡预期/状态/回执）"
       ],
       "steps": [
-        "区分信息/来源/回答/导入/检查时间，固定UTC与到期边界。",
-        "定义语义/路由兼容、刷新代次、任务键和请求缓存键；换run不新增逻辑题。",
-        "列领取租约、result_ready/delivered/unknown/uncertain的合法转移、取消和恢复条件。",
-        "冻结run/scan/observation及复用引用，UTC执行时间和来源信息时间分开；不以导入刷新历史。"
+        "保留原观察的information_as_of、published_at、实际回答时间、首次imported_at和复核事件时点；UTC/日期精度、未知时间及截止边界不得互相代替。",
+        "对照题义/路由兼容与刷新代次：仅更新受影响字段；固定逻辑待办键entity+question+字段代次+scope+scope_id，与含模型/请求输入hash的request_cache_key分开。",
+        "为状态schema明确pending/leased/uncertain/result_ready/delivered/failed/cancelled；资料不足是独立response_status与冷却调度决定，不和request/delivery状态混用；未证实发包先按uncertain对账；ACK不匹配不能完成投递。",
+        "补充纯离线work_contract.py作为可执行参考规则，不实现worker、数据库、HTTP、LLM或重试调度；逐个覆盖关联TIME/JOB场景并按真实Schema FormatChecker校验。",
+        "记录run/scan对同一逻辑work的引用、尝试时间和observation复用方式；answered unknown冷却到期后只递增对应字段代次；重放ACK不得改写已存观察或续期。",
+        "Bind work identity revision and distinguish issuer, security, and listing scopes in logical work keys.",
+        "Bind every new logical Work key to analysis_subject_id plus subject revision; keep issuer/security/listing scopes explicit and legacy jobs readable without synthetic scope."
       ],
       "deliverables": [
-        "新鲜度/任务schema",
-        "状态图及禁止转移样例"
+        "字段时效/逻辑work及attempt分层JSON Schema",
+        "状态转移表、同一attempt恢复规则与禁止转移",
+        "纯离线参考规则及覆盖TIME-01—09/JOB-01/JOB-08的行为测试",
+        "Task C04完成回执（implementation_complete，独立审查留pending）"
       ],
       "case_ids": [
         "TIME-01",
@@ -352,16 +452,15 @@
         "TIME-03",
         "TIME-04",
         "TIME-05",
-        "TIME-06",
         "TIME-07",
         "TIME-08",
-        "JOB-01",
-        "JOB-08"
+        "TIME-09",
+        "C04-CONTRACT-04"
       ],
-      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "test_binding": "执行tests/test_freshness_and_jobs_contract.py全部用例；测试必须调用scripts/work_contract.py并启用JSON Schema FormatChecker。固定TTL边界、严格历史来源门槛、scope级待办键、请求缓存分离、同一不确定attempt对账及ACK匹配断言。不得在测试中重写待测逻辑当作实现，也不把离线参考规则宣称为生产运行器。 新增TIME-09必须调用work_contract.field_freshness_preview，以固定时钟覆盖fresh/stale/missing_date字段，验证确定性、输入不变和dispatch_started=false。",
       "completion": [
         "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
-        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+        "提交实现快照、变更文件、复现命令和测试摘要；C01—C07在G0准备中纳入同一批独立审查，不为每张小卡单独重复全量审查；当前状态与未解项记录在progress.md；仅在G0等大节点按组审查关闭。"
       ],
       "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
     },
@@ -389,44 +488,46 @@
         "references/standard-output.md",
         "references/model-policy.md",
         "examples/model-policy.template.json",
-        "schemas/model-policy.schema.json"
+        "schemas/model-policy.schema.json",
+        "docs/implementation/contracts/freshness-and-jobs.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md"
       ],
       "allowed_changes": [
-        "schemas/model-policy.schema.json、examples/model-policy.template.json及契约适配（扩展已有模板，无密钥）",
-        "docs/implementation/contracts/providers-and-budget.md（新增）"
+        "schemas/model-policy.schema.json（扩展现有无密钥契约）",
+        "examples/model-policy.template.json（扩展无密钥示例）",
+        "scripts/model_policy.py（仅增加跨字段预算/比较配置的离线检查）",
+        "tests/test_model_policy.py（纯离线配置契约检查）",
+        "tests/test_providers_and_budget_contract.py（纯离线配置契约检查）",
+        "docs/implementation/contracts/providers-and-budget.md（新增）",
+        "docs/implementation/contracts/receipt-C05.json",
+        "docs/implementation/contracts/validation-C05-2026-09-23.log",
+        "docs/implementation/tasks.json（仅本卡）",
+        "task_plan.md（仅本卡）",
+        "progress.md（仅本卡）",
+        "findings.md（仅本卡）"
       ],
       "steps": [
-        "对齐StockQA有序提供商/模型与能力配置；固定成功即停和故障冷却语义。",
-        "区分429/5xx/认证/坏请求/结构失败/正常unknown；一个重试预算拥有者。",
-        "定义原子费用预留、实际消耗、未知结果、搜索收费和策略热更新记录；不把示例价格当实际价格。",
-        "分开primary fallback和显式comparison；冻结实际模型未知值、独立请求、共同输入与对照预算。",
+        "对齐StockQA有序提供商/模型与搜索/结构化能力预检；固定成功即停、首选容量满时等待和故障冷却语义。",
+        "区分确认额度耗尽、普通429、5xx、认证、坏请求、结构失败、能力缺失、超时不明和正常unknown；明确一个重试预算拥有者。",
+        "定义派发前原子费用预留、失败/搜索/fallback的共同账本、实际消耗结算、未知费用暂停和策略热更新记录；不编造厂商价格。",
+        "分开primary fallback和显式comparison；冻结实际模型未知值、独立逻辑请求、共同输入截止日与独立比较子预算。",
         "复核现有model-policy.schema.json及可填写JSON模板，冻结三层并发、共享账户五小时额度、组级熔断、逐题防重与单探针契约；不得另建矛盾策略。"
       ],
       "deliverables": [
-        "执行策略/费用契约",
-        "错误分类表和计价配置要求"
+        "执行策略、错误分类、费用预留/结算和comparison契约",
+        "扩展后的用户模型顺序/预算配置Schema与安全模板",
+        "由真实离线配置校验器和JSON Schema执行的case绑定测试及回执"
       ],
       "case_ids": [
-        "LLM-03",
-        "LLM-04",
-        "LLM-05",
-        "LLM-06",
-        "LLM-10",
-        "BUD-01",
-        "BUD-02",
-        "BUD-03",
-        "BUD-04",
-        "PAR-01",
-        "PAR-02",
-        "PAR-03",
-        "PAR-06",
-        "PAR-07",
-        "PAR-08"
+        "C05-CONTRACT-01",
+        "C05-CONTRACT-02",
+        "C05-CONTRACT-03"
       ],
-      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "test_binding": "仅绑定C05-CONTRACT-*离线契约case，运行tests/test_model_policy.py与tests/test_providers_and_budget_contract.py并调用真实scripts/model_policy.py和Draft202012Validator。LLM/BUD/PAR运行case保留给下游StockQA/StockWiki owner任务，C05不得将其标为passed。",
       "completion": [
         "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
-        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+        "提交实现快照、变更文件、复现命令和测试摘要；C01—C07在G0准备中纳入同一批独立审查，不为每张小卡单独重复全量审查；当前状态与未解项记录在progress.md；仅在G0等大节点按组审查关闭。"
       ],
       "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
     },
@@ -449,46 +550,58 @@
         "I13",
         "I14",
         "I15",
-        "I18"
+        "I18",
+        "I54",
+        "I55"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
         "docs/universe-and-operations-design.md",
         "docs/implementation/results-ui.md",
         "docs/system-contract.md",
-        "references/standard-output.md"
+        "references/standard-output.md",
+        "docs/implementation/contracts/identity.md",
+        "docs/implementation/contracts/scoring.md",
+        "docs/implementation/contracts/freshness-and-jobs.md",
+        "docs/implementation/contracts/providers-and-budget.md",
+        "schemas/observation.schema.json",
+        "schemas/answer-content.schema.json"
       ],
       "allowed_changes": [
         "schemas/quick_scan/exchange*（新增）",
         "schemas/quick_scan/query*（新增）",
-        "docs/implementation/contracts/exchange-and-query.md（新增）"
+        "scripts/exchange_contract.py（仅新增无网络/无数据库的参考规则）",
+        "examples/quick_scan/*（新增虚构数据样例）",
+        "tests/test_exchange_and_query_contract.py（纯离线Schema/协议测试）",
+        "docs/implementation/contracts/exchange-and-query.md（新增）",
+        "docs/implementation/contracts/receipt-C06.json、docs/implementation/contracts/validation-C06-2026-09-23.log",
+        "docs/implementation/tasks.json及根目录planning-with-files记录（仅本卡）",
+        "tests/test_g0_regressions.py（覆盖交换契约消费者断言）"
       ],
       "steps": [
         "定义生产者/消费者版本、不可变键/hash、兼容错误、ACK与来源限制。",
         "定义capabilities/coverage、分页search/get_profiles/candidate_set、范围补扫及提名/冲突反馈。",
         "采用已提供facts/score标准schema和样板，记录兼容范围；记录深研现有契约版本，不伪造正式manifest/span或强接DAG。",
         "冻结结果UI所需的稳定entity链接、分页快照/游标、单页上限、评分依据/状态和历史可比性字段；保存视图引用规则版本，页面不另算评分。",
-        "冻结两库水位/ACK/回放和三维比较接口，声明每类权威数据及data_root，不共享可写库。"
+        "冻结两库水位/ACK/回放和三维比较接口，声明每类权威数据及data_root，不共享可写库。",
+        "Expose issuer, security, listing, identity state/revision, and eligibility without collapsing quote scopes.",
+        "Expose analysis-subject identity, scope kind/revision and scope coverage in query capabilities and results; filter and paginate by subject while keeping listing-specific views separate."
       ],
       "deliverables": [
         "交换/查询schema与样例",
-        "版本兼容与拥有者说明"
+        "版本兼容与拥有者说明",
+        "ACK冲突/幂等、scope refresh、coverage gap及研究来源防循环的离线协议测试与回执"
       ],
       "case_ids": [
-        "DB-02",
-        "DB-03",
-        "DB-06",
-        "DB-07",
-        "QUERY-01",
-        "QUERY-02",
-        "QUERY-04",
-        "FACT-01",
-        "CONS-05"
+        "C06-CONTRACT-01",
+        "C06-CONTRACT-02",
+        "C06-CONTRACT-03",
+        "C06-CONTRACT-04"
       ],
-      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "test_binding": "仅绑定C06-CONTRACT-*离线契约case，使用虚构fixture、Schema和真实reference validator验证轻量交换、查询一致性及传递lineage。DB/QUERY/CONS生产case保留给下游owner公共入口，C06不得将SQLite事务、端点、认证或消费者运行标为passed。",
       "completion": [
         "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
-        "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
+        "提交实现快照、变更文件、复现命令和测试摘要；C01—C07在G0准备中纳入同一批独立审查，不为每张小卡单独重复全量审查；当前状态与未解项记录在progress.md；仅在G0等大节点按组审查关闭。"
       ],
       "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
     },
@@ -521,8 +634,14 @@
         "references/standard-output.md"
       ],
       "allowed_changes": [
-        "schemas/quick_scan/deployment*（新增）",
-        "docs/implementation/contracts/launch-and-release.md（新增）"
+        "schemas/quick_scan/deployment.schema.json（新增）",
+        "scripts/deployment_contract.py（新增；纯离线策略参考，不读写进程/网络/数据库）",
+        "examples/quick_scan/deployment*（新增虚构样例）",
+        "tests/test_deployment_contract.py（新增离线schema/策略测试）",
+        "docs/implementation/contracts/launch-and-release.md（新增）",
+        "docs/implementation/contracts/validation-C07-2026-09-23.log及receipt-C07.json",
+        "docs/implementation/tasks.json及根目录planning-with-files记录（仅本卡）",
+        "tests/test_g0_regressions.py（覆盖发布/就绪消费者断言）"
       ],
       "steps": [
         "固定StockWiki统一setup/doctor/plan/start/status/stop/resume语义及StockQA公开控制/配置接口。",
@@ -535,20 +654,14 @@
         "G6完整就绪证据要求"
       ],
       "case_ids": [
-        "DEPLOY-02",
-        "DEPLOY-04",
-        "START-02",
-        "START-03",
-        "START-05",
-        "START-09",
-        "START-11",
-        "E2E-04",
-        "E2E-05"
+        "C07-CONTRACT-01",
+        "C07-CONTRACT-02",
+        "C07-CONTRACT-03"
       ],
-      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "test_binding": "仅绑定C07-CONTRACT-*离线契约case，运行tests/test_deployment_contract.py与tests/test_g0_regressions.py并调用真实scripts/deployment_contract.py和Draft202012Validator。DEPLOY/START/E2E生产运行case保留给StockWiki/StockQA/X owner任务；本仓测试只证明发布集合、进程身份、就绪证据和状态迁移协议的拒绝路径，不宣称真实CLI、进程、SQLite、预算账本、UI或联网搜索已经实现。",
       "completion": [
-        "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
-        "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
+        "每个关联case都有对应的离线协议正反检查和实际运行输出；测试明确阻止hash/version错配、重复启动/费用重置、doctor付费与不完整发布越级；未运行/skip不算通过。",
+        "提交schema、契约文档、fixture、参考规则、精确测试选择器及回执；生产CLI/数据库/进程/预算行为不得用本地参考规则冒充，独立审查最新快照后才verified。"
       ],
       "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
     },
@@ -581,12 +694,17 @@
         "docs/universe-and-operations-design.md"
       ],
       "allowed_changes": [
-        "docs/implementation/reviews/G0/（新增审查记录）"
+        "docs/implementation/reviews/G0/（新增审查记录）",
+        "scripts/g0_candidate_manifest.py（候选快照须覆盖持久化测试fixture并校验当前计划版本/范围声明）",
+        "tests/test_g0_manifest.py（manifest范围完整性、历史候选冻结与元数据回归）",
+        "docs/implementation/contracts/validation-G0-*.log（本地隔离review校验输出）"
       ],
       "steps": [
         "逐项核对契约与固定约束，检查引用和样例的正反预期。",
         "检查每个接口恰好一个写入拥有者，跨仓不共享可写内部状态。",
-        "记录所有未定值/版本与阻塞项；固定契约hash后放行实现任务。"
+        "记录未定值/版本与阻塞项；冻结契约hash后放行实现任务。",
+        "仅把P00/P01旧回执和审查作为历史上下文；本次G0按当前代码、测试、样本hash和未解项审查C01—C07，不依赖自动任务回执。",
+        "候选快照须包含持久化测试fixture，并核对当前计划版本、声明/排除范围及文件hash；旧候选与旧报告留作只读历史。"
       ],
       "deliverables": [
         "G0审查与问题关闭记录",
@@ -595,12 +713,12 @@
       "case_ids": [
         "REV-01",
         "REV-02",
-        "REV-03",
-        "BASE-02"
+        "REV-03"
       ],
       "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
       "completion": [
         "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
+        "候选manifest与当前计划、声明范围及所有纳入的源文件/fixture逐项匹配；旧候选与旧报告保留为只读历史。",
         "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
       ],
       "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
@@ -640,10 +758,9 @@
         "解析/生成器真实接口测试"
       ],
       "case_ids": [
-        "SC-01",
-        "SC-02",
         "SC-03",
-        "SC-04"
+        "SC-04",
+        "SC-14"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -673,21 +790,21 @@
       "allowed_changes": [
         "src/providers/llm_client.py（核实后修改）",
         "所选提供商已有适配层（P00核实）",
-        "tests/搜索请求与metadata测试"
+        "src/providers/llm_provider.py、src/utils/llm_integration.py、src/core/models.py（仅真实厂商与路由别名回执归属接线）",
+        "tests/搜索请求、公开CLI与metadata测试"
       ],
       "steps": [
         "按当时厂商官方接口核实搜索参数/工具事件，不仅修改prompt。",
-        "统一保存request_id与原始必要执行metadata；不支持的能力返回不可用。",
-        "在传输边界mock正反响应，检查缺执行凭据时不放行。"
+        "统一保存可得的provider request_id、response_id、本地attempt_id与完成的搜索事件/来源；厂商未返回request_id时保留null，不把本地ID冒充它；逐题真实端点厂商与route/config别名分栏，多厂商批次不伪造单一顶层厂商。",
+        "在传输边界mock正反响应，检查缺执行凭据时不放行；能力不支持或全局坏请求的单路由预检/失败边界由LLM-11覆盖。所有路由用尽的运行级状态属Q04，持久retry_wait和恢复属Q08，Q02不等待后置卡形成依赖环。"
       ],
       "deliverables": [
         "首个提供商搜索适配",
         "搜索receipt与不可用状态测试"
       ],
       "case_ids": [
-        "LLM-01",
         "LLM-02",
-        "LLM-06"
+        "LLM-11"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -731,11 +848,10 @@
         "端到端入口回归"
       ],
       "case_ids": [
-        "SC-01",
         "SC-02",
         "SC-04",
         "LLM-02",
-        "LLM-07"
+        "LLM-18"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -743,6 +859,53 @@
         "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
       ],
       "rollback": "保留原版本/运行数据；局部撤回本任务改动或禁用新增能力，不能覆盖其他任务的后续修改。"
+    },
+    {
+      "id": "Q12",
+      "stage": "M1",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "绑定原始问题哈希与成功HTTP状态",
+      "depends_on": [
+        "Q03"
+      ],
+      "invariants": [
+        "I02",
+        "I05",
+        "I17",
+        "I19"
+      ],
+      "read_first": [
+        "references/stockqa-integration.md",
+        "docs/system-contract.md"
+      ],
+      "allowed_changes": [
+        "src/core/models.py",
+        "src/providers/llm_client.py",
+        "tests/unit/test_models.py",
+        "tests/unit/test_llm_client.py",
+        "tests/integration/test_quick_scan_cli.py"
+      ],
+      "steps": [
+        "由公开QuickScan序列化器直接对实际Question.text的UTF-8字节计算input_question_sha256；不接受模型自报哈希，也不保存题目正文。",
+        "同步与异步搜索客户端从实际HTTP响应对象记录成功状态码，并将其写入顶层执行回执及对应attempt。",
+        "用真实StockQA公开CLI走通解析器、provider、runner和序列化器；本地screening消费者要求最终attempt状态与顶层整数200完全一致。"
+      ],
+      "deliverables": [
+        "逐题输入问题SHA-256与成功HTTP状态回执",
+        "公开CLI和下游导入的隔离契约回归"
+      ],
+      "case_ids": [
+        "SC-12",
+        "SC-13"
+      ],
+      "test_binding": "StockQAbyLLM tests/unit/test_models.py::TestQABatchResult::test_quick_scan_envelope_keeps_entity_time_score_and_execution_separate；tests/unit/test_llm_client.py::TestLLMClient::test_search_request_uses_openai_responses_tool_and_keeps_receipt；tests/unit/test_llm_client.py::TestAsyncLLMClient::test_async_search_uses_same_execution_semantics；tests/integration/test_quick_scan_cli.py::test_public_cli_exports_eight_score_entity_timestamp_model_and_search_receipt。跨仓正向导入与回执篡改由invest-quick-scan tests/test_question_sets.py::QuestionSetTests::test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline 覆盖。",
+      "completion": [
+        "每题哈希等于实际Question.text UTF-8字节哈希，且成功HTTP状态来自真实响应对象；每个最终attempt与顶层回执一致。",
+        "保留prompt正文、响应正文与密钥不进入回执；失败路径回归继续通过。",
+        "隔离测试不调用真实provider/网络；StockQA相关测试、下游导入正反例、文件快照和独立审查均有记录后才verified。"
+      ],
+      "rollback": "只撤回本任务两个StockQA源码文件及对应测试中的新增回执字段；不得覆盖Q01—Q03既有修改，不接触StockWiki或company-wiki。"
     },
     {
       "id": "Q04",
@@ -757,7 +920,8 @@
       "invariants": [
         "I02",
         "I10",
-        "I11"
+        "I11",
+        "I50"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -776,7 +940,8 @@
         "复用ProviderCascade，支持提供商/模型对和能力预检；确认实际调用方使用它。",
         "实现有限失败切换与成功停止，正常低分/unknown不切换。",
         "记录策略版本和最终模型；默认新运行生效，热更新有边界记录。",
-        "导入用户数组顺序，首选仅槽满时等待；变更版本在已记录边界对未派发任务生效，保留在途版本且不使已成功题失效。"
+        "导入用户数组顺序，首选仅槽满时等待；变更版本在已记录边界对未派发任务生效，保留在途版本且不使已成功题失效。",
+        "对每个fallback原因分类明确是否形成retryable terminal rejection；未确认未发送/终态前不得创建下一attempt，正常低分/unknown不得切换。"
       ],
       "deliverables": [
         "生产调用链中的有序策略",
@@ -787,8 +952,7 @@
         "LLM-04",
         "LLM-06",
         "LLM-10",
-        "PAR-03",
-        "PAR-08"
+        "PAR-11"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -834,7 +998,7 @@
       "case_ids": [
         "LLM-08",
         "LLM-09",
-        "DB-06"
+        "LLM-16"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -887,10 +1051,8 @@
       ],
       "case_ids": [
         "SC-08",
-        "SC-09",
         "SC-10",
         "SC-11",
-        "REC-04",
         "MATRIX-07"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
@@ -909,6 +1071,7 @@
       "depends_on": [
         "S01",
         "Q03",
+        "Q12",
         "G0"
       ],
       "invariants": [
@@ -949,8 +1112,6 @@
         "SC-05",
         "SC-06",
         "SC-07",
-        "SC-09",
-        "REC-04",
         "LLM-02"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
@@ -984,13 +1145,17 @@
         "references/standard-output.md"
       ],
       "allowed_changes": [
-        "questions/中C02批准的题目模块",
+        "questions/catalog.json",
+        "questions/common.json",
+        "questions/types/pre_revenue.json",
+        "main_questions.json",
+        "docs/durability-and-change-design.md",
         "references/buy-side-questions.md",
         "references/common-framework.md",
         "tests/test_question_sets.py"
       ],
       "steps": [
-        "只落实C02/G0批准的题义/依据变化；未批准新题则不擅自加入。",
+        "只落实C02/G0批准的题义/依据变化；未批准新题则不擅自加入；同步原设计文档的当前状态。",
         "必要诊断按实质变化触发，保持机会、侵蚀、净效果分别展示，不做新总分。",
         "改动题目/锚点就显式升版并记录受影响字段；不迁移旧答案成新题结果。"
       ],
@@ -1003,9 +1168,9 @@
         "DUR-02",
         "DUR-03",
         "SC-08",
-        "TIME-06"
+        "DUR-04"
       ],
-      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
+      "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；如更新评分源题，重生成并断言main_questions.json导出一致；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
         "所列case均有对应检查及实际结果；关键skip/未运行不算通过。",
         "提交实现快照、变更文件、复现命令和完整测试摘要；独立审查最新版本后才verified。"
@@ -1103,7 +1268,8 @@
         "REV-03",
         "LIVE-02",
         "SC-01",
-        "LLM-08"
+        "LLM-08",
+        "REV-05"
       ],
       "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
       "completion": [
@@ -1127,7 +1293,8 @@
         "I03",
         "I04",
         "I15",
-        "I21"
+        "I21",
+        "I54"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -1136,24 +1303,29 @@
         "references/standard-output.md"
       ],
       "allowed_changes": [
-        "StockWiki新增quick_scan存储/迁移命名空间（先核实布局）",
-        "tests/迁移与身份引用测试"
+        "StockWiki/stockwiki/quick_scan_store.py",
+        "StockWiki/tests/test_quick_scan_store.py",
+        "StockWiki/.gitignore"
       ],
       "steps": [
         "新增实体/证券/成员与后续观察所需最小表，复用现有数据库约定。",
         "旧ticker目录和正式分类保持兼容，仅显式映射。",
-        "从空库与旧库升级并重复执行；无company-wiki也能用。"
+        "从空库与旧库升级并重复执行；无company-wiki也能用。",
+        "Persist source candidates, issuer identifier claims, aliases, securities, and venue-qualified listings without downloading source documents.",
+        "Enforce namespace-aware uniqueness, non-unique aliases, immutable IDs, and conflict rollback in the authoritative SQLite transaction."
       ],
       "deliverables": [
         "最小存储与迁移",
-        "旧状态保护测试"
+        "旧状态保护测试",
+        "Quick-scan store supports unresolved candidates and issuer/security/listing identity claims with isolated migration tests."
       ],
       "case_ids": [
         "DB-01",
         "ID-01",
         "ID-02",
-        "ID-04",
-        "DB-06"
+        "ID-07",
+        "DB-08",
+        "DB-09"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1174,31 +1346,44 @@
       "invariants": [
         "I04",
         "I16",
-        "I18"
+        "I18",
+        "I54",
+        "I55"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
         "docs/universe-and-operations-design.md"
       ],
       "allowed_changes": [
-        "quick_scan名单导入/身份解析适配层（新增）",
-        "tests/身份与导入测试"
+        "StockWiki/stockwiki/quick_scan_store.py",
+        "StockWiki/stockwiki/quick_scan_identity.py",
+        "StockWiki/stockwiki/cli_parsers/quick_scan.py",
+        "StockWiki/stockwiki/cli_registry.py",
+        "StockWiki/tests/test_quick_scan_store.py",
+        "StockWiki/tests/test_quick_scan_identity.py"
       ],
       "steps": [
         "复用可用的只读证券主档或CSV/JSON快照，保留来源版本与记录ID。",
         "区分证券类别、代码歧义和待核实桥接，提供preview与确定性错误。",
-        "核实ADR/股类映射缺失时阻止证券级复用；同名不合并。"
+        "核实ADR/股类映射缺失时阻止证券级复用；同名不合并。",
+        "Resolve exact venue-qualified listing keys and registered authoritative issuer identifiers before considering names.",
+        "Keep ambiguous/name-only inputs as unresolved candidates; LLM search may suggest evidence but cannot create issuer links or paid work.",
+        "Resolve each accepted listed issuer to a separate analysis subject; provisional issuers can only bind their exact input listing, never a parent group."
       ],
       "deliverables": [
         "导入与身份解析入口",
-        "可解释歧义报告"
+        "可解释歧义报告",
+        "Deterministic candidate resolver with reasoned matches, conflicts, and no-scan unresolved outcomes."
       ],
       "case_ids": [
         "ID-01",
         "ID-02",
         "ID-03",
         "UNI-02",
-        "UNI-06"
+        "UNI-06",
+        "ID-12",
+        "ID-13",
+        "ID-14"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1219,7 +1404,9 @@
       "invariants": [
         "I04",
         "I16",
-        "I21"
+        "I21",
+        "I54",
+        "I55"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -1228,13 +1415,19 @@
         "references/standard-output.md"
       ],
       "allowed_changes": [
-        "quick_scan universe命令/API（新增）",
-        "tests/成员维护测试"
+        "StockWiki/stockwiki/quick_scan_store.py",
+        "StockWiki/stockwiki/quick_scan_universe.py",
+        "StockWiki/stockwiki/cli_parsers/quick_scan.py",
+        "StockWiki/stockwiki/cli_registry.py",
+        "StockWiki/tests/test_quick_scan_store.py",
+        "StockWiki/tests/test_quick_scan_universe.py"
       ],
       "steps": [
         "实现add/add_security/remove/restore/pin/unpin/list/diff/explain。",
         "唯一对象的用户加入直接产生版本，重复加入幂等；歧义只挂起相关对象。",
-        "保留更名/退出/挂牌失效历史，不让低分或单挂牌退市误停实体。"
+        "保留更名/退出/挂牌失效历史，不让低分或单挂牌退市误停实体。",
+        "Maintain aliases, issuer claims, and listing symbol histories as revisioned identity events; never derive a new issuer ID from a rename or ticker change.",
+        "Maintain reporting-scope memberships and subject revision events separately from legal issuer relationships; control/group links alone never assert consolidation."
       ],
       "deliverables": [
         "名单维护小工具",
@@ -1243,9 +1436,10 @@
       "case_ids": [
         "UNI-03",
         "UNI-04",
-        "UNI-05",
         "ID-05",
-        "ID-06"
+        "ID-06",
+        "UNI-08",
+        "ID-15"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1267,7 +1461,8 @@
       "invariants": [
         "I04",
         "I16",
-        "I18"
+        "I18",
+        "I54"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -1280,7 +1475,8 @@
       "steps": [
         "按固定种子/行业市场缺口、manual_pin、可用规模流动性排序，稳定ID打破平局。",
         "60/25/15通过配置表达；未知行业/指标留缺失，不自动调用LLM。",
-        "输出去重后数量、证券类型/市场重叠、入池理由及不足项；允许先生成候选名单。"
+        "输出去重后数量、证券类型/市场重叠、入池理由及不足项；允许先生成候选名单。",
+        "Keep conflicted identity members visible and pinned as applicable while blocking all new paid scan work."
       ],
       "deliverables": [
         "分层候选与版本化输入报告",
@@ -1290,7 +1486,8 @@
         "UNI-01",
         "UNI-02",
         "UNI-04",
-        "UNI-06"
+        "UNI-06",
+        "ID-16"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1307,7 +1504,10 @@
       "title": "实现不可变问答观察的事务导入",
       "depends_on": [
         "W01",
-        "G1"
+        "G1",
+        "S05",
+        "W02",
+        "W03"
       ],
       "invariants": [
         "I03",
@@ -1315,7 +1515,9 @@
         "I08",
         "I12",
         "I15",
-        "I21"
+        "I21",
+        "I54",
+        "I55"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -1328,9 +1530,12 @@
         "tests/导入事务与历史测试"
       ],
       "steps": [
-        "按C06校验schema、对象、不可变键与hash；不把模型自报审核字段升级。",
+        "按C06校验schema、对象、不可变键与hash；已发布评分观察还要用S05的严格published-ingest入口重算归档题义/口径/方法指纹，不把模型自报审核字段升级；旧legacy观察只读兼容，不能从新导入路径降级。",
+        "首次导入核对可信StockQA outbox的包/逐项ID、payload hash和逻辑执行键（producer、request_id、attempt_id、question_id、作用对象）；重放以StockWiki持久化的预期observation_id校验，同一逻辑执行键换ID须隔离冲突或走显式更正，不把自包含JSON重算哈希当作旧身份的证明。",
         "同包幂等；同键异hash隔离冲突；更正追加关系，不覆盖旧观察。",
-        "保存原始时点、题义和来源引用；失败事务不得变成部分合格快照。"
+        "保存原始时点、题义和来源引用；失败事务不得变成部分合格快照。",
+        "Persist immutable identity_revision, security_id, listing_id, and source-binding scope on every imported observation.",
+        "Persist analysis_subject_id and analysis_subject_revision with the exact entity/security/listing mapping on every observation; replay and correction preserve the historical scope."
       ],
       "deliverables": [
         "事务导入与历史记录",
@@ -1339,12 +1544,13 @@
       "case_ids": [
         "DB-02",
         "DB-03",
-        "DB-04",
         "DB-06",
         "SC-05",
         "SC-06",
         "STORE-01",
-        "STORE-02"
+        "STORE-02",
+        "ID-17",
+        "ID-23"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1395,7 +1601,8 @@
         "TIME-06",
         "TIME-07",
         "TIME-08",
-        "LLM-09"
+        "LLM-09",
+        "TIME-10"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1442,7 +1649,6 @@
         "RULE-01",
         "RULE-02",
         "RULE-03",
-        "RULE-04",
         "SC-09",
         "SC-11"
       ],
@@ -1490,8 +1696,7 @@
         "REC-01",
         "REC-02",
         "REC-03",
-        "REC-04",
-        "RULE-04"
+        "REC-04"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1541,8 +1746,7 @@
         "QUERY-01",
         "QUERY-02",
         "QUERY-03",
-        "ID-04",
-        "RULE-04"
+        "ID-04"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1643,9 +1847,9 @@
         "MAINT-01",
         "MAINT-02",
         "MAINT-03",
-        "MAINT-04",
-        "MAINT-05",
-        "MAINT-06"
+        "MAINT-06",
+        "MAINT-07",
+        "UNI-05"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1697,7 +1901,8 @@
         "REV-03",
         "LIVE-04",
         "UNI-05",
-        "SC-07"
+        "SC-07",
+        "REV-06"
       ],
       "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
       "completion": [
@@ -1718,7 +1923,8 @@
       ],
       "invariants": [
         "I02",
-        "I12"
+        "I12",
+        "I54"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -1735,7 +1941,8 @@
         "将逐题逻辑键、状态和领取令牌落盘，原子创建/领取。",
         "多run同代次引用一个待办；租约过期恢复并拒绝旧worker迟到覆盖。",
         "记录合法状态转换与异常，不用聊天文本作为唯一断点。",
-        "primary逻辑键不含fallback模型/运行ID，记录pack/attempt/prompt hash；租约到期先区分未发送与结果不明，不盲目重发。"
+        "primary逻辑键不含fallback模型/运行ID，记录pack/attempt/prompt hash；租约到期先区分未发送与结果不明，不盲目重发。",
+        "Deduplicate issuer-level questions while keeping listing-level work distinct and idempotent."
       ],
       "deliverables": [
         "任务存储与租约",
@@ -1744,8 +1951,9 @@
       "case_ids": [
         "JOB-01",
         "JOB-02",
-        "JOB-08",
-        "PAR-05"
+        "PAR-12",
+        "JOB-10",
+        "JOB-11"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1796,7 +2004,7 @@
         "JOB-05",
         "LLM-07",
         "PAR-04",
-        "PAR-06"
+        "PAR-09"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1819,7 +2027,8 @@
       "invariants": [
         "I02",
         "I10",
-        "I11"
+        "I11",
+        "I50"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -1836,7 +2045,8 @@
         "HTTP与LLM层共享尝试预算，尊重Retry-After并给故障模型全局冷却。",
         "跨进程恢复冷却和有限健康探测；备用成功不是首选恢复证据。",
         "所有允许模型不可用就记录下次可重试时间并停止派发。",
-        "识别确认的五小时额度拒绝与普通429，按共享账户组持久化熔断/重置来源；未知恢复时间用有界单探针，恢复前跳过同组其他路由。"
+        "识别确认的五小时额度拒绝与普通429，按共享账户组持久化熔断/重置来源；未知恢复时间用有界单探针，恢复前跳过同组其他路由。",
+        "持久化路由冷却及待重试状态必须绑定逻辑work与单调attempt序号；结果不明先对账，不因worker重启、并发容量释放或用户重复点击自动创建fallback attempt。"
       ],
       "deliverables": [
         "单一重试/冷却机制",
@@ -1848,9 +2058,9 @@
         "LLM-05",
         "LLM-06",
         "LLM-10",
-        "BUD-02",
         "PAR-02",
-        "PAR-07"
+        "PAR-13",
+        "BUD-05"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1871,7 +2081,8 @@
       ],
       "invariants": [
         "I11",
-        "I12"
+        "I12",
+        "I50"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -1889,7 +2100,8 @@
         "使用实际计价版本和搜索费用，派发前原子预留。",
         "成功/失败/备用共用账本，结果不明保留预留直至核对。",
         "达到金额/请求/时间上限停止新派发，已运行回执继续结算。",
-        "实现跨worker的全局/组/路由三层在途槽，和题目领取/预算预留协调；未完成领取不得发送，崩溃和迟到回执不能超发或重复结算。"
+        "实现跨worker的全局/组/路由三层在途槽，和题目领取/预算预留协调；未完成领取不得发送，崩溃和迟到回执不能超发或重复结算。",
+        "共享预算reserve/settle必须与attempt序号绑定并具幂等键；只有上次attempt终态可对账后才可为下一路由原子reserve，旧预留结果不明时不得释放再花。"
       ],
       "deliverables": [
         "费用账本与预算闸门",
@@ -1900,9 +2112,8 @@
         "BUD-02",
         "BUD-03",
         "BUD-04",
-        "JOB-05",
         "PAR-01",
-        "PAR-06"
+        "JOB-09"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1929,30 +2140,36 @@
       "read_first": [
         "docs/stock-pool-design.md",
         "docs/universe-and-operations-design.md",
+        "docs/implementation/contracts/exchange-and-query.md",
+        "schemas/quick_scan/exchange.schema.json",
         "references/model-policy.md",
         "examples/model-policy.template.json",
         "schemas/model-policy.schema.json"
       ],
       "allowed_changes": [
-        "StockQA轻量outbox/投递接口（新增）",
-        "tests/结果交付与ACK测试"
+        "StockQAbyLLM/src/utils/quick_scan_result_outbox.py（版本化C06包/ACK校验辅助；不复制Observation完整Schema）",
+        "StockQAbyLLM/src/utils/quick_scan_work_store.py（SQLite outbox表、向前迁移、状态机、ACK事务与事件）",
+        "StockQAbyLLM/tests/unit/test_quick_scan_work_store.py",
+        "StockQAbyLLM/tests/unit/test_quick_scan_result_outbox.py"
       ],
       "steps": [
-        "持久化result_ready并产生版本化轻量包，投递失败只重投。",
-        "接受匹配item/hash的ACK后才delivered；重复ACK幂等。",
-        "独立问答可在StockWiki不可用时完成，不创建第二主画像库。",
-        "续扫先对账和重投已回答结果，保留原尝试时间/实际模型；不得因公司未全完成而重问已成功题。"
+        "不得从紧凑answer checkpoint推造cohort、question/template版本、information cutoff或标准证据字段；经验证适配器无法给出完整C06 package时，持久记录block reason，work仍为result_ready，不再次调用模型。",
+        "仅接受单Observation C06 package；校验Envelope、内容地址与checkpoint中确实存在的身份/题目/答案/执行字段，封存规范化原始字节、package/item/payload hashes和稳定delivery key；封存后拒绝替换。",
+        "提交send-intent后将投递视为结果不明；重启不得盲目重发。只有transport能证明请求字节未发出时，才允许同字节/同key re-arm；未知结果须先取得精确ACK或权威对账。",
+        "ACK必须精确匹配package/item/observation/payload hash及StockWiki namespace/store；仅accepted/already_present原子写ACK并标delivered，rejected/conflict进入不可自动重试的终态，重复相同ACK幂等。",
+        "StockWiki不可用时可完成本地问答/保留轻量result_ready；不建第二份可编辑公司主档。续扫先处理既有答案/outbox，不因投递失败重问成功题。"
       ],
       "deliverables": [
-        "持久化outbox及ACK消费",
-        "投递失败不重问测试"
+        "SQLite schema v5结果outbox、向前迁移、阻断记录、发送不确定性状态与逐条不可变事件",
+        "精确C06 ACK事务消费、已完成结果不重问的隔离回归",
+        "明确声明未接入W05真实接收端前只验收producer-side outbox，不声称跨仓导入完成"
       ],
       "case_ids": [
         "JOB-07",
         "JOB-08",
         "DB-07",
         "LLM-08",
-        "PAR-06"
+        "PAR-10"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -1998,7 +2215,8 @@
         "DB-02",
         "DB-03",
         "JOB-07",
-        "JOB-08"
+        "JOB-08",
+        "PAR-06"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2092,7 +2310,6 @@
       ],
       "case_ids": [
         "DB-05",
-        "DB-04",
         "REV-04",
         "LLM-08",
         "STORE-03"
@@ -2105,24 +2322,90 @@
       "rollback": "迁移前制作可恢复副本；新命名空间优先加法迁移，保留旧状态与观察；恢复流程先在临时目录验证。"
     },
     {
+      "id": "B01",
+      "stage": "M3",
+      "owner": "stockqa",
+      "kind": "live",
+      "title": "真实对照搜索交接、30题分组策略与缓存成本",
+      "depends_on": [
+        "L01",
+        "G1",
+        "Q05",
+        "Q09",
+        "Q10",
+        "Q12",
+        "W10"
+      ],
+      "invariants": [
+        "I01",
+        "I05",
+        "I11",
+        "I12",
+        "I17",
+        "I19",
+        "I21",
+        "I56"
+      ],
+      "read_first": [
+        "docs/implementation/experiments/llm-search-and-batching-benchmark.md",
+        "references/model-policy.md",
+        "docs/stock-pool-design.md",
+        "docs/universe-and-operations-design.md"
+      ],
+      "allowed_changes": [
+        "StockQAbyLLM公开QuickScan入口使用的隔离benchmark harness与本run专属临时状态；不写生产库或正式公司档案",
+        "StockWiki既有公开导入/ACK入口指向独立临时workspace；不修改StockWiki源码",
+        "docs/implementation/experiments/llm-search-and-batching-benchmark.md中的冻结manifest摘要、脱敏结果、成本/精度报告和结论"
+      ],
+      "steps": [
+        "确认所需前置工作在progress.md中有实际测试结果和未解项记录；执行前冻结样本、30道题及题库/路由/rubric/model revision、信息截止时间、搜索配置、方法顺序、答案gold、盲评抽样seed、预注册阈值和有限预算。样本限本实验A股/港股/美股各1家；只有预注册的跨市场/类型分歧规则触发时才能扩至各2家、总计最多6家，不导入或改变大股票池。",
+        "用真实Brave/Tavily公开搜索入口分别取得结果，规整为有source_id、URL、发布/检索时间和长度上限的短证据；将其作为不可信context随问题发给真实模型，要求逐claim引用source_id。只在run专属临时隔离工件中保留每snippet 500字、每公司累计30,000字且与真实prompt完全一致的截断快照/hash；不持久化原始搜索响应、完整网页/财报或公司文档。",
+        "先固定相同搜索证据和同一精确模型revision，按manifest冻结的随机顺序执行匹配对照：30题顺序逐题、逐题并发（最多4或受提供商限制）、3/5/10题分组及单批30题。逐题ID、状态、分数/unknown、短依据和证据引用必须完整且无串题；失败不得在同一配对组静默换模型，按用户顺位切换时另开匹配组。",
+        "分两阶段比较模型：第一阶段用当前可验证的MiniMax-M3套餐/计费模式完成所有请求粒度；第二阶段对逐题基线与第一阶段通过正确性门槛的候选打包策略，分别用MiniMax-M3、mimo-v2.6-flash、deepseek-flash运行独立匹配区组。每区组固定准确的provider/model revision及同一输入；拒绝/不支持保留为失败，不换模型补齐。预算不足时不外推跨模型结论。",
+        "将检索器比较与打包比较分开，随机化配对执行顺序；每家公司分别运行冷答案缓存、三个正交缓存子实验、同输入全链warm复用和材料性输入失效。搜索缓存与provider前缀实验须绕过应用答案缓存，防止答案缓存短路上游后被误报为上游cache hit。",
+        "按预注册gold与双人盲评规则检查题目/结构完整性、事实claim支持率、评分MAE及±1一致率、身份/数值/风险critical错误；记录每个公司级run的端到端时延和阶段耗时。只在样本数满足门槛时报告分位数，另核对搜索/API/模型/重试/失败调用的真实费用和执行日官方计价快照。MiniMax单列套餐quota消耗与额外现金支出，不虚构逐token/逐题单价。",
+        "如果要推荐“搜索源+打包大小”的联合默认，追加两种候选context×逐题基线/候选打包的2×2匹配交叉区组；预算不足或未完成时只报告两个维度各自的条件结论，不宣称联合最优。",
+        "仅在预注册正确性底线通过后比较耗时和费用Pareto前沿；如无打包法满足质量门槛，则保留逐题基线。把结论及适用限制交G3大节点审查，再决定是否用于L03的200家公司试点。"
+      ],
+      "deliverables": [
+        "冻结输入/样本/模型/价格与预算的脱敏run manifest，以及每个provider/model×方法区组的逐题覆盖、attempt、来源支持、缓存和usage记录",
+        "三市场小样本盲评报告：gold/裁决记录、正确性门槛、关键错误、按样本量适用的原始耗时/分布、真实费用、模型限额和缓存效应分开呈现",
+        "有条件的默认调用策略或“保留逐题基线”结论，适用范围、未决项与可复现实验命令"
+      ],
+      "case_ids": [
+        "BENCH-01",
+        "BENCH-02"
+      ],
+      "test_binding": "必须从Q10/W10已验收的真实公开执行/导入入口完成有界live对照；隔离临时workspace、SQLite、缓存和下载目录。对每个BENCH-01原子断言登记生产入口、逐请求回执或盲评记录；mock、离线fixture或模型自述不能替代搜索、费用、缓存或导入能力。",
+      "completion": [
+        "BENCH-01所有预注册断言均有实际结果；关键skip/未运行不算通过，失败和额度拒绝保留在分母与成本账本。",
+        "隔离状态前后核对通过，G3审查通过后，所有本run临时snippet/文件按可信manifest清理；异常时安全保留隔离根，不扩大清理范围。",
+        "在G3大节点一次审查实验快照、盲评、价格依据、隔离清理和结论；不因单个小步骤重复组织全套review。"
+      ],
+      "rollback": "停止本run新派发，结算已完成或结果不明attempt；保留调用/费用回执和盲评记录。仅按可信run manifest及匹配owner/run/hash清理临时文件；不可回滚或删除正式观察、生产配置和股票池成员。"
+    },
+    {
       "id": "L03",
       "stage": "M3",
       "owner": "stockqa",
       "kind": "live",
       "title": "执行200家公司可靠性与成本试点",
       "depends_on": [
+        "B01",
         "Q08",
         "Q09",
         "W11",
         "W10",
-        "W12"
+        "W12",
+        "W15"
       ],
       "invariants": [
         "I01",
         "I11",
         "I12",
         "I17",
-        "I21"
+        "I21",
+        "I56"
       ],
       "read_first": [
         "docs/stock-pool-design.md",
@@ -2134,7 +2417,7 @@
       "steps": [
         "冻结样本与预算，先运行离线故障矩阵，再开展真实批次。",
         "至少主动中断/恢复一次，验证已答未入库、重复导入和数据库恢复。",
-        "报告实际费用、等待/覆盖/未知；pack若启用须对照逐题基线，否则明确仍逐题。"
+        "按B01已审查的质量门槛采用可用的逐题/打包策略；若无方法通过门槛则保持逐题。报告实际费用、等待/覆盖/未知；不得把pilot结论外推成普遍最优。"
       ],
       "deliverables": [
         "200家公司试点与恢复报告",
@@ -2197,7 +2480,8 @@
         "REV-04",
         "JOB-02",
         "BUD-03",
-        "DB-05"
+        "DB-05",
+        "REV-07"
       ],
       "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
       "completion": [
@@ -2228,12 +2512,12 @@
         "references/standard-output.md"
       ],
       "allowed_changes": [
-        "questions/事实专用模块与catalog扩展（新增）",
-        "scripts/question_sets.py",
-        "tests/事实题路由/协议测试"
+        "questions/facts.json（保留已提供61题的题义/field_id）",
+        "scripts/question_sets.py现有事实路由及兼容导出",
+        "tests/事实题路由/协议测试；fact-catalog和事实独立发布锁由后续F06拥有"
       ],
       "steps": [
-        "事实题库1.0.0及离线编排已由用户本轮要求提供；本卡审查覆盖与契约并完成生产接入，不能将离线通过当G4已验收。",
+        "事实题库1.0.0及离线编排已由用户本轮要求提供；本卡审查61题覆盖、现有路由与兼容导出，不建立第二套catalog/发布锁，模块化发布由F06拥有；不能将离线通过当G4已验收。",
         "按类型/行业问产品、材料、设备、应用、客户供应商、商业化与实质性。",
         "未知和未披露明确留空，不补无来源名单，不返回假分数。",
         "保留分部、关系方向、证据/否定/日期；评分问卷及旧版本兼容。"
@@ -2243,11 +2527,8 @@
         "非评分协议/路由测试"
       ],
       "case_ids": [
-        "FACT-01",
-        "FACT-02",
-        "FACT-05",
         "SC-06",
-        "MATRIX-08"
+        "FACT-06"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2265,7 +2546,9 @@
       "depends_on": [
         "G3",
         "F01",
-        "Q10"
+        "Q10",
+        "F06",
+        "V13"
       ],
       "invariants": [
         "I01",
@@ -2291,11 +2574,9 @@
         "评分/事实兼容回归"
       ],
       "case_ids": [
-        "FACT-01",
-        "FACT-05",
-        "SC-02",
         "LLM-08",
-        "JOB-03"
+        "JOB-03",
+        "FACT-08"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2312,7 +2593,8 @@
       "title": "实现版本化术语、短词和别名",
       "depends_on": [
         "G3",
-        "C06"
+        "C06",
+        "V03"
       ],
       "invariants": [
         "I08",
@@ -2338,8 +2620,7 @@
       ],
       "case_ids": [
         "FACT-04",
-        "FACT-05",
-        "QUERY-02"
+        "FACT-09"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2384,10 +2665,8 @@
       ],
       "case_ids": [
         "FACT-01",
-        "FACT-02",
-        "FACT-03",
-        "FACT-05",
-        "CONS-05"
+        "CONS-05",
+        "FACT-07"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2405,7 +2684,8 @@
       "depends_on": [
         "F03",
         "F04",
-        "W09"
+        "W09",
+        "V07"
       ],
       "invariants": [
         "I07",
@@ -2436,7 +2716,7 @@
         "FACT-04",
         "FACT-05",
         "RULE-04",
-        "QUERY-02"
+        "QUERY-10"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2489,11 +2769,11 @@
         "精确场景测试、故障恢复与审查记录"
       ],
       "case_ids": [
-        "MATRIX-04",
-        "MATRIX-05",
         "MATRIX-06",
         "PAR-01",
-        "PAR-03"
+        "PAR-03",
+        "MATRIX-09",
+        "MATRIX-10"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2532,7 +2812,8 @@
       "steps": [
         "主题先独立拆完整产业链，再查库找各环节候选并复用合适基础字段。",
         "缺口仅对指定实体/字段补扫；保留池外领导者发现与提名。",
-        "主题收入证据、情景预测和原验证器继续有效，快扫分数不替代模型输入。"
+        "主题收入证据、情景预测和原验证器继续有效，快扫分数不替代模型输入。",
+        "按F05公开能力/词表版本查询；unsupported/unavailable和未核实关系显式呈现，不把空列表解释为主题无人。"
       ],
       "deliverables": [
         "主题消费适配",
@@ -2542,7 +2823,8 @@
         "CONS-01",
         "CONS-02",
         "QUERY-04",
-        "CONS-05"
+        "CONS-05",
+        "CONS-06"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2581,7 +2863,8 @@
       "steps": [
         "行业框架完成后先按术语/行业映射查公司，不再要求已有companies目录。",
         "按实际截止日和财务期间补缺，去掉硬编码2025的调用假设。",
-        "保留原行业框架PDF流程和独立量表，不向快扫库复制文档或直接写入评分。"
+        "保留原行业框架PDF流程和独立量表，不向快扫库复制文档或直接写入评分。",
+        "按F05公开能力/词表版本查询；旧Query缺能力或范围外候选明确标记并可按预算定向补缺。"
       ],
       "deliverables": [
         "行业消费适配",
@@ -2591,7 +2874,8 @@
         "CONS-03",
         "CONS-04",
         "QUERY-04",
-        "SC-11"
+        "SC-11",
+        "CONS-07"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2610,7 +2894,8 @@
         "F04",
         "Q11",
         "W09",
-        "C06"
+        "C06",
+        "W15"
       ],
       "invariants": [
         "I01",
@@ -2645,7 +2930,10 @@
         "MATRIX-03",
         "MATRIX-05",
         "MATRIX-06",
-        "STORE-04"
+        "STORE-04",
+        "MATRIX-04",
+        "DB-04",
+        "MOD-08"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2747,7 +3035,8 @@
         "REV-03",
         "CONS-04",
         "CONS-05",
-        "QUERY-04"
+        "QUERY-04",
+        "REV-08"
       ],
       "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
       "completion": [
@@ -2795,7 +3084,8 @@
         "UNI-04",
         "UNI-05",
         "UNI-06",
-        "ID-01"
+        "ID-01",
+        "UNI-09"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2814,7 +3104,9 @@
         "G3",
         "Q06",
         "Q09",
-        "O01"
+        "O01",
+        "V09",
+        "V10"
       ],
       "invariants": [
         "I09",
@@ -2848,13 +3140,10 @@
       ],
       "case_ids": [
         "UNI-07",
-        "JOB-05",
         "JOB-06",
         "TIME-05",
         "BUD-01",
-        "PAR-01",
-        "PAR-05",
-        "PAR-07"
+        "PAR-01"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -2950,10 +3239,10 @@
         "身份/分页/零模型调用浏览器测试"
       ],
       "case_ids": [
-        "UI-01",
         "UI-02",
         "UI-08",
-        "UI-09"
+        "UI-09",
+        "UI-13"
       ],
       "test_binding": "在真实StockWiki服务与临时SQLite上通过浏览器操作并断言DOM值、导航与请求范围；仅模型网络边界可stub，不以HTTP 200或独立helper替代UI。",
       "completion": [
@@ -3003,7 +3292,7 @@
         "UI-04",
         "UI-05",
         "UI-06",
-        "UI-10"
+        "UI-14"
       ],
       "test_binding": "在真实StockWiki服务与临时SQLite上通过浏览器操作并断言DOM值、导航与请求范围；仅模型网络边界可stub，不以HTTP 200或独立helper替代UI。",
       "completion": [
@@ -3022,7 +3311,8 @@
         "O04",
         "W09",
         "W11",
-        "U02"
+        "U02",
+        "V08"
       ],
       "invariants": [
         "I03",
@@ -3051,11 +3341,11 @@
       ],
       "case_ids": [
         "QUERY-01",
-        "QUERY-02",
         "QUERY-04",
         "REC-04",
         "ID-04",
-        "DB-06"
+        "DB-06",
+        "QUERY-11"
       ],
       "test_binding": "在目标拥有者仓库为所列case绑定真实测试选择器；mock只置于外部边界；先核对固定输入/预期，再实现最小变更。",
       "completion": [
@@ -3111,10 +3401,10 @@
         "REV-04",
         "LIVE-06",
         "UNI-04",
-        "QUERY-02",
         "UI-03",
         "UI-04",
-        "UI-08"
+        "UI-08",
+        "REV-09"
       ],
       "test_binding": "对实际实现快照及测试/原始输出逐项审查；输出每项case证据与问题结论，不能只复述实现者摘要。",
       "completion": [
@@ -3165,12 +3455,8 @@
         "公共入口协议测试"
       ],
       "case_ids": [
-        "DEPLOY-08",
-        "START-02",
-        "START-04",
-        "START-08",
         "JOB-07",
-        "JOB-08"
+        "START-13"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
@@ -3220,10 +3506,6 @@
       ],
       "case_ids": [
         "DEPLOY-02",
-        "DEPLOY-08",
-        "START-05",
-        "START-06",
-        "START-10",
         "DB-07"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
@@ -3278,12 +3560,9 @@
       ],
       "case_ids": [
         "START-09",
-        "START-11",
-        "START-12",
-        "DEPLOY-07",
         "BUD-04",
         "LLM-10",
-        "PAR-08"
+        "START-14"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
@@ -3340,12 +3619,8 @@
         "无效/缺失/重复设置测试"
       ],
       "case_ids": [
-        "START-11",
-        "START-12",
-        "DEPLOY-01",
         "DEPLOY-02",
-        "DEPLOY-07",
-        "PAR-08"
+        "START-15"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
@@ -3365,14 +3640,20 @@
         "X04",
         "O02",
         "W12",
-        "C07"
+        "C07",
+        "V09",
+        "V10",
+        "W16",
+        "Q15"
       ],
       "invariants": [
         "I09",
         "I11",
         "I12",
         "I23",
-        "I24"
+        "I24",
+        "I44",
+        "I46"
       ],
       "read_first": [
         "docs/implementation/one-click-launch.md",
@@ -3390,7 +3671,9 @@
         "原子判定同workspace/profile已运行则附着；核实进程身份，不只看端口或PID。",
         "只启动快扫必要组件，预检后先补导入再提交缺口；全部有效返回no_work。",
         "stop停止新派发并保存进行中状态，关闭页面不删除进程/任务；重启沿用费用账本与旧待办。",
-        "单次/可选continuous共用生命周期；维护时钟触发StockWiki准入及StockQA待办，关机后接续且只管本workspace。"
+        "单次/可选continuous共用生命周期；维护时钟触发StockWiki准入及StockQA待办，关机后接续且只管本workspace。",
+        "同一启动入口必须从StockWiki权威身份/缺口和StockQA能力/预算解析并持久绑定ScanRecipe；先按冻结receipt安全对账旧attempt/outbox，再判断新版本兼容性。缺新recipe/lock只能阻断新付费work，不能阻断旧请求的导入/费用结算。",
+        "每次start/resume只接受active ReleaseSet，核对锁定V17实现与W16影响计划；candidate只提供dry-run预览。为实际付费POST必须由StockQA Q15逐attempt消费W16 dispatch fence；任何入口不能直建work或跳过授权。"
       ],
       "deliverables": [
         "单一生命周期服务",
@@ -3399,17 +3682,13 @@
       ],
       "case_ids": [
         "START-01",
-        "START-02",
         "START-03",
         "START-04",
-        "START-05",
-        "START-07",
         "START-08",
         "START-10",
-        "MAINT-04",
         "MAINT-05"
       ],
-      "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
+      "test_binding": "在owner项目绑定真实公共入口测试；以旧冻结recipe下已答未ACK attempt验证重启后能先结算旧账本，再单独阻断新work。固定跨组件正反预期，仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
         "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
         "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
@@ -3462,16 +3741,11 @@
         "快捷方式/CLI/UI一致性测试"
       ],
       "case_ids": [
-        "DEPLOY-03",
-        "START-02",
         "START-03",
-        "START-05",
         "START-06",
         "START-07",
-        "START-11",
         "E2E-02",
-        "PAR-07",
-        "PAR-08"
+        "DEPLOY-09"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
@@ -3490,7 +3764,9 @@
         "U02",
         "G4",
         "X06",
-        "W14"
+        "W14",
+        "W15",
+        "V11"
       ],
       "invariants": [
         "I01",
@@ -3530,7 +3806,8 @@
         "UI-06",
         "MATRIX-02",
         "MATRIX-03",
-        "MATRIX-05"
+        "MATRIX-05",
+        "EVO-21"
       ],
       "test_binding": "在真实StockWiki服务与临时SQLite上通过浏览器操作并断言DOM值、导航与请求范围；仅模型网络边界可stub，不以HTTP 200或独立helper替代UI。",
       "completion": [
@@ -3550,14 +3827,25 @@
         "G4",
         "G5",
         "X06",
-        "X03"
+        "X03",
+        "S06",
+        "F06",
+        "V01",
+        "V11",
+        "V14",
+        "V15",
+        "W16",
+        "V16",
+        "V17",
+        "Q14"
       ],
       "invariants": [
         "I08",
         "I14",
         "I15",
         "I22",
-        "I26"
+        "I26",
+        "I41"
       ],
       "read_first": [
         "docs/implementation/one-click-launch.md",
@@ -3573,7 +3861,8 @@
       "steps": [
         "汇总各项目实际代码/协议/题库/查询/配置schema版本与hash，生成可用于X08的候选配套清单。",
         "记录两个消费者源入口、拟安装/宿主加载入口和查询契约；源更新不算已加载更新。",
-        "清单只包含工件定位/版本/恢复/回执引用，无密钥/公司文档；最终release_set在X08—X11实测后固化，不能提前标G6。"
+        "清单只包含工件定位/版本/恢复/回执引用，无密钥/公司文档；最终release_set在X08—X11实测后固化，不能提前标G6。",
+        "候选release_set只核验并固定各owner发布工件的候选schema/hash/兼容范围，包含Q14 parser/schema/evidence解释release ID/hash；X07不宣称已安装、实际加载、active或运行。"
       ],
       "deliverables": [
         "候选release_set及schema",
@@ -3581,11 +3870,7 @@
         "实际加载/版本核对要求"
       ],
       "case_ids": [
-        "DEPLOY-04",
-        "DEPLOY-07",
-        "DEPLOY-08",
-        "E2E-04",
-        "E2E-05"
+        "EVO-64"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
@@ -3627,7 +3912,7 @@
         "tests/干净部署/重复安装/路径测试"
       ],
       "steps": [
-        "从经核实的候选release_set定位各自解释器和依赖，调用拥有者安装/迁移入口；不直接写另一仓私有配置/库。",
+        "从经核实候选release_set调用各自拥有者安装/迁移入口，记录准确安装路径和实际hash；匹配只表示installed/staged，不自动提升为生产active，也不能据此开始生产扫描。",
         "复用宿主技能安装/注册机制并核实实际加载路径/hash；为X06生成可用快捷方式。",
         "安装可重入；正常start不自动拉新代码/升级依赖/破坏性迁移。明确当前安装组合和故障步骤，保留用户数据。"
       ],
@@ -3639,11 +3924,8 @@
       "case_ids": [
         "DEPLOY-01",
         "DEPLOY-02",
-        "DEPLOY-03",
-        "DEPLOY-04",
         "DEPLOY-07",
-        "DEPLOY-08",
-        "START-11"
+        "EVO-68"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
@@ -3660,11 +3942,18 @@
       "title": "建立真实组件的离线端到端联调",
       "depends_on": [
         "X08",
+        "X05",
         "X06",
         "X02",
         "G4",
         "G5",
-        "U03"
+        "U03",
+        "U04",
+        "W16",
+        "Q14",
+        "Q15",
+        "V11",
+        "W10"
       ],
       "invariants": [
         "I01",
@@ -3672,7 +3961,9 @@
         "I12",
         "I13",
         "I17",
-        "I26"
+        "I26",
+        "I49",
+        "I50"
       ],
       "read_first": [
         "docs/implementation/one-click-launch.md",
@@ -3693,7 +3984,10 @@
         "从setup/快捷方式或等价实际入口完成扫描、导入、查询、加公司、停止/续扫、两个技能查询与范围补扫。",
         "测试重复点击、预算耗尽、已答未入库、旧PID/端口冲突、company-wiki停用，记录生产入口调用路径。",
         "使用真实浏览器走企业列表→筛选→详情→来源/事实→返回及进度→结果，断言具体值/范围和浏览零模型调用，留布局截图。",
-        "以两worker+受控网络stub验证真实并发/组共享额度/部分包/迟到回执/重启不重问；记录每次发送唯一键和费用变化，不能只检查最终汇总。"
+        "以两worker+受控网络stub验证真实并发/组共享额度/部分包/迟到回执/重启不重问；记录每次发送唯一键和费用变化，不能只检查最终汇总。",
+        "使用临时隔离workspace中的test-only active指针、真实组件入口和stub网络验收完整运行；核对runtime实际加载hash、dispatch fence、历史回执与隔离清理。该测试激活只存在于临时fixture，不推广候选包到生产active。",
+        "运行EVO-67/69/70/71/72/74/76/80/81/82：经真实X05恢复旧attempt、核验逐题parser回执、UI/CLI双启动竞态、拒绝伪造plan和candidate启动、验证历史无recipe账本/资格CAS/permit consume/attempt退役竞态与安全fallback；旧结算和新generation/work/permit/dispatch_commit/费用预留/HTTP POST分别计数。",
+        "完整联调覆盖active pointer稳定但component eligibility revision被退役、permit签发后与W16 consume之间资格变化、consume提交后到provider传输前崩溃、provider明确额度拒绝与outcome_unknown的双worker屏障；逐个断言generation/work/permit/attempt/dispatch_commit/POST/费用/ACK计数。"
       ],
       "deliverables": [
         "离线全链测试套件",
@@ -3724,7 +4018,38 @@
         "PAR-05",
         "PAR-06",
         "PAR-07",
-        "PAR-08"
+        "PAR-08",
+        "MOD-06",
+        "MOD-09",
+        "MOD-13",
+        "EVO-20",
+        "EVO-21",
+        "EVO-26",
+        "EVO-03",
+        "EVO-19",
+        "EVO-34",
+        "EVO-37",
+        "EVO-38",
+        "EVO-42",
+        "EVO-43",
+        "EVO-67",
+        "EVO-69",
+        "EVO-70",
+        "EVO-71",
+        "MATRIX-08",
+        "EVO-72",
+        "EVO-74",
+        "EVO-76",
+        "EVO-80",
+        "EVO-82",
+        "DEPLOY-03",
+        "DEPLOY-04",
+        "DEPLOY-08",
+        "START-06",
+        "START-07",
+        "START-11",
+        "START-12",
+        "EVO-81"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
@@ -3743,7 +4068,8 @@
         "X09",
         "X08",
         "W12",
-        "C07"
+        "C07",
+        "V12"
       ],
       "invariants": [
         "I08",
@@ -3766,7 +4092,8 @@
       "steps": [
         "升级前停止派发、处理进行中请求、保存outbox/预算并做一致性备份。",
         "核对组件协议与schema兼容，模拟单组件升级和迁移中断；只采用配套已验证组合。",
-        "安全降级不可行时保持只读/待修，不覆盖升级后数据或费用；按实际组件接口恢复并重验。"
+        "安全降级不可行时保持只读/待修，不覆盖升级后数据或费用；按实际组件接口恢复并重验。",
+        "升级前的无recipe run/work/observation用legacy_without_recipe只读适配并先对账；不得伪造历史recipe或因缺新字段自动重问/重扣费。"
       ],
       "deliverables": [
         "配套升级回退流程",
@@ -3823,7 +4150,8 @@
       "steps": [
         "固定小样本/多挂牌/新增对象、模型顺序及预算，从已安装快捷方式或同一UI入口启动。",
         "验证真实搜索、原样评分/null、导入与查询、停止/恢复、重复点击和两个实际加载的研究消费者。",
-        "记录安装组合/加载hash及实际收费，不能手工启动另一个项目或复制答案来补齐产品路径。"
+        "记录安装组合/加载hash及实际收费，不能手工启动另一个项目或复制答案来补齐产品路径。",
+        "E2E-06和EVO-23均在唯一受控live run完成，真实回执绑定recipe_id/hash；无公司文档下载的正常路径断言下载目录为空，文件故障注入交换/缓存解析边界。"
       ],
       "deliverables": [
         "一键入口真实试点回执",
@@ -3837,11 +4165,15 @@
         "START-02",
         "START-05",
         "START-08",
-        "START-09"
+        "START-09",
+        "MOD-10",
+        "EVO-23",
+        "E2E-06"
       ],
-      "test_binding": "先验证配套安装与离线联调，再经实际同一启动入口在已配置预算内运行；保留真实组件/搜索/费用/导入/消费回执。",
+      "test_binding": "先验证配套安装与离线联调，再经实际同一启动入口在已配置预算内运行；保留真实组件/搜索/费用/导入/消费回执。真实E2E必须使用唯一临时workspace、临时SQLite和本次专属下载/交换目录；以测试前文件/数据库/进程快照为oracle，在finally中停止本次进程、回滚或删除临时库，并仅删除由本次run_id创建且hash匹配的文件，最后断言外部仓工作树和非测试数据零漂移。",
       "completion": [
         "全部关联case有实际结果，说明运行组件与版本；关键skip和未运行不能放行。",
+        "E2E-06清理审计通过：成功、失败、超时和中断四条路径均恢复测试前环境；清理失败必须使测试失败并保留隔离目录供取证，禁止扩大删除范围。",
         "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
       ],
       "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
@@ -3890,7 +4222,8 @@
         "E2E-04",
         "E2E-05",
         "REV-01",
-        "REV-02"
+        "REV-02",
+        "REV-11"
       ],
       "test_binding": "在owner项目绑定真实公共入口测试，固定跨组件正反预期；仅在模型网络等外部边界使用stub，不能mock掉执行器/数据库/启动协调本身。",
       "completion": [
@@ -3910,7 +4243,13 @@
         "G5",
         "X10",
         "X11",
-        "X12"
+        "X12",
+        "U04",
+        "V18",
+        "S07",
+        "S08",
+        "S09",
+        "S10"
       ],
       "invariants": [
         "I01",
@@ -3946,7 +4285,8 @@
         "有任何模块未接上、只有离线stub或仅评分通过时不宣布整个计划完成；审查最终快照并给出可运行支持组合。",
         "审查真实结果UI而非仅状态页：评分/依据/恢复/历史/事实与筛选可用，桌面/窄屏和浏览器操作证据齐备。",
         "从设置→手工加入→自动准入→增量扫描→三维结果查看审查完整流程；外部接线/在线验证未做不能被本地题库测试替代。",
-        "核查用户顺位配置模板、并行限制、五小时额度fallback、逐题接续和结果不明对账的真实实现/测试，配置离线通过不能代替调度器验收。"
+        "核查用户顺位配置模板、并行限制、五小时额度fallback、逐题接续和结果不明对账的真实实现/测试，配置离线通过不能代替调度器验收。",
+        "确认模块发布包、路由决策、增量问答、旧版读取和模块历史UI真实接通；新增模块不得静默重算旧分或触发全池重问。"
       ],
       "deliverables": [
         "G6完整发布审查",
@@ -3973,7 +4313,34 @@
         "PAR-04",
         "PAR-05",
         "PAR-07",
-        "PAR-08"
+        "PAR-08",
+        "MOD-08",
+        "MOD-10",
+        "MOD-13",
+        "EVO-56",
+        "EVO-61",
+        "EVO-62",
+        "EVO-63",
+        "EVO-64",
+        "EVO-65",
+        "EVO-66",
+        "EVO-67",
+        "EVO-68",
+        "EVO-69",
+        "EVO-70",
+        "EVO-71",
+        "EVO-72",
+        "EVO-73",
+        "EVO-74",
+        "EVO-75",
+        "EVO-76",
+        "EVO-77",
+        "EVO-78",
+        "EVO-79",
+        "EVO-80",
+        "EVO-81",
+        "EVO-82",
+        "REV-10"
       ],
       "test_binding": "审查精确release_set、所有依赖回执、实际安装加载位置、源码/测试和原始结果；UI可打开与helper测试不能替代整个系统验收。",
       "completion": [
@@ -3981,6 +4348,1832 @@
         "提交代码/配置schema/部署工件快照、测试和独立审查；版本或加载位置改变后重验受影响部分。"
       ],
       "rollback": "只由拥有者在已授权部署目录执行恢复；保留名单/观察/待办/outbox/费用预留，不杀无关进程，不回退费用，不覆盖其他项目的开发文件。"
+    },
+    {
+      "id": "S04",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "contract",
+      "title": "冻结模块注册、独立版本与历史读取契约",
+      "depends_on": [
+        "G0",
+        "S01"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I08",
+        "I09",
+        "I17"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "references/routing.md",
+        "docs/implementation/test-strategy.md"
+      ],
+      "allowed_changes": [
+        "docs/modular-question-bank-design.md",
+        "docs/implementation/contracts/question-modules.md",
+        "schemas/quick_scan/question-module.schema.json",
+        "schemas/quick_scan/module-release.schema.json",
+        "schemas/quick_scan/route-decision.schema.json",
+        "scripts/module_contract.py",
+        "tests/test_module_contract.py",
+        "tests/fixtures/route_decision_legacy_v1.json"
+      ],
+      "steps": [
+        "以现有48模块/222题和61事实题为基线，定义模块ID、kind/axis、适用与排斥、作用层、依赖及发布锁schema；不重建平行题库。",
+        "冻结24核心构念；新增通用题作为独立补充层。同ID已发布题面/证据/锚点不可修改，勘误与实质改题均创建新ID并记录supersedes；规定模块元数据patch、追加minor、退役major和旧发布包读取规则。",
+        "分别定义题义指纹、渲染prompt hash与模块包hash；只纳入该题实际适用口径。编制旧版可读、假版本/篡改拒绝及无关行业追加的正反例。",
+        "在validate_registry与validate_release两个独立入口验证完整模块依赖图：依赖/冲突引用必须闭合、拒绝自依赖/自冲突/同模块依赖与冲突矛盾和依赖环；冲突模块可共存于发布目录，但不能在同一已选组合中共存。归档字节、题义锁、活动题与累计退役墓碑均核验后才返回完整包。"
+      ],
+      "deliverables": [
+        "模块/发布锁/路由决策契约",
+        "升级与历史兼容矩阵及审查记录"
+      ],
+      "case_ids": [
+        "MOD-02",
+        "MOD-14"
+      ],
+      "test_binding": "先把关联case做成固定输入、精确断言和失败反例；真实公共入口、原始结果与临时环境清理均须有回执。",
+      "completion": [
+        "关联case有实测结果；关键skip/未运行不可放行，记录受影响旧题和旧观察。",
+        "保存源码/配置/测试hash、隔离日志和独立审查；跨仓写入先核对用户授权及该仓AGENTS。",
+        "MOD-14的每个atomic assertion ID均在receipt中绑定具体测试selector、真实入口、失败原因和hash自洽归档fixture；registry与validate_release分开覆盖。"
+      ],
+      "rollback": "保留旧发布包、manifest、路由快照、观察和费用账本；仅撤回本任务新版本，不改写历史或其他任务文件。"
+    },
+    {
+      "id": "S05",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "实现模块注册、确定性拼装与按版本读取",
+      "depends_on": [
+        "S04",
+        "S01"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I08",
+        "I09",
+        "I17"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "references/routing.md",
+        "docs/implementation/test-strategy.md"
+      ],
+      "allowed_changes": [
+        "questions/catalog.json及现有模块/口径",
+        "scripts/question_sets.py",
+        "schemas/quick_scan/模块schema与发布锁",
+        "tests/test_question_sets.py",
+        "schemas/quick_scan/module-legacy-baseline.json（原始可信归档hash清单；代码内固定清单文件SHA-256）",
+        "scripts/module_registry.py（只依据可信基线ID+原始artifact_sha256批准旧字段兼容）",
+        "scripts/question_sets.py（当前题库校验调用同一精确基线验证）",
+        "tests/test_module_registry.py（发布包reader、当前catalog入口和基线篡改回归）",
+        "tests/test_routing.py（S06临时发布根复制可信基线，保持隔离测试真实入口可运行）"
+      ],
+      "steps": [
+        "扩展现有catalog/模块校验和scoring-contexts注册；新增行业、投资视角或事实模块时缺任何渲染口径/适用证据/依赖均在导出前fail closed。",
+        "manifest逐模块锁版本/hash、逐题锁语义与prompt；历史运行以其发布包解析，当前题库升级不重算旧manifest，也不放宽伪造版本校验。",
+        "维持类型替代、关键题继承与24核心分母；quick预算不足时返回未派发清单，不丢重大风险；新扩展分与覆盖单列。",
+        "用临时虚构模块先红后绿验证新行业缺口、追加题不改旧题、无关模块不改方法指纹、共有渲染规则变化使受影响题不可比。",
+        "历史归档reader对全部已解出的模块重验依赖闭包与环，并拒绝hash自洽但结构无效的归档；只有精确命中可信基线release中的模块ID+归档hash，才可将旧模块缺失的dependencies/conflicts按空集合兼容读取。新模块/新归档缺必需元数据、未知基线或调用方自报legacy标记一律拒绝或needs_review；MOD-16/17分别覆盖reader和升级链。"
+      ],
+      "deliverables": [
+        "模块注册与发布锁实现",
+        "历史manifest及组合回归"
+      ],
+      "case_ids": [
+        "MOD-02",
+        "MOD-03",
+        "MOD-15",
+        "MOD-16",
+        "MOD-17"
+      ],
+      "test_binding": "先把关联case做成固定输入、精确断言和失败反例；真实公共入口、原始结果与临时环境清理均须有回执。",
+      "completion": [
+        "关联case有实测结果；关键skip/未运行不可放行，记录受影响旧题和旧观察。",
+        "保存源码/配置/测试hash、隔离日志和独立审查；跨仓写入先核对用户授权及该仓AGENTS。",
+        "MOD-17必须有精确legacy正例及同module_id改写字节并重算全部hash的拒绝负例；旧字段兼容只能以module_id+原始artifact_sha256可信基线匹配。",
+        "当前题库导出/validate_library入口与历史包reader、publish统一以实际读取的原始模块字节计算artifact_sha256；禁止仅凭模块ID、外层legacy声明或调用方自报标记豁免。"
+      ],
+      "rollback": "保留旧发布包、manifest、路由快照、观察和费用账本；仅撤回本任务新版本，不改写历史或其他任务文件。"
+    },
+    {
+      "id": "S06",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "实现证据化路由决策及多轴模块选择",
+      "depends_on": [
+        "S05",
+        "S03"
+      ],
+      "invariants": [
+        "I04",
+        "I07",
+        "I08",
+        "I17"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "references/routing.md",
+        "docs/implementation/test-strategy.md"
+      ],
+      "allowed_changes": [
+        "scripts/routing.py",
+        "scripts/question_sets.py",
+        "scripts/module_contract.py",
+        "scripts/module_registry.py",
+        "questions/routing-policy.v2.json",
+        "schemas/quick_scan/route-decision.schema.json",
+        "references/routing.md",
+        "tests/test_routing.py",
+        "tests/test_question_sets.py",
+        "tests/test_module_registry.py",
+        "tests/test_implementation_plan.py",
+        "scripts/stockqa_adapter.py",
+        "tests/test_stockqa_adapter.py",
+        "docs/implementation/reviews/S06/run-first-segment-offline.py"
+      ],
+      "steps": [
+        "保留现有ROUTE_01与严格validate_profile，另建基于已验证S05发布包的ROUTE_02候选请求、路由v2纯解析和部分问卷入口；先确定性锁身份与已证实类别，再将LLM候选严格映射到已发布模块，旧48模块由版本化机器策略全覆盖，新模块必须有activation及已注册策略谓词。",
+        "按发布模块图对最终选择做确定性依赖闭包：传递必需模块恰好加入一次，缺失/未决依赖使组合needs_review/blocked；在闭包上按无向语义检查conflicts，选中冲突对时派发前拒绝。目录中存在互斥备选本身合法；LLM不得自行补依赖、删冲突或更改题目顺序/去重规则。",
+        "公司类型和主阶段各一个；quick至多两个已证实重大行业，三个及以上不得截断，只有full且业务/类型/阶段边界兼容才可同实体展开，否则返回分部待处理而不创建身份；既有cyclical虽kind=stages却只占正交周期属性，困境/恢复可与主阶段叠加，投资视角须用户策略或人工启用。",
+        "冻结机器策略的物质性进入/退出门槛、重大事件例外及逐轴理由；收入之外允许利润、资本占用、投资和存续重大性，证据不足时标uncertain而非自由文本猜测；把已触发困境/恢复的六道风险题列为受信任mandatory，预算低于24核心加必需题时导出前拒绝，不静默延期或改核心分母。",
+        "输出每模块selected/rejected/uncertain、证据或严格受限的policy/unavailable依据、来源、置信度、人工覆盖理由/TTL、可信decided_at和路由策略版本/hash；路由v2绑定完整S05 package及冻结profile_context，含周期位置/恢复理由/多业务缺口/搜索模型回执；当前执行时重检TTL，历史manifest仅按原快照验证。低置信度只运行确定通用/必要风险，不从池中删除公司。新执行入口必须用调用方独立保存的decision_id核对快照；自计算内容哈希只检出内容变化，不认证来源标签或模型出处。",
+        "固定半导体扩张、成熟周期低谷、困境成长及24题预算、多业务full/分部、无搜索空来源和边界TTL反例；未知行业不得伪装other，候选乱序不改decision_id，路由变更产生可审计增量集。",
+        "将ROUTE_02总体分类置信度与模块自身置信度分开版本化：低于策略阈值只把searched_llm候选降为uncertain，不影响独立verified_facts；快照校验重算内部策略约束，不能靠自报score绕过模块证据门；执行必须以调用方独立保存的decision_id验证来源标签和模型出处未被重封包改写。"
+      ],
+      "deliverables": [
+        "确定性路由决策/提示词与回执",
+        "冲突/歧义/人工覆盖回归"
+      ],
+      "case_ids": [
+        "MOD-01",
+        "MOD-04",
+        "MOD-05",
+        "MOD-18",
+        "MOD-19"
+      ],
+      "test_binding": "先把关联case做成固定输入、精确断言和失败反例；真实公共入口、原始结果与临时环境清理均须有回执。",
+      "completion": [
+        "关联case有实测结果；关键skip/未运行不可放行，记录受影响旧题和旧观察。",
+        "保存源码/配置/测试hash、隔离日志和独立审查；跨仓写入先核对用户授权及该仓AGENTS。",
+        "MOD-18按atomic assertion分别覆盖传递闭包、未决/缺失/循环依赖、对称冲突、目录备选正例、排序稳定和零派发。",
+        "MOD-19分别验证ROUTE_02外层置信度保留、阈值上下边界、模型/模块置信度独立门控、确定性事实不受降级、快照内部一致性、独立decision_id执行锚点与旧router只读兼容；2.0由真实归档fixture覆盖，2.1目前仅覆盖合成兼容路径，不宣称有真实历史快照。"
+      ],
+      "rollback": "保留旧发布包、manifest、路由快照、观察和费用账本；仅撤回本任务新版本，不改写历史或其他任务文件。"
+    },
+    {
+      "id": "Q13",
+      "stage": "M3",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "按冻结模块问卷执行增量逐题任务",
+      "depends_on": [
+        "S06",
+        "Q07",
+        "Q10"
+      ],
+      "invariants": [
+        "I01",
+        "I02",
+        "I09",
+        "I10",
+        "I11",
+        "I12",
+        "I17"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "references/routing.md",
+        "docs/implementation/test-strategy.md"
+      ],
+      "allowed_changes": [
+        "StockQA现有CLI/批次/待办/回执入口（实施前核实精确文件并另获授权）",
+        "StockQA隔离测试"
+      ],
+      "steps": [
+        "核实StockQA公共CLI和持久任务入口；消费S05/S06冻结manifest，只接受已选题/版本/语义hash，不根据自由文本自选模块。",
+        "沿用Q06/Q07/Q10待办、模型顺位、搜索和outbox：新增模块只派缺失题；已完成题或未确定attempt先复用/对账，不重复收费。",
+        "记录每题模块版本、实际prompt hash、model/attempt与预算；篡改manifest或两个模块替换同一核心题须在付费前拒绝。",
+        "在唯一TEMP根用真实公共入口、mock网络边界做中断/恢复和并发回归；只有X10能宣称实际联网。"
+      ],
+      "deliverables": [
+        "冻结问卷消费与逐题增量派发",
+        "费用/恢复/防重审查回执"
+      ],
+      "case_ids": [
+        "MOD-06",
+        "MOD-09",
+        "JOB-03"
+      ],
+      "test_binding": "先把关联case做成固定输入、精确断言和失败反例；真实公共入口、原始结果与临时环境清理均须有回执。",
+      "completion": [
+        "关联case有实测结果；关键skip/未运行不可放行，记录受影响旧题和旧观察。",
+        "保存源码/配置/测试hash、隔离日志和独立审查；跨仓写入先核对用户授权及该仓AGENTS。"
+      ],
+      "rollback": "保留旧发布包、manifest、路由快照、观察和费用账本；仅撤回本任务新版本，不改写历史或其他任务文件。"
+    },
+    {
+      "id": "W15",
+      "stage": "M3",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "持久化路由快照与模块级刷新缺口",
+      "depends_on": [
+        "W06",
+        "W11",
+        "Q13"
+      ],
+      "invariants": [
+        "I03",
+        "I04",
+        "I08",
+        "I09",
+        "I12",
+        "I27"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "references/routing.md",
+        "docs/implementation/test-strategy.md"
+      ],
+      "allowed_changes": [
+        "StockWiki quick_scan身份/观察/刷新/查询入口（实施前核实精确文件并另获授权）",
+        "StockWiki临时SQLite测试"
+      ],
+      "steps": [
+        "在StockWiki quick_scan库追加不可变路由决策和模块版本关联；人工覆盖保留操作者/理由/TTL，旧版本快照只读。",
+        "router 2.2快照必须原样保存classification_confidence的status/score/minimum_score/llm_candidates_eligible及ROUTE_02 provider/model/answered_at/as_of；旧router快照缺失该字段时保留缺失，不能补造或改标成公司质量分。",
+        "新建派发时，调用方必须从可信路由存储读取独立expected decision_id并传给执行入口；不把快照内可重算的hash当作来源认证，也不从待执行对象自身取得锚点。",
+        "比较新旧模块集和逐题语义/时效，仅生成新增或失效题待办；退出模块的答案保留历史但不算当前适用覆盖。",
+        "按相同题篮/期间/作用层/模型元数据生成比较基础；新增题不能改旧核心分，改变共有规则须标不可比。",
+        "用临时SQLite模拟新增半导体模块、阶段迁移、部分ACK丢失与回滚；不触碰正式库或company-wiki。"
+      ],
+      "deliverables": [
+        "路由与模块观察历史",
+        "增量缺口/同题篮比较查询及事务回归"
+      ],
+      "case_ids": [
+        "MOD-05",
+        "MOD-06",
+        "MOD-07"
+      ],
+      "test_binding": "先把关联case做成固定输入、精确断言和失败反例；真实公共入口、原始结果与临时环境清理均须有回执。",
+      "completion": [
+        "关联case有实测结果；关键skip/未运行不可放行，记录受影响旧题和旧观察。",
+        "保存源码/配置/测试hash、隔离日志和独立审查；跨仓写入先核对用户授权及该仓AGENTS。"
+      ],
+      "rollback": "保留旧发布包、manifest、路由快照、观察和费用账本；仅撤回本任务新版本，不改写历史或其他任务文件。"
+    },
+    {
+      "id": "F06",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "将事实问题纳入同一模块发布规则",
+      "depends_on": [
+        "G3",
+        "F01",
+        "S05"
+      ],
+      "invariants": [
+        "I01",
+        "I08",
+        "I14",
+        "I17"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "references/routing.md",
+        "docs/implementation/test-strategy.md"
+      ],
+      "allowed_changes": [
+        "questions/facts.json（保持61题1.0.0基线原样）及新增questions/fact-catalog.json、questions/fact-modules/",
+        "schemas/quick_scan/fact-module.schema.json、fact-release.schema.json和加法式schemas/observation.schema.json",
+        "scripts/fact_registry.py、module_contract.py共享原语、module_registry.py安全归档复用、standard_answers.py",
+        "tests/test_fact_registry.py、test_module_contract.py、test_module_registry.py、test_standard_answers.py及事实契约文档"
+      ],
+      "steps": [
+        "冻结questions/facts.json的61题/字段ID、顺序与旧compose-facts输出；新增fact-catalog只记录模块元数据/引用，不复制题文，未来新字段归属单一fact-modules文件。",
+        "建立独立factrel_/factpkg_内容寻址发布锁，复用S05归档安全、版本/墓碑/指纹原语；事实manifest同时关联S06评分route_decision/release，X07发布集绑定两种包，事实增题不得改变评分包或24核心分。",
+        "逐字段冻结ID、field_id、作用层、关系、渲染prompt及响应schema；新增字段只生成适用公司该字段待办，旧档可读。分部字段缺segment_id、未知或未确定路由、重复字段/ID、归档篡改和缺activation均在派发前拒绝。",
+        "外部事实回答允许省略score并在内部规范化为null，数值score一律拒绝；保留legacy输出/观察的兼容路径，已发布观察绑定事实包，不用当前可编辑事实库重释旧答案。"
+      ],
+      "deliverables": [
+        "可增量事实模块及兼容导出",
+        "旧事实题与新字段缺口回归"
+      ],
+      "case_ids": [
+        "MOD-11",
+        "MOD-12"
+      ],
+      "test_binding": "先把关联case做成固定输入、精确断言和失败反例；真实公共入口、原始结果与临时环境清理均须有回执。",
+      "completion": [
+        "关联case有实测结果；关键skip/未运行不可放行，记录受影响旧题和旧观察。",
+        "保存源码/配置/测试hash、隔离日志和独立审查；跨仓写入先核对用户授权及该仓AGENTS。"
+      ],
+      "rollback": "保留旧发布包、manifest、路由快照、观察和费用账本；仅撤回本任务新版本，不改写历史或其他任务文件。"
+    },
+    {
+      "id": "U04",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "显示模块选择依据、版本与时间轴变化",
+      "depends_on": [
+        "U03",
+        "W15"
+      ],
+      "invariants": [
+        "I03",
+        "I05",
+        "I08",
+        "I27"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "references/routing.md",
+        "docs/implementation/test-strategy.md"
+      ],
+      "allowed_changes": [
+        "StockWiki现有Web详情/历史/查询呈现层（实施前核实精确文件并另获授权）",
+        "StockWiki浏览器测试"
+      ],
+      "steps": [
+        "在现有企业详情按通用/类型/行业/阶段/属性/诊断/事实分组展示已选模块、依据、版本、题目与缺口；人工覆盖、歧义和路由变化可见。",
+        "router 2.2的ROUTE_02分类置信度以独立路由置信字段展示status/score/threshold/model/timestamp，明确不是公司质量分；低于阈值的searched_llm模块显示uncertain，独立verified_facts仍照常显示。router 2.0/2.1字段缺失时显示历史未记录，不推测、不补值。",
+        "历史页按冻结题篮并排、明确新增/退役/不再适用；跨阶段或渲染规则变化不画伪分差，不在浏览器另算公司质量。",
+        "真实浏览器在临时SQLite和窄屏/键盘流程检查模块筛选、展开、版本、模型、来源及零费用浏览。"
+      ],
+      "deliverables": [
+        "模块版企业详情与历史视图",
+        "桌面/窄屏/键盘浏览器证据"
+      ],
+      "case_ids": [
+        "MOD-08",
+        "MOD-13",
+        "UI-07",
+        "UI-10",
+        "EVO-21"
+      ],
+      "test_binding": "先把关联case做成固定输入、精确断言和失败反例；真实公共入口、原始结果与临时环境清理均须有回执。",
+      "completion": [
+        "关联case有实测结果；关键skip/未运行不可放行，记录受影响旧题和旧观察。",
+        "保存源码/配置/测试hash、隔离日志和独立审查；跨仓写入先核对用户授权及该仓AGENTS。"
+      ],
+      "rollback": "保留旧发布包、manifest、路由快照、观察和费用账本；仅撤回本任务新版本，不改写历史或其他任务文件。"
+    },
+    {
+      "id": "V02",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "发布独立评分尺与同题篮可比性契约",
+      "depends_on": [
+        "G3",
+        "S05",
+        "C03",
+        "S01"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I08",
+        "I20",
+        "I30"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/scoring-rubric.schema.json和questions/scoring-rubrics/（新，实施前核实）",
+        "scripts/scoring_rubrics.py和tests/test_scoring_rubrics.py（新）",
+        "docs/implementation/contracts/scoring-rubric-evolution.md（新）"
+      ],
+      "steps": [
+        "冻结现有24核心构念/类型替代/关键风险分母和逐题1—10/unknown语义；用独立rubric_release_id/method_id记录权重、分母、cohort、有效期及校准样本引用，不重写原问卷或观察。",
+        "编译新旧评分尺的兼容矩阵：同题义/作用层/期间/模型比较口径且覆盖足够才算可比分；改锚点或缺题标incomparable及原因，重聚合只能新建派生分。",
+        "测试5/8/unknown、核心分与诊断分分离、不同方法同一旧原答可并列且旧白名单阈值不自动套新方法。",
+        "本卡只验证纯聚合与可比性，权威库历史白名单不覆写由V08的事务/回放测试验收。"
+      ],
+      "deliverables": [
+        "不可变评分尺发布包与可比性判定器",
+        "核心与新方法并排的固定回归样本"
+      ],
+      "case_ids": [
+        "EVO-05",
+        "EVO-06",
+        "EVO-07"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V03",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "冻结事实关系本体与词表映射边界",
+      "depends_on": [
+        "G3",
+        "F06",
+        "C06"
+      ],
+      "invariants": [
+        "I01",
+        "I08",
+        "I14",
+        "I31"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/fact-ontology.schema.json和questions/ontology/（新）",
+        "scripts/fact_ontology.py和tests/test_fact_ontology.py（新）",
+        "docs/implementation/contracts/fact-ontology.md（新）"
+      ],
+      "steps": [
+        "在既有61事实题/事实模块上定义方向、公司角色、价值链阶段、产品/设备/材料/客户/应用、时间与分部的稳定relation_id；不把问句文本或StockWiki别名复制为第二份事实库。",
+        "给原词、规范词ID和映射版本分别留字段；未知/歧义映射保留原词并标待核，不得把使用设备、制造设备、供应设备合并。",
+        "用同词不同角色和旧事实包验证schema与发布锁；旧观察按旧本体可读，新本体只影响未来答案或可重建投影。"
+      ],
+      "deliverables": [
+        "关系本体release及StockWiki映射接口",
+        "方向/角色/歧义固定反例"
+      ],
+      "case_ids": [
+        "EVO-27",
+        "EVO-28"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V04",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "定义可组合且三值的筛选lens契约",
+      "depends_on": [
+        "G3",
+        "V02",
+        "C03"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I07",
+        "I09",
+        "I30"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/screening-lens.schema.json和不具发布权的示例lens fixtures（新）",
+        "scripts/screening_lenses.py和tests/test_screening_lenses.py（新；仅AST/纯组合校验）",
+        "docs/implementation/contracts/screening-lenses.md（新）"
+      ],
+      "steps": [
+        "在既有C03规则AST上定义独立版本lens的schema/组合协议和非发布示例：质量、困境反转、产业主题和关键风险；每个声明适用cohort、字段/评分尺依赖、unknown策略、有效期与输出名单，不再造第二个规则语言。具体lens release由StockWiki V08唯一签发。",
+        "组合器只合并名单视图，不修改逐题/核心分；质量critical gate始终独立，不能被OR主题或恢复条件绕过；恢复候选可保留当前低分。",
+        "规则版本/阈值变化仅重算派生名单，模型调用为0；旧lens快照可重放且新阈值不回填旧历史。"
+      ],
+      "deliverables": [
+        "lens schema/AST/纯编译校验及非发布示例；不签发具体lens release",
+        "质量、恢复、主题并列的三值固定样本"
+      ],
+      "case_ids": [
+        "EVO-11",
+        "EVO-12"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V05",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "定义字段级声明式刷新策略和优先级",
+      "depends_on": [
+        "G3",
+        "C04",
+        "S06"
+      ],
+      "invariants": [
+        "I08",
+        "I09",
+        "I12",
+        "I32"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/refresh-policy.schema.json和questions/refresh-policies/（新）",
+        "scripts/refresh_policy.py和tests/test_refresh_policy.py（新）",
+        "docs/implementation/contracts/refresh-policy-evolution.md（新）"
+      ],
+      "steps": [
+        "先对评分字段按字段ID/作用层/公司阶段声明TTL、事件失效、人工强制、unknown冷却和适用模块；F06发布后以可选事实字段扩展，不阻塞既有评分扩容。规定事件与强制优先级、UTC边界、generation递增及同一原因幂等。",
+        "解析旧观察原valid_until/策略版本，不以导入时间、全局题库升版或阈值变更使其变fresh/全池重问；新模块只产新字段缺口。",
+        "固定时钟覆盖同日多事件、到期瞬间、身份修订、阶段变化、人工刷新与无关模块升级。"
+      ],
+      "deliverables": [
+        "独立刷新策略release与字段级缺口解析器",
+        "新旧策略并行回放样本"
+      ],
+      "case_ids": [
+        "EVO-29",
+        "EVO-30"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V06",
+      "stage": "M4",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "发布提供商能力与实际搜索回执适配快照",
+      "depends_on": [
+        "G3",
+        "Q13",
+        "C05",
+        "Q04"
+      ],
+      "invariants": [
+        "I02",
+        "I10",
+        "I11",
+        "I19",
+        "I32"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockQAbyLLM现有provider/config入口与新quick_scan capability schema/adapter（先核实真实文件及AGENTS）",
+        "StockQAbyLLM提供商能力/搜索回执/拒绝分类隔离测试"
+      ],
+      "steps": [
+        "在现有StockQA provider栈上为每个模型发布带hash的web_search方式、可验证回执、可用地区、并发/额度窗口、成本和能力版本；密钥仍仅在StockQA配置。",
+        "只有等价且当前可用的搜索能力可按用户顺序fallback；执行前拒绝无能力或未知价格，HTTP 5xx/超时/已送出未确认保持uncertain，不能因字符串说搜索过便记executed。",
+        "本卡以真实适配器和固定厂商HTTP/工具事件fixture验证能力、URL归属、未知执行/明确拒绝分类；不在V06重写Q04派发器，完整fallback和预算通过后置V09/EVO-16—17验。测试不触网不读密钥。"
+      ],
+      "deliverables": [
+        "版本化能力快照与搜索回执适配",
+        "跨提供商拒绝/未知故障矩阵"
+      ],
+      "case_ids": [
+        "EVO-31",
+        "EVO-32",
+        "EVO-33"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V01",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "解析并冻结跨组件ScanRecipe与兼容矩阵",
+      "depends_on": [
+        "G3",
+        "V02",
+        "V04",
+        "V05",
+        "V06",
+        "S06"
+      ],
+      "invariants": [
+        "I02",
+        "I08",
+        "I10",
+        "I11",
+        "I29",
+        "I32"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/scan-recipe.schema.json和scripts/scan_recipe.py（新）",
+        "tests/test_scan_recipe.py与docs/implementation/contracts/scan-recipe.md（新）"
+      ],
+      "steps": [
+        "先支持scoring_only：冻结评分题包/路由/评分尺/lens/刷新/能力/预算/身份/输出schema；fact_ref明确absent/disabled。schema保留facts_enabled分支但只有F06/V03/F03真实发布引用齐全才可启用，V13负责该分支实际实现。每个引用带owner、release ID、内容hash及读写区间，规范序列化生成recipe_id。",
+        "解析器检查依赖、排斥、mandatory风险、能力等价、预算、身份revision及输出协议；给出稳定拒绝原因，未过不得发付费请求；不复制StockQA策略。",
+        "旧recipe/run manifest按归档字节读取，新事实包不改变旧scoring_only或24核心；新配置只生新recipe，新题仅增加缺口。",
+        "读入真实pre-recipe旧形状时标legacy_without_recipe并核实旧题义/身份/执行/费用证据；可验证旧答只读复用，不足以判定者保持needs_review和零自动POST，绝不补签一个伪旧recipe。"
+      ],
+      "deliverables": [
+        "机器可验证ScanRecipe/RunManifest及版本兼容矩阵",
+        "冲突预检与历史读取样本"
+      ],
+      "case_ids": [
+        "EVO-01",
+        "EVO-02",
+        "EVO-04",
+        "EVO-39"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V07",
+      "stage": "M4",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "在权威库实现词表映射与关系投影版本",
+      "depends_on": [
+        "G3",
+        "V03",
+        "F03",
+        "F04"
+      ],
+      "invariants": [
+        "I03",
+        "I08",
+        "I13",
+        "I21",
+        "I31"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockWiki既有quick_scan词表/关系存储与迁移入口（先核实精确文件及AGENTS）",
+        "StockWiki临时SQLite和真实只读快照副本测试"
+      ],
+      "steps": [
+        "由StockWiki发布别名/同义词映射release，索引只引用本仓V03关系本体ID；保存原词、原关系、来源/时期/分部及映射版本。",
+        "新别名只在临时副本/事务中重建投影，不调用模型、不改原事实；歧义、同词异角色、映射冲突回unknown/待核。",
+        "strict与exploratory查询均携带taxonomy_id/ontology_id/watermark，旧release可读；迁移失败回滚投影且不触碰原观察。"
+      ],
+      "deliverables": [
+        "版本化词表关系索引",
+        "同词异角色和失败迁移回归"
+      ],
+      "case_ids": [
+        "EVO-08",
+        "EVO-09",
+        "EVO-10"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V08",
+      "stage": "M5",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "实现评分尺与lens的可重建名单投影",
+      "depends_on": [
+        "V02",
+        "V04",
+        "W07",
+        "W08"
+      ],
+      "invariants": [
+        "I03",
+        "I05",
+        "I06",
+        "I07",
+        "I20",
+        "I30"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockWiki现有quick_scan评分/规则/查询存储与迁移入口（先核实精确文件及AGENTS）",
+        "StockWiki派生评分与白名单临时SQLite测试"
+      ],
+      "steps": [
+        "用不可变观察生成按rubric_release/method/cohort/as_of/model标记的只读派生分；绝不UPDATE原观察或跨口径画分差。",
+        "StockWiki作为具体lens release唯一发布者，按V04 schema/AST签发、版本化并审计质量白名单、恢复观察和主题候选；输出pass/fail/unknown及关键风险/缺失原因，保存各自名单快照与构成观察ID。",
+        "改权重/阈值在临时库重投影且模型调用为0；真实库迁移先备份演练，旧名单按旧版本可回放。"
+      ],
+      "deliverables": [
+        "StockWiki签发的具体lens release及评分/多lens快照查询",
+        "相同旧答新旧方法并列与低谷关注回归"
+      ],
+      "case_ids": [
+        "EVO-05",
+        "EVO-06",
+        "EVO-11",
+        "EVO-12",
+        "EVO-13"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V09",
+      "stage": "M5",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "在持久执行路径固定recipe、能力和预算",
+      "depends_on": [
+        "V01",
+        "Q13",
+        "Q09",
+        "Q08"
+      ],
+      "invariants": [
+        "I02",
+        "I10",
+        "I11",
+        "I12",
+        "I19",
+        "I29",
+        "I32"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockQAbyLLM已验证的quick_scan公开runner/work/attempt/model-policy入口（实施前核实）",
+        "StockQAbyLLM临时work库、受控HTTP传输与断电测试"
+      ],
+      "steps": [
+        "公开派发入口只消费V01解析的recipe和StockWiki权威身份/缺口，不接调用方自签版本；run/work/attempt持久绑定recipe_id、实际能力版本/模型、预算和搜索要求。",
+        "热更新仅影响未领取的新run/新generation；旧已发送尝试按原快照结算，结果不明先对账。能力失效、费用未知、mandatory预算不足均在POST前fail closed。",
+        "固定断点覆盖配置更新、重复启动、额度拒绝/5xx、结果已返回未入库和双worker；每个逻辑题的真实HTTP POST次数与费用账本精确断言。",
+        "旧无recipe在途attempt先查旧执行/费用账本并对账，不能因为新入口强制recipe而重发；只有新work/新generation写当前recipe。"
+      ],
+      "deliverables": [
+        "recipe绑定的公开问答执行",
+        "中断/能力/预算隔离回归"
+      ],
+      "case_ids": [
+        "EVO-01",
+        "EVO-03",
+        "EVO-16",
+        "EVO-17",
+        "EVO-34",
+        "EVO-41"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V10",
+      "stage": "M5",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "持久化recipe引用、身份快照和字段刷新代次",
+      "depends_on": [
+        "V01",
+        "V05",
+        "V09",
+        "W03",
+        "W15"
+      ],
+      "invariants": [
+        "I03",
+        "I04",
+        "I08",
+        "I09",
+        "I12",
+        "I21",
+        "I29",
+        "I32"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockWiki已有quick_scan身份/成员/route/observation/待办迁移入口（先核实精确文件及AGENTS）",
+        "StockWiki临时SQLite和只读真实主档副本测试"
+      ],
+      "steps": [
+        "将来源候选、verified issuer/security、池成员/manual pin分层；identity_revision、membership_version、recipe_id、刷新policy ID与字段generation形成事务快照。",
+        "多个挂牌对实体级工作只建一条待办；身份合并/拆分或绑定变化只追加映射事件与新代次，旧观察按旧身份读；未决请求先对账。",
+        "按V05优先级生成字段级增量缺口；变更词表/lens/阈值/无关模块不派发模型；备份/迁移失败或混合身份版本时停写。",
+        "StockWiki升级时保留pre-recipe旧观察原ID/hash及身份/来源；能证明的旧答继续只读，无法证明兼容的字段标needs_review，不直接生成付费缺口。"
+      ],
+      "deliverables": [
+        "身份/成员/recipe/刷新一致快照",
+        "多挂牌、修订、长批次续扫及迁移故障测试"
+      ],
+      "case_ids": [
+        "EVO-14",
+        "EVO-15",
+        "EVO-18",
+        "EVO-19",
+        "EVO-25",
+        "EVO-40"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V11",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "发布版本化查询投影与UI/消费者能力接口",
+      "depends_on": [
+        "V07",
+        "V08",
+        "V10",
+        "W14",
+        "U02",
+        "C06",
+        "G4",
+        "V13",
+        "V14",
+        "V15"
+      ],
+      "invariants": [
+        "I03",
+        "I08",
+        "I13",
+        "I20",
+        "I27",
+        "I31",
+        "I33"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockWiki现有quick_scan只读API与U02已存在的基础列表/详情能力标记（先核实精确文件及AGENTS）",
+        "StockWiki公开查询协议/临时库/浏览器基础回归及主题行业消费者契约fixture"
+      ],
+      "steps": [
+        "查询协议显式schema_version/capabilities/snapshot/watermark/rubric/ontology/taxonomy/lens/recipe；旧API在声明窗口只读，缺新能力返回unavailable和原因，不用空列表伪装。",
+        "在U02已有基础列表/详情显示版本与能力缺口，不在V11越界完成U03/U04的全时间模型界面；完整桌面/窄屏交互留U03/U04和X09的EVO-21。",
+        "以已完成T01/T02真实消费者入口验证同一snapshot的方向/角色/时期查询、池外提名、旧协议回退和定向补缺；只改StockWiki拥有文件，消费者代码仍由T01/T02拥有。"
+      ],
+      "deliverables": [
+        "能力协商的版本化查询API与基础UI提示",
+        "供U03/U04和两个消费者使用的稳定查询样例与回归"
+      ],
+      "case_ids": [
+        "EVO-20",
+        "EVO-24",
+        "EVO-26"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V12",
+      "stage": "M6",
+      "owner": "iqs",
+      "kind": "review",
+      "title": "独立审查跨版本发布、迁移和全链回放",
+      "depends_on": [
+        "X09",
+        "V01",
+        "V07",
+        "V08",
+        "V09",
+        "V10",
+        "V11"
+      ],
+      "invariants": [
+        "I17",
+        "I21",
+        "I22",
+        "I26",
+        "I29",
+        "I33"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "docs/implementation/reviews/V12/和精确回执（新）",
+        "docs/implementation/test-strategy.md与X09/X11真实日志引用"
+      ],
+      "steps": [
+        "由独立审查者核对所有owner实际加载hash/发布包/兼容矩阵，不以各组件自报版本相同替代；旧归档阅读、新派发、混搭拒绝与数据库恢复分别给原始证据。",
+        "在隔离部署副本对升级中断、旧schema只读、新版本无法安全降级、原答/费用/outbox保留做故障注入；不删除正式库。",
+        "核对X09离线真实组件、X10待运行live门、浏览器/主题/行业同snapshot；形成阻塞清单，只有修复后最新hash可供X11升级验收。"
+      ],
+      "deliverables": [
+        "跨版本独立审查报告与受影响回归清单",
+        "X11升级/回退准入结论"
+      ],
+      "case_ids": [
+        "EVO-02",
+        "EVO-04",
+        "EVO-22",
+        "EVO-25",
+        "EVO-26",
+        "EVO-42",
+        "EVO-43"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V13",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "启用事实版ScanRecipe并保持scoring_only旧版不变",
+      "depends_on": [
+        "V01",
+        "V03",
+        "F06",
+        "F03"
+      ],
+      "invariants": [
+        "I08",
+        "I14",
+        "I29",
+        "I31",
+        "I32"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/scan-recipe.schema.json与scripts/scan_recipe.py的facts_enabled分支",
+        "tests/test_scan_recipe.py事实版/旧评分版兼容反例及docs/implementation/contracts/scan-recipe.md"
+      ],
+      "steps": [
+        "从F06可信事实包、V03关系本体与F03 StockWiki词表release解析事实模块/字段/路由/作用层/答案schema，并和评分包分开计预算及hash。",
+        "事实版只产生新增事实字段待办，外部facts缺score内部null；事实包/本体/词表不兼容、事实字段映射缺失或无实际搜索能力均在付费前拒绝。",
+        "真实1.0.0旧scoring_only recipe、24核心和已答work字节/hash不变；旧事实包只读，新发布版才可派发。"
+      ],
+      "deliverables": [
+        "可验证事实版ScanRecipe发布/解析入口",
+        "评分版旧快照与事实增量反例"
+      ],
+      "case_ids": [
+        "EVO-35",
+        "EVO-36"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V14",
+      "stage": "M6",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "将事实版recipe接入同一逐题执行与回执链",
+      "depends_on": [
+        "V13",
+        "V09",
+        "F02",
+        "Q10"
+      ],
+      "invariants": [
+        "I02",
+        "I05",
+        "I11",
+        "I12",
+        "I14",
+        "I29"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockQAbyLLM已验证的quick_scan公开runner/work/outbox与事实回复入口（先核实精确文件及AGENTS）",
+        "StockQAbyLLM临时work/预算/回执/同一HTTP传输隔离测试"
+      ],
+      "steps": [
+        "在现有F02事实回复路径接受V13事实recipe并持久绑定run/work/attempt/outbox的recipe_id/hash；不新增第二客户端或独立事实重试队列。",
+        "只问新增适用事实字段，评分旧题和已完成事实不重复请求；facts数值score拒绝，未知/失败不变为5。",
+        "故障注入事实请求已发送结果不明、已答未ACK、预算耗尽与重启；仅对账或重投递，同一用户模型顺序/共享额度/费用账本守恒。"
+      ],
+      "deliverables": [
+        "事实版逐题派发与不可变回执",
+        "与scoring_only共用账本的断点回归"
+      ],
+      "case_ids": [
+        "EVO-37",
+        "EVO-38"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V15",
+      "stage": "M6",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "接入事实版字段缺口、观察导入与ACK",
+      "depends_on": [
+        "V10",
+        "V13",
+        "V14",
+        "F04",
+        "W05"
+      ],
+      "invariants": [
+        "I02",
+        "I03",
+        "I08",
+        "I09",
+        "I12",
+        "I29",
+        "I31",
+        "I32"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockWiki现有quick_scan事实缺口/刷新/观察导入/outbox ACK入口（先核实精确文件及AGENTS）",
+        "StockWiki隔离临时SQLite与StockQA回执契约fixture；不得新增第二权威事实库"
+      ],
+      "steps": [
+        "只接受V13 facts_enabled recipe产生的新增适用字段缺口，将字段/分部/身份revision/事实包/本体/词表/recipe_id/hash与V10权威代次事务绑定；旧scoring_only缺口与原观察不变。",
+        "经F04真实事实导入和W05不可变观察入口校验V14回复：证据/搜索/作用层与标准答案齐备才可入库，数值score拒绝；原样记录实际模型和information_as_of，不补签旧版事实。",
+        "以同一outbox ACK边界完成幂等导入：已提交但ACK丢失时只重投递回执不重问，身份或recipe冲突停写待审；库/费用/旧题数守恒。",
+        "以临时真实库副本演练事实版发布、升级/回退和消费者查询；词表/lens变更仅重建索引/派生视图，不能触发评分旧题全池重扫。"
+      ],
+      "deliverables": [
+        "StockWiki事实版字段级缺口、不可变观察及幂等ACK接线",
+        "评分旧题零重问、事实增量/断点/迁移隔离回归"
+      ],
+      "case_ids": [
+        "EVO-42",
+        "EVO-43"
+      ],
+      "test_binding": "先以固定旧发布包/虚构实体或临时SQLite把EVO反例接到真实公开入口，保留红绿日志；必要live仅由X10在有界授权和隔离清理器中运行。每项标明原始/派生记录及模型调用数。",
+      "completion": [
+        "关联case实测且无关键skip；记录旧版可读、新版可写、口径可比/不可比、无重复收费的实际结果。",
+        "保存精确源码/配置/测试hash、原始隔离日志、临时目录清理证明和独立审查结论；跨仓写入遵守当前用户授权及目标仓AGENTS。"
+      ],
+      "rollback": "保留旧原答/观察/成员/recipe/outbox/费用和已发布包；只撤回新策略或派生投影。数据库迁移先备份并用临时副本演练，失败停写不删库。"
+    },
+    {
+      "id": "V16",
+      "stage": "M4",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "冻结跨层组件发布生命周期与兼容声明",
+      "depends_on": [
+        "G3",
+        "S04",
+        "S05",
+        "V01",
+        "C06",
+        "C07"
+      ],
+      "invariants": [
+        "I29",
+        "I33",
+        "I34",
+        "I35",
+        "I36",
+        "I40",
+        "I44",
+        "I47",
+        "I49",
+        "I51"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "schemas/quick_scan/component-release.schema.json（新：只定义公共元数据外壳，不统一各域专属schema）",
+        "scripts/component_releases.py与tests/test_component_releases.py（新：纯解析/兼容校验，不加载任意插件代码）",
+        "docs/implementation/contracts/component-release-lifecycle.md（新）"
+      ],
+      "steps": [
+        "为问题模块、路由、评分尺、证据/答案解析、事实本体/词表、lens、刷新、提供商能力、查询投影等分别保留owner专属schema；仅统一component_id、release_id、schema_version、内容hash、owner、状态、生效时间、supersedes、支持的读/写契约和能力声明。",
+        "分离组件release生命周期与workspace/profile级ReleaseSet active指针：component release状态单调记录draft→candidate→active→deprecated→retired；candidate只可做纯plan预览，生产新work/付费派发要求active ReleaseSet及其所有component具备新派发资格。ReleaseSet指针原子切换不自动改变component状态；deprecated须由owner显式发布。回退只指向仍获资格的已验证包；旧包若已deprecated/retired或过资格窗则只读、阻断新work，不暗中复活。",
+        "定义组合解析只允许已登记的声明式组件，校验依赖、排斥、适用对象、能力、预算和版本范围；LLM可提议分类/组件，不得自动发布、激活或绕过人工覆盖与风险必答规则。",
+        "验证同一个发布ID内容被替换、非法状态跳转、退役/旧归档包读写边界，以及不兼容release在纯预检中被标为blocked；本卡不执行StockWiki导入/HTTP派发。",
+        "兼容矩阵行绑定精确producer/consumer release与动作，并定义valid_from_utc含端点、valid_until_utc不含端点；必须显式说明null到期字段代表non_expiring。过期按动作分别返回blocked/needs_review；历史只读无法继续解释时标needs_review，绝不删除或改释观察。"
+      ],
+      "deliverables": [
+        "通用组件发布元数据schema和确定性生命周期校验器",
+        "跨域兼容声明与状态迁移反例"
+      ],
+      "case_ids": [
+        "EVO-44",
+        "EVO-45",
+        "EVO-46",
+        "EVO-47",
+        "EVO-77",
+        "EVO-83"
+      ],
+      "test_binding": "使用虚构发布包和固定hash；测试真实schema/解析器，断言副作用为零。正例、同ID篡改、退役读写分离及不兼容writer/reader必须分别有可复现断言。",
+      "completion": [
+        "六个case均绑定实际测试且无关键skip；记录候选发布不可被误当active、旧版可读/新派发门控与精确失败原因。",
+        "保存源码/测试hash、原始隔离日志和独立审查；本卡不改StockQA或StockWiki配置/数据库。",
+        "component状态事件和workspace/profile active ReleaseSet指针分开建模；回退资格与deprecated/retired/资格窗的派发规则有明确正反例。",
+        "EVO-83在固定UTC时钟下逐动作覆盖半开窗口边界、显式non_expiring与到期/非法时钟失败路径。"
+      ],
+      "rollback": "新元数据校验只作为发布前拒绝/警告层；停用新候选即可恢复旧发布路径，不能删除旧包、观察或账本。"
+    },
+    {
+      "id": "V17",
+      "stage": "M5",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "计算版本变更影响范围并生成字段级演进计划",
+      "depends_on": [
+        "G3",
+        "V01",
+        "V05",
+        "V10",
+        "V16"
+      ],
+      "invariants": [
+        "I08",
+        "I09",
+        "I12",
+        "I29",
+        "I36",
+        "I37",
+        "I49"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "scripts/evolution_impact.py与tests/test_evolution_impact.py（新：纯差异分析/计划生成）",
+        "docs/implementation/contracts/evolution-impact.md（新：StockWiki只读观察清单适配契约）"
+      ],
+      "steps": [
+        "把组件依赖映射到题目/字段、有限答案schema、评分派生、lens名单和查询投影；至少从V10/StockWiki公开只读查询取真实快照，输出no_op、projection_rebuild、selected_field_rescan、needs_review或blocked及逐对象原因，但不创建generation或写owner库。每个plan绑定完整快照hash、范围、active ReleaseSet ID/status/manifest hash/pointer revision、固定V17实现release/hash与规范plan hash。",
+        "规定新增题/模块只生成新字段缺口；改变题义、锚点、身份或适用路由只影响可证明受影响的实体/字段；只改权重、别名、词表索引、阈值或展示投影不调用模型。",
+        "对StockWiki只读快照或契约样例计算候选影响集合，不复制名单/观察状态、不直接派发、不写owner库；已领取/已发送work沿用冻结recipe。",
+        "依赖图不全时先通过V01既有legacy_without_recipe证据适配器验证旧记录；能证明兼容的旧答仍可只读复用，只有身份/语义/依赖证据不足才needs_review/blocked。绝不将无法定位的影响退化为全池重问，也不删除低分/恢复候选。"
+      ],
+      "deliverables": [
+        "确定性组件差异到字段/对象影响计划",
+        "仅投影、单字段增量、局部重扫及无法确定需人工复核的固定案例"
+      ],
+      "case_ids": [
+        "EVO-48",
+        "EVO-49",
+        "EVO-50",
+        "EVO-51"
+      ],
+      "test_binding": "以固定时钟、虚构实体加V10公开只读快照执行V17真实纯函数/CLI；断言精确plan、模型/HTTP调用0、generation/数据库写入0。使用真实临时SQLite验证读取边界但不mock被测差异算法。",
+      "completion": [
+        "四个case均有实际测试和影响明细；零影响升级、字段级增量和无法证明影响时的停机行为与预期一致。",
+        "保存输入/输出hash、测试日志、清理证明与独立审查；不写StockWiki权威库或其他外仓。"
+      ],
+      "rollback": "影响计划是只读派生结果；撤回新解析器并保留先前recipe/待办/观察，不自动执行其建议。"
+    },
+    {
+      "id": "Q14",
+      "stage": "M4",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "版本化答案解析/标准化并保持轻量回执可追溯",
+      "depends_on": [
+        "G3",
+        "V16",
+        "Q01",
+        "Q03",
+        "Q04",
+        "Q12",
+        "Q13",
+        "C06"
+      ],
+      "invariants": [
+        "I02",
+        "I05",
+        "I08",
+        "I19",
+        "I27",
+        "I34",
+        "I38",
+        "I39",
+        "I41"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockQAbyLLM/src/providers/llm_response_parser.py（先核实当前实现与未提交改动）",
+        "StockQAbyLLM/src/services/answer_generator.py及src/runners/llm_runner.py（仅标准化/版本回执所需最小hunk）",
+        "StockQAbyLLM已有parser/service/runner单元和CLI集成测试（先核实精确路径）"
+      ],
+      "steps": [
+        "为标准答案schema、解析器、证据状态解释和规范化规则分别记录release ID/hash；每题保存实际provider/model、题义与prompt hash、解析版本、information_as_of，以及最小搜索回执：attempt/request/response ID（缺失允许null）、完成态search call ID/status、引用URL到call ID的归属。",
+        "只保留约定的有限结构化答案、短依据、来源URL及上述必要运行元数据；不持久化完整HTTP原始响应、web_search查询/结果正文、网页/财报文档或密钥。URL缺少可验证search call归属时不得据此认定已搜索。",
+        "解析器升级仅可从已保存的有限答案和最小执行回执重新派生；旧观察/answer hash/费用不覆写、模型调用为零。新版本需要旧记录中缺失的来源-call绑定、期间等字段时返回unknown或needs_review，不编造来源或分数。",
+        "题义/锚点/答案语义变化须发新问题/答案schema版本并明确supersedes；可证明纯表示变化才允许无收费重标准化。"
+      ],
+      "deliverables": [
+        "每题可追溯的答案解析/标准化release元数据",
+        "旧回执只读、有限答案重标准化和信息不足停审路径"
+      ],
+      "case_ids": [
+        "LLM-13",
+        "LLM-14",
+        "LLM-15"
+      ],
+      "test_binding": "执行前向用户报备StockQA实际精确写入文件；采用唯一TEMP工作区与真实parser/service/CLI路径，网络stub只替代HTTP边界。旧版答复重放断言模型请求数为零，禁止触碰.coverage、用户配置和正式数据目录。",
+      "completion": [
+        "三项case均绑定运行测试；实际provider/模型、解析版本、来源状态按题记录，缺字段不伪造，完整搜索/HTTP正文未落盘。",
+        "保留精确源文件hash、隔离前后状态、测试原始日志和独立审查；live联网仍由既有Q02/X10 gate验收。"
+      ],
+      "rollback": "保留原标准答案和解析版本；新版本停用后旧回执按原解析器解释，不覆写answer、费用或已完成work。"
+    },
+    {
+      "id": "V18",
+      "stage": "M6",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "建立跨版本升级、回退与历史样本回放验收",
+      "depends_on": [
+        "G5",
+        "V16",
+        "V17",
+        "Q14",
+        "V12",
+        "X09",
+        "W16",
+        "Q15"
+      ],
+      "invariants": [
+        "I08",
+        "I21",
+        "I29",
+        "I33",
+        "I36",
+        "I37",
+        "I38",
+        "I40",
+        "I47"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md",
+        "docs/implementation/one-click-launch.md"
+      ],
+      "allowed_changes": [
+        "tests/fixtures/evolution/（新：合成/脱敏旧发布包、有限问答与冻结观察）",
+        "tests/test_evolution_upgrade.py（新：本地release解析、历史读取、增量影响及失败回退）",
+        "docs/implementation/contracts/evolution-upgrade-rehearsal.md（新：操作步骤/验收证据）"
+      ],
+      "steps": [
+        "建立跨题库、路由、解析器、评分尺、词表、lens和查询投影的冻结小样本，至少包含稳定优势的周期低谷公司、多挂牌主体、多个模型和旧版/无recipe历史回执；不含财报或网页正文。",
+        "在隔离副本回放candidate→active ReleaseSet指针切换、字段迁移与回退；分别验证组件生命周期事件不倒退、旧包资格、在途旧attempt结算以及新POST围栏，不能用测试fixture改变生产active指针。",
+        "对升级前后逐对象比较身份、原答案/观察hash、评分方法、名单、费用和待办；经营证据变化、模型变化、解析规则变化必须可区分，恢复候选不得因暂时低分消失。",
+        "升级失败时停止新写/派发，保留旧release与所有账本；从单一公开入口验证离线回放，并与X09跨仓联调报告对照，不冒充X10真实联网或G6上线验收。"
+      ],
+      "deliverables": [
+        "可重复执行的升级/回退隔离回放测试夹具",
+        "跨维度变化归因与周期低谷保留案例报告"
+      ],
+      "case_ids": [
+        "EVO-52",
+        "EVO-53",
+        "EVO-54",
+        "EVO-55",
+        "EVO-56",
+        "EVO-78"
+      ],
+      "test_binding": "默认使用固定时钟、合成或脱敏短答案、真实临时SQLite与stub网络；对每次run做隔离前后快照和逐文件清理验证。任何真实provider只允许既有X10授权/预算/清理门，不从本卡发起。",
+      "completion": [
+        "六项case均有实际结果；升级、回退、旧历史、受影响字段集合与账本守恒可重现，恢复候选和三维模型/时间比较结论均不误导。",
+        "保存固定样本与release hash、原始测试日志、清理证明、实际加载版本和独立审查；未通过的跨仓/真实联网路径保留partial。"
+      ],
+      "rollback": "演练仅在run-local副本；失败时删除范围限于清单登记的临时文件，保留旧发布包、正式数据库、公司目录、费用与outbox。"
+    },
+    {
+      "id": "W16",
+      "stage": "M5",
+      "owner": "stockwiki",
+      "kind": "implementation",
+      "title": "将版本影响计划接入权威字段待办与派发预检",
+      "depends_on": [
+        "G3",
+        "V16",
+        "V17",
+        "V10",
+        "W15",
+        "W12"
+      ],
+      "invariants": [
+        "I02",
+        "I03",
+        "I08",
+        "I09",
+        "I12",
+        "I29",
+        "I33",
+        "I36",
+        "I37",
+        "I40",
+        "I42",
+        "I43",
+        "I44",
+        "I45",
+        "I46",
+        "I49",
+        "I50"
+      ],
+      "read_first": [
+        "docs/implementation/composable-evolution-plan.md",
+        "docs/implementation/decision-register.md",
+        "docs/implementation/test-strategy.md",
+        "docs/implementation/review-and-handoff.md"
+      ],
+      "allowed_changes": [
+        "StockWiki现有release/ScanRecipe预检、字段缺口/刷新/投影与启动入口（先只读核实精确文件、AGENTS及工作树；获批后才写）",
+        "StockWiki现有隔离SQLite/公开CLI集成测试；不新增第二权威库"
+      ],
+      "steps": [
+        "StockWiki必须用实际active V16 ReleaseSet、固定V17实现release和当前权威快照确定性重算影响集合；candidate只可预览，不得创建generation/work/费用/HTTP POST；拒绝调用方自带plan hash与未定义签名回执。",
+        "安全对账/幂等导入旧recipe下已派发或已答未ACK的work，沿用原冻结receipt完成费用/结果结算；随后才检查新版本准入。缺失/不兼容lock或plan只阻止新generation/new paid dispatch，不得阻断旧outbox结算。",
+        "同一事务CAS覆盖快照hash、身份/成员/字段scope revision、recipe、generation、active ReleaseSet ID/status/完整manifest hash/pointer revision及V17实现hash；任一竞态都回滚。",
+        "仅在一个owner数据库事务内应用明确的selected_field_rescan（新增逐字段generation/work）或projection_rebuild（只更新可重建视图）；no_op不写，needs_review/blocked不自动派发。",
+        "W16是dispatch fence请求/回执schema及授权状态的唯一owner。dispatch_fence针对精确work_id/attempt_id/recipe hash/active ReleaseSet ID+manifest hash/pointer revision/身份范围revision，在真实POST前重新核对active指针、component资格和work范围，并原子签发短时、单次、不可跨attempt复用的permit。CLI/UI/StockQA不得绕过此门。",
+        "为执行中旧recipe保留原口径；新增模块仅添对应字段，lens/阈值/别名/评分权重升级不创建付费任务，不影响manual_pin、低分/恢复候选和已完成观察。",
+        "在临时真实SQLite注入事务中断、重复plan、过期身份、ACK/重启故障；正式数据库不迁移，跨仓写入执行前须另按当前用户边界获得精确授权。",
+        "将当前active ReleaseSet内精确组件集合的lifecycle/dispatch_eligibility revision、status、manifest hash和资格摘要纳入同一CAS快照；资格可在active指针不变时独立变化，预检与commit/permit边界必须复核。",
+        "在W16自身事务屏障中覆盖组件被retired/deprecated但active pointer未变、资格revision在预检后改变、permit后组件资格改变等竞态；拒绝新work不得阻断旧attempt结算。",
+        "permit issuance与实际传输之间采用两阶段围栏：Q15先耐久写入send_intent_prepared，再调用W16 consume_dispatch_permit；W16在单一owner事务中重新核验active pointer及组件资格revision并将permit绑定为consumed/dispatch_commit。只有返回匹配的耐久dispatch_commit receipt后才允许一次provider POST。",
+        "资格在permit签发后、consume提交前变化时必须拒绝consume；consume提交后生命周期变化不得撤销已承诺的单次POST，但不得创建后续attempt。已消费permit后崩溃且无法证明未发送时进入outcome_unknown，不得重放。"
+      ],
+      "deliverables": [
+        "StockWiki权威写入owner对V16/V17影响plan的幂等应用协议",
+        "新增字段/纯投影/冲突阻断/恢复观察保持的真实公开入口回归，以及StockQA消费的一次性dispatch fence请求/回执schema"
+      ],
+      "case_ids": [
+        "EVO-57",
+        "EVO-58",
+        "EVO-59",
+        "EVO-60",
+        "EVO-61",
+        "EVO-62",
+        "EVO-63",
+        "EVO-65",
+        "EVO-66",
+        "EVO-73",
+        "EVO-75",
+        "EVO-79"
+      ],
+      "test_binding": "以V10/W15/W16 owner公开路径、临时SQLite和固定时钟运行真实StockWiki入口；两个worker以测试屏障同步预检后争同一plan，并在事务前注入身份/代次变化；HTTP边界stub且模型/POST/new-work计数精确断言。本卡完成条件仅要求owner接口；统一X05/X09集成由后置任务验收。真实跨仓写入需单独取得用户授权；本卡规格不构成该授权。",
+      "completion": [
+        "十二项owner-local case逐一在StockWiki W16 owner公开入口与真实临时SQLite上通过；计划应用原子、幂等、精确限域，冲突无副作用，评分/事实两种模式按已实现能力分别报告。",
+        "保存真实调用路径、隔离前后状态、源码/测试hash、原始测试日志、清理证明与独立审查；W16 owner实现可独立verified，统一X05/X09接线由后置任务验收且G6前必须完成；跨仓写入仍按用户授权执行。",
+        "只接受active ReleaseSet生成正式work；candidate只能预览；旧已授权attempt仍可按原receipt安全结算。",
+        "EVO-79在真实临时SQLite/公开owner路径通过：active指针不变但组件资格revision改变时CAS零副作用失败；permit签发再次核验当前资格。",
+        "permit签发与consume分离；consume事务的资格CAS、一次性消费回执、并发重放拒绝及崩溃后的unknown处理均有真实临时SQLite反例。"
+      ],
+      "rollback": "先停止消费新plan，保留owner数据库的旧recipe/观察/费用/outbox和migration前备份；只重建派生projection，不删记录，不清除已生成的付费/待办账本。"
+    },
+    {
+      "id": "Q15",
+      "stage": "M5",
+      "owner": "stockqa",
+      "kind": "implementation",
+      "title": "在真实provider POST前消费StockWiki活动发布围栏",
+      "depends_on": [
+        "G3",
+        "Q06",
+        "Q08",
+        "Q14",
+        "W16",
+        "C07"
+      ],
+      "invariants": [
+        "I34",
+        "I43",
+        "I44",
+        "I45",
+        "I46",
+        "I49",
+        "I50"
+      ],
+      "read_first": [
+        "docs/implementation/decision-register.md",
+        "docs/implementation/contracts/providers-and-budget.md",
+        "docs/implementation/contracts/launch-and-release.md",
+        "docs/implementation/composable-evolution-plan.md",
+        "C07",
+        "Q08",
+        "Q14",
+        "W16"
+      ],
+      "allowed_changes": [
+        "仅StockQA公开派发协调/attempt/outbox边界和对应隔离测试；不改V16/V17/W16权威定义，不写StockWiki私有库，不改provider密钥。"
+      ],
+      "steps": [
+        "StockWiki W16是dispatch fence契约与回执schema的唯一owner；StockQA只消费该contract。每次付费HTTP POST前，以work_id、attempt_id、recipe hash、active ReleaseSet ID/hash、active pointer revision、身份/范围revision请求一次性dispatch fence。",
+        "只有与当前work/attempt/recipe/active pointer完全匹配、未过期且未消费的W16 permit才能准备派发；StockQA先本地耐久写入send_intent_prepared，再调用W16 consume_dispatch_permit。W16必须在owner事务中重新核验当前active指针、组件派发资格、revision及work范围并原子消费permit；只有匹配的dispatch_commit receipt耐久返回后，StockQA才可向传输层发出恰好一次POST。",
+        "若permit已签发但send_intent_prepared或W16 consume尚未提交即崩溃，恢复时POST为0，旧permit不可重放；资格仍有效时只能新建本地准备并重新申请/消费新permit。若W16 consume/dispatch_commit已耐久提交后崩溃，则单次POST可能已发生；无法由持久传输回执证明未发送时一律outcome_unknown并阻断重试/新attempt。",
+        "测试lease→资格退役→permit、permit签发→资格变化→consume拒绝、send_intent_prepared→consume提交前崩溃、consume提交→传输前崩溃/未知响应四处屏障；只有未消费permit可因资格复核被拒绝，已消费commit只允许原attempt单次结算。",
+        "冻结attempt状态机：StockQA单调生成attempt_id；每个work最多一个有效或结果不明attempt/permit；重复claim复用现有attempt；新attempt仅在确定未发送或provider冻结策略确认可重试的终态拒绝并完成费用对账后创建。",
+        "未知/超时/连接中断若可能已发送，一律outcome_unknown并阻断fallback及新permit；本地send_intent_prepared只是必要记录，W16 consume_dispatch_permit事务返回dispatch_commit receipt才是跨仓授权线性化点，之后最多允许该attempt一次POST；fallback必须创建新的单调attempt并重新核对资格/预算。"
+      ],
+      "deliverables": [
+        "实际POST前围栏调用图、W16授权回执的消费端校验与状态/重启表、隔离双进程回归与原始日志；不得另行定义StockWiki的权威回执schema。"
+      ],
+      "case_ids": [
+        "LLM-17",
+        "EVO-76",
+        "EVO-81"
+      ],
+      "test_binding": "真实StockQA派发/attempt/outbox类与临时数据库；W16使用真实隔离endpoint或契约stub，provider传输使用stub；分别在permit签发→本地send_intent_prepared、W16 consume提交前/后及transport start处设置崩溃/资格修订屏障，精确断言permit、dispatch_commit、POST、费用和重放次数。",
+      "completion": [
+        "未获permit、资格已变、过期permit、非法状态及consume前崩溃均在POST前拒绝；consume前崩溃恢复后POST为0且permit不可重放；consume后崩溃若不能证明未发送则outcome_unknown并禁止新attempt；旧attempt最多一次POST且只按原recipe结算。",
+        "X05/X09依赖Q15；任何provider POST前均已有本地send_intent_prepared与匹配的W16 durable dispatch_commit receipt；consume时资格CAS失败、候选/退役/过期/越权请求的POST计数为0。",
+        "EVO-81覆盖重复claim、有效permit复用、可安全新attempt、unknown-after-send和伪造/重放attempt_id；与W16授权、费用账本及真实传输边界分别计数。"
+      ],
+      "rollback": "保留授权与attempt审计；如兼容回退，禁用新dispatch fence并只允许旧attempt对账，不回写/删除已记录回执。"
+    },
+    {
+      "id": "S07",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "拆分问题渲染契约并解除编排器与答案构建器的双向依赖",
+      "depends_on": [
+        "S03",
+        "S05"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I08",
+        "I17"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "docs/system-contract.md",
+        "docs/implementation/test-strategy.md",
+        "references/common-framework.md"
+      ],
+      "allowed_changes": [
+        "scripts/question_prompts.py",
+        "scripts/question_sets.py",
+        "scripts/standard_answers.py",
+        "tests/test_question_prompts.py",
+        "tests/test_question_sets.py",
+        "tests/test_standard_answers.py",
+        "tests/test_producer_pipeline_e2e.py",
+        "scripts/implementation_plan.py",
+        "tests/test_implementation_plan.py",
+        "docs/implementation/tasks.json",
+        "docs/implementation/acceptance-cases.json",
+        "docs/implementation/README.md",
+        "docs/implementation/test-strategy.md",
+        "task_plan.md",
+        "progress.md",
+        "findings.md"
+      ],
+      "steps": [
+        "先用失败测试证明question_sets.py与standard_answers.py之间存在双向导入责任，并冻结代表性评分题、事实题的提示语与发布包兼容行为。",
+        "将ANSWER_RULE、applied_contexts、render_question和standard_prompt迁入无CLI/存储/provider依赖的question_prompts.py；两个现有入口只消费该公开提示契约，不互相延迟导入。",
+        "保持既有标准答案调用路径可读；本次仅搬移代码，评分题和事实题必须逐字不变，renderer版本与哈希保持与当前发布包一致。只有后续提示语义变更才单独升renderer版本并发布新候选。",
+        "以隔离单测覆盖输入边界、事实与评分提示、依赖方向；以真实CLI/类和临时目录覆盖compose、manifest prompt hash与答案校验；以本地离线producer E2E覆盖问题导出到标准化观察的串联。",
+        "记录模块边界和测试层级；离线fixture不得标为真实搜索、StockWiki导入/ACK、UI或生产启动端到端通过。"
+      ],
+      "deliverables": [
+        "独立提示渲染契约及无环依赖图",
+        "单测、公共CLI集成与本地离线producer E2E证据"
+      ],
+      "case_ids": [
+        "MOD-20",
+        "MOD-21",
+        "MOD-22"
+      ],
+      "test_binding": "先运行依赖方向红测，再只替换question_sets/standard_answers到提示契约的边；单测不stub提示被测函数，集成和E2E在独立临时根运行真实本仓入口，关闭网络和仓库级覆盖率副作用。",
+      "completion": [
+        "question_sets不再导入standard_answers，standard_answers与question_sets共享quick_scan_prompts公开契约；不存在重复提示实现或延迟导入循环。",
+        "代表性评分题/事实题的提示输出保持既有语义，manifest prompt hash可重算，旧封存包只读验证仍通过，新renderer版本不会覆盖旧发布包。",
+        "MOD-20/21/22所有owner断言有真实选择器、运行命令、临时环境与清理证据；离线E2E不冒充跨仓生产验收。"
+      ],
+      "rollback": "renderer提示合同指纹变化时旧包只读；如本次拆分失败，恢复两个入口原有导入，不改写历史manifest或分数。"
+    },
+    {
+      "id": "S08",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "抽离题库源数据与profile校验契约，减少答案构建器对CLI的耦合",
+      "depends_on": [
+        "S07"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I08",
+        "I17"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "docs/system-contract.md",
+        "docs/implementation/test-strategy.md",
+        "scripts/question_sets.py",
+        "scripts/standard_answers.py"
+      ],
+      "allowed_changes": [
+        "scripts/json_io.py",
+        "scripts/question_library.py",
+        "scripts/question_sets.py",
+        "scripts/standard_answers.py",
+        "tests/test_question_library.py",
+        "tests/test_question_sets.py",
+        "tests/test_standard_answers.py",
+        "tests/test_producer_pipeline_e2e.py",
+        "scripts/implementation_plan.py",
+        "tests/test_implementation_plan.py",
+        "docs/implementation/tasks.json",
+        "docs/implementation/acceptance-cases.json",
+        "docs/implementation/README.md",
+        "docs/implementation/test-strategy.md",
+        "task_plan.md",
+        "progress.md",
+        "findings.md"
+      ],
+      "steps": [
+        "先用依赖图红测冻结当前边界：答案构建器不得再从question_sets CLI取JSON读写、题库加载、URL校验或profile校验；不得隐藏延迟导入。",
+        "将UTF-8 JSON文件I/O抽至下层json_io.py，由question_prompts与question_library共用且不重复实现；question_library只承接本地题库root、source catalog读取、URL格式校验与profile校验。",
+        "question_sets保留既有公开函数和ROOT覆盖行为作为兼容入口；standard_answers改为直接消费question_library契约。当前复杂的不可变manifest验证和question fingerprint明确作为仅剩的两条CLI依赖，后续独立owner任务再拆，不借本卡宣称全域解耦。",
+        "在同一大节点批次运行纯库单测、真实模块/答案接口集成与本地离线producer E2E；旧问题集CLI、profile行为、renderer版本/哈希和已发布观察都须兼容。",
+        "所有测试使用本仓固定fixture与唯一临时目录，清除仓库级pytest覆盖率输出；不使用真实公司、API、网络、下载或外仓。"
+      ],
+      "deliverables": [
+        "无上层依赖的题库读取与profile校验契约",
+        "显式记录剩余manifest/fingerprint依赖的导入图与三层回归证据"
+      ],
+      "case_ids": [
+        "MOD-23",
+        "MOD-24",
+        "MOD-25"
+      ],
+      "test_binding": "先运行MOD-23依赖方向红测，再迁移被允许的共享helper；MOD-24验证旧CLI兼容入口与答案构建器共享同一契约，MOD-25运行隔离的本地离线producer E2E。任何剩余question_sets引用必须限定为manifest语义验证和历史fingerprint，并由测试精确枚举。",
+      "completion": [
+        "json_io只有一份UTF-8 JSON实现；question_prompts、question_library和question_sets兼容面共用它。question_library不导入question_sets、standard_answers、provider、网络或生产持久化。",
+        "两个业务消费端依赖稳定下层模块，question_sets既有调用签名及临时ROOT覆盖兼容；standard_answers的实际fact catalog API在备用ROOT下不触碰仓库根目录。",
+        "standard_answers对question_sets的引用只剩validate_manifest_metric_contract和_question_fingerprint，且没有延迟/动态导入；目录加载、URL与profile规则不重复实现。",
+        "MOD-23/24/25均有真实selector、命令、脱敏日志、临时目录与清理证据；离线E2E仍标为本仓离线闭环。"
+      ],
+      "rollback": "若source catalog/临时ROOT兼容或renderer/观察回放失败，恢复standard_answers原helper入口并保留红测；不得改写题库发布包或历史观察。"
+    },
+    {
+      "id": "S09",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "将历史题目指纹算法下沉为共享契约并解除答案构建器的CLI依赖",
+      "depends_on": [
+        "S08"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I08",
+        "I17",
+        "I29"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "docs/system-contract.md",
+        "docs/implementation/test-strategy.md",
+        "scripts/question_sets.py",
+        "scripts/standard_answers.py",
+        "scripts/module_contract.py"
+      ],
+      "allowed_changes": [
+        "scripts/question_fingerprints.py（新）",
+        "scripts/question_sets.py",
+        "scripts/standard_answers.py",
+        "tests/test_question_fingerprint.py（新）",
+        "tests/test_question_sets.py",
+        "tests/test_standard_answers.py",
+        "tests/test_producer_pipeline_e2e.py",
+        "tests/test_implementation_plan.py",
+        "docs/implementation/tasks.json",
+        "docs/implementation/acceptance-cases.json",
+        "docs/implementation/README.md",
+        "docs/implementation/test-strategy.md",
+        "task_plan.md",
+        "progress.md",
+        "findings.md",
+        "tests/test_question_library.py"
+      ],
+      "steps": [
+        "先用单元红测固定答案构建器对question_sets._question_fingerprint的调用边；以缺省semantic_fingerprint_version字段的旧格式投影和当前2.0.0发布包记录基准，并明确仓内没有真实归档1.x包，不能声称完成真实历史回放。",
+        "将单一指纹算法移入question_fingerprints.py：旧版输入和输出保持不变，新版继续绑定实际应用上下文、renderer版本、答案格式和对应格式资源摘要。",
+        "question_sets保留原函数签名作为兼容包装；standard_answers直接消费下层契约，只保留独立的manifest语义验证边，不复制算法或通过延迟导入隐藏依赖。",
+        "在同一阶段门运行指纹单测、已发布观察集成回归及隔离本地producer E2E；只有这些跨层行为均通过才完成本卡。",
+        "所有测试使用真实本仓题库发布包和虚构profile、唯一临时目录及离线回执；不使用真实公司、网络、模型API、下载文档或外仓写入。"
+      ],
+      "deliverables": [
+        "可独立复用且向后兼容的已发布题目语义指纹模块",
+        "答案构建器只依赖下层共享指纹契约的导入边界和分层回归证据"
+      ],
+      "case_ids": [
+        "MOD-26",
+        "MOD-27",
+        "MOD-28"
+      ],
+      "test_binding": "先以MOD-26红测冻结算法基线与question_sets兼容包装，再抽取唯一实现；MOD-27通过答案观察公开校验接口确认当前发布包观察校验及伪造manifest拒绝，question_sets剩余边精确；MOD-28通过隔离的本地CLI端到端验证题目编排、观察和交换hash。所有选择器关闭仓库级pytest覆盖率输出；使用临时根并记录清理结果。",
+      "completion": [
+        "question_fingerprints.question_fingerprint是唯一算法实现；question_sets._question_fingerprint保持相同签名并逐参数委托。",
+        "standard_answers不再从question_sets取question fingerprint；其静态成员依赖仅为validate_manifest_metric_contract，且无延迟/动态导入。",
+        "缺省版本字段时的1.0.0旧算法及当前2.0.0固定fingerprint基线逐字节通过；格式资源摘要被改动时2.0.0指纹改变；没有真实归档1.x包时不宣称已验证其原始回放。",
+        "MOD-26/27/28覆盖单元、集成和E2E层；E2E仅证明本仓离线producer闭环，不冒称真实搜索、StockWiki ACK、UI或启动通过。"
+      ],
+      "rollback": "若旧包指纹、标准观察校验或producer E2E发生漂移，保留红测，恢复question_sets的旧算法实现及standard_answers原调用；不重写或重新发布历史题库包，也不改写历史观察。"
+    },
+    {
+      "id": "S10",
+      "stage": "M1",
+      "owner": "iqs",
+      "kind": "implementation",
+      "title": "把清单校验与选择规则下沉为稳定领域契约，解除答案构建器对question_sets的依赖",
+      "depends_on": [
+        "S09"
+      ],
+      "invariants": [
+        "I05",
+        "I06",
+        "I08",
+        "I17",
+        "I29"
+      ],
+      "read_first": [
+        "docs/modular-question-bank-design.md",
+        "docs/system-contract.md",
+        "docs/implementation/test-strategy.md",
+        "scripts/question_sets.py",
+        "scripts/standard_answers.py",
+        "scripts/question_library.py",
+        "scripts/question_prompts.py",
+        "scripts/question_fingerprints.py"
+      ],
+      "allowed_changes": [
+        "scripts/question_selection.py（新增）",
+        "scripts/question_manifest.py（新增）",
+        "scripts/question_prompts.py",
+        "scripts/question_sets.py",
+        "scripts/standard_answers.py",
+        "tests/test_question_manifest.py（新增）",
+        "tests/test_question_library.py",
+        "tests/test_question_fingerprint.py",
+        "tests/test_question_sets.py",
+        "tests/test_standard_answers.py",
+        "tests/test_producer_pipeline_e2e.py",
+        "tests/test_implementation_plan.py",
+        "docs/implementation/tasks.json",
+        "docs/implementation/acceptance-cases.json",
+        "docs/implementation/README.md",
+        "docs/implementation/test-strategy.md",
+        "task_plan.md",
+        "progress.md",
+        "findings.md"
+      ],
+      "steps": [
+        "先用单元边界测试固定standard_answers对question_sets的唯一manifest验证依赖、selection实现的归属、提示renderer指纹与旧公开入口签名；负例必须在新模块实现前证明当前依赖边存在。",
+        "将组合选择与question budget规则迁入question_selection.py，将版本化manifest语义验证迁入question_manifest.py；question_sets保留同签名兼容包装器并传递可注入ROOT。",
+        "将screening提示与renderer源码指纹统一放回question_prompts.py；standard_answers只依赖question_manifest和question_library，不以延迟导入或隐式注册掩盖question_sets依赖。",
+        "在同一大节点运行模块单测、已发布manifest/答案构建集成回归和隔离producer E2E；确认当前发布包renderer hash、旧manifest读取与伪造拒绝不漂移。",
+        "全部验证仅使用仓内发布包、虚构profile、example.invalid来源和独占临时目录；无真实公司、网络、模型API、下载或外仓写入。"
+      ],
+      "deliverables": [
+        "question selection、manifest validation与prompt renderer各自具有单一owner模块和清晰依赖方向。",
+        "question_sets保留兼容入口，standard_answers不再导入CLI编排器；旧发布包、公开CLI和观察hash保持可读可验。"
+      ],
+      "case_ids": [
+        "MOD-29",
+        "MOD-30",
+        "MOD-31"
+      ],
+      "test_binding": "MOD-29在纯模块层固定selection/manifest/prompt与CLI编排器无反向依赖、并检查兼容签名；MOD-30通过standard_answers的发布观察构建及伪造manifest拒绝验证公开契约；MOD-31沿本地compose、StockQA结果适配、观察生成和交换hash执行离线producer E2E并检查临时目录清理。三层在同一阶段门运行，关闭仓库pytest addopts和coverage副作用。",
+      "completion": [
+        "question_selection.py唯一拥有选择、发布选择、module locks和question budget实现；question_manifest.py唯一拥有metric mapping及manifest语义校验；question_prompts.py拥有screening renderer及其renderer hash。",
+        "standard_answers.py静态导入question_manifest、question_library等下层契约，不导入question_sets；question_sets保留旧函数名/签名并委托到新owner模块。",
+        "当前发布包与历史manifest均通过已发布观察集成回归；伪造清单仍在产出观察之前被拒绝；prompt源码hash与renderer版本保持不变。",
+        "MOD-29/30/31分别覆盖unit、integration、e2e并在计划包中由S10唯一拥有；E2E只宣称本仓离线producer闭环，不宣称真实搜索、StockWiki ACK、UI或安装运行已验收。"
+      ],
+      "rollback": "如renderer hash、历史manifest读取、route-v2 composition或公开CLI产生漂移，保留红测，恢复question_sets中原选择/校验实现和standard_answers原调用边；不修改已发布包、历史观察或外仓文件。"
     }
   ],
   "release_requirements": {
@@ -3995,6 +6188,7 @@
     ],
     "required_tasks": [
       "C07",
+      "B01",
       "X01",
       "X02",
       "X03",
@@ -4012,7 +6206,38 @@
       "U03",
       "W13",
       "Q11",
-      "W14"
+      "W14",
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S08",
+      "Q13",
+      "W15",
+      "F06",
+      "U04",
+      "V01",
+      "V02",
+      "V03",
+      "V04",
+      "V05",
+      "V06",
+      "V07",
+      "V08",
+      "V09",
+      "V10",
+      "V11",
+      "V12",
+      "V13",
+      "V14",
+      "V15",
+      "Q14",
+      "V16",
+      "V17",
+      "V18",
+      "W16",
+      "Q15",
+      "S09"
     ],
     "required_components": [
       "iqs",

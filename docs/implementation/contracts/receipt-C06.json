@@ -1,0 +1,238 @@
+{
+  "schema_version": "2.0",
+  "core": {
+    "task_id": "C06",
+    "plan_version": "1.9.8",
+    "plan_sha256": "c03175fe2def61eda4dc974816b2bd42b1b09bf042b52ee730924d7d6d31b2f3",
+    "case_catalog_sha256": "8d9342896a3485f90ee67436643f67b6db7af35f24fa2b92f6733ac10a9a7287",
+    "hash_algorithm": "canonical-json-sha256-v1",
+    "task_spec_sha256": "ba6f487556f63a630d76b7fa1809243eb331088abf58e2ab2affa35fc98b44d6",
+    "owned_case_bundle_sha256": "f400f0e15f4db502562c8a423e925703cfc652da329d6be3edae43d8294fadd0",
+    "global_boundaries_sha256": "d05c77a2814f1f1d296963f709727c71969c5ee102d2848e0e770059e4874b54",
+    "implementation_author_id": "agent:/root",
+    "case_results": [
+      {
+        "case_id": "C06-CONTRACT-01",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "C06-CONTRACT-01.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_06_model_cannot_inject_formal_source_artifacts_or_acceptance",
+            "command": "python -B -X utf8 -m pytest -p no:base_url -p no:cacheprovider --basetemp C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s01-c06-acceptance-f9a9b567f8d943b9baf367e80195f2a5\\pytest -W error -vv tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_manifest_remains_readable_without_new_mapping tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages tests/test_metrics_contract.py::MetricsContractTests::test_sc_10_core_manifest_coverage_and_replacements tests/test_metrics_contract.py::MetricsContractTests::test_sc_11_cross_cohort_incomparability tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_06_model_cannot_inject_formal_source_artifacts_or_acceptance tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_07_package_is_standalone_lightweight_exchange_not_a_second_store tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_02_empty_requires_covered_scope_and_unknown_is_coverage_gap tests/test_g0_regressions.py::G0RegressionTests::test_g0_08_lineage_must_be_closed_acyclic_and_transitively_independent",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C06-current-followup-2026-09-27.log",
+              "sha256": "34a8df2534b2f69a2784980273b11d13a48cd665e3056533f3e7099cb31dba10"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "bdba09d3-8119-4e22-8f25-4f29dca1322f",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique TEMP/TMP and pytest basetemp were removed and verified absent; run id and cleanup marker are in the log."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local fixtures only; no provider, API, document download, or network request."
+            }
+          },
+          {
+            "assertion_id": "C06-CONTRACT-01.T02",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_07_package_is_standalone_lightweight_exchange_not_a_second_store",
+            "command": "python -B -X utf8 -m pytest -p no:base_url -p no:cacheprovider --basetemp C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s01-c06-acceptance-f9a9b567f8d943b9baf367e80195f2a5\\pytest -W error -vv tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_manifest_remains_readable_without_new_mapping tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages tests/test_metrics_contract.py::MetricsContractTests::test_sc_10_core_manifest_coverage_and_replacements tests/test_metrics_contract.py::MetricsContractTests::test_sc_11_cross_cohort_incomparability tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_06_model_cannot_inject_formal_source_artifacts_or_acceptance tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_07_package_is_standalone_lightweight_exchange_not_a_second_store tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_02_empty_requires_covered_scope_and_unknown_is_coverage_gap tests/test_g0_regressions.py::G0RegressionTests::test_g0_08_lineage_must_be_closed_acyclic_and_transitively_independent",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C06-current-followup-2026-09-27.log",
+              "sha256": "34a8df2534b2f69a2784980273b11d13a48cd665e3056533f3e7099cb31dba10"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "bdba09d3-8119-4e22-8f25-4f29dca1322f",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique TEMP/TMP and pytest basetemp were removed and verified absent; run id and cleanup marker are in the log."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local fixtures only; no provider, API, document download, or network request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "C06-CONTRACT-02",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "C06-CONTRACT-02.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_02_empty_requires_covered_scope_and_unknown_is_coverage_gap",
+            "command": "python -B -X utf8 -m pytest -p no:base_url -p no:cacheprovider --basetemp C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s01-c06-acceptance-f9a9b567f8d943b9baf367e80195f2a5\\pytest -W error -vv tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_manifest_remains_readable_without_new_mapping tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages tests/test_metrics_contract.py::MetricsContractTests::test_sc_10_core_manifest_coverage_and_replacements tests/test_metrics_contract.py::MetricsContractTests::test_sc_11_cross_cohort_incomparability tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_06_model_cannot_inject_formal_source_artifacts_or_acceptance tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_07_package_is_standalone_lightweight_exchange_not_a_second_store tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_02_empty_requires_covered_scope_and_unknown_is_coverage_gap tests/test_g0_regressions.py::G0RegressionTests::test_g0_08_lineage_must_be_closed_acyclic_and_transitively_independent",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C06-current-followup-2026-09-27.log",
+              "sha256": "34a8df2534b2f69a2784980273b11d13a48cd665e3056533f3e7099cb31dba10"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "bdba09d3-8119-4e22-8f25-4f29dca1322f",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique TEMP/TMP and pytest basetemp were removed and verified absent; run id and cleanup marker are in the log."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local fixtures only; no provider, API, document download, or network request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "C06-CONTRACT-03",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "C06-CONTRACT-03.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_g0_regressions.py::G0RegressionTests::test_g0_08_lineage_must_be_closed_acyclic_and_transitively_independent",
+            "command": "python -B -X utf8 -m pytest -p no:base_url -p no:cacheprovider --basetemp C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s01-c06-acceptance-f9a9b567f8d943b9baf367e80195f2a5\\pytest -W error -vv tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_manifest_remains_readable_without_new_mapping tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages tests/test_metrics_contract.py::MetricsContractTests::test_sc_10_core_manifest_coverage_and_replacements tests/test_metrics_contract.py::MetricsContractTests::test_sc_11_cross_cohort_incomparability tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_06_model_cannot_inject_formal_source_artifacts_or_acceptance tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_07_package_is_standalone_lightweight_exchange_not_a_second_store tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_02_empty_requires_covered_scope_and_unknown_is_coverage_gap tests/test_g0_regressions.py::G0RegressionTests::test_g0_08_lineage_must_be_closed_acyclic_and_transitively_independent",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C06-current-followup-2026-09-27.log",
+              "sha256": "34a8df2534b2f69a2784980273b11d13a48cd665e3056533f3e7099cb31dba10"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "bdba09d3-8119-4e22-8f25-4f29dca1322f",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique TEMP/TMP and pytest basetemp were removed and verified absent; run id and cleanup marker are in the log."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local fixtures only; no provider, API, document download, or network request."
+            }
+          }
+        ]
+      }
+    ],
+    "implementation_snapshot": [
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/exchange-and-query.md",
+        "sha256": "bf02331088b8f3ef2f283ce6e5b68286558432d2fe29f8cee2a1065416b70e96"
+      },
+      {
+        "root_id": "iqs",
+        "path": "schemas/quick_scan/exchange.schema.json",
+        "sha256": "efdf0e3427d1bbb73892e9573fbf3b1f0389218e3f5a0c8dff4ca0cd63764122"
+      },
+      {
+        "root_id": "iqs",
+        "path": "schemas/quick_scan/query.schema.json",
+        "sha256": "e7fc264b43d85e4cdd5c82a71b9fedb579dd0fc1196f3c5fde661f14fa1756f8"
+      },
+      {
+        "root_id": "iqs",
+        "path": "scripts/exchange_contract.py",
+        "sha256": "be08f84055dbb72ad5205ea31bd9ac17106b523f4cc5ae17a315171a570592f7"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/test_exchange_and_query_contract.py",
+        "sha256": "052f07906d80527c083d40f3f090801d4666f6660a72d77b8668fed439deeb04"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/test_g0_regressions.py",
+        "sha256": "69291a1efec99d14a3381aa20d5e454f10ef8e310f1063505f06c2b2721a3b64"
+      }
+    ],
+    "implementation_snapshot_sha256": "3bb0741283787d4ada51e62871394318be24692f5122f2388fbe7f8a73e8ce09",
+    "independent_review": {
+      "report": {
+        "root_id": "iqs",
+        "path": "docs/implementation/reviews/C06/independent-follow-up-review-2026-09-27.json",
+        "sha256": "7245d0c526236a712ef9d42a777c2b66c800c6f407cf957dc4bbb3f88ed1e5b4"
+      },
+      "reviewer_id": "agent:/root/q04_retry_design_review",
+      "reviewer_role": "independent read-only S01/C06 milestone reviewer",
+      "independent": true,
+      "separation_basis": "Separate review agent; inspected the supplied current snapshot and did not implement or modify source, tests, receipts, or validation logs.",
+      "outcome": "approved",
+      "implementation_snapshot_sha256": "3bb0741283787d4ada51e62871394318be24692f5122f2388fbe7f8a73e8ce09",
+      "open_findings": []
+    },
+    "dependency_evidence": [
+      {
+        "task_id": "C01",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C01.json",
+          "sha256": "e91e307282f48e265579d6a66e621aa7fd7bf7718dd3a6beabf436beda96a729"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C03",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C03.json",
+          "sha256": "944b3357ec22235d39dcf1093e2f79c82f19ac4b16414c98a1e0c952caeda34f"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C04",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C04.json",
+          "sha256": "f783b93c8bf0321def64882f411766be89d7aaa467b2235ffec516491c1c538a"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C05",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C05.json",
+          "sha256": "4a0397ab741d4f238dfddff71a05b71a17fde298ad0a6df4b1c345426f8f9e7b"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "P01",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-P01.json",
+          "sha256": "84d413e8813260a18f571570c193e83bf24ab580a1afd00252d53bddd28fe9c7"
+        },
+        "status": "eligible_to_close"
+      }
+    ]
+  },
+  "core_sha256": "4a537d64a39aab9c833a285f1682eadeaaa3e72781218609edf156f15bc28f1e"
+}

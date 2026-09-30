@@ -1,0 +1,87 @@
+{
+  "reviewer_id": "agent:/root/q07_checkpoint_design_review",
+  "reviewer_role": "independent read-only implementation reviewer",
+  "independent": true,
+  "separation_basis": "Separate review subagent; did not implement or modify the reviewed S04 implementation, schemas, tests, or fixture.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "791fd39b2f10a39d61bb5e96038135fea92cc9663ba80e4dedb41bb2c026a2d8",
+  "review_date": "2026-09-27",
+  "review_scope": {
+    "files": [
+      "docs/implementation/contracts/question-modules.md",
+      "docs/modular-question-bank-design.md",
+      "schemas/quick_scan/module-release.schema.json",
+      "schemas/quick_scan/question-module.schema.json",
+      "schemas/quick_scan/route-decision.schema.json",
+      "scripts/module_contract.py",
+      "tests/test_module_contract.py",
+      "tests/fixtures/route_decision_legacy_v1.json"
+    ],
+    "checks": [
+      "The current schema keeps disjoint LegacyRoute 1.0.0 and RouteV2 2.0.0 branches.",
+      "The frozen legacy v1 positive fixture has a valid decision hash and is accepted by the current schema and route validator.",
+      "The v1 negative fixture has a valid decision hash but includes the v2-only classification_confidence field; the current schema rejects it.",
+      "Changing the positive legacy route status while retaining its original decision_id is rejected with route decision content hash mismatch.",
+      "Existing legacy-route tests also cover release binding, missing module decisions, and expired manual overrides."
+    ]
+  },
+  "execution": {
+    "mode": "read-only review",
+    "tests_run_by_reviewer": false,
+    "tests_run_by_implementer": true,
+    "reported_validation": {
+      "source": "implementer-reported tests/test_module_contract.py run",
+      "result": "27 tests passed, 11 subtests passed; isolated temporary cleanup verified."
+    },
+    "reviewer_checks": [
+      "Verified all eight implementation snapshot SHA-256 values and recomputed the snapshot hash.",
+      "Recomputed both fixture decision IDs using the repository canonical hash function.",
+      "Applied the current route schema in memory: the positive v1 fixture was accepted and the v2-field v1 fixture was rejected.",
+      "Inspected the new preserved-ID tamper regression and its expected content-hash error."
+    ],
+    "network_or_api_access": false
+  },
+  "reviewed_snapshot": [
+    {
+      "root_id": "iqs",
+      "path": "docs/implementation/contracts/question-modules.md",
+      "sha256": "039f789b0905c69705798288fbbfa8dc884b0fa70b7b2af9e1f221be804512a6"
+    },
+    {
+      "root_id": "iqs",
+      "path": "docs/modular-question-bank-design.md",
+      "sha256": "c3eb96e04499a563657c89c58518f858acee8449946c1d1daaaeb37a16a15e8b"
+    },
+    {
+      "root_id": "iqs",
+      "path": "schemas/quick_scan/module-release.schema.json",
+      "sha256": "6265d0c9c64ce40f25ca1d0906183941e134b868821c1d8e3ed5c83d9ab24601"
+    },
+    {
+      "root_id": "iqs",
+      "path": "schemas/quick_scan/question-module.schema.json",
+      "sha256": "ae74e817c82846540882894a57c0750619ecae3541ced04abb5b0f89c8564b72"
+    },
+    {
+      "root_id": "iqs",
+      "path": "schemas/quick_scan/route-decision.schema.json",
+      "sha256": "9c4035dab03d2810b926eaf5ece214494a2984d8f63ede25c84605119a3086e4"
+    },
+    {
+      "root_id": "iqs",
+      "path": "scripts/module_contract.py",
+      "sha256": "abe3b9549f433aced1a3f18d6584753434e76b6650ae687c1a7cca462961a7b9"
+    },
+    {
+      "root_id": "iqs",
+      "path": "tests/test_module_contract.py",
+      "sha256": "9a9bde8b7fdd44325ca6eeef2ad7075ea41bb8b1a0c7e3fcf8df299899bca7c3"
+    },
+    {
+      "root_id": "iqs",
+      "path": "tests/fixtures/route_decision_legacy_v1.json",
+      "sha256": "bad38c6bde47674fd58399512afdb928ee80196a96b79d0958f500ca8e71b00d"
+    }
+  ],
+  "open_findings": []
+}

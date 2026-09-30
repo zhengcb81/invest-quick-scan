@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.10.15",
   "status": "acceptance_specifications_not_runtime_results",
   "example_only": true,
   "defaults": {
@@ -18,7 +18,12 @@
       "then": [
         "创建必要轻量目录并调用拥有者迁移/注册；准确记录实际解释器/组件hash/配置版本，不要求用户手工复制交换文件。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X08",
+      "requires_tasks": [
+        "X04",
+        "C07"
+      ]
     },
     {
       "id": "DEPLOY-02",
@@ -29,7 +34,8 @@
       "then": [
         "定位具体组件与原因；不派发模型、不自动破坏性迁移、不把仅UI可打开当ready。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X02"
     },
     {
       "id": "DEPLOY-03",
@@ -44,7 +50,12 @@
       "then": [
         "路径和参数正确传递；无需手动cd/激活venv；不杀无关进程，采用经配置的端口策略并打开实际地址。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X08",
+        "X06"
+      ]
     },
     {
       "id": "DEPLOY-04",
@@ -55,7 +66,12 @@
       "then": [
         "检测实际hash/来源不匹配并阻止相应写入或能力放行；不能仅按版本名认为兼容。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X08",
+        "X07"
+      ]
     },
     {
       "id": "DEPLOY-05",
@@ -66,7 +82,8 @@
       "then": [
         "保持一致版本或明确只读/待修状态；保留任务/outbox/观察/预算，不自动用不兼容组件运行。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X11"
     },
     {
       "id": "DEPLOY-06",
@@ -77,7 +94,8 @@
       "then": [
         "不得覆盖新数据或重置费用；按受支持的恢复路径处理，不以删除数据库解决。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X11"
     },
     {
       "id": "DEPLOY-07",
@@ -88,7 +106,12 @@
       "then": [
         "拒绝越界内容/动作；通过各组件公开配置迁移接口，密钥只归StockQA；安装包不含公司原件。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X08",
+      "requires_tasks": [
+        "X03",
+        "X04"
+      ]
     },
     {
       "id": "DEPLOY-08",
@@ -99,7 +122,14 @@
       "then": [
         "各组件实际解释器/cwd/hash正确，未依赖当前shell的sys.path或PATH巧合；消费者确实调用共同查询接口。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X08",
+        "X01",
+        "X02",
+        "V11"
+      ]
     },
     {
       "id": "START-01",
@@ -110,7 +140,8 @@
       "then": [
         "返回no_work并显示现有结果；LLM请求数0，不自动新建付费刷新代次。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X05"
     },
     {
       "id": "START-02",
@@ -121,7 +152,13 @@
       "then": [
         "附着同一逻辑运行；只一个有效worker/领取者，预算不复制，重复点击不多收费。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X05",
+        "X06",
+        "X08"
+      ]
     },
     {
       "id": "START-03",
@@ -132,7 +169,8 @@
       "then": [
         "仍budget_exhausted；不创建新run重置额度；只有已授权的额度调整/期间分配才增加预算。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X05"
     },
     {
       "id": "START-04",
@@ -143,7 +181,11 @@
       "then": [
         "验证进程与workspace握手；不附着错误进程，不终止无关进程；只管理确认归属的组件。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X05",
+      "requires_tasks": [
+        "X01"
+      ]
     },
     {
       "id": "START-05",
@@ -154,7 +196,12 @@
       "then": [
         "快扫正常使用既有身份；来源下载、通用scheduler-cycle和正式研究队列调用数均0。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X05",
+        "W04"
+      ]
     },
     {
       "id": "START-06",
@@ -165,7 +212,11 @@
       "then": [
         "可读已有画像，但显示failed_component/version_mismatch，不能显示扫描已运行或完整ready。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X06",
+      "requires_tasks": [
+        "X02"
+      ]
     },
     {
       "id": "START-07",
@@ -176,7 +227,11 @@
       "then": [
         "视图关闭不丢进度；仍同运行/同预算；恢复页面显示真实执行和导入状态。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X06",
+      "requires_tasks": [
+        "X05"
+      ]
     },
     {
       "id": "START-08",
@@ -187,7 +242,13 @@
       "then": [
         "停止后无新派发；已有结果/结果不明/费用预留保留；resume先恢复回执与outbox，不重新问已答题。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X05",
+      "requires_tasks": [
+        "X01",
+        "Q08",
+        "W10"
+      ]
     },
     {
       "id": "START-09",
@@ -198,7 +259,8 @@
       "then": [
         "doctor网络模型调用0；测试按StockQA账本计费并保留真实搜索receipt，不能把存在密钥等同联网已验证。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X03"
     },
     {
       "id": "START-10",
@@ -209,7 +271,12 @@
       "then": [
         "先导入已有结果再计算缺口；已回答题不被误重新提交；waiting_import与running区分。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X05",
+      "requires_tasks": [
+        "W10",
+        "Q06"
+      ]
     },
     {
       "id": "START-11",
@@ -220,7 +287,13 @@
       "then": [
         "准确定位缺项，设置由拥有者保存；默认不派发、不用示例配置；配置齐备后可从同入口继续。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X03",
+        "X04",
+        "X08"
+      ]
     },
     {
       "id": "START-12",
@@ -231,7 +304,12 @@
       "then": [
         "通过StockQA接口修改并返回新版本；StockWiki不另存可变模型配置，旧运行按热更新规则处理。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X03",
+        "X04"
+      ]
     },
     {
       "id": "E2E-01",
@@ -242,7 +320,8 @@
       "then": [
         "全链无需手工搬文件或改sys.path；公共入口确实连到真实模块；来源采集调用0，结果/预算/ACK可追踪。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09"
     },
     {
       "id": "E2E-02",
@@ -253,7 +332,8 @@
       "then": [
         "拒绝作为整体验收；必须提供实际组件/入口/安装加载证据，UI健康不替代执行健康。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X06"
     },
     {
       "id": "E2E-03",
@@ -264,7 +344,8 @@
       "then": [
         "保存真实搜索、最终模型、费用、导入ACK、复用/续扫和消费查询记录；不额外手工启动其他项目，不拿stub结果当live。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X10"
     },
     {
       "id": "E2E-04",
@@ -275,7 +356,8 @@
       "then": [
         "不能标整个计划完成/完整一键开启；指出缺少关口或不匹配工件，已验证评分范围可单独说明。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X10"
     },
     {
       "id": "E2E-05",
@@ -286,7 +368,8 @@
       "then": [
         "只有相应安装、真实联调/搜索和G6证据允许升级状态；文件存在/端口打开/模型自述不能越级。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09"
     },
     {
       "id": "LIVE-07",
@@ -298,7 +381,8 @@
         "保存实际搜索/调用/费用与逐关系来源，不用纯stub代替事实联网采集。",
         "按固定标注集报告strict精确率、探索召回、未知真值与关键反例；两消费入口有查询/定向补扫/池外发现记录。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "L04"
     },
     {
       "id": "BASE-01",
@@ -308,9 +392,10 @@
       "when": "记录目标仓库提交或文件hash、命令、退出码与skip数量。",
       "then": [
         "保留原始基线报告，不把题库validate当真实联网验收。",
-        "记录StockQA兼容测试仍容许AnswerGenerator输出5或8这一已知宽松断言。"
+        "记录早期基线曾容许AnswerGenerator输出5或8这一历史宽松断言，并核实Q01/S02当前回归已严格要求8、unknown仍为null；不得把历史缺陷当成当前行为。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "P00"
     },
     {
       "id": "BASE-02",
@@ -322,7 +407,8 @@
         "记录不可用依赖和实际发现；使用允许的只读替代核查。",
         "不发明接口/测试命令、不将skip算通过、不写另一套客户端。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "P00"
     },
     {
       "id": "ID-01",
@@ -358,7 +444,8 @@
           ]
         }
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C01"
     },
     {
       "id": "ID-02",
@@ -372,11 +459,25 @@
         "same_brand": true,
         "verified_same_issuer": false
       },
-      "when": "解析/去重候选。",
+      "when": "验证发行人身份与集团关系契约。",
       "then": [
-        "保留两个实体；同名、同品牌、相同ticker字符串都不能作为跨市场合并证据。"
+        "保留两个实体；同名、同品牌、相同ticker字符串都不能作为跨市场合并证据。",
+        "Parent/subsidiary and same-group relationships remain separate from issuer identity; same_issuer is not a group-relationship value."
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C01",
+      "assertions": [
+        {
+          "id": "ID-02.A01",
+          "entrypoint": "IdentityContractTests.test_id_02_parent_subsidiary_cannot_merge_without_verified_issuer",
+          "expected": "Same brand or ticker text without a verified same-issuer bridge preserves distinct parent and listed-subsidiary Entity IDs."
+        },
+        {
+          "id": "ID-02.A02",
+          "entrypoint": "IdentityContractTests.test_v21_group_relationships_never_assert_issuer_equivalence",
+          "expected": "Group relationships are represented separately; `same_issuer` is rejected as an EntityRelationship type and cannot merge issuers."
+        }
+      ]
     },
     {
       "id": "ID-03",
@@ -391,7 +492,8 @@
       "then": [
         "证券层unknown并说明缺失；经营画像可在经核实同发行人后复用，不猜ADR比例。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C01"
     },
     {
       "id": "ID-04",
@@ -406,7 +508,9 @@
       "then": [
         "可以执行/查询；不创建原件目录，不要求来源worker或正式证据建档。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "W09"
     },
     {
       "id": "ID-05",
@@ -417,7 +521,8 @@
       "then": [
         "entity_id和旧观察ID稳定；保留有效期；不给历史答案改公司ID。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W03"
     },
     {
       "id": "ID-06",
@@ -428,7 +533,8 @@
       "then": [
         "S_CN失效历史保留，E1仍可扫描；S_HK报价不受错误停用影响。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W03"
     },
     {
       "id": "SC-01",
@@ -443,7 +549,9 @@
       "then": [
         "每层正式score均为8；断言必须等于8，不能接受(5,8)或只验证类型。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "S02"
     },
     {
       "id": "SC-02",
@@ -458,7 +566,12 @@
       "then": [
         "正式score保持null；旧外层5仅在明确旧协议内允许，永不入均分、规则和恢复优势。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q03",
+      "requires_tasks": [
+        "Q01",
+        "Q02"
+      ]
     },
     {
       "id": "SC-03",
@@ -484,7 +597,8 @@
       "then": [
         "非法值全部拒绝且不猜分；三种有效边界原样通过。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C03"
     },
     {
       "id": "SC-04",
@@ -500,7 +614,8 @@
       "then": [
         "各自明确报错；不能按列表位置补ID或择一分数。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C03"
     },
     {
       "id": "SC-05",
@@ -511,7 +626,8 @@
       "then": [
         "不能由回复自行授予资格；原reported_score可保留，正式采用依赖运行/检查记录。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "S02"
     },
     {
       "id": "SC-06",
@@ -522,7 +638,8 @@
       "then": [
         "旧strict仍review_pending；不会自动填accepted_ids或升级为正式accepted。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "S02"
     },
     {
       "id": "SC-07",
@@ -538,7 +655,8 @@
       "then": [
         "已审核N/A可从适用分母排除得到7/9；未审核保持7/10。未知不删分母，低置信度不算有效。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C03"
     },
     {
       "id": "SC-08",
@@ -549,7 +667,8 @@
       "then": [
         "所有原汇总不变；诊断只增独立展示与完整率。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C02"
     },
     {
       "id": "SC-09",
@@ -564,7 +683,12 @@
       "then": [
         "质量分为null，风险显著展示；关键风险不能被均分或OR规则绕过。N/A/未知关键题也不算通过。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W07",
+      "requires_tasks": [
+        "C02",
+        "C03"
+      ]
     },
     {
       "id": "SC-10",
@@ -575,7 +699,8 @@
       "then": [
         "24个核心判断或其明确替代均覆盖；关键标记传递；无重复ID；mature可同时cycle_sensitive；无理由不加杜邦/五力。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C02"
     },
     {
       "id": "SC-11",
@@ -586,7 +711,33 @@
       "then": [
         "不同metric/cohort或标不可比；不能仅按名称统一、自动排名或换标签混分。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C02"
+    },
+    {
+      "id": "SC-12",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "公开StockQA CLI使用实际Question.text、搜索成功HTTP响应和显式题目/公司身份，结果回执含最终attempt。",
+      "when": "将原样CLI结果绑定manifest并导入screening-1；再分别篡改问题哈希或最终attempt HTTP状态。",
+      "then": [
+        "未篡改结果中input_question_sha256等于manifest问题文本UTF-8哈希，顶层与最终attempt状态均为整数200，筛选分数8可用且formal_research_status仍为not_accepted。",
+        "任一哈希或最终attempt状态不匹配时保留reported_score用于排查，但score为null、screening_status为unusable。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q12"
+    },
+    {
+      "id": "SC-13",
+      "kind": "negative",
+      "level": "integration",
+      "given": "与manifest身份/题目匹配且有8分的CLI答案，但执行回执中的问题哈希错误，或最终attempt HTTP状态与顶层200不一致。",
+      "when": "将回执传入screening-1导入器。",
+      "then": [
+        "导入失败关闭：reported_score仍为8供排查，采用score必须为null，screening_status为unusable，模型不能自授检查等级。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q12"
     },
     {
       "id": "REC-01",
@@ -607,7 +758,8 @@
       "then": [
         "先potential_watch，再recovery_evidence_watch；原低分、质量汇总不因催化上调而改变。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W08"
     },
     {
       "id": "REC-02",
@@ -626,7 +778,8 @@
       "then": [
         "high_risk_watch；保留优势，同时显示资金/普通股风险；不放入高质量白名单。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W08"
     },
     {
       "id": "REC-03",
@@ -645,7 +798,8 @@
       "then": [
         "structural_risk_watch；高催化不能把结构性衰退说成周期重启。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W08"
     },
     {
       "id": "REC-04",
@@ -656,7 +810,9 @@
       "then": [
         "第一对象在恢复和未设质量过滤的主题入口可见；第二对象不能凭reported_score成为已验证优势。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "W08"
     },
     {
       "id": "DUR-01",
@@ -667,7 +823,8 @@
       "then": [
         "问清客户需求、替代方式、利润归属和优势前提；不默认有AI标签就有优势。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C02"
     },
     {
       "id": "DUR-02",
@@ -678,7 +835,8 @@
       "then": [
         "同时呈现机会和损害，不用收入增速代替普通股持续受益，不产生精确预测或新的机械总分。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C02"
     },
     {
       "id": "DUR-03",
@@ -689,7 +847,8 @@
       "then": [
         "不适用/未知分开；可通过增强原题依据解决时不加重复题；若改题必须版本化且留决定依据。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C02"
     },
     {
       "id": "TIME-01",
@@ -704,7 +863,8 @@
       "then": [
         "无新事件且检查等级达标则复用原observation_id；API新增请求数为0。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C04"
     },
     {
       "id": "TIME-02",
@@ -728,18 +888,20 @@
           ]
         }
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C04"
     },
     {
       "id": "TIME-03",
       "kind": "metamorphic",
-      "level": "integration",
-      "given": "旧观察information_as_of=2026-03-01，已过期；今天重新导入或复核。",
-      "when": "更新imported_at或checked_at。",
+      "level": "contract",
+      "given": "C04纯work_contract.py参考函数接收旧观察information_as_of=2026-03-01、已过期字段与新复核事件；不启动数据库或worker。",
+      "when": "更新checked_at/imported_at输入后重新计算纯函数字段有效性。",
       "then": [
-        "原信息时间和有效性不变；不得自动续期。"
+        "原information_as_of与有效性不因导入/复核时间变化而续期；状态/原因确定；不得写库或发请求；真实持久刷新由W06/W05负责。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C04"
     },
     {
       "id": "TIME-04",
@@ -753,20 +915,22 @@
       },
       "when": "规划本次扫描。",
       "then": [
-        "标deferred_unknown；暂不派发、不算有效覆盖；冷却结束后可重新入队。"
+        "返回调度决定deferred_unknown且不创建/发送新work；该answer不算fresh覆盖。冷却到期后，对相同逻辑字段递增generation再创建work。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C04"
     },
     {
       "id": "TIME-05",
       "kind": "metamorphic",
-      "level": "integration",
-      "given": "24题有效，白名单阈值从>8改>=8；之后新增3题。",
-      "when": "依次重新筛选与生成缺口。",
+      "level": "contract",
+      "given": "C04纯work_contract.py收到同一旧观察及两份字段scope请求：一份只改筛选阈值，一份追加3个新问题。",
+      "when": "分别计算筛选派生更新和逻辑work缺口键，不启用数据库、worker或HTTP。",
       "then": [
-        "阈值修改API调用0；新增题只生成3个待办，旧观察日期/文本不改。"
+        "阈值修改模型调用0；新增题只产生3个逻辑待办键；旧观察的内容/来源/时间不变；持久化队列实现由Q06/W06验收。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C04"
     },
     {
       "id": "TIME-06",
@@ -777,7 +941,9 @@
       "then": [
         "只刷新失效/新增适用部分；理由包含TTL/语义/路由；不因全局题库版本字符串变化重问全部。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "W06"
     },
     {
       "id": "TIME-07",
@@ -792,7 +958,8 @@
       "then": [
         "来源虽描述FY2025也不能越过公布日；不将今天LLM回溯当6月已知。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C04"
     },
     {
       "id": "TIME-08",
@@ -803,7 +970,8 @@
       "then": [
         "相关字段提前失效；缺日期的观察不能用导入时间补造fresh。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "C04"
     },
     {
       "id": "LLM-01",
@@ -814,7 +982,9 @@
       "then": [
         "保留搜索执行receipt与逐题引用；实际metadata和模型文本分开。此case真实放行须live证据。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "L01"
     },
     {
       "id": "LLM-02",
@@ -825,7 +995,8 @@
       "then": [
         "search_unavailable或待验证，不得标成有效联网评分。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q02"
     },
     {
       "id": "LLM-03",
@@ -853,7 +1024,8 @@
           "score": 8
         }
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q04"
     },
     {
       "id": "LLM-04",
@@ -876,7 +1048,8 @@
       "then": [
         "两次均不为择优调用B/C；低分或缺证据按答案状态保存。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q04"
     },
     {
       "id": "LLM-05",
@@ -887,18 +1060,34 @@
       "then": [
         "冷却跨进程保留；B成功不触发A恢复；A确认恢复后新题优先A，旧B答案不重跑。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q08"
     },
     {
       "id": "LLM-06",
       "kind": "negative",
       "level": "unit",
-      "given": "A不支持搜索；或全局请求参数错误；或所有模型不可用。",
+      "given": "A不支持搜索；或全局请求参数错误；或所有路由因限流/额度暂时不可用；或所有路由均因永久配置错误不可用。",
       "when": "分别执行能力检查与派发。",
       "then": [
-        "不支持能力的A跳过；坏请求不盲目遍历所有模型；全不可用进入retry_wait并结束派发，不无限轮询。"
+        "不支持能力的A跳过；坏请求不盲目遍历所有模型；全部暂时不可用以运行级retry_wait结局结束派发，不无限轮询；全是永久配置错误时标setup_required，不安排无意义定时重试。",
+        "Q04验证本轮派发结局和备用模型成功覆盖先前错误；Q08负责持久冷却、恢复资格与跨运行retry_wait，不把持久化要求提前压在Q02。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q04"
+    },
+    {
+      "id": "LLM-11",
+      "kind": "negative",
+      "level": "integration",
+      "given": "单提供商搜索能力不支持，或搜索请求遭全局参数错误；另有MiniMax响应无HTTP request ID但有同一响应的response/attempt/completed search事件与来源。",
+      "when": "通过真实提供商适配器的能力预检、传输mock和公开CLI结果序列化。",
+      "then": [
+        "不支持的单路线在计费请求前标不可用；全局坏请求本次失败且不把文本URL当真实搜索，跨路由后继选择留给Q04。",
+        "可验证MiniMax搜索保留request_id=null，但必须有response_id、本地attempt_id、完成搜索事件ID与同一事件来源；公开逐题厂商来自真实端点，配置别名另存，错配的保留厂商键在派发前拒绝。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q02"
     },
     {
       "id": "LLM-07",
@@ -909,7 +1098,12 @@
       "then": [
         "最多授权的修复次数；成功题保存，无法修复的题单列；不正则猜分、不额外合成成功。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q07",
+      "requires_tasks": [
+        "Q03",
+        "Q06"
+      ]
     },
     {
       "id": "LLM-08",
@@ -920,7 +1114,8 @@
       "then": [
         "只允许结构化字段/短依据/URL元数据落盘；不复制正文或凭据；答案内容不能改变执行策略或触发文件/网络工具。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q05"
     },
     {
       "id": "LLM-09",
@@ -931,7 +1126,8 @@
       "then": [
         "不得误命中另一个完整请求；计划层兼容复用单独决策，不能靠缓存绕过新鲜度。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q05"
     },
     {
       "id": "LLM-10",
@@ -942,7 +1138,8 @@
       "then": [
         "下轮默认变更；立即变更记录派发边界与新policy_version，仅未派发题采用；旧快照/完成结果保留。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q04"
     },
     {
       "id": "BUD-01",
@@ -967,7 +1164,8 @@
       "then": [
         "原子预留只允许一个请求；spent+reserved<=10，另一个保持待办。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q09"
     },
     {
       "id": "BUD-02",
@@ -983,7 +1181,8 @@
       "then": [
         "不派发；失败、搜索及备用费用计入同一账本；不能用换模型突破总额。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q09"
     },
     {
       "id": "BUD-03",
@@ -994,7 +1193,8 @@
       "then": [
         "outcome_uncertain保留预留；先查回执/结果，再有上限重试；没有支持不承诺零重复收费。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q09"
     },
     {
       "id": "BUD-04",
@@ -1005,7 +1205,8 @@
       "then": [
         "不得给出虚构准确费用或启动无限批次；先固定计价版本/保守费用边界和用户预算。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "L01"
     },
     {
       "id": "JOB-01",
@@ -1016,7 +1217,8 @@
       "then": [
         "逻辑待办只一项；run_id或备用模型不同不会重复创建；强制刷新显式新代次。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q06"
     },
     {
       "id": "JOB-02",
@@ -1027,7 +1229,8 @@
       "then": [
         "同一有效租约只一个执行者；旧租约提交不能覆盖新结果，冲突有记录。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q06"
     },
     {
       "id": "JOB-03",
@@ -1038,7 +1241,8 @@
       "then": [
         "4题结果持久化；只补2题；不会将pack整体丢弃或视为全成功。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q07"
     },
     {
       "id": "JOB-04",
@@ -1049,7 +1253,8 @@
       "then": [
         "派发前无费用；发出后不明单列；已存结果不再问；未ACK只重导入；无静默丢任务。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q07"
     },
     {
       "id": "JOB-05",
@@ -1060,7 +1265,8 @@
       "then": [
         "不再发新请求；已发结果仍可保存；待办保留；取消是状态变更不删除历史。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q07"
     },
     {
       "id": "JOB-06",
@@ -1071,18 +1277,20 @@
       "then": [
         "旧任务不重建，新增实体并入增量；版本和覆盖范围可追踪。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W11"
     },
     {
       "id": "JOB-07",
       "kind": "positive",
       "level": "integration",
-      "given": "StockQA已有result_ready，StockWiki导入失败后重试成功。",
-      "when": "投递outbox并收到ACK。",
+      "given": "StockQA已有result_ready和封存的完整C06 package；StockWiki不可用后恢复。",
+      "when": "对已证明未发送的连接前失败用同一package字节/key重试，或在发送结果不明时先消费精确ACK/执行权威对账。",
       "then": [
-        "重试期间LLM调用新增0；ACK之前不标delivered，重复ACK幂等。"
+        "投递恢复期间LLM调用新增0；结果不明不得盲目重POST；ACK之前不标delivered；重复相同ACK幂等。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q10"
     },
     {
       "id": "JOB-08",
@@ -1093,18 +1301,20 @@
       "then": [
         "拒绝错误ACK/非法转移；原待办与回执保留，不伪造delivered。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q10"
     },
     {
       "id": "DB-01",
       "kind": "positive",
       "level": "integration",
-      "given": "临时数据库含旧正式分类与ticker目录；未建quick_scan。",
-      "when": "执行新增迁移两次。",
+      "given": "临时StockWiki工作区含旧正式分类YAML与ticker目录，尚无quick_scan SQLite；保存旧文件路径和SHA。",
+      "when": "仅对独立quick_scan SQLite执行新增迁移两次。",
       "then": [
-        "独立命名空间可用；迁移幂等；旧正式状态/目录未改变。"
+        "独立命名空间可用且迁移幂等；旧正式YAML与ticker目录的路径、内容和SHA未改变。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W01"
     },
     {
       "id": "DB-02",
@@ -1115,18 +1325,21 @@
       "then": [
         "只一份权威观察；原信息时间不改；可返回原导入回执。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W05"
     },
     {
       "id": "DB-03",
       "kind": "negative",
       "level": "integration",
-      "given": "同一不可变键但不同payload hash；或引用不存在实体/问题。",
+      "given": "同一不可变键但不同payload hash；或引用不存在实体/问题；或已发布观察伪造题义指纹、删除全部模块绑定并重算内容ID、同一StockQA执行键改ID重放。",
       "when": "事务导入。",
       "then": [
-        "冲突/约束错误明确；不last-write-wins；失败事务不留下半份合格数据。"
+        "冲突/约束错误明确；不last-write-wins；失败事务不留下半份合格数据。",
+        "新导入只接受能从冻结S05发布包重算语义/方法且与可信outbox逐项ID一致的观察；legacy只读。已入库的同一逻辑执行键重放必须匹配持久化ID；改ID只能走显式更正或隔离冲突，不能凭重算自报hash伪装原观察。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W05"
     },
     {
       "id": "DB-04",
@@ -1137,7 +1350,12 @@
       "then": [
         "当前反映更正；历史仍引用旧ID/口径；更正记录保留原因和关系。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W14",
+      "requires_tasks": [
+        "W05",
+        "W09"
+      ]
     },
     {
       "id": "DB-05",
@@ -1148,7 +1366,8 @@
       "then": [
         "恢复后成员、观察、规则、检查与dataset可重现；不能仅复制运行中主db文件忽略WAL。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W12"
     },
     {
       "id": "DB-06",
@@ -1159,18 +1378,21 @@
       "then": [
         "不创建正式来源工件、不提升accepted资格、不跨写company-wiki。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "W05"
     },
     {
       "id": "DB-07",
       "kind": "positive",
       "level": "integration",
-      "given": "StockWiki未运行，StockQA已有轻量交换包。",
-      "when": "独立执行问答并查看导出；之后恢复导入。",
+      "given": "StockWiki未运行，StockQA已回答但适配器可能尚不能从权威输入组装完整C06 package。",
+      "when": "独立执行问答并查看result_ready/outbox；缺适配器字段时记录durable block，适配器可用后再封存/导入。",
       "then": [
-        "问答不依赖StockWiki服务；导入可后补；不同时维护另一份可编辑画像主库。"
+        "问答不依赖StockWiki服务；缺字段不得猜补、伪装成可导入包或重问已回答问题；导入可后补；不同时维护另一份可编辑画像主库。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q10"
     },
     {
       "id": "UNI-01",
@@ -1181,7 +1403,8 @@
       "then": [
         "成员、排序、理由、规则版本一致；独立公司总数与各市场覆盖/证券数分开。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W04"
     },
     {
       "id": "UNI-02",
@@ -1192,7 +1415,8 @@
       "then": [
         "按显式证券范围处理；未知行业进待分类；亏损不自动排除；身份歧义不强并。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W02"
     },
     {
       "id": "UNI-03",
@@ -1203,7 +1427,8 @@
       "then": [
         "不增加重复实体；挂牌可新增；手工保留标记有效；不重新请求全部经营题。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W03"
     },
     {
       "id": "UNI-04",
@@ -1214,7 +1439,8 @@
       "then": [
         "允许2003；不自动挤出旧公司；移除仅逻辑状态，恢复保留历史与理由。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W03"
     },
     {
       "id": "UNI-05",
@@ -1225,7 +1451,13 @@
       "then": [
         "低分不自动退池；池外公司进入建议列表，不未经既定规则自动成为长期成员。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [
+        "W03",
+        "W04",
+        "C01"
+      ],
+      "owner_task": "W13"
     },
     {
       "id": "UNI-06",
@@ -1236,7 +1468,8 @@
       "then": [
         "明确空缺与重叠；不重复凑数、不捏造ticker、不强行用无效证券填满。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W02"
     },
     {
       "id": "UNI-07",
@@ -1247,7 +1480,8 @@
       "then": [
         "按配置份额能处理普通队列；报告最长等待与首次覆盖，不能只运行高分/热点。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "O02"
     },
     {
       "id": "RULE-01",
@@ -1269,7 +1503,8 @@
           ]
         }
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W07"
     },
     {
       "id": "RULE-02",
@@ -1286,7 +1521,8 @@
       "then": [
         "all中fail优先、再unknown；any中pass优先、再unknown；另行应用critical gate，不能绕过。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W07"
     },
     {
       "id": "RULE-03",
@@ -1297,7 +1533,8 @@
       "then": [
         "前组为unknown并解释；空/非法规则为配置错误，不默认为通过或忽略条件。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W07"
     },
     {
       "id": "RULE-04",
@@ -1308,7 +1545,12 @@
       "then": [
         "不调用LLM；解释逐项命中原因；没有质量条件的查询不暗中排除恢复或低分对象。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "F05",
+      "requires_tasks": [
+        "W09",
+        "F04"
+      ]
     },
     {
       "id": "QUERY-01",
@@ -1319,7 +1561,8 @@
       "then": [
         "分页无重漏，返回实体证券映射/观察日期/引用/检查等级；facts_available=false。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W09"
     },
     {
       "id": "QUERY-02",
@@ -1330,7 +1573,8 @@
       "then": [
         "empty与coverage_gap/unknown明确；不宣称全市场没有公司或公司没有该业务。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W09"
     },
     {
       "id": "QUERY-03",
@@ -1341,7 +1585,8 @@
       "then": [
         "入选参数、观察ID和原理由稳定；当前数据可以另查，不改历史候选。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W09"
     },
     {
       "id": "QUERY-04",
@@ -1352,18 +1597,31 @@
       "then": [
         "仅允许范围内缺口，费用上限适用；禁止直接写库或扩成全池；有效字段复用。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W11",
+      "requires_tasks": [
+        "W06",
+        "W09",
+        "W10",
+        "Q06"
+      ]
     },
     {
       "id": "FACT-01",
       "kind": "positive",
       "level": "contract",
-      "given": "一条产品/设备/材料/应用关系，具有entity、segment、方向、状态、依据和日期。",
-      "when": "通过事实回复与关系导入。",
+      "given": "虚构公司一条设备/材料/应用关系，具有entity_id、segment_id、方向、商业化状态、URL/发布日期/evidence_ids，收入占比未披露；外部事实答复省略score。",
+      "when": "通过事实回复解析、内部规范化、观察校验与关系导出。",
       "then": [
-        "不要求score；保留原始表述、术语ID、商业化、来源及未知收入占比。"
+        "外部可省略score而内部恒为null；保留field/question/module归属、原始表述、canonical未知值、商业化、来源绑定与未知收入占比；逆向/未知关系、截止日后来源、缺证据绑定及伪称answered的空items均拒绝。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "F04",
+      "requires_tasks": [
+        "F02",
+        "F03",
+        "W05"
+      ]
     },
     {
       "id": "FACT-02",
@@ -1374,7 +1632,8 @@
       "then": [
         "仅满足方向、状态、时点与依据的生产者入围；其余不能靠关键词误入。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "F05"
     },
     {
       "id": "FACT-03",
@@ -1385,7 +1644,8 @@
       "then": [
         "不能把跨分部两个事实拼成已证实的业务关系。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "F05"
     },
     {
       "id": "FACT-04",
@@ -1403,7 +1663,8 @@
       "then": [
         "受控词/别名能召回，不依赖仅支持3字以上的索引；返回实际命中路径。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "F03"
     },
     {
       "id": "FACT-05",
@@ -1414,7 +1675,12 @@
       "then": [
         "冲突保留并待复核；推断在探索模式标明，不升级为确认关系，不编造客户名单。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "F05",
+      "requires_tasks": [
+        "F03",
+        "F04"
+      ]
     },
     {
       "id": "CONS-01",
@@ -1425,7 +1691,8 @@
       "then": [
         "先查询复用，再定向补缺；原主题收入证据、领导者覆盖和情景模型要求保留。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "T01"
     },
     {
       "id": "CONS-02",
@@ -1436,7 +1703,8 @@
       "then": [
         "继续池外研究；提名不自动加长期名单；不能以大池边界宣布完整链条已覆盖。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "T01"
     },
     {
       "id": "CONS-03",
@@ -1447,7 +1715,8 @@
       "then": [
         "可查画像进入候选；用实际截止日/财务期间补缺；行业PDF流程不传递成快扫依赖。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "T02"
     },
     {
       "id": "CONS-04",
@@ -1458,7 +1727,8 @@
       "then": [
         "分别保留量表与日期，不直接合分；过期可作线索但关键结论需补证。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "T02"
     },
     {
       "id": "CONS-05",
@@ -1469,7 +1739,8 @@
       "then": [
         "保留origin_task/upstream_observation_ids；不视为O1的第二个独立支持来源。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "F04"
     },
     {
       "id": "LIVE-01",
@@ -1480,7 +1751,8 @@
       "then": [
         "保留实际搜索/模型/请求/费用回执、逐题来源与失败；至少一个请求经真实生产路径；不以mock替代。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "L01"
     },
     {
       "id": "LIVE-02",
@@ -1491,7 +1763,8 @@
       "then": [
         "不得通过；已完成离线工作保留，提交具体未运行批次与阻塞原因，不造真实记录。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "L01"
     },
     {
       "id": "LIVE-03",
@@ -1502,7 +1775,8 @@
       "then": [
         "分类型/模型报告覆盖、unknown、有效比较差异与入围变化；按test-strategy门槛判定，不择优删样本。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "L02"
     },
     {
       "id": "LIVE-04",
@@ -1513,7 +1787,143 @@
       "then": [
         "不放行；保留完整样本和失败状态，修改锚点/能力后按版本重测受影响组。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "L02"
+    },
+    {
+      "id": "BENCH-01",
+      "kind": "positive",
+      "level": "live",
+      "given": {
+        "sample": "本轮用户授权的研究样本：A股、港股、美股各1家；预注册触发跨组差异时才可扩为每市场2家、最多6家。不得改变大股票池。",
+        "fixed_inputs": "每家公司同一已发布版本的30道评分题、题目/提示/评分尺hash、身份/subject revision、信息截止时间和同一匹配组的provider/model revision及生成设置。",
+        "cache_states": [
+          "application_answer_cache_cold",
+          "immediate_same_input_warm_reuse",
+          "single_material_input_hash_changed"
+        ],
+        "budget": "运行前冻结有限搜索请求、模型请求、时间及费用/套餐quota预算；真实provider和真实公开搜索，不下载公司文档。"
+      },
+      "when": "从真实公开执行入口，先配对比较Brave/Tavily结果规整并作为带来源编号的短context交给模型，再在固定证据集上比较逐题顺序、逐题并发、每批3/5/10题和单批30题；通过临时StockWiki公开导入/ACK路径验收隔离结果。",
+      "then": [
+        "运行前manifest锁定样本、精确30题、release/rubric hash、gold与盲评抽样seed、模型/搜索参数、方法顺序、硬预算和明确质量阈值；实际请求与失败attempt逐项对账，不因结果删样本。",
+        "Brave/Tavily结果规整为短的不可信context并带稳定source_id；run专属临时工件中的snippet快照（G3审查后清理）必须与实际发送内容完全一致，单条最多500字符/每公司最多30,000字符；原始response、完整网页/财报和公司文档不落盘。",
+        "每个打包方案严格覆盖30个唯一question_id并返回独立status/score-or-unknown/evidence_refs/rationale；缺失、重复、错题、schema错误均独立报告且不得作为有效正式评分。匹配组不得混用模型答案。",
+        "解盲前由两名独立评审者基于冻结rubric/来源建立gold并记录分歧裁决。方案质量门槛为：唯一题目ID/schema覆盖100%；gold可评分题有效分覆盖至少95%，gold unknown不得强填；抽样非关键事实source support至少90%；critical claims逐条复核且无未解决重大错误；与裁决gold相比MAE≤0.75且至少90%在±1内；相对逐题顺序基线，MAE最多差0.25、source support最多低5个百分点、可评分覆盖最多低5个百分点。非关键claim按每个公司×方法至少max(10题、每入选模块2题)分层抽样，跨三家公司每方法至少30条，少于30则inconclusive。未达到gold/抽样复核条件记inconclusive，不进入胜出集。",
+        "报告每个公司×方法的端到端总耗时和阶段耗时；三家公司单轮仅报原始值/中位数/范围，不报run级p90或显著性。至少20个同口径完整run才报run级p50/p90；单请求分位数注明请求数且不代替全run耗时。",
+        "分别报告搜索API实际账单/credits、模型实际usage/缓存token、失败/重试的计费、每家公司30题总现金费用与每个有效答案费用；附执行日官方价格快照。MiniMax报告套餐窗口quota变化/拒绝和额外现金费用，不推造单位价格。",
+        "搜索缓存、provider前缀缓存、应用答案缓存分别在正交子实验中取得实际hit/miss证据：搜索和前缀子实验绕过答案缓存；全链warm复用为零新增搜索/模型派发；query/filter变更使搜索缓存miss，材料性答案hash变更仅使受影响题失效。无usage证据的provider缓存按保守未命中成本报告。",
+        "若推荐搜索源与打包策略的联合组合，另完成两搜索context×逐题基线/候选打包的2×2匹配验证；未做时只给固定context的条件结论。方案只能在正确性门槛内进入Pareto比较，无合格打包方案时维持逐题策略，三家公司不代表普遍规律。",
+        "所有答案/ACK只落入本run临时数据库；prompt实际用到的限长snippet只暂存至G3复核并按manifest清理；实验前后正式名单、用户配置、数据库和仓库工作树无漂移。下载目录为空；清理器只删除manifest登记且owner/run/hash仍匹配的临时文件，残留异常安全保留隔离根。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "B01",
+      "requires_tasks": [
+        "L01",
+        "G1",
+        "Q05",
+        "Q09",
+        "Q10",
+        "Q12",
+        "W10"
+      ],
+      "assertions": [
+        {
+          "id": "BENCH-01.A01",
+          "entrypoint": "Isolated benchmark run manifest before the first paid dispatch",
+          "expected": "Before paid dispatch lock exact sample/30 IDs, gold, stratified claim-sample seed and minimums, method matrix, absolute and per-question-baseline tolerances, price/quota snapshot and hard spend ceiling; no pool mutation."
+        },
+        {
+          "id": "BENCH-01.A02",
+          "entrypoint": "Real Brave/Tavily search adapter and provider request/response receipt",
+          "expected": "The exact bounded snippets sent to the model exist only in the run-scoped temporary audit artifact with hashes (<=500 Unicode chars/snippet and <=30,000/company), then are manifest-cleaned after G3 review; full search payloads/pages are never stored."
+        },
+        {
+          "id": "BENCH-01.A03",
+          "entrypoint": "Production question dispatcher and standardized answer parser",
+          "expected": "All six declared request strategies are reconciled against exact IDs; failed and malformed attempts stay visible; no mixed-model matched arm."
+        },
+        {
+          "id": "BENCH-01.A04",
+          "entrypoint": "Search cache, provider usage receipt, and application answer cache",
+          "expected": "Use independent cache namespaces and orthogonal subruns: bypass answer cache when measuring real search/prefix cache, prove same-input end-to-end warm reuse, and prove query/filter and material answer-hash invalidation."
+        },
+        {
+          "id": "BENCH-01.A05",
+          "entrypoint": "Independent blind scoring and evidence adjudication packet",
+          "expected": "Two independent reviewers create/adjudicate gold before unblinding; enforce score MAE <=0.75 and <=0.25 worse than per-question baseline, >=90% within +/-1, support >=90% and <=5pp below baseline, >=95% eligible coverage and <=5pp below baseline; sample >=max(10 questions,2/module/company-method) and >=30 factual claims/method or inconclusive."
+        },
+        {
+          "id": "BENCH-01.A06",
+          "entrypoint": "Run timing ledger",
+          "expected": "Record raw company-run total/stage timing; report run-level p50/p90 only with >=20 matched complete runs; otherwise provide raw values/median/range and request counts."
+        },
+        {
+          "id": "BENCH-01.A07",
+          "entrypoint": "Provider/search billing and official execution-date price snapshot",
+          "expected": "Actual cash charges, search credits, token/cache usage, charged failures and MiniMax package quota are reported separately without invented unit prices; MiniMax-M3, MiMo Flash and DeepSeek Flash, when supported, use separate matched model blocks with no mixed-model completion."
+        },
+        {
+          "id": "BENCH-01.A08",
+          "entrypoint": "Temporary StockWiki public import/ACK and isolated-workspace cleanup audit",
+          "expected": "No production state drift or company document download; only exact manifest-owned temporary files are removed, otherwise evidence is retained safely."
+        },
+        {
+          "id": "BENCH-01.A09",
+          "entrypoint": "G3 benchmark result review",
+          "expected": "Any combined search+packing recommendation includes the predeclared 2x2 crossover; otherwise conclusions are conditional. Pareto eligibility first requires fixed accuracy gates."
+        }
+      ]
+    },
+    {
+      "id": "BENCH-02",
+      "kind": "fault",
+      "level": "integration",
+      "given": {
+        "config": "actual public quick-scan entry with isolated temporary profile and zero/unknown spend authorization",
+        "provider": "real provider transport instrumented only at the network boundary to prove zero outbound requests",
+        "state": "production company pool and databases are read-only"
+      },
+      "when": "Preflight or start BENCH-01 while the hard spend cap is zero, price snapshot is missing, or search/model quota cannot be established.",
+      "then": [
+        "The public entry returns an explicit blocked/needs_configuration result before creating a dispatchable attempt.",
+        "Outbound search/provider request count is exactly zero; no search/model budget reservation or chargeable work is created.",
+        "Prior completed work, production profile, pool membership and databases remain unchanged.",
+        "The run records a bounded reason and can be retried only after a valid price/quota snapshot and explicit hard budget are supplied; retry uses an auditable new run ID."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "B01",
+      "requires_tasks": [
+        "L01",
+        "G1",
+        "Q05",
+        "Q09",
+        "Q10",
+        "Q12",
+        "W10"
+      ],
+      "assertions": [
+        {
+          "id": "BENCH-02.A01",
+          "entrypoint": "Public benchmark CLI/API preflight with zero hard budget",
+          "expected": "Block before reservation or dispatch; outbound search/provider request count is exactly zero."
+        },
+        {
+          "id": "BENCH-02.A02",
+          "entrypoint": "Public benchmark CLI/API preflight with unknown provider price or search quota",
+          "expected": "Return an explicit configuration error; do not invent a price, quota, or fallback route."
+        },
+        {
+          "id": "BENCH-02.A03",
+          "entrypoint": "Production pool/database snapshot before and after blocked preflight",
+          "expected": "No company, observation, task, configuration, or durable production database mutation occurs."
+        },
+        {
+          "id": "BENCH-02.A04",
+          "entrypoint": "Run ledger for blocked preflight and authorized retry",
+          "expected": "Persist only a bounded block reason; a later authorized retry receives a new run ID and cannot reuse a paid attempt."
+        }
+      ]
     },
     {
       "id": "LIVE-05",
@@ -1524,7 +1934,8 @@
       "then": [
         "覆盖、缺证据、失败、费用和等待分别报告；恢复不遗漏逻辑题；成本按实际调用估算扩容。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "L03"
     },
     {
       "id": "LIVE-06",
@@ -1535,7 +1946,8 @@
       "then": [
         "报告实体/证券/市场重叠及各字段有效/尝试/待办；只对已经通过的评分/事实能力宣告交付。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "O04"
     },
     {
       "id": "REV-01",
@@ -1546,18 +1958,20 @@
       "then": [
         "可标verified；保留可重现命令、输出路径、审查结论与下一任务。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "G0"
     },
     {
       "id": "REV-02",
       "kind": "negative",
       "level": "review",
-      "given": "回执声称通过但日志缺失/空白/样例、case未运行或关键skip；审查后又修改源码。",
+      "given": "回执声称通过但日志缺失/空白/样例、case未运行或关键skip；候选快照漏掉持久化测试fixture或使用旧计划版本；审查后又修改源码。",
       "when": "审查任务完成状态。",
       "then": [
-        "保留review_pending或needs_revision；不让自报通过/旧审查放行新实现。"
+        "保留review_pending或needs_revision；不让自报通过/旧审查放行新实现，且manifest遗漏、范围/版本过期或hash变化必须阻止放行。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "G0"
     },
     {
       "id": "REV-03",
@@ -1568,7 +1982,8 @@
       "then": [
         "要求恢复独立预期和实际目标调用；语义变更须单独决策，不能把通过率当正确性。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "G0"
     },
     {
       "id": "REV-04",
@@ -1579,7 +1994,8 @@
       "then": [
         "先备份并按受支持迁移/版本回退；不盲目删除库或覆盖后续数据；受影响任务重新验收。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W12"
     },
     {
       "id": "UI-01",
@@ -1591,7 +2007,9 @@
         "E1始终一行且导航到同entity_id，全部挂牌可见；证券价格/币种按所选证券显示，不合并为公司价格。",
         "无目录仍可浏览，查询路径新增模型调用和来源下载均为0。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "U02"
     },
     {
       "id": "UI-02",
@@ -1603,7 +2021,8 @@
         ">8时E1未命中，>=8时E1命中；E2始终待核实而非合格。",
         "重开保留规则含义及版本，页面与接口结果一致；不调用LLM。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U01"
     },
     {
       "id": "UI-03",
@@ -1615,7 +2034,8 @@
         "分别展示真实状态与日期，不将null填0/5、不将N/A混同缺数；过期值可查看但不默认入当前有效筛选。",
         "置信度和公司分数分列；信息日期与入库时间分别显示。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U02"
     },
     {
       "id": "UI-04",
@@ -1627,7 +2047,8 @@
         "全部公司和恢复观察可见E1/E2；质量白名单遵守原规则，不凭恢复标记放行。",
         "详情保留原分与风险、剩余优势和兑现条件，不将低谷描述直接换算高分。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U02"
     },
     {
       "id": "UI-05",
@@ -1639,7 +2060,8 @@
         "替代题显示对应关系，不重复计入原题；每题显示分数/状态、短依据、日期、模型及版本。",
         "汇总严格复用已验证指标，诊断不混入质量均分，不生成新万能总分。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U02"
     },
     {
       "id": "UI-06",
@@ -1651,7 +2073,8 @@
         "文本转义且脚本不执行，仅安全HTTP(S)可跳转；不内嵌或下载目标全文。",
         "页面、URL、前端持久化不出现密钥哨兵；合法短依据和来源保留。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U02"
     },
     {
       "id": "UI-07",
@@ -1663,7 +2086,8 @@
         "7到8显示+1并标信息日期；新题义9分与旧版不可直接比较，不画同口径增长。",
         "重新入库不改变事实日期或有效性；历史缺失如实展示。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U03"
     },
     {
       "id": "UI-08",
@@ -1675,7 +2099,8 @@
         "固定快照页数与行数为50/50/37，137个entity_id无重复/漏项，排序用稳定并列键；更新提示刷新，不静默混页。",
         "单次列表至多100条、不携带全部题目和依据；记录环境/响应耗时，浏览产生0次LLM请求。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U01"
     },
     {
       "id": "UI-09",
@@ -1687,7 +2112,8 @@
         "筛选/分页/证券上下文保留，稳定链接指向正确实体；加载、无数据、无命中、无实体和错误状态分清。",
         "故障不伪装空股票池或删除已有数据；已有结果仍按可用查询能力显示。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U01"
     },
     {
       "id": "UI-10",
@@ -1699,7 +2125,14 @@
         "facts未就绪显示原因，不编造关系或阻止评分浏览；执行器离线但库可读时已有评分/事实仍可浏览。",
         "补扫说明缺项/故障，不暗中改用记忆回答或全池扫描。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U03",
+      "requires_tasks": [
+        "U02",
+        "G4",
+        "X06",
+        "W14"
+      ]
     },
     {
       "id": "UI-11",
@@ -1711,7 +2144,8 @@
         "方向、阶段、分部/时期及来源明确；生产者过滤不包含纯使用者/仅在研，预览仅列所选实体/字段。",
         "交接范围与用户所选一致；查看事实、跳转、预览不收费，只有显式发起才走已有预算与执行接口。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U03"
     },
     {
       "id": "UI-12",
@@ -1723,7 +2157,8 @@
         "焦点与文字状态可见，长内容不遮挡操作；窄屏卡片/受控滚动可用，颜色不是唯一提示。",
         "结果显示已入库观察，待导入不伪装当前有效；详情和运行双向导航可用，截图附实际DOM/导航断言。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "U03"
     },
     {
       "id": "MAINT-01",
@@ -1734,7 +2169,8 @@
       "then": [
         "只形成一个entity成员和一次有效变更，manual_pin保留，经营扫描不重复。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W13"
     },
     {
       "id": "MAINT-02",
@@ -1745,7 +2181,8 @@
       "then": [
         "核实的2个自动加入并原子记录增量扫描意图；歧义对象留候选，无须每次人工确认。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W13"
     },
     {
       "id": "MAINT-03",
@@ -1756,7 +2193,8 @@
       "then": [
         "全部不自动入池，不发扫描；分别返回身份/类型/上市/用户排除原因，保留提名记录。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W13"
     },
     {
       "id": "MAINT-04",
@@ -1767,7 +2205,14 @@
       "then": [
         "成员/准入名额/增量意图各只计一次，崩溃不丢新增意图，也不重复花额度。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "W13",
+        "O01",
+        "O02",
+        "X05"
+      ]
     },
     {
       "id": "MAINT-05",
@@ -1778,7 +2223,9 @@
       "then": [
         "合并处理到期主档维护，预算耗尽不发问；补充后沿用旧待办与新增意图，普通公司不饥饿。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "X05"
     },
     {
       "id": "MAINT-06",
@@ -1789,7 +2236,8 @@
       "then": [
         "不因低分或单挂牌退市移出整个实体，保留历史成员与挂牌有效期。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W13"
     },
     {
       "id": "STORE-01",
@@ -1800,7 +2248,8 @@
       "then": [
         "权威状态各归拥有者，结果可查且无公司文档目录；UI/主题/行业均查同一个StockWiki观察。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W05"
     },
     {
       "id": "STORE-02",
@@ -1811,7 +2260,8 @@
       "then": [
         "同ID同hash幂等；同ID异hash拒绝并留冲突，不覆盖观察，不重新发LLM。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W05"
     },
     {
       "id": "STORE-03",
@@ -1822,7 +2272,8 @@
       "then": [
         "先重放安全交换数据和对账，保留新观察及费用；不能把旧备份余额当未花额度；不确定时停收费派发。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W12"
     },
     {
       "id": "STORE-04",
@@ -1833,7 +2284,8 @@
       "then": [
         "快照引用旧observation_id并保留旧时间/模型；比较回答不自动覆盖primary或按最高分胜出。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W14"
     },
     {
       "id": "MATRIX-01",
@@ -1844,7 +2296,8 @@
       "then": [
         "固定字段并排，数值单位和来源可追，只有口径对齐项给差值，不跨行业强排名。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W14"
     },
     {
       "id": "MATRIX-02",
@@ -1855,7 +2308,8 @@
       "then": [
         "标具体口径差异，保留原值，不自动换汇、相减或硬合排名。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W14"
     },
     {
       "id": "MATRIX-03",
@@ -1866,7 +2320,8 @@
       "then": [
         "差异处断开可比趋势，显示方法/模型/期间变化，不称为经营改善。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "W14"
     },
     {
       "id": "MATRIX-04",
@@ -1877,7 +2332,12 @@
       "then": [
         "每个模型有独立子任务/请求/时间/观察，原分均保留；不沿用fallback成功即停来漏掉被要求的对照。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [
+        "W09",
+        "W15"
+      ],
+      "owner_task": "W14"
     },
     {
       "id": "MATRIX-05",
@@ -1888,7 +2348,12 @@
       "then": [
         "普通fallback不当受控对照；信息时点不齐禁直接差分，来源不同标检索混杂，不平均成真值。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [
+        "W09",
+        "W15"
+      ],
+      "owner_task": "W14"
     },
     {
       "id": "MATRIX-06",
@@ -1899,7 +2364,8 @@
       "then": [
         "拒绝伪造执行元数据；遗留缺失保留unknown/null，不补造现在时间或默认模型。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q11"
     },
     {
       "id": "MATRIX-07",
@@ -1910,18 +2376,25 @@
       "then": [
         "两者均为5，附加题独立显示；关键风险和恢复观察不被移除；旧汇总按原版本保存。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "S01"
     },
     {
       "id": "MATRIX-08",
       "kind": "negative",
       "level": "integration",
-      "given": "供应商未公开，另有已知设备品种；同名但不同证券实体；事实模型尝试输出5分。",
-      "when": "编排事实并校验输出。",
+      "given": "供应商未公开，另有已知设备品种；同名但不同entity/security的两家公司；事实模型尝试输出5分。",
+      "when": "编排事实、构造问卷身份hash并校验输出。",
       "then": [
-        "提示含明确身份，事实score恒null；未知供应方不填行业龙头/假关系，设备使用与生产分开。"
+        "两家公司提示及manifest身份hash不同；已知uses_equipment保留，未知supplier为insufficient_evidence、items=[]、coverage=unknown且有缺口字段；不填行业龙头/假关系，设备使用与生产分开；数值score=5被拒绝。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [
+        "F02",
+        "F05",
+        "F06"
+      ],
+      "owner_task": "X09"
     },
     {
       "id": "PAR-01",
@@ -1942,7 +2415,8 @@
         "任意时点全局在途≤4、各组≤2、各路由≤1，且独立问题存在发送时间重叠，不能用串行冒充并发。",
         "领取槽、逻辑题与预算失败不发网络请求；程序崩溃不能只丢失内存计数而超发。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q09"
     },
     {
       "id": "PAR-02",
@@ -1970,7 +2444,8 @@
         "持久化A组冷却至提供商reset_at，并通知其他worker；未派发请求按顺序跳过两个A路由，仅尝试B。",
         "A已发请求仍接受回执/记账；普通429不编造五小时剩余额度或reset_at，按短期限流策略处理。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q08"
     },
     {
       "id": "PAR-03",
@@ -1991,7 +2466,11 @@
         "等待A空槽；B发送计数为0，不能为了吞吐擅改用户优先级，也不能同一primary题向A/B抢答。",
         "A完成后派发待办并记录A；显式comparison必须另有比较组和预算，不能混用此逻辑题键。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q11",
+      "requires_tasks": [
+        "Q09"
+      ]
     },
     {
       "id": "PAR-04",
@@ -2019,7 +2498,8 @@
         "q1—q4各有唯一成功检查点与原执行时间/模型；只重组q5/q6，原4题发送次数不增加。",
         "新包ID不产生6个新逻辑题；保留每个attempt/pack/prompt hash，混合模型的公司快照逐字段显示来源。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "Q07"
     },
     {
       "id": "PAR-05",
@@ -2031,7 +2511,13 @@
         "仅一个成功领取且至多一次原始网络发送；fallback或run_id不使同代次变成新题。",
         "租约到期不直接证明请求未发出；先对账或进入outcome_uncertain；已完成新鲜题在重启时新增发送0。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "Q06",
+        "X05",
+        "X06"
+      ]
     },
     {
       "id": "PAR-06",
@@ -2043,7 +2529,9 @@
         "结果不明请求保留预算预留，先查回执，不立即并行重发备用；对账成功后落原结果并仅结算一次。",
         "outbox重投仅调用导入，不调用LLM；StockWiki重复ACK与观察幂等。无法确认的请求保留明确状态和恢复动作，不伪造成功。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "W10"
     },
     {
       "id": "PAR-07",
@@ -2056,7 +2544,13 @@
         "到期每组仅一个半开探针，失败有界延后，成功后才释放正常并发；不存在忙轮询或多进程探针风暴。",
         "单轮尝试耗尽后仅到持久化retry_eligible_at或新的有效恢复事件才创建下一轮；重启/点击不重开尝试轮，总预算不变，已成功逻辑题不再入队。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "Q08",
+        "O02",
+        "X06"
+      ]
     },
     {
       "id": "PAR-08",
@@ -2069,7 +2563,3358 @@
         "按明确边界使新版本作用于未派发待办，已在途请求保留原policy；成功题不失效、不因顺序变更自动重问。",
         "UI、CLI与执行器读取同一StockQA生效版本，不维护两份独立优先级。"
       ],
-      "status": "specified_not_executed"
+      "status": "specified_not_executed",
+      "requires_tasks": [
+        "X04",
+        "X03"
+      ],
+      "owner_task": "X09"
+    },
+    {
+      "id": "C05-CONTRACT-01",
+      "kind": "positive",
+      "level": "contract",
+      "given": "虚构model-policy包含有序路由、共享组、并发和预算边界。",
+      "when": "用公开Schema和scripts/model_policy.py离线校验。",
+      "then": [
+        "合法模板通过；非法顺序、组、并发、预算或占位配置失败。",
+        "结果只证明契约约束，不声明真实provider、并发或费用账本已运行。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C05"
+    },
+    {
+      "id": "C05-CONTRACT-02",
+      "kind": "negative",
+      "level": "contract",
+      "given": "各种429、额度耗尽、认证、能力缺失、超时不明和comparison配置。",
+      "when": "执行离线策略真值表与Schema负例。",
+      "then": [
+        "错误分类、成功即停、未知结果、费用预留与comparison隔离语义固定。",
+        "不把离线真值表登记成LLM/BUD/PAR运行case通过。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C05"
+    },
+    {
+      "id": "C05-CONTRACT-03",
+      "kind": "boundary",
+      "level": "contract",
+      "given": "策略版本更新、在途请求和未派发请求同时存在。",
+      "when": "校验版本字段、边界说明与可填写模板。",
+      "then": [
+        "契约明确版本作用边界且不含密钥或虚构厂商价格。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C05"
+    },
+    {
+      "id": "C06-CONTRACT-01",
+      "kind": "negative",
+      "level": "contract",
+      "given": "交换包含轻量观察、不可变hash以及试图经extensions嵌套正文的负例。",
+      "when": "经exchange Schema和公共reference validator校验。",
+      "then": [
+        "正常轻量包通过；正文、二进制、正式证据或未注册扩展均拒绝。",
+        "不声明真实数据库事务或跨仓导入已执行。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C06"
+    },
+    {
+      "id": "C06-CONTRACT-02",
+      "kind": "negative",
+      "level": "contract",
+      "given": "查询状态、coverage、分值lineage和profile实体存在互相矛盾的最小输入。",
+      "when": "经query Schema和公共语义validator校验。",
+      "then": [
+        "覆盖状态、结果、缺失字段、观测实体和scored lineage必须一致。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C06"
+    },
+    {
+      "id": "C06-CONTRACT-03",
+      "kind": "negative",
+      "level": "contract",
+      "given": "两跳、三跳、成环和祖先缺失的观察lineage。",
+      "when": "判断研究线索是否构成独立支持。",
+      "then": [
+        "只有完整、无环且不含目标祖先的闭包才返回independent；缺失信息保守拒绝。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C06"
+    },
+    {
+      "id": "C07-CONTRACT-01",
+      "kind": "negative",
+      "level": "contract",
+      "given": "release set缺字段、重复组件、hash错误或owner集合不完整。",
+      "when": "先经完整deployment Schema再经reference validator校验。",
+      "then": [
+        "畸形release set全部拒绝；helper不能接受Schema本身拒绝的对象。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C07"
+    },
+    {
+      "id": "C07-CONTRACT-02",
+      "kind": "boundary",
+      "level": "contract",
+      "given": "setup/doctor/start/status/stop/resume的虚构请求与生命周期上下文。",
+      "when": "运行离线命令决策和Schema检查。",
+      "then": [
+        "零付费doctor、进程身份、重复操作及保护边界固定；不声明真实进程或并发已验证。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C07"
+    },
+    {
+      "id": "C07-CONTRACT-03",
+      "kind": "negative",
+      "level": "contract",
+      "given": "响应自报full_release_verified但组件hash、setup、doctor、live回执、gate或consumer证据缺失。",
+      "when": "经readiness条件Schema和assess_readiness计算。",
+      "then": [
+        "不得得到full_release_verified；就绪等级只能由同一release证据闭包推导。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C07"
+    },
+    {
+      "id": "E2E-06",
+      "kind": "fault",
+      "level": "live",
+      "given": {
+        "real_data": "固定少量公开公司与真实联网provider；产品正常路径只留短搜索回执/交换元数据，不下载公司文档",
+        "isolation": "唯一run_id、临时workspace、临时SQLite、专属下载/交换目录，不复用用户生产profile",
+        "pre_state": "外部仓git状态、受保护目录文件路径/大小/hash、相关数据库页/表计数和本次启动前进程身份快照",
+        "fault_matrix": [
+          "正常完成",
+          "若真实路径下载允许的临时文件则测下载后解析失败；否则断言下载目录为空并在交换/缓存解析边界注入文件故障",
+          "provider超时或额度拒绝",
+          "导入前中断",
+          "导入后ACK丢失"
+        ]
+      },
+      "when": "经真实公共入口逐项执行；每项在finally关闭本run拥有的进程，回滚事务或删除临时库，并按run manifest只清理本次创建且当前hash仍匹配的文件。",
+      "then": [
+        "真实数据结果、搜索/费用/允许的临时文件或零下载/ACK证据保存在隔离测试回执中；不以stub替代被测能力。",
+        "每条故障路径结束后重新采集状态，外部仓跟踪/未跟踪文件、用户profile、生产数据库和非测试进程与pre_state一致。",
+        "清理器遇到路径越界、文件hash变化、owner/run_id不匹配或数据库不属于临时workspace时拒绝删除并使测试失败。",
+        "任何清理失败保留隔离目录及manifest供取证，但不得把残留移动到公司正式目录或用递归清理扩大范围。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X10"
+    },
+    {
+      "id": "MOD-01",
+      "kind": "positive",
+      "level": "unit",
+      "given": "冻结3.2.0样例：商业化半导体企业、扩张期，无附加属性；另将同一发布包中的候选模块排列打乱。",
+      "when": "经已验证发布包和路由决策在quick和full模式组合问卷。",
+      "then": [
+        "均恰好包含common、operating、semiconductors、scaling，旧基线分别为28/34题；24核心构念覆盖完整、每题只出现一次；候选排列不改变冻结问卷或方法指纹。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S06",
+      "requires_tasks": [
+        "S05"
+      ]
+    },
+    {
+      "id": "MOD-02",
+      "kind": "negative",
+      "level": "contract",
+      "given": "同一已发布模块/题ID下改锚点、适用对象或题义；另有两个类型替代同一核心题。",
+      "when": "验证版本锁和组合。",
+      "then": [
+        "实质变化不允许原ID原rubric覆盖；冲突在发LLM请求前拒绝，旧发布包与旧观察不变。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S04"
+    },
+    {
+      "id": "MOD-03",
+      "kind": "metamorphic",
+      "level": "unit",
+      "given": "在虚构新行业追加独立题，不修改已有通用/半导体题及其适用口径。",
+      "when": "比较升级前后旧公司manifest与方法指纹。",
+      "then": [
+        "已有题ID、语义指纹、核心分和可比性不变；只对新适用公司增加新题及模块覆盖差。"
+      ],
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "S05"
+    },
+    {
+      "id": "MOD-04",
+      "kind": "negative",
+      "level": "unit",
+      "given": "新增行业/投资视角模块仅登记catalog，漏scoring-contexts、适用条件、冲突规则或事实覆盖；另传未知module ID、模型擅选未启用的投资视角和低置信度旧profile。",
+      "when": "运行库校验、旧画像校验、新路由和导出。",
+      "then": [
+        "新模块缺注册、未知ID和模型擅选视角均在导出或付费前以明确错误拒绝；旧画像的严格校验不被放宽，不产生半成品问卷或默认5分。"
+      ],
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "S06"
+    },
+    {
+      "id": "MOD-05",
+      "kind": "boundary",
+      "level": "unit",
+      "given": "同一实体有半导体+扩张证据，又有周期低谷；另一实体身份明确但搜索不可用且行业不明；人工覆盖在决策后、执行前到期；另有纯股价下跌、other、三项重大行业、困境+恢复且预算24题反例。",
+      "when": "产生路由决策快照。",
+      "then": [
+        "第一家可叠加scaling/cyclical/recovery且保留低分；第二家只得确定通用与风险题并以unavailable/uncertain空来源表示未证实类别；执行时到期覆盖不继续生效但历史可读，来源和候选原因均留痕。",
+        "股价下跌不自动触发困境、other不表示未知行业；三个重大行业quick不得静默截断，full仅在业务边界兼容时展开，否则返回分部待处理。",
+        "困境+恢复已选时六道风险/恢复题连同24核心为mandatory；max_questions=24在写输出前失败，30题可保留必需题并逐项标延期，不把模型候选的自报搜索/操作者/时间当执行证据。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S06"
+    },
+    {
+      "id": "MOD-06",
+      "kind": "fault",
+      "level": "integration",
+      "given": "旧run四题已成功；新模块追加两题；一题发送后结果不明，另有导入ACK丢失。",
+      "when": "经公共待办/出站/导入入口停止、恢复和重放。",
+      "then": [
+        "旧四题新增模型调用0；只派两道新增题，结果不明先对账；重复导入仅一份不可变观察，费用预留不重置。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q13"
+    },
+    {
+      "id": "MOD-07",
+      "kind": "negative",
+      "level": "integration",
+      "given": "旧manifest锁旧发布包；当前catalog已升级；另有旧发布包hash篡改，并含router 2.2分类置信度快照与router 2.0/2.1历史快照。",
+      "when": "尝试读取与验证历史观察。",
+      "then": [
+        "可信旧发布包可按原版解释且不被新catalog重算；篡改或找不到发布包时明确不可验证，绝不悄悄用新版解析。router 2.2的分类status/score/threshold/eligibility与执行provider/model/as_of须经StockWiki存取原样保留；router 2.0/2.1缺失置信度时保持历史缺失，不补造、不重解释。"
+      ],
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "W15",
+      "assertions": [
+        {
+          "id": "MOD-07.A01",
+          "entrypoint": "W15 route snapshot store and historical reader",
+          "expected": "Router 2.2 classification status/score/threshold/eligibility and execution model/time survive SQLite write/read unchanged; tampered or mismatched snapshots fail closed. Router 2.0/2.1 remain readable without synthesized confidence or company-quality score."
+        },
+        {
+          "id": "MOD-07.A02",
+          "entrypoint": "W15 trusted route store to dispatch handoff",
+          "expected": "Before composition/dispatch, StockWiki loads expected_decision_id from its trusted stored route row, never from the candidate snapshot. A modified and resealed decision whose ID differs from the stored ID is blocked before model calls or question output."
+        }
+      ]
+    },
+    {
+      "id": "MOD-08",
+      "kind": "negative",
+      "level": "integration",
+      "given": "24核心题均5，新行业扩展题均10；公司从scaling转mature，旧信息重新入库。",
+      "when": "计算当前分和跨期同题篮对照。",
+      "then": [
+        "核心分仍5；扩展题分与覆盖单列；不同阶段/题义不直接画增长，重新入库不刷新信息日期。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W14",
+      "requires_tasks": [
+        "W15",
+        "W09"
+      ]
+    },
+    {
+      "id": "MOD-09",
+      "kind": "negative",
+      "level": "integration",
+      "given": "冻结问卷中一个question ID的模块版本或prompt hash被改；两个模块同时声明替换关键核心题。",
+      "when": "调用StockQA公开派发入口。",
+      "then": [
+        "付费发送数0；返回可审计的manifest冲突/篡改错误，不退回自由文本LLM自选模块。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q13"
+    },
+    {
+      "id": "MOD-10",
+      "kind": "fault",
+      "level": "live",
+      "given": "显式预算与一次性临时workspace/SQLite；一家公司使用真实搜索提供商、已锁定模块包，随后模拟续扫或额度拒绝。",
+      "when": "从已安装的一键入口运行有限真实路由/问答/导入/查询并执行E2E-06清理。",
+      "then": [
+        "真实搜索/模型/模块版本/逐题attempt回执与来源可追溯；模块只按已核实资料和锁定规则选用，未完成题可接续。",
+        "总请求和费用不越显式预算；临时文件/数据库清理后，外部仓工作树及正式目录零漂移；不以hardcode实时分数验收。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X10"
+    },
+    {
+      "id": "MOD-11",
+      "kind": "positive",
+      "level": "unit",
+      "given": "冻结61道事实题与两个固定行业/阶段的quick/full旧导出，然后只在半导体事实模块minor版新增FACT_SEMI_EQUIPMENT_DEPENDENCY及新field_id。",
+      "when": "导出新旧事实问卷并比较逐字段定义/prompt/method版本、评分包及待办。",
+      "then": [
+        "旧61个字段ID/题义/prompt/method和旧导出字节保持不变；仅适用半导体公司多一个无分数字段和一个增量待办，软件公司不变；新旧事实归档均可读，评分包ID和24核心分不变。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "F06"
+    },
+    {
+      "id": "MOD-12",
+      "kind": "negative",
+      "level": "unit",
+      "given": "新事实题带数值score/score型response_kind、跨模块重复question_id/field_id、缺activation/路由引用、未知或uncertain模块、segment scope缺segment_id；另有同ID改题/关系/作用层、归档篡改/缺失、退休ID复用。",
+      "when": "校验并生成事实问卷。",
+      "then": [
+        "以上错误在生成manifest或派发前拒绝，旧发布包与旧观察不重释；无API attempt或评分表行，事实题不进入质量分或以兼容5伪装评分。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "F06"
+    },
+    {
+      "id": "MOD-13",
+      "kind": "negative",
+      "level": "integration",
+      "given": "临时库含同公司两个时间点的模块集、两个模型、退出模块与不可比rubric；其中一个router 2.2公司分类置信度为6且有LLM候选被降为uncertain，另一个有独立verified_facts；另含router 2.0/2.1历史快照且旧schema未记录classification_confidence。",
+      "when": "在桌面与窄屏真实浏览器查看详情/历史并切换模型。",
+      "then": [
+        "模块进出、原因、版本、缺失与实际模型可见；ROUTE_02分类置信度单独标为路由置信度而非公司质量分，并展示阈值和6分下模型候选为uncertain、已核实事实不受降级；2.0/2.1缺少置信度时明确显示历史未记录，不补造分数/阈值/model/time；不可比项无伪分差；浏览请求模型发送数0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "U04",
+      "assertions": [
+        {
+          "id": "MOD-13.A01",
+          "entrypoint": "U04 real browser detail/history view",
+          "expected": "Classification status/score/threshold is labeled as ROUTE_02 routing confidence, never company quality; model and timestamp remain visible; a below-threshold model candidate is shown uncertain while independently verified selected modules remain visible. Router 2.0/2.1 history without the field displays 'historically not recorded' and fabricates no score/threshold/model/time; zero model calls."
+        }
+      ]
+    },
+    {
+      "id": "EVO-01",
+      "kind": "positive",
+      "level": "integration",
+      "given": "虚构ENT_A有冻结题包、身份revision=2、旧观察20题有效、新模块加2题；各部件发布hash固定。",
+      "when": "以同一组权威发布引用和固定StockQA能力快照解析两次scoring_only recipe。",
+      "then": [
+        "两次规范化recipe字节/hash相同，纯解析器只返回20题可复用与2条新字段缺口；不自行创建WorkItem或调用模型。",
+        "用户顺序、能力、预算、题义、路由、刷新/评分/lens/交换版本在manifest逐项可追溯；事实包/本体/词表引用在scoring_only中明确absent/disabled且不要求发布版本或hash。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V01"
+    },
+    {
+      "id": "EVO-02",
+      "kind": "negative",
+      "level": "contract",
+      "given": "路由锁引用缺失题包、两个类型替代同核心题、mandatory风险题超过预算、StockQA首选及备用均无实际搜索能力。",
+      "when": "调用本仓ScanRecipe纯解析器。",
+      "then": [
+        "纯解析器逐项给稳定拒绝原因且不产生可派发recipe/work plan；不得删风险题或使用无搜索/默认5替代。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V01"
+    },
+    {
+      "id": "EVO-03",
+      "kind": "fault",
+      "level": "integration",
+      "given": "长批次已送出3题；此时修改模型顺序、TTL、评分尺和lens，另一题尚未领取。",
+      "when": "重启同run并创建下一新run。",
+      "then": [
+        "已送出3题按旧recipe/费用/模型回执完成，同run不偷换配置；新run锁新recipe，仅受影响字段增量派发。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V09"
+    },
+    {
+      "id": "EVO-04",
+      "kind": "negative",
+      "level": "integration",
+      "given": "真实旧归档recipe和旧观察存在；当前catalog/策略已升级；另备缺失或篡改的旧发布字节。",
+      "when": "读取历史并请求新派发。",
+      "then": [
+        "可信旧归档按旧语义只读成功，旧版不能新派发；缺失/篡改归档明确不可验证，不以新版本重释。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V01"
+    },
+    {
+      "id": "EVO-05",
+      "kind": "positive",
+      "level": "unit",
+      "given": "同一冻结逐题1—10答案及24核心构念，发布旧/新两套只改聚合权重的评分尺。",
+      "when": "计算两个method_id的派生分。",
+      "then": [
+        "原答ID/hash不变、两套派生分分别有rubric版本/分母/cohort/来源ID；旧核心分保持原值。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V02"
+    },
+    {
+      "id": "EVO-06",
+      "kind": "negative",
+      "level": "unit",
+      "given": "另一问题改锚点或作用层、缺关键题、跨期或跨模型口径不齐，表面数字都为8。",
+      "when": "请求旧新评分尺纵向比较和>8筛选。",
+      "then": [
+        "返回incomparable及逐项原因；不画+0趋势、不把旧8直接放入新口径白名单，也不补默认分。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V02"
+    },
+    {
+      "id": "EVO-07",
+      "kind": "negative",
+      "level": "unit",
+      "given": "score=8但答案为insufficient_evidence/search_unavailable，或diagnostic_only=10且核心题均5。",
+      "when": "生成核心质量分和规则输入。",
+      "then": [
+        "未知无正式分，诊断题不抬高24核心分；质量critical gate与检查等级仍生效。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V02"
+    },
+    {
+      "id": "EVO-08",
+      "kind": "positive",
+      "level": "integration",
+      "given": "事实记录原词‘液冷’，方向为客户使用设备；新增‘AI液冷硬件’同义词映射发布。",
+      "when": "重建StockWiki临时词表投影并查询。",
+      "then": [
+        "原始事实/来源/日期/hash不变，新索引能命中且记录ontology/taxonomy release；新增模型调用0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V07"
+    },
+    {
+      "id": "EVO-09",
+      "kind": "negative",
+      "level": "integration",
+      "given": "甲制造设备、乙使用设备、丙供应材料、丁是客户，四条记录都含同一关键词。",
+      "when": "按生产者/使用者/材料供应方/下游客户作strict关系查询。",
+      "then": [
+        "方向、角色、阶段、时期和分部均过滤正确；同词不得把设备使用者误列为制造商。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V07"
+    },
+    {
+      "id": "EVO-10",
+      "kind": "fault",
+      "level": "integration",
+      "given": "新别名同时映射两类冲突关系，旧词表release和旧关系索引完整。",
+      "when": "发布词表并强制在索引切换点失败。",
+      "then": [
+        "歧义保持待核而不猜；事务失败旧查询仍按旧release/watermark可读，原词/原事实未被改写。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V07"
+    },
+    {
+      "id": "EVO-11",
+      "kind": "positive",
+      "level": "unit",
+      "given": "周期低谷公司当前质量3分、剩余渠道优势8分，恢复触发证据有效，另有AI硬件应用关系。",
+      "when": "同时运行质量、恢复观察与主题候选lens。",
+      "then": [
+        "三个独立名单可分别fail/pass/pass并保留原因、版本、时间；低质量不从大池或恢复/主题入口删除。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V04"
+    },
+    {
+      "id": "EVO-12",
+      "kind": "negative",
+      "level": "unit",
+      "given": "质量critical风险2分或unknown，主题规则为pass；某配置用OR试图绕过质量gate。",
+      "when": "编译lens并计算质量白名单。",
+      "then": [
+        "绕过配置拒绝或质量名单保持fail/unknown；主题/恢复名单可独立呈现，不把关键风险平均掉。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V04"
+    },
+    {
+      "id": "EVO-13",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "已保存100家原答和lens v1结果，质量门槛8改9、另新增主题lens v2。",
+      "when": "重建派生名单并回放旧snapshot。",
+      "then": [
+        "新旧名单版本并列且差异可解释；旧snapshot不变、StockQA模型调用0、原观察hash全相同。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V08"
+    },
+    {
+      "id": "EVO-14",
+      "kind": "positive",
+      "level": "integration",
+      "given": "100家公司仅一家公司某风险题过期；新增一个仅适用于其中5家的模块，其他字段仍fresh。",
+      "when": "按策略版本生成字段级RefreshPlan。",
+      "then": [
+        "只得1条过期题和5条新字段缺口，既有题模型调用0；每条代次、原因和策略hash明确。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V10"
+    },
+    {
+      "id": "EVO-15",
+      "kind": "fault",
+      "level": "integration",
+      "given": "同一字段恰好到期，同时发生重大事件和人工强制刷新；旧观察information_as_of已知。",
+      "when": "并发规划、导入旧观察并重启。",
+      "then": [
+        "事件/人工/TTL优先级确定且同原因幂等只建一代；旧valid_until/信息日期不变，重复导入不续期。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V10"
+    },
+    {
+      "id": "EVO-16",
+      "kind": "negative",
+      "level": "integration",
+      "given": "用户顺序A→B；A额度拒绝，B支持文本但不支持可验证web_search。",
+      "when": "在搜索必需的题上执行有序fallback。",
+      "then": [
+        "B在POST前因能力不等价跳过，题标待办/unknown及原因；不伪造executed、不用无搜索答案计分，预算不透支。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V09"
+    },
+    {
+      "id": "EVO-17",
+      "kind": "fault",
+      "level": "integration",
+      "given": "A的POST已发但只得HTTP 500/超时；另有明确提供商配额拒绝及可信未执行回执。",
+      "when": "分类尝试并决定是否使用B。",
+      "then": [
+        "500/超时保持uncertain并先对账、不立即再POST；明确未执行拒绝可按用户顺序fallback，全部尝试计预算并保留脱敏回执。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V09"
+    },
+    {
+      "id": "EVO-18",
+      "kind": "fault",
+      "level": "integration",
+      "given": "双挂牌同一ENT公司，身份revision 1的旧work未决；核实后revision 2更换来源绑定且新增证券成员。",
+      "when": "通过StockWiki权威身份/成员事务与StockQA待办接续。",
+      "then": [
+        "实体题在同一身份revision内只问一次，证券题分开；旧work/观察仍绑revision 1，revision 2建新代次并先对账未决请求。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V10"
+    },
+    {
+      "id": "EVO-19",
+      "kind": "fault",
+      "level": "integration",
+      "given": "2,000家长批次中300家已答、7个send_intent未确认、其余待办；期间发布新recipe。",
+      "when": "停机、恢复旧run并逐步启用新run。",
+      "then": [
+        "已答不重问，7个不明先对账；旧run依原recipe推进，新策略只建受影响缺口；成员/费用/待办计数守恒。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V10"
+    },
+    {
+      "id": "EVO-20",
+      "kind": "negative",
+      "level": "integration",
+      "given": "客户端只支持Query v1；服务端具v2时间/模型/词表投影，另有缺失某能力的实例。",
+      "when": "协商schema_version/capabilities并请求新字段。",
+      "then": [
+        "旧v1在兼容窗只读可用，新字段缺能力返回unavailable及原因，不返回空集合或猜测值；分页持同一snapshot/watermark。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V11"
+    },
+    {
+      "id": "EVO-21",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "同公司两个时间点、两个模型、两套评分尺和一条不可比题，2000家分页；桌面与窄屏浏览器。",
+      "when": "通过真实StockWiki UI切换模块/lens/时间/模型。",
+      "then": [
+        "页面展示原答时间、实际模型、来源、版本、可比差和不可比原因；分页稳定，键盘可达且浏览模型调用0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "U03"
+    },
+    {
+      "id": "EVO-22",
+      "kind": "negative",
+      "level": "review",
+      "given": "安装配套表声称版本一致但实际加载某旧题包/旧StockQA能力hash；另有旧版归档与费用账本。",
+      "when": "独立审查版本握手和混搭回退证据。",
+      "then": [
+        "基于真实加载hash/兼容矩阵阻止新写，旧观察只读；审查报告逐项列源码、测试、迁移与费用回执，不把版本名当证据。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V12"
+    },
+    {
+      "id": "EVO-23",
+      "kind": "positive",
+      "level": "live",
+      "given": "X10已有明确live授权、有限题/费用预算和隔离清理器；真实A/H双挂牌及一美股小样本。",
+      "when": "从统一入口跑搜索、评分、事实、lens与查询UI全链，并在中断点恢复。",
+      "then": [
+        "实际搜索/模型/费用/身份/recipe/词表/评分尺/时间回执齐全；重复运行不重问已答，三维比较不混口径。",
+        "临时SQLite/缓存/下载/日志逐文件登记并清理；外部仓、正式库、用户配置和非测试进程前后零漂移，否则live gate失败。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X10"
+    },
+    {
+      "id": "EVO-24",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "2,000家已保存原答；只新增别名、筛选lens和一个仅5家适用的事实问题。",
+      "when": "重建索引/名单并生成增量待办。",
+      "then": [
+        "原答hash、费用、信息日期保持不变；词表/lens升级模型调用0，仅5家新增事实字段待办，不全池重扫。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V11"
+    },
+    {
+      "id": "EVO-25",
+      "kind": "fault",
+      "level": "integration",
+      "given": "真实StockWiki库的只读备份副本与旧版本投影存在；迁移在提交/切换前故障。",
+      "when": "在临时SQLite演练升级、恢复和回滚。",
+      "then": [
+        "旧库/观察/成员/费用/outbox可读且hash不变；失败停新写并保留证据，不删除数据库或重置已付费工作。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V10"
+    },
+    {
+      "id": "EVO-26",
+      "kind": "negative",
+      "level": "integration",
+      "given": "主题/行业技能请求不存在的taxonomy版本或只有旧Query capability；库中另有未核实同词关系。",
+      "when": "经真实消费者入口查询并定向补缺。",
+      "then": [
+        "明确返回unsupported/unavailable及候选/缺口，不把空结果说成产业链无人；不直接写库，不为少数公司启动全池扫描。"
+      ],
+      "status": "specified_not_executed",
+      "requires_tasks": [],
+      "owner_task": "V11"
+    },
+    {
+      "id": "EVO-27",
+      "kind": "positive",
+      "level": "contract",
+      "given": "冻结61题事实包及新本体release；同一设备词分别出现在制造、使用、供应和客户关系中。",
+      "when": "用本仓真实schema/发布器编译关系ID、方向、角色、阶段、时期与分部。",
+      "then": [
+        "每条关系有唯一稳定ID与冻结语义hash；旧事实题ID/原词/事实包字节不变，变更别名不改变关系方向。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V03"
+    },
+    {
+      "id": "EVO-28",
+      "kind": "negative",
+      "level": "contract",
+      "given": "发布候选试图把uses_equipment等同makes_equipment，或缺角色/时期/分部作用层，另有未知本体版本。",
+      "when": "由本仓本体发布校验器验签并解析。",
+      "then": [
+        "不安全crosswalk和缺必需方向信息均被拒绝；旧版按可信归档只读，未知新版不得降级按旧语义写入。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V03"
+    },
+    {
+      "id": "EVO-29",
+      "kind": "positive",
+      "level": "unit",
+      "given": "固定UTC时钟、一个评分风险字段到期、另一个字段fresh；同字段同时收到人工强制和重大事件。",
+      "when": "调用本仓刷新策略纯解析器两次。",
+      "then": [
+        "只输出受影响字段及稳定的reason/next_generation/策略hash；事件、强制和TTL按固定优先级归并，同原因幂等。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V05"
+    },
+    {
+      "id": "EVO-30",
+      "kind": "negative",
+      "level": "unit",
+      "given": "旧观察只有imported_at较新而information_as_of未知；另新增无关模块、词表别名及筛选阈值。",
+      "when": "本仓刷新策略解析旧观察和新策略。",
+      "then": [
+        "未知信息日期不能变fresh；词表/阈值/无关模块不产旧题新generation，旧valid_until与策略版本不被回写。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V05"
+    },
+    {
+      "id": "EVO-31",
+      "kind": "negative",
+      "level": "unit",
+      "given": "能力配置A只支持普通文本，B声明web_search但缺可验证回执格式，用户顺序A→B。",
+      "when": "调用StockQA提供商能力适配器的纯预检入口。",
+      "then": [
+        "两者都不满足需要可验证搜索的题，返回逐模型原因与能力版本；不创建请求、不读取密钥、不把模型自报视为能力。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V06"
+    },
+    {
+      "id": "EVO-32",
+      "kind": "negative",
+      "level": "unit",
+      "given": "HTTP 200回答带两个网址和‘已搜索’，真实工具事件为空；另一事件URL属于相邻request/call。",
+      "when": "调用StockQA搜索回执适配器解析固定厂商响应。",
+      "then": [
+        "状态为unverified、跨call网址拒绝归属；旧无call-id的历史结果可读但不补签为executed。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V06"
+    },
+    {
+      "id": "EVO-33",
+      "kind": "fault",
+      "level": "unit",
+      "given": "一次HTTP 500、一次超时、一次带厂商明确未执行码与回执的429拒绝。",
+      "when": "调用StockQA能力/拒绝分类适配器。",
+      "then": [
+        "500/超时归执行结果不明并保留已知运输回执，429仅在可信未执行证据齐备时归明确拒绝；不在适配器内自行重发POST。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V06"
+    },
+    {
+      "id": "EVO-34",
+      "kind": "negative",
+      "level": "integration",
+      "given": "冻结recipe引用缺失题包、mandatory风险题超预算或StockQA没有等价web_search能力。",
+      "when": "通过V09的真实公开派发/work/预算入口尝试运行。",
+      "then": [
+        "HTTP POST、持久WorkItem和费用预留新增均为0；返回与EVO-02纯解析器一致的明确原因，不静默删题或降级能力。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V09"
+    },
+    {
+      "id": "EVO-35",
+      "kind": "positive",
+      "level": "contract",
+      "given": "真实F06事实发布包与F03词表release均匹配；已有可信scoring_only旧recipe/24核心观察。",
+      "when": "调用本仓事实版ScanRecipe解析器。",
+      "then": [
+        "facts_enabled recipe只新增适用事实字段及独立事实预算，旧scoring_only字节/hash/核心分/已答work键不变；事实答数值score不得进入规范输出。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V13"
+    },
+    {
+      "id": "EVO-36",
+      "kind": "negative",
+      "level": "contract",
+      "given": "事实包与路由锁、关系本体或词表release不相容，或分部事实缺segment_id；旧评分版仍有效。",
+      "when": "调用本仓fact-mode解析/历史读取。",
+      "then": [
+        "新事实派发在模型请求前拒绝并报告精确冲突；旧scoring_only仍可读/可继续，不回填伪事实包。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V13"
+    },
+    {
+      "id": "EVO-37",
+      "kind": "positive",
+      "level": "integration",
+      "given": "评分run已有24核心有效观察；事实版只新增3条适用字段，用户模型顺序与费用上限已冻结。",
+      "when": "经StockQA真实公开runner/work/预算/outbox的同一事实执行入口运行。",
+      "then": [
+        "3条事实工作共享原执行/预算/回执链，评分旧题POST数0；事实数值score拒绝、合法事实内部score=null，各记录绑recipe_id/hash。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V14"
+    },
+    {
+      "id": "EVO-38",
+      "kind": "fault",
+      "level": "integration",
+      "given": "事实版一个POST已提交send_intent后超时，另一个事实结果已持久但StockWiki ACK丢失。",
+      "when": "停止、重启并接续StockQA事实运行。",
+      "then": [
+        "不明请求先对账不换模型重发，已答只重投递不重问；费用和attempt不重置，评分版待办不受影响。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V14"
+    },
+    {
+      "id": "EVO-39",
+      "kind": "negative",
+      "level": "contract",
+      "given": "真实旧格式run/work/observation早于ScanRecipe，原执行/身份/题义证据有的齐全、有的缺失。",
+      "when": "经V01历史读取与新派发预检入口解析。",
+      "then": [
+        "旧记录标legacy_without_recipe且不伪造recipe_id；可证明兼容者只读复用，证据不足者needs_review并禁止自动付费重问。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V01"
+    },
+    {
+      "id": "EVO-40",
+      "kind": "fault",
+      "level": "integration",
+      "given": "StockWiki临时数据库副本中存在旧identity revision、无recipe观察和未决attempt/费用行。",
+      "when": "仅运行V09/V10拥有者的迁移/适配器，不启动统一X05入口、不调用provider。",
+      "then": [
+        "无recipe历史仅按可证明证据只读适配；迁移前后回答hash/费用/outbox数量守恒；无法核实的旧行标needs_review；不生成新generation/work/费用预留，POST为0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V10"
+    },
+    {
+      "id": "EVO-41",
+      "kind": "fault",
+      "level": "integration",
+      "given": "StockQA独立临时旧账本包含已答、未决send_intent、费用与outbox，均无recipe_id；StockWiki不参与该用例。",
+      "when": "只调用V09兼容runner和派发预检，并模拟重启。",
+      "then": [
+        "旧已答只读，未决请求先对账，证据不足needs_review且零自动POST；新work才绑定当前recipe，旧attempt/费用/回执不改。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V09"
+    },
+    {
+      "id": "EVO-42",
+      "kind": "positive",
+      "level": "integration",
+      "given": "已有24条有效评分观察；新启用3个适用事实字段且库内尚无这些字段的有效观察，其中两挂牌为同一实体、一个事实关系作用于证券；V13/V14不可变recipe/回执齐全。",
+      "when": "经StockWiki真实缺口、F04/W05导入、查询入口运行事实增量。",
+      "then": [
+        "只建3条适用事实work并按实体/证券作用层归属；事实观察有实际模型、时间、搜索、版本、recipe/hash且score=null；评分旧题POST数0，ACK后消费者可查同一snapshot。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V15"
+    },
+    {
+      "id": "EVO-43",
+      "kind": "fault",
+      "level": "integration",
+      "given": "事实观察已提交StockWiki但ACK丢失，随后recipe或身份revision冲突；另有旧scoring_only和pre-recipe观察。",
+      "when": "重启后重投递同一V14 outbox并尝试导入冲突回执。",
+      "then": [
+        "同一事实观察不重复写也不重问，冲突停写待审；旧原答ID/hash、费用与原有名单不变，未核实关系不进入主题索引。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V15"
+    },
+    {
+      "id": "EVO-44",
+      "kind": "positive",
+      "level": "contract",
+      "given": "一个由唯一owner发布、具有schema/hash/能力/兼容范围的candidate组件release。",
+      "when": "使用公共release envelope校验并生成不可变release lock。",
+      "then": [
+        "release ID、内容hash、owner与组件专属schema全部被锁定；同一recipe仅引用该已登记release，不执行任意插件代码。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V16"
+    },
+    {
+      "id": "EVO-45",
+      "kind": "negative",
+      "level": "contract",
+      "given": "已发布release ID/hash已进入观察或recipe；有人以相同ID替换题义、兼容范围或能力。",
+      "when": "重新校验该组件或加载历史recipe。",
+      "then": [
+        "拒绝同ID内容变化并报告hash冲突；旧观察仍按原包读取，新内容必须用新release ID，不自动转active。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V16"
+    },
+    {
+      "id": "EVO-46",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "本项目真实归档的问题模块发布包早于公共component envelope；历史观察仍引用该包，且另有deprecated/retired release。",
+      "when": "使用归档版本专属reader读取历史包，并分别检查当前候选发布/新recipe是否可用。",
+      "then": [
+        "历史包仅在归档hash与旧schema可核实时按legacy_read_only解释；缺少可验证证据时needs_review。deprecated仅在兼容窗内可用，retired禁止新组合/派发；任何情况都不删除旧观察。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V16"
+    },
+    {
+      "id": "EVO-47",
+      "kind": "negative",
+      "level": "integration",
+      "given": "producer schema或能力高于consumer声明支持范围，兼容校验器只收到release envelope元数据。",
+      "when": "调用公共兼容判定器，分别请求历史读取、新写入和付费派发能力结果。",
+      "then": [
+        "分别返回legacy_read_only、adapter_required或blocked等精确动作状态和原因；兼容声明按producer/consumer精确release及动作查找，并遵守EVO-83的UTC半开时间窗。纯校验器不发HTTP、不写数据库、不把未知映射成分数，真实入口阻断由StockWiki W16/X05/X09验证。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V16"
+    },
+    {
+      "id": "EVO-48",
+      "kind": "positive",
+      "level": "integration",
+      "given": "V10公开快照显示公司既有通用/行业问题均有效，V16/V17收到的新成长模块只增加一个缺失字段。",
+      "when": "V17计算release变化影响集合并生成续扫计划。",
+      "then": [
+        "计划仅将新增问题字段标selected_field_rescan；旧答案、信息时间、实际模型、generation和费用账本不变；本卡不写入/派发。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V17"
+    },
+    {
+      "id": "EVO-49",
+      "kind": "metamorphic",
+      "level": "unit",
+      "given": "同一冻结答案快照和旧派生结果，发布差异只改变评分权重、lens阈值、词表别名或展示列。",
+      "when": "V17比较release依赖图并形成影响plan。",
+      "then": [
+        "只输出对应projection_rebuild及依赖范围；LLM/HTTP POST为0、观察和待办不变；实际派生视图重建由owner消费者卡验收。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V17"
+    },
+    {
+      "id": "EVO-50",
+      "kind": "fault",
+      "level": "integration",
+      "given": "V10真实只读快照中，路由/身份/题义release只影响明确Entity/字段，另有一个已派发旧recipe的work。",
+      "when": "V17经V10读取并生成影响plan，然后只读模拟下游对plan的校验。",
+      "then": [
+        "plan只列可证明受影响的Entity/字段并保留旧work原recipe；V17不创建generation、不改状态、不发送请求，未受影响对象保持no_op。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V17"
+    },
+    {
+      "id": "EVO-51",
+      "kind": "negative",
+      "level": "integration",
+      "given": "同一快照含一条经V01可证明的legacy_without_recipe旧答，以及另一条缺少身份revision/依赖边而无法验证的旧答。",
+      "when": "运行V17版本影响分析。",
+      "then": [
+        "可验证旧答仍只读可复用并返回no_op/适配器结论；证据不足对象单独needs_review/blocked且调用为0，不把全部旧记录一概拦截，也不触发全池重扫。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V17"
+    },
+    {
+      "id": "LLM-13",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "旧版已持久化有限答案、短依据、citation URL、attempt/request/response ID、completed search call ID/status及URL-call归属；原始HTTP/web_search正文未保存。",
+      "when": "使用新解析/标准化release读取并重放该问答。",
+      "then": [
+        "只有最小搜索回执和保存答案足以验证搜索资格/语义时才生成新的派生规范化版本；原answer/observation hash、旧解释和费用不变，模型请求与文件下载均为0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q14"
+    },
+    {
+      "id": "LLM-14",
+      "kind": "negative",
+      "level": "unit",
+      "given": "旧短答案缺少新解析规则要求的来源-call归属或数值期间，且无完整原始响应可回看。",
+      "when": "新解析器尝试重标准化和产生正式分数。",
+      "then": [
+        "保持unknown或needs_review，不补造来源/期间/分数；不得认定搜索合格、访问网络、重问模型或将默认5写入评分。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q14"
+    },
+    {
+      "id": "LLM-15",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "一个批次中的不同问题因顺位fallback使用不同真实provider/model和不同解析器release。",
+      "when": "生成逐题回执与可比较结果。",
+      "then": [
+        "每题保留实际provider/model、解析和答案schema版本、attempt/response ID及search call/source归属；若批次级字段不能无损表示混用则标null/heterogeneous，不能继承首选模型标签或将版本差异说成经营变化。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q14"
+    },
+    {
+      "id": "EVO-52",
+      "kind": "positive",
+      "level": "integration",
+      "given": "旧发布集含scoring_only和legacy_without_recipe历史，新发布集增加解析版本与一个事实关系词表扩展但保留评分题义。",
+      "when": "在隔离临时库执行升级读取与影响计划。",
+      "then": [
+        "旧评分历史按旧release只读可见，解析/词表变化只处理证据足够的派生投影和新增字段；旧题零重问、recipe和身份不被补签或改写。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V18"
+    },
+    {
+      "id": "EVO-53",
+      "kind": "fault",
+      "level": "integration",
+      "given": "临时SQLite升级在复制新release锁后、切换active前发生进程中断。",
+      "when": "重启并检查旧/新release、观察、待办、outbox及费用水位。",
+      "then": [
+        "失败升级保持旧release可读和active；未提交变更回滚到本run临时副本，已发生费用/POST意图不消失，不触发补偿性付费请求。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V18"
+    },
+    {
+      "id": "EVO-54",
+      "kind": "fault",
+      "level": "integration",
+      "given": "新release已局部激活但消费者加载hash或数据库migration版本不符，随后请求回退。",
+      "when": "经公开升级入口执行受控回退和重放。",
+      "then": [
+        "停新写/新派发，原始答案、观察、费用和未决请求保持守恒；回到上一兼容release或明确read-only/needs_review，不反向覆盖历史。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V18"
+    },
+    {
+      "id": "EVO-55",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "冻结样本包含一家处于行业周期低谷但仍有品牌/渠道/成本优势、资金尚可且有可验证恢复条件的公司。",
+      "when": "只升级无关行业模块、provider能力元数据或lens展示版本，并沿时间/模型维度回放。",
+      "then": [
+        "未受影响的持久优势证据、低谷评分、恢复观察资格和旧模型结果均保留；版本变化单列，不能把低分自动清池或误报基本面恶化。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V18"
+    },
+    {
+      "id": "EVO-56",
+      "kind": "positive",
+      "level": "review",
+      "given": "V16—V18/Q14已完成实现、固定样本、升级/回退记录与当前测试结果。",
+      "when": "独立审查者按组件、时间、模型、身份、答案解析、费用及迁移维度逐项复核。",
+      "then": [
+        "核对版本/快照hash、决策边界、公开数据溯源、存储成本、迁移、盲点与回滚；报告问题严重度和大节点放行结论。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V18"
+    },
+    {
+      "id": "EVO-57",
+      "kind": "positive",
+      "level": "integration",
+      "given": "当前StockWiki权威快照与有效V16/V17计划一致，动作是新增一个尚缺的行业/成长问题字段。",
+      "when": "经StockWiki公开缺口/续扫入口应用该plan。",
+      "then": [
+        "单一事务仅新增目标Entity/字段generation/work，旧字段答案、信息时间、模型与费用不变；重放同一plan不重复创建。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-58",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": "同一公司观察只因lens阈值、评分权重、词表别名或展示投影release变化产生projection_rebuild。",
+      "when": "StockWiki通过唯一owner投影入口处理该动作。",
+      "then": [
+        "只更派生视图并保留旧snapshot可读；新增paid work、generation和LLM调用均为0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-59",
+      "kind": "negative",
+      "level": "integration",
+      "given": "V17 plan hash已过期，或身份revision/当前字段generation与plan不符。",
+      "when": "StockWiki公开写入口尝试应用plan。",
+      "then": [
+        "事务前拒绝并返回stale_plan/identity_conflict；数据库行、outbox和模型/HTTP POST计数均不变，不猜测性套用。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-60",
+      "kind": "fault",
+      "level": "fault",
+      "given": "真实临时SQLite在创建字段work与记录plan应用水位之间注入崩溃。",
+      "when": "重启并重放同一V17 plan。",
+      "then": [
+        "事务全回滚或完整提交且幂等恢复；不出现孤儿work/重复generation，不改旧观察/费用/已发送请求；清理仅限本次run登记文件。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-61",
+      "kind": "positive",
+      "level": "integration",
+      "given": "StockWiki W16 owner API/CLI收到一个V16 lock与V17 plan已核实、仅新增单字段的受控请求，并准备为新work签发绑定精确attempt/recipe/active pointer的派发授权。",
+      "when": "在独立临时SQLite中直接调用W16公开新增/续扫入口并请求该work的一次性dispatch fence。",
+      "then": [
+        "owner路径消费同一确定性重算plan，只创建目标新字段generation/work；既有题零重问，字段generation/recipe hash和费用回执可追溯；仅对当前active资格与精确attempt签发短时、单次permit，记录完整绑定字段且重复领取不能签发第二个permit；不访问其他公司或下载文档。X05调用此接口的集成另由后置X09场景验收。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-62",
+      "kind": "fault",
+      "level": "integration",
+      "given": "StockWiki W16 owner入口收到不兼容V16 lock、unknown capability、被篡改/过期的V17 plan，或收到与当前active指针不匹配、过期、已消费/重复消费的dispatch fence请求。",
+      "when": "直接对隔离owner数据库尝试创建新generation/work或重复签发/消费permit。",
+      "then": [
+        "owner入口拒绝无效/重放permit，并停止新generation、新work、费用预留和任何LLM/HTTP POST，显示精确blocked/needs_review原因；合法旧冻结attempt仍按原回执幂等对账，不能把结算误判为新版本放行。统一X05启动行为另由EVO-67验收。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-63",
+      "kind": "race",
+      "level": "integration",
+      "given": "两个真实worker在同一SQLite权威库上同时预检同一V17 plan；屏障确保两者都读到相同identity revision与field generation后再提交，并重复一次在预检后让身份/代次先行变化的排列。",
+      "when": "两个worker并发应用selected_field_rescan。",
+      "then": [
+        "使用同一事务内CAS重验及唯一generation/work键；相同plan最多产生一个generation和一个work，败方为幂等已有结果或精确stale/conflict。预检后身份/代次变化时旧plan不得提交；无重复费用预留、outbox或HTTP POST。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-64",
+      "kind": "negative",
+      "level": "contract",
+      "given": "候选release_set漏掉Q14解析器/答案schema/证据解释hash，或将已声明hash改成与候选工件内容不符。",
+      "when": "生成候选release_set并运行纯工件校验。",
+      "then": [
+        "缺项、声明hash与候选工件内容不符或重复release ID时拒绝候选；候选只包含Q14 schema/parser/evidence解释release ID/hash；不核验实际安装/运行hash、不触发安装或模型/HTTP调用。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X07"
+    },
+    {
+      "id": "EVO-65",
+      "kind": "fault",
+      "level": "integration",
+      "given": "旧recipe已有provider已答的attempt与未ACK outbox；W16 owner入口收到缺失/不兼容的新V16 lock或失效V17 plan。",
+      "when": "在临时owner库中分别请求结算旧outbox与应用新版本plan。",
+      "then": [
+        "W16允许原冻结receipt安全、幂等结算旧attempt，但拒绝新generation/work/费用预留/HTTP POST；旧答案和费用不覆写。只允许旧账本结算所需的行变化；X05恢复时先后顺序由EVO-67另验。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-66",
+      "kind": "negative",
+      "level": "integration",
+      "given": "调用方提交一个自洽重算过plan hash的伪造plan，把V17预期no_op改为selected_field_rescan，或将少量受影响对象扩大为全池；其身份revision与当前水位看似匹配。",
+      "when": "直接通过StockWiki W16 owner公开入口应用计划。",
+      "then": [
+        "W16以已安装且hash匹配的固定V17实现和当前权威快照确定性重算完整计划，拒绝调用方自带plan/hash与伪造范围；不接受本计划未定义的签名回执作为替代信任根。新generation/work/费用预留/HTTP POST均为0，返回plan_provenance_invalid或scope_mismatch。通过X05触发的同类场景由后置X09覆盖。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-67",
+      "kind": "fault",
+      "level": "integration",
+      "given": "X05统一启动/恢复入口有旧冻结recipe下provider已答未ACK的attempt，当前候选V16/V17不兼容或缺失。",
+      "when": "通过UI和CLI各自触发一次恢复及新版本续扫。",
+      "then": [
+        "两入口先调用W16/StockQA公开账本接口，按旧receipt幂等导入并ACK旧结果，再阻止新generation/work/费用预留/HTTP POST；旧答案和费用未变，失败状态可解释，重试不重复结算。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X05",
+        "W16",
+        "Q15"
+      ]
+    },
+    {
+      "id": "EVO-68",
+      "kind": "negative",
+      "level": "integration",
+      "given": "X07候选release_set已锁StockQA parser/schema/evidence hash；隔离安装目录含匹配版本，以及逐项篡改一个实际安装hash的两个安装排列。",
+      "when": "X08通过真实拥有者安装接口部署并核对实际组件文件与宿主加载位置。",
+      "then": [
+        "全匹配时才记录installed且hash逐项相同；任一差异使安装组合不可active并阻止付费start，不覆盖用户配置/库，HTTP与模型调用均为0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X08"
+    },
+    {
+      "id": "EVO-69",
+      "kind": "positive",
+      "level": "integration",
+      "given": "X08已安装且所有parser/schema/evidence hash匹配的release_set；临时StockWiki库中有一个只缺新模块字段的公司。",
+      "when": "X09经已安装X05真实公共入口续扫，由真实StockQA parser处理受控答案（仅模型HTTP边界stub）。",
+      "then": [
+        "实际加载hash、ScanRecipe、work及逐题answer receipt相互匹配；只新增目标字段，不重问旧题、不下载公司文档；界面与查询读取同一已导入观察。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X09"
+    },
+    {
+      "id": "EVO-70",
+      "kind": "race",
+      "level": "integration",
+      "given": "两路UI/CLI同时对同一workspace/profile启动相同X05 run及同一V17 plan；测试屏障确保均完成进程检查、recipe及W16 plan预检后再继续。",
+      "when": "经安装后的X05入口并发开始/续扫，并在一个排列中于预检后更新身份revision。",
+      "then": [
+        "其中一路创建或附着同一run，另一条幂等附着/返回精确冲突；最多一个generation/work/费用预留/outbox/HTTP POST。身份revision先变时旧plan被拒绝，不存在重复worker/重复付费或全池扩扫。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X09"
+    },
+    {
+      "id": "EVO-71",
+      "kind": "negative",
+      "level": "integration",
+      "given": "攻击/缺陷注入把V17 plan的no_op改为selected_field_rescan或把一家公司扩大成全池，同时重新计算一个与伪造内容自洽的plan hash。",
+      "when": "用户通过已安装X05的UI和CLI分别发起新扫，W16按当前可信组件与权威快照验证请求。",
+      "then": [
+        "两条公开路径均无法绕过W16来源验证；拒绝并指出provenance/scope错误，新generation/work/费用预留/outbox/HTTP POST全为0，未受影响公司保持no_op。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X09"
+    },
+    {
+      "id": "SC-14",
+      "kind": "negative",
+      "level": "unit",
+      "given": "真实SearchResult经AnswerGenerator处理时，内部答案状态为unknown/score=null，外层兼容字段却带有5分。",
+      "when": "调用Q01本地解析与生成入口。",
+      "then": [
+        "输出仍为unknown/score=null；不得用外层5分覆盖未知态；无CLI、数据库、网络或模型调用。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q01"
+    },
+    {
+      "id": "LLM-16",
+      "kind": "negative",
+      "level": "unit",
+      "given": "StockQA模型输出中夹带source_manifest、formal_profile、审核通过等声称由权威系统生成的字段。",
+      "when": "调用Q05公开的有限答案序列化边界。",
+      "then": [
+        "仅保留允许的答案/短依据字段；伪造权威字段不成为可信证据，不触发跨仓写入。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q05"
+    },
+    {
+      "id": "ID-07",
+      "kind": "positive",
+      "level": "integration",
+      "given": "空的真实临时SQLite工作区，无company-wiki公司目录，输入已核实Entity/Security引用。",
+      "when": "调用W01身份存储迁移和导入公开入口。",
+      "then": [
+        "身份可保存并查询；company_wiki_ref保持可空；不创建目录、不下载公司文档。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W01"
+    },
+    {
+      "id": "DB-08",
+      "kind": "negative",
+      "level": "integration",
+      "given": "迁移后的临时StockWiki数据库没有company-wiki内容或财报文件。",
+      "when": "执行W01初始化/迁移，再检查实际文件和表记录。",
+      "then": [
+        "只建立快扫自身轻量schema与可空引用；不得生成正式company-wiki工件、镜像文档或隐式下载。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W01"
+    },
+    {
+      "id": "UNI-08",
+      "kind": "negative",
+      "level": "unit",
+      "given": "成员低分、manual_pin、用户排除和历史成员状态同时存在。",
+      "when": "调用W03成员版本更新/解释逻辑，不运行自动提名。",
+      "then": [
+        "低分本身不移除成员；manual_pin与用户排除保持优先级；提名/LLM调用数为0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W03"
+    },
+    {
+      "id": "UI-13",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "临时查询快照中同一Entity有多地挂牌、别名和缺失详情字段。",
+      "when": "渲染U01公司列表并检查链接和返回状态。",
+      "then": [
+        "别名按Entity去重；链接稳定指向canonical entity_id并保留返回上下文；不假设详情页已实现，不调用模型或下载。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "U01"
+    },
+    {
+      "id": "MOD-14",
+      "kind": "negative",
+      "level": "contract",
+      "given": "纯fixture分别构造registry与完整归档release：包括重复module ID、错误归档字节hash、所有归档字节/hash与release_id均自洽但模块依赖成环、未知/自引用依赖、同一模块同时声明依赖和冲突、活动question ID与模块级/发布级retired tombstone冲突，以及发布锁遗漏模块级退役墓碑。",
+      "when": "分别调用S04的validate_registry和validate_release公开纯校验入口；针对语义攻击重算release_id并提供哈希正确的归档字节，确保命中依赖图校验而不是更早的hash错误。",
+      "then": [
+        "两个入口都拒绝各自不合法的声明；validate_release在加载并逐个核验全部归档后，还必须验证模块依赖闭包和无环图，不能只因release_id与artifact SHA自洽就接受。发布目录允许同时包含互斥备选，但选中组合的冲突由MOD-18验证。错误必须在任何运行/模型调用前出现；不读取StockWiki观察、不返回部分有效包，也不回退到当前catalog解释历史。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S04",
+      "assertions": [
+        {
+          "id": "MOD-14.A01",
+          "entrypoint": "validate_registry",
+          "expected": "重复module ID在注册入口拒绝。"
+        },
+        {
+          "id": "MOD-14.A02",
+          "entrypoint": "validate_registry",
+          "expected": "未知依赖、自依赖/自冲突、同目标依赖与冲突矛盾、依赖环均各自拒绝。"
+        },
+        {
+          "id": "MOD-14.A03",
+          "entrypoint": "validate_release",
+          "expected": "重复module ID与归档字节SHA不匹配分别拒绝。"
+        },
+        {
+          "id": "MOD-14.A04",
+          "entrypoint": "validate_release",
+          "expected": "所有artifact SHA与release_id均正确的依赖循环仍拒绝。"
+        },
+        {
+          "id": "MOD-14.A05",
+          "entrypoint": "validate_release",
+          "expected": "未知依赖、自依赖/自冲突及同目标依赖/冲突矛盾分别拒绝。"
+        },
+        {
+          "id": "MOD-14.A06",
+          "entrypoint": "validate_release",
+          "expected": "活动question ID撞模块级retired tombstone拒绝。"
+        },
+        {
+          "id": "MOD-14.A07",
+          "entrypoint": "validate_release",
+          "expected": "活动question ID撞发布级retired tombstone拒绝。"
+        },
+        {
+          "id": "MOD-14.A08",
+          "entrypoint": "validate_release",
+          "expected": "发布锁遗漏归档模块级退役墓碑拒绝。"
+        },
+        {
+          "id": "MOD-14.A09",
+          "entrypoint": "validate_release",
+          "expected": "通过校验后一次性返回完整包，绝不返回部分结果或回退当前catalog。"
+        },
+        {
+          "id": "MOD-14.A10",
+          "entrypoint": "validate_release",
+          "expected": "互相conflict的替代模块可同时存在于完整release目录。"
+        }
+      ]
+    },
+    {
+      "id": "MOD-15",
+      "kind": "negative",
+      "level": "unit",
+      "given": "S05本地模块注册表缺少一个必需module release或scoring context。",
+      "when": "调用模块compose/export纯本地入口。",
+      "then": [
+        "输出needs_review/blocked及缺失模块原因；不静默删题、不调用LLM、不访问StockWiki。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S05"
+    },
+    {
+      "id": "MOD-16",
+      "kind": "boundary",
+      "level": "unit",
+      "given": "S05实际历史reader输入包括可信旧归档、其哈希正确但模块依赖成环的伪造release、依赖引用缺失的包和hash篡改副本；均不含StockWiki观察。",
+      "when": "调用S05归档reader解析并组合旧module版本。",
+      "then": [
+        "可信且依赖闭合/无环的旧包按锁定schema只读解析；内容hash自洽不能绕过依赖闭包、缺引用或循环校验；篡改或结构无效包拒绝；不回退当前catalog、不将其升级为active release或查询公司数据。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S05",
+      "assertions": [
+        {
+          "id": "MOD-16.A01",
+          "entrypoint": "S05 historical package reader",
+          "expected": "可信、闭合且无环的历史发布按其锁定schema只读解析。"
+        },
+        {
+          "id": "MOD-16.A02",
+          "entrypoint": "S05 historical package reader",
+          "expected": "自洽hash的环/缺依赖/篡改归档分别拒绝。"
+        },
+        {
+          "id": "MOD-16.A03",
+          "entrypoint": "S05 historical package reader",
+          "expected": "失败时不回退当前catalog、不升active、不查询观察或派发。"
+        }
+      ]
+    },
+    {
+      "id": "PAR-09",
+      "kind": "fault",
+      "level": "integration",
+      "given": "Q07持久任务有预算预留；提供商请求结果不明，随后收到迟到回执。",
+      "when": "通过真实临时存储运行Q07恢复逻辑。",
+      "then": [
+        "不并行或盲目重复POST；预算不双重预留/结算；迟到回执只幂等结算原attempt。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q07"
+    },
+    {
+      "id": "PAR-10",
+      "kind": "fault",
+      "level": "integration",
+      "given": "真实临时outbox已有send-intent且结果不明，重启后收到格式正确但package/item/hash不匹配的假ACK。",
+      "when": "调用Q10恢复与ACK核验。",
+      "then": [
+        "拒绝假ACK并保持outbox结果不明；不自动重POST、不创建第二次模型请求、不覆盖原观察；仅精确ACK或权威对账可结束不确定态。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q10"
+    },
+    {
+      "id": "MATRIX-09",
+      "kind": "boundary",
+      "level": "unit",
+      "given": "Q11比较请求包含两个模型的独立子任务、各自预算上限与待执行标记。",
+      "when": "调用Q11本地comparison计划生成。",
+      "then": [
+        "产生可分别追踪的子任务和预算，不查询StockWiki，不混用答案/费用回执。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q11"
+    },
+    {
+      "id": "MATRIX-10",
+      "kind": "negative",
+      "level": "unit",
+      "given": "备用模型接管一次失败请求，但没有同题同期间的独立对照答案。",
+      "when": "调用Q11 comparison标记与结果聚合。",
+      "then": [
+        "结果标为fallback而非comparison；不生成模型差异结论或伪造对照。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q11"
+    },
+    {
+      "id": "CONS-06",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "主题研究请求遇到现有F05查询能力缺失、未知产业词和部分覆盖。",
+      "when": "T01只通过当前已声明StockWiki查询协议请求数据。",
+      "then": [
+        "返回候选/缺口与unavailable状态；不伪称已支持V11版本协商、不以空列表代表完整覆盖。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "T01"
+    },
+    {
+      "id": "CONS-07",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "行业研究请求遇到现有F05查询能力缺失、未知产业词和部分覆盖。",
+      "when": "T02只通过当前已声明StockWiki查询协议请求数据。",
+      "then": [
+        "返回候选/缺口与unavailable状态；不伪称已支持V11版本协商、不以空列表代表完整覆盖。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "T02"
+    },
+    {
+      "id": "FACT-06",
+      "kind": "negative",
+      "level": "contract",
+      "given": "仅有本地questions/facts.json与模块元数据，没有StockQA或StockWiki运行服务。",
+      "when": "F01校验并导出61题事实题库。",
+      "then": [
+        "稳定题目/字段ID、适用范围和unknown语义均可验证；分数字段不出现；不宣称事实链路或查询已接通。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "F01"
+    },
+    {
+      "id": "FACT-07",
+      "kind": "negative",
+      "level": "integration",
+      "given": "真实临时StockWiki库收到一个角色/方向/时期冲突且来源缺失的事实候选。",
+      "when": "调用F04实际导入边界，不调用F05查询。",
+      "then": [
+        "事实不可覆盖旧记录；冲突保留为needs_review且带来源缺口；不声称查询端已支持该记录。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "F04"
+    },
+    {
+      "id": "DUR-04",
+      "kind": "negative",
+      "level": "unit",
+      "given": "S03旧题有已保存答案和1—10分，新版本改变了题义或锚点。",
+      "when": "调用本地question/rubric manifest升级校验。",
+      "then": [
+        "旧题义/分数不被原位重解释；需新题ID或显式supersedes；不调用StockWiki刷新调度。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S03"
+    },
+    {
+      "id": "TIME-09",
+      "kind": "negative",
+      "level": "contract",
+      "given": "C04纯reference work_contract.py收到虚构公司的多字段观察状态与固定UTC时钟；其中有fresh、过期和缺少有效日期的字段。",
+      "when": "调用field_freshness_preview生成本地字段时效预览。",
+      "then": [
+        "每个字段独立返回确定的fresh/stale/missing_date状态及刷新缺口；相同输入和时钟重复运行输出相同。",
+        "输入观察不被修改，dispatch_started始终为false；不写数据库、不发送HTTP/LLM，并明确该预览不替代W06实际调度验收。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C04"
+    },
+    {
+      "id": "EVO-72",
+      "kind": "fault",
+      "level": "integration",
+      "given": "隔离工作区中有300条legacy_without_recipe已完成记录、7条send_intent/未ACK旧attempt，其中含可对账与needs_review样本。",
+      "when": "从已安装X05公开入口恢复后启动一次新扫描。",
+      "then": [
+        "旧回答hash/费用不变；可证实旧请求先幂等结算；不确定项needs_review且不重发；新扫描只使用active ReleaseSet；记录每类POST/费用/ACK计数。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X05",
+        "W16",
+        "Q15"
+      ]
+    },
+    {
+      "id": "EVO-73",
+      "kind": "negative",
+      "level": "contract",
+      "given": "W16收到candidate ReleaseSet、V17固定实现和权威只读快照。",
+      "when": "仅请求影响计划预览，再尝试应用该candidate。",
+      "then": [
+        "纯预览可返回确定plan；应用被拒绝；数据库无generation/work/费用预留/outbox/HTTP POST变化。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-74",
+      "kind": "negative",
+      "level": "integration",
+      "given": "X05 public CLI/UI启动请求绑定candidate而非active ReleaseSet。",
+      "when": "经统一启动入口请求新扫描。",
+      "then": [
+        "明确提示candidate仅可预览/测试；生产库不创建run generation/work/费用预留，不调用StockQA或网络。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X05",
+        "X07"
+      ]
+    },
+    {
+      "id": "EVO-75",
+      "kind": "race",
+      "level": "integration",
+      "given": "W16完成预检后，active ReleaseSet ID、manifest hash或active pointer revision任一项改变。",
+      "when": "屏障控制下继续应用原plan。",
+      "then": [
+        "同一事务CAS检测完整release指针/哈希/状态及身份、成员、字段代次不匹配并回滚；不创建generation/work/费用预留/outbox/HTTP POST。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16"
+    },
+    {
+      "id": "EVO-76",
+      "kind": "race",
+      "level": "integration",
+      "given": "覆盖四种持久状态：StockQA已领取lease但尚未取得permit；W16已签发permit但send_intent_prepared未耐久；send_intent_prepared已耐久但W16 consume_dispatch_permit未提交；W16已返回耐久dispatch_commit但provider尚未开始或已开始而响应未知。分别在组件资格变化/进程崩溃屏障发生。",
+      "when": "执行permit签发、StockQA本地准备、W16单次consume与provider传输的两阶段围栏，并从持久状态恢复。",
+      "then": [
+        "lease/permit未消费或资格在consume前改变：POST为0；已签发permit不能在重启后复用，需按当前资格重新申请。",
+        "本地send_intent_prepared不是充分授权；W16 consume_dispatch_permit必须在同一owner事务复核active pointer、组件资格revision、work范围并记录唯一dispatch_commit receipt。",
+        "资格退役发生在dispatch_commit后，只允许已承诺的那一次POST；consume后崩溃且无法证明未发送时标为outcome_unknown，禁止重放/新attempt；所有旧结果按原recipe结算。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q15",
+      "requires_tasks": [
+        "W16"
+      ]
+    },
+    {
+      "id": "EVO-77",
+      "kind": "boundary",
+      "level": "contract",
+      "given": "已有candidate/active/rollback候选ReleaseSet，部分component release处于deprecated或retired；active指针切换本身不应自动改变未被显式退役的组件release状态。",
+      "when": "执行V16生命周期与active pointer静态迁移校验。",
+      "then": [
+        "component状态只追加事件、不因ReleaseSet指针切换而自动变化且不改旧工件；ReleaseSet active pointer按workspace/profile原子切换；回退仅可指向仍获新派发资格的兼容包，退役/过窗包只读并阻断新work。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V16"
+    },
+    {
+      "id": "EVO-78",
+      "kind": "fault",
+      "level": "integration",
+      "given": "隔离临时库先激活已验证ReleaseSet A，再候选/安装并切换到B；切换未自动改变A的component lifecycle，A仍有冻结旧attempt。",
+      "when": "切换到B后触发受控回退到A并恢复任务。",
+      "then": [
+        "只有仍满足资格且回执齐备的A可重新成为active指针；旧attempt按A原receipt幂等结算；新work在指针稳定后使用A，任何阶段不重复费用/POST或覆写观察；若A已被显式deprecated/retired，则回退只读并阻断新work。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V18",
+      "requires_tasks": [
+        "X09",
+        "W16",
+        "Q15"
+      ]
+    },
+    {
+      "id": "LLM-17",
+      "kind": "negative",
+      "level": "integration",
+      "given": "StockQA拿到与其他work、过期active pointer或candidate ReleaseSet绑定的dispatch fence。",
+      "when": "调用Q15真实POST前置检验。",
+      "then": [
+        "拒绝授权并保留准确blocked/needs_review；provider POST、费用预留和新attempt发送均为0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q15"
+    },
+    {
+      "id": "SC-15",
+      "kind": "negative",
+      "level": "contract",
+      "given": "构造包含24核心题、未知值和显式诊断分的评分输入。",
+      "when": "执行C02定义的核心指标映射与聚合契约。",
+      "then": [
+        "未知不进入有效分母；诊断分不进入质量/成长汇总；关键风险项仍独立保留。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C02"
+    },
+    {
+      "id": "SC-16",
+      "kind": "negative",
+      "level": "contract",
+      "given": "旧兼容传输包含legacy_transport_score，新ParsedAnswer使用当前score.schema的status与nullable score。",
+      "when": "只验证C03冻结的ParsedAnswer schema与公开结构校验函数；不调用LLM parser或筛选规则引擎。",
+      "then": [
+        "unknown、not_applicable、insufficient_evidence和error均保持各自status且正式score为null；legacy_transport_score不能覆盖正式score。",
+        "显式低分仍表示scored且保留数值，与unknown/N/A/错误状态不同；本用例不测试LLM parser或规则引擎。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C03"
+    },
+    {
+      "id": "TIME-10",
+      "kind": "fault",
+      "level": "integration",
+      "given": "隔离临时SQLite中一个字段仍新鲜、一个字段已过期、一个字段为unknown冷却；所有时钟固定。",
+      "when": "通过W06公开刷新计划入口生成一次refresh plan。",
+      "then": [
+        "只生成受影响字段/模块缺口；新鲜字段0个新work，unknown按冷却策略保留；不发HTTP/LLM；刷新计划可幂等重算且不改旧观察。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W06",
+      "requires_tasks": [
+        "W05",
+        "C04"
+      ]
+    },
+    {
+      "id": "MOD-17",
+      "kind": "negative",
+      "level": "unit",
+      "given": "可信基线包含一个确切module_id+artifact_sha256的历史模块，其旧schema未提供dependencies/conflicts；候选链分别包含原样保留该旧字节的合法release，以及新增或改写但缺生命周期/依赖元数据的模块、调用方自报legacy_ids/legacy标记、基线未知的归档。",
+      "when": "通过S05 registry/package读取入口解析旧包并封装候选增量。",
+      "then": [
+        "可信基线中精确匹配的旧字节可以仅为历史读取而把缺失的可选依赖/冲突字段规范化为空集合；新模块/新字节必须显式给出必需元数据，不能由调用方、LLM或自签manifest声明为legacy。基线未知/链断裂时needs_review或blocked；旧manifest按原版本可读，候选不改旧题义/观察且不触发派发。本用例不验证S06的最终选择闭包。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S05",
+      "requires_tasks": [
+        "S04"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-17.A01",
+          "entrypoint": "S05 trusted legacy adapter",
+          "expected": "精确module_id+原始artifact_sha256命中可信基线时仅只读适配缺失的可选字段。"
+        },
+        {
+          "id": "MOD-17.A02",
+          "entrypoint": "S05 trusted legacy adapter",
+          "expected": "保持module_id但改写字节、重算全部自洽hash且省略字段时拒绝legacy豁免。"
+        },
+        {
+          "id": "MOD-17.A03",
+          "entrypoint": "S05 trusted legacy adapter",
+          "expected": "自报legacy、未知基线或断裂历史链得到needs_review/blocked。"
+        },
+        {
+          "id": "MOD-17.A04",
+          "entrypoint": "S05 package/export entry",
+          "expected": "旧manifest不重释，新候选不改旧观察、不派发。"
+        }
+      ]
+    },
+    {
+      "id": "MOD-18",
+      "kind": "boundary",
+      "level": "unit",
+      "given": "已验证发布目录含common、一个依赖两层基础模块的半导体扩展，以及可共存于目录但互斥的替代模块；另有依赖缺失、依赖被拒绝/未决、传递依赖环和选中冲突对的独立fixture。",
+      "when": "S06按route decision对选中模块执行问卷拼装。",
+      "then": [
+        "拼装确定性展开全部传递dependencies并按固定顺序/问题ID去重；已选模块的依赖不完整、依赖状态不确定或依赖闭包出现冲突时返回needs_review/blocked，任何LLM派发为0；选中冲突对在付费前拒绝。互斥备选共存在目录合法；模块声明顺序变化不改变闭包、题目列表或hash。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S06",
+      "requires_tasks": [
+        "S05"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-18.A01",
+          "entrypoint": "S06 composition resolver",
+          "expected": "依赖递归闭包确定、去重且顺序规范化；多层依赖全部出现。"
+        },
+        {
+          "id": "MOD-18.A02",
+          "entrypoint": "S06 composition resolver",
+          "expected": "缺失、rejected/uncertain依赖和传递依赖环各自needs_review/blocked。"
+        },
+        {
+          "id": "MOD-18.A03",
+          "entrypoint": "S06 composition resolver",
+          "expected": "已选冲突按无向语义阻断；目录内互斥候选共存本身通过。"
+        },
+        {
+          "id": "MOD-18.A04",
+          "entrypoint": "S06 composition resolver",
+          "expected": "模块声明顺序变化不改变组合ID/hash或问题顺序。"
+        },
+        {
+          "id": "MOD-18.A05",
+          "entrypoint": "S06 dispatch boundary",
+          "expected": "每个不合法组合在LLM派发前失败，模型请求数为0。"
+        }
+      ]
+    },
+    {
+      "id": "PAR-11",
+      "kind": "boundary",
+      "level": "unit",
+      "given": {
+        "order": [
+          "A",
+          "B"
+        ],
+        "A_capacity": 1,
+        "A_in_flight": 1,
+        "A_health": "healthy",
+        "B_in_flight": 0
+      },
+      "when": "将一个逻辑题交给Q04顺位决策器。",
+      "then": [
+        "只等待A的并发槽；不得向B fallback、不得创建比较请求；释放A槽后继续A。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q04",
+      "requires_tasks": [
+        "Q03",
+        "C05"
+      ]
+    },
+    {
+      "id": "PAR-12",
+      "kind": "race",
+      "level": "integration",
+      "given": "两个worker同时领取同一entity、field generation、question pack和逻辑work key。",
+      "when": "使用Q06真实临时持久队列与同步屏障并发claim。",
+      "then": [
+        "最多一个有效lease/claim token；重复claim返回同一逻辑work而不创建第二条待办；本用例不覆盖UI重复点击及HTTP发送。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q06",
+      "requires_tasks": [
+        "C04",
+        "G2"
+      ]
+    },
+    {
+      "id": "PAR-13",
+      "kind": "fault",
+      "level": "integration",
+      "given": "Q08账本中A账户组处于持久冷却，另有待处理逻辑题；进程重启且固定时钟未到恢复点。",
+      "when": "从Q08公开恢复/route资格入口重启调度。",
+      "then": [
+        "冷却跨进程保留，A组新POST为0；未知恢复点只产生有界探测时间；不重置共享预算、不创建重复attempt。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q08",
+      "requires_tasks": [
+        "Q04",
+        "Q06"
+      ]
+    },
+    {
+      "id": "LLM-18",
+      "kind": "negative",
+      "level": "unit",
+      "given": "合法外层JSON包含重复question_id，两个对象分数冲突；另构造Markdown代码块内相同反例。",
+      "when": "通过Q03 direct与Markdown兼容解析入口各解析一次。",
+      "then": [
+        "两条路径均拒绝重复ID并fail closed；不得采用最后一个对象、metadata或外层分数伪造成功分。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q03",
+      "requires_tasks": [
+        "Q01",
+        "Q02"
+      ]
+    },
+    {
+      "id": "JOB-09",
+      "kind": "fault",
+      "level": "integration",
+      "given": {
+        "budget": 10,
+        "spent": 8,
+        "next_reserve": 3,
+        "in_flight": 1
+      },
+      "when": "通过Q09 owner预算/并发入口准备一次备用请求预留。",
+      "then": [
+        "新预留被原子拒绝；正在运行请求仍可结算；后续新派发为0；失败和结果不明的既有占用保持账本守恒。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q09",
+      "requires_tasks": [
+        "Q06",
+        "C05"
+      ]
+    },
+    {
+      "id": "JOB-10",
+      "kind": "negative",
+      "level": "integration",
+      "given": "同一Q06逻辑work的旧lease已过期，新worker领取了更高epoch/token。",
+      "when": "旧worker在恢复后尝试写回状态和答案。",
+      "then": [
+        "拒绝旧token写入；新lease与待办历史不被覆盖；不能仅凭lease过期认定外部请求未发送。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q06",
+      "requires_tasks": [
+        "C04"
+      ]
+    },
+    {
+      "id": "BUD-05",
+      "kind": "negative",
+      "level": "unit",
+      "given": "primary出现明确可重试失败；预算owner返回“备用请求预留被拒绝”。",
+      "when": "调用Q08持久重试/fallback状态机。",
+      "then": [
+        "进入budget_deferred或冻结策略定义的终态；备用POST为0；不绕过Q09预留，也不把拒绝伪装成模型故障。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q08",
+      "requires_tasks": [
+        "Q04",
+        "Q06"
+      ]
+    },
+    {
+      "id": "FACT-08",
+      "kind": "negative",
+      "level": "contract",
+      "given": "StockQA生成事实答案时有设备/材料关系但模型省略来源或试图填入数值score。",
+      "when": "仅调用F02 facts response解析/规范化入口。",
+      "then": [
+        "缺来源的确认关系不通过；事实答案score固定为null；不写StockWiki、不导出公司文档，也不影响评分问答。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "F02",
+      "requires_tasks": [
+        "F01",
+        "Q10",
+        "F06",
+        "V13"
+      ]
+    },
+    {
+      "id": "FACT-09",
+      "kind": "negative",
+      "level": "contract",
+      "given": "术语词表有一个唯一别名和一个同时映射两个canonical值的歧义短词。",
+      "when": "通过F03版本化术语解析入口归一化两个输入。",
+      "then": [
+        "唯一别名按锁定版本映射；歧义词标unknown/needs_review，不自行选客户/供应商关系；词表升级保留旧release可读。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "F03",
+      "requires_tasks": [
+        "C06",
+        "V03"
+      ]
+    },
+    {
+      "id": "QUERY-10",
+      "kind": "negative",
+      "level": "integration",
+      "given": "事实查询无命中、字段覆盖未启用、或实体地区不在数据库覆盖范围。",
+      "when": "通过F05 strict/explore关系检索分别查询。",
+      "then": [
+        "区分empty、coverage_gap与unknown；严格模式不把推断升级为已确认关系；不得宣称全市场不存在。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "F05",
+      "requires_tasks": [
+        "F03",
+        "F04",
+        "W09",
+        "V07"
+      ]
+    },
+    {
+      "id": "QUERY-11",
+      "kind": "negative",
+      "level": "integration",
+      "given": "股票池UI查询无命中，且请求字段在当前数据库中未启用。",
+      "when": "通过O05公开名单/筛选查询返回列表结果。",
+      "then": [
+        "同时返回结果为空与coverage/能力状态；不得把空列表显示为公司/行业不存在；保留可继续缩小范围的条件。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "O05",
+      "requires_tasks": [
+        "O04",
+        "W09",
+        "W11",
+        "U02",
+        "V08"
+      ]
+    },
+    {
+      "id": "UI-14",
+      "kind": "negative",
+      "level": "integration",
+      "given": "评分结果已存在且facts能力未启用，用户打开评分详情并点击查看上下游信息。",
+      "when": "通过U02评分详情页面和结果API浏览。",
+      "then": [
+        "评分、依据、来源与恢复标记可读；事实页显示明确unavailable且不编造关系；纯浏览模型/搜索调用为0。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "U02",
+      "requires_tasks": [
+        "U01"
+      ]
+    },
+    {
+      "id": "MAINT-07",
+      "kind": "race",
+      "level": "integration",
+      "given": "两个维护进程收到同一已核实证券来源行的重复nomination；成员仍为candidate。",
+      "when": "通过W13持久membership owner入口并发apply nomination。",
+      "then": [
+        "候选/成员/增量意图各最多创建一次；保留来源归属和审核状态；低分或歧义身份不能自动准入。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W13",
+      "requires_tasks": [
+        "W03",
+        "W04",
+        "C01"
+      ]
+    },
+    {
+      "id": "START-13",
+      "kind": "fault",
+      "level": "integration",
+      "given": "StockQA服务未配置模型密钥，且有现成只读答案；公开执行服务进程已启动。",
+      "when": "只调用X01 capability/health/lifecycle API。",
+      "then": [
+        "返回准确的缺配置能力和已存结果可读状态；不启动浏览器、不改设置、不发模型请求；进程健康不得冒充provider ready。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X01",
+      "requires_tasks": [
+        "C07",
+        "Q10",
+        "Q08",
+        "Q09"
+      ]
+    },
+    {
+      "id": "START-14",
+      "kind": "negative",
+      "level": "integration",
+      "given": "用户提交含重复模型、未知共享组、占位密钥的策略；网络探针未授权。",
+      "when": "通过X03配置导入/校验API提交一次。",
+      "then": [
+        "完整拒绝且不部分覆盖当前policy；响应不得回显密钥；不发HTTP/模型探针；配置owner仍为StockQA。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X03",
+      "requires_tasks": [
+        "X01",
+        "Q04",
+        "Q09",
+        "C07"
+      ]
+    },
+    {
+      "id": "START-15",
+      "kind": "negative",
+      "level": "integration",
+      "given": "设置页面编辑名单、预算引用、自动准入范围和模型顺序模板。",
+      "when": "通过X04首次设置UI保存扫描profile。",
+      "then": [
+        "只持久化StockWiki拥有的profile字段；模型policy经StockQA公开接口写入并显示版本；校验失败时不触发start或收费请求。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X04",
+      "requires_tasks": [
+        "X02",
+        "X03",
+        "W03",
+        "W09",
+        "C07"
+      ]
+    },
+    {
+      "id": "DEPLOY-09",
+      "kind": "boundary",
+      "level": "unit",
+      "given": "快捷方式安装根目录包含中文与空格，当前工作目录、PID和端口均属于无关进程。",
+      "when": "通过X06生成/解析快捷方式目标和启动参数。",
+      "then": [
+        "参数以结构化参数传递，路径不截断、不依赖当前cwd；不按端口/PID误杀无关进程；本地fixture不执行真实安装。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X06",
+      "requires_tasks": [
+        "X05",
+        "X04",
+        "C07",
+        "O05"
+      ]
+    },
+    {
+      "id": "EVO-79",
+      "kind": "race",
+      "level": "integration",
+      "given": "W16预检读取active ReleaseSet指针P及组件资格revision r；随后该组件在指针保持P不变时被显式retired/deprecated。",
+      "when": "在应用事务前使用双worker屏障更新组件生命周期，再提交旧V17影响计划。",
+      "then": [
+        "CAS必须核对精确组件集合及资格revision/hash并失败；generation/work/费用预留/outbox/StockQA POST均为0；不得仅因active指针未变就允许新派发。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W16",
+      "requires_tasks": [
+        "V16",
+        "V17",
+        "V10",
+        "W15",
+        "W12"
+      ]
+    },
+    {
+      "id": "EVO-80",
+      "kind": "race",
+      "level": "integration",
+      "given": "隔离临时workspace中，X09 public start预检后active ReleaseSet指针不变，但组件资格revision已被并发退役。",
+      "when": "从已安装public UI和CLI分别提交新扫描。",
+      "then": [
+        "两入口都经W16 owner CAS及permit consume资格复核；若资格revision在consume前变化，拒绝新generation/work/费用/dispatch_commit/POST；无旁路。",
+        "已提交dispatch_commit后发生退役只允许该attempt单次POST/结算，不产生后续attempt；已发旧attempt仍按冻结receipt安全结算。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "X05",
+        "W16",
+        "Q15",
+        "X06",
+        "X08"
+      ]
+    },
+    {
+      "id": "EVO-81",
+      "kind": "race",
+      "level": "integration",
+      "given": "同一work被两个worker重复claim；首个attempt取得有效permit并耐久写入send_intent_prepared；W16 consume回执分别返回成功/冲突；另有明确未发送终态、已确认retryable provider拒绝、outcome_unknown及伪造attempt_id。",
+      "when": "通过Q15真实attempt/outbox事务依序claim、消费permit、settle费用并尝试创建下一次attempt。",
+      "then": [
+        "重复claim复用同一有效attempt/permit；只有W16 consume成功且绑定当前资格revision的dispatch_commit receipt才授权一次POST。",
+        "仅StockQA可生成单调attempt序号；下一attempt只在确定未发送，或provider冻结策略确认的终态拒绝完成费用对账后创建，并重新取得新permit/dispatch_commit。",
+        "unknown-after-send及consume后无法证明未发出的崩溃均阻断fallback/新permit；伪造或重放attempt_id拒绝；预算占用不重复释放。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q15",
+      "requires_tasks": [
+        "Q06",
+        "Q08",
+        "Q14",
+        "W16",
+        "C07"
+      ]
+    },
+    {
+      "id": "EVO-82",
+      "kind": "fault",
+      "level": "integration",
+      "given": {
+        "routes": [
+          "primary",
+          "fallback"
+        ],
+        "primary_result": "explicit_quota_rejection",
+        "shared_budget_remaining": 5
+      },
+      "when": "通过X09真实组件入口依顺位运行备用路由；另重复测试send outcome unknown。",
+      "then": [
+        "收到可核实且按冻结策略属于retryable terminal的额度拒绝后，先完成费用/结果对账，再按冻结顺序创建唯一下一attempt并重新取得W16 dispatch_commit；总预算不突破，备用成功后停止。",
+        "outcome_unknown或consume后无法证明未发送时不触发下一provider POST，保留预留并进入对账状态；全程记录provider、attempt、搜索状态和清理证明。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X09",
+      "requires_tasks": [
+        "Q04",
+        "Q08",
+        "Q09",
+        "Q15",
+        "W16",
+        "X05"
+      ]
+    },
+    {
+      "id": "UNI-09",
+      "kind": "negative",
+      "level": "integration",
+      "given": "名单候选构建样本中有同一已验证issuer跨A/H/ADR挂牌、多家子公司及覆盖外证券。",
+      "when": "通过O01名单候选版本构建与覆盖报告入口生成一次名单快照。",
+      "then": [
+        "仅将有可靠身份依据的同一发行人挂牌归并；父子经营主体分开；覆盖外与身份未知对象进入待核，不按高分/盈利筛掉低谷公司；输出候选版本和覆盖缺口，不直接自动准入。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "O01",
+      "requires_tasks": [
+        "C01",
+        "W01"
+      ]
+    },
+    {
+      "id": "REV-05",
+      "kind": "negative",
+      "level": "review",
+      "given": "G1之前置联网/解析任务均有最新快照、真实搜索证据、轻资产边界与测试回执。",
+      "when": "审查评分闭环第一阶段放行材料。",
+      "then": [
+        "缺真实搜索事件、分数链对照、原件下载约束或最新审查时保留review_pending；不能用离线假搜索或模型自报放行。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "G1",
+      "requires_tasks": [
+        "L01",
+        "S02",
+        "Q05"
+      ]
+    },
+    {
+      "id": "REV-06",
+      "kind": "negative",
+      "level": "review",
+      "given": "G2之前置评分闭环、名单及查询任务都有隔离结果、错误/unknown分层和60家公司校准回执。",
+      "when": "审查评分试点放行。",
+      "then": [
+        "校准分母、行业/类型cohort、恢复观察、费用/失败和用户排除均可核验才放行；低谷公司低分不能被从研究池删除。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "G2",
+      "requires_tasks": [
+        "L02",
+        "W03",
+        "W04",
+        "W09",
+        "W13"
+      ]
+    },
+    {
+      "id": "REV-07",
+      "kind": "fault",
+      "level": "review",
+      "given": "G3之前置批次任务包含中断、租约失效、结果不明、费用预留、备份恢复和真实数据隔离结果。",
+      "when": "审查是否允许扩大评分扫描规模。",
+      "then": [
+        "任何重复收费、错误ACK、未知结果盲重发、清理漂移或关键skip均保持partial；小样本通过不得代表批量恢复能力。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "G3",
+      "requires_tasks": [
+        "L03",
+        "W11"
+      ]
+    },
+    {
+      "id": "REV-08",
+      "kind": "negative",
+      "level": "review",
+      "given": "G4之前置事实检索、关系术语、来源绑定及主题/行业消费者均有strict/explore、coverage-gap和只读联动验收。",
+      "when": "审查完整事实能力放行。",
+      "then": [
+        "无来源关系不升级为confirmed；空结果不能表示行业不存在；消费者不得写owner数据库或扩大为全池补扫。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "G4",
+      "requires_tasks": [
+        "L04"
+      ]
+    },
+    {
+      "id": "REV-09",
+      "kind": "negative",
+      "level": "review",
+      "given": "G5之前置全池覆盖、UI、快照、名单运维、备份和费用接续均有运行范围与恢复证据。",
+      "when": "审查评分规模交付和日常维护。",
+      "then": [
+        "披露实际独立公司数、市场重叠、未扫/失败/待补项和预算；不得把候选名单数、mock入口或UI健康宣称为运行覆盖。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "G5",
+      "requires_tasks": [
+        "O04",
+        "O05",
+        "W12"
+      ]
+    },
+    {
+      "id": "REV-10",
+      "kind": "fault",
+      "level": "review",
+      "given": "G6所有前置阶段门、候选/安装/加载hash、跨仓消费者、permit/attempt账本、真实E2E隔离和升级回退均有最新回执。",
+      "when": "审查一键开启完整交付。",
+      "then": [
+        "只有所有任务闭合且X10真实全链、清理前后快照、实际收费/来源及升级回滚证据齐备才可完成；任一外仓部分实现或旧版本审查作废均保持partial。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "G6",
+      "requires_tasks": [
+        "G4",
+        "G5",
+        "X10",
+        "X11",
+        "X12",
+        "U04",
+        "V18"
+      ]
+    },
+    {
+      "id": "REV-11",
+      "kind": "negative",
+      "level": "review",
+      "given": "操作手册声称可在Windows上一键安装/启动、配置模型顺序、停止续扫及恢复旧attempt。",
+      "when": "按文档在干净隔离环境进行逐步可执行性审查。",
+      "then": [
+        "每条命令/界面均映射到已验收公开入口及当前hash；不要求手工跨仓复制数据库/密钥；任何未实现步骤明确标partial而不写成已可用。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "X12",
+      "requires_tasks": [
+        "X10",
+        "X11",
+        "X07"
+      ]
+    },
+    {
+      "id": "EVO-83",
+      "kind": "boundary",
+      "level": "contract",
+      "given": {
+        "producer_release": {
+          "id": "producer_r2",
+          "sha256": "p2"
+        },
+        "consumer_release": {
+          "id": "consumer_r3",
+          "sha256": "c3"
+        },
+        "actions": [
+          "historical_read",
+          "projection_rebuild",
+          "new_write",
+          "paid_dispatch",
+          "migration",
+          "rollback"
+        ],
+        "valid_from_utc": "2026-10-01T00:00:00Z",
+        "valid_until_utc": "2026-10-08T00:00:00Z",
+        "explicit_non_expiring_alternative": true
+      },
+      "when": "以注入UTC时钟分别在窗口开始前、恰好开始、结束前、恰好结束及结束后评估各action；另提供缺字段、naive时间、重叠声明和显式non_expiring行。",
+      "then": [
+        "窗口采用左闭右开[start,end)：开始时有效，结束时已过期；每个producer/consumer/action独立判断，不得跨动作借用read兼容。",
+        "过期/未生效的新写入、付费派发、迁移或回退按矩阵blocked/needs_review；历史读取若无仍有效的明确archive reader则needs_review，绝不回退当前schema解释或删除旧观察。",
+        "无到期必须有required且明确的expiry_policy=non_expiring及valid_until_utc=null；缺失、时区不明、倒置/重叠区间或不确定时钟在任何副作用前失败关闭。",
+        "版本号相同不能替代精确release/hash匹配；合法显式non_expiring条目仅对声明的producer/consumer/action生效。"
+      ],
+      "assertions": [
+        {
+          "id": "EVO-83.A01",
+          "entrypoint": "V16 compatibility evaluator",
+          "expected": "UTC valid_from含端点、valid_until不含端点，边界前/恰好/后分别得出预期。"
+        },
+        {
+          "id": "EVO-83.A02",
+          "entrypoint": "V16 compatibility evaluator",
+          "expected": "六种兼容动作分别判定；history_read许可不能放行new_write/paid_dispatch。"
+        },
+        {
+          "id": "EVO-83.A03",
+          "entrypoint": "V16 compatibility evaluator",
+          "expected": "窗口到期后的dispatch/write/migration/rollback阻断；历史无reader时needs_review且原观察保持不变。"
+        },
+        {
+          "id": "EVO-83.A04",
+          "entrypoint": "V16 compatibility evaluator",
+          "expected": "非到期需显式non_expiring；缺失、倒置、重叠、naive时间和未知时钟失败关闭。"
+        },
+        {
+          "id": "EVO-83.A05",
+          "entrypoint": "V16 compatibility evaluator",
+          "expected": "release版本文字相同但ID/hash不一致时不匹配。"
+        }
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "V16"
+    },
+    {
+      "id": "MOD-19",
+      "kind": "boundary",
+      "level": "integration",
+      "given": "A verified temporary router 2.3 package (policy schema 1.3, request protocol 3) with ROUTE_02 native responses at scores 6, 7, and 10, an unscored response, a StockQA quick_scan_result/1.0.0 public envelope with answer-hash-bound execution receipt, low per-module evidence, independent verified_facts, one archived router 2.0 snapshot, and synthesized router 2.1/2.2 compatibility-path snapshots.",
+      "when": "Parse the native response, resolve the route, seal/read snapshots, and invoke current execution/composition gates.",
+      "then": [
+        "The classification score is preserved separately from company-quality scores. Below the frozen threshold only searched_llm candidates become uncertain; independently verified facts remain eligible. At/above threshold, per-module evidence rules still apply. Snapshot validation recomputes internal confidence, receipt, module and dispatch invariants. Its self-computed content hash does not authenticate source provenance; a new execution must compare against the caller's independently stored decision ID. The actual archived router 2.0 fixture remains readable; generated router 2.1 compatibility paths remain read-only, without claiming coverage from a preserved historical 2.1 artifact."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S06",
+      "requires_tasks": [
+        "S05"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-19.A01",
+          "entrypoint": "parse_route_response",
+          "expected": "Native status and integer score are returned in the normalized classification_confidence envelope; unscored statuses retain null, with no placeholder/default score. The public StockQA result adapter accepts only the documented v1 envelope and verifies exact entity/question identity, completed web-search receipt, actual/requested model, candidate source membership, and SHA-256 of the serialized ROUTE_02 answer. resolve_route_decision receives one complete raw answer and derives the candidate, confidence, and answer hash from that same value; split caller-supplied fields are not accepted."
+        },
+        {
+          "id": "MOD-19.A02",
+          "entrypoint": "resolve_route_decision",
+          "expected": "A score below 7 marks applicable searched_llm module candidates uncertain with overall_confidence_below_threshold and excludes them from selected/eligible modules."
+        },
+        {
+          "id": "MOD-19.A03",
+          "entrypoint": "resolve_route_decision",
+          "expected": "At score 7 the overall gate permits evaluation but does not bypass a module rule; a low per-module confidence or inapplicable evidence remains uncertain/rejected."
+        },
+        {
+          "id": "MOD-19.A04",
+          "entrypoint": "resolve_route_decision",
+          "expected": "At score 10, a low-confidence searched_llm candidate remains uncertain; overall confidence never overrides individual evidence/materiality/confirmation gates."
+        },
+        {
+          "id": "MOD-19.A05",
+          "entrypoint": "resolve_route_decision",
+          "expected": "A separately supplied valid verified_fact remains selected on a low overall model score and can retain mandatory recovery coverage."
+        },
+        {
+          "id": "MOD-19.A06",
+          "entrypoint": "validate_route_snapshot",
+          "expected": "Tampered status/score/threshold/eligibility, mismatched execution confidence, or a selected below-threshold searched_llm candidate is rejected after resealing. A resealed source-label rewrite is rejected at execution when its decision ID differs from the caller's independently stored expected ID; the self-computed snapshot hash alone is not provenance authentication. Changing the StockQA answer while retaining its receipt answer_sha256, or pairing answer A with answer B's separate receipt, is rejected before a route can be composed; split caller-supplied candidate/confidence/hash fields are rejected."
+        },
+        {
+          "id": "MOD-19.A07",
+          "entrypoint": "parse_route_response and resolve_route_decision",
+          "expected": "Unknown/insufficient_evidence require score=null and an empty candidate list; a no-call route is explicitly not_run/null; inconsistent candidate/status/receipt combinations fail closed."
+        },
+        {
+          "id": "MOD-19.A08",
+          "entrypoint": "validate_route_snapshot and validate_route_for_execution",
+          "expected": "The preserved router 2.0 snapshot remains readable under its archived package. Generated router 2.1 compatibility-path snapshots are readable but cannot dispatch; this is not evidence from a preserved historical router 2.1 artifact. Current resolve/execute/compose paths refuse historical routers."
+        },
+        {
+          "id": "MOD-19.A09",
+          "entrypoint": "validate_policy and module_registry.publish",
+          "expected": "Schema 1.3/request-protocol-3 confidence policy with router version 2.3.0 or later, a bounded integer threshold, and the supported downgrade action publishes; malformed or mismatched policy versions are rejected. Its schema also rejects scored-with-null/out-of-range score and unknown/insufficient_evidence-with-non-null score combinations. Router 2.2 remains bound to schema 1.2/request-protocol-2. Explicit router 2.0, 2.1, and 2.2 historical readers retain only their documented compatibility behavior and cannot dispatch current work."
+        }
+      ]
+    },
+    {
+      "id": "MOD-20",
+      "kind": "negative",
+      "level": "unit",
+      "given": "评分题、事实题、固定profile、scoring contexts及已归档renderer样例。",
+      "when": "独立导入question_prompts并经两个旧入口请求渲染。",
+      "then": [
+        "问题渲染只依赖显式question/profile/context/resource输入及本地纯格式化逻辑；提示module不导入CLI编排、answer builder、模型provider、存储或联网模块。question_sets与standard_answers不形成双向导入。评分题、事实题和典型边界输入生成确定的标准提示，standard_answers旧公开函数继续兼容。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S07",
+      "requires_tasks": [
+        "S03",
+        "S05"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-20.A01",
+          "entrypoint": "question_prompts public functions and import graph",
+          "expected": "Question prompt module has no CLI, provider, storage, network, question_sets or standard_answers imports; question_sets and standard_answers both depend on it, never on each other for prompt generation. A clean child-process import succeeds with deterministic import order."
+        },
+        {
+          "id": "MOD-20.A02",
+          "entrypoint": "applied_contexts, render_question, standard_prompt",
+          "expected": "Fixed score and fact question fixtures preserve cutoff, identity, rubric, response schema, metric registry, uncertainty and recovery language; repeated identical inputs produce byte-identical prompts and the legacy standard_answers.standard_prompt compatibility surface returns the same prompt."
+        }
+      ]
+    },
+    {
+      "id": "MOD-21",
+      "kind": "positive",
+      "level": "integration",
+      "given": "当前锁定renderer发布包、评分题和事实题；临时输出目录只包含本次输入。",
+      "when": "通过本仓真实compose/manifest reader与标准答案builder生成并校验提示及prompt hash。",
+      "then": [
+        "当前发布包继续按锁定renderer和原prompt校验；纯结构拆分保持renderer版本与指纹不变，不创建或激活无语义变化的新包。manifest中的question prompt和SHA-256可由公开入口重算，篡改提示、资源或版本时拒绝；只使用临时目录且无网络调用。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S07",
+      "requires_tasks": [
+        "S03",
+        "S05"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-21.A01",
+          "entrypoint": "question_sets compose, published manifest reader and standard_answers validator",
+          "expected": "Actual public local interfaces agree on exact prompt bytes and hashes for score and fact questions; existing published answer remains valid; prompt/schema/resource tampering fails before observation output; historical release is read-only and candidate is not activated."
+        }
+      ]
+    },
+    {
+      "id": "MOD-22",
+      "kind": "boundary",
+      "level": "e2e",
+      "given": "固定虚构entity/profile、已发布question module、example.invalid回答与搜索回执、唯一LiveE2ESandbox临时目录。",
+      "when": "运行本仓生产CLI从问题组装、提示及hash生成、离线答案解析到标准观察/交换内容hash验证。",
+      "then": [
+        "真实本地producer链输出符合契约且可追溯到固定renderer/module版本；网络、密钥和财报下载均未触发，临时数据库/文件/进程副作用全数回收。该case仅证明本仓离线链，不宣称真实搜索、StockWiki导入/ACK、UI或安装启动已验收。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S07",
+      "requires_tasks": [
+        "S03",
+        "S05"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-22.A01",
+          "entrypoint": "isolated local producer end-to-end CLI workflow",
+          "expected": "Question compose and standard observation build invoke real local public entrypoints; exchange schema/content hashes pass; subprocesses receive no API keys/live opt-in, network is denied, download path stays empty, and exact temporary root is cleaned after success and failure."
+        }
+      ]
+    },
+    {
+      "id": "MOD-23",
+      "kind": "negative",
+      "level": "unit",
+      "given": "question_library、question_sets兼容入口与standard_answers的导入图和已固定的S07提示契约。",
+      "when": "在无API密钥的全新子进程中按两种顺序导入组件，并检查稳定库模块依赖与答案构建器调用边。",
+      "then": [
+        "json_io独占通用UTF-8 JSON实现；question_prompts与question_library复用它。question_library只依赖本地question module/schema和纯校验代码，不反向导入CLI、答案构建器、provider、网络或生产存储；standard_answers不再通过question_sets做题库加载、URL或profile操作。唯一保留的question_sets边是复杂的不可变manifest验证与历史question fingerprint，且必须静态可见。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S08",
+      "requires_tasks": [
+        "S07"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-23.A01",
+          "entrypoint": "question_library import graph and standard_answers module dependencies",
+          "expected": "Both import orders succeed without credentials or live flags; question_library imports no higher-layer module; prompt/catalog layers import one json_io owner rather than redefining read_json; standard_answers has no question_sets dynamic import and its only allowed direct references are validate_manifest_metric_contract and _question_fingerprint."
+        }
+      ]
+    },
+    {
+      "id": "MOD-24",
+      "kind": "positive",
+      "level": "integration",
+      "given": "本仓question catalog、scoring contexts、profile fixture、临时ROOT与当前已发布renderer/module release。",
+      "when": "经question_library公开接口加载并校验题库/profile，同时经question_sets兼容入口和standard_answers真实接口读取同一内容。",
+      "then": [
+        "source catalog、URL判定、profile拒绝规则、UTF-8 JSON语义及ROOT注入一致；question_sets旧函数签名继续可用。standard_answers的validate_fact_library/select_facts在临时备用ROOT中返回该根内的专属版本标记和问题，不回落仓库根目录；既有观察回放由producer E2E继续校验。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S08",
+      "requires_tasks": [
+        "S07"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-24.A01",
+          "entrypoint": "question_library APIs, question_sets compatibility facade and standard_answers public functions",
+          "expected": "question_library and the question_sets compatibility facade return the same catalog/profile results for fixed valid and invalid inputs; standard_answers.validate_fact_library and select_facts consume a uniquely marked alternate-root fact bank, while isolated output paths remain under the registered temporary root."
+        }
+      ]
+    },
+    {
+      "id": "MOD-25",
+      "kind": "boundary",
+      "level": "e2e",
+      "given": "固定虚构entity/profile、example.invalid答案与执行回执、已发布问题模块和独占LiveE2ESandbox临时目录。",
+      "when": "用本仓真实本地CLI从question library/compose走到标准化观察与交换内容hash验证。",
+      "then": [
+        "答案构建器与题库CLI沿稳定下层契约完成producer离线链；未调用网络/模型、未读取或写入财报下载目录、未继承密钥/live opt-in，成功与失败路径均清理精确临时根。该用例不代表真实公司或StockWiki/UI跨仓验收。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S08",
+      "requires_tasks": [
+        "S07"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-25.A01",
+          "entrypoint": "isolated local producer end-to-end CLI workflow",
+          "expected": "Real local public entrypoints produce and validate the fixture observation/exchange hashes with the same library release; network is denied, API key variables are absent, download path remains empty, and only the unique registered temporary root is removed."
+        }
+      ]
+    },
+    {
+      "id": "MOD-26",
+      "kind": "boundary",
+      "level": "unit",
+      "given": "本仓已发布问题包、固定profile、标准答案格式，以及semantic_fingerprint_version缺省时的旧算法和当前2.0.0规则；仓内没有真实归档1.x包。",
+      "when": "分别经下层question_fingerprints契约和question_sets兼容包装计算题目指纹，并改变当前包的一项答案schema资源。",
+      "then": [
+        "旧格式缺省版本字段时的1.0.0算法指纹与冻结基准完全相同；当前2.0.0指纹绑定格式资源摘要；格式资源变化只改变新规则指纹；兼容包装输出与共享契约逐字节相同。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S09",
+      "requires_tasks": [
+        "S08"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-26.A01",
+          "entrypoint": "tests/test_question_fingerprint.py::QuestionFingerprintTests.test_legacy_default_and_current_fingerprint_algorithms_are_stable",
+          "expected": "The legacy-format projection with no semantic_fingerprint_version matches its frozen old-algorithm value; the v2 digest changes when a bound format resource changes. This does not claim replay of an authentic archived v1 package."
+        },
+        {
+          "id": "MOD-26.A02",
+          "entrypoint": "tests/test_question_fingerprint.py::QuestionFingerprintTests.test_question_sets_legacy_entrypoint_delegates_to_shared_contract",
+          "expected": "The legacy question_sets function signature delegates to exactly the same shared implementation and output."
+        }
+      ]
+    },
+    {
+      "id": "MOD-27",
+      "kind": "negative",
+      "level": "integration",
+      "given": "当前已发布问题包和与其绑定的标准观察记录，以及answer builder的静态导入图。",
+      "when": "通过standard_answers观察校验入口读取记录，并检查其question_sets调用面。",
+      "then": [
+        "有效发布包观察继续通过；伪造manifest仍在生成观察前拒绝；standard_answers只保留manifest语义验证这一条question_sets成员依赖。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S09",
+      "requires_tasks": [
+        "S08"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-27.A01",
+          "entrypoint": "tests/test_standard_answers.py::StandardAnswerTests.test_published_same_method_is_comparable_across_company_identity",
+          "expected": "Current released answer semantics remain valid after fingerprint ownership moves below the CLI layer."
+        },
+        {
+          "id": "MOD-27.A02",
+          "entrypoint": "tests/test_standard_answers.py::StandardAnswerTests.test_published_manifest_forgery_fails_before_observation_even_with_new_receipt_hash",
+          "expected": "Manifest forgery continues to fail closed before observation construction."
+        },
+        {
+          "id": "MOD-27.A03",
+          "entrypoint": "tests/test_question_fingerprint.py::QuestionFingerprintTests.test_answer_builder_keeps_only_manifest_validation_edge_to_question_sets",
+          "expected": "AST inspection finds exactly validate_manifest_metric_contract among question_sets members referenced by standard_answers."
+        }
+      ]
+    },
+    {
+      "id": "MOD-28",
+      "kind": "boundary",
+      "level": "e2e",
+      "given": "虚构entity/profile、固定本仓题库包和离线执行回执，运行于独占LiveE2ESandbox临时目录。",
+      "when": "使用本仓公开compose、标准观察生成和交换hash验证入口完成完整producer流程。",
+      "then": [
+        "迁移后的指纹共享层可与题库编排和答案构建器共同完成离线端到端流程；网络/API/下载均未启用，测试结束仅清理由该次登记的临时根；结果不代表真实公司或外仓导入/ACK/UI验收。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S09",
+      "requires_tasks": [
+        "S08"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-28.A01",
+          "entrypoint": "tests/test_producer_pipeline_e2e.py::ProducerPipelineE2ETests.test_public_clis_build_exchange_ready_observation_in_isolation",
+          "expected": "Real local public entrypoints produce and verify the fixture observation/exchange hashes with the same release; no network, secrets, model calls, or report downloads occur, and the unique sandbox is cleaned."
+        }
+      ]
+    },
+    {
+      "id": "MOD-29",
+      "kind": "boundary",
+      "level": "unit",
+      "given": "S09已把题目指纹下沉，但standard_answers仍通过question_sets调用manifest校验，选择与screening renderer也仍处在编排模块。",
+      "when": "把选择、manifest语义校验和screening renderer迁入独立owner模块，并从standard_answers直接消费稳定契约。",
+      "then": [
+        "question_manifest和question_selection不导入question_sets；standard_answers不导入question_sets；question_sets旧校验/选择入口保留原签名；renderer hash与当前发布包逐字一致。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S10",
+      "requires_tasks": [
+        "S09"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-29.A01",
+          "entrypoint": "tests/test_question_manifest.py::QuestionManifestBoundaryTests.test_manifest_and_selection_contracts_do_not_import_the_cli_orchestrator",
+          "expected": "Manifest and selection domain modules have no import edge back to the CLI orchestrator."
+        },
+        {
+          "id": "MOD-29.A02",
+          "entrypoint": "tests/test_question_manifest.py::QuestionManifestBoundaryTests.test_question_sets_keeps_the_legacy_manifest_validator_entrypoint",
+          "expected": "The existing one-argument question_sets validator wrapper remains callable and delegates to the versioned contract."
+        },
+        {
+          "id": "MOD-29.A03",
+          "entrypoint": "tests/test_question_prompts.py::QuestionPromptBoundaryTests.test_existing_question_set_rendering_names_are_compatibility_aliases",
+          "expected": "Moved prompt code preserves the source hash required by the active release."
+        }
+      ]
+    },
+    {
+      "id": "MOD-30",
+      "kind": "negative",
+      "level": "integration",
+      "given": "当前不可变发布包、标准答案回执、兼容question_sets包装器及已知伪造manifest反例。",
+      "when": "通过standard_answers构造发布观察，并分别输入有效清单与更换内容后重算顶层hash的伪造清单。",
+      "then": [
+        "有效发布观察保持可比；伪造manifest在观察生成前被拒绝；答案构建器直接使用question_manifest，而非question_sets成员。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S10",
+      "requires_tasks": [
+        "S09"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-30.A01",
+          "entrypoint": "tests/test_standard_answers.py::StandardAnswerTests.test_published_same_method_is_comparable_across_company_identity",
+          "expected": "Valid current-release standard observations still validate and remain comparable across company identity."
+        },
+        {
+          "id": "MOD-30.A02",
+          "entrypoint": "tests/test_standard_answers.py::StandardAnswerTests.test_published_manifest_forgery_fails_before_observation_even_with_new_receipt_hash",
+          "expected": "Recomputed outer hashes cannot make a forged published manifest pass the immutable package validator."
+        },
+        {
+          "id": "MOD-30.A03",
+          "entrypoint": "tests/test_question_library.py::QuestionLibraryBoundaryTests.test_answer_builder_uses_shared_library_for_general_helpers",
+          "expected": "The answer builder imports the lower question/manifest libraries and has no question_sets import."
+        }
+      ]
+    },
+    {
+      "id": "MOD-31",
+      "kind": "boundary",
+      "level": "e2e",
+      "given": "固定虚构profile、已发布题库包、离线答案和回执、唯一LiveE2ESandbox。",
+      "when": "沿真实本仓公开CLI执行question compose、答案观察构造和交换hash验证。",
+      "then": [
+        "迁移前后的问题、renderer版本、观察与交换hash保持一致；密钥、网络、API和下载目录未触碰；测试后独占临时目录清理。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "S10",
+      "requires_tasks": [
+        "S09"
+      ],
+      "assertions": [
+        {
+          "id": "MOD-31.A01",
+          "entrypoint": "tests/test_producer_pipeline_e2e.py::ProducerPipelineE2ETests.test_public_clis_build_exchange_ready_observation_in_isolation",
+          "expected": "The local producer chain completes with stable release/hash lineage and cleans its exclusive sandbox without claiming a live search or StockWiki ACK."
+        }
+      ]
+    },
+    {
+      "id": "ID-08",
+      "kind": "metamorphic",
+      "level": "contract",
+      "given": {
+        "issuer_id": "opaque stable ENT id",
+        "legal_issuer_unchanged": true,
+        "name_and_ticker_change": true
+      },
+      "when": "Apply an effective-dated issuer rename and listing ticker change.",
+      "then": [
+        "The entity_id remains unchanged and is not derived from any name, market, ticker, or external provider key.",
+        "Name/ticker facts are appended with source and validity; identity_revision increments.",
+        "Every identity content change is an append-only event with from_revision/to_revision, source/evidence, and exactly one revision increment."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-09",
+      "kind": "negative",
+      "level": "contract",
+      "given": {
+        "names": [
+          "中微公司",
+          "中微半导体"
+        ],
+        "same_brand_or_token": true,
+        "authoritative_same_issuer_evidence": false
+      },
+      "when": "Resolve candidate names and build the issuer relationship graph.",
+      "then": [
+        "String similarity, shared brand/token, or an LLM suggestion cannot merge the candidates.",
+        "They remain separate or unresolved until authoritative identity evidence establishes alias, issuer, or group relation."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-10",
+      "kind": "boundary",
+      "level": "contract",
+      "given": {
+        "identifier_claims": [
+          {
+            "scheme": "orgId",
+            "authority": "CNINFO",
+            "namespace": "source-A",
+            "value": "X"
+          },
+          {
+            "scheme": "orgId",
+            "authority": "provider-B",
+            "namespace": "source-B",
+            "value": "X"
+          }
+        ]
+      },
+      "when": "Compare identifiers from different namespaces and a verified legal identifier.",
+      "then": [
+        "Source-local IDs never identify an issuer outside their namespace.",
+        "Only a scheme registered for issuer scope and backed by trusted evidence may link issuers; conflicting claims fail closed."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-11",
+      "kind": "positive",
+      "level": "contract",
+      "given": {
+        "issuer": "E1",
+        "securities": [
+          "A-share",
+          "H-share",
+          "ADR"
+        ],
+        "listings": [
+          "SSE:A",
+          "HKEX:H",
+          "NYSE:ADR",
+          "TSX:A-share"
+        ]
+      },
+      "when": "Represent securities and exchange listings under one verified issuer.",
+      "then": [
+        "A/H share classes and ADR are separate Security records under one verified issuer.",
+        "Two venue listings of the same fungible security are distinct Listing records pointing to the same Security.",
+        "Issuer-level operating questions run once; valuation/quote scopes remain listing-specific."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "DB-09",
+      "kind": "fault",
+      "level": "unit",
+      "given": {
+        "claim_key": [
+          "scheme",
+          "authority",
+          "jurisdiction",
+          "normalized_value"
+        ],
+        "existing_verified_owner": "E1",
+        "incoming_verified_owner": "E2"
+      },
+      "when": "Persist non-unique name aliases and a uniqueness-constrained verified issuer claim in one transaction.",
+      "then": [
+        "The same alias text can belong to multiple issuers with source/type/validity.",
+        "A claim uniqueness conflict is rejected atomically and leaves all previous claims unchanged."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W01",
+      "requires_tasks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "ID-12",
+      "kind": "negative",
+      "level": "integration",
+      "given": {
+        "input": "name-only candidate with two similar issuer matches",
+        "llm_output": "candidate suggestion with search citations"
+      },
+      "when": "Import the candidate and prepare the scan queue.",
+      "then": [
+        "Candidate remains unresolved without entity_id and no paid Work/Observation is created.",
+        "LLM output and citations can be reviewed but cannot activate identity or scan eligibility."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W02",
+      "requires_tasks": [
+        "C01",
+        "W01"
+      ]
+    },
+    {
+      "id": "ID-13",
+      "kind": "boundary",
+      "level": "integration",
+      "given": {
+        "same_ticker": "1234",
+        "listings": [
+          {
+            "mic": "XNAS",
+            "valid_to": "2025-01-01"
+          },
+          {
+            "mic": "XHKG",
+            "valid_from": "2025-01-02"
+          },
+          {
+            "mic": "XNAS",
+            "valid_from": "2026-01-01"
+          }
+        ]
+      },
+      "when": "Resolve exact and bare tickers, including a symbol reused after the first listing ends.",
+      "then": [
+        "MIC/venue and effective time distinguish listings and ticker reuse.",
+        "A bare ticker with multiple valid candidates remains ambiguous; it cannot identify an issuer."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W02",
+      "requires_tasks": [
+        "C01",
+        "W01"
+      ]
+    },
+    {
+      "id": "ID-14",
+      "kind": "negative",
+      "level": "integration",
+      "given": {
+        "provider_local_ids": [
+          {
+            "provider": "Dayu",
+            "value": "600001_SSE"
+          },
+          {
+            "provider": "StockInfoDLSimple",
+            "value": "1234567890"
+          }
+        ]
+      },
+      "when": "Ingest source adapters and attempt cross-provider identity resolution.",
+      "then": [
+        "Dayu ticker-derived IDs and StockInfo/CNINFO orgId are stored as source-scoped claims only.",
+        "The adapters do not merge issuers without an independently verified issuer bridge."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W02",
+      "requires_tasks": [
+        "C01",
+        "W01"
+      ]
+    },
+    {
+      "id": "ID-15",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": {
+        "issuer_id": "E1",
+        "identity_revision": 3,
+        "old_name": "Old name",
+        "old_ticker": "OLD",
+        "identity_status": "verified"
+      },
+      "when": "Apply documented issuer rename and exchange-qualified ticker update.",
+      "then": [
+        "Internal issuer/security/listing IDs stay stable when legal continuity is proven.",
+        "Identity revision and alias/listing history advance; old Work remains bound to its dispatch revision."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W03",
+      "requires_tasks": [
+        "C01",
+        "W01",
+        "W02"
+      ]
+    },
+    {
+      "id": "ID-16",
+      "kind": "negative",
+      "level": "integration",
+      "given": {
+        "identity_status": "conflicted",
+        "member_status": "active",
+        "manual_pin": true
+      },
+      "when": "Run eligibility preflight and scan scheduling.",
+      "then": [
+        "The member and pin remain preserved for review.",
+        "No new paid Work is scheduled while identity is conflicted; conflict is visible with reason."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W04",
+      "requires_tasks": [
+        "C01",
+        "W01",
+        "W02",
+        "W03"
+      ]
+    },
+    {
+      "id": "ID-17",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": {
+        "old_issuer_ids": [
+          "E1",
+          "E2"
+        ],
+        "old_observations": [
+          "O1",
+          "O2"
+        ],
+        "verified_merge_or_split_event": true
+      },
+      "when": "Apply an audited issuer merge or split and render current and historical views.",
+      "then": [
+        "Old observations retain original entity/listing IDs, model, timestamps, scores, and payload hashes.",
+        "The successor identity starts new generations and receives no inherited current score."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W05",
+      "requires_tasks": [
+        "C01",
+        "W01"
+      ]
+    },
+    {
+      "id": "C04-CONTRACT-04",
+      "kind": "boundary",
+      "level": "contract",
+      "given": {
+        "work_scope": "listing valuation",
+        "entity_id": "E1",
+        "identity_revision": 2,
+        "security_id": "S1",
+        "listing_ids": [
+          "L1",
+          "L2"
+        ]
+      },
+      "when": "Build logical work keys for issuer-level and listing-level questions.",
+      "then": [
+        "Every work item binds entity_id and identity_revision.",
+        "Listing-scoped work binds security_id and listing_id so separate venues cannot collide; issuer questions remain deduplicated."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C04",
+      "requires_tasks": [
+        "C01"
+      ]
+    },
+    {
+      "id": "C06-CONTRACT-04",
+      "kind": "positive",
+      "level": "contract",
+      "given": {
+        "issuer": "E1",
+        "securities": [
+          "S1",
+          "S2"
+        ],
+        "listings": [
+          "L1",
+          "L2",
+          "L3"
+        ],
+        "identity_status": "verified"
+      },
+      "when": "Exchange and query the issuer profile and its quote scopes.",
+      "then": [
+        "Responses preserve issuer, security, listing, identity_revision, and eligibility boundaries.",
+        "Consumers can deduplicate issuer questions without collapsing distinct market quotes."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C06",
+      "requires_tasks": [
+        "C01",
+        "C04"
+      ]
+    },
+    {
+      "id": "JOB-11",
+      "kind": "boundary",
+      "level": "integration",
+      "given": {
+        "issuer": "E1",
+        "business_question": "Q1",
+        "valuation_question": "Q2",
+        "listings": [
+          "L1",
+          "L2"
+        ]
+      },
+      "when": "Create persistent work for the same issuer across multiple listing venues.",
+      "then": [
+        "One logical business-question work item is created for the issuer.",
+        "Valuation work remains distinct per listing and idempotent by identity revision and listing scope."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "Q06",
+      "requires_tasks": [
+        "C04"
+      ]
+    },
+    {
+      "id": "ID-18",
+      "kind": "positive",
+      "level": "contract",
+      "given": {
+        "verified_issuer": "ENT_1",
+        "reporting_perimeter": "consolidated_group",
+        "scope_revision": 1
+      },
+      "when": "Create a company-level business-question run.",
+      "then": [
+        "A stable analysis_subject_id/revision identifies the reported business perimeter independently of the legal issuer ID.",
+        "A/H/ADR quote scopes remain security/listing-bound; issuer group relations alone do not define consolidation membership."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-19",
+      "kind": "boundary",
+      "level": "contract",
+      "given": {
+        "issuer_state": "provisional",
+        "exact_listing_id": "LST_1"
+      },
+      "when": "Create an analysis subject from an unresolved source listing.",
+      "then": [
+        "The provisional subject is anchored to exactly that listing and issuer.",
+        "It cannot include subsidiaries, claim a consolidated reporting perimeter, or accept another listing without verified issuer evidence."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-20",
+      "kind": "boundary",
+      "level": "contract",
+      "given": {
+        "markets": [
+          "JP",
+          "GB",
+          "SG"
+        ],
+        "overlapping_same_market_ticker": [
+          {
+            "mic": null
+          },
+          {
+            "mic": "XNYS"
+          }
+        ]
+      },
+      "when": "Validate worldwide venue and ticker identity.",
+      "then": [
+        "Valid ISO alpha-2 markets are not limited to CN/HK/US.",
+        "Overlapping same-market/ticker listings fail closed if either MIC is missing; two known distinct MICs remain distinct venues."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-21",
+      "kind": "negative",
+      "level": "contract",
+      "given": {
+        "claims": [
+          "verified_alias_without_evidence",
+          "verified_identifier_without_evidence",
+          "inverted_validity_interval"
+        ]
+      },
+      "when": "Validate identity claims before they can enter candidate resolution.",
+      "then": [
+        "Verified claims require non-empty evidence; invalid half-open intervals are rejected.",
+        "Aliases remain non-unique candidates and cannot by themselves authorize issuer linking."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-22",
+      "kind": "boundary",
+      "level": "contract",
+      "given": {
+        "event_type": "security_added",
+        "affected_security_ids": [],
+        "listing_status": "delisted",
+        "binding_status": "retired"
+      },
+      "when": "Validate identity revision events and historical source bindings.",
+      "then": [
+        "Security/listing events must name the exact affected IDs and advance one revision; application must match the before/after snapshots.",
+        "A retired owner binding may preserve a delisted listing, while active listings require active bindings."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-23",
+      "kind": "metamorphic",
+      "level": "integration",
+      "given": {
+        "analysis_subject_id": "ASJ_1",
+        "analysis_subject_revision": 1,
+        "work_id": "W1",
+        "observation_id": "O1"
+      },
+      "when": "A reporting perimeter changes and a new scan is dispatched.",
+      "then": [
+        "New Work and Observation bind the new subject revision and exact issuer/security/listing scope.",
+        "Old observations preserve their original subject revision, model, timestamp, answer and score; legacy records are not silently assigned a subject."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "W05",
+      "requires_tasks": [
+        "C01",
+        "C04",
+        "C06",
+        "W01",
+        "W02",
+        "W03"
+      ]
+    },
+    {
+      "id": "ID-24",
+      "kind": "negative",
+      "level": "contract",
+      "given": {
+        "scope_kind": "consolidated_reporting_group",
+        "member_issuer_state": "verified",
+        "member_evidence_ref": "fabricated",
+        "trusted_reporting_perimeter_receipt": null
+      },
+      "when": "Validate a consolidated AnalysisSubject before creating company-level Work.",
+      "then": [
+        "Verified issuer status, corporate-group relationships and evidence_ref text do not prove consolidated membership.",
+        "The owner-supplied verified receipt must bind the exact subject ID/revision, primary issuer, membership roles/effective intervals and perimeter snapshot digest to an HTTPS disclosure source.",
+        "complete_as_disclosed is accepted only when that exact perimeter snapshot is covered by the trusted receipt."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-25",
+      "kind": "negative",
+      "level": "contract",
+      "given": {
+        "listing_security_id": "SEC_A",
+        "event_security_id": "SEC_B",
+        "before_after_snapshots": "ticker change is otherwise correct"
+      },
+      "when": "Apply an identity or AnalysisSubject event to immutable before/after snapshots.",
+      "then": [
+        "Ticker/listing events must name the exact Security referenced by the affected Listing and exact changed listing/security IDs.",
+        "AnalysisSubject events bind subject ID and consecutive revisions, encode old/new values or perimeter hashes, and list exactly the affected issuer IDs.",
+        "Wrong, missing, extra, no-op or snapshot-inconsistent event targets are rejected before any owner transaction."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-26",
+      "kind": "boundary",
+      "level": "contract",
+      "given": {
+        "market": "JP",
+        "listing_mic": "XNAS",
+        "invalid_market_example": "ZZ",
+        "registry": "owner-controlled ISO market/MIC registry"
+      },
+      "when": "Validate a worldwide issuer listing against its trusted venue registry.",
+      "then": [
+        "Market membership is checked against the trusted ISO jurisdiction registry; a two-letter lexical shape alone is insufficient.",
+        "A supplied MIC must belong to the declared market in the trusted registry; unknown registries or mismatched MICs fail closed.",
+        "Overlapping same-market ticker listings still require known, distinct MICs to remain separate venues."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01"
+    },
+    {
+      "id": "ID-27",
+      "kind": "positive",
+      "level": "integration",
+      "given": {
+        "contract_package_version": "2.2.0",
+        "document_types": [
+          "entity",
+          "analysis_subject"
+        ],
+        "trusted_context": "synthetic internally consistent test-only records"
+      },
+      "when": "Invoke the public identity contract CLI as a subprocess for each supported identity object type.",
+      "then": [
+        "A valid Entity 2.1.0 request returns exactly one JSON line with status valid and exit 0; the input file bytes remain unchanged.",
+        "A valid AnalysisSubject 1.0.0 request returns exactly one JSON line with status valid and exit 0; output explicitly represents contract validation only."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01",
+      "assertions": [
+        {
+          "id": "ID-27.A01",
+          "entrypoint": "IdentityContractCliTests.test_valid_entity_request_returns_one_line_json_exit_zero_and_does_not_modify_input",
+          "expected": "Valid synthetic Entity 2.1.0 under package 2.2.0 is accepted by schema and semantic reference validators; one-line stdout, exit 0, unchanged input."
+        },
+        {
+          "id": "ID-27.A02",
+          "entrypoint": "IdentityContractCliTests.test_valid_analysis_subject_request_is_contract_only_and_read_only",
+          "expected": "Valid synthetic AnalysisSubject 1.0.0 is accepted against provided context; one-line stdout includes contract-only scope, exit 0, unchanged input."
+        }
+      ]
+    },
+    {
+      "id": "ID-28",
+      "kind": "negative",
+      "level": "integration",
+      "given": {
+        "entity": "schema-valid Entity 2.1.0",
+        "trusted_source_binding": "references a different Security or Listing",
+        "payload_marker": "synthetic private sentinel"
+      },
+      "when": "Invoke the public identity contract CLI on a reference-mismatched request.",
+      "then": [
+        "Exit 2 with status invalid, stable semantic error code and a JSON Pointer under /payload; no payload value or sentinel is echoed to stdout or stderr."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01",
+      "assertions": [
+        {
+          "id": "ID-28.A01",
+          "entrypoint": "IdentityContractCliTests.test_semantic_identity_mismatch_returns_stable_pointer_without_echoing_input",
+          "expected": "Wrong source-to-Security/Listing binding fails closed, exit 2, structured error only, no user-controlled value leakage."
+        }
+      ]
+    },
+    {
+      "id": "ID-29",
+      "kind": "boundary",
+      "level": "integration",
+      "given": {
+        "requested_schema_version": "unsupported future version",
+        "input_path": "nonexistent path"
+      },
+      "when": "Invoke the CLI with an unsupported --schema-version.",
+      "then": [
+        "Exit 3 with status invalid, error code unknown_schema_version and stable pointer /schema_version; the input path is not opened and one JSON line is emitted."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01",
+      "assertions": [
+        {
+          "id": "ID-29.A01",
+          "entrypoint": "IdentityContractCliTests.test_unknown_schema_version_exits_three_without_reading_input",
+          "expected": "Unsupported package versions fail before input I/O with stable machine-readable output and exit 3."
+        }
+      ]
+    },
+    {
+      "id": "ID-30",
+      "kind": "negative",
+      "level": "integration",
+      "given": {
+        "json": "duplicate object key",
+        "input_size": "one byte over the published maximum"
+      },
+      "when": "Invoke the CLI on each hostile input using a temporary directory.",
+      "then": [
+        "Duplicate keys and oversized inputs fail closed with stable structured error codes and exit 2; neither input is changed and no input content is echoed."
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "C01",
+      "assertions": [
+        {
+          "id": "ID-30.A01",
+          "entrypoint": "IdentityContractCliTests.test_duplicate_json_keys_fail_closed_without_echo",
+          "expected": "Duplicate JSON object keys are rejected rather than last-key-wins; exit 2 and no content echo."
+        },
+        {
+          "id": "ID-30.A02",
+          "entrypoint": "IdentityContractCliTests.test_oversized_input_is_rejected_before_full_read",
+          "expected": "Input exceeds documented bounded maximum, is rejected with exit 2 without full read or mutation."
+        }
+      ]
     }
   ]
 }

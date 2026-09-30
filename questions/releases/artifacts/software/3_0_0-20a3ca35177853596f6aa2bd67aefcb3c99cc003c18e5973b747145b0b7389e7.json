@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "software",
+  "kind": "industries",
+  "name": "软件、SaaS与IT服务",
+  "applies_when": "按订阅、许可证、实施或人力服务收入占比解释，不能默认都是SaaS。",
+  "questions": [
+    {
+      "id": "SOFTWARE_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "成熟客户批次在获客、实施、支持和续约全成本后是否创造价值？",
+      "evidence": [
+        "净收入留存",
+        "流失",
+        "CAC回收",
+        "服务毛利"
+      ],
+      "anchors": {
+        "1": "靠折扣获客且批次无法回本",
+        "5": "主要批次能回本但效率普通",
+        "10": "批次回本可靠且扩张收入不依赖过度补贴"
+      },
+      "metric_id": "score.software_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SOFTWARE_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "软件嵌入客户流程的深度能否抵御替换和技术商品化？",
+      "evidence": [
+        "迁移成本",
+        "实际替换",
+        "关键流程",
+        "竞品或AI替代"
+      ],
+      "anchors": {
+        "1": "易替换且同质替代持续压价",
+        "5": "部分粘性但竞争频繁",
+        "10": "关键流程价值和迁移难度经客户行为验证"
+      },
+      "metric_id": "score.software_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SOFTWARE_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "产品可靠性、交付与研发效率是否支持持续竞争？",
+      "evidence": [
+        "故障",
+        "实施周期",
+        "发布质量",
+        "研发产出"
+      ],
+      "anchors": {
+        "1": "事故频繁且实施失控",
+        "5": "交付基本达标但研发产出一般",
+        "10": "服务可靠且研发投入持续转为客户价值"
+      },
+      "metric_id": "score.software_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "SOFTWARE_04",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "收入增长的会计与现金含金量如何？",
+      "evidence": [
+        "递延收入",
+        "应收",
+        "费用资本化",
+        "股权薪酬摊薄"
+      ],
+      "anchors": {
+        "1": "确认激进或资本化掩盖成本",
+        "5": "会计与现金基本匹配但调整较多",
+        "10": "回款与履约匹配，计入研发和摊薄后仍有经济利润"
+      },
+      "metric_id": "score.software_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

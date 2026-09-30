@@ -1,0 +1,17 @@
+P00 read-only repository and index snapshot
+Captured 2026-09-26 before P00 report/evidence outputs were added.
+Commands: git rev-parse HEAD; git status --short (summarized) in each repository working directory.
+invest-quick-scan|head=25b8d14316c06390450e5a1d8883583bfd039d0d|tracked_changes=43|untracked_entries=292
+StockQAbyLLM|head=3c685dda28f67a00bd653ad257a121d3b8edebb8|tracked_changes=28|untracked_entries=14
+StockWiki|head=f5b8526c78ef0bc7df27885da043ce5a2534fffb|tracked_changes=653|untracked_entries=276
+company-wiki|head=bf0c8b27e83c3ee7e533c6031fefad8e27e5e121|tracked_changes=9|untracked_entries=7
+
+CodeGraph MCP status (read-only):
+invest-quick-scan: files=39 nodes=1256 edges=2087; healthy
+StockQAbyLLM: files=92 nodes=1584 edges=3084; healthy
+StockWiki: files=262 nodes=4490 edges=6922; healthy
+company-wiki: files=550 nodes=10710 edges=23560; healthy
+
+CodeGraph lookup (StockWiki): QuickScanStore/quick_scan_store.py not indexed. Direct read-only checks confirmed stockwiki/quick_scan_store.py and tests/test_quick_scan_store.py both exist. These are untracked current-worktree files, so the index snapshot does not yet cover them.
+
+External boundary: source files were read only. No external test runner, provider API, document downloader, refresh command, or network client was run. The separate StockQA --help probe failed before parser entry when its logger attempted to open an external logs file; the write was denied and no file was created.

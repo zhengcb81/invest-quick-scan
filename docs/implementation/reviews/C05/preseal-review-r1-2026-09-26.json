@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "review_id": "C05-preseal-review-r1-2026-09-26",
+  "reviewer_id": "agent:/root/p01_receipt_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "Separate read-only sub-agent; did not implement or modify the reviewed task, contracts, schemas, tests, plan, or evidence.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "d4afa10abc2b883c847f80aac737a3ad56371f888c8c9df53e84b823427578ee",
+  "open_findings": [],
+  "plan_binding": {
+    "plan_version": "1.9.6",
+    "plan_sha256": "40272b45ec730efa060f2ddb050d8ef9cd736eeeffce57007def9e7879adb411",
+    "case_catalog_sha256": "8d9342896a3485f90ee67436643f67b6db7af35f24fa2b92f6733ac10a9a7287"
+  },
+  "review_scope": [
+    "C05 task card, C05-CONTRACT-01/02/03 acceptance cases and owner allowlist",
+    "providers-and-budget.md, model-policy schema/template, model_policy.py and the two C05 test files current snapshot",
+    "C05-prefixed copy of the shared offline C01-C07 batch log and its test selectors",
+    "C05 multi-path allowlist normalization and each snapshot path's task ownership"
+  ],
+  "checks": {
+    "snapshot_binding": "Verified by recomputing the canonical snapshot over the six owner-allowlisted paths; all paths are accepted by the current C05 scope declarations after their intended path splitting.",
+    "case_and_test_coverage": "C05-CONTRACT-01/02/03 are covered by the logged offline policy/schema and provider-budget contract selectors. The batch does not assert provider calls, live quota state, parallel production dispatch or actual charge-ledger operation.",
+    "policy_and_budget_boundary": "The contract separates configured routes from runtime availability; distinguishes quota exhaustion, ordinary rate limiting, authentication, capability failures and uncertain timeouts; and describes shared budget/reservation semantics without inventing vendor prices.",
+    "template_safety": "The unconfigured template does not self-certify runtime readiness; tests cover route/group limits, redaction, five-hour quota hints, restart budget reset and explicit comparison budget boundaries without using real credentials or network access.",
+    "scope_split": "The current snapshot's separate provider policy, schema, template, implementation, test and documentation paths match the current owner allowlist; the earlier multi-path snapshot refusal is not reproduced by this current binding."
+  },
+  "shared_batch": {
+    "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+    "result": "188 passed, 121 subtests passed, 0 skips; exit 0 in 27.83 seconds",
+    "log_relation": "C01-C07 task-prefixed logs are byte-identical copies of this one local run; temporary root cleanup is verified and the root is recorded removed."
+  },
+  "execution": {
+    "review_mode": "read-only",
+    "reviewer_ran_tests": false,
+    "reviewer_ran_scripts": false,
+    "network_or_api_used": false,
+    "external_repositories_modified": false,
+    "implementation_or_plan_files_modified": false,
+    "shared_test_evidence_rerun": false
+  }
+}

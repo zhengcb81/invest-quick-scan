@@ -1,0 +1,15 @@
+{
+  "reviewer_id": "agent:/root/p00_preseal_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "I performed a read-only review and did not implement or modify the reviewed report, logs, task/case files, source files, receipt, or any external repository.",
+  "outcome": "changes_requested",
+  "implementation_snapshot_sha256": "ae957b16a6c02634eabfffea63745cabe5350a0de2541202808dbc52f5f0ee3a",
+  "open_findings": [
+    {
+      "severity": "P2",
+      "detail": "The P00 task requires verifying the real StockQA parsing, search, AnswerGenerator, and ProviderCascade call chain. The report describes the quick-scan request as using `LLMClient.send_search_request` and generic `provider routing`, but does not name or distinguish the actual quick-scan `OrderedSearchProviderCascade` from the separate legacy `ProviderCascade`. Current `src/runners/llm_runner.py` imports `OrderedSearchProviderCascade`; the legacy class is a distinct stateful fallback and CodeGraph found no callers for it. This distinction is material to the configured fallback order and failure semantics. Update the baseline to trace the actual chain (`llm_runner` → `OrderedSearchProviderCascade` → `LLMProvider.search_question` → `LLMClient.send_search_request`) and explicitly state the legacy class is not the quick-scan path; cite read-only structural evidence or exact source locations."
+    }
+  ],
+  "notes": "Other material claims checked were supported: BASE-01.T01 hashes match the P01 context manifest and preserved legacy artifacts; BASE-01.T02 is an offline in-memory fixture, not a live search, and its log records successful cleanup, unchanged external source/status snapshots, zero network requests, and zero fees; parser source requires strict integer scores and null scores for non-scored statuses. The report candidly states that external test suites and live/API searches were not run. Repository/codegraph snapshot log source hashes and plan-validation output are internally consistent with the report. No external repository was written."
+}

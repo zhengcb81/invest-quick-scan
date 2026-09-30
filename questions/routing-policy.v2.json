@@ -1,0 +1,712 @@
+{
+  "schema_version": "1.3.0",
+  "router_version": "2.3.0",
+  "materiality": {
+    "enter_share": 0.15,
+    "retain_share": 0.1,
+    "strategic_share": 0.2,
+    "share_metrics": [
+      "revenue_share",
+      "gross_profit_share",
+      "invested_capital_share"
+    ],
+    "strategic_metrics": [
+      "committed_capex_share",
+      "binding_backlog_share"
+    ],
+    "exit_confirmation_periods": 2,
+    "switch_confirmation_periods": 2,
+    "major_event_can_override": true
+  },
+  "rules": [
+    {
+      "module_id": "acquisitive",
+      "axis": "attribute",
+      "predicate": "attribute_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "exposure_acquisitive"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "agriculture",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "auto",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "bank",
+      "axis": "type",
+      "predicate": "type_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "bank_economics"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "capital_markets",
+      "axis": "type",
+      "predicate": "type_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "capital_markets_economics"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "commercialization",
+      "axis": "lifecycle",
+      "predicate": "lifecycle_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "lifecycle_commercialization"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "common",
+      "axis": "common",
+      "predicate": "always",
+      "minimum_confidence": "medium",
+      "evidence_tags": [],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "concentrated",
+      "axis": "attribute",
+      "predicate": "attribute_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "exposure_concentrated"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "construction",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "consumer",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "controlled",
+      "axis": "attribute",
+      "predicate": "attribute_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "exposure_controlled"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "cross_border",
+      "axis": "attribute",
+      "predicate": "attribute_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "exposure_cross_border"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "cyclical",
+      "axis": "cycle",
+      "predicate": "cycle_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_cycle"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "declining",
+      "axis": "lifecycle",
+      "predicate": "lifecycle_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "lifecycle_declining"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "distressed",
+      "axis": "attribute",
+      "predicate": "attribute_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "default",
+        "covenant_breach",
+        "going_concern",
+        "financing_blocked"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": [
+        "DISTRESSED_01",
+        "DISTRESSED_02"
+      ]
+    },
+    {
+      "module_id": "dupont",
+      "axis": "diagnostic",
+      "predicate": "user_diagnostic",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "research_question"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "energy_transition",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "hardware",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "healthcare",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "holding",
+      "axis": "type",
+      "predicate": "type_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "holding_economics"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "industrial",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "insurer",
+      "axis": "type",
+      "predicate": "type_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "insurer_economics"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "internet",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "leisure_media",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "listing_structure",
+      "axis": "attribute",
+      "predicate": "attribute_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "exposure_listing_structure"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "materials",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "mature",
+      "axis": "lifecycle",
+      "predicate": "lifecycle_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "lifecycle_mature"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "medtech",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "operating",
+      "axis": "type",
+      "predicate": "type_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "operating_economics"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "other",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "unmatched_known_business"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "porter",
+      "axis": "diagnostic",
+      "predicate": "user_diagnostic",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "research_question"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "pre_revenue",
+      "axis": "type",
+      "predicate": "type_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "pre_revenue_economics"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "professional_services",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "property_developer",
+      "axis": "type",
+      "predicate": "type_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "property_developer_economics"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "property_owner",
+      "axis": "type",
+      "predicate": "type_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "property_owner_economics"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "recent_listing",
+      "axis": "attribute",
+      "predicate": "attribute_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "exposure_recent_listing"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "recovery",
+      "axis": "diagnostic",
+      "predicate": "recovery_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "temporary_operating_distress",
+        "structural_decline_uncertain",
+        "business_cycle"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": [
+        "RECOVERY_01",
+        "RECOVERY_02",
+        "RECOVERY_03",
+        "RECOVERY_04"
+      ]
+    },
+    {
+      "module_id": "resources",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "retail",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "scaling",
+      "axis": "lifecycle",
+      "predicate": "lifecycle_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "lifecycle_scaling"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "semiconductors",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "software",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "subsidized",
+      "axis": "attribute",
+      "predicate": "attribute_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "exposure_subsidized"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "telecom",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "transport",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "turnaround",
+      "axis": "lifecycle",
+      "predicate": "lifecycle_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "lifecycle_turnaround"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "utilities",
+      "axis": "industry",
+      "predicate": "industry_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "business_activity"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    },
+    {
+      "module_id": "validation",
+      "axis": "lifecycle",
+      "predicate": "lifecycle_evidence",
+      "minimum_confidence": "medium",
+      "evidence_tags": [
+        "lifecycle_validation"
+      ],
+      "excluded_tags": [
+        "price_decline",
+        "concept_label"
+      ],
+      "mandatory_question_ids": []
+    }
+  ],
+  "request_protocol": "stockqa-route-confidence-3",
+  "partial_dispatch": "common_and_mandatory_risk",
+  "classification_confidence_gate": {
+    "minimum_score": 7,
+    "below_threshold": "mark_llm_candidates_uncertain"
+  }
+}

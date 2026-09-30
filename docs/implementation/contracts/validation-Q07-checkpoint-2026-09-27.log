@@ -1,0 +1,56 @@
+Q07 checkpoint and per-question recovery implementation validation
+Date: 2026-09-27
+Owner repository: StockQAbyLLM
+Scope: additive SQLite checkpoint store + shared receipt hash + isolated regressions
+Note: The initial snapshot below is retained as history. Its hashes, 234-test result, and pending-review note are superseded by the final exact-snapshot verification at the end of this file.
+
+Command:
+python -B -X utf8 -m pytest -q -o addopts='' -p no:cacheprovider -p no:base_url --basetemp=<unique TEMP/TMP child> tests/unit/test_quick_scan_work_store.py tests/unit/test_quick_scan_work_transport.py tests/unit/test_llm_client.py tests/unit/test_llm_provider.py tests/unit/test_search_provider.py tests/integration/test_quick_scan_cli.py
+
+Result: 234 passed, 0 failed, 0 skipped.
+Static checks: Ruff passed; Black check passed; git diff --check passed.
+Test isolation: pytest --basetemp, TMP and TEMP used a unique external temporary root; the root was removed and prior environment values restored. PYTHONDONTWRITEBYTECODE was restored. One .pyc created by an earlier syntax probe was removed. No fixture, SQLite, WAL/SHM, coverage, or pytest cache output was retained in the StockQA repository.
+External effects: no live API call, search-provider request, company-document download, or StockWiki/company-wiki write.
+
+Covered behavior:
+- SQLite schema v1 → v2 migration is additive and preserves work items, attempts, and event history; inconsistent v1 result_ready rows fail closed without migration.
+- Checkpoint persistence binds the normalized score/status/description to exact entity/question and immutable identity/question/routing fingerprints, verified identity, successful completed search receipt, source URLs, response/model/provider IDs, and both durable-work and provider prompt hashes.
+- The LLM HTTP transport's provider attempt ID is distinct from the work-store attempt ID; both are preserved. Receipt hashing is centralized and binds completion time and source URLs while excluding raw provider content.
+- A checkpoint insert, work_item=result_ready transition, and work_event are atomic. An injected transition failure rolls the entire transaction back; identical replay is idempotent and changed answer replay conflicts; checkpoints cannot be updated/deleted and corrupt payload hashes fail closed.
+- On restart, four checkpointed questions remain complete and only two pending questions can be claimed. response_available without a checkpoint remains leased and becomes uncertain after expiry; it is never silently skipped or reposted.
+- Only pending work can be cancelled; cancellation is idempotent and a leased in-flight question remains leased.
+- An end-to-end isolated test exercised the real LLMClient and ordered cascade, a fake HTTP response at the network boundary, strict response parsing, and a real temporary SQLite checkpoint.
+
+Initial StockQA file SHA-256 (superseded):
+src/utils/quick_scan_work_store.py 976819D21332A3B936B8D4852CF0A75E1B9948045D94DC744661B1D16970D80C
+src/utils/quick_scan_work_transport.py 60BC146DF4AAF023C25F372F02600E71D0209488867FDF28A832D162C7636FF0
+tests/unit/test_quick_scan_work_store.py 642EE6C9B37DBD78E8A9AC2E453601CD8571F0A71AD5DC04B0E1F932D98FD20F
+tests/unit/test_quick_scan_work_transport.py 567F3CBE709B67A49896C0E1B127123B043B76C2D48025A7380A39E0825686B5
+
+Scope limits (Q07 remains partial):
+- The current default is one question per provider request. A single pack dispatch mapped to multiple work items/answers (PAR-04) is not implemented or verified; the 4+2 restart test uses six independent question items.
+- The public StockQA runner is not yet wired to this store because production binding requires the authoritative StockWiki W03 identity projection. No StockWiki files were modified.
+- Budget reservation/settlement, StockWiki outbox ACK/import, and asynchronous transport are separate unresolved Q09/W05/Q06 integration gates.
+
+Independent exact-snapshot review: pending at time of initial validation; superseded by the final follow-up review below. Q07 remains partial because production runner and PAR-04 are incomplete.
+
+## Final follow-up snapshot
+
+Final affected-path command ran from a unique temporary working directory, with `TEMP`, `TMP`, `PYTHONPATH`, and `--basetemp` isolated and restored/removed afterward. The environment's unrelated global `pytest_base_url` plugin and repository-default coverage/cache outputs were excluded from this run; no project pytest configuration or repository `.coverage`, `htmlcov`, logs, or pytest cache was modified.
+
+Result: 235 passed, 0 failed, 0 skipped across the store, transport, LLM client/provider, search provider, and public CLI affected paths. `ResourceWarning` was promoted to an error; the final run produced no warnings. Ruff passed, Black check passed, AST syntax passed, and `git diff --check` passed. Test sandbox removed after completion. No API request, search call, or document download occurred.
+
+Follow-up changes included:
+- Remove common token/key/signature/credential/password query parameters from citation URLs using the same URL canonicalization used by persisted checkpoint payloads and receipt hashing; preserve non-sensitive query values and strip URL fragments.
+- Replace the generated-v2-then-downgraded migration fixture with fixed `tests/fixtures/quick_scan_work_store_v1.sql`. Migration now validates the old schema snapshot directly and tests row preservation plus rollback on unsafe completed rows.
+- Explicitly close test SQLite connections while preserving transaction commit/rollback behavior.
+
+Final StockQA file SHA-256:
+- `src/utils/quick_scan_work_store.py` `0824833D7465BE89DB8390482FA201BF211A4412913933463BD3E96EE338D61C`
+- `src/utils/quick_scan_work_transport.py` `60BC146DF4AAF023C25F372F02600E71D0209488867FDF28A832D162C7636FF0`
+- `tests/unit/test_quick_scan_work_store.py` `CDCA20CA6569977803D7985F37402B9F20E0BCEE8B0BA2D54C1E345F0C3F827D`
+- `tests/unit/test_quick_scan_work_transport.py` `567F3CBE709B67A49896C0E1B127123B043B76C2D48025A7380A39E0825686B5`
+- `tests/integration/test_quick_scan_cli.py` `006FFE66D6DF929A12F9C3C6ABE0B3993768AE1C642258ADFAB6D4CC02A0B5B9`
+- `tests/fixtures/quick_scan_work_store_v1.sql` `FC426AB3E9D8AEF9C6F1DE2097590002D26AF74E22A573060497F24197443C60`
+
+Independent exact-snapshot follow-up: passed; 64 focused store/transport tests passed; no open P0–P2 findings. Report: `docs/implementation/reviews/Q07/followup-review-2026-09-27.md`. This certifies the reviewed foundation only. The public runner still has no checkpoint call site and awaits authoritative W03 identity projection; PAR-04's single multi-question dispatch to per-question checkpoints remains unimplemented. An answer body lost between completed transport and checkpoint commit cannot be reconstructed, so the work remains safely `uncertain` and must not be reposted. Do not mark Q07 production complete.

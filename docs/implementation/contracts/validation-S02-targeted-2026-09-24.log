@@ -1,0 +1,305 @@
+F......................................F....                [100%]
+================================== FAILURES ===================================
+_ QuestionSetTests.test_actual_stockqa_cli_scores_eight_and_imports_execution_receipts_offline _
+
+self = <test_question_sets.QuestionSetTests testMethod=test_actual_stockqa_cli_scores_eight_and_imports_execution_receipts_offline>
+
+    def test_actual_stockqa_cli_scores_eight_and_imports_execution_receipts_offline(self):
+        repo = Path(os.environ.get('STOCKQA_REPO', str(ROOT.parent / 'StockQAbyLLM')))
+        self.assertTrue((repo / 'src/config/json_config_manager.py').exists(),
+                        'StockQAbyLLM is required for S02 contract acceptance; configure STOCKQA_REPO')
+        old_cwd = Path.cwd()
+        old_argv = sys.argv[:]
+        sys.path.insert(0, str(repo))
+        try:
+            temp_context = tempfile.TemporaryDirectory(prefix='iqs-stockqa-s02-')
+            tmp = temp_context.name
+            try:
+                os.chdir(tmp)  # upstream logger writes here, never into the external repository
+                loader = importlib.import_module('src.config.json_config_manager').JSONConfigManager
+                parser = importlib.import_module('src.providers.llm_response_parser').LLMResponseParser
+                models = importlib.import_module('src.core.models')
+                generator = importlib.import_module('src.services.answer_generator').AnswerGenerator
+                questions = loader(str(ROOT / 'main_questions.json')).load_questions()
+                self.assertEqual(len(questions), len(self.modules['common']['questions']))
+                q = self.make_manifest()['questions'][0]
+                raw = self.good_answer(q, score=8)
+                score, description = parser().parse_response(json.dumps(raw))
+                self.assertEqual(score, 8)
+                self.assertEqual(json.loads(description)['score'], 8)
+                # The real Q01 path must preserve the provider's score exactly.
+                answer = generator().generate_answer(models.Question('offline test'), [
+                    models.SearchResult(title='test', snippet=description, score=8)])
+                self.assertEqual(answer.score, 8)
+    
+                profile = {**copy.deepcopy(self.profile), 'entity_id': 'ENTITY_FIXTURE'}
+                run_dir = Path(tmp) / 'composed-screening'
+                qs.compose(profile, 'quick', run_dir, answer_format='screening-1')
+                manifest = qs.read_json(run_dir / 'manifest.json')
+                config_path = run_dir / 'questions.json'
+                result_path = Path(tmp) / 'stockqa-result.json'
+                config_json = json.loads(config_path.read_text(encoding='utf-8'))
+                self.assertTrue(all(isinstance(item, dict) and item.get('question_id') and item.get('text')
+                                    for group in config_json for item in group['questions']))
+                Path(tmp, 'llm_apis.json').write_text(json.dumps({
+                    'default_provider': 'openai',
+                    'providers': {'openai': {'api_key': 'TEST_KEY_LOCAL_ONLY',
+                                             'base_url': 'https://api.openai.com/v1/responses',
+                                             'model': 'fixture-model', 'max_retries': 1,
+                                             'format_repair_budget': 0}},
+                }), encoding='utf-8')
+                client_module = importlib.import_module('src.providers.llm_client')
+                main_cli = importlib.import_module('main_with_llm')
+    
+                def offline_search(_client, prompt, system_prompt=None):
+                    question_match = re.search(r'Target question_id: ([A-Z0-9_]+)', prompt)
+                    self.assertIsNotNone(question_match, 'StockQA omitted the bound question ID')
+                    qid = question_match.group(1)
+                    expected = next(item for item in manifest['questions'] if item['id'] == qid)
+                    url = f'https://example.com/source/{qid.lower()}'
+                    content = {
+                        'id': qid, 'status': 'scored', 'score': 8, 'confidence': 'high',
+                        'rationale': 'offline CLI fixture', 'information_as_of': profile['as_of'],
+                        'period_start': None, 'period_end': None, 'basis': 'current',
+                        'evidence': [{'claim': 'fixture source supports the score', 'title': 'Fixture source',
+                                      'url': url, 'published_at': None, 'period': 'not_applicable'}],
+                        'counterevidence': 'fixture counterevidence', 'sensitivity': 'fixture downside',
+                        'metrics': {},
+                    }
+                    response_content = json.dumps({
+                        'question_id': qid, 'entity_id': profile['entity_id'],
+                        'company_name': profile['company'], 'status': 'scored', 'score': 8,
+                        'description': json.dumps(content, ensure_ascii=False),
+                    }, ensure_ascii=False)
+                    stamp = '2026-09-24T12:00:00Z'
+                    execution = {
+                        'attempt_id': f'attempt-{qid}', 'started_at': stamp, 'completed_at': stamp,
+                        'prompt_sha256': hashlib.sha256(prompt.encode('utf-8')).hexdigest(),
+                        'response_status': 'completed', 'http_status_code': 200,
+                        'search_status': 'executed', 'search_receipt_id': f'search-{qid}',
+                        'source_urls': [url],
+                        'web_search_calls': [{'id': f'call-{qid}', 'status': 'completed',
+                                              'source_urls': [url]}],
+                        'attempts': [{'attempt_id': f'attempt-{qid}', 'status': 'completed'}],
+                    }
+                    self.assertIn(expected['prompt'], prompt)
+                    return client_module.LLMSearchResponse(
+                        content=response_content, request_id=f'req-{qid}', response_id=f'resp-{qid}',
+                        actual_model='fixture-model', source_urls=(url,), execution_metadata=execution)
+    
+                sys.argv = ['main_with_llm.py', '--company', profile['company'], '--provider', 'openai',
+                            '--config', str(config_path), '--output', str(result_path),
+                            '--require-search', '--entity-id', profile['entity_id']]
+                try:
+                    with mock.patch.object(client_module.LLMClient, 'send_search_request', autospec=True,
+                                           side_effect=offline_search) as send_search, \
+                         contextlib.redirect_stdout(io.StringIO()):
+                        self.assertEqual(main_cli.main(), 0)
+                    quick_scan = qs.read_json(result_path)
+                    self.assertEqual(send_search.call_count, manifest['question_count'])
+                    self.assertEqual(quick_scan['schema_version'], 'stockqa.quick_scan_result/1.0.0')
+                    self.assertEqual(set(quick_scan['answers']), {item['id'] for item in manifest['questions']})
+                    bundle = {
+                        'schema_version': 'invest-quick-scan.screening-import/1.0.0',
+                        'manifest_sha256': qs._stable_sha256(manifest),
+                        'input_question_sha256': {
+                            item['id']: hashlib.sha256(item['prompt'].encode('utf-8')).hexdigest()
+                            for item in manifest['questions']
+                        },
+                        'result': quick_scan,
+                    }
+                    screened = qs.normalize(manifest, bundle)
+>                   self.assertEqual(screened['summary']['quality_score'], 8)
+E                   AssertionError: None != 8
+
+tests\test_question_sets.py:708: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ���ڼ���JSON�����ļ�: C:\Users\֣����\Projects\invest-quick-scan\main_questions.json
+INFO - �ɹ���JSON���ü��� 24 ������
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - ���ڼ���JSON�����ļ�: C:\Users\֣����\AppData\Local\Temp\iqs-stockqa-s02-ejed_7yf\composed-screening\questions.json
+INFO - �ɹ���JSON���ü��� 31 ������
+INFO - �ɹ����� LLM �����ļ�: llm_apis.json
+WARNING - �������ļ���ȡ API ��Կ������ʹ�û���������
+INFO - LLMProvider initialized (provider: openai, model: fixture-model, api_key: TEST...ONLY)
+INFO - QAEngine ��ʼ����ɣ������ṩ��: openai��
+INFO - ��ʼ�������� 31 ������
+INFO - LLM��������: [IQS_01] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [1/31] �����ɹ�
+INFO - LLM��������: [IQS_02] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [2/31] �����ɹ�
+INFO - LLM��������: [OPERATING_02] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [3/31] �����ɹ�
+INFO - LLM��������: [INDUSTRIAL_02] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [4/31] �����ɹ�
+INFO - LLM��������: [MATURE_01] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", ...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [5/31] �����ɹ�
+INFO - LLM��������: [IQS_04] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [6/31] �����ɹ�
+INFO - LLM��������: [IQS_05] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [7/31] �����ɹ�
+INFO - LLM��������: [IQS_06] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [8/31] �����ɹ�
+INFO - LLM��������: [INDUSTRIAL_01] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [9/31] �����ɹ�
+INFO - LLM��������: [IQS_07] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [10/31] �����ɹ�
+INFO - LLM��������: [IQS_08] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [11/31] �����ɹ�
+INFO - LLM��������: [IQS_09] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [12/31] �����ɹ�
+INFO - LLM��������: [IQS_10] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [13/31] �����ɹ�
+INFO - LLM��������: [IQS_12] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [14/31] �����ɹ�
+INFO - LLM��������: [OPERATING_01] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [15/31] �����ɹ�
+INFO - LLM��������: [CYCLICAL_01] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��"...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [16/31] �����ɹ�
+INFO - LLM��������: [IQS_13] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [17/31] �����ɹ�
+INFO - LLM��������: [IQS_14] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [18/31] �����ɹ�
+INFO - LLM��������: [IQS_15] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [19/31] �����ɹ�
+INFO - LLM��������: [MATURE_02] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", ...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [20/31] �����ɹ�
+INFO - LLM��������: [IQS_16] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [21/31] �����ɹ�
+INFO - LLM��������: [IQS_17] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [22/31] �����ɹ�
+INFO - LLM��������: [IQS_18] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [23/31] �����ɹ�
+INFO - LLM��������: [CYCLICAL_02] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��"...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [24/31] �����ɹ�
+INFO - LLM��������: [CROSS_BORDER_01] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾��...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [25/31] �����ɹ�
+INFO - LLM��������: [IQS_19] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [26/31] �����ɹ�
+INFO - LLM��������: [IQS_20] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [27/31] �����ɹ�
+INFO - LLM��������: [IQS_21] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [28/31] �����ɹ�
+INFO - LLM��������: [IQS_22] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [29/31] �����ɹ�
+INFO - LLM��������: [IQS_23] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [30/31] �����ɹ�
+INFO - LLM��������: [IQS_24] ������ھ�={"company": "ʾ����ҵ�豸�ɷ����޹�˾���鹹��", "ti...
+INFO - ���ڵ��� openai API... (���� 1/1)
+INFO - �ɹ�����LLM��Ӧ��ֱ��JSON��������: 8/10
+INFO - LLM��������� (״̬: scored)
+INFO - [31/31] �����ɹ�
+INFO - [OK] ����ѱ��浽: C:\Users\֣����\AppData\Local\Temp\iqs-stockqa-s02-ejed_7yf\stockqa-result.json
+_ QuestionSetTests.test_screening_recovery_watch_preserves_low_current_quality_and_strong_assets _
+
+self = <test_question_sets.QuestionSetTests testMethod=test_screening_recovery_watch_preserves_low_current_quality_and_strong_assets>
+
+    def test_screening_recovery_watch_preserves_low_current_quality_and_strong_assets(self):
+        profile = {**self.profile, 'recovery_review': True,
+                   'recovery_rationale': 'fixture: cyclical downturn with retained assets'}
+        manifest, _ = self.make_screening_manifest(profile)
+        scores = {q['id']: 4 for q in manifest['questions']}
+        scores.update({qid: 8 for qid in ('IQS_05', 'IQS_12', 'IQS_13', 'IQS_16',
+                                          'RECOVERY_01', 'RECOVERY_02', 'RECOVERY_04')})
+        scores['RECOVERY_03'] = 3
+        imported = qs.normalize_screening(manifest, self.make_screening_bundle(manifest, scores=scores))
+>       self.assertEqual(imported['recovery_watch']['status'], 'potential_watch')
+E       AssertionError: 'weak_case_watch' != 'potential_watch'
+E       - weak_case_watch
+E       + potential_watch
+
+tests\test_question_sets.py:590: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_question_sets.py::QuestionSetTests::test_actual_stockqa_cli_scores_eight_and_imports_execution_receipts_offline
+FAILED tests/test_question_sets.py::QuestionSetTests::test_screening_recovery_watch_preserves_low_current_quality_and_strong_assets
+2 failed, 42 passed, 85 subtests passed in 7.34s

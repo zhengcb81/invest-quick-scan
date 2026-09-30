@@ -82,7 +82,20 @@
           "additionalProperties": false
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": { "dimension": { "enum": ["recovery_watch", "dupont", "porter", "fact"] } },
+            "required": ["dimension"]
+          },
+          "then": { "properties": { "aggregation_role": { "const": "diagnostic_only" } } }
+        },
+        {
+          "if": { "properties": { "aggregation_role": { "const": "diagnostic_only" } }, "required": ["aggregation_role"] },
+          "then": { "properties": { "critical_risk": { "const": false } } }
+        }
+      ]
     },
     "MetricContractBundle": {
       "type": "object",

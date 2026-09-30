@@ -1,0 +1,132 @@
+{
+  "review_version": "1.0",
+  "review_type": "P00 post-seal evidence review",
+  "task_id": "P00",
+  "reviewer_id": "agent:/root/p01_postseal_review",
+  "reviewer_role": "independent post-seal evidence reviewer",
+  "independent": true,
+  "separation_basis": "Separate evidence review, distinct from implementation author codex:/root and pre-seal reviewer agent:/root/p00_preseal_review. Read-only review of the sealed receipt, detached sidecar, P00 task/cases, assertion logs, validator, pre-seal report, and preserved legacy v1. Did not execute recorded test commands, call external services, or modify reviewed artifacts.",
+  "reviewed_at_utc": "2026-09-29T17:15:10Z",
+  "outcome": "approved",
+  "open_findings": [],
+  "receipt": {
+    "root_id": "iqs",
+    "path": "docs/implementation/contracts/receipt-P00.json",
+    "sha256": "58200d5bf612006fbb8ca58623a54140ae685bc00d7c288ebf302582478c7db3",
+    "schema_version": "2.0",
+    "core_sha256": "7fb22e43fa54ed4223a29dc68d5723d59fb23020ed19c2ee46a80a823478b43b",
+    "canonical_core_hash_verified": true,
+    "wrapper_shape_verified": true,
+    "plan_version": "1.10.13",
+    "current_plan_sha256": "26a028772b69751f4d71b7a7910c6bd71c67f13dbb597ae946df27b7a36df7fa",
+    "current_case_catalog_sha256": "d5786aa0e8ae1690ad58299f4cb76a0ddba4217e08218c7aea7db27093c25c9a",
+    "task_spec_sha256": "53ab0a278a0b74d7ce304d9d812e5f7d5380d302bc7615053d4a82a152dd5fcd",
+    "owned_case_bundle_sha256": "6b197ab764e9edef5b39d84f0b52df027d694efafcfe3a5ce0ea647b2f838216",
+    "global_boundaries_sha256": "61b52329b266485ce055345e33344326ff97d8cfad6b7d9b7140d47a3da9c1ab",
+    "case_ids": "BASE-01, BASE-02",
+    "assertion_ids": "BASE-01.T01, BASE-01.T02, BASE-02.T01, BASE-02.T02"
+  },
+  "sidecar": {
+    "root_id": "iqs",
+    "path": "docs/implementation/contracts/validation-P00-current-2026-09-29.json",
+    "sha256": "1dd382c80c2956ad1b78f8c3a43d7613f686d8a26d57c40145ece57eb2baabdc",
+    "schema_version": "task-receipt-validation/1",
+    "status": "eligible_to_close",
+    "eligible_to_close": true,
+    "blockers": [],
+    "evaluated_at_utc": "2026-09-29T17:12:12.803318Z",
+    "receipt_hash_binding_verified": true,
+    "core_hash_binding_verified": true,
+    "validator_hash_binding_verified": true,
+    "projection_case_count": 2,
+    "projection_assertion_count": 4,
+    "all_case_and_assertion_statuses_passed": true,
+    "all_assertion_evidence_checks_passed": true,
+    "assertion_id_sets_match_receipt": true,
+    "exact_stable_projection_matches_fresh_public_verifier": true,
+    "comparison_note": "The public read-only verifier was rerun at 2026-09-29T17:14:45.570786Z and exited 0. Its complete output matched the saved sidecar after excluding only evaluated_at_utc, which is expected to vary per run."
+  },
+  "validator": {
+    "root_id": "iqs",
+    "path": "scripts/task_receipts.py",
+    "sha256": "a917c30d219218dd2ff32e07d6e84cfff799865a5de0ae62e90666ee0b1e9ffb"
+  },
+  "preseal_review": {
+    "root_id": "iqs",
+    "path": "docs/implementation/reviews/P00/preseal-review-independent-r2-2026-09-29.json",
+    "sha256": "f6a012138857e88bca4e117a9054926ac09412a9cb11a78a48c45a89a5513cce",
+    "outcome": "approved",
+    "reviewer_id": "agent:/root/p00_preseal_review",
+    "implementation_snapshot_sha256": "ca4311d9e55160548495b7207933974be71bd03312879b8f5bd14de199634eea",
+    "receipt_snapshot_binding_verified": true,
+    "review_report_hash_binding_verified": true,
+    "reviewer_distinct_from_postseal_reviewer": true,
+    "open_findings": []
+  },
+  "assertion_logs": [
+    {
+      "assertion_id": "BASE-01.T01",
+      "path": "docs/implementation/contracts/validation-P00-BASE01-T01-2026-09-29.log",
+      "sha256": "229028059b2f2a280e6ae7a35ecdd2bdc0459d9c58a69addce2f4bcc60282482",
+      "hash_verified": true,
+      "status": "passed"
+    },
+    {
+      "assertion_id": "BASE-01.T02",
+      "path": "docs/implementation/contracts/validation-P00-BASE01-T02-2026-09-29.log",
+      "sha256": "66fc453a9ea662d73d994eeb0f538ff42be86a0c33109a4f59e62d85ce664dcc",
+      "hash_verified": true,
+      "status": "passed"
+    },
+    {
+      "assertion_id": "BASE-02.T01",
+      "path": "docs/implementation/contracts/validation-P00-BASE02-T01-2026-09-29.log",
+      "sha256": "b083219fc458898254518e4a2e6db79a1bdb692e86474a2579cbd1e24fdaa81a",
+      "hash_verified": true,
+      "status": "passed"
+    },
+    {
+      "assertion_id": "BASE-02.T02",
+      "path": "docs/implementation/contracts/validation-P00-BASE02-T02-2026-09-29.log",
+      "sha256": "9c119b65b163bf34a2862946aa8cd927d7e12626feed8dab372a20ff0e8f513f",
+      "hash_verified": true,
+      "status": "passed"
+    }
+  ],
+  "legacy_p00_v1": {
+    "root_id": "iqs",
+    "path": "docs/implementation/baselines/receipt-P00.json",
+    "sha256": "0d7cccbab76842ac7bd45e94e23242da88ff18a0c34b0910a310842ce0ee5983",
+    "matches_immutable_P01_context_manifest": true,
+    "confirmed_legacy_non_v2": true,
+    "modified_by_reviewer": false
+  },
+  "evidence_checks": {
+    "receipt_core_hash_recomputed": true,
+    "sidecar_core_hash_matches_receipt": true,
+    "sidecar_receipt_file_hash_matches": true,
+    "sidecar_validator_hash_matches_current_file": true,
+    "current_P00_task_and_cases_match_receipt_and_verifier": true,
+    "implementation_snapshot_files_and_digest_match": true,
+    "preseal_review_hash_and_snapshot_match": true,
+    "all_four_assertion_logs_nonempty_and_hash_valid": true,
+    "all_four_assertion_projections_pass": true,
+    "fresh_verifier_projection_matches_saved_sidecar": true,
+    "legacy_P00_v1_unchanged_and_hash_locked": true
+  },
+  "cycle_check": {
+    "receipt_core_references_sidecar_or_postseal_review": false,
+    "receipt_snapshot_includes_receipt_sidecar_or_postseal_review": false,
+    "preseal_review_references_receipt_or_sidecar_hashes": false,
+    "sidecar_references_postseal_review": false,
+    "postseal_report_is_detached": true
+  },
+  "reviewer_execution": {
+    "public_read_only_verifier_rerun": true,
+    "verifier_exit_code": 0,
+    "recorded_test_commands_executed": false,
+    "network_or_api_calls": false,
+    "reviewed_receipt_sidecar_task_cases_logs_validator_preseal_report_and_legacy_v1": true,
+    "receipt_or_sidecar_modified": false
+  }
+}

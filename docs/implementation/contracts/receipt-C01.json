@@ -1,109 +1,167 @@
 {
-  "task_id": "C01",
-  "status": "implementation_complete",
-  "owner": "iqs",
-  "plan_version": "1.4.0",
-  "plan_sha256": "24FC0CFBFAD86AF1B6A87B00420F22FE9AAAD0F76BEFFD7608D216E8766A7F6B",
-  "case_catalog_sha256": "1B4B4F8CD4F1CC47AA071087E6463C6F7CBA3A9EFEB0DB4074D580E3B73DF525",
-  "implementation_snapshot": {
-    "commit": "6d8610c",
-    "file_hashes": {
-      "schemas/quick_scan/identity.schema.json": "B0F1931B4EB6CDCEF0FAB0E6F7AC5D6DB707686555F363301AEA0511C9AE0A82",
-      "docs/implementation/contracts/identity.md": "50413E0DA604661028EB3055BECEA71C663157DD5B3B2EAFC93A23AAA4D5787F",
-      "tests/test_identity_contract.py": "58792EDD391723276CB13C62621FC8FD33739A3AB60F5F838997FB2ADD8FD266"
-    }
+  "schema_version": "2.0",
+  "core": {
+    "task_id": "C01",
+    "plan_version": "1.9.8",
+    "plan_sha256": "c03175fe2def61eda4dc974816b2bd42b1b09bf042b52ee730924d7d6d31b2f3",
+    "case_catalog_sha256": "8d9342896a3485f90ee67436643f67b6db7af35f24fa2b92f6733ac10a9a7287",
+    "hash_algorithm": "canonical-json-sha256-v1",
+    "task_spec_sha256": "2cd827f60fb614ce903334d29b98579129adecdaa3e4f7d54021f674f66d089d",
+    "owned_case_bundle_sha256": "3a3369089cff46db631b6aeb0b2dab5027ce620fc80ebd6347be6c6d6d762724",
+    "global_boundaries_sha256": "d05c77a2814f1f1d296963f709727c71969c5ee102d2848e0e770059e4874b54",
+    "implementation_author_id": "agent:/root",
+    "case_results": [
+      {
+        "case_id": "ID-01",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "ID-01.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_01_dual_listed_entity_separation",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-identity-r2-6h8e1i8n\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C01-identity-r2-2026-09-26.log",
+              "sha256": "5017a5ca3bc720fb5874cbbc66765e1d5b53142465f369c19d0461454e3e274a"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dedaf7c1-3c0e-4cd3-91b7-269270f03dfa",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the C01 identity-contract batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "ID-02",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "ID-02.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_02_parent_subsidiary_cannot_merge_without_verified_issuer",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-identity-r2-6h8e1i8n\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C01-identity-r2-2026-09-26.log",
+              "sha256": "5017a5ca3bc720fb5874cbbc66765e1d5b53142465f369c19d0461454e3e274a"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dedaf7c1-3c0e-4cd3-91b7-269270f03dfa",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the C01 identity-contract batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "ID-03",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "ID-03.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_03_adr_ratio_boundary_and_no_guessing",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-identity-r2-6h8e1i8n\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C01-identity-r2-2026-09-26.log",
+              "sha256": "5017a5ca3bc720fb5874cbbc66765e1d5b53142465f369c19d0461454e3e274a"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dedaf7c1-3c0e-4cd3-91b7-269270f03dfa",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the C01 identity-contract batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      }
+    ],
+    "implementation_snapshot": [
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/identity.md",
+        "sha256": "2680af14ec3e6d1e086b14cf61211d6f649cf3dae7c18a7654498dac57321c50"
+      },
+      {
+        "root_id": "iqs",
+        "path": "schemas/quick_scan/identity.schema.json",
+        "sha256": "228745aa45474e5670d7801d1baa8211dd7ce8bc911a96c611ff0294abe7f1f3"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/test_identity_contract.py",
+        "sha256": "95d155d17cb883a1af3668c076a3219401bda71146466f405fd53b9c9d2ef19f"
+      }
+    ],
+    "implementation_snapshot_sha256": "14d9d5c4b5c0f6e5f9b24e7848e69adf5f3cf189d26a6db19b2d5ff9d7b06c45",
+    "independent_review": {
+      "report": {
+        "root_id": "iqs",
+        "path": "docs/implementation/reviews/C01/preseal-review-r2-2026-09-26.json",
+        "sha256": "4e907e6c67b07456fb054bec0826bfdd6ad0f86e29098d96b72aaf385be1a224"
+      },
+      "reviewer_id": "agent:/root/p01_receipt_review",
+      "reviewer_role": "independent implementation reviewer",
+      "independent": true,
+      "separation_basis": "Separate read-only sub-agent; did not implement or modify the C01 contract, validator, test, or evidence.",
+      "outcome": "approved",
+      "implementation_snapshot_sha256": "14d9d5c4b5c0f6e5f9b24e7848e69adf5f3cf189d26a6db19b2d5ff9d7b06c45",
+      "open_findings": []
+    },
+    "dependency_evidence": [
+      {
+        "task_id": "P00",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-P00.json",
+          "sha256": "a2a0f0d522e0405b08b76c96544d6bba7638fd16be17253746b8617ffd98285a"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "P01",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-P01.json",
+          "sha256": "84d413e8813260a18f571570c193e83bf24ab580a1afd00252d53bddd28fe9c7"
+        },
+        "status": "eligible_to_close"
+      }
+    ]
   },
-  "dependency_receipts": [
-    "docs/implementation/baselines/receipt-P00.json"
-  ],
-  "changed_files": [
-    "schemas/quick_scan/identity.schema.json",
-    "docs/implementation/contracts/identity.md",
-    "tests/test_identity_contract.py",
-    "docs/implementation/contracts/receipt-C01.json"
-  ],
-  "contract_changes": [
-    "新增公司(Entity)、证券(Security)、分部(Segment)、发行人桥接(VerifiedIssuerBridge)及大股票池清单(UniverseManifest)Schema",
-    "规定A/H多挂牌经营题按Entity生成1份、估值按Security生成各自币种估值范围",
-    "规定母子公司同品牌未核实同一发行人严禁合并为单Entity",
-    "规定ADR折算比例未核实时为null，严禁推测",
-    "规定大股票池软目标扩容不自动退池，退池为逻辑移除，恢复保留历史理由与递增版本"
-  ],
-  "checks": [
-    {
-      "case_id": "ID-01",
-      "kind": "automated",
-      "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_01_dual_listed_entity_separation",
-      "command": "pytest tests/test_identity_contract.py -k test_id_01",
-      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
-      "result": "passed",
-      "exit_code": 0,
-      "executed_count": 1,
-      "skipped_count": 0,
-      "output_path": null,
-      "explanation": "验证A/H双重挂牌实体Schema校验通过，经营题每题生成1个待办，估值题分别针对CNY与HKD证券生成独立的估值待办。"
-    },
-    {
-      "case_id": "ID-02",
-      "kind": "automated",
-      "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_02_parent_subsidiary_cannot_merge_without_verified_issuer",
-      "command": "pytest tests/test_identity_contract.py -k test_id_02",
-      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
-      "result": "passed",
-      "exit_code": 0,
-      "executed_count": 1,
-      "skipped_count": 0,
-      "output_path": null,
-      "explanation": "验证母公司与上市子公司虽同品牌，但verified_same_issuer为False时禁止合并，必须保留两个独立Entity。"
-    },
-    {
-      "case_id": "ID-03",
-      "kind": "automated",
-      "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_03_adr_ratio_boundary_and_no_guessing",
-      "command": "pytest tests/test_identity_contract.py -k test_id_03",
-      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
-      "result": "passed",
-      "exit_code": 0,
-      "executed_count": 1,
-      "skipped_count": 0,
-      "output_path": null,
-      "explanation": "验证ADR比例未知时adr_ratio必须为null，换算返回unknown严禁臆测，而实体经营画像仍可复用。"
-    },
-    {
-      "case_id": "ID-04",
-      "kind": "automated",
-      "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_04_lightweight_identity_without_wiki_prerequisite",
-      "command": "pytest tests/test_identity_contract.py -k test_id_04",
-      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
-      "result": "passed",
-      "exit_code": 0,
-      "executed_count": 1,
-      "skipped_count": 0,
-      "output_path": null,
-      "explanation": "验证快扫实体在company_wiki_ref和formal_stockwiki_profile均为null时合法通过，无前置文档下载或正式建档约束。"
-    },
-    {
-      "case_id": "UNI-04",
-      "kind": "automated",
-      "selector": "tests/test_identity_contract.py::IdentityContractTests::test_uni_04_universe_manifest_capacity_expansion_and_logical_removal",
-      "command": "pytest tests/test_identity_contract.py -k test_uni_04",
-      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
-      "result": "passed",
-      "exit_code": 0,
-      "executed_count": 1,
-      "skipped_count": 0,
-      "output_path": null,
-      "explanation": "验证名单扩容至2003家不挤出老成员，移出为logically_removed带原因，恢复入池递增版本号并记录理由。"
-    }
-  ],
-  "review": {
-    "reviewer": null,
-    "snapshot": "6d8610c",
-    "result": "pending",
-    "findings": []
-  },
-  "rollback_evidence": "删除 schemas/quick_scan/identity.schema.json, docs/implementation/contracts/identity.md, tests/test_identity_contract.py 即可完全回退",
-  "open_issues": [],
-  "next_task": "C02",
-  "resume_from": "C02"
+  "core_sha256": "50ab552912e650be835493d8cb608671803085736322d69e432448c19cb16cc8"
 }

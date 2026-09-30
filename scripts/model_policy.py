@@ -32,6 +32,18 @@ def validate_policy(policy):
             seen.add(route)
     if policy['configured'] and (not seen or policy['budget']['max_cost'] <= 0 or policy['budget']['max_requests'] <= 0):
         raise ValueError('configured policy requires enabled models and positive explicit budgets')
+    if policy['configured'] and policy['budget']['max_cost_per_attempt'] > policy['budget']['max_cost']:
+        raise ValueError('per-attempt cost cap cannot exceed the total budget')
+    comparison = policy['comparison']
+    if comparison['enabled']:
+        if not policy['configured']:
+            raise ValueError('comparison requires a configured policy')
+        if comparison['max_cost'] > policy['budget']['max_cost']:
+            raise ValueError('comparison cost cap cannot exceed the shared total budget')
+        if comparison['max_requests'] > policy['budget']['max_requests']:
+            raise ValueError('comparison request cap cannot exceed the shared total budget')
+        if comparison['max_models_per_question'] > len(seen):
+            raise ValueError('comparison requests more models than enabled routes')
     return {'valid': True, 'configured': policy['configured'],
             'ordered_routes': [m['id'] for m in models if m['enabled']],
             'runtime_verified': False, 'network_used': False,

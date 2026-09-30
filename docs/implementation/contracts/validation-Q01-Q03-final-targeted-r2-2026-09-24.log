@@ -1,0 +1,93 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: C:\Users\郑曾波\Projects\StockQAbyLLM
+configfile: pyproject.toml
+plugins: anyio-4.13.0, Faker-40.19.1, asyncio-1.3.0, base-url-2.1.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 138 items
+
+tests\unit\test_models.py ..................................             [ 24%]
+tests\unit\test_llm_response_parser.py ...................               [ 38%]
+tests\unit\test_llm_client.py .......EEE.......                          [ 50%]
+tests\unit\test_qa_engine.py ............                                [ 59%]
+tests\unit\test_services.py ................                             [ 71%]
+tests\unit\test_search_provider.py .........                             [ 77%]
+tests\unit\test_batch_processor.py ..                                    [ 78%]
+tests\integration\test_json_config.py ..................                 [ 92%]
+tests\integration\test_qa_pipeline.py ........                           [ 97%]
+tests\integration\test_quick_scan_cli.py F..                             [100%]
+
+=================================== ERRORS ====================================
+_ ERROR at setup of TestLLMClient.test_ambiguous_openai_search_endpoint_is_rejected_before_transport[https://user:pass@api.openai.com/v1/chat/completions] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of TestLLMClient.test_ambiguous_openai_search_endpoint_is_rejected_before_transport[https://api.openai.com:8443/v1/chat/completions] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of TestLLMClient.test_ambiguous_openai_search_endpoint_is_rejected_before_transport[https://api.openai.com/proxy/v1/chat/completions] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+================================== FAILURES ===================================
+_ test_public_cli_exports_eight_score_entity_timestamp_model_and_search_receipt _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000012A206E8F50>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-q01-q03-retest-da368c4ba57b48608779993b34e90d85/pytest-tmp/test_public_cli_exports_eight_0')
+
+    def test_public_cli_exports_eight_score_entity_timestamp_model_and_search_receipt(
+        monkeypatch, tmp_path
+    ):
+        exit_code, output_file, session = _invoke(monkeypatch, tmp_path)
+    
+>       assert exit_code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py:110: AssertionError
+---------------------------- Captured stdout call -----------------------------
+ERROR - 运行失败: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\AppData\\Local\\Temp\\stockqa-q01-q03-retest-da368c4ba57b48608779993b34e90d85\\pytest-tmp\\test_public_cli_exports_eight_0\\logs\\stock_qa_20260924.log'
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 283, in main
+    from src.runners.llm_runner import LLMRunner
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\__init__.py", line 8, in <module>
+    from .llm_runner import LLMRunner
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 29, in <module>
+    logger = get_logger(__name__)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\utils\logger.py", line 66, in get_logger
+    file_handler = logging.FileHandler(log_file, encoding="utf-8")
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1219, in __init__
+    StreamHandler.__init__(self, self._open())
+                                 ~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1248, in _open
+    return open_func(self.baseFilename, self.mode,
+                     encoding=self.encoding, errors=self.errors)
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\AppData\\Local\\Temp\\stockqa-q01-q03-retest-da368c4ba57b48608779993b34e90d85\\pytest-tmp\\test_public_cli_exports_eight_0\\logs\\stock_qa_20260924.log'
+------------------------------ Captured log call ------------------------------
+ERROR    main_with_llm:main_with_llm.py:298 运行失败: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\AppData\\Local\\Temp\\stockqa-q01-q03-retest-da368c4ba57b48608779993b34e90d85\\pytest-tmp\\test_public_cli_exports_eight_0\\logs\\stock_qa_20260924.log'
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 283, in main
+    from src.runners.llm_runner import LLMRunner
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\__init__.py", line 8, in <module>
+    from .llm_runner import LLMRunner
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 29, in <module>
+    logger = get_logger(__name__)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\utils\logger.py", line 66, in get_logger
+    file_handler = logging.FileHandler(log_file, encoding="utf-8")
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1219, in __init__
+    StreamHandler.__init__(self, self._open())
+                                 ~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1248, in _open
+    return open_func(self.baseFilename, self.mode,
+                     encoding=self.encoding, errors=self.errors)
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\AppData\\Local\\Temp\\stockqa-q01-q03-retest-da368c4ba57b48608779993b34e90d85\\pytest-tmp\\test_public_cli_exports_eight_0\\logs\\stock_qa_20260924.log'
+=========================== short test summary info ===========================
+FAILED tests/integration/test_quick_scan_cli.py::test_public_cli_exports_eight_score_entity_timestamp_model_and_search_receipt
+ERROR tests/unit/test_llm_client.py::TestLLMClient::test_ambiguous_openai_search_endpoint_is_rejected_before_transport[https://user:pass@api.openai.com/v1/chat/completions]
+ERROR tests/unit/test_llm_client.py::TestLLMClient::test_ambiguous_openai_search_endpoint_is_rejected_before_transport[https://api.openai.com:8443/v1/chat/completions]
+ERROR tests/unit/test_llm_client.py::TestLLMClient::test_ambiguous_openai_search_endpoint_is_rejected_before_transport[https://api.openai.com/proxy/v1/chat/completions]
+=================== 1 failed, 134 passed, 3 errors in 1.79s ===================

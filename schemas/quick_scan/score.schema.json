@@ -60,6 +60,11 @@
           "type": ["string", "null"]
         },
         "check_level": { "$ref": "#/definitions/CheckLevel" },
+        "check_level_receipt_id": {
+          "type": ["string", "null"],
+          "pattern": "^RCP_[A-Za-z0-9_.-]+$",
+          "description": "由可信执行或审核步骤签发的回执ID。模型原始输出不得自行授予检查等级。"
+        },
         "critical_risk_flag": {
           "type": "boolean",
           "default": false
@@ -70,7 +75,26 @@
           "description": "是否经人工/规则核实为合规不适用。只有经审核的N/A才可从分母排除（SC-07）。"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "scored" } }, "required": ["status"] },
+          "then": { "properties": { "score": { "$ref": "#/definitions/ValidScore" } } }
+        },
+        {
+          "if": { "properties": { "status": { "enum": ["unknown", "insufficient_evidence", "not_applicable", "error"] } }, "required": ["status"] },
+          "then": { "properties": { "score": { "type": "null" } } }
+        },
+        {
+          "if": { "properties": { "check_level": { "const": "unverified_model_output" } }, "required": ["check_level"] },
+          "then": { "properties": { "check_level_receipt_id": { "type": "null" } } },
+          "else": { "required": ["check_level_receipt_id"], "properties": { "check_level_receipt_id": { "type": "string", "pattern": "^RCP_[A-Za-z0-9_.-]+$" } } }
+        },
+        {
+          "if": { "properties": { "is_audited_na": { "const": true } }, "required": ["is_audited_na"] },
+          "then": { "properties": { "status": { "const": "not_applicable" } } }
+        }
+      ]
     }
   },
   "oneOf": [

@@ -1,0 +1,135 @@
+{
+  "task_id": "C02",
+  "status": "implementation_complete",
+  "owner": "iqs",
+  "plan_version": "1.4.0",
+  "plan_sha256": "24FC0CFBFAD86AF1B6A87B00420F22FE9AAAD0F76BEFFD7608D216E8766A7F6B",
+  "case_catalog_sha256": "1B4B4F8CD4F1CC47AA071087E6463C6F7CBA3A9EFEB0DB4074D580E3B73DF525",
+  "implementation_snapshot": {
+    "commit": "5320e0c",
+    "file_hashes": {
+      "schemas/quick_scan/metric.schema.json": "5A67C551AE644C038B291876685EA1181EB20FB4A4E1106B217D0143FF4CAD34",
+      "docs/implementation/contracts/metrics.md": "2E8DC17F8856964DAA746FA6A3A389235A0EF2AA7F769D8B96A33A1B8B4DA4EA",
+      "tests/test_metrics_contract.py": "7765CDA815BF419444B54273ADE8DE2CB2C05E79C20C91B125432C59762E9DD0"
+    }
+  },
+  "dependency_receipts": [
+    "docs/implementation/baselines/receipt-P00.json"
+  ],
+  "changed_files": [
+    "schemas/quick_scan/metric.schema.json",
+    "docs/implementation/contracts/metrics.md",
+    "tests/test_metrics_contract.py",
+    "docs/implementation/contracts/receipt-C02.json"
+  ],
+  "contract_changes": [
+    "新增指标定义(MetricRegistryEntry)、问题映射(QuestionMetricMapping)及契约包(MetricContractBundle)Schema",
+    "规定诊断题目（杜邦、五力、恢复）严禁计入质量/成长/估值均分（SC-08）",
+    "规定关键风险题（现金断粮、核心造假等）得<=3分时直接触发不可绕过的一票否决告警（SC-09）",
+    "规定跨行业不同群指标（如银行ROE与工业ROIC）不可直接拉通混比排名（SC-11）",
+    "规定护城河与变化证据要求说明前提与反证，严禁概念热词盲目加分，新业务增长需核算股东净经济效果（DUR-01, DUR-02, DUR-03）"
+  ],
+  "checks": [
+    {
+      "case_id": "SC-08",
+      "kind": "automated",
+      "selector": "tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages",
+      "command": "pytest tests/test_metrics_contract.py -k test_sc_08",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证向已有打分追加满分10分的杜邦、五力和恢复诊断题后，质量、成长、估值三个维度的原有均分绝对不变。"
+    },
+    {
+      "case_id": "SC-09",
+      "kind": "automated",
+      "selector": "tests/test_metrics_contract.py::MetricsContractTests::test_sc_09_critical_risk_cannot_be_averaged_or_bypassed",
+      "command": "pytest tests/test_metrics_contract.py -k test_sc_09",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证关键风险题目得分3分时触发致命风险拦截，即使平均分超过8分且存在OR规则，仍一票否决质量门槛。"
+    },
+    {
+      "case_id": "SC-10",
+      "kind": "automated",
+      "selector": "tests/test_metrics_contract.py::MetricsContractTests::test_sc_10_core_manifest_coverage_and_replacements",
+      "command": "pytest tests/test_metrics_contract.py -k test_sc_10",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证题库目录中通用核心模块包含完整24道买方核心决策题。"
+    },
+    {
+      "case_id": "SC-11",
+      "kind": "automated",
+      "selector": "tests/test_metrics_contract.py::MetricsContractTests::test_sc_11_cross_cohort_incomparability",
+      "command": "pytest tests/test_metrics_contract.py -k test_sc_11",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证跨群体指标（银行资本回报与工业ROIC）的比较判定被准确拒绝，禁止跨群体混分。"
+    },
+    {
+      "case_id": "DUR-01",
+      "kind": "automated",
+      "selector": "tests/test_metrics_contract.py::MetricsContractTests::test_dur_01_and_dur_02_evidence_demands",
+      "command": "pytest tests/test_metrics_contract.py -k test_dur_01",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证问题映射结构强制声明require_durability_conditions与反证需求。"
+    },
+    {
+      "case_id": "DUR-02",
+      "kind": "automated",
+      "selector": "tests/test_metrics_contract.py::MetricsContractTests::test_dur_01_and_dur_02_evidence_demands",
+      "command": "pytest tests/test_metrics_contract.py -k test_dur_01",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证新旧业务交替场景中要求声明require_net_economic_effect，防止单纯收入虚增误判。"
+    },
+    {
+      "case_id": "DUR-03",
+      "kind": "automated",
+      "selector": "tests/test_metrics_contract.py::MetricsContractTests::test_dur_03_diagnostic_addition_rules",
+      "command": "pytest tests/test_metrics_contract.py -k test_dur_03",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": null,
+      "explanation": "验证按需诊断规则：not_applicable直接跳过，unknown进入待核实，避免增设无谓冗余题。"
+    }
+  ],
+  "review": {
+    "reviewer": null,
+    "snapshot": "5320e0c",
+    "result": "pending",
+    "findings": []
+  },
+  "rollback_evidence": "删除 schemas/quick_scan/metric.schema.json, docs/implementation/contracts/metrics.md, tests/test_metrics_contract.py 即可完全回退",
+  "open_issues": [],
+  "next_task": "C03",
+  "resume_from": "C03"
+}

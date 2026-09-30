@@ -1,0 +1,38 @@
+$ C:\Miniconda\python.exe -X utf8 scripts/implementation_plan.py validate
+{"planning_valid": true, "tasks": 74, "acceptance_cases": 174, "final_release_gate": "G6", "product_tests_executed": false}
+EXIT_CODE=0
+
+$ C:\Miniconda\python.exe -X utf8 scripts/question_sets.py validate
+{
+  "modules": 48,
+  "questions": 222,
+  "by_kind": {
+    "common": 1,
+    "types": 8,
+    "industries": 21,
+    "stages": 7,
+    "overlays": 8,
+    "diagnostics": 3
+  }
+}
+EXIT_CODE=0
+
+$ git diff --check
+warning: in the working copy of 'docs/implementation/contracts/identity.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/implementation/contracts/metrics.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/implementation/contracts/scoring.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'references/common-framework.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'references/stockqa-integration.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'schemas/quick_scan/metric.schema.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'schemas/quick_scan/rule.schema.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'schemas/quick_scan/score.schema.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/implementation_plan.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/model_policy.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/question_sets.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/test_identity_contract.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/test_implementation_plan.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/test_metrics_contract.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/test_model_policy.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/test_question_sets.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/test_scoring_and_rules_contract.py', LF will be replaced by CRLF the next time Git touches it
+EXIT_CODE=0

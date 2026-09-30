@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "materials",
+  "kind": "industries",
+  "name": "化工、钢铁、建材与纸业",
+  "applies_when": "流程工业与大宗材料；用正常化价差和利用率评价。",
+  "questions": [
+    {
+      "id": "MATERIALS_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "正常化原料价差与产能利用率下，单位经济是否健康？",
+      "evidence": [
+        "产品原料价差",
+        "能耗",
+        "运费",
+        "利用率"
+      ],
+      "anchors": {
+        "1": "仅极端高价差时盈利",
+        "5": "中周期能覆盖成本但回报一般",
+        "10": "合理低价差下仍靠工艺或成本形成回报"
+      },
+      "metric_id": "score.materials_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "MATERIALS_02",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "工艺、原料、能耗或地域优势是否难以复制？",
+      "evidence": [
+        "单位成本",
+        "一体化",
+        "原料保障",
+        "运输半径"
+      ],
+      "anchors": {
+        "1": "成本劣势且产能同质",
+        "5": "成本和工艺接近同业",
+        "10": "结构性成本或产品差异优势稳定可验证"
+      },
+      "metric_id": "score.materials_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "MATERIALS_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "供给扩张和去库存阶段的现金韧性如何？",
+      "evidence": [
+        "行业新增产能",
+        "库存",
+        "维护投入",
+        "债务"
+      ],
+      "anchors": {
+        "1": "过剩与杠杆同时扩大现金缺口",
+        "5": "低谷可维持但扩张受限",
+        "10": "低谷仍能维护资产和覆盖资金需求"
+      },
+      "metric_id": "score.materials_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "MATERIALS_04",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "能耗、排放与安全责任是否已反映在运营成本和投资中？",
+      "evidence": [
+        "排放许可",
+        "改造投入",
+        "安全事故",
+        "碳成本"
+      ],
+      "anchors": {
+        "1": "合规改造缺口大且可能停产",
+        "5": "基本合规但未来投入压力明显",
+        "10": "合理未来标准下仍具成本竞争力和资金准备"
+      },
+      "metric_id": "score.materials_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

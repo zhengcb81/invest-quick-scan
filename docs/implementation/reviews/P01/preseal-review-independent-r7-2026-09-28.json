@@ -1,0 +1,97 @@
+{
+  "review_version": "1.0",
+  "review_type": "P01 pre-seal implementation review",
+  "reviewer_id": "agent:/root/p01_revalidation_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "Separate read-only review sub-agent; did not implement or modify the verifier, schema, example, tests, contract, plan, or evidence. This review re-read the current snapshot after the implementation owner updated the acceptance assertions and allowlist regression test. Prior report r6 is preserved.",
+  "outcome": "approved_with_findings",
+  "implementation_snapshot_sha256": "1136b23ab200a18a6c9e911fa564e2484ee36337d08675fe2b0899b9a94dd467",
+  "implementation_snapshot_files": [
+    {
+      "root_id": "iqs",
+      "path": "docs/implementation/contracts/task-receipts.md",
+      "sha256": "00ee7b3d7443064eb650d6610e279ba6b9ded5ce8941303af5b19437e5c31d9f"
+    },
+    {
+      "root_id": "iqs",
+      "path": "examples/quick_scan/task-receipt-v2-example.json",
+      "sha256": "bef5081098d09b240580d093764dc8b45c58bb1ad2eadddc1823a1b410998941"
+    },
+    {
+      "root_id": "iqs",
+      "path": "schemas/quick_scan/task-receipt.schema.json",
+      "sha256": "c6e0f1d7e329b2108ad608ea194ff8f6c0d37294c8b1ae9d38a90a512768284e"
+    },
+    {
+      "root_id": "iqs",
+      "path": "scripts/task_receipts.py",
+      "sha256": "a917c30d219218dd2ff32e07d6e84cfff799865a5de0ae62e90666ee0b1e9ffb"
+    },
+    {
+      "root_id": "iqs",
+      "path": "tests/test_task_receipts.py",
+      "sha256": "b7d0b5d221f17bd64274395d296a7cad04e84b36a0204fdf8d7c2795a00cdd5a"
+    }
+  ],
+  "open_findings": [
+    {
+      "id": "P01-R7-01",
+      "severity": "P2",
+      "title": "RCPT-03.A05 overstates the legacy-byte preservation oracle",
+      "files": [
+        "docs/implementation/acceptance-cases.json",
+        "tests/test_task_receipts.py",
+        "docs/implementation/tasks.json"
+      ],
+      "detail": "RCPT-03.A05 says its expected result proves that the legacy P00 v1 receipt remains preserved. The bound test only checks that allowlist strings, including the human-readable phrase 保留历史P00 v1原字节, appear in the P00/P01 task cards. It does not compare docs/implementation/baselines/receipt-P00.json with a pinned pre-existing digest or otherwise fail when that file is changed. P00's allowlist also names the whole baselines directory, so the phrase itself is not an enforced path restriction. The current legacy file does match P00-context-manifest.json, but the new test does not assert that fact. Either narrow RCPT-03.A05's oracle to the allowlist declarations it actually checks, or add a regression that anchors and verifies the legacy file's expected bytes and rejects a changed file.",
+      "evidence": "tests/test_task_receipts.py::TaskReceiptTests::test_p00_p01_current_receipt_artifacts_are_allowlisted_without_replacing_legacy_baseline only asserts `artifact in allowed`; acceptance-cases.json RCPT-03.A05 additionally claims legacy-byte preservation. Current manifest and baseline receipt hashes match, but no assertion in this test compares them."
+    }
+  ],
+  "review_scope": {
+    "supplemental_files": [
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/tasks.json",
+        "sha256": "b53660062a902cc5dfdf55164d3fbe1060c2d2db3c1ea5db7232213317269a6d"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/acceptance-cases.json",
+        "sha256": "2afe22aeadac5e548c1d451b6310ed17d2ea25b615245767e356d93bb5f3d876"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/test_implementation_plan.py",
+        "sha256": "cda4954c1675204308061b371a9a206245b5b51212a593bb1a9cc05641e91d5d"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/test_identity_contract.py",
+        "sha256": "f1b002ae9f5fa8be3ba643bfec2f8d1150eadc808c27ee12e593f5d28a94a231"
+      }
+    ],
+    "requirements": [
+      "P01 task requirements and RCPT-01/RCPT-02/RCPT-03 receipt/bootstrap contract",
+      "Strict v2 schema, core and task/case/global-boundary freshness hashes, exact case/assertion closure, source snapshot and pre-seal review binding",
+      "Recursive current dependency verification and P01-to-P00 historical-context-only bootstrap with exact manifest paths, hashes, and legacy classification",
+      "Read-only verifier behavior, no command execution or input mutation, safe rooted path handling, and detached sidecar projection",
+      "P00 current receipt/review outputs and P01 current detached sidecar JSON are declared in their owner task allowlists and checked by the regression test",
+      "ID-02.A02 resolves to an existing test selector; RCPT-03.A05 resolves to the new P00/P01 allowlist test, with expected-result scope compared against actual assertions"
+    ]
+  },
+  "execution": {
+    "mode": "read-only independent review",
+    "tests_run_by_reviewer": true,
+    "test_command": "python -X utf8 -m pytest --rootdir=. -p no:cacheprovider -q tests/test_task_receipts.py tests/test_implementation_plan.py tests/test_identity_contract.py::IdentityContractTests::test_v21_group_relationships_never_assert_issuer_equivalence",
+    "test_result": "118 passed, 102 subtests passed",
+    "targeted_binding_command": "python -X utf8 -m pytest --rootdir=. -p no:cacheprovider -q tests/test_task_receipts.py::TaskReceiptTests::test_p00_p01_current_receipt_artifacts_are_allowlisted_without_replacing_legacy_baseline tests/test_identity_contract.py::IdentityContractTests::test_v21_group_relationships_never_assert_issuer_equivalence",
+    "targeted_binding_result": "2 passed, 9 subtests passed",
+    "plan_validation_command": "python -X utf8 scripts/implementation_plan.py validate",
+    "plan_validation_result": "planning_valid=true; 108 tasks; 365 acceptance cases; final_release_gate=G6; product_tests_executed=false",
+    "current_p00_manifest_matches_legacy_file": true,
+    "network_or_api_calls": false,
+    "receipt_recorded_commands_executed": false,
+    "implementation_files_modified": false
+  }
+}

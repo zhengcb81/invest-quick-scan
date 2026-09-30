@@ -1,0 +1,32 @@
+run_id=bdba09d3-8119-4e22-8f25-4f29dca1322f
+isolation_root=C:\Users\郑曾波\AppData\Local\Temp\iqs-s01-c06-acceptance-f9a9b567f8d943b9baf367e80195f2a5
+environment=PYTHONDONTWRITEBYTECODE=1; TEMP/TMP isolated
+network=none
+fees_usd=0
+command=python -B -X utf8 -m pytest -p no:base_url -p no:cacheprovider --basetemp C:\Users\郑曾波\AppData\Local\Temp\iqs-s01-c06-acceptance-f9a9b567f8d943b9baf367e80195f2a5\pytest -W error -vv tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_manifest_remains_readable_without_new_mapping tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages tests/test_metrics_contract.py::MetricsContractTests::test_sc_10_core_manifest_coverage_and_replacements tests/test_metrics_contract.py::MetricsContractTests::test_sc_11_cross_cohort_incomparability tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_06_model_cannot_inject_formal_source_artifacts_or_acceptance tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_07_package_is_standalone_lightweight_exchange_not_a_second_store tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_02_empty_requires_covered_scope_and_unknown_is_coverage_gap tests/test_g0_regressions.py::G0RegressionTests::test_g0_08_lineage_must_be_closed_acyclic_and_transitively_independent
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+metadata: {'Python': '3.13.9', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.1.1', 'pluggy': '1.5.0'}, 'Plugins': {'Faker': '40.19.1', 'asyncio': '1.3.0', 'benchmark': '5.2.3', 'cov': '7.0.0', 'html': '4.1.1', 'metadata': '3.1.1', 'mock': '3.15.1', 'playwright': '0.7.2', 'timeout': '2.4.0', 'xdist': '3.8.0'}}
+rootdir: C:\Users\郑曾波\Projects\invest-quick-scan
+plugins: Faker-40.19.1, asyncio-1.3.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 10 items
+
+tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output 
+tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output PASSED [ 10%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping 
+tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping PASSED [ 20%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_manifest_remains_readable_without_new_mapping PASSED [ 30%]
+tests/test_metrics_contract.py::MetricsContractTests::test_sc_08_metamorphic_diagnostics_never_alter_core_averages PASSED [ 40%]
+tests/test_metrics_contract.py::MetricsContractTests::test_sc_10_core_manifest_coverage_and_replacements PASSED [ 50%]
+tests/test_metrics_contract.py::MetricsContractTests::test_sc_11_cross_cohort_incomparability PASSED [ 60%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_06_model_cannot_inject_formal_source_artifacts_or_acceptance PASSED [ 70%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_07_package_is_standalone_lightweight_exchange_not_a_second_store PASSED [ 80%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_02_empty_requires_covered_scope_and_unknown_is_coverage_gap PASSED [ 90%]
+tests/test_g0_regressions.py::G0RegressionTests::test_g0_08_lineage_must_be_closed_acyclic_and_transitively_independent PASSED [100%]
+
+=================== 10 passed, 6 subtests passed in 11.32s ====================
+
+cleanup_verified=True
+exit_code=0

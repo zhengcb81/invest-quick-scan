@@ -1,0 +1,441 @@
+{
+  "$schema": "../schemas/provider-connectivity-profiles.schema.json",
+  "schema_version": "1.1.0",
+  "inventory_id": "provider-connectivity-profiles-2026-09-26",
+  "as_of": "2026-09-26",
+  "purpose": "Record provider endpoints, model identifiers, credential environment-variable names, and sanitized connectivity/search probe outcomes. This is not a model-priority policy and does not enable production dispatch.",
+  "credential_policy": {
+    "secret_values_included": false,
+    "credential_reference_format": "environment_variable_name_only"
+  },
+  "priority_policy_ref": "model-policy.template.json",
+  "profiles": [
+    {
+      "profile_id": "mimo-token-plan-cn",
+      "provider": "mimo",
+      "service_tier": "token_plan",
+      "endpoint": {
+        "url": "https://token-plan-cn.xiaomimimo.com/v1/chat/completions",
+        "protocol": "openai_chat_completions",
+        "region": "China mainland"
+      },
+      "model": "mimo-v2.6-flash",
+      "credential_env": "MIMO_PLAN_API_KEY",
+      "capabilities": {
+        "text_generation": "not_verified",
+        "provider_web_search_documentation": "supported",
+        "provider_web_search_probe": "failed_feature_gate",
+        "function_tool_calling": "not_verified",
+        "requires_external_search_runner": false,
+        "stockqa_cli_e2e": "not_run"
+      },
+      "usage_note": "The user confirmed the web-search plugin was enabled, but this credential's probe returned webSearchEnabled=false. MiMo's published Token Plan terms restrict these package keys to programming tools and prohibit custom-backend automated scripts; do not use this profile for company scanning.",
+      "probes": [
+        {
+          "kind": "web_search",
+          "status": "failed",
+          "checked_at": "2026-09-25",
+          "http_status": 400,
+          "response_status": null,
+          "search_calls": 0,
+          "citation_annotations": 0,
+          "input_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null,
+          "evidence_path": "docs/implementation/contracts/validation-Q02-MiMo-probe-2026-09-25.log",
+          "note": "Provider rejected the requested web_search tool with webSearchEnabled=false; no answer, source, or usage receipt was returned."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "MiMo web search tool calling",
+          "url": "https://mimo.mi.com/docs/zh-CN/quick-start/usage-guide/text-generation/tool-calling/web-search"
+        },
+        {
+          "title": "MiMo Token Plan usage terms",
+          "url": "https://mimo.mi.com/docs/tokenplan/subscription"
+        }
+      ]
+    },
+    {
+      "profile_id": "mimo-pay-as-you-go-cn",
+      "provider": "mimo",
+      "service_tier": "pay_as_you_go",
+      "endpoint": {
+        "url": "https://api.xiaomimimo.com/v1/chat/completions",
+        "protocol": "openai_chat_completions",
+        "region": "China mainland"
+      },
+      "model": "mimo-v2.6-flash",
+      "credential_env": "MIMO_API_KEY",
+      "capabilities": {
+        "text_generation": "passed",
+        "provider_web_search_documentation": "supported",
+        "provider_web_search_probe": "passed",
+        "function_tool_calling": "not_verified",
+        "requires_external_search_runner": false,
+        "stockqa_cli_e2e": "not_run"
+      },
+      "usage_note": "Real web_search returned one tool use, one page, and a Microsoft annual-report citation. A follow-up completed but omitted the requested revenue figure; this is provider capability evidence, not scan-quality or StockQA integration acceptance.",
+      "probes": [
+        {
+          "kind": "web_search",
+          "status": "passed",
+          "checked_at": "2026-09-25",
+          "http_status": 200,
+          "response_status": "length_then_stop",
+          "search_calls": 1,
+          "citation_annotations": 1,
+          "input_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null,
+          "source_urls": [
+            "https://www.microsoft.com/investor/reports/ar25/index.html"
+          ],
+          "evidence_path": "docs/implementation/contracts/validation-Q02-MiMo-paygo-probe-2026-09-25.log",
+          "note": "First response hit a 220-token cap with no answer text; a follow-up produced text and retained real search evidence, but omitted the requested revenue figure."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "MiMo web search tool calling",
+          "url": "https://mimo.mi.com/docs/zh-CN/quick-start/usage-guide/text-generation/tool-calling/web-search"
+        },
+        {
+          "title": "MiMo API integration",
+          "url": "https://mimo.mi.com/docs/zh-CN/quick-start/faq/api-integration"
+        }
+      ]
+    },
+    {
+      "profile_id": "minimax-cn-responses",
+      "provider": "minimax",
+      "service_tier": "mainland_openai_compatible",
+      "endpoint": {
+        "url": "https://api.minimax.cn/v1/responses",
+        "protocol": "openai_responses",
+        "region": "China mainland"
+      },
+      "model": "MiniMax-M3",
+      "credential_env": "MINIMAX_API_KEY",
+      "capabilities": {
+        "text_generation": "passed",
+        "provider_web_search_documentation": "not_documented",
+        "provider_web_search_probe": "not_demonstrated",
+        "function_tool_calling": "not_verified",
+        "requires_external_search_runner": true,
+        "stockqa_cli_e2e": "not_run"
+      },
+      "usage_note": "This route returned text but no web_search_call or citation annotation. The model mentioning a URL is not evidence that a search ran.",
+      "probes": [
+        {
+          "kind": "text_generation",
+          "status": "passed",
+          "checked_at": "2026-09-25",
+          "http_status": 200,
+          "response_status": "completed",
+          "search_calls": 0,
+          "citation_annotations": 0,
+          "input_tokens": 796,
+          "output_tokens": 199,
+          "total_tokens": 995,
+          "evidence_path": "docs/implementation/contracts/validation-Q02-MiniMax-probe-2026-09-25.log",
+          "note": "Completed text response; no search event or citation receipt."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "MiniMax text generation",
+          "url": "https://platform.minimax.cn/docs/guides/text-generation"
+        }
+      ]
+    },
+    {
+      "profile_id": "minimax-global-server-tools",
+      "provider": "minimax",
+      "service_tier": "international_server_tools",
+      "endpoint": {
+        "url": "https://api.minimax.io/v1/responses",
+        "protocol": "openai_responses",
+        "region": "International"
+      },
+      "model": "MiniMax-M3",
+      "credential_env": "MINIMAX_API_KEY",
+      "capabilities": {
+        "text_generation": "not_verified",
+        "provider_web_search_documentation": "supported",
+        "provider_web_search_probe": "credential_rejected",
+        "function_tool_calling": "not_verified",
+        "requires_external_search_runner": false,
+        "stockqa_cli_e2e": "not_run"
+      },
+      "usage_note": "Official Server Tools documentation describes web_search on this endpoint, but the current environment credential was rejected with HTTP 401 / error 2049. A region mismatch is plausible, not proven.",
+      "probes": [
+        {
+          "kind": "web_search",
+          "status": "failed",
+          "checked_at": "2026-09-25",
+          "http_status": 401,
+          "response_status": null,
+          "search_calls": 0,
+          "citation_annotations": 0,
+          "input_tokens": null,
+          "output_tokens": null,
+          "total_tokens": null,
+          "evidence_path": "docs/implementation/contracts/validation-Q02-MiniMax-probe-2026-09-25.log",
+          "note": "Error 2049: invalid api key for this host; no response or usage receipt."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "MiniMax Server Tools",
+          "url": "https://platform.minimax.io/docs/guides/server-tools"
+        }
+      ]
+    },
+    {
+      "profile_id": "minimax-mainland-responses-search",
+      "provider": "minimax",
+      "service_tier": "mainland_compatible_responses_search",
+      "endpoint": {
+        "url": "https://api.minimaxi.com/v1/responses",
+        "protocol": "openai_responses",
+        "region": "China mainland compatible host"
+      },
+      "model": "MiniMax-M3",
+      "credential_env": "MINIMAX_API_KEY",
+      "capabilities": {
+        "text_generation": "passed",
+        "provider_web_search_documentation": "not_documented",
+        "provider_web_search_probe": "passed",
+        "function_tool_calling": "not_verified",
+        "requires_external_search_runner": false,
+        "stockqa_cli_e2e": "passed_prior_revision_latest_unverified",
+        "stockqa_cli_e2e_evidence_path": "docs/implementation/contracts/validation-Q02-MiniMax-cli-live-2026-09-26.json",
+        "stockqa_cli_e2e_latest_evidence_path": "docs/implementation/contracts/validation-Q02-MiniMax-final-live-2026-09-26.json"
+      },
+      "usage_note": "A direct live probe returned one completed web_search_call and Microsoft investor-relations sources. A single-question StockQA public CLI live test passed on an earlier revision after its prompt explicitly required the official annual report; the latest code received HTTP 200/completed but search_status=unverified and correctly failed closed. The host is not named in the official docs checked; availability and contractual status remain unverified. Q02 durable recovery is still open.",
+      "probes": [
+        {
+          "kind": "web_search",
+          "status": "passed",
+          "checked_at": "2026-09-25",
+          "http_status": 200,
+          "response_status": "completed",
+          "search_calls": 1,
+          "citation_annotations": 1,
+          "input_tokens": 9739,
+          "output_tokens": 263,
+          "total_tokens": 10002,
+          "source_urls": [
+            "https://www.microsoft.com/en-us/Investor/earnings/FY-2025-Q4/press-release-webcast",
+            "https://www.microsoft.com/investor/reports/ar25/index.html"
+          ],
+          "evidence_path": "docs/implementation/contracts/validation-Q02-MiniMax-probe-2026-09-25.log",
+          "note": "Direct provider search passed; monetary charge receipt was not returned. This is not StockQA CLI E2E."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "MiniMax Server Tools documentation (international host)",
+          "url": "https://platform.minimax.io/docs/guides/server-tools"
+        },
+        {
+          "title": "MiniMax Mainland text generation base URL",
+          "url": "https://platform.minimax.cn/docs/guides/text-generation"
+        }
+      ]
+    },
+    {
+      "profile_id": "deepseek-flash-official-api",
+      "provider": "deepseek",
+      "service_tier": "official_api",
+      "endpoint": {
+        "url": "https://api.deepseek.com/chat/completions",
+        "protocol": "openai_chat_completions",
+        "region": "Official API"
+      },
+      "model": "deepseek-flash",
+      "credential_env": "DEEPSEEK_API_KEY",
+      "capabilities": {
+        "text_generation": "passed",
+        "provider_web_search_documentation": "unsupported",
+        "provider_web_search_probe": "not_attempted",
+        "function_tool_calling": "supported",
+        "requires_external_search_runner": true,
+        "stockqa_cli_e2e": "not_run"
+      },
+      "usage_note": "Use OpenAI-compatible Chat Completions with thinking disabled for a short non-reasoning response. DeepSeek supports function tool calls, so a caller can implement a search function and return its results. The tested OpenAI Responses API ignores built-in web_search; use the separate Anthropic-compatible Messages profile below for DeepSeek server-side web search.",
+      "probes": [
+        {
+          "kind": "text_generation",
+          "status": "passed",
+          "checked_at": "2026-09-25",
+          "http_status": 200,
+          "response_status": "stop",
+          "search_calls": 0,
+          "citation_annotations": 0,
+          "input_tokens": 9,
+          "output_tokens": 1,
+          "total_tokens": 10,
+          "evidence_path": "docs/implementation/contracts/validation-Q02-DeepSeek-probe-2026-09-25.log",
+          "note": "Chat Completions returned the requested two-character OK response."
+        },
+        {
+          "kind": "web_search",
+          "status": "unsupported",
+          "checked_at": "2026-09-25",
+          "http_status": 200,
+          "response_status": "incomplete",
+          "search_calls": 0,
+          "citation_annotations": 0,
+          "input_tokens": 77,
+          "output_tokens": 96,
+          "total_tokens": 173,
+          "evidence_path": "docs/implementation/contracts/validation-Q02-DeepSeek-probe-2026-09-25.log",
+          "note": "A Responses API request included tools=[{type:web_search}] but returned no search call or citation; output hit its token cap in reasoning. Official docs say built-in web_search is ignored."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "DeepSeek first API call and OpenAI-compatible endpoint",
+          "url": "https://api-docs.deepseek.com/guides/harness"
+        },
+        {
+          "title": "DeepSeek Chat Completions API and supported tools",
+          "url": "https://api-docs.deepseek.com/api/create-chat-completion/"
+        },
+        {
+          "title": "DeepSeek tool calls",
+          "url": "https://api-docs.deepseek.com/guides/tool_calls/"
+        },
+        {
+          "title": "DeepSeek Responses API supported tool list",
+          "url": "https://api-docs.deepseek.com/guides/responses_api/"
+        },
+        {
+          "title": "DeepSeek Codex integration settings",
+          "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/codex/"
+        },
+        {
+          "title": "DeepSeek thinking mode controls",
+          "url": "https://api-docs.deepseek.com/guides/thinking_mode/"
+        }
+      ]
+    },
+    {
+      "profile_id": "deepseek-flash-openai-responses",
+      "provider": "deepseek",
+      "service_tier": "official_openai_responses_api",
+      "endpoint": {
+        "url": "https://api.deepseek.com/responses",
+        "protocol": "openai_responses",
+        "region": "Official API"
+      },
+      "model": "deepseek-flash",
+      "credential_env": "DEEPSEEK_API_KEY",
+      "capabilities": {
+        "text_generation": "not_verified",
+        "provider_web_search_documentation": "unsupported",
+        "provider_web_search_probe": "unsupported_tool_ignored",
+        "function_tool_calling": "supported",
+        "requires_external_search_runner": true,
+        "stockqa_cli_e2e": "not_run"
+      },
+      "usage_note": "The request returned HTTP 200 but no web_search_call/citation and stopped incomplete at the output cap. DeepSeek's official Responses API tool matrix states built-in web_search is ignored on this protocol; use the Anthropic Messages endpoint below for server-side web search.",
+      "probes": [
+        {
+          "kind": "web_search",
+          "status": "unsupported",
+          "checked_at": "2026-09-25",
+          "http_status": 200,
+          "response_status": "incomplete",
+          "search_calls": 0,
+          "citation_annotations": 0,
+          "input_tokens": 77,
+          "output_tokens": 96,
+          "total_tokens": 173,
+          "evidence_path": "docs/implementation/contracts/validation-Q02-DeepSeek-probe-2026-09-25.log",
+          "note": "The Responses request included tools=[{type:web_search}] but returned only reasoning, no search event or citation. The 96-token cap was reached before a final answer."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "DeepSeek Responses API supported tool list",
+          "url": "https://api-docs.deepseek.com/guides/responses_api/"
+        },
+        {
+          "title": "DeepSeek Responses API tool schema",
+          "url": "https://api-docs.deepseek.com/api/create-response/"
+        }
+      ]
+    },
+    {
+      "profile_id": "deepseek-flash-anthropic-web-search",
+      "provider": "deepseek",
+      "service_tier": "official_anthropic_compatible_api",
+      "endpoint": {
+        "url": "https://api.deepseek.com/anthropic/v1/messages",
+        "protocol": "anthropic_messages",
+        "region": "Official API"
+      },
+      "model": "deepseek-flash",
+      "credential_env": "DEEPSEEK_API_KEY",
+      "capabilities": {
+        "text_generation": "passed",
+        "provider_web_search_documentation": "supported",
+        "provider_web_search_probe": "passed",
+        "function_tool_calling": "supported",
+        "requires_external_search_runner": false,
+        "stockqa_cli_e2e": "not_run"
+      },
+      "usage_note": "Unlike the OpenAI-compatible route tested above, the Anthropic-compatible Messages API accepts the Anthropic web_search_20250305 server tool. This live probe returned search result blocks for official DeepSeek documentation. Although the request set max_uses=1, the response reported two server-side search calls; do not rely on that limit to cap use or cost until separately verified.",
+      "probes": [
+        {
+          "kind": "web_search",
+          "status": "passed",
+          "checked_at": "2026-09-25",
+          "http_status": 200,
+          "response_status": "end_turn",
+          "search_calls": 2,
+          "citation_annotations": 0,
+          "input_tokens": 4808,
+          "output_tokens": 436,
+          "total_tokens": 5244,
+          "server_tool_use_count": 2,
+          "web_search_result_blocks": 2,
+          "requested_max_uses": 1,
+          "max_uses_respected": false,
+          "source_urls": [
+            "https://api-docs.deepseek.com/",
+            "https://api-docs.deepseek.com/zh-cn/",
+            "https://api-docs.deepseek.com/zh-cn/guides/anthropic_api/",
+            "https://apidog.com/blog/how-to-use-deepseek-v4-1-flash-api/#1",
+            "https://apidog.com/blog/how-to-use-deepseek-v4-api/#1#1#1",
+            "https://apidog.com/pt/blog/how-to-use-deepseek-v4-api/#1#1",
+            "https://deepseek-usa.ai/docs/api/",
+            "https://docs.getbifrost.ai/providers/supported-providers/deepseek",
+            "https://github.com/maximhq/bifrost/pull/5177#1",
+            "https://github.com/thevibeworks/deepseek-docs/blob/main/content/en/guides/anthropic_api.md#1"
+          ],
+          "evidence_path": "docs/implementation/contracts/validation-Q02-DeepSeek-probe-2026-09-25.log",
+          "note": "The response contained two server_tool_use and two web_search_tool_result blocks. Sources included official DeepSeek API docs. The request asked for max_uses=1, but usage.web_search_requests reported 2. No monetary charge receipt was returned."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "DeepSeek Anthropic-compatible API and compatibility table",
+          "url": "https://api-docs.deepseek.com/guides/anthropic_api/"
+        },
+        {
+          "title": "DeepSeek Claude Code web-search integration",
+          "url": "https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code/"
+        },
+        {
+          "title": "Anthropic web search tool request and response format",
+          "url": "https://docs.anthropic.com/zh-CN/docs/agents-and-tools/tool-use/web-search-tool"
+        }
+      ]
+    }
+  ]
+}

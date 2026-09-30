@@ -1,0 +1,42 @@
+Q09 durable budget/concurrency first-segment validation
+Date: 2026-09-27
+Owner implementation: StockQAbyLLM (authorized external repository scope)
+
+Isolation
+- Test runner working directory was a unique temporary directory under the OS temp root.
+- PYTHONPATH pointed to StockQAbyLLM; TEMP, TMP, and pytest basetemp pointed inside that unique root.
+- STOCKQA_RUN_LIVE_E2E=0; PYTHONDONTWRITEBYTECODE=1; ResourceWarning was promoted to an error.
+- Disabled globally installed pytest base_url, cacheprovider, and coverage plugins. This avoids plugin fixture collisions and writes to the repository's protected .coverage file.
+- Temporary test workspace (including logger output, SQLite databases, and pytest files) was removed in PowerShell finally cleanup.
+- No real provider/search API request, API key read, or document download occurred.
+
+Final regression command shape
+python -m pytest -q -p no:base_url -p no:cacheprovider -p no:cov -o addopts= -W error::ResourceWarning --basetemp <unique-temp-root>/pytest-tmp <11 explicit unit/integration test paths>
+
+Final regression paths
+- tests/unit/test_quick_scan_budget.py
+- tests/unit/test_quick_scan_work_store.py
+- tests/unit/test_quick_scan_work_transport.py
+- tests/unit/test_llm_client.py
+- tests/unit/test_llm_config.py
+- tests/unit/test_llm_provider.py
+- tests/unit/test_llm_integration.py
+- tests/unit/test_llm_response_parser.py
+- tests/unit/test_llm_runner.py
+- tests/integration/test_quick_scan_budget.py
+- tests/integration/test_quick_scan_cli.py
+
+Results
+- Full affected unit/integration/provider/CLI regression: 436 passed in 31.62s.
+- Focused work-store/transport/budget regression after late-receipt, idempotency, cost-resolver, and reconciliation request-count hardening: 80 passed in 7.40s.
+- The budget concurrency integration launches two worker processes with 20 distinct requests through a real local blocking HTTP stub and shared temporary SQLite ledger. It observes real overlap and enforces global <=4, each quota group <=2, and each route <=1.
+- Late 2xx, recognized 401/429, and bare 503 responses after lease expiry retain the work attempt as uncertain, do not fall back, store the late receipt, release the network-concurrency slot, and keep unknown cost reserved so admission pauses. A timeout with no HTTP response remains outcome_uncertain and keeps its slot. Identical late-receipt replay is idempotent; a conflicting HTTP status is rejected.
+- Resolver exceptions and invalid numeric measurements after HTTP 200 become unknown-cost outcomes: the answer remains available, the network slot is released, the reservation stays unsettled, and new admission pauses.
+- Budget denial is proven to happen before synchronous HTTP POST; unknown costs pause new dispatch; failed attempts/fallbacks share the same ledger; policy version updates preserve spend; async transport settles the same ledger with a deterministic test-only resolver.
+- Scoped Ruff and Black checks pass on the five touched Python source/test files. `git diff --check` passes; Git emitted only existing LF/CRLF normalization warnings.
+
+Independent review
+- First Q09 snapshot review found one P2: a late definite HTTP response could strand an in-flight budget slot. The change was made with an atomic work-receipt/budget transaction and covered by regression tests.
+- Follow-up hardening makes identical late receipts idempotent while rejecting conflicting status/cost/source; provider resolver exceptions and invalid measurements fail closed as unpriced after releasing a definitively ended HTTP concurrency slot. Reconciliation replay now rejects `confirmed_not_sent`/`completed` flips that would otherwise undercount request_counted, with zero-cost regression cases.
+- Review also highlighted the duplicate late-receipt consistency boundary and cost-resolver failures after HTTP completion; exact replay is idempotent, conflicting outcomes are rejected, and invalid/failed cost resolution retains an unpriced reservation while closing the network slot.
+- Final independent read-only review of the updated hashes is pending. Do not mark Q09 verified until it returns and remaining Q09 production fee-resolution/runner wiring is complete.

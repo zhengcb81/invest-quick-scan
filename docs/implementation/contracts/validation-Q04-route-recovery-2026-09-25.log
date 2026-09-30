@@ -1,0 +1,23 @@
+
+=================================== ERRORS ====================================
+_____________ ERROR collecting tests/unit/test_llm_integration.py _____________
+tests\unit\test_llm_integration.py:11: in <module>
+    from src.utils.llm_integration import (
+src\utils\llm_integration.py:22: in <module>
+    logger = get_logger(__name__)
+             ^^^^^^^^^^^^^^^^^^^^
+src\utils\logger.py:66: in get_logger
+    file_handler = logging.FileHandler(log_file, encoding="utf-8")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\logging\__init__.py:1219: in __init__
+    StreamHandler.__init__(self, self._open())
+                                 ^^^^^^^^^^^^
+C:\Miniconda\Lib\logging\__init__.py:1248: in _open
+    return open_func(self.baseFilename, self.mode,
+E   PermissionError: [Errno 13] Permission denied: 'C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\logs\\stock_qa_20260925.log'
+=========================== short test summary info ===========================
+ERROR tests/unit/test_llm_integration.py - PermissionError: [Errno 13] Permis...
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.61s
+
+EXIT_CODE=2

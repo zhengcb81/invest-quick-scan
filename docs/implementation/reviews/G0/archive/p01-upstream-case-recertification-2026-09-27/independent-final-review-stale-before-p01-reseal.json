@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "review_id": "G0-final-independent-review-1.9.8",
+  "reviewer_id": "agent:/root/g0_current_review",
+  "reviewer_role": "independent G0 milestone reviewer",
+  "independent": true,
+  "separation_basis": "Read-only independent sub-agent reviewer; did not implement or modify the candidate, plan, tests, receipts, or evidence. The only writes are these two manifest-excluded final-review outputs.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "d866b852a703648de62982ca80ec81571a3ff2cef878ab9ab7b45b6dcb956a38",
+  "open_findings": [],
+  "review_decision": "verified_for_local_contract_scope",
+  "reviewed_candidate_path": "docs/implementation/reviews/G0/candidate-snapshot.json",
+  "reviewed_candidate_sha256": "e6ada748839aee76c725653cc04af52789ccf63fe8fbeef20756587f414c2e7a",
+  "plan_version": "1.9.8",
+  "scope_files": 646,
+  "review_packet_path": "docs/implementation/reviews/G0/current-review-packet-2026-09-26.md",
+  "review_packet_sha256": "93baa6845878636c7c5187d45abfc42bfb64fa183c5ee9066175284c62ac7345",
+  "invariant_matrix_path": "docs/implementation/reviews/G0/current-invariant-matrix-2026-09-26.md",
+  "invariant_matrix_sha256": "3564cfe51715457477a78fb57ce758abede3108c9dd640b9cb7d1216d4b31679",
+  "checks": [
+    {
+      "id": "candidate_freeze_and_manifest",
+      "result": "passed",
+      "details": "Candidate raw SHA-256 matches the assigned value; plan 1.9.8 and 646 artifacts confirmed. `python -B scripts/g0_candidate_manifest.py verify` returned scope_files=646 and errors=[]."
+    },
+    {
+      "id": "scope_completeness_and_exclusions",
+      "result": "passed",
+      "details": "Manifest generator compares the actual scoped path set with recorded entries, recomputes each file hash, binds tests/fixtures/** and both G0 read_first inputs, and has fail-closed regression coverage for missing inputs and scope drift. Exact post-seal outputs and mutable journals are excluded as declared."
+    },
+    {
+      "id": "case_ownership_and_plan_binding",
+      "result": "passed",
+      "details": "G0 owns REV-01, REV-02, and REV-03 only. BASE-02 is P00-owned upstream evidence. The current plan has 103 tasks, 327 acceptance cases, and final gate G6."
+    },
+    {
+      "id": "current_dependency_receipts",
+      "result": "passed",
+      "details": "Public task_receipts.py verification was run individually for P00, P01, and C01-C07. All nine were eligible_to_close with no blockers. C07 recursive r4 verification includes P00/P01 and C01-C07, all eligible with no blockers."
+    },
+    {
+      "id": "g0_public_validator_counterexamples",
+      "result": "passed",
+      "details": "Selective source/test audit confirms fixed G0 counterexamples exercise public contract validators, including score state and trusted check-level receipts, entity and scope consistency, lightweight exchange rejection, readiness closure, query coverage/lineage, rule schema/executor behavior, and transitive evidence independence."
+    },
+    {
+      "id": "id02_semantic_rejection",
+      "result": "passed",
+      "details": "ID-02.T01 calls public cv.validate_entity with a same-entity multi-security candidate and an exact trusted issuer fact same_legal_issuer=false, which is rejected. The current C01 r2 review, owner test log, and receipts bind the repaired implementation."
+    },
+    {
+      "id": "historical_g0_and_rr_findings",
+      "result": "passed",
+      "details": "G0-01 through G0-09 and RR-01 through RR-04 were checked against current source, tests, and bound evidence. Historical reports were treated as leads only, not current approval."
+    },
+    {
+      "id": "reused_test_batches",
+      "result": "passed",
+      "details": "Reused candidate-bound offline evidence: C01-C07 shared batch 188 passed, 121 subtests, zero skips; G0/plan r7 batch 94 passed, 55 subtests, zero skips; C01 identity r2 batch 16 passed, 31 subtests, zero skips. The full suite and shared 188-test batch were not rerun."
+    },
+    {
+      "id": "resolved_c07_dependency_hash_drift",
+      "result": "passed",
+      "details": "The prior C02/C03 dependency mismatch arose from a temporary whitespace edit to Markdown hard-break bytes. Exact bytes were restored; current public per-task verification and C07 recursive r4 verification now pass without blockers."
+    },
+    {
+      "id": "local_contract_external_boundary",
+      "result": "passed",
+      "details": "The packet and matrix consistently limit approval to local schemas, offline contracts/validators, plan, and evidence chain. External/live runtime behavior remains explicitly unproven."
+    }
+  ],
+  "scope_limitations": [
+    "No live web search, provider call, API call, or company-document download was performed.",
+    "No external repository was modified or tested.",
+    "StockWiki production import and SQLite concurrency, production queue and budget-ledger behavior, crash recovery, UI, install-time runtime version, 2000-company operation, and theme/industry research integration remain unverified.",
+    "Offline fixtures, stubs, schemas, and local contracts do not establish production readiness or successful live E2E-06."
+  ],
+  "execution": {
+    "review_mode": "read_only_except_manifest_excluded_final_reports",
+    "reviewer_reran_full_suite": false,
+    "reviewer_reran_shared_188_test_batch": false,
+    "reviewer_ran_public_manifest_verifier": true,
+    "reviewer_ran_public_task_receipt_verifiers": true,
+    "network_or_api_used": false,
+    "external_repositories_modified": false,
+    "candidate_included_files_modified": false
+  }
+}

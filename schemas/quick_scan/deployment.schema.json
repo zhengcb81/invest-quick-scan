@@ -1,0 +1,1770 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:quick-scan:deployment:1",
+  "title": "QuickScanDeploymentAndLifecycleContract",
+  "description": "Setup, preflight, lifecycle, release and readiness protocol; no credentials, company documents, or process-control implementation.",
+  "$defs": {
+    "Sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "ComponentId": {
+      "enum": [
+        "iqs",
+        "stockqa",
+        "stockwiki",
+        "theme",
+        "industry",
+        "company_wiki"
+      ]
+    },
+    "ProcessIdentity": {
+      "type": "object",
+      "properties": {
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "component_id": {
+          "enum": [
+            "iqs",
+            "stockqa",
+            "stockwiki",
+            "theme",
+            "industry",
+            "company_wiki"
+          ]
+        },
+        "process_instance_id": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 160
+        },
+        "pid": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "process_started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "executable_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "working_directory": {
+          "$ref": "#/$defs/AbsolutePath"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "profile_id",
+        "component_id",
+        "process_instance_id",
+        "pid",
+        "process_started_at",
+        "executable_sha256",
+        "working_directory"
+      ],
+      "additionalProperties": false
+    },
+    "ContractVersions": {
+      "type": "object",
+      "properties": {
+        "identity_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "answer_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "observation_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "question_catalog": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "metric_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "score_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "rule_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "work_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "model_policy_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "exchange_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "query_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        },
+        "deployment_schema": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][A-Za-z0-9.-]+)?$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ReleaseComponent": {
+      "type": "object",
+      "properties": {
+        "component_id": {
+          "enum": [
+            "iqs",
+            "stockqa",
+            "stockwiki",
+            "theme",
+            "industry",
+            "company_wiki"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "artifact_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "entrypoint": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "cli",
+                "module",
+                "skill",
+                "package"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          "required": [
+            "kind",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "interpreter": {
+          "type": "object",
+          "properties": {
+            "python_version": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 32
+            },
+            "executable_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "dependency_lock_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "python_version",
+            "executable_sha256",
+            "dependency_lock_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "contract_versions": {
+          "$ref": "#/$defs/ContractVersions"
+        },
+        "capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{1,79}$"
+          },
+          "maxItems": 80
+        }
+      },
+      "required": [
+        "component_id",
+        "required",
+        "version",
+        "artifact_sha256",
+        "source_ref",
+        "entrypoint",
+        "interpreter",
+        "contract_versions",
+        "capabilities"
+      ],
+      "additionalProperties": false
+    },
+    "ReleaseSet": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "release_set_id": {
+          "type": "string",
+          "pattern": "^REL_[A-Za-z0-9_-]{4,120}$"
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReleaseComponent"
+          },
+          "minItems": 5,
+          "maxItems": 6,
+          "uniqueItems": true
+        },
+        "required_gates": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "G0",
+              "G1",
+              "G2",
+              "G3",
+              "G4",
+              "G5",
+              "G6"
+            ]
+          },
+          "minItems": 7,
+          "maxItems": 7
+        },
+        "required_consumers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "theme",
+              "industry"
+            ]
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "optional_components": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "const": "company_wiki"
+          },
+          "maxItems": 1
+        },
+        "rollback_set_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 120
+        }
+      },
+      "required": [
+        "schema_version",
+        "release_set_id",
+        "manifest_sha256",
+        "created_at",
+        "components",
+        "required_gates",
+        "required_consumers",
+        "optional_components",
+        "rollback_set_id"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "properties": {
+            "components": {
+              "contains": {
+                "properties": {
+                  "component_id": {
+                    "const": "iqs"
+                  },
+                  "required": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "component_id",
+                  "required"
+                ]
+              },
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "components": {
+              "contains": {
+                "properties": {
+                  "component_id": {
+                    "const": "stockqa"
+                  },
+                  "required": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "component_id",
+                  "required"
+                ]
+              },
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "components": {
+              "contains": {
+                "properties": {
+                  "component_id": {
+                    "const": "stockwiki"
+                  },
+                  "required": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "component_id",
+                  "required"
+                ]
+              },
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "components": {
+              "contains": {
+                "properties": {
+                  "component_id": {
+                    "const": "theme"
+                  },
+                  "required": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "component_id",
+                  "required"
+                ]
+              },
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "components": {
+              "contains": {
+                "properties": {
+                  "component_id": {
+                    "const": "industry"
+                  },
+                  "required": {
+                    "const": true
+                  }
+                },
+                "required": [
+                  "component_id",
+                  "required"
+                ]
+              },
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "components": {
+              "not": {
+                "contains": {
+                  "properties": {
+                    "component_id": {
+                      "const": "company_wiki"
+                    },
+                    "required": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "component_id",
+                    "required"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "components": {
+              "contains": {
+                "properties": {
+                  "component_id": {
+                    "const": "company_wiki"
+                  }
+                },
+                "required": [
+                  "component_id"
+                ]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          }
+        }
+      ]
+    },
+    "ComponentStatus": {
+      "type": "object",
+      "properties": {
+        "component_id": {
+          "enum": [
+            "iqs",
+            "stockqa",
+            "stockwiki",
+            "theme",
+            "industry",
+            "company_wiki"
+          ]
+        },
+        "expected_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "actual_version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 100
+        },
+        "expected_artifact_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "actual_loaded_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "enum": [
+            "missing",
+            "installed",
+            "stopped",
+            "healthy",
+            "incompatible",
+            "failed"
+          ]
+        },
+        "source_root": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AbsolutePath"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "loaded_root": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AbsolutePath"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "entrypoint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "executable_path": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AbsolutePath"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "executable_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "working_directory": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AbsolutePath"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "python_version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 32
+        },
+        "contract_versions": {
+          "$ref": "#/$defs/ContractVersions"
+        },
+        "capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{1,79}$"
+          },
+          "maxItems": 80
+        },
+        "process_identity": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ProcessIdentity"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "component_id",
+        "expected_version",
+        "actual_version",
+        "expected_artifact_sha256",
+        "actual_loaded_sha256",
+        "status",
+        "source_root",
+        "loaded_root",
+        "entrypoint",
+        "executable_path",
+        "executable_sha256",
+        "working_directory",
+        "python_version",
+        "contract_versions",
+        "capabilities",
+        "process_identity"
+      ],
+      "additionalProperties": false
+    },
+    "InstallRecord": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "install_record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "release_set_id": {
+          "type": "string",
+          "pattern": "^REL_[A-Za-z0-9_-]{4,120}$"
+        },
+        "installed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ComponentStatus"
+          },
+          "minItems": 5,
+          "maxItems": 6
+        },
+        "readiness": {
+          "enum": [
+            "not_ready",
+            "installed",
+            "offline_ready",
+            "live_verified",
+            "full_release_verified"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "install_record_id",
+        "workspace_id",
+        "profile_id",
+        "release_set_id",
+        "installed_at",
+        "components",
+        "readiness"
+      ],
+      "additionalProperties": false
+    },
+    "SetupPayload": {
+      "type": "object",
+      "properties": {
+        "stockwiki": {
+          "$ref": "#/$defs/StockWikiSettingsRef"
+        },
+        "stockqa": {
+          "$ref": "#/$defs/StockQASettingsRef"
+        },
+        "company_identity_source": {
+          "enum": [
+            "company_wiki_snapshot",
+            "user_supplied_snapshot",
+            "none"
+          ]
+        }
+      },
+      "required": [
+        "stockwiki",
+        "stockqa",
+        "company_identity_source"
+      ],
+      "additionalProperties": false
+    },
+    "DoctorPayload": {
+      "type": "object",
+      "properties": {
+        "network_calls": {
+          "const": false
+        },
+        "paid_calls": {
+          "const": false
+        },
+        "mutating": {
+          "const": false
+        }
+      },
+      "required": [
+        "network_calls",
+        "paid_calls",
+        "mutating"
+      ],
+      "additionalProperties": false
+    },
+    "PlanPayload": {
+      "type": "object",
+      "properties": {
+        "scope": {
+          "enum": [
+            "all_missing",
+            "full_pool",
+            "entities"
+          ]
+        },
+        "entity_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^ENT_[A-Za-z0-9_]+$"
+          },
+          "maxItems": 2000
+        },
+        "field_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "maxItems": 300
+        },
+        "snapshot_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 160
+        },
+        "preview_only": {
+          "const": true
+        }
+      },
+      "required": [
+        "scope",
+        "entity_ids",
+        "field_ids",
+        "snapshot_id",
+        "preview_only"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "scope": {
+                "const": "entities"
+              }
+            },
+            "required": [
+              "scope"
+            ]
+          },
+          "then": {
+            "properties": {
+              "entity_ids": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "scope": {
+                "enum": [
+                  "all_missing",
+                  "full_pool"
+                ]
+              }
+            },
+            "required": [
+              "scope"
+            ]
+          },
+          "then": {
+            "properties": {
+              "entity_ids": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "StartPayload": {
+      "type": "object",
+      "properties": {
+        "existing_run_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 160
+        },
+        "plan_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 160
+        },
+        "open_results_ui": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "existing_run_id",
+        "plan_id",
+        "open_results_ui"
+      ],
+      "additionalProperties": false
+    },
+    "StatusPayload": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 160
+        }
+      },
+      "required": [
+        "run_id"
+      ],
+      "additionalProperties": false
+    },
+    "StopPayload": {
+      "type": "object",
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "drain_inflight": {
+          "const": true
+        }
+      },
+      "required": [
+        "run_id",
+        "drain_inflight"
+      ],
+      "additionalProperties": false
+    },
+    "VerifyLiveBudgetCap": {
+      "type": "object",
+      "properties": {
+        "max_model_requests": {
+          "const": 1
+        },
+        "max_search_requests": {
+          "const": 1
+        },
+        "max_input_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1024
+        }
+      },
+      "required": [
+        "max_model_requests",
+        "max_search_requests",
+        "max_input_tokens",
+        "max_output_tokens"
+      ],
+      "additionalProperties": false
+    },
+    "VerifyLivePayload": {
+      "type": "object",
+      "properties": {
+        "external_action": {
+          "const": "execute_one_live_search_probe"
+        },
+        "policy_revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "budget_cap": {
+          "$ref": "#/$defs/VerifyLiveBudgetCap"
+        }
+      },
+      "required": [
+        "external_action",
+        "policy_revision",
+        "budget_cap"
+      ],
+      "additionalProperties": false
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "message_type": {
+          "const": "request"
+        },
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "operation": {
+          "enum": [
+            "setup",
+            "doctor",
+            "plan",
+            "start",
+            "status",
+            "stop",
+            "resume",
+            "verify_live"
+          ]
+        },
+        "expected_release_set_id": {
+          "type": "string",
+          "pattern": "^REL_[A-Za-z0-9_-]{4,120}$"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 200
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "message_type",
+        "schema_version",
+        "request_id",
+        "workspace_id",
+        "profile_id",
+        "operation",
+        "expected_release_set_id",
+        "idempotency_key",
+        "requested_at",
+        "payload"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "setup"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/SetupPayload"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "doctor"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/DoctorPayload"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "plan"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/PlanPayload"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "start"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/StartPayload"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "resume"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/StartPayload"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "status"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/StatusPayload"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "stop"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/StopPayload"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "verify_live"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/VerifyLivePayload"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ReadinessEvidence": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "enum": [
+            "not_ready",
+            "installed",
+            "offline_ready",
+            "live_verified",
+            "full_release_verified"
+          ]
+        },
+        "release_set_id": {
+          "type": "string",
+          "pattern": "^REL_[A-Za-z0-9_-]{4,120}$"
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "all_required_component_hashes_match": {
+          "type": "boolean"
+        },
+        "setup_complete": {
+          "type": "boolean"
+        },
+        "doctor_passed": {
+          "type": "boolean"
+        },
+        "live_search_receipt_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 160
+        },
+        "paid_usage_receipt_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 160
+        },
+        "gate_evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "gate_id": {
+                "enum": [
+                  "G0",
+                  "G1",
+                  "G2",
+                  "G3",
+                  "G4",
+                  "G5",
+                  "G6"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "passed",
+                  "pending",
+                  "failed",
+                  "not_applicable"
+                ]
+              },
+              "receipt_sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "release_set_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 128
+              },
+              "manifest_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "gate_id",
+              "status",
+              "receipt_sha256",
+              "release_set_id",
+              "manifest_sha256"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 7
+        },
+        "loaded_consumers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "theme",
+              "industry"
+            ]
+          },
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "level",
+        "release_set_id",
+        "manifest_sha256",
+        "checked_at",
+        "all_required_component_hashes_match",
+        "setup_complete",
+        "doctor_passed",
+        "live_search_receipt_id",
+        "paid_usage_receipt_id",
+        "gate_evidence",
+        "loaded_consumers"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "level": { "enum": ["offline_ready", "live_verified", "full_release_verified"] } }, "required": ["level"] },
+          "then": { "properties": { "all_required_component_hashes_match": { "const": true }, "setup_complete": { "const": true }, "doctor_passed": { "const": true } } }
+        },
+        {
+          "if": { "properties": { "level": { "enum": ["live_verified", "full_release_verified"] } }, "required": ["level"] },
+          "then": { "properties": { "live_search_receipt_id": { "type": "string", "minLength": 1 }, "paid_usage_receipt_id": { "type": "string", "minLength": 1 } } }
+        },
+        {
+          "if": { "properties": { "level": { "const": "full_release_verified" } }, "required": ["level"] },
+          "then": {
+            "properties": {
+              "gate_evidence": {
+                "minItems": 7,
+                "maxItems": 7,
+                "items": { "properties": { "status": { "const": "passed" }, "receipt_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "release_set_id": { "type": "string", "minLength": 1 } } },
+                "allOf": [
+                  { "contains": { "properties": { "gate_id": { "const": "G0" } }, "required": ["gate_id"] }, "minContains": 1, "maxContains": 1 },
+                  { "contains": { "properties": { "gate_id": { "const": "G1" } }, "required": ["gate_id"] }, "minContains": 1, "maxContains": 1 },
+                  { "contains": { "properties": { "gate_id": { "const": "G2" } }, "required": ["gate_id"] }, "minContains": 1, "maxContains": 1 },
+                  { "contains": { "properties": { "gate_id": { "const": "G3" } }, "required": ["gate_id"] }, "minContains": 1, "maxContains": 1 },
+                  { "contains": { "properties": { "gate_id": { "const": "G4" } }, "required": ["gate_id"] }, "minContains": 1, "maxContains": 1 },
+                  { "contains": { "properties": { "gate_id": { "const": "G5" } }, "required": ["gate_id"] }, "minContains": 1, "maxContains": 1 },
+                  { "contains": { "properties": { "gate_id": { "const": "G6" } }, "required": ["gate_id"] }, "minContains": 1, "maxContains": 1 }
+                ]
+              },
+              "loaded_consumers": { "minItems": 2, "maxItems": 2 }
+            }
+          }
+        }
+      ]
+    },
+    "Response": {
+      "type": "object",
+      "properties": {
+        "message_type": {
+          "const": "response"
+        },
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "operation": {
+          "enum": [
+            "setup",
+            "doctor",
+            "plan",
+            "start",
+            "status",
+            "stop",
+            "resume",
+            "verify_live"
+          ]
+        },
+        "responded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "accepted",
+                "attached",
+                "blocked",
+                "ready",
+                "no_work",
+                "running",
+                "waiting_import",
+                "retry_wait",
+                "budget_exhausted",
+                "stopped",
+                "completed_with_gaps",
+                "failed_component",
+                "setup_required",
+                "version_mismatch",
+                "migration_required",
+                "no_resumable_run"
+              ]
+            },
+            "readiness": {
+              "enum": [
+                "not_ready",
+                "installed",
+                "offline_ready",
+                "live_verified",
+                "full_release_verified"
+              ]
+            },
+            "run_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 160
+            },
+            "attached_to_existing": {
+              "type": "boolean"
+            },
+            "process_spawned": {
+              "type": "boolean"
+            },
+            "dispatch_started": {
+              "type": "boolean"
+            },
+            "paid_calls_started": {
+              "type": "boolean"
+            },
+            "network_calls_started": {
+              "type": "boolean"
+            },
+            "generic_research_scheduler_started": {
+              "const": false
+            },
+            "source_pipeline_started": {
+              "const": false
+            },
+            "unowned_process_terminated": {
+              "const": false
+            },
+            "readiness_evidence": {
+              "$ref": "#/$defs/ReadinessEvidence"
+            },
+            "components": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ComponentStatus"
+              },
+              "minItems": 5,
+              "maxItems": 6
+            },
+            "error_code": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                null,
+                "missing_component",
+                "version_mismatch",
+                "loaded_hash_or_version_mismatch",
+                "contract_version_mismatch",
+                "capability_missing",
+                "interpreter_hash_mismatch",
+                "interpreter_version_mismatch",
+                "migration_required",
+                "profile_incomplete",
+                "budget_exhausted",
+                "permission_denied",
+                "unowned_process",
+                "no_resumable_run",
+                "invalid_manifest",
+                "manifest_hash_mismatch",
+                "duplicate_or_invalid_component",
+                "missing_required_component",
+                "unsupported_component",
+                "required_component_marked_optional",
+                "optional_identity_source_marked_required",
+                "incomplete_gate_set",
+                "incomplete_consumer_set",
+                "duplicate_component_status",
+                "unsupported_component_status",
+                "missing_install_record",
+                "component_failed",
+                "doctor_failed"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 500
+            }
+          },
+          "required": [
+            "status",
+            "readiness",
+            "run_id",
+            "attached_to_existing",
+            "process_spawned",
+            "dispatch_started",
+            "paid_calls_started",
+            "network_calls_started",
+            "generic_research_scheduler_started",
+            "source_pipeline_started",
+            "unowned_process_terminated",
+            "readiness_evidence",
+            "components",
+            "error_code",
+            "message"
+          ],
+          "additionalProperties": false,
+          "allOf": [
+            { "if": { "properties": { "readiness": { "const": "not_ready" } }, "required": ["readiness"] }, "then": { "properties": { "readiness_evidence": { "properties": { "level": { "const": "not_ready" } } } } } },
+            { "if": { "properties": { "readiness": { "const": "installed" } }, "required": ["readiness"] }, "then": { "properties": { "readiness_evidence": { "properties": { "level": { "const": "installed" } } } } } },
+            { "if": { "properties": { "readiness": { "const": "offline_ready" } }, "required": ["readiness"] }, "then": { "properties": { "readiness_evidence": { "properties": { "level": { "const": "offline_ready" } } } } } },
+            { "if": { "properties": { "readiness": { "const": "live_verified" } }, "required": ["readiness"] }, "then": { "properties": { "readiness_evidence": { "properties": { "level": { "const": "live_verified" } } } } } },
+            { "if": { "properties": { "readiness": { "const": "full_release_verified" } }, "required": ["readiness"] }, "then": { "properties": { "readiness_evidence": { "properties": { "level": { "const": "full_release_verified" } } } } } }
+          ]
+        }
+      },
+      "required": [
+        "message_type",
+        "schema_version",
+        "request_id",
+        "workspace_id",
+        "profile_id",
+        "operation",
+        "responded_at",
+        "result"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "doctor"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "properties": {
+                  "dispatch_started": {
+                    "const": false
+                  },
+                  "paid_calls_started": {
+                    "const": false
+                  },
+                  "network_calls_started": {
+                    "const": false
+                  },
+                  "process_spawned": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "plan"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "properties": {
+                  "dispatch_started": {
+                    "const": false
+                  },
+                  "paid_calls_started": {
+                    "const": false
+                  },
+                  "network_calls_started": {
+                    "const": false
+                  },
+                  "process_spawned": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "status"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "properties": {
+                  "dispatch_started": {
+                    "const": false
+                  },
+                  "paid_calls_started": {
+                    "const": false
+                  },
+                  "network_calls_started": {
+                    "const": false
+                  },
+                  "process_spawned": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "stop"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "properties": {
+                  "dispatch_started": {
+                    "const": false
+                  },
+                  "unowned_process_terminated": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "setup"
+              }
+            },
+            "required": [
+              "operation"
+            ]
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "properties": {
+                  "dispatch_started": {
+                    "const": false
+                  },
+                  "paid_calls_started": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "GateEvidence": {
+      "type": "object",
+      "properties": {
+        "gate_id": {
+          "enum": [
+            "G0",
+            "G1",
+            "G2",
+            "G3",
+            "G4",
+            "G5",
+            "G6"
+          ]
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "pending",
+            "failed",
+            "not_applicable"
+          ]
+        },
+        "receipt_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "release_set_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "gate_id",
+        "status",
+        "receipt_sha256",
+        "release_set_id"
+      ],
+      "additionalProperties": false
+    },
+    "AbsolutePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^(?:[A-Za-z]:[\\\\/]|/|\\\\\\\\)[^\\r\\n]+$"
+    },
+    "StockWikiSettingsRef": {
+      "type": "object",
+      "properties": {
+        "universe_profile_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "config_sha256": {
+          "$ref": "#/$defs/Sha256"
+        }
+      },
+      "required": [
+        "universe_profile_ref",
+        "revision",
+        "config_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "StockQASettingsRef": {
+      "type": "object",
+      "properties": {
+        "model_policy_profile_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "config_sha256": {
+          "$ref": "#/$defs/Sha256"
+        }
+      },
+      "required": [
+        "model_policy_profile_ref",
+        "revision",
+        "config_sha256"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/ReleaseSet"
+    },
+    {
+      "$ref": "#/$defs/InstallRecord"
+    },
+    {
+      "$ref": "#/$defs/Request"
+    },
+    {
+      "$ref": "#/$defs/Response"
+    }
+  ]
+}

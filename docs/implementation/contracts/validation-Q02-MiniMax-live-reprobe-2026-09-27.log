@@ -1,0 +1,165 @@
+COMMAND: C:\Miniconda\python.exe -B -X utf8 -m pytest -p no:cacheprovider --no-cov --basetemp C:\Users\郑曾波\AppData\Local\Temp\stockqa-q02-minimax-live-cbyefsdo\pytest --timeout=210 -q tests/live/test_live_quick_scan.py::test_live_minimax_search_runs_public_company_through_cli_and_cleans_local_artifacts
+EXIT_CODE: 1
+TEMP_PARENT_CLEANUP_VERIFIED: True
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_live_minimax_search_runs_public_company_through_cli_and_cleans_local_artifacts _
+
+    @pytest.mark.live
+    @pytest.mark.skipif(
+        os.environ.get("STOCKQA_RUN_LIVE_E2E") != "1" or not os.environ.get("MINIMAX_API_KEY"),
+        reason="Set STOCKQA_RUN_LIVE_E2E=1 and MINIMAX_API_KEY for one MiniMax-M3 search E2E",
+    )
+    def test_live_minimax_search_runs_public_company_through_cli_and_cleans_local_artifacts():
+        """One public CLI question through MiniMax-M3 with a real search-call receipt."""
+        repo_root = Path(__file__).resolve().parents[2]
+        original_cwd = Path.cwd()
+    
+        with tempfile.TemporaryDirectory(prefix="stockqa-live-minimax-") as temporary_root:
+            sandbox = Path(temporary_root).resolve()
+            (sandbox / "logs").mkdir()
+            questions_path = sandbox / "questions.json"
+            questions_path.write_text(
+                json.dumps(
+                    {
+                        "categories": [
+                            {
+                                "category": "quality",
+                                "questions": [
+                                    {
+                                        "question_id": "IQS_05",
+                                        "text": (
+                                            "Search the web for Microsoft's official FY2025 annual "
+                                            "report and current evidence. Then rate its durable "
+                                            "enterprise software switching-cost advantage from 1 to 10. "
+                                            "Return strict JSON with question_id IQS_05, status, score or "
+                                            "null, and a concise description. Do not include markdown."
+                                        ),
+                                    }
+                                ],
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            (sandbox / "llm_apis.json").write_text(
+                json.dumps(
+                    {
+                        "default_provider": "minimax",
+                        "providers": {
+                            "minimax": {
+                                "enabled": True,
+                                "api_key": "",
+                                "model": "MiniMax-M3",
+                                "base_url": "https://api.minimaxi.com/v1/responses",
+                                "max_retries": 1,
+                                "format_repair_budget": 0,
+                                "timeout": 160,
+                            }
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+    
+            child_env = os.environ.copy()
+            child_env["PYTHONPATH"] = str(repo_root) + os.pathsep + child_env.get("PYTHONPATH", "")
+            child_env["PYTHONDONTWRITEBYTECODE"] = "1"
+            output_path = sandbox / "result.json"
+            command = [
+                sys.executable,
+                "-X",
+                "utf8",
+                str(repo_root / "main_with_llm.py"),
+                "--company",
+                "Microsoft Corporation",
+                "--entity-id",
+                "issuer:US5949181045",
+                "--provider",
+                "minimax",
+                "--config",
+                str(questions_path),
+                "--output",
+                str(output_path),
+                "--require-search",
+            ]
+            try:
+                completed = subprocess.run(
+                    command,
+                    cwd=sandbox,
+                    env=child_env,
+                    capture_output=True,
+                    text=True,
+                    timeout=180,
+                    check=False,
+                )
+            finally:
+                assert Path.cwd() == original_cwd
+    
+            if completed.returncode != 0:
+                failure = {"exit": completed.returncode, "output_exists": output_path.exists()}
+                if output_path.exists():
+                    partial = json.loads(output_path.read_text(encoding="utf-8"))
+                    failed_answer = partial.get("answers", {}).get("IQS_05", {})
+                    failed_receipt = partial.get("execution_receipts", {}).get("IQS_05", {})
+                    failure.update(
+                        answer_status=failed_answer.get("status"),
+                        http_status_code=failed_receipt.get("http_status_code"),
+                        response_status=failed_receipt.get("response_status"),
+                        search_status=failed_receipt.get("search_status"),
+                        search_calls=[
+                            {
+                                "status": call.get("status"),
+                                "action_type": call.get("action_type"),
+                                "source_count": len(call.get("source_urls") or []),
+                            }
+                            for call in failed_receipt.get("web_search_calls") or []
+                            if isinstance(call, dict)
+                        ],
+                        source_count=len(failed_receipt.get("source_urls") or []),
+                        failure_type=failed_receipt.get("failure_type"),
+                        dispatch_outcome=(failed_receipt.get("dispatch_outcome") or {}).get("state"),
+                    )
+                pytest.fail(f"Live MiniMax CLI failed: {failure}")
+            result = json.loads(output_path.read_text(encoding="utf-8"))
+            answer = result["answers"]["IQS_05"]
+            receipt = result["execution_receipts"]["IQS_05"]
+            assert result["entity"]["name"] == "Microsoft Corporation"
+            assert result["observed_at"].endswith("Z")
+            assert answer["question_id"] == "IQS_05"
+            assert answer["status"] in {"scored", "unknown", "insufficient_evidence", "error"}
+            assert (answer["score"] is None) == (answer["status"] != "scored")
+            assert receipt["provider"] == "minimax"
+            assert receipt["requested_model"] == "MiniMax-M3"
+            safe_receipt_summary = {
+                "http_status_code": receipt["http_status_code"],
+                "response_status": receipt["response_status"],
+                "actual_model": receipt["actual_model"],
+                "search_status": receipt["search_status"],
+                "search_calls": [
+                    {
+                        "status": call.get("status"),
+                        "action_type": call.get("action_type"),
+                        "source_count": len(call.get("source_urls", [])),
+                    }
+                    for call in receipt["web_search_calls"]
+                ],
+                "source_count": len(receipt["source_urls"]),
+                "request_id_present": bool(receipt["request_id"]),
+                "response_id_present": bool(receipt["response_id"]),
+                "attempt_id_present": bool(receipt["attempt_id"]),
+            }
+            assert receipt["actual_model"] == "MiniMax-M3", safe_receipt_summary
+>           assert receipt["search_status"] == "executed", safe_receipt_summary
+E           AssertionError: {'http_status_code': 200, 'response_status': 'completed', 'actual_model': 'MiniMax-M3', 'search_status': 'unverified', ...}
+E           assert 'unverified' == 'executed'
+E             
+E             - executed
+E             + unverified
+
+tests\live\test_live_quick_scan.py:276: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/live/test_live_quick_scan.py::test_live_minimax_search_runs_public_company_through_cli_and_cleans_local_artifacts
+1 failed in 6.08s

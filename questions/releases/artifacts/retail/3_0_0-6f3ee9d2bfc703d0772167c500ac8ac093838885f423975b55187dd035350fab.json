@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "retail",
+  "kind": "industries",
+  "name": "零售、餐饮与连锁服务",
+  "applies_when": "门店、电商零售和加盟系统；区分自营与加盟经济性。",
+  "questions": [
+    {
+      "id": "RETAIL_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "成熟门店或经营单元在租金、人力、总部成本后回报如何？",
+      "evidence": [
+        "同店利润",
+        "租赁",
+        "回本期",
+        "加盟商盈利"
+      ],
+      "anchors": {
+        "1": "成熟店也无法覆盖完整成本",
+        "5": "多数单元能盈利但回收较慢",
+        "10": "多批次单元全成本回报可靠且加盟商同步健康"
+      },
+      "metric_id": "score.retail_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RETAIL_02",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "开店或获客扩张能否复制成熟单元而不蚕食旧业务？",
+      "evidence": [
+        "新店爬坡",
+        "关店",
+        "同店增长",
+        "区域密度"
+      ],
+      "anchors": {
+        "1": "新开掩盖同店衰退且关店增加",
+        "5": "新店大致达标但部分蚕食",
+        "10": "不同区域的成熟批次回报可复制且密度合理"
+      },
+      "metric_id": "score.retail_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RETAIL_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "采购、库存、服务和用工系统是否支持一致体验？",
+      "evidence": [
+        "缺货损耗",
+        "服务投诉",
+        "人员流失",
+        "供应效率"
+      ],
+      "anchors": {
+        "1": "规模扩大导致明显失控",
+        "5": "运营基本稳定但效率一般",
+        "10": "跨区域运营一致且效率持续改善"
+      },
+      "metric_id": "score.retail_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RETAIL_04",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "租赁承诺、加盟信用与库存占用能否承受需求下降？",
+      "evidence": [
+        "租赁到期",
+        "保底承诺",
+        "库存",
+        "加盟商应收"
+      ],
+      "anchors": {
+        "1": "刚性承诺与滞销造成资金缺口",
+        "5": "平稳期可覆盖，压力余量有限",
+        "10": "压力同店销售下仍有灵活性和资金缓冲"
+      },
+      "metric_id": "score.retail_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

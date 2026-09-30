@@ -1,0 +1,75 @@
+{
+  "version": "3.0.0",
+  "module_id": "recent_listing",
+  "kind": "overlays",
+  "name": "新上市、分拆与短历史",
+  "applies_when": "可比公开经营历史较短或最近发生重大分拆与重组。",
+  "questions": [
+    {
+      "id": "RECENT_LISTING_01",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "独立经营口径是否足以验证历史盈利与资金需要？",
+      "evidence": [
+        "备考调整",
+        "独立成本",
+        "关联往来",
+        "上市费用"
+      ],
+      "anchors": {
+        "1": "依赖母公司补贴且独立成本不明",
+        "5": "多数调整可解释但历史较短",
+        "10": "独立口径与现金需求清楚且关键调整可验证"
+      },
+      "metric_id": "score.recent_listing_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RECENT_LISTING_02",
+      "dimension": "governance",
+      "priority": 2,
+      "question": "上市或分拆后的激励、锁定安排与股东利益是否一致？",
+      "evidence": [
+        "锁定到期",
+        "期权",
+        "老股出售",
+        "关联服务"
+      ],
+      "anchors": {
+        "1": "重要利益冲突未约束",
+        "5": "安排常规但部分冲突存在",
+        "10": "冲突透明且激励支持长期每股价值"
+      },
+      "metric_id": "score.recent_listing_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "RECENT_LISTING_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "承诺的募投或独立运营计划是否已有可靠兑现？",
+      "evidence": [
+        "资金用途",
+        "项目进度",
+        "独立系统",
+        "初期结果"
+      ],
+      "anchors": {
+        "1": "明显偏离用途或执行失控",
+        "5": "计划基本推进但验证期短",
+        "10": "资金用途与经营交付均有可核实进展"
+      },
+      "metric_id": "score.recent_listing_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

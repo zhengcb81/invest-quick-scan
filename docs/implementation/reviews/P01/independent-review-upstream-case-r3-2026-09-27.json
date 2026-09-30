@@ -1,0 +1,38 @@
+{
+  "reviewer_id": "agent:/root/p01_receipt_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "Separate read-only review sub-agent; did not implement or modify the reviewed implementation, tests, schema, example, or contract.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "017318f72c0994b69f7a19355b629a6f2460d8fc2e2f6c74b47e1744222d905a",
+  "open_findings": [],
+  "review_scope": {
+    "date": "2026-09-27",
+    "files": [
+      "scripts/task_receipts.py",
+      "tests/test_task_receipts.py",
+      "schemas/quick_scan/task-receipt.schema.json",
+      "examples/quick_scan/task-receipt-v2-example.json",
+      "docs/implementation/contracts/task-receipts.md",
+      "docs/implementation/contracts/validation-P01-upstream-case-regression-r3-2026-09-27.log"
+    ],
+    "checks": [
+      "Upstream case owners are required to belong to the task's transitive dependency closure; malformed graphs fail closed.",
+      "Referenced case definitions are bound by referenced_case_bundle_sha256, and changes or a missing required hash block eligibility.",
+      "case_results cover every task.case_ids entry while owned and referenced case hashes remain separate.",
+      "Owner-only legacy v2 receipts may omit the referenced case hash; schema, example, and written contract align with verifier behavior.",
+      "Previously reported hash-failure exception and transitive dependency test gaps are closed."
+    ]
+  },
+  "execution": {
+    "mode": "read-only review",
+    "tests_run_by_reviewer": false,
+    "commands_run_by_reviewer": false,
+    "network_or_api_access": false,
+    "reported_validation": {
+      "source": "docs/implementation/contracts/validation-P01-upstream-case-regression-r3-2026-09-27.log",
+      "sha256": "8933c4258588e08db3bab81fad2211968579632d72123c03101cda9e6bfe2a3d",
+      "result": "29 tests passed; recorded in the supplied log, not rerun by the reviewer."
+    }
+  }
+}

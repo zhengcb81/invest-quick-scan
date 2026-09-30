@@ -1,5 +1,27 @@
 # 设计调研与证据
 
+## 2026-09-26 — Review/test cadence audit
+
+- The actual milestone cadence is already consolidated: P00 used one focused evidence batch and one review; C01–C07 used one shared 188-test regression batch, one combined review, and one recursive receipt-chain check; current Phase 27 plans one G0 review. This is a reasonable number of independent review gates for a multi-repository delivery.
+- The remaining friction was ambiguous wording: atomic assertion evidence could be read as requiring a separate test process/log per assertion. The receipt contract permits exact selectors/subtest IDs from a shared parameterized run; clarify that one batch/run ID may satisfy multiple assertions, with byte-identical task-scoped log copies where required by path policy.
+- Keep scenario/assertion coverage and receipt traceability, but do not make them a test-run schedule. Use focused grouped tests during implementation, one stable-candidate full local regression per milestone, one grouped independent review at major gates, and affected-path reruns only after fixes. P01's separate pre-/post-seal reviews are a hash-direction exception, not a general task cadence.
+- Current consistency issue: the G0 packet instructions referred to plan 1.9.6 while authoritative tasks/catalog/README are at 1.9.7. Updated the active Phase 27 references; no task/case/constraint counts changed.
+## 2026-09-23：G0 外部接口只读复核
+- 用户已授权读取外部仓库但要求任何写入先询问；本轮只把观察写入本仓 `docs/implementation/reviews/G0/external-interface-snapshot.md`，没有在外部仓运行可能产生日志/缓存/数据库的测试或命令。
+- StockQAbyLLM 当前同步/异步请求体只有 model/messages/temperature/max_tokens，没有搜索工具或引用契约；SearchResult虽有score，正常AnswerGenerator路径仍固定写5分。ProviderCascade只有进程内计数，JSON题库加载器只返回字符串列表；搜索、评分保真、额度、去重和跨重启接续均属下游待实现能力。
+- StockWiki `Company` 以ticker派生safe_id，没有统一发行人ID；已有workspace/job/UI命令，但没有quick-scan/candidate-set入口。其研究语义和knowledge state仍由StockWiki独占写入。
+- company-wiki `SecurityIdentityResolver`按证券记录和market/exchange提示解析；多条精确命中会返回ambiguous，不能自行承担跨市场发行人合并。快扫身份必须保留issuer与listing两层，并用显式、可审计映射消歧。
+- 两个研究skill当前没有quick-scan读取入口；后续只能消费版本化只读查询/交换包，不能共享可写数据库。
+- company-wiki现有CodeGraph在issuer-index位置与当前工作树源码不一致；该区域以实时文件内容及文件SHA为准，不能把陈旧索引当作当前接口事实。
+
+## 2026-09-23：Task C04 字段时效与接续契约
+- C04既有未完成草稿有8个测试，但多项直接在测试体内复制待测逻辑；scope未区分entity/security/segment key，状态把资料unknown与任务投递结果混用。
+- 已修正为独立执行状态+答案response_status+调度冷却决定；持久化的WorkItem通过scope_id区分双挂牌证券/分部，同一字段在新刷新代次才重问；request_cache_key另含实际provider/model/prompt输入。
+- uncertain请求绑定原attempt，租约超时不等于没发包；只有对账可安全退回/接受迟到回答。result_ready在ACK item/hash/status通过前保持待投递。已投递资料不足的答案仍不可变，冷却到期建新generation。
+- 新增scripts/work_contract.py纯离线参考规则、增补Draft-07 schema和完整状态文档；15项C04测试通过，含Schema FormatChecker、UTC、时点切断和scope键；任务规划测试41项通过、计划校验通过。
+- C04 receipt记录实施快照与本地日志。独立审查尚未执行，C04保持implementation_complete；StockQA/StockWiki持久队列尚未实现，G0未通过。
+
+
 ## 2026-09-22：Task C03 评分与规则契约证据
 - 评分与规则契约已固化：schemas/quick_scan/score.schema.json, schemas/quick_scan/rule.schema.json 与 docs/implementation/contracts/scoring.md。
 - 传输默认5分隔离（SC-02, SC-03, SC-04）：实现 ParsedAnswer Schema，非打分状态强制 score=null，旧传输 5 分字段隔离于 legacy_transport_score；非法值全部拒绝；内外分冲突与错题明确拦截。
@@ -217,3 +239,835 @@
 - 已写docs/durability-and-change-design.md：优势的有效条件、需求与手段区别、利润归属、能力迁移、新旧业务净效果、并存风险与机会，以及与恢复观察的区别。
 - 建议先深化24题；最多三道按需诊断草案为能力迁移、组织调整、新旧业务净股东利益，含1/5/10锚点但尚未加入catalog。
 - 3份相关设计文档链接及代码围栏校验通过；本轮未改题库、评分代码、现有模型结果或外部项目。
+
+## 2026-09-23 — C05模型策略/预算契约与卡片编号核对
+
+- `docs/implementation/README.md`确认`tasks.json`和`acceptance-cases.json`是唯一任务/case清单。根目录task_plan曾把C05误标为StockWiki SQLite schema；当前1.4.0正式卡C05实际是冻结有序模型、故障分类及费用边界。该误标已纠正。StockWiki SQLite对应后续任务仍须按清单与owner核对，未获用户授权前只读。
+- C05本地实现包含有序模型/能力预检、首选容量等待、低分/unknown成功即停、错误分类、持久化额度组/半开探针规范、总预算与单次预留、失败/搜索/fallback共同计费、未知费用暂停、comparison独立子预算和不可变策略版本。
+- 配置Schema升至2.0.0；旧1.0.0因缺少新必填字段不自动迁移。模板维持configured=false、路由禁用、预算为0，不含密钥或虚构价格。若采用rate-card需要StockQA有效价格引用；否则需要显式用户单次上限。
+- `test_providers_and_budget_contract.py`的16项与既有`test_model_policy.py`9项均调用真实离线校验器/schema；计划工具41项通过、计划73任务/162case校验通过。它们不是provider、联网搜索、真实并发、持久费用记账或StockQA运行验收。
+- C04和C05回执均是implementation_complete/review_pending；两个卡片都没有独立审查，G0未通过。C05仅在本项目内建立契约，不向StockQA发布或修改外部实现。
+
+## 2026-09-23 — C06交换、查询与交接发现
+
+- 报文边界与数据写入归属必须分开：StockQA只负责提问并导出观察/ACK交换流，StockWiki独占quick_scan权威存储和查询；同一SQLite文件/跨项目直接写入会破坏责任边界。
+- 观察内容hash正确且观察ID相同才能视作幂等重放；键相同、内容hash不同属于冲突，禁止last-write-wins。DB-03测试原先用错误payload hash测冲突时，实际应先拒绝无效payload；测试已调整为ID相同且内容自洽的有效变体，确保触达冲突分支。
+- 查询没有覆盖时，0行不是“无匹配公司”。empty必须要求完整coverage；partial/not_covered/unknown要显式反映coverage gap，并带store/snapshot水位和固定分页快照。
+- 消费技能的补扫权限必须拆成两步：精确实体/字段的费用与策略预览，然后经认证用户确认并复验scope/budget，才登记StockQA工作。预览本身、普通查询、页面浏览均不得派发模型。
+- Fact观察的null score、上游证据ID/任务ID与交接源链必须完整；转述不产生第二份独立支持，快扫Observation不构成正式证据接受。
+- 构包参考函数必须深拷贝观察与版本输入；否则构建后调用方修改原字典会让存放payload偏离已生成hash。已加输入变更回归，验证观察hash与package hash仍然一致。
+- C06本地参考实现和schema测试不能验证跨仓事务、权限/UI、调用入口、线上模型或真实浏览器；这些必须由StockWiki/StockQA owner测试，当前不在本仓更改授权内。
+
+## 2026-09-23 — C07部署与就绪协议发现
+
+- `ReleaseSet`记录所有核心工件的hash、contract/capability版本、entrypoint与Python/依赖锁；只比对版本字符串会把“源目录已更新、宿主仍加载旧skill”误当作同一配套版。
+- `offline_ready`只证明本地配置和实际资源可用；真实搜索与费用回执才允许`live_verified`；G0—G6、G4/G5、消费技能实载hash及真实同入口闭环共同决定`full_release_verified`。设置表单或页面健康不能自签完整发布状态。
+- `doctor`、`plan`、`status`明确无联网/付费/派发/进程启动；真实探针单独需要用户确认引用、当前StockQA策略和共享额度批准。模型顺序/凭据/费用仍由StockQA唯一拥有，名单/profile仍由StockWiki拥有。
+- 重复start按workspace/profile附着同一run；预算耗尽跨重启仍耗尽；关闭页面与stop分离；stop只停止新派发并排空/保留outbox，不凭PID或端口终止不明进程。进程控制身份需匹配启动时间与可执行文件hash等，不止PID。
+- company-wiki作为可选身份来源；一键快扫永不启动通用研究scheduler/source pipeline或为身份缺失自动抓文档。生产实现仍需各owner真实入口/进程/数据库测试，纯参考规则不授予控制权。
+- 第一轮schema测试揭露`ProcessIdentity`被内嵌复制后路径规则只更新$defs、响应路径仍可相对；把引用统一后相对路径负例通过。该反例说明后续消费者实现应优先引用单一schema定义，避免复制造成约束漂移。
+- G0前向交叉检查发现C07初稿把模型策略版本写成`model_policy`，但C06包使用`model_policy_schema`；即使两边版本数字一样也可能静默错过兼容性判定。现将部署、release和运行报告统一到单一`ContractVersions`引用并采用相同schema后缀命名，虚构manifest重新散列，测试锁定该映射。
+
+## 2026-09-23 — G0独立审查所得
+
+- JSON Schema只能约束单对象形状，无法自动保证Entity/Security、Universe计数、WorkItem scope、Profile/Observation之间的外键一致性；这些关系必须在公共导入/查询校验器中显式核对并由负例锁定。
+- 检查等级和readiness都不能由负载自报。较高检查等级必须引用可信运行/审核回执；readiness必须由同一release证据闭包计算，响应声明只能与计算结果一致。
+- “测试写出同一公式”不证明实现。C01—C03测试现改为调用公共`contract_validation.py`；C05—C07离线case与外部owner运行case分离，避免证据名称造成虚假上线结论。
+- 任意`extensions`会穿透轻资产边界。v1.0.0将其封闭为空；未来扩展需要具名、限长、版本化schema，不能以自由对象保留后门。
+- 来源独立性是图闭包属性，不是一跳比较。任一祖先缺失、成环或最终回到目标Observation时都必须保守拒绝。
+
+## 2026-09-24 — 真实E2E隔离回归审查
+
+- 独立审查本地live测试沙箱时发现三项Windows清理缺陷：原位更新manifest可沿硬链接写入外部目标；逐个直接删除时开放SQLite可能导致前面的日志/下载已删、数据库失败后无法重试；空NTFS junction可能被当作普通目录。
+- 已按最小范围修复：控制文件必须为单链接普通文件，manifest经同目录临时文件原子替换；清理先将所有已登记工件暂存、校验并在失败时回滚，外部pre/post状态漂移也会回滚暂存；目录遍历拒绝symlink/reparse point。真实Windows回归覆盖外部硬链接哨兵、开放SQLite句柄、多工件回滚和空junction。
+- 后续复核又发现测试子进程默认cwd可能留在产品仓库，造成相对路径写入污染。现将默认cwd固定在本run workspace，外部cwd在`Popen`前拒绝；测试确认相对输出隔离和无进程启动。
+- 独立报告`docs/implementation/reviews/E2E-isolation/independent-review.md`结论限定为`verified_for_local_isolation_mechanism_only`，不覆盖真实网络/provider/费用/StockWiki导入ACK。E2E-06继续`specified_not_executed`。定向17项及全量214项（116 subtests）独立复跑通过；原始日志SHA见`progress.md`。
+- 只读查看确认StockQA README和`src/services/search_service.py`仍声明真实搜索为占位实现；StockWiki当前没有quick-scan observation/ACK公共入口。因此真实产品E2E缺少可调用执行链。S02依赖StockQA Q01—Q03，下一步必须先得到用户对StockQA写入的明确授权；写StockWiki前另行取得其授权。
+
+
+## 2026-09-24 — StockQA Q01–Q03独立复核整改发现
+
+- OpenAI搜索source必须显式包含在响应中；仅看内层tool status会把顶层incomplete或跨两个search call拼出的sources误当成功。现要求顶层completed，并要求URL来自同一个completed search action。
+- question_id不足以防止回答串到别家公司；require-search解析同时绑定稳定entity_id和CLI目标公司名。此身份标记是模型输出契约，不构成对描述中每条事实的独立证明，check_level仍为unverified_model_output。
+- 旧parser会从任意前后缀/Markdown文本中正则抽取对象；quick-scan改为整段JSON解析，旧宽松行为仅留给兼容入口。格式解析失败属于格式预算，不再触发普通transport重试；失败答案为unknown/null并保持进程失败状态。
+- 每次请求记录prompt哈希而非prompt正文、唯一attempt ID、起止时间、request/response、模型、response status、来源和搜索回执；异步请求错误只暴露异常类型。
+- live E2E曾把API key写入临时配置文件；改为仅注入child environment并断言sandbox清理。没有环境凭据时测试明确skip，不能登记LLM-01真实联网通过。
+- 当前修复已通过StockQA定向63项和全量479项测试；独立审查仍在进行。
+
+
+## Q02复审补充：传输失败与重试的回执
+
+- 首轮Q01–Q03独立复审发现发送成功后的receipt设计不足以回答“请求是否已发出/是否消耗额度/实际重试了几次”。已扩展到transport边界：每次异常只保留类型和可用的status/request ID，不保留响应正文/异常字符串/原提示词；Attempt ID、开始/结束UTC时间和prompt SHA-256在POST前生成。
+- 异步/同步均复用同一失败异常与attempt结构。成功重试保留所有历史失败；耗尽重试的CLI结果仍保存null/error和attempts并以非零退出。UI或后续持久化可据同一question receipt判断是否已派发；不能仅凭exit code推断没有发包。
+- 新增失败响应header 429、timeout、同步/异步重试后恢复、全失败CLI与秘密脱敏案例。当前全量486 passed/1 skipped；该修复等待独立二轮复核。
+
+
+## 2026-09-24 — Q12/S02审查与测试结论
+
+- 消费端应以实际问题文本的SHA-256绑定manifest，并要求最末attempt与顶层回执一致；只校验provider外层200或允许模型自报hash均不足以防止串题/伪造执行状态。SC-12/13覆盖公开CLI成功导入8分和回执篡改失败关闭。
+- 独立审查发现`references/stockqa-integration.md`把Q12误写成临时别名Q03R；已统一改用正式ID Q12。复审附录记录`Q12-DOC-01`关闭，文档SHA-256 `72F05E16FA498BBB2BC2B7E7C4D4FF8D84B0FBD672FB1D5D79D65D080144F35B`。
+- 完整StockQA测试与受限子集必须区分：由于沙箱ACL不能读取Miniconda的certifi CA文件，13项HTTP client用例失败；针对Q12的64项通过，排除该25项文件后的其余461项通过、1项live测试跳过。该限制不替代真实OpenAI搜索验证。
+- 本地S02定向和全量测试分别45/92子测试、220/128子测试通过；测试使用独立TEMP根并在结束后清理。真实StockWiki持久化及ACK还没有公开可调用入口，故E2E-06仍未执行。
+
+
+## 2026-09-24 — Q04实现前的调用链发现
+
+- 现有`ProviderCascade`无生产调用者，且其共享`_current_index`和备份成功恢复主路由的行为不适合Q04：应按每个logical question从用户策略顺位选择，某题成功后停止该题切换，不把备份成功误报成主模型恢复。
+- `LLMRunner._run_single_company`现只创建一个固定`LLMProvider`；`LLMProvider`的client及model在初始化时绑定。引入逐题fallback需把策略放入实际`QAEngine`请求路径，并确保一次逻辑题的内部重试/fallback共用C05上限，避免嵌套重试乘倍。
+- `LLMConfig`目前只从已有配置取provider-specific model/API设置，无policy版本、用户提供顺序或quota-group运行接口。Q04需复用这个配置拥有者并拒绝密钥进入日志/回执。
+- 外部工作树已有Q01—Q03的未提交变更，尤其包含runner/provider/models；任何Q04 patch需对当前diff作精确局部编辑，并由用户另行授权后才实施。StockWiki设置界面属于后续owner任务，不能因PAR-08测试要求而在本卡越权写入。
+
+## 2026-09-24 — Q04候选实现及跨卡独立审查发现
+
+- Q04当前在StockQA只改六个获批文件，require-search CLI使用用户顺序provider/model策略并固定run-start policy快照；fallback仅针对明确的429、401/403/404和5xx等可恢复传输拒绝，低分/unknown不fallback。测试mock仅位于HTTP边界，不调用真实网络。
+- Q04尚不能覆盖C05所列运行语义：没有对共享账户组/并发槽进行跨worker容量协调，故不能证明“首选槽满则等待、不抢发备用模型”；也未支持同一运行中的policy热更新派发边界，StockWiki设置入口尚未写入。需将PAR-03/PAR-08保持open，后续按owner分卡实施。
+- 当前cascade未读取/遵循`Retry-After`；如果需要将普通429与五小时共享额度冷却分开，并由多个worker协调，需要扩展StockQA传输层/持久化owner，不能在本卡现有局部实现上声称已闭合。
+- 独立审查Q01/Q03新增四个公开CLI反例：旧内层`insufficient_evidence`可被外层兼容5覆盖并计平均；嵌套内外分数冲突不拒绝；内层题ID冲突不拒绝；重复JSON `question_id`键静默取最后一个。这些需要单独的StockQA修订范围授权；Q02真实搜索仍需key和live审批。
+- C04/C06/C07独立审查阻断缺口：uncertain attempt ID不校验绑定已存在attempt；公共exchange validator接受正文被篡改但hash不变的包；full readiness接受实际组件hash错误但自报布尔值为true。三项都应新增固定反例并重绑当前字节的回执后再晋级。
+- 上述C04/C06/C07首轮阻断现已各自加入固定反例并修复公共入口：WorkItem验证和transition都以已记录attempt为依据，exchange验证重算item/package所有内容地址，full readiness用组件当前实载hash重新推导。定向51项和全套222项通过；独立follow-up已关闭全部阻断，三卡在本地离线契约范围verified。生产集成与live验收仍开放。
+
+
+## 2026-09-24 — Q01/Q03 follow-up 新发现与修复候选
+
+- F04：完整嵌套description若内外status、score与题目ID一致，是现有S02消费者协议的一部分，不应整体拒绝。独立CLI到消费者测试在旧r1 parser上复现失败；当前按字段一致性保留合法结构，并已重跑通过。
+- F03扩展：只在每个regex候选上拒绝重复键不足；外层重复question_id JSON带metadata子对象时，regex会绕开失败外层并返回子对象的9分。兼容模式现只处理完整外层JSON对象，重复键候选fail closed；direct与Markdown包装案例均通过。
+- 证据为StockQA定向51项、共享suite 276项及本地全量222项/139子用例，哈希绑定于Q01/Q03回执。独立r2复审未完成前不晋级。
+
+
+## 2026-09-24 — Q01/Q03 r2 独立审查结果
+
+- 独立review对精确哈希复审并复跑167项（166个selected cases + 1个S02 consumer E2E），结论为F01/F02/F03/F04的固定反例已修复，获批离线范围无阻断项；报告SHA-256为39325AB05687514F4EFE1DDF7A3EE15ACA168BC33E870C4F3E545E375C703127。
+- 审查记录了第一版git观察器因safe.directory限制而不可作为零漂移证据；随后以命令级safe.directory重跑后，2,594条目与Git状态前后相同，TEMP已清理。没有StockQA外仓写入或网络调用。
+- Q01可在其离线scope内verified；Q03虽已审查修复，但仍依赖未完成的Q02。真实LLM搜索与其他Q04跨仓能力不因离线测试通过而关闭。
+
+
+## 2026-09-24 — Q04 B1/B2修订快照 r3
+
+- 对初审B1增加了完整v2 policy schema parity与运行时完整校验；不完整读入/写入均拒绝，测试验证原配置不被破坏。策略JSON Schema复制自本地规范文件且SHA一致。
+- 对初审B2增加了秒数/HTTP日期Retry-After解析、仅白名单error code落attempt receipt、429区分rate-limit/quota exhaustion、同run quota-group冷却、401/403 route禁用及受总attempt预算约束的5xx retry；认证路由不会在后续题重复调用。
+- 已定向复测131项通过、格式和diff hygiene通过；仅离线mock。此为实现事实，仍需独立review按哈希快照确认语义，不据此自行宣告B1/B2关闭。跨进程共享额度协调与运行中policy热更新边界仍是开放设计/实现问题。
+
+- 发布追踪注意：StockQA当前`.gitignore`的`*.json`规则会忽略新增的`src/config/quick_scan_model_policy.schema.json`。文件hash已进入本仓回执，但Git尚不跟踪该文件；已向用户请求只针对该文件增加精确ignore例外的授权，等待答复，不改其他忽略规则。
+
+
+## 2026-09-24 — Q04 r3复审发现整改
+
+- r3 reviewer的独立schema audit证明原单测policy fixture无效，并给出三条固定失效：verified_rate_card缺pricing_ref、policy/quota/model identifiers超200字符、comparison启用时零cost/零requests。对应20条pytest案例先红，手写完整校验器改完后读入与保存两条路径均拒绝，20条转绿。
+- 把unit/CLI policy factory均改为合法user_cap引用；独立运行JSON Schema Draft 2020-12验证两个fixture有效。校验并与canonical schema hash比对时不新增依赖。
+- `.gitignore`存在两条通用JSON规则，首轮将例外放在较早规则后未生效；随即检查`check-ignore`并将唯一例外移到最后`*.json`规则之后，`git status`现显示schema为untracked可正常提交。未暂存或提交StockQA变更。
+- r3 follow-up reviewer报告SHA-256 `4CBB3172D9332C2C16982E4A4E610F7CEE4BC124FC7AE4A430C3163B889DC263`；只读r4复审仍待完成。
+
+
+## 2026-09-24 — Q04 r4 最终独立复审
+
+- r4审查报告确认三类B1 schema差异修复、有效policy fixtures与B2关键分支通过；复审日志pytest SHA `53F657BF22D006FE3F5890D8756F1B5D9E4628DAA034790E07ABB99CD6ACBB92`，schema fixture验证SHA `63ECAB95EA6E245155A7CEA43923CD75E4D2616382E1A9DA061A6EAECD9FAAB5`。
+- 独立审查记录手写validator比JSON Schema更严格：要求web_search与structured_output同时存在；review判断对本skill执行有意且非阻断。
+- schema可见但仍是untracked、尚未暂存/提交；无需stage作为当前工作结果。PAR-03/PAR-08/LLM-06/LLM-10保持open。
+
+
+## 2026-09-24 — Q01/Q03公开CLI反例整改
+
+- 处理Q01/Q03独立报告F01/F02/F03：完成JSON重复键拒绝、顶层native answer与嵌套旧答案协议隔离。recognized nested payload fail closed而不强制解析为兼容答案，避免内外评分/题ID冲突或旧transport 5进入平均分；保留普通自然语言description。
+- RED证据：`validation-Q01-Q03-counterexamples-red-r2-2026-09-24.log`（8/8）及`validation-Q01-Q03-duplicate-fallback-red-2026-09-24.log`（1/1）。GREEN：`validation-Q01-Q03-counterexamples-green-r1-2026-09-24.log`（9/9）；共享目标suite 272 passed并附Black、diff-check。所有run均无live调用且TEMP根清理。
+- 修改后精确快照及复审需求见`receipt-Q01.json`和`receipt-Q03.json`；当前结论仅实现候选，等待独立follow-up，不据测试通过直接verified。
+## 2026-09-25 — Q02 OpenAI接口与离线证据
+
+- OpenAI当前官方Web Search文档要求新接入走Responses API托管`web_search`；`tool_choice="required"`可强制运行搜索，而`auto`允许不搜索。以`include=["web_search_call.action.sources"]`可取回搜索来源。这与StockQA现有mock请求及执行回执测试一致；静态文档核对不能代替真实服务运行。[Web Search API](https://developers.openai.com/api/docs/guides/tools-web-search)
+- 当前GPT-4.1 mini文档列出`v1/responses`并明确支持工具调用；Web Search指南的支持模型表列出`gpt-4.1-mini`。该模型可用于当前单题live harness，但Web Search按工具调用收费，单条API请求可能产生不定数量的内部搜索调用，需按实际返回receipt核对成本/调用情况。[GPT-4.1 mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini)
+- 选定外仓测试的隔离运行支持：成功的web_search事件与来源被关联到attempt/request/response/model receipt；没有transport级搜索事件时为unverified且不计分。伪造文本URL不等于真实搜索证据。
+- LLM-06不止是“跳过不支持的provider”或“不对HTTP 400切换”。当前独立审查在`src/utils/llm_integration.py`发现无可用route返回`provider_unavailable`/error，没有`retry_wait`状态与持久恢复路径；故Q02/Q04必须保留此缺口，不能将有界本轮停止等同于后续可接续。
+- 状态词还需在契约层对齐：LLM-06和部署结果schema使用运行级`retry_wait`，C05“全路由不可用”段落写`waiting_for_provider`，C04的WorkItem状态枚举则不含`retry_wait`。实现前应明确它是运行/派发状态并带`wait_reason`与资格条件，WorkItem仍遵循C04；同时区分可按Retry-After/冷却到期恢复的临时故障，与需配置变化后恢复的能力/密钥缺失，避免忙轮询或无期限计时器。
+- 本机StockQA provider配置密钥为空，相关环境变量也没有提供。live E2E正确以opt-in与key双门控，并在临时目录中运行；真实LLM-01仍待用户本机提供凭据及启动授权，不请求在聊天中传递密钥。
+
+## 2026-09-25 — Q02 MiMo live probe 与状态归属复核
+
+- 用户提供的`MIMO_PLAN_API_KEY`在本机环境中存在；密钥值仅用于请求授权头，没有打印或写入文件。使用用户指定的MiMo Token Plan endpoint、`mimo-v2.6-flash`、单关键词上限和`force_search=true`发起一次真实请求。服务返回HTTP 400 `Param Incorrect`，原因是请求包含web search tool而账户的`webSearchEnabled`为false；没有模型回答、搜索来源或usage receipt，因此不构成LLM-01 live通过。脱敏原始结果见`docs/implementation/contracts/validation-Q02-MiMo-probe-2026-09-25.log`。
+- 按MiMo官方文档，联网服务插件需在平台开通；开关变化可能有约5分钟缓存。该文档示例使用OpenAI Chat Completions协议，而StockQA当前Q02 live路径使用OpenAI Responses API hosted `web_search`。两种请求协议/receipt不能直接视作等价；本次只验证到MiMo服务明确报告插件未启用，没有证明已完成兼容适配。[MiMo联网搜索文档](https://mimo.mi.com/docs/zh-CN/quick-start/usage-guide/text-generation/tool-calling/web-search)
+- 重新核对状态所有权：C07部署/运行状态已有`retry_wait`；C04的WorkItem状态故意不含该值，且已有`next_retry_at`字段和失败后有资格时回到pending的规则。C05正文中的`waiting_for_provider`与Q02/Q04运行状态命名不一致。需要将等待解释为run/dispatch状态，并让StockWiki的WorkItem在无发送时保持pending或在已确认失败后按next_retry_at进入可重试；不能把`retry_wait`塞进WorkItem枚举，也不能只返回无截止时间的等待标记而引发忙轮询。具体恢复触发及StockQA/StockWiki边界仍待完成独立设计审查。
+
+### Q02 MiMo probe correction (2026-09-25)
+
+- The user confirmed MiMo web search was enabled before this test. The earlier Token Plan response `webSearchEnabled=false` is therefore a server/credential/entitlement discrepancy, not evidence that the user failed to enable the feature.
+- Official MiMo documentation confirms the Token Plan China endpoint used above, but also limits Token Plan package keys to programming-tool use and prohibits obvious non-coding automated-script/custom-backend calls. Do not use `MIMO_PLAN_API_KEY` for the stock-company scan workflow; use an API credential permitted for custom API applications instead. [Token Plan usage terms](https://mimo.mi.com/docs/tokenplan/subscription) [API integration](https://mimo.mi.com/docs/zh-CN/quick-start/faq/api-integration)
+- A separate `MIMO_API_KEY` was present. One minimal real request to the official pay-as-you-go endpoint `https://api.xiaomimimo.com/v1/chat/completions` with `mimo-v2.6-flash`, `web_search`, `force_search=true`, and `max_keyword=1` returned HTTP 200, one URL citation (`Microsoft 2025 Annual Report`, `https://www.microsoft.com/investor/reports/ar25/index.html`), and `web_search_usage` of one tool/one page. `finish_reason=length` and the response content was empty at the 220-token cap, so this proves an actual search source was returned but not a complete answer. It was a direct provider smoke test, not the StockQA CLI E2E and not LLM-01 acceptance. Sanitized output: `docs/implementation/contracts/validation-Q02-MiMo-paygo-probe-2026-09-25.log`.
+## 2026-09-25 — MiniMax endpoint troubleshooting
+
+- The China OpenAI-compatible `api.minimax.cn/v1/responses` call authenticated and generated M3 text, but returned no search event or citation annotations. The international Server Tools URL `api.minimax.io/v1/responses` rejected the current environment key with 401/2049.
+- A public developer report for CodexBar says a valid Mainland China MiniMax Coding Plan key is rejected on the default global host and succeeds after selecting the Mainland region/API host. That matches this 401 pattern and motivated one bounded probe of the Mainland-compatible host; see [issue #1615](https://github.com/steipete/CodexBar/issues/1615). This is a user report, not MiniMax's formal regional-host contract.
+- The actual `api.minimaxi.com/v1/responses` probe completed successfully with one `web_search_call` and Microsoft FY2025 source URLs. Thus this specific key/host/model/tool combination has live search evidence; the earlier `.cn` and `.io` results remain recorded as endpoint-specific failures/non-search responses.
+- The official MiniMax Server Tools guide documents the expected `web_search_call` and citation receipt structure. An open report in the MiniMax-M3 GitHub repository describes failure of the separate Anthropic Messages `web_search` path; it does not negate the tested Responses-compatible mainland route. See [official Server Tools docs](https://platform.minimax.io/docs/guides/server-tools) and [MiniMax-M3 issue #23](https://github.com/MiniMax-AI/MiniMax-M3/issues/23).
+- Direct API success does not prove StockQA's provider adapter or public CLI path. Keep Q02/LLM-01 partial until the exact StockQA E2E and durable retry owners pass.
+
+## 2026-09-26 — 模块发布、路由与真实提供商标记
+
+- S05发布观察若只核对自报的`question_semantic_sha256`与`method_id`互相一致，改写者可重算两者和内容ID继续通过。现在published观察从不可变归档资源、cohort及周期上下文重算语义；严格新导入还要由存储端提供独立已记录的预期observation ID。自包含JSON无法证明自己曾是哪条旧观察，因此StockWiki W05必须在首次导入绑定可信outbox逐项ID/逻辑执行键，重放用持久化ID，legacy仅只读。
+- S06当前旧路由schema对`unavailable/uncertain`强制来源，容易诱导编造URL；48旧模块均无机器activation，旧`cyclical`虽kind=stages却应走正交周期轴。旧full画像也只接受最多两行业；困境+恢复已选后预算24把六道相关问题全延期。路由v2须绑定发布包/策略hash/冻结profile_context，可信执行时钟重检手工TTL，24核心加高风险必问题先于可延期题。
+- MiniMax-M3在`api.minimaxi.com/v1/responses`经公开StockQA CLI单题live实测搜索通过，但首次题目未要求官方年报时为unverified；这是一次适配器/提示词联合验证，不代表生产预算、持久重试或约2,000家批量可靠性。MiniMax可能没有`x-request-id`，需要以本地attempt、provider response和completed search event绑定，不能把本地attempt伪装成provider request ID。
+- 提供商配置名与实际传输厂商不能混用。独立复核用mock公共CLI复现：`openai`键配置MiniMax URL/M3，实际POST到MiniMax但公开provider标为openai；`primary/backup`别名还会在cascade和serializer覆盖实际厂商。用户要求跨模型比较时，这会污染模型来源和费用归属；应在派发前拒绝保留厂商键错配，逐题公布真实transport provider，并另存route/config别名。跨厂商批次没有单一真实顶层provider，需消费者按逐题回执校验。
+
+## 2026-09-25 — DeepSeek Anthropic兼容搜索核实
+
+- 修正先前对DeepSeek“无原生搜索”的概括：它只适用于本次检查的OpenAI Responses路径（官方表格说内置web_search会忽略）和普通Chat Completions工具能力；DeepSeek另有Anthropic兼容`/anthropic/v1/messages`，官方兼容表列出`server_tool_use`/`web_search_tool_result`支持，Claude Code集成文档说明Web Search通过DeepSeek API执行。[Anthropic API兼容文档](https://api-docs.deepseek.com/guides/anthropic_api/) [Claude Code搜索集成](https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code/) [Responses工具支持表](https://api-docs.deepseek.com/guides/responses_api/)
+- 真实小探针以`web_search_20250305`调用Anthropic Messages endpoint，HTTP 200、`end_turn`、2个服务端搜索调用/2个结果块，官方DeepSeek文档URL在返回来源内。Usage为4,808输入、436输出token；未收到货币扣费receipt。
+- 请求设置`max_uses=1`仍观察到`usage.server_tool_use.web_search_requests=2`和2个server_tool_use，需作为搜索限额/成本不确定性记录。成功证明搜索确实发生，不证明max_uses限制有效。
+- Chat Completions文本探针HTTP 200、10 tokens；Responses带`tools:[{type:web_search}]`的探针HTTP 200但无搜索事件，且响应因96输出token上限停在reasoning/incomplete。故接口协议能力分别建profile，不能以模型名单独判断联网能力。
+- 以上均为直连API探针，不是StockQACLI/单公司扫描E2E。完整脱敏结构记录见`examples/provider-connectivity-profiles.json`和`validation-Q02-DeepSeek-probe-2026-09-25.log`。
+
+## 2026-09-26 — 组合式题库复核（设计中）
+
+- 当前`questions/catalog.json`已经将通用、类型、行业、阶段、属性、诊断拆为独立JSON；`scripts/question_sets.py::select_questions`按通用→类型→最多两个行业→单一阶段→周期/属性→诊断顺序组合，类型题可替换通用会计题。这是用户新提议的可复用基础，不应另起平行题库。
+- `catalog.version=3.2.0`是全局版本；48个模块文件虽各有`version=3.0.0`，但没有独立升级规则/变更记录及生效/废弃元数据。导出manifest留全局版本、源hash、选中模块与替换映射，但缺每模块版本、路由决策快照及新增模块的补扫计划。
+- 当前路由通过一题LLM问答给出profile，随后由运行者核验；`validate_profile`对低置信度分类拒绝输出，尚无确定性优先/人工覆盖/重路由抖动控制的正式契约。
+- 即使只追加新题也会改变模块平均分及比较分母；需要固定核心构念汇总，将扩展题分层展示，并为跨期比较保存同题篮、同rubric和模块选择快照。
+- Q04 route-recovery r6独立复审代理在开始前遭Codex服务401认证错误；本轮无审查结果，不能标verified。主线程继续本地规划，不把该错误归因于provider API或项目代码。
+- 独立只读探针确认`common+operating+semiconductors+scaling`当前quick为28题、full为34题，均覆盖24核心构念；事实库61题。用户设想的组合不是新功能起点，而是现有实现的可持续版本化问题。
+- 新增行业若仅注册catalog，`select_questions`可过、`render_question`因`scoring-contexts`缺键报错；新增投资范式还受`kind`固定枚举限制。必须将注册、渲染口径、路由提示和事实适用性作为单一校验闭包。
+- `validate_manifest_metric_contract`只接受当前全局catalog版本；旧发布包读取不能简单放宽版本判断，须按锁定版本/哈希解析。当前方法ID哈希整份`scoring-contexts`使无关模块升级影响旧题，而只改共同渲染规则又可能在更新receipt后仍被判可比。新契约须区分题义指纹、实际prompt hash与模块包版本。
+- `routing_question`给LLM的可选项目前只有ID/名称；新增模块还应提供适用、排除和必要证据。`standard_answers`事实题共用整库版本，增题会牵连未变事实字段。S04—S06/F06与MOD固定反例覆盖这些已复现薄弱点。
+
+## 2026-09-26 — S04 离线模块契约审查结论
+
+- 核心层必须冻结为IQS_01—IQS_24且恰好各一题；类型替代只能一对一指向既有核心构念，其他扩展不能伪装成核心。历史题即使只修正标点也不得在原ID下覆盖，否则旧观察可能被新题义重释。
+- 退役题ID既不能在后续minor版本重新出现，也不能被另一模块复用；只检验相邻版本不足以约束整条发布链。S04在模块/发布锁层保留累计墓碑，S05仍须从可信基线逐版验证历史链。
+- 路由决策的人工覆盖TTL必须从受信运行时`decided_at`起算，而不是从可能较早的`as_of`资料日期起算。离线schema能拒绝失效时间，但由运行时真实填入时间仍属S06。
+- S04独立审查在最终六文件SHA不变的快照上重跑14项测试并做22项内存行为验证，无剩余P0/P1/P2。合成归档成功不能冒充真实旧manifest入口，真实发布/读取/比较接线须由S05验收。
+
+## 2026-09-26 — 路由运行时与Q04派发状态补充发现
+
+- 旧`validate_profile`要求完整画像，S06若直接放宽会让旧调用者把未知行业/阶段误当有效；应保持旧路径，另建仅由冻结发布包与证据决策驱动的部分问卷入口。`cyclical`目前的schema kind仍是`stages`，业务语义却为正交周期属性，唯一主阶段计数必须排除它。
+- S04的路线快照schema对所有确定性拒绝也要HTTP来源，无法合理表达“用户未选投资视角”；搜索不可用时无URL的`uncertain`亦无容身之处。S06需有限的`policy`/`unavailable`依据，客观选中仍要来源；运行时在使用旧人工覆盖前重检TTL。周期位置、恢复理由和多业务缺口需入hash才能复现prompt。
+- Q04 r6独立审查补充固定反例：主路由429或运行时搜索不可用，备用模型成功产生8分，但当前`_dispatch_outcome`先看旧失败、把最终成功错误标为等待/需配置。现有76项测试遗漏此结果语义。另公开`QABatchResult.to_quick_scan_dict()`不输出`execution.dispatch_outcome`，位于尚未获准写入的StockQA `src/core/models.py`；两个缺口不得因原suite绿灯而忽略。
+
+## 2026-09-26 — S05与事实发布设计边界
+
+- S05独立审查五个P1证明“manifest能从旧归档读取”不等于所有下游观察/比较都用旧归档。发布版标准答案构建器必须先验证权威manifest，再沿包引用取冻结schema/题义；比较方法应使用题义，不应把公司身份相关prompt hash当方法变化。连续升级只做相邻版本校验，另检查全局退休题ID；manual投资视角在组合前核对用户显式授权。
+- `facts.json`现为61个字段、38个路由组；评分发布锁中的`common`/anchors/24核心约束使事实模块不能混入评分锁。事实使用单独内容寻址锁，但沿用S05安全归档和S06同一路由决策，可避免新增事实字段导致未变化的评分包/核心分漂移。F01只审查旧事实题；F06负责未来事实模块catalog/发布锁，F02才接StockQA执行。
+- 事实外部协议“score可省略”和当前内部`answer-content.schema.json`要求score字段不一致；在解析边界允许省略并规范化为null，已存观察仍保持显式null，任何数值分都失败关闭。
+
+## 2026-09-26 — 搜索凭据、消费端与身份库新增边界
+
+- HTTP 3xx并不会被`requests.Response.raise_for_status()`视为错误；禁自动重定向只能防止跟随，不能证明搜索完成。搜索适配器必须在解析任何响应体前显式要求2xx，并以真实Requests/HTTPX对象测试伪造的completed搜索体。前次302反例现已独立复核关闭。
+- MiniMax可返回HTTP 200/completed但没有可验证的完成搜索事件；一次较早版本live通过不能推导最终版每次可用。当前评分资格正确保持unverified，应由模型顺位回退/冷却处理，不能把文本URL、模型自报或旧成功回执当本次搜索证据。
+- StockWiki正式迁移是YAML工作区版本，快扫应另建SQLite `user_version`而不改旧ticker目录。独立审查证明只核对v1库的表/列名不足以保障主键、外键和CHECK，须验证完整DDL签名；所有验证须在创建事务提交前完成。ADR基础普通股关系还需在DB写入/更新边界约束同实体、ordinary类型及禁止自引用。
+
+## 2026-09-26 — 主档缺字段与MiniMax搜索选择
+
+- company-wiki现有CN/HK/US证券快照是证券级来源，不含可泛化的跨挂牌法人ID、注册国家和普适证券类别；US CIK可能关联多个证券。W01/C01要求已知国别和类型，所以W02不得把挂牌地当注册国或把目录证券默认标为ordinary。仅候选会拖慢2,000家一键启用，须另行设计同一权威库中的显式未知/暂定身份，保证不自动合并且历史观察可追溯。
+- MiniMax官方[Server Tools](https://platform.minimax.io/docs/guides/server-tools)说明Responses请求声明`web_search`，模型服务端自动触发，完成的响应含`web_search_call`；[Create Response](https://platform.minimax.io/docs/api-reference/responses-create)目前只列`tool_choice=none/auto`。现有MiniMax请求符合示例且未传`required`，但最终源码两次live为200/completed且无可验证搜索链；这是“某次搜索未证实”而非可以放行的回答。应走用户排序的备用提供商/冷却，不伪造调用。
+
+## 2026-09-26 — 审查反例与版本化边界
+
+- 仅在Entity JSON和资格回执之间核对同一个BND字符串，不足以证明它属于来源主档的精确行；C01 v2已增加owner-held来源绑定反查。两个不同BND仍可各自声称同一来源命名空间/行键，单对象验证器无法获知全局冲突，必须由StockWiki SQLite在同一事务内约束来源行唯一及当前归属；CIK、代码或名字均不能代替来源行键。
+- 只读复核真实三地快照：`(market, security_id, source_record_id)`在CN/HK/US均无重复，而单独`source_record_id`分别有258/0/653个值被多证券共享，US最多9条。W02的持久来源键必须含来源命名空间、市场、来源证券ID和来源记录ID；同一键跨快照与身份修订不能分配两个BND。代码变化时沿用内部证券ID须有连续性证据，不能靠新代码自动推断。
+- 对路由新增搜索URL归属校验时，旧router 2.0合法回执没有`web_search_calls`，全局强制新字段会使历史读取失效。读写应分离：历史快照/manifest按归档release和旧执行时刻验证，新router 2.1+派发仍严格核对completed搜索调用；旧包只能读，不能重新派发。可信核实事实的优先级必须高于同ID的未绑定模型候选，否则困境风险必问题会被伪候选取消。
+- 提供商健康账本的有效冷却截止与其来源应作为同一个原子事实更新；晚到的较短无头429不能把已知较长Retry-After的来源改成unknown，也不能返回较早的公开恢复时间。HTTP层不能在快扫attempt之外对付费POST隐式重试，否则一次逻辑attempt会隐含多次请求或因五小时Retry-After阻塞fallback。
+
+## 2026-09-26 — 全项目可组合演进的固定判断
+
+- 可升级组件应各有唯一发布者和独立release/hash；跨组件付费运行需要一份冻结的`ScanRecipe`绑定题义、路由、评分尺、lens、刷新、模型能力/预算、身份和输出协议。原答/观察/费用/outbox不可随策略升级覆写；只变权重、阈值、词表别名时重建派生投影，模型调用为零。
+- 评分版与事实版必须分阶段：`scoring_only`事实引用为`absent/disabled`，不被F06/G4阻塞；事实版须本仓V13解析、StockQA V14执行和StockWiki V15字段缺口/导入/ACK全部接通。事实字段不能给数值score，也不能重复问已完成评分题。
+- 旧记录可能根本没有recipe，不能迁移时补签伪历史版本。旧答仅在题义/身份/执行/费用证据足够时只读复用；不明请求先对账，证据不足标`needs_review`并阻止自动付费POST。统一入口X05必须经过recipe/身份/预算预检。
+- 具体筛选lens由StockWiki V08唯一发布，本仓V04只定义schema/规则AST/非发布示例。质量、困境反转、主题候选可并列，质量critical gate不能被OR绕过；当前低分的恢复候选保留关注入口，不改原分。
+- 正常快扫路径零公司文档下载。真实E2E-06属于X10 live验收，X09只用真实组件和受控网络边界替身做离线联调；故障在交换/缓存解析处注入，允许的临时文件才测逐文件清理。事实词表、查询与UI须明确版本能力，缺能力返回`unavailable`而非空结果。
+
+## 2026-09-26 — 计划1.9.0全局可演进补充
+
+- 复核1.8.0的V01—V15后确认已有ScanRecipe、评分尺、事实关系/词表、lens、刷新、provider与查询/UI版本化，但缺少跨域统一release状态机、逐动作兼容矩阵、依赖变更影响算法、答案解析器版本和有代表性的升级/回退回放卡。
+- 冻结原则：公共release envelope只统一ID/hash/owner/状态/能力/读写兼容，不吞并领域schema；可组合内容必须登记且声明式；LLM可给分类建议但不能激活；每次版本变更计算no-op/投影重建/受影响字段/needs_review/blocked，未知影响禁止全池重问。
+- StockQA Q14仅计划版本化解析器/答案schema回执。快扫仍仅持有限答案、短依据、来源和运行元数据，不留完整HTTP/web_search正文或公司文件。解析不足以重建时保持unknown/needs_review且模型调用为0。
+- 加入周期低谷但仍有品牌/渠道/成本等优势的冻结回放对象，用来保证无关版本升级不清除恢复观察。升版、退役、回退和比较都不得覆写原答案、观察、费用或时间戳。
+- 1.9.0最终清单为101卡/253场景、40条约束；V16/V17/W16/Q14/V18进入G6。独立审查发现的生产接线、owner越界、旧无recipe误阻断、最小搜索回执及历史发布包问题已分别通过W16、X05/X07/X09依赖、纯plan/事务应用拆分、V01 legacy适配与attempt/search-call/URL归属、旧S04/S05归档reader反例修正；最终复审已请求。
+
+## 2026-09-26 — 计划1.9.1复审闭环补强
+
+- Q14答案schema/parser/证据解释作为V16 release envelope下的owner组件；X07及X09必须锁定并验证实际安装/加载hash，逐题回执要与候选release_set一致。仅有组件名称或版本号不足以证明配套。
+- W16不接受调用方提交且自洽的plan hash作为信任证明。它须从固定V17实现、候选/active V16 releases及当前StockWiki权威快照重算影响集合，或验证覆盖完整输入/组件hash/plan的可信owner回执；随后在同一owner事务CAS核验身份与generation。
+- 并发验收使用真实临时SQLite和双worker屏障：两者预检同一plan后同时提交，最多一条generation/work；如果身份或代次在预检后变动，旧plan必须冲突退出，不产生重复费用/outbox/POST。
+- 启动恢复须先按旧冻结recipe与原attempt receipt幂等完成已派发、已回答待ACK请求的安全结算，再决定新版本是否可派发。新release缺失/不兼容只阻止新的generation/work/费用预留/POST，不能阻断合法旧结果入库。
+- 计划扩为101卡/257场景/43条约束。新增EVO-63—66分别固定双worker竞态、解析发布hash闭包、旧attempt结算及伪造扩域plan反例；全链真实实现测试仍未执行。
+
+> 以上是1.9.1当时的审查记录；其中“可信owner回执”替代确定性计算的备选方案已由1.9.2复核明确撤销。当前权威语义见I42、W16步骤及EVO-66。
+
+## 2026-09-26 — 全计划独立复核与1.9.2修订
+
+- 独立复核覆盖任务图和阶段顺序、owner边界、验收case归属、跨任务依赖、轻资产边界、可组合release/recipe/答案解释/刷新/查询、候选与生产分离、迁移回放、并发CAS、POST前围栏、回退与旧attempt结算。未发现任务依赖环；发现多张前置卡的完成条件误含后续公开入口、真实live、导入、UI或刷新行为，容易让实施者把局部完成错误留为阻塞，或把跨组件行为提前标作完成。
+- 将跨任务全链用例绑定`requires_tasks`，并将局部验收与完整验收分离。具体移动/补本地反例见`docs/implementation/reviews/PLAN-1.9.2-review.md`；计划校验器现拒绝未知/格式错误的任务依赖，并拒绝前置任务声称后置用例已通过。
+- 固定V17由已安装、hash匹配的确定性实现从当前权威快照重算；W16不接受调用方自签plan hash或未定义的签名回执。W16 CAS覆盖快照、身份/成员/范围revision、字段generation、recipe、active ReleaseSet完整指针/manifest与V17实现hash。candidate只能预览，生产任务只来自具资格的active ReleaseSet。
+- 明确component release生命周期与workspace/profile active ReleaseSet指针分离；指针切换不会自动deprecated组件。显式退役的release不可由回退静默复活；只有仍有新派发资格的组合可回退。W16唯一拥有dispatch fence schema并签发绑定精确attempt的单次permit；Q15必须先耐久关联permit与本地send_intent再POST。permit后、send_intent前崩溃时POST为0且permit不可重放；send_intent后结果不明的attempt只对账、不盲目重发。
+- 清理W16重复派发围栏步骤和case计数表述；EVO-66的信任根描述与决策表/演进说明对齐。计划数据、README、演进设计、决策表、测试策略、跨仓交付、task_plan和本审查记录统一为1.9.2：102任务、289场景、48约束。
+- 1.9.2全部验收case仍标`specified_not_executed`；本轮仅运行计划校验器和计划单测，不实施产品功能、不写StockQA/StockWiki或其他外仓，也不运行live/API测试。详细报告记录了当前边界和暂停状态。
+
+## 2026-09-26 全计划与组合演进复核（过程记录；已由1.9.3收口）
+
+- 计划清单当前可解析为102张任务卡、289个验收场景、最终门G6；`python -X utf8 scripts/implementation_plan.py validate`通过。计划校验测试63项通过。该结果只证明规划包自身结构/回归检查通过，不代表任一产品功能或跨仓任务已实现。
+- `composable-evolution-plan.md`已包含独立组件release、active ReleaseSet指针、candidate不得付费派发、历史只读/新派发使用已获准版本、ScanRecipe快照、增量影响分析、V17计划与W16 CAS、StockQA POST前fence等重要设计。
+- 初步一致性脚本发现若干任务卡的case-level `requires_tasks`与卡片直接依赖不同；需先区分合法的传递依赖/自包含E2E case与真正的提前验收/循环声明，不能仅凭直接依赖差异判错。已请求只读独立复核当前文件。
+- 待重点核实：各前置任务是否只拥有自己能运行的局部case；composable-evolution发布/回退及新派发资格语义是否单一明确；发布锁/规范hash/compatibility matrix是否可由较弱实现者直接按schema落地；跨仓owner、完整集成case和阶段门是否形成无环可执行路径；README/实施设计/任务及case数字与范围是否一致。
+- 本轮依照用户要求仅审查并加固规划文档及其校验，不继续实现产品功能；收尾后将目标显式暂停。
+
+### 复核发现：当前计划尚有验收倒挂和发布竞态（待修订）
+
+两轮只读独立审查与依赖闭包检查确认：`requires_tasks`当前18例都落在任务依赖闭包内，但这不能捕捉一个case同时把UI、存储、消费者等尚未由该卡提供的行为捆在一起。具体倒挂包括：C02/C03/C04契约卡与OR/parser/ACK集成；S05模块解析与S06路由/W14跨期比较；Q04/Q06/Q08模型并发、比较、统一启动；W05/W07存储/规则与W14/F05查询；Q13/F02/F03/W15/F04/F05的执行、导入、查询；U02事实浏览与U03；X01—X07预装、配置、UI、快捷方式和真实加载与X08/X09。计划现有任务“所有case全实测”的完成规则会使这些前置卡无法独立关闭或被误报局部通过。
+
+生命周期方面：W16 CAS锁active ReleaseSet指针但尚未锁其内各组件的独立派发资格修订，指针不变时组件退役仍可能在过时预检后创建新work；permit未明确定义安全拒绝后的下一attempt与结果不明时禁止新attempt；Q15的send_intent已耐久但HTTP未开始时发生退役的线性化语义不清。此外decision-register还有过时“可信签名回执可替代重算”及X07/X08实载hash措辞，V16/V18完成条数写少。
+
+建议的修订：让每个验收case有唯一`owner_task`，验证所有任务只在owner自身或owner依赖闭包内引用它；完整跨仓case列出必需owner，前置卡另用本地contract/fixture case。对W16增加组件资格快照hash/revision并在同一事务CAS复核；对Q15明确一次性permit与attempt状态机、fallback的可信终态条件、结果不明禁止重试以及send_intent线性化点；补固定屏障用例。独立审查agent已确认当前快照其它旧审查问题（candidate只预演、V17确定性重算、候选/安装/加载分工）已修。
+
+## 2026-09-26 计划1.9.3全局复核收口
+
+- 将上述待办逐项落实到1.9.3：102任务、322验收场景、50条约束；唯一case owner、owner依赖闭包和完整集成case前置约束由计划测试覆盖。
+- 对照跨仓责任、身份/路由/模块/答案解释/评分/事实/刷新/provider/UI组件的独立版本、历史只读兼容与新写/付费分派策略；检查低谷/恢复候选不会被质量白名单删除，改变聚合/词表不会误触发模型重问，影响不清时失败关闭。
+- 发现并统一4份活跃说明与任务边界中的旧派发先后语义；canonical流程为本地准备→W16原子consume并写dispatch_commit→一次POST。结果未知阻断fallback/新attempt。当前EVO/LLM范围也在测试策略中同步。
+- 新增跨权威文档语义一致性测试。首次触发的两项测试失败暴露了边界及参考文档缺少确切`consume_dispatch_permit`词项；补齐权威契约和文档后，局部测试通过。
+- 最终验证：计划校验通过（102/322/G6），`test_implementation_plan.py` 68项通过，`git diff --check`退出0（仅显示现存LF/CRLF风格提示）。所有验收场景均为`specified_not_executed`；未运行真实模型、搜索或E2E，未写外部仓库。完整范围、测试证据及剩余实现风险见`docs/implementation/reviews/PLAN-1.9.3-review.md`。
+- 该报告取代本节较早的“待修订”判断；按用户本轮指令，计划复核收口后暂停，不继续产品实施。
+
+## 2026-09-26 恢复实施：S04当前验收覆盖差距
+
+- 最新上下文明确继续原实施目标，因此上轮pause已解除；goal状态核实为`active`。
+- S04任务清单当前要求MOD-02/MOD-14。既有receipt-S04为计划1.7.0，只记录MOD-02/03/04/07，不能单独证明当前MOD-14。当前代码实现包含release ID、归档hash、注册依赖无环与退役墓碑检查，但原测试未用一个单独case把这四种恶意声明绑定到MOD-14。
+- 本仓新增隔离测试`test_mod_14_s04_release_static_contract_fails_closed`：构造重复module ID、改写归档内容、循环依赖和退役题仍被激活的fixture，要求公开静态validator拒绝；S04定向测试15项通过。
+- 独立只读审查进行中。回执版本/哈希、完整回归及其他case覆盖未确认前，不关闭S04；本轮只修改当前仓库测试/规划记录。
+
+## 2026-09-26 — 1.9.4全局计划与模块向后兼容复核
+
+- S04审查的固定反例揭示一个信任边界差异：注册表入口有cycle detection，归档release reader没有对“所有哈希正确但依赖成环”的归档对象重验整张图。MOD-14/既有静态测试未覆盖实际的`validate_release`路径，因此S04不应据此关闭。
+- 向后兼容规则细化为可信基线精确匹配，而非缺字段猜旧版：历史模块只有`module_id + artifact_sha256`在固定可信legacy基线时可对缺失可选依赖/冲突作只读空集合适配；新版本和新归档对象不能自报legacy。S05逐版检查全链和累计退役ID。
+- 可组合语义分三层，避免将“发布目录含哪些模块”与“本公司本次选择哪些模块”混在一起：S04验证release内部dependency references闭合、无环；S05历史reader/基线可信性；S06展开transitive dependencies并对所选集合检查无向conflict。互斥备选能共存在release目录，互选才拒绝；缺依赖、未决依赖或冲突在付费前失败关闭。
+- 新增`MOD-18` S06唯一owner场景；强化MOD-14/16/17和S04/S05/S06任务步骤。其他可演进轴复核覆盖独立owner release、活动指针/组件资格、recipe冻结、field impact plan、解析器hash、attempt/permit CAS、旧recipe结算、模型/时间/评分方法横纵向可比、轻资产和UI查询能力协商。
+- 当前计划1.9.4为102任务/323场景/50约束/G6。计划测试与结构校验只验证规划包，不等于产品行为；所有行为case仍须owner实施、独立审查并写新receipt。审查报告：`docs/implementation/reviews/PLAN-1.9.4-review.md`。
+- 用户已要求暂停，本次不修S04代码、不扩展产品测试、不写外仓，也不运行live/API；恢复点由`task_plan.md`的Phase 21/22记录。
+
+
+## 2026-09-26 — 1.9.5终审：依赖回执bootstrap与自验闭环
+
+- 全计划复核后，独立审查指出旧v1仅作`legacy_historical`，但依赖关闭语义没有写清：P01→P00可能形成启动死结，C01—C07与G0也可能把旧回执误当当前证明。另一个证据闭环风险是P01最终自验日志若计入自身receipt的哈希证据集，会形成自引用；复核又要求清楚分开封存前实现review与封存后证据review。
+- 新增I53与`historical_context_dependencies`：所有普通`depends_on`边都要求当前v2 verified receipt；明确的历史上下文边只允许路径/hash锁定的只读输入，永不满足当前关闭门。当前唯一例外是P01→P00，P01记录P00原有基线清单但不提升旧receipt；P01过验后按BASE-01/02重跑P00、生成新v2，C01—C07/G0遵守普通依赖规则，旧v1字节保持原样。
+- 增加RCPT-03固定旧回执依赖、P00重验与P01封存前实现review、封存后sidecar及证据review分层的正反断言；计划校验器新增对历史上下文边字段形状及其必须属于`depends_on`的静态校验。
+- 复核器此前无P0，指出两项P2；两项已写入任务卡、receipt契约、测试策略、决策表与handoff文档；补充allowlist双向结构校验并明确P00及C01—C07重验顺序后，独立终审确认无剩余P0—P2及计划环。
+- 最新计划为1.9.5 / 103任务 / 327场景 / 53约束 / G6；所有接受行为仍标`specified_not_executed`。`implementation_plan.py validate`通过；计划回归79项通过；本轮未运行产品/外仓/live测试或改外仓。
+## 2026-09-26 — P01 receipt verifier implementation findings
+
+- CodeGraph is initialized and healthy. Structural lookup found `scripts/exchange_contract.py::canonical_bytes`, which uses `json.dumps(sort_keys=True, ensure_ascii=False, separators=(",", ":"), allow_nan=False).encode("utf-8")`; no existing task-receipt verifier is indexed.
+- P01 is an explicit M0 implementation card with three owner cases (RCPT-01/02/03), six, eight, and four explicit stable assertion IDs respectively. The card permits only the receipt schema, verifier, fictional examples, focused tests, receipt contract/review/evidence outputs, and P00 context manifest.
+- P00's legacy receipt is at `docs/implementation/baselines/receipt-P00.json` (not under `docs/implementation/contracts/`). The prior mistaken path was read-only and changed nothing. Its paired baseline report is `docs/implementation/baselines/baseline-report-2026-09-22.md`.
+- Planning-with-files selected the existing root planning files (`task_plan.md`, `progress.md`, `findings.md`); no named `.planning` directory is active. Phase 24 is being used for this resumed implementation, preserving previous phase history.
+- Receipt verification must derive current validity from `task_spec_sha256`, sorted complete owner-case bundle hash, and global-boundary hash. Full plan/catalog hashes are provenance only, so unrelated task/case additions cannot invalidate the receipt.
+- Path checks must happen before file reads and reject absolute paths, traversal, and symlink escapes. The verifier will never execute recorded commands, write status/receipt files, or emit evidence contents; tests will assert input-tree hashes and subprocess markers remain unchanged.
+- The P00 context manifest can only prove exact historical input bytes. It cannot satisfy P00's current v2 dependency gate; after P01, P00 and C01–C07 must be rerun under current contracts.
+
+
+## P01 implementation feedback from the first red/green test cycle
+
+- The schema must remain syntactically valid JSON independently of Python; Draft 2020-12 checking now runs both in the focused test and verifier. Structural schema validation is strict (`additionalProperties: false`) so sidecar/post-seal review cannot leak back into the sealed core.
+- `plan_sha256` and `case_catalog_sha256` are provenance only. Testing unrelated plan task and other-owner case additions caught an initial implementation mistake that compared these hashes as currentness gates; only exact task, owned case bundle, and global-boundary hashes invalidate a receipt.
+- Empty-log validation is intentionally reached only after its referenced SHA matches the empty file. This distinguishes missing/stale evidence from validly referenced but empty evidence.
+- Historical P00 context must match a single plan-allowlisted edge and exact manifest path, keep `eligibility_effect` context-only, hash every manifest entry, and prove the named old P00 receipt is still non-v2.
+- The repository test command uses unittest discovery, not `tests.test_*` module imports; the failed initial invocation has been corrected and is recorded above.
+
+
+## P01 current CLI and historical-context hardening
+
+- The public CLI is now exercised in a subprocess against a temporary repository root with an API-key-free environment. It returned an eligible detached sidecar and left the full input-tree hash map byte-identical; the result has no command/log fields.
+- Historical P00 evidence now requires the exact allowlisted manifest path from `historical_context_edges`; the manifest must explicitly deny current close-gate effect, all listed files must hash-match, and the sole `receipt-P00.json` entry must remain non-v2. The old v1 bytes are captured in the manifest and will be checked again before sealing.
+- An unsuccessful native PowerShell pipe truncated the untracked task-receipts contract during an encoding exception. The former complete text had been read earlier in this turn; it was reconstructed and expanded using a direct patch. The planning ledger records this recovery. No P00 baseline file or external repository was affected.
+
+## P01 full regression and environment-safety findings
+
+- Plan validation at current plan version 1.9.5 passed for 103 tasks / 327 acceptance cases / G6. Full offline regression passed 376/376 tests in 273.498 seconds; no network/API or file-download path was invoked.
+- P01 focused suite is now 20/20. The CLI subprocess explicitly receives only PATH and PYTHONIOENCODING, not configured provider keys; the output schema is detached and the temporary input tree remains byte-identical.
+- The symlink escape test no longer writes into a shared temp parent. Both the registered root and attacker-controlled target are independently created under unique TemporaryDirectory contexts and automatically cleaned; this preserves any pre-existing user temp files.
+- The current P00 context manifest hashes both the fixed baseline report and receipt; the latter still equals captured SHA-256 `0d7cccbab76842ac7bd45e94e23242da88ff18a0c34b0910a310842ce0ee5983` and is not upgraded.
+- Focused log SHA-256: `ac3b6807a773f5d9566086b535a7bd6a0cecb1feef8e47954c9f86f14330c09e`.
+
+
+## P01 independent review counterexamples and final-candidate status
+
+- The first independent review was correctly not approved. It found five contract/implementation mismatches: plan version as a freshness gate despite provenance-only semantics; example `test_stage` at the wrong nesting level; sensitive-root and resolved-symlink bypasses; missing assertion-level CLI audit output; and no malicious-command marker test through the actual CLI.
+- Follow-up review identified two more adversarial cases before approval: dependency-cycle handling could fall through with uninitialized task data, and selectors could echo API-key-like strings while reporting the selector check as valid. The verifier now returns structured `dependency_cycle`, applies a fail-closed selector safety check and does not echo unsafe selector values, and separates `reported_status` from validated status.
+- Evidence constraints: protected path segments cannot be registered as roots; resolved paths are rechecked after symlink resolution; hard-linked evidence is rejected; symlink/hardlink regressions use unique temporary roots and do not open protected content. CLI tests cover malicious command nonexecution/no writes and selector-secret suppression.
+- Final review added three more counterexamples: an unhashable P00 manifest path could crash instead of produce blocked JSON; a case could display reported `passed` despite a failed assertion; and duplicate log reads allowed a concurrent-change inconsistency between gate and sidecar. Fixed with path-type checks, derived case status, and a single cached log audit consumed by both paths.
+- Current focused P01 suite is 20/20; plan validation is 103 tasks / 327 cases / G6; schema/example validation passes. Current implementation snapshot hash: `884d10f9c97a03e1a3ad80044fe2443c8038583341833e377824c52e31667806`.
+- Independent pre-seal review is being repeated against that exact frozen candidate in a new versioned report. P01 remains unsealed until the final report, selector-specific isolation logs, detached self-check sidecar and separate post-seal evidence review are present and verified. The ongoing full-suite process started before these latest small changes, so its result is intermediate for them.
+
+## 2026-09-26 — P01 final path-scope and compatibility-contract review
+
+- Independent review found that registered-root containment and sensitive-directory names alone did not prevent an ordinary receipt reference from reading `config/provider-settings.toml` or `evidence/body.log`. The verifier now classifies references before opening: snapshots must match the current task's declared `allowed_changes`; logs must be under the task-ID-specific validation-log namespace; review reports must be under that task's review directory; historical manifests and entries must match plan-allowlisted paths; current dependency receipts use the task-specific receipt path. Sensitive credential filenames are rejected for all reference classes.
+- Added a hermetic regression that patches `Path.read_bytes` to fail if ordinary config, provider settings, or full-body evidence is opened, then verifies that purpose/scope blockers are returned first. The focused P01 suite passes 21/21; the complete offline repository suite passes 377/377 in 833.870 seconds. The exact full-suite output is retained at `docs/implementation/contracts/validation-P01-final-full-suite-r3.log`.
+- The generic receipt contract previously described EVO-83 release/action/window validation despite having no such fields. It now says receipt v2 only records test execution evidence; release compatibility metadata and half-open UTC window evaluation belong to the dedicated compatibility contract/evaluator. The example receipt's log and review paths now obey the runtime purpose policy.
+- Plan validation passes at 103 tasks / 327 acceptance cases / G6; `git diff --check` passes with repository line-ending warnings. The final independent implementation review has not yet been issued for the updated snapshot. P01 remains unsealed; next evidence work is to regenerate selector-specific logs and obtain review for the exact snapshot.
+- A further r3 read-only review found two remaining P2 edge cases: an allowed symlink alias could resolve to an ordinary but unapproved in-root target because purpose checks only examined the lexical path; and a historical P00 receipt with schema version 3.0 or an unknown explicit value could be downgraded to `legacy_historical`. The verifier now reapplies purpose/scope policy to the resolved root-relative target before `read_bytes`, and only accepts pre-versioned known legacy or explicit v1.0 receipts. Regressions cover allowed-alias→body/config targets and v3/unknown/null markers. Focused suite passes 21/21; full suite is being rerun for the repaired candidate.
+
+- Sidecar path projection is another disclosure boundary: log paths require the correct evidence namespace but can still contain a token-like filename segment. Validate secret patterns per path segment before copying a path to the sidecar; applying a token regex to the entire slash-separated path can misclassify normal paths because `/` is a base64 alphabet character.
+- Keep the verification cadence at milestone gates. Atomic acceptance mappings remain detailed, but small repairs use targeted regressions; aggregate all review findings before one comprehensive pre-seal review, and run the full repository suite once against the clean final candidate. The post-seal review remains separate because its subject and hash binding differ.
+- Python's default JSON decoder accepts duplicate object members and silently retains the last value. Since another consumer can retain the first value, identical bytes may present conflicting status; receipt, plan, schema, manifest and catalog parsing must reject duplicate keys before schema/hash checks.
+- P01 is now fully sealed and eligible: final offline regression 379/379 with no skips; focused tests 23/23; 23 isolated selector logs all exit 0 with cleanup verified; 18 atomic assertions map to 14 logs. Pre-seal implementation review and post-seal evidence review both approved with no findings. The detached verifier sidecar says `eligible_to_close=true`.
+- P00 revalidation must keep the historical bootstrap file `docs/implementation/baselines/receipt-P00.json` byte-identical; the current v2 dependency receipt belongs at the validator's canonical path `docs/implementation/contracts/receipt-P00.json`. This cleanly preserves P01's hash-locked historical manifest while satisfying ordinary dependency receipt path policy.
+- User review of cadence found the written plan could be read as requiring a standalone review/test cycle for each small task. Shared guidance now makes the intended cadence explicit: task-level cases/evidence stay atomic, related work is tested as one focused batch, one repository-wide suite runs on the clean milestone candidate, and independent reviews are batched at major gates. Re-review follows only affected fixes; stand-alone reviews are for high-risk or cross-contract changes.
+
+## P00 current-snapshot revalidation findings
+
+- BASE-01 still described an early 5/8-compatible assertion as current behavior even though Q01/S02 repaired the current path. Updated the case/task wording so the original behavior is retained only as historical context and the current strict-8 / unknown-null regression is the active acceptance target. P01 task-specific freshness remains valid; its read-only verifier was rerun and returned eligible.
+- The four relevant repositories all have dirty working trees, with substantial untracked/modified content. P00 records the entry `HEAD`/status counts and hashes the precise source files read instead of treating a repository commit as a complete source snapshot. No external tests were executed because their runners may write caches, coverage or generated reports and this task has read-only authority.
+- The StockWiki quick-scan identity/universe store exists as an untracked schema-v1 SQLite module but is not yet indexed by the current CodeGraph snapshot. Its current objects cover identities, securities, segments, universes and memberships; scored observation persistence, UI and production end-to-end wiring remain open.
+- StockQA `main_with_llm.py --help` initializes a file logger before printing help and attempted to create a dated file in the external repository; the operation was denied before CLI entry and produced no file. This is a real read-only-environment limitation and is recorded; future external execution must use the project owner's explicitly isolated runner.
+- The new P00 source-hash audit initially caught a missing hex nibble in the written `quick_scan_provider_health.py` hash. The report was corrected and the final 17-path audit now matches every reported SHA-256.
+- The first P00 receipt self-check found the independent review report's snapshot hash nested under `subject`, while receipt v2 requires the binding fields at top level. The reviewer reissued a format-compatible report with the same reviewed snapshot and no findings; the next read-only self-check passed. The blocked first attempt is preserved as historical evidence.
+- G0 first-pass review found a real P1 scope omission: the candidate hash set did not include the two documents named in G0's `read_first`. The manifest generator now derives required paths from the current plan, and a fail-closed test proves drift cannot silently recur. The corrected candidate includes both documents and verifies with zero errors.
+- The user's cadence review is reflected in the plan: atomic assertions remain traceable, while small tasks share milestone test batches, logs, and reviews. For this G0 correction, one focused 94-test/55-subtest batch was run; the 188-test C01–C07 suite was reused, and the 379-test full suite was not repeated. A final independent review is now checking the corrected frozen candidate.
+- G0's next independent read found C01 ID-02 was a false-positive-prone selector: its hand-written test branch did not invoke the public identity writer. The test now calls `cv.validate_entity` with a correctly bound issuer receipt whose `same_legal_issuer` value is false and asserts rejection. The C01 identity file passes 16 tests/31 subtests; the independent C01 r2 review approved this exact snapshot. C01 and dependent C03–C07 receipts were reissued and the previous r1 chain was preserved byte-for-byte. The previous G0 candidate is stale and must not be reviewed as final.
+- Final G0 receipt preparation caught a plan ownership inconsistency before closure: G0 listed P00-owned BASE-02 as its own case, while the public receipt verifier correctly enforces exact single ownership. G0 now owns only REV-01/02/03; BASE-02 remains required upstream evidence from P00. Plan/catalog are version 1.9.8, and the structured G0 final-review JSON is explicitly excluded from the candidate hash set alongside the readable Markdown report to avoid self-hash. The previously approved 639-file candidate is stale; one focused 1.9.8 regression and a fresh milestone review remain before closure.
+- A fresh C07 recursive CLI check caught that my cleanup of two Markdown hard-break spaces had invalidated C02/C03 snapshot hashes and therefore C04–C07 dependency eligibility. Reverted those exact bytes, verified C02–C07 plus P00/P01 individually through the public verifier, then generated a new C07 recursive sidecar r4 with no blockers. Future cosmetic cleanup must not alter any receipt-bound implementation bytes; the unrelated content is left as-is.
+- G0 then passed one final independent milestone review on the exact 646-file plan 1.9.8 candidate, with no open findings. Its v2 receipt owns REV-01/02/03 only, cites P00-owned BASE-02 as upstream evidence, and the public recursive verifier returns `eligible_to_close=true`; post-seal G0 verifier output is stored at the exact excluded sidecar path. M0 is now closed for local contract scope; production/live and external runtime work remain unverified and continue under later owner tasks.
+
+## P01 regression-reference receipt semantics
+
+- The task graph permits a downstream task to list upstream-owned cases as regression references. Receipt evidence must therefore include results for every `task.case_ids` entry, but the `owned_case_bundle_sha256` must remain limited to cases owned by the closing task.
+- Any non-owner case reference is valid only when its `owner_task` exists in the plan and is in the current task's transitive dependency closure. Its full normalized definition needs a separate `referenced_case_bundle_sha256`; otherwise a changed historical/upstream case with stable IDs could leave stale downstream evidence eligible.
+- Keep the new hash additive for v2 compatibility: an older v2 receipt without it remains eligible only when its current task has no non-owner case references. Missing hashes for referenced cases fail closed.
+- P01 now implements the split between task-owned and upstream-referenced case bundles, validates transitive dependency ownership, and binds referenced case definitions separately. The malformed-owner and dependency-cycle failures fail closed; multi-hop references are covered. The 29-test focused suite and 14 isolated acceptance selectors passed, the implementation review and post-seal evidence review approved, and the current P01 v2 receipt is eligible. The P01-dependent P00/C01–C07 receipts were refreshed and publicly verified.
+- The first G0 re-review caught a packet/matrix freeze-state mismatch. Both documents were corrected before a new review; the prior candidate was not reused. The current 671-file candidate was independently approved without open findings, its manifest had zero errors, and the reissued G0 receipt plus public recursive sidecar are eligible. Phase 29 is closed for local contract scope, and S01 is unblocked. Live/provider/runtime behavior remains outside this evidence scope.
+
+
+## S01 closeout notes (2026-09-27)
+
+- The S01 reviewer approved the frozen local snapshot with no P0–P2 findings. One compatibility test limitation remains documented: it synthesizes a legacy manifest shape from current selection data rather than loading a frozen historical release. This does not block the current local contract, but a true archived-release fixture should be added if historical-reader behavior is later expanded or changed.
+- S01's deterministic local behavior is now sealed by a v2 receipt and public verifier. This evidence does not establish live search, provider fallback, StockWiki refresh/ACK, UI, or 2,000-company operational behavior; those require their own downstream task evidence.
+
+
+## Q02 latest-code MiniMax reproduction (2026-09-27)
+
+- A fresh isolated public-CLI call reproduced HTTP 200 / response `completed` / model `MiniMax-M3` with `search_status=unverified`. The test intentionally retained only safe receipt counters and discarded the raw response with its temporary workspace, so the precise provider event shape is not available from this run.
+- The previous assumption that the hostname alone explains the discrepancy is unsupported: historical evidence has a successful `api.minimaxi.com` run for this key, while other recorded official-host probes had different auth/search outcomes. Do not change the allowlist solely from docs or hostname naming; first obtain a diagnostic that distinguishes absent provider search events from a parser mismatch, while preserving the no-raw-response policy.
+- Q02 remains partial. One more identical retry would add little evidence; any follow-up live request should change one controlled input or instrumentation target and be recorded before sending.
+
+
+## 2026-09-27 — MiniMax Anthropic Messages live-path finding
+
+- The new Messages route passes the final isolated unit/CLI/live-fixture offline suite (102 passed, 3 expected credential-gated skips), but real public-CLI responses did not satisfy the adapter's search proof contract. With outbound networking enabled, the CLI returned successfully and preserved MiniMax-M3/response/attempt identity, while the answer was insufficient_evidence and the latest search receipt remained unverified.
+- Do not weaken require_search, infer execution from a server-tool capability declaration, or convert this result to a score. Current evidence cannot distinguish “the model did not invoke web_search” from “the response event/result/source structure did not meet the parser's correlation rules”; the raw response was deliberately discarded.
+- Next Q02 work should use a provider-approved, bounded diagnostic that records only block types, tool-use IDs/result-ID correlation outcome, stop reason, source counts, and final status—or a controlled request-shape change supported by MiniMax's primary documentation. Preserve temp cleanup and never log response text or credentials. Until the exact response path is verified, Anthropic Messages support is experimental and Q02 remains partial.
+
+
+## 2026-09-27 — Q02 review closeout note
+
+- The independent reviewer confirmed the live diagnostic truncation/NameError path is fixed and the updated file passes diff checking. Final isolated evidence is 109 passed / 3 expected live skips (validation-Q02-Anthropic-offline-r6-2026-09-27.log).
+- Review approval is limited to offline implementation and regression coverage. No live API was called during the follow-up review, and no post-fix live request was run. The existing network-enabled result remains insufficient to verify Anthropic web_search execution, so Q02 stays partial.
+
+## 2026-09-27 — Q02 endpoint/credential-region diagnostic
+
+- After the recorded one-query Anthropic E2E pass, a controlled rerun to the existing `.cn` route returned HTTP 200/completed but no correlated server-search/result blocks or sources. The CLI kept the answer unscored (`search_status=unverified`).
+- MiniMax's official Server Tools guide documents Anthropic Messages and Responses and uses the versioned `web_search_20250305` declaration. A controlled request to its documented global Anthropic endpoint `.io` returned HTTP 401 with the currently configured key. This suggests an endpoint/credential-region mismatch, but does not prove its cause. The live test now allows `STOCKQA_MINIMAX_ANTHROPIC_BASE_URL` override and retains `.cn` as the default for this key environment.
+- UTF-8 subprocess capture was fixed in the live test; safe failure diagnostics now retain only HTTP status, exception class, and provider error code. Final isolated Anthropic unit/CLI focus: 17 passed / 93 deselected. The temp roots were removed. The current live results are logged in `validation-Q02-endpoint-region-diagnostic-2026-09-27.md`.
+- Q02 remains partial. Do not weaken verified-search requirements or repeat identical requests; wait for a supported endpoint/credential pair or justify one controlled protocol change, then run one bounded live acceptance and refresh the current-snapshot review/receipt.
+
+
+- Added one final unit regression for two individually successful but over-limit Anthropic server-search calls: a response with two correlated calls remains unverified under the one-call policy. The isolated suite now passes 110 tests with 3 expected live skips. No live API was called for this test.
+
+
+## Q02 MiniMax Anthropic bounded live E2E — 2026-09-27
+
+- MiniMax's current official guide documents Anthropic Messages server tools at `/anthropic/v1/messages`; the response's `server_tool_use` and matching `web_search_tool_result` blocks are the execution evidence. Anthropic documentation explains that search is normally model-selected and that a search turn may return `pause_turn`.
+- Adding Anthropic `tool_choice={"type":"tool","name":"web_search"}` caused an actual search on MiniMax-M3. The broad test prompt induced two search calls and a paused incomplete response; the parser correctly stayed fail-closed. A one-query, one-source E2E then completed through the public CLI and passed its correlated event/source assertions.
+- Multi-search pause_turn continuation is not implemented or verified. Keep the route bounded and do not certify a paused result as complete. The live E2E proves one-query search execution only; it does not prove successful scoring, batch operation, quota handling, or repeated continuation.
+- Latest file hashes, isolated test commands/results, live diagnostics, and cleanup assertions: `docs/implementation/contracts/validation-Q02-MiniMax-Anthropic-live-E2E-single-query-2026-09-27.log`.
+
+
+## S05/MOD-17 trust-boundary and receipt findings (2026-09-27)
+
+- A module ID alone is not a compatibility credential. Legacy fields are trusted only when both the ID and the exact raw source artifact SHA-256 match the pinned baseline; recomputing release/package hashes does not legitimize changed legacy content.
+- This trust rule must be applied consistently by current catalog validation, release publishing, and historical release loading. Otherwise a module rejected by one entry point can still bypass lifecycle checks through another.
+- Path containment must inspect every component below the configured root, including the `questions/` directory itself, and must treat Windows junctions as symlink-equivalent. Checking only leaf paths leaves a parent redirection bypass.
+- MOD-17's own assertions and review pass, but receipt closure is dependency-gated: S05 changed shared `question_sets.py`, making the existing S01 evidence hash and review stale; S04 remains on its historical receipt format. Refresh S01 evidence/review and complete S04/MOD-14 before recursively closing S05.
+
+## S01 legacy recovery-map review finding (2026-09-27)
+
+- Independent review found that legacy manifests bypass metric-contract validation but still fed their top-level `replacements` map directly into `recovery_watch`. A rewritten mapping could therefore misidentify the effective current or survival question while leaving the historical score calculation unchanged.
+- The fix reconstructs replacement links from each selected question's `replaces` metadata, rejects duplicate/malformed/incomplete links, and cross-checks the declared index. When the mapping cannot be verified, recovery observations carry `replacement_mapping_unverified` and `needs_verification`; the core scoring summary retains legacy behavior.
+- Regressions cover a forged top-level link and missing question-level replacement metadata, asserting the core summary remains identical. The S01-related suite passed 70 tests / 166 subtests; final named selectors passed 6 tests / 4 subtests. Independent S01 review and S05 trust-path follow-up found no remaining issue.
+
+## S04 module applicability compatibility finding (2026-09-27)
+
+- Final S04 review found `validate_upgrade` allowed a module to change its `applies_when` while retaining previously published question IDs. Because `applies_when` determines which companies receive the questions, this could silently change comparison scope under stable IDs.
+- The contract now distinguishes presentation metadata from scope: name-only patches remain compatible; changing `applies_when` while retaining any old question ID is rejected. A scope migration requires a major version, retiring every old question ID and giving each one a unique successor ID, preserving the old release for historical reads.
+- The MOD-02 selector now tests the rejected same-ID scope change and a valid full successor migration, alongside question copyedit, descriptive metadata patch, and duplicate core replacement cases. The current S04 batch passes 26 tests / 11 subtests with isolated cleanup verified. Independent review approved the exact final snapshot; the S04 v2 receipt and recursively refreshed S05 receipt both return `eligible_to_close=true` with no blockers.
+
+## 实施验收节奏复核（2026-09-27）
+
+- 计划已有“按G0—G6批量测试/审查”的表述，但README的逐卡任务说明、receipt依赖门和状态流程容易让后续模型误以为每张卡都要单独停下等待审查。
+- 固定改进原则：任务卡仍保留owner/文件范围及原子验收映射；同一接口稳定后可连续实现下游任务。开发自测不必每次封存；同组case在一个定向/集成批次中执行，阶段候选只做一次全仓/大范围回归与一次合并独立审查。
+- receipt依赖仍是里程碑关闭门，不能把未验收任务标verified或发布；审查报告按任务留结论但不重复审查事件。问题修复只重跑失败及受影响路径，严重边界/契约改变才额外定向复审。
+- P01证据校验器的一次性前后封存复审、真实联网/费用、数据库迁移与派发/身份安全边界仍需专门验收；其余不作为每卡默认仪式。任务与场景总量未变。
+
+
+## 2026-09-27 S03 historical evidence boundary
+- The repository contains immutable question-module artifacts at version 3.0.0 inside packages whose catalog version is 3.2.0, but no genuine catalog 3.1.0 metric manifest. A synthetic `template_version=3.1.0` header is only a negative mismatch test, not proof that a historical 3.1.0 manifest remains readable.
+- New regression test validates that a real published package manifest can be composed and normalized from an isolated copy of the release archive with mutable question sources absent. This establishes frozen-package read behavior, but does not establish compatibility with an unavailable 3.1.0 snapshot.
+- Full S06 review found route-level confidence is parsed from provider output but not carried into route snapshot or dispatch gating. Define protocol and compatibility impact before closing S06.
+
+
+## S06 route-level confidence finding and resolution (2026-09-27)
+
+- The prior route parser validated ROUTE_02's outer classification score but discarded it before the route snapshot and dispatch plan. As a result, module candidates could still be selected as though the outer confidence did not exist.
+- The owner-local fix versions the policy as schema 1.2 / protocol 2 and freezes the threshold at 7. The parser now returns `candidate` and `classification_confidence` separately; the execution receipt and route snapshot bind status/score and policy threshold. Below threshold, only applicable model-inferred modules become uncertain; independently verified facts remain usable. A high overall score never overrides per-module evidence gates.
+- Snapshot verification recomputes eligibility from the archived policy, requires exact receipt agreement, validates the low-confidence gap and refuses resealed selected candidates below threshold. Router 2.0/2.1 remain readable as history but cannot create new work under the current runtime.
+- MOD-19 and grouped owner-local tests pass, but the fix is not yet independently reviewed or sealed in a current S06 receipt; therefore this finding is implementation-complete pending milestone review, not production-verified.
+
+## S06/MOD-19 provenance-anchor follow-up (2026-09-27)
+
+- Independent review found a real P1 boundary gap: the snapshot low-score loop trusted the mutable `basis` label, so a caller able to reseal a modified snapshot could relabel a searched candidate as deterministic. A self-computed route hash proves content consistency only; it cannot authenticate source provenance.
+- `validate_route_for_execution` now requires `expected_decision_id` for current routers and checks it against the decision before authorizing execution. The value must come from caller-held trusted state; copying it from the route file does not establish trust. W15 must persist and supply that independent reference in the eventual cross-project path.
+- MOD-19.A06 now separates snapshot consistency from provenance authentication. The regression lowers the score and matching receipt, rewrites the candidate basis, updates derived gap/status fields, reseals the snapshot, then confirms execution rejects the new decision ID against the caller's original ID. Snapshot read validation may accept the internally coherent object, but it cannot authorize execution.
+- The historical compatibility limitation is explicit: router 2.0 uses a preserved fixture; router 2.1 currently has synthesized compatibility-path coverage, not a preserved historical artifact. Independent follow-up review is pending.
+
+## S06/W15/U04 follow-up acceptance coverage (2026-09-27)
+
+- The S06 reviewer confirmed the execution anchor fix, then found two downstream acceptance gaps: MOD-07 did not prove the expected ID was fetched from trusted storage before dispatch, and MOD-13 did not verify how old snapshots with no confidence field appear in the UI.
+- Added MOD-07.A02 for the trusted StockWiki route-row lookup and pre-dispatch rejection of a resealed ID mismatch; MOD-13 now includes router 2.0/2.1 snapshots without the field and requires a historical-not-recorded display with no fabricated score, threshold, model, or timestamp. W15/U04 task steps and the implementation-plan regression guard now bind these requirements.
+- Plan version 1.10.4 retains 103 tasks / 328 cases / 53 invariants. Plan validation is valid; `test_implementation_plan.py` passes 81 tests / 58 subtests. Final independent review confirmed both acceptance gaps closed; router 2.1's missing preserved fixture remains a documented limitation.
+
+
+## Q06 durable transport boundary — 2026-09-27
+
+- 持久化原语只有在调用上下文绑定一个预先创建并领取的逻辑工作项和lease后才能安全派发。级联会绑定当前provider route；同步HTTP客户端在POST前持久化send_intent。公开runner尚未绑定工作项，因为StockWiki W03还没有提供权威身份快照；测试身份不构成生产证据。
+- 只有可证实的提供商拒绝才允许按模型优先级转路：401/403/404，或带已允许错误码的429。超时、5xx、歧义429、账本故障和过期lease均fail closed。response_available不是答案检查点；Q07完成前不能据此在续扫时跳过已答问题。
+- 回执哈希只从允许字段计算；prompt正文、答案、网页正文、来源URL和密钥不进入工作账本。本阶段只接同步HTTP路径；不能把同步测试通过宣称为异步transport已接通。
+- 独立审查针对本仓Q06 transport-boundary-implementation-2026-09-27.md列出的StockQA精确哈希进行；审查与官方verified receipt刷新完成前，Q06保持partial。
+
+
+## Q06 durable transport review follow-up (2026-09-27)
+
+- A durable response is not yet a durable answer checkpoint. The work store may permit the one explicitly budgeted format repair only within the same work item, lease epoch/token, provider route, model, and changed prompt/cache identity. It counts successful transport receipts in SQLite and rejects a third response request; a Python-only counter would not protect a resumed or alternate caller.
+- Lease fencing means a response arrived after the owner lost authority. Both late successful responses and late failures/refusals therefore store only a safe receipt hash, leave the work uncertain, and prohibit accepting the answer or switching routes. Even a late 401/429 does not authorize fallback from a stale worker.
+- These rules and their isolation tests were independently re-reviewed on a matching seven-file StockQA snapshot; no P0-P2 remains for this synchronous transport boundary. Production CLI binding, answer checkpoint, budget ledger, StockWiki ACK, and async transport remain separate open tasks.
+
+## MiMo/DeepSeek搜索能力核验（2026-09-27）
+
+- MiMo官方[联网搜索文档](https://mimo.mi.com/docs/zh-CN/quick-start/usage-guide/text-generation/tool-calling/web-search)显示其OpenAI兼容Chat Completions使用`tools: [{"type":"web_search", "force_search": true, ...}]`，并在响应的assistant message `annotations`中返回`url_citation`；文档也说明搜索插件必须在账户/产品路由可用。
+- 本机只使用`MIMO_PLAN_API_KEY`环境变量读取凭据并请求用户提供的Token Plan endpoint。服务端HTTP 400结构化参数为`webSearchEnabled=false`，所以该endpoint/凭据组合没有产生可用联网证据；这不能证明用户账户的其它MiMo endpoint未开插件。
+- 官方[DeepSeek Tool Calls文档](https://api-docs.deepseek.com/guides/tool_calls/)示例中的function tool需要调用方实际执行。未找到DeepSeek自带网页搜索服务契约，因此不纳入需要内置搜索回执的provider fallback链。
+- StockQA当前同步`LLMClient`仅allowlist了OpenAI Responses与MiniMax Responses/Anthropic Messages；MiMo chat-completions引用解析尚未实现。新增支持时必须以同一次响应中的citation annotations构造证据化搜索回执；只因模型在答案中声称“已搜索”不算通过。
+## 2026-09-27 搜索后端额度与MiMo验收
+
+- 用户提供Brave计划额度：50 requests/second、每月请求数不限；Tavily为每月1,000 credits。该信息用于设计额度分层，非官方账户核验结果。大股票池批量搜索优先使用Brave，Tavily用于按需补充/高歧义问题检索。搜索后端需有独立于回答模型的可版本化配置：分别施加Brave速率门控与Tavily月度credit预算；未核实供应商计费规则前不得假定1 credit等于1次查询，优先按供应商用量回执结算，缺失时由用户设保守上限并标记未知/估算。记录额度来源及核验日期；搜索路由、实际搜索引擎、用量与最小来源回执均为独立字段，不能混入模型provider身份。
+- 用户确认拥有两项服务的API key，但本次没有读取或调用这些key。配置/日志只应记录provider标识和必要请求元数据，不能包含密钥；原始搜索结果的保留必须受服务套餐保存权约束，默认轻量存储结构化结论与最小来源回执。
+- MiMo Token Plan路由拒绝web search（结构化参数`webSearchEnabled=false`）；独立的pay-as-you-go MiMo route通过一次公开CLI live E2E，成功返回同响应URL引用。应在receipt中明确endpoint/route以区分产品开关，不能将pay-as-you-go的通过归因给Token Plan。
+- MiMo初始焦点StockQA离线回归151项通过，真实live 1项通过，临时sandbox已删除。独立复审发现async provider alias和实测provider可能不一致；代码已按同步语义修复并分离`provider_config_ref`，新增别名→MiMo回归，受影响离线集171项通过；整改复审确认无遗留发现。Q02最终receipt重签仍在进行。
+
+## Q07 检查点存储与续跑设计发现（2026-09-27）
+
+- StockQA work store v1 只保存逻辑题、lease、attempt与脱敏transport hash；`response_available`绝不表示评分答案已完成。v2采用事务式增量迁移，保存一个不可变的规范化答案checkpoint，并在同一事务中切换`work_item`到`result_ready`、写入事件。v1遗留的无checkpoint `result_ready/delivered`状态会拒绝迁移，防止把空答案伪装成已完成。
+- 持久账本attempt ID、LLM transport attempt ID、combined system+user prompt hash和provider prompt hash分属不同层级，必须分别命名、保存并绑定，不能假定值相同。checkpoint receipt hash允许字段统一由transport与store共用，包含搜索完成时间和来源URL，排除原始provider response与网页正文。
+- 幂等重放仅接受与已存answer、attempt和receipt hash完全一致的提交；变化时拒绝覆盖。response_available在checkpoint前崩溃后只能恢复为`uncertain`，不能自动再次发包。取消只作用于pending，已发送/租约中的调用应继续完成或按不确定处理。
+- 当前已实现默认单题请求的持久保存和按run恢复；PAR-04一次模型dispatch对应多个question work item的映射仍未实现。4题成功/2题待补测试使用六次独立题目执行，不可记作单一pack的部分成功验收。runner仍须等W03权威身份投影；Q09预算和W05 outbox/ACK另行接线。
+- 最终修订快照的235项unit/integration/provider/CLI回归全部通过，`ResourceWarning`提升为错误后无警告；Ruff、Black、diff检查通过。follow-up独立复审基于六个文件的精确SHA-256，两个聚焦测试文件64项通过，无开放P0-P2。
+- 复审已发现并关闭查询URL泄漏凭据风险：常见token/key/signature类参数从持久来源及共享receipt hash一致剔除，公开过滤器/分页参数保留。固定旧版v1 SQL fixture真实走v1 schema验证和事务迁移，成功行保留和失败回滚均被覆盖。
+- 复审明确不属于当前底座缺陷但仍是生产门槛：公开runner没有调用checkpoint API，接线等待W03权威身份投影；PAR-04单次多题请求到多条逐题checkpoint映射未实现。Q07不得标生产完成。
+
+
+
+## Q09 用量计价边界与搜索额度分账（2026-09-27）
+
+- 结算必须使用同一模型响应中可验证的provider usage，而不是从答案、prompt长度或模型名称估算；不同协议的输入、缓存输入、缓存创建、输出、推理token和搜索工具调用计数先归一为严格schema。缺失或矛盾字段应保持未知费用，不能把估算值写成已结算金额。
+- 价格卡必须显式绑定provider、model、pricing reference、currency和费率字段，以Decimal计算，避免浮点误差和不同计价版本串用。用户添加并核实真实账单费率前，模板应为空，配置失败必须保守暂停派发。
+- 需区分三种搜索成本：模型厂商响应内置工具搜索费、Brave外部搜索API请求/速率预算、Tavily外部API月度credit预算。它们的计量单位和结算源不同，不能折叠成一个search call或把Tavily credit当作请求数。用户提供的Brave 50 RPS/月请求不限和Tavily 1,000 credits/月尚未账户核验；应由搜索后端各自的有版本策略负责限速、月额度、用量证据和切换/暂停。
+- MiMo官方资料说明响应usage可包含prompt/completion token、缓存信息和web_search_usage，且pay-as-you-go的搜索费用独立于token价格；Token Plan还可能按模型、缓存和时段采用不同额度系数。因此费率必须从用户对应的结算计划核对，不能将公开默认价格或某个MiMo计划套用至其他账户/端点。[MiMo Chat API](https://mimo.mi.com/docs/en-US/api/chat)、[MiMo Token Plan Usage & Quota](https://mimo.mi.com/docs/en-US/quick-start/faq/token-plan/Usage%26Quota)、[MiMo API Pricing](https://mimo.mi.com/docs/en-US/price/pay-as-you-go)。
+- 当前本地费率卡resolver已接入runner并由mock CLI E2E覆盖，但没有账号级实价或真实账单回执；因此实现范围完成不等于生产费率验证。合并pytest进程还存在Windows pytest-asyncio临时Proactor loop teardown异常，严格隔离分组干净通过；将其归类为测试harness清理限制，而非隐藏为全套通过。
+
+## Q10 outbox 与 C06 Observation 边界（2026-09-27）
+
+- 当前StockQA答案checkpoint只保存规范化`entity_id/question_id/status/score/description`、冻结身份/题目指纹与同响应模型/搜索回执；它不是C06完整Observation。缺少已证明来源的cohort、question/template版本、information cutoff及标准证据声明时，不得补默认值来伪造可导入观察。
+- Q10 outbox必须储存完整、符合C06 `ExchangePackage`的规范化字节，记录`package_id/item_id/payload_sha256`并把已存在checkpoint的身份、答案和可核验执行字段与Observation做一致性绑定。适配器还未能构造完整包时，工作保留`result_ready`和持久阻断原因，不触发第二次模型调用；后续补齐经过验证的字段适配器再入队。
+- 发送前写耐久send-intent；stable idempotency key至少绑定package/item/hash。确定未发送可按同包重试；超时、断连、发送后崩溃为结果不明，只允许取回精确C06 ACK或对账，不能自动重新POST。StockWiki须按C06不可变导入键对相同重投返回稳定`already_present`；`accepted/already_present` ACK精确匹配后才原子标delivered。`rejected/conflict`进入阻断，错误item/hash拒绝且保留原outbox。
+- JOB-07/08、DB-07和PAR-10的Q10测试应使用真实临时SQLite work store、重启和外部接收器stub；stub使用完整C06 package fixture，并分别模拟确定未发送、commit后ACK丢失/对账、错ACK、hash冲突和幂等重投。未接入真实W05 owner库前，只能宣称producer outbox机制通过，不能声称真实跨库导入验收。
+
+## Q10 producer-side实现首段（2026-09-27）
+
+- StockQA schema v5增加单item delivery projection与不可变事件日志；v4→v5事务迁移保留既有work/checkpoint。工作状态保持result_ready直到精确成功ACK；adapter缺位可显式持久化block reason。
+- 已封存C06 package保留规范UTF-8 JSON字节、C06 package hash、全字节hash、item/payload hash及稳定delivery key；读回时重验地址。数据库触发器阻止包替换、删除、非法状态跳转及不匹配/格式错误ACK直接落入终态。
+- begin_result_delivery原子写send-intent并返回同一不可变字节；其后默认为结果不明，不能自动重POST。只有调用方证明请求体未发出才可re-arm；错误ACK不改变uncertain状态。真实W05尚无receiver/权威对账接口，本段不声称支持真实跨库重投。
+- 当前Q07 checkpoint不足以推出C06所需完整Observation元数据；outbox拒绝unknown状态或执行回执不全，不从公司目录/问题文本/当前catalog补猜字段。完整且已验证的Observation adapter、runner接线、W05端到端与本段独立审查仍开放。
+
+## Q10证据来源绑定复审整改（2026-09-27）
+
+- 独立复审发现producer checkpoint已持久化规范化搜索来源URL，但初版`validate_checkpoint_binding`没有核对C06 `answer.evidence[].url`，因此调用方可以改成无关来源并重算所有内容哈希后提交。
+- 修复后要求evidence为数组、来源URL为checkpoint持久化列表，并逐条验证每个证据对象的URL精确存在于该列表；允许适配器从搜索回执来源中选用子集。这里采用精确比较，是因为checkpoint已保存脱敏、canonical形式，适配器必须复用该稳定来源标识，不自行另造URL规范化语义。
+- 本仓C06 `validate_content`要求成功答案至少有一条evidence，因此producer也明确拒绝`scored`但空evidence的包；`insufficient_evidence`允许无引用。新增两项临时SQLite反例，包括改URL后重新计算payload/item/package哈希仍然拒绝，以及删除scored证据仍然拒绝。包含既有Q10基线的聚焦测试共79 passed（warnings-as-errors），Ruff/Black和完整C06 schema+语义交叉验证通过；最终精确哈希复审无P0–P2。精确命令、哈希及仍开放的跨仓运行边界记录于`docs/implementation/contracts/validation-Q10-result-outbox-2026-09-27.md`。
+
+## W02/W03 StockWiki 首段设计发现（2026-09-27）
+
+- 当前公司主档快照包含的是证券候选行，不足以证明跨市场发行人身份。真实只读样本为 CN 6,137、HK 2,746、US 6,959 条记录；首段只持久化来源快照和候选，不把证券代码/名称碰撞提升为 Entity/Security，也不虚构注册国、跨市场ID或证券类别。
+- 名单导入采用内容SHA-256、显式预览/apply及遗漏成员保留语义。新建股票池的软容量不删成员；默认导入只补缺项，移除/恢复/置顶均由用户动作产生追加历史。v1→v2数据库迁移在获得写锁后重验结构并事务提交。
+- SQLite默认`recursive_triggers=OFF`会让单靠UPDATE/DELETE触发器的append-only表被`INSERT OR REPLACE`冲突替换绕过。初次修复增加冲突键INSERT护栏后，独立复审又构造出显式`event_id=0/-1`绕过正整数冲突检查的反例；现以`CHECK(event_id > 0)`拒绝非正主键，保留正ID插入护栏，并在测试中用未开启recursive triggers的裸连接验证正、零、负ID攻击均不能改写历史。最新精确快照复审尚待回。
+- 相同来源快照的身份碰撞提示取决于当前security listing index，不能参与来源快照幂等性判断。重放只比对源文件派生字段并保留第一次匹配上下文；之后的预览可显示新的碰撞而不重写历史。
+- 股票池恢复与人工置顶属于一个用户意图；若拆成两次提交，置顶失败会留下“已恢复但未置顶”的半完成状态。现在add恢复路径在同一个SQLite事务中完成恢复和pin变更，只追加一个版本化恢复事件，并以回归验证事件序列、版本号和最终状态。
+- v1→v2迁移验收不应只验证universe/member：固定临时v1数据库种入entity、security、segment、universe、member及其引用关系，并逐表比较迁移前后记录，覆盖迁移保留语义。该测试仍是由测试代码构建的v1 fixture，不代表已验证所有历史生产库变体。
+- 最终独立哈希复审确认上述实现并关闭两个P2：任意来源URL路径可能包含凭据，因此只保存HTTPS origin并以路径脱敏测试验证预览/SQLite均不含路径秘密；迁移测试现使用独立内嵌冻结的v1 SQL fixture。最终8文件哈希均匹配、review无剩余P0–P2，证据见`docs/implementation/contracts/validation-W02-W03-stockwiki-first-segment-2026-09-27.md`。
+
+## 搜索API额度和持久化边界（2026-09-27）
+
+- 用户报告其Brave套餐为50 req/s、月请求不限。官方限流指南确认每个响应提供套餐相关的`X-RateLimit-*`窗口、剩余额度和重置秒数；超限返回429。当前公开Search Pricing页面展示预付按请求计费，和用户报告存在可能的账户/历史套餐差异，故实际策略以该API key控制台和响应头为准，不硬编码无限月额。
+- Brave官方FAQ明确：持久保存API结果的全部或部分内容须有明确storage rights。快扫在核实套餐许可前，不持久化Brave搜索响应、snippet或结果URL，只在模型调用内存中暂用；若要求来源链接长期留存，需先确认计划授权或换用有明确存储许可的来源路径。
+- Tavily用户额度为1,000 monthly credits；官方Pricing确认该额度、按月重置，官方Basic/Advanced说明单次搜索分别消耗1/2 credit。因此不能把credit当请求数；预算按search depth和可核验usage元数据入账。官方说明：[Brave限流](https://api-dashboard.search.brave.com/documentation/guides/rate-limiting)、[Brave定价](https://api-dashboard.search.brave.com/app/plans)、[Brave保存结果许可](https://brave.com/search/api/)、[Tavily定价](https://www.tavily.com/pricing)、[Tavily搜索credit](https://help.tavily.com/articles/6938147944-basic-vs-advanced-search-what-s-the-difference)。
+- 导入器不保存网页正文或API URL凭证。任意URL路径也可能含bearer token或签名，因此所有来源引用只归一成HTTPS origin，删除路径、用户名、密码、query和fragment；记录URL若需要清理会显式标为人工复核。真实证券主档仅读取，测试将其复制到临时目录并只写临时SQLite；没有下载财报或改写company-wiki。
+- v1→v2迁移测试现内嵌冻结的历史v1 SQL DDL，而不调用当前`_create_schema_v1`生成迁移输入。这样生产端v1签名与历史输入任一方意外漂移都会使迁移验收失败；数据保留断言覆盖entity/security/segment/universe/member五张表。
+- W02/W03的StockWiki 8文件快照仍在独立只读复核中。当前验证只证明本地身份来源候选与名单生命周期原语，不代表跨仓身份证据绑定、StockQA待办派发、W05 ACK、UI、名单全量扫描或生产库迁移已完成。
+
+## Q02 Anthropic 搜索回执 fail-closed 复核（2026-09-27）
+
+- Anthropic parser 必须使用精确类型校验provider状态码；Python的`False == 0`会把畸形错误态误认为成功。已改为只接受精确的`int(0)`。
+- 搜索回执只代表请求中授权的`web_search`工具。即使另一个服务器工具响应与有效搜索共存，也必须拒绝给整个响应签发已验证状态，避免未审查工具执行/来源链被忽略。
+- 同步与异步路径共用同一解析和`search_verified`判定，因此未知搜索链都会成为`insufficient_evidence`，不能解析模型给出的分数。
+- 真实端到端连接错误没有HTTP状态和request/response ID。它不能证明请求未到达供应商，也不能当作搜索功能成功或失败根因；遵守“不盲目重试”，保留为未知/失败尝试。
+
+## 当前任务回执链 freshness（2026-09-27）
+
+- P00当前公共回执仍eligible。P01当前回执因其允许变更集中的`task-receipts.md`契约文本更新而出现snapshot hash mismatch，封存前review也因此stale；schema、CLI、example、tests均与旧回执哈希一致。
+- P01是当前递归闭环的根阻塞：C01–C07以P01为当前依赖，G0又依赖C01–C07/P01，S01/S04再依赖G0。不能只看单个S04/MOD-14 review就宣称可关闭。
+- S04也有自身的证据漂移：当前`route-decision.schema.json` SHA-256 `9c4035...`与S04 receipt记录的`1bca5d...`不同，故schema及S04独立review需按当前快照复核；10个MOD-14 atomic selector虽已存在且旧快照通过，仍不能替代当前schema review。
+- 重新封存P01应只更新当前五文件snapshot及新的独立review绑定，沿用仍与当前test/schema/CLI哈希匹配的隔离测试日志。随后按依赖边批量刷新receipt引用，并用公开递归verifier证明闭环；不要为了更新说明文字重跑整个产品suite。
+## G0 candidate scope must exclude transitive mutable outputs (2026-09-27)
+
+G0's immutable candidate originally included S01/S04 and other downstream receipts even though those receipts bind G0. Re-signing the downstream work therefore invalidated the G0 candidate and created a hash cycle. The candidate scope now derives exclusions from the reverse dependency graph in `tasks.json`: each transitive descendant's receipt and direct `validation-{task}-*` files are omitted, while prerequisite receipts, source, tests, and the G0 regression log remain included. The graph reader rejects malformed IDs, duplicate dependencies, and unknown task references instead of producing a partial exclusion set. Tests render against a temporary root and prove actual descendant validation artifacts are excluded while an upstream validation log remains visible. The candidate is currently manifest-valid; its independent follow-up review is pending.
+
+## G0 must exclude future descendant review artifacts (2026-09-27)
+
+Excluding only downstream receipts and validation outputs still lets a future downstream review report change the G0 candidate after sealing. This appeared when the S05 snapshot needed renewed independent review after S01/S06 changed two files listed in S05's allowlist. The candidate now derives a review-directory exclusion for every transitive descendant. A temporary-root render test proves that P00's prerequisite review remains in scope, S01's downstream review is excluded, and a similarly named `S01-extra` directory is not over-excluded. G0's latest 535-file candidate is manifest-valid; the updated G0 independent review and S05 current-snapshot review are pending, so dependent receipts need a later refresh.
+
+## Snapshot reviews must follow declared downstream file reuse (2026-09-27)
+
+S05's allowed implementation snapshot includes `scripts/question_sets.py` and `tests/test_routing.py`, which were later changed by S01 and S06. Even though S05's own module-registry implementation did not change, the old snapshot/review binding could not remain current. S05 was re-reviewed against all five current files and the existing 24-pass MOD-02/03/15/16/17 evidence; the independent report confirms exact baseline trust and S01/S06 compatibility, with no P0–P2 findings. The updated S05 receipt and its current S01/S04 dependency receipts now pass the public verifier.
+
+## 松耦合与TDD链路审查（2026-09-27）
+
+- 总体设计已按单一状态拥有者和版本化公开契约拆分：StockWiki拥有身份/名单/观察，invest-quick-scan拥有问题/路由/方法，StockQA拥有任务/模型调用/回执/费用，主题与行业技能只读消费查询结果。设计是松耦合的，但生产接口没有全部接通，因此“边界清楚”不等于“端到端已验收”。
+- 当前本仓模块级单元与契约测试覆盖充分；已补一条真实公开CLI链路的离线E2E：问题编排→执行回执绑定→标准观察→交换schema/hash。外部回答使用可识别的example.invalid夹具，不代表真实搜索；未启动真实StockWiki writer。
+- 全仓默认unittest尝试在高CPU运行数分钟后人工中断，不能记为通过；受影响测试组分别通过。后续应依据owner接口逐层接通真实跨仓集成，而非增加不区分测试层级的全仓默认等待。
+
+
+## 用户指定股票池输入边界（2026-09-27）
+
+- 股票池成员选择权属于用户。约2000家是目标规模而非系统选股任务；启动时先导入用户提供的若干几百家公司池。O01的候选构建只处理明确提供/确认的池，报告覆盖、去重、身份歧义和差异；目录中其他证券或自动发现结果只能作为待确认建议，不得静默加入权威成员或自动启动扫描。
+- 名单尚未提供；需要在开始初始池导入或O01构建前由用户给出池文件/名单及对应池名与市场范围。此输入依赖不阻塞无关本地开发。
+
+## G0下游回执新鲜度（2026-09-27）
+
+- 重新封存G0后，旧G0 receipt的原始文件SHA变化使S01和S04依赖证据过期，继而阻塞S05。源码/测试/review快照未漂移。仅按依赖顺序更新引用后，S01、S04、S05均经公开递归verifier再次验证eligible。今后任何上游receipt重封都须扫描并刷新已封存后代的精确receipt引用，不可把旧的eligible状态当作当前状态。
+
+## 2026-09-27 — MiniMax CN endpoint correction and current CLI discrepancy
+
+- Official MiniMax docs identify `api.minimaxi.com` as the Mainland endpoint and `api.minimax.io` as the global endpoint. The existing `api.minimax.cn` allowlist/test routes were invalid; they are now rejected, while the official regional Anthropic Messages endpoint is allowlisted. See [Server Tools](https://platform.minimax.io/docs/guides/server-tools) and [Anthropic-compatible text generation](https://platform.minimax.io/docs/guides/text-generation).
+- Isolated offline provider/CLI focus passed 34 tests (125 deselected); live-harness non-live helper focus passed 2 tests (4 deselected). An exact public-CLI run with only the HTTP send replaced by a deterministic stub confirms the temp config resolves `minimax`, `MiniMax-M3`, and `https://api.minimaxi.com/anthropic/v1/messages`, with `supports_web_search=true` and a successful shaped receipt. It does not prove live connectivity or provider search execution.
+- Two post-correction live E2E attempts returned `insufficient_evidence` with the provider's generic “current provider or endpoint does not support verifiable web search” message, `search_status=unavailable`, and zero attempt/HTTP/response/search receipt or sources. Since no request was dispatched, this is not server rejection. The result conflicts with the exact offline CLI route check; root cause remains unknown. Stop identical live retries; Q02/LLM-01 stays partial.
+- Only the four already-authorized StockQA files were written this pass: `src/providers/llm_client.py`, `tests/unit/test_llm_client.py`, `tests/integration/test_quick_scan_cli.py`, and `tests/live/test_live_quick_scan.py`. Their current hashes and sandbox cleanup evidence are in `docs/implementation/contracts/validation-Q02-MiniMax-CN-endpoint-2026-09-27.md`. The existing StockQA working tree contains many unrelated prior modifications, which were preserved.
+
+## 2026-09-27 — MiniMax global endpoint attempt and pytest artifact isolation
+
+- A no-network public-CLI subprocess using the Anthropic live fixture's empty config key and inherited `MINIMAX_API_KEY` confirmed `supports_web_search=true` on the official CN host; a network stub received the expected POST and emitted only a synthetic `example.invalid` receipt. The optional endpoint override was absent in the parent environment.
+- Under earlier user authorization, one controlled live call path was launched against `api.minimax.io/anthropic/v1/messages`. The pytest node ran but the process exited 3 after the repository-level `pytest-cov` HTML reporter raised `PermissionError` writing `htmlcov/style_cb_ed8d5379.css`; the teardown obscured the assertion/receipt summary. The provider dispatch and search outcome are unknown. Treat as potentially dispatched and do not retry the same prompt.
+- The unique temporary test root was removed. Post-run `.coverage`/`htmlcov` timestamps remained at 08:38 UTC, earlier than the approximately 22:55 UTC run, and scoped git status showed no tracked/unignored changes. The command nevertheless exposed a harness isolation defect: future live pytest calls must add `-o addopts=` so project coverage HTML output cannot touch the repository root. Exact sanitized evidence is in `docs/implementation/contracts/validation-Q02-MiniMax-global-endpoint-outcome-unknown-2026-09-27.md`.
+- Q02/LLM-01 remains partial; no provider success is claimed, no further live call was issued, and no StockQA source/config was modified in this turn.
+
+## 2026-09-28 — S03 historical answer immutability test
+
+- The active catalog package replay uses immutable release artifacts without the editable authoring catalog. Its validator binds the question definition and rendered prompt/fingerprint to that package, so a saved score cannot be accepted after same-ID prompt or rubric mutation.
+- Added a regression to `tests/test_question_sets.py`: the unchanged archived run still normalizes to score 7; changing either the prompt or `rubric_version` for that ID raises `ValueError`. Isolated focused test passed with warnings treated as errors. This validates current archive immutability; no authentic 3.1.0 manifest was found, so historical 3.1 compatibility remains unverified.
+
+
+## 2026-09-28 — 组件耦合与真实样本边界复核
+
+- 独立只读架构复审结论为“部分松耦合”：契约、版本注册、路由和交换纯逻辑可分测；本地`question_sets.py`仍兼任编排与CLI，`standard_answers.py`直接依赖它的文件读取、URL校验、prompt渲染、题库加载和profile校验接口。后续应以一个明确owner task抽出最小稳定共享契约，先固定现有公开CLI行为，再渐进替换依赖，避免为分层而重写。
+- 当前本仓producer E2E只证明真实本地CLI串联及fixture答案/交换hash，不证明真实StockQA搜索、StockWiki导入/ACK、UI或安装启动。StockQA公开结果适配器和router 2.3已有离线单元/CLI集成覆盖，但跨仓真实闭环仍保持未验收。
+- 用户再次明确初始公司池由其提供；约2000家是覆盖目标，不授权实施者挑选名单或真实样本。已将live E2E计划改为仅使用用户提供且由用户指定的样本；名单未提供时只做fixture离线测试。
+
+
+## 2026-09-28 — S06原始回答绑定与S07提示模块边界
+
+- S06复审发现候选A可配合候选B的答案hash/回执调用resolver。当前resolver不再接收拆分字段，而是在边界内解析一个完整原始回答；独立回执只能与该答案匹配。政策schema也约束scored必须有1—10整数分，unknown/insufficient_evidence必须为null。
+- 题库路由是“部分松耦合”：问题/策略/路由及StockQA公开结果适配可独立测；业务运行时的跨仓导入ACK、UI和生产启动尚未证明。原`question_sets.py`与`standard_answers.py`存在提示渲染双向调用；S07把`ANSWER_RULE`、context selection、question rendering和standard prompt移到`question_prompts.py`，移除question_sets对answer builder的调用边，并保留两个旧入口兼容别名。
+- 本次只做提示函数结构迁移，必须保留字节级renderer源码指纹，避免active旧package拒绝compose。实测旧active package仍是renderer 1.0.0，当前source hash一致，故没有为纯代码整理增加无意义版本或激活新发布包。提示语义今后变更才另行升级renderer并测试旧包读取窗口。
+- 更大的单向依赖问题仍在：`standard_answers.py`需要`question_sets.py`的一些文件IO、题库加载、profile和manifest helper。S07仅关闭提示渲染的循环边；这些helper应由后续owner任务逐项抽成稳定domain contract，先有单测/公共CLI回归再迁移，不能宣称已全域解耦。
+- 计划validator此前无`e2e` case level，导致端到端测试只能被记为integration；S07新增`e2e`层级并在单测中固定plan、owner、层级矩阵。
+- 本地producer E2E只覆盖真实本仓CLI链路+虚构答案/回执，不证明真实搜索、StockWiki事务ACK、UI浏览或安装后启动。初始公司池由用户选择提供；不得自行选公司作为真实E2E样本。
+
+## 2026-09-28 — S08题库下层契约实施发现
+
+- `standard_answers.py`原先从`question_sets.py`取JSON读写、catalog、URL、profile、manifest和question fingerprint。S08先把通用本地题库/config helper迁入`question_library.py`，并保留question_sets兼容表面；当前仅剩不可变manifest语义校验和历史fingerprint两条明确边，避免把局部改进误称为全域解耦。
+- source catalog必须通过`module_registry.source_catalog(root)`读取；兼容包装器必须将可替代ROOT显式传递给共享契约，避免临时发布包测试意外穿透到真实仓库目录。
+- 用户拥有初始公司池选择权；缺少用户池时，只能用虚构fixture验证本地离线producer链，不能挑真实上市公司替代。
+- 独立复审一度指出MOD-24没有覆盖答案构建器接口，以及prompt模块仍重复实现通用JSON reader。整改后以唯一`json_io.read_json`实现统一两个模块，并让MOD-24在带专属版本标记的临时facts库中直接调用`standard_answers.validate_fact_library/select_facts`；第二轮owner回归186 passed / 237 subtests。复审确认两项P2均关闭，没有未关闭的S08发现。
+
+
+## 2026-09-28 — S09历史题目指纹依赖边
+
+- 指纹属于发布题目/答案格式的语义契约，不应由question_sets CLI拥有。它现由无CLI依赖的`question_fingerprints.py`唯一实现；旧CLI函数保留同签名委托，以维持其他调用方兼容。
+- `standard_answers.py`不再引用question_sets的fingerprint函数，静态成员依赖只剩不可变manifest语义验证。该manifest验证仍与组合/路由选择强绑定，作为后续独立owner任务，不在本次为追求“零引用”而大规模搬动。
+- 固定当前真实发布包的v2指纹基线，并以缺省版本标记的旧格式投影锁定v1算法、覆盖v2格式资源摘要变化；仓内没有真实归档1.x发布包，因此不声称完成真实历史回放；标准观察成功/伪造拒绝与离线producer E2E均有聚焦回归。此E2E仍是本仓离线producer证据，不代表StockQA实网、StockWiki ACK或UI闭环。
+- 受影响全批执行的唯一失败来自旧S08断言未随S09更新，不是业务失败；更新后对应边界与关键集成/E2E复跑绿色。
+- 合并范围的广泛Ruff检查在`standard_answers.py`其余历史代码发现11条E701/E702单行语句风格问题，均不在本次两处导入/调用差异中；新模块和新测试的限定Ruff检查通过。未借机改写无关代码。
+- 首批股票池仍由用户指定；当前不选公司、不导入、不启动真实扫描。
+
+
+### S09独立复审整改结论
+
+- 首轮只读复审发现MOD-27的task test_binding把当前包测试写成旧/新包可读，属于计划证据范围过宽。现已收窄为当前发布包观察校验与伪造manifest拒绝，并固定MOD-26测试所用不可变package ID。
+- 兼容包装测试现在同时锁定原参数名、位置参数行为、关键字调用和缺省semantic_fingerprint_version的旧算法输出。独立follow-up确认P2关闭，无未关闭P0–P2。真实归档1.x包仍不存在于本仓，不宣称完成真实历史回放。
+
+## 2026-09-28 — Q04/Q08/Q11/X09恢复状态所有权
+
+- 当前结构化验收用例将LLM-06本轮provider结果分类和停止fallback交给Q04；其持久冷却、半开探测与跨运行`retry_wait`由Q08负责。Q04自己的未结项是运行中policy更新边界和PAR-11同一路由容量等待。
+- 共享全局并发PAR-03由Q11负责，StockWiki设置接线PAR-08由X09负责。此前task_plan的Q04摘要把这些跨owner责任写进Q04；已改当前状态摘要，保留历史receipt与findings原文不动。
+- Q08虽已持久化provider健康/冷却首段，尚未证明有界dispatch round与Q06 work lifecycle的完整生产接线；这仍是独立实现工作，不由Q04摘要提前声称完成。
+
+## 2026-09-28 — S10 completes the remaining local answer-builder boundary
+
+- After S09, the remaining explicit local dependency from standard_answers to the CLI-oriented question_sets module was manifest validation; selection/budget and screening rendering also remained owned by the orchestrator. S10 assigns these contracts to question_manifest, question_selection, and question_prompts respectively.
+- Compatibility remains explicit: question_sets keeps its existing entry points/signatures as wrappers, while standard_answers consumes lower-level stable modules directly. MOD-29/30/31 and a plan regression guard cover unit boundaries, public observation integration, and isolated offline producer E2E.
+- This closes that local module edge only. StockQA/StockWiki production wiring, UI, user-provided company-pool ingestion, live search, and the complete cross-project flow remain separate acceptance work.
+- Verification is recorded in progress.md; the broad question-set run's two message-only failures were corrected and individually passed, but the entire long suite was not rerun.
+
+## 2026-09-28 — S03 historical-manifest boundary recheck
+
+- Focused verification passed 6 S03 question tests plus the mature cyclical-trough recovery regression. The latter keeps temporary weakness observable without letting the recovery diagnostic lift the core score.
+- The actual initial Git snapshot contains a 3.0.0 catalog, the repository has no configured remote, and the current release archive contains no authentic catalog 3.1.0 metric manifest. A fabricated 3.1.0 header remains only a negative rejection test; it cannot prove that a genuine 3.1.0 run is readable.
+- The local S03 code/tests are present, but S03 must remain partial until a trustworthy 3.1.0 artifact is available and the separate StockWiki refresh/live E2E gates are run. Do not manufacture an archive or mark the historical compatibility assertion verified.
+
+## 2026-09-28 — W01 StockWiki independent review and pool-discovery checkpoint
+
+### W01 status: partial / reopened
+
+An independent read-only review of the locally authorized W01 store found five reproducible P2 issues; no fixes were applied before the user requested a pause:
+
+1. Reusing a source `binding_ref` with a changed ticker can update a security row while leaving the source-binding row with the old ticker. Reject immutable source-field changes or revise both consistently under explicit version semantics.
+2. Reusing the same `identity_revision` with different identity content can overwrite prior data. Require an exact idempotent replay for the same revision, otherwise enforce increment/CAS semantics.
+3. `identity_state="verified"` is accepted without an issuer receipt. Require the verification receipt at the verified-state boundary.
+4. Member booleans are permissively coerced (for example, the string `"false"` becomes true); string member versions can also diverge between JSON and DB representations. Strictly validate and normalize before writes.
+5. SQLite connection context managers commit/rollback but do not close connections. Several read paths retain handles; explicitly close and test immediate deletion of an isolated temp root.
+
+Reviewer used fabricated isolated data only; no live database, import, scan, API, or network request. Keep these findings as the next W01 test-first work.
+
+### Candidate pool discovery
+
+The 2026-09-28 user-directed filename search is recorded in `docs/implementation/universe-inputs/company_pool_inventory_2026-09-28.md`. It produced 547 unverified candidates and 209 possible name overlaps. Similar names remain separate; no automatic entity merges were made. None of these candidates was imported or scanned. The search had limited traversal gaps in generated cache directories denied by the OS.
+
+## 2026-09-28 — Company identity resolution: evidence and design
+
+### Read-only upstream findings
+
+- Dayu `dayu/fins/ticker_normalization.py` provides strong input normalization into canonical ticker + market + exchange. Its `ticker_to_company_id()` returns `{ticker}_{exchange_or_market}` and explicitly says cross-market folding / CIK / Chinese unified social credit code are future refinements. Good adapter behavior; not a global issuer key.
+- StockInfoDLSimple `v2-clean-rewrite/src/string_utils.py` only normalizes six-digit stock codes. `MappingManager` and `OrgIdCrawler` resolve A-share code to CNINFO `orgId` and display name. Useful source-local identity/crosswalk; no HK/US or same-issuer multi-market model.
+- StockInfoDLSimple CodeGraph was not initialized; user approved `codegraph init -i`, which completed successfully and indexed 46 files. Dayu's existing index was used. No business source in either external repo was changed.
+
+### Design consequence
+
+The W03 design supplement now specifies an issuer-identifier registry, non-unique effective-dated aliases, venue-qualified listings, and a deterministic candidate-resolution state machine. C01 schema 2.1.0, local validation, contract docs, and plan cases have been implemented/synchronized. Identity is not complete until the authorized StockWiki store and W02/W03 resolver/maintenance, consumer preflight, and identity-bound history are implemented and tested. Similar Chinese names (including the user's “中微公司 / 中微半导体” example) must remain unresolved or separate until authoritative evidence confirms a former-name alias or same issuer; do not infer their actual relationship from spelling.
+
+### W01 test state
+
+The previously authorized StockWiki `tests/test_quick_scan_store.py` has newly appended regression cases for the five independent W01 review findings. They have not been run yet and must be reconsidered against the identity design before implementation. The previously created W01 store still has the five P2 issues described above.
+
+## C01 independent review and remediation — 2026-09-28
+
+The read-only `/root/identity_contract_review` of the current v2.1 snapshot found six issues. All reported local examples were reproduced by the reviewer using isolated synthetic data. The fixes below are local and are not yet independently re-reviewed or receipt-closed:
+
+1. **P1 — Market enum limited to CN/HK/US.** Replaced v2.1 market's closed enum with ISO alpha-2 shape while leaving historical v1/v2.0 market definitions unchanged; JP/GB/SG positive tests pass.
+2. **P1/P2 — Verified aliases/identifier claims could lack evidence or have inverted validity.** Schema now requires non-empty evidence for `verified`; claim validators enforce ordered `[valid_from, valid_to)` intervals. Alias strings remain non-unique and do not grant merge authority.
+3. **P2 — MIC missing/present duplicate venue bypass.** Within an overlapping same-market/same-ticker key, if either listing has no MIC, local validation fails closed. Two distinct known MICs are separate venues. A trusted venue alias catalog and cross-entity transaction uniqueness remain StockWiki owner work.
+4. **P2 — `security_added` event could omit affected securities.** Schema and semantic validation now require the target security in the affected set. `validate_identity_transition` compares supported single-issuer events with exact before/after snapshots; merge/split remains an owner transaction concern.
+5. **P2 — Retired source binding could never be used.** A `delisted` listing must match a `retired` trusted binding; other states require `active`. This validates historical identity mapping but grants no scan eligibility to a delisted listing.
+6. **P2 — v2.1 ID-02/ID-08 paths were not exercised.** Added distinct v2.1 close-name issuer records and exact snapshot transition tests for rename and security addition.
+
+The identity model also now separates legal issuer from AnalysisSubject/reporting perimeter. This was identified as an architectural gap before downstream Work/query integration: C01 package 2.2 leaves Entity writes at 2.1 and adds AnalysisSubject 1.0 separately. Provisional subjects require a trusted listing-to-issuer mapping; verified consolidated membership is explicit/effective-dated, and group-control edges do not imply reporting scope.
+
+At the time of this entry, local focused evidence was `tests/test_identity_contract.py` **36 passed / 50 subtests**, Draft7 schema and `py_compile` passed; the merged regression and second independent review were still pending. The subsequent final follow-up and receipt state are recorded below.
+
+## 2026-09-28 — C01 identity final follow-up and remaining trust boundary
+
+- The final reviewer found no remaining P0–P2. It had manually probed a foreign-owned Security referenced by an identity-event snapshot; I added a permanent regression alongside the existing dangling-reference case. The tests now lock both cases.
+- Event snapshots are validated as complete local issuer snapshots: every Security belongs to the event issuer and has a unique ID; every Listing is unique, belongs to that issuer, and references one of those Security records. A ticker event must also name the exact Security of the changed Listing. This prevents a valid-looking event from laundering a foreign or phantom instrument into history.
+- A primary-issuer switch is intentionally narrow: the old and new primary members must both exist, the event old/new values must match the two snapshots, and only their `role` fields may swap. Any unrelated membership evidence/validity change belongs in a separate perimeter event and cannot be hidden inside the primary switch.
+- Trusted ISO/MIC mapping and consolidated reporting perimeter proof are injected owner-controlled inputs to the local semantic validator. The validator checks consistency/fail-closed behavior; it cannot establish official-source authenticity, registry completeness/version correctness, unique ownership across the whole database, durable receipt custody, or transactional compare-and-swap. Those remain StockWiki owner integration requirements and are not implied by these tests.
+- Combined regression passed **170 tests / 160 subtests**; focused identity tests passed **36 / 50 subtests**; plan validation is valid at **107 tasks / 363 cases / G6**. The public receipt verifier still blocks old C01/P01 receipts on stale plan/task/case/boundary/evidence/review state and dependencies, so no current formal closeout is claimed.
+
+
+## 2026-09-28 — 搜索context与多题打包实验的设计取舍
+
+- 搜索服务通常返回搜索结果对象而不是模型可直接消费的“可信事实”。BENCH-01采用适配层将结果规整为带source_id、URL、发布/抓取时点及限长snippet的证据context，随对应题目发送；模型必须引用source_id，外部snippet不具指令权限。仅留短来源指针、必要hash和计量数据。
+- 逐题与分组不能只比较HTTP请求数：大组可能减少重复固定prompt但增加输入上下文、跨题污染、截断和结构解析失败；并行逐题可降低总墙钟时间但不会自然减少调用数/费用。因此将请求策略和检索器策略做正交对照，并对相同题目/证据/模型revision配对。
+- 三类缓存的经济意义不同：搜索缓存降低搜索API请求，provider前缀缓存须以usage回执证明，应用答案缓存才可能使同一冻结输入零重复调用；缓存键材料性变化必须失效。缓存命中与未命中成本分开报告，不能把重复warm run的节省归因于打包。
+- MiniMax Token Plan按套餐窗口额度管理时，实验应报告额度变化、拒绝和额外现金账单。无法将某次请求精确映射到套餐消耗时，不人为换算逐题单价；与按量模型比较时分别展示现金增量和稀缺quota占用。
+- 实验样本及阈值必须预注册；质量与关键错误先于速度和价格。只有质量过线方案进入Pareto比较。三市场小样本仅支持本项目pilot，不可据此宣称对所有模型/行业普遍最优。
+
+- 计划复审补充：三家公司各一轮不足以估算run级p90；BENCH-01改为原始run时延/阶段值和跨公司范围，除非积累至少20个同口径完整run才报p50/p90。不同方法应按run而非把同一批响应里的题目伪装成独立样本。
+- 为减少查看实验结果后挑门槛的风险，已将独立gold形成顺序、双人复核/争议裁决、可评分覆盖≥95%、MAE≤0.75、±1一致≥90%、抽样非关键claim support≥90%和critical错误规则写入预注册方案。未完成gold或足量审查则标`inconclusive`。
+- 复核溯源需要保存实际给模型的文本而非只有未来可变的URL：只保留prompt实际使用的截断snippet快照（每条500字符、每家公司累计30,000字符上限）及hash，仍禁止完整网页/公司材料落盘。若最后需要同时选择search provider和packing，补做2×2交叉；否则明确只能分别得出条件结论。
+- 第二轮只读复审确认缓存/时延/证据/交互修订已落实，并发现相对baseline容忍度和claim抽样下限应数值化，任务步骤需统一随机顺序。已补入MAE相对差≤0.25、source-support与coverage最多低5pp、每公司×方法按模块至少抽max(10题, 2题/模块)、全实验每方法至少30条事实主张；否则inconclusive。
+- 2026-09-28续审发现P00卡片允许写入范围遗漏了其当前v2 receipt、验证sidecar/日志和独立review路径，而receipt契约要求P01后必须重跑P00并签发这些工件；这会诱使实施者覆盖旧v1或把工件写入未授权目录。已精确补齐P00 allowlist和回归测试，旧`baselines/receipt-P00.json`保持只读；`task-receipts.md`此前固定写“计划1.9.5”，而当前计划为1.10.13，已改成动态引用`tasks.json`。
+- P01路径复核又发现实际当前验证sidecar为`validation-P01-current-*.json`，但任务卡仅允许日志和单一自验JSON。已将receipt、日志、detached sidecar分别列入允许路径，并在`test_task_receipts.py`添加回归；这是计划权限边界修正，不是任务验收状态放宽。
+- 本轮修改后P00/P01仍需正式重封：当前只读校验器分别报告P00 task_spec/global-boundary stale，P01 global-boundary/evidence/review stale。不要手工改hash冒充重验；必须完成当前快照review、用当前case闭包和日志重建receipt core、运行只读sidecar，再做独立封存后证据审查。
+
+## 2026-09-28 — BENCH-01 price/cache/model comparison research
+
+- Public search results are structured evidence inputs, not already trusted model context. The benchmark normalizes Brave/Tavily results to source IDs, URL/time metadata and bounded snippets, explicitly passes only question-relevant items as untrusted context, and checks exact evidence references. Brave LLM Context and provider-native search are separate arms; native search success requires correlated execution receipts rather than a model's claim.
+- To avoid assuming one model's packing result generalizes, compare six request shapes first on a fixed MiniMax-M3 block, then replicate only the sequential-question baseline and any quality-qualified packing candidate as independent matched blocks for MiniMax-M3, MiMo Flash and DeepSeek Flash. Never complete one matched group using fallback output from another model.
+- Official pricing checked on 2026-09-28: MiMo V2.6 Flash pay-as-you-go and internet-connectivity plugin rates are listed separately in the [MiMo official price table](https://mimo.mi.com/docs/en-US/price/pay-as-you-go); the [MiniMax official Token Plan](https://platform.minimax.cn/subscribe/token-plan) is a shared subscription/quota with 5-hour/weekly controls, not a per-call price; [DeepSeek Flash official pricing](https://api-docs.deepseek.com/quick_start/pricing/) varies by cache hit and peak/off-peak window. [Brave's public Search API plan](https://brave.com/search/api/) publishes per-request pricing, while the user's stated 50-QPS/unlimited plan must be taken from their actual account and usage receipts. [Tavily public pricing](https://www.tavily.com/pricing) is credit-based; search depth/endpoint determines credit use.
+- These are time-stamped planning references only. BENCH execution must record the actual account/key billing mode, plan/quota before and after, response usage and charges, plus a fresh official-price snapshot. Do not infer a MiniMax per-question cash price by dividing a subscription fee by marketing token estimates; report incremental cash and attributable quota separately. No live benchmark run was performed in this planning update.
+- A user explicitly asked to pause after the current work; before pausing, the experiment protocol and official price notes are documented, while actual A/HK/US runs remain gated on current production-search receipts, Q09 budget/usage ledger, Q10 result receipts, W10 isolated ACK, and an explicit hard spend/quota cap.
+- P01 follow-up r8 independently confirmed that the P00 dated-report glob and split JSON/log patterns match real paths, while the historical P00 v1 receipt and P01 context manifest remain outside the write patterns. The pinned legacy receipt hash still matches the historical context manifest. r8 found no P0/P1/P2; the P01 receipt itself is still stale and must be resealed/verified separately.
+- P01 was then resealed from the current task/case hashes, r8 snapshot, and a dedicated RCPT-03.A05 test log. The read-only validator derives eligible with no blockers; the detached current sidecar is saved outside the core. A separate post-seal reviewer is checking the final receipt/sidecar pair. P00 is still blocked by stale task/global-boundary hashes and must be rerun only after P01's complete two-stage review passes.
+- The separate post-seal reviewer approved the P01 package on 2026-09-29: exact receipt/core/sidecar/validator hashes matched, the fresh read-only validator projection matched the detached sidecar apart from its evaluation timestamp, all 19 assertions were passed, and the legacy P00 bootstrap edge remained context-only. The evidence report is `docs/implementation/reviews/P01/postseal-evidence-review-independent-r1-2026-09-29.json`; P00 current-v2 refresh can now proceed.
+
+## 2026-09-29 — P00 current-v2 refresh findings
+
+- `SearchService` is still a simulated placeholder and is not the quick-scan live-search chain. `LLMRunner._run_single_company` wires `OrderedSearchProviderCascade`; the separate legacy `ProviderCascade` keeps a stateful current-provider index and has no CodeGraph caller. The quick-scan cascade permits fallback only for explicit classified provider failures; a valid low score or non-scored evidence status ends that question. The baseline report now makes this distinction explicit.
+- StockWiki quick-scan SQLite v1 currently stores lightweight identity/security/source-binding, segment, universe and membership history. The full scored-observation timeline and UI are not present in that store snapshot. company-wiki remains the upstream source/document owner; no document or security-master refresh was used.
+- The offline CLI fixture proves score-8 pass-through and structured execution receipt parsing but does not prove provider web search actually ran. No live-search acceptance is claimed; Q02 remains governed by its own evidence gate.
+- Four repository worktrees contain existing changes. Status counts and representative source hashes are recorded as observations, not attributed to this task; external trees were not run or written.
+- P00 public v2 verifier returns eligible with four passing assertions. Its separate post-seal evidence review is approved: the saved sidecar matches a fresh verifier projection apart from evaluation time, the P00 v1 manifest hash is unchanged, and no cycle exists. P00 is closed; the C01–C07/G0 receipt chain remains stale and must be refreshed before W01.
+## 2026-09-29 — IQS harness lane 接管的实施约束
+
+- company-wiki lane card要求的“identity package 2.2.0”是包层版本；不要把它误作Entity schema版本。现有分层应继续是Entity 2.1.0、AnalysisSubject 1.0.0，历史Entity 2.0只读。新增CLI必须明确验证对象类型/版本，不得因统一CLI把不同payload当成同一结构。
+- CLI应是IQS公开JSON边界：文件只读且有大小上限；stdout一行、仅valid/invalid、稳定错误码与JSON Pointer；不得回显原始输入/秘密；无效内容退出2、未知版本退出3、有效退出0。外部调用者不应导入本仓Python内部模块。
+- StockWiki的四态mapping DTO和真实identity snapshot golden尚未生产。IQS可冻结validator与负例，但不得伪造mapped producer golden；null/unknown/ambiguous/mapped的语义要等StockWiki owner版本化DTO后再交叉验。
+- 施工卡的回执退役会影响 `scripts/task_receipts.py`、task-receipt schema、`tests/test_task_receipts.py`、`tasks.json`依赖/工件allowlist及大量历史报告链接。应先做引用图、区分当前行为与历史输出并保留既有证据，再拆掉机器闭环；当前一次共享测试日志没有被签入receipt。
+- Deployment语义简化与可信字段精简不可作为文本清理直接做。必须把 `explicit_user_confirmation` / `approval_ref` 映射到明确的外部动作与有限预算；对待移除的identity/source/period/trust字段逐项验证已有owner记录和来源/修订/hash，并保留错主体、错期间和伪造高信任级别的失败关闭测试。
+- 工作树基线有792条变化：745条未跟踪，其中多数是实现/合同/不可变题库发布/历史证据。Git状态不等于垃圾清单；候选覆盖副本在引用审计完成前统一保留。
+
+## 2026-09-29 — IQS harness lane 退役回归与下一审查边界
+
+- G0候选清单对`docs/implementation/**/*.log`做快照，因此临时的本轮日志若使用`.log`扩展名会进入自身hash范围，导致自校验失败。IQS harness输出保存在`.txt`批次报告，避免把可变测试输出误当产品输入；失败诊断文件仍保留。
+- pytest的`--basetemp`不能同时用作PowerShell捕获文件目录：Windows pytest清理自身临时目录时，外层重定向仍占用文件句柄。把捕获报告放在basetemp之外后，15项G0/退役测试全部通过且临时根清理成功。
+- 任务receipt流程的schema/执行器不是产品调用入口；当前需要保留的产品执行receipt（搜索、provider dispatch、结果导入/费用）与工程任务签收是不同数据。归档和退休stub边界测试锁住该区别。
+- `explicit_user_confirmation`/`approval_ref`不能仅从JSON里删字段；本地已将其替换为命名外部动作和单模型/单搜索/token硬上限，并绑定活动release/policy。可信identity/source字段经逐项trace与伪造矩阵测试后无安全可删项；owner来源/revision/hash的真实性仍要由StockWiki/StockQA公开producer DTO及跨仓测试证明。
+
+## 2026-09-29 — 独立复审核心发现已处理
+
+- 活动说明与Phase 12历史checkbox可能让后续实施者误以为C01回执仍须刷新。统一以Phase 43、README、测试策略的当前批次机制为准；旧Phase内容保留历史事实但明确已取代，不改变尚未完成的生产集成状态。
+- Preservation manifest遍历测试本身无法发现manifest条目被整体删除；固定manifest哈希、186项数量及5/1/180类别分布现作为回归锁。
+- 原request-to-decision测试把请求自报policy revision复制进active字段，证据来源并不独立。改为独立静态活动策略fixture并加入stale revision拒绝断言。生产owner读取和控制面绑定仍未验证，不能据此声称实际授权系统闭环。
+
+## 2026-09-29 — 恢复全计划实施
+
+- planning-with-files resolver未见PLAN_ID/PWF_PLAN_ROOT选择，当前计划解析为项目根legacy计划；`git diff --stat`记录47个既有跟踪文件存在修改（共16,837插入/1,752删除，非本轮全部改动），必须保留。
+- 计划中Phase 43已将IQS施工卡本地范围标为完成、外部G2b仍开放。较早的`Next Step`段落仍是2026-09-27 receipt-v2流程，和Phase 43退休决定冲突；执行前应更新活动Next Step，不应恢复逐卡receipt刷新。
+- 当前主线本地可推进候选是S06本地路由/适配器范围；仍未核实其准确实现/测试边界，尚不宣称S06完成。Q02/Q06等StockQA工作和W02/W03后续StockWiki工作受当前“先完成IQS本目录、其余外仓只读”约束，暂不写外仓。
+
+## 2026-09-29 — IQS施工卡范围复核
+
+- 卡片允许IQS先完成第1—4步，然后等StockWiki真实数据库/serializer生成identity snapshot golden再做第5步。第1步需能追溯PWF plan目录与原始脏树分类；第2步需2.2校验CLI及身份错配负例；第3步退役的是工程receipt工作流而非产品provider/search/import receipts；第4步只移除已被证明重复的trusted proof，不能为简化字段而丢不同owner/时间点约束。
+- 对StockWiki只读检索到`quick_scan_store.py`与store测试含identity/source-binding存储，但未检出identity snapshot/mapping DTO serializer或golden fixture。必须以owner实际产物完成G2b；本仓测试中的合成mapping不能代替该证据。
+
+- 当前PWF resolver在未设置`PLAN_ID`/`PWF_PLAN_ROOT`且不存在`.planning`目录时返回空，按技能规则使用项目根legacy计划。施工卡开工Git快照为`master@25b8d14316c06390450e5a1d8883583bfd039d0d`，792个状态路径（47 tracked/745 untracked）。最终delta捕获843个状态路径（47 tracked/796 untracked）：53新增、22既有文件哈希变化、2个计划退役旧路径；`.pytest_cache`遍历受权限拒绝，ignored文件不在Git状态清单内。完整哈希见`docs/implementation/reviews/IQS-lane/worktree-inventory-delta-2026-09-29.json`。
+- 增量盘点一次性解析代码先把`(状态,路径)`记录方向用于dict，读成2个伪路径而非真实状态路径；通过和PowerShell状态计数及原始Git NUL字节对照发现，未写出清单。第一次delta脚本还误写了活动example的归档映射，文件存在性断言阻止产出报告；读取实际legacy目录后修正。最终按`路径 -> 状态`解析并强制校验792/843、53/22/2不变量，两个已退役活动receipt路径均与归档副本哈希相同。
+- IQS施工卡本仓步骤1—4已由`docs/implementation/reviews/IQS-lane/construction-card-closeout-2026-09-29.md`逐项关闭；205 tests / 351 subtests / 0 skips通过，计划为107 tasks/366 cases/G6 valid，隔离临时根已清理。第5步/G2b仍等待StockWiki实际snapshot/mapping DTO与serializer golden，不将本地合成fixture当作跨仓生产者证据。
+
+## 2026-09-29 — S06 当前路由门的语义分界
+
+- `validate_recorded_route_execution`证明归档决定可按其原记录时间读取；它不能授权新问卷拼装。新执行入口必须走`validate_route_for_execution`，显式校验当前router版本/身份/TTL/ready资格。历史manifest读取继续使用recorded validator，两条路径不可合并成“兼容即可执行”。
+- 历史renderer拒绝测试应patch规则哈希的真实模块owner。S08把helper下沉至`question_manifest`后仍patch旧`question_sets` facade会使失败注入失效；测试现patch owner绑定，并经公开manifest校验入口验证。
+- 当前S06离线批次57 passed、独立只读复审无P0–P2，证明IQS本地执行边界；不证明StockQA/StockWiki生产记录的真实性、router 2.1真实历史golden或实际事务ACK。G2b仍需StockWiki producer DTO/golden；完整S06仍需授权的真实跨仓验收。
+
+## 2026-09-29 — G2b 交接边界
+
+- IQS施工卡步骤1—4已交付；不再重复实现。G2b需要StockWiki真实公共serializer/API产物，producer provenance由owner接口测试证明，IQS CLI只证明schema和语义一致性。
+- 交接要求、版本/命令/现有测试证据、Entity/AnalysisSubject golden封装和跨仓正反例集中在`docs/implementation/reviews/IQS-lane/G2b-handoff-2026-09-29.md`。StockWiki golden未到前保持pending，不使用IQS合成夹具冒充实际producer结果。

@@ -1,29 +1,56 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://invest-quick-scan.local/schemas/quick_scan/identity.schema.json",
-  "title": "QuickScanIdentityContract",
-  "description": "公司、证券、分部与大股票池名单身份契约（Task C01，契约版本 1.0.0）",
+  "title": "QuickScanIdentityContract 2.2.0",
+  "description": "Issuer/security/listing identity plus an independently versioned, sourced analysis/reporting subject; historical v1/v2.0 readers remain explicit.",
   "type": "object",
   "definitions": {
     "Market": {
       "type": "string",
-      "enum": ["CN", "HK", "US"]
+      "enum": [
+        "CN",
+        "HK",
+        "US"
+      ]
     },
     "Exchange": {
       "type": "string",
-      "enum": ["SZSE", "SSE", "BSE", "HKEX", "NASDAQ", "NYSE", "AMEX", "OTHER"]
+      "enum": [
+        "SZSE",
+        "SSE",
+        "BSE",
+        "HKEX",
+        "NASDAQ",
+        "NYSE",
+        "AMEX",
+        "OTHER"
+      ]
     },
     "SecurityType": {
       "type": "string",
-      "enum": ["ordinary", "adr", "gdr", "preferred", "cdr"]
+      "enum": [
+        "ordinary",
+        "adr",
+        "gdr",
+        "preferred",
+        "cdr"
+      ]
     },
     "ListingStatus": {
       "type": "string",
-      "enum": ["active", "suspended", "delisted", "pending_listing"]
+      "enum": [
+        "active",
+        "suspended",
+        "delisted",
+        "pending_listing"
+      ]
     },
     "Segment": {
       "type": "object",
-      "required": ["segment_id", "segment_name"],
+      "required": [
+        "segment_id",
+        "segment_name"
+      ],
       "properties": {
         "segment_id": {
           "type": "string",
@@ -34,12 +61,18 @@
           "minLength": 1
         },
         "revenue_share_pct": {
-          "type": ["number", "null"],
+          "type": [
+            "number",
+            "null"
+          ],
           "minimum": 0,
           "maximum": 100
         },
         "description": {
-          "type": ["string", "null"]
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "additionalProperties": false
@@ -65,8 +98,12 @@
           "type": "string",
           "pattern": "^ENT_[A-Za-z0-9_]+$"
         },
-        "market": { "$ref": "#/definitions/Market" },
-        "exchange": { "$ref": "#/definitions/Exchange" },
+        "market": {
+          "$ref": "#/definitions/Market"
+        },
+        "exchange": {
+          "$ref": "#/definitions/Exchange"
+        },
         "ticker": {
           "type": "string",
           "minLength": 1
@@ -75,20 +112,32 @@
           "type": "string",
           "pattern": "^[A-Z]{3}$"
         },
-        "security_type": { "$ref": "#/definitions/SecurityType" },
+        "security_type": {
+          "$ref": "#/definitions/SecurityType"
+        },
         "adr_ratio": {
-          "type": ["number", "null"],
+          "type": [
+            "number",
+            "null"
+          ],
           "minimum": 0,
           "description": "1份ADR对应的普通股股数。若未获得经核实的官方存托凭证折算比率，必须为null，严禁推测或臆测。"
         },
         "ordinary_security_ref": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "ADR对应的基础普通股security_id"
         },
-        "listing_status": { "$ref": "#/definitions/ListingStatus" },
+        "listing_status": {
+          "$ref": "#/definitions/ListingStatus"
+        },
         "aliases": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
         }
       },
@@ -136,7 +185,10 @@
           "format": "date-time"
         },
         "notes": {
-          "type": ["string", "null"]
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "additionalProperties": false
@@ -164,35 +216,124 @@
           "pattern": "^[A-Z]{2}$"
         },
         "company_wiki_ref": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "company-wiki中的实体ID或路径。若不存在，必须为null，不强制前置建档（ID-04）。"
         },
         "formal_stockwiki_profile": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "StockWiki正式建档ID。若不存在，必须为null，不强制前置建档（ID-04）。"
         },
         "securities": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#/definitions/Security" },
+          "items": {
+            "$ref": "#/definitions/Security"
+          },
           "description": "该独立实体旗下发行的所有交易证券（如A股、H股、ADR）"
         },
         "segments": {
           "type": "array",
-          "items": { "$ref": "#/definitions/Segment" },
+          "items": {
+            "$ref": "#/definitions/Segment"
+          },
           "default": []
         },
         "aliases": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
         }
       },
       "additionalProperties": false
     },
+    "SecurityV2": {
+      "$ref": "#/definitions/SecurityV20"
+    },
+    "SourceBindingV2": {
+      "type": "object",
+      "required": [
+        "binding_ref",
+        "source_namespace",
+        "source_record_id",
+        "source_canonical_name",
+        "security_id",
+        "entity_id",
+        "market",
+        "exchange_raw",
+        "ticker",
+        "status"
+      ],
+      "properties": {
+        "binding_ref": {
+          "type": "string",
+          "pattern": "^BND_[A-Za-z0-9_]+$"
+        },
+        "source_namespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_canonical_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "security_id": {
+          "type": "string",
+          "pattern": "^SEC_[A-Za-z0-9_.]+$"
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[A-Za-z0-9_]+$"
+        },
+        "market": {
+          "$ref": "#/definitions/Market"
+        },
+        "exchange_raw": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "ticker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "VerifiedSecurityV2": {
+      "$ref": "#/definitions/VerifiedSecurityV20"
+    },
+    "ProvisionalEntityV2": {
+      "$ref": "#/definitions/ProvisionalEntityV20"
+    },
+    "VerifiedEntityV2": {
+      "$ref": "#/definitions/VerifiedEntityV20"
+    },
     "MembershipStatus": {
       "type": "string",
-      "enum": ["active", "logically_removed", "nominated", "candidate"]
+      "enum": [
+        "active",
+        "logically_removed",
+        "nominated",
+        "candidate"
+      ]
     },
     "UniverseMember": {
       "type": "object",
@@ -208,7 +349,9 @@
           "type": "string",
           "pattern": "^ENT_[A-Za-z0-9_]+$"
         },
-        "membership_status": { "$ref": "#/definitions/MembershipStatus" },
+        "membership_status": {
+          "$ref": "#/definitions/MembershipStatus"
+        },
         "manual_pin": {
           "type": "boolean",
           "description": "用户手动置顶/锁定保护标记。若为true，无论分数高低均不得自动退池（I16）。"
@@ -218,21 +361,36 @@
           "format": "date-time"
         },
         "added_reason": {
-          "type": ["string", "null"]
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "removed_at": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "date-time"
         },
         "removal_reason": {
-          "type": ["string", "null"]
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "restored_at": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "date-time"
         },
         "restoration_reason": {
-          "type": ["string", "null"]
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "version": {
           "type": "integer",
@@ -279,17 +437,1972 @@
         },
         "members": {
           "type": "array",
-          "items": { "$ref": "#/definitions/UniverseMember" }
+          "items": {
+            "$ref": "#/definitions/UniverseMember"
+          }
         }
       },
       "additionalProperties": false
+    },
+    "SecurityV20": {
+      "type": "object",
+      "required": [
+        "security_id",
+        "entity_id",
+        "market",
+        "exchange_raw",
+        "exchange",
+        "ticker",
+        "currency",
+        "security_type",
+        "listing_status",
+        "source_binding_ref",
+        "adr_ratio",
+        "ordinary_security_ref"
+      ],
+      "properties": {
+        "security_id": {
+          "type": "string",
+          "pattern": "^SEC_[A-Za-z0-9_.]+$"
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[A-Za-z0-9_]+$"
+        },
+        "market": {
+          "$ref": "#/definitions/Market"
+        },
+        "exchange_raw": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "exchange": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Exchange"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ticker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{3}$"
+        },
+        "security_type": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecurityType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "listing_status": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ListingStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_binding_ref": {
+          "type": "string",
+          "pattern": "^BND_[A-Za-z0-9_]+$"
+        },
+        "adr_ratio": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "ordinary_security_ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^SEC_[A-Za-z0-9_.]+$"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "security_type": {
+                "not": {
+                  "enum": [
+                    "adr",
+                    "gdr",
+                    "cdr"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "security_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "adr_ratio": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "VerifiedSecurityV20": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/SecurityV20"
+        },
+        {
+          "properties": {
+            "exchange": {
+              "$ref": "#/definitions/Exchange"
+            },
+            "currency": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$"
+            },
+            "security_type": {
+              "$ref": "#/definitions/SecurityType"
+            },
+            "listing_status": {
+              "$ref": "#/definitions/ListingStatus"
+            }
+          }
+        }
+      ]
+    },
+    "ProvisionalEntityV20": {
+      "type": "object",
+      "required": [
+        "identity_schema_version",
+        "identity_state",
+        "identity_revision",
+        "entity_id",
+        "canonical_name",
+        "incorporation_country",
+        "scope_attestation_id",
+        "company_wiki_ref",
+        "formal_stockwiki_profile",
+        "securities",
+        "segments"
+      ],
+      "properties": {
+        "identity_schema_version": {
+          "const": "2.0.0"
+        },
+        "identity_state": {
+          "const": "provisional"
+        },
+        "identity_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[A-Za-z0-9_]+$"
+        },
+        "canonical_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "incorporation_country": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{2}$",
+          "not": {
+            "const": "ZZ"
+          }
+        },
+        "scope_attestation_id": {
+          "type": "string",
+          "pattern": "^ATT_[A-Za-z0-9_]+$"
+        },
+        "company_wiki_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "formal_stockwiki_profile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "securities": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/definitions/SecurityV20"
+          }
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Segment"
+          }
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "VerifiedEntityV20": {
+      "type": "object",
+      "required": [
+        "identity_schema_version",
+        "identity_state",
+        "identity_revision",
+        "entity_id",
+        "canonical_name",
+        "incorporation_country",
+        "verified_issuer_receipt_id",
+        "company_wiki_ref",
+        "formal_stockwiki_profile",
+        "securities",
+        "segments"
+      ],
+      "properties": {
+        "identity_schema_version": {
+          "const": "2.0.0"
+        },
+        "identity_state": {
+          "const": "verified"
+        },
+        "identity_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[A-Za-z0-9_]+$"
+        },
+        "canonical_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "incorporation_country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "not": {
+            "const": "ZZ"
+          }
+        },
+        "verified_issuer_receipt_id": {
+          "type": "string",
+          "pattern": "^IVR_[A-Za-z0-9_]+$"
+        },
+        "company_wiki_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "formal_stockwiki_profile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "securities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/VerifiedSecurityV20"
+          }
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Segment"
+          }
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "SecurityV21": {
+      "type": "object",
+      "required": [
+        "security_id",
+        "entity_id",
+        "security_type",
+        "share_class",
+        "adr_ratio",
+        "ordinary_security_ref"
+      ],
+      "properties": {
+        "security_id": {
+          "type": "string",
+          "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "security_type": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecurityType"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "share_class": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adr_ratio": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "ordinary_security_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ListingV21": {
+      "type": "object",
+      "required": [
+        "listing_id",
+        "entity_id",
+        "security_id",
+        "market",
+        "exchange_raw",
+        "exchange_mic",
+        "ticker_raw",
+        "ticker",
+        "currency",
+        "listing_status",
+        "source_binding_ref",
+        "valid_from",
+        "valid_to"
+      ],
+      "properties": {
+        "listing_id": {
+          "type": "string",
+          "pattern": "^LST_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "security_id": {
+          "type": "string",
+          "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "market": {
+          "$ref": "#/definitions/MarketV21"
+        },
+        "exchange_raw": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "exchange_mic": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z0-9]{4}$"
+        },
+        "ticker_raw": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ticker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{3}$"
+        },
+        "listing_status": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ListingStatus"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_binding_ref": {
+          "type": "string",
+          "pattern": "^BND_[A-Za-z0-9_]+$"
+        },
+        "valid_from": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "valid_to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SourceBindingV21": {
+      "type": "object",
+      "required": [
+        "binding_ref",
+        "source_namespace",
+        "source_record_id",
+        "source_canonical_name",
+        "entity_id",
+        "security_id",
+        "listing_id",
+        "market",
+        "exchange_raw",
+        "exchange_mic",
+        "ticker_raw",
+        "ticker",
+        "status",
+        "valid_from",
+        "valid_to"
+      ],
+      "properties": {
+        "binding_ref": {
+          "type": "string",
+          "pattern": "^BND_[A-Za-z0-9_]+$"
+        },
+        "source_namespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_canonical_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "security_id": {
+          "type": "string",
+          "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "listing_id": {
+          "type": "string",
+          "pattern": "^LST_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "market": {
+          "$ref": "#/definitions/MarketV21"
+        },
+        "exchange_raw": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "exchange_mic": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z0-9]{4}$"
+        },
+        "ticker_raw": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ticker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "active",
+            "retired"
+          ]
+        },
+        "valid_from": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "valid_to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ProvisionalEntityV21": {
+      "type": "object",
+      "required": [
+        "identity_schema_version",
+        "identity_state",
+        "identity_revision",
+        "entity_id",
+        "canonical_name",
+        "incorporation_country",
+        "company_wiki_ref",
+        "formal_stockwiki_profile",
+        "securities",
+        "listings",
+        "segments",
+        "scope_attestation_id"
+      ],
+      "properties": {
+        "identity_schema_version": {
+          "const": "2.1.0"
+        },
+        "identity_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "canonical_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "company_wiki_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "formal_stockwiki_profile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "securities": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/definitions/SecurityV21"
+          }
+        },
+        "listings": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/definitions/ListingV21"
+          }
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Segment"
+          }
+        },
+        "identity_state": {
+          "const": "provisional"
+        },
+        "incorporation_country": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{2}$",
+          "not": {
+            "const": "ZZ"
+          }
+        },
+        "scope_attestation_id": {
+          "type": "string",
+          "pattern": "^ATT_[A-Za-z0-9_]+$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "VerifiedEntityV21": {
+      "type": "object",
+      "required": [
+        "identity_schema_version",
+        "identity_state",
+        "identity_revision",
+        "entity_id",
+        "canonical_name",
+        "incorporation_country",
+        "company_wiki_ref",
+        "formal_stockwiki_profile",
+        "securities",
+        "listings",
+        "segments",
+        "verified_issuer_receipt_id"
+      ],
+      "properties": {
+        "identity_schema_version": {
+          "const": "2.1.0"
+        },
+        "identity_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "canonical_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "company_wiki_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "formal_stockwiki_profile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "securities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/SecurityV21"
+          }
+        },
+        "listings": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/ListingV21"
+          }
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Segment"
+          }
+        },
+        "identity_state": {
+          "const": "verified"
+        },
+        "incorporation_country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "not": {
+            "const": "ZZ"
+          }
+        },
+        "verified_issuer_receipt_id": {
+          "type": "string",
+          "pattern": "^IVR_[A-Za-z0-9_]+$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "IssuerIdentifierClaimV21": {
+      "type": "object",
+      "required": [
+        "claim_id",
+        "entity_id",
+        "subject_type",
+        "scheme",
+        "assigning_authority",
+        "jurisdiction",
+        "value",
+        "source_namespace",
+        "source_record_id",
+        "verification_status",
+        "evidence_ref",
+        "valid_from",
+        "valid_to"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "pattern": "^ICL_[A-Za-z0-9_]+$"
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "subject_type": {
+          "type": "string",
+          "enum": [
+            "issuer",
+            "security",
+            "listing"
+          ]
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scheme": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assigning_authority": {
+          "type": "string",
+          "minLength": 1
+        },
+        "jurisdiction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_namespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "verified",
+            "rejected",
+            "superseded"
+          ]
+        },
+        "evidence_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "valid_from": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "valid_to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "subject_type": {
+                "const": "issuer"
+              }
+            },
+            "required": [
+              "subject_type"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "subject_id"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "subject_type": {
+                "const": "security"
+              }
+            },
+            "required": [
+              "subject_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "subject_id"
+            ],
+            "properties": {
+              "subject_id": {
+                "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "subject_type": {
+                "const": "listing"
+              }
+            },
+            "required": [
+              "subject_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "subject_id"
+            ],
+            "properties": {
+              "subject_id": {
+                "pattern": "^LST_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "verification_status": {
+                "const": "verified"
+              }
+            },
+            "required": [
+              "verification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "verification_status": {
+                "const": "verified"
+              }
+            },
+            "required": [
+              "verification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "NameAliasClaimV21": {
+      "type": "object",
+      "required": [
+        "alias_id",
+        "entity_id",
+        "name",
+        "alias_type",
+        "language",
+        "jurisdiction",
+        "source_namespace",
+        "source_record_id",
+        "verification_status",
+        "evidence_ref",
+        "valid_from",
+        "valid_to"
+      ],
+      "properties": {
+        "alias_id": {
+          "type": "string",
+          "pattern": "^ALS_[A-Za-z0-9_]+$"
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "alias_type": {
+          "type": "string",
+          "enum": [
+            "legal_name",
+            "former_legal_name",
+            "trading_short_name",
+            "english_name",
+            "transliteration",
+            "brand_name",
+            "other"
+          ]
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2
+        },
+        "jurisdiction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_namespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "verified",
+            "rejected",
+            "superseded"
+          ]
+        },
+        "evidence_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "valid_from": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "valid_to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "verification_status": {
+                "const": "verified"
+              }
+            },
+            "required": [
+              "verification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "verification_status": {
+                "const": "verified"
+              }
+            },
+            "required": [
+              "verification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "EntityRelationshipV21": {
+      "type": "object",
+      "required": [
+        "relationship_id",
+        "from_entity_id",
+        "to_entity_id",
+        "relationship_type",
+        "verification_status",
+        "source_namespace",
+        "source_record_id",
+        "evidence_ref",
+        "valid_from",
+        "valid_to"
+      ],
+      "properties": {
+        "relationship_id": {
+          "type": "string",
+          "pattern": "^REL_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "from_entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "to_entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "relationship_type": {
+          "type": "string",
+          "enum": [
+            "parent_of",
+            "controlled_by",
+            "subsidiary_of",
+            "associate_of",
+            "joint_venture_of",
+            "same_corporate_group",
+            "successor_of",
+            "predecessor_of",
+            "merged_into",
+            "split_from"
+          ]
+        },
+        "verification_status": {
+          "type": "string",
+          "enum": [
+            "unverified",
+            "verified",
+            "rejected",
+            "superseded"
+          ]
+        },
+        "source_namespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "valid_from": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "valid_to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "verification_status": {
+                "const": "verified"
+              }
+            },
+            "required": [
+              "verification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "IdentityEventV21": {
+      "type": "object",
+      "required": [
+        "event_id",
+        "entity_id",
+        "from_revision",
+        "to_revision",
+        "event_type",
+        "effective_at",
+        "recorded_at",
+        "source_namespace",
+        "source_record_id",
+        "evidence_ref",
+        "actor_id",
+        "related_entity_ids",
+        "affected_security_ids",
+        "affected_listing_ids",
+        "listing_id",
+        "security_id",
+        "field_path",
+        "old_value",
+        "new_value",
+        "reason"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "pattern": "^EVT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "from_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "to_revision": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "event_type": {
+          "type": "string",
+          "enum": [
+            "renamed",
+            "ticker_changed",
+            "identifier_claim_changed",
+            "listing_added",
+            "listing_retired",
+            "security_added",
+            "issuer_merged",
+            "issuer_split",
+            "identity_corrected"
+          ]
+        },
+        "effective_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source_namespace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actor_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "related_entity_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "uniqueItems": true
+        },
+        "affected_security_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "uniqueItems": true
+        },
+        "affected_listing_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^LST_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "uniqueItems": true
+        },
+        "listing_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^LST_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "security_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "field_path": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "old_value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "new_value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "enum": [
+                  "renamed",
+                  "ticker_changed"
+                ]
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "field_path",
+              "old_value",
+              "new_value"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "const": "ticker_changed"
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "listing_id": {
+                "type": "string",
+                "pattern": "^LST_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "security_id": {
+                "type": "string",
+                "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "affected_listing_ids": {
+                "type": "array",
+                "minItems": 1
+              },
+              "affected_security_ids": {
+                "type": "array",
+                "minItems": 1
+              }
+            },
+            "required": [
+              "listing_id",
+              "security_id",
+              "affected_listing_ids",
+              "affected_security_ids"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "enum": [
+                  "issuer_merged",
+                  "issuer_split"
+                ]
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "related_entity_ids": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "enum": [
+                  "listing_added",
+                  "listing_retired"
+                ]
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "listing_id": {
+                "type": "string",
+                "pattern": "^LST_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "security_id": {
+                "type": "string",
+                "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "affected_listing_ids": {
+                "type": "array",
+                "minItems": 1
+              },
+              "affected_security_ids": {
+                "type": "array",
+                "minItems": 1
+              }
+            },
+            "required": [
+              "listing_id",
+              "security_id",
+              "affected_listing_ids",
+              "affected_security_ids"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "const": "security_added"
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "security_id": {
+                "type": "string",
+                "pattern": "^SEC_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "affected_security_ids": {
+                "type": "array",
+                "minItems": 1
+              }
+            },
+            "required": [
+              "security_id",
+              "affected_security_ids"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "const": "identity_corrected"
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "field_path",
+              "old_value",
+              "new_value"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "const": "renamed"
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "field_path": {
+                "const": "canonical_name"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "MarketV21": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2 market jurisdiction; lexical schema validation must be supplemented by the owner-controlled ISO/MIC registry, and venue identity is carried separately by MIC/raw exchange."
+    },
+    "AnalysisSubjectMembershipV10": {
+      "type": "object",
+      "required": [
+        "entity_id",
+        "role",
+        "valid_from",
+        "valid_to",
+        "evidence_ref"
+      ],
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "primary_issuer",
+            "consolidated_subsidiary",
+            "equity_method_investee",
+            "related_not_consolidated"
+          ]
+        },
+        "valid_from": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "valid_to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnalysisSubjectV10": {
+      "type": "object",
+      "required": [
+        "analysis_subject_schema_version",
+        "analysis_subject_id",
+        "analysis_subject_revision",
+        "display_name",
+        "primary_issuer_id",
+        "anchor_listing_id",
+        "scope_kind",
+        "scope_as_of",
+        "perimeter_coverage",
+        "memberships"
+      ],
+      "properties": {
+        "analysis_subject_schema_version": {
+          "const": "1.0.0"
+        },
+        "analysis_subject_id": {
+          "type": "string",
+          "pattern": "^ASJ_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "analysis_subject_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "primary_issuer_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "scope_kind": {
+          "type": "string",
+          "enum": [
+            "provisional_listing_scope",
+            "consolidated_reporting_group",
+            "standalone_issuer"
+          ]
+        },
+        "scope_as_of": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "perimeter_coverage": {
+          "type": "string",
+          "enum": [
+            "not_enumerated",
+            "partial",
+            "complete_as_disclosed",
+            "not_applicable"
+          ]
+        },
+        "memberships": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/AnalysisSubjectMembershipV10"
+          }
+        },
+        "anchor_listing_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^LST_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "scope_kind": {
+                "const": "provisional_listing_scope"
+              }
+            },
+            "required": [
+              "scope_kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "memberships": {
+                "minItems": 1,
+                "maxItems": 1
+              },
+              "perimeter_coverage": {
+                "const": "not_applicable"
+              },
+              "anchor_listing_id": {
+                "type": "string",
+                "pattern": "^LST_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "scope_kind": {
+                "const": "standalone_issuer"
+              }
+            },
+            "required": [
+              "scope_kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "memberships": {
+                "minItems": 1,
+                "maxItems": 1
+              },
+              "perimeter_coverage": {
+                "const": "not_applicable"
+              },
+              "anchor_listing_id": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "scope_kind": {
+                "const": "consolidated_reporting_group"
+              }
+            },
+            "required": [
+              "scope_kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "perimeter_coverage": {
+                "enum": [
+                  "not_enumerated",
+                  "partial",
+                  "complete_as_disclosed"
+                ]
+              },
+              "anchor_listing_id": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "AnalysisSubjectEventV10": {
+      "type": "object",
+      "required": [
+        "event_id",
+        "analysis_subject_id",
+        "from_revision",
+        "to_revision",
+        "event_type",
+        "effective_at",
+        "recorded_at",
+        "affected_entity_ids",
+        "evidence_ref",
+        "reason"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "pattern": "^ASE_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "analysis_subject_id": {
+          "type": "string",
+          "pattern": "^ASJ_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "from_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "to_revision": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "event_type": {
+          "type": "string",
+          "enum": [
+            "perimeter_changed",
+            "primary_issuer_changed",
+            "scope_kind_changed",
+            "display_name_changed"
+          ]
+        },
+        "effective_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "affected_entity_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          }
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^https://"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "old_value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "new_value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "const": "display_name_changed"
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "old_value",
+              "new_value"
+            ],
+            "properties": {
+              "old_value": {
+                "type": "string"
+              },
+              "new_value": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "const": "perimeter_changed"
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "old_value",
+              "new_value"
+            ],
+            "properties": {
+              "old_value": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "new_value": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "const": "primary_issuer_changed"
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "old_value",
+              "new_value"
+            ],
+            "properties": {
+              "old_value": {
+                "type": "string",
+                "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              },
+              "new_value": {
+                "type": "string",
+                "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "const": "scope_kind_changed"
+              }
+            },
+            "required": [
+              "event_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "old_value",
+              "new_value"
+            ],
+            "properties": {
+              "old_value": {
+                "type": "string",
+                "enum": [
+                  "provisional_listing_scope",
+                  "consolidated_reporting_group",
+                  "standalone_issuer"
+                ]
+              },
+              "new_value": {
+                "type": "string",
+                "enum": [
+                  "provisional_listing_scope",
+                  "consolidated_reporting_group",
+                  "standalone_issuer"
+                ]
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "oneOf": [
-    { "$ref": "#/definitions/Entity" },
-    { "$ref": "#/definitions/Security" },
-    { "$ref": "#/definitions/VerifiedIssuerBridge" },
-    { "$ref": "#/definitions/UniverseMember" },
-    { "$ref": "#/definitions/UniverseManifest" }
+    {
+      "$ref": "#/definitions/Entity"
+    },
+    {
+      "$ref": "#/definitions/Security"
+    },
+    {
+      "$ref": "#/definitions/ProvisionalEntityV20"
+    },
+    {
+      "$ref": "#/definitions/VerifiedEntityV20"
+    },
+    {
+      "$ref": "#/definitions/ProvisionalEntityV21"
+    },
+    {
+      "$ref": "#/definitions/VerifiedEntityV21"
+    },
+    {
+      "$ref": "#/definitions/VerifiedIssuerBridge"
+    },
+    {
+      "$ref": "#/definitions/IssuerIdentifierClaimV21"
+    },
+    {
+      "$ref": "#/definitions/NameAliasClaimV21"
+    },
+    {
+      "$ref": "#/definitions/SourceBindingV21"
+    },
+    {
+      "$ref": "#/definitions/UniverseMember"
+    },
+    {
+      "$ref": "#/definitions/UniverseManifest"
+    },
+    {
+      "$ref": "#/definitions/EntityRelationshipV21"
+    },
+    {
+      "$ref": "#/definitions/IdentityEventV21"
+    },
+    {
+      "$ref": "#/definitions/AnalysisSubjectV10"
+    },
+    {
+      "$ref": "#/definitions/AnalysisSubjectEventV10"
+    }
   ]
 }

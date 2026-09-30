@@ -1,0 +1,85 @@
+command=C:\Miniconda\python.exe -B -X utf8 -m pytest --rootdir=. --basetemp=C:\Users\郑曾波\AppData\Local\Temp\iqs-idcli-green1-fdntvlub\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract_cli.py
+exit_code=1
+pytest_temp_removed=True
+--- output ---
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+metadata: {'Python': '3.13.9', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.1.1', 'pluggy': '1.5.0'}, 'Plugins': {'Faker': '40.19.1', 'asyncio': '1.3.0', 'base-url': '2.1.0', 'benchmark': '5.2.3', 'cov': '7.0.0', 'html': '4.1.1', 'metadata': '3.1.1', 'mock': '3.15.1', 'playwright': '0.7.2', 'timeout': '2.4.0', 'xdist': '3.8.0'}, 'Base URL': ''}
+rootdir: C:\Users\郑曾波\Projects\invest-quick-scan
+plugins: Faker-40.19.1, asyncio-1.3.0, base-url-2.1.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 6 items
+
+tests/test_identity_contract_cli.py::IdentityContractCliTests::test_duplicate_json_keys_fail_closed_without_echo PASSED [ 16%]
+tests/test_identity_contract_cli.py::IdentityContractCliTests::test_oversized_input_is_rejected_before_full_read PASSED [ 33%]
+tests/test_identity_contract_cli.py::IdentityContractCliTests::test_semantic_identity_mismatch_returns_stable_pointer_without_echoing_input FAILED [ 50%]
+tests/test_identity_contract_cli.py::IdentityContractCliTests::test_unknown_schema_version_exits_three_without_reading_input PASSED [ 66%]
+tests/test_identity_contract_cli.py::IdentityContractCliTests::test_valid_analysis_subject_request_is_contract_only_and_read_only FAILED [ 83%]
+tests/test_identity_contract_cli.py::IdentityContractCliTests::test_valid_entity_request_returns_one_line_json_exit_zero_and_does_not_modify_input FAILED [100%]
+
+================================== FAILURES ===================================
+_ IdentityContractCliTests.test_semantic_identity_mismatch_returns_stable_pointer_without_echoing_input _
+
+self = <test_identity_contract_cli.IdentityContractCliTests testMethod=test_semantic_identity_mismatch_returns_stable_pointer_without_echoing_input>
+
+    def test_semantic_identity_mismatch_returns_stable_pointer_without_echoing_input(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-identity-cli-") as temp:
+            request = _entity_request()
+            request["payload"]["canonical_name"] = "SYNTHETIC-PRIVATE-SENTINEL"
+            request["trusted_context"]["source_bindings"]["BND_SYNTHETIC_01"]["security_id"] = "SEC_FOREIGN"
+            path = self.write_request(Path(temp), request)
+            result = self.run_cli(path)
+>           response = self.output_object(result)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_identity_contract_cli.py:214: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_identity_contract_cli.py:179: in output_object
+    self.assertEqual(result.stderr, "")
+E   AssertionError: 'Traceback (most recent call last):\n  Fil[4038 chars]e}\n' != ''
+E   Diff is 3964 characters long. Set self.maxDiff to None to see it.
+_ IdentityContractCliTests.test_valid_analysis_subject_request_is_contract_only_and_read_only _
+
+self = <test_identity_contract_cli.IdentityContractCliTests testMethod=test_valid_analysis_subject_request_is_contract_only_and_read_only>
+
+    def test_valid_analysis_subject_request_is_contract_only_and_read_only(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-identity-cli-") as temp:
+            path = self.write_request(Path(temp), _analysis_subject_request())
+            before = path.read_bytes()
+            result = self.run_cli(path)
+>           response = self.output_object(result)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_identity_contract_cli.py:201: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_identity_contract_cli.py:179: in output_object
+    self.assertEqual(result.stderr, "")
+E   AssertionError: 'Traceback (most recent call last):\n  Fil[3820 chars]e}\n' != ''
+E   Diff is 3758 characters long. Set self.maxDiff to None to see it.
+_ IdentityContractCliTests.test_valid_entity_request_returns_one_line_json_exit_zero_and_does_not_modify_input _
+
+self = <test_identity_contract_cli.IdentityContractCliTests testMethod=test_valid_entity_request_returns_one_line_json_exit_zero_and_does_not_modify_input>
+
+    def test_valid_entity_request_returns_one_line_json_exit_zero_and_does_not_modify_input(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-identity-cli-") as temp:
+            path = self.write_request(Path(temp), _entity_request())
+            before = path.read_bytes()
+            result = self.run_cli(path)
+>           response = self.output_object(result)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_identity_contract_cli.py:188: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_identity_contract_cli.py:179: in output_object
+    self.assertEqual(result.stderr, "")
+E   AssertionError: 'Traceback (most recent call last):\n  Fil[4038 chars]e}\n' != ''
+E   Diff is 3964 characters long. Set self.maxDiff to None to see it.
+=========================== short test summary info ===========================
+FAILED tests/test_identity_contract_cli.py::IdentityContractCliTests::test_semantic_identity_mismatch_returns_stable_pointer_without_echoing_input - AssertionError: 'Traceback (most recent call last):\n  Fil[4038 chars]e}\n' != ''
+Diff is 3964 characters long. Set self.maxDiff to None to see it.
+FAILED tests/test_identity_contract_cli.py::IdentityContractCliTests::test_valid_analysis_subject_request_is_contract_only_and_read_only - AssertionError: 'Traceback (most recent call last):\n  Fil[3820 chars]e}\n' != ''
+Diff is 3758 characters long. Set self.maxDiff to None to see it.
+FAILED tests/test_identity_contract_cli.py::IdentityContractCliTests::test_valid_entity_request_returns_one_line_json_exit_zero_and_does_not_modify_input - AssertionError: 'Traceback (most recent call last):\n  Fil[4038 chars]e}\n' != ''
+Diff is 3964 characters long. Set self.maxDiff to None to see it.
+========================= 3 failed, 3 passed in 2.03s =========================

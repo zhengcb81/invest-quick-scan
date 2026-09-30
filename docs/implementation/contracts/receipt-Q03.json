@@ -1,0 +1,276 @@
+{
+  "task_id": "Q03",
+  "status": "implementation_partial",
+  "owner": "stockqa",
+  "plan_version": "1.6.2",
+  "plan_sha256": "55DBB8D63A27A8D8A8ACD37C46322CD0FBDCE2D5113CEEC3E416E16AA401AC0F",
+  "case_catalog_sha256": "38642BFDBEA9C3BEBB7272D13EED6D3C4C85BEBC99D5A9C7B372CC7400E557FA",
+  "implementation_snapshot": {
+    "commit": "3c685dda28f67a00bd653ad257a121d3b8edebb8",
+    "file_hashes": {
+      "StockQAbyLLM/src/providers/llm_response_parser.py": "9D5EB7D58DACFED1DFFB605ECA504D8A9EC6B6C39A5E2F4341D0A9B6F58AA867",
+      "StockQAbyLLM/src/runners/llm_runner.py": "579CDE5A1FB21604E0A2BDCA5667C880E45E78864602E2BD664F23A2DBEDD2A4",
+      "StockQAbyLLM/src/services/answer_generator.py": "B59840DA063D00D7BCAAB4BA960B88797F6466A4EAD868BA0A7110E4D8FD44F4",
+      "StockQAbyLLM/tests/unit/test_llm_response_parser.py": "3BF0D736CCE8696CAA2F70AD201A3C7BEEA1CDA118CE43EC8C10252A174A8259",
+      "StockQAbyLLM/tests/unit/test_services.py": "C4D99935E48AD2F065DCEF547B4B0444524090F40C7BD6181FD2F755E6179FF8",
+      "StockQAbyLLM/tests/integration/test_quick_scan_cli.py": "E242EC7E6B1EA82C6AD056A644CC091901ACEBA3633E525EE2093B0D75955843",
+      "docs/implementation/contracts/validation-Q01-Q03-counterexamples-red-r2-2026-09-24.log": "BF6AD2C4D4DABE7C8B43FBDBB68407388CED7092A6E074C65465F3448EC51C06",
+      "docs/implementation/contracts/validation-Q01-Q03-duplicate-fallback-red-2026-09-24.log": "D103ED8BEF604FBFA235D0BC2DF9E884324CC91C2C62C6FA9D27E8321F6B2950",
+      "docs/implementation/contracts/validation-Q01-Q03-counterexamples-green-r1-2026-09-24.log": "3B595F3EAD073DAD24A9C1309DB56C09F85F656AADFEE55B6330C93D75AAD01F",
+      "docs/implementation/contracts/validation-Q01-Q03-regression-final-r1-2026-09-24.log": "1DFBECBAFD93214C556041D9B4A6260E09FD2548FF758F2575AD0FF0970867B8",
+      "docs/implementation/contracts/validation-Q01-Q03-F04-F03-extension-red-r2-2026-09-24.log": "3FA5570B7E33DF387522AAD2F7113C935BB5AB17CC4D9292BFBBDC1251DA6F15",
+      "docs/implementation/contracts/validation-Q01-Q03-S02-compatibility-red-r2-2026-09-24.log": "90FB0ECA29C73111AF1DA10FCBBC25B894DCBC87B8376232AF03CBCA64430792",
+      "docs/implementation/contracts/validation-Q01-Q03-F04-F03-extension-green-r1-2026-09-24.log": "0B8D0854B0D1F10112441911A89DD1A5668764EF72F862D1BE0FD1AB9FD4F04B",
+      "docs/implementation/contracts/validation-Q01-Q03-S02-compatibility-green-r1-2026-09-24.log": "7892A3357E462A1D3B31699098CF66086E9B815F6AB0160BB45A147A9E75FCA3",
+      "docs/implementation/contracts/validation-Q01-Q03-regression-final-r3-2026-09-24.log": "DB02BABCAC96766874A09AED514C35A1BDD9EAB6D695CD97785B1DA09D4F44F7",
+      "docs/implementation/contracts/validation-local-Q01-Q03-regression-full-r4-2026-09-24.log": "3B76F40C9E69BD51620F9E1E949DCB4C349B6F8F761154CDF6C2557BF03FCD1B",
+      "docs/implementation/reviews/Q01-Q03/r2-follow-up-review.md": "39325AB05687514F4EFE1DDF7A3EE15ACA168BC33E870C4F3E545E375C703127"
+    }
+  },
+  "changed_files": [
+    "StockQAbyLLM/src/providers/llm_response_parser.py",
+    "StockQAbyLLM/tests/unit/test_llm_response_parser.py",
+    "StockQAbyLLM/tests/integration/test_quick_scan_cli.py"
+  ],
+  "checks": [
+    {
+      "case_id": "counterexamples-before-fix-r2",
+      "kind": "external_automated",
+      "result": "expected_red_reproduced",
+      "exit_code": 1,
+      "executed_count": 8,
+      "failed_count": 8,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-counterexamples-red-r2-2026-09-24.log",
+      "output_sha256": "BF6AD2C4D4DABE7C8B43FBDBB68407388CED7092A6E074C65465F3448EC51C06",
+      "explanation": "固定CLI/parser反例覆盖外层transport-5压过内层unknown、内外score冲突、question identity冲突、重复外层question_id；8个参数案例在实现前均失败。隔离TEMP根已删除。"
+    },
+    {
+      "case_id": "duplicate-keys-legacy-fallback-before-fix",
+      "kind": "external_automated",
+      "result": "expected_red_reproduced",
+      "exit_code": 1,
+      "executed_count": 1,
+      "failed_count": 1,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-duplicate-fallback-red-2026-09-24.log",
+      "output_sha256": "D103ED8BEF604FBFA235D0BC2DF9E884324CC91C2C62C6FA9D27E8321F6B2950",
+      "explanation": "再次证明非strict兼容JSON提取分支会静默采用重复question_id的最后一个值；隔离TEMP根已删除。"
+    },
+    {
+      "case_id": "counterexamples-after-fix-r1",
+      "kind": "external_automated",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 9,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-counterexamples-green-r1-2026-09-24.log",
+      "output_sha256": "3B595F3EAD073DAD24A9C1309DB56C09F85F656AADFEE55B6330C93D75AAD01F",
+      "explanation": "拒绝完整JSON description中的未选择旧答案协议，并在直接和regex兼容提取中拒绝重复对象键；4个parser用例、一个旧模式重复键用例和4个公开CLI反例全部通过。无真实网络。"
+    },
+    {
+      "case_id": "owner-selected-Q01-Q04-shared-regression-suite-r1",
+      "kind": "external_automated",
+      "selector": "tests/unit/test_llm_config.py, test_llm_integration.py, test_llm_response_parser.py, test_llm_client.py, test_models.py, test_services.py, test_search_provider.py, tests/integration/test_quick_scan_cli.py",
+      "command": "python -B -X utf8 -m pytest -q --tb=short -o addopts= -p no:cacheprovider -p no:cov --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP>/pytest <8 selected files>",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 272,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-regression-final-r1-2026-09-24.log",
+      "output_sha256": "1DFBECBAFD93214C556041D9B4A6260E09FD2548FF758F2575AD0FF0970867B8",
+      "explanation": "含Q01/Q03新增fixed counterexamples、原有Q01/Q03 owner测试及Q04策略/fallback定向回归。14个Python文件Black检查、git diff --check通过。所有HTTP Session.post均mock；无实时网络、公司数据或API费用。CWD/TEMP/TMP/basetemp是唯一短TEMP根并已删除。"
+    },
+    {
+      "case_id": "F04-F03-regex-bypass-before-fix-r2",
+      "kind": "external_automated",
+      "result": "expected_red_reproduced",
+      "exit_code": 1,
+      "executed_count": 3,
+      "failed_count": 3,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-F04-F03-extension-red-r2-2026-09-24.log",
+      "output_sha256": "3FA5570B7E33DF387522AAD2F7113C935BB5AB17CC4D9292BFBBDC1251DA6F15",
+      "explanation": "合法一致嵌套8分先被错误拒绝；外层重复question_id的direct及Markdown响应均从metadata误取9分。唯一隔离TEMP/CWD/basetemp根已清理。"
+    },
+    {
+      "case_id": "S02-consumer-compatibility-before-fix-r2",
+      "kind": "external_automated",
+      "result": "expected_red_reproduced",
+      "exit_code": 1,
+      "executed_count": 1,
+      "failed_count": 1,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-S02-compatibility-red-r2-2026-09-24.log",
+      "output_sha256": "90FB0ECA29C73111AF1DA10FCBBC25B894DCBC87B8376232AF03CBCA64430792",
+      "explanation": "本地真实CLI到screening消费者离线E2E复现合法一致嵌套答案被解析为None；HTTP边界为fixture，临时根清理。"
+    },
+    {
+      "case_id": "F04-F03-regex-bypass-after-fix-r1",
+      "kind": "external_automated",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 51,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-F04-F03-extension-green-r1-2026-09-24.log",
+      "output_sha256": "0B8D0854B0D1F10112441911A89DD1A5668764EF72F862D1BE0FD1AB9FD4F04B",
+      "explanation": "StockQA parser与公开CLI定向文件全量通过，涵盖合法嵌套答案、冲突答案、重复外层键及direct/Markdown兼容提取；无实时网络。"
+    },
+    {
+      "case_id": "S02-consumer-compatibility-after-fix-r1",
+      "kind": "local_automated",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-S02-compatibility-green-r1-2026-09-24.log",
+      "output_sha256": "7892A3357E462A1D3B31699098CF66086E9B815F6AB0160BB45A147A9E75FCA3",
+      "explanation": "invest-quick-scan调用StockQA parser与AnswerGenerator的离线消费者案例通过；HTTP Session.post由fixture替代。"
+    },
+    {
+      "case_id": "owner-selected-Q01-Q04-shared-regression-suite-r2",
+      "kind": "external_automated",
+      "selector": "tests/unit/test_llm_config.py, test_llm_integration.py, test_llm_response_parser.py, test_llm_client.py, test_models.py, test_services.py, test_search_provider.py, tests/integration/test_quick_scan_cli.py",
+      "command": "python -B -X utf8 -m pytest -q --tb=short -o addopts= -p pytest_asyncio.plugin -p no:cacheprovider -p no:cov --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP>/pytest <8 selected files>",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 276,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-regression-final-r3-2026-09-24.log",
+      "output_sha256": "DB02BABCAC96766874A09AED514C35A1BDD9EAB6D695CD97785B1DA09D4F44F7",
+      "explanation": "显式加载asyncio插件后，Q01/Q03与Q04共享定向suite 276项通过。HTTP发送mock，无真实网络/LLM/费用；-B、禁用缓存，隔离CWD/TEMP/basetemp根已清理。"
+    },
+    {
+      "case_id": "local-full-suite-after-parser-shared-change-r4",
+      "kind": "local_automated",
+      "command": "python -B -X utf8 -m pytest -q --tb=short -o addopts= -p no:cacheprovider -p no:cov --rootdir=<invest-quick-scan> --basetemp=<unique system TEMP>/pytest tests",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 222,
+      "subtest_count": 139,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-local-Q01-Q03-regression-full-r4-2026-09-24.log",
+      "output_sha256": "3B76F40C9E69BD51620F9E1E949DCB4C349B6F8F761154CDF6C2557BF03FCD1B",
+      "explanation": "本项目全量离线套件通过；包括S02 StockQA CLI到消费者的隔离验收。系统TEMP唯一根结束后删除。"
+    },
+    {
+      "case_id": "F04-F03-regex-bypass-before-fix-r2",
+      "kind": "external_automated",
+      "result": "expected_red_reproduced",
+      "exit_code": 1,
+      "executed_count": 3,
+      "failed_count": 3,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-F04-F03-extension-red-r2-2026-09-24.log",
+      "output_sha256": "3FA5570B7E33DF387522AAD2F7113C935BB5AB17CC4D9292BFBBDC1251DA6F15",
+      "explanation": "合法一致嵌套8分先被错误拒绝；外层重复question_id的direct及Markdown响应均从metadata误取9分。唯一隔离TEMP/CWD/basetemp根已清理。"
+    },
+    {
+      "case_id": "S02-consumer-compatibility-before-fix-r2",
+      "kind": "external_automated",
+      "result": "expected_red_reproduced",
+      "exit_code": 1,
+      "executed_count": 1,
+      "failed_count": 1,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-S02-compatibility-red-r2-2026-09-24.log",
+      "output_sha256": "90FB0ECA29C73111AF1DA10FCBBC25B894DCBC87B8376232AF03CBCA64430792",
+      "explanation": "本地真实CLI到screening消费者离线E2E复现合法一致嵌套答案被解析为None；HTTP边界为fixture，临时根清理。"
+    },
+    {
+      "case_id": "F04-F03-regex-bypass-after-fix-r1",
+      "kind": "external_automated",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 51,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-F04-F03-extension-green-r1-2026-09-24.log",
+      "output_sha256": "0B8D0854B0D1F10112441911A89DD1A5668764EF72F862D1BE0FD1AB9FD4F04B",
+      "explanation": "StockQA parser与公开CLI定向文件全量通过，涵盖合法嵌套答案、冲突答案、重复外层键及direct/Markdown兼容提取；无实时网络。"
+    },
+    {
+      "case_id": "S02-consumer-compatibility-after-fix-r1",
+      "kind": "local_automated",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-S02-compatibility-green-r1-2026-09-24.log",
+      "output_sha256": "7892A3357E462A1D3B31699098CF66086E9B815F6AB0160BB45A147A9E75FCA3",
+      "explanation": "invest-quick-scan调用StockQA parser与AnswerGenerator的离线消费者案例通过；HTTP Session.post由fixture替代。"
+    },
+    {
+      "case_id": "owner-selected-Q01-Q04-shared-regression-suite-r2",
+      "kind": "external_automated",
+      "selector": "tests/unit/test_llm_config.py, test_llm_integration.py, test_llm_response_parser.py, test_llm_client.py, test_models.py, test_services.py, test_search_provider.py, tests/integration/test_quick_scan_cli.py",
+      "command": "python -B -X utf8 -m pytest -q --tb=short -o addopts= -p pytest_asyncio.plugin -p no:cacheprovider -p no:cov --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP>/pytest <8 selected files>",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 276,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q01-Q03-regression-final-r3-2026-09-24.log",
+      "output_sha256": "DB02BABCAC96766874A09AED514C35A1BDD9EAB6D695CD97785B1DA09D4F44F7",
+      "explanation": "显式加载asyncio插件后，Q01/Q03与Q04共享定向suite 276项通过。HTTP发送mock，无真实网络/LLM/费用；-B、禁用缓存，隔离CWD/TEMP/basetemp根已清理。"
+    },
+    {
+      "case_id": "local-full-suite-after-parser-shared-change-r4",
+      "kind": "local_automated",
+      "command": "python -B -X utf8 -m pytest -q --tb=short -o addopts= -p no:cacheprovider -p no:cov --rootdir=<invest-quick-scan> --basetemp=<unique system TEMP>/pytest tests",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 222,
+      "subtest_count": 139,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-local-Q01-Q03-regression-full-r4-2026-09-24.log",
+      "output_sha256": "3B76F40C9E69BD51620F9E1E949DCB4C349B6F8F761154CDF6C2557BF03FCD1B",
+      "explanation": "本项目全量离线套件通过；包括S02 StockQA CLI到消费者的隔离验收。系统TEMP唯一根结束后删除。"
+    }
+  ],
+  "rollback_evidence": "StockQA工作树包含用户预存Q01—Q03修改和未跟踪内容；没有整文件回滚、暂存或提交。新增行为仅在明确获批的parser与测试路径；恢复时保留每个文件当前工作树快照，不覆盖同文件上的其他既有diff。",
+  "review": {
+    "reviewer": "/root/question_audit",
+    "result": "verified_for_authorized_Q01_Q03_offline_scope",
+    "prior_report": "docs/implementation/reviews/Q01-Q03/review.md",
+    "prior_report_sha256": "2335D90F4B92090F79B4613FDCF2C6160F7662DFB78AB9371B75630A11386A3C",
+    "findings": [
+      "F01 SC-02: nested unknown/insufficient-evidence cannot be turned into a scored transport 5.",
+      "F02 SC-04: conflicting inner/outer score or question identity fails closed.",
+      "F03 LLM-07: duplicate JSON keys cannot be selected by direct or compatibility extraction.",
+      "F04 compatibility: consistent nested S02 scoring payload remains accepted; inconsistent layers fail closed."
+    ],
+    "latest_follow_up": {
+      "result": "verified_for_authorized_Q01_Q03_offline_scope",
+      "report_path": "docs/implementation/reviews/Q01-Q03/r2-follow-up-review.md",
+      "report_sha256": "39325AB05687514F4EFE1DDF7A3EE15ACA168BC33E870C4F3E545E375C703127",
+      "snapshot_sha256_by_file": {
+        "StockQAbyLLM/src/providers/llm_response_parser.py": "9D5EB7D58DACFED1DFFB605ECA504D8A9EC6B6C39A5E2F4341D0A9B6F58AA867",
+        "StockQAbyLLM/tests/unit/test_llm_response_parser.py": "3BF0D736CCE8696CAA2F70AD201A3C7BEEA1CDA118CE43EC8C10252A174A8259",
+        "StockQAbyLLM/tests/integration/test_quick_scan_cli.py": "E242EC7E6B1EA82C6AD056A644CC091901ACEBA3633E525EE2093B0D75955843"
+      },
+      "scope": "F04 nested-answer compatibility and F03 compatibility-extraction bypass remediation",
+      "independent_tests": "166 selected cases passed plus 1 S02 consumer E2E passed",
+      "repository_invariance": "2,594 readable entries and scoped Git status unchanged after isolated reruns"
+    },
+    "report_path": "docs/implementation/reviews/Q01-Q03/r2-follow-up-review.md",
+    "report_sha256": "39325AB05687514F4EFE1DDF7A3EE15ACA168BC33E870C4F3E545E375C703127",
+    "history": [
+      {
+        "result": "verified_for_authorized_Q01_Q03_offline_scope",
+        "report_path": "docs/implementation/reviews/Q01-Q03/r2-follow-up-review.md",
+        "report_sha256": "39325AB05687514F4EFE1DDF7A3EE15ACA168BC33E870C4F3E545E375C703127",
+        "summary": "Independent review resolved F01-F04 for reproduced offline cases; Q02 live and unrelated Q04 scope excluded."
+      }
+    ]
+  },
+  "open_issues": [
+    "The Q01/Q03 parser remediation is independently verified for the exact offline scope, but Q03 remains partial because its plan dependency Q02 is not complete.",
+    "Q02 LLM-01 real OpenAI web_search remains unexecuted because no API credential/live run authorization; mocked transport does not close it.",
+    "Initial review TLS/certifi ACL and test-order logger observations are outside this parser-only remediation and are not claimed fixed."
+  ],
+  "next_task": "Complete Q02 acceptance before closing dependent Q03",
+  "resume_from": "The parser/CLI fixes for Q03 are independently verified offline at the bound hashes. Preserve the dependency gate: Q03 stays partial until Q02 is complete.",
+  "contract_changes": [
+    "LLM-07 duplicate JSON object keys rejected in direct and compatibility extraction paths",
+    "F04 preserve consistent nested S02 answer protocol while rejecting status/score/question identity conflicts",
+    "F03 compatibility fallback extracts only complete top-level JSON objects and stops on duplicate-key ambiguity"
+  ]
+}

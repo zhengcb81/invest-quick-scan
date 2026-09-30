@@ -1,0 +1,103 @@
+exit_code=1
+C:\Miniconda\python.exe -B -X utf8 -m pytest --rootdir=. --basetemp=C:\Users\郑曾波\AppData\Local\Temp\iqs-lane-retire-mn372efz\pytest --no-cov -p no:cacheprovider -vv tests/test_g0_manifest.py tests/test_task_receipt_retirement.py
+pytest_temp_removed=True
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+metadata: {'Python': '3.13.9', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.1.1', 'pluggy': '1.5.0'}, 'Plugins': {'Faker': '40.19.1', 'asyncio': '1.3.0', 'base-url': '2.1.0', 'benchmark': '5.2.3', 'cov': '7.0.0', 'html': '4.1.1', 'metadata': '3.1.1', 'mock': '3.15.1', 'playwright': '0.7.2', 'timeout': '2.4.0', 'xdist': '3.8.0'}, 'Base URL': ''}
+rootdir: C:\Users\郑曾波\Projects\invest-quick-scan
+plugins: Faker-40.19.1, asyncio-1.3.0, base-url-2.1.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 15 items
+
+tests/test_g0_manifest.py::test_reviewed_candidate_bytes_remain_immutable_after_g0 PASSED [  6%]
+tests/test_g0_manifest.py::test_current_scope_can_render_a_complete_self_consistent_candidate PASSED [ 13%]
+tests/test_g0_manifest.py::test_missing_or_extra_artifact_breaks_scope_equality PASSED [ 20%]
+tests/test_g0_manifest.py::test_changed_hash_is_detected PASSED          [ 26%]
+tests/test_g0_manifest.py::test_persistent_test_fixtures_are_in_candidate_scope PASSED [ 33%]
+tests/test_g0_manifest.py::test_every_g0_read_first_input_is_in_declared_scope_and_manifest PASSED [ 40%]
+tests/test_g0_manifest.py::test_mutable_journals_and_postseal_g0_artifacts_are_excluded PASSED [ 46%]
+tests/test_g0_manifest.py::test_g0_candidate_excludes_downstream_validation_and_review_outputs FAILED [ 53%]
+tests/test_g0_manifest.py::test_g0_future_descendant_validation_exclusions_are_derived_from_dependency_graph PASSED [ 60%]
+tests/test_g0_manifest.py::test_g0_candidate_refuses_unknown_or_non_string_dependency_ids[MISSING] PASSED [ 66%]
+tests/test_g0_manifest.py::test_g0_candidate_refuses_unknown_or_non_string_dependency_ids[17] PASSED [ 73%]
+tests/test_g0_manifest.py::test_g0_candidate_omits_actual_descendant_validation_files FAILED [ 80%]
+tests/test_g0_manifest.py::test_manifest_rejects_stale_version_or_tampered_scope_declaration PASSED [ 86%]
+tests/test_task_receipt_retirement.py::TaskReceiptRetirementTests::test_active_plan_has_no_task_receipt_engine_or_p01_closure_gate PASSED [ 93%]
+tests/test_task_receipt_retirement.py::TaskReceiptRetirementTests::test_historical_receipts_reviews_and_archived_sources_keep_their_hashes 
+tests/test_task_receipt_retirement.py::TaskReceiptRetirementTests::test_historical_receipts_reviews_and_archived_sources_keep_their_hashes PASSED [100%]
+
+================================== FAILURES ===================================
+_____ test_g0_candidate_excludes_downstream_validation_and_review_outputs _____
+
+    def test_g0_candidate_excludes_downstream_validation_and_review_outputs():
+        plan = json.loads((ROOT / "docs/implementation/tasks.json").read_text(encoding="utf-8"))
+        downstream = manifest._downstream_task_ids(plan)
+        candidate = manifest.render()
+    
+        assert {"S01", "S04"} <= downstream
+        assert "C01" not in downstream
+        for task_id in downstream:
+            assert f"docs/implementation/contracts/receipt-{task_id}.json" not in candidate["scope_exclusions"]
+            assert f"docs/implementation/contracts/validation-{task_id}-*" in candidate["scope_exclusions"]
+            assert f"docs/implementation/reviews/{task_id}/**" in candidate["scope_exclusions"]
+        assert "docs/implementation/contracts/receipt-C01.json" in candidate["artifact_hashes"]
+        assert "scripts/question_sets.py" in candidate["artifact_hashes"]
+        assert "tests/test_question_sets.py" in candidate["artifact_hashes"]
+        assert manifest.verify(candidate) == []
+    
+        reintroduced = copy.deepcopy(candidate)
+        downstream_receipt = "docs/implementation/contracts/receipt-S01.json"
+        reintroduced["artifact_hashes"][downstream_receipt] = manifest.sha256(downstream_receipt)
+>       assert any("outside declared scope" in error for error in manifest.verify(reintroduced))
+E       assert False
+E        +  where False = any(<generator object test_g0_candidate_excludes_downstream_validation_and_review_outputs.<locals>.<genexpr> at 0x000002593E181D80>)
+
+tests\test_g0_manifest.py:117: AssertionError
+_________ test_g0_candidate_omits_actual_descendant_validation_files __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqs-lane-retire-mn372efz/pytest/test_g0_candidate_omits_actual0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002593E0D82B0>
+
+    def test_g0_candidate_omits_actual_descendant_validation_files(tmp_path, monkeypatch):
+        monkeypatch.setattr(manifest, "ROOT", tmp_path)
+        contract_dir = tmp_path / "docs/implementation/contracts"
+        contract_dir.mkdir(parents=True)
+        (tmp_path / "SKILL.md").write_text("fixture", encoding="utf-8")
+        plan = {"version": "test", "tasks": [
+            {"id": "P00", "depends_on": []},
+            {"id": "G0", "depends_on": ["P00"], "read_first": ["SKILL.md"]},
+            {"id": "S01", "depends_on": ["G0"]},
+        ]}
+        (tmp_path / "docs/implementation/tasks.json").write_text(
+            json.dumps(plan), encoding="utf-8"
+        )
+        for filename in (
+            "receipt-P00.json",
+            "validation-P00-upstream.log",
+            "receipt-S01.json",
+            "validation-S01-current.log",
+        ):
+            (contract_dir / filename).write_text("fixture", encoding="utf-8")
+        upstream_review_dir = tmp_path / "docs/implementation/reviews/P00"
+        downstream_review_dir = tmp_path / "docs/implementation/reviews/S01"
+        neighboring_review_dir = tmp_path / "docs/implementation/reviews/S01-extra"
+        upstream_review_dir.mkdir(parents=True)
+        downstream_review_dir.mkdir(parents=True)
+        neighboring_review_dir.mkdir(parents=True)
+        (upstream_review_dir / "review.json").write_text("upstream review", encoding="utf-8")
+        (downstream_review_dir / "review.json").write_text("downstream review", encoding="utf-8")
+        (neighboring_review_dir / "review.json").write_text("neighbor review", encoding="utf-8")
+    
+        candidate = manifest.render()
+        assert "docs/implementation/contracts/receipt-P00.json" in candidate["artifact_hashes"]
+        assert "docs/implementation/contracts/validation-P00-upstream.log" in candidate["artifact_hashes"]
+>       assert "docs/implementation/contracts/receipt-S01.json" not in candidate["artifact_hashes"]
+E       AssertionError: assert 'docs/implementation/contracts/receipt-S01.json' not in {'SKILL.md': 'F16D05EC6B29248D2C61ADB1E9263F78E4F7BACE1B955014A2D17872CFE4064D', 'docs/implementation/contracts/receipt-P00.json': 'F16D05EC6B29248D2C61ADB1E9263F78E4F7BACE1B955014A2D17872CFE4064D', 'docs/implementation/contracts/receipt-S01.json': 'F16D05EC6B29248D2C61ADB1E9263F78E4F7BACE1B955014A2D17872CFE4064D', 'docs/implementation/contracts/validation-P00-upstream.log': 'F16D05EC6B29248D2C61ADB1E9263F78E4F7BACE1B955014A2D17872CFE4064D', 'docs/implementation/reviews/P00/review.json': '698A4A25AC09CEF22925BAF11AFC7BC8F80789CA5F20B8E06F0B91710813ED2D', 'docs/implementation/reviews/S01-extra/review.json': 'D0C161F96206FB49EB7CA7FB5D43D7423292D25A7266E796337B23F29023D7C3', 'docs/implementation/tasks.json': 'EF08087CDE967EC996578A75A493723DA9B5C0C03D2ACE7F13A2A6A47105138B'}
+
+tests\test_g0_manifest.py:174: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_g0_manifest.py::test_g0_candidate_excludes_downstream_validation_and_review_outputs - assert False
+ +  where False = any(<generator object test_g0_candidate_excludes_downstream_validation_and_review_outputs.<locals>.<genexpr> at 0x000002593E181D80>)
+FAILED tests/test_g0_manifest.py::test_g0_candidate_omits_actual_descendant_validation_files - AssertionError: assert 'docs/implementation/contracts/receipt-S01.json' not in {'SKILL.md': 'F16D05EC6B29248D2C61ADB1E9263F78E4F7BACE1B955014A2D17872CFE4064D', 'docs/implementation/contracts/receipt-P00.json': 'F16D05EC6B29248D2C61ADB1E9263F78E4F7BACE1B955014A2D17872CFE4064D', 'docs/implementation/contracts/receipt-S01.json': 'F16D05EC6B29248D2C61ADB1E9263F78E4F7BACE1B955014A2D17872CFE4064D', 'docs/implementation/contracts/validation-P00-upstream.log': 'F16D05EC6B29248D2C61ADB1E9263F78E4F7BACE1B955014A2D17872CFE4064D', 'docs/implementation/reviews/P00/review.json': '698A4A25AC09CEF22925BAF11AFC7BC8F80789CA5F20B8E06F0B91710813ED2D', 'docs/implementation/reviews/S01-extra/review.json': 'D0C161F96206FB49EB7CA7FB5D43D7423292D25A7266E796337B23F29023D7C3', 'docs/implementation/tasks.json': 'EF08087CDE967EC996578A75A493723DA9B5C0C03D2ACE7F13A2A6A47105138B'}
+============= 2 failed, 13 passed, 186 subtests passed in 12.71s ==============

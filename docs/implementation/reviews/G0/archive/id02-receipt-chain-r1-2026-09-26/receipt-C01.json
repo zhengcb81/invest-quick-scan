@@ -1,0 +1,167 @@
+{
+  "schema_version": "2.0",
+  "core": {
+    "task_id": "C01",
+    "plan_version": "1.9.6",
+    "plan_sha256": "40272b45ec730efa060f2ddb050d8ef9cd736eeeffce57007def9e7879adb411",
+    "case_catalog_sha256": "8d9342896a3485f90ee67436643f67b6db7af35f24fa2b92f6733ac10a9a7287",
+    "hash_algorithm": "canonical-json-sha256-v1",
+    "task_spec_sha256": "2cd827f60fb614ce903334d29b98579129adecdaa3e4f7d54021f674f66d089d",
+    "owned_case_bundle_sha256": "3a3369089cff46db631b6aeb0b2dab5027ce620fc80ebd6347be6c6d6d762724",
+    "global_boundaries_sha256": "d05c77a2814f1f1d296963f709727c71969c5ee102d2848e0e770059e4874b54",
+    "implementation_author_id": "agent:/root",
+    "case_results": [
+      {
+        "case_id": "ID-01",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "ID-01.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_01_dual_listed_entity_separation",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C01-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "ID-02",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "ID-02.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_02_parent_subsidiary_cannot_merge_without_verified_issuer",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C01-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "ID-03",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "ID-03.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_identity_contract.py::IdentityContractTests::test_id_03_adr_ratio_boundary_and_no_guessing",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C01-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      }
+    ],
+    "implementation_snapshot": [
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/identity.md",
+        "sha256": "2680af14ec3e6d1e086b14cf61211d6f649cf3dae7c18a7654498dac57321c50"
+      },
+      {
+        "root_id": "iqs",
+        "path": "schemas/quick_scan/identity.schema.json",
+        "sha256": "228745aa45474e5670d7801d1baa8211dd7ce8bc911a96c611ff0294abe7f1f3"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/test_identity_contract.py",
+        "sha256": "c4b90bdab3d86f9c36aaa54b0a8ff59c0bc49fcec54dc5bcf952536c5a4e809c"
+      }
+    ],
+    "implementation_snapshot_sha256": "5fc05985fdf4b395dff605b2d9759c2db0355a765dd85ef2416a1116645afb27",
+    "independent_review": {
+      "report": {
+        "root_id": "iqs",
+        "path": "docs/implementation/reviews/C01/preseal-review-r1-2026-09-26.json",
+        "sha256": "f7c07030ce24be6df8ea66a82ec0db459b2c4cf1c7383a28ab50dfd1852e8f1c"
+      },
+      "reviewer_id": "agent:/root/p01_receipt_review",
+      "reviewer_role": "independent implementation reviewer",
+      "independent": true,
+      "separation_basis": "Separate read-only sub-agent; did not implement or modify the reviewed task, contracts, schemas, tests, plan, or evidence.",
+      "outcome": "approved",
+      "implementation_snapshot_sha256": "5fc05985fdf4b395dff605b2d9759c2db0355a765dd85ef2416a1116645afb27",
+      "open_findings": []
+    },
+    "dependency_evidence": [
+      {
+        "task_id": "P00",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-P00.json",
+          "sha256": "a2a0f0d522e0405b08b76c96544d6bba7638fd16be17253746b8617ffd98285a"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "P01",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-P01.json",
+          "sha256": "bd63693a2b1c9d4616f6d534ad95d7a86b9a59caf00c655922713c21ca27e84b"
+        },
+        "status": "eligible_to_close"
+      }
+    ]
+  },
+  "core_sha256": "4da6cfc19c48f68f6e501901afae1f5b8f18e7e27b2f258e15e773815811e6aa"
+}

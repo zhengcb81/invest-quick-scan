@@ -1,0 +1,96 @@
+{
+  "version": "3.0.0",
+  "module_id": "industrial",
+  "kind": "industries",
+  "name": "工业制造、自动化与专业设备",
+  "applies_when": "资本品、机械、自动化、航空航天和国防装备等。",
+  "questions": [
+    {
+      "id": "INDUSTRIAL_01",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "设备可靠性、客户认证和服务网络能否保持竞争优势？",
+      "evidence": [
+        "使用寿命",
+        "停机成本",
+        "认证周期",
+        "维修网络"
+      ],
+      "anchors": {
+        "1": "性能与服务落后且易替代",
+        "5": "满足要求但差异一般",
+        "10": "全寿命成本与可靠性优势经客户长期使用验证"
+      },
+      "metric_id": "score.industrial_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INDUSTRIAL_02",
+      "dimension": "business",
+      "priority": 1,
+      "question": "订单在取消、验收、质保和收款后具备多高利润确定性？",
+      "evidence": [
+        "定金",
+        "验收",
+        "订单延期取消",
+        "质保计提"
+      ],
+      "anchors": {
+        "1": "订单多但取消验收或收款风险高",
+        "5": "多数订单可兑现，利润有波动",
+        "10": "订单条款、交付和现金回收持续相互印证"
+      },
+      "metric_id": "score.industrial_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INDUSTRIAL_03",
+      "dimension": "execution",
+      "priority": 2,
+      "question": "产能与项目交付能否兼顾成本、质量和进度？",
+      "evidence": [
+        "按期交付",
+        "瓶颈",
+        "返工",
+        "外包管理"
+      ],
+      "anchors": {
+        "1": "产能扩张伴随持续超支和返工",
+        "5": "交付可控但效率普通",
+        "10": "复杂订单稳定交付，效率改善有记录"
+      },
+      "metric_id": "score.industrial_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INDUSTRIAL_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "安装基数、售后和升级需求能否形成持续增量？",
+      "evidence": [
+        "设备基数",
+        "备件服务率",
+        "改造需求"
+      ],
+      "anchors": {
+        "1": "一次性销售后缺乏持续价值",
+        "5": "有售后和更新需求但增长一般",
+        "10": "基数形成高回报服务与升级需求且已兑现"
+      },
+      "metric_id": "score.industrial_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

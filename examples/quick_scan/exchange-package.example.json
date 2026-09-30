@@ -1,0 +1,232 @@
+{
+  "schema_version": "1.0.0",
+  "producer": {
+    "component": "StockQAbyLLM",
+    "component_version": "fixture-only",
+    "build_id": "OFFLINE_FIXTURE"
+  },
+  "consumer": {
+    "component": "StockWiki",
+    "namespace": "quick_scan",
+    "minimum_schema_version": "1.0.0"
+  },
+  "created_at": "2026-09-23T12:00:00Z",
+  "data_class": "lightweight_screening",
+  "required_capabilities": [
+    "entity_security_identity_v1",
+    "standard_observation_v1"
+  ],
+  "contract_versions": {
+    "identity_schema": "1.0.0",
+    "answer_schema": "standard-1",
+    "observation_schema": "1.0.0",
+    "question_catalog": "3.0.0",
+    "model_policy_schema": "2.0.0"
+  },
+  "document_payloads_included": false,
+  "items": [
+    {
+      "item_id": "itm_4bd4b010ada98ee84eedcd3ac6135af87bd0d5d396d067a1a529a3fc4648aa8c",
+      "observation_id": "obs_8a49c27be1056b06786e7d7dc3556330de57b03b17abaee9f0c56a09f11177c8",
+      "payload_sha256": "053fbea3b15f86ddccc1d6b0ce0b4a56d7923cd2c1f050fc88914935fa08878c",
+      "observation": {
+        "schema_version": "1.0.0",
+        "entity_id": "ENT_EXAMPLE_A",
+        "security_id": null,
+        "segment_id": null,
+        "field_id": "score.iqs_01",
+        "construct_id": "IQS_01",
+        "question_id": "IQS_01",
+        "question_version": "1.0.0",
+        "template_version": "3.0.0",
+        "method_id": "core-constructs-v1/context-1/f879a5efdf9c935b",
+        "scope": "entity",
+        "cohort": {
+          "company_type": "operating",
+          "industries": [
+            "industrial"
+          ],
+          "stage": "mature",
+          "subtype": null
+        },
+        "information_cutoff": "2026-09-22",
+        "run_id": "EXAMPLE_RUN_A",
+        "scan_id": "EXAMPLE_SCAN_A",
+        "inputset_id": "EXAMPLE_INPUT_V1",
+        "task_mode": "comparison",
+        "comparison_group_id": "EXAMPLE_GROUP",
+        "observed_at": "2026-09-22T09:01:00Z",
+        "execution": {
+          "provider": "EXAMPLE_PROVIDER",
+          "model_requested": "EXAMPLE_MODEL_A",
+          "model_resolved": "EXAMPLE_MODEL_A",
+          "model_revision": "fixture-1",
+          "request_id": "EXAMPLE_REQUEST",
+          "attempt_id": "EXAMPLE_ATTEMPT",
+          "started_at": "2026-09-22T09:00:00Z",
+          "answered_at": "2026-09-22T09:01:00Z",
+          "search_status": "executed",
+          "search_receipt_id": "OFFLINE_FIXTURE_NOT_SEARCH_PROOF",
+          "prompt_sha256": "df4c4ce3fe63a2bc556d61d7dda50357a93673f10ebbc178ece9ffff7845ad18"
+        },
+        "answer": {
+          "question_id": "IQS_01",
+          "response_kind": "score",
+          "status": "scored",
+          "score": 8,
+          "summary": "虚构示例：核心客户持续采购，但客户集中仍需关注。",
+          "information_as_of": "2026-09-01",
+          "period_start": "2026-01-01",
+          "period_end": "2026-06-30",
+          "basis": "current",
+          "trend": "stable",
+          "confidence": "medium",
+          "metrics": [
+            {
+              "metric_id": "operating.repeat_purchase_share",
+              "value": 82,
+              "unit": "percent",
+              "currency": null,
+              "unit_detail": null,
+              "period_start": "2026-01-01",
+              "period_end": "2026-06-30",
+              "basis": "current",
+              "definition": "虚构：半年重复采购客户数/同期采购客户数，非收入留存率。",
+              "evidence_ids": [
+                "e1"
+              ]
+            }
+          ],
+          "items": [],
+          "evidence": [
+            {
+              "id": "e1",
+              "title": "虚构示例，不是实际公司证据",
+              "url": "https://example.invalid/company",
+              "published_at": "2026-09-01",
+              "claim": "仅用于离线验证标准输出。"
+            }
+          ],
+          "counterevidence": "虚构示例：尚缺分客户采购历史。",
+          "watch_triggers": [
+            "跟踪客户复购和供货状态"
+          ],
+          "missing_fields": [
+            "客户收入占比"
+          ],
+          "coverage": {
+            "status": "partial",
+            "reason": "离线样例仅覆盖少量字段，不代表完整公司画像。"
+          }
+        },
+        "evidence_review_status": "unreviewed",
+        "observation_id": "obs_8a49c27be1056b06786e7d7dc3556330de57b03b17abaee9f0c56a09f11177c8"
+      }
+    },
+    {
+      "item_id": "itm_1bab8382d194d2eec2ffc93d501a94eec2aeeace7de47948a1abbf5cfdf7af68",
+      "observation_id": "obs_5bd4751ca771ef9190a4d413f64fbeeafc01fc4255372641c3d9b548ab52635a",
+      "payload_sha256": "f06411dd1add26383851aa051797aad83a8c272c54238884b3c34bb3dac30c97",
+      "observation": {
+        "schema_version": "1.0.0",
+        "entity_id": "ENT_EXAMPLE_A",
+        "security_id": null,
+        "segment_id": null,
+        "field_id": "facts.customers",
+        "construct_id": null,
+        "question_id": "FACT_10",
+        "question_version": "1.0.0",
+        "template_version": "1.0.0",
+        "method_id": "facts-1/7978e030d1ad4ea9",
+        "scope": "entity",
+        "cohort": {
+          "company_type": "operating",
+          "industries": [
+            "industrial"
+          ],
+          "stage": "mature",
+          "subtype": null
+        },
+        "information_cutoff": "2026-09-22",
+        "run_id": "EXAMPLE_RUN_A",
+        "scan_id": "EXAMPLE_SCAN_A",
+        "inputset_id": "EXAMPLE_INPUT_V1",
+        "task_mode": "comparison",
+        "comparison_group_id": "EXAMPLE_GROUP",
+        "observed_at": "2026-09-22T09:01:00Z",
+        "execution": {
+          "provider": "EXAMPLE_PROVIDER",
+          "model_requested": "EXAMPLE_MODEL_A",
+          "model_resolved": "EXAMPLE_MODEL_A",
+          "model_revision": "fixture-1",
+          "request_id": "EXAMPLE_REQUEST",
+          "attempt_id": "EXAMPLE_ATTEMPT",
+          "started_at": "2026-09-22T09:00:00Z",
+          "answered_at": "2026-09-22T09:01:00Z",
+          "search_status": "executed",
+          "search_receipt_id": "OFFLINE_FIXTURE_NOT_SEARCH_PROOF",
+          "prompt_sha256": "f2cfd43143e9fc1ef6683c81a318e80933f5b2fe89539a496c89f7422709cc13"
+        },
+        "answer": {
+          "question_id": "FACT_10",
+          "response_kind": "fact",
+          "status": "answered",
+          "score": null,
+          "summary": "虚构示例：核心客户持续采购，但客户集中仍需关注。",
+          "information_as_of": "2026-09-01",
+          "period_start": "2026-01-01",
+          "period_end": "2026-06-30",
+          "basis": "current",
+          "trend": "stable",
+          "confidence": "medium",
+          "metrics": [],
+          "items": [
+            {
+              "name": "示例工业客户（虚构）",
+              "canonical_entity_id": null,
+              "aliases": [],
+              "relation": "sells_to",
+              "segment": "示例分部",
+              "role": "customer",
+              "commercial_stage": "commercial",
+              "description": "虚构客户关系，未提供交易规模。",
+              "valid_from": "2026-01-01",
+              "valid_to": null,
+              "taxonomy_id": null,
+              "metrics": [],
+              "evidence_ids": [
+                "e1"
+              ],
+              "confidence": "medium"
+            }
+          ],
+          "evidence": [
+            {
+              "id": "e1",
+              "title": "虚构示例，不是实际公司证据",
+              "url": "https://example.invalid/company",
+              "published_at": "2026-09-01",
+              "claim": "仅用于离线验证标准输出。"
+            }
+          ],
+          "counterevidence": "虚构示例：尚缺分客户采购历史。",
+          "watch_triggers": [
+            "跟踪客户复购和供货状态"
+          ],
+          "missing_fields": [
+            "客户收入占比"
+          ],
+          "coverage": {
+            "status": "partial",
+            "reason": "离线样例仅覆盖少量字段，不代表完整公司画像。"
+          }
+        },
+        "evidence_review_status": "unreviewed",
+        "observation_id": "obs_5bd4751ca771ef9190a4d413f64fbeeafc01fc4255372641c3d9b548ab52635a"
+      }
+    }
+  ],
+  "extensions": [],
+  "package_sha256": "1f5663f6d12a6ef1bf15bc51a392da67c47a7b95965a8027effc03f9acd097fc",
+  "package_id": "pkg_1f5663f6d12a6ef1bf15bc51a392da67c47a7b95965a8027effc03f9acd097fc"
+}

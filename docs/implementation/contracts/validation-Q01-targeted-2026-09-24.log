@@ -1,0 +1,30 @@
+............................F........................................... [ 61%]
+.............................................                            [100%]
+================================== FAILURES ===================================
+_____ TestAnswerGenerator.test_generated_answer_rejects_wrong_question_id _____
+
+self = <tests.unit.test_services.TestAnswerGenerator object at 0x000002B1E4763AD0>
+
+    def test_generated_answer_rejects_wrong_question_id(self):
+        answer = AnswerGenerator().generate_answer(
+            Question(text="评估问题", question_id="IQS_05"),
+            [
+                SearchResult(
+                    title="LLM",
+                    snippet="回答了另一题",
+                    source="llm_api",
+                    score=8,
+                    metadata={"question_id": "IQS_06", "parsed_score": 8},
+                )
+            ],
+        )
+        assert answer.score is None
+        assert answer.status == "error"
+>       assert "问题ID" in answer.text
+E       AssertionError: assert '问题ID' in '拒绝接收：外层评分与结构化回复中的评分不一致。'
+E        +  where '拒绝接收：外层评分与结构化回复中的评分不一致。' = Answer(text='拒绝接收：外层评分与结构化回复中的评分不一致。', score=None, source='error', created_at=datetime.datetime(2026, 9, 24, 6, 20, 24, 437427), status='error', metadata={'question_id': 'IQS_06', 'parsed_score': 8}).text
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_services.py:117: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_services.py::TestAnswerGenerator::test_generated_answer_rejects_wrong_question_id
+1 failed, 116 passed in 13.88s

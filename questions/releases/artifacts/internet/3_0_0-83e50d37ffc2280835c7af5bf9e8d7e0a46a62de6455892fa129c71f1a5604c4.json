@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "internet",
+  "kind": "industries",
+  "name": "互联网平台、电商与数字内容",
+  "applies_when": "匹配、广告、交易抽佣、内容订阅或流量分发平台。",
+  "questions": [
+    {
+      "id": "INTERNET_01",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "平台的网络效应是否带来可持续的用户与商家价值？",
+      "evidence": [
+        "多归属",
+        "流量质量",
+        "交易密度",
+        "自然留存"
+      ],
+      "anchors": {
+        "1": "补贴停止即流失且容易迁移",
+        "5": "规模有用但多平台竞争强",
+        "10": "规模改善匹配与回报，留存无需长期亏损补贴"
+      },
+      "metric_id": "score.internet_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INTERNET_02",
+      "dimension": "business",
+      "priority": 1,
+      "question": "扣除履约、内容、流量和激励后，交易或用户经济性如何？",
+      "evidence": [
+        "抽佣",
+        "获客",
+        "履约",
+        "退货或内容成本"
+      ],
+      "anchors": {
+        "1": "交易越多实际亏损越大",
+        "5": "主要场景贡献为正但利润薄",
+        "10": "完整成本后单位回报可靠且用户价值同步提升"
+      },
+      "metric_id": "score.internet_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INTERNET_03",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "平台规则、数据和内容责任是否限制核心变现？",
+      "evidence": [
+        "平台监管",
+        "数据许可",
+        "分发渠道",
+        "创作者规则"
+      ],
+      "anchors": {
+        "1": "核心变现受到重大持续限制",
+        "5": "存在可管理合规成本",
+        "10": "核心变现具有清晰合规路径且适应能力经验证"
+      },
+      "metric_id": "score.internet_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "INTERNET_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "现有用户和供给的增长是否来自真实活跃与支付需求？",
+      "evidence": [
+        "留存批次",
+        "交易频次",
+        "广告主回报",
+        "非补贴增长"
+      ],
+      "anchors": {
+        "1": "虚假活跃或补贴维持表面增长",
+        "5": "活跃稳定，变现扩张空间普通",
+        "10": "活跃与支付需求持续增强且不损害生态"
+      },
+      "metric_id": "score.internet_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

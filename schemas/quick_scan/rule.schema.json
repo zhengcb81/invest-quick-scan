@@ -30,21 +30,27 @@
     },
     "CompositeRule": {
       "type": "object",
+      "oneOf": [
+        { "required": ["all"] },
+        { "required": ["any"] },
+        { "required": ["not"] },
+        { "required": ["condition"] }
+      ],
       "properties": {
         "all": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#" },
+          "items": { "$ref": "#/definitions/CompositeRule" },
           "description": "合取条件（三值逻辑优先级：fail > unknown > pass）"
         },
         "any": {
           "type": "array",
           "minItems": 1,
-          "items": { "$ref": "#" },
+          "items": { "$ref": "#/definitions/CompositeRule" },
           "description": "析取条件（三值逻辑优先级：pass > unknown > fail）"
         },
         "not": {
-          "$ref": "#",
+          "$ref": "#/definitions/CompositeRule",
           "description": "否定条件（pass<->fail, unknown保持unknown）"
         },
         "condition": { "$ref": "#/definitions/FieldThresholdCondition" }

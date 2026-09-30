@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://invest-quick-scan.local/schemas/task-receipt-v2.schema.json",
+  "title": "Task Receipt v2",
+  "description": "Sealed, source-bound task evidence core. Validation sidecars and post-seal evidence reviews are detached and must not be embedded here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "core", "core_sha256"],
+  "properties": {
+    "schema_version": {"const": "2.0"},
+    "core": {"$ref": "#/$defs/core"},
+    "core_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "rooted_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["root_id", "path", "sha256"],
+      "properties": {
+        "root_id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,31}$"},
+        "path": {"type": "string", "minLength": 1, "pattern": "^[^/].*$"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "core": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id", "plan_version", "plan_sha256", "case_catalog_sha256",
+        "hash_algorithm", "task_spec_sha256", "owned_case_bundle_sha256",
+        "global_boundaries_sha256", "implementation_author_id", "case_results",
+        "implementation_snapshot", "implementation_snapshot_sha256",
+        "independent_review", "dependency_evidence"
+      ],
+      "properties": {
+        "task_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_-]{1,31}$"},
+        "plan_version": {"type": "string", "minLength": 1},
+        "plan_sha256": {"$ref": "#/$defs/sha256"},
+        "case_catalog_sha256": {"$ref": "#/$defs/sha256"},
+        "hash_algorithm": {"const": "canonical-json-sha256-v1"},
+        "task_spec_sha256": {"$ref": "#/$defs/sha256"},
+        "owned_case_bundle_sha256": {"$ref": "#/$defs/sha256"},
+        "referenced_case_bundle_sha256": {"$ref": "#/$defs/sha256"},
+        "global_boundaries_sha256": {"$ref": "#/$defs/sha256"},
+        "implementation_author_id": {"type": "string", "minLength": 1},
+        "case_results": {
+          "type": "array", "minItems": 1,
+          "items": {"$ref": "#/$defs/case_result"}
+        },
+        "implementation_snapshot": {
+          "type": "array", "minItems": 1,
+          "items": {"$ref": "#/$defs/rooted_path"}
+        },
+        "implementation_snapshot_sha256": {"$ref": "#/$defs/sha256"},
+        "independent_review": {"$ref": "#/$defs/review"},
+        "dependency_evidence": {"type": "array", "items": {"$ref": "#/$defs/dependency"}}
+      }
+    },
+    "case_result": {
+      "type": "object", "additionalProperties": false,
+      "required": ["case_id", "status", "assertions"],
+      "properties": {
+        "case_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["passed", "failed", "not_run", "not_applicable"]},
+        "assertions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/assertion_result"}}
+      }
+    },
+    "assertion_result": {
+      "type": "object", "additionalProperties": false,
+      "required": ["assertion_id", "status", "test_stage", "selector", "command", "exit_code", "log", "skip_count", "isolation", "network"],
+      "properties": {
+        "assertion_id": {"type": "string", "minLength": 1},
+        "status": {"enum": ["passed", "failed", "not_run", "not_applicable"]},
+        "test_stage": {"enum": ["unit", "contract", "integration", "e2e", "review"]},
+        "selector": {"type": "string", "minLength": 1},
+        "command": {"type": "string", "minLength": 1},
+        "exit_code": {"type": ["integer", "null"]},
+        "log": {"oneOf": [{"$ref": "#/$defs/rooted_path"}, {"type": "null"}]},
+        "skip_count": {"type": "integer", "minimum": 0},
+        "isolation": {
+          "type": "object", "additionalProperties": false,
+          "required": ["isolated", "run_id", "cleanup_verified", "cleanup_summary"],
+          "properties": {
+            "isolated": {"type": "boolean"},
+            "run_id": {"type": "string", "minLength": 1},
+            "cleanup_verified": {"type": "boolean"},
+            "cleanup_summary": {"type": "string", "minLength": 1}
+          }
+        },
+        "network": {
+          "type": "object", "additionalProperties": false,
+          "required": ["mode", "request_count", "fees_usd", "evidence"],
+          "properties": {
+            "mode": {"enum": ["none", "stubbed", "live"]},
+            "request_count": {"type": "integer", "minimum": 0},
+            "fees_usd": {"type": ["string", "null"], "pattern": "^(?:0|[1-9][0-9]*)(?:\\.[0-9]+)?$"},
+            "evidence": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["report", "reviewer_id", "reviewer_role", "independent", "separation_basis", "outcome", "implementation_snapshot_sha256", "open_findings"],
+      "properties": {
+        "report": {"$ref": "#/$defs/rooted_path"},
+        "reviewer_id": {"type": "string", "minLength": 1},
+        "reviewer_role": {"type": "string", "minLength": 1},
+        "independent": {"const": true},
+        "separation_basis": {"type": "string", "minLength": 1},
+        "outcome": {"enum": ["approved", "approved_with_findings", "rejected"]},
+        "implementation_snapshot_sha256": {"$ref": "#/$defs/sha256"},
+        "open_findings": {
+          "type": "array",
+          "items": {"type": "object", "additionalProperties": false, "required": ["id", "severity"], "properties": {"id": {"type": "string", "minLength": 1}, "severity": {"enum": ["P0", "P1", "P2", "P3"]}}}
+        }
+      }
+    },
+    "dependency": {
+      "type": "object", "additionalProperties": false,
+      "required": ["task_id", "kind", "evidence", "status"],
+      "properties": {
+        "task_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["current_receipt", "historical_context"]},
+        "evidence": {"$ref": "#/$defs/rooted_path"},
+        "status": {"enum": ["eligible_to_close", "blocked", "context_only", "legacy_historical"]}
+      }
+    }
+  }
+}

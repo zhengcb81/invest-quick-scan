@@ -7,14 +7,20 @@ import copy
 from datetime import date, datetime, timezone
 import hashlib
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
-import question_sets as qs
+import question_manifest as manifest_contract
+import question_library as library
+from question_prompts import standard_prompt
+from question_fingerprints import question_fingerprint
+import module_contract
+import module_registry
 
-ROOT = qs.ROOT
+ROOT = library.ROOT
 
 
 def digest(value):
@@ -26,14 +32,17 @@ def digest(value):
 def validator(name):
     registry = Registry()
     for file in ('answer-content.schema.json', 'observation.schema.json'):
-        schema = qs.read_json(ROOT / 'schemas' / file)
+        schema = library.read_json(ROOT / 'schemas' / file)
         registry = registry.with_resource(schema['$id'], Resource.from_contents(schema))
-    return Draft202012Validator(qs.read_json(ROOT / 'schemas' / name),
+    return Draft202012Validator(library.read_json(ROOT / 'schemas' / name),
                                registry=registry, format_checker=FormatChecker())
 
 
-def validate_content(answer, question, cutoff):
-    validator('answer-content.schema.json').validate(answer)
+def validate_content(answer, question, cutoff, *, answer_schema=None, metric_registry=None):
+    if answer_schema is None:
+        validator('answer-content.schema.json').validate(answer)
+    else:
+        Draft202012Validator(answer_schema, format_checker=FormatChecker()).validate(answer)
     if answer['question_id'] != question['id']:
         raise ValueError('answer question mismatch')
     kind = question.get('response_kind', 'score')
@@ -66,7 +75,7 @@ def validate_content(answer, question, cutoff):
     if len(ids) != len(set(ids)):
         raise ValueError('duplicate evidence id')
     for e in answer['evidence']:
-        if not qs.valid_url(e['url']) or (e['published_at'] and e['published_at'] > cutoff):
+        if not library.valid_url(e['url']) or (e['published_at'] and e['published_at'] > cutoff):
             raise ValueError('invalid URL or future source')
     values = answer['metrics'] + [m for i in answer['items'] for m in i['metrics']]
     for item in answer['items']:
@@ -77,10 +86,10 @@ def validate_content(answer, question, cutoff):
     for group in [answer['metrics']] + [i['metrics'] for i in answer['items']]:
         if len({m['metric_id'] for m in group}) != len(group):
             raise ValueError('duplicate metric id')
+    metrics_by_id = (metric_registry or library.read_json(ROOT / 'questions/metric-registry.json'))['metrics']
     for m in values:
-        registry = qs.read_json(ROOT / 'questions/metric-registry.json')['metrics']
-        if m['metric_id'] in registry:
-            if m['unit'] != registry[m['metric_id']]['unit']:
+        if m['metric_id'] in metrics_by_id:
+            if m['unit'] != metrics_by_id[m['metric_id']]['unit']:
                 raise ValueError('canonical metric unit mismatch')
         elif not m['metric_id'].startswith('custom.'):
             raise ValueError('unknown metric must use custom namespace')
@@ -99,8 +108,8 @@ def validate_content(answer, question, cutoff):
 
 
 def validate_fact_library():
-    bank = qs.read_json(ROOT / 'questions/facts.json')
-    _, modules = qs.load_library()
+    bank = library.read_json(ROOT / 'questions/facts.json')
+    _, modules = library.load_library(root=ROOT)
     ids, fields = set(), set()
     for q in bank['questions']:
         if q['id'] in ids or q['field_id'] in fields or not q['field_id'].startswith('facts.'):
@@ -119,34 +128,12 @@ def validate_fact_library():
     return {'questions': len(ids), 'version': bank['version']}
 
 
-def standard_prompt(question, profile):
-    schema = qs.read_json(ROOT / 'schemas/answer-content.schema.json')
-    # Emit the exact schema once per independent request; no unstated external resource dependency.
-    identity = {k: profile[k] for k in ('company', 'entity_id', 'ticker', 'exchange', 'security_id',
-                'security_class', 'segment_id', 'as_of', 'company_type', 'industry_modules', 'stage',
-                'business_subtype', 'cycle_sensitive', 'cycle_position') if k in profile}
-    base = qs.render_question(question, profile).split(qs.ANSWER_RULE)[0] if question.get('response_kind') != 'fact' else (
-        f"[{question['id']}] 对象与口径={json.dumps(identity, ensure_ascii=False)}。{question['question']}\n"
-        f"关系只可用{question['relations']}；最多{question['max_items']}条。")
-    return (base + '\n实际联网搜索，仅用截止日前可得来源。不要下载公司文档。'
-            '只输出符合下列schema的JSON；不使用score/description外层兼容包装。'
-            'response_kind=' + question.get('response_kind', 'score') + '。'
-            '事实不评分且score=null；未披露用insufficient_evidence，不等同不存在。'
-            '已知部分可以answered+coverage.partial，并列缺项；关系和数值逐条绑定evidence_ids。'
-            'canonical_entity_id/taxonomy_id只有已知主档映射才填，否则null，不自行创造。'
-            '时间和模型由执行器另附，不在答案中自报执行回执。'
-            'metrics使用明确单位、币种、期间和current/normalized/stress/forward口径；禁止混用。\n'
-            + json.dumps(schema, ensure_ascii=False, separators=(',', ':'))
-            + '\n数值指标尽量使用以下固定ID/单位/定义；没有数据则metrics=[]。其他指标只用custom.*，不可自动数值比较：'
-            + json.dumps(qs.read_json(ROOT / 'questions/metric-registry.json')['metrics'], ensure_ascii=False, separators=(',', ':')))
-
-
 def select_facts(profile, mode='quick'):
-    _, modules = qs.load_library()
-    qs.validate_profile(profile, modules)
+    _, modules = library.load_library(root=ROOT)
+    library.validate_profile(profile, modules, root=ROOT)
     if mode not in ('quick', 'full'):
         raise ValueError('unknown mode')
-    bank = qs.read_json(ROOT / 'questions/facts.json')
+    bank = library.read_json(ROOT / 'questions/facts.json')
     chosen = []
     recovery = (profile.get('recovery_review') or profile['stage'] in ('turnaround', 'declining')
                 or 'distressed' in profile.get('overlays', []))
@@ -175,23 +162,120 @@ def compose_facts(profile, mode, output_dir):
                 'source_sha256': {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in
                                   ('questions/facts.json', 'schemas/answer-content.schema.json', 'questions/metric-registry.json')},
                 'questions': [{**q, 'prompt': standard_prompt(q, profile)} for q in chosen]}
-    qs.write_json(output_dir / 'manifest.json', manifest)
-    qs.write_json(output_dir / 'questions.json', [{'category': '非评分事实',
+    library.write_json(output_dir / 'manifest.json', manifest)
+    library.write_json(output_dir / 'questions.json', [{'category': '非评分事实',
                                                  'questions': [q['prompt'] for q in manifest['questions']]}])
     return {'fact_questions': len(chosen), 'output_dir': str(output_dir.resolve()), 'network_used': False}
 
 
-def validate_observation(record):
-    validator('observation.schema.json').validate(record)
-    if record['answer']['response_kind'] == 'fact':
-        known = {q['id']: {**q, 'response_kind': 'fact'} for q in qs.read_json(ROOT / 'questions/facts.json')['questions']}
+def _published_observation_source(record):
+    required = ('module_package_id', 'module_release_id', 'question_definition_sha256',
+                'question_semantic_sha256')
+    if any(key not in record for key in required):
+        raise ValueError('published observation requires complete module package binding')
+    package, modules, release, contexts = module_registry.load_package(
+        record['module_package_id'], root=ROOT)
+    resources = package['format_resources']
+    if 'schemas/observation.schema.json' not in resources:
+        raise ValueError('historical observation schema unavailable in this module package')
+    if record['module_release_id'] != release['release_id']:
+        raise ValueError('observation module release mismatch')
+    if record['template_version'] != release['catalog_version']:
+        raise ValueError('observation catalog version mismatch')
+    if record['answer']['response_kind'] != 'score':
+        raise ValueError('scored module package cannot validate a fact observation')
+    known = {q['id']: (module_id, q)
+             for module_id, module in modules.items() for q in module['questions']}
+    source = known.get(record['question_id'])
+    if source is None:
+        raise ValueError('observation question missing from frozen module release')
+    module_id, archived_question = source
+    if record['question_definition_sha256'] != module_contract.question_definition_sha256(archived_question):
+        raise ValueError('observation question definition differs from frozen release')
+    question = {**archived_question, 'module_id': module_id}
+    if (record['question_version'] != question['rubric_version']
+            or record['construct_id'] != question['construct_id']):
+        raise ValueError('observation question version, construct, or method mismatch')
+    if package.get('semantic_fingerprint_version') == '2.0.0':
+        if record.get('schema_version') != '1.1.0' or not isinstance(record.get('cycle_sensitive'), bool):
+            raise ValueError('published observation requires schema 1.1 and cycle context')
+        cohort = record['cohort']
+        semantic_profile = {'industry_modules': cohort['industries'],
+                            'cycle_sensitive': record['cycle_sensitive']}
+        if cohort['company_type'] != 'unclassified':
+            semantic_profile['company_type'] = cohort['company_type']
+        if cohort['stage'] != 'unclassified':
+            semantic_profile['stage'] = cohort['stage']
+        if cohort['subtype'] is not None:
+            semantic_profile['business_subtype'] = cohort['subtype']
+        common_critical = {q['id'] for q in modules['common']['questions'] if q.get('critical')}
+        if common_critical.intersection(question.get('replaces', [])):
+            question = {**question, 'critical': True}
+        expected_semantic = question_fingerprint(
+            question, semantic_profile, contexts, package, release, 'standard-1')
+        if record['question_semantic_sha256'] != expected_semantic:
+            raise ValueError('observation semantic fingerprint differs from frozen resources and context')
+        method_pattern = r'module-locked-v1/core-constructs-v1/[a-f0-9]{16}/' + expected_semantic[:16]
+        if not re.fullmatch(method_pattern, record['method_id']):
+            raise ValueError('observation method does not bind verified semantic fingerprint')
     else:
-        _, modules = qs.load_library()
-        known = {q['id']: q for module in modules.values() for q in module['questions']}
-    question = known.get(record['question_id'])
+        # Read-only compatibility for package v1 observations; a synthetic v1
+        # package must never claim the current published record namespace.
+        if record.get('schema_version') != '1.0.0':
+            raise ValueError('historical package cannot issue current observation schema')
+        if not record['method_id'].endswith('/' + record['question_semantic_sha256'][:16]):
+            raise ValueError('historical observation method mismatch')
+    expected_scope = 'segment' if record['segment_id'] and question['scope'] == 'entity' else question['scope']
+    if record['scope'] != expected_scope:
+        raise ValueError('observation scope differs from frozen question')
+    return question, resources
+
+
+def validate_observation(record, *, require_published=False, expected_observation_id=None):
+    """Validate a record; strict ingest requires a v2 package and store-anchored ID.
+
+    Legacy v1 records are deliberately supported for read-only comparison. A
+    self-contained mutable JSON record cannot prove its prior stored identity;
+    the ingest caller should pass its independently retained observation ID.
+    """
+    if record.get('schema_version') == '2.0.0':
+        raise ValueError('v2 identity observation requires the dedicated identity-bound adapter')
+    if require_published and expected_observation_id is None:
+        raise ValueError('published ingest requires an independently stored observation ID')
+    if expected_observation_id is not None and record.get('observation_id') != expected_observation_id:
+        raise ValueError('observation differs from immutable stored identity')
+    published = 'module_package_id' in record
+    if (record.get('schema_version') == '1.1.0'
+            or str(record.get('method_id', '')).startswith('module-locked-v1/')) and not published:
+        raise ValueError('published observation missing package binding')
+    if require_published and not published:
+        raise ValueError('published ingest requires a frozen package binding')
+    if published:
+        question, resources = _published_observation_source(record)
+        if require_published and record['schema_version'] != '1.1.0':
+            raise ValueError('published ingest requires current frozen observation contract')
+        registry = Registry().with_resource(
+            resources['schemas/answer-content.schema.json']['$id'],
+            Resource.from_contents(resources['schemas/answer-content.schema.json']))
+        Draft202012Validator(resources['schemas/observation.schema.json'],
+                             registry=registry, format_checker=FormatChecker()).validate(record)
+    else:
+        if any(key in record for key in ('module_release_id', 'question_definition_sha256',
+                                         'question_semantic_sha256')):
+            raise ValueError('partial module package binding in legacy observation')
+        validator('observation.schema.json').validate(record)
+        if record['answer']['response_kind'] == 'fact':
+            known = {q['id']: {**q, 'response_kind': 'fact'} for q in library.read_json(ROOT / 'questions/facts.json')['questions']}
+        else:
+            _, modules = library.load_library(root=ROOT)
+            known = {q['id']: q for module in modules.values() for q in module['questions']}
+        question = known.get(record['question_id'])
+        resources = None
     if not question or record['field_id'] != question.get('field_id', question.get('metric_id')):
         raise ValueError('unknown or mismatched field identity')
-    validate_content(record['answer'], question, record['information_cutoff'])
+    validate_content(record['answer'], question, record['information_cutoff'],
+                     answer_schema=resources['schemas/answer-content.schema.json'] if resources else None,
+                     metric_registry=resources['questions/metric-registry.json'] if resources else None)
     e = record['execution']
     start, end = (datetime.fromisoformat(e[k].replace('Z', '+00:00')) for k in ('started_at', 'answered_at'))
     if start.utcoffset().total_seconds() != 0 or end.utcoffset().total_seconds() != 0:
@@ -221,6 +305,18 @@ def validate_observation(record):
 def build_observations(manifest, answers, receipts):
     if manifest.get('answer_format') != 'standard-1':
         raise ValueError('standard manifest required; never relabel legacy records')
+    # A caller can recompute manifest and request hashes after tampering. The
+    # published path must first prove every question against archived bytes.
+    manifest_contract.validate_manifest_metric_contract(manifest, root=ROOT)
+    published = 'module_package_id' in manifest
+    resources = None
+    if published:
+        package, _, release, _ = module_registry.load_package(manifest['module_package_id'], root=ROOT)
+        if not module_registry.observation_ingest_ready(package):
+            raise ValueError('historical package cannot issue new standard observations')
+        resources = package['format_resources']
+        if 'schemas/observation.schema.json' not in resources:
+            raise ValueError('historical observation schema unavailable in this module package')
     profile = manifest['profile']
     if not profile.get('entity_id'):
         raise ValueError('verified entity_id required from identity owner')
@@ -232,26 +328,40 @@ def build_observations(manifest, answers, receipts):
     records = []
     for qid, answer in answers.items():
         q = known[qid]
-        validate_content(answer, q, profile['as_of'])
+        validate_content(answer, q, profile['as_of'],
+                         answer_schema=resources['schemas/answer-content.schema.json'] if resources else None,
+                         metric_registry=resources['questions/metric-registry.json'] if resources else None)
         execution = receipts['requests'][qid]
         if execution['prompt_sha256'] != hashlib.sha256(q['prompt'].encode()).hexdigest():
             raise ValueError('execution prompt mismatch')
-        record = dict(schema_version='1.0.0', entity_id=profile['entity_id'],
+        method_tail = q['semantic_sha256'][:16] if published else digest(
+            {k: v for k, v in q.items() if k != 'prompt'})[:16]
+        record = dict(schema_version='1.1.0' if published else '1.0.0', entity_id=profile['entity_id'],
                       security_id=profile.get('security_id') if q['scope'] == 'security' else None,
                       segment_id=profile.get('segment_id'), field_id=q.get('field_id', q.get('metric_id')),
                       construct_id=q.get('construct_id'), question_id=qid,
                       question_version=q['rubric_version'], template_version=manifest['template_version'],
-                      method_id=manifest['method_id'] + '/' + digest({k: v for k, v in q.items() if k != 'prompt'})[:16],
+                      method_id=('module-locked-v1/' if published else '') + manifest['method_id'] + '/' + method_tail,
                       scope='segment' if profile.get('segment_id') and q['scope'] == 'entity' else q['scope'],
-                      cohort=dict(company_type=profile['company_type'], industries=sorted(profile.get('industry_modules', [])),
-                                  stage=profile['stage'], subtype=profile.get('business_subtype')),
+                      cohort=dict(company_type=profile.get('company_type', 'unclassified'),
+                                  industries=sorted(profile.get('industry_modules', [])),
+                                  stage=profile.get('stage', 'unclassified'),
+                                  subtype=profile.get('business_subtype')),
                       information_cutoff=profile['as_of'], run_id=receipts['run_id'], scan_id=receipts['scan_id'],
                       inputset_id=receipts['inputset_id'], task_mode=receipts['task_mode'],
                       comparison_group_id=receipts['comparison_group_id'], observed_at=execution['answered_at'],
                       execution=execution, answer=answer, evidence_review_status='unreviewed')
+        if published:
+            record.update(module_package_id=manifest['module_package_id'],
+                          module_release_id=manifest['module_release_id'],
+                          question_definition_sha256=q['definition_sha256'],
+                          question_semantic_sha256=q['semantic_sha256'],
+                          cycle_sensitive=bool(profile.get('cycle_sensitive', False)))
         # Detach from caller-owned mutable answers/receipts before creating an immutable snapshot.
         record = copy.deepcopy(record)
         record['observation_id'] = 'obs_' + digest(record)
+        # This creates a new snapshot. A later ingest must supply its immutable
+        # ID from the store through require_published=True.
         records.append(validate_observation(record))
     return {'schema_version': '1.0.0', 'assembled_at': datetime.now(timezone.utc).isoformat(),
             'manifest_sha256': digest(manifest), 'observations': records,
@@ -351,14 +461,14 @@ def main():
     args = parser.parse_args()
     try:
         if args.command == 'validate-library': result = validate_fact_library()
-        elif args.command == 'compose-facts': result = compose_facts(qs.read_json(args.profile), args.mode, args.out_dir)
+        elif args.command == 'compose-facts': result = compose_facts(library.read_json(args.profile), args.mode, args.out_dir)
         elif args.command == 'build':
-            result = build_observations(qs.read_json(args.manifest), qs.read_json(args.answers), qs.read_json(args.receipts))
+            result = build_observations(library.read_json(args.manifest), library.read_json(args.answers), library.read_json(args.receipts))
             if Path(args.output).exists(): raise ValueError('do not overwrite observations')
-            qs.write_json(args.output, result)
+            library.write_json(args.output, result)
         else:
-            result = compare(qs.read_json(args.left), qs.read_json(args.right), args.axis)
-            qs.write_json(args.output, result)
+            result = compare(library.read_json(args.left), library.read_json(args.right), args.axis)
+            library.write_json(args.output, result)
         print(json.dumps({'command': args.command, 'ok': True, 'network_used': False}, ensure_ascii=False))
     except Exception as exc:
         parser.exit(2, f'Error: {exc}\n')

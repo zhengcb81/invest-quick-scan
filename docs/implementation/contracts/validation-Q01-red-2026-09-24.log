@@ -1,0 +1,226 @@
+......FFFFFF....FF........FFF...........F.....F................          [100%]
+================================== FAILURES ===================================
+________________ test_invalid_score_values_are_rejected[True] _________________
+
+score = True
+
+    @pytest.mark.parametrize("score", [True, False, 0, 11, 1.5, "8", "NaN"])
+    def test_invalid_score_values_are_rejected(score):
+        """SC-03：非法类型和越界分数必须拒绝，不能钳制或猜分。"""
+        parser = LLMResponseParser()
+        result = parser.parse_response(
+            __import__("json").dumps({"score": score, "description": "test"})
+        )
+>       assert result is None
+E       AssertionError: assert (1, 'test') is None
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:67: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功解析LLM响应（直接JSON），评分: 1/10
+------------------------------ Captured log call ------------------------------
+INFO     src.providers.llm_response_parser:llm_response_parser.py:93 成功解析LLM响应（直接JSON），评分: 1/10
+________________ test_invalid_score_values_are_rejected[False] ________________
+
+score = False
+
+    @pytest.mark.parametrize("score", [True, False, 0, 11, 1.5, "8", "NaN"])
+    def test_invalid_score_values_are_rejected(score):
+        """SC-03：非法类型和越界分数必须拒绝，不能钳制或猜分。"""
+        parser = LLMResponseParser()
+        result = parser.parse_response(
+            __import__("json").dumps({"score": score, "description": "test"})
+        )
+>       assert result is None
+E       AssertionError: assert (1, 'test') is None
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:67: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功解析LLM响应（直接JSON），评分: 1/10
+------------------------------ Captured log call ------------------------------
+INFO     src.providers.llm_response_parser:llm_response_parser.py:93 成功解析LLM响应（直接JSON），评分: 1/10
+__________________ test_invalid_score_values_are_rejected[0] __________________
+
+score = 0
+
+    @pytest.mark.parametrize("score", [True, False, 0, 11, 1.5, "8", "NaN"])
+    def test_invalid_score_values_are_rejected(score):
+        """SC-03：非法类型和越界分数必须拒绝，不能钳制或猜分。"""
+        parser = LLMResponseParser()
+        result = parser.parse_response(
+            __import__("json").dumps({"score": score, "description": "test"})
+        )
+>       assert result is None
+E       AssertionError: assert (1, 'test') is None
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:67: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功解析LLM响应（直接JSON），评分: 1/10
+------------------------------ Captured log call ------------------------------
+INFO     src.providers.llm_response_parser:llm_response_parser.py:93 成功解析LLM响应（直接JSON），评分: 1/10
+_________________ test_invalid_score_values_are_rejected[11] __________________
+
+score = 11
+
+    @pytest.mark.parametrize("score", [True, False, 0, 11, 1.5, "8", "NaN"])
+    def test_invalid_score_values_are_rejected(score):
+        """SC-03：非法类型和越界分数必须拒绝，不能钳制或猜分。"""
+        parser = LLMResponseParser()
+        result = parser.parse_response(
+            __import__("json").dumps({"score": score, "description": "test"})
+        )
+>       assert result is None
+E       AssertionError: assert (10, 'test') is None
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:67: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功解析LLM响应（直接JSON），评分: 10/10
+------------------------------ Captured log call ------------------------------
+INFO     src.providers.llm_response_parser:llm_response_parser.py:93 成功解析LLM响应（直接JSON），评分: 10/10
+_________________ test_invalid_score_values_are_rejected[1.5] _________________
+
+score = 1.5
+
+    @pytest.mark.parametrize("score", [True, False, 0, 11, 1.5, "8", "NaN"])
+    def test_invalid_score_values_are_rejected(score):
+        """SC-03：非法类型和越界分数必须拒绝，不能钳制或猜分。"""
+        parser = LLMResponseParser()
+        result = parser.parse_response(
+            __import__("json").dumps({"score": score, "description": "test"})
+        )
+>       assert result is None
+E       AssertionError: assert (1, 'test') is None
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:67: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功解析LLM响应（直接JSON），评分: 1/10
+------------------------------ Captured log call ------------------------------
+INFO     src.providers.llm_response_parser:llm_response_parser.py:93 成功解析LLM响应（直接JSON），评分: 1/10
+__________________ test_invalid_score_values_are_rejected[8] __________________
+
+score = '8'
+
+    @pytest.mark.parametrize("score", [True, False, 0, 11, 1.5, "8", "NaN"])
+    def test_invalid_score_values_are_rejected(score):
+        """SC-03：非法类型和越界分数必须拒绝，不能钳制或猜分。"""
+        parser = LLMResponseParser()
+        result = parser.parse_response(
+            __import__("json").dumps({"score": score, "description": "test"})
+        )
+>       assert result is None
+E       AssertionError: assert (8, 'test') is None
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:67: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+------------------------------ Captured log call ------------------------------
+INFO     src.providers.llm_response_parser:llm_response_parser.py:93 成功解析LLM响应（直接JSON），评分: 8/10
+________________ test_native_insufficient_evidence_is_nullable ________________
+
+    def test_native_insufficient_evidence_is_nullable():
+        parser = LLMResponseParser()
+>       result = parser.parse_structured_response(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            '{"status":"insufficient_evidence","score":null,"description":"缺少可核验依据"}'
+        )
+E       AttributeError: 'LLMResponseParser' object has no attribute 'parse_structured_response'
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:80: AttributeError
+_____________ test_non_scored_status_cannot_carry_transport_score _____________
+
+    def test_non_scored_status_cannot_carry_transport_score():
+        parser = LLMResponseParser()
+>       assert parser.parse_structured_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            '{"status":"unknown","score":5,"description":"没有依据"}'
+        ) is None
+E       AttributeError: 'LLMResponseParser' object has no attribute 'parse_structured_response'
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:90: AttributeError
+__ TestAnswerGenerator.test_generated_answer_preserves_provider_score_eight ___
+
+self = <tests.unit.test_services.TestAnswerGenerator object at 0x000001B5498EA3F0>
+
+    def test_generated_answer_preserves_provider_score_eight(self):
+        answer = AnswerGenerator().generate_answer(
+            Question(text="评估问题"),
+            [SearchResult(title="LLM", snippet="证据充分", source="llm_api", score=8)],
+        )
+>       assert answer.score == 8
+E       AssertionError: assert 5 == 8
+E        +  where 5 = Answer(text='证据充分', score=5, source='llm_api', created_at=datetime.datetime(2026, 9, 24, 6, 11, 20, 522804)).score
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_services.py:91: AssertionError
+_____ TestAnswerGenerator.test_generated_answer_keeps_missing_score_null ______
+
+self = <tests.unit.test_services.TestAnswerGenerator object at 0x000001B5498EA2C0>
+
+    def test_generated_answer_keeps_missing_score_null(self):
+        answer = AnswerGenerator().generate_answer(
+            Question(text="评估问题"),
+            [SearchResult(title="LLM", snippet="证据不足", source="llm_api", score=None)],
+        )
+>       assert answer.score is None
+E       AssertionError: assert 5 is None
+E        +  where 5 = Answer(text='证据不足', score=5, source='llm_api', created_at=datetime.datetime(2026, 9, 24, 6, 11, 20, 536752)).score
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_services.py:99: AssertionError
+_________ TestAnswerGenerator.test_generate_answer_with_empty_results _________
+
+self = <tests.unit.test_services.TestAnswerGenerator object at 0x000001B54998E7B0>
+
+    def test_generate_answer_with_empty_results(self):
+        """测试使用空搜索结果生成答案。"""
+        generator = AnswerGenerator()
+        question = Question(text="如何学习Python？")
+    
+        answer = generator.generate_answer(question, [])
+    
+        assert answer.text is not None
+        assert "没有找到" in answer.text
+        assert answer.source == "no_results"
+>       assert answer.score is None
+E       assert 5 is None
+E        +  where 5 = Answer(text="抱歉，没有找到关于 '如何学习Python？' 的相关信息。", score=5, source='no_results', created_at=datetime.datetime(2026, 9, 24, 6, 11, 20, 549547)).score
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_services.py:112: AssertionError
+---------------------------- Captured stdout call -----------------------------
+WARNING - 没有搜索结果，返回默认答案
+------------------------------ Captured log call ------------------------------
+WARNING  src.services.answer_generator:answer_generator.py:42 没有搜索结果，返回默认答案
+___ TestAnswer.test_answer_rejects_non_integer_or_out_of_range_scores[True] ___
+
+self = <tests.unit.test_models.TestAnswer object at 0x000001B5498EA9E0>
+invalid = True
+
+    @pytest.mark.parametrize("invalid", [True, False, 0, 11, 1.5, "8"])
+    def test_answer_rejects_non_integer_or_out_of_range_scores(self, invalid):
+>       with pytest.raises(ValueError, match="评分必须是1-10之间的整数"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_models.py:66: Failed
+___________ TestAnswer.test_answer_null_score_has_non_scored_status ___________
+
+self = <tests.unit.test_models.TestAnswer object at 0x000001B549941B80>
+
+    def test_answer_null_score_has_non_scored_status(self):
+>       answer = Answer(text="缺少可核验依据", score=None, status="insufficient_evidence")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: Answer.__init__() got an unexpected keyword argument 'status'
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_models.py:70: TypeError
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_invalid_score_values_are_rejected[True]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_invalid_score_values_are_rejected[False]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_invalid_score_values_are_rejected[0]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_invalid_score_values_are_rejected[11]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_invalid_score_values_are_rejected[1.5]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_invalid_score_values_are_rejected[8]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_native_insufficient_evidence_is_nullable
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_non_scored_status_cannot_carry_transport_score
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_services.py::TestAnswerGenerator::test_generated_answer_preserves_provider_score_eight
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_services.py::TestAnswerGenerator::test_generated_answer_keeps_missing_score_null
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_services.py::TestAnswerGenerator::test_generate_answer_with_empty_results
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_models.py::TestAnswer::test_answer_rejects_non_integer_or_out_of_range_scores[True]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_models.py::TestAnswer::test_answer_null_score_has_non_scored_status
+13 failed, 50 passed in 2.15s

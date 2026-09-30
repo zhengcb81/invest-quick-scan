@@ -1,0 +1,97 @@
+{
+  "version": "3.0.0",
+  "module_id": "medtech",
+  "kind": "industries",
+  "name": "医疗器械、诊断与生命科学工具",
+  "applies_when": "设备、耗材、IVD、实验室工具与医疗供应链。",
+  "questions": [
+    {
+      "id": "MEDTECH_01",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "临床工作流、认证或装机平台能否形成持续使用优势？",
+      "evidence": [
+        "认证",
+        "培训",
+        "装机",
+        "耗材绑定的实际留存"
+      ],
+      "anchors": {
+        "1": "易替换且无临床或工作流优势",
+        "5": "有认证与安装基础但竞争明显",
+        "10": "临床价值与工作流嵌入形成可靠留存"
+      },
+      "metric_id": "score.medtech_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "MEDTECH_02",
+      "dimension": "business",
+      "priority": 1,
+      "question": "设备、耗材和服务组合的全成本回报如何？",
+      "evidence": [
+        "装机成本",
+        "耗材使用",
+        "服务成本",
+        "回款"
+      ],
+      "anchors": {
+        "1": "低价装机后耗材利用不足",
+        "5": "成熟装机能回本但使用率波动",
+        "10": "成熟设备批次产生稳定全成本回报"
+      },
+      "metric_id": "score.medtech_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "MEDTECH_03",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "质量召回、报销和采购规则变化的风险是否可控？",
+      "evidence": [
+        "召回",
+        "支付政策",
+        "集采",
+        "客户预算"
+      ],
+      "anchors": {
+        "1": "关键品类受重大限制且无缓冲",
+        "5": "可应对但价格或需求承压",
+        "10": "产品价值和成本结构支持规则变化下持续经营"
+      },
+      "metric_id": "score.medtech_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "MEDTECH_04",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "新产品与新适应场景能否从批准转成实际使用？",
+      "evidence": [
+        "批准范围",
+        "培训",
+        "临床采用",
+        "采购周期"
+      ],
+      "anchors": {
+        "1": "获批但长期未形成使用",
+        "5": "有采购兴趣但利用率待验证",
+        "10": "采购和实际使用均有连续验证"
+      },
+      "metric_id": "score.medtech_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

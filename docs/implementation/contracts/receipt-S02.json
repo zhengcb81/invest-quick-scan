@@ -1,0 +1,156 @@
+{
+  "task_id": "S02",
+  "status": "verified",
+  "owner": "iqs",
+  "plan_version": "1.6.2",
+  "plan_sha256": "55DBB8D63A27A8D8A8ACD37C46322CD0FBDCE2D5113CEEC3E416E16AA401AC0F",
+  "case_catalog_sha256": "38642BFDBEA9C3BEBB7272D13EED6D3C4C85BEBC99D5A9C7B372CC7400E557FA",
+  "implementation_snapshot": {
+    "commit": null,
+    "file_hashes": {
+      "scripts/question_sets.py": "9702F21AA8F3C2ADC6BB39135B84700A8F93F3E80109DD2DFCDEF1105DEEB045",
+      "tests/test_question_sets.py": "2FF8090C17B2AA89EC96C708302EFDF895D3797BD759ED986AD2110970F98FE0",
+      "references/scoring.md": "B1402B6FEFB3D7E32605886227002E0E767E2BBB41D1D86C88418E9D7F069460",
+      "references/stockqa-integration.md": "72F05E16FA498BBB2BC2B7E7C4D4FF8D84B0FBD672FB1D5D79D65D080144F35B"
+    }
+  },
+  "dependency_receipts": [
+    "docs/implementation/contracts/receipt-S01.json",
+    "docs/implementation/reviews/G0/independent-final-review.md",
+    "docs/implementation/reviews/Q12-S02/independent-review.md",
+    "docs/implementation/reviews/Q12-S02/independent-review-addendum.md"
+  ],
+  "changed_files": [
+    "scripts/question_sets.py",
+    "tests/test_question_sets.py",
+    "references/scoring.md",
+    "references/stockqa-integration.md"
+  ],
+  "contract_changes": [
+    "screening-1 accepts raw public StockQA CLI receipts only when input_question_sha256 matches the selected manifest prompt and top-level plus final-attempt HTTP status are integer 200 and consistent.",
+    "Mismatched question hash or final HTTP status preserves reported_score for diagnosis but sets adopted score=null and screening_status=unusable.",
+    "Screening observations remain separate from accepted deep-research evidence."
+  ],
+  "checks": [
+    {
+      "case_id": "SC-12, SC-13",
+      "kind": "automated",
+      "selector": "tests/test_question_sets.py; real StockQA public CLI path with HTTP transport stubbed and fail-closed receipt mutations",
+      "command": "python -X utf8 -m pytest -q -p no:cacheprovider --basetemp=<unique system TEMP root>/pytest tests/test_question_sets.py",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 45,
+      "subtest_count": 92,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-S02-final-targeted-2026-09-24.log",
+      "output_sha256": "2D06BD735792760E8A3A43BCC3979836D9413599CB38571AB622799CA591FEBC",
+      "explanation": "覆盖原样StockQA公开CLI结果导入得到8分、题目哈希/最终attempt状态篡改失败关闭；实际HTTP发送由固定响应替身隔离，不进行联网。测试临时根在finally清理。"
+    },
+    {
+      "case_id": "not_applicable",
+      "kind": "automated",
+      "selector": "full local pytest suite",
+      "command": "python -X utf8 -m pytest -q -p no:cacheprovider --basetemp=<unique system TEMP root>/pytest",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 220,
+      "subtest_count": 128,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q12-local-final-2026-09-24.log",
+      "output_sha256": "060F25A8B4A97C179BE3E7020651EE7AFB8F4E32A9405E6CE69BC9D04FB566B7",
+      "explanation": "测试输出目录为独立系统TEMP子目录，运行结束已清理。"
+    },
+    {
+      "case_id": "not_applicable",
+      "kind": "automated",
+      "selector": "implementation plan, question library, and diff whitespace checks",
+      "command": "python -X utf8 scripts/implementation_plan.py validate; python -X utf8 scripts/question_sets.py validate; git diff --check",
+      "cwd": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 3,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q12-contracts-final-2026-09-24.log",
+      "output_sha256": "021D6140A9AD115A07C00AEAE39A04889CA3DB54437A71DAE7D6DA6EBABD3E0B",
+      "explanation": "计划74项任务/174验收场景/G6有效；题库48模块/222题有效。git diff --check通过，只有换行风格提示。"
+    },
+    {
+      "case_id": "SC-12, SC-13",
+      "kind": "external_automated_evidence",
+      "selector": "StockQAbyLLM Q12 unit/public CLI targeted suite",
+      "command": "See StockQAbyLLM Q12 task binding and independent review report; local evidence log retained without further external writes.",
+      "cwd": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 64,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-Q12-stockqa-targeted-2026-09-24.log",
+      "output_sha256": "12BE884783E7CCF958DE12D4CAF4DB5E430574EBD7B18A92AB3A0665223A85CF",
+      "explanation": "Q12 owner-side targeted unit/public CLI tests; independent review additionally ran its expanded relevant set. No live provider request."
+    },
+    {
+      "case_id": "not_applicable",
+      "kind": "external_automated_evidence",
+      "selector": "StockQAbyLLM suite excluding unrelated tests/unit/test_http_client.py",
+      "command": "See retained Q12 run record; test_http_client.py excluded because sandbox ACL prevents reading the Miniconda certifi CA bundle.",
+      "cwd": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "result": "passed_with_skip",
+      "exit_code": 0,
+      "executed_count": 461,
+      "skipped_count": 1,
+      "excluded_count": 25,
+      "output_path": "docs/implementation/contracts/validation-Q12-stockqa-rest-full-2026-09-24.log",
+      "output_sha256": "02E92BD544F27CF6391617383866069E951581E2A4102633645D5299C250FE84",
+      "explanation": "受限全套中除25项环境受限HTTP client用例外通过461项、跳过1项live用例。完整未过滤StockQA全套的13项HTTP client失败由同一certifi读取ACL导致，不能标作全套通过。"
+    }
+  ],
+  "validation": {
+    "local_targeted": "45 passed, 92 subtests passed",
+    "local_full": "220 passed, 128 subtests passed",
+    "stockqa_q12_targeted": "64 passed",
+    "stockqa_non_httpclient_full": "461 passed, 1 skipped; 25 unrelated tests excluded",
+    "question_library": "48 modules, 222 questions; validation passed",
+    "implementation_plan": "74 tasks, 174 acceptance cases, G6; validation passed",
+    "network_used": false,
+    "live_provider_executed": false,
+    "isolated_temp_roots_cleaned": true
+  },
+  "external_snapshot": {
+    "project": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+    "files": {
+      "src/core/models.py": "3A2659B5A67E79F6CADD54571F87FA0AFE1E34B4D03FBE52EF667EF101456136",
+      "src/providers/llm_client.py": "F06F4AD74C2A159575DF85596CAE2247CCB53ACCD98CA05DE6B25B01B24E68BE",
+      "tests/unit/test_llm_client.py": "29C7ECC54C9C32C8AEE6939F07BEA30F8F88FB5350679A78B26C92BF048BF32B",
+      "tests/unit/test_models.py": "18CBD10F47E9DA821E8E542CB69E3D4CB57161229DC29E8CC8E5EDEB62AEE603",
+      "tests/integration/test_quick_scan_cli.py": "A9DC89C1DB656EB275EF4565E218AFC742F9DB26180D0B8B2CCC3D1ACDFC36FF"
+    }
+  },
+  "review": {
+    "reviewer": "/root/g0_independent_review",
+    "result": "verified_for_offline_local_contract_scope",
+    "findings": [],
+    "reports": [
+      {
+        "path": "docs/implementation/reviews/Q12-S02/independent-review.md",
+        "sha256": "460EF8BD067084C874BC7F40D3CB8EBEE82B1F780568246D63927B7C8D07FE1A"
+      },
+      {
+        "path": "docs/implementation/reviews/Q12-S02/independent-review-addendum.md",
+        "sha256": "83BA3278E0300C7DF8D1A98BB168CB5C063270EC3D8054CBE71B11FDE2E68479"
+      }
+    ],
+    "closed_document_finding": "Q12-DOC-01"
+  },
+  "rollback_evidence": "本地S02实现只涉及本回执列出的题库适配器、回归测试与说明；测试新增的所有TEMP根已清理。未写入StockWiki/company-wiki。已授权的StockQA代码路径保持用户改动状态，不做自动回滚或覆盖。",
+  "open_issues": [
+    "Q01—Q03各自任务回执/状态尚待StockQA owner侧独立收口；Q12/S02报告不替代这些单独闭环。",
+    "本机无OpenAI API key；真实搜索和LLM-01 live未执行，不能据离线CLI集成宣称真实网络已通过。",
+    "StockWiki生产导入、数据库ACK和UI尚未实现；真实跨仓E2E-06保持specified_not_executed。",
+    "StockQA未过滤全套的13项HTTP client测试因沙箱拒绝读取Miniconda certifi CA文件而失败；未将受限子集结果表述为完整全套通过。"
+  ],
+  "next_task": "Q04",
+  "resume_from": "本地S02与Q12离线/本地范围已经独立复核。接下来只读调查StockQA Q04有序模型策略的真实调用链和具体测试范围；由于用户要求外部仓库写入须另行授权，未经新授权不改写StockQA代码、配置或回执。",
+  "scope_statement": "S02完成 screening-1 与实际StockQA公开CLI结构之间的隔离本地集成、回执校验与失败关闭。此回执不代表StockWiki落库/UI、真实LLM搜索、费用或G6生产发布完成。Q12上游代码/测试证据仅按用户当时的窄范围授权读取和复核；本回执保存在invest-quick-scan，不向StockQA写入任何新文件。"
+}

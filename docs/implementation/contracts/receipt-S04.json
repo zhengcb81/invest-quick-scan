@@ -1,0 +1,395 @@
+{
+  "schema_version": "2.0",
+  "core": {
+    "task_id": "S04",
+    "plan_version": "1.10.0",
+    "plan_sha256": "736fdc39bb440f3caebfa51448be60f830792610a07305eac9b0c9c7b9bc178f",
+    "case_catalog_sha256": "7d78585e677adb75ffda91216ba993d664f12c1abeb779a99e12722ac1ae580f",
+    "hash_algorithm": "canonical-json-sha256-v1",
+    "task_spec_sha256": "62f4c4d7f971fd2a5e34f105e188080c85c6e742229de08ea89658552ee1ab88",
+    "owned_case_bundle_sha256": "0c8da8c72dac62915f4992d68800049d51e29a524d9d6b739336232fba6a26a1",
+    "referenced_case_bundle_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "global_boundaries_sha256": "d05c77a2814f1f1d296963f709727c71969c5ee102d2848e0e770059e4874b54",
+    "implementation_author_id": "agent:/root",
+    "case_results": [
+      {
+        "case_id": "MOD-02",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "MOD-02.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_02_s04_rejects_same_id_copyedit_and_duplicate_core_replacement",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "MOD-14",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "MOD-14.A01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_a01_registry_rejects_duplicate_module_identity",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          },
+          {
+            "assertion_id": "MOD-14.A02",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_a02_registry_rejects_unknown_self_conflicting_and_cyclic_edges",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          },
+          {
+            "assertion_id": "MOD-14.A03",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_a03_release_rejects_duplicate_module_and_bad_archive_hash",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          },
+          {
+            "assertion_id": "MOD-14.A04",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_release_reader_rejects_hash_consistent_dependency_cycle",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          },
+          {
+            "assertion_id": "MOD-14.A05",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_a05_release_rejects_unknown_self_and_contradictory_edges",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          },
+          {
+            "assertion_id": "MOD-14.A06",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_a06_release_rejects_module_tombstone_active_collision",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          },
+          {
+            "assertion_id": "MOD-14.A07",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_a07_release_rejects_release_tombstone_active_collision",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          },
+          {
+            "assertion_id": "MOD-14.A08",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_a08_release_rejects_omitted_module_tombstone",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          },
+          {
+            "assertion_id": "MOD-14.A09",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_a09_release_returns_only_complete_valid_archive_set",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          },
+          {
+            "assertion_id": "MOD-14.A10",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_module_contract.py::ModuleContractTests::test_mod_14_a10_release_allows_conflicting_alternatives_to_coexist",
+            "command": "python -B -X utf8 -m pytest -W error -p no:cacheprovider --basetemp \"C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-s04-seal-5c720eef1dbf4066a0e051fa06d90b34\\pytest\" tests/test_module_contract.py -vv",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-S04-legacy-v1-2026-09-27.log",
+              "sha256": "317ec3e65e45b362cbc76e4e36b15f8befb45d95b3574235601bfddc507a7f40"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "5c720eef1dbf4066a0e051fa06d90b34",
+              "cleanup_verified": true,
+              "cleanup_summary": "Unique temporary root used for TEMP, TMP, and pytest basetemp; removed in finally and absence verified."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no provider, API, or network request."
+            }
+          }
+        ]
+      }
+    ],
+    "implementation_snapshot": [
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/question-modules.md",
+        "sha256": "039f789b0905c69705798288fbbfa8dc884b0fa70b7b2af9e1f221be804512a6"
+      },
+      {
+        "root_id": "iqs",
+        "path": "docs/modular-question-bank-design.md",
+        "sha256": "c3eb96e04499a563657c89c58518f858acee8449946c1d1daaaeb37a16a15e8b"
+      },
+      {
+        "root_id": "iqs",
+        "path": "schemas/quick_scan/module-release.schema.json",
+        "sha256": "6265d0c9c64ce40f25ca1d0906183941e134b868821c1d8e3ed5c83d9ab24601"
+      },
+      {
+        "root_id": "iqs",
+        "path": "schemas/quick_scan/question-module.schema.json",
+        "sha256": "ae74e817c82846540882894a57c0750619ecae3541ced04abb5b0f89c8564b72"
+      },
+      {
+        "root_id": "iqs",
+        "path": "schemas/quick_scan/route-decision.schema.json",
+        "sha256": "9c4035dab03d2810b926eaf5ece214494a2984d8f63ede25c84605119a3086e4"
+      },
+      {
+        "root_id": "iqs",
+        "path": "scripts/module_contract.py",
+        "sha256": "abe3b9549f433aced1a3f18d6584753434e76b6650ae687c1a7cca462961a7b9"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/test_module_contract.py",
+        "sha256": "9a9bde8b7fdd44325ca6eeef2ad7075ea41bb8b1a0c7e3fcf8df299899bca7c3"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/fixtures/route_decision_legacy_v1.json",
+        "sha256": "bad38c6bde47674fd58399512afdb928ee80196a96b79d0958f500ca8e71b00d"
+      }
+    ],
+    "implementation_snapshot_sha256": "791fd39b2f10a39d61bb5e96038135fea92cc9663ba80e4dedb41bb2c026a2d8",
+    "independent_review": {
+      "report": {
+        "root_id": "iqs",
+        "path": "docs/implementation/reviews/S04/route-decision-v1-v2-compatibility-2026-09-27.json",
+        "sha256": "e84624fb6ddb27053f87434152cb0e53f15b4ec148aa9fed7754e581e5050d90"
+      },
+      "reviewer_id": "agent:/root/q07_checkpoint_design_review",
+      "reviewer_role": "independent read-only implementation reviewer",
+      "independent": true,
+      "separation_basis": "Separate review subagent; did not implement or modify the reviewed S04 implementation, schemas, tests, or fixture.",
+      "outcome": "approved",
+      "implementation_snapshot_sha256": "791fd39b2f10a39d61bb5e96038135fea92cc9663ba80e4dedb41bb2c026a2d8",
+      "open_findings": []
+    },
+    "dependency_evidence": [
+      {
+        "task_id": "G0",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-G0.json",
+          "sha256": "aa06899784e6692f6e31baf0ff23889dfbd19746195b09753530033464000617"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "S01",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-S01.json",
+          "sha256": "efebba65c97668b6cbda4fcf2182009cd38063f22d6bb54d06eceb8f09949978"
+        },
+        "status": "eligible_to_close"
+      }
+    ]
+  },
+  "core_sha256": "fd269602b4fa48769489522c4c35d000010069867250582b0c5c23535c91523d"
+}

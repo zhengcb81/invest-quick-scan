@@ -1,0 +1,24 @@
+command: C:\Miniconda\python.exe -m pytest -p pytest_asyncio.plugin -p no:cacheprovider -o addopts= tests/unit/test_llm_client.py tests/unit/test_llm_provider.py tests/unit/test_llm_integration.py tests/unit/test_llm_response_parser.py tests/unit/test_quick_scan_work_store.py tests/unit/test_quick_scan_work_transport.py tests/integration/test_quick_scan_cli.py --basetemp <unique TemporaryDirectory>
+exit_code: 0
+temp_root_removed: True (verified after TemporaryDirectory context exit)
+API keys and live flags removed from child environment: true
+
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0
+rootdir: C:\Users\郑曾波\Projects\StockQAbyLLM
+configfile: pyproject.toml
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 274 items
+
+tests\unit\test_llm_client.py .......................................... [ 15%]
+..............................                                           [ 26%]
+tests\unit\test_llm_provider.py ..........................               [ 35%]
+tests\unit\test_llm_integration.py ..................................... [ 49%]
+...........................                                              [ 59%]
+tests\unit\test_llm_response_parser.py .............................     [ 69%]
+tests\unit\test_quick_scan_work_store.py ...........................     [ 79%]
+tests\unit\test_quick_scan_work_transport.py ..................          [ 86%]
+tests\integration\test_quick_scan_cli.py ............................... [ 97%]
+.......                                                                  [100%]
+
+============================ 274 passed in 22.97s =============================

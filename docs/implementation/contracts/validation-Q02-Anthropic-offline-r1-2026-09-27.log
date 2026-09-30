@@ -1,0 +1,68 @@
+TEMP_COPY_AND_PYTEST_CLEANUP_VERIFIED: True
+COMMAND: C:\Miniconda\python.exe -B -X utf8 -m pytest -p no:cacheprovider --no-cov --basetemp C:\Users\郑曾波\AppData\Local\Temp\stockqa-q02-anthropic-offline-hficsbx6\pytest -q tests/unit/test_llm_client.py tests/integration/test_quick_scan_cli.py
+EXIT_CODE: 1
+...................................EEEEEE.............................EE [ 70%]
+.........................EE...                                           [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimaxi.com/v1/responses-True] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimax.cn/v1/responses-True] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimax.io/v1/responses-True] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimax.cn/anthropic/v1/messages-True] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimax.io/anthropic/v1/messages-True] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimaxi.com/anthropic/v1/messages-False] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of test_public_cli_rejects_canonical_provider_host_mismatch_before_request[openai-https://api.minimaxi.com/v1/responses-MiniMax-M3] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of test_public_cli_rejects_canonical_provider_host_mismatch_before_request[minimax-https://api.openai.com/v1/responses-gpt-4.1-mini] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of test_public_cli_minimax_wrong_host_or_model_is_preflight_unavailable[https://api.minimax.cn/v1/chat/completions-MiniMax-M3] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+_ ERROR at setup of test_public_cli_minimax_wrong_host_or_model_is_preflight_unavailable[https://api.minimaxi.com/v1/responses-MiniMax-M2.7] _
+ScopeMismatch: You tried to access the function scoped fixture base_url with a session scoped request object. Requesting fixture stack:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\pytest_base_url\plugin.py:18:  def _verify_url(request, base_url)
+Requested fixture:
+..\..\..\..\..\..\..\Miniconda\Lib\site-packages\_pytest\python.py:1154:  def get_direct_param_fixture_func(request: 'FixtureRequest') -> 'Any'
+=========================== short test summary info ===========================
+ERROR tests/unit/test_llm_client.py::test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimaxi.com/v1/responses-True]
+ERROR tests/unit/test_llm_client.py::test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimax.cn/v1/responses-True]
+ERROR tests/unit/test_llm_client.py::test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimax.io/v1/responses-True]
+ERROR tests/unit/test_llm_client.py::test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimax.cn/anthropic/v1/messages-True]
+ERROR tests/unit/test_llm_client.py::test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimax.io/anthropic/v1/messages-True]
+ERROR tests/unit/test_llm_client.py::test_minimax_search_capabilities_are_limited_to_allowlisted_routes[https://api.minimaxi.com/anthropic/v1/messages-False]
+ERROR tests/integration/test_quick_scan_cli.py::test_public_cli_rejects_canonical_provider_host_mismatch_before_request[openai-https://api.minimaxi.com/v1/responses-MiniMax-M3]
+ERROR tests/integration/test_quick_scan_cli.py::test_public_cli_rejects_canonical_provider_host_mismatch_before_request[minimax-https://api.openai.com/v1/responses-gpt-4.1-mini]
+ERROR tests/integration/test_quick_scan_cli.py::test_public_cli_minimax_wrong_host_or_model_is_preflight_unavailable[https://api.minimax.cn/v1/chat/completions-MiniMax-M3]
+ERROR tests/integration/test_quick_scan_cli.py::test_public_cli_minimax_wrong_host_or_model_is_preflight_unavailable[https://api.minimaxi.com/v1/responses-MiniMax-M2.7]
+92 passed, 10 errors in 4.11s

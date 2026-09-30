@@ -1,0 +1,33 @@
+{
+  "task_id": "W01",
+  "plan_version": "1.7.4",
+  "owner": "stockwiki",
+  "status": "verified_for_local_SQLite_identity_migration_scope",
+  "authorization": "User explicitly authorized only StockWiki/.gitignore, new stockwiki/quick_scan_store.py, and new tests/test_quick_scan_store.py for W01 on 2026-09-26.",
+  "source_snapshot_sha256": {
+    "StockWiki/.gitignore": "9E320C206A5259F0DC5C78B73B4455F20E28979FD349328DCAAE9695C691061F",
+    "StockWiki/stockwiki/quick_scan_store.py": "F0D3F4241B8F251A6996970A6AF7EADD49463991EBD3AA88163950CDC8866C0E",
+    "StockWiki/tests/test_quick_scan_store.py": "274C709126626C6C0CFA9ADE43C0F71B6913A94B90D168203779131C4BC393B5"
+  },
+  "cases": ["DB-01", "ID-01", "ID-02", "ID-04", "DB-06"],
+  "checks": {
+    "stockwiki_quick_scan_and_existing_schema_tests": "29 passed, zero skipped when real input configured",
+    "real_data_input": "StockWiki/data/companies/TSM.N/classification.yaml copied read-only to a temporary workspace; source SHA unchanged",
+    "ruff_no_cache": "passed",
+    "git_diff_check": "passed",
+    "temporary_workspace_cleaned": true,
+    "production_database_migrated": false,
+    "network_used": false
+  },
+  "independent_review": {
+    "reviewer": "/root/g0_independent_review",
+    "decision": "verified_for_local_W01_scope",
+    "report_path": "docs/implementation/reviews/W01/independent-follow-up-2026-09-26.md",
+    "report_sha256": "1D2DDB4C61499214755B449EC44AE0AB2B53500EFBD658230D5AB6FCB811D8C0",
+    "prior_findings_closed": ["W01-IR-01", "W01-IR-02", "W01-IR-03"]
+  },
+  "limits": [
+    "W02 master import, W03 member commands, W05 immutable observation ingestion, production migration and backup restoration remain separate tasks.",
+    "StockWiki formal YAML workspace and company-wiki sources were not modified."
+  ]
+}

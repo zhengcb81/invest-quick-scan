@@ -1,0 +1,1052 @@
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+.........FFFFFFFF.FF.F..F..F............................................ [ 52%]
+........................................................................ [ 70%]
+........................................................................ [ 87%]
+..................................................                       [100%]
+================================== FAILURES ===================================
+___________ TestAsyncHTTPClient.test_get_client_creates_new_client ____________
+
+self = <tests.unit.test_http_client.TestAsyncHTTPClient object at 0x00000156EE14AD50>
+
+    @pytest.mark.asyncio
+    async def test_get_client_creates_new_client(self):
+        """测试首次获取 client 时创建新实例。"""
+>       client = await AsyncHTTPClient.get_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:99: in get_client
+    cls._client = httpx.AsyncClient(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1402: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1445: in _init_transport
+    return AsyncHTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:297: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+__________ TestAsyncHTTPClient.test_get_client_returns_same_instance __________
+
+self = <tests.unit.test_http_client.TestAsyncHTTPClient object at 0x00000156EE14AC10>
+
+    @pytest.mark.asyncio
+    async def test_get_client_returns_same_instance(self):
+        """测试多次获取返回同一实例（单例模式）。"""
+>       client1 = await AsyncHTTPClient.get_client()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:99: in get_client
+    cls._client = httpx.AsyncClient(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1402: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1445: in _init_transport
+    return AsyncHTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:297: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+__________ TestAsyncHTTPClient.test_get_client_has_limits_configured __________
+
+self = <tests.unit.test_http_client.TestAsyncHTTPClient object at 0x00000156ED142780>
+
+    @pytest.mark.asyncio
+    async def test_get_client_has_limits_configured(self):
+        """测试 client 配置了连接池限制。"""
+>       client = await AsyncHTTPClient.get_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:99: in get_client
+    cls._client = httpx.AsyncClient(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1402: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1445: in _init_transport
+    return AsyncHTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:297: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+____________________ TestAsyncHTTPClient.test_close_client ____________________
+
+self = <tests.unit.test_http_client.TestAsyncHTTPClient object at 0x00000156ED1428B0>
+
+    @pytest.mark.asyncio
+    async def test_close_client(self):
+        """测试关闭 client。"""
+>       client = await AsyncHTTPClient.get_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:99: in get_client
+    cls._client = httpx.AsyncClient(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1402: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1445: in _init_transport
+    return AsyncHTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:297: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+_______________ TestAsyncHTTPClient.test_get_client_after_close _______________
+
+self = <tests.unit.test_http_client.TestAsyncHTTPClient object at 0x00000156EE209010>
+
+    @pytest.mark.asyncio
+    async def test_get_client_after_close(self):
+        """测试关闭后重新获取创建新 client。"""
+>       client1 = await AsyncHTTPClient.get_client()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:99: in get_client
+    cls._client = httpx.AsyncClient(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1402: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1445: in _init_transport
+    return AsyncHTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:297: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+__________________ TestAsyncHTTPClient.test_get_sync_client ___________________
+
+self = <tests.unit.test_http_client.TestAsyncHTTPClient object at 0x00000156ED12ABE0>
+
+    def test_get_sync_client(self):
+        """测试获取同步 httpx.Client。"""
+>       client = AsyncHTTPClient.get_sync_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:136: in get_sync_client
+    return httpx.Client(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:688: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:731: in _init_transport
+    return HTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:153: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+_______ TestAsyncHTTPClient.test_get_sync_client_has_limits_configured ________
+
+self = <tests.unit.test_http_client.TestAsyncHTTPClient object at 0x00000156ED12ACF0>
+
+    def test_get_sync_client_has_limits_configured(self):
+        """测试同步 client 配置了连接池限制。"""
+>       client = AsyncHTTPClient.get_sync_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:136: in get_sync_client
+    return httpx.Client(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:688: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:731: in _init_transport
+    return HTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:153: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+_______________ TestAsyncHTTPClient.test_get_sync_client_close ________________
+
+self = <tests.unit.test_http_client.TestAsyncHTTPClient object at 0x00000156ED14E950>
+
+    def test_get_sync_client_close(self):
+        """测试关闭同步 client。"""
+>       client = AsyncHTTPClient.get_sync_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:136: in get_sync_client
+    return httpx.Client(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:688: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:731: in _init_transport
+    return HTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:153: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+_________________ TestHTTPClientManager.test_get_async_client _________________
+
+self = <tests.unit.test_http_client.TestHTTPClientManager object at 0x00000156EE14AFD0>
+
+    @pytest.mark.asyncio
+    async def test_get_async_client(self):
+        """测试获取异步 client。"""
+>       client = await HTTPClientManager.get_async_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:200: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:158: in get_async_client
+    return await AsyncHTTPClient.get_client()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:99: in get_client
+    cls._client = httpx.AsyncClient(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1402: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1445: in _init_transport
+    return AsyncHTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:297: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+______________ TestHTTPClientManager.test_get_httpx_sync_client _______________
+
+self = <tests.unit.test_http_client.TestHTTPClientManager object at 0x00000156ED1429E0>
+
+    def test_get_httpx_sync_client(self):
+        """测试获取同步 httpx client。"""
+>       client = HTTPClientManager.get_httpx_sync_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:205: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:163: in get_httpx_sync_client
+    return AsyncHTTPClient.get_sync_client()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:136: in get_sync_client
+    return httpx.Client(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:688: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:731: in _init_transport
+    return HTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:153: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+____________________ TestHTTPClientManager.test_aclose_all ____________________
+
+self = <tests.unit.test_http_client.TestHTTPClientManager object at 0x00000156EE18B770>
+
+    @pytest.mark.asyncio
+    async def test_aclose_all(self):
+        """测试异步关闭所有客户端。"""
+        # 创建一些客户端
+        HTTPClientManager.get_sync_session()
+>       await HTTPClientManager.get_async_client()
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:158: in get_async_client
+    return await AsyncHTTPClient.get_client()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:99: in get_client
+    cls._client = httpx.AsyncClient(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1402: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1445: in _init_transport
+    return AsyncHTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:297: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+______ TestGlobalHTTPClientManager.test_get_httpx_sync_client_via_global ______
+
+self = <tests.unit.test_http_client.TestGlobalHTTPClientManager object at 0x00000156ED142C40>
+
+    def test_get_httpx_sync_client_via_global(self):
+        """测试通过全局实例获取同步 httpx client。"""
+>       client = http_client_manager.get_httpx_sync_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:244: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:163: in get_httpx_sync_client
+    return AsyncHTTPClient.get_sync_client()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:136: in get_sync_client
+    return httpx.Client(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:688: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:731: in _init_transport
+    return HTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:153: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+________ TestHTTPClientIntegration.test_async_http_client_get_request _________
+
+self = <tests.unit.test_http_client.TestHTTPClientIntegration object at 0x00000156ED142D70>
+mock_get = <AsyncMock name='get' id='1472907010336'>
+
+    @pytest.mark.asyncio
+    @patch("httpx.AsyncClient.get")
+    async def test_async_http_client_get_request(self, mock_get):
+        """测试使用异步客户端发送 GET 请求。"""
+        # Mock 响应
+        mock_response = AsyncMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"result": "success"}
+        mock_get.return_value = mock_response
+    
+        # 获取 client 并发送请求
+>       client = await AsyncHTTPClient.get_client()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py:312: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\Projects\StockQAbyLLM\src\utils\http_client.py:99: in get_client
+    cls._client = httpx.AsyncClient(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1402: in __init__
+    self._transport = self._init_transport(
+C:\Miniconda\Lib\site-packages\httpx\_client.py:1445: in _init_transport
+    return AsyncHTTPTransport(
+C:\Miniconda\Lib\site-packages\httpx\_transports\default.py:297: in __init__
+    ssl_context = create_ssl_context(verify=verify, cert=cert, trust_env=trust_env)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\site-packages\httpx\_config.py:40: in create_ssl_context
+    ctx = ssl.create_default_context(cafile=certifi.where())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+purpose = <Purpose.SERVER_AUTH: _ASN1Object(nid=129, shortname='serverAuth', longname='TLS Web Server Authentication', oid='1.3.6.1.5.5.7.3.1')>
+cafile = 'C:\\Miniconda\\Lib\\site-packages\\certifi\\cacert.pem', capath = None
+cadata = None
+
+    def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,
+                               capath=None, cadata=None):
+        """Create a SSLContext object with default settings.
+    
+        NOTE: The protocol and settings may change anytime without prior
+              deprecation. The values represent a fair balance between maximum
+              compatibility and security.
+        """
+        if not isinstance(purpose, _ASN1Object):
+            raise TypeError(purpose)
+    
+        # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,
+        # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE
+        # by default.
+        if purpose == Purpose.SERVER_AUTH:
+            # verify certs and host name in client mode
+            context = SSLContext(PROTOCOL_TLS_CLIENT)
+            context.verify_mode = CERT_REQUIRED
+            context.check_hostname = True
+        elif purpose == Purpose.CLIENT_AUTH:
+            context = SSLContext(PROTOCOL_TLS_SERVER)
+        else:
+            raise ValueError(purpose)
+    
+        # `VERIFY_X509_PARTIAL_CHAIN` makes OpenSSL's chain building behave more
+        # like RFC 3280 and 5280, which specify that chain building stops with the
+        # first trust anchor, even if that anchor is not self-signed.
+        #
+        # `VERIFY_X509_STRICT` makes OpenSSL more conservative about the
+        # certificates it accepts, including "disabling workarounds for
+        # some broken certificates."
+        context.verify_flags |= (_ssl.VERIFY_X509_PARTIAL_CHAIN |
+                                 _ssl.VERIFY_X509_STRICT)
+    
+        if cafile or capath or cadata:
+>           context.load_verify_locations(cafile, capath, cadata)
+E           PermissionError: [Errno 13] Permission denied
+
+C:\Miniconda\Lib\ssl.py:717: PermissionError
+
+------------------------------------------ benchmark 'batch_aggregation': 1 tests -----------------------------------------
+Name (time in us)              Min       Max     Mean   StdDev   Median     IQR  Outliers  OPS (Kops/s)  Rounds  Iterations
+---------------------------------------------------------------------------------------------------------------------------
+test_answer_aggregation     7.0999  959.0000  13.2055  11.2317  12.7000  2.1001  522;7192       75.7260   44643           1
+---------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------- benchmark 'batch_chunked': 3 tests ---------------------------------------------------------------------------------------
+Name (time in us)                           Min                   Max                Mean             StdDev              Median                IQR            Outliers  OPS (Kops/s)            Rounds  Iterations
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_chunked_strategy_small_batch       92.0000 (1.0)        954.7999 (1.0)      165.9804 (1.0)      58.0152 (1.0)      153.4999 (1.0)      21.2999 (1.0)       247;316        6.0248 (1.0)        1710           1
+test_chunked_strategy_medium_batch      94.2000 (1.02)     1,387.5000 (1.45)     176.8065 (1.07)     62.4189 (1.08)     168.5000 (1.10)     29.4000 (1.38)      341;354        5.6559 (0.94)       2428           1
+test_chunked_strategy_large_batch      125.6000 (1.37)     1,429.0001 (1.50)     243.1054 (1.46)     79.1937 (1.37)     230.3000 (1.50)     44.2001 (2.08)      216;146        4.1134 (0.68)       1774           1
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------- benchmark 'batch_formatter': 1 tests -------------------------------------------
+Name (time in us)             Min       Max      Mean   StdDev    Median      IQR  Outliers  OPS (Kops/s)  Rounds  Iterations
+-----------------------------------------------------------------------------------------------------------------------------
+test_json_formatting     103.9000  976.3001  176.2902  41.9484  177.6000  16.6000   632;765        5.6725    3504           1
+-----------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------- benchmark 'batch_progress': 1 tests ---------------------------------------------
+Name (time in us)               Min       Max      Mean   StdDev    Median      IQR  Outliers  OPS (Kops/s)  Rounds  Iterations
+-------------------------------------------------------------------------------------------------------------------------------
+test_progress_reporting     60.4000  618.5999  110.7555  26.1773  108.3000  16.0999   929;772        9.0289    4654           1
+-------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------- benchmark 'batch_progress_calculation': 1 tests -------------------------------------------
+Name (time in ns)                 Min          Max      Mean    StdDev    Median      IQR    Outliers  OPS (Mops/s)  Rounds  Iterations
+---------------------------------------------------------------------------------------------------------------------------------------
+test_progress_percentage     215.3773  46,838.4600  404.0433  231.7094  376.9259  53.8555  9375;57257        2.4750  185184          13
+---------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------- benchmark 'batch_serial': 2 tests ---------------------------------------------------------------------------------------
+Name (time in us)                         Min                   Max                Mean             StdDev              Median                IQR            Outliers  OPS (Kops/s)            Rounds  Iterations
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_serial_strategy_small_batch      38.6001 (1.0)        439.9000 (1.0)       83.3049 (1.0)      58.4835 (1.0)       49.7000 (1.0)      82.1999 (2.43)       356;24       12.0041 (1.0)        1914           1
+test_serial_strategy_medium_batch     97.7000 (2.53)     3,487.4000 (7.93)     168.5730 (2.02)     87.6129 (1.50)     159.4000 (3.21)     33.8749 (1.0)       137;206        5.9321 (0.49)       2655           1
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------- benchmark 'batch_strategy_factory': 1 tests -------------------------------------
+Name (time in us)            Min       Max    Mean  StdDev  Median     IQR   Outliers  OPS (Kops/s)  Rounds  Iterations
+-----------------------------------------------------------------------------------------------------------------------
+test_strategy_factory     2.3999  180.8000  4.5463  1.9648  4.4000  0.3001  2412;8937      219.9592   47170           1
+-----------------------------------------------------------------------------------------------------------------------
+
+----------------------------------------------- benchmark 'batch_string': 1 tests ------------------------------------------------
+Name (time in us)               Min         Max      Mean    StdDev    Median      IQR  Outliers  OPS (Kops/s)  Rounds  Iterations
+----------------------------------------------------------------------------------------------------------------------------------
+test_string_operations     234.5000  1,739.5001  445.6997  135.5593  410.3000  64.7501   458;448        2.2437    1944           1
+----------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------ benchmark 'batch_validation': 1 tests -------------------------------------------
+Name (time in us)              Min       Max     Mean   StdDev   Median     IQR   Outliers  OPS (Kops/s)  Rounds  Iterations
+----------------------------------------------------------------------------------------------------------------------------
+test_output_validation     24.0001  445.1000  45.2023  12.2876  45.5000  7.4999  2663;1846       22.1228   13551           1
+----------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------- benchmark 'llm_cache': 2 tests ----------------------------------------------------------------------------------
+Name (time in us)                 Min                   Max              Mean             StdDev            Median               IQR            Outliers  OPS (Kops/s)            Rounds  Iterations
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_cache_performance_hit     4.0999 (1.0)      2,200.1001 (11.84)    7.1522 (1.0)      17.6714 (5.13)     6.9001 (1.0)      2.2000 (1.0)       58;1530      139.8166 (1.0)       21646           1
+test_cache_performance_set     4.1000 (1.00)       185.8000 (1.0)      7.8866 (1.10)      3.4451 (1.0)      7.2999 (1.06)     2.3000 (1.05)    3826;1084      126.7972 (0.91)      32680           1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------- benchmark 'llm_cascade': 1 tests ------------------------------------------------
+Name (time in ns)              Min          Max      Mean    StdDev    Median      IQR   Outliers  OPS (Mops/s)  Rounds  Iterations
+-----------------------------------------------------------------------------------------------------------------------------------
+test_provider_cascade     137.4981  20,977.4997  215.7367  105.1489  197.5015  62.4976  7132;6313        4.6353  123456          40
+-----------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------ benchmark 'llm_config': 1 tests ------------------------------------------
+Name (time in us)          Min       Max    Mean  StdDev  Median     IQR   Outliers  OPS (Kops/s)  Rounds  Iterations
+---------------------------------------------------------------------------------------------------------------------
+test_config_loading     2.0999  171.9000  3.8583  2.4714  3.7999  1.3000  1212;2725      259.1816   49752           1
+---------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------ benchmark 'llm_context': 1 tests ------------------------------------------
+Name (time in us)           Min       Max    Mean  StdDev  Median     IQR   Outliers  OPS (Kops/s)  Rounds  Iterations
+----------------------------------------------------------------------------------------------------------------------
+test_request_context     6.1999  210.2000  9.4526  4.2384  8.3999  2.1000  1421;1575      105.7907   20000           1
+----------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------- benchmark 'llm_cost': 1 tests --------------------------------------------
+Name (time in us)            Min       Max    Mean  StdDev  Median     IQR   Outliers  OPS (Kops/s)  Rounds  Iterations
+-----------------------------------------------------------------------------------------------------------------------
+test_cost_calculation     3.2000  486.2000  5.8365  3.2841  5.8000  1.6999  1566;2381      171.3355   48310           1
+-----------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------- benchmark 'llm_json': 1 tests ----------------------------------------------
+Name (time in us)           Min         Max     Mean   StdDev   Median     IQR  Outliers  OPS (Kops/s)  Rounds  Iterations
+--------------------------------------------------------------------------------------------------------------------------
+test_json_operations     5.5999  1,196.9000  12.3464  10.3681  10.6000  5.1999   379;402       80.9951   31250           1
+--------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------- benchmark 'llm_response': 1 tests ----------------------------------------------
+Name (time in us)             Min         Max      Mean   StdDev    Median      IQR  Outliers  OPS (Kops/s)  Rounds  Iterations
+-------------------------------------------------------------------------------------------------------------------------------
+test_response_parsing     94.4000  3,901.8999  169.2959  90.9021  165.6000  23.5001    69;495        5.9068    2194           1
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------- benchmark 'llm_string': 1 tests --------------------------------------------
+Name (time in us)             Min       Max     Mean  StdDev   Median     IQR  Outliers  OPS (Kops/s)  Rounds  Iterations
+-------------------------------------------------------------------------------------------------------------------------
+test_string_operations     6.1999  531.3001  11.2617  7.1853  10.6001  2.2000  841;3496       88.7967   27856           1
+-------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------- benchmark 'llm_token': 1 tests ---------------------------------------------------
+Name (time in ns)          Min           Max        Mean      StdDev      Median       IQR   Outliers  OPS (Kops/s)  Rounds  Iterations
+---------------------------------------------------------------------------------------------------------------------------------------
+test_token_usage      999.8912  318,199.9782  1,972.1999  1,896.1350  1,900.0145  500.0038  1139;7276      507.0480   67115           1
+---------------------------------------------------------------------------------------------------------------------------------------
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestAsyncHTTPClient::test_get_client_creates_new_client
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestAsyncHTTPClient::test_get_client_returns_same_instance
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestAsyncHTTPClient::test_get_client_has_limits_configured
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestAsyncHTTPClient::test_close_client
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestAsyncHTTPClient::test_get_client_after_close
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestAsyncHTTPClient::test_get_sync_client
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestAsyncHTTPClient::test_get_sync_client_has_limits_configured
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestAsyncHTTPClient::test_get_sync_client_close
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestHTTPClientManager::test_get_async_client
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestHTTPClientManager::test_get_httpx_sync_client
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestHTTPClientManager::test_aclose_all
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestGlobalHTTPClientManager::test_get_httpx_sync_client_via_global
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_http_client.py::TestHTTPClientIntegration::test_async_http_client_get_request
+13 failed, 397 passed in 33.62s

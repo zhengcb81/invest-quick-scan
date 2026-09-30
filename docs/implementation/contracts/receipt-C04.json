@@ -1,0 +1,368 @@
+{
+  "schema_version": "2.0",
+  "core": {
+    "task_id": "C04",
+    "plan_version": "1.9.8",
+    "plan_sha256": "c03175fe2def61eda4dc974816b2bd42b1b09bf042b52ee730924d7d6d31b2f3",
+    "case_catalog_sha256": "8d9342896a3485f90ee67436643f67b6db7af35f24fa2b92f6733ac10a9a7287",
+    "hash_algorithm": "canonical-json-sha256-v1",
+    "task_spec_sha256": "1b2ebefe581550fcdcd916d80d36eec023e107d8030b6041a6a0c423ff63d98a",
+    "owned_case_bundle_sha256": "7838bda98cd59f49e27fcdbbb728cb09b5b74ce2c5dcaab9ac863f52414d4edc",
+    "global_boundaries_sha256": "d05c77a2814f1f1d296963f709727c71969c5ee102d2848e0e770059e4874b54",
+    "implementation_author_id": "agent:/root",
+    "case_results": [
+      {
+        "case_id": "TIME-01",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "TIME-01.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_time_01_reuses_compatible_fresh_observation_without_creating_work",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C04-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "TIME-02",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "TIME-02.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_time_02_expiry_is_strict_at_the_boundary_and_all_datetime_is_utc",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C04-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "TIME-03",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "TIME-03.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_time_03_reimport_never_renews_expired_observation",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C04-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "TIME-04",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "TIME-04.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_time_04_unknown_is_deferred_during_cooldown_then_dispatched",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C04-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "TIME-05",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "TIME-05.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_time_05_screening_threshold_is_not_part_of_logical_work_identity",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C04-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "TIME-07",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "TIME-07.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_time_07_historical_cutoff_requires_source_published_by_cutoff",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C04-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "TIME-08",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "TIME-08.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_time_08_event_invalidation_overrides_ttl_and_missing_date_is_never_fresh",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C04-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      },
+      {
+        "case_id": "TIME-09",
+        "status": "passed",
+        "assertions": [
+          {
+            "assertion_id": "TIME-09.T01",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_time_09_field_freshness_preview_is_stable_and_never_dispatches",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C04-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          },
+          {
+            "assertion_id": "TIME-09.T02",
+            "status": "passed",
+            "test_stage": "contract",
+            "selector": "tests/test_freshness_and_jobs_contract.py::FreshnessAndJobsContractTests::test_time_09_field_freshness_preview_is_stable_and_never_dispatches",
+            "command": "C:\\Miniconda\\python.exe -B -X utf8 -m pytest --rootdir=C:\\Users\\郑曾波\\Projects\\invest-quick-scan --basetemp=C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqs-c01-c07-batch-pkh98mys\\pytest --no-cov -p no:cacheprovider -vv tests/test_identity_contract.py tests/test_metrics_contract.py tests/test_scoring_and_rules_contract.py tests/test_freshness_and_jobs_contract.py tests/test_model_policy.py tests/test_providers_and_budget_contract.py tests/test_exchange_and_query_contract.py tests/test_deployment_contract.py tests/test_g0_regressions.py tests/test_implementation_plan.py",
+            "exit_code": 0,
+            "log": {
+              "root_id": "iqs",
+              "path": "docs/implementation/contracts/validation-C04-batch-r1-2026-09-26.log",
+              "sha256": "c332d8f1e9793936a8da8ce4b28fe942bcdaa4662db54c1c7e3595f82c51290f"
+            },
+            "skip_count": 0,
+            "isolation": {
+              "isolated": true,
+              "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+              "cleanup_verified": true,
+              "cleanup_summary": "The unique pytest temporary root was verified removed after the shared batch."
+            },
+            "network": {
+              "mode": "none",
+              "request_count": 0,
+              "fees_usd": "0",
+              "evidence": "Offline local contract tests only; no external network, provider, or API request."
+            }
+          }
+        ]
+      }
+    ],
+    "implementation_snapshot": [
+      {
+        "root_id": "iqs",
+        "path": "docs/implementation/contracts/freshness-and-jobs.md",
+        "sha256": "8caba3b45ec947036ba248ea34fe0f744beed1e69265e53b8a16f563041dfb6e"
+      },
+      {
+        "root_id": "iqs",
+        "path": "schemas/quick_scan/work.schema.json",
+        "sha256": "8a5054eb82f204ae15b78da18b60d7a12db8c1b6fac40d7bbe80195a32c0ac81"
+      },
+      {
+        "root_id": "iqs",
+        "path": "scripts/work_contract.py",
+        "sha256": "05afd95708a9954ebe5b811cf101ef8928f1a1d05354cfce8aa693d52732732c"
+      },
+      {
+        "root_id": "iqs",
+        "path": "tests/test_freshness_and_jobs_contract.py",
+        "sha256": "df8945a9375208f4a9758940f9c321aca9b0c52e5c7d3558fea01b846d710ae8"
+      }
+    ],
+    "implementation_snapshot_sha256": "baee65b294fc0a4901b8597a34879ed7be44cdb672132815bebf01219782f6fd",
+    "independent_review": {
+      "report": {
+        "root_id": "iqs",
+        "path": "docs/implementation/reviews/C04/preseal-review-r1-2026-09-26.json",
+        "sha256": "9880deac8073ab3f463bc73938cadaf46df4dcebe5bda0474f839f5143490a1b"
+      },
+      "reviewer_id": "agent:/root/p01_receipt_review",
+      "reviewer_role": "independent implementation reviewer",
+      "independent": true,
+      "separation_basis": "Separate read-only sub-agent; did not implement or modify the reviewed task, contracts, schemas, tests, plan, or evidence.",
+      "outcome": "approved",
+      "implementation_snapshot_sha256": "baee65b294fc0a4901b8597a34879ed7be44cdb672132815bebf01219782f6fd",
+      "open_findings": []
+    },
+    "dependency_evidence": [
+      {
+        "task_id": "C01",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C01.json",
+          "sha256": "e91e307282f48e265579d6a66e621aa7fd7bf7718dd3a6beabf436beda96a729"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "C03",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-C03.json",
+          "sha256": "944b3357ec22235d39dcf1093e2f79c82f19ac4b16414c98a1e0c952caeda34f"
+        },
+        "status": "eligible_to_close"
+      },
+      {
+        "task_id": "P01",
+        "kind": "current_receipt",
+        "evidence": {
+          "root_id": "iqs",
+          "path": "docs/implementation/contracts/receipt-P01.json",
+          "sha256": "84d413e8813260a18f571570c193e83bf24ab580a1afd00252d53bddd28fe9c7"
+        },
+        "status": "eligible_to_close"
+      }
+    ]
+  },
+  "core_sha256": "cd464c49ac4426f5dfcf697501e2651675fbd4c209c3750d0098fcb7d467054b"
+}

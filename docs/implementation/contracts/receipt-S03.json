@@ -1,0 +1,107 @@
+{
+  "task_id": "S03",
+  "status": "verified",
+  "owner": "iqs",
+  "plan_version": "1.6.1",
+  "dependency_receipts": [
+    "docs/implementation/reviews/G0/independent-final-review.md",
+    "docs/implementation/contracts/receipt-S01.json"
+  ],
+  "changed_files": [
+    "questions/catalog.json",
+    "questions/common.json",
+    "questions/types/pre_revenue.json",
+    "main_questions.json",
+    "docs/durability-and-change-design.md",
+    "references/buy-side-questions.md",
+    "references/common-framework.md",
+    "tests/test_question_sets.py"
+  ],
+  "implementation_snapshot": {
+    "questions/catalog.json": "252DAB9E3F71868A71147ECB7DAC64CC187D7D56002B28B266A74F406FACAF10",
+    "questions/common.json": "6900922FC077B0558DF49631C2F79E7677B2888C159D29E230D269F23ADFDBE3",
+    "questions/types/pre_revenue.json": "DF9A8C51AE1B330AD22A1FD0B035A3DF9A6D536140DD8D8F1A12DC4104B1F55C",
+    "main_questions.json": "1A21260B972784E94870006E4F47C74C4AD5804CE21269F10FABD2E2FFB7FC9B",
+    "docs/durability-and-change-design.md": "7063A474B897B79646AD69C0B8F0332281E05763344336223E2836A75CFCD2EC",
+    "references/buy-side-questions.md": "34DAA33665449CE26F0CD356BE05E7D57F8109E66E4377139AE9354C275A2A2D",
+    "references/common-framework.md": "651A81A3A332C9E29F796DD7F8C1A179B2AA6ED9F7A788E5BCD1C82F88A068BE",
+    "tests/test_question_sets.py": "BCE695A9165CAA2EEDFB82B77A247246438292F99D6D712C94D6BC3F6360725A"
+  },
+  "decisions": [
+    "保持24个通用核心construct和题目ID；IQS_05、IQS_18、IQS_20、IQS_21及PRE_REVENUE_04升级rubric_version至2.0.0，题库升至3.2.0。",
+    "不新增未经C02/G0批准的能力迁移、组织调整或新旧业务净效果桥接评分题；保留杜邦、五力和恢复诊断为按需诊断。",
+    "旧观察保留原rubric版本；metric-enriched旧版manifest不被静默当作3.2.0评分输入。"
+  ],
+  "checks": [
+    {
+      "case_id": "DUR-01",
+      "selector": "tests/test_question_sets.py::QuestionSetTests::test_s03_advantage_prompts_include_scope_conditions_and_falsifiers",
+      "command": "python -X utf8 -m pytest -q -p no:cacheprovider tests/test_question_sets.py tests/test_metrics_contract.py tests/test_standard_answers.py",
+      "result": "passed",
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-S03-targeted-2026-09-24.log"
+    },
+    {
+      "case_id": "DUR-02",
+      "selector": "tests/test_question_sets.py::QuestionSetTests::test_s03_growth_prompts_require_net_effect_after_legacy_loss_and_financing and test_s03_pre_revenue_replacement_keeps_growth_construct_and_net_economics",
+      "command": "python -X utf8 -m pytest -q -p no:cacheprovider tests/test_question_sets.py tests/test_metrics_contract.py tests/test_standard_answers.py",
+      "result": "passed",
+      "executed_count": 2,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-S03-targeted-2026-09-24.log"
+    },
+    {
+      "case_id": "DUR-03",
+      "selector": "tests/test_question_sets.py::QuestionSetTests::test_s03_does_not_add_unapproved_bridge_questions_or_auto_diagnostics and test_optional_diagnostics_do_not_change_any_dimension_or_quality_score",
+      "command": "python -X utf8 -m pytest -q -p no:cacheprovider tests/test_question_sets.py tests/test_metrics_contract.py tests/test_standard_answers.py",
+      "result": "passed",
+      "executed_count": 2,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-S03-targeted-2026-09-24.log"
+    },
+    {
+      "case_id": "SC-08",
+      "selector": "tests/test_question_sets.py::QuestionSetTests::test_optional_diagnostics_do_not_change_any_dimension_or_quality_score",
+      "command": "python -X utf8 -m pytest -q -p no:cacheprovider tests/test_question_sets.py tests/test_metrics_contract.py tests/test_standard_answers.py",
+      "result": "passed",
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-S03-targeted-2026-09-24.log"
+    },
+    {
+      "case_id": "TIME-06",
+      "selector": "tests/test_question_sets.py::QuestionSetTests::test_s03_previous_metric_manifest_is_not_reinterpreted_under_new_rubrics",
+      "command": "python -X utf8 -m pytest -q -p no:cacheprovider tests/test_question_sets.py tests/test_metrics_contract.py tests/test_standard_answers.py",
+      "result": "specified_not_executed",
+      "executed_count": 1,
+      "skipped_count": 0,
+      "output_path": "docs/implementation/contracts/validation-S03-targeted-2026-09-24.log",
+      "explanation": "本仓验证rubric升级时拒绝把旧metric manifest重新解释为新分数；按题的TTL/语义/路由刷新规划由StockWiki W06拥有，本地没有刷新调度入口，不能将manifest拒绝测试冒充为局部补扫验收。"
+    }
+  ],
+  "validation": {
+    "targeted": "65 passed, 83 subtests passed",
+    "targeted_log_sha256": "FF249831C515C89A8F8806D31CB9CD53ABE9B182641E6A745FE108E7D8D03F79",
+    "full": "197 passed, 116 subtests passed",
+    "full_log_sha256": "9168E5C60F0A458FBD5602CEB5FCD29AE03B679DC47BF7C8C4C19416EAAD89B5",
+    "question_library": "48 modules, 222 questions; validation passed",
+    "implementation_plan": "73 tasks, 172 cases, G6; validation passed",
+    "skipped": 0,
+    "network_used": false,
+    "product_tests_executed": false
+  },
+  "review": {
+    "reviewer": "/root/g0_independent_review",
+    "result": "verified_for_local_implementation_scope",
+    "reviewed_receipt_sha256": "D55F3EE6F62B4D36266E636B887CAFF63B421D83A5B343B5212352A8FBD61608",
+    "findings": [],
+    "reports": [
+      {
+        "path": "docs/implementation/reviews/S03/independent-review.md",
+        "sha256": "CABD7C6D8DC7D5CEBB7EE2E4098115B5E7DC68261FA9BEE78DA42B19C9E49BE8"
+      }
+    ]
+  },
+  "scope_statement": "S03 updates local scoring-question prompts and evidence rubrics only. It does not implement LLM execution, StockWiki freshness scheduling, or live E2E-06."
+}

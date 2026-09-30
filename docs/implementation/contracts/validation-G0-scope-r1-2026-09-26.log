@@ -1,0 +1,113 @@
+G0 current candidate scope regression; run_id=10f45c6e-ff91-408b-9aa3-01bb9f1ede24
+command=C:\Miniconda\python.exe -B -X utf8 -m pytest --rootdir=C:\Users\郑曾波\Projects\invest-quick-scan --basetemp=C:\Users\郑曾波\AppData\Local\Temp\iqs-g0-review-scope-nndn4j2g\pytest --no-cov -p no:cacheprovider -vv tests/test_g0_manifest.py tests/test_implementation_plan.py
+exit_code=0
+temporary_root=C:/Users/郑曾波/AppData/Local/Temp/iqs-g0-review-scope-nndn4j2g
+cleanup_verified=true
+temporary_root_removed=true
+
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+metadata: {'Python': '3.13.9', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.1.1', 'pluggy': '1.5.0'}, 'Plugins': {'Faker': '40.19.1', 'asyncio': '1.3.0', 'base-url': '2.1.0', 'benchmark': '5.2.3', 'cov': '7.0.0', 'html': '4.1.1', 'metadata': '3.1.1', 'mock': '3.15.1', 'playwright': '0.7.2', 'timeout': '2.4.0', 'xdist': '3.8.0'}, 'Base URL': ''}
+rootdir: C:\Users\郑曾波\Projects\invest-quick-scan
+plugins: Faker-40.19.1, asyncio-1.3.0, base-url-2.1.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 85 items
+
+tests/test_g0_manifest.py::test_reviewed_candidate_bytes_remain_immutable_after_g0 PASSED [  1%]
+tests/test_g0_manifest.py::test_current_scope_can_render_a_complete_self_consistent_candidate PASSED [  2%]
+tests/test_g0_manifest.py::test_missing_or_extra_artifact_breaks_scope_equality PASSED [  3%]
+tests/test_g0_manifest.py::test_changed_hash_is_detected PASSED          [  4%]
+tests/test_g0_manifest.py::test_persistent_test_fixtures_are_in_candidate_scope PASSED [  5%]
+tests/test_g0_manifest.py::test_manifest_rejects_stale_version_or_tampered_scope_declaration PASSED [  7%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_active_release_set_and_pre_post_fence_are_in_final_path PASSED [  8%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_allowlisted_historical_context_edge_must_be_declared PASSED [  9%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_atomic_assertion_bindings_are_validated_and_stable 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_atomic_assertion_bindings_are_validated_and_stable PASSED [ 10%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_case_family_allows_e2e_but_not_malformed_ids 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_case_family_allows_e2e_but_not_malformed_ids PASSED [ 11%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_case_needs_input_and_action PASSED [ 12%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_case_owner_prerequisites_must_be_closed_before_owner_completion PASSED [ 14%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_case_requires_tasks_must_be_known_and_well_formed PASSED [ 15%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_cli_filters_cross_project_launch_tasks PASSED [ 16%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_cli_missing_or_corrupt_plan_is_error_not_empty_success PASSED [ 17%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_cli_stage_filter_only_returns_requested_stage PASSED [ 18%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_cli_validation_does_not_claim_product_tests PASSED [ 20%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_complete_release_cannot_disable_all_tasks_requirement PASSED [ 21%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_complete_release_cannot_drop_a_consumer PASSED [ 22%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_complete_ui_cannot_be_claimed_before_ui_tasks PASSED [ 23%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_component_evolution_cannot_be_dropped_from_final_release PASSED [ 24%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_component_evolution_extensions_are_mandatory_and_owner_scoped PASSED [ 25%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_composable_evolution_is_in_release_without_blocking_scoring_on_facts 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_composable_evolution_is_in_release_without_blocking_scoring_on_facts PASSED [ 27%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_current_package_is_valid_but_not_product_evidence PASSED [ 28%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_dependency_cycle_is_rejected_without_recursion_loop PASSED [ 29%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_duplicate_case_is_rejected PASSED [ 30%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_duplicate_task_is_rejected PASSED [ 31%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_each_case_has_one_completion_owner_and_only_downstream_regression_refs PASSED [ 32%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_every_implementation_and_review_card_must_own_a_local_case PASSED [ 34%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_evolution_cases_and_live_boundary_are_explicit PASSED [ 35%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_explicit_oracle_is_required PASSED [ 36%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_fact_mode_requires_stockwiki_ingest_ack_owner PASSED [ 37%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_facts_cannot_start_without_score_reliability_gate PASSED [ 38%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_final_gate_must_cover_all_task_branches PASSED [ 40%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_first_search_provider_does_not_wait_for_later_durable_retry_gate PASSED [ 41%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_forward_acceptance_dependencies_cannot_mark_local_tasks_complete PASSED [ 42%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_future_stage_dependency_is_rejected PASSED [ 43%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_happy_path_only_task_is_rejected PASSED [ 44%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_historical_context_dependency_ids_must_be_unique PASSED [ 45%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_historical_context_exception_must_be_allowlisted PASSED [ 47%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_historical_context_must_be_a_declared_dependency PASSED [ 48%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_launch_configuration_owner_cannot_drift PASSED [ 49%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_launch_contract_is_frozen_before_g0 PASSED [ 50%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_launch_packet_contains_new_invariant_definitions PASSED [ 51%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_live_cleanup_case_cannot_be_claimed_by_offline_gate PASSED [ 52%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_live_launch_cannot_point_to_offline_suite PASSED [ 54%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_live_task_cannot_be_satisfied_by_mock_cases_only PASSED [ 55%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_malformed_historical_context_dependency_field_is_rejected_without_crashing 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_malformed_historical_context_dependency_field_is_rejected_without_crashing PASSED [ 56%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_malformed_kind_has_validation_error_instead_of_type_error PASSED [ 57%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_malformed_top_level_has_actionable_error PASSED [ 58%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_missing_review_gate_is_rejected PASSED [ 60%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_missing_scope_or_steps_is_rejected 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_missing_scope_or_steps_is_rejected PASSED [ 61%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_missing_unknown_and_forward_case_owners_are_rejected PASSED [ 62%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_modular_cases_have_failure_oracles_and_are_not_results 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_modular_cases_have_failure_oracles_and_are_not_results PASSED [ 63%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_modular_question_work_is_in_final_delivery_chain PASSED [ 64%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_module_archive_graph_legacy_trust_and_composition_closure_are_explicit PASSED [ 65%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_one_click_dispatch_requires_recipe_runtime_and_store PASSED [ 67%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_only_exact_historical_context_edge_is_allowlisted PASSED [ 68%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_orphan_case_is_rejected PASSED [ 69%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_owner_task_cannot_claim_downstream_integration_cases PASSED [ 70%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_packet_refuses_missing_invariant_definition PASSED [ 71%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases PASSED [ 72%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_public_paid_entry_cannot_bypass_impact_plan_application PASSED [ 74%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_published_observation_ingest_cannot_downgrade_to_legacy PASSED [ 75%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_receipt_and_compatibility_window_tasks_are_in_the_delivery_graph PASSED [ 76%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_receipt_bootstrap_context_is_explicit_and_does_not_change_dependency_graph PASSED [ 77%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_recovery_is_available_before_two_hundred_company_pilot PASSED [ 78%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_release_cannot_end_at_scoring_only_gate PASSED [ 80%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_release_cannot_omit_facts_gate PASSED [ 81%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_release_set_cannot_omit_parser_release_or_actual_hash_case PASSED [ 82%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_route_work_includes_policy_archive_and_mandatory_risk_budget PASSED [ 83%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_scoring_only_graph_cannot_silently_depend_on_facts 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_scoring_only_graph_cannot_silently_depend_on_facts PASSED [ 84%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_self_cycle_is_rejected PASSED [ 85%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_show_is_bounded_and_contains_real_oracles PASSED [ 87%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_show_unknown_task_never_guesses PASSED [ 88%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_spec_cannot_claim_a_passed_test PASSED [ 89%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_task_spec_cannot_duplicate_completion_state PASSED [ 90%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_two_phase_dispatch_contract_is_consistent_across_current_docs 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_two_phase_dispatch_contract_is_consistent_across_current_docs PASSED [ 91%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_case_reference_is_rejected PASSED [ 92%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_dependency_is_rejected PASSED [ 94%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_historical_context_edge_endpoint_is_rejected PASSED [ 95%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_invariant_is_rejected PASSED [ 96%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_or_multiple_owner_is_rejected 
+tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_or_multiple_owner_is_rejected PASSED [ 97%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_versioned_answer_parser_cannot_be_owned_by_quick_scan PASSED [ 98%]
+tests/test_implementation_plan.py::ImplementationPlanTests::test_versions_must_align PASSED [100%]
+
+=================== 85 passed, 55 subtests passed in 27.09s ===================

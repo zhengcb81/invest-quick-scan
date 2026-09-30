@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "review_id": "C01-preseal-review-r1-2026-09-26",
+  "reviewer_id": "agent:/root/p01_receipt_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "Separate read-only sub-agent; did not implement or modify the reviewed task, contracts, schemas, tests, plan, or evidence.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "5fc05985fdf4b395dff605b2d9759c2db0355a765dd85ef2416a1116645afb27",
+  "open_findings": [],
+  "plan_binding": {
+    "plan_version": "1.9.6",
+    "plan_sha256": "40272b45ec730efa060f2ddb050d8ef9cd736eeeffce57007def9e7879adb411",
+    "case_catalog_sha256": "8d9342896a3485f90ee67436643f67b6db7af35f24fa2b92f6733ac10a9a7287"
+  },
+  "review_scope": [
+    "C01 task card, ID-01 through ID-03 acceptance cases and owner allowlist",
+    "identity.md, identity.schema.json and test_identity_contract.py current snapshot",
+    "C01-prefixed copy of the shared offline C01-C07 batch log and its test selectors"
+  ],
+  "checks": {
+    "snapshot_binding": "Verified by recomputing the canonical snapshot over the three owner-allowlisted paths.",
+    "case_and_test_coverage": "ID-01, ID-02 and ID-03 have matching passing selectors in the shared log: dual-listed entity separation, parent/subsidiary non-merging without verified issuer, and ADR-ratio unknown boundary.",
+    "identity_boundary": "The contract and tests preserve one entity with multiple securities only when the issuer link is verified, keep parent/subsidiary entities separate absent that proof, and do not guess ADR ratios or require a company-wiki document entry for the lightweight identity contract.",
+    "shared_batch": "The seven task-prefixed logs are byte-identical copies of one run (run_id dcb590ac-b1fb-4acd-80f8-e9035a651181): 188 passed, 121 subtests passed, 0 skips, exit 0, 27.83 seconds. Temporary root cleanup is recorded as verified and removed."
+  },
+  "execution": {
+    "review_mode": "read-only",
+    "reviewer_ran_tests": false,
+    "reviewer_ran_scripts": false,
+    "network_or_api_used": false,
+    "external_repositories_modified": false,
+    "implementation_or_plan_files_modified": false,
+    "shared_test_evidence_rerun": false
+  }
+}

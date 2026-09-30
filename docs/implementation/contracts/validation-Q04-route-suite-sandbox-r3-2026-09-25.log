@@ -1,0 +1,34 @@
+.............................................F.......................... [ 96%]
+...                                                                      [100%]
+================================== FAILURES ===================================
+_ TestOrderedSearchProviderCascade.test_each_new_question_starts_at_user_preferred_route _
+
+self = <unit.test_llm_integration.TestOrderedSearchProviderCascade object at 0x000002B754C65B70>
+
+    def test_each_new_question_starts_at_user_preferred_route(self):
+        primary = _provider("primary", "model-a", _search_result("error"))
+        primary.search_question.side_effect = [
+            [
+                _search_result(
+                    "error",
+                    attempts=[{"attempt_id": "a-429", "http_status_code": 429}],
+                )
+            ],
+            [_search_result("scored", 2)],
+        ]
+        backup = _provider("backup", "model-b", _search_result("scored", 8))
+        cascade = _ordered_cascade(primary, backup)
+    
+        cascade.search_question(Question("first"))
+        second = cascade.search_question(Question("second"))[0]
+    
+>       assert second.score == 2
+E       AssertionError: assert 8 == 2
+E        +  where 8 = SearchResult(title='fixture', snippet='fixture answer', source='llm_api', url=None, rank=0, score=8, created_at=dateti...te': 'completed', 'wait_reason': None, 'resume_condition': None}}, 'provider': 'backup', 'model_requested': 'model-b'}).score
+
+tests\unit\test_llm_integration.py:711: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_llm_integration.py::TestOrderedSearchProviderCascade::test_each_new_question_starts_at_user_preferred_route
+1 failed, 74 passed in 4.75s
+
+EXIT_CODE=1

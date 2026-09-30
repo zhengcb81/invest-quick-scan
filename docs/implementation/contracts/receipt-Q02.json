@@ -1,0 +1,234 @@
+{
+  "task_id": "Q02",
+  "status": "implementation_partial",
+  "owner": "stockqa",
+  "plan_version": "1.6.2",
+  "plan_sha256": "55DBB8D63A27A8D8A8ACD37C46322CD0FBDCE2D5113CEEC3E416E16AA401AC0F",
+  "case_catalog_sha256": "38642BFDBEA9C3BEBB7272D13EED6D3C4C85BEBC99D5A9C7B372CC7400E557FA",
+  "implementation_snapshot": {
+    "commit": "3c685dda28f67a00bd653ad257a121d3b8edebb8",
+    "file_hashes": {
+      "StockQAbyLLM/src/config/llm_config.py": "DD9257762DFDC0EC54538C653DCB057D58962901210607BDCB7D944A74D2B350",
+      "StockQAbyLLM/src/core/models.py": "3A2659B5A67E79F6CADD54571F87FA0AFE1E34B4D03FBE52EF667EF101456136",
+      "StockQAbyLLM/src/core/qa_engine.py": "2C7889354069FFBA02D9B7C3F98E53882DBBB4A2CCE1A2F800A8A30A69189991",
+      "StockQAbyLLM/src/providers/llm_client.py": "207AE40383DA230AD544116DFB13CABC1963FADA117EE9C0670F601DFEAF099F",
+      "StockQAbyLLM/src/providers/llm_provider.py": "542376B016C80F4175B93DBE9CE793391357A72767E650467F1DEEE546C27A97",
+      "StockQAbyLLM/src/providers/async_llm_provider.py": "68B87001A2E03118E27C74933DCA8443DA999E3AAD18E33353B012705A17D3A3",
+      "StockQAbyLLM/src/providers/base_llm_provider.py": "3553424F1C074B6E4C38CC2F376E809C509D503FEDBE9D380BE202E619972C9A",
+      "StockQAbyLLM/src/providers/llm_response_parser.py": "9D5EB7D58DACFED1DFFB605ECA504D8A9EC6B6C39A5E2F4341D0A9B6F58AA867",
+      "StockQAbyLLM/src/runners/llm_runner.py": "579CDE5A1FB21604E0A2BDCA5667C880E45E78864602E2BD664F23A2DBEDD2A4",
+      "StockQAbyLLM/src/utils/llm_integration.py": "144212285E8E7BDDFAEE30907CE2D493471677DADF43591246C6701E31C2DC7C",
+      "StockQAbyLLM/src/services/answer_generator.py": "B59840DA063D00D7BCAAB4BA960B88797F6466A4EAD868BA0A7110E4D8FD44F4",
+      "StockQAbyLLM/tests/unit/test_llm_client.py": "29C7ECC54C9C32C8AEE6939F07BEA30F8F88FB5350679A78B26C92BF048BF32B",
+      "StockQAbyLLM/tests/unit/test_llm_provider.py": "C08491434622CB9FDECCD9D9F08F3E7E6E48D1B9BD1092C3E85265DD0A935C6E",
+      "StockQAbyLLM/tests/unit/test_search_provider.py": "24204047E9E52A9621AACD210B4AF85F968C45DCB9BB569101F6E87F67C17739",
+      "StockQAbyLLM/tests/unit/test_llm_runner.py": "098A060E54AB6F2612EAA8B05CDBDA68DDA03F1CE95318FF60C8C6F74F94BB33",
+      "StockQAbyLLM/tests/integration/test_quick_scan_cli.py": "E242EC7E6B1EA82C6AD056A644CC091901ACEBA3633E525EE2093B0D75955843",
+      "StockQAbyLLM/tests/live/test_live_quick_scan.py": "9C186DAD42E4846B599389822A30198E8AA6FD0D996087121975208F5DA502F6"
+    },
+    "snapshot_boundary": "StockQAbyLLM contains pre-existing user changes; this receipt binds the reviewed working-tree bytes and does not claim authorship or external modifications in this turn."
+  },
+  "changed_files": [],
+  "checks": [
+    {
+      "case_id": "LLM-01, LLM-02, LLM-06 offline selected suite",
+      "kind": "external_automated",
+      "selector": "tests/unit/test_llm_client.py; tests/unit/test_search_provider.py; tests/integration/test_quick_scan_cli.py",
+      "command": "python -B -X utf8 -m pytest -q --tb=short -o addopts= -p pytest_asyncio.plugin -p no:cacheprovider -p no:cov --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP>/pytest <three selected files>",
+      "cwd": "<unique system TEMP root>",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 63,
+      "skipped_count": 0,
+      "network_used": false,
+      "output_path": "docs/implementation/contracts/validation-Q02-offline-2026-09-25.log",
+      "output_sha256": "F7623C1C0A6A6AFC6BBF4B2739EC4A04740EDDF5530466C1D5FC0B09DB77246B",
+      "explanation": "同步/异步Responses web_search请求、completed search与sources解析、attempt/request/model receipt、无transport搜索凭据时不计分、能力预检和公开CLI路由错误处理均由真实实现运行；HTTP传输边界被mock。唯一TEMP/CWD/basetemp根结束后删除。"
+    },
+    {
+      "case_id": "LLM-01 live opt-in gate",
+      "kind": "external_automated",
+      "selector": "tests/live/test_live_quick_scan.py::test_live_openai_search_runs_public_company_through_cli_and_cleans_local_artifacts",
+      "command": "python -B -X utf8 -m pytest -q -rs -o addopts= -p no:cacheprovider -p no:cov --rootdir=<StockQAbyLLM> --basetemp=<unique system TEMP>/pytest <live test>; child env removed STOCKQA_RUN_LIVE_E2E, STOCKQA_OPENAI_API_KEY and OPENAI_API_KEY",
+      "cwd": "<unique system TEMP root>",
+      "result": "skipped_required_credentials",
+      "exit_code": 0,
+      "executed_count": 0,
+      "skipped_count": 1,
+      "network_used": false,
+      "output_path": "docs/implementation/contracts/validation-Q02-live-gate-r2-2026-09-25.log",
+      "output_sha256": "DC83879A76E7EB4B215BF98EFC8A73426A12796A81004308A92ABCF6C453A9A0",
+      "explanation": "确认缺credential/opt-in时live测试不会执行。该skip不是LLM-01通过证据。"
+    },
+    {
+      "case_id": "LLM-01, LLM-02 current OpenAI contract documentation review",
+      "kind": "primary_source_review",
+      "result": "verified_for_request_shape_only",
+      "retrieved_at": "2026-09-25",
+      "sources": [
+        "https://developers.openai.com/api/docs/guides/tools-web-search",
+        "https://developers.openai.com/api/docs/models/gpt-4.1-mini"
+      ],
+      "explanation": "当前官方指南支持Responses API hosted web_search、tool_choice required与web_search_call.action.sources include；当前model页列出GPT-4.1 mini的Responses endpoint，search指南列出其web search支持。文档核对不能替代live响应。"
+    },
+    {
+      "case_id": "Q02 independent offline follow-up review",
+      "kind": "independent_review",
+      "result": "needs_revision",
+      "reviewer": "/root/q02_offline_review",
+      "report_path": "docs/implementation/reviews/Q02/offline-review.md",
+      "report_sha256": "A1869A987B83BFF3FC7C972CF4A65DE44E3571BA9E0551E8190C6A8958B9BEA5",
+      "executed_count": 110,
+      "skipped_count": 0,
+      "explanation": "五个隔离selected test files报告110 passed；原始stdout、命令、环境隔离/清理、外仓文件哈希核对证据已归档并绑定。独立复审仍发现LLM-06恢复语义缺口；LLM-01 StockQA真实E2E仍未验证。",
+      "artifacts": [
+        {
+          "path": "docs/implementation/reviews/Q02/offline-pytest.stdout.txt",
+          "sha256": "EC2939EBB39C818C307151239DF0A51239B24BB39CBD2343CB093CE6F7AE22EE",
+          "kind": "raw_pytest_stdout"
+        },
+        {
+          "path": "docs/implementation/reviews/Q02/offline-pytest-evidence.json",
+          "sha256": "66C8DB4CC933889EE62F079492A4C42B5218FF4897C0CFCEC64829793628D96B",
+          "kind": "isolated_execution_metadata"
+        }
+      ]
+    },
+    {
+      "case_id": "MiMo Token Plan endpoint live configuration probe",
+      "kind": "external_live_smoke",
+      "endpoint": "https://token-plan-cn.xiaomimimo.com/v1/chat/completions",
+      "requested_model": "mimo-v2.6-flash",
+      "result": "rejected_web_search_disabled",
+      "http_status_code": 400,
+      "provider_error": "Param Incorrect: web search tool found in the request body, but webSearchEnabled is false",
+      "search_result_returned": false,
+      "key_value_logged": false,
+      "evidence_path": "docs/implementation/contracts/validation-Q02-MiMo-probe-2026-09-25.log"
+    },
+    {
+      "case_id": "MiMo pay-as-you-go live web-search smoke probe",
+      "kind": "external_live_smoke",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "requested_model": "mimo-v2.6-flash",
+      "result": "real_search_source_observed; answer_smoke_partial",
+      "http_status_code": 200,
+      "web_search_tool_usage": 1,
+      "web_search_page_usage": 1,
+      "source_url": "https://www.microsoft.com/investor/reports/ar25/index.html",
+      "first_response_finish_reason": "length",
+      "follow_up_finish_reason": "stop",
+      "follow_up_answer": "Based on the official annual report, Microsoft fiscal year 2025 ended on June 30, 2025.",
+      "requested_revenue_returned": false,
+      "key_value_logged": false,
+      "stockqa_cli_e2e": false,
+      "evidence_path": "docs/implementation/contracts/validation-Q02-MiMo-paygo-probe-2026-09-25.log"
+    },
+    {
+      "case_id": "MiniMax-M3 China text-generation endpoint smoke",
+      "kind": "external_live_smoke",
+      "endpoint": "https://api.minimax.cn/v1/responses",
+      "requested_model": "MiniMax-M3",
+      "http_status_code": 200,
+      "response_status": "completed",
+      "output_item_types": [
+        "message"
+      ],
+      "web_search_call_count": 0,
+      "citation_annotation_count": 0,
+      "usage": {
+        "input_tokens": 796,
+        "output_tokens": 199,
+        "total_tokens": 995
+      },
+      "result": "text_generation_only_no_search_receipt",
+      "key_value_logged": false,
+      "stockqa_cli_e2e": false,
+      "evidence_path": "docs/implementation/contracts/validation-Q02-MiniMax-probe-2026-09-25.log",
+      "evidence_sha256": "C9D2C26850848913C4824CB6DB528BF3C9DCC20AE28F96DEFA4F7985C8217578",
+      "explanation": "The model returned text and named an official Microsoft URL, but the response had no web_search_call and no URL citation annotation, so real search was not verified."
+    },
+    {
+      "case_id": "MiniMax-M3 international Server Tools authentication probe",
+      "kind": "external_live_smoke",
+      "endpoint": "https://api.minimax.io/v1/responses",
+      "requested_model": "MiniMax-M3",
+      "http_status_code": 401,
+      "provider_error": "authorized_error: invalid api key (2049)",
+      "web_search_call_count": 0,
+      "usage_receipt_returned": false,
+      "result": "credential_rejected_by_documented_server_tools_endpoint",
+      "key_value_logged": false,
+      "stockqa_cli_e2e": false,
+      "evidence_path": "docs/implementation/contracts/validation-Q02-MiniMax-probe-2026-09-25.log",
+      "evidence_sha256": "C9D2C26850848913C4824CB6DB528BF3C9DCC20AE28F96DEFA4F7985C8217578",
+      "explanation": "The current environment credential worked on api.minimax.cn but was rejected on api.minimax.io. Region/platform mismatch is possible but unconfirmed."
+    },
+    {
+      "case_id": "DeepSeek-flash Anthropic-compatible web_search live smoke",
+      "kind": "external_live_smoke",
+      "endpoint": "https://api.deepseek.com/anthropic/v1/messages",
+      "requested_model": "deepseek-flash",
+      "protocol": "Anthropic Messages-compatible",
+      "http_status_code": 200,
+      "stop_reason": "end_turn",
+      "server_tool_use_count": 2,
+      "web_search_result_block_count": 2,
+      "requested_max_uses": 1,
+      "max_uses_respected": false,
+      "source_urls_include_official_deepseek_docs": true,
+      "usage": {
+        "input_tokens": 4808,
+        "output_tokens": 436,
+        "server_tool_use_web_search_requests": 2
+      },
+      "monetary_charge_receipt": false,
+      "key_value_logged": false,
+      "stockqa_cli_e2e": false,
+      "result": "real_provider_search_verified_but_search_limit_not_respected",
+      "evidence_path": "docs/implementation/contracts/validation-Q02-DeepSeek-probe-2026-09-25.log",
+      "evidence_sha256": "DA2C3D16580F0B6241BEADA63A0CDDAA7809C459B633A1A259691FA9B82690A6",
+      "explanation": "The request used Anthropic web_search_20250305. Direct provider search is verified, but max_uses=1 did not cap the observed two server-side searches."
+    },
+    {
+      "case_id": "Provider connectivity inventory schema and secret-exclusion suite",
+      "kind": "local_automated",
+      "selector": "tests/test_provider_connectivity_profiles.py within tests/",
+      "command": "python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov tests",
+      "result": "passed",
+      "exit_code": 0,
+      "executed_count": 230,
+      "subtest_count": 139,
+      "skipped_count": 0,
+      "network_used": false,
+      "provider_profile_tests": 8,
+      "output_path": "docs/implementation/contracts/validation-Q02-provider-profiles-2026-09-25.log",
+      "output_sha256": "1A9E24A93A0F458737DA090EE63C96B2037F1AB82A49C74154DDA037C79AC70C",
+      "explanation": "All 230 project tests and 139 subtests passed with credential and live-opt-in environment variables cleared. The profile suite validates Draft 2020-12 schema, endpoint-specific capability claims, evidence paths, environment variable names only, and rejection of inline key-like values."
+    }
+  ],
+  "review": {
+    "reviewer": "/root/q02_offline_review",
+    "result": "needs_revision_for_LLM_06_and_live_pending_for_LLM_01",
+    "report_path": "docs/implementation/reviews/Q02/offline-review.md",
+    "report_sha256": "A1869A987B83BFF3FC7C972CF4A65DE44E3571BA9E0551E8190C6A8958B9BEA5",
+    "findings": [
+      "LLM-02 offline fail-closed behavior is supported by current tests.",
+      "LLM-06 unsupported capability preflight and global HTTP 400 no-fallback are supported, but all routes unavailable does not enter retry_wait and has no persistent recovery path.",
+      "LLM-01 real OpenAI web_search event and receipt correlation remains unverified because no live request was sent."
+    ],
+    "follow_up": "Independent reviewer follow-up is complete. Raw pytest stdout and isolated execution metadata are bound in this receipt; implementation and live acceptance remain open."
+  },
+  "rollback_evidence": "No StockQA or other external repository files were written. Offline TEMP roots were removed. Three explicitly requested live provider probes used process-environment credentials without printing or persisting their values: Token Plan returned HTTP 400 with webSearchEnabled=false; two pay-as-you-go requests returned HTTP 200 and real search citations (the first response was truncated at the token cap, the second omitted the requested revenue figure). No local/external repository files were changed by those requests. MiniMax probes: api.minimax.cn returned text with no search receipt, api.minimax.io rejected the current key, and api.minimaxi.com completed one real web_search call. DeepSeek direct probes used chat/completions, responses, and Anthropic Messages; the Anthropic route reported two search calls despite max_uses=1. No provider probe printed or persisted a key value, and no StockQA files were modified.",
+  "open_issues": [
+    "LLM-01 requires one live public-company quick scan with the opt-in flag and local credential; key must not be sent in chat, and actual web_search tool-call count/charges may vary.",
+    "LLM-06 all-route-exhaustion retry_wait state and persistent bounded recovery are missing and block Q02 completion.",
+    "Local contracts use run-level retry_wait in acceptance/deployment schema, waiting_for_provider in C05 prose, and no retry_wait value in the C04 WorkItem enum; status ownership and transient-vs-configuration recovery triggers must be reconciled before implementation.",
+    "MiMo Token Plan endpoint returned webSearchEnabled=false although the user confirms the plugin was enabled; root cause remains unresolved. Official Token Plan terms restrict package keys to programming tools and prohibit automated scripts/custom backends, so do not use MIMO_PLAN_API_KEY for company quick-scan requests.",
+    "Direct pay-as-you-go MiMo API search worked with a real source and one tool/page usage, but this is not StockQA CLI E2E; StockQA currently uses OpenAI Responses web_search and MiMo Chat Completions adaptation/receipt contract is not implemented or authorized.",
+    "MiniMax-M3 real direct web_search passed on api.minimaxi.com, but documented api.minimax.io rejected the current credential and api.minimax.cn text path had no search receipt; StockQA adapter E2E remains unverified.",
+    "DeepSeek Anthropic-compatible Messages API returned real server-side search results, but max_uses=1 did not limit observed usage to one search. StockQA adapter E2E remains unverified."
+  ],
+  "next_task": "Reconcile run/dispatch retry_wait with C04 WorkItem and C05 waiting reason; finish provider-side LLM-06 semantics/tests within already authorized StockQA files, then seek any needed exact additional write scope for serialized/persistent recovery. Retry a permitted live end-to-end test only through a supported custom-application API route and record answer/source/search receipts.",
+  "resume_from": "Preserve current StockQA working tree. The Q02 independent offline review is evidence-complete but needs revision on LLM-06. MiMo pay-as-you-go supports direct search; Token Plan state conflicts with the user's enabled setting and its key terms preclude this automated scan use. MiniMax direct web_search succeeded on api.minimaxi.com. DeepSeek Anthropic Messages direct web_search succeeded but observed two searches despite max_uses=1. All these remain direct provider probes, not StockQA CLI E2E, and do not change Q02/Q04 acceptance status."
+}

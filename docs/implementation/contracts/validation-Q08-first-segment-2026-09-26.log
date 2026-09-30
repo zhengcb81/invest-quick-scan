@@ -1,0 +1,17 @@
+Q08 first segment, StockQAbyLLM offline unit + integration suite
+Command: python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov -p no:base_url --rootdir <StockQAbyLLM> --basetemp <unique system TEMP>/pytest-temp <StockQAbyLLM>/tests/unit <StockQAbyLLM>/tests/integration
+Execution: elevated only for read-only C:\Miniconda\Lib\site-packages\certifi\cacert.pem access; all pytest outputs under a unique system TEMP directory; no live provider calls.
+........................................................................ [ 11%]
+........................................................................ [ 23%]
+........................................................................ [ 35%]
+........................................................................ [ 47%]
+........................................................................ [ 58%]
+........................................................................ [ 70%]
+........................................................................ [ 82%]
+........................................................................ [ 94%]
+....................................                                     [100%]
+612 passed in 23.08s
+TEMP_CLEANED=True
+
+Static checks after final source patch: Ruff on seven changed Python files: All checks passed. Black --check on two new Python files: both unchanged. git diff --check on tracked touched paths: exit 0 (line-ending advisory only).
+Restricted-sandbox diagnostic before CA read escalation: 595 passed / 13 failed, with all 13 failures confined to existing test_http_client.py SSL context initialization PermissionError while reading certifi CA. No source change was made for that environmental issue.

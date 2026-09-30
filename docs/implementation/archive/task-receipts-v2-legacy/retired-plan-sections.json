@@ -1,0 +1,211 @@
+{
+  "captured_plan_version": "1.10.14",
+  "task": {
+    "id": "P01",
+    "stage": "M0",
+    "owner": "iqs",
+    "kind": "implementation",
+    "title": "规范任务回执并提供只读完整性校验器",
+    "depends_on": [
+      "P00"
+    ],
+    "invariants": [
+      "I17",
+      "I18",
+      "I52",
+      "I53"
+    ],
+    "read_first": [
+      "docs/implementation/README.md",
+      "docs/implementation/tasks.json",
+      "docs/implementation/acceptance-cases.json",
+      "docs/implementation/test-strategy.md",
+      "docs/implementation/review-and-handoff.md"
+    ],
+    "allowed_changes": [
+      "schemas/quick_scan/task-receipt.schema.json（新增）",
+      "scripts/task_receipts.py（新增，只读校验，不执行任务/不改回执）",
+      "examples/quick_scan/task-receipt-v2*.json（新增虚构样例）",
+      "tests/test_task_receipts.py（新增）",
+      "docs/implementation/contracts/task-receipts.md（新增）",
+      "docs/implementation/reviews/P01/（新增）",
+      "docs/implementation/contracts/receipt-P01.json（当前封存receipt core）",
+      "docs/implementation/contracts/validation-P01-*.log（测试/隔离日志）",
+      "docs/implementation/contracts/validation-P01-current-*.json（只读验证detached sidecar）",
+      "docs/implementation/baselines/P00-context-manifest.json（新增，只读路径/hash清单）",
+      "docs/implementation/contracts/validation-P01-self-check.log（新增，位于自身receipt证据集之外）",
+      "docs/implementation/contracts/validation-P01-self-check.json（新增，detached receipt校验结果，不回写receipt）"
+    ],
+    "steps": [
+      "定义receipt v2：记录plan_version及完整plan/catalog hash作来源上下文，并以精确task spec hash、owner全部case bundle hash、global_boundaries hash作为有效性闭包；只有无关任务或case变化不得使本任务回执变旧。完整计划/catalog hash只是来源上下文；依赖任务默认必须有当前v2 verified回执，唯P01→P00可将旧基线作为只读历史上下文，并须生成路径+SHA-256清单，绝不据此声明P00当前完成。",
+      "每个owner case列出其全部assertion结果；显式assertions使用稳定ID，未显式拆分的case按then顺序生成稳定默认ID。每项通过断言绑定真实测试选择器、可复现命令/退出码、非空日志路径与SHA-256、skip数和隔离/网络证据。",
+      "绑定源码/配置/测试快照及封存前独立实现review快照；该报告记录reviewer身份/角色、与实现者分离的依据并引用同一实现snapshot，但不引用receipt或sidecar hash。源码变化使该review stale；缺case/assertion、failed/not_run/关键skip、日志hash不符或任务/case契约hash变化均不能verified。",
+      "以只读CLI验证receipt，不执行测试命令、不改状态或文件；路径只允许落在登记的仓库与证据根内，不读取/输出密钥、公司文档或完整web正文。现有v1回执只可报告legacy_historical，不补签、不迁移为当前通过。",
+      "用合成隔离根覆盖完整正例、精确案例集、无关计划增量、缺项、重复、过期/篡改、skip、空日志、review过期、路径越界及旧格式；P01自身receipt由封存前实现review对应的源码/测试快照支持。",
+      "将含封存前实现review hash的P01 receipt core封存并计算core SHA-256；运行只读校验器生成detached sidecar，绑定core hash、validator hash、eligible结果和时间。随后另行执行封存后证据审查，报告hash保存在receipt core之外，并同时绑定core与sidecar；封存后的两份工件不反向回写receipt或封存前review，禁止生成哈希循环。"
+    ],
+    "deliverables": [
+      "task-receipt v2 schema与契约",
+      "只读回执校验CLI与隔离回归",
+      "P01自身及旧receipt的明确兼容/历史解释规则、封存回执后的detached自验sidecar",
+      "P00旧基线只读输入清单，以及P01自验外置日志边界"
+    ],
+    "case_ids": [
+      "RCPT-01",
+      "RCPT-02",
+      "RCPT-03"
+    ],
+    "test_binding": "仅用临时目录和虚构回执运行真实schema与scripts/task_receipts.py；校验器不得执行回执中的命令。每个assertion分别断言可关闭/不可关闭及原因；验证旧receipt只读历史、路径/日志哈希与review快照。 RCPT-03验证P01→P00 bootstrap edge、旧回执不构成当前依赖证据、P00重验顺序和自验日志不自引用。",
+    "completion": [
+      "RCPT-01/02/03所有atomic assertion均有真实测试选择器与非空日志证据，零未解释skip；当前契约hash和完整源码快照一致。",
+      "封存前独立实现review绑定P01源码/测试snapshot；封存后的只读CLI验证sidecar绑定receipt core及validator hash；另有封存后证据review绑定receipt core/sidecar两者hash并确认相互一致。两份review职责不同，封存后报告不回写receipt。"
+    ],
+    "rollback": "保留所有历史receipt原字节；禁用新只读校验器不触及业务代码、生产数据库或运行状态。",
+    "historical_context_dependencies": [
+      "P00"
+    ]
+  },
+  "acceptance_cases": [
+    {
+      "id": "RCPT-01",
+      "kind": "positive",
+      "level": "contract",
+      "given": "临时证据根内有符合receipt v2 schema的任务回执：task spec hash、该owner全部cases/assertions hash、全局边界hash、源码/测试快照与review快照一致；每条passed assertion有测试选择器、退出码0、非空且hash正确日志、skip=0。仅无关owner的case/任务后续追加，当前任务与全局边界未变化。",
+      "when": "调用只读scripts/task_receipts.py检查当前任务和独立证据根。",
+      "then": [
+        "验证器按完整owned case/assertion闭包返回eligible_to_close=true；无关任务/用例增量不使未受影响任务receipt过期，但plan_version和global catalog hash保留作来源上下文。",
+        "验证器只读取文件、不执行记录中的命令、不改receipt/任务状态/业务数据；输出每个case/assertion的选择器、证据路径和hash校验结果。"
+      ],
+      "assertions": [
+        {
+          "id": "RCPT-01.A01",
+          "entrypoint": "task receipt verifier",
+          "expected": "receipt精确覆盖owner全部case与每个case的所有atomic assertion，未缺项/重复/多报。"
+        },
+        {
+          "id": "RCPT-01.A02",
+          "entrypoint": "task receipt verifier",
+          "expected": "task spec、owned-case bundle、global-boundary hash及源码快照均匹配当前输入。"
+        },
+        {
+          "id": "RCPT-01.A03",
+          "entrypoint": "task receipt verifier",
+          "expected": "每条passed assertion均有选择器、零退出命令、有效非空日志hash和zero skip。"
+        },
+        {
+          "id": "RCPT-01.A04",
+          "entrypoint": "task receipt verifier",
+          "expected": "review report/hash绑定同一源码快照且无未关闭P0/P1/P2时可关闭。"
+        },
+        {
+          "id": "RCPT-01.A05",
+          "entrypoint": "task receipt verifier",
+          "expected": "不相关owner任务或case添加后局部合同hash未变的既有回执仍可验证；全局约束变化则失效。"
+        },
+        {
+          "id": "RCPT-01.A06",
+          "entrypoint": "task receipt verifier",
+          "expected": "校验过程纯只读、不执行命令或写入状态。"
+        }
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "P01"
+    },
+    {
+      "id": "RCPT-02",
+      "kind": "negative",
+      "level": "fault",
+      "given": "分别准备遗漏/重复/额外case或assertion、task/case/global boundary hash过期、源码在review后改变、日志缺失/空白/hash被改/测试失败/关键skip、伪造review结论、路径越界、旧receipt v1以及传入命令含敏感凭据的receipt。",
+      "when": "调用只读scripts/task_receipts.py检查。",
+      "then": [
+        "上述任一差异都不得eligible_to_close=true；返回具体case/assertion与原因，不覆盖或删除证据。",
+        "旧receipt v1只标legacy_historical，不能补签成当前版本通过；路径越界被拒绝，验证器不执行命令、不读取/回显密钥或公司文档。"
+      ],
+      "assertions": [
+        {
+          "id": "RCPT-02.A01",
+          "entrypoint": "task receipt verifier",
+          "expected": "case/assertion缺失、重复、额外或owner错配拒绝关闭。"
+        },
+        {
+          "id": "RCPT-02.A02",
+          "entrypoint": "task receipt verifier",
+          "expected": "任务、所属case bundle或global boundary hash过期使回执stale。"
+        },
+        {
+          "id": "RCPT-02.A03",
+          "entrypoint": "task receipt verifier",
+          "expected": "源文件在review后变化或review snapshot/hash不匹配时review_stale。"
+        },
+        {
+          "id": "RCPT-02.A04",
+          "entrypoint": "task receipt verifier",
+          "expected": "缺失/空白/篡改日志、非零退出或关键skip不可能标passed。"
+        },
+        {
+          "id": "RCPT-02.A05",
+          "entrypoint": "task receipt verifier",
+          "expected": "伪造review结论没有实际review report/hash时不放行。"
+        },
+        {
+          "id": "RCPT-02.A06",
+          "entrypoint": "task receipt verifier",
+          "expected": "证据路径越出登记根被拒绝且不打开目标路径。"
+        },
+        {
+          "id": "RCPT-02.A07",
+          "entrypoint": "task receipt verifier",
+          "expected": "旧格式只读标legacy_historical，不升级成当前verified。"
+        },
+        {
+          "id": "RCPT-02.A08",
+          "entrypoint": "task receipt verifier",
+          "expected": "记录的命令仅作为文本显示/验证，不执行，也不回显敏感参数。"
+        }
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "P01"
+    },
+    {
+      "id": "RCPT-03",
+      "kind": "boundary",
+      "level": "contract",
+      "given": "P00只有旧receipt v1及现存基线文件；P01实现receipt v2只读校验器；P01先做封存前实现review，再封存receipt core，之后产生detached校验sidecar和封存后证据review。",
+      "when": "依次校验P01→P00 bootstrap依赖、P00和C01—C07当前关闭资格，并最终验证P01自有receipt。",
+      "then": [
+        "P01仅可把P00现存输出作为带规范相对路径和SHA-256的只读context snapshot；旧P00 v1始终为legacy_historical，不能让P00、C01—C07或G0/G6获得当前verified资格。",
+        "P01验证完成后，P00须按原BASE-01/02重跑并生成新v2 receipt；旧v1原字节保留。除P01→P00 bootstrap edge外，任何当前依赖边缺少v2 verified凭证都阻止关闭。",
+        "P01封存前实现review只绑定源码/测试snapshot並被receipt core哈希；封存后校验sidecar绑定receipt core SHA-256和validator SHA-256；另一份封存后证据review绑定receipt core与sidecar，但不回写receipt或前置review，证据链无环。"
+      ],
+      "status": "specified_not_executed",
+      "owner_task": "P01",
+      "assertions": [
+        {
+          "id": "RCPT-03.A01",
+          "entrypoint": "task receipt verifier dependency evaluation",
+          "expected": "P01→P00只读bootstrap context必须有完整路径/hash清单；清单不提升P00为当前verified。"
+        },
+        {
+          "id": "RCPT-03.A02",
+          "entrypoint": "task receipt verifier dependency evaluation",
+          "expected": "历史v1依赖不满足当前关闭门；P00重跑后仅新v2回执可满足当前依赖。"
+        },
+        {
+          "id": "RCPT-03.A03",
+          "entrypoint": "task receipt verifier self-validation",
+          "expected": "封存前实现review、receipt core、detached验证sidecar、封存后证据review职责分离；sidecar绑定core/validator hash，封存后review绑定core/sidecar hash，任何既有封存内容均不被后续哈希反向引用。"
+        },
+        {
+          "id": "RCPT-03.A04",
+          "entrypoint": "task receipt verifier dependency evaluation",
+          "expected": "除显式P01→P00 bootstrap edge外，缺当前v2依赖回执时G0/G6不得eligible。"
+        },
+        {
+          "id": "RCPT-03.A05",
+          "entrypoint": "TaskReceiptTests.test_p00_p01_current_receipt_artifacts_are_allowlisted_without_replacing_legacy_baseline",
+          "expected": "P00 current v2 receipt/review outputs and P01 detached current sidecar JSON are explicitly allowlisted at their owner paths; the P00 dated-report glob matches a real YYYY-MM-DD filename but excludes its legacy receipt; the legacy P00 v1 receipt's pinned SHA-256 remains unchanged."
+        }
+      ]
+    }
+  ]
+}

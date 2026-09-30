@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="13" time="2.338" timestamp="2026-09-24T20:46:44.468517+01:00" hostname="DESKTOP-156V213"><testcase classname="" name="test_sc01_real_cli_preserves_native_eight" time="0.069" /><testcase classname="" name="test_sc02_real_cli_preserves_native_unknown_null" time="0.025" /><testcase classname="" name="test_sc02_legacy_inner_unknown_transport_five_never_becomes_scored" time="0.029"><failure message="AssertionError: SC-02: legacy transport 5 must never become the formal score&#10;assert 5 is None">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023F841130B0&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-counterexamples-82crc9sy/pytest/test_sc02_legacy_inner_unknown0')
+
+    def test_sc02_legacy_inner_unknown_transport_five_never_becomes_scored(monkeypatch, tmp_path):
+        inner = json.dumps({'id': 'IQS_05', 'status': 'insufficient_evidence', 'score': None,
+                            'confidence': 'medium', 'rationale': 'No disclosed evidence'})
+        answer, _, _ = invoke(monkeypatch, tmp_path, outer(5, inner))
+&gt;       assert answer['score'] is None, 'SC-02: legacy transport 5 must never become the formal score'
+E       AssertionError: SC-02: legacy transport 5 must never become the formal score
+E       assert 5 is None
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_acceptance_counterexamples.py:61: AssertionError</failure></testcase><testcase classname="" name="test_sc04_inner_outer_score_mismatch_is_not_a_scored_answer" time="0.053"><failure message="AssertionError: SC-04: outer 5 / inner 8 must fail closed&#10;assert 5 is None">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023F83F17DF0&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-counterexamples-82crc9sy/pytest/test_sc04_inner_outer_score_mi0')
+
+    def test_sc04_inner_outer_score_mismatch_is_not_a_scored_answer(monkeypatch, tmp_path):
+        inner = json.dumps({'id': 'IQS_05', 'status': 'scored', 'score': 8,
+                            'confidence': 'medium', 'rationale': 'Fictional inner eight'})
+        answer, _, _ = invoke(monkeypatch, tmp_path, outer(5, inner))
+&gt;       assert answer['score'] is None, 'SC-04: outer 5 / inner 8 must fail closed'
+E       AssertionError: SC-04: outer 5 / inner 8 must fail closed
+E       assert 5 is None
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_acceptance_counterexamples.py:69: AssertionError</failure></testcase><testcase classname="" name="test_sc04_wrong_inner_question_id_is_not_a_scored_answer" time="0.054"><failure message="AssertionError: SC-04: conflicting nested question identity must fail closed&#10;assert 8 is None">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023F83F17F00&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-counterexamples-82crc9sy/pytest/test_sc04_wrong_inner_question0')
+
+    def test_sc04_wrong_inner_question_id_is_not_a_scored_answer(monkeypatch, tmp_path):
+        inner = json.dumps({'id': 'IQS_06', 'status': 'scored', 'score': 8,
+                            'confidence': 'medium', 'rationale': 'Fictional answer to a different question'})
+        answer, _, _ = invoke(monkeypatch, tmp_path, outer(8, inner))
+&gt;       assert answer['score'] is None, 'SC-04: conflicting nested question identity must fail closed'
+E       AssertionError: SC-04: conflicting nested question identity must fail closed
+E       assert 8 is None
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_acceptance_counterexamples.py:76: AssertionError</failure></testcase><testcase classname="" name="test_llm07_conflicting_duplicate_json_question_ids_do_not_choose_last" time="0.106"><failure message="AssertionError: LLM-07: repeated conflicting IDs must be rejected, not overwritten by json.loads&#10;assert 8 is None">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023F840C0C50&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/stockqa-readonly-review-counterexamples-82crc9sy/pytest/test_llm07_conflicting_duplica0')
+
+    def test_llm07_conflicting_duplicate_json_question_ids_do_not_choose_last(monkeypatch, tmp_path):
+        text = ('{"entity_id":"issuer:review-fixture","company_name":"Fictional Fixture Corp",'
+                '"question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous ID"}')
+        answer, _, calls = invoke(monkeypatch, tmp_path, text)
+&gt;       assert answer['score'] is None, 'LLM-07: repeated conflicting IDs must be rejected, not overwritten by json.loads'
+E       AssertionError: LLM-07: repeated conflicting IDs must be rejected, not overwritten by json.loads
+E       assert 8 is None
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\Q01-Q03\test_acceptance_counterexamples.py:83: AssertionError</failure></testcase><testcase classname="" name="test_sc03_invalid_score_real_cli_is_never_adopted[True]" time="0.132" /><testcase classname="" name="test_sc03_invalid_score_real_cli_is_never_adopted[False]" time="0.108" /><testcase classname="" name="test_sc03_invalid_score_real_cli_is_never_adopted[0]" time="0.054" /><testcase classname="" name="test_sc03_invalid_score_real_cli_is_never_adopted[11]" time="0.062" /><testcase classname="" name="test_sc03_invalid_score_real_cli_is_never_adopted[1.5]" time="0.053" /><testcase classname="" name="test_sc03_invalid_score_real_cli_is_never_adopted[8]" time="0.045" /><testcase classname="" name="test_sc03_invalid_score_real_cli_is_never_adopted[NaN]" time="0.040" /></testsuite></testsuites>

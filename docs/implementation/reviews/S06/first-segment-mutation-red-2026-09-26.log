@@ -1,0 +1,110 @@
+MODE mutants NETWORK_DENIED True WRITES_TEMP_ONLY True
+IN_MEMORY_MUTANT T1_input_order_leaks
+EXPECTED_ASSERTION_RED T1_input_order_leaks True
+F
+IN_MEMORY_MUTANT T2_price_is_cycle
+======================================================================
+FAIL: test_t1_semiconductor_scaling_is_deterministic_and_dual_listing_one_entity (test_routing.RoutingTests.test_t1_semiconductor_scaling_is_deterministic_and_dual_listing_one_entity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_routing.py", line 117, in test_t1_semiconductor_scaling_is_deterministic_and_dual_listing_one_entity
+    self.assertEqual(first, self.route(list(reversed(self.normal()))))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'sch[1134 chars]d': 'acquisitive', 'module_version': '3.0.0', [13356 chars]cd6'} != {'sch[1134 chars]d': 'validation', 'module_version': '3.0.0', '[13356 chars]cd6'}
+Diff is 51965 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 1 test in 3.444s
+
+FAILED (failures=1)
+F
+======================================================================
+FAIL: test_t2_mature_cycle_trough_preserves_stage_and_adds_recovery (test_routing.RoutingTests.test_t2_mature_cycle_trough_preserves_stage_and_adds_recovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_routing.py", line 157, in test_t2_mature_cycle_trough_preserves_stage_and_adds_recovery
+    self.assertTrue({"cyclical", "recovery", "distressed"}.isdisjoint(self.selected(only_price)))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 3.281s
+
+FAILED (failures=1)
+EXPECTED_ASSERTION_RED T2_price_is_cycle True
+IN_MEMORY_MUTANT T3_budget_drops_risk
+F
+EXPECTED_ASSERTION_RED T3_budget_drops_risk True
+IN_MEMORY_MUTANT T4_truncate_to_two
+======================================================================
+FAIL: test_t3_distressed_scaling_six_mandatory_questions_budget_and_manual_veto (test_routing.RoutingTests.test_t3_distressed_scaling_six_mandatory_questions_budget_and_manual_veto)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_routing.py", line 165, in test_t3_distressed_scaling_six_mandatory_questions_budget_and_manual_veto
+    with self.assertRaisesRegex(ValueError, "budget below mandatory"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 1.944s
+
+FAILED (failures=1)
+F
+======================================================================
+FAIL: test_t4_three_material_industries_do_not_truncate_and_full_needs_scope (test_routing.RoutingTests.test_t4_three_material_industries_do_not_truncate_and_full_needs_scope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_routing.py", line 182, in test_t4_three_material_industries_do_not_truncate_and_full_needs_scope
+    self.assertEqual(quick["profile_context"]["industry_modules"], ["industrial", "semiconductors", "software"])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['industrial', 'semiconductors'] != ['industrial', 'semiconductors', 'software']
+
+Second list contains 1 additional elements.
+First extra element 2:
+'software'
+
+- ['industrial', 'semiconductors']
++ ['industrial', 'semiconductors', 'software']
+?                                ++++++++++++
+
+
+----------------------------------------------------------------------
+Ran 1 test in 1.749s
+
+FAILED (failures=1)
+EXPECTED_ASSERTION_RED T4_truncate_to_two True
+IN_MEMORY_MUTANT T5_history_clock_for_execution
+FFF
+======================================================================
+FAIL: test_t5_override_expiry_blocks_execution_but_history_remains_readable (test_routing.RoutingTests.test_t5_override_expiry_blocks_execution_but_history_remains_readable) (now='2026-09-21T00:00:00Z')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_routing.py", line 223, in test_t5_override_expiry_blocks_execution_but_history_remains_readable
+    with self.subTest(now=instant), self.assertRaisesRegex(ValueError, "expired at execution"):
+                                    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_t5_override_expiry_blocks_execution_but_history_remains_readable (test_routing.RoutingTests.test_t5_override_expiry_blocks_execution_but_history_remains_readable) (now='2026-09-22T00:00:00Z')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_routing.py", line 223, in test_t5_override_expiry_blocks_execution_but_history_remains_readable
+    with self.subTest(now=instant), self.assertRaisesRegex(ValueError, "expired at execution"):
+                                    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_t5_override_expiry_blocks_execution_but_history_remains_readable (test_routing.RoutingTests.test_t5_override_expiry_blocks_execution_but_history_remains_readable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_routing.py", line 226, in test_t5_override_expiry_blocks_execution_but_history_remains_readable
+    with self.assertRaisesRegex(ValueError, "independently stored"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 1.953s
+
+FAILED (failures=3)
+EXPECTED_ASSERTION_RED T5_history_clock_for_execution True
+TEMP_CLEANED True

@@ -1,0 +1,95 @@
+{
+  "version": "3.0.0",
+  "module_id": "cyclical",
+  "kind": "stages",
+  "name": "周期经营阶段",
+  "applies_when": "商品、运价、库存、信贷或资本开支周期主导近年变化；记录当前周期位置但不对位置本身打高低分。",
+  "questions": [
+    {
+      "id": "CYCLICAL_01",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "剔除峰谷价格与利用率后，中周期回报是否创造价值？",
+      "evidence": [
+        "全周期收益",
+        "正常化价格",
+        "维护投入"
+      ],
+      "anchors": {
+        "1": "只在峰值盈利，常态毁损价值",
+        "5": "中周期覆盖成本但回报一般",
+        "10": "中周期有可靠超额回报且低谷不破坏经营"
+      },
+      "metric_id": "score.cyclical_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CYCLICAL_02",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "在历史可比低谷下，存续和必要投资能力如何？",
+      "evidence": [
+        "低谷价格",
+        "债务",
+        "现金",
+        "刚性开支"
+      ],
+      "anchors": {
+        "1": "合理低谷即出现无法覆盖缺口",
+        "5": "能存续但需显著削减必要投入",
+        "10": "低谷仍可维护核心资产并保持资金余量"
+      },
+      "metric_id": "score.cyclical_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CYCLICAL_03",
+      "dimension": "governance",
+      "priority": 2,
+      "question": "管理层的投资、库存与回报政策是否避免顺周期过度扩张？",
+      "evidence": [
+        "峰值扩产",
+        "低谷削减",
+        "套保",
+        "股东回报"
+      ],
+      "anchors": {
+        "1": "反复高位扩张低位被迫处置",
+        "5": "周期管理有优劣",
+        "10": "能够克制峰值冲动并在低谷维持纪律"
+      },
+      "metric_id": "score.cyclical_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CYCLICAL_04",
+      "dimension": "valuation",
+      "priority": 2,
+      "question": "当前价格隐含的周期假设是否有合理余地？",
+      "evidence": [
+        "反推正常盈利",
+        "供给变化",
+        "股价日期"
+      ],
+      "anchors": {
+        "1": "估值便宜依赖峰值盈利持续",
+        "5": "价格对应合理正常化水平",
+        "10": "保守中周期与压力低谷下仍有价格缓冲"
+      },
+      "metric_id": "score.cyclical_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

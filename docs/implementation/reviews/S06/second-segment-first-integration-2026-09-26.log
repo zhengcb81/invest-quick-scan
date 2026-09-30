@@ -1,0 +1,32 @@
+MODE integration NETWORK_DENIED True WRITES_TEMP_ONLY True
+test_s06_first_stage_package_keeps_exact_historical_request_prompt (test_question_sets.RouteCompositionTests.test_s06_first_stage_package_keeps_exact_historical_request_prompt) ... ok
+test_s06_native_cli_request_resolve_compose_preserves_model_and_identity (test_question_sets.RouteCompositionTests.test_s06_native_cli_request_resolve_compose_preserves_model_and_identity) ... ok
+test_s06_native_cli_unknown_module_and_ambiguous_response_fail_before_output (test_question_sets.RouteCompositionTests.test_s06_native_cli_unknown_module_and_ambiguous_response_fail_before_output) ... ok
+test_s06_public_export_cannot_bypass_route_profile_id_or_clock (test_question_sets.RouteCompositionTests.test_s06_public_export_cannot_bypass_route_profile_id_or_clock) ... ok
+test_s06_real_manifest_keeps_historical_ttl_but_reexport_at_expiry_is_blocked (test_question_sets.RouteCompositionTests.test_s06_real_manifest_keeps_historical_ttl_but_reexport_at_expiry_is_blocked) ... ok
+test_s06_t1_real_quick_full_and_method_preserve_24_core (test_question_sets.RouteCompositionTests.test_s06_t1_real_quick_full_and_method_preserve_24_core) ... FAIL
+test_s06_t2_mature_trough_composes_recovery_without_changing_core (test_question_sets.RouteCompositionTests.test_s06_t2_mature_trough_composes_recovery_without_changing_core) ... ok
+test_s06_t3_budget30_exports_all_six_risk_questions_budget24_writes_nothing (test_question_sets.RouteCompositionTests.test_s06_t3_budget30_exports_all_six_risk_questions_budget24_writes_nothing) ... ok
+test_s06_t4_full_three_industries_requires_compatible_scope_and_no_legacy_relaxation (test_question_sets.RouteCompositionTests.test_s06_t4_full_three_industries_requires_compatible_scope_and_no_legacy_relaxation) ... ok
+test_s06_t5_common_only_and_known_distress_standard_output_keep_unknown_profile (test_question_sets.RouteCompositionTests.test_s06_t5_common_only_and_known_distress_standard_output_keep_unknown_profile) ... ok
+
+======================================================================
+FAIL: test_s06_t1_real_quick_full_and_method_preserve_24_core (test_question_sets.RouteCompositionTests.test_s06_t1_real_quick_full_and_method_preserve_24_core)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_question_sets.py", line 1210, in test_s06_t1_real_quick_full_and_method_preserve_24_core
+    self.assertEqual(set(quick['replacements']), {'IQS_02', 'IQS_10'})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Items in the first set but not the second:
+'IQS_03'
+'IQS_11'
+Items in the second set but not the first:
+'IQS_02'
+'IQS_10'
+
+----------------------------------------------------------------------
+Ran 10 tests in 47.976s
+
+FAILED (failures=1)
+RESULT 10 failures 1 errors 0 skipped 0
+TEMP_CLEANED True

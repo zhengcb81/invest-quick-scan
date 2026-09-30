@@ -1,0 +1,45 @@
+COMMAND=python -m pytest -p pytest_asyncio.plugin tests/test_module_registry.py -vv
+ENVIRONMENT=PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+CAPTURE=PowerShell captured process output and appended exit code after completion.
+
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\֣����\Projects\invest-quick-scan
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 24 items
+
+tests/test_module_registry.py::ModuleRegistryTests::test_answer_format_description_change_invalidates_standard_method_comparison PASSED [  4%]
+tests/test_module_registry.py::ModuleRegistryTests::test_archived_metric_schema_survives_mutable_schema_change PASSED [  8%]
+tests/test_module_registry.py::ModuleRegistryTests::test_manifest_prompt_forgery_is_rejected_even_with_recomputed_prompt_hash PASSED [ 12%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_02_release_is_deterministic_and_historical_archive_is_authority PASSED [ 16%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_03_append_keeps_old_question_meaning_and_old_run_readable PASSED [ 20%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_04_unregistered_industry_and_missing_context_fail_before_activation PASSED [ 25%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_07_tamper_or_missing_archive_rejects_old_run PASSED [ 29%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_08_budget_defers_only_optional_questions PASSED [ 33%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_exact_legacy_baseline_remains_readable_and_validates_current_catalog PASSED [ 37%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_package_cannot_self_assert_legacy_status PASSED [ 41%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_pinned_baseline_cannot_be_redeclared PASSED [ 45%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_rehashed_current_catalog_edit_is_rejected PASSED [ 50%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_rehashed_same_id_legacy_archive_is_rejected PASSED [ 54%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_unknown_module_cannot_claim_legacy_without_exact_baseline_bytes PASSED [ 58%]
+tests/test_module_registry.py::ModuleRegistryTests::test_module_order_in_profile_is_canonical_for_same_membership PASSED [ 62%]
+tests/test_module_registry.py::ModuleRegistryTests::test_new_manual_lens_and_automatic_common_extension_are_separate_from_core PASSED [ 66%]
+tests/test_module_registry.py::ModuleRegistryTests::test_partial_route_uses_common_and_known_risk_without_fabricated_classification PASSED [ 70%]
+tests/test_module_registry.py::ModuleRegistryTests::test_prior_package_without_observation_schema_is_readable_but_cannot_issue_observations PASSED [ 75%]
+tests/test_module_registry.py::ModuleRegistryTests::test_published_observation_uses_frozen_answer_schema_and_question_after_source_edit PASSED [ 79%]
+tests/test_module_registry.py::ModuleRegistryTests::test_real_pre_observation_package_cannot_export_standard_run PASSED [ 83%]
+tests/test_module_registry.py::ModuleRegistryTests::test_release_and_catalog_paths_reject_parent_directory_symlinks PASSED [ 87%]
+tests/test_module_registry.py::ModuleRegistryTests::test_two_consecutive_major_retirements_publish_against_adjacent_version PASSED [ 91%]
+tests/test_module_registry.py::ModuleRegistryTests::test_unavailable_historical_renderer_fails_closed_without_losing_archive PASSED [ 95%]
+tests/test_module_registry.py::ModuleRegistryTests::test_unrelated_context_does_not_relabel_industrial_question_but_global_rule_does PASSED [100%]
+
+============================== warnings summary ===============================
+..\..\..\..\Miniconda\Lib\site-packages\_pytest\cacheprovider.py:469
+  C:\Miniconda\Lib\site-packages\_pytest\cacheprovider.py:469: PytestCacheWarning: could not create cache path C:\Users\֣����\Projects\invest-quick-scan\.pytest_cache\v\cache\nodeids: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\֣����\\Projects\\invest-quick-scan\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 24 passed, 1 warning in 129.43s (0:02:09) ==================
+
+EXIT_CODE=0

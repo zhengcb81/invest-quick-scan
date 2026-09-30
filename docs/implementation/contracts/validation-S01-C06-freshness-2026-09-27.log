@@ -1,0 +1,120 @@
+S01/C06 affected-path regression batch
+run_id=bbdc6ad08381411f8b82b9e38b283873
+command=python -B -X utf8 -m pytest -W error -p no:base_url -p no:cacheprovider --basetemp "C:\Users\郑曾波\AppData\Local\Temp\iqs-s01-c06-batch-bbdc6ad08381411f8b82b9e38b283873\pytest" tests/test_question_sets.py tests/test_exchange_and_query_contract.py tests/test_g0_regressions.py -vv
+isolated_temp_root=C:\Users\郑曾波\AppData\Local\Temp\iqs-s01-c06-batch-bbdc6ad08381411f8b82b9e38b283873; TEMP and TMP pointed here; removed in finally
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+metadata: {'Python': '3.13.9', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.1.1', 'pluggy': '1.5.0'}, 'Plugins': {'Faker': '40.19.1', 'asyncio': '1.3.0', 'benchmark': '5.2.3', 'cov': '7.0.0', 'html': '4.1.1', 'metadata': '3.1.1', 'mock': '3.15.1', 'playwright': '0.7.2', 'timeout': '2.4.0', 'xdist': '3.8.0'}}
+rootdir: C:\Users\郑曾波\Projects\invest-quick-scan
+plugins: Faker-40.19.1, asyncio-1.3.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 87 items
+
+tests/test_question_sets.py::QuestionSetTests::test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline PASSED [  1%]
+tests/test_question_sets.py::QuestionSetTests::test_bank_replaces_general_cash_and_balance_questions PASSED [  2%]
+tests/test_question_sets.py::QuestionSetTests::test_compose_is_reproducible_and_does_not_overwrite_runs PASSED [  3%]
+tests/test_question_sets.py::QuestionSetTests::test_coverage_cannot_hide_an_entire_missing_quality_dimension PASSED [  4%]
+tests/test_question_sets.py::QuestionSetTests::test_critical_failure_cannot_be_averaged_away PASSED [  5%]
+tests/test_question_sets.py::QuestionSetTests::test_critical_unknown_and_inapplicable_are_not_treated_as_cleared PASSED [  6%]
+tests/test_question_sets.py::QuestionSetTests::test_defaults_or_upstream_score_corruption_are_rejected PASSED [  8%]
+tests/test_question_sets.py::QuestionSetTests::test_every_module_is_selectable PASSED [  9%]
+tests/test_question_sets.py::QuestionSetTests::test_full_mode_also_requires_a_specific_reason_for_optional_tools PASSED [ 10%]
+tests/test_question_sets.py::QuestionSetTests::test_future_evidence_wrong_id_missing_sources_and_boolean_score_fail 
+tests/test_question_sets.py::QuestionSetTests::test_future_evidence_wrong_id_missing_sources_and_boolean_score_fail PASSED [ 11%]
+tests/test_question_sets.py::QuestionSetTests::test_invalid_profile_is_not_silently_routed 
+tests/test_question_sets.py::QuestionSetTests::test_invalid_profile_is_not_silently_routed PASSED [ 12%]
+tests/test_question_sets.py::QuestionSetTests::test_library_and_export_are_consistent PASSED [ 13%]
+tests/test_question_sets.py::QuestionSetTests::test_low_current_scores_can_have_recovery_potential_without_score_uplift PASSED [ 14%]
+tests/test_question_sets.py::QuestionSetTests::test_material_overlays_cannot_be_silently_dropped PASSED [ 16%]
+tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output 
+tests/test_question_sets.py::QuestionSetTests::test_matrix_07_quick_full_context_preserves_core_risk_and_recovery_output PASSED [ 17%]
+tests/test_question_sets.py::QuestionSetTests::test_missing_data_and_transport_fives_do_not_become_scores PASSED [ 18%]
+tests/test_question_sets.py::QuestionSetTests::test_mixed_profile_suggests_review_without_claiming_a_turnaround PASSED [ 19%]
+tests/test_question_sets.py::QuestionSetTests::test_model_self_report_cannot_verify_search PASSED [ 20%]
+tests/test_question_sets.py::QuestionSetTests::test_optional_diagnostics_do_not_change_any_dimension_or_quality_score PASSED [ 21%]
+tests/test_question_sets.py::QuestionSetTests::test_quick_covers_core_judgments_without_automatic_dupont_or_porter 
+tests/test_question_sets.py::QuestionSetTests::test_quick_covers_core_judgments_without_automatic_dupont_or_porter PASSED [ 22%]
+tests/test_question_sets.py::QuestionSetTests::test_recovery_cannot_conceal_survival_governance_or_equity_risks 
+tests/test_question_sets.py::QuestionSetTests::test_recovery_cannot_conceal_survival_governance_or_equity_risks PASSED [ 24%]
+tests/test_question_sets.py::QuestionSetTests::test_recovery_routes_without_misclassifying_mature_cyclical_company 
+tests/test_question_sets.py::QuestionSetTests::test_recovery_routes_without_misclassifying_mature_cyclical_company PASSED [ 25%]
+tests/test_question_sets.py::QuestionSetTests::test_recovery_uses_effective_type_specific_survival_question PASSED [ 26%]
+tests/test_question_sets.py::QuestionSetTests::test_review_from_another_company_or_period_is_rejected PASSED [ 27%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_context_questions_cannot_change_core_construct_summary PASSED [ 28%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_manifest_remains_readable_without_new_mapping PASSED [ 29%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping 
+tests/test_question_sets.py::QuestionSetTests::test_s01_legacy_recovery_watch_flags_unverified_replacement_mapping PASSED [ 31%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_manifest_embeds_frozen_metric_and_action_layer PASSED [ 32%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_metric_mapping_is_authoritative_and_metadata_cannot_drift 
+tests/test_question_sets.py::QuestionSetTests::test_s01_metric_mapping_is_authoritative_and_metadata_cannot_drift PASSED [ 33%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_replacement_and_module_routing_cannot_drift PASSED [ 34%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_selected_question_and_mapping_sets_are_closed PASSED [ 35%]
+tests/test_question_sets.py::QuestionSetTests::test_s01_type_replacements_keep_construct_and_scope PASSED [ 36%]
+tests/test_question_sets.py::QuestionSetTests::test_s03_advantage_prompts_include_scope_conditions_and_falsifiers 
+tests/test_question_sets.py::QuestionSetTests::test_s03_advantage_prompts_include_scope_conditions_and_falsifiers PASSED [ 37%]
+tests/test_question_sets.py::QuestionSetTests::test_s03_archived_metric_manifest_reads_from_immutable_package_without_live_sources PASSED [ 39%]
+tests/test_question_sets.py::QuestionSetTests::test_s03_current_manifest_rejects_an_unsupported_older_template_header PASSED [ 40%]
+tests/test_question_sets.py::QuestionSetTests::test_s03_does_not_add_unapproved_bridge_questions_or_auto_diagnostics PASSED [ 41%]
+tests/test_question_sets.py::QuestionSetTests::test_s03_growth_prompts_require_net_effect_after_legacy_loss_and_financing 
+tests/test_question_sets.py::QuestionSetTests::test_s03_growth_prompts_require_net_effect_after_legacy_loss_and_financing PASSED [ 42%]
+tests/test_question_sets.py::QuestionSetTests::test_s03_pre_revenue_replacement_keeps_growth_construct_and_net_economics PASSED [ 43%]
+tests/test_question_sets.py::QuestionSetTests::test_sc10_all_company_types_and_lifecycle_stages_keep_fixed_metric_manifest 
+tests/test_question_sets.py::QuestionSetTests::test_sc10_all_company_types_and_lifecycle_stages_keep_fixed_metric_manifest PASSED [ 44%]
+tests/test_question_sets.py::QuestionSetTests::test_screening_accepts_minimax_completed_search_without_http_request_id PASSED [ 45%]
+tests/test_question_sets.py::QuestionSetTests::test_screening_accepts_mixed_actual_providers_with_null_batch_provider PASSED [ 47%]
+tests/test_question_sets.py::QuestionSetTests::test_screening_ignores_model_self_approval_and_legacy_strict_stays_pending PASSED [ 48%]
+tests/test_question_sets.py::QuestionSetTests::test_screening_import_rejects_identity_question_period_and_search_mismatches 
+tests/test_question_sets.py::QuestionSetTests::test_screening_import_rejects_identity_question_period_and_search_mismatches PASSED [ 49%]
+tests/test_question_sets.py::QuestionSetTests::test_screening_low_confidence_and_na_remain_out_of_valid_coverage PASSED [ 50%]
+tests/test_question_sets.py::QuestionSetTests::test_screening_modern_single_provider_requires_complete_final_route 
+tests/test_question_sets.py::QuestionSetTests::test_screening_modern_single_provider_requires_complete_final_route PASSED [ 51%]
+tests/test_question_sets.py::QuestionSetTests::test_screening_new_route_receipts_reject_forged_evidence_or_execution 
+tests/test_question_sets.py::QuestionSetTests::test_screening_new_route_receipts_reject_forged_evidence_or_execution PASSED [ 52%]
+tests/test_question_sets.py::QuestionSetTests::test_screening_protocol_is_explicit_and_never_uses_legacy_review_ids PASSED [ 54%]
+tests/test_question_sets.py::QuestionSetTests::test_screening_recovery_watch_preserves_low_current_quality_and_strong_assets PASSED [ 55%]
+tests/test_question_sets.py::QuestionSetTests::test_stage_and_cycle_are_independent PASSED [ 56%]
+tests/test_question_sets.py::QuestionSetTests::test_stockqa_import_cleanup_restores_state_after_failure PASSED [ 57%]
+tests/test_question_sets.py::QuestionSetTests::test_unaudited_na_cannot_raise_coverage_and_low_confidence_is_not_counted PASSED [ 58%]
+tests/test_question_sets.py::QuestionSetTests::test_unreviewed_missing_and_low_confidence_cannot_become_recovery_candidates PASSED [ 59%]
+tests/test_question_sets.py::QuestionSetTests::test_valid_scores_are_separate_from_growth_and_price PASSED [ 60%]
+tests/test_question_sets.py::RouteCompositionTests::test_mod19_native_cli_persists_low_classification_confidence_and_keeps_verified_route PASSED [ 62%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_first_stage_package_keeps_exact_historical_request_prompt PASSED [ 63%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_native_cli_request_resolve_compose_preserves_model_and_identity PASSED [ 64%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_native_cli_unknown_module_and_ambiguous_response_fail_before_output 
+tests/test_question_sets.py::RouteCompositionTests::test_s06_native_cli_unknown_module_and_ambiguous_response_fail_before_output PASSED [ 65%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_public_export_cannot_bypass_route_profile_id_or_clock PASSED [ 66%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_real_manifest_keeps_historical_ttl_but_reexport_at_expiry_is_blocked 
+tests/test_question_sets.py::RouteCompositionTests::test_s06_real_manifest_keeps_historical_ttl_but_reexport_at_expiry_is_blocked PASSED [ 67%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_t1_real_quick_full_and_method_preserve_24_core PASSED [ 68%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_t2_mature_trough_composes_recovery_without_changing_core PASSED [ 70%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_t3_budget30_exports_all_six_risk_questions_budget24_writes_nothing PASSED [ 71%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_t4_full_three_industries_requires_compatible_scope_and_no_legacy_relaxation PASSED [ 72%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_t5_common_only_and_known_distress_standard_output_keep_unknown_profile PASSED [ 73%]
+tests/test_question_sets.py::RouteCompositionTests::test_s06_uncertain_primary_axis_does_not_borrow_confidence_from_known_industry PASSED [ 74%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_build_package_detaches_mutable_inputs_before_hashing PASSED [ 75%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_candidate_set_pins_snapshot_members_and_rule_version PASSED [ 77%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_cons_05_handoff_retains_origin_and_upstream_lineage_without_formal_acceptance PASSED [ 78%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_02_same_immutable_payload_reimport_is_idempotent PASSED [ 79%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_03_same_key_different_hash_conflicts_and_missing_refs_reject PASSED [ 80%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_06_model_cannot_inject_formal_source_artifacts_or_acceptance PASSED [ 81%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_db_07_package_is_standalone_lightweight_exchange_not_a_second_store PASSED [ 82%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address 
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_exchange_public_validator_rejects_any_stale_content_address PASSED [ 83%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_fact_01_existing_fact_observation_keeps_null_score_and_relation_evidence PASSED [ 85%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_hashes_bind_package_item_and_observation_payload PASSED [ 86%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_nomination_and_conflict_feedback_do_not_auto_merge_or_admit PASSED [ 87%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_01_bounded_snapshot_pagination_and_three_axis_metadata PASSED [ 88%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_02_empty_requires_covered_scope_and_unknown_is_coverage_gap PASSED [ 89%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_04_refresh_is_exact_scope_preview_reuses_valid_fields_and_never_dispatches PASSED [ 90%]
+tests/test_exchange_and_query_contract.py::ExchangeAndQueryContractTests::test_query_capabilities_profiles_and_approved_refresh_are_typed PASSED [ 91%]
+tests/test_g0_regressions.py::G0RegressionTests::test_g0_01_score_state_is_closed_and_level_requires_trusted_receipt PASSED [ 93%]
+tests/test_g0_regressions.py::G0RegressionTests::test_g0_02_cross_entity_and_manifest_drift_are_rejected PASSED [ 94%]
+tests/test_g0_regressions.py::G0RegressionTests::test_g0_04_extensions_cannot_escape_lightweight_boundary PASSED [ 95%]
+tests/test_g0_regressions.py::G0RegressionTests::test_g0_05_release_and_readiness_cannot_self_attest PASSED [ 96%]
+tests/test_g0_regressions.py::G0RegressionTests::test_g0_06_scored_query_requires_lineage_and_ok_requires_coverage PASSED [ 97%]
+tests/test_g0_regressions.py::G0RegressionTests::test_g0_07_diagnostics_and_empty_rules_are_rejected PASSED [ 98%]
+tests/test_g0_regressions.py::G0RegressionTests::test_g0_08_lineage_must_be_closed_acyclic_and_transitively_independent PASSED [100%]
+
+============= 87 passed, 173 subtests passed in 188.30s (0:03:08) =============
+CLEANUP_VERIFIED=True

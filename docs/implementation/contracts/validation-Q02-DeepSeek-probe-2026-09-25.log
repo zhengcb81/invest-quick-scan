@@ -1,0 +1,41 @@
+Q02 DeepSeek-flash direct API probes (sanitized)
+Date: 2026-09-25
+Credential handling: DEEPSEEK_API_KEY was read from the process environment for Authorization headers only. Its value was not printed, logged, or persisted.
+
+Probe A — official OpenAI-compatible Chat Completions
+- Endpoint: https://api.deepseek.com/chat/completions
+- Model: deepseek-flash
+- Request: one short text generation with thinking disabled and max_tokens=16.
+- Result: HTTP 200; model deepseek-flash; finish_reason=stop; the requested two-character reply matched.
+- Usage: 9 prompt, 1 completion, 10 total tokens.
+- Outcome: direct text-generation smoke passed.
+
+Probe B — official Responses API built-in web_search capability
+- Endpoint: https://api.deepseek.com/responses
+- Model: deepseek-flash
+- Request: one short public documentation query with tools=[{"type":"web_search"}] and max_output_tokens=96.
+- Result: HTTP 200; response status=incomplete; output contained reasoning only; zero web_search_call items and zero citation annotations.
+- Usage: 77 input, 96 output, 173 total tokens.
+- Outcome: no real web search occurred. The output cap was reached during reasoning, so this probe does not prove a final answer was delivered. DeepSeek's official Responses API tool table states that built-in web_search is ignored; its Codex setup sets web_search=disabled. Standard API tool calling supports caller-provided functions, which would require an external search implementation and result handoff.
+
+StockQA CLI integration/E2E: not run. No provider adapter was changed. No source documents or company data were requested. No monetary charge receipt was returned by these probes.
+
+Official references checked:
+- https://api-docs.deepseek.com/guides/harness
+- https://api-docs.deepseek.com/api/create-chat-completion/
+- https://api-docs.deepseek.com/guides/tool_calls/
+- https://api-docs.deepseek.com/guides/responses_api/
+- https://api-docs.deepseek.com/quick_start/agent_integrations/codex/
+- https://api-docs.deepseek.com/guides/thinking_mode/
+
+Probe C — Anthropic-compatible Messages API with server-side web_search
+- Endpoint: https://api.deepseek.com/anthropic/v1/messages
+- Model: deepseek-flash
+- Request: one public DeepSeek API documentation query using the Anthropic web_search_20250305 tool and max_uses=1.
+- Result: HTTP 200; stop_reason=end_turn; content included two server_tool_use blocks and two web_search_tool_result blocks.
+- Sources: returned results included https://api-docs.deepseek.com/zh-cn/guides/anthropic_api/ and other DeepSeek docs URLs.
+- Usage: 4,808 input, 436 output, 5,244 total tokens; server_tool_use.web_search_requests=2. No currency charge receipt was returned.
+- Limit finding: the response reports two server searches although max_uses=1 was requested. Search capability passed; max_uses enforcement did not.
+- Outcome: DeepSeek's Anthropic-compatible API can perform server-side web search. The earlier finding that DeepSeek could not search applies only to the OpenAI-compatible Chat/Responses routes tested.
+
+StockQA CLI integration/E2E remains not run. No provider adapter was changed.

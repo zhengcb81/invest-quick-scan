@@ -1,0 +1,12 @@
+Q02 provider connectivity profile validation (sanitized)
+Date: 2026-09-25
+Command: python -B -X utf8 -m pytest -q -o addopts= -p no:cacheprovider -p no:cov tests
+Network: test subprocess credential variables cleared; local test suite only.
+Coverage: strict Draft 2020-12 schema, provider/endpoint inventory, environment-variable-name-only policy, local evidence-file binding, and explicit non-acceptance of StockQA CLI E2E.
+........................................................ [ 24%]
+........................................................... [ 50%]
+.................................................... [ 72%]
+...................................................... [ 96%]
+.........                                                                [100%]
+230 passed, 139 subtests passed in 56.38s
+JSON config/schema parsing and git diff --check passed in the targeted validation run.

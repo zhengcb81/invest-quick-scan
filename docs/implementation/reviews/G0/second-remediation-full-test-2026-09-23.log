@@ -1,0 +1,19 @@
+..........................................F................. [ 32%]
+................................................... [ 60%]
+..................................................................... [ 97%]
+....                                                                     [100%]
+================================== FAILURES ===================================
+____________ test_frozen_candidate_matches_complete_declared_scope ____________
+
+    def test_frozen_candidate_matches_complete_declared_scope():
+        value = json.loads(manifest.MANIFEST.read_text(encoding="utf-8"))
+>       assert manifest.verify(value) == []
+E       AssertionError: assert ['hash mismat... progress.md'] == []
+E         
+E         Left contains 6 more items, first extra item: 'hash mismatch: docs/implementation/acceptance-cases.json'
+E         Use -v to get more diff
+
+tests\test_g0_manifest.py:16: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_g0_manifest.py::test_frozen_candidate_matches_complete_declared_scope
+1 failed, 183 passed, 108 subtests passed in 70.39s (0:01:10)

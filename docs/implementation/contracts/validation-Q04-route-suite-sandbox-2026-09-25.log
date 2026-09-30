@@ -1,0 +1,18 @@
+
+=================================== ERRORS ====================================
+__________ ERROR collecting tests/integration/test_quick_scan_cli.py __________
+ImportError while importing test module 'C:\Users\郑曾波\AppData\Local\Temp\iqs-q04-route-suite-0gni775a\StockQAbyLLM\tests\integration\test_quick_scan_cli.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Miniconda\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_quick_scan_cli.py:10: in <module>
+    import main_with_llm
+E   ModuleNotFoundError: No module named 'main_with_llm'
+=========================== short test summary info ===========================
+ERROR tests/integration/test_quick_scan_cli.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 1.09s
+
+EXIT_CODE=2

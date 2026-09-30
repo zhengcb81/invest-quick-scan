@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "review_id": "S01-fixed-snapshot-follow-up-read-only-review-2026-09-27",
+  "reviewer_id": "agent:/root/q04_retry_design_review",
+  "reviewer_role": "independent read-only S01/C06 milestone reviewer",
+  "independent": true,
+  "separation_basis": "Separate review agent; inspected the supplied current snapshot and did not implement or modify source, tests, receipts, or validation logs.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "1a49ac9155c7b74f77028c96a06a2831247a57a570a90d5e61d1bcbf0467a7e8",
+  "snapshot_binding": "Bound to the aggregate implementation snapshot SHA-256 and exact per-file SHA-256 values below.",
+  "snapshot_files": [
+    {
+      "path": "questions/catalog.json",
+      "sha256": "252dab9e3f71868a71147ecb7dac64cc187d7d56002b28b266a74f406facaf10"
+    },
+    {
+      "path": "scripts/question_sets.py",
+      "sha256": "602480ac453150ce5c4c8529e2c081250405ac915fd9f47cd1afb4099d36fa47"
+    },
+    {
+      "path": "tests/test_question_sets.py",
+      "sha256": "a90616a15b770ef1e936d1c87af5ed8857891facd33a9cae18dee21c052ca2dc"
+    }
+  ],
+  "review_scope": [
+    "S01 legacy recovery-map validation and compatibility",
+    "S01 metric mapping and recovery-watch behavior relevant to recent S05/S06 changes"
+  ],
+  "checks": {
+    "snapshot_binding": "All three supplied S01 file hashes matched the current files.",
+    "coordinated_legacy_rewrite": "Closed: for a legacy-format manifest without metric_contract_version, recovery mappings are trusted only when the template version and selected questions, modules, and replacements match the current canonical question library. The regression test rewrites both question-level replaces and the top-level map consistently and confirms recovery_watch becomes needs_verification with replacement_mapping_unverified.",
+    "legacy_readability": "Preserved: a legacy manifest without template_version or metric_contract_version still normalizes, reports template_version as unknown, uses legacy-all-questions aggregation, and is not mutated. Its recovery mapping is conservatively left unverified.",
+    "canonical_catalog_boundary": "Unknown or unavailable catalog versions fail closed for recovery mapping; the original answers and core summary remain readable and unchanged."
+  },
+  "findings": [],
+  "open_findings": [],
+  "implementer_test_evidence": {
+    "reported_result": "The implementer reported the full affected S01 batch at 86 passed with one legacy-fixture expectation failure after adding template_version to a shared fixture; the fixture was corrected only in that test, then the two affected S01 tests passed with 4 subtests. Cleanup was verified by the implementer.",
+    "run_by": "implementer",
+    "reviewer_reran": false
+  },
+  "execution": {
+    "review_mode": "read-only",
+    "reviewer_ran_tests": false,
+    "network_or_api_used": false,
+    "implementation_or_receipt_files_modified": false
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "version": "3.0.0",
+  "module_id": "listing_structure",
+  "kind": "overlays",
+  "name": "ADR、VIE与特殊股权结构",
+  "applies_when": "存托凭证、协议控制、双重股权或跨地挂牌导致权利与经济利益分离。",
+  "questions": [
+    {
+      "id": "LISTING_STRUCTURE_01",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "所购买证券对经营资产与现金流的权利是否清晰可执行？",
+      "evidence": [
+        "ADR比例",
+        "VIE合同",
+        "股权层级",
+        "投票权"
+      ],
+      "anchors": {
+        "1": "核心权益不清或存在重大不可执行风险",
+        "5": "权利可理解但执行存在显著约束",
+        "10": "权利、救济与经济归属有可靠明确依据"
+      },
+      "metric_id": "score.listing_structure_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    },
+    {
+      "id": "LISTING_STRUCTURE_02",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "挂牌、审计或存托安排中断时投资者是否有可行替代？",
+      "evidence": [
+        "退市程序",
+        "转换",
+        "审计",
+        "托管与费用"
+      ],
+      "anchors": {
+        "1": "中断可能导致权益难处置且无替代",
+        "5": "存在替代路径但成本或限制明显",
+        "10": "可执行转换或处置路径清楚，风险有界"
+      },
+      "metric_id": "score.listing_structure_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    },
+    {
+      "id": "LISTING_STRUCTURE_03",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "报价、股数与币种换算后，估值口径是否足够可靠？",
+      "evidence": [
+        "ADR换算",
+        "流通与总股数",
+        "稀释",
+        "币种日期"
+      ],
+      "anchors": {
+        "1": "重大口径不明导致估值失真",
+        "5": "主要口径清楚但存在部分误差",
+        "10": "证券到经济股权换算完整且可复核"
+      },
+      "metric_id": "score.listing_structure_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "security"
+    }
+  ]
+}

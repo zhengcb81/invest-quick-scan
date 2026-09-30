@@ -1,0 +1,70 @@
+{
+  "task_id": "S05",
+  "status": "verified_for_local_S05_scope",
+  "owner": "iqs",
+  "plan_version": "1.7.3",
+  "dependency_receipts": [
+    "docs/implementation/contracts/receipt-S04.json",
+    "docs/implementation/contracts/receipt-S01.json"
+  ],
+  "implementation_snapshot": {
+    "scripts/module_registry.py": "4AE0FD4359A5C2E583F85A790BA8AC929190BC97D1F9111687BFE78A74A35E0B",
+    "scripts/question_sets.py": "B6C6AD4219BE1AE8A87AF44A40CD2199FD2E33A90A5AFBC56BC14B04D342BB9B",
+    "scripts/standard_answers.py": "66EADD87503F0BDE7794E33B34172A3F77B32525FE805031471F2A3DEFD012EC",
+    "schemas/observation.schema.json": "6344D2AFC9E0D937E05BABA8AEF27AD15C91770AB7ECB2DD549E5AB4FB70EC",
+    "tests/test_module_registry.py": "5D3EB28E56A50AC78FFECE4AD06D6115B497E81E9A6B0A94C011A476747E5608",
+    "tests/test_standard_answers.py": "B32403C595EEB7A26D2B5D0CA3509B5071659B289F3E427BF34E48FA93F9F7A1",
+    "questions/releases/current.json": "8950DC3FA28B287AE5E9E7E0B3775360659F3A74A78107664D6B2C5EB5EBE985",
+    "questions/releases/packages/pkg_24f07923f23cf0a2be5d7fb4b36a11925c779a8f4a68bdc9c81457084ded080f.json": "284BE44F2C67F91E3359A038425579682052F1BDAB67CFA426390EE8A468F7AA"
+  },
+  "current_package_id": "pkg_24f07923f23cf0a2be5d7fb4b36a11925c779a8f4a68bdc9c81457084ded080f",
+  "checks": [
+    {
+      "case_id": "MOD-01",
+      "result": "passed_for_published_composition; route_resolver_pending_S06",
+      "evidence": "Frozen semiconductor/scaling profile produces quick 28 and full 34 questions with 24 unique core constructs."
+    },
+    {
+      "case_id": "MOD-02",
+      "result": "passed",
+      "evidence": "Independent per-module upgrade and retired-ID chain validated; old archived bytes stay readable."
+    },
+    {
+      "case_id": "MOD-03",
+      "result": "passed_for_frozen_method_comparison",
+      "evidence": "Question-specific format/context semantics change method IDs; unrelated module changes leave comparable questions stable."
+    },
+    {
+      "case_id": "MOD-04",
+      "result": "passed_for_registry_and_compose; route_resolver_pending_S06",
+      "evidence": "Missing registration/context and model-selected manual lens fail before export, including revalidation."
+    },
+    {
+      "case_id": "MOD-07",
+      "result": "passed_for_historical_package_and_manifest",
+      "evidence": "Two genuine older packages remain readable; legacy read-only and current standard dispatch boundaries hold."
+    },
+    {
+      "case_id": "MOD-08",
+      "result": "passed_for_per_question_method_and_budget",
+      "evidence": "Shared answer/metric/observation format resources affect semantics, unrelated modules do not; S06 still owns triggered-risk mandatory budget."
+    }
+  ],
+  "validation": {
+    "full_command": "python -X utf8 -m pytest -p no:cacheprovider tests -q",
+    "full_result": "267 passed, 148 subtests passed",
+    "full_output_path": "docs/implementation/contracts/validation-S05-r3-final-full-2026-09-26.log",
+    "full_output_sha256": "C0B7C99D7A2A7DC49CA392065FAD3D3293A8E6363C8E1BE4FCF22B5B3883F2D4",
+    "skipped": 0,
+    "network_used": false
+  },
+  "review": {
+    "reviewer": "/root/question_audit",
+    "result": "no_remaining_P1_P2_for_local_S05_scope",
+    "independent_tests": "54 passed, 0 skipped",
+    "independent_probes": "31 passed",
+    "report_path": "docs/implementation/reviews/S05/r3-independent-review-2026-09-26.md",
+    "report_sha256": "26C0343F53BA9B10926148FB629D2BEA6E62C684ECB532FA4EE69882750E4FBD"
+  },
+  "scope_statement": "S05 local publishing, historical reads, deterministic composition and frozen standard-observation comparison are verified. S06 route evidence/TTL and mandatory risk dispatch, StockQA execution, StockWiki strict ingest with independently persisted expected observation ID, and cross-repository E2E are separate unfinished gates."
+}

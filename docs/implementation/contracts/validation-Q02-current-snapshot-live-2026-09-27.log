@@ -1,0 +1,153 @@
+Q02 MiniMax Anthropic single-query live E2E on current StockQA snapshot
+selector: tests/live/test_live_quick_scan.py::test_live_minimax_anthropic_search_runs_public_company_through_cli_and_cleans_local_artifacts
+command: python -X utf8 -m pytest -q -p pytest_asyncio.plugin -p no:cacheprovider -o addopts= <selector> --basetemp <unique TemporaryDirectory>
+MINIMAX_API_KEY: present in test process; value not logged
+source_llm_client_sha256_before: c57136bddaf1e77a1295bf99a30bed069748f3698ffd7dc36eda7d69ff4cb77c
+source_llm_client_sha256_after: c57136bddaf1e77a1295bf99a30bed069748f3698ffd7dc36eda7d69ff4cb77c
+basetemp_removed_after_context: True
+exit_code: 1
+
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_live_minimax_anthropic_search_runs_public_company_through_cli_and_cleans_local_artifacts _
+
+    @pytest.mark.live
+    @pytest.mark.skipif(
+        os.environ.get("STOCKQA_RUN_LIVE_E2E") != "1" or not os.environ.get("MINIMAX_API_KEY"),
+        reason="Set STOCKQA_RUN_LIVE_E2E=1 and MINIMAX_API_KEY for one MiniMax-M3 Anthropic E2E",
+    )
+    def test_live_minimax_anthropic_search_runs_public_company_through_cli_and_cleans_local_artifacts():
+        """Exercise MiniMax's documented Anthropic Messages server-search route end to end."""
+        repo_root = Path(__file__).resolve().parents[2]
+        original_cwd = Path.cwd()
+    
+        with tempfile.TemporaryDirectory(prefix="stockqa-live-minimax-anthropic-") as temporary_root:
+            sandbox = Path(temporary_root).resolve()
+            (sandbox / "logs").mkdir()
+            questions_path = sandbox / "questions.json"
+            questions_path.write_text(
+                json.dumps(
+                    {
+                        "categories": [
+                            {
+                                "category": "quality",
+                                "questions": [
+                                    {
+                                        "question_id": "IQS_05",
+                                        "text": (
+                                            "Run exactly one web_search query for Alphabet Inc.'s " +
+                                            "official FY2025 annual report. Using only that search " +
+                                            "result, rate the durability of Google Search's distribution " +
+                                            "advantage from 1 to 10; do not issue a second search. Return only "
+                                            "strict JSON with question_id IQS_05, status, integer score "
+                                            "or null, and a concise description. Do not include markdown."
+                                        ),
+                                    }
+                                ],
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            endpoint = "https://api.minimax.cn/anthropic/v1/messages"
+            (sandbox / "llm_apis.json").write_text(
+                json.dumps(
+                    {
+                        "default_provider": "minimax",
+                        "providers": {
+                            "minimax": {
+                                "enabled": True,
+                                "api_key": "",
+                                "model": "MiniMax-M3",
+                                "base_url": endpoint,
+                                "max_retries": 1,
+                                "format_repair_budget": 0,
+                                "timeout": 180,
+                            }
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+    
+            child_env = os.environ.copy()
+            child_env["PYTHONPATH"] = str(repo_root) + os.pathsep + child_env.get("PYTHONPATH", "")
+            child_env["PYTHONDONTWRITEBYTECODE"] = "1"
+            output_path = sandbox / "result.json"
+            command = [
+                sys.executable, "-X", "utf8", str(repo_root / "main_with_llm.py"),
+                "--company", "Alphabet Inc.", "--entity-id", "issuer:US02079K3059",
+                "--provider", "minimax", "--config", str(questions_path),
+                "--output", str(output_path), "--require-search",
+            ]
+            try:
+                completed = subprocess.run(
+                    command, cwd=sandbox, env=child_env, capture_output=True, text=True,
+                    timeout=210, check=False,
+                )
+            finally:
+                assert Path.cwd() == original_cwd
+    
+            result = json.loads(output_path.read_text(encoding="utf-8"))
+            answer = result["answers"]["IQS_05"]
+            receipt = result["execution_receipts"]["IQS_05"]
+            answer_error = answer.get("description") if answer.get("status") == "error" else None
+            if isinstance(answer_error, str):
+                api_key = os.environ.get("MINIMAX_API_KEY")
+                if api_key:
+                    answer_error = answer_error.replace(api_key, "[REDACTED]")
+                answer_error = answer_error[:180]
+            safe_summary = {
+                "cli_returncode": completed.returncode,
+                "answer_status": answer.get("status"),
+                "answer_score": answer.get("score"),
+                "answer_error": answer_error,
+                "http_status_code": receipt.get("http_status_code"),
+                "response_status": receipt.get("response_status"),
+                "stop_reason": receipt.get("stop_reason"),
+                "actual_model": receipt.get("actual_model"),
+                "search_status": receipt.get("search_status"),
+                "search_call_count": len(receipt.get("web_search_calls", [])),
+                "search_calls": [
+                    {
+                        "has_id": bool(call.get("id")),
+                        "status": call.get("status"),
+                        "source_count": len(call.get("source_urls", [])),
+                        "has_error_code": bool(call.get("error_code")),
+                    }
+                    for call in receipt.get("web_search_calls", [])
+                ],
+                "search_receipt_id_present": bool(receipt.get("search_receipt_id")),
+                "source_count": len(receipt.get("source_urls", [])),
+                "request_id_present": bool(receipt.get("request_id")),
+                "response_id_present": bool(receipt.get("response_id")),
+                "attempt_id_present": bool(receipt.get("attempt_id")),
+            }
+            safe_summary_text = json.dumps(safe_summary, ensure_ascii=True, sort_keys=True)
+            assert completed.returncode == 0, safe_summary_text
+            assert result["entity"]["name"] == "Alphabet Inc."
+            assert result["observed_at"].endswith("Z")
+            assert answer["status"] in {"scored", "insufficient_evidence"}, safe_summary_text
+            if answer["status"] == "scored":
+                assert type(answer["score"]) is int and 1 <= answer["score"] <= 10, safe_summary_text
+            else:
+                assert answer["score"] is None, safe_summary_text
+            assert receipt["provider"] == "minimax"
+            assert receipt["requested_model"] == "MiniMax-M3"
+            assert receipt["actual_model"] == "MiniMax-M3", safe_summary_text
+            assert receipt["request_id"] is None
+            assert receipt["response_id"]
+            assert receipt["attempt_id"]
+>           assert receipt["search_status"] == "executed", safe_summary_text
+E           AssertionError: {"actual_model": "MiniMax-M3", "answer_error": null, "answer_score": null, "answer_status": "insufficient_evidence", "attempt_id_present": true, "cli_returncode": 0, "http_status_code": 200, "request_id_present": false, "response_id_present": true, "response_status": "completed", "search_call_count": 0, "search_calls": [], "search_receipt_id_present": false, "search_status": "unverified", "source_count": 0, "stop_reason": null}
+E           assert 'unverified' == 'executed'
+E             
+E             - executed
+E             + unverified
+
+tests\live\test_live_quick_scan.py:427: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/live/test_live_quick_scan.py::test_live_minimax_anthropic_search_runs_public_company_through_cli_and_cleans_local_artifacts
+1 failed in 4.75s

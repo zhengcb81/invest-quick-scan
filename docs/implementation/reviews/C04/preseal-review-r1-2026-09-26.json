@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "review_id": "C04-preseal-review-r1-2026-09-26",
+  "reviewer_id": "agent:/root/p01_receipt_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "Separate read-only sub-agent; did not implement or modify the reviewed task, contracts, schemas, tests, plan, or evidence.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "baee65b294fc0a4901b8597a34879ed7be44cdb672132815bebf01219782f6fd",
+  "open_findings": [],
+  "plan_binding": {
+    "plan_version": "1.9.6",
+    "plan_sha256": "40272b45ec730efa060f2ddb050d8ef9cd736eeeffce57007def9e7879adb411",
+    "case_catalog_sha256": "8d9342896a3485f90ee67436643f67b6db7af35f24fa2b92f6733ac10a9a7287"
+  },
+  "review_scope": [
+    "C04 task card and TIME-01/02/03/04/05/07/08/09 acceptance cases and owner allowlist",
+    "freshness-and-jobs.md, work.schema.json, work_contract.py and test_freshness_and_jobs_contract.py current snapshot",
+    "C04-prefixed copy of the shared offline C01-C07 batch log and its test selectors"
+  ],
+  "checks": {
+    "snapshot_binding": "Verified by recomputing the canonical snapshot over the four owner-allowlisted paths.",
+    "case_and_test_coverage": "Every C04-owned TIME case has a passing selector in the shared log; the module also runs additional freshness/job regression selectors without expanding C04's owned case set.",
+    "time_09_is_preview_only": "field_freshness_preview is a deterministic field-by-field pure function. Its test checks fresh, stale and missing_date classifications, sorted refresh gaps, repeatability, unchanged input and dispatch_started=false.",
+    "scheduler_boundary": "The contract explicitly states that the preview creates no work, writes no database, makes no HTTP/LLM call and does not replace W06-owned real refresh scheduling.",
+    "time_and_work_semantics": "The logged cases distinguish information time from import/review time, preserve strict UTC TTL boundaries and separate logical work identity from request caching and unknown cooldown behavior."
+  },
+  "shared_batch": {
+    "run_id": "dcb590ac-b1fb-4acd-80f8-e9035a651181",
+    "result": "188 passed, 121 subtests passed, 0 skips; exit 0 in 27.83 seconds",
+    "log_relation": "C01-C07 task-prefixed logs are byte-identical copies of this one local run; temporary root cleanup is verified and the root is recorded removed."
+  },
+  "execution": {
+    "review_mode": "read-only",
+    "reviewer_ran_tests": false,
+    "reviewer_ran_scripts": false,
+    "network_or_api_used": false,
+    "external_repositories_modified": false,
+    "implementation_or_plan_files_modified": false,
+    "shared_test_evidence_rerun": false
+  }
+}

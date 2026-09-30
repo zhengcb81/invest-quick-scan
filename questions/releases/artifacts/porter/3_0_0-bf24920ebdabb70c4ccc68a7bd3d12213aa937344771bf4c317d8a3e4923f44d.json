@@ -1,0 +1,134 @@
+{
+  "version": "3.0.0",
+  "module_id": "porter",
+  "kind": "diagnostics",
+  "name": "五力与利润池诊断",
+  "applies_when": "竞争结构或价值链利润归属不清时选用；明确真实市场边界，不进入汇总。",
+  "questions": [
+    {
+      "id": "PORTER_01",
+      "dimension": "moat",
+      "priority": 1,
+      "framework": "porter",
+      "factor": "rivalry",
+      "aggregation": "diagnostic",
+      "question": "波特五力·现有竞争者：行业竞争强度是否允许公司赚取合理回报？",
+      "evidence": [
+        "价格纪律",
+        "新增供给",
+        "差异化",
+        "退出壁垒"
+      ],
+      "anchors": {
+        "1": "长期恶性竞争和过剩产能吞噬回报",
+        "5": "竞争激烈但有效率企业可获合理回报",
+        "10": "供给有纪律且差异化支持持续合理回报，不唯集中度"
+      },
+      "metric_id": "score.porter_01",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PORTER_02",
+      "dimension": "moat",
+      "priority": 1,
+      "framework": "porter",
+      "factor": "entrants",
+      "aggregation": "diagnostic",
+      "question": "波特五力·潜在进入者：新进入者突破壁垒并侵蚀利润的难度如何？",
+      "evidence": [
+        "资本技术认证",
+        "渠道",
+        "实际新进入记录",
+        "规模门槛"
+      ],
+      "anchors": {
+        "1": "进入容易且新供给持续压低回报",
+        "5": "有门槛但资金或技术可克服",
+        "10": "关键门槛持久且已有进入失败或高成本的证据"
+      },
+      "metric_id": "score.porter_02",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PORTER_03",
+      "dimension": "moat",
+      "priority": 1,
+      "framework": "porter",
+      "factor": "substitutes",
+      "aggregation": "diagnostic",
+      "question": "波特五力·替代品：替代方案对客户价值和公司经济利润的威胁是否可控？",
+      "evidence": [
+        "替代方案总成本",
+        "性能",
+        "客户迁移",
+        "技术路线"
+      ],
+      "anchors": {
+        "1": "替代方案已明显占优且迁移加速",
+        "5": "替代存在但切换仍有代价",
+        "10": "主要需求难被替代或公司主动掌握有竞争力的替代方案"
+      },
+      "metric_id": "score.porter_03",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PORTER_04",
+      "dimension": "moat",
+      "priority": 1,
+      "framework": "porter",
+      "factor": "buyers",
+      "aggregation": "diagnostic",
+      "question": "波特五力·购买者：客户的议价能力是否会持续压缩公司利润？",
+      "evidence": [
+        "客户集中",
+        "采购招标",
+        "转换成本",
+        "后向整合"
+      ],
+      "anchors": {
+        "1": "客户掌控价格条款且可轻易替换或自制",
+        "5": "双方议价大体平衡但客户能部分压价",
+        "10": "公司独特价值限制客户压价且交易关系可持续"
+      },
+      "metric_id": "score.porter_04",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "PORTER_05",
+      "dimension": "moat",
+      "priority": 1,
+      "framework": "porter",
+      "factor": "suppliers",
+      "aggregation": "diagnostic",
+      "question": "波特五力·供应商：关键投入方的议价能力是否会侵蚀公司回报？",
+      "evidence": [
+        "替代供应",
+        "投入集中",
+        "转换认证",
+        "前向整合"
+      ],
+      "anchors": {
+        "1": "关键投入被控制且成本风险持续转嫁",
+        "5": "供给可得但部分关键方议价较强",
+        "10": "替代或协作机制有效，长期经济回报不受单方支配"
+      },
+      "metric_id": "score.porter_05",
+      "construct_id": null,
+      "comparison_role": "diagnostic",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

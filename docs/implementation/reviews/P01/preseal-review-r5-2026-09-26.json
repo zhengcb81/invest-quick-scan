@@ -1,0 +1,63 @@
+{
+  "review_version": "1.0",
+  "review_type": "P01 pre-seal implementation review",
+  "reviewer_id": "agent:/root/p01_receipt_review",
+  "reviewer_role": "independent implementation reviewer",
+  "independent": true,
+  "separation_basis": "Separate read-only sub-agent; did not implement or modify the reviewed implementation, schema, tests, example, or contract.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "664bc7fd5fbe507b7a87d6a1844e312e5295178f740ee86b629c518066265c79",
+  "implementation_snapshot_files": [
+    {
+      "root_id": "iqs",
+      "path": "docs/implementation/contracts/task-receipts.md",
+      "sha256": "72f66b499591c457a9b328c85ae6dcd4de56ec02374b28c6b1bbc957ca0ecba3"
+    },
+    {
+      "root_id": "iqs",
+      "path": "examples/quick_scan/task-receipt-v2-example.json",
+      "sha256": "cc765a4c33f07bb1beb4a6d580d02ed042cbc4833ec6abf80d04179383de83b4"
+    },
+    {
+      "root_id": "iqs",
+      "path": "schemas/quick_scan/task-receipt.schema.json",
+      "sha256": "6758782e295ca37f7c7ae1b0f29b41180024c26fa1eafca3ed9936a6ca047cf9"
+    },
+    {
+      "root_id": "iqs",
+      "path": "scripts/task_receipts.py",
+      "sha256": "1054cd195a4abcaace923628978630d71f0830591d58d294e214abdd0ad2c318"
+    },
+    {
+      "root_id": "iqs",
+      "path": "tests/test_task_receipts.py",
+      "sha256": "9dd304bf673606d70a5e60ab9c2d6d883cbc90439117c6b220cb569ad0b35604"
+    }
+  ],
+  "open_findings": [],
+  "review_scope": {
+    "implementation_files": [
+      "scripts/task_receipts.py",
+      "schemas/quick_scan/task-receipt.schema.json",
+      "tests/test_task_receipts.py",
+      "docs/implementation/contracts/task-receipts.md",
+      "examples/quick_scan/task-receipt-v2-example.json"
+    ],
+    "requirements": [
+      "P01 task requirements and RCPT-01/RCPT-02/RCPT-03 acceptance cases",
+      "Duplicate JSON object members are rejected before schema validation or hash evaluation without echoing field names or values",
+      "Provenance-only full-plan/catalog hashes, task/case/global-boundary closure, exact case/assertion sets, evidence validation, and source/review snapshot binding",
+      "Historical P01-to-P00 context allowlist, manifest integrity, and known-legacy-only status",
+      "Recursive current dependencies and cycle rejection",
+      "Read-only stdout sidecar, no receipt command execution, and path purpose/scope/symlink/hardlink controls",
+      "No secret/company-document/web-body disclosure and legacy-byte preservation"
+    ]
+  },
+  "execution": {
+    "mode": "read-only review",
+    "tests_run_by_reviewer": false,
+    "network_or_api_calls": false,
+    "receipt_recorded_commands_executed": false,
+    "implementation_files_modified": false
+  }
+}

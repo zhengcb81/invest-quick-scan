@@ -1,0 +1,50 @@
+{
+  "suite": "S06 MOD-18 local milestone",
+  "groups": [
+    {
+      "group": "routing-and-MOD18",
+      "exit_code": 0,
+      "summary": [
+        "24 passed, 17 subtests passed in 301.84s (0:05:01)"
+      ]
+    },
+    {
+      "group": "public-S06-composition",
+      "exit_code": 0,
+      "summary": [
+        "11 passed, 52 deselected, 7 subtests passed in 203.06s (0:03:23)"
+      ]
+    },
+    {
+      "group": "module-contract-and-activation",
+      "exit_code": 0,
+      "summary": [
+        "6 passed, 44 deselected in 8.88s"
+      ]
+    }
+  ],
+  "outer_temp_cleaned": true,
+  "temporary_leftover_paths_before_cleanup": [],
+  "live_api_used": false
+}
+
+## routing-and-MOD18
+$ C:\Miniconda\python.exe -B -X utf8 -m pytest -q -p no:cacheprovider -o tmp_path_retention_policy=none tests/test_routing.py tests/test_s06_dependency_closure.py
+........................                                [100%]
+24 passed, 17 subtests passed in 301.84s (0:05:01)
+
+exit_code=0
+
+## public-S06-composition
+$ C:\Miniconda\python.exe -B -X utf8 -m pytest -q -p no:cacheprovider -o tmp_path_retention_policy=none tests/test_question_sets.py -k test_s06_
+...........                                                       [100%]
+11 passed, 52 deselected, 7 subtests passed in 203.06s (0:03:23)
+
+exit_code=0
+
+## module-contract-and-activation
+$ C:\Miniconda\python.exe -B -X utf8 -m pytest -q -p no:cacheprovider -o tmp_path_retention_policy=none tests/test_module_contract.py tests/test_module_registry.py -k route_decision or new_module_requires or new_lens_requires or mod_04_unregistered or module_order_in_profile or partial_route_uses_common
+......                                                                   [100%]
+6 passed, 44 deselected in 8.88s
+
+exit_code=0

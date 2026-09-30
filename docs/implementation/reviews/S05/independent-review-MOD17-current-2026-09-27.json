@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "review_id": "S05-MOD17-current-snapshot-independent-review-2026-09-27",
+  "reviewer_id": "agent:/root/q04_retry_design_review",
+  "reviewer_role": "independent read-only S05/MOD-17 milestone reviewer",
+  "independent": true,
+  "separation_basis": "Separate review agent; reviewed the supplied current snapshot without implementing or modifying source, tests, receipts, or validation logs.",
+  "outcome": "approved",
+  "implementation_snapshot_sha256": "8eee2a911978139fe60f4ec44765e6dfd17dbe095f676e069f6fa09154b5b4bb",
+  "snapshot_files": [
+    {
+      "path": "schemas/quick_scan/module-legacy-baseline.json",
+      "sha256": "0a128fa569efae7c1b06948a142fb67dead78812d1ccfce6087de21753f28ab3"
+    },
+    {
+      "path": "scripts/module_registry.py",
+      "sha256": "9e45a224a6ace21d9c33010eba2e2c5abdd0eff74adfe8510f003cb8b88a38ce"
+    },
+    {
+      "path": "scripts/question_sets.py",
+      "sha256": "602480ac453150ce5c4c8529e2c081250405ac915fd9f47cd1afb4099d36fa47"
+    },
+    {
+      "path": "tests/test_module_registry.py",
+      "sha256": "bdf0b7b1a8b6228ffa5b0aca86221309d29216921b62bd5d898a86f36593900e"
+    },
+    {
+      "path": "tests/test_routing.py",
+      "sha256": "8916abfe0ce49903c470c4e58d086195182e61afe0fad0db800594c514cbb3ae"
+    }
+  ],
+  "review_scope": [
+    "S05/MOD-17 exact legacy baseline validation, package/archive loading, and first publication behavior",
+    "Cross-task S01 recovery-map canonical validation in the current question_sets.py snapshot",
+    "S06 route confidence and archived/current package compatibility represented in the current routing tests"
+  ],
+  "checks": {
+    "snapshot_binding": "All five supplied file hashes matched the current files; aggregate implementation snapshot hash is bound above.",
+    "legacy_baseline_trust_root": "The exact raw baseline digest is pinned in module_registry.py. Its fixed release_id, exact schema keys, sorted 48-module ID set, unique entries, and lowercase SHA-256 values are checked before legacy status is granted.",
+    "legacy_module_compatibility": "Metadata-light modules are treated as legacy only when their archived/source artifact bytes match the pinned per-module digest. The package loader and publisher both enforce that check; partial lifecycle metadata does not qualify for the compatibility exception.",
+    "negative_cases": "The bound tests reject a rehashed same-ID legacy archive, an unregistered module claiming legacy compatibility, a package self-asserting legacy_ids, a changed legacy source artifact, and re-declaration/tampering of the pinned baseline.",
+    "historical_package_readability": "The exact 48-module baseline remains publishable/readable, while immutable package and release hashes preserve historical module content. S06 route tests preserve legacy package readability and keep routing-policy execution bound to frozen archived policy artifacts.",
+    "S01_interaction": "The current question_sets.py snapshot validates legacy recovery replacement mappings against the canonical selected questions and exact catalog version; coordinated question-level/top-level rewrites cannot be trusted, and missing/unknown catalog versions fail closed for recovery-watch mapping while legacy scoring remains readable.",
+    "S06_interaction": "The current routing test snapshot includes confidence-gate, prompt-bound candidate receipt, evidence-anchor/confirmation, and archived-router compatibility cases; no conflict with the MOD-17 baseline loader was found by static inspection."
+  },
+  "findings": [],
+  "open_findings": [],
+  "test_evidence": [
+    {
+      "path": "docs/implementation/contracts/validation-S05-MOD17-refresh-after-S01-2026-09-27.log",
+      "sha256": "63abb94e46dffe9a45d5459651729af07d9906bb64d71ead103513d7758a6e61",
+      "reported_result": "24 passed; TEMP_CLEANUP_VERIFIED=True; EXIT_CODE=0. The logged command ran tests/test_module_registry.py, including the MOD-02/03/17 cases.",
+      "run_by": "implementer",
+      "reviewer_reran": false
+    },
+    {
+      "path": "tests/test_routing.py",
+      "reported_result": "Static inspection only for the S06 compatibility/confidence cases in this snapshot; not included in the cited S05 test-log command.",
+      "run_by": "reviewer_static_inspection",
+      "reviewer_reran": false
+    }
+  ],
+  "execution": {
+    "review_mode": "read-only",
+    "reviewer_ran_tests": false,
+    "network_or_api_used": false,
+    "implementation_receipt_test_or_log_files_modified": false
+  }
+}

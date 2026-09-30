@@ -1,0 +1,98 @@
+{
+  "version": "3.0.0",
+  "module_id": "commercialization",
+  "kind": "stages",
+  "name": "初步商业化期",
+  "applies_when": "已形成初始付费或准入，尚未证明跨客户批次复制。",
+  "questions": [
+    {
+      "id": "COMMERCIALIZATION_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "首批付费是否证明真实需求而非试用、补贴或关联采购？",
+      "evidence": [
+        "独立客户",
+        "复购",
+        "退货",
+        "净价",
+        "补贴"
+      ],
+      "anchors": {
+        "1": "付费主要依赖补贴或关联客户",
+        "5": "部分真实客户但复购不足",
+        "10": "独立客户复购与支付意愿均经验证"
+      },
+      "metric_id": "score.commercialization_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "COMMERCIALIZATION_02",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "试点转为稳定量产或常规交付的能力如何？",
+      "evidence": [
+        "良率",
+        "实施时间",
+        "售后",
+        "交付成本"
+      ],
+      "anchors": {
+        "1": "试点效果不能在正常交付复现",
+        "5": "能交付但成本或质量不稳定",
+        "10": "多个批次稳定达到商业质量与成本目标"
+      },
+      "metric_id": "score.commercialization_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "COMMERCIALIZATION_03",
+      "dimension": "growth",
+      "priority": 2,
+      "question": "新客户获取路径是否已经具备可重复性？",
+      "evidence": [
+        "线索转化",
+        "销售周期",
+        "客户批次",
+        "渠道"
+      ],
+      "anchors": {
+        "1": "销售靠偶然项目与创始人关系",
+        "5": "有可行渠道但规模复制未明",
+        "10": "不同批次获客可复制且经济性成立"
+      },
+      "metric_id": "score.commercialization_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "COMMERCIALIZATION_04",
+      "dimension": "financial",
+      "priority": 2,
+      "question": "达到可自我维持经营前的资金缺口是否可控？",
+      "evidence": [
+        "盈亏平衡产量",
+        "消耗",
+        "融资",
+        "稀释"
+      ],
+      "anchors": {
+        "1": "可行盈亏平衡前资金明显不足",
+        "5": "路径合理但仍需较大外部融资",
+        "10": "保守爬坡下融资缺口有限且来源可靠"
+      },
+      "metric_id": "score.commercialization_04",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

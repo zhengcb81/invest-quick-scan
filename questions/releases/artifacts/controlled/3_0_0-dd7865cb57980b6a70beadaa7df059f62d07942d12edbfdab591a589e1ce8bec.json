@@ -1,0 +1,74 @@
+{
+  "version": "3.0.0",
+  "module_id": "controlled",
+  "kind": "overlays",
+  "name": "控股股东、国资或家族主导",
+  "applies_when": "存在实质控制人；所有权身份本身不构成加分或扣分。",
+  "questions": [
+    {
+      "id": "CONTROLLED_01",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "控制权安排是否允许普通股东公平分享经济利益？",
+      "evidence": [
+        "关联交易",
+        "优先权",
+        "独立审议",
+        "少数股东保护"
+      ],
+      "anchors": {
+        "1": "控制人持续转移利益且无法制衡",
+        "5": "基本权益受保护但独立性有限",
+        "10": "实际交易与投票记录证明公平保护有效"
+      },
+      "metric_id": "score.controlled_01",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONTROLLED_02",
+      "dimension": "governance",
+      "priority": 2,
+      "question": "非商业目标与上市公司回报冲突时是否透明且受约束？",
+      "evidence": [
+        "政策或家族目标",
+        "补偿",
+        "投资决策"
+      ],
+      "anchors": {
+        "1": "频繁承担不透明损失且无补偿",
+        "5": "冲突可见但制衡普通",
+        "10": "目标与成本明确，补偿或制衡机制有效"
+      },
+      "metric_id": "score.controlled_02",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    },
+    {
+      "id": "CONTROLLED_03",
+      "dimension": "resilience",
+      "priority": 2,
+      "question": "控制人自身的债务、质押或接班风险是否可隔离？",
+      "evidence": [
+        "股份质押",
+        "担保",
+        "资金占用",
+        "接班"
+      ],
+      "anchors": {
+        "1": "控制人风险可直接传染上市公司",
+        "5": "存在暴露但短期可管理",
+        "10": "财务与治理隔离清楚且接班风险可控"
+      },
+      "metric_id": "score.controlled_03",
+      "construct_id": null,
+      "comparison_role": "context",
+      "rubric_version": "1.0.0",
+      "scope": "entity"
+    }
+  ]
+}

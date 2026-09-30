@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:quick-scan:question-module:1",
+  "title": "QuickScanScoredQuestionModule",
+  "description": "S04 module shape. Existing 3.0.0 files remain valid; S05 adds registration closure and versioned execution.",
+  "type": "object",
+  "properties": {
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "module_id": {"$ref": "#/$defs/ModuleId"},
+    "kind": {"enum": ["common", "types", "industries", "stages", "overlays", "diagnostics", "common_extensions", "lenses"]},
+    "name": {"type": "string", "minLength": 1},
+    "applies_when": {"type": "string", "minLength": 1},
+    "activation": {
+      "type": "object",
+      "properties": {
+        "mode": {"enum": ["automatic", "manual", "diagnostic"]},
+        "required_evidence": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "exclude_when": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "minimum_confidence": {"enum": ["medium", "high"]}
+      },
+      "required": ["mode", "required_evidence", "exclude_when", "minimum_confidence"],
+      "additionalProperties": false
+    },
+    "dependencies": {"$ref": "#/$defs/ModuleIds"},
+    "conflicts": {"$ref": "#/$defs/ModuleIds"},
+    "introduced_in": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "deprecated_in": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "retired_question_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}},
+    "questions": {"type": "array", "minItems": 1, "maxItems": 64, "items": {"$ref": "#/$defs/ScoredQuestion"}}
+  },
+  "required": ["version", "module_id", "kind", "name", "applies_when", "questions"],
+  "allOf": [
+    {"if": {"properties": {"kind": {"enum": ["lenses", "common_extensions"]}}, "required": ["kind"]},
+     "then": {"required": ["activation", "dependencies", "conflicts", "introduced_in"]}},
+    {"if": {"properties": {"kind": {"const": "lenses"}}, "required": ["kind"]},
+     "then": {"properties": {"activation": {"properties": {"mode": {"const": "manual"}}}}}}
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "ModuleId": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+    "ModuleIds": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/ModuleId"}},
+    "ScoredQuestion": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+        "dimension": {"enum": ["business", "moat", "execution", "financial", "governance", "resilience", "growth", "valuation"]},
+        "priority": {"enum": [1, 2]},
+        "question": {"type": "string", "minLength": 1},
+        "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "anchors": {"type": "object", "properties": {"1": {"type": "string", "minLength": 1}, "5": {"type": "string", "minLength": 1}, "10": {"type": "string", "minLength": 1}}, "required": ["1", "5", "10"], "additionalProperties": false},
+        "metric_id": {"type": "string", "pattern": "^score\\.[a-z0-9_]+$"},
+        "construct_id": {"type": ["string", "null"]},
+        "comparison_role": {"enum": ["core", "context", "diagnostic"]},
+        "rubric_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "scope": {"enum": ["entity", "security", "segment"]},
+        "replaces": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}},
+        "aggregation": {"enum": ["scored", "diagnostic"]},
+        "critical": {"type": "boolean"},
+        "framework": {"type": "string", "minLength": 1},
+        "factor": {"type": "string", "minLength": 1},
+        "supersedes": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+      },
+      "required": ["id", "dimension", "priority", "question", "evidence", "anchors", "metric_id", "construct_id", "comparison_role", "rubric_version", "scope"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,2435 @@
+Expected-red Q01/Q03 independent counterexamples
+CWD/TEMP/TMP: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e
+HTTP transport mock only; no provider network
+
+F..FFFFF                                                                 [100%]
+================================== FAILURES ===================================
+_ test_ambiguous_or_nested_legacy_identity_never_becomes_a_scored_native_answer[{"entity_id": "issuer:review-fixture", "company_name": "Fictional Fixture Corp", "question_id": "IQS_05", "score": 5, "description": "{\\"id\\": \\"IQS_05\\", \\"status\\": \\"insufficient_evidence\\", \\"score\\": null, \\"confidence\\": \\"medium\\", \\"rationale\\": \\"No disclosed evidence\\"}"}] _
+
+content = '{"entity_id": "issuer:review-fixture", "company_name": "Fictional Fixture Corp", "question_id": "IQS_05", "score": 5,...icient_evidence\\", \\"score\\": null, \\"confidence\\": \\"medium\\", \\"rationale\\": \\"No disclosed evidence\\"}"}'
+
+    @pytest.mark.parametrize(
+        "content",
+        [
+            json.dumps(
+                {
+                    "entity_id": "issuer:review-fixture",
+                    "company_name": "Fictional Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {
+                            "id": "IQS_05",
+                            "status": "insufficient_evidence",
+                            "score": None,
+                            "confidence": "medium",
+                            "rationale": "No disclosed evidence",
+                        }
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {"id": "IQS_05", "status": "scored", "score": 8, "rationale": "inner 8"}
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "question_id": "IQS_05",
+                    "score": 8,
+                    "description": json.dumps(
+                        {"id": "IQS_06", "status": "scored", "score": 8, "rationale": "wrong item"}
+                    ),
+                }
+            ),
+            (
+                '{"entity_id":"issuer:review-fixture","company_name":"Fictional Fixture Corp",'
+                '"question_id":"IQS_06","question_id":"IQS_05","score":8,'
+                '"description":"ambiguous ID"}'
+            ),
+        ],
+    )
+    def test_ambiguous_or_nested_legacy_identity_never_becomes_a_scored_native_answer(content):
+        parser = LLMResponseParser()
+    
+>       assert (
+            parser.parse_structured_response(
+                content,
+                expected_question_id="IQS_05",
+                expected_entity_id="issuer:review-fixture",
+                expected_company_name="Fictional Fixture Corp",
+                strict_json_only=True,
+            )
+            is None
+        )
+E       assert ParsedLLMAnswer(score=5, description='{"id": "IQS_05", "status": "insufficient_evidence", "score": null, "confidence":...ce"}', status='scored', question_id='IQS_05', entity_id='issuer:review-fixture', company_name='Fictional Fixture Corp') is None
+E        +  where ParsedLLMAnswer(score=5, description='{"id": "IQS_05", "status": "insufficient_evidence", "score": null, "confidence":...ce"}', status='scored', question_id='IQS_05', entity_id='issuer:review-fixture', company_name='Fictional Fixture Corp') = parse_structured_response('{"entity_id": "issuer:review-fixture", "company_name": "Fictional Fixture Corp", "question_id": "IQS_05", "score": 5,...icient_evidence\\", \\"score\\": null, \\"confidence\\": \\"medium\\", \\"rationale\\": \\"No disclosed evidence\\"}"}', expected_question_id='IQS_05', expected_entity_id='issuer:review-fixture', expected_company_name='Fictional Fixture Corp', strict_json_only=True)
+E        +    where parse_structured_response = <src.providers.llm_response_parser.LLMResponseParser object at 0x0000017BDFD257F0>.parse_structured_response
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:220: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功解析LLM响应（直接JSON），评分: 5/10
+------------------------------ Captured log call ------------------------------
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 5/10
+_ test_ambiguous_or_nested_legacy_identity_never_becomes_a_scored_native_answer[{"entity_id":"issuer:review-fixture","company_name":"Fictional Fixture Corp","question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous ID"}] _
+
+content = '{"entity_id":"issuer:review-fixture","company_name":"Fictional Fixture Corp","question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous ID"}'
+
+    @pytest.mark.parametrize(
+        "content",
+        [
+            json.dumps(
+                {
+                    "entity_id": "issuer:review-fixture",
+                    "company_name": "Fictional Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {
+                            "id": "IQS_05",
+                            "status": "insufficient_evidence",
+                            "score": None,
+                            "confidence": "medium",
+                            "rationale": "No disclosed evidence",
+                        }
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {"id": "IQS_05", "status": "scored", "score": 8, "rationale": "inner 8"}
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "question_id": "IQS_05",
+                    "score": 8,
+                    "description": json.dumps(
+                        {"id": "IQS_06", "status": "scored", "score": 8, "rationale": "wrong item"}
+                    ),
+                }
+            ),
+            (
+                '{"entity_id":"issuer:review-fixture","company_name":"Fictional Fixture Corp",'
+                '"question_id":"IQS_06","question_id":"IQS_05","score":8,'
+                '"description":"ambiguous ID"}'
+            ),
+        ],
+    )
+    def test_ambiguous_or_nested_legacy_identity_never_becomes_a_scored_native_answer(content):
+        parser = LLMResponseParser()
+    
+>       assert (
+            parser.parse_structured_response(
+                content,
+                expected_question_id="IQS_05",
+                expected_entity_id="issuer:review-fixture",
+                expected_company_name="Fictional Fixture Corp",
+                strict_json_only=True,
+            )
+            is None
+        )
+E       assert ParsedLLMAnswer(score=8, description='ambiguous ID', status='scored', question_id='IQS_05', entity_id='issuer:review-fixture', company_name='Fictional Fixture Corp') is None
+E        +  where ParsedLLMAnswer(score=8, description='ambiguous ID', status='scored', question_id='IQS_05', entity_id='issuer:review-fixture', company_name='Fictional Fixture Corp') = parse_structured_response('{"entity_id":"issuer:review-fixture","company_name":"Fictional Fixture Corp","question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous ID"}', expected_question_id='IQS_05', expected_entity_id='issuer:review-fixture', expected_company_name='Fictional Fixture Corp', strict_json_only=True)
+E        +    where parse_structured_response = <src.providers.llm_response_parser.LLMResponseParser object at 0x0000017BDFD709D0>.parse_structured_response
+
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:220: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+------------------------------ Captured log call ------------------------------
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 8/10
+_ test_public_cli_never_scores_ambiguous_or_nested_legacy_answers[legacy-unknown-outer-five] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017BDFD70B00>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq01red7bb25c9e/pytest/test_public_cli_never_scores_a0')
+capsys = <_pytest.capture.CaptureFixture object at 0x0000017BDFD25A90>
+content = '{"entity_id": "issuer:fixture", "company_name": "Fixture Corp", "question_id": "IQS_05", "score": 5, "description": "...icient_evidence\\", \\"score\\": null, \\"confidence\\": \\"medium\\", \\"rationale\\": \\"No disclosed evidence\\"}"}'
+
+    @pytest.mark.parametrize(
+        "content",
+        [
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {
+                            "id": "IQS_05",
+                            "status": "insufficient_evidence",
+                            "score": None,
+                            "confidence": "medium",
+                            "rationale": "No disclosed evidence",
+                        }
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {"id": "IQS_05", "status": "scored", "score": 8, "rationale": "inner 8"}
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 8,
+                    "description": json.dumps(
+                        {"id": "IQS_06", "status": "scored", "score": 8, "rationale": "wrong item"}
+                    ),
+                }
+            ),
+            (
+                '{"entity_id":"issuer:fixture","company_name":"Fixture Corp",'
+                '"question_id":"IQS_06","question_id":"IQS_05","score":8,'
+                '"description":"ambiguous ID"}'
+            ),
+        ],
+        ids=["legacy-unknown-outer-five", "inner-outer-score-conflict", "inner-question-conflict", "duplicate-question-key"],
+    )
+    def test_public_cli_never_scores_ambiguous_or_nested_legacy_answers(
+        monkeypatch, tmp_path, capsys, content
+    ):
+        exit_code, output_file, session = _invoke(
+            monkeypatch,
+            tmp_path,
+            repair_budget=0,
+            responses=[_response(content=content)],
+        )
+    
+        assert output_file.exists()
+        answer = json.loads(output_file.read_text(encoding="utf-8"))["answers"]["IQS_05"]
+>       assert answer["score"] is None
+E       assert 5 is None
+
+C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py:855: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 5/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a0\result.json
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a0\result.json
+
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 5/10
+
+{"id": "IQS_05", "status": "insufficient_evidence", "score": null, "confidence": "medium", "rationale": "No disclosed evidence"}
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a0\result.json
+[OK] 平均评分: 5.0/10
+[OK] 评分分布: {5: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:110 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:113 LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:181 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 5/10
+INFO     src.providers.llm_provider:llm_provider.py:81 LLM答案生成完成 (状态: scored)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a0\result.json
+_ test_public_cli_never_scores_ambiguous_or_nested_legacy_answers[inner-outer-score-conflict] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017BDFD71480>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq01red7bb25c9e/pytest/test_public_cli_never_scores_a1')
+capsys = <_pytest.capture.CaptureFixture object at 0x0000017BDE84B610>
+content = '{"entity_id": "issuer:fixture", "company_name": "Fixture Corp", "question_id": "IQS_05", "score": 5, "description": "{\\"id\\": \\"IQS_05\\", \\"status\\": \\"scored\\", \\"score\\": 8, \\"rationale\\": \\"inner 8\\"}"}'
+
+    @pytest.mark.parametrize(
+        "content",
+        [
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {
+                            "id": "IQS_05",
+                            "status": "insufficient_evidence",
+                            "score": None,
+                            "confidence": "medium",
+                            "rationale": "No disclosed evidence",
+                        }
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {"id": "IQS_05", "status": "scored", "score": 8, "rationale": "inner 8"}
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 8,
+                    "description": json.dumps(
+                        {"id": "IQS_06", "status": "scored", "score": 8, "rationale": "wrong item"}
+                    ),
+                }
+            ),
+            (
+                '{"entity_id":"issuer:fixture","company_name":"Fixture Corp",'
+                '"question_id":"IQS_06","question_id":"IQS_05","score":8,'
+                '"description":"ambiguous ID"}'
+            ),
+        ],
+        ids=["legacy-unknown-outer-five", "inner-outer-score-conflict", "inner-question-conflict", "duplicate-question-key"],
+    )
+    def test_public_cli_never_scores_ambiguous_or_nested_legacy_answers(
+        monkeypatch, tmp_path, capsys, content
+    ):
+        exit_code, output_file, session = _invoke(
+            monkeypatch,
+            tmp_path,
+            repair_budget=0,
+            responses=[_response(content=content)],
+        )
+    
+        assert output_file.exists()
+        answer = json.loads(output_file.read_text(encoding="utf-8"))["answers"]["IQS_05"]
+>       assert answer["score"] is None
+E       assert 5 is None
+
+C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py:855: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a1\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 5/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a1\result.json
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 5/10
+
+{"id": "IQS_05", "status": "scored", "score": 8, "rationale": "inner 8"}
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a1\result.json
+[OK] 平均评分: 5.0/10
+[OK] 评分分布: {5: 1}
+---------------------------- Captured stderr call -----------------------------
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 246, in run
+    self.logger.info("=" * 70)
+Message: '======================================================================'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 248, in run
+    self.logger.info("公司分析 - %s", company)
+Message: '公司分析 - %s'
+Arguments: ('Fixture Corp',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 249, in run
+    self.logger.info("=" * 70)
+Message: '======================================================================'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 310, in _run_single_company
+    self.logger.info(f"\n成功加载 {len(questions)} 个问题")
+Message: '\n成功加载 1 个问题'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 311, in _run_single_company
+    self.logger.info(f"配置文件: {config} ({config_format}格式)")
+Message: '配置文件: C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqsq01red7bb25c9e\\pytest\\test_public_cli_never_scores_a1\\questions.json (json格式)'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 312, in _run_single_company
+    self.logger.info("输出文件: %s\n", output)
+Message: '输出文件: %s\n'
+Arguments: ('C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqsq01red7bb25c9e\\pytest\\test_public_cli_never_scores_a1\\result.json',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 458, in _run_single_company
+    self.logger.info("\nQuestion processing completed.")
+Message: '\nQuestion processing completed.'
+Arguments: ()
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:246 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:248 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:249 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a1\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:310 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:311 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a1\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:312 输出文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a1\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:110 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:113 LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:181 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 5/10
+INFO     src.providers.llm_provider:llm_provider.py:81 LLM答案生成完成 (状态: scored)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a1\result.json
+INFO     src.runners.llm_runner:llm_runner.py:458 
+Question processing completed.
+_ test_public_cli_never_scores_ambiguous_or_nested_legacy_answers[inner-question-conflict] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017BDEA1F410>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq01red7bb25c9e/pytest/test_public_cli_never_scores_a2')
+capsys = <_pytest.capture.CaptureFixture object at 0x0000017BDE84BD90>
+content = '{"entity_id": "issuer:fixture", "company_name": "Fixture Corp", "question_id": "IQS_05", "score": 8, "description": "{\\"id\\": \\"IQS_06\\", \\"status\\": \\"scored\\", \\"score\\": 8, \\"rationale\\": \\"wrong item\\"}"}'
+
+    @pytest.mark.parametrize(
+        "content",
+        [
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {
+                            "id": "IQS_05",
+                            "status": "insufficient_evidence",
+                            "score": None,
+                            "confidence": "medium",
+                            "rationale": "No disclosed evidence",
+                        }
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {"id": "IQS_05", "status": "scored", "score": 8, "rationale": "inner 8"}
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 8,
+                    "description": json.dumps(
+                        {"id": "IQS_06", "status": "scored", "score": 8, "rationale": "wrong item"}
+                    ),
+                }
+            ),
+            (
+                '{"entity_id":"issuer:fixture","company_name":"Fixture Corp",'
+                '"question_id":"IQS_06","question_id":"IQS_05","score":8,'
+                '"description":"ambiguous ID"}'
+            ),
+        ],
+        ids=["legacy-unknown-outer-five", "inner-outer-score-conflict", "inner-question-conflict", "duplicate-question-key"],
+    )
+    def test_public_cli_never_scores_ambiguous_or_nested_legacy_answers(
+        monkeypatch, tmp_path, capsys, content
+    ):
+        exit_code, output_file, session = _invoke(
+            monkeypatch,
+            tmp_path,
+            repair_budget=0,
+            responses=[_response(content=content)],
+        )
+    
+        assert output_file.exists()
+        answer = json.loads(output_file.read_text(encoding="utf-8"))["answers"]["IQS_05"]
+>       assert answer["score"] is None
+E       assert 8 is None
+
+C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py:855: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a2\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a2\result.json
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 8/10
+
+{"id": "IQS_06", "status": "scored", "score": 8, "rationale": "wrong item"}
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a2\result.json
+[OK] 平均评分: 8.0/10
+[OK] 评分分布: {8: 1}
+---------------------------- Captured stderr call -----------------------------
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 246, in run
+    self.logger.info("=" * 70)
+Message: '======================================================================'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 248, in run
+    self.logger.info("公司分析 - %s", company)
+Message: '公司分析 - %s'
+Arguments: ('Fixture Corp',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 249, in run
+    self.logger.info("=" * 70)
+Message: '======================================================================'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 310, in _run_single_company
+    self.logger.info(f"\n成功加载 {len(questions)} 个问题")
+Message: '\n成功加载 1 个问题'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 311, in _run_single_company
+    self.logger.info(f"配置文件: {config} ({config_format}格式)")
+Message: '配置文件: C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqsq01red7bb25c9e\\pytest\\test_public_cli_never_scores_a2\\questions.json (json格式)'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 312, in _run_single_company
+    self.logger.info("输出文件: %s\n", output)
+Message: '输出文件: %s\n'
+Arguments: ('C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqsq01red7bb25c9e\\pytest\\test_public_cli_never_scores_a2\\result.json',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 458, in _run_single_company
+    self.logger.info("\nQuestion processing completed.")
+Message: '\nQuestion processing completed.'
+Arguments: ()
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:246 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:248 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:249 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a2\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:310 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:311 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a2\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:312 输出文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a2\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:110 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:113 LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:181 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:81 LLM答案生成完成 (状态: scored)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a2\result.json
+INFO     src.runners.llm_runner:llm_runner.py:458 
+Question processing completed.
+_ test_public_cli_never_scores_ambiguous_or_nested_legacy_answers[duplicate-question-key] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017BDEA427A0>
+tmp_path = WindowsPath('C:/Users/郑曾波/AppData/Local/Temp/iqsq01red7bb25c9e/pytest/test_public_cli_never_scores_a3')
+capsys = <_pytest.capture.CaptureFixture object at 0x0000017BDFD70C30>
+content = '{"entity_id":"issuer:fixture","company_name":"Fixture Corp","question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous ID"}'
+
+    @pytest.mark.parametrize(
+        "content",
+        [
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {
+                            "id": "IQS_05",
+                            "status": "insufficient_evidence",
+                            "score": None,
+                            "confidence": "medium",
+                            "rationale": "No disclosed evidence",
+                        }
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 5,
+                    "description": json.dumps(
+                        {"id": "IQS_05", "status": "scored", "score": 8, "rationale": "inner 8"}
+                    ),
+                }
+            ),
+            json.dumps(
+                {
+                    "entity_id": "issuer:fixture",
+                    "company_name": "Fixture Corp",
+                    "question_id": "IQS_05",
+                    "score": 8,
+                    "description": json.dumps(
+                        {"id": "IQS_06", "status": "scored", "score": 8, "rationale": "wrong item"}
+                    ),
+                }
+            ),
+            (
+                '{"entity_id":"issuer:fixture","company_name":"Fixture Corp",'
+                '"question_id":"IQS_06","question_id":"IQS_05","score":8,'
+                '"description":"ambiguous ID"}'
+            ),
+        ],
+        ids=["legacy-unknown-outer-five", "inner-outer-score-conflict", "inner-question-conflict", "duplicate-question-key"],
+    )
+    def test_public_cli_never_scores_ambiguous_or_nested_legacy_answers(
+        monkeypatch, tmp_path, capsys, content
+    ):
+        exit_code, output_file, session = _invoke(
+            monkeypatch,
+            tmp_path,
+            repair_budget=0,
+            responses=[_response(content=content)],
+        )
+    
+        assert output_file.exists()
+        answer = json.loads(output_file.read_text(encoding="utf-8"))["answers"]["IQS_05"]
+>       assert answer["score"] is None
+E       assert 8 is None
+
+C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py:855: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a3\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a3\result.json
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 8/10
+
+ambiguous ID
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a3\result.json
+[OK] 平均评分: 8.0/10
+[OK] 评分分布: {8: 1}
+---------------------------- Captured stderr call -----------------------------
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 246, in run
+    self.logger.info("=" * 70)
+Message: '======================================================================'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 248, in run
+    self.logger.info("公司分析 - %s", company)
+Message: '公司分析 - %s'
+Arguments: ('Fixture Corp',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 249, in run
+    self.logger.info("=" * 70)
+Message: '======================================================================'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 310, in _run_single_company
+    self.logger.info(f"\n成功加载 {len(questions)} 个问题")
+Message: '\n成功加载 1 个问题'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 311, in _run_single_company
+    self.logger.info(f"配置文件: {config} ({config_format}格式)")
+Message: '配置文件: C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqsq01red7bb25c9e\\pytest\\test_public_cli_never_scores_a3\\questions.json (json格式)'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 312, in _run_single_company
+    self.logger.info("输出文件: %s\n", output)
+Message: '输出文件: %s\n'
+Arguments: ('C:\\Users\\郑曾波\\AppData\\Local\\Temp\\iqsq01red7bb25c9e\\pytest\\test_public_cli_never_scores_a3\\result.json',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: I/O operation on closed file.
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\pytest\__main__.py", line 9, in <module>
+    raise SystemExit(_console_main())
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 253, in _console_main
+    code = _main(prog=_get_prog_name(sys.argv))
+  File "C:\Miniconda\Lib\site-packages\_pytest\config\__init__.py", line 229, in _main
+    ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 377, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 330, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 384, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\main.py", line 408, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 118, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 139, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 249, in call_and_report
+    call = CallInfo.from_call(
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 361, in from_call
+    result: TResult | None = func()
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 250, in <lambda>
+    lambda: runtest_hook(item=item, **kwds),
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\runner.py", line 184, in pytest_runtest_call
+    item.runtest()
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 1707, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "C:\Miniconda\Lib\site-packages\pluggy\_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "C:\Miniconda\Lib\site-packages\_pytest\python.py", line 167, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 846, in test_public_cli_never_scores_ambiguous_or_nested_legacy_answers
+    exit_code, output_file, session = _invoke(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py", line 282, in _invoke
+    exit_code = main_with_llm.main()
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\main_with_llm.py", line 286, in main
+    return runner.run(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 250, in run
+    return self._run_single_company(
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\runners\llm_runner.py", line 458, in _run_single_company
+    self.logger.info("\nQuestion processing completed.")
+Message: '\nQuestion processing completed.'
+Arguments: ()
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:246 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:248 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:249 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a3\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:310 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:311 配置文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a3\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:312 输出文件: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a3\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:110 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:113 LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:49 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:126 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:45 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:181 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:81 LLM答案生成完成 (状态: scored)
+INFO     src.core.qa_engine:qa_engine.py:142 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:206 [OK] 结果已保存到: C:\Users\郑曾波\AppData\Local\Temp\iqsq01red7bb25c9e\pytest\test_public_cli_never_scores_a3\result.json
+INFO     src.runners.llm_runner:llm_runner.py:458 
+Question processing completed.
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_ambiguous_or_nested_legacy_identity_never_becomes_a_scored_native_answer[{"entity_id": "issuer:review-fixture", "company_name": "Fictional Fixture Corp", "question_id": "IQS_05", "score": 5, "description": "{\\"id\\": \\"IQS_05\\", \\"status\\": \\"insufficient_evidence\\", \\"score\\": null, \\"confidence\\": \\"medium\\", \\"rationale\\": \\"No disclosed evidence\\"}"}]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_ambiguous_or_nested_legacy_identity_never_becomes_a_scored_native_answer[{"entity_id":"issuer:review-fixture","company_name":"Fictional Fixture Corp","question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous ID"}]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py::test_public_cli_never_scores_ambiguous_or_nested_legacy_answers[legacy-unknown-outer-five]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py::test_public_cli_never_scores_ambiguous_or_nested_legacy_answers[inner-outer-score-conflict]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py::test_public_cli_never_scores_ambiguous_or_nested_legacy_answers[inner-question-conflict]
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\integration\test_quick_scan_cli.py::test_public_cli_never_scores_ambiguous_or_nested_legacy_answers[duplicate-question-key]
+6 failed, 2 passed in 3.27s
+
+Pytest exit (expected nonzero before fix): 1
+
+Temporary root removed: True
+

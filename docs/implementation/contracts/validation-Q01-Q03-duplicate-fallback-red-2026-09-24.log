@@ -1,0 +1,18 @@
+Expected-red duplicate key fallback case
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_duplicate_json_object_keys_are_rejected_in_legacy_extraction_mode ____
+..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py:243: in test_duplicate_json_object_keys_are_rejected_in_legacy_extraction_mode
+    assert parser.parse_structured_response(content, expected_question_id="IQS_05") is None
+E   assert ParsedLLMAnswer(score=8, description='ambiguous ID', status='scored', question_id='IQS_05', entity_id=None, company_name=None) is None
+E    +  where ParsedLLMAnswer(score=8, description='ambiguous ID', status='scored', question_id='IQS_05', entity_id=None, company_name=None) = parse_structured_response('{"question_id":"IQS_06","question_id":"IQS_05","score":8,"description":"ambiguous ID"}', expected_question_id='IQS_05')
+E    +    where parse_structured_response = <src.providers.llm_response_parser.LLMResponseParser object at 0x000002025E8BD2B0>.parse_structured_response
+---------------------------- Captured stdout call -----------------------------
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+------------------------------ Captured log call ------------------------------
+INFO     src.providers.llm_response_parser:llm_response_parser.py:185 成功解析LLM响应（直接JSON），评分: 8/10
+=========================== short test summary info ===========================
+FAILED ..\..\..\..\Projects\StockQAbyLLM\tests\unit\test_llm_response_parser.py::test_duplicate_json_object_keys_are_rejected_in_legacy_extraction_mode
+1 failed in 0.99s
+Pytest exit (expected nonzero): 1
+Temporary root removed: True

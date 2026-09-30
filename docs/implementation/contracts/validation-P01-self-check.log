@@ -1,0 +1,11 @@
+run_id=55d9b34d-1cfa-408a-b1ac-8f9b07893c09
+selector=public read-only P01 receipt verifier
+command=python scripts/task_receipts.py verify --receipt iqs:docs/implementation/contracts/receipt-P01.json --plan iqs:docs/implementation/tasks.json --cases iqs:docs/implementation/acceptance-cases.json --root iqs=.
+exit_code=0
+skip_count=0
+isolated=true
+cleanup_verified=true
+cleanup_summary=Verifier was read-only and created no temporary artifacts.
+network=none request_count=0 fees_usd=0
+eligible_to_close=true
+core_sha256=42f3f8e540cd236dc4aa02f188ded03515fb11ec6e1374ea78dd490674f68ebf

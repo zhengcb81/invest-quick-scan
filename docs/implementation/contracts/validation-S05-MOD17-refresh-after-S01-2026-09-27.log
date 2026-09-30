@@ -1,0 +1,37 @@
+RUN_ID=s05-refresh-8b3b3021c9af4cdd920d3d33b6f279d4
+COMMAND=python -B -X utf8 -m pytest -p no:cacheprovider -p pytest_asyncio.plugin --basetemp C:\Users\郑曾波\AppData\Local\Temp\iqs-s05-refresh-8b3b3021c9af4cdd920d3d33b6f279d4\pytest tests/test_module_registry.py -vv
+TEMP_ROOT=C:\Users\郑曾波\AppData\Local\Temp\iqs-s05-refresh-8b3b3021c9af4cdd920d3d33b6f279d4
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+rootdir: C:\Users\郑曾波\Projects\invest-quick-scan
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 24 items
+
+tests/test_module_registry.py::ModuleRegistryTests::test_answer_format_description_change_invalidates_standard_method_comparison PASSED [  4%]
+tests/test_module_registry.py::ModuleRegistryTests::test_archived_metric_schema_survives_mutable_schema_change PASSED [  8%]
+tests/test_module_registry.py::ModuleRegistryTests::test_manifest_prompt_forgery_is_rejected_even_with_recomputed_prompt_hash PASSED [ 12%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_02_release_is_deterministic_and_historical_archive_is_authority PASSED [ 16%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_03_append_keeps_old_question_meaning_and_old_run_readable PASSED [ 20%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_04_unregistered_industry_and_missing_context_fail_before_activation PASSED [ 25%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_07_tamper_or_missing_archive_rejects_old_run PASSED [ 29%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_08_budget_defers_only_optional_questions PASSED [ 33%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_exact_legacy_baseline_remains_readable_and_validates_current_catalog PASSED [ 37%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_package_cannot_self_assert_legacy_status PASSED [ 41%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_pinned_baseline_cannot_be_redeclared PASSED [ 45%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_rehashed_current_catalog_edit_is_rejected PASSED [ 50%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_rehashed_same_id_legacy_archive_is_rejected PASSED [ 54%]
+tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_unknown_module_cannot_claim_legacy_without_exact_baseline_bytes PASSED [ 58%]
+tests/test_module_registry.py::ModuleRegistryTests::test_module_order_in_profile_is_canonical_for_same_membership PASSED [ 62%]
+tests/test_module_registry.py::ModuleRegistryTests::test_new_manual_lens_and_automatic_common_extension_are_separate_from_core PASSED [ 66%]
+tests/test_module_registry.py::ModuleRegistryTests::test_partial_route_uses_common_and_known_risk_without_fabricated_classification PASSED [ 70%]
+tests/test_module_registry.py::ModuleRegistryTests::test_prior_package_without_observation_schema_is_readable_but_cannot_issue_observations PASSED [ 75%]
+tests/test_module_registry.py::ModuleRegistryTests::test_published_observation_uses_frozen_answer_schema_and_question_after_source_edit PASSED [ 79%]
+tests/test_module_registry.py::ModuleRegistryTests::test_real_pre_observation_package_cannot_export_standard_run PASSED [ 83%]
+tests/test_module_registry.py::ModuleRegistryTests::test_release_and_catalog_paths_reject_parent_directory_symlinks PASSED [ 87%]
+tests/test_module_registry.py::ModuleRegistryTests::test_two_consecutive_major_retirements_publish_against_adjacent_version PASSED [ 91%]
+tests/test_module_registry.py::ModuleRegistryTests::test_unavailable_historical_renderer_fails_closed_without_losing_archive PASSED [ 95%]
+tests/test_module_registry.py::ModuleRegistryTests::test_unrelated_context_does_not_relabel_industrial_question_but_global_rule_does PASSED [100%]
+
+======================= 24 passed in 128.98s (0:02:08) ========================
+TEMP_CLEANUP_VERIFIED=True
+EXIT_CODE=0
