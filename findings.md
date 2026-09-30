@@ -1100,6 +1100,16 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - CodeGraph确认用户排序策略落在`OrderedSearchProviderCascade`，而历史`ProviderCascade`仍为独立的状态式类；对`OrderedSearchProviderCascade`本体的调用者查询返回none。CodeGraph另显示`save_quick_scan_model_policy`已有原子保存、顺序快照及无效配置拒绝的单测。
 - 因此Q04后续不能仅以cascade类或配置单测证明公开派发链已接通。Q03复审通过后，先沿StockQA CLI/adapter追查cascade构造者与实际调用路径，并验证PAR-11槽满等待和LLM-10运行中policy revision范围；确认实际缺口后再在StockQA已授权范围实施。此处是结构索引发现，调用图对动态构造/别名为best-effort，尚未仅凭它判定生产接线缺失。
 
+## 2026-09-30 — Cross-harness lane architecture
+
+- The plan graph has 107 tasks across five owners: IQS 40, StockQA 26, StockWiki 39, Theme 1, Industry 1. One implementation lane per owner project directory covers the full task set with no task duplicated or omitted; shared-file work remains serialized inside its owner lane rather than split artificially.
+- IQS is the coordinator-owned repository. StockQA and StockWiki have separate project roots. Theme and Industry are distinct skill subdirectories under the same `local-skills` Git root; they can work concurrently only in separate worktrees/branches with subtree-only allowlists, then integrate serially.
+- Current read-only preflight observed StockQA `master` with 55 existing dirty paths, StockWiki `master` with untracked `.claude/`, and `local-skills` clean. These are preserved; no external file was edited. Q04 is the next StockQA candidate but must use a frozen snapshot that includes the Q03 parser fix, and its exact write-file list must be reported before the previously authorized write scope is used.
+- StockWiki W01 and the exact W02/W03 file set remain the only current StockWiki write scope. Theme/Industry remain read-only. The parallel-lane documents do not grant StockWiki, consumer-repository, API, download, sample-company, or spend authorization. The first stock pool remains user-provided.
+- Added `docs/implementation/parallel-lanes/` with overall sequencing, five standalone owner packets, review protocol, a versioned handoff JSON Schema, and a machine-readable manifest. Added `tests/test_parallel_lane_plan.py` to assert full task-owner coverage, nonoverlapping owned paths, lane docs, and handoff fields.
+- Validation: `tests/test_parallel_lane_plan.py` + `tests/test_implementation_plan.py` passed 85 tests and 53 subtests; Draft 2020-12 schema and a representative handoff payload validated; temporary pytest root removed. No network/API/live test.
+- This design is ready for dispatch after each owner's worktree/input snapshot preflight. It does not itself start a worker or claim any implementation task beyond planning.
+
 ## 2026-09-30 — Q03复核发现与修复
 
 - 独立复核发现LLM JSON中的`status`可能是数组或对象；直接对其做set成员判断会抛`TypeError`。异常处理会把已收到的搜索回答降为通用错误，从而丢失request/response/search-call/source回执，并可能导致重复请求。该问题位于未信任模型输出的解析边界，修复应拒绝非字符串状态并返回普通无效答案，不改变provider路由。

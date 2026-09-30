@@ -1237,3 +1237,12 @@
 - 修正validation报告中首轮测试使用的parser单测SHA笔误：原执行前实际hash是`3BF0D736CCE8696CAA2F70AD201A3C7BEEA1CDA118CE43EC8C10252A174A8259`；当前修改后的SHA已在报告addendum单列。Q03解析/公开结果回执路径的任务级验收现标记通过，限制仍是该项不证明G1、其他provider、费用或跨仓链路。
 - 当前下一项切换为Q04：沿公开CLI与adapter检查有序cascade动态构造/调用，再验证PAR-11同路由槽满等待和LLM-10运行中policy revision边界。旧receipt机制继续退役，不刷新C01—C07回执。
 - 本轮同步planning-with-files后，使用仓库实际的无配置pytest入口两次验证`tests/test_implementation_plan.py`：最近一次为**80 passed / 53 subtests passed / 18.89s**；临时根清理、`git diff --check`通过。第一次误用不存在的`pyproject.toml`，pytest在配置加载阶段未执行测试；改用`--rootdir`和仓库默认配置后通过。
+
+## 2026-09-30 — 跨Harness并行施工包
+
+- 总控现将107项计划任务按owner拆为五条互不重复的实现线：IQS总控40项、StockQA 26项、StockWiki 39项、Theme消费者T01、Industry消费者T02。任务依赖唯一来源仍是`docs/implementation/tasks.json`；共享脚本/数据库/CLI任务留在同一仓库线顺序实施。
+- 新增`docs/implementation/parallel-lanes/README.md`及每条线独立的上下文/接口/allowlist/测试/review/handoff文档；新增handoff schema和manifest。Theme/Industry子目录独立但共用`local-skills` Git根，要求分开worktree和子树白名单，串行整合。IQS仓由总控单独持有，避免其同时被计划编辑者和实现harness修改。
+- 按用户要求，不对每个小任务做独立审查；owner按TDD写反例并聚合unit/integration测试，只在G0–G6等大节点或身份、迁移、预算并发、真实POST等高风险边界做独立审查。跨仓X09/X10与真实搜索/费用实验后置并要求独立隔离/授权。
+- 只读环境检查：StockQA `master`有55项既有工作树状态；StockWiki `master`有未跟踪`.claude/`；local-skills当前clean。未修改任何外仓。Q04仍须冻结含Q03修复的精确snapshot并先报备拟改文件；StockWiki当前获批仍限W01/W02/W03确切文件，Theme/Industry不写。
+- 新增计划回归`tests/test_parallel_lane_plan.py`：验证manifest覆盖全部107任务且owner正确、项目scope不相交、引用文档存在、handoff必需字段定义完整。最终隔离批次与计划测试合计**85 passed / 53 subtests passed / 5.71s**；pytest临时根已清理。Draft 2020-12 validator确认handoff schema有效且示例payload匹配。未发网络/API、未下载资料。
+- `task_plan.md` Phase 44标为计划完成/待owner preflight后派发；Q04保留为主线下一项，不能从裸HEAD启动而丢失Q03修复或混入55项既有差异。

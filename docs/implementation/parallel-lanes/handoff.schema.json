@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://invest-quick-scan.local/schemas/parallel-lane-handoff-1.0.0.schema.json",
+  "title": "Invest Quick Scan parallel lane handoff",
+  "description": "A compact, reproducible lane result returned to the IQS coordinator. Does not grant write, network, or spend authorization.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "lane_id",
+    "package_id",
+    "status",
+    "snapshot",
+    "scope",
+    "interfaces",
+    "verification",
+    "review",
+    "open_items"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "lane_id": { "enum": ["iqs", "stockqa", "stockwiki", "theme", "industry"] },
+    "package_id": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["complete", "partial", "blocked"] },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "base_ref", "base_commit", "result_ref", "result_commit", "worktree_before", "worktree_after"],
+      "properties": {
+        "repository": { "type": "string", "minLength": 1 },
+        "base_ref": { "type": "string", "minLength": 1 },
+        "base_commit": { "type": "string", "minLength": 7 },
+        "result_ref": { "type": "string" },
+        "result_commit": { "type": ["string", "null"] },
+        "worktree_before": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "dirty_path_count", "manifest_sha256"],
+          "properties": {
+            "state": { "enum": ["clean", "dirty"] },
+            "dirty_path_count": { "type": "integer", "minimum": 0 },
+            "manifest_sha256": { "type": ["string", "null"] }
+          }
+        },
+        "worktree_after": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state", "dirty_path_count", "manifest_sha256"],
+          "properties": {
+            "state": { "enum": ["clean", "dirty"] },
+            "dirty_path_count": { "type": "integer", "minimum": 0 },
+            "manifest_sha256": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_ids", "authorization_scope_ref", "owned_paths", "authorized_paths", "changed_paths", "out_of_scope_writes"],
+      "properties": {
+        "task_ids": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "authorization_scope_ref": { "type": "string", "description": "User authorization or task-local write grant; use 'not_authorized' for read-only work." },
+        "owned_paths": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "authorized_paths": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "changed_paths": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "out_of_scope_writes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "interfaces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "version", "content_hash", "direction", "result"],
+        "properties": {
+          "name": { "type": "string" },
+          "version": { "type": "string" },
+          "content_hash": { "type": "string" },
+          "direction": { "enum": ["consumed", "produced", "both"] },
+          "result": { "enum": ["compatible", "changed", "blocked", "not_applicable"] }
+        }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checks", "external_writes", "network_calls", "paid_calls", "temporary_roots"],
+      "properties": {
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "command", "scope", "result", "passed", "failed", "skipped"],
+            "properties": {
+              "name": { "type": "string" },
+              "command": { "type": "string" },
+              "scope": { "type": "string" },
+              "result": { "enum": ["passed", "failed", "not_run"] },
+              "passed": { "type": "integer", "minimum": 0 },
+              "failed": { "type": "integer", "minimum": 0 },
+              "skipped": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "external_writes": { "type": "boolean" },
+        "network_calls": { "type": "boolean" },
+        "paid_calls": { "type": "boolean" },
+        "temporary_roots": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path_or_id", "created", "cleaned"],
+            "properties": {
+              "path_or_id": { "type": "string" },
+              "created": { "type": "boolean" },
+              "cleaned": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "snapshot_commit", "findings"],
+      "properties": {
+        "status": { "enum": ["not_run", "approved", "changes_requested", "insufficient_evidence"] },
+        "snapshot_commit": { "type": ["string", "null"] },
+        "findings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "open_items": { "type": "array", "items": { "type": "string" } },
+    "next_action": { "type": "string" }
+  }
+}

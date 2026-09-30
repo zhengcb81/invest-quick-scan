@@ -1,0 +1,67 @@
+{
+  "format_version": "1.0.0",
+  "status": "design_ready_not_dispatched",
+  "task_source": "../tasks.json",
+  "handoff_schema": "handoff.schema.json",
+  "review_protocol": "review-protocol.md",
+  "ownership_rule": "One implementation lane owns each project directory. Each lane's worker writes only its owned project path and current task allowlist. The coordinator owns the IQS repository and never shares that checkout with a second writer.",
+  "lanes": [
+    {
+      "id": "iqs",
+      "task_owner": "iqs",
+      "project_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "git_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "owned_paths": ["."],
+      "document": "lane-iqs.md",
+      "executor": "main_coordinator",
+      "write_authorization": "Current workspace write access; coordinator-only lane.",
+      "task_ids": ["P00", "C01", "C02", "C03", "C04", "C05", "C06", "C07", "G0", "S01", "S02", "S03", "G1", "L02", "G2", "G3", "F01", "G4", "G5", "X07", "X12", "G6", "S04", "S05", "S06", "F06", "V02", "V03", "V04", "V05", "V01", "V12", "V13", "V16", "V17", "V18", "S07", "S08", "S09", "S10"]
+    },
+    {
+      "id": "stockqa",
+      "task_owner": "stockqa",
+      "project_root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "git_root": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "owned_paths": ["."],
+      "document": "lane-stockqa.md",
+      "executor": "one_worker_per_repository",
+      "write_authorization": "User authorized StockQA writes with exact pre-write file and purpose report for every batch; live/API spending remains separately gated.",
+      "preflight_note": "Observed 55 pre-existing working-tree entries on 2026-09-30; freeze the exact Q03-containing base snapshot before dispatch.",
+      "task_ids": ["Q01", "Q02", "Q03", "Q12", "Q04", "Q05", "L01", "Q06", "Q07", "Q08", "Q09", "Q10", "B01", "L03", "F02", "Q11", "O02", "O04", "X01", "X03", "Q13", "V06", "V09", "V14", "Q14", "Q15"]
+    },
+    {
+      "id": "stockwiki",
+      "task_owner": "stockwiki",
+      "project_root": "C:/Users/郑曾波/Projects/StockWiki",
+      "git_root": "C:/Users/郑曾波/Projects/StockWiki",
+      "owned_paths": ["."],
+      "document": "lane-stockwiki.md",
+      "executor": "one_worker_per_repository",
+      "write_authorization": "Only W01 and the precise W02/W03 file set previously authorized; all other tasks require fresh exact-scope user authorization.",
+      "preflight_note": "Observed untracked .claude/ on 2026-09-30; preserve it and keep it out of product commits.",
+      "task_ids": ["W01", "W02", "W03", "W04", "W05", "W06", "W07", "W08", "W09", "W13", "W10", "W11", "W12", "F03", "F04", "F05", "W14", "L04", "O01", "U01", "U02", "O05", "X02", "X04", "X05", "X06", "U03", "X08", "X09", "X11", "X10", "W15", "U04", "V07", "V08", "V10", "V11", "V15", "W16"]
+    },
+    {
+      "id": "theme",
+      "task_owner": "theme",
+      "project_root": "C:/Users/郑曾波/Projects/local-skills/analyze-theme-value-chain",
+      "git_root": "C:/Users/郑曾波/Projects/local-skills",
+      "owned_paths": ["analyze-theme-value-chain/"],
+      "document": "lane-theme.md",
+      "executor": "one_worker_on_disjoint_subtree",
+      "write_authorization": "Read-only until the user authorizes an exact write scope.",
+      "task_ids": ["T01"]
+    },
+    {
+      "id": "industry",
+      "task_owner": "industry",
+      "project_root": "C:/Users/郑曾波/Projects/local-skills/industry-research",
+      "git_root": "C:/Users/郑曾波/Projects/local-skills",
+      "owned_paths": ["industry-research/"],
+      "document": "lane-industry.md",
+      "executor": "one_worker_on_disjoint_subtree",
+      "write_authorization": "Read-only until the user authorizes an exact write scope.",
+      "task_ids": ["T02"]
+    }
+  ]
+}

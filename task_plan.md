@@ -8,6 +8,7 @@
 - 选定计划目录：本项目根目录（resolver返回legacy fallback；不存在已有命名计划）。
 - 已有基础：24题核心评分模板、行业与阶段模块、StockQAbyLLM兼容导出和离线验证。
 - 新目标：从单公司研究问卷升级为可持续维护的轻量股票池数据产品，同时与revenue-forecast/invest-*深度研究保持边界。
+- 并行实施边界：每个独立项目目录仅归一条实现线；同仓库同一时间只允许一个写入harness。当前IQS总控同时拥有IQS仓库并维护计划/集成；外部线通过独立工作树、精确任务allowlist和结构化交接接入。并行任务的具体分组、接口与门槛见 `docs/implementation/parallel-lanes/README.md`。
 - 用户新增硬约束：只靠LLM问答（允许联网搜索）填充画像；不保存公司文档、网页正文或财报；company-wiki和StockWiki联动不得引入文档采集依赖。
 
 ## Phases
@@ -414,7 +415,7 @@ Status: complete_for_planning_only
 ### 当前下一动作
 
 - Q03首轮快照回归通过166项后，独立复核发现一个P1：JSON数组/对象类型的`status`使parser抛`TypeError`，导致公开CLI丢弃已完成搜索回执。已按TDD修复并补事件级回执断言，完整Q03隔离回归170项通过；两轮独立只读复核均未发现未解决项，最终复核匹配三份当前SHA。Q03解析与结果回执路径的任务级验收已通过。初始报告parser单测SHA有单字符笔误，已更正；精确命令、SHA与审查边界见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。该任务级验收不代表G1/全项目、其他模型或跨仓链路完成。
-- 当前下一步进入Q04剩余运行语义：先沿StockQA公开CLI和adapter追踪`OrderedSearchProviderCascade`的实际构造/调用路径，再围绕PAR-11同路由槽满等待及LLM-10运行中policy revision边界补行为测试；不要把旧`ProviderCascade`或配置保存单测当作生产路由接线证据。不访问网络、不读密钥、不修改未报备的StockQA文件。
+- 并行施工包与handoff契约已整理在Phase 44和 `docs/implementation/parallel-lanes/`；下一项仍是StockQA Q04剩余运行语义：先沿公开CLI/adapter追踪`OrderedSearchProviderCascade`实际构造与调用，再围绕PAR-11同路由槽满等待、LLM-10运行中policy revision边界补行为测试。开工前须冻结包含Q03修复的StockQA准确快照、隔离该仓55项既有工作树状态，并先报告Q04拟改精确文件；不要把旧`ProviderCascade`或配置保存单测当作生产路由接线证据。不访问网络、不读密钥。
 
 ## 2026-09-29 — S06 路由执行门与测试owner修复
 
@@ -641,6 +642,19 @@ Status: complete_for_local_IQS_lane_scope_external_G2b_remains_open
 - [ ] 施工卡第5步/G2b：等待StockWiki真实身份snapshot/mapping DTO与producer serializer golden，通过其公开接口做跨仓正例验收。合成本地夹具不替代producer golden；本步骤未获跨仓写授权且本仓无可验真实产物。
 
 本阶段按用户选择施工卡优先，C01—C07旧receipt刷新保持暂停；这些材料已作为历史工件保留，当前里程碑状态以`task_plan.md`、`progress.md`和大节点审查为准。
+
+## Phase 44: 跨Harness并行施工包、路径所有权与集成接口
+
+Status: complete_plan_ready_for_dispatch_after_owner_preflight
+
+- [x] 按107项任务的owner与依赖图聚合工作；每条实现线拥有不相交的项目目录，多个任务若共享脚本、存储或测试路径则留在同一线内顺序实施，不强行拆小。
+- [x] 冻结IQS总控、StockQA执行、StockWiki权威存储/UI、主题研究消费者、行业研究消费者五条实现线；Theme与Industry虽目录分开，但共用`local-skills` Git根，须各用独立分支/工作树且只写各自技能子目录。
+- [x] 为每条线写独立上下文包，包含owner任务、接口契约、允许/禁止路径、依赖门、TDD测试包、阶段审查标准、交接字段与已知授权边界；总索引引用各包，依赖顺序唯一以`tasks.json`为准。
+- [x] 定义标准机器可读handoff schema与计划校验测试，检查任务owner覆盖无遗漏/重复、目录所有权不重叠、文档均存在及schema最低字段齐全。
+- [x] 将完整跨项目X09/X10、付费B01/真实搜索实验与G2b真实StockWiki golden保留为后置门；handoff文档不授予外仓写入、真实API、用户名单选择或费用权限。
+- [x] 规定大节点合并审查（G0—G6）和高风险边界复核；小任务按TDD自测并归入同一owner批次，不逐卡重复独立审查。
+- [x] 标明执行前必须隔离当前共享工作树：StockQA当前有55项未提交状态；StockWiki存在未跟踪`.claude/`目录；不得清理、覆盖或把无关状态带入lane提交。
+- [ ] 执行Q04前冻结含Q03修复的准确StockQA基线，并报告Q04精确写入文件；用户先前授权的是StockQA写入但需事前报备，StockWiki后续W05/UI等仍须另行精确授权。
 
 ### 2026-09-30 — 本地检查点与规划文件同步
 
