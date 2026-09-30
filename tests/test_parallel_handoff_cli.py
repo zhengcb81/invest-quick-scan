@@ -1,0 +1,152 @@
+"""Public, read-only intake checks for independent harness handoffs."""
+
+from __future__ import annotations
+
+import json
+import subprocess
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+CLI = ROOT / "scripts" / "parallel_handoff_cli.py"
+
+
+def _report(package_id: str = "QA-04", lane_id: str = "stockqa") -> dict:
+    dirty = {"state": "dirty", "dirty_path_count": 55, "manifest_sha256": "a" * 64}
+    return {
+        "schema_version": "1.0.0",
+        "lane_id": lane_id,
+        "package_id": package_id,
+        "status": "partial",
+        "snapshot": {
+            "repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+            "base_ref": "master",
+            "base_commit": "a" * 40,
+            "result_ref": "",
+            "result_commit": None,
+            "worktree_before": dirty,
+            "worktree_after": dirty,
+        },
+        "scope": {
+            "task_ids": ["Q04"],
+            "authorization_scope_ref": "user_reported_stockqa_authorization",
+            "owned_paths": ["C:/Users/郑曾波/Projects/StockQAbyLLM"],
+            "authorized_paths": ["src/runners/llm_runner.py"],
+            "changed_paths": [],
+            "out_of_scope_writes": [],
+        },
+        "interfaces": [],
+        "verification": {
+            "checks": [],
+            "external_writes": False,
+            "network_calls": False,
+            "paid_calls": False,
+            "temporary_roots": [],
+        },
+        "review": {"status": "not_run", "snapshot_commit": None, "findings": []},
+        "open_items": ["Q04 implementation pending"],
+    }
+
+
+class ParallelHandoffCliTests(unittest.TestCase):
+    def run_cli(self, root: Path, payload: dict | str, *, package_id: str = "QA-04"):
+        path = root / "handoff.json"
+        path.write_text(
+            payload if isinstance(payload, str) else json.dumps(payload, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        before = path.read_bytes()
+        result = subprocess.run(
+            [sys.executable, "-B", "-X", "utf8", str(CLI), "--input", str(path),
+             "--package-id", package_id],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            timeout=15,
+            check=False,
+        )
+        self.assertEqual(path.read_bytes(), before)
+        self.assertEqual(result.stderr, "")
+        self.assertEqual(len(result.stdout.splitlines()), 1, result.stdout)
+        return result.returncode, json.loads(result.stdout)
+
+    def test_valid_partial_handoff_is_format_only_and_read_only(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-handoff-cli-") as temp:
+            code, answer = self.run_cli(Path(temp), _report())
+        self.assertEqual(code, 0)
+        self.assertEqual(answer, {
+            "status": "valid",
+            "package_id": "QA-04",
+            "validation_scope": "handoff_shape_and_declared_scope_only",
+            "errors": [],
+        })
+
+    def test_unknown_or_wrong_owner_package_is_rejected(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-handoff-cli-") as temp:
+            unknown_code, unknown = self.run_cli(Path(temp), _report(), package_id="NO-SUCH-PACKAGE")
+            report = _report()
+            report["lane_id"] = "stockwiki"
+            lane_code, lane = self.run_cli(Path(temp), report)
+        self.assertEqual(unknown_code, 2)
+        self.assertEqual(unknown["errors"][0]["code"], "unknown_package_id")
+        self.assertEqual(lane_code, 2)
+        self.assertEqual(lane["errors"][0]["code"], "lane_mismatch")
+
+    def test_duplicate_json_key_and_sentinel_are_not_echoed(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-handoff-cli-") as temp:
+            raw = '{"schema_version":"1.0.0","schema_version":"1.0.0",' \
+                '"secret":"SENTINEL-DO-NOT-ECHO"}'
+            code, answer = self.run_cli(Path(temp), raw)
+        self.assertEqual(code, 2)
+        self.assertEqual(answer["errors"][0]["code"], "duplicate_json_key")
+        self.assertNotIn("SENTINEL", json.dumps(answer))
+
+    def test_path_escape_and_unclean_temp_root_are_rejected(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-handoff-cli-") as temp:
+            report = _report()
+            report["scope"]["changed_paths"] = ["../StockWiki/stockwiki/quick_scan_store.py"]
+            path_code, path_answer = self.run_cli(Path(temp), report)
+            report = _report()
+            report["verification"]["temporary_roots"] = [{
+                "path_or_id": "temporary-test-root", "created": True, "cleaned": False,
+            }]
+            temp_code, temp_answer = self.run_cli(Path(temp), report)
+        self.assertEqual(path_code, 2)
+        self.assertEqual(path_answer["errors"][0]["code"], "changed_path_out_of_scope")
+        self.assertEqual(temp_code, 2)
+        self.assertEqual(temp_answer["errors"][0]["code"], "temporary_root_not_cleaned")
+
+    def test_read_only_prestudy_cannot_claim_changed_files(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-handoff-cli-") as temp:
+            report = _report("TH-01", "theme")
+            report["scope"]["task_ids"] = ["T01"]
+            report["scope"]["changed_paths"] = ["SKILL.md"]
+            code, answer = self.run_cli(Path(temp), report, package_id="TH-01")
+        self.assertEqual(code, 2)
+        self.assertEqual(answer["errors"][0]["code"], "read_only_package_changed_files")
+
+    def test_self_declared_authorization_cannot_escape_owner_repo(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-handoff-cli-") as temp:
+            report = _report()
+            outside = "C:/Users/郑曾波/Projects/StockWiki/stockwiki/quick_scan_store.py"
+            report["scope"]["authorized_paths"] = [outside]
+            report["scope"]["changed_paths"] = [outside]
+            code, answer = self.run_cli(Path(temp), report)
+        self.assertEqual(code, 2)
+        self.assertEqual(answer["errors"][0]["code"], "changed_path_out_of_scope")
+
+    def test_declared_authorized_file_inside_owner_repo_is_shape_valid(self):
+        with tempfile.TemporaryDirectory(prefix="iqs-handoff-cli-") as temp:
+            report = _report()
+            report["scope"]["changed_paths"] = ["src/runners/llm_runner.py"]
+            code, answer = self.run_cli(Path(temp), report)
+        self.assertEqual(code, 0)
+        self.assertEqual(answer["validation_scope"], "handoff_shape_and_declared_scope_only")
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -671,6 +671,7 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] 按用户要求把两条预研所需的只读步骤、字段/接口核查、完整 Markdown+JSON 交接与总控归档规则直接嵌入 TH-01/IN-02 各自文档；交给独立 harness 时无需依赖聊天上下文。报告仍未执行，索引保持空。
 - [x] 收到 StockWiki `master@72531b5` 后更新 SW-IDENT：W04 owner `identity-export-g2b`、receipt、market registry 已实现；本包改为 W01–W03 逐 case 验收与最小缺口修复，G2b 最终签收由 IQS 总控。四个 StockWiki 定向文件在隔离环境 64 passed；旧 `c8cfb2e` 缺 context 诊断只作历史记录。
 - [ ] IQS 总控从 StockWiki 公开 CLI 独立生成并冻结真实 owner golden，核验 SHA、owner context、跨仓正反例及临时根清理；再决定 G2b 状态。SW-IDENT 尚未分派，不借此次更新扩展 StockWiki 写授权。
+- [x] 将总控遗留的 handoff intake RED 测试补成只读 `scripts/parallel_handoff_cli.py`：只验证 schema、package/lane/task、声明路径与临时根清理，不认证用户授权或测试事实；拒绝重复 JSON key、跨仓路径、未清理根和只读包变更。
 
 ### 2026-09-30 — 本地检查点与规划文件同步
 
