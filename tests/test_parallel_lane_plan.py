@@ -93,6 +93,53 @@ class ParallelLanePlanTests(unittest.TestCase):
                 target_path = target.split("#", 1)[0]
                 self.assertTrue((document.parent / target_path).exists(), f"{document.name}: {target}")
 
+    def test_independent_packages_match_owner_dependencies_and_disjoint_write_scopes(self):
+        package_dir = LANE_DIR / "packages"
+        catalog = json.loads((package_dir / "manifest.json").read_text(encoding="utf-8"))
+        task_by_id = {task["id"]: task for task in self.tasks["tasks"]}
+        lane_by_id = {lane["id"]: lane for lane in self.manifest["lanes"]}
+        packages = catalog["packages"]
+        self.assertEqual({"QA-04", "SW-IDENT", "TH-01", "IN-02"}, {p["id"] for p in packages})
+        assigned = []
+        scopes = []
+        for package in packages:
+            body = (package_dir / package["document"]).read_text(encoding="utf-8")
+            self.assertIn(package["id"], body)
+            self.assertIn("TDD", body)
+            self.assertTrue(package["task_ids"])
+            self.assertIn(package["lane_id"], lane_by_id)
+            scope = PurePosixPath(package["write_scope"].casefold()).as_posix().rstrip("/")
+            scopes.append((package["id"], scope))
+            for task_id in package["task_ids"]:
+                self.assertEqual(package["lane_id"], task_by_id[task_id]["owner"])
+                assigned.append(task_id)
+            self.assertEqual(
+                set(package["depends_on"]),
+                set().union(*(task_by_id[task_id]["depends_on"] for task_id in package["task_ids"]))
+                - set(package["task_ids"]),
+            )
+        self.assertEqual(len(assigned), len(set(assigned)))
+        for index, (first_id, first_path) in enumerate(scopes):
+            for second_id, second_path in scopes[index + 1 :]:
+                self.assertFalse(
+                    first_path == second_path
+                    or first_path.startswith(second_path + "/")
+                    or second_path.startswith(first_path + "/"),
+                    f"package write scopes overlap: {first_id}/{second_id}",
+                )
+
+    def test_package_links_and_readiness_gates(self):
+        package_dir = LANE_DIR / "packages"
+        catalog = json.loads((package_dir / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual("1.0.0", catalog["format_version"])
+        self.assertEqual(2, sum(p["readiness"].startswith("read_only") for p in catalog["packages"]))
+        link_pattern = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+        for document in [LANE_DIR / "README.md", *package_dir.glob("*.md")]:
+            for target in link_pattern.findall(document.read_text(encoding="utf-8")):
+                if target.startswith(("http://", "https://", "#")):
+                    continue
+                self.assertTrue((document.parent / target.split("#", 1)[0]).exists(), f"{document.name}: {target}")
+
 
 if __name__ == "__main__":
     unittest.main()

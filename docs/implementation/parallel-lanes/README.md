@@ -21,6 +21,8 @@
 
 准确任务归属见[机器可读lane manifest](lane-manifest.json)。任务依赖仍以`tasks.json`为唯一来源，不能因为同一条线接了一个包就越过`depends_on`。
 
+可直接交给不同 harness 的下一段施工卡见[独立施工包目录](packages/README.md)：QA-04、SW-IDENT、TH-01、IN-02。包目录区分现在可做的写入候选与依赖未齐时的只读预研，不把五条长线的全部未来任务一次性宣布可开工。
+
 ## 并行执行节奏
 
 ```mermaid
@@ -70,6 +72,7 @@ flowchart TD
 
 - StockQA `master`有55项未提交工作树状态。Q04执行前须冻结当前准确快照并保留Q03修复；不能从不含修复的HEAD盲目分支，也不能清理/提交其他人的更改。
 - StockWiki `master`有未跟踪`.claude/`目录。原目录必须保留；分支/工作树生成前先确定其是否为工具数据，任何情况下不删除或带入产品提交。
+- 2026-09-30 后续核验发现 StockWiki `master@c8cfb2e` 已合并 `identity_snapshot.py` 和 `identity_mapping.py` 及测试；原 W02/W03 进度记录与新 HEAD 须重新对照。摘要 receipt 不是可供 IQS CLI 直接验收的完整 producer golden。参见 SW-IDENT 包，勿照旧文件名重造。
 - `local-skills` Git根当前clean；Theme和Industry目标目录不重叠，可各自独立工作树，但只改自身子树，最终串行整合。
 - G2b仍待真实StockWiki identity snapshot/mapping DTO及serializer golden；S06仍待真实StockQA→StockWiki事务ACK和真实router 2.1历史样本。保持pending。
 - 当前StockQA全仓写入授权要求**每个实施批次开工前报备精确文件与目的**；StockWiki仅W01及先前批准的W02/W03精确文件范围已获授权，后续任务逐批取得用户精确授权；Theme、Industry仍只读，任何写入前须单独授权。

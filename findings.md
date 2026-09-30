@@ -1110,6 +1110,13 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - Validation: `tests/test_parallel_lane_plan.py` + `tests/test_implementation_plan.py` passed 85 tests and 53 subtests; Draft 2020-12 schema and a representative handoff payload validated; temporary pytest root removed. No network/API/live test.
 - This design is ready for dispatch after each owner's worktree/input snapshot preflight. It does not itself start a worker or claim any implementation task beyond planning.
 
+## 2026-09-30 — Fine-grained dispatch packets
+
+- The five lane documents are owner maps, not automatically executable task cards. Four next-step packets make the dependency boundary explicit: QA-04 and SW-IDENT are conditional write candidates in separate repositories; TH-01 and IN-02 are read-only preparation until G3/F05/W11, production query evidence, and explicit skill-subtree write authorization.
+- The StockWiki working tree advanced to `master@c8cfb2e`, merging `identity_snapshot.py` and `identity_mapping.py` with focused tests. These files were absent from the older W02/W03 allowlist and the older progress description. `.planning/w02_golden_receipt.json` has snapshot hash/count/version only; a full owner-generated public snapshot/request golden and cross-repo IQS CLI verification still need to be demonstrated. A new merge does not itself close W01/W02/W03 or G2b.
+- QA-04 must distinguish LLM-10 next-run versus immediate policy update at undispatched question boundaries and PAR-11 capacity wait versus fallback on actual route failure. Existing sequential QAEngine and transport wait are useful implementation facts but not public-path proof; use RED tests around runner/CLI and POST counts.
+- Package manifest tests assert task owner and prerequisites against `tasks.json`, disjoint write scopes, document links, and gated consumer status. Existing handoff schema remains the final report format; no second IQS writer is created.
+
 ## 2026-09-30 — Q03复核发现与修复
 
 - 独立复核发现LLM JSON中的`status`可能是数组或对象；直接对其做set成员判断会抛`TypeError`。异常处理会把已收到的搜索回答降为通用错误，从而丢失request/response/search-call/source回执，并可能导致重复请求。该问题位于未信任模型输出的解析边界，修复应拒绝非字符串状态并返回普通无效答案，不改变provider路由。

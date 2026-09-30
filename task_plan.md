@@ -656,6 +656,17 @@ Status: complete_plan_ready_for_dispatch_after_owner_preflight
 - [x] 标明执行前必须隔离当前共享工作树：StockQA当前有55项未提交状态；StockWiki存在未跟踪`.claude/`目录；不得清理、覆盖或把无关状态带入lane提交。
 - [ ] 执行Q04前冻结含Q03修复的准确StockQA基线，并报告Q04精确写入文件；用户先前授权的是StockQA写入但需事前报备，StockWiki后续W05/UI等仍须另行精确授权。
 
+## Phase 45: 可交给独立 harness 的下一段精细施工卡
+
+Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
+
+- [x] 以五条长线为上层 owner，只挑四个不重叠的下一段工作包：QA-04、SW-IDENT、TH-01、IN-02；机器目录和独立文档位于 `docs/implementation/parallel-lanes/packages/`，上层总文档已链接。
+- [x] 将 QA-04 的 LLM-10 运行中策略边界和 PAR-11 首选路由槽位等待写成公开入口 TDD/POST 计数验收；明确保留 Q03 已完成修复和 55 项既有 StockQA 状态。
+- [x] 发现 StockWiki 新合并 `master@c8cfb2e` 已含真实 `identity_snapshot.py` / `identity_mapping.py`，修正旧计划路径假设；SW-IDENT 要求先复核 W01/W02/W03 新基线，再补缺口并交真正 serializer golden，且不越过既有文件授权。
+- [x] TH-01/IN-02 文档明确 G3、F05、W11 与生产 query/golden/写授权为硬门；两者当前只能做只读准备，不能用 IQS 本地协议定义冒充生产端点。
+- [x] 新增包级机器 manifest 与回归，检查 owner/任务前置/写入 scope 无重叠、文档链接和只读门；包内只在大节点或高风险边界审查，worker 标准 handoff 交总控。
+- [ ] QA-04 和 SW-IDENT 由各 owner 通过工作树/授权/依赖预检后实施；总控只在真实 StockWiki golden 到达后做 G2b 跨仓验证。TH-01/IN-02 等待 G3/F05/W11，不抢跑。
+
 ### 2026-09-30 — 本地检查点与规划文件同步
 
 - [x] 将当前 invest-quick-scan 本地工作树进度提交为 `eb462d48321f3247eabf18daa57a4d4606405ca4`；共849个文件。提交涵盖本地实现、题库/发布物、契约、测试及已完成阶段证据，不代表所有跨项目任务完成。

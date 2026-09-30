@@ -1,0 +1,47 @@
+{
+  "format_version": "1.0.0",
+  "observed_at": "2026-09-30",
+  "task_source": "../../tasks.json",
+  "packages": [
+    {
+      "id": "QA-04",
+      "lane_id": "stockqa",
+      "document": "QA-04-stockqa-runtime-policy.md",
+      "task_ids": ["Q04"],
+      "depends_on": ["Q03", "C05"],
+      "write_scope": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "readiness": "conditional_preflight",
+      "authorization": "stockqa_all_files_with_exact_prewrite_report"
+    },
+    {
+      "id": "SW-IDENT",
+      "lane_id": "stockwiki",
+      "document": "SW-IDENT-stockwiki-producer.md",
+      "task_ids": ["W01", "W02", "W03"],
+      "depends_on": ["G0", "C01", "C06"],
+      "write_scope": "C:/Users/郑曾波/Projects/StockWiki",
+      "readiness": "conditional_preflight_and_exact_scope",
+      "authorization": "only_prior_W01_W02_W03_exact_paths"
+    },
+    {
+      "id": "TH-01",
+      "lane_id": "theme",
+      "document": "TH-01-theme-consumer.md",
+      "task_ids": ["T01"],
+      "depends_on": ["G3", "F05", "W11"],
+      "write_scope": "C:/Users/郑曾波/Projects/local-skills/analyze-theme-value-chain",
+      "readiness": "read_only_preparation",
+      "authorization": "not_authorized_for_write"
+    },
+    {
+      "id": "IN-02",
+      "lane_id": "industry",
+      "document": "IN-02-industry-consumer.md",
+      "task_ids": ["T02"],
+      "depends_on": ["G3", "F05", "W11"],
+      "write_scope": "C:/Users/郑曾波/Projects/local-skills/industry-research",
+      "readiness": "read_only_preparation",
+      "authorization": "not_authorized_for_write"
+    }
+  ]
+}

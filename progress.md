@@ -1246,3 +1246,10 @@
 - 只读环境检查：StockQA `master`有55项既有工作树状态；StockWiki `master`有未跟踪`.claude/`；local-skills当前clean。未修改任何外仓。Q04仍须冻结含Q03修复的精确snapshot并先报备拟改文件；StockWiki当前获批仍限W01/W02/W03确切文件，Theme/Industry不写。
 - 新增计划回归`tests/test_parallel_lane_plan.py`：验证manifest覆盖全部107任务且owner正确、项目scope不相交、引用文档存在、handoff必需字段定义完整。最终隔离批次与计划测试合计**85 passed / 53 subtests passed / 5.71s**；pytest临时根已清理。Draft 2020-12 validator确认handoff schema有效且示例payload匹配。未发网络/API、未下载资料。
 - `task_plan.md` Phase 44标为计划完成/待owner preflight后派发；Q04保留为主线下一项，不能从裸HEAD启动而丢失Q03修复或混入55项既有差异。
+
+## 2026-09-30 — 独立 harness 精细施工卡
+
+- 用户要求将并行长线拆成可直接分派的下一段施工包。新增 `docs/implementation/parallel-lanes/packages/` 的四份独立卡与 manifest：QA-04、SW-IDENT、TH-01、IN-02；每卡含现状、硬前置、owner 写入范围、TDD 反例、隔离测试、完成标准、handoff。上层总文档已链接。
+- 只读再核验发现 StockWiki `master@c8cfb2e` 已合并 `identity_snapshot.py`、`identity_mapping.py` 与测试；旧 W02/W03 记录和旧假设文件名不能直接作为当前实现状态。SW-IDENT 先重跑 owner 证据，区分摘要 receipt 与可供 IQS CLI 验收的完整真实 golden；新合并文件不在先前 StockWiki 精确写授权内，必要修改先取授权。
+- Theme/Industry 共用 `local-skills` Git 根但可在不重叠子树的独立工作树并行；当前 G3/F05/W11 和查询生产端点未满足，且无写授权，文档限定为只读准备。总控持有 IQS 并等待 G2b，IQS 施工卡步骤 1—4 不重做。
+- 包级回归与计划测试 **87 passed / 53 subtests**；测试只读本地文档/JSON，未调用网络/API、未下载公司资料，也未改外仓。提交前将复查临时根、计划 validator 和 Git 差异。
