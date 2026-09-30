@@ -1197,3 +1197,10 @@
 - 隔离聚焦回归重跑：`tests/test_routing.py`、`tests/test_stockqa_adapter.py`、`tests/test_s06_dependency_closure.py`、`RouteCompositionTests`、historical-renderer refusal，共 **57 passed / 0 skipped**，209.44秒。唯一TEMP/TMP与pytest basetemp结束后均清理。日志为`docs/implementation/contracts/validation-S06-current-fix-2026-09-29.txt`；未发网络/模型请求。
 - 独立只读复审覆盖新执行/历史读取验证器分离、router 2.0/2.1拒绝、失败时不写输出及renderer patch owner，无P0–P2。计划验证仍为107 tasks/366 cases/G6。S06不据此关闭：真实StockQA→StockWiki事务ACK、真实router 2.1历史样本及跨仓E2E尚缺。
 - 本次日志封存后重跑工程计划回归：80 passed，计划validator为107 tasks / 366 acceptance cases / G6 valid；临时根清理确认，`git diff --check`通过（仅既有LF/CRLF转换提示）。结果见`docs/implementation/contracts/validation-S06-doc-sync-2026-09-29.txt`。
+
+## 2026-09-30 — 本地进度检查点提交
+
+- 已将当前完成的 invest-quick-scan 本地交付提交为 `eb462d48321f3247eabf18daa57a4d4606405ca4`（`Checkpoint completed local quick-scan work`），共849个文件；提交包括题库与可组合路由实现、契约/工具、隔离测试和实施/审查证据。
+- 提交后复跑计划校验为107 tasks / 366 acceptance cases / G6 valid，`tests/test_implementation_plan.py`为80 passed / 53 subtests。施工卡步骤1—4已有205 passed / 351 subtests / 0 skips记录，S06本地修复57 passed / 0 skipped记录。
+- 仅完成本仓检查点提交；G2b仍等待StockWiki真实DTO/golden，S06仍等待StockQA→StockWiki事务ACK及跨仓真实样本。没有修改外仓、刷新C01—C07回执或宣称关闭这些门槛。
+- 同步更新IQS lane实施摘要与G2b交接文档，明确提交边界和待办；文档更新另行提交。

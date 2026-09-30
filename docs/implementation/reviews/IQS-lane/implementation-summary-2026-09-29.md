@@ -1,7 +1,7 @@
 # IQS harness lane local implementation status
 
-Date: 2026-09-29  
-Local repository: `master` at base `25b8d14316c06390450e5a1d8883583bfd039d0d`; no commit was created.  
+Date: 2026-09-30  
+Local repository: `master`; the completed local checkpoint is commit `eb462d48321f3247eabf18daa57a4d4606405ca4` (based on `25b8d14316c06390450e5a1d8883583bfd039d0d`).  
 Plan: 1.10.15 — 107 tasks, 366 acceptance cases, 54 invariants, final gate G6.  
 Construction card: `company-wiki/docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/invest_quick_scan.md`, read-only SHA-256 `516077a6e9af3da41a121f5977225cc662035badcb3bc963dfb4dfe12f32be0a`.
 
