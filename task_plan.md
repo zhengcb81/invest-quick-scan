@@ -643,3 +643,11 @@ Status: complete_for_local_IQS_lane_scope_external_G2b_remains_open
 - [x] 计划校验复跑有效：107 tasks / 366 acceptance cases / G6；`tests/test_implementation_plan.py` 为80 passed / 53 subtests。
 - [ ] 继续等待StockWiki producer golden以完成G2b；S06仍等待真实StockQA→StockWiki事务ACK、router 2.1真实历史样本和获批跨仓端到端验证。C01—C07回执刷新继续暂停。
 - [x] 第二笔提交 `5aec24044aabdbf5187725e51066cd21fc39bc33` 同步了实施摘要、handoff和进度记录；本次再同步 `task_plan.md`、`findings.md` 与 `progress.md`，不改外仓。
+
+### 2026-09-30 — Q02 MiMo 实际搜索验收
+
+- [x] 在StockQAbyLLM获授权范围内，对公开CLI MiMo live E2E运行一次真实Microsoft搜索。沙箱内两次请求在HTTP前ConnectionError；同一隔离测试在批准的联网执行环境成功，1 passed / 13.63s；临时目录不存在，测试前后StockQA Git状态条目数均为55。
+- [x] 修正新增live E2E的失败摘要，使错误描述限长并脱敏MIMO_API_KEY/MIMO_PLAN_API_KEY；未记录密钥或原始响应。实际成功断言覆盖provider/model、response ID、search_status、绑定的search receipt、非空来源与URL citation basis。精确运行记录和源文件SHA见`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。
+- [x] 同一StockQA工作树离线回归`test_llm_client.py`、`test_llm_provider.py`和`test_quick_scan_cli.py`共159 passed / 17.45s；从唯一临时工作目录运行、关闭`base_url`插件及项目coverage/cache addopts，并把pytest basetemp置于临时根；运行后临时根不存在，StockQA Git状态仍为55项。
+- [x] Q02首个提供商任务在精确StockQA工作树快照上完成验收：独立只读复核匹配五个源码/测试SHA，确认LLM-02/LLM-11所选离线覆盖并未发现P0/P1；MiMo公开CLI真实搜索1 passed / 13.63s，provider/model、响应关联搜索回执、来源与临时目录清理均有断言。复核提出的P2断言增强和无citation正文URL负例记录为后续测试改进，没有因此重复付费live调用。
+- [x] 复核发现的旧receipt/验收目录状态按当前规则正确处理：task-receipt v2于2026-09-29退役，`acceptance-cases.json`声明其为规格而非运行结果；旧Q02 receipt保持只读，`specified_not_executed`规格值不改，当前结果写入`progress.md`及批次验证记录。Q02任务级验收对记录的StockQA工作树快照通过，但不等于G1、跨仓生产接线或全项目完成。StockQA工作树仍有既有未提交改动，本次未将其合并提交。

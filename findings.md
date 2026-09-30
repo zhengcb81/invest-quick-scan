@@ -1078,3 +1078,13 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 提交后计划校验为107 tasks / 366 acceptance cases / G6 valid，计划测试80 passed / 53 subtests；施工卡收尾205 passed / 351 subtests / 0 skips与S06聚焦回归57 passed / 0 skipped已有对应隔离日志。
 - 交接状态同步提交为 `5aec24044aabdbf5187725e51066cd21fc39bc33`。G2b继续pending（等待StockWiki真实DTO/golden），S06继续partial（等待真实事务ACK及跨仓样本）；未写外仓、未刷新C01—C07回执。
 - 提交检查中的空白提示来自多份Markdown双空格硬换行与文件末尾空行；这轮没有全局格式化历史审查材料。Git工作区在两笔提交后干净；`.pytest_cache`因访问权限警告未纳入跟踪。
+
+## 2026-09-30 — Q02 MiMo live E2E
+
+- 当前StockQA live E2E真实请求通过公开CLI用`mimo-v2.6-flash`完成Microsoft问题的一次web search。测试断言实际provider/model、response ID、执行状态、同响应绑定的receipt ID、非空URL citation与时间戳；`insufficient_evidence`分支仍要求score为null，因此评分未知不会伪装成通过搜索证据。
+- 沙箱两次失败的脱敏结果均为连接层`ConnectionError`，没有HTTP状态和provider响应。获授权的非沙箱单次执行通过；该差异说明原先live失败由当前执行环境的网络限制触发，不能当成服务端拒绝。API使用账单/usage未由测试保存，不能估计本次费用。
+- 为使下一次失败可诊断，仅在StockQA `tests/live/test_live_quick_scan.py` 新增截断和密钥脱敏后的answer error摘要。真实成功测试随后验证此快照；临时运行目录清理断言通过，外仓Git状态没有因测试产生新项。
+- 精确working-tree文件hash、命令、provider/model及观察边界记录在`validation-Q02-MiMo-live-E2E-2026-09-30.md`。StockQA当前大量改动仍未提交；本次不封存它们。独立复核后，Q02首个提供商任务级验收对该快照通过；不能把这一家公司、一题的结果外推到模型整体或多个市场。
+- 同快照provider/parser/CLI离线回归最初分别暴露仓库日志目录只读、自动插件`base_url` fixture冲突和系统pytest basetemp无权限。把CWD与basetemp放进唯一临时根，关闭冲突插件和项目coverage/cache addopts后，三文件最终 **159 passed / 17.45s**；tmp根删除、Git状态不变。环境 setup 错误没有算作产品失败，也没有为修复环境去改StockQA logger或测试配置。
+- 独立只读复核匹配live测试所用五个StockQA文件的精确SHA，确认Q02所列LLM-02/LLM-11覆盖，并未发现P0/P1代码缺陷。复核提出URL集合/搜索调用ID绑定断言、有效host记录及“正文含URL但无citation”的P2测试增强；这些不是已复现的产品错误，也不为其重复发起live请求。
+- 复核提及的旧`receipt-Q02.json`和`acceptance-cases.json`状态不是当前阻塞：本计划已退役任务回执刷新，验收JSON本身明示是规格而非运行结果。保持旧回执只读及`specified_not_executed`规格值不变，把执行证据留在当前批次日志和`progress.md`。Q02任务级验收在该快照上通过；G1、来源主张支持度、评分正确性、实际费用、其他提供商和跨仓链路仍未由本次实验验证。

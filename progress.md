@@ -1205,3 +1205,17 @@
 - 仅完成本仓检查点提交；G2b仍等待StockWiki真实DTO/golden，S06仍等待StockQA→StockWiki事务ACK及跨仓真实样本。没有修改外仓、刷新C01—C07回执或宣称关闭这些门槛。
 - 同步更新IQS lane实施摘要与G2b交接文档，明确提交边界和待办；对应提交为 `5aec24044aabdbf5187725e51066cd21fc39bc33`。
 - 随后更新 `task_plan.md`、`findings.md` 与本进度文件，记录两笔提交、验证结果及仍未关闭的跨仓门槛。
+
+## 2026-09-30 — Q02 MiMo真实联网验收
+
+- 在获授权的StockQA工作树运行 `tests/live/test_live_quick_scan.py::test_live_mimo_search_runs_public_company_through_cli_and_cleans_local_artifacts`。两次沙箱运行在HTTP前返回ConnectionError；获授权的非沙箱执行通过：**1 passed / 13.63s**。
+- 该E2E对Microsoft Corporation通过公开CLI执行`mimo-v2.6-flash`联网搜索，断言provider/model/response ID、`search_status=executed`、与响应关联的search receipt、非空source URLs和`url_citation_annotations`。答案可为scored或insufficient_evidence；本测试不证明分数本身正确。
+- 测试自身确认唯一临时目录已清理；调用前后StockQA Git状态均为55项，无测试下载或残留输出。没有保存原始响应、来源URL或token用量；费用未知。错误路径添加密钥脱敏/限长诊断，不记录API key。
+- 同一源码快照三文件provider/parser/public-CLI离线回归 **159 passed / 17.45s**；运行于独立临时CWD与basetemp，关闭第三方`base_url`插件及project coverage/cache addopts，临时根删除且StockQA状态仍为55项。
+- 当前准确的StockQA源码/测试SHA和命令记录在 `docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。独立复核已完成；其结论与当前任务状态裁定见本文件末尾的同日记录。
+
+## 2026-09-30 — Q02独立复核与状态裁定
+
+- 独立只读复核匹配本次测试所用五个StockQA文件SHA，确认所选LLM-02/LLM-11覆盖；无P0/P1代码问题。建议加强source URL集合/搜索调用ID绑定、有效host记录及“正文含URL但无citation”的P2负例，不是已观察缺陷；没有为此重复发送付费请求。
+- 当前计划已于2026-09-29退役工程任务receipt v2；`acceptance-cases.json`明确是规格、不是运行结果。因此不刷新只读旧Q02 receipt，也不改`specified_not_executed`规格状态。执行和复核证据留在本进度及MiMo批次报告。
+- Q02首个提供商任务级验收对该精确StockQA工作树快照通过。G1更大样本、评分准确性、引用对主张的支持、实际费用、MiniMax真实搜索和跨仓生产闭环仍未被本次实验验证。StockQA中存在的55项工作树状态不属于本仓提交范围。
