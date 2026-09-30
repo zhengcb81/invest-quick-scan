@@ -1146,3 +1146,13 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - StockWiki `72531b5` 的 `identity-export-g2b` 公开 CLI 在两套隔离 owner stores 上输出完全相同的 provisional Entity 请求。冻结字节 SHA 与 owner W04 施工记录精确一致；owner store API 返回的 active receipt、source binding、market registry 与请求中的 exact-key 引用逐项一致。IQS CLI 成功消费，五个单字段篡改均拒绝。
 - 初次 hash 不一致只因 Windows stdout 末尾 CRLF，不能把平台换行纳入 canonical JSON 内容；脚本现精确去除终端换行。冻结文件不含换行，2,765 字节。
 - StockWiki mapping DTO 1.0.0 的 public builder 对两个近名合成标签保持两个 Entity 并返回 ambiguous；精确 source key 映射单一 Entity。但 IQS 目前没有独立四态 mapping DTO consumer validator，也没有 mapping DTO owner golden 归档；施工卡完整 G2b 不能仅凭 provisional Entity 请求签收。verified、多挂牌和 AnalysisSubject 缺 owner 实际样本时不应合成正例。
+
+## 2026-09-30 — Mapping DTO 1.0.0 消费边界
+
+- IQS 现有独立消费规则以 StockWiki 公共 snapshot 与原始 query 为输入，重算 `null/unknown/ambiguous/mapped` 候选及 source mismatch，而非只信 DTO 自述的状态。DTO/snapshot 绑定 SHA、as-of、Entity/Security/Listing/source key；即使攻击者重算 snapshot SHA，也不能让绑定 ticker 错位通过。五个 owner API 输出已冻结在 mapping golden bundle。
+- StockWiki 当前 snapshot 的 Listing 有效区间全为 null，mapping DTO 的 candidate `as_of` 由 listing.valid_from 得到 null；IQS 可校验请求 as-of 与 snapshot as-of 相同，但本样本不能证明股票代码复用/退市后的历史区间路由。该限制应由后续 W02/W03 真实区间实现和测试覆盖，不得将当前 G2b 快照扩张为历史身份全覆盖。
+
+## 2026-09-30 — G2b 独立边界审查结论
+
+- Owner 与 IQS consumer 初版共同漏掉有效区间过滤，导致过期 Listing/source binding 在之后的 as-of 仍为 `mapped`。RED 测试固定反例；修复后双方按 `[valid_from, valid_to)` 与 active/retired/delisted 状态失败关闭，并要求 query/snapshot as-of 相同。IQS 同时拒绝重算哈希后的未知 package/snapshot 版本。独立复审的内存矩阵覆盖未来起点、起点、终点、过期、退役和退市。
+- 冻结的五态 bundle 与公开 owner API/CLI 已证明当前 provisional 单挂牌 2.2.0/1.0.0 接口相容；“中微公司/中微半导体”只是相同 Listing key 上的合成标签，不能证明真实近名导入不误并。StockWiki snapshot 目前将 Listing/binding 有效期投影为 null，真实 ticker 复用和历史时点仍是 W02 产品能力与生产证据缺口；verified、多挂牌、AnalysisSubject 未给 owner 正例，完整 G2b 不得关闭。

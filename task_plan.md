@@ -415,7 +415,7 @@ Status: complete_for_planning_only
 ### 当前下一动作
 
 - Q03首轮快照回归通过166项后，独立复核发现一个P1：JSON数组/对象类型的`status`使parser抛`TypeError`，导致公开CLI丢弃已完成搜索回执。已按TDD修复并补事件级回执断言，完整Q03隔离回归170项通过；两轮独立只读复核均未发现未解决项，最终复核匹配三份当前SHA。Q03解析与结果回执路径的任务级验收已通过。初始报告parser单测SHA有单字符笔误，已更正；精确命令、SHA与审查边界见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。该任务级验收不代表G1/全项目、其他模型或跨仓链路完成。
-- QA-04 已由用户交给其他 harness，IQS 总控不并发写 StockQA。`72531b5` 的 provisional Entity owner golden 已由总控独立验证并留档；**当前下一项**是补 IQS 自有四态 mapping DTO 消费合同和真实 owner DTO 正反例，再判定 G2b 剩余门。SW-IDENT 尚未分派，不代改 StockWiki；S06 仍待真实 ACK/历史样本。
+- QA-04 已由用户交给其他 harness，IQS 总控不并发写 StockQA。`72531b5` 的 provisional Entity 与四态 mapping DTO owner goldens 已由总控独立冻结并验证；**当前下一项**是完成此高风险接口的独立审查、处理发现项，再判定 G2b 剩余门。SW-IDENT 尚未分派，不代改 StockWiki；S06 仍待真实 ACK/历史样本。
 
 ## 2026-09-29 — S06 路由执行门与测试owner修复
 
@@ -639,7 +639,7 @@ Status: complete_for_local_IQS_lane_scope_external_G2b_remains_open
 - [x] 独立复审收尾：README、测试策略和Phase 12历史状态移除过期活动回执门；归档manifest完整性增加固定SHA/条目数/分类测试；verify_live集成样例改用独立活动策略fixture并验证过期revision被拒绝。
 - [x] 补充施工卡工作树增量快照：792基线→843当前状态路径，53新增、22哈希变化、2个计划退役路径；逐文件哈希与两份原哈希归档映射见`docs/implementation/reviews/IQS-lane/worktree-inventory-delta-2026-09-29.json`。快照明确排除自身与其后的最终规划改动，忽略文件未枚举。
 - [x] 按施工卡第1—4步逐项交叉核对并完成最终隔离回归：205 tests / 351 subtests / 0 skips；107 tasks / 366 cases / G6计划校验有效；测试临时根已清理，无网络/API/下载。最终报告见`docs/implementation/reviews/IQS-lane/construction-card-closeout-2026-09-29.md`，原始日志见`docs/implementation/contracts/validation-IQS-card-closeout-2026-09-29.txt`。
-- [ ] 施工卡第5步/G2b：StockWiki `72531b5` 的真实 owner CLI 现已输出 provisional Entity 2.1.0 golden；IQS 总控独立冻结原始字节、复现 SHA、核 owner read context、跑 IQS CLI 正例/五个负例与近名歧义 probe，见 `G2b-owner-acceptance-2026-09-30.md`。剩余四态 mapping DTO 的 IQS 消费校验/golden，以及有实际 owner 产物时的 verified/多挂牌/AnalysisSubject 路径尚未完成；整门保持 partial，不伪造生产者正例。
+- [ ] 施工卡第5步/G2b：StockWiki `72531b5` 的真实 owner CLI provisional Entity 2.1.0 golden 和公有 snapshot/mapping DTO 四态 golden 已由 IQS 总控冻结；独立消费校验、错 ID/source/as-of/status 反例与临时根清理均通过，见 `G2b-owner-acceptance-2026-09-30.md`。独立审查的 P1 有效区间漏洞已在获批 StockWiki 两文件及 IQS 消费端修复并复审；**当前 provisional Entity + mapping 1.0.0 接口切片签收，完整 G2b 仍 partial**。真实历史区间、近名 resolver/import、verified/多挂牌/AnalysisSubject owner 正例仍待 W02/owner 交付，不能用合成探针替代。
 
 本阶段按用户选择施工卡优先，C01—C07旧receipt刷新保持暂停；这些材料已作为历史工件保留，当前里程碑状态以`task_plan.md`、`progress.md`和大节点审查为准。
 
@@ -671,7 +671,8 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] 按用户要求把两条预研所需的只读步骤、字段/接口核查、完整 Markdown+JSON 交接与总控归档规则直接嵌入 TH-01/IN-02 各自文档；交给独立 harness 时无需依赖聊天上下文。报告仍未执行，索引保持空。
 - [x] 收到 StockWiki `master@72531b5` 后更新 SW-IDENT：W04 owner `identity-export-g2b`、receipt、market registry 已实现；本包改为 W01–W03 逐 case 验收与最小缺口修复，G2b 最终签收由 IQS 总控。四个 StockWiki 定向文件在隔离环境 64 passed；旧 `c8cfb2e` 缺 context 诊断只作历史记录。
 - [x] IQS 总控从 StockWiki 公开 CLI 独立生成并冻结 provisional Entity golden：两套隔离 owner store 导出字节相同、SHA 与 owner 记录一致，owner receipt/source/MIC 公开读核验及 IQS CLI 正例/五个负例通过，临时根清理；当前只签收此 slice。SW-IDENT 尚未分派，不借此次更新扩展 StockWiki 写授权。
-- [ ] 补 IQS 自有四态 mapping DTO 消费合同/真实 owner DTO golden 与正反例，按施工卡完成 G2b 的剩余接口签收；verified/多挂牌/AnalysisSubject 若无真实 owner 产物只能标未覆盖，不能由 provisional fixture 推断。
+- [x] 补 IQS 自有四态 mapping DTO 1.0.0 schema/消费合同、真实 owner 公共 API 产出的五态样本 bundle（四态加 source mismatch）与逆向反例；冻结 SHA `da3991c0d85ef9a0bce7c9152475b9184942df74c34fab4c5c935fb0e375a96f`，合并回归101 passed/63 subtests。
+- [x] 对 G2b Entity + mapping 当前接口做独立审查并处理 P0–P2：P1 过期挂牌误映射与 P2 未知版本均已用 RED/GREEN 回归修复；复审无剩余 P0/P1，见 `docs/implementation/reviews/IQS-lane/G2b-independent-review-2026-09-30.md`。仅签收 provisional 单挂牌接口切片；verified/多挂牌/AnalysisSubject 与真实历史有效区间、近名导入仍标未覆盖。
 - [x] 将总控遗留的 handoff intake RED 测试补成只读 `scripts/parallel_handoff_cli.py`：只验证 schema、package/lane/task、声明路径与临时根清理，不认证用户授权或测试事实；拒绝重复 JSON key、跨仓路径、未清理根和只读包变更。
 
 ### 2026-09-30 — 本地检查点与规划文件同步
@@ -679,7 +680,7 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] 将当前 invest-quick-scan 本地工作树进度提交为 `eb462d48321f3247eabf18daa57a4d4606405ca4`；共849个文件。提交涵盖本地实现、题库/发布物、契约、测试及已完成阶段证据，不代表所有跨项目任务完成。
 - [x] 更新施工卡实施摘要与G2b交接：步骤1—4随检查点提交，版本/CLI/golden格式与测试记录不变；G2b仍需StockWiki真实公开DTO/serializer golden。
 - [x] 计划校验复跑有效：107 tasks / 366 acceptance cases / G6；`tests/test_implementation_plan.py` 为80 passed / 53 subtests。
-- [ ] StockWiki provisional Entity producer golden 已验；G2b 仍需四态 mapping DTO 的 IQS 消费验收。S06 仍等待真实 StockQA→StockWiki 事务 ACK、router 2.1 真实历史样本和跨仓端到端验证。C01—C07 回执刷新继续暂停。
+- [ ] StockWiki provisional Entity producer golden 与四态 mapping DTO 的 IQS 消费验收已完成当前接口切片；完整 G2b 仍等 W02 真实历史/近名、verified/多挂牌/AnalysisSubject owner 证据。S06 仍等待真实 StockQA→StockWiki 事务 ACK、router 2.1 真实历史样本和跨仓端到端验证。C01—C07 回执刷新继续暂停。
 - [x] 第二笔提交 `5aec24044aabdbf5187725e51066cd21fc39bc33` 同步了实施摘要、handoff和进度记录；本次再同步 `task_plan.md`、`findings.md` 与 `progress.md`，不改外仓。
 
 ### 2026-09-30 — Q02 MiMo 实际搜索验收

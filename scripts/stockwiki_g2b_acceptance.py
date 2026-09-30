@@ -16,6 +16,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+from stockwiki_mapping_contract import MappingContractError, validate_mapping_dto
+
 
 IQS_ROOT = Path(__file__).resolve().parents[1]
 AS_OF = "2026-09-29T00:00:00Z"
@@ -116,7 +118,8 @@ def _check_owner_joins(request: dict, owner: dict) -> None:
     assert binding["security_id"] == security["security_id"]
 
 
-def _near_name_mapping_probe(stockwiki_root: Path, root: Path) -> dict:
+def _near_name_mapping_probe(stockwiki_root: Path, root: Path, golden: Path,
+                             capture_golden: bool) -> dict:
     """Use owner store/snapshot/mapping APIs; names are synthetic labels."""
     sys.path.insert(0, str(stockwiki_root))
     sys.path.insert(0, str(stockwiki_root / "tests"))
@@ -135,35 +138,85 @@ def _near_name_mapping_probe(stockwiki_root: Path, root: Path) -> dict:
     second = _entity_v4(_ENTITY_V4_2, _SECURITY_V4_2, binding_ref="BND_fixture_2")
     first["canonical_name"] = "中微公司（合成标签）"
     second["canonical_name"] = "中微半导体（合成标签）"
+    first["company_wiki_ref"] = "wiki/companies/synthetic-one"
+    second["company_wiki_ref"] = "wiki/companies/synthetic-two"
     store.save_entity(first, source_bindings=[_binding("BND_fixture_1", _SECURITY_V4, _ENTITY_V4)])
     store.save_entity(second, source_bindings=[_binding("BND_fixture_2", _SECURITY_V4_2, _ENTITY_V4_2)])
     snapshot = build_identity_snapshot(store, as_of=AS_OF)
     assert {entity["entity_id"] for entity in snapshot["entities"]} == {_ENTITY_V4, _ENTITY_V4_2}
     query = {"ticker": "ACME", "ticker_raw": "ACME", "market": "US",
              "exchange_raw": "NASDAQ", "exchange_mic": "XNAS", "as_of": AS_OF}
-    ambiguous = build_mapping_result(snapshot, query)
+    binding = _binding("BND_fixture_1", _SECURITY_V4, _ENTITY_V4)
+    exact_query = {**query, "source_binding_expectation": {
+        "source_namespace": binding["source_namespace"],
+        "source_record_id": binding["source_record_id"],
+    }}
+    unknown_query = {**query, "ticker": "NOPE", "ticker_raw": "NOPE"}
+    mismatch_query = {**query, "source_binding_expectation": {
+        "source_namespace": binding["source_namespace"], "source_record_id": "urn:wrong",
+    }}
+    cases = [
+        {"name": "not_attempted", "query": None, "dto": build_mapping_result(snapshot, None)},
+        {"name": "unknown", "query": unknown_query,
+         "dto": build_mapping_result(snapshot, unknown_query)},
+        {"name": "ambiguous", "query": query,
+         "dto": build_mapping_result(snapshot, query)},
+        {"name": "mapped", "query": exact_query,
+         "dto": build_mapping_result(snapshot, exact_query)},
+        {"name": "source_mismatch", "query": mismatch_query,
+         "dto": build_mapping_result(snapshot, mismatch_query)},
+    ]
+    for case in cases:
+        validate_mapping_dto(case["dto"], snapshot, case["query"])
+    by_name = {case["name"]: case["dto"] for case in cases}
+    ambiguous = by_name["ambiguous"]
     assert ambiguous["mapping_status"] == "ambiguous" and ambiguous["candidate"] is None
     assert {candidate["entity_id"] for candidate in ambiguous["candidates"]} == {_ENTITY_V4, _ENTITY_V4_2}
-    binding = _binding("BND_fixture_1", _SECURITY_V4, _ENTITY_V4)
-    exact = build_mapping_result(snapshot, {
-        **query, "source_binding_expectation": {
-            "source_namespace": binding["source_namespace"],
-            "source_record_id": binding["source_record_id"],
-        },
-    })
+    exact = by_name["mapped"]
     assert exact["mapping_status"] == "mapped"
     assert exact["candidate"]["entity_id"] == _ENTITY_V4
-    return {"near_name_without_source": "ambiguous_unmerged",
-            "exact_source_key": "mapped_to_one_entity"}
+    bundle = {"snapshot": snapshot, "cases": cases}
+    canonical = json.dumps(bundle, ensure_ascii=False, sort_keys=True,
+                           separators=(",", ":"), allow_nan=False).encode("utf-8")
+    if not capture_golden:
+        assert golden.read_bytes() == canonical, "mapping DTO golden differs from owner API"
+    forged = copy.deepcopy(exact)
+    forged["candidate"]["entity_id"] = "ENT_forged"
+    for changed_dto, changed_query in (
+        (forged, exact_query),
+        ({**exact, "mapping_status": "unknown"}, exact_query),
+        ({**exact, "snapshot_sha256": "0" * 64}, exact_query),
+        (exact, {**exact_query, "as_of": "2026-09-30T00:00:00Z"}),
+    ):
+        try:
+            validate_mapping_dto(changed_dto, snapshot, changed_query)
+        except MappingContractError:
+            pass
+        else:
+            raise AssertionError("forged mapping DTO was accepted")
+    if capture_golden:
+        golden.parent.mkdir(parents=True, exist_ok=True)
+        golden.write_bytes(canonical)
+    return {"duplicate_listing_key_without_source": "ambiguous_unmerged",
+            "synthetic_name_labels_only": True,
+            "exact_source_key": "mapped_to_one_entity",
+            "four_states_and_source_mismatch": "consumer_valid",
+            "mapping_golden_sha256": hashlib.sha256(canonical).hexdigest(),
+            "mapping_negative_count": 4}
 
 
-def run(stockwiki_root: Path, golden: Path, capture_golden: bool) -> dict:
+def run(stockwiki_root: Path, golden: Path, capture_golden: bool,
+        mapping_golden: Path, capture_mapping_golden: bool) -> dict:
     if not (stockwiki_root / "stockwiki" / "cli.py").is_file():
         raise ValueError("StockWiki root does not contain public CLI")
     if capture_golden and not golden.is_relative_to(IQS_ROOT):
         raise ValueError("captured golden must remain inside the IQS repository")
+    if capture_mapping_golden and not mapping_golden.is_relative_to(IQS_ROOT):
+        raise ValueError("captured mapping golden must remain inside the IQS repository")
     if golden.exists() and capture_golden:
         raise ValueError("golden already exists; capture must never overwrite")
+    if mapping_golden.exists() and capture_mapping_golden:
+        raise ValueError("mapping golden already exists; capture must never overwrite")
     with tempfile.TemporaryDirectory(prefix="iqs-g2b-coordinator-") as parent:
         temp_root = Path(parent)
         outputs = []
@@ -205,7 +258,8 @@ def run(stockwiki_root: Path, golden: Path, capture_golden: bool) -> dict:
             assert code == 2 and outcome["status"] == "invalid" and outcome["errors"], name
             assert "ACME" not in json.dumps(outcome), "consumer diagnostics echoed company payload"
             negative_codes[name] = [error["code"] for error in outcome["errors"]]
-        near_name = _near_name_mapping_probe(stockwiki_root, temp_root / "near-name")
+        near_name = _near_name_mapping_probe(stockwiki_root, temp_root / "near-name",
+                                             mapping_golden, capture_mapping_golden)
         if capture_golden:
             golden.parent.mkdir(parents=True, exist_ok=True)
             golden.write_bytes(canonical)
@@ -222,8 +276,11 @@ def main() -> int:
     parser.add_argument("--stockwiki-root", type=Path, required=True)
     parser.add_argument("--golden", type=Path, required=True)
     parser.add_argument("--capture-golden", action="store_true")
+    parser.add_argument("--mapping-golden", type=Path, required=True)
+    parser.add_argument("--capture-mapping-golden", action="store_true")
     args = parser.parse_args()
-    result = run(args.stockwiki_root.resolve(), args.golden.resolve(), args.capture_golden)
+    result = run(args.stockwiki_root.resolve(), args.golden.resolve(), args.capture_golden,
+                 args.mapping_golden.resolve(), args.capture_mapping_golden)
     print(json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
     return 0
 

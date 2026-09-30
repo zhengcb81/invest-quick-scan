@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://invest-quick-scan.local/schemas/stockwiki-identity-mapping-dto-1.0.0.schema.json",
+  "title": "StockWiki identity mapping DTO 1.0.0 consumer contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mapping_dto_schema_version", "snapshot_sha256", "mapping_status", "attempted", "queried_identity", "candidate", "candidates", "binding_mismatch"],
+  "properties": {
+    "mapping_dto_schema_version": {"const": "1.0.0"},
+    "snapshot_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "mapping_status": {"enum": [null, "unknown", "ambiguous", "mapped"]},
+    "attempted": {"type": "boolean"},
+    "queried_identity": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/query"}]},
+    "candidate": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/candidate"}]},
+    "candidates": {"type": "array", "items": {"$ref": "#/$defs/candidate"}},
+    "binding_mismatch": {"type": "boolean"}
+  },
+  "$defs": {
+    "query": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ticker", "ticker_raw", "market", "exchange_raw", "exchange_mic", "as_of"],
+      "properties": {
+        "ticker": {"type": "string"}, "ticker_raw": {"type": "string"},
+        "market": {"type": "string"}, "exchange_raw": {"type": "string"},
+        "exchange_mic": {"type": ["string", "null"]}, "as_of": {"type": "string"}
+      }
+    },
+    "candidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["entity_id", "entity_canonical_name", "security_id", "listing_id", "market", "exchange_raw", "exchange_mic", "ticker_raw", "ticker", "currency", "listing_status", "as_of", "source_binding"],
+      "properties": {
+        "entity_id": {"type": "string"}, "entity_canonical_name": {"type": "string"},
+        "security_id": {"type": "string"}, "listing_id": {"type": "string"},
+        "market": {"type": "string"}, "exchange_raw": {"type": "string"},
+        "exchange_mic": {"type": ["string", "null"]},
+        "ticker_raw": {"type": "string"}, "ticker": {"type": "string"},
+        "currency": {"type": "string"}, "listing_status": {"type": "string"},
+        "as_of": {"type": ["string", "null"]},
+        "source_binding": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/binding"}]}
+      }
+    },
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["binding_ref", "source_namespace", "source_record_id", "source_canonical_name", "entity_id", "security_id", "listing_id", "market", "exchange_raw", "exchange_mic", "ticker_raw", "ticker", "status", "valid_from", "valid_to"],
+      "properties": {
+        "binding_ref": {"type": "string"}, "source_namespace": {"type": "string"},
+        "source_record_id": {"type": "string"}, "source_canonical_name": {"type": "string"},
+        "entity_id": {"type": "string"}, "security_id": {"type": "string"},
+        "listing_id": {"type": "string"}, "market": {"type": "string"},
+        "exchange_raw": {"type": "string"}, "exchange_mic": {"type": ["string", "null"]},
+        "ticker_raw": {"type": "string"}, "ticker": {"type": "string"},
+        "status": {"type": "string"},
+        "valid_from": {"type": ["string", "null"]}, "valid_to": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

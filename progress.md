@@ -1287,3 +1287,16 @@
 - 总控从 owner 公共读路径核对 Entity/receipt/source binding/MIC，IQS 公共 CLI 正例 exit 0、五个逐字段负例 exit 2。另用 StockWiki 公共 snapshot/mapping API 对两条带“中微公司/中微半导体”**合成标签**的 fixture Entity 验证无 source 时 ambiguous/unmerged，有精确 source key 时只映射一个；不代表真实公司身份结论。
 - 本仓冻结 fixture 回归加原 CLI 边界 **8 passed**；跨仓脚本正常运行两次并确认临时 owner 根删除，pytest 临时根已删除。无联网、API、下载或外仓写入。详见 `docs/implementation/reviews/IQS-lane/G2b-owner-acceptance-2026-09-30.md`。四态 mapping DTO 尚无 IQS 自有消费 validator/golden；整 G2b 暂记 partial。
 - 合并本批黄金样本/身份 CLI/并行计划回归最终 **97 passed / 53 subtests / 9.66s**；计划 validator 107 tasks/366 cases/G6 valid；跨仓复跑同 SHA/同正反例，两个 pytest 临时根已清理，`git diff --check` 通过。
+
+## 2026-09-30 — G2b StockWiki 四态 mapping DTO 消费合同
+
+- 从 StockWiki `72531b5` 公共 `build_identity_snapshot`/`build_mapping_result` 在隔离 owner store 中生成 null（未尝试）、unknown、ambiguous、mapped 与 source mismatch 五个 DTO，冻结 9,774 字节 bundle SHA `da3991c0d85ef9a0bce7c9152475b9184942df74c34fab4c5c935fb0e375a96f`。IQS 新增独立 DTO 1.0.0 schema/validator，按原始查询与 owner snapshot 重算候选，检验状态、来源、Entity/Security/Listing 绑定、snapshot hash 和 as-of。
+- TDD 逆向反例覆盖伪造候选、状态、source record、hash、as-of、版本；额外将 snapshot 中 binding ticker 改错并重算 hash，仍由 IQS validator 拒绝。第一次反例测试发现 validator 将自身 `MappingContractError` 意外归为 `snapshot_invalid`，已缩窄异常捕获并保留专门错误码。最终 mapping 定向 4 passed/10 subtests；合并身份/计划批次 **101 passed / 63 subtests / 9.21s**，计划 validator 107 tasks/366 cases/G6 valid。
+- 跨仓脚本复跑两份 golden 均字节稳定，Entity IQS CLI 正例/五负例和 mapping 四态/四个 runtime 逆向例全通过，临时 owner 根及 pytest 根清理。当前 StockWiki snapshot 的 Listing `valid_from/valid_to` 为 null，故尚不能据此宣称历史有效区间处理；verified/多挂牌/AnalysisSubject owner 正例亦未提供。独立大节点审查已启动，G2b 尚未最终签收。
+
+## 2026-09-30 — G2b 独立复审、有效期修复与阶段签收
+
+- 独立审查发现 StockWiki 与 IQS 消费端会把已过 `valid_to` 的挂牌映为 `mapped`，以及 IQS 接受重算哈希后的未知身份包版本；还指出合成近名标签实际只验证了相同挂牌 key 冲突，未覆盖名称解析。先写两仓 RED 反例，再在 IQS 与用户精确授权的 StockWiki `identity_mapping.py`/`test_identity_mapping.py` 修复，复审验证 `[valid_from,valid_to)` 起点包含、终点排除，退役/退市未知。
+- StockWiki 聚焦 mapping/snapshot 回归 **33 passed**。一次 `scripts/check_all.sh` 的 pytest/coverage/framework 阶段 **655 passed、15 skipped、1 warning**，覆盖率及框架门通过；Ruff 阶段仅因沙箱限制无法写 StockWiki `.ruff_cache` 使汇总脚本退出 1。改用 IQS 临时缓存目录单跑 Ruff 为 **All checks passed**，不把汇总退出码称为成功。
+- IQS 跨仓公开路径两份冻结 golden 再次同哈希，正例与五个 Entity 负例、mapping 四态/来源错配及四个 runtime 篡改通过，临时根清理；合并回归 **104 passed / 63 subtests**。审查报告 `docs/implementation/reviews/IQS-lane/G2b-independent-review-2026-09-30.md` 无当前 provisional 接口切片剩余 P0/P1。该切片可签收，完整 G2b/W02 继续 partial：StockWiki 生产 snapshot 仍不持久化历史区间，公开近名解析、verified/多挂牌/AnalysisSubject 正例待 owner 证据。
+- StockWiki 仅授权的 `stockwiki/identity_mapping.py`、`tests/test_identity_mapping.py` 已离开沙箱单独提交为 `2058931`；原有 `.claude/` 未暂存。IQS 本批待本仓单独提交。
