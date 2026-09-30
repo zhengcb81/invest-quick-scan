@@ -2,7 +2,21 @@
 
 **可单独交给 Industry harness 的施工指令，当前仅可只读预研。** Owner 子树 `C:/Users/郑曾波/Projects/local-skills/industry-research/`；任务 T02，验收 CONS-03、CONS-04、QUERY-04、SC-11、CONS-07。G3、F05、W11 和 StockWiki 公开 query endpoint/golden 为硬前置；用户当前未授权本子树写入。`local-skills` Git 根也包含 Theme，两个 harness 必须在独立工作树/分支写各自子树，最终由总控串行整合。
 
-当前只读部分使用[统一预研与记录规则](../prestudy/README.md)及其报告模板；由本 harness 在最终消息交回结果，总控核验后记入 IQS，不要求本 harness 写中央计划仓。
+## 现在立即执行：只读预研（本卡可独立使用）
+
+**只读范围**：本技能子树、IQS 契约/计划、StockWiki 公开接口和测试/文档；不改任何项目文件、不创建技能代码或测试文件、不访问 StockWiki 私有 SQLite、不发 LLM/API 请求、不下载公司资料。检查产生临时文件时使用独立临时根并清理。T02 实施验收仍等待 G3/F05/W11、真实 query/golden 和用户对 Industry 子树的写授权；找不到端点可以完成缺口勘察，但不能宣称接线通过。
+
+请依次调查，并在报告中给每条事实标注具体文件/公开方法与观察到的版本/hash：
+
+1. 冻结 `local-skills`、StockWiki、IQS 三仓 HEAD、工作树摘要和所读关键文件 SHA-256；读当前 `AGENTS.md`（如有）。
+2. 从 `SKILL.md` 第 6/7 步、`modules/company-evaluation.md`、`modules/report-generation.md`、`config.yaml` 画出“研报/wiki/companies 发现→公司评估→报告”真实路径，找一个最小快扫候选入口，并说明原深研/PDF路径怎样保留。不能把 `companies/` 目录是否存在当股票池权威准入。
+3. 核对 IQS [查询契约](../../contracts/exchange-and-query.md)、[字段/时效契约](../../contracts/freshness-and-jobs.md)、`tasks.json` 的 T02，以及 StockWiki 当前**实际已实现**的 `capabilities/search/get_profiles/request_refresh` 公开入口、协议版本、owner response golden、错误码/coverage/watermark。合同文本不等于生产接口；缺失时写 `not_available` 和查过的位置，不用私有 SQLite 或合成响应冒充 owner golden。
+4. 列公开字段到公司评估表的映射：`analysis_subject_id`/revision、primary issuer、security/listing、行业/细分、设备/材料/客户/下游、score/status、field/module release、`information_cutoff`/`observed_at`、真实 provider/model、source pointer、coverage/freshness。明确哪些只作快扫线索，哪些需原行业研究证据独立验证；缺字段指明 IQS 或 StockWiki owner。
+5. 设计而不执行实施测试：完整/部分覆盖与空结果、歧义名称、同 issuer 多挂牌、短词误命中、未证实关系、过期/unknown、旧版 unsupported、分页快照、刷新预览零派发及原第 6/7 步不回退。列未来本子树拟写精确文件/目的，本次不实施。
+
+**交接接口**：最终消息同时给出一份完整 UTF-8 Markdown 报告和一份完整 JSON。Markdown 按[统一模板](../prestudy/template.md)的“冻结输入、当前路径、字段映射、公开接口缺口、测试设计、拟写文件/授权、实际只读检查与下一步”分节。JSON 严格符合[handoff schema](../handoff.schema.json)：`schema_version=1.0.0`、`lane_id=industry`、`package_id=IN-02`、`status=partial`（预研查清但 T02 未实施）或 `blocked`（连必要输入也无法读取）；填写 `snapshot`、`scope`、`interfaces`、`verification`、`review`、`open_items`，其中 `authorization_scope_ref=not_authorized`、`changed_paths=[]`、`external_writes=false`、`network_calls=false`、`paid_calls=false`。嵌套字段按 schema；不只给 hash/摘要，未执行的测试写 `not_run`。
+
+**留档接口**：harness 不写 IQS 中央仓。总控核对事实和 JSON 后，把 UTF-8/LF 报告按完整字节 SHA-256 前 12 位存为 `docs/implementation/parallel-lanes/prestudy/IN-02-<YYYY-MM-DD>-<sha12>.md`，完整 JSON 存同前缀 `.handoff.json`，将两份完整 hash、三仓输入 commit、观察/接收时间和依赖缺口加入[归档索引](../prestudy/archive-index.json)并按[索引 schema](../prestudy/archive-index.schema.json)校验，随后更新 `progress.md`/`findings.md`。预研报告不可变；新结果新增文件。`prestudy_complete` 只表示勘察完成，T02 实施仍是 `not_started`。共同规则见[只读预研规程](../prestudy/README.md)，本卡自身已经列明执行与交接字段。
 
 ## 现有流程与目标
 
@@ -25,6 +39,6 @@
 
 ## 当前可交付的只读准备与完成标准
 
-前置未齐时仅交付第 6 步入口图、字段/口径映射、公开端点缺口、测试矩阵及拟写路径，状态为 `blocked/partial`；**不提交实现，不声称 T02 验收**。正式完成需五个 case 的 owner 实测、真实契约 fixture/版本、unknown 与 coverage 正确呈现、可重跑离线 E2E 和清理记录。
+前置未齐时交付上述只读预研报告；完整勘察即使发现生产端点尚无，也可把报告标为 `prestudy_complete`，handoff 的 T02 状态仍为 `partial`。只有必要输入无法读取才标预研 `blocked`。**不提交实现，不声称 T02 验收**。正式完成需五个 case 的 owner 实测、真实契约 fixture/版本、unknown 与 coverage 正确呈现、可重跑离线 E2E 和清理记录。
 
 按 [handoff schema](../handoff.schema.json) 返回 `package_id=IN-02`、base/result commit、子树内变更路径/hash、消费的版本/golden hash、测试命令与结果、未触发的网络/费用、review/open items。总控核对后串行整合到共享 `local-skills` Git 根。

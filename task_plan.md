@@ -668,6 +668,7 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [ ] QA-04 和 SW-IDENT 由各 owner 通过工作树/授权/依赖预检后实施；总控只在真实 StockWiki golden 到达后做 G2b 跨仓验证。TH-01/IN-02 等待 G3/F05/W11，不抢跑。
 - [x] IQS 总控只读复验 StockWiki 当前身份 producer：专项 29 passed；临时权威库的真实 serializer hash 与 owner 摘要相同；缺 `identity_receipts`/`market_registry` 导致 IQS CLI 诊断负例退出 2。已把精确差距交给 SW-IDENT，G2b 保持 pending。
 - [x] 为 TH-01/IN-02 定义只读预研、handoff 与留档接口：harness 只返回 Markdown+标准 JSON；IQS 总控核验后以内容 hash 命名保存，并维护 JSON Schema 校验的不可变索引。当前索引为空，未伪造预研结果；T01/T02 仍待 G3/F05/W11、生产 query/golden 和写授权。
+- [x] 按用户要求把两条预研所需的只读步骤、字段/接口核查、完整 Markdown+JSON 交接与总控归档规则直接嵌入 TH-01/IN-02 各自文档；交给独立 harness 时无需依赖聊天上下文。报告仍未执行，索引保持空。
 
 ### 2026-09-30 — 本地检查点与规划文件同步
 

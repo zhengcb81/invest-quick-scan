@@ -190,6 +190,23 @@ class ParallelLanePlanTests(unittest.TestCase):
             self.assertEqual([], handoff_data["scope"]["changed_paths"])
             self.assertFalse(handoff_data["verification"]["external_writes"])
 
+    def test_each_consumer_packet_is_self_contained_for_read_only_prestudy(self):
+        package_dir = LANE_DIR / "packages"
+        for package_id, filename, lane_id in (
+            ("TH-01", "TH-01-theme-consumer.md", "theme"),
+            ("IN-02", "IN-02-industry-consumer.md", "industry"),
+        ):
+            body = (package_dir / filename).read_text(encoding="utf-8")
+            for required in (
+                "只读范围", "StockWiki", "G3/F05/W11", "字段", "golden",
+                "完整 UTF-8 Markdown", "完整 JSON", "handoff schema",
+                "archive-index.json", "archive-index.schema.json", "SHA-256",
+                "changed_paths=[]", "external_writes=false", "network_calls=false",
+                "paid_calls=false", "prestudy_complete", "not_started", package_id,
+                f"lane_id={lane_id}",
+            ):
+                self.assertIn(required, body, f"{filename} lacks {required}")
+
 
 if __name__ == "__main__":
     unittest.main()

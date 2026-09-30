@@ -1266,3 +1266,9 @@
 - 留档使用 UTF-8/LF 报告字节 SHA-256 前12位命名、完整 hash 索引、三仓输入 commit 与接收时间。新增 `archive-index.schema.json`、空 `archive-index.json`，当前没有 TH-01/IN-02 实际预研报告；`prestudy_complete` 只表示勘察完成，T01/T02 实施状态仍为 `not_started`。
 - 包目录、TH-01/IN-02 卡和计划已链接预研规程；新增回归校验索引/schema、未来条目的文件 hash/命名、handoff 字段与无外仓写入。未修改 Theme/Industry/StockWiki 等外仓。
 - 本仓隔离计划回归最终 **88 passed / 53 subtests**；计划 validator 为107 tasks / 366 cases / G6 valid；两次 pytest 临时根均已删除。无网络、API、下载或外仓写入。
+
+## 2026-09-30 — 预研施工卡自包含交付
+
+- 用户要求重新给出 TH-01/IN-02 完整链接，并确保每个 harness 只读本卡即可理解预研规则和接口。两份卡现直接列出必读路径、当前可做的五步只读勘察、公开 StockWiki 能力核查、字段映射、TDD 设计、完整 Markdown/JSON handoff、总控 hash 留档和状态区分。
+- 新增回归断言两个独立文档都包含 archive-index/schema、handoff、no-write/no-network/no-spend 与 `prestudy_complete`≠任务完成的关键字段。尚未收到任何预研报告；没有修改外仓或执行 T01/T02 施工。
+- 隔离计划/接口回归 **89 passed / 53 subtests**；计划 validator 为107 tasks / 366 cases / G6 valid；唯一 pytest 临时根已删除，`git diff --check`通过。

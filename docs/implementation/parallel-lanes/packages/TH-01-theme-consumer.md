@@ -2,7 +2,21 @@
 
 **可单独交给 Theme harness 的施工指令，当前仅可只读预研。** Owner 子树 `C:/Users/郑曾波/Projects/local-skills/analyze-theme-value-chain/`；任务 T01，验收 CONS-01、CONS-02、QUERY-04、CONS-05、CONS-06。G3、F05、W11 为硬前置；这三项及 StockWiki 公开 query endpoint/能力/golden 都通过之后，且用户授予 Theme 子树写入权限，才能进入代码施工。Theme 与 Industry 共用 `local-skills` Git 根：各用独立工作树/分支，绝不写对方子树，集成串行。当前总计划只授予本子树 read-only。
 
-当前只读部分使用[统一预研与记录规则](../prestudy/README.md)及其报告模板；由本 harness 在最终消息交回结果，总控核验后记入 IQS，不要求本 harness 写中央计划仓。
+## 现在立即执行：只读预研（本卡可独立使用）
+
+**只读范围**：本技能子树、IQS 契约/计划、StockWiki 公开接口和测试/文档；不改任何项目文件、不创建技能代码或测试文件、不访问 StockWiki 私有 SQLite、不发 LLM/API 请求、不下载公司资料。若检查命令产生临时文件，使用独立临时根并在结束时删除。预研不能因缺生产端点就伪造成功；可如实完成“查明缺口”的报告。T01 的实施验收仍等待 G3/F05/W11、StockWiki 真实 query/golden 和用户对 Theme 子树的写授权。
+
+请依次完成以下调查，并在报告中给每条事实标注具体文件/公开方法与观察到的版本/hash：
+
+1. 冻结 `local-skills`、StockWiki、IQS 三仓 HEAD、工作树摘要和所读关键文件 SHA-256；读当前 `AGENTS.md`（如有）。
+2. 从 `SKILL.md` 第 5/6 步、`references/quality-gates.md`、`references/output-schema.md`、`references/company-model.md` 绘制“主题定义→价值链叶节点→公司发现→可比数据→报告”真实路径，指出**一个**最小快扫接入点与旧流程降级路径。
+3. 核对 IQS [查询契约](../../contracts/exchange-and-query.md)、[字段/模块契约](../../contracts/question-modules.md)、`tasks.json` 的 T01，以及 StockWiki 当前**实际已实现**的 `capabilities/search/get_profiles/request_refresh` 公开入口、协议版本、owner response golden、错误码/coverage/watermark。合同文本不等于端点实现；找不到时写 `not_available`、查过的位置及对 G3/F05/W11 的依赖，不用私有表或自造 golden 补齐。
+4. 列字段映射：`analysis_subject_id`/revision、issuer 与 listing、细分行业/上下游/设备/材料/客户、score/status、field/module release、`information_cutoff`/`observed_at`、真实 provider/model、source pointer、coverage/freshness 各从哪个**公开字段**到主题候选表哪一列。区分搜索线索与主题收入暴露的正式证据；缺字段指明 IQS 或 StockWiki owner。
+5. 设计而不执行实施测试：完整/部分覆盖、空结果、身份歧义、同 issuer 多挂牌、过期/unknown、strict/explore 未证实关系、旧版 unsupported、分页快照、刷新预览零派发。列出未来本子树拟写的精确文件和目的，不在本次动手。
+
+**交接接口**：最终消息同时给出一份完整 UTF-8 Markdown 报告和一份完整 JSON。Markdown 按[统一模板](../prestudy/template.md)的“冻结输入、当前路径、字段映射、公开接口缺口、测试设计、拟写文件/授权、实际只读检查与下一步”分节。JSON 必须符合[handoff schema](../handoff.schema.json)：`schema_version=1.0.0`、`lane_id=theme`、`package_id=TH-01`、`status=partial`（预研查清但 T01 未实施）或 `blocked`（连预研必要输入也无法读）；填写 `snapshot`、`scope`、`interfaces`、`verification`、`review`、`open_items`，其中 `authorization_scope_ref=not_authorized`、`changed_paths=[]`、`external_writes=false`、`network_calls=false`、`paid_calls=false`。嵌套字段严格按 schema，不只给 hash 或摘要；未运行的测试标 `not_run`，不能写成通过。
+
+**留档接口**：harness 不写 IQS 中央仓。总控核对事实和 JSON 后，把 UTF-8/LF 报告按完整字节 SHA-256 前 12 位存为 `docs/implementation/parallel-lanes/prestudy/TH-01-<YYYY-MM-DD>-<sha12>.md`，完整 JSON 存同前缀 `.handoff.json`，将两份完整 hash、三仓输入 commit、观察/接收时间、依赖缺口加入[归档索引](../prestudy/archive-index.json)并按[索引 schema](../prestudy/archive-index.schema.json)校验，随后更新 `progress.md`/`findings.md`。预研报告是不可变快照；新结果新增文件。`prestudy_complete` 仅表示本次勘察完成，T01 实施仍是 `not_started`。更详细的共同规则见[只读预研规程](../prestudy/README.md)，但本卡已列出执行与交接所需字段。
 
 ## 业务边界与现有入口
 
@@ -25,6 +39,6 @@
 
 ## 当前可交付的只读准备与完成标准
 
-前置未齐时，harness 可以交出：现有第 5/6 步调用图、候选字段映射表、StockWiki 当前 capability 缺口、拟写文件清单、RED fixture 设计和开放问题；状态写 `blocked` 或 `partial`，**不能提交消费端实现或宣称 T01 完成**。前置齐全且获写授权后，完成需有五个 case 的运行证据、版本/水位/覆盖端到端验证、旧版降级、临时目录清理及 owner review。
+前置未齐时，harness 交出上述预研报告；若已完整勘察，即使结论是“生产端点尚无”，报告也可标 `prestudy_complete`，handoff 的 T01 状态仍为 `partial`。只有必要源码/接口无法读取时才标预研 `blocked`。**不能提交消费端实现或宣称 T01 完成**。前置齐全且获写授权后，完成需有五个 case 的运行证据、版本/水位/覆盖端到端验证、旧版降级、临时目录清理及 owner review。
 
 按 [handoff schema](../handoff.schema.json) 返回 `package_id=TH-01`、base/result commit、只改本子树的路径与 hash、实际 query/golden 版本/hash、测试命令及数量、网络/费用标志、review 和 open items。总控只在接口与 G4 大节点验收后串行合并共享 `local-skills` Git 根。
