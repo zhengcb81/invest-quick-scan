@@ -1117,6 +1117,16 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - QA-04 must distinguish LLM-10 next-run versus immediate policy update at undispatched question boundaries and PAR-11 capacity wait versus fallback on actual route failure. Existing sequential QAEngine and transport wait are useful implementation facts but not public-path proof; use RED tests around runner/CLI and POST counts.
 - Package manifest tests assert task owner and prerequisites against `tasks.json`, disjoint write scopes, document links, and gated consumer status. Existing handoff schema remains the final report format; no second IQS writer is created.
 
+## 2026-09-30 — StockWiki producer evidence narrows G2b gap
+
+- `StockWiki master@c8cfb2e` owner identity snapshot/mapping tests pass 29/29; a real temporary QuickScanStore→`build_identity_snapshot` output matches its committed summary SHA `2f4a2efa15827c10d7fa5a8eae13ad94a693fb68c20067c3c09fc22e30a7ce52`. The owner serializer now exists and is deterministic on that fixture.
+- The serialized snapshot has Entity and source binding data but does not expose the trusted identity receipt or market registry required by the IQS 2.2.0 CLI request. An empty-receipt diagnostic is rejected with exit 2/`semantic_validation_failed`, as desired. The missing producer-owned authority projection, full CLI envelope golden, and public-path positive/negative cross-check are now the specific G2b blockers. Caller-fabricated context cannot satisfy them.
+
+## 2026-09-30 — Consumer prestudy archive ownership
+
+- TH-01 and IN-02 share a Git root but have disjoint read-only skill subtrees. A worker writing central IQS planning files would violate the single-writer lane boundary, so the handoff is a full Markdown report plus existing versioned JSON handoff in the final message; IQS coordinator alone archives after validation.
+- The archive interface records source commits, exact UTF-8/LF report hash, handoff hash, observation/acceptance times, dependency gaps and separate prestudy versus implementation status. An empty index is intentional evidence that no consumer prestudy has yet been accepted; a template is not an accepted report.
+
 ## 2026-09-30 — Q03复核发现与修复
 
 - 独立复核发现LLM JSON中的`status`可能是数组或对象；直接对其做set成员判断会抛`TypeError`。异常处理会把已收到的搜索回答降为通用错误，从而丢失request/response/search-call/source回执，并可能导致重复请求。该问题位于未信任模型输出的解析边界，修复应拒绝非字符串状态并返回普通无效答案，不改变provider路由。

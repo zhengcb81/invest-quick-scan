@@ -11,6 +11,8 @@
 
 **立即可并行的写入候选只有 QA-04 与 SW-IDENT，且各自通过上述开工门后才开始。** TH-01/IN-02 可由两个 harness 同时做只读准备，但不能把不存在的 StockWiki 生产查询端点 mock 成已验收。StockWiki 当前 HEAD `c8cfb2e` 已合并 `identity_snapshot.py` / `identity_mapping.py`，旧计划中 `quick_scan_identity.py` / `quick_scan_universe.py` 的路径不能再被当成现存实现；先做差异核验，不要重造。
 
+TH-01 / IN-02 的只读预研按[预研与记录规则](../prestudy/README.md)执行，并用其中模板回交。两个 harness 不写 IQS；总控核对后才在本仓保存按日期/输入 hash 命名的报告，并更新 planning-with-files。当前尚无实际预研报告，不能把模板当成果。
+
 ```mermaid
 flowchart LR
   QA[QA-04: StockQA] --> C[IQS 总控: 接口/跨仓验收]

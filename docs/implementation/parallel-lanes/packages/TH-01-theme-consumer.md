@@ -2,6 +2,8 @@
 
 **可单独交给 Theme harness 的施工指令，当前仅可只读预研。** Owner 子树 `C:/Users/郑曾波/Projects/local-skills/analyze-theme-value-chain/`；任务 T01，验收 CONS-01、CONS-02、QUERY-04、CONS-05、CONS-06。G3、F05、W11 为硬前置；这三项及 StockWiki 公开 query endpoint/能力/golden 都通过之后，且用户授予 Theme 子树写入权限，才能进入代码施工。Theme 与 Industry 共用 `local-skills` Git 根：各用独立工作树/分支，绝不写对方子树，集成串行。当前总计划只授予本子树 read-only。
 
+当前只读部分使用[统一预研与记录规则](../prestudy/README.md)及其报告模板；由本 harness 在最终消息交回结果，总控核验后记入 IQS，不要求本 harness 写中央计划仓。
+
 ## 业务边界与现有入口
 
 现有 `SKILL.md` 第 5 步建立主题公司池，第 6 步收集可比公司数据。快扫可提供候选、细分产业链/上下游字段、版本化评分及观察时间/模型，但不能把一个关键词命中或模型自述提升为“主题收入受益”证据。主题技能仍负责价值链原子拆分、受益机制、收入弹性、场景预测和估值，原有深研证据规则继续有效。快扫项目轻资产：不下载/持久化公司财报、网页正文，也不创建第二个 2000 家股票池。

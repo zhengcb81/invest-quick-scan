@@ -6,6 +6,8 @@
 
 2026-09-30 只读观察 StockWiki `master@c8cfb2e`，存在未跟踪 `.claude/`。该 HEAD **已合并** `stockwiki/identity_snapshot.py`、`stockwiki/identity_mapping.py` 与相应测试；`build_identity_snapshot` 从真实 `QuickScanStore` 序列化，identity package 2.2.0 / Entity 2.1.0 / AnalysisSubject 1.0.0，mapping DTO 1.0.0；`.planning/w02_golden_receipt.json` 仅含摘要 hash/count，并非可直接交给 IQS CLI 的完整请求 golden。旧进度说 W02/W03 首段 partial；合并提交后必须重新跑真实 owner 测试、检查该结论是否仍成立。旧计划中的 `quick_scan_identity.py` / `quick_scan_universe.py` 当前不存在，不能机械按文件名重造。
 
+总控已作只读复验：两个 identity 专项文件 **29 passed**；用 StockWiki 真实 `build_identity_snapshot` 从临时 `QuickScanStore` 导出的 hash 与 owner 摘要 `2f4a2efa15827c10d7fa5a8eae13ad94a693fb68c20067c3c09fc22e30a7ce52` 精确一致。当前 snapshot 输出 `entities/analysis_subjects/source_bindings`，但**没有权威 `identity_receipts` 或 `market_registry`**。以该真实 Entity/binding、外部补的市场注册表及空 receipt 调 IQS CLI，退出 2、`semantic_validation_failed`；这只证明 G2b 仍缺 owner provenance，不能把外部补的字段写成正例。优先补齐 owner 事务保存/公开读取的 receipt 与注册表、完整 envelope golden，而非重造已存在的 snapshot serializer。相关命令/结论见 [G2b 交接](../../reviews/IQS-lane/G2b-handoff-2026-09-29.md)。
+
 先读目标仓当前 `AGENTS.md`（如有）、[`tasks.json`](../../tasks.json) W01/W02/W03、[身份契约](../../contracts/identity.md)、[股票池设计](../../../stock-pool-design.md)、[G2b 交接](../../reviews/IQS-lane/G2b-handoff-2026-09-29.md)、现有 `identity_snapshot.py`/`identity_mapping.py`/测试、`quick_scan_store.py` 与 CLI 注册路径。记录 HEAD、全量 status 路径/哈希、现有 serializer 的公开调用方式、receipt hash 可否复算。 `.claude/` 不删除、不 stage。核对 W01 旧 P2 问题是否已被后续合并解决；不能只因有合并提交就把 W01 标为通过。
 
 ## 允许范围和前置门

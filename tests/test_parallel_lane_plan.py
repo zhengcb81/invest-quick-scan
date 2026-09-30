@@ -1,9 +1,12 @@
 """Regression checks for the cross-harness lane ownership plan."""
 
+import hashlib
 import json
 import re
 import unittest
 from pathlib import Path, PurePosixPath
+
+from jsonschema import Draft202012Validator, FormatChecker
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -134,11 +137,58 @@ class ParallelLanePlanTests(unittest.TestCase):
         self.assertEqual("1.0.0", catalog["format_version"])
         self.assertEqual(2, sum(p["readiness"].startswith("read_only") for p in catalog["packages"]))
         link_pattern = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
-        for document in [LANE_DIR / "README.md", *package_dir.glob("*.md")]:
+        for document in [LANE_DIR / "README.md", *package_dir.glob("*.md"), *(LANE_DIR / "prestudy").glob("*.md")]:
             for target in link_pattern.findall(document.read_text(encoding="utf-8")):
                 if target.startswith(("http://", "https://", "#")):
                     continue
                 self.assertTrue((document.parent / target.split("#", 1)[0]).exists(), f"{document.name}: {target}")
+
+    def test_consumer_prestudy_archive_interface(self):
+        prestudy_dir = LANE_DIR / "prestudy"
+        schema = json.loads((prestudy_dir / "archive-index.schema.json").read_text(encoding="utf-8"))
+        index = json.loads((prestudy_dir / "archive-index.json").read_text(encoding="utf-8"))
+        Draft202012Validator.check_schema(schema)
+        Draft202012Validator(schema, format_checker=FormatChecker()).validate(index)
+        example = {
+            "format_version": "1.0.0",
+            "entries": [{
+                "package_id": "TH-01",
+                "report_path": "TH-01-2026-09-30-abcdef012345.md",
+                "report_sha256": "a" * 64,
+                "handoff_path": "TH-01-2026-09-30-abcdef012345.handoff.json",
+                "handoff_sha256": "b" * 64,
+                "observed_at_utc": "2026-09-30T12:00:00Z",
+                "accepted_at_utc": "2026-09-30T12:05:00Z",
+                "input_commits": {"local_skills": "abcdef0", "stockwiki": "1234567", "iqs": "fedcba9"},
+                "report_status": "prestudy_complete",
+                "implementation_status": "not_started",
+                "dependency_gaps": ["StockWiki query endpoint pending"],
+            }],
+        }
+        Draft202012Validator(schema, format_checker=FormatChecker()).validate(example)
+        example["entries"][0]["implementation_status"] = "complete"
+        self.assertFalse(Draft202012Validator(schema).is_valid(example))
+        for document in (prestudy_dir / "README.md", prestudy_dir / "template.md"):
+            self.assertTrue(document.read_text(encoding="utf-8").strip())
+        seen = set()
+        for entry in index["entries"]:
+            report = prestudy_dir / entry["report_path"]
+            handoff = prestudy_dir / entry["handoff_path"]
+            self.assertTrue(report.is_file())
+            self.assertTrue(handoff.is_file())
+            self.assertTrue(report.name.startswith(entry["package_id"] + "-"))
+            self.assertEqual(report.stem + ".handoff.json", handoff.name)
+            report_hash = hashlib.sha256(report.read_bytes()).hexdigest()
+            self.assertEqual(entry["report_sha256"], report_hash)
+            self.assertEqual(report_hash[:12], report.stem.rsplit("-", 1)[1])
+            self.assertEqual(entry["handoff_sha256"], hashlib.sha256(handoff.read_bytes()).hexdigest())
+            self.assertNotIn(report.name, seen)
+            seen.add(report.name)
+            handoff_data = json.loads(handoff.read_text(encoding="utf-8"))
+            Draft202012Validator(self.handoff).validate(handoff_data)
+            self.assertEqual(entry["package_id"], handoff_data["package_id"])
+            self.assertEqual([], handoff_data["scope"]["changed_paths"])
+            self.assertFalse(handoff_data["verification"]["external_writes"])
 
 
 if __name__ == "__main__":

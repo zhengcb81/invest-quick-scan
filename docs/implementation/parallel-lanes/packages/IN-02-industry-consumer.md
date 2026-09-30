@@ -2,6 +2,8 @@
 
 **可单独交给 Industry harness 的施工指令，当前仅可只读预研。** Owner 子树 `C:/Users/郑曾波/Projects/local-skills/industry-research/`；任务 T02，验收 CONS-03、CONS-04、QUERY-04、SC-11、CONS-07。G3、F05、W11 和 StockWiki 公开 query endpoint/golden 为硬前置；用户当前未授权本子树写入。`local-skills` Git 根也包含 Theme，两个 harness 必须在独立工作树/分支写各自子树，最终由总控串行整合。
 
+当前只读部分使用[统一预研与记录规则](../prestudy/README.md)及其报告模板；由本 harness 在最终消息交回结果，总控核验后记入 IQS，不要求本 harness 写中央计划仓。
+
 ## 现有流程与目标
 
 行业技能 `SKILL.md` 第 6 步“评估行业公司”，`modules/company-evaluation.md` 目前从研报、行业 wiki、`companies/` 目录找公司，并有本地公司文档/年报读取路径。T02 只给这一步增加**可选的快扫候选/画像来源**，不删除或篡改既有深度行业研究路径；快扫自身不依赖下载文件，读取 StockWiki 的轻量结构化数据。不能为快扫去批量下载财报，不能把本地目录是否存在当成某上市公司是否在股票池的权威判据，也不能自选 2000 家名单。

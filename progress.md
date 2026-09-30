@@ -1253,3 +1253,16 @@
 - 只读再核验发现 StockWiki `master@c8cfb2e` 已合并 `identity_snapshot.py`、`identity_mapping.py` 与测试；旧 W02/W03 记录和旧假设文件名不能直接作为当前实现状态。SW-IDENT 先重跑 owner 证据，区分摘要 receipt 与可供 IQS CLI 验收的完整真实 golden；新合并文件不在先前 StockWiki 精确写授权内，必要修改先取授权。
 - Theme/Industry 共用 `local-skills` Git 根但可在不重叠子树的独立工作树并行；当前 G3/F05/W11 和查询生产端点未满足，且无写授权，文档限定为只读准备。总控持有 IQS 并等待 G2b，IQS 施工卡步骤 1—4 不重做。
 - 包级回归与计划测试 **87 passed / 53 subtests**；测试只读本地文档/JSON，未调用网络/API、未下载公司资料，也未改外仓。提交前将复查临时根、计划 validator 和 Git 差异。
+
+## 2026-09-30 — G2b 当前 StockWiki producer 跨仓探针
+
+- 只读复验 `StockWiki master@c8cfb2e` 的 `tests/test_identity_snapshot.py` 与 `tests/test_identity_mapping.py`：**29 passed / 1.50s**。测试只在 IQS 所属临时根建 SQLite，随后确认该根不存在；StockWiki Git 状态仍仅有原有 `.claude/`。
+- 用 StockWiki 测试 fixture 经真实 `QuickScanStore` 和 `build_identity_snapshot` 生成临时快照；SHA-256 `2f4a2efa15827c10d7fa5a8eae13ad94a693fb68c20067c3c09fc22e30a7ce52` 与 owner 的 `.planning/w02_golden_receipt.json` 完全一致。快照版本 1.0.0、identity package 2.2.0、一个 Entity；没有 `identity_receipts` 或 `market_registry`。
+- 将真实 Entity/source binding 放入 IQS CLI 临时请求，故意用调用者市场注册表和空 receipt 做缺口诊断，退出 2、`semantic_validation_failed`。这不是 producer 正例，不能关闭 G2b。临时库与请求自动删除；StockWiki 未写、无网络/API/下载。已将准确缺口与交付要求更新到 G2b handoff 和 SW-IDENT 施工卡。
+
+## 2026-09-30 — TH-01 / IN-02 预研留档接口
+
+- 按用户追问补上两条只读预研的操作规程和模板：各 harness 返回完整 Markdown 与 `handoff.schema.json` JSON，IQS 总控核验输入 commit/文件 hash、公开端点与缺口、只读/无费用事实后，才在 `docs/implementation/parallel-lanes/prestudy/` 保存不可变报告及 handoff。
+- 留档使用 UTF-8/LF 报告字节 SHA-256 前12位命名、完整 hash 索引、三仓输入 commit 与接收时间。新增 `archive-index.schema.json`、空 `archive-index.json`，当前没有 TH-01/IN-02 实际预研报告；`prestudy_complete` 只表示勘察完成，T01/T02 实施状态仍为 `not_started`。
+- 包目录、TH-01/IN-02 卡和计划已链接预研规程；新增回归校验索引/schema、未来条目的文件 hash/命名、handoff 字段与无外仓写入。未修改 Theme/Industry/StockWiki 等外仓。
+- 本仓隔离计划回归最终 **88 passed / 53 subtests**；计划 validator 为107 tasks / 366 cases / G6 valid；两次 pytest 临时根均已删除。无网络、API、下载或外仓写入。
