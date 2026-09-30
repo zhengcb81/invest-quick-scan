@@ -406,7 +406,7 @@ Status: complete_for_planning_only
 ### 2026-09-30 当前执行状态
 
 - Q02首个提供商实现的任务级验收已在精确StockQA工作树快照通过：MiMo公开CLI真实搜索、LLM-02/LLM-11离线检查及同快照独立审查均已记录在`progress.md`和`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。旧任务回执已退役、验收目录为规格；不刷新receipt或改规格状态。该结果不关闭G1或跨仓链路。
-- company-wiki IQS独占施工卡本仓步骤1—4已完成，报告见`docs/implementation/reviews/IQS-lane/construction-card-closeout-2026-09-29.md`；第5步/G2b仍等待StockWiki真实公开身份snapshot/mapping DTO及serializer golden。交接包列明当前分支/commit、schema/CLI版本、校验命令/结果、golden格式与跨仓正反例，见`docs/implementation/reviews/IQS-lane/G2b-handoff-2026-09-29.md`。不得重复实现步骤1—4、伪造StockWiki正例或代改StockWiki。
+- company-wiki IQS独占施工卡本仓步骤1—4已完成，报告见`docs/implementation/reviews/IQS-lane/construction-card-closeout-2026-09-29.md`。StockWiki `72531b5` 已提供 W04 公开 `identity-export-g2b` 与 owner receipt/registry/source context；第5步/G2b 从“缺 producer 实现”转为 IQS 总控独立复现 golden、核查来源与正反例后签收，见`docs/implementation/reviews/IQS-lane/G2b-handoff-2026-09-29.md`。不得重复实现步骤1—4、伪造 verified/multi-listing 正例或代改StockWiki。
 - 卡片SHA-256仍为`516077a6e9af3da41a121f5977225cc662035badcb3bc963dfb4dfe12f32be0a`。基线792条路径至delta快照843条：新增53、已有文件哈希变化22、缺失2；两项缺失均是退役活动receipt文件，已由原哈希归档副本解释。delta明细见`docs/implementation/reviews/IQS-lane/worktree-inventory-delta-2026-09-29.json`。
 - 卡片隔离回归205 tests / 351 subtests、0 skip；计划校验107 tasks / 366 cases / G6 valid，临时根清理已确认，日志见`docs/implementation/contracts/validation-IQS-card-closeout-2026-09-29.txt`。
 - 已恢复S06本地工作：将新执行route gate切到当前router执行校验器，保留历史manifest的历史校验路径；修正renderer失败测试的mock patch位置。S06聚焦回归57 passed、0 skip，独立只读复审无P0–P2，计划校验107 tasks/366 cases/G6 valid；日志见`docs/implementation/contracts/validation-S06-current-fix-2026-09-29.txt`，范围说明见`docs/implementation/reviews/S06/current-router-execution-fix-2026-09-29.md`。
@@ -415,7 +415,7 @@ Status: complete_for_planning_only
 ### 当前下一动作
 
 - Q03首轮快照回归通过166项后，独立复核发现一个P1：JSON数组/对象类型的`status`使parser抛`TypeError`，导致公开CLI丢弃已完成搜索回执。已按TDD修复并补事件级回执断言，完整Q03隔离回归170项通过；两轮独立只读复核均未发现未解决项，最终复核匹配三份当前SHA。Q03解析与结果回执路径的任务级验收已通过。初始报告parser单测SHA有单字符笔误，已更正；精确命令、SHA与审查边界见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。该任务级验收不代表G1/全项目、其他模型或跨仓链路完成。
-- 并行施工包与handoff契约已整理在Phase 44和 `docs/implementation/parallel-lanes/`；下一项仍是StockQA Q04剩余运行语义：先沿公开CLI/adapter追踪`OrderedSearchProviderCascade`实际构造与调用，再围绕PAR-11同路由槽满等待、LLM-10运行中policy revision边界补行为测试。开工前须冻结包含Q03修复的StockQA准确快照、隔离该仓55项既有工作树状态，并先报告Q04拟改精确文件；不要把旧`ProviderCascade`或配置保存单测当作生产路由接线证据。不访问网络、不读密钥。
+- QA-04 已由用户交给其他 harness，IQS 总控不并发写 StockQA。当前下一项：按更新后的 SW-IDENT 卡只读核验 StockWiki W01–W03 剩余 case，同时以 `72531b5` 公共 CLI 产物做 G2b 独立 golden/来源/正反例验收；SW-IDENT 尚未分派，不代改 StockWiki。其他 IQS 总控本地工作可继续，S06 仍待真实 ACK/历史样本。
 
 ## 2026-09-29 — S06 路由执行门与测试owner修复
 
@@ -669,6 +669,8 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] IQS 总控只读复验 StockWiki 当前身份 producer：专项 29 passed；临时权威库的真实 serializer hash 与 owner 摘要相同；缺 `identity_receipts`/`market_registry` 导致 IQS CLI 诊断负例退出 2。已把精确差距交给 SW-IDENT，G2b 保持 pending。
 - [x] 为 TH-01/IN-02 定义只读预研、handoff 与留档接口：harness 只返回 Markdown+标准 JSON；IQS 总控核验后以内容 hash 命名保存，并维护 JSON Schema 校验的不可变索引。当前索引为空，未伪造预研结果；T01/T02 仍待 G3/F05/W11、生产 query/golden 和写授权。
 - [x] 按用户要求把两条预研所需的只读步骤、字段/接口核查、完整 Markdown+JSON 交接与总控归档规则直接嵌入 TH-01/IN-02 各自文档；交给独立 harness 时无需依赖聊天上下文。报告仍未执行，索引保持空。
+- [x] 收到 StockWiki `master@72531b5` 后更新 SW-IDENT：W04 owner `identity-export-g2b`、receipt、market registry 已实现；本包改为 W01–W03 逐 case 验收与最小缺口修复，G2b 最终签收由 IQS 总控。四个 StockWiki 定向文件在隔离环境 64 passed；旧 `c8cfb2e` 缺 context 诊断只作历史记录。
+- [ ] IQS 总控从 StockWiki 公开 CLI 独立生成并冻结真实 owner golden，核验 SHA、owner context、跨仓正反例及临时根清理；再决定 G2b 状态。SW-IDENT 尚未分派，不借此次更新扩展 StockWiki 写授权。
 
 ### 2026-09-30 — 本地检查点与规划文件同步
 

@@ -1133,3 +1133,9 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - RED确认：新增parser unit与public CLI集成反例共4个场景在旧代码上失败；集成结果为`error`且无法保留搜索/来源回执。修复后反例全通过，invalid answer仍是unknown/null，已有execution metadata完整序列化。完整Q03七文件离线回归170 passed。
 - 首份Q03验证报告把当时parser单测SHA少记一个`E`；原测试执行前实际SHA为`3BF0D736CCE8696CAA2F70AD201A3C7BEEA1CDA118CE43EC8C10252A174A8259`。报告已更正旧快照记录，并单列本次修复hash，避免混淆两个测试快照。
 - 修复只触及StockQA parser源码、parser单测、公开CLI集成测试。provider无需修改，因为parser安全返回`None`后原逻辑已保留HTTP/search metadata。无live/API/network，外仓HEAD和Git状态条目数不变；固定SHA、命令与清理信息记在validation报告。最终独立复核逐项匹配当前三个SHA，确认新增`web_search_calls`事件列表断言与fixture及serializer一致，无P0/P1/P2。
+
+## 2026-09-30 — StockWiki W04 改变 SW-IDENT 开工基线
+
+- StockWiki `master@72531b5` 的 W04 merge 新增 owner market registry、append-only identity receipts 与公开 `identity-export-g2b`。先前 `c8cfb2e` snapshot 缺 `identity_receipts`/`market_registry` 的负例仍是历史证据，但不再是当前阻塞。公开导出走 QuickScanStore、IdentityReceiptStore、MarketRegistryStore，生成 exact-key 2.2.0/Entity 2.1.0 请求。
+- Owner 施工记录提供 provisional 单证券/单挂牌 golden SHA `0efc2c04daa7b6345078410a5df5ae0aa5bec9098b1523d7c25f9f60f53e5d2f`；IQS 只读运行四个 StockWiki 定向测试文件 64 passed，含真实 CLI 跨仓正例和 17 个单字段负例。该 fixture 使用 synthetic evidence URL，不是 verified issuer、多挂牌桥接或 AnalysisSubject 产物。W01–W03 的身份歧义、名单资格、迁移等 case 仍需逐项证据；最终 G2b 签收需总控独立复现 owner golden 与 provenance，不能仅照 owner closure 宣称完成。
+- SW-IDENT 的精确 StockWiki 旧授权不涵盖新 W04 模块/测试。施工卡已改为先只读验收、后在授权路径最小修复；若真实缺口要求写新路径须另取精确授权。QA-04 已委派，SW-IDENT 尚未分派，避免同仓双写。

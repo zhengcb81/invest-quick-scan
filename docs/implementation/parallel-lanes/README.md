@@ -72,9 +72,9 @@ flowchart TD
 
 - StockQA `master`有55项未提交工作树状态。Q04执行前须冻结当前准确快照并保留Q03修复；不能从不含修复的HEAD盲目分支，也不能清理/提交其他人的更改。
 - StockWiki `master`有未跟踪`.claude/`目录。原目录必须保留；分支/工作树生成前先确定其是否为工具数据，任何情况下不删除或带入产品提交。
-- 2026-09-30 后续核验发现 StockWiki `master@c8cfb2e` 已合并 `identity_snapshot.py` 和 `identity_mapping.py` 及测试；原 W02/W03 进度记录与新 HEAD 须重新对照。摘要 receipt 不是可供 IQS CLI 直接验收的完整 producer golden。参见 SW-IDENT 包，勿照旧文件名重造。
+- 2026-09-30 新核验：StockWiki `master@72531b5` 已合并 W04 G2b owner 导出，公开 `identity-export-g2b` 从 owner receipt/market registry/source bindings 形成完整 request。四个定向测试文件 64 passed（含 IQS CLI 正反例）；原 `c8cfb2e` 缺上下文的诊断已过时。参见更新的 SW-IDENT 包；W01/W02/W03 仍需逐 case 核验。
 - `local-skills` Git根当前clean；Theme和Industry目标目录不重叠，可各自独立工作树，但只改自身子树，最终串行整合。
-- G2b仍待真实StockWiki identity snapshot/mapping DTO及serializer golden；S06仍待真实StockQA→StockWiki事务ACK和真实router 2.1历史样本。保持pending。
+- G2b 已有 StockWiki producer 实现，待 IQS 总控按公开 CLI 和 frozen golden 独立复核并签收；S06 仍待真实 StockQA→StockWiki 事务 ACK 和真实 router 2.1 历史样本。保持相应 pending/partial。
 - 当前StockQA全仓写入授权要求**每个实施批次开工前报备精确文件与目的**；StockWiki仅W01及先前批准的W02/W03精确文件范围已获授权，后续任务逐批取得用户精确授权；Theme、Industry仍只读，任何写入前须单独授权。
 - 首批股票池和live benchmark样本必须由用户提供/确认。此计划没有挑选任何公司，也没有发出API请求。
 

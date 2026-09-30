@@ -5,11 +5,11 @@
 | 包 | 独占写入目录 | 现在可做什么 | 开工门 |
 |---|---|---|---|
 | [QA-04 模型策略运行语义](QA-04-stockqa-runtime-policy.md) | `StockQAbyLLM/` | 冻结含 Q03 修复的当前快照，做 Q04 的 RED/GREEN 与离线回归 | Q03/C05 已满足；先报备精确写入文件；不得覆盖该仓既有 55 项状态 |
-| [SW-IDENT 身份与真实 producer golden](SW-IDENT-stockwiki-producer.md) | `StockWiki/` | 核验 W01/W02/W03 新合并基线，补真正缺口并交付 owner serializer 产物 | W01 必须重新确认；只写已有精确授权路径，若须改新合并的 `identity_snapshot.py` 等先获得新授权 |
+| [SW-IDENT 身份与名单剩余验收](SW-IDENT-stockwiki-producer.md) | `StockWiki/` | W04 的 G2b owner 导出已在 `72531b5` 交付；逐 case 核验 W01/W02/W03 并只补真实缺口 | W01 必须重新确认；新 G2b/registry/receipt 文件不在旧授权内，若须改动先取得精确授权 |
 | [TH-01 主题消费者](TH-01-theme-consumer.md) | `local-skills/analyze-theme-value-chain/` | 现在仅做只读接口调查/设计；依赖满足后实施 | G3、F05、W11 与公开 query API/golden 均满足，且获得该目录写授权 |
 | [IN-02 行业消费者](IN-02-industry-consumer.md) | `local-skills/industry-research/` | 现在仅做只读接口调查/设计；依赖满足后实施 | 同上；与 TH-01 分开工作树、子目录白名单，串行合并共享 Git 根 |
 
-**立即可并行的写入候选只有 QA-04 与 SW-IDENT，且各自通过上述开工门后才开始。** TH-01/IN-02 可由两个 harness 同时做只读准备，但不能把不存在的 StockWiki 生产查询端点 mock 成已验收。StockWiki 当前 HEAD `c8cfb2e` 已合并 `identity_snapshot.py` / `identity_mapping.py`，旧计划中 `quick_scan_identity.py` / `quick_scan_universe.py` 的路径不能再被当成现存实现；先做差异核验，不要重造。
+**QA-04 已交给另一 harness 实施；SW-IDENT 尚未分派。** TH-01/IN-02 可由两个 harness 同时做只读准备，但不能把不存在的 StockWiki 生产查询端点 mock 成已验收。StockWiki 当前观察 HEAD `72531b5` 已合并 snapshot/mapping 与 W04 G2b owner CLI、registry、receipt；SW-IDENT 应先核验剩余 W01–W03，不重造这批能力。IQS 总控负责 G2b 最终跨仓签收。
 
 TH-01 / IN-02 的只读预研按[预研与记录规则](../prestudy/README.md)执行，并用其中模板回交。两个 harness 不写 IQS；总控核对后才在本仓保存按日期/输入 hash 命名的报告，并更新 planning-with-files。当前尚无实际预研报告，不能把模板当成果。
 

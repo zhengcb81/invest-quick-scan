@@ -1272,3 +1272,9 @@
 - 用户要求重新给出 TH-01/IN-02 完整链接，并确保每个 harness 只读本卡即可理解预研规则和接口。两份卡现直接列出必读路径、当前可做的五步只读勘察、公开 StockWiki 能力核查、字段映射、TDD 设计、完整 Markdown/JSON handoff、总控 hash 留档和状态区分。
 - 新增回归断言两个独立文档都包含 archive-index/schema、handoff、no-write/no-network/no-spend 与 `prestudy_complete`≠任务完成的关键字段。尚未收到任何预研报告；没有修改外仓或执行 T01/T02 施工。
 - 隔离计划/接口回归 **89 passed / 53 subtests**；计划 validator 为107 tasks / 366 cases / G6 valid；唯一 pytest 临时根已删除，`git diff --check`通过。
+
+## 2026-09-30 — SW-IDENT 随 StockWiki 新提交更新
+
+- 用户提示 StockWiki 有新提交；只读核验 `master@72531b5` 已合并 W04 G2b owner identity context（`8bee364`）及 source reader 拆分。新公开 `identity-export-g2b` 从 owner QuickScanStore、IdentityReceiptStore、MarketRegistryStore 导出 identity package 2.2.0 / Entity 2.1.0 request；canonical provisional 单挂牌 fixture SHA 为 `0efc2c04daa7b6345078410a5df5ae0aa5bec9098b1523d7c25f9f60f53e5d2f`（owner 施工记录）。
+- 在 IQS 所属隔离 pytest 根运行 StockWiki `test_market_registry.py`、`test_identity_receipts.py`、`test_identity_g2b_export.py`、`tests/e2e/test_g2b_iqs_cli.py`：**64 passed / 11.54s**；临时根清理后不存在。未改 StockWiki；其既有 `.claude/` 保留。该覆盖包括 public StockWiki→IQS CLI 正例与 17 个负例，但尚未由总控独立冻结 golden/审查所有 G2b case。
+- 更新 SW-IDENT 包、包索引、总控并行计划及 G2b handoff：旧 `c8cfb2e` 缺 owner receipt/registry 的诊断标为历史；W01–W03 仍按任务 case 重新判定，不重造 W04。G2b 由“等待 producer 实现”改为“总控跨仓签收待办”。QA-04 已由其他 harness 实施，SW-IDENT 尚未分派。
