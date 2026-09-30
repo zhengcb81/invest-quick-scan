@@ -402,13 +402,19 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-### 2026-09-29 当前执行状态
+### 2026-09-30 当前执行状态
 
+- Q02首个提供商实现的任务级验收已在精确StockQA工作树快照通过：MiMo公开CLI真实搜索、LLM-02/LLM-11离线检查及同快照独立审查均已记录在`progress.md`和`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。旧任务回执已退役、验收目录为规格；不刷新receipt或改规格状态。该结果不关闭G1或跨仓链路。
 - company-wiki IQS独占施工卡本仓步骤1—4已完成，报告见`docs/implementation/reviews/IQS-lane/construction-card-closeout-2026-09-29.md`；第5步/G2b仍等待StockWiki真实公开身份snapshot/mapping DTO及serializer golden。交接包列明当前分支/commit、schema/CLI版本、校验命令/结果、golden格式与跨仓正反例，见`docs/implementation/reviews/IQS-lane/G2b-handoff-2026-09-29.md`。不得重复实现步骤1—4、伪造StockWiki正例或代改StockWiki。
 - 卡片SHA-256仍为`516077a6e9af3da41a121f5977225cc662035badcb3bc963dfb4dfe12f32be0a`。基线792条路径至delta快照843条：新增53、已有文件哈希变化22、缺失2；两项缺失均是退役活动receipt文件，已由原哈希归档副本解释。delta明细见`docs/implementation/reviews/IQS-lane/worktree-inventory-delta-2026-09-29.json`。
 - 卡片隔离回归205 tests / 351 subtests、0 skip；计划校验107 tasks / 366 cases / G6 valid，临时根清理已确认，日志见`docs/implementation/contracts/validation-IQS-card-closeout-2026-09-29.txt`。
 - 已恢复S06本地工作：将新执行route gate切到当前router执行校验器，保留历史manifest的历史校验路径；修正renderer失败测试的mock patch位置。S06聚焦回归57 passed、0 skip，独立只读复审无P0–P2，计划校验107 tasks/366 cases/G6 valid；日志见`docs/implementation/contracts/validation-S06-current-fix-2026-09-29.txt`，范围说明见`docs/implementation/reviews/S06/current-router-execution-fix-2026-09-29.md`。
 - S06仍因StockQA→StockWiki真实事务ACK、router 2.1真实历史快照和跨仓端到端验收而partial。旧工程task receipt v2/P01签收机制已退役；不能以刷新C01—C07旧回执作为当前门槛。StockWiki本轮只读。
+
+### 当前下一动作
+
+- Q03 parser/service/runner/model/main CLI及公开quick-scan/QA pipeline当前快照定向回归已在StockQA唯一TEMP/CWD/basetemp执行并通过166项；前后HEAD、55项Git状态完全一致，临时根已清理。当前准确命令与14个源码/测试SHA见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。
+- 下一步只做对该14文件快照的独立只读复核，重点检查Q03固定反例、当前修改后的公开CLI调用链和Q02依赖；不访问网络、不读密钥、不改StockQA。若复审无阻塞，再关闭Q03的任务级验收并转到Q04剩余策略边界。
 
 ## 2026-09-29 — S06 路由执行门与测试owner修复
 

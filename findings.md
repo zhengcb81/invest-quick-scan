@@ -1088,3 +1088,9 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 同快照provider/parser/CLI离线回归最初分别暴露仓库日志目录只读、自动插件`base_url` fixture冲突和系统pytest basetemp无权限。把CWD与basetemp放进唯一临时根，关闭冲突插件和项目coverage/cache addopts后，三文件最终 **159 passed / 17.45s**；tmp根删除、Git状态不变。环境 setup 错误没有算作产品失败，也没有为修复环境去改StockQA logger或测试配置。
 - 独立只读复核匹配live测试所用五个StockQA文件的精确SHA，确认Q02所列LLM-02/LLM-11覆盖，并未发现P0/P1代码缺陷。复核提出URL集合/搜索调用ID绑定断言、有效host记录及“正文含URL但无citation”的P2测试增强；这些不是已复现的产品错误，也不为其重复发起live请求。
 - 复核提及的旧`receipt-Q02.json`和`acceptance-cases.json`状态不是当前阻塞：本计划已退役任务回执刷新，验收JSON本身明示是规格而非运行结果。保持旧回执只读及`specified_not_executed`规格值不变，把执行证据留在当前批次日志和`progress.md`。Q02任务级验收在该快照上通过；G1、来源主张支持度、评分正确性、实际费用、其他提供商和跨仓链路仍未由本次实验验证。
+
+## 2026-09-30 — Q03 current snapshot audit
+
+- Q03依赖Q02现已解除；StockQA CodeGraph已索引，结构检查确认`LLMResponseParser`、`AnswerGenerator`和公共QuickScan CLI测试入口。StockQA根未发现`AGENTS.md`。
+- Q03 r2独立报告对parser、answer generator、runner及parser单测的哈希仍相符；公共CLI集成测试、models及其他被Q02/Q04改动的文件需要以新快照重新核对，不能沿用旧review做当前放行结论。
+- 当前快照隔离聚焦测试覆盖parser、service、runner、models、main CLI、public quick-scan CLI和QA pipeline，共166 passed；StockQA HEAD和55项Git状态前后相同，唯一本轮TEMP/CWD/basetemp已清理。独立复核为下一步；详见`validation-Q03-current-snapshot-2026-09-30.md`。

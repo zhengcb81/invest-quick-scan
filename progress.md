@@ -1219,3 +1219,10 @@
 - 独立只读复核匹配本次测试所用五个StockQA文件SHA，确认所选LLM-02/LLM-11覆盖；无P0/P1代码问题。建议加强source URL集合/搜索调用ID绑定、有效host记录及“正文含URL但无citation”的P2负例，不是已观察缺陷；没有为此重复发送付费请求。
 - 当前计划已于2026-09-29退役工程任务receipt v2；`acceptance-cases.json`明确是规格、不是运行结果。因此不刷新只读旧Q02 receipt，也不改`specified_not_executed`规格状态。执行和复核证据留在本进度及MiMo批次报告。
 - Q02首个提供商任务级验收对该精确StockQA工作树快照通过。G1更大样本、评分准确性、引用对主张的支持、实际费用、MiniMax真实搜索和跨仓生产闭环仍未被本次实验验证。StockQA中存在的55项工作树状态不属于本仓提交范围。
+
+## 2026-09-30 — Q03当前快照定向回归
+
+- Q03的Q02前置现已完成任务级验收。我在StockQAbyLLM只读核对现有工作树与CodeGraph后，在唯一TEMP/CWD/basetemp执行parser、answer-service、runner、models、main CLI、QuickScan CLI和QA pipeline测试：**166 passed / 4.91s**。
+- 命令隔离了第三方`base_url`插件、项目coverage/cache addopts及所有live/API凭证变量；HTTP边界使用测试fixture，未做任何真实网络/API调用。独立临时根清理完成，StockQA HEAD未变化且Git status仍为55项。
+- 关键快照SHA：`llm_response_parser.py`=`9D5EB7D58DACFED1DFFB605ECA504D8A9EC6B6C39A5E2F4341D0A9B6F58AA867`；`answer_generator.py`=`B59840DA063D00D7BCAAB4BA960B88797F6466A4EAD868BA0A7110E4D8FD44F4`；`llm_runner.py`=`E63FDD5890DBCE16A057D0140170E3E1E95C9227E45BD8CC1CD14ABCD8ED0ACC`；`test_quick_scan_cli.py`=`2D146FACE169DD130722DFF182982BCDA9FF7AC9CBCE022F80CE310EA553DD90`。完整14文件清单及复现命令见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。
+- Q03精确快照的独立复审尚未完成；在其结论出来前不改标verified、不改StockQA，也不触碰历史receipt。无复审之外的产品失败。
