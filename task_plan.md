@@ -667,13 +667,17 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] 新增包级机器 manifest 与回归，检查 owner/任务前置/写入 scope 无重叠、文档链接和只读门；包内只在大节点或高风险边界审查，worker 标准 handoff 交总控。
 - [ ] QA-04 和 SW-IDENT 由各 owner 通过工作树/授权/依赖预检后实施；总控只在真实 StockWiki golden 到达后做 G2b 跨仓验证。TH-01/IN-02 等待 G3/F05/W11，不抢跑。
 - [x] IQS 总控只读复验 StockWiki 当前身份 producer：专项 29 passed；临时权威库的真实 serializer hash 与 owner 摘要相同；缺 `identity_receipts`/`market_registry` 导致 IQS CLI 诊断负例退出 2。已把精确差距交给 SW-IDENT，G2b 保持 pending。
-- [x] 为 TH-01/IN-02 定义只读预研、handoff 与留档接口：harness 只返回 Markdown+标准 JSON；IQS 总控核验后以内容 hash 命名保存，并维护 JSON Schema 校验的不可变索引。当前索引为空，未伪造预研结果；T01/T02 仍待 G3/F05/W11、生产 query/golden 和写授权。
-- [x] 按用户要求把两条预研所需的只读步骤、字段/接口核查、完整 Markdown+JSON 交接与总控归档规则直接嵌入 TH-01/IN-02 各自文档；交给独立 harness 时无需依赖聊天上下文。报告仍未执行，索引保持空。
+- [x] 为 TH-01/IN-02 定义只读预研、handoff 与留档接口：harness 返回 Markdown+标准 JSON；IQS 总控核验后以内容 hash 命名保存，并维护 JSON Schema 校验的不可变索引。索引起初为空；2026-09-30 两份真实原件已验收归档。T01/T02 仍待 G3/F05/W11、生产 query/golden 和写授权。
+- [x] 按用户要求把两条预研所需的只读步骤、字段/接口核查、完整 Markdown+JSON 交接与总控归档规则直接嵌入 TH-01/IN-02 各自文档；交给独立 harness 时无需依赖聊天上下文。两份后续交付已按本规则验收，见预研索引。
 - [x] 收到 StockWiki `master@72531b5` 后更新 SW-IDENT：W04 owner `identity-export-g2b`、receipt、market registry 已实现；本包改为 W01–W03 逐 case 验收与最小缺口修复，G2b 最终签收由 IQS 总控。四个 StockWiki 定向文件在隔离环境 64 passed；旧 `c8cfb2e` 缺 context 诊断只作历史记录。
 - [x] IQS 总控从 StockWiki 公开 CLI 独立生成并冻结 provisional Entity golden：两套隔离 owner store 导出字节相同、SHA 与 owner 记录一致，owner receipt/source/MIC 公开读核验及 IQS CLI 正例/五个负例通过，临时根清理；当前只签收此 slice。SW-IDENT 尚未分派，不借此次更新扩展 StockWiki 写授权。
 - [x] 补 IQS 自有四态 mapping DTO 1.0.0 schema/消费合同、真实 owner 公共 API 产出的五态样本 bundle（四态加 source mismatch）与逆向反例；冻结 SHA `da3991c0d85ef9a0bce7c9152475b9184942df74c34fab4c5c935fb0e375a96f`，合并回归101 passed/63 subtests。
 - [x] 对 G2b Entity + mapping 当前接口做独立审查并处理 P0–P2：P1 过期挂牌误映射与 P2 未知版本均已用 RED/GREEN 回归修复；复审无剩余 P0/P1，见 `docs/implementation/reviews/IQS-lane/G2b-independent-review-2026-09-30.md`。仅签收 provisional 单挂牌接口切片；verified/多挂牌/AnalysisSubject 与真实历史有效区间、近名导入仍标未覆盖。
 - [x] 将总控遗留的 handoff intake RED 测试补成只读 `scripts/parallel_handoff_cli.py`：只验证 schema、package/lane/task、声明路径与临时根清理，不认证用户授权或测试事实；拒绝重复 JSON key、跨仓路径、未清理根和只读包变更。
+- [x] 2026-09-30 接收 QA-04、SW-IDENT 及 TH-01/IN-02 预研交付并做大节点审查，见 `docs/implementation/reviews/IQS-lane/parallel-package-acceptance-2026-09-30.md`。QA-04 新 revision 损坏 quota group 反例先 RED 再修复 GREEN，当前功能批次 246 passed、Ruff 通过，独立复审无剩余 P1；但 StockQA 55 项共享脏树、旧 handoff hash/`result_commit=null`，正式交付仍 partial。SW-IDENT 43 项独立聚焦测试和 G2b golden 通过，但 handoff CLI 拒绝 `changed_path_out_of_scope`，W01–W03 生产链仍 partial。TH-01/IN-02 两份原件在用户随后给出的精确子目录找到，独立验收并按 SHA 归档为 `prestudy_complete`，T01/T02 实施仍未开始。
+- [ ] QA-04 收尾：在不混入共享脏树无关修改的前提下冻结/提交当前实现快照，刷新 `q04_handoff.json` 的两文件 SHA、测试和 review，并由总控重验公开 handoff CLI；随后才将 Q04 delivery gate 标 complete。
+- [ ] SW-IDENT 收尾：交付方修正 `authorized_paths` 与新增 evidence store/test 的授权出处，再逐 case 交付候选导入、裸 ticker、名单 CLI/身份历史等剩余公开路径证据；总控复核后才能关闭 W01–W03。完整 G2b 另等 owner 的 verified/多挂牌/AnalysisSubject 正例。
+- [x] TH-01/IN-02 预研收尾：完整 Markdown + handoff JSON 通过公开 CLI/schema、关键文件哈希与独立只读复核；原报告/JSON 字节按报告 SHA 不可变归档并更新索引。实施仍需决定独立技能仓与 `local-skills` 镜像的唯一 owner、对已移动上游做增量核对，且不得将 T01/T02 标完成。
 
 ### 2026-09-30 — 本地检查点与规划文件同步
 

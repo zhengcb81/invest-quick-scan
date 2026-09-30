@@ -2,6 +2,8 @@
 
 **可单独交给 Industry harness 的施工指令，当前仅可只读预研。** Owner 子树 `C:/Users/郑曾波/Projects/local-skills/industry-research/`；任务 T02，验收 CONS-03、CONS-04、QUERY-04、SC-11、CONS-07。G3、F05、W11 和 StockWiki 公开 query endpoint/golden 为硬前置；用户当前未授权本子树写入。`local-skills` Git 根也包含 Theme，两个 harness 必须在独立工作树/分支写各自子树，最终由总控串行整合。
 
+**接收更新（2026-09-30）：** [IN-02 只读预研](../prestudy/IN-02-2026-09-30-023f9a7960c8.md)已由 IQS 总控独立核验并归档为 `prestudy_complete`；T02 实施仍 `not_started`。原件来自独立 `Projects/industry-research@4a80f99`，内容冻结的是 `local-skills@ec4db38` 镜像。实施前须明确唯一 Git owner 并对已移动的上游做增量预研；本卡其余施工门保持有效。
+
 ## 现在立即执行：只读预研（本卡可独立使用）
 
 **只读范围**：本技能子树、IQS 契约/计划、StockWiki 公开接口和测试/文档；不改任何项目文件、不创建技能代码或测试文件、不访问 StockWiki 私有 SQLite、不发 LLM/API 请求、不下载公司资料。检查产生临时文件时使用独立临时根并清理。T02 实施验收仍等待 G3/F05/W11、真实 query/golden 和用户对 Industry 子树的写授权；找不到端点可以完成缺口勘察，但不能宣称接线通过。

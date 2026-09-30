@@ -1156,3 +1156,9 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 
 - Owner 与 IQS consumer 初版共同漏掉有效区间过滤，导致过期 Listing/source binding 在之后的 as-of 仍为 `mapped`。RED 测试固定反例；修复后双方按 `[valid_from, valid_to)` 与 active/retired/delisted 状态失败关闭，并要求 query/snapshot as-of 相同。IQS 同时拒绝重算哈希后的未知 package/snapshot 版本。独立复审的内存矩阵覆盖未来起点、起点、终点、过期、退役和退市。
 - 冻结的五态 bundle 与公开 owner API/CLI 已证明当前 provisional 单挂牌 2.2.0/1.0.0 接口相容；“中微公司/中微半导体”只是相同 Listing key 上的合成标签，不能证明真实近名导入不误并。StockWiki snapshot 目前将 Listing/binding 有效期投影为 null，真实 ticker 复用和历史时点仍是 W02 产品能力与生产证据缺口；verified、多挂牌、AnalysisSubject 未给 owner 正例，完整 G2b 不得关闭。
+
+## 2026-09-30 — 并行交付验收发现
+
+- QA-04 的热更新单测若损坏 quota group 却不改变 `policy_version`，只会命中同版本早退，无法证明策略采纳路径。真实新版本与持久健康状态的反例在旧代码使 `self.quota_groups[quota_group]` 抛 `KeyError`；改为先校验所有候选再提交运行时状态后通过。交接文件自述的原修复与当前文件 hash 已失效，任何验收须绑定新快照。共享脏树下不能为了 Q04 盲目整树暂存或把不完整四文件提交当成可复现发布物。
+- SW-IDENT 新增 `QuickScanEvidenceStore` 解决别名/issuer claim 的存储子问题，却只被自身测试使用；没有接入 snapshot/resolver/scan，因此 `DB-09/ID-14 storage` 与 `W02/W03 production flow` 必须分开记状态。其 handoff schema 合格但公开 CLI 因 `authorized_paths` 漏新文件报 `changed_path_out_of_scope`，文字授权不能替代可核对机器范围。
+- TH-01/IN-02 原卡以 `local-skills` 为 Git owner；用户随后给出独立技能仓的精确交接子目录，完整报告与 handoff 均已按字节哈希归档。两份报告都把 StockWiki 查询端点/golden 缺口写为 `not_available`，把未来测试列为 `not_run`，符合只读预研边界。独立仓提交与被勘察的 `local-skills@ec4db38` 镜像需分开记录；真正实施前必须明确唯一 Git owner 并补上游增量核查。

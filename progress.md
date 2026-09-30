@@ -1300,3 +1300,9 @@
 - StockWiki 聚焦 mapping/snapshot 回归 **33 passed**。一次 `scripts/check_all.sh` 的 pytest/coverage/framework 阶段 **655 passed、15 skipped、1 warning**，覆盖率及框架门通过；Ruff 阶段仅因沙箱限制无法写 StockWiki `.ruff_cache` 使汇总脚本退出 1。改用 IQS 临时缓存目录单跑 Ruff 为 **All checks passed**，不把汇总退出码称为成功。
 - IQS 跨仓公开路径两份冻结 golden 再次同哈希，正例与五个 Entity 负例、mapping 四态/来源错配及四个 runtime 篡改通过，临时根清理；合并回归 **104 passed / 63 subtests**。审查报告 `docs/implementation/reviews/IQS-lane/G2b-independent-review-2026-09-30.md` 无当前 provisional 接口切片剩余 P0/P1。该切片可签收，完整 G2b/W02 继续 partial：StockWiki 生产 snapshot 仍不持久化历史区间，公开近名解析、verified/多挂牌/AnalysisSubject 正例待 owner 证据。
 - StockWiki 仅授权的 `stockwiki/identity_mapping.py`、`tests/test_identity_mapping.py` 已离开沙箱单独提交为 `2058931`；原有 `.claude/` 未暂存。IQS 本批待本仓单独提交。
+
+## 2026-09-30 — 并行施工包 QA-04 / SW-IDENT 与两项预研接收
+
+- QA-04 handoff JSON 格式预检通过，但当前 `status=partial`、`result_commit=null`，StockQA 仍有 55 项共享脏树。独立审查指出其坏 quota group 测试复用了旧 policy version，绕过热更新；总控事先报备后仅修复 StockQA `src/utils/llm_integration.py` 与 `tests/unit/test_llm_integration.py`。新 revision 反例 RED 为 KeyError，候选完整校验后原子切换 GREEN；最终相关六文件回归 **246 passed**，独立复审 **52 passed**，Ruff/diff check 通过。旧 handoff 的源码 hash 与声明已过期，需交付方刷新及隔离提交/冻结后才标 Q04 完成。
+- SW-IDENT handoff 在 StockWiki `8bc454e` 可读，自报 partial。新增 evidence store/test 的 hash 与提交一致，独立 43 项聚焦测试及 G2b 跨仓双 golden 通过；但 IQS handoff CLI 返回 `changed_path_out_of_scope`（新文件未列 `authorized_paths`），且 evidence store 未接生产 resolver/扫描路径。W01–W03 和完整 G2b 维持 partial。
+- 初次仅按文件名检索两份独立技能仓库，未发现 TH-01/IN-02 原件；用户随后给出精确 `prestudy/` 与 `docs/handoff/` 子目录。两份完整 Markdown+JSON 已找到、通过 schema/公开 handoff CLI、关键文件 SHA 和独立只读复核；TH-01 报告的 15 项离线合同测试复跑通过。原字节以报告 SHA 命名复制到 IQS 预研目录，索引录入冻结三仓 commit/观察和接收时间/依赖缺口。两份状态为 `prestudy_complete`，T01/T02 实施仍 `not_started`。原件分别在独立技能仓提交 `3c9a49c`、`4a80f99`，内容冻结的是 `local-skills@ec4db38` 镜像；实施前需决定唯一 owner 并核对已移动上游。逐项证据与限制见 `docs/implementation/reviews/IQS-lane/parallel-package-acceptance-2026-09-30.md`。

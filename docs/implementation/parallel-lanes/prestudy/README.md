@@ -33,7 +33,7 @@
 | 索引 | IQS 总控 | 原子更新本目录 [`archive-index.json`](archive-index.json)，按[索引 JSON Schema](archive-index.schema.json)校验：package、报告/JSON 相对路径和 SHA-256、观察时间、local-skills/StockWiki/IQS 三仓输入 commit、接收时间、预研状态、实施状态、前置缺口 | 索引只指向已验收文件；`implementation_status` 在 T01/T02 真实验收前固定 `not_started`，旧索引项不删除 |
 | 计划同步 | IQS 总控 | 在 `progress.md` 写入报告链接/验证结论；`findings.md` 记接口差距；`task_plan.md` 的 T01/T02 仍未完成，并在施工包索引写“最新已核验报告”链接 | 仅预研通过不能解除 G3/F05/W11、写授权或正式 owner query/golden 门 |
 
-`archive-index.json` 当前 `entries=[]` 是“尚未收到报告”的真实状态。每个索引项字段固定如下；`report_status=prestudy_complete` 表示勘察已完成，**不等于** `implementation_status=complete`；与 handoff JSON 的 `status=partial` 并不矛盾。
+`archive-index.json` 在 2026-09-30 已接收 TH-01 与 IN-02 两份不可变原件；旧 `entries=[]` 仅是接收前历史状态。每个索引项字段固定如下；`report_status=prestudy_complete` 表示勘察已完成，**不等于** `implementation_status=complete`；与 handoff JSON 的 `status=partial` 并不矛盾。
 
 ```json
 {
@@ -51,6 +51,6 @@
 }
 ```
 
-上面的 JSON 是**格式示意，不是已发生的预研记录**；真实条目必须填真实值并通过档案校验。`archive-index.json` 中同一包最后一个已验收且输入快照最新的条目是当前预研入口；若仓库已变化，总控先核实是否需要增量预研，不自动沿用旧结论。
+上面的 JSON 是**格式示意，不是已发生的预研记录**；真实条目必须填真实值并通过档案校验。`archive-index.json` 中同一包最后一个已验收且输入快照最新的条目是当前预研入口；若仓库已变化，总控先核实是否需要增量预研，不自动沿用旧结论。当前两份原件以 `local-skills@ec4db38`、`StockWiki@72531b5`、`IQS@65e96ba` 为冻结输入，另由独立技能仓库提交保存；实施前要解决 Git owner 归属并核对当前上游增量。
 
 预研完成只意味着“实施入口、接口缺口和测试方案已查清”；T01/T02 仍处于依赖门等待。待 G3/F05/W11 和 owner query/golden 达标后，总控重新核对报告快照，过期则要求增量预研，再由用户授权具体子树写入并开工。

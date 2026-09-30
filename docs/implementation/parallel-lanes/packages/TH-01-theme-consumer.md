@@ -2,6 +2,8 @@
 
 **可单独交给 Theme harness 的施工指令，当前仅可只读预研。** Owner 子树 `C:/Users/郑曾波/Projects/local-skills/analyze-theme-value-chain/`；任务 T01，验收 CONS-01、CONS-02、QUERY-04、CONS-05、CONS-06。G3、F05、W11 为硬前置；这三项及 StockWiki 公开 query endpoint/能力/golden 都通过之后，且用户授予 Theme 子树写入权限，才能进入代码施工。Theme 与 Industry 共用 `local-skills` Git 根：各用独立工作树/分支，绝不写对方子树，集成串行。当前总计划只授予本子树 read-only。
 
+**接收更新（2026-09-30）：** [TH-01 只读预研](../prestudy/TH-01-2026-09-30-e40a079d9d69.md)已由 IQS 总控独立核验并归档为 `prestudy_complete`；T01 实施仍 `not_started`。原件来自独立 `Projects/analyze-theme-value-chain@3c9a49c`，内容冻结的是 `local-skills@ec4db38` 镜像。实施前须明确唯一 Git owner 并对已移动的上游做增量预研；本卡其余施工门保持有效。
+
 ## 现在立即执行：只读预研（本卡可独立使用）
 
 **只读范围**：本技能子树、IQS 契约/计划、StockWiki 公开接口和测试/文档；不改任何项目文件、不创建技能代码或测试文件、不访问 StockWiki 私有 SQLite、不发 LLM/API 请求、不下载公司资料。若检查命令产生临时文件，使用独立临时根并在结束时删除。预研不能因缺生产端点就伪造成功；可如实完成“查明缺口”的报告。T01 的实施验收仍等待 G3/F05/W11、StockWiki 真实 query/golden 和用户对 Theme 子树的写授权。

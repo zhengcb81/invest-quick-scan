@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "industry",
+  "package_id": "IN-02",
+  "status": "partial",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/local-skills (owner subtree: industry-research/)",
+    "base_ref": "main",
+    "base_commit": "ec4db38a0f87717d66567eb83febe23cd9dfa601",
+    "result_ref": "main (read-only prestudy, no commits)",
+    "result_commit": null,
+    "worktree_before": {"state": "clean", "dirty_path_count": 0, "manifest_sha256": null},
+    "worktree_after": {"state": "clean", "dirty_path_count": 0, "manifest_sha256": null}
+  },
+  "scope": {
+    "task_ids": ["T02"],
+    "authorization_scope_ref": "not_authorized",
+    "owned_paths": ["C:/Users/郑曾波/Projects/local-skills/industry-research/"],
+    "authorized_paths": [],
+    "changed_paths": [],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [
+    {"name": "iqs:contract:exchange-and-query (C06)", "version": "1.0.0 local protocol, no production endpoint", "content_hash": "9f2559ba91c49210906fa3c1c75606f3c403e6ca7d5f896908fb1371675f398b", "direction": "consumed", "result": "blocked"},
+    {"name": "iqs:contract:freshness-and-jobs (C04, +W03 v2 ext)", "version": "1.1.0", "content_hash": "2d8f6d4be7ae05ef996e7cdb71f58dff355bf3229de4241b6a0dc8acbeee3f93", "direction": "consumed", "result": "compatible"},
+    {"name": "iqs:schema:query urn:iqs:quick-scan:query:1", "version": "envelope 1.0.0 (no analysis_subject fields)", "content_hash": "e7fc264b43d85e4cdd5c82a71b9fedb579dd0fc1196f3c5fde661f14fa1756f8", "direction": "consumed", "result": "blocked"},
+    {"name": "iqs:schema:observation-v2 urn:iqs:observation:2", "version": "2 (not wired to production)", "content_hash": "95f39bc04bcffcd1c6fa446b4f6743dcf21149a8d7c001f712235234d039b440", "direction": "consumed", "result": "not_applicable"},
+    {"name": "iqs:tasks.json T02", "version": "1.10.15 (status: implementation_plan_not_product_completion)", "content_hash": "a7c6167d4bf9aca56b529bd85bd70b0ae01a99125033e06dcbcdcbb06731bf60", "direction": "consumed", "result": "compatible"},
+    {"name": "iqs:package-card IN-02-industry-consumer.md", "version": "worktree 2026-09-30", "content_hash": "fdd1ad53f55109f998aa1a195720e7a365635adffb468953ffe1487fc3f37dcc", "direction": "consumed", "result": "compatible"},
+    {"name": "iqs:parallel-lanes handoff.schema.json", "version": "1.0.0", "content_hash": "ed38a65aafed82649a071acbc9e6ee5b47c92120ad958713db4d7261a4b15c0e", "direction": "consumed", "result": "compatible"},
+    {"name": "iqs:lane-industry.md", "version": "worktree 2026-09-30", "content_hash": "b816c36f1b190485d23cd4fdafca1dac925f03ce79bbf124874cba33c1600ef2", "direction": "consumed", "result": "compatible"},
+    {"name": "iqs:fixture query-contract.examples.json", "version": "example_only=true (fictional)", "content_hash": "06fa7ac61cd46dc59571e42ab728d3ac43e24eb408a1514f7eea5c7fdeb4866f", "direction": "consumed", "result": "compatible"},
+    {"name": "stockwiki:cli_registry (83 subcommands, no query ops)", "version": "master@72531b5", "content_hash": "d7337e8b9b959957218409dcf8bcd6e41870a7ad7a75c960a04a2bb474dcbc4c", "direction": "consumed", "result": "blocked"},
+    {"name": "stockwiki:quick_scan_store.py (storage layer only)", "version": "SCHEMA_VERSION=1", "content_hash": "bcd7903431ca43b4a887dbf1885a79c88689c2db060e303bcf745a57a4ba2688", "direction": "consumed", "result": "not_applicable"},
+    {"name": "stockwiki:identity-export-g2b (W04)", "version": "identity package 2.2.0 / Entity 2.1.0 / CLI envelope 1.0.0", "content_hash": "10bf117ccd76d5bfe755a417d77fbf5f6849cf59a60ae18b0ea92dbdfbfb8787", "direction": "consumed", "result": "not_applicable"},
+    {"name": "stockwiki:golden G2b-handoff-2026-09-29.md (owner receipt 0efc2c04..., identity-side only)", "version": "updated for W04", "content_hash": "1811cc154fd0ba6a5b6f75110ba1ec53cb9fa8f39929509675ad8adea18f0d97", "direction": "consumed", "result": "compatible"}
+  ],
+  "verification": {
+    "checks": [
+      {"name": "three-repo freeze (HEAD/branch/porcelain)", "command": "git -C <repo> rev-parse HEAD; git log -1 --format='%H %ci %s'; git status --porcelain", "scope": "local-skills@main ec4db38, StockWiki@master 72531b5 (clean, .claude/ ignored), invest-quick-scan@master 65e96ba (7 modified + 1 untracked, coordinator in-flight docs)", "result": "passed", "passed": 3, "failed": 0, "skipped": 0},
+      {"name": "key-file SHA-256 freeze", "command": "sha256sum (industry skill 7 files, StockWiki 7 files, IQS 14 files)", "scope": "read-only hashing across three repos", "result": "passed", "passed": 28, "failed": 0, "skipped": 0},
+      {"name": "StockWiki public CLI enumeration", "command": "python -X utf8 -m stockwiki.cli --help (read-only) + regex over stockwiki/cli_parsers/*.py", "scope": "83 subcommands; capabilities/search/get_profiles/request_refresh absent; quick-scan surface = identity-export-g2b + market-registry-* only; data/quick_scan absent in production workspace", "result": "passed", "passed": 1, "failed": 0, "skipped": 0},
+      {"name": "field-mapping cross-check vs query.schema.json", "command": "substring counts: analysis_subject=0 in query schema v1.0.0; securities/score_refs/coverage/watermark confirmed present", "scope": "IQS repo read-only", "result": "passed", "passed": 1, "failed": 0, "skipped": 0},
+      {"name": "dependency-gate audit", "command": "ls docs/implementation/contracts/receipt-*.json + tasks.json depends_on read", "scope": "receipts exist only for G0/C01-C07/P00-P01/Q01-Q04/Q08/S01-S06/W01; none for G3/F05/W11 (W02/W03/W04 validated without receipts; G2b final sign-off pending)", "result": "passed", "passed": 1, "failed": 0, "skipped": 0},
+      {"name": "handoff JSON schema validation (in-memory)", "command": "python -X utf8 jsonschema.validate(doc, handoff.schema.json)", "scope": "no files created in any repo", "result": "passed", "passed": 1, "failed": 0, "skipped": 0},
+      {"name": "T02 RED/GREEN suite (design-only)", "command": "not executed - no write authorization, no production endpoint, no owner query golden", "scope": "future local-skills/industry-research tests", "result": "not_run", "passed": 0, "failed": 0, "skipped": 0}
+    ],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": [
+      {"path_or_id": "C:/Users/郑曾波/AppData/Local/Temp/in02-prestudy/ (handoff.json draft + validator)", "created": true, "cleaned": true}
+    ]
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": [
+      "StockWiki 83 CLI subcommands contain no capabilities/search/get_profiles/request_refresh; the only quick-scan public surface is identity-side (W04 identity-export-g2b + market-registry-*); QuickScanStore is storage-layer only; data/quick_scan/scan.sqlite does not exist in the production workspace and no private SQLite was opened.",
+      "IQS exchange-and-query contract v1.0.0 is a local protocol definition only; query.schema.json (urn:iqs:quick-scan:query:1, envelope 1.0.0) has 0 occurrences of analysis_subject_id/analysis_subject_revision/primary_issuer_id - promised in contract text as next version, so subject/revision keys are a schema gap, not an implemented field.",
+      "T02 hard gates G3/F05/W11 all unsatisfied (no receipts; W04 identity golden 0efc2c04... is identity-side only; no query/search/profiles owner golden exists anywhere).",
+      "T02 allowed_changes = [SKILL.md, modules/company-evaluation.md (verify-then-modify), consumer adapter + tests (new)] - config.yaml is NOT in scope; the local-skills sync gate additionally requires install-root consistency, which writes outside the subtree and needs coordinator coordination.",
+      "Current step-6 discovery = framework competitive_landscape + sector wiki wikilinks + companies/ dir name scan (tools/deepseek_client.py:374-450 identify_companies, LLM-mediated); checklist/report use cache/<sector>/companies.json while identify_companies writes company_list.json - naming inconsistency to fix during T02.",
+      "Step-6 evaluation JSON schema has only name/stock_code; no identity keys - quick-scan rows must carry entity_id (plus future subject/revision) without displacing existing display fields."
+    ]
+  },
+  "open_items": [
+    "G3, F05, W11 implementation + receipts (owners: IQS coordinator / StockWiki).",
+    "StockWiki public capabilities/search/get_profiles/request_refresh endpoints with protocol version, owner response goldens, error codes, coverage/watermark semantics (StockWiki W05+ query chain).",
+    "analysis_subject_id/analysis_subject_revision/primary_issuer_id, valid_until, segment/subtype fields in query schema (IQS C04/C06 v2 + StockWiki W05/F chain).",
+    "User write authorization for local-skills/industry-research subtree.",
+    "Decision whether config.yaml may join T02 scope (currently outside allowed_changes).",
+    "Install-root sync (tools/sync_installations.py --apply touches ~/.claude/skills and ~/.agents/skills outside the repo) - coordinate who runs it after T02 commits.",
+    "SC-11 is owner_task=C02 yet bound into T02 case_ids - T02 tests must re-verify scale non-merging semantics (industry 1-10 vs IQS anchors) without re-owning acceptance.",
+    "Unify company_list.json vs companies.json naming in the step-6 chain.",
+    "FACT_01-61 relationship/facts production execution (F02/F04/F05) unimplemented; facts_available=false must never be read as no suppliers/customers."
+  ],
+  "next_action": "IQS coordinator validates facts and archives this report per prestudy/README.md (IN-02-<YYYY-MM-DD>-<sha12>.md + .handoff.json + archive-index.json entry with the three input commits); T02 implementation stays not_started and waits for G3/F05/W11, a real StockWiki public query endpoint with owner golden, and explicit user write authorization; re-run incremental prestudy if any of the three repos moves materially."
+}

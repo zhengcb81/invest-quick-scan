@@ -1,0 +1,176 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "theme",
+  "package_id": "TH-01",
+  "status": "partial",
+  "snapshot": {
+    "repository": "local-skills",
+    "base_ref": "main",
+    "base_commit": "ec4db38a0f87717d66567eb83febe23cd9dfa601",
+    "result_ref": "main",
+    "result_commit": "ec4db38a0f87717d66567eb83febe23cd9dfa601",
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": null
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": null
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "T01"
+    ],
+    "authorization_scope_ref": "not_authorized",
+    "owned_paths": [
+      "analyze-theme-value-chain/"
+    ],
+    "authorized_paths": [],
+    "changed_paths": [],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [
+    {
+      "name": "IQS exchange-and-query contract",
+      "version": "1.0.0",
+      "content_hash": "9f2559ba91c49210906fa3c1c75606f3c403e6ca7d5f896908fb1371675f398b",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "IQS question-modules contract",
+      "version": "2026-09-26",
+      "content_hash": "039f789b0905c69705798288fbbfa8dc884b0fa70b7b2af9e1f221be804512a6",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "IQS freshness-and-jobs contract",
+      "version": "1.1.0",
+      "content_hash": "2d8f6d4be7ae05ef996e7cdb71f58dff355bf3229de4241b6a0dc8acbeee3f93",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "IQS query.schema.json",
+      "version": "urn:iqs:quick-scan:query:1 / 1.0.0",
+      "content_hash": "e7fc264b43d85e4cdd5c82a71b9fedb579dd0fc1196f3c5fde661f14fa1756f8",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "IQS query-contract.examples.json (owner golden)",
+      "version": "not_available",
+      "content_hash": "06fa7ac61cd46dc59571e42ab728d3ac43e24eb408a1514f7eea5c7fdeb4866f (example_only fixture)",
+      "direction": "consumed",
+      "result": "blocked"
+    },
+    {
+      "name": "StockWiki public capabilities/search/get_profiles/request_refresh endpoints",
+      "version": "not_available",
+      "content_hash": "not_available",
+      "direction": "consumed",
+      "result": "blocked"
+    },
+    {
+      "name": "StockWiki response golden (real, non-fixture)",
+      "version": "not_available",
+      "content_hash": "not_available",
+      "direction": "consumed",
+      "result": "blocked"
+    },
+    {
+      "name": "IQS identity.schema.json AnalysisSubjectV10 (subject/issuer/revision binding)",
+      "version": "analysis_subject_schema_version 1.0.0",
+      "content_hash": "671292a60bf1656b73009877a59c49c8585935b11d42b7fef5e021fc275fc2e3",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "analyze-theme-value-chain SKILL.md steps 5/6 (integration target)",
+      "version": "local-skills init HEAD",
+      "content_hash": "3e2767baa381cd8dc6f25323ba167f15510f9088343ca2bd38b585cc329084bb",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "IQS tasks.json T01 acceptance cases (CONS-01/02/QUERY-04/CONS-05/CONS-06)",
+      "version": "tasks 1.10.15 / cases 1.10.15",
+      "content_hash": "a7c6167d4bf9aca56b529bd85bd70b0ae01a99125033e06dcbcdcbb06731bf60",
+      "direction": "consumed",
+      "result": "compatible"
+    }
+  ],
+  "verification": {
+    "checks": [
+      {
+        "name": "IQS offline query/exchange contract suite",
+        "command": "python -X utf8 -m unittest discover -s tests -p test_exchange_and_query_contract.py -q",
+        "scope": "invest-quick-scan tests (offline fixtures only, no production endpoints)",
+        "result": "passed",
+        "passed": 15,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "IQS implementation plan integrity",
+        "command": "python -X utf8 scripts/implementation_plan.py validate",
+        "scope": "invest-quick-scan planning validation",
+        "result": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "TH-01 consumer RED/contract tests (design-only, future subtree work)",
+        "command": "asserted list of 14 designed RED cases; none exist yet and none were written",
+        "scope": "local-skills/analyze-theme-value-chain (future)",
+        "result": "not_run",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": [
+      {
+        "path_or_id": "%TEMP%/t01_extract.json + %TEMP%/cons_cases.json (hash lookup scratch files)",
+        "created": true,
+        "cleaned": true
+      }
+    ]
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": "ec4db38a0f87717d66567eb83febe23cd9dfa601",
+    "findings": [
+      "prestudy_complete: entry point, field mapping, interface gaps and test design fully investigated; no project file modified anywhere",
+      "T01 implementation status: not_started, gated on G3/F05/W11 + real StockWiki public query endpoints/golden + user write authorization for the theme subtree",
+      "StockWiki public capabilities/search/get_profiles/request_refresh endpoints: not_available - verified absent in stockwiki/quick_scan_store.py (storage only, v1), cli_registry.py, cli.py, services/, and entire tests/ tree; no private SQLite access used to compensate",
+      "Real owner response golden: not_available; existing examples/quick_scan/query-contract.examples.json is explicitly example_only fixture data and must not be treated as a production positive",
+      "Query contract v1.0.0 search/profile results lack analysis_subject_id/revision/primary_issuer_id binding; AnalysisSubjectV10 exists in identity.schema.json - contract change proposal belongs to IQS (C04/C06)",
+      "Relation/fact retrieval fields for theme exposure (devices/materials/customers/downstream) have no query-level schema yet: gated on StockWiki F05 (depends F03/F04/W09/V07) and IQS F06",
+      "G3 review artifacts absent (docs/implementation/reviews/G3 does not exist); W11 depends on W06/W09/W10/Q06, none delivered",
+      "During the observation window the IQS mainline advanced from 65e96ba599e8734fa97c302acc68c748b37bda97 to 7a53bf53322d15d2cd3e30b282dca8479a26c1f6 with other dirty paths by another lane; all nine cited IQS files were re-hashed byte-identical at both HEADs, so findings remain reproducible",
+      "Proposed integration point: single insertion at SKILL.md step 5 candidate-pool construction (capabilities -> search -> get_profiles -> request_refresh preview), with explicit unsupported degradation back to the existing manual flow that must never be reported as zero candidates",
+      "Fast-scan 1-10 scores may only surface as initial-screening/needs-verification columns; theme purity, revenue elasticity, scenario forecasts and valuation remain owned by the theme skill's own evidence rules",
+      "This handoff JSON was archived locally in the analyze-theme-value-chain git repository at user request; it is not the IQS coordinator canonical archive copy"
+    ]
+  },
+  "open_items": [
+    "W11 (StockWiki) must deliver bounded refresh submission with scope/budget, depends W06/W09/W10/Q06",
+    "F05 (StockWiki) must implement strict/explore relation retrieval with explainable candidates, depends F03/F04/W09/V07",
+    "G3 (IQS) batch reliability review must pass and authorize M4 expansion, depends L03/W11",
+    "StockWiki owner must expose implemented public query endpoints with protocol version and production response goldens (error codes/coverage/watermark) for consumer-contract testing",
+    "IQS owner must extend query response schema with analysis_subject_id/analysis_subject_revision/primary_issuer_id (submit contract change to IQS coordinator)",
+    "IQS F06 must publish fact-module field schemas; S05 must generate the first production module release lock for contract_versions reporting",
+    "User must grant write authorization for local-skills/analyze-theme-value-chain/ subtree; Theme and Industry lanes must use independent worktrees/branches on the shared git root with serial integration",
+    "After prerequisites land, re-run incremental prestudy if repos moved, then implement the 14 designed RED cases before the adapter"
+  ],
+  "next_action": "Coordinator records this prestudy snapshot in archive-index.json; await G3/F05/W11 completion, real StockWiki query capability/golden, and user write authorization; then T01 RED phase per designed test cases. T01 implementation remains not_started."
+}

@@ -9,9 +9,9 @@
 | [TH-01 主题消费者](TH-01-theme-consumer.md) | `local-skills/analyze-theme-value-chain/` | 现在仅做只读接口调查/设计；依赖满足后实施 | G3、F05、W11 与公开 query API/golden 均满足，且获得该目录写授权 |
 | [IN-02 行业消费者](IN-02-industry-consumer.md) | `local-skills/industry-research/` | 现在仅做只读接口调查/设计；依赖满足后实施 | 同上；与 TH-01 分开工作树、子目录白名单，串行合并共享 Git 根 |
 
-**QA-04 已交给另一 harness 实施；SW-IDENT 尚未分派。** TH-01/IN-02 可由两个 harness 同时做只读准备，但不能把不存在的 StockWiki 生产查询端点 mock 成已验收。StockWiki 当前观察 HEAD `72531b5` 已合并 snapshot/mapping 与 W04 G2b owner CLI、registry、receipt；SW-IDENT 应先核验剩余 W01–W03，不重造这批能力。IQS 总控负责 G2b 最终跨仓签收。
+**2026-09-30 接收状态：** QA-04 的功能反例经总控修复和独立复审通过，但共享脏树的提交/新 handoff 尚欠；SW-IDENT 在 StockWiki `8bc454e` 有部分实现和交接，W01–W03 仍 partial 且 handoff 授权路径字段需修正。TH-01/IN-02 两份只读预研已验收归档，T01/T02 实施尚未开始。逐项判定见[总控接收审查](../../reviews/IQS-lane/parallel-package-acceptance-2026-09-30.md)。StockWiki 生产查询端点仍不存在；IQS 总控负责完整 G2b 最终跨仓签收。
 
-TH-01 / IN-02 的只读预研按[预研与记录规则](../prestudy/README.md)执行，并用其中模板回交。两个 harness 不写 IQS；总控核对后才在本仓保存按日期/输入 hash 命名的报告，并更新 planning-with-files。当前尚无实际预研报告，不能把模板当成果。
+TH-01 / IN-02 的只读预研按[预研与记录规则](../prestudy/README.md)执行。两份完整原件已从用户指定的独立技能仓库子目录接收，并按报告 SHA-256 字节归档：[`TH-01`](../prestudy/TH-01-2026-09-30-e40a079d9d69.md)、[`IN-02`](../prestudy/IN-02-2026-09-30-023f9a7960c8.md)；[索引](../prestudy/archive-index.json)固定输入提交与缺口。验收仅为 `prestudy_complete`，T01/T02 实施仍 `not_started`。原设计以 `local-skills` 为实施 Git owner，而原件留在两个独立技能仓库；实施前须明确唯一 owner、核对增量快照和写授权。
 
 ```mermaid
 flowchart LR
