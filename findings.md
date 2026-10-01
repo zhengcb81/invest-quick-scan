@@ -1177,3 +1177,9 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 仅用 `(market, exchange, ticker)` 精确去重挂牌。未提供可靠 issuer key 的目录名、中文/英文别名或代码变更只产生未解析记录/提示；即使名称唯一也不自动合并。`中信建投` 精确标签连到两个不同 A 股代码，证明名称匹配要保留候选歧义。
 - 原文件不含可信信息截止时间或 listing status。查找有少量拒绝访问的 pytest/cache/临时目录，因此审计准确表述为“全部可读匹配文件”，不声称扫描了被操作系统拒绝的路径。逐文件 provenance、hash 和 candidate-only JSON 见 `docs/implementation/reviews/universe-source-inventory-2026-10-01.json`。
 - StockWiki CodeGraph 的宽泛 quick-scan context 查询只返回 UI 符号，未提供这批 identity/universe 入口的结构上下文；本轮验收依据实际 handoff 和只读文件状态。后续代码审查需先确认相关 owner 文件确实进入索引。
+
+## 2026-10-01 — 候选范围确认与可派工边界
+
+- 用户确认216个 `(market, exchange, ticker)` 候选作为首批输入；331个名称标签只作待解析提示。不得把候选挂牌数报告为发行人数，也不得用近似名称合并；生产导入前要有StockWiki owner的身份/挂牌状态预览、未解析/歧义分流和明确写授权。
+- QA-04与SW-IDENT当前是已有卡的交付收尾，不应再复制派给并行写入者。TH-01/IN-02已有只读预研原件，因G3/F05/W11和StockWiki生产查询接口/golden缺口只能待命。
+- 后续最自然的两个独立owner施工包为Q05（StockQA日志/请求缓存隐私与完整请求键，依赖Q03/Q04）和W05（StockWiki不可变问答观察事务导入，依赖W01/G1/S05/W02/W03）。虽然两个repo互不重叠，当前依赖和授权未满足，故列为准备候选而非可立即开工卡。

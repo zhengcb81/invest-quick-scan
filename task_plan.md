@@ -711,5 +711,7 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] TH-01/IN-02 归档索引含两项，报告和 handoff hash 全匹配且均通过相应 schema；只验收只读预研，T01/T02 仍 not_started。
 - [x] 本仓 S06 的本地范围已有 57 项焦点回归日志与独立复审；剩余真实 StockQA→StockWiki ACK、router 2.1 真实历史工件与跨仓 E2E 属于外部验收门。避免无变化地重复同一 S06 批次。
 - [x] 按用户先前指定的文件名规则只读搜索 Projects：94 个可读匹配文本文件、12 种精确字节内容；六个有效来源产生 209 个 A 股挂牌候选、7 个美股挂牌候选及 331 个去重名称标签。名字/代码未被当作 issuer identity；`中信建投` 的两个不同代码保留为歧义。报告及完整逐行来源见 `docs/implementation/reviews/universe-source-inventory-2026-10-01.md` 和同名 JSON。未写 StockWiki、未导入股票池、未扫描公司。
-- [ ] 等用户从候选输入中确认首批股票池及哪些名称清单纳入；确认前不创建 canonical universe，也不派发快扫。确认后再按 StockWiki owner 的授权范围导入，并以 identity resolver 预览/处理多挂牌及歧义。
+- [x] 用户已确认首批输入采用审计报告中的216个带市场的挂牌候选；331个名称标签保留为待解析提示，不据此自动合并发行人或扩大挂牌成员。确认只覆盖候选范围，不等于StockWiki权威导入或扫描。
+- [ ] 在任何StockWiki写入前，由owner对216个挂牌候选作身份/状态预览并报告精确改动路径，再取得该导入工作的明确写授权； unresolved/ambiguous项目不进入付费扫描队列。
+- [ ] 下一批跨仓候选施工包为StockQA Q05（Q03/Q04通过且Q04快照正式收口后）与StockWiki W05（W01、W02、W03、G1、S05全部满足并取得W05精确写授权后）；它们目录owner不同，可在各自开工门通过后并行，但当前都不得提前实施。
 - [ ] QA-04 待交付方提供安全隔离的当前快照、刷新 hash 的 handoff 和 review；SW-IDENT 待交付方修正声明路径并交齐 W02/W03 生产入口。总控收到更新后重验；full G2b 仍需真实 verified、多挂牌、AnalysisSubject 与历史区间 owner 证据。

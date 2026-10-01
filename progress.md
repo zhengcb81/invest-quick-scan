@@ -1323,3 +1323,10 @@
 - 生成候选级审计材料 `docs/implementation/reviews/universe-source-inventory-2026-10-01.md` 与 `.json`，包含源文件 SHA、94 个命中文件路径/hash、逐行来源、候选挂牌、名称提示与排除项；JSON SHA-256 为 `2fd5f147e8dc6f7c2c47ac386b68666a553a32ecc2fed6d59d2e25c13dbf68ab`。该工件仅供用户确认，未写入 StockWiki 权威名单或启动扫描。
 - 在上述结果复核中，第一次提取脚本在输出前因错误处理 `read_lines` 返回值而中止；未产生文件，修正后生成并校验 216 个挂牌键/331 个规范化标签唯一。一次仅改输出统计字段的校验命令引用了错误 JSON 层级，同样在写入前失败；修正后重新生成并复验。另一次只读探查发现 StockWiki 没有 `.planning/progress.md`，对应 handoff 实际位于 `.planning/sw-ident_handoff_2026-09-30.json`；未更改外仓。
 - 新审计 JSON 通过 JSON 解析、216 挂牌键/331 标签唯一性及 94 个命中文件和六份主来源 SHA 重核。最终 PWF/并行包回归 **96 passed / 53 subtests**（`-p no:cacheprovider -o addopts=`），计划验证仍为 107 tasks / 366 cases / G6；`git diff --check` 通过。没有 API、网络、下载或外仓写入。
+
+## 2026-10-01 — 首批候选确认与问题模块回归
+
+- 用户确认审计报告的216个带市场挂牌候选作为首批输入；331个名称标签只作为待解析提示，不能自动变成公司/发行人或挂牌成员。该确认不构成StockWiki生产名单导入或真实扫描授权；导入前仍需owner身份预览和单独明确的StockWiki写授权。
+- 为S10题库/模块边界执行六文件离线回归：`tests/test_question_sets.py`、`tests/test_question_prompts.py`、`tests/test_question_manifest.py`、`tests/test_question_library.py`、`tests/test_module_registry.py`、`tests/test_module_contract.py`，**131 passed / 355.69s**。API/live环境变量在子进程中清除，唯一临时pytest根在退出后确认不存在；无网络、API、公司文档下载或外仓写入。
+- 验收状态：QA-04功能批次有246项测试和Ruff证据，但handoff仍partial、`result_commit=null`且hash过期；SW-IDENT当前身份/G2b/MIC与IQS公开CLI聚焦测试113项通过，但handoff仍因`changed_path_out_of_scope`无效，W01–W03生产证据不全；TH-01/IN-02仅只读预研已验收，T01/T02未开始。详细证据见`docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`和`docs/implementation/reviews/universe-source-inventory-2026-10-01.md`。
+- 当前没有新的立即可开工并行施工包。下一组可准备的独立owner包是StockQA Q05（依赖Q04正式收口）与StockWiki W05（依赖W01/W02/W03、G1/S05以及精确写授权）；目录不重叠，但现在都受前置门阻挡。IQS中心工作、G2b、S06仍由总控单写者完成。

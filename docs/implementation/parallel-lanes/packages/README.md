@@ -34,4 +34,13 @@ flowchart LR
 
 总控收到 JSON 文件后可先运行只读格式预检：`python -B -X utf8 scripts/parallel_handoff_cli.py --input <handoff.json> --package-id SW-IDENT`（从 IQS 仓根运行）。退出 0 仅表示 schema、package/lane/task 和**自述**路径/清理字段一致；它不认证用户授权、提交 SHA、测试结果或 owner golden。退出 2 的 JSON 错误不回显报告正文。正式签收仍按上条逐项核验。
 
+## 下一批候选包（尚不可开工）
+
+| 候选 | Owner | 计划内容 | 开工门 |
+|---|---|---|---|
+| Q05 | StockQA | 日志内容边界、隐私字段清除、完整模型/实体/题义/截止日请求缓存键 | Q03/Q04 已满足；QA-04 当前快照、handoff 与 review 正式收口后，按 P00 只读预检给出精确路径 |
+| W05 | StockWiki | 不可变问答观察的事务导入、重放/冲突隔离和历史身份范围 | W01/W02/W03、G1、S05 已满足；StockWiki owner 给出精确路径且用户明确授权 W05 写入 |
+
+Q05 与 W05 属于不同仓，可在各自开工门通过后并行；现在不能把它们标记为可开工卡。QA-04/SW-IDENT 有未闭合交付，不得另外派一个 harness 同时写同一仓。TH-01/IN-02 已完成的是只读预研，实施继续等待 G3/F05/W11 与生产 query/golden。
+
 机器可读包目录见 [`manifest.json`](manifest.json)。`readiness` 是分派状态，不是 `tasks.json` 的任务验收状态；外仓如有新提交，必须重新做开工核验。
