@@ -404,6 +404,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+当前按用户2026-10-01要求暂停：本轮收尾V02本地候选实现并提交；本仓无Git远端配置，不能执行推送。恢复时先重核外仓HEAD/工作树与handoff，继续QA-04、SW-IDENT交付收口及W02/W03候选preview；V02生产启用仍待G3、调用方认证与后续StockWiki接线，不以本地通过替代依赖验收。
+
 ### 历史执行状态（截至2026-09-30）
 
 - Q02首个提供商实现的任务级验收已在精确StockQA工作树快照通过：MiMo公开CLI真实搜索、LLM-02/LLM-11离线检查及同快照独立审查均已记录在`progress.md`和`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。旧任务回执已退役、验收目录为规格；不刷新receipt或改规格状态。该结果不关闭G1或跨仓链路。
@@ -745,3 +747,17 @@ Status: intake_and_synthesis_complete; DWA-03_protocol_breach_DWA-04_visibility_
 - [x] 收齐 DWA-01–DWA-07 全部交付并形成 `docs/implementation/reviews/dirty-worktree-audits/2026-10-01/acceptance-review.md`：DWA-01/02/07 通过；DWA-03 因未遵守只读/漂移停止拒收为合规审计；DWA-04 正确停止但未完成归因；DWA-05 读取受限 `config.json` 内容；DWA-06 披露新增 `nul` 漂移且逐路径状态表需细化。
 - [x] 2026-10-01重查 DWA-03/04/05 的当前 HEAD、文件级状态数与 porcelain SHA 均匹配原冻结快照；DWA-03 的 `.dwa03v2.py` 不存在。DWA-04 为6124项且与原状态摘要相同。DWA-05 的 `config.json` 仍按未知处理，未读取内容。
 - [ ] 后续动作保持只读：DWA-03/04/05 可按原任务卡重新派发，但接手者必须从头重核基线和结束状态；DWA-04需6124项的同等可见性，DWA-05不得读取`config.json`。DWA-06当前63项、含`?? nul`，不同于62项原快照；先冻结新基线并保留该路径为未知，再做逐路径报告。不得基于审计建议自行改动或清理外仓。
+
+### Phase 47: V02独立评分尺本地候选收尾与暂停
+
+Status: local_candidate_implemented_and_reviewed; overall_V02_partial; paused_by_user
+
+- [x] 按Phase30允许接口冻结后连续推进的规则，实现本仓V02纯候选层；没有关闭G3或重排107任务依赖。schema、内容寻址候选、加载/API/公开只读CLI与兼容文档已落地。
+- [x] EVO-05—07本地测试覆盖固定24构念/替代、分母和覆盖率、NA/等级/关键风险、权重并列派生和原观察不变、题义/作用层/期间/模型不可比、规则method/release绑定、字节hash及重复key拒绝、真实归档与隔离CLI。未连接生产数据库或模型。
+- [x] 独立审查的严格int、附加critical缺轴、普通core追加critical三项漏洞已修复并补反例；119 tests / 84 subtests通过，Ruff通过，plan validate仍为107 tasks / 366 cases / G6。
+- [x] 内容寻址归档在Windows autocrlf下以目录内JSON `-text`保持字节；真实临时Git add/checkout回归通过。最后V02定向15 tests / 27 subtests，PWF文档门93 tests / 241 subtests通过。
+- [ ] G3校准、生产caller观察/等级认证、StockWiki持久化/CAS/历史重算与V16活动资格另行实施验收；候选`calibration_sample_refs=[]`，不可宣称已校准或已上线。
+- [x] 首轮测试发现两项fixture与既定门槛不一致：NA需screening_audited、合法跨snapshot scope变化须在各快照内部一致。修正fixture并保留原校验要求。缺失`pyproject.toml`的字面搜索无产品影响；后续不再以该不存在路径作检查入口。
+- [x] 用户要求手头工作完成后提交/推送/暂停。本仓`git remote -v`为空，保持未配置，不猜测远端地址；完成本地提交后暂停，不继续其他施工或外仓清理。源码/文档发布按本轮Git提交历史定位。
+
+证据：[评分尺契约](docs/implementation/contracts/scoring-rubric-evolution.md)、[独立审查](docs/implementation/contracts/review-V02-closeout-2026-10-01.md)、`validation-V02-red-2026-10-01.log`及`validation-V02-green-2026-10-01.log`。

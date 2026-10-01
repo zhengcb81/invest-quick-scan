@@ -1372,3 +1372,14 @@
 - DWA首轮报告全部收到，但只有DWA-01/02/07可接收；DWA-03/04/05各有纪律/可见性/范围问题，DWA-06比原快照多出`?? nul`，需owner先确认并建立新基线。没有清理或修改外仓。
 - PWF修正了过时的名单确认措辞、Phase 44/45施工状态、StockQA 61/63条状态观察的时间顺序、Q02 MiMo首提供商结果和总控Next Step。未改任务依赖或扩大授权范围；外仓继续只读。
 - 验证：`python -B -X utf8 scripts/implementation_plan.py validate`通过（107 tasks / 366 acceptance cases / G6）；`tests/test_task_receipt_retirement.py`、`tests/test_implementation_plan.py`、`tests/test_parallel_lane_plan.py`共93 passed / 241 subtests；`git diff --check`通过。Git状态检查打印了本机global ignore与`.pytest_cache`权限warning，但没有阻止测试/计划校验，也未修改外部仓库。
+
+## 2026-10-01 — V02候选评分尺收尾、提交与暂停
+
+- 完成已开始的V02纯本地候选层：新增schema、scoring_rubrics API/CLI、内容寻址经营类候选与契约文档。复用共享canonical hash；没有另造LLM执行器或StockWiki存储。原观察/旧白名单不变，权重改变使用新method产生并列派生，不能自动进入旧规则。
+- TDD RED为缺实现的预期失败（日志已留档）；首轮测试暴露两处fixture问题（NA等级不足、单快照scope口径混合），按原门槛修正fixture。独立审查随后复现严格整数、附加critical缺模型/期间轴、普通核心追加critical漏门三处实质缺陷；均修复并留回归反例，复审无剩余收尾阻碍。
+- 合并定向测试：`tests/test_scoring_rubrics.py`、`tests/test_scoring_and_rules_contract.py`、`tests/test_metrics_contract.py`、`tests/test_implementation_plan.py`、`tests/test_parallel_lane_plan.py`，**119 passed / 84 subtests**；Ruff两文件通过，计划校验107 tasks / 366 cases / G6有效。公开CLI子进程清除API/live变量，在唯一临时cwd执行并核验清理，无下载/API/外仓写入。
+- V02整体partial：候选未校准/未激活，caller认证、G3、StockWiki持久化/历史重算及V16资格仍待后续，不据此宣称全链路可用。全项目各线审计结论延续上一节，不扩大外仓授权。
+- 按用户要求收尾后暂停；本仓没有任何Git remote，无法推送，不擅自添加。本轮提交包含新增评分尺与PWF/审查记录，具体SHA从Git历史读取；已提交的此前状态盘点为`56ff421`。
+- PWF更新后复跑最终文档门：93 passed / 241 subtests；`git diff --check`通过。系统global ignore/cache目录访问warning未影响验收；未对其权限/内容作修改。
+- 提交前新增文件检查发现RED日志两处行尾空格，已去掉（失败内容不变）。本机core.autocrlf=true会改写新候选的字节hash，因此在评分尺归档目录加精确JSON `-text` 属性，并新增隔离Git index/checkout回归保证字节不变；不改变其他目录换行规则。
+- 归档属性最终回归：V02测试15 passed / 27 subtests；Ruff通过，临时Git目录清理，日志`validation-V02-archive-2026-10-01.log`。119项合并批次与93项文档批次均保留原结果，不因新增归档测试冒称重新跑过全批次。

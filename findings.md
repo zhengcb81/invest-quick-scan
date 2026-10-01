@@ -1237,3 +1237,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 外部只读快照：StockQAbyLLM `master@3c685dda`、63条状态；StockWiki `master@b4f3846`、可见1条既有未跟踪`.claude/`状态（未查看内容）；company-wiki `master@00af53f`、analyze-theme-value-chain `master@3c9a49c`、industry-research `main@4a80f99`、local-skills `main@ec4db38`均干净；revenue-forecast `fcap@ee0a82b`有6,124条状态。它们只是观察时快照，不是对后续并行进程状态的承诺。
 
 本轮只调整IQS的PWF状态叙述：首批长期容量目标与当前输入分开；Phase 44/45反映施工卡已实施但未验收收口；把StockQA 61条观察标为历史并以随后63条观察作新近记录；删除“等待用户确认名单”的过期表述；将Q02 MiMo实测写入当前计划并刷新Next Step。没有重排任务依赖或扩大外仓授权。
+
+## 2026-10-01 — V02本地候选评分尺与收尾限制
+
+- Phase30允许冻结接口之后连续开发下游纯模块，但里程碑依赖仍不得跳过。V02已实现纯候选发布/重算/比较/规则绑定，本地测试及独立审查通过；G3、真实校准、生产认证/活动指针、StockWiki接线尚未完成，V02仍partial。
+- JSON Schema的integer包括8.0这样的数值，无法单独落实C03严格整数语义；已显式排除浮点/bool。关键风险门要同时支持固定项和输入追加项，附加风险也必须满足统一模型/期间/等级可用性，不能用原8分解除未解析风险。
+- 模型、期间、题义或作用口径不同的答案可以保留并列派生，但不能自动生成数值趋势或套用旧method白名单。NA只有实际审计且等级足够才能减少适用分母；关键NA仍阻断质量分。
+- 来源/派生内容hash是完整性绑定，不是认证器；StockWiki caller须验证真实观察和等级回执，不能直接信任CLI自声明输入。经营类候选无校准样本，不推广银行/保险等cohort。
+- 本仓Git没有remote；本地交付可提交，远端推送缺少目标地址。用户要求本轮收尾后暂停，因此未猜测或新增remote，也未继续外仓施工。

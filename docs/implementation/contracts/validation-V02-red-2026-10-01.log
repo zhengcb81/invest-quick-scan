@@ -1,0 +1,56 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ ScoringRubricTests.test_evo05_weight_only_release_keeps_originals_and_parallel_scores _
+
+self = <test_scoring_rubrics.ScoringRubricTests testMethod=test_evo05_weight_only_release_keeps_originals_and_parallel_scores>
+
+    def test_evo05_weight_only_release_keeps_originals_and_parallel_scores(self):
+        raw = snapshot(self.body, score=5)
+        for row in raw["records"]:
+            if row["dimension"] == "moat":
+                row["score"] = 8
+        before = copy.deepcopy(raw)
+>       old = sr.seal_rubric(self.body)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_scoring_rubrics.py:83:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = {'schema_version': '1.0.0', 'version': '1.0.0', 'method_id': 'core-constructs-v1-operating', 'owner': 'iqs', ...}
+
+    def seal_rubric(body):
+>       raise NotImplementedError("V02 rubric release is not implemented")
+E       NotImplementedError: V02 rubric release is not implemented
+
+scripts\scoring_rubrics.py:5: NotImplementedError
+_ ScoringRubricTests.test_evo07_unknown_eight_and_diagnostic_ten_never_raise_core_five _
+
+self = <test_scoring_rubrics.ScoringRubricTests testMethod=test_evo07_unknown_eight_and_diagnostic_ten_never_raise_core_five>
+
+    def test_evo07_unknown_eight_and_diagnostic_ten_never_raise_core_five(self):
+        raw = snapshot(self.body, score=5)
+        row = copy.deepcopy(raw["records"][0])
+        row.update(id="DIAG_01", construct_id=None, aggregation_role="diagnostic_only",
+                   score=10, critical=False, observation_id="OBS_DIAG_01")
+        raw["records"].append(row)
+>       self.assertEqual(self.aggregate(raw)["quality_score"], 5)
+                         ^^^^^^^^^^^^^^^^^^^
+
+tests\test_scoring_rubrics.py:106:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_scoring_rubrics.py:74: in aggregate
+    return sr.aggregate(sr.seal_rubric(body or self.body), raw,
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = {'schema_version': '1.0.0', 'version': '1.0.0', 'method_id': 'core-constructs-v1-operating', 'owner': 'iqs', ...}
+
+    def seal_rubric(body):
+>       raise NotImplementedError("V02 rubric release is not implemented")
+E       NotImplementedError: V02 rubric release is not implemented
+
+scripts\scoring_rubrics.py:5: NotImplementedError
+=========================== short test summary info ===========================
+FAILED tests/test_scoring_rubrics.py::ScoringRubricTests::test_evo05_weight_only_release_keeps_originals_and_parallel_scores
+FAILED tests/test_scoring_rubrics.py::ScoringRubricTests::test_evo07_unknown_eight_and_diagnostic_ten_never_raise_core_five
+2 failed, 8 deselected in 0.74s
