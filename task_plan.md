@@ -694,3 +694,11 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] 同一StockQA工作树离线回归`test_llm_client.py`、`test_llm_provider.py`和`test_quick_scan_cli.py`共159 passed / 17.45s；从唯一临时工作目录运行、关闭`base_url`插件及项目coverage/cache addopts，并把pytest basetemp置于临时根；运行后临时根不存在，StockQA Git状态仍为55项。
 - [x] Q02首个提供商任务在精确StockQA工作树快照上完成验收：独立只读复核匹配五个源码/测试SHA，确认LLM-02/LLM-11所选离线覆盖并未发现P0/P1；MiMo公开CLI真实搜索1 passed / 13.63s，provider/model、响应关联搜索回执、来源与临时目录清理均有断言。复核提出的P2断言增强和无citation正文URL负例记录为后续测试改进，没有因此重复付费live调用。
 - [x] 复核发现的旧receipt/验收目录状态按当前规则正确处理：task-receipt v2于2026-09-29退役，`acceptance-cases.json`声明其为规格而非运行结果；旧Q02 receipt保持只读，`specified_not_executed`规格值不改，当前结果写入`progress.md`及批次验证记录。Q02任务级验收对记录的StockQA工作树快照通过，但不等于G1、跨仓生产接线或全项目完成。StockQA工作树仍有既有未提交改动，本次未将其合并提交。
+
+
+### 2026-10-01 — QA-04 / SW-IDENT acceptance revalidation
+
+- [x] QA-04 在临时 cwd 复跑六文件离线批次 **246 passed**，Ruff 通过；增加 `next_run` 两题回执均无 `policy_transition` 的公开 CLI 断言。临时根删除，StockQA 55 项状态前后字节一致；未调用 API/网络、未下载公司资料。
+- [x] SW-IDENT 在当前 StockWiki `b4f3846` 复跑身份、G2b、证据存储、MIC 与 IQS public CLI 跨仓 E2E 聚焦包，**113 passed**；临时 pytest/home 根删除，StockWiki 状态仍只有既有 `.claude/`。
+- [x] 新复核报告记录精确文件哈希和 handoff CLI 结果：QA-04 CLI `valid` 仅表示自述格式/范围可解析，回执仍 stale、`result_commit=null`；SW-IDENT CLI `invalid/changed_path_out_of_scope`，新 evidence store/test 未列在 `authorized_paths`。
+- [ ] QA-04 交付快照和当前 handoff 尚未一致，StockQA 55 项共享脏树下不做整树提交；SW-IDENT W01–W03 及完整 G2b 仍缺生产链证据。详见 `docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`。

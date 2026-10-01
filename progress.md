@@ -1306,3 +1306,11 @@
 - QA-04 handoff JSON 格式预检通过，但当前 `status=partial`、`result_commit=null`，StockQA 仍有 55 项共享脏树。独立审查指出其坏 quota group 测试复用了旧 policy version，绕过热更新；总控事先报备后仅修复 StockQA `src/utils/llm_integration.py` 与 `tests/unit/test_llm_integration.py`。新 revision 反例 RED 为 KeyError，候选完整校验后原子切换 GREEN；最终相关六文件回归 **246 passed**，独立复审 **52 passed**，Ruff/diff check 通过。旧 handoff 的源码 hash 与声明已过期，需交付方刷新及隔离提交/冻结后才标 Q04 完成。
 - SW-IDENT handoff 在 StockWiki `8bc454e` 可读，自报 partial。新增 evidence store/test 的 hash 与提交一致，独立 43 项聚焦测试及 G2b 跨仓双 golden 通过；但 IQS handoff CLI 返回 `changed_path_out_of_scope`（新文件未列 `authorized_paths`），且 evidence store 未接生产 resolver/扫描路径。W01–W03 和完整 G2b 维持 partial。
 - 初次仅按文件名检索两份独立技能仓库，未发现 TH-01/IN-02 原件；用户随后给出精确 `prestudy/` 与 `docs/handoff/` 子目录。两份完整 Markdown+JSON 已找到、通过 schema/公开 handoff CLI、关键文件 SHA 和独立只读复核；TH-01 报告的 15 项离线合同测试复跑通过。原字节以报告 SHA 命名复制到 IQS 预研目录，索引录入冻结三仓 commit/观察和接收时间/依赖缺口。两份状态为 `prestudy_complete`，T01/T02 实施仍 `not_started`。原件分别在独立技能仓提交 `3c9a49c`、`4a80f99`，内容冻结的是 `local-skills@ec4db38` 镜像；实施前需决定唯一 owner 并核对已移动上游。逐项证据与限制见 `docs/implementation/reviews/IQS-lane/parallel-package-acceptance-2026-09-30.md`。
+
+
+## 2026-10-01 — QA-04 / SW-IDENT acceptance revalidation
+
+- QA-04：只在 StockQA 获授权范围内更新 `tests/integration/test_quick_scan_cli.py`，为 `next_run` 补上本次两题回执不包含 `policy_transition` 的断言；运行时源文件不变。StockQA 当前两个核心运行时/单测 SHA 与新集成测试 SHA 记录在 `docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`。
+- 从 disposable temp cwd 复跑六文件离线 owner batch **246 passed**；Ruff 对运行时与集成测试通过。首次从 StockQA cwd 运行时 logger 试图写外仓 `logs/` 被 sandbox 拒绝，未触碰该路径；改从临时 cwd 运行后通过。最终临时根不存在，StockQA 55 项 Git 状态逐字节一致，无 API、网络、付费调用或公司文档下载。
+- 当前 StockWiki `master@b4f3846` 新增 W04 operating-MIC 检查。身份 mapping/snapshot/receipt/G2b export/evidence/MIC 和 StockWiki→IQS public CLI E2E 聚焦套件 **113 passed**；pytest 与 E2E home/temp 根均删除，StockWiki 状态输出逐字节一致，仅原有 `.claude/`。
+- 交接门仍未闭合：StockQA `q04_handoff.json` 仍 `partial`/无 `result_commit`，hash 旧且被 `*.json` 忽略；IQS CLI `valid` 只校验声明格式。StockWiki handoff 仍在旧 commit、`status=partial`，IQS CLI 拒绝 `changed_path_out_of_scope`。详细判定见上述 revalidation report；不把测试通过扩大为跨仓包完成。
