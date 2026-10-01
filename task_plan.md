@@ -403,7 +403,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-### 2026-09-30 当前执行状态
+### 历史执行状态（截至2026-09-30）
 
 - Q02首个提供商实现的任务级验收已在精确StockQA工作树快照通过：MiMo公开CLI真实搜索、LLM-02/LLM-11离线检查及同快照独立审查均已记录在`progress.md`和`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。旧任务回执已退役、验收目录为规格；不刷新receipt或改规格状态。该结果不关闭G1或跨仓链路。
 - company-wiki IQS独占施工卡本仓步骤1—4已完成，报告见`docs/implementation/reviews/IQS-lane/construction-card-closeout-2026-09-29.md`。StockWiki `72531b5` 已提供 W04 公开 `identity-export-g2b` 与 owner receipt/registry/source context；第5步/G2b 从“缺 producer 实现”转为 IQS 总控独立复现 golden、核查来源与正反例后签收，见`docs/implementation/reviews/IQS-lane/G2b-handoff-2026-09-29.md`。不得重复实现步骤1—4、伪造 verified/multi-listing 正例或代改StockWiki。
@@ -415,7 +415,9 @@ Status: complete_for_planning_only
 ### 当前下一动作
 
 - Q03首轮快照回归通过166项后，独立复核发现一个P1：JSON数组/对象类型的`status`使parser抛`TypeError`，导致公开CLI丢弃已完成搜索回执。已按TDD修复并补事件级回执断言，完整Q03隔离回归170项通过；两轮独立只读复核均未发现未解决项，最终复核匹配三份当前SHA。Q03解析与结果回执路径的任务级验收已通过。初始报告parser单测SHA有单字符笔误，已更正；精确命令、SHA与审查边界见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。该任务级验收不代表G1/全项目、其他模型或跨仓链路完成。
-- QA-04 已由用户交给其他 harness，IQS 总控不并发写 StockQA。`72531b5` 的 provisional Entity 与四态 mapping DTO owner goldens 已由总控独立冻结并验证；**当前下一项**是完成此高风险接口的独立审查、处理发现项，再判定 G2b 剩余门。SW-IDENT 尚未分派，不代改 StockWiki；S06 仍待真实 ACK/历史样本。
+- G2b 的 provisional Entity + mapping 1.0.0 接口切片已由独立复审通过；完整 G2b 仍待 StockWiki 真实 verified/多挂牌/AnalysisSubject 与历史区间 owner 样本。S06 本地范围测试/复审已通过，整卡仍待 StockQA→StockWiki 真实 ACK、router 2.1 历史样本和获批跨仓 E2E。
+- QA-04 当前行为回归有 246 passed 证据，但 handoff 仍 `partial`/`result_commit=null`；当前再次观察到 61 个 StockQA 状态路径，handoff 记录 55。SW-IDENT handoff 因 `changed_path_out_of_scope` 被公开 CLI 拒绝，W02/W03 生产入口仍有缺口。TH-01/IN-02 只读预研归档有效，T01/T02 仍 not_started；详见 2026-10-01 复验报告。
+- Projects 股票池候选文件已完成只读清点，完整列表和来源 hash 在 `docs/implementation/reviews/universe-source-inventory-2026-10-01.json`。需要用户先确认纳入范围；此文件不等于 canonical universe，未写 StockWiki、未扫描。
 
 ## 2026-09-29 — S06 路由执行门与测试owner修复
 
@@ -701,4 +703,13 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] QA-04 在临时 cwd 复跑六文件离线批次 **246 passed**，Ruff 通过；增加 `next_run` 两题回执均无 `policy_transition` 的公开 CLI 断言。临时根删除，StockQA 55 项状态前后字节一致；未调用 API/网络、未下载公司资料。
 - [x] SW-IDENT 在当前 StockWiki `b4f3846` 复跑身份、G2b、证据存储、MIC 与 IQS public CLI 跨仓 E2E 聚焦包，**113 passed**；临时 pytest/home 根删除，StockWiki 状态仍只有既有 `.claude/`。
 - [x] 新复核报告记录精确文件哈希和 handoff CLI 结果：QA-04 CLI `valid` 仅表示自述格式/范围可解析，回执仍 stale、`result_commit=null`；SW-IDENT CLI `invalid/changed_path_out_of_scope`，新 evidence store/test 未列在 `authorized_paths`。
-- [ ] QA-04 交付快照和当前 handoff 尚未一致，StockQA 55 项共享脏树下不做整树提交；SW-IDENT W01–W03 及完整 G2b 仍缺生产链证据。详见 `docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`。
+- [ ] QA-04 交付快照和当前 handoff 尚未一致；本次状态盘点为 61 条，handoff 仍记录 55 条且无 `result_commit`，不对共享脏树整树提交。SW-IDENT handoff 路径范围无效且 W02/W03/full G2b 仍缺生产证据。详见 `docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md` 与 2026-10-01 当前进度段。
+
+### 2026-10-01 — 当前执行状态与首批候选来源
+
+- [x] 重验 QA-04、SW-IDENT、TH-01/IN-02 handoff；独立结论见 `docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`。QA-04 运行行为有 246 项离线回归证据，但当前交付仍 partial；此次当前工作树状态数为 61，handoff 仍记 55，`result_commit=null`。StockWiki 当前 `b4f3846` 的聚焦回归记录为 113 项通过，但 handoff CLI 因 `changed_path_out_of_scope` 拒绝，W02/W03 完整公开入口与 full G2b 仍未完成。不能将格式有效或聚焦测试通过扩大为交付验收。
+- [x] TH-01/IN-02 归档索引含两项，报告和 handoff hash 全匹配且均通过相应 schema；只验收只读预研，T01/T02 仍 not_started。
+- [x] 本仓 S06 的本地范围已有 57 项焦点回归日志与独立复审；剩余真实 StockQA→StockWiki ACK、router 2.1 真实历史工件与跨仓 E2E 属于外部验收门。避免无变化地重复同一 S06 批次。
+- [x] 按用户先前指定的文件名规则只读搜索 Projects：94 个可读匹配文本文件、12 种精确字节内容；六个有效来源产生 209 个 A 股挂牌候选、7 个美股挂牌候选及 331 个去重名称标签。名字/代码未被当作 issuer identity；`中信建投` 的两个不同代码保留为歧义。报告及完整逐行来源见 `docs/implementation/reviews/universe-source-inventory-2026-10-01.md` 和同名 JSON。未写 StockWiki、未导入股票池、未扫描公司。
+- [ ] 等用户从候选输入中确认首批股票池及哪些名称清单纳入；确认前不创建 canonical universe，也不派发快扫。确认后再按 StockWiki owner 的授权范围导入，并以 identity resolver 预览/处理多挂牌及歧义。
+- [ ] QA-04 待交付方提供安全隔离的当前快照、刷新 hash 的 handoff 和 review；SW-IDENT 待交付方修正声明路径并交齐 W02/W03 生产入口。总控收到更新后重验；full G2b 仍需真实 verified、多挂牌、AnalysisSubject 与历史区间 owner 证据。

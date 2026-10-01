@@ -1314,3 +1314,12 @@
 - 从 disposable temp cwd 复跑六文件离线 owner batch **246 passed**；Ruff 对运行时与集成测试通过。首次从 StockQA cwd 运行时 logger 试图写外仓 `logs/` 被 sandbox 拒绝，未触碰该路径；改从临时 cwd 运行后通过。最终临时根不存在，StockQA 55 项 Git 状态逐字节一致，无 API、网络、付费调用或公司文档下载。
 - 当前 StockWiki `master@b4f3846` 新增 W04 operating-MIC 检查。身份 mapping/snapshot/receipt/G2b export/evidence/MIC 和 StockWiki→IQS public CLI E2E 聚焦套件 **113 passed**；pytest 与 E2E home/temp 根均删除，StockWiki 状态输出逐字节一致，仅原有 `.claude/`。
 - 交接门仍未闭合：StockQA `q04_handoff.json` 仍 `partial`/无 `result_commit`，hash 旧且被 `*.json` 忽略；IQS CLI `valid` 只校验声明格式。StockWiki handoff 仍在旧 commit、`status=partial`，IQS CLI 拒绝 `changed_path_out_of_scope`。详细判定见上述 revalidation report；不把测试通过扩大为跨仓包完成。
+
+## 2026-10-01 — 首批股票池来源只读汇总
+
+- 按用户此前指令，从 `C:\Users\郑曾波\Projects` 递归搜索 `*companies*.txt` / `*list*.txt`。发现 94 个可读匹配项、12 种不同精确文件字节内容；`rg` 在若干 pytest/cache/临时目录遇到访问拒绝，搜索覆盖其余可读路径。
+- 识别六份具公司/挂牌候选意义的来源：company-wiki 两份列表、StockInfoDLSimple 两份列表、Research `pending_list.txt`（UTF-16）、earnings-transcripts 的带交易所字段列表。其余匹配文件是环境包/路径恢复/审查行号清单，未混入股票候选。
+- 按带市场的挂牌键去重得到 A 股 209、美股 7；两个名称源精确去重后得到 331 个名称标签。未通过名称自动合并发行人；特别保留 `中信建投` 同名对应两个 A 股代码的歧义。当前上市状态/资料截止日无法由源文件证明。
+- 生成候选级审计材料 `docs/implementation/reviews/universe-source-inventory-2026-10-01.md` 与 `.json`，包含源文件 SHA、94 个命中文件路径/hash、逐行来源、候选挂牌、名称提示与排除项；JSON SHA-256 为 `2fd5f147e8dc6f7c2c47ac386b68666a553a32ecc2fed6d59d2e25c13dbf68ab`。该工件仅供用户确认，未写入 StockWiki 权威名单或启动扫描。
+- 在上述结果复核中，第一次提取脚本在输出前因错误处理 `read_lines` 返回值而中止；未产生文件，修正后生成并校验 216 个挂牌键/331 个规范化标签唯一。一次仅改输出统计字段的校验命令引用了错误 JSON 层级，同样在写入前失败；修正后重新生成并复验。另一次只读探查发现 StockWiki 没有 `.planning/progress.md`，对应 handoff 实际位于 `.planning/sw-ident_handoff_2026-09-30.json`；未更改外仓。
+- 新审计 JSON 通过 JSON 解析、216 挂牌键/331 标签唯一性及 94 个命中文件和六份主来源 SHA 重核。最终 PWF/并行包回归 **96 passed / 53 subtests**（`-p no:cacheprovider -o addopts=`），计划验证仍为 107 tasks / 366 cases / G6；`git diff --check` 通过。没有 API、网络、下载或外仓写入。

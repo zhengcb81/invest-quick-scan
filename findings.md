@@ -1169,3 +1169,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - QA-04 `next_run` 公开 CLI 场景此前只断言两题均走启动模型、策略版本相同；本次补充检查两题所有 attempt 均不带 `policy_transition`，将 review 中的 F9 测试缺口补齐。六文件离线回归 246 passed、Ruff 通过，StockQA 当前仍 55 项共享状态；有效快照、owner hash/回执刷新和安全隔离提交仍需单独闭合。
 - StockWiki 最新 `b4f3846` 仅增加 MIC operating-venue 校验相关提交；当前身份、证据库、市场注册表和 StockWiki→IQS CLI E2E 聚焦测试 113 passed，状态仅有原 `.claude/`。现有 SW-IDENT handoff 仍指向较早结果提交 `1cabb47`，`authorized_paths` 漏 `quick_scan_evidence.py` 及其测试，故公开 intake CLI 明确报 `changed_path_out_of_scope`；不得将较新 W04 测试通过解释为 W01–W03/完整 G2b 完成。
 - 两组复测的临时测试根已删除、外仓 status 输出保持不变。StockQA 外仓 logger 首次因默认相对路径 `logs/` 权限失败，测试改从唯一临时 cwd 执行，避免修改外仓内容；成功回归及文件 hash 详见 `docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`。
+
+## 2026-10-01 — 股票池候选文件审计与身份限制
+
+- Projects 下有 94 个可读 `*companies*.txt` / `*list*.txt` 文件名匹配项、12 种精确文件内容。多个 company-wiki 列表副本内容相同或只差编码/换行；按文件 hash 去重能消除重复快照，不应将 review/worktree 副本当成额外来源。
+- Company-wiki A 股清单 205 个代码，StockInfoDLSimple 清单 192 个，交集 188、并集 209；另有 7 个 NASDAQ/NYSE 候选 ticker。company-wiki 目录名 239 个、Research pending 名单 158 个，精确名称交集 66，合并为 331 个 distinct 标签。它们是候选输入，不代表 216 家不同发行人或当前均上市。
+- 仅用 `(market, exchange, ticker)` 精确去重挂牌。未提供可靠 issuer key 的目录名、中文/英文别名或代码变更只产生未解析记录/提示；即使名称唯一也不自动合并。`中信建投` 精确标签连到两个不同 A 股代码，证明名称匹配要保留候选歧义。
+- 原文件不含可信信息截止时间或 listing status。查找有少量拒绝访问的 pytest/cache/临时目录，因此审计准确表述为“全部可读匹配文件”，不声称扫描了被操作系统拒绝的路径。逐文件 provenance、hash 和 candidate-only JSON 见 `docs/implementation/reviews/universe-source-inventory-2026-10-01.json`。
+- StockWiki CodeGraph 的宽泛 quick-scan context 查询只返回 UI 符号，未提供这批 identity/universe 入口的结构上下文；本轮验收依据实际 handoff 和只读文件状态。后续代码审查需先确认相关 owner 文件确实进入索引。
