@@ -718,13 +718,13 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 
 ## Phase 46: 未提交工作树只读盘点与独立任务包
 
-Status: all_seven_reports_received_and_reviewed; DWA-03_protocol_breach_DWA-04_visibility_stop_DWA-05_scope_breach_DWA-06_drift; followups_pending
+Status: intake_and_synthesis_complete; DWA-03_protocol_breach_DWA-04_visibility_stop_DWA-05_scope_breach_DWA-06_drift; followups_pending
 
 - [x] 对 `Projects` 下顶层 Git 项目做只读状态扫描，以每个项目目录为 Git 根，排除嵌套测试夹具造成的伪项目发现；Git 安全目录只通过单次命令参数设置，不改全局配置。
 - [x] 为本次发现的7个脏仓库固定 HEAD、分支、完整 `--untracked-files=all` porcelain 清单、状态摘要和可读取的非敏感文件哈希；每仓库任务卡均要求开始/结束复核，漂移则停止旧快照归因。
 - [x] 任务包明确只读边界、凭据/本地配置脱敏、每条路径的来源/未提交原因/分类/处置建议/信心等级，以及禁止自行删除、提交或运行会改动数据的脚本。
-- [ ] 将DWA-01至DWA-07分派给不同只读harness并收回带快照核验结果的逐路径报告；冲突时以各仓库owner提供的新快照重新派工。
-- [ ] 总控合并报告，核实临时文件可重建性、用户依赖和工作归属；需清理或提交时按仓库owner与现有授权分别办理，不在只读审计任务内实施。
+- [x] 将 DWA-01 至 DWA-07 分派给独立只读 harness 并收回交付；逐项核对快照/状态漂移和任务边界。完成收件不代表每份审计均通过，例外结论见验收报告。
+- [x] 总控汇总七份交付并形成验收结论；对违规、可见性不足、漂移或证据不足的项目明确保留待办，不推断文件可删除或可重建，也不据此清理或提交外仓改动。
 
 独立任务包索引：`docs/implementation/reviews/dirty-worktree-audits/2026-10-01/README.md`。
 
