@@ -1358,3 +1358,8 @@
 - [x] DWA-06只读状态仍为63项，SHA `d9951959…`，比旧62项基线多`?? nul`；不读取该路径内容、不删除、不归因。旧卡不能直接作为新审计快照使用。
 - [x] `python -B -X utf8 -m stockwiki.cli --help`与`identity-export-g2b --help`只读检查确认没有候选导入/解析/名单preview CLI；G2b导出要求已有精确`--entity-id`和`--as-of`，不能为216个未解析挂牌候选生成身份/状态预览。因此未导入、未扫描，也未写StockWiki。
 - 当前可交给独立只读 harness 的复审可复用 DWA-03/04/05 原任务卡，但必须在开工/结束重新核对状态；DWA-04必须具备owner侧6124项可见性，DWA-05不得碰`config.json`。DWA-06需owner确认当前漂移后另冻结快照。没有新的独立实现卡达到开工门：Q05/W05和TH-01/IN-02仍受各自依赖阻挡，且不得再派第二个写入者进入QA-04或SW-IDENT仓库。
+
+## 2026-10-01 — S03真实历史发布兼容回归
+
+- [x] 按 DUR-04 复审意见，先检查仓库当前归档与可用 Git 历史：存在真实、已提交且不可变的 3.0.0 模块发布包；未找到真实 3.1.0 metric manifest。新增 `test_mod_17_committed_3_0_0_release_archive_remains_readable`，将实际 release tree 复制到测试临时根后调用 `module_registry.load_package`，断言 package/release 身份、schema/指纹版本、48个模块、222题及模块版本3.0.0。真实归档单测 **1 passed**；注册表/模块契约/manifest 聚焦套件 **55 passed / 13 subtests**，临时目录由测试清理。
+- S03整体仍未关闭：新用例证明当前真实3.0.0已提交归档可读，不替代缺失的3.1.0历史样本；TIME-06与E2E-06仍未执行。没有生产代码或题义变更。

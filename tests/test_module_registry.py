@@ -137,6 +137,21 @@ class ModuleRegistryTests(unittest.TestCase):
         self.assertEqual(len(catalog["modules"]), 48)
         self.assertEqual(set(validated_modules), set(modules))
 
+    def test_mod_17_committed_3_0_0_release_archive_remains_readable(self):
+        shutil.copytree(ROOT / "questions" / "releases", self.root / "questions" / "releases")
+        package_id = "pkg_24f07923f23cf0a2be5d7fb4b36a11925c779a8f4a68bdc9c81457084ded080f"
+
+        package, modules, release, contexts = registry.load_package(package_id, root=self.root)
+
+        self.assertEqual(package["package_id"], package_id)
+        self.assertEqual(package["schema_version"], "1.0.0")
+        self.assertEqual(package["semantic_fingerprint_version"], "2.0.0")
+        self.assertEqual(release["release_id"], package["release_id"])
+        self.assertEqual(len(modules), 48)
+        self.assertEqual(sum(len(module["questions"]) for module in modules.values()), 222)
+        self.assertEqual({module["version"] for module in modules.values()}, {"3.0.0"})
+        self.assertTrue(contexts)
+
     def test_mod_17_rehashed_same_id_legacy_archive_is_rejected(self):
         original = self.publish()
         package, _, release, _ = registry.load_package(original["package_id"], root=self.root)

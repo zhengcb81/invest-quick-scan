@@ -1200,6 +1200,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 当前 StockWiki `stockwiki.cli` 公开命令列表不含候选导入、identity resolve或universe预览；`identity-export-g2b`仅从精确Entity ID与`as-of`导出，不能预览216个挂牌候选。名单写入前的身份/上市状态owner预览因此尚不能执行，需W02/W03提供可隔离的候选preview入口。CLI检查以`python -B`执行，没有写缓存、生产库或网络。
 - 可派发的新增工作目前是DWA-03/04/05合规复审，而非新的实现线；Q05、W05、TH-01、IN-02仍被验收/依赖门阻挡。不得让第二个写入harness并行修改QA-04或SW-IDENT所在仓库。
 
+## 2026-10-01 — 真实历史题库发布兼容性
+
+- S03/DUR-04原有测试通过修改临时作者文件的版本头模拟3.1.0，不能证明历史3.1.0归档可读。当前仓库确实保留了内容哈希绑定的3.0.0发布包（48模块、222题，package `pkg_24f07923…`，semantic fingerprint 2.0.0）；调用`module_registry.load_package`能从真实不可变归档加载它。
+- 新增隔离回归将实际`questions/releases`复制到独立临时根，并验证此3.0.0包的schema/package/release、模块数、题数和版本。相关55项unit/integration式契约回归、13个子例均通过。该证据证明3.0.0兼容，不证明未找到的3.1.0历史格式；S03仍因TIME-06与E2E-06未完成而保持partial。
+
 ## 2026-10-01 — DWA 回执验收初步结论
 
 - DWA-01 报告满足单项状态覆盖和保密边界。路径名 `config/FMP_API_KEY.txt` 足以要求防止误提交，但因审计者未读内容，实际用途只能表述为疑似凭据；文件是否保留、ignore 或迁移由 filing-fetch owner 决定。
