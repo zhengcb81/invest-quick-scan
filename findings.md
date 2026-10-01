@@ -1220,3 +1220,20 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - DWA-06 报告声称原62个路径哈希全匹配，新增 `?? nul` 是审计窗口漂移且源头未知。当前只读状态仍是63项，摘要与报告结束态相同。零字节不是可删除性证明，特别考虑其他并行进程；保持现状待 owner 核实。分组/通配符汇总还不足以替代逐路径状态与处置清单。
 - DWA-07 独立 harness 依 owner 选择的全局忽略规则复查为零状态，且保留了初始 `?? .claude/settings.local.json` 观察和其元数据。当前 IQS shell因权限无法读取同一 global ignore，显示一条；两者差异已明确记录，不读该本地配置内容。
 - DWA-01/02/07 的报告可接收；DWA-04 漂移停止操作合规但任务未完成；DWA-03拒收、DWA-05有禁读违规、DWA-06属于覆盖部分有效而存在新增漂移。七份逐项判断与owner后续事项见 `docs/implementation/reviews/dirty-worktree-audits/2026-10-01/acceptance-review.md`。
+
+## 2026-10-01 — 全项目各线进度与 PWF 一致性复核
+
+总体结论：107 tasks / 366 acceptance cases / G6 的结构校验有效；现有owner分区与先决关系总体自洽，没有证据支持重排主依赖图。真正需要的是修正“当前状态”而非改架构：部分交付有测试通过，但handoff/生产接线仍未闭环，必须维持partial。
+
+| 工作线 | 当前可确认进展 | 仍未关闭的门 |
+|---|---|---|
+| IQS本地契约与模块化题库 | 核心契约、主要本地实现和阶段审查已留档；S01/S04/S05的本地模块发布/拼装范围通过。真实3.0.0归档读取新增回归通过。 | S03仍缺真实3.1.0历史样本、TIME-06与E2E-06；S06仍缺真实跨仓ACK、router 2.1历史工件和授权E2E。旧C01–C07回执刷新已退役。 |
+| StockQA模型/快扫执行 | Q01离线范围验收；Q02的MiMo首提供商当前快照真实搜索E2E和同快照离线回归通过；Q03解析整改有精确快照复核；Q04运行行为批次246项通过。 | Q02整体仍partial：MiniMax最终快照无verified搜索receipt，其他provider/价格/跨仓链路不由MiMo单项证明。Q03仍受Q02依赖门影响。Q04 handoff过期且`result_commit=null`；Q06–Q10多为底座首段，尚无完整公共runner、权威身份投影和StockWiki ACK。 |
+| StockWiki身份与股票池 | W01基础库已验收；W04 owner身份导出与provisional Entity/mapping切片被IQS消费端复验；当前StockWiki `b4f3846`聚焦跨仓回归113项通过。 | SW-IDENT handoff因`changed_path_out_of_scope`无效；W02/W03候选preview、歧义/挂牌状态事件及生产接线不完整。full G2b还缺真实verified、多挂牌、AnalysisSubject、有效区间样本；W05/UI未进入授权施工。 |
+| 主题/行业消费者 | TH-01与IN-02只读预研已按hash/schema归档。 | T01/T02未开始；G3/F05/W11、生产query/golden和技能仓唯一Git owner仍是开工门。 |
+| 首批公司范围 | 用户已确认216个带市场的挂牌候选作为输入；331个名称标签只用于待解析提示。 | 尚未形成canonical发行人名单，StockWiki公开CLI缺候选预览入口。用户确认输入不等于导入或扫描授权；未解析/歧义不能进扫描队列。 |
+| DWA外仓状态审计 | 七份报告均已收到；DWA-01/02/07通过初审。StockQAbyLLM此审计快照63条状态，含`?? nul`。 | DWA-03不符合只读纪律，DWA-04按可见性差异停止，DWA-05读了禁读文件，DWA-06需解释漂移并补逐路径清单。任何清理/提交都需另行owner决定与授权。 |
+
+外部只读快照：StockQAbyLLM `master@3c685dda`、63条状态；StockWiki `master@b4f3846`、可见1条既有未跟踪`.claude/`状态（未查看内容）；company-wiki `master@00af53f`、analyze-theme-value-chain `master@3c9a49c`、industry-research `main@4a80f99`、local-skills `main@ec4db38`均干净；revenue-forecast `fcap@ee0a82b`有6,124条状态。它们只是观察时快照，不是对后续并行进程状态的承诺。
+
+本轮只调整IQS的PWF状态叙述：首批长期容量目标与当前输入分开；Phase 44/45反映施工卡已实施但未验收收口；把StockQA 61条观察标为历史并以随后63条观察作新近记录；删除“等待用户确认名单”的过期表述；将Q02 MiMo实测写入当前计划并刷新Next Step。没有重排任务依赖或扩大外仓授权。

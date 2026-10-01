@@ -1363,3 +1363,12 @@
 
 - [x] 按 DUR-04 复审意见，先检查仓库当前归档与可用 Git 历史：存在真实、已提交且不可变的 3.0.0 模块发布包；未找到真实 3.1.0 metric manifest。新增 `test_mod_17_committed_3_0_0_release_archive_remains_readable`，将实际 release tree 复制到测试临时根后调用 `module_registry.load_package`，断言 package/release 身份、schema/指纹版本、48个模块、222题及模块版本3.0.0。真实归档单测 **1 passed**；注册表/模块契约/manifest 聚焦套件 **55 passed / 13 subtests**，临时目录由测试清理。
 - S03整体仍未关闭：新用例证明当前真实3.0.0已提交归档可读，不替代缺失的3.1.0历史样本；TIME-06与E2E-06仍未执行。没有生产代码或题义变更。
+
+## 2026-10-01 — 全项目各线进度与计划对照
+
+- 对照`task_plan.md`、近期handoff验收、DWA验收、模块归档测试和首批候选记录。计划结构仍为107 tasks / 366 acceptance cases / G6，校验有效；没有调整owner边界或依赖顺序。
+- 当前关键线：IQS模块/契约本地范围总体按计划推进，S03/S06仍partial；Q02 MiMo首提供商真实搜索E2E验收通过但MiniMax最终快照仍无verified搜索receipt，故Q02整体partial；Q04功能回归246 passed但handoff过期、无`result_commit`；SW-IDENT handoff仍因路径声明越界无效，W02/W03生产preview与完整G2b未闭环；TH-01/IN-02只读预研已归档，T01/T02未开始。
+- 首批216个带市场挂牌候选已获用户确认作为输入，尚无可隔离身份/挂牌状态preview入口；没有导入StockWiki或启动扫描。长期约2,000家公司仅是容量规划，不是当前名单。
+- DWA首轮报告全部收到，但只有DWA-01/02/07可接收；DWA-03/04/05各有纪律/可见性/范围问题，DWA-06比原快照多出`?? nul`，需owner先确认并建立新基线。没有清理或修改外仓。
+- PWF修正了过时的名单确认措辞、Phase 44/45施工状态、StockQA 61/63条状态观察的时间顺序、Q02 MiMo首提供商结果和总控Next Step。未改任务依赖或扩大授权范围；外仓继续只读。
+- 验证：`python -B -X utf8 scripts/implementation_plan.py validate`通过（107 tasks / 366 acceptance cases / G6）；`tests/test_task_receipt_retirement.py`、`tests/test_implementation_plan.py`、`tests/test_parallel_lane_plan.py`共93 passed / 241 subtests；`git diff --check`通过。Git状态检查打印了本机global ignore与`.pytest_cache`权限warning，但没有阻止测试/计划校验，也未修改外部仓库。

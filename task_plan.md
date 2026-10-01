@@ -1,7 +1,7 @@
 # 大股票池快速扫描与产业链检索：总体规划
 
 ## Goal
-为约2,000家独立上市公司（A/H/美股各600—800家为可重叠覆盖软目标）的持续画像、字段评分白名单、产业链语义检索和深度研究交接，逐卡实施跨项目方案。本目录可写；用户已授权StockQAbyLLM全仓写入但须事先报备拟改文件/目的；StockWiki的W01及W02/W03精确范围已授权，W02/W03仅限8个名单身份/成员管理源码与测试文件，不含W05、UI或其他文件；company-wiki等其他仓库只读，写前另获许可。不批量下载公司文档，不把离线契约验收冒充生产上线。
+为用户逐批确认的上市公司池建立持续画像、字段评分白名单、产业链语义检索和深度研究交接，并逐卡实施跨项目方案。约2,000家及A/H/美股各600—800家只作长期容量规划，不是已批准的首批名单或发行人数承诺；当前首批输入是用户确认的216个带市场挂牌候选。本目录可写；用户已授权StockQAbyLLM全仓写入但须事先报备拟改文件/目的；StockWiki的W01及W02/W03精确范围已授权，W02/W03仅限8个名单身份/成员管理源码与测试文件，不含W05、UI或其他文件；company-wiki等其他仓库只读，写前另获许可。不批量下载公司文档，不把离线契约验收冒充生产上线。
 
 ## Ownership and Scope
 - 计划所有者：当前任务 `/root`。
@@ -114,6 +114,7 @@ Status: historical_superseded_by_Phase_43_task_receipt_retirement
 - Q02 latest endpoint/credential diagnostic (2026-09-27): a bounded one-query `.cn` live pass is recorded above, but a later same-route request returned HTTP 200/completed without a correlated search result and correctly remained unscored/unverified; two diagnostic calls to the official `.io` host returned HTTP 401 with the configured key. The live test now accepts `STOCKQA_MINIMAX_ANTHROPIC_BASE_URL` and uses safe UTF-8 diagnostics. Focused offline client/CLI tests passed 17/17; independent read-only review is pending. Q02 remains partial until a supported endpoint/key pair produces a verified current-snapshot search receipt. Evidence: `docs/implementation/contracts/validation-Q02-endpoint-region-diagnostic-2026-09-27.md`.
 - Q02 test-review follow-up (2026-09-27): independent r1 found a P1 indentation error, P2 overconstraint on optional request_id, and P3 loss of the allowlisted web_search error_code in the safe summary. All three are fixed. Current live-test SHA256 `CC1423ECC7E5F24AE26ACF2F08067B3613F5AE9BDAE22AF6D8B5A9E8D10BA95F`; AST parsing passes, live selector collects without execution, and isolated focus passes 17/17. R2 review closed the P1/P2/P3 findings with no new P0-P2 (report SHA256 F5D7DC9413F6248DC9C87218558CB9665353F5C0E4EC8C33B506462D127A8113); Q02 remains partial pending a stable verified live search receipt.
 - 2026-09-27 MiMo single-query live retest through the public CLI returned `error/unverified` with no HTTP status, model, response ID, or source URL. Its unique temp root was cleaned. Because the transport receipt cannot prove the request was not sent, this is an unknown outcome and must not be blindly retried; no cause or live-search success is inferred. See the detailed entry in `progress.md`.
+- Q02首提供商切片于2026-09-30完成新快照验收：MiMo公开CLI真实Microsoft搜索E2E为1 passed，同快照离线测试159 passed并经独立复核；仅关闭该MiMo切片，不关闭G1、其他提供商能力、费用核对或跨仓接线。MiniMax最终快照仍无verified搜索receipt，故Q02整体保持partial。详见`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。
 - [ ] Q03: F03重复JSON对象键在direct与Markdown兼容路径曾可绕过并从metadata误取9分；现只提取完整外层JSON并fail closed，direct/Markdown固定案例通过，r2独立复审verified。Q03仍因前置Q02未完成而保持partial；Q12/S02不替代Q02的LLM-01 live。
 - [ ] Q04: B1/B2完整v2策略校验经r4独立复审verified。route-recovery r6复审发现备用成功仍误报等待，r7在用户新授权/提前报备的四文件内修复成功答案、终局无结果和公开JSON的`dispatch_outcome`；114项隔离unit/CLI及真实代码路径探针经独立复审通过。Q04整体仍partial：运行中policy热更新及同一路由容量满时等待（PAR-11）开放。LLM-06的本轮结果分类与停止fallback由Q04负责；持久冷却/跨运行`retry_wait`由Q08负责，共享全局容量PAR-03由Q11负责，StockWiki设置接线PAR-08由X09负责。
 - [x] Q12: StockQA公开回执输出实际Question.text哈希和每次HTTP状态；64项定向、461项剩余全套通过/1项live跳过，独立复核无finding。对话中称作Q03R，但正式任务ID按计划校验器规则定为Q12。
@@ -416,8 +417,17 @@ Status: complete_for_planning_only
 
 - Q03首轮快照回归通过166项后，独立复核发现一个P1：JSON数组/对象类型的`status`使parser抛`TypeError`，导致公开CLI丢弃已完成搜索回执。已按TDD修复并补事件级回执断言，完整Q03隔离回归170项通过；两轮独立只读复核均未发现未解决项，最终复核匹配三份当前SHA。Q03解析与结果回执路径的任务级验收已通过。初始报告parser单测SHA有单字符笔误，已更正；精确命令、SHA与审查边界见`docs/implementation/contracts/validation-Q03-current-snapshot-2026-09-30.md`。该任务级验收不代表G1/全项目、其他模型或跨仓链路完成。
 - G2b 的 provisional Entity + mapping 1.0.0 接口切片已由独立复审通过；完整 G2b 仍待 StockWiki 真实 verified/多挂牌/AnalysisSubject 与历史区间 owner 样本。S06 本地范围测试/复审已通过，整卡仍待 StockQA→StockWiki 真实 ACK、router 2.1 历史样本和获批跨仓 E2E。
-- QA-04 当前行为回归有 246 passed 证据，但 handoff 仍 `partial`/`result_commit=null`；当前再次观察到 61 个 StockQA 状态路径，handoff 记录 55。SW-IDENT handoff 因 `changed_path_out_of_scope` 被公开 CLI 拒绝，W02/W03 生产入口仍有缺口。TH-01/IN-02 只读预研归档有效，T01/T02 仍 not_started；详见 2026-10-01 复验报告。
-- Projects 股票池候选文件已完成只读清点，完整列表和来源 hash 在 `docs/implementation/reviews/universe-source-inventory-2026-10-01.json`。需要用户先确认纳入范围；此文件不等于 canonical universe，未写 StockWiki、未扫描。
+- QA-04当前行为回归有246 passed证据，但handoff仍`partial`/`result_commit=null`；复验报告记录61条状态，随后DWA-06盘点记录63条（含`?? nul`），handoff仍记录55。SW-IDENT handoff因`changed_path_out_of_scope`被公开CLI拒绝，W02/W03生产入口仍有缺口。TH-01/IN-02只读预研归档有效，T01/T02仍not_started；详见2026-10-01复验报告和DWA审计报告。
+- Projects股票池候选文件已完成只读清点，完整列表和来源hash在`docs/implementation/reviews/universe-source-inventory-2026-10-01.json`。用户已确认216个带市场挂牌候选作为首批输入；该确认不等于canonical universe导入授权或扫描授权，候选文件仍未写StockWiki、未扫描。
+
+### 当前总控动作
+
+- 下一项关键路径是让StockWiki owner完成W02/W03的可隔离挂牌候选身份预览入口。收到修正后的范围声明、可运行preview和真实歧义/挂牌状态样例后，总控复核公开CLI与隔离端到端，再报告精确写入范围供后续授权；未解析/歧义项不得进入扫描队列。
+- QA-04只在owner提供安全隔离的当前快照、与其hash一致的handoff/review后复验并收口；当前StockQA共享工作树最新已知状态为63条，含`?? nul`。不整树暂存/提交，也不重复运行无变化的246项批次。
+- 完整G2b仍需StockWiki真实verified、多挂牌、AnalysisSubject及历史有效区间owner样本；S06仍需真实StockQA→StockWiki事务ACK、router 2.1历史工件和获批跨仓E2E。provisional Entity/mapping接口切片已签收，不扩张其覆盖声明。
+- TH-01/IN-02只读预研已归档验收；T01/T02仍受G3/F05/W11、生产query/golden及技能仓唯一owner决策阻塞。
+- DWA-03/04/05可在满足各自基线、可见性和禁读条件后重新只读审计；DWA-06须先由owner确认63条状态中的`?? nul`并冻结新基线。七项盘点不等于七仓改动原因均已查清。
+- MiMo首提供商live验收、Q03修复、S03真实3.0.0归档回归及DWA首轮审查均已分别留档；外部交付门未变。变更发生前不重跑相同大批次。
 
 ## 2026-09-29 — S06 路由执行门与测试owner修复
 
@@ -647,7 +657,7 @@ Status: complete_for_local_IQS_lane_scope_external_G2b_remains_open
 
 ## Phase 44: 跨Harness并行施工包、路径所有权与集成接口
 
-Status: complete_plan_ready_for_dispatch_after_owner_preflight
+Status: plan_complete; QA-04_closeout_and_SW-IDENT_delivery_partial; downstream_dispatch_gated
 
 - [x] 按107项任务的owner与依赖图聚合工作；每条实现线拥有不相交的项目目录，多个任务若共享脚本、存储或测试路径则留在同一线内顺序实施，不强行拆小。
 - [x] 冻结IQS总控、StockQA执行、StockWiki权威存储/UI、主题研究消费者、行业研究消费者五条实现线；Theme与Industry虽目录分开，但共用`local-skills` Git根，须各用独立分支/工作树且只写各自技能子目录。
@@ -655,19 +665,19 @@ Status: complete_plan_ready_for_dispatch_after_owner_preflight
 - [x] 定义标准机器可读handoff schema与计划校验测试，检查任务owner覆盖无遗漏/重复、目录所有权不重叠、文档均存在及schema最低字段齐全。
 - [x] 将完整跨项目X09/X10、付费B01/真实搜索实验与G2b真实StockWiki golden保留为后置门；handoff文档不授予外仓写入、真实API、用户名单选择或费用权限。
 - [x] 规定大节点合并审查（G0—G6）和高风险边界复核；小任务按TDD自测并归入同一owner批次，不逐卡重复独立审查。
-- [x] 标明执行前必须隔离当前共享工作树：StockQA当前有55项未提交状态；StockWiki存在未跟踪`.claude/`目录；不得清理、覆盖或把无关状态带入lane提交。
-- [ ] 执行Q04前冻结含Q03修复的准确StockQA基线，并报告Q04精确写入文件；用户先前授权的是StockQA写入但需事前报备，StockWiki后续W05/UI等仍须另行精确授权。
+- [x] 标明施工包编制时必须隔离共享工作树：StockQA当时观测到55项未提交状态，StockWiki存在未跟踪`.claude/`目录；状态会随其他进程变化，开工前必须重新核验，不得清理、覆盖或把无关状态带入lane提交。
+- [ ] QA-04实施前的StockQA隔离基线门未能作为干净独立快照满足：QA-04结果目前仍与共享工作树状态交叠。该前置条件不能事后补勾；正式收尾前，交付方须冻结可复核的精确改动快照、刷新handoff/hash/review，并把预存改动与QA-04改动分清。不得为收尾整树暂存或提交StockQA；StockWiki后续W05/UI仍须另行精确授权。
 
 ## Phase 45: 可交给独立 harness 的下一段精细施工卡
 
-Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
+Status: package_docs_complete; QA-04_and_SW-IDENT_first_segments_received; both_delivery_partial; TH-01_IN-02_prestudy_complete; downstream_gates_pending
 
 - [x] 以五条长线为上层 owner，只挑四个不重叠的下一段工作包：QA-04、SW-IDENT、TH-01、IN-02；机器目录和独立文档位于 `docs/implementation/parallel-lanes/packages/`，上层总文档已链接。
-- [x] 将 QA-04 的 LLM-10 运行中策略边界和 PAR-11 首选路由槽位等待写成公开入口 TDD/POST 计数验收；明确保留 Q03 已完成修复和 55 项既有 StockQA 状态。
+- [x] 将 QA-04 的 LLM-10 运行中策略边界和 PAR-11 首选路由槽位等待写成公开入口 TDD/POST 计数验收；施工包编制时保留当时观测到的Q03修复和55项既有StockQA状态作为基线信息，执行前仍需复核。
 - [x] 发现 StockWiki 新合并 `master@c8cfb2e` 已含真实 `identity_snapshot.py` / `identity_mapping.py`，修正旧计划路径假设；SW-IDENT 要求先复核 W01/W02/W03 新基线，再补缺口并交真正 serializer golden，且不越过既有文件授权。
 - [x] TH-01/IN-02 文档明确 G3、F05、W11 与生产 query/golden/写授权为硬门；两者当前只能做只读准备，不能用 IQS 本地协议定义冒充生产端点。
 - [x] 新增包级机器 manifest 与回归，检查 owner/任务前置/写入 scope 无重叠、文档链接和只读门；包内只在大节点或高风险边界审查，worker 标准 handoff 交总控。
-- [ ] QA-04 和 SW-IDENT 由各 owner 通过工作树/授权/依赖预检后实施；总控只在真实 StockWiki golden 到达后做 G2b 跨仓验证。TH-01/IN-02 等待 G3/F05/W11，不抢跑。
+- [x] QA-04 和 SW-IDENT 已收到首段实现/测试交付并进入总控复核；这不代表交付完成。QA-04 handoff/hash仍过期且无result_commit，SW-IDENT handoff因声明路径越界被拒，W02/W03生产入口与完整G2b仍缺证据。总控只在真实StockWiki owner golden到达后做G2b跨仓验证。TH-01/IN-02只读预研已验收，实施继续等待G3/F05/W11，不抢跑。
 - [x] IQS 总控只读复验 StockWiki 当前身份 producer：专项 29 passed；临时权威库的真实 serializer hash 与 owner 摘要相同；缺 `identity_receipts`/`market_registry` 导致 IQS CLI 诊断负例退出 2。已把精确差距交给 SW-IDENT，G2b 保持 pending。
 - [x] 为 TH-01/IN-02 定义只读预研、handoff 与留档接口：harness 返回 Markdown+标准 JSON；IQS 总控核验后以内容 hash 命名保存，并维护 JSON Schema 校验的不可变索引。索引起初为空；2026-09-30 两份真实原件已验收归档。T01/T02 仍待 G3/F05/W11、生产 query/golden 和写授权。
 - [x] 按用户要求把两条预研所需的只读步骤、字段/接口核查、完整 Markdown+JSON 交接与总控归档规则直接嵌入 TH-01/IN-02 各自文档；交给独立 harness 时无需依赖聊天上下文。两份后续交付已按本规则验收，见预研索引。
@@ -703,11 +713,11 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] QA-04 在临时 cwd 复跑六文件离线批次 **246 passed**，Ruff 通过；增加 `next_run` 两题回执均无 `policy_transition` 的公开 CLI 断言。临时根删除，StockQA 55 项状态前后字节一致；未调用 API/网络、未下载公司资料。
 - [x] SW-IDENT 在当前 StockWiki `b4f3846` 复跑身份、G2b、证据存储、MIC 与 IQS public CLI 跨仓 E2E 聚焦包，**113 passed**；临时 pytest/home 根删除，StockWiki 状态仍只有既有 `.claude/`。
 - [x] 新复核报告记录精确文件哈希和 handoff CLI 结果：QA-04 CLI `valid` 仅表示自述格式/范围可解析，回执仍 stale、`result_commit=null`；SW-IDENT CLI `invalid/changed_path_out_of_scope`，新 evidence store/test 未列在 `authorized_paths`。
-- [ ] QA-04 交付快照和当前 handoff 尚未一致；本次状态盘点为 61 条，handoff 仍记录 55 条且无 `result_commit`，不对共享脏树整树提交。SW-IDENT handoff 路径范围无效且 W02/W03/full G2b 仍缺生产证据。详见 `docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md` 与 2026-10-01 当前进度段。
+- [ ] QA-04 交付快照和当前 handoff 尚未一致；2026-10-01复验报告当时观察到61条状态，后续DWA-06只读盘点为63条（含`?? nul`），handoff仍记录55条且无`result_commit`。以63条作为当前观测，不对共享脏树整树提交。SW-IDENT handoff路径范围无效且W02/W03/full G2b仍缺生产证据。详见`docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`及DWA-06审计记录。
 
 ### 2026-10-01 — 当前执行状态与首批候选来源
 
-- [x] 重验 QA-04、SW-IDENT、TH-01/IN-02 handoff；独立结论见 `docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`。QA-04 运行行为有 246 项离线回归证据，但当前交付仍 partial；此次当前工作树状态数为 61，handoff 仍记 55，`result_commit=null`。StockWiki 当前 `b4f3846` 的聚焦回归记录为 113 项通过，但 handoff CLI 因 `changed_path_out_of_scope` 拒绝，W02/W03 完整公开入口与 full G2b 仍未完成。不能将格式有效或聚焦测试通过扩大为交付验收。
+- [x] 重验 QA-04、SW-IDENT、TH-01/IN-02 handoff；独立结论见 `docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`。QA-04运行行为有246项离线回归证据；该复验时观察到61条，随后DWA-06盘点为63条（含`?? nul`），handoff仍记55且`result_commit=null`。StockWiki `b4f3846`聚焦回归为113项通过，但handoff CLI因`changed_path_out_of_scope`拒绝，W02/W03完整公开入口与full G2b仍未完成。不能将格式有效或聚焦测试通过扩大为交付验收。
 - [x] TH-01/IN-02 归档索引含两项，报告和 handoff hash 全匹配且均通过相应 schema；只验收只读预研，T01/T02 仍 not_started。
 - [x] 本仓 S06 的本地范围已有 57 项焦点回归日志与独立复审；剩余真实 StockQA→StockWiki ACK、router 2.1 真实历史工件与跨仓 E2E 属于外部验收门。避免无变化地重复同一 S06 批次。
 - [x] 按用户先前指定的文件名规则只读搜索 Projects：94 个可读匹配文本文件、12 种精确字节内容；六个有效来源产生 209 个 A 股挂牌候选、7 个美股挂牌候选及 331 个去重名称标签。名字/代码未被当作 issuer identity；`中信建投` 的两个不同代码保留为歧义。报告及完整逐行来源见 `docs/implementation/reviews/universe-source-inventory-2026-10-01.md` 和同名 JSON。未写 StockWiki、未导入股票池、未扫描公司。
