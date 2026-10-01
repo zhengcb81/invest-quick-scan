@@ -712,7 +712,7 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [x] 本仓 S06 的本地范围已有 57 项焦点回归日志与独立复审；剩余真实 StockQA→StockWiki ACK、router 2.1 真实历史工件与跨仓 E2E 属于外部验收门。避免无变化地重复同一 S06 批次。
 - [x] 按用户先前指定的文件名规则只读搜索 Projects：94 个可读匹配文本文件、12 种精确字节内容；六个有效来源产生 209 个 A 股挂牌候选、7 个美股挂牌候选及 331 个去重名称标签。名字/代码未被当作 issuer identity；`中信建投` 的两个不同代码保留为歧义。报告及完整逐行来源见 `docs/implementation/reviews/universe-source-inventory-2026-10-01.md` 和同名 JSON。未写 StockWiki、未导入股票池、未扫描公司。
 - [x] 用户已确认首批输入采用审计报告中的216个带市场的挂牌候选；331个名称标签保留为待解析提示，不据此自动合并发行人或扩大挂牌成员。确认只覆盖候选范围，不等于StockWiki权威导入或扫描。
-- [ ] 在任何StockWiki写入前，由owner对216个挂牌候选作身份/状态预览并报告精确改动路径，再取得该导入工作的明确写授权； unresolved/ambiguous项目不进入付费扫描队列。
+- [ ] 在任何StockWiki写入前，由owner对216个挂牌候选作身份/挂牌状态预览并报告精确改动路径，再取得该导入工作的明确写授权；unresolved/ambiguous项目不进入付费扫描队列。2026-10-01只读检查公开CLI：命令表没有候选导入、解析或名单预览入口；`identity-export-g2b`仅接受精确`--entity-id`和`--as-of`，不能替代216项预览。因此先由W02/W03交付公开、可隔离的preview入口，再执行owner预览；不写生产库、不扫描。
 - [ ] 下一批跨仓候选施工包为StockQA Q05（Q03/Q04通过且Q04快照正式收口后）与StockWiki W05（W01、W02、W03、G1、S05全部满足并取得W05精确写授权后）；它们目录owner不同，可在各自开工门通过后并行，但当前都不得提前实施。
 - [ ] QA-04 待交付方提供安全隔离的当前快照、刷新 hash 的 handoff 和 review；SW-IDENT 待交付方修正声明路径并交齐 W02/W03 生产入口。总控收到更新后重验；full G2b 仍需真实 verified、多挂牌、AnalysisSubject 与历史区间 owner 证据。
 
@@ -733,4 +733,5 @@ Status: intake_and_synthesis_complete; DWA-03_protocol_breach_DWA-04_visibility_
 - [x] 收到 DWA-04 可见性漂移报告并按规则停止逐项归因；owner 环境的只读复核为 6124 条、原状态摘要一致，2274/2274 个普通可哈希路径一致。该 harness 报告不构成逐条盘点完成证据。
 - [x] 记录 DWA-07 owner 决议：采用有效全局忽略下的空状态（SHA-256 `e3b0c442…`）作为新基线；保留初始快照以供追溯，`.claude/settings.local.json` 仅记录路径元数据、不读取内容。
 - [x] 收齐 DWA-01–DWA-07 全部交付并形成 `docs/implementation/reviews/dirty-worktree-audits/2026-10-01/acceptance-review.md`：DWA-01/02/07 通过；DWA-03 因未遵守只读/漂移停止拒收为合规审计；DWA-04 正确停止但未完成归因；DWA-05 读取受限 `config.json` 内容；DWA-06 披露新增 `nul` 漂移且逐路径状态表需细化。
-- [ ] 后续动作保持只读，直到 owner 明确授权：DWA-03 重做（禁止目标仓库内脚本、统一忽略口径并逐路径报告）；DWA-04 在相同文件可见性环境重做；DWA-05 相关配置内容按未知处理；DWA-06 查明/归属 `nul` 并补精确状态表。不得基于审计建议自行改动或清理外仓。
+- [x] 2026-10-01重查 DWA-03/04/05 的当前 HEAD、文件级状态数与 porcelain SHA 均匹配原冻结快照；DWA-03 的 `.dwa03v2.py` 不存在。DWA-04 为6124项且与原状态摘要相同。DWA-05 的 `config.json` 仍按未知处理，未读取内容。
+- [ ] 后续动作保持只读：DWA-03/04/05 可按原任务卡重新派发，但接手者必须从头重核基线和结束状态；DWA-04需6124项的同等可见性，DWA-05不得读取`config.json`。DWA-06当前63项、含`?? nul`，不同于62项原快照；先冻结新基线并保留该路径为未知，再做逐路径报告。不得基于审计建议自行改动或清理外仓。

@@ -1192,6 +1192,14 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 各包授权只读解释改动来源、用途、未提交原因和建议动作；禁止写、删、暂存、提交、下载/API/网络或执行会改状态的脚本。暂时文件判定须有可重建和无用户依赖证据，审计harness不得自行清理。
 - 这些包是待分发任务，不代表逐路径审计已完成；在收到独立harness报告并总控复核前，不对大批改动作删除/提交决定。
 
+## 2026-10-01 — DWA 复审状态与候选预览阻塞
+
+- 首轮 DWA 验收只证明7份交付均被复核，不代表7个仓库的逐路径原因全部查清。当前只有DWA-01/02/07报告可接收；DWA-03、04、05、06各自保留不同的合规或证据缺口。
+- DWA-03/04/05当前HEAD、文件级状态条目数及porcelain SHA与冻结快照匹配：QAbyLLM `main@64ec7721` 67项 / `cc17c9a7…`；revenue-forecast `fcap@ee0a82bf` 6124项 / `086f4505…`；StockInfoDownloader `改版新下载器@dcf2c64c` 6项 / `c34f77a8…`。DWA-03违规审计创建的`.dwa03v2.py`当前不存在，但这不能追认旧报告合规；DWA-05 `config.json`仍不可读、用途未知。三项可由独立只读harness重审，前提是开始和结束状态再次匹配。
+- DWA-06 `StockQAbyLLM@3c685dda`当前63项 / `d9951959…`，旧快照为62项 / `ddf06a25…`，且观察到`?? nul`。该路径内容没有读取，零字节或名称都不足以判定可删除；先确认owner状态并冻结新基线，再做剩余逐路径审计。
+- 当前 StockWiki `stockwiki.cli` 公开命令列表不含候选导入、identity resolve或universe预览；`identity-export-g2b`仅从精确Entity ID与`as-of`导出，不能预览216个挂牌候选。名单写入前的身份/上市状态owner预览因此尚不能执行，需W02/W03提供可隔离的候选preview入口。CLI检查以`python -B`执行，没有写缓存、生产库或网络。
+- 可派发的新增工作目前是DWA-03/04/05合规复审，而非新的实现线；Q05、W05、TH-01、IN-02仍被验收/依赖门阻挡。不得让第二个写入harness并行修改QA-04或SW-IDENT所在仓库。
+
 ## 2026-10-01 — DWA 回执验收初步结论
 
 - DWA-01 报告满足单项状态覆盖和保密边界。路径名 `config/FMP_API_KEY.txt` 足以要求防止误提交，但因审计者未读内容，实际用途只能表述为疑似凭据；文件是否保留、ignore 或迁移由 filing-fetch owner 决定。

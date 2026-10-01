@@ -1350,3 +1350,11 @@
 - [x] 只读复核 QAbyLLM 当前受限shell看到67条，摘要与原快照相同，`.dwa03v2.py` 当前不存在；StockQAbyLLM 当前63条，含 `?? nul`，摘要与DWA-06结束状态相同；StockWiki当前shell因全局忽略文件权限仍见旧的一条，而独立DWA-07报告按 owner 口径重验为0条。未对任何外仓写入或清理。
 - [ ] DWA-03、DWA-04 需要合规/同可见性复审；DWA-06 需解释并归属 `nul`、补齐逐路径状态表；未获 owner 精确写授权前不清理 `.coverage`、`nul`、HTML、报告或映射文件，不改外仓 ignore/源码。
 - [x] 已同步 `task_plan.md` Phase 46：七份报告收件与首轮总控汇总标记完成；遗留复审和归属事项仍保持待办。验收测试通过（93 tests、241 subtests），计划校验通过（107 tasks、366 acceptance cases）；本次改动仅限 PWF 文档。
+
+## 2026-10-01 — DWA 复审可分派性与股票池预览入口
+
+- [x] 回答“先前验收是否完成”：七份 DWA 报告均已做首轮总控审阅，但只有 DWA-01/02/07 可接收；DWA-03不符合只读审计边界、DWA-04仅有效停止而未完成盘点、DWA-05读取了任务卡禁读内容、DWA-06存在审计窗口漂移。因此“收件/初审完成”，不等于“七仓原因盘点完成”。QA-04仍为行为回归通过但交付partial；SW-IDENT的producer焦点测试通过但handoff无效且W01–W03/full G2b仍partial；TH-01/IN-02只读预研验收完成，T01/T02未开工。
+- [x] 以文件级porcelain口径只读重查DWA-03/04/05：各自 HEAD、状态条目数与SHA均匹配冻结快照（依次为67/`cc17c9…`、6124/`086f45…`、6/`c34f77…`）；DWA-03的临时脚本当前不存在。DWA-05的`config.json`内容始终按未知处理，未读取。
+- [x] DWA-06只读状态仍为63项，SHA `d9951959…`，比旧62项基线多`?? nul`；不读取该路径内容、不删除、不归因。旧卡不能直接作为新审计快照使用。
+- [x] `python -B -X utf8 -m stockwiki.cli --help`与`identity-export-g2b --help`只读检查确认没有候选导入/解析/名单preview CLI；G2b导出要求已有精确`--entity-id`和`--as-of`，不能为216个未解析挂牌候选生成身份/状态预览。因此未导入、未扫描，也未写StockWiki。
+- 当前可交给独立只读 harness 的复审可复用 DWA-03/04/05 原任务卡，但必须在开工/结束重新核对状态；DWA-04必须具备owner侧6124项可见性，DWA-05不得碰`config.json`。DWA-06需owner确认当前漂移后另冻结快照。没有新的独立实现卡达到开工门：Q05/W05和TH-01/IN-02仍受各自依赖阻挡，且不得再派第二个写入者进入QA-04或SW-IDENT仓库。

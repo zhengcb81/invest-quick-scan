@@ -11,6 +11,12 @@
 
 **2026-09-30 接收状态：** QA-04 的功能反例经总控修复和独立复审通过，但共享脏树的提交/新 handoff 尚欠；SW-IDENT 在 StockWiki `8bc454e` 有部分实现和交接，W01–W03 仍 partial 且 handoff 授权路径字段需修正。TH-01/IN-02 两份只读预研已验收归档，T01/T02 实施尚未开始。逐项判定见[总控接收审查](../../reviews/IQS-lane/parallel-package-acceptance-2026-09-30.md)。StockWiki 生产查询端点仍不存在；IQS 总控负责完整 G2b 最终跨仓签收。
 
+**2026-10-01 当前可分派性：** QA-04 的 246 项离线行为回归通过，但共享 StockQA 工作树与旧 handoff 未收口；SW-IDENT 的 113 项聚焦回归通过，但 handoff 被 IQS CLI 以 `changed_path_out_of_scope` 拒绝，W01–W03/full G2b 仍 partial。TH-01/IN-02 只读预研验收完成，T01/T02仍受G3/F05/W11和生产查询接口阻挡。不得再派第二个写入 harness 到 QA-04 或 SW-IDENT 同一仓库。
+
+可独立重派的只读复审沿用[原始审计卡索引](../../reviews/dirty-worktree-audits/2026-10-01/README.md)：DWA-03、DWA-04、DWA-05 当前状态摘要与原快照一致；每个 harness 仍须先后核对快照。DWA-04要求和owner相同的6124项可见性；DWA-05的 `config.json` 内容必须保持未知、不得读取。DWA-06现为63项且含 `?? nul`，原62项任务快照已漂移，不能直接重用旧卡。Q05/W05暂无开工资格，分别等待QA-04收口及W01–W03/G1/S05和单独写授权。
+
+216个挂牌候选的owner身份预览当前也不可用：只读运行StockWiki CLI帮助时没有候选导入/解析/名单预览命令；`identity-export-g2b`要求已知的精确Entity ID与`as-of`，不能消费候选清单。W02/W03须先提供隔离preview接口和逐项输出，再考虑任何名单写入。
+
 TH-01 / IN-02 的只读预研按[预研与记录规则](../prestudy/README.md)执行。两份完整原件已从用户指定的独立技能仓库子目录接收，并按报告 SHA-256 字节归档：[`TH-01`](../prestudy/TH-01-2026-09-30-e40a079d9d69.md)、[`IN-02`](../prestudy/IN-02-2026-09-30-023f9a7960c8.md)；[索引](../prestudy/archive-index.json)固定输入提交与缺口。验收仅为 `prestudy_complete`，T01/T02 实施仍 `not_started`。原设计以 `local-skills` 为实施 Git owner，而原件留在两个独立技能仓库；实施前须明确唯一 owner、核对增量快照和写授权。
 
 ```mermaid
