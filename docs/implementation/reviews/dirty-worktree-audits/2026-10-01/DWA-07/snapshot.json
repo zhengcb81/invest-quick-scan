@@ -2,19 +2,34 @@
   "id": "DWA-07",
   "repo": "StockWiki",
   "root": "C:\\Users\\郑曾波\\Projects\\StockWiki",
-  "captured_at_utc": "2026-10-01T20:35:25Z",
+  "captured_at_utc": null,
   "branch": "master",
   "head": "b4f3846bb3e331f5661edee974a7d0b76dbf9664",
   "status_command": "git -c safe.directory=\"C:\\Users\\郑曾波\\Projects\\StockWiki\" -c core.quotepath=false -C \"C:\\Users\\郑曾波\\Projects\\StockWiki\" status --porcelain=v1 --untracked-files=all",
-  "status_entry_count": 1,
-  "status_porcelain_sha256": "3ab8895f206d466e87cc5b9008a83aa4b5f4ba861c536584cfeea7bec0586c82",
+  "status_entry_count": 0,
+  "status_porcelain_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "status_file": "snapshot-status.txt",
   "file_manifest": "snapshot-files.jsonl",
-  "status_counts": {
-    "??": 1
-  },
+  "status_counts": {},
   "file_hashes_written": 0,
-  "sensitive_file_hashes_omitted": 1,
+  "sensitive_file_hashes_omitted": 0,
   "inaccessible_files": 0,
-  "status_digest_canonicalization": "SHA256 of UTF-8 bytes for porcelain entries joined with LF and one trailing LF; empty status hashes empty bytes"
+  "status_digest_canonicalization": "SHA256 of UTF-8 bytes for porcelain entries joined with LF and one trailing LF; empty status hashes empty bytes",
+  "file_manifest_path_encoding": "path is decoded relative filesystem path; optional porcelain_path preserves Git C-quoted spelling",
+  "owner_baseline_decision": "effective_global_ignore_empty_status",
+  "baseline_recorded_at_utc": "2026-10-01T20:59:49Z",
+  "initial_capture_at_utc": "2026-10-01T20:35:25Z",
+  "supersedes_snapshot": "snapshot-initial.json",
+  "superseded_status_porcelain_sha256": "3ab8895f206d466e87cc5b9008a83aa4b5f4ba861c536584cfeea7bec0586c82",
+  "excluded_path_metadata": [
+    {
+      "path": ".claude/settings.local.json",
+      "owner_description": "personal Claude local configuration",
+      "content_inspected": false,
+      "scope_note": "Excluded by the owner-selected effective global-ignore baseline; retain path metadata only."
+    }
+  ],
+  "baseline_source": "owner_confirmed_effective_global_ignore_status",
+  "capture_note": "This file records the owner's accepted empty-status baseline; the independent DWA-07 report documents a status-command recheck with zero entries. The current IQS shell cannot read the global ignore file and sees one entry, so that restricted view is not substituted for the owner baseline. The original observed snapshot is preserved separately.",
+  "reproducibility_note": "This baseline follows the effective global ignore rules in the owner environment. A restricted audit harness that cannot read those global rules must report its visibility mismatch and must not reinterpret the excluded local configuration as a project change."
 }

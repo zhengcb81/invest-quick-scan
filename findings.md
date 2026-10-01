@@ -1191,3 +1191,19 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 以文件级 `--untracked-files=all` 口径，revenue-forecast 有6,124条状态（3,778删除、12修改、2,334新增），QAbyLLM有67条，StockQAbyLLM有62条；其余 filing-fetch 1、MeetingConverter 1、StockInfoDownloader 6、StockWiki 1。快照只代表生成时刻；任务卡要求开始/结束核验 HEAD、分支、状态摘要与文件哈希，任一漂移停止旧快照归因。
 - 各包授权只读解释改动来源、用途、未提交原因和建议动作；禁止写、删、暂存、提交、下载/API/网络或执行会改状态的脚本。暂时文件判定须有可重建和无用户依赖证据，审计harness不得自行清理。
 - 这些包是待分发任务，不代表逐路径审计已完成；在收到独立harness报告并总控复核前，不对大批改动作删除/提交决定。
+
+## 2026-10-01 — DWA 回执验收初步结论
+
+- DWA-01 报告满足单项状态覆盖和保密边界。路径名 `config/FMP_API_KEY.txt` 足以要求防止误提交，但因审计者未读内容，实际用途只能表述为疑似凭据；文件是否保留、ignore 或迁移由 filing-fetch owner 决定。
+- DWA-04 报告正确执行“快照不符即停止”，但它看到的 416 项不是 owner 工作树状态的权威口径。owner 视图按原命令复现 6,124 项和快照摘要；全部 2,274 个可哈希文件路径哈希匹配。差异来源指向 harness 文件可见性不足；在相同可见性环境重派前，不能归因数千条删除或临时输出。
+- DWA-07 的原始 `?? .claude/settings.local.json` 是 snapshot harness 与 owner 全局忽略读取口径不一致造成的单项差异。owner 选定有效全局忽略后的空状态为新基线；保留原始记录作审计链条，个人配置只留路径元数据、不查内容。
+- 首轮收件时共享目录仅有 DWA-01 完整报告与 DWA-04 漂移报告；随后其余报告已到齐，最新总控结论见下一节。
+
+## 2026-10-01 — 七项 DWA 交付复核
+
+- DWA-02 的 `.coverage` 是被 Git 跟踪的 Coverage.py SQLite 输出，配置与提交历史支持“pytest 重写”解释；不能提交当前二进制 diff。若要 `git rm --cached` 并加 ignore，需 MeetingConverter owner 明确授权。
+- DWA-03 报告承认开始状态 66 条/hash 与冻结的 67 条/hash 不同，仍继续归因；还在目标仓库创建并删除 `.dwa03v2.py`。这不是只读审计，且违背状态漂移即停规则。当前受限 IQS shell看到原始 67 条摘要、未见该临时文件，但对全局 ignore 文件无权访问；报告仅可作为线索，必须重做。
+- DWA-05 报告的6行状态表和快照匹配，但承认以 grep 读取了任务卡列为禁读的 `config.json`。虽没有输出密钥值，仍是范围违规；该配置后续一律按未知处理，不能以这段 grep 作为安全或用途证据。
+- DWA-06 报告声称原62个路径哈希全匹配，新增 `?? nul` 是审计窗口漂移且源头未知。当前只读状态仍是63项，摘要与报告结束态相同。零字节不是可删除性证明，特别考虑其他并行进程；保持现状待 owner 核实。分组/通配符汇总还不足以替代逐路径状态与处置清单。
+- DWA-07 独立 harness 依 owner 选择的全局忽略规则复查为零状态，且保留了初始 `?? .claude/settings.local.json` 观察和其元数据。当前 IQS shell因权限无法读取同一 global ignore，显示一条；两者差异已明确记录，不读该本地配置内容。
+- DWA-01/02/07 的报告可接收；DWA-04 漂移停止操作合规但任务未完成；DWA-03拒收、DWA-05有禁读违规、DWA-06属于覆盖部分有效而存在新增漂移。七份逐项判断与owner后续事项见 `docs/implementation/reviews/dirty-worktree-audits/2026-10-01/acceptance-review.md`。

@@ -7,7 +7,7 @@ HEAD：`3c685dda28f67a00bd653ad257a121d3b8edebb8`
 状态条目：62（` M`=1, `??`=4, `A `=15, `AM`=14, `MM`=28）
 状态清单 SHA-256：`ddf06a25987318f8f00e1bdc8b1250c5f3a983dab246f172f442cb2b4e533e6b`
 
-快照文件：[`snapshot.json`](snapshot.json)、[`snapshot-status.txt`](snapshot-status.txt)、[`snapshot-files.jsonl`](snapshot-files.jsonl)。文件哈希仅对可读的普通非敏感路径生成；密钥、令牌、凭据、`.env`、`.claude`、疑似含密钥的 `config.json` 等路径只记录元数据，不读取或输出内容。无权读取的文件会标记为 `inaccessible`，不能据此推断其用途。
+快照文件：[`snapshot.json`](snapshot.json)、[`snapshot-status.txt`](snapshot-status.txt)、[`snapshot-files.jsonl`](snapshot-files.jsonl)。清单中的 `path` 为已解码的相对文件系统路径；仅Git需C引号转义时另含 `porcelain_path` 原始拼写。文件哈希只对可读的普通非敏感路径生成；密钥、令牌、凭据、`.env`、`.claude`、疑似含密钥的 `config.json` 等只记元数据，不读不输出。无权读取的文件标记为 `inaccessible`，不能据此推断用途。
 
 ## 交给审计 harness 的任务
 

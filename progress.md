@@ -1339,4 +1339,13 @@
 - 凭据保护：`filing-fetch/config/FMP_API_KEY.txt`、StockInfoDownloader `config.json` 和本地 `.claude` 配置不做内容哈希或读取；revenue-forecast 3,778个删除项按 Git 状态记录，避免因当前权限不可读而误标。
 - 该轮仅在 IQS 工作树新增审计任务文档；未执行目标仓库清理、提交、下载、测试或网络/API调用。下一步将任务卡发给独立只读harness；只有带快照核验的结论收回后，才能判定哪些文件保留、忽略、提交或待owner批准清理。
 
-- Final documentation gate: 	ests/test_implementation_plan.py + 	ests/test_parallel_lane_plan.py completed **89 passed / 53 subtests passed**; snapshot integrity check passed for all 7 packages and git diff --check passed. Pytest reported only a cache-directory permission warning; it created no tracked output.
+- Final documentation gate: `tests/test_implementation_plan.py` + `tests/test_parallel_lane_plan.py` completed **89 passed / 53 subtests passed**; snapshot integrity passed for all 7 packages, and `git diff --check` passed. Pytest reported only a cache-directory permission warning; it created no tracked output.
+
+## 2026-10-01 — DWA 首批回执验收与 owner 基线决议
+
+- [x] 收到 DWA-01 报告并核对快照、唯一 `??` 路径及凭据防护。审计者未读取 `config/FMP_API_KEY.txt` 内容；报告将用途保持为未证实/疑似凭据，建议不提交并交 owner 处理，边界合格。没有修改 filing-fetch。
+- [x] 收到 DWA-04 漂移报告。受限 harness 的 416 条视图与冻结的 6124 条不符，依任务卡正确停止逐路径归因。owner 视图另行复核得到 6124 条、原摘要完全一致，2274/2274 个普通可哈希路径的摘要匹配；判断为 harness 可见性差异，不能将其报告当作全仓原因盘点。
+- [x] owner 选择 DWA-07 采用有效全局忽略下的空状态作为当前基线。初始 `?? .claude/settings.local.json` 快照另存作历史；个人本地配置只记录路径与状态元数据，不查看内容。新增 `owner-baseline-decision.md` 并更新当前 snapshot/task packet/index。
+- [x] 七项交付现均已落盘并完成总控审阅，结论见 `docs/implementation/reviews/dirty-worktree-audits/2026-10-01/acceptance-review.md`。DWA-01/02/07 通过；DWA-03 有目标仓库临时写入且开始状态不符；DWA-04 按规则停止；DWA-05 读取任务卡禁读的 `config.json` 内容；DWA-06 原62条哈希通过但审计窗口新增 `nul`。
+- [x] 只读复核 QAbyLLM 当前受限shell看到67条，摘要与原快照相同，`.dwa03v2.py` 当前不存在；StockQAbyLLM 当前63条，含 `?? nul`，摘要与DWA-06结束状态相同；StockWiki当前shell因全局忽略文件权限仍见旧的一条，而独立DWA-07报告按 owner 口径重验为0条。未对任何外仓写入或清理。
+- [ ] DWA-03、DWA-04 需要合规/同可见性复审；DWA-06 需解释并归属 `nul`、补齐逐路径状态表；未获 owner 精确写授权前不清理 `.coverage`、`nul`、HTML、报告或映射文件，不改外仓 ignore/源码。

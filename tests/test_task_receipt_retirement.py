@@ -13,6 +13,24 @@ ARCHIVE = ROOT / "docs/implementation/archive/task-receipts-v2-legacy"
 
 
 class TaskReceiptRetirementTests(unittest.TestCase):
+    def test_historical_phase_39_40_do_not_keep_retired_receipt_gates_open(self):
+        plan_text = (ROOT / "task_plan.md").read_text(encoding="utf-8")
+        phase39 = plan_text.split("## Phase 39:", 1)[1].split("## Phase 40:", 1)[0]
+        phase40 = plan_text.split("## Phase 40:", 1)[1].split("## Phase 41:", 1)[0]
+        for phase_name, phase_text in (("Phase 39", phase39), ("Phase 40", phase40)):
+            with self.subTest(phase=phase_name):
+                for line in phase_text.splitlines():
+                    if not line.startswith("- [ ]"):
+                        continue
+                    mentions_retired_receipts = (
+                        ("P01" in line or "C01" in line)
+                        and ("receipt" in line.lower() or "回执" in line)
+                    )
+                    self.assertFalse(
+                        mentions_retired_receipts,
+                        f"{phase_name} still gates current work on the retired receipt chain: {line}",
+                    )
+
     def test_preservation_manifest_is_complete_and_pinned(self):
         manifest_path = ARCHIVE / "preservation-manifest.json"
         self.assertEqual(

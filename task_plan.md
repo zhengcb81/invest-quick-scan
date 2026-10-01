@@ -201,7 +201,7 @@ Status: complete_for_planning_only
 
 ### Phase 21: 恢复逐卡实施并补齐S04当前验收范围
 
-Status: in_progress
+Status: complete_for_local_S04_scope; later owner tasks continue in subsequent phases
 
 - [x] 按最新继续指令恢复完整实施目标；重新读取1.9.3任务包、当前工作树、回执和独立审查结论。外仓仍按既有授权边界处理。
 - [x] 核对S04当前case集合；发现新增MOD-14未出现在此前S04回执/测试绑定中。
@@ -211,7 +211,7 @@ Status: in_progress
 - [x] S04/MOD-02与MOD-14当前源码hash绑定的26项/11子例隔离测试日志通过；MOD-14的10条atomic assertion、精确错误、hash自洽依赖环、墓碑冲突/遗漏、完整包原子返回及互斥备选正例均已覆盖。独立复审发现并促成修复`applies_when`同ID范围变更缺口；同ID拒绝与major successor迁移正例、两份契约均已更新。保存旧v1收据后生成当前v2 receipt，公开递归验证`eligible_to_close=true`。复审报告、验证sidecar和当前receipt均在`docs/implementation/`。
 - [x] S05/MOD-17精确基线信任、父目录符号链接/junction防护及24项注册器测试已通过；共享恢复映射修复后，S05独立复审确认信任路径未受影响。更新S04依赖hash后，S05 v2 receipt递归验证`eligible_to_close=true`，无blocker。
 - [x] S01因共享`question_sets.py`证据哈希/复审过期而仅为刷新回执短暂重开；发现并修复旧manifest恢复观察信任顶层`replacements`的P2，改为从题目`replaces`重建和交叉校验，不一致/不完整时标记`needs_verification`且不改核心汇总。相关批次70项/166子断言、最终定向6项/4子断言通过，独立复审无剩余发现，S01 v2 receipt公开验证`eligible_to_close=true`。
-- [ ] 按计划依赖继续逐卡实施；只在大里程碑合并运行回归和独立审查，不为每个小修复单独重复全套检查。
+- [x] 本阶段S04及其S05/S01依赖范围已完成；后续逐卡实施转入Phase 32及其后续owner任务，只在大里程碑合并回归/独立审查。
 
 ### Phase 22: 1.9.4全计划与可组合兼容专项复核
 
@@ -549,7 +549,7 @@ Status: complete_for_local_test_scope
 
 ## Phase 39: 公司、证券与挂牌身份解析设计补充
 
-Status: design_and_local_contract_v2_1_complete_cross_project_pending
+Status: design_and_local_contract_v2_1_complete_cross_project_pending; legacy_receipt_gate_retired
 
 - [x] 只读核查 Dayu ticker 规范化/局部 company_id 与 StockInfoDLSimple A股代码/CNINFO orgId 映射的边界；不把任一来源 ID 当全局发行人主键。
 - [x] 设计 opaque、不可变 issuer ID；namespaced 外部编号 claim；非唯一、带类型/有效期/来源的名称 alias；venue/time-qualified listing；unresolved/provisional/verified/conflicted/superseded 状态和独立扫描资格。
@@ -561,15 +561,15 @@ Status: design_and_local_contract_v2_1_complete_cross_project_pending
 - [x] 将Entity/Security/Listing IDs约束为类型前缀UUIDv4，挂牌绑定有效区间并拒绝反向/重叠时段；增加不可误写为issuer等价的集团关系及单步递增、带来源证据的追加式身份事件契约。
 - [x] 加强挂牌、证券归属与引用、来源绑定、provisional范围回执、verified发行人/挂牌回执、ADR关系和ticker/MIC歧义的契约回归。
 - [x] 同步本地C01契约文档、C01准确允许文件范围和ID-02/ID-08验收预期；计划升至1.10.10（107任务/354场景/54约束）。
-- [ ] 在完成最终快照和独立复审后刷新C01 v2 receipt；当前P01 v2 receipt因global boundary hash陈旧而阻断依赖关闭，不能用历史C01回执代替。
-- [ ] 运行本轮完整身份/计划受影响回归，并在复审后记录当前测试与源码快照证据。
+- [x] [Superseded by Phase 43] 不再刷新P01/C01工程任务回执链；旧回执只读保留，不作为身份契约或当前里程碑的关闭门。
+- [x] Phase 40执行本地身份与计划受影响回归并完成独立复审；170 passed / 160 subtests及36项身份专项证据见Phase 40记录。
 - [ ] 同步完成后再继续 W01 红/绿修复和 W02/W03 实现；仍使用用户授权的精确 StockWiki 文件范围，不导入或扫描尚未确认的候选池。
 
 本阶段只完成设计工件与只读上游核查，不代表身份 resolver、三层存储、UI 或跨仓接线已实现。StockInfoDLSimple CodeGraph 索引由用户明确授权后建立；Dayu/StockInfoDLSimple 业务源码均未改。
 
 ## Phase 40: 分离法律发行人与分析范围并修复身份契约复审发现
 
-Status: local_contract_and_tests_updated_receipt_chain_pending
+Status: local_contract_and_tests_complete; production_identity_registry_external_pending; legacy_receipt_gate_retired
 
 - [x] 在身份设计中明确 `entity_id` 只代表法律发行人，新增独立 `analysis_subject_id + analysis_subject_revision` 标识快扫研究范围；普通经营题以并表/独立报告范围为对象，证券报价题仍绑定 Security/Listing。
 - [x] provisional subject 仅锚定权威库确认的单一精确挂牌，禁止从暂定 issuer、集团控制关系或 LLM 建议推导合并报告范围；已核实 issuer 才能建立 standalone/consolidated subject。
@@ -579,7 +579,7 @@ Status: local_contract_and_tests_updated_receipt_chain_pending
 - [x] 本轮身份与G0/计划合并回归为170 passed / 160 subtests；新增foreign-Security专测后身份文件为36 passed / 50 subtests。identity schema Draft7、计划校验、Ruff、`py_compile`与`git diff --check`通过。
 - [x] 独立只读终审未发现未关闭P0—P2；审查仅针对本地身份契约/修复快照，不代表外仓resolver或全链完成。
 - [x] 同步 C01、C04、C06、W02、W03、W05 任务边界与新增 ID-18—ID-26；计划版本1.10.12，107任务/363验收场景/55约束。跨项目文件仍只读。
-- [ ] 依据P01先后依赖门刷新有效receipt链，再生成当前C01 v2回执并通过公开递归验证；当前历史P01/C01回执不覆盖1.10.12语义快照，C01仍partial。
+- [x] [Superseded by Phase 43] 不再按P01依赖门刷新C01 v2任务回执；保留历史P01/C01工件，不据此标记生产身份注册表或跨仓集成完成。
 - [ ] 身份registry本身仍需owner接线：从受控、版本化来源加载完整ISO/MIC市场映射和有效期/撤销语义；consolidated scope receipt由权威存储事务维护。当前validator只对注入的可信映射/回执做语义校验，不证明注册表完整、签名真实性、全库唯一性或并发CAS。
 - [ ] 之后按既有批准文件范围推进StockWiki W01修复及W02/W03；C04/C06/W05消费者实现仍需沿本地契约分开推进，不能提前声称跨仓完成。
 
@@ -718,7 +718,7 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 
 ## Phase 46: 未提交工作树只读盘点与独立任务包
 
-Status: packet_ready; independent_audits_pending
+Status: all_seven_reports_received_and_reviewed; DWA-03_protocol_breach_DWA-04_visibility_stop_DWA-05_scope_breach_DWA-06_drift; followups_pending
 
 - [x] 对 `Projects` 下顶层 Git 项目做只读状态扫描，以每个项目目录为 Git 根，排除嵌套测试夹具造成的伪项目发现；Git 安全目录只通过单次命令参数设置，不改全局配置。
 - [x] 为本次发现的7个脏仓库固定 HEAD、分支、完整 `--untracked-files=all` porcelain 清单、状态摘要和可读取的非敏感文件哈希；每仓库任务卡均要求开始/结束复核，漂移则停止旧快照归因。
@@ -728,4 +728,9 @@ Status: packet_ready; independent_audits_pending
 
 独立任务包索引：`docs/implementation/reviews/dirty-worktree-audits/2026-10-01/README.md`。
 
-- [x] 文档门槛：	ests/test_implementation_plan.py 与 	ests/test_parallel_lane_plan.py 共89 passed / 53 subtests；7份快照摘要、条目数量、卡片绑定与哈希清单完整性检查通过，git diff --check 通过。
+- [x] 文档门槛：`tests/test_implementation_plan.py` 与 `tests/test_parallel_lane_plan.py` 共89 passed / 53 subtests；7份快照摘要、条目数量、卡片绑定与哈希清单完整性检查通过，`git diff --check` 通过。
+- [x] 收到并审阅 DWA-01 报告：快照绑定与唯一疑似凭据路径处理符合只读边界；不检查凭据内容、不建议提交，外仓后续 ignore/迁移需 owner 决定。
+- [x] 收到 DWA-04 可见性漂移报告并按规则停止逐项归因；owner 环境的只读复核为 6124 条、原状态摘要一致，2274/2274 个普通可哈希路径一致。该 harness 报告不构成逐条盘点完成证据。
+- [x] 记录 DWA-07 owner 决议：采用有效全局忽略下的空状态（SHA-256 `e3b0c442…`）作为新基线；保留初始快照以供追溯，`.claude/settings.local.json` 仅记录路径元数据、不读取内容。
+- [x] 收齐 DWA-01–DWA-07 全部交付并形成 `docs/implementation/reviews/dirty-worktree-audits/2026-10-01/acceptance-review.md`：DWA-01/02/07 通过；DWA-03 因未遵守只读/漂移停止拒收为合规审计；DWA-04 正确停止但未完成归因；DWA-05 读取受限 `config.json` 内容；DWA-06 披露新增 `nul` 漂移且逐路径状态表需细化。
+- [ ] 后续动作保持只读，直到 owner 明确授权：DWA-03 重做（禁止目标仓库内脚本、统一忽略口径并逐路径报告）；DWA-04 在相同文件可见性环境重做；DWA-05 相关配置内容按未知处理；DWA-06 查明/归属 `nul` 并补精确状态表。不得基于审计建议自行改动或清理外仓。

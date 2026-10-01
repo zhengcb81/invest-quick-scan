@@ -1,13 +1,13 @@
 # DWA-07 — StockWiki 未提交改动只读盘点
 
-快照时间：2026-10-01T20:35:25Z
+基线决议记录时间：2026-10-01T20:59:49Z；原始状态观察时间：2026-10-01T20:35:25Z。独立复核报告已按 owner 生效的全局忽略规则重跑状态并确认0条；IQS当前受限shell视图不能覆盖该结果。
 仓库：`C:\Users\郑曾波\Projects\StockWiki`
 分支：`master`
 HEAD：`b4f3846bb3e331f5661edee974a7d0b76dbf9664`
-状态条目：1（`??`=1）
-状态清单 SHA-256：`3ab8895f206d466e87cc5b9008a83aa4b5f4ba861c536584cfeea7bec0586c82`
+状态条目：0（owner 于 2026-10-01 选择有效全局忽略规则生效后的空状态作为新基线）
+状态清单 SHA-256：`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
 
-快照文件：[`snapshot.json`](snapshot.json)、[`snapshot-status.txt`](snapshot-status.txt)、[`snapshot-files.jsonl`](snapshot-files.jsonl)。文件哈希仅对可读的普通非敏感路径生成；密钥、令牌、凭据、`.env`、`.claude`、疑似含密钥的 `config.json` 等路径只记录元数据，不读取或输出内容。无权读取的文件会标记为 `inaccessible`，不能据此推断其用途。
+快照文件：[`snapshot.json`](snapshot.json)、[`snapshot-status.txt`](snapshot-status.txt)、[`snapshot-files.jsonl`](snapshot-files.jsonl)。原始观察快照保存在 [`snapshot-initial.json`](snapshot-initial.json)、[`snapshot-status-initial.txt`](snapshot-status-initial.txt)、[`snapshot-files-initial.jsonl`](snapshot-files-initial.jsonl)，供追溯口径调整。owner 已确认 `.claude/settings.local.json` 是个人本地配置，采用生效全局忽略后的空状态；该路径仅保留元数据，不检查内容。新基线状态条目为0，本卡无需再做逐路径归因。受限 harness 若无法读取同一全局忽略口径，应报告可见性差异并停止，不得把该路径恢复为项目脏改动。
 
 ## 交给审计 harness 的任务
 
