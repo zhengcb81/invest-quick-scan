@@ -715,3 +715,17 @@ Status: package_docs_complete; owner_preflight_and_dependency_gates_pending
 - [ ] 在任何StockWiki写入前，由owner对216个挂牌候选作身份/状态预览并报告精确改动路径，再取得该导入工作的明确写授权； unresolved/ambiguous项目不进入付费扫描队列。
 - [ ] 下一批跨仓候选施工包为StockQA Q05（Q03/Q04通过且Q04快照正式收口后）与StockWiki W05（W01、W02、W03、G1、S05全部满足并取得W05精确写授权后）；它们目录owner不同，可在各自开工门通过后并行，但当前都不得提前实施。
 - [ ] QA-04 待交付方提供安全隔离的当前快照、刷新 hash 的 handoff 和 review；SW-IDENT 待交付方修正声明路径并交齐 W02/W03 生产入口。总控收到更新后重验；full G2b 仍需真实 verified、多挂牌、AnalysisSubject 与历史区间 owner 证据。
+
+## Phase 46: 未提交工作树只读盘点与独立任务包
+
+Status: packet_ready; independent_audits_pending
+
+- [x] 对 `Projects` 下顶层 Git 项目做只读状态扫描，以每个项目目录为 Git 根，排除嵌套测试夹具造成的伪项目发现；Git 安全目录只通过单次命令参数设置，不改全局配置。
+- [x] 为本次发现的7个脏仓库固定 HEAD、分支、完整 `--untracked-files=all` porcelain 清单、状态摘要和可读取的非敏感文件哈希；每仓库任务卡均要求开始/结束复核，漂移则停止旧快照归因。
+- [x] 任务包明确只读边界、凭据/本地配置脱敏、每条路径的来源/未提交原因/分类/处置建议/信心等级，以及禁止自行删除、提交或运行会改动数据的脚本。
+- [ ] 将DWA-01至DWA-07分派给不同只读harness并收回带快照核验结果的逐路径报告；冲突时以各仓库owner提供的新快照重新派工。
+- [ ] 总控合并报告，核实临时文件可重建性、用户依赖和工作归属；需清理或提交时按仓库owner与现有授权分别办理，不在只读审计任务内实施。
+
+独立任务包索引：`docs/implementation/reviews/dirty-worktree-audits/2026-10-01/README.md`。
+
+- [x] 文档门槛：	ests/test_implementation_plan.py 与 	ests/test_parallel_lane_plan.py 共89 passed / 53 subtests；7份快照摘要、条目数量、卡片绑定与哈希清单完整性检查通过，git diff --check 通过。

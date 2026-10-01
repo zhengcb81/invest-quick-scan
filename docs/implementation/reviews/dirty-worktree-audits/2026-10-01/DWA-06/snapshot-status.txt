@@ -1,0 +1,68 @@
+# Captured at 2026-10-01T20:35:25Z
+# Repo: C:\Users\郑曾波\Projects\StockQAbyLLM
+# Branch: master
+# HEAD: 3c685dda28f67a00bd653ad257a121d3b8edebb8
+# Porcelain-SHA256: ddf06a25987318f8f00e1bdc8b1250c5f3a983dab246f172f442cb2b4e533e6b
+# git -c safe.directory="C:\Users\郑曾波\Projects\StockQAbyLLM" -c core.quotepath=false -C "C:\Users\郑曾波\Projects\StockQAbyLLM" status --porcelain=v1 --untracked-files=all
+MM .gitignore
+ M .pre-commit-config.yaml
+A  docs/quick_scan_rate_cards.md
+A  examples/quick_scan_rate_cards.template.json
+A  experiments/scoring_comparison/README.md
+A  experiments/scoring_comparison/config_loader.py
+A  experiments/scoring_comparison/jev_client.py
+A  experiments/scoring_comparison/llm_scorer.py
+A  experiments/scoring_comparison/render_report.py
+AM experiments/scoring_comparison/run_comparison.py
+A  experiments/scoring_comparison/test_set.json
+MM main_with_llm.py
+MM pyproject.toml
+MM src/cli/batch_processor.py
+MM src/config/json_config_manager.py
+MM src/config/llm_config.py
+AM src/config/quick_scan_model_policy.schema.json
+A  src/config/quick_scan_rate_cards.schema.json
+MM src/core/models.py
+MM src/core/qa_engine.py
+MM src/providers/async_llm_provider.py
+MM src/providers/base_llm_provider.py
+MM src/providers/llm_client.py
+MM src/providers/llm_provider.py
+MM src/providers/llm_response_parser.py
+MM src/runners/llm_runner.py
+MM src/services/answer_generator.py
+MM src/utils/http_client.py
+MM src/utils/llm_integration.py
+AM src/utils/quick_scan_cost_resolver.py
+AM src/utils/quick_scan_provider_health.py
+A  src/utils/quick_scan_result_outbox.py
+AM src/utils/quick_scan_work_store.py
+AM src/utils/quick_scan_work_transport.py
+A  tests/fixtures/quick_scan_work_store_v1.sql
+A  tests/fixtures/quick_scan_work_store_v2.sql
+MM tests/integration/test_json_config.py
+MM tests/integration/test_qa_pipeline.py
+A  tests/integration/test_quick_scan_budget.py
+AM tests/integration/test_quick_scan_cli.py
+AM tests/live/test_live_quick_scan.py
+A  tests/unit/test_batch_processor.py
+MM tests/unit/test_http_client.py
+MM tests/unit/test_llm_client.py
+MM tests/unit/test_llm_config.py
+MM tests/unit/test_llm_integration.py
+MM tests/unit/test_llm_provider.py
+MM tests/unit/test_llm_response_parser.py
+MM tests/unit/test_models.py
+MM tests/unit/test_qa_engine.py
+AM tests/unit/test_quick_scan_budget.py
+A  tests/unit/test_quick_scan_cost_resolver.py
+AM tests/unit/test_quick_scan_provider_health.py
+AM tests/unit/test_quick_scan_result_outbox.py
+AM tests/unit/test_quick_scan_work_store.py
+AM tests/unit/test_quick_scan_work_transport.py
+AM tests/unit/test_search_provider.py
+MM tests/unit/test_services.py
+?? .codegraph/.gitignore
+?? .workbuddy-ai/memory/2026-09-20.md
+?? .workbuddy-ai/memory/MEMORY.md
+?? progress_update.txt

@@ -1183,3 +1183,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 用户确认216个 `(market, exchange, ticker)` 候选作为首批输入；331个名称标签只作待解析提示。不得把候选挂牌数报告为发行人数，也不得用近似名称合并；生产导入前要有StockWiki owner的身份/挂牌状态预览、未解析/歧义分流和明确写授权。
 - QA-04与SW-IDENT当前是已有卡的交付收尾，不应再复制派给并行写入者。TH-01/IN-02已有只读预研原件，因G3/F05/W11和StockWiki生产查询接口/golden缺口只能待命。
 - 后续最自然的两个独立owner施工包为Q05（StockQA日志/请求缓存隐私与完整请求键，依赖Q03/Q04）和W05（StockWiki不可变问答观察事务导入，依赖W01/G1/S05/W02/W03）。虽然两个repo互不重叠，当前依赖和授权未满足，故列为准备候选而非可立即开工卡。
+
+## 2026-10-01 — Projects 脏工作树只读审计快照
+
+- 首次用递归 `.git` 搜索时命中了 `revenue-forecast` 内的大量 pytest/临时 fixture 仓库，不能把它们误算为独立项目。以 `Projects` 的顶层 Git 项目目录作为审计根，识别7个有未提交状态的仓库：filing-fetch、MeetingConverter、QAbyLLM、revenue-forecast、StockInfoDownloader、StockQAbyLLM、StockWiki；其他已扫描顶层 Git 项目在快照时干净。
+- 为每个脏仓库生成独立 DWA-01–DWA-07 只读任务卡及快照文件，记录仓库路径、分支、HEAD、逐文件 Git porcelain 状态、SHA-256 状态摘要和可安全读取文件的内容哈希。明显可能承载密钥/个人配置的路径只保留文件元数据，不读取或输出内容；revenue-forecast 的 Git 删除路径按删除状态登记，不尝试读取受限的旧测试文件。
+- 以文件级 `--untracked-files=all` 口径，revenue-forecast 有6,124条状态（3,778删除、12修改、2,334新增），QAbyLLM有67条，StockQAbyLLM有62条；其余 filing-fetch 1、MeetingConverter 1、StockInfoDownloader 6、StockWiki 1。快照只代表生成时刻；任务卡要求开始/结束核验 HEAD、分支、状态摘要与文件哈希，任一漂移停止旧快照归因。
+- 各包授权只读解释改动来源、用途、未提交原因和建议动作；禁止写、删、暂存、提交、下载/API/网络或执行会改状态的脚本。暂时文件判定须有可重建和无用户依赖证据，审计harness不得自行清理。
+- 这些包是待分发任务，不代表逐路径审计已完成；在收到独立harness报告并总控复核前，不对大批改动作删除/提交决定。

@@ -1330,3 +1330,13 @@
 - 为S10题库/模块边界执行六文件离线回归：`tests/test_question_sets.py`、`tests/test_question_prompts.py`、`tests/test_question_manifest.py`、`tests/test_question_library.py`、`tests/test_module_registry.py`、`tests/test_module_contract.py`，**131 passed / 355.69s**。API/live环境变量在子进程中清除，唯一临时pytest根在退出后确认不存在；无网络、API、公司文档下载或外仓写入。
 - 验收状态：QA-04功能批次有246项测试和Ruff证据，但handoff仍partial、`result_commit=null`且hash过期；SW-IDENT当前身份/G2b/MIC与IQS公开CLI聚焦测试113项通过，但handoff仍因`changed_path_out_of_scope`无效，W01–W03生产证据不全；TH-01/IN-02仅只读预研已验收，T01/T02未开始。详细证据见`docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`和`docs/implementation/reviews/universe-source-inventory-2026-10-01.md`。
 - 当前没有新的立即可开工并行施工包。下一组可准备的独立owner包是StockQA Q05（依赖Q04正式收口）与StockWiki W05（依赖W01/W02/W03、G1/S05以及精确写授权）；目录不重叠，但现在都受前置门阻挡。IQS中心工作、G2b、S06仍由总控单写者完成。
+
+## 2026-10-01 — 未提交工作树审计任务包
+
+- 回答用户进度：全目录逐路径原因调查尚未完成。先前对 StockQAbyLLM 的实现来源和失败提交钩子已有实质排查；其余大改动仓库尚需专门只读审计，因此按仓库建立可独立转交的 DWA-01–DWA-07。
+- 完成顶层项目扫描并记录生成时刻快照。Git 仓库 owner 与当前沙箱身份不一致时，本地只读调用使用 `git -c safe.directory=<repo>`，没有改全局 Git 配置。最初递归扫描发现测试临时仓库产生噪声，已从项目统计排除。
+- 任务包目录 `docs/implementation/reviews/dirty-worktree-audits/2026-10-01/` 包含总索引、七张详细指令卡、每仓库 JSON 快照、完整状态清单和文件级哈希清单。状态条目数、JSON可读性、卡片中的仓库/HEAD绑定、哈希计数和 `git diff --check` 已复验通过。
+- 凭据保护：`filing-fetch/config/FMP_API_KEY.txt`、StockInfoDownloader `config.json` 和本地 `.claude` 配置不做内容哈希或读取；revenue-forecast 3,778个删除项按 Git 状态记录，避免因当前权限不可读而误标。
+- 该轮仅在 IQS 工作树新增审计任务文档；未执行目标仓库清理、提交、下载、测试或网络/API调用。下一步将任务卡发给独立只读harness；只有带快照核验的结论收回后，才能判定哪些文件保留、忽略、提交或待owner批准清理。
+
+- Final documentation gate: 	ests/test_implementation_plan.py + 	ests/test_parallel_lane_plan.py completed **89 passed / 53 subtests passed**; snapshot integrity check passed for all 7 packages and git diff --check passed. Pytest reported only a cache-directory permission warning; it created no tracked output.
