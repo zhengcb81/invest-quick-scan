@@ -1303,3 +1303,10 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **`Test-Path`/`os.path.exists` 对"拒绝访问"返回 False 而非报错**：权限遮蔽会伪装成"文件不存在"，曾导致把不可见目录当缺失目录跳过。诊断脚本对"缺失"与"拒绝"必须分别取证（catch 具体异常 vs 返回值）。
 - **ID-13 的有效期维度在输入侧**：store schema v1 的 `quick_scan_security` 没有 valid_from/valid_to 列（snapshot 投影硬编码 None），symbol-reuse/时间窗判别只能依赖候选输入自带的 `listings` interval claims；store 只提供 venue+entity 绑定。preview 设计据此把歧义判定放在"输入 claims 活跃集"上（裸 ticker ≥2 活跃 → 歧义；0 活跃 → 显式 no_active_listing_at_as_of），并使 store 行只做背书不做时间裁决。
 - **空库预览的诚实语义**：真实 216 首跑在空权威库上给出 216/216 unresolved + 中信建投重叠组 + 零 membership/零 paid_work——这是"导入授权前"应有的真实状态，不是失败；owner 预览看的就是这份报告。
+
+## 2026-10-02 — 处置执行中的工具链教训（第三、四次同类坑）
+
+- **bash heredoc 会吞反斜杠，连 `<< 'PYEOF'` 也不例外（本会话第三次踩）**：含 `\` 的替换脚本必须用 Write 工具落盘执行，或用 `chr(92)` 程序化拼接；执行后必须用**严格形态**复验（点号正则 `Users.zheng` 只匹配单反斜杠，会把双反斜杠残留误报为已清）。
+- **pre-push 门的"红"要分层归因再动**：rf 三轮红分别是（a）外部工作区瞬态写入（dayu-agent portfolio 指纹）、（b）多进程 E2E 时序、（c）GBK 子进程解码炸 reader 线程——均非提交内容所致。根因缓解（UTF-8 env）+复跑 ≠ 绕门；协议禁止 `--no-verify`。**独立跑门绿≠推送内绿**，两处环境要一致取证。
+- **无 git 身份的仓用一次性 `-c user.name/-c user.email` 注入历史作者**，不改配置文件（`git commit` 的 `| tail` 管道会吞退出码——判定成败必须看 `git log` 而非链式返回值）。
+- **requirements 版本线 = 代码 API 代际**：`langchain>=0.1.0` 装到 1.x 后 `langchain.text_splitter` 消失；按代码实际 import 选 0.3 线而非最新线。pip 升级共享库（click）引发的基环境冲突要记录在案。

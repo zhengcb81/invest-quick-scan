@@ -828,3 +828,13 @@ Status: entry_delivered_stockwiki_33dbf7f; real_report_produced; awaiting_owner_
 - [x] 真实预览：空 schema v1 前置建库（0 导入、仓内 ignore、可逆，宽授权下执行并记录）→ 216 报告 exit 0 落 `reviews/universe-identity-preview-2026-10-02.json`；零 membership/零 paid_work；跑后 DB/两仓状态只读复验不变。
 - [ ] owner 审阅 216 报告 → 给出导入写授权与 ambiguous（中信建投组）消歧证据要求；此后才谈导入与扫描。
 - [ ] W03 剩余公开路径（UNI-03/04、ID-05/06、UNI-08、ID-15 的 add/remove/pin/diff/explain CLI 与身份历史事件）为下一 StockWiki 批次。
+
+### Phase 54: 决定6执行 — DWA 四仓 P1 处置全量落地
+
+Status: complete; all_four_repos_disposed_and_pushed; unknowns_preserved
+
+- [x] revenue-forecast：A=360 路径精确对账（`core.longpaths` 本地启用）、B=先测后提（17+全目录绿）、C=4 台账、D=ignore×4+删2空文件（mutation/bak/周志选 ignore 留盘）；推送经 pre-push 门三轮根因取证（外部瞬态写入+多进程时序+GBK 解码）后 `PYTHONUTF8` 缓解全绿推送 `5319ee26`；1985 未知集原样保留。
+- [x] StockInfoDownloader：还原污染报告+html ignore（`88e37ea`）、映射与 e2e 报告结构审查后入库（`064a837`）；已推送；盲区 config/claude 未碰；orgid 真实性联网核验=记录残余。
+- [x] QAbyLLM：F/B/A/C/D/E 六批（`8e79774`→`ad389f8`）推送完成；76 测试全绿；gitignore 手术解藏测试、13 处个人路径脱敏、porter 语法修复；E 仪表板 diff 安全审查通过；34 不建议提交项按审计保留未动；环境按 requirements 补装声明依赖（langchain 按代码 API 锁 0.3 线）。
+- [x] StockQAbyLLM：无操作（`fe11f63` 已覆盖，决定8 保留四文件）。
+- [ ] 队列剩余（均已授权）：S06 跨仓 ACK E2E、W03 剩余公开 CLI（UNI-03/04、ID-05/06、UNI-08、ID-15）、L01 真实搜索探针（先 live 成本声明）、DWA-04 2401 条新基线扩盘盘点（含1985解封组分类）。
