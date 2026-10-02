@@ -107,16 +107,16 @@ Status: historical_superseded_by_Phase_43_task_receipt_retirement
 - [x] C07: 跨项目部署、启动生命周期与就绪协议（full-readiness组件实载hash阻断整改后独立复审verified；仅本地离线契约）。
 - [x] G0: 跨项目契约与接口冻结审查（第三轮独立审查`verified_for_local_contract_scope`；生产live/E2E仍按后续gate执行）。
 - [x] S01: metric与作用层编排（本地实现、原始测试日志及独立审查均验证通过；REC-04依赖StockWiki查询入口，仍未执行）。
-- [ ] S03: 优势条件与产业变化诊断取舍（本仓题义、版本、导出及回归通过独立审查；TIME-06的StockWiki刷新规划和E2E-06仍未执行）。DUR-04 review follow-up: 增加了基于仓库真实不可变 3.0.0 发布归档的读取回归（48 modules/222 questions）；当前 tracked 问题归档及可用 Git 历史中没有真实 3.1.0 metric manifest，故 3.1.0 历史兼容仍未验证，不能声称通过。
+- [x] S03: 优势条件与产业变化诊断取舍（题义、版本、导出及回归通过独立审查；DUR-01/02/03+SC-08 绑定 `tests/test_metrics_contract.py`、DUR-04 绑定 `tests/test_module_registry.py` 归档回归，2026-10-02 复跑 32 passed + question_sets 相关子集 12 passed/10 subtests）。**3.1.0 历史样本要求按用户 2026-10-02 改判 (a) 关闭**：接受真实 3.0.0 发布归档（48 模块/222 题）+ 既有合成错误版本头拒绝测试作为兼容证据，不再声称覆盖真实 3.1.0 回放（搜索 agent 已证实该样本本地不可得：catalog 从 3.0.0 直跳 3.2.0，3.1.0 从未落任何快照）。TIME-06/E2E-06 按 tasks.json 归属分别为 W06/X10，不再是 S03 阻塞项（历史回执误挂已纠正）。**S03 verified；L01（deps Q04/Q05/S02/S03）随之解锁**。
 - [x] Q01: F01/F02及r2复审发现的F04均按获批parser范围修复；S02消费者兼容恢复。StockQA共享suite 276项、本地全量222项/139子用例及独立复审均通过；receipt绑定精确文件哈希，Q01离线范围verified。
-- [ ] Q02: MiniMax-M3公开CLI在较早代码快照有一次Microsoft单题真实完成搜索；配置别名/真实厂商错标已整改，302伪搜索HTTP响应已补真实Requests/HTTPX反例并独立复审，最终源码离线unit+integration 588项通过、独立焦点203项通过。最终代码的有限live重验：受限沙箱两次在HTTP前ConnectionError；经授权放行后两次HTTP 200/completed但无已完成搜索链，`search_status=unverified`且评分正确拒绝。故历史live通过不能作为最终哈希的LLM-01通过，Q02继续partial；脱敏证据及覆盖率产物副作用见`receipt-Q02-minimax-final-revision-2026-09-26.json`。MiMo和DeepSeek仍仅直连探针，运行级路由用尽归Q04、持久恢复归Q08。2026-09-27获批新增MiniMax-M3 Anthropic Messages适配；经初轮独立复核整改后，隔离unit+integration与live fixture suite最终为110 passed/3 expected skips；网络受限运行给出HTTP前ConnectionError，联网公共CLI两次均返回insufficient_evidence，最新回执仍为search_status=unverified，故未证明本次搜索事件和来源链，新增路径不能关闭LLM-01/Q02。脱敏日志见validation-Q02-Anthropic-offline-r3-2026-09-27.log及validation-Q02-MiniMax-Anthropic-live-E2E-final-2026-09-27.log。
+- [x] Q02: 2026-10-02 verified（Phase 52）——`ced1faa`+`82f1794` 已推送；两个 MiniMax live E2E（responses+anthropic）在最终代码 PASSED；独立审查 changes_requested（payload 拆分无契约测试）→修复 `82f1794`→同会话复核 **approved** 并确认 LLM-02/LLM-11 完成判据满足。官方契约核实（ToolChoice 仅 auto/none、system 走 instructions、server-tool 超时指引）、中文 system 进 input 抑制搜索的实证修复、strict=唯一绑定对象（Q02+Q03 联合批次）均入提交。证据：`contracts/validation-Q02-MiniMax-live-E2E-2026-10-02.md`（含 ~20 次单题调用成本纪要）。历史 partial 叙述（下方 2026-09-26/27 条目）保留为档案，不代表当前状态；**用户 2026-10-02 决定：QAbyLLM 旧密钥不轮换**（暴露面限本机、未进 Git、报告 0 命中，残留风险由 owner 承担并已知悉）。
 - Q02 current-snapshot hardening (2026-09-27): corrected two fail-closed gaps in MiniMax Anthropic search verification (`base_resp.status_code=false` and an unrecognized server tool coexisting with valid `web_search`). The seven-file code/test snapshot passed 160 isolated unit/provider/CLI integration tests with warnings-as-errors; Ruff and Black passed on the changed parser and its unit tests. Independent review matched all seven exact file hashes, reproduced the receipt semantics, and found no P0–P2. One authorized single-question live CLI attempt on the current code ended with `ConnectionError` before an HTTP response; it produced no search receipt or score and is not a successful E2E. The live harness's parent-side UTF-8 decode error is fixed, its changed-file review found no P0–P2, and the live selectors collect offline as four expected skips. No automatic retry was issued. Q02 remains partial until a current-hash live search receipt verifies the complete search/source chain; exact hashes and cleanup evidence are in `progress.md` and `docs/implementation/contracts/validation-Q02-fail-closed-hardening-2026-09-27.md`.
 - Q02 latest endpoint/credential diagnostic (2026-09-27): a bounded one-query `.cn` live pass is recorded above, but a later same-route request returned HTTP 200/completed without a correlated search result and correctly remained unscored/unverified; two diagnostic calls to the official `.io` host returned HTTP 401 with the configured key. The live test now accepts `STOCKQA_MINIMAX_ANTHROPIC_BASE_URL` and uses safe UTF-8 diagnostics. Focused offline client/CLI tests passed 17/17; independent read-only review is pending. Q02 remains partial until a supported endpoint/key pair produces a verified current-snapshot search receipt. Evidence: `docs/implementation/contracts/validation-Q02-endpoint-region-diagnostic-2026-09-27.md`.
 - Q02 test-review follow-up (2026-09-27): independent r1 found a P1 indentation error, P2 overconstraint on optional request_id, and P3 loss of the allowlisted web_search error_code in the safe summary. All three are fixed. Current live-test SHA256 `CC1423ECC7E5F24AE26ACF2F08067B3613F5AE9BDAE22AF6D8B5A9E8D10BA95F`; AST parsing passes, live selector collects without execution, and isolated focus passes 17/17. R2 review closed the P1/P2/P3 findings with no new P0-P2 (report SHA256 F5D7DC9413F6248DC9C87218558CB9665353F5C0E4EC8C33B506462D127A8113); Q02 remains partial pending a stable verified live search receipt.
 - 2026-09-27 MiMo single-query live retest through the public CLI returned `error/unverified` with no HTTP status, model, response ID, or source URL. Its unique temp root was cleaned. Because the transport receipt cannot prove the request was not sent, this is an unknown outcome and must not be blindly retried; no cause or live-search success is inferred. See the detailed entry in `progress.md`.
 - Q02首提供商切片于2026-09-30完成新快照验收：MiMo公开CLI真实Microsoft搜索E2E为1 passed，同快照离线测试159 passed并经独立复核；仅关闭该MiMo切片，不关闭G1、其他提供商能力、费用核对或跨仓接线。MiniMax最终快照仍无verified搜索receipt，故Q02整体保持partial。详见`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。
-- [ ] Q03: F03重复JSON对象键在direct与Markdown兼容路径曾可绕过并从metadata误取9分；现只提取完整外层JSON并fail closed，direct/Markdown固定案例通过，r2独立复审verified。Q03仍因前置Q02未完成而保持partial；Q12/S02不替代Q02的LLM-01 live。
-- [ ] Q04: B1/B2完整v2策略校验经r4独立复审verified。route-recovery r6复审发现备用成功仍误报等待，r7在用户新授权/提前报备的四文件内修复成功答案、终局无结果和公开JSON的`dispatch_outcome`；114项隔离unit/CLI及真实代码路径探针经独立复审通过。Q04整体仍partial：运行中policy热更新及同一路由容量满时等待（PAR-11）开放。LLM-06的本轮结果分类与停止fallback由Q04负责；持久冷却/跨运行`retry_wait`由Q08负责，共享全局容量PAR-03由Q11负责，StockWiki设置接线PAR-08由X09负责。
+- [x] Q03: F03重复JSON对象键在direct与Markdown兼容路径曾可绕过并从metadata误取9分；现只提取完整外层JSON并fail closed，direct/Markdown固定案例通过，r2独立复审verified。2026-10-02 随 Q02 关闭（Phase 52）：前置达成；且本批 strict 语义增量（唯一绑定对象+全绑定）经同一独立审查 approved、差分审计无安全回归——Q03 verified。
+- [x] Q04: 2026-10-02 收口（Phase 50）——隔离快照 `fe11f63`（58 跟踪文件，含不可分割底座，写前报告披露）通过完整 pre-commit 链并推送；`q04_handoff.json` 刷至 `status=complete`、`result_commit` 就位、独立增量审查 **approved**、IQS CLI valid；246 责任批次与钩子链全绿。B1/B2/r7 历史修复记录保留。Q04 完成判据满足（case 全有实际结果+快照+独立审查最新版）。
 - [x] Q12: StockQA公开回执输出实际Question.text哈希和每次HTTP状态；64项定向、461项剩余全套通过/1项live跳过，独立复核无finding。对话中称作Q03R，但正式任务ID按计划校验器规则定为Q12。
 - [x] S02: StockQA公开CLI到screening导入的离线隔离E2E得到8分；MiniMax空HTTP request ID、跨厂商最终真实provider及现代级联派发状态兼容增量经四类矛盾回执反例、49项/107子例和独立复审通过，精确快照见`receipt-S02-minimax-compat-2026-09-26.json`。真实跨厂商live仍未执行；S06后续改动须另行复审。
 
@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-Q02/Q03 已关闭（Phase 52，`ced1faa`+`82f1794` 已推送，独立审查 approved，两个 MiniMax live E2E 最终代码 PASSED；MiniMax live 证据摘要见 `contracts/validation-Q02-MiniMax-live-E2E-2026-10-02.md`）。M1 主体收口（Q01–Q05、Q12、S01/S02/S04/S05、S07–S10 verified 或完成）；**M1 仅剩 S03、S06 及其下游 L01/G1，全部为外部件缺失**（S03 等不可寻的 3.1.0 历史样本，S06 等真实事务 ACK/router 2.1 工件/获批跨仓 E2E）。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff，再对照 tasks.json 确认有无新解锁（M2+ 仍被 G2/G3 与外仓证据挡住）；候选集中在等待项解锁与 W02/W03 生产 preview（需 StockWiki owner 证据/授权）。持续等待：DWA ACL 解封、QAbyLLM 密钥轮换、DWA P1 处置逐项执行、G2b owner 样本、216 候选预览入口。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+Q02/Q03 已关闭（Phase 52，`ced1faa`+`82f1794` 已推送，独立审查 approved，两个 MiniMax live E2E 最终代码 PASSED；证据 `contracts/validation-Q02-MiniMax-live-E2E-2026-10-02.md`）。**S03 已 verified**（用户改判 (a)：接受 3.0.0 归档+合成拒绝测试关闭 3.1.0 样本要求；TIME-06/E2E-06 归位 W06/X10；DUR/SC 测试复跑全绿）；**用户同批决定：QAbyLLM 密钥不轮换、ACL 解封已由我执行完成（DWA-04 两未知组闭合，新基线 2401 条）、216 候选文件确认为输入但仍未授权导入/扫描**。M1 剩 S06（外部件）与 **L01（deps 全满足已解锁，待 live 成本声明后执行真实搜索探针）**。当前主攻：**StockWiki W02/W03 可隔离候选 preview 入口**（用户已授权，勘察完成，实现中）→ 216 owner 预览。其后：DWA P1 处置全执行（用户 2026-10-02 授权）、S06 跨仓 ACK E2E（已授权）。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。持续等待（owner 侧）：QAbyLLM 密钥轮换（owner 已决定不换，风险知悉）、G2b owner 正样本、DWA-04 重采基线扩盘盘点（2401 条）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -528,7 +528,7 @@ Status: complete_for_local_test_scope
 - [x] `tests/test_question_sets.py`完整回归67 passed / 170 subtests；S07后S06 CLI集成14 passed、0失败/错误/跳过、`TEMP_CLEANED=True`。标准答案23 passed / 3 subtests；producer E2E 3 passed。
 - [x] 依赖方向与提示模块Ruff检查通过；当前计划validator valid（104任务/331场景），计划单测82 passed / 58 subtests。
 - [x] S08已将UTF-8 JSON、source catalog、URL与profile helper下沉为共享契约；不可变manifest验证和历史fingerprint仍是明确的后续拆分边，不能宣称全项目已完全松耦合。
-- [ ] 用户尚未提供首批公司池或真实E2E样本；不自选名单、不导入、不扫描。
+- [ ] 首批公司池已由用户确认为 216 个带市场挂牌候选（2026-10-01，见 `reviews/universe-source-inventory-2026-10-01.json`）；确认只覆盖候选范围，**仍不授权导入、不授权扫描**，也不自选名单。真实跨仓 E2E 样本仍另行等待。
 
 计划当前为1.10.9，107任务/354场景/54约束/G6。更改计划版本与owner场景后，旧的G0/G6快照审查不能自动视为覆盖本版；在相关大节点重审前保留旧报告作为历史证据。
 
@@ -668,7 +668,7 @@ Status: plan_complete; QA-04_closeout_and_SW-IDENT_delivery_partial; downstream_
 - [x] 将完整跨项目X09/X10、付费B01/真实搜索实验与G2b真实StockWiki golden保留为后置门；handoff文档不授予外仓写入、真实API、用户名单选择或费用权限。
 - [x] 规定大节点合并审查（G0—G6）和高风险边界复核；小任务按TDD自测并归入同一owner批次，不逐卡重复独立审查。
 - [x] 标明施工包编制时必须隔离共享工作树：StockQA当时观测到55项未提交状态，StockWiki存在未跟踪`.claude/`目录；状态会随其他进程变化，开工前必须重新核验，不得清理、覆盖或把无关状态带入lane提交。
-- [ ] QA-04实施前的StockQA隔离基线门未能作为干净独立快照满足：QA-04结果目前仍与共享工作树状态交叠。该前置条件不能事后补勾；正式收尾前，交付方须冻结可复核的精确改动快照、刷新handoff/hash/review，并把预存改动与QA-04改动分清。不得为收尾整树暂存或提交StockQA；StockWiki后续W05/UI仍须另行精确授权。
+- [x] QA-04实施前的StockQA隔离基线门未能作为干净独立快照满足（2026-10-01 时点事实，记录保留）。**2026-10-02 解决路径**：用户全权授权下，先由 DWA-06R 独立盘点给出"可提交 57"分组证据，再以隔离提交 `fe11f63` 冻结（写前报告披露不可分割底座），handoff 刷新+CLI valid+独立增量审查 approved 收口（Phase 50）——**事前隔离要求未满足的事实作为豁免保留，事后收口链完整**。StockWiki后续W05/UI仍须另行精确授权。
 
 ## Phase 45: 可交给独立 harness 的下一段精细施工卡
 
@@ -689,7 +689,7 @@ Status: package_docs_complete; QA-04_and_SW-IDENT_first_segments_received; both_
 - [x] 对 G2b Entity + mapping 当前接口做独立审查并处理 P0–P2：P1 过期挂牌误映射与 P2 未知版本均已用 RED/GREEN 回归修复；复审无剩余 P0/P1，见 `docs/implementation/reviews/IQS-lane/G2b-independent-review-2026-09-30.md`。仅签收 provisional 单挂牌接口切片；verified/多挂牌/AnalysisSubject 与真实历史有效区间、近名导入仍标未覆盖。
 - [x] 将总控遗留的 handoff intake RED 测试补成只读 `scripts/parallel_handoff_cli.py`：只验证 schema、package/lane/task、声明路径与临时根清理，不认证用户授权或测试事实；拒绝重复 JSON key、跨仓路径、未清理根和只读包变更。
 - [x] 2026-09-30 接收 QA-04、SW-IDENT 及 TH-01/IN-02 预研交付并做大节点审查，见 `docs/implementation/reviews/IQS-lane/parallel-package-acceptance-2026-09-30.md`。QA-04 新 revision 损坏 quota group 反例先 RED 再修复 GREEN，当前功能批次 246 passed、Ruff 通过，独立复审无剩余 P1；但 StockQA 55 项共享脏树、旧 handoff hash/`result_commit=null`，正式交付仍 partial。SW-IDENT 43 项独立聚焦测试和 G2b golden 通过，但 handoff CLI 拒绝 `changed_path_out_of_scope`，W01–W03 生产链仍 partial。TH-01/IN-02 两份原件在用户随后给出的精确子目录找到，独立验收并按 SHA 归档为 `prestudy_complete`，T01/T02 实施仍未开始。
-- [ ] QA-04 收尾：在不混入共享脏树无关修改的前提下冻结/提交当前实现快照，刷新 `q04_handoff.json` 的两文件 SHA、测试和 review，并由总控重验公开 handoff CLI；随后才将 Q04 delivery gate 标 complete。
+- [x] QA-04 收尾（2026-10-02 完成，Phase 50）：以隔离提交 `fe11f63` 冻结实现快照（不可分割底座经 DWA-06R"可提交57"论证并写前披露）；`q04_handoff.json` 刷新四文件 SHA、result_commit、worktree_after 与 verification；总控重验公开 handoff CLI = valid；独立增量审查 approved 后 `status=complete`。Q04 delivery gate 已标 complete。
 - [ ] SW-IDENT 收尾：交付方修正 `authorized_paths` 与新增 evidence store/test 的授权出处，再逐 case 交付候选导入、裸 ticker、名单 CLI/身份历史等剩余公开路径证据；总控复核后才能关闭 W01–W03。完整 G2b 另等 owner 的 verified/多挂牌/AnalysisSubject 正例。
 - [x] TH-01/IN-02 预研收尾：完整 Markdown + handoff JSON 通过公开 CLI/schema、关键文件哈希与独立只读复核；原报告/JSON 字节按报告 SHA 不可变归档并更新索引。实施仍需决定独立技能仓与 `local-skills` 镜像的唯一 owner、对已移动上游做增量核对，且不得将 T01/T02 标完成。
 
@@ -715,7 +715,7 @@ Status: package_docs_complete; QA-04_and_SW-IDENT_first_segments_received; both_
 - [x] QA-04 在临时 cwd 复跑六文件离线批次 **246 passed**，Ruff 通过；增加 `next_run` 两题回执均无 `policy_transition` 的公开 CLI 断言。临时根删除，StockQA 55 项状态前后字节一致；未调用 API/网络、未下载公司资料。
 - [x] SW-IDENT 在当前 StockWiki `b4f3846` 复跑身份、G2b、证据存储、MIC 与 IQS public CLI 跨仓 E2E 聚焦包，**113 passed**；临时 pytest/home 根删除，StockWiki 状态仍只有既有 `.claude/`。
 - [x] 新复核报告记录精确文件哈希和 handoff CLI 结果：QA-04 CLI `valid` 仅表示自述格式/范围可解析，回执仍 stale、`result_commit=null`；SW-IDENT CLI `invalid/changed_path_out_of_scope`，新 evidence store/test 未列在 `authorized_paths`。
-- [ ] QA-04 交付快照和当前 handoff 尚未一致；2026-10-01复验报告当时观察到61条状态，后续DWA-06只读盘点为63条（含`?? nul`），handoff仍记录55条且无`result_commit`。以63条作为当前观测，不对共享脏树整树提交。SW-IDENT handoff路径范围无效且W02/W03/full G2b仍缺生产证据。详见`docs/implementation/reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`及DWA-06审计记录。
+- [x] QA-04 交付快照和当前 handoff 尚未一致（2026-10-01 观察，已过时）：**2026-10-02 已收口**——`fe11f63` 隔离快照 + handoff 刷至 complete + CLI valid + 独立审查 approved（Phase 50）。SW-IDENT handoff 路径声明已修正（StockWiki `aa17f93`，CLI valid），W02/W03 生产证据仍在交付中。历史观察文件：`reviews/IQS-lane/parallel-package-revalidation-2026-10-01.md`。
 
 ### 2026-10-01 — 当前执行状态与首批候选来源
 
@@ -725,7 +725,7 @@ Status: package_docs_complete; QA-04_and_SW-IDENT_first_segments_received; both_
 - [x] 按用户先前指定的文件名规则只读搜索 Projects：94 个可读匹配文本文件、12 种精确字节内容；六个有效来源产生 209 个 A 股挂牌候选、7 个美股挂牌候选及 331 个去重名称标签。名字/代码未被当作 issuer identity；`中信建投` 的两个不同代码保留为歧义。报告及完整逐行来源见 `docs/implementation/reviews/universe-source-inventory-2026-10-01.md` 和同名 JSON。未写 StockWiki、未导入股票池、未扫描公司。
 - [x] 用户已确认首批输入采用审计报告中的216个带市场的挂牌候选；331个名称标签保留为待解析提示，不据此自动合并发行人或扩大挂牌成员。确认只覆盖候选范围，不等于StockWiki权威导入或扫描。
 - [ ] 在任何StockWiki写入前，由owner对216个挂牌候选作身份/挂牌状态预览并报告精确改动路径，再取得该导入工作的明确写授权；unresolved/ambiguous项目不进入付费扫描队列。2026-10-01只读检查公开CLI：命令表没有候选导入、解析或名单预览入口；`identity-export-g2b`仅接受精确`--entity-id`和`--as-of`，不能替代216项预览。因此先由W02/W03交付公开、可隔离的preview入口，再执行owner预览；不写生产库、不扫描。
-- [ ] 下一批跨仓候选施工包为StockQA Q05（Q03/Q04通过且Q04快照正式收口后）与StockWiki W05（W01、W02、W03、G1、S05全部满足并取得W05精确写授权后）；它们目录owner不同，可在各自开工门通过后并行，但当前都不得提前实施。
+- [ ] 下一批跨仓候选施工包：StockQA Q05 **已于 2026-10-02 完成并 verified**（`1318a2a`+`7ced082`，Phase 51）；StockWiki W05 仍等 W01、W02、W03、G1、S05 全部满足并取得 W05 精确写授权后才能开工。当前并行推进的是 StockWiki W02/W03 生产 preview 入口（216 候选 owner 预览前置，用户 2026-10-02 已授权）。
 - [ ] QA-04 待交付方提供安全隔离的当前快照、刷新 hash 的 handoff 和 review；SW-IDENT 待交付方修正声明路径并交齐 W02/W03 生产入口。总控收到更新后重验；full G2b 仍需真实 verified、多挂牌、AnalysisSubject 与历史区间 owner 证据。
 
 ## Phase 46: 未提交工作树只读盘点与独立任务包
@@ -816,4 +816,4 @@ Status: verified; commits_ced1faa_82f1794_pushed; independent_review_approved; b
 - [x] 修复链：anthropic tool_choice 合规化；中文 system 行移出 input 进 instructions（实证 3/3 抑制 vs 4/4 正常）；_build_prompt 搜索强制令+JSON-first（前导 1297→139）；parser strict 升级为"唯一完整对象+全绑定"（Q02+Q03 联合批次，Q03 fail-closed 性质全保留）；3 处旧姿态测试契约更新；live 超时 300/360（官方 Tip）。
 - [x] 证据：mypy 0/bandit 0/静态净；离线全量 854 passed/4 skipped；**两个 MiniMax live E2E 最终代码 PASSED**（累计约 20 次单题级调用，量级角位人民币）；`ced1faa`（8 文件）+ `82f1794`（3 文件）过完整钩子链并推送。
 - [x] 独立审查 changes_requested（Medium：payload 拆分无契约测试；LOW×2）→ 修复 `82f1794`（锁 instructions/input 拆分的契约测试+零候选用例+docstring）→ 恢复同会话复核 **approved**（变异探针验证测试有效性；全量 854 passed；明确确认 case→test 映射与 live 结果满足 Q02 完成判据）。**Q02 verified；Q03 关闭条件随之满足**（r2 verified + 本批 parser 增量经同审查 approved，差分审计无安全回归）。
-- [ ] M1 剩余：S03（等真实 3.1.0 样本/TIME-06/E2E-06）、S06（等真实 ACK/router 2.1 工件/获批 E2E）、L01→G1（随 S03）。
+- [x] M1 剩余更新（2026-10-02）：**S03 已 verified**（用户改判 (a) 关闭 3.1.0 样本要求 + 5 case 测试复跑全绿 + 既有独立复审）。M1 仅剩 **S06**（等真实事务 ACK/router 2.1 工件/获批跨仓 E2E）与 **L01**（deps 已全满足，正式解锁——需真实搜索探针 live 成本声明后执行）→ G1（随 L01/S06）。

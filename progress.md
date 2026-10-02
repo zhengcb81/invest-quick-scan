@@ -1475,3 +1475,12 @@
 - **第2项（3.1.0 样本搜索，agent 完成）**：**NOT FOUND**——IQS 全历史（40 commits、tags/stash/reflog/unreachable blobs 全查）、全部本地仓 `-G` 探针、Downloads/Documents/Desktop、home 仓全无。锚点查明：3.0.0 归档在 `questions/releases/`（48 模块产物+lock），catalog 版本从 3.0.0 直跳 3.2.0（commit `eb462d4`），**3.1.0 时代只存在于未提交的工作区，从未落任何快照**。S03 该要求本地不可恢复 → **待用户改判**（接受 3.0.0 归档+合成拒绝测试为兼容证据，或判不可得）。
 - **第5项**：已解释轮换理由（明文落地过的旧值作废问题），暴露面限本机，**换不换由 owner 定**。**第7项**：StockWiki 维持本地提交不加 remote。**第8项**：StockQA 四未跟踪文件保留。**第9项**：MiniMax 账单后议。
 - 待办队列（按用户授权）：第6项 DWA P1 处置全执行；第1项 W02/W03 preview 施工（最高杠杆）；第3项 S06 跨仓 ACK E2E。
+
+## 2026-10-02 — 用户两项决定落地：S03 改判 (a) 关闭 + 密钥不轮换
+
+- **决定(a)**：接受"真实 3.0.0 发布归档（questions/releases，48 模块/222 题）+ 既有合成错误版本头拒绝测试"作为版本兼容证据，**关闭 S03 的 3.1.0 历史样本要求**，不再声称真实 3.1.0 回放覆盖（搜索 agent 已证实本地不可得：catalog 3.0.0×5 commits 后直跳 3.2.0，3.1.0 时代从未落任何快照/tags/stash/unreachable blob）。
+- S03 收口证据（全部现 HEAD 复跑）：DUR-01/02/03+SC-08 绑定 `tests/test_metrics_contract.py`、DUR-04 绑定 `tests/test_module_registry.py` → **32 passed**；question_sets 中 S03 相关子集（durability/pre-revenue/bridge/diagnostic/archive/header/3_0_0）→ **12 passed + 10 subtests**；叠加 2026-09-27 独立复审与其 DUR-04 follow-up。**S03 → verified**（task_plan 主清单已翻转）。
+- **纠正历史误挂**：TIME-06（owner W06）、E2E-06（owner X10）不在 tasks.json 的 S03 case 列表（S03=DUR-01..04+SC-08），系旧回执混记——二者移回各自等待项，不再作为 S03 阻塞。
+- **连锁解锁**：L01（10 家公司真实搜索探针与小样本，deps=Q04/Q05/S02/S03）四依赖全部 satisfied → **L01 正式可开工**（执行前按 live 纪律做成本与验证内容声明）；G1 随 L01/S06。
+- **决定(5)**：owner 决定 **QAbyLLM 旧密钥不轮换**——暴露面限本机（未进 Git、审计报告 0 命中、仅复审时终端截断显示过前 26 字符），残留风险（拿到旧值者可用）已向 owner 说明并由 owner 承担，记录为最终决定不再提议。
+- M1 主清单同步回写：Q02/Q03/Q04 行由 [x] 翻转并以 Phase 50/52 结果替换过期 partial 叙述；QA-04 收尾/基线门三处历史行标注解决路径与豁免事实；"公司池未提供"行更新为 216 已确认但仍未授权导入/扫描。G2b/W05/S06 等等待项不变。
