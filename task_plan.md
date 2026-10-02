@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-Q02/Q03 已关闭（Phase 52，`ced1faa`+`82f1794` 已推送，独立审查 approved，两个 MiniMax live E2E 最终代码 PASSED；证据 `contracts/validation-Q02-MiniMax-live-E2E-2026-10-02.md`）。**S03 已 verified**（用户改判 (a)：接受 3.0.0 归档+合成拒绝测试关闭 3.1.0 样本要求；TIME-06/E2E-06 归位 W06/X10；DUR/SC 测试复跑全绿）；**用户同批决定：QAbyLLM 密钥不轮换、ACL 解封已由我执行完成（DWA-04 两未知组闭合，新基线 2401 条）、216 候选文件确认为输入但仍未授权导入/扫描**。M1 剩 S06（外部件）与 **L01（deps 全满足已解锁，待 live 成本声明后执行真实搜索探针）**。当前主攻：**StockWiki W02/W03 可隔离候选 preview 入口**（用户已授权，勘察完成，实现中）→ 216 owner 预览。其后：DWA P1 处置全执行（用户 2026-10-02 授权）、S06 跨仓 ACK E2E（已授权）。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。持续等待（owner 侧）：QAbyLLM 密钥轮换（owner 已决定不换，风险知悉）、G2b owner 正样本、DWA-04 重采基线扩盘盘点（2401 条）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`，11 选择器绑定 8 case，check_all 698 passed），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03（改判 (a)）、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、密钥不轮换（决定5）、StockWiki 不加 remote（决定7）、四文件保留（决定8）。**我方可继续的已授权队列**：① DWA P1 处置全执行（决定6）；② S06 跨仓 ACK E2E（第3项授权）；③ W03 剩余公开 CLI 批次（UNI-03/04、ID-05/06、UNI-08、ID-15）；④ L01 真实搜索探针（deps 全满足，执行前作 live 成本声明）。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、DWA-04 2401 条基线扩盘盘点、MiniMax 账单核对（决定9后议）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -724,7 +724,7 @@ Status: package_docs_complete; QA-04_and_SW-IDENT_first_segments_received; both_
 - [x] 本仓 S06 的本地范围已有 57 项焦点回归日志与独立复审；剩余真实 StockQA→StockWiki ACK、router 2.1 真实历史工件与跨仓 E2E 属于外部验收门。避免无变化地重复同一 S06 批次。
 - [x] 按用户先前指定的文件名规则只读搜索 Projects：94 个可读匹配文本文件、12 种精确字节内容；六个有效来源产生 209 个 A 股挂牌候选、7 个美股挂牌候选及 331 个去重名称标签。名字/代码未被当作 issuer identity；`中信建投` 的两个不同代码保留为歧义。报告及完整逐行来源见 `docs/implementation/reviews/universe-source-inventory-2026-10-01.md` 和同名 JSON。未写 StockWiki、未导入股票池、未扫描公司。
 - [x] 用户已确认首批输入采用审计报告中的216个带市场的挂牌候选；331个名称标签保留为待解析提示，不据此自动合并发行人或扩大挂牌成员。确认只覆盖候选范围，不等于StockWiki权威导入或扫描。
-- [ ] 在任何StockWiki写入前，由owner对216个挂牌候选作身份/挂牌状态预览并报告精确改动路径，再取得该导入工作的明确写授权；unresolved/ambiguous项目不进入付费扫描队列。2026-10-01只读检查公开CLI：命令表没有候选导入、解析或名单预览入口；`identity-export-g2b`仅接受精确`--entity-id`和`--as-of`，不能替代216项预览。因此先由W02/W03交付公开、可隔离的preview入口，再执行owner预览；不写生产库、不扫描。
+- [ ] 216 候选 owner 预览与导入授权（入口已交付）：**2026-10-02 W02 preview 入口已完成**（StockWiki `33dbf7f`，`stockwiki identity-preview`，11 选择器绑定 8 case，check_all 698 passed），并已产出首份真实预览报告 `reviews/universe-identity-preview-2026-10-02.json`（216/216 unresolved 空权威库诚实状态、中信建投重叠组、零 membership/零 paid_work、跑前后 DB digest 与成员表不变）。**剩余：owner 审阅该报告并给出 216 导入的明确写授权**（unresolved/ambiguous 不进付费扫描队列不变）；空 schema v1 建库已按宽授权执行并记录（仅建表零导入、可逆）。
 - [ ] 下一批跨仓候选施工包：StockQA Q05 **已于 2026-10-02 完成并 verified**（`1318a2a`+`7ced082`，Phase 51）；StockWiki W05 仍等 W01、W02、W03、G1、S05 全部满足并取得 W05 精确写授权后才能开工。当前并行推进的是 StockWiki W02/W03 生产 preview 入口（216 候选 owner 预览前置，用户 2026-10-02 已授权）。
 - [ ] QA-04 待交付方提供安全隔离的当前快照、刷新 hash 的 handoff 和 review；SW-IDENT 待交付方修正声明路径并交齐 W02/W03 生产入口。总控收到更新后重验；full G2b 仍需真实 verified、多挂牌、AnalysisSubject 与历史区间 owner 证据。
 
@@ -817,3 +817,14 @@ Status: verified; commits_ced1faa_82f1794_pushed; independent_review_approved; b
 - [x] 证据：mypy 0/bandit 0/静态净；离线全量 854 passed/4 skipped；**两个 MiniMax live E2E 最终代码 PASSED**（累计约 20 次单题级调用，量级角位人民币）；`ced1faa`（8 文件）+ `82f1794`（3 文件）过完整钩子链并推送。
 - [x] 独立审查 changes_requested（Medium：payload 拆分无契约测试；LOW×2）→ 修复 `82f1794`（锁 instructions/input 拆分的契约测试+零候选用例+docstring）→ 恢复同会话复核 **approved**（变异探针验证测试有效性；全量 854 passed；明确确认 case→test 映射与 live 结果满足 Q02 完成判据）。**Q02 verified；Q03 关闭条件随之满足**（r2 verified + 本批 parser 增量经同审查 approved，差分审计无安全回归）。
 - [x] M1 剩余更新（2026-10-02）：**S03 已 verified**（用户改判 (a) 关闭 3.1.0 样本要求 + 5 case 测试复跑全绿 + 既有独立复审）。M1 仅剩 **S06**（等真实事务 ACK/router 2.1 工件/获批跨仓 E2E）与 **L01**（deps 已全满足，正式解锁——需真实搜索探针 live 成本声明后执行）→ G1（随 L01/S06）。
+
+### Phase 53: W02 候选 preview 入口与真实 216 预览报告
+
+Status: entry_delivered_stockwiki_33dbf7f; real_report_produced; awaiting_owner_review_and_import_authorization
+
+- [x] 用户第1项授权（W02/W03 preview 施工）；explore 勘察确认零 preview 基建、216 输入文件位置、14 case 中仅 ID-02 已绑定。
+- [x] 四文件写前报告批次：`quick_scan_identity.py`（ro 零写库/三态命名理由/规范 JSON/命名拒收）、`cli_parsers/quick_scan.py`、`cli_registry.py` 接线、`test_quick_scan_identity.py`（11 选择器覆盖 ID-01/02/03/UNI-02/UNI-06/ID-12/ID-13×2/ID-14 + CLI e2e + 只读证明）；handler 落允许模块的 deviation 已记录。
+- [x] 验证：11 passed 首跑、ruff/black(100) 净、`check_all.sh` 698 passed + 覆盖率双 PASS + 框架 PASS；StockWiki 本地提交 `33dbf7f`（不加 remote，决定7）。
+- [x] 真实预览：空 schema v1 前置建库（0 导入、仓内 ignore、可逆，宽授权下执行并记录）→ 216 报告 exit 0 落 `reviews/universe-identity-preview-2026-10-02.json`；零 membership/零 paid_work；跑后 DB/两仓状态只读复验不变。
+- [ ] owner 审阅 216 报告 → 给出导入写授权与 ambiguous（中信建投组）消歧证据要求；此后才谈导入与扫描。
+- [ ] W03 剩余公开路径（UNI-03/04、ID-05/06、UNI-08、ID-15 的 add/remove/pin/diff/explain CLI 与身份历史事件）为下一 StockWiki 批次。

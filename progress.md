@@ -1484,3 +1484,11 @@
 - **连锁解锁**：L01（10 家公司真实搜索探针与小样本，deps=Q04/Q05/S02/S03）四依赖全部 satisfied → **L01 正式可开工**（执行前按 live 纪律做成本与验证内容声明）；G1 随 L01/S06。
 - **决定(5)**：owner 决定 **QAbyLLM 旧密钥不轮换**——暴露面限本机（未进 Git、审计报告 0 命中、仅复审时终端截断显示过前 26 字符），残留风险（拿到旧值者可用）已向 owner 说明并由 owner 承担，记录为最终决定不再提议。
 - M1 主清单同步回写：Q02/Q03/Q04 行由 [x] 翻转并以 Phase 50/52 结果替换过期 partial 叙述；QA-04 收尾/基线门三处历史行标注解决路径与豁免事实；"公司池未提供"行更新为 216 已确认但仍未授权导入/扫描。G2b/W05/S06 等等待项不变。
+
+## 2026-10-02 — W02 候选 preview 入口交付 + 真实 216 预览报告
+
+- 用户第1项授权（W02/W03 preview 施工）落地。勘察（explore agent）确认：StockWiki 无 quick_scan_identity/quick_scan_universe/cli_parsers·quick_scan、无 preview 子命令；216 候选在 IQS `reviews/universe-source-inventory-2026-10-01.json`（键形 CN-A:000002 / US:NASDAQ:GENB）；14 个 W02/W03 case 仅 ID-02 有绑定。
+- **写前报告后四文件批次**：新建 `stockwiki/quick_scan_identity.py`（候选解析核心：ro SQLite URI 零写库、resolved/ambiguous/unresolved 命名理由、stdout 单行规范 JSON、stderr 命名拒收 exit 2）、新建 `cli_parsers/quick_scan.py`、`cli_registry.py` +2 行接线、新建 `tests/test_quick_scan_identity.py`（11 选择器绑定 ID-01/02/03/UNI-02/UNI-06/ID-12/ID-13×2/ID-14 + CLI e2e + 只读证明 + 三类拒收）。deviation 记录：handler 落允许模块而非 services/（W02 范围外）。
+- **验证**：新测试 11 passed（首跑）；ruff 净（修1处 F841）；black@100 净（仓库无 black 门，行长 100）；`check_all.sh` 全过（**698 passed、覆盖率 TOTAL/ui 双 PASS、框架校验 PASS**（11 个预存 OKF warning 非本批））。StockWiki 本地提交 **`33dbf7f`**（按用户决定7不加 remote）。
+- **真实 216 预览执行**：真实工作区缺 `scan.sqlite` → 经宽授权建**空 schema v1**（仅建表、0 证券 0 成员、`data/quick_scan/*.sqlite*` 本就被仓库设计性 ignore、可逆删除，记录为最小前置写）→ `stockwiki identity-preview --candidates <IQS inventory> --as-of 2026-10-02T00:00:00Z` **exit 0**，报告落 `docs/implementation/reviews/universe-identity-preview-2026-10-02.json`（182KB）：**216/216 unresolved（空权威库的诚实状态）、0 resolved/0 ambiguous、中信建投 CN-A:002168+601066 重叠组正确识别、membership_created=0、paid_work_created=0**；跑后 DB digest 成员 0/证券 0、两仓 git 状态不变（只读复验通过）。
+- **待 owner**：审阅该预览报告 → 决定 216 导入授权（逐条 unresolved 的处理与 ambiguous 重叠组的消歧证据）；预览入口已可重复运行。

@@ -1296,3 +1296,10 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **strict fail-closed 的正确形态**：厂商模型合法地输出"前导散文+JSON"，整段字面 JSON 的 strict 会让 quick-scan 对该厂商永久不可用。升级为"恰好一个完整外层对象+全身份绑定"后，安全差分（审查者 29×4 矩阵）证明无回归：19 处 old-None→new-non-None 全部通过全绑定验证，6 处为变严。**差分审计（新旧实现×输入×绑定集）应成为 parser 语义变更的标准审查动作。**
 - **审查闭环模式复用**：changes_requested（单一 Medium）→ 精确修复（补契约测试，非改判据）→ 恢复同一审查会话复核（保留上下文）→ approved 并由审查者显式确认完成判据。变异探针（把回拼变体喂给新测试确认会失败）是"测试真的锁住了回归"的最有力证据。
 - live 成本纪律：每轮执行前声明调用数与量级；7 轮迭代累计约 20 次单题级 MiniMax 调用（角位级）；探针输出只留结构/计数，不留厂商返回全文。
+
+## 2026-10-02 — Windows 工具链陷阱与 preview 设计要点
+
+- **PowerShell 5.1 脚本编码**：无 BOM 的 UTF-8 `.ps1` 被按 GBK 解码，脚本内中文路径（用户名）变乱码 → 所有路径"找不到"。修复：写文件用 `utf-8-sig`（带 BOM）。git-bash→cmd 的中文路径同样会丢码——**凡中文路径的外部命令，用 Python subprocess 参数数组直传（CreateProcessW Unicode），不要经 shell 字符串**。
+- **`Test-Path`/`os.path.exists` 对"拒绝访问"返回 False 而非报错**：权限遮蔽会伪装成"文件不存在"，曾导致把不可见目录当缺失目录跳过。诊断脚本对"缺失"与"拒绝"必须分别取证（catch 具体异常 vs 返回值）。
+- **ID-13 的有效期维度在输入侧**：store schema v1 的 `quick_scan_security` 没有 valid_from/valid_to 列（snapshot 投影硬编码 None），symbol-reuse/时间窗判别只能依赖候选输入自带的 `listings` interval claims；store 只提供 venue+entity 绑定。preview 设计据此把歧义判定放在"输入 claims 活跃集"上（裸 ticker ≥2 活跃 → 歧义；0 活跃 → 显式 no_active_listing_at_as_of），并使 store 行只做背书不做时间裁决。
+- **空库预览的诚实语义**：真实 216 首跑在空权威库上给出 216/216 unresolved + 中信建投重叠组 + 零 membership/零 paid_work——这是"导入授权前"应有的真实状态，不是失败；owner 预览看的就是这份报告。
