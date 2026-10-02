@@ -1288,3 +1288,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **分层键契约**：内存 `RequestCache` 与持久 `request_cache_key` 是两种东西。前者键缺维度是真缺陷（模型变化会串答），补齐 8 维白名单；后者已由 work_item（entity/scope/题义指纹）+ model_requested + prompt_sha256（含截止日）隐式覆盖，llm_client 层根本没有实体/日期上下文可加显式维度——不硬造管道，改用行为绑定测试（改日期/模型→REQ 键变）。"补全请求键"的正确形态取决于每层实际可用上下文。
 - **负例测试的锚点选择**：LLM-16 的 outbox 禁键检查先于哈希检查，所以 `source_manifest` 类测试可用 `match="forbidden"` 精确锚定禁键路径；而 `formal_profile`/`审核通过` 不在禁单里、只能被哈希检查挡下——此时真正的边界是公开的答案序列化白名单，测试要打在边界函数上而不是假装 outbox 也认这些键。
 - **审查阻断项的闭环**：独立审查 changes_requested（ruff F401/F541）后，因提交已推送不能 amend，用修复提交闭环并在 PWF 记录"阻断项修复+复验"证据链；LOW 观察（脱敏在 traceback 源码行过度遮蔽、装饰器维度仅 kwargs）显式接受记录，不为完美主义扩改。
+
+## 2026-10-02 — Q02 live 调查方法与厂商契约教训
+
+- **分层探针定位法**：live 失败后按"官方文档形状→裸问题→仓库真实 builder→双变量（instructions 拆分 vs 去中文前缀）→逐 item 结构"逐层收敛，每步 1–2 次最小调用。直接对生产 payload 做字节级复现（import 仓库内 `_build_prompt`/`_search_request_payload`）才暴露"中文 system 行拼进 input 抑制工具调用"这一反直觉事实（3/3 vs 4/4）；手写镜像 prompt 的探针会因细微差异给出假阳性（probe2 搜了、真 payload 没搜）。
+- **厂商契约先于猜测**：tool_choice 枚举（Messages 仅 auto/none、Responses 仅 none|auto）、system 归属（instructions 字段）、server-tool 慢请求加大 timeout——三项全部以官方文档定案，prompt 只做配合性补强（搜索强制令、JSON-first），且 payload 形状用契约测试锁死防回拼。
+- **strict fail-closed 的正确形态**：厂商模型合法地输出"前导散文+JSON"，整段字面 JSON 的 strict 会让 quick-scan 对该厂商永久不可用。升级为"恰好一个完整外层对象+全身份绑定"后，安全差分（审查者 29×4 矩阵）证明无回归：19 处 old-None→new-non-None 全部通过全绑定验证，6 处为变严。**差分审计（新旧实现×输入×绑定集）应成为 parser 语义变更的标准审查动作。**
+- **审查闭环模式复用**：changes_requested（单一 Medium）→ 精确修复（补契约测试，非改判据）→ 恢复同一审查会话复核（保留上下文）→ approved 并由审查者显式确认完成判据。变异探针（把回拼变体喂给新测试确认会失败）是"测试真的锁住了回归"的最有力证据。
+- live 成本纪律：每轮执行前声明调用数与量级；7 轮迭代累计约 20 次单题级 MiniMax 调用（角位级）；探针输出只留结构/计数，不留厂商返回全文。

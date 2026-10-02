@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-Q05 已 verified（Phase 51，`1318a2a`+`7ced082` 已推送）。M1 依赖重核结论：S02 已 verified，L01 仍被 S03（缺真实 3.1.0 样本/TIME-06/E2E-06）卡住，G1 随之 blocked；M1 可开工面收窄，恢复时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)先重核各仓 HEAD/工作树/handoff，再对照 tasks.json 找依赖齐备且 owner 可写的任务（M2+ 均被 G2/G3 以上门或外仓证据挡着，候选应集中在 IQS 本地 S03 可先行子项与各等待项解锁后）。持续等待项：DWA ACL 解封（owner 管理员）、QAbyLLM 密钥轮换（owner 服务商）、DWA 各包 P1 处置逐项执行、SW-IDENT/W01–W03 生产证据与 G2b 总控签收、S06 真实 ACK、Q02 MiniMax verified live receipt（需 live opt-in）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+Q02/Q03 已关闭（Phase 52，`ced1faa`+`82f1794` 已推送，独立审查 approved，两个 MiniMax live E2E 最终代码 PASSED；MiniMax live 证据摘要见 `contracts/validation-Q02-MiniMax-live-E2E-2026-10-02.md`）。M1 主体收口（Q01–Q05、Q12、S01/S02/S04/S05、S07–S10 verified 或完成）；**M1 仅剩 S03、S06 及其下游 L01/G1，全部为外部件缺失**（S03 等不可寻的 3.1.0 历史样本，S06 等真实事务 ACK/router 2.1 工件/获批跨仓 E2E）。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff，再对照 tasks.json 确认有无新解锁（M2+ 仍被 G2/G3 与外仓证据挡住）；候选集中在等待项解锁与 W02/W03 生产 preview（需 StockWiki owner 证据/授权）。持续等待：DWA ACL 解封、QAbyLLM 密钥轮换、DWA P1 处置逐项执行、G2b owner 样本、216 候选预览入口。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -807,3 +807,13 @@ Status: verified; commits_1318a2a_7ced082_pushed; review_blocker_fixed; LLM-08_0
 - [x] 实现：`ContentBoundaryFormatter`（脱敏+2000 字符限长，双 sink）；`REQUEST_CACHE_KEY_FIELDS` 8 维键+装饰器透传（TTL/LRU 不变、生产不接线、不决定 fresh）；公开 `serialize_answer_for_exchange`（9 字段白名单、伪造字段丢弃、描述限长 5000、无 I/O）接入 `to_quick_scan_dict`；config WARNING 结构化。
 - [x] 验证：Q05+outbox 39、受影响回归 211、246 责任批次、mypy 0、bandit 0、触及 6 文件 ruff/black/isort 净；提交 `1318a2a` 过完整钩子链推送。
 - [x] 独立增量审查 changes_requested（唯一阻断 ruff F401+F541）→ 修复 `7ced082` 推送并复验（ruff 六文件净、57 passed、静态门净）；LOW/INFO 观察（脱敏过度遮蔽、装饰器维度仅 kwargs）记录接受不改码。**Q05 verified**。
+
+### Phase 52: Q02 MiniMax verified live receipt（Q02/Q03 关闭）
+
+Status: verified; commits_ced1faa_82f1794_pushed; independent_review_approved; both_minimax_live_e2e_passed
+
+- [x] live 门声明后执行两个 MiniMax E2E，首轮全败（search_call_count=0）；四轮 live+七轮单次探针分层定位，逐项对照官方文档（ToolChoice 仅 auto/none；system 属 instructions 字段；server-tool 慢请求需加大 timeout）。
+- [x] 修复链：anthropic tool_choice 合规化；中文 system 行移出 input 进 instructions（实证 3/3 抑制 vs 4/4 正常）；_build_prompt 搜索强制令+JSON-first（前导 1297→139）；parser strict 升级为"唯一完整对象+全绑定"（Q02+Q03 联合批次，Q03 fail-closed 性质全保留）；3 处旧姿态测试契约更新；live 超时 300/360（官方 Tip）。
+- [x] 证据：mypy 0/bandit 0/静态净；离线全量 854 passed/4 skipped；**两个 MiniMax live E2E 最终代码 PASSED**（累计约 20 次单题级调用，量级角位人民币）；`ced1faa`（8 文件）+ `82f1794`（3 文件）过完整钩子链并推送。
+- [x] 独立审查 changes_requested（Medium：payload 拆分无契约测试；LOW×2）→ 修复 `82f1794`（锁 instructions/input 拆分的契约测试+零候选用例+docstring）→ 恢复同会话复核 **approved**（变异探针验证测试有效性；全量 854 passed；明确确认 case→test 映射与 live 结果满足 Q02 完成判据）。**Q02 verified；Q03 关闭条件随之满足**（r2 verified + 本批 parser 增量经同审查 approved，差分审计无安全回归）。
+- [ ] M1 剩余：S03（等真实 3.1.0 样本/TIME-06/E2E-06）、S06（等真实 ACK/router 2.1 工件/获批 E2E）、L01→G1（随 S03）。

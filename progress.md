@@ -1453,3 +1453,17 @@
 - parallel-lanes/README：施工卡清单行与"启动门首候选 Q04"句更新为已收口历史记录+按 Next Step 选工。
 - packages/README：追加"2026-10-02 当前可分派性"日期块；DWA 复审指针改指 `2026-10-02-reaudit/`（旧卡不再重派）；候选包表移除 Q05（已完成），W05 为唯一剩余候选且门未开。
 - 本批仅 IQS 文档+PWF；外仓零写入；无测试产品代码。链接/路径已人工核对（`../../reviews/...` 相对 packages/ 正确）。
+
+## 2026-10-02 — Q02 MiniMax verified live receipt（Q02/Q03 关闭）
+
+- 起点：按 live 门声明后跑两个 MiniMax live E2E，首轮 2/2 失败（HTTP 200/completed 但 `search_call_count=0`）。四轮 live + 七轮单次探针分层定位，全部对照 MiniMax 官方文档核实：
+  1. anthropic 分支 `tool_choice={"type":"tool","name":...}` 不符合官方 ToolChoice（仅 auto/none）→ 改 `{type:"auto"}`；两处测试断言同步。
+  2. **中文 system 行拼进 Responses `input` 实测抑制工具调用**（含中文的 payload 3/3 零搜索；纯英文 4/4 有搜索）→ system 移入官方 `instructions` 字段（`{model,instructions,input,tools}` 精确形状）。
+  3. `_build_prompt` 加搜索强制令与"最终消息 JSON-first"规则（厂商前导散文 1297→139 字符）。
+  4. 模型终消息仍是"散文+JSON"（`first_brace=139`）→ parser strict 语义升级（**Q02+Q03 联合批次**）：整段字面 JSON → 恰好一个完整外层对象+全身份绑定；Q03 全部 fail-closed 性质保留（重复键/嵌套冲突/错绑定/多候选拒绝）；3 处旧姿态契约测试更新为新契约（接受单绑定/拒绝多候选/前导路径绑定实体；no-repair 测试换错绑载体保原意）。
+  5. live 超时按官方 Server Tools Tip 调大（config 300s/子进程 360s，两 MiniMax 测试）。
+- 证据：mypy 0、bandit 0、black/isort/ruff 净；离线全量 854 passed/4 skipped（仅 env-gated live）；**两个 MiniMax live E2E（responses+anthropic）在最终代码 PASSED**。累计约 20 次单题级 MiniMax API 调用（7 轮探针/live 迭代，合计量级角位人民币，精确账单见 owner 控制台）。无其他网络/付费调用。
+- 提交：`ced1faa`（8 文件，完整 pre-commit 链过）+ `82f1794`（3 文件：payload 契约测试锁 `instructions`/`input` 拆分、零候选 strict 用例、docstring 措辞），均已推送 `github.com/zhengcb81/StockQAbyLLM`。
+- **独立审查**：changes_requested（唯一 Medium=minimax payload 拆分无契约测试；LOW=尾随散文措辞/零候选无用例）→ 修复 `82f1794` → 恢复同会话复核 → **approved**（变异探针确认新测试能捕获回拼回归；三文件 171 passed；全量 854 passed），并明确确认 LLM-02/LLM-11 各条款的 case→test 映射 + live 结果共同满足 Q02 完成判据。
+- **Q02 verified**；Q03 的关闭条件随之满足（原 r2 独立复审 verified + 本批 parser 语义增量经同一独立审查 approved 且差分审计无安全回归：19 处 old-None→new-non-None 全部经全绑定验证、6 处 non-None→None 为变严）。acceptance-cases.json 的 `specified_not_executed` 状态字段按纪律不改动（执行证据记于本处）。
+- M1 收口进度：Q01/Q02/Q03/Q04/Q05/Q12/S01/S02/S04/S05/S07–S10 verified 或完成；M1 剩 S03（3.1.0 样本缺失）、S06（真实 ACK/工件）与其后的 L01/G1 门。
