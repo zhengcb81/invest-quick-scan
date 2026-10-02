@@ -53,14 +53,14 @@ python -B -X utf8 scripts/implementation_plan.py show <TASK_ID>
 
 | 线 | 上次已知状态 | 证据缺口/处理规则 |
 |---|---|---|
-| IQS | `da32ec2`（2026-10-02已推送；本会话完成DWA复审四包收口、QA-04收口、Q05 verified、Q02/Q03关闭、SW-IDENT声明修正；计划仍107卡/366场景/G6；origin已配置） | V02仍partial：无真实校准、无生产观察/receipt认证、无StockWiki历史重算/活动发布；不要仅凭派生hash把候选用进生产白名单 |
+| IQS | `cda6b01`（2026-10-02已推送；本会话完成DWA复审四包收口+P1处置（Phase54）、QA-04收口、Q05 verified、Q02/Q03关闭、S03改判(a)关闭、SW-IDENT声明修正、W02 preview入口+216报告（Phase53）；计划仍107卡/366场景/G6；origin已配置） | V02仍partial：无真实校准、无生产观察/receipt认证、无StockWiki历史重算/活动发布；不要仅凭派生hash把候选用进生产白名单 |
 | StockQA / Q02–Q05 | `master@82f1794`已推送（origin=github.com/zhengcb81/StockQAbyLLM）；QA-04 handoff **complete**@`fe11f63`，Q05 verified@`1318a2a`+`7ced082`，**Q02/Q03 verified**@`ced1faa`+`82f1794`（两个MiniMax live E2E最终代码PASSED、独立审查approved，证据`contracts/validation-Q02-MiniMax-live-E2E-2026-10-02.md`）；钩子链已修绿（mypy/bandit零债） | 共享工作树仅4条未跟踪（`.codegraph/`、`.workbuddy-ai/`、`nul`、`progress_update.txt`）不清理，`nul`保持未知；live 成本/账单见owner MiniMax控制台 |
-| StockWiki / SW-IDENT | 本地提交`aa17f93`（该仓无remote，仅本地）；handoff路径声明已修正，IQS CLI **valid**；status仍partial | W02/W03候选preview与生产链未闭；不伪造verified/多挂牌/AnalysisSubject/历史区间正例。UI、W05和其他路径无新授权不写 |
-| QAbyLLM | `simple_porter.py`（未跟踪）硬编码`sk-`密钥已脱敏为`SIMPLE_PORTER_API_KEY`环境读取（值零回显、0残留、未进Git历史） | **密钥轮换必须owner在服务商侧执行**；`.gitignore`新增`test_*`隐藏全套测试的决策待owner |
+| StockWiki / SW-IDENT | 本地提交`33dbf7f`（该仓无remote，仅本地）；`aa17f93`修正 handoff 路径声明后 IQS CLI **valid**；W02 **候选 preview 入口已交付**（`stockwiki identity-preview`，11 选择器绑 8 case，check_all 698 passed）并产出真实 216 报告（IQS `reviews/universe-identity-preview-2026-10-02.json`）；worktree 仅含仓设计性忽略的空库 `data/quick_scan/scan.sqlite`（建库零导入，可逆） | W02/W03 生产证据与 G2b 完整签收未闭；**等 owner 审阅 216 报告并给导入写授权**；不伪造verified/多挂牌/AnalysisSubject/历史区间正例。UI、W05和其他路径无新授权不写 |
+| QAbyLLM | **决定6 六批处置已执行并推送**（`64ec772..ad389f8`：F gitignore手术/路径脱敏/porter环境变量读取、B 验证+配置日志+全套测试、A RAG双模式核心、C 多Provider/插件/对话、D 文档工具、E 仪表板）；76 测试绿；13 处个人路径已改 `knowledge_base`；无git身份仓用一次性`-c`注入历史作者 | 残留 34 项"不建议提交"（pip重定向日志/样例数据/1字节临时/9个无引用工具/两份仪表板备份）维持现状，去留需另行指示；`simple_porter.py` 已入库（环境变量读取、可编译、零sk-）；**密钥轮换仍待owner服务商侧**（决定5=不换，残余风险owner承担）；环境补装了requirements声明依赖（langchain锁0.3线） |
 | G2b / S06 | 只签收provisional单挂牌Entity+mapping接口切片；S06本地slice已有测试/审查 | G2b仍需真实owner历史区间、verified、多挂牌、AnalysisSubject样本；S06仍需真实事务ACK、router 2.1历史工件及获批跨仓E2E |
 | TH-01 / IN-02 | 两份只读预研完整原件已归档验收 | T01/T02实施仍依赖G3/F05/W11、StockWiki生产query/golden、唯一Git owner与写授权 |
 | 首批名单 | 用户确认216个带市场的挂牌候选作为输入；331个名称仅为解析提示 | 候选数不等于发行人数；不自动合并近名公司，不自动导入或扫描，歧义/unresolved不入付费队列 |
-| DWA-01–07 | 复审四包03R/04R/05R/06R于2026-10-02执行并**全部接受**（四份报告与acceptance-review归档于`2026-10-02-reaudit/`）；01/02/07维持接收；DWA-04漂移归因收口（3778条` D`为幻影条目；`??` 2334−1971−14+55=404闭合） | P1处置（DWA-04批次A–D、DWA-05还原/ignore、DWA-06提交分组）与1985条ACL拒绝组解封仍待owner执行；不清理任何未知来源外仓文件 |
+| DWA-01–07 | 复审四包03R/04R/05R/06R于2026-10-02执行并**全部接受**（归档`2026-10-02-reaudit/`）；01/02/07维持接收；漂移归因收口；**P1 处置已按决定6 全执行并推送**（Phase 54：rf `5319ee26` 门绿、SID `064a837`、QAbyLLM `ad389f8` 六批、StockQA 无操作）；ACL 解封完成，rf 新基线 2401 条（含 1985 解封组） | 解封后新增可见的 1985 条**尚未被审计分类**，在 DWA-04 扩盘盘点（我方队列）完成前**不得清理/提交/ignore**；QAbyLLM 34 项"不建议提交"与 SID 2 盲区文件维持现状，去留变更需另行指示 |
 
 身份主键、主题/行业只读消费者、轻资产LLM问答、模型/时间/评分尺横向纵向比较、原答案不可变、未知不计零、周期低谷保留观察标记，均是设计不变量。完整条文在`decision-register.md`与各契约中；遇到冲突优先用户最新指令与这些冻结契约，并记录提案，不能静默改设计。
 
