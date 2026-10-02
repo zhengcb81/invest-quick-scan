@@ -1390,3 +1390,19 @@
 - 此次为文档/规划改动，没有运行测试；提交前做链接/路径人工核对与`git diff --check`。不写外仓、不运行模型/API或下载。
 - 提交前新增文件检查发现RED日志两处行尾空格，已去掉（失败内容不变）。本机core.autocrlf=true会改写新候选的字节hash，因此在评分尺归档目录加精确JSON `-text` 属性，并新增隔离Git index/checkout回归保证字节不变；不改变其他目录换行规则。
 - 归档属性最终回归：V02测试15 passed / 27 subtests；Ruff通过，临时Git目录清理，日志`validation-V02-archive-2026-10-01.log`。119项合并批次与93项文档批次均保留原结果，不因新增归档测试冒称重新跑过全批次。
+
+## 2026-10-02 — 接手恢复、全项目只读重核与 DWA 复审重派
+
+- 按新接手模型工作指南恢复：planning-with-files 解析为根目录 legacy 计划；重读 task_plan/progress/findings、implementation README、decision-register、test-strategy、review-and-handoff。计划校验仍 107 tasks / 366 acceptance cases / G6 valid。
+- 只读重核各仓 2026-10-02 事实：IQS `master@db22815`（新接手指南提交，本地无 remote）；StockQAbyLLM `master@3c685dd` 63 条含 `?? nul`（mtime 10-01 21:54，未读内容），digest `d9951959…` 与 DWA-06 报告结束态一致；StockWiki `master@b4f3846` 干净；QAbyLLM `main@64ec7721` 66 条（比 10-01 冻结 67 条少 `.claude/settings.local.json`，该路径被用户级全局忽略 `~/.config/git/ignore` 吸收，文件仍在）；StockInfoDownloader `改版新下载器@dcf2c64` 6 条 digest `c34f77a8…` 与 10-01 冻结完全一致；company-wiki `master@f318b35` 比 10-01 观察前进 5 提交（文档/CI 记录类），施工卡 `invest_quick_scan.md` hash 变为 `5b9101fa…` 仅追加 2026-10-01 状态注记、范围未变；theme/industry/local-skills/filing-fetch/MeetingConverter 与已知基线一致。
+- 外部 handoff 无新交付：QA-04 仍 `partial`/`result_commit=null`（55 项基线 vs 当前 63 条共享脏树）；SW-IDENT 仍 `partial`、路径声明越界未修正。Q05/W05/T01/T02 前置门未开，无新增可开工 owner 包。
+- DWA-04 基线漂移查明（只读）：10-01 冻结 6124 条含 3778 ` D` 与 2334 `??`；今天 git 不再报任何 ` D`（0 条）、`??` 为 404（旧 1985 条消失、新增 55 条 DEF-*/RATCHET-FIX-*/T3-DIAG 目录）。抽样复核显示多数原 ` D` 文件仍在磁盘且 mtime（多为 09-20）早于快照时间；`.git` 目录 mtime 今天 07:15 但 `.git/index` mtime 仍为 09-27。探查中发现相对路径超长（236–255 字符）时 Python `os.path.exists`/`listdir` 有假阴性（绝对路径与 `cmd dir` 均可见文件），已弃用该探针。幻影条目（可见性/长路径 stat 失败）vs 事后真实变更 vs 混合，只读证据不足以区分，列为 DWA-04R 第一问，不作结论。
+- 编制 DWA 复审重派包 `docs/implementation/reviews/dirty-worktree-audits/2026-10-02-reaudit/`：四仓新基线（snapshot.json + snapshot-status.txt + snapshot-files.jsonl，摘要为 LF 连接+尾 LF 规范；敏感路径 omitted、不可读 inaccessible）与四张任务卡。DWA-03R：合规复审（全程只读、不在目标仓库留临时文件，前次拒收主因）；DWA-04R：先归因基线漂移再逐路径盘点；DWA-05R：零漂移复审，`config.json` 等禁读内容只记元数据（前次 grep 违规不重复）；DWA-06R：63 条完整逐路径清单（前次分组汇总不足），`nul` 单列保持未知、不读不删。
+- 快照生成用一次性脚本（生成后已删）；未运行产品测试。本次全部写入限于本仓 DWA 目录与 PWF 文件；外仓只读，无网络/API/下载，无需新增授权。
+
+## 2026-10-02 — DWA-04R 全面审查、缺陷修复与归因收口
+
+- 全面审查 DWA-04 新旧基线工件：发现 `2026-10-02-reaudit/DWA-04/snapshot-files.jsonl` 首版把 2 条 269/295 字符超长路径误标 `inaccessible`（Windows MAX_PATH 下普通 stat/open 失败）。以 `\?\` 扩展前缀补哈希，2 条 SHA-256 与 10-01 快照同路径逐字节一致（`1cbfb1a2ed055fa1…`/`0b2b9fdf710255e0…`）；manifest 现 416/416 hashed，snapshot.json 计数与 note 已同步。敏感误哈希检查 0 条。
+- 漂移归因收口（含独立 read-only agent 独立重推，三条主张全部 VERIFIED、数量闭合 0 差异）：3778 条 ` D` 全部仍在磁盘（`\?\` 全量 3778/3778）、361 条共有路径哈希 0 差异、25 条抽样 mtime/ctime 全部 ≤2026-09-21（Windows ctime=创建时间）、reflog 无恢复操作 → **幻影条目（快照捕获时可见性失败），非真实删除**。`??` 2334→404 精确闭合：1971 条 `.tmp-zr408-unit*`（当前 shell/icacls 均拒绝访问，mtime 08-18）+14 条 scratch 子目录（父目录拒绝访问）去留未知；349 条正常延续；55 条"新增"实为 09-27 创建、父链 mtime 停在 09-27 的漏视旧文件。等式 2334−1971−14+55=404。
+- 归因证据与修复记录写入 `2026-10-02-reaudit/DWA-04/coordinator-review-2026-10-02.md`；DWA-04R 任务卡"第一问"改为已收口摘要，复审范围收窄为当前 416 条逐路径盘点 + 两个拒绝访问组单列未知。保持未知不外推：不清理、不恢复、不提交 revenue-forecast 任何路径。
+- 目标仓库零写入；无网络/API/下载；独立复核 agent 只读。临时核查脚本在系统 TEMP。

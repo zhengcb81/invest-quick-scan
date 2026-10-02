@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-恢复工作时的第一步是按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核计划解析结果和各仓最新HEAD/工作树/handoff，然后按任务依赖挑选一组已具备接口的owner工作；2026-10-01外仓状态只是历史观察。上轮V02本地候选实现已提交为`e67e991`，本仓当时无Git remote；当前推送配置要重新只读核对。V02生产启用仍待G3、调用方认证与后续StockWiki接线，不以本地通过替代依赖验收。审查节奏沿用G0—G6/高风险边界，不新增逐小节点review。
+2026-10-02 重核完成：外部 handoff 无新交付，Q05/W05/T01/T02 前置门未开。当前可执行的唯一下一步是把 `docs/implementation/reviews/dirty-worktree-audits/2026-10-02-reaudit/` 的四张复审卡（DWA-03R/04R/05R/06R）交给独立只读 harness，收回报告后做验收审查；DWA-04R 的基线漂移归因未闭环前不得对 revenue-forecast 执行任何清理/恢复/提交。恢复工作时仍按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核计划解析结果和各仓最新HEAD/工作树/handoff。V02 生产启用仍待 G3、调用方认证与 StockWiki 接线；QA-04/SW-IDENT/G2b/S06 的收口仍等各自 owner 交付。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -770,3 +770,14 @@ Status: documentation_complete; no_task_or_gate_change
 - [x] 写明IQS、StockQA、StockWiki及只读外仓的历史授权范围和限制；要求每个handoff提供精确基线/结果、状态摘要、契约hash、分项测试结果、清理、网络费用、阻塞和单一下一步。
 - [x] 将测试/审查明确保持在owner批次、G0—G6和跨仓/高风险门，不为小卡增加独立review或重复整套回归。
 - [x] 从实施入口与并行施工包索引加入醒目链接；不改变任务数、验收case、任务状态、外仓权限或产品契约。
+
+### Phase 49: 2026-10-02 只读状态重核与 DWA 复审重派
+
+Status: reaudit_packages_ready; awaiting_independent_harness_dispatch
+
+- [x] 按接手指南恢复唯一 legacy 计划并重核各仓 HEAD/工作树/handoff：IQS `master@db22815`（无remote）；StockQAbyLLM `master@3c685dd` 63条含`?? nul`与 DWA-06 结束态 digest 一致；StockWiki `master@b4f3846` 干净；QAbyLLM `main@64ec7721` 66条（`.claude/settings.local.json` 被用户全局忽略吸收）；StockInfoDownloader 6条与冻结 digest 完全一致；company-wiki `master@f318b35` 前进5个文档/CI类提交、施工卡hash变`5b9101fa…`仅追加状态注记、范围未变。QA-04/SW-IDENT handoff 无新交付，Q05/W05/T01/T02 前置门未开。
+- [x] 查明 DWA-04 基线漂移的可证实事实：冻结 6124 条（3778 ` D`）vs 当前 416 条（0 ` D`），HEAD 未变、` .git/index` mtime 仍是 09-27，抽样原 ` D` 文件仍在盘上且 mtime 早于快照；幻影条目/事后变更/混合无法只读区分，保持未知并列为复审第一问。修正超长相对路径下存在性探针假阴性的核查方法。
+- [x] 生成四仓 2026-10-02 复审基线（snapshot.json/snapshot-status.txt/snapshot-files.jsonl，LF+尾LF 摘要规范，敏感路径 omitted、不可读 inaccessible）并编制 `docs/implementation/reviews/dirty-worktree-audits/2026-10-02-reaudit/` 四张任务卡与索引：DWA-03R 合规复审、DWA-04R 漂移归因+逐路径盘点、DWA-05R 零漂移禁读复审、DWA-06R 63条完整逐路径清单（`nul` 保持未知）。
+- [x] DWA-04R 全面审查与修复：补 2 条超长路径漏哈希（`\\?\` 前缀，与 10-01 逐字节一致，manifest 416/416 hashed）；漂移归因经独立只读复核收口——3778 ` D` 为幻影条目（3778/3778 在盘、361 哈希 0 差异、ctime≤09-21、reflog 无恢复），`??` 2334−1971−14+55=404 精确闭合（55 条为 09-27 漏视旧文件；1971+14 在拒绝访问组，去留未知）。证据见 `2026-10-02-reaudit/DWA-04/coordinator-review-2026-10-02.md`；不清理/不恢复/不提交 revenue-forecast。
+- [x] 本次全部写入限于本仓 DWA 目录与 PWF 文件；外仓只读，无网络/API/下载，无产品测试运行，无需新增授权。快照生成脚本为一次性，生成后已删。
+- [ ] 将四张卡交给独立只读 harness 执行并收回 `DWA-03R/04R/05R/06R` 报告；总控按验收审查后决定可接收范围。DWA-04R 归因未闭环前不得对 revenue-forecast 作任何清理/恢复/提交建议的执行。

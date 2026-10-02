@@ -1252,3 +1252,16 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 新接手指南明确 `tasks.json` 管结构与依赖、`acceptance-cases.json` 管验收规格、根PWF文件管实施状态/证据、worker handoff只是自述、总控验证才签收。更晚时间的事实覆盖旧快照，但旧观察保留供审计。
 - 旧review文档已明确同owner批次和G0—G6集中审查。把该承诺重复写入入口以降低误解风险，不新增小节点审查步骤或小节点全量测试。
 - 各外仓状态和脏工作树会被平行任务改动；handoff要求开始/结束分别记录branch/HEAD/porcelain摘要和结果hash，并在漂移时重新归因。外部权限按精确路径及现存用户授权记录，不因指南或CLI格式通过而扩大。
+
+## 2026-10-02 — DWA-04 基线漂移与探针假阴性
+
+- 2026-10-01 冻结的 revenue-forecast 状态（6124 条：12 ` M` + 3778 ` D` + 2334 `??`）与 2026-10-02 只读重核（416 条：12 ` M` + 404 `??`，0 ` D`）差异巨大，但 HEAD/分支未变（`fcap@ee0a82b`）、12 条 ` M` 逐条一致、`.git/index` mtime 仍是 09-27。抽样复核：原 ` D` 集合多数文件仍在磁盘、mtime 多为 09-20 前后（早于快照时间）；旧 `??` 有 1985 条消失（部分磁盘已不在、部分仍在），新增 55 条 DEF-*/RATCHET-FIX-*/T3-DIAG execution_runs 子目录。
+- 可能解释（可见性/长路径 stat 失败造成幻影 ` D` vs 快照后真实删除/恢复 vs 混合）在只读证据下无法区分：`.git` 目录 mtime 变化可由索引锁创建/删除引起，不证明内容变化；权限拒绝目录（`reviews/revenue/scratch/*`、`.tmp-zr408-unit*`）与过长路径内部不可见。因此保持未知，列为 DWA-04R 复审第一问，不得据此清理、恢复或提交。
+- 探针教训：对 236–255 字符的相对路径（Windows MAX_PATH 边缘），Python `os.path.exists`/`listdir` 会出现假阴性（同文件绝对路径与 `cmd dir` 均可见）；后续对深路径仓库的磁盘存在性核查一律用绝对路径或 shell 原生命令，不把探针失败当文件消失。
+- `?? nul`（StockQAbyLLM）与 rf 根目录的 `NUL` 是同名不同判的现象：rf 的 `NUL` 被 `.gitignore` 的 `nul` 规则忽略（check-ignore 可证），StockQA 的 `nul` 仍出现在状态中。两者都保持未知、不读内容、不由零字节推断可删。
+
+## 2026-10-02 — DWA-04 归因结论与快照生成器教训
+
+- DWA-04 基线漂移归因已收口（经独立只读复核 VERIFIED）：10-01 快照 3778 条 ` D` 全部是幻影条目——3778/3778 文件仍在磁盘、361 条共有路径哈希 0 差异、mtime/ctime 均 ≤2026-09-21（Windows ctime=创建时间，排除删除恢复）、reflog 无恢复操作。`??` 数量精确闭合 2334−1971−14+55=404；其中 55 条“新增”实为 2026-09-27 创建、10-01 漏视的旧文件（父链 mtime 停在 09-27），1971+14 条在当前 shell 拒绝访问组（`.tmp-zr408-unit*`、`scratch/{model-tests,publication-tests,pytest}`），去留保持未知。
+- 快照生成器教训：Windows 长路径（260+ 字符）会让普通 `open/stat` 失败而被误标 `inaccessible`；`\\?\` 扩展前缀（需全反斜杠路径）可正常读写。同时相对路径 236–255 字符时 Python 存在性探针有假阴性。对深路径仓库的核查一律用绝对路径+`\\?\`，探针失败不当作文件消失。
+- 归因收口不构成处置授权：不对 revenue-forecast 做任何清理、恢复、提交；幻影 ` D` 不是待删清单。
