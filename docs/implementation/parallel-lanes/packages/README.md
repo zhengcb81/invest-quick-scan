@@ -13,7 +13,9 @@
 
 **2026-10-01 当前可分派性：** QA-04 的 246 项离线行为回归通过，但共享 StockQA 工作树与旧 handoff 未收口；SW-IDENT 的 113 项聚焦回归通过，但 handoff 被 IQS CLI 以 `changed_path_out_of_scope` 拒绝，W01–W03/full G2b 仍 partial。TH-01/IN-02 只读预研验收完成，T01/T02仍受G3/F05/W11和生产查询接口阻挡。不得再派第二个写入 harness 到 QA-04 或 SW-IDENT 同一仓库。
 
-可独立重派的只读复审沿用[原始审计卡索引](../../reviews/dirty-worktree-audits/2026-10-01/README.md)：DWA-03、DWA-04、DWA-05 当前状态摘要与原快照一致；每个 harness 仍须先后核对快照。DWA-04要求和owner相同的6124项可见性；DWA-05的 `config.json` 内容必须保持未知、不得读取。DWA-06现为63项且含 `?? nul`，原62项任务快照已漂移，不能直接重用旧卡。Q05/W05暂无开工资格，分别等待QA-04收口及W01–W03/G1/S05和单独写授权。
+**2026-10-02 当前可分派性：** QA-04 **已收口**：`StockQAbyLLM` 隔离快照提交 `fe11f63`（58 文件）通过完整 pre-commit 链并推送（origin=github.com/zhengcb81/StockQAbyLLM），handoff `status=complete`、`result_commit` 就位、独立增量审查 approved、IQS CLI valid。同日 **Q05 由总控直接实现并 verified**（`1318a2a`+`7ced082`，LLM-08/09/16 全绿、独立审查 ruff 阻断已修复）——Q05 不再是候选包。SW-IDENT handoff 路径声明已修正（StockWiki 本地提交 `aa17f93`，该仓无 remote），IQS CLI 转 **valid**，但 status 仍 partial（W01–W03 生产证据缺口未闭）。TH-01/IN-02 维持只读预研等待 G3/F05/W11。
+
+DWA 复审四包已于 2026-10-02 执行并全部接受（[复审归档与验收](../../reviews/dirty-worktree-audits/2026-10-02-reaudit/README.md)），旧卡不再重派；`config.json` 类禁读规则与"不清理未知来源文件"继续有效，P1 处置与 1985 条 ACL 拒绝组解封仍待 owner。W05 仍无开工资格（等 W01–W03/G1/S05 和单独写授权）。
 
 216个挂牌候选的owner身份预览当前也不可用：只读运行StockWiki CLI帮助时没有候选导入/解析/名单预览命令；`identity-export-g2b`要求已知的精确Entity ID与`as-of`，不能消费候选清单。W02/W03须先提供隔离preview接口和逐项输出，再考虑任何名单写入。
 
@@ -44,9 +46,8 @@ flowchart LR
 
 | 候选 | Owner | 计划内容 | 开工门 |
 |---|---|---|---|
-| Q05 | StockQA | 日志内容边界、隐私字段清除、完整模型/实体/题义/截止日请求缓存键 | Q03/Q04 已满足；QA-04 当前快照、handoff 与 review 正式收口后，按 P00 只读预检给出精确路径 |
 | W05 | StockWiki | 不可变问答观察的事务导入、重放/冲突隔离和历史身份范围 | W01/W02/W03、G1、S05 已满足；StockWiki owner 给出精确路径且用户明确授权 W05 写入 |
 
-Q05 与 W05 属于不同仓，可在各自开工门通过后并行；现在不能把它们标记为可开工卡。QA-04/SW-IDENT 有未闭合交付，不得另外派一个 harness 同时写同一仓。TH-01/IN-02 已完成的是只读预研，实施继续等待 G3/F05/W11 与生产 query/golden。
+Q05 已于 2026-10-02 由总控直接实现并 verified（`1318a2a`+`7ced082`），不再是候选包。W05 仍等其开工门；不得另外派一个 harness 与既有写入者同写 QA-04 或 SW-IDENT 仓库。TH-01/IN-02 已完成的是只读预研，实施继续等待 G3/F05/W11 与生产 query/golden。
 
 机器可读包目录见 [`manifest.json`](manifest.json)。`readiness` 是分派状态，不是 `tasks.json` 的任务验收状态；外仓如有新提交，必须重新做开工核验。

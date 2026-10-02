@@ -23,7 +23,7 @@
 
 准确任务归属见[机器可读lane manifest](lane-manifest.json)。任务依赖仍以`tasks.json`为唯一来源，不能因为同一条线接了一个包就越过`depends_on`。
 
-可直接交给不同 harness 的下一段施工卡见[独立施工包目录](packages/README.md)：QA-04、SW-IDENT、TH-01、IN-02。包目录区分现在可做的写入候选与依赖未齐时的只读预研，不把五条长线的全部未来任务一次性宣布可开工。
+施工卡目录见[独立施工包目录](packages/README.md)：QA-04 已于 2026-10-02 收口（`fe11f63`，handoff complete、审查 approved）；SW-IDENT handoff 已 valid 但 status 仍 partial（生产证据缺口）；TH-01/IN-02 为只读预研已验收。包目录区分可做的写入候选与依赖未齐时的只读预研，不把五条长线的全部未来任务一次性宣布可开工。Q05 已由总控直接实现并 verified（`1318a2a`+`7ced082`）。
 
 ## 并行执行节奏
 
@@ -44,7 +44,7 @@ flowchart TD
 
 波次是**依赖门**，不是硬编码批次号。建议顺序：
 
-1. **启动门**：总控核实输入分支/commit、工作树、AGENTS、task/case状态与接口release；确保harness只占一个owner路径。当前第一候选是StockQA Q04；它依赖Q03/C05且Q03任务级验证已过，但StockQA已有55项工作树状态，尚需冻结准确包含Q03修复的基线。
+1. **启动门**：总控核实输入分支/commit、工作树、AGENTS、task/case状态与接口release；确保harness只占一个owner路径。（历史记录：2026-09-30 首候选为 StockQA Q04；Q04 已于 2026-10-02 收口于 `fe11f63`，Q05 同日 verified，当前无自动排定的第一候选——按 `task_plan.md` 的 Next Step 与依赖重核结果选下一件工作。）
 2. **可独立owner包**：满足`tasks.json`依赖的IQS、StockQA、StockWiki任务可跨仓并发；例如IQS问题/模块维护、StockQA运行语义、StockWiki身份名单，不代表这些子项当前都已到期或已授权。StockWiki W02/W03启动前先证明W01已完成，并仅写先前精确授权的8个文件。
 3. **运行闭环门**：Q06–Q10、W05–W12及W15按实际依赖交接；producer schema/golden与consumer schema须来自owner真实实现。G2b需要真实StockWiki DTO/serializer golden，不能用本仓模拟正例替代。
 4. **事实与消费者门**：F01–F06、V01–V15和T01/T02依赖冻结事实/关系接口、StockWiki查询能力与实际任务前置；Theme/Industry只能使用公开只读查询接口，不能直接访问StockWiki私有SQLite。

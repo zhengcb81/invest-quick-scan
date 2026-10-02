@@ -1446,3 +1446,10 @@
 - 接受的 LOW/INFO 观察（不改码）：脱敏在 traceback 源码行会过度遮蔽（只多不少）；装饰器维度仅从 kwargs 读（位置参数不会入键，生产无调用方）；LLM-08 缓存路径非持久仅隐式覆盖。
 - Q05 完成判据满足：case 全有实际结果、快照已提交（`1318a2a`+`7ced082`）、独立审查阻断项已修复复验 → **verified**。whole-src ruff 有 19 处预存可修（非 pre-commit 门、非本任务债务，未动）。
 - StockQA 本阶段写入：2 提交已推送 `github.com/zhengcb81/StockQAbyLLM`；IQS 写入仅 PWF。无网络/API/付费（pip-audit 为钩子自带依赖公告查询）；临时目录已清理。
+
+## 2026-10-02 — 接手指南与施工索引状态刷新
+
+- handoff-for-new-agent.md 更新 8 处旧锚点至 10-02 事实：IQS 提交/remote（`94be5a5`，origin 已配并推送）、快照表表头日期、IQS/StockQA/QA-04+Q05/SW-IDENT/DWA 四行状态（QA-04 complete@fe11f63、Q05 verified@1318a2a+7ced082、SW-IDENT CLI valid@aa17f93、DWA 复审四包全接受+归因收口）、新增 QAbyLLM 行（密钥已脱敏/轮换待 owner）、权限速查 remote 规则改为"origin 已有，其余仍不猜不新增"、第 3 节证据消费状态。原则条款（不误判、不越权、live 前说明成本）未改。
+- parallel-lanes/README：施工卡清单行与"启动门首候选 Q04"句更新为已收口历史记录+按 Next Step 选工。
+- packages/README：追加"2026-10-02 当前可分派性"日期块；DWA 复审指针改指 `2026-10-02-reaudit/`（旧卡不再重派）；候选包表移除 Q05（已完成），W05 为唯一剩余候选且门未开。
+- 本批仅 IQS 文档+PWF；外仓零写入；无测试产品代码。链接/路径已人工核对（`../../reviews/...` 相对 packages/ 正确）。
