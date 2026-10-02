@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-当前按用户2026-10-01要求暂停：本轮收尾V02本地候选实现并提交；本仓无Git远端配置，不能执行推送。恢复时先重核外仓HEAD/工作树与handoff，继续QA-04、SW-IDENT交付收口及W02/W03候选preview；V02生产启用仍待G3、调用方认证与后续StockWiki接线，不以本地通过替代依赖验收。
+恢复工作时的第一步是按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核计划解析结果和各仓最新HEAD/工作树/handoff，然后按任务依赖挑选一组已具备接口的owner工作；2026-10-01外仓状态只是历史观察。上轮V02本地候选实现已提交为`e67e991`，本仓当时无Git remote；当前推送配置要重新只读核对。V02生产启用仍待G3、调用方认证与后续StockWiki接线，不以本地通过替代依赖验收。审查节奏沿用G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -761,3 +761,12 @@ Status: local_candidate_implemented_and_reviewed; overall_V02_partial; paused_by
 - [x] 用户要求手头工作完成后提交/推送/暂停。本仓`git remote -v`为空，保持未配置，不猜测远端地址；完成本地提交后暂停，不继续其他施工或外仓清理。源码/文档发布按本轮Git提交历史定位。
 
 证据：[评分尺契约](docs/implementation/contracts/scoring-rubric-evolution.md)、[独立审查](docs/implementation/contracts/review-V02-closeout-2026-10-01.md)、`validation-V02-red-2026-10-01.log`及`validation-V02-green-2026-10-01.log`。
+
+### Phase 48: 跨模型接手指引与状态时间口径
+
+Status: documentation_complete; no_task_or_gate_change
+
+- [x] 建立无聊天上下文的接手流程：唯一PWF计划解析、权威文件用途、当前事实与旧snapshot区分、依赖/owner/allowlist选择顺序。
+- [x] 写明IQS、StockQA、StockWiki及只读外仓的历史授权范围和限制；要求每个handoff提供精确基线/结果、状态摘要、契约hash、分项测试结果、清理、网络费用、阻塞和单一下一步。
+- [x] 将测试/审查明确保持在owner批次、G0—G6和跨仓/高风险门，不为小卡增加独立review或重复整套回归。
+- [x] 从实施入口与并行施工包索引加入醒目链接；不改变任务数、验收case、任务状态、外仓权限或产品契约。

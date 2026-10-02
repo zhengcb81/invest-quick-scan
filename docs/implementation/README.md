@@ -4,6 +4,8 @@
 
 跨项目分别交什么见[各项目交付](cross-project-delivery.md)，最终如何安装配置和一键开启见[统一启动设计](one-click-launch.md)。企业结果的列表、详情与事实关系视图见[结果UI设计](results-ui.md)，U01—U03和浏览器验收为必交项。全部计划完成的最终判定为G6；G5仍是评分规模交付，不代表所有组件已经配套启动。
 
+**新模型/独立harness接手先读[工作恢复与交接指南](handoff-for-new-agent.md)**：先恢复唯一PWF计划和当前各repo快照，再按任务依赖、owner allowlist与历史授权选择下一步。各线状态含日期快照，不能当作实时状态；施工频率仍是owner批次和G0—G6大节点审查，不增加逐小卡review。
+
 1.9.3全计划依赖、case归属、向后兼容与跨仓派发竞态的复核记录见[计划审查报告](reviews/PLAN-1.9.3-review.md)；1.9.4模块归档图与legacy基线复核见[审查报告](reviews/PLAN-1.9.4-review.md)；1.9.5的receipt v2和P01双审只代表当时设计，已由1.10.15退役，原review作为历史记录保留。
 
 先读[全局运行/存储/比较契约](../system-contract.md)。本地已有评分题库3.2.0、事实61题与标准输出校验；这些不替代StockQA/StockWiki的生产接线及最终验收。W13/Q11/W14补齐自动名单维护和三维比较。[组合式题库增补设计](../modular-question-bank-design.md)把现有模块升级为可独立扩题、路由、版本锁定与增量补扫的系统；S04—S06、Q13、W15、F06、U04为新增任务，跨仓写入仍须按用户边界另获许可。

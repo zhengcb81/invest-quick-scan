@@ -1381,5 +1381,12 @@
 - V02整体partial：候选未校准/未激活，caller认证、G3、StockWiki持久化/历史重算及V16资格仍待后续，不据此宣称全链路可用。全项目各线审计结论延续上一节，不扩大外仓授权。
 - 按用户要求收尾后暂停；本仓没有任何Git remote，无法推送，不擅自添加。本轮提交包含新增评分尺与PWF/审查记录，具体SHA从Git历史读取；已提交的此前状态盘点为`56ff421`。
 - PWF更新后复跑最终文档门：93 passed / 241 subtests；`git diff --check`通过。系统global ignore/cache目录访问warning未影响验收；未对其权限/内容作修改。
+
+## 2026-10-02 — 较弱模型接手说明补强
+
+- 新接手模型曾需从task_plan、progress、findings、任务manifest、lane README和多个较旧handoff中拼出状态、依赖、权限和下一步。新增`docs/implementation/handoff-for-new-agent.md`，明确计划选择/恢复顺序、各规划文件的权威范围、下一任务的依赖判断、工作树漂移处理、跨仓授权、TDD批次、集中审查频率与handoff字段模板。
+- 将IQS、StockQA、StockWiki/主题行业线和首批216挂牌候选的上次事实整理为截至2026-10-01的快照；逐处声明必须在接手日重核，不把旧HEAD、旧porcelain或worker声明当实时/已验收状态。保留V02 partial、QA-04/SW-IDENT未收口、G2b/S06生产证据缺口和DWA审计遗留。
+- 从实施总入口、并行施工总索引和PWF Next Step添加链接；审查机制维持G0—G6/跨仓接口/高风险批次集中审查，不增加逐小卡复核或测试门。任务/验收规格数量及依赖未更改。
+- 此次为文档/规划改动，没有运行测试；提交前做链接/路径人工核对与`git diff --check`。不写外仓、不运行模型/API或下载。
 - 提交前新增文件检查发现RED日志两处行尾空格，已去掉（失败内容不变）。本机core.autocrlf=true会改写新候选的字节hash，因此在评分尺归档目录加精确JSON `-text` 属性，并新增隔离Git index/checkout回归保证字节不变；不改变其他目录换行规则。
 - 归档属性最终回归：V02测试15 passed / 27 subtests；Ruff通过，临时Git目录清理，日志`validation-V02-archive-2026-10-01.log`。119项合并批次与93项文档批次均保留原结果，不因新增归档测试冒称重新跑过全批次。

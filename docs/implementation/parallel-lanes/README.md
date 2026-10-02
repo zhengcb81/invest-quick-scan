@@ -1,5 +1,7 @@
 # Invest Quick Scan 跨 Harness 并行施工总控
 
+新接手harness先按[工作恢复与交接指南](../handoff-for-new-agent.md)刷新计划和各仓快照。本文件后文所列“开工/阻塞状态”均是带日期的历史观察，不得据此假定今天的HEAD、脏树或授权仍未变化。
+
 状态：施工包已准备；不是任务完成记录，也不自动授权写外仓或运行真实API。
 版本：1.0.0；依赖任务与状态以本仓 `docs/implementation/tasks.json`、`task_plan.md`、`progress.md` 为准。
 
