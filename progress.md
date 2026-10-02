@@ -1467,3 +1467,11 @@
 - **独立审查**：changes_requested（唯一 Medium=minimax payload 拆分无契约测试；LOW=尾随散文措辞/零候选无用例）→ 修复 `82f1794` → 恢复同会话复核 → **approved**（变异探针确认新测试能捕获回拼回归；三文件 171 passed；全量 854 passed），并明确确认 LLM-02/LLM-11 各条款的 case→test 映射 + live 结果共同满足 Q02 完成判据。
 - **Q02 verified**；Q03 的关闭条件随之满足（原 r2 独立复审 verified + 本批 parser 语义增量经同一独立审查 approved 且差分审计无安全回归：19 处 old-None→new-non-None 全部经全绑定验证、6 处 non-None→None 为变严）。acceptance-cases.json 的 `specified_not_executed` 状态字段按纪律不改动（执行证据记于本处）。
 - M1 收口进度：Q01/Q02/Q03/Q04/Q05/Q12/S01/S02/S04/S05/S07–S10 verified 或完成；M1 剩 S03（3.1.0 样本缺失）、S06（真实 ACK/工件）与其后的 L01/G1 门。
+
+## 2026-10-02 — owner 授权批次：ACL 解封与 3.1.0 搜索（用户 9 项决定落地）
+
+- **第4项（ACL 解封，执行完成）**：三次迭代定位执行层障碍——①git-bash→cmd 中文路径编码吞失；②PowerShell 5.1 对无 BOM UTF-8 脚本按 GBK 解码致用户名乱码（修复：UTF-8 with BOM）；③`Test-Path` 对拒绝访问路径返回 False 被误当"目录不存在"（修复：去掉门无条件执行）。最终经 UAC 提权（用户确认）对 6 个拒绝目录执行 takeown /R + `icacls grant R /T`，全部 rc=0，**本 shell 复核全部可列举**（450/450/450/1/7/8）。提权日志 `C:\acl_run_log.txt`；仅授予读权限，与只读盘点意图一致。
+- **解锁后对账（DWA-04 悬案全部闭合）**：新状态 **2401 条（12 M + 2389 ??）digest `0a5407d72fa2c7c272cf4b8ec3731b1ae95297013d5cb6ed2b916a1b592e4dad`**。等式精确闭合：2389 ?? = 昨日可见 404 + 解封回归的 tmp-zr408 **1971** + scratch **14**（与原"未知组"计数逐个相符）；冻结 3778 条 ` D` 路径今日全部"跟踪且干净"（幻影终验）；仅存 1 条 stderr = I-07 `evidence` 长路径目录（非权限、属 MAX_PATH 残留）。**两个未知组从此可盘点**；DWA-04R 报告的 416 条清单已过时，需按 2401 新基线重采/扩盘（列为下一 DWA 阶段）。
+- **第2项（3.1.0 样本搜索，agent 完成）**：**NOT FOUND**——IQS 全历史（40 commits、tags/stash/reflog/unreachable blobs 全查）、全部本地仓 `-G` 探针、Downloads/Documents/Desktop、home 仓全无。锚点查明：3.0.0 归档在 `questions/releases/`（48 模块产物+lock），catalog 版本从 3.0.0 直跳 3.2.0（commit `eb462d4`），**3.1.0 时代只存在于未提交的工作区，从未落任何快照**。S03 该要求本地不可恢复 → **待用户改判**（接受 3.0.0 归档+合成拒绝测试为兼容证据，或判不可得）。
+- **第5项**：已解释轮换理由（明文落地过的旧值作废问题），暴露面限本机，**换不换由 owner 定**。**第7项**：StockWiki 维持本地提交不加 remote。**第8项**：StockQA 四未跟踪文件保留。**第9项**：MiniMax 账单后议。
+- 待办队列（按用户授权）：第6项 DWA P1 处置全执行；第1项 W02/W03 preview 施工（最高杠杆）；第3项 S06 跨仓 ACK E2E。
