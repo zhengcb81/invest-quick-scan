@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-DWA 复审四包已执行并验收（Phase 49）。等待项：① owner 侧管理员执行验收审查中的 ACL 解封命令后重采 DWA-04 状态，把 1985 条从未知转可盘点；② QAbyLLM `simple_porter.py` 硬编码密钥轮换+脱敏（P0）；③ 各包 P1 处置逐项授权。外部门未变：QA-04/SW-IDENT 仍等交付方刷新 handoff，Q05/W05/T01/T02 前置门未开，V02 生产启用待 G3/调用方认证/StockWiki 接线。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核计划解析与各仓 HEAD/工作树/handoff。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+QA-04 已收口（Phase 50，`fe11f63`，handoff complete，增量审查 approved，Q05 解锁）。下一实现批次：**Q05（约束日志/缓存内容及完整请求键）**——StockQA 施工，按施工纪律先写卡与逐文件写前报告，钩子链已修绿可直接走提交门。并行修复项：SW-IDENT handoff 路径声明（StockWiki）。等待项不变：DWA ACL 解封（owner 管理员命令）、QAbyLLM 密钥轮换（owner 服务商侧）、各包 P1 处置逐项授权、QA-04 外部门已闭但 SW-IDENT/G2b/S06 仍等 StockWiki/交付方证据；Q01/Q02/Q03 与 W05/T01/T02 前置门状态见各 Phase。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核计划与各仓 HEAD/工作树/handoff。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -784,4 +784,16 @@ Status: reaudit_completed_accepted; awaiting_owner_dispositions_and_acl_unlock
 - [x] 2026-10-02 四个独立 harness 并行执行完成：起止核验全 PASS 零漂移，目标仓零写入；四份报告归档 `2026-10-02-reaudit/DWA-0X/report.md`；验收 `acceptance-review.md` 四包全部接受（前次四项拒收原因均纠正）。DWA-04R 按收口归因执行（引用总控、5/5 抽样一致、未重做）。
 - [x] P0 记录：QAbyLLM `simple_porter.py`（未跟踪、未进 Git 历史）含 `sk-` 形态硬编码密钥，归档报告密钥值 0 命中；需 owner 轮换+脱敏后才可提交。`.gitignore` `test_*` 隐藏测试待 owner 决策。
 - [ ] 1985 条 ACL 拒绝组解封（`takeown` 因本 shell 非管理员失败；管理员命令已写入验收审查，owner 侧执行后重采 DWA-04 状态）。
-- [ ] 各包 P1 处置建议（DWA-04 批次 A–D、DWA-05 还原/ignore、DWA-06 提交分组、DWA-03 分组、QAbyLLM 密钥脱敏）等逐项精确授权后执行。
+- [ ] 各包 P1 处置建议（DWA-04 批次 A–D、DWA-05 还原/ignore、DWA-06 提交分组、DWA-03 分组）等逐项精确授权后执行；QAbyLLM 密钥脱敏已于 Phase 50 完成（轮换仍待 owner 服务商侧）。
+
+### Phase 50: QA-04 正式收口与 Q05 解锁
+
+Status: complete; handoff_complete_at_fe11f63; delta_review_approved; Q05_startable
+
+- [x] P0 密钥脱敏：QAbyLLM `simple_porter.py` 硬编码 `sk-` 密钥替换为环境变量读取（值零回显、0 残留）；密钥轮换仍需 owner 服务商侧执行；`.gitignore` `test_*` 决策仍待 owner。
+- [x] Q04 当前内容重验：246 责任批次 passed + Ruff 全过；确认四 Q04 文件与底座新模块 import 耦合、孤岛提交会断链，按 DWA-06R"可提交57"提交完整暂存体（写前报告精确列出）。
+- [x] 钩子链修绿（未跳过钩子）：HEAD 基线实测 mypy 0/bandit 0，证明 93 mypy + 4 bandit 为本批引入；5 并行 agent 分文件修复（guard+raise 替代 bare assert、`# nosec B608` 纯占位拼接标注、局部标注/重命名），black/isort 归一，复验 mypy 0/bandit 0/246 再过。
+- [x] 提交 `fe11f63`（58 跟踪文件：Q04 四文件+不可分割底座+pre-commit/-p no:base_url 与 .gitignore schema 豁免）通过完整 pre-commit 链（含 pip-audit 网络），推送 `github.com/zhengcb81/StockQAbyLLM`；提交后脏树 5 条未跟踪与 DWA-06R 分类一致。
+- [x] handoff 刷新（result_commit/接口哈希/worktree_after/verification 增 5 项/network_calls=true/open_items 换代）→ CLI valid → 独立只读增量审查 **approved**（F1/F2/F4/F9 复验在位、行为保持无风险、118 案例测试、ruff 净）→ `status=complete` + `review.snapshot_commit=fe11f63` → CLI 复验 valid。Q04 完成判据全满足。
+- [ ] Q05（约束日志/缓存内容及完整请求键，deps Q03+Q04）已解锁，为下一实现批次（StockQA，需施工卡+写前报告）。
+- [ ] SW-IDENT handoff `changed_path_out_of_scope` 路径声明修正为下一并行修复项（StockWiki 写入，需精确报告）。

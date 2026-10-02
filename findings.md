@@ -1272,3 +1272,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - P0：QAbyLLM `simple_porter.py`（未跟踪、未进 Git 历史）含 `sk-` 形态 46 字符硬编码 API 密钥；审计与归档报告只记存在性、密钥值 0 命中。轮换在密钥服务商侧、脱敏是目标仓写入，均需另行执行；不轮换不得提交该文件。同仓 `.gitignore` 新增 `test_*` 会隐藏整套测试且与文档矛盾，待 owner 决策。
 - ACL 解封教训：目标目录 ACL 拒绝时，非管理员 shell 的 `takeown` 直接失败（UAC 交互提权不能在批量执行中使用）；1985 条 `.tmp-zr408-unit*`/scratch 条目继续按"环境不可见/未知"处理，解封命令交 owner 管理员执行。
 - 处置边界不变：四份报告的提交/还原/删除/ignore 建议均未执行；"全权授权"用于只读审计与本仓归档，外仓写入仍按精确路径+具体动作逐项落实。
+
+## 2026-10-02 — 钩子门修绿与 QA-04 收口教训
+
+- **先测 HEAD 基线再判定"预存失败"**：pre-commit 拦截后，把 HEAD 抽到临时树用同参数跑 mypy/bandit（0/0），才证明 93 mypy + 4 bandit 是本批引入。不测基线就容易把新债误判为旧债、误走跳钩歧路；本仓纪律是修绿不跳钩。
+- **并行修文件级债务的边界**：5 agent 各占一个文件集、禁 git、只认领自己的错误行，避免共享仓并发写冲突；但 agent 中途互相引用"剩余错误数"会因执行时序出现矛盾，**最终裁决只能靠总控全局复验**（mypy/bandit/black/isort 全仓一遍）。本仓出现过 LSP 保存时重排与两次编辑碰撞，靠 black 归一与"从 .pyc 快照回滚重施"恢复——工具链副作用必须纳入复验项。
+- **提交可分性判据**：Q04 四文件 import 了不在 HEAD 的4个底座新模块 → 文件级隔离提交=断链快照；DWA-06R"可提交57"与包卡"隔离快照须含当前修复"共同支持整暂存体提交。**任务归属与提交边界可以不同**：handoff scope 仍声明 Q04 的4个 owned 路径，底座在 open_items 里明示归属未来 Q06–Q10 包，避免把别人的工作记进 Q04 的账。
+- **收口判据全链**：重验（246+Ruff）→ 钩子全绿提交（result_commit）→ handoff 刷新（哈希/快照/verification 增量、pip-audit 网络如实记 network_calls=true）→ CLI 形状校验 valid → **独立增量审查 approved**（复验前审发现仍有效+行为保持审计）→ status=complete。跳过任何一环都不算完成；handoff 的 `validation_scope` 只管形状与声明范围，业务收口靠 PWF+审查。
+- **nosec 用法**：B608 纯 `?` 占位拼接用 `# nosec B608` + 说明（值全参数化）；bandit 对 nosec 行有"No failed test"告警属正常，只要 findings=0。B101（bare assert）不用 nosec，用 guard+raise——同时满足 mypy 收窄与 `-O` 下更严格。

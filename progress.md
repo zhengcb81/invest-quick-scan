@@ -1419,3 +1419,13 @@
 - **ACL 解封未果**：总控尝试 `takeown` 解封 `.tmp-zr408-unit*` 等拒绝访问目录，报"当前登录用户没有系统管理权限"（本 shell 非提权；UAC 交互弹窗不在批处理中执行）。1985 条继续保持未知；解封命令已写入验收审查供 owner 侧管理员执行。
 - P1 处置建议（DWA-04 批次 A–D、DWA-05 还原/ignore、DWA-06 提交分组、DWA-03 分组）**全部未执行**，等逐项精确授权。
 - 本批写入：本仓 reaudit 目录（4 报告 + 验收审查 + README 更新）与 PWF；外仓只读。临时中转目录在系统 TEMP。
+
+## 2026-10-02 — P0 密钥脱敏与 QA-04 正式收口（Q05 解锁）
+
+- **P0 密钥脱敏（QAbyLLM）**：一次性脚本把 `simple_porter.py` 第16行 `sk-` 形态 46 字符硬编码密钥替换为 `os.environ["SIMPLE_PORTER_API_KEY"]`（脚本只回显计数/行号，密钥值零回显；替换后复查 0 残留）。文件仍为未跟踪、未进 Git 历史。**密钥轮换仍需 owner 在服务商侧执行**；`.gitignore` `test_*` 隐藏测试的决策仍待 owner。
+- **QA-04 收口（StockQA，全仓授权+精确写前报告）**：当前内容重验 246 passed + Ruff 全过；Q04 四文件与底座模块 import 耦合（4 新模块不在 HEAD）证明孤岛提交会断链，故按 DWA-06R"可提交57"结论提交完整暂存体。
+- **钩子链纪律（未跳过任何钩子）**：首次提交被 pre-commit 拦截（`.pre-commit-config.yaml` 未暂存）。基线对比证实 HEAD 为 mypy 0 errors / bandit 0 findings——93 mypy + 4 bandit 全部为本批引入，必须修绿。5 个并行 agent 分文件修复（None 收窄用显式 guard+raise 替代 bare assert、`# nosec B608` 标注纯 `?` 占位拼接、局部标注/重命名），black/isort 归一后复验：mypy 0、bandit 0、246 责任批次再过。
+- **提交 `fe11f63` 通过完整钩子链**（whitespace/yaml/json/toml + black + isort + mypy + pylint≥9 + detect-secrets + bandit + pip-audit(网络) + pytest 全量 unit），已推送 `3c685dd..fe11f63` 到 `github.com/zhengcb81/StockQAbyLLM`。提交后脏树收敛为 5 条未跟踪（-uall：`.codegraph/`、`.workbuddy-ai/`、`nul`、`progress_update.txt`），与 DWA-06R"保留/未知"分类一致。
+- **handoff 刷新与独立增量审查**：`q04_handoff.json` 更新 result_commit/ref、interfaces 内容哈希、worktree_after（5 条，digest `b20238aa…`）、新增 5 项 verification checks（network_calls 因 pip-audit 记为 true）、open_items 换代（收口 `-p no:base_url`、预算预存失败、LSP 警告、55 项不可隔离四项，新增提交组成说明与轮换提示）；先 CLI valid 保持 partial → 独立只读增量审查 **approved**（F1/F2/F4/F9 复验在位、type-guard 行为保持审计无风险、118 案例测试过、ruff 净，INFO N1 float/Decimal、N2 三个不可达 guard）→ status=complete + review.snapshot_commit=fe11f63，CLI 再验 **valid**。
+- **Q04 完成判据全满足**（cases 全有实际结果、实现快照已提交、独立审查最新版 approved）。**Q05（deps Q03+Q04）自本日起可开工**。SW-IDENT handoff 仍 `changed_path_out_of_scope`，为下一并行修复项。临时目录（q04run/sqa_head/dwa-reports）已全部清理。
+- 本批 StockQA 写入：1 个提交（58 跟踪文件）+ handoff 工作树文件（`*.json` 忽略，不入库）；QAbyLLM 写入：1 文件脱敏；IQS 写入：仅 PWF。无 API/付费调用；网络仅 pip-audit 依赖公告查询（钩子自带）。
