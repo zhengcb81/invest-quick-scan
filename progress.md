@@ -1429,3 +1429,9 @@
 - **handoff 刷新与独立增量审查**：`q04_handoff.json` 更新 result_commit/ref、interfaces 内容哈希、worktree_after（5 条，digest `b20238aa…`）、新增 5 项 verification checks（network_calls 因 pip-audit 记为 true）、open_items 换代（收口 `-p no:base_url`、预算预存失败、LSP 警告、55 项不可隔离四项，新增提交组成说明与轮换提示）；先 CLI valid 保持 partial → 独立只读增量审查 **approved**（F1/F2/F4/F9 复验在位、type-guard 行为保持审计无风险、118 案例测试过、ruff 净，INFO N1 float/Decimal、N2 三个不可达 guard）→ status=complete + review.snapshot_commit=fe11f63，CLI 再验 **valid**。
 - **Q04 完成判据全满足**（cases 全有实际结果、实现快照已提交、独立审查最新版 approved）。**Q05（deps Q03+Q04）自本日起可开工**。SW-IDENT handoff 仍 `changed_path_out_of_scope`，为下一并行修复项。临时目录（q04run/sqa_head/dwa-reports）已全部清理。
 - 本批 StockQA 写入：1 个提交（58 跟踪文件）+ handoff 工作树文件（`*.json` 忽略，不入库）；QAbyLLM 写入：1 文件脱敏；IQS 写入：仅 PWF。无 API/付费调用；网络仅 pip-audit 依赖公告查询（钩子自带）。
+
+## 2026-10-02 — SW-IDENT handoff 路径声明修正（CLI 转 valid）
+
+- 写前报告后对 StockWiki 唯一路径 `\.planning\sw-ident_handoff_2026-09-30.json` 修正声明：`authorization_scope_ref` 早已记录 user-granted 的 `stockwiki/quick_scan_evidence.py` 与 `tests/test_quick_scan_evidence.py`（DB-09/ID-14 交付），但 `authorized_paths` 数组漏列，导致 IQS CLI `changed_path_out_of_scope`。补列后 authorized_paths 11 条，CLI **valid**（exit 0）。
+- status 维持 `partial`（open_items 中 W01–W03 生产证据缺口、UNI/ID 新范围、G2b 总控签收仍真实未完成）；声明修正≠任务收口。StockWiki 本地提交 `aa17f93`（该仓无 remote，无处推送；未新增猜测远端）。
+- IQS 侧 QA-04 收口已随 `d4e6d49` 推送。两仓本阶段写入：StockWiki 1 文件 1 提交；IQS 仅 PWF。

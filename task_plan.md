@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-QA-04 已收口（Phase 50，`fe11f63`，handoff complete，增量审查 approved，Q05 解锁）。下一实现批次：**Q05（约束日志/缓存内容及完整请求键）**——StockQA 施工，按施工纪律先写卡与逐文件写前报告，钩子链已修绿可直接走提交门。并行修复项：SW-IDENT handoff 路径声明（StockWiki）。等待项不变：DWA ACL 解封（owner 管理员命令）、QAbyLLM 密钥轮换（owner 服务商侧）、各包 P1 处置逐项授权、QA-04 外部门已闭但 SW-IDENT/G2b/S06 仍等 StockWiki/交付方证据；Q01/Q02/Q03 与 W05/T01/T02 前置门状态见各 Phase。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核计划与各仓 HEAD/工作树/handoff。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+QA-04 已收口（Phase 50，`fe11f63`，handoff complete，增量审查 approved，Q05 解锁）；SW-IDENT handoff 声明已修正为 CLI valid（StockWiki `aa17f93`，status 仍 partial）。下一实现批次：**Q05（约束日志/缓存内容及完整请求键）**——StockQA 施工，先写卡与逐文件写前报告，钩子链已修绿可直接走提交门。等待项：DWA ACL 解封（owner 管理员命令）、QAbyLLM 密钥轮换（owner 服务商侧）、各包 P1 处置逐项授权、SW-IDENT/W01–W03 生产证据与完整 G2b 仍等 StockWiki/交付方、S06 等真实 ACK。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核计划与各仓 HEAD/工作树/handoff。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -788,7 +788,7 @@ Status: reaudit_completed_accepted; awaiting_owner_dispositions_and_acl_unlock
 
 ### Phase 50: QA-04 正式收口与 Q05 解锁
 
-Status: complete; handoff_complete_at_fe11f63; delta_review_approved; Q05_startable
+Status: complete; handoff_complete_at_fe11f63; delta_review_approved; sw_ident_cli_valid_at_aa17f93; Q05_startable
 
 - [x] P0 密钥脱敏：QAbyLLM `simple_porter.py` 硬编码 `sk-` 密钥替换为环境变量读取（值零回显、0 残留）；密钥轮换仍需 owner 服务商侧执行；`.gitignore` `test_*` 决策仍待 owner。
 - [x] Q04 当前内容重验：246 责任批次 passed + Ruff 全过；确认四 Q04 文件与底座新模块 import 耦合、孤岛提交会断链，按 DWA-06R"可提交57"提交完整暂存体（写前报告精确列出）。
@@ -796,4 +796,4 @@ Status: complete; handoff_complete_at_fe11f63; delta_review_approved; Q05_starta
 - [x] 提交 `fe11f63`（58 跟踪文件：Q04 四文件+不可分割底座+pre-commit/-p no:base_url 与 .gitignore schema 豁免）通过完整 pre-commit 链（含 pip-audit 网络），推送 `github.com/zhengcb81/StockQAbyLLM`；提交后脏树 5 条未跟踪与 DWA-06R 分类一致。
 - [x] handoff 刷新（result_commit/接口哈希/worktree_after/verification 增 5 项/network_calls=true/open_items 换代）→ CLI valid → 独立只读增量审查 **approved**（F1/F2/F4/F9 复验在位、行为保持无风险、118 案例测试、ruff 净）→ `status=complete` + `review.snapshot_commit=fe11f63` → CLI 复验 valid。Q04 完成判据全满足。
 - [ ] Q05（约束日志/缓存内容及完整请求键，deps Q03+Q04）已解锁，为下一实现批次（StockQA，需施工卡+写前报告）。
-- [ ] SW-IDENT handoff `changed_path_out_of_scope` 路径声明修正为下一并行修复项（StockWiki 写入，需精确报告）。
+- [x] SW-IDENT handoff `changed_path_out_of_scope` 路径声明修正完成（StockWiki `aa17f93`，唯一文件 `.planning/sw-ident_handoff_2026-09-30.json`，补列 user-granted 两路径）→ IQS CLI **valid**；status 维持 partial（W01–W03 生产证据缺口未闭）。StockWiki 无 remote，仅本地提交。

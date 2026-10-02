@@ -1280,3 +1280,4 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **提交可分性判据**：Q04 四文件 import 了不在 HEAD 的4个底座新模块 → 文件级隔离提交=断链快照；DWA-06R"可提交57"与包卡"隔离快照须含当前修复"共同支持整暂存体提交。**任务归属与提交边界可以不同**：handoff scope 仍声明 Q04 的4个 owned 路径，底座在 open_items 里明示归属未来 Q06–Q10 包，避免把别人的工作记进 Q04 的账。
 - **收口判据全链**：重验（246+Ruff）→ 钩子全绿提交（result_commit）→ handoff 刷新（哈希/快照/verification 增量、pip-audit 网络如实记 network_calls=true）→ CLI 形状校验 valid → **独立增量审查 approved**（复验前审发现仍有效+行为保持审计）→ status=complete。跳过任何一环都不算完成；handoff 的 `validation_scope` 只管形状与声明范围，业务收口靠 PWF+审查。
 - **nosec 用法**：B608 纯 `?` 占位拼接用 `# nosec B608` + 说明（值全参数化）；bandit 对 nosec 行有"No failed test"告警属正常，只要 findings=0。B101（bare assert）不用 nosec，用 guard+raise——同时满足 mypy 收窄与 `-O` 下更严格。
+- SW-IDENT 转 valid 的根因是**声明字段内部不同步**：`authorization_scope_ref` 记录了 user-granted 新文件，`authorized_paths` 却没同步补列。交付纪律：凡是 ref 文本里新增的授权，必须同时落到结构化数组字段，否则 CLI 形状校验必然拒收；handoff 修声明≠收口，status 仍由证据缺口决定。
