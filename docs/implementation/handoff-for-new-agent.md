@@ -53,8 +53,8 @@ python -B -X utf8 scripts/implementation_plan.py show <TASK_ID>
 
 | 线 | 上次已知状态 | 证据缺口/处理规则 |
 |---|---|---|
-| IQS | `94be5a5`（2026-10-02已推送；本会话完成DWA复审四包收口、QA-04收口、Q05 verified、SW-IDENT声明修正；计划仍107卡/366场景/G6；origin已配置） | V02仍partial：无真实校准、无生产观察/receipt认证、无StockWiki历史重算/活动发布；不要仅凭派生hash把候选用进生产白名单 |
-| StockQA / QA-04 / Q05 | `master@7ced082`已推送（origin=github.com/zhengcb81/StockQAbyLLM）；QA-04 handoff **complete**@`fe11f63`（独立增量审查approved），Q05 verified@`1318a2a`+`7ced082`（LLM-08/09/16全绿，审查ruff阻断已修复）；钩子链已修绿（mypy/bandit零债） | 共享工作树仅4条未跟踪（`.codegraph/`、`.workbuddy-ai/`、`nul`、`progress_update.txt`）不清理，`nul`保持未知；Q02仍partial（MiniMax verified live receipt缺），不代表Q02/G1完成 |
+| IQS | `da32ec2`（2026-10-02已推送；本会话完成DWA复审四包收口、QA-04收口、Q05 verified、Q02/Q03关闭、SW-IDENT声明修正；计划仍107卡/366场景/G6；origin已配置） | V02仍partial：无真实校准、无生产观察/receipt认证、无StockWiki历史重算/活动发布；不要仅凭派生hash把候选用进生产白名单 |
+| StockQA / Q02–Q05 | `master@82f1794`已推送（origin=github.com/zhengcb81/StockQAbyLLM）；QA-04 handoff **complete**@`fe11f63`，Q05 verified@`1318a2a`+`7ced082`，**Q02/Q03 verified**@`ced1faa`+`82f1794`（两个MiniMax live E2E最终代码PASSED、独立审查approved，证据`contracts/validation-Q02-MiniMax-live-E2E-2026-10-02.md`）；钩子链已修绿（mypy/bandit零债） | 共享工作树仅4条未跟踪（`.codegraph/`、`.workbuddy-ai/`、`nul`、`progress_update.txt`）不清理，`nul`保持未知；live 成本/账单见owner MiniMax控制台 |
 | StockWiki / SW-IDENT | 本地提交`aa17f93`（该仓无remote，仅本地）；handoff路径声明已修正，IQS CLI **valid**；status仍partial | W02/W03候选preview与生产链未闭；不伪造verified/多挂牌/AnalysisSubject/历史区间正例。UI、W05和其他路径无新授权不写 |
 | QAbyLLM | `simple_porter.py`（未跟踪）硬编码`sk-`密钥已脱敏为`SIMPLE_PORTER_API_KEY`环境读取（值零回显、0残留、未进Git历史） | **密钥轮换必须owner在服务商侧执行**；`.gitignore`新增`test_*`隐藏全套测试的决策待owner |
 | G2b / S06 | 只签收provisional单挂牌Entity+mapping接口切片；S06本地slice已有测试/审查 | G2b仍需真实owner历史区间、verified、多挂牌、AnalysisSubject样本；S06仍需真实事务ACK、router 2.1历史工件及获批跨仓E2E |
