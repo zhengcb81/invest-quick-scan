@@ -1406,3 +1406,8 @@
 - 漂移归因收口（含独立 read-only agent 独立重推，三条主张全部 VERIFIED、数量闭合 0 差异）：3778 条 ` D` 全部仍在磁盘（`\?\` 全量 3778/3778）、361 条共有路径哈希 0 差异、25 条抽样 mtime/ctime 全部 ≤2026-09-21（Windows ctime=创建时间）、reflog 无恢复操作 → **幻影条目（快照捕获时可见性失败），非真实删除**。`??` 2334→404 精确闭合：1971 条 `.tmp-zr408-unit*`（当前 shell/icacls 均拒绝访问，mtime 08-18）+14 条 scratch 子目录（父目录拒绝访问）去留未知；349 条正常延续；55 条"新增"实为 09-27 创建、父链 mtime 停在 09-27 的漏视旧文件。等式 2334−1971−14+55=404。
 - 归因证据与修复记录写入 `2026-10-02-reaudit/DWA-04/coordinator-review-2026-10-02.md`；DWA-04R 任务卡"第一问"改为已收口摘要，复审范围收窄为当前 416 条逐路径盘点 + 两个拒绝访问组单列未知。保持未知不外推：不清理、不恢复、不提交 revenue-forecast 任何路径。
 - 目标仓库零写入；无网络/API/下载；独立复核 agent 只读。临时核查脚本在系统 TEMP。
+
+## 2026-10-02 — GitHub remote 配置与推送
+
+- 用户提供本仓 GitHub 地址 `https://github.com/zhengcb81/invest-quick-scan`，据此新增 remote `origin`（此前计划文档中"无 remote、不猜测远端"的悬置状态解除；历史记录保留不改写）。
+- 提交 `149f58c`（DWA-03/04/05/06 复审基线包 + DWA-04R 归因收口 + PWF 更新，21 文件）并 `git push -u origin master` 成功，`master` 已跟踪 `origin/master`。`opencode.json`（opencode 工具本地配置）保持未跟踪，不在交付范围。
