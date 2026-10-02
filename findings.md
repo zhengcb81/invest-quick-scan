@@ -1281,3 +1281,10 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **收口判据全链**：重验（246+Ruff）→ 钩子全绿提交（result_commit）→ handoff 刷新（哈希/快照/verification 增量、pip-audit 网络如实记 network_calls=true）→ CLI 形状校验 valid → **独立增量审查 approved**（复验前审发现仍有效+行为保持审计）→ status=complete。跳过任何一环都不算完成；handoff 的 `validation_scope` 只管形状与声明范围，业务收口靠 PWF+审查。
 - **nosec 用法**：B608 纯 `?` 占位拼接用 `# nosec B608` + 说明（值全参数化）；bandit 对 nosec 行有"No failed test"告警属正常，只要 findings=0。B101（bare assert）不用 nosec，用 guard+raise——同时满足 mypy 收窄与 `-O` 下更严格。
 - SW-IDENT 转 valid 的根因是**声明字段内部不同步**：`authorization_scope_ref` 记录了 user-granted 新文件，`authorized_paths` 却没同步补列。交付纪律：凡是 ref 文本里新增的授权，必须同时落到结构化数组字段，否则 CLI 形状校验必然拒收；handoff 修声明≠收口，status 仍由证据缺口决定。
+
+## 2026-10-02 — Q05 实现教训
+
+- **编辑锚要盖到函数 body**：改方法签名时 oldString 只锚到 docstring 末尾，函数体里旧的 `key = self._make_key(provider, prompt, system_prompt)` 被留下，set/get 键计算分裂——测试（identical-hit 用例）当场暴露。多行结构性修改后必须直接跑该行为的正向用例，不能只看签名 diff。
+- **分层键契约**：内存 `RequestCache` 与持久 `request_cache_key` 是两种东西。前者键缺维度是真缺陷（模型变化会串答），补齐 8 维白名单；后者已由 work_item（entity/scope/题义指纹）+ model_requested + prompt_sha256（含截止日）隐式覆盖，llm_client 层根本没有实体/日期上下文可加显式维度——不硬造管道，改用行为绑定测试（改日期/模型→REQ 键变）。"补全请求键"的正确形态取决于每层实际可用上下文。
+- **负例测试的锚点选择**：LLM-16 的 outbox 禁键检查先于哈希检查，所以 `source_manifest` 类测试可用 `match="forbidden"` 精确锚定禁键路径；而 `formal_profile`/`审核通过` 不在禁单里、只能被哈希检查挡下——此时真正的边界是公开的答案序列化白名单，测试要打在边界函数上而不是假装 outbox 也认这些键。
+- **审查阻断项的闭环**：独立审查 changes_requested（ruff F401/F541）后，因提交已推送不能 amend，用修复提交闭环并在 PWF 记录"阻断项修复+复验"证据链；LOW 观察（脱敏在 traceback 源码行过度遮蔽、装饰器维度仅 kwargs）显式接受记录，不为完美主义扩改。

@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-QA-04 已收口（Phase 50，`fe11f63`，handoff complete，增量审查 approved，Q05 解锁）；SW-IDENT handoff 声明已修正为 CLI valid（StockWiki `aa17f93`，status 仍 partial）。下一实现批次：**Q05（约束日志/缓存内容及完整请求键）**——StockQA 施工，先写卡与逐文件写前报告，钩子链已修绿可直接走提交门。等待项：DWA ACL 解封（owner 管理员命令）、QAbyLLM 密钥轮换（owner 服务商侧）、各包 P1 处置逐项授权、SW-IDENT/W01–W03 生产证据与完整 G2b 仍等 StockWiki/交付方、S06 等真实 ACK。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核计划与各仓 HEAD/工作树/handoff。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+Q05 已 verified（Phase 51，`1318a2a`+`7ced082` 已推送）。M1 依赖重核结论：S02 已 verified，L01 仍被 S03（缺真实 3.1.0 样本/TIME-06/E2E-06）卡住，G1 随之 blocked；M1 可开工面收窄，恢复时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)先重核各仓 HEAD/工作树/handoff，再对照 tasks.json 找依赖齐备且 owner 可写的任务（M2+ 均被 G2/G3 以上门或外仓证据挡着，候选应集中在 IQS 本地 S03 可先行子项与各等待项解锁后）。持续等待项：DWA ACL 解封（owner 管理员）、QAbyLLM 密钥轮换（owner 服务商）、DWA 各包 P1 处置逐项执行、SW-IDENT/W01–W03 生产证据与 G2b 总控签收、S06 真实 ACK、Q02 MiniMax verified live receipt（需 live opt-in）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -795,5 +795,15 @@ Status: complete; handoff_complete_at_fe11f63; delta_review_approved; sw_ident_c
 - [x] 钩子链修绿（未跳过钩子）：HEAD 基线实测 mypy 0/bandit 0，证明 93 mypy + 4 bandit 为本批引入；5 并行 agent 分文件修复（guard+raise 替代 bare assert、`# nosec B608` 纯占位拼接标注、局部标注/重命名），black/isort 归一，复验 mypy 0/bandit 0/246 再过。
 - [x] 提交 `fe11f63`（58 跟踪文件：Q04 四文件+不可分割底座+pre-commit/-p no:base_url 与 .gitignore schema 豁免）通过完整 pre-commit 链（含 pip-audit 网络），推送 `github.com/zhengcb81/StockQAbyLLM`；提交后脏树 5 条未跟踪与 DWA-06R 分类一致。
 - [x] handoff 刷新（result_commit/接口哈希/worktree_after/verification 增 5 项/network_calls=true/open_items 换代）→ CLI valid → 独立只读增量审查 **approved**（F1/F2/F4/F9 复验在位、行为保持无风险、118 案例测试、ruff 净）→ `status=complete` + `review.snapshot_commit=fe11f63` → CLI 复验 valid。Q04 完成判据全满足。
-- [ ] Q05（约束日志/缓存内容及完整请求键，deps Q03+Q04）已解锁，为下一实现批次（StockQA，需施工卡+写前报告）。
+- [x] Q05（约束日志/缓存内容及完整请求键，deps Q03+Q04）已解锁，为下一实现批次（StockQA，需施工卡+写前报告）。
 - [x] SW-IDENT handoff `changed_path_out_of_scope` 路径声明修正完成（StockWiki `aa17f93`，唯一文件 `.planning/sw-ident_handoff_2026-09-30.json`，补列 user-granted 两路径）→ IQS CLI **valid**；status 维持 partial（W01–W03 生产证据缺口未闭）。StockWiki 无 remote，仅本地提交。
+
+### Phase 51: Q05 内容边界与完整请求键实现
+
+Status: verified; commits_1318a2a_7ced082_pushed; review_blocker_fixed; LLM-08_09_16_all_green
+
+- [x] 规格读取与勘察：Q05 三步/三 case/四不变量；定位日志 sink（无脱敏限长）、`RequestCache` 键缺维度、无公开答案序列化边界、两处 config WARNING 原始对象落日志。
+- [x] TDD RED→GREEN：`tests/unit/test_q05_content_boundary.py`（14 例）+ outbox LLM-16（3 例）先失败；实现四文件后全绿；`get()` 体漏传维度的编辑缺口由 identical-hit 用例暴露并修复。
+- [x] 实现：`ContentBoundaryFormatter`（脱敏+2000 字符限长，双 sink）；`REQUEST_CACHE_KEY_FIELDS` 8 维键+装饰器透传（TTL/LRU 不变、生产不接线、不决定 fresh）；公开 `serialize_answer_for_exchange`（9 字段白名单、伪造字段丢弃、描述限长 5000、无 I/O）接入 `to_quick_scan_dict`；config WARNING 结构化。
+- [x] 验证：Q05+outbox 39、受影响回归 211、246 责任批次、mypy 0、bandit 0、触及 6 文件 ruff/black/isort 净；提交 `1318a2a` 过完整钩子链推送。
+- [x] 独立增量审查 changes_requested（唯一阻断 ruff F401+F541）→ 修复 `7ced082` 推送并复验（ruff 六文件净、57 passed、静态门净）；LOW/INFO 观察（脱敏过度遮蔽、装饰器维度仅 kwargs）记录接受不改码。**Q05 verified**。

@@ -1435,3 +1435,14 @@
 - 写前报告后对 StockWiki 唯一路径 `\.planning\sw-ident_handoff_2026-09-30.json` 修正声明：`authorization_scope_ref` 早已记录 user-granted 的 `stockwiki/quick_scan_evidence.py` 与 `tests/test_quick_scan_evidence.py`（DB-09/ID-14 交付），但 `authorized_paths` 数组漏列，导致 IQS CLI `changed_path_out_of_scope`。补列后 authorized_paths 11 条，CLI **valid**（exit 0）。
 - status 维持 `partial`（open_items 中 W01–W03 生产证据缺口、UNI/ID 新范围、G2b 总控签收仍真实未完成）；声明修正≠任务收口。StockWiki 本地提交 `aa17f93`（该仓无 remote，无处推送；未新增猜测远端）。
 - IQS 侧 QA-04 收口已随 `d4e6d49` 推送。两仓本阶段写入：StockWiki 1 文件 1 提交；IQS 仅 PWF。
+
+## 2026-10-02 — Q05 实现收尾（内容边界与完整请求键，verified）
+
+- 读规格（tasks.json Q05、acceptance-cases LLM-08/09/16、decision-register I01/I02/I08/I19）后派 explore 全面勘察：日志 sink（logger.py 单入口无脱敏/限长）、请求缓存（内存 `RequestCache` 键仅 provider+system_prompt+prompt，缺模型与全部上下文维度；装饰器仅测试接线）、交换序列化（checkpoint 精确 5 键/outbox 12 键禁单/to_quick_scan 固定 9 键构造，但无公开边界）、两处 config WARNING 原始对象无界落日志。
+- TDD：先写 `tests/unit/test_q05_content_boundary.py`（LLM-08×3 / LLM-09×8 含持久键截止日+模型绑定 / LLM-16×3）与 outbox LLM-16×3 绑定，RED（ImportError+键缺失）→ 实现四文件 → GREEN。中途发现 `get()` 体内 key 计算漏传维度（编辑锚未盖到 body），由 identical-hit 用例暴露后修复。
+- 实现：① `logger.py` `ContentBoundaryFormatter`（sk-/Bearer/api_key 等模式脱敏 + 单记录 2000 字符限长，文件与控制台双 sink）；② `llm_integration.py` `REQUEST_CACHE_KEY_FIELDS` 8 维白名单，`_make_key/get/set` 补 model/entity_id/security_scope/question_version/as_of_date，装饰器透传 kwargs 维度（TTL/LRU 语义不变，生产仍不接线，不在此层决定 fresh）；③ `models.py` 公开 `serialize_answer_for_exchange`（9 字段白名单、伪造权威字段丢弃、描述限长 5000、无 I/O 惰性透传）并接入 `to_quick_scan_dict`；④ `json_config_manager.py` 两处原始对象 WARNING 改结构化标识+50 字符预览。
+- 验证：Q05+outbox 39、受影响回归 211、246 责任批次、mypy 0、bandit 0、black/isort/ruff（触及 6 文件）净。提交 `1318a2a` 过完整钩子链并推送（`fe11f63..1318a2a`）。
+- **独立增量审查 changes_requested（唯一阻断：ruff F401 新增 + 所触文件 3 处预存 F541）**→ 修复提交 `7ced082`（删未用 import、去 f 前缀、注解收紧、black 归一）推送；复验 ruff 六文件净、57 passed、mypy/bandit/black 净。审查其余结论全过（规格三步、三 case→17 测试映射、行为保持 byte-equal、formatter 不崩、无 answer→执行路由）。
+- 接受的 LOW/INFO 观察（不改码）：脱敏在 traceback 源码行会过度遮蔽（只多不少）；装饰器维度仅从 kwargs 读（位置参数不会入键，生产无调用方）；LLM-08 缓存路径非持久仅隐式覆盖。
+- Q05 完成判据满足：case 全有实际结果、快照已提交（`1318a2a`+`7ced082`）、独立审查阻断项已修复复验 → **verified**。whole-src ruff 有 19 处预存可修（非 pre-commit 门、非本任务债务，未动）。
+- StockQA 本阶段写入：2 提交已推送 `github.com/zhengcb81/StockQAbyLLM`；IQS 写入仅 PWF。无网络/API/付费（pip-audit 为钩子自带依赖公告查询）；临时目录已清理。
