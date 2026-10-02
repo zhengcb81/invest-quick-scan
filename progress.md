@@ -1411,3 +1411,11 @@
 
 - 用户提供本仓 GitHub 地址 `https://github.com/zhengcb81/invest-quick-scan`，据此新增 remote `origin`（此前计划文档中"无 remote、不猜测远端"的悬置状态解除；历史记录保留不改写）。
 - 提交 `149f58c`（DWA-03/04/05/06 复审基线包 + DWA-04R 归因收口 + PWF 更新，21 文件）并 `git push -u origin master` 成功，`master` 已跟踪 `origin/master`。`opencode.json`（opencode 工具本地配置）保持未跟踪，不在交付范围。
+
+## 2026-10-02 — DWA 复审四包执行、验收与 P0 发现
+
+- 用户给出全权授权（含"不用再询问"）。四个独立只读 harness 并行执行 DWA-03R/04R/05R/06R：起止核验全部 PASS 零漂移（66/416/6/63 条及 digest 分别 `58c44b82…`/`fd4981c6…`/`c34f77a8…`/`d9951959…`，与 2026-10-02 冻结一致，文件哈希 66/416/4/62 全部重算一致），目标仓库零写入，无测试/网络/凭据读取。四份报告由总控归档至 `2026-10-02-reaudit/DWA-0X/report.md`（273/713/89/214 行），验收审查 `acceptance-review.md` 判定四包全部接受：前次四项拒收原因（目标仓临时脚本、归因未完成、读禁读文件、分组汇总）均针对性纠正。DWA-05R 确认 `config.json`/`settings.local.json` 内容零接触；DWA-06R 交付 63/63 逐路径并把 `nul` 改为无处置建议（覆盖前次"可安全删除"）。
+- **P0 发现（QAbyLLM）**：`simple_porter.py`（未跟踪，未进 Git 历史）含 1 处 `sk-` 形态 46 字符硬编码 API 密钥——报告只记存在性，归档报告中密钥值 0 命中；处置需 owner 轮换密钥+脱敏后才可提交。另 `.gitignore` 新增 `test_*` 会隐藏整套测试且与文档矛盾，待 owner 决策。
+- **ACL 解封未果**：总控尝试 `takeown` 解封 `.tmp-zr408-unit*` 等拒绝访问目录，报"当前登录用户没有系统管理权限"（本 shell 非提权；UAC 交互弹窗不在批处理中执行）。1985 条继续保持未知；解封命令已写入验收审查供 owner 侧管理员执行。
+- P1 处置建议（DWA-04 批次 A–D、DWA-05 还原/ignore、DWA-06 提交分组、DWA-03 分组）**全部未执行**，等逐项精确授权。
+- 本批写入：本仓 reaudit 目录（4 报告 + 验收审查 + README 更新）与 PWF；外仓只读。临时中转目录在系统 TEMP。

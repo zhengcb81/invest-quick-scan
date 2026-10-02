@@ -33,5 +33,5 @@
 ## 派发与回收
 
 - 每卡交回独立只读 harness；结论以 `DWA-03R` / `DWA-04R` / `DWA-05R` / `DWA-06R` 编号回报。
-- 总控收齐后做验收审查（参照 2026-10-01 的 acceptance-review 形式），再决定哪些结论可接收、哪些仍需重派。
+- **2026-10-02 已执行**：四个独立 harness 并行完成，四份报告归档于各任务目录 `report.md`，起止核验全部 PASS、零漂移、目标仓零写入；总控验收见 [acceptance-review.md](acceptance-review.md)（四包全部接受，P0 发现为 QAbyLLM 硬编码密钥）。
 - 本批不授予任何外仓写入权限；审计建议中的提交/删除/ignore 修改均须 owner 精确授权后另行执行。
