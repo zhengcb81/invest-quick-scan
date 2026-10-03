@@ -1,0 +1,46 @@
+{
+  "freeze_id": "L01-pilot-2026-10-02",
+  "frozen_at_utc": "2026-10-02T00:00:00Z",
+  "task": "L01",
+  "purpose": "10-company real search pilot: receipts, sources, costs, failures (LIVE-01/SC-01/LLM-01/BUD-04 evidence)",
+  "sample": [
+    {"seq": 1, "company": "茅台", "listing_key": "CN-A:600519", "market": "CN-A", "board": "main", "in_216": true, "entity_id": "probe:CN-A:600519"},
+    {"seq": 2, "company": "安集科技", "listing_key": "CN-A:688019", "market": "CN-A", "board": "STAR", "in_216": true, "entity_id": "probe:CN-A:688019"},
+    {"seq": 3, "company": "曙光数创", "listing_key": "CN-A:872808", "market": "CN-A", "board": "BJ", "in_216": true, "entity_id": "probe:CN-A:872808"},
+    {"seq": 4, "company": "万科", "listing_key": "CN-A:000002", "market": "CN-A", "board": "main", "in_216": true, "entity_id": "probe:CN-A:000002"},
+    {"seq": 5, "company": "宁德时代", "listing_key": "CN-A:300750", "market": "CN-A", "board": "GEM", "in_216": true, "entity_id": "probe:CN-A:300750"},
+    {"seq": 6, "company": "Microsoft Corporation", "listing_key": "US:NASDAQ:MSFT", "market": "US", "board": "NASDAQ", "in_216": true, "entity_id": "probe:US:NASDAQ:MSFT"},
+    {"seq": 7, "company": "MongoDB", "listing_key": "US:NASDAQ:MDB", "market": "US", "board": "NASDAQ", "in_216": true, "entity_id": "probe:US:NASDAQ:MDB"},
+    {"seq": 8, "company": "Snowflake", "listing_key": "US:NYSE:SNOW", "market": "US", "board": "NYSE", "in_216": true, "entity_id": "probe:US:NYSE:SNOW"},
+    {"seq": 9, "company": "腾讯控股", "listing_key": "HK:00700", "market": "HK", "board": "main", "in_216": false, "probe_only": true, "entity_id": "probe:HK:00700", "note": "outside the confirmed216 pool; probe-only, never a pool membership claim"},
+    {"seq": 10, "company": "阿里巴巴集团", "listing_key": "HK:09988", "market": "HK", "board": "main", "in_216": false, "probe_only": true, "entity_id": "probe:HK:09988", "note": "outside the confirmed216 pool; probe-only, never a pool membership claim"}
+  ],
+  "entity_id_semantics": "probe:<listing_key> is a probe-local stable binding derived from the confirmed listing key. It asserts NO issuer resolution (preview reported issuer_unresolved for all216) and is not an authority claim (I08).",
+  "questions": [
+    {"question_id": "IQS_05", "source": "questions/common.json", "text": "公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？"},
+    {"question_id": "IQS_06", "source": "questions/common.json", "text": "公司的竞争地位有多稳固，变化趋势是否支持这种稳固性？单列增强/稳定/恶化，不因上升速度本身加分。"}
+  ],
+  "execution_plan": {
+    "phase_a_single_question": {"companies": ["probe:CN-A:600519"], "questions": ["IQS_05"], "runs": 1, "gate": "LIVE-02: stop the whole batch on systemic failure (zero executed search / unverified)"},
+    "phase_b_small_sample": {"companies": "remaining9 plus company1's second question", "questions": ["IQS_05", "IQS_06"], "runs": 19, "sequence": "sequential, resumable (completed outputs skipped)"}
+  },
+  "provider_order": [
+    {"provider": "minimax", "model": "MiniMax-M3", "base_url": "https://api.minimaxi.com/v1/responses", "timeout": 300, "max_retries": 1, "format_repair_budget": 0, "rationale": "only provider with verified live search receipts (2026-10-02)"}
+  ],
+  "budget_caps": {
+    "primary_request_cap": 20,
+    "http_attempt_ceiling_including_retries": 40,
+    "batch_is_always_bounded": true,
+    "pricing_version": {"schema": "quick_scan_rate_cards/1.0.0", "rate_cards": [], "source": "examples/quick_scan_rate_cards.template.json", "stance": "empty cards -> NO fabricated unit prices (BUD-04); token usage recorded per receipt; search per-call fee UNPRICED in our stack"},
+    "conservative_bounds": {"per_request_token_note": "prompt+completion usage recorded from actual receipts; owner verifies vendor list prices on the console", "search_fee_note": "unpriced locally; bounded by the request cap; owner reconciles the MiniMax console after the run"},
+    "user_budget_statement": "Blanket owner authorization for bounded live pilot (2026-10-02), caps above; owner may veto after seeing this freeze and the post-run report."
+  },
+  "case_evidence_plan": {
+    "LIVE-01": "per-run result JSON + execution receipts (search/model/request/cost metadata), >=1 request through the real public CLI path, no mocks",
+    "LIVE-02": "phase-a gate abort rule (stop on systemic failure, submit blocking reasons, no faked records)",
+    "SC-01": "score exact-equality assertions across parser->AnswerGenerator->CLI layers in the pilot report (S02's prior verified record cited for the binding)",
+    "LLM-01": "search execution receipts with request/response correlation and per-question citations; metadata separated from model text (Q02 MiMo/MiniMax live records cited)",
+    "BUD-04": "this freeze: pricing version pinned to empty-card template, conservative caps, no fabricated precision"
+  },
+  "rollback": "stop new dispatch; keep all partial results/receipts; never delete records and re-run to fake success"
+}
