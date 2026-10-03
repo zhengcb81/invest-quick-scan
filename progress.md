@@ -1582,3 +1582,11 @@
 - 独立审查两轮 approved（首F2空断言/F3场景错配两 blocker + F1/F4/F5/F6/F7 → 全整改），5 SHA 记档，`check_all` 832 passed/0 quick_scan skip/框架 0 错；27 对抗 + 10 迁移探针全过。审批后仅 2 处纯类型收窄（`is not None` 断言），行为不变、9 测试复绿（记录保 SHA 追溯）。
 - **G2b 检索签收（决定4 落地）**：agent 结果从会话固化入 `reviews/IQS-lane/G2b-sample-search-2026-10-03.md`，owner 签收其完整性诚实性。核心事实：**A/C/D 真实样本=0**、B=company-wiki 主档 653+148 组未进库；**签收 ≠ G2b verified**，A/C/D 缺口各需 owner 新决定。磁盘实测纠偏：`scan_observations.sqlite` 真实工作区缺失（W05 只在 temp 建过表）。
 - 本批写入：StockWiki 1 提交（`d007a68`）；IQS 1 提交（Phase 62 + G2b 检索归档）。
+
+
+## 2026-10-03 — Phase 63：W07 verified + owner 第二批答复
+
+- **W07 verified**（StockWiki `aa98848` 本地）：三值规则引擎（`quick_scan_rules.py` 472 行 + 477 行测试）。真值表逐行对齐 C03；critical gate=要求语义、门独立于复合体、树内标记叶子同样按门处理；SC-11 跨口径拒排名；阈值改动仅重筛且冻结版本+血统。
+- 独立审查**三轮** approved：首轮 F1–F10（血统漏门字段/类型/非有限数/未解析形态/树内门惰性/死分支/测试卫生/摘要漏血统）→ 二轮抓出 **A=我 F4 没修干净（5 条早退路径 NaN 仍进摘要）+ B=我修 F3 引入的 huge-int 溢出回归** → 三轮 approved。SHA `53afa69a…`/`a6f33e55…`；`check_all` 842 passed。
+- **owner 第二批答复**：①G2b A/C/D/B 全授权（实现路径放行；证据仍待 owner 提供）②补 W05/W13 CLI ③7a 顺其自然 ④叙事三提交已说明、处置待定 ⑤live 凭据预批（执行前仍报成本）⑥O01 不急。
+- 本批写入：StockWiki 1 提交（`aa98848`）；IQS 1 提交（Phase 63）。
