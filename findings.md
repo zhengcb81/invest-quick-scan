@@ -1368,3 +1368,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **schema 升版的连带面**：测试里 `migrate()==2` 这类硬编码版本断言是升版的必炸点——一律改引 `SCHEMA_VERSION` 常量并补新表存在性断言，升版脚本先 grep `== 旧版本号`。
 - **计数语义要对齐字段名**：`overlap_groups_recorded` 按行累加得 2、按组去重才是 1——凡是 `*_groups/_distinct` 字段，计数器必须走 set 去重。
 - **范围偏离的记录时点**：写前报告若实现中发现 allowed_changes 外的必需文件（本次新模块），**记录要在派独立审查之前**落盘（Phase 节+handoff authorized_paths+模块 docstring 三处），否则复审第一轮就卡 F1——代码再干净也 approved 不了。
+
+
+## 2026-10-03 — W06 教训（C04 差分、行尾复检、payload_json 双形态）
+
+- **移植契约用差分测试兜底**：审查员拿 IQS 参考做 437 场景差分，抓出 generation 对齐门缺失与 compat 顺序偏差两处真漂移——移植类工作的审查请求要明确要求"与参考实现做差分/逐行比对"，不能只测自家 case。
+- **跨仓语义移植要写清"改了什么"**：`meaning_version`/`information_cutoff` 进兼容键是 W06 步骤1的正当扩展，但 docstring 若写"ports the rules"就会被认定 overstate——移植+扩展的文档公式=「逐行对齐 X + 本卡新增 Y」。
+- **行读取函数要兼容两种形态**：`meta_from_observation_row` 初版只认解码后的 `payload`，raw sqlite 行是 `payload_json` 文本 → TIME-10 fresh 字段误判 dispatch。读库函数入参写明接受哪两种形态并各测一次。
+- **black 要带 --line-length 100**：仓库标准是 ruff 100 列，裸 `black --check`（88 列）会误报；审查请求里要写明 flags，避免把环境差异报成文件问题。

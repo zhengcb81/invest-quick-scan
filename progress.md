@@ -1566,3 +1566,11 @@
 - 教训（findings 已录）：store 是 CRLF（补丁断言救了整文件免遭转 LF）；heredoc `
 ` 第6踩（写出了真换行）；schema 升版必须同步改硬编码版本断言（改用 `SCHEMA_VERSION` 常量）；overlap 计数要按组不按行；**偏离记录要在派审查之前落盘**。
 - 并行道发现：StockWiki HEAD 被叙事消费道推进到 `ae0b3e3`（`_narrative_*`+cli_registry，11:05–12:15）——非本会话工作，本批文件与其零交集，提交将叠加其上。
+
+
+## 2026-10-03 — Phase 61：W06 verified
+
+- 新增 `quick_scan_freshness.py`（449 行）+10 测试；C04 参考语义逐行移植（fresh 边界、冷却代次、发布日截断、身份/缓存分离），缺口计划纯函数幂等（plan_sha256 稳定、dispatch_started=false、目录版本不触发重问）。
+- 独立审查 approved（10/10 绑定 0 skip、437 场景 C04 差分、823 passed 全绿）；SHA 记档 `e4dfcf55…`/`3fdcfc14…`。
+- 跟进项 F1（generation 对齐门）/F2（compat-first 顺序）/F3（TIME-03 输入变更补测）记录于 Phase 61，**先于 work-item 存储卡落地前必修**，不动已批文件。
+- StockWiki `d4779e6` 本地提交；本批 IQS 写入=Phase 61 PWF。
