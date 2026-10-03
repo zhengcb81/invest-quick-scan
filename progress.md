@@ -1538,3 +1538,12 @@
 - 交付物 IQS `f7860fb` 推送（审查记录+60家范围说明+脚本+3 log），doc 门 89+53/valid/diff-check 绿。**M1 全部 18 卡 verified，M1 关闭。**
 - 排程现状：W04/W05 deps 已齐（StockWiki 新路径按 handoff 规则待精确授权=唯一解锁候选）；L02 仍等 W07/W08/W09+范围说明 F1/F2 前置。**更正（同批追记）：Q13 deps 并不齐**——PWF 明载 Q06/Q07/Q09/Q10 均 partial，原条误写"Q13 deps 齐"，Q13 不可开工；StockQA 可续做 partial 收尾（runner 接 W03 身份投影、PAR-04、Observation adapter；W05 ACK 段被 StockWiki 授权卡住）。
 - 本批写入=IQS 2 提交（G1 包+PWF）；StockQA/StockWiki/其他外仓零写入。
+
+
+## 2026-10-03 — W04+W05 收口（Phase 59）与 owner 八项决定
+
+- **W04 verified**（StockWiki `5f2739a` 本地）：新建 `quick_scan_candidates.py`+15 测试；两轮独立审查（F1 输入哈希不全、F2 资格预检 fail-open 等 9 项整改）approved；check_all 728 passed。
+- **W05 verified**（StockWiki `aa3c6e6` 本地）：新建 `quick_scan_observations.py`+`quick_scan_import.py`+18 测试+官方 fixture 向量；两轮审查（首轮 1M3L：递归禁用键、subject 双向、method-core 钉死、回滚测试等）approved；check_all 748 passed、0 skip、框架 0 错；F6 original_import 过滤列为已接受遗留（下次触碰补）。
+- **owner 八项决定原文记录**：①216 导入授权；②rf 1985 条删除；③MiniMax 账单核对通过（便宜），**运营事实：MiniMax 有 5 小时调用限制**，后续 live 批次派发须按窗口规划；④G2b 派 agent 找真实样本后 owner 授权签收；⑤StockWiki 后续全部卡一次性授权（每卡仍先写前报告）；⑥QAbyLLM 34+SID 2 清理（先报备精确清单）；⑦信息日期/来源元数据选 a=补采集实现；⑧W03 签收两点确认闭合。
+- 依赖刷新：W06、W13 解锁（决定5）；M2 主链 W06→W07→W08→W09→L02 可连续推进。
+- 本批写入：StockWiki 2 提交（本地）；IQS 1 提交（本 PWF）。

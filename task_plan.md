@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03 改判(a)、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、决定5/7/8。**Phase 54 完成：DWA 四仓 P1 处置**（rf `5319ee26`、SID `064a837`、QAbyLLM `ad389f8`、StockQA 无操作）。**Phase 55 完成：W03 verified**（`4fbda21`，六 case、37 测试、审查 approved、基线登记经审查接受）；DWA-04 扩盘分类归档（1985 条全为可重建 pytest 临时）——**owner 决策点：`.tmp-zr408-unit*`×3（各657条）与 14 scratch 删除或 ignore 二选一明示**。**Phase 56 完成：S06 verified**（收口复审 approved，147+20 passed 入隔离日志+12 哈希记档，五 case 全映射；诚实边界：2.1 仅合成、跨仓 ACK/E2E 归 W05/G1 域不声称）。**Phase 57 完成：L01 verified**（冻结钉版 IQS `51fbce1`；10 家真实探针 11 调用承载 20 请求=用满上限未超、41 搜索/388 源、18 题得分(4–9)、2 题 fail-closed、0 mock；试点包+三轮整改 StockQA `7a40a98..1f04a8f` 已推送；独立审查两轮 approved，四文件 SHA-256 记档，预算按问题级 20 请求口径修正）。**Phase 58 完成：G1 verified → M1 关闭**（独立复审 approved（ses_f0022a928ffewW1KsB6lHQRJE9），`reviews/G1/` 审查记录+60家范围说明+30检查脚本+三 log = IQS `f7860fb`；发现 F1 信息日期 20/20 null 与 F2 来源元数据缺失已绑定为 L02 进入条件）。**当前唯一 deps 全齐的候选=W04/W05（均 StockWiki，新路径须先取得精确写授权=第一等 owner 动作）**：W04（deps W02/W03 齐）、W05（deps W01/G1/S05/W02/W03 齐）。**Q13 不可开工**（deps Q07/Q10 实为 partial——PWF 明载"Q07仍partial/Q10仍partial"，Q06/Q09 亦 partial；此前同批误写"Q13 deps 齐"已更正）。StockQA 侧可续做的是 Q06/Q07/Q10 的 partial 收尾（公共runner 接 W03 权威身份投影、PAR-04 一次多题 dispatch、完整 Observation adapter；W05 ACK 段仍被 StockWiki 授权卡住）。L02 等 W07/W08/W09 且须先满足范围说明 §5 F1/F2 二选一。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、1985 条处置决定、MiniMax 账单核对（决定9，L01 本批 20 completions+41 searches）、QAbyLLM 34 项与 SID 2 盲区去留、W03 签收两点确认（基线登记+步骤5分离）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03 改判(a)、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、决定5/7/8。**Phase 54 完成：DWA 四仓 P1 处置**（rf `5319ee26`、SID `064a837`、QAbyLLM `ad389f8`、StockQA 无操作）。**Phase 55 完成：W03 verified**（`4fbda21`，六 case、37 测试、审查 approved、基线登记经审查接受）；DWA-04 扩盘分类归档（1985 条全为可重建 pytest 临时）——**owner 决策点：`.tmp-zr408-unit*`×3（各657条）与 14 scratch 删除或 ignore 二选一明示**。**Phase 56 完成：S06 verified**（收口复审 approved，147+20 passed 入隔离日志+12 哈希记档，五 case 全映射；诚实边界：2.1 仅合成、跨仓 ACK/E2E 归 W05/G1 域不声称）。**Phase 57 完成：L01 verified**（冻结钉版 IQS `51fbce1`；10 家真实探针 11 调用承载 20 请求=用满上限未超、41 搜索/388 源、18 题得分(4–9)、2 题 fail-closed、0 mock；试点包+三轮整改 StockQA `7a40a98..1f04a8f` 已推送；独立审查两轮 approved，四文件 SHA-256 记档，预算按问题级 20 请求口径修正）。**Phase 58 完成：G1 verified → M1 关闭**（独立复审 approved（ses_f0022a928ffewW1KsB6lHQRJE9），`reviews/G1/` 审查记录+60家范围说明+30检查脚本+三 log = IQS `f7860fb`；发现 F1 信息日期 20/20 null 与 F2 来源元数据缺失已绑定为 L02 进入条件）。**Phase 59 完成：W04/W05 双卡 verified**（StockWiki `5f2739a`+`aa3c6e6` 本地；两轮独立审查均 approved）+ **owner 八项决定已记录**（见 Phase 59 节：216 授权/1985 删除/账单通过含 5 小时限额/G2b 派 agent 后签收/StockWiki 全授权/34+2 清理/信息日期选 a/W03 签收）。**当前队列（按序）**：① rf 删 1985+重录基线；② QAbyLLM 34+SID 2 清理（先报备精确清单）；③ 派 agent 搜 G2b 真实样本供 owner 签收；④ 216 名单导入（授权已给，需候选导入能力+消歧不强并）；⑤ W06/W13 施工（已解锁+全授权，先写前报告）；⑥ 7a 信息日期/来源元数据补采集（L02 冻结前置）。Q13 仍不可开工（Q06/Q07/Q09/Q10 partial）。L02 等 W07/W08/W09 且须先满足范围说明 §5 F1/F2 二选一。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、1985 条处置决定、MiniMax 账单核对（决定9，L01 本批 20 completions+41 searches）、QAbyLLM 34 项与 SID 2 盲区去留、W03 签收两点确认（基线登记+步骤5分离）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -882,3 +882,21 @@ Status: verified; review_approved; scope_deliverable_published; M1_closed
 - [x] 独立复审 **approved**（task `ses_f0022a928ffewW1KsB6lHQRJE9`）：范围合规（两仓工作树核验、acceptance-cases 零改动）、脚本复跑与归档 log 字节一致、断言行号/计数 AST 复算、6 个文件 SHA-256 记档、L02 deps 与 tasks.json 一致、诚实边界原文在案。两条 non-blocking 观察（ruff 19 为引旧数、formatter 命令无独立 log）记录不改已批文件。
 - [x] 交付物入库推送：`reviews/G1/{G1-review-2026-10-03.md, G1-60-company-scope-2026-10-03.md, g1_verify.py, 三份 log}` = IQS `f7860fb`；doc 门 89+53/valid/diff-check 全绿。
 - [ ] **M1 全部 18 卡 verified → M1 关闭**。M2 现状：W04/W05 deps 齐（StockWiki 新路径需精确授权=当前唯一解锁候选）、L02 等 W07/W08/W09+冻结条件（F1/F2）。更正：Q13 deps 实为不齐（Q07/Q10 partial），原批误记已改。
+
+### Phase 59: W04+W05 双卡收口 + owner 八项决定
+
+Status: W04_verified; W05_verified; owner_decisions_2026-10-03_recorded
+
+- [x] **W04 verified**（StockWiki 本地 `5f2739a`，无 remote=决定7）：`quick_scan_candidates.py`（494→570 行，分层候选 60/25/15 配置化、固定种子+稳定ID平局、缺口/重叠报告、ID-16 fail-closed 资格预检）+ 15 测试；独立审查两轮（`ses_eff7535c2ffeFZpJple3blTQQy`）首轮9发现（F1 输入指纹缺口、F2 付费门 fail-open 等）全整改后 **approved**，四文件 SHA 记档；`check_all` 728 passed。
+- [x] **W05 verified**（StockWiki 本地 `aa3c6e6`）：`quick_scan_observations.py`（观察/ACK/冲突/更正四表追加式、单事务 apply、原回执重放）+ `quick_scan_import.py`（C06 内容寻址全复算、S05 冻结发布包重算题义/方法指纹、SC-05/06 自授予资格拒绝、DB-03 执行键隔离、ID-23 subject 双向精确绑定）+ 18 测试 + IQS 官方 fixture 哈希向量；独立审查两轮（`ses_efefdd575ffeEEGVWeBe9mGmVU`）首轮 1M+3L+2info（含递归禁用键、subject 单向校验、method-core 未钉、缺回滚测试）全整改后 **approved**（`87c77921…/c06f4c58…/28e75199…/fbd555de…` 记档）；`check_all` 748 passed、0 skip、框架 0 错。
+- [ ] W05 遗留（记录接受，不改已批文件）：F6 `original_import` 未过滤 status（INFO 级、契约未定义该字段）——**下次触碰该文件时补 `AND status IN ('accepted','already_present')`**；F7 import 仅 Python API 无 CLI（契约 §6 端点另门）。
+- [x] **owner 八项决定（2026-10-03，大白话答复原样记录）**：
+  1. **216 导入：授权**（含推进消歧处理；中信建投标记按"歧义不强并"落地）。
+  2. **rf 仓 1985 条临时文件：删除**（`.tmp-zr408-unit*`×3 + 14 scratch；删后重录 DWA-04 基线）。
+  3. **MiniMax 账单：很便宜=核对通过**；运营事实记录：**MiniMax 有 5 小时调用限制**（L02 及后续批次派发须尊重该窗口）。
+  4. **G2b 正样本：派 agent 搜索所需真实样本**（verified/多挂牌/AnalysisSubject/历史区间），找到后 **owner 授权签收**。
+  5. **StockWiki 后续全部卡：一次性授权**（W06/W07/W08/W09/W13 及 W10–W16；沿用每卡写前报告纪律）。
+  6. **QAbyLLM 34 项 + SID 2 盲区：清理**（按 DWA 精确清单执行，先报备后删）。
+  7. **信息日期/来源元数据：选 a=补采集**（实现结构化 information_as_of 与来源标题/日期采集=L02 冻结前置）。
+  8. **W03 签收两点：确认**（quick_scan_store.py 基线登记 + 步骤5 reporting-scope 分离式满足——owner 签收闭合）。
+- [ ] 依赖更新：W06（deps W05✓C04✓S01✓）与 W13（deps W03✓W04✓C01✓）**已解锁**（决定5 授权在手）；L02 仍等 W07/W08/W09 + 冻结条件（7a 选 a）。
