@@ -1356,3 +1356,15 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **heredoc 吞 `\\?\` 第5次踩**：Windows 长路径前缀在 heredoc 里被吃成失效路径，`exists()` 全 False 看起来像"目录不存在"，差点误报"已删"。规则：脚本里任何"不存在"结论先用**独立第二种方式**（ls/正斜杠裸路径）复核一次再采信；Windows 目标删除一律用**正斜杠路径**（Python 原生支持，无需 `\\?\`，路径<260 时）。
 - **删不掉≠只有一种原因**：同一目录里 WinError5（ACL 只读授权）与 WinError5（0444 只读属性）**先后串场**——ACL 授 F 之后同名错误还在，是因为 `.git` 对象自带只读位。处置顺序：`icacls grant`（Python 子进程传参，避免中文用户名过 cmd 乱码）→ rmtree 的 onexc 里 chmod 后重试；每步失败计数留痕，最后必须"0 错误 + 目标不存在 + git 状态复测"三证齐全才收工。
 - **"不建议提交"清单删除前必须做集合相等核对**：DWA 快照是时点数据，执行时先算 `当前 ?? 集合 == 目标集合`（注意 git 对非 ASCII 路径加引号转义，须解码比较），集合不等就停下来解释差异（本次 SID 的 org_id 就从"待删"变成"已还原态"→ 无操作）。
+
+
+## 2026-10-03 — W02 导入段教训（CRLF 补丁、版本断言、偏离记录时点）
+
+- **改存量文件前先探行尾**：`quick_scan_store.py` 是 CRLF，多行 `
+` 补丁断言必失败——这次断言拦住了"末尾整文件重写成 LF"的灾难。规则：补丁脚本第一步 `assert '
+' in t` 探测并按原行尾拼接；断言失败=整批未落盘（第6次 heredoc 之 `
+` 写成真换行，又添一例：计数断言里别写 `
+`，改用 chr(10) 或 Edit 工具）。
+- **schema 升版的连带面**：测试里 `migrate()==2` 这类硬编码版本断言是升版的必炸点——一律改引 `SCHEMA_VERSION` 常量并补新表存在性断言，升版脚本先 grep `== 旧版本号`。
+- **计数语义要对齐字段名**：`overlap_groups_recorded` 按行累加得 2、按组去重才是 1——凡是 `*_groups/_distinct` 字段，计数器必须走 set 去重。
+- **范围偏离的记录时点**：写前报告若实现中发现 allowed_changes 外的必需文件（本次新模块），**记录要在派独立审查之前**落盘（Phase 节+handoff authorized_paths+模块 docstring 三处），否则复审第一轮就卡 F1——代码再干净也 approved 不了。

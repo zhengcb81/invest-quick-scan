@@ -1555,3 +1555,14 @@
 - **决定6 执行完毕**：QAbyLLM 34/34 删除（清单=DWA-03 行号映射，执行前与当前 `??` 集合逐路径相等），工作树全清；SID `logs/debug_page_300750.html` 磁盘删除（ignore 规则 Phase 54 已留），`org_id_validation_report.json` 实测已==HEAD（还原态满足，无操作）；SID 剩 2 条本地配置 M 不在范围不动。
 - 审计记录：`reviews/dirty-worktree-audits/2026-10-03-owner-decision-executions.md`（前后状态、命令、失败与修复全录）。
 - 本批写入：IQS 1 提交（报告+PWF）；rf/QAbyLLM/SID 三仓零提交（只删未跟踪/被忽略物）。
+
+
+## 2026-10-03 — Phase 60：W02 导入段完成，216 候选真实入库（决定1 落地）
+
+- 写前报告四改一增（W02 allowed 4 文件 + 新模块 `quick_scan_candidate_import.py`）；**范围偏离三处记录**（本 Phase 节/handoff authorized_paths 11→12/模块 docstring scope disclosure），依据决定1+决定5、先例 W03 handler deviation 与 `aa17f93` 路径登记。
+- 实现：store v3 加法迁移 `quick_scan_candidate` 表（923→991 行守 <1000 门）+ `apply_candidates` 单事务幂等/冲突计数；导入语义=**仅暂存**（0 entity/0 member/0 paid work、同名不合并、内容哈希幂等、同行异容 conflict 不覆盖、unresolved 带 entity/eligible 直接拒收）。
+- 独立复审两轮：首轮 F1（记录缺失，代码全过）+F2（member 断言）→ 整改 → **approved**，5+1 文件 SHA 记档；`check_all` 813 passed、quick_scan 套件 0 skip。
+- **真实执行**：216 入库（inserted 216→重跑 unchanged 216），真库 v1→v3，中信建投 002168/601066 分立不合并，`SUM(scan_eligible)=0`，entity/member/security/universe 全 0——候选身份未晋级，等待消歧证据后才谈激活。
+- 教训（findings 已录）：store 是 CRLF（补丁断言救了整文件免遭转 LF）；heredoc `
+` 第6踩（写出了真换行）；schema 升版必须同步改硬编码版本断言（改用 `SCHEMA_VERSION` 常量）；overlap 计数要按组不按行；**偏离记录要在派审查之前落盘**。
+- 并行道发现：StockWiki HEAD 被叙事消费道推进到 `ae0b3e3`（`_narrative_*`+cli_registry，11:05–12:15）——非本会话工作，本批文件与其零交集，提交将叠加其上。

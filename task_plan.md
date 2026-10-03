@@ -902,3 +902,14 @@ Status: W04_verified; W05_verified; owner_decisions_2026-10-03_recorded
 - [x] **决定2 已执行**：rf 1985 条全删、工作树 0 未跟踪、HEAD 不变（`reviews/dirty-worktree-audits/2026-10-03-owner-decision-executions.md`）。
 - [x] **决定6 已执行**：QAbyLLM 34/34 删除（树全清）；SID html 已删、org_id 实测已==HEAD 无操作；SID 剩 2 条本地配置 M 不在范围。
 - [ ] 依赖更新：W06（deps W05✓C04✓S01✓）与 W13（deps W03✓W04✓C01✓）**已解锁**（决定5 授权在手）；L02 仍等 W07/W08/W09 + 冻结条件（7a 选 a）。剩余队列：G2b 样本搜索 agent、216 导入、W06/W13 施工、7a 信息日期实现。
+
+### Phase 60: W02 导入段（决定1：216 候选入库）
+
+Status: batch_built; deviation_recorded; review_rerun_pending; real_import_pending
+
+- [x] 写前报告（四改一增）：W02 allowed 内修改 `quick_scan_store.py`（v2→v3 加法迁移：`quick_scan_candidate` 表 + `apply_candidates` 单事务幂等/冲突计数；923→991 行守住 <1000 硬门）、`cli_parsers/quick_scan.py`（`candidate-import` 注册）、`tests/test_quick_scan_store.py`（版本断言改用 `SCHEMA_VERSION` + v3 表断言）、`tests/test_quick_scan_identity.py`（+5 导入测试）。
+- [x] **范围偏离记录（复审 F1 整改）**：新增 `stockwiki/quick_scan_candidate_import.py` **不在** tasks.json W02 `allowed_changes` 枚举内——折进 store 会破 1000 行硬门、折进只读 preview 模块会破坏其字节级 DB 不变保证（复审亦独立确认两理由成立）。依据：**决定1**（216 导入授权）+ **决定5**（StockWiki 全卡授权，条件=每卡写前报告纪律），先例=W03 in-module handler deviation（`task_plan` Phase 53/55 两处）。同步动作：StockWiki `.planning/sw-ident_handoff_2026-09-30.json` `scope.authorized_paths` 追加该路径（11→12 条）且 `authorization_scope_ref` 引用决定1/决定5（先例 `aa17f93`）；模块 docstring 含 scope disclosure 句。
+- [x] 语义与不变量：**仅暂存**——216 全 unresolved → `entities_created=memberships_created=paid_work_created=0`（测试加 DB 级 member/entity 计数=0 断言，复审 F2 整改）；同名（中信建投 002168+601066）分行不合并且各记 overlap 冲突组；内容哈希幂等（unchanged 保留原 batch/imported_at）；同行异容→`conflict` 只推进计数不覆盖原文；unresolved 带 `entity_id` 或 `scan_eligible=true` 直接拒收（命名错误码）。测试 16+22 全绿，`check_all` 813 passed/0 quick_scan skip/框架 0 错。
+- [x] 独立复审（`ses_efe679da8ffearpOnLy0basq7Q`）：首轮 changes_requested（F1 记录缺失 + F2 测试加固；F3–F6 info）→ 三处记录落盘（Phase 60 本节 / handoff authorized_paths 12 条 / 模块 scope disclosure）+ DB 级 member 计数断言 → 二轮 **approved**；5 文件 SHA-256 记档（module `9fcf4113…`、store `ce88fce6…`、parser `fb868ab4…`、store-tests `5b34ef50…`、identity-tests `3f12dc3b…`、handoff `cf423a63…`）；`check_all` 813 passed 全绿复跑。
+- [x] **真实 216 执行完毕（决定1 落地）**：`python -m stockwiki.cli --root <StockWiki> candidate-import --report reviews/universe-identity-preview-2026-10-02.json` exit 0 → 回执 `inserted=216, staged_total=216, entities=memberships=paid_work=0, overlap_groups_recorded=1, batch_c9aec572b56f6b91, report_sha c9aec572…/input_sha 2fd5f147…`（与复审 dry-run 哈希一致）；二次运行 `inserted=0/unchanged=216` 同 batch 同 `imported_at`。独立 DB 复验：`user_version=3`（v1 真库升 v3）、candidate 216 / entity 0 / security 0 / member 0 / universe 0、中信建投两行分立（unresolved、entity NULL、scan_eligible 0）、`SUM(scan_eligible)=0`、单 batch 单时间戳。
+- [x] StockWiki 本地提交（叠加并行叙事消费道 `3c20d4d..ae0b3e3`，本批 6 文件：四改+一增+handoff 登记；不碰叙事道文件）+ 本 Phase PWF 推送。
