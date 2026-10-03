@@ -1393,3 +1393,12 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **"已修"的证据要覆盖它声称的每条路径**：我给 F4 的测试只测了 answered 路径，复审把 stale/error/NA/scope/gate 五条全跑了一遍就穿帮。规则：修复声明里列出的每条受影响路径，测试就各留一条。
 - **契约歧义时按 schema 机器定义走，不按散文示例**：SC-09 散文写"≤3 判定为风险"，schema 写"此字段不满足时 fail"（要求语义）。我先按散文把门写成风险谓词 → 极性反了全挂；改按 schema 要求语义（门=`>3`，3 违反→fail）后与 IQS 参考测试一致。**机器 schema > 文档散文 > 我的直觉**。
 - **测试极性错误 ≠ 模块错误**：二轮我误以为模块 bug，实际是测试把门的极性写反——先分清"谁错了"再动模块，否则会把对的实现改坏。
+
+
+## 2026-10-03 — Phase 64 教训（差分基线、跨仓合法输入、CLI 校验边界）
+
+- **跨仓差分的第一道坎是"对方的输入合法性"**：我拿手搓 manifest 去跑 IQS 参考，9613 例全不匹配——差的不是算法，是参考侧的 `replacement_mapping_verified=False`（我的 manifest 不满足 recovery_base_ids 全在场 + 路由一致）。教训：**差分前先让参考侧输入达到它的 verified 态**，否则比的是两个不同前提。正解=复用对方自己的测试夹具类（`QuestionSetTests.setUpClass()+make_manifest()`）造合法 manifest，再比。
+- **差分脚本的性能坑藏在"每次都重读全目录"**：参考实现每次调用 `load_library()` 重读题库目录 → 9613 例要跑 10 分钟以上被超时杀掉（还因 stdout 缓冲丢光了输出）。正解=给参考侧 `load_library` 打**缓存补丁**（行为中性，复审独立验证过 with/without 结果一致），并用 `python -u` 无缓冲跑。
+- **移植类任务的"无旋钮"是可验证的**：审查用 AST 数了模块里的数值字面量（只有 3/4/6/7/8）+ 函数参数列表（无 cutoff 参数）+ 无 `os.environ`/`globals()` → 证明"没有偷偷变阈值的路"。这条检查法可复用于后续所有"消费既有政策"的卡。
+- **CLI 的校验边界要下到元素级**：我只验了 JSON 顶层是 list，元素是 int/str 时 `record.get` 和 sqlite 参数绑定直接吐 traceback（退出码 1）。**"named refusal" 的承诺必须覆盖到每一层输入形状**——顶层、元素、字段类型、取值类型四层都要有错误码。
+- **薄胶水挪层能救尺寸门**：`quick_scan_import.py` 因加 handler 冲到 626 行（>600），把 argparse 胶水挪进已授权的 `cli_parsers`（本就是 CLI 层的家）后回到 593——**模块只留纯逻辑，CLI 层放胶水**，顺带满足分层。

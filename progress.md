@@ -1590,3 +1590,12 @@
 - 独立审查**三轮** approved：首轮 F1–F10（血统漏门字段/类型/非有限数/未解析形态/树内门惰性/死分支/测试卫生/摘要漏血统）→ 二轮抓出 **A=我 F4 没修干净（5 条早退路径 NaN 仍进摘要）+ B=我修 F3 引入的 huge-int 溢出回归** → 三轮 approved。SHA `53afa69a…`/`a6f33e55…`；`check_all` 842 passed。
 - **owner 第二批答复**：①G2b A/C/D/B 全授权（实现路径放行；证据仍待 owner 提供）②补 W05/W13 CLI ③7a 顺其自然 ④叙事三提交已说明、处置待定 ⑤live 凭据预批（执行前仍报成本）⑥O01 不急。
 - 本批写入：StockWiki 1 提交（`aa98848`）；IQS 1 提交（Phase 63）。
+
+
+## 2026-10-03 — Phase 64：CLI 批次 + G2b 证据检索 + W08 verified
+
+- **W05/W13 CLI 批次**（owner"补"）：4 子命令 `observation-import`/`maintenance-nominate`/`maintenance-apply-auto`/`maintenance-report`。两轮审查 approved：首轮 F1/F2（畸形输入原始 traceback/退出1，17 探针实测）→ 元素级+分值类型校验+universe 前置 → 二轮 17 负向+17 正常路径全绿；F10/F11 收尾。StockWiki `cc7fc6b`。`quick_scan_import.py` 与 HEAD 字节一致（handler 移到 parser 层守 <600）。
+- **G2b A/B/C/D 证据检索**（3 只读 agent 并行）→ `G2b-evidence-hunt-2026-10-03.md`（`5a7e996`）。**0 READY**：A 强候选=Alphabet 双证券共用 SEC 10-K（缺回执/实体存储）；**B A/H 硬缺失（151 对零共享键）**，美股 CIK READY；C 有 3 条真实 HTTPS 披露但无 subject 生产者；D 日期只在散文/表格、主档零日期字段。**逐字段 owner 规格已交付，待签收。**
+- **W08 verified**（`9fa8a7e`）：`recovery-watch-1` 逐字移植（阈值全字面量、无配置旋钮）+ 公司简表 + 三入口，质量为空仍全展示、永不按质量删池、`reported_score` 永不晋升。**跨仓差分 9613 例/0 不匹配**（复用 IQS 测试类造合法 manifest + 缓存 `load_library`），复审补测 33/0 → 合计 **9646/0**；一轮 approved（info×3）。`check_all` 855 passed。
+- 依赖：**W09 已解锁** → 完成后 L02 只剩 7a/F1/F2 冻结条件。
+- 本批写入：StockWiki 2 提交（`cc7fc6b` CLI、`9fa8a7e` W08）；IQS 2 提交（`5a7e996` 证据、Phase 64）。
