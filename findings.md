@@ -1317,3 +1317,9 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **裸 `sqlite3.connect` 无 row_factory**：`dict(row)` 对 tuple 会抛 `length 12; 2 required`；要么 `zip(cur.description, row)`，要么 `conn.row_factory = sqlite3.Row`。
 - **heredoc 吞反斜杠第四次踩**：所有含 `\`/`\n` 字面量的补丁一律 Write 工具落盘执行 + **parse-before-write**（脚本先 ast.parse 再写目标文件，失败不落盘）；长块拆分用行号/行前缀锚（`"\n            con.commit()\n"` 行锚），子串锚会被更深缩进的同文本行吞掉。
 - **尺寸门的合规出口**：仓库治理文件的错误信息本身就是授权路径（"显式纳入 MODULE_SIZE_BASELINE"）；在禁新文件的 scope 下登记基线优于越权拆分，登记后必须实测门仍对非基线/超 critical 报错，且在 PWF 里列为 owner 签收确认项。
+
+## 2026-10-02 — 复审谱系与选择器绑定教训
+
+- **独立复审必须当场记录被审文件哈希**：S06 的09-29修复轮复审无哈希，导致"当前版本是否被审过"只能靠谱系推理（09-27有哈希→09-30首次入库→内容可比性断裂）。本轮收口把12个哈希写进隔离日志才闭环。规则固化：任何"独立审查最新版本"若无字节级哈希，等同未覆盖当前版本。
+- **`-k` 过滤会漏 case 选择器**：收口日志用主题过滤跑套件时把6个低分保留测试滤掉——case 绑定清单必须按 node-id 精确执行，主题过滤只能作为补充。被滤项补跑 6 passed 后才翻 verified。
+- **权威 spec 高于历史 PWF 叙述**：S06"等真实ACK"曾被写成阻塞项，但 tasks.json 完成判据明示2.1允许合成路径——收口时以 spec 为准纠正口径，同时把真正在途的跨仓项归还给 W05/G1，不吞并也不漏报。

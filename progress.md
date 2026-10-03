@@ -1510,3 +1510,10 @@
 - **独立审查 approved**（task_id ses_f00afd04effeCoINPv5XhEBDGc）：迁移/拆分/幂等/守卫逐项核验、六 case→selector 映射齐全、37 passed+ruff+black（预存债归 parent）、零网络双补丁验证、CLI 九命令规范 JSON+exit2 实测、基线登记 accept-with-justification。10 条 low/info（含 OR IGNORE 实为守卫冗余、dup 比较仅遍历入参键、拒绝分支未测、ID-15 以事件 dispatch_revision 代理 Work 绑定、handler 位置 deviation 等）**记录接受不改码**；owner 签收 W03 时显式确认基线登记与步骤5 分离式满足两点。真实工作区 DB 幂等迁 v2（空库）。
 - **DWA-04 扩盘分类（agent 完成）**：1985/1985 全部分类——三个 `.tmp-zr408-unit*` 目录各657条=08-18 ZR-408 pytest basetemp（unit/final/retry 仅13个时钟文件名差异）+14 条 scratch（schema 化测试输出，3 个兄弟文件已入库）；10/10 抽样 token 命中真实测试定义（company-wiki 5 + rf 5）；起止零漂移（HEAD `5319ee26`）。判定：全部**可重建临时**，需保留=0、不可判=0。报告归档 `2026-10-02-reaudit/DWA-04/extended-classification-1985.md`。**处置（删除或 ignore）待 owner 二选一明示**——沿用"未知不删"原则直到决定。
 - 本批 StockWiki 写入=1 提交（本地）；IQS 写入=PWF+1 归档报告；临时脚本在系统 TEMP。
+
+## 2026-10-02 — S06 收口（Phase 56）
+
+- S06 deps（S05+S03）复核全满足后收口：tasks.json 完成判据明确允许"2.1 仅合成兼容路径、不宣称真实历史快照"，旧 PWF 中"等真实ACK/E2E"实为 W05/G1 域的后续项而非 S06 判据——口径按权威 spec 纠正。
+- 收口独立复审（task ses_f00907e3cffelIUFj5wTgSF9yf）**approved**：两套件 147+20 passed（91 subtests）写入隔离日志；12 个当前源/配置/测试 SHA-256 记档且与 HEAD 字节一致（补齐09-29复审无哈希的缺口；09-27 MOD18/MOD19 复审哈希因 eb462d4 首次入库而过时的谱系已厘清）；MOD-01/04/05/18/19 → 8/9/19/4/30 个选择器全执行映射；规格符合性逐点引用（decision_id 锚、阈值门、确定性免疫、48 谓词、ROUTE_02 文档）。
+- MINOR2（`-k` 过滤掉的6个低分保留测试）按 node-id 补跑 **6 passed**；MINOR1（字面三元组类比覆盖）、MINOR3、INFO×3 记录接受。**S06 → verified**。
+- 复审确认的非声称项保持原样：router2.1 真实历史样本待 owner（合成路径只称合成）、StockQA→StockWiki 事务ACK与跨仓E2E 归 W05/G1 域。M1 仅剩 **L01**（需 live 成本声明）及其下游 G1。

@@ -1,0 +1,640 @@
+S06 CLOSEOUT INDEPENDENT TEST-RUN LOG — 2026-10-02
+Task: S06 "实现证据化路由决策及多轴模块选择" (docs/implementation/tasks.json)
+Reviewer role: INDEPENDENT READ-ONLY closeout reviewer (only this file is written)
+Repo: C:\Users\郑曾波\Projects\invest-quick-scan
+Repo HEAD: 9be29bd55d9ef358bca70b6c7161856b98969774 (9be29bd docs: Phase 55 — W03 verified at 4fbda21 ...)
+Python: 3.13.9 (Anaconda MSC v.1929 64-bit)
+Unique TEMP run dir: C:\Users\郑曾波\AppData\Local\Temp\s06_closeout_839  (/tmp/s06_closeout_839)
+git status --porcelain (untracked-only, pre-run): "?? opencode.json"  -> worktree effectively clean for S06 paths (no modified/staged tracked files)
+Last commit touching S06 sources: eb462d4 "Checkpoint completed local quick-scan work" (2026-09-30)
+No git writes, no network, no live model/API calls performed by this review.
+
+=====================================================================
+SECTION 1 — CURRENT SHA-256 (completion criterion: 保存源码/配置/测试hash)
+=====================================================================
+SHA-256                                                            file
+26b0dd749ee7a35d1843f0a87c1a58ded52a80aae22b1bf342236a108546e326  scripts/routing.py
+f75c2d317016368f8812338a4e76f4911a80fcbe4acefdcd551686ca6fc72450  scripts/question_sets.py
+abe3b9549f433aced1a3f18d6584753434e76b6650ae687c1a7cca462961a7b9  scripts/module_contract.py
+9e45a224a6ace21d9c33010eba2e2c5abdd0eff74adfe8510f003cb8b88a38ce  scripts/module_registry.py
+ade932ca711c02e8e7a992724951506e5145cd374c2e7a782de95705d3a87463  scripts/stockqa_adapter.py
+99130fb52de8b10d4cc5380dde0f8eff40094c9688e7963c7e32b2cf771e16d6  questions/routing-policy.v2.json
+edec2540b52939c5de45646fd4a9a5651c68f612594d2b735ae6110696b8b9c7  schemas/quick_scan/route-decision.schema.json
+dce315add1c54b4b18817b2c51591e3c5bfb53caa0b76dd6e893ffd0e967fe34  references/routing.md
+d80c39f9300088190459aec640c58578ebc9191a7b1984c2b92c152f009029c6  tests/test_routing.py
+e101d0dda3a1fe7b4cafa1536b5abe21ed8c4a6127841616ff97500c2b0446bf  tests/test_s06_dependency_closure.py
+6d67ca0589c91e4f930d03bf311d62eaa3b60e7d197175c6bcdb2a48bdcd66c5  tests/test_stockqa_adapter.py
+c5216564989f5197eeef8c788d7541b82422c4465eda0f71dcbe811882d94aa8  tests/test_module_registry.py
+
+(Note: the 2026-09-26/27 independent-review recorded hashes no longer match HEAD because these
+ files were first committed in eb462d4 on 09-30 after the 09-29 fix round; the 09-29 review
+ current-router-execution-fix-2026-09-29.md recorded no file hashes. The hashes above are the
+ authoritative current-version hashes for this closeout.)
+
+=====================================================================
+SECTION 2 — FOCUSED TEST RUNS (run from unique TEMP dir, read-only)
+=====================================================================
+--- RUN 1 ---
+working dir: C:\Users\郑曾波\AppData\Local\Temp\s06_closeout_839 (unique TEMP dir; no repo writes)
+command: python -m pytest C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_routing.py C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_s06_dependency_closure.py C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_stockqa_adapter.py C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_module_registry.py C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_implementation_plan.py -p no:cacheprovider -o addopts= -q
+start UTC: 2026-10-03T01:47:47Z
+............................................. [ 30%]
+................................................... [ 65%]
+...................................................                                                              [100%]
+147 passed, 80 subtests passed in 245.76s (0:04:05)
+end UTC: 2026-10-03T01:51:57Z
+RUN 1 exit code: 0
+
+--- RUN 2 ---
+working dir: /tmp/s06_closeout_839
+command: python -m pytest C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_question_sets.py -k "mod19 or composition or closure or MOD" -p no:cacheprovider -o addopts= -q
+start UTC: 2026-10-03T01:52:33Z
+....................                                          [100%]
+20 passed, 47 deselected, 11 subtests passed in 64.15s (0:01:04)
+end UTC: 2026-10-03T01:53:40Z
+RUN 2 exit code: 0
+
+--- SUPPLEMENTARY: collection only (no test execution; used for case->selector mapping) ---
+command: python -m pytest C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_routing.py C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_s06_dependency_closure.py C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_stockqa_adapter.py C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_module_registry.py C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_implementation_plan.py --collect-only -q -p no:cacheprovider -o addopts=
+Projects/invest-quick-scan/tests/test_routing.py::RouteSchemaTests::test_router_21_schema_rejects_router_22_confidence_field
+Projects/invest-quick-scan/tests/test_routing.py::RouteSchemaTests::test_v2_cannot_use_unavailable_to_select_objective_module
+Projects/invest-quick-scan/tests/test_routing.py::RouteSchemaTests::test_v2_policy_common_and_unavailable_sources_are_representable
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_legacy_package_and_current_pointer_survive_unactivated_routing_publish
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_materiality_entry_strategic_survival_and_pre_revenue_project
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_materiality_exit_hysteresis_and_lifecycle_event
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_a01_a07_parser_preserves_outer_confidence_and_unscored_null
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_a02_a05_overall_gate_only_demotes_model_candidates_and_keeps_verified_facts
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_a06_snapshot_recomputes_gate_and_rejects_resealed_bypass
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_a09_policy_versions_and_confidence_threshold_are_exact
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_previous_route_requires_independent_id_before_hysteresis
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_previous_router_policy_requires_explicit_migration
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_rejects_answer_from_another_execution_attempt
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_resolver_cannot_pair_one_answers_candidate_with_another_answers_hash
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_schema_rejects_execution_status_score_mismatch
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_stockqa_public_result_adapter_binds_answer_and_execution_receipt
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_mod19_v23_execution_receipt_requires_hash_of_parsed_native_answer
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_new_lens_requires_registered_policy_and_explicit_nontransferable_authorization
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_policy_covers_all48_and_frozen_artifact_not_mutable_source
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_searched_candidate_urls_must_belong_to_selected_completed_call
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_t1_llm_candidates_require_real_prompt_bound_receipt
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_t1_semiconductor_scaling_is_deterministic_and_dual_listing_one_entity
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_t2_mature_cycle_trough_preserves_stage_and_adds_recovery
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_t3_distressed_scaling_six_mandatory_questions_budget_and_manual_veto
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_t4_three_material_industries_do_not_truncate_and_full_needs_scope
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_t4_two_labels_for_one_business_need_review_not_holding
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_t5_equal_authority_type_conflicts_require_segments_manual_precedence_is_explicit
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_t5_override_expiry_blocks_execution_but_history_remains_readable
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_t5_unavailable_keeps_common_and_verified_risk_without_fake_other
+Projects/invest-quick-scan/tests/test_routing.py::RoutingTests::test_unbound_model_candidate_cannot_override_verified_risk_fact
+Projects/invest-quick-scan/tests/test_routing.py::ArchivedRouterCompatibilityTests::test_archived_router_20_manifest_remains_readable
+Projects/invest-quick-scan/tests/test_routing.py::ArchivedRouterCompatibilityTests::test_archived_router_21_snapshot_is_readable_but_cannot_start_or_execute_work
+Projects/invest-quick-scan/tests/test_routing.py::ArchivedRouterCompatibilityTests::test_archived_search_snapshot_is_read_only
+Projects/invest-quick-scan/tests/test_s06_dependency_closure.py::ModuleDependencyClosureTests::test_mod18_a01_a04_transitive_closure_deduplicates_and_is_order_stable
+Projects/invest-quick-scan/tests/test_s06_dependency_closure.py::ModuleDependencyClosureTests::test_mod18_a02_missing_uncertain_rejected_and_cyclic_dependencies_fail_closed
+Projects/invest-quick-scan/tests/test_s06_dependency_closure.py::ModuleDependencyClosureTests::test_mod18_a03_conflicts_are_undirected_but_alternatives_can_coexist
+Projects/invest-quick-scan/tests/test_s06_dependency_closure.py::DependencyDispatchBoundaryTests::test_mod18_a05_unresolved_dependency_or_selected_conflict_writes_no_dispatch_payload
+Projects/invest-quick-scan/tests/test_stockqa_adapter.py::StockQAAdapterTests::test_adapts_public_answer_receipt_and_preserves_both_model_names
+Projects/invest-quick-scan/tests/test_stockqa_adapter.py::StockQAAdapterTests::test_rejects_answer_changed_after_receipt_creation
+Projects/invest-quick-scan/tests/test_stockqa_adapter.py::StockQAAdapterTests::test_rejects_answer_sources_outside_completed_search
+Projects/invest-quick-scan/tests/test_stockqa_adapter.py::StockQAAdapterTests::test_rejects_cross_company_result_even_when_answer_hash_is_valid
+Projects/invest-quick-scan/tests/test_stockqa_adapter.py::StockQAAdapterTests::test_rejects_unverified_search
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_answer_format_description_change_invalidates_standard_method_comparison
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_archived_metric_schema_survives_mutable_schema_change
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_manifest_prompt_forgery_is_rejected_even_with_recomputed_prompt_hash
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_02_release_is_deterministic_and_historical_archive_is_authority
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_03_append_keeps_old_question_meaning_and_old_run_readable
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_04_unregistered_industry_and_missing_context_fail_before_activation
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_07_tamper_or_missing_archive_rejects_old_run
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_08_budget_defers_only_optional_questions
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_committed_3_0_0_release_archive_remains_readable
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_exact_legacy_baseline_remains_readable_and_validates_current_catalog
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_package_cannot_self_assert_legacy_status
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_pinned_baseline_cannot_be_redeclared
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_rehashed_current_catalog_edit_is_rejected
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_rehashed_same_id_legacy_archive_is_rejected
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_mod_17_unknown_module_cannot_claim_legacy_without_exact_baseline_bytes
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_module_order_in_profile_is_canonical_for_same_membership
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_new_manual_lens_and_automatic_common_extension_are_separate_from_core
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_partial_route_uses_common_and_known_risk_without_fabricated_classification
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_prior_package_without_observation_schema_is_readable_but_cannot_issue_observations
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_published_observation_uses_frozen_answer_schema_and_question_after_source_edit
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_real_pre_observation_package_cannot_export_standard_run
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_release_and_catalog_paths_reject_parent_directory_symlinks
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_two_consecutive_major_retirements_publish_against_adjacent_version
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_unavailable_historical_renderer_fails_closed_without_losing_archive
+Projects/invest-quick-scan/tests/test_module_registry.py::ModuleRegistryTests::test_unrelated_context_does_not_relabel_industrial_question_but_global_rule_does
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_active_release_set_and_pre_post_fence_are_in_final_path
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_atomic_assertion_bindings_are_validated_and_stable
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_case_family_allows_e2e_but_not_malformed_ids
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_case_needs_input_and_action
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_case_owner_prerequisites_must_be_closed_before_owner_completion
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_case_requires_tasks_must_be_known_and_well_formed
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_cli_filters_cross_project_launch_tasks
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_cli_missing_or_corrupt_plan_is_error_not_empty_success
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_cli_stage_filter_only_returns_requested_stage
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_cli_validation_does_not_claim_product_tests
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_compatibility_window_tasks_remain_in_the_delivery_graph_without_receipt_gate
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_complete_release_cannot_disable_all_tasks_requirement
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_complete_release_cannot_drop_a_consumer
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_complete_ui_cannot_be_claimed_before_ui_tasks
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_component_evolution_cannot_be_dropped_from_final_release
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_component_evolution_extensions_are_mandatory_and_owner_scoped
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_composable_evolution_is_in_release_without_blocking_scoring_on_facts
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_current_package_is_valid_but_not_product_evidence
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_dependency_cycle_is_rejected_without_recursion_loop
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_duplicate_case_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_duplicate_task_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_each_case_has_one_completion_owner_and_only_downstream_regression_refs
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_every_implementation_and_review_card_must_own_a_local_case
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_evolution_cases_and_live_boundary_are_explicit
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_explicit_oracle_is_required
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_fact_mode_requires_stockwiki_ingest_ack_owner
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_facts_cannot_start_without_score_reliability_gate
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_final_gate_must_cover_all_task_branches
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_first_search_provider_does_not_wait_for_later_durable_retry_gate
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_forward_acceptance_dependencies_cannot_mark_local_tasks_complete
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_future_stage_dependency_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_happy_path_only_task_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_launch_configuration_owner_cannot_drift
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_launch_contract_is_frozen_before_g0
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_launch_packet_contains_new_invariant_definitions
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_live_cleanup_case_cannot_be_claimed_by_offline_gate
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_live_launch_cannot_point_to_offline_suite
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_live_task_cannot_be_satisfied_by_mock_cases_only
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_malformed_kind_has_validation_error_instead_of_type_error
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_malformed_top_level_has_actionable_error
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_missing_review_gate_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_missing_scope_or_steps_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_missing_unknown_and_forward_case_owners_are_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_modular_cases_have_failure_oracles_and_are_not_results
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_modular_question_work_is_in_final_delivery_chain
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_module_archive_graph_legacy_trust_and_composition_closure_are_explicit
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_one_click_dispatch_requires_recipe_runtime_and_store
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_orphan_case_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_owner_task_cannot_claim_downstream_integration_cases
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_p00_historical_receipt_artifacts_are_preserved_but_not_new_write_targets
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_packet_refuses_missing_invariant_definition
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_public_e2e_requires_concurrency_and_safe_legacy_settlement_cases
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_public_paid_entry_cannot_bypass_impact_plan_application
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_published_observation_ingest_cannot_downgrade_to_legacy
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_recovery_is_available_before_two_hundred_company_pilot
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_release_cannot_end_at_scoring_only_gate
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_release_cannot_omit_facts_gate
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_release_set_cannot_omit_parser_release_or_actual_hash_case
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_retired_task_receipt_workflow_is_absent_from_active_plan
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_route_work_includes_policy_archive_and_mandatory_risk_budget
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_s03_change_allowlist_names_real_question_sources
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_s06_confidence_gate_has_exact_local_scope_and_atomic_cases
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_s07_prompt_dependency_boundary_has_unit_integration_and_e2e_cases
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_s08_question_library_boundary_has_unit_integration_and_e2e_cases
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_s09_fingerprint_contract_has_unit_integration_and_e2e_cases
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_s10_manifest_and_selection_boundaries_have_unit_integration_and_e2e_cases
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_scoring_only_graph_cannot_silently_depend_on_facts
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_search_batch_benchmark_is_a_gated_live_experiment
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_self_cycle_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_show_is_bounded_and_contains_real_oracles
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_show_unknown_task_never_guesses
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_spec_cannot_claim_a_passed_test
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_task_spec_cannot_duplicate_completion_state
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_two_phase_dispatch_contract_is_consistent_across_current_docs
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_case_reference_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_dependency_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_invariant_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_unknown_or_multiple_owner_is_rejected
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_versioned_answer_parser_cannot_be_owned_by_quick_scan
+Projects/invest-quick-scan/tests/test_implementation_plan.py::ImplementationPlanTests::test_versions_must_align
+
+147 tests collected in 0.16s
+collect exit: 0
+
+
+--- SUPPLEMENTARY: collection only for RUN 2 filter ---
+command: python -m pytest C:/Users/郑曾波/Projects/invest-quick-scan/tests/test_question_sets.py -k "mod19 or composition or closure or MOD" --collect-only -q -p no:cacheprovider -o addopts=
+Projects/invest-quick-scan/tests/test_question_sets.py::QuestionSetTests::test_every_module_is_selectable
+Projects/invest-quick-scan/tests/test_question_sets.py::QuestionSetTests::test_full_mode_also_requires_a_specific_reason_for_optional_tools
+Projects/invest-quick-scan/tests/test_question_sets.py::QuestionSetTests::test_model_self_report_cannot_verify_search
+Projects/invest-quick-scan/tests/test_question_sets.py::QuestionSetTests::test_s01_replacement_and_module_routing_cannot_drift
+Projects/invest-quick-scan/tests/test_question_sets.py::QuestionSetTests::test_screening_ignores_model_self_approval_and_legacy_strict_stays_pending
+Projects/invest-quick-scan/tests/test_question_sets.py::QuestionSetTests::test_screening_modern_single_provider_requires_complete_final_route
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_mod19_native_cli_persists_low_classification_confidence_and_keeps_verified_route
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_mod19_resolve_cli_requires_independent_previous_decision_id
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_first_stage_package_keeps_exact_historical_request_prompt
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_native_cli_request_resolve_compose_preserves_model_and_identity
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_native_cli_unknown_module_and_ambiguous_response_fail_before_output
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_public_export_cannot_bypass_route_profile_id_or_clock
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_real_manifest_keeps_historical_ttl_but_reexport_at_expiry_is_blocked
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_stockqa_public_result_cli_adapts_and_composes_by_public_contract
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_t1_real_quick_full_and_method_preserve_24_core
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_t2_mature_trough_composes_recovery_without_changing_core
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_t3_budget30_exports_all_six_risk_questions_budget24_writes_nothing
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_t4_full_three_industries_requires_compatible_scope_and_no_legacy_relaxation
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_t5_common_only_and_known_distress_standard_output_keep_unknown_profile
+Projects/invest-quick-scan/tests/test_question_sets.py::RouteCompositionTests::test_s06_uncertain_primary_axis_does_not_borrow_confidence_from_known_industry
+
+20/67 tests collected (47 deselected) in 0.14s
+collection exit: 0
+
+=====================================================================
+SECTION 3 — RUN AUDIT (completion criterion: 关联case有实测结果；关键skip/未运行不可放行)
+=====================================================================
+RUN 1 (5 files): 147 passed, 80 subtests passed, 0 failed, 0 skipped, 0 xfailed, exit 0, 245.76s
+RUN 2 (1 file, -k filter): 20 passed, 47 deselected, 11 subtests passed, 0 failed, 0 skipped, exit 0, 64.15s
+Progress markers: RUN 1 = 45+51+51 = 147 '.' chars, zero 's' (skip) chars;
+                  RUN 2 = 20 '.' chars, zero 's' (skip) chars.
+Conditional skipTest guards present in the batch (tests/test_module_registry.py:238 and :244,
+Windows junction/symlink availability) did NOT fire — their tests produced pass dots.
+=> No key skip, no unrun selector inside the S06 focused batch. Criterion 1 satisfied for MOD-01/04/05/18/19.
+
+=====================================================================
+SECTION 4 — CASE -> EXECUTED TEST SELECTOR MAPPING
+All selectors listed below were executed in RUN 1 or RUN 2 above (full selector lists:
+lines "SUPPLEMENTARY: collection only" blocks; 147 + 20 collected/ran).
+
+---------------- MOD-01 (positive/unit; entrypoint null) — 8 selectors ----------------
+GIVEN frozen 3.2.0 sample (commercial semiconductor + scaling) + shuffled candidate order;
+WHEN compose via verified package + route decision in quick and full;
+THEN[1] exactly {common, operating, semiconductors, scaling}; quick/full = 28/34 questions;
+        24 core constructs complete; each question appears once; shuffled candidates do not
+        change the frozen questionnaire or the method fingerprint.
+Bindings:
+ 1. tests/test_routing.py::RoutingTests::test_t1_semiconductor_scaling_is_deterministic_and_dual_listing_one_entity
+    -> THEN[1]a selected set == {common,operating,semiconductors,scaling}; reversed deterministic
+       candidate order yields FULL route equality (incl. decision_id) at line 242; unknown module
+       rejected (251-253); dual-listing stays one entity (243-245).
+ 2. tests/test_question_sets.py::RouteCompositionTests::test_s06_t1_real_quick_full_and_method_preserve_24_core
+    -> THEN[1]b quick=28, full=34 (1387-1388), method_id identical quick vs full (1389).
+ 3. tests/test_question_sets.py::RouteCompositionTests::compose_route HELPER (1357-1364), applied to
+    every composition in tests 2, and to test_s06_t2/t3/t4/t5 and the CLI tests
+    -> THEN[1]c core-role question count == 24 (line 1363) + validate_manifest_metric_contract
+       uniqueness/duplicate rejection (delegates to scripts/question_manifest.py:88 duplicate guard).
+ 4. tests/test_routing.py::RoutingTests::test_t1_llm_candidates_require_real_prompt_bound_receipt
+    -> THEN[1]d shuffled LLM candidate order keeps selection + eligible_module_ids identical
+       (258-262) while answer_sha256 legitimately differs (263-264); receipt binding enforced.
+ 5. tests/test_question_sets.py::RouteCompositionTests::test_s06_native_cli_request_resolve_compose_preserves_model_and_identity
+    -> THEN[1] end-to-end CLI: prompt hash bound, quick manifest = 28 questions (1495),
+       route_decision_id bound to manifest (1497).
+ 6. tests/test_module_registry.py::ModuleRegistryTests::test_module_order_in_profile_is_canonical_for_same_membership
+    -> THEN[1] module declaration order canonical for same membership (order-independence).
+ 7. tests/test_question_sets.py::QuestionSetTests::test_s01_replacement_and_module_routing_cannot_drift (RUN 2)
+    -> THEN[1] replacement/routing set cannot drift (supporting).
+ 8. tests/test_routing.py::RoutingTests::test_policy_covers_all48_and_frozen_artifact_not_mutable_source
+    -> THEN[1] frozen package/policy coverage of all 48 modules (supporting).
+GAP (minor): no single selector asserts a byte-identical composed manifest/method fingerprint
+  under SHUFFLED LLM candidate answers end-to-end; invariance is asserted at route/selection/
+  eligible level (selectors 1,4) and composition determinism separately (selectors 2,5).
+  Note: for reordered raw LLM answers decision_id/answer_sha256 intentionally differ (documented
+  in references/routing.md:9 and asserted at test_routing.py:263-264); MOD-01 THEN only requires
+  questionnaire/method-fingerprint stability, which the bindings above cover.
+
+---------------- MOD-04 (negative/unit; entrypoint null) — 9 selectors ----------------
+GIVEN catalog-only new module missing scoring-contexts/applicability/conflicts/fact coverage;
+  unknown module ID; model self-selected investment lens; low-confidence legacy profile;
+WHEN registry validation, legacy profile validation, new route, export;
+THEN[1] missing registration, unknown ID and model-chosen lens are all rejected with clear errors
+  BEFORE export/payment; strict legacy profile validation not relaxed; no half-built questionnaire
+  and no default-5 score.
+Bindings:
+ 1. tests/test_module_registry.py::ModuleRegistryTests::test_mod_04_unregistered_industry_and_missing_context_fail_before_activation
+    -> publish fails "missing scoring context" (336-337); current package unchanged (338).
+ 2. tests/test_routing.py::RoutingTests::test_new_lens_requires_registered_policy_and_explicit_nontransferable_authorization
+    -> activation weakening rejected "weakens declared module activation" (746-747); model-chosen
+       lens NOT selected without explicit user authorization (755-757); lens module_id forgery
+       rejected (758-759); activation cross-check lives at scripts/routing.py:227-232 and
+       scripts/module_registry.py:198.
+ 3. tests/test_routing.py::RoutingTests::test_t1_semiconductor_scaling_... (251-253)
+    -> unknown module ID rejected "unknown route module" at route time.
+ 4. tests/test_question_sets.py::RouteCompositionTests::test_s06_native_cli_unknown_module_and_ambiguous_response_fail_before_output
+    -> CLI exit 2 + NO output file (1589-1593): rejection before export; and status=unknown with
+       score=5 rejected (1574-1577) => binds the "no default-5" sub-clause directly.
+ 5. tests/test_question_sets.py::RouteCompositionTests::test_s06_t4_full_three_industries_requires_compatible_scope_and_no_legacy_relaxation
+    -> strict validate_profile rejects legacy 3-industry profile "invalid number or duplicate
+       industry_modules" (1424-1426) => "strict validation not relaxed".
+ 6. tests/test_routing.py::RoutingTests::test_policy_covers_all48_and_frozen_artifact_not_mutable_source
+    -> versioned machine policy covers all 48 modules; frozen artifact not a mutable source.
+ 7. tests/test_routing.py::RoutingTests::test_legacy_package_and_current_pointer_survive_unactivated_routing_publish
+    -> unactivated publish does not switch current pointer (supporting).
+ 8. tests/test_question_sets.py::QuestionSetTests::test_screening_ignores_model_self_approval_and_legacy_strict_stays_pending (RUN 2)
+    -> low-confidence/legacy profile stays pending, no silent promotion (given clause).
+ 9. tests/test_question_sets.py::QuestionSetTests::test_model_self_report_cannot_verify_search (RUN 2)
+    -> model self-report cannot become evidence (given: model-selected inputs rejected).
+GAP: none material. "付费前" (before payment) is expressed as "before output/export/write" in these
+  offline tests (no output dir / no write_json); there is no billing subsystem in S06 scope.
+
+---------------- MOD-05 (boundary/unit; entrypoint null) — 19 distinct selectors (15 binding groups) ----------------
+THEN[1] entity A stacks scaling/cyclical/recovery and keeps the low score; entity B (search
+  unavailable, industry unknown) gets only deterministic common + risk questions with
+  unavailable/uncertain and empty sources; override expired before execution no longer applies
+  but history stays readable; sources and candidate reasons retained.
+THEN[2] price decline alone does not trigger distress; "other" does not stand for unknown
+  industry; three material industries are not silently truncated in quick; full only expands on
+  compatible business scope, otherwise segments pending.
+THEN[3] with distress+recovery selected the six risk/recovery questions plus the 24 core are
+  mandatory; max_questions=24 fails BEFORE writing output; 30 keeps required questions and marks
+  deferrals; model candidates' self-reported search/operator/time are not execution evidence.
+Bindings:
+ 1. tests/test_routing.py::RoutingTests::test_t2_mature_cycle_trough_preserves_stage_and_adds_recovery
+    -> THEN[1]/THEN[2] stage preserved + cycle orthogonal (426-428), recovery mandatory 4 (429),
+       decision_id changes on rationale change (430-431), price_decline alone selects none of
+       {cyclical,recovery,distressed} (432-434).
+ 2. tests/test_question_sets.py::RouteCompositionTests::test_s06_t2_mature_trough_composes_recovery_without_changing_core
+    -> THEN[1] composes recovery (34/42) with unchanged 24 core; recovery questions all
+       comparison_role=diagnostic (1400) — recovery cannot uplift the core score (I07 support).
+ 3. tests/test_routing.py::RoutingTests::test_t5_unavailable_keeps_common_and_verified_risk_without_fake_other
+    -> THEN[1]/THEN[2] no search => selected {common} only, "other" uncertain (486), empty
+       sources retained (487), known-risk keeps distressed+recovery and 30 minimum (488-491),
+       unclassified other not selected (492-493).
+ 4. tests/test_module_registry.py::ModuleRegistryTests::test_partial_route_uses_common_and_known_risk_without_fabricated_classification
+    -> THEN[1] partial route without fabricated classification.
+ 5. tests/test_routing.py::RoutingTests::test_t5_override_expiry_blocks_execution_but_history_remains_readable
+    -> THEN[1] expired override blocks new execution (504-508) while validate_route_snapshot still
+       reads history (509); decision-id anchor enforced (499-503, 510-512).
+ 6. tests/test_question_sets.py::RouteCompositionTests::test_s06_real_manifest_keeps_historical_ttl_but_reexport_at_expiry_is_blocked
+    -> THEN[1] manifest keeps historical TTL; re-export at expiry blocked (1456-1457); forged
+       route/expected-id/late-clock manifests rejected (1459-1469).
+ 7. tests/test_routing.py::RoutingTests::test_t4_three_material_industries_do_not_truncate_and_full_needs_scope
+    -> THEN[2] quick keeps all three industry labels but status=requires_full_or_segments (459-460),
+       full+compatible scope => ready (461-462), unknown/incompatible scope => requires_segments
+       (463-467), forged ready rejected (468-470).
+ 8. tests/test_question_sets.py::RouteCompositionTests::test_s06_t4_full_three_industries_requires_compatible_scope_and_no_legacy_relaxation
+    -> THEN[2] blocked compose writes nothing (1418-1420); full+compatible expands (1421-1423).
+ 9. tests/test_routing.py::RoutingTests::test_t4_two_labels_for_one_business_need_review_not_holding
+    -> THEN[2] ambiguous labels => ready_common_and_risk, no "holding" invention (477-481).
+10. tests/test_routing.py::RoutingTests::test_t3_distressed_scaling_six_mandatory_questions_budget_and_manual_veto
+    -> THEN[3] scaling+distressed+recovery selected (439), minimum_questions=30 and exactly 6
+       mandatory (440-441), budget 24 rejected "budget below mandatory" (442-443), 30 accepted
+       (444), manual veto of risk/recovery refused (445-448), stripping mandatory coverage
+       rejected at seal (449-453).
+11. tests/test_question_sets.py::RouteCompositionTests::test_s06_t3_budget30_exports_all_six_risk_questions_budget24_writes_nothing
+    -> THEN[3] budget 24 fails BEFORE write, output dir absent (1405-1407); budget 30 exports 30
+       with all mandatory retained and 4 explicitly deferred (1408-1413).
+12. tests/test_module_registry.py::ModuleRegistryTests::test_mod_08_budget_defers_only_optional_questions
+    -> THEN[3] deferral limited to optional questions.
+13. tests/test_routing.py::RoutingTests::test_searched_candidate_urls_must_belong_to_selected_completed_call
+    -> THEN[3] URLs must belong to the selected completed search call (execution evidence).
+14. tests/test_stockqa_adapter.py::StockQAAdapterTests::test_rejects_unverified_search +
+    ::test_rejects_answer_sources_outside_completed_search (+ 3 sibling adapter tests, all in RUN 1)
+    -> THEN[3] self-reported/unverified search and out-of-receipt sources rejected.
+15. tests/test_question_sets.py::QuestionSetTests::test_model_self_report_cannot_verify_search (RUN 2)
+    -> THEN[3] model self-report cannot verify search.
+GAP (minor)1: the exact single-entity stack "scaling + cyclical(trough) + recovery" from the GIVEN
+  is not asserted literally; executed analogues are selector 1 (mature+cyclical+recovery) and
+  selector 10 (scaling+distressed+recovery). Axis-orthogonality mechanics are covered, the exact
+  triple combination is not.
+GAP (minor)2: THEN[1] "保留低分" (retains the low score, invariant I07) is bound directly by
+  tests/test_question_sets.py::QuestionSetTests::test_low_current_scores_can_have_recovery_potential_without_score_uplift
+  and ::test_screening_recovery_watch_preserves_low_current_quality_and_strong_assets, but those
+  selectors were DESELECTED by the prescribed RUN 2 -k filter and therefore did NOT execute in
+  this closeout log. What did execute: selector 2 (recovery questions diagnostic-only) and
+  selector 1 (no score assertions). Affected observation recorded here per completion criterion 1.
+
+---------------- MOD-18 (boundary/unit; assertion entrypoints) — 4 selectors ----------------
+A01 (composition resolver: recursive closure deterministic, deduped, order normalized, multi-level)
+A02 (missing / rejected-uncertain / cyclic dependencies each => needs_review/blocked)
+A03 (selected conflicts blocked undirected; catalog alternatives may coexist)
+A04 (module declaration order changes do not alter closure, question list or hash)
+A05 (dispatch boundary: every illegal composition fails pre-LLM, model requests = 0)
+Bindings (tests/test_s06_dependency_closure.py, all executed in RUN 1):
+ 1. ::ModuleDependencyClosureTests::test_mod18_a01_a04_transitive_closure_deduplicates_and_is_order_stable
+    -> A01: closure == [common, base_a, base_b, semiconductors] (49), issues empty (48), multi-level
+       dependencies all present; A04: reordered module/dependency declarations produce equal
+       closure (50), equal selected set, equal question id order (57-58) and equal question-list
+       digest (59). (A01 and A04 share one method but are separate assertion blocks.)
+ 2. ::ModuleDependencyClosureTests::test_mod18_a02_missing_uncertain_rejected_and_cyclic_dependencies_fail_closed
+    -> A02: dependency_missing (63-64), dependency_not_selected for both uncertain and rejected
+       via subTest (66-72), dependency_cycle (74-78).
+ 3. ::ModuleDependencyClosureTests::test_mod18_a03_conflicts_are_undirected_but_alternatives_can_coexist
+    -> A03: alternative coexistence clean (86-87), selected conflict pair blocked (88-89).
+ 4. ::DependencyDispatchBoundaryTests::test_mod18_a05_unresolved_dependency_or_selected_conflict_writes_no_dispatch_payload
+    -> A05 (dispatch boundary): route status "needs_review" with empty eligible list and
+       coverage_gaps (117-120); compose_from_route raises "needs_review" with write_json
+       NOT called and output directory absent (123-128) — for both uncertain_dependency and
+       selected_conflict variants (subTest 107,114).
+Observation (info): "model requests = 0" is expressed as "no manifest/output is ever written and
+  the public compose entry raises before dispatch" (write_json.assert_not_called, output absent),
+  i.e. zero-dispatch at the boundary; there is no separate LLM call-counter because StockQA is
+  the only executor and no client exists on these offline paths. Composition-order stability at
+  the catalog level additionally rests on selectors in test_module_registry (order canonical) and
+  MOD-18 selector 1.
+
+---------------- MOD-19 (boundary/integration; assertion entrypoints) — 30 distinct selectors ----------------
+A01 parse_route_response + StockQA public result adapter + single-raw-answer resolve:
+ 1. tests/test_routing.py::RoutingTests::test_mod19_a01_a07_parser_preserves_outer_confidence_and_unscored_null
+ 2. tests/test_routing.py::RoutingTests::test_mod19_stockqa_public_result_adapter_binds_answer_and_execution_receipt
+ 3. tests/test_routing.py::RoutingTests::test_mod19_v23_execution_receipt_requires_hash_of_parsed_native_answer
+ 4. tests/test_routing.py::RoutingTests::test_mod19_resolver_cannot_pair_one_answers_candidate_with_another_answers_hash
+    (split caller-supplied candidate/confidence/hash fields => TypeError "unexpected keyword
+     argument 'candidate'" at test line 612-619)
+ 5-9. tests/test_stockqa_adapter.py::StockQAAdapterTests::{test_adapts_public_answer_receipt_and_preserves_both_model_names,
+    test_rejects_answer_changed_after_receipt_creation, test_rejects_cross_company_result_even_when_answer_hash_is_valid,
+    test_rejects_unverified_search, test_rejects_answer_sources_outside_completed_search}
+10. tests/test_question_sets.py::RouteCompositionTests::test_s06_stockqa_public_result_cli_adapts_and_composes_by_public_contract
+A02 score<7 => searched_llm uncertain + excluded from eligible; A03 score 7 permits but does not
+    bypass module rule; A04 score 10 with low per-module confidence stays uncertain;
+    A05 verified_fact stays selected on low overall score:
+11. tests/test_routing.py::RoutingTests::test_mod19_a02_a05_overall_gate_only_demotes_model_candidates_and_keeps_verified_facts
+    (score6: uncertain+overall_confidence_below_threshold, deterministic set retained 307-311;
+     score7: eligible + selected 313-317; score10 + low module confidence: uncertain/low_confidence
+     319-325)
+12. tests/test_question_sets.py::RouteCompositionTests::test_mod19_native_cli_persists_low_classification_confidence_and_keeps_verified_route
+13. tests/test_question_sets.py::RouteCompositionTests::test_s06_uncertain_primary_axis_does_not_borrow_confidence_from_known_industry
+14. tests/test_routing.py::RoutingTests::test_unbound_model_candidate_cannot_override_verified_risk_fact
+A06 snapshot recompute, tamper/reseal rejection, caller-held decision ID, answer/receipt pairing:
+15. tests/test_routing.py::RoutingTests::test_mod19_a06_snapshot_recomputes_gate_and_rejects_resealed_bypass
+    (forged score/eligibility 333-343; resealed source-label rewrite readable as snapshot but
+     rejected at execution "independently stored decision identity" 348-362)
+16. tests/test_routing.py::RoutingTests::test_mod19_rejects_answer_from_another_execution_attempt
+17. tests/test_routing.py::RoutingTests::test_mod19_schema_rejects_execution_status_score_mismatch
+18. tests/test_routing.py::RoutingTests::test_mod19_previous_route_requires_independent_id_before_hysteresis
+19. tests/test_question_sets.py::RouteCompositionTests::test_mod19_resolve_cli_requires_independent_previous_decision_id
+A07 unknown/insufficient_evidence => null score + empty candidates; not_run explicit; inconsistent
+    combinations fail closed:
+20. selector 1 (unscored null + not_run at lines 286-299) and selector 17; plus
+21. tests/test_question_sets.py::RouteCompositionTests::test_s06_native_cli_unknown_module_and_ambiguous_response_fail_before_output
+A08 archived router 2.0 real fixture readable; synthesized 2.1 read-only, cannot dispatch;
+    current paths refuse historical routers:
+22. tests/test_routing.py::ArchivedRouterCompatibilityTests::test_archived_search_snapshot_is_read_only
+    (REAL archived fixture tests/fixtures/s06_router_20_search_route.json; resolve/execute/compose
+     all refuse)
+23. tests/test_routing.py::ArchivedRouterCompatibilityTests::test_archived_router_20_manifest_remains_readable
+24. tests/test_routing.py::ArchivedRouterCompatibilityTests::test_archived_router_21_snapshot_is_readable_but_cannot_start_or_execute_work
+    (SYNTHESIZED in TEMP via patched _current_router_compatible — read-only, cannot start/execute;
+     NOT a preserved historical 2.1 artifact)
+25. tests/test_routing.py::RoutingTests::test_mod19_previous_router_policy_requires_explicit_migration
+A09 validate_policy + module_registry.publish policy/schema gating:
+26. tests/test_routing.py::RoutingTests::test_mod19_a09_policy_versions_and_confidence_threshold_are_exact
+    (schema 1.3.0/router 2.3.0/protocol stockqa-route-confidence-3; bounded integer threshold;
+     gate variants rejected; 2.2 bound to schema 1.2 + protocol 2; historical readers accepted)
+27. tests/test_routing.py::RouteSchemaTests::{test_v2_policy_common_and_unavailable_sources_are_representable,
+    test_v2_cannot_use_unavailable_to_select_objective_module, test_router_21_schema_rejects_router_22_confidence_field}
+    + tests/test_routing.py::RoutingTests::test_mod19_schema_rejects_execution_status_score_mismatch (counted at 17)
+    (schema rejects scored-with-null / out-of-range / unknown-with-score combinations)
+Also supporting (included in the total below): tests/test_question_sets.py::
+QuestionSetTests::test_model_self_report_cannot_verify_search (RUN 2, A01/A06 evidence rule).
+TOTAL distinct MOD-19 selectors executed: 30 = test_routing.py 19 (11 mod19_* +
+ RoutingTests::test_unbound_model_candidate_cannot_override_verified_risk_fact +
+ RoutingTests::test_searched_candidate_urls_must_belong_to_selected_completed_call
+ + 3 RouteSchemaTests + 3 ArchivedRouterCompatibilityTests) + test_stockqa_adapter.py 5
+ + test_question_sets.py 6 (s06_stockqa_public_result_cli, mod19_native_cli, mod19_resolve_cli,
+ s06_native_cli_unknown_module, s06_uncertain_primary_axis, model_self_report_cannot_verify_search).
+GAP: none for A01-A09 against their entrypoints. Non-claim recorded in Section 6: router 2.1
+  coverage is the SYNTHESIZED compatibility path only (A08 expected text itself forbids claiming a
+  preserved historical 2.1 artifact); router 2.0 uses the real archived fixture.
+
+=====================================================================
+SECTION 5 — SPEC CONFORMANCE SPOT-CHECK AT CURRENT HEAD (file:line citations)
+=====================================================================
+Step 1 (ROUTE_01 retained + ROUTE_02 v2 parse + strict mapping + activation/policy predicates):
+ - build_route_request at scripts/routing.py:270; parse_route_response at scripts/routing.py:316
+   (native envelope validated at 338-350; answer_sha256 derived from the SAME raw value 349).
+ - Legacy ROUTE_01 / strict validate_profile retained: references/routing.md:5 (documents
+   "现有 ROUTE_01、严格 validate_profile ... 保留"); validate_profile at
+   scripts/question_sets.py:113 (strict: rejects 3 industry_modules, asserted test_question_sets.py:1424-1426).
+ - Deterministic lock first, then strict LLM->published-module mapping: scripts/routing.py:357-358
+   ("unknown route module ID"), sources bound to receipt at 386-403 and URL membership checks.
+ - 48-module versioned policy coverage: questions/routing-policy.v2.json rules == 48,
+   schema_version 1.3.0, router_version 2.3.0, request_protocol stockqa-route-confidence-3,
+   classification_confidence_gate {minimum_score: 7, below_threshold: mark_llm_candidates_uncertain}.
+ - "activation及已注册策略谓词": scripts/routing.py:227-232 (policy rule must not weaken module
+   activation mode/minimum_confidence), :276 (activation carried into request), validate_policy at
+   :165 with per-module registered predicates; scripts/module_registry.py:198 (module requires
+   activation + introduced_in), publish enforces via :281-286 and :345-346; activation/predicate
+   names present in questions/routing-policy.v2.json (48 rules with predicate values:
+   attribute_evidence, industry_evidence, type_evidence, lifecycle_evidence, cycle_evidence,
+   recovery_evidence, user_diagnostic, always).
+
+Step 2 (deterministic dependency closure; needs_review/blocked; undirected conflicts; alternatives legal):
+ - resolve_module_dependency_closure at scripts/routing.py:53; module_missing :97,
+   dependency_missing :99, dependency_cycle :102-103, dependency_not_selected :113,
+   selected_conflict :134 (undirected, sorted pair iteration :127-134).
+ - needs_review dispatch: scripts/routing.py:705 and :828; eligible list emptied (validated at
+   :897-904); conflicts checked on the closure, not the catalog (catalog alternatives coexist — MOD-18 A03).
+
+Step 3 (one company type + one stage; quick <=2 material industries; full needs scope else segments;
+  cyclical orthogonal; recovery overlay; lens needs user policy/manual):
+ - dispatch statuses: scripts/routing.py:687 requires_segments, :691 requires_full_or_segments,
+   :693 requires_segments, :703 ready_common_and_risk, :705 needs_review;
+   snapshot revalidation :828-833.
+ - lens gating: scripts/routing.py:544-545 (user_diagnostic/user_lens predicate => rejected unless
+   requested), tests test_new_lens_...:755-759.
+
+Step 4 (materiality enter/exit thresholds frozen; non-revenue materiality; uncertain not free text;
+  six risk questions mandatory; budget <24 refused before export):
+ - policy materiality keys: questions/routing-policy.v2.json materiality {enter_share, retain_share,
+   strategic_share, share_metrics, strategic_metrics, exit_confirmation_periods,
+   switch_confirmation_periods, major_event_can_override}.
+ - entry/exit logic: scripts/routing.py:564-589 (missing_materiality -> uncertain :567,
+   below_materiality -> rejected :588, exit hysteresis :573-584, confirmation_pending);
+   non-revenue bases tested at tests/test_routing.py:526-537 (gross_profit/invested_capital/
+   committed_capex/binding_backlog/survival_critical/primary_development_project).
+ - enforce_route_budget at scripts/routing.py:949-952 refuses budget < mandatory minimum; six risk
+   questions asserted tests/test_routing.py:441, tests/test_question_sets.py:1402-1413.
+
+Step 5 (per-module selected/rejected/uncertain + restricted basis; sources; TTL; decided_at;
+  policy version/hash; low confidence runs only common/mandatory risk; decision_id anchor;
+  content hash is not provenance):
+ - per-module decisions with basis {policy, unavailable, deterministic, searched_llm, manual} and
+   sources/rationale: scripts/routing.py:540-562 etc.; dispatch narrowing :895-904
+   (partial_dispatch == "common_and_mandatory_risk").
+ - TTL: manual override expiry at execution scripts/routing.py:925-926; historical manifest reads
+   only via validate_recorded_route_execution :912-929; re-export via validate_route_for_execution.
+ - decision_id anchor: scripts/routing.py:920-921 (recorded path), :944-945 ("current route
+   execution requires independently stored decision identity"), previous-route anchor :426-433;
+   called from the public entry scripts/question_sets.py:214.
+ - content hash != provenance: scripts/routing.py:933-937 docstring + references/routing.md:26.
+
+Step 6 (frozen counterexamples; unknown industry not "other"; candidate order; auditable route diff):
+ - tests bound in Section 4 (MOD-01 selectors 1,4; MOD-05 selectors 1,3,7,10,11);
+   diff_routes auditable increment set at scripts/routing.py:959-967 (entered/exited/retained/uncertain).
+
+Step 7 (ROUTE_02 overall confidence versioned separately from module confidence; threshold demotes
+  only searched_llm; verified_facts immune; snapshot recomputes; decision_id verifies source label):
+ - separation: normalized classification_confidence (scripts/routing.py:465, 474-475) vs per-module
+   fact confidence (:561); threshold demotion gated on basis=="searched_llm" only (:555-560) —
+   deterministic/verified facts skip that branch (immunity).
+ - snapshot recompute: :860-890 (recomputes eligibility from threshold, rejects below-threshold
+   selected model candidate :882-883, inconsistent downgrade :884-886, bypass :887-890); receipt
+   classification consistency :874-876; coverage/status consistency :893-908.
+ - execution must verify source label/model provenance via caller decision_id: :932-946.
+ - questions/routing-policy.v2.json: activation-equivalent predicates + classification_confidence_gate
+   present (see Step 1 list); references/routing.md documents ROUTE_02 semantics: matches for
+   ROUTE_02/decision_id/TTL found at references/routing.md:5, 8, 9, 10, 13, 24, 26, 36 (line 36
+   states the frozen threshold=7 behavior, searched_llm-only demotion, verified_facts immunity,
+   per-module gates not bypassed, decision_id verification, and 2.0-2.2 read-only compatibility).
+ - schemas/quick_scan/route-decision.schema.json: classification_confidence required for current
+   routes (:288, :301, :1105) and forbidden for historical ones (:1138); minimum_score integer 1-10
+   (:298).
+
+=====================================================================
+SECTION 6 — LINEAGE STATEMENT (独立审查最新版本 assessment)
+=====================================================================
+(a) The 2026-09-26/27 independent reviews recorded source SHA-256s that no longer match HEAD: TRUE
+    (those files were first committed in eb462d4 on 2026-09-30, after the 09-29 fix round).
+(b) The 09-29 review (docs/implementation/reviews/S06/current-router-execution-fix-2026-09-29.md)
+    reports "no P0-P2" and 57 focused tests, and records NO file hashes — so it cannot by itself
+    bind the reviewed code to a specific byte state.
+(c) Post-09-29 history of the S06 allowed-change set (git log since 2026-09-29):
+      eb462d4 (2026-09-30) initial commit of the S06 slice;
+      e7fe99c (2026-10-01) tests/test_module_registry.py +15 lines only ("test: cover committed
+      legacy module release loading").
+    No source/config file under scripts/{routing,question_sets,module_contract,module_registry,
+    stockqa_adapter}.py, questions/routing-policy.v2.json, schemas/quick_scan/route-decision.schema.json
+    or references/routing.md changed after eb462d4.
+(d) Working tree vs HEAD for all S06 allowed-change paths: `git diff HEAD -- <paths>` empty and
+    `git status --porcelain -- scripts questions schemas references tests` empty; repo-wide status
+    shows only the untracked `?? opencode.json` (unrelated to S06). So tested bytes == HEAD bytes.
+(e) This closeout re-ran the full S06 focused batch green TODAY (147+20 passed, 80+11 subtests,
+    0 skipped) from a unique TEMP dir with -p no:cacheprovider -o addopts=, no network, no live
+    calls, and recorded current SHA-256 for all 12 source/config/test files in Section 1 — closing
+    completion criterion "保存源码/配置/测试hash、隔离日志和独立审查".
+(f) Therefore the 09-29 review (design/defect verdict) + today's green runs + clean git status +
+    recorded current hashes jointly bind the CURRENT version. THIS DOCUMENT IS THE FINAL
+    INDEPENDENT REVIEW OF THE CURRENT VERSION (HEAD 9be29bd), superseding the stale-hash binding
+    of the 09-26/27 reviews for closeout purposes.
+
+EXPLICIT NON-CLAIMS (must not be asserted anywhere):
+ (1) Router 2.1 REAL historical sample remains UNPROVEN: coverage of router 2.1 is a synthesized
+     compatibility path created in a TEMP dir (tests/test_routing.py:811-848) plus schema-level
+     refusal (RouteSchemaTests::test_router_21_schema_rejects_router_22_confidence_field). Only
+     router 2.0 is covered by a preserved archived fixture
+     (tests/fixtures/s06_router_20_search_route.json). This is exactly what MOD-19 completion
+     text permits ("2.1目前仅覆盖合成兼容路径，不宣称有真实历史快照") and this review does not
+     claim otherwise.
+ (2) Real StockQA -> StockWiki ACK / authorized cross-repository E2E is OUT OF S06's completion
+     scope per docs/implementation/tasks.json (S06 completion list contains only the four local
+     items) and is NOT claimed as done here; the 09-29 review states the same boundary.
+ (3) acceptance-cases.json still marks all 366 cases (including MOD-01/04/05/18/19) with status
+     "specified_not_executed" — this is the uniform repo-wide convention (0 cases carry any other
+     status); measured execution results are recorded in validation logs such as this one and in
+     docs/implementation/contracts/validation-S06-MOD18-batch-2026-09-27.log. Observation only.
+
+FINDINGS / SEVERITIES:
+ [MINOR] MOD-01: no single selector asserts byte-identical composed manifest under shuffled LLM
+          candidate answers end-to-end (bound at route/selection/eligible level instead).
+ [MINOR] MOD-05 THEN[1]: direct I07 "retains low score" selectors
+          (test_low_current_scores_can_have_recovery_potential_without_score_uplift,
+          test_screening_recovery_watch_preserves_low_current_quality_and_strong_assets) were
+          deselected by the prescribed RUN 2 -k filter and did not run in this log; they exist in
+          the repo suite and must be run by the full-suite gate.
+ [MINOR] MOD-05 GIVEN: literal "scaling + cyclical + recovery" single-entity stack not asserted;
+          executed analogues: mature+cyclical+recovery and scaling+distressed+recovery.
+ [INFO]  MOD-18 A05 zero-dispatch asserted as "no output/manifest written + public entry raises"
+          (write_json.assert_not_called), not an explicit LLM request counter.
+ [INFO]  Lineage: 09-29 review recorded no hashes (closed by Section 1 here); one post-checkpoint
+          test-only commit (e7fe99c, 10-01) is covered by today's run.
+ [INFO]  acceptance-cases.json statuses remain specified_not_executed repo-wide (convention).
+ No P0 and no P1 findings.
+
+=====================================================================
+SECTION 7 — VERDICT
+=====================================================================
+VERDICT: approved
+Reasons: both prescribed focused runs are fully green with zero skips (147+20 passed, 80+11
+subtests, exit 0); all five S06 cases (MOD-01/04/05/18/19) map to concrete selectors that
+actually executed, with only the minor bindings recorded in Section 4; current SHA-256 of all 12
+source/config/test files recorded (completion criterion "保存hash"); spec steps 1-7 spot-checked
+present at HEAD with file:line citations; routing-policy activation/predicates, ROUTE_02/decision_id/
+TTL documentation in references/routing.md, and schema confidence gating all verified; working tree
+matches HEAD for every allowed-change path; the three MINOR findings are coverage-narrowness
+observations, not defects, and are explicitly recorded rather than silently passed. Non-claims
+(router 2.1 real historical sample unproven; StockQA->StockWiki ACK/E2E out of S06 scope) are
+stated in Section 6 and must be preserved in any downstream summary.

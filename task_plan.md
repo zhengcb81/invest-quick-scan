@@ -147,7 +147,7 @@ Status: complete_for_local_contract_scope
 ### Phase 16: S06证据路由与StockWiki轻量身份库
 Status: in_progress
 
-- [ ] S06: ROUTE_02已升级至router 2.3 / policy schema 1.3 / request protocol 3，保留2.0—2.2历史只读兼容。新增StockQA公开`quick_scan_result/1.0.0`适配器，逐项核验实体、搜索回执、答案SHA-256与实际模型归属；执行仍须校验调用方独立保存的decision_id。2026-09-29修复新执行路径误用历史读取校验器的问题，并修正renderer失败测试的patch owner；S06相关聚焦回归57项通过、独立只读复审无P0–P2。S06仍为partial：真实StockQA到StockWiki事务ACK、router 2.1真实历史快照以及授权的跨仓端到端验收未闭环。工程task receipt v2/P01已退役，不再以刷新旧回执链作为门槛。
+- [x] S06: ROUTE_02已升级至router 2.3 / policy schema 1.3 / request protocol 3，保留2.0—2.2历史只读兼容。StockQA公开适配器逐项核验实体/搜索回执/答案SHA-256/实际模型归属，执行校验调用方独立 decision_id；09-29 修复新执行路径误用历史读取校验器并修正 renderer patch owner。**2026-10-02 收口 verified（Phase 56）**：收口独立复审 **approved**（两套件 147+20 passed/91 subtests 入隔离日志 `contracts/validation-S06-closeout-2026-10-02.txt`，**12 个源/配置/测试 SHA-256 与当前 HEAD 字节一致**并记档——补上09-29复审未留哈希的流程缺口）；五 case 全映射（MOD-01×8、MOD-04×9、MOD-05×19、MOD-18×4 含零派发、MOD-19×30）；MINOR2 被 `-k` 过滤的6个低分保留测试已按 node-id 补跑 6 passed；MINOR1/3（字面三元组类比覆盖）与 INFO×3 记录接受。**诚实边界不变：router2.1 仅合成兼容路径（真实历史样本待 owner）、StockQA→StockWiki 事务ACK与跨仓E2E 不在 S06 完成范围且不声称完成**。工程task receipt v2/P01已退役。
 - [x] W01: 经用户精确授权，仅在StockWiki新增独立SQLite身份库/测试并更新`.gitignore`。真实分类YAML只读副本的隔离验证29项通过；独立首审的伪v1 schema、提交后验证和ADR错误基础引用三项均经固定反例修复、第二轮独立复审通过。`receipt-W01.json`绑定精确哈希与本地范围；生产库未迁移，W05仍待实施。
 - [ ] W02: 在用户授权的StockWiki精确文件范围内完成安全主档快照预览/导入首段：只落不可合并的来源候选，按内容哈希幂等，拒绝名称/代码推断身份，来源URL仅保留HTTPS origin，不持久化路径/凭证/query/fragment；真实CN/HK/US主档复制到临时目录验收通过。59 passed、1 skipped隔离目标测试及静态检查通过；最终8文件独立哈希复审通过，无P0–P2，见[验证回执](docs/implementation/contracts/validation-W02-W03-stockwiki-first-segment-2026-09-27.md)。仍缺source-to-entity binding审批/事务桥接、可核实身份升级和生产名单自动接续，因此W02 partial；跨实体唯一性须由StockWiki owner事务实现，见W02方案与C01复审报告。
 - [ ] Q08: Q08拥有持久冷却/半开探针及跨运行`retry_wait`恢复资格；首段provider-health状态与HTTP隐式POST重试、晚到拒绝时间修复已独立复审，离线unit+integration 617项通过，精确边界见`receipt-Q08-first-segment-2026-09-26.json`。当前仍缺有界dispatch-round持久化和与Q06 work lifecycle的生产接线。Q06持久待办/transport和Q09预算/并发账本第一段已实现；Q07逐题检查点仍缺生产接线与多题单次派发支持，Q09真实费用解析、公共runner完整预算接线及最终独立复审仍待完成，故Q08整体partial。
@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`，11 选择器绑定 8 case，check_all 698 passed），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03（改判 (a)）、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、密钥不轮换（决定5）、StockWiki 不加 remote（决定7）、四文件保留（决定8）。**Phase 54 完成：DWA 四仓 P1 处置全执行并推送**（rf `5319ee26`、SID `064a837`、QAbyLLM `ad389f8`、StockQA 无操作）。**Phase 55 完成：W03 verified**（StockWiki 本地 `4fbda21`，六 case 全绑定、37 测试、独立审查 approved、尺寸门基线登记经审查接受）；**DWA-04 扩盘分类完成**（1985 条全部为可重建 pytest 临时，报告归档 `2026-10-02-reaudit/DWA-04/extended-classification-1985.md`，10/10 token 命中真实测试定义）——**新增 owner 决策点：`.tmp-zr408-unit*` 三目录（各 657 条，08-18 ZR-408 pytest basetemp）与 14 条 scratch 的处置二选一（删除或 ignore，均需 owner 明示；-final/-retry 与 unit 仅 13 个时钟文件名差异，scratch 另有"随兄弟文件入库 vs 删除"选项）**。**我方可继续的已授权队列**：① S06 跨仓 ACK E2E（第3项授权）；② L01 真实搜索探针（deps 全满足，执行前作 live 成本声明）。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、1985 条处置决定、MiniMax 账单核对（决定9后议）、QAbyLLM 34 项与 SID 2 盲区文件去留（如需清理另行指示）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03 改判(a)、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、决定5/7/8。**Phase 54 完成：DWA 四仓 P1 处置**（rf `5319ee26`、SID `064a837`、QAbyLLM `ad389f8`、StockQA 无操作）。**Phase 55 完成：W03 verified**（`4fbda21`，六 case、37 测试、审查 approved、基线登记经审查接受）；DWA-04 扩盘分类归档（1985 条全为可重建 pytest 临时）——**owner 决策点：`.tmp-zr408-unit*`×3（各657条）与 14 scratch 删除或 ignore 二选一明示**。**Phase 56 完成：S06 verified**（收口复审 approved，147+20 passed 入隔离日志+12 哈希记档，五 case 全映射；诚实边界：2.1 仅合成、跨仓 ACK/E2E 归 W05/G1 域不声称）。**M1 仅剩 L01**：10 家公司真实搜索探针与小样本（deps 全满足，执行前必须作 live 成本声明；case LIVE-01/LIVE-02/SC-01/LLM-01/LLM-02/BUD-04；允许范围=StockQA 试点运行目录轻量结果与回执）。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、1985 条处置决定、MiniMax 账单核对、QAbyLLM 34 项与 SID 2 盲区去留、W03 签收两点确认（基线登记+步骤5分离）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -848,3 +848,13 @@ Status: verified; commit_4fbda21_local; review_approved; baseline_registered
 - [x] 独立审查 **approved**：`_save_prepared` 与原体95/96行一致；六 case→selector 映射齐全；37 passed+ruff+black（预存债注明）；零网络双补丁验证；CLI 九命令+规范 JSON+exit2 实测；基线登记 accept-with-justification。10 条 low/info 记录接受不改码（owner 签收时显式确认基线登记与 W03 步骤5 分离满足）。
 - [x] 真实工作区 `scan.sqlite` 幂等迁至 v2（空库、gitignored、工作树净）。
 - [ ] owner 签收 W03 时的两点确认：基线登记（quick_scan_store.py，Stage-3.2 拆分延后）与步骤5 reporting-scope 分离式满足。
+
+### Phase 56: S06 收口（证据化路由与多轴选择）
+
+Status: verified; closeout_review_approved; hashes_recorded; honest_scope_boundaries_preserved
+
+- [x] deps 复核：S05、S03 均已 verified → S06 正式解锁（其 tasks.json 完成判据本就允许 2.1 仅合成兼容路径，不强制真实 ACK/E2E——旧 PWF 叙述中"真实ACK为阻塞"的口径按权威判据纠正）。
+- [x] 聚焦套件复跑（收口独立复审执行并落盘）：`routing+closure+adapter+module_registry+plan` **147 passed/80 subtests**、`question_sets -k mod19/composition/closure/MOD` **20 passed/11 subtests**，隔离日志 `contracts/validation-S06-closeout-2026-10-02.txt`（640 行，含命令/计数/时长/判定）。
+- [x] 当前版本哈希记档（完成判据第2条）：12 个源/配置/测试 SHA-256 写入日志并与 HEAD 实测一致；厘清复审谱系——09-27 MOD18/MOD19 复审有哈希（现已过时，因 eb462d4 于09-30 首次入库）、09-29 修复轮复审无哈希（流程缺口，本轮补齐）。
+- [x] 五 case→selector 全映射（8/9/19/4/30）+ 规格符合性逐点引用（validate_route_for_execution decision_id 锚、阈值门、确定性事实免疫、48 谓词激活、ROUTE_02 文档）；MINOR2 过滤缺口按 node-id 补跑 **6 passed**；MINOR1/3+INFO×3 记录接受。**裁决 approved**。
+- [ ] 诚实边界固化进所有后续文档：router2.1 合成路径不称真实历史；跨仓 ACK/E2E 属 W05/G1 域，S06 不声称。
