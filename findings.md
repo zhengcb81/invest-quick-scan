@@ -1376,3 +1376,12 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **跨仓语义移植要写清"改了什么"**：`meaning_version`/`information_cutoff` 进兼容键是 W06 步骤1的正当扩展，但 docstring 若写"ports the rules"就会被认定 overstate——移植+扩展的文档公式=「逐行对齐 X + 本卡新增 Y」。
 - **行读取函数要兼容两种形态**：`meta_from_observation_row` 初版只认解码后的 `payload`，raw sqlite 行是 `payload_json` 文本 → TIME-10 fresh 字段误判 dispatch。读库函数入参写明接受哪两种形态并各测一次。
 - **black 要带 --line-length 100**：仓库标准是 ruff 100 列，裸 `black --check`（88 列）会误报；审查请求里要写明 flags，避免把环境差异报成文件问题。
+
+
+## 2026-10-03 — W13 教训（DDL 抽取守门、短路单一原因、断言不可空转）
+
+- **守尺寸硬门靠抽 DDL 不靠压逻辑**：store 991/1000 只剩 9 行，W13 还要加 3 张表——把 v1/v2/v3 DDL（纯声明、无逻辑）抽到独立 schema 模块，AST 逐体比对证明零语义漂移，store 立刻腾出 ~130 行。规则：贴近 1000 门时优先抽「声明型代码」，行为型代码动一行都要迁移探针兜底。
+- **抽取边界会吃装饰器**：上一轮抽 `_apply_v*` 时把 `_prepare` 的 `@staticmethod` 一起删了（我的切片停在 `def ` 行，没算上一行的装饰器）——抽方法前先 `grep -B1 "def 目标"` 确认上一行是不是 `@`。同类残留在 schema 模块里又长出一个模块级 `apply_v3` 的 `@staticmethod`，审查 F1 抓到。
+- **负向 case 要「唯一区分原因」**：MAINT-03 要求四类候选分别返回身份/类型/上市/用户排除原因——若不短路，一个候选会同时命中 3 个原因，case 的"分别"就不成立。身份与用户排除设为**短路型**（命中即返回，不再跑后续检查），类型/上市/配额可叠加。
+- **断言不可空转**：审查抓到 `all(...) or report["held"] == []` —— 当 held 真为空时 `all()` 对空集恒真，整个断言形同虚设，且测试根本没造提名记录。规则：断言前先造出**被断言的对象**；`all()` 永远配一个 `len(...) == N` 的非空前置；硬编码常量（如 `removals_suggested == []`）必须注明是"契约常量"，真正的牙齿要落在**行为后置状态**（成员仍在、历史字节不变、挂牌状态集不变）。
+- **审批后改动要单独记账**：approved 之后我只做了 2 处 `is not None` 类型收窄——行为零变、测试复绿，但 SHA 变了。写进 Phase 62 保住"审批版 SHA → 现版"的可追溯，不假装文件没动过。

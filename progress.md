@@ -1574,3 +1574,11 @@
 - 独立审查 approved（10/10 绑定 0 skip、437 场景 C04 差分、823 passed 全绿）；SHA 记档 `e4dfcf55…`/`3fdcfc14…`。
 - 跟进项 F1（generation 对齐门）/F2（compat-first 顺序）/F3（TIME-03 输入变更补测）记录于 Phase 61，**先于 work-item 存储卡落地前必修**，不动已批文件。
 - StockWiki `d4779e6` 本地提交；本批 IQS 写入=Phase 61 PWF。
+
+
+## 2026-10-03 — Phase 62：W13 verified + G2b 检索签收
+
+- **W13 verified**（StockWiki `d007a68` 本地）：发现/提名/评估/自动准入四工具落地。DDL 抽取到新 `quick_scan_schema.py`（AST 逐体与 `d4779e6` 原 `_apply_v1/v2/v3` 一致）把 store 从 991 压到 967 守住 <1000 硬门；`admit_with_intent` 单事务=成员+历史版本+扫描意图同落同滚；identity/user-exclusion 短路给唯一区分原因；quota 走 soft_target_capacity；报告只读永不移出。LLM 发现=预算请求结构零调用。
+- 独立审查两轮 approved（首F2空断言/F3场景错配两 blocker + F1/F4/F5/F6/F7 → 全整改），5 SHA 记档，`check_all` 832 passed/0 quick_scan skip/框架 0 错；27 对抗 + 10 迁移探针全过。审批后仅 2 处纯类型收窄（`is not None` 断言），行为不变、9 测试复绿（记录保 SHA 追溯）。
+- **G2b 检索签收（决定4 落地）**：agent 结果从会话固化入 `reviews/IQS-lane/G2b-sample-search-2026-10-03.md`，owner 签收其完整性诚实性。核心事实：**A/C/D 真实样本=0**、B=company-wiki 主档 653+148 组未进库；**签收 ≠ G2b verified**，A/C/D 缺口各需 owner 新决定。磁盘实测纠偏：`scan_observations.sqlite` 真实工作区缺失（W05 只在 temp 建过表）。
+- 本批写入：StockWiki 1 提交（`d007a68`）；IQS 1 提交（Phase 62 + G2b 检索归档）。
