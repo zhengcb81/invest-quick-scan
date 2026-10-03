@@ -1,0 +1,36 @@
+== G1 offline verification ==
+stockqa: C:\Users\郑曾波\Projects\StockQAbyLLM
+iqs: C:\Users\郑曾波\Projects\invest-quick-scan
+PASS | A0 pilot company files == 11 | 11
+PASS | A1 status<->score coherent 20/20 | 20
+PASS | A2 answer_sha256 canonical replay 20/20 | 20
+PASS | A3 citations subset of executed attempt urls | 20/20
+PASS | A4 receipts executed+http200+response_id 20/20 | 20
+PASS | A5 distinct response_id == 20 | 20
+PASS | A7 web searches == 41 | 41
+PASS | A7 source urls == 388 | 388
+FINDING | A8 structured information dates unpopulated (information_as_of/published_date null) | 0/20 populated; prose dates only; freshness contract allows null -> not-fresh fail-closed
+FINDING | A11 receipts persist source URLs but no source title/published_date | stock-pool-design section2 save-set wants title+URL+date; only URLs in attempts/receipts
+PASS | A9 status counts scored=18 unknown=2 | {'unknown': 2, 'scored': 18}
+PASS | A10 score dist matches report | [4, 5, 6, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9]
+PASS | B1 no html/pdf body patterns in pilot files
+PASS | B2 no credential-like strings in pilot files
+PASS | B3 no mock/monkeypatch markers in pilot files
+PASS | B4 description bounded (max len < 4000) | 3048
+PASS | A7 invocations == 11 | 11
+PASS | A7 primary requests == 20 == at cap | 20
+PASS | C1 root llm_apis.json not tracked (template llm_apis.json.example is)
+PASS | C1b no tracked llm_apis.json with live key material (only .example allowed) | ['llm_apis.json.example']
+PASS | C2 logs/ not tracked
+PASS | C3 stockqa dirty == 4 expected kept untracked | ['.codegraph/', '.workbuddy-ai/', 'nul', 'progress_update.txt']
+PASS | C4 hash matches L01 approved review: pilot-report.md | 034c9d920967010b
+PASS | C4 hash matches L01 approved review: run-log.json | abecd559cc127a42
+PASS | C4 hash matches L01 approved review: _fix_budget.py | 6108cdca734aef23
+PASS | C4 hash matches L01 approved review: L01-pilot-freeze-2026-10-02.json | 7e07998f447b8179
+PASS | D1 receipt-S02.json exists
+PASS | D2 Q02 MiniMax live E2E contract exists
+PASS | D3 S06 closeout not required here (marker only) | info
+PASS | D4 Q05 artifacts tracked | 'tests/unit/test_q05_content_boundary.py\n'
+== summary ==
+checks: 30 failures: 0
+ALL PASS
