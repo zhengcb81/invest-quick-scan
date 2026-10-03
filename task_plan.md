@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03 改判(a)、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、决定5/7/8。**Phase 54 完成：DWA 四仓 P1 处置**（rf `5319ee26`、SID `064a837`、QAbyLLM `ad389f8`、StockQA 无操作）。**Phase 55 完成：W03 verified**（`4fbda21`，六 case、37 测试、审查 approved、基线登记经审查接受）；DWA-04 扩盘分类归档（1985 条全为可重建 pytest 临时）——**owner 决策点：`.tmp-zr408-unit*`×3（各657条）与 14 scratch 删除或 ignore 二选一明示**。**Phase 56 完成：S06 verified**（收口复审 approved，147+20 passed 入隔离日志+12 哈希记档，五 case 全映射；诚实边界：2.1 仅合成、跨仓 ACK/E2E 归 W05/G1 域不声称）。**M1 仅剩 L01**：10 家公司真实搜索探针与小样本（deps 全满足，执行前必须作 live 成本声明；case LIVE-01/LIVE-02/SC-01/LLM-01/LLM-02/BUD-04；允许范围=StockQA 试点运行目录轻量结果与回执）。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、1985 条处置决定、MiniMax 账单核对、QAbyLLM 34 项与 SID 2 盲区去留、W03 签收两点确认（基线登记+步骤5分离）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03 改判(a)、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、决定5/7/8。**Phase 54 完成：DWA 四仓 P1 处置**（rf `5319ee26`、SID `064a837`、QAbyLLM `ad389f8`、StockQA 无操作）。**Phase 55 完成：W03 verified**（`4fbda21`，六 case、37 测试、审查 approved、基线登记经审查接受）；DWA-04 扩盘分类归档（1985 条全为可重建 pytest 临时）——**owner 决策点：`.tmp-zr408-unit*`×3（各657条）与 14 scratch 删除或 ignore 二选一明示**。**Phase 56 完成：S06 verified**（收口复审 approved，147+20 passed 入隔离日志+12 哈希记档，五 case 全映射；诚实边界：2.1 仅合成、跨仓 ACK/E2E 归 W05/G1 域不声称）。**Phase 57 完成：L01 verified**（冻结钉版 IQS `51fbce1`；10 家真实探针 11 调用承载 20 请求=用满上限未超、41 搜索/388 源、18 题得分(4–9)、2 题 fail-closed、0 mock；试点包+三轮整改 StockQA `7a40a98..1f04a8f` 已推送；独立审查两轮 approved，四文件 SHA-256 记档，预算按问题级 20 请求口径修正）。**M1 唯余 G1 审查**：deps L01+S02+Q05 全 verified 已解锁（invariants I01/I05/I15/I17/I19；cases REV-01/02/03、LIVE-02、SC-01、LLM-08、REV-05；allowed_changes=`reviews/G1/` 新增；步骤=真实调用证据/分数null逐层/来源与信息日期抽查/skip与宽松断言审查，产出审查记录+60家范围说明）。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、1985 条处置决定、MiniMax 账单核对（决定9，L01 本批 20 completions+41 searches）、QAbyLLM 34 项与 SID 2 盲区去留、W03 签收两点确认（基线登记+步骤5分离）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -858,3 +858,15 @@ Status: verified; closeout_review_approved; hashes_recorded; honest_scope_bounda
 - [x] 当前版本哈希记档（完成判据第2条）：12 个源/配置/测试 SHA-256 写入日志并与 HEAD 实测一致；厘清复审谱系——09-27 MOD18/MOD19 复审有哈希（现已过时，因 eb462d4 于09-30 首次入库）、09-29 修复轮复审无哈希（流程缺口，本轮补齐）。
 - [x] 五 case→selector 全映射（8/9/19/4/30）+ 规格符合性逐点引用（validate_route_for_execution decision_id 锚、阈值门、确定性事实免疫、48 谓词激活、ROUTE_02 文档）；MINOR2 过滤缺口按 node-id 补跑 **6 passed**；MINOR1/3+INFO×3 记录接受。**裁决 approved**。
 - [ ] 诚实边界固化进所有后续文档：router2.1 合成路径不称真实历史；跨仓 ACK/E2E 属 W05/G1 域，S06 不声称。
+
+### Phase 57: L01 收口（10家公司真实搜索探针与小样本）
+
+Status: verified; freeze_pinned_51fbce1; review_approved_two_rounds; budget_at_cap_honestly_recounted
+
+- [x] 冻结先行：`reviews/L01-pilot-freeze-2026-10-02.json`（10 家 CN×5（含 STAR/BJ/GEM）/US×3/HK×2；`probe:<listing_key>` 仅为探测内绑定不称 issuer 解析；IQS_05+IQS_06 双题；caps 20 primary/40 attempts；rate_cards 空→零编造单价；LIVE-02 零搜索即全批止损门）。F5 整改：冻结文件已入库钉版（IQS `51fbce1`）。
+- [x] 执行（live，成本已声明）：Phase A 茅台×IQS_05 先行（搜索 2 次/19 源，答案因模型输出平衡但非法 JSON → 严格解析 fail-closed → unknown，按 rollback 规则原样保留不重跑）；Phase B 其余 19 题。**11 次 CLI 调用承载 20 个问题级 primary requests = 恰好用满 20 上限未超**，HTTP 20≤40，41 次真实搜索，388 条来源，18 题得分（4–9），2 题 fail-closed unknown（茅台 phaseA、阿里巴巴 IQS_06），0 mock。
+- [x] case 证据（LIVE-01/LIVE-02/SC-01/LLM-01/LLM-02/BUD-04）全部落 `StockQAbyLLM/pilot_runs/l01_2026-10-02/`：11 份回执 JSON + run-log + _score-rows + 冻结题面 + 试点报告；SC-01 双校验 20/20（status↔score、`answer_sha256` 对规范序列化 `ensure_ascii=False,sort_keys,compact` 逐字节绑定；ASCII 转义形式仅 2/20 非绑定形式）。acceptance-cases 状态字段不改（证据入 PWF/contracts 口径）。
+- [x] 独立审查两轮（task `ses_f0057137dffew9k5XUUTgxLW0f`）：首轮 changes_requested（F1 预算按调用次数误计→须按 20 请求重述、F2 表格两格错、F3/F4 措辞、F5 冻结未钉版、F6 路径缺前缀）→ 修复后二轮 F8+info（"11 requests"分类学残留、phase-A 字样歧义）→ **approved**，四文件 SHA-256 记档（pilot-report `034c9d92…`、run-log `abecd559…`、_fix_budget `6108cdca…`、freeze `7e07998f…`）。
+- [x] 提交推送：StockQA `7a40a98`（试点包）+ `a8650c0`/`cea6efc`/`1f04a8f`（审查整改）；IQS `51fbce1`（冻结钉版）。预算重算脚本 `_fix_budget.py` 随包入库（断言 11/20/20/41/388，可复算）。
+- [ ] owner：MiniMax 控制台账单核对（决定9；本批 20 completions + 41 searches，另 Q02/Q03 早期单发诊断另计）。
+- 下一步：**G1 审查**（deps L01+S02+Q05 全部 verified，G1 已解锁；invariants I01/I05/I15/I17/I19，cases REV-01/02/03、LIVE-02、SC-01、LLM-08、REV-05，allowed_changes=reviews/G1/ 新增）。

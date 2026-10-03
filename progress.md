@@ -1517,3 +1517,13 @@
 - 收口独立复审（task ses_f00907e3cffelIUFj5wTgSF9yf）**approved**：两套件 147+20 passed（91 subtests）写入隔离日志；12 个当前源/配置/测试 SHA-256 记档且与 HEAD 字节一致（补齐09-29复审无哈希的缺口；09-27 MOD18/MOD19 复审哈希因 eb462d4 首次入库而过时的谱系已厘清）；MOD-01/04/05/18/19 → 8/9/19/4/30 个选择器全执行映射；规格符合性逐点引用（decision_id 锚、阈值门、确定性免疫、48 谓词、ROUTE_02 文档）。
 - MINOR2（`-k` 过滤掉的6个低分保留测试）按 node-id 补跑 **6 passed**；MINOR1（字面三元组类比覆盖）、MINOR3、INFO×3 记录接受。**S06 → verified**。
 - 复审确认的非声称项保持原样：router2.1 真实历史样本待 owner（合成路径只称合成）、StockQA→StockWiki 事务ACK与跨仓E2E 归 W05/G1 域。M1 仅剩 **L01**（需 live 成本声明）及其下游 G1。
+
+
+## 2026-10-03 — L01 收口（Phase 57）
+
+- 冻结先行后 live 执行（成本已声明）：`reviews/L01-pilot-freeze-2026-10-02.json`（10 家三市场、probe listing-key 非 issuer 解析、caps 20/40、空 rate cards、LIVE-02 止损门）。Phase A 茅台×IQS_05 模型输出平衡但非法 JSON → fail-closed unknown（原样保留不重跑）；Phase B 完成其余 19 题。**11 次 CLI 调用=20 个问题级 primary requests，恰好用满 20 上限未超**，HTTP 20≤40，41 真实搜索，388 来源，18 题得分(4–9)，2 题 unknown，0 mock。
+- SC-01 双校验 20/20：status↔score 一致；`answer_sha256` 对规范序列化（`ensure_ascii=False, sort_keys, compact`）逐字节绑定（ASCII 转义形式仅 2/20，非绑定形式）。
+- 独立审查两轮（`ses_f0057137dffew9k5XUUTgxLW0f`）：首轮 changes_requested F1–F7（预算误按 11 调用计数、表格两格错、措辞、冻结未钉版、路径前缀）；修复后二轮 F8+info 再整改 → **approved**，四文件 SHA-256 记档（pilot-report `034c9d92…`、run-log `abecd559…`、_fix_budget `6108cdca…`、freeze `7e07998f…`）。
+- 提交推送：StockQA `7a40a98`（试点包 17 文件，llm_apis/logs 按仓策略排除）→ `a8650c0`/`cea6efc`/`1f04a8f`（整改）；IQS `51fbce1`（冻结钉版）。预算重算脚本 `_fix_budget.py` 入库（断言 11/20/20/41/388）。
+- **L01 → verified；M1 唯余 G1**（deps L01+S02+Q05 全满足已解锁）。owner 侧新增：MiniMax 控制台账单核对（本批 20 completions+41 searches）。
+- 本批 StockQA 写入=4 提交（试点+3 整改）；IQS 写入=2 提交（冻结+PWF）；StockWiki/rf/SID/QAbyLLM/company-wiki 零写入。

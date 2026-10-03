@@ -8,7 +8,7 @@
 2. 使用planning-with-files技能自带的 `resolve-plan-dir.ps1` / `.sh` 解析计划。解析结果为空且根目录存在 `task_plan.md` 时，使用根目录的legacy计划；显式 `PLAN_ID` 无法解析时停止，不能自动改读另一份计划。本仓截至2026-10-02仍是根目录legacy计划，没有 `.planning` 命名计划。计划由单一总控写入；worker不得另建或并行改写总控计划。
 3. 阅读根目录 `task_plan.md` 的 `## Next Step`、最新 Phase 和恢复提示，随后读 `progress.md` 最近两次工作记录、`findings.md` 对应发现。本指南不取代这三份文件。
 4. 阅读 `docs/implementation/README.md`、`decision-register.md`、`test-strategy.md`、`review-and-handoff.md`。准备某条外部工作线时，再读 `parallel-lanes/README.md` 对应 lane 文档和 `parallel-lanes/packages/` 的整份施工卡。
-5. 对照当前Git事实：IQS分支/HEAD/工作树；需要工作的外仓也分别核对分支/HEAD/状态、AGENTS.md、owner路径、组件版本及交接原件hash。**先前快照不是当前状态**。不要输出含凭据的remote URL或秘密文件内容。当前已知的IQS提交为 `94be5a5`；本仓已配置用户提供的 GitHub origin（`github.com/zhengcb81/invest-quick-scan`）并已推送。这两个事实同样要在恢复时重新核对；其他仓库仍不得猜测或新增remote。
+5. 对照当前Git事实：IQS分支/HEAD/工作树；需要工作的外仓也分别核对分支/HEAD/状态、AGENTS.md、owner路径、组件版本及交接原件hash。**先前快照不是当前状态**。不要输出含凭据的remote URL或秘密文件内容。当前已知的IQS基线提交为 `51fbce1`（Phase 57 批次在其后追加，以 `git log` 为准）；本仓已配置用户提供的 GitHub origin（`github.com/zhengcb81/invest-quick-scan`）并已推送。这两个事实同样要在恢复时重新核对；其他仓库仍不得猜测或新增remote。
 
 推荐只读恢复命令（分别在目标仓库目录运行，不要把输出合并后误读归属）：
 
@@ -49,18 +49,18 @@ python -B -X utf8 scripts/implementation_plan.py show <TASK_ID>
 
 ## 4. 用户边界与不能误判的当前快照
 
-以下是截至2026-10-02写入PWF的**上次观察**，不是接手日的当前Git状态；恢复时必须重核：
+以下是截至2026-10-03写入PWF的**上次观察**，不是接手日的当前Git状态；恢复时必须重核：
 
 | 线 | 上次已知状态 | 证据缺口/处理规则 |
 |---|---|---|
-| IQS | `cda6b01`（2026-10-02已推送；本会话完成DWA复审四包收口+P1处置（Phase54）、QA-04收口、Q05 verified、Q02/Q03关闭、S03改判(a)关闭、SW-IDENT声明修正、W02 preview入口+216报告（Phase53）；计划仍107卡/366场景/G6；origin已配置） | V02仍partial：无真实校准、无生产观察/receipt认证、无StockWiki历史重算/活动发布；不要仅凭派生hash把候选用进生产白名单 |
-| StockQA / Q02–Q05 | `master@82f1794`已推送（origin=github.com/zhengcb81/StockQAbyLLM）；QA-04 handoff **complete**@`fe11f63`，Q05 verified@`1318a2a`+`7ced082`，**Q02/Q03 verified**@`ced1faa`+`82f1794`（两个MiniMax live E2E最终代码PASSED、独立审查approved，证据`contracts/validation-Q02-MiniMax-live-E2E-2026-10-02.md`）；钩子链已修绿（mypy/bandit零债） | 共享工作树仅4条未跟踪（`.codegraph/`、`.workbuddy-ai/`、`nul`、`progress_update.txt`）不清理，`nul`保持未知；live 成本/账单见owner MiniMax控制台 |
+| IQS | 上一批次 `51fbce1` 已推送（Phase 57 L01 收口 PWF+本表刷新=随后的当前 HEAD，以 `git log -2` 为准；此前完成 Phase 53–56：W02 preview+216报告、DWA P1 处置、W03 verified、S06 收口、Q05/Q02/Q03/S03/ACL 全闭）；计划仍107卡/366场景/G6；**M1 唯余 G1 审查**（deps L01+S02+Q05 全 verified） | V02仍partial：无真实校准、无生产观察/receipt认证、无StockWiki历史重算/活动发布；不要仅凭派生hash把候选用进生产白名单 |
+| StockQA / Q02–Q05, L01 | `master@1f04a8f`已推送（origin=github.com/zhengcb81/StockQAbyLLM）；**L01 verified**（Phase 57：试点包 `7a40a98`+三轮整改 `a8650c0`/`cea6efc`/`1f04a8f`，10 家真实探针 20 请求用满上限、41 搜索、388 源、18 得分 2 unknown、0 mock，独立审查两轮 approved 哈希记档，证据=`pilot_runs/l01_2026-10-02/`）；Q05@`1318a2a`+`7ced082`、Q02/Q03@`ced1faa`+`82f1794`、QA-04 complete@`fe11f63` | 共享工作树仅4条未跟踪（`.codegraph/`、`.workbuddy-ai/`、`nul`、`progress_update.txt`）不清理，`nul`保持未知；live 账单见 owner MiniMax 控制台（L01 本批 20 completions+41 searches，决定9 待核对） |
 | StockWiki / SW-IDENT | 本地提交`33dbf7f`（该仓无remote，仅本地）；`aa17f93`修正 handoff 路径声明后 IQS CLI **valid**；W02 **候选 preview 入口已交付**（`stockwiki identity-preview`，11 选择器绑 8 case，check_all 698 passed）并产出真实 216 报告（IQS `reviews/universe-identity-preview-2026-10-02.json`）；worktree 仅含仓设计性忽略的空库 `data/quick_scan/scan.sqlite`（建库零导入，可逆） | W02/W03 生产证据与 G2b 完整签收未闭；**等 owner 审阅 216 报告并给导入写授权**；不伪造verified/多挂牌/AnalysisSubject/历史区间正例。UI、W05和其他路径无新授权不写 |
 | QAbyLLM | **决定6 六批处置已执行并推送**（`64ec772..ad389f8`：F gitignore手术/路径脱敏/porter环境变量读取、B 验证+配置日志+全套测试、A RAG双模式核心、C 多Provider/插件/对话、D 文档工具、E 仪表板）；76 测试绿；13 处个人路径已改 `knowledge_base`；无git身份仓用一次性`-c`注入历史作者 | 残留 34 项"不建议提交"（pip重定向日志/样例数据/1字节临时/9个无引用工具/两份仪表板备份）维持现状，去留需另行指示；`simple_porter.py` 已入库（环境变量读取、可编译、零sk-）；**密钥轮换仍待owner服务商侧**（决定5=不换，残余风险owner承担）；环境补装了requirements声明依赖（langchain锁0.3线） |
-| G2b / S06 | 只签收provisional单挂牌Entity+mapping接口切片；S06本地slice已有测试/审查 | G2b仍需真实owner历史区间、verified、多挂牌、AnalysisSubject样本；S06仍需真实事务ACK、router 2.1历史工件及获批跨仓E2E |
+| G2b / S06 | **S06 → verified（Phase 56 收口复审 approved，147+20 passed 隔离日志+12 SHA-256 记档）**；G2b 只签收 provisional 单挂牌 Entity+mapping 接口切片 | G2b 仍需真实 owner 历史区间、verified、多挂牌、AnalysisSubject 样本；router 2.1 仅合成兼容路径不称真实历史，StockQA→StockWiki 真实事务 ACK 与获批跨仓 E2E 属 W05/G1 域后续项（S06 不声称、也不再列为 S06 阻塞） |
 | TH-01 / IN-02 | 两份只读预研完整原件已归档验收 | T01/T02实施仍依赖G3/F05/W11、StockWiki生产query/golden、唯一Git owner与写授权 |
 | 首批名单 | 用户确认216个带市场的挂牌候选作为输入；331个名称仅为解析提示 | 候选数不等于发行人数；不自动合并近名公司，不自动导入或扫描，歧义/unresolved不入付费队列 |
-| DWA-01–07 | 复审四包03R/04R/05R/06R于2026-10-02执行并**全部接受**（归档`2026-10-02-reaudit/`）；01/02/07维持接收；漂移归因收口；**P1 处置已按决定6 全执行并推送**（Phase 54：rf `5319ee26` 门绿、SID `064a837`、QAbyLLM `ad389f8` 六批、StockQA 无操作）；ACL 解封完成，rf 新基线 2401 条（含 1985 解封组） | 解封后新增可见的 1985 条**尚未被审计分类**，在 DWA-04 扩盘盘点（我方队列）完成前**不得清理/提交/ignore**；QAbyLLM 34 项"不建议提交"与 SID 2 盲区文件维持现状，去留变更需另行指示 |
+| DWA-01–07 | 复审四包03R/04R/05R/06R于2026-10-02执行并**全部接受**（归档`2026-10-02-reaudit/`）；01/02/07维持接收；漂移归因收口；**P1 处置已按决定6 全执行并推送**（Phase 54：rf `5319ee26` 门绿、SID `064a837`、QAbyLLM `ad389f8` 六批、StockQA 无操作）；ACL 解封完成，rf 新基线 2401 条；**1985 条解封组已扩盘分类完毕（Phase 55：全部=可重建 pytest 临时，报告归档）** | 1985 条处置待 **owner 二选一明示（删除或 ignore）**，决定前不得动；QAbyLLM 34 项"不建议提交"与 SID 2 盲区文件维持现状，去留变更需另行指示 |
 
 身份主键、主题/行业只读消费者、轻资产LLM问答、模型/时间/评分尺横向纵向比较、原答案不可变、未知不计零、周期低谷保留观察标记，均是设计不变量。完整条文在`decision-register.md`与各契约中；遇到冲突优先用户最新指令与这些冻结契约，并记录提案，不能静默改设计。
 
