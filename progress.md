@@ -1502,3 +1502,11 @@
 - **Git 身份**：QAbyLLM 无身份配置，三连提交曾夭折——改用一次性 `-c user.name/-c user.email=zhengcb81 <your-email@example.com>`（沿用仓历史作者，**零配置文件改动**）后全部成功。
 - **DWA-06/StockQA**：无操作（`fe11f63` 已覆盖可提交 57，决定8 保留 4 未跟踪文件）。
 - 对账终态：rf=1985 未知（设计保留）；SID=2 盲区（config/claude）；QAbyLLM=34 不建议提交项；StockQA=4 保留项。四仓全部与审计建议逐项一致。
+
+## 2026-10-02 — W03 剩余批次与 DWA-04 扩盘分类（Phase 55）
+
+- **W03 剩余批次（StockWiki 本地 `4fbda21`，决定7 不加 remote）**：写前报告 6 文件——store 升 schema v2（`quick_scan_listing_history`+`quick_scan_identity_event`、增量迁移、v1 数据升级用例）、`_save_prepared` 事务核拆分（与原体 95/96 行一致，仅移除早退内层 close）、`add_security`（同件幂等 no-op/新挂牌 revision+1/乐观锁/内容差异拒绝）、`record_listing_status`（追加历史+幂等+仅动目标行）、`apply_rename`/`apply_ticker_change`（旧值匹配+revision+1+entity_id 恒稳+binding ticker 同事务一致+事件行）、`identity_events`（old/new 双查）、`get_universe`；新建 `quick_scan_universe.py`（add/remove/restore/pin/diff/explain：仅显式移除、容量 advisory-only、历史理由全保留、构造上零网络；CLI handlers 因 services/ 超范围落本文件=已记录 deviation）；`cli_parsers/quick_scan.py` 增 9 子命令。测试 store22+universe4：UNI-04 字面 2003 成员、socket 双补丁零调用、v1→v2 升级保数据、CLI e2e 与命名拒收实测。门：ruff/触及文件 black100 净、`check_all` 全绿。
+- **尺寸门处理**：store 548→923 行触发 ">600 新增偏大" 错误；W03 禁新增文件故不能拆分，按错误信息自带路径**基线登记** `framework_validators_okf.py::MODULE_SIZE_BASELINE={"quick_scan_store.py"}`（923<critical1000、理由注释含行数/成因/Case/Stage-3.2 延后）；实测门对非基线新大模块与超 critical 仍报 error（未削弱）。
+- **独立审查 approved**（task_id ses_f00afd04effeCoINPv5XhEBDGc）：迁移/拆分/幂等/守卫逐项核验、六 case→selector 映射齐全、37 passed+ruff+black（预存债归 parent）、零网络双补丁验证、CLI 九命令规范 JSON+exit2 实测、基线登记 accept-with-justification。10 条 low/info（含 OR IGNORE 实为守卫冗余、dup 比较仅遍历入参键、拒绝分支未测、ID-15 以事件 dispatch_revision 代理 Work 绑定、handler 位置 deviation 等）**记录接受不改码**；owner 签收 W03 时显式确认基线登记与步骤5 分离式满足两点。真实工作区 DB 幂等迁 v2（空库）。
+- **DWA-04 扩盘分类（agent 完成）**：1985/1985 全部分类——三个 `.tmp-zr408-unit*` 目录各657条=08-18 ZR-408 pytest basetemp（unit/final/retry 仅13个时钟文件名差异）+14 条 scratch（schema 化测试输出，3 个兄弟文件已入库）；10/10 抽样 token 命中真实测试定义（company-wiki 5 + rf 5）；起止零漂移（HEAD `5319ee26`）。判定：全部**可重建临时**，需保留=0、不可判=0。报告归档 `2026-10-02-reaudit/DWA-04/extended-classification-1985.md`。**处置（删除或 ignore）待 owner 二选一明示**——沿用"未知不删"原则直到决定。
+- 本批 StockWiki 写入=1 提交（本地）；IQS 写入=PWF+1 归档报告；临时脚本在系统 TEMP。

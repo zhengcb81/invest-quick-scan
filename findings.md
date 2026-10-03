@@ -1310,3 +1310,10 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **pre-push 门的"红"要分层归因再动**：rf 三轮红分别是（a）外部工作区瞬态写入（dayu-agent portfolio 指纹）、（b）多进程 E2E 时序、（c）GBK 子进程解码炸 reader 线程——均非提交内容所致。根因缓解（UTF-8 env）+复跑 ≠ 绕门；协议禁止 `--no-verify`。**独立跑门绿≠推送内绿**，两处环境要一致取证。
 - **无 git 身份的仓用一次性 `-c user.name/-c user.email` 注入历史作者**，不改配置文件（`git commit` 的 `| tail` 管道会吞退出码——判定成败必须看 `git log` 而非链式返回值）。
 - **requirements 版本线 = 代码 API 代际**：`langchain>=0.1.0` 装到 1.x 后 `langchain.text_splitter` 消失；按代码实际 import 选 0.3 线而非最新线。pip 升级共享库（click）引发的基环境冲突要记录在案。
+
+## 2026-10-02 — W03 批次工具与流程教训
+
+- **`print(x, sys.stderr)` 不是写 stderr**：print 的第二位置参数是打印对象，会把流的 repr 打到 stdout——正确写法 `file=sys.stderr`。此坑让 CLI 拒收测试的 stderr 恒空、报 JSONDecodeError 假故障；教训：写完 stderr 输出立即用"断言 stderr 非空+stdout 为空"双向验证。
+- **裸 `sqlite3.connect` 无 row_factory**：`dict(row)` 对 tuple 会抛 `length 12; 2 required`；要么 `zip(cur.description, row)`，要么 `conn.row_factory = sqlite3.Row`。
+- **heredoc 吞反斜杠第四次踩**：所有含 `\`/`\n` 字面量的补丁一律 Write 工具落盘执行 + **parse-before-write**（脚本先 ast.parse 再写目标文件，失败不落盘）；长块拆分用行号/行前缀锚（`"\n            con.commit()\n"` 行锚），子串锚会被更深缩进的同文本行吞掉。
+- **尺寸门的合规出口**：仓库治理文件的错误信息本身就是授权路径（"显式纳入 MODULE_SIZE_BASELINE"）；在禁新文件的 scope 下登记基线优于越权拆分，登记后必须实测门仍对非基线/超 critical 报错，且在 PWF 里列为 owner 签收确认项。
