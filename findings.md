@@ -1332,3 +1332,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **报告表格必须对回执逐格复算**：两处单元格错（行1 phase-A 源数留"—"、行8 Snowflake 19→20）使合计 368≠388——headline 与表格各自独立成文时必然漂移，收口前跑一次"表格求和=headline"断言。
 - **改口径要全文替换到诚实边界段**：F1 修正主表后，Honest boundaries 段残留"these 11 requests"被复审抓为 F8；凡引入新分类学（invocation vs request），grep 旧口径词（如 "11 requests"）确认零残留。
 - **两轮复审+哈希记档成为常态闭环**：首轮 findings → 整改提交 → 二轮只复核增量 diff 与新 SHA-256 → approved，比整包重审快且证据清晰；info 级（F4/F7）用文档澄清而非改码。
+
+
+## 2026-10-03 — G1 门审查教训（信息日期、旧回执替代、债务数字）
+
+- **执行时间≠信息日期，null 合法但有代价**：L01 20/20 答案 `information_as_of`/`published_date` 全 null——字段链存在但上游无人填充，日期只活在 description 散文里。契约允许 null，但语义是 not-fresh fail-closed，且 answered_at 严禁顶替。教训：live 试点收口时应把"结构化信息日期是否填充"列为显式检查项，否则缺口要到门审查才浮出。已在 60 家范围说明中二选一绑定（补采集 or 正式接受 not-fresh）。
+- **旧 receipt 哈希过时≠任务回退，但不能拿来放行**：receipt-S02 快照 3/4 哈希与当前树不一致（后续授权任务改的）。按 REV-02"旧审查不放行新实现"，门审查用**当前快照运行结果**替代旧 receipt，同时把不一致本身记为 info——既不假装 receipt 仍有效，也不把 S02 判为失效。
+- **审查记录里的债务数字要实测**：记录引 progress.md"ruff 19 处"，复审实测 0.15.18 下为 16。已批准文件不回改（保 SHA 稳定），教训固化：引用旧 PWF 数字前先复测，或写明"引用时点"。
+- **负向 live case 的"通过"是"条件未出现"**：LIVE-02 是止损/不造假类负向 case，判定=门武装且从未触发+rollback 合规，不是"跑出了什么"。记录模板要把负向 case 写成"若发生则如何、实测未发生、依据"，避免含糊成正面断言。

@@ -8,7 +8,7 @@
 2. 使用planning-with-files技能自带的 `resolve-plan-dir.ps1` / `.sh` 解析计划。解析结果为空且根目录存在 `task_plan.md` 时，使用根目录的legacy计划；显式 `PLAN_ID` 无法解析时停止，不能自动改读另一份计划。本仓截至2026-10-02仍是根目录legacy计划，没有 `.planning` 命名计划。计划由单一总控写入；worker不得另建或并行改写总控计划。
 3. 阅读根目录 `task_plan.md` 的 `## Next Step`、最新 Phase 和恢复提示，随后读 `progress.md` 最近两次工作记录、`findings.md` 对应发现。本指南不取代这三份文件。
 4. 阅读 `docs/implementation/README.md`、`decision-register.md`、`test-strategy.md`、`review-and-handoff.md`。准备某条外部工作线时，再读 `parallel-lanes/README.md` 对应 lane 文档和 `parallel-lanes/packages/` 的整份施工卡。
-5. 对照当前Git事实：IQS分支/HEAD/工作树；需要工作的外仓也分别核对分支/HEAD/状态、AGENTS.md、owner路径、组件版本及交接原件hash。**先前快照不是当前状态**。不要输出含凭据的remote URL或秘密文件内容。当前已知的IQS基线提交为 `51fbce1`（Phase 57 批次在其后追加，以 `git log` 为准）；本仓已配置用户提供的 GitHub origin（`github.com/zhengcb81/invest-quick-scan`）并已推送。这两个事实同样要在恢复时重新核对；其他仓库仍不得猜测或新增remote。
+5. 对照当前Git事实：IQS分支/HEAD/工作树；需要工作的外仓也分别核对分支/HEAD/状态、AGENTS.md、owner路径、组件版本及交接原件hash。**先前快照不是当前状态**。不要输出含凭据的remote URL或秘密文件内容。当前已知的IQS基线提交为 `f7860fb`（Phase 58 PWF 批次在其后追加，以 `git log` 为准）；本仓已配置用户提供的 GitHub origin（`github.com/zhengcb81/invest-quick-scan`）并已推送。这两个事实同样要在恢复时重新核对；其他仓库仍不得猜测或新增remote。
 
 推荐只读恢复命令（分别在目标仓库目录运行，不要把输出合并后误读归属）：
 
@@ -53,7 +53,7 @@ python -B -X utf8 scripts/implementation_plan.py show <TASK_ID>
 
 | 线 | 上次已知状态 | 证据缺口/处理规则 |
 |---|---|---|
-| IQS | 上一批次 `51fbce1` 已推送（Phase 57 L01 收口 PWF+本表刷新=随后的当前 HEAD，以 `git log -2` 为准；此前完成 Phase 53–56：W02 preview+216报告、DWA P1 处置、W03 verified、S06 收口、Q05/Q02/Q03/S03/ACL 全闭）；计划仍107卡/366场景/G6；**M1 唯余 G1 审查**（deps L01+S02+Q05 全 verified） | V02仍partial：无真实校准、无生产观察/receipt认证、无StockWiki历史重算/活动发布；不要仅凭派生hash把候选用进生产白名单 |
+| IQS | 上一批次 `f7860fb`（G1 审查包）+ 本批次 Phase 58 PWF（以 `git log -2` 为准）；**M1 已关闭：18 卡全 verified**（Phase 53–58：W02 preview+216、DWA P1、W03、S06、L01、G1）。G1=approved（`ses_f0022a928ffewW1KsB6lHQRJE9`，`reviews/G1/` 记录+60家范围+30检查脚本+3 log）；计划 107 卡/366 场景/G6。当前候选：Q13（deps 齐，StockQA 报备制）、W04/W05（deps 齐，StockWiki 新路径待精确授权）；L02 等 W07/W08/W09+范围 §5 F1/F2 | V02仍partial：无真实校准、无生产观察/receipt认证、无StockWiki历史重算/活动发布；不要仅凭派生hash把候选用进生产白名单 |
 | StockQA / Q02–Q05, L01 | `master@1f04a8f`已推送（origin=github.com/zhengcb81/StockQAbyLLM）；**L01 verified**（Phase 57：试点包 `7a40a98`+三轮整改 `a8650c0`/`cea6efc`/`1f04a8f`，10 家真实探针 20 请求用满上限、41 搜索、388 源、18 得分 2 unknown、0 mock，独立审查两轮 approved 哈希记档，证据=`pilot_runs/l01_2026-10-02/`）；Q05@`1318a2a`+`7ced082`、Q02/Q03@`ced1faa`+`82f1794`、QA-04 complete@`fe11f63` | 共享工作树仅4条未跟踪（`.codegraph/`、`.workbuddy-ai/`、`nul`、`progress_update.txt`）不清理，`nul`保持未知；live 账单见 owner MiniMax 控制台（L01 本批 20 completions+41 searches，决定9 待核对） |
 | StockWiki / SW-IDENT | 本地提交`33dbf7f`（该仓无remote，仅本地）；`aa17f93`修正 handoff 路径声明后 IQS CLI **valid**；W02 **候选 preview 入口已交付**（`stockwiki identity-preview`，11 选择器绑 8 case，check_all 698 passed）并产出真实 216 报告（IQS `reviews/universe-identity-preview-2026-10-02.json`）；worktree 仅含仓设计性忽略的空库 `data/quick_scan/scan.sqlite`（建库零导入，可逆） | W02/W03 生产证据与 G2b 完整签收未闭；**等 owner 审阅 216 报告并给导入写授权**；不伪造verified/多挂牌/AnalysisSubject/历史区间正例。UI、W05和其他路径无新授权不写 |
 | QAbyLLM | **决定6 六批处置已执行并推送**（`64ec772..ad389f8`：F gitignore手术/路径脱敏/porter环境变量读取、B 验证+配置日志+全套测试、A RAG双模式核心、C 多Provider/插件/对话、D 文档工具、E 仪表板）；76 测试绿；13 处个人路径已改 `knowledge_base`；无git身份仓用一次性`-c`注入历史作者 | 残留 34 项"不建议提交"（pip重定向日志/样例数据/1字节临时/9个无引用工具/两份仪表板备份）维持现状，去留需另行指示；`simple_porter.py` 已入库（环境变量读取、可编译、零sk-）；**密钥轮换仍待owner服务商侧**（决定5=不换，残余风险owner承担）；环境补装了requirements声明依赖（langchain锁0.3线） |

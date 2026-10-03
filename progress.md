@@ -1527,3 +1527,14 @@
 - 提交推送：StockQA `7a40a98`（试点包 17 文件，llm_apis/logs 按仓策略排除）→ `a8650c0`/`cea6efc`/`1f04a8f`（整改）；IQS `51fbce1`（冻结钉版）。预算重算脚本 `_fix_budget.py` 入库（断言 11/20/20/41/388）。
 - **L01 → verified；M1 唯余 G1**（deps L01+S02+Q05 全满足已解锁）。owner 侧新增：MiniMax 控制台账单核对（本批 20 completions+41 searches）。
 - 本批 StockQA 写入=4 提交（试点+3 整改）；IQS 写入=2 提交（冻结+PWF）；StockWiki/rf/SID/QAbyLLM/company-wiki 零写入。
+
+
+## 2026-10-03 — G1 收口（Phase 58，M1 完成）
+
+- G1（M1 收口门）deps L01+S02+Q05 全 verified 后执行：read_first 两设计文档通读，三批离线证据（零网络、零源码改动、仅 `reviews/G1/`）——`g1_verify.py` 30 检查 0 失败 + 2 FINDING；当前快照 70 passed 0 skipped（Q05 边界+分数链）；live 套件 2 passed+4 环境门 skip 逐条入 log；非 live 0 skip/0 xfail。
+- 七 case（REV-01/02/03、LIVE-01/02、SC-01、LLM-08、REV-05）逐项实测判定：SC-01 用当前快照 `==8` 精确断言（非旧 receipt 放行，F3 记录 receipt-S02 快照 3/4 哈希过时）；LIVE-02 止损门未触发=负向条件未现；REV-05 材质矩阵（L01/S02/Q05 最新快照+真实搜索事件+轻资产约束+测试回执+最新审查）全齐。
+- 发现：F1（medium）结构化信息日期 20/20 null（散文有日期、字段空，契约语义=null→not-fresh）→ 绑定 L02 进入条件；F2（low）来源仅 URL 无标题/日期 → L02 冻结时决定；F3/F4 info 记录。
+- 独立复审 **approved**（`ses_f0022a928ffewW1KsB6lHQRJE9`）：脚本复跑字节一致、断言行号实测、6 文件 SHA-256 记档、两仓工作树与 allowed_changes 合规、acceptance-cases 零改动；2 条 non-blocking 观察记录不改已批文件。
+- 交付物 IQS `f7860fb` 推送（审查记录+60家范围说明+脚本+3 log），doc 门 89+53/valid/diff-check 绿。**M1 全部 18 卡 verified，M1 关闭。**
+- 排程现状：W04/W05 deps 已齐（StockWiki 新路径按 handoff 规则待精确授权）；Q13（M3）deps 齐（StockQA 全仓授权+施工报备制）；L02 仍等 W07/W08/W09+范围说明 F1/F2 前置。
+- 本批写入=IQS 2 提交（G1 包+PWF）；StockQA/StockWiki/其他外仓零写入。
