@@ -1599,3 +1599,12 @@
 - **W08 verified**（`9fa8a7e`）：`recovery-watch-1` 逐字移植（阈值全字面量、无配置旋钮）+ 公司简表 + 三入口，质量为空仍全展示、永不按质量删池、`reported_score` 永不晋升。**跨仓差分 9613 例/0 不匹配**（复用 IQS 测试类造合法 manifest + 缓存 `load_library`），复审补测 33/0 → 合计 **9646/0**；一轮 approved（info×3）。`check_all` 855 passed。
 - 依赖：**W09 已解锁** → 完成后 L02 只剩 7a/F1/F2 冻结条件。
 - 本批写入：StockWiki 2 提交（`cc7fc6b` CLI、`9fa8a7e` W08）；IQS 2 提交（`5a7e996` 证据、Phase 64）。
+
+
+## 2026-10-03 — Phase 65：W09 verified → M2 主链 W01–W09 齐
+
+- **W09 verified**（StockWiki `ac5a653`）：只读查询层五接口（capabilities/coverage/search/get_profiles/export）。冻结快照稳定排序分页（默认50/顶100、数据变化只提示刷新不重排）、四视图互不内含质量门、空态四分因+`scope=query_only`（绝不全市场宣称）、导出集哈希冻结（画像更新不改历史）、行级短依据+安全链接+`facts_available=False` 全程、ID-04 轻画像零目录创建。
+- 两轮审查 approved：首轮 F1（伪造 snapshot 骗假 total）+ F2（裸 AttributeError）两 MEDIUM、F3–F6 四 LOW → 全整改 → 二轮 62 项回归探针 0 失败 approved。SHA `271b1ba2…`/`4613839b…`；`check_all` 866 passed。
+- **M2 主链 W01–W09 全部 verified**（+W13）。L02 只剩自己的冻结条件（7a + §5 F1/F2 二选一），G2 只等 L02；W10 已解锁可并行。
+- 队列：7a → L02 冻结（live 先报成本+按 5 小时窗分片）→ L02 → G2；并行 W10。
+- 本批写入：StockWiki 1 提交（`ac5a653`）；IQS 1 提交（Phase 65）。

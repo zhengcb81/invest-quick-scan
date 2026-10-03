@@ -1402,3 +1402,12 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **移植类任务的"无旋钮"是可验证的**：审查用 AST 数了模块里的数值字面量（只有 3/4/6/7/8）+ 函数参数列表（无 cutoff 参数）+ 无 `os.environ`/`globals()` → 证明"没有偷偷变阈值的路"。这条检查法可复用于后续所有"消费既有政策"的卡。
 - **CLI 的校验边界要下到元素级**：我只验了 JSON 顶层是 list，元素是 int/str 时 `record.get` 和 sqlite 参数绑定直接吐 traceback（退出码 1）。**"named refusal" 的承诺必须覆盖到每一层输入形状**——顶层、元素、字段类型、取值类型四层都要有错误码。
 - **薄胶水挪层能救尺寸门**：`quick_scan_import.py` 因加 handler 冲到 626 行（>600），把 argparse 胶水挪进已授权的 `cli_parsers`（本就是 CLI 层的家）后回到 593——**模块只留纯逻辑，CLI 层放胶水**，顺带满足分层。
+
+
+## 2026-10-03 — W09 教训（形状校验要查类型、投影别漏字段、文档只写存在的能力）
+
+- **"形状校验"必须校验到元素类型，不能只查真值**：`if not snapshot.get("ordered_ids")` 让字符串 `"E0E1E2"` 蒙混过关，`total` 直接变成字符串长度6——**UI 会显示一个凭空捏造的总数**。规则：容器先判 `isinstance(list)`，再对每个元素判类型/非空；空列表是合法值（真值判断会误伤它），用"类型对但元素错"的分支区分。
+- **公共 API 的每个入参都要在门口洗干净**：`filters` 传成列表 → `_matches` 里 `.items()` 直接 AttributeError（裸 traceback 出了带错误码的契约）；`text` 传 int → `.lower()` 同理。规则：**入口一次校验 text/filters/page/page_size 的类型**，内部函数就可以放心假设形状——别把校验散在深层调用里。
+- **投影函数=字段清单的唯一真相**：step1 要求返回"模型"，我 `_project_row` 漏了 `model`，调用方给了值却被静默丢弃。规则：投影/序列化函数要对着 step 清单逐字段点名，新字段要配一条断言（不然永远发现不了"给了但没出"）。
+- **文档只写真存在的能力**：docstring 说"除非调用方指定 path 否则不写"——实际 `export_candidate_set` **根本没有 path 参数**，能力比文档更强但文档在撒谎。审查用 `inspect.signature` 一验就穿。规则：能力声明要么对着签名写，要么写"纯内存返回，持久化由调用方负责"。
+- **同义反复又差点混进来**：`== [...] [0:0] or True` 这种我写过两次了——收口前 grep ` or True` 应该变成肌肉记忆。
