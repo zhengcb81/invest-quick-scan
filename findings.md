@@ -1411,3 +1411,15 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **投影函数=字段清单的唯一真相**：step1 要求返回"模型"，我 `_project_row` 漏了 `model`，调用方给了值却被静默丢弃。规则：投影/序列化函数要对着 step 清单逐字段点名，新字段要配一条断言（不然永远发现不了"给了但没出"）。
 - **文档只写真存在的能力**：docstring 说"除非调用方指定 path 否则不写"——实际 `export_candidate_set` **根本没有 path 参数**，能力比文档更强但文档在撒谎。审查用 `inspect.signature` 一验就穿。规则：能力声明要么对着签名写，要么写"纯内存返回，持久化由调用方负责"。
 - **同义反复又差点混进来**：`== [...] [0:0] or True` 这种我写过两次了——收口前 grep ` or True` 应该变成肌肉记忆。
+
+
+## 2026-10-03 — 7a 教训（stash 致 CRLF、heredoc 第8踩、既有错误先证伪、精确断言是哨兵）
+
+- **`git stash` 循环会把工作区改写成 CRLF**（autocrlf checkout）：我为"证伪既有错误"做的 stash→run→pop 之后，6 个 src 文件全变 CRLF，后续多行锚点补丁全部失配。教训：**stash/pop 之后第一件事是检查并归一 EOL**（本仓 hook 是 `mixed-line-ending --fix=lf`，归一到 LF 即可），多行补丁前先 `assert '
+' not in t` 或按实测行尾拼接。
+- **heredoc `
+` 第8踩**：锚点里要匹配源码字符串的字面 `
+`（反斜杠+n 两个字符）时，heredoc 半量+三引号解释会把它变成真换行 → 失配。规则固化：**锚点里绝不放反斜杠转义**，改用不含转义的子串定位。
+- **"测试挂了"先证伪是不是自己弄的**：3 failed + 18 errors 一开始看着都像我干的——stash 到干净 HEAD 一跑，18 errors 照旧（`pytest_base_url` ScopeMismatch）= 既有环境问题；仓库钩子本来就带 `-p no:base_url` 所以平时不暴露。**跑测试要用"门真正会用的参数"**，并对疑似既有错误做 stash/clone 证伪再定责。
+- **精确字典断言是"加字段"的哨兵**：给回执加 `sources` 键，3 处 `web_search_calls == [...]` 立刻红，还有1处当时因 error 没跑到（等于埋雷）。规则：**凡给既有结构加字段，先 grep 所有 `== [` 精确断言点一次改齐**，并检查"当前跑不到的测试"里有没有同类断言。
+- **解析器校验过 ≠ 信封可信任**：信封只做正则校验，`2026-13-45` 能混进去——生产上只有 provider 生产者所以不可达，但**纵深防御要假设将来有别的生产者**：抽一个 `_real_iso_date`（正则+fromisoformat）给两条字段路径共用，聚合路径也只收过检的日期。

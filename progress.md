@@ -1608,3 +1608,12 @@
 - **M2 主链 W01–W09 全部 verified**（+W13）。L02 只剩自己的冻结条件（7a + §5 F1/F2 二选一），G2 只等 L02；W10 已解锁可并行。
 - 队列：7a → L02 冻结（live 先报成本+按 5 小时窗分片）→ L02 → G2；并行 W10。
 - 本批写入：StockWiki 1 提交（`ac5a653`）；IQS 1 提交（Phase 65）。
+
+
+## 2026-10-03 — Phase 66：决定7a 落地（信息日期+来源元数据）
+
+- **7a verified + 推送 StockQA `5fdcc2c`**：prompt 要求结构化 `information_as_of`（所引事实之日、非今天、拿不准给 null）→ 解析器只认真实日历日（坏日期 null+警告、不丢答案不编造）→ 双 provider metadata 透传 → 信封去掉硬编码 None；回执 `_extract_sources` 在四处接线采集 url+title+published_date，`source_urls` 逐字节兼容（5000 输入属性测试 0 差异）；`published_date` = 回执里恰一个日历有效日期否则 null。
+- 两轮独立审查 approved：首轮 2 LOW（信封只查正则、聚合不查格式）+1 INFO（修复 prompt 漏字段）→ 抽 `_real_iso_date` 统一校验+补字段+2 覆盖测试 → 二轮 31 探针全过。9 文件 SHA 记档。18 钩子全过（mypy/pylint≥9/bandit/pip-audit）。
+- 测试基线：新文件 12 条；`tests/unit -p no:base_url` 757；全量 848 passed / **18 errors 全为既有 `pytest_base_url` ScopeMismatch**（stash 在干净 HEAD 复现；仓库钩子自带 `-p no:base_url` 故不受影响）。
+- **G1 F1/F2 处置双双落地 → L02 范围说明 §5 进入条件齐**；L02 deps W07/W08/W09 也齐 → **只剩自身冻结**。
+- 本批写入：StockQA 1 提交推送（`5fdcc2c`）；IQS 1 提交（Phase 66）。
