@@ -899,4 +899,6 @@ Status: W04_verified; W05_verified; owner_decisions_2026-10-03_recorded
   6. **QAbyLLM 34 项 + SID 2 盲区：清理**（按 DWA 精确清单执行，先报备后删）。
   7. **信息日期/来源元数据：选 a=补采集**（实现结构化 information_as_of 与来源标题/日期采集=L02 冻结前置）。
   8. **W03 签收两点：确认**（quick_scan_store.py 基线登记 + 步骤5 reporting-scope 分离式满足——owner 签收闭合）。
-- [ ] 依赖更新：W06（deps W05✓C04✓S01✓）与 W13（deps W03✓W04✓C01✓）**已解锁**（决定5 授权在手）；L02 仍等 W07/W08/W09 + 冻结条件（7a 选 a）。
+- [x] **决定2 已执行**：rf 1985 条全删、工作树 0 未跟踪、HEAD 不变（`reviews/dirty-worktree-audits/2026-10-03-owner-decision-executions.md`）。
+- [x] **决定6 已执行**：QAbyLLM 34/34 删除（树全清）；SID html 已删、org_id 实测已==HEAD 无操作；SID 剩 2 条本地配置 M 不在范围。
+- [ ] 依赖更新：W06（deps W05✓C04✓S01✓）与 W13（deps W03✓W04✓C01✓）**已解锁**（决定5 授权在手）；L02 仍等 W07/W08/W09 + 冻结条件（7a 选 a）。剩余队列：G2b 样本搜索 agent、216 导入、W06/W13 施工、7a 信息日期实现。

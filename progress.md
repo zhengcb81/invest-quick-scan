@@ -1402,8 +1402,8 @@
 
 ## 2026-10-02 — DWA-04R 全面审查、缺陷修复与归因收口
 
-- 全面审查 DWA-04 新旧基线工件：发现 `2026-10-02-reaudit/DWA-04/snapshot-files.jsonl` 首版把 2 条 269/295 字符超长路径误标 `inaccessible`（Windows MAX_PATH 下普通 stat/open 失败）。以 `\?\` 扩展前缀补哈希，2 条 SHA-256 与 10-01 快照同路径逐字节一致（`1cbfb1a2ed055fa1…`/`0b2b9fdf710255e0…`）；manifest 现 416/416 hashed，snapshot.json 计数与 note 已同步。敏感误哈希检查 0 条。
-- 漂移归因收口（含独立 read-only agent 独立重推，三条主张全部 VERIFIED、数量闭合 0 差异）：3778 条 ` D` 全部仍在磁盘（`\?\` 全量 3778/3778）、361 条共有路径哈希 0 差异、25 条抽样 mtime/ctime 全部 ≤2026-09-21（Windows ctime=创建时间）、reflog 无恢复操作 → **幻影条目（快照捕获时可见性失败），非真实删除**。`??` 2334→404 精确闭合：1971 条 `.tmp-zr408-unit*`（当前 shell/icacls 均拒绝访问，mtime 08-18）+14 条 scratch 子目录（父目录拒绝访问）去留未知；349 条正常延续；55 条"新增"实为 09-27 创建、父链 mtime 停在 09-27 的漏视旧文件。等式 2334−1971−14+55=404。
+- 全面审查 DWA-04 新旧基线工件：发现 `2026-10-02-reaudit/DWA-04/snapshot-files.jsonl` 首版把 2 条 269/295 字符超长路径误标 `inaccessible`（Windows MAX_PATH 下普通 stat/open 失败）。以 `\\?\` 扩展前缀补哈希，2 条 SHA-256 与 10-01 快照同路径逐字节一致（`1cbfb1a2ed055fa1…`/`0b2b9fdf710255e0…`）；manifest 现 416/416 hashed，snapshot.json 计数与 note 已同步。敏感误哈希检查 0 条。
+- 漂移归因收口（含独立 read-only agent 独立重推，三条主张全部 VERIFIED、数量闭合 0 差异）：3778 条 ` D` 全部仍在磁盘（`\\?\` 全量 3778/3778）、361 条共有路径哈希 0 差异、25 条抽样 mtime/ctime 全部 ≤2026-09-21（Windows ctime=创建时间）、reflog 无恢复操作 → **幻影条目（快照捕获时可见性失败），非真实删除**。`??` 2334→404 精确闭合：1971 条 `.tmp-zr408-unit*`（当前 shell/icacls 均拒绝访问，mtime 08-18）+14 条 scratch 子目录（父目录拒绝访问）去留未知；349 条正常延续；55 条"新增"实为 09-27 创建、父链 mtime 停在 09-27 的漏视旧文件。等式 2334−1971−14+55=404。
 - 归因证据与修复记录写入 `2026-10-02-reaudit/DWA-04/coordinator-review-2026-10-02.md`；DWA-04R 任务卡"第一问"改为已收口摘要，复审范围收窄为当前 416 条逐路径盘点 + 两个拒绝访问组单列未知。保持未知不外推：不清理、不恢复、不提交 revenue-forecast 任何路径。
 - 目标仓库零写入；无网络/API/下载；独立复核 agent 只读。临时核查脚本在系统 TEMP。
 
@@ -1547,3 +1547,11 @@
 - **owner 八项决定原文记录**：①216 导入授权；②rf 1985 条删除；③MiniMax 账单核对通过（便宜），**运营事实：MiniMax 有 5 小时调用限制**，后续 live 批次派发须按窗口规划；④G2b 派 agent 找真实样本后 owner 授权签收；⑤StockWiki 后续全部卡一次性授权（每卡仍先写前报告）；⑥QAbyLLM 34+SID 2 清理（先报备精确清单）；⑦信息日期/来源元数据选 a=补采集实现；⑧W03 签收两点确认闭合。
 - 依赖刷新：W06、W13 解锁（决定5）；M2 主链 W06→W07→W08→W09→L02 可连续推进。
 - 本批写入：StockWiki 2 提交（本地）；IQS 1 提交（本 PWF）。
+
+
+## 2026-10-03 — 决定2/决定6 执行（1985 删除 + 34+2 清理）
+
+- **决定2 执行完毕**：rf 1985 条（1971 tmp + 14 scratch，与 DWA-04 分类逐项吻合）全删，工作树 **0 未跟踪**、HEAD `5319ee26` 不变、3 个已跟踪 sibling 完好。过程三步（首轮 heredoc 吞 `\\?\` 前缀零删除 → 二轮 ACL 只读拒 → icacls 授 F 后 0444 对象 chmod 重试）——全程 0 错收尾。诚实注记：10-02 的"2401 基线"删除时点无法复现，以实测 1985（=分类报告）为准。
+- **决定6 执行完毕**：QAbyLLM 34/34 删除（清单=DWA-03 行号映射，执行前与当前 `??` 集合逐路径相等），工作树全清；SID `logs/debug_page_300750.html` 磁盘删除（ignore 规则 Phase 54 已留），`org_id_validation_report.json` 实测已==HEAD（还原态满足，无操作）；SID 剩 2 条本地配置 M 不在范围不动。
+- 审计记录：`reviews/dirty-worktree-audits/2026-10-03-owner-decision-executions.md`（前后状态、命令、失败与修复全录）。
+- 本批写入：IQS 1 提交（报告+PWF）；rf/QAbyLLM/SID 三仓零提交（只删未跟踪/被忽略物）。
