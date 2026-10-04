@@ -1661,3 +1661,14 @@
 - **C 类草案只读干跑 PASS（零写入）**：Alphabet consolidated subject（primary=真实 verified 实体、anchor=null、coverage=not_enumerated、evidence=批准 SEC10-K、scope_as_of=FY2025 期末），`perimeter_sha256=bf0bdda6…`，payload 存 `pilot_runs/g2b_c_alphabet_2026-10-04/alphabet_subject_draft.json`，**provenance=DRAFT awaiting owner sign-off**（兑现"先起草成员清单给你签字"的承诺）。
 - **等 owner 签 C 草案**；L02 冻结万事俱备（分层+7a+deps 全齐）。
 - 本批写入：StockWiki 1 提交（`b25a34e`）+ 草案文件（StockQA 运行目录，不入库）；IQS 1 提交（Phase 71）。
+
+
+## 2026-10-04 — Phase 72：C 签收入库 + 两表联网取回
+
+- **C 类真实入库**（owner「签收」）：`analysis-subject-import` → `analysis_subjects.sqlite` 1 subject（consolidated/not_enumerated/anchor=null）+1 verified 回执（SEC 10-K），幂等重放 unchanged；decision_ref 带签收；provenance 被 F8 正确拒后移 sidecar。**G2b A/B(US)/C 三类均有实物**。
+- **owner 授权 LLM agent 联网取表（惯例突破，明示授权）**：两 agent 并行取回——
+  - **A/H 桥草稿**：122 行全 high（cninfo A股年报双代码披露，HTTPS+sha256+UTC 全溯源；12/13 优先、122/151 全宇宙；HKEX 前缀交叉核对 122/122）；**纠正我 brief 的4处 H 代码**（02601/01880/02899/02359）；002142 证伪；issuer_id 122/122 源内无（待补或按现态签）。
+  - **D 官方登记草稿**：217 行（CN210/US5/HK2）、207 结构化+10 官方散文、**池覆盖 98.61%**、listed215+delisted2、SSE/SZSE/cninfo/SEC/HKEXnews 全带 sha256；对59种子交叉核对抓出**2 条种子假阳性**（002747 申请受理日、000547 串台）；3 缺口（北交所/GENB/NVO）。
+- 两表均 `closes=false` **待 owner 签收**（各自附签收动作清单）。
+- L02 获批"2600/5200 内直接跑"。
+- 本批写入：StockWiki 真实两库写入（C，authorized）+ IQS 3 草稿文件 + Phase 72 PWF。
