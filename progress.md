@@ -1653,3 +1653,11 @@
 - **D 卡保持 open**：关闭唯一路径=owner 交交易所官方登记（evidence-hunt §D 字段规格），到货交叉核对再签。
 - 中途教训：文档级实体强挂产生过误归属（美团年报里理想汽车上市→挂错美团）→ 改为句内确认制；heredoc 转义第10踩 → 最终整文件重写。
 - 本批写入：IQS 3 文件（提取器+数据+报告）+ Phase 70 PWF。
+
+
+## 2026-10-04 — Phase 71：G2b-C 批次 + C 类草案
+
+- **G2b-C 四轮 approved + 提交 StockWiki `b25a34e`**：AnalysisSubject 存储（自有 `analysis_subjects.sqlite`）+ perimeter 回执读取器 + `analysis-subject-import` CLI。`perimeter_sha256` 移植 IQS `contract_validation` 并用离线权威向量钉死（`2aa1d799…`/`a35118d8…` 双侧复算一致）；单事务（同库）；schema 条件全对齐（consolidated anchor=null 为 R1 的 HIGH 整改）；成员窗口完整 UTC 半开区间 9/9 与 IQS 一致（R2 N1）；空 scope_as_of 具名拒绝（R3 N2）；不可哈希枚举具名化；回执换字节=conflict；append-only；IQS 消费函数交叉验证通过。`check_all` 894 passed。
+- **C 类草案只读干跑 PASS（零写入）**：Alphabet consolidated subject（primary=真实 verified 实体、anchor=null、coverage=not_enumerated、evidence=批准 SEC10-K、scope_as_of=FY2025 期末），`perimeter_sha256=bf0bdda6…`，payload 存 `pilot_runs/g2b_c_alphabet_2026-10-04/alphabet_subject_draft.json`，**provenance=DRAFT awaiting owner sign-off**（兑现"先起草成员清单给你签字"的承诺）。
+- **等 owner 签 C 草案**；L02 冻结万事俱备（分层+7a+deps 全齐）。
+- 本批写入：StockWiki 1 提交（`b25a34e`）+ 草案文件（StockQA 运行目录，不入库）；IQS 1 提交（Phase 71）。

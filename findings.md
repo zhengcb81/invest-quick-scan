@@ -1456,3 +1456,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **heredoc 锚点禁带反斜杠（第10踩，最终教训）**：含 `
 `/`\s` 的正则锚点在 heredoc 半量+三引号双重解释下必失配，行级 splice 也在缓冲输出里看不出死因。**收尾动作=直接整文件重写（Write 工具）**，不再做多段补丁；这条与 findings 前面第8、9踩合并成一句：正则/二进制/多段锚点 → 一律 Write 整文件。
 - **种子的诚实定位**：`confidence=transitional_pattern_unreviewed` + `closes_category_D=false` + `review_status=unreviewed` 三件套写进每一行——种子只配"交叉核对"资格，官方登记表没来 D 就不关。
+
+
+## 2026-10-04 — G2b-C 教训（schema 条件要整块读完、可空字段的第二重检查）
+
+- **schema 条件块必须整块读完再写校验**：R1 的 HIGH 是我把 consolidated 的 `then` 只读到一半（输出被截断处），凭推测写了"anchor 必须属发行人派生挂牌"——实际 schema 要求 `anchor_listing_id: {type: "null"}`（方向完全相反），连带 coverage 枚举也错。教训：**`allOf`/`if-then` 条件块要完整 dump 再实现**，并用对方的参考校验器（IQS `validate_analysis_subject`）做双向用例对拍——R2 的6例对拍一次就全绿。
+- **"可空"辅助函数套在"必填"字段上=埋雷**：`_utc()` 为 membership 的 valid_from/to 设计成可空（None 直接放行），但同一个函数被用于 schema 必填的 `scope_as_of` → None 溜到 `fromisoformat(str(None))` 裸崩（N2，且前两轮分别是 TypeError 和静默接受——同一洞换了三种表现）。教训：**必填字段的 None 要在调用可空辅助之前显式拒**，或给辅助加 `required=True` 参数；每种畸形（None/错类型/错格式）都要有一条具名探针。
+- **同一失败类要一次扫完一类**：F9（不可哈希枚举）修完后我没想到 N2 是同类（畸形输入→裸异常→exit1）——审查员补上了。规则：修"named refusal"类缺陷时，**枚举 schema 全部字段 × {None, 错类型, 不可哈希}** 做一次矩阵探针，而不是只修报告里那一个键。
+- **哈希差分向量是移植类任务的定海神针**：离线用对方权威函数算两个向量写死在测试里 → 后续每轮整改都能秒验"没跑偏"，比文字比对强一个量级。
