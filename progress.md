@@ -1644,3 +1644,12 @@
 - **Alphabet 真实入库成功**：4 证券（GOOG/GOOGL ordinary、GOOGM/GOOGN preferred）、MIC=XNAS、verified 实体 + `IVR_663efa01…` 回执（coverage 4/4、批准的 SEC 10-K evidence_ref、decision_ref 持久化、adr_ratios={} 诚实空）。首次被写前门拒绝（`IVR_` 含连字符，exit2 零写入）→ 修正 → exit0 → 库内复验 1/4/4/1 → 幂等重放同回执不变。证据 `G2b-alphabet-sample-2026-10-04.md`。
 - **G2b 效果**：A(美股)+B(美股多挂牌) 从 0 READY → 有实物；C/D 待；卡保持 open。
 - 本批写入：StockWiki 1 提交（`f701909`）+ 真实两库写入（authorized）；IQS 1 提交（Phase 69 + 证据文件）。
+
+
+## 2026-10-04 — Phase 70：G2b D 类过渡播种
+
+- **D 两步走第①步落地**：`G2b-D-seed-extract.py`（可复跑、mode=ro）+ 种子数据59行（listed58/delisted1、22文档）+ 播种报告。三重负门：法律实体噪音/财政报告噪音（17命中——散文抽日期最大假阳性源）/无上市动词；**归属诚实**：仅窗口含实体名才挂 entity（2条 sentence_confirmed，57条 document_level_unverified，绝不强挂）；每行 `closes_category_D=false`。
+- 真例抽检：金山雲「上市日期」=2022-12-30 定义式、贝壳纳斯达克2020-05-08、英方股份2017-12摘牌（全库唯一退市）。docling 表格路径仅1条（非规模来源）。
+- **D 卡保持 open**：关闭唯一路径=owner 交交易所官方登记（evidence-hunt §D 字段规格），到货交叉核对再签。
+- 中途教训：文档级实体强挂产生过误归属（美团年报里理想汽车上市→挂错美团）→ 改为句内确认制；heredoc 转义第10踩 → 最终整文件重写。
+- 本批写入：IQS 3 文件（提取器+数据+报告）+ Phase 70 PWF。

@@ -1447,3 +1447,12 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **"派生字段"和"owner 证明字段"必须分清**：coverage/属性映射从 store 投影注入（机械事实），evidence_ref/same_legal_issuer/decision_ref 必须来自 owner payload（证明）。审查的诚实性核心=派生只在缺失时注入、owner 提供的值送去校验而非改写——错值让 store 报错，绝不静默修正。
 - **heredoc 又写进真空字节**（第9踩，` ` 直接进源文件导致 SyntaxError: null bytes）：写含二进制字面量的测试时改用 `bytes([0xff,0xfe,0x00])` 构造，或干脆用 Write 工具。修复方式=字节级读改写整行。
 - **回执无事件 = active**：`active_receipt_id` 的语义是"没有生命周期事件才算有效"（事件只在 retire/supersede/revoke 时追加）——新回执 events=[] 是正确状态，别误当成漏写事件。
+
+
+## 2026-09-30 — D 播种与 heredoc 反模式收尾
+
+- **散文抽日期=三重负门才够用**：单靠"日期+上市"邻接会把 `截至X止年度…上市規則` 全抓进来。必须叠加①法律实体词黑名单②**财政/报告词黑名单**（截至/止年度/年度報告/公允價值…）③窗口内必须出现上市/摘牌动词。过滤计数要进产物 stats（本例财噪音17、实体噪音17被剔）——**可审计的过滤比行数更重要**。
+- **跨主体误挂是散文抽取的头号风险**：年报里"理想汽车於2021-08-12上市"出现在美团年报中，文档级实体 join 会把它挂成美团的上市日。规则：**只有匹配窗口自身点名了文档实体才允许填 entity_names**，否则留空+`document_level_unverified`——宁可少归属，不可错归属。
+- **heredoc 锚点禁带反斜杠（第10踩，最终教训）**：含 `
+`/`\s` 的正则锚点在 heredoc 半量+三引号双重解释下必失配，行级 splice 也在缓冲输出里看不出死因。**收尾动作=直接整文件重写（Write 工具）**，不再做多段补丁；这条与 findings 前面第8、9踩合并成一句：正则/二进制/多段锚点 → 一律 Write 整文件。
+- **种子的诚实定位**：`confidence=transitional_pattern_unreviewed` + `closes_category_D=false` + `review_status=unreviewed` 三件套写进每一行——种子只配"交叉核对"资格，官方登记表没来 D 就不关。
