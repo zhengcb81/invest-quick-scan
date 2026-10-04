@@ -1635,3 +1635,12 @@
 - **事故记档**：runner 输出路径未分相 → HK 覆盖 11 份分类回执 → 恢复（`out/<phase>/`、11 家重跑全成、预算+11 修正、覆盖文件保留）。
 - 交付：`stratification-final.md/json`（四维分层表）、`hk-discovery-results.json`、`budget-final.json`、run-log 台账、freeze 两修正案。**等 owner 一次性签收**。
 - 本批写入：StockQA 运行目录（pilot_runs/b2a_2026-10-03/，llm_apis.json 冻结副本按仓策略不入库）；IQS 冻结修正案；IQS PWF（Phase 68）。
+
+
+## 2026-10-04 — Phase 69：G2b-A 导入路径 + Alphabet 首个真实样本
+
+- **G2b-A 批次两轮 approved + 提交 StockWiki `f701909`**：`entity-import` 两阶段诚实导入（跨两库不假装原子、写前门全挡、派生≠证明、幂等）。首轮 3 项（kind/state 绕过、UnicodeDecodeError 漏出、docstring 夸大）整改+4 测试 → 二轮 approved，SHA `832b391d…`/`b3fe4941…`/`1f5efb28…`，check_all 883。
+- **owner 两决定入档**：A/H 先跳过（美股+Alphabet 先签）、D 两步走（我先播种）。
+- **Alphabet 真实入库成功**：4 证券（GOOG/GOOGL ordinary、GOOGM/GOOGN preferred）、MIC=XNAS、verified 实体 + `IVR_663efa01…` 回执（coverage 4/4、批准的 SEC 10-K evidence_ref、decision_ref 持久化、adr_ratios={} 诚实空）。首次被写前门拒绝（`IVR_` 含连字符，exit2 零写入）→ 修正 → exit0 → 库内复验 1/4/4/1 → 幂等重放同回执不变。证据 `G2b-alphabet-sample-2026-10-04.md`。
+- **G2b 效果**：A(美股)+B(美股多挂牌) 从 0 READY → 有实物；C/D 待；卡保持 open。
+- 本批写入：StockWiki 1 提交（`f701909`）+ 真实两库写入（authorized）；IQS 1 提交（Phase 69 + 证据文件）。

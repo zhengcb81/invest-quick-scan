@@ -1439,3 +1439,11 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **同名输出文件跨阶段必须分相**：runner 用 `<slug>.json` 不带 phase → HK 阶段直接覆盖了 11 份分类回执（且 budget 因此"不涨"反而成了发现信号）。规则：**输出路径从第一天就带命名空间**（`out/<phase>/`）；**预算数字不随执行增长=立刻停下查覆盖**——这次就是靠这个异常识破的。
 - **被覆盖/被拒的回执也是钱**：预算账必须 (a) 递归扫所有隔离目录 `rejected_*/`，(b) 对无法找回的回执做**显式调整项**（+11 请求/+21 搜索，标注估算与依据）。"文件里数不到"不等于"没花"。
 - **模型对题面形态的合规率必须冒烟实测**：嵌套 JSON 在 description 里只有 67% 合规；改成标签纯文本行后 114→216 全通。**大批量前先跑 2 家冒烟+看失败模式（日志 WARNING 聚类），比事后返工便宜一个量级。**
+
+
+## 2026-10-04 — G2b-A 教训（ID 字符集契约、派生与证明的边界、真空字节）
+
+- **ID 字符集是写前门的第一道考题**：我用 `uuid4().hex` 的兄弟——带连字符的 `str(uuid4())` 构造 `IVR_`，而契约是 `^IVR_[A-Za-z0-9_]+$`（无连字符）→ 真实导入被写前门 exit2 拒绝（零写入，门是对的）。教训：**构造外部 ID 前先把契约正则抄下来当构造器的断言**，测试夹具（用 hex）已经示范了正确写法，真实构建却没对齐。
+- **"派生字段"和"owner 证明字段"必须分清**：coverage/属性映射从 store 投影注入（机械事实），evidence_ref/same_legal_issuer/decision_ref 必须来自 owner payload（证明）。审查的诚实性核心=派生只在缺失时注入、owner 提供的值送去校验而非改写——错值让 store 报错，绝不静默修正。
+- **heredoc 又写进真空字节**（第9踩，` ` 直接进源文件导致 SyntaxError: null bytes）：写含二进制字面量的测试时改用 `bytes([0xff,0xfe,0x00])` 构造，或干脆用 Write 工具。修复方式=字节级读改写整行。
+- **回执无事件 = active**：`active_receipt_id` 的语义是"没有生命周期事件才算有效"（事件只在 retire/supersede/revoke 时追加）——新回执 events=[] 是正确状态，别误当成漏写事件。
