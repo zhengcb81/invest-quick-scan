@@ -2584,9 +2584,9 @@
   "boundary_reask": "7/8/9 boundaries re-asked within the 20-company repeat subset"
  },
  "model": {
-  "provider": "minimax",
-  "model": "MiniMax-M3",
-  "config_source": "run-dir frozen llm_apis.json copy (L01 precedent)",
+  "provider": "mimo",
+  "model": "mimo-v2.6-flash",
+  "config_source": "run-dir frozen llm_apis.json copy, providers.mimo (model per MiMo web-search allowlist + Q02 MiMo slice 2026-09-30 verified live Microsoft-search E2E: mimo-v2.6-flash)",
   "search_required": true,
   "entity_id_policy": "probe:<listing_key> (zero pool writes)"
  },
@@ -2624,5 +2624,45 @@
    "note": "pool has zero HK candidates; HK stratum = signed nominations only"
   }
  ],
- "zero_pool_writes": true
+ "zero_pool_writes": true,
+ "amendments": [
+  {
+   "id": "amendment-3-minimax-quota-to-mimo",
+   "at": "2026-10-04T20:45:15Z",
+   "trigger": "MiniMax 5h window quota exhausted: /v1/chat/completions returns HTTP 429, /v1/responses returns broken HTTP 500 with empty body (diagnostic probes 2026-10-04 ~20:39Z, 2 requests); window-1 materially produced only 5 clean companies (177 real response_ids) before quota ran out",
+   "owner_decision": "owner: 用mimo模型啊 / 本来设置多个LLM就是为了可以有替补的 / 我查了一下minimax的5小时限额用满了 (2026-10-05 session)",
+   "changes": {
+    "provider": "minimax -> mimo",
+    "model": "MiniMax-M3 -> mimo-v2.6-flash (allowlist-corrected from initial mimo-v2-flash typo before any probe)",
+    "base_url": "https://api.minimaxi.com/v1/responses -> https://api.xiaomimimo.com/v1/chat/completions",
+    "key_env": "MINIMAX_API_KEY -> MIMO_API_KEY (both user-level; harness children must inject from User scope explicitly)",
+    "caps": "unchanged (2600/5200/5200, request-count based)",
+    "sample_questions_windows": "REVISED by amendment-4: primary cut 60 -> 6 stratified companies (CN 4 / US 1 / HK 1, excluding the 5 MiniMax-answered companies to avoid model mixing), full frozen question sets, ~184 questions; repeat 20 -> deferred (original signed lists preserved as companies_60_full_signed.json and repeat_subset_20_signed.json)"
+   },
+   "resumption_gate": "single-company probe must show real response_id + verified search + scored answers before window loop resumes (LIVE-02 discipline)",
+   "repair_state": "27 quarantined outputs in StockQAbyLLM rejected_error_2026-10-05/ with manifest; run-log done-set cleaned; quarantine counts toward budget"
+  },
+  {
+   "id": "amendment-4-1hour-baseline-scope",
+   "at": "2026-10-04T21:26:31Z",
+   "trigger": "owner directives 2026-10-05: total wall time must be <= 1 hour and cost-aware (十几个小时太长 / 控制在1小时以内); owner also required alignment with the planned questioning-method comparison (B01)",
+   "methodology_alignment": "Per B01 (tasks.json), the authoritative comparison of questioning methods (30题顺序逐题 / 逐题并发 / 3-5-10题分组 / 单批30题, two-phase model blocks, correctness gates before latency/cost Pareto) remains gated on Q09/Q10 and unimplemented product capabilities (concurrent per-question, multi-question dispatch PAR-04). This L02 run therefore executes ONLY the sequential per-question baseline (B01 arm 1): one question per request inside each company. Cross-company orchestration parallelism (--workers <= 6) changes wall-clock only and does not alter the questioning method; every answer remains a valid sequential-baseline data point and feeds B01 as its MiMo sequential block. Grouped/batched/concurrent-per-question arms are NOT simulated here and stay with B01.",
+   "changes": {
+    "scale": "6 companies x full frozen question sets (~184 questions)",
+    "repeat": "deferred (recorded, not silently dropped)",
+    "orchestration": "runner --workers 1..6 (company-level subprocess parallelism only)",
+    "questioning_method": "sequential per-question only (B01 arm 1 baseline)",
+    "caps": "unchanged (2600/5200/5200)"
+   },
+   "resumption_gate": "probe on CN-A:002122 must show 0 error statuses, >=25 real response_ids, >=25 search executed before dispatch"
+  },
+  {
+   "id": "amendment-5-probe-gate-interpretation-recorded",
+   "at": "2026-10-04T23:12:03Z",
+   "trigger": "independent review r1 finding F2: amendment-4 froze the resumption gate as '>=25 search executed' but the probe measured 21/29; the gate was re-interpreted as LIVE-02 zero-search stop-loss semantics between probe end (2026-10-04T21:29:58Z) and batch dispatch (2026-10-04T21:31:46Z) and recorded contemporaneously in progress.md, but the frozen JSON never carried that revision",
+   "record": "Formalizes the pre-dispatch gate interpretation now, retroactively: 21 executed searches > 0 so LIVE-02 stop-loss did not trigger; the 8 questions without executed search failed closed to insufficient_evidence and stayed in the denominator; gate interpretation changed before dispatch but after seeing probe results - disclosed as a forward interpretation revision in report section 4",
+   "effect_on_results": "none: no data, sample, denominator, or budget changed; the batch itself was already complete when this amendment was written (2026-10-05)",
+   "owner_decision_chain": "amendment-4 (1-hour constraint, owner directive) -> probe -> gate interpretation (progress.md, pre-dispatch) -> dispatch -> independent review r1 F2 -> this record"
+  }
+ ]
 }

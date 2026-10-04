@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>invest-quick-scan 项目整体进展流程图 — 2026-10-05</title>
+<style>
+  body { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; background:#f7f8fa; margin:0; padding:24px; }
+  h1 { font-size:20px; color:#1a1a2e; }
+  .wrap { background:#fff; border-radius:12px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+  .legend { font-size:13px; color:#444; margin:8px 0 4px 8px; }
+  .sw { display:inline-block; width:14px; height:14px; border-radius:3px; vertical-align:-2px; margin:0 4px 0 14px; }
+</style>
+</head>
+<body>
+<h1>invest-quick-scan · 大股票池快扫基础设施 — 整体进展（截至 2026-10-05 22:40）</h1>
+<div class="wrap">
+<div class="legend">
+  <span class="sw" style="background:#2e9e5b"></span>verified 完成
+  <span class="sw" style="background:#2f6fed"></span>进行中
+  <span class="sw" style="background:#e8912d"></span>已授权排队
+  <span class="sw" style="background:#9aa3ad"></span>阻塞/未开始
+</div>
+<svg width="1060" height="1460" viewBox="0 0 1060 1460" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#555"/></marker>
+  </defs>
+
+  <!-- ===== M0 ===== -->
+  <rect x="330" y="20" width="400" height="86" rx="10" fill="#e6f6ec" stroke="#2e9e5b" stroke-width="2"/>
+  <text x="530" y="48" text-anchor="middle" font-size="16" font-weight="bold" fill="#14532d">M0 跨项目契约与基线 — 完成</text>
+  <text x="530" y="70" text-anchor="middle" font-size="12" fill="#3f6212">P00 基线 · P01 回执 · C01–C07 身份/指标/评分/时效/模型/交换/部署</text>
+  <text x="530" y="88" text-anchor="middle" font-size="12" fill="#3f6212">G0 独立审查 ✓（本地契约范围）· 三层身份 Entity/Security/Listing</text>
+  <line x1="530" y1="106" x2="530" y2="136" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ===== M1 ===== -->
+  <rect x="330" y="140" width="400" height="100" rx="10" fill="#e6f6ec" stroke="#2e9e5b" stroke-width="2"/>
+  <text x="530" y="166" text-anchor="middle" font-size="16" font-weight="bold" fill="#14532d">M1 评分闭环 — 完成（18 卡 verified，G1 ✓）</text>
+  <text x="530" y="186" text-anchor="middle" font-size="12" fill="#3f6212">题库 48 模块/222 评分题 + 61 事实题 · 指标映射 · 三值规则引擎</text>
+  <text x="530" y="204" text-anchor="middle" font-size="12" fill="#3f6212">Q02/Q03 MiniMax 真实搜索 live E2E ✓ · Q05 内容边界 ✓ · S01–S10 契约下沉</text>
+  <text x="530" y="222" text-anchor="middle" font-size="12" fill="#3f6212">L01 十家真实搜索探针 ✓（20 请求/41 搜索/388 源）</text>
+  <line x1="530" y1="240" x2="530" y2="270" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ===== M2 ===== -->
+  <rect x="330" y="274" width="400" height="116" rx="10" fill="#e6f6ec" stroke="#2e9e5b" stroke-width="2"/>
+  <text x="530" y="300" text-anchor="middle" font-size="16" font-weight="bold" fill="#14532d">M2 权威存储主链 — 完成（W01–W13 verified）</text>
+  <text x="530" y="320" text-anchor="middle" font-size="12" fill="#3f6212">SQLite 身份库 v4 · 216 候选导入 staging · 新鲜度/缺口计划器</text>
+  <text x="530" y="338" text-anchor="middle" font-size="12" fill="#3f6212">三值规则筛选 · 恢复观察 · 只读查询/冻结导出 · 导入 ACK · 维护准入</text>
+  <text x="530" y="356" text-anchor="middle" font-size="12" fill="#3f6212">B2a：216 家四维分类 + H 股发现 ✓（owner 签收）</text>
+  <text x="530" y="374" text-anchor="middle" font-size="12" fill="#3f6212">G2b 身份证据：A 实体✓ B 美股CIK✓ C 分析主体✓ D 官方登记✓</text>
+  <line x1="530" y1="390" x2="530" y2="420" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ===== L02 running ===== -->
+  <rect x="330" y="424" width="400" height="100" rx="10" fill="#e8f0fe" stroke="#2f6fed" stroke-width="3"/>
+  <text x="530" y="450" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e3a8a">L02 试点执行 — 进行中（MiMo 链路）</text>
+  <text x="530" y="470" text-anchor="middle" font-size="12" fill="#1e40af">6 家分层样本 × 全套题 ≈184 题 · 逐题基线（B01 臂①）· 6 路并行</text>
+  <text x="530" y="488" text-anchor="middle" font-size="12" fill="#1e40af">探针 ✓（29 题 0 error，21/29 搜索执行）· 批处理 22:27Z 起，预计 ~23:10 收尾</text>
+  <text x="530" y="506" text-anchor="middle" font-size="12" fill="#1e40af">amendment-3/4：MiniMax 5h 窗耗尽→MiMo；≤1h 约束→样本缩减（原 60 家归档保留）</text>
+  <line x1="530" y1="524" x2="530" y2="554" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ===== L02 report + G2 ===== -->
+  <rect x="330" y="558" width="400" height="100" rx="10" fill="#e8f0fe" stroke="#2f6fed" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="530" y="584" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e3a8a">L02 校准报告 + 独立审查 → G2 门（下一步）</text>
+  <text x="530" y="604" text-anchor="middle" font-size="12" fill="#1e40af">LIVE-03 分层覆盖/unknown 报告 · LIVE-04 分母完整性（缩减在开跑前冻结）</text>
+  <text x="530" y="622" text-anchor="middle" font-size="12" fill="#1e40af">G2 cases：REV-01/02/03 · LIVE-04 · UNI-05 · SC-07 · REV-06</text>
+  <text x="530" y="640" text-anchor="middle" font-size="12" fill="#1e40af">报告骨架已就位，数据落地即回填</text>
+  <line x1="530" y1="658" x2="530" y2="688" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ===== M3 ===== -->
+  <rect x="330" y="692" width="400" height="118" rx="10" fill="#eef1f4" stroke="#9aa3ad" stroke-width="2"/>
+  <text x="530" y="718" text-anchor="middle" font-size="16" font-weight="bold" fill="#374151">M3 方法对照与规模试点 — 未开始</text>
+  <text x="530" y="738" text-anchor="middle" font-size="12" fill="#4b5563">B01 提问方法对照（顺序/并发逐题 vs 3/5/10 分组 vs 单批30题）</text>
+  <text x="530" y="756" text-anchor="middle" font-size="12" fill="#4b5563">阻塞：Q09 预算账本 partial · Q10 outbox partial · PAR-04 多题派发未实现</text>
+  <text x="530" y="774" text-anchor="middle" font-size="12" fill="#4b5563">正确性门槛先行 → 时延/费用 Pareto → G3 审查定策略</text>
+  <text x="530" y="792" text-anchor="middle" font-size="12" fill="#4b5563">L03：200 家可靠性/成本试点（采用 B01 胜出策略或保留逐题）</text>
+  <line x1="530" y1="810" x2="530" y2="840" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ===== M4-M6 ===== -->
+  <rect x="330" y="844" width="400" height="100" rx="10" fill="#eef1f4" stroke="#9aa3ad" stroke-width="2"/>
+  <text x="530" y="870" text-anchor="middle" font-size="16" font-weight="bold" fill="#374151">M4–M6 规模化与消费联动 — 未开始</text>
+  <text x="530" y="890" text-anchor="middle" font-size="12" fill="#4b5563">61 事实题采集 · 产业链语义检索 · 结果 UI（U01–U03）</text>
+  <text x="530" y="908" text-anchor="middle" font-size="12" fill="#4b5563">白名单/低谷观察运营 · ~2,000 家扩容（O01，owner：不急）</text>
+  <text x="530" y="926" text-anchor="middle" font-size="12" fill="#4b5563">G4 事实消费者 · G5 评分扩容 · G6 终审</text>
+
+  <!-- ===== A/H bridge branch (queue) ===== -->
+  <rect x="790" y="430" width="240" height="118" rx="10" fill="#fdf3e3" stroke="#e8912d" stroke-width="2"/>
+  <text x="910" y="456" text-anchor="middle" font-size="14" font-weight="bold" fill="#7c4a03">A/H 桥导入批次（队列③）</text>
+  <text x="910" y="476" text-anchor="middle" font-size="11.5" fill="#92400e">122 行 owner 已签收（SIGNED）</text>
+  <text x="910" y="494" text-anchor="middle" font-size="11.5" fill="#92400e">施工卡已写（写前报告纪律）</text>
+  <text x="910" y="512" text-anchor="middle" font-size="11.5" fill="#92400e">桥证据表 v5 + 导入 + 只读核验</text>
+  <text x="910" y="530" text-anchor="middle" font-size="11.5" fill="#92400e">G2b 最后实物 → G2b 关闭</text>
+  <path d="M 730 470 C 760 470 760 480 786 484" fill="none" stroke="#e8912d" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+
+  <!-- ===== waiting owner ===== -->
+  <rect x="20" y="430" width="250" height="100" rx="10" fill="#f3f4f6" stroke="#9aa3ad" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="145" y="456" text-anchor="middle" font-size="14" font-weight="bold" fill="#374151">等 owner（不阻塞）</text>
+  <text x="145" y="476" text-anchor="middle" font-size="11.5" fill="#4b5563">MiniMax/MiMo 控制台对账</text>
+  <text x="145" y="494" text-anchor="middle" font-size="11.5" fill="#4b5563">（B2a 406/771 + L02 本批）</text>
+  <text x="145" y="512" text-anchor="middle" font-size="11.5" fill="#4b5563">QAbyLLM 密钥轮换（服务商侧）</text>
+  <path d="M 270 480 C 300 480 300 470 326 470" fill="none" stroke="#9aa3ad" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- ===== deep research handoff ===== -->
+  <rect x="790" y="600" width="240" height="100" rx="10" fill="#f3f4f6" stroke="#9aa3ad" stroke-width="1.5"/>
+  <text x="910" y="626" text-anchor="middle" font-size="14" font-weight="bold" fill="#374151">深研交接（只读消费）</text>
+  <text x="910" y="646" text-anchor="middle" font-size="11.5" fill="#4b5563">revenue-forecast / invest-*</text>
+  <text x="910" y="664" text-anchor="middle" font-size="11.5" fill="#4b5563">筛选线索 → 正式研究按各自</text>
+  <text x="910" y="682" text-anchor="middle" font-size="11.5" fill="#4b5563">来源资格流程独立验收</text>
+  <path d="M 730 610 C 760 610 760 630 786 636" fill="none" stroke="#9aa3ad" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+
+  <!-- ===== stats bar ===== -->
+  <rect x="60" y="990" width="940" height="150" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="530" y="1020" text-anchor="middle" font-size="15" font-weight="bold" fill="#0f172a">关键数字</text>
+  <text x="100" y="1048" font-size="12.5" fill="#334155">· 任务计划 1.10.x：107 卡 / 340+ 验收场景 / 55 约束 · M0–M2 主链 + 两大门（G0/G1）约 40 卡 verified</text>
+  <text x="100" y="1072" font-size="12.5" fill="#334155">· 首批股票池：216 挂牌候选已入 staging 库（0 实体/0 成员，scan_eligible=0，等身份核验晋级）</text>
+  <text x="100" y="1096" font-size="12.5" fill="#334155">· 真实 live 证据：Q02 MiniMax E2E ✓ · L01 十家探针 ✓ · B2a 216 分类（406 请求/771 搜索）✓ · L02 进行中</text>
+  <text x="100" y="1120" font-size="12.5" fill="#334155">· 纪律：每批写前报告 + 独立审查（两轮制）+ live 前成本声明 + 失败 fail-closed 不静默重派</text>
+
+  <!-- ===== today incidents ===== -->
+  <rect x="60" y="1160" width="940" height="140" rx="10" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5"/>
+  <text x="530" y="1190" text-anchor="middle" font-size="15" font-weight="bold" fill="#7c2d12">今日（10-04/05）执行插曲与修复 — 已全部闭环</text>
+  <text x="100" y="1218" font-size="12.5" fill="#9a3412">1. 会话切换丢失 API key + 沙箱范围变化 → 两次窗口失败（27 份废产出）→ 隔离归档 + done-set 修复，损失 ≈0 费用</text>
+  <text x="100" y="1242" font-size="12.5" fill="#9a3412">2. 根因定位：MINIMAX_API_KEY 在用户级环境变量（子进程需显式注入）；MIMO_* 是小米 MiMo 专用</text>
+  <text x="100" y="1266" font-size="12.5" fill="#9a3412">3. MiniMax 5h 窗耗尽（429/500 实锤）→ owner 决策切 MiMo → 配置 BOM/模型名两处修复 → 探针全绿 → 正式批开跑</text>
+  <text x="100" y="1290" font-size="12.5" fill="#9a3412">教训已入档：跨会话前置条件（凭据/配置/白名单）必须先验证再批量；错误不静默、现场不覆盖</text>
+</svg>
+</div>
+<p style="font-size:12px;color:#666">生成于 2026-10-05 · 数据源：task_plan.md / progress.md / run-log.json · 刷新见 planning-with-files 三件套</p>
+</body>
+</html>

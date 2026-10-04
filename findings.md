@@ -1479,3 +1479,13 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **"gaps 不进 rows"的设计让"剔除"决定零风险**：A/H agent 把30个未确认对放在 `gaps` 数组而非 rows，所以 owner 的"剔除"执行=纯核验（断言 rows 里没有它们）+ 给 gaps 标 `owner_disposition`，不用删数据。教训：**取证类表格把"已确认"与"待确认"物理分开存放**，下游的剔除/排除决定就不需要破坏性操作，全程可审计。
 - **owner 口头决定要落成机器可读字段**：每项决定写成 `owner_signoff.decisions` 键值对 + `signed_by`（原话引用）+ `decision_ref`（供下游回执引用），而不是只写在 PWF 散文里——导入器和后续审查只认结构化字段。
 - **"排除北交所"这类范围决定要双向记录**：既记 `bse_excluded_by_owner=true`，也把**未覆盖的显式清单**（`uncovered_gaps: [GENB, NVO]`）留下——排除≠消失，缺口必须仍然可见。
+
+
+## 2026-10-05 — L02 校准结果与搜索费用发现
+
+- **L02 逐题基线（MiMo，6 家 182 题）终态**：scored 111 (61.0%)、insufficient_evidence 60 (33.0%)、unknown 11 (6.0%)、error 0；搜索执行率 88.5%（161/182）；修复预算命中 ~45+；均延迟 ~51s/题；主批 45 分钟墙钟。分层：HK 万科 82% scored 最高，CN 天马 38% 最低；所有 unknown/失败留痕在分母（LIVE-04 合规）。
+- **owner 账单发现（重要）**：MiMo 本批**搜索插件费用 > 模型调用费用**（182 题触发 ~246 次内建搜索 ≈1.35 次/题）。指令：B01 全面评比必须综合搜索费用。设计含义：内建插件按次计费且每次题面都搜索；Brave/Tavily 外部检索解耦（计划既有设计）可能显著更省——B01 检索器对照的关键量化点。
+- **000738 两次静默失败第三次成功**：同一命令、无 stderr、无输出，跨 provider 复现两次后第三次自愈——间歇性缺陷，根因未定位，如复发需在 StockQA 层加 stderr 捕获/心跳诊断。
+- B2a/L01/L02 三批实测节奏：MiMo ~50-90s/题、MiniMax-M3 ~9s/题（B2a 口径）——批量规模的模型选择要在 B01 费用对照里同时算时间与两厢费用。
+
+- **A/H bridge 真实导入 fail-closed（数据缺陷，待 owner 裁决）**：签收表 122 行仅 121 个不同证据 sha——上海医药被记了两行：(600849,02607) 旧 A 代码 + (601607,02607) 现 A 代码，同引一份 cninfo 年报 PDF(1225062873)。官方核实：上药现代码 A=601607/H=02607（SSE 2025-03-28 公告 'code changed from 600849' + HKEX 2025-09-15 文件 + SSE 公司页），(601607,02607) 正确、(600849,02607) 为过期代码残留，违反签署的证据政策（一份 PDF 只证明一个发行人一对代码）。导入器按 sha_conflict 拒收、交易回滚、零写入（真实库 data/quick_scan/scan.sqlite 已迁 v5、216 候选完好、bridge=0 实测）。owner 需删除该行并把 stats.rows 改 121 重新签收后才能导入；不自作主张改签收文件。

@@ -1,0 +1,150 @@
+====================================================================================================
+STEP 1 — out/primary 全文件清单与 provider 归属
+====================================================================================================
+CN_A_000672.json         provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} model=MiniMax-M3 entity=probe:CN-A:000672 q=31 statuses={'scored': 29, 'unknown': 1, 'not_applicable': 1}
+CN_A_000681.json         provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} model=MiniMax-M3 entity=probe:CN-A:000681 q=29 statuses={'scored': 27, 'unknown': 1, 'insufficient_evidence': 1}
+CN_A_000725.json         provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} model=MiniMax-M3 entity=probe:CN-A:000725 q=31 statuses={'scored': 30, 'insufficient_evidence': 1}
+CN_A_000738.json         provider={'name': 'mimo', 'requested_model': 'mimo-v2.6-flash'} model=mimo-v2.6-flash entity=probe:CN-A:000738 q=29 statuses={'scored': 17, 'insufficient_evidence': 10, 'unknown': 2}
+CN_A_000783.json         provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} model=MiniMax-M3 entity=probe:CN-A:000783 q=31 statuses={'scored': 31}
+CN_A_000938.json         provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} model=MiniMax-M3 entity=probe:CN-A:000938 q=29 statuses={'scored': 26, 'unknown': 2, 'insufficient_evidence': 1}
+CN_A_002122.json         provider={'name': 'mimo', 'requested_model': 'mimo-v2.6-flash'} model=mimo-v2.6-flash entity=probe:CN-A:002122 q=29 statuses={'scored': 11, 'insufficient_evidence': 17, 'unknown': 1}
+CN_A_002156.json         provider={'name': 'mimo', 'requested_model': 'mimo-v2.6-flash'} model=mimo-v2.6-flash entity=probe:CN-A:002156 q=29 statuses={'scored': 20, 'insufficient_evidence': 4, 'unknown': 5}
+CN_A_300327.json         provider={'name': 'mimo', 'requested_model': 'mimo-v2.6-flash'} model=mimo-v2.6-flash entity=probe:CN-A:300327 q=33 statuses={'scored': 20, 'insufficient_evidence': 13}
+HK_02202.json            provider={'name': 'mimo', 'requested_model': 'mimo-v2.6-flash'} model=mimo-v2.6-flash entity=probe:HK:02202 q=33 statuses={'scored': 27, 'insufficient_evidence': 5, 'unknown': 1}
+US_NASDAQ_GENB.json      provider={'name': 'mimo', 'requested_model': 'mimo-v2.6-flash'} model=mimo-v2.6-flash entity=probe:US:NASDAQ:GENB q=29 statuses={'scored': 16, 'insufficient_evidence': 11, 'unknown': 2}
+
+MiMo 文件 6 份 / 非 MiMo 文件 5 份
+
+====================================================================================================
+STEP 1a — 6 家 MiMo 逐公司复算
+====================================================================================================
+company                   q scored insuff  unk  err  exec nocall   att  rep  srcA  srcR  rid    avg    max
+CN_A_000738              29     17     10    2    0    24      3    41   12   189   189   29   27.0   67.8
+CN_A_002122              29     11     17    1    0    24      5    35    6   138   138   29   50.2  108.0
+CN_A_002156              29     20      4    5    0    24      2    40   11   166   166   29   53.7  134.7
+CN_A_300327              33     20     13    0    0    31      2    40    7   191   191   33   49.8  178.9
+HK_02202                 33     27      5    1    0    30      3    45   12   226   226   33   53.6  125.1
+US_NASDAQ_GENB           29     16     11    2    0    28      0    38    9   186   186   29   46.9  132.8
+----------------------------------------------------------------------------------------------------
+TOTAL(6家)               182    111     60   11    0   161          239   57  1096  1096  182
+non-scored = 71 (期望 71); scored%=61.0 insuff%=33.0 unk%=6.0; exec%=88.5; repairs_delta=57
+calls_total(内建搜索调用)=218  sources(answer层)=1096 sources(receipt层)=1096
+attempt 级延迟 n=239 avg=46.9s max=178.9s (CN_A_300327.json IQS_02)
+
+====================================================================================================
+STEP 1b — 搜索执行归因交叉表（receipt.search_status × answer.status）
+====================================================================================================
+search_status=executed  -> {'scored': 111, 'insufficient_evidence': 45, 'unknown': 5}
+web_search_calls==0     -> {'insufficient_evidence': 15}
+search_status!=executed 逐组合 -> {('unverified', 'insufficient_evidence'): 15, ('unverified', 'unknown'): 6}
+其中 calls>0 但回执不可核验 -> {'unknown': 6}
+未 executed 却 scored 的题数 = 0 （必须为 0）
+calls==0 却 scored 的题数 = 0 （必须为 0）
+
+====================================================================================================
+STEP 1c — unknown/null 与均分的关系（未知不伪装中等）
+====================================================================================================
+status!=scored 但 score 非 null 的题: 0 -> []
+非法分（bool/非1-10整数）: 0 -> []
+unknown 11 题明细:
+   IQS_21             score=None rid=True search=unverified calls=1 repair=unverified | 格式修复响应未通过联网搜索执行验证。
+   CROSS_BORDER_01    score=None rid=True search=unverified calls=1 repair=unverified | 格式修复响应未通过联网搜索执行验证。
+   IQS_13             score=None rid=True search=executed calls=2 repair=failed | 一次格式修复后仍无法验证结构化回答。
+   IQS_05             score=None rid=True search=unverified calls=1 repair=unverified | 格式修复响应未通过联网搜索执行验证。
+   IQS_18             score=None rid=True search=unverified calls=1 repair=unverified | 格式修复响应未通过联网搜索执行验证。
+   IQS_19             score=None rid=True search=executed calls=2 repair=failed | 一次格式修复后仍无法验证结构化回答。
+   HARDWARE_02        score=None rid=True search=executed calls=2 repair=failed | 一次格式修复后仍无法验证结构化回答。
+   CROSS_BORDER_01    score=None rid=True search=unverified calls=1 repair=unverified | 格式修复响应未通过联网搜索执行验证。
+   IQS_17             score=None rid=True search=executed calls=2 repair=failed | 一次格式修复后仍无法验证结构化回答。
+   IQS_06             score=None rid=True search=unverified calls=1 repair=unverified | 格式修复响应未通过联网搜索执行验证。
+   IQS_24             score=None rid=True search=executed calls=2 repair=failed | 一次格式修复后仍无法验证结构化回答。
+
+逐公司均分（scored 集合 vs 非 null 分集合，二者必须逐字相等）:
+   CN_A_000738.json       n(scored)= 17 n(non-null)= 17 mean=6.35 equal=True
+   CN_A_002122.json       n(scored)= 11 n(non-null)= 11 mean=4.36 equal=True
+   CN_A_002156.json       n(scored)= 20 n(non-null)= 20 mean=6.70 equal=True
+   CN_A_300327.json       n(scored)= 20 n(non-null)= 20 mean=5.95 equal=True
+   HK_02202.json          n(scored)= 27 n(non-null)= 27 mean=3.67 equal=True
+   US_NASDAQ_GENB.json    n(scored)= 16 n(non-null)= 16 mean=5.88 equal=True
+不一致公司数 = 0 （必须为 0）
+注：本批 unknown/insufficient 全为 null，故任何按非 null 分聚合的均分都等价于只按 scored 聚合，unknown 不可能以 5 分或任何默认分进入均分（I05/SC-02）。
+
+====================================================================================================
+STEP 1d — 模型/类型比较可比性声明抽查
+====================================================================================================
+   CN_A_000738.json       provider.name=mimo requested=mimo-v2.6-flash receipt providers=['mimo'] models=['mimo-v2.6-flash'] entity=probe:CN-A:000738
+   CN_A_002122.json       provider.name=mimo requested=mimo-v2.6-flash receipt providers=['mimo'] models=['mimo-v2.6-flash'] entity=probe:CN-A:002122
+   CN_A_002156.json       provider.name=mimo requested=mimo-v2.6-flash receipt providers=['mimo'] models=['mimo-v2.6-flash'] entity=probe:CN-A:002156
+   CN_A_300327.json       provider.name=mimo requested=mimo-v2.6-flash receipt providers=['mimo'] models=['mimo-v2.6-flash'] entity=probe:CN-A:300327
+   HK_02202.json          provider.name=mimo requested=mimo-v2.6-flash receipt providers=['mimo'] models=['mimo-v2.6-flash'] entity=probe:HK:02202
+   US_NASDAQ_GENB.json    provider.name=mimo requested=mimo-v2.6-flash receipt providers=['mimo'] models=['mimo-v2.6-flash'] entity=probe:US:NASDAQ:GENB
+MiMo 组内 provider 集合是否唯一: True
+MiMo 组内 model 集合是否唯一: True
+
+非 MiMo（MiniMax 旧产）文件:
+   CN_A_000672.json       provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} entity=probe:CN-A:000672 q=31 statuses={'scored': 29, 'unknown': 1, 'not_applicable': 1} models=['MiniMax-M3']
+   CN_A_000681.json       provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} entity=probe:CN-A:000681 q=29 statuses={'scored': 27, 'unknown': 1, 'insufficient_evidence': 1} models=['MiniMax-M3']
+   CN_A_000725.json       provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} entity=probe:CN-A:000725 q=31 statuses={'scored': 30, 'insufficient_evidence': 1} models=['MiniMax-M3']
+   CN_A_000783.json       provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} entity=probe:CN-A:000783 q=31 statuses={'scored': 31} models=['MiniMax-M3']
+   CN_A_000938.json       provider={'name': 'minimax', 'requested_model': 'MiniMax-M3'} entity=probe:CN-A:000938 q=29 statuses={'scored': 26, 'unknown': 2, 'insufficient_evidence': 1} models=['MiniMax-M3']
+   MiniMax 组题数合计 = 151，公司集合 = ['CN_A_000672.json', 'CN_A_000681.json', 'CN_A_000725.json', 'CN_A_000783.json', 'CN_A_000938.json']
+
+====================================================================================================
+STEP 2 — 恢复/低谷观察题、实体策略（零池写入）
+====================================================================================================
+   CN_A_300327.json       RECOVERY 题 4 个 -> [('RECOVERY_01', 'scored', 7), ('RECOVERY_02', 'scored', 7), ('RECOVERY_03', 'scored', 5), ('RECOVERY_04', 'insufficient_evidence', None)]
+   HK_02202.json          RECOVERY 题 4 个 -> [('RECOVERY_01', 'scored', 5), ('RECOVERY_02', 'scored', 5), ('RECOVERY_03', 'scored', 3), ('RECOVERY_04', 'scored', 2)]
+
+全 6 份 + 探针 entity_id:
+   probe: CN_A_002122_mimo.json entity=probe:CN-A:002122 q=29 statuses={'insufficient_evidence': 16, 'scored': 12, 'unknown': 1} exec={'unverified': 8, 'executed': 21} att=36 rep=7 avg=70.6 max=134.8 srcR=139
+   probe 未 executed -> {'insufficient_evidence': 8} / 全部非exec状态: 
+   probe attempts<=2 全部? 计算于下方
+   全部 entity_id = ['probe:CN-A:000738', 'probe:CN-A:002122', 'probe:CN-A:002156', 'probe:CN-A:300327', 'probe:HK:02202', 'probe:US:NASDAQ:GENB', 'probe:CN-A:002122']
+   零池写入（全部以 probe: 开头） = True
+
+====================================================================================================
+STEP 2/3 — attempts 预算与费用总账
+====================================================================================================
+out/primary: 11 份 attempts = 403
+rejected_* : 29 份 attempts = 537
+合计 = 940
+run-log 顶层键 = ['runs', 'budget', 'budget_note', 'last_window']
+run-log budget = {"primary_requests": 940, "http_attempts": 940, "web_search_calls": 897, "source_urls": 7104, "distinct_response_ids": 388, "output_files": 43}
+单题 attempts>2 的 receipt 数（预算=1 修复，应为 0）= 0
+
+====================================================================================================
+STEP 3 — 冻结/派发时序与探针门
+====================================================================================================
+   amendment-3-minimax-quota-to-mimo at=2026-10-04T20:45:15Z
+   amendment-4-1hour-baseline-scope at=2026-10-04T21:26:31Z
+   amendment-5-probe-gate-interpretation-recorded at=2026-10-04T23:12:03Z
+   zero_pool_writes=True  sample.total=60 by_market={'CN-A': 51, 'HK': 2, 'US': 7}
+   run-log.backup-before-000738-repair.json: last_window={"phase": "primary", "started_at": "2026-10-04T21:31:46Z", "runs": [{"phase": "primary", "listing_key": "CN-A:002122", "name": "天马股份", "profile_key": "operating|mature|industrial|False|False", "questions_in_config": 29, "output": "primary/CN_A_002122.json", "output_exists": true, "exit": 1, "seconds": 1759.9, "stderr_tail": "", "answers": 29, "statuses": {"IQS_01": "scored", "IQS_02": "scored", "IQS_04": "insufficient_evidence", "IQS_05": "scored", "IQS_06": "insufficient_evidence", "IQS_07": "insufficient_evidence", "IQS_08": "insufficient_evidence", "IQS_09": "insufficient_evidence", "IQS_10": "insufficient_evidence", "IQS_12": "scored", "IQS_13": "unknown", "IQS_14": "insufficient_evidence", "IQS_15": "scored", "IQS_16": "insufficient_evidence", "IQS_17": "insufficient_evidence", "IQS_18": "scored", "IQS_19": "scored", "IQS_20": "scored", "IQS_21": "insufficient_evidence", "IQS_22": "insufficient_evidence", "IQS_23": "scored", "IQS_24": "scored", "OPERATING_01": "insufficient_evidence", "OPERATING_02": "insufficient_evidence", "INDUSTRIAL_01": "insufficient_evidence", "INDUSTRIAL_02": "insufficient_evidence", "MATURE_01": "scored", "MATURE_02": "insufficient_evidence", "CROSS_BORDER_01": "insufficient_evidence"}, "search_status": "executed", "response_id": "4a2ca6d2-4884-4f16-8f08-46462a967af0_a906d32c675344fc8b0817a38065274a", "question_attempts": 35}, {"phase": "primary", "listing_key": "CN-A:002156", "name": "通富微电", "profile_key": "operating|scaling|hardware|False|False", "questions_in_config": 29, "output": "primary/CN_A_002156.json", "output_exists": true, "exit": 1, "seconds": 2149.9, "stderr_tail": "", "answers": 29, "statuses": {"IQS_01": "scored", "IQS_02": "scored", "IQS_04": "insufficient_evidence", "IQS_05": "unknown", "IQS_06": "scored", "IQS_07": "scored", "IQS_08": "scored", "IQS_09": "scored", "IQS_10": "insufficient_evidence", "IQS_12": "scored", "IQS_13": "scored", "IQS_14": "scored", "IQS_15": "scored", "IQS_16": "scored", "IQS_17": "scored", "IQS_18": "unknown", "IQS_19": "unknown", "IQS_20": "scored", "IQS_21": "insufficient_evidence", "IQS_22": "scored", "IQS_23": "scored", "IQS_24": "scored", "OPERATING_01": "scored", "OPERATING_02": "insufficient_evidence", "HARDWARE_01": "scored", "HARDWARE_02": "unknown", "SCALING_01": "scored", "SCALING_02": "scored", "CROSS_BORDER_01": "unknown"}, "search_status": "executed", "response_id": "f0894e33-fcc0-425a-b559-c0373551b995_8220e98918da4317ba7c65b01fad5696", "question_attempts": 40}, {"phase": "primary", "listing_key": "CN-A:300327", "name": "中颖电子", "profile_key": "operating|declining|hardware|False|True", "questions_in_config": 33, "output": "primary/CN_A_300327.json", "output_exists": true, "exit": 0, "seconds": 1995.7, "stderr_tail": "", "answers": 33, "statuses": {"IQS_01": "scored", "IQS_02": "scored", "IQS_04": "scored", "IQS_05": "scored", "IQS_06": "scored", "IQS_07": "scored", "IQS_08": "insufficient_evidence", "IQS_09": "scored", "IQS_10": "insufficient_evidence", "IQS_12": "insufficient_evidence", "IQS_13": "insufficient_evidence", "IQS_14": "insufficient_evidence", "IQS_15": "scored", "IQS_16": "insufficient_evidence", "IQS_17": "insufficient_evidence", "IQS_18": "scored", "IQS_19": "scored", "IQS_20": "scored", "IQS_21": "scored", "IQS_22": "insufficient_evidence", "IQS_23": "scored", "IQS_24": "scored", "OPERATING_01": "scored", "OPERATING_02": "insufficient_evidence", "HARDWARE_01": "scored", "HARDWARE_02": "insufficient_evidence", "DECLINING_01": "insufficient_evidence", "DECLINING_02": "insufficient_evidence", "CROSS_BORDER_01": "scored", "RECOVERY_01": "scored", "RECOVERY_02": "scored", "RECOVERY_03": "scored", "RECOVERY_04": "insufficient_evidence"}, "search_status": "executed", "response_id": "a319e944-33a5-41b1-9044-14b585618b5c_1a0c949c949548399e0de78954a907da", "question_attempts": 40}, {"phase": "primary", "listing_key": "US:NASDAQ:GENB", "name": "Generate Biomedicines", "profile_key": "operating|scaling|healthcare|False|False", "questions_in_config": 29, "output": "primary/US_NASDAQ_GENB.json", "output_exists": true, "exit": 1, "seconds": 1783.4, "stderr_tail": "", "answers": 29, "statuses": {"IQS_01": "scored", "IQS_02": "scored", "IQS_04": "insufficient_evidence", "IQS_05": "scored", "IQS_06": "unknown", "IQS_07": "insufficient_evidence", "IQS_08": "scored", "IQS_09": "scored", "IQS_10": "insufficient_evidence", "IQS_12": "scored", "IQS_13": "insufficient_evidence", "IQS_14": "insufficient_evidence", "IQS_15": "scored", "IQS_16": "insufficient_evidence", "IQS_17": "scored", "IQS_18": "scored", "IQS_19": "insufficient_evidence", "IQS_20": "insufficient_evidence", "IQS_21": "scored", "IQS_22": "scored", "IQS_23": "scored", "IQS_24": "unknown", "OPERATING_01": "insufficient_evidence", "OPERATING_02": "insufficient_evidence", "HEALTHCARE_01": "scored", "HEALTHCARE_02": "scored", "SCALING_01": "insufficient_evidence", "SCALING_02": "scored", "CROSS_BORDER_01": "scored"}, "search_status": "executed", "response_id": "0e80ad97-7b53-4b5b-a9b6-19e6e693fa5c_6d2024b98ef5409eb601f5925918cddb", "question_attempts": 38}, {"phase": "primary", "listing_key": "HK:02202", "name": "万科企业", "profile_key": "operating|mature|other|False|True", "questions_in_config": 33, "output": "primary/HK_02202.json", "output_exists": true, "exit": 1, "seconds": 2412.2, "stderr_tail": "", "answers": 33, "statuses": {"IQS_01": "scored", "IQS_02": "scored", "IQS_04": "scored", "IQS_05": "scored", "IQS_06": "scored", "IQS_07": "scored", "IQS_08": "scored", "IQS_09": "scored", "IQS_10": "insufficient_evidence", "IQS_12": "insufficient_evidence", "IQS_13": "scored", "IQS_14": "insufficient_evidence", "IQS_15": "scored", "IQS_16": "scored", "IQS_17": "unknown", "IQS_18": "scored", "IQS_19": "scored", "IQS_20": "insufficient_evidence", "IQS_21": "scored", "IQS_22": "scored", "IQS_23": "scored", "IQS_24": "scored", "OPERATING_01": "scored", "OPERATING_02": "scored", "OTHER_01": "scored", "OTHER_02": "scored", "MATURE_01": "scored", "MATURE_02": "insufficient_evidence", "CROSS_BORDER_01": "scored", "RECOVERY_01": "scored", "RECOVERY_02": "scored", "RECOVERY_03": "scored", "RECOVERY_04": "scored"}, "search_status": "executed", "response_id": "7b3cdff2-42f4-4213-a303-994f5a2733d7_dbbddd7577914c65a30de1c3690709fd", "question_attempts": 45}], "questions_planned": 153, "stopped_reason": null, "workers": 6, "budget_after": {"primary_requests": 899, "http_attempts": 899, "web_search_calls": 861, "source_urls": 6915, "distinct_response_ids": 359, "output_files": 41}, "caps": {"primary_request_cap": 2600, "http_attempt_ceiling": 5200, "web_search_call_ceiling": 5200}, "caps_ok": true}
+   run-log.json: last_window={"phase": "primary", "started_at": "2026-10-04T22:16:06Z", "runs": [{"phase": "primary", "listing_key": "CN-A:000738", "name": "航发控制", "profile_key": "operating|mature|industrial|False|False", "questions_in_config": 29, "output": "primary/CN_A_000738.json", "output_exists": true, "exit": 1, "seconds": 1109.9, "stderr_tail": "", "answers": 29, "statuses": {"IQS_01": "scored", "IQS_02": "insufficient_evidence", "IQS_04": "scored", "IQS_05": "scored", "IQS_06": "scored", "IQS_07": "insufficient_evidence", "IQS_08": "scored", "IQS_09": "insufficient_evidence", "IQS_10": "insufficient_evidence", "IQS_12": "scored", "IQS_13": "scored", "IQS_14": "insufficient_evidence", "IQS_15": "insufficient_evidence", "IQS_16": "insufficient_evidence", "IQS_17": "scored", "IQS_18": "scored", "IQS_19": "scored", "IQS_20": "scored", "IQS_21": "unknown", "IQS_22": "scored", "IQS_23": "insufficient_evidence", "IQS_24": "scored", "OPERATING_01": "insufficient_evidence", "OPERATING_02": "insufficient_evidence", "INDUSTRIAL_01": "scored", "INDUSTRIAL_02": "scored", "MATURE_01": "scored", "MATURE_02": "scored", "CROSS_BORDER_01": "unknown"}, "search_status": "executed", "response_id": "545d9114-046f-401a-913a-4ca49f60d7a8_31fb5452069c4aa887d2d5f068a8a425", "question_attempts": 41}], "questions_planned": 29, "stopped_reason": null, "workers": 1, "budget_after": {"primary_requests": 940, "http_attempts": 940, "web_search_calls": 897, "source_urls": 7104, "distinct_response_ids": 388, "output_files": 43}, "caps": {"primary_request_cap": 2600, "http_attempt_ceiling": 5200, "web_search_call_ceiling": 5200}, "caps_ok": true}
+   探针 002122: response_id 29/29 error=0 search executed=21/29 (amendment-4 门 >=25 executed -> 未达标)
+   批内首个 attempt started_at(UTC) / 末个 completed_at(UTC):
+      first=2026-10-04T21:31:48.520988+00:00 last=2026-10-04T22:34:36.413380+00:00 span=62.8 min
+
+====================================================================================================
+STEP 1 补 — 分层（公司维度）表复算（供报告 §2.2 对照）
+====================================================================================================
+   天马股份         CN-A:002122      CN-A   operating|mature|industrial|False|False      q= 29 scored= 11 insuff= 17 unk= 1 exec= 24 rep=  6 avg=50.2s mean_score=4.36 range=[2,7]
+   通富微电         CN-A:002156      CN-A   operating|scaling|hardware|False|False       q= 29 scored= 20 insuff=  4 unk= 5 exec= 24 rep= 11 avg=53.7s mean_score=6.7 range=[4,8]
+   中颖电子         CN-A:300327      CN-A   operating|declining|hardware|False|True      q= 33 scored= 20 insuff= 13 unk= 0 exec= 31 rep=  7 avg=49.8s mean_score=5.95 range=[4,7]
+   航发控制         CN-A:000738      CN-A   operating|mature|industrial|False|False      q= 29 scored= 17 insuff= 10 unk= 2 exec= 24 rep= 12 avg=27.0s mean_score=6.35 range=[3,8]
+   Generate Biomedicines US:NASDAQ:GENB   US     operating|scaling|healthcare|False|False     q= 29 scored= 16 insuff= 11 unk= 2 exec= 28 rep=  9 avg=46.9s mean_score=5.88 range=[2,8]
+   万科企业         HK:02202         HK     operating|mature|other|False|True            q= 33 scored= 27 insuff=  5 unk= 1 exec= 30 rep= 12 avg=53.6s mean_score=3.67 range=[2,6]
+
+====================================================================================================
+STEP 4 — 冻结题库 vs 运行题库 vs 产出题面（固定预期未被改动）
+====================================================================================================
+   冻结题库 set 数 = 37
+   CN-A:002122      题数 file=29 freeze=29 out=29 | file==freeze=True out==freeze=True sha_match=[]
+   CN-A:002156      题数 file=29 freeze=29 out=29 | file==freeze=True out==freeze=True sha_match=[]
+   CN-A:300327      题数 file=33 freeze=33 out=33 | file==freeze=True out==freeze=True sha_match=[]
+   CN-A:000738      题数 file=29 freeze=29 out=29 | file==freeze=True out==freeze=True sha_match=[]
+   US:NASDAQ:GENB   题数 file=29 freeze=29 out=29 | file==freeze=True out==freeze=True sha_match=[]
+   HK:02202         题数 file=33 freeze=33 out=33 | file==freeze=True out==freeze=True sha_match=[]
+   （sha 变体若均未命中，仅说明哈希口径不同；判定以 question_ids 逐一相等为准）
+
+DONE

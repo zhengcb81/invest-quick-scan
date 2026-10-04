@@ -86,6 +86,21 @@ class FreshnessAndJobsContractTests(unittest.TestCase):
         self.assertEqual(value, original)
         self.assertEqual(__import__("hashlib").sha256(json.dumps(value, sort_keys=True).encode()).hexdigest(), original_hash)
         self.assertEqual(wc.freshness_status(value, "2026-09-22T22:00:00Z"), "stale")
+        # W06 F3 (review finding 2026-10-05): genuinely VARY checked_at/imported_at —
+        # a later import or re-check timestamp must never renew validity.
+        renewed = observation(
+            valid_until="2026-06-01T00:00:00Z",
+            information_as_of="2026-03-01",
+            imported_at="2026-09-22T21:59:00Z",
+            checked_at="2026-09-22T21:59:30Z",
+        )
+        self.assertEqual(wc.freshness_status(renewed, "2026-09-22T22:00:00Z"), "stale")
+        self.assertEqual(
+            wc.reuse_decision(renewed, expected(), "2026-09-22T22:00:00Z",
+                              {"status": "delivered", "generation": 1}),
+            "dispatch",
+        )
+        self.assertNotEqual(renewed["imported_at"], value["imported_at"])
 
     def test_time_04_unknown_is_deferred_during_cooldown_then_dispatched(self):
         value = observation(response_status="insufficient_evidence", information_as_of=None, valid_until=None)

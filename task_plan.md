@@ -274,6 +274,7 @@ Status: complete_for_planning_only
 | 2026-09-22 | CodeGraph status返回Transport closed | 使用已知文件与本地只读检索核查接口和测试；不反复调用失效服务 |
 | 2026-09-29 | 一次性工作树delta解析脚本最初把(状态,路径)记录方向建成dict，导致只得到两个伪路径；首次归档映射断言也使用了错误的活动example路径 | 对照PowerShell计数与Git NUL记录发现解析问题；归档断言阻止写出错误报告，随后读取实际legacy目录、修正路径映射并重跑；生成报告前校验792/843、53/22/2数量不变量 |
 | 2026-09-22 | 新增恶意类型测试发现case.kind为dict时负例检查抛TypeError | 修复计划校验器的类型安全检查，保留反例预期并重跑；不将错误输入视为有效计划 |
+| 2026-10-05 | PowerShell 双引号 here-string 把 `` `r `` 反引号当转义写成回车（progress.md 3 处内容损坏，`runner.py` 被吃成 `unner.py`），Add-Content 写入路径还将旧内容整体转为 CRLF；`git diff --check` 报 exit 2 | 字节级诊断（HEAD 纯 LF=1682 行 vs 工作树 1406 CRLF）→ 两文件 CRLF→LF 归一 + 3 处 `` `r `` 恢复 → --check 回 0、numstat 64/0 纯新增；**永久规则：PWF 文件只经 Python 追加（读改写用字节模式），禁用双引号 here-string/Add-Content，每次追加后必跑 `git diff --check`** |
 | 2026-09-22 | 启动联调规划核查中CodeGraph仍Transport closed，StockWiki没有假设的src目录 | 使用已核实README/pyproject和实际测试入口；不重复检索不存在路径，不把建议布局冒充现有实现 |
 | 2026-09-22 | 扩展联调场景E2E前缀后，旧校验器只允许纯字母前缀导致清单校验和4项测试失败 | 允许字母起始的字母数字场景族，保留固定两位编号及非法路径/分隔符拒绝；新增边界测试后复跑 |
 | 2026-09-26 | Q04 route-recovery r6独立审查agent在开始审查前遭Codex服务401认证错误 | 本轮无审查结论，不标verified；主线程继续本仓工作，待服务恢复后重试独立复审 |
@@ -1090,3 +1091,44 @@ Status: both_tables_signed; D_evidence_closed; AH_evidence_signed_bridge_import_
 - [x] 两表写入 `decision_ref` + `owner_signoff` 块 + `status=SIGNED`：A/H 122 行（`closes_g2b_ah_evidence=true`）、D 217 行（**`closes_g2b_d=true`**）。
 - [x] **G2b 类别现状**：A(US)✅ 实物、B(US)✅ 实物、**D ✅ 签收闭合**（官方登记表取代过渡种子地位）、C ✅ 实物；**A/H 证据已签但实物待建**（`quick_scan_issuer_bridge` 表+导入+平安 A/H 实体——通授覆盖，下一施工项）。
 - [ ] 队列：① **L02 冻结**（owner 已批 2600/5200 内直接跑——表格已签不再阻塞）→ ② L02 执行 → ③ A/H bridge 导入批次（G2b 最后实物）→ ④ W11 → ⑤ W06 跟进。等 owner：MiniMax 对账（B2a 406/771）、叙事=保留（已定）。
+
+### Phase 74: L02 冻结实装 + 冒烟 + 窗口1（含中断与恢复，进行中交接）
+
+Status: L02_frozen_smoke_passed_window1_done; execution_in_progress; DO_NOT_INTERRUPT_LONG_WINDOWS
+
+- [x] **L02 冻结已钉版推送**（IQS `a27f42b`）：60 家分层样本（CN51/US7/HK2）+ 20 家 repeat 子集 + 真实题库题面/锚点版本 + caps=primary 2600 / searches 5200（owner 批准上限内直接跑，不再等成本报批）。
+- [x] **Runner 冻结并就位**：`StockQAbyLLM/pilot_runs/l02_2026-10-04/runner.py`；冻结配置副本 `llm_apis.json`（MiniMax-M3 + `/v1/responses` + format_repair_budget=1）；`companies.json` + 按分层预生成的 `questions_*.json` 题库 + `repeat_subset.json`。
+- [x] **冒烟完成并修复假告警**：上峰水泥（31答）、视觉中国（29答）端到端通过；run-log 中视觉中国手动补跑记录已修正入档。冒烟消耗 primary 64。
+- [x] **窗口1 重跑完成**（此前被会话消息两次打断，不损失产出——runner resume 跳过已有输出）：12 家公司、计划 354 题，run-log 逐家记录 statuses/search_status/response_id/question_attempts/耗时；**预算累计 636/2600 primary、651/5200 searches**（caps_ok=true）；输出 `out/primary/` 21 份；止损原因=window_question_budget（正常窗口切片）。
+- [x] **诚实注记**：部分公司 exit=1（上峰水泥/视觉中国本题面含 unknown/insufficient_evidence 答案，按 Q01—Q03 契约 CLI 对含失败答案的题返回非零）；京东方 exit=0。**exit 非 0 ≠ 未产出**——均有完整输出文件；最终判定以 L02 校准报告对 unknown/修复预算的统计为准，执行期不逐家干预。
+- [ ] **进行中（关键交接）**：L02 primary 共 60 家 + repeat 20 家；窗口1 已完成 12 家。**继续方式=循环重跑同一命令，runner 自动跳过已完成公司**：
+  `cd C:\Users\郑曾波\Projects\StockQAbyLLM\pilot_runs\l02_2026-10-04`
+  `python -X utf8 runner.py --phase primary --max-questions 325 --provider minimax`
+  每窗口约 50 分钟；primary 跑完再 `--phase repeat`；预计还剩约 8 个窗口（半天到一天）。**恢复会话第一动作=发起下一窗口，并声明"长任务请勿发消息打断"。**
+- [ ] **水位检查点（每窗口后）**：读 `run-log.json` 尾部 + 预算（caps 2600/5200 触顶前主动报数），progress.md 记一行。
+- [ ] **全部跑完后**：出 L02 校准报告（LIVE-03/04 判定：题面成功率、unknown 率、修复预算命中、每题成本）→ 独立审查 → G2 门审查 → Phase 75+ PWF。
+- [ ] **不要动**：并行叙事道三提交 `3c20d4d..ae0b3e3`（owner 已裁保留，零接触）；B2a 资产（已签收批次，不可覆盖）。
+- [ ] 等 owner（不阻塞 L02）：MiniMax 对账（B2a 406/771；L02 跑完同样以控制台为准）。
+
+### Phase 75: L02 试点执行（MiMo 链路逐题基线）与校准报告
+
+Status: in_progress（执行完成、报告已回填、独立审查 r1 进行中）
+
+- [x] **中断恢复与根因闭环**：会话切换丢失 key（MINIMAX_API_KEY 在用户级，子进程须显式注入）+ workspace 沙箱拒绝外仓写（已切 danger-full-access）+ MiniMax 5h 窗耗尽（chat 429/responses 500 实锤）→ owner 决策切 MiMo；两次失败窗口的 27 份废产出隔离归档（rejected_error_2026-10-05/，含 manifest 与 run-log 备份），done-set 修复。
+- [x] **amendment-3/4 入档**：provider 切 mimo-v2.6-flash（搜索白名单内，Q02 验证型号）；owner ≤1h 约束 → 样本 60→6 分层（原 60/20 签名归档 companies_60_full_signed.json / repeat_subset_20_signed.json）、repeat 顺延、编排并发 ≤6 不改变提问方法；方法论对照归 B01（Q09/Q10/PAR-04 前置），L02 数据即 B01 的 MiMo 逐题基线区组。
+- [x] **执行完成**：探针（002122，29 题 0 error）+ 主批 5 家（45 分钟）+ 000738 第三跑成功；全量 6 家 182 题：scored 111 (61.0%)、insufficient 60、unknown 11、error 0；搜索执行 88.5%；来源 1,096 条；预算 940/2600、897/5200（caps 内）；零池写入。
+- [x] **校准报告回填**：`docs/implementation/reviews/L02/L02-calibration-report-2026-10-05.md`（LIVE-03 分层明细、LIVE-04 分母完整性=缩减在开跑前冻结、REV-06 等六项 G2 case 映射、000738 两次静默失败与 ≈29 请求账本缺口诚实披露）。
+- [x] **owner 费用发现入档**：MiMo 搜索插件费 > 模型费（~246 搜索/182 题）→ B01 评比必须综合搜索费用（报告 §2.5 + findings.md + progress.md 三处）。
+- [x] 独立审查闭环：r1 **needs_revision**（F1 口径混杂/F2 探针门未入冻结 两个 P2 + 5 LOW + 4 INFO；数字与分母本身复算全对）→ 全项修订（6 家口径 239/57/46.9s、amendment-5 补录、UTC 时间戳 local=UTC+1 纠正、summarize provider 过滤、000738 单次失败叙事修正）→ **r2 approved**（五核查点含实跑复现命令）。审查报告 `reviews/L02/independent-review-2026-10-05.md`；证据 `L02-summary-6mimo-2026-10-05.json`。
+- [x] **G2 审查包组装**（`reviews/G2/G2-review-packet-2026-10-05.md`：依赖证据表、逐 case 图、可用比较组清单草案、r2 INFO 补注、诚实边界）+ **G2 独立审查已派出**（subagent 进行中，M2 关门）。
+- [ ] 不碰：B2a 资产、叙事三提交 `3c20d4d..ae0b3e3`。等 owner：MiMo/MiniMax 控制台对账、A/H 签收表上药行裁决（方案 A 推荐）。
+
+### Phase 76: W06 审查跟进批次 F1/F2/F3（代次门与兼容门）
+
+Status: implementation_and_gates_complete; review_deferred_to_milestone_group
+
+- [x] 写前报告：`reviews/IQS-lane/W06-followup-F1F2F3-card-2026-10-05.md`（owner 通授覆盖；跨 StockWiki+IQS 两仓的精确文件清单与语义边界）。
+- [x] TDD：RED 2 失败（F1 代次对齐门缺失、F2 兼容门在 unknown/冷却之后）+ F3 IQS 测试补真实输入变化（17+9 直接过——行为本正确、纯补测）→ GREEN 16/16。
+- [x] 实现：`quick_scan_freshness.py`——F1 resume 前 C04 语义代次门（期望≠在途→dispatch_new_work/generation_mismatch）；F2 兼容门前置到 unknown/冷却分支（新身份不继承旧冷却）+ in-flight resume 保持最先并在 `_field_decision` docstring 记录审查者认可的"防重复派发"取舍（Q06 链的执行器 logical-key 去重为终局方案）；决策词汇表/plan_sha256/零网络不变。
+- [x] 门：ruff/black 净、StockWiki `check_all.sh` **ALL CHECKS PASSED**、IQS 定向 17+9 过（ruff 3×E402 为该文件既有结构、非本批引入、不动）。
+- [ ] 里程碑合并审查（与 A/H bridge 批次同批）→ 两仓提交。**验证状态维持 implementation_complete 至审查通过。**
