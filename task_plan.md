@@ -404,7 +404,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03 改判(a)、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、决定5/7/8。**Phase 54 完成：DWA 四仓 P1 处置**（rf `5319ee26`、SID `064a837`、QAbyLLM `ad389f8`、StockQA 无操作）。**Phase 55 完成：W03 verified**（`4fbda21`，六 case、37 测试、审查 approved、基线登记经审查接受）；DWA-04 扩盘分类归档（1985 条全为可重建 pytest 临时）——**owner 决策点：`.tmp-zr408-unit*`×3（各657条）与 14 scratch 删除或 ignore 二选一明示**。**Phase 56 完成：S06 verified**（收口复审 approved，147+20 passed 入隔离日志+12 哈希记档，五 case 全映射；诚实边界：2.1 仅合成、跨仓 ACK/E2E 归 W05/G1 域不声称）。**Phase 57 完成：L01 verified**（冻结钉版 IQS `51fbce1`；10 家真实探针 11 调用承载 20 请求=用满上限未超、41 搜索/388 源、18 题得分(4–9)、2 题 fail-closed、0 mock；试点包+三轮整改 StockQA `7a40a98..1f04a8f` 已推送；独立审查两轮 approved，四文件 SHA-256 记档，预算按问题级 20 请求口径修正）。**Phase 58 完成：G1 verified → M1 关闭**（独立复审 approved（ses_f0022a928ffewW1KsB6lHQRJE9），`reviews/G1/` 审查记录+60家范围说明+30检查脚本+三 log = IQS `f7860fb`；发现 F1 信息日期 20/20 null 与 F2 来源元数据缺失已绑定为 L02 进入条件）。**Phase 59 完成：W04/W05 双卡 verified**（StockWiki `5f2739a`+`aa3c6e6` 本地；两轮独立审查均 approved）+ **owner 八项决定已记录**（见 Phase 59 节：216 授权/1985 删除/账单通过含 5 小时限额/G2b 派 agent 后签收/StockWiki 全授权/34+2 清理/信息日期选 a/W03 签收）。**队列进度（2026-10-03）**：①②③④⑥ 中 ①②④ 已完成（1985 删+34+2 清理=Phase 60 前后、216 入库 Phase 60、W06=Phase 61）；**Phase 63 完成：W07 verified → M2 关键路径推进一格**（W08 现已解锁）。owner 第二批答复已入档：G2b A/C/D/B 全授权、补 W05/W13 CLI、7a 顺其自然、live 凭据预批、O01 不急、叙事三提交处置待定。**Phase 64 完成：CLI 批次 approved+committed（`cc7fc6b`）、G2b 证据检索归档（`5a7e996`，四类 0 READY 待 owner 签收）、W08 verified（`9fa8a7e`，差分 9646/0）→ W09 已解锁**。**Phase 65 完成：W09 verified（两轮审查）→ M2 主链 W01–W09 全齐**。L02 只剩自己的冻结条件（7a + 范围 §5 F1/F2 二选一），G2 只等 L02。**Phase 66 完成：7a verified+pushed（StockQA `5fdcc2c`）→ G1 F1/F2 处置落地 → L02 进入条件全齐**。当前队列：① **L02 冻结**（唯一剩余：冻结文件+钉版）→ ② L02 执行（live：先报成本、按 MiniMax 5 小时窗分片）→ ③ G2 审查；并行 W10（已解锁，StockWiki）。等 owner：G2b A/B/C/D 签收（A/H 桥必须你给）、叙事三提交处置。已完成：Phase 60 216、61 W06、62 W13+签收、63 W07、64 CLI+证据+W08、65 W09、66 7a。Q13 仍不可开工（Q06/Q07/Q09/Q10 partial）。L02 等 W07/W08/W09 且须先满足范围说明 §5 F1/F2 二选一。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、1985 条处置决定、MiniMax 账单核对（决定9，L01 本批 20 completions+41 searches）、QAbyLLM 34 项与 SID 2 盲区去留、W03 签收两点确认（基线登记+步骤5分离）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03 改判(a)、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、决定5/7/8。**Phase 54 完成：DWA 四仓 P1 处置**（rf `5319ee26`、SID `064a837`、QAbyLLM `ad389f8`、StockQA 无操作）。**Phase 55 完成：W03 verified**（`4fbda21`，六 case、37 测试、审查 approved、基线登记经审查接受）；DWA-04 扩盘分类归档（1985 条全为可重建 pytest 临时）——**owner 决策点：`.tmp-zr408-unit*`×3（各657条）与 14 scratch 删除或 ignore 二选一明示**。**Phase 56 完成：S06 verified**（收口复审 approved，147+20 passed 入隔离日志+12 哈希记档，五 case 全映射；诚实边界：2.1 仅合成、跨仓 ACK/E2E 归 W05/G1 域不声称）。**Phase 57 完成：L01 verified**（冻结钉版 IQS `51fbce1`；10 家真实探针 11 调用承载 20 请求=用满上限未超、41 搜索/388 源、18 题得分(4–9)、2 题 fail-closed、0 mock；试点包+三轮整改 StockQA `7a40a98..1f04a8f` 已推送；独立审查两轮 approved，四文件 SHA-256 记档，预算按问题级 20 请求口径修正）。**Phase 58 完成：G1 verified → M1 关闭**（独立复审 approved（ses_f0022a928ffewW1KsB6lHQRJE9），`reviews/G1/` 审查记录+60家范围说明+30检查脚本+三 log = IQS `f7860fb`；发现 F1 信息日期 20/20 null 与 F2 来源元数据缺失已绑定为 L02 进入条件）。**Phase 59 完成：W04/W05 双卡 verified**（StockWiki `5f2739a`+`aa3c6e6` 本地；两轮独立审查均 approved）+ **owner 八项决定已记录**（见 Phase 59 节：216 授权/1985 删除/账单通过含 5 小时限额/G2b 派 agent 后签收/StockWiki 全授权/34+2 清理/信息日期选 a/W03 签收）。**队列进度（2026-10-03）**：①②③④⑥ 中 ①②④ 已完成（1985 删+34+2 清理=Phase 60 前后、216 入库 Phase 60、W06=Phase 61）；**Phase 63 完成：W07 verified → M2 关键路径推进一格**（W08 现已解锁）。owner 第二批答复已入档：G2b A/C/D/B 全授权、补 W05/W13 CLI、7a 顺其自然、live 凭据预批、O01 不急、叙事三提交处置待定。**Phase 64 完成：CLI 批次 approved+committed（`cc7fc6b`）、G2b 证据检索归档（`5a7e996`，四类 0 READY 待 owner 签收）、W08 verified（`9fa8a7e`，差分 9646/0）→ W09 已解锁**。**Phase 65 完成：W09 verified（两轮审查）→ M2 主链 W01–W09 全齐**。L02 只剩自己的冻结条件（7a + 范围 §5 F1/F2 二选一），G2 只等 L02。**Phase 67 完成：W10 verified（两轮）→ W11 解锁；owner 第三批（B2/同意/按建议/保留）+ 通授全部入档；B2a 获批待执行**。当前队列：① **B2a 执行**（live：冻结题面+caps=primary≤230/HTTP≤460/搜索≤460、3窗×≤80，跑前再报一次具体清单）→ ② G2b A 类实体导入路径 + C 类 AnalysisSubject 存储/回执读取器（通授已给）→ ③ D 过渡播种 → ④ W11（已解锁）→ ⑤ W06 跟进 F1/F2。L02 在 B2a 结果复核+分层补齐后冻结。等 owner 数据：A/H 桥映射表、D 官方登记表、B2a 结果与 H 提名复核。已完成：Phase 60 216、61 W06、62 W13、63 W07、64 CLI+证据+W08、65 W09、66 7a、67 W10。Q13 仍不可开工（Q06/Q07/Q09/Q10 partial）。L02 等 W07/W08/W09 且须先满足范围说明 §5 F1/F2 二选一。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、1985 条处置决定、MiniMax 账单核对（决定9，L01 本批 20 completions+41 searches）、QAbyLLM 34 项与 SID 2 盲区去留、W03 签收两点确认（基线登记+步骤5分离）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -980,6 +980,17 @@ Status: W09_verified; M2_core_chain_complete; L02_pending_only_its_own_freeze
 
 ### Phase 66: 决定7a 落地（信息日期+来源元数据补采集）→ L02 进入条件齐
 
+- [x] **owner 第三批决定（2026-10-03 会话）**：
+  1. **L02 分层口径 = B2**（授权 LLM 分类，按 W13 纪律走 StockQA 预算请求，caps+预算+owner 复核，产出仅算建议）。
+  2. **L02 live 预算 = 同意**（原则批准；执行前仍按 live 规则报具体成本与 5 小时窗分片，此为纪律不豁免）。
+  3. **G2b 四类证据 = 待 owner 对我的建议逐条确认**（建议随会话交付：美股 B 按 CIK 签、Alphabet 全 4 只签、A/H 桥选 b 签字映射表、D 走"过渡播种+官方表"两步、C 按 subject 配对且首个建议比亚迪、A/C 两个实现授权建议都建）。
+  4. **叙事三提交 `3c20d4d..ae0b3e3` = 保留**（不补审不回滚；继续零接触）。
+- [x] **B2 前置澄清已答 = B2a**（H 股候选并入本批 LLM 发现，产出 nomination→owner 复核入池；caps=primary≤230/HTTP≤460/搜索≤460，3 窗×≤80 顺序跑，撞限即停）。
+- [x] **G2b 四类 = owner 按我的建议执行**：美股 B 按 CIK 签收；Alphabet A 全 4 只签；A/H 桥选 b（owner 签字映射表，**数据待 owner 提供**）；D 两步走（过渡播种我做 + 官方登记表待 owner）；C 按 subject 配对、首个建议比亚迪；**A（实体导入路径）与 C（AnalysisSubject 存储+回执读取器）两个实现授权=都建**。
+- [x] **叙事三提交 = 保留**（不补审不回滚）。
+- [x] **owner 通授（2026-10-03）**：「给你全部需要的授权」= **全部剩余卡/批次一次性授权**（含 W10 及后续 W11/W15、G2b A/C/D 实现与播种、B2a 执行、W06 跟进），条件不变=每批写前报告+独立审查+live 前成本声明。
+
+
 Status: 7a_verified_and_pushed; G1_F1_F2_dispositions_satisfied; L02_entry_conditions_met
 
 - [x] **7a verified 并推送 StockQA `5fdcc2c`**（18 个 pre-commit 钩子全过：black/isort/mypy/pylint≥9/detect-secrets/bandit/pip-audit/pytest-unit）。
@@ -990,3 +1001,16 @@ Status: 7a_verified_and_pushed; G1_F1_F2_dispositions_satisfied; L02_entry_condi
 - [x] **G1 F1/F2 处置条件满足**：F1=结构化 `information_as_of` 已采集+校验（决定7a 选 a）；F2=来源标题/发布日期已随回执采集（`sources[]`，per-source 原样留痕）。**L02 的范围说明 §5 两条进入条件双双落地。**
 - [ ] **L02 现状**：deps W07/W08/W09 全 verified ✓、F1/F2 条件 ✓ → **只剩自身冻结**（样本分层、题面/锚点版本、caps、止损/回滚规则写入 `reviews/` 冻结文件并钉版）+ live 成本声明（按 MiniMax 5 小时窗口分片派发）。
 - [ ] 队列：① **L02 冻结**（先写前报告+冻结文件）→ ② L02 执行（live，先报成本）→ ③ G2 审查；并行 W10（已解锁，StockWiki）。等 owner 不变（G2b 签收清单、A/H 桥、叙事三提交）。
+
+### Phase 67: W10 verified（导入ACK+执行状态只读投影）+ owner 第三批/通授入档
+
+Status: W10_verified; third_batch_recorded; blanket_authorization_recorded; B2a_authorized
+
+- [x] **W10 verified**（StockWiki 本地 `3a3d061`）：2 新文件 `quick_scan_delivery.py`（283 行）+ `tests/test_quick_scan_delivery.py`（340 行），allowed_changes 吻合、W05 ledger 零改动。
+  - 语义：`ack_status` 只读回执（错误回执显式 `error_receipt=True`，永不伪装 delivered）；**5 状态合法转移守卫**（50 对全探：acked/delivered 必须有 ACK、delivered 只能从 acked、非法边全拒、幂等 no-op 不伪造状态）；`validate_ack` 必须匹配精确 item+hash；`reconcile_delivery` = 无调用方 ACK 时**先消费台账精确回执**推进（JOB-07）、无回执保持 unknown、**错 ACK 拒绝并保持状态+具名错误码**（JOB-08，不崩溃）；`project_runtime_status` 显式区分 `import_attempts` vs `distinct_companies`（执行次数≠公司数）、`facts_available=False`、零 LLM/网络；读路径=公开 `database_path`+`PRAGMA query_only`+表存在性检查（空库文件也出 `store_not_migrated` 而非裸 traceback）。
+  - 测试夹具**全部走真实 W05 `apply_decisions` 事务**（非手插 SQL 非 mock ledger），socket 炸弹，闭环=accepted→回执→投影→重复ACK幂等。
+  - 独立审查两轮 approved（首轮会话连返两次空 → 换新会话 `ses_efbc83bd5ffev8fZFRwck5S5fT`；low=空库文件漏裸错误 + 3 info → 全整改含新探针）→ 二轮 **approved**，2 文件 SHA 记档（`27208402…`/`83590abb…`）；`check_all` **871 passed**/0 skip/框架 0 错。
+- [x] **owner 第三批**：L02 分层=B2、L02 live 预算=同意（原则）、G2b=按我建议执行、叙事=保留 → 已记于 Phase 66 节下。
+- [x] **owner 通授**：「给你全部需要的授权」= 全部剩余卡/批次一次性授权（条件不变：写前报告+独立审查+live 成本声明）。
+- [x] **B2a 获批**：216 家分类 + H 股提名发现（LLM 建议性质、复核后才入池）；caps=primary≤230/HTTP≤460/搜索≤460、3 窗×≤80 顺序、撞限即停。
+- [ ] 依赖刷新：**W11 已解锁**（deps W09✓W10✓）。队列：① **B2a 执行**（live，先冻结题面+回执核验清单）→ ② G2b A 类实体导入路径 + C 类 AnalysisSubject 存储/回执读取器（通授已给）→ ③ D 过渡播种 → ④ W11 → ⑤ W06 跟进 F1/F2。等 owner 数据：A/H 桥映射表、D 官方登记表、B2a/H提名复核。

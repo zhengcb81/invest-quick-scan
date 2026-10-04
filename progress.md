@@ -1617,3 +1617,12 @@
 - 测试基线：新文件 12 条；`tests/unit -p no:base_url` 757；全量 848 passed / **18 errors 全为既有 `pytest_base_url` ScopeMismatch**（stash 在干净 HEAD 复现；仓库钩子自带 `-p no:base_url` 故不受影响）。
 - **G1 F1/F2 处置双双落地 → L02 范围说明 §5 进入条件齐**；L02 deps W07/W08/W09 也齐 → **只剩自身冻结**。
 - 本批写入：StockQA 1 提交推送（`5fdcc2c`）；IQS 1 提交（Phase 66）。
+
+
+## 2026-10-03 — Phase 67：W10 verified + owner 第三批/通授入档
+
+- **W10 verified**（StockWiki `3a3d061`）：导入ACK回执+执行状态只读投影。5 状态合法转移守卫（50 对全探）、错 ACK 拒绝保持状态+具名码、先消费台账精确回执、执行次数≠公司数、读路径 query_only+表存在性检查（空库文件也具名拒绝）、夹具走真实 apply_decisions 事务。审查两轮 approved（首个会话连返空→换新会话），SHA `27208402…`/`83590abb…`，check_all 871 passed。
+- **owner 第三批入档**：B2（LLM 分类）、L02 预算同意、G2b 按我建议（美股CIK签/Alphabet全4只/A-H桥选b/D两步走/C比亚迪首个/A+C都建）、叙事保留。**owner 通授**=全部剩余卡一次性授权（写前报告+独立审查+live 成本声明不变）。
+- **B2a 获批**：216 分类+H 股提名（建议性质、复核后入池），caps primary≤230/HTTP≤460/搜索≤460、3窗×≤80。
+- 依赖：**W11 解锁**。队列：B2a 执行 → G2b A/C 实现 → D 播种 → W11 → W06 跟进。等 owner：A/H 桥表、D 官方表、B2a/H 复核。
+- 本批写入：StockWiki 1 提交（`3a3d061`）；IQS 1 提交（Phase 67）。
