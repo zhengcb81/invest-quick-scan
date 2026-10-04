@@ -1,0 +1,163 @@
+{
+  "amendment_1": {
+    "at": "2026-10-04T00:00:00Z",
+    "caps_new": {
+      "http_attempt_ceiling_including_retries": 560,
+      "primary_request_cap": 280,
+      "web_search_call_ceiling": 600
+    },
+    "format_repair_budget": 1,
+    "measured_at_amendment": {
+      "companies_classified_ok": 79,
+      "primary_requests_spent": 105,
+      "single_retry_pass_rate_with_repair": "8/9",
+      "source_urls_spent": 2061,
+      "web_search_calls_spent": 216
+    },
+    "owner_decision": "A (finish all 216 + 11 HK)",
+    "reason": "original caps forgot failure/retry headroom (first-pass compliance 67%; observed 1 request/company + ~2 searches/company + retries)",
+    "scope": "all 216 candidates + 11 HK discovery (unchanged from freeze)"
+  },
+  "amendment_2": {
+    "at": "2026-10-04T00:00:00Z",
+    "caps_final": {
+      "http_attempt_ceiling_including_retries": 840,
+      "primary_request_cap": 420,
+      "web_search_call_ceiling": 840
+    },
+    "measured_before_amendment": {
+      "attempts_per_valid_observed": 2.1,
+      "primary_requests_spent": 240,
+      "valid_classifications": 114,
+      "web_search_calls_spent": 456
+    },
+    "owner_decision": "approved final caps (message: 可以)",
+    "prompt_versions": [
+      {
+        "note": "nested JSON in description",
+        "outcome": "54/80 first pass; 26 rejected",
+        "v": 1
+      },
+      {
+        "note": "explicit outer structure + example",
+        "outcome": "8/26 retries rescued; repair_budget=1 rescued 23 more",
+        "v": 2
+      },
+      {
+        "note": "labelled plain-text lines (no nested JSON)",
+        "outcome": "12 labelled-text valid so far",
+        "v": 3
+      }
+    ],
+    "root_cause": "nested-JSON-in-description first-pass compliance 67-80%; retries + repair cost real requests (v1/v2 attempts under-priced)",
+    "scope": "finish remaining 102 companies + 11 HK discovery"
+  },
+  "candidate_count": 216,
+  "caps": {
+    "http_attempt_ceiling_including_retries": 460,
+    "primary_request_cap": 230,
+    "web_search_call_ceiling": 460
+  },
+  "entity_id_policy": "probe:<listing_key> (probe namespace, not an issuer claim)",
+  "frozen_at": "2026-10-03T00:00:00Z",
+  "input_report_sha256": "c9aec572b56f6b9105399c59031c474dd8c737269149d8fb98c517206a1f8bd4",
+  "outputs_never_enter_pool": true,
+  "purpose": "B2a: stratification classification + H-share discovery for L02 sampling (suggestions only; never enters the pool)",
+  "questions": {
+    "answer_vehicle": {
+      "carrier": "description JSON",
+      "note": "no 1-10 score dimension on this question; outputs are sampling inputs only, excluded from coverage/whitelist metrics and never imported as answers",
+      "score": null,
+      "status": "unknown"
+    },
+    "classify_file": "questions_classify.json",
+    "classify_question_id": "B2A_CLASSIFY",
+    "hk_file": "questions_hk.json",
+    "hk_question_id": "B2A_HK_LISTING"
+  },
+  "rollback": "stop dispatch, persist tasks/receipts/costs; never delete records and re-run",
+  "sample": {
+    "classify": "all 216 candidates sorted by listing_key",
+    "hk_discovery": {
+      "count": 11,
+      "rule": "overlap-group members + first sorted listing_keys",
+      "targets": [
+        "CN-A:002168",
+        "CN-A:601066",
+        "CN-A:000002",
+        "CN-A:000026",
+        "CN-A:000400",
+        "CN-A:000547",
+        "CN-A:000596",
+        "CN-A:000625",
+        "CN-A:000651",
+        "CN-A:000672",
+        "CN-A:000681"
+      ]
+    }
+  },
+  "schema": "l02_b2a_freeze/1",
+  "taxonomy": {
+    "industry": [
+      "农林牧渔",
+      "基础化工",
+      "钢铁",
+      "有色金属",
+      "电子",
+      "汽车",
+      "家用电器",
+      "食品饮料",
+      "纺织服饰",
+      "轻工制造",
+      "医药生物",
+      "公用事业",
+      "交通运输",
+      "房地产",
+      "商贸零售",
+      "社会服务",
+      "建筑材料",
+      "建筑装饰",
+      "电力设备",
+      "国防军工",
+      "计算机",
+      "传媒",
+      "通信",
+      "银行",
+      "非银金融",
+      "综合金融",
+      "煤炭",
+      "石油石化",
+      "环保",
+      "机械设备",
+      "美容护理",
+      "综合"
+    ],
+    "lifecycle_stage": [
+      "growth",
+      "mature",
+      "cyclical",
+      "turnaround",
+      "declining"
+    ],
+    "operating_type": [
+      "manufacturing",
+      "service",
+      "platform",
+      "finance",
+      "holding",
+      "resource"
+    ],
+    "profitability": [
+      "profit",
+      "loss",
+      "unknown"
+    ]
+  },
+  "verification": "budget recounted from execution_receipts attempt entries (primary unit), searches counted from web_search_calls; owner reconciles MiniMax console",
+  "windows": {
+    "count": 3,
+    "max_new_requests_per_window": 80,
+    "order": "deterministic listing_key sort",
+    "stop_on_limit": true
+  }
+}
