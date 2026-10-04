@@ -147,4 +147,32 @@ STEP 4 — 冻结题库 vs 运行题库 vs 产出题面（固定预期未被改�
    HK:02202         题数 file=33 freeze=33 out=33 | file==freeze=True out==freeze=True sha_match=[]
    （sha 变体若均未命中，仅说明哈希口径不同；判定以 question_ids 逐一相等为准）
 
+====================================================================================================
+STEP 5 — 归档名单 / run-log 零漂移 / 证据 JSON 逐字段对照 / 文件字节绑定
+====================================================================================================
+   归档 60 家: n=60; 冻结 entities: n=60; 成员逐一相同=True; 集合相同=True
+   name/market/probe_entity_id 值差条数=0
+   repeat 签名 n=20 与冻结一致=True
+   运行用 repeat_subset.json = []
+   run-log runs 条数=11; budget_note="primary_requests/http_attempts = sum of execution_receipts attempt entries across out/** and rejected_* (L01 counting discipline); one attempt per question + format_repair_budget=1; failures reported, never hidden. Companies within a window dispatch concurrently (--workers)."
+   run-log ↔ 产出 漂移项 = [] （应为空）
+   000738 历史失败条目（隔离备份中）:
+      {"listing_key": "CN-A:000738", "output_exists": false, "exit": 1, "seconds": 730.6, "stderr_tail": ""}
+   隔离前备份 budget={"primary_requests": 636, "http_attempts": 636, "web_search_calls": 651, "source_urls": 5869, "distinct_response_ids": 177, "output_files": 32}
+   证据 JSON aggregate = {"questions": 182, "answer_statuses": {"scored": 111, "insufficient_evidence": 60, "unknown": 11}, "search_executed": 161, "search_executed_rate": 0.885, "attempts_total": 239, "format_repairs": 57, "sources_total": 1096, "latency_avg_seconds": 46.9}
+   本审查复算          = {"questions": 182, "scored": 111, "insufficient": 60, "unknown": 11, "error": 0, "search_executed": 161, "attempts": 239, "repairs": 57, "sources": 1096, "latency_avg": 46.9}
+   逐字段相等 = True
+   证据 JSON answer_statuses 是否含 error 键 = False（不含则 error=0 须由差额推得/或直接枚举计数）
+   docs\implementation\reviews\L02\L02-calibration-report-2026-10-05.md: sha256=fde58dfc2d8c814f7abc899d860283e639386dfc317bbaa46fc2a681ef5f03b1 bytes=9905 mtime=2026-10-05T00:11:50.843302
+   docs\implementation\reviews\L02\independent-review-2026-10-05.md: sha256=cdfc3949d1cabbf1faa1df1ece61e4a4fd99a97b3f5a2defb79e9df2f793e2b8 bytes=25239 mtime=2026-10-05T00:19:06.795695
+   docs\implementation\reviews\L02\L02-summary-6mimo-2026-10-05.json: sha256=9a6da7e13a67d321b27c50a0ed7dbb62d50d7a28dbb2a8ed09a5e8367fa6c9cf bytes=4737 mtime=2026-10-05T00:10:03.252490
+   docs\implementation\reviews\L02-freeze-2026-10-04.json: sha256=1cd126ab079ef7a1cf04414d347d8e0926510fc43a04367200b43437f3782d8a bytes=69648 mtime=2026-10-05T00:12:03.536212
+   探针内建搜索调用=28；6 家合计=218；合计=246（报告 §2.5: 218 + 28 = 246）
+
+====================================================================================================
+STEP 5f — 比较组 2（MiniMax 旧产 5 家）组内统计
+====================================================================================================
+   5 家 / 151 题 statuses={'scored': 143, 'unknown': 4, 'not_applicable': 1, 'insufficient_evidence': 3} attempts=164 repairs=13 executed=150 response_id=151
+   scored 率=94.7%（与 MiMo 组 61.0% 不可跨比：不同公司/模型/时段）
+
 DONE

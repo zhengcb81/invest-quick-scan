@@ -13,7 +13,7 @@
 - **000738 单跑**：22:16:06Z – 22:34:36Z（1,109.9s，18.5 分钟）。
 
 ## 2. 校准判定（LIVE-03/04）
-数据来源：`python -X utf8 summarize.py <out.json> mimo`（provider 过滤=6 家批口径，r1-F4 修复）；证据文件 `L02-summary-6mimo-2026-10-05.json`（本目录）。
+数据来源：`python -X utf8 summarize.py mimo`（**stdout 真只读复现**，provider 过滤=6 家批口径，r1-F4/G2-R3；落盘变体 `summarize.py <新路径> mimo` 带护栏——拒写 run 目录内、拒覆盖已存在文件）；证据文件 `L02-summary-6mimo-2026-10-05.json`（本目录，事故前落盘）。
 
 ### 2.1 MiMo 批总览（6 家 182 题终态）
 | 指标 | 值 |
@@ -38,7 +38,7 @@
 | 万科企业 02202 | HK·mature | 33 | 27(82%) | 5 | 1 | 30 (91%) | 12 | 53.6s |
 | Generate Biomedicines | US·scaling·医疗 | 29 | 16(55%) | 11 | 2 | 28 (97%) | 9 | 46.9s |
 
-观察：HK 大盘成熟公司 scored 率最高（82%）；CN 小盘成熟工业最低（38%）。**所有 unknown 均非 error、均留痕**；未触发搜索的题一律 fail-closed 为 insufficient_evidence，无伪分。**每格 n=1（r1-F11）：分层表仅作方向性观察，不构成统计推断**。
+观察：HK 大盘成熟公司 scored 率最高（82%）；CN 小盘成熟工业最低（38%）。**所有 unknown 均非 error、均留痕**；未触发搜索的题一律 fail-closed 为 insufficient_evidence，无伪分。**每格 n≤2（r1-F11、G2-F4：5 个分层格中 CN·mature·工业 n=2（002122 38% vs 000738 59%），其余 n=1）：分层表仅作方向性观察，不构成统计推断**。
 
 ### 2.3 000738 航发控制（第 6 家）——单次失败 + stale 跳过 + 重跑成功（r1-F5/F6 修正）
 - **首次且唯一在案失败**：MiniMax 窗口1（run-log 条目 exit=1、无输出、730.6s；日志 19:46:42 local）——运行有真实派发但回执未落盘，**账本缺口 ≈29 请求（上界）**。
@@ -63,11 +63,11 @@ owner 核对 MiMo 账单：**本批搜索插件费用高于模型调用费用**�
 - **LIVE-03 分类型/模型报告**：本批单模型（mimo-v2.6-flash），按市场（CN/US/HK）与生命周期分层报告覆盖与 unknown；repeat 稳定性数据顺延（如实声明，G2 按修正后范围裁决）。
 - **REV-01/02/03（可复现）**：冻结配置 + runner/summarize 过滤命令入档（§5），证据文件 `L02-summary-6mimo-2026-10-05.json` 与 run-log 逐公司对应（r1 独立复算零漂移）。
 - **UNI-05 / SC-07**：大池维护不依赖高分（W13 已验证）、N/A 分母规则（C03 契约）——引用既有 verified 证据，本批不重测。
-- **REV-06（G2 核心 case）**：校准分母可核验（§2.2 + 证据文件可复现）；行业/生命周期 cohort 已分层呈现（**每格 n=1，仅方向性**）；恢复观察独立（300327 declining 含恢复题，低分不删池——本批 `probe:<listing_key>` 零池写入实体策略，r1 对 6 份+探针 entity_id 全部核验 ✓）；费用/失败全留痕（含 000738 缺口披露）；**"用户排除"维度本批为零操作、未单列（r1-F10 记录）**。原文"60 家公司校准回执"按 amendment-4 缩减为 6 家 + 原 60 家签名名单归档保留（r1 核验 60/60 成员一致，系工作文件投影）——G2 按修正后范围裁决。
+- **REV-06（G2 核心 case）**：校准分母可核验（§2.2 + 证据文件可复现）；行业/生命周期 cohort 已分层呈现（**每格 n≤2，仅方向性**）；恢复观察独立（300327 declining 含恢复题，低分不删池——本批 `probe:<listing_key>` 零池写入实体策略，r1 对 6 份+探针 entity_id 全部核验 ✓）；费用/失败全留痕（含 000738 缺口披露）；**"用户排除"维度本批为零操作、未单列（r1-F10 记录）**。原文"60 家公司校准回执"按 amendment-4 缩减为 6 家 + 原 60 家签名名单归档保留（r1 核验 60/60 成员一致，系工作文件投影）——G2 按修正后范围裁决。
 
 ## 5. 复现命令
 - `python -X utf8 runner.py --phase primary --max-questions 325 --provider mimo --workers 6`（cwd=`StockQAbyLLM/pilot_runs/l02_2026-10-04`，密钥经用户级环境变量注入子进程）
-- `python -X utf8 summarize.py <out.json> mimo`（同目录，只读聚合；**`mimo` 过滤 = 本报告 §2.1 口径**，无过滤为含 MiniMax 旧产的全量口径）
+- `python -X utf8 summarize.py mimo`（同目录，**stdout 输出、真只读**；`mimo` 过滤 = 本报告 §2.1 口径，无过滤为含 MiniMax 旧产的全量口径。**G2-R3 护栏**：如需落盘用 `python -X utf8 summarize.py <run 目录之外的新路径> mimo`——写入 run 目录内或覆盖已存在文件会被拒绝；2026-10-05 00:36:54 事故即因旧版无护栏、生产文件被误作输出路径，见 G2 审查报告与 progress.md 入档）
 
 ## 6. r1 审查处理记录（2026-10-05）
 | Finding | 级别 | 处置 |

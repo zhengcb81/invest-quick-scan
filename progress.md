@@ -1744,3 +1744,7 @@
 
 - **L02 独立审查 r2 = approved（报告链闭环）**：五核查点全过——数字逐格一致、amendment-5 时间线与探针交叉表验证（8 题未搜索→8/8 fail-closed 进分母属实）、UTC 锚点互证、审查者实跑 summarize mimo 命令逐字段复现、无新过度声称。4 条非阻断 INFO（端到端含 4 分钟批间间隔 62.8 分钟 vs 分段 58.5、error=0 需推得、filter 对无 attempt 文件纳入、≈29 单跑口径含修复硬上界≈58）→ 转入 G2 材料注明。
 - **W06 F1/F2/F3 跟进批次全绿**：RED 2 失败 → GREEN 16/16（F1 代次对齐门 C04 语义、F2 兼容门前置到 unknown/冷却 + resume-first 取舍 docstring、F3 IQS 17+9 过）→ ruff/black 净 → check_all ALL CHECKS PASSED。按施工卡纪律，独立审查并入里程碑合并审查，与 A/H bridge 批次一起提交。**L02→G2 依赖已全绿（L02✓ W03✓ W04✓ W09✓ W13✓）**，开始组装 G2 审查包。
+
+- **审查事故入档（2026-10-05 00:36:54 本地，待 owner 签认）**：G2 审查者验证复现命令时误把生产文件当 summarize.py 输出路径参数，`out/primary/CN_A_000672.json`（上峰水泥，MiniMax 组，1,321,279 字节）被 4,737 字节汇总覆盖，经 git/缓存/卷影核查不可逆；其余 10 份完好，L02 校准集 6 份 sha256 已由审查者记档（27FA72F2/BB882941/3D7DD0B2/DFA96E7D/B7A2E057/C1D6AD9D）。存留证据：审查者覆盖前 13 秒的复算日志（E7E535D6…，含 000672 q=31/statuses/attempts=33）+ run-log 逐题聚合。处置：summarize.py 护栏（拒写 run 目录内、拒覆盖已存在）已上；G2 包比较组 2 更正为 4 家 120 题；比较组 2 仅组内自检用途不变、不影响 6 家校准交付与 G2 实质检查；G2 裁决按其初步意见 needs_revision（P1 只读边界突破+完整样本损失），修复项=事故档+清单更正+护栏，不重跑。
+
+- **G2 r1 台账更正批（F3/F4/F5 随行修正，2026-10-05）**：findings.md 三处口径更正（57/46.9s/40分钟UTC、218+28 搜索、000738 单次失败+跳过叙事）+ task_plan Phase 75 三处同批更正 + 报告 §2/§5/两处 n≤2 + 包三处 n≤2/F5 旁注（样本文件 21:22:23Z 先于 amendment-4 记录 21:26:31Z，冻结 sha 不变）+ summarize CLI 支持 stdout 单参 `mimo` 调用（真只读）。另修复 findings.md 一个 HEAD 既有 NUL 字节（历史 `0 转义残留，会话早期同类 bug）。本批为台账同步，不改任何数据/校准结论。

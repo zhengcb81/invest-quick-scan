@@ -1445,7 +1445,7 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 
 - **ID 字符集是写前门的第一道考题**：我用 `uuid4().hex` 的兄弟——带连字符的 `str(uuid4())` 构造 `IVR_`，而契约是 `^IVR_[A-Za-z0-9_]+$`（无连字符）→ 真实导入被写前门 exit2 拒绝（零写入，门是对的）。教训：**构造外部 ID 前先把契约正则抄下来当构造器的断言**，测试夹具（用 hex）已经示范了正确写法，真实构建却没对齐。
 - **"派生字段"和"owner 证明字段"必须分清**：coverage/属性映射从 store 投影注入（机械事实），evidence_ref/same_legal_issuer/decision_ref 必须来自 owner payload（证明）。审查的诚实性核心=派生只在缺失时注入、owner 提供的值送去校验而非改写——错值让 store 报错，绝不静默修正。
-- **heredoc 又写进真空字节**（第9踩，` ` 直接进源文件导致 SyntaxError: null bytes）：写含二进制字面量的测试时改用 `bytes([0xff,0xfe,0x00])` 构造，或干脆用 Write 工具。修复方式=字节级读改写整行。
+- **heredoc 又写进真空字节**（第9踩，`0` 直接进源文件导致 SyntaxError: null bytes）：写含二进制字面量的测试时改用 `bytes([0xff,0xfe,0x00])` 构造，或干脆用 Write 工具。修复方式=字节级读改写整行。
 - **回执无事件 = active**：`active_receipt_id` 的语义是"没有生命周期事件才算有效"（事件只在 retire/supersede/revoke 时追加）——新回执 events=[] 是正确状态，别误当成漏写事件。
 
 
@@ -1483,9 +1483,9 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 
 ## 2026-10-05 — L02 校准结果与搜索费用发现
 
-- **L02 逐题基线（MiMo，6 家 182 题）终态**：scored 111 (61.0%)、insufficient_evidence 60 (33.0%)、unknown 11 (6.0%)、error 0；搜索执行率 88.5%（161/182）；修复预算命中 ~45+；均延迟 ~51s/题；主批 45 分钟墙钟。分层：HK 万科 82% scored 最高，CN 天马 38% 最低；所有 unknown/失败留痕在分母（LIVE-04 合规）。
-- **owner 账单发现（重要）**：MiMo 本批**搜索插件费用 > 模型调用费用**（182 题触发 ~246 次内建搜索 ≈1.35 次/题）。指令：B01 全面评比必须综合搜索费用。设计含义：内建插件按次计费且每次题面都搜索；Brave/Tavily 外部检索解耦（计划既有设计）可能显著更省——B01 检索器对照的关键量化点。
-- **000738 两次静默失败第三次成功**：同一命令、无 stderr、无输出，跨 provider 复现两次后第三次自愈——间歇性缺陷，根因未定位，如复发需在 StockQA 层加 stderr 捕获/心跳诊断。
+- **L02 逐题基线（MiMo，6 家 182 题）终态**：scored 111 (61.0%)、insufficient_evidence 60 (33.0%)、unknown 11 (6.0%)、error 0；搜索执行率 88.5%（161/182）；格式修复 57 次（57/182=31.3% 的题，attempts 239，预算=1 未触顶）；均延迟 46.9s（attempt 加权，max 178.9s）；主批 40 分钟（真 UTC 21:31:46Z–22:11:58Z；原稿此处混入 5 家口径 45+/~51s/45 分钟，G2-F3 更正）。分层：HK 万科 82% scored 最高，CN 天马 38% 最低（5 个分层格 **n≤2**：CN·mature·工业 n=2，其余 n=1——G2-F4）；所有 unknown/失败留痕在分母（LIVE-04 合规）。
+- **owner 账单发现（重要）**：MiMo 本批**搜索插件费用 > 模型调用费用**（本批 6 家触发 218 次内建搜索 ≈1.20 次/题，加探针 28 次共 246；MiMo 请求全口径 275=239+36——原稿"182 题触发 ~246"混入探针，r1-F7/G2 口径更正）。指令：B01 全面评比必须综合搜索费用。设计含义：内建插件按次计费且每次题面都搜索；Brave/Tavily 外部检索解耦（计划既有设计）可能显著更省——B01 检索器对照的关键量化点。
+- **000738 单次失败+批内跳过+重跑成功（r1-F5 更正口径）**：首跑失败在 MiniMax 窗口1（exit 1、无输出、730.6s，run-log 在案）；MiMo 批因 stale done 条目**跳过**该家（planned=153=182−29 为证，原稿"两次静默失败跨 provider"系误读已否定）；移除 stale 条目后重跑成功（1,109.9s）。根因未定位（单次失败、复跑即成），如复发需在 StockQA 层加 stderr 捕获/心跳诊断；账本缺口 ≈29 请求（单次口径，含修复硬上界 ≈58）。
 - B2a/L01/L02 三批实测节奏：MiMo ~50-90s/题、MiniMax-M3 ~9s/题（B2a 口径）——批量规模的模型选择要在 B01 费用对照里同时算时间与两厢费用。
 
 - **A/H bridge 真实导入 fail-closed（数据缺陷，待 owner 裁决）**：签收表 122 行仅 121 个不同证据 sha——上海医药被记了两行：(600849,02607) 旧 A 代码 + (601607,02607) 现 A 代码，同引一份 cninfo 年报 PDF(1225062873)。官方核实：上药现代码 A=601607/H=02607（SSE 2025-03-28 公告 'code changed from 600849' + HKEX 2025-09-15 文件 + SSE 公司页），(601607,02607) 正确、(600849,02607) 为过期代码残留，违反签署的证据政策（一份 PDF 只证明一个发行人一对代码）。导入器按 sha_conflict 拒收、交易回滚、零写入（真实库 data/quick_scan/scan.sqlite 已迁 v5、216 候选完好、bridge=0 实测）。owner 需删除该行并把 stats.rows 改 121 重新签收后才能导入；不自作主张改签收文件。

@@ -421,6 +421,113 @@ def main():
           f"sha_match={match}")
     p("   （sha 变体若均未命中，仅说明哈希口径不同；判定以 question_ids 逐一相等为准）")
 
+    p("\n" + "=" * 100)
+    p("STEP 5 — 归档名单 / run-log 零漂移 / 证据 JSON 逐字段对照 / 文件字节绑定")
+    p("=" * 100)
+    # 5a 60 家签名归档 vs 冻结 entities
+    signed = load(os.path.join(RUN, "companies_60_full_signed.json"))
+    ent = fz["sample"]["entities"]
+    if isinstance(signed, dict):
+        rows = signed.get("entities") or signed.get("rows") or signed.get("companies")
+    else:
+        rows = signed
+    ks_signed = [r["listing_key"] for r in rows]
+    ks_freeze = [r["listing_key"] for r in ent]
+    p(f"   归档 60 家: n={len(ks_signed)}; 冻结 entities: n={len(ks_freeze)}; "
+      f"成员逐一相同={ks_signed == ks_freeze}; 集合相同={set(ks_signed) == set(ks_freeze)}")
+    diff = [r for r in rows if any(
+        r.get(k) != next(e for e in ent if e["listing_key"] == r["listing_key"]).get(k)
+        for k in ("name", "market", "probe_entity_id"))]
+    p(f"   name/market/probe_entity_id 值差条数={len(diff)}")
+    # repeat
+    rep20 = load(os.path.join(RUN, "repeat_subset_20_signed.json"))
+    rk = rep20 if isinstance(rep20, list) else (rep20.get("listing_keys") or rep20.get("keys"))
+    p(f"   repeat 签名 n={len(rk)} 与冻结一致={set(rk) == set(fz['repeat_subset']['listing_keys'])}")
+    p(f"   运行用 repeat_subset.json = {load(os.path.join(RUN, 'repeat_subset.json'))}")
+
+    # 5b run-log runs vs 产出
+    rl = load(os.path.join(RUN, "run-log.json"))
+    runs = rl["runs"]
+    p(f"   run-log runs 条数={len(runs)}; budget_note={json.dumps(rl.get('budget_note'), ensure_ascii=False)}")
+    drift = []
+    for r in runs:
+        outp = r.get("output")
+        if not outp:
+            continue
+        path = os.path.join(RUN, "out", outp.replace("primary/", "primary/"))
+        if not os.path.exists(path):
+            drift.append((r.get("listing_key"), "missing", outp))
+            continue
+        d = load(path)
+        if r.get("statuses") and r["statuses"] != {k: v["status"] for k, v in d["answers"].items()}:
+            drift.append((r.get("listing_key"), "status_mismatch"))
+        if r.get("answers") not in (None, len(d["answers"])):
+            drift.append((r.get("listing_key"), "answers_count", r.get("answers"), len(d["answers"])))
+    p(f"   run-log ↔ 产出 漂移项 = {drift} （应为空）")
+    p(f"   000738 历史失败条目（隔离备份中）:")
+    bk = load(os.path.join(REJ_ERR, "run-log.backup-before-repair.json"))
+    for r in bk.get("runs", []):
+        if r.get("listing_key") == "CN-A:000738" and not r.get("output_exists", True):
+            p(f"      {json.dumps({k: r.get(k) for k in ('listing_key','output_exists','exit','seconds','stderr_tail')}, ensure_ascii=False)}")
+    p(f"   隔离前备份 budget={json.dumps(bk.get('budget'), ensure_ascii=False)}")
+
+    # 5c 证据 JSON 逐字段对照
+    ev = load(os.path.join(IQS, "docs", "implementation", "reviews", "L02",
+                           "L02-summary-6mimo-2026-10-05.json"))
+    agg = ev["aggregate"]
+    mine = dict(questions=int(tot["q"]), scored=int(tot["scored"]),
+                insufficient=int(tot["insufficient_evidence"]), unknown=int(tot["unknown"]),
+                error=int(tot["error"]), search_executed=int(tot["exec"]),
+                attempts=int(tot["att"]), repairs=int(tot["rep"]), sources=int(tot["srcR"]),
+                latency_avg=round(sum(lat) / len(lat), 1))
+    p(f"   证据 JSON aggregate = {json.dumps(agg, ensure_ascii=False)}")
+    p(f"   本审查复算          = {json.dumps(mine, ensure_ascii=False)}")
+    p(f"   逐字段相等 = "
+      f"{agg['questions'] == mine['questions'] and agg['answer_statuses'].get('scored') == mine['scored'] and agg['answer_statuses'].get('insufficient_evidence') == mine['insufficient'] and agg['answer_statuses'].get('unknown') == mine['unknown'] and agg['search_executed'] == mine['search_executed'] and agg['attempts_total'] == mine['attempts'] and agg['format_repairs'] == mine['repairs'] and agg['sources_total'] == mine['sources'] and agg['latency_avg_seconds'] == mine['latency_avg']}")
+    # 证据 JSON 未列 error 键
+    p(f"   证据 JSON answer_statuses 是否含 error 键 = {'error' in agg['answer_statuses']}（不含则 error=0 须由差额推得/或直接枚举计数）")
+
+    # 5d 文件字节绑定
+    import hashlib as _hl
+    for rel in (os.path.join("docs", "implementation", "reviews", "L02",
+                             "L02-calibration-report-2026-10-05.md"),
+                os.path.join("docs", "implementation", "reviews", "L02",
+                             "independent-review-2026-10-05.md"),
+                os.path.join("docs", "implementation", "reviews", "L02",
+                             "L02-summary-6mimo-2026-10-05.json"),
+                os.path.join("docs", "implementation", "reviews",
+                             "L02-freeze-2026-10-04.json")):
+        full = os.path.join(IQS, rel)
+        b = open(full, "rb").read()
+        p(f"   {rel}: sha256={_hl.sha256(b).hexdigest()} bytes={len(b)} "
+          f"mtime={datetime.fromtimestamp(os.path.getmtime(full)).isoformat()}")
+
+    # 5e 探针内建搜索调用数
+    pr2 = load(probe)
+    calls_probe = sum(len(r.get("web_search_calls") or [])
+                      for r in (pr2.get("execution_receipts") or {}).values())
+    p(f"   探针内建搜索调用={calls_probe}；6 家合计={int(tot['calls'])}；"
+      f"合计={calls_probe + int(tot['calls'])}（报告 §2.5: 218 + 28 = 246）")
+
+    # 5f MiniMax 组（比较组 2）
+    p("\n" + "=" * 100)
+    p("STEP 5f — 比较组 2（MiniMax 旧产 5 家）组内统计")
+    p("=" * 100)
+    ms = Counter()
+    m_att = 0
+    m_rep = 0
+    m_exec = 0
+    m_rid = 0
+    for r in mini:
+        ms.update(r["statuses"])
+        m_att += r["attempts"]
+        m_rep += r["repairs_attempted"]
+        m_exec += r["exec_receipts"].get("executed", 0)
+        m_rid += r["with_rid"]
+    p(f"   5 家 / {sum(ms.values())} 题 statuses={dict(ms)} attempts={m_att} repairs={m_rep} "
+      f"executed={m_exec} response_id={m_rid}")
+    p(f"   scored 率={ms.get('scored',0)/sum(ms.values())*100:.1f}%（与 MiMo 组 61.0% 不可跨比：不同公司/模型/时段）")
+
     p("\nDONE")
 
 
