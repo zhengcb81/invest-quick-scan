@@ -1672,3 +1672,11 @@
 - 两表均 `closes=false` **待 owner 签收**（各自附签收动作清单）。
 - L02 获批"2600/5200 内直接跑"。
 - 本批写入：StockWiki 真实两库写入（C，authorized）+ IQS 3 草稿文件 + Phase 72 PWF。
+
+
+## 2026-10-04 — Phase 73：两表签收（六项决定）
+
+- **六项决定入档执行**：A/H issuer_id=b 按现态签（122 行 null+not_found 留后补）、30 对未确认**剔除**（核验=本就未入 rows，gaps 留档标 excluded）、4 纠偏+002142 证伪**接受**、D sha **信任**、**排除北交所**（872808 记 owner 排除；GENB/NVO 留未覆盖缺口）、HK "expected to commence" 注记**接受**。
+- 两表写 `decision_ref`+`owner_signoff`+`status=SIGNED`；**D 类 `closes_g2b_d=true` 证据闭合**（官方登记取代过渡种子）；A/H 证据签毕但实物（issuer_bridge 导入+平安实体）待建。
+- G2b 现状：A/B(US)/C/D ✅ 实物或签收；A/H=证据✅实物⬜。
+- 本批写入：IQS 两表终版+Phase 73 PWF。

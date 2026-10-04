@@ -1472,3 +1472,10 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **"官方列表"未必带日期列**：HKEX ListOfSecurities.xlsx、Nasdaq nasdaqlisted.txt 实测**无日期列** → 取表路径必须允许换源（SSE List Date、SZSE LIST_DATE、SEC Form25、公司年报），并把失败源逐条记进 `stats.sources.failed_or_unusable` 而不是静默跳过。
 - **过渡种子被官方表反杀**：59 条散文种子里可绑定的5条有2条假阳性（002747 把 H 股申请受理日当上市日、000547 摘了别家公司的牌）——**过渡种子与官方登记的交叉核对本身就是 D 类的价值证明**，两条流必须都留档对比，不能只留一条。
 - **取表 agent 要给"写唯一文件"的硬边界**：一个 agent 中途曾用临时数组覆盖目标文件后重建并复审——**单文件写入边界+事后 schema/溯源审计**是联网 agent 的最低安全栏。
+
+
+## 2026-10-04 — 两表签收的执行设计教训
+
+- **"gaps 不进 rows"的设计让"剔除"决定零风险**：A/H agent 把30个未确认对放在 `gaps` 数组而非 rows，所以 owner 的"剔除"执行=纯核验（断言 rows 里没有它们）+ 给 gaps 标 `owner_disposition`，不用删数据。教训：**取证类表格把"已确认"与"待确认"物理分开存放**，下游的剔除/排除决定就不需要破坏性操作，全程可审计。
+- **owner 口头决定要落成机器可读字段**：每项决定写成 `owner_signoff.decisions` 键值对 + `signed_by`（原话引用）+ `decision_ref`（供下游回执引用），而不是只写在 PWF 散文里——导入器和后续审查只认结构化字段。
+- **"排除北交所"这类范围决定要双向记录**：既记 `bse_excluded_by_owner=true`，也把**未覆盖的显式清单**（`uncovered_gaps: [GENB, NVO]`）留下——排除≠消失，缺口必须仍然可见。
