@@ -1761,3 +1761,5 @@
 - **A/H 整改批全绿（待跟进复审）**：P2-1 decision_ref 格式+expect 精确匹配、P2-2 v4→v5 两态迁移测试、P2-3 report --source 逐 sha diff+sha_manifest_digest、LOW-2 scan_eligible 命名拒收、LOW-3 --report 回执、LOW-4 handoff 12→17（补本批3文件+W06对，scope_ref 注依据）、LOW-5 docstring 121/122 溯源、INFO QuickScanStoreError 捕获；LOW-1（authoritative:0 零键）接受不改——改签会破坏 AHB_55b79eb9 批次哈希绑定，理由入卡。复跑：17/17、ruff/black 净、check_all ALL CHECKS PASSED。
 
 - **A/H r2 终裁 approved → 隔离提交 → 队列③关闭（2026-10-05）**：r2 独立复跑全项（check_all 923=917+6 自洽、真实库只读 report --source diff_zero=true/DB 哈希 D0D51CBE 前后不变、P2-1/2/3 探针逐一验证、handoff 17 路径与 Phase 77 引用确认）；测试头 INFO-4 顺手修正后 **StockWiki `01a4289`**（恰 6 文件：本批 5 + handoff）。**owner round-41 双签**：「Q06 卡确认，两取舍签认」= Q06 收尾卡转正 + W06 case② 豁免与 F2 resume-first 两处取舍正式签认（原非阻断遗留关闭）。**Q06 开工即刻开始。**
+
+- **owner 指令（round-42）：手头任务收尾+PWF 更新后暂停**。收尾状态：A/H 批完全关闭（StockWiki `01a4289` + IQS `3bd3787`/`92a4acd`）、G2 verified（M2 关门）、W06 verified、双签入档（Q06 卡+两取舍）；**Q06 卡转正+开工侦察完成**（绑定点/题循环/API 面已锁，Phase 78 载明恢复点=签名精读→钩子契约→6 条 RED）。所有仓库工作树干净（仅既有杂物）、后台 agent 全部收工。目标暂停于 Q06 实施前的干净断点。

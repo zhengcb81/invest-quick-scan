@@ -1094,6 +1094,15 @@ Status: both_tables_signed; D_evidence_closed; AH_evidence_signed_bridge_import_
 - [x] **G2b 类别现状**：A(US)✅ 实物、B(US)✅ 实物、**D ✅ 签收闭合**（官方登记表取代过渡种子地位）、C ✅ 实物；**A/H 证据已签但实物待建**（`quick_scan_issuer_bridge` 表+导入+平安 A/H 实体——通授覆盖，下一施工项）。
 - [ ] 队列：① **L02 冻结**（owner 已批 2600/5200 内直接跑——表格已签不再阻塞）→ ② L02 执行 → ③ A/H bridge 导入批次（G2b 最后实物）→ ④ W11 → ⑤ W06 跟进。等 owner：MiniMax 对账（B2a 406/771）、叙事=保留（已定）。
 
+### Phase 78: Q06 收尾批次（公共 CLI 绑定真实 work item + issuer 去重）
+
+Status: card_confirmed_and_recon_done; paused_by_owner_before_implementation
+
+- [x] 施工卡转正：`reviews/IQS-lane/Q06-closeout-card-draft-2026-10-05.md` —— **owner round-41 确认**（「Q06 卡确认，两取舍签认」，连带关闭 W06 case② 豁免与 F2 resume-first 两处取舍签认）。开工前置全绿：G2 r2 verified + C04✓。
+- [x] 开工侦察：绑定点锁定 `src/runners/llm_runner.py:479-491` seam（QAEngine 构造与 `bind_quick_scan_budget` 上下文之间，budget_store 已在 :398 创建）；QAEngine 题循环 = `process_questions`（qa_engine.py L131-171，逐题 process_question、失败→error 结果继续）；Store 生命周期 API 面清点：`create_or_attach`(L1419)/`claim`(L1538)/`prepare_attempt`(L1562)/`record_attempt_outcome`(L1730)/`recover_expired`(L1867)/`note_late_receipt`(L1920)——钩子取向：QAEngine 可选 per-question 生命周期（零注入行为逐字节不变），runner 注入 store 绑定。
+- [ ] **恢复点（下次会话第一动作）**：读 4 个 store 方法精确签名 + QAEngine `__init__`/`process_question` → 敲定生命周期钩子契约 → 按卡写 6 条 RED（R1 无钩子等价 / R2 claim-终态-幂等 / R3 并发双领 / R4 租约过期+迟到拒覆 / R5 issuer 去重 vs listing 分立 / R6 公开 CLI 端到端）→ GREEN → 门（定向+全量+mypy 钩子链标准）→ 独立审查两轮 → StockQA 隔离提交（写前报告=本卡）。完成即 W11 解锁（deps 含 Q06）。
+- 禁改提醒：transport 协议、Q09 预算上下文、Q07 checkpoint（下一卡）、frozen L02 资产、叙事三提交。
+
 ### Phase 77: G2b A/H bridge 导入批次（G2b 最后实物）
 
 Status: COMPLETE — committed_StockWiki_01a4289; two_round_review_approved
