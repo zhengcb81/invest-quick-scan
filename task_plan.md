@@ -1096,7 +1096,7 @@ Status: both_tables_signed; D_evidence_closed; AH_evidence_signed_bridge_import_
 
 ### Phase 77: G2b A/H bridge 导入批次（G2b 最后实物）
 
-Status: imported_and_review_approved; fix_batch_complete; awaiting_followup_then_commit
+Status: COMPLETE — committed_StockWiki_01a4289; two_round_review_approved
 
 - [x] 施工卡：`reviews/IQS-lane/G2b-AH-bridge-import-card-2026-10-05.md`（owner 通授覆盖；5 文件范围+TDD 矩阵+零副作用边界）。
 - [x] schema v5 + `quick_scan_issuer_bridge.py` + CLI 双子命令 + 11 测试 RED→GREEN；全量门 check_all 首轮 907 passed。
@@ -1105,7 +1105,7 @@ Status: imported_and_review_approved; fix_batch_complete; awaiting_followup_then
 - [x] **真实导入**：121 行 exit0（batch AHB_55b79eb9…）、replay 0/121 幂等、DB 全核验（601607 恰1/600849 零/216 候选/零副作用）。
 - [x] 独立审查 **approved**（P0/P1=0；根因独立证实=原件恰1个重复 sha 3b556e17…；DB↔源 0 差异；check_all 917）。
 - [x] **整改批**（P2×3+LOW 全处置，含 handoff 12→17 在册、LOW-1 接受留档理由）→ 复跑 17/17 + check_all ALL CHECKS PASSED → 卡片整改节入档。
-- [ ] 跟进复审（原审查者）→ StockWiki 隔离提交（仅本批文件，精确暂存）→ 本 Phase 关闭。
+- [x] 跟进复审（原审查者）**终裁 approved**（独立全量 check_all 923=917+6 自洽、真实库只读 report --source diff_zero、范围恰 6 文件、LOW-1 不改理由确认、handoff 17 路径与 Phase 77 引用确认）→ 测试头 INFO-4 顺手修正 → **StockWiki 隔离提交 `01a4289`**（6 文件：本批 5 + handoff 在册 12→17）。**本 Phase 关闭；G2b A/H 桥实物收口（G2b 最后实物）。**
 
 ### Phase 74: L02 冻结实装 + 冒烟 + 窗口1（含中断与恢复，进行中交接）
 
