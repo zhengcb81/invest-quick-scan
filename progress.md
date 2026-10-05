@@ -1767,3 +1767,5 @@
 - **Q06 接线完成（全量门后台跑）**：`load_identity_snapshot`（W04 导出→15 参数身份映射+文件 sha）+ run/_run_single_company 线程 + QuickScanWorkLifecycle 注入 QAEngine；回归 108 passed；ruff 净。全量 pytest + mypy 后台中。
 
 - **Q06 四重门全绿（最终字节）**：black 0、ruff 0、mypy 0（3 源文件含 main_with_llm）、全量 pytest **872 passed/4 skipped/0 errors**（标准旗标 `-p no:base_url`——首跑 18 个第三方插件 ScopeMismatch 系命令缺旗标，非代码回归，已记录）、Q06 定向 6/6。改动恰 4 文件（qa_engine/llm_runner/main_with_llm/test_q06）。待独立审查→StockQA 隔离提交。
+
+- **Q06 审查 r1 = needs_revision（3×P0）+ owner 签认放宽 store 正则**：门全绿复跑（872/0、mypy 0、回归 97、反证 18 错=缺 -p no:base_url 旗标）、R1 零注入等价通过、golden 映射一致；P0×3（json.dumps(List[Question]) 构造崩、rf-前缀与 ENT_连字符被 store 拒致 100% 拒派发、attempt 缺 mark_send_intent 致终态不落+租约过期重复派发违反 JOB-10/I12）。owner round-51 结构化签认「签认：放宽正则（推荐）」→ store _ENTITY_ID 放宽含连字符。整改计划入卡（P0 修法+P1/P2/LOW 清单），下轮 RED 先行。

@@ -1,4 +1,12 @@
-# Q06 收尾批次施工卡（写前报告 — owner 已确认，2026-10-05 round-41；实施完成待审）
+# Q06 收尾批次施工卡（写前报告 — owner 已确认，2026-10-05 round-41；r1 needs_revision 整改中）
+
+## 审查 r1（needs_revision，3×P0）与整改计划（2026-10-05）
+审查报告 `docs/implementation/reviews/Q06/independent-review-2026-10-05.md`：门全绿复跑（872/0、mypy 0、定向 6、回归 97、反证 18 错=缺 `-p no:base_url` 旗标）+ R1 零注入等价通过 + golden 映射逐项一致；但：
+- **P0-1**：`json.dumps(List[Question])` 构造即 TypeError（生产路径一题跑不到）；loader/CLI/构造段零测试。→ 修复：指纹改为题面文本规范 JSON 的 sha256（64-hex，兼修 P0-2a 的 `rf-` 前缀违规）；补 loader/CLI/runner 构造 RED。
+- **P0-2b**：真实 `ENT_<uuid>` 连字符被 store `_ENTITY_ID` 拒 → **owner 已签认放宽（round-51 结构化决定「签认：放宽正则（推荐）」）** → 改 store 正则+反例测试+卡记签认；loader 补 `payload.entity_id` 与 `--entity-id` 互校（P1-2）+ provisional 多不同 refs fail-fast（P1-3）。
+- **P0-3**：attempt 流缺 `mark_send_intent` → 终态永不落、租约过期重复派发（违反 JOB-10/I12）。→ 修复：before_question 补 `mark_send_intent`（transport 语义：prepare→mark 在发送前；`budget_route`/`budget_policy` 无预算上下文时成对 None，有则取真实 policy route/quota——runner 注入真实 route 字段替换占位常量）；after 成功仅在结果携带真实 response 事实时记 `response_available`+真 receipt_sha256，否则**如实记 `unknown`**（禁臆造 http 200）；after_failed 记 `unknown`（非 confirmed_failure，无 provider 拒绝证据）；补 RED：成功后 work_item=result_ready 且租约过期不重派发。
+- **P1**：R3 改真并发（线程/子进程）、R6 改真 CLI 端到端（`--identity-snapshot` 路径到 work_item 回执关联）、lifecycle 支持 scope/scope_id 参数（JOB-11 绑定路径）、source_binding_version 硬编码=1 入 docstring+卡披露（W04 导出不含该字段，披露为已知限制）。
+- **P2/LOW**：拒绝结果摘要计数（qa_engine 完成行区分成功/拒绝）、prompt_sha256 docstring 对齐公式、before_question 不得抛出契约入 docstring。
 
 ## 实施完成记录（2026-10-05，四重门全绿）
 - **改动 4 文件**：`src/core/qa_engine.py`（可选 `work_item_lifecycle` 钩子：claim 拒绝→error 结果不派发、success→after、失败→after_failed；缺省 None 逐字节不变）、`src/runners/llm_runner.py`（`QuickScanWorkLifecycle` 类 = create_or_attach→claim→prepare_attempt→record_outcome 全生命周期 + `load_identity_snapshot` W04 导出映射 + `run(identity_snapshot=)` 校验与线程 + entity_id 收窄）、`main_with_llm.py`（`--identity-snapshot` CLI 参数 + 透传）、`tests/unit/test_q06_work_binding.py`（6 场景 RED→GREEN）。
