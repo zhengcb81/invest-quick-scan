@@ -22,3 +22,8 @@
 - StockWiki：定向 pytest 全绿 → `ruff`+`black(100)` 净 → `check_all.sh` 全绿（上次 907 passed 基线）；
 - IQS：定向 `pytest tests/test_freshness_and_jobs_contract.py` 全绿 + `git diff --check`；
 - 本批测试结果与 SHA 记入 progress.md；独立审查可并入后续里程碑合并审查（小任务不逐卡开审）。
+
+## 审查轮修订（2026-10-05，r1 needs_revision 之后）
+- **F1 范围扩展**：原卡写"resume 前"，r1 审查确认原 finding 字面是"复用/恢复前"（C04 门同时罩 reuse）→ 补 **P2-1 reuse 门**（work_item 存在且代次≠expected + fresh 观察 → dispatch/generation_mismatch + 反例测试）；case ②（无 work_item 不判冲突，C04 字面会 dispatch 的分歧）记入 `_field_decision` docstring 点 4，随 F2 的 resume-first 取舍一并留 owner 签认。
+- **LOW 一并整改**：LOW-1（compat 系 reasons 追加 `status_x` 归因，不再替换）、LOW-2（不兼容分支 freshness 防御求值，未来/非法日期不再中止整计划）、LOW-4（单次求值）；LOW-3（结果+SHA 记 progress）已完成。
+- 复跑证据：freshness 20/20、ruff/black 净、`check_all` ALL CHECKS PASSED；三文件 SHA 见 progress.md 同批记录。
