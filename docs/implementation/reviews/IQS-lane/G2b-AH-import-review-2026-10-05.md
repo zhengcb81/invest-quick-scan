@@ -223,12 +223,22 @@ r1 已记档的 schema/store 两文件 SHA-256 未变（diff 与 r1 一致）；
 - **P0/P1/P2：无**。r1 三项 P2 全部闭合（证据见 10.1）。
 - **LOW：无新增**。r1 LOW-2/3/4/5 已闭合；LOW-1 按理由接受留档。
 - **INFO（本轮新增注记，均不阻断）**：
-  - INFO-4：测试文件头 docstring 仍写「signed 122-row」（陈旧一句，模块 docstring 已更正）。
+  - INFO-4：测试文件头 docstring 曾写「signed 122-row」——收口提交 `01a4289` 已更正为「121 rows after the owner plan-A correction … originally 122 — see the archived original」并注明 r2 扩展，**已闭合**（见 10.7）。
   - INFO-5：`decision_ref_mismatch` 在 `import_issuer_bridge` 内先于**其自身** DB 连接，但 CLI handler 在调用前先跑 `store.migrate()`——v5 真实库上 migrate 为只读提前返回（零写入，本轮已实证哈希不变）；仅在「未迁移旧库 + decision_ref 不符」组合下会先执行迁移 DDL 再拒收（迁移是加法 DDL、非桥表写入，且该组合不在本批路径内）。
   - INFO-6：handoff `changed_paths` 停留更早批次、文件尾换行缺失（既有/外观，非声称范围）。
   - r1 INFO-1（content_sha256 为证据 PDF 哈希、导入器只验格式）为设计事实，维持不变，不视为待整改项。
 
 **r2 裁决：approved。** 整改与 r1 findings 逐项相符且有独立复跑证据；范围 6 文件合规；LOW-1 不改理由成立；门 923 全绿。可按此裁决进行隔离提交。
+
+### 10.7 收口附记（提交后核验，2026-10-05）
+
+按裁决隔离提交后我做了最后一次新鲜度核验（收口确认阶段）：
+
+- `01a4289`「feat(quick-scan): G2b A/H issuer-bridge import …（two-round review approved, check_all 923; handoff authorized_paths 12→17）」父 `0d6adf3`，**提交恰含 6 文件**（M handoff / M cli_parsers / M schema / M store + A issuer_bridge / A tests），`git diff 0d6adf3 01a4289 --stat` 与 r2 §10.3 的工作树 diff 逐文件一致（409/49/31/4/11 行），工作树干净、无遗留 untracked。
+- 测试文件头部 3 行 docstring 更新（121-after-plan-A 表述 + r2 扩展说明）——17 个测试名与断言主体不变，复跑 **17 passed**（2.65s）；即 INFO-4 随之闭合。
+- 只读复核未变：scan.sqlite 仍 `D0D51CBE…`、修正版已签 JSON 仍 `55B79EB9…`。
+
+**批次收口：approved（r1 + r2 终裁），StockWiki 提交 `01a4289`。**
 
 ---
 *方法声明：所有数字为本审查者独立复算/复跑所得；真实库仅只读访问（mode=ro，前后哈希比对）；行为探针全部使用临时库并已清理；未联网、未调 LLM；本报告为本批唯一写入文件（UTF-8 无 BOM）。r2 段为同文件追加。*
