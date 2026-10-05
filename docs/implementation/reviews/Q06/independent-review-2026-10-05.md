@@ -185,3 +185,81 @@ dispatched_calls = 0 | status = error | metadata = {'work_claim_refused': True, 
 2. 明确 entity id 来源与格式：放宽 store `_ENTITY_ID` 需 owner 签认（属改 store 最小缺口），或在 loader 交叉校验 `payload.entity_id` 与 `--entity-id` 并 fail-fast；
 3. 生命周期补 `mark_send_intent` 后再 `record_attempt_outcome`，或改用与阶段机一致的收口 API，并为 `response_available` 提供真实 receipt_sha256（否则如实记 `unknown`，绝不写臆造 200）；
 4. 补三条红测：CLI/runner 构造段端到端（发现 P0-1/P0-2）、成功后 work item 达到终态且 `recover_expired` 不重派发（发现 P0-3）、loader 对真实 golden 的字段级断言。
+
+---
+
+# r2 聚焦复核（2026-10-05，同日第二轮）
+
+复核对象：r1 三 P0 + P1/P2/LOW 整改批（含实现者自报的一处额外发现）。r1 的门复跑结果仍为基准；本轮**重新独立执行**定向/全量门与全部语义探针，不采信整改描述。
+
+## 8.1 范围与门复跑（r2 实测）
+
+`git status --porcelain`（StockQA）实测：**4 个 tracked 被修改**（`main_with_llm.py` +7、`src/core/qa_engine.py` +69、`src/runners/llm_runner.py` +283、`src/utils/quick_scan_work_store.py` +5/-1）**+ 1 个新增测试**（`tests/unit/test_q06_work_binding.py`）= 恰 5 文件；untracked 杂物同 r1 不变。**store 改动逐行核对 = 仅 `_ENTITY_ID` 正则一行（`[A-Za-z0-9_]+` → `[A-Za-z0-9_-]+`）+ 3 行 owner 签认注释**，其余零改动；transport/预算/模型策略文件零改动。
+
+| # | 命令 | r2 实测结果 |
+|---|---|---|
+| G1' | `python -X utf8 -m pytest tests/ -q -p no:cacheprovider -p no:base_url -o addopts=` | **880 passed, 4 skipped, 0 errors**（89.56s，exit 0）——较 r1 基线 872 净增 8 = 新增测试数 |
+| G2' | `pytest tests/unit/test_q06_work_binding.py …` | **14 passed**（3.50s）；R3 并发测试单独连跑 **10/10 全过**（无 flake） |
+| G3' | `black --check --line-length 100`（5 文件） | exit 0，`5 files would be left unchanged` |
+| G4' | `ruff check`（5 文件） | exit 0，`All checks passed!` |
+| G5' | `mypy src/core/qa_engine.py src/runners/llm_runner.py main_with_llm.py` | exit 0，`Success: no issues found in 3 source files` |
+
+## 8.2 三 P0 修法核对（diff 审读 + 独立探针，逐项对照 r1 §7 建议）
+
+**P0-1（构造崩溃）— 已修，与建议 1 相符。**
+`routing_fingerprint_for(questions)`（llm_runner L42-53）取题面文本列表的规范 JSON sha256 → 实测 `b22136ba…68fd`，64-hex ✓；构造点（L759）已无 `json.dumps(List[Question])`。loader 覆盖：`test_loader_golden_shape_and_entity_crosscheck`（字段映射 + 文件字节 sha 独立复算 + 错 entity 互校 raise + 不支持版本 raise）✓，我复跑通过。
+**我的独立复核（loader 对真实 golden）**：`load_identity_snapshot(GOLDEN, expected_entity_id=<golden entity>)` → payload 字段齐备、`identity_snapshot_sha256 == sha256(文件原始字节)`（`0efc2c04…e5d2f`，与 r1 一致）、错误 entity → `ValueError: … does not match --entity-id …` ✓。
+
+**P0-2（参数格式 100% 拒派发）— 已修，与建议 2 相符。**
+(a) store `_ENTITY_ID` 放宽含连字符（owner 签认注释入码）；实测 `_REAL_UUID_ENTITY = ENT_1b2a4d3e-0000-4a1b-8c2d-000000000001` 经 create_or_attach **落库成功**（r1 探针 C3 的 `invalid entity_id` 已消除）；`rf-` 前缀去除，构造点与默认值均为 64-hex（r1 探针 C2 的 `invalid routing_fingerprint` 已消除）。
+(b) fail-fast：`load_identity_snapshot(expected_entity_id=)` 由 `run()` 传入 `--entity-id` → 我的 CLI 实测：entity 不匹配时**进程 exit 1**（fail-fast，不带病运行）。
+
+**P0-3（终态从不记录 + 恢复路径把已发送记成未发送）— 已修，与建议 3 相符。**
+- `before_question` 在 `prepare_attempt` 后补 `mark_send_intent`（同 try 内；失败 → 拒绝且不派发）。**位置核对**：意图提交在 claim/prepare 之后、返回 `claimed=True` 之前 → 满足"dispatch 前未完成 claim 不得发送"且"发送前必有 send_intent"。探针 B3：claim 后 work=`leased`、attempt=**`send_intent`**（r1 为 `prepared`）。
+- **unknown 语义核对**：`after_question`/`after_question_failed` 均记 `outcome="unknown"`，`http_status_code=200` 代码已删（diff 确认）；store 对 unknown → attempt=`uncertain`、work_item=`uncertain` **清租约**。探针 B4：work=`uncertain`、attempt=`uncertain`、`lease_token=NULL`。
+- **R4 双路径断言核对**（`test_r4` L171-218）：(a) 仅 claim 未发送 → `recover_expired → pending` → 新 worker 可领（我的独立探针 F1：`pending` + re-claim True）；(b) 经 lifecycle 已发送 → `recover_expired → uncertain`（探针 E3：attempt 停在 `send_intent` 时恢复也为 `uncertain`，**永不回 pending**）→ 再 claim 拒绝 `work_item_not_pending`（探针 E5）+ 迟到 `record_attempt_outcome` 被 fenced（`pytest.raises`，我复跑通过）。
+- **r1 §7 建议 4 的三条红测**：`test_p0_1`（指纹函数化）、`test_p0_3`（成功后 status ∉{pending,leased} 且再领被拒——r1 字节下必红）、loader 测试 → 均在并复跑通过。
+
+**端到端复证（本审查独立执行，替代 r1 无法做的生产路径验证）**：用 `test_quick_scan_cli` 的离线假传输 harness 自建一次**真实 CLI 运行**（`main_with_llm.main()` + `--require-search --entity-id <W04 uuid> --identity-snapshot <真实 golden>`，零真实网络）：
+- RUN1：**exit 0**、HTTP 调用 1 次、`quick_scan_work.sqlite` 落 1 条 work item（golden entity、scope=entity、status=**uncertain**）、attempt=uncertain、摘要"成功: 1/1"、答案 scored 8 → **r1 的"生产激活跑不通"已不复存在**；
+- RUN2（同参重跑）：**exit 1**、HTTP 调用总数仍 1（**零重复派发**）、摘要"成功: 0/1（work拒绝未派发 1）"（P2-2 生效）、答案=拒绝说明、work 仍 uncertain、attempt 仍 1 条 → JOB-10/I12 达成；
+- RUN3（`--entity-id` 与快照不符）：exit 1 fail-fast ✓。
+
+## 8.3 P1 / P2 / LOW 整改核对
+
+| r1 编号 | 修法 | 复核结论 |
+|---|---|---|
+| P1-1 R3 | `threading.Barrier(2)` + 双线程真并发，恰一领一拒 | ✓ 真并发；单独连跑 10/10 稳定 |
+| P1-1 R6 | `test_r6_public_cli_threads_identity_snapshot`（monkeypatch `LLMRunner.run` + sys.argv 断言三参线程） | **部分交付**：argparse→`run()` 接线级；非 `test_quick_scan_cli` 入口端到端、无回执 work item 关联（见 8.5 P2-3）。方法已在卡 L64 披露（措辞"真 CLI 端到端"偏大） |
+| P1-2 | loader `expected_entity_id` 互校 + `run()` 传入 | ✓（单测 raise + 我的 CLI RUN3 exit 1） |
+| P1-3 | provisional 多不同 refs loader fail-fast、verified 同数据放行（同一测试双断言）+ `source_binding_version=1` 入 docstring（llm_runner L97-100）与卡 L64 披露 | ✓ 双断言真绑定，复跑通过 |
+| P1-4 | lifecycle 增 `scope/scope_id`（默认回落 entity_id）+ `test_r5b` 绑定路径证明 listing 与 issuer 分项分立 | ✓ 复跑通过；我的探针 G1：entity 与 security 两 scope 各 claim 成功且 work_item 互异 |
+| P2-1 | run_id=UTC 派生、scan_id="scan-l02"、prompt_sha 公式 `sha(identity_sha\|题面)`、before 不抛出、uncertain/Q07 升级路径全部入 docstring | ✓ 逐条在 L91-107 |
+| P2-2 | `refused_count` 独立计数，`成功 = processed − refused`，refused>0 时括注 | ✓ 零注入保真：无钩子时探针 H1 输出 `批量处理完成，成功: 1/1`（与原字节一致）；真 CLI RUN2 显示 `成功: 0/1（work拒绝未派发 1）` |
+| 额外发现 | `request_cache_key` 补 `work_item_id`，按 transport 同式（work_item_id+route_id+provider+model+prompt_sha 的 `sort_keys`/`separators` 规范 JSON sha，前缀 `REQ_`） | ✓ 与 `quick_scan_work_transport.py:417-430` 逐键逐参同式；探针 G1：跨 scope 两 attempt **request_cache_key 各异（COUNT(DISTINCT)=2）**，r1 潜伏的全局键冲突消除 |
+
+**R1 零注入等价（r2 复审）**：qa_engine 新增仅 `refused_count=0` 初始化、拒绝分支（钩子非 None 才可达）、`finish_batch` 摘要重构——无钩子时 `refused_count≡0`，摘要字符串与原式逐字符相同（探针 H1 实证）；全量 880 passed 佐证。
+
+## 8.4 签认、C04 对照与范围（r2 项 a/d/e）
+
+- **owner 签认三处在案**：`task_plan.md` Phase 78（L1107-1108「owner round-51 签认」+ 整改与额外发现记录）、store 源码注释（L28-30：「Hyphens accepted per owner sign-off (2026-10-05 round-51)」）、施工卡 L6/L61（结构化决定「签认：放宽正则（推荐）」）✓。
+- **C04 对照**：IQS `scripts/work_contract.py:163` `status ∈ {pending, leased, uncertain, result_ready} → resume_existing_work`——`uncertain` 语义与 C04 一致（resume 不重问）；状态机 `uncertain → pending` 仅在带回执对账证明时允许（L21/L246-249），不因租约过期自动回落 ✓。
+- **范围**：恰 5 文件（4 tracked + 1 新增测试）；store 仅正则行+注释；无网络/LLM/密钥触碰（全量与探针均离线，fake 传输）✓。
+
+## 8.5 r2 残余 findings
+
+- **P2-3（卡 TDD R6 未完全交付，措辞需对齐）**：卡 L53 要求"公开 CLI 端到端（`test_quick_scan_cli` 现有入口）+ **回执含 work item 关联**"。实际交付为 argparse→`run()` 接线测试；我实测 `result.json` 中**不含** `WORK_` 前缀（回执无 work item 关联），且该字段的落地位置 `src/core/models.py::to_quick_scan_dict` **不在卡的允许改动文件清单内**（L33-38），需要扩权或另立小卡。缓解证据：(i) 卡 L64 已披露所用方法（monkeypatch 接线），但未显式标注"回执关联未做"；(ii) 端到端正确性由本审查 8.2 的独立 RUN1/RUN2 运行实证；(iii) IQS 侧 `stockqa_adapter` 对 `stockqa.quick_scan_result/1.0.0` 并不读取 work_item_id（linkage 由 observation-v2 / Q10 outbox 路径承载），无契约消费者。**建议：Q06 状态翻 verified 前，二选一——补 `test_quick_scan_cli` 入口 e2e（把我的 RUN1/RUN2 固化为回归），或经 owner 签认修订卡 L53 措辞。**
+- **P2-4（runner 构造段无回归测试）**：`_run_single_company` 内 `identity_payload → QuickScanWorkLifecycle(...) → QAEngine(work_item_lifecycle=…)` 这段 glue 仍无自动化测试（loader、指纹函数、lifecycle 各自被测，胶水层靠人工）。P0-1 正是在此层发生的；本轮由我的端到端运行覆盖一次，但不构成回归门。建议并入 P2-3 的入口 e2e 一并解决。
+- **INFO-1**：开启 `--identity-snapshot` 后，Q09 预算仍由 transport 的预算独立路径预留（`quick_scan_work_transport.py:476-495`，`reserve_budget_attempt` 与 work 绑定无关），我核对 docstring 声明属实；副作用是该路径下 work attempt（`ATTEMPT_*`）与 budget attempt（`DISPATCH_*`）不互相关联——属预算侧既有设计，非本批引入。
+- **INFO-2**：已完成扫描的重跑会 exit 1 并产出 error 答案（Q07 checkpoint 未落地前无内容可 resume 回填），拒绝文案与 docstring 已明示 Q07 升级路径——符合"下一卡"边界。
+- **LOW-4**：`mark_send_intent` 在派发前提交，进程若在 POST 前崩溃，工作将保守标为 `uncertain`（可能不发也不重发，需 resume 补偿）——与 C04"不盲重发"方向一致，属已接受的保守取舍，docstring 已披露。
+
+## 8.6 r2 裁决
+
+**approved**
+
+- 三 P0 全部按 r1 §7 建议修复并经我独立探针 + 独立端到端运行复证（生产激活路径 RUN1 成功落库并答完、RUN2 零重复派发、RUN3 fail-fast）；R4 双恢复路径、unknown 诚实终态、迟到写 fencing 均与 C04/JOB-10/I12 对齐；
+- P1-2/P1-3/P1-4、P2/LOW 全部落地并复跑通过；额外发现的 request_cache_key 修法与 transport 完全同式；
+- 门复跑：定向 14 passed（R3 ×10 稳定）、全量 **880 passed / 4 skipped / 0 errors**、black/ruff/mypy 全 0（5 文件）；
+- owner 签认三处在案、范围恰 5 文件（store 仅正则行+注释）、全程离线无密钥触碰；
+- 残余 P2-3/P2-4（卡 R6 入口测试与回执关联、runner 胶水层回归测试）为覆盖与措辞问题，非当前字节的正确性缺陷，且已有本审查的端到端实证与消费者分析——**不阻断隔离提交**；建议在 Q06 由 partial 翻 **verified**（及 W11 解锁）之前，按 8.5 关闭其一（补入口 e2e，或经 owner 签认修订卡 L53 措辞）。
