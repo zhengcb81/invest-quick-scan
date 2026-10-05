@@ -1113,7 +1113,7 @@ Status: L02_frozen_smoke_passed_window1_done; execution_in_progress; DO_NOT_INTE
 
 ### Phase 75: L02 试点执行（MiMo 链路逐题基线）与校准报告
 
-Status: in_progress（执行完成、报告已回填、独立审查 r1 进行中）
+Status: report_chain_complete (r2 approved); G2_verified_for_local_gate_scope; M2_gate_dimension_closed; Q06_unlocked
 
 - [x] **中断恢复与根因闭环**：会话切换丢失 key（MINIMAX_API_KEY 在用户级，子进程须显式注入）+ workspace 沙箱拒绝外仓写（已切 danger-full-access）+ MiniMax 5h 窗耗尽（chat 429/responses 500 实锤）→ owner 决策切 MiMo；两次失败窗口的 27 份废产出隔离归档（rejected_error_2026-10-05/，含 manifest 与 run-log 备份），done-set 修复。
 - [x] **amendment-3/4 入档**：provider 切 mimo-v2.6-flash（搜索白名单内，Q02 验证型号）；owner ≤1h 约束 → 样本 60→6 分层（原 60/20 签名归档 companies_60_full_signed.json / repeat_subset_20_signed.json）、repeat 顺延、编排并发 ≤6 不改变提问方法；方法论对照归 B01（Q09/Q10/PAR-04 前置），L02 数据即 B01 的 MiMo 逐题基线区组。
@@ -1121,8 +1121,8 @@ Status: in_progress（执行完成、报告已回填、独立审查 r1 进行中
 - [x] **校准报告回填**：`docs/implementation/reviews/L02/L02-calibration-report-2026-10-05.md`（LIVE-03 分层明细、LIVE-04 分母完整性=缩减在开跑前冻结、REV-06 等六项 G2 case 映射、000738 单次失败+stale 跳过与 ≈29 请求账本缺口披露——r1-F5 修正后口径）。
 - [x] **owner 费用发现入档**：MiMo 搜索插件费 > 模型费（本批搜索 218=1.20 次/题 + 探针 28 = 246；请求 239+36=275——G2/r1-F7 口径，原稿"~246 搜索/182 题"混入探针）→ B01 评比必须综合搜索费用（报告 §2.5 + findings.md + progress.md 三处）。
 - [x] 独立审查闭环：r1 **needs_revision**（F1 口径混杂/F2 探针门未入冻结 两个 P2 + 5 LOW + 4 INFO；数字与分母本身复算全对）→ 全项修订（6 家口径 239/57/46.9s、amendment-5 补录、UTC 时间戳 local=UTC+1 纠正、summarize provider 过滤、000738 单次失败叙事修正）→ **r2 approved**（五核查点含实跑复现命令）。审查报告 `reviews/L02/independent-review-2026-10-05.md`；证据 `L02-summary-6mimo-2026-10-05.json`。
-- [x] **G2 审查包组装**（`reviews/G2/G2-review-packet-2026-10-05.md`：依赖证据表、逐 case 图、可用比较组清单草案、r2 INFO 补注、诚实边界）+ **G2 独立审查已派出**（subagent 进行中，M2 关门）。
-- [ ] 不碰：B2a 资产、叙事三提交 `3c20d4d..ae0b3e3`。等 owner：MiMo/MiniMax 控制台对账、A/H 签收表上药行裁决（方案 A 推荐）。
+- [x] **G2 审查包组装**（`reviews/G2/G2-review-packet-2026-10-05.md`：依赖证据表、逐 case 图、可用比较组清单草案、r2 INFO 补注、诚实边界）+ G2 独立审查完成：**needs_revision**——实质检查全过（复算逐字段相等、unknown 不进均分 6/6、总账 940 对平、零池写入 7/7），阻断项=审查者自曝事故（G2-F1 P1：误覆盖 out/primary/CN_A_000672.json 1.3MB→4.7KB 不可逆，6 家校准集 6/6 完好）+ 比较组 2 声明失效（G2-F2 P2）→ **修复批 R1/R2/R3+F3/F4/F5 全部完成并提交 `1c761d6`**（事故三处入档、清单改 4 家 120 题、summarize 护栏+stdout 模式实测、台账同步）。
+- [x] **G2 r2 = verified_for_local_gate_scope（2026-10-05，M2 关门维度放行）**：owner 事故签认（round-38「已知悉，接受」）后 r2 复核——r1 双阻断（G2-F1 事故、G2-F2 比较组）按其自设条件全闭、6 家校准 sha 6/6 未变、比较组终版逐条一致；对"评分闭环与校准门槛"维度**允许进入 200 家运行验证**（L03 另有 Q08/Q09/W10/W11/W12/W15 前置未齐，本审查不表态；B01 前置未满足不构成方法结论）。r2 非阻断 LOW×3（F6 包 §3 命令同步、F7 filter 口径差异 7/4 vs 6/5 须写明、F8 台账签认标记滞后）已同批落实。报告 `reviews/G2/G2-review-2026-10-05.md`。**Q06（deps G2✓ C04✓）正式解锁。**
 
 ### Phase 76: W06 审查跟进批次 F1/F2/F3（代次门与兼容门）
 
@@ -1132,4 +1132,6 @@ Status: implementation_and_gates_complete; review_deferred_to_milestone_group
 - [x] TDD：RED 2 失败（F1 代次对齐门缺失、F2 兼容门在 unknown/冷却之后）+ F3 IQS 测试补真实输入变化（17+9 直接过——行为本正确、纯补测）→ GREEN 16/16。
 - [x] 实现：`quick_scan_freshness.py`——F1 resume 前 C04 语义代次门（期望≠在途→dispatch_new_work/generation_mismatch）；F2 兼容门前置到 unknown/冷却分支（新身份不继承旧冷却）+ in-flight resume 保持最先并在 `_field_decision` docstring 记录审查者认可的"防重复派发"取舍（Q06 链的执行器 logical-key 去重为终局方案）；决策词汇表/plan_sha256/零网络不变。
 - [x] 门：ruff/black 净、StockWiki `check_all.sh` **ALL CHECKS PASSED**、IQS 定向 17+9 过（ruff 3×E402 为该文件既有结构、非本批引入、不动）。
-- [ ] 里程碑合并审查（与 A/H bridge 批次同批）→ 两仓提交。**验证状态维持 implementation_complete 至审查通过。**
+- [x] **独立审查两轮收口（2026-10-05，不等 A/H 单独收）**：r1 needs_revision（P2-1 原 finding 字面"复用/恢复"只做了 resume 半边 + LOW×4）→ 整改批（reuse 门+反例、case② docstring 豁免留签认、LOW-1/2/4 全修、LOW-3 SHA 记档、INFO nul 清理）→ **r2 approved**（P0/P1/P2 归零；审查者独立复跑 20/20、ruff/black、check_all **917 passed ALL CHECKS PASSED**、IQS 17+9、SHA Get-FileHash 实测相符）。报告 `reviews/IQS-lane/W06-followup-review-2026-10-05.md`。
+- [x] **两仓提交**：StockWiki `0d6adf3`（仅本批 2 文件，A/H 5 文件未触碰）、IQS `e234cff`（卡修订+审查报告+Q06 草案+台账）。**W06 F1/F2/F3 批次 verified**。
+- [ ] 非阻断遗留（owner）：case② 豁免与 F2 resume-first 两处取舍签认——docstring/施工卡已留档，建议随 Q06 收尾卡一并签认。

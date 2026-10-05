@@ -891,6 +891,24 @@
   },
   {
    "schema": "g2b_ah_bridge_draft/1",
+   "cn_listing_key": "CN-A:600849",
+   "hk_listing_key": "HK:02607",
+   "cn_ticker": "600849",
+   "hk_ticker": "02607",
+   "cn_name": "上海医药",
+   "hk_name": "上海醫藥",
+   "issuer_id": null,
+   "issuer_id_status": "not_found_in_sources",
+   "evidence_url": "https://static.cninfo.com.cn/finalpage/2026-03-31/1225062873.PDF",
+   "evidence_kind": "annual_report_ah_section",
+   "verification_source": "exchange_filing",
+   "retrieved_at": "2026-10-04T17:11:06Z",
+   "content_sha256": "3b556e17552b22cfff004604bc131ef756ce2b87e6e16dd9e8ca5c339842c970",
+   "confidence": "high",
+   "notes": "cninfo annual-report summary discloses both legs in one 公司简介 table (codes 15 chars apart). cninfo org_id=gssh0600849 (CN leg only), hkex_stock_id=1868 (HK leg only); no identifier on both legs, so issuer_id=null."
+  },
+  {
+   "schema": "g2b_ah_bridge_draft/1",
    "cn_listing_key": "CN-A:600876",
    "hk_listing_key": "HK:01108",
    "cn_ticker": "600876",
@@ -2225,26 +2243,27 @@
  "stats": {
   "pairs_in_universe_name_matched": 151,
   "pairs_checked": 151,
-  "rows": 121,
+  "rows": 122,
   "confidence": {
-   "high": 121
+   "high": 122
   },
   "issuer_id": {
-   "not_found_in_sources": 121
+   "authoritative": 0,
+   "not_found_in_sources": 122
   },
   "priority_list_size": 13,
   "priority_covered": 12,
   "priority_coverage_pct": 92.3,
-  "universe_coverage_pct": 80.1,
+  "universe_coverage_pct": 80.8,
   "verification_source": {
-   "exchange_filing": 121
+   "exchange_filing": 122
   },
   "evidence_kind": {
-   "annual_report_ah_section": 121
+   "annual_report_ah_section": 122
   },
   "gaps": 31,
   "hkex_leg_crosscheck": {
-   "checked": 121,
+   "checked": 122,
    "mismatches": 0,
    "errors": 0,
    "mismatch_detail": []
@@ -2692,10 +2711,9 @@
    "issuer_id": "b_signed_as_is (null + not_found_in_sources; backfill later)",
    "dual_code_not_confirmed_30": "excluded (never admitted as rows; remain in gaps list)",
    "h_code_corrections_4": "accepted (02601/01880/02899/02359 per source evidence)",
-   "ningbo_002142_disproven": "accepted (not an A/H pair)",
-   "shanghai_pharma_old_code_row_removal": "removed CN-A:600849/02607 (stale A-code; official current pair 601607/02607 verified via SSE announcement 'code changed from 600849' + HKEX 2025-09-15 A股股份代號601607 + SSE company page); stats.rows and all row-derived aggregates recomputed 122->121, universe_coverage_pct 80.8->80.1; priority/gap/universe-level stats unchanged"
+   "ningbo_002142_disproven": "accepted (not an A/H pair)"
   },
-  "signed_by": "owner verbal instruction 2026-10-04 (message: 1,b 2,剔除 3,接受) + owner structured decision 2026-10-05 (ask_user_question round-38, ah_row_decision): 方案A 删旧行重签"
+  "signed_by": "owner verbal instruction 2026-10-04 (message: 1,b 2,剔除 3,接受)"
  },
  "status": "SIGNED",
  "closes_g2b_ah_evidence": true

@@ -23,7 +23,7 @@
 - 审查：`docs/implementation/reviews/L02/independent-review-2026-10-05.md`（r1 复算 + r2 五核查点 approved）
 - 冻结与修正案链：`docs/implementation/reviews/L02-freeze-2026-10-04.json`（amendment-3 切 MiMo / amendment-4 缩样 6 家冻结于 21:26:31Z 早于派发 21:31:46Z / amendment-5 探针门解释补录）
 - 原始产出（只读）：`StockQAbyLLM/pilot_runs/l02_2026-10-04/`（out/primary 11 份、run-log、rejected_* 隔离区含 27 份废产出与探针）
-- 复现命令：`python -X utf8 summarize.py <out.json> mimo`（r2 已实跑逐字段复现）
+- 复现命令：`python -X utf8 summarize.py mimo`（stdout 真只读；r2 已实跑逐字段复现。**G2-F6 更正**：原稿此行误写 `<out.json>` 位置参数形式——即 r1 事故同款，护栏已使该形式对 run 目录失效）
 
 **终态数字（r1/r2 双重独立复算）**：6 家 182 题 = scored 111 (61.0%) / insufficient 60 (33.0%) / unknown 11 (6.0%) / **error 0**（182−111−60−11 推得，证据 JSON 无零值键——r2 INFO）；搜索执行 161/182 (88.5%)；attempts 239（182+57 修复，57/182=31.3%，预算=1 全未触顶）；来源 1,096；均延迟 46.9s / max 178.9s。
 
@@ -47,7 +47,7 @@
 ## 6. r2 残余 INFO（本包补注，供 G2 口径）
 - 墙钟：分段运行 40+18.5=58.5 分钟 ≤1h；**端到端含 4 分钟批间间隔为 62.8 分钟**——两种口径并列，G2 采用其一须写明。
 - error=0 为推得值（182−111−60−11）。
-- summarize provider 过滤对无 attempt provider 的文件纳入而非跳过（本数据不触发）。
+- summarize provider 过滤对无 attempt provider 的文件纳入而非跳过——**G2-F7：事故后此情形已实际触发**（受损 `CN_A_000672.json` 无 execution_receipts → 被纳入）：stdout 复现现为 `files_included=7 / files_skipped=4`，与事故前证据 JSON 的 `6/5` 不同；该文件贡献 0 题、**全部聚合数字不变**，引用复现输出时必须写明该差异。
 - 000738 账本缺口"≈29"为单次失败口径；含修复硬上界 ≈58（当前表述可接受）。
 - 未知不伪装中等的量级补充：11 unknown 全为 null 分不入均分；6 题"搜索已调用但回执不可核验"归 unknown（r1-F9）。
 
