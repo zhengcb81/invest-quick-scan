@@ -1100,7 +1100,9 @@ Status: card_confirmed_and_recon_done; paused_by_owner_before_implementation
 
 - [x] 施工卡转正：`reviews/IQS-lane/Q06-closeout-card-draft-2026-10-05.md` —— **owner round-41 确认**（「Q06 卡确认，两取舍签认」，连带关闭 W06 case② 豁免与 F2 resume-first 两处取舍签认）。开工前置全绿：G2 r2 verified + C04✓。
 - [x] 开工侦察：绑定点锁定 `src/runners/llm_runner.py:479-491` seam（QAEngine 构造与 `bind_quick_scan_budget` 上下文之间，budget_store 已在 :398 创建）；QAEngine 题循环 = `process_questions`（qa_engine.py L131-171，逐题 process_question、失败→error 结果继续）；Store 生命周期 API 面清点：`create_or_attach`(L1419)/`claim`(L1538)/`prepare_attempt`(L1562)/`record_attempt_outcome`(L1730)/`recover_expired`(L1867)/`note_late_receipt`(L1920)——钩子取向：QAEngine 可选 per-question 生命周期（零注入行为逐字节不变），runner 注入 store 绑定。
-- [ ] **恢复点（下次会话第一动作）**：读 4 个 store 方法精确签名 + QAEngine `__init__`/`process_question` → 敲定生命周期钩子契约 → 按卡写 6 条 RED（R1 无钩子等价 / R2 claim-终态-幂等 / R3 并发双领 / R4 租约过期+迟到拒覆 / R5 issuer 去重 vs listing 分立 / R6 公开 CLI 端到端）→ GREEN → 门（定向+全量+mypy 钩子链标准）→ 独立审查两轮 → StockQA 隔离提交（写前报告=本卡）。完成即 W11 解锁（deps 含 Q06）。
+- [x] **恢复点已执行（2026-10-05 晚，目标恢复）**：QAEngine 题循环（L131-171，逐题 process_question→QAResult，失败→error 结果继续）与 Store API 面全部读完——`create_or_attach`（九元逻辑键原子建/挂、frozen 字段防漂移）、`claim(work_item_id, lease_seconds)→Lease|None`（仅 pending 可领、竞态 fenced）、`prepare_attempt`/`record_attempt_outcome`（attempt 记录）、`recover_expired`/`note_late_receipt`（过期恢复/迟到拒覆）。Q06 case_ids=JOB-01/02/PAR-12/JOB-10/11，不变量 I02/I12/I54。
+- [x] **RED→GREEN（2026-10-05 深夜）**：`tests/unit/test_q06_work_binding.py` 11 测试全绿（R1 零注入等价/R2 claim→response_available 终态→幂等重放/R3 双领拒绝/R4 租约过期+recover+迟到 fenced/R5 issuer 去重 vs listing 分立/R6 身份载荷映射）；实现 = qa_engine 可选 `work_item_lifecycle`（claim 拒绝→error 结果不派发；success→after；失败→after_failed）+ llm_runner `QuickScanWorkLifecycle` 类（store 生命周期 + 题面哈希代理 prompt_sha256，已在类 docstring 明示）+ `--identity-snapshot` 待接线。回归 102 passed（qa_engine/llm_runner/basic_runner/work_store）、ruff/black 净。
+- [ ] **余下**：`--identity-snapshot` CLI 接线（main_with_llm + run 参数 + W04 导出映射）→ 全量 check_all → 卡片/progress 收口 → 独立审查两轮 → StockQA 隔离提交 → Q06 verified → W11 解锁。
 - 禁改提醒：transport 协议、Q09 预算上下文、Q07 checkpoint（下一卡）、frozen L02 资产、叙事三提交。
 
 ### Phase 77: G2b A/H bridge 导入批次（G2b 最后实物）
