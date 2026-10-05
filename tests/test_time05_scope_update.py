@@ -61,6 +61,11 @@ def test_time_05_threshold_request_derives_zero_model_calls() -> None:
     )
     assert stale_preview["dispatch_started"] is False
     assert stale_preview["refresh_needed_fields"] == ["industry"]
+    # the observation is actually READ by a contract function (r1 P2-3: the
+    # old vacuous compare never passed `old` to anything)
+    assert isinstance(
+        work_contract.observation_compatible(old, dict(old)), bool
+    )
     assert old == frozen, "old observation content/source/time unchanged"
 
 

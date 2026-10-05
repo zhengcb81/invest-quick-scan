@@ -1777,3 +1777,5 @@
 - **W11 写前报告完成（round-55）**：勘察确认 request_refresh 不存在（本批新建）、W09/W10 只读基座与 StockQA 执行入口可复用；施工卡入 `reviews/IQS-lane/W11-refresh-card-2026-10-05.md`（设计/允许改动/case/门/边界），Phase 79 建档。owner 通授覆盖本批；纯离线无 live 成本。
 
 - **W11 实施 GREEN + 全门（round-56/57）**：`quick_scan_refresh.py` 落地（QUERY-04 具名拒绝/cap/复用/无 SQL 面、JOB-06 内容寻址增量、TIME-05 纯派生），StockWiki 定向 3 passed、check_all ALL PASSED、IQS TIME-05 2 passed + plan 80/53；字段词汇按 profiles_from_store 真实契约调整（卡实施记录已档）；独立审查 570d7cb3 已派在途。
+
+- **W11 r1 needs_revision 处置（round-60）**：审查 r1 = needs_revision（1×P1+7×P2，无 P0；门 926 passed/81%/0 errors 独立复跑、I09/I13/I18 逐条有实现级证据）。owner 决定：P1-1=a 补最小接线+离线 e2e；P2=修5留2（P2-1/2/3/5/7 已修并复跑 3+2 passed；P2-4/P2-6 owner 书面接受延后——过期缺口归 Q07、schema 同名归后续统一）。接线实施进行中。
