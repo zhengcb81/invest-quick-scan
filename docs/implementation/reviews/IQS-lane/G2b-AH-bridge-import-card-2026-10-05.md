@@ -32,3 +32,11 @@
 
 ## 证据与记录
 - 验证日志 + 本卡 + 审查报告 → `docs/implementation/reviews/IQS-lane/`（IQS 仓）；PWF task_plan 补 Phase 75 节。
+
+## 审查整改批（2026-10-05，r1 approved 带 P2×3+LOW×5 之后）
+- **P2-1**：decision_ref 从"仅存在性"升级为格式校验（`owner-YYYY-MM-DD-slug` 正则，伪造 `forged-ref-xyz` 拒收 `decision_ref_invalid`）+ 可选 `--expect-decision-ref` 精确匹配（不符 `decision_ref_mismatch`，写前拒绝）。
+- **P2-2**：补 v4→v5 迁移两态专项测试（空库升 v5 + 真 v4 库带 staging candidate 升 v5 保数据）。
+- **P2-3**：`issuer-bridge-report` 支持 `--source`——15 字段逐 sha diff（mismatches/missing/extra/diff_zero）+ `sha_manifest_digest`（卡要求的 sha 清单摘要与 diff=0 证明）。
+- **LOW-2**：`scan_eligible` 夹带改**命名拒收** `scan_eligible_forbidden`（不再静默忽略）；**LOW-3**：`--report <path>` 回执副本落地；**LOW-4**：handoff `authorized_paths` 12→17（补本批 3 文件 + W06 对 2 文件，scope_ref 逐项注授权依据）；**LOW-5**：docstring 121/122 溯源说明；**INFO**：CLI 捕获补 `QuickScanStoreError`。
+- **LOW-1 不改码（接受+留档）**：stats.issuer_id 丢 `authoritative:0` 零键——修正已签文件会改其 sha256 并破坏 `AHB_55b79eb9469a5d23` 批次哈希绑定（导入回执引用该值），数值正确性不受影响；以本节记录替代二次改签。
+- 复跑：17/17 定向、ruff/black 净、`check_all` ALL CHECKS PASSED。

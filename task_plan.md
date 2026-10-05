@@ -253,6 +253,7 @@ Status: complete_for_planning_only
 - 任务卡是owner/范围边界，不是逐卡停工点：接口冻结后可连续实施同一依赖链的下游卡；只在大节点封存回执并审查依赖闭包。开发自测可随手执行，不为每次自测产生日志/回执；正式结果按一批测试映射多个case/assertion。
 - 2026-09-26用户授权修改StockQAbyLLM所有文件，要求事先告知拟改文件/目的；已报备Q04 r7四文件。StockWiki及其他外仓仍按原先逐次授权边界。
 - 主题链第5/6步与行业研究第6步查询画像库，定向补缺并保留池外发现；不把原技能的PDF依赖、正式模型或评分量表搬进快扫。
+- owner 常设调查纪律（2026-10-05）：遇到"同一公司出现不同股票代码"类异常（如上海医药 600849/601607），**先用搜索引擎查清前因后果**（代码变更公告、历史沿革、官方口径）再下结论/提请裁决——不要先本地推理再回头补搜；上海医药案的搜索时机滞后于本地诊断，作为反例记档。
 
 ## Errors Encountered
 | 日期 | 错误 | 处置 |
@@ -1092,6 +1093,19 @@ Status: both_tables_signed; D_evidence_closed; AH_evidence_signed_bridge_import_
 - [x] 两表写入 `decision_ref` + `owner_signoff` 块 + `status=SIGNED`：A/H 122 行（`closes_g2b_ah_evidence=true`）、D 217 行（**`closes_g2b_d=true`**）。
 - [x] **G2b 类别现状**：A(US)✅ 实物、B(US)✅ 实物、**D ✅ 签收闭合**（官方登记表取代过渡种子地位）、C ✅ 实物；**A/H 证据已签但实物待建**（`quick_scan_issuer_bridge` 表+导入+平安 A/H 实体——通授覆盖，下一施工项）。
 - [ ] 队列：① **L02 冻结**（owner 已批 2600/5200 内直接跑——表格已签不再阻塞）→ ② L02 执行 → ③ A/H bridge 导入批次（G2b 最后实物）→ ④ W11 → ⑤ W06 跟进。等 owner：MiniMax 对账（B2a 406/771）、叙事=保留（已定）。
+
+### Phase 77: G2b A/H bridge 导入批次（G2b 最后实物）
+
+Status: imported_and_review_approved; fix_batch_complete; awaiting_followup_then_commit
+
+- [x] 施工卡：`reviews/IQS-lane/G2b-AH-bridge-import-card-2026-10-05.md`（owner 通授覆盖；5 文件范围+TDD 矩阵+零副作用边界）。
+- [x] schema v5 + `quick_scan_issuer_bridge.py` + CLI 双子命令 + 11 测试 RED→GREEN；全量门 check_all 首轮 907 passed。
+- [x] **真实导入被数据缺陷 fail-closed 拦下**（签收表上药双行同 sha 异 pair）→ 联网查证现代码 601607（SSE/HKEX/cninfo）→ owner round-38 方案A。
+- [x] **方案A 修正**：原件备份（FA9CE0B9…）→ 删 (CN-A:600849,02607)、行派生 stats 全重算（121/80.1）、owner_signoff 追加（修正版 55B79EB9…，已提交 2e96e61）。
+- [x] **真实导入**：121 行 exit0（batch AHB_55b79eb9…）、replay 0/121 幂等、DB 全核验（601607 恰1/600849 零/216 候选/零副作用）。
+- [x] 独立审查 **approved**（P0/P1=0；根因独立证实=原件恰1个重复 sha 3b556e17…；DB↔源 0 差异；check_all 917）。
+- [x] **整改批**（P2×3+LOW 全处置，含 handoff 12→17 在册、LOW-1 接受留档理由）→ 复跑 17/17 + check_all ALL CHECKS PASSED → 卡片整改节入档。
+- [ ] 跟进复审（原审查者）→ StockWiki 隔离提交（仅本批文件，精确暂存）→ 本 Phase 关闭。
 
 ### Phase 74: L02 冻结实装 + 冒烟 + 窗口1（含中断与恢复，进行中交接）
 

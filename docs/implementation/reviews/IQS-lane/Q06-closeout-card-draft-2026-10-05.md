@@ -1,6 +1,6 @@
-# Q06 收尾批次施工卡（公共 CLI 绑定真实 work item + issuer 去重，写前报告草案 2026-10-05）
+# Q06 收尾批次施工卡（写前报告 — owner 已确认，2026-10-05 round-41）
 
-> **开工前置**：`G2` 独立审查 verified（Q06 deps = G2 + C04✓；G2 审查进行中）。本卡在 G2 裁决后复核一遍允许文件清单再动工。
+> **开工前置已全部满足**：`G2` r2 = verified_for_local_gate_scope ✓；**owner 卡确认（round-41 原话「Q06 卡确认，两取舍签认」）** ✓；附带完成 W06 两处取舍签认（case② 无 work_item reuse 豁免、F2 resume-first——原记"待签认"，现已取得，见 progress 同批记录）。C04✓。本卡自草案转正，允许文件清单于动工时按现状复核一遍。
 
 ## 授权与背景
 - Q06 现状（tasks.json 卡 + Phase 16 记录）：第一段 SQLite 待办原语、第二段同步 transport 边界均已独立复审；**剩余缺口 = 公共题路径未绑定真实 work item（claim/lease 生命周期不进循环）+ step 5 issuer 级去重未验收**。完成后 Q06 partial→verified，W11 随之解锁。
