@@ -55,3 +55,11 @@
 ## 门与证据
 - 定向 pytest → 全量 owner 批次（上次基线 846+ 口径）→ ruff/black/mypy（仓库钩子标准）→ 独立审查两轮 → StockQA 隔离提交（DWA-06R 分组纪律）。
 - 完成判据按 Q06 卡：全部 case 有实际结果、提交快照/变更文件/复现命令/测试摘要、独立审查最新版后 verified。
+
+## r1 整改批记录（2026-10-05 round-52/53，14/14 测试）
+- **P0-1**：`routing_fingerprint_for(questions)`（题面文本规范 JSON → 64-hex）替换 json.dumps(Question) 崩溃；loader 补 golden 形状断言测试。
+- **P0-2**：store `_ENTITY_ID` 放宽含连字符（**owner round-51 结构化签认**，注释入 store）；构造点 rf- 前缀去除；`load_identity_snapshot(expected_entity_id=)` 与 `--entity-id` 互校（P1-2）。
+- **P0-3**：`before_question` 补 `mark_send_intent`（transport 语义 prepare→intent，预算 policy/route 成对 None 并在 docstring 披露 Q09 配对待接）；成功/失败均如实 `outcome="unknown"`（禁臆造 200/回执——response_available 需真 2xx+回执、confirmed_failure 需可识别拒绝）→ attempt=uncertain、work_item=uncertain 清租约：claim 永不可领、C04 视 uncertain 为 resume；R4 重写为**双恢复路径**（未发送→pending 重领；已发送→uncertain 永不重派 + 迟到 fenced）。
+- **额外发现（审查者未列）**：`request_cache_key` 未含 work_item_id → 同题跨 scope 键冲突被 store 全局检查（L1620-1635）拒绝——按 transport 同一公式（work_item_id+route_id+provider+model+prompt_sha）修正。
+- **P1**：R6 真 CLI 端到端（monkeypatch run 接线，无 LLM 调用）；lifecycle 增 `scope/scope_id`（JOB-11 绑定路径测试）；provisional 多 ref loader fail-fast（verified 放行）；source_binding_version=1 披露（W04 导出不含，待权威版本替换）。
+- **P2/LOW**：拒绝计数独立摘要（refused 不入"成功 N/N"）；docstring 全对齐（prompt_sha=`sha(identity_sha|题面)` 渲染前代理、run_id=UTC 派生、scan_id="scan-l02"、before 不抛出契约）。

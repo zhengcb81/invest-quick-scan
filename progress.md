@@ -1769,3 +1769,5 @@
 - **Q06 四重门全绿（最终字节）**：black 0、ruff 0、mypy 0（3 源文件含 main_with_llm）、全量 pytest **872 passed/4 skipped/0 errors**（标准旗标 `-p no:base_url`——首跑 18 个第三方插件 ScopeMismatch 系命令缺旗标，非代码回归，已记录）、Q06 定向 6/6。改动恰 4 文件（qa_engine/llm_runner/main_with_llm/test_q06）。待独立审查→StockQA 隔离提交。
 
 - **Q06 审查 r1 = needs_revision（3×P0）+ owner 签认放宽 store 正则**：门全绿复跑（872/0、mypy 0、回归 97、反证 18 错=缺 -p no:base_url 旗标）、R1 零注入等价通过、golden 映射一致；P0×3（json.dumps(List[Question]) 构造崩、rf-前缀与 ENT_连字符被 store 拒致 100% 拒派发、attempt 缺 mark_send_intent 致终态不落+租约过期重复派发违反 JOB-10/I12）。owner round-51 结构化签认「签认：放宽正则（推荐）」→ store _ENTITY_ID 放宽含连字符。整改计划入卡（P0 修法+P1/P2/LOW 清单），下轮 RED 先行。
+
+- **Q06 r1 整改批完成（3×P0 + 额外发现 + P1/P2/LOW，14/14 测试）**：P0-1 指纹函数化+loader 覆盖；P0-2 store 正则经 owner 签认放宽（ENT_ 连字符）+rf 前缀去除+entity 互校；P0-3 mark_send_intent 前置+诚实 unknown 终态（uncertain 清租约=JOB-10 不重派发）+R4 双恢复路径；额外修 request_cache_key 缺 work_item_id 的跨 scope 冲突（按 transport 公式）；R6 真 CLI 线程测试、scope 参数、provisional fail-fast、P2-2 拒绝计数、docstring 全对齐。四重门后台跑（pwsh-79）。
