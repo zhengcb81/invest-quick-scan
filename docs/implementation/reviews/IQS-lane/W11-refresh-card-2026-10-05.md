@@ -31,7 +31,7 @@ case：QUERY-04 / TIME-05 / JOB-06 / DB-07；不变量：I09 / I13 / I18（定�
 ## 允许改动（动工前按现状复核；I18：接入不重写）
 1. **新增** `StockWiki/stockwiki/quick_scan_refresh.py` + `StockWiki/tests/test_quick_scan_refresh.py`
 2. 视需要：`StockQA/main_with_llm.py`（仅接线，预期为 0；若改须具名+说明）
-3. IQS：本卡、Phase 79、case 执行记录
+3. IQS：本卡、Phase 79、case 执行记录 + `tests/test_time05_scope_update.py`（**实施期修订补入**：TIME-05 契约执行测试，owner=C04 的 case 在本批一并执行）
 4. **禁改**：`quick_scan_query.py`/`quick_scan_delivery.py` 内部（调用不重写）、W05 ledger、StockQA transport/policy/Q09、Q06 已验证面
 
 ## 门与证据
@@ -45,3 +45,9 @@ case：QUERY-04 / TIME-05 / JOB-06 / DB-07；不变量：I09 / I13 / I18（定�
 - W09/W10 接口是**已验证的真实接口**（I18）——本卡只调用公共函数，不触 SQLite 内部。
 - 「reusing the same StockQA execution entry」以现实为界：入口= `main_with_llm` 既有参数面；若覆盖某字段需要新题面，题面清单由工件携带，不改执行器。
 - TIME-05 的「筛选派生更新」语义按其原文（纯函数、不启用 DB/worker/HTTP）实现与测试。
+
+## 实施记录（2026-10-05 round-56/57，TDD RED→GREEN）
+- **RED**：StockWiki `tests/test_quick_scan_refresh.py`（QUERY-04/JOB-06/TIME-05-pure）初跑 `ModuleNotFoundError: stockwiki.quick_scan_refresh` ✓；IQS `tests/test_time05_scope_update.py` 初跑 `field_freshness_preview` 入参形状错（ValueError）→ 修正入参（field→metadata 映射）后 2 passed——TIME-05 既有契约侧执行通过（`dispatch_started=False` 派发未启动=零模型调用、`logical_work_key` 恰 3 键且互异、旧观察不可变）。
+- **GREEN（字段词汇按真实契约调整）**：`profiles_from_store`（W09）实际只承载 `entity_id/canonical_name/identity_state/securities`，industry 等按其 docstring **设计性缺席=缺口**（不发明值）。QUERY-04 测试字段从假设的 `incorporation_country` 改为真实可覆盖的 `canonical_name`（恒覆盖→复用断言）+ `industry`（恒缺口→任务断言）；`REFRESHABLE_FIELDS` 定义为本接口服务的稳定字段全集（canonical_name/identity_state/incorporation_country/industry/segments），未知字段具名拒绝。
+- **实现**：`stockwiki/quick_scan_refresh.py`——`RefreshError`（具名 code：scope_entity/scope_field/input_rejected/cost_cap/bad_request）、`_ENTITY_ID` 严格字符类（含连字符接 W04 uuid，**SQL 形输入在任何 store 访问前拒绝**=I13 无 SQL 面）、缺口检测=profile 字段非空判覆盖（覆盖→reused 复用不提交）、离线单项估价×cap 检查（真预算由执行器 Q09 落实，docstring 披露）、`task_key=RFR_(entity|field|generation)` 内容寻址（**与 roster 版本无关**→JOB-06 旧键自动保持 ⊆、增量=新实体）、coverage_fingerprint/batch_id/llm_calls=0。`derive_scope_update` 纯函数（TIME-05：threshold→derived+0 model_calls；new_questions→5 元组逻辑键；观测只读）。
+- **门（本轮）**：W11 定向 **3 passed**、ruff 0、black 归一后复跑 3 passed；IQS TIME-05 **2 passed** + plan 80 passed/53 subtests + ruff 0；StockWiki `check_all.sh` 后台全量（pwsh-120）待收。
