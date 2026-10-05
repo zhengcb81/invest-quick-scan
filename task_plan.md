@@ -1168,3 +1168,9 @@ Status: implementation_and_gates_complete; review_deferred_to_milestone_group
 - [x] **独立审查两轮收口（2026-10-05，不等 A/H 单独收）**：r1 needs_revision（P2-1 原 finding 字面"复用/恢复"只做了 resume 半边 + LOW×4）→ 整改批（reuse 门+反例、case② docstring 豁免留签认、LOW-1/2/4 全修、LOW-3 SHA 记档、INFO nul 清理）→ **r2 approved**（P0/P1/P2 归零；审查者独立复跑 20/20、ruff/black、check_all **917 passed ALL CHECKS PASSED**、IQS 17+9、SHA Get-FileHash 实测相符）。报告 `reviews/IQS-lane/W06-followup-review-2026-10-05.md`。
 - [x] **两仓提交**：StockWiki `0d6adf3`（仅本批 2 文件，A/H 5 文件未触碰）、IQS `e234cff`（卡修订+审查报告+Q06 草案+台账）。**W06 F1/F2/F3 批次 verified**。
 - [ ] 非阻断遗留（owner）：case② 豁免与 F2 resume-first 两处取舍签认——docstring/施工卡已留档，建议随 Q06 收尾卡一并签认。
+
+### Phase 79: W11 定向补扫接线（Q06 解锁后的下一批）
+Status: card_written; ready_for_implementation
+- [x] **W11 解锁确认 + 只读勘察（round-55）**：deps W06✓W09✓W10✓Q06✓；`request_refresh` 在两仓源码均不存在（grep 实证）=本批新建；W09 `quick_scan_query.py`（coverage/export 五接口）与 W10 `quick_scan_delivery.py`（状态投影）为只读基座；StockQA 执行入口（main_with_llm + Q09 绑定）为复用对象。
+- [x] **写前报告卡已写**：`reviews/IQS-lane/W11-refresh-card-2026-10-05.md`（设计=request_refresh 拥有者接口（范围校验/cap/增量版本）+ W09 coverage 缺口检测 + 复用既有执行入口；允许改动=StockWiki 新模块+测试，StockQA 预期 0 改动；case=QUERY-04/JOB-06/TIME-05（DB-07 归 Q10）；不变量 I09/I13/I18 按 decision-register 原文）。owner 通授（2026-10-03）覆盖本批，条件=写前报告+独立审查+live 前成本声明（本批纯离线，无 live 成本）。
+- [ ] TDD：RED（QUERY-04 负例 / JOB-06 增量 / TIME-05 纯契约）→ GREEN → StockWiki check_all + 定向 → 独立审查两轮 → 隔离提交 → W11 verified。

@@ -1773,3 +1773,5 @@
 - **Q06 r1 整改批完成（3×P0 + 额外发现 + P1/P2/LOW，14/14 测试）**：P0-1 指纹函数化+loader 覆盖；P0-2 store 正则经 owner 签认放宽（ENT_ 连字符）+rf 前缀去除+entity 互校；P0-3 mark_send_intent 前置+诚实 unknown 终态（uncertain 清租约=JOB-10 不重派发）+R4 双恢复路径；额外修 request_cache_key 缺 work_item_id 的跨 scope 冲突（按 transport 公式）；R6 真 CLI 线程测试、scope 参数、provisional fail-fast、P2-2 拒绝计数、docstring 全对齐。四重门后台跑（pwsh-79）。
 
 - **Q06 r2 approved + 残余关闭（round-54）**：r2 门独立复跑全对、RUN1/RUN2/RUN3 真 CLI 端到端复证；StockQA 隔离提交 `5b0d024`（恰 5 文件，全钩子链过）；P2-3 经 owner 选项 b 修订卡 R6 措辞（回执关联→Q10）、P2-4 以入口 e2e 关闭（_invoke+extra_argv、RUN1 落库/RUN2 零 HTTP 回归）。门：定向 63 passed、全量 881 passed/0 errors、black/ruff/mypy 0。Q06 → verified，W11 解锁。
+
+- **W11 写前报告完成（round-55）**：勘察确认 request_refresh 不存在（本批新建）、W09/W10 只读基座与 StockQA 执行入口可复用；施工卡入 `reviews/IQS-lane/W11-refresh-card-2026-10-05.md`（设计/允许改动/case/门/边界），Phase 79 建档。owner 通授覆盖本批；纯离线无 live 成本。
