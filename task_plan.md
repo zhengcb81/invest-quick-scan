@@ -1110,7 +1110,7 @@ Status: card_confirmed_and_recon_done; paused_by_owner_before_implementation
 - [x] **r2 = approved（2026-10-05）**：门独立复跑全对（880/0、14 定向、R3×10 稳定、black/ruff/mypy 0、store diff=正则 1 行+注释 3 行），三 P0 修法逐项对上 §7 建议，审查者自建 RUN1/RUN2/RUN3 真 CLI 端到端复证（1 次 HTTP 落库、重跑 0 重复派发、entity 不符 fail-fast）。
 - [x] **StockQA 隔离提交 `5b0d024`**（恰 5 文件，pre-commit 全钩子链通过：black/isort/mypy/pylint/detect-secrets/bandit/pip-audit/pytest-unit）。
 - [x] **残余 P2-3/P2-4 关闭（owner round-54 选项 b + r2 建议的入口 e2e）**：卡 R6 措辞修订（回执含 work item 关联 → **Q10 outbox 小卡**，依据 r2 消费分析：IQS adapter 不读、linkage 属 observation-v2/Q10，当前无契约消费者；本批不碰 models.py）；`_invoke` 加 `extra_argv` 扩展 + `test_e2e_public_cli_identity_snapshot_glue_no_redispatch`（RUN1 1 次 HTTP+work item 落库非 pending；RUN2 拒绝且 0 HTTP = JOB-10 回归固化）盖住 P2-4 胶水层与 R6 入口。定向 63 passed、全量 881 passed/0 errors、black/ruff/mypy 0。
-- [ ] **Q06 → verified（本行执行后）→ W11 解锁**；StockQA 第二提交（2 测试文件）随本收口完成。
+- [x] **Q06 = verified；W11 解锁**（2026-10-05 round-54）：StockQA 两笔提交 `5b0d024`（主批 5 文件）+ `6416f57`（残余关闭 2 测试文件，全钩子链过）；IQS `0534975`+`f27918c`；门（终字节）全量 **881 passed/4 skipped/0 errors**、mypy 0、ruff 0、black 0、定向 63 passed。下一批 = **W11 定向补扫接线**（deps 全满足：W06✓W09✓W10✓Q06✓）。
 - 禁改提醒：transport 协议、Q09 预算上下文、Q07 checkpoint（下一卡）、frozen L02 资产、叙事三提交。
 
 ### Phase 77: G2b A/H bridge 导入批次（G2b 最后实物）
