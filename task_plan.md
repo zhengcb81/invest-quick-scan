@@ -1107,7 +1107,10 @@ Status: card_confirmed_and_recon_done; paused_by_owner_before_implementation
 - [x] **审查 r1 = needs_revision（3×P0）→ 整改批完成（2026-10-05 round-52/53）**：P0-1 `routing_fingerprint_for`（题面文本→64-hex，json.dumps(Question) 崩溃修复）+ loader 覆盖；P0-2 store 正则放宽（**owner round-51 签认**，ENT_ 含连字符）+ rf- 前缀去除 + `--entity-id` 互校（P1-2）；P0-3 `mark_send_intent` 前置（transport 语义）+ 诚实 `unknown` 终态（禁臆造 200/回执）→ work_item=uncertain 清租约不可再领（JOB-10 不重派发）+ **R4 重写为双恢复路径**（未发送→pending；已发送→uncertain 永不重派+迟到 fenced）。
 - [x] **额外发现（审查者未列）**：request_cache_key 缺 work_item_id → 跨 scope 键冲突被 store 全局检查拒绝——按 transport 同一公式（work_item_id+route+provider+model+prompt_sha）修正。
 - [x] **P1/P2/LOW 收尾**：R6 真 CLI 端到端（argparse→run 线程接线，monkeypatch 无 LLM 调用）+ scope/scope_id 参数与绑定路径测试（JOB-11）+ provisional 多 ref loader fail-fast（verified 放行）+ source_binding_version=1 docstring 披露 + 拒绝计数摘要（P2-2，refused 不计入成功）+ docstring 对齐（prompt_sha 公式/run_id·scan_id 派生/before 不抛出/uncertain 语义）。测试 14/14。
-- [ ] 独立审查 r2（原审查者 b30d5dfe）→ **StockQA 隔离提交**（5 文件：qa_engine/llm_runner/main_with_llm/work_store/test_q06）→ Q06 verified → W11 解锁。
+- [x] **r2 = approved（2026-10-05）**：门独立复跑全对（880/0、14 定向、R3×10 稳定、black/ruff/mypy 0、store diff=正则 1 行+注释 3 行），三 P0 修法逐项对上 §7 建议，审查者自建 RUN1/RUN2/RUN3 真 CLI 端到端复证（1 次 HTTP 落库、重跑 0 重复派发、entity 不符 fail-fast）。
+- [x] **StockQA 隔离提交 `5b0d024`**（恰 5 文件，pre-commit 全钩子链通过：black/isort/mypy/pylint/detect-secrets/bandit/pip-audit/pytest-unit）。
+- [x] **残余 P2-3/P2-4 关闭（owner round-54 选项 b + r2 建议的入口 e2e）**：卡 R6 措辞修订（回执含 work item 关联 → **Q10 outbox 小卡**，依据 r2 消费分析：IQS adapter 不读、linkage 属 observation-v2/Q10，当前无契约消费者；本批不碰 models.py）；`_invoke` 加 `extra_argv` 扩展 + `test_e2e_public_cli_identity_snapshot_glue_no_redispatch`（RUN1 1 次 HTTP+work item 落库非 pending；RUN2 拒绝且 0 HTTP = JOB-10 回归固化）盖住 P2-4 胶水层与 R6 入口。定向 63 passed、全量 881 passed/0 errors、black/ruff/mypy 0。
+- [ ] **Q06 → verified（本行执行后）→ W11 解锁**；StockQA 第二提交（2 测试文件）随本收口完成。
 - 禁改提醒：transport 协议、Q09 预算上下文、Q07 checkpoint（下一卡）、frozen L02 资产、叙事三提交。
 
 ### Phase 77: G2b A/H bridge 导入批次（G2b 最后实物）

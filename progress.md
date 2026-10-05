@@ -1771,3 +1771,5 @@
 - **Q06 审查 r1 = needs_revision（3×P0）+ owner 签认放宽 store 正则**：门全绿复跑（872/0、mypy 0、回归 97、反证 18 错=缺 -p no:base_url 旗标）、R1 零注入等价通过、golden 映射一致；P0×3（json.dumps(List[Question]) 构造崩、rf-前缀与 ENT_连字符被 store 拒致 100% 拒派发、attempt 缺 mark_send_intent 致终态不落+租约过期重复派发违反 JOB-10/I12）。owner round-51 结构化签认「签认：放宽正则（推荐）」→ store _ENTITY_ID 放宽含连字符。整改计划入卡（P0 修法+P1/P2/LOW 清单），下轮 RED 先行。
 
 - **Q06 r1 整改批完成（3×P0 + 额外发现 + P1/P2/LOW，14/14 测试）**：P0-1 指纹函数化+loader 覆盖；P0-2 store 正则经 owner 签认放宽（ENT_ 连字符）+rf 前缀去除+entity 互校；P0-3 mark_send_intent 前置+诚实 unknown 终态（uncertain 清租约=JOB-10 不重派发）+R4 双恢复路径；额外修 request_cache_key 缺 work_item_id 的跨 scope 冲突（按 transport 公式）；R6 真 CLI 线程测试、scope 参数、provisional fail-fast、P2-2 拒绝计数、docstring 全对齐。四重门后台跑（pwsh-79）。
+
+- **Q06 r2 approved + 残余关闭（round-54）**：r2 门独立复跑全对、RUN1/RUN2/RUN3 真 CLI 端到端复证；StockQA 隔离提交 `5b0d024`（恰 5 文件，全钩子链过）；P2-3 经 owner 选项 b 修订卡 R6 措辞（回执关联→Q10）、P2-4 以入口 e2e 关闭（_invoke+extra_argv、RUN1 落库/RUN2 零 HTTP 回归）。门：定向 63 passed、全量 881 passed/0 errors、black/ruff/mypy 0。Q06 → verified，W11 解锁。

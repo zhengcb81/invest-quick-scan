@@ -50,7 +50,7 @@
 - R3：并发双 claim 同 key → 一领一拒（子进程/线程级）；
 - R4：租约过期 → 恢复路径 + 迟到 worker 的旧 token 写被拒；
 - R5：同 issuer 两 listing 各派一次 issuer 级题 → 存储一条 work item；listing 级题两条互异；
-- R6：公开 CLI 端到端（test_quick_scan_cli 现有入口）+ 回执含 work item 关联。
+- R6：公开 CLI 端到端（`test_quick_scan_cli` 现有入口 `_invoke` harness，含 runner 构造胶水层回归——P2-4）。~~回执含 work item 关联~~ → **owner round-54 结构化决定（选项 b）：修订本条措辞，回执关联字段（`models.py::to_quick_scan_dict` 落地 `WORK_` 前缀）归 Q10 outbox 小卡**——依据 r2 消费分析：IQS `stockqa_adapter` 不读该字段、linkage 由 observation-v2/Q10 承载，当前无契约消费者；本批不碰 models.py。
 
 ## 门与证据
 - 定向 pytest → 全量 owner 批次（上次基线 846+ 口径）→ ruff/black/mypy（仓库钩子标准）→ 独立审查两轮 → StockQA 隔离提交（DWA-06R 分组纪律）。
