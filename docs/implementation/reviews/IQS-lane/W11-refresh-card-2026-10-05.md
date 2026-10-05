@@ -48,7 +48,7 @@ case：QUERY-04 / TIME-05 / JOB-06 / DB-07；不变量：I09 / I13 / I18（定�
 
 ## 实施记录（2026-10-05 round-56/57，TDD RED→GREEN）
 - **RED**：StockWiki `tests/test_quick_scan_refresh.py`（QUERY-04/JOB-06/TIME-05-pure）初跑 `ModuleNotFoundError: stockwiki.quick_scan_refresh` ✓；IQS `tests/test_time05_scope_update.py` 初跑 `field_freshness_preview` 入参形状错（ValueError）→ 修正入参（field→metadata 映射）后 2 passed——TIME-05 既有契约侧执行通过（`dispatch_started=False` 派发未启动=零模型调用、`logical_work_key` 恰 3 键且互异、旧观察不可变）。
-- **GREEN（字段词汇按真实契约调整）**：`profiles_from_store`（W09）实际只承载 `entity_id/canonical_name/identity_state/securities`，industry 等按其 docstring **设计性缺席=缺口**（不发明值）。QUERY-04 测试字段从假设的 `incorporation_country` 改为真实可覆盖的 `canonical_name`（恒覆盖→复用断言）+ `industry`（恒缺口→任务断言）；`REFRESHABLE_FIELDS` 定义为本接口服务的稳定字段全集（canonical_name/identity_state/incorporation_country/industry/segments），未知字段具名拒绝。
+- **GREEN（字段词汇按真实契约调整）**：`profiles_from_store`（W09）实际只承载 `entity_id/canonical_name/identity_state/securities`，industry 等按其 docstring **设计性缺席=缺口**（不发明值）。QUERY-04 测试字段从假设的 `incorporation_country` 改为真实可覆盖的 `canonical_name`（恒覆盖→复用断言）+ `industry`（恒缺口→任务断言）；**【r2 更正 P2-r2-1】**`REFRESHABLE_FIELDS` 实为 **4 项**：canonical_name / incorporation_country / industry / segments（**不含 identity_state**——此前实施记录误写，本句为更正；未知字段具名拒绝 `scope_field`，实测 `identity_state` 会被拒）。
 - **实现**：`stockwiki/quick_scan_refresh.py`——`RefreshError`（具名 code：scope_entity/scope_field/input_rejected/cost_cap/bad_request）、`_ENTITY_ID` 严格字符类（含连字符接 W04 uuid，**SQL 形输入在任何 store 访问前拒绝**=I13 无 SQL 面）、缺口检测=profile 字段非空判覆盖（覆盖→reused 复用不提交）、离线单项估价×cap 检查（真预算由执行器 Q09 落实，docstring 披露）、`task_key=RFR_(entity|field|generation)` 内容寻址（**与 roster 版本无关**→JOB-06 旧键自动保持 ⊆、增量=新实体）、coverage_fingerprint/batch_id/llm_calls=0。`derive_scope_update` 纯函数（TIME-05：threshold→derived+0 model_calls；new_questions→5 元组逻辑键；观测只读）。
 - **门（本轮）**：W11 定向 **3 passed**、ruff 0、black 归一后复跑 3 passed；IQS TIME-05 **2 passed** + plan 80 passed/53 subtests + ruff 0；StockWiki `check_all.sh` 后台全量（pwsh-120）待收。
 
@@ -56,3 +56,10 @@ case：QUERY-04 / TIME-05 / JOB-06 / DB-07；不变量：I09 / I13 / I18（定�
 - **owner 决定 P1-1 = 选项 a**：补最小接线（StockWiki 公共入口调 `request_refresh`、工件携带题面/问题ID 对齐 main_with_llm 可消费格式、W10 状态回读、1 条离线 e2e；StockQA 仍 0 改动）。
 - **owner 决定 P2 = 修5留2**：P2-1（卡记录失实更正）、P2-2（4 实体池使"禁全池"断言具区分力）、P2-3（IQS 冻结断言改为真传参 `observation_compatible(old, …)`）、P2-5（请求层 order-preserving 去重，修后 3+2 测试复跑通过）、P2-7（.code 断言、去同义反复、reused/carried_over_keys 断言）已修。
 - **P2-4 / P2-6：owner 书面接受延后**（round-60 结构化决定+「接受」确认）：缺口语义的"过期/事件失效"留待 **Q07（观察时间接入）**；与 query.schema 的同名不同形留待**后续 schema 统一**。两者的现况已在模块 docstring/本记录披露。
+
+## r2 findings 处置记录（2026-10-05，r3 放行条件四项）
+- **P2-r2-1**：卡 L51 失实句已在本文件就地更正（见上「【r2 更正 P2-r2-1】」，原句含 identity_state 为误写）。
+- **P2-r2-2**：`request_refresh` 去重改为**先形状校验、后 `dict.fromkeys` 去重**——不可哈希输入（如 `fields=[["industry"]]`）现为具名 `input_rejected`，不再是裸 TypeError；新增 1 条断言（`.code` + 非 TypeError 传播）。
+- **P2-r2-3**：模块 docstring **实际补入**两句披露（此前只在本卡声称"已披露"、docstring 零命中——r2 抓实）：缺口语义现仅覆盖「缺失」，过期/事件失效留待 Q07 观察时间接入；工件/命令名与 query.schema 的 refresh 形状同名不同形，留待后续 schema 统一。本卡 L58 旧句以本段为准。
+- **P2-r2-4**：工件 `invocations[]` 增 `company` 字段（`--company` 标签，值=entity_id）；`render_refresh_artifact` docstring 与 CLI help 的消费表述改为**逐 invocation 配方**（`--require-search --entity-id <id> --company <label> --config <materialized questions_file>`），并明确 entities_file 是白名单簿记输入、`--require-search` 拒绝 `--batch`（`llm_runner` L550-553 实证）；help 措辞 "never touches SQL" → "no SQL write surface (read-only SELECTs via W09)"。
+- LOW×6：可选项，按 r2「LOW 可选」不阻断，留 r3 备查。
