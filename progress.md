@@ -1763,3 +1763,7 @@
 - **A/H r2 终裁 approved → 隔离提交 → 队列③关闭（2026-10-05）**：r2 独立复跑全项（check_all 923=917+6 自洽、真实库只读 report --source diff_zero=true/DB 哈希 D0D51CBE 前后不变、P2-1/2/3 探针逐一验证、handoff 17 路径与 Phase 77 引用确认）；测试头 INFO-4 顺手修正后 **StockWiki `01a4289`**（恰 6 文件：本批 5 + handoff）。**owner round-41 双签**：「Q06 卡确认，两取舍签认」= Q06 收尾卡转正 + W06 case② 豁免与 F2 resume-first 两处取舍正式签认（原非阻断遗留关闭）。**Q06 开工即刻开始。**
 
 - **owner 指令（round-42）：手头任务收尾+PWF 更新后暂停**。收尾状态：A/H 批完全关闭（StockWiki `01a4289` + IQS `3bd3787`/`92a4acd`）、G2 verified（M2 关门）、W06 verified、双签入档（Q06 卡+两取舍）；**Q06 卡转正+开工侦察完成**（绑定点/题循环/API 面已锁，Phase 78 载明恢复点=签名精读→钩子契约→6 条 RED）。所有仓库工作树干净（仅既有杂物）、后台 agent 全部收工。目标暂停于 Q06 实施前的干净断点。
+
+- **Q06 接线完成（全量门后台跑）**：`load_identity_snapshot`（W04 导出→15 参数身份映射+文件 sha）+ run/_run_single_company 线程 + QuickScanWorkLifecycle 注入 QAEngine；回归 108 passed；ruff 净。全量 pytest + mypy 后台中。
+
+- **Q06 四重门全绿（最终字节）**：black 0、ruff 0、mypy 0（3 源文件含 main_with_llm）、全量 pytest **872 passed/4 skipped/0 errors**（标准旗标 `-p no:base_url`——首跑 18 个第三方插件 ScopeMismatch 系命令缺旗标，非代码回归，已记录）、Q06 定向 6/6。改动恰 4 文件（qa_engine/llm_runner/main_with_llm/test_q06）。待独立审查→StockQA 隔离提交。
