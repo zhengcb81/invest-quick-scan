@@ -1807,3 +1807,5 @@
 - **Q10 = verified（一轮 approved，partial/producer-side 口径）**：审查者 92/92 探针+四 case 双重核证；LOW-1 跨字节拒单测随提交补入（6 passed）、LOW-2 措辞修正+runner 接线未做显式留档（薄封装下一小卡）；两仓门 902/0+check_all。LOW/INFO 余项留档。下一批 B01（live 成本声明前置）。
 
 - **B01 两段拆解卡完成（round-77）**：B01-a 预检门（离线 TDD：零授权/缺价→入口 blocked、出站 0、不漂移、可重试新 run id）本批实施；B01-b live 本体（BENCH-01）待成本声明+owner 放行。卡入 `B01-preflight-card-2026-10-06.md`、Phase 83 建档。
+
+- **B01-a GREEN + 门（round-78/79）**：`--spend-authorization` 入口预检（canonical blocked 载荷、return 2 零状态）+ 3 测试（零授权/无效/有效重试+生产不动）；harness `_invoke` 自动快照（既有测试零破坏披露）；全量 906/0、mypy/black/ruff 0。待审查→提交。
