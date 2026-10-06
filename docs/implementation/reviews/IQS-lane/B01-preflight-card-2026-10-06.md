@@ -33,3 +33,9 @@ case：BENCH-01（live，owner=B01）/ BENCH-02（fault，owner=B01）；不变�
 - **入口授权输入**：quick-scan require-search 运行要求**花费授权快照**（`--spend-authorization <file>` 或默认路径 spend_authorization.json）：{schema_version、currency、hard_cap（正数）、pricing_snapshot_ref（非空）、authorized_at}——**缺失/无效 → 入口 blocked/needs_configuration**（在创建任何 work/budget/attempt 之前）。**【r1 作用域限定 P2-1】覆盖面=授权快照的缺失与无效两类触发**；BENCH-02 when 的第三触发「quota cannot be established」**入口零覆盖**——policy 配置运行由运行时准入 fail-closed 兜底（零 POST 实证），policy-less 派发为 18 个已验证钉子测试固化的保留契约（**待 owner 处置**，本批不动禁改面）；「price snapshot missing」的**真实性解析**（pricing_snapshot_ref→真实计价源）留待 B01-b manifest 绑定，入口仅验非空。**「then 全覆盖」的宽读法不成立，以本段限定为准**。（在创建任何 work/budget/attempt 之前；BENCH-02 的 then 全覆盖：零出站、零预留、零计费、有界原因、可重试新 run id）。
 - **既有语义不冲突**：verified_rate_card 的"预留后暂停"（Q09 既有已验证行为，L594 口径）是**结算期**语义；本预检是**入口期**授权快照检查——两者分层不互斥。快照存在但运行中价格失效 → 仍走结算期暂停（不变）。
 - **既有测试零破坏**：harness `_invoke` 默认代供有效快照（显式 opt-out 参数供 BENCH-02 反例）；Q06 e2e 等既有测试自动获得快照、断言不变。
+
+## r2 findings 处置记录（2026-10-06，approved 随提交落实）
+- **INFO-1（允许面对齐）**：本卡允许改动清单补列实际触碰的两文件——`main_with_llm.py`（argparse+透传）与 `tests/integration/test_quick_scan_cli.py`（harness `_invoke` 增 `spend_authorization` 参数+自动/显式快照注入）；v2 修订节已说明缘由。
+- **LOW-4（设计3 快照比对）**：**未实现为测试**——以 tmp 路径断言 + 预检时点保证（return 2 在任何状态创建之前）代替；快照比对不实施，特此留档。
+- **INFO-5（L33 行尾旧括注）**：「then 全覆盖…」旧括注语义已由【r1 作用域限定】段治理（"宽读法不成立，以本段为准"）；本行尾旧字样保留为历史痕迹、以限定段为准（略读者以限定段为唯一覆盖声明）。
+- **反馈失实更正（r2 §8.7）**：前轮处置消息三处与字节不符——①exit==2 实为 1/3（当时仅 test3）；②LOW-4 卡处置记录当时未落；③INFO-1 卡允许面当时未补列——均已于本轮落实/更正（见本节与 test 文件、task_plan）。
