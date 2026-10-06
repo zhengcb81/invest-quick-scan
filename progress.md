@@ -1787,3 +1787,5 @@
 - **Q07 RED（round-61）**：六 case 测试文件就位（JOB-03 补水/JOB-04 四态分区/JOB-05 取消历史保留/LLM-07 无回执不存+I05 拒绝/PAR-04 原检查点与 model-a 来源保持/PAR-09 预算单次预留+迟到回执结算+不可重 POST），5 failed/1 passed（LLM-07 store 层预满足）、ruff 净；勘察确认 store **零改动**（cancel_pending/list_run_items/四 API 全备），实现面定型。
 
 - **Q07 GREEN + 四重门（round-62）**：六 case 全绿（补水/原样保持/四桶分区/取消历史/不造检查点/预算单次预留+迟到回执幂等+不可重 POST）；实现四件套（回执事实源、hydrate、四前置 after、recovery/cancel）；Q06 回归 123 passed 零破坏、全量 887/0、mypy/black/ruff 全 0。待独立审查。
+
+- **Q07 r1 整改（round-63）**：needs_revision（2×P1+P2×2+LOW×4 无 P0）→ 全部处置：P1-1 预检零状态回退（store 同源校验器+漂移探测对）、P1-2 水合原时+信封回执重建、P2-1 四桶精确成员与预算零断言、P2-2 信封接线共享函数、LOW 全清；Q07 8 passed/电池 125/mypy·black·ruff 全 0；卡处置记录入档。待 r2。

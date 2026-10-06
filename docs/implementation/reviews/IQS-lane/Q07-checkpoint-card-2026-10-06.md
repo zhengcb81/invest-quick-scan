@@ -43,3 +43,11 @@ case：JOB-03 / JOB-04 / JOB-05 / LLM-07 / PAR-04 / PAR-09；不变量：I05 / I
 - checkpoint 需完整回执——**只在回执可信时存**（search_status=executed + 2xx + completed），缺回执的"成功"不落检查点宁可重问（诚实优先）。
 - 水合路径不得伪造 `answer.created_at`/执行时间——PAR-04 要求原执行时间，水合时保留 checkpoint 内时间戳并注明来源 provenance。
 - Q10（outbox/ACK 导入）不在本批：JOB-04 的"未 ACK 只重导入"标注为 Q10 域承接。
+
+## r1 findings 处置记录（2026-10-06 round-63，needs_revision→整改）
+- **P1-1（record 成功→save 失败劈叉）**：新增 `_preflight_checkpoint`——**用 store 自己的校验器**（_safe/_safe_text/_sanitized_receipt/_timestamp/_canonical_source_urls/quick_scan_receipt_sha256/全套答案与回执面）在**任何状态记录之前**跑完 save 的确定性校验；预检拒绝→零状态降级诚实 unknown（探针三类：6001 字描述/`` 控制字符/空 source_urls 全部落 uncertain+checkpoint=0+claim 拒，**且真 save 对同样输入也拒**=漂移探测对）。record 后不可预检的异常按 `recorded` 标志诚实分流（已收执→交恢复流程，不再双记录）。
+- **P1-2（水合伪造 created_at + 信封丢回执）**：水合 Answer 现从 provenance `response_completed_at` 解析**原始执行时间**（解析失败保留默认并注释）；新增 `_provenance_metadata`——把 provenance 重建为信封期望的 answer.metadata（execution/provider/attempts/search_status/source_urls）→ `to_quick_scan_dict` 对水合题输出原回执（provider=mimo、search_status=executed、answered_at=原时间、http 200）。回归测试断言 created_at==原时且 provider 调用 0。
+- **P2-1**：JOB-04 测试强化——C 精确 ∈persisted、D 实例化（result_ready 无 checkpoint → import_ack_pending）、E 实例化（cancel_pending_work → cancelled 桶）、预算行=0（派发前无费用）、分区断言现跨 5 项。
+- **P2-2**：`to_quick_scan_dict` 内联 provider 选择已**接线**到共享 `final_transport_provider`（行为等价、48 CLI 集成测试与全量 887+2 佐证），docstring 过度声称消除。
+- **LOW**：JOB-05 走公共 `cancel_pending_work` 包装（零调用变有测试）、JOB-03 增 fresh 2 题非水合断言、PAR-09 settle `>=1`→`==1`、hydrate docstring「read-only」改「幂等 attach+只读查询」。INFO：Q09 接线时注意与 transport `begin_quick_scan_reserve` 的双预留路径（随 Q09 批处理）。
+- **门（整改后）**：Q07 定向 **8 passed**（+P1-1/P1-2 回归）、回归电池 **125 passed**、mypy Success、black/ruff 0；全量后台复验。
