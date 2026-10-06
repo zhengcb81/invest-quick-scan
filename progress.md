@@ -1791,3 +1791,5 @@
 - **Q07 r1 整改（round-63）**：needs_revision（2×P1+P2×2+LOW×4 无 P0）→ 全部处置：P1-1 预检零状态回退（store 同源校验器+漂移探测对）、P1-2 水合原时+信封回执重建、P2-1 四桶精确成员与预算零断言、P2-2 信封接线共享函数、LOW 全清；Q07 8 passed/电池 125/mypy·black·ruff 全 0；卡处置记录入档。待 r2。
 
 - **Q07 = verified（三轮审查收口）**：r1 2×P1（record→save 劈叉三探针实证、水合伪 created_at+信封丢回执）→ 整改（preflight 零状态回退+真 save 漂移对、provenance 原时+信封重建、五桶精确+预算零、信封共享函数、LOW 全清）→ r2 唯一阻断注释诚实性（含"已删"假声称更正留痕 76efd65）→ r3 approved（门全绿 889/125/15/48+mypy·black·ruff·diff 全 0、grep never-strand=0、范围恰 4 面、Q06 无破坏）。StockQA 提交+IQS 记档。下一批 Q09（ADV-1+双预留接缝随批）。
+
+- **Q09 写前报告完成（round-66）**：勘察定案——store 预算机器已在（三层槽/门/守恒全备，Q09 首段产物），真缺口=runner policy 对接线（今日 reserve-before-dispatch 未激活）+deadline 门+六 case 测试+ADV-1；卡入 `Q09-budget-card-2026-10-06.md`、Phase 81 建档。纯离线无 live 成本。

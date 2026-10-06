@@ -1193,3 +1193,9 @@ Status: card_written; ready_for_implementation
 - [x] **StockQA 隔离提交**（恰 4 面：models/qa_engine/llm_runner/test_q07，全钩子链）+ IQS 记档；**Q07 = verified（本行）**。
 - 非阻断遗留（已入审查报告）：LOW-3（builder-None 引擎级用例后续建议）、INFO Q09 双预留接缝（随 Q09 批）、recovery 双查备注。
 - **队列状态**：Q07 关闭 → 下一批 = **Q09（并发预算，含 ADV-1 company=canonical_name live 前换、Q09 双预留接缝）** → Q10 → B01 → L03。
+
+### Phase 81: Q09 并发上限/费用预留/预算停止
+Status: card_written; ready_for_implementation
+- [x] **只读勘察（round-66）**：store 预算机器已建成（三层槽 DB 计数/成本请求门/I50 对账门/不确定保留预留/budget_totals 守恒，全为 Q09 首段产物）；mark_send_intent=work 路径唯一预留（L1704）；cascade `_preferred_route_busy` 同账本读；Q07 已铺 policy 对参数。**真缺口**=runner 未接 policy 对（reserve-before-dispatch 今日未激活=I11 缺口）+ 时间 deadline 门 + 六 case 测试（含 PAR-01 跨进程）+ ADV-1（W11 company→canonical_name）。C05 依赖已 verified（L105）。
+- [x] **写前报告卡**：`reviews/IQS-lane/Q09-budget-card-2026-10-06.md`（接线/时间门/三层实证/六 case 映射/ADV-1/允许改动 6 项+禁改/门/风险含多路由归因披露与 BUD-04=L01 边界）。
+- [ ] TDD：RED（BUD-01 并发原子/BUD-02 同账本/BUD-03 保留+对账序/BUD-04 拒未知价/PAR-01 跨进程三层/JOB-09 owner 入口守恒）→ GREEN → 双仓门 → 独立审查两轮 → 隔离提交 → Q09 verified。
