@@ -116,3 +116,70 @@ C1 有效快照 + 无模型策略（quota 不可建立形态）→ exit=0, posts
 
 **needs_revision**（无 P0/P1；唯一阻断 P2-1 = BENCH-02 quota 触发的覆盖缺口与失实声称——整改为卡/docstring/记录的**披露与作用域修正**（或 owner 决策补入口 policy 预检），不含必须的生产代码变更；LOW×6 / INFO×4 非阻断）。
 授权维度的入口 fail-closed 门本身实现扎实：门全绿（3/48/906/Success/黑盒净）、载荷/退出码/时点/零状态经独立探针逐字证实、harness 增参披露充分、既有面零破坏经断言实质抽查证实。P2 整改完成后建议复审一轮（文档+断言收紧即可闭环）。
+
+---
+
+## 8. r2 复审段（2026-10-06 — 整改后字节复核；**本段为最终裁决依据**，取代 §7 裁决）
+
+整改输入：IQS 处置提交 `9246102`（卡设计1 废止 + v2【r1 作用域限定 P2-1】+ Phase 83【r1 更正 LOW-3】）+ StockQA 工作区改动（LOW-2 默认路径、exit==2、测试 docstring 收窄）。
+
+### 8.1 门独立复跑（当前字节）
+
+| 命令 | 结果 |
+|---|---|
+| `pytest tests/unit/test_b01_preflight.py -q -p no:cacheprovider -o addopts=` | **3 passed** in 2.08s |
+| `pytest tests/integration/test_quick_scan_cli.py -q -p no:cacheprovider -p no:base_url -o addopts=` | **48 passed** in 6.88s |
+| `pytest tests/ -q -p no:cacheprovider -p no:base_url -o addopts=` | **906 passed, 4 skipped** in 82.15s，**0 errors** |
+| `mypy main_with_llm.py src/runners/llm_runner.py` | **Success: no issues found in 2 source files** |
+| `black --check -l100`（4 触及文件）/ `ruff check` / `git diff --check` | 4 files unchanged / All checks passed / 净 |
+| 仓根 `Test-Path spend_authorization.json` | **False**（默认路径回落未污染测试隔离） |
+
+### 8.2 (a) P2-1 作用域限定与设计1 废止 —— ✅ 消解（字节核证）
+- 卡 L11：删除线 + **【v2 废止此条】** + 理由（18 个 policy-less CLI 钉子测试=禁改面，直接落地将破坏）+ **policy/配额维度入口化留待 owner 决策**（B01-b manifest 快照+policy 并备）✓。
+- 卡 L33：**【r1 作用域限定 P2-1】**覆盖面=授权快照缺失/无效两类；quota 触发**入口零覆盖**（policy 配置运行由运行时准入 fail-closed 兜底、policy-less 派发=保留契约待 owner）；price 真实性解析留 B01-b、入口仅验非空；**「then 全覆盖」的宽读法不成立，以本段限定为准**——可证伪声称已显式撤回并设治理句 ✓。
+- 测试模块 docstring（L3-9）收窄：covered trigger = SPEND-AUTHORIZATION snapshot；并明示 "The BENCH-02 'quota cannot be established' trigger is **NOT covered at the entry** (policy-less dispatch remains the pinned contract)" ✓。
+- 残余（cosmetic）：L33 行尾旧括注仍含「BENCH-02 的 then 全覆盖…」字样，位于治理句之后并受其约束——建议下批删改括注 → **INFO-5**。
+
+### 8.3 (b) LOW-2 默认路径 —— ✅ 实现 + 4 探针复跑
+实现（llm_runner 净 +1 行，改动面=默认路径约 5 行）：`resolved = Path(path) if path else Path("spend_authorization.json")`（cwd 相对），附 r1 LOW-2 注释；卡文「或默认路径」与实现现一致 ✓。
+- **A1** cwd 无默认文件、无 flag → blocked，`reason=spend_authorization_missing`，**exit=2**（fail-closed 不变）；
+- **A2** cwd 有**有效**默认文件、无 flag → **放行**（exit=1=config 期失败、blocked 载荷 absent——预检已过）；
+- **A3** cwd 默认文件 hard_cap=0 → blocked，`reason=spend_authorization_invalid_hard_cap`，exit=2（**默认文件被校验而非盲信**）；
+- **A4** harness `spend_authorization=None` + cwd 有效默认 → **exit=0、posts=1、产出结果文件**（端到端授权放行）；
+- A5 精确码不变（invalid_hard_cap / missing_pricing_snapshot / missing）；A6 两次 blocked run_id 互异、exit [2,2]。
+
+### 8.4 (c) exit==2 断言核证 —— ⚠️ **声称与字节不符：实为 1/3，非 3/3**
+- 字节实况：test3 L90 `assert exit_code == 2` ✓；**test1 L60 与 test2 L74 仍为 `exit_code != 0`**（其注释文本亦仍写 "exit != 0"）。
+- LOW-1 其余（载荷/status/run_id 无自动化断言）已**如实留档**：测试注释（L63-65/L76「verified via -s；capsys 与嵌套 stdio 冲突」）+ Phase 83 更正句 ✓——未假装已断言 ✓。
+- 残余风险：test1/2 对「预检改走异常→exit 1」仍假阳性通过；两处收紧在技术上无障碍（探针 A1/A3 实证两路径恒 exit=2）→ **LOW-1 记部分闭合**，两行收紧建议随提交顺手完成。
+
+### 8.5 (d) Phase 83 更正 —— ✅ 与实况一致
+`【r1 更正 LOW-3】第三测断言实况=exit==2/零出站/零 store，run_id 审计性未自动化断言（stdout 经 -s 人工核验；capsys 与嵌套 stdio 冲突）——非「run_id 已断言」`——与字节逐项相符（第三测确为 ==2）✓；GREEN 描述已去「新 run_id」✓；harness 面外勘误保留 ✓。IQS `9246102` 仅改卡（L11/L33）+ plan（L1224）各一处，无夹带 ✓。
+
+### 8.6 (e) 范围与离线 —— ✅ 恰 3 面
+`main_with_llm.py` +7（与 r1 同）、`src/runners/llm_runner.py` 53→**54**（差额=LOW-2 默认路径块，无其他改动）、`tests/unit/test_b01_preflight.py`（docstring 收窄 + exit==2×1）；harness 文件 +19 与 r1 逐字节同（无新改动）；StockWiki 零改动；untracked 杂物不在范围；探针/门全程离线、无网络无密钥 ✓。
+
+### 8.7 整改声称核对（r2 反馈 vs 字节）
+
+| r2 反馈声称 | 字节实况 | 判定 |
+|---|---|---|
+| P2-1 走路线 (a)（卡废止+作用域限定+docstring 收窄） | 均在（L11/L33/docstring L3-9） | ✅ |
+| LOW-2 默认路径实现（A2 应放行） | 实现 + A1-A4 探针全证实 | ✅ |
+| Phase 83 LOW-3 更正 | 与实况一致 | ✅ |
+| 「**三处** `!= 0` 收紧为 `== 2`」 | **仅 test3 一处；test1/2 仍 `!= 0`** | ❌ 不实 |
+| 「LOW-4 卡处置记录明示（workspace 快照比对未实现为测试）」 | **卡 L13 原文未动，卡/plan 均无该处置记录** | ❌ 不实（LOW-4 仍开放） |
+| 「INFO-1 卡允许面清单补正（main_with_llm+harness）」 | **卡「允许改动」节未动**（两文件仍未列入；Phase 83 的 3 面+勘误系 r1 既有） | ❌ 不实（INFO-1 仍开放） |
+
+持久记录本身诚实（Phase 83 更正句准确、卡的限定段真实落地）；失实集中在本轮反馈汇总——提交前请以本表更正（提交信息勿沿用「exit==2 pinned ×3」口径）。
+
+### 8.8 r2 findings
+**P0 / P1 / P2：无（r1 唯一阻断 P2-1 已实质闭环）**。
+开放残留（均非阻断）：
+- **LOW-1（部分闭合）** test1/2 仍 `exit_code != 0`，宜与 test3 对齐为 `== 2`（两行）；
+- **LOW-4（未落）** 卡 L13「workspace 快照比对」承诺与测试实况的处置记录未入卡——补一句「以 tmp 断言+预检时点保证代替，快照比对不实施」或改卡文；
+- **INFO-1（未落）** 卡「允许改动」清单补列 `main_with_llm.py` 与 harness integration 测试文件；
+- **INFO-5（新增）** 卡 L33 行尾旧括注「then 全覆盖…」建议删改，避免与治理句并列造成略读者误读；
+- **记录更正**：r2 反馈三处失实（8.7 表）需在提交信息/处置台账中更正。
+
+### 8.9 终裁
+**approved**。r1 唯一阻断 **P2-1 已以文档路线实质闭环**（设计1 废止+作用域限定+docstring 收窄，字节逐条核证，可证伪声称撤回并设治理句）；门独立复跑全绿（**3 / 48 / 906 passed·4sk·0 errors / mypy Success(2) / black·ruff·diff-check 净**）；**LOW-2 默认路径实现并经 4 探针证实**（无效→blocked exit2、有效→放行、端到端 posts=1、默认文件被校验）；Phase 83 更正与实况一致；范围恰 3 面、离线无密钥。残留 LOW-1（部分）/LOW-4/INFO-1/INFO-5 及三处反馈失实为非阻断记档——建议随 StockQA 隔离提交前顺手完成（两行 exit==2 + 两句卡文）并在提交信息中按 8.7 更正口径；B01-b live 段另批（成本声明+owner 放行硬门不变）。
