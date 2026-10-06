@@ -1797,3 +1797,5 @@
 - **Q09 测试层 GREEN（round-67）**：六 case+deadline 共 7 passed（含 PAR-01 双子进程/DB 轮询三层≤上限/真重叠≥2/崩溃行幸存——子进程修复了 f-string 父求值、顶层缩进、GBK 编码三坑）；lifecycle 增 deadline 门、reason 带准入码。余 runner 胶水+ADV-1+全门+审查。
 
 - **Q09 实施+双门完成（round-68/69）**：runner policy 对接线、双准入接缝（own 旗使 begin 跳过二准入=一 send 一 reserve，自锁 32.9s→2.78s）、ADV-1 company=canonical_name；8 测试+电池 133+CLI 48+全量 897/0+mypy·black·ruff 0、StockWiki check_all ALL PASSED。待独立审查→隔离提交（StockQA 5 面+StockWiki 2 面）。
+
+- **Q09 = verified（一轮 approved）**：审查无阻断——双准入接缝探针实证闭环（旗关 begin 二预留/旗开一行；旗关自家路由 busy 30s 自锁、旗开 False）、四类准入码实测、六 case 双重核证、ADV-1 逐字有效、门 897/0+133+CLI48+mypy·black·ruff 0+StockWiki check_all 929。两仓隔离提交（StockQA 恰 4 面更正 INFO-2 笔误、StockWiki 恰 2 面）。LOW×6/INFO×6 留档下一批。下一批 Q10。

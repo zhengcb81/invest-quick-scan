@@ -1202,4 +1202,7 @@ Status: card_written; ready_for_implementation
 - [x] **实现（deadline 门 + reason 准入码）**：lifecycle `deadline` 参数（monotonic，超点拒 `time_cap_reached` 不 claim）；store_error/attempt_intent reason 带上 `str(exc)`（准入码如 budget_request_limit 可见）。
 - [x] **runner 胶水 + 双准入接缝 + ADV-1（round-68/69）**：构造点传 policy 对（首选 eligible 路由=意图路由归因，docstring 披露）；胶水 e2e 断**恰 1 条 reserve**（一 send 一 reserve）；**own-reservation 上下文旗**——lifecycle mark 后置位、after 清位，`begin_quick_scan_send` 置位时跳过二次准入返回 None（既有契约，llm_client 容忍）、llm_integration 路由忙等同旗跳过（30s 自锁 32.9s→2.78s）；ADV-1 = StockWiki item 携带 canonical_name→render company 透传+e2e 断言。
 - [x] **双仓门全绿（round-69）**：StockQA 全量 **897 passed/4sk/0 errors**（889+8 自洽）· 电池 133 · CLI 48（begin 行为零破坏）· mypy Success(5) · black 0 · ruff 0；StockWiki `check_all` **ALL CHECKS PASSED**（framework 0 errors，含 ADV-1）。
-- [ ] 独立审查两轮 → 两仓隔离提交（StockQA 5 变更面：llm_runner/transport/llm_integration/test_q09 + StockWiki 2 文件）→ Q09 verified。
+- [x] **独立审查一轮 approved（0ba9b746，无 P0/P1/P2）**：双仓门全部独立复跑（897/0、133、CLI 48、mypy·black·ruff·diff 全 0；StockWiki 4+check_all 929 ALL PASSED）；双准入接缝**实证闭环**（探针 P5：旗关 begin 插第 2 行 rows 1→2、旗开 None 不变；P4：旗关自家路由 busy=True 即 30s 自锁链、旗开 False）；六 case 测试断言+探针双重核证（四类准入码实测）；ADV-1 逐字有效+W11 零回归；范围严格 4+2 面、零网络、无过度声称。
+- [x] **两仓隔离提交**（StockQA 恰 4 面：llm_runner/transport/llm_integration/test_q09 —— 更正 INFO-2 笔误：实为 4 面非 5；StockWiki 恰 2 面）+ IQS 记档；**Q09 = verified（本行）**。
+- 低优先留档（r1 LOW×6/INFO×6，下一批或内务处置）：LOW-1 `or True` 空转断言、LOW-2 拒因断言收紧、LOW-3 直读 sqlite3 的"收编/留档"二选一、LOW-4 PAR-01 偏差（20→12 题、组/路由瞬时上限未轮询、弱配对零发送）、LOW-5 ADV-1 注释与回落自相矛盾、LOW-6 **deadline 生产无注入点**（随 L01/live 批次接线，Phase 81 留档）；INFO-1 被拒项即时态 leased、INFO-3 fallback 意图路由槽边界补句、INFO-5 reason 全文脱敏、INFO-6 nul 内务。
+- **队列状态**：Q09 关闭 → 下一批 = **Q10（outbox）** → B01（live 成本声明）→ L03（200 家，启动需 owner 确认）。
