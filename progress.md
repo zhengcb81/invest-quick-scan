@@ -1827,3 +1827,4 @@
 - **B01-b 执行序②（round-90，首批 live）**：Brave/Tavily 240 调用 0 错误；Brave 出量大、两引擎交集 jaccard≈0.02-0.03（高度互补）；ADS 文件名事故恢复（CN-A/HK 池流恢复、US 重跑 60 调用）；6 池≤30000 字符无原始响应落盘。待入档提交后进执行序③。
 - **B01-b 执行序③ 启动（round-91）**：方法矩阵 runner 两轮 plan 验证（240 请求/seed 序/prompts 哈希），live 后台执行中（pwsh-253）；并发实现修正（v1 伪并发→v2 ThreadPoolExecutor）+raw 字符串语法修复如实记录。
 - **B01-b run-2 启动（round-93）**：owner 加预算+零低级错误要求入档；run-1 三缺陷（占位身份/契约尾冲突/7 键载入面）审计式定位并归档 invalid；六修复+证据守卫+载入面修正经 24/24 设计审计全绿后 run-2 live 起跑（cap 600、phase ≤929）。
+- **run-2 停跑与根因（round-93/94）**：sequential 22min 无完段→kill→探针铁证 finish_reason=length（模型先推理后 JSON 烧光 2000 token 截断）；四修复（max_tokens 提档/禁推理直出/finish 捕获/--smoke 小规模模式=owner 方案）落地，smoke 试跑中。
