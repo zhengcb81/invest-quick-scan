@@ -1811,3 +1811,5 @@
 - **B01-a GREEN + 门（round-78/79）**：`--spend-authorization` 入口预检（canonical blocked 载荷、return 2 零状态）+ 3 测试（零授权/无效/有效重试+生产不动）；harness `_invoke` 自动快照（既有测试零破坏披露）；全量 906/0、mypy/black/ruff 0。待审查→提交。
 
 - **B01-a 收口（round-80）**：r2 approved（P2-1 文档路线闭环+LOW-2 默认路径 4 探针证实+三处反馈失实按 §8.7 更正）；StockQA `21fbe3b`（恰 4 变更面，全钩子链过）；IQS 卡处置 `c68b52c`。**BENCH-02 已验证**（入口 fail-closed：零/未知授权 exit2/零出站/零 store/审计 run_id/有效快照重试成功）。B01-b（live）待成本声明+owner 放行。
+
+- **B01-b 样本冻结（owner round-81 两项决定）**：A股=宁德时代 300750；港股=中信建投 H 06066（独立选）；美股=Alphabet（现成 verified）。前置缺口实证：生产库仅 Alphabet verified——宁德/中信建投 H 经 G2b-A 导入路径入库+验证（通授内）。后续：前置导入批 → B01-b 成本声明+冻结清单 → owner 放行 → live。
