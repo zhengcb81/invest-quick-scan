@@ -1824,3 +1824,4 @@
 - **B01-b 冻结 manifest+成本声明落档（round-87）**：三快照集齐（Alphabet a4c6eeef/CATL 9960b7e0/CNCB 4d30c311）、冻结文档（样本/30题程序/检索器/两阶段模型/seed/阈值/硬预算 caps/入口/边界）；等 prereq r2 后 live。
 - **前置导入批三轮闭环（r3 approved，round-89）**：sha 四方全等+三 P2 字节落实+数据基线不变；B01-b 冻结生效、live 执行开跑（owner 放行+双键+manifest 齐）。执行序七步入 Phase 85。
 - **B01-b 执行序①（round-89）**：30 题冻结 = 默认 profile 31−1（降序规则）= b01b_questions_v1 共享集（42f02417/045f3956）；per-company profile 数（29/29/31）与共享集设计理由如实记档。下步=执行序② Brave/Tavily 检索器对照。
+- **B01-b 执行序②（round-90，首批 live）**：Brave/Tavily 240 调用 0 错误；Brave 出量大、两引擎交集 jaccard≈0.02-0.03（高度互补）；ADS 文件名事故恢复（CN-A/HK 池流恢复、US 重跑 60 调用）；6 池≤30000 字符无原始响应落盘。待入档提交后进执行序③。

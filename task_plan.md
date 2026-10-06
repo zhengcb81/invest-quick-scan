@@ -1250,3 +1250,5 @@ Status: freeze_documented; awaiting_prereq_r2_then_live
 - [x] **冻结文档**：`reviews/IQS-lane/B01b-freeze-manifest-2026-10-07.md`——样本/30题程序（L02 question_sets 引用+首请求前生成记 hash）/检索器（双键就绪、500字/30000字上限）/两阶段模型（M3→M3+mimo+deepseek-flash）/seed 20261007·20261008/预注册阈值（case 原文）/硬预算 caps（模型 800+800 分账、检索 500、时间 2×3h、现金≤25USD、quota 单列）/执行入口（Q06-Q10 链+B01-a 授权快照）/诚实边界。
 - [ ] prereq r2 → approved → **live 执行**（owner 已放行；P2-5 IQS 契约 CLI 兼容项单独开项不阻本批）。
 - [x] **执行序① 30 题冻结（round-89）**：`b01b_questions_v1` = 默认 profile 31 题 − 冻结降序规则 1（OPERATING_02）= **30 唯一题**，共享跨三公司跨方法（设计理由如实记档）；`questions_sha256=42f02417…`、文件 `045f3956…`、`question_freeze.json` 落 StockQA `pilot_runs/b01b_freeze_2026-10-07/`。
+- [x] **执行序② Brave/Tavily 检索器对照（round-90，首批 live）**：240 调用（90 配对查询×2 + US 池落盘事故重跑 60）、**0 错误**、上限 500 内；6 池全部 ≤30000 字符（snippet≤500 规整、无原始响应落盘、键不落盘）；**发现：Brave 出量 202/176/171 唯一 URL vs Tavily 64/60/61，交集 jaccard 0.031/0.022/0.018——高度互补低冗余**。事故与恢复如实记录：Windows 文件名 `:` 冲突→ADS 落盘→CN-A/HK 四流恢复（428KB 校验过）、US 内存池丢失→仅 US 重跑（60 调用）。产物 `pilot_runs/b01b_retriever_2026-10-07/`（报告/queries_log/6 池）。
+- [ ] 执行序③ 方法矩阵（顺序/并发4/3-5-10组/单批30，seed 20261007）→ ④ 两阶段模型 → ⑤ 缓存正交子实验 → ⑥ gold/盲评 → ⑦ 报告 → G3。
