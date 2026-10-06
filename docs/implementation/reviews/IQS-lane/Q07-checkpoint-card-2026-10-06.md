@@ -51,3 +51,7 @@ case：JOB-03 / JOB-04 / JOB-05 / LLM-07 / PAR-04 / PAR-09；不变量：I05 / I
 - **P2-2**：`to_quick_scan_dict` 内联 provider 选择已**接线**到共享 `final_transport_provider`（行为等价、48 CLI 集成测试与全量 887+2 佐证），docstring 过度声称消除。
 - **LOW**：JOB-05 走公共 `cancel_pending_work` 包装（零调用变有测试）、JOB-03 增 fresh 2 题非水合断言、PAR-09 settle `>=1`→`==1`、hydrate docstring「read-only」改「幂等 attach+只读查询」。INFO：Q09 接线时注意与 transport `begin_quick_scan_reserve` 的双预留路径（随 Q09 批处理）。
 - **门（整改后）**：Q07 定向 **8 passed**（+P1-1/P1-2 回归）、回归电池 **125 passed**、mypy Success、black/ruff 0；全量后台复验。
+
+## r2 findings 处置记录（2026-10-06 round-64）
+- **P2-r2-1（唯一阻断，纯注释）更正与闭环**：前一轮处置**消息**中「原注释 `failed save can never strand` 已删」为**不实陈述**（实际未删）——此处更正：该绝对化句与 models `execution_receipt_for_checkpoint` 的 "every field save requires / stays refillable" 措辞**已于本轮真正改写**（llm_runner 注释改为分层描述：确定性前置全在落态前预检、record 后非确定窗口不双记录交恢复、其余走诚实 unknown；models docstring 收窄为"标识字段由 builder、其余 save 面由 preflight 落态前补齐、绝不伪造成功"），与 recorded 分支注释自洽，"never strand" 全仓消失（grep 复核）。行为零改动。
+- 事实基线：r2 已独立验证 r1 全部行为面修复（三探针劈叉消除+漂移探测对、信封/原时、五桶+预算零、接线等价、Q06 15+电池 125+全量 889+CLI 48+mypy/black/ruff 全绿），r2 阻断仅此诚实性闭环一项。
