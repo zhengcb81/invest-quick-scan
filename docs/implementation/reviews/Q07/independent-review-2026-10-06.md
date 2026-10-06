@@ -296,3 +296,42 @@
 - 已独立复验达标：P1-1 行为（三探针复现面全部消除、漂移探测对存在）、P1-2（原时 + 信封原回执）、P2-1（五桶精确成员 + 预算零）、P2-2（接线等价 + 输出不变）、全部 LOW（包装测试/fresh 断言/settle==1/hydrate docstring）、门全绿（8/125/889+4sk/Q06 15/CLI 48/mypy/black/ruff/diff）、Q06 契约不破坏、范围恰 4 面、离线无密钥。
 - 阻断理由：r1 点名的过度声称注释未按处置声称"删除"，且保留的绝对句与新代码分支自相矛盾——属诚实性维度未闭环，不接受带假声称收批。
 - 复审预期：纯注释 + docstring 措辞改动 → 门八项原样复绿即可判 **approved**（无需重跑探针，行为不变；我将 grep 确认 "never strand" 消失与处置表述更正）。
+
+---
+---
+
+# r3 终审（2026-10-06 round-65，P2-r2-1 三件注释事项复验）
+
+门全部本审查自跑；探针按 r2 预期未重跑（行为零改动，已用代码与门佐证）。
+
+## r3-1 门复跑（自跑）
+
+| 门 | 结果 |
+|---|---|
+| 全量 `pytest tests/ -p no:base_url -o addopts=` | **889 passed, 4 skipped, 0 errors**（69.14s，exit 0）——与 r2 同口径 |
+| 六文件电池（Q07 8 + Q06 15 + qa_engine/llm_runner/basic_runner/work_store） | **125 passed** |
+| CLI 集成 | **48 passed** |
+| mypy（4 源文件）/ black(100) / ruff / `git diff --check` | Success / 4 files unchanged / All checks passed / exit 0 |
+
+行为零改动佐证：`recorded` 分支（llm_runner L363-393）与 r2 逐字一致（读文件核）；numstat 增量仅 models +2、llm_runner +3、qa_engine +0（注释/docstring 行数增长）；测试计数不变（8/125/889）。
+
+## r3-2 核查点 (a)–(f)
+
+- **(a) 禁句 grep**：`git grep -E "never strand|no stranded state"`（tracked）= **0 命中**（exit 1）；`src/` = 0。`tests/` 有 1 处命中——`test_q07_checkpoint.py` L532 测试 docstring "…never **stranded** at response_available with no checkpoint"：这是对**已修复不变量的正向描述**（预检拒绝的输入绝不停在 response_available——探针 A/A2/F 实证为真），非 r2 禁止的"save 失败永不分叉"绝对化声称，**判为可接受**（区别记录于此）。
+- **(b) 新头注释自洽**：llm_runner L309-318 改为分层表述——"EVERY deterministic input precondition is pre-checked before any state is recorded … non-preflightable window after a committed record (crash / lease race / DB error) is never double-recorded and is handed to lease recovery. Anything less stays on the Q06 honest-unknown path (no fabricated success)"。与同函数 L388-392 `recorded` 分支（"never double-record; lease recovery owns the rest"）**逐义一致**，无绝对化句；原 "can never strand" 与 "no stranded state" 已消失 ✓。
+- **(c) models docstring 收窄**：`execution_receipt_for_checkpoint`（L326-336）现为 "…the **identity-bearing fields the checkpoint needs** (actual_model / response_id / attempt_id / search_receipt_id). The **remaining save-side input rules are enforced by `_preflight_checkpoint` in llm_runner BEFORE any state is recorded**; … NO checkpoint is persisted — never a fabricated success"；"every field save requires" 与 "stays refillable" 均已删除。字面与实现相符（builder 自查面如实枚举、其余明确指派预检）✓。
+- **(d) 处置更正留痕**：IQS `git log` 实核 —— `76efd65 docs: Q07 r2 P2-r2-1 correction — false '已删' claim retracted, comment/docstring rewrite recorded`；卡 L55-57「r2 findings 处置记录」写明"前一轮处置消息中『原注释已删』为**不实陈述**（实际未删）——此处更正"并记录本轮真正改写内容与 grep 复核 ✓。假声称已在持久化工件与本轮消息双重更正，诚实性闭环 ✓。
+- **(e) 门**：见 r3-1，八项全绿，全量 889 口径与 r2 相同 ✓；范围仍恰 4 变更面（models +84/-13、qa_engine +89/-0、llm_runner +276/-11、test_q07 新增 8 用例），store 零改动 ✓。
+- **(f) 终裁依据**：r1 全部 findings（2×P1 + 2×P2 + 4×LOW）与 r2 唯一阻断项（P2-r2-1 三件事项）均已独立复验关闭；Q06 契约、I05/I12/I17、六 case、离线/无密钥全部达标。
+
+## r3-3 遗留（全部非阻断）
+
+- **LOW-3 残余**：`test_p1_1` 已提供 after_question 引擎级用例（预检拒绝面），但 receipt-builder 返回 None 的引擎级用例（无搜索/非 2xx 经 `after_question`）仍仅由审查探针 D 覆盖——保留为后续建议，不阻断。
+- **INFO-2/3/4**（recovery 双查、Q09 双预留接缝已入卡随 Q09 处理、未知状态兜底列出）保持备忘。
+- StockQA 改动仍未提交（3 M + 1 新测试）；隔离提交应严格限于此 4 变更面（已核 `git status -- src/ tests/`）。
+
+## r3-4 终裁
+
+**approved**
+
+门全绿（全量 889+4sk / 电池 125 / Q06 15 / CLI 48 / mypy / black / ruff / diff --check）、三轮 findings 全部闭环并经独立复跑/探针/逐行对照复验、处置声称与实况一致（含假声称的正式更正）、范围恰 4 变更面、Q06 契约与 I05/I12/I17 无破坏。可进行 StockQA 隔离提交并关闭 Q07。
