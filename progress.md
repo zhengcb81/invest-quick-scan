@@ -1795,3 +1795,5 @@
 - **Q09 写前报告完成（round-66）**：勘察定案——store 预算机器已在（三层槽/门/守恒全备，Q09 首段产物），真缺口=runner policy 对接线（今日 reserve-before-dispatch 未激活）+deadline 门+六 case 测试+ADV-1；卡入 `Q09-budget-card-2026-10-06.md`、Phase 81 建档。纯离线无 live 成本。
 
 - **Q09 测试层 GREEN（round-67）**：六 case+deadline 共 7 passed（含 PAR-01 双子进程/DB 轮询三层≤上限/真重叠≥2/崩溃行幸存——子进程修复了 f-string 父求值、顶层缩进、GBK 编码三坑）；lifecycle 增 deadline 门、reason 带准入码。余 runner 胶水+ADV-1+全门+审查。
+
+- **Q09 实施+双门完成（round-68/69）**：runner policy 对接线、双准入接缝（own 旗使 begin 跳过二准入=一 send 一 reserve，自锁 32.9s→2.78s）、ADV-1 company=canonical_name；8 测试+电池 133+CLI 48+全量 897/0+mypy·black·ruff 0、StockWiki check_all ALL PASSED。待独立审查→隔离提交（StockQA 5 面+StockWiki 2 面）。
