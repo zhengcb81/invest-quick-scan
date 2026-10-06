@@ -1180,3 +1180,10 @@ Status: card_written; ready_for_implementation
 - [x] **隔离提交**：StockWiki（3 文件，钩子链过）+ IQS 记档；**W11 = verified（本行）**。
 - [ ] **ADV-1 记档（随 Q09/live 批次）**：`company` 标签现取 entity_id（自洽不致失败但把稳定 ID 当公司名进检索题面）——**任何 live 补扫前换 `canonical_name`**（W09 投影已带，CLI 一行可得）+ e2e 补 1 行 company 断言。r2 LOW×6 备案（可选）。
 - **队列状态**：④ W11 关闭 → 下一批 = Q07（逐题检查点，deps Q06✓）/ Q09（并发预算）——M3 余项 Q07→Q09→Q10→B01→L03。
+
+### Phase 80: Q07 逐题检查点/部分回复/取消恢复
+Status: card_written; ready_for_implementation
+- [x] **目标恢复 + 轮次预算 120**（owner「恢复目标，继续做不要停」round-61；blocked(round-limit)→edit max→resume，objective 更新为当前队列 Q07→Q09→Q10→B01→L03→余项）。
+- [x] **只读勘察**：Q07 store API 全备（save/get checkpoint、note_late_receipt、reconcile_budget_attempt——契约恰合 I05 1-10 int/I12 同 attempt 幂等）且**零调用**；回执在 `QAResult.metadata` 已有（to_quick_scan_dict 同源组装，引擎缝隙可直接存）；Q06 生命周期与内容寻址键为 PAR-04/JOB-04 提供基座。
+- [x] **写前报告卡**：`reviews/IQS-lane/Q07-checkpoint-card-2026-10-06.md`（接线设计五点、六 case 映射、允许改动 5 文件+禁改、门、风险边界；纯离线）。
+- [ ] TDD：RED（JOB-03 补水/JOB-04 四点故障注入/JOB-05 取消/LLM-07 修复预算/PAR-04 pack 续扫/PAR-09 迟到回执）→ GREEN → 全量门 → 独立审查两轮 → StockQA 隔离提交 → Q07 verified。

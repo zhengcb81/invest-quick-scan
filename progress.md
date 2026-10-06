@@ -1781,3 +1781,5 @@
 - **W11 r1 needs_revision 处置（round-60）**：审查 r1 = needs_revision（1×P1+7×P2，无 P0；门 926 passed/81%/0 errors 独立复跑、I09/I13/I18 逐条有实现级证据）。owner 决定：P1-1=a 补最小接线+离线 e2e；P2=修5留2（P2-1/2/3/5/7 已修并复跑 3+2 passed；P2-4/P2-6 owner 书面接受延后——过期缺口归 Q07、schema 同名归后续统一）。接线实施进行中。
 
 - **W11 = verified（三轮审查收口，2026-10-06 00:0x）**：r1 needs_revision（P1-1 接线缺口）→ owner 选项 a 接线四件套落地 → r2 needs_revision（记录可信度/契约一致性 4×P2）→ 四条件整改（卡 L51 就地更正、去重顺序修不可哈希、docstring 真披露、company+配方表述）→ **r3 approved**。门：check_all 929 passed/coverage 81%/0 errors、定向 4、IQS 2+80/53、三静态门全 0；StockWiki 恰 3 文件纯加法（73/0）、StockQA 0 改动。ADV-1（company 标签 live 前换 canonical_name）随 Q09/live 记档；LOW×6 备案。M3：Q06✓ W11✓，余 Q07/Q09/Q10/B01/L03。
+
+- **目标恢复（owner：恢复目标，继续做不要停）**：blocked(round-limit 60/60) → owner 直接授权 edit maxGoalRounds 120 + resume（rev8 active/armed），objective 更新为当前队列（Q07→Q09→Q10→B01→L03→余项，含 ADV-1 随 Q09 记档）。同轮完成 Q07 侦察（store checkpoint API 全备零调用、回执在 result.metadata 引擎缝隙可存）与**写前报告卡**（Phase 80 建档，`Q07-checkpoint-card-2026-10-06.md`）。
