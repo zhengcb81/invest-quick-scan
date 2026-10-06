@@ -14,7 +14,10 @@
 
 ## 2. 题面与规则冻结（BENCH-01 given.fixed_inputs）
 
-- **30 道评分题/公司**：程序=冻结题库 `L02-freeze-2026-10-04.json` 的 `question_sets`（mechanism=`IQS select_questions(make_manifest) per frozen profile`、cycle_position=trough）→ 执行期为三样本各生成一个 per-company 文件（keyed by profile_key）并记录 SHA-256；**首请求前完成，冻结后不改**。
+- **30 道评分题（已冻结 — 2026-10-07 首请求前）**：**共享固定 30 题集**（`b01b_questions_v1`）跨三公司、跨全部方法变体同题（case「每家公司同一已发布版本的30道评分题」的同版本读法 + 方法对照的同输入控制）。生成=默认冻结 profile 经 `IQS select_questions(make_manifest)`（L02 先例）得 **31 题**（全 priority=1）→ 冻结降序规则恰减 1（priority 最大值并列→id 降序 → 丢弃 `OPERATING_02`）= **30**。
+  - `questions_sha256` = **`42f024170a5eb12b…`**（题集 canonical SHA）；文件 `questions_b01b_v1.json` SHA-256 = **`045f3956f8c8828e…`**；冻结记录 `question_freeze.json`；题 ID 集 = IQS_01/02/04–10/12–24 + OPERATING_01 + INDUSTRIAL_01/02 + MATURE_01/02 + CYCLICAL_01/02 + CROSS_BORDER_01（恰 30 唯一）。
+  - **为何共享集（如实设计记录）**：按公司 profile 分别出题得 29（CATL=operating|scaling|energy_transition，B2a lifecycle=growth）/ 29（中信建投=bank|mature|other，finance）/ 31（Alphabet 无 B2a 行、人工 operating|mature）——均不等于 30；共享集一并解决非 30 问题与 Alphabet 无分类行问题，且是方法对照的更强控制（公司×方法双维度同题）。per-company profile 数字如实记档于 `question_freeze.json.profiles_note`。
+  - **首请求前完成，冻结后不改**（改=作废重冻、新 run id）。
 - **冻结对象（哈希一并记录于执行回执）**：题目文本/题面 prompt 模板、评分尺 rubric、身份 revision（见 §1）、信息截止时间（as-of=**2026-10-07T00:00:00Z**，与快照一致）、provider/model revision（见 §4）、搜索配置（见 §3）、方法执行顺序（seed 见 §5）、答案 gold、盲评抽样 seed、预注册阈值（见 §6）、硬预算（见 §7）。
 
 ## 3. 检索器冻结（step2）

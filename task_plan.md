@@ -1249,3 +1249,4 @@ Status: freeze_documented; awaiting_prereq_r2_then_live
 - [x] **三样本快照集齐**：Alphabet `a4c6eeef2b132ca9…`（verified rev1 4 listings）+ CATL `9960b7e0…` + CNCB-H `4d30c311…`（均 rev2，as-of 2026-10-07T00:00:00Z，字节级捕获）。
 - [x] **冻结文档**：`reviews/IQS-lane/B01b-freeze-manifest-2026-10-07.md`——样本/30题程序（L02 question_sets 引用+首请求前生成记 hash）/检索器（双键就绪、500字/30000字上限）/两阶段模型（M3→M3+mimo+deepseek-flash）/seed 20261007·20261008/预注册阈值（case 原文）/硬预算 caps（模型 800+800 分账、检索 500、时间 2×3h、现金≤25USD、quota 单列）/执行入口（Q06-Q10 链+B01-a 授权快照）/诚实边界。
 - [ ] prereq r2 → approved → **live 执行**（owner 已放行；P2-5 IQS 契约 CLI 兼容项单独开项不阻本批）。
+- [x] **执行序① 30 题冻结（round-89）**：`b01b_questions_v1` = 默认 profile 31 题 − 冻结降序规则 1（OPERATING_02）= **30 唯一题**，共享跨三公司跨方法（设计理由如实记档）；`questions_sha256=42f02417…`、文件 `045f3956…`、`question_freeze.json` 落 StockQA `pilot_runs/b01b_freeze_2026-10-07/`。

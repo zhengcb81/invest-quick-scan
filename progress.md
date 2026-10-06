@@ -1823,3 +1823,4 @@
 - **前置批 r1→rev2 修复（round-86/87）**：三 P1 经 CLI rev2 全消（幂等双 0/回执 listing MATCH/namespace 溯源更正+孤儿披露），无二次裸 SQL；证据 v2+卡处置+P2 处置+勘误入档；JSON force-add 待提交；r2 待派。owner 放行+双搜索键已就绪。
 - **B01-b 冻结 manifest+成本声明落档（round-87）**：三快照集齐（Alphabet a4c6eeef/CATL 9960b7e0/CNCB 4d30c311）、冻结文档（样本/30题程序/检索器/两阶段模型/seed/阈值/硬预算 caps/入口/边界）；等 prereq r2 后 live。
 - **前置导入批三轮闭环（r3 approved，round-89）**：sha 四方全等+三 P2 字节落实+数据基线不变；B01-b 冻结生效、live 执行开跑（owner 放行+双键+manifest 齐）。执行序七步入 Phase 85。
+- **B01-b 执行序①（round-89）**：30 题冻结 = 默认 profile 31−1（降序规则）= b01b_questions_v1 共享集（42f02417/045f3956）；per-company profile 数（29/29/31）与共享集设计理由如实记档。下步=执行序② Brave/Tavily 检索器对照。
