@@ -1206,3 +1206,9 @@ Status: card_written; ready_for_implementation
 - [x] **两仓隔离提交**（StockQA 恰 4 面：llm_runner/transport/llm_integration/test_q09 —— 更正 INFO-2 笔误：实为 4 面非 5；StockWiki 恰 2 面）+ IQS 记档；**Q09 = verified（本行）**。
 - 低优先留档（r1 LOW×6/INFO×6，下一批或内务处置）：LOW-1 `or True` 空转断言、LOW-2 拒因断言收紧、LOW-3 直读 sqlite3 的"收编/留档"二选一、LOW-4 PAR-01 偏差（20→12 题、组/路由瞬时上限未轮询、弱配对零发送）、LOW-5 ADV-1 注释与回落自相矛盾、LOW-6 **deadline 生产无注入点**（随 L01/live 批次接线，Phase 81 留档）；INFO-1 被拒项即时态 leased、INFO-3 fallback 意图路由槽边界补句、INFO-5 reason 全文脱敏、INFO-6 nul 内务。
 - **队列状态**：Q09 关闭 → 下一批 = **Q10（outbox）** → B01（live 成本声明）→ L03（200 家，启动需 owner 确认）。
+
+### Phase 82: Q10 结果 outbox 与投递回执消费
+Status: card_written; ready_for_implementation
+- [x] **只读勘察（round-73）**：store Q10 API **11 方法族全备零调用**（blocked/prepare/begin/confirm-not-sent/apply-ack/list/get/events）+ outbox 模块（C06 信封校验 L116-217、**checkpoint 绑定校验 L221-305=适配器字段映射的完整依据**、ACK 校验、delivery_key）；C06 内容寻址同法确定；unknown 状态不可打包→block；envelope 权威字段（contract_versions/capabilities/producer）缺失即 block（step1 原文）。
+- [x] **写前报告卡**：`reviews/IQS-lane/Q10-outbox-card-2026-10-06.md`（C06 适配器设计/执行路径接线/ACK 入口/投递恢复/五 case 映射——LLM-08=Q05 只登记边界/允许改动 5 项+禁改 outbox 校验面/门/风险边界）。
+- [ ] TDD：RED（JOB-07 恢复零 LLM/JOB-08 错 ACK/DB-07 durable block/PAR-10 假 ACK）→ GREEN（适配器+接线）→ 全量门（基线 897 口径）→ 独立审查两轮 → StockQA 隔离提交 → Q10 verified。

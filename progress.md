@@ -1799,3 +1799,5 @@
 - **Q09 实施+双门完成（round-68/69）**：runner policy 对接线、双准入接缝（own 旗使 begin 跳过二准入=一 send 一 reserve，自锁 32.9s→2.78s）、ADV-1 company=canonical_name；8 测试+电池 133+CLI 48+全量 897/0+mypy·black·ruff 0、StockWiki check_all ALL PASSED。待独立审查→隔离提交（StockQA 5 面+StockWiki 2 面）。
 
 - **Q09 = verified（一轮 approved）**：审查无阻断——双准入接缝探针实证闭环（旗关 begin 二预留/旗开一行；旗关自家路由 busy 30s 自锁、旗开 False）、四类准入码实测、六 case 双重核证、ADV-1 逐字有效、门 897/0+133+CLI48+mypy·black·ruff 0+StockWiki check_all 929。两仓隔离提交（StockQA 恰 4 面更正 INFO-2 笔误、StockWiki 恰 2 面）。LOW×6/INFO×6 留档下一批。下一批 Q10。
+
+- **Q10 写前报告完成（round-73）**：勘察实证 store 11 方法族全备零调用 + C06 绑定契约全图（适配器字段映射完整依据：observation identity/answer/execution 九字段全出自 checkpoint provenance、envelope 权威字段缺失即 block、unknown 不可打包）；卡入 `Q10-outbox-card-2026-10-06.md`、Phase 82 建档。纯离线。
