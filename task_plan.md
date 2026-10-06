@@ -1240,6 +1240,8 @@ Status: sample_frozen_pending_import; b01_b_awaiting_cost_declaration_and_go
 
 - [x] **owner B01-b live 放行（round-86，原话「给你放行」）**：硬门通过——manifest 冻结与成本声明转为**记录式**（跑前落档，不再等待二次确认）。**剩余资源前置**：BENCH-01 step2 要求真实 Brave/Tavily 公开搜索入口——实测环境与 llm_apis **两把键均不存在**（providers 仅 deepseek/glm/mimo/minimax/openai；env 无 BRAVE/TAVILY）→ 已向 owner 提出二选一：(a) 提供两把键 或 (b) 批准替代口径（L02 已验证的 mimo/minimax 内置搜索做两路检索对照，属 case 口径变更需批）。
 
+**勘误（Phase 84 侦察③，r2 R2-P2-2 落实）**：侦察③原句「③市场标签 CN-A/HK 与库惯例一致」**失实**——真实口径：`quick_scan_security.market`/`quick_scan_source_binding.market` = **ISO 国家码**（CN/GB/HK/US，市场注册表口径），`CN-A` 是候选层段标签（candidates.listing_key 前缀）；两层标签不可混用（本批 CATL 初次误用 CN-A 即被导出注册表拒绝，已按 §3 rev2 修复）。
+
 ### Phase 85: B01-b 冻结 manifest + 成本声明（记录式）
 Status: freeze_documented; awaiting_prereq_r2_then_live
 - [x] **三样本快照集齐**：Alphabet `a4c6eeef2b132ca9…`（verified rev1 4 listings）+ CATL `9960b7e0…` + CNCB-H `4d30c311…`（均 rev2，as-of 2026-10-07T00:00:00Z，字节级捕获）。

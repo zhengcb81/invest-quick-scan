@@ -26,10 +26,10 @@ provisional 诚实边界不变：**不声称 verified**；rev1 回执行（ATT_b
 
 | 文件 | 字节 | sha256（前16） | 内容 |
 |---|---|---|---|
-| `catl_snapshot.json` | 2977 | `9960b7e0a682f19f` | **rev2**、300750 CN XSHE、ctx 仅 ATT_5912 |
-| `cncb_h_snapshot.json` | 2948 | `4d30c311296161cd` | **rev2**、06066 HK XHKG、ctx 仅 ATT_88b5 |
+| `catl_snapshot.json` | 2976 | `6929f0868243a271…` | **rev2**、300750 CN XSHE、ctx 仅 ATT_5912 |
+| `cncb_h_snapshot.json` | 2947 | `884855433a431292…` | **rev2**、06066 HK XHKG、ctx 仅 ATT_88b5 |
 
-（v1 sha `4ce7ba5a…`/`2853cc98…` 已被取代——旧文件被重导覆盖。）
+（v1 sha `4ce7ba5a…`/`2853cc98…` 已被取代；**本表 sha=归档文件字节=运行时 load_identity_snapshot 所取**——CLI stdout 为 CRLF、git EOL 归一为 LF 入库，两口径已双向复算、内容零差异（r2 R2-P1-1 处置）；stdout 口径值：catl `9960b7e0…`(2977B)、cncb `4d30c311…`(2948B)、alphabet `a4c6eeef…`(8690B)。）
 
 产物目录：`StockQAbyLLM/pilot_runs/b01_prereq_2026-10-07/`（原+rev2 payload、导入回执、快照）。**JSON 产物经 `git add -f` 入库**（repo `.gitignore` 的 `*.json` 忽略规则不适用于证据档——审查 P2-2 处置）。
 
@@ -45,3 +45,9 @@ provisional 诚实边界不变：**不声称 verified**；rev1 回执行（ATT_b
 - market-registry 用既有 iso10383 fixture（Alphabet 同源，7 条；**已补入写前卡允许面**——P2-1 处置）。
 - 时间戳：名义 `2026-10-07T00:00:00Z`（快照 as-of）；实际导入窗口 19:52–20:29Z——名义/实际差异如实在此声明（LOW）。
 - 快照含 CRLF（两份一致、导出器既定输出）；`load_identity_snapshot`（StockQA 消费面）两版均通过；IQS 公共契约 CLI 的 `BND_`/`status` 兼容项=P2-5 单独开项（非本批引入，Alphabet 同路径）。
+
+## r2 处置补记（round-88）
+- **R2-P1-1（sha 口径对齐，修法 ii）**：manifest §1 与本档 §2 三行全部改为**归档文件字节 sha**（=运行时 `load_identity_snapshot` 所取）：alphabet `5ad1a45e287c9456…`(8689B)、catl `6929f0868243a271…`(2976B)、cncb `884855433a431292…`(2947B)；CRLF（CLI stdout）↔ LF（git 归一入库）关系与双向复算注明；提交信息口径以本节更正（历史提交不改写）。**验收双值已核**：三文件 Get-FileHash == load_identity_snapshot 返回值（逐一相等）。
+- **P2-1**：cncb rev2 payload `provenance.entity_source` 改为 `iqs:b2a_hk_discovery/2026-10-03 (CN_A_601066)`（与自身 binding/revision_2_note 一致；catl 的 candidates 源属实保留）。
+- **P2-2**：Phase 84 侦察③**真勘误行**写入 task_plan（原句「与库惯例一致」失实——security.market=ISO 国家码、CN-A=候选层段标签，两层不可混用）。
+- **P2-3**：rev2 回执归档——`catl_rev2_import_out.txt`/`catl_rev2_replay_out.txt`/`cncb_h_rev2_import_out.txt`/`cncb_h_rev2_replay_out.txt`（四份均 rc=0、receipt_recorded=true、幂等重放零新增）。

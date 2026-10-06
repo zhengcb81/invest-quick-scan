@@ -6,11 +6,11 @@
 
 | 市场 | entity_id | 名称 | 身份态 | identity_snapshot（冻结输入） |
 |---|---|---|---|---|
-| US | `ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e` | Alphabet Inc. | verified rev1 | `alphabet_snapshot.json` 8690B **`a4c6eeef2b132ca9…`** |
-| CN-A | `ENT_99ebb735-f072-41e4-8545-823bc012614f` | 宁德时代（300750/XSHE） | provisional rev2 | `catl_snapshot.json` 2977B **`9960b7e0a682f19f…`** |
-| HK | `ENT_1af6804e-40c1-4c35-b190-ea691dba2c85` | 中信建投 H（06066/XHKG） | provisional rev2 | `cncb_h_snapshot.json` 2948B **`4d30c311296161cd…`** |
+| US | `ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e` | Alphabet Inc. | verified rev1 | `alphabet_snapshot.json` 8689B **`5ad1a45e287c945680fc4c23db7b4dcf32959a6c0021daea4ba226ebd4365278`**（已入库 `b6e9fd0`） |
+| CN-A | `ENT_99ebb735-f072-41e4-8545-823bc012614f` | 宁德时代（300750/XSHE） | provisional rev2 | `catl_snapshot.json` 2976B **`6929f0868243a271ccc35ab7b16005b11fe968f43f18213929d0651c3bf66db7`** |
+| HK | `ENT_1af6804e-40c1-4c35-b190-ea691dba2c85` | 中信建投 H（06066/XHKG） | provisional rev2 | `cncb_h_snapshot.json` 2947B **`884855433a431292da3e1dbf7382e757aab9dea41be8f321b464c79303ad908a`** |
 
-快照目录：`StockQAbyLLM/pilot_runs/b01_prereq_2026-10-07/`（已入库 `c282c80`）。样本不进大股票池（`不导入或改变大股票池`——三实体为隔离样本，B01 结束后不自动入池）。
+快照目录：`StockQAbyLLM/pilot_runs/b01_prereq_2026-10-07/`（已入库：CATL/CNCB `c282c80`、Alphabet `b6e9fd0`）。**sha 口径=归档文件字节**（运行时 `load_identity_snapshot` 所取；CLI stdout 为 CRLF 终止、经 git EOL 归一为 LF 入库——r2 R2-P1-1 处置，两口径关系已双向复算，内容零差异）。样本不进大股票池（`不导入或改变大股票池`——三实体为隔离样本，B01 结束后不自动入池）。
 
 ## 2. 题面与规则冻结（BENCH-01 given.fixed_inputs）
 
