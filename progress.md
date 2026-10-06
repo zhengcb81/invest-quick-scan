@@ -1801,3 +1801,5 @@
 - **Q09 = verified（一轮 approved）**：审查无阻断——双准入接缝探针实证闭环（旗关 begin 二预留/旗开一行；旗关自家路由 busy 30s 自锁、旗开 False）、四类准入码实测、六 case 双重核证、ADV-1 逐字有效、门 897/0+133+CLI48+mypy·black·ruff 0+StockWiki check_all 929。两仓隔离提交（StockQA 恰 4 面更正 INFO-2 笔误、StockWiki 恰 2 面）。LOW×6/INFO×6 留档下一批。下一批 Q10。
 
 - **Q10 写前报告完成（round-73）**：勘察实证 store 11 方法族全备零调用 + C06 绑定契约全图（适配器字段映射完整依据：observation identity/answer/execution 九字段全出自 checkpoint provenance、envelope 权威字段缺失即 block、unknown 不可打包）；卡入 `Q10-outbox-card-2026-10-06.md`、Phase 82 建档。纯离线。
+
+- **Q10 GREEN（round-74/75）**：`quick_scan_c06_adapter.py`（authority 五键/能力集/producer/九执行字段全前置→MissingC06Fields 分类 block、内容寻址同法、证据=provenance url 绑定不发明）——RED 2 失败（adapter 缺）/3 过（内联包直过 store 真校验器）→ **5 passed**；mypy Success+black/ruff 0；电池 138+全量 902/0。待审查。

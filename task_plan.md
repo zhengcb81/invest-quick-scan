@@ -1211,4 +1211,5 @@ Status: card_written; ready_for_implementation
 Status: card_written; ready_for_implementation
 - [x] **只读勘察（round-73）**：store Q10 API **11 方法族全备零调用**（blocked/prepare/begin/confirm-not-sent/apply-ack/list/get/events）+ outbox 模块（C06 信封校验 L116-217、**checkpoint 绑定校验 L221-305=适配器字段映射的完整依据**、ACK 校验、delivery_key）；C06 内容寻址同法确定；unknown 状态不可打包→block；envelope 权威字段（contract_versions/capabilities/producer）缺失即 block（step1 原文）。
 - [x] **写前报告卡**：`reviews/IQS-lane/Q10-outbox-card-2026-10-06.md`（C06 适配器设计/执行路径接线/ACK 入口/投递恢复/五 case 映射——LLM-08=Q05 只登记边界/允许改动 5 项+禁改 outbox 校验面/门/风险边界）。
-- [ ] TDD：RED（JOB-07 恢复零 LLM/JOB-08 错 ACK/DB-07 durable block/PAR-10 假 ACK）→ GREEN（适配器+接线）→ 全量门（基线 897 口径）→ 独立审查两轮 → StockQA 隔离提交 → Q10 verified。
+- [x] **RED→GREEN（round-74/75）**：RED = `tests/unit/test_q10_delivery.py` 2 failed（adapter 缺）/**3 passed**（内联 C06 包构造直过 store 真校验器=绑定契约映射实证正确）；实现 = `src/utils/quick_scan_c06_adapter.py`（`build_c06_package`：authority 五键契约/能力集/producer/九执行字段全前置校验，缺失→`MissingC06Fields` 分类 block；unknown 不可打包；内容寻址同法）——**5 passed** + mypy Success + ruff/black 0；电池 138 + 全量 902/0。
+- [ ] 独立审查两轮 → StockQA 隔离提交（2 新文件：adapter/test_q10；runner 接线按卡最小）→ Q10 verified。
