@@ -1819,3 +1819,4 @@
 - **B01-b 前置导入完成（round-84/85）**：宁德/中信建投 H provisional 双导入（幂等复验零新增）+ W04 双快照（4ce7ba5a/2853cc98，UTF-8 字节级）；批内纠正两件如实入证据档（market CN-A→CN 操作者纠正、PS> UTF-16 陷阱）。待独立审查→B01-b 冻结+成本声明→owner 放行。
 
 - **owner 放行 B01-b（round-86「给你放行」）**：硬门过，manifest+成本声明转记录式；新资源前置=Brave/Tavily 两把键不存在（providers/env 实测）→ 已提二选一（提供键/批准替代口径）。前置导入审查 9e30a318 在途。
+- **B01 搜索键就绪（owner 提供）**：BRAVE_API_KEY（31）与 TAVILY_API_KEY（41）均在 Windows **用户级** env（长度已验、值不打印不落盘）；运行时按本会话既定规则显式注入子进程（`[Environment]::GetEnvironmentVariable(..,'User')`）——检索入口资源缺口闭合，B01-b 可按 case 原口径（Brave vs Tavily）执行。
