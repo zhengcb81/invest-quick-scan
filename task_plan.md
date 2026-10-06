@@ -1239,3 +1239,9 @@ Status: sample_frozen_pending_import; b01_b_awaiting_cost_declaration_and_go
 - [ ] **B01-b 成本声明+冻结清单**：30 题引用 L02 冻结 manifest（题面/评分尺 hash）· 方法矩阵（顺序/并发≤4/3-5-10/单批30）· 预算上限（参考 L02 实测 940/2600 外推+保守余量）· Brave/Tavily 对照口径 · 执行日价格快照引用 → **owner 放行** → live 执行 → 报告 → G3。
 
 - [x] **owner B01-b live 放行（round-86，原话「给你放行」）**：硬门通过——manifest 冻结与成本声明转为**记录式**（跑前落档，不再等待二次确认）。**剩余资源前置**：BENCH-01 step2 要求真实 Brave/Tavily 公开搜索入口——实测环境与 llm_apis **两把键均不存在**（providers 仅 deepseek/glm/mimo/minimax/openai；env 无 BRAVE/TAVILY）→ 已向 owner 提出二选一：(a) 提供两把键 或 (b) 批准替代口径（L02 已验证的 mimo/minimax 内置搜索做两路检索对照，属 case 口径变更需批）。
+
+### Phase 85: B01-b 冻结 manifest + 成本声明（记录式）
+Status: freeze_documented; awaiting_prereq_r2_then_live
+- [x] **三样本快照集齐**：Alphabet `a4c6eeef2b132ca9…`（verified rev1 4 listings）+ CATL `9960b7e0…` + CNCB-H `4d30c311…`（均 rev2，as-of 2026-10-07T00:00:00Z，字节级捕获）。
+- [x] **冻结文档**：`reviews/IQS-lane/B01b-freeze-manifest-2026-10-07.md`——样本/30题程序（L02 question_sets 引用+首请求前生成记 hash）/检索器（双键就绪、500字/30000字上限）/两阶段模型（M3→M3+mimo+deepseek-flash）/seed 20261007·20261008/预注册阈值（case 原文）/硬预算 caps（模型 800+800 分账、检索 500、时间 2×3h、现金≤25USD、quota 单列）/执行入口（Q06-Q10 链+B01-a 授权快照）/诚实边界。
+- [ ] prereq r2 → approved → **live 执行**（owner 已放行；P2-5 IQS 契约 CLI 兼容项单独开项不阻本批）。
