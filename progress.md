@@ -1813,3 +1813,5 @@
 - **B01-a 收口（round-80）**：r2 approved（P2-1 文档路线闭环+LOW-2 默认路径 4 探针证实+三处反馈失实按 §8.7 更正）；StockQA `21fbe3b`（恰 4 变更面，全钩子链过）；IQS 卡处置 `c68b52c`。**BENCH-02 已验证**（入口 fail-closed：零/未知授权 exit2/零出站/零 store/审计 run_id/有效快照重试成功）。B01-b（live）待成本声明+owner 放行。
 
 - **B01-b 样本冻结（owner round-81 两项决定）**：A股=宁德时代 300750；港股=中信建投 H 06066（独立选）；美股=Alphabet（现成 verified）。前置缺口实证：生产库仅 Alphabet verified——宁德/中信建投 H 经 G2b-A 导入路径入库+验证（通授内）。后续：前置导入批 → B01-b 成本声明+冻结清单 → owner 放行 → live。
+
+- **B01-b 前置导入侦察（round-82）**：Alphabet 路径全档读毕；provisional 导入受支持（单证券约束满足）、MIC XSHE/XHKG 在册、市场标签惯例确认。下一步=写前报告+两 payload 构建+导入+W04 导出。

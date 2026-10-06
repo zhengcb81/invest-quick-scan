@@ -1231,5 +1231,6 @@ Status: card_written; B01-a ready_for_implementation; B01-b awaiting_owner_go
 Status: sample_frozen_pending_import; b01_b_awaiting_cost_declaration_and_go
 - [x] **样本冻结（owner round-81 决定）**：A股=宁德时代 300750（B2a 池 CN-A:300750）；港股=中信建投 H 06066（owner 从 11 家 A+H 池独立选，非 A 样本同司）；美股=Alphabet GOOGL（W09 verified 现成）。
 - [x] **前置缺口实证**：StockWiki 生产库仅 Alphabet verified——宁德/中信建投 H 需经 G2b-A 导入路径入库+验证链（写授权已在 owner 通授内：全部剩余批次一次性授权，含导入；条件=写前报告+审查，适用）。
-- [ ] **前置导入批（离线）**：两实体经 G2b-A 路径导入+验证（复用已验证导入器与 W04 导出链）→ identity_snapshot 可产 → B01-b 冻结清单可落。
+- [x] **前置导入侦察（round-82）**：Alphabet 路径全档（`G2b-alphabet-sample-2026-10-04.md`：payload 四键 {provenance,entity,source_bindings,issuer_receipt}、`entity-import --file` 命令、幂等复验）；三前置核验——①entity-import **支持 provisional**（kind=provisional_scope、"provisional scope needs one security"=恰 1 证券，两样本均满足；verified 才需 IVR+owner evidence，本前置不越界）②MIC fixture 含 **XSHE（宁德 300750→深交所创业板）/XHKG（中信建投 H 06066→港交）** ③市场标签 CN-A/HK 与库惯例一致。
+- [ ] **前置导入批实施**：按 W04 golden/test fixture 的 provisional 形状构建两 payload（宁德时代 CN-A:300750 单证券 ordinary、中信建投 HK:06066 单证券 ordinary；source_namespace=iqs:b2a_candidates/2026-10-03 诚实溯源）→ `entity-import` ×2 → 幂等复验 → W04 `identity-export-g2b` ×2 → 两份 identity_snapshot 交 B01-b 冻结清单。写前报告卡 + 独立审查两轮 + 隔离提交。
 - [ ] **B01-b 成本声明+冻结清单**：30 题引用 L02 冻结 manifest（题面/评分尺 hash）· 方法矩阵（顺序/并发≤4/3-5-10/单批30）· 预算上限（参考 L02 实测 940/2600 外推+保守余量）· Brave/Tavily 对照口径 · 执行日价格快照引用 → **owner 放行** → live 执行 → 报告 → G3。
