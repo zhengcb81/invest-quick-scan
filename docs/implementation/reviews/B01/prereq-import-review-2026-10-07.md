@@ -5,7 +5,8 @@
 样本来源：`task_plan.md` Phase 84（owner round-81 两项结构化决定）；先例：`reviews/IQS-lane/G2b-alphabet-sample-2026-10-04.md`；契约：StockWiki `stockwiki/identity_import.py`（L149-169 provisional 分支）。
 
 **裁决（r1）：needs_revision**（3 项 P1 需返工，0 项 P0）。详见 §7/§8。
-**裁决（r2，收窄复审）：needs_revision** —— r1 的 3 项 P1 经 CLI rev2 **全部复算确认闭合**；但新引入 1 项 P1（冻结 manifest / 证据表 / 提交信息所记 sha 与**归档快照字节**不符，三份全中，运行时消费方取的是文件字节）+ 3 项 P2 文档修正。详见 §9。
+**裁决（r2，收窄复审）：needs_revision** —— r1 的 3 项 P1 经 CLI rev2 **全部复算确认闭合**；但新引入 1 项 P1（冻结 manifest / 证据表 / 提交信息所记 sha 与**归档快照字节**不符，三份全中，运行时消费方取的是文件字节）+ 3 项 P2 文档修正。见 §9。
+**裁决（r3，极窄确认）：approved** —— R2-P1-1 与 3×P2 全部字节级复核通过，冻结链四方一致（`Get-FileHash` == manifest §1 == 证据 §2 == `load_identity_snapshot`）。见 §10。
 
 ---
 
@@ -279,3 +280,61 @@ v1 的 `receipt_duplicate` exit 1 消除 ✓；行数零新增 ✓；receipt_id 
 - 已确认闭合：**P1-1**（rev2 幂等双 exit 0、v1 写前拒绝、零行新增、状态哈希不变）、**P1-2**（rev2 回执与 payload listing/market 逐项 MATCH、ctx 仅 rev2、消费者通过）、**P1-3**（新 namespace/record 实档核对通过、旧绑定 0 引用孤儿如实披露）；§3 记录与实况一致、无二次裸 SQL（字节级佐证）；force-add 口径属实（blob==文件）；范围零代码、零 B2a/叙事触碰；provisional 诚实边界维持。
 - 阻断项仅剩 **R2-P1-1 字节/sha 对齐**（内容零缺陷、可机械修复，manifest 明示首请求前可改）+ 3 项 P2 文档修正。对齐后建议以三点验收：① 三份文件 `Get-FileHash` == manifest §1；② `load_identity_snapshot` 返回 sha == manifest §1；③ 证据 §2 表三列描述同一对象（文件字节）。
 - 说明：本裁决**不否定**数据与身份侧整改质量——三处 P1 的修复路径（store 原生 rev 递增 + 新绑定引用）是本审首选方案且执行到位；本轮分歧仅在"冻结记录引用哪一种字节形式"这一项可复算事实上。
+
+---
+
+# §10 r3 极窄确认复核（R2-P1-1 + 3×P2 落实核验 → 终裁）
+
+日期：2026-10-07。复核时点：2026-10-06 21:53–21:56 (+0100)。范围：IQS `e4556b8` + StockQA `ea358ae`。方法：按 §9.9 给出的两点验收 + P2 字节级核验，全部本审独立执行。
+本审副作用：`Get-FileHash` ×3（只读）、`load_identity_snapshot` ×3（只读）、`entity-import` 幂等重放 ×2（授权内——两份 rev2 payload 本轮被编辑过，须确认导入契约未受波及）。
+
+## 10.1 (a) 三文件 Get-FileHash == manifest §1 → **通过**
+
+| 文件 | 字节 | 本审 `Get-FileHash SHA256` | manifest §1 | 一致 |
+|---|---|---|---|---|
+| `alphabet_snapshot.json` | 8689 | `5ad1a45e287c945680fc4c23db7b4dcf32959a6c0021daea4ba226ebd4365278` | 同值（并注"已入库 `b6e9fd0`"） | ✓ |
+| `catl_snapshot.json` | 2976 | `6929f0868243a271ccc35ab7b16005b11fe968f43f18213929d0651c3bf66db7` | 同值 | ✓ |
+| `cncb_h_snapshot.json` | 2947 | `884855433a431292da3e1dbf7382e757aab9dea41be8f321b464c79303ad908a` | 同值 | ✓ |
+
+三份文件 mtime 仍为 21:31:18 / 21:38:13（本轮未再被改写）→ 无二次换行规范化。
+
+## 10.2 (b) `load_identity_snapshot` == manifest §1 → **通过**
+
+| 文件 | 返回 `identity_snapshot_sha256` | == manifest §1 | state / rev / 绑定数 |
+|---|---|---|---|
+| `alphabet_snapshot.json` | `5ad1a45e…5278` | ✓ | verified / 1 / 4 |
+| `catl_snapshot.json` | `6929f086…6db7` | ✓ | provisional / **2** / 1 |
+| `cncb_h_snapshot.json` | `88485543…908a` | ✓ | provisional / **2** / 1 |
+
+（`expected_entity_id` 交叉校验三份全过。）运行时口径与冻结记录自此是**同一对象**。
+
+## 10.3 (c) 证据 §2 / manifest 描述同一对象（文件字节）且 stdout 口径注明 → **通过**
+- manifest §1：三行均为归档文件字节 sha + 字节数；第 13 行补"**sha 口径=归档文件字节**（运行时 `load_identity_snapshot` 所取；CLI stdout 为 CRLF 终止、经 git EOL 归一为 LF 入库——两口径关系已双向复算，内容零差异）"，Alphabet 入库口更正为 `b6e9fd0`（本审 r2 INFO 所指）。
+- 证据 §2：表值改为 2976/`6929f0868243a271…`、2947/`884855433a431292…`（=文件字节），表下注明"本表 sha=归档文件字节=运行时 `load_identity_snapshot` 所取"，stdout 口径作为附注保留（catl `9960b7e0…`2977B、cncb `4d30c311…`2948B、alphabet `a4c6eeef…`8690B）；新增"r2 处置补记（round-88）"记录修法 (ii)、双值验收与"历史提交不改写"。
+- 交叉比对：**manifest §1 == 证据 §2 == 本审 Get-FileHash == 本审 `load_identity_snapshot`，四方全等**。
+
+## 10.4 (d) 3×P2 字节级落实 → **全部通过**
+- **P2-1**：`cncb_h_rev2.json` `provenance.entity_source` = `iqs:b2a_hk_discovery/2026-10-03 (CN_A_601066)`，与同文件 binding 逐字一致；`catl_rev2.json` 保留 `iqs:b2a_candidates/2026-10-03 (CN-A:300750)`（实存记录，断言属实）。**v1 payload 未被改写**（`cncb_h_payload.json` 仍为 `HK:06066` 历史原貌 ✓）。快照侧：`cncb_h_snapshot.json` **不含 `HK:06066`**（仅 `CN_A_601066`）；`catl_snapshot.json` 中 `CN-A` 仅作 `source_record_id="CN-A:300750"`（实存记录，两处均为 receipt/binding 的 record id），`market=CN` ✓；`alphabet_snapshot.json` 无 CN-A/HK 残留 ✓。
+- **P2-2**：task_plan L1243 真勘误行已落——保留侦察③原句 + 明示"失实"，给出真实口径（`quick_scan_security.market`/`quick_scan_source_binding.market` = ISO 国家码 CN/GB/HK/US；`CN-A` = 候选层段标签（candidates.listing_key 前缀）；两层不可混用）并回指本批 CN-A 被拒因果 ✓。
+- **P2-3**：四份 rev2 回执归档 `catl_rev2_{import,replay}_out.txt` / `cncb_h_rev2_{import,replay}_out.txt`，四份均 `EXIT=0`、`phase_status=entity_saved_receipt_recorded`、`receipt_recorded=true`、receipt_id 与库内一致（`ATT_5912…`/`ATT_88b5…`）、`llm_calls=0/network_calls=0` ✓。
+- **附带回归（本审加做的授权重放）**：被编辑过的 `catl_rev2.json` / `cncb_h_rev2.json` 重放**双双 exit 0**、receipt_id 不变、`receipt_recorded=true`；两库行数（entity 3 / security 6 / binding 7 / receipt 5）与状态**完全不变** → provenance 字段编辑未波及导入契约 ✓。
+
+## 10.5 (e) 范围 → **通过**
+- IQS `e4556b8`（21:48:38）= 本审 r2 报告 + freeze manifest + 证据档 + task_plan，**4 文件全 docs** ✓；
+- StockQA `ea358ae`（21:50:54）= 4 份 rev2 回执 + `cncb_h_rev2.json`，**仅 `pilot_runs/b01_prereq_2026-10-07/`** ✓；
+- 两树 `git status` 净（仅既有未跟踪项）；StockWiki 树净、HEAD 仍 `3fe5008`；叙事三提交 `3c20d4d..ae0b3e3` 未动；**零代码改动** ✓。
+
+## 10.6 r3 INFO（记档，不阻断）
+- **INFO-1** 归档的四份 rev2 回执 `imported_at` = `2026-10-06T20:48:18–20Z`（21:48 窗口的幂等重跑捕获），库内 rev2 首次写入窗为 20:29:27Z；两者 receipt_id/phase 完全一致、回执自述其时点（非失实），但"import/replay"两份实为同一幂等重跑的相邻两次——幂等另由本审库内状态哈希不变独立佐证。
+- **INFO-2** P2-5（IQS 公共契约 CLI 的 `BND_`/`status` 兼容）维持独立开项：非本批引入、本轮无回归；本批实际消费面（StockQA `load_identity_snapshot`）三份全通过。
+- **INFO-3** 证据 §2 表仅含两样本快照（Alphabet 属冻结 manifest §1 口径），两档互指、无冲突。
+
+## 10.7 r3 终裁
+
+**approved。**
+
+- r1 三 P1（幂等 / 包自洽 / 港股溯源）与 r2 一 P1（冻结 sha≠归档字节）+ 三 P2（provenance 残留 / 假勘误声明 / rev2 回执缺失）**全部经本审独立复算确认闭合**，整改路径均为本审给定的首选方案（CLI rev 递增、新绑定引用、sha 口径对齐文件字节）。
+- **冻结链四方一致**：`Get-FileHash` == manifest §1 == 证据 §2 == `load_identity_snapshot` 返回值（三份全等），运行时口径与冻结记录自首请求起即同一对象。
+- 数据侧基线未变：3 实体（Alphabet verified rev1 + 两样本 provisional rev2）/ 6 证券 / 7 绑定（含已披露 0 引用孤儿）/ 5 回执（2×rev1 历史 + 2×rev2 + 1×verified）；provisional 诚实边界维持；零网络零 LLM；零代码、零 B2a/叙事触碰；本审多轮写操作后两库状态始终不变（r2 基线 `7757ba0f299bddb9e0e1cd2e5a6c343c37b23ac935a718ec60d880ad93d39906`）。
+- 残留：P2-5 单独开项；INFO-1 的回执时点口径建议在执行回执中沿用已统一的"文件字节 sha"口径。
+- **B01-b 冻结可生效，进入 live 执行**（owner round-86 已放行、双搜索键就绪、manifest+成本声明已落 `B01b-freeze-manifest-2026-10-07.md`）。
