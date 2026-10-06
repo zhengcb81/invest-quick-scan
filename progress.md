@@ -1785,3 +1785,5 @@
 - **目标恢复（owner：恢复目标，继续做不要停）**：blocked(round-limit 60/60) → owner 直接授权 edit maxGoalRounds 120 + resume（rev8 active/armed），objective 更新为当前队列（Q07→Q09→Q10→B01→L03→余项，含 ADV-1 随 Q09 记档）。同轮完成 Q07 侦察（store checkpoint API 全备零调用、回执在 result.metadata 引擎缝隙可存）与**写前报告卡**（Phase 80 建档，`Q07-checkpoint-card-2026-10-06.md`）。
 
 - **Q07 RED（round-61）**：六 case 测试文件就位（JOB-03 补水/JOB-04 四态分区/JOB-05 取消历史保留/LLM-07 无回执不存+I05 拒绝/PAR-04 原检查点与 model-a 来源保持/PAR-09 预算单次预留+迟到回执结算+不可重 POST），5 failed/1 passed（LLM-07 store 层预满足）、ruff 净；勘察确认 store **零改动**（cancel_pending/list_run_items/四 API 全备），实现面定型。
+
+- **Q07 GREEN + 四重门（round-62）**：六 case 全绿（补水/原样保持/四桶分区/取消历史/不造检查点/预算单次预留+迟到回执幂等+不可重 POST）；实现四件套（回执事实源、hydrate、四前置 after、recovery/cancel）；Q06 回归 123 passed 零破坏、全量 887/0、mypy/black/ruff 全 0。待独立审查。
