@@ -1793,3 +1793,5 @@
 - **Q07 = verified（三轮审查收口）**：r1 2×P1（record→save 劈叉三探针实证、水合伪 created_at+信封丢回执）→ 整改（preflight 零状态回退+真 save 漂移对、provenance 原时+信封重建、五桶精确+预算零、信封共享函数、LOW 全清）→ r2 唯一阻断注释诚实性（含"已删"假声称更正留痕 76efd65）→ r3 approved（门全绿 889/125/15/48+mypy·black·ruff·diff 全 0、grep never-strand=0、范围恰 4 面、Q06 无破坏）。StockQA 提交+IQS 记档。下一批 Q09（ADV-1+双预留接缝随批）。
 
 - **Q09 写前报告完成（round-66）**：勘察定案——store 预算机器已在（三层槽/门/守恒全备，Q09 首段产物），真缺口=runner policy 对接线（今日 reserve-before-dispatch 未激活）+deadline 门+六 case 测试+ADV-1；卡入 `Q09-budget-card-2026-10-06.md`、Phase 81 建档。纯离线无 live 成本。
+
+- **Q09 测试层 GREEN（round-67）**：六 case+deadline 共 7 passed（含 PAR-01 双子进程/DB 轮询三层≤上限/真重叠≥2/崩溃行幸存——子进程修复了 f-string 父求值、顶层缩进、GBK 编码三坑）；lifecycle 增 deadline 门、reason 带准入码。余 runner 胶水+ADV-1+全门+审查。
