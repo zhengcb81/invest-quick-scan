@@ -1235,3 +1235,5 @@ Status: sample_frozen_pending_import; b01_b_awaiting_cost_declaration_and_go
 - [x] **前置导入实施（round-84/85）**：写前报告 `B01b-import-card-2026-10-07.md` + 两 payload → `entity-import` ×2 exit 0（`entity_saved_receipt_recorded`、零网络零 LLM）→ 库内复验（3 实体/6 证券/3 回执）→ 幂等重放零新增 → market-registry-import（iso10383 fixture 7 条）→ W04 导出 ×2 = **catl_snapshot（2979B `4ce7ba5a…`）/ cncb_h_snapshot（2938B `2853cc98…`）** UTF-8 字节级。**批内纠正如实记录**（CN-A→CN 操作者纠正两行+PS UTF-16 陷阱，见证据档 §3）——证据档 `B01b-prereq-import-evidence-2026-10-07.md`。
 - [ ] 独立审查两轮（数据批：范围/溯源/provisional 诚实性/纠正记录裁定/幂等）→ approved → 隔离提交（StockQA pilot_runs 产物 + IQS 档）→ B01-b 冻结材料集齐 → 成本声明+manifest → owner 放行。
 - [ ] **B01-b 成本声明+冻结清单**：30 题引用 L02 冻结 manifest（题面/评分尺 hash）· 方法矩阵（顺序/并发≤4/3-5-10/单批30）· 预算上限（参考 L02 实测 940/2600 外推+保守余量）· Brave/Tavily 对照口径 · 执行日价格快照引用 → **owner 放行** → live 执行 → 报告 → G3。
+
+- [x] **owner B01-b live 放行（round-86，原话「给你放行」）**：硬门通过——manifest 冻结与成本声明转为**记录式**（跑前落档，不再等待二次确认）。**剩余资源前置**：BENCH-01 step2 要求真实 Brave/Tavily 公开搜索入口——实测环境与 llm_apis **两把键均不存在**（providers 仅 deepseek/glm/mimo/minimax/openai；env 无 BRAVE/TAVILY）→ 已向 owner 提出二选一：(a) 提供两把键 或 (b) 批准替代口径（L02 已验证的 mimo/minimax 内置搜索做两路检索对照，属 case 口径变更需批）。

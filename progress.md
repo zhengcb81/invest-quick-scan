@@ -1817,3 +1817,5 @@
 - **B01-b 前置导入侦察（round-82）**：Alphabet 路径全档读毕；provisional 导入受支持（单证券约束满足）、MIC XSHE/XHKG 在册、市场标签惯例确认。下一步=写前报告+两 payload 构建+导入+W04 导出。
 
 - **B01-b 前置导入完成（round-84/85）**：宁德/中信建投 H provisional 双导入（幂等复验零新增）+ W04 双快照（4ce7ba5a/2853cc98，UTF-8 字节级）；批内纠正两件如实入证据档（market CN-A→CN 操作者纠正、PS> UTF-16 陷阱）。待独立审查→B01-b 冻结+成本声明→owner 放行。
+
+- **owner 放行 B01-b（round-86「给你放行」）**：硬门过，manifest+成本声明转记录式；新资源前置=Brave/Tavily 两把键不存在（providers/env 实测）→ 已提二选一（提供键/批准替代口径）。前置导入审查 9e30a318 在途。
