@@ -1820,3 +1820,4 @@
 
 - **owner 放行 B01-b（round-86「给你放行」）**：硬门过，manifest+成本声明转记录式；新资源前置=Brave/Tavily 两把键不存在（providers/env 实测）→ 已提二选一（提供键/批准替代口径）。前置导入审查 9e30a318 在途。
 - **B01 搜索键就绪（owner 提供）**：BRAVE_API_KEY（31）与 TAVILY_API_KEY（41）均在 Windows **用户级** env（长度已验、值不打印不落盘）；运行时按本会话既定规则显式注入子进程（`[Environment]::GetEnvironmentVariable(..,'User')`）——检索入口资源缺口闭合，B01-b 可按 case 原口径（Brave vs Tavily）执行。
+- **前置批 r1→rev2 修复（round-86/87）**：三 P1 经 CLI rev2 全消（幂等双 0/回执 listing MATCH/namespace 溯源更正+孤儿披露），无二次裸 SQL；证据 v2+卡处置+P2 处置+勘误入档；JSON force-add 待提交；r2 待派。owner 放行+双搜索键已就绪。

@@ -31,3 +31,12 @@
 ## 风险与边界
 - 名称与证券属性取自 B2a 分类（source_namespace 如实标注）；不引入未经分类的字段。
 - 单证券约束（provisional）两样本均满足；A/H 多挂牌语义不在本批（B 类另论）。
+
+## r1 findings 处置记录（round-86/87）
+- **P1-1/2/3 → CLI rev2 修复（证据档 v2 §1-§3）**：rev2 双导入 exit 0 + 幂等重放双 exit 0 + 回执/payload listing MATCH + trusted_context 仅 rev2 + cncb namespace 溯源更正（新 BIND，旧 BIND 孤儿残留披露）；**未再裸 SQL**。
+- **P2-1**：允许面补 `market-registry-import`（iso10383 fixture，Alphabet 同源）。
+- **P2-2**：JSON 证据档经 `git add -f` 入库（绕过 `*.json` ignore 的证据适用性）。
+- **P2-3**：证据措辞更正（仅导入回执 0/0；导出无回执）。
+- **P2-4**：拒绝事件字节证据引用审查报告复现（v1 e1/e2 零字节如实说明）。
+- **P2-5**：IQS 公共契约 CLI 兼容项（BND_/status）单独开项，非本批引入。
+- **LOW**：Phase84 侦察③勘误入 task_plan；时间戳/ CRLF 如实披露入证据档 §3/§4。
