@@ -1186,4 +1186,5 @@ Status: card_written; ready_for_implementation
 - [x] **目标恢复 + 轮次预算 120**（owner「恢复目标，继续做不要停」round-61；blocked(round-limit)→edit max→resume，objective 更新为当前队列 Q07→Q09→Q10→B01→L03→余项）。
 - [x] **只读勘察**：Q07 store API 全备（save/get checkpoint、note_late_receipt、reconcile_budget_attempt——契约恰合 I05 1-10 int/I12 同 attempt 幂等）且**零调用**；回执在 `QAResult.metadata` 已有（to_quick_scan_dict 同源组装，引擎缝隙可直接存）；Q06 生命周期与内容寻址键为 PAR-04/JOB-04 提供基座。
 - [x] **写前报告卡**：`reviews/IQS-lane/Q07-checkpoint-card-2026-10-06.md`（接线设计五点、六 case 映射、允许改动 5 文件+禁改、门、风险边界；纯离线）。
-- [ ] TDD：RED（JOB-03 补水/JOB-04 四点故障注入/JOB-05 取消/LLM-07 修复预算/PAR-04 pack 续扫/PAR-09 迟到回执）→ GREEN → 全量门 → 独立审查两轮 → StockQA 隔离提交 → Q07 verified。
+- [x] **RED（round-61）**：`tests/unit/test_q07_checkpoint.py` 六 case 就位，**5 failed / 1 passed**（LLM-07 的 store 校验层预满足=已存在契约；其余真红：`recovery_report` 缺、补水未接、原检查点未保、取消语义未接、迟到回执未接）；ruff 净。实现面已定型（勘察结论）：**store 零改动**——`cancel_pending`/`list_run_items`/`save+get_answer_checkpoint`/`note_late_receipt`/`reconcile_budget_attempt` 全部已存在；接线件 = lifecycle `hydrate_question` + 引擎补水 + `after_question` 有真回执→`save_answer_checkpoint`（否则维持 Q06 honest-unknown）+ llm_runner `recovery_report` 四态分区 + 取消包装。
+- [ ] GREEN → 全量门（基线 881 口径）→ 独立审查两轮 → StockQA 隔离提交 → Q07 verified。

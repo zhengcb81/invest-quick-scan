@@ -1783,3 +1783,5 @@
 - **W11 = verified（三轮审查收口，2026-10-06 00:0x）**：r1 needs_revision（P1-1 接线缺口）→ owner 选项 a 接线四件套落地 → r2 needs_revision（记录可信度/契约一致性 4×P2）→ 四条件整改（卡 L51 就地更正、去重顺序修不可哈希、docstring 真披露、company+配方表述）→ **r3 approved**。门：check_all 929 passed/coverage 81%/0 errors、定向 4、IQS 2+80/53、三静态门全 0；StockWiki 恰 3 文件纯加法（73/0）、StockQA 0 改动。ADV-1（company 标签 live 前换 canonical_name）随 Q09/live 记档；LOW×6 备案。M3：Q06✓ W11✓，余 Q07/Q09/Q10/B01/L03。
 
 - **目标恢复（owner：恢复目标，继续做不要停）**：blocked(round-limit 60/60) → owner 直接授权 edit maxGoalRounds 120 + resume（rev8 active/armed），objective 更新为当前队列（Q07→Q09→Q10→B01→L03→余项，含 ADV-1 随 Q09 记档）。同轮完成 Q07 侦察（store checkpoint API 全备零调用、回执在 result.metadata 引擎缝隙可存）与**写前报告卡**（Phase 80 建档，`Q07-checkpoint-card-2026-10-06.md`）。
+
+- **Q07 RED（round-61）**：六 case 测试文件就位（JOB-03 补水/JOB-04 四态分区/JOB-05 取消历史保留/LLM-07 无回执不存+I05 拒绝/PAR-04 原检查点与 model-a 来源保持/PAR-09 预算单次预留+迟到回执结算+不可重 POST），5 failed/1 passed（LLM-07 store 层预满足）、ruff 净；勘察确认 store **零改动**（cancel_pending/list_run_items/四 API 全备），实现面定型。
