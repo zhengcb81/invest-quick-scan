@@ -1212,4 +1212,7 @@ Status: card_written; ready_for_implementation
 - [x] **只读勘察（round-73）**：store Q10 API **11 方法族全备零调用**（blocked/prepare/begin/confirm-not-sent/apply-ack/list/get/events）+ outbox 模块（C06 信封校验 L116-217、**checkpoint 绑定校验 L221-305=适配器字段映射的完整依据**、ACK 校验、delivery_key）；C06 内容寻址同法确定；unknown 状态不可打包→block；envelope 权威字段（contract_versions/capabilities/producer）缺失即 block（step1 原文）。
 - [x] **写前报告卡**：`reviews/IQS-lane/Q10-outbox-card-2026-10-06.md`（C06 适配器设计/执行路径接线/ACK 入口/投递恢复/五 case 映射——LLM-08=Q05 只登记边界/允许改动 5 项+禁改 outbox 校验面/门/风险边界）。
 - [x] **RED→GREEN（round-74/75）**：RED = `tests/unit/test_q10_delivery.py` 2 failed（adapter 缺）/**3 passed**（内联 C06 包构造直过 store 真校验器=绑定契约映射实证正确）；实现 = `src/utils/quick_scan_c06_adapter.py`（`build_c06_package`：authority 五键契约/能力集/producer/九执行字段全前置校验，缺失→`MissingC06Fields` 分类 block；unknown 不可打包；内容寻址同法）——**5 passed** + mypy Success + ruff/black 0；电池 138 + 全量 902/0。
-- [ ] 独立审查两轮 → StockQA 隔离提交（2 新文件：adapter/test_q10；runner 接线按卡最小）→ Q10 verified。
+- [x] **独立审查一轮 approved（1801f7d9，无 P0/P1/P2；2 LOW + 5 INFO）**：门全独立复跑（902/0、5+138、mypy/black/ruff 0）；审查者 92/92 独立探针（自有 canonical 重算三级寻址、29 项逐字段溯源零推造、24 反例全 MissingC06Fields）；四 case 测试+探针双重核证；范围恰 2 新文件、outbox 校验面/store 零改动。
+- [x] **LOW-1/LOW-2 随提交落实**：LOW-1 跨字节封存拒单测（探针 C25 场景固化为 `test_low_1_cross_byte_seal_is_refused`，Q10 定向 6 passed）；LOW-2 本行措辞修正——**runner 接线（检查点落定后的组装/block 调用）本批未做**，store 侧 blocked/封存通路已全测，薄封装留待下一小卡（与 Q10 partial 口径一致：producer-side，W05 真实接收端未接）。
+- [x] **Q10 = verified（本行，partial 口径）**：StockQA 隔离提交（恰 2 新文件）+ IQS 记档。
+- **队列状态**：Q10 关闭（producer-side）→ 下一批 = **B01（提问方法对照，live 成本声明前置）** → L03（启动需 owner 确认）。
