@@ -1216,3 +1216,10 @@ Status: card_written; ready_for_implementation
 - [x] **LOW-1/LOW-2 随提交落实**：LOW-1 跨字节封存拒单测（探针 C25 场景固化为 `test_low_1_cross_byte_seal_is_refused`，Q10 定向 6 passed）；LOW-2 本行措辞修正——**runner 接线（检查点落定后的组装/block 调用）本批未做**，store 侧 blocked/封存通路已全测，薄封装留待下一小卡（与 Q10 partial 口径一致：producer-side，W05 真实接收端未接）。
 - [x] **Q10 = verified（本行，partial 口径）**：StockQA 隔离提交（恰 2 新文件）+ IQS 记档。
 - **队列状态**：Q10 关闭（producer-side）→ 下一批 = **B01（提问方法对照，live 成本声明前置）** → L03（启动需 owner 确认）。
+
+### Phase 83: B01 两段拆解——B01-a 预检门（离线）+ B01-b live 计划骨架
+Status: card_written; B01-a ready_for_implementation; B01-b awaiting_owner_go
+- [x] **只读勘察（round-77）**：deps 全满足；BENCH-02=公共入口零/未知授权预检 fail-closed（可离线 TDD）；BENCH-01=live 本体（样本/题面/gold/盲评/预算冻结+Brave/Tavily+分组对照+G3）——启动硬门=成本声明+owner 放行。
+- [x] **写前报告卡**：`reviews/IQS-lane/B01-preflight-card-2026-10-06.md`（两段拆解；B01-a=入口级预检 blocked/needs_configuration+零出站证明+不漂移+审计性新 run id；B01-b 计划骨架占位随卡）。
+- [ ] B01-a TDD：RED（零授权/缺价格快照/配额不可建立 → 入口 blocked、出站 0、库零漂移、可重试新 run id）→ GREEN → 门 → 审查 → 提交。
+- [ ] B01-b：成本声明 + manifest 冻结清单 + owner 放行 → live 执行 → 报告 → G3。
