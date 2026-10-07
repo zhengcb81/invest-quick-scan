@@ -1,0 +1,61 @@
+{
+  "scope": "synthetic offline public-CLI cross-owner preflight; NOT real owner golden/G3/X09",
+  "status": "needs_revision",
+  "product_blockers": [
+    "QA-C06-1 incomplete_observation",
+    "QA-C06-2 independent_scan_id_collision"
+  ],
+  "tests": {
+    "passed": 3,
+    "failed": 3,
+    "errors": 0,
+    "seconds": 4.56,
+    "exit_code": 1
+  },
+  "fixture_history": [
+    "stderr error JSON was initially not captured",
+    "input refusal is exit 2, not exit 1"
+  ],
+  "actual_import": {
+    "entry": "stockwiki.cli.main observation-import",
+    "summary": {
+      "rejected": 1
+    },
+    "error_code": "observation_missing_field"
+  },
+  "scan_identity": {
+    "observation_ids_equal": true,
+    "actual_attempt_ids_differ": true
+  },
+  "qa_source_head": "09f68a69bbdbf76e3a4fff63043cdd4815572e5b",
+  "sw_source_head": "04dfc5190589a8bbe224a47e94b045779c884b80",
+  "export_counts": {
+    "qa": 195,
+    "sw_public": 182,
+    "sw_inert_config": 1
+  },
+  "real_network_paid_calls": 0,
+  "production_db_reads_writes": 0,
+  "external_repo_writes": 0,
+  "fixture_http_calls_in_final_suite": 14,
+  "warm_http_calls": 0,
+  "G3_closed": false,
+  "F05_closed": false,
+  "temporary_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\cross-owner-2026-10-07-01",
+  "cleanup_status": "completed",
+  "sources": {
+    "cross_owner_cases.py": "cb49c7a66e577b8c0f9fb94b14199050e5a1f3cf586a14231577ee03412c98b3",
+    "cross_owner_guarded.py": "210c582f7bb9aba5c0deaa5e15bf866b344ad4052db25d5fcbdb096fc88e5c6e"
+  },
+  "deleted_files": 483,
+  "source_worktrees_unchanged": {
+    "StockQAbyLLM": "same HEAD and original 7 untracked only",
+    "StockWiki": "same HEAD and clean"
+  },
+  "cleanup_evidence": "strict literal-path-matching CIM scan before deletion; known export/test tool sessions terminal; per-file SHA/type check and single-file removal",
+  "artifact_roles": {
+    "consumer-rejected-ack.json": "acceptance-failure case receipt, NOT paired with replay case",
+    "replayed-rejected-ack.json": "separate replay test final receipt; first receipt was not separately archived"
+  },
+  "ack_replay_proof": "first/again exact ACK-id equality and zero-observation assertions GREEN in named public-CLI test; two archived ACK files from different cases are NOT a replay pair"
+}

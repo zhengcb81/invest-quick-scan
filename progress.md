@@ -2012,3 +2012,19 @@
 - IQS验收/整改批82文件已提交46740146ce7f206ed3392352ae5542afa795dd57并推送（f3ceb62→4674014）；提交后仅原opencode.json保留。最终复核发现35个owner原日志/producer golden/浏览器图被通用logs/忽略，已为两条精确归档子树加.gitignore例外，补交原始字节，不扩大runtime日志入库。原QA交付是6文档/12日志（先前恢复摘要7/14错误），整改后才7文档/14日志；本次已纠正当前计划/外仓summary，原交付不改，历史progress此处明示更正。
 
 - StockQA最后仅两统计说明/索引文件提交09f68a69bbdbf76e3a4fff63043cdd4815572e5b并推送，源码84e24ef/982测试未变；原证据commit4779764仍保留。归档remediation-result已指最新09f68a6。
+
+## 2026-10-07 — Phase91 跨仓公开入口预检启动
+- goal自动接续后重核master@927fae1，工作树仅原opencode.json；StockWiki六项整改仍待唯一writer授权。此前四次heartbeat和状态答复是只读状态核对，不算新的产品进度或已确认live process wait。
+- 转向当前允许的IQS隔离联调准备，不写StockWiki/Theme/Industry，也不重复982或收费实验。生成答案/身份均明确synthetic；两端CLI、adapter、导入validator和SQLite真实执行，不替换被测实现。
+- CodeGraph读取结构后精确已知文件显示adapter只产出部分观察字段，独立观察ID未绑定执行attempt；先写跨仓反例复现，不凭静态读取直接判验收失败。
+- 两个只读路径猜测错误已纠正：无单独observation.schema.json（交换契约使用本仓已有schema），QA重建清单实际是remediation-export-manifest.json。文件清单定位后继续，无产品写入。
+
+- 精确Git导出QA195件、SW182公开文件+1惰性配置；三轮预检实际退出1。前两轮4fail/2pass中一项为fixture（stderr JSON捕获、exit2口径），最终第三轮**3fail/3pass/4.56s/0setup error**，两类新生产接口阻断：真实producer原包被consumer拒`observation_missing_field`；两独立actual store attempts同observation_id。保留原5+R1–R3整改范围，不把982说成未通过。
+- 三GREEN为拒绝ACK幂等且观察0、包篡改拒绝、warm新输出HTTP0/attempt/package不变；最终14次仅HTTP边界stub，真实模型/搜索/费用0。fixture身份、release、rate card和答案均synthetic，不补字段令正向通过，不伪造真实owner golden。最小原包/ACK/两扫描碰撞与三轮日志已归档。
+- reviewer指出两个归档ACK来自不同case，不能作为重放配对；原字节保留，在result及整改卡明确来源。重放GREEN只由同test内部first/again精确断言和实际日志支持，首次ACK未另存，不能清理后猜造。
+- **483件自有文件清理完成**：CIM严格事前字面路径matching0+所有已知测试/导出tool session终态；逐绝对范围、owner/run_id、SHA、无reparse/HardLink，原生PowerShell逐文件删除、空目录逐级移除。失败关闭，不碰共享TEMP/其他仓/opencode。两源仓前后HEAD/工作树完全相同（QA09f68a6+原七untracked；SW04dfc519 clean）。13件证据index更新，尚待同批独立报告/提交。
+- 早先“无单独observation.schema.json”应精确为**schemas/quick_scan/下无此文件**，真实Observation在`schemas/observation.schema.json`，exchange按urn引用；已按既有schema定位，不另造schema。cleanup manifest的CIM只证明字面路径匹配，结合已知工具句柄终态，不夸称OS能识别任意环境变量携带的进程。
+
+- 集中独立复核已交付，报告SHA256 `8d86582388156b0a9ee2535cd9d5a629a3c04407f029951fc88b0a2ead5d6c8c`；确认3 RED=两类新阻断，3 GREEN范围准确，13/13归档hash/size、483件清理清单一致，未复跑测试/API/打开运行库。补精度边界：篡改GREEN断言exit2/hash错误，没有单独落库计数，不扩大其声称。
+- 最新用户询问TH/IN能否开工，本轮只读核对四源仓：QA09f68a6+原7untracked、SW04dfc519 clean、Theme3c9a49c clean、Industry4a80f998 clean；条件未变，G3/F05/真实查询golden仍缺，W11已交付。首次沙箱Git只读Permission denied，升级只读重核成功，无外仓写。
+- 上一个目标回合是状态答复（no progress），不是已确认进程的verified wait；现在完成Phase91集中复核收口/PWF更新并准备精确提交，然后推进已授权StockQA真实输入映射。根计划resolver无named选择，继续由总控维护根三文件；不刷新退役回执。

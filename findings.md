@@ -1562,3 +1562,10 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 48/48工件齐不表示实现可验收。空目标restore二次exists拒绝；foreign self-digest无owner proof被prune；final rename在异常清理外导致.complete-looking partial；公开导入两subject均accepted却同field只剩后高分；UI只有一leaf使AND/OR恒等（静态反例）；旧真实query源码snapshot交同1.0新版分页拒绝。主线guarded 7case最终6fail/1WAL positive/3.83s，原990历史GREEN保留但缺这些反例。两subject是producer公开fixture，不是真实身份golden；旧snapshot是真旧producer函数产物。冻结StockWiki04dfc519始终clean未写。详见SW整改卡，待唯一writer授权；不假定用户“查收”允许外仓整改。
 
 本批隔离比旧owner按mtime共享TEMP清理安全，但cleanup进程扫描有真实缺口：沙箱CIM错误非终止、扫描未得结果仍清理自有root。已准确更正元数据，不把零当证据，strict只读补核matching0并明确时序；无别仓/共享TEMP删除。后续必须ErrorAction Stop，扫描失败即停清理；不得用事后0伪造事前证明。
+
+### Phase91：跨仓观察契约预检范围
+StockQA原5+R1–R3验收范围保持；982通过不能证明尚未执行的真实StockWiki导入。生产adapter的字段与消费者必填字段可能不一致，观察ID只由entity/question/scope导出也可能合并独立扫描。先用真实公开入口固定反例，结果出来前不增加“已复现”的声称。此次只写IQS测试/证据，不以synthetic正例冒充真实身份/关系golden；无API或生产库操作。
+
+预检已实跑确认两项：adapter少9项观察必填元数据及execution.started_at，公开consumer返回rejected/observation_missing_field；不同真实attempt同obs_id。原内部ready/seal validator没有完整Observation要求，不能据封包成功宣布跨仓ready。正确修复需要题库/Recipe/运行上下文的耐久真实输入与历史封包兼容，不能测试侧猜field/cutoff/cohort或放宽StockWiki。下一批StockQA已有全仓授权，可先做输入映射并报备精确源码范围；StockWiki整改仍待writer授权。
+
+Phase91集中独立复核已完成：报告`docs/implementation/reviews/G3/cross-owner-independent-review-2026-10-07.md`确认三RED属于上述两类阻断，无第三类产品缺陷。篡改GREEN只实证exit2/hash错误，没有独立数据库计数断言；不要将其扩大成单独证明observations=0。重放GREEN确实断言同ACK和观察0，但归档两ACK来自不同case，不能冒充配对。当前四源仓HEAD均无新提交，TH/IN开工条件没有改变。

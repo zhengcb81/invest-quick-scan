@@ -1,5 +1,9 @@
 # 新接手模型工作指南
 
+**2026-10-07 Phase91最新增量（优先于Phase90“只等SW writer”）**：已用真实StockQA CLI生成原始sealed package交真实StockWiki `observation-import`，隔离预检3fail/3pass/4.56s，发现Q10两项未覆盖跨仓阻断：残缺观察必填元数据、不同actual attempt同obs ID。不是推翻原5+R1–R3/982验收，也不是真实owner golden/G3。证据13/13、483自有临时文件已清理，外仓HEAD/工作树未变。读[跨仓整改卡](reviews/G3/cross-owner-remediation-2026-10-07.md)和`intake/G3/2026-10-07-cross-owner/result.json`；下一步在已授权StockQA内先映射真实冻结输入并报备精确范围，再做完整生产整改与旧封包兼容。StockWiki仍待唯一writer授权；不用它接收残缺包来凑绿。
+
+Phase91离线预检范围现已完成集中独立复核，见[报告](reviews/G3/cross-owner-independent-review-2026-10-07.md)。篡改GREEN只证明公开CLI拒绝，不另外声称其数据库计数；重放GREEN才有观察0断言。完整生产整改仍未做，三RED不能在接手时改成预期失败来宣布全门通过；保留原日志后用新实施快照闭合。
+
 **2026-10-07最新接手状态（优先于下方历史快照）**：Phase89实验已完成并归档，勿重复收费实验。Phase90 QA-NET-01原5阻断及R1–R3已整改验收，源码84e24ef、交接4779764（统计纠正09f68a6）已推送StockQA既有origin/master；982离线tests与六步骤全过、独立复审收口。whole package仍partial：external生产dispatcher/DeepSeek续写/真实StockWiki导入ACK未完成。用户已指定总控接管StockQA（不再只读等待原harness），仍须逐批精确报备。
 
 StockWiki SW-READY-01完整交接已到，HEAD04dfc519、主体0d76dc39、48工件hash匹配，但集中7case为6fail/1pass。**等待用户指定唯一整改writer**；只读StockWiki，不能因为本卡或worker交接而自行取得写授权。读[SW整改卡](reviews/SW-READY-01/remediation-card-2026-10-07.md)和[独立报告](reviews/SW-READY-01/intake-review-2026-10-07.md)。六问题为空目标恢复、外来目录prune、finalize残留、不同subject/口径混用、UI单条件、旧query snapshot不兼容。UI反例是静态断言，其他五为真实Python路径；WAL备份正例实际通过，未复跑原990。TH/IN实施与G3/F05仍暂缓。P2-5身份read-wire已交付a780a72，勿重复实现。
@@ -18,7 +22,7 @@ QA最终证据见 `intake/QA-NET-01/2026-10-07/remediation-result.json`，完整
 python -X utf8 scripts/batching_benchmark_report.py --archive docs/implementation/experiments/artifacts/b01-improved-2026-10-07
 ```
 
-**单一下一动作**：等用户答复SW-READY唯一整改writer。若交回原harness，只读等按整改卡交回新快照；若明确授权总控接管，先报备14源码/测试及包内文档清单、核新HEAD/既有差异，再同批TDD推进。不要重复修已交付QA五阻断、勿重跑982或收费实验；无新代码失败/疑点不重跑完整门。两个整包均仍partial，真实跨仓链与执行侧恢复未验。不改已有施工包输入锁/107任务/366case或刷新已退役工程回执。
+**单一下一动作（Phase91更新）**：按最新跨仓整改卡核实StockQA的完整观察输入与历史封包兼容，报备精确文件后在既有授权内整改。与此同时保持SW六项writer选择pending，不写StockWiki/TH/IN。不要重复修已交付QA五阻断或收费实验；本次两真实跨仓反例是新的重跑理由，仅整改受影响部分后跑一次大节点门。两个整包仍partial，不改施工包输入锁/107任务/366case或退役回执。
 
 **2026-10-07最新分派入口：** [独立施工包波次](parallel-lanes/packages/2026-10-07/README.md)。两个离线实现候选为QA-NET-01与SW-READY-01；TH/IN实施继续等G3/F05/公共query golden。不得按旧目录的“尚无查询/旧脏树/同local-skills Git根”叙述重做已交付工作；本波明确以两技能独立源仓为唯一实现owner、总控负责镜像同步。实际分派状态由用户与PWF确认，本批只是包准备。
 

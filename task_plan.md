@@ -411,7 +411,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**下一步**：等待用户指定SW-READY-01六项整改的唯一writer（原StockWiki harness返工或明确授权总控按精确整改卡接管）；具体范围见 `docs/implementation/reviews/SW-READY-01/remediation-card-2026-10-07.md`。QA-NET-01五阻断及R1–R3已在982项离线全量门和集中复审下闭合，代码84e24ef/证据4779764（统计说明纠正09f68a6）已推送；整包仍partial，external生产dispatcher与真实跨仓ACK未验。StockWiki完整交接04dfc519已收到、48/48hash一致，但集中7case为6fail/1pass，不能推进依赖它的联调成功宣称。允许继续独立IQS只读准备，不写StockWiki/TH/IN，不重跑Phase89收费实验/启动L03，不新增小节点review。
+**下一步**：先按Phase91[`跨仓完整观察整改卡`](docs/implementation/reviews/G3/cross-owner-remediation-2026-10-07.md)核实StockQA题库/Recipe/运行上下文的权威输入映射并报备精确拟改文件，再在已有StockQA全仓授权内以TDD完成Q10生产封包与历史兼容整改。原5+R1–R3/982项验收范围保留；新真实双公开CLI预检3fail/3pass证明producer缺必填观察元数据且独立扫描ID碰撞，不能直接称C06可导入。StockWiki六项整改仍等唯一writer选择，未授权不写它；TH/IN/G3/F05/L03暂缓，不重复收费实验或退役回执。整改完成后再集中联调完整包/ACK/投影与配套恢复，不因当前测试支架交付解锁下游。
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
@@ -1331,3 +1331,10 @@ Status: QA_NET_01_bounded_remediation_verified_and_pushed; SW_READY_01_needs_rev
 - [x] 已提供SW六项精确整改卡与一次集中测试/审查标准；用户writer选择问题已发，尚未回答。StockWiki保持只读，绝不代改未获授权路径。共享TEMP不碰；本批六自有root共4646文件清理，保留file manifest及process scan失败/后续严格扫描0的准确时序，不虚报删除前OS扫描均完成。
 - [ ] SW唯一writer修复空目标恢复/外来prune/finalize残留/不可比variant混用/UI多条件/旧query快照兼容并交回；之后集中跑真实StockQA C06→StockWiki导入/ACK→执行端落定→投影/UI与双owner恢复正反例。缺口未闭合不关闭G3/F05/TH/IN/L03。
 - [x] 更新本批接收结果、PWF/接手指南与不可变字节属性；IQS精确commit/push实际结果在progress记录，不改107卡/366case/退役工程回执。
+
+### Phase 91: 不依赖StockWiki写授权的跨仓公开入口预检
+Status: complete_for_offline_preflight_scope; G3_and_F05_not_closed
+- [x] 从已验收的精确Git快照和白名单重建StockQA/StockWiki隔离副本，不复制凭据、真实库或公司文档。
+- [x] 使用真实StockQA公开CLI和HTTP边界替身生成交换包，交真实StockWiki observation-import公开CLI；检查必填元数据、独立扫描ID、重放和零HTTP接续。
+- [x] 留存真实断言结果、原字节hash与环境清理证据，明确合成fixture/离线接口检查，不冒充真实owner golden、X09或G3。独立集中复核确认3 RED为两类产品阻断、3 GREEN仅支持各自断言，13/13归档一致、483件自有临时文件已清理。
+- [x] 更新PWF并整理本仓证据；精确commit/push实际结果在progress记录。StockWiki整改writer授权仍待用户回答，不写外仓、不刷新已退役工程回执。

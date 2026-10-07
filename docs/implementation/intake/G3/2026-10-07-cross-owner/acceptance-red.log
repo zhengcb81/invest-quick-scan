@@ -1,0 +1,375 @@
+cross_owner_guard_canaries_passed
+FFF...                                                                   [100%]
+================================== FAILURES ===================================
+______________ test_producer_package_accepted_by_public_consumer ______________
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\G3\cross_owner_cases.py:80: in test_producer_package_accepted_by_public_consumer
+    assert receipt["summary"] == {"accepted": 1}, receipt
+E   AssertionError: {'acks': [{'ack_id': 'ack_47a7f824cabd8d5f7a787146', 'ack_sequence': 1, 'consumer': {'component': 'StockWiki', 'namesp...id': 'pkg_e67fc6fb6db471fd0def1cb0b9478119477cf56bf7bfad634743ca703764d72d', 'store_id': 'qsobs_5498338338b020f2', ...}
+E   assert {'rejected': 1} == {'accepted': 1}
+E     
+E     Left contains 1 more item:
+E     {'rejected': 1}
+E     Right contains 1 more item:
+E     {'accepted': 1}
+E     Use -v to get more diff
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_producer_package_accepted0\qa\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO - C06 权威文档已加载（b7409f994124d02c）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_producer_package_accepted0\qa\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_producer_package_accepted0\qa\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: None）
+INFO - 开始批量处理 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - Q10 检查点落定 → sealed（WORK_dcefad55c655407c87bfe9911bb2cacf）
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_producer_package_accepted0\qa\result.json
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1104 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1106 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1107 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_producer_package_accepted0\qa\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1218 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO     src.runners.llm_runner:llm_runner.py:1259 C06 权威文档已加载（b7409f994124d02c）
+INFO     src.runners.llm_runner:llm_runner.py:1266 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1267 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_producer_package_accepted0\qa\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1268 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_producer_package_accepted0\qa\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:342 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+INFO     src.runners.llm_runner:llm_runner.py:389 Q10 检查点落定 → sealed（WORK_dcefad55c655407c87bfe9911bb2cacf）
+INFO     src.core.qa_engine:qa_engine.py:296 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:366 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_producer_package_accepted0\qa\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1572 
+Question processing completed.
+__________ test_generated_observation_preserves_comparable_metadata ___________
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\G3\cross_owner_cases.py:88: in test_generated_observation_preserves_comparable_metadata
+    assert required <= set(observation), sorted(required - set(observation))
+E   AssertionError: ['cohort', 'field_id', 'information_cutoff', 'method_id', 'observed_at', 'question_version', ...]
+E   assert {'cohort', 'f...version', ...} <= {'answer', 'e... 'scope', ...}
+E     
+E     Extra items in the left set:
+E     'observed_at'
+E     'question_version'
+E     'field_id'
+E     'run_id'
+E     'template_version'...
+E     
+E     ...Full output truncated (4 lines hidden), use '-vv' to show
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_generated_observation_pre0\qa\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO - C06 权威文档已加载（b7409f994124d02c）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_generated_observation_pre0\qa\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_generated_observation_pre0\qa\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: None）
+INFO - 开始批量处理 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - Q10 检查点落定 → sealed（WORK_f6263e6e26dd4c23be2ff898cdbe0d4f）
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_generated_observation_pre0\qa\result.json
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1104 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1106 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1107 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_generated_observation_pre0\qa\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1218 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO     src.runners.llm_runner:llm_runner.py:1259 C06 权威文档已加载（b7409f994124d02c）
+INFO     src.runners.llm_runner:llm_runner.py:1266 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1267 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_generated_observation_pre0\qa\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1268 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_generated_observation_pre0\qa\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:342 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+INFO     src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:91 C06 包已封存（WORK_f6263e6e26dd4c23be2ff898cdbe0d4f）→ pkg_ca8ece76173d4ad2f6aa35b1ba7fbdb1f94027dd64ceb5ab534de9655832f76f
+INFO     src.runners.llm_runner:llm_runner.py:389 Q10 检查点落定 → sealed（WORK_f6263e6e26dd4c23be2ff898cdbe0d4f）
+INFO     src.core.qa_engine:qa_engine.py:296 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:366 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_generated_observation_pre0\qa\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1572 
+Question processing completed.
+________ test_independent_actual_attempts_do_not_share_observation_id _________
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\G3\cross_owner_cases.py:98: in test_independent_actual_attempts_do_not_share_observation_id
+    assert a["observation_id"] != b["observation_id"], "independent scans collide"
+E   AssertionError: independent scans collide
+E   assert 'obs_9b80079253f97158204099caa9dc7523635bca1995c1d98290c96a021415251c' != 'obs_9b80079253f97158204099caa9dc7523635bca1995c1d98290c96a021415251c'
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\first\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO - C06 权威文档已加载（b7409f994124d02c）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\first\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\first\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: None）
+INFO - 开始批量处理 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - Q10 检查点落定 → sealed（WORK_46e75471d27545a49cee518e406b2d4b）
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\first\result.json
+INFO - 
+Question processing completed.
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\second\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO - C06 权威文档已加载（b7409f994124d02c）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\second\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\second\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: None）
+INFO - 开始批量处理 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - Q10 检查点落定 → sealed（WORK_1d50257445b4444ba5303a496fbdf1e3）
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\second\result.json
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1104 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1106 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1107 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\first\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1218 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO     src.runners.llm_runner:llm_runner.py:1259 C06 权威文档已加载（b7409f994124d02c）
+INFO     src.runners.llm_runner:llm_runner.py:1266 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1267 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\first\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1268 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\first\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:342 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+INFO     src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:91 C06 包已封存（WORK_46e75471d27545a49cee518e406b2d4b）→ pkg_43bd417dfaba5d1b5c38e70b544870a499373266956db748de1166dc7d25434c
+INFO     src.runners.llm_runner:llm_runner.py:389 Q10 检查点落定 → sealed（WORK_46e75471d27545a49cee518e406b2d4b）
+INFO     src.core.qa_engine:qa_engine.py:296 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:366 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\first\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1572 
+Question processing completed.
+INFO     src.runners.llm_runner:llm_runner.py:1104 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1106 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1107 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\second\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1218 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO     src.runners.llm_runner:llm_runner.py:1259 C06 权威文档已加载（b7409f994124d02c）
+INFO     src.runners.llm_runner:llm_runner.py:1266 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1267 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\second\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1268 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\second\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:342 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+INFO     src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:91 C06 包已封存（WORK_1d50257445b4444ba5303a496fbdf1e3）→ pkg_a73f5cccbec94cbe4206e00decb4fa9bb01fcf0addb936c5c52a10bcd1b847e2
+INFO     src.runners.llm_runner:llm_runner.py:389 Q10 检查点落定 → sealed（WORK_1d50257445b4444ba5303a496fbdf1e3）
+INFO     src.core.qa_engine:qa_engine.py:296 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:366 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\cross-owner-2026-10-07-01\pytest\test_independent_actual_attemp0\second\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1572 
+Question processing completed.
+=========================== short test summary info ===========================
+FAILED ..\..::test_producer_package_accepted_by_public_consumer - AssertionEr...
+FAILED ..\..::test_generated_observation_preserves_comparable_metadata - Asse...
+FAILED ..\..::test_independent_actual_attempts_do_not_share_observation_id - ...
+3 failed, 3 passed in 4.56s
