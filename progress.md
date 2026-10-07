@@ -2137,3 +2137,5 @@
 - Phase97实际清理：单一自有根103文件经Python lstat nlink1、PowerShell绝对路径/精确set+SHA、strict CIM0与已知同步session终态核实，dry-run→Apply完成，receipt.applied=true。Lab原HEAD d87/clean未变，无remote；旧Phase92、共享TEMP、opencode.json保留。验收结束changes_requested，交回六组整改与9固定反例；不代改Lab，不以54已有测试过关覆盖8新增失败。PWF/交接已更新，精确Git提交随后记录。
 
 - Git原始日志检查报一处pytest traceback行的trailing blank（worker-regression-final.stdout.log:38）；保留原字节/SHA，用该唯一原始日志的精确whitespace属性豁免，不清洗日志或修改已审源。其他staged范围继续正常diff检查。
+
+- **Phase97实际Git交付（2026-10-08）**：`742dbb78a39ca9a1cb6f324dea4c992d28cc638c`，67精确文件，正常推送origin/master（83ec14a→742dbb7，exit0）。61已索引证据/helper全部与staged blob size/SHA一致，diff --check通过。IQS工作树仅既有opencode.json未跟踪保留；未提交或修改Lab/StockQA/StockWiki、旧Phase92根。验收结果仍changes_requested，六组整改由原Lab writer接续；随后只提交PWF实际交付回执，不改被审工件。
