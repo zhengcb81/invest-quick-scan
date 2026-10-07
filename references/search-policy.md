@@ -12,6 +12,10 @@
 
 原生搜索的当前协议白名单：MiMo 的指定官方 host 与 `mimo-v2.6-flash/pro/pro-ultraspeed` 走 Chat Completions；MiniMax-M3 的指定官方 host 走 Responses 或 Anthropic Messages。**MiniMax 的普通 Chat Completions 实验请求不因此具备搜索。** DeepSeek 虽有历史 Anthropic 直连探针，当前 StockQA `--require-search` 尚未接入它；顺位策略会跳过缺搜索能力的路由，不把离线答案当作已联网。
 
+**DeepSeek复测（2026-10-07）**：用户提供的[博客](https://chendahuang.com/blog/deepseek-api-web-search/)使用Responses内建`web_search`。现行[官方兼容表](https://api-docs.deepseek.com/guides/responses_api/)将其列为ignored；按博客旧别名`deepseek-v4-flash`发起请求，实际映射`deepseek-flash`，禁思考且2048输出上限下完整回答，无截断、搜索事件或引用，正文明确无法联网，见[Responses脱敏回执](../docs/implementation/contracts/validation-Q02-DeepSeek-responses-recheck-2026-10-07.json)。不能依靠旧文章启用该路径，也不能根据旧96-token截断探针单独判断当前能力。
+
+另按[官方Anthropic兼容协议](https://api-docs.deepseek.com/guides/anthropic_api/)复测`https://api.deepseek.com/anthropic/v1/messages`、`deepseek-flash`和`web_search_20250305`，确认3次`server_tool_use`及对应结果块，其中一个结果块带实际URL且按`tool_use_id`关联；见[Messages脱敏回执](../docs/implementation/contracts/validation-Q02-DeepSeek-anthropic-recheck-2026-10-07.json)。本次强制工具选择返回`stop_reason=tool_use`、无最终答案，且要求官方新闻却只获得第三方来源：只证明搜索能力，不证明目标事实/来源质量或完整画像。`max_uses=1`仍实际搜索3次，不能用这个参数保证调用/费用上限。StockQA生产白名单与接线未改；后续由其adapter负责继续生成最终答案、校验来源/时点并绑定回执，不在IQS另造客户端。没有控制台账单，不能把文章的“免费”表述当作本批费用结论。
+
 生产实现依据：`StockQAbyLLM/main_with_llm.py`、`src/runners/llm_runner.py`、`src/providers/{base_llm_provider,llm_provider,llm_client}.py`、`src/utils/llm_integration.py`。B01-b 实验依据：`pilot_runs/b01b_retriever_2026-10-07/{queries_log,retriever_compare_report}.json`、`pilot_runs/b01b_method_2026-10-07/runner.py`。这些路径属于外仓，恢复时只读核对当前快照；历史实验不等于生产接线。
 
 ## 原生搜索如何约束

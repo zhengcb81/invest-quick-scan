@@ -6,6 +6,8 @@
 
 用户设置的接口地址、模型标识、环境变量名和脱敏连通性证据见[提供商连接配置](../examples/provider-connectivity-profiles.json)，schema为`../schemas/provider-connectivity-profiles.schema.json`。密钥值必须留在运行环境，不能写进该文件或日志；模型优先级只由`examples/model-policy.template.json`管理。DeepSeek的Anthropic兼容Messages接口已直连验证服务端`web_search`，但一次`max_uses=1`探针返回了两次搜索事件，因此现阶段不能依赖该参数限制搜索费用；StockQA适配及单公司端到端验收仍未完成。
 
+2026-10-07复测更新：DeepSeek Responses旧别名映射为`deepseek-flash`，完整回答仍无搜索事件；Anthropic兼容接口再次证实搜索，但`max_uses=1`出现3次调用，且本次强制工具响应无最终答案。完整记录见[搜索策略](search-policy.md)，不要把直连搜索阳性等同公开CLI公司问答通过。
+
 ## 当前协议
 
 | 能力 | 当前边界 |

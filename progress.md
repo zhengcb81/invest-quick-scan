@@ -1861,3 +1861,12 @@
 - 请求全口径：REST1+MCP9=10个HTTP请求，其中3次搜索（REST1/MCP2）+7次握手/发现；无自动重试、LLM调用、文档下载或组件安装。只保留脱敏元信息及有限返回片段，无完整响应/临时脚本文件需清理；费用/剩余额度未对账，legacy SSE未测。
 - 清单升为1.1.0，更新当前搜索规则及计划说明。直接探针通过不等于StockQA生产接线或L03启动，不新增小节点审查门。
 - 本批记录校验通过：5个JSON可解析、无凭据URL与探针引用有效、搜索说明7个本地链接有效、10个HTTP/3次搜索统计对齐；`git diff --check`退出0。未运行产品测试或批量扫描；既有未跟踪`opencode.json`保留。
+
+## 2026-10-07 — 用户文章触发DeepSeek两协议真实复测
+
+- 用户要求读取`https://chendahuang.com/blog/deepseek-api-web-search/`并实测DeepSeek搜索。独立agent只读核对官方协议；部分官方页面open超时，官方域名搜索可取得兼容表与参数说明，不用第三方文章替代现行技术规则。
+- 只读取命名环境变量`DEEPSEEK_API_KEY`（Process可见），值不落盘/输出；Responses和Anthropic Messages各1个HTTP请求，均200，无自动重试、下载、安装或外仓写入，只有本仓脱敏记录和文档改动。
+- Responses博客参数：requested=`deepseek-v4-flash`、actual=`deepseek-flash`、`web_search`、reasoning none、输出上限2048；1.561秒、completed、59输入/81输出/140总token、0reasoning、0搜索/引用。正文明确无法联网。回执`docs/implementation/contracts/validation-Q02-DeepSeek-responses-recheck-2026-10-07.json`，避免此前96-token截断歧义。
+- Anthropic Messages：deepseek-flash、thinking disabled、web_search_20250305、max_uses1、强制选择搜索工具；1.850秒、3个server_tool_use+3结果块，1个URL结果块按tool_use_id绑定，usage也报3搜索。stop_reason=tool_use、最终答案为空、来源是第三方而非要求的微软官方站点。结论=原生搜索可用，但未完成目标事实或CLI E2E；不可把max_uses当成本门。回执`validation-Q02-DeepSeek-anthropic-recheck-2026-10-07.json`。保留input_tokens7860/cache_read384/output119原字段，不补造total或货币费用。
+- 参考配置追加Responses旧别名复测profile、Anthropic追加新probe，保留历史记录；更新搜索规则/上游接入说明/PWF。生产StockQA白名单、用户模型顺位和L03启动边界均不改变，无新增小节点审查门。本批2个模型HTTP请求含3次服务端搜索；临时脚本仅stdin执行，无完整响应/推理内容留档。
+- 记录校验：提供商配置通过既有draft2020-12 schema和format校验；两份live回执的完成/搜索/额度/最终答案状态断言及2请求统计一致；13个本地文档链接有效；`git diff --check`退出0。不重复产品全套测试，既有`opencode.json`未动。

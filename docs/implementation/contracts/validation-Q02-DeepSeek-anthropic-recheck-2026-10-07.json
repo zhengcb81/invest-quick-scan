@@ -1,0 +1,118 @@
+{
+  "probe_version": "1.0.0",
+  "observed_at": "2026-10-07T07:45:24.718832+00:00",
+  "endpoint": "https://api.deepseek.com/anthropic/v1/messages",
+  "protocol": "anthropic_messages",
+  "credential_env": "DEEPSEEK_API_KEY",
+  "credential_present": true,
+  "credential_scope": "Process",
+  "requested_model": "deepseek-flash",
+  "request_parameters": {
+    "model": "deepseek-flash",
+    "max_tokens": 2048,
+    "thinking": {
+      "type": "disabled"
+    },
+    "tools": [
+      {
+        "type": "web_search_20250305",
+        "name": "web_search",
+        "max_uses": 1
+      }
+    ],
+    "tool_choice": {
+      "type": "tool",
+      "name": "web_search"
+    }
+  },
+  "request_input": "请实际联网搜索微软投资者关系网站，查找2026年10月1日之后发布的最新新闻，简短返回标题、发布日期和原文URL。必须依据实际搜索结果；若没有符合日期的可靠结果请明确说未找到，不得靠记忆或编造。",
+  "requests_sent": 1,
+  "automatic_retries": 0,
+  "raw_response_persisted": false,
+  "reasoning_content_persisted": false,
+  "downloads": 0,
+  "official_reference": "https://api-docs.deepseek.com/guides/anthropic_api/",
+  "http_status": 200,
+  "response_id": "f482975b-d9cf-4576-a101-b0a20f50d90f",
+  "actual_model": "deepseek-flash",
+  "stop_reason": "tool_use",
+  "usage": {
+    "input_tokens": 7860,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 384,
+    "output_tokens": 119,
+    "service_tier": "standard",
+    "server_tool_use": {
+      "web_search_requests": 3
+    }
+  },
+  "content_block_types": [
+    "server_tool_use",
+    "server_tool_use",
+    "web_search_tool_result",
+    "web_search_tool_result",
+    "server_tool_use",
+    "web_search_tool_result"
+  ],
+  "server_tool_use_count": 3,
+  "web_search_result_blocks": 3,
+  "search_events": [
+    {
+      "id": "call_00_S8To5fye3octvhV8A6Te5151",
+      "name": "web_search",
+      "query": "Microsoft Investor Relations news October 2026"
+    },
+    {
+      "id": "call_01_xHpTG2YioLnN8XB7Uz8I8427",
+      "name": "web_search",
+      "query": "site:microsoft.com investor relations press release 2026"
+    },
+    {
+      "id": "call_02_J2ehKFGlQ5a5CcpBNQS12621",
+      "name": "web_search",
+      "query": "microsoft.com/en-us/investor news press release"
+    }
+  ],
+  "response_linked_result_blocks": 1,
+  "citation_annotations": 0,
+  "source_urls": [
+    "https://es.marketscreener.com/noticias/microsoft-corporation-declara-un-dividendo-trimestral-pagadero-el-10-de-diciembre-de-2026-ce785bd2d889f423#1",
+    "https://finance.baidu.com/stock/us-MSFT?mainTab=%E8%B4%A2%E5%8A%A1",
+    "https://news.einfomax.co.kr/news/articleView.html?idxno=4437814",
+    "https://www.boerse-express.com/news/articles/microsoft-aktie-office-und-teams-ruecken-zu-copilot-950285#1",
+    "https://www.digitaltoday.co.kr/disclosure/articleView.html?idxno=704149",
+    "https://www.forbesargentina.com/money/despues-subir-34-microsoft-enfrenta-una-prueba-fuego-debe-mirar-mercado-proximos-seis-meses-n99258",
+    "https://www.hankyung.com/article/202610066386i",
+    "https://www.it-times.de/news/technologie-trend-im-check-microsoft-ueberzeugt-experten-durch-strategische-fuehrung-im-ki-wettlauf-187556/",
+    "https://www.jemin.com/news/articleView.html?idxno=843794",
+    "https://www1.edaily.co.kr/News/Read?newsId=01344806645610296&mediaCodeNo=257"
+  ],
+  "sources_sample": [
+    {
+      "title": "전고점 정조준 MS…'토큰 과금'으로 AI 2차 도약 날개 다나",
+      "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4437814",
+      "page_age": null
+    },
+    {
+      "title": "MS의 달라진 현금흐름…AI 투자 확대에 주주환원 여력 줄었다 [김주완의 글로벌머니 X파일]",
+      "url": "https://www.hankyung.com/article/202610066386i",
+      "page_age": null
+    },
+    {
+      "title": "'엑스박스 매각설' 선 그은 CEO \"팔 생각 없다\"",
+      "url": "https://www.digitaltoday.co.kr/disclosure/articleView.html?idxno=704149",
+      "page_age": null
+    }
+  ],
+  "tool_error_codes": [],
+  "answer_excerpt": "",
+  "search_result": "passed",
+  "search_requests_reported": 3,
+  "requested_max_uses": 1,
+  "max_uses_respected_by_visible_calls": false,
+  "scope_note": "Search positive requires server_tool_use and source-bearing web_search_tool_result bound by tool_use_id; it does not prove the answer date/financial facts or enforceable max_uses.",
+  "elapsed_seconds": 1.85,
+  "final_answer_available": false,
+  "answer_generation_result": "not_completed_tool_use_stop",
+  "normalization_note": "Tool execution passed; the forced-tool request returned tool results without a final answer. Search result URLs are third-party sources, not verified Microsoft investor-relations evidence."
+}

@@ -417,6 +417,8 @@ Status: complete_for_planning_only
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
+**DeepSeek接口复测（2026-10-07）**：按用户文章分别请求Responses与Anthropic Messages各1次。Responses完整回答无搜索事件，与现行官方ignored说明一致；Messages有真实关联搜索结果，但`max_uses=1`执行3次且无最终答案。已更新[提供商参考配置](examples/provider-connectivity-profiles.json)与搜索说明；后续StockQA接线必须处理工具结果→最终答案、真实搜索次数和来源验证，本次未改外仓/模型顺位，不关闭E2E或启动L03。
+
 ### 历史执行状态（截至2026-09-30）
 
 - Q02首个提供商实现的任务级验收已在精确StockQA工作树快照通过：MiMo公开CLI真实搜索、LLM-02/LLM-11离线检查及同快照独立审查均已记录在`progress.md`和`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。旧任务回执已退役、验收目录为规格；不刷新receipt或改规格状态。该结果不关闭G1或跨仓链路。

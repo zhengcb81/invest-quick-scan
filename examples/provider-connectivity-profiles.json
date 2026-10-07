@@ -2,7 +2,7 @@
   "$schema": "../schemas/provider-connectivity-profiles.schema.json",
   "schema_version": "1.1.0",
   "inventory_id": "provider-connectivity-profiles-2026-09-26",
-  "as_of": "2026-09-26",
+  "as_of": "2026-10-07",
   "purpose": "Record provider endpoints, model identifiers, credential environment-variable names, and sanitized connectivity/search probe outcomes. This is not a model-priority policy and does not enable production dispatch.",
   "credential_policy": {
     "secret_values_included": false,
@@ -389,7 +389,7 @@
         "requires_external_search_runner": false,
         "stockqa_cli_e2e": "not_run"
       },
-      "usage_note": "Unlike the OpenAI-compatible route tested above, the Anthropic-compatible Messages API accepts the Anthropic web_search_20250305 server tool. This live probe returned search result blocks for official DeepSeek documentation. Although the request set max_uses=1, the response reported two server-side search calls; do not rely on that limit to cap use or cost until separately verified.",
+      "usage_note": "The Anthropic-compatible Messages route has direct native-search positive probes. Latest 2026-10-07 probe used thinking disabled and forced web_search, returning 3 server_tool_use and 3 result blocks, with one source-bearing block bound to its tool_use_id. Requested max_uses=1 was not respected. stop_reason=tool_use and no final answer: this proves search execution, not company-answer quality or StockQA CLI E2E. Source relevance/date and actual monetary costs are not validated.",
       "probes": [
         {
           "kind": "web_search",
@@ -420,6 +420,36 @@
           ],
           "evidence_path": "docs/implementation/contracts/validation-Q02-DeepSeek-probe-2026-09-25.log",
           "note": "The response contained two server_tool_use and two web_search_tool_result blocks. Sources included official DeepSeek API docs. The request asked for max_uses=1, but usage.web_search_requests reported 2. No monetary charge receipt was returned."
+        },
+        {
+          "kind": "web_search",
+          "status": "passed",
+          "checked_at": "2026-10-07",
+          "http_status": 200,
+          "response_status": "tool_use",
+          "search_calls": 3,
+          "citation_annotations": 0,
+          "input_tokens": 7860,
+          "output_tokens": 119,
+          "total_tokens": null,
+          "server_tool_use_count": 3,
+          "web_search_result_blocks": 3,
+          "requested_max_uses": 1,
+          "max_uses_respected": false,
+          "source_urls": [
+            "https://es.marketscreener.com/noticias/microsoft-corporation-declara-un-dividendo-trimestral-pagadero-el-10-de-diciembre-de-2026-ce785bd2d889f423#1",
+            "https://finance.baidu.com/stock/us-MSFT?mainTab=%E8%B4%A2%E5%8A%A1",
+            "https://news.einfomax.co.kr/news/articleView.html?idxno=4437814",
+            "https://www.boerse-express.com/news/articles/microsoft-aktie-office-und-teams-ruecken-zu-copilot-950285#1",
+            "https://www.digitaltoday.co.kr/disclosure/articleView.html?idxno=704149",
+            "https://www.forbesargentina.com/money/despues-subir-34-microsoft-enfrenta-una-prueba-fuego-debe-mirar-mercado-proximos-seis-meses-n99258",
+            "https://www.hankyung.com/article/202610066386i",
+            "https://www.it-times.de/news/technologie-trend-im-check-microsoft-ueberzeugt-experten-durch-strategische-fuehrung-im-ki-wettlauf-187556/",
+            "https://www.jemin.com/news/articleView.html?idxno=843794",
+            "https://www1.edaily.co.kr/News/Read?newsId=01344806645610296&mediaCodeNo=257"
+          ],
+          "evidence_path": "docs/implementation/contracts/validation-Q02-DeepSeek-anthropic-recheck-2026-10-07.json",
+          "note": "Search executed with response-bound source results; no final answer text. max_uses=1 produced 3 search calls. Usage has separate cache fields but no total_tokens; total not fabricated. No money or StockQA E2E acceptance."
         }
       ],
       "documentation": [
@@ -434,6 +464,57 @@
         {
           "title": "Anthropic web search tool request and response format",
           "url": "https://docs.anthropic.com/zh-CN/docs/agents-and-tools/tool-use/web-search-tool"
+        }
+      ]
+    },
+    {
+      "profile_id": "deepseek-v4-flash-responses-recheck",
+      "provider": "deepseek",
+      "service_tier": "official_openai_responses_api",
+      "endpoint": {
+        "url": "https://api.deepseek.com/responses",
+        "protocol": "openai_responses",
+        "region": "Official API"
+      },
+      "model": "deepseek-v4-flash",
+      "credential_env": "DEEPSEEK_API_KEY",
+      "capabilities": {
+        "text_generation": "passed",
+        "provider_web_search_documentation": "unsupported",
+        "provider_web_search_probe": "unsupported_tool_ignored",
+        "function_tool_calling": "supported",
+        "requires_external_search_runner": true,
+        "stockqa_cli_e2e": "not_run"
+      },
+      "usage_note": "Re-tested the blog model alias with tools=[web_search], reasoning.effort=none and max_output_tokens=2048. HTTP 200/completed, actual model deepseek-flash, 0 reasoning tokens, 0 search calls/citations. The answer explicitly said it could not search. This avoids the earlier 96-token truncation ambiguity. Native web search is directly verified on the separate Anthropic Messages route, not on Responses.",
+      "probes": [
+        {
+          "kind": "web_search",
+          "status": "unsupported",
+          "checked_at": "2026-10-07",
+          "http_status": 200,
+          "response_status": "completed",
+          "search_calls": 0,
+          "citation_annotations": 0,
+          "input_tokens": 59,
+          "output_tokens": 81,
+          "total_tokens": 140,
+          "evidence_path": "docs/implementation/contracts/validation-Q02-DeepSeek-responses-recheck-2026-10-07.json",
+          "note": "Completed answer with no native web_search_call or citations; old requested alias deepseek-v4-flash resolved to actual deepseek-flash. Current official Responses compatibility table marks web_search ignored."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "DeepSeek Responses compatibility table",
+          "url": "https://api-docs.deepseek.com/guides/responses_api/"
+        },
+        {
+          "title": "DeepSeek Responses request schema",
+          "url": "https://api-docs.deepseek.com/api/create-response/"
+        },
+        {
+          "title": "DeepSeek model identifiers and pricing",
+          "url": "https://api-docs.deepseek.com/quick_start/pricing/"
         }
       ]
     }

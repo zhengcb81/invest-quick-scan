@@ -1,0 +1,58 @@
+{
+  "probe_version": "1.0.0",
+  "observed_at": "2026-10-07T07:44:19.933976+00:00",
+  "endpoint": "https://api.deepseek.com/responses",
+  "protocol": "openai_responses",
+  "credential_env": "DEEPSEEK_API_KEY",
+  "credential_present": true,
+  "credential_scope": "Process",
+  "requested_model": "deepseek-v4-flash",
+  "request_parameters": {
+    "model": "deepseek-v4-flash",
+    "tools": [
+      {
+        "type": "web_search"
+      }
+    ],
+    "reasoning": {
+      "effort": "none"
+    },
+    "max_output_tokens": 2048
+  },
+  "request_input": "请先实际调用 web_search 搜索微软投资者关系网站，查找2026年10月1日之后发布的最新新闻，简短返回标题、发布日期和原文URL。如果不能调用联网搜索，请明确说无法联网，不得靠记忆或编造网址作答。",
+  "requests_sent": 1,
+  "automatic_retries": 0,
+  "raw_response_persisted": false,
+  "reasoning_content_persisted": false,
+  "downloads": 0,
+  "source_blog": "https://chendahuang.com/blog/deepseek-api-web-search/",
+  "official_reference": "https://api-docs.deepseek.com/guides/responses_api/",
+  "http_status": 200,
+  "response_id": "9eb78801-57ac-46d3-9058-cbe28dc2f391",
+  "actual_model": "deepseek-flash",
+  "response_status": "completed",
+  "incomplete_details": null,
+  "usage": {
+    "input_tokens": 59,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 81,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 140
+  },
+  "output_item_types": [
+    "message"
+  ],
+  "search_calls": 0,
+  "completed_search_calls": 0,
+  "search_events": [],
+  "citation_annotations": 0,
+  "source_urls": [],
+  "answer_excerpt": "我无法联网搜索，因此不能实际调用 web_search 查询微软投资者关系网站，也不能返回 2026年10月1日之后发布新闻的标题、发布日期和原文 URL。\n\n如果你愿意，我可以改为：\n1. 告诉你如何在微软投资者关系网站手动筛选该日期之后的新闻；\n2. 或在你提供网页内容/截图后，帮你整理标题、日期和 URL。",
+  "search_result": "not_demonstrated",
+  "scope_note": "Only completed native search events and response-bound sources prove this probe searched. Answer text and HTTP 200 alone do not.",
+  "elapsed_seconds": 1.561
+}
