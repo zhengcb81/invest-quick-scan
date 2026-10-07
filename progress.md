@@ -2089,3 +2089,5 @@
 - 本批producer_and_standard真实回归**35 passed/24 subtests/24.97s**，不与子进程场景简单加总充功能数；日志原字节SHA 86dd3869…、bf4b11a0…留档。一次独立agent只读复核已签本地producer代码门，明确Python audit不限制任意读取/父harness、identity/model-policy版本和producer构建为声明、同helper等价测试另用真实Git diff佐证；清理尚pending时未冒称环境已恢复。
 - 自有两根28文件清理：逐文件SHA/bytes、Python lstat链接数1和PowerShell reparse/LinkType、严格CIM0相关argv+已知subprocess.run终态；先dry-run后Apply原生PowerShell精确删除和空目录移除，实际receipt applied=true/files_deleted28/old_phase92_root_preserved=true。原结果cleanup_pending不改，以附receipt闭环；旧Phase92根/共享TEMP/外仓9项不碰。保留CLI输入/正例/11日志，身份synthetic而非真实StockWiki golden。
 - 正式上游说明`contracts/iqs-authority-producer-2026-10-07.md`、集中review和intake/artifact索引准备交付；源加精确-text使实际review SHA不被checkout改写。只提交本IQS上游及本批证据/PWF，opencode.json原样排除；最后Git结果随后追加。整Q10/G3/F05未关闭，QA消费端原embedded_answer RED由已开工QA包接续，不代修。
+
+- **Phase95正式提交推送**：`a23bec03ec459fa036a8800acc1f43b1662b22b8`，40精确文件，origin/master正常由6f7d7db前进；33工件staged blob全部size/SHA一致，已审源不改，working-scope whitespace通过（CR-at-EOL认可原Windows字节，原历史MD/日志不修剪）。当前只剩opencode.json原未跟踪项，三个外包源仓无写入/提交；波次2冻结包全部保留。后续由总控只读接收三包真实commit/handoff再集中联调，当前用户确认开工不等于已有完成交付或verified wait。
