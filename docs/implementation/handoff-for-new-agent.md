@@ -1,6 +1,10 @@
 # 新接手模型工作指南
 
-**2026-10-07最新接手状态（优先于下方历史快照）**：Phase89小样本打包实验、独立审查与轻量归档已完成。先读[最终报告](experiments/b01-improved-results-2026-10-07.md)和根PWF Next Step；不要重新跑收费实验。当前已有其他harness实施QA-NET-01、SW-READY-01，总控仅只读接收它们的handoff/commit/公开golden，等接口齐备再按原大节点联调；不能写入或清理StockQA/StockWiki活动工作树。TH/IN包仍暂缓。P2-5身份read-wire已交付a780a72，勿重复实现。
+**2026-10-07最新接手状态（优先于下方历史快照）**：Phase89实验已完成并归档，勿重复收费实验。Phase90 QA-NET-01原5阻断及R1–R3已整改验收，源码84e24ef、交接4779764已推送StockQA既有origin/master；982离线tests与六步骤全过、独立复审收口。whole package仍partial：external生产dispatcher/DeepSeek续写/真实StockWiki导入ACK未完成。用户已指定总控接管StockQA（不再只读等待原harness），仍须逐批精确报备。
+
+StockWiki SW-READY-01完整交接已到，HEAD04dfc519、主体0d76dc39、48工件hash匹配，但集中7case为6fail/1pass。**等待用户指定唯一整改writer**；只读StockWiki，不能因为本卡或worker交接而自行取得写授权。读[SW整改卡](reviews/SW-READY-01/remediation-card-2026-10-07.md)和[独立报告](reviews/SW-READY-01/intake-review-2026-10-07.md)。六问题为空目标恢复、外来目录prune、finalize残留、不同subject/口径混用、UI单条件、旧query snapshot不兼容。UI反例是静态断言，其他五为真实Python路径；WAL备份正例实际通过，未复跑原990。TH/IN实施与G3/F05仍暂缓。P2-5身份read-wire已交付a780a72，勿重复实现。
+
+QA最终证据见 `intake/QA-NET-01/2026-10-07/remediation-result.json`，完整原件与整改版分目录。982执行快照与commit EOL有4件仅CRLF→LF差异，报告分别绑定SHA；`reviews/QA-NET-01/export_runtime.py`+归档manifest可从Git精确重建195件原执行字节，已实际验证。六个测试根已清理，不假定临时runtime仍存在；只按显式allowlist重建，绝不复制ignored config/key/真实数据库。原owner共享TEMP事故影响未知；本批cleanup的沙箱CIM扫描失败在清理中发现，随后严格只读扫描0，manifest准确区分时序，不能把零值当完成的删除前OS扫描。
 
 - 实验：宁德时代/中信建投H/Alphabet、30题，最终410模型HTTP+48搜索、USD保守上界4.869098、未决0/usage缺失0。用户允许报备后超预算继续；本轮有限扩展已完成，不等于批准200家L03。生产逐题基线、G3/F05与现有大节点门不变。
 - 结论：DeepSeek每包5题、并发≤4是效率候选，中位配对提速1.56、参考模型费约降35%；十题更快但输出有变化。281匿名行分别三份agent-assisted片段支持审查，不是准确率gold；候选27评分19支撑不足，不能按高分/覆盖率直接推广。
@@ -14,7 +18,7 @@
 python -X utf8 scripts/batching_benchmark_report.py --archive docs/implementation/experiments/artifacts/b01-improved-2026-10-07
 ```
 
-**单一下一动作**：只读查收QA-NET-01/SW-READY-01的结构交接与结果commit；没有handoff不把零散施工文件当完成。不增加小节点review，不改已有施工包输入锁/107任务/366case或刷新已退役工程回执。
+**单一下一动作**：等用户答复SW-READY唯一整改writer。若交回原harness，只读等按整改卡交回新快照；若明确授权总控接管，先报备14源码/测试及包内文档清单、核新HEAD/既有差异，再同批TDD推进。不要重复修已交付QA五阻断、勿重跑982或收费实验；无新代码失败/疑点不重跑完整门。两个整包均仍partial，真实跨仓链与执行侧恢复未验。不改已有施工包输入锁/107任务/366case或刷新已退役工程回执。
 
 **2026-10-07最新分派入口：** [独立施工包波次](parallel-lanes/packages/2026-10-07/README.md)。两个离线实现候选为QA-NET-01与SW-READY-01；TH/IN实施继续等G3/F05/公共query golden。不得按旧目录的“尚无查询/旧脏树/同local-skills Git根”叙述重做已交付工作；本波明确以两技能独立源仓为唯一实现owner、总控负责镜像同步。实际分派状态由用户与PWF确认，本批只是包准备。
 

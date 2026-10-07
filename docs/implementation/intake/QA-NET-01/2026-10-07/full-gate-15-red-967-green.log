@@ -1,0 +1,499 @@
+==> checks [full] step=pytest
+........................................................................ [  7%]
+........................................................................ [ 14%]
+........................................................................ [ 21%]
+........................................................................ [ 29%]
+........................................................................ [ 36%]
+........................................................................ [ 43%]
+........................................................................ [ 51%]
+..................................................................F..... [ 58%]
+..........F............................................................. [ 65%]
+....................................................................F.F. [ 73%]
+........................................................................ [ 80%]
+..............................................................FFFFFFFFF. [ 87%]
+.....F...................................................F.............. [ 95%]
+..............................................                           [100%]
+================================== FAILURES ===================================
+__________ test_e2e_public_cli_identity_snapshot_glue_no_redispatch ___________
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\tests\unit\test_q06_work_binding.py:577: in test_e2e_public_cli_identity_snapshot_glue_no_redispatch
+    assert exit1 == 0, exit1
+E   AssertionError: 1
+E   assert 1 == 0
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_e2e_public_cli_identity_s0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_e2e_public_cli_identity_s0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_e2e_public_cli_identity_s0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - transport checkpoint 拒绝（answer checkpoint requires verified identity）——原请求状态保留
+ERROR - [1/1] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+
+[1/1] 进度: 100.0% - [FAIL] 失败: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: —
+
+处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_e2e_public_cli_identity_s0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 0
+[INFO] 未评分问题: 1
+[OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_e2e_public_cli_identity_s0\result.json
+ERROR - Quick-scan contains 1 failed question(s); partial results were saved.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1104 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1106 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1107 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_e2e_public_cli_identity_s0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+WARNING  src.runners.llm_runner:llm_runner.py:1261 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1266 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1267 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_e2e_public_cli_identity_s0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1268 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_e2e_public_cli_identity_s0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: openai, model: requested-fixture-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+WARNING  src.runners.llm_runner:llm_runner.py:453 transport checkpoint 拒绝（answer checkpoint requires verified identity）——原请求状态保留
+ERROR    src.core.qa_engine:qa_engine.py:303 [1/1] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+INFO     src.core.qa_engine:qa_engine.py:366 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_e2e_public_cli_identity_s0\result.json
+ERROR    src.runners.llm_runner:llm_runner.py:1566 Quick-scan contains 1 failed question(s); partial results were saved.
+__________________ test_runner_glue_reserves_before_dispatch __________________
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\tests\unit\test_q09_budget_concurrency.py:629: in test_runner_glue_reserves_before_dispatch
+    assert exit_code == 0, exit_code
+E   AssertionError: 1
+E   assert 1 == 0
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_runner_glue_reserves_befo0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_runner_glue_reserves_befo0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_runner_glue_reserves_befo0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: None）
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 primary API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - transport checkpoint 拒绝（answer checkpoint requires verified identity）——原请求状态保留
+ERROR - [1/1] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+
+[1/1] 进度: 100.0% - [FAIL] 失败: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: —
+
+处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_runner_glue_reserves_befo0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 0
+[INFO] 未评分问题: 1
+[OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_runner_glue_reserves_befo0\result.json
+ERROR - Quick-scan contains 1 failed question(s); partial results were saved.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1104 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1106 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1107 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_runner_glue_reserves_befo0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+WARNING  src.runners.llm_runner:llm_runner.py:1261 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1266 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1267 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_runner_glue_reserves_befo0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1268 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_runner_glue_reserves_befo0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 primary API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+WARNING  src.runners.llm_runner:llm_runner.py:453 transport checkpoint 拒绝（answer checkpoint requires verified identity）——原请求状态保留
+ERROR    src.core.qa_engine:qa_engine.py:303 [1/1] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+INFO     src.core.qa_engine:qa_engine.py:366 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_runner_glue_reserves_befo0\result.json
+ERROR    src.runners.llm_runner:llm_runner.py:1566 Quick-scan contains 1 failed question(s); partial results were saved.
+_______ test_two_processes_race_on_one_lease_and_stale_epoch_is_fenced ________
+tests\unit\test_quick_scan_work_store.py:257: in test_two_processes_race_on_one_lease_and_stale_epoch_is_fenced
+    _claim_process(
+tests\unit\test_quick_scan_work_store.py:230: in _claim_process
+    return subprocess.Popen(
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:46: in audit
+    raise PermissionError("qa_net_full_guard_child_environment")
+E   PermissionError: qa_net_full_guard_child_environment
+______ test_send_intent_survives_immediate_process_exit_before_any_http _______
+tests\unit\test_quick_scan_work_store.py:342: in test_send_intent_survives_immediate_process_exit_before_any_http
+    child = subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:46: in audit
+    raise PermissionError("qa_net_full_guard_child_environment")
+E   PermissionError: qa_net_full_guard_child_environment
+_________________ test_sh_wrapper_returns_zero_for_list_steps _________________
+tests\integration\test_ci_checks_cli.py:100: in test_sh_wrapper_returns_zero_for_list_steps
+    proc = _run([_find_bash(), str(SH_WRAPPER), "--list-steps"], cwd=outside)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+________________ test_sh_wrapper_forwards_unknown_flag_as_two _________________
+tests\integration\test_ci_checks_cli.py:108: in test_sh_wrapper_forwards_unknown_flag_as_two
+    proc = _run([_find_bash(), str(SH_WRAPPER), "--no-such-flag"], cwd=outside)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+______________ test_sh_wrapper_forwards_unknown_step_as_nonzero _______________
+tests\integration\test_ci_checks_cli.py:115: in test_sh_wrapper_forwards_unknown_step_as_nonzero
+    proc = _run([_find_bash(), str(SH_WRAPPER), "--only", "no_such_step"], cwd=outside)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+____________ test_sh_wrapper_propagates_pytest_collection_failure _____________
+tests\integration\test_ci_checks_cli.py:123: in test_sh_wrapper_propagates_pytest_collection_failure
+    proc = _run(
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+____________ test_sh_wrapper_runs_from_cwd_with_spaces_and_chinese ____________
+tests\integration\test_ci_checks_cli.py:144: in test_sh_wrapper_runs_from_cwd_with_spaces_and_chinese
+    proc = _run([_find_bash(), str(SH_WRAPPER), "--list-steps"], cwd=outside)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+____________ test_sh_wrapper_pytest_target_with_spaces_and_chinese ____________
+tests\integration\test_ci_checks_cli.py:155: in test_sh_wrapper_pytest_target_with_spaces_and_chinese
+    proc = _run(
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+________________ test_bat_wrapper_returns_zero_for_list_steps _________________
+tests\integration\test_ci_checks_cli.py:172: in test_bat_wrapper_returns_zero_for_list_steps
+    proc = _run([_find_cmd(), "/c", str(BAT_WRAPPER), "--list-steps"], cwd=outside)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+________________ test_bat_wrapper_forwards_unknown_flag_as_two ________________
+tests\integration\test_ci_checks_cli.py:180: in test_bat_wrapper_forwards_unknown_flag_as_two
+    proc = _run([_find_cmd(), "/c", str(BAT_WRAPPER), "--no-such-flag"], cwd=outside)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+______________ test_bat_wrapper_forwards_unknown_step_as_nonzero ______________
+tests\integration\test_ci_checks_cli.py:187: in test_bat_wrapper_forwards_unknown_step_as_nonzero
+    proc = _run([_find_cmd(), "/c", str(BAT_WRAPPER), "--only", "no_such_step"], cwd=outside)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+_______________ test_wrapper_does_not_create_reports_directory ________________
+tests\integration\test_ci_checks_cli.py:261: in test_wrapper_does_not_create_reports_directory
+    proc = _run([_find_bash(), str(SH_WRAPPER), "--list-steps"], cwd=outside)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\integration\test_ci_checks_cli.py:55: in _run
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+..\guard\sitecustomize.py:41: in audit
+    raise PermissionError("qa_net_full_guard_unidentified_executable")
+E   PermissionError: qa_net_full_guard_unidentified_executable
+______ test_checkpoint_refusal_is_public_error_without_losing_transport _______
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\tests\integration\test_qa_net01_transport_e2e.py:392: in test_checkpoint_refusal_is_public_error_without_losing_transport
+    assert len(attempts) == 1 and attempts[0]["phase"] == "response_available"
+E   AssertionError: assert (2 == 1)
+E    +  where 2 = len([{'attempt_id': 'ATTEMPT_8578e0def29749eba126a21d283f72ab', 'work_item_id': 'WORK_1dafd6a585f54dd8931adffe0fee8727', '...d': 'WORK_1dafd6a585f54dd8931adffe0fee8727', 'lease_epoch': 1, 'lease_token': '1b1b0cb769a44fb9865c0ceb3659f430', ...}])
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_checkpoint_refusal_is_pub0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO - C06 权威文档已加载（b7409f994124d02c）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_checkpoint_refusal_is_pub0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_checkpoint_refusal_is_pub0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: None）
+INFO - 开始批量处理 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 backup API... (尝试 1/1)
+WARNING - transport checkpoint 拒绝（missing authoritative transport binding）——原请求状态保留
+ERROR - [1/1] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_checkpoint_refusal_is_pub0\result.json
+ERROR - Quick-scan contains 1 failed question(s); partial results were saved.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1104 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1106 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1107 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_checkpoint_refusal_is_pub0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1218 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO     src.runners.llm_runner:llm_runner.py:1259 C06 权威文档已加载（b7409f994124d02c）
+INFO     src.runners.llm_runner:llm_runner.py:1266 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1267 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_checkpoint_refusal_is_pub0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1268 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_checkpoint_refusal_is_pub0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:342 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 backup API... (尝试 1/1)
+WARNING  src.runners.llm_runner:llm_runner.py:453 transport checkpoint 拒绝（missing authoritative transport binding）——原请求状态保留
+ERROR    src.core.qa_engine:qa_engine.py:303 [1/1] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+INFO     src.core.qa_engine:qa_engine.py:366 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\pytest-root\test_checkpoint_refusal_is_pub0\result.json
+ERROR    src.runners.llm_runner:llm_runner.py:1566 Quick-scan contains 1 failed question(s); partial results were saved.
+=========================== short test summary info ===========================
+FAILED tests/unit/test_q06_work_binding.py::test_e2e_public_cli_identity_snapshot_glue_no_redispatch
+FAILED tests/unit/test_q09_budget_concurrency.py::test_runner_glue_reserves_before_dispatch
+FAILED tests/unit/test_quick_scan_work_store.py::test_two_processes_race_on_one_lease_and_stale_epoch_is_fenced
+FAILED tests/unit/test_quick_scan_work_store.py::test_send_intent_survives_immediate_process_exit_before_any_http
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_returns_zero_for_list_steps
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_forwards_unknown_flag_as_two
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_forwards_unknown_step_as_nonzero
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_propagates_pytest_collection_failure
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_runs_from_cwd_with_spaces_and_chinese
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_pytest_target_with_spaces_and_chinese
+FAILED tests/integration/test_ci_checks_cli.py::test_bat_wrapper_returns_zero_for_list_steps
+FAILED tests/integration/test_ci_checks_cli.py::test_bat_wrapper_forwards_unknown_flag_as_two
+FAILED tests/integration/test_ci_checks_cli.py::test_bat_wrapper_forwards_unknown_step_as_nonzero
+FAILED tests/integration/test_ci_checks_cli.py::test_wrapper_does_not_create_reports_directory
+FAILED tests/integration/test_qa_net01_transport_e2e.py::test_checkpoint_refusal_is_public_error_without_losing_transport
+15 failed, 967 passed in 76.49s (0:01:16)
+checks: step=pytest exit=1 seconds=77.45 FAILED
+checks: mode=full result=fail exit=1 steps=pytest seconds=77.45

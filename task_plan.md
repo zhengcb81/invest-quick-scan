@@ -411,7 +411,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**下一步**：只读接收QA-NET-01/SW-READY-01的handoff、实现commit和公开接口golden，按原大节点集中联调；两外仓已有其他harness开工，总控不写、不清理它们。Phase89改进实验已完成并归档：[最终报告](docs/implementation/experiments/b01-improved-results-2026-10-07.md)。410模型/48搜索、费用保守上界US$4.869098；DeepSeek五题为效率候选，事实审查仍有不足，生产默认保持逐题，G3/F05不关闭。用户允许报备后超原预算继续，但本轮已完成，不为用满预算追加无目的请求。L03/200家未启动；TH-IMPL-01/IN-IMPL-01暂缓。P2-5此前交付a780a72，身份兼容不重做。
+**下一步**：等待用户指定SW-READY-01六项整改的唯一writer（原StockWiki harness返工或明确授权总控按精确整改卡接管）；具体范围见 `docs/implementation/reviews/SW-READY-01/remediation-card-2026-10-07.md`。QA-NET-01五阻断及R1–R3已在982项离线全量门和集中复审下闭合，代码84e24ef/证据4779764已推送；整包仍partial，external生产dispatcher与真实跨仓ACK未验。StockWiki完整交接04dfc519已收到、48/48hash一致，但集中7case为6fail/1pass，不能推进依赖它的联调成功宣称。允许继续独立IQS只读准备，不写StockWiki/TH/IN，不重跑Phase89收费实验/启动L03，不新增小节点review。
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
@@ -1317,5 +1317,17 @@ Status: complete_for_experiment_scope; G3_and_production_default_unchanged
 - [x] 三市场三模型、1/3/4/5/10/12/30题包（非全因子；每臂限制见预注册）与Brave/Tavily basic、目标advanced、片段主体/口径v6组合试验完成。MiniMax只补失败题一轮各5，原答案不覆盖、不把格式恢复当事实正确。
 - [x] 28离线单元/集成/归档回放测试通过；三模型真实答案cache与6stage公开CLI接续在禁止网络/凭据guard下均0HTTP，账本原字节不变；全部410 actual payload/question/context/hash匹配，初始orchestrator只hash未存source的边界保留。
 - [x] 匿名答案审查：原164行+扩展57行+候选60行=281不重叠行；hash/题号/引用/标签分母全部核对，分别统计，不当人类gold/准确率。独立本批技术审查无归档阻断，同批修复检索基线串用；不新增逐小节点门、不关G3。
-- [ ] 报告/最小结构答案+receipt+source pointers归档；自有runtime/log/cache/snippet清理，保留其他仓与opencode.json；PWF/交接更新后精确commit/push。
+- [x] 报告/最小结构答案+receipt+source pointers归档、自有runtime/log/cache/snippet清理、PWF/交接与精确commit/push已完成（0d19af9/f3ceb62）；保留其他仓与opencode.json。
 - 条件性性能候选DeepSeek五题包（三司90/90结构、对并发4逐题median paired speedup1.56/refcost约降35%），但高分和unknown仍可能有事实/单位错误；正式政策仍待G3。实验详见`docs/implementation/experiments/b01-improved-2026-10-07.md`，L03未启动。
+
+
+### Phase 90: QA-NET-01与SW-READY-01交付接收、隔离验证和接口联调
+Status: QA_NET_01_bounded_remediation_verified_and_pushed; SW_READY_01_needs_revision_waiting_for_writer
+- [x] QA原交付36工件hash与7文档/14日志完整归档，冻结d160d80；集中6case为5 RED/1真实N/A GREEN。旧F2 lifecycle-only例子不满足真实备用attempt要求，保留原RED，不放宽store凑绿。
+- [x] 用户指定总控接管StockQA整改；逐HTTP绑定真实model/route/send_intent/预算/final receipt，修复external误native、增量routing、gen2接续、改prompt绕uncertain以及检查点拒绝误成功。独立同批复审原5+R1–R3闭合，无新阻断；未启用external或DeepSeek续写，不冒充真实StockWiki golden。
+- [x] 自有隔离导出194公开Git文件+13overlay，实际公开六步骤全过、982 passed/0failed/0skipped/85.81s；只有HTTP边界stub，合成usage/rate card不代表真实供应商免费。提交前4文件仅EOL规范化有独立hash等价记录；从精确Git重建195件原执行字节全部匹配。禁网/根外写/禁用guard flag canary通过；opt-in live/benchmark未跑。
+- [x] StockQA代码84e24ef79901ce7c817054f6354b90a15c44afd3、证据4779764c3a3e3b08bf25ebe918c1590a633f416b均提交并推送既有origin/master；46当前工件匹配、公开handoff CLI shape/scope valid，原七项未跟踪保留。整包仍partial、历史shared TEMP删除影响未知。
+- [x] 用户交回SW-READY-01：StockWiki代码0d76dc39/交接HEAD04dfc519，clean只读，48/48工件匹配、原件归档，公开shape/scope valid。独立集中静态审查+冻结182文件/旧真实query源码实测7case为6fail/1WAL positive pass/3.83s/0setup error；UI项为静态断言，非浏览器复跑。
+- [x] 已提供SW六项精确整改卡与一次集中测试/审查标准；用户writer选择问题已发，尚未回答。StockWiki保持只读，绝不代改未获授权路径。共享TEMP不碰；本批六自有root共4646文件清理，保留file manifest及process scan失败/后续严格扫描0的准确时序，不虚报删除前OS扫描均完成。
+- [ ] SW唯一writer修复空目标恢复/外来prune/finalize残留/不可比variant混用/UI多条件/旧query快照兼容并交回；之后集中跑真实StockQA C06→StockWiki导入/ACK→执行端落定→投影/UI与双owner恢复正反例。缺口未闭合不关闭G3/F05/TH/IN/L03。
+- [x] 更新本批接收结果、PWF/接手指南与不可变字节属性；IQS精确commit/push实际结果在progress记录，不改107卡/366case/退役工程回执。

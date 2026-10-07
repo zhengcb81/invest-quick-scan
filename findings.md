@@ -1545,3 +1545,20 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 最终结构、故障、预算、接续与费用口径已验证：410/48，USD保守上界4.869098，28离线测试；所有失败和63次扩展/补问入同账，不覆盖旧答案，完全无来源gold就不报准确率。按主题组包是建议，实际实验仅按原题序分包。
 - 281匿名行三个不同目的样本保留独立分母和逐claim标签，0重叠、答案hash/引用绑定一致。candidate审查不含十倍单位错，但仍有期间补全/收入替代利润/引用窗口越界/同业主体省略；非评分也要审事实，claim无问题不代表rationale等整体正确。
 - 已完成最小归档、904文件自有run清理、删除后公开CLI纯离线重算。9文件工件不含搜索snippet正文/raw API/推理/key；正式runtime仍归StockQA，IQS这里只提供冻结客户端实验工具。原片段不可恢复和最早源码未保存的限制可审计。
+
+
+## 2026-10-07 — QA-NET-01交付初读
+- 包自己承认external_context/explicit_hybrid仅准入拒绝和离线parser，生产检索→context→答案尚未接完。必须保持partial，不能把“有API key”推定所有route准入或把mock ACK当真实消费者。
+- 交接isolation.md表格仍写base/未提交27条，handoff却声明提交后7条；源码门更新来自另条G2-SQA-CHECKS无交集，按当前commit/日志核对，不回滚别人变更。共享TEMP清理按mtime归属不可靠，尤其多项目并行；新验收强制IQS自有根/网络与写入guard。
+
+## 2026-10-07 QA-NET接管整改
+- 用户指定由总控修StockQA。F1-F5集中验收证据在docs/implementation/intake/QA-NET-01/2026-10-07/acceptance-red.log；5 RED不是5次真实API。F2原lifecycle边界案例尚未证明双路由实际HTTP，最终必须增加真实引擎/transport入口的stub E2E及伪造备用receipt拒绝反例。
+- claim阶段预造首模型attempt并设置_OWN_RESERVATION，生产QAEngine又未bind_work，导致真实HTTP attempt脱钩；可靠整改将claim与逐HTTP prepare/send intent/record分层，保留unknown收费占用和禁止自动重发。
+
+### QA-NET整改收尾的测试与隔离边界（2026-10-07）
+检查点失败不得吞掉并宣称scored/CLI成功；真实HTTP响应与费用状态必须保留。旧provisional身份/错误actual model样本不应期望可保存checkpoint。失败使用服务器明确且完整一致的usage才可结算；缺搜索次数、负值、冲突cached/detail别名仍保持未决，不能推定quota拒绝免费。nested pytest必须各进程独占basetemp；Windows subprocess必须继承guard。sh/bat仅允许manifest固定哈希的私有转发脚本，Python audit不能当OS级shell沙箱；其固定内容只调用Python公开checks。Windows Git Bash MSYS对象沙箱拒绝使用相同离线guard沙箱外运行，不删除失败日志。
+
+### SW-READY-01正式查收：6固定反例（2026-10-07）
+48/48工件齐不表示实现可验收。空目标restore二次exists拒绝；foreign self-digest无owner proof被prune；final rename在异常清理外导致.complete-looking partial；公开导入两subject均accepted却同field只剩后高分；UI只有一leaf使AND/OR恒等（静态反例）；旧真实query源码snapshot交同1.0新版分页拒绝。主线guarded 7case最终6fail/1WAL positive/3.83s，原990历史GREEN保留但缺这些反例。两subject是producer公开fixture，不是真实身份golden；旧snapshot是真旧producer函数产物。冻结StockWiki04dfc519始终clean未写。详见SW整改卡，待唯一writer授权；不假定用户“查收”允许外仓整改。
+
+本批隔离比旧owner按mtime共享TEMP清理安全，但cleanup进程扫描有真实缺口：沙箱CIM错误非终止、扫描未得结果仍清理自有root。已准确更正元数据，不把零当证据，strict只读补核matching0并明确时序；无别仓/共享TEMP删除。后续必须ErrorAction Stop，扫描失败即停清理；不得用事后0伪造事前证明。

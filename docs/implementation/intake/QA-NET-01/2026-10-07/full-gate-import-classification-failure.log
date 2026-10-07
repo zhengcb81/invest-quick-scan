@@ -1,0 +1,10 @@
+==> checks [full] step=black
+All done! ✨ 🍰 ✨
+121 files would be left unchanged.
+checks: step=black exit=0 seconds=17.76
+==> checks [full] step=isort
+ERROR: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\tests\integration\test_qa_net01_cli_e2e.py Imports are incorrectly sorted and/or formatted.
+ERROR: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\tests\unit\test_qa_net01_question_manifest.py Imports are incorrectly sorted and/or formatted.
+ERROR: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\tests\unit\test_qa_net01_search_boundary.py Imports are incorrectly sorted and/or formatted.
+checks: step=isort exit=1 seconds=0.93 FAILED
+checks: mode=full result=fail exit=1 steps=black,isort seconds=18.70

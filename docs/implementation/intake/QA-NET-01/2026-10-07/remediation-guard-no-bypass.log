@@ -1,0 +1,49 @@
+{
+  "mode": "default",
+  "offline": true,
+  "steps": [
+    "black",
+    "isort",
+    "mypy",
+    "bandit",
+    "pytest",
+    "smoke"
+  ],
+  "pytest": {
+    "scope": "daily",
+    "targets": [
+      "tests/unit/test_models.py",
+      "tests/unit/test_config_manager.py",
+      "tests/unit/test_llm_config.py",
+      "tests/unit/test_basic_runner.py",
+      "tests/unit/test_main_with_llm.py",
+      "tests/unit/test_q07_checkpoint.py",
+      "tests/unit/test_quick_scan_budget.py",
+      "tests/unit/test_q09_budget_concurrency.py",
+      "tests/unit/test_ci_checks.py",
+      "tests/integration/test_ci_checks_cli.py",
+      "tests/integration/test_quick_scan_cli.py::test_public_cli_exports_eight_score_entity_timestamp_model_and_search_receipt",
+      "tests/integration/test_quick_scan_cli.py::test_public_cli_refuses_to_infer_question_id",
+      "tests/integration/test_quick_scan_cli.py::test_public_cli_persists_every_failed_transport_retry_without_error_details",
+      "tests/integration/test_quick_scan_cli.py::test_public_cli_does_not_retry_uncertain_server_error_without_reconciliation",
+      "tests/integration/test_quick_scan_cli.py::test_public_cli_fake_health_schema_rejects_before_http",
+      "tests/integration/test_quick_scan_cli.py::test_public_cli_pauses_after_unpriced_attempt_without_sending_backup"
+    ],
+    "args": [
+      "-q",
+      "--tb=short",
+      "-p",
+      "no:base_url",
+      "-p",
+      "no:cacheprovider",
+      "-m",
+      "not live and not benchmark",
+      "--ignore=tests/live",
+      "--ignore=tests/benchmarks"
+    ],
+    "env": {
+      "STOCKQA_RUN_LIVE_E2E": "0"
+    }
+  },
+  "output_dir": null
+}

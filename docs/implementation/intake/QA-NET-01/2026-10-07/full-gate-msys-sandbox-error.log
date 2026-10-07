@@ -1,0 +1,52 @@
+==> checks [full] step=pytest
+....FF.FFF.........F....                                                 [100%]
+================================== FAILURES ===================================
+_________________ test_sh_wrapper_returns_zero_for_list_steps _________________
+tests\integration\test_ci_checks_cli.py:101: in test_sh_wrapper_returns_zero_for_list_steps
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+E   AssertionError: 
+E   assert 3221225794 == 0
+E    +  where 3221225794 = CompletedProcess(args=['C:\\Program Files\\Git\\usr\\bin\\bash.EXE', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\run...t01-intake-full-2026-10-07\\runtime\\scripts\\run_ci.sh', '--list-steps'], returncode=3221225794, stdout='', stderr='').returncode
+________________ test_sh_wrapper_forwards_unknown_flag_as_two _________________
+tests\integration\test_ci_checks_cli.py:109: in test_sh_wrapper_forwards_unknown_flag_as_two
+    assert proc.returncode == 2, f"wrapper 吞掉了 argparse 退出码：{proc.returncode}"
+E   AssertionError: wrapper 吞掉了 argparse 退出码：3221225794
+E   assert 3221225794 == 2
+E    +  where 3221225794 = CompletedProcess(args=['C:\\Program Files\\Git\\usr\\bin\\bash.EXE', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\run...n\\bash.EXE: *** fatal error - NtCreateDirectoryObject(\\BaseNamedObjects\\msys-2.0S5-1888ae32e00d56aa): 0xC0000022\n').returncode
+____________ test_sh_wrapper_propagates_pytest_collection_failure _____________
+tests\integration\test_ci_checks_cli.py:137: in test_sh_wrapper_propagates_pytest_collection_failure
+    assert "test_broken" in combined, combined
+E   AssertionError:       0 [main] bash (35784) C:\Program Files\Git\usr\bin\bash.EXE: *** fatal error - NtCreateDirectoryObject(\BaseNamedObjects\msys-2.0S5-1888ae32e00d56aa): 0xC0000022
+E     
+E   assert 'test_broken' in '      0 [main] bash (35784) C:\\Program Files\\Git\\usr\\bin\\bash.EXE: *** fatal error - NtCreateDirectoryObject(\\BaseNamedObjects\\msys-2.0S5-1888ae32e00d56aa): 0xC0000022\n'
+____________ test_sh_wrapper_runs_from_cwd_with_spaces_and_chinese ____________
+tests\integration\test_ci_checks_cli.py:145: in test_sh_wrapper_runs_from_cwd_with_spaces_and_chinese
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+E   AssertionError:       0 [main] bash (5356) C:\Program Files\Git\usr\bin\bash.EXE: *** fatal error - NtCreateDirectoryObject(\BaseNamedObjects\msys-2.0S5-1888ae32e00d56aa): 0xC0000022
+E     
+E   assert 3221225794 == 0
+E    +  where 3221225794 = CompletedProcess(args=['C:\\Program Files\\Git\\usr\\bin\\bash.EXE', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\run...n\\bash.EXE: *** fatal error - NtCreateDirectoryObject(\\BaseNamedObjects\\msys-2.0S5-1888ae32e00d56aa): 0xC0000022\n').returncode
+____________ test_sh_wrapper_pytest_target_with_spaces_and_chinese ____________
+tests\integration\test_ci_checks_cli.py:160: in test_sh_wrapper_pytest_target_with_spaces_and_chinese
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+E   AssertionError:       0 [main] bash (27424) C:\Program Files\Git\usr\bin\bash.EXE: *** fatal error - NtCreateDirectoryObject(\BaseNamedObjects\msys-2.0S5-1888ae32e00d56aa): 0xC0000022
+E     
+E   assert 3221225794 == 0
+E    +  where 3221225794 = CompletedProcess(args=['C:\\Program Files\\Git\\usr\\bin\\bash.EXE', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\run...n\\bash.EXE: *** fatal error - NtCreateDirectoryObject(\\BaseNamedObjects\\msys-2.0S5-1888ae32e00d56aa): 0xC0000022\n').returncode
+_______________ test_wrapper_does_not_create_reports_directory ________________
+tests\integration\test_ci_checks_cli.py:262: in test_wrapper_does_not_create_reports_directory
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+E   AssertionError:       0 [main] bash (30796) C:\Program Files\Git\usr\bin\bash.EXE: *** fatal error - NtCreateDirectoryObject(\BaseNamedObjects\msys-2.0S5-1888ae32e00d56aa): 0xC0000022
+E     
+E   assert 3221225794 == 0
+E    +  where 3221225794 = CompletedProcess(args=['C:\\Program Files\\Git\\usr\\bin\\bash.EXE', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\run...n\\bash.EXE: *** fatal error - NtCreateDirectoryObject(\\BaseNamedObjects\\msys-2.0S5-1888ae32e00d56aa): 0xC0000022\n').returncode
+=========================== short test summary info ===========================
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_returns_zero_for_list_steps
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_forwards_unknown_flag_as_two
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_propagates_pytest_collection_failure
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_runs_from_cwd_with_spaces_and_chinese
+FAILED tests/integration/test_ci_checks_cli.py::test_sh_wrapper_pytest_target_with_spaces_and_chinese
+FAILED tests/integration/test_ci_checks_cli.py::test_wrapper_does_not_create_reports_directory
+6 failed, 18 passed in 13.89s
+checks: step=pytest exit=1 seconds=14.85 FAILED
+checks: mode=full result=fail exit=1 steps=pytest seconds=14.86

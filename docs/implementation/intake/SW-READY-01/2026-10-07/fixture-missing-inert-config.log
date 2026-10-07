@@ -1,0 +1,94 @@
+sw_ready_guard_canaries_passed
+FFFFFF.                                                                  [100%]
+================================== FAILURES ===================================
+_____________ test_restore_accepts_already_existing_empty_target ______________
+..\..\..\docs\implementation\reviews\SW-READY-01\acceptance_cases.py:35: in test_restore_accepts_already_existing_empty_target
+    receipt = backup.restore_backup(paths, "owned_backup")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:293: in restore_backup
+    raise _bad("restore_target_not_empty", str(target))
+E   stockwiki.quick_scan_backup_manifest.QuickScanBackupError: restore_target_not_empty: C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-ready01-intake-2026-10-07\pytest\test_restore_accepts_already_e0\workspace\data\quick_scan
+_______________ test_foreign_manifest_directory_is_never_pruned _______________
+..\..\..\docs\implementation\reviews\SW-READY-01\acceptance_cases.py:48: in test_foreign_manifest_directory_is_never_pruned
+    assert foreign.exists(), "Foreign same-named manifest is not a StockWiki backup owner proof"
+E   AssertionError: Foreign same-named manifest is not a StockWiki backup owner proof
+E   assert False
+E    +  where False = exists()
+E    +    where exists = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-ready01-intake-2026-10-07/pytest/test_foreign_manifest_director0/workspace/backups/quick_scan/foreign_fixture').exists
+________ test_failed_final_rename_never_leaves_complete_partial_backup ________
+..\..\..\docs\implementation\reviews\SW-READY-01\acceptance_cases.py:67: in test_failed_final_rename_never_leaves_complete_partial_backup
+    assert not list(backup.quick_scan_backup_root(paths).glob("*.partial-*"))
+E   AssertionError: assert not [WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-ready01-intake-2026-10-07/pytest/test_failed_final_rename_never0/workspace/backups/quick_scan/.must_not_finalize.partial-f43c76df')]
+E    +  where [WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-ready01-intake-2026-10-07/pytest/test_failed_final_rename_never0/workspace/backups/quick_scan/.must_not_finalize.partial-f43c76df')] = list(<map object at 0x0000017AA3D02050>)
+E    +    where <map object at 0x0000017AA3D02050> = glob('*.partial-*')
+E    +      where glob = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-ready01-intake-2026-10-07/pytest/test_failed_final_rename_never0/workspace/backups/quick_scan').glob
+E    +        where WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-ready01-intake-2026-10-07/pytest/test_failed_final_rename_never0/workspace/backups/quick_scan') = <function quick_scan_backup_root at 0x0000017AA3D4C040>(WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-ready01-intake-2026-10-07/pytest/test...ects/invest-quick-scan/runs/sw-ready01-intake-2026-10-07/pytest/test_failed_final_rename_never0/workspace/runs/state')))
+E    +          where <function quick_scan_backup_root at 0x0000017AA3D4C040> = backup.quick_scan_backup_root
+___ test_two_subjects_of_one_issuer_never_silently_collapse_into_one_score ____
+..\..\..\docs\implementation\reviews\SW-READY-01\acceptance_cases.py:71: in test_two_subjects_of_one_issuer_never_silently_collapse_into_one_score
+    import test_quick_scan_profiles as owner
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_profiles.py:20: in <module>
+    from test_quick_scan_observations import _observation, _package, _seed_entity
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_observations.py:21: in <module>
+    from stockwiki.cli_registry import build_parser
+stockwiki\cli_registry.py:7: in <module>
+    from stockwiki.cli_parsers import (
+stockwiki\cli_parsers\company.py:5: in <module>
+    from stockwiki.llm_review import DEFAULT_DEEPSEEK_MODEL
+stockwiki\llm_review.py:22: in <module>
+    DEFAULT_DEEPSEEK_MODEL = default_model()
+                             ^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:96: in default_model
+    providers = load_providers()
+                ^^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:61: in load_providers
+    data = read_yaml(_config_path(), default={}) or {}
+                     ^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:53: in _config_path
+    raise FileNotFoundError("config/llm_providers.yaml not found")
+E   FileNotFoundError: config/llm_providers.yaml not found
+______________ test_real_legacy_public_snapshot_remains_readable ______________
+..\..\..\docs\implementation\reviews\SW-READY-01\acceptance_cases.py:107: in test_real_legacy_public_snapshot_remains_readable
+    current = search(profiles, page=2, page_size=50, snapshot=old["snapshot"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_query.py:313: in search
+    raise _bad("snapshot_query_mismatch", str(snapshot.get("snapshot_id")))
+E   stockwiki.quick_scan_query.QueryError: snapshot_query_mismatch: SNP_2a3fd23c20c1c67ba297d5c1
+_ test_ui_supports_multiple_conditions_instead_of_single_leaf_static_contract _
+..\..\..\docs\implementation\reviews\SW-READY-01\acceptance_cases.py:115: in test_ui_supports_multiple_conditions_instead_of_single_leaf_static_contract
+    assert "payload.conditions = [{ field: q.field, op: q.op, value: q.value }]" not in payload, "One hard-coded leaf makes AND/OR identical"
+E   AssertionError: One hard-coded leaf makes AND/OR identical
+E   assert 'payload.con...: q.value }]' not in 'function qs...load;\n}\n\n'
+E     
+E     'payload.conditions..., value: q.value }]' is contained here:
+E       ld) {
+E           payload.conditions = [{ field: q.field, op: q.op, value: q.value }];
+E           payload.condition_combine = q.combine;
+E         }
+E         if (q.snapshot && q.snapshotKey === qsStateKey()) payload.snapshot = q.snapshot;...
+E     
+E     ...Full output truncated (3 lines hidden), use '-vv' to show
+=========================== short test summary info ===========================
+FAILED ..::test_restore_accepts_already_existing_empty_target - stockwiki.qui...
+FAILED ..::test_foreign_manifest_directory_is_never_pruned - AssertionError: ...
+FAILED ..::test_failed_final_rename_never_leaves_complete_partial_backup - As...
+FAILED ..::test_two_subjects_of_one_issuer_never_silently_collapse_into_one_score
+FAILED ..::test_real_legacy_public_snapshot_remains_readable - stockwiki.quic...
+FAILED ..::test_ui_supports_multiple_conditions_instead_of_single_leaf_static_contract
+6 failed, 1 passed in 2.83s

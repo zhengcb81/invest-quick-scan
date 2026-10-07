@@ -1,0 +1,16 @@
+==> checks [full] step=black
+All done! ✨ 🍰 ✨
+121 files would be left unchanged.
+checks: step=black exit=0 seconds=0.91
+==> checks [full] step=isort
+checks: step=isort exit=0 seconds=1.18
+==> checks [full] step=mypy
+src\providers\llm_client.py:841: error: Unsupported right operand type for in ("Any | None")  [operator]
+src\providers\llm_client.py:844: error: Value of type "Any | None" is not indexable  [index]
+src\providers\llm_client.py:845: error: Value of type "Any | None" is not indexable  [index]
+src\providers\llm_client.py:846: error: Value of type "Any | None" is not indexable  [index]
+src\providers\llm_client.py:854: error: Unsupported right operand type for in ("Any | None")  [operator]
+src\providers\llm_client.py:854: error: Value of type "Any | None" is not indexable  [index]
+Found 6 errors in 1 file (checked 55 source files)
+checks: step=mypy exit=1 seconds=51.12 FAILED
+checks: mode=full result=fail exit=1 steps=black,isort,mypy seconds=53.22

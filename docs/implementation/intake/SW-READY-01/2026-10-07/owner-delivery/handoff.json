@@ -1,0 +1,326 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "stockwiki",
+  "package_id": "SW-READY-01",
+  "status": "partial",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/StockWiki",
+    "base_ref": "master",
+    "base_commit": "9f552a6741dd093dc760ad6965458989cd027251",
+    "result_ref": "master",
+    "result_commit": "0d76dc39e8d9d53d451b1ce84c7147b0dd1bd2c5",
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "W12",
+      "U01",
+      "U02"
+    ],
+    "authorization_scope_ref": "human_confirmed_stockwiki_exact_scope — 用户 2026-10-07 分派：按 SW-READY-01 施工包实施，只修改本包所属仓库，按共同规范交付（manifest.authorization=human_confirmed_stockwiki_exact_scope）",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/StockWiki"
+    ],
+    "authorized_paths": [
+      "docs/quick-scan-backup-restore.md",
+      "docs/ui.md",
+      "stockwiki/cli_parsers/backup.py",
+      "stockwiki/quick_scan_backup.py",
+      "stockwiki/quick_scan_backup_manifest.py",
+      "stockwiki/quick_scan_conditions.py",
+      "stockwiki/quick_scan_profiles.py",
+      "stockwiki/quick_scan_query.py",
+      "stockwiki/quick_scan_rows.py",
+      "stockwiki/services/backup.py",
+      "stockwiki/ui.py",
+      "stockwiki/ui_quick_scan.py",
+      "stockwiki/ui_static/app.js",
+      "stockwiki/ui_static/index.html",
+      "stockwiki/ui_static/styles.css",
+      "tests/test_e2e_quick_scan_ui.py",
+      "tests/test_quick_scan_backup.py",
+      "tests/test_quick_scan_profiles.py",
+      "tests/test_sw_ready_01_real_data.py",
+      "tests/test_ui_quick_scan.py",
+      "docs/handoff/SW-READY-01/"
+    ],
+    "changed_paths": [
+      "docs/quick-scan-backup-restore.md",
+      "docs/ui.md",
+      "stockwiki/cli_parsers/backup.py",
+      "stockwiki/quick_scan_backup.py",
+      "stockwiki/quick_scan_backup_manifest.py",
+      "stockwiki/quick_scan_conditions.py",
+      "stockwiki/quick_scan_profiles.py",
+      "stockwiki/quick_scan_query.py",
+      "stockwiki/quick_scan_rows.py",
+      "stockwiki/services/backup.py",
+      "stockwiki/ui.py",
+      "stockwiki/ui_quick_scan.py",
+      "stockwiki/ui_static/app.js",
+      "stockwiki/ui_static/index.html",
+      "stockwiki/ui_static/styles.css",
+      "tests/test_e2e_quick_scan_ui.py",
+      "tests/test_quick_scan_backup.py",
+      "tests/test_quick_scan_profiles.py",
+      "tests/test_sw_ready_01_real_data.py",
+      "tests/test_ui_quick_scan.py",
+      "docs/handoff/SW-READY-01/handoff.json",
+      "docs/handoff/SW-READY-01/summary.md",
+      "docs/handoff/SW-READY-01/interfaces.md",
+      "docs/handoff/SW-READY-01/case-map.md",
+      "docs/handoff/SW-READY-01/isolation.md",
+      "docs/handoff/SW-READY-01/artifacts.json",
+      "docs/handoff/SW-READY-01/logs/RED-w12-backup.txt",
+      "docs/handoff/SW-READY-01/logs/RED-u01-u02-projection.txt",
+      "docs/handoff/SW-READY-01/logs/GREEN-w12-backup.txt",
+      "docs/handoff/SW-READY-01/logs/GREEN-u01-u02-projection.txt",
+      "docs/handoff/SW-READY-01/logs/GREEN-u01-u02-http-routes.txt",
+      "docs/handoff/SW-READY-01/logs/GREEN-u01-u02-browser-e2e.txt",
+      "docs/handoff/SW-READY-01/logs/GREEN-real-data-acceptance.txt",
+      "docs/handoff/SW-READY-01/logs/check_all.log",
+      "docs/handoff/SW-READY-01/logs/check_all_full.log",
+      "docs/handoff/SW-READY-01/logs/e2e/e2e-01-list-2000.png",
+      "docs/handoff/SW-READY-01/logs/e2e/e2e-02-detail.png",
+      "docs/handoff/SW-READY-01/logs/e2e/e2e-03-narrow.png",
+      "docs/handoff/SW-READY-01/logs/golden/backup_create_ok.json",
+      "docs/handoff/SW-READY-01/logs/golden/backup_restore_nonempty_rejected.json",
+      "docs/handoff/SW-READY-01/logs/golden/backup_restore_ok.json",
+      "docs/handoff/SW-READY-01/logs/golden/backup_verify_missing_rejected.json",
+      "docs/handoff/SW-READY-01/logs/golden/backup_verify_ok.json",
+      "docs/handoff/SW-READY-01/logs/golden/backup_verify_tampered_rejected.json",
+      "docs/handoff/SW-READY-01/logs/golden/query_capabilities_ok.json",
+      "docs/handoff/SW-READY-01/logs/golden/query_entity_not_found_rejected.txt",
+      "docs/handoff/SW-READY-01/logs/golden/query_search_condition_ok.json",
+      "docs/handoff/SW-READY-01/logs/golden/query_search_unknown_key_rejected.txt",
+      "docs/handoff/SW-READY-01/logs/golden/quick_scan_backup_manifest_sample.json"
+    ],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [
+    {
+      "name": "iqs.docs.implementation.tasks.json (W12/U01/U02 cards + case ids)",
+      "version": "inputs.lock@2026-10-07",
+      "content_hash": "a7c6167d4bf9aca56b529bd85bd70b0ae01a99125033e06dcbcdcbb06731bf60",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "iqs.schemas.quick_scan.query.schema.json (C06 query envelope)",
+      "version": "inputs.lock@2026-10-07",
+      "content_hash": "e7fc264b43d85e4cdd5c82a71b9fedb579dd0fc1196f3c5fde661f14fa1756f8",
+      "direction": "consumed",
+      "result": "not_applicable"
+    },
+    {
+      "name": "iqs.docs.implementation.results-ui.md",
+      "version": "sha256@delivery",
+      "content_hash": "74e9053cc005bffcbf477484645f92a6008a0ce9a1912099ee82356e3b621be5",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "iqs.docs.implementation.acceptance-cases.json (DB-05/REV-04/STORE-03/UI-01..14)",
+      "version": "sha256@delivery",
+      "content_hash": "6793d24ce5704dddd1297852315acc807127c9870d6bcc18ed4d828b21ea9d37",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "stockwiki.tests.fixtures.quick_scan_exchange_example.json (C06 producer fixture)",
+      "version": "sha256@delivery",
+      "content_hash": "fbd555de608abcb071b9f93d0c2b20b0436ad40b62a92b2c0a0a4efa44b7adb4",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "stockwiki.quick_scan_import (W05 public observation import entry, unchanged)",
+      "version": "1.0.0",
+      "content_hash": "87c77921428cb52239f0276a647198aeb3988954f07b4debb468a1a1237dfa56",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "stockwiki.quick-scan-backup CLI + stockwiki.quick_scan_backup_manifest",
+      "version": "1.0.0",
+      "content_hash": "5fccd9140bb97bcaeb03d45cf767a73b797c24b58b679d07ba3580dfe3843baf",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "stockwiki.quick-scan-backup CLI receipts (create/verify/restore golden)",
+      "version": "1.0.0",
+      "content_hash": "4dedc6a7255d5fb673f95b1f8e782aa4627f8b56e15db88ca0af48da55b3f3f7",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "stockwiki.quick_scan_query (W09 read primitives, additive: protocol marker + score conditions + field catalog)",
+      "version": "quick_scan_query/1.0.0",
+      "content_hash": "2eed4641d4f3fad135887894d00f5630f1b3175aa0ac7fe79e187da27b75dc03",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "stockwiki.quick_scan_profiles (observation->profile projection)",
+      "version": "quick_scan_profiles/1.0.0",
+      "content_hash": "11515dd3489772fb0b256712c040be9bc778570de7449ea476aa8c51e653405d",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "stockwiki /api/quickscan/{capabilities,search,coverage,entity} HTTP routes",
+      "version": "quick_scan_query/1.0.0 + quick_scan_profiles/1.0.0",
+      "content_hash": "dd319b2385c42e8e448051426ea4fc093cb3dae3747eade0be52bc9784baf9b6",
+      "direction": "produced",
+      "result": "compatible"
+    }
+  ],
+  "verification": {
+    "checks": [
+      {
+        "name": "TDD RED (expected): stockwiki.quick_scan_backup absent before implementation",
+        "command": "python -X utf8 -m pytest tests/test_quick_scan_backup.py -q",
+        "scope": "tests/test_quick_scan_backup.py (collection error, exit 2)",
+        "result": "failed",
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0
+      },
+      {
+        "name": "TDD RED (expected): stockwiki.quick_scan_profiles absent before implementation",
+        "command": "python -X utf8 -m pytest tests/test_quick_scan_profiles.py -q",
+        "scope": "tests/test_quick_scan_profiles.py (collection error, exit 2)",
+        "result": "failed",
+        "passed": 0,
+        "failed": 1,
+        "skipped": 0
+      },
+      {
+        "name": "GREEN W12 backup/verify/restore/retention/watermark suite",
+        "command": "python -X utf8 -m pytest tests/test_quick_scan_backup.py -q",
+        "scope": "12 tests (unit+integration, temp sqlite, socket-bombed)",
+        "result": "passed",
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "GREEN projection + query + refresh + backup regression batch",
+        "command": "python -X utf8 -m pytest tests/test_quick_scan_profiles.py tests/test_quick_scan_query.py tests/test_quick_scan_refresh.py tests/test_quick_scan_backup.py -q",
+        "scope": "34 tests",
+        "result": "passed",
+        "passed": 34,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "GREEN HTTP routes for /api/quickscan/*",
+        "command": "python -X utf8 -m pytest tests/test_ui_quick_scan.py -q",
+        "scope": "8 tests (real ThreadingHTTPServer, ephemeral port, loopback guard)",
+        "result": "passed",
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "GREEN real-browser E2E (Playwright chromium, temp workspace, offline)",
+        "command": "python -X utf8 -m pytest tests/test_e2e_quick_scan_ui.py -q -s",
+        "scope": "5 tests (2000-entity workspace seeded via public import entry)",
+        "result": "passed",
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "GREEN real-data acceptance on isolated copy of the real workspace",
+        "command": "python -X utf8 -m pytest tests/test_sw_ready_01_real_data.py -q",
+        "scope": "2 tests (real data/quick_scan copied to temp root, real workspace hash-verified unchanged)",
+        "result": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "daily check gate during development",
+        "command": "bash scripts/check_all.sh",
+        "scope": "ruff + validate-framework + curated daily pytest package",
+        "result": "passed",
+        "passed": 304,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "big-node full gate (run once for this delivery)",
+        "command": "bash scripts/check_all.sh --full",
+        "scope": "ruff + validate-framework + full offline suite under coverage incl. data-contract and real-workspace tests",
+        "result": "passed",
+        "passed": 990,
+        "failed": 0,
+        "skipped": 18
+      },
+      {
+        "name": "pre-commit static gate",
+        "command": "python -B scripts/checks.py --static-only",
+        "scope": "ruff + static framework/config validation (no pytest)",
+        "result": "passed",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "coordinator catalog shape/scope precheck (read-only, run from invest-quick-scan root)",
+        "command": "python -B -X utf8 scripts/parallel_handoff_cli.py --catalog docs/implementation/parallel-lanes/packages/2026-10-07/manifest.json --package-id SW-READY-01 --input C:/Users/郑曾波/Projects/StockWiki/docs/handoff/SW-READY-01/handoff.json",
+        "scope": "handoff.json shape and declared scope only",
+        "result": "passed",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": [
+      {
+        "path_or_id": "%LOCALAPPDATA%/Temp/pytest-of-郑曾波/pytest-6..9 (all package tmp_path/E2E/real-copy roots)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": "%TEMP%/tmp*/golden_ws + golden_restore (golden generation roots)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": "127.0.0.1 ephemeral ports for ThreadingHTTPServer (http tests + browser E2E)",
+        "created": true,
+        "cleaned": true
+      }
+    ]
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "review 未做（review.status=not_run），需总控安排独立审查；本包不自签 approved。",
+    "UI-03 浏览器级过期样本 not_run：字段 TTL/valid_until 属中央字段注册表（未接入），不臆造 TTL，无合法可导入的 stale 观察；stale 分支由单元测试覆盖，页面如实显示“有效期未记录”。",
+    "UI-05 替代题对应关系 not_run：依赖 W15 路由快照（本包范围外），详情显示缺口 replacement_mapping_unavailable。",
+    "UI-09 浏览器级查询故障注入 not_run：错误/无实体/无命中状态由 HTTP 层反例与浏览器空态覆盖。",
+    "store_id 为路径派生：跨根恢复后新 ACK 的 store_id 变化，历史 ACK 保持原值（已写入 manifest restore_preconditions）；跨 owner 水位对账留待 G3 总控联调。",
+    "执行器（StockQA）数据库/费用账本不在本备份内：所有回执固定“执行侧未核验、禁止恢复收费”，执行侧快照需由 QA-NET-01 owner 提供后另行验收。",
+    "实施期间 master 被其他进程 fast-forward 至 0b48919（codex/g2-sw-daily，与本包零路径重叠）；本包提交的父提交为 0b48919，已记录新基线（summary §8）。"
+  ],
+  "next_action": "总控先用 README 的 --catalog 命令做形状/范围预检，再独立核验 artifacts.json 哈希、两个提交（0d76dc3 代码 + docs/handoff 证据）、任务范围与真实日志；随后安排本包独立 review，最后纳入 QA→真实导入/ACK→UI 与双 owner 恢复的集中联调（G3 未关闭，W12 局部通过不替代 G3）。"
+}

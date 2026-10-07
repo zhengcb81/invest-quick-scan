@@ -1,0 +1,116 @@
+....F                                                                    [100%]
+================================== FAILURES ===================================
+________ test_one_explicit_format_repair_keeps_final_http_receipt_hash ________
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\runtime\tests\integration\test_qa_net01_transport_e2e.py:160: in test_one_explicit_format_repair_keeps_final_http_receipt_hash
+    assert code == 0, captured.out
+E   AssertionError: {"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_1b2a4d3e-0000-4a1b-8c2d-000000000001", "generation_by_question": {}, "identity_snapshot_sha256": "6209f3f68c109cf2cd9c4e36d1a61731d013c735110ef9a8957551e1d14c0fa3", "manifest_sha256": "c99d07775e358fc48a57757a4d17f373d0564a1444888019c965c76d4608e78e", "model_calls_planned": 1, "module_package_id": "pkg_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "questions": [{"action": "dispatch", "generation": 1, "module_id": "common", "prompt_sha256": "7781c0657bae338d1be567b7d257e83d84e4c2950269b4a5661ee2afccafcfef", "question_id": "IQS_01", "scope": "entity", "scope_id": "ENT_1b2a4d3e-0000-4a1b-8c2d-000000000001", "semantic_sha256": "edeea4938be786825f296024b47a3a4d53a42d9abc22ea67b04f984a66f8f28a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "3.2.0"}
+E     
+E     ======================================================================
+E     开始处理 1 个任务...
+E     ======================================================================
+E     
+E     [1/1] 进度: 100.0% - 正在处理: 题面...[1/1] 进度: 100.0% - [OK] 完成: 题面...  
+E     
+E     ======================================================================
+E     批量处理完成，成功: 1/1
+E     ======================================================================
+E     
+E     
+E     ======================================================================
+E     Fixture Corp 分析报告
+E     ======================================================================
+E     
+E     ──────────────────────────────────────────────────────────────────────
+E     [1/1] 题面
+E     ──────────────────────────────────────────────────────────────────────
+E     Score: —
+E     
+E     无法验证结构化评分回答及目标公司身份。
+E     
+E     ======================================================================
+E     分析完成统计
+E     ======================================================================
+E     [OK] 处理问题数: 1
+E     [OK] 成功处理: 0
+E     [INFO] 未评分问题: 1
+E     [OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\pytest-root\test_one_explicit_format_repai0\result.json
+E     
+E   assert 1 == 0
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\pytest-root\test_one_explicit_format_repai0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO - C06 权威文档已加载（b7409f994124d02c）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\pytest-root\test_one_explicit_format_repai0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\pytest-root\test_one_explicit_format_repai0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: None）
+INFO - 开始批量处理 1 个问题
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: primary-model, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: backup-model, api_key: ***
+INFO - LLM处理问题: 题面...
+INFO - 正在调用 primary API... (尝试 1/1)
+WARNING - 严格模式要求内容恰好包含一个完整外层JSON对象（发现 0 个）
+INFO - LLM答案生成完成 (状态: unknown)
+INFO - Q10 检查点落定 → blocked（WORK_b4bc329dc50c480b89b34e3c2837890b）
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\pytest-root\test_one_explicit_format_repai0\result.json
+ERROR - Quick-scan contains 1 failed question(s); partial results were saved.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1084 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1086 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1087 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\pytest-root\test_one_explicit_format_repai0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1198 冻结问卷已校验（1 题，manifest c99d07775e358fc4）
+INFO     src.runners.llm_runner:llm_runner.py:1237 C06 权威文档已加载（b7409f994124d02c）
+INFO     src.runners.llm_runner:llm_runner.py:1244 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1245 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\pytest-root\test_one_explicit_format_repai0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1246 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\pytest-root\test_one_explicit_format_repai0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: primary, model: primary-model, api_key: offl...-key)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: backup, model: backup-model, api_key: offl...-key)
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 primary API... (尝试 1/1)
+WARNING  src.providers.llm_response_parser:llm_response_parser.py:193 严格模式要求内容恰好包含一个完整外层JSON对象（发现 0 个）
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: unknown)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:82 C06 封存阻断（WORK_b4bc329dc50c480b89b34e3c2837890b）：answer status is not packageable: 'unknown'
+INFO     src.runners.llm_runner:llm_runner.py:384 Q10 检查点落定 → blocked（WORK_b4bc329dc50c480b89b34e3c2837890b）
+INFO     src.core.qa_engine:qa_engine.py:296 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:366 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-r2-2026-10-07\pytest-root\test_one_explicit_format_repai0\result.json
+ERROR    src.runners.llm_runner:llm_runner.py:1540 Quick-scan contains 1 failed question(s); partial results were saved.
+=========================== short test summary info ===========================
+FAILED tests/integration/test_qa_net01_transport_e2e.py::test_one_explicit_format_repair_keeps_final_http_receipt_hash
+INTAKE_GUARD_COUNTS={'outside_write_blocked': 1, 'network_blocked': 1}

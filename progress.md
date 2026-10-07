@@ -1979,3 +1979,32 @@
 - 提交前发现Git默认diff --check把`-text`保留的CRLF逐行报成空白错误（首次输出过量，随后改捕获摘要）；不修改hash绑定的代码/JSON原字节。使用单次`git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --cached --check`保留其他空白检查，只识别CR为行尾。随后仅发现候选Markdown多一个EOF空行，已去除；候选JSON标签/hash与六源码hash不变。精确-text同时覆盖六源码/测试及五审查JSON，避免下一次checkout改坏hash。
 
 - **本批提交与推送完成**：36精确文件提交`0d19af9`（master，Improve batching benchmark with audited live comparisons），已推送既有origin/master（933cff8→0d19af9），无force/新增remote/外仓提交。暂存前CRLF-aware whitespace check exit0，受hash绑定Git blob与执行原字节全部相同。提交后仅既有`?? opencode.json`保留；随后仅追加本交付记录，不改被审源码/标签/归档。
+
+
+## 2026-10-07 — Phase90恢复与QA-NET-01新交付接收
+- 上轮为progress：Phase89真实实验收尾、最小归档、清理、两commit及推送均完成，HEAD/origin f3ceb62；原opencode.json保留。继续原全部目标，不把实验完成当全项目完成。
+- 外仓Git在沙箱内Permission denied，仅只读升级访问后重核：StockQA d160d80，StockWiki 0b48919。QA-NET目录已有7工件/14日志，主体commit610de6a；StockWiki目前仅SW-READY日志，不根据文件mtime认定进程运行或完成。
+- 用户随后明确QA-NET已做好要求查收，当前按这批次验收。公开handoff CLI exit0/status valid，范围仅shape_and_declared_scope。QA handoff自述partial：external context生产发送未接、DeepSeek续写关闭、跨仓ACK/golden未跑、独立review未做；这些不能靠986本仓测试绿变成完成。
+- 隔离记录自曝共享TEMP按名称/mtime删除25个pytest根，曾遇非本包产物，违反共同规范的manifest精确归属清理要求。保留事实，独立审查评估；总控不重现删除，不碰共享TEMP/外仓日志/覆盖率。
+- 独立agent只读静态与日志审核QA-NET，报告仅写IQS reviews/QA-NET-01；主线准备本仓唯一临时隔离导出和定向公开入口测试，不发真实API、不读取凭据、不改外仓。
+
+- 用户已明确指定由总控接管StockQA整改，解除QA唯一writer等待；StockWiki仍只读。初始交付36工件原字节/hash全部对齐。自有隔离根导出67源码/公开schema/精确测试，集中6case为5 RED/1真正N/A GREEN；没有真实API/key读取/生产库写入。原shared TEMP事故影响未知，不凭PermissionError宣称整棵目录无损。
+- 隔离启动错误与修正均保留原日志：日志/rootdir越界、缺公开inert example、Tee.isatty、Windows extended drive spelling；F3/F4初始同路径FileCache缓存造成2 fixture错误，改版本化输入+精确新qid HTTP fixture后，最终完整6case无setup错误（5fail/1pass/4.81s）。不把这些环境错误算产品bug。
+- 正在修复外部模式缺生产dispatcher时失败关闭、旧问题路由不可变继承、gen2复用及旧uncertain阻止prompt升级收费；备用模型要求每次真实HTTP自己的attempt/model/费用绑定，不能简单删除model一致性校验。
+
+- 整改末轮大节点检查：42定向此前通过；后续完整982首次15fail/967pass，其中12个为guard子进程/Windows wrapper环境问题、2个旧provisional/model-mismatch样本过时期望、1个oversize fixture误走429。保留完整RED日志，不归成15个新产品bug。强检查点拒绝现在公开error，未削弱store同work/model/hash/成功phase校验。
+- 新报备并修改旧Q06/Q09两测试为provisional负例：请求响应持久保留、公开error/nullscore/无checkpoint，接续0HTTP；新transport正例仍使用明确标注的合成verified身份，不宣称StockWiki真实golden。oversize改直接2xx5001字符，费用真实落合成账后checkpoint拒绝。
+- guard支持精确hash的私有sh/bat转发入口与继承Python guard，nested pytest按PID隔离basetemp防相互清理；18定向通过、6个Git Bash MSYS NtCreateDirectoryObject拒绝是Windows沙箱权限。随后沙箱外相同guard运行完整公开--full门，black/isort/mypy/bandit已过，pytest/smoke仍在执行。所有实际模型/搜索请求0，不使用环境key，不改真实公司/执行库。
+
+## 2026-10-07 — Phase90验收/整改收口与SW返工卡
+- QA-NET原5+集中增量R1–R3已闭合，完整公开六步骤982pass/0fail/0skip/85.81s（pytest74.95s），独立静态复审未重复运行982，报告绑定实际日志与13执行源码SHA。代码84e24ef/9项交接4779764已提交推送既有origin/master，原7未跟踪保留。source规范化4CRLF→LF仅换行，commit等价记录+195件原字节Git重建实证齐。
+- 文档commit首轮被原mixed-line-ending hook自动LF中止；保留原CRLF执行日志，46工件hash按当前LF重算后第二次全部hooks过。handoff首次相对changed_paths/绝对authorized_paths不匹配，改成用户实际完整授权的精确相对13+包文档范围；临时根清理后公开shape/scope valid。未修改公共validator或生产schema。
+- SW-READY用户已交回：HEAD04dfc519 clean、主体0d76dc39、48hash齐，182白名单文件导出加旧9f552a67 query源码。集中只读审查6项反例，主线真实隔离7case最终6fail/1WAL正例pass/3.83s，UI静态项单列。初轮少inert CLI默认providers配置的fixture错误单独存档，补providers:[]与正确ACK键后全部6为真实断言失败。未下载/联网/读key/生产DB/改StockWiki。
+- SW精确整改卡已写，14源码/测试+本包docs，一次集中回归/浏览器/full门与兼容边界明确。等待用户选择原harness返工或授权总控接管；无答复不写StockWiki，不提前宣布G3/TH/IN/L03解锁。
+- 6自有根清理4646文件，保留完整归属file SHA清单/无reparse，原共享TEMP/其他仓/opencode.json未清理。本次PowerShell CIM沙箱查询非终止失败后清理继续，不能把默认active=0当证据；已更正全部receipt为pre-scan unavailable/known own test sessions complete，随后沙箱外strict只读process scan matching0。准确记录时序，不宣称所有root删除前完成OS扫描；后续清理必须ErrorAction Stop失败关闭。
+- 额外只读错误：误猜scripts/parallel_handoff.py不存在（真实工具仅parallel_handoff_cli.py）；SW index字段是items，首次按artifacts读取KeyError零产品写，随后正确48匹配。均已改依据当前文件，不扩大成产品故障。
+- PWF/接手指南更新、Phase89漏勾的归档已按真实0d19af9/f3ceb62更正；旧原始交付/失败/partial均保留，不添加小节点门或更新退役回执。IQS本批精确提交推送待末尾实录。
+
+- 收尾导出器真实Git验证：QA195件原执行字节匹配；SW182公共Git文件+1惰性fixture共183件hash匹配。新增SW replay184文件与6显式自有助手经ErrorAction Stop+CIM事前strict matching0/无reparse/逐hash清单后清理；不重跑7反例或982。8个intake/guard/export Python AST通过（前一次控制台误写Nine，实际8，末次计数已准确），handoff两个公开shape/scope均valid；不等于SW六失败消失。
+
+- IQS首暂存whitespace检查因原始pytest/log的行尾空格报错中止，未提交。原日志受hash绑定不能修剪；改只对本批新代码/计划/review文档执行CRLF-aware whitespace检查，完整原件留原字节并以hash核验。非忽略新代码空白错误，不重跑产品测试。

@@ -1,0 +1,299 @@
+EEEEEE                                                                   [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_admitted_external_mode_must_not_silently_send_native _
+
+path = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+ignore_errors = False, onerror = None
+onexc = functools.partial(<function on_rm_rf_error at 0x000001F5EA9FB420>, start_path=WindowsPath('//?/C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root'))
+dir_fd = None
+
+    def rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
+        """Recursively delete a directory tree.
+    
+        If dir_fd is not None, it should be a file descriptor open to a directory;
+        path will then be relative to that directory.
+        dir_fd may not be implemented on your platform.
+        If it is unavailable, using it will raise a NotImplementedError.
+    
+        If ignore_errors is set, errors are ignored; otherwise, if onexc or
+        onerror is set, it is called to handle the error with arguments (func,
+        path, exc_info) where func is platform and implementation dependent;
+        path is the argument to that function that caused it to fail; and
+        the value of exc_info describes the exception. For onexc it is the
+        exception instance, and for onerror it is a tuple as returned by
+        sys.exc_info().  If ignore_errors is false and both onexc and
+        onerror are None, the exception is reraised.
+    
+        onerror is deprecated and only remains for backwards compatibility.
+        If both onerror and onexc are set, onerror is ignored and onexc is used.
+        """
+    
+>       sys.audit("shutil.rmtree", path, dir_fd)
+
+C:\Miniconda\Lib\shutil.py:735: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\guarded_tests.py:39: in audit
+    own_path(args[0])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+
+    def own_path(value):
+        if isinstance(value, int):
+            return
+        path = Path(os.fsdecode(value)).resolve()
+        if not path.is_relative_to(OWN):
+            COUNTS["outside_write_blocked"] += 1
+>           raise PermissionError("intake_guard_root_escape")
+E           PermissionError: intake_guard_root_escape
+
+..\guarded_tests.py:29: PermissionError
+___ ERROR at setup of test_changed_prompt_waits_for_uncertain_prior_attempt ___
+
+path = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+ignore_errors = False, onerror = None
+onexc = functools.partial(<function on_rm_rf_error at 0x000001F5EA9FB420>, start_path=WindowsPath('//?/C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root'))
+dir_fd = None
+
+    def rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
+        """Recursively delete a directory tree.
+    
+        If dir_fd is not None, it should be a file descriptor open to a directory;
+        path will then be relative to that directory.
+        dir_fd may not be implemented on your platform.
+        If it is unavailable, using it will raise a NotImplementedError.
+    
+        If ignore_errors is set, errors are ignored; otherwise, if onexc or
+        onerror is set, it is called to handle the error with arguments (func,
+        path, exc_info) where func is platform and implementation dependent;
+        path is the argument to that function that caused it to fail; and
+        the value of exc_info describes the exception. For onexc it is the
+        exception instance, and for onerror it is a tuple as returned by
+        sys.exc_info().  If ignore_errors is false and both onexc and
+        onerror are None, the exception is reraised.
+    
+        onerror is deprecated and only remains for backwards compatibility.
+        If both onerror and onexc are set, onerror is ignored and onexc is used.
+        """
+    
+>       sys.audit("shutil.rmtree", path, dir_fd)
+
+C:\Miniconda\Lib\shutil.py:735: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\guarded_tests.py:39: in audit
+    own_path(args[0])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+
+    def own_path(value):
+        if isinstance(value, int):
+            return
+        path = Path(os.fsdecode(value)).resolve()
+        if not path.is_relative_to(OWN):
+            COUNTS["outside_write_blocked"] += 1
+>           raise PermissionError("intake_guard_root_escape")
+E           PermissionError: intake_guard_root_escape
+
+..\guarded_tests.py:29: PermissionError
+_ ERROR at setup of test_new_module_keeps_old_answers_hydratable_with_fresh_output _
+
+path = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+ignore_errors = False, onerror = None
+onexc = functools.partial(<function on_rm_rf_error at 0x000001F5EA9FB420>, start_path=WindowsPath('//?/C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root'))
+dir_fd = None
+
+    def rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
+        """Recursively delete a directory tree.
+    
+        If dir_fd is not None, it should be a file descriptor open to a directory;
+        path will then be relative to that directory.
+        dir_fd may not be implemented on your platform.
+        If it is unavailable, using it will raise a NotImplementedError.
+    
+        If ignore_errors is set, errors are ignored; otherwise, if onexc or
+        onerror is set, it is called to handle the error with arguments (func,
+        path, exc_info) where func is platform and implementation dependent;
+        path is the argument to that function that caused it to fail; and
+        the value of exc_info describes the exception. For onexc it is the
+        exception instance, and for onerror it is a tuple as returned by
+        sys.exc_info().  If ignore_errors is false and both onexc and
+        onerror are None, the exception is reraised.
+    
+        onerror is deprecated and only remains for backwards compatibility.
+        If both onerror and onexc are set, onerror is ignored and onexc is used.
+        """
+    
+>       sys.audit("shutil.rmtree", path, dir_fd)
+
+C:\Miniconda\Lib\shutil.py:735: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\guarded_tests.py:39: in audit
+    own_path(args[0])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+
+    def own_path(value):
+        if isinstance(value, int):
+            return
+        path = Path(os.fsdecode(value)).resolve()
+        if not path.is_relative_to(OWN):
+            COUNTS["outside_write_blocked"] += 1
+>           raise PermissionError("intake_guard_root_escape")
+E           PermissionError: intake_guard_root_escape
+
+..\guarded_tests.py:29: PermissionError
+_ ERROR at setup of test_completed_generation_two_restarts_without_reverting_to_one _
+
+path = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+ignore_errors = False, onerror = None
+onexc = functools.partial(<function on_rm_rf_error at 0x000001F5EA9FB420>, start_path=WindowsPath('//?/C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root'))
+dir_fd = None
+
+    def rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
+        """Recursively delete a directory tree.
+    
+        If dir_fd is not None, it should be a file descriptor open to a directory;
+        path will then be relative to that directory.
+        dir_fd may not be implemented on your platform.
+        If it is unavailable, using it will raise a NotImplementedError.
+    
+        If ignore_errors is set, errors are ignored; otherwise, if onexc or
+        onerror is set, it is called to handle the error with arguments (func,
+        path, exc_info) where func is platform and implementation dependent;
+        path is the argument to that function that caused it to fail; and
+        the value of exc_info describes the exception. For onexc it is the
+        exception instance, and for onerror it is a tuple as returned by
+        sys.exc_info().  If ignore_errors is false and both onexc and
+        onerror are None, the exception is reraised.
+    
+        onerror is deprecated and only remains for backwards compatibility.
+        If both onerror and onexc are set, onerror is ignored and onexc is used.
+        """
+    
+>       sys.audit("shutil.rmtree", path, dir_fd)
+
+C:\Miniconda\Lib\shutil.py:735: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\guarded_tests.py:39: in audit
+    own_path(args[0])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+
+    def own_path(value):
+        if isinstance(value, int):
+            return
+        path = Path(os.fsdecode(value)).resolve()
+        if not path.is_relative_to(OWN):
+            COUNTS["outside_write_blocked"] += 1
+>           raise PermissionError("intake_guard_root_escape")
+E           PermissionError: intake_guard_root_escape
+
+..\guarded_tests.py:29: PermissionError
+___ ERROR at setup of test_fallback_actual_model_is_not_lost_at_checkpoint ____
+
+path = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+ignore_errors = False, onerror = None
+onexc = functools.partial(<function on_rm_rf_error at 0x000001F5EA9FB420>, start_path=WindowsPath('//?/C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root'))
+dir_fd = None
+
+    def rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
+        """Recursively delete a directory tree.
+    
+        If dir_fd is not None, it should be a file descriptor open to a directory;
+        path will then be relative to that directory.
+        dir_fd may not be implemented on your platform.
+        If it is unavailable, using it will raise a NotImplementedError.
+    
+        If ignore_errors is set, errors are ignored; otherwise, if onexc or
+        onerror is set, it is called to handle the error with arguments (func,
+        path, exc_info) where func is platform and implementation dependent;
+        path is the argument to that function that caused it to fail; and
+        the value of exc_info describes the exception. For onexc it is the
+        exception instance, and for onerror it is a tuple as returned by
+        sys.exc_info().  If ignore_errors is false and both onexc and
+        onerror are None, the exception is reraised.
+    
+        onerror is deprecated and only remains for backwards compatibility.
+        If both onerror and onexc are set, onerror is ignored and onexc is used.
+        """
+    
+>       sys.audit("shutil.rmtree", path, dir_fd)
+
+C:\Miniconda\Lib\shutil.py:735: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\guarded_tests.py:39: in audit
+    own_path(args[0])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+
+    def own_path(value):
+        if isinstance(value, int):
+            return
+        path = Path(os.fsdecode(value)).resolve()
+        if not path.is_relative_to(OWN):
+            COUNTS["outside_write_blocked"] += 1
+>           raise PermissionError("intake_guard_root_escape")
+E           PermissionError: intake_guard_root_escape
+
+..\guarded_tests.py:29: PermissionError
+___ ERROR at setup of test_actual_not_applicable_answer_is_not_redispatched ___
+
+path = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+ignore_errors = False, onerror = None
+onexc = functools.partial(<function on_rm_rf_error at 0x000001F5EA9FB420>, start_path=WindowsPath('//?/C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root'))
+dir_fd = None
+
+    def rmtree(path, ignore_errors=False, onerror=None, *, onexc=None, dir_fd=None):
+        """Recursively delete a directory tree.
+    
+        If dir_fd is not None, it should be a file descriptor open to a directory;
+        path will then be relative to that directory.
+        dir_fd may not be implemented on your platform.
+        If it is unavailable, using it will raise a NotImplementedError.
+    
+        If ignore_errors is set, errors are ignored; otherwise, if onexc or
+        onerror is set, it is called to handle the error with arguments (func,
+        path, exc_info) where func is platform and implementation dependent;
+        path is the argument to that function that caused it to fail; and
+        the value of exc_info describes the exception. For onexc it is the
+        exception instance, and for onerror it is a tuple as returned by
+        sys.exc_info().  If ignore_errors is false and both onexc and
+        onerror are None, the exception is reraised.
+    
+        onerror is deprecated and only remains for backwards compatibility.
+        If both onerror and onexc are set, onerror is ignored and onexc is used.
+        """
+    
+>       sys.audit("shutil.rmtree", path, dir_fd)
+
+C:\Miniconda\Lib\shutil.py:735: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\guarded_tests.py:39: in audit
+    own_path(args[0])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = '\\\\?\\C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-net01-intake-2026-10-07\\pytest-root'
+
+    def own_path(value):
+        if isinstance(value, int):
+            return
+        path = Path(os.fsdecode(value)).resolve()
+        if not path.is_relative_to(OWN):
+            COUNTS["outside_write_blocked"] += 1
+>           raise PermissionError("intake_guard_root_escape")
+E           PermissionError: intake_guard_root_escape
+
+..\guarded_tests.py:29: PermissionError
+=========================== short test summary info ===========================
+ERROR ::test_admitted_external_mode_must_not_silently_send_native - Permissio...
+ERROR ::test_changed_prompt_waits_for_uncertain_prior_attempt - PermissionErr...
+ERROR ::test_new_module_keeps_old_answers_hydratable_with_fresh_output - Perm...
+ERROR ::test_completed_generation_two_restarts_without_reverting_to_one - Per...
+ERROR ::test_fallback_actual_model_is_not_lost_at_checkpoint - PermissionErro...
+ERROR ::test_actual_not_applicable_answer_is_not_redispatched - PermissionErr...
+6 errors in 2.17s
+INTAKE_GUARD_COUNTS={'outside_write_blocked': 7, 'network_blocked': 1}

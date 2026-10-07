@@ -1,0 +1,48 @@
+==> checks [full] step=black
+Traceback (most recent call last):
+  File "C:\Users\֣����\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\scripts\checks.py", line 877, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "C:\Users\֣����\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\scripts\checks.py", line 873, in main
+    return run_plan(plan, timeout=args.timeout)
+  File "C:\Users\֣����\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\scripts\checks.py", line 755, in run_plan
+    code = runner(plan, step_timeout)
+  File "C:\Users\֣����\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\scripts\checks.py", line 626, in _run_tool_step
+    result = run_step(
+        _tool_command(step),
+    ...<3 lines>...
+        env=build_env(),
+    )
+  File "C:\Users\֣����\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\runtime\scripts\checks.py", line 226, in run_step
+    proc = subprocess.run(
+        argv,
+    ...<7 lines>...
+        errors="replace",
+    )
+  File "C:\Miniconda\Lib\subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\subprocess.py", line 1550, in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\֣����\Projects\invest-quick-scan\runs\qa-net01-intake-full-2026-10-07\guard\sitecustomize.py", line 27, in audit
+    if Path(executable).resolve() != Path(sys.executable).resolve():
+       ~~~~^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\pathlib\_local.py", line 503, in __init__
+    super().__init__(*args)
+    ~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Miniconda\Lib\pathlib\_local.py", line 132, in __init__
+    raise TypeError(
+    ...<2 lines>...
+        f"not {type(path).__name__!r}")
+TypeError: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'NoneType'

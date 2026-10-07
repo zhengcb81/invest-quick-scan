@@ -1,0 +1,57 @@
+{
+  "schema_version": "qa_net01_intake/1.0.0",
+  "producer_commit": "d160d80dc2340c6fb6cef0453b289b5210cf2cb6",
+  "declared_code_commit": "610de6a4c66ca86f835775fee1e986c012b8c888",
+  "status": "needs_revision",
+  "shape_cli": "valid; shape_and_declared_scope_only",
+  "artifact_hashes_verified": 36,
+  "exported_allowlist_count": 67,
+  "owner_tests": {
+    "collected": 27,
+    "first_run_passed": 26,
+    "first_run_environment_failure": 1,
+    "environment_failure": "inert public policy sample initially omitted from export",
+    "affected_test_rerun_passed": 1,
+    "product_failure_count": 0,
+    "whole_repo_suite_repeated": false
+  },
+  "acceptance_cases": {
+    "total": 6,
+    "passed": 1,
+    "failed": 5,
+    "errors": 0,
+    "wall_seconds": 4.81,
+    "failed_names": [
+      "test_admitted_external_mode_must_not_silently_send_native",
+      "test_changed_prompt_waits_for_uncertain_prior_attempt",
+      "test_new_module_keeps_old_answers_hydratable_with_fresh_output",
+      "test_completed_generation_two_restarts_without_reverting_to_one",
+      "test_fallback_actual_model_is_not_lost_at_checkpoint"
+    ],
+    "positive": "test_actual_not_applicable_answer_is_not_redispatched",
+    "fallback_scope": "qualified alternate model receipt at real lifecycle/store boundary; not a full two-route HTTP cascade"
+  },
+  "network": {
+    "real_http": 0,
+    "search": 0,
+    "paid": 0,
+    "credentials_loaded": false,
+    "http_boundary": "owner mock; synthetic fixture key only",
+    "guard_canaries": {
+      "outside_write_blocked": 1,
+      "dns_blocked": 1
+    },
+    "outside_write_except_canary": 0
+  },
+  "source_semantics_modified": false,
+  "original_q13_fixture_adjustments": "Versioned question paths avoid pre-existing in-process file-cache interference; only newly dispatched IQS03 HTTP fixture returns IQS03.",
+  "environment_errors": [
+    "pytest default devnull logging denied by own-root guard: fixed explicit owned logfile",
+    "Tee lacked isatty: delegated stream attributes",
+    "Windows extended drive path cleanup spelling rejected: normalize drive spelling before resolved-root check"
+  ],
+  "existing_isolation_incident": "Owner reported shared TEMP mtime-based removals. No assertion of no collateral loss; not reproduced by intake.",
+  "cleanup": "pending; remove only verified own intake run after evidence archive",
+  "case_sha256": "dde1dfd7efe910d6814c01869c0505f3f230db0a0363759047339532c70263f8",
+  "guard_sha256": "9151aabdc484a2a17c121f3017b5f17b5cd126e2a28aa7b3f2a1649c32aa47bb"
+}

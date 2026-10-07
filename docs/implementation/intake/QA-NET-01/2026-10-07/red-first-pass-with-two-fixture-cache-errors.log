@@ -1,0 +1,465 @@
+FFFFF.                                                                   [100%]
+================================== FAILURES ===================================
+__________ test_admitted_external_mode_must_not_silently_send_native __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000029BAA3C7BB0>
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root/test_admitted_external_mode_mu0')
+capsys = <_pytest.capture.CaptureFixture object at 0x0000029BA8734830>
+
+    def test_admitted_external_mode_must_not_silently_send_native(monkeypatch, tmp_path, capsys):
+        files = CLI._setup(tmp_path, with_authority=False)
+        policy = tmp_path / "external.json"
+        policy.write_text(json.dumps(CLI._search_policy()), encoding="utf-8")
+        monkeypatch.setenv("BRAVE_API_KEY", "offline-fixture-key")
+        code, session = CLI._run(monkeypatch, tmp_path, files, manifest=False,
+                                 with_authority=False, extra=["--search-policy", str(policy)])
+        captured = capsys.readouterr()
+>       assert session.post.call_count == 0, "External adapter absent: native HTTP must remain 0"
+E       AssertionError: External adapter absent: native HTTP must remain 0
+E       assert 2 == 0
+E        +  where 2 = <Mock name='mock.get_sync_session().post' id='2867599530640'>.call_count
+E        +    where <Mock name='mock.get_sync_session().post' id='2867599530640'> = <Mock name='mock.get_sync_session()' id='2867599533328'>.post
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\QA-NET-01\acceptance_cases.py:33: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_admitted_external_mode_mu0\questions.json
+INFO - 成功从JSON配置加载 2 个问题
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 2 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_admitted_external_mode_mu0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_admitted_external_mode_mu0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: actual-fixture-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 2 个问题
+INFO - LLM处理问题: 问题 IQS_01 的题面...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - Q07 检查点已存（IQS_01）
+WARNING - C06 封存阻断（WORK_9f90364834dc41199378370939137ca9）：c06 authority is not configured
+INFO - Q10 检查点落定 → blocked（WORK_9f90364834dc41199378370939137ca9）
+INFO - [1/2] 处理成功
+INFO - LLM处理问题: 问题 IQS_02 的题面...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - Q07 检查点已存（IQS_02）
+WARNING - C06 封存阻断（WORK_5e2e80262583458d90d82975b2e91313）：c06 authority is not configured
+INFO - Q10 检查点落定 → blocked（WORK_5e2e80262583458d90d82975b2e91313）
+INFO - [2/2] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_admitted_external_mode_mu0\result.json
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1018 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1020 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1021 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_admitted_external_mode_mu0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 2 个问题
+WARNING  src.runners.llm_runner:llm_runner.py:1171 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1176 
+成功加载 2 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1177 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_admitted_external_mode_mu0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1178 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_admitted_external_mode_mu0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: openai, model: actual-fixture-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:104 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:181 开始批量处理 2 个问题
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 问题 IQS_01 的题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+INFO     src.runners.llm_runner:llm_runner.py:468 Q07 检查点已存（IQS_01）
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:70 C06 封存阻断（WORK_9f90364834dc41199378370939137ca9）：c06 authority is not configured
+INFO     src.runners.llm_runner:llm_runner.py:373 Q10 检查点落定 → blocked（WORK_9f90364834dc41199378370939137ca9）
+INFO     src.core.qa_engine:qa_engine.py:288 [1/2] 处理成功
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 问题 IQS_02 的题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+INFO     src.runners.llm_runner:llm_runner.py:468 Q07 检查点已存（IQS_02）
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:70 C06 封存阻断（WORK_5e2e80262583458d90d82975b2e91313）：c06 authority is not configured
+INFO     src.runners.llm_runner:llm_runner.py:373 Q10 检查点落定 → blocked（WORK_5e2e80262583458d90d82975b2e91313）
+INFO     src.core.qa_engine:qa_engine.py:288 [2/2] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:358 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_admitted_external_mode_mu0\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1472 
+Question processing completed.
+____________ test_changed_prompt_waits_for_uncertain_prior_attempt ____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root/test_changed_prompt_waits_for_0')
+
+    def test_changed_prompt_waits_for_uncertain_prior_attempt(tmp_path):
+        from src.core.models import Question
+        from src.utils.quick_scan_work_store import QuickScanWorkStore
+        from src.utils.quick_scan_question_manifest import load_question_manifest, plan_manifest_dispatch
+        store = QuickScanWorkStore(tmp_path / "work.sqlite")
+        lifecycle = MANIFEST._lifecycle(store)
+        question = Question(text="旧版题面", question_id="IQS_01")
+        handle = lifecycle.before_question(question)
+        assert handle["claimed"] is True
+        store.record_attempt_outcome(handle["work_item_id"], handle["lease"],
+                                     handle["attempt_id"], outcome="unknown")
+        doc = MANIFEST._manifest(["IQS_01"], prompts={"IQS_01": "新版题面"})
+        loaded = load_question_manifest(MANIFEST._write_manifest(tmp_path, doc))
+        plan = plan_manifest_dispatch(loaded, store, entity_id=MANIFEST.UUID_ENTITY,
+                                     identity_snapshot_sha256=MANIFEST.IDENTITY["identity_snapshot_sha256"],
+                                     bindings=MANIFEST._bindings(loaded))
+>       assert plan["model_calls_planned"] == 0, "Uncertain old attempt must reconcile before new generation"
+E       AssertionError: Uncertain old attempt must reconcile before new generation
+E       assert 1 == 0
+
+..\..\..\docs\implementation\reviews\QA-NET-01\acceptance_cases.py:52: AssertionError
+_______ test_new_module_keeps_old_answers_hydratable_with_fresh_output ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000029BAA2A83E0>
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root/test_new_module_keeps_old_answ0')
+capsys = <_pytest.capture.CaptureFixture object at 0x0000029BAA29DBD0>
+
+    def test_new_module_keeps_old_answers_hydratable_with_fresh_output(monkeypatch, tmp_path, capsys):
+        original = [dict(q) for q in CLI.QUESTIONS]
+        files = CLI._setup(tmp_path)
+        code, cold = CLI._run(monkeypatch, tmp_path, files)
+        capsys.readouterr()
+        assert code == 0 and cold.post.call_count == 2
+        monkeypatch.setattr(CLI, "QUESTIONS", original + [{"question_id": "IQS_03", "text": "新增模块题面"}])
+        files = CLI._setup(tmp_path)
+        files["output"] = tmp_path / "new-module-output.json"
+        code, warm = CLI._run(monkeypatch, tmp_path, files)
+        captured = capsys.readouterr()
+>       assert CLI._plans(captured.out)[-1]["counts"] == {"dispatch": 1, "reuse": 2}
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\QA-NET-01\acceptance_cases.py:66: IndexError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\questions.json
+INFO - 成功从JSON配置加载 2 个问题
+INFO - 冻结问卷已校验（2 题，manifest 22f08d19f1d19db8）
+INFO - C06 权威文档已加载（b7409f994124d02c）
+INFO - 
+成功加载 2 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: actual-fixture-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 2 个问题
+INFO - LLM处理问题: 问题 IQS_01 的题面...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - Q07 检查点已存（IQS_01）
+INFO - C06 包已封存（WORK_c6a14cd3aaa74e2a8d0056fc2f22314b）→ pkg_c8ddde92f2e9d87c49e533c00fc34b507e34afa89c087a9f5205e354c45cf5e0
+INFO - Q10 检查点落定 → sealed（WORK_c6a14cd3aaa74e2a8d0056fc2f22314b）
+INFO - [1/2] 处理成功
+INFO - LLM处理问题: 问题 IQS_02 的题面...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - Q07 检查点已存（IQS_02）
+INFO - C06 包已封存（WORK_44190602cf8a41df901cbbfeca0889dd）→ pkg_369f0682bea47125a92c8f3076cbb97704f240b2413ed5f04fe367411dee038f
+INFO - Q10 检查点落定 → sealed（WORK_44190602cf8a41df901cbbfeca0889dd）
+INFO - [2/2] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\result.json
+INFO - 
+Question processing completed.
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\questions.json
+INFO - 成功从JSON配置加载 2 个问题
+ERROR - 运行失败: manifest_question_set_mismatch: expected=3 observed=2
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\runners\llm_runner.py", line 1022, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\runners\llm_runner.py", line 1131, in _run_single_company
+    bind_manifest_to_questions(manifest, cast(List[Question], questions))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\utils\quick_scan_question_manifest.py", line 190, in bind_manifest_to_questions
+    raise QuestionManifestRejected(
+    ...<2 lines>...
+    )
+src.utils.quick_scan_question_manifest.QuestionManifestRejected: manifest_question_set_mismatch: expected=3 observed=2
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1018 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1020 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1021 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 2 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1132 冻结问卷已校验（2 题，manifest 22f08d19f1d19db8）
+INFO     src.runners.llm_runner:llm_runner.py:1169 C06 权威文档已加载（b7409f994124d02c）
+INFO     src.runners.llm_runner:llm_runner.py:1176 
+成功加载 2 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1177 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1178 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: openai, model: actual-fixture-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:104 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:181 开始批量处理 2 个问题
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 问题 IQS_01 的题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+INFO     src.runners.llm_runner:llm_runner.py:468 Q07 检查点已存（IQS_01）
+INFO     src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:91 C06 包已封存（WORK_c6a14cd3aaa74e2a8d0056fc2f22314b）→ pkg_c8ddde92f2e9d87c49e533c00fc34b507e34afa89c087a9f5205e354c45cf5e0
+INFO     src.runners.llm_runner:llm_runner.py:373 Q10 检查点落定 → sealed（WORK_c6a14cd3aaa74e2a8d0056fc2f22314b）
+INFO     src.core.qa_engine:qa_engine.py:288 [1/2] 处理成功
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 问题 IQS_02 的题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+INFO     src.runners.llm_runner:llm_runner.py:468 Q07 检查点已存（IQS_02）
+INFO     src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:91 C06 包已封存（WORK_44190602cf8a41df901cbbfeca0889dd）→ pkg_369f0682bea47125a92c8f3076cbb97704f240b2413ed5f04fe367411dee038f
+INFO     src.runners.llm_runner:llm_runner.py:373 Q10 检查点落定 → sealed（WORK_44190602cf8a41df901cbbfeca0889dd）
+INFO     src.core.qa_engine:qa_engine.py:288 [2/2] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:358 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1472 
+Question processing completed.
+INFO     src.runners.llm_runner:llm_runner.py:1018 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1020 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1021 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_new_module_keeps_old_answ0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 2 个问题
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: manifest_question_set_mismatch: expected=3 observed=2
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\runners\llm_runner.py", line 1022, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\runners\llm_runner.py", line 1131, in _run_single_company
+    bind_manifest_to_questions(manifest, cast(List[Question], questions))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\utils\quick_scan_question_manifest.py", line 190, in bind_manifest_to_questions
+    raise QuestionManifestRejected(
+    ...<2 lines>...
+    )
+src.utils.quick_scan_question_manifest.QuestionManifestRejected: manifest_question_set_mismatch: expected=3 observed=2
+_______ test_completed_generation_two_restarts_without_reverting_to_one _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000029BAA3179B0>
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root/test_completed_generation_two_0')
+capsys = <_pytest.capture.CaptureFixture object at 0x0000029BAA29CE10>
+
+    def test_completed_generation_two_restarts_without_reverting_to_one(monkeypatch, tmp_path, capsys):
+        monkeypatch.setattr(CLI, "QUESTIONS", [{"question_id": "IQS_01", "text": "第一版题面"}])
+        files = CLI._setup(tmp_path)
+        code, first = CLI._run(monkeypatch, tmp_path, files)
+        capsys.readouterr()
+        assert code == 0 and first.post.call_count == 1
+        monkeypatch.setattr(CLI, "QUESTIONS", [{"question_id": "IQS_01", "text": "第二版题面"}])
+        files = CLI._setup(tmp_path)
+        files["output"] = tmp_path / "generation-two.json"
+        code, refreshed = CLI._run(monkeypatch, tmp_path, files)
+        captured = capsys.readouterr()
+>       assert CLI._plans(captured.out)[-1]["questions"][0]["generation"] == 2
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\QA-NET-01\acceptance_cases.py:83: IndexError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 287465d632574309）
+INFO - C06 权威文档已加载（b7409f994124d02c）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: actual-fixture-model, api_key: ***
+INFO - QAEngine 初始化完成（搜索提供者: openai）
+INFO - 开始批量处理 1 个问题
+INFO - LLM处理问题: 第一版题面...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - Q07 检查点已存（IQS_01）
+INFO - C06 包已封存（WORK_38298b3a44704fecac81806e68546635）→ pkg_c8c91de39d464ed9fe0d7f57fe64a9b17b7c871ac57b5d591388ec4b4903ac5c
+INFO - Q10 检查点落定 → sealed（WORK_38298b3a44704fecac81806e68546635）
+INFO - [1/1] 处理成功
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\result.json
+INFO - 
+Question processing completed.
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+ERROR - 运行失败: manifest_prompt_hash_mismatch: IQS_01
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\runners\llm_runner.py", line 1022, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\runners\llm_runner.py", line 1131, in _run_single_company
+    bind_manifest_to_questions(manifest, cast(List[Question], questions))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\utils\quick_scan_question_manifest.py", line 196, in bind_manifest_to_questions
+    raise QuestionManifestRejected("manifest_prompt_hash_mismatch", frozen["id"])
+src.utils.quick_scan_question_manifest.QuestionManifestRejected: manifest_prompt_hash_mismatch: IQS_01
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1018 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1020 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1021 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1132 冻结问卷已校验（1 题，manifest 287465d632574309）
+INFO     src.runners.llm_runner:llm_runner.py:1169 C06 权威文档已加载（b7409f994124d02c）
+INFO     src.runners.llm_runner:llm_runner.py:1176 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1177 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1178 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:124 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:127 LLMProvider initialized (provider: openai, model: actual-fixture-model, api_key: offl...-key)
+INFO     src.core.qa_engine:qa_engine.py:104 QAEngine 初始化完成（搜索提供者: openai）
+INFO     src.core.qa_engine:qa_engine.py:181 开始批量处理 1 个问题
+INFO     src.providers.llm_provider:llm_provider.py:72 LLM处理问题: 第一版题面...
+INFO     src.providers.llm_provider:llm_provider.py:238 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 8/10
+INFO     src.providers.llm_provider:llm_provider.py:128 LLM答案生成完成 (状态: scored)
+INFO     src.runners.llm_runner:llm_runner.py:468 Q07 检查点已存（IQS_01）
+INFO     src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:91 C06 包已封存（WORK_38298b3a44704fecac81806e68546635）→ pkg_c8c91de39d464ed9fe0d7f57fe64a9b17b7c871ac57b5d591388ec4b4903ac5c
+INFO     src.runners.llm_runner:llm_runner.py:373 Q10 检查点落定 → sealed（WORK_38298b3a44704fecac81806e68546635）
+INFO     src.core.qa_engine:qa_engine.py:288 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:358 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1472 
+Question processing completed.
+INFO     src.runners.llm_runner:llm_runner.py:1018 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1020 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1021 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\pytest-root\test_completed_generation_two_0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: manifest_prompt_hash_mismatch: IQS_01
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\runners\llm_runner.py", line 1022, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\runners\llm_runner.py", line 1131, in _run_single_company
+    bind_manifest_to_questions(manifest, cast(List[Question], questions))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\qa-net01-intake-2026-10-07\runtime\src\utils\quick_scan_question_manifest.py", line 196, in bind_manifest_to_questions
+    raise QuestionManifestRejected("manifest_prompt_hash_mismatch", frozen["id"])
+src.utils.quick_scan_question_manifest.QuestionManifestRejected: manifest_prompt_hash_mismatch: IQS_01
+____________ test_fallback_actual_model_is_not_lost_at_checkpoint _____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-net01-intake-2026-10-07/pytest-root/test_fallback_actual_model_is_0')
+
+    def test_fallback_actual_model_is_not_lost_at_checkpoint(tmp_path):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore
+        store = QuickScanWorkStore(tmp_path / "work.sqlite")
+        authority = SEAL.load_c06_authority(SEAL._write_authority(tmp_path))
+        lifecycle = SEAL._lifecycle(store, authority=authority)
+        handle = lifecycle.before_question(SEAL._q("IQS_05"))
+        result = SEAL._result("IQS_05")
+        result.answer.metadata["actual_model"] = "fallback-fixture-model"
+        lifecycle.after_question(handle, result)
+        checkpoint = store.get_answer_checkpoint(handle["work_item_id"])
+>       assert checkpoint is not None, "Qualified fallback receipt must not be discarded as unknown"
+E       AssertionError: Qualified fallback receipt must not be discarded as unknown
+E       assert None is not None
+
+..\..\..\docs\implementation\reviews\QA-NET-01\acceptance_cases.py:104: AssertionError
+=========================== short test summary info ===========================
+FAILED ::test_admitted_external_mode_must_not_silently_send_native - Assertio...
+FAILED ::test_changed_prompt_waits_for_uncertain_prior_attempt - AssertionErr...
+FAILED ::test_new_module_keeps_old_answers_hydratable_with_fresh_output - Ind...
+FAILED ::test_completed_generation_two_restarts_without_reverting_to_one - In...
+FAILED ::test_fallback_actual_model_is_not_lost_at_checkpoint - AssertionErro...
+5 failed, 1 passed in 3.86s
+INTAKE_GUARD_COUNTS={'outside_write_blocked': 1, 'network_blocked': 1}
