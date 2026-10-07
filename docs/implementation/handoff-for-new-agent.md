@@ -150,3 +150,9 @@ single_next_action:
 - **门状态**：B01 phase-1 报告已有范围补充，但 B01 的预注册完整验收未完成。BENCH-01.A03 的数据结构部分通过；A05 未执行，其他 A01/A02/A04/A06/A07/A08/A09 未完整验收，BENCH-02 未运行。**G3 没有关闭**：其正式依赖为 L03 + W11，W11 已 verified，L03 等 owner 明确启动并处置 phase-1 局限；还须验收真实中断/租约/预留/备份恢复证据。
 - **当前下一步**：不重跑相同 live 矩阵补造历史来源；等待 owner 对 L03 试点的启动范围/预算明确放行，并按审查发现限定报告结论。未经明确启动前不发 L03 请求。
 - 本次复核环境快照：IQS `master@8143cd9bb7e0cc4224c684cd9fba948723bf1e6e`；StockQA `master@6a9ff13864ebb160d5c4ab3cf2f42155d9f4aa99`（既有状态摘要 hash `138279937e77405c5a1817f225ffcbb1e663807a8499fd87ae006ad135a0391c`）；StockWiki 观察到 `master@9f552a6741dd`、1 条状态项。所有外仓状态均只读保留。
+
+### 2026-10-07 后续：搜索接口与统一规范
+
+当前入口为[联网搜索与LLM统一规范](../../references/search-and-llm-playbook.md)、[实时能力/探针边界](../../references/search-policy.md)和[非执行参考模板](../../examples/search-and-llm-policy.template.json)。Z.ai REST/Streamable HTTP MCP已直连搜到结果；DeepSeek Responses旧别名重测仍无搜索事件，Anthropic兼容直连有搜索但max_uses1→3且未返回最终答案。准确回执在上述状态文档链接中；不能把它们当生产公开CLI验收。
+
+后续StockQA的外部adapter/工具续写在同一集成批次按规范测试表实现；既有预算、租约、检查点不重复造，C05§1.9.3结果不明先对账。模板不会被现有执行器读取，保持template_only/execution_enabled标记，不自行配置模型/引擎顺位、不用演示超时/预算当用户授权。集中做集成和既有大节点验证，不增加小节点审查。本次规范没有改变上方L03等待明确启动的边界，也未改外仓或正式库。

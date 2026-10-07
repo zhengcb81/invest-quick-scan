@@ -419,6 +419,8 @@ Status: complete_for_planning_only
 
 **DeepSeek接口复测（2026-10-07）**：按用户文章分别请求Responses与Anthropic Messages各1次。Responses完整回答无搜索事件，与现行官方ignored说明一致；Messages有真实关联搜索结果，但`max_uses=1`执行3次且无最终答案。已更新[提供商参考配置](examples/provider-connectivity-profiles.json)与搜索说明；后续StockQA接线必须处理工具结果→最终答案、真实搜索次数和来源验证，本次未改外仓/模型顺位，不关闭E2E或启动L03。
 
+**统一联网规范（2026-10-07）**：按用户要求新增[搜索与LLM使用规范](references/search-and-llm-playbook.md)及[不可执行参考模板](examples/search-and-llm-policy.template.json)。固定native/external/显式混合路径、证据context和分层成功、C05终态驱动重试/对账/切换、持久化接续/缓存、费用与时间边界及集成测试包；不改变既有schema/契约或增加小节点审查。后续StockQA adapter同批实现并验证外部搜索、工具续写及其故障恢复；本批仅文档/模板，不启动live/L03，不重复实现已完成预算/检查点模块。
+
 ### 历史执行状态（截至2026-09-30）
 
 - Q02首个提供商实现的任务级验收已在精确StockQA工作树快照通过：MiMo公开CLI真实搜索、LLM-02/LLM-11离线检查及同快照独立审查均已记录在`progress.md`和`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。旧任务回执已退役、验收目录为规格；不刷新receipt或改规格状态。该结果不关闭G1或跨仓链路。

@@ -1,0 +1,72 @@
+{
+  "template_version": "1.0.0",
+  "template_only": true,
+  "execution_enabled": false,
+  "runtime_owner": "StockQAbyLLM",
+  "purpose": "Fillable reference only. No current dispatcher consumes this template. Effective policy, retries and budgets remain owned by StockQA.",
+  "spec_reference": "../references/search-and-llm-playbook.md",
+  "existing_contract_reference": "../docs/implementation/contracts/providers-and-budget.md",
+  "provider_inventory_references": ["search-provider-inventory.json", "provider-connectivity-profiles.json"],
+  "stockqa_effective_model_policy_ref": null,
+  "selection": {
+    "mode": null,
+    "allowed_modes": ["native_only", "external_context", "explicit_hybrid"],
+    "external_search_priority": [],
+    "answer_model_priority_source": "existing_stockqa_model_policy",
+    "allow_same_primary_racing": false,
+    "hybrid_plan_reference": null
+  },
+  "retrieval": {
+    "query_plan_reference": null,
+    "max_external_routes_per_retrieval": 2,
+    "max_query_refinements_per_retrieval": 1,
+    "require_entity_and_as_of_binding": true,
+    "max_snippet_unicode_characters": 500,
+    "max_company_evidence_unicode_characters": 30000,
+    "max_in_memory_response_bytes": 1000000,
+    "max_json_unwrap_layers": 3,
+    "raw_response_persistence": false,
+    "final_context_must_be_question_relevant": true
+  },
+  "proposed_external_transport_defaults": {
+    "connect_timeout_seconds": 10,
+    "read_timeout_seconds": 60,
+    "logical_work_deadline_seconds": 240,
+    "run_deadline_seconds": null,
+    "max_attempts_per_retrieval": 3,
+    "backoff_base_seconds": 2,
+    "backoff_cap_seconds": 30,
+    "jitter": "full",
+    "respect_retry_after": true,
+    "retry_after_must_fit_deadline": true,
+    "retry_or_fallback_on_outcome_unknown": false,
+    "answer_model_retry_policy_source": "existing_stockqa_model_policy"
+  },
+  "budget": {
+    "source": "existing_stockqa_shared_budget",
+    "include_search_model_repair_probe_and_discovery_requests": true,
+    "unknown_cost_action": "hold_reservation_and_reconcile",
+    "reset_on_restart": false,
+    "native_search_cost_bound_verified": false,
+    "claim_hard_search_cost_guarantee_without_enforceable_bound": false
+  },
+  "cache": {
+    "search_ttl_seconds": null,
+    "empty_result_cooldown_seconds": null,
+    "allow_expired_evidence": false,
+    "reuse_answer_by_published_contract": true,
+    "mark_reused_search_as_new_execution": false
+  },
+  "recovery": {
+    "attempt_state_contract": "C05 section 1.9.3: outcome_unknown",
+    "persist_attempt_round_quota_group_and_deadline": true,
+    "half_open_probe_owners_per_quota_group": 1,
+    "repeat_completed_questions_on_restart": false,
+    "requery_on_outbox_ack_failure": false
+  },
+  "credential_policy": {
+    "references": "environment_variable_names_only",
+    "secret_values_included": false,
+    "persist_authenticated_mcp_url": false
+  }
+}

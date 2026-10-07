@@ -1870,3 +1870,12 @@
 - Anthropic Messages：deepseek-flash、thinking disabled、web_search_20250305、max_uses1、强制选择搜索工具；1.850秒、3个server_tool_use+3结果块，1个URL结果块按tool_use_id绑定，usage也报3搜索。stop_reason=tool_use、最终答案为空、来源是第三方而非要求的微软官方站点。结论=原生搜索可用，但未完成目标事实或CLI E2E；不可把max_uses当成本门。回执`validation-Q02-DeepSeek-anthropic-recheck-2026-10-07.json`。保留input_tokens7860/cache_read384/output119原字段，不补造total或货币费用。
 - 参考配置追加Responses旧别名复测profile、Anthropic追加新probe，保留历史记录；更新搜索规则/上游接入说明/PWF。生产StockQA白名单、用户模型顺位和L03启动边界均不改变，无新增小节点审查门。本批2个模型HTTP请求含3次服务端搜索；临时脚本仅stdin执行，无完整响应/推理内容留档。
 - 记录校验：提供商配置通过既有draft2020-12 schema和format校验；两份live回执的完成/搜索/额度/最终答案状态断言及2请求统计一致；13个本地文档链接有效；`git diff --check`退出0。不重复产品全套测试，既有`opencode.json`未动。
+
+## 2026-10-07 — 联网搜索与LLM统一使用规范
+
+- 用户要求整理全部搜索手段并强调robustness。总控复用现有探针/题目输出/模型预算契约；独立agent只读检查失败、缓存、预算边界，确认C05§1.9.3终态驱动准入，不能超时盲重试或正常缺证据换模型。
+- 新增`references/search-and-llm-playbook.md` v1.0.0，覆盖模式/路由准入、外部短证据context、分层成功、13类失败动作、deadline/退避、跨进程组冷却/接续、嵌套JSON/工具续写、三层缓存、实际费用及同批单元/集成/E2E案例。明确native搜索上限实测不可靠时不能宣称硬费用保障。
+- 新增非执行`examples/search-and-llm-policy.template.json`，保留StockQA有效策略唯一拥有者；mode/搜索顺位/有效policy引用及TTL等待填，禁止racing/结果不明重发/ACK丢失重调模型/重启清零，默认不启用或派发。示例参数是新外部adapter起点，不是厂商保证或当前生效配置。
+- SKILL、搜索状态、上游接入和模型策略接入规范；模型文档的结果不明文字对齐outcome_unknown，未修改冻结schema/契约、题库、外仓或计划case数量。更新PWF/交接，仍按大节点审查，本批未发API、读密钥或改真实库。
+- 编辑中首次apply_patch因同一文件hunk顺序失败，确认零写入后按正确顺序重做成功，没有部分交付或外仓状态变化。
+- 校验通过：参考模板JSON及非执行/不盲重发/不重置等关键标记有效；6个入口文档47个本地链接可解析；skill-creator `quick_validate.py`返回`Skill is valid!`；`git diff --check`退出0。未跑产品测试或实际API；测试包仅作为后续adapter集成验收要求，未宣称实现已通过。
