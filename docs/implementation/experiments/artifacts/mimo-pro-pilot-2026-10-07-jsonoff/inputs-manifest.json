@@ -1,0 +1,470 @@
+{
+  "run-manifest.json": {
+    "experiment": "mimo_paired_extension/2",
+    "kind": "jsonoff",
+    "created_at": "2026-10-07T20:02:32.993793+00:00",
+    "calls": 12,
+    "aggregate_caps": {
+      "model": 200,
+      "search": 24,
+      "usd": 8
+    },
+    "previous_budget": {
+      "model": 174,
+      "search": 24,
+      "usd": 2.704924
+    },
+    "parent_input_fingerprint": "7deca8a41e1778a8fe5d388fd6975c1d317098ce532d1c7082879bc519aba866",
+    "parent_ledgers": {
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\mimo-pro-pilot-2026-10-07-01": "1a4fa699de2b8d59d64b5467c9f6657a21e2e028cf6233edd72a54eae27f6b14",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\mimo-pro-pilot-2026-10-07-thinking-all": "4cecd6845ccc0d2bc7e9a63fc54c1e4a59652e0240d514c77f6de7ab293d22b8"
+    },
+    "parent_file_hashes": {
+      "questions.json": "e666680296e16acb0620a4395282dbc5b2f64955594820d98a6af9d285966036",
+      "companies.json": "2a359cbba16acd55187e41db6fcd8c272d6ee1582fa5c0be330be90410a0c7f2",
+      "runtime-manifest.json": "03789f465f409dfbd7f9b5941f7224b378c24a35ea48642e5373ce9aa33c3d17",
+      "evidence/catl-targeted.json": "0b942c1385cc6430cd8169acf635db82292f1eaa4d26c460068d7198d11ab8fa",
+      "evidence/cncb_h-targeted.json": "8ba8a9e6c658d1a8c9726abb114ed070fed2790459aa77ea2a38dfff52afd868",
+      "evidence/alphabet-targeted.json": "8f9ecfac6ebb3d92c6fed6c7ec3baf955485c9834318e890eee77001ca13feed"
+    },
+    "blocks": [
+      [
+        "catl",
+        "mimo_nojson",
+        "jsonoff"
+      ],
+      [
+        "catl",
+        "mimo_pro_nojson",
+        "jsonoff"
+      ],
+      [
+        "cncb_h",
+        "mimo_nojson",
+        "jsonoff"
+      ],
+      [
+        "cncb_h",
+        "mimo_pro_nojson",
+        "jsonoff"
+      ],
+      [
+        "alphabet",
+        "mimo_nojson",
+        "jsonoff"
+      ],
+      [
+        "alphabet",
+        "mimo_pro_nojson",
+        "jsonoff"
+      ]
+    ],
+    "policies": {
+      "mimo_nojson:jsonoff": null,
+      "mimo_pro_nojson:jsonoff": null
+    },
+    "reused_pro_on": "three original main thinking blocks; same cap/no temperature/exact frozen prompt; do not resend",
+    "reasoning_storage": "separate field discarded; final answer and usage only",
+    "accuracy": "source-support audit, not human gold/world factual correctness",
+    "source_revisions": {
+      "scripts/mimo_pilot_extension.py": "4536567e20674ddfbabd44831e23890eac26989b320efee61806a86aa41c0ffe",
+      "scripts/mimo_pro_pilot.py": "558a9693ed43fd492e1a1dce86580165fd7c9c11342fa9d36c3dd6d93a297add",
+      "scripts/batching_benchmark.py": "788823f6bc3a2102b4ac744f3e05268020cbb72cdcb13324f79961c41fc9f159",
+      "scripts/batching_benchmark_report.py": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb",
+      "scripts/batching_benchmark_archive.py": "adfdae340839aaa5cc5bc67910fe0cae6d184ec3e8e546cf99b5dee8f4fe8436"
+    }
+  },
+  "runtime-manifest.json": {
+    "commit": "6a9ff13864ebb160d5c4ab3cf2f42155d9f4aa99",
+    "files": {
+      "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/config/__init__.py": "4ce0ebf9480b52d0c46fca06cab9c3f35a09ee69a27065b1c93fe01e8ae7e343",
+      "src/config/settings.py": "69cc2221ec3d6b1489611801d757df86843ec926276a7c240906c8243a1d5855",
+      "src/providers/__init__.py": "8b9ff26d67901ac24337553a8bf58c5ead31155acbfda3699400894898e47a11",
+      "src/providers/llm_client.py": "4806aab0e95cb4f57ab787adcd6a98093e1eb880a1ee55983eaa3fb8562ce9d9",
+      "src/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/utils/logger.py": "ed81a6470007d71b0296255999033cd2f473215768c7cbec98eddfe8fc808868",
+      "src/utils/http_client.py": "15bf417fbdabb9e883a54db814ba1bde6a1512a677bc4ff2bd8cc94868a77323",
+      "src/utils/quick_scan_work_transport.py": "06488d574466602321876eec79fae88f43d81f0444f335ba55cb19150639be3b",
+      "src/utils/quick_scan_work_store.py": "2b5183229ef0ba28f00df72f8a5dbf77baa68b4e183e6952ae57f98e1e100df8"
+    }
+  },
+  "questions.json": [
+    {
+      "question_id": "IQS_01",
+      "text": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+      "anchors": {
+        "1": "产品价值不足，主要靠补贴或推销维持需求",
+        "5": "客户价值成立但可轻易替换、支付意愿一般",
+        "10": "客户价值清楚且有行为证据，付费与复购可持续"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_02",
+      "text": "现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？",
+      "anchors": {
+        "1": "每期收入都需高成本重新购买且可见性很低",
+        "5": "有稳定存量但仍需较多投入维持",
+        "10": "存量需求、履约与收款可预测且维护成本合理，不限订阅模式"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_04",
+      "text": "行业的供需和价值链分配，是否允许这家公司长期留下合理利润？",
+      "anchors": {
+        "1": "过剩竞争或强势交易方长期挤走公司利润",
+        "5": "能留下合理利润但容易被新增供给或交易方侵蚀",
+        "10": "供给纪律或差异价值使公司持续保留合理利润，不唯市场集中度"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_05",
+      "text": "公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？",
+      "anchors": {
+        "1": "缺少可验证优势，对手可迅速复制或低价替代",
+        "5": "有优势，但竞争者数年内可能追上",
+        "10": "优势机制和经济回报均有长期证据，复制代价显著且不依赖口号"
+      },
+      "rubric_version": "2.0.0"
+    },
+    {
+      "question_id": "IQS_08",
+      "text": "扩大规模或遇到需求波动时，公司能否保持交付质量与成本纪律？",
+      "anchors": {
+        "1": "规模或需求变化就导致质量和成本失控",
+        "5": "正常经营可靠，但扩张或波动时瓶颈明显",
+        "10": "多个扩张或压力周期证实质量、交付与成本可以同步受控"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_09",
+      "text": "组织能力是否足以延续，而不过度依赖少数关键个人？",
+      "anchors": {
+        "1": "核心个人流失即可破坏经营且没有接班能力",
+        "5": "岗位基本齐备，但关键能力仍依赖少数人",
+        "10": "人才与流程已形成可复制组织能力，关键人员更替有成功记录"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_10",
+      "text": "在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？",
+      "anchors": {
+        "1": "正常经营回报长期低于合理资金成本，或高回报主要来自失真分母与激进杠杆",
+        "5": "回报大致覆盖合理资金成本，优势有限",
+        "10": "可比且保守口径下长期赚取明显超额回报，非依赖周期峰值或少投必要资本"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_12",
+      "text": "资产、负债和利润的披露，是否足以可信地反映真实经济状况？",
+      "anchors": {
+        "1": "重大失真、隐性义务或审计疑虑未解决",
+        "5": "主要口径可解释，但调整与估计不确定性较多",
+        "10": "关键口径透明且资产、利润、现金相互印证，风险确认及时"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_13",
+      "text": "管理层和控制人是否有公平对待普通股东的实际记录？",
+      "anchors": {
+        "1": "存在重大侵占、利益输送或权利缺陷且未解决",
+        "5": "基本权益受保护，但制衡或交易公平性仍有疑问",
+        "10": "长期交易与治理记录证明普通股东能公平分享经济利益"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_16",
+      "text": "在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？",
+      "anchors": {
+        "1": "存在未落实资金覆盖的刚性缺口，可能被迫违约或严重摊薄",
+        "5": "正常情景可覆盖，压力情景依赖融资或资产出售",
+        "10": "保守压力下仍有落实的资金与资本缓冲，可履约并维护核心业务"
+      },
+      "rubric_version": "1.0.0"
+    }
+  ],
+  "companies.json": {
+    "catl": {
+      "name": "宁德时代",
+      "ticker": "300750",
+      "aliases": [
+        "宁德时代",
+        "CATL",
+        "Contemporary Amperex"
+      ],
+      "issuer_domains": [
+        "catl.com"
+      ],
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "canonical_name": "宁德时代新能源科技股份有限公司",
+      "identity_revision": 2,
+      "identity_state": "provisional",
+      "identity_file_sha256": "6929f0868243a271ccc35ab7b16005b11fe968f43f18213929d0651c3bf66db7"
+    },
+    "cncb_h": {
+      "name": "中信建投证券",
+      "ticker": "06066",
+      "aliases": [
+        "中信建投",
+        "CSC Financial",
+        "China Securities"
+      ],
+      "issuer_domains": [
+        "csc108.com"
+      ],
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "canonical_name": "中信建投证券股份有限公司",
+      "identity_revision": 2,
+      "identity_state": "provisional",
+      "identity_file_sha256": "884855433a431292da3e1dbf7382e757aab9dea41be8f321b464c79303ad908a"
+    },
+    "alphabet": {
+      "name": "Alphabet Inc.",
+      "ticker": "GOOGL",
+      "aliases": [
+        "Alphabet",
+        "Google"
+      ],
+      "issuer_domains": [
+        "abc.xyz",
+        "google.com"
+      ],
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "canonical_name": "Alphabet Inc.",
+      "identity_revision": 1,
+      "identity_state": "verified",
+      "identity_file_sha256": "5ad1a45e287c945680fc4c23db7b4dcf32959a6c0021daea4ba226ebd4365278"
+    }
+  },
+  "budget.json": {
+    "model_http_cap": 12,
+    "search_http_cap": 0,
+    "cash_usd_cap": 5.295076
+  },
+  "cache-resume-proof.json": {
+    "cache_hits": 3,
+    "new_http": 0,
+    "key_reads": 0,
+    "ledger_sha256": "28337432a368b77018b4c88949085d17c938ea8dce25c2778d3f8f8f604fe004",
+    "result_hashes_unchanged": true,
+    "scope": "valid cached chunks only; invalid/unknown are not replayed or declared cached"
+  },
+  "extension-input-lock.json": {
+    "files": {
+      "questions.json": "e666680296e16acb0620a4395282dbc5b2f64955594820d98a6af9d285966036",
+      "companies.json": "2a359cbba16acd55187e41db6fcd8c272d6ee1582fa5c0be330be90410a0c7f2",
+      "runtime-manifest.json": "03789f465f409dfbd7f9b5941f7224b378c24a35ea48642e5373ce9aa33c3d17",
+      "budget.json": "b0cf20ffbb99b50c6a44c80332e49f0ca47a1641bdcdd9416ee6e55cebd84457",
+      "registration.json": "cc5c7121d38cff36a1dafa6584c0c8ea8672c7910749aefdad66204628654a4e",
+      "run-manifest.json": "cc5c7121d38cff36a1dafa6584c0c8ea8672c7910749aefdad66204628654a4e",
+      "route-snapshot.json": "3c003ac672d664887dda33e53daedb785a1f1c1880d92a8ce6cba0816af73247",
+      "evidence/catl-targeted.json": "0b942c1385cc6430cd8169acf635db82292f1eaa4d26c460068d7198d11ab8fa",
+      "evidence/cncb_h-targeted.json": "8ba8a9e6c658d1a8c9726abb114ed070fed2790459aa77ea2a38dfff52afd868",
+      "evidence/alphabet-targeted.json": "8f9ecfac6ebb3d92c6fed6c7ec3baf955485c9834318e890eee77001ca13feed",
+      "runtime/src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runtime/src/config/__init__.py": "4ce0ebf9480b52d0c46fca06cab9c3f35a09ee69a27065b1c93fe01e8ae7e343",
+      "runtime/src/config/settings.py": "69cc2221ec3d6b1489611801d757df86843ec926276a7c240906c8243a1d5855",
+      "runtime/src/providers/__init__.py": "8b9ff26d67901ac24337553a8bf58c5ead31155acbfda3699400894898e47a11",
+      "runtime/src/providers/llm_client.py": "4806aab0e95cb4f57ab787adcd6a98093e1eb880a1ee55983eaa3fb8562ce9d9",
+      "runtime/src/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runtime/src/utils/logger.py": "ed81a6470007d71b0296255999033cd2f473215768c7cbec98eddfe8fc808868",
+      "runtime/src/utils/http_client.py": "15bf417fbdabb9e883a54db814ba1bde6a1512a677bc4ff2bd8cc94868a77323",
+      "runtime/src/utils/quick_scan_work_transport.py": "06488d574466602321876eec79fae88f43d81f0444f335ba55cb19150639be3b",
+      "runtime/src/utils/quick_scan_work_store.py": "2b5183229ef0ba28f00df72f8a5dbf77baa68b4e183e6952ae57f98e1e100df8",
+      "parent-source/mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+      "parent-source/batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+      "parent-source/batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+      "parent-source/batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+      "source/mimo_pilot_extension.py": "4536567e20674ddfbabd44831e23890eac26989b320efee61806a86aa41c0ffe",
+      "source/mimo_pro_pilot.py": "558a9693ed43fd492e1a1dce86580165fd7c9c11342fa9d36c3dd6d93a297add",
+      "source/batching_benchmark.py": "788823f6bc3a2102b4ac744f3e05268020cbb72cdcb13324f79961c41fc9f159",
+      "source/batching_benchmark_report.py": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb",
+      "source/batching_benchmark_archive.py": "adfdae340839aaa5cc5bc67910fe0cae6d184ec3e8e546cf99b5dee8f4fe8436"
+    },
+    "system_sha256": "941a35e7ed2c3e91789c795dee47e2ed00bc109cdefe150892cc33d9ab4863d8",
+    "routes_sha256": "baf328662c56fdabe625f2c886fda28645a8c1863cb725c2280a75ff1f33f016"
+  },
+  "registration.json": {
+    "experiment": "mimo_paired_extension/2",
+    "kind": "jsonoff",
+    "created_at": "2026-10-07T20:02:32.993793+00:00",
+    "calls": 12,
+    "aggregate_caps": {
+      "model": 200,
+      "search": 24,
+      "usd": 8
+    },
+    "previous_budget": {
+      "model": 174,
+      "search": 24,
+      "usd": 2.704924
+    },
+    "parent_input_fingerprint": "7deca8a41e1778a8fe5d388fd6975c1d317098ce532d1c7082879bc519aba866",
+    "parent_ledgers": {
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\mimo-pro-pilot-2026-10-07-01": "1a4fa699de2b8d59d64b5467c9f6657a21e2e028cf6233edd72a54eae27f6b14",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\mimo-pro-pilot-2026-10-07-thinking-all": "4cecd6845ccc0d2bc7e9a63fc54c1e4a59652e0240d514c77f6de7ab293d22b8"
+    },
+    "parent_file_hashes": {
+      "questions.json": "e666680296e16acb0620a4395282dbc5b2f64955594820d98a6af9d285966036",
+      "companies.json": "2a359cbba16acd55187e41db6fcd8c272d6ee1582fa5c0be330be90410a0c7f2",
+      "runtime-manifest.json": "03789f465f409dfbd7f9b5941f7224b378c24a35ea48642e5373ce9aa33c3d17",
+      "evidence/catl-targeted.json": "0b942c1385cc6430cd8169acf635db82292f1eaa4d26c460068d7198d11ab8fa",
+      "evidence/cncb_h-targeted.json": "8ba8a9e6c658d1a8c9726abb114ed070fed2790459aa77ea2a38dfff52afd868",
+      "evidence/alphabet-targeted.json": "8f9ecfac6ebb3d92c6fed6c7ec3baf955485c9834318e890eee77001ca13feed"
+    },
+    "blocks": [
+      [
+        "catl",
+        "mimo_nojson",
+        "jsonoff"
+      ],
+      [
+        "catl",
+        "mimo_pro_nojson",
+        "jsonoff"
+      ],
+      [
+        "cncb_h",
+        "mimo_nojson",
+        "jsonoff"
+      ],
+      [
+        "cncb_h",
+        "mimo_pro_nojson",
+        "jsonoff"
+      ],
+      [
+        "alphabet",
+        "mimo_nojson",
+        "jsonoff"
+      ],
+      [
+        "alphabet",
+        "mimo_pro_nojson",
+        "jsonoff"
+      ]
+    ],
+    "policies": {
+      "mimo_nojson:jsonoff": null,
+      "mimo_pro_nojson:jsonoff": null
+    },
+    "reused_pro_on": "three original main thinking blocks; same cap/no temperature/exact frozen prompt; do not resend",
+    "reasoning_storage": "separate field discarded; final answer and usage only",
+    "accuracy": "source-support audit, not human gold/world factual correctness",
+    "source_revisions": {
+      "scripts/mimo_pilot_extension.py": "4536567e20674ddfbabd44831e23890eac26989b320efee61806a86aa41c0ffe",
+      "scripts/mimo_pro_pilot.py": "558a9693ed43fd492e1a1dce86580165fd7c9c11342fa9d36c3dd6d93a297add",
+      "scripts/batching_benchmark.py": "788823f6bc3a2102b4ac744f3e05268020cbb72cdcb13324f79961c41fc9f159",
+      "scripts/batching_benchmark_report.py": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb",
+      "scripts/batching_benchmark_archive.py": "adfdae340839aaa5cc5bc67910fe0cae6d184ec3e8e546cf99b5dee8f4fe8436"
+    }
+  },
+  "initial-adaptive-registration.json": {
+    "experiment": "mimo_json_mode_ablation/1",
+    "created_at": "2026-10-07T19:23:56.114661+00:00",
+    "parent_input_lock": {
+      "files": {
+        "questions.json": "e666680296e16acb0620a4395282dbc5b2f64955594820d98a6af9d285966036",
+        "companies.json": "2a359cbba16acd55187e41db6fcd8c272d6ee1582fa5c0be330be90410a0c7f2",
+        "runtime-manifest.json": "03789f465f409dfbd7f9b5941f7224b378c24a35ea48642e5373ce9aa33c3d17",
+        "budget.json": "439333a4819a17fb6ef729032aec37ce78d9242c96a004fc4fbe45cc2cdc2541",
+        "pilot-registration.json": "b0fcf246a87d19b3183d2c676799582197828b4d7fba7d5ebc7306c28ccdd938",
+        "source/mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+        "source/batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+        "source/batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+        "source/batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+        "evidence/catl-targeted.json": "0b942c1385cc6430cd8169acf635db82292f1eaa4d26c460068d7198d11ab8fa",
+        "evidence/cncb_h-targeted.json": "8ba8a9e6c658d1a8c9726abb114ed070fed2790459aa77ea2a38dfff52afd868",
+        "evidence/alphabet-targeted.json": "8f9ecfac6ebb3d92c6fed6c7ec3baf955485c9834318e890eee77001ca13feed"
+      },
+      "system_sha256": "941a35e7ed2c3e91789c795dee47e2ed00bc109cdefe150892cc33d9ab4863d8",
+      "routes_sha256": "da0fbbe1f6bca3b1934336db48c40bf1a03afb64125d1cc76a90d9307c4aa430"
+    },
+    "sources": {
+      "scripts/mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+      "scripts/batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+      "scripts/batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+      "scripts/batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+      "scripts/mimo_json_mode_probe.py": "6dfa52a017c8e29bc6cb49dae3d398b1e3f902fbfc791cec37bb205c46e614bc"
+    },
+    "routes": {
+      "mimo_nojson": {
+        "model": "mimo-v2.6-flash",
+        "key_env": "MIMO_API_KEY",
+        "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+        "input_rate": 0.14,
+        "output_rate": 0.28,
+        "cache_rate": 0.0028
+      },
+      "mimo_pro_nojson": {
+        "model": "mimo-v2.6-pro",
+        "key_env": "MIMO_API_KEY",
+        "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+        "input_rate": 0.435,
+        "output_rate": 0.87,
+        "cache_rate": 0.0036
+      }
+    },
+    "registered_after": "13 primary blocks; missing/extra answer ids observed; no diagnostic answer seen",
+    "changed_variable": "omit response_format; same temperature0/thinking_disabled/output cap/identity/questions/context",
+    "scope": "adaptive, not preregistered primary matrix; no search or replacement of primary failures"
+  },
+  "route-snapshot.json": {
+    "minimax": {
+      "model": "MiniMax-M3",
+      "key_env": "MINIMAX_API_KEY",
+      "endpoint": "https://api.minimaxi.com/v1/chat/completions",
+      "input_rate": 0.6,
+      "output_rate": 2.4,
+      "cache_rate": 0.12
+    },
+    "mimo": {
+      "model": "mimo-v2.6-flash",
+      "key_env": "MIMO_API_KEY",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "input_rate": 0.14,
+      "output_rate": 0.28,
+      "cache_rate": 0.0028
+    },
+    "mimo_pro": {
+      "model": "mimo-v2.6-pro",
+      "key_env": "MIMO_API_KEY",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "input_rate": 0.435,
+      "output_rate": 0.87,
+      "cache_rate": 0.0036
+    },
+    "deepseek": {
+      "model": "deepseek-flash",
+      "key_env": "DEEPSEEK_API_KEY",
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "input_rate": 0.3,
+      "output_rate": 1.2,
+      "cache_rate": 0.006
+    },
+    "mimo_nojson": {
+      "model": "mimo-v2.6-flash",
+      "key_env": "MIMO_API_KEY",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "input_rate": 0.14,
+      "output_rate": 0.28,
+      "cache_rate": 0.0028
+    },
+    "mimo_pro_nojson": {
+      "model": "mimo-v2.6-pro",
+      "key_env": "MIMO_API_KEY",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "input_rate": 0.435,
+      "output_rate": 0.87,
+      "cache_rate": 0.0036
+    }
+  }
+}

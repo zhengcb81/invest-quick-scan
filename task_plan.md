@@ -411,7 +411,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**下一步**：先按Phase91[`跨仓完整观察整改卡`](docs/implementation/reviews/G3/cross-owner-remediation-2026-10-07.md)核实StockQA题库/Recipe/运行上下文的权威输入映射并报备精确拟改文件，再在已有StockQA全仓授权内以TDD完成Q10生产封包与历史兼容整改。原5+R1–R3/982项验收范围保留；新真实双公开CLI预检3fail/3pass证明producer缺必填观察元数据且独立扫描ID碰撞，不能直接称C06可导入。StockWiki六项整改仍等唯一writer选择，未授权不写它；TH/IN/G3/F05/L03暂缓，不重复收费实验或退役回执。整改完成后再集中联调完整包/ACK/投影与配套恢复，不因当前测试支架交付解锁下游。
+**下一步**：先完成用户新授权的Phase93 MiMo Pro三公司十题小实验（132模型/24搜索、保守USD5），记录同输入的完整性/耗时/价参考与来源支持边界，集中收尾后回到Phase92 Q10完整上下文、耐久封包及旧包兼容整改。原5+R1–R3/982项验收范围保留；新真实双公开CLI预检3fail/3pass证明producer缺必填观察元数据且独立扫描ID碰撞，不能直接称C06可导入。StockWiki六项整改仍等唯一writer选择，未授权不写它；TH/IN/G3/F05/L03暂缓，不刷新退役回执，不把本小实验当作L03启动。
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
@@ -1338,3 +1338,23 @@ Status: complete_for_offline_preflight_scope; G3_and_F05_not_closed
 - [x] 使用真实StockQA公开CLI和HTTP边界替身生成交换包，交真实StockWiki observation-import公开CLI；检查必填元数据、独立扫描ID、重放和零HTTP接续。
 - [x] 留存真实断言结果、原字节hash与环境清理证据，明确合成fixture/离线接口检查，不冒充真实owner golden、X09或G3。独立集中复核确认3 RED为两类产品阻断、3 GREEN仅支持各自断言，13/13归档一致、483件自有临时文件已清理。
 - [x] 更新PWF并整理本仓证据；精确commit/push实际结果在progress记录。StockWiki整改writer授权仍待用户回答，不写外仓、不刷新已退役工程回执。
+
+### Phase 92: Q10完整观察输入、耐久封包与旧包兼容整改
+Status: in_progress; G3_and_F05_not_closed
+- [ ] 对照IQS真实已发布manifest/standard_answers及StockQA当前checkpoint/outbox，冻结字段来源、版本扩展、旧包替代与精确拟写范围；每批写外仓前报备。
+- producer输入映射见`docs/implementation/reviews/G3/c06-authority-v2-input-map-2026-10-07.md`；IQS已有私有v2导出，StockQA首段9文件按write-scope已开发但尚未接生产authority/store。原组合79 tests/24 subtests GREEN；后来新增第45消费用例`embedded_answer`真实RED（1 failed/44 deselected），需先修复再继续接线，不能当成v2生产已可运行。Phase92自有run仍保留，不随Phase93清理或提交。
+- [ ] 先补代表完整生产要求的RED；复用IQS标准metadata公式，StockQA冻结上下文和标准答案后再封包，缺信息持久阻断且不重复收费。
+- [ ] 在隔离库验证同执行重放稳定、独立扫描ID唯一、旧封包/ACK只读兼容与补包替代链；两真实公开CLI完成接受/重放/ACK落定。
+- [ ] 同批一次集中全量门与独立审查，按真实结果更新PWF/提交/推送。StockWiki六项、真实owner golden/配套恢复及G3/F05仍独立未关闭。
+
+### Phase 93: 用户追加MiMo Pro的小规模打包对照
+Status: complete_for_experiment_scope; no_production_default_or_gate_change
+- [x] 复核旧实验结论：DeepSeek五题包90/90结构、配对速度1.56倍、费用约降35%，事实/评分仍未通过gold门；Flash大包缺题，M3也不稳定。
+- [x] 预注册三公司×固定10题×三模型×1/5/10题包、重复与Pro thinking独立臂；原132模型/24搜索终态、0未知，保守上界USD1.889780；107有效缓存块warm0HTTP/0key。原USD5预算不改。
+- [x] 复用StockQA十源码固定Git快照和B01 transport/账本/解析/缓存/归档；13新离线+28旧回归GREEN，后增父ledger/重新签锁仍错配反例7扩展测试GREEN。旧真实三模型归档RED→GREEN，旧工件不改；先持锁再归档且完整源索引。初轮默认sandbox TEMP权限4error已明确，改自有TemporaryDirectory。
+- [x] 用户要求四模型开启思考，扩展首发前登记42模型请求（Pro原6开启复用）及JSON-off12；合计186/24，统一cap200/USD8，父ledger冻结SHA扣预算，等输出上限10000。计划省略temperature，但终态审查确认48次实际继承0.7，开/关均同值；原账本不回写，实际参数provenance附加，未来explicit_only/2与cache协议修复。独立思考正文不显示/不落盘。
+- [x] 收费阶段完成：186模型/24搜索/0未知，上界USD2.877381（非账单）；四模型等cap开关和12次JSON-off均终态，133有效缓存块warm0HTTP/0key，53失败块保留。未改变生产默认或启动L03。
+- [x] 同批来源支持复核196+130=326行，join全匹配；191评分仅14有有限方向/区间依据，177不足，不能当准确率。原始严格与完整包装归一化分开，不以结构完整冒充事实gold。
+- [x] 三最小归档公开CLI重算通过，实际payload132/42/12全匹配，继承温度6/42/0；最终45独立离线测试GREEN（17新+28受影响回归）。严格预检后537个三个自有root临时文件清除，Phase92/共享TEMP/外仓不动；Windows默认编码/CIM拒绝均删除前停止并留档。
+- [x] 一次集中独立复核终态确认无新实质归档阻断，MP-05历史回放/未来参数修订/缓存/归档/清理范围通过；仅本实验，Phase92未完产品源/opencode.json不得暂存。精确commit/push实际回执在progress记录，完整结果见`docs/implementation/experiments/mimo-pro-results-2026-10-07.md`。
+- 单一下一动作：接续Phase92的embedded_answer真实RED及生产authority/store接线。StockWiki仍只读，TH/IN仍暂缓，G3/F05不因本实验关闭；不重复本轮已通过实验或收费矩阵。

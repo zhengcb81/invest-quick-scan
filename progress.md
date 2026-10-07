@@ -2028,3 +2028,43 @@
 - 集中独立复核已交付，报告SHA256 `8d86582388156b0a9ee2535cd9d5a629a3c04407f029951fc88b0a2ead5d6c8c`；确认3 RED=两类新阻断，3 GREEN范围准确，13/13归档hash/size、483件清理清单一致，未复跑测试/API/打开运行库。补精度边界：篡改GREEN断言exit2/hash错误，没有单独落库计数，不扩大其声称。
 - 最新用户询问TH/IN能否开工，本轮只读核对四源仓：QA09f68a6+原7untracked、SW04dfc519 clean、Theme3c9a49c clean、Industry4a80f998 clean；条件未变，G3/F05/真实查询golden仍缺，W11已交付。首次沙箱Git只读Permission denied，升级只读重核成功，无外仓写。
 - 上一个目标回合是状态答复（no progress），不是已确认进程的verified wait；现在完成Phase91集中复核收口/PWF更新并准备精确提交，然后推进已授权StockQA真实输入映射。根计划resolver无named选择，继续由总控维护根三文件；不刷新退役回执。
+
+- Phase91 **23精确文件已提交并推送**：`ab3270160a8f166b0ea1fd8e01b3d4acb6b12bf8`，既有origin/master由927fae1前进，无force/外仓提交。13证据项与4被审source/review的Git blob逐字节相同；仅新代码/文档whitespace检查通过，原失败日志不修剪。提交后仅原opencode.json保留。规划校验107卡/366case通过，product_tests_executed=false，不重复六预检或982全套。
+
+## 2026-10-07 — Phase92 完整观察输入映射与Q10整改
+- 结构检索CodeGraph仍未索引新Q10生命周期/adapter，只返回较早Question/receipt符号；用已知runner import/交接文件定位实际实现。两次猜测路径失败：`quick_scan_work_lifecycle.py`不存在（类在`src/runners/llm_runner.py`），StockQA无根AGENTS.md/requirements.txt（依赖在pyproject.toml）。PowerShell给rg传目录通配符报123，后改按实际目录/文件查询；均只读、无收费或生产写。
+- 比对真实Observation/answer schema后确认缺口不止首个消费者错误：compact checkpoint没有完整标准答案（置信度、证据title/claim、覆盖、期间等），adapter直接以URL列表造evidence缺必填字段。不得用low/current/机器日期/URL当标题的默认值凑完整；实际LLM已回答的标准内容可从description JSON保留，旧极简答案缺信息则继续持久阻断，不能自动重问。
+- IQS已有`standard_answers.build_observations`、标准prompt与发布manifest验证。完整元数据应由该拥有者的同一公式导出，StockQA只消费/冻结，不另创题义、field_id或method_id。旧authority1.0保留只读；v2显式携带发布、题目、scope/身份、执行批次与信息日期上下文。checkpoint/旧sealed包不原地改hash，历史补包另有版本/替代链，丢ACK仍0HTTP。
+
+- IQS `c06_authority.py`及12方法TDD测试新增，先stub RED实跑25fail/3容器pass（subtest父方法计数，不是3项功能通过）；第一次guard漏定向pytest.log，被根外写canary拒exit3，补日志到own root后实跑RED。metadata从既有`build_observations`抽出同一纯公式，无另建题义/method计算；新导出拒篡改、错版本、缺run/scope、重复JSON，绑定文件与canonical两类hash，不生成答案/执行/身份认证。
+- 第一GREEN为1fail/31pass/22subtests，唯一公开CLI原子link因Windows沙箱PermissionError；同guard沙箱外定向1pass，证明环境原因。增补合法重新compose的缺security范围、primary、重复JSON、发布故障后最终**35pass/24subtests/17.20s/exit0**，含原standard_answers回归，真实HTTP/费用/生产库0。不是新StockQA消费端或G3通过。
+- 对照schema时一次额外诊断误在guard外调用旧published_fixture，默认sandbox TEMP写入PermissionError且cleanup错误；不是本批35套件。随后只读/非递归精确处理该路径时host观察已不存在，没有删除共享TEMP任何项；不把此失误声称成完美隔离。改TEMP/TMP/TMPDIR及tempfile.tempdir后只在同一own root完成schema对照，两份当前schema与已发布资源canonical SHA完全一致。
+- 完整输入映射、私有v2接口及StockQA预计路径已写，消费端仍未写。旧compact缺字段不填默认、不重问；旧封包revision/head/ACK审计链按V6附加表设计。下一步先最终报备具体外仓测试路径后以同一实施批次接线，不额外设每helper审查门。
+
+## 2026-10-07 — 用户追加MiMo Pro试验
+- 官方确认mimo-v2.6-pro可使用普通MIMO_API_KEY/同按量endpoint，支持JSON object与thinking；海外每百万token未缓存输入0.435/缓存0.0036/输出0.87美元，国内3/0.025/6元。只作价参考，不声称控制台实扣。
+- 新预注册docs/implementation/experiments/mimo-pro-pilot-2026-10-07.md，三司十关键题、三模型同证据，Pro thinking另列；计划132HTTP（口头129漏3次，已更正）+24search，USD5 conservative cap。
+- 新6离线用例初轮4error来自默认sandbox TEMP写/cleanup拒绝，非产品错误；显式IQS自有TemporaryDirectory后6通过0.477s，原B01三套共28通过1.012s。未发任何HTTP/读key，旧Phase92改动完整保留。
+- 当前prepare成功3公司/10题、StockQA十源码只读导出至自有run；源仓0修改。准备新增搜索与模型测试，尚无结果；旧归档不动。
+- 24搜索全部HTTP完成/0未知，上界USD0.384，原候选CATL30/HK19/Alphabet25片。首模型前固定删除21个其他发行人/SEC访问拒绝/空导航/老融资/字典片段，实际选23/15/15片，分别14113/10349/12026 context字符，日期未填造。真实模型输入hash冻结7deca8a41e1778a8fe5d388fd6975c1d317098ce532d1c7082879bc519aba866。不是每题证据充分gold；只做模型/包装同输入对照。
+- 首批Pro Alphabet十题包HTTP200/stop但严格题目输出不合格；DeepSeek HK五题包10有效全unknown、CATL十题包10有效9scored。阶段还在运行，暂不据局部结果宣布赢家，不修模型内容或重发失败臂。
+
+- 主matrix117+repeat9+Pro thinking6全部终态，共132模型/24search，0未知，保守上界USD1.889780。主matrix181/270结构有效；Pro开启三个block5/10/0题。warm107有效块0HTTP/0key读取且ledgerSHA不变；未声称invalid块可缓存或事实正确。
+- 用户进一步要求全部模型开启对照；在扩展首发前登记42次（含Flash/DeepSeek/M3开关和Pro等上限关闭，复用Pro已有6开启），加原JSON-off12，预计186模型/24search，统一cap200/USD8。原main输入/预算/执行4源码不改；共用工具只在132与warm全部结束后修订。源支持属性由首模型前selection已实际注入，初审MP-04需核原selection而非猜作后附标签。
+- 集中TDD初轮扩展4error：3为有名未实现stub，1为真实旧三模型归档漂移反例；不是四产品测试失败。修订加入完整输入/父ledger/budget锁、等上限参数、持锁归档/最终索引、历史路由定价。新增13测试一次GREEN，另跑受影响旧B01套件，后再首发扩展；不设置小节点审查门、不推进G3/F05。
+
+- 本轮额外只读核实Phase92保留交付：StockQA首段9路径报备见phase92-stockqa-write-scope.md；IQS/消费首段组合原79passed/24subtests/20.52s。后来新增embedded_answer反例明确1failed/44deselected/0.41s，authority仍允许夹带答案，待下次主线先修；生产loader/store尚未接线。该run和未完产品源改动不属于Phase93归档/清理/提交范围，纠正计划中“尚未写消费首段”的过时状态。
+
+- 等上限四模型42请求/0未知/upper0.815144，warm23有效块0HTTP/0key且结果hash不变；JSON-off12请求/0未知/upper0.172457，warm3有效块同证据。全部合计186模型/24search/0未知/upper2.877381，未超新统一200/USD8，不再追加HTTP。主+扩展326合法答案分两个只读分区做同一次集中source-support审查，repeat只用于结构稳定性、不计事实gold。
+- 输出分离新增真实方向的synthetic canary：分开reasoning_content不入receipt/ledger，混入content的think/analysis前缀即拒绝，不正则抽JSON。最终新15独立离线用例（8 Pro+7extension，分批），旧B01受影响28回归；无新增helper审查门。一个PowerShell统计格式化语法错误已修，不影响原实验或计数。
+
+- 集中技术复核新增实质发现：旧observer未删StockQA初始temperature0.7；48次原Pro6+extension42实际温度0.7，账本parameters却写省略。独立按固定原源合并回放186/186请求SHA匹配，不能改账本、伪称不传温度或重跑收费洗结果。等cap四模型开关都实发0.7，仍可配对但要披露原生采样限制。新增transport-default单测真实1RED后，explicit_only/2只取model/messages+声明参数；cachekey升级/warm miss0HTTP/已归档run不许prepare。
+- 第一次修语义后旧28套件3error：两个旧mock第二次request漏model、一个手造warm key未包括新policy字段；按完整请求fixture与新key契约修正，保留该中间日志，未放宽真实传输。最终新17+旧28（45独立用例）GREEN；新归档回放验证原source实际默认温度，持久provenance附加实际参数，不改变原模型答案/ledger/hash。
+
+- 主/扩展/JSON-off真实最小归档分别16/19/19文件、132/42/12结果；公共归档报告三exit0，provenance全匹配、继承默认6/42/0。归档ledger统一JSON序列化，事件不变但文件SHA不等于原运行字节；原SHA留在warm/父ledger锁，二口径不混用。原执行源和未来修订源均保留，不能关闭source lock把旧run当新源码执行。
+- 两来源支持agent完成196/130不重叠行，review IDs/canonical答案hash/scored状态全核，join326/326；claims162/150/2/12，score_basis14支持/177不足/135不评分。不保存思考正文/来源页面；最终报告mimo-pro-results-2026-10-07.md明确三司样本、采样/并发/cache混杂、模型费用非实扣、unknown合法与非事实gold限制。
+- 清理预检初次Windows PowerShell读取UTF-8 JSON默认ANSI失败；显式Encoding UTF8后沙箱strict CIM仍权限拒，均在删除前停止。沙箱外只读dry-run验证537文件/归档hash/0未决/同名runner0/无link，再Apply精确删除三个本轮run的537文件。receipt逐路径/size/hash保存，三根已不存在，Phase92 c06-context根仍存在；未删共享TEMP或其他仓库。
+- 交接只读source join新增--check，重算与原retained join严格相等且不覆盖时间戳/原件，实际exit0留日志。收费总计186/24、上界USD2.877381、模型token参考USD0.392538（不含搜索、非实扣）、0未知；不再追加live、不为修温度重跑。一次集中技术终态签收进行中；随后精确提交本实验/PWF/交接，Phase92产品修改与opencode.json保留。
+
+- 同一集中技术复核终态已确认无新实质归档阻断：未来explicit_only/2/缓存/零发送守卫与45 GREEN日志核对、历史186回放和48次偏差保留；三归档51 retained项hash及集合正确（另3 manifests），537清理/Phase92保留范围确认。Phase93实验范围完成；G3/F05/生产默认仍不变。准备精确提交/推送本实验与PWF/接续文档，实际Git回执随后追加，不把未来能力未live验证称通过。
+- 终态技术报告SHA `7de4eb2a2b60b873d530c3b570e0a9d948fcadfe7e41b6570b8170e11f632d28`（26088B）；交付index `mimo-pro-result-index-2026-10-07.json`锁96文件（含54归档文件），SHA `c731bec5b16911bf38ec52817960800cffd072236a93faca40c60697c35ad83c`。公共join --check与结果8本地链接通过；不重复45已通过测试。提交范围从固定index+PWF/接续/.gitattrs/.gitignore/无key provider配置精确选，不含Phase92源或opencode.json。

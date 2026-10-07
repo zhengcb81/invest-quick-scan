@@ -1,11 +1,39 @@
 """Offline B01 provenance/archival helpers. No credentials or network."""
 import argparse
+import ast
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import batching_benchmark as b
 import batching_benchmark_report as report
+
+
+def frozen_transport_defaults(run):
+    """Verify original source, then reconstruct its literal temperature default.
+
+    This is post-run provenance, not a change to ledger or an on-wire capture.
+    New explicit_only/2 dispatches do not inherit this default.
+    """
+    manifest=json.loads((run/'runtime-manifest.json').read_text(encoding='utf-8'))
+    if manifest.get('commit')!=b.FROZEN_COMMIT or set(manifest.get('files',{}))!=set(b.RUNTIME_FILES):
+        raise ValueError('historical_transport_not_frozen')
+    for name,sha in manifest['files'].items():
+        if hashlib.sha256((run/'runtime'/name).read_bytes()).hexdigest()!=sha:
+            raise ValueError('historical_transport_source_drift')
+    settings=ast.parse((run/'runtime/src/config/settings.py').read_text(encoding='utf-8-sig'))
+    values=[node.value.value for node in settings.body if isinstance(node,ast.Assign) and
+            any(isinstance(target,ast.Name) and target.id=='TEMPERATURE' for target in node.targets) and
+            isinstance(node.value,ast.Constant) and type(node.value.value) in (int,float)]
+    client=ast.parse((run/'runtime/src/providers/llm_client.py').read_text(encoding='utf-8-sig'))
+    methods=[m for c in client.body if isinstance(c,ast.ClassDef) and c.name=='LLMClient'
+             for m in c.body if isinstance(m,ast.FunctionDef) and m.name=='send_request']
+    uses_default=any(isinstance(node,ast.Dict) and any(isinstance(k,ast.Constant) and k.value=='temperature'
+                 and isinstance(v,ast.Name) and v.id=='TEMPERATURE' for k,v in zip(node.keys,node.values))
+                 for method in methods for node in ast.walk(method))
+    if len(values)!=1 or not uses_default:raise ValueError('historical_transport_default_not_literal')
+    return {'temperature':values[0]}
 
 
 def replay_inputs(run):
@@ -36,15 +64,23 @@ def replay_inputs(run):
                     completion_check='输出前核对answers长度等于required_answer_count，并逐项核对以上全部题号；缺证据的题也必须有完整unknown项。')
             prompt=json.dumps(data,ensure_ascii=False,separators=(',',':'))
             if b.fingerprint(dict(system=system,prompt=prompt))!=event['prompt_sha256']:continue
-            body=dict(model=event['requested_model'],messages=[dict(role='system',content=system),dict(role='user',content=prompt)],**event['parameters'])
-            if (b.fingerprint(body)!=event['request_body_sha256']
-                    or b.fingerprint(evidence)!=event['evidence_sha256']
+            parameters=dict(event['parameters'])
+            body=dict(model=event['requested_model'],messages=[dict(role='system',content=system),dict(role='user',content=prompt)],**parameters)
+            inherited={}
+            if b.fingerprint(body)!=event['request_body_sha256'] and 'temperature' not in parameters and event.get('transport_parameter_policy')!='explicit_only/2':
+                inherited=frozen_transport_defaults(run)
+                parameters={**inherited,**parameters}
+                body=dict(model=event['requested_model'],messages=[dict(role='system',content=system),dict(role='user',content=prompt)],**parameters)
+            if (b.fingerprint(body)!=event['request_body_sha256'] or b.fingerprint(evidence)!=event['evidence_sha256']
                     or b.fingerprint(questions)!=event['questions_sha256']):
                 raise ValueError('actual_payload_binding_mismatch')
             matched=version;break
         if matched is None:raise ValueError('prompt_profile_replay_mismatch')
-        verified.append(dict(attempt_id=aid,version=matched,prompt_sha256=event['prompt_sha256'],body_sha256=event['request_body_sha256']))
+        verified.append(dict(attempt_id=aid,version=matched,prompt_sha256=event['prompt_sha256'],body_sha256=event['request_body_sha256'],
+                             actual_generation_parameters=parameters,reconstructed_client_defaults=inherited))
     return dict(model_attempts=len(verified),all_matched=True,verified=verified,
+        inherited_default_attempts=sum(bool(x['reconstructed_client_defaults']) for x in verified),
+        replay_scope='canonical JSON payload SHA from original frozen source; not raw HTTP packet capture; ledger unchanged',
         reconstructed_legacy_probe_profiles=True,initial_orchestrator_source_snapshot='not_saved; original hash only'),profiles
 
 
@@ -52,15 +88,16 @@ def write_jsonl(path,rows):
     path.write_text(''.join(json.dumps(x,ensure_ascii=False,separators=(',',':'),allow_nan=False)+'\n' for x in rows),encoding='utf-8')
 
 
-def archive(run,dest):
+def _archive_locked(run,dest):
     run=run.resolve();dest=dest.resolve()
     if not run.is_relative_to(b.ROOT/'runs') or run==b.ROOT/'runs':raise ValueError('not_owned_run')
     allowed=b.ROOT/'docs/implementation/experiments/artifacts'
     if not dest.is_relative_to(allowed) or dest==allowed:raise ValueError('not_owned_archive')
-    if (run/'orchestrator.lock').exists():raise ValueError('active_run')
     if dest.exists():raise ValueError('archive_already_exists')
     replay,profiles=replay_inputs(run)
     analysis=report.summarize(run)
+    route_file=run/'route-snapshot.json'
+    routes=json.loads(route_file.read_text(encoding='utf-8')) if route_file.exists() else b.ROUTES
     sources=[]
     # Source pointers/fragment hashes only: no source snippets in durable data.
     for p in sorted((run/'evidence').glob('*.json')):
@@ -89,10 +126,21 @@ def archive(run,dest):
                  'model-input-lock-v2.json','model-input-lock-v3.json','model-input-lock-v4.json','model-input-lock-v5.json',
                  'targeted-input-lock.json','scoped-input-lock.json','cache-resume-proof.json',
                  'blind-claim-private-mapping.json','blind-extension-private-mapping.json',
-                 'blind-candidate-private-mapping.json','answer-audit-summary.json'):
+                 'blind-candidate-private-mapping.json','answer-audit-summary.json',
+                 'pilot-input-lock.json','pilot-registration.json','extension-input-lock.json',
+                 'registration.json','initial-adaptive-registration.json','pilot-selection.json',
+                 'blind-primary-private-mapping.json','blind-extension-private-mapping.json',
+                 'final-statistics.json'):
         p=run/name
         if p.exists():metadata[name]=json.loads(p.read_text(encoding='utf-8'))
+    metadata['route-snapshot.json']=routes
     b.write_json(dest/'inputs-manifest.json',metadata)
+    for folder in ('source','parent-source'):
+        if (run/folder).exists():
+            for p in sorted((run/folder).glob('*.py')):
+                (dest/(folder+'-'+p.name)).write_bytes(p.read_bytes())
+    for name in ('matrix-console.log','repeat-console.log','thinking-console.log','run-console.log'):
+        if (run/name).exists():(dest/name).write_bytes((run/name).read_bytes())
     owned=[str(p.relative_to(run)) for p in sorted(run.rglob('*')) if p.is_file()]
     # Cleanup itself is manual, with absolute-root/path verification; no broad
     # auto-delete or external directory access here.
@@ -101,6 +149,22 @@ def archive(run,dest):
         retained_files={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(dest.iterdir())},
         owned_run_files=owned,budget=analysis['budget']))
     return dict(files=len(list(dest.iterdir())),results=len(results),verified_model_payloads=replay['model_attempts'],budget=analysis['budget'])
+
+
+def archive(run,dest,lock_owner_pid=None):
+    run=run.resolve();lock=run/'orchestrator.lock'
+    if not run.is_relative_to(b.ROOT/'runs') or run==b.ROOT/'runs':raise ValueError('not_owned_run')
+    fd=None
+    if lock_owner_pid is not None:
+        if lock_owner_pid!=os.getpid() or not lock.exists() or lock.read_text()!=str(os.getpid()):
+            raise ValueError('active_run_owner_mismatch')
+    else:
+        try:fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
+        except FileExistsError:raise ValueError('active_run') from None
+        os.write(fd,str(os.getpid()).encode())
+    try:return _archive_locked(run,dest)
+    finally:
+        if fd is not None:os.close(fd);lock.unlink()
 
 
 def main():

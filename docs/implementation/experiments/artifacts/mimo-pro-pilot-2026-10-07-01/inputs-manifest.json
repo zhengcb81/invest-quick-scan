@@ -1,0 +1,3674 @@
+{
+  "run-manifest.json": {
+    "experiment": "mimo_pro_pilot/1",
+    "created_at": "2026-10-07T19:14:59.715234+00:00",
+    "stockqa_commit": "6a9ff13864ebb160d5c4ab3cf2f42155d9f4aa99",
+    "files": {
+      "scripts/mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+      "scripts/batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+      "scripts/batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+      "scripts/batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b"
+    },
+    "scope": "three-company pilot; not L03/production/gate closure"
+  },
+  "runtime-manifest.json": {
+    "commit": "6a9ff13864ebb160d5c4ab3cf2f42155d9f4aa99",
+    "files": {
+      "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/config/__init__.py": "4ce0ebf9480b52d0c46fca06cab9c3f35a09ee69a27065b1c93fe01e8ae7e343",
+      "src/config/settings.py": "69cc2221ec3d6b1489611801d757df86843ec926276a7c240906c8243a1d5855",
+      "src/providers/__init__.py": "8b9ff26d67901ac24337553a8bf58c5ead31155acbfda3699400894898e47a11",
+      "src/providers/llm_client.py": "4806aab0e95cb4f57ab787adcd6a98093e1eb880a1ee55983eaa3fb8562ce9d9",
+      "src/utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/utils/logger.py": "ed81a6470007d71b0296255999033cd2f473215768c7cbec98eddfe8fc808868",
+      "src/utils/http_client.py": "15bf417fbdabb9e883a54db814ba1bde6a1512a677bc4ff2bd8cc94868a77323",
+      "src/utils/quick_scan_work_transport.py": "06488d574466602321876eec79fae88f43d81f0444f335ba55cb19150639be3b",
+      "src/utils/quick_scan_work_store.py": "2b5183229ef0ba28f00df72f8a5dbf77baa68b4e183e6952ae57f98e1e100df8"
+    }
+  },
+  "questions.json": [
+    {
+      "question_id": "IQS_01",
+      "text": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+      "anchors": {
+        "1": "产品价值不足，主要靠补贴或推销维持需求",
+        "5": "客户价值成立但可轻易替换、支付意愿一般",
+        "10": "客户价值清楚且有行为证据，付费与复购可持续"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_02",
+      "text": "现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？",
+      "anchors": {
+        "1": "每期收入都需高成本重新购买且可见性很低",
+        "5": "有稳定存量但仍需较多投入维持",
+        "10": "存量需求、履约与收款可预测且维护成本合理，不限订阅模式"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_04",
+      "text": "行业的供需和价值链分配，是否允许这家公司长期留下合理利润？",
+      "anchors": {
+        "1": "过剩竞争或强势交易方长期挤走公司利润",
+        "5": "能留下合理利润但容易被新增供给或交易方侵蚀",
+        "10": "供给纪律或差异价值使公司持续保留合理利润，不唯市场集中度"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_05",
+      "text": "公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？",
+      "anchors": {
+        "1": "缺少可验证优势，对手可迅速复制或低价替代",
+        "5": "有优势，但竞争者数年内可能追上",
+        "10": "优势机制和经济回报均有长期证据，复制代价显著且不依赖口号"
+      },
+      "rubric_version": "2.0.0"
+    },
+    {
+      "question_id": "IQS_08",
+      "text": "扩大规模或遇到需求波动时，公司能否保持交付质量与成本纪律？",
+      "anchors": {
+        "1": "规模或需求变化就导致质量和成本失控",
+        "5": "正常经营可靠，但扩张或波动时瓶颈明显",
+        "10": "多个扩张或压力周期证实质量、交付与成本可以同步受控"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_09",
+      "text": "组织能力是否足以延续，而不过度依赖少数关键个人？",
+      "anchors": {
+        "1": "核心个人流失即可破坏经营且没有接班能力",
+        "5": "岗位基本齐备，但关键能力仍依赖少数人",
+        "10": "人才与流程已形成可复制组织能力，关键人员更替有成功记录"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_10",
+      "text": "在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？",
+      "anchors": {
+        "1": "正常经营回报长期低于合理资金成本，或高回报主要来自失真分母与激进杠杆",
+        "5": "回报大致覆盖合理资金成本，优势有限",
+        "10": "可比且保守口径下长期赚取明显超额回报，非依赖周期峰值或少投必要资本"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_12",
+      "text": "资产、负债和利润的披露，是否足以可信地反映真实经济状况？",
+      "anchors": {
+        "1": "重大失真、隐性义务或审计疑虑未解决",
+        "5": "主要口径可解释，但调整与估计不确定性较多",
+        "10": "关键口径透明且资产、利润、现金相互印证，风险确认及时"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_13",
+      "text": "管理层和控制人是否有公平对待普通股东的实际记录？",
+      "anchors": {
+        "1": "存在重大侵占、利益输送或权利缺陷且未解决",
+        "5": "基本权益受保护，但制衡或交易公平性仍有疑问",
+        "10": "长期交易与治理记录证明普通股东能公平分享经济利益"
+      },
+      "rubric_version": "1.0.0"
+    },
+    {
+      "question_id": "IQS_16",
+      "text": "在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？",
+      "anchors": {
+        "1": "存在未落实资金覆盖的刚性缺口，可能被迫违约或严重摊薄",
+        "5": "正常情景可覆盖，压力情景依赖融资或资产出售",
+        "10": "保守压力下仍有落实的资金与资本缓冲，可履约并维护核心业务"
+      },
+      "rubric_version": "1.0.0"
+    }
+  ],
+  "companies.json": {
+    "catl": {
+      "name": "宁德时代",
+      "ticker": "300750",
+      "aliases": [
+        "宁德时代",
+        "CATL",
+        "Contemporary Amperex"
+      ],
+      "issuer_domains": [
+        "catl.com"
+      ],
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "canonical_name": "宁德时代新能源科技股份有限公司",
+      "identity_revision": 2,
+      "identity_state": "provisional",
+      "identity_file_sha256": "6929f0868243a271ccc35ab7b16005b11fe968f43f18213929d0651c3bf66db7"
+    },
+    "cncb_h": {
+      "name": "中信建投证券",
+      "ticker": "06066",
+      "aliases": [
+        "中信建投",
+        "CSC Financial",
+        "China Securities"
+      ],
+      "issuer_domains": [
+        "csc108.com"
+      ],
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "canonical_name": "中信建投证券股份有限公司",
+      "identity_revision": 2,
+      "identity_state": "provisional",
+      "identity_file_sha256": "884855433a431292da3e1dbf7382e757aab9dea41be8f321b464c79303ad908a"
+    },
+    "alphabet": {
+      "name": "Alphabet Inc.",
+      "ticker": "GOOGL",
+      "aliases": [
+        "Alphabet",
+        "Google"
+      ],
+      "issuer_domains": [
+        "abc.xyz",
+        "google.com"
+      ],
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "canonical_name": "Alphabet Inc.",
+      "identity_revision": 1,
+      "identity_state": "verified",
+      "identity_file_sha256": "5ad1a45e287c945680fc4c23db7b4dcf32959a6c0021daea4ba226ebd4365278"
+    }
+  },
+  "budget.json": {
+    "model_http_cap": 160,
+    "search_http_cap": 24,
+    "cash_usd_cap": 5,
+    "authorized_by": "user_mimo_pro_small_pilot_2026-10-07"
+  },
+  "model-input-lock-v5.json": {
+    "files": {
+      "questions.json": "e666680296e16acb0620a4395282dbc5b2f64955594820d98a6af9d285966036",
+      "companies.json": "2a359cbba16acd55187e41db6fcd8c272d6ee1582fa5c0be330be90410a0c7f2",
+      "runtime-manifest.json": "03789f465f409dfbd7f9b5941f7224b378c24a35ea48642e5373ce9aa33c3d17"
+    },
+    "system_sha256": "941a35e7ed2c3e91789c795dee47e2ed00bc109cdefe150892cc33d9ab4863d8",
+    "routes_sha256": "aad2b45f9c6547385f95a46c3e7f2401690f753d54a0bce6959735159c63b27c",
+    "generation": "v5;explicit_question_count_ids;valid_json_template;temperature0;thinking_disabled;max_output=1024+600*n;mimo_and_deepseek_json;strict_complete_envelope_normalization"
+  },
+  "targeted-input-lock.json": {
+    "file_sha256": "8ba8a9e6c658d1a8c9726abb114ed070fed2790459aa77ea2a38dfff52afd868",
+    "question_ids": [
+      "IQS_01",
+      "IQS_02",
+      "IQS_04",
+      "IQS_05",
+      "IQS_08",
+      "IQS_09",
+      "IQS_10",
+      "IQS_12",
+      "IQS_13",
+      "IQS_16"
+    ],
+    "retrieval": "six precise Chinese intents; primary domains; basic Brave/advanced Tavily; fragment windows",
+    "cumulative_unique_snippet_chars": 6416,
+    "created_at": "2026-10-07T19:17:12.634921+00:00",
+    "preselection_file_sha256": "efce63faf72d77d1262ac18a282043dcc28a76ee2a62da61c934a100a24d14a1",
+    "selection": "pre-model fixed exclusion; no answers seen"
+  },
+  "cache-resume-proof.json": {
+    "cache_hits": 107,
+    "new_http": 0,
+    "key_reads": 0,
+    "ledger_sha256": "1a4fa699de2b8d59d64b5467c9f6657a21e2e028cf6233edd72a54eae27f6b14"
+  },
+  "blind-extension-private-mapping.json": [
+    {
+      "review_id": "Raf0b4413a9d9aef3",
+      "answer_sha256": "f724d2ab9be83460f7fe9a35a73abb0d5918fea6040c700b1059e8bfdcd0d386",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_024ac5a97578470891f9b2883b55f5a6",
+      "arm": "paired-off.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rab3ac1c2ac04e315",
+      "answer_sha256": "1d2166f938f8cadc812f8af714c07636acf538c620ed55196855b96fef6be0dc",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_024ac5a97578470891f9b2883b55f5a6",
+      "arm": "paired-off.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "Ra0503fdecb4ea311",
+      "answer_sha256": "f0d60500119aebb4425dee1212fa54b17481e30ad5abdb114d25aa63e9514e65",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_024ac5a97578470891f9b2883b55f5a6",
+      "arm": "paired-off.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Rb7a5b23ba3a1e48b",
+      "answer_sha256": "75b33a6cd9d777837b4e09906e7032866652cf77f0e61ff2f41d4b5aef33184f",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_024ac5a97578470891f9b2883b55f5a6",
+      "arm": "paired-off.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Rbcc661c6cf02defa",
+      "answer_sha256": "b1a2ae5aa1d69ea9ede3770722be0d64000783a53418d8672e4a31c25bc30a51",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_024ac5a97578470891f9b2883b55f5a6",
+      "arm": "paired-off.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R4ad088a60e0854da",
+      "answer_sha256": "a619fde57f71f106135cac99317644b1cdb254d5bfc06b633ccaf54685b3581c",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_16e2514b9abe42d5bfce22c63de8bc25",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rf67534b78d5694fe",
+      "answer_sha256": "99b9fbe65d274bcabe326de075f72de446bf96faa2880dedab7d013114d4a067",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_16e2514b9abe42d5bfce22c63de8bc25",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "Rc68e194132772a4e",
+      "answer_sha256": "65b3737cc4a2e57c16474c81064a8c068df84b266e38b8543b1e1101dd45b845",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_16e2514b9abe42d5bfce22c63de8bc25",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Rcdf25ba97b7e3ac8",
+      "answer_sha256": "590c7f2262c0f29776b6d6e86e063e46c9748b709df147a2240522a3de05ca96",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_16e2514b9abe42d5bfce22c63de8bc25",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R0613e0e0858cdcc3",
+      "answer_sha256": "b9c2b36042c1cfa1f4259a4b5f957763fc884c9066cd9250c6204c8e4df628f6",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_16e2514b9abe42d5bfce22c63de8bc25",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R509acc99b8a0ae34",
+      "answer_sha256": "45d7e0df95c449bab30c0de9b0e2d214e1f85077758fd90125820444f90968d3",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_1d359ae7fa7b4ca2ab3a3ced12690e51",
+      "arm": "paired-off.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Re8f223179dd2a56f",
+      "answer_sha256": "bff9e6cc75b9dcb2ebf3be8791e7ae2dfbe77073e557886ee8989b91f5fa08c4",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_1d359ae7fa7b4ca2ab3a3ced12690e51",
+      "arm": "paired-off.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R13990291152848d9",
+      "answer_sha256": "79c5bac65e3f592acd10b2ea71e987f860333e8f2d078d1d80f40b120bb5ccea",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_1d359ae7fa7b4ca2ab3a3ced12690e51",
+      "arm": "paired-off.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R330cff208eb89f81",
+      "answer_sha256": "f8644ac6b064013a71ca3aa638eef5c2c8317496132b817a50d42baeafd194f8",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_1d359ae7fa7b4ca2ab3a3ced12690e51",
+      "arm": "paired-off.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R1a96b94abaff0d8f",
+      "answer_sha256": "b6f3c38e8393c1ede7bc803fb2ed7f9f86e94d7961ec4cee23d65d6a7b41e89e",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_1d359ae7fa7b4ca2ab3a3ced12690e51",
+      "arm": "paired-off.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Rf8df73095dc0f29e",
+      "answer_sha256": "3a9aa41a4be0da00358d0b915944a563bdfcb2775e41458da8ee4d5cb66b0237",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_242670ba5b4d4dc3be6a4e72006eea82",
+      "arm": "paired-on.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R30a5057312bcf529",
+      "answer_sha256": "15cb24a779b5d6646a19bef91bacedea29b1b7af4e07ecbe62f858882e700234",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_242670ba5b4d4dc3be6a4e72006eea82",
+      "arm": "paired-on.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "Refc87f4cb9127843",
+      "answer_sha256": "acef36cf94cbe781a9758dc5c3a149f46abb0b5e861956f575d4207b5476c093",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_242670ba5b4d4dc3be6a4e72006eea82",
+      "arm": "paired-on.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Re75c1dbd5bfae2e9",
+      "answer_sha256": "c6dd7cee30378f9fd6479b03e8a43fba627e52cb6bb1931a89103d2e8d2addbf",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_242670ba5b4d4dc3be6a4e72006eea82",
+      "arm": "paired-on.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R7292bb74c5f33611",
+      "answer_sha256": "326a69085d82b9ba07f125657c21128f6342b31429d3bdcf2f921da55773089f",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_242670ba5b4d4dc3be6a4e72006eea82",
+      "arm": "paired-on.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R477ef7ed21e817bd",
+      "answer_sha256": "192bda9d5fc520b518fadaf176ff458d9ca61f0421655292ea4afd74ade9cbdc",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_29076e18776b4873bcc3d372059d0fbc",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R4e9e62820a3559af",
+      "answer_sha256": "e9227ab9fad0224082863cd197b90c940ac81bb6dc82d22ad228194c08aad7d2",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_29076e18776b4873bcc3d372059d0fbc",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R098da19c02f6cc66",
+      "answer_sha256": "d38636e266ba159af77393974184c2bec9f10c0206ef9e646ac4ae9b7b23bc92",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_29076e18776b4873bcc3d372059d0fbc",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R0b365e8db729c294",
+      "answer_sha256": "d4e44bd9e93a489831eb9e116cbe32a12227a61f78e9c5cb0a63b01e22a626fc",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_29076e18776b4873bcc3d372059d0fbc",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Re22a8a63b8d64bcc",
+      "answer_sha256": "547226da628920f74ba2211d78b13a1ecae9bdeccb52d5b2635f925a029da1d7",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_29076e18776b4873bcc3d372059d0fbc",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R4d5f085ec06e4322",
+      "answer_sha256": "a74a58db8b8a7050f5b839093e3d05d34b6965a60cb4b9034bcb3aee8ede80cc",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_363b000c81fc4e81bcdc55f209b217a1",
+      "arm": "paired-on.catl.minimax.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R24331be957b1ed8b",
+      "answer_sha256": "30a3578300df26259d84d18dfa5760febbaf74dfb2a41e860587372ce31b2f04",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_363b000c81fc4e81bcdc55f209b217a1",
+      "arm": "paired-on.catl.minimax.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "Ra96948acae257b3f",
+      "answer_sha256": "f219de57481ce158e3d17c838a3793fefc60f3146c501256cb590f2cde416bac",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_363b000c81fc4e81bcdc55f209b217a1",
+      "arm": "paired-on.catl.minimax.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R55122741363d9777",
+      "answer_sha256": "a2a73b95a8073f18a6eacae115094742cc79b97e6d13d87d9139c744e12f42ca",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_363b000c81fc4e81bcdc55f209b217a1",
+      "arm": "paired-on.catl.minimax.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Rffdad3c40a5997aa",
+      "answer_sha256": "47c758a9aafbd7297e2043a1e6d435353f7f0d3f70a31a4145f23fa9f6cd408b",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_363b000c81fc4e81bcdc55f209b217a1",
+      "arm": "paired-on.catl.minimax.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Rab5f69ee22654e12",
+      "answer_sha256": "e98ff8c24920b2dd9e7f03d5986772e9608ba58a7146e4742f7400e2c8d589b9",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_4a204743663d407583891764e92dee77",
+      "arm": "paired-off.catl.minimax.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R59afbc532487838c",
+      "answer_sha256": "67fbfe559e0d442be458b8a6f3ac0e131c82884c81106797e6bcca4cd788d0ee",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_4a204743663d407583891764e92dee77",
+      "arm": "paired-off.catl.minimax.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R382f63e4d83e6555",
+      "answer_sha256": "e68bfcf3dcaff175cea412f638cbcd68d704120144f34f36eae1e32603b0fef3",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_4a204743663d407583891764e92dee77",
+      "arm": "paired-off.catl.minimax.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R51a6d9c8eeb4b8ee",
+      "answer_sha256": "79f8731ea3a286bbfcab7a101ebd2f3a63b2f5c32d7eba12b68746596831ad81",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_4a204743663d407583891764e92dee77",
+      "arm": "paired-off.catl.minimax.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Rd7cc7fbc64155aeb",
+      "answer_sha256": "a4f2c2eed1ac8832081094cf4e71b53590b087cd05619424739151731e49c92b",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_4a204743663d407583891764e92dee77",
+      "arm": "paired-off.catl.minimax.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R96ee29743eadb02d",
+      "answer_sha256": "046fe0260530db044fecf8b21526a994a79b06b7c149bfafc173c5ead2133620",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_5e0a5c15fdb64a09b0c3e7a55a293d9d",
+      "arm": "paired-off.catl.deepseek.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R594fc81722190e3f",
+      "answer_sha256": "fbdc095e4b3648446165556c28862d20b9be903da9c7b1d34580ee8e7af6e3a9",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_5e0a5c15fdb64a09b0c3e7a55a293d9d",
+      "arm": "paired-off.catl.deepseek.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rcb03f8392b9c30a6",
+      "answer_sha256": "5cfa13a3d398f301614d20b0295ab1d2aae3d6112ea856988e17d20254ee7b7d",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_5e0a5c15fdb64a09b0c3e7a55a293d9d",
+      "arm": "paired-off.catl.deepseek.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R48e83da5a6032298",
+      "answer_sha256": "6d93304e29e9f1b129039cbe31353b81b3933344d7415bed0a7c63b28701cf15",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_5e0a5c15fdb64a09b0c3e7a55a293d9d",
+      "arm": "paired-off.catl.deepseek.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R128feb4a8469491e",
+      "answer_sha256": "7542c38383fe4d75f7ffed22747190645e326e8faaf7e117ea2995be7b84bf7a",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_5e0a5c15fdb64a09b0c3e7a55a293d9d",
+      "arm": "paired-off.catl.deepseek.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R53c944bb71a86b3d",
+      "answer_sha256": "50d814c785041750ad4f5de44810030a70968b8c1429e2bc953d08ce29552914",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_60383c8855a9407a84c2a148639092f8",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rc312447ec1ff3934",
+      "answer_sha256": "dab43f8196c30aa3af168836991baea0228d3e067e1b7ffb9bc4e8561a5e3a0f",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_60383c8855a9407a84c2a148639092f8",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "Rbf52ce5dc31ada10",
+      "answer_sha256": "7cfa555033b464cc4cbcd84306b540defa3db0e4c2b11f35579dca2e2530d3b2",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_60383c8855a9407a84c2a148639092f8",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R51f15d65f1c53b03",
+      "answer_sha256": "da2b9443ea9d69f67553958e2e53c708b090b7b61504fa764ec885175b24d511",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_60383c8855a9407a84c2a148639092f8",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R3ad9695d3579124a",
+      "answer_sha256": "4bf520e41392f096320d1a3bcd53d7d683a650ec82a9c23d1ad2506f34d74fd6",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_60383c8855a9407a84c2a148639092f8",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R2c1f391f4d5917ea",
+      "answer_sha256": "4f5fe70d3cc6501c7afd0f105e01190dd5a0c98fa96af24e8905876ee30d1960",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_69e06677fe2342d5b355ef1add1c79b8",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R16b7017fc0cf4482",
+      "answer_sha256": "b1237a13125475edd169ab3c2b46f19847ab412054df2c0ac8ce065d9e951356",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_69e06677fe2342d5b355ef1add1c79b8",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R480b56470ecaee01",
+      "answer_sha256": "c92c90eeedba4e6e6918ffb1e9dad8c26fb33290edaf2f50f4770d6479e608b7",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_69e06677fe2342d5b355ef1add1c79b8",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R724778928aa90520",
+      "answer_sha256": "38c07e8862e717faa9a5f188a39b5df4f6d765d4e2042de7380da9d8553b7e9d",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_69e06677fe2342d5b355ef1add1c79b8",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R0abcffd3898e495a",
+      "answer_sha256": "2dd6afd5ed6ab30d4566d5c8716ece925efaa3678d8557e57ed85cfe525b7598",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_69e06677fe2342d5b355ef1add1c79b8",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R94079ac238c807d8",
+      "answer_sha256": "4231a4b28d1629a198ed92178f1adb6a6fd7ddc7709945f8bd9f237847bd2be7",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_79b2373ad75c4eeaa6b5b8ed8861ec5d",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R9aa5e69ea94fc3c5",
+      "answer_sha256": "ba1a99fc9c03100063515800f41e8a98edcbdc7204391c5445e45d0f098b2e96",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_79b2373ad75c4eeaa6b5b8ed8861ec5d",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R82a07e1aa73d0191",
+      "answer_sha256": "e67714d362c343d34bf7b51b0a63f292a14f996da3f4b1a8db464378af5c3c6d",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_79b2373ad75c4eeaa6b5b8ed8861ec5d",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R5a0ba275add34e57",
+      "answer_sha256": "2c0162d1417131fb3e66336476afb1759480d75db554411e00b4ee07726937eb",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_79b2373ad75c4eeaa6b5b8ed8861ec5d",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R81476b0e3775f6e3",
+      "answer_sha256": "e2bf6818b48cb5242337d16190c1d6ec59e63bd22c116f837940a91a8e2fed65",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_79b2373ad75c4eeaa6b5b8ed8861ec5d",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R9a32f3b9c182c611",
+      "answer_sha256": "a179c935c7c073927774b53d54835026cc3efbe07efd6ca7d8c3a3154bfab141",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_7cf8a9d9cdb746f68efc1dbf0f4401c7",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R1d9d66b9e2d696bc",
+      "answer_sha256": "24baddee1a0752c5a478de8bb6d2684107580af8da5a17764feb499aac330472",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_7cf8a9d9cdb746f68efc1dbf0f4401c7",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R9cb8594ecb130ea8",
+      "answer_sha256": "e15026bc39b319cfef44e8b10d70aeca3a76be51d0a0de81b4133e4a9b977073",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_7cf8a9d9cdb746f68efc1dbf0f4401c7",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Rca2147c2a11191e0",
+      "answer_sha256": "1e285b80724c35e73554310a4d129ef0f2158459acf9ac12acdf304391699067",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_7cf8a9d9cdb746f68efc1dbf0f4401c7",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rf04e99d824942838",
+      "answer_sha256": "bd0f3d6162c88b451b15d54e5f9562084ba6b67b6b3c3220254b37a7a4c75d48",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_7cf8a9d9cdb746f68efc1dbf0f4401c7",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R75712c059524add5",
+      "answer_sha256": "384422e4aef580b3e517ecf48556b4fe8060d9a51019f4f567b673bffc9c54ba",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_80f391676e304bd3a6c0aa27a26700c7",
+      "arm": "paired-on.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R6302018b29697a36",
+      "answer_sha256": "59d858b23101cc2f820a67d193ff4aa8fa2a16c8458b5a8d1fab96cc11dbe460",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_80f391676e304bd3a6c0aa27a26700c7",
+      "arm": "paired-on.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "Rfdb816d7fd5fc7da",
+      "answer_sha256": "dd2fd5d7060216894f9c5f0e52e1128d14fe8f5aea9ef58c39a36f2fccacc70b",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_80f391676e304bd3a6c0aa27a26700c7",
+      "arm": "paired-on.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R71ecc21f99fe063b",
+      "answer_sha256": "ac12aaa37aa5b8d1a71a63ccb9f9a0f09a2ee4bed44f7b308f19a004b4e58820",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_80f391676e304bd3a6c0aa27a26700c7",
+      "arm": "paired-on.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R7f800192c6acab89",
+      "answer_sha256": "f2ab078d90efb3a7eec42125675773f5a63b2dbeb727fe85ad97a59d0e439c52",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_80f391676e304bd3a6c0aa27a26700c7",
+      "arm": "paired-on.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Ra28a904e745d00c0",
+      "answer_sha256": "dca4ff4dd049e094d37b9ee2ef5d4c06b492aa3a2159a75b2f8824732d640a9b",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_92f2254360664141ae4b7352b8e2285a",
+      "arm": "paired-off.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Rc1d3ca2d46e81553",
+      "answer_sha256": "c6b33a405f2a1054d381b282ce0918d107f1f6e3aaa243103586f6f296ea036a",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_92f2254360664141ae4b7352b8e2285a",
+      "arm": "paired-off.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R01e160e5eee8a581",
+      "answer_sha256": "64966bd5a82cacf8185c1446a97dae33f78750ae053a90f628c7eed46109d8d9",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_92f2254360664141ae4b7352b8e2285a",
+      "arm": "paired-off.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R611756db244fffae",
+      "answer_sha256": "e1ca2b56bc2929841ef7a6c4155fde692927b51474fc8a98626b75a7d45aeee3",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_92f2254360664141ae4b7352b8e2285a",
+      "arm": "paired-off.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R80a6727aa44dcf73",
+      "answer_sha256": "527cbe133de8f5ecab2d3e4ce20645b9e6fe639df95ca302f9e50b9f1aa7ac32",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_92f2254360664141ae4b7352b8e2285a",
+      "arm": "paired-off.alphabet.minimax.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R11e435880472d574",
+      "answer_sha256": "f4d5a4646fe20f1780e75677c44da4fd7e64c4404c8970ea6fb9b6e886b9cfd2",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_a91d48f14a1d4f19ba9e44410301f44a",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Rf7311bf96cd83807",
+      "answer_sha256": "c4fc1c75b1a14545ef3bf89420e0b36b0776ebb2da13dda4981a5f9b0045628a",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_a91d48f14a1d4f19ba9e44410301f44a",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R899d0604218557d9",
+      "answer_sha256": "d14f93608c6d3c565bf965320971f27bbb39e7b4803cd87641b417e60ded0858",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_a91d48f14a1d4f19ba9e44410301f44a",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R0fdbbbf1f3c8d4bd",
+      "answer_sha256": "dae9fd2e32ea8c2a9117c9abd225a43c35514dc7c7ce6d7277fc844b259140a9",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_a91d48f14a1d4f19ba9e44410301f44a",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R9ba02d0fe1395201",
+      "answer_sha256": "20b0e713d0f3764af14f210c078f830248561bc4f036c921006bf1c2a22ff67f",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_a91d48f14a1d4f19ba9e44410301f44a",
+      "arm": "paired-on.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Ra82369f04a19f74c",
+      "answer_sha256": "1fb88a8e9a95bfeb2aff02416e5069f038fd0aab7d0d97f5dd4871b523bc256e",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ca84ec61c43e4682bd4115eb23e2f4ba",
+      "arm": "paired-off.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Re0bc66f770e7b7ff",
+      "answer_sha256": "a0a3f68ed6a814e6d9b95ff3e8d9f5fe4fe580828b5f4059c822abdafe47c1ca",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ca84ec61c43e4682bd4115eb23e2f4ba",
+      "arm": "paired-off.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R625d6b815d36ac3d",
+      "answer_sha256": "6a460681af31936c7ad4e5270f03b026ce698e3ffd8fbddd84ded47744d0696e",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ca84ec61c43e4682bd4115eb23e2f4ba",
+      "arm": "paired-off.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Re6c4e4dfa26b51d9",
+      "answer_sha256": "a59103fbc832264eec713c2119e2beb865ab2d41de9993a6a743b91dded18fad",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ca84ec61c43e4682bd4115eb23e2f4ba",
+      "arm": "paired-off.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R26978eeebed30bda",
+      "answer_sha256": "3f2bef00cdc42c4cf1d5c1df49c76735a85e8f4070c0ca8d271fa188670cd4ee",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ca84ec61c43e4682bd4115eb23e2f4ba",
+      "arm": "paired-off.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R2028b4017198b334",
+      "answer_sha256": "f85cb78dcd095ebc2647fa542f826044cc716996842c2749701256e1e09f9734",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_cf1ffa888917499aa3dc249cd646070d",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R9d65b97f43d0c1d5",
+      "answer_sha256": "5645de24f14621bf1b04d14050a46d1c9f92bcb6ffd93b934a74fb0d5c906f31",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_cf1ffa888917499aa3dc249cd646070d",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R126afb26ab3fca60",
+      "answer_sha256": "b20e6e5ed91c05fadcf08888c6f2c3a09720a3a860c09c4cd7b8a546bac4c55f",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_cf1ffa888917499aa3dc249cd646070d",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R6187979e2fe02457",
+      "answer_sha256": "4718eca38ec5d5691e1ee74cb1cdc470e1fd6dce85604f447befa83cc22e4111",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_cf1ffa888917499aa3dc249cd646070d",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R9158505fe95fce57",
+      "answer_sha256": "dcfd7d49e0e5197b11fe92bc63b3c77fcc5c0b0c5582f83650d03998876c6f3a",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_cf1ffa888917499aa3dc249cd646070d",
+      "arm": "paired-off.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Rf50dfcb9eae8806f",
+      "answer_sha256": "1a80f5ea4cdad0ed69fc86132f676016b9b8e4565bcfc33cbc34c14e3ba520df",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d413ad27f009408d8e69b838b6d38f95",
+      "arm": "paired-on.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R0c68963e82cf1cbe",
+      "answer_sha256": "5ed09f86c03e65c12bf531303fb4c9c816afc6a952b9166879d3a56eeb0e8555",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d413ad27f009408d8e69b838b6d38f95",
+      "arm": "paired-on.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "Rd6bc919b52c71946",
+      "answer_sha256": "de32e9b650299cf167adf971911c7e924dd5d536f4c755daa5afea6c38721376",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d413ad27f009408d8e69b838b6d38f95",
+      "arm": "paired-on.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Rcbd45518e9e06f9b",
+      "answer_sha256": "978fe4b35e3ecdcd7d0b58c9479b8655d56c6027049e2cf651be32660f0c8ff4",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d413ad27f009408d8e69b838b6d38f95",
+      "arm": "paired-on.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R2d01623da3d24b98",
+      "answer_sha256": "540d2ef8c27b7e93694de215b0723cb98615dc7ed85a04a10bb494932d1a43d3",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d413ad27f009408d8e69b838b6d38f95",
+      "arm": "paired-on.cncb_h.minimax.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Rfef46f9ab18891e1",
+      "answer_sha256": "bf851770afcf36db2168a38e1b76b7873b519bc9ad64a54975cf934d8188eadc",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d618400477614c0da0f5ae575836584b",
+      "arm": "paired-off.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rd170912f2e878835",
+      "answer_sha256": "57a18f59a6affe5232aedf42be48f33f99022ad3012826bb06d71fb616276209",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d618400477614c0da0f5ae575836584b",
+      "arm": "paired-off.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R77904a1d2160b7e5",
+      "answer_sha256": "2de3d57b51355a8dd35eb5ea8a98f6db03dda93d7e297d63c2d68442d527abff",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d618400477614c0da0f5ae575836584b",
+      "arm": "paired-off.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Rb7c1c979ecef455e",
+      "answer_sha256": "a3c7290de786314226606de8f099546dc38cdf1cc5242976b3962c7fd7ef1753",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d618400477614c0da0f5ae575836584b",
+      "arm": "paired-off.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Rca974da82b66d993",
+      "answer_sha256": "59880516fd3f11fcbed08c6ffbc5142795ba6310afed0e5629d134051d8dcf2c",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_d618400477614c0da0f5ae575836584b",
+      "arm": "paired-off.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Ra75556253427f77b",
+      "answer_sha256": "ae867cbd71f0846f80785d7f23aeae0e2ab59eaefefac2e8c4219002a8162362",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_e479c29d937f49e0b7d604ba4eaf17ff",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Rdd61c90e8bfa2d5d",
+      "answer_sha256": "82a3a0e7eb688a5f8c1fc98a1c2fcb628ed8ac4b2b6c78daef10606a85492f64",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_e479c29d937f49e0b7d604ba4eaf17ff",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rec36acb77b98c6a0",
+      "answer_sha256": "2b574ea9d59d4a9dcc32b010ebf9ffedcba16189ea0aa630301e85c83a603a58",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_e479c29d937f49e0b7d604ba4eaf17ff",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Refdc32fac143ea39",
+      "answer_sha256": "fab63faf9636d3e95da61d8d8f27a4425383cad6cfc8c8387dd4381b6599795d",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_e479c29d937f49e0b7d604ba4eaf17ff",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R5c8f972132e99f1d",
+      "answer_sha256": "6c32d250148b273907ee877b695d4453683f68c74c4486622c053c3425b76f32",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_e479c29d937f49e0b7d604ba4eaf17ff",
+      "arm": "paired-on.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R13fb8e15eec0f489",
+      "answer_sha256": "09c7765d44f5720991704b48bdbc1fbd10752c11586dcff779e75a3f2b16a52e",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_f27665bde8a94ac996ccbacd06b5407a",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Rdcc410c981719303",
+      "answer_sha256": "95ec62a787c954ec027fa6c9c0a1dca2abb3653b6041cbc6bef8c82b91994bc6",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_f27665bde8a94ac996ccbacd06b5407a",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rc1bf5cd1f004f92e",
+      "answer_sha256": "a02db79b864308d4f08473a2ae0d14fc5cdd570bbbe0215138c3a4f7ba6de681",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_f27665bde8a94ac996ccbacd06b5407a",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Rb5b1007ce4d2bf58",
+      "answer_sha256": "6459d46eca90a6e5074759888fc4424aad45400ff87eb8942de5a359b52c493e",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_f27665bde8a94ac996ccbacd06b5407a",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R40196ee4c627bc22",
+      "answer_sha256": "753b7db14e58b3a1ddeb4da5a1736380be654539966c0608dcd747ade6eca237",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_f27665bde8a94ac996ccbacd06b5407a",
+      "arm": "paired-off.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R442f493a762cb20a",
+      "answer_sha256": "175d2479cf6ae88ef8639575d2266bf8e09587d75a40c2947ff8f892d0724795",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_fd0afa7616984d7799e03ab3c24f5d27",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Ra4b3d736118e90c0",
+      "answer_sha256": "b9f93f0e7fd19d45614da8faf5da4499dc1e820effd0db6ef82f602b3fe4a370",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_fd0afa7616984d7799e03ab3c24f5d27",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R9241e58c60e5768a",
+      "answer_sha256": "6a98061aa40210a9aece7880793f9b5c4729ae0b52079b025b60b5ed24fd30c6",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_fd0afa7616984d7799e03ab3c24f5d27",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R8ebd24bda5866f5c",
+      "answer_sha256": "63b2e25dec81f5bbe793e85898b1d209e374e77e37d30059e2d626ebd26b9b93",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_fd0afa7616984d7799e03ab3c24f5d27",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rfbe90d4267142ecd",
+      "answer_sha256": "e2a0e0d5f984d5836e64461ef50903e41891fccfbdd33c813c7dff67f9c36b8e",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_fd0afa7616984d7799e03ab3c24f5d27",
+      "arm": "paired-off.catl.mimo.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Rd913ae69835ffe94",
+      "answer_sha256": "7565c746907c6c8a01706dc8826bf610674748c8ed12f2800c0b36e3d78d4051",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ffc0bc64e9804b14a51ee74091de6b26",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R606801a4c1cbb613",
+      "answer_sha256": "781fa176059aa23fbd9fbdbb921b06cd3f0d592dfabb04772666054ae59e2b97",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ffc0bc64e9804b14a51ee74091de6b26",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R810283ebbf640e4e",
+      "answer_sha256": "19982ca16ef1d9c9dc9a3215edd2b54e76986257999b5e7b5bd06ccef9064647",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ffc0bc64e9804b14a51ee74091de6b26",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R5c6017624e62cc04",
+      "answer_sha256": "1fbb920beab918b6a5ca993a55a9bef52928f12342c822f1e1b532b58f89b54f",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ffc0bc64e9804b14a51ee74091de6b26",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rd5dfdd89546e7794",
+      "answer_sha256": "53dc25522f4b33b6f70ee616c1c3d6fdee172e52a1c3cddcbd4b033f4cd53fec",
+      "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+      "chunk_id": "CHK_ffc0bc64e9804b14a51ee74091de6b26",
+      "arm": "paired-on.catl.deepseek.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R8624a60649fc052a",
+      "answer_sha256": "e816e77b4d6fd0a1dee2d1b1b20d2f83820ded8868903ffb6e41e1994e8c3a35",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_2daeebb34b1e4a1d9e77e1f78a6f1416",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rfee4f72fb6bd619a",
+      "answer_sha256": "c8b2adb88ca8c85910bc7e617d6cc80ce803d8d6afd9eec052b8e445f77ac76d",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_2daeebb34b1e4a1d9e77e1f78a6f1416",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "Rcb58e5c06892c333",
+      "answer_sha256": "9d19032e26ebf67786e6ef05fd96350d2a3f5d2bb1fcd75071a1a40e2c14a96e",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_2daeebb34b1e4a1d9e77e1f78a6f1416",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Rfcb5d8b5ca037207",
+      "answer_sha256": "638adad2617fedde38d2b31e872338c92dd93edef27f5b36612782943a2f7da1",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_2daeebb34b1e4a1d9e77e1f78a6f1416",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R79568893dd104689",
+      "answer_sha256": "02137be5ffa736ea5a483a2c02343f8834dd6debc15e5b640156f9576814c07c",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_2daeebb34b1e4a1d9e77e1f78a6f1416",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Rced0f735a4708c4f",
+      "answer_sha256": "6cb10f6016dd1a5496554d9467a930b791bb1904a45f8de45baa4b97f29fe701",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_36490e2034f945b5ad37b2d0f07751ad",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R0b2eec094da463d5",
+      "answer_sha256": "00b694f06235d2d56c44250221dc5e956c30ae9365fd497d8f4570d6333dd1f9",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_36490e2034f945b5ad37b2d0f07751ad",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rb713b8e6470a05b9",
+      "answer_sha256": "57014a14f81a04f8b026bf26e3553753d2e58695f9ccc5957f513ed315368566",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_36490e2034f945b5ad37b2d0f07751ad",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Rec5f10782522d0af",
+      "answer_sha256": "4d5a3463319fb8f39582d8db07fc1c166faa39002b67e168fda4e5a1bb102516",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_36490e2034f945b5ad37b2d0f07751ad",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Re6164208d253931a",
+      "answer_sha256": "0843328aab80a75372bed29a7795d72e3ae5e1962091b5e8232c13103c7f9978",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_36490e2034f945b5ad37b2d0f07751ad",
+      "arm": "paired-jsonoff.catl.mimo_pro_nojson.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Rd10f2b31c43f4168",
+      "answer_sha256": "50fdb1629587e09e32f85a65e3be9f68d7c0b2bb01307de2350701f78b705739",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_7d81239ba1934c9d872f37572ccef41d",
+      "arm": "paired-jsonoff.catl.mimo_nojson.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rb8b3f2c133459302",
+      "answer_sha256": "498ba553a7ad2cd3d6ef582b8e056c9192ded6fd32a397f17809ff919a2d398e",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_7d81239ba1934c9d872f37572ccef41d",
+      "arm": "paired-jsonoff.catl.mimo_nojson.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R87e70b977830495f",
+      "answer_sha256": "1dbc6825e92a2145847d39e60f977e2f0c0c78b990cba827b24491213469872d",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_7d81239ba1934c9d872f37572ccef41d",
+      "arm": "paired-jsonoff.catl.mimo_nojson.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Reb801d5d438c3f1b",
+      "answer_sha256": "1359226f18feee3a03f2346b46b9a5481a66c62388b62fd64340d02c8a13d6c6",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_7d81239ba1934c9d872f37572ccef41d",
+      "arm": "paired-jsonoff.catl.mimo_nojson.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R1dc3ff4453de4fcb",
+      "answer_sha256": "14064e02d7fb8103abb1830196e1805f84fbb17bf0109a487531964dccf40f78",
+      "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+      "chunk_id": "CHK_7d81239ba1934c9d872f37572ccef41d",
+      "arm": "paired-jsonoff.catl.mimo_nojson.g5.targeted",
+      "question_id": "IQS_16"
+    }
+  ],
+  "pilot-input-lock.json": {
+    "files": {
+      "questions.json": "e666680296e16acb0620a4395282dbc5b2f64955594820d98a6af9d285966036",
+      "companies.json": "2a359cbba16acd55187e41db6fcd8c272d6ee1582fa5c0be330be90410a0c7f2",
+      "runtime-manifest.json": "03789f465f409dfbd7f9b5941f7224b378c24a35ea48642e5373ce9aa33c3d17",
+      "budget.json": "439333a4819a17fb6ef729032aec37ce78d9242c96a004fc4fbe45cc2cdc2541",
+      "pilot-registration.json": "b0fcf246a87d19b3183d2c676799582197828b4d7fba7d5ebc7306c28ccdd938",
+      "source/mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+      "source/batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+      "source/batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+      "source/batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+      "evidence/catl-targeted.json": "0b942c1385cc6430cd8169acf635db82292f1eaa4d26c460068d7198d11ab8fa",
+      "evidence/cncb_h-targeted.json": "8ba8a9e6c658d1a8c9726abb114ed070fed2790459aa77ea2a38dfff52afd868",
+      "evidence/alphabet-targeted.json": "8f9ecfac6ebb3d92c6fed6c7ec3baf955485c9834318e890eee77001ca13feed"
+    },
+    "system_sha256": "941a35e7ed2c3e91789c795dee47e2ed00bc109cdefe150892cc33d9ab4863d8",
+    "routes_sha256": "da0fbbe1f6bca3b1934336db48c40bf1a03afb64125d1cc76a90d9307c4aa430"
+  },
+  "pilot-registration.json": {
+    "experiment": "mimo_pro_pilot/1",
+    "created_at": "2026-10-07T19:14:59.705611+00:00",
+    "companies": [
+      "catl",
+      "cncb_h",
+      "alphabet"
+    ],
+    "question_ids": [
+      "IQS_01",
+      "IQS_02",
+      "IQS_04",
+      "IQS_05",
+      "IQS_08",
+      "IQS_09",
+      "IQS_10",
+      "IQS_12",
+      "IQS_13",
+      "IQS_16"
+    ],
+    "routes": {
+      "mimo": {
+        "model": "mimo-v2.6-flash",
+        "key_env": "MIMO_API_KEY",
+        "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+        "input_rate": 0.14,
+        "output_rate": 0.28,
+        "cache_rate": 0.0028
+      },
+      "mimo_pro": {
+        "model": "mimo-v2.6-pro",
+        "key_env": "MIMO_API_KEY",
+        "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+        "input_rate": 0.435,
+        "output_rate": 0.87,
+        "cache_rate": 0.0036
+      },
+      "deepseek": {
+        "model": "deepseek-flash",
+        "key_env": "DEEPSEEK_API_KEY",
+        "endpoint": "https://api.deepseek.com/chat/completions",
+        "input_rate": 0.3,
+        "output_rate": 1.2,
+        "cache_rate": 0.006
+      }
+    },
+    "matrix_groups": [
+      1,
+      5,
+      10
+    ],
+    "planned_model_calls": 132,
+    "planned_search_calls": 24,
+    "topics": {
+      "catl": [
+        "2025 2026 动力电池 储能电池 客户 复购 市占率",
+        "2025 2026 营业收入 净利润 经营现金流 研发 资本支出",
+        "2025 2026 净资产 股东权益 现金 负债 到期债务",
+        "2025 2026 公司治理 管理层 关联交易 股权 激励"
+      ],
+      "cncb_h": [
+        "2025 2026 财富管理 投顾 客户 复购 竞争优势",
+        "2025 2026 营业收入 净利润 经营现金流 加权净资产收益率",
+        "2025 2026 净资本 风险覆盖率 客户资产 负债 到期债务",
+        "2025 2026 公司治理 管理层 永续资本 股东权益"
+      ],
+      "alphabet": [
+        "2025 2026 Google Search Cloud advertising customers competition retention",
+        "2025 2026 revenue net income operating cash flow capex AI",
+        "2025 2026 cash debt maturity shareholder equity returns capital",
+        "2025 2026 governance Class A B C voting rights management compensation"
+      ]
+    },
+    "domains": {
+      "catl": [
+        "catl.com",
+        "szse.cn"
+      ],
+      "cncb_h": [
+        "csc108.com",
+        "hkexnews.hk",
+        "sse.com.cn"
+      ],
+      "alphabet": [
+        "abc.xyz",
+        "google.com",
+        "sec.gov"
+      ]
+    },
+    "model_native_search": false,
+    "accuracy": "agent source-support audit, not human gold/world accuracy",
+    "price_source": "https://mimo.mi.com/docs/pricing"
+  },
+  "pilot-selection.json": {
+    "created_at": "2026-10-07T19:19:23.774395+00:00",
+    "before_first_model_http": true,
+    "changes": [
+      {
+        "company": "catl",
+        "input_count": 30,
+        "retained": 23,
+        "rejected": [
+          {
+            "source_id": "TF07abbf98ed",
+            "reason": "other issuer prospectus"
+          },
+          {
+            "source_id": "BF98fc690f80",
+            "reason": "empty cover"
+          },
+          {
+            "source_id": "TFc336884e37",
+            "reason": "2021 finance proposal, outside current comparison"
+          },
+          {
+            "source_id": "BF3ceb8bcd1e",
+            "reason": "empty cover"
+          },
+          {
+            "source_id": "TF4e927ed593",
+            "reason": "glossary only"
+          },
+          {
+            "source_id": "TF5a98cc6cae",
+            "reason": "garbled title/identity boilerplate"
+          },
+          {
+            "source_id": "BF3d52f4b5f4",
+            "reason": "contents only"
+          }
+        ],
+        "context_chars": 14113,
+        "file_sha256": "0b942c1385cc6430cd8169acf635db82292f1eaa4d26c460068d7198d11ab8fa"
+      },
+      {
+        "company": "cncb_h",
+        "input_count": 19,
+        "retained": 15,
+        "rejected": [
+          {
+            "source_id": "BF59ca7eb4f0",
+            "reason": "disclaimer only"
+          },
+          {
+            "source_id": "TFc4d0fb4c18",
+            "reason": "CITIC00267, different issuer"
+          },
+          {
+            "source_id": "BF6191467041",
+            "reason": "no description"
+          },
+          {
+            "source_id": "TF3d3ff03e18",
+            "reason": "CITIC00267, different issuer"
+          }
+        ],
+        "context_chars": 10349,
+        "file_sha256": "8ba8a9e6c658d1a8c9726abb114ed070fed2790459aa77ea2a38dfff52afd868"
+      },
+      {
+        "company": "alphabet",
+        "input_count": 25,
+        "retained": 15,
+        "rejected": [
+          {
+            "source_id": "BF44323f28a1",
+            "reason": "privacy/navigation"
+          },
+          {
+            "source_id": "BF3a18e2c79d",
+            "reason": "SEC crawler access boilerplate, not company evidence"
+          },
+          {
+            "source_id": "BFccac5295b5",
+            "reason": "SEC crawler access boilerplate, not company evidence"
+          },
+          {
+            "source_id": "BF393879b6d7",
+            "reason": "SEC crawler access boilerplate, not company evidence"
+          },
+          {
+            "source_id": "BFd9c91ebfef",
+            "reason": "SEC crawler access boilerplate, not company evidence"
+          },
+          {
+            "source_id": "BFfa12076aec",
+            "reason": "SEC crawler access boilerplate, not company evidence"
+          },
+          {
+            "source_id": "BFf6d3dc3517",
+            "reason": "SEC crawler access boilerplate, not company evidence"
+          },
+          {
+            "source_id": "BF8d38ad9976",
+            "reason": "privacy/navigation"
+          },
+          {
+            "source_id": "BFc95fc4b664",
+            "reason": "SEC crawler access boilerplate, not company evidence"
+          },
+          {
+            "source_id": "BF4323abc071",
+            "reason": "mislabelled sitemap/historical founders text"
+          }
+        ],
+        "context_chars": 12026,
+        "file_sha256": "8f9ecfac6ebb3d92c6fed6c7ec3baf955485c9834318e890eee77001ca13feed"
+      }
+    ],
+    "selection_source_sha256": "ba612f0dcdc7ee41f5ed9f6f2e5d856a8fc6703c1a2aceeb6af245f5ad28a57c"
+  },
+  "blind-primary-private-mapping.json": [
+    {
+      "review_id": "R06a1eea1afa592fe",
+      "answer_sha256": "fabb6eff6887f83c6ff87b4b2e4e91a3f0e898d2de9bcaa19f7e3a17dbfb9d76",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_02fb1051daa94296acaa3faeb9e52bfc",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R7fb9d62fc08781b5",
+      "answer_sha256": "9859d2cf7f2c4cdd299125f3c769e4ae53d412ca95e556c195c7cca46174a149",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_054541e054464b90971b8b8569a4318a",
+      "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R91953a77eca34976",
+      "answer_sha256": "ab93ed4b9a265c937037951f1de27a0269c99c4832963a75be780ec6cdb7df4e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_05a7ca6ee5044ff0b062e67c4f1c5193",
+      "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R53c8c4a94043d775",
+      "answer_sha256": "de2dc6ef58ce1af7cfaa5ba2d8e035d3d2265f58ee1b797250839c8f9a75e0e3",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_09c04907d18c4fff988f9a8edb08ebd3",
+      "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R82407a5d75df1fac",
+      "answer_sha256": "3d01417eac892ac3b8d385615ed54911b6cc37605c47e5fb07ad4722df901621",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_165e7addeb344ea4bd8aa7d2c6fe5bec",
+      "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R97c1245073f93f25",
+      "answer_sha256": "ef82257a07a7aaa1daf5423e0283f1098f8561ae1287bd1074f734f550253da0",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1958f40b63ae47078b4ce7ddb33265f7",
+      "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Ra01d3863dfd35314",
+      "answer_sha256": "58269ea8e20d3245ad0b7d6ae10de3aaad5eee8484dc8a7be0df68b312d212de",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_19dedf1830c84fb9bf4aced8dc491b46",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R4496c345428e9627",
+      "answer_sha256": "90e630faab55e2f9738049db3c29b56308c3f6565424b4def12e0ab96aa06cb3",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1b1b289227834803b87a955873228bfa",
+      "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Rabf2164538e34465",
+      "answer_sha256": "024cc9921d10d89dc238466988a4d5d0fd0557282537cf53b14d5c2ed48d959a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1b1e1e50bc104973b8eb5b4c84ce5844",
+      "arm": "pilot-thinking.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R9cf583842556422a",
+      "answer_sha256": "e1a18cc406dcc95d96c26c27b3e98523c070cd8d7e7c80915059b00eb89fb88c",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1b1e1e50bc104973b8eb5b4c84ce5844",
+      "arm": "pilot-thinking.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R6ad2d15a6f35fb3f",
+      "answer_sha256": "eff2a01b0acd230bd8a061e0b547acfbe770db382987c00eaebb8d38f5aad798",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1b1e1e50bc104973b8eb5b4c84ce5844",
+      "arm": "pilot-thinking.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Rb2be8825f599bf4d",
+      "answer_sha256": "b02ff1308b7139880b07794e18413860e7d99144c1c608f98098b0cb6a8d4072",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1b1e1e50bc104973b8eb5b4c84ce5844",
+      "arm": "pilot-thinking.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Re7184570bbaa2551",
+      "answer_sha256": "494bfb452ba9d73d45cc89df7ec3333b96c1a16cc44933db4989eab3ae4dacea",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1b1e1e50bc104973b8eb5b4c84ce5844",
+      "arm": "pilot-thinking.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R8c5d541eff96777d",
+      "answer_sha256": "d31f3280a26d8da33de8ec1f1e36a1be50efb85cd5ac3d38e9c44a577ee14792",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1c197692d9bb489e9215314487ab5839",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rfe60667451522a2f",
+      "answer_sha256": "7007cfe606738e1eda0c5d5cea00d7f8d1312500874b2949e0802b825a63664a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1c197692d9bb489e9215314487ab5839",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R7108b9d208542d5e",
+      "answer_sha256": "f7d3c6be4cc9aa68bbd59fba33295f6a138773971fc670f2d4d8a34bea079401",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1c197692d9bb489e9215314487ab5839",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Ra6d7de8905923ed4",
+      "answer_sha256": "1b54706bbf32666e4bc793a8797bb5a1cc7a5f1a27a5574562a805a7c5bf120e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1c197692d9bb489e9215314487ab5839",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R78b3c3c6d007d02c",
+      "answer_sha256": "a7011c30d601644b44a9bf36d0a77fe57b72e3a0c71648264c719eb18c84defe",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1c197692d9bb489e9215314487ab5839",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R552d8b638ddaa71b",
+      "answer_sha256": "6477e05dc5bca5b09ced04d45cbe62615ab429fa7dbab5185f06ebdb01aeb37f",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1d5d91ae670c4e8697f23b83e4c4afd6",
+      "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R7451c6cb4b325e9d",
+      "answer_sha256": "d768c64cac9f6fbd5a5b5f9ee2df5587be7c4a5e4abbd64db54de72c8284295e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1e2aee1bdc2245478b32996886ee08f4",
+      "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R2d560180297c049e",
+      "answer_sha256": "e87d351211819c1a080e3284a63f23c8071628a595f8fbab40c8ddd9c40cd6d7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_1e44ed4d0c984421b74316d6f7ee61c7",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R2a33b549ba2071a4",
+      "answer_sha256": "82afac0d66023d866547bb474fe72ad6a0ca41a026f64c009cd1a50ff3964346",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_2166fe5f90a94fe199d69e066979d7da",
+      "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R49c4ffca49ec0f25",
+      "answer_sha256": "63c03d65b7782e7577f14c55b09e07434901f6c7945113aafa125a58eae213b7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_226ba573bac7432d901e3161e7509d27",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R9f4cf85b2df47565",
+      "answer_sha256": "1ccf9e800f5cec2f878f2d030bdae158996cff160014a90253173c6f93cd0024",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_2bb61c654ee943758709791e009a32cd",
+      "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R2df44e849bb4bf37",
+      "answer_sha256": "5d164021dfd1a640686f50ea46a9d16d3b0d5e3749c4a94dabf294975d6c5fba",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_2ce8ad6dea62434c99c0d46205f4273b",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rdc69a34e0a9cce39",
+      "answer_sha256": "2641570415e42b6e6a4d8d64e80a48f07c34cfda2d8c960a340cf89cae89cabf",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_2f1438adf2934243bf88464d100e8021",
+      "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R5b055da109befeb4",
+      "answer_sha256": "13f2da8aa7c3f799fdbe57a4132e230534c23448abde706c008f34653ff0ebd7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_31873ad33e7044d38b435be40abbf9c9",
+      "arm": "pilot-matrix.catl.mimo.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R90937156c41f5a74",
+      "answer_sha256": "2ea0ff070c54c3733c8577e1bd4d086a950a3a6782b04ce29a45e1cfefab81e0",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_31873ad33e7044d38b435be40abbf9c9",
+      "arm": "pilot-matrix.catl.mimo.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R7236af8cf3735969",
+      "answer_sha256": "324cdaaf507548c14a84ac8a25ebac979dc697fe50ea17286b57b5aa7b769953",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_31873ad33e7044d38b435be40abbf9c9",
+      "arm": "pilot-matrix.catl.mimo.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R8b7f40369c46f63d",
+      "answer_sha256": "500a437ac10ec9f6a2c37d49ebaa11eb85e1c5a7ca4b1d139a19d95ade8df0f2",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_31873ad33e7044d38b435be40abbf9c9",
+      "arm": "pilot-matrix.catl.mimo.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R9413999e9f7f72d6",
+      "answer_sha256": "21a3f2db5179bc3d0f8450b17945cf386e97e49c9b17faa143c1e955e317ea77",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_31873ad33e7044d38b435be40abbf9c9",
+      "arm": "pilot-matrix.catl.mimo.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Re6ca955367ced1ee",
+      "answer_sha256": "481936558b1952e77cffaa2fd761d7bdbe558d6860ec0457697fc27614c3e271",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_35e1960f9aba4f168e21280e733cee6c",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Rdcba72e52fd07613",
+      "answer_sha256": "443ceeb7e54f377b625649b9470190f625a43e1b3b6079a54f4a1d86355bb99d",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_37a5fd80c5574ddb8526464ed75fe467",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R777f6557f7e269eb",
+      "answer_sha256": "e592e0936aa04ba781a2dd0dc601d9dd42a6e7e29a43ee6820bf60e33c7aef98",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_39e22dfaa94e4639806c78b066920464",
+      "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R8a04b893c26ebd9d",
+      "answer_sha256": "210ee2e470b6b18b0d56a81dadf0d9c7e7a08e0f071932699a32719a97ab5093",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_3aa36ad56d0940559e37caa9465aa889",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R6b6e3fccc5f0cde1",
+      "answer_sha256": "60f101161a17408fcfbd5644958b0c50497766768d35860c2a2dd6a6843e894a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_3d94bf54b9d348e78396ae36de843cf8",
+      "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R6063d0137c1d68b3",
+      "answer_sha256": "b348858d1679ce1d777c3279af9ba095640be48970894ceaef91655ee1522744",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_3e3cefc1ad3f4c09b54b11269d67f621",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R03f98207e9944bda",
+      "answer_sha256": "d18b26fd64fbc678d5884f51443e0893cad17dcb4649455b374f6eacbaad6880",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_420f543c703c4e28808e47b701f5eede",
+      "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Rce8db6d25d73c3d5",
+      "answer_sha256": "ad0854dd2e227e89cc34aeaf094fdf99aa8b26b95a85eb2907bfe9834168f23b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_42a640720bf84eb4ab207929627d455f",
+      "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rb79ed2d6f7f7f306",
+      "answer_sha256": "602afe30122a1038428396915531f526f8d3cf3a69afd91242eb641db107b8e7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_44d919bf4989495eba68b9f02ec2ff57",
+      "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R539e8de3c4f89e99",
+      "answer_sha256": "c193be36a959001fb35916abb07851347ec4077d12e33bb77be5733ecd322580",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_4ebdfdfb5bfb4131b5d8b37e303b8375",
+      "arm": "pilot-matrix.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rfa954eabf0cbdab1",
+      "answer_sha256": "e60f043cfaad8d404fb15d78452c9ae107ed770e2c7be0f302708532d35510ee",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_4ebdfdfb5bfb4131b5d8b37e303b8375",
+      "arm": "pilot-matrix.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R4171e17dc19363e7",
+      "answer_sha256": "15baff586071f248d2526f28adbefed282c864fef8f1380819f6f77e31989d7a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_4ebdfdfb5bfb4131b5d8b37e303b8375",
+      "arm": "pilot-matrix.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R0e8ed2ec195de680",
+      "answer_sha256": "b3e70a923be0c818705f5054d943bf2620e6d84bb630120b01fea2b3ee80db5b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_4ebdfdfb5bfb4131b5d8b37e303b8375",
+      "arm": "pilot-matrix.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R31ab55bef7b6e205",
+      "answer_sha256": "b91cadf70d95369acd4920577f310fbd512591605b5bb65aec9b9b8a32b7a52e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_4ebdfdfb5bfb4131b5d8b37e303b8375",
+      "arm": "pilot-matrix.alphabet.mimo.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R652bdf608ba1b9fe",
+      "answer_sha256": "dbcbd27d9f963fee1885b170d702098dba1bbc5a39d3cd4f388f35a6d14db7fd",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_5020e7c8a2164f3ab3c2436c133acb5d",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R15571a757ee36f01",
+      "answer_sha256": "2201f3a0f54b7e9ec3193eb92ec31de0e719658799b67aeaf9eb7d3d14c8111e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_50f874f4041f4b77bbb9c3fcb6c25f24",
+      "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R884279b189f133c3",
+      "answer_sha256": "a8d53b916d7ad796826cb27d511d275154134b14d9227dda698546e327c882d0",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_55f41d01501e4c859ab3ef998c87e361",
+      "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R52808c33997b90bb",
+      "answer_sha256": "f031c280079ca46ca26be340ed92d5324635ec4150e66801dd588560dfc64f27",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R78d2305036de7218",
+      "answer_sha256": "e13bf7effa78487f62fea159f2ae29b2f5a51ece0e60aeb7d06e0db83ec79dad",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R197a264bbea19435",
+      "answer_sha256": "569a5b3ba8827415ef0fc5bfe33c996acbe5b792e7423a896488271130db1ab5",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Rb9fa426fbcb8cd82",
+      "answer_sha256": "30bf69b46e8039cbeac7c0e472bb1dd6f93dc47760d78694bbea2964bab5af22",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rafda3929fd1d3a1e",
+      "answer_sha256": "e17fe603eff7679dabcfa2f1d0ae5d5be2c3608afe3ff00c605756f637d612df",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R51029deb0473a852",
+      "answer_sha256": "7bad065db3c8985d99cdecbc772b76d307d1143fe512693e3a3f3b4e033e37d5",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rc1bef1e5d1f1978c",
+      "answer_sha256": "10f15f43d5f54d850352e2ccb17b1258c35488898e639e2505b43c00ac50b5e7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R971e3c74ee022198",
+      "answer_sha256": "e417236578e29acdb6a332339fc9685cb6811c6acb9953348eb838f3826e119f",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R093251a539fd5508",
+      "answer_sha256": "1d828e1b5b31066dab1844fa1ec1913d3d57476cf367811db17c749efaa1837b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R58ff64dcff01eb14",
+      "answer_sha256": "b19491425bcf092ebdfcc53b37a51144f9cf2b87b43c1a86549203c4a7e74c8a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_587def8157d6482cae46b48ffca881e8",
+      "arm": "pilot-matrix.alphabet.deepseek.g10.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R0ce57a6406bc7738",
+      "answer_sha256": "f2b049245a9f37f51b38a3316e7814b75bf59bfac3469a3224f2a36927836a2f",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_58e63fb1f11844c99d4b791dd968d788",
+      "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R7f88dad63ab68a2f",
+      "answer_sha256": "7ea701e70888f637fc9ceccbe7f9fdd4d4b672d382b7ef831cd945fc0a32504e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_59e84d7e6119465194dbf4e43ff93d62",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R82ba5544db618c57",
+      "answer_sha256": "0177bd4db0e4306c8d5639d3928f32243d5e0c8ba44f32139a940d6d4b2cd480",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_5e11e3b09c7f4153a45b390cb91319fc",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R2af57341080e3358",
+      "answer_sha256": "394535dc9806dad9c49cd5d75582600081374332fe0e66fea75b5e6953582c86",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_614a31876031495196b6c259ab623b91",
+      "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R68bb9daafff05f9f",
+      "answer_sha256": "760aeeb775115c9a51f38205015bf791e0ad38be064ea30f4317c89810791131",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_6684c590d0eb4da889ef0d01ff7577e5",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R30573c3fd3070912",
+      "answer_sha256": "8a44785d0ad94df46aaecbf63eea696316f0b37acba402bb582bb51a02118d45",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_6a85f79d5b8b467fa03fb0a10334440f",
+      "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R55a2284cee25d1bc",
+      "answer_sha256": "1adc4174316431989cc05ef33c3e120218ca34ac9a8fa8cac28bd44eba9b21be",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_6bf4eca2d03b447693ed89ff0912abc6",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R684216aaa821bf24",
+      "answer_sha256": "2838f901f0e0241cc0cfe7075a793ac1b0f008263aafe5144031eee87c87bec9",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_7148fbee223f4dbb9cd930e8481417a0",
+      "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Re05fef209ab511a7",
+      "answer_sha256": "47462f2c0a93f5aeb5c909cb47a45f0da2d1acaddd5cc2622e9a105e14f2a15b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_734d4e8e101149d2810af8108e041287",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R65b2f9c7c5e3bc6b",
+      "answer_sha256": "7125138f9b22f2e10ff39e1d8f633f641d35735c086adf011d4c9c1e2d98f133",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_79e47ccaad624d84a51faa1d7ccf87ed",
+      "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Rea23d1065601aa94",
+      "answer_sha256": "1f391dce0d4fb659d2b8b66858991302bc4d7a9cea99e1aec887f4335c999d0e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_7a2f574dcaff47688307fa0f04702e56",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R4419f379f4524b50",
+      "answer_sha256": "25466c9dfed9ea2786de57f9c13f105cda742c297c7960e3676e9a7784756d7f",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_7b9fde1836b84046b948f3960a17e6e2",
+      "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R0797bb7beee29853",
+      "answer_sha256": "f25ec96c8086575471c965cc549a881e417ffd8ef7e0760291e18a5bffe606f0",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_7ec001e470f541858b503f1826b157a5",
+      "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R3d4356e91d32bf1e",
+      "answer_sha256": "7cddc388d5dd75d537084fcb24668c32336925e48b33d32f55de6b3a5c7df18f",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_83f9e17e27b547388ef8994458a97bef",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R8051597f0c39922d",
+      "answer_sha256": "68d51a8982370c3a5004c55d0f1acdcc7b848250e73ac8a3cd22b24900096686",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_881e7b3e936a45aa8468ad0a245befed",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R661bf4169fdb2171",
+      "answer_sha256": "22a04f10a50c62a527d08166792eb3bf34bbc131dcfdc5c71ed380430cdbe58e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_881e7b3e936a45aa8468ad0a245befed",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R093e71d939e839e5",
+      "answer_sha256": "67efe52e22cbb9df384fba3b936960a947bb393f1836d4faff3873d8091a5bd5",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_881e7b3e936a45aa8468ad0a245befed",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R166a8b01a9dd57f3",
+      "answer_sha256": "27f24731876d77ca92ecbb4d0b6c89fa0d6e465103ecdbc178f1cb6bb1ef3a5c",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_881e7b3e936a45aa8468ad0a245befed",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R0473dae201706e93",
+      "answer_sha256": "3e3b2adb721472480d6e8a468527ac0d22a0d8c2293c5a00ee4c9596a3f70222",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_881e7b3e936a45aa8468ad0a245befed",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R2574b22cbd405c32",
+      "answer_sha256": "c62d5a8997eb177181e1b259665141c0e1368036bd9d52ecdda82c77da7fd9f5",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_8b752dc9ecb54479a50ed6d6585762a5",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R06c4d66b96a662b1",
+      "answer_sha256": "5fcf86f8826389e8fd1ec72e4957db00b75e7aa00f0316aa8ad0cf6d75644473",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_8bd9f774be064d35a4fe07c3c513b03e",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R15327835c163a375",
+      "answer_sha256": "882615284a5be24ccee06c9b486d38d19952114117841312ddcb1a039d970e8e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_8f83edb2a53c448ca5530c2fb7c6e646",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R799965b1e63b669b",
+      "answer_sha256": "b3937b25fb702b311822f2bea132ba1488d7ad2bfaa6e0a716ca87aad74225b7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_8f83edb2a53c448ca5530c2fb7c6e646",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R098ca3f705f6a683",
+      "answer_sha256": "6da03e18571155ff9a4a5fb284db100c4bf81cb942a3dafa82d8fcb383d4b92d",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_8f83edb2a53c448ca5530c2fb7c6e646",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R5eca6b7b6fc31895",
+      "answer_sha256": "1f13c2edef7d737ff14597f565f58198e96d9cb8955667023f9b00d7f154886e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_8f83edb2a53c448ca5530c2fb7c6e646",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R4465fbdfc811ed8d",
+      "answer_sha256": "f8ef9f58b13b36146fd44502f30e51269c5555978514bbfc2cf6f07808b5ab59",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_8f83edb2a53c448ca5530c2fb7c6e646",
+      "arm": "pilot-matrix.cncb_h.mimo.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R88995d97b03f9a7a",
+      "answer_sha256": "4a860364e575445ef1d502ba304eb962c99cbaa85a5a9ebcde7dcdde75170c28",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_926f965ccb8b409cb651fc2b6a464d21",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rd76c80e7317b2a95",
+      "answer_sha256": "b421dd7d8f39421042d575833d7bb4936977f59f891d980e28ab002a54e2bd65",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_94af70d3b65a42e69d05b1e4069ccd3a",
+      "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R911c67162fe4be1d",
+      "answer_sha256": "9419b275d90fa2d12fe4e3284687f7a3e562214e94d4336d5b96c69bc54c8150",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_96867f2d44f24c9d885a09798cec3121",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R4ca32db61a8692c8",
+      "answer_sha256": "5e058a14be5ea2547ea6ed52c9c05fa7dc3e7e1ee31dd3c4eb357201b559caf1",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_96867f2d44f24c9d885a09798cec3121",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R31645ee305097024",
+      "answer_sha256": "4f31f459b4d195c8fbe3fdf006be36605f2ebd47f284764546152a0663880e4c",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_96867f2d44f24c9d885a09798cec3121",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R5bf5214903452561",
+      "answer_sha256": "b33cc111dc2aad801c7f173e30f4e169c6b0b231a428040144f085dc0a8ab1c7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_96867f2d44f24c9d885a09798cec3121",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R000cb5a21fcaebfe",
+      "answer_sha256": "f1164b457b466fc6dc9bb6aaadc4261a27d869d139c741e752b7b0b726474659",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_96867f2d44f24c9d885a09798cec3121",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Rad64126e8f914c90",
+      "answer_sha256": "433588a0b96013f636b01da6da042375d17e0f6d747e196f9cecdc95ecb1bb5b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_9a7a83aaa34e434c95f2463dc299b6c1",
+      "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Rf9e6b09290eb1d7c",
+      "answer_sha256": "78f9c33d49122ff816386c91a56bba3ad86be797fc4835f6333407b03b69ccf7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_9c5544bc6d1f4af6babececb6985f984",
+      "arm": "pilot-matrix.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R05871e2959c6c0d5",
+      "answer_sha256": "789a6745959c2c9b7fbe462cec9895e0f1d64434d4df9265f1a95854cb11d31b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_9c5544bc6d1f4af6babececb6985f984",
+      "arm": "pilot-matrix.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R40feaf567d87d952",
+      "answer_sha256": "ece83ce521760033e51ee9a0d104ddd0396c03bbeee5dce2b4de735a14d390ea",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_9c5544bc6d1f4af6babececb6985f984",
+      "arm": "pilot-matrix.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R3c9097a005f2561e",
+      "answer_sha256": "2d36d31d689e0b9eaeabd6a4f630789e8d9fb10b03c1d003eee7761a5e4b214e",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_9c5544bc6d1f4af6babececb6985f984",
+      "arm": "pilot-matrix.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Rfa110fd11bb74d03",
+      "answer_sha256": "66faafc053aee9100c2d2e0e5e8f695642c952535e18c04f79893452725dabdc",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_9c5544bc6d1f4af6babececb6985f984",
+      "arm": "pilot-matrix.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Re72dba171348d3ce",
+      "answer_sha256": "5a65c03e2fb6967fcb289834fed16749e5eb386c9a95495f30bc008575cf93c0",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_a06fc29b96bf4dd3af83faad2a1d3ee1",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R8948c3afa43434ce",
+      "answer_sha256": "e622f4691fa81270d8c578abe6d0f1306ebb9414ebb3aad2e5ffce36eb783234",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_a795603f1e8348cdbdcc5b27c69fac27",
+      "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R14212fd7b19d4fca",
+      "answer_sha256": "ee9dea50f82092a8121f8e4b6fe0094f9793dd9a67d88ba7dc2322395000d39b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_a7a4f9d97c8a4faca36b29a58cd6dd04",
+      "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R716206fa6f81a58b",
+      "answer_sha256": "8d210921f4f19c490e4fd0bc3b19bdf68c999665a100e25d54442c785fa991f2",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_a907ec172ddf4a30ab48b2895e1b27e2",
+      "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R937f88abfb4323fe",
+      "answer_sha256": "d49c5f638a56de254247093c80dfac0d5f8b5671e316bb4697cbe19b077527c6",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_a943bf67b4474e079c447482ce2b2541",
+      "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R05f23ac81df7a22b",
+      "answer_sha256": "a9feb6dc6dbca37080476e6d5f5720bd08396712e1ac6b47efdf1eb00a4b37ea",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_a9a6372188cb4a4594fd71f326b5df9c",
+      "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R8b5c5fea9cd13d12",
+      "answer_sha256": "c879115f2c2a69cba8584f1ec0abcf36297ebcca46ebe3f8982390d89f7f51d7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_a9f8a39cbe8642e3a9b6df82ae5b8afa",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R31e139fdee182a84",
+      "answer_sha256": "2e0f737921bf7c93bd55ad53caf867d5638a40f0c9263a52b532ed7eac5dc990",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_ae9dc392ca69402d91b525ae5afb7719",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rcd5ac8eeab7aee7d",
+      "answer_sha256": "cdca7e1eab73215d549cda687750b7d8153aa040fbe5396b7009b87955b6a79c",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b124ccab7f174df698e937a03ca15e2c",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R4b256afda9b8594d",
+      "answer_sha256": "077f91e9d9b052e8b7839ae17364da2346b4718ff65a4346ab62ded516c689e0",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b181a696ce2f478cb30986a7e25d9b74",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R7ece0ba4064c18c1",
+      "answer_sha256": "99031553357c57509d52bb2433cbba55e4685da5b2c1334c36f5a106eda5c8fd",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b181a696ce2f478cb30986a7e25d9b74",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rde024c283bb8e6a1",
+      "answer_sha256": "e5efc36dcae6f25e5b3a847d35e3c008ec39776a91e9f72fa4c385e30c866347",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b181a696ce2f478cb30986a7e25d9b74",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Ref0c9d17a7db7efa",
+      "answer_sha256": "6bd0aa474b49ee2a1eca7aff82dda9dc0e50b696ab77e870c7212f8761975d12",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b181a696ce2f478cb30986a7e25d9b74",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rd0796848369ec8f9",
+      "answer_sha256": "acd3cebca21a1df8846e0d8aee81ddfa397ec90f9261bdac803a384b3fc81bf8",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b181a696ce2f478cb30986a7e25d9b74",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Rd7fd5ee7d4eca9db",
+      "answer_sha256": "757bd2410f1551df39d85a71b4394786ae5547c2af8d7d35ba6e6c609eb62955",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b1e2e25187344c4e9dd56a9bac88d992",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R79302a0e2e79b0f0",
+      "answer_sha256": "72f65cae01c0bfa25e87baeea11ab1bc2b85a0e0bf15f4a5f73c4494d1fffc83",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b1e2e25187344c4e9dd56a9bac88d992",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R1cfbb25cec8284a9",
+      "answer_sha256": "efb9c09009d640b333292d1549edf845a4a7d82feab5cc9d48990a8555155ca9",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b1e2e25187344c4e9dd56a9bac88d992",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R553e08e46097ca34",
+      "answer_sha256": "473c258ab397540781026a857da4d3e2b3ae79167906eaf2a5d16269db855a51",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b1e2e25187344c4e9dd56a9bac88d992",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R75f0e87001efddeb",
+      "answer_sha256": "9d347c9842311ce6bbf44d71ab1eda1d94bb1b07f49ca25ad9f8784fe6aacda9",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b1e2e25187344c4e9dd56a9bac88d992",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R6b25ae0400acf25d",
+      "answer_sha256": "ef7c48b1e556f585bc49289cb2727101172948757788d703c3f6c2d88ba95a45",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b1f10cb4a6974d94b0ea025a0f24c8a4",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R72deefda27298d7c",
+      "answer_sha256": "b3b009ce3ec6182c938b54c9d41e72fdee398add0e81436302551658b5ca2ab5",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b2069daa868049c98fc1133de7bf0a17",
+      "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Rd1234ff15abe22b5",
+      "answer_sha256": "7f2ba4294fc749b7fe2f92ae3806415d64894b2781924f485ca9cbd104f155b3",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b3104557c3aa4aacaf85a112bddbfd89",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R0a99981daad21a4b",
+      "answer_sha256": "467935d8c16dc503759acb12e933fec03cc716d8371be9c3c60539323d2a32a4",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b3eb3b6a78a04b44a4759e7dddc8c192",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R8baba62838066993",
+      "answer_sha256": "7cd352600b6fbe8ebbec7e59a32ba57fb965cbdda127c758002e44bfa2f6505d",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b4897b25d93c466e84b10ccae9c7c5bc",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R3b4da70b892f8467",
+      "answer_sha256": "b45c63e1a55ae8b73b5f4e54c3a0e8442348e5739645d7dd69d38f900caf1d7c",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b753c891612e486798a895d3bc5137d8",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R3ccfd22a8143d7f2",
+      "answer_sha256": "4151714de1041129b8ec8e27c7395fec465010b38bd4a4637598be457c44cffb",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b924f0b23d1e4acaba25c8eec5d8ecb5",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R646c9a305c3ab2f8",
+      "answer_sha256": "30ecc331520726bc6f271304c5ee6874992441be05dea0708a37ecdd2e634884",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b924f0b23d1e4acaba25c8eec5d8ecb5",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R165852425b17dd9d",
+      "answer_sha256": "d357325602302e317cdedd981a857b9e1dff66a7632b92e8044e5b8ae86c8004",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b924f0b23d1e4acaba25c8eec5d8ecb5",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R7235149e282fe0e6",
+      "answer_sha256": "c535c9e64b8a29b8fa42e1d4e8e783b0110ecab2b2c97497adc349c94f98478a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b924f0b23d1e4acaba25c8eec5d8ecb5",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Rd342c6de92724b8b",
+      "answer_sha256": "336ae9b9a1b9d84101cbcd3a9ddafaab7dac58650dc462767031a20737b4f471",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_b924f0b23d1e4acaba25c8eec5d8ecb5",
+      "arm": "pilot-matrix.catl.deepseek.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R62bd31db94ee3f37",
+      "answer_sha256": "177703aff26ba6bdd889eb5b2a7c4bb44e35e7f04d51cec2e6276700807f7bc2",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_bda4436db7424694a2f74eabc625fccd",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R4f986245739ec9c6",
+      "answer_sha256": "6633bae8cb8af55f8343e0d5769bb8fbe7ecee299474c10f7cacab0ce67976e7",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_bf180ac0cfb34fd7844b5c313e11eb20",
+      "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R962b7714f711df49",
+      "answer_sha256": "6b06a09b86d61b66371f94b0a09a669c50f9e3eacb3fc523608fab84082c77c1",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c33335ce597a4dcdaadb3c51af445a29",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Ra5186eac4ebc0bf4",
+      "answer_sha256": "0ccb66eda242502d37662e2f00d51ba6f6fce6938211b0a109bbd5a5039ecd17",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c33335ce597a4dcdaadb3c51af445a29",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R9be6801dc421e025",
+      "answer_sha256": "3b49d1dcf9e6a96804b347438c3901b42760baafbbf3635ed20417ee4b084519",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c33335ce597a4dcdaadb3c51af445a29",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R17164ee771553e22",
+      "answer_sha256": "33165dc7f1403d22a00029e44ce54a322b7c88c79dadf3470d601259168d7972",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c33335ce597a4dcdaadb3c51af445a29",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rfca7828551185f6e",
+      "answer_sha256": "0cf3f9e71bcc721722eb872af49628ba536bf0cda3ff560add8d153f0ff72d60",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c33335ce597a4dcdaadb3c51af445a29",
+      "arm": "pilot-thinking.catl.mimo_pro.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Rce52baff331b271f",
+      "answer_sha256": "b72312186b9910afba094e9905ffa9bbd9fbec58bbf33b8eca33e04d9c774190",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c578cad0dab04ded852932f65ac16642",
+      "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R6f0f7459b9f98992",
+      "answer_sha256": "a7792755b5ca810730988f77734ad2a1bb9975961d6fbc3065a2e428ab0deb80",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c5b6bf39b6034044932c5d56e979ed56",
+      "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Re3f5e723194a606a",
+      "answer_sha256": "07682168f622ab94d84844aab4b97e1a4a95c75faec28ead243eddfa23afacf6",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c890c72f23a440039406f3098e2a9c18",
+      "arm": "pilot-matrix.cncb_h.mimo.g1.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R7988a0143ed8b9a5",
+      "answer_sha256": "3e436e3ca22205cc6f9073f1f600d2971ca479524f61f7b597996b2690f1244b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c93a535c30b3418f8eb2c86abebca299",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R02823a429685c264",
+      "answer_sha256": "86809adaa57795d6c33172fcc005c5960602bcb7f75091693fb0a368b333b791",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c93a535c30b3418f8eb2c86abebca299",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rcb96eb45387da053",
+      "answer_sha256": "400cc2255aaa6abc9ab759b30a415aacaadad353337d6569cb45f29297e28dd1",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c93a535c30b3418f8eb2c86abebca299",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R3f8e478823783536",
+      "answer_sha256": "6aeb56830cce9a64b667102fb545e3009f79a5463c8bc955d4fdbe9469c9a33d",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c93a535c30b3418f8eb2c86abebca299",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R63d42f2b96a846b4",
+      "answer_sha256": "968ac8e38f5bdda9ac278f8d339a0d6346a3622684ed7ecb79147137bae34c8d",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_c93a535c30b3418f8eb2c86abebca299",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R7b65800e75feffdb",
+      "answer_sha256": "180f0fb71596c4193b3951f15dade51a421b14b8f87ffef61ff1bb8463a8629d",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_ce5d74024fa8445fad6c2115af7075d4",
+      "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R5ec67ec24c355d9b",
+      "answer_sha256": "e9d85292e44a18041ae12b737218c86f79c7d29d82802327bf322683c5f348e5",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_d5992680862a4a39b43b82d314b01418",
+      "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R50f41148799a2911",
+      "answer_sha256": "c168fc204f1fccd466bd3488ea68bdb30d65b0a8ef072deee891dba594c3e5d2",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_d79116385c4c4613acb1a0f223cd1295",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Re9e1cff7943f5467",
+      "answer_sha256": "72ae1f448535867318deb5edbb18aaed93acecbcaf8da5496602ce62f45d7f8a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_d79116385c4c4613acb1a0f223cd1295",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R87be52549d965ec8",
+      "answer_sha256": "3c1c2b1eb310b3605c00075f0d1b66c613d4dd45914e2a3f0bd13369dd71e712",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_d79116385c4c4613acb1a0f223cd1295",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R6c25d14eddbb2fe1",
+      "answer_sha256": "0b65996be5644911a5172344d5cf6ca6aed0d97f6b44564e605db71a51c5a93a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_d79116385c4c4613acb1a0f223cd1295",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Rd2032b8a23f19f7d",
+      "answer_sha256": "8874dc9a8301654d663a011359a313734472ab10795998f95575eb7bf5632eaf",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_d79116385c4c4613acb1a0f223cd1295",
+      "arm": "pilot-matrix.alphabet.deepseek.g5.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R5c00ab72f3b692fb",
+      "answer_sha256": "4e4913e4fa22dfb1da1ebc467b04713cae5cc6209660e5c5f6c44654f45e698a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_dd8dbbb42fa54a67a39bd1b85f6c0b3d",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Rb42d433ae8a8ac3a",
+      "answer_sha256": "e3d868ffdaab76dca387ce6188251b97880ffed0625a7b4e971cf90807f48cbd",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e302098110974c87aacc3b9b979918b9",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R4ff3fc52e775b00c",
+      "answer_sha256": "e6ea4a9c6a353b3689567657513d4af7ba96998a3a908b2d452a15badd5844fc",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Rbc910aaf523cf2dc",
+      "answer_sha256": "bb7546a2125098e90e5704239bdfd6abfcfa8d4bb052817c87645d6a33919823",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rcd695ff7c80e59b3",
+      "answer_sha256": "c5b471b8b740b1b609906522248ce4fb879d0b5f1aa6ba6dbca08c518482bb4d",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R40bb4225852adc41",
+      "answer_sha256": "49a496db0edd611c473ede1645854d63e53226ed6f17dccca15ff7e1f6e74b15",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rad11c4fcc7e24db3",
+      "answer_sha256": "28ada2f0b9e22d92fb2b6f6d49cf654c56f714e6ebbe2c0af3bf310087ffd76a",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Rd7ad979fcf944d03",
+      "answer_sha256": "197d3c13ad8834db7a83634770709fc69ef428f45cfbed6e5b747ff2e655c2bd",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "Rd1986ea0d80ab4fd",
+      "answer_sha256": "be00db94fa7eab1bc9e42142a60698de98d6b75257dde92dd10f4e3b19c30329",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "Rbce0b71c254560d4",
+      "answer_sha256": "ae57b8cb3c2bba0a46e44a21880361d62affb9eed1aa923d81236c6b0bdd5acc",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R63c12d1bd0e3c4c4",
+      "answer_sha256": "a37174af3a63a0242d40c8ddc082d2ab912d50718a95fe998350dcc3dffb6c59",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R464c218426cc07a6",
+      "answer_sha256": "c5e1f58d9de725d1403d1eb0fdc5ee4a696672e347ec813ab3a07d7472165976",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e67c7dd408a244d2b346735fb4f2f9a3",
+      "arm": "pilot-matrix.cncb_h.deepseek.g10.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R0676c52826d87ca6",
+      "answer_sha256": "f75e34c0a34f3c908d905d9a12e179255eb3fae0c9f8348b0457da21be193952",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e7c7484064a446e985bf7f2da222e22c",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R153a3f94f4571246",
+      "answer_sha256": "0a73dbb3b91fbaed1b21db0ab250efa79e9e00b55473cea59c7494338879c88d",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e7deaf88851542b0a7392ebed4d2fc7f",
+      "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R113818af9b9f82e1",
+      "answer_sha256": "f2732ada69719d391547c4f72f72abc7dc868664a966eaa29bf225de3d992352",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_e881eb567667430fa1f8b09ef239c7bb",
+      "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rf271274872927b5f",
+      "answer_sha256": "22f2fc77f8c54766aac911cb4964b2a9b3121af367fca5c75ffb1609456d4986",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_ea043feea1fd45fd912126b1e6d07739",
+      "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R8df3b7228a5d07dc",
+      "answer_sha256": "92d815345c70a986e9d34b099b096c34416fe364cc94a6c77c9d82b986c4a4b4",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_ece7eaf3c5e74e38af7aa01a9953e375",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Raf72dc06ed16f05f",
+      "answer_sha256": "0d4d7472257498c616eee77fc2d7d5fd41a053cfba248e4f6a3885d3a1cef21d",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_f0ae6ba8d20c412291d4c9f9b5677cfc",
+      "arm": "pilot-matrix.catl.mimo.g1.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Ra28cd2fdd8c67024",
+      "answer_sha256": "1e7eb4675ff529d526a89fc822d6fecd6350eec94dadf67f8c3ce4cdcfe360e2",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_f174f71525a5451fb7c7706c05c43d43",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R5cf73312113ae27f",
+      "answer_sha256": "052f1cc904c1e4f1b744b5d622fe41dc0b30e6aba0b0a1b07d96304d74182a40",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_f738a709e0b847638e10c57e9fa3f243",
+      "arm": "pilot-matrix.cncb_h.deepseek.g1.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R5b8a1a0b32ac6bbc",
+      "answer_sha256": "15162f9578b4667b59edc6b6533a5188570a2d61b4bf81761da962fb4c859ca5",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_f950c5087f03484cb165d89be8aa7fc8",
+      "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Rf91e19b58143e3dc",
+      "answer_sha256": "b6e0a6efc44f2ab0c5d0e2ca4772e3ddf627f85673b804489e64b563bffb079b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa51b4dae3b049ffb5b4fbfe8ca1d28e",
+      "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rd66f4f231c52aedd",
+      "answer_sha256": "6b21424b29622b3923e1e66733971ded7e3043de7aa44b41b00fbb4b372b0d65",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "Raab36307bb017685",
+      "answer_sha256": "18677f7d3b01d8e05fc10cbc394555108f24804846b74f387201114e41894d6b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "Rcebcea4d7ac87578",
+      "answer_sha256": "40e4f9e7721f891ef769c3afc4bb45f0f6311b55b2ec003a6570e96af20d9ed0",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "R9c594358b018c162",
+      "answer_sha256": "60f02f49b3ae5a0ced91db4df0e8d3d937dbc45117c4bd4ce36c906555447ea6",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "R537a958de6f90e54",
+      "answer_sha256": "dce55c74b69898a72fb59dae8ed4596add08729664e8f25db2149c6b4627b491",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "R83136db0f4cb5435",
+      "answer_sha256": "9236a82bc32badc51c8bb0ceba8c8c2dc3155c479d460b2ebce93b2175c69522",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R84d4bf04ab05b1c0",
+      "answer_sha256": "cf608c5c41064b57a8a895cb53b4a841499867cb959b681977c48d4cd54fdaa9",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R60d06aa8af025115",
+      "answer_sha256": "50195d29526d78284378dd5d29dfee6784202d349c745a1e34f1b9af66608062",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R770fe406489c6c1f",
+      "answer_sha256": "0ba2a005b5c353d3769427c2e022db722c486156e6d440f91db935a714e4d247",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R2829e4c7044990de",
+      "answer_sha256": "8a6df632905af762d52377cc56cbd11973d42f5ba26b7c8cb804668cb83cc080",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fa65adb629a243e3a0e917e0c1f2480d",
+      "arm": "pilot-matrix.catl.mimo_pro.g10.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "Re342b67af2733496",
+      "answer_sha256": "1330766aaa980bc5c8bba1c8eccee277d691054d1efae937086fcb0c19450387",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_01"
+    },
+    {
+      "review_id": "R6bd7019922070c02",
+      "answer_sha256": "3bbe0a64cfd47b352ce9018d29147755545ac78d12abf6c01ecd710fd1600817",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_02"
+    },
+    {
+      "review_id": "R069735aaced2bc97",
+      "answer_sha256": "b2719a14f39c656de93e5a7b44e76df16a392cad01b4301408d210c21c96aca5",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_04"
+    },
+    {
+      "review_id": "Rdcb831e488d13447",
+      "answer_sha256": "785bbb01652db3df5384a8d0f87a926a1e8413feea9826ff7dc745e137e2b9ac",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_05"
+    },
+    {
+      "review_id": "Rc2e92d457546c018",
+      "answer_sha256": "fa226830f399a5c59e7b38e4403a61340bf51951b329d0f4e4e862185e87c804",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_08"
+    },
+    {
+      "review_id": "Ree89661f060ab7cd",
+      "answer_sha256": "f5b56e33b402c730ef884d85223d0ef3ae296c95ab79c7abe63230b6e1952ebb",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R4204b06ae3856d2d",
+      "answer_sha256": "dd3ea91f87f1d7202b18d471e4751f45db995a2e208e9a424d133483a9a9c6db",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R4696540dfbc28af1",
+      "answer_sha256": "7b523425eebda103b118018b57ed06a7fe2509b513dc84d89206d29ec70fef0b",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "R5bc44fea7065a749",
+      "answer_sha256": "827e81c4e98d53c5ae6abddcbfa60009bee370e2f8941c01dbfa0c3764689039",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "R22ac35cb220417fc",
+      "answer_sha256": "20da5ca4002b9d96ac64c298bc765fb1a8d6e7830bf16111a492e88f8ab758b9",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fb9d034bc65e4d9aa68b1e9c1b0a7639",
+      "arm": "pilot-matrix.catl.deepseek.g10.targeted",
+      "question_id": "IQS_16"
+    },
+    {
+      "review_id": "R888e2fe59d7a95eb",
+      "answer_sha256": "bfd4dd35b3c5fd28bcf5092062d8bd5408f20229e695824fb69c8910126451c8",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fefc12ec5d6548dc9a03c3052b9c2031",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_09"
+    },
+    {
+      "review_id": "R33d23a6730747ada",
+      "answer_sha256": "d0d5b6b1409e37e2f55469a36e33501829571978f7ecf35b3677f19dc4b0c454",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fefc12ec5d6548dc9a03c3052b9c2031",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_10"
+    },
+    {
+      "review_id": "R3bcde0156cf19a51",
+      "answer_sha256": "b90ee854dd3c1275d296c9353b322b05dc859b0a445c2bac2a4cb8419ba0ce2c",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fefc12ec5d6548dc9a03c3052b9c2031",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_12"
+    },
+    {
+      "review_id": "Rf3b3ceba8fae1ab3",
+      "answer_sha256": "afcbdd5f329ccf12017d136b24b36feda75137a246838c40f444e16db3860878",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fefc12ec5d6548dc9a03c3052b9c2031",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_13"
+    },
+    {
+      "review_id": "Rf8a1bc3d3d5f81e8",
+      "answer_sha256": "c86a3216bf6afb9d0f262b673821a5d9744baedf0ceef9e3b1d756a3c92cdea5",
+      "run": "mimo-pro-pilot-2026-10-07-01",
+      "chunk_id": "CHK_fefc12ec5d6548dc9a03c3052b9c2031",
+      "arm": "pilot-matrix.cncb_h.deepseek.g5.targeted",
+      "question_id": "IQS_16"
+    }
+  ],
+  "final-statistics.json": {
+    "schema": "mimo_pilot_final/1",
+    "created_at": "2026-10-07T20:06:55.181063+00:00",
+    "companies": 3,
+    "questions_each": 10,
+    "matrix": {
+      "mimo": {
+        "1": {
+          "requested": 30,
+          "valid_rows": 28,
+          "raw_strict_rows": 28,
+          "scored": 17,
+          "median_company_seconds": 20.619,
+          "sum_block_seconds": 56.455,
+          "reference_usd": 0.0053945,
+          "input_tokens": 212541,
+          "output_tokens": 8236,
+          "cached_tokens": 194368,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "item_contract": 1,
+            "claim_reference_contract": 1
+          },
+          "actual_models": [
+            "mimo-v2.6-flash"
+          ],
+          "finish_reasons": {
+            "stop": 30
+          }
+        },
+        "5": {
+          "requested": 30,
+          "valid_rows": 20,
+          "raw_strict_rows": 20,
+          "scored": 8,
+          "median_company_seconds": 18.042,
+          "sum_block_seconds": 55.514,
+          "reference_usd": 0.00565725,
+          "input_tokens": 44853,
+          "output_tokens": 4489,
+          "cached_tokens": 13696,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "missing_duplicate_extra_or_reordered_qid": 1,
+            "root_contract": 1
+          },
+          "actual_models": [
+            "mimo-v2.6-flash"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        },
+        "10": {
+          "requested": 30,
+          "valid_rows": 0,
+          "raw_strict_rows": 0,
+          "scored": 0,
+          "median_company_seconds": 11.87,
+          "sum_block_seconds": 33.396,
+          "reference_usd": 0.0018593,
+          "input_tokens": 23895,
+          "output_tokens": 1153,
+          "cached_tokens": 13184,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "missing_duplicate_extra_or_reordered_qid": 3
+          },
+          "actual_models": [
+            "mimo-v2.6-flash"
+          ],
+          "finish_reasons": {
+            "stop": 3
+          }
+        }
+      },
+      "mimo_pro": {
+        "1": {
+          "requested": 30,
+          "valid_rows": 27,
+          "raw_strict_rows": 27,
+          "scored": 12,
+          "median_company_seconds": 114.628,
+          "sum_block_seconds": 277.818,
+          "reference_usd": 0.09724091,
+          "input_tokens": 212541,
+          "output_tokens": 7976,
+          "cached_tokens": 4992,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "claim_reference_contract": 3
+          },
+          "actual_models": [
+            "mimo-v2.6-pro"
+          ],
+          "finish_reasons": {
+            "stop": 30
+          }
+        },
+        "5": {
+          "requested": 30,
+          "valid_rows": 10,
+          "raw_strict_rows": 10,
+          "scored": 8,
+          "median_company_seconds": 38.442,
+          "sum_block_seconds": 103.925,
+          "reference_usd": 0.02282053,
+          "input_tokens": 44853,
+          "output_tokens": 3804,
+          "cached_tokens": 0,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "missing_duplicate_extra_or_reordered_qid": 4
+          },
+          "actual_models": [
+            "mimo-v2.6-pro"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        },
+        "10": {
+          "requested": 30,
+          "valid_rows": 10,
+          "raw_strict_rows": 10,
+          "scored": 10,
+          "median_company_seconds": 23.324,
+          "sum_block_seconds": 86.086,
+          "reference_usd": 0.00947409,
+          "input_tokens": 23895,
+          "output_tokens": 2687,
+          "cached_tokens": 7552,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "missing_duplicate_extra_or_reordered_qid": 2
+          },
+          "actual_models": [
+            "mimo-v2.6-pro"
+          ],
+          "finish_reasons": {
+            "stop": 3
+          }
+        }
+      },
+      "deepseek": {
+        "1": {
+          "requested": 30,
+          "valid_rows": 26,
+          "raw_strict_rows": 26,
+          "scored": 8,
+          "median_company_seconds": 6.502,
+          "sum_block_seconds": 19.194,
+          "reference_usd": 0.0132955,
+          "input_tokens": 177779,
+          "output_tokens": 8030,
+          "cached_tokens": 168960,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 30,
+          "failures": {
+            "claims_contract": 4
+          },
+          "actual_models": [
+            "deepseek-flash"
+          ],
+          "finish_reasons": {
+            "stop": 30
+          }
+        },
+        "5": {
+          "requested": 30,
+          "valid_rows": 30,
+          "raw_strict_rows": 30,
+          "scored": 13,
+          "median_company_seconds": 6.037,
+          "sum_block_seconds": 17.935,
+          "reference_usd": 0.01448248,
+          "input_tokens": 37843,
+          "output_tokens": 6528,
+          "cached_tokens": 16000,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 6,
+          "failures": {},
+          "actual_models": [
+            "deepseek-flash"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        },
+        "10": {
+          "requested": 30,
+          "valid_rows": 30,
+          "raw_strict_rows": 30,
+          "scored": 18,
+          "median_company_seconds": 9.03,
+          "sum_block_seconds": 27.612,
+          "reference_usd": 0.01016974,
+          "input_tokens": 20351,
+          "output_tokens": 6084,
+          "cached_tokens": 11008,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 3,
+          "failures": {},
+          "actual_models": [
+            "deepseek-flash"
+          ],
+          "finish_reasons": {
+            "stop": 3
+          }
+        }
+      }
+    },
+    "equal_cap_thinking": {
+      "mimo": {
+        "off": {
+          "requested": 30,
+          "valid_rows": 20,
+          "raw_strict_rows": 20,
+          "scored": 12,
+          "median_company_seconds": 17.873,
+          "sum_block_seconds": 51.659,
+          "reference_usd": 0.00163748,
+          "input_tokens": 44853,
+          "output_tokens": 5311,
+          "cached_tokens": 44672,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "root_contract": 1,
+            "missing_duplicate_extra_or_reordered_qid": 1
+          },
+          "actual_models": [
+            "mimo-v2.6-flash"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        },
+        "on": {
+          "requested": 30,
+          "valid_rows": 5,
+          "raw_strict_rows": 5,
+          "scored": 3,
+          "median_company_seconds": 69.695,
+          "sum_block_seconds": 213.734,
+          "reference_usd": 0.0055628,
+          "input_tokens": 44841,
+          "output_tokens": 19336,
+          "cached_tokens": 44672,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 8408,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "missing_duplicate_extra_or_reordered_qid": 3,
+            "root_contract": 1,
+            "Expecting ',' delimiter: line 1 column 699 (char 698)": 1
+          },
+          "actual_models": [
+            "mimo-v2.6-flash"
+          ],
+          "finish_reasons": {
+            "stop": 5,
+            "length": 1
+          }
+        }
+      },
+      "mimo_pro": {
+        "off": {
+          "requested": 30,
+          "valid_rows": 5,
+          "raw_strict_rows": 5,
+          "scored": 4,
+          "median_company_seconds": 22.655,
+          "sum_block_seconds": 69.399,
+          "reference_usd": 0.00264464,
+          "input_tokens": 44853,
+          "output_tokens": 2701,
+          "cached_tokens": 44544,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "missing_duplicate_extra_or_reordered_qid": 2,
+            "root_contract": 3
+          },
+          "actual_models": [
+            "mimo-v2.6-pro"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        },
+        "on": {
+          "requested": 30,
+          "valid_rows": 15,
+          "raw_strict_rows": 15,
+          "scored": 13,
+          "median_company_seconds": 138.799,
+          "sum_block_seconds": 438.627,
+          "reference_usd": 0.02003681,
+          "input_tokens": 44841,
+          "output_tokens": 22698,
+          "cached_tokens": 44544,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 16105,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "item_contract": 1,
+            "missing_duplicate_extra_or_reordered_qid": 1,
+            "claim_reference_contract": 1
+          },
+          "actual_models": [
+            "mimo-v2.6-pro"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        }
+      },
+      "deepseek": {
+        "off": {
+          "requested": 30,
+          "valid_rows": 25,
+          "raw_strict_rows": 25,
+          "scored": 9,
+          "median_company_seconds": 5.643,
+          "sum_block_seconds": 17.039,
+          "reference_usd": 0.00811806,
+          "input_tokens": 37843,
+          "output_tokens": 6335,
+          "cached_tokens": 36860,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 6,
+          "failures": {
+            "claims_contract": 1
+          },
+          "actual_models": [
+            "deepseek-flash"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        },
+        "on": {
+          "requested": 30,
+          "valid_rows": 30,
+          "raw_strict_rows": 30,
+          "scored": 18,
+          "median_company_seconds": 35.338,
+          "sum_block_seconds": 110.771,
+          "reference_usd": 0.06406846,
+          "input_tokens": 37993,
+          "output_tokens": 44143,
+          "cached_tokens": 1024,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 37997,
+          "reasoning_usage_missing": 0,
+          "failures": {},
+          "actual_models": [
+            "deepseek-flash"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        }
+      },
+      "minimax": {
+        "off": {
+          "requested": 30,
+          "valid_rows": 15,
+          "raw_strict_rows": 15,
+          "scored": 13,
+          "median_company_seconds": 18.286,
+          "sum_block_seconds": 55.74,
+          "reference_usd": 0.03575148,
+          "input_tokens": 36497,
+          "output_tokens": 7001,
+          "cached_tokens": 6144,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 0,
+          "reasoning_usage_missing": 2,
+          "failures": {
+            "claim_reference_contract": 2,
+            "reference_contract": 1
+          },
+          "actual_models": [
+            "MiniMax-M3"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        },
+        "on": {
+          "requested": 30,
+          "valid_rows": 15,
+          "raw_strict_rows": 0,
+          "scored": 15,
+          "median_company_seconds": 35.261,
+          "sum_block_seconds": 107.752,
+          "reference_usd": 0.05272596,
+          "input_tokens": 36575,
+          "output_tokens": 14131,
+          "cached_tokens": 6528,
+          "cached_usage_missing": 0,
+          "reasoning_tokens_reported": 2133,
+          "reasoning_usage_missing": 0,
+          "failures": {
+            "claim_reference_contract": 3
+          },
+          "actual_models": [
+            "MiniMax-M3"
+          ],
+          "finish_reasons": {
+            "stop": 6
+          }
+        }
+      }
+    },
+    "json_off_adaptive": {
+      "mimo": {
+        "requested": 30,
+        "valid_rows": 5,
+        "raw_strict_rows": 5,
+        "scored": 4,
+        "median_company_seconds": 12.276,
+        "sum_block_seconds": 84.573,
+        "reference_usd": 0.00195248,
+        "input_tokens": 44853,
+        "output_tokens": 6436,
+        "cached_tokens": 44672,
+        "cached_usage_missing": 0,
+        "reasoning_tokens_reported": 0,
+        "reasoning_usage_missing": 0,
+        "failures": {
+          "Expecting ',' delimiter: line 1 column 479 (char 478)": 2,
+          "claim_reference_contract": 1,
+          "Expecting ',' delimiter: line 1 column 500 (char 499)": 1,
+          "Expecting ',' delimiter: line 1 column 453 (char 452)": 1
+        },
+        "actual_models": [
+          "mimo-v2.6-flash"
+        ],
+        "finish_reasons": {
+          "stop": 6
+        }
+      },
+      "mimo_pro": {
+        "requested": 30,
+        "valid_rows": 10,
+        "raw_strict_rows": 0,
+        "scored": 6,
+        "median_company_seconds": 35.534,
+        "sum_block_seconds": 116.442,
+        "reference_usd": 0.00644219,
+        "input_tokens": 44853,
+        "output_tokens": 7066,
+        "cached_tokens": 44544,
+        "cached_usage_missing": 0,
+        "reasoning_tokens_reported": 0,
+        "reasoning_usage_missing": 0,
+        "failures": {
+          "Expecting ',' delimiter: line 1 column 508 (char 507)": 1,
+          "Expecting ',' delimiter: line 1 column 382 (char 381)": 1,
+          "Expecting value: line 1 column 1 (char 0)": 1,
+          "Extra data: line 1 column 914 (char 913)": 1
+        },
+        "actual_models": [
+          "mimo-v2.6-pro"
+        ],
+        "finish_reasons": {
+          "stop": 6
+        }
+      }
+    },
+    "independent_repeat_g10": {
+      "mimo": {
+        "requested": 30,
+        "valid_rows": 10,
+        "raw_strict_rows": 10,
+        "scored": 10,
+        "median_company_seconds": 8.405,
+        "sum_block_seconds": 32.489,
+        "reference_usd": 0.00086043,
+        "input_tokens": 23895,
+        "output_tokens": 2760,
+        "cached_tokens": 23744,
+        "cached_usage_missing": 0,
+        "reasoning_tokens_reported": 0,
+        "reasoning_usage_missing": 0,
+        "failures": {
+          "missing_duplicate_extra_or_reordered_qid": 1,
+          "root_contract": 1
+        },
+        "actual_models": [
+          "mimo-v2.6-flash"
+        ],
+        "finish_reasons": {
+          "stop": 3
+        }
+      },
+      "mimo_pro": {
+        "requested": 30,
+        "valid_rows": 30,
+        "raw_strict_rows": 30,
+        "scored": 24,
+        "median_company_seconds": 44.828,
+        "sum_block_seconds": 153.046,
+        "reference_usd": 0.00501551,
+        "input_tokens": 23895,
+        "output_tokens": 5496,
+        "cached_tokens": 23552,
+        "cached_usage_missing": 0,
+        "reasoning_tokens_reported": 0,
+        "reasoning_usage_missing": 0,
+        "failures": {},
+        "actual_models": [
+          "mimo-v2.6-pro"
+        ],
+        "finish_reasons": {
+          "stop": 3
+        }
+      },
+      "deepseek": {
+        "requested": 30,
+        "valid_rows": 30,
+        "raw_strict_rows": 30,
+        "scored": 19,
+        "median_company_seconds": 9.655,
+        "sum_block_seconds": 27.173,
+        "reference_usd": 0.00732834,
+        "input_tokens": 20351,
+        "output_tokens": 5880,
+        "cached_tokens": 19840,
+        "cached_usage_missing": 0,
+        "reasoning_tokens_reported": 0,
+        "reasoning_usage_missing": 3,
+        "failures": {},
+        "actual_models": [
+          "deepseek-flash"
+        ],
+        "finish_reasons": {
+          "stop": 3
+        }
+      }
+    },
+    "aggregate_budget": {
+      "model_requests": 186,
+      "search_requests": 24,
+      "charged_upper_usd": 2.877381,
+      "unresolved_attempts": 0
+    },
+    "model_token_reference_usd": 0.392538,
+    "scope": "single-day three-company source-context experiment; not production scan or factual gold",
+    "pricing_snapshot": "docs/implementation/experiments/mimo-pilot-pricing-2026-10-07.json",
+    "pricing_note": "peak/undiscounted frozen reference; DeepSeek off-peak and MiniMax discount references may be half; package actual cash unknown"
+  },
+  "route-snapshot.json": {
+    "minimax": {
+      "model": "MiniMax-M3",
+      "key_env": "MINIMAX_API_KEY",
+      "endpoint": "https://api.minimaxi.com/v1/chat/completions",
+      "input_rate": 0.6,
+      "output_rate": 2.4,
+      "cache_rate": 0.12
+    },
+    "mimo": {
+      "model": "mimo-v2.6-flash",
+      "key_env": "MIMO_API_KEY",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "input_rate": 0.14,
+      "output_rate": 0.28,
+      "cache_rate": 0.0028
+    },
+    "mimo_pro": {
+      "model": "mimo-v2.6-pro",
+      "key_env": "MIMO_API_KEY",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "input_rate": 0.435,
+      "output_rate": 0.87,
+      "cache_rate": 0.0036
+    },
+    "deepseek": {
+      "model": "deepseek-flash",
+      "key_env": "DEEPSEEK_API_KEY",
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "input_rate": 0.3,
+      "output_rate": 1.2,
+      "cache_rate": 0.006
+    }
+  }
+}

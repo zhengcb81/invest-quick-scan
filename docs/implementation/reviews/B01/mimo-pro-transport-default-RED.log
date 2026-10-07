@@ -1,0 +1,15 @@
+test_observer_does_not_leak_inherited_temperature_into_actual_payload (test_mimo_pilot_extension.ExtensionTests.test_observer_does_not_leak_inherited_temperature_into_actual_payload) ... FAIL
+
+======================================================================
+FAIL: test_observer_does_not_leak_inherited_temperature_into_actual_payload (test_mimo_pilot_extension.ExtensionTests.test_observer_does_not_leak_inherited_temperature_into_actual_payload)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_mimo_pilot_extension.py", line 30, in test_observer_does_not_leak_inherited_temperature_into_actual_payload
+    self.assertNotIn('temperature',sent[0])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'temperature' unexpectedly found in {'model': 'mimo-v2.6-pro', 'messages': [{'role': 'user', 'content': 'synthetic'}], 'temperature': 0.7, 'thinking': {'type': 'enabled'}, 'max_completion_tokens': 10000, 'stream': False}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.013s
+
+FAILED (failures=1)

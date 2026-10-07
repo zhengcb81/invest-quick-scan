@@ -1569,3 +1569,18 @@ StockQA原5+R1–R3验收范围保持；982通过不能证明尚未执行的真�
 预检已实跑确认两项：adapter少9项观察必填元数据及execution.started_at，公开consumer返回rejected/observation_missing_field；不同真实attempt同obs_id。原内部ready/seal validator没有完整Observation要求，不能据封包成功宣布跨仓ready。正确修复需要题库/Recipe/运行上下文的耐久真实输入与历史封包兼容，不能测试侧猜field/cutoff/cohort或放宽StockWiki。下一批StockQA已有全仓授权，可先做输入映射并报备精确源码范围；StockWiki整改仍待writer授权。
 
 Phase91集中独立复核已完成：报告`docs/implementation/reviews/G3/cross-owner-independent-review-2026-10-07.md`确认三RED属于上述两类阻断，无第三类产品缺陷。篡改GREEN只实证exit2/hash错误，没有独立数据库计数断言；不要将其扩大成单独证明observations=0。重放GREEN确实断言同ACK和观察0，但归档两ACK来自不同case，不能冒充配对。当前四源仓HEAD均无新提交，TH/IN开工条件没有改变。
+
+Phase92输入映射发现：IQS `standard_answers.build_observations`已定义field/版本/method/cohort/cutoff及以完整record内容寻址的ID，应该抽出同一纯metadata helper供authority导出，不能在StockQA重复计算。StockQA normalized checkpoint description可以保留LLM的结构化内层JSON，但parser只接受score/description外层和实体绑定；因此完整标准答案模式应保留原外层身份校验，并显式要求description携带完整标准JSON，不静默允许缺实体的原始body。旧compact检查点不可由confidence/current等默认值升级。实际provider开始时间可由耐久attempt.send_intent_at取，信息日期只能来自冻结profile；两种时间必须分开。
+
+## 2026-10-07 — MiMo Pro追加实验决策
+旧实验性能候选不等于正确性候选；新实验必须用相同公司/问题/证据比较Flash/Pro/DeepSeek，thinking参数单列。扩大源片段不能靠提升分数衡量，仍以来源支持与合法unknown报告。普通MIMO_API_KEY保持，Token Plan不混用；不启生产原生搜索、不改默认派发。官方价格与预注册详见docs/implementation/experiments/mimo-pro-pilot-2026-10-07.md。主线Phase92暂停在保留交付处，不宣布完成。
+
+用户随后要求全部模型思考开关对比：主132请求/warm全部结束后新增等上限四模型42请求，Pro原6开启复用；MiniMax M3用adaptive/split，MiMo与DeepSeek用enabled/独立reasoning字段，显示与耐久数据只保留最终答案。不是凭prompt说“不要思考”关闭其能力。新官方定价表MiniMax standard <=512K有50%折扣、DeepSeek离峰半价；旧归档的peak/undiscounted参考不改，新独立pricing快照注明可另列折扣参考与套餐未知，不能反推实扣。
+
+### 四模型对照终态与质量判断
+
+等10000上限五题包：Flash off/on有效20/5、Pro5/15、DeepSeek25/30、M3 15/15（各分母30）；DeepSeek耗时5.643→35.338秒，公共冻结token参考约7.89倍，provider缓存不同不能纯归因思考。主温度0矩阵DeepSeek g5/g10 30/30，Pro g10独立重复10→30/30仍说明不稳定。JSON-off Flash5/Pro10有效未修复总体协议。结构数含unknown、整包拒绝含引用错误，不称准确率/缺题率。
+
+独立审查实际源重建发现48次继承客户端temperature0.7，原ledger.parameters计划省略；用固定runtime AST确认默认后186/186 canonical payload SHA匹配。原收费结果/ledger事件/source不回写，新增实际参数provenance；未来explicit_only/2只继承model/messages、版本化cache、warm miss零发送、已归档ID拒prepare，已离线RED→GREEN，未收费重跑。等cap开关实际均显式0.7，MiMo/DeepSeek思考有效采样受官方规则影响，不是纯温度受控因果实验。
+
+全326来源支持盲评：claims支持162/部分150/不支持2/无claim12；191 scored仅14有限方向/区间有依据，177不足，135非评分。主要缺口为短片段表头/期间/单位、发行人自身融资与客户业务混淆、集团/segment/指标层级不匹配，换强模型或开思考不能替代证据覆盖。两agent未校准一致性，Pro开关跨分区，不能用review差异判世界准确率或宣布生产赢家。结果与价格/生成配置均结构化留档。

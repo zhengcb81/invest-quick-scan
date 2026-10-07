@@ -1,0 +1,358 @@
+{
+  "schema": "mimo_pilot_source_support_join/1",
+  "created_at": "2026-10-07T20:23:36.599460+00:00",
+  "reviewed": 326,
+  "expected": 326,
+  "claims": {
+    "supported": 162,
+    "partial": 150,
+    "no_claims": 12,
+    "unsupported": 2
+  },
+  "basis": {
+    "not_scored": 135,
+    "insufficient": 177,
+    "supported": 14
+  },
+  "score_scopes": "supported means limited source-backed direction/band, never validated exact 1-10 score",
+  "method_note": "Two blinded agents reviewed disjoint primary/extension partitions using the same instructions; inter-rater calibration not measured. Pro on/off crosses these partitions.",
+  "not_human_or_world_gold": true,
+  "by_arm": [
+    {
+      "stage": "paired-jsonoff",
+      "route": "mimo_nojson",
+      "group": "g5",
+      "n": 5,
+      "claims": {
+        "no_claims": 1,
+        "supported": 2,
+        "partial": 2
+      },
+      "basis": {
+        "not_scored": 1,
+        "insufficient": 4
+      },
+      "scored": 4,
+      "high_scores": 3,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 0
+    },
+    {
+      "stage": "paired-jsonoff",
+      "route": "mimo_pro_nojson",
+      "group": "g5",
+      "n": 10,
+      "claims": {
+        "supported": 5,
+        "partial": 5
+      },
+      "basis": {
+        "not_scored": 4,
+        "insufficient": 6
+      },
+      "scored": 6,
+      "high_scores": 3,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 1
+    },
+    {
+      "stage": "paired-off",
+      "route": "deepseek",
+      "group": "g5",
+      "n": 25,
+      "claims": {
+        "supported": 13,
+        "partial": 12
+      },
+      "basis": {
+        "not_scored": 16,
+        "insufficient": 9
+      },
+      "scored": 9,
+      "high_scores": 8,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 6
+    },
+    {
+      "stage": "paired-off",
+      "route": "mimo",
+      "group": "g5",
+      "n": 20,
+      "claims": {
+        "supported": 7,
+        "partial": 10,
+        "no_claims": 3
+      },
+      "basis": {
+        "not_scored": 8,
+        "insufficient": 12
+      },
+      "scored": 12,
+      "high_scores": 6,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 1
+    },
+    {
+      "stage": "paired-off",
+      "route": "mimo_pro",
+      "group": "g5",
+      "n": 5,
+      "claims": {
+        "supported": 4,
+        "partial": 1
+      },
+      "basis": {
+        "not_scored": 1,
+        "insufficient": 4
+      },
+      "scored": 4,
+      "high_scores": 3,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 0
+    },
+    {
+      "stage": "paired-off",
+      "route": "minimax",
+      "group": "g5",
+      "n": 15,
+      "claims": {
+        "supported": 2,
+        "partial": 11,
+        "unsupported": 2
+      },
+      "basis": {
+        "not_scored": 2,
+        "insufficient": 13
+      },
+      "scored": 13,
+      "high_scores": 8,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 1
+    },
+    {
+      "stage": "paired-on",
+      "route": "deepseek",
+      "group": "g5",
+      "n": 30,
+      "claims": {
+        "supported": 16,
+        "partial": 11,
+        "no_claims": 3
+      },
+      "basis": {
+        "not_scored": 12,
+        "insufficient": 16,
+        "supported": 2
+      },
+      "scored": 18,
+      "high_scores": 3,
+      "high_score_basis_supported": 1,
+      "unscored_with_claim_issues": 1
+    },
+    {
+      "stage": "paired-on",
+      "route": "mimo",
+      "group": "g5",
+      "n": 5,
+      "claims": {
+        "no_claims": 2,
+        "supported": 2,
+        "partial": 1
+      },
+      "basis": {
+        "not_scored": 2,
+        "insufficient": 2,
+        "supported": 1
+      },
+      "scored": 3,
+      "high_scores": 1,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 0
+    },
+    {
+      "stage": "paired-on",
+      "route": "minimax",
+      "group": "g5",
+      "n": 15,
+      "claims": {
+        "partial": 11,
+        "supported": 4
+      },
+      "basis": {
+        "insufficient": 15
+      },
+      "scored": 15,
+      "high_scores": 5,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 0
+    },
+    {
+      "stage": "pilot-matrix",
+      "route": "deepseek",
+      "group": "g1",
+      "n": 26,
+      "claims": {
+        "supported": 13,
+        "partial": 13
+      },
+      "basis": {
+        "not_scored": 18,
+        "insufficient": 7,
+        "supported": 1
+      },
+      "scored": 8,
+      "high_scores": 6,
+      "high_score_basis_supported": 1,
+      "unscored_with_claim_issues": 7
+    },
+    {
+      "stage": "pilot-matrix",
+      "route": "deepseek",
+      "group": "g10",
+      "n": 30,
+      "claims": {
+        "partial": 14,
+        "supported": 16
+      },
+      "basis": {
+        "supported": 2,
+        "insufficient": 16,
+        "not_scored": 12
+      },
+      "scored": 18,
+      "high_scores": 10,
+      "high_score_basis_supported": 2,
+      "unscored_with_claim_issues": 2
+    },
+    {
+      "stage": "pilot-matrix",
+      "route": "deepseek",
+      "group": "g5",
+      "n": 30,
+      "claims": {
+        "partial": 14,
+        "supported": 16
+      },
+      "basis": {
+        "supported": 2,
+        "insufficient": 11,
+        "not_scored": 17
+      },
+      "scored": 13,
+      "high_scores": 7,
+      "high_score_basis_supported": 2,
+      "unscored_with_claim_issues": 5
+    },
+    {
+      "stage": "pilot-matrix",
+      "route": "mimo",
+      "group": "g1",
+      "n": 28,
+      "claims": {
+        "supported": 13,
+        "partial": 15
+      },
+      "basis": {
+        "insufficient": 17,
+        "not_scored": 11
+      },
+      "scored": 17,
+      "high_scores": 12,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 4
+    },
+    {
+      "stage": "pilot-matrix",
+      "route": "mimo",
+      "group": "g5",
+      "n": 20,
+      "claims": {
+        "no_claims": 3,
+        "supported": 12,
+        "partial": 5
+      },
+      "basis": {
+        "not_scored": 12,
+        "insufficient": 8
+      },
+      "scored": 8,
+      "high_scores": 5,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 2
+    },
+    {
+      "stage": "pilot-matrix",
+      "route": "mimo_pro",
+      "group": "g1",
+      "n": 27,
+      "claims": {
+        "supported": 15,
+        "partial": 12
+      },
+      "basis": {
+        "not_scored": 15,
+        "insufficient": 8,
+        "supported": 4
+      },
+      "scored": 12,
+      "high_scores": 5,
+      "high_score_basis_supported": 2,
+      "unscored_with_claim_issues": 4
+    },
+    {
+      "stage": "pilot-matrix",
+      "route": "mimo_pro",
+      "group": "g10",
+      "n": 10,
+      "claims": {
+        "partial": 4,
+        "supported": 6
+      },
+      "basis": {
+        "supported": 1,
+        "insufficient": 9
+      },
+      "scored": 10,
+      "high_scores": 5,
+      "high_score_basis_supported": 1,
+      "unscored_with_claim_issues": 0
+    },
+    {
+      "stage": "pilot-matrix",
+      "route": "mimo_pro",
+      "group": "g5",
+      "n": 10,
+      "claims": {
+        "partial": 4,
+        "supported": 6
+      },
+      "basis": {
+        "not_scored": 2,
+        "insufficient": 7,
+        "supported": 1
+      },
+      "scored": 8,
+      "high_scores": 5,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 1
+    },
+    {
+      "stage": "pilot-thinking",
+      "route": "mimo_pro",
+      "group": "g5",
+      "n": 15,
+      "claims": {
+        "supported": 10,
+        "partial": 5
+      },
+      "basis": {
+        "not_scored": 2,
+        "insufficient": 13
+      },
+      "scored": 13,
+      "high_scores": 6,
+      "high_score_basis_supported": 0,
+      "unscored_with_claim_issues": 0
+    }
+  ]
+}

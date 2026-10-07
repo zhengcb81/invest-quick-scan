@@ -194,3 +194,15 @@ single_next_action:
 P2-5本范围已收口：相关89 tests/139subtests、最终独立14tests通过；实施commit `a780a724259b2a9915409567b0555cd3ef251a40`已推送origin/master，审查及限制见[批次报告](reviews/IQS-lane/P2-5-wire-review-2026-10-07.md)。不要重复这批实现或扩大verified范围；只有后续行为变化/新失败才重跑受影响检查。
 
 特别保留后续缺口：work.schema的source_binding_refs仍只允许BND；当前身份CLI不校验现在as_of的有效性。不要用三正例关闭工作链或G3。用户要求后两包可开工时通知，已有本线程每小时只读follow-up（automationId=automation）；条件未变保持安静，不启动收费或代改仓库。不要创建重复提醒。
+
+### 2026-10-07 最新接续：Phase90–93（覆盖上方旧占用/暂停/下一步口径）
+
+先读根PWF最后四阶段和本节，不按上文旧HEAD或停工句重启已做批次。用户已继续推进；IQS当前在主线，外仓状态随其他进程可能变化，读最新Git再决定写入，不拿本节作动态clean证明。
+
+- QA-NET-01整改在StockQA `84e24ef`、证据`4779764`、统计纠正`09f68a6`已提交推送，本范围982离线通过；整包partial，没有真实跨仓G3正例。SW-READY-01交付接收，6固定反例待唯一writer修复；StockWiki仍只读，不能把查收理解成代改授权。TH/IN开工门G3/F05/真实owner查询golden未齐，W11已交付。
+- Phase91真实公开producer→consumer隔离预检归档：3 RED为完整观察元数据缺失和独立扫描ID冲突两类，3 GREEN范围有限。不要重复982测试或扩大验收；`ab3270160a8f166b0ea1fd8e01b3d4acb6b12bf8`是Phase93开始前IQS提交基线。
+- Phase92是接下来实施的单一主线：输入映射/写入范围在`reviews/G3/c06-authority-v2-input-map-2026-10-07.md`和`phase92-stockqa-write-scope.md`；IQS `c06_authority.py`与StockQA首段9文件未完，原组合79 tests/24subtests GREEN，但后增`embedded_answer`真实RED（1failed/44deselected/0.41s）。先修拒绝authority夹带答案，再接loader/store/完整标准答案耐久封包，缺信息持久阻断且不自动重问。不是v2生产已就绪。StockQA全仓写授权有效，外仓每批写前报备、重新核唯一writer。
+- Phase93收费实验已结束：三司10题、Flash/Pro/DeepSeek主1/5/10包、四模型思考开关与JSON-off，共186模型/24搜索/0未知，上界USD2.877381；结果`experiments/mimo-pro-results-2026-10-07.md`。326来源复核不等于gold，不能据结构完整启生产g5/思考或L03。后续缓存协议explicit_only/2修复只离线测试，旧48次实际temperature0.7原结果留档，不重发或回写。
+- 仅三个MiMo实验根537临时文件已清理。`runs/c06-context-2026-10-07-01`、Phase92未完成源修改及opencode.json明确保留。本实验精确提交排除这些产品文件；不要为“清工作树”删除/提交他人的改动。
+
+恢复时以progress最新commit/push记录及[实验结果](experiments/mimo-pro-results-2026-10-07.md)、[技术复核](reviews/B01/mimo-pro-technical-review-2026-10-07.md)为准。归档公共CLI支持--archive离线重算；source join用--check只读，不重跑收费矩阵/重新检索补历史片段。每个实施批次做受影响TDD和一次集中大节点审查，不为每个helper另立门。

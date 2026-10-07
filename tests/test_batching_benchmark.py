@@ -192,7 +192,7 @@ class BenchmarkTests(unittest.TestCase):
             self.assertEqual(observer.receipt['response_id'],'RESP_A')
             self.assertEqual(ledger.summary()['unresolved_attempts'],0)
             with self.assertRaises(b.BudgetExceeded):
-                observer.post(b.ROUTES['deepseek']['endpoint'],json={'messages':[{'content':'hi'}]},headers={})
+                observer.post(b.ROUTES['deepseek']['endpoint'],json={'model':'deepseek-flash','messages':[{'content':'hi'}]},headers={})
             self.assertEqual(delegate.sent,1)
 
     def test_timeout_no_retry_and_reservation_held(self):
@@ -205,7 +205,7 @@ class BenchmarkTests(unittest.TestCase):
             ledger=b.Ledger(Path(tmp));delegate=Session()
             observer=b.TransportObserver(delegate,ledger,'deepseek',{'arm':'probe'},{'max_tokens':100})
             with self.assertRaises(RuntimeError):
-                observer.post(b.ROUTES['deepseek']['endpoint'],json={'messages':[{'content':'hi'}]},headers={})
+                observer.post(b.ROUTES['deepseek']['endpoint'],json={'model':'deepseek-flash','messages':[{'content':'hi'}]},headers={})
             self.assertEqual(delegate.sent,1)
             self.assertEqual(observer.receipt['state'],'outcome_unknown')
             self.assertGreater(ledger.summary()['charged_upper_usd'],0)
@@ -241,7 +241,7 @@ class BenchmarkTests(unittest.TestCase):
         qs=[dict(question_id='Q1',text='q',anchors={'1':'a','5':'b','10':'c'},rubric_version='1')]
         params=dict(temperature=0,stream=False,thinking={'type':'disabled'},max_tokens=1624,response_format={'type':'json_object'})
         system,prompt=b.build_prompt(company,qs,[])
-        key=b.fingerprint(dict(route=b.ROUTES['deepseek'],system=system,prompt=prompt,parameters=params,parser_version='4'))
+        key=b.fingerprint(dict(route=b.ROUTES['deepseek'],system=system,prompt=prompt,parameters=params,parser_version='4',transport_parameter_policy='explicit_only/2'))
         with tempfile.TemporaryDirectory(dir=ROOT) as tmp:
             run=Path(tmp);b.AnswerCache(run/'cache').put(key,{'cache_hit':False,'arm':'first','repeat':0,'answers':[answer()]})
             with patch.object(b,'read_key',side_effect=AssertionError('must not read key')):

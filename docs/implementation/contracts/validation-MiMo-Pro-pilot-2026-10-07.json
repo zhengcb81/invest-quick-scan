@@ -1,0 +1,50 @@
+{
+  "scope": "real text generation through frozen StockQA transport; external snippets only, not native search or production acceptance",
+  "requested_model": "mimo-v2.6-pro",
+  "credential_env": "MIMO_API_KEY",
+  "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+  "actual_receipt": {
+    "attempt_id": "ATT_4bdd9caab6094f90b30f71b33477d8fe",
+    "http_status": 200,
+    "latency_s": 8.615,
+    "response_id": "650f1605-f2e1-461a-961f-797d96b31167_09fc0338e92b48b4b2323c0795ed28c2",
+    "actual_model": "mimo-v2.6-pro",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 263,
+      "prompt_tokens": 8842,
+      "total_tokens": 9105,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0118728,
+    "final_content_sha256": "4f63a1bcc436d81f31c45d0cdb5cb6ab019dbcaa07646115a3e97d0042067812"
+  },
+  "chunk_id": "CHK_1958f40b63ae47078b4ce7ddb33265f7",
+  "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+  "prompt_sha256": "bb69dff7418122acee73a9ddee868a3f1f366385fe6abe706d95d642f0b427a0",
+  "cache_key": "03972697731a927b0f2d3fd2afae4ee321c0e9fcad3005233e95f186e9e6c303",
+  "checked_at": "2026-10-07",
+  "pricing": {
+    "per_million_tokens": {
+      "USD": {
+        "input_uncached": 0.435,
+        "input_cached": 0.0036,
+        "output": 0.87
+      },
+      "CNY": {
+        "input_uncached": 3,
+        "input_cached": 0.025,
+        "output": 6
+      }
+    },
+    "source": "https://mimo.mi.com/docs/pricing",
+    "not_invoice": true
+  }
+}

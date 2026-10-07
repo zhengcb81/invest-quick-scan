@@ -42,6 +42,9 @@ ROUTES = {
     'mimo': dict(model='mimo-v2.6-flash', key_env='MIMO_API_KEY',
                  endpoint='https://api.xiaomimimo.com/v1/chat/completions',
                  input_rate=.14, output_rate=.28, cache_rate=.0028),
+    'mimo_pro': dict(model='mimo-v2.6-pro', key_env='MIMO_API_KEY',
+                 endpoint='https://api.xiaomimimo.com/v1/chat/completions',
+                 input_rate=.435, output_rate=.87, cache_rate=.0036),
     'deepseek': dict(model='deepseek-flash', key_env='DEEPSEEK_API_KEY',
                      endpoint='https://api.deepseek.com/chat/completions',
                      input_rate=.3, output_rate=1.2, cache_rate=.006),
@@ -351,6 +354,8 @@ def git_bytes(path):
 
 def prepare(run):
     """Explicit source-only export, never all-repo archive or llm_apis config."""
+    if (ROOT/'docs/implementation/experiments/artifacts'/run.name).exists():
+        raise ValueError('run_id_already_archived_zero_send')
     if (run/'attempts.jsonl').exists() and (run/'attempts.jsonl').stat().st_size:
         raise ValueError('prepare_forbidden_after_first_send')
     runtime = run / 'runtime'
@@ -422,8 +427,12 @@ class TransportObserver:
         cfg = ROUTES[self.route]
         if url != cfg['endpoint']:
             raise ValueError('unexpected_endpoint')
-        payload = dict(kwargs['json'])
-        payload.pop('max_tokens',None); payload.update(self.params)
+        if kwargs['json'].get('model')!=cfg['model']:
+            raise ValueError('requested_model_mismatch')
+        # StockQA supplies legacy generation defaults (notably temperature=.7).
+        # The experiment must send exactly its declared policy, not inherit them.
+        payload = {k:kwargs['json'][k] for k in ('model','messages')}
+        payload.update(self.params)
         # No retries or redirects; every POST is explicitly ledgered.
         kwargs.update(json=payload,allow_redirects=False)
         input_upper = sum(len(m['content'].encode()) for m in payload['messages']) + 1024
@@ -431,7 +440,7 @@ class TransportObserver:
         reserve = (input_upper*1.2 + output_upper*4.8)/1_000_000
         aid = self.ledger.reserve('model',reserve,dict(**self.meta, route=self.route,requested_model=cfg['model'],
                  endpoint=url,parameters=self.params,request_body_sha256=fingerprint(payload),
-                 max_output_tokens=output_upper,input_utf8_bound=input_upper))
+                 max_output_tokens=output_upper,input_utf8_bound=input_upper,transport_parameter_policy='explicit_only/2'))
         start = time.monotonic()
         try:
             response = self.delegate.post(url, **kwargs)
@@ -474,25 +483,35 @@ def install_observer(module):
 
 
 def call_chunk(module, delegate, ledger, run, company, questions, evidence, route,
-               arm, repeat=0, warm=False, profile='v5'):
+               arm, repeat=0, warm=False, profile='v5', generation_overrides=None):
     cfg=ROUTES[route]
     identity = {k:v for k,v in company.items() if k not in ('issuer_domains','aliases','name')}
     system,prompt=build_prompt(identity, questions, evidence,profile)
     params=dict(temperature=0,stream=False,thinking={'type':'disabled'},max_completion_tokens=1024+600*len(questions))
     if route=='minimax': params['reasoning_split']=True
-    if route=='mimo': params['response_format']={'type':'json_object'}
+    if route in ('mimo','mimo_pro'): params['response_format']={'type':'json_object'}
     if route=='deepseek':
         params['max_tokens']=params.pop('max_completion_tokens')
         params['response_format']={'type':'json_object'}
+    if generation_overrides:
+        if set(generation_overrides)-{'thinking','max_completion_tokens','omit_temperature'}:
+            raise ValueError('experiment_override_not_allowed')
+        params.update({k:v for k,v in generation_overrides.items() if k!='omit_temperature'})
+        if route=='deepseek' and 'max_completion_tokens' in generation_overrides:
+            params['max_tokens']=params.pop('max_completion_tokens')
+        if generation_overrides.get('omit_temperature') or params['thinking']=={'type':'enabled'}:
+            params.pop('temperature',None)
     # Model/endpoint/system/rubric/cutoff/input evidence all change this key.
     semantic=dict(route=cfg,system=system,prompt=prompt,parameters=params)
     semantic['parser_version']='4'
+    semantic['transport_parameter_policy']='explicit_only/2'
     key=fingerprint(semantic)
     cache=AnswerCache(run/'cache')
     if warm:
         cached=cache.get(key)
         if cached:
             return {**cached,'cache_hit':True,'arm':arm,'repeat':repeat}
+        raise ValueError('warm_cache_miss_zero_send')
     chunk='CHK_'+uuid.uuid4().hex
     meta=dict(chunk_id=chunk,company=company['canonical_name'],entity_id=company['entity_id'],
               arm=arm,repeat=repeat,prompt_profile=profile,question_ids=[q['question_id'] for q in questions],
@@ -649,18 +668,22 @@ def verify_model_inputs(run):
     return fingerprint(current)
 
 
-def targeted_search(run, module, ledger):
+def targeted_search(run, module, ledger, company_slug='cncb_h', topics=None, domains=None):
     """Separate adaptive evidence arm; original pools/locks stay immutable."""
-    if (run/'targeted-input-lock.json').exists():
-        verify_evidence_lock(run,'targeted')
+    prefix='' if company_slug=='cncb_h' else company_slug+'-'
+    lock_path=run/(prefix+'targeted-input-lock.json')
+    if lock_path.exists():
+        verify_evidence_lock(run,'targeted',company_slug)
         return dict(resumed=True,budget=ledger.summary())
     session=module.http_client_manager.get_sync_session()
-    company=json.loads((run/'companies.json').read_text(encoding='utf-8'))['cncb_h']
+    company=json.loads((run/'companies.json').read_text(encoding='utf-8'))[company_slug]
+    domains=domains or ['csc108.com','hkexnews.hk','sse.com.cn']
     fragments={}
     for provider in ('brave','tavily'):
-        for item in json.loads((run/'evidence'/('cncb_h-'+provider+'.json')).read_text(encoding='utf-8')):
+        old_pool=run/'evidence'/(company_slug+'-'+provider+'.json')
+        for item in json.loads(old_pool.read_text(encoding='utf-8')) if old_pool.exists() else []:
             fragments[fingerprint(dict(url=item['url'],snippet=item['snippet']))]=len(item['snippet'])
-    topics=[
+    topics=topics or [
         '2025年度 2026上半年 财富管理 基金投顾 客户 保有规模 业务收入',
         '2025年度 2026上半年 投行业务 市场排名 IPO 债券承销 业务收入',
         '2025年度 管理层 经营目标 兑现 人员 组织 董事 薪酬',
@@ -673,8 +696,8 @@ def targeted_search(run, module, ledger):
         key=read_key('BRAVE_API_KEY' if provider=='brave' else 'TAVILY_API_KEY')
         items=[]
         for topic in topics:
-            query='中信建投证券 601066 06066 '+topic
-            qkey=fingerprint(dict(phase='targeted_v1',provider=provider,query=query,domains=['csc108.com','hkexnews.hk','sse.com.cn']))
+            query=company['canonical_name']+' '+company['ticker']+' '+topic
+            qkey=fingerprint(dict(phase='targeted_v1',provider=provider,query=query,domains=domains))
             checkpoint=run/'evidence'/('targeted-query-'+qkey+'.json')
             if checkpoint.exists():
                 loaded=json.loads(checkpoint.read_text(encoding='utf-8'))['items']
@@ -687,9 +710,9 @@ def targeted_search(run, module, ledger):
             start=time.monotonic()
             try:
                 if provider=='brave':
-                    resp=session.get('https://api.search.brave.com/res/v1/web/search',params=dict(q=query+' (site:csc108.com OR site:hkexnews.hk OR site:sse.com.cn)',count=5),headers={'X-Subscription-Token':key},timeout=45,allow_redirects=False)
+                    resp=session.get('https://api.search.brave.com/res/v1/web/search',params=dict(q=query+' ('+' OR '.join('site:'+d for d in domains)+')',count=5),headers={'X-Subscription-Token':key},timeout=45,allow_redirects=False)
                 else:
-                    resp=session.post('https://api.tavily.com/search',json=dict(api_key=key,query=query,search_depth='advanced',max_results=5,include_domains=['csc108.com','hkexnews.hk','sse.com.cn'],include_raw_content=False,include_answer=False),timeout=45,allow_redirects=False)
+                    resp=session.post('https://api.tavily.com/search',json=dict(api_key=key,query=query,search_depth='advanced',max_results=5,include_domains=domains,include_raw_content=False,include_answer=False),timeout=45,allow_redirects=False)
                 resp.raise_for_status();data=resp.json()
                 rows=((data.get('web') or {}).get('results') or []) if provider=='brave' else data.get('results') or []
                 new=[]
@@ -728,7 +751,7 @@ def targeted_search(run, module, ledger):
             if size+len(text)+1>13000:continue
             pool.append(item);seen.add(item['source_id']);size+=len(text)+1
         providers[provider]=pool
-        write_json(run/'evidence'/('cncb_h-targeted-'+provider+'.json'),pool)
+        write_json(run/'evidence'/(company_slug+'-targeted-'+provider+'.json'),pool)
     balanced=[]
     for i in range(max(len(x) for x in providers.values())):
         for provider in ('brave','tavily'):
@@ -738,17 +761,18 @@ def targeted_search(run, module, ledger):
     for item in balanced:
         n=len(json.dumps(item,ensure_ascii=False,separators=(',',':')))
         if size+n+1<=16000:output.append(item);size+=n+1
-    p=run/'evidence/cncb_h-targeted.json';write_json(p,output)
-    write_json(run/'targeted-input-lock.json',dict(file_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
+    p=run/'evidence'/(company_slug+'-targeted.json');write_json(p,output)
+    write_json(lock_path,dict(file_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
                question_ids=[q['question_id'] for q in json.loads((run/'questions.json').read_text(encoding='utf-8'))[:12]],
                retrieval='six precise Chinese intents; primary domains; basic Brave/advanced Tavily; fragment windows',
                cumulative_unique_snippet_chars=sum(fragments.values()),created_at=now()))
     return dict(retained=len(output),budget=ledger.summary())
 
 
-def verify_evidence_lock(run, variant):
-    p=run/'evidence'/('cncb_h-'+variant+'.json')
-    lock=json.loads((run/(variant+'-input-lock.json')).read_text(encoding='utf-8'))
+def verify_evidence_lock(run, variant, company_slug='cncb_h'):
+    p=run/'evidence'/(company_slug+'-'+variant+'.json')
+    prefix='' if company_slug=='cncb_h' else company_slug+'-'
+    lock=json.loads((run/(prefix+variant+'-input-lock.json')).read_text(encoding='utf-8'))
     if hashlib.sha256(p.read_bytes()).hexdigest()!=lock['file_sha256']:
         raise ValueError(variant+'_evidence_drift')
     return lock

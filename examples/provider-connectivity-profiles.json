@@ -517,6 +517,57 @@
           "url": "https://api-docs.deepseek.com/quick_start/pricing/"
         }
       ]
+    },
+    {
+      "profile_id": "mimo-pro-pay-as-you-go-cn",
+      "provider": "mimo",
+      "service_tier": "pay_as_you_go",
+      "endpoint": {
+        "url": "https://api.xiaomimimo.com/v1/chat/completions",
+        "protocol": "openai_chat_completions",
+        "region": "China mainland"
+      },
+      "model": "mimo-v2.6-pro",
+      "credential_env": "MIMO_API_KEY",
+      "capabilities": {
+        "text_generation": "passed",
+        "provider_web_search_documentation": "supported",
+        "provider_web_search_probe": "not_attempted",
+        "function_tool_calling": "not_verified",
+        "requires_external_search_runner": false,
+        "stockqa_cli_e2e": "not_run"
+      },
+      "usage_note": "Pro text generation was tested using the same ordinary MIMO_API_KEY, JSON mode and frozen external search context. This is not a native-search test, a completed company-scan E2E or proof of scoring correctness. Some multi-question JSON responses omit IDs. Pricing references and actual minimal receipt are in the probe evidence. Production priority remains user-controlled.",
+      "probes": [
+        {
+          "kind": "text_generation",
+          "status": "passed",
+          "checked_at": "2026-10-07",
+          "http_status": 200,
+          "response_status": "stop",
+          "search_calls": 0,
+          "citation_annotations": 0,
+          "input_tokens": 8842,
+          "output_tokens": 263,
+          "total_tokens": 9105,
+          "evidence_path": "docs/implementation/contracts/validation-MiMo-Pro-pilot-2026-10-07.json",
+          "note": "Actual model mimo-v2.6-pro; valid structured five-question response. Search was external/context; native search and full StockQA public CLI not tested."
+        }
+      ],
+      "documentation": [
+        {
+          "title": "MiMo Pro model and API",
+          "url": "https://mimo.mi.com/models/zh-CN/mimo-v2.6-pro"
+        },
+        {
+          "title": "MiMo official pricing",
+          "url": "https://mimo.mi.com/docs/pricing"
+        },
+        {
+          "title": "MiMo structured JSON output",
+          "url": "https://mimo.mi.com/docs/zh-CN/quick-start/usage-guide/text-generation/structured-output"
+        }
+      ]
     }
   ]
 }
