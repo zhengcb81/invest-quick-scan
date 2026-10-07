@@ -415,7 +415,7 @@ Status: complete_for_planning_only
 
 **下一步**：L03 200家公司试点启动前，需 owner 明确放行试点范围/预算并处置 phase-1 局限；未收到该启动确认前不发live请求。W11已verified；G3仍未关闭，因为正式G3还依赖L03和W12恢复证据。本次B01报告审查不替代G3的REV/JOB/BUD/DB验收。接手入口为[`新接手模型工作指南`](docs/implementation/handoff-for-new-agent.md)的2026-10-07后续交接节。
 
-**搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search MCP已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。当前公开CLI走模型原生搜索；Brave/Tavily仅实验接通，Z.ai未接通/未live验证。后续外部adapter仍归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次登记不改变上面的L03启动边界。
+**搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
 ### 历史执行状态（截至2026-09-30）
 

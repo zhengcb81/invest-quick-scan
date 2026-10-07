@@ -1852,3 +1852,12 @@
 - 新增`examples/search-provider-inventory.json`和`references/search-policy.md`，登记Brave/Tavily/Z.ai；Z.ai仅存基础SSE/REST地址、建议环境变量名、文档/字段映射和未验证状态，不存密钥、不改模型顺位。SKILL接入该说明并移除过时的普遍搜索缺口表述。
 - 本批只改IQS文档/参考清单，不写外仓，不读密钥，不安装MCP，不发Brave/Tavily/Z.ai/LLM收费请求；仅官方文档浏览/检索。主线仍等待L03明确启动，无新小节点审查门。
 - 验证：无密钥清单JSON解析和登记状态/无凭据URL断言通过；SKILL及两个接入文档27个本地链接全部有效；`python -X utf8 C:/Users/郑曾波/.codex/skills/.system/skill-creator/scripts/quick_validate.py .`返回`Skill is valid!`；`git diff --check`退出0。只验证文档/清单，本批未跑产品测试或live探针，不宣称Z.ai连通性已验收。
+
+## 2026-10-07 — 用户授权ZAI_API_KEY快速真实验证
+
+- 授权：用户将密钥放在Windows环境变量`ZAI_API_KEY`并要求快速验证。实际从User作用域读取，值仅在探针进程内使用、不输出、不落盘，不改系统环境变量。本批只写IQS脱敏记录，无外仓改动。
+- REST搜索：1请求，HTTP200、2.923秒、有标题/URL/摘要；请求count=3实际1条，未检验过滤或答案正确性。报告`docs/implementation/experiments/zai-connectivity-probe-2026-10-07.json`。
+- MCP：按官方Coding Plan Streamable HTTP接口握手/发现成功，协议2024-11-05；真实工具名`web_search_prime`而非文档`webSearchPrime`。首次search文本249字、单层解析未取得条目，已将最初仅凭URL存在的passed更正为response_unclassified，原始内容未保存所以不补造结果数。第二次诊断返回3252字文本，700字脱敏片段能确认实际标题/URL/摘要条目，搜索通过；观察到JSON字符串包裹数组，后续适配需解开。握手/schema、初次未分类和诊断记录分别为`zai-mcp-connectivity-probe`、`zai-mcp-search-probe`、`zai-mcp-result-check`同日JSON。
+- 请求全口径：REST1+MCP9=10个HTTP请求，其中3次搜索（REST1/MCP2）+7次握手/发现；无自动重试、LLM调用、文档下载或组件安装。只保留脱敏元信息及有限返回片段，无完整响应/临时脚本文件需清理；费用/剩余额度未对账，legacy SSE未测。
+- 清单升为1.1.0，更新当前搜索规则及计划说明。直接探针通过不等于StockQA生产接线或L03启动，不新增小节点审查门。
+- 本批记录校验通过：5个JSON可解析、无凭据URL与探针引用有效、搜索说明7个本地链接有效、10个HTTP/3次搜索统计对齐；`git diff --check`退出0。未运行产品测试或批量扫描；既有未跟踪`opencode.json`保留。

@@ -8,7 +8,7 @@
 |---|---|---|
 | StockQA 公开 CLI `--require-search` | 在 LLM 请求中传供应商的原生搜索工具，并验证响应中的搜索证明 | 已接线；不是仅在提示词写“请联网” |
 | B01-b 外部搜索实验 | Brave/Tavily 返回短证据，实验 runner 将其作为 context 交给 MiniMax-M3 | 实验已执行；未找到公开 CLI 的外部搜索 adapter |
-| Z.ai Web Search MCP / REST | 可作为未来外部检索来源，再把证据交给回答模型 | 已登记，未接通、未试调用；本会话工具列表没有该 MCP |
+| Z.ai Web Search MCP / REST | REST与Streamable HTTP MCP已做直接搜索探针，可作为外部检索来源 | 直接连通性通过；尚未安装到本会话工具列表或接入生产CLI，legacy SSE未测 |
 
 原生搜索的当前协议白名单：MiMo 的指定官方 host 与 `mimo-v2.6-flash/pro/pro-ultraspeed` 走 Chat Completions；MiniMax-M3 的指定官方 host 走 Responses 或 Anthropic Messages。**MiniMax 的普通 Chat Completions 实验请求不因此具备搜索。** DeepSeek 虽有历史 Anthropic 直连探针，当前 StockQA `--require-search` 尚未接入它；顺位策略会跳过缺搜索能力的路由，不把离线答案当作已联网。
 
@@ -38,9 +38,13 @@ StockQA 检查执行证明：MiniMax 需要完成的搜索事件及来源 URL；
 
 [官方指南](https://docs.z.ai/guides/tools/web-search)分别介绍外部 Web Search API、MCP 和 GLM 的 Web Search in Chat。这次登记的是外部检索来源，**不添加 GLM 回答模型，不修改用户模型顺位**。
 
-指南给出的 MCP 是 SSE，基础地址 `https://api.z.ai/api/mcp/web_search/sse`，示例通过 `Authorization` 查询参数传凭据。清单只存基础地址和建议环境变量名 `ZAI_API_KEY`；真实变量是否存在未检查，带密钥的URL不能落盘或进入日志。尚未执行 `tools/list`，不猜工具名、参数或过滤能力；也不把其他接口的 header 支持套到这个 SSE 服务上。
+指南给出的 legacy MCP 是 SSE，基础地址 `https://api.z.ai/api/mcp/web_search/sse`，示例通过 `Authorization` 查询参数传凭据。本次未测该SSE接口，清单只存无凭据基础地址；不能把其他接口的header支持套到它上面。用户确认并已实测读取Windows用户环境变量`ZAI_API_KEY`，密钥值未落盘或输出。
+
+[Coding Plan专属MCP文档](https://docs.z.ai/devpack/mcp/search-mcp-server)另给出Streamable HTTP地址`https://api.z.ai/api/mcp/web_search_prime/mcp`与Bearer请求头。2026-10-07实际initialize、tools/list和搜索通过，协商版本为`2024-11-05`；实际工具名`web_search_prime`，文档写`webSearchPrime`，执行必须采用真实发现的名字/schema。工具文本观察到JSON字符串包裹JSON数组，首次解析未解开而无法计数；后续诊断确认带标题、URL和摘要的真实条目，总结果数未保留。脱敏证据见[握手/schema](../docs/implementation/experiments/zai-mcp-connectivity-probe-2026-10-07.json)和[结果核对](../docs/implementation/experiments/zai-mcp-result-check-2026-10-07.json)。仅证明此密钥/接口当时可检索，不证明套餐剩余额度、过滤有效性或财务答案正确。
 
 [REST API 文档](https://docs.z.ai/api-reference/tools/web-search)给出 `POST https://api.z.ai/api/paas/v4/web_search`、Bearer认证和 `search-prime`。计划映射其 `title/link/media/publish_date/content` 到标准短证据字段；项目生成证据包内唯一 `source_id`，保留供应商引用与请求ID。内容须截短，未知字段留空，不能原样保存长响应。REST 文档的引擎枚举与部分可选过滤参数说明不一致，须实际核实；REST返回格式也不能假定等于MCP结果格式。
+
+本次[REST探针](../docs/implementation/experiments/zai-connectivity-probe-2026-10-07.json)HTTP200、2.923秒，请求`count=3`但只返回1条；不能保证指定条数。未做domain/recency或信息截止日有效性测试。全批1次REST搜索+2次MCP工具搜索，另7次MCP握手/发现HTTP请求，无LLM调用或文档下载；未读取账单，不能宣称搜索免费。本次探针没有把服务接入StockQA生产执行器。
 
 实际接入前在 StockQA 的同一集成批次完成工具发现/接口选择、证据适配和回执验证，覆盖成功与无结果、身份错配、日期/过滤不生效、额度拒绝、超时结果不明及凭据脱敏；再用隔离小样本验收。此处不新增小节点审查门，不修改已冻结的B01实验，也不自动发起收费调用。
 

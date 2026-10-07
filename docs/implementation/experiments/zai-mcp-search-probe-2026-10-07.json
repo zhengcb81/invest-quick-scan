@@ -1,0 +1,42 @@
+{
+  "probe_version": "1.0.0",
+  "observed_at": "2026-10-07T07:38:50.805299+00:00",
+  "interface_id": "zai_web_search_prime_mcp",
+  "endpoint": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+  "transport": "streamable-http",
+  "credential_env": "ZAI_API_KEY",
+  "tool_name": "web_search_prime",
+  "tool_name_basis": "Previous actual tools/list; docs use webSearchPrime.",
+  "schema_reference": "zai-mcp-connectivity-probe-2026-10-07.json",
+  "http_requests": 3,
+  "search_calls": 1,
+  "retries": 0,
+  "raw_response_persisted": false,
+  "mcp_client_installed": false,
+  "llm_requests": 0,
+  "downloads": 0,
+  "steps": [
+    {
+      "method": "initialize",
+      "http_status": 200
+    },
+    {
+      "method": "notifications/initialized",
+      "http_status": 202
+    },
+    {
+      "method": "tools/call",
+      "http_status": 200
+    }
+  ],
+  "protocol_version": "2024-11-05",
+  "search_query": "Microsoft investor relations annual report 2025 revenue",
+  "tool_is_error": false,
+  "result_text_chars": 249,
+  "results_sample": [],
+  "result_contains_https_url": true,
+  "result": "response_unclassified",
+  "elapsed_seconds": 2.237,
+  "parsed_count": 0,
+  "validation_note": "Initial parser did not handle nested JSON string output. URL presence alone did not prove usable search results; follow-up result check supplies the verified positive."
+}

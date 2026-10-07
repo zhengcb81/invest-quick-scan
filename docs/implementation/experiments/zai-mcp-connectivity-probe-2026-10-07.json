@@ -1,0 +1,67 @@
+{
+  "probe_version": "1.0.0",
+  "observed_at": "2026-10-07T07:38:15.953559+00:00",
+  "interface_id": "zai_web_search_prime_mcp",
+  "endpoint": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+  "transport": "streamable-http",
+  "credential_env": "ZAI_API_KEY",
+  "credential_present": true,
+  "http_requests": 3,
+  "search_calls": 0,
+  "retries": 0,
+  "raw_response_persisted": false,
+  "mcp_client_installed": false,
+  "llm_requests": 0,
+  "downloads": 0,
+  "steps": [
+    {
+      "method": "initialize",
+      "http_status": 200
+    },
+    {
+      "method": "notifications/initialized",
+      "http_status": 202
+    },
+    {
+      "method": "tools/list",
+      "http_status": 200
+    }
+  ],
+  "protocol_version": "2024-11-05",
+  "tools": [
+    {
+      "name": "web_search_prime",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "search_query": {
+            "type": "string",
+            "description": "Content to be searched, it is recommended that the search query not exceed 70 characters"
+          },
+          "search_domain_filter": {
+            "type": "string",
+            "description": "Used to limit the scope of search results, only return content from specified whitelist domains, such as: www.example.com."
+          },
+          "search_recency_filter": {
+            "type": "string",
+            "description": "Search for web pages within a specified time range. Default is noLimit Available values:- oneDay, within one day- oneWeek, within one week- oneMonth, within one month- oneYear, within one year- noLimit, no limit (default)"
+          },
+          "content_size": {
+            "type": "string",
+            "description": "Control the number of words in the web page summary; default value is medium - medium: balanced mode, suitable for most queries. 400-600 words.- high: maximize context to provide more comprehensive answers, but higher cost, 2500 words."
+          },
+          "location": {
+            "type": "string",
+            "description": "Guess which region the user is from based on user input. Default is cn Available values: - cn, Chinese region- us, non-Chinese region"
+          }
+        },
+        "required": [
+          "search_query"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "result": "search_tool_not_found",
+  "elapsed_seconds": 0.573
+}

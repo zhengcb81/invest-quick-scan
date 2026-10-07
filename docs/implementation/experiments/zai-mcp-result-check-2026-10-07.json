@@ -1,0 +1,30 @@
+{
+  "observed_at": "2026-10-07T07:39:35.555846+00:00",
+  "endpoint": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+  "tool_name": "web_search_prime",
+  "http_requests": 3,
+  "search_calls": 1,
+  "elapsed_seconds": 6.69,
+  "tool_is_error": false,
+  "result_text_chars": 3252,
+  "response_preview": "\"[{\\\"title\\\":\\\"MICROSOFT CORP (MSFT-USD.SW) Q4 FY2025 earnings\\\",\\\"link\\\":\\\"https://finance.yahoo.com/quote/MSFT-USD.SW/earnings/MSFT-USD.SW-Q4-2025-earnings_call-335356.html\\\",\\\"content\\\":\\\"Microsoft delivered a record Q4 and FY25, with Q4 revenue of $76.4B (+18% YoY) and annual revenue of $281B (+15% YoY). Microsoft Cloud annual ...\\\",\\\"refer\\\":\\\"ref_1\\\"},{\\\"title\\\":\\\"Microsoft Corporation - 10K - Annual Report - July 30, 2025\\\",\\\"link\\\":\\\"https://fintel.io/doc/sec-microsoft-corp-789019-10k-2025-july-30-20299-4872\\\",\\\"content\\\":\\\"Annual Report - July 30, 2025. The following table outlines the expected future recognition of unearned revenue as of June 30, 2025: (In ...\\\",\\\"refer\\\":\\\"ref_2\\\"",
+  "preview_purpose": "Distinguish actual search results from account/entitlement messages; contains at most 700 characters.",
+  "result": "passed",
+  "raw_response_persisted": false,
+  "validation_basis": "Successful tools/call with isError=false; excerpt contains search entries with titles, links and summaries. Exact total result count was not preserved.",
+  "result_encoding": "Text block contains a JSON string whose decoded value is an escaped JSON array; integration must unwrap before parsing entries.",
+  "returned_count": null,
+  "results_sample": [
+    {
+      "title": "MICROSOFT CORP (MSFT-USD.SW) Q4 FY2025 earnings",
+      "url": "https://finance.yahoo.com/quote/MSFT-USD.SW/earnings/MSFT-USD.SW-Q4-2025-earnings_call-335356.html",
+      "has_summary": true
+    },
+    {
+      "title": "Microsoft Corporation - 10K - Annual Report - July 30, 2025",
+      "url": "https://fintel.io/doc/sec-microsoft-corp-789019-10k-2025-july-30-20299-4872",
+      "has_summary": true
+    }
+  ],
+  "scope": "Connectivity and result shape only; no financial answer validation, effective filter test, billing reconciliation or production end-to-end acceptance."
+}

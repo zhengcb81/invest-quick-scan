@@ -1,5 +1,5 @@
 {
-  "inventory_version": "1.0.0",
+  "inventory_version": "1.1.0",
   "as_of": "2026-10-07",
   "purpose": "Reference inventory only; not consumed by the dispatcher and does not enable providers or set priority.",
   "runtime_owner": "StockQAbyLLM",
@@ -45,16 +45,17 @@
       "provider_id": "zai",
       "kind": "external_search",
       "credential_env": "ZAI_API_KEY",
-      "credential_env_basis": "Suggested project convention; user configuration has not been inspected or confirmed.",
+      "credential_env_basis": "User confirmed Windows environment variable; direct probes resolved it from User scope on 2026-10-07. No value recorded.",
       "documentation": [
         "https://docs.z.ai/guides/tools/web-search",
-        "https://docs.z.ai/api-reference/tools/web-search"
+        "https://docs.z.ai/api-reference/tools/web-search",
+        "https://docs.z.ai/devpack/mcp/search-mcp-server"
       ],
       "status": {
         "registration": "listed",
-        "historical_probe": "not_run",
+        "historical_probe": "REST search and Streamable HTTP MCP search passed on 2026-10-07; legacy SSE not probed.",
         "production_integration": "not_implemented",
-        "current_connectivity": "not_probed",
+        "current_connectivity": "direct_rest_and_streamable_mcp_probes_passed_2026-10-07",
         "mcp_tool_exposed_in_this_session": false
       },
       "documented_interfaces": [
@@ -85,7 +86,11 @@
             "credential_source": "environment_variable"
           },
           "search_engine": "search-prime",
-          "documented_optional_parameters": ["count", "search_domain_filter", "search_recency_filter"],
+          "documented_optional_parameters": [
+            "count",
+            "search_domain_filter",
+            "search_recency_filter"
+          ],
           "filter_support_verified": false,
           "documentation_caveat": "API reference lists search-prime but labels some optional parameters as supported by search_pro_jina; verify behavior. REST parameter definitions do not establish the MCP tool schema.",
           "source_mapping": {
@@ -96,7 +101,35 @@
             "content": "short_snippet",
             "refer": "provider_reference"
           },
-          "source_mapping_status": "planned_not_implemented"
+          "source_mapping_status": "planned_not_implemented",
+          "search_probe_result": "passed",
+          "search_probe_reference": "../docs/implementation/experiments/zai-connectivity-probe-2026-10-07.json",
+          "count_probe_observation": {
+            "requested": 3,
+            "returned": 1,
+            "guaranteed_exact_count": false
+          }
+        },
+        {
+          "interface_id": "zai_web_search_prime_mcp",
+          "transport": "streamable-http",
+          "endpoint": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+          "documented_entitlement": "GLM Coding Plan users; effective quota and billing not verified.",
+          "authentication": {
+            "documented_location": "header",
+            "header_name": "Authorization",
+            "scheme": "Bearer",
+            "credential_source": "environment_variable"
+          },
+          "tools_list_verified": true,
+          "tool_name": "web_search_prime",
+          "tool_name_in_docs": "webSearchPrime",
+          "protocol_version_observed": "2024-11-05",
+          "tool_input_schema_reference": "../docs/implementation/experiments/zai-mcp-connectivity-probe-2026-10-07.json",
+          "search_probe_result": "passed",
+          "search_probe_reference": "../docs/implementation/experiments/zai-mcp-result-check-2026-10-07.json",
+          "filter_support_verified": false,
+          "response_encoding_caveat": "Observed text contains a JSON string wrapping a JSON array; do not assume one JSON decode returns result entries."
         }
       ],
       "answering_model_binding": null,
