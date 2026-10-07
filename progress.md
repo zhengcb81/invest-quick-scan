@@ -1916,3 +1916,64 @@
 - 旧W04签收golden当前CLI仍exit0，施工包10个输入hash未漂移。接下来仅精确stage/commit/push本地批次，再追加实际结果，不写两已占用外仓。
 
 - **交付完成**：离开沙箱精确暂存19个文件并提交`a780a724259b2a9915409567b0555cd3ef251a40`，推送现有origin/master成功（702eddb→a780a72），无force/新增remote/外仓写入。提交后状态仅?? opencode.json，原样保留。Phase88收口范围仍仅read-wire consistency；主线下一动作只读接收两施工线handoff，再集中跨仓验收。
+
+## 2026-10-07 — Phase 89恢复与新实验预算
+- 用户新指令：复核打包实验并改进，允许多轮/多LLM/多搜索；明确硬上限US$25、模型请求350、搜索请求200。
+- 只读查收时猜测StockQA/StockWiki docs/handoff路径不存在，未当作交付失败；2026-10-07T09:22:55Z源仓HEAD为6a9ff13/9f552a6，StockQA有施工中修改、StockWiki仅nul，均不接管/清理。
+- 已恢复PWF与实验规格；保存新的单一下一步。原G3/open界限与L03未授权不变；独立agent只读审核实验设计，禁API/凭据。
+
+- Phase89追加设计发现：旧runner强制三司cycle_position=trough、每题约1.7K字模板重复30次、Brave先填满证据；旧解析器重复qid覆盖及宽松评分引用、响应后预算计数/format-repair漏账都会干扰结论。新实验只使用question text+anchors，不复制旧整段模板。
+- 已新增实验测试9项，首次RED=模块不存在，GREEN=9 tests通过；预算原子预留/重复settlement/合法unknown/重复及额外qid/引用白名单/cache失效/发行人混淆已覆盖。
+- prepare首次失败KeyError entity_id：归档真实golden是公开CLI请求包而非裸entity，修正为读取明确嵌套entity后再预检；失败阶段无HTTP，隔离根保留。
+- 文档定位猜question_sets与question_catalog失败，已用CodeGraph找到scripts/question_sets.py、question_library.py；未运行创建索引或改外仓。
+- 官方价目读取DeepSeek原URL出现Internal Error，改官方同页查询参数/搜索可读价表；M3文档已确认thinking disabled支持M3，不适用于M3.1。
+
+- 首36真实Brave/Tavily搜索完成，0 model/36 search，所有搜索attempt结算、保守USD0.288；发行人过滤丢弃HK Brave14/Tavily4条，进一步说明旧无关证据风险。三司池均按相同规则截短，检索原响应/key未落盘。
+- prepare第二次失败为cncb_h实际文件名含下划线，已按现有golden精确路径修正；第三次prepare完成30题/三司/10源码，零HTTP。namespace loader避免StockQA aggregator __init__导入未选模块，未修改冻结模块；offline import passed，所有HTTP自动retry=0。
+- 扩充真实transport接缝离线反例（请求前准入/超时无重发/receipt同ID结算/异常不保存内容），11 tests passed；模型开跑前修正同attempt_id kwargs冲突，尚无模型请求因此无收费重跑。
+- 首3模型probe: M3有效3/3且scored2，DeepSeek有效3/3且scored0，MiMo JSON语法错误0/3；3模型请求/36搜索，USD上界0.318532，零未知。来源校验发现同一客户价值问题M3用业务规模/AI平台作7分，DeepSeek认为缺留存行为证据；只能作为评分分歧，不能证明M3更准确。
+- 正常已完成probe不覆盖。依据MiMo官方JSON object文档，新增v2 JSON参数预注册delta+单独model-input-lock-v2；3次新probe计同账，主矩阵只使用v2。原始MiMo失败保留，不人工修JSON强行改成功。
+- 批内只读审查的5处问题集中修复并补反例：search逐query接续、warm重复kwargs、首send后prepare禁改、input lock/marker指纹复验、发送前route cooldown；另unknown数量显示修正。14 offline tests通过，不增加新的小节点审查。
+- v2/v3/v4各probe三次均归同账。M3代码围栏是可确定去壳格式，不是缺题；MiMo v3 root并列完整末项但v4实测数组IQS01+root IQS02，仅2/3，因此仍invalid，不强行补齐。v5显式题号/数量检查，若第三模型继续失败则全矩阵用可用模型，先注册调整不结果后挑质量赢家。
+
+- v5最终小probe：MiMo3/3、DeepSeek3/3结构有效；M3引用在claims与evidence_refs之间不一致判invalid，题号完整但不宽放。5轮共15模型请求，保守USD0.44272含36search，零outcome_unknown。v5为完整主矩阵固定版本，不再改题/规则/上下文；主矩阵由冻结StockQA客户端运行，MiMo/DeepSeek三司g1/g5/g10/g30并发≤4，共240基础请求。
+- 启动独立blind-input标签审查，只看冻结题库/证据，不看结果，标签是agent-assisted充分性而非人类score gold。后续正确性报告区分来源支持/评分一致性/准确率未判。
+- report helper首次汇总KeyError rows_by_id（早删baseline配对表），修复为全部pair后再移除；补缓存缺usage/unknown排除/同baseline多pair反例，17 tests passed。
+- 输入blind标签36=2有限足/34不足，82dates null；主矩阵保留原池作为宽摘要条件性实验，不覆盖。新adaptive targeted方案先登记：M3普通12题样本减至Alphabet16calls，省32供HK目标片段×DeepSeek/M3×12题逐题/g4/g12。追加12search用primary domains与fragment窗口，旧URL去重会丢掉同网页不同题的关键段落，改fragment ID但限长不变；不会把原/new context混为同arm。
+
+- 主矩阵24臂完成：15probe+240core=255模型HTTP、36search、保守上界USD3.0058、0未知。DeepSeek 5/10/30题包结构全齐；逐题有1项claims超上限失败。MiMo分组多处缺题，CN/HK30题0完整，US30题30完整，不能用单一US成功外推。
+- targeted追加12search完成，累计48search；25片段候选在模型前按导航无主题事实剔除4，实际21fragment，原/候选保留hash/拒因；targeted模型32calls后总287、USD3.603731、0未知。
+- targeted结果初步：DeepSeek逐题11/12有效、3scored，g4 8/12、4scored，g12因claims契约全invalid；M3 g12全12有效且12scored，但不能认为准确率100%；逐题/g4结构失败仍记录。targeted输入blind继续，不读答案。
+- 重要：M3原宽池12题试验现在在Alphabet，新targeted在HK，不是同公司因果对照；只比较各自方法/可用性，不把差异归检索。HK DeepSeek逐题前12旧0scored新3scored是条件性有用性对照，非准确率证明。
+
+- M3 Alphabet12题试验16请求已完成，总303model/48search/USD3.753310/0未知；g12 12有效，g1 5有效，g4 8有效。search-cross24完成后总327/USD3.892726，Brave-only与Tavily-only均0评分，有效行10/10与9或10/10；不能称某检索器准确率赢家。新增scoped-v6预注册14请求，尚未发包。一次apply_patch因整句不匹配拒绝零写入，改完整文字replace。
+
+- 新增3个预算上限/targeted接续/七片锁反例，RED=18 tests/2 errors（尚缺prepare_scoped与零网络接续）；实现后20 tests GREEN/0.378s。已锁片段不能重新检索覆盖，marker再核evidence/qids/profile。M3三司30题各一次均结构invalid（0有效），合计330model/48search/USD3.994430/0未知，失败保留，不补救藏入成功。
+
+- 用户追加授权：超原预算继续但需报备；此时333model/48search/USD4.071158。原上限内scoped14请求先完成，暂未扩大账本硬限。三模型HK30题重复：MiMo30有效（原0）、DeepSeek30有效，M3仍0，均HTTP200/stop，结构随机性不可忽视；缺题不自动归因长度限制。scoped七片准备成功/0HTTP，3500片段字符，来源family显式。
+
+- scoped-v6完成14请求：DeepSeek逐题/五题/重复均5有效、0scored；M3逐题3有效、五题首次0、重复5有效且5scored。总347/48/USD4.181360/0未知。匿名164行packet交独立agent；先报一个数值119.8 billion→119.8亿美元的十倍单位错和高分由无支持生态/截断现金/SEC拦截片推断，主线只记风险不解盲。报备追加<=63模型、无搜索，hard cap410/200/USD10，预算rev2+注册均首新send前保存。新增逐行恢复反例RED=19 tests/1 missing helper；GREEN=21 tests/0.479s。
+
+- DeepSeek g3新增30次完成，累计377model/48search/USD4.506749/0未知；三司whole chunk有效87/90。新逐行验收只作补充，绝不把schema恢复当准确性提高；旧无原结构的失败不逆向恢复。运行时manifest增exact源码allowlist/commit校验，计费拒绝负usage。
+
+- 新包与单题补问全部完成：410 model HTTP（M3 81/MiMo126/DeepSeek203）+48 search，USD保守上界4.869098，0未知/0缺usage；Tavily18basic+6advanced=30credit，Brave24请求。M3逐行有效率初25/30、18/30、21/30，补问各5后26/30、19/30、25/30；严格whole chunk原状态仍10/0/10有效。补问15只有6个通过，未达全齐，未继续反复重发。DeepSeekg3 whole87/90、逐行恢复后89/90；g5/g10/g30均90/90但评分/unknown有漂移。
+- 三模型实际答案cache-hit、6个已完成stage的公开CLI接续均在禁DNS/socket/凭据读取guard下通过，账本原字节未变、model/search delta皆0；proof存run。最终所有410 actual payload/system/context/question hashes回放匹配；原初runner只hash未存source的限制如实保留，probe历史profile由显式重构匹配哈希，主矩阵v5及v6完整锁齐。
+- 最终25项离线单元/集成/归档回放与补问不重复测试全部通过（0.496s），validation-B01-improved-2026-10-07.log；测试临时根自动清理。独立匿名164+扩展57共221行来源/分数充分性审查仍在途；不提前宣称accuracy通过。
+
+- 最后接续薄弱点补持久ledger重复/未知settlement/NaN反例，RED=20tests/1fail（重复记录此前静默覆盖）；顺序严格恢复ledger后GREEN=26tests（本次日志实际时间见validation-B01-improved-2026-10-07.log）。没有增加API或改已有账本。此为同批技术复核最后修复，非新增review门。
+
+- 集中独立技术审查抓到search-cross基线串用：report仅stage/company/route匹配，会把Tavily g5配Brave g1；先补固定反例RED=4tests/1fail（4.0应2.0），修正同时匹配variant/evidence hash/question IDs/profile后4tests GREEN。主三司同池性能数字不受影响；只变离线统计，没有追加HTTP。
+
+- 性能候选五题/十题此前未直接事实审，因此另匿名抽全部scored+六关键财务题共60行（读现有结果，0HTTP），交独立candidate_fact_review，不看model/method。选择依据与原164/新增57分母分开，非挑好行/非生产验收。新增--archive最小归档公开复算，测试从actual ledger+payload/archive结构到离线report且tamper拒绝，28 tests/1.241s GREEN；等待同批技术增量复核后更新最终hash。
+
+
+## 2026-10-07 — Phase89本批验收、轻量归档与清理完成
+- 410模型/48搜索全部结算，未决0、usage缺失0，保守USD4.869098；原350模型上限经用户追加授权并预先报备扩为410/200/USD10。模型公开价参考0.653576，套餐真实账单未推定。没有增加搜索、没有外仓写入或正式公司库变更。
+- 独立三份匿名事实审查共281不重叠行/510 claims，按原164/扩展57/候选60分母分别存档。候选60行118claims=89支持/29部分支持，27评分=8有限可辩护/19不足，22未评分行仍有claim问题。审核覆盖的字段并不等于整行或世界事实准确率；候选样本是在性能统计后按全部scored+固定财务题选定，明确披露。
+- 技术审查无归档阻断，6个代码/测试hash固定。最终28 tests GREEN/1.241s已实际观察（工具83ba0a）；独立审查为27全套+新增归档复算1项，未伪称再跑28。历史26原始日志保留，检索基线混用反例4项定向GREEN亦保留，不为文档更新重复全套。
+- 最终9文件归档含410结构结果、账本、输入锁、prompt profile、source指针/hash、3份审查映射/摘要；410实际request payload全部匹配。archiver exit0。原最早orchestrator源码只存hash且旧probe profile重构匹配，不能称所有旧版代码可恢复。
+- 清理前核对绝对run路径、归档8数据文件hash、完整904文件清单、无active lock/重解析点，仅删除本批自有run；清理后DNS/socket/key/subprocess均禁止的公开--archive CLI exit0、archive_statistics_verified=true、410/48不变、新HTTP0、临时目录恢复。原片段不可从hash复原，重新检索不同于同上下文；实录validation-B01-archive-cleanup-2026-10-07.log。没有下载文件、没有清理opencode.json或外仓。
+- 结果是DeepSeek原题序五题包的效率候选：并发≤4、90/90结构有效、中位配对1.56倍提速、参考模型费约降35%；十题更快但输出改变，事实/评分充分性没有通过准确率gold。正式逐题基线/G3/F05/200家运行保持原边界；下一动作只读查收两活动施工线handoff并按原大节点集成。
+- PWF/接手指南/最终报告已更新；提交推送实际结果随后追加，不改中央107卡/366case或退役工程回执系统。
+
+- 提交前发现Git默认diff --check把`-text`保留的CRLF逐行报成空白错误（首次输出过量，随后改捕获摘要）；不修改hash绑定的代码/JSON原字节。使用单次`git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --cached --check`保留其他空白检查，只识别CR为行尾。随后仅发现候选Markdown多一个EOF空行，已去除；候选JSON标签/hash与六源码hash不变。精确-text同时覆盖六源码/测试及五审查JSON，避免下一次checkout改坏hash。

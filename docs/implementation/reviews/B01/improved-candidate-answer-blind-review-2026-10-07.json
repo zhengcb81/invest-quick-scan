@@ -1,0 +1,2288 @@
+{
+  "schema": "agent_assisted_blind_candidate_answer_review/1",
+  "created_at": "2026-10-07T11:16:41.851038+00:00",
+  "reviewer": {
+    "type": "agent-assisted",
+    "agent": "candidate_fact_review",
+    "independent_of_candidate_generation": true,
+    "review_basis": "仅审给定片段对匿名答案的支持"
+  },
+  "packet_sha256": "41cb65c6341abfd5c092edf52c409ef95ab7cce1fd86162b2d229f787e2180fe",
+  "blind_to": [
+    "private-mapping",
+    "candidate model/pack-size/method identities",
+    "results",
+    "blocks",
+    "analysis",
+    "model/method reports"
+  ],
+  "review_method": {
+    "scope": "B01 improved candidate 同一大批补充事实盲审；60个匿名行，3个去重证据池；不是新增小节点审查门。",
+    "source_boundary_first": true,
+    "actual_input_only": "仅读取 runs/b01-improved-2026-10-07/blind-candidate-packet.json；无外部浏览、API或凭据；未读取映射、结果、块、分析或模型方法报告。",
+    "source_pools": [
+      {
+        "evidence_pool_id": "P_02451bba",
+        "source_window_count": 28,
+        "issuer": "Alphabet Inc.",
+        "boundary_note": "官方Q1只露出表格引言，SEC窗口为限流说明，Q2官方窗口含收入与Search/Services增长；Stocktitan给FY2025 FCF但余额as of fiscal…年份截断，另一窗口Cash & Debt $55.9B科目截断不能认作现金；Yahoo五列FCF/发债/回购无列头；CNBC明确Class B超级投票、Class C无投票。"
+      },
+      {
+        "evidence_pool_id": "P_d636dc7e",
+        "source_window_count": 31,
+        "issuer": "宁德时代新能源科技股份有限公司",
+        "boundary_note": "多数目录、导航、报告题头或乱码；Google利润表有日期/CNY但不明示季度跨度；年报致股东信自述销量/领跑，第三方文章转述利润与成本解释；券商盈利预测不是实际利润；Cbonds只列2031到期券名/票息，不能当负债金额/两年到期表。"
+      },
+      {
+        "evidence_pool_id": "P_a0dc0e87",
+        "source_window_count": 23,
+        "issuer": "中信建投证券股份有限公司",
+        "boundary_note": "大多导航、定义或标题；Q1净资本合规是公司陈述，追溯调整影响句截断；年度摘要吸收海通/更名国泰海通是上表同业信息；股东拟划转不是已完成；2017客户托管资产不是公司自有资产；券商CFO不能直接套工业FCF。"
+      }
+    ],
+    "total_source_windows": 82,
+    "source_field_policy": "可用边界为包内title、URL、snippet及明确元数据；URL/标题可确认报告或公告存在及明示日期，但不把链接后完整文档视为已读。所有published_at为null；retrieved_at不能当发布日期。",
+    "claim_policy": "每条原claims按其source_ids实际引用窗口逐条评审；同池其他来源不补错引。index为原claims的0基序号。复合claim部分要素可见而频率、年份、主体或财务口径未证实时判部分支持；无支持/明确冲突仅在足以证明时使用。",
+    "claim_labels": {
+      "支持": "被引用窗口直接陈述或容许有限明确推导；来源自述仅核其表述。",
+      "部分支持": "数值或部分事实受支持，另有期间、主体、口径、频率或推断缺口。",
+      "明确冲突": "与被引窗口明确内容相抵触。",
+      "无支持": "被引窗口没有该具体事实的可用依据。"
+    },
+    "score_policy": "按题意与1/5/10 anchors，以该行所属池全部实际可用窗口判断评分是否有限可辩护、支持不足或明确冲突；所有非scored行记非评分，N/A适用性单列whole_answer_note。不给精确gold分。",
+    "unknown_policy": "unknown_assessment评审rationale/counterevidence中明确的缺证据表述；具体、影响题意且池内未给的标实质缺口，空泛缺口标笼统缺口，已有给定事实却称其缺失的标与给定事实冲突。仅条件风险、未来敏感性或非缺口的适用性论证记null；未给事实不等于真实世界不存在。",
+    "claim_problem_policy": "contains_claim_problem只统计原claims中任一非支持；不把评分或未知项问题混入claim问题计数。",
+    "units_and_sector_checks": "逐项核对billion到亿美元乘10（如$119.8B=1198亿美元、$73.3B=733亿美元、$5.9B=59亿美元），本批未发现十倍错误；未将Cash & Debt截断值或客户资产认作自有现金。券商净资本合规、CFO和工业FCF分别对待。",
+    "self_report_policy": "公司年报、简介、净资本合规、自查和分析者预测，仅确认给定来源说法；不当独立事实核真。"
+  },
+  "summary": {
+    "row_count": 60,
+    "claim_count": 118,
+    "claim_verdict_counts": {
+      "支持": 89,
+      "部分支持": 29,
+      "明确冲突": 0,
+      "无支持": 0
+    },
+    "score_verdict_counts": {
+      "有限可辩护": 8,
+      "支持不足": 19,
+      "明确冲突": 0,
+      "非评分": 33
+    },
+    "unknown_verdict_counts": {
+      "实质缺口": 54,
+      "笼统缺口": 0,
+      "与给定事实冲突": 1,
+      "非未知项": 5
+    },
+    "rows_with_claim_problem": 28,
+    "unscored_rows_with_claim_problem": 22,
+    "scored_row_count": 27,
+    "unscored_row_count": 33,
+    "not_applicable_row_count": 1
+  },
+  "rows": [
+    {
+      "row_id": "A_f27348a8a0fc",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_13",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "605b243ccbede8728de3120867f8a2b3cd0853d46c33c80bdc9ffc50fe42cb1f",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "Reuters窗口及标题支持首次股息、每股20美分、2024年4月与70 billion=700亿美元回购；未给出季度频率。",
+          "source_ids": [
+            "T31b892a167"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "窗口明确董事会承诺$500 million改善全球合规，并提及已和解股东派生诉讼；金额换算正确。",
+          "source_ids": [
+            "T8afef24d12"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；关联交易、公平分配与治理制衡的长期记录确有缺口。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "关联交易公平、控制权持股比例和超级投票权的实际治理影响缺失；池中CNBC已给出Class B超级投票/Class C无投票，不能把类股权利本身视为完全未知。"
+      },
+      "whole_answer_note": "CNBC类股信息应纳入治理分析；答案称制衡影响缺证据仍可成立，不能等同类股安排不存在。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_b30a2894aaee",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_16",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "08b08370758b232e3b0e7061fb41e70673bcafe2e12e4c4e10c701658355a21f",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "引用表有2026年6月、CNY、收入1477.86亿与销货成本1151.55亿；窗口没有明确单季度期间标签。",
+          "source_ids": [
+            "Tc2a8c8027b"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "所引第三方文章明确2026H1归母净利432.8亿与扣非390亿；这里只确认文章如此表述。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；缺现金、到期结构和压力测算足以阻止两年履约评分。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "池内没有可用现金余额、债务到期量与压力现金流；Cbonds债券名称不能替代义务表。"
+      },
+      "whole_answer_note": "净利与收入不能代替可用于履约的资金。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_1b86a3826b52",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_06",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "ce9d611ce8a7706637e11e7b70df94c62bcc4ce79d6760053d5b3503f105c499",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "2025年报致股东信明确自述动力/储能出货领跑、销量近四成增长至661GWh；不等于独立核实排名。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "引用第三方窗口逐项给出2026H1营收2769亿/+54.8%、归母432.8亿/+42.0%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "自述出货领先和一年销量、第三方半年度增长不能充分支持跨竞争周期的稳固性7分；无份额轨迹、客户保持或相对经济利益。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "具体份额、关键客户保持和竞争盈利对比缺失，正是题目稳固性所需。"
+      },
+      "whole_answer_note": "趋势向好有片段基础；收入或销量增长本身不能为稳固性加分。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_5dd383c1f482",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_16",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "d52e7f81d94ede88f3083c1016c2d2268b403c54a4b7e395b4ddacf5e0d1a9ae",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Q1报告窗口明确母公司净资本等风险控制指标符合证监会规定；仅为公司报告中的合规陈述。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "年度摘要列出多期永续次级债券，支持发行存在；未给出这些债券获认可的资本补充金额/口径。",
+          "source_ids": [
+            "B5a63ac95ea"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；合规陈述与债券名单不足以进行两年压力履约评估。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "缺具体净资本、流动性、债务到期和压力测算。 rationale称完全无净资本应理解为无数额，因为已有合规陈述。"
+      },
+      "whole_answer_note": "不把发行人风险控制指标自述当独立压力核验。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_597ece0acdf9",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_10",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "c687557388378b534f50302a738d3d55f75659b0520a1d5983070ec2963df859",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "窗口明确FY2025 FCF $73.3B、同比0.7%，换算733亿美元正确。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "$30.7B现金和$46.5B长期债务数额可见；as of fiscal…被截断，不能确认余额截至2025财年。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；现金流和余额不能计算持续ROIC相对资金成本。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "投入资本、经营回报和同口径资金成本缺失。"
+      },
+      "whole_answer_note": "现金/长期债务余额的具体财年被补全；未评分仍需标记。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_12ac47d3d07b",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_16",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "b0c13ae6d3cfa73060509989f782092212873d0c39488f0bac3a0b65ca829dab",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "现金$30.7B/长期债务$46.5B可见且换算正确；截至2025财年未出现在截断余额句。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "所引窗口明确Q2 2026 FCF流出$5.9B、同比下降210.5%，换算59亿美元正确。",
+          "source_ids": [
+            "Ta1b296999a"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；两年义务、可用资金与压力情景都没有完整数据。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "到期结构和承诺、压力现金流确实缺失；两笔余额本身的财年也未确认。"
+      },
+      "whole_answer_note": "不从同一网页的FY2025 FCF推定余额年份。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_a43b6364a1ac",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "OPERATING_01",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "not_applicable",
+      "original_score": null,
+      "answer_sha256": "12b32893071af4139b7bcedc91a3f8ff226ee06b332dd23fef342151bf708766",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "雪球窗口明确列出投资银行、财富管理、交易及机构客户服务、资产管理四板块。",
+          "source_ids": [
+            "B08cccdebbf"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "not_applicable未给分；行业口径不同有依据，但证券公司身份本身不能证明现金创造题完全不适用。"
+      },
+      "unknown_assessment": null,
+      "whole_answer_note": "N/A适用性依据不足：应解释为什么题目不能转为证券公司的可分配现金/监管资本框架；券商CFO受客户资金和自营资产变动影响，不能机械套工业FCF，也不应把净资本直接当现金创造。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_b15c8a1cf642",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_14",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "315548f6ba4910845044079e1ad8872a570e6286e73d9d1cff009eb45f3f3fac",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "所引窗口明确FY2025 FCF $73.3B及同比0.7%。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "Yahoo窗口列出五个FCF数值，billion换算均正确；无年度/TTM列头，不能称近五个年度。",
+          "source_ids": [
+            "Tc14e2c65f8"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；现金支付/FCF金额不足以评价每股价值增量。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "缺并购回报、再投资回报与每股价值跨期证据；Yahoo列期间也不明。"
+      },
+      "whole_answer_note": "Yahoo数字准确并不等于年度序列识别准确。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_bc9a53035abb",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_01",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 8,
+      "answer_sha256": "8b41f2616c76c90a234a8c85c0b934ad6482035af35c729b787c5f7307b97284",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "官方Q2 2026窗口明确收入$119.8B、同比24%、连续12季双位数增长；1198亿美元换算正确。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "所引第三方窗口明确Q2 2026 Search&other 52.9%、Cloud20.7%。",
+          "source_ids": [
+            "B5f001828ff"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "有限可辩护",
+        "reason": "持续收入与官方12季增长提供客户持续交易的间接行为证据；偏高评分可有限辩护，但未证明留存、净客户价值或可持续支付意愿，不能视为精确gold。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "缺留存、复购和支付意愿是具体缺口；增长与收入结构仅间接支持。"
+      },
+      "whole_answer_note": "收入规模与增长不能独立核真客户获得真实价值。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_3beadd64f308",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_10",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "4ded1383bb1cfcf1d1f1b13606ace3b86b3f040fdd298799aa35550cc5c64243",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "Google表明确2026年6月CNY收入1477.86亿、成本1151.55亿、研发60.63亿；窗口未标明季度跨度。",
+          "source_ids": [
+            "Tc2a8c8027b"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "第三方文章明确所述2026H1归母、扣非净利及同比，并在答案注明整理来源。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；缺投入资本和资金成本，不能据利润算超额回报。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "投入资本、资本开支、杠杆与可比资金成本实质缺失。"
+      },
+      "whole_answer_note": "日期列不能自动补为单季度；第三方数值仅核片段支持。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_0b30603c59d3",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_05",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "4c1638f141a7c648016cd5bcb1fa07491630c586f2c702741d2558c798d2356c",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "公司简介窗口自述2012年与宝马战略合作并成为核心供应商。",
+          "source_ids": [
+            "Tb4fb625874"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "年报窗口自述2025年两类出货领跑、销量近四成增长至661GWh；没有独立排名核验。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "历史宝马供货、上市和规模领先不足以证明复制成本；7分所需壁垒机制与经济回报没有可用片段。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "竞争成本、技术性能、客户认证保持及复制代价的证据缺失。"
+      },
+      "whole_answer_note": "规模和海外子公司存在只说明布局，不能自动证明竞争壁垒。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_69b2423443b7",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_10",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "172ab4d96192ee7fe0ff1f95e24161e723f72792b2caec6a62130bf69cefc7da",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "第三方片段明确2026H1营收2769亿/+54.8%、归母432.8亿/+42.0%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "年报致股东信明确自述2025销量661GWh及近四成增长、两类出货领跑。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；净利和销量不足以衡量投入资本相对资金成本。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "投入资本、ROIC、必要资本投入、杠杆和可比资金成本缺失。"
+      },
+      "whole_answer_note": "ROE也未给出，但即使有ROE也不能自动替代题目的资本回报。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_ae225ac47c63",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_16",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "dedae4d29a3243a6e1212c8fdca21eb25473c3bff5e3599089f4b7c86a744b3f",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "两项余额$30.7B/$46.5B及换算可见；余额句财年被截断，不能确定截至2025财年。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "所引窗口明确Q2 2026 FCF流出$5.9B及同比-210.5%。",
+          "source_ids": [
+            "Ta1b296999a"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；缺到期结构和两年压力覆盖。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "未来两年债务、租赁、采购/资本承诺和压力现金流实质缺失。"
+      },
+      "whole_answer_note": "答案的余额财年补全仍是claim问题。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_adb43077a7bf",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_24",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "a4c4e839251e35e9396fe0917cc546a5bcca9b187f108171dd83e24d48ada01d",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Yahoo视频窗口日期2024-04-27，描述首次季度股息$0.2及标题$70 billion回购；足以支持所述宣布机制。",
+          "source_ids": [
+            "T3e8defe01c"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "Yahoo片段列出这些回购值；没有五年列头，不能确认近五年及年度序列。",
+          "source_ids": [
+            "Tc14e2c65f8"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "有限可辩护",
+        "reason": "已宣布季度股息和实际回购金额提供普通股东回报路径；7分可有限辩护，但多年连续性、年份顺序和可靠性证据有限。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "资金分配持续性和回购与发行的同期间净效应缺失；约0.5%收益率只在池内Bybit明确截至2025年6月，不能无期间当当前。"
+      },
+      "whole_answer_note": "回购授权不等于实际执行；Yahoo无列头不能证明多年高位或逐年变化。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_2aad0e305b69",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_01",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 8,
+      "answer_sha256": "5bb8185c8d1e85cd91d9d8120f081557b74a680a79945fdb8c506467cb61cc60",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "公司年报自述2025销量661GWh、近四成增长及出货领跑。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "新浪公司资料窗口明确动力/储能电池研发生产销售及乘用车、商用车、储能应用。",
+          "source_ids": [
+            "T4d449e6d69"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "有限可辩护",
+        "reason": "大额实物销售提供采购行为的间接证据，可有限辩护客户价值较强；8分仍依赖公司自述且缺支付/复购与净客户价值证据。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "客户留存、复购、订单持续性和支付意愿确实缺失。"
+      },
+      "whole_answer_note": "本审查确认来源如此描述；不独立确认全球龙头或购买可持续性。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_8aa9187af515",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_10",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "1b07cac306aec5a9694aaaba7ba2cb551f5a97d90a118fdd22228a086b24d0dd",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "窗口明确FY2025 FCF $73.3B/+0.7%，733亿美元换算正确。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "五个FCF数字与换算一致；没有列头/日期，近年期间归属不可确认。",
+          "source_ids": [
+            "Tc14e2c65f8"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；无法据FCF计算ROIC与资金成本差。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "ROIC、投入资本与加权资金成本缺失。"
+      },
+      "whole_answer_note": "用近年弱化了具体年份，但仍不能从无表头窗口确认历史期间。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_142bb53a3fba",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_24",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "6340ee4b4630a560b340891b2ecedcd72f408ddc5a570a08445fc2fe2c9e13d8",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "Reuters标题/窗口支持首次每股20美分、2024年4月与70 billion回购；季度频率不在该引用窗口。",
+          "source_ids": [
+            "T31b892a167"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "Yahoo文章窗口明确过去12个月$55.75 billion股票回购；截止日未露出。",
+          "source_ids": [
+            "T93364cdbb2"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "有限可辩护",
+        "reason": "股息宣布与实际TTM回购可有限支持合理兑现路径；7分可靠性受未对齐时间和相反标题报道限制。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "暂停回购/发行的第三方标题与TTM回购可能属于不同期间，缺对齐日期与净发行量以判断长期归属。"
+      },
+      "whole_answer_note": "BigGo标题确有暂停回购/售股$85B说法；只能认作来源报道，不能独立认定当前事实或同期间冲突。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_5c912d1859bd",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_14",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "9cbf4d9f14f1ef3d21cc26b7859ffd0a89f2464e806490fab9a8fc350cf6612c",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "第三方文章明确2026H1营收2769亿/+54.8%、归母432.8亿/+42.0%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "公告标题给出回购A股进展及编号2026-073，URL含2026-09-03；支持公告存在和月份，不支持执行规模。",
+          "source_ids": [
+            "B95035b47ac"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；利润/公告存在不能证明每股经济价值增加。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "缺再投资与并购回报、价格/执行量和每股价值序列。"
+      },
+      "whole_answer_note": "回购公告窗口只有标题与披露保证，不足以判回购效果。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_721a86d3d528",
+      "issuer": "Alphabet Inc.",
+      "question_id": "OPERATING_01",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 6,
+      "answer_sha256": "50ae9fffb0905a4225c2a64a55eacfaab617a48567997fbb8b65904a558f39ef",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Stocktitan窗口明确FY2025 FCF $73.3B/+0.7%。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "另一Stocktitan窗口明确Q2 2026 FCF -$5.9B、同比-210.5%。",
+          "source_ids": [
+            "Ta1b296999a"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "一年正FCF和一季负FCF不足以给中周期现金创造6分；必要营运资本、维护投入、FCF计算及多年同口径路径均未确认。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "维护/扩张开支划分、现金转化路径及营运资本确有缺口。"
+      },
+      "whole_answer_note": "rationale资本开支强度上升未被两个claim证实；FCF波动不能单独证明维护投入后能力。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_33fcea907fec",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "OPERATING_01",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "dbe0d7398a0b577476af62afa497173dcf189df2b4bf1c58a7ed20cdf68f2323",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "Google窗口日期列2026年6月和CNY金额对应，但没有明示单季度跨度。",
+          "source_ids": [
+            "Tc2a8c8027b"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "东方财富文章明确2026H1扣非390亿元/+43.4%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；损益数据不足以评价自由现金创造。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "经营现金流、资本开支与营运资本变动确实没有可用数值。"
+      },
+      "whole_answer_note": "净利不能代替现金流。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_ab4819cee376",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_05",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 8,
+      "answer_sha256": "e99114a6fd74f21e2034f73106921b328c633b328d9f4fe460d44811bf777e44",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Yahoo报道窗口明确桌面搜索份额略高于80%及自有AI可守住主导地位的预测；支持报道存在，不核真预测。",
+          "source_ids": [
+            "T668bf6f5e3"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "窗口支持Q2收入占比52.9%/20.7%；收入构成不能证明搜索为核心利润来源。",
+          "source_ids": [
+            "B5f001828ff"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "桌面份额与报道的AI预测未证明数据/规模壁垒的复制成本和长期经济回报，8分依据不足。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "排名来自二手报道、无日期和复制成本/回报证据；AI与监管风险只是风险假设。"
+      },
+      "whole_answer_note": "把收入占比转为利润来源是不同财务口径的推断。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_cd30b2f632fd",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_05",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "e3bf7b6868067c6ab5c14e505cd51c4e0b8a2129cb060f9f77f2c6e81992ad86",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "公司简介明确自述2012与宝马合作及核心供应商身份。",
+          "source_ids": [
+            "Tb4fb625874"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "年报自述2025动力/储能出货领跑、锂电池近四成增长至661GWh。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "客户关系历史和出货规模不能充分证明对手合理成本下难复制；7分缺壁垒机制、保持力和经济回报。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "研发产出、可复制技术/成本差与追赶时间缺失。"
+      },
+      "whole_answer_note": "上市本身不是竞争壁垒。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_1ba392962317",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_14",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "3d7ac7e25d1436173fcca7bcf641dfde8628b2054bacf5a6d02377dc28fb453f",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "窗口明确FY2025 FCF $73.3B同比0.7%。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "列值包含$17.4B至$62.22B，约174至622亿美元换算/取整合理；没有列头，近年期间不明。",
+          "source_ids": [
+            "Tc14e2c65f8"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；支付规模不能归因每股经济价值增量。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "逐项并购/再投资回报、退出纪律和每股归因均缺。"
+      },
+      "whole_answer_note": "回购金额范围支持，跨年口径不足。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_c11956d17394",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_12",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "8831da9f5fa2345531cdfec7c43ff1764df275272fbd98e242643927c94fe053",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "官方Q1文件标题及窗口明确表格总结2025/2026年3月31日季度合并结果。",
+          "source_ids": [
+            "B3c2e2b7efb"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "FY2025 FCF733亿美元可见；现金307/长期债务465亿美元也可见，但其as of fiscal…年份截断，不能统一为2025财年。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；没有审计、附注和三表勾稽证据。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "审计意见、表外义务、关联交易及资产利润现金验证缺失。"
+      },
+      "whole_answer_note": "官方文件存在不等于披露真实经济状况已验证。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_bab6169d0c0e",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_10",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "9787334c692dd26cbfa849fb61c03ea222c6f68d5b7ae5bda948f3b7d0a6e92c",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Q1窗口明确母公司净资本等风险指标符合证监会规定；仅支持公司报告这样称述。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "东方财富实际窗口仅给PE/PB等定义与破折号，没有发行人具体指标数值。",
+          "source_ids": [
+            "Tfdef855e79"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；合规与定义不能比较持续回报和资金成本。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "缺同口径ROE/监管资本回报、资金成本及跨期路径。"
+      },
+      "whole_answer_note": "券商资本回报不能由工业ROIC或指标网页存在替代。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_6ebd0e4149ea",
+      "issuer": "Alphabet Inc.",
+      "question_id": "OPERATING_01",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "66a936a26a146af459db07d9578c33a7735759e3d8b665553416cdd2f5bc805a",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "五项FCF数值逐项一致，但Yahoo窗口没有五年/年度/TTM列头。",
+          "source_ids": [
+            "Tc14e2c65f8"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "Stocktitan窗口明确Q2 2026 FCF -$5.9B与同比-210.5%。",
+          "source_ids": [
+            "Ta1b296999a"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "多年正FCF的基础期间未识别；最新季度资本开支强度上升和维护投入后现金创造均未定量，7分不足。"
+      },
+      "unknown_assessment": null,
+      "whole_answer_note": "counterevidence只描述已给出的FCF转负及条件风险，没有独立未知项；最新一词也不能凭截至Q2窗口确认现时最新。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_3fd40f7a22b5",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_02",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "d51c00d75c8e643c52139e693417e58c9e10f137571b2a148e808ce62a1358a8",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "官方窗口明确Q2 2026收入$119.8B/+24%、Services $94.5B/+15%，换算正确。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "第三方窗口给出Search52.9%、Cloud20.7%；收入集中是这些占比的合理概括。",
+          "source_ids": [
+            "B5f001828ff"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "连续增长/业务规模不能测量不增加获客与补贴投入的存量延续比例；7分缺题目核心成本条件。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "获客、补贴、维持投入与存量收入延续/收款可见性缺失。"
+      },
+      "whole_answer_note": "历史增长不能区分新增客户收入与存量延续。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_152c86cd6ec7",
+      "issuer": "Alphabet Inc.",
+      "question_id": "MATURE_01",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 8,
+      "answer_sha256": "94f03ae19ef0e48e940bdef5e0af0170c7ca8ea9864b49883bee2f4bc06ca3ae",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "官方窗口明确Q2收入119.8 billion/+24%及连续12季双位数增长。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "Stocktitan明确Q2 2026 FCF-$5.9B及同比-210.5%，after capex现金短缺描述可见。",
+          "source_ids": [
+            "Ta1b296999a"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "收入增长支持需求但无法把持久现金创造评为8；FCF为负且无成熟分部维护投入、现金流或期限测算。"
+      },
+      "unknown_assessment": null,
+      "whole_answer_note": "counterevidence是资本开支/需求条件风险；rationale称收入加速无前期同比基准，资本开支高企也无强度序列。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_130b8fe27113",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_12",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "377a7e37b166d42699369b9c3c49bac839048a3636c5584b77f55d1c419fd34d",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "标题支持2026半年报摘要编号2026-064，年报窗口支持2025全文存在；公司域名与标题支持披露文件属性。",
+          "source_ids": [
+            "Bcad5a62ca2",
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "Google窗口列明2025年9月至2026年6月日期及收入/成本/费用，不含资产负债现金流；但没有明示季度跨度。",
+          "source_ids": [
+            "Tc2a8c8027b"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；短窗口不能评价三表勾稽、风险确认或审计。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "完整三表、关键附注/会计政策、审计意见确实没有实际可用内容。"
+      },
+      "whole_answer_note": "不存在于给定窗口不等于完整网页/年报未披露；审查只认当前可用证据。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_6c2106e1e42a",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_04",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "8d522aafe7e5dd2e291de295a4a73c085bf3bbc0a21517218f33f31e706dc731",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "官方窗口支持收入1198亿美元/+24%、Services+15%；云重要收入支柱没有出现在该短窗口，不能借别的来源补错引。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "FinancialContent窗口明确云市场趋于饱和，需创新、合作及定价策略获取份额；属于分析意见。",
+          "source_ids": [
+            "Te234c530ff"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "营收规模/增长不证明价值链利润留存；无利润率、上下游分配或供给纪律证据，7分不足。"
+      },
+      "unknown_assessment": null,
+      "whole_answer_note": "缺口并未明确列出；竞争和监管只列风险，不能替代利润分配证据。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_b0b3574bf806",
+      "issuer": "Alphabet Inc.",
+      "question_id": "MATURE_01",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 8,
+      "answer_sha256": "1af56ff7cc652343082c71e86364f931c2c1a66971ee46af4d3ed535918bd66b",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "官方窗口明确Q2 2026合并收入+24%至$119.8B、连续12季双位数增长。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "同窗口明确Services +15%至$94.5B，其中Search&other +17%。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "需求增长有基础，但8分同时要求持久现金创造/资产维护；池内Q2 FCF负值未处理，成熟分部现金与必要投入缺失。"
+      },
+      "unknown_assessment": null,
+      "whole_answer_note": "答案只列AI和监管条件风险，遗漏同池已给出的负FCF反证；收入不自动证明现金创造。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_52b16a635d40",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_14",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "888e831e7274ebf454fa8a87193b8bf1bb0032c9865e2a41b626d30c4f36845a",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "年度摘要明确列出21至25信投Y系列多期永续次级债券。",
+          "source_ids": [
+            "B5a63ac95ea"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "Q1窗口支持报表追溯调整存在，但对2025Q1利润总额/净利/权益的影响句被截断为均…，不能断言这些科目均被调整。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；债券发行/追溯调整不说明配置的每股效果。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "缺每股价值、分红回购金额、再投资/并购实际回报。池有分配计划会议但没有金额或效果。"
+      },
+      "whole_answer_note": "不能将截断的追溯调整影响句补为科目已发生调整。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_6bb85968f1f8",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_13",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "fd5e603eecdc1b3db0385a603eac4876815690bf4378c5a6877bd4e4be37be15",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "两引用短窗口分别只是章程页面标识/客服及公告导航，没有可用交易公平性正文。",
+          "source_ids": [
+            "B19b53e6a0c",
+            "B5687fe274f"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；实际关联交易/权益保护记录缺失。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "未给出关联定价、占用资金与普通股东分配公平性证据。"
+      },
+      "whole_answer_note": "只确认给定片段无正文，不推断网站完整章程/目录内文件没有公平条款。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_263013365649",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_08",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "3a35c792544bdd6223a7f360118bef883ec1875b4e7e07cdf8639c72090e1d7d",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "年报致股东信自述2025锂电销量近四成增长至661GWh及动力/储能领跑。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "第三方窗口明确2026H1收入2769亿/+54.8%、归母432.8亿/+42.0%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "规模和利润增长不能证明交付质量、良率或扩张成本受控；7分缺题目两项直接证据及压力周期。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "良率、交付、产能利用率、单位成本与压力期表现缺失。"
+      },
+      "whole_answer_note": "净利增速低于收入增速，也不能单独证明成本纪律保持。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_a437ad1345a8",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_14",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "b1e841a86e11f8a2f790d37618b641456a616264b005a56377774a7e47180f2b",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "年度摘要确有21至25信投Y系列多期永续次级债券。",
+          "source_ids": [
+            "B5a63ac95ea"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "维基窗口明确2020营业额233.51亿、净利95.37亿、总资产3712.28亿，均人民币口径。",
+          "source_ids": [
+            "T4ea62e8d80"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；单年旧财务数和发债不评价配置每股增值。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "多年ROE、股本/每股净值、分红回购量和并购回报未给。"
+      },
+      "whole_answer_note": "保留2020标签避免把历史资产规模当当前资本情况。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_0899d9a01838",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_01",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 8,
+      "answer_sha256": "cc4958e522187b6a58035c4ecc08ea5db38d2e2b0c5c4dd12ae672152b8bf80d",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "年报明确自述2025锂电销量661GWh/近四成增长与两类出货全球领跑。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "新浪窗口明确动力/储能电池研发生产销售及乘用车、商用车、表前/表后储能应用。",
+          "source_ids": [
+            "T4d449e6d69"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "有限可辩护",
+        "reason": "大量实物销售提供客户采购的间接行为证据，可有限辩护较强价值判断；8分仍缺持续支付、复购和客户净效益直接证据。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "复购、支付意愿、替换风险/成本等直接数据缺失。"
+      },
+      "whole_answer_note": "公司销量/排名自述只核文字支持，不独立核实行业地位。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_2e4956739ce5",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_10",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "7d988c8c3f3b57a3453bbbe977f3cc0bde3826c0b586990198193034e32ef389",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Q1窗口明确母公司净资本等风险指标符合监管规定，仅为报告声明。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "所引东方财富窗口仅给指标定义，未给公司数值。",
+          "source_ids": [
+            "Tfdef855e79"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；定义/合规不能量化资本回报相对资金成本。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "长期ROE、监管资本需求及资金成本的可比数值缺失。"
+      },
+      "whole_answer_note": "券商适用框架需资本/杠杆/风险暴露，不能用风控合规替代超额回报。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_f42ea06d2eed",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_02",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "473cfec608b6c399b4cf9d3e629717a0a741f0f2bc2ff6ed067a0624a03b6369",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "东方财富第三方片段明确2026H1收入、归母、扣非净利和三项同比。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "东方财富片段给2025收入+17.0%/净利+42.3%；年报给2025锂电销量661GWh/近四成增长，联合引用完整。",
+          "source_ids": [
+            "Bccef6c412d",
+            "T10ee4d2e84"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "增长不能识别存量收入延续及获客/补贴投入条件；7分把总收入延续当低维护成本的存量延续。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "获客成本、补贴、订单/履约收款可见性和存量收入结构缺失。"
+      },
+      "whole_answer_note": "不是因为无法精确量化而失分，而是核心条件完全未得到证据支持。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_dc8b5d67bed3",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_16",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "16ac8a05b4673b2f91f00635dd3c0e83679225211211967419eddecb5d39ce79",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Q1窗口明确报告期母公司净资本等风险指标符合证监会规定。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "年度摘要支持多期永续次级债券发行；窗口不说明其监管资本补充口径/金额。",
+          "source_ids": [
+            "B5a63ac95ea"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；无两年到期和压力覆盖数据。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "到期义务、流动性、可用授信及压力融资依赖确缺。"
+      },
+      "whole_answer_note": "风控合规声明不等于保守压力下履约能力。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_12bdedafb77d",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_04",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 6,
+      "answer_sha256": "8b35deb507d397142791eaee63209d8060ccfd4f88755ef1e1d70cd76d1b6d44",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "第三方窗口明确2024原材料降价、电池价下调、收入-9.7%、归母+15%；这里只确认其转述。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "年报自述2025两类出货领先和661GWh/近四成增长。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "有限可辩护",
+        "reason": "2024降价期间收入降而利润增是利润保留的具体有限证据，6分可有限辩护；仍无多周期利润分配与供给纪律。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "长期单位利润、供给纪律和上下游分配数据缺失；强势车企/激烈竞争是未独立佐证的分析假设。"
+      },
+      "whole_answer_note": "东方财富关于成本和规模红利的解释是第三方观点，不是独立因果核真。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_35b80331d418",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_05",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 8,
+      "answer_sha256": "e6468823ef78b92f2f040fbffcabb4cdcb02de2be4185fefbbe66123000b2d0f",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Yahoo报道窗口称桌面搜索份额略高于约80%；支持其转述，不证明独立测量。",
+          "source_ids": [
+            "T668bf6f5e3"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "第三方窗口明确Q2 2026 Search&other52.9%、Cloud20.7%。",
+          "source_ids": [
+            "B5f001828ff"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "份额与收入构成不能证明网络效应、复制代价或长期经济回报；缺核心壁垒机制仍给8分不足。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "复制成本、优势持续时间和竞争经济回报缺失；AI风险不能补该缺口。"
+      },
+      "whole_answer_note": "规模/份额不自动证明网络效应。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_5e241b22ab40",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "OPERATING_01",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "09f0eafd4192cd4fbcffbbcc85df624f7045420176e22b78653feda000f82f53",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "富途窗口只解释FY/Q报告期间，不含公司现金流/资本开支值。",
+          "source_ids": [
+            "Beb3a123875"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "Q1窗口支持报表追溯调整存在，但对2025Q1三项科目的均…影响句截断，不能确定这些科目实际调整。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；现金流和适用定义实质缺失。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "缺券商专用现金创造/监管资本与客户资金区分，也缺现金流、资本开支数值。"
+      },
+      "whole_answer_note": "券商CFO受客户资金和金融资产交易影响；即使取得CFO/资本开支，也不能直接机械算工业FCF。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_3bcb28c6bfe0",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "OPERATING_01",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "b99ff88ebb813a3e30524fe960fe2081465be15ff2f4259198e01304034a5781",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "2026年6月CNY收入1477.86亿、成本1151.55亿、研发60.63亿可见；季度跨度未明示。",
+          "source_ids": [
+            "Tc2a8c8027b"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "第三方窗口明确2026H1归母432.8亿、扣非390亿/+43.4%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；损益数字不证明扣维护与营运资本后的自由现金。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "CFO、维护/扩张资本支出及营运资本变动缺失。"
+      },
+      "whole_answer_note": "未评分仍标记Google期间补全。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_ddbd64f94d0f",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_12",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "33a8c6a2fd8a5fa98af7b3d02174ba107958b6a0f0bcd5b50e9eb030bcb7dd30",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "报表追溯调整可见；关于2025Q1利润总额、净利、权益的影响句截断，不能断言三科目被追溯调整。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "年度摘要确有多期永续次级债券名单；给定窗口无资产负债利润勾稽细节。",
+          "source_ids": [
+            "B5a63ac95ea"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；没有三表/审计与科目细节可核验。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "审计、关键科目、追溯调整原因影响及现金利润勾稽缺失。"
+      },
+      "whole_answer_note": "缺内容仅指实际可用窗口；不说明完整报告不披露。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_e173c102fa94",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_13",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "7268497d610add765e06661966553e80645aed0f0f28ec7077926e713bf01ac6",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "AASTOCKS窗口明确拟划转26.84亿A股/35.11%，成为第一大股东且尚需核准。",
+          "source_ids": [
+            "Tb22039b771"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "窗口明确连续三交易日偏离累计>20%及公司自查经营正常；未披露重大事项的声明限定于两大股东涉及公司的列举事项，答案泛化为公司无任何未披露重大信息。",
+          "source_ids": [
+            "T6b3a7da9bf"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；转让拟议与自查声明不提供长期普通股东公平记录。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "关联定价、分配公平、小股东救济实质缺失。"
+      },
+      "whole_answer_note": "不得把公司/股东自查声明当独立核真；独董受查仅新闻标题可用，无正文详情。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_81592940d3c6",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_13",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "86d0474fce12f4390bc8a522a37eda0e55b101ce77d4b601c303a3f781149f07",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Yahoo视频日期2024年4月，描述首次季度$0.2股息及$70 billion回购；换算700亿美元正确。",
+          "source_ids": [
+            "T3e8defe01c"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "Bloomberg Law窗口明确董事会$500 million合规结构承诺和已和解派生诉讼。",
+          "source_ids": [
+            "T8afef24d12"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；关联公平和长期治理记录缺失足以阻止评分。"
+      },
+      "unknown_assessment": {
+        "verdict": "与给定事实冲突",
+        "reason": "称缺投票权安排/双重股权直接证据与池中T22b2fe8496明确Class B超级投票和Class C无投票信息冲突；关联交易公平仍有缺口。"
+      },
+      "whole_answer_note": "未评分不能把已经给出的类股权利降为未知。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_aa59809cf5ff",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_12",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "5a192ba110242868d5bc4aab493f9fa81d40f3c0dd28283c3eeb5a1ec22b3fe4",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "Q1片段报表追溯调整存在；三项2025Q1科目的均…影响结尾截断，不能断言三科目实际调整。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "窗口确有吸收海通/更名国泰海通文字，支持年报提及这一事实；但上表简称国泰海通明确指同业，不能用于中信建投主体。答案省略同业限定，发行人归属不受支持。",
+          "source_ids": [
+            "B5a63ac95ea"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；缺真实披露验证；错误同业事实不能补充中信建投证据。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "调整原因影响及三表勾稽确缺；但应先剔除错置的同业合并事实。"
+      },
+      "whole_answer_note": "第二claim的字面年报提及有支持，但主体未注明，属于可能错置的同业事实；不能据此推断中信建投完成合并。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_337c9c830b26",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_06",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "aab776345cd0511058520cae0a38f8facd8aaed7114b9f08f3cf473d0e0ff1c6",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "年报自述2025动力/储能出货全球领跑及锂电661GWh/近四成增长。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "第三方片段明确2026H1营收2769亿/+54.8%、归母432.8亿/+42.0%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "自述规模领先和增长不足以证明长期客户/经济利益稳固，7分缺份额与相对盈利轨迹；上涨速度不应为稳固性加分。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "逐年份额、关键客户保持和竞争对手经济回报缺失。"
+      },
+      "whole_answer_note": "趋势向好仅为有限推断，未独立单列趋势状态。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_f8bdd2fd249d",
+      "issuer": "Alphabet Inc.",
+      "question_id": "MATURE_02",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 6,
+      "answer_sha256": "406f2da57e7b0cc1eb1a855f98b744ec445f8b8473460af26ec90082d88c491b",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Reuters2024年4月窗口明确首次股息和$70 billion回购宣布。",
+          "source_ids": [
+            "T31b892a167"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "BigGo标题明确暂停回购/售股$85 billion，正文片段每股$0.22股息；支持报道称述，时间/实真未核验。",
+          "source_ids": [
+            "Ba3434a5ea8"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "授权、股息和相反标题报道不能证明高回报机会减少时及时停止低效投入或每股价值效果，6分缺核心触发与响应证据。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "低回报投入退出、机会减少及每股净效应均无证据。"
+      },
+      "whole_answer_note": "2024授权与未注明年期的售股标题不能当同时实际回购/增发；资本开支和融资巨大也无本引用量化。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_5ada5a391b11",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_02",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "ff08fe89d1b0017f6bf8ea91d70c8b3159d0cbf05146e207a68d53d45a709f17",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "第三方窗口明确2026H1收入2769亿/+54.8%、归母432.8亿/+42.0%、扣非390亿/+43.4%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "同第三方窗口明确2025收入+17.0%、净利+42.3%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "总收入增长不能证明存量收入在不提高获客/补贴投入条件下延续；7分缺题目的条件与比例证据。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "订单可见性、存量客户延续、价格折让/补贴和维护获客成本确缺。"
+      },
+      "whole_answer_note": "项目/订单制是模型推断；没有直接订单结构窗口佐证。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_ea3e89339675",
+      "issuer": "Alphabet Inc.",
+      "question_id": "MATURE_02",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "1dfa7a38a40f4d298efb9e2b4d87667b2f3a1d23e5905177734ac71bdf7aec3c",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "部分支持",
+          "reason": "Yahoo列值支持$17.4B至$62.22B回购金额/换算；无期间列头，不能认定近年序列。",
+          "source_ids": [
+            "Tc14e2c65f8"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "BigGo正文明确下一次季度股息$0.22并称this year aggressive capital-raising；支持报道表述，年份截断/未注明。",
+          "source_ids": [
+            "Ba3434a5ea8"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "回购金额和派息报道不能证明机会减少时的及时转向、停止低效投入或每股增值，7分缺核心机制与效果。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "rationale承認配置纪律证据不完整；确缺机会减少、投资退出和每股净效应。"
+      },
+      "whole_answer_note": "无列头的发债不能证明同期大幅增加；负FCF、回购及债务新增未对齐期间，不能断言负FCF仍靠债务回购。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_b1d519e2d0eb",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_16",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "6abcdf655c0fa9fce3eb7b77fa2fcba4f2960e6e4783daa79c849c796ec0775a",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "第三方窗口明确2026H1收入2769亿元、归母432.8亿元。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "Cbonds窗口逐条列2031年到期CNY债券及票息，没有负债总额、现金或到期金额。",
+          "source_ids": [
+            "T5c935d2f3e"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；远期票息列表不构成未来两年履约测算。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "可用货币资金、两年刚性到期量、CFO与承诺/担保数据缺失。"
+      },
+      "whole_answer_note": "本审查仅认债券条目可见，不独立核验债券发行或余额。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_a3509e558017",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_06",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 8,
+      "answer_sha256": "16e258438d5bb9912a94288380ba66d33ec36a349708eb3e866a92a982613f8e",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "Yahoo报道窗口称全球桌面搜索份额略高于80%；仅支持报道口径，日期未露出。",
+          "source_ids": [
+            "T668bf6f5e3"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "官方窗口明确Q2 2026收入+24%及连续12季双位数增长。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "静态桌面份额和总收入增长不能证明长期保持客户和经济利益；8分缺竞争侵蚀/份额趋势与相对盈利证据。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "份额趋势、关键客户和经济利益保持的数据缺失；并非必须官方来源，但须可比长期序列。"
+      },
+      "whole_answer_note": "题目要求单列增强/稳定/恶化，答案未明确单列；不把增长速度计入稳固性。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_1eb5f7cbaa88",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_13",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "00d425cb3f9efce555fecdc1440512cdd3a39133dd6662996e3257fd24094119",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "章程窗口仅栏目框架/客服，无实际关联/股权条款。",
+          "source_ids": [
+            "B19b53e6a0c"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "分红配股窗口仅导航/服务推广，无具体分红方案或表决。",
+          "source_ids": [
+            "B221d001418"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；普通股东实际公平记录没有可用正文。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "关联定价、资金占用、救济/治理处罚与权益分配记录缺失。"
+      },
+      "whole_answer_note": "仅评价给定片段，不声明网站完整文件未披露。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_6be8d3cbd5da",
+      "issuer": "中信建投证券股份有限公司",
+      "question_id": "IQS_13",
+      "evidence_pool_id": "P_a0dc0e87",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "d4506fcd8669cbaca15225715e386bdfd10f96fb7d47bfff05a29b3396ef24dd",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "AASTOCKS明确拟划转26.84亿股A股/35.11%、尚需证监会及香港核准。",
+          "source_ids": [
+            "Tb22039b771"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "异常波动与公司自查正常明确；未披露重大事项声明限定两大股东涉及公司的列举事项，答案泛化为公司无未披露重大信息。",
+          "source_ids": [
+            "T6b3a7da9bf"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；股东转让和自查不足以评实际公平记录。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "关联交易、分红公平与中小股东权利记录缺失。"
+      },
+      "whole_answer_note": "转让后仍无控股股东/实际控制人的声明同池明确存在；不将自查当独立核真。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_27ba8ba1aed0",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_12",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 6,
+      "answer_sha256": "1debf4360a2ca412d9aac004e584fe84931cfa713751bf1675c93b199282d12d",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "年报及半年报摘要标题支持文件存在，2026-064对应半年报摘要。",
+          "source_ids": [
+            "T10ee4d2e84",
+            "Bcad5a62ca2"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "第三方片段明确2026H1收入2769亿/+54.8%、归母432.8亿/+42.0%、扣非390亿/+43.4%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "支持不足",
+        "reason": "报告存在和第三方重复数值不能支持披露可信6分或主要口径可解释；无审计、资产负债、现金、估计或风险确认可用正文。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "审计、关联/表外义务与三表勾稽确实缺失，直接阻止题目可信度评价。"
+      },
+      "whole_answer_note": "港股年度公告标题池内存在，但不能把文件名/可检索等同透明可信披露。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_3791df79252b",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_14",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "690ac99854dacd3fa6217da2b9df6ba00e479aca4e5a56e2994633c041d29bf1",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "2025年报致股东信明确自述锂电销量661GWh/近四成增长。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "第三方窗口明确2026H1收入2769亿/归母432.8亿和同比+54.8%/+42.0%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；销售/利润不证明历次配置每股增值。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "回购量价、注销/库存股、稀释、资本投入回报、并购对价和每股影响均无可用数据。"
+      },
+      "whole_answer_note": "公告窗口有标题/编号及信息保证，不能证明执行金额或每股效果。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_afbb4de956f4",
+      "issuer": "宁德时代新能源科技股份有限公司",
+      "question_id": "IQS_04",
+      "evidence_pool_id": "P_d636dc7e",
+      "original_status": "scored",
+      "original_score": 7,
+      "answer_sha256": "d20fcedfa7d38a647244717f01b0b768a089f8d6874e6776b88a0e17bc6bba91",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "第三方窗口明确2024原材料降价、电池价下调、收入-9.7%、归母+15%。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "年报明确自述2025收入结构与增长质量优化、锂电销量近四成增长。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "有限可辩护",
+        "reason": "价格下行中利润增加是利润留存的具体有限证据，7分可有限辩护但上沿判断很不确定；没有长期价值链分配/供给纪律。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "长期毛利/单位利润、供给纪律和上下游分配趋势缺失。"
+      },
+      "whole_answer_note": "公司增长质量自述及第三方成本解释均不是独立核真；不精确重评分。",
+      "contains_claim_problem": false
+    },
+    {
+      "row_id": "A_6176cbf4dba1",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_12",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "insufficient_evidence",
+      "original_score": null,
+      "answer_sha256": "a0763e5e344de74eadc8fd0181c2eb21778cff9a15328cdd22a43a82ca6329b4",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "官方Q1标题和表格窗口明确2026第一季度合并财务结果表存在。",
+          "source_ids": [
+            "B3c2e2b7efb"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "部分支持",
+          "reason": "两项余额$30.7B/$46.5B及换算可见；余额句as of fiscal…截断，不能补成2025财年。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "非评分",
+        "reason": "未给分；文件存在与不全第三方余额不能判断披露可信。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "缺审计、关键估计、资产利润现金交叉验证及对齐口径。"
+      },
+      "whole_answer_note": "不从FY2025 FCF句移借余额年份。",
+      "contains_claim_problem": true
+    },
+    {
+      "row_id": "A_732b25aac65b",
+      "issuer": "Alphabet Inc.",
+      "question_id": "IQS_01",
+      "evidence_pool_id": "P_02451bba",
+      "original_status": "scored",
+      "original_score": 8,
+      "answer_sha256": "1c2d6b8be91d57e0416b7c11c82f00c705706485fb8dcce285b27bf41228c84b",
+      "claims": [
+        {
+          "index": 0,
+          "verdict": "支持",
+          "reason": "官方窗口明确Q2 2026收入+24%至$119.8B/1198亿美元及连续12季双位数增长。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "index": 1,
+          "verdict": "支持",
+          "reason": "第三方窗口明确Q2 2026 Search&other52.9%、Cloud20.7%。",
+          "source_ids": [
+            "B5f001828ff"
+          ]
+        }
+      ],
+      "score_assessment": {
+        "verdict": "有限可辩护",
+        "reason": "官方连续交易增长可有限支持客户持续购买/付费，8分缺直接净价值、留存和支付意愿，不能视为精确验证分。"
+      },
+      "unknown_assessment": {
+        "verdict": "实质缺口",
+        "reason": "客户留存、复购与持续支付意愿的直接证据缺失；广告周期/AI需求只是可行替代解释。"
+      },
+      "whole_answer_note": "这里只确认给定片段支持收入/构成，不独立核真客户价值。",
+      "contains_claim_problem": false
+    }
+  ],
+  "limitations": [
+    "这是agent-assisted给定片段支持审查，不是世界准确率、人类gold或精确评分校准。",
+    "短窗口有截断、缺期间表头、导航/限流、乱码和无发布日期；不推定完整来源未披露，也不补读网页/原报告。",
+    "来源数字与叙述本身可能有错误、过时或宣传成分；仅检验答案是否遵守实际可见证据边界。",
+    "包按已评分答案与固定财务题选取，并非全任务或随机公司样本；不给模型、方法或吞吐/质量排名。",
+    "评分有限可辩护表示存在有限间接或具体证据且已指出缺口；不表示原数值获得独立验证。",
+    "同业更名claim字面年报提及有支持，主体省略被判部分支持；未把这种语义歧义强判为明确事实冲突。"
+  ]
+}

@@ -1524,3 +1524,24 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 独立设计审查发现work.schema.source_binding_refs仍只允许BND，以及CLI历史envelope无as_of。本批只证明归档DTO的结构/引用一致性，不能认证owner或证明现在准入，不把消费侧正例扩大成Work/Observation/C05/整条链已兼容。后续由契约owner联调批次处理。
 
 - P2-5当前范围已verified并提交推送a780a72：相关89测试/139子例、最终独立14测试通过。用户已启动两前包，当前总控不得向StockQA/StockWiki写代码；后续以完整handoff/result commit/interface golden为验收起点，不从活动施工的零散文件推断完成。
+
+## 2026-10-07 — 改进实验起点与集成留档
+- 旧实验终版540题槽：331 scored、88 insufficient、110 missing、8 error、3 N/A。61.3%不是accuracy；原报告token/引用分母/provenance偏差已独立报告，不重复覆盖旧档。
+- 大包HK batch30仅1/30题，与诊断返回30题不同，历史prompt/参数绑定不完整，不能确定根因；新实验必须每请求绑定全部输入、参数、response/model id与finish_reason，且输出限长清晰。
+- 初始只读发现P2-5仅解决identity wire：work/observation/query/exchange及_owner_context_v2/logical_work_key_v2仍含不允许UUID连字符与BIND的旧正则。此跨链兼容缺口另留档，不修改正在冻结的施工包契约，不宣称全链已兼容。
+- 外仓CodeGraph LLMClient定位有效但源码行偏移，已读定位文件；rg --files会忽略部分JSON实验结果，使用精确路径和GetChildItem列举，不能把忽略误判缺失。
+
+- B01本轮303模型/48search：输入盲审提示两条中信股份00267混入6066来源；半年净利润单位百万元、普通股权益剔永续、客户资产非自有资产是高风险口径。source存在不是事实被支持；模型包越大可能结构全齐却过度给分。新增scoped-v6七事实片/五关键题组合试验预注册14call，原池不变，累计预计347，仍不闭G3。
+
+- 匿名答案审查先报：高分答案也可能把billion换亿美元缩小10倍、Alphabet C无投票权写成超级投票权、未来500M合规投入写已支付和解金、SEC拦截页作报表支持；unknown行也有评级2024资产挪成2025的错年。正式结论需完整164行审查与来源级分母，不能当全部回答准确率。DeepSeek三题包新3臂27/30、30/30、30/30，其中US可恢复2有效行需另统计，g3未必优g5。
+
+- 独立匿名原164行已固化：283 claims=214支持/53部分支持/11明确冲突/5无支持；66scored的支持程度46不足/11有限可辩护/9冲突，98非评分。56行含claim问题、其中21非评分。此为给定片段支持的agent-assisted复核，不是世界事实准确率；样本偏向关键/可评分题、不能外推全池百分比。扩展57仍固化中，新增把含糊Cash&Debt/无期间FCF当具体期现金、利润增速低于收入却判毛利稳定、子公司英文名归错母公司的反例。
+
+- MiniMax官方OpenAI SDK参数页再次只读核查：thinking disabled/max_completion_tokens有明确支持；未看到response_format强制JSON承诺。本轮失败仅限注册的OpenAI兼容端点/参数/提示，不可外推整模型或Anthropic/native能力。未为未经证实参数另发无必要付费探针。最终same-input比较必须同时绑定evidence variant/hash、题集、profile；新增归档--archive验证并纯离线复算供清理后交接，28tests已过。
+
+
+## 2026-10-07 — Phase89最终可采用与不可推断结论
+- 五题包提升吞吐不等于事实改善；DeepSeek五题、十题候选补审的27评分中19缺支撑。细化context以后，DeepSeek保留unknown而MiniMax全scored，不能按评分覆盖把后者叫胜者。来源日期/主体/单位/财务口径和题目级证据覆盖是下一轮重点。
+- 最终结构、故障、预算、接续与费用口径已验证：410/48，USD保守上界4.869098，28离线测试；所有失败和63次扩展/补问入同账，不覆盖旧答案，完全无来源gold就不报准确率。按主题组包是建议，实际实验仅按原题序分包。
+- 281匿名行三个不同目的样本保留独立分母和逐claim标签，0重叠、答案hash/引用绑定一致。candidate审查不含十倍单位错，但仍有期间补全/收入替代利润/引用窗口越界/同业主体省略；非评分也要审事实，claim无问题不代表rationale等整体正确。
+- 已完成最小归档、904文件自有run清理、删除后公开CLI纯离线重算。9文件工件不含搜索snippet正文/raw API/推理/key；正式runtime仍归StockQA，IQS这里只提供冻结客户端实验工具。原片段不可恢复和最早源码未保存的限制可审计。

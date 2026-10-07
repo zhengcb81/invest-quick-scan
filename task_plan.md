@@ -411,7 +411,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**下一步**：按[独立施工包](docs/implementation/parallel-lanes/packages/2026-10-07/README.md)只读查收QA-NET-01/SW-READY-01的handoff目录、result commit及真实接口工件，交付齐后集中联调；未齐不把施工中的代码当可验收交付。P2-5本地兼容已审并提交推送a780a72。两源仓由各自harness独占，TH-IMPL-01/IN-IMPL-01暂缓；后两包等G3/F05及真实公共query/golden，已有静默只读开工提醒。L03仍需owner明确范围/预算/启动，W12恢复证据仍是G3硬前置。
+**下一步**：只读接收QA-NET-01/SW-READY-01的handoff、实现commit和公开接口golden，按原大节点集中联调；两外仓已有其他harness开工，总控不写、不清理它们。Phase89改进实验已完成并归档：[最终报告](docs/implementation/experiments/b01-improved-results-2026-10-07.md)。410模型/48搜索、费用保守上界US$4.869098；DeepSeek五题为效率候选，事实审查仍有不足，生产默认保持逐题，G3/F05不关闭。用户允许报备后超原预算继续，但本轮已完成，不为用满预算追加无目的请求。L03/200家未启动；TH-IMPL-01/IN-IMPL-01暂缓。P2-5此前交付a780a72，身份兼容不重做。
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
@@ -1309,3 +1309,13 @@ Status: verified_for_read_wire_consistency_scope; implementation_committed_and_p
 - 本轮恢复错误：误读不存在的handoff-guide.md、test_identity_contract_v21.py；均只读错误无写入，改用实际文件列表定位handoff-for-new-agent.md、test_identity_contract.py。此前summary提及的identity-validation-request.schema.json同为错误猜测，真实路径identity-cli-request.schema.json。
 - 用户后续状态：两个前包已开始施工，后两包暂缓。总控继续本目录，禁止与两外仓writer并发写。开工提醒已设本线程每小时只读heartbeat id=automation，条件未变静默；首次工具参数遗漏destination拒绝，修正后创建成功。
 - 原identity schema工作树CRLF vs Git blob LF双口径已记录（671292a6…/4924b5e3…），不改冻结schema；三golden各加精确-text属性防checkout字节漂移。work.schema BND边界与当前as_of未验证明确留档，本批不关闭整条工作链/G3。
+
+### Phase 89: 小批量打包问答改进实验（2026-10-07）
+Status: complete_for_experiment_scope; G3_and_production_default_unchanged
+- [x] 独立复核旧540行报告/费用/执行来源薄弱点，保留原inconclusive结论；三真实公司/30题、v5共同说明/证据/身份/rubric冻结，复用StockQA固定commit的10源码，不写被其他harness占用的StockQA/StockWiki。
+- [x] 实验初始预算25USD/350模型/200搜索；用户随后授权超过继续并报备，实际登记新增<=63模型、无搜索，hard cap改410/200/USD10。所有probe/失败/重复/补问同账；最终410模型+48搜索、保守上界4.869098、0未知、0缺usage。
+- [x] 三市场三模型、1/3/4/5/10/12/30题包（非全因子；每臂限制见预注册）与Brave/Tavily basic、目标advanced、片段主体/口径v6组合试验完成。MiniMax只补失败题一轮各5，原答案不覆盖、不把格式恢复当事实正确。
+- [x] 28离线单元/集成/归档回放测试通过；三模型真实答案cache与6stage公开CLI接续在禁止网络/凭据guard下均0HTTP，账本原字节不变；全部410 actual payload/question/context/hash匹配，初始orchestrator只hash未存source的边界保留。
+- [x] 匿名答案审查：原164行+扩展57行+候选60行=281不重叠行；hash/题号/引用/标签分母全部核对，分别统计，不当人类gold/准确率。独立本批技术审查无归档阻断，同批修复检索基线串用；不新增逐小节点门、不关G3。
+- [ ] 报告/最小结构答案+receipt+source pointers归档；自有runtime/log/cache/snippet清理，保留其他仓与opencode.json；PWF/交接更新后精确commit/push。
+- 条件性性能候选DeepSeek五题包（三司90/90结构、对并发4逐题median paired speedup1.56/refcost约降35%），但高分和unknown仍可能有事实/单位错误；正式政策仍待G3。实验详见`docs/implementation/experiments/b01-improved-2026-10-07.md`，L03未启动。

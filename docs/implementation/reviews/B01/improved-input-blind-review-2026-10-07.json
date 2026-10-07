@@ -1,0 +1,945 @@
+{
+  "schema": "iqs.b01.agent_assisted_input_review/1.0.0",
+  "created_at": "2026-10-07T10:08:22.769798+00:00",
+  "reviewer": "independent_batch_experiment_review_agent",
+  "blind_to": [
+    "results",
+    "blocks",
+    "model_answers"
+  ],
+  "read_scope": [
+    "questions.json",
+    "companies.json",
+    "evidence/catl-balanced.json",
+    "evidence/cncb_h-balanced.json",
+    "evidence/alphabet-balanced.json"
+  ],
+  "prohibited_actions_not_performed": [
+    "api_requests",
+    "credential_reads",
+    "external_repo_writes"
+  ],
+  "input_sha256": {
+    "questions.json": "a2b5834cd45e0313f799e1a9b1d3b0db007ae8293a091b544c692dd1d8d2673d",
+    "companies.json": "2a359cbba16acd55187e41db6fcd8c272d6ee1582fa5c0be330be90410a0c7f2",
+    "evidence/catl-balanced.json": "2afee3312a2c3fb3dd30e837d396f3d35139f1b4f2b860080d9bb45e9ca2f864",
+    "evidence/cncb_h-balanced.json": "742c261c25c8cc40282108fe8fa477700c4d2866735edebfa8780b144f7fc727",
+    "evidence/alphabet-balanced.json": "61f09cad51b3476248a388c20471a201c70abea2aef5a5ed240648ef1468a623"
+  },
+  "information_cutoff": "2026-10-07",
+  "label_definitions": {
+    "足": "对有限明确范围有事实基础，允许低/中置信有界推断；不是高分许可。",
+    "不足": "相关线索不足以支撑题目锚点所需判断，unknown或insufficient_evidence合理。",
+    "不适用": "该业务下问题无含义；本次12项核心题不自动不适用。"
+  },
+  "limitations": [
+    "仅审片段，未打开URL或独立验证原文真伪。",
+    "82条published_at全null，retrieved_at不是published_at。",
+    "agent辅助标签不是人类gold，也不提供精确分数或MAE标准。",
+    "不足不是公司差，也不要求模型机械服从此标签。",
+    "仍须审查模型实际claim及引用。"
+  ],
+  "summary": {
+    "companies": 3,
+    "questions_per_company": 12,
+    "reviewed_slots": 36,
+    "足": 2,
+    "不足": 34,
+    "不适用": 0
+  },
+  "rows": [
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_01",
+      "question": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+      "evidence_sufficiency": "足",
+      "reason": "官方销售与产品资料可支持客户需求的有限判断；无客户留存/实际效益，不支持高置信或8分以上。",
+      "supported_snippet_claims": [
+        {
+          "text": "官方2025年度报告片段称锂电池销量同比增长近四成至661GWh，动力及储能出货继续领跑；不能推出客户续约率、利润率或难复制机制。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "text": "公司资料列动力电池、储能电池、电池材料及回收业务；仅支持业务范围。",
+          "source_ids": [
+            "T4d449e6d69"
+          ]
+        },
+        {
+          "text": "企业简介记载2012年与宝马战略合作，2013年为宇通开发电池；不支持截至2026仍独占供应或续约。",
+          "source_ids": [
+            "Tb4fb625874"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_02",
+      "question": "现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？",
+      "evidence_sufficiency": "不足",
+      "reason": "缺留存、续约、可见订单与维持开支；2012合作不能推出当前可延续收入。",
+      "supported_snippet_claims": [
+        {
+          "text": "官方2025年度报告片段称锂电池销量同比增长近四成至661GWh，动力及储能出货继续领跑；不能推出客户续约率、利润率或难复制机制。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "text": "企业简介记载2012年与宝马战略合作，2013年为宇通开发电池；不支持截至2026仍独占供应或续约。",
+          "source_ids": [
+            "Tb4fb625874"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_04",
+      "question": "行业的供需和价值链分配，是否允许这家公司长期留下合理利润？",
+      "evidence_sufficiency": "不足",
+      "reason": "缺价格竞争、上下游议价及跨周期利润，销售规模与二手利润不足。",
+      "supported_snippet_claims": [
+        {
+          "text": "官方2025年度报告片段称锂电池销量同比增长近四成至661GWh，动力及储能出货继续领跑；不能推出客户续约率、利润率或难复制机制。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "text": "用户文章称2024营收下降而利润增长、2025收入及利润增长；二手转述，缺原始报表核对。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_05",
+      "question": "公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？",
+      "evidence_sufficiency": "不足",
+      "reason": "出货领先不证明复制成本、机制或经济租金。",
+      "supported_snippet_claims": [
+        {
+          "text": "官方2025年度报告片段称锂电池销量同比增长近四成至661GWh，动力及储能出货继续领跑；不能推出客户续约率、利润率或难复制机制。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "text": "企业简介记载2012年与宝马战略合作，2013年为宇通开发电池；不支持截至2026仍独占供应或续约。",
+          "source_ids": [
+            "Tb4fb625874"
+          ]
+        },
+        {
+          "text": "生成式AI分析片段介绍2023年换电方案并转引公众号；是产品线索，不证明落地降本。",
+          "source_ids": [
+            "T4958e7f7d7"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_06",
+      "question": "公司的竞争地位有多稳固，变化趋势是否支持这种稳固性？单列增强/稳定/恶化，不因上升速度本身加分。",
+      "evidence_sufficiency": "不足",
+      "reason": "缺同口径多期份额、客户流失与竞争冲击证据。",
+      "supported_snippet_claims": [
+        {
+          "text": "官方2025年度报告片段称锂电池销量同比增长近四成至661GWh，动力及储能出货继续领跑；不能推出客户续约率、利润率或难复制机制。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "text": "用户文章称2024营收下降而利润增长、2025收入及利润增长；二手转述，缺原始报表核对。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_07",
+      "question": "管理层过去对经营目标和重大项目的承诺，兑现得如何？",
+      "evidence_sufficiency": "不足",
+      "reason": "没有事前经营/项目承诺与事后兑现对照。",
+      "supported_snippet_claims": [
+        {
+          "text": "官方2025年度报告片段称锂电池销量同比增长近四成至661GWh，动力及储能出货继续领跑；不能推出客户续约率、利润率或难复制机制。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_08",
+      "question": "扩大规模或遇到需求波动时，公司能否保持交付质量与成本纪律？",
+      "evidence_sufficiency": "不足",
+      "reason": "增长不证明质量、召回、单位成本及波动期交付；产品方案不等于落地。",
+      "supported_snippet_claims": [
+        {
+          "text": "官方2025年度报告片段称锂电池销量同比增长近四成至661GWh，动力及储能出货继续领跑；不能推出客户续约率、利润率或难复制机制。",
+          "source_ids": [
+            "T10ee4d2e84"
+          ]
+        },
+        {
+          "text": "生成式AI分析片段介绍2023年换电方案并转引公众号；是产品线索，不证明落地降本。",
+          "source_ids": [
+            "T4958e7f7d7"
+          ]
+        },
+        {
+          "text": "用户文章称2024营收下降而利润增长、2025收入及利润增长；二手转述，缺原始报表核对。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_09",
+      "question": "组织能力是否足以延续，而不过度依赖少数关键个人？",
+      "evidence_sufficiency": "不足",
+      "reason": "公司历史未提供授权、继任、团队梯队和关键人更替结果。",
+      "supported_snippet_claims": [
+        {
+          "text": "企业简介记载2012年与宝马战略合作，2013年为宇通开发电池；不支持截至2026仍独占供应或续约。",
+          "source_ids": [
+            "Tb4fb625874"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_10",
+      "question": "在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？",
+      "evidence_sufficiency": "不足",
+      "reason": "缺必要资本、正常化利润、资本成本与合理杠杆；同比利润不能代替资本回报。",
+      "supported_snippet_claims": [
+        {
+          "text": "用户文章称2024营收下降而利润增长、2025收入及利润增长；二手转述，缺原始报表核对。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_12",
+      "question": "资产、负债和利润的披露，是否足以可信地反映真实经济状况？",
+      "evidence_sufficiency": "不足",
+      "reason": "报表标题及利润转述缺审计意见、估计、现金勾稽及敞口。",
+      "supported_snippet_claims": [
+        {
+          "text": "用户文章称2024营收下降而利润增长、2025收入及利润增长；二手转述，缺原始报表核对。",
+          "source_ids": [
+            "Bccef6c412d"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_13",
+      "question": "管理层和控制人是否有公平对待普通股东的实际记录？",
+      "evidence_sufficiency": "不足",
+      "reason": "回购页眉不提供执行/稀释/关联交易及股东公平长期记录。",
+      "supported_snippet_claims": [
+        {
+          "text": "公告标题/页眉显示2026年A股回购进展公告存在；不含执行股数、金额或目的。",
+          "source_ids": [
+            "B95035b47ac"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "catl",
+      "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+      "question_id": "IQS_16",
+      "question": "在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？",
+      "evidence_sufficiency": "不足",
+      "reason": "债券票息与租赁业务存在不足以证明两年刚性义务及压力后现金覆盖。",
+      "supported_snippet_claims": [
+        {
+          "text": "债券报价列若干2031年到期债券利率；缺本金、实体层级、限制及两年负债/现金。",
+          "source_ids": [
+            "T5c935d2f3e"
+          ]
+        },
+        {
+          "text": "融资租赁业务涉及宁德时代融资租赁有限公司；同段其他车企仅为行业案例。",
+          "source_ids": [
+            "B31267f1dd7"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_01",
+      "question": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+      "evidence_sufficiency": "不足",
+      "reason": "业务和旧客户规模、AI发布不证明当前客户价值、付费及续用。",
+      "supported_snippet_claims": [
+        {
+          "text": "公司资料列投行、财富管理、交易及机构客户服务、资管业务；标的是证券公司。",
+          "source_ids": [
+            "B08cccdebbf"
+          ]
+        },
+        {
+          "text": "公司资料以2017年6月为截止列网点、客户账户及托管证券市值，列2016年H股上市；不属于2026数据或自有资产。",
+          "source_ids": [
+            "T27f56f9599"
+          ]
+        },
+        {
+          "text": "新闻介绍自然语言量化回测AI平台；支持产品/功能存在，不证明付费、留存或利润。",
+          "source_ids": [
+            "T94b0fb8173",
+            "Baa50487d69"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_02",
+      "question": "现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？",
+      "evidence_sufficiency": "不足",
+      "reason": "投顾增长不等于无新增获客投入的延续收入；缺收费基数和维护费用。",
+      "supported_snippet_claims": [
+        {
+          "text": "资料明确2026上半年期货市场成交和子公司代理交易额，另述投顾收入增长和战略配售；代理交易额不是营收。",
+          "source_ids": [
+            "Bd6149e6d0a"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_04",
+      "question": "行业的供需和价值链分配，是否允许这家公司长期留下合理利润？",
+      "evidence_sufficiency": "不足",
+      "reason": "缺证券各业务利润率、费率竞争和价值链；不能套银行息差/不良贷款。",
+      "supported_snippet_claims": [
+        {
+          "text": "公司资料列投行、财富管理、交易及机构客户服务、资管业务；标的是证券公司。",
+          "source_ids": [
+            "B08cccdebbf"
+          ]
+        },
+        {
+          "text": "资料明确2026上半年期货市场成交和子公司代理交易额，另述投顾收入增长和战略配售；代理交易额不是营收。",
+          "source_ids": [
+            "Bd6149e6d0a"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_05",
+      "question": "公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？",
+      "evidence_sufficiency": "不足",
+      "reason": "历史规模/AA及配售单点排名不证明难复制机制和经济回报。",
+      "supported_snippet_claims": [
+        {
+          "text": "公司资料以2017年6月为截止列网点、客户账户及托管证券市值，列2016年H股上市；不属于2026数据或自有资产。",
+          "source_ids": [
+            "T27f56f9599"
+          ]
+        },
+        {
+          "text": "资料明确2026上半年期货市场成交和子公司代理交易额，另述投顾收入增长和战略配售；代理交易额不是营收。",
+          "source_ids": [
+            "Bd6149e6d0a"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_06",
+      "question": "公司的竞争地位有多稳固，变化趋势是否支持这种稳固性？单列增强/稳定/恶化，不因上升速度本身加分。",
+      "evidence_sufficiency": "不足",
+      "reason": "旧客户规模和单期份额不构成同口径竞争趋势。",
+      "supported_snippet_claims": [
+        {
+          "text": "公司资料以2017年6月为截止列网点、客户账户及托管证券市值，列2016年H股上市；不属于2026数据或自有资产。",
+          "source_ids": [
+            "T27f56f9599"
+          ]
+        },
+        {
+          "text": "资料明确2026上半年期货市场成交和子公司代理交易额，另述投顾收入增长和战略配售；代理交易额不是营收。",
+          "source_ids": [
+            "Bd6149e6d0a"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_07",
+      "question": "管理层过去对经营目标和重大项目的承诺，兑现得如何？",
+      "evidence_sufficiency": "不足",
+      "reason": "董事会审议/平台发布缺事前承诺与事后结果对应。",
+      "supported_snippet_claims": [
+        {
+          "text": "片段记载2025年8月董事会审议半年报、利润分配和增资；不证明执行或公平性。",
+          "source_ids": [
+            "Tb645ad8d13"
+          ]
+        },
+        {
+          "text": "新闻介绍自然语言量化回测AI平台；支持产品/功能存在，不证明付费、留存或利润。",
+          "source_ids": [
+            "T94b0fb8173",
+            "Baa50487d69"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_08",
+      "question": "扩大规模或遇到需求波动时，公司能否保持交付质量与成本纪律？",
+      "evidence_sufficiency": "不足",
+      "reason": "代理交易额不证明质量、故障、效率或成本纪律。",
+      "supported_snippet_claims": [
+        {
+          "text": "资料明确2026上半年期货市场成交和子公司代理交易额，另述投顾收入增长和战略配售；代理交易额不是营收。",
+          "source_ids": [
+            "Bd6149e6d0a"
+          ]
+        },
+        {
+          "text": "新闻介绍自然语言量化回测AI平台；支持产品/功能存在，不证明付费、留存或利润。",
+          "source_ids": [
+            "T94b0fb8173",
+            "Baa50487d69"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_09",
+      "question": "组织能力是否足以延续，而不过度依赖少数关键个人？",
+      "evidence_sufficiency": "不足",
+      "reason": "无券商继任、关键岗替代和人才梯队资料。",
+      "supported_snippet_claims": [
+        {
+          "text": "公司资料列投行、财富管理、交易及机构客户服务、资管业务；标的是证券公司。",
+          "source_ids": [
+            "B08cccdebbf"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_10",
+      "question": "在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？",
+      "evidence_sufficiency": "不足",
+      "reason": "核心问题仍适用证券公司；应看风险资本和正常化回报，监管合规并非资本回报超过成本。",
+      "supported_snippet_claims": [
+        {
+          "text": "2026一季报片段称母公司净资本指标符合监管要求，并述2025一季追溯调整；不证明压力后偿债覆盖。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_12",
+      "question": "资产、负债和利润的披露，是否足以可信地反映真实经济状况？",
+      "evidence_sufficiency": "不足",
+      "reason": "追溯调整需解释但不自动失真；缺调整原因、审计、估值及表外义务。",
+      "supported_snippet_claims": [
+        {
+          "text": "2026一季报片段称母公司净资本指标符合监管要求，并述2025一季追溯调整；不证明压力后偿债覆盖。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        },
+        {
+          "text": "公告页眉识别公司为担保人并引用2024年募集说明；缺债务规模、期限。",
+          "source_ids": [
+            "B035d59b936"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_13",
+      "question": "管理层和控制人是否有公平对待普通股东的实际记录？",
+      "evidence_sufficiency": "不足",
+      "reason": "审议分配不等于公平落实；拟划转不等于侵占，缺股东保护/关联交易记录。",
+      "supported_snippet_claims": [
+        {
+          "text": "片段记载2025年8月董事会审议半年报、利润分配和增资；不证明执行或公平性。",
+          "source_ids": [
+            "Tb645ad8d13"
+          ]
+        },
+        {
+          "text": "新闻描述第一大股东持股拟无偿划转北京金控，当时尚待批准；不证明完成、侵占或当前控制状态。",
+          "source_ids": [
+            "Tb22039b771"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "cncb_h",
+      "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+      "question_id": "IQS_16",
+      "question": "在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？",
+      "evidence_sufficiency": "不足",
+      "reason": "净资本合规不替代两年到期债务、担保及压力测试，客户资金/托管资产非自有偿债资源。",
+      "supported_snippet_claims": [
+        {
+          "text": "2026一季报片段称母公司净资本指标符合监管要求，并述2025一季追溯调整；不证明压力后偿债覆盖。",
+          "source_ids": [
+            "Bf56ba741ce"
+          ]
+        },
+        {
+          "text": "公告页眉识别公司为担保人并引用2024年募集说明；缺债务规模、期限。",
+          "source_ids": [
+            "B035d59b936"
+          ]
+        },
+        {
+          "text": "公司资料以2017年6月为截止列网点、客户账户及托管证券市值，列2016年H股上市；不属于2026数据或自有资产。",
+          "source_ids": [
+            "T27f56f9599"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_01",
+      "question": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+      "evidence_sufficiency": "足",
+      "reason": "官方收入与连续增长支持持续购买服务的有限推断；不证明客户ROI、留存或维持成本，不支持高分无反证。",
+      "supported_snippet_claims": [
+        {
+          "text": "2026Q2公告片段称合并营收1198亿美元、同比增24%、连续第12季双位数增长；Google Services收入945亿美元、增15%，搜索及其他增17%。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_02",
+      "question": "现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？",
+      "evidence_sufficiency": "不足",
+      "reason": "缺TAC/获客投入、续约、留存及无新增开支时收入可延续性。",
+      "supported_snippet_claims": [
+        {
+          "text": "2026Q2公告片段称合并营收1198亿美元、同比增24%、连续第12季双位数增长；Google Services收入945亿美元、增15%，搜索及其他增17%。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "text": "评论称桌面搜索份额约80%，但缺日期/测量方法，未来防御力为作者预测。",
+          "source_ids": [
+            "T668bf6f5e3"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_04",
+      "question": "行业的供需和价值链分配，是否允许这家公司长期留下合理利润？",
+      "evidence_sufficiency": "不足",
+      "reason": "收入结构/年度FCF缺议价、竞争资本投入和正常利润。",
+      "supported_snippet_claims": [
+        {
+          "text": "2026Q2公告片段称合并营收1198亿美元、同比增24%、连续第12季双位数增长；Google Services收入945亿美元、增15%，搜索及其他增17%。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "text": "二手财务片段称2025财年FCF733亿美元、增0.7%；现金及债务所属年度截断。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "text": "2025评论指出云竞争及创新需求；观点不等于份额/利润趋势。",
+          "source_ids": [
+            "Te234c530ff"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_05",
+      "question": "公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？",
+      "evidence_sufficiency": "不足",
+      "reason": "份额评论缺日期方法，复制成本和经济租金机制未验证。",
+      "supported_snippet_claims": [
+        {
+          "text": "评论称桌面搜索份额约80%，但缺日期/测量方法，未来防御力为作者预测。",
+          "source_ids": [
+            "T668bf6f5e3"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_06",
+      "question": "公司的竞争地位有多稳固，变化趋势是否支持这种稳固性？单列增强/稳定/恶化，不因上升速度本身加分。",
+      "evidence_sufficiency": "不足",
+      "reason": "连续收入增长不代表地位稳固，缺同口径份额与客户迁移/AI侵蚀。",
+      "supported_snippet_claims": [
+        {
+          "text": "2026Q2公告片段称合并营收1198亿美元、同比增24%、连续第12季双位数增长；Google Services收入945亿美元、增15%，搜索及其他增17%。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "text": "评论称桌面搜索份额约80%，但缺日期/测量方法，未来防御力为作者预测。",
+          "source_ids": [
+            "T668bf6f5e3"
+          ]
+        },
+        {
+          "text": "2025评论指出云竞争及创新需求；观点不等于份额/利润趋势。",
+          "source_ids": [
+            "Te234c530ff"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_07",
+      "question": "管理层过去对经营目标和重大项目的承诺，兑现得如何？",
+      "evidence_sufficiency": "不足",
+      "reason": "无明确管理层事前目标及事后兑现对照。",
+      "supported_snippet_claims": [
+        {
+          "text": "2026Q2公告片段称合并营收1198亿美元、同比增24%、连续第12季双位数增长；Google Services收入945亿美元、增15%，搜索及其他增17%。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "text": "2024报道述首次股息及700亿美元回购授权，各类股可领股息；不代表投票权相同。",
+          "source_ids": [
+            "T31b892a167",
+            "T22b2fe8496"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_08",
+      "question": "扩大规模或遇到需求波动时，公司能否保持交付质量与成本纪律？",
+      "evidence_sufficiency": "不足",
+      "reason": "缺扩张/波动时服务质量、单位成本、故障和交付。",
+      "supported_snippet_claims": [
+        {
+          "text": "2026Q2公告片段称合并营收1198亿美元、同比增24%、连续第12季双位数增长；Google Services收入945亿美元、增15%，搜索及其他增17%。",
+          "source_ids": [
+            "T8a7a75887c"
+          ]
+        },
+        {
+          "text": "二手片段明确2026Q2 FCF为负59亿美元；559亿美元Cash & Debt字段含义截断。",
+          "source_ids": [
+            "Ta1b296999a"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_09",
+      "question": "组织能力是否足以延续，而不过度依赖少数关键个人？",
+      "evidence_sufficiency": "不足",
+      "reason": "缺继任、团队更替和关键人依赖资料。合规承诺不证明组织延续。",
+      "supported_snippet_claims": [
+        {
+          "text": "法律新闻片段述董事会承诺5亿美元改善合规及衍生诉讼；不是已付经营赔款或刑事处罚。",
+          "source_ids": [
+            "T8afef24d12"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_10",
+      "question": "在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？",
+      "evidence_sufficiency": "不足",
+      "reason": "FCF不足以计算正常化利润、必要资本和资金成本。",
+      "supported_snippet_claims": [
+        {
+          "text": "二手财务片段称2025财年FCF733亿美元、增0.7%；现金及债务所属年度截断。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "text": "二手片段明确2026Q2 FCF为负59亿美元；559亿美元Cash & Debt字段含义截断。",
+          "source_ids": [
+            "Ta1b296999a"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_12",
+      "question": "资产、负债和利润的披露，是否足以可信地反映真实经济状况？",
+      "evidence_sufficiency": "不足",
+      "reason": "SEC片段为拦截提示；缺审计意见、会计估计、现金利润勾稽及风险。",
+      "supported_snippet_claims": [
+        {
+          "text": "二手财务片段称2025财年FCF733亿美元、增0.7%；现金及债务所属年度截断。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "text": "二手片段明确2026Q2 FCF为负59亿美元；559亿美元Cash & Debt字段含义截断。",
+          "source_ids": [
+            "Ta1b296999a"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_13",
+      "question": "管理层和控制人是否有公平对待普通股东的实际记录？",
+      "evidence_sufficiency": "不足",
+      "reason": "各类股息及回购授权是部分正面事实，但不证明投票权公平、净回购执行及长期无侵占。",
+      "supported_snippet_claims": [
+        {
+          "text": "2024报道述首次股息及700亿美元回购授权，各类股可领股息；不代表投票权相同。",
+          "source_ids": [
+            "T31b892a167",
+            "T22b2fe8496"
+          ]
+        },
+        {
+          "text": "法律新闻片段述董事会承诺5亿美元改善合规及衍生诉讼；不是已付经营赔款或刑事处罚。",
+          "source_ids": [
+            "T8afef24d12"
+          ]
+        }
+      ]
+    },
+    {
+      "company_slug": "alphabet",
+      "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+      "question_id": "IQS_16",
+      "question": "在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？",
+      "evidence_sufficiency": "不足",
+      "reason": "缺当前受限/可用现金、到期结构、AI刚性承诺和两年压力覆盖；截断现金债务不可用。",
+      "supported_snippet_claims": [
+        {
+          "text": "二手财务片段称2025财年FCF733亿美元、增0.7%；现金及债务所属年度截断。",
+          "source_ids": [
+            "B481dad645a"
+          ]
+        },
+        {
+          "text": "二手片段明确2026Q2 FCF为负59亿美元；559亿美元Cash & Debt字段含义截断。",
+          "source_ids": [
+            "Ta1b296999a"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_warnings": [
+    {
+      "company_slug": "catl",
+      "source_ids": [
+        "B4345621149"
+      ],
+      "reason": "盈利预测不能当实际利润。"
+    },
+    {
+      "company_slug": "catl",
+      "source_ids": [
+        "Tc2a8c8027b"
+      ],
+      "reason": "月末列名未说明单季/累计，不能自行相加为半年营收。"
+    },
+    {
+      "company_slug": "catl",
+      "source_ids": [
+        "T192b807050",
+        "B33de4acdf1"
+      ],
+      "reason": "编码损坏，不能可靠读取姓名或注册资本。"
+    },
+    {
+      "company_slug": "catl",
+      "source_ids": [
+        "T63b9ba3126"
+      ],
+      "reason": "3750是CATL另一挂牌，不是错公司；H股价格不能替代A股价格。"
+    },
+    {
+      "company_slug": "catl",
+      "source_ids": [
+        "Bcad5a62ca2",
+        "B19b53e6a0c",
+        "B95035b47ac"
+      ],
+      "reason": "报告/章程/回购标题页眉只支持文件存在，不能支持文件内结论。"
+    },
+    {
+      "company_slug": "cncb_h",
+      "source_ids": [
+        "B5a63ac95ea"
+      ],
+      "reason": "吸收合并海通并更名国泰海通是同行国泰君安事项，不能归中信建投；永续债名称不提供偿债覆盖。"
+    },
+    {
+      "company_slug": "cncb_h",
+      "source_ids": [
+        "T37147e0774"
+      ],
+      "reason": "REIT发行价格/分派率与中信建投对AIDD的研报不等于券商自身分红或AI制药业务。"
+    },
+    {
+      "company_slug": "cncb_h",
+      "source_ids": [
+        "Tcf1387fc3f"
+      ],
+      "reason": "独董调查标题的snippet只有导航，只能作待核查线索，不能确定日期、结论和影响。"
+    },
+    {
+      "company_slug": "cncb_h",
+      "source_ids": [
+        "T27f56f9599",
+        "T4ea62e8d80"
+      ],
+      "reason": "2017网点/账户和2020财务不可当2026现况，客户托管规模不是自有资产。"
+    },
+    {
+      "company_slug": "alphabet",
+      "source_ids": [
+        "Bc222795e0f"
+      ],
+      "reason": "SEC访问拦截信息不是财务/审计证据。"
+    },
+    {
+      "company_slug": "alphabet",
+      "source_ids": [
+        "Tc14e2c65f8"
+      ],
+      "reason": "回购/债务/FCF多列金额缺年度表头，不可指定年度、TTM或季度。"
+    },
+    {
+      "company_slug": "alphabet",
+      "source_ids": [
+        "Ta1b296999a",
+        "B481dad645a"
+      ],
+      "reason": "2026Q2负FCF与2025年度正FCF非矛盾；现金债务字段/年度被截断。"
+    },
+    {
+      "company_slug": "alphabet",
+      "source_ids": [
+        "T22b2fe8496"
+      ],
+      "reason": "各类股可领股息不能推出各类投票权相同。"
+    },
+    {
+      "company_slug": "alphabet",
+      "source_ids": [
+        "T8afef24d12"
+      ],
+      "reason": "合规改善承诺不能改写成即时经营罚款、已付赔款或刑事处罚。"
+    },
+    {
+      "company_slug": "alphabet",
+      "source_ids": [
+        "Ba3434a5ea8",
+        "T93364cdbb2",
+        "Bb594d9c6fa"
+      ],
+      "reason": "停止回购标题、不同期间金额与缺日期TTM不能拼接成单一截止日事实。"
+    }
+  ],
+  "recommendations": [
+    "主矩阵前剔除导航/页眉/乱码/SEC拦截空证据；保留拒绝记录。",
+    "补齐关键题的原始短网页片段，不下载财报。",
+    "改变检索池时生成新输入版本/hash，旧probe独立归档。",
+    "不能以scored率选赢家，未知多的池单列证据不足。"
+  ]
+}
