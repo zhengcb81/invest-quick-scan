@@ -1362,9 +1362,9 @@ Status: complete_for_experiment_scope; no_production_default_or_gate_change
 - 单一下一动作：接续Phase92的embedded_answer真实RED及生产authority/store接线。StockWiki仍只读，TH/IN仍暂缓，G3/F05不因本实验关闭；不重复本轮已通过实验或收费矩阵。
 
 ### Phase 94: 新一轮三个独立大施工包
-Status: verified_for_package_planning_scope; pending_exact_commit_and_push
+Status: complete_for_package_delivery_scope; committed_and_pushed; workers_not_dispatched
 - [x] 只读复核实际HEAD/脏树和已交付范围；保留QA首段九路径、IQS私有v2源及其他进程改动。company-wiki活动来源链不分派第二writer，TH/IN原包保持hold。
 - [x] 写QA-C06-02（StockQA）、SW-REPAIR-02（StockWiki）、EVID-LAB-01（新iqs-evidence-lab）的自包含卡、共同规范、接口、冻结输入与handoff模板；三写根无交集。13份原字节（QA九件+IQS四件）冻结，114项IQS输入含96件实验归档绑定，其他脏项不读/复制/删。
 - [x] 一次批次验证：23相关单元/集成通过、三公开handoff模板shape/scope valid、10 JSON/2协议schema/62链接/5冻结Python AST通过；专属临时根清除，外仓写/网络/付费0。文档准备不代表产品验收或用户授权，不增加小节点审查或变更中央107任务/366case。
-- [ ] 更新PWF/总控分派入口并精确提交推送，只写IQS文档与本包输入。用户实际分派前不移交唯一writer、不启动任何包或付费调用。
+- [x] 更新PWF/总控分派入口，39精确文件提交`78ad21e163042630255d2ca9f22f9cea07fbf29f`且正常推送既有origin/master；30索引工件与staged blob逐字节匹配。只写IQS文档/本包输入/相关测试，完整包加-text防checkout破坏hash；原Phase92七条状态保留。用户实际分派前不移交唯一writer、不启动任何包或付费调用。
 - 单一下一动作：交付三个施工包和明确分派指令；QA实际交出去后总控停止写StockQA，回收交付后再做跨仓联合验收。
