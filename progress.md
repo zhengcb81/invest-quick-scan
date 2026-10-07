@@ -2122,3 +2122,5 @@
 - 清理：Python lstat四根nlink1/无reparse；沙箱CIM不可访问，删除前停（只读探针exit1），沙箱外严格CIM0/394文件set+SHA预检dry-run通过，Apply删除394自有文件、实际receipt.applied=true；old Phase92 root仍在。无外仓/生产库/名单/共享TEMP写入，unknown费用不因清理释放。
 - 恢复中的只读输出脚本误用report键main导致KeyError，后改真实main_profiles/followup_profiles；第一次经济性glob匹配0项，未将0费写入结论，改按实际arm文件名读取18/6请求并落economics.json。archive首次exec超过等待窗口，只读确认index后完成移动复算；不再次执行会覆盖归档的builder。
 - 更新SKILL/search规范、准确性手册/结果/交接与PWF；不改模型顺位、题包默认、schema或G3/F05。下一步回收三个外包真实交付做联合验收；Git精确提交与push实际结果随后追加，不在此虚填commit。
+
+- **Phase96实际Git交付**：`03e34aa6e4d414bc09b65dbf070ca3dbd59fcbef`，221精确文件，正常推送origin/master（323ab41→03e34aa，exit0）。213已索引源码/工件全部与staged blob原字节一致，diff --check通过（CR-at-EOL保留日志原字节）。只包含本实验/规范/证据/PWF；opencode.json未检查/未暂存/未删，三个外部writer和旧Phase92根不动。之后仅提交本回执，不改已审source/工件。

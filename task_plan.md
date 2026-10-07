@@ -1381,7 +1381,7 @@ Status: complete_for_local_producer_delivery; committed_and_pushed; external_lan
 
 
 ## Phase96：准确性优先的LLM与搜索组合实测
-Status: complete_for_bounded_experiment_and_operations_scope; git_delivery_pending
+Status: complete_for_bounded_experiment_and_operations_scope; committed_and_pushed
 - [x] 首次模型请求前冻结三市场既有样本、官方事实参照、期间/单位/主体、问题、生成参数及终止/补问规则。
 - [x] 用现有StockQA冻结transport及IQS实验账本，比较四个开启思考的模型、Brave/Tavily/Z.ai、互补上下文和人工核验短事实卡。
 - [x] 分别测量事实正确、引用支持、答题覆盖、正确拒答、结构、评分证据不足误给分；不将多模型一致当真值，不将评分判断当精确事实gold。
@@ -1391,3 +1391,5 @@ Status: complete_for_bounded_experiment_and_operations_scope; git_delivery_pendi
 
 - 终态：108模型HTTP/56搜索相关HTTP（50query发送含2拒绝+6协议）、USD3.871962保守上界，1本地处理未知保留USD0.03全预约且不重发。三司15事实不是评分gold；DS增强15数值/14支持，M3/Pro15/12，Flash10/8；M3正确数值旁仍有十倍单位/年份错误。三题包15/12与逐题相同，输入减少66.3%、低峰参考token费减少47.9%、请求耗时之和减少16.6%，不等于30判断题通过。
 - 本批51离线测试GREEN/2.448s、集中独审已完成、skill validator和47链接通过；原输入freeze再次匹配，最小归档公开CLI移动后--check通过。四自有根394文件按manifest/hash、无link、严格CIM0先dry-run再Apply清除，旧Phase92/共享TEMP/外仓/opencode.json保留。unknown历史预算不释放。结果/手册已落档，Git实际回执待追加。
+
+- Phase96正式交付：221精确文件提交`03e34aa6e4d414bc09b65dbf070ca3dbd59fcbef`，origin/master正常323ab41→03e34aa推送成功；213个已索引源/工件staged blob size/SHA逐字节一致。仅既有opencode.json未跟踪保留；不提交外仓、旧未完源或Phase92临时根。随后仅补本Git回执。
