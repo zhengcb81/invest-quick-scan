@@ -1510,3 +1510,15 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - **Z.ai后续真实探针（2026-10-07，更新上条状态）**：Windows User作用域`ZAI_API_KEY`可读，REST检索200/2.923秒；count3返回1。官方Coding Plan另有Bearer认证Streamable HTTP MCP，握手/schema及真实搜索已验证，实际工具名`web_search_prime`与文档camelCase不同；返回文本为JSON字符串嵌套数组，不能只解一层，不能用含https或isError=false单独判成功。初次未分类返回与后续明确正例分开记档，总结果数未知不补造。legacy SSE、过滤/时点、费用/配额和生产adapter仍未验收。
 - **DeepSeek旧文章与当前协议（2026-10-07）**：博客建议Responses+deepseek-v4-flash+web_search；实测旧模型名被映射为deepseek-flash，禁思考后完整回答仍0搜索/0引用，与现行官方工具ignored相符。Anthropic Messages仍有真实server_tool_use及绑定结果阳性；但max_uses1实际3调用、强制工具响应停tool_use无答案、检索未满足官方来源条件。应区分“服务端可搜”“题目可可靠回答”和“StockQA生产可接入”三个状态，不能从任一阳性推出其余已完成；不保存密钥、不引用博客免费说法推算费用。
 - **统一robustness规则（2026-10-07）**：C05§1.9.3的outcome_unknown、原attempt对账/保留预留优先于泛化超时重试建议；不新增uncertain同义生产状态。搜索执行、证据质量、最终答案和费用/ACK必须独立检查。外部服务返回少条目或MCP嵌套JSON、native停tool_use不能当失败免费重搜；只做有界解析/协议续写并计真实请求。低分/有效unknown停止primary fallback。native max_uses忽略导致费用不可硬界定时，不把本地预留声称为厂商费用硬限额；严格上限批次选可逐次准入外部检索或已验证厂商界限。
+
+## 2026-10-07 — P2-5 真实身份wire兼容复现
+
+- 用户确认两个立即施工包均未开工；总控先做IQS本目录挂账项，不与外部writer重叠。
+- 三份StockQA保存的W04真实导出均在IQS公共CLI2.2.0被request_schema_invalid拒绝；原字节SHA为CATL 6929f0868243a271ccc35ab7b16005b11fe968f43f18213929d0651c3bf66db7、CNCB-H 884855433a431292da3e1dbf7382e757aab9dea41be8f321b464c79303ad908a、Alphabet 5ad1a45e287c945680fc4c23db7b4dcf32959a6c0021daea4ba226ebd4365278。
+- owner identity_g2b.py使用effective_status检查生命周期；identity_receipts.py的get_receipt按追加event计算该状态，并不保证历史payload含status。不能在两个字段冲突时任选一个active。
+- 额外缺口：CATL/CNCB-H的manual attestation evidence_ref=null，但有owner actor_id、精确listing/source/known_attributes；官方证据仍要求HTTPS。消费端不能用新造URL或替换ID补齐，也不能把caller-supplied trusted_context解释为认证。
+- 拟以单独版本化wire profile兼容真实生产字段，保持原C01 schema/hash和v1/v2.0历史读取冻结；新的profile只影响显式消费者兼容路径，原验证入口不静默放宽。独立只读review与本身份批次一起完成。
+
+- 实现与89项/139子例相关回归支持本地兼容；CLI默认显式标profile、内部默认legacy。profile仅扩两个v2.1词法定义，严格状态字段与int修订同时适用于legacy，不能用旧active遮盖effective_status撤销。
+- 环境重要差异：identity schema当前原字节CRLF SHA671292a6…，Git冻结LF blob SHA4924b5e3…；自动断言只规范Git EOL且仍核原始工作树hash。三producer golden为LF归档原字节，以精确-text规则避免Windows新checkout变CRLF导致伪失败；不改变原schema文件或其他历史golden。
+- 独立设计审查发现work.schema.source_binding_refs仍只允许BND，以及CLI历史envelope无as_of。本批只证明归档DTO的结构/引用一致性，不能认证owner或证明现在准入，不把消费侧正例扩大成Work/Observation/C05/整条链已兼容。后续由契约owner联调批次处理。

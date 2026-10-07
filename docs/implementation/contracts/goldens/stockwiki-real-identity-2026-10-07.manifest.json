@@ -1,0 +1,41 @@
+{
+  "format_version": "1.0.0",
+  "golden_type": "existing_real_owner_export",
+  "copied_at_utc": "2026-10-07T09:03:44.268482+00:00",
+  "source_repository": "StockQAbyLLM",
+  "source_commit": "6a9ff13864ebb160d5c4ab3cf2f42155d9f4aa99",
+  "producer_repository": "StockWiki",
+  "producer_code_observed_commit": "9f552a6741dd093dc760ad6965458989cd027251",
+  "producer_commit_scope": "current read-only code baseline, not a newly executed export",
+  "evidence_ref": "../../reviews/IQS-lane/B01b-prereq-import-evidence-2026-10-07.md",
+  "bytes_policy": "exact archived file bytes, never normalize or reconstruct",
+  "cases": [
+    {
+      "name": "catl",
+      "path": "stockwiki-real-catl-2026-10-07.json",
+      "bytes": 2976,
+      "sha256": "6929f0868243a271ccc35ab7b16005b11fe968f43f18213929d0651c3bf66db7",
+      "source_path": "pilot_runs/b01_prereq_2026-10-07/catl_snapshot.json",
+      "historical_generation": "identity-export-g2b --entity-id ENT_99ebb735-f072-41e4-8545-823bc012614f --as-of 2026-10-07T00:00:00Z",
+      "generation_command_scope": "historical_subcommand; workspace/global options in source evidence, not executed in this batch"
+    },
+    {
+      "name": "cncb_h",
+      "path": "stockwiki-real-cncb_h-2026-10-07.json",
+      "bytes": 2947,
+      "sha256": "884855433a431292da3e1dbf7382e757aab9dea41be8f321b464c79303ad908a",
+      "source_path": "pilot_runs/b01_prereq_2026-10-07/cncb_h_snapshot.json",
+      "historical_generation": "identity-export-g2b --entity-id ENT_1af6804e-40c1-4c35-b190-ea691dba2c85 --as-of 2026-10-07T00:00:00Z",
+      "generation_command_scope": "historical_subcommand; workspace/global options in source evidence, not executed in this batch"
+    },
+    {
+      "name": "alphabet",
+      "path": "stockwiki-real-alphabet-2026-10-07.json",
+      "bytes": 8689,
+      "sha256": "5ad1a45e287c945680fc4c23db7b4dcf32959a6c0021daea4ba226ebd4365278",
+      "source_path": "pilot_runs/b01_prereq_2026-10-07/alphabet_snapshot.json",
+      "historical_generation": "identity-export-g2b --entity-id ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e --as-of 2026-10-07T00:00:00Z",
+      "generation_command_scope": "historical_subcommand; workspace/global options in source evidence, not executed in this batch"
+    }
+  ]
+}

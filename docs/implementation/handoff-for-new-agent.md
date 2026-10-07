@@ -160,3 +160,11 @@ single_next_action:
 当前入口为[联网搜索与LLM统一规范](../../references/search-and-llm-playbook.md)、[实时能力/探针边界](../../references/search-policy.md)和[非执行参考模板](../../examples/search-and-llm-policy.template.json)。Z.ai REST/Streamable HTTP MCP已直连搜到结果；DeepSeek Responses旧别名重测仍无搜索事件，Anthropic兼容直连有搜索但max_uses1→3且未返回最终答案。准确回执在上述状态文档链接中；不能把它们当生产公开CLI验收。
 
 后续StockQA的外部adapter/工具续写在同一集成批次按规范测试表实现；既有预算、租约、检查点不重复造，C05§1.9.3结果不明先对账。模板不会被现有执行器读取，保持template_only/execution_enabled标记，不自行配置模型/引擎顺位、不用演示超时/预算当用户授权。集中做集成和既有大节点验证，不增加小节点审查。本次规范没有改变上方L03等待明确启动的边界，也未改外仓或正式库。
+
+### 2026-10-07 后续：施工包占用与身份wire兼容批次
+
+用户最新明确：QA-NET-01和SW-READY-01已开始施工，TH-IMPL-01/IN-IMPL-01暂缓；前两源仓由对应harness独占，IQS总控仅接收交付与只读接口，不并发写StockQA/StockWiki。四包工作目录见[本轮入口](parallel-lanes/packages/2026-10-07/README.md)。
+
+本目录挂账P2-5采用[版本化身份wire兼容规则](../../references/identity-wire-compatibility.md)。CLI1.1.0默认stockwiki-g2b/1.0.0，原--schema-version 2.2.0不变且响应标记wire_profile；冻结C01 schema/hash和原ID不改，内部validate_entity默认legacy。真实三份W04归档快照及反例为消费侧离线测试，不称新producer导出/生产准入或完整跨仓完成。批次测试/独立审查实际状态以最新PWF与验证日志为准。
+
+特别保留后续缺口：work.schema的source_binding_refs仍只允许BND；当前身份CLI不校验现在as_of的有效性。不要用三正例关闭工作链或G3。用户要求后两包可开工时通知，已有本线程每小时只读follow-up（automationId=automation）；条件未变保持安静，不启动收费或代改仓库。不要创建重复提醒。

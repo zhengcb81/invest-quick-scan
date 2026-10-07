@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://invest-quick-scan.local/schemas/quick_scan/identity-wire-profile.schema.json",
+  "title": "StockWiki G2b Wire Compatibility Profile 1.0.0",
+  "$comment": "Profile stockwiki-g2b/1.0.0 for read-only CLI validation. Derive only ListingV21.source_binding_ref and SourceBindingV21.binding_ref from frozen C01 2.2.0. Do not rewrite IDs, authenticate producer context, change historical formats, or authorize writes.",
+  "definitions": {
+    "SourceBindingRef": {
+      "type": "string",
+      "pattern": "^(?:BND_[A-Za-z0-9_]+|BIND_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$",
+      "not": {"pattern": "\\s"}
+    }
+  }
+}

@@ -30,6 +30,29 @@ def _load(path: str) -> dict:
 
 SCORE_SCHEMA = _load("schemas/quick_scan/score.schema.json")
 IDENTITY_SCHEMA = _load("schemas/quick_scan/identity.schema.json")
+STOCKWIKI_G2B_WIRE_PROFILE = "stockwiki-g2b/1.0.0"
+IDENTITY_WIRE_PROFILE_SCHEMA = _load("schemas/quick_scan/identity-wire-profile.schema.json")
+
+
+def identity_schema_for_wire_profile(wire_profile: str | None = None) -> dict:
+    """Derive a consumer dialect without modifying the frozen identity schema.
+
+    The default remains the historical contract; only an explicit registered
+    profile permits the real owner BIND_UUIDv4 spelling. Caller copies cannot
+    change either global schema or a subsequent legacy validation.
+    """
+    schema = deepcopy(IDENTITY_SCHEMA)
+    if wire_profile is None or wire_profile == "legacy":
+        return schema
+    if wire_profile != STOCKWIKI_G2B_WIRE_PROFILE:
+        raise ValueError("unknown identity wire profile")
+    binding_ref_schema = IDENTITY_WIRE_PROFILE_SCHEMA["definitions"]["SourceBindingRef"]
+    for definition, field in (("ListingV21", "source_binding_ref"),
+                              ("SourceBindingV21", "binding_ref")):
+        schema["definitions"][definition]["properties"][field] = deepcopy(binding_ref_schema)
+    return schema
+
+
 SOURCE_BINDING_SCHEMA = {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": IDENTITY_SCHEMA["definitions"],
@@ -142,17 +165,23 @@ def _validate_entity_ownership(value: dict, *, verify_base: bool = True) -> None
 
 
 def _identity_receipt(
-    value: dict, receipt_id: str, trusted_receipts: Mapping[str, dict] | None
+    value: dict, receipt_id: str, trusted_receipts: Mapping[str, dict] | None,
+    *, wire_profile: str | None = None,
 ) -> dict:
     if not isinstance(trusted_receipts, Mapping):
         raise ValueError("new identity requires authoritative receipt lookup")
     receipt = trusted_receipts.get(receipt_id)
     if not isinstance(receipt, dict):
         raise ValueError("identity receipt is missing")
+    active_fields = [receipt[field] for field in ("status", "effective_status") if field in receipt]
+    status_present = "status" in receipt or wire_profile == STOCKWIKI_G2B_WIRE_PROFILE
+    revision = receipt.get("identity_revision")
     if (receipt.get("receipt_id") != receipt_id
             or receipt.get("entity_id") != value["entity_id"]
-            or receipt.get("identity_revision") != value["identity_revision"]
-            or receipt.get("status") != "active"):
+            or type(revision) is not int or revision < 1
+            or revision != value["identity_revision"]
+            or not status_present or not active_fields
+            or any(status != "active" for status in active_fields)):
         raise ValueError("identity receipt does not bind this active revision")
     recorded_at = receipt.get("recorded_at")
     try:
@@ -427,7 +456,8 @@ def _listing_datetime(value: str | None) -> datetime | None:
 
 
 def _source_binding_v21(
-    value: dict, listing: dict, trusted_bindings: Mapping[str, dict] | None
+    value: dict, listing: dict, trusted_bindings: Mapping[str, dict] | None,
+    *, source_binding_schema: dict | None = None,
 ) -> dict:
     """Resolve an owner-held listing binding and compare every identity field."""
     if not isinstance(trusted_bindings, Mapping):
@@ -437,7 +467,7 @@ def _source_binding_v21(
     if not isinstance(binding, dict):
         raise ValueError("source binding is missing")
     try:
-        _validate_draft7(SOURCE_BINDING_V21_SCHEMA, binding)
+        _validate_draft7(source_binding_schema or SOURCE_BINDING_V21_SCHEMA, binding)
     except JsonSchemaValidationError as exc:
         raise ValueError("source binding shape is invalid") from exc
     expected_status = "retired" if listing["listing_status"] == "delisted" else "active"
@@ -472,11 +502,17 @@ def validate_entity(
     value: dict, *, trusted_identity_receipts: Mapping[str, dict] | None = None,
     trusted_source_bindings: Mapping[str, dict] | None = None,
     trusted_market_registry: Mapping[str, Iterable[str]] | None = None,
+    wire_profile: str | None = None,
 ) -> None:
-    """Validate the only supported new identity-write format, schema v2.1.0."""
+    """Validate v2.1 identity consistency; optional profile is read-wire only.
+
+    Selecting a wire profile never grants write/scan eligibility or proves
+    that caller-supplied context came from an authoritative owner.
+    """
     if value.get("identity_schema_version") != "2.1.0":
         raise ValueError("new writes require identity schema 2.1.0")
-    _validate_draft7(IDENTITY_SCHEMA, value)
+    identity_schema = identity_schema_for_wire_profile(wire_profile)
+    _validate_draft7(identity_schema, value)
     if "securities" not in value or "listings" not in value:
         raise ValueError("expected a v2.1 issuer Entity")
     if not isinstance(trusted_market_registry, Mapping):
@@ -485,13 +521,21 @@ def validate_entity(
         value, trusted_market_registry=trusted_market_registry
     )
     bindings = {
-        listing["listing_id"]: _source_binding_v21(value, listing, trusted_source_bindings)
+        listing["listing_id"]: _source_binding_v21(
+            value, listing, trusted_source_bindings,
+            source_binding_schema={
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "definitions": identity_schema["definitions"],
+                "$ref": "#/definitions/SourceBindingV21",
+            },
+        )
         for listing in listings
     }
 
     if value["identity_state"] == "provisional":
         receipt = _identity_receipt(
-            value, value["scope_attestation_id"], trusted_identity_receipts
+            value, value["scope_attestation_id"], trusted_identity_receipts,
+            wire_profile=wire_profile,
         )
         listing = listings[0]
         security = securities[0]
@@ -523,8 +567,14 @@ def validate_entity(
                 or receipt.get("source_namespace") != binding["source_namespace"]
                 or receipt.get("source_record_id") != binding["source_record_id"]
                 or receipt.get("known_attributes") != known_attributes
-                or not isinstance(receipt.get("evidence_ref"), str)
-                or not receipt["evidence_ref"].strip()):
+                or not (
+                    isinstance(receipt.get("evidence_ref"), str)
+                    and receipt["evidence_ref"].strip()
+                    or wire_profile == STOCKWIKI_G2B_WIRE_PROFILE
+                    and receipt.get("basis") == "user_exact_security_attestation"
+                    and "evidence_ref" in receipt
+                    and receipt["evidence_ref"] is None
+                )):
             raise ValueError("provisional scope has no positive listing qualification")
         if receipt["basis"] == "official_equity_category" and not receipt[
             "evidence_ref"
@@ -541,7 +591,8 @@ def validate_entity(
     if value["identity_state"] != "verified":
         raise ValueError("invalid identity state")
     receipt = _identity_receipt(
-        value, value["verified_issuer_receipt_id"], trusted_identity_receipts
+        value, value["verified_issuer_receipt_id"], trusted_identity_receipts,
+        wire_profile=wire_profile,
     )
     security_ids = {security["security_id"] for security in securities}
     listing_ids = {listing["listing_id"] for listing in listings}

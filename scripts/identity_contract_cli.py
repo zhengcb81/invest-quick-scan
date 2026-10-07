@@ -18,6 +18,9 @@ from referencing import Registry, Resource
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_VERSION = "2.2.0"
+CLI_VERSION = "1.1.0"
+DEFAULT_WIRE_PROFILE = "stockwiki-g2b/1.0.0"
+WIRE_PROFILES = ("legacy", DEFAULT_WIRE_PROFILE)
 MAX_INPUT_BYTES = 1_048_576
 REQUEST_SCHEMA_PATH = ROOT / "schemas" / "quick_scan" / "identity-cli-request.schema.json"
 IDENTITY_SCHEMA_PATH = ROOT / "schemas" / "quick_scan" / "identity.schema.json"
@@ -54,20 +57,25 @@ def _json_pointer(parts: Any) -> str:
     return "/" + "/".join(escaped)
 
 
-def _load_schemas() -> tuple[dict[str, Any], dict[str, Any], Registry]:
+def _load_schemas(wire_profile: str) -> tuple[dict[str, Any], dict[str, Any], Registry]:
+    import contract_validation as cv
+
     request_schema = json.loads(REQUEST_SCHEMA_PATH.read_text(encoding="utf-8"))
-    identity_schema = json.loads(IDENTITY_SCHEMA_PATH.read_text(encoding="utf-8"))
+    identity_schema = cv.identity_schema_for_wire_profile(wire_profile)
     registry = Registry().with_resource(
         identity_schema["$id"], Resource.from_contents(identity_schema)
     )
     return request_schema, identity_schema, registry
 
 
-def _response(version: str, errors: list[dict[str, str]]) -> dict[str, Any]:
+def _response(
+    version: str, errors: list[dict[str, str]], wire_profile: str | None
+) -> dict[str, Any]:
     return {
         "schema_version": version,
         "status": "valid" if not errors else "invalid",
         "validation_scope": "contract_consistency_only",
+        "wire_profile": wire_profile,
         "errors": errors,
     }
 
@@ -131,8 +139,8 @@ def _schema_failure(
     }
 
 
-def _validate_semantics(request: dict[str, Any]) -> None:
-    # Imported only after schema/version/input gates. This CLI remains the
+def _validate_semantics(request: dict[str, Any], wire_profile: str) -> None:
+    # Called only after schema/version/input gates. This CLI remains the
     # public boundary; callers do not import this module's Python internals.
     import contract_validation as cv
 
@@ -144,6 +152,7 @@ def _validate_semantics(request: dict[str, Any]) -> None:
             trusted_identity_receipts=trusted["identity_receipts"],
             trusted_source_bindings=trusted["source_bindings"],
             trusted_market_registry=trusted["market_registry"],
+            wire_profile=wire_profile,
         )
         return
     cv.validate_analysis_subject(
@@ -154,32 +163,40 @@ def _validate_semantics(request: dict[str, Any]) -> None:
     )
 
 
-def validate_file(input_path: str, schema_version: str) -> tuple[dict[str, Any], int]:
+def validate_file(
+    input_path: str, schema_version: str, *, wire_profile: str = DEFAULT_WIRE_PROFILE,
+) -> tuple[dict[str, Any], int]:
     """Validate one public request document and return its JSON response/exit code."""
+    def response(errors: list[dict[str, str]]) -> dict[str, Any]:
+        # Never echo an unregistered caller-controlled profile string.
+        return _response(schema_version, errors, wire_profile if wire_profile in WIRE_PROFILES else None)
+
     if schema_version != SCHEMA_VERSION:
-        return _response(schema_version, [{
+        return response([{
             "code": "unknown_schema_version",
             "pointer": "/schema_version",
         }]), 3
+    if wire_profile not in WIRE_PROFILES:
+        return response([{"code": "unknown_wire_profile", "pointer": "/wire_profile"}]), 3
 
     try:
         request = _read_request(input_path)
     except _InputFailure as exc:
-        return _response(schema_version, [{"code": exc.code, "pointer": exc.pointer}]), 2
+        return response([{"code": exc.code, "pointer": exc.pointer}]), 2
 
     if request.get("schema_version") != schema_version:
-        return _response(schema_version, [{
+        return response([{
             "code": "schema_version_mismatch",
             "pointer": "/schema_version",
         }]), 2
 
     try:
-        request_schema, identity_schema, registry = _load_schemas()
+        request_schema, identity_schema, registry = _load_schemas(wire_profile)
         # Confirm the public package schema is itself well-formed before using it.
         Draft7Validator.check_schema(request_schema)
         Draft7Validator.check_schema(identity_schema)
         if _selected_request_schema(request_schema, request.get("object_type")) is None:
-            return _response(schema_version, [{
+            return response([{
                 "code": "unsupported_object_type",
                 "pointer": "/object_type",
             }]), 2
@@ -187,22 +204,22 @@ def validate_file(input_path: str, schema_version: str) -> tuple[dict[str, Any],
         # resolving from the schema resource that owns them.
         failure = _schema_failure(request_schema, request, registry)
         if failure:
-            return _response(schema_version, [failure]), 2
-        _validate_semantics(request)
+            return response([failure]), 2
+        _validate_semantics(request, wire_profile)
     except JsonSchemaValidationError as exc:
         pointer = "/payload" + _json_pointer(exc.absolute_path)
-        return _response(schema_version, [{
+        return response([{
             "code": "identity_schema_invalid",
             "pointer": pointer,
         }]), 2
     except (ValueError, KeyError, TypeError):
         # Do not echo payload values or validator exception messages.
-        return _response(schema_version, [{
+        return response([{
             "code": "semantic_validation_failed",
             "pointer": "/payload",
         }]), 2
     except OSError:
-        return _response(schema_version, [{
+        return response([{
             "code": "validator_unavailable",
             "pointer": "",
         }]), 2
@@ -210,11 +227,11 @@ def validate_file(input_path: str, schema_version: str) -> tuple[dict[str, Any],
         # Keep the public CLI fail-closed if a local schema reference or
         # validator dependency is unexpectedly broken; never emit a traceback
         # that could include caller-controlled input.
-        return _response(schema_version, [{
+        return response([{
             "code": "validator_unavailable",
             "pointer": "",
         }]), 2
-    return _response(schema_version, []), 0
+    return response([]), 0
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -223,8 +240,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--input", required=True, help="Path to one JSON validation request")
     parser.add_argument("--schema-version", required=True, help="Identity package version")
+    parser.add_argument("--wire-profile", default=DEFAULT_WIRE_PROFILE,
+                        help="Registered read-wire profile (default: stockwiki-g2b/1.0.0; legacy supported)")
+    parser.add_argument("--version", action="version",
+                        version=f"identity_contract_cli {CLI_VERSION}; package {SCHEMA_VERSION}; default profile {DEFAULT_WIRE_PROFILE}")
     args = parser.parse_args(argv)
-    response, exit_code = validate_file(args.input, args.schema_version)
+    response, exit_code = validate_file(args.input, args.schema_version, wire_profile=args.wire_profile)
     print(json.dumps(response, ensure_ascii=False, allow_nan=False, separators=(",", ":")))
     return exit_code
 

@@ -1896,3 +1896,21 @@
 - **本批只读独立审查已完成**：`parallel_wave_review`未发现阻断问题，确认四owner独立、依赖一致、schema/四模板/旧默认命令可用、10个输入hash匹配；审查只覆盖文档/接收工具，不是产品实施验收。结论与15项包/代码快照hash入`reviews/IQS-lane/parallel-wave-review-2026-10-07.md`。按本批精确路径提交/推送，实际commit和远端结果随后记录。
 
 - **交付提交与远端结果**：本批25个精确文件提交为 `37851280094495f552b5d191730ddbc159c328c6`，已成功推送既有`origin/master`（dca3c8f→3785128），无force/新增remote/外仓提交。该提交包含新施工包与可运行--catalog工具；inputs.lock中的dca3c8f是准备前契约观察基线，不是新工具的实现版本。随后仅记录交付信息的PWF提交不改被审15项包/代码快照。既有opencode.json保留。
+
+## 2026-10-07 — 恢复主线及P2-5本地身份兼容
+
+- 上一goal turn仅解释施工目录，属于no progress；本轮按当前文件恢复主线，resolver返回legacy根计划，IQS HEAD=702eddb、origin/master同值，唯一既有未跟踪opencode.json保留。
+- 用户回复QA-NET-01/SW-READY-01均尚未开工；本轮仍只写IQS，独立agent仅只读审查身份兼容批次。未发API/读密钥/下载/写外仓。
+- 原始CLI对三份现有真实快照均exit2/request_schema_invalid；复制/修改前先核对原字节hash。设计新增版本化wire profile而不改变冻结C01/其他施工包输入；TDD和批次审查待完成，不提前称verified。
+- 恢复读取时两次猜路径失败（handoff-guide.md/test_identity_contract_v21.py），改实际文件列表定位；CodeGraph context未覆盖StockWiki新identity文件、files返回空，随后用literal文件列表读取已定位文件，不将空结果当功能不存在。
+
+- 用户随后明确两包已开始施工，后两包暂缓；总控从此仅只读StockQA/StockWiki，继续本地P2-5。用户要求前置齐备通知，创建本线程每小时只读heartbeat（id=automation，ACTIVE）；首次参数缺destination被工具拒绝、没有创建，补destination=thread后成功。条件不变静默、不开工/不调用收费/不写外仓。
+- 三份真实identity JSON原字节复制到本仓goldens，manifest明确历史导出/当前producer代码观察与本次未重导边界；不保存财报/网页正文。先跑12测试RED（27 failures/1 error，新增兼容缺失和边界断言；1 error为测试仅捕获ValueError而实际legacy schema抛JsonSchemaValidationError，已修正，不隐瞒），实现后12 tests GREEN；增加隔离guard生效canary与schema副本不泄漏测试后，14项及相关批次回归在途。
+- 新profile只拓宽内存ListingV21/SourceBindingV21的BIND_UUIDv4拼写，所有状态字段须active、修订严格int、manual null证据仍有actor/精确来源，official/verified仍HTTPS。公共CLI1.1.0响应标profile；legacy模式和内部默认保留，另补生命周期冲突/type失败关闭。冻结C01文件、任务/case数量、其他包输入锁不变。
+
+- 相关最终批次：六文件89 passed/139subtests（含14新tests），102.87s，无skip；日志validation-P2-5-wire-regression-2026-10-07.log。临时TEMP根删除且tempfile.tempdir恢复。各子进程guard marker与canary证明拒绝socket和自有根外写入，不把仅源码无网络调用当唯一隔离证明。
+- 新发现Git EOL陷阱后只改新测试：原schema工作树CRLF/raw671292a6…，HEAD blob LF/4924b5e3…；保持原文件不变，测试只容许EOL转换。新增.gitattributes三golden精确-text（git check-attr均unset），原字节/hash不可漂移。两受影响单测定向复跑2 passed/0.034s，日志validation-P2-5-wire-final-checks-2026-10-07.log；不重复89项全回归。
+- AST3/profile schema/4本地链接/manifest来源及3golden原字节hash、计划107/366/G6及diff检查通过。独立审查回到同一identity批次最终复核；目前未提前填approved或提交。新文档明确work.schema BND及当前as_of限制，当前真实数据E2E仅归档DTO到IQS公开CLI。
+
+- 独立最终审查无阻断：14 tests/40.749s/exit0，实际核查三golden原档、冻结原schema/HEAD LFblob、派生副本不泄漏、生命周期/修订/人工证据/覆盖与隔离canary，确认自有TEMP根0。范围verified_for_read_wire_consistency_scope，报告P2-5-wire-review-2026-10-07.md列关键原字节SHA与明确限制。
+- 旧W04签收golden当前CLI仍exit0，施工包10个输入hash未漂移。接下来仅精确stage/commit/push本地批次，再追加实际结果，不写两已占用外仓。
