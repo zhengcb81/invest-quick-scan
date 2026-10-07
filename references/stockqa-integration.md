@@ -2,6 +2,8 @@
 
 本skill只编排题库与检查轻量结果，不复制API客户端、密钥管理、提供商、搜索、重试、缓存或请求调度。默认上游仓库为`C:/Users/郑曾波/Projects/StockQAbyLLM`；生产调用应使用StockQA自己的环境和公共CLI。
 
+2026-10-07核查的原生搜索、外部证据context及缓存边界见[搜索策略](search-policy.md)。[外部搜索来源清单](../examples/search-provider-inventory.json)登记Brave、Tavily及用户新增的Z.ai MCP/REST；它不是执行器配置，不能据此启用搜索或改模型顺位。下方旧批次验收数字保留为历史记录，当前能力以搜索策略的日期和实际源码/回执为准。
+
 用户设置的接口地址、模型标识、环境变量名和脱敏连通性证据见[提供商连接配置](../examples/provider-connectivity-profiles.json)，schema为`../schemas/provider-connectivity-profiles.schema.json`。密钥值必须留在运行环境，不能写进该文件或日志；模型优先级只由`examples/model-policy.template.json`管理。DeepSeek的Anthropic兼容Messages接口已直连验证服务端`web_search`，但一次`max_uses=1`探针返回了两次搜索事件，因此现阶段不能依赖该参数限制搜索费用；StockQA适配及单公司端到端验收仍未完成。
 
 ## 当前协议

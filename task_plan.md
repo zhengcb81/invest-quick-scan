@@ -415,6 +415,8 @@ Status: complete_for_planning_only
 
 **下一步**：L03 200家公司试点启动前，需 owner 明确放行试点范围/预算并处置 phase-1 局限；未收到该启动确认前不发live请求。W11已verified；G3仍未关闭，因为正式G3还依赖L03和W12恢复证据。本次B01报告审查不替代G3的REV/JOB/BUD/DB验收。接手入口为[`新接手模型工作指南`](docs/implementation/handoff-for-new-agent.md)的2026-10-07后续交接节。
 
+**搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search MCP已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。当前公开CLI走模型原生搜索；Brave/Tavily仅实验接通，Z.ai未接通/未live验证。后续外部adapter仍归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次登记不改变上面的L03启动边界。
+
 ### 历史执行状态（截至2026-09-30）
 
 - Q02首个提供商实现的任务级验收已在精确StockQA工作树快照通过：MiMo公开CLI真实搜索、LLM-02/LLM-11离线检查及同快照独立审查均已记录在`progress.md`和`docs/implementation/contracts/validation-Q02-MiMo-live-E2E-2026-09-30.md`。旧任务回执已退役、验收目录为规格；不刷新receipt或改规格状态。该结果不关闭G1或跨仓链路。

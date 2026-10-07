@@ -1,0 +1,107 @@
+{
+  "inventory_version": "1.0.0",
+  "as_of": "2026-10-07",
+  "purpose": "Reference inventory only; not consumed by the dispatcher and does not enable providers or set priority.",
+  "runtime_owner": "StockQAbyLLM",
+  "policy_reference": "../references/search-policy.md",
+  "native_search_inventory": "provider-connectivity-profiles.json",
+  "provider_order": null,
+  "providers": [
+    {
+      "provider_id": "brave",
+      "kind": "external_search",
+      "credential_env": "BRAVE_API_KEY",
+      "status": {
+        "registration": "listed",
+        "historical_probe": "B01-b retriever experiment executed on 2026-10-07",
+        "production_integration": "not_found_in_current_public_cli",
+        "current_connectivity": "not_probed"
+      },
+      "evidence_reference": "StockQAbyLLM/pilot_runs/b01b_retriever_2026-10-07/retriever_compare_report.json",
+      "owner_reported_plan": {
+        "requests_per_second": 50,
+        "monthly_request_limit": "unlimited",
+        "current_entitlement_verified": false
+      }
+    },
+    {
+      "provider_id": "tavily",
+      "kind": "external_search",
+      "credential_env": "TAVILY_API_KEY",
+      "status": {
+        "registration": "listed",
+        "historical_probe": "B01-b retriever experiment executed on 2026-10-07",
+        "production_integration": "not_found_in_current_public_cli",
+        "current_connectivity": "not_probed"
+      },
+      "evidence_reference": "StockQAbyLLM/pilot_runs/b01b_retriever_2026-10-07/retriever_compare_report.json",
+      "owner_reported_plan": {
+        "monthly_api_credits": 1000,
+        "credits_equal_requests": false,
+        "current_entitlement_verified": false
+      }
+    },
+    {
+      "provider_id": "zai",
+      "kind": "external_search",
+      "credential_env": "ZAI_API_KEY",
+      "credential_env_basis": "Suggested project convention; user configuration has not been inspected or confirmed.",
+      "documentation": [
+        "https://docs.z.ai/guides/tools/web-search",
+        "https://docs.z.ai/api-reference/tools/web-search"
+      ],
+      "status": {
+        "registration": "listed",
+        "historical_probe": "not_run",
+        "production_integration": "not_implemented",
+        "current_connectivity": "not_probed",
+        "mcp_tool_exposed_in_this_session": false
+      },
+      "documented_interfaces": [
+        {
+          "interface_id": "zai_web_search_mcp_sse",
+          "transport": "sse",
+          "server_name_in_docs": "z.ai-web-search-sse",
+          "base_url": "https://api.z.ai/api/mcp/web_search/sse",
+          "authentication": {
+            "documented_location": "query_parameter",
+            "parameter_name": "Authorization",
+            "credential_source": "environment_variable",
+            "persist_credential_bearing_url": false
+          },
+          "tools_list_verified": false,
+          "tool_name": null,
+          "tool_input_schema": null
+        },
+        {
+          "interface_id": "zai_web_search_rest",
+          "transport": "https",
+          "method": "POST",
+          "endpoint": "https://api.z.ai/api/paas/v4/web_search",
+          "authentication": {
+            "documented_location": "header",
+            "header_name": "Authorization",
+            "scheme": "Bearer",
+            "credential_source": "environment_variable"
+          },
+          "search_engine": "search-prime",
+          "documented_optional_parameters": ["count", "search_domain_filter", "search_recency_filter"],
+          "filter_support_verified": false,
+          "documentation_caveat": "API reference lists search-prime but labels some optional parameters as supported by search_pro_jina; verify behavior. REST parameter definitions do not establish the MCP tool schema.",
+          "source_mapping": {
+            "title": "title",
+            "link": "url",
+            "media": "publisher",
+            "publish_date": "published_at",
+            "content": "short_snippet",
+            "refer": "provider_reference"
+          },
+          "source_mapping_status": "planned_not_implemented"
+        }
+      ],
+      "answering_model_binding": null,
+      "pricing_verified": false,
+      "quota_verified": false
+    }
+  ]
+}

@@ -28,7 +28,7 @@ description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快
 ## 执行
 
 1. **确定对象与时间。** 固定公司法定实体、证券代码、交易所／股类、信息截止日；估值另固定报价日期与币种。证券简称或代码有歧义时先消歧，不默认上市地区就是经营地区。
-2. **检查外部工具。** 读 [StockQAbyLLM 接入](references/stockqa-integration.md)。先验证搜索确实启用且实际执行。当前本地上游存在搜索与评分传递缺口，不能将提示词中的“请搜索”当作已联网，不能使用 CLI 的默认 5 分冒充结果。缺口未解决时可完成问题编排，但应明确实际联网画像尚未执行。
+2. **检查外部工具。** 读 [StockQAbyLLM 接入](references/stockqa-integration.md)和[搜索策略与来源清单](references/search-policy.md)。公开CLI的`--require-search`使用已接入供应商的原生工具；Brave/Tavily实验及Z.ai登记不等于生产外部搜索已接通。验证实际执行证明，不能将提示词中的“请搜索”当作已联网，缺证明或证据不足时留空分数。
 3. **用 LLM 分类。** 依 [路由规则](references/routing.md) 通过同一上游工具发出分类问题。检查实体、类型、行业、阶段及可确认的business_subtype，写入profile；entity_id/security_id由身份拥有者确认，不让模型自由创造。分类是评分和事实的共同入口，不重复收费做两次相同路由。
 4. **离线编排。** 使用 `scripts/question_sets.py compose`。通用框架先出题，再由类型替换不适用的会计题，加行业、阶段与有实质影响的属性题。只读 [目录](questions/catalog.json) 和命中的模块，不一次性装入全部题库。
 5. **逐题联网回答。** 导出的questions.json复用StockQA的加载/执行接口；标准模式先核实其原生score/fact解析能力，不把旧外层5分协议套到事实题。保持ID、截止日、评分锚点/事实关系与结构化约定；只保存短依据和来源，不下载报告。StockQA每次另附真实执行时间、请求/实际模型、搜索回执；正常fallback成功即停，显式模型对照另设有预算比较组。

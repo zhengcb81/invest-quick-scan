@@ -1844,3 +1844,11 @@
 - 一般 finding：报告合并引用率约88%无可复算分母（420项/540槽=77.8%；420/430非missing=97.7%）；provider `cached_tokens` 基数分布差异很大且不证明现金节省；HK batch30 的1/30与探针30/30只证明观察到不同完整度，不能定位为服务端非确定性。
 - 复核后在 B01 phase-1 报告 §9 追加证据边界与更正。独立复核原件 `docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md`；原报告审查前 SHA=`66c5acd551219ff206866b894aa3945f4af82373084273df359b1a15e92ce2ac`。
 - 结论仍是 `inconclusive`，逐题只作为暂定操作默认，不构成胜出/盲评结论。BENCH-01.A03结构部分可复算；A05未运行，其余关键预注册断言未完整验收。G3未关闭，正式依赖L03+W11（W11已verified）；L03等owner明确启动，不能先发请求。完整发现、文件hash和门状态见独立复核报告。
+
+## 2026-10-07 — 搜索路径核查与Z.ai来源登记
+
+- 用户询问搜索规则并提供Z.ai官方Web Search文档；总控读取官方指南/API说明，独立agent只读核查StockQA生产调用链。公开CLI `--require-search`调用供应商原生工具并校验执行证明；当前生产未找到Brave/Tavily外部adapter，DeepSeek尚不在搜索协议白名单。
+- B01-b外部实验查询为公司名+题目，短证据context交给MiniMax，未启用原生搜索；不能把未来按题选证据/六类检索意图/三层缓存设计称为当前生产行为。
+- 新增`examples/search-provider-inventory.json`和`references/search-policy.md`，登记Brave/Tavily/Z.ai；Z.ai仅存基础SSE/REST地址、建议环境变量名、文档/字段映射和未验证状态，不存密钥、不改模型顺位。SKILL接入该说明并移除过时的普遍搜索缺口表述。
+- 本批只改IQS文档/参考清单，不写外仓，不读密钥，不安装MCP，不发Brave/Tavily/Z.ai/LLM收费请求；仅官方文档浏览/检索。主线仍等待L03明确启动，无新小节点审查门。
+- 验证：无密钥清单JSON解析和登记状态/无凭据URL断言通过；SKILL及两个接入文档27个本地链接全部有效；`python -X utf8 C:/Users/郑曾波/.codex/skills/.system/skill-creator/scripts/quick_validate.py .`返回`Skill is valid!`；`git diff --check`退出0。只验证文档/清单，本批未跑产品测试或live探针，不宣称Z.ai连通性已验收。
