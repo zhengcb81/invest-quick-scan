@@ -1,0 +1,38 @@
+{
+  "schema": "phase96_pack_economics/1",
+  "pricing_source": "accuracy-pricing-2026-10-07.json",
+  "invoice_verified": false,
+  "currency": "USD",
+  "search_fee_included": false,
+  "time_metric": "sum of request wall seconds, not company end-to-end wall time",
+  "groups": {
+    "g1": {
+      "calls": 18,
+      "prompt_tokens": 203096,
+      "completion_tokens": 16323,
+      "cache_hit_tokens": 4992,
+      "unknown_cache_usage_requests": 0,
+      "deepseek_offpeak_reference_usd": 0.039524376,
+      "sum_wall_s": 95.942,
+      "formula_per_1m": {
+        "uncached_input": 0.15,
+        "cached_input": 0.003,
+        "output": 0.6
+      }
+    },
+    "g3": {
+      "calls": 6,
+      "prompt_tokens": 68492,
+      "completion_tokens": 17743,
+      "cache_hit_tokens": 2176,
+      "unknown_cache_usage_requests": 0,
+      "deepseek_offpeak_reference_usd": 0.020599728,
+      "sum_wall_s": 80.053,
+      "formula_per_1m": {
+        "uncached_input": 0.15,
+        "cached_input": 0.003,
+        "output": 0.6
+      }
+    }
+  }
+}

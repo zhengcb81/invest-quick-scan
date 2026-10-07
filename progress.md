@@ -2093,3 +2093,32 @@
 - **Phase95正式提交推送**：`a23bec03ec459fa036a8800acc1f43b1662b22b8`，40精确文件，origin/master正常由6f7d7db前进；33工件staged blob全部size/SHA一致，已审源不改，working-scope whitespace通过（CR-at-EOL认可原Windows字节，原历史MD/日志不修剪）。当前只剩opencode.json原未跟踪项，三个外包源仓无写入/提交；波次2冻结包全部保留。后续由总控只读接收三包真实commit/handoff再集中联调，当前用户确认开工不等于已有完成交付或verified wait。
 
 - PWF真实交付记录`fdf0f7ef0f648acb8b522ed862ca253910f3a03e`已推送，生产者33+冻结包30工件在HEAD全部原字节匹配。随后只读检查实际指定handoff：QA09f68a69/16状态尚无新包目录；SW04dfc519/1状态已有本包目录；Lab已真实建仓`codex/evid-lab-01@cc3c38824c90a210196d63242797113247094b22`/3状态，有交接目录。三个handoff.json均未出现，不能按目录/初始commit宣称交付或验收。外仓实际写入仍归各harness，后续回收真实成果；本回合为生产者正式实现/验证/提交的progress，不是verified wait，不关闭goal。
+
+
+## 2026-10-07 — Phase96启动：准确性优先新实验
+- 用户授权继续LLM×搜索组合/复问/换模型试验并最终固化手册。重读PWF技能/resolver(root legacy)、三文件与旧结果；三外包唯一writer保留，StockQA工具只从已冻结Git commit导出复用，不导入动态脏树。
+- 先设计官方窄事实参照与正确拒答检查，价格/速度只在证据支持门之后排序；结果出来前不宣布赢家。注册与离线预检完成前不发送收费请求。
+
+- 初始搜索已发7次：6completed+Z.ai首发429；随后原账本cooldown抛BudgetExceeded停止，0模型请求。按真实拒绝补route-wide停用，未重试Z.ai，保留原initial-search源快照并更新首模型前执行源。
+
+- 用户追问Z.ai MCP当日成功。独立有界诊断用同一key：REST429/error1113明确Insufficient balance or no resource package；MCP initialize200/notify202/list200/call200，isError=false/4结果。5 HTTP（其中仅2实际搜索）/0模型/0重试；费用上界0.15不是实扣。诊断归档zai-rest-vs-mcp-diagnostic-2026-10-07.json。不能将REST额度拒绝推成MCP不可用或重试429频限；后续MCP单独新实验臂，不解冻/替换旧失败臂。
+
+- Phase96主矩阵48真实HTTP+12 REST not_run终态，3 invalid保留；1.481965 USD保守上界/19搜索/0未决，45有效warm0key/0HTTP。预检18项两FAIL分别为synthetic身份fixture缺canonical_name及冻结v1浮点边界；补充十进制评估v2保留原源/旧分析，修新score prompt tuple，19 GREEN/0.396s。未把真实模型错误修成成功；MCP+定向4000字符的新臂另注册，预计总102模型/48搜索HTTP。此前主CLI持锁时summary拒执行FileExistsError，零新增发送。
+
+- Phase96 MCP9 query全部HTTP200，但CNCB返回其他中信实体且链接常只有域名；定向URL搜索丢了issuer词导致错公司。新增首模型前第三组实体+期间+指标query六HTTP，不重复旧query；搜索合计计划54HTTP仍cap60。只复用p.retrieve与既有池，4000字符摘要，全页/财报下载0。新enhanced将合并旧已审短证据作为检索缓存复用，与新检索证据分开provenance。后评估decimal四端点修正后DS hybrid15事实/12支持/0错误、M3 hybrid14/12/0；按原注册成本tie-break两模型改为DeepSeek+MiniMax，原选择保留为历史解释，不作生产推荐。
+
+- 新检索wrapper的normalize动态替换与原helper调用形成递归，首个额外CATL Brave query在HTTP返回处理阶段RecursionError，账本保留outcome_unknown/0.03全预约；不改旧事件或重发此query。另注册resume只做剩余5不同query，原失败源保留。不能把此本地处理失败说成供应商失败，也不冒称全部零未决。
+
+- Phase96补检索共32HTTP，其中MCP12、定向12、实体query6（第一本地递归未知 held）、精度query2；父19+诊断5合计56HTTP。模型前增强context复用父查询缓存，14/15数值有明确支持，Alphabet精确Capex仍缺年度列表头；MCP只有CATL毛利率1/15支持、CNCB错主体三条剔除，其余保留作不足检验。CNCB F01明确2024原披露而非最新追溯重述；这与摘要上限4000/人工筛选一起披露为复合修复，不归因单一工具品牌。
+
+- 增强证据首发DS15/15数值、14/15引用；M3数值15/15但引用12/15，且CATL说明把billion写成亿元（十倍）、AlphabetEPS说明添加未支持数字，数值字段正确不能证明全文可靠。另注册六请求让Flash/Pro在同一已冻结增强输入对照，累计计划108模型/56搜索HTTP内；不重搜、不改任何旧答案/输入/默认顺位。
+
+## 2026-10-07 — Phase96终态、实操规范与隔离恢复
+- 收费阶段结束：主48模型+补60=108；搜索相关56HTTP=50query发送（2REST拒绝）+6MCP协议。保守上界USD3.871962，实际账单/套餐/币种区未知；1本地normalize递归异常仍outcome_unknown，USD0.03全预约保留，未重复发送。
+- 结论：补证比换模型有效。增强DS15数值/14引用、M3及Pro15/12、Flash10/8；数值正确与说明可靠分开，M3至少四项说明单位/年份错误，缺依据7/8分不用于高置信白名单。重复四答15数值一致、仅12四答引用均支持；不以一致当真值。
+- 相同增强context的DS逐题18HTTP与g3六HTTP均15数值/12引用；203096→68492输入，95.942→80.053请求耗时之和；按实际cache hit和核查官网低峰价USD0.039524376→0.020599728。是窄事实小包方向，不授权30判断题生产大包。
+- ZAI同key REST429/1113资源包不足，MCP真实工具调用成功；接口/权益桶健康分开，不能品牌级封禁或盲重试。MCP财经证据仅覆盖1/15，成功HTTP不代表证据充分。
+- 51受影响离线测试/2.448s GREEN；一次集中独审；最终含semantic_audit报告在原根及移动后最小归档公开CLI --check均matched、HTTP/key0。skill quick_validate成功、47本地链接通过。原source/runtime10文件freeze/hash归档前匹配。保留191最小工件、index、URL/hash/覆盖/原结构答案/失败/预算，不保存片段、独立思考或invalid正文。
+- 清理：Python lstat四根nlink1/无reparse；沙箱CIM不可访问，删除前停（只读探针exit1），沙箱外严格CIM0/394文件set+SHA预检dry-run通过，Apply删除394自有文件、实际receipt.applied=true；old Phase92 root仍在。无外仓/生产库/名单/共享TEMP写入，unknown费用不因清理释放。
+- 恢复中的只读输出脚本误用report键main导致KeyError，后改真实main_profiles/followup_profiles；第一次经济性glob匹配0项，未将0费写入结论，改按实际arm文件名读取18/6请求并落economics.json。archive首次exec超过等待窗口，只读确认index后完成移动复算；不再次执行会覆盖归档的builder。
+- 更新SKILL/search规范、准确性手册/结果/交接与PWF；不改模型顺位、题包默认、schema或G3/F05。下一步回收三个外包真实交付做联合验收；Git精确提交与push实际结果随后追加，不在此虚填commit。

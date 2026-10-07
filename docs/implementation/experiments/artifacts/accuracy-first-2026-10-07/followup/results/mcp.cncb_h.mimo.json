@@ -1,0 +1,108 @@
+{
+  "arm": "mcp.cncb_h.mimo",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "8451cbc24c434149753118b3eaef807f6d46fecdad95b685e63a0b6a0963f96a",
+  "questions_sha256": "3050bc11e303feb5c09fc88c2bf4784cd090960104673e19f2b259982574e03e",
+  "prompt_sha256": "4c6eccad8ded2afa95da9f71efc04f83c557751b980b7870d66726ae37bd8cc4",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "mcp",
+  "cache_key": "dae3b8c869d5e3bc18bc41369909d0bac5e62d6c76cba13716001fb770f8df2c",
+  "route": "mimo",
+  "created_at": "2026-10-07T22:30:40.779188+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的两段证据分别为2026年中期报告与2025年第三季度业绩报告片段，均未披露2024年上半年IFRS总收入及其他收益数据，无法核验。"
+    },
+    {
+      "question_id": "F02",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "无任何证据片段给出2024年上半年归属公司权益持有人净利润数值，缺口为原始披露数字。"
+    },
+    {
+      "question_id": "F03",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "现有片段不含2024年上半年现金流量表信息，无法核验经营活动现金流净额。"
+    },
+    {
+      "question_id": "F04",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未包含2024年6月30日合并资产负债表总资产数据，无法核验。"
+    },
+    {
+      "question_id": "F05",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未披露2024年6月30日归属于公司权益持有人的权益数值，无法核验。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据既未给出ROIC、WACC任一数值，也未说明其计算口径，故无法核实二者差额。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_718c8cc4a70e4d4e8431cedef4c28ccf",
+    "http_status": 200,
+    "latency_s": 7.744,
+    "response_id": "7a8d5c72-09d6-421c-b8cc-175a9a9d974c_4ab3ac62e5344d71b7d598026f451b52",
+    "actual_model": "mimo-v2.6-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 486,
+      "prompt_tokens": 1454,
+      "total_tokens": 1940,
+      "completion_tokens_details": {
+        "reasoning_tokens": 37
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0040776,
+    "final_content_sha256": "f80342eab30790fc62e72e4e4acf745055b6571af60eae22fa2dc01a160ca965"
+  },
+  "wall_s": 7.752
+}

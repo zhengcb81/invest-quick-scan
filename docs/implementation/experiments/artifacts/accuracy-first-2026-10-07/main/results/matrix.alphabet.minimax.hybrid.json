@@ -1,0 +1,124 @@
+{
+  "arm": "matrix.alphabet.minimax.hybrid",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "ebd803c4adccfbb678c67650de305ebc149b2e3d3e0083da27edaf1dfabd9d9a",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "5f0c55b1792ba34bf84a7a28213d0cd48d738844a7f4c4a8a62aa4a9a756f67b",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "hybrid",
+  "cache_key": "e740253ba711795de715a5b603a1e233940e578280ce60073c9cf2e5f77ca382",
+  "route": "minimax",
+  "created_at": "2026-10-07T22:11:18.419059+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5",
+        "Tf6c6096a20c4"
+      ],
+      "rationale": "10-K Consolidated Statements of Income shows 2024 consolidated revenues of $350,018 million, confirmed in 2025 10-K comparative column."
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K Consolidated Statements of Income shows 2024 net income of $100,118 million."
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125299,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T9371c37b9648",
+        "Tfe2b2e551afc",
+        "Tca21c8a2ab3f"
+      ],
+      "rationale": "Q3 2024 9-mo YTD OCF $86,186M + Q4 2024 OCF $39,113M = $125,299M; matches 2024 Annual Report narrative of $125.3 billion."
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52535,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T9371c37b9648",
+        "Tfe2b2e551afc",
+        "Tca21c8a2ab3f"
+      ],
+      "rationale": "Q3 2024 9-mo YTD purchases $38,259M + Q4 2024 purchases $14,276M = $52,535M; aligns with 10-K MD&A narrative of $52.5 billion capex."
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K Consolidated Statements of Income shows 2024 diluted EPS of $8.04."
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "Evidence provides no ROIC or WACC figures or their computation bases; insufficient data to verify the spread."
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_d98ffae334eb4350a6501271bc4e7d58",
+    "http_status": 200,
+    "latency_s": 39.072,
+    "response_id": "0715f68928925d68374fbe6858559562",
+    "actual_model": "MiniMax-M3",
+    "finish_reason": "stop",
+    "usage": {
+      "total_tokens": 15113,
+      "total_characters": 0,
+      "prompt_tokens": 9709,
+      "completion_tokens": 5404,
+      "completion_tokens_details": {
+        "reasoning_tokens": 4860
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 128
+      }
+    },
+    "business_error_code": 0,
+    "state": "completed",
+    "upper_usd": 0.03759,
+    "final_content_sha256": "be3b5fc68cfdf6b6220c4b99b52110076ef5f0426f74de18589b1fd288cb9232"
+  },
+  "wall_s": 39.094
+}

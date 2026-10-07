@@ -1600,3 +1600,22 @@ Phase92输入映射发现：IQS `standard_answers.build_observations`已定义fi
 Phase95收尾选择：QA/SW可能由用户交给其他harness，不能仅靠无Git差异假定可抢写；IQS production exporter和metadata纯公式仍由总控独占。现有CLI测试进程内调用main，不证明实际入口/import/子进程环境隔离，因此补独立guarded CLI测试是有意义的缺口；不新增LLM、身份认证或存储实现。v2只bind opaque身份原字节，不颁verified资格；测试必须明确synthetic，不代替G3。
 
 本地正式producer可在不修改已分派卡的前提下落定：四IQS冻结源原字节不变，提交将私有上游变成可按commit消费的源，而不会改协议/题义。真实11子进程场景31题逐题与冻结authority metadata相等，35回归/24子测试通过；独立review对原内联metadata的Git diff佐证语义等价。Python audit只覆盖子进程受监控事件，父fixture harness不是OS读隔离；identity_schema/model_policy_schema与build声明不能当版本/来源认证。收到QA的完整v2消费后仍要独立核其真实绑定/状态与原RED，不能因producer通过关闭联合门。
+
+
+## Phase96准确性优先设计
+用户要求持续实验直至可操作结论：准确性优先于价格/速度，允许复问或换模型。旧326行agent审查不是人类gold，191评分仅14有有限依据；新实验必须有模型不可见的官方事实参照。选既有CATL/CNCB/Alphabet，不扩大名单。财务期间/单位/主体是重点：CATL2024H1；CNCB港股IFRS total revenue and other income与A股营业收入不可混用；Alphabet2024全年不能取Q4。官方CATL短新闻、SEC HTML earnings exhibit及HKEX搜索索引已核到真实数据，不在本机下载原文。参照是总控核验的窄事实集，不声称双人校准的投资评分gold。
+已核官方DeepSeek/MiMo/MiniMax思考协议：分别enabled/enabled/adaptive，不传temperature，独立reasoning_content只在内存丢弃。Z.ai REST search-prime复用原已探测接口，client侧独立核域名/主体，不把请求中的site过滤当已生效保证。
+文件查询错误：scripts/mimo_thinking_extension.py不存在，实际为mimo_pilot_extension.py，已按rg --files定位；无外仓写。
+
+Phase96真实源输入问题：CATL英文同页37.5%/26.9%都写global，需中文/SNE交叉核；未知发送不得重复。Z.ai首次429后必须停整route，不等第二次reserve才中断整实验；新增拒绝后跨公司零key/零HTTP反例。
+
+Z.ai本轮真实对照：REST错误1113为余额/资源包不足，MCP仍有真实搜索结果，同一key。因此route-health/cooldown应以具体接口/权益桶区分；429不自动等于频率限流。官方tools/web-search为REST例子，devpack/mcp/search-mcp-server为Coding Plan remote MCP。只证接口此次可用，不证明套餐余量/永久权限；返回来源是否精确可追溯还需实验审查。
+
+- Phase96主矩阵48真实HTTP+12 REST not_run终态，3 invalid保留；1.481965 USD保守上界/19搜索/0未决，45有效warm0key/0HTTP。预检18项两FAIL分别为synthetic身份fixture缺canonical_name及冻结v1浮点边界；补充十进制评估v2保留原源/旧分析，修新score prompt tuple，19 GREEN/0.396s。未把真实模型错误修成成功；MCP+定向4000字符的新臂另注册，预计总102模型/48搜索HTTP。此前主CLI持锁时summary拒执行FileExistsError，零新增发送。
+
+## Phase96最终操作取舍
+同源事实精确字段与说明的正确性是两层：M3字段15/15仍把CATL billion写成亿元，EPS附加错误年份。保护8分筛选需四项门（事实/口径/引用/说明），不能按机器数值结果自动放行。利润/现金流/规模不足以证明超额资本回报或难复制护城河；缺证判断保留unknown/原观察，并展示反转关注条件。
+补查询必须带主体/期间/表名，不能仅用PDF URL；保留表头/单位和同URL互补片段。原始2024 CSC收入14830与2025重述比较14257都是其各自口径，默认使用哪种必须写入题义/允许definition，不能错当一个数字错误。CATL官方英文页37.5/26.9冲突，用中文原始披露核37.5；不保存财报。
+有限复问/第二模型可测稳定性，但15数值四答一致仅12项四次引用均支持；不足不能靠一致、多数票或换模型修复。三题事实包减少重复输入（66.3%）和参考费（47.9%），服务耗时之和仅减16.6%；不推成端到端并发加速或30评分题生产验收。正确拒答单列，不能全拒答零错误胜出。
+ZAI被拒的是REST资源桶（429/1113），MCP同key当次成功。工具结果域名级链接、错issuer或缺表头仍不可支持精确财务；本MCP只覆盖1/15，保留补充路由且endpoint细分健康。冻结transport和实验小接口均不等于原生搜索多轮生产最终答案已接线。
+本地处理递归的未知请求留原ledger和全部预算，停止重复，另登记不同查询；归档/删除临时文件不释放账务未知。原浮点评估留档，十进制端点以sidecar重算；原覆盖补标与说明独审分开。最小归档可复算结果/支持计数，不可还原全prompt、片段或invalid文本，不能夸称完整响应重放。

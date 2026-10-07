@@ -1,0 +1,106 @@
+{
+  "arm": "score.catl.minimax",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "IQS_05",
+    "IQS_10"
+  ],
+  "variant": "enhanced",
+  "evidence_sha256": "67b64663acac2db3193bd0ce23d417ad93a4d1006fa007ffc589f5c4a4b34aa4",
+  "questions_sha256": "384d0d9ea2f2158c62806de6ce9fdb6b4671cf0257805bdd5def8e9c25b6258b",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "cache_key": "a1597a4c3ed3fa77e91fdc390066a70c9b5d904e7e431ebd6da5549214c4f3f7",
+  "prompt_sha256": "c31ed36b60c8d29e01c474bb5a965f5db33d1c620d670d9fe5309840aa9954b6",
+  "route": "minimax",
+  "created_at": "2026-10-07T22:37:13.717132+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "IQS_05",
+      "status": "scored",
+      "score": 8,
+      "confidence": "medium",
+      "rationale": "证据显示公司在动力电池(2025年全球市占率39.2%,连续9年第一)与储能电池(连续5年全球出货量第一)双线具备长期且持续的市场领先,且与第二名比亚迪(2024年17.2%)保持约20个百分点的份额差距,行业前五合计74.7%的高集中度印证进入壁垒。但证据未深入揭示具体护城河机制(成本结构、专利、长期合同等)的可复制成本。",
+      "evidence_refs": [
+        "T2653556a62e3",
+        "Tea233b715863",
+        "T321eb8f2f9b3",
+        "Tc6efda9ff80d"
+      ],
+      "claims": [
+        {
+          "text": "2025年公司全球动力电池使用量市占率39.2%,较上年提升1.2个百分点,连续9年(2017-2025)排名全球第一",
+          "source_ids": [
+            "T2653556a62e3"
+          ]
+        },
+        {
+          "text": "2024年全球前五大EV电池公司合计市占率74.7%,前十大合计89.4%,CATL以37.9%领先,比亚迪17.2%居第二",
+          "source_ids": [
+            "T321eb8f2f9b3"
+          ]
+        }
+      ],
+      "counterevidence": "2025年市占率仅提升1.2pp,增速有限;比亚迪等竞争对手在加速追赶,差距虽大但非不可逾越",
+      "sensitivity": "若中国二三线厂商价格战加剧或海外政策壁垒提升,领先优势可持续性存疑"
+    },
+    {
+      "question_id": "IQS_10",
+      "status": "scored",
+      "score": 7,
+      "confidence": "medium",
+      "rationale": "2025年营收4237亿元(+17%),归母净利722亿元(+42%),整体毛利率26.27%(同比+1.83pp),经营性现金流1332亿元,产能利用率96.9%。盈利能力和现金转化均较强,显示存量业务回报覆盖合理资金成本的概率较高,但证据未提供ROIC/ROE等可比口径回报率及债务/股权成本,无法严格验证超额回报。",
+      "evidence_refs": [
+        "Tea233b715863",
+        "Tc6efda9ff80d",
+        "T55e2313a7b7e",
+        "T2e9da4571bb0"
+      ],
+      "claims": [
+        {
+          "text": "2025年营业收入4237亿元(同比+17%),归母净利润722亿元(同比+42%),整体毛利率26.27%(同比+1.83pp)",
+          "source_ids": [
+            "Tea233b715863",
+            "Tc6efda9ff80d"
+          ]
+        },
+        {
+          "text": "2025年经营性现金流净额1332亿元,产能利用率96.9%,总资产9748亿元",
+          "source_ids": [
+            "Tea233b715863",
+            "T55e2313a7b7e",
+            "T2e9da4571bb0"
+          ]
+        }
+      ],
+      "counterevidence": "未披露可比口径ROIC及加权资本成本,2024年总资产已7867亿元,资产扩张速度快于营收增速可能压低未来回报",
+      "sensitivity": "若碳酸锂等原材料价格大幅下行压缩毛利,或资本开支继续快于利润增长,回报可能回落至接近资金成本"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_a87213fcd2db454a8334d42bb057c005",
+    "http_status": 200,
+    "latency_s": 30.881,
+    "response_id": "0715fc9f669241df804c661e70c7ef66",
+    "actual_model": "MiniMax-M3",
+    "finish_reason": "stop",
+    "usage": {
+      "total_tokens": 14647,
+      "total_characters": 0,
+      "prompt_tokens": 12395,
+      "completion_tokens": 2252,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 128
+      }
+    },
+    "business_error_code": 0,
+    "state": "completed",
+    "upper_usd": 0.025683599999999997,
+    "final_content_sha256": "62cc561d051882a5fb8d1dd1d679ebb833f8ab98422b7f5d1792c046587db602"
+  },
+  "wall_s": 30.894
+}

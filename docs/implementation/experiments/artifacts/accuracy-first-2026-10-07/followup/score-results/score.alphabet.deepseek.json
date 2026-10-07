@@ -1,0 +1,100 @@
+{
+  "arm": "score.alphabet.deepseek",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "IQS_05",
+    "IQS_10"
+  ],
+  "variant": "enhanced",
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "384d0d9ea2f2158c62806de6ce9fdb6b4671cf0257805bdd5def8e9c25b6258b",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "cache_key": "9ad37746d9d757a28309c8a8be1e5d08352bf6d0daa8f28196fd8ff0c1fc5a11",
+  "prompt_sha256": "fcb542a49b67eb283f0b244cf3bd3b238389a69ff111d09e3978b8665cb8b50f",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:37:37.179662+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "IQS_05",
+      "status": "insufficient_evidence",
+      "score": null,
+      "confidence": "low",
+      "rationale": "证据仅显示收入增长和AI业务动能，未提供搜索/云竞争优势的具体机制、客户锁定、复制成本或长期份额证据，无法判断对手能否以合理成本复制。",
+      "evidence_refs": [
+        "T20340095f3f3",
+        "T6bfcc0f155f9"
+      ],
+      "claims": [
+        {
+          "text": "2024 Q4 Google Cloud收入同比+30%至120亿美元；服务收入+10%至841亿美元。",
+          "source_ids": [
+            "T20340095f3f3"
+          ]
+        },
+        {
+          "text": "2024 Q1 Search & Other广告收入462亿美元，同比+14%；YouTube广告81亿美元，同比+21%。",
+          "source_ids": [
+            "T6bfcc0f155f9"
+          ]
+        }
+      ],
+      "counterevidence": "收入增长可能来自周期或AI投入，不证明进入壁垒。",
+      "sensitivity": "若披露搜索份额、切换成本或云订单积压等可验证壁垒会改变判断。"
+    },
+    {
+      "question_id": "IQS_10",
+      "status": "insufficient_evidence",
+      "score": null,
+      "confidence": "low",
+      "rationale": "有盈利和现金流，但缺投入资本、净债务/权益、WACC与正常周期口径，无法判断回报是否持续超过资金成本。",
+      "evidence_refs": [
+        "Tf6c6096a20c4",
+        "T717c5b2b4023"
+      ],
+      "claims": [
+        {
+          "text": "2024年收入3500.18亿美元、经营利润1123.90亿美元；2025年经营利润1290.39亿美元。",
+          "source_ids": [
+            "Tf6c6096a20c4"
+          ]
+        },
+        {
+          "text": "2024年经营现金流1253亿美元，资本开支525亿美元。",
+          "source_ids": [
+            "T717c5b2b4023"
+          ]
+        }
+      ],
+      "counterevidence": "高利润和经营现金流不等于ROIC>WACC；未披露资本成本与投入资本。",
+      "sensitivity": "若提供投入资本、净债务和WACC及多年ROIC，可改变判断。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_068426a11fbf4ae9b62d881649457d21",
+    "http_status": 200,
+    "latency_s": 20.485,
+    "response_id": "57453578-0bfe-48ea-938d-1c4616b58606",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12611,
+      "completion_tokens": 4101,
+      "total_tokens": 16712,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3659
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12355
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.034818,
+    "final_content_sha256": "a8dedd6d35cef5c0b38648aa8920a07111df9dd25f2a09e8280137e9fa74516d"
+  },
+  "wall_s": 20.497
+}

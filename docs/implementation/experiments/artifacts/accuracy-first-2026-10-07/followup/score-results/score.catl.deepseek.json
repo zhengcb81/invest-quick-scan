@@ -1,0 +1,102 @@
+{
+  "arm": "score.catl.deepseek",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "IQS_05",
+    "IQS_10"
+  ],
+  "variant": "enhanced",
+  "evidence_sha256": "67b64663acac2db3193bd0ce23d417ad93a4d1006fa007ffc589f5c4a4b34aa4",
+  "questions_sha256": "384d0d9ea2f2158c62806de6ce9fdb6b4671cf0257805bdd5def8e9c25b6258b",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "cache_key": "900056e91c0e45bcce1e333e2eff11165389ec126dfc286552a33d9e995357e5",
+  "prompt_sha256": "c31ed36b60c8d29e01c474bb5a965f5db33d1c620d670d9fe5309840aa9954b6",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:37:13.726213+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "IQS_05",
+      "status": "scored",
+      "score": 8,
+      "confidence": "medium",
+      "rationale": "证据显示公司全球动力电池市占率39.2%且连续九年第一，2025年毛利率26.27%同比升1.83个百分点、产能利用率96.9%，具备规模与盈利优势；但未直接量化复制成本或专利壁垒，故未给10。",
+      "evidence_refs": [
+        "T2653556a62e3",
+        "Tc6efda9ff80d",
+        "T2e9da4571bb0"
+      ],
+      "claims": [
+        {
+          "text": "2025年全球动力电池使用量市占率39.2%，连续九年第一；海外市占率30.0%。",
+          "source_ids": [
+            "T2653556a62e3"
+          ]
+        },
+        {
+          "text": "2025年毛利率26.27%，同比提升1.83个百分点；产能利用率96.9%。",
+          "source_ids": [
+            "Tc6efda9ff80d",
+            "T2e9da4571bb0"
+          ]
+        }
+      ],
+      "counterevidence": "对手如BYD、LG仍在扩产，证据未量化技术、专利或客户转换成本。",
+      "sensitivity": "若全球市占率持续下滑或毛利率明显收窄，优势评分应下调。"
+    },
+    {
+      "question_id": "IQS_10",
+      "status": "insufficient_evidence",
+      "score": null,
+      "confidence": "high",
+      "rationale": "证据仅有营收、净利润、总资产等财务数据，缺少投入资本、有息负债、利息支出及WACC/资金成本口径，无法判断存量业务回报是否持续超过资金成本。",
+      "evidence_refs": [
+        "T2e9da4571bb0",
+        "T55e2313a7b7e"
+      ],
+      "claims": [
+        {
+          "text": "2025年营业收入423,701.83百万元、净利润76,786.3百万元。",
+          "source_ids": [
+            "T2e9da4571bb0"
+          ]
+        },
+        {
+          "text": "2025年资产总额97,482,754.4万元。",
+          "source_ids": [
+            "T55e2313a7b7e"
+          ]
+        }
+      ],
+      "counterevidence": "缺少投入资本回报率、资本成本及杠杆明细，无法验证回报是否超过资金成本。",
+      "sensitivity": "若披露ROIC、WACC及投入资本明细，可重新评估该题。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_59c7014662e946ff9569757c95d7f55d",
+    "http_status": 200,
+    "latency_s": 31.176,
+    "response_id": "70079b06-9067-4868-8687-25c6eed24acf",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12998,
+      "completion_tokens": 6636,
+      "total_tokens": 19634,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 6151
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12742
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0474504,
+    "final_content_sha256": "478aa6fef2d6f8cfdf06f60db5f1c03b0ae3e3ee169b6c5abe119a80f2d961a4"
+  },
+  "wall_s": 31.187
+}

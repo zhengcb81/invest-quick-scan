@@ -1,0 +1,57 @@
+{
+  "arm": "pack.cncb_h.g1.i1",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F02"
+  ],
+  "evidence_sha256": "7ac34f7a2933f91756929975cb3fb2fa933ea23c52ca90cf9fe9ecfc8312a452",
+  "questions_sha256": "478915523a4e9f49b62337aa6fbfa62d0a75bc2b10e5b16e7e72da8ac71403c1",
+  "prompt_sha256": "a5c67d168908e8bab3c4630d906205d2b7cdcd3c9317d1bfca649a84acf7ddb1",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "cf0fe268372449d99baf0d516a583b2908a4dd41a3630fe05e28725537150df6",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:23.386865+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024年中报摘要显示，2024年1-6月归属于公司权益持有人净利润为2,858百万元人民币，为合并口径，未含少数股东净利润。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_eb351a7db1884384b773add06b949445",
+    "http_status": 200,
+    "latency_s": 5.069,
+    "response_id": "2e30ceae-38c2-470b-9b39-d2435f62aa74",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 8128,
+      "completion_tokens": 976,
+      "total_tokens": 9104,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 880
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 7872
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.014438400000000002,
+    "final_content_sha256": "b4c5cdaad98eb00d549b7959b96d460e117d95f7cd3d521090eb0c4867b8a7cf"
+  },
+  "wall_s": 5.079
+}

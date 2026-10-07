@@ -1,0 +1,117 @@
+{
+  "arm": "matrix.cncb_h.mimo.brave",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "ae3addae53f205c57854ef75577064d24878b2ebe2ef0028a09eac697e3d7a73",
+  "questions_sha256": "d25f9f2d2d60ac7c69824dc0ae4dec1f444420a00fc6de3c56a157828b4d225d",
+  "prompt_sha256": "ddbd7d927312fccb21e424bb2081ab4e0570cbdd0f12667a3764792aa85ff777",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "brave",
+  "cache_key": "2172ee26ebdc945c288ac2428fb44bd1e39a1a7f33c0153cc5d4e21ff49d2978",
+  "route": "mimo",
+  "created_at": "2026-10-07T22:15:04.493244+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B7225a6d18d74"
+      ],
+      "rationale": "所给片段无2024年中期IFRS口径total revenue and other income数值；B7225a6d18d74仅为港交所文件检索页片段，无数据，无法核实。"
+    },
+    {
+      "question_id": "F02",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B7225a6d18d74"
+      ],
+      "rationale": "无任何片段给出2024年上半年归属公司权益持有人净利润；其余片段为2021、2023年度或子公司数据，期间不符，无法核实。"
+    },
+    {
+      "question_id": "F03",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "全部片段均未涉及2024年上半年经营活动产生的现金流净额，缺少任何可引用数值，无法核实。"
+    },
+    {
+      "question_id": "F04",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B1911d084d27d",
+        "B4d58f882c8b6"
+      ],
+      "rationale": "仅有2023年末集团总资产5,227.52亿元及子公司2024年6月末资产，均非2024-06-30合并口径，无法核实。"
+    },
+    {
+      "question_id": "F05",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B1911d084d27d"
+      ],
+      "rationale": "仅有2023年末归属于母公司股东净资产974.78亿元，期间为2023-12-31，无2024-06-30归母权益数据，无法核实。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "片段中未出现ROIC、WACC数值或其计算口径定义，两项及其口径均无证据支持，无法计算差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_749acc98180646c8a090c2950cc7ef9c",
+    "http_status": 200,
+    "latency_s": 14.4,
+    "response_id": "6768bd7a-535b-427a-93e5-682eb89b4067_868aff5754694d00b08e13cb3a92b65e",
+    "actual_model": "mimo-v2.6-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 1554,
+      "prompt_tokens": 3932,
+      "total_tokens": 5486,
+      "completion_tokens_details": {
+        "reasoning_tokens": 964
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.012177599999999998,
+    "final_content_sha256": "2993d7d3cd503b7b1255b6a741fff17d29d67aa2176f13cbdc548f8a75c07e5a"
+  },
+  "wall_s": 14.408
+}

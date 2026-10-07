@@ -209,3 +209,13 @@ P2-5本范围已收口：相关89 tests/139subtests、最终独立14tests通过�
 - 仅三个MiMo实验根537临时文件已清理。`runs/c06-context-2026-10-07-01`、Phase92未完成源修改及opencode.json明确保留。本实验精确提交排除这些产品文件；不要为“清工作树”删除/提交他人的改动。
 
 恢复时以progress最新commit/push记录及[实验结果](experiments/mimo-pro-results-2026-10-07.md)、[技术复核](reviews/B01/mimo-pro-technical-review-2026-10-07.md)为准。归档公共CLI支持--archive离线重算；source join用--check只读，不重跑收费矩阵/重新检索补历史片段。每个实施批次做受影响TDD和一次集中大节点审查，不为每个helper另立门。
+
+### 2026-10-07 最新接续：Phase95–96（覆盖旧暂停/实验待跑口径）
+
+Phase95 IQS正式producer已交付提交推送；QA-C06-02、SW-REPAIR-02、EVID-LAB-01用户已确认三个包开工，三个外仓归各自harness独占。总控只写IQS，接下来只读接收真实handoff/commit，再按波次2接口联合验收；不要按目录存在或旧dirty状态判交付，不代改活跃外仓。
+
+Phase96准确性优先实验已经结束，读[完整结果](experiments/accuracy-first-results-2026-10-07.md)、[实操手册](../../references/accuracy-first-operations.md)、[最小归档入口](experiments/artifacts/accuracy-first-2026-10-07/README.md)。108模型HTTP/56搜索相关HTTP/USD3.871962保守上界，实际扣费未知，1本地响应处理异常全预约USD0.03仍挂账。不开新收费矩阵；旧实验/原答案/原coverage不回写。DS增强15数值/14支持，M3/Pro15/12，说明需独立看；四答一致不当真值。三题包只在窄事实对照节省输入，逐题默认、用户顺位和大节点门仍生效。
+
+四实验根394临时文件已按hash/无进程/无link清除，未知费用不释放；old Phase92自有根和opencode.json保留。51离线测试+集中独审+skill校验+归档公开CLI移动重算通过。不要重复已结束测试/原探针收费；只有新行为/失败才做受影响检查。原生搜索最终答案、authority消费、StockWiki整改及G3/F05/TH/IN/L03仍待各自真实交付和大节点验收。
+
+ZAI官方link对应REST接口，本批同key REST429/1113为资源包不足，MCP成功；不要把REST拒绝扩散成MCP停用或普通限频自动重试。生产接线由QA owner按统一规范实施，IQS实验脚本不是第二调度器。Git实际交付见progress最新记录。

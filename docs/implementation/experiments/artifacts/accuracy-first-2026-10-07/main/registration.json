@@ -1,0 +1,118 @@
+{
+  "version": "accuracy-pilot/1",
+  "created_at": "2026-10-07T22:05:14.035938+00:00",
+  "companies": [
+    "catl",
+    "cncb_h",
+    "alphabet"
+  ],
+  "routes": {
+    "deepseek": {
+      "model": "deepseek-flash",
+      "key_env": "DEEPSEEK_API_KEY",
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "input_rate": 0.3,
+      "output_rate": 1.2,
+      "cache_rate": 0.006
+    },
+    "mimo_pro": {
+      "model": "mimo-v2.6-pro",
+      "key_env": "MIMO_API_KEY",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "input_rate": 0.435,
+      "output_rate": 0.87,
+      "cache_rate": 0.0036
+    },
+    "mimo": {
+      "model": "mimo-v2.6-flash",
+      "key_env": "MIMO_API_KEY",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "input_rate": 0.14,
+      "output_rate": 0.28,
+      "cache_rate": 0.0028
+    },
+    "minimax": {
+      "model": "MiniMax-M3",
+      "key_env": "MINIMAX_API_KEY",
+      "endpoint": "https://api.minimaxi.com/v1/chat/completions",
+      "input_rate": 0.6,
+      "output_rate": 2.4,
+      "cache_rate": 0.12
+    }
+  },
+  "policies": {
+    "deepseek": {
+      "stream": false,
+      "thinking": {
+        "type": "enabled"
+      },
+      "max_tokens": 10000,
+      "response_format": {
+        "type": "json_object"
+      }
+    },
+    "mimo_pro": {
+      "stream": false,
+      "thinking": {
+        "type": "enabled"
+      },
+      "max_completion_tokens": 10000,
+      "response_format": {
+        "type": "json_object"
+      }
+    },
+    "mimo": {
+      "stream": false,
+      "thinking": {
+        "type": "enabled"
+      },
+      "max_completion_tokens": 10000,
+      "response_format": {
+        "type": "json_object"
+      }
+    },
+    "minimax": {
+      "stream": false,
+      "thinking": {
+        "type": "adaptive"
+      },
+      "max_completion_tokens": 10000,
+      "reasoning_split": true
+    }
+  },
+  "variants": [
+    "curated",
+    "brave",
+    "tavily",
+    "zai",
+    "hybrid"
+  ],
+  "main_calls": 60,
+  "planned_repeat_calls": 6,
+  "planned_packing_calls": 24,
+  "planned_score_calls": 12,
+  "initial_search_calls": 27,
+  "conditional_search_cap": 60,
+  "model_call_cap": 120,
+  "usd_upper_cap": 25,
+  "gold_kind": "controller_checked_primary_facts_not_double_blind_human_investment_gold",
+  "native_search": false,
+  "production_adoption": false,
+  "search_coverage_audit_required_before_first_model": true,
+  "budget_authorization": "user_accuracy_first_2026-10-07; prior_overrun_permission_remains",
+  "expected_answers_excluded_from_noncontrol_model_inputs": true,
+  "selection_rule": {
+    "eligible_min_supported_facts_per_company_aggregate": 9,
+    "denominator": 15,
+    "exclude_curated_from_search_selection": true,
+    "rank": [
+      "answered_errors_ascending",
+      "supported_facts_descending",
+      "format_failures_ascending",
+      "reference_cost_ascending",
+      "wall_time_ascending",
+      "lexical_route_then_variant"
+    ],
+    "ineligible_routes": "report no qualified winner; follow-up only diagnostic best coverage, do not claim adopted"
+  }
+}

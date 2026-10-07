@@ -1,0 +1,118 @@
+{
+  "arm": "matrix.catl.mimo_pro.curated",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "191b0dbd9cd8d422040345827cfb5005e58589bba19a74e4e9005b4ffb0f6da3",
+  "questions_sha256": "c61c7907fd3b8832418d89ae1652624049e3d86dab9c11b800dd64434cf2c6f9",
+  "prompt_sha256": "d7c21eaff9e8a12f8560de9d2aa3768beb5df8dbf87e41d3d875e01fe1a668e1",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "curated",
+  "cache_key": "256931d61827c2631042cb0ea8f4d1cb14abfca1075ad143f516272a86aa34e5",
+  "route": "mimo_pro",
+  "created_at": "2026-10-07T22:15:18.933117+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 166.77,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "证据CONTROL_catl给出2024-H1合并营业收入166.77十亿元人民币，期间、范围、单位与题设一致。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 22.87,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "证据明确为归属于母公司股东的净利润22.87十亿元人民币，2024-H1合并口径，非少数股东损益。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 44.7,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "证据给出经营活动现金流净额44.7十亿元人民币，2024-H1合并口径，未混用投资或筹资现金流。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 26.5,
+      "unit": "percent",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "证据给出2024-H1综合毛利率26.5%，为合并口径，未与单季或分部毛利率混用。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 37.5,
+      "unit": "percent",
+      "period": "2024-01/2024-05",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "证据的Global EV battery share为37.5%，期间2024-01/2024-05，系全球动力电池口径，未使用中国市场或NCM份额。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所提供证据未包含ROIC或WACC数值及其计算口径，两项均缺，无法核实差额精确值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_ae6e17e02f984600984aa626798b366f",
+    "http_status": 200,
+    "latency_s": 15.245,
+    "response_id": "5c792786-f1d6-4879-8bf1-71fdbdcdfe26_08d84f8491a24692a4460fbf1f81a270",
+    "actual_model": "mimo-v2.6-pro",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 639,
+      "prompt_tokens": 1252,
+      "total_tokens": 1891,
+      "completion_tokens_details": {
+        "reasoning_tokens": 129
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.004569599999999999,
+    "final_content_sha256": "d9bc9f25e6f9fa2c07bd633f3cb16768bfc2ddd5f344b6848c9194ca3a9ed493"
+  },
+  "wall_s": 15.252
+}

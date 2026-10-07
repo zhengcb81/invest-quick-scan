@@ -1,0 +1,57 @@
+{
+  "arm": "pack.cncb_h.g1.i3",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F04"
+  ],
+  "evidence_sha256": "7ac34f7a2933f91756929975cb3fb2fa933ea23c52ca90cf9fe9ecfc8312a452",
+  "questions_sha256": "dfcd9fdb485d5c106443be0067b43548dabcef92cde1aaa00f9cbd0b5cc3beb5",
+  "prompt_sha256": "199686bc25c79f841b637d7e56d9e7b37495d86d2577c9bbdaa117e09069b489",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "3587a6a85e03f9fe0a0320bd37ae2ec159b9274f1df42b7a6a22e203a4145207",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:16.155329+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 525115,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "中期业绩公告财务摘要载明2024年6月30日合并总资产为人民币525,115百万元。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_1f0a94139fc24dbcbe6512a2f4a6cd17",
+    "http_status": 200,
+    "latency_s": 7.167,
+    "response_id": "f12e6b26-989c-4a95-98f3-75e64b5a8ee9",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 8124,
+      "completion_tokens": 1038,
+      "total_tokens": 9162,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 952
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 7740
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.014731199999999998,
+    "final_content_sha256": "6b38e6a0abc436f5dd84a5543d014145ac792a28995b91b786a8d5daa82db27f"
+  },
+  "wall_s": 7.177
+}

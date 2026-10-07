@@ -1,0 +1,118 @@
+{
+  "arm": "matrix.cncb_h.mimo_pro.curated",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "9a78c56d8005c1bacfa4142ec32c8bc1afa51eabf3ec30899e710d13ff1be845",
+  "questions_sha256": "d25f9f2d2d60ac7c69824dc0ae4dec1f444420a00fc6de3c56a157828b4d225d",
+  "prompt_sha256": "ff05a9d5499c6f7be6134a23a0af079ee86345c2bbdeedd692ea8108959c319b",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "curated",
+  "cache_key": "21755c52b44b82c364639840f73dab21d120abce7168f6c309732a4218f3dab4",
+  "route": "mimo_pro",
+  "created_at": "2026-10-07T22:16:03.935549+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据明确列示Total revenue and other income为14830百万元人民币，期间2024-H1、合并口径，与港股IFRS口径要求一致，未用A股营业收入替代。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据列示Parent net profit为2858百万元人民币，即归属公司权益持有人（不含少数股东）净利润，期间与合并口径相符。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据列示Operating cash flow为2625百万元人民币，期间2024-H1、合并口径，即经营活动现金流净额。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 525115,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据列示Total assets为525115百万元人民币，时点2024-06-30，合并口径，与题目要求一致。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 102615,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据列示Parent equity为102615百万元人民币，即归属公司权益持有人的权益（不含少数股东），时点2024-06-30。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所给证据仅含收入、利润、现金流、资产与权益，无ROIC、WACC数值及计算口径，两项均无支持，无法核实其差额。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_73ba30f4b64d49b39c505d6fbda20e2f",
+    "http_status": 200,
+    "latency_s": 15.96,
+    "response_id": "ed808451-7f02-4818-8ae0-bfd03c4695c1_dea64498d331499996ae0b9adb6e88b3",
+    "actual_model": "mimo-v2.6-pro",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 841,
+      "prompt_tokens": 1340,
+      "total_tokens": 2181,
+      "completion_tokens_details": {
+        "reasoning_tokens": 282
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.005644799999999999,
+    "final_content_sha256": "28fb679a04c21a8cdd7cd38e80cd3abf2e26e585e0880b7246107338a1ff0a53"
+  },
+  "wall_s": 15.971
+}

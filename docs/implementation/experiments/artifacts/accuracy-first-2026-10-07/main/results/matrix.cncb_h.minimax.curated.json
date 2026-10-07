@@ -1,0 +1,121 @@
+{
+  "arm": "matrix.cncb_h.minimax.curated",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "9a78c56d8005c1bacfa4142ec32c8bc1afa51eabf3ec30899e710d13ff1be845",
+  "questions_sha256": "d25f9f2d2d60ac7c69824dc0ae4dec1f444420a00fc6de3c56a157828b4d225d",
+  "prompt_sha256": "ff05a9d5499c6f7be6134a23a0af079ee86345c2bbdeedd692ea8108959c319b",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "curated",
+  "cache_key": "baea674ce7983296659cd27e40fbfa12cb56da823d43e7826642d02cf1bb4b3e",
+  "route": "minimax",
+  "created_at": "2026-10-07T22:13:29.722059+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "港交所06066中信建投2024中期报告(IFRS口径)披露2024上半年合并Total revenue and other income为14830百万元，与题目要求一致。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "中期报告披露归属公司权益持有人净利润2858百万元，2024上半年合并口径，排除少数股东，与题目要求一致。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "中期报告披露2024上半年合并经营活动现金流净额2625百万元。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 525115,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "中期报告披露2024年6月30日合并总资产525115百万元。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 102615,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "中期报告披露2024年6月30日归属公司权益持有人的权益102615百万元，未混入含少数股东的总权益。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "现有证据未提供ROIC投入资本/税后经营利润及WACC股权成本/债务成本/权重等构成项，计算口径未被证据明确支持，故unknown。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_d40b61c058824284bd22dd73b2bcee59",
+    "http_status": 200,
+    "latency_s": 9.97,
+    "response_id": "0715f70a480e49094d6b324de596782a",
+    "actual_model": "MiniMax-M3",
+    "finish_reason": "stop",
+    "usage": {
+      "total_tokens": 2722,
+      "total_characters": 0,
+      "prompt_tokens": 1321,
+      "completion_tokens": 1401,
+      "completion_tokens_details": {
+        "reasoning_tokens": 771
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 128
+      }
+    },
+    "business_error_code": 0,
+    "state": "completed",
+    "upper_usd": 0.00831,
+    "final_content_sha256": "d724232134b7885fa496fa040a280f20a616447823538a1a0862932371875fa2"
+  },
+  "wall_s": 9.983
+}

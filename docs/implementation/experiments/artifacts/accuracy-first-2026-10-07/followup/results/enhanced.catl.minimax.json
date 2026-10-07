@@ -1,0 +1,124 @@
+{
+  "arm": "enhanced.catl.minimax",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "67b64663acac2db3193bd0ce23d417ad93a4d1006fa007ffc589f5c4a4b34aa4",
+  "questions_sha256": "c61c7907fd3b8832418d89ae1652624049e3d86dab9c11b800dd64434cf2c6f9",
+  "prompt_sha256": "ce8f6511a344cd6b28175e2b29875a107d9392d6862ca48635ed894bfff93523",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "b13d5b149357615effed713e27e66dae6aaf1f3fc0f66971d83e12261575cde4",
+  "route": "minimax",
+  "created_at": "2026-10-07T22:30:29.609075+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 166.77,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db",
+        "Tbd7a87144b15"
+      ],
+      "rationale": "CATL官方2024半年报新闻稿披露合并营业收入166.77亿元人民币，等于166.77十亿元。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 22.87,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db",
+        "Tbd7a87144b15"
+      ],
+      "rationale": "CATL官方2024半年报新闻稿披露归属于上市公司股东的净利润22.87亿元人民币。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 44.7,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db",
+        "Tbd7a87144b15"
+      ],
+      "rationale": "CATL官方2024半年报新闻稿披露报告期经营活动现金流44.7亿元人民币。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 26.5,
+      "unit": "percent",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db",
+        "Tbd7a87144b15"
+      ],
+      "rationale": "CATL官方2024半年报新闻稿披露上半年综合毛利率为26.5%，同比上升4.9个百分点。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 37.5,
+      "unit": "percent",
+      "period": "2024-01/2024-05",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B9a0f64441d1f",
+        "T5a1896638335"
+      ],
+      "rationale": "官方2024半年报中文版披露2024年1-5月动力电池使用量全球市占率37.5%，引自SNE Research；未误用中国46.4%或NCM 68.0%。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未提供ROIC及WACC的口径定义或数值，无法核实ROIC减WACC的精确数值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_97f1ab37345e42bd9398a87ab6e1bf38",
+    "http_status": 200,
+    "latency_s": 32.949,
+    "response_id": "0715fb09dabad7d400f5141ac113885f",
+    "actual_model": "MiniMax-M3",
+    "finish_reason": "stop",
+    "usage": {
+      "total_tokens": 15762,
+      "total_characters": 0,
+      "prompt_tokens": 12785,
+      "completion_tokens": 2977,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      }
+    },
+    "business_error_code": 0,
+    "state": "completed",
+    "upper_usd": 0.029631599999999998,
+    "final_content_sha256": "5a8585aab65b3cecaeaf2bb7afb6393e71564661c1d6fce7c974029412840706"
+  },
+  "wall_s": 32.962
+}

@@ -1,0 +1,124 @@
+{
+  "arm": "enhanced.alphabet.minimax",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "a525db36c5ed1a4ade2ae7296421d7e00cecd4a4a9ec5107ce003e54c5c551c9",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "991a26febd2a61ccdcb9c3142872c86a0fcefd28de47761706e6a34a7ab42119",
+  "route": "minimax",
+  "created_at": "2026-10-07T22:31:19.937693+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K合并报表显示2024年合并收入为350,018百万美元（对应2023年307,394）"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K合并损益表显示2024年净利润为100,118百万美元（对应2023年73,795）"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125299,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T1c46157d2304",
+        "Tf39369c84e0b",
+        "Tca21c8a2ab3f"
+      ],
+      "rationale": "10-K现金流量表及Q4新闻稿均确认2024全年经营活动现金流为125,299百万美元"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52535,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Taa88913a733a",
+        "Tca21c8a2ab3f",
+        "T717c5b2b4023",
+        "Tf80b5c5084e9"
+      ],
+      "rationale": "Q4新闻稿现金流量表全年列示purchases of property and equipment为(52,535)百万美元，取绝对值；年报亦称CapEx 52.5 billion"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K合并损益表显示2024年稀释EPS为8.04美元/股（非基本EPS4.59）"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未提供ROIC所需投入资本口径或WACC所需股权/债务成本与权重，无法精确核实差值"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_8638bea8c2c443fda4ee4a4b94fefe1d",
+    "http_status": 200,
+    "latency_s": 28.22,
+    "response_id": "0715fb3c58e50244ee4feedd1c6fa53e",
+    "actual_model": "MiniMax-M3",
+    "finish_reason": "stop",
+    "usage": {
+      "total_tokens": 15251,
+      "total_characters": 0,
+      "prompt_tokens": 12788,
+      "completion_tokens": 2463,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 128
+      }
+    },
+    "business_error_code": 0,
+    "state": "completed",
+    "upper_usd": 0.027168,
+    "final_content_sha256": "07989d5aff7dd0f9221fd8111efe9dfa3f039ffe5af3a9695cb275b90fb4b4b1"
+  },
+  "wall_s": 28.23
+}

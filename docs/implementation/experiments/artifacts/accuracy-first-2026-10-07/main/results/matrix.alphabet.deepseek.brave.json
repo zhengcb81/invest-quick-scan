@@ -1,0 +1,110 @@
+{
+  "arm": "matrix.alphabet.deepseek.brave",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "43cac84cb816cb61945e09f2f37d252b8b20c7557309784cb27d008d649cce5f",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "8f0f326f26c215452796067d3c615eb5917db3a2caf2acde00104dae77bd2e38",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "brave",
+  "cache_key": "071e5e3d752db89272dc1ec62ce91a0e00a010a39fd7880c380d622ad0f7a090",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:14:07.906094+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段仅涉及2023年Q4/全年影响数、2024Q1项目或网站地图，未给出Alphabet 2024全年合并收入，无法核实。"
+    },
+    {
+      "question_id": "F02",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段无Alphabet 2024全年合并净利润数据，仅有2023年税务/折旧影响及2024Q1费用项目，故无法核实。"
+    },
+    {
+      "question_id": "F03",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段未包含Alphabet 2024全年经营活动现金流，无法核实该期间合并口径数值。"
+    },
+    {
+      "question_id": "F04",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段未包含Alphabet 2024全年purchases of property and equipment，无法核实绝对值或合并口径。"
+    },
+    {
+      "question_id": "F05",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段无Alphabet 2024全年稀释每股收益，仅有2023年会计估计影响每股数，故无法核实。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段未给出2024全年ROIC、WACC或可据以计算的两项口径，无法核实ROIC减WACC精确数值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_761d31e9b0754f79be2fe03f8132b77d",
+    "http_status": 200,
+    "latency_s": 4.161,
+    "response_id": "034fefea-8f7e-4386-9fa0-f785241b26b8",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 2326,
+      "completion_tokens": 848,
+      "total_tokens": 3174,
+      "prompt_tokens_details": {
+        "cached_tokens": 640
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 410
+      },
+      "prompt_cache_hit_tokens": 640,
+      "prompt_cache_miss_tokens": 1686
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0068616,
+    "final_content_sha256": "4e81b087ac1f982a348d09ee3564e53abdd17fe43a4a8343ce929bbfd5e4d438"
+  },
+  "wall_s": 4.176
+}

@@ -1,0 +1,121 @@
+{
+  "arm": "matrix.alphabet.mimo.tavily",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "8ca197833b9a71f75eee17782cdab30679f7e3a00ed0621ed35a3503c7fc01b2",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "7dd394c2eae75a96813742707d2503539291603cbaa91bea6477ed56dd792542",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "tavily",
+  "cache_key": "8d9a95b57faebe1e5e83b9406c3305b066a1e8e67d84ea464dd88bee41299b6d",
+  "route": "mimo",
+  "created_at": "2026-10-07T22:11:18.416639+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5",
+        "Tf6c6096a20c4"
+      ],
+      "rationale": "10-K合并利润表列示2024年Revenues为350,018百万美元（2023年307,394），与MD&A年度对比一致，为全年合并口径。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "MD&A年度对比表列示2024年Net income为100,118百万美元（2023年73,795），为全年合并归母净利润。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125300,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T717c5b2b4023",
+        "Tca21c8a2ab3f"
+      ],
+      "rationale": "10-K与年报均称2024全年Operating cash flow为$125.3 billion，折合125,300百万美元；原文精度为0.1十亿美元。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52500,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T717c5b2b4023",
+        "Tca21c8a2ab3f"
+      ],
+      "rationale": "10-K披露2024全年capital expenditures为$52.5 billion，与现金流表purchases of property and equipment同口径，折合52,500百万美元（绝对值）；原文精度0.1十亿美元。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "合并利润表及MD&A列示2024全年Diluted EPS为$8.04（2023年$5.80），非基本EPS（$8.13）。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所提供片段仅含收入、利润、现金流、EPS等，未给出ROIC、WACC数值或两者计算口径，无法核实其差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_890efaef0d3849f6bfc63ef7cbca71f4",
+    "http_status": 200,
+    "latency_s": 15.955,
+    "response_id": "002ad8d8-800c-4b67-841c-2f2b99bf1b87_d290679438b9422285857bafd3086870",
+    "actual_model": "mimo-v2.6-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 1658,
+      "prompt_tokens": 9886,
+      "total_tokens": 11544,
+      "completion_tokens_details": {
+        "reasoning_tokens": 990
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.019821599999999998,
+    "final_content_sha256": "0fbb94ea54d5559156ac40cef022d61b14103d0d96fe36d71f45f73f18070151"
+  },
+  "wall_s": 15.975
+}

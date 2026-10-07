@@ -1,0 +1,112 @@
+{
+  "arm": "mcp.alphabet.mimo_pro",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "29af6dbcdcf1138cf987862c4e1e2f6d20dc011b5718b0946e7d3d85815ec438",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "ceeda4db9bc4593eddb6da077436f50cd6a90c0a9b57c935299137009f02a7e4",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "mcp",
+  "cache_key": "25357a882e04377ddecb29e48a48842004418e4423638294b28934c62d7fe9b8",
+  "route": "mimo_pro",
+  "created_at": "2026-10-07T22:31:30.061564+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所给片段均未列示Alphabet 2024全年合并收入数字，无可核对的收入、期间与口径，证据缺口，不猜测。"
+    },
+    {
+      "question_id": "F02",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "无任何片段给出2024全年净利润或归属口径金额，无法核实合并/归母范围与期间，证据不足。"
+    },
+    {
+      "question_id": "F03",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Zbd764e776e18"
+      ],
+      "rationale": "Zbd764e776e18仅列“Net cash provided by operating activities 39,113”等自由现金流调节项，未标明属2024Q4还是2024全年，片段不支持全年口径，故不采用。"
+    },
+    {
+      "question_id": "F04",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Zbd764e776e18"
+      ],
+      "rationale": "Zbd764e776e18列“purchases of property and equipment (14,276)”，但片段无期间标注，无法排除为2024Q4而非全年支出，题目要求排除Q4，故不确认。"
+    },
+    {
+      "question_id": "F05",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "无片段给出2024全年稀释每股收益，亦无基本/稀释口径区分，无法核实。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "片段未提供ROIC、WACC数值或其计算口径（投入资本、资本成本定义），两项均无证据支持，无法计算差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_26edb5a2582443b9934701359196ba7f",
+    "http_status": 200,
+    "latency_s": 51.066,
+    "response_id": "f2613239-16cd-41a2-8c86-370b72ba28e4_8cdd3085266a4a6caf419bb27a74a3b3",
+    "actual_model": "mimo-v2.6-pro",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 1462,
+      "prompt_tokens": 1528,
+      "total_tokens": 2990,
+      "completion_tokens_details": {
+        "reasoning_tokens": 837
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.008851199999999998,
+    "final_content_sha256": "6fe3f327f244b8257d08f51d5347044623be32b52678ded73cd4901310ce1a63"
+  },
+  "wall_s": 51.078
+}

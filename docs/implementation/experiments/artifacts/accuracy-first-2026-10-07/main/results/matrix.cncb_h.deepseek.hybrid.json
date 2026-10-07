@@ -1,0 +1,120 @@
+{
+  "arm": "matrix.cncb_h.deepseek.hybrid",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "07ae8ffda77dca1b61cc66e03b7286efcdef290199e760742bd46525a092d8e5",
+  "questions_sha256": "d25f9f2d2d60ac7c69824dc0ae4dec1f444420a00fc6de3c56a157828b4d225d",
+  "prompt_sha256": "92f0872969af7d4e8ef3bab5bcdd3856336dd5c9388d705ea588c4b4ea499a26",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "hybrid",
+  "cache_key": "00271cdca8888a8eda037eca2726aa673dc7d3e92dfa419dc1a07d7b3e51f5b1",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:13:02.861771+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024年中期业绩公告第2节财务摘要列示，截至2024年6月30日止六个月Total revenue and other income为14,830百万元人民币，非A股营业收入。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "同期公告列示Net profit attributable to equity holders of the Company为2,858百万元人民币，已排除少数股东。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "同期公告列示Net cash flow from operating activities为2,625百万元人民币。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 525115,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "同期公告列示2024年6月30日Total assets为525,115百万元人民币。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 102615,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "同期公告列示2024年6月30日Equity attributable to equity holders of the Company为102,615百万元人民币。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未提供ROIC、WACC或其计算口径，无法核实两者精确差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_096330d1de70407498110279ad00c331",
+    "http_status": 200,
+    "latency_s": 22.843,
+    "response_id": "d402d2ad-673b-42f3-a37d-5834198c64f0",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 6737,
+      "completion_tokens": 5652,
+      "total_tokens": 12389,
+      "prompt_tokens_details": {
+        "cached_tokens": 768
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 5182
+      },
+      "prompt_cache_hit_tokens": 768,
+      "prompt_cache_miss_tokens": 5969
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.035214,
+    "final_content_sha256": "d450d80f7202a058225f19b0db74ba12937e8a435941577043e47580828e9188"
+  },
+  "wall_s": 22.853
+}

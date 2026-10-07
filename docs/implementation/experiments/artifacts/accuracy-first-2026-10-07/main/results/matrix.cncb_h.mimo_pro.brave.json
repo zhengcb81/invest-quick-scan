@@ -1,0 +1,108 @@
+{
+  "arm": "matrix.cncb_h.mimo_pro.brave",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "ae3addae53f205c57854ef75577064d24878b2ebe2ef0028a09eac697e3d7a73",
+  "questions_sha256": "d25f9f2d2d60ac7c69824dc0ae4dec1f444420a00fc6de3c56a157828b4d225d",
+  "prompt_sha256": "ddbd7d927312fccb21e424bb2081ab4e0570cbdd0f12667a3764792aa85ff777",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "brave",
+  "cache_key": "e588ecfc293787adc0d871d738c433a86cddb7454a175b77319c8901c026ea93",
+  "route": "mimo_pro",
+  "created_at": "2026-10-07T22:13:39.761307+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "无证据给出2024年上半年港股IFRS口径总收入及其他收益。B4d58f882c8b6仅为子公司中信建投资本2024-H1营业收入1.14亿元，属子业务口径，不能替代集团合并total revenue and other income。"
+    },
+    {
+      "question_id": "F02",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "无证据给出2024年上半年归属于公司权益持有人的净利润。现有片段仅有2021年归母净利润及2023年年报摘要、子公司数据，期间与范围均不符。"
+    },
+    {
+      "question_id": "F03",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所有片段均未披露2024年上半年经营活动产生的现金流量净额，无法核实。"
+    },
+    {
+      "question_id": "F04",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "无2024年6月30日合并总资产数据。B1911d084d27d为2023-12-31总资产5,227.52亿元，B913a39bf91be为2021年末452,791百万元，期间不符；B4d58f882c8b6为子公司口径，不可混用。"
+    },
+    {
+      "question_id": "F05",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "无2024年6月30日归属于公司权益持有人的权益数据。B1911d084d27d仅含2023年末归母净资产974.78亿元，期间不符；子公司净资产不可替代合并口径。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "片段未提供ROIC、WACC任一项及其计算口径，两项均无证据支持，无法核实精确差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_752a36dbff584e3f80b582c87051e850",
+    "http_status": 200,
+    "latency_s": 21.049,
+    "response_id": "aa393de2-758f-490c-8a59-e281ad7f9f8b_1d55eb38f88f46af8b3a0b37e52e9dd5",
+    "actual_model": "mimo-v2.6-pro",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 760,
+      "prompt_tokens": 3932,
+      "total_tokens": 4692,
+      "completion_tokens_details": {
+        "reasoning_tokens": 157
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0083664,
+    "final_content_sha256": "1c13077ee85caa5256ce9cffa2ba27eaa0c89c9f8a4237903468905d935df454"
+  },
+  "wall_s": 21.06
+}

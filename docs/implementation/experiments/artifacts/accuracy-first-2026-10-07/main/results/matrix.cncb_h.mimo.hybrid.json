@@ -1,0 +1,118 @@
+{
+  "arm": "matrix.cncb_h.mimo.hybrid",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "07ae8ffda77dca1b61cc66e03b7286efcdef290199e760742bd46525a092d8e5",
+  "questions_sha256": "d25f9f2d2d60ac7c69824dc0ae4dec1f444420a00fc6de3c56a157828b4d225d",
+  "prompt_sha256": "92f0872969af7d4e8ef3bab5bcdd3856336dd5c9388d705ea588c4b4ea499a26",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "hybrid",
+  "cache_key": "d4a7b56e6d86bb118b68c3b4e0f4602fcc3f7b3131d241aa2a61528ab6cbb83f",
+  "route": "mimo",
+  "created_at": "2026-10-07T22:15:41.483708+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期报告财务摘要列示1-6月Total revenue and other income为14,830百万元（IFRS口径）。注：2025中期报告比较列列示2024H1为14,257，存在重述差异，此处采用原始当期披露。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期报告列示1-6月Net profit attributable to equity holders of the Company为2,858百万元，为归母口径，与2025年报告比较列一致。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期报告列示1-6月Net cash flow from operating activities为2,625百万元，2025年中期报告比较列同样为2,625，可交叉印证。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 525115,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期报告关键会计数据列示2024年6月30日Total assets为525,115百万元，合并口径。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 102615,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期报告列示2024年6月30日Equity attributable to equity holders of the Company为102,615百万元，为归母权益而非含少数股东总权益。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所提供片段均未披露ROIC、WACC数值及其计算口径（如资本定义、税后利润、加权方式），两项指标与口径均无证据支持，无法核验其差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_098c962a19ab4dba9ada515e95664010",
+    "http_status": 200,
+    "latency_s": 16.046,
+    "response_id": "0c1d906c-8499-4a26-bb60-fe4021b90512_ba01027f3ded4e7e99ac07d4d854dad7",
+    "actual_model": "mimo-v2.6-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 1988,
+      "prompt_tokens": 8237,
+      "total_tokens": 10225,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1320
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.019426799999999998,
+    "final_content_sha256": "99bed8f9f3d86f604008db2875986fc019db3781f27ec12c1eb1846183449c17"
+  },
+  "wall_s": 16.052
+}

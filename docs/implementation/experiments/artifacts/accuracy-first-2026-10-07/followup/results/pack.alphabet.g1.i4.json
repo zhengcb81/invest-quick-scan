@@ -1,0 +1,57 @@
+{
+  "arm": "pack.alphabet.g1.i4",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F05"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "ff509f7b0f91a12746e71aae80cb7f61a9f9dbf8151ace22fc885d7614e2d6ce",
+  "prompt_sha256": "f7363ce81c8da53480afd087e9c8a752dd288c12dc8983ced7c6616590d8686e",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "11e0d7ed56863780d09edfb898155f13ecb3d8a4f3329d323146f0edf2d21926",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:09.242400+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "2024年10-K合并利润表披露全年稀释每股收益为8.04美元，与基本每股收益及Q4口径区分。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_238b85818e0b43ceb55ba01d9adbbc01",
+    "http_status": 200,
+    "latency_s": 3.803,
+    "response_id": "a113c681-5d33-444a-af73-c6cc61a29b39",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12670,
+      "completion_tokens": 661,
+      "total_tokens": 13331,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 571
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12414
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0183768,
+    "final_content_sha256": "ffa65b6a1c18a7967db145be8cef39a4809f02518becaa04a29204be05844f95"
+  },
+  "wall_s": 3.812
+}

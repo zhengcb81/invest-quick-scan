@@ -1,0 +1,58 @@
+{
+  "arm": "pack.alphabet.g1.i0",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "c7ba50dab9c072f13f7d857cbe48c118b58347daa292b40c4aac35e92b693245",
+  "prompt_sha256": "bd674786ffec70ec1b449bd3aa6465f280774038d1c8f3fc9f0e005ee5cc9133",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "89ab1bec448f6da96ae92d47cdf33754980618ba4432f46799a8cec21884c07b",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:21.230789+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5",
+        "Tf6c6096a20c4"
+      ],
+      "rationale": "2024年报合并利润表列示全年合并收入350,018百万美元，并与2023年307,394百万美元对比，口径为合并Alphabet。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_e6729888b1154c6fbcdd498c1caeb9a4",
+    "http_status": 200,
+    "latency_s": 3.033,
+    "response_id": "991ea408-6fe1-4036-8bf4-8f907b13c24a",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12669,
+      "completion_tokens": 438,
+      "total_tokens": 13107,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 334
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 12285
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0173052,
+    "final_content_sha256": "cfbb3ae8401bbf3d9f80c910dd645f923f4bf989f19aa867449f8dccb4633e16"
+  },
+  "wall_s": 3.044
+}

@@ -1,0 +1,57 @@
+{
+  "arm": "pack.catl.g1.i1",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F02"
+  ],
+  "evidence_sha256": "67b64663acac2db3193bd0ce23d417ad93a4d1006fa007ffc589f5c4a4b34aa4",
+  "questions_sha256": "b4ac3dff409d7922f7457694ada8ed1e0d8e9fe055739608d120bd205aedcc7a",
+  "prompt_sha256": "9b0148703b919df8a8400eae909c5b0692d805ad430beadd277223eb8206f52b",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "57a8b59c2b397e3175206dc8357ef817dff9aaa3e402ee2af0c40e87f3e611e7",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:24.321034+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 22.865,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B7603770baeff"
+      ],
+      "rationale": "2024年半年度报告披露报告期内归属于上市公司股东的净利润为228.65亿元，按十亿元换算为22.865，期间和合并归母口径相符。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_6ad383152535460388866848c6f32b16",
+    "http_status": 200,
+    "latency_s": 4.134,
+    "response_id": "c139185f-6e4f-4f07-9866-f9fa717cec95",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 13040,
+      "completion_tokens": 610,
+      "total_tokens": 13650,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 514
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12784
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.018576,
+    "final_content_sha256": "e92b06a128dc6de205de7b525f468145a8d537fe742d6d3fdfe03710d9e0b119"
+  },
+  "wall_s": 4.149
+}

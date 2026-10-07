@@ -1,0 +1,114 @@
+{
+  "arm": "mcp.alphabet.deepseek",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "29af6dbcdcf1138cf987862c4e1e2f6d20dc011b5718b0946e7d3d85815ec438",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "ceeda4db9bc4593eddb6da077436f50cd6a90c0a9b57c935299137009f02a7e4",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "mcp",
+  "cache_key": "a792ef0241036cdfbce953322943aaf4f4056fb835cf30bc0fd575064dab3c33",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:31:22.498992+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段无2024全年合并收入数据，无法核验。"
+    },
+    {
+      "question_id": "F02",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段无2024全年合并净利润数据，无法核验。"
+    },
+    {
+      "question_id": "F03",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Zbd764e776e18"
+      ],
+      "rationale": "片段仅出现39,113且未标明为2024全年；标题含Q4与FY，无法排除Q4口径，故不能用于全年。"
+    },
+    {
+      "question_id": "F04",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Zbd764e776e18"
+      ],
+      "rationale": "片段中14,276未标明为2024全年，可能为Q4口径；缺少全年购买物业与设备绝对值，无法核验。"
+    },
+    {
+      "question_id": "F05",
+      "status": "unknown",
+      "value": null,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段无2024全年稀释每股收益数据，无法核验。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未提供ROIC、WACC或其计算口径，无法核验两者差额精确值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_f92c347bc8dd4d85ae03d565bc23e6fa",
+    "http_status": 200,
+    "latency_s": 14.162,
+    "response_id": "addace4e-8909-4a8b-9d3e-e312c3fa05d8",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 1377,
+      "completion_tokens": 2943,
+      "total_tokens": 4320,
+      "prompt_tokens_details": {
+        "cached_tokens": 640
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2538
+      },
+      "prompt_cache_hit_tokens": 640,
+      "prompt_cache_miss_tokens": 737
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0157788,
+    "final_content_sha256": "80b66dbbdd5d61711c7847a260197c3a5ddec075abd0920627f81d1d6f9ea585"
+  },
+  "wall_s": 14.171
+}

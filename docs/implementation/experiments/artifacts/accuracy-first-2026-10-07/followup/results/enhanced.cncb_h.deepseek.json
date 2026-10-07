@@ -1,0 +1,120 @@
+{
+  "arm": "enhanced.cncb_h.deepseek",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "7ac34f7a2933f91756929975cb3fb2fa933ea23c52ca90cf9fe9ecfc8312a452",
+  "questions_sha256": "3050bc11e303feb5c09fc88c2bf4784cd090960104673e19f2b259982574e03e",
+  "prompt_sha256": "ca302fd6a9f2b27b15c28efc45664276642cbdf4d1093ed0657314a91c096c02",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "baea3e31fc166fe798c68e5e8864c7623208ca8e0db8a6786d7f677d63d7f3cb",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:30:36.361291+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024年中期业绩摘要载明2024年1-6月Total revenue and other income为14,830百万元人民币，采用2024当期原始披露口径，非2025年比较列14,257。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024年中期业绩摘要载明2024年1-6月归属公司权益持有人净利润为2,858百万元人民币，不含少数股东。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024年中期业绩摘要载明2024年1-6月经营活动现金流净额为2,625百万元人民币。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 525115,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024年中期业绩摘要载明2024年6月30日合并总资产为525,115百万元人民币。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 102615,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024年中期业绩摘要载明2024年6月30日归属公司权益持有人权益为102,615百万元人民币，不含少数股东。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供片段未披露ROIC、WACC及其计算口径，无法核实ROIC减WACC的精确数值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_853e9d54887c4efab7c51ffa216fea3e",
+    "http_status": 200,
+    "latency_s": 11.828,
+    "response_id": "5ec1f608-530e-4d5e-b967-411936d83561",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 8493,
+      "completion_tokens": 2046,
+      "total_tokens": 10539,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1543
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 8237
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.020012400000000003,
+    "final_content_sha256": "842555fd8760e276edfaa4916b150a7dc481692b76d4cd36236399c9ba2337db"
+  },
+  "wall_s": 11.839
+}

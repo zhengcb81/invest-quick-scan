@@ -1,0 +1,100 @@
+{
+  "arm": "score.cncb_h.deepseek",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "IQS_05",
+    "IQS_10"
+  ],
+  "variant": "enhanced",
+  "evidence_sha256": "7ac34f7a2933f91756929975cb3fb2fa933ea23c52ca90cf9fe9ecfc8312a452",
+  "questions_sha256": "384d0d9ea2f2158c62806de6ce9fdb6b4671cf0257805bdd5def8e9c25b6258b",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "cache_key": "fa3aa7f2ccee785dbd5bd118a05884e77f0c0b8e9a9b96f809d9ceb9807fdb44",
+  "prompt_sha256": "4219514928ff3aec2e7d47aa9721b6b83df697c1f8f4e567f8b9ac2b9d68751c",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:37:13.740433+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "IQS_05",
+      "status": "scored",
+      "score": 5,
+      "confidence": "medium",
+      "rationale": "证据显示公司在内地拥有广泛分支网络和较大投行承销规模，可视为规模优势；但无独立证据证明对手难以合理成本复制或该优势带来超额经济回报，故评为中等。",
+      "evidence_refs": [
+        "Tbd1fa99f566f",
+        "Tedf24e7c97e5"
+      ],
+      "claims": [
+        {
+          "text": "2024年报披露公司在中国内地设有45家分公司、275家证券营业部和30家期货分支机构。",
+          "source_ids": [
+            "Tbd1fa99f566f"
+          ]
+        },
+        {
+          "text": "2024年A股审计口径下，公司股权融资主承销金额为150.60亿元，债券主承销金额为16,471.59亿元。",
+          "source_ids": [
+            "Tedf24e7c97e5"
+          ]
+        }
+      ],
+      "counterevidence": "无独立证据证明分支网络或承销规模带来定价权或对手难以复制；证券公司间竞争激烈。",
+      "sensitivity": "若竞争者在核心投行或财富管理份额快速追赶，或费率和回报下降，则评分应下调。"
+    },
+    {
+      "question_id": "IQS_10",
+      "status": "insufficient_evidence",
+      "score": null,
+      "confidence": "medium",
+      "rationale": "证据提供2024/2025年上半年净利润和归属股东权益，可算简易年化ROE约5.6%-8.2%，但未提供股权资金成本或必需资本回报基准，无法判断存量业务是否持续超过资金成本。",
+      "evidence_refs": [
+        "T27085c70948b",
+        "Tf44b1ba2cc70"
+      ],
+      "claims": [
+        {
+          "text": "2025年上半年归属股东净利润45.09亿元，2025年6月末归属股东权益1,097.95亿元。",
+          "source_ids": [
+            "Tf44b1ba2cc70"
+          ]
+        },
+        {
+          "text": "2024年上半年归属股东净利润28.58亿元，2024年6月末归属股东权益1,026.15亿元。",
+          "source_ids": [
+            "T27085c70948b"
+          ]
+        }
+      ],
+      "counterevidence": "2025H1经营现金流净额450.46亿元，但现金流波动大，不能证明ROE持续超资金成本。",
+      "sensitivity": "若获得明确的股权成本或长期ROIC/ROE序列，或资金成本基准变化，可重新评估。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_28e8c67d90854b6494292f09aeeb3ae8",
+    "http_status": 200,
+    "latency_s": 41.481,
+    "response_id": "f0839f21-e0a3-4e60-a7c9-377b6cefc165",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 8176,
+      "completion_tokens": 9157,
+      "total_tokens": 17333,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 8654
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 7920
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.053764799999999995,
+    "final_content_sha256": "4102c8d929f1b8ad9f1e76e0ac5b3f2c5007bb42b2e22aa1940470d2fdaba95b"
+  },
+  "wall_s": 41.493
+}

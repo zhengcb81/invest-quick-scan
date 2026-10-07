@@ -1,0 +1,57 @@
+{
+  "arm": "pack.cncb_h.g1.i0",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01"
+  ],
+  "evidence_sha256": "7ac34f7a2933f91756929975cb3fb2fa933ea23c52ca90cf9fe9ecfc8312a452",
+  "questions_sha256": "02dba207fcb5a504c633e9dca47112310d9144bd31ae2f7f0f611a501206b8fe",
+  "prompt_sha256": "1488300a6583dd23a1445453b5f015019bd99098a3a0b5262c01198fbe24fb57",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "0eb5025e393f66f18eadee41c4da312c7270ee4153052f8141badffa0c6e6c26",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:34:58.833936+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期业绩公告财务摘要显示，单位RMB million，2024年1-6月总收益及其他收入为14,830百万元，属当期原始披露，非2025比较列追溯数。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_a88dc790cd4f4765bdd0084547d378d6",
+    "http_status": 200,
+    "latency_s": 3.46,
+    "response_id": "862ef311-2e40-4141-bf35-36e9de274351",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 8155,
+      "completion_tokens": 629,
+      "total_tokens": 8784,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 525
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 7771
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.012805200000000001,
+    "final_content_sha256": "66add43b1612c94d1dfb4efa5044e96d441bedcf5a68c6408fc35aefdb3f7fbf"
+  },
+  "wall_s": 3.468
+}

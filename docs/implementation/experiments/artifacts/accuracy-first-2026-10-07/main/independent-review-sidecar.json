@@ -1,0 +1,64 @@
+{
+  "created_at": "2026-10-07",
+  "review_type": "independent_readonly_primary_fragment_review",
+  "amendments": [
+    {
+      "company": "cncb_h",
+      "variants": [
+        "tavily",
+        "hybrid"
+      ],
+      "source_id": "Tf44b1ba2cc70",
+      "question_ids": [
+        "F02",
+        "F03"
+      ],
+      "reason": "2025 report explicitly contains 2024 H1 comparative RMB million parent profit 2858 and OCF 2625",
+      "unsupported": [
+        "F01 restated revenue 14257 vs original14830",
+        "F04/F05 compare December2024"
+      ]
+    },
+    {
+      "company": "cncb_h",
+      "variants": [
+        "tavily",
+        "hybrid"
+      ],
+      "source_id": "T9c113770f9c3",
+      "question_ids": [
+        "F02",
+        "F03"
+      ],
+      "reason": "2025 report explicitly contains 2024 H1 comparative RMB million parent profit 2858 and OCF 2625",
+      "unsupported": [
+        "F01 restated revenue 14257 vs original14830",
+        "F04/F05 compare December2024"
+      ]
+    }
+  ],
+  "narrative_issues": [
+    {
+      "arm": "matrix.cncb_h.mimo.tavily",
+      "question_id": "F01",
+      "reason": "rationale writes million HKD RMB; unit field correct but inconsistent wording"
+    }
+  ],
+  "period_missing_derivations": [
+    {
+      "arm": "alphabet hybrid",
+      "sources": [
+        "T9371c37b9648",
+        "Tfe2b2e551afc"
+      ],
+      "question_ids": [
+        "F03",
+        "F04"
+      ],
+      "reason": "quarter/year table header and units absent in snippets; true sum not sufficient support"
+    }
+  ],
+  "restatement_source": "https://www.hkexnews.hk/listedco/listconews/sehk/2025/0828/2025082802022.pdf",
+  "gold_reporting_basis": "original_2024_report_not_latest_restated",
+  "original_coverage_sha256": "8e6b1735c866e4e735e8bb7211a364a7b86bf5c4280325bb2005e919c6e39b15"
+}

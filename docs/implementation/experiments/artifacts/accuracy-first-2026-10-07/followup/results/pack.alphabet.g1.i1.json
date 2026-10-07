@@ -1,0 +1,57 @@
+{
+  "arm": "pack.alphabet.g1.i1",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F02"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "65f0da99bbd7b4aaa65ae513495c3c1c3ddf362784f800b7c86dc434e2779481",
+  "prompt_sha256": "2c6665099f25a94450e8c51664983c67c962f3684e3ca714ceef4893ef692538",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "84f2d4350d4af20ab9dcb544667af3ba3170b3a2805653bdc124e0820f22351e",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:00.808539+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "证据为Alphabet 2024年Form 10-K合并利润表，列示截至2024年12月31日全年净利润为100,118百万美元，非2024Q4数据。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_dc2ffe777c544c2290a766ba656512d3",
+    "http_status": 200,
+    "latency_s": 3.666,
+    "response_id": "96182a50-0a43-46da-b1db-20e78c0fec77",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12668,
+      "completion_tokens": 587,
+      "total_tokens": 13255,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 486
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12412
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.018019199999999996,
+    "final_content_sha256": "71eed78bc0043b8536d79d35c18d2a9c25b5616903719a12183506ccde9ea391"
+  },
+  "wall_s": 3.68
+}

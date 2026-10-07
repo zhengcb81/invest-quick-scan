@@ -1,0 +1,120 @@
+{
+  "arm": "matrix.catl.mimo_pro.hybrid",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "2e8fd2e97797ae7b9fc14c2238692adda8f2639bff3d29b12acd968373454e97",
+  "questions_sha256": "c61c7907fd3b8832418d89ae1652624049e3d86dab9c11b800dd64434cf2c6f9",
+  "prompt_sha256": "a6fa81350bdc507dd912773eacbd88c648679d5f079792ac6a661f002bf2ddf5",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "hybrid",
+  "cache_key": "292153bf17054677f497cb89f4b38e7f2fe621a9b48b16fc0c60ed73efb61730",
+  "route": "mimo_pro",
+  "created_at": "2026-10-07T22:15:29.483408+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 166.77,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tbd7a87144b15",
+        "B58308d0b63db"
+      ],
+      "rationale": "公司披露2024H1报告营业收入166.77 billion yuan，期间与合并口径相符，直接换算为166.7十亿元人民币。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 22.87,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tbd7a87144b15",
+        "B7603770baeff"
+      ],
+      "rationale": "公司稿称profit attributable to shareholders为22.87 billion yuan；半年报为归属于上市公司股东净利润228.65亿元，约合22.865十亿元，口径一致。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 44.7,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tbd7a87144b15"
+      ],
+      "rationale": "公司稿称报告期operating cash flow为44.7 billion yuan，期间为2024H1，属合并经营活动现金流。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 26.5,
+      "unit": "percent",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tbd7a87144b15"
+      ],
+      "rationale": "公司稿明确comprehensive gross profit margin in the first half为26.5%，期间为2024H1合并口径。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 37.5,
+      "unit": "percent",
+      "period": "2024-01/2024-05",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T5a1896638335"
+      ],
+      "rationale": "公司转述SNE：2024年1-5月全球动力电池使用量份额37.5%。46.4%为中国市场、68.0%为NCM口径，未采用；同片段另处26.9%表述与之矛盾，未采信。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段均未给出ROIC、WACC或其计算口径，无法核实两者差额的精确数值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_6a545b3cb9de457283f4149b09c552ac",
+    "http_status": 200,
+    "latency_s": 70.914,
+    "response_id": "e9445e68-f175-4b38-8bd2-92ec1459155c_736625bf4d2a46dea699035f1bbb515b",
+    "actual_model": "mimo-v2.6-pro",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 3209,
+      "prompt_tokens": 13810,
+      "total_tokens": 17019,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2591
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.031975199999999995,
+    "final_content_sha256": "bffc4c41b5c5f5ecb5b85bd6a3e282fb59aa73e786a27e39d9149f07c1f0d379"
+  },
+  "wall_s": 70.92
+}

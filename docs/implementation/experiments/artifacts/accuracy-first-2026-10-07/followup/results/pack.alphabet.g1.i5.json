@@ -1,0 +1,55 @@
+{
+  "arm": "pack.alphabet.g1.i5",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F06"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "6b2e80429ae0d28ae58256b5f191f89cc757d6a70bde2f43bcff3ec3f682a10c",
+  "prompt_sha256": "97140c9cf49918ceaec417347fd560f3c47437807b6a0046a65f3c4d4e286e8d",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "8db11bf555a7dfd5c7f5e058d557e576bb432bba301c805e3bf5baed7e734a82",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:12.683165+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供片段仅含2024年收入、经营利润、净利润、资产、现金流等，未披露ROIC或WACC，也未给出二者计算口径，无法核实差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_3604531057e544eebb88ee340fe2d60e",
+    "http_status": 200,
+    "latency_s": 3.392,
+    "response_id": "f7a142bb-3041-4f3c-b838-d1c743538657",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12683,
+      "completion_tokens": 438,
+      "total_tokens": 13121,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 353
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12427
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.017322,
+    "final_content_sha256": "9422496e41ce2eba2a67f83f0ccbc10716f14b5780e2e2069126a198cba020dd"
+  },
+  "wall_s": 3.401
+}

@@ -1,0 +1,58 @@
+{
+  "arm": "pack.catl.g1.i5",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F06"
+  ],
+  "evidence_sha256": "67b64663acac2db3193bd0ce23d417ad93a4d1006fa007ffc589f5c4a4b34aa4",
+  "questions_sha256": "30dd1f0303d19419c8b930cfe098f68145ea24fa93dfc0dfd440055f0f96de33",
+  "prompt_sha256": "a288488d3c4d4e322e0229e97111ef0aaadc13dbbf3cd9bd4a58096f09914e7c",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "1d47b478b4b86f421598cac1316346019318548d352b03b79a495c6da113398e",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:34:45.072221+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B7603770baeff",
+        "B58308d0b63db"
+      ],
+      "rationale": "提供的2024年半年度片段仅含收入、归母净利润、毛利率、市占率等，未披露ROIC或WACC，也未给出二者计算口径，无法核实差额。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_f507377abc7f4269acb0c35231c8a42d",
+    "http_status": 200,
+    "latency_s": 4.979,
+    "response_id": "0b79ac38-c4bc-4e1d-80e0-234de6b74630",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 13059,
+      "completion_tokens": 771,
+      "total_tokens": 13830,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 666
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12803
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0193716,
+    "final_content_sha256": "006a52224ecf91b31d7d4e266001d3882cf9883fad515088af7296793e66315f"
+  },
+  "wall_s": 4.993
+}

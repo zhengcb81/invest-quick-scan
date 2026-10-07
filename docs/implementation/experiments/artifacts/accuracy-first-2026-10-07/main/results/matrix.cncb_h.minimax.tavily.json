@@ -1,0 +1,119 @@
+{
+  "arm": "matrix.cncb_h.minimax.tavily",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "98370cce4e60adc8d8b1e480319474e5c3871f729dc0ec05b9d643566329c45b",
+  "questions_sha256": "d25f9f2d2d60ac7c69824dc0ae4dec1f444420a00fc6de3c56a157828b4d225d",
+  "prompt_sha256": "be2e8860fff1df25f00b8a668303d2e8dbf8131daf4932446e14f4433f8f14f4",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "tavily",
+  "cache_key": "fd50550791d419f5dc06ffa13ac14a97197049229aa19b76ab8ef940ac45f81e",
+  "route": "minimax",
+  "created_at": "2026-10-07T22:12:05.621461+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024年中期业绩公告(IFRS合并)直接列示Total revenue and other income=14,830(RMB million)。注:2025中报对H1 2024比较数重述为14,257,与原报存在差异,本项按原报口径取值。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期业绩公告关键会计数据列示Net profit attributable to equity holders of the Company=2,858(RMB million),不含少数股东。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期业绩公告列示Net cash flow from operating activities=2,625(RMB million)。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 525115,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期业绩公告列示截至30 June 2024 Total assets=525,115(RMB million),IFRS合并口径。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 102615,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期业绩公告列示Equity attributable to equity holders of the Company=102,615(RMB million),不包含少数股东权益。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未提供ROIC或WACC口径定义及计算所需投入资本、税后NOPAT、负债成本等数据,无法核实精确数值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_3af3fa16bc464b1285859d783b534384",
+    "http_status": 200,
+    "latency_s": 29.929,
+    "response_id": "0715f6b8091b7977d513078041308f80",
+    "actual_model": "MiniMax-M3",
+    "finish_reason": "stop",
+    "usage": {
+      "total_tokens": 6799,
+      "total_characters": 0,
+      "prompt_tokens": 4312,
+      "completion_tokens": 2487,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 128
+      }
+    },
+    "business_error_code": 0,
+    "state": "completed",
+    "upper_usd": 0.017112,
+    "final_content_sha256": "25593415b4e416c82c0ea65f19c818a67469a6df0f37ad2cb48712c75af5cc70"
+  },
+  "wall_s": 29.936
+}

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-c",
+    "import unittest; from pathlib import Path; suite=unittest.TestSuite(); loader=unittest.TestLoader(); [suite.addTests(loader.discover('tests',pattern=p)) for p in ['test_accuracy*.py','test_batching_benchmark*.py']]; result=unittest.TextTestRunner(verbosity=2).run(suite); raise SystemExit(not result.wasSuccessful())"
+  ],
+  "returncode": 0,
+  "wall_s": 3.111,
+  "http": 0,
+  "keys": 0,
+  "temporary_environment": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\accuracy-validation-2026-10-07-01\\tmp",
+  "includes_offline_fixture_http": false
+}

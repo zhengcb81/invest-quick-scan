@@ -1,6 +1,6 @@
 # 联网搜索与LLM统一使用规范
 
-规范版本：1.0.0；日期：2026-10-07。用于上市公司评分、事实采集与补扫。本文定义操作及后续adapter验收要求，**不是已部署功能清单**。接口能力/探针见[搜索接入状态](search-policy.md)；attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。
+规范版本：1.1.0；日期：2026-10-07。用于上市公司评分、事实采集与补扫。本文定义操作及后续adapter验收要求，**不是已部署功能清单**。接口能力/探针见[搜索接入状态](search-policy.md)；attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。
 
 StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检查点和费用账本；IQS只维护题面与规范；StockWiki提供名单、缺口及观察入库，不能另包请求重试。[配置参考模板](../examples/search-and-llm-policy.template.json)仅供填写需求，执行器尚不读取；`template_only=true`、`execution_enabled=false`保持不变，不是第二份生效配置或调用授权。
 
@@ -35,7 +35,7 @@ StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检
 
 外部条目统一为`source_id/title/publisher/url/published_at/retrieved_at/short_snippet`，另绑定实体、检索attempt/request、query/过滤、adapter版本、证据包hash和`question_id→source_id`映射。ID在包内唯一，引用可回查；没有发表时间留null，检索时间不能代替发表时间。
 
-URL去重后按实体、分部、相关性、来源权威和时点筛选，不照抄搜索排名。公司/交易所/监管机构原始披露优先；关键数值须有期间、币种、单位、集团/归母及指标口径的原始证据。摘要不能证明就留缺口。错公司、晚于截止日、无日期且无法确认当时可知、来源冲突的材料不能支持对应主张；第三方新闻不能声称为官方披露。
+来源按URL去重、不同有效片段按内容hash保留，再按实体、分部、相关性、来源权威和时点筛选，不照抄搜索排名。公司/交易所/监管机构原始披露优先；关键数值须有期间、币种、单位、集团/归母及指标口径的原始证据。摘要不能证明就留缺口。错公司、晚于截止日、无日期且无法确认当时可知、来源冲突的材料不能支持对应主张；第三方新闻不能声称为官方披露。
 
 只给模型该题相关短证据；固定system/题库前缀在前、公司证据和题目在后。预算预演用实际渲染输入估计token，字符数不是token数。新外部adapter沿用片段每条≤500个Unicode字符、每公司本轮累计≤30,000字符的设计边界，同时受上下文和输出预算限制；超限删减/分阶段，不放宽存储。这是接线要求，不代表现有原生工具能限制厂商返回长度。
 
@@ -127,3 +127,8 @@ max_keyword/max_uses/count不是已验证硬限额：DeepSeek实测max_uses1→3
 清理只删除本次manifest列出且路径/owner/hash仍匹配的文件；不能重置真实凭据、名单、公司目录或其他进程缓存。真实费用不随删文件回滚。直连探针不能冒充公开CLI E2E，未注入断线/迟到结果不能宣称已验收这些故障。
 
 交接至少含规范/策略/adapter/schema版本、精确route/能力快照、逻辑键/证据hash、attempt/request/搜索关联、分层状态、实际模型/UTC、次数/usage/未结费用、测试原结果及清理。后续实施归StockQA同一集成批次；本规范不启动L03、不改生效配置或冻结实验。
+
+
+## 9. 准确性实验落地
+
+按[准确性优先实操](accuracy-first-operations.md)处理约数/精确字段、原始与重述、完整表头、说明与数值矛盾及跨模型同错。三市场小样本不改变生产顺位/批量默认/500字符设计；题包仍须原模块质量门。ZAI最新同key REST429/1113、MCP成功的分接口诊断见[脱敏证据](../docs/implementation/experiments/zai-rest-vs-mcp-diagnostic-2026-10-07.json)，不能沿用早期阳性覆盖最新拒绝，也不能把REST资源包拒绝传播到MCP。

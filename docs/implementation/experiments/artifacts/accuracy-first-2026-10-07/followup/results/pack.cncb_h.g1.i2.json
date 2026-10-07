@@ -1,0 +1,58 @@
+{
+  "arm": "pack.cncb_h.g1.i2",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F03"
+  ],
+  "evidence_sha256": "7ac34f7a2933f91756929975cb3fb2fa933ea23c52ca90cf9fe9ecfc8312a452",
+  "questions_sha256": "9ce8730c4148992cee907107b1040c3cb65d50f238ccb2b7ccaeec155561ef5a",
+  "prompt_sha256": "b6a3b9734c1ec2adf700182069a18f2d194e890e3881b2e310cce4cbe1b99e1f",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "31ad56e9d8bf38a5f3e4b561b1c10297e88a3ead5b3d4f4ca274d512be4758e0",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:13.134164+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b",
+        "Tf44b1ba2cc70"
+      ],
+      "rationale": "2024中期业绩公告财务摘要显示，2024年1-6月经营活动现金流净额为2,625百万元人民币；2025中期报告比较数亦为2,625百万元，口径为集团合并。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_37fe93a292cb445fbfda92725cbf393e",
+    "http_status": 200,
+    "latency_s": 8.028,
+    "response_id": "44f7efe9-25ee-4f37-a253-3f6631e355f7",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 8119,
+      "completion_tokens": 1528,
+      "total_tokens": 9647,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1413
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 7863
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.017077199999999997,
+    "final_content_sha256": "ef2124b958b4416d44cefbfe5da72b1dc2f118e8c29aad79fcc9e4c74b3fef1e"
+  },
+  "wall_s": 8.037
+}

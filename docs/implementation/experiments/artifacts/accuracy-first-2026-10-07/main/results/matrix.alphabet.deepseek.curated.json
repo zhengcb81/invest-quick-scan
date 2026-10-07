@@ -1,0 +1,120 @@
+{
+  "arm": "matrix.alphabet.deepseek.curated",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "79549a70a3876a712b6875ee408dd9433060337760361dee2b030cfa2c26a2b6",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "5371a3b2a3aa895c61983c81cb1647f8fe1def30eff68e288362a4399792fa1f",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "curated",
+  "cache_key": "8a64f248d5ceb0150e3ec6620ef94f1cbd017ea43f049253aa84aaed05b669f1",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:11:18.413453+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "CONTROL_alphabet明确列示2024-FY合并口径Revenue为350018百万美元，与题目期间、单位和范围一致。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "CONTROL_alphabet明确列示2024-FY合并口径Net income为100118百万美元，未混用Q4。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125299,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "CONTROL_alphabet明确列示2024-FY合并口径Operating cash flow为125299百万美元。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52535,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "CONTROL_alphabet列示2024-FY合并口径Capex为52535百万美元，对应采购不动产及设备支出绝对值。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "CONTROL_alphabet明确列示2024-FY合并口径Diluted EPS为8.04美元，非基本每股收益或Q4。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "片段仅含收入、净利润、经营现金流、资本开支和稀释EPS，未提供ROIC、WACC或计算口径，无法核验该差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_2b019562d11541e19422dbef3f1e5f36",
+    "http_status": 200,
+    "latency_s": 7.079,
+    "response_id": "b44a0456-03d5-472e-9f09-c59d0276dbbb",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 1216,
+      "completion_tokens": 1354,
+      "total_tokens": 2570,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 889
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 1216
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0079584,
+    "final_content_sha256": "65097737846c1cd0ddfa1d3d6500064c64d02e51dfa8f0a3e8ad3797e4a03083"
+  },
+  "wall_s": 7.093
+}

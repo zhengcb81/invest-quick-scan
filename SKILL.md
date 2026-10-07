@@ -31,7 +31,7 @@ description: 通过开启搜索的 StockQAbyLLM，为全球上市公司编排快
 2. **检查外部工具。** 读 [StockQAbyLLM 接入](references/stockqa-integration.md)、[联网搜索与LLM统一规范](references/search-and-llm-playbook.md)及[搜索接入状态](references/search-policy.md)。区分原生搜索与外部证据context，验证实际执行证明；结果不明先对账，不盲重发。公开CLI的`--require-search`仍仅使用已接入供应商；直连探针不等于生产接通，缺证明或证据不足时留空分数。
 3. **用 LLM 分类。** 依 [路由规则](references/routing.md) 通过同一上游工具发出分类问题。检查实体、类型、行业、阶段及可确认的business_subtype，写入profile；entity_id/security_id由身份拥有者确认，不让模型自由创造。分类是评分和事实的共同入口，不重复收费做两次相同路由。
 4. **离线编排。** 使用 `scripts/question_sets.py compose`。通用框架先出题，再由类型替换不适用的会计题，加行业、阶段与有实质影响的属性题。只读 [目录](questions/catalog.json) 和命中的模块，不一次性装入全部题库。
-5. **逐题联网回答。** 导出的questions.json复用StockQA的加载/执行接口；标准模式先核实其原生score/fact解析能力，不把旧外层5分协议套到事实题。保持ID、截止日、评分锚点/事实关系与结构化约定；只保存短依据和来源，不下载报告。StockQA每次另附真实执行时间、请求/实际模型、搜索回执；正常fallback成功即停，显式模型对照另设有预算比较组。
+5. **回答并还原逐题结果。** 导出的questions.json复用StockQA的加载/执行接口；标准模式先核实其原生score/fact解析能力，不把旧外层5分协议套到事实题。默认逐题，质量门通过的同期间/口径小包可按既有策略执行，不把事实实验推广成30评分题大包。按[准确性优先实操](references/accuracy-first-operations.md)先修证据、区分约数/精确数与披露版本，再决定复问/第二模型；核引用和文字，不以一致替代核实。保持ID、截止日、锚点/事实关系；只保存短依据和来源，不下载报告。StockQA另附真实执行时间、请求/实际模型及搜索回执；正常fallback成功即停，显式对照另设有预算组。
 6. **验证与画像。** 依 [评分规则](references/scoring.md) 检查来源、日期、口径、反证和上游错误，再用 `normalize` 生成结果。先展示重大问题与未确认的关键事项，再列八个维度、逐题分数、证据和最值得追问的三件事。同时展示`recovery_watch`的状态、优势、原低分与待验证条件；即使质量分为空也不隐藏。企业质量、成长机会、当前估值和恢复观察分开，不能汇成一个买卖结论。
 
 标准模式用`standard_answers.py build`绑定manifest/题面/执行回执，不能交给旧normalize。独立来源审核仍不可省；结构通过默认为unreviewed。存入StockWiki不可变观察，由每次scan快照引用新旧observation_id，保留原时间和模型。比较前检查[全局契约](docs/system-contract.md)，不将模型换代、回溯回答或重新导入解释成公司变化。

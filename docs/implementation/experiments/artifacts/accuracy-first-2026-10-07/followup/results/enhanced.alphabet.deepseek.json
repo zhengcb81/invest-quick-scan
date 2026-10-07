@@ -1,0 +1,120 @@
+{
+  "arm": "enhanced.alphabet.deepseek",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "a525db36c5ed1a4ade2ae7296421d7e00cecd4a4a9ec5107ce003e54c5c551c9",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "9b144021f182962cde88f3d64be0b1506a46908eb2e147e63f255f8e617fd8b8",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:31:26.158855+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K合并利润表显示，2024全年合并收入为350,018百万美元。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K合并利润表显示，2024全年净利润为100,118百万美元。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125299,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T1c46157d2304"
+      ],
+      "rationale": "10-K现金流量表显示，2024全年经营活动现金流净额为125,299百万美元。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52535,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Taa88913a733a"
+      ],
+      "rationale": "Q4财报现金流量表显示，2024全年购买物业设备支出为52,535百万美元，取绝对值。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K合并利润表显示，2024全年稀释每股收益为8.04美元。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的片段未含ROIC、WACC数值或其计算口径，无法核验两者差额。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_914444a48b0a40da97f874f20aeb5082",
+    "http_status": 200,
+    "latency_s": 15.686,
+    "response_id": "63c79635-3199-41fd-8892-bbd0a43781c0",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12996,
+      "completion_tokens": 3626,
+      "total_tokens": 16622,
+      "prompt_tokens_details": {
+        "cached_tokens": 1152
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3193
+      },
+      "prompt_cache_hit_tokens": 1152,
+      "prompt_cache_miss_tokens": 11844
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.033,
+    "final_content_sha256": "157484769b4280de659ef6db4049ccc7ad026e52028efd897f58b389c09484da"
+  },
+  "wall_s": 15.695
+}

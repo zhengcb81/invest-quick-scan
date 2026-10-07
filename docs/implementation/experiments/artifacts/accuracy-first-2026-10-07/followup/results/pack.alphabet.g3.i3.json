@@ -1,0 +1,81 @@
+{
+  "arm": "pack.alphabet.g3.i3",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "18051217c7f9b12d86b81e4fd142ab0cfa0954044c2dfbcb5747097d88e928a0",
+  "prompt_sha256": "3f81c4e65bbed637e291d6c25da00c932daa86732cf9d4c92616ea6b9833f420",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "a9ef7a6de186c87261b3e9d95d261fbb0d28973b19d1b508412755936ffd3789",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:34:57.413839+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52535,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Taa88913a733a"
+      ],
+      "rationale": "采用2024全年合并现金流量表‘Purchases of property and equipment’列，绝对值为52,535百万美元；非Q4的14,276，也非2025预测。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "2024全年合并利润表披露稀释每股收益为8.04美元；对应FY2024，非基本每股收益，非Q4。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所提供片段未包含ROIC、WACC或可支持二者精确计算口径的数据，无法核验其差值，故unknown。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_15a49e45a60c4b8f8564b7dc257cfacf",
+    "http_status": 200,
+    "latency_s": 11.632,
+    "response_id": "d35ca436-4402-40ea-8350-9fe52b01b1cb",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12817,
+      "completion_tokens": 2259,
+      "total_tokens": 15076,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2007
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 12433
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0262236,
+    "final_content_sha256": "5e7f6313bdd74f71e9e6d9587435b3147185d193d6e289984ee0c364a0acb8dc"
+  },
+  "wall_s": 11.641
+}

@@ -1,0 +1,57 @@
+{
+  "arm": "pack.catl.g1.i2",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F03"
+  ],
+  "evidence_sha256": "67b64663acac2db3193bd0ce23d417ad93a4d1006fa007ffc589f5c4a4b34aa4",
+  "questions_sha256": "24ea2ae8a6367e2c3d7dbefc95081440be89cb656d868441b16a873806061614",
+  "prompt_sha256": "7d7d144be670f2e36fee1dceab8906caa8b4430fa3a7258727aa8d5f647ed693",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "21dc64c5b4ebc6bbc0bc1237bfe03974b5a6dfa950b3632da83c67c9e5878158",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:16.167969+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 44.7,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db"
+      ],
+      "rationale": "来源明确为2024年H1报告期内经营活动现金流44.7 billion yuan（447亿元），合并口径；按十亿元人民币换算为44.7。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_3a17d4747d4641b484eb3aa9b5facf2d",
+    "http_status": 200,
+    "latency_s": 4.999,
+    "response_id": "576da1ff-4204-413d-91c5-e1b0b9227010",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 13038,
+      "completion_tokens": 866,
+      "total_tokens": 13904,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 772
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12782
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.019802399999999998,
+    "final_content_sha256": "1221483b09f253026202a0a434ec0c147414118d4ce11d138c9e1eaa2858eb05"
+  },
+  "wall_s": 5.009
+}

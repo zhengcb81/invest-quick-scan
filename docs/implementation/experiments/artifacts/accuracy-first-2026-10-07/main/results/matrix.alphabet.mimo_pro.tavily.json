@@ -1,0 +1,119 @@
+{
+  "arm": "matrix.alphabet.mimo_pro.tavily",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "8ca197833b9a71f75eee17782cdab30679f7e3a00ed0621ed35a3503c7fc01b2",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "7dd394c2eae75a96813742707d2503539291603cbaa91bea6477ed56dd792542",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "tavily",
+  "cache_key": "c521d9d4b6a860d104eba984b5b463364c3295b0bf409e7ab9b4c75e774729e8",
+  "route": "mimo_pro",
+  "created_at": "2026-10-07T22:12:57.683800+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K合并利润表口径(in millions)：2024全年Consolidated revenues为350,018百万美元，非Q4数据，发行人Alphabet Inc.一致。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K中2024全年Net income为100,118百万美元(对比列2023为73,795)，为全年合并净利润，非Q4。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125300,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T717c5b2b4023"
+      ],
+      "rationale": "10-K披露2024全年Operating cash flow为125.3十亿美元，折合125,300百万美元；原文为0.1十亿精度的约数，未见全年精确百万数。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52535,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T9371c37b9648",
+        "Tfe2b2e551afc"
+      ],
+      "rationale": "Q3文件九个月purchases of property and equipment为38,259，Q4文件该季为14,276（均百万美元、合并口径），合计52,535，与年报全年52.5十亿美元一致；取绝对值。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K显示2024全年Diluted net income per share为8.04美元(基本EPS为8.13不用)，为全年合并稀释口径，非Q4。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未给出ROIC、WACC任一数值，也未定义计算口径（投入资本、税后营业利润、资本成本假设），无法核实两者之差。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_20be6fbcddcc4ff29731c5670ac03a3e",
+    "http_status": 200,
+    "latency_s": 104.137,
+    "response_id": "b33dd6bc-9c4a-4c86-b3d6-2a87ddaded1d_4ff32155aee645cb87e52ffbe8c4e37c",
+    "actual_model": "mimo-v2.6-pro",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 3623,
+      "prompt_tokens": 9886,
+      "total_tokens": 13509,
+      "completion_tokens_details": {
+        "reasoning_tokens": 2969
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.029253599999999998,
+    "final_content_sha256": "c06ac5a498cbd0c61285cb213ae29845d95093ec3f71893843755b6b589ab061"
+  },
+  "wall_s": 104.146
+}

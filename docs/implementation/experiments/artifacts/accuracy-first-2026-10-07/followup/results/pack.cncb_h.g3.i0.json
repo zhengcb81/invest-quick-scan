@@ -1,0 +1,83 @@
+{
+  "arm": "pack.cncb_h.g3.i0",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03"
+  ],
+  "evidence_sha256": "7ac34f7a2933f91756929975cb3fb2fa933ea23c52ca90cf9fe9ecfc8312a452",
+  "questions_sha256": "2c3492b552b801f33c100b79ac020620496dd4f8f1a8816caf872f83b0be107a",
+  "prompt_sha256": "79a30993ec4df753d755bc7cd050aa0dfc7d46880d7e8aef5e116aa36a30503c",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "c445d91225b6d03e7f8cb8f2dc0354917d98c5240dbb66de977d404905a425ba",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:09.137520+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期业绩公告Key Accounting Data列示2024年1-6月Total revenue and other income为14,830百万元人民币；未采用2025比较列重述数。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期业绩公告列示Net profit attributable to equity holders of the Company为2,858百万元人民币，期间2024年1-6月。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b"
+      ],
+      "rationale": "2024中期业绩公告列示Net cash flow from operating activities为2,625百万元人民币，期间2024年1-6月。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_20f9e5895c3f4e14b89c5990a3928830",
+    "http_status": 200,
+    "latency_s": 9.715,
+    "response_id": "f5a7edd2-3bc5-4d98-b012-9cabe37457e6",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 8280,
+      "completion_tokens": 2290,
+      "total_tokens": 10570,
+      "prompt_tokens_details": {
+        "cached_tokens": 512
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2022
+      },
+      "prompt_cache_hit_tokens": 512,
+      "prompt_cache_miss_tokens": 7768
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.020928,
+    "final_content_sha256": "00d9aacd8c086f2b33896ce7c435a16bb8885ec809fe0a87c9d502b40aa628d9"
+  },
+  "wall_s": 9.735
+}

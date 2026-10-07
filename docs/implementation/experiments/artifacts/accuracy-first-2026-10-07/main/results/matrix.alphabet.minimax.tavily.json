@@ -1,0 +1,122 @@
+{
+  "arm": "matrix.alphabet.minimax.tavily",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "8ca197833b9a71f75eee17782cdab30679f7e3a00ed0621ed35a3503c7fc01b2",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "7dd394c2eae75a96813742707d2503539291603cbaa91bea6477ed56dd792542",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "tavily",
+  "cache_key": "43fad3340b29ba5f2df216b0ee02ee146363a1e1023b287f9790569acfab4cbe",
+  "route": "minimax",
+  "created_at": "2026-10-07T22:14:56.992121+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5",
+        "Tf6c6096a20c4"
+      ],
+      "rationale": "10-K Consolidated Statements of Income shows consolidated revenues of $350,018M for year ended Dec 31, 2024."
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K Consolidated Statements of Income shows net income of $100,118M for year ended Dec 31, 2024."
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125300,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T717c5b2b4023",
+        "Tca21c8a2ab3f"
+      ],
+      "rationale": "10-K MD&A states operating cash flow was $125.3 billion for year ended Dec 31, 2024; rounded to $125,300M."
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52500,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T717c5b2b4023",
+        "Tca21c8a2ab3f"
+      ],
+      "rationale": "10-K MD&A states capital expenditures were $52.5 billion for 2024 FY; absolute value equals $52,500M."
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K reports diluted EPS of $8.04 for year ended Dec 31, 2024, distinct from basic EPS of $8.13."
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "Evidence does not include ROIC calculation inputs (e.g., invested capital, NOPAT) or WACC components; precise spread cannot be verified."
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_775d243c418c4865893f49a5589793fe",
+    "http_status": 200,
+    "latency_s": 17.851,
+    "response_id": "0715f76274a58e659758b5da6c2d395e",
+    "actual_model": "MiniMax-M3",
+    "finish_reason": "stop",
+    "usage": {
+      "total_tokens": 10797,
+      "total_characters": 0,
+      "prompt_tokens": 8294,
+      "completion_tokens": 2503,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1903
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 128
+      }
+    },
+    "business_error_code": 0,
+    "state": "completed",
+    "upper_usd": 0.021967199999999996,
+    "final_content_sha256": "14442a39072b8f7d1cfb4b52354ee4b1da04a1def4cfe13679e92cbc1b6fc93b"
+  },
+  "wall_s": 17.861
+}

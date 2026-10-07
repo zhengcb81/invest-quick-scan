@@ -1,0 +1,124 @@
+{
+  "arm": "repeat.cncb_h.minimax",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "7ac34f7a2933f91756929975cb3fb2fa933ea23c52ca90cf9fe9ecfc8312a452",
+  "questions_sha256": "3050bc11e303feb5c09fc88c2bf4784cd090960104673e19f2b259982574e03e",
+  "prompt_sha256": "ca302fd6a9f2b27b15c28efc45664276642cbdf4d1093ed0657314a91c096c02",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "fec4684e1e14fdc41205ff3656ad908e7cd4bf569037e8193d2ffb5b37c422f6",
+  "route": "minimax",
+  "created_at": "2026-10-07T22:33:34.580276+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b",
+        "T0c057d3b7633"
+      ],
+      "rationale": "2024年中期业绩公告(2024/08/29)原始披露Jan-Jun 2024 Total revenue and other income为14,830百万元。未使用2025比较列追溯重述值14,257。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b",
+        "T0c057d3b7633"
+      ],
+      "rationale": "2024中期业绩公告披露归属于公司权益持有人的净利润2,858百万元，已剔除少数股东损益。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b",
+        "T0c057d3b7633"
+      ],
+      "rationale": "2024中期业绩公告披露经营活动现金流量净额2,625百万元（合并口径）。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 525115,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b",
+        "T0c057d3b7633"
+      ],
+      "rationale": "2024中期业绩公告披露2024年6月30日合并总资产525,115百万元（IFRS/港股口径）。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 102615,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T27085c70948b",
+        "T0c057d3b7633"
+      ],
+      "rationale": "2024中期业绩公告披露归属于公司权益持有人的权益102,615百万元，已剔除少数股东权益。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供证据中未给出ROIC或WACC及其口径定义，无法计算精确差值，按unknown处理。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_5907552ddbfd4558aa484e1541c3ddb4",
+    "http_status": 200,
+    "latency_s": 12.547,
+    "response_id": "0715fbc2ee79cc8846485e2bb1b86eec",
+    "actual_model": "MiniMax-M3",
+    "finish_reason": "stop",
+    "usage": {
+      "total_tokens": 9690,
+      "total_characters": 0,
+      "prompt_tokens": 8355,
+      "completion_tokens": 1335,
+      "completion_tokens_details": {
+        "reasoning_tokens": 822
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 8354
+      }
+    },
+    "business_error_code": 0,
+    "state": "completed",
+    "upper_usd": 0.016434,
+    "final_content_sha256": "711b2152344a49de357991626c7d6feb7a19a3e313726e2166bb0fb239dc7566"
+  },
+  "wall_s": 12.558
+}

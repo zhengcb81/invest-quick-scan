@@ -1,0 +1,84 @@
+{
+  "arm": "pack.catl.g3.i0",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03"
+  ],
+  "evidence_sha256": "67b64663acac2db3193bd0ce23d417ad93a4d1006fa007ffc589f5c4a4b34aa4",
+  "questions_sha256": "87f91ced42c86444ebae0b0218467e793ad741d4c2b93d58d2eeb88a5b626a1b",
+  "prompt_sha256": "a36d029f35d29fc71e0fd6ec5d3912679e434af16d13e208d5501b0c91d310a3",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "39f6b120d6c2ab9d307d5803c522b286f0585ba920b323491c38d9615413acd4",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:34:45.086611+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 166.77,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db"
+      ],
+      "rationale": "CATL官网2024半年报新闻披露H1合并口径收入166.77 billion yuan，按十亿元人民币单位即为166.77。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 22.87,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db",
+        "B7603770baeff"
+      ],
+      "rationale": "官网新闻披露H1归母净利润22.87 billion yuan；半年报PDF披露228.65亿元，约合22.865十亿元，新闻取22.87。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 44.7,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db"
+      ],
+      "rationale": "CATL官网2024半年报新闻披露报告期经营活动现金流44.7 billion yuan，按十亿元人民币单位即为44.7。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_c3436eccf4f44aba80ef355f43b400c7",
+    "http_status": 200,
+    "latency_s": 15.649,
+    "response_id": "2ed91c75-765a-40f8-ba58-3ea935f38fb3",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 13152,
+      "completion_tokens": 3349,
+      "total_tokens": 16501,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 3076
+      },
+      "prompt_cache_hit_tokens": 384,
+      "prompt_cache_miss_tokens": 12768
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0318576,
+    "final_content_sha256": "0ae91e25f4c6ed7122ae7c08e468f05634d482c1d99993d9908032755dae38b8"
+  },
+  "wall_s": 15.668
+}

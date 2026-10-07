@@ -1,0 +1,121 @@
+{
+  "arm": "enhanced_more.alphabet.mimo",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "a525db36c5ed1a4ade2ae7296421d7e00cecd4a4a9ec5107ce003e54c5c551c9",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "32217b409c28d5c372a4452bfd120d6005e3dab408c519003b640ec8642fd40d",
+  "route": "mimo",
+  "created_at": "2026-10-07T22:38:58.691706+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5",
+        "Tf6c6096a20c4"
+      ],
+      "rationale": "10-K合并利润表及分部披露均列示2024全年合并收入350,018百万美元，与2023年307,394对比增14%。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K披露2024全年Net income 100,118百万美元，2023年为73,795，属合并口径全年数据。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125299,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T1c46157d2304",
+        "Tf39369c84e0b"
+      ],
+      "rationale": "10-K现金流摘要及业绩公告均列2024全年Net cash provided by operating activities 125,299百万美元。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52535,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Taa88913a733a",
+        "Tf80b5c5084e9"
+      ],
+      "rationale": "业绩公告现金流量表列2024全年Purchases of property and equipment (52,535)百万美元，10-K亦称全年capex 52.5 billion，取绝对值。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Tb38462c59ee5"
+      ],
+      "rationale": "10-K显示2024全年Diluted EPS为8.04美元（基本为5.84），为合并全年口径。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所有片段均未提供ROIC、WACC数值或其计算口径，两项及口径均无证据支持，无法核实差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_ecf42ddd071743c483f807782811c270",
+    "http_status": 200,
+    "latency_s": 8.5,
+    "response_id": "c1175f68-c043-4b0c-b22f-15a3186bd3a9_a1d3f8b2bc2a4a68abaf7d9e9f4699a5",
+    "actual_model": "mimo-v2.6-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 862,
+      "prompt_tokens": 15278,
+      "total_tokens": 16140,
+      "completion_tokens_details": {
+        "reasoning_tokens": 231
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.022471199999999997,
+    "final_content_sha256": "9878a7de4f766bb43e4433191778fe027f80bf6a83fbf83e5d8fab60e5f8b886"
+  },
+  "wall_s": 8.51
+}

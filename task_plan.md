@@ -407,13 +407,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前状态（2026-10-07晚间）**：三个[外包大包](docs/implementation/parallel-lanes/packages/2026-10-07-wave2/README.md)已由用户确认开工；总控独占IQS并只读外仓。Phase95正在收口IQS authority上游，Phase92完整生产链/StockWiki六整改/G3/F05仍开放。Phase93收费实验已结束并推送，186模型/24搜索、0未知、上界USD2.877381；326来源复核不是人类gold，不据结构有效改生产默认或启动L03。
+**当前状态（2026-10-07晚间）**：三个[外包大包](docs/implementation/parallel-lanes/packages/2026-10-07-wave2/README.md)已由用户确认开工；总控独占IQS并只读外仓。Phase95上游已提交推送，Phase96准确性实验已收口；Phase92完整生产链/StockWiki六整改/G3/F05仍开放。Phase93收费实验已结束并推送，186模型/24搜索、0未知、上界USD2.877381；326来源复核不是人类gold，不据结构有效改生产默认或启动L03。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**下一步**：只读核三包真实handoff/commit是否交到；有新交付再按卡统一验收，QA/SW收齐后集中做双公开CLI→ACK→恢复→查询/UI联调，Lab先核只读归档重放与非执行提案。IQS上游已提交推送a23bec0，总控不抢写三个源仓、不自动派发其他任务；TH/IN/G3/F05/L03暂缓，不刷新退役回执或重跑已结束实验。
+**单一下一步**：只读接收三个已开工外包的真实commit/handoff，按波次2接口接续Phase92联合验收；没有真实交付则不代改源仓。Phase96已完成有界准确性实验及[实操手册](references/accuracy-first-operations.md)，收费停止；原逐题/用户顺位不自动改。TH/IN/G3/F05/L03仍暂缓，不刷新退役回执，不重跑已结束的收费矩阵。
 
 **当前执行（Phase95）**：IQS上游40精确文件已正式提交并推送`a23bec03ec459fa036a8800acc1f43b1662b22b8`；11真实子进程CLI、35回归/24子测试及集中独审通过，本轮两根28文件已清。用户已确认三个外包开工，总控只写IQS；下一动作收实际交付，不接管源仓。整Phase92/G3/F05开放，波次2初始workers_dispatched=false为历史快照。
 
@@ -1378,3 +1378,16 @@ Status: complete_for_local_producer_delivery; committed_and_pushed; external_lan
 - [x] 一次相关回归和集中独立复核无本范围阻断，给源码/合成输入/工件hash和准确命令；明确不含QA消费端/StockWiki owner golden。原子发布不变；Python audit不证明任意读/父harness全树隔离，identity/model-policy版本仍由接收方独立核。
 - [x] 本轮两根28文件manifest、SHA、无link、严格CIM argv扫描+已知子进程终态核验并清理；旧Phase92根/共享TEMP/外仓保留。原test-results cleanup_pending保留，另附实际receipt闭环。
 - [x] 精确40文件提交`a23bec03ec459fa036a8800acc1f43b1662b22b8`并正常推送origin/master；33源码/证据与staged blob逐字节相同，仅原opencode.json未跟踪保留。波次2冻结包/旧Phase92根/外仓不动，整Q10/G3/F05继续开放；同SHA上游可供已开工QA读取。
+
+
+## Phase96：准确性优先的LLM与搜索组合实测
+Status: complete_for_bounded_experiment_and_operations_scope; git_delivery_pending
+- [x] 首次模型请求前冻结三市场既有样本、官方事实参照、期间/单位/主体、问题、生成参数及终止/补问规则。
+- [x] 用现有StockQA冻结transport及IQS实验账本，比较四个开启思考的模型、Brave/Tavily/Z.ai、互补上下文和人工核验短事实卡。
+- [x] 分别测量事实正确、引用支持、答题覆盖、正确拒答、结构、评分证据不足误给分；不将多模型一致当真值，不将评分判断当精确事实gold。
+- [x] 复问/换模型与逐题/小包做有界对照；只对明确缺口补证据，不盲重试未知发送。
+- [x] 形成实操手册和配置参考（不自动启生产），一次集中受影响回归/独审，归档最小证据、清理本轮自有环境、提交推送。
+- 三外包源仓只读；本实验不修改其交接/工具源，不调用生产库、不下载保存财报或网页正文。实验短片段仅自有临时root，最终保留结构事实参照/URL/hash及逐项判定。
+
+- 终态：108模型HTTP/56搜索相关HTTP（50query发送含2拒绝+6协议）、USD3.871962保守上界，1本地处理未知保留USD0.03全预约且不重发。三司15事实不是评分gold；DS增强15数值/14支持，M3/Pro15/12，Flash10/8；M3正确数值旁仍有十倍单位/年份错误。三题包15/12与逐题相同，输入减少66.3%、低峰参考token费减少47.9%、请求耗时之和减少16.6%，不等于30判断题通过。
+- 本批51离线测试GREEN/2.448s、集中独审已完成、skill validator和47链接通过；原输入freeze再次匹配，最小归档公开CLI移动后--check通过。四自有根394文件按manifest/hash、无link、严格CIM0先dry-run再Apply清除，旧Phase92/共享TEMP/外仓/opencode.json保留。unknown历史预算不释放。结果/手册已落档，Git实际回执待追加。

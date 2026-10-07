@@ -1,0 +1,122 @@
+{
+  "arm": "matrix.catl.mimo.hybrid",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "2e8fd2e97797ae7b9fc14c2238692adda8f2639bff3d29b12acd968373454e97",
+  "questions_sha256": "c61c7907fd3b8832418d89ae1652624049e3d86dab9c11b800dd64434cf2c6f9",
+  "prompt_sha256": "a6fa81350bdc507dd912773eacbd88c648679d5f079792ac6a661f002bf2ddf5",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "hybrid",
+  "cache_key": "21ce425d7de5c07ee249ba8f87fe9544241aa5103ae8c10743bd2a85c7fba32b",
+  "route": "mimo",
+  "created_at": "2026-10-07T22:12:42.376725+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 166.77,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db",
+        "Tbd7a87144b15"
+      ],
+      "rationale": "公司英文新闻稿转述2024年半年报：上半年营收1667.7亿元人民币，折合166.77十亿元，合并口径、人民币。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 22.87,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db",
+        "B7603770baeff"
+      ],
+      "rationale": "英文稿称归母净利润228.7亿元，中文半年报称归属上市公司股东净利润228.65亿元，一致约22.87十亿元。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 44.7,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db",
+        "Tbd7a87144b15"
+      ],
+      "rationale": "公司英文新闻稿明确报告期内经营现金流447亿元人民币，即44.7十亿元，上半年合并口径。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 26.5,
+      "unit": "percent",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "B58308d0b63db",
+        "Tbd7a87144b15"
+      ],
+      "rationale": "公司英文稿称上半年综合毛利率26.5%，同比升4.9个百分点，为合并口径。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 37.5,
+      "unit": "percent",
+      "period": "2024-01/2024-05",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T5a1896638335"
+      ],
+      "rationale": "同一稿明确转述SNE Research：2024年1-5月全球动力电池使用量份额37.5%；46.4%为国内、68.0%为NCM份额，不适用。片段中26.9%表述与2023年连霸口径矛盾，未采用。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所提供片段未披露ROIC、WACC或其计算口径，两项数值与口径均无证据支持，无法核验差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_3dcd9673a96c4a3f907d52326dd152d1",
+    "http_status": 200,
+    "latency_s": 15.091,
+    "response_id": "0f93c66d-a86d-48fc-b235-c3a9acd653fb_2308afad1e554a5e96ccd8523836fe67",
+    "actual_model": "mimo-v2.6-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 1658,
+      "prompt_tokens": 13810,
+      "total_tokens": 15468,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1015
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0245304,
+    "final_content_sha256": "0dbecb993d309363e584adacdf09656d3f5c7b62e0ccd2f77698d9f71a1f5a31"
+  },
+  "wall_s": 15.099
+}

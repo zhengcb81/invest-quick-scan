@@ -1,0 +1,118 @@
+{
+  "arm": "matrix.alphabet.mimo_pro.curated",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "79549a70a3876a712b6875ee408dd9433060337760361dee2b030cfa2c26a2b6",
+  "questions_sha256": "2c78a520c87527b89337f038999e03805d07adf4a730e7f876e61ff85649cd74",
+  "prompt_sha256": "5371a3b2a3aa895c61983c81cb1647f8fe1def30eff68e288362a4399792fa1f",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "curated",
+  "cache_key": "755bd8435a0cabc58326c899aab714ef0cba0da4c454826963d720aa8c830563",
+  "route": "mimo_pro",
+  "created_at": "2026-10-07T22:14:00.886310+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 350018,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "证据CONTROL_alphabet的Revenue条目为2024-FY合并口径350018百万美元，期间、单位与指标均匹配，非Q4数据。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 100118,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "证据Net income条目为2024-FY合并口径100118百万美元，与题目合并净利润的期间、单位、范围一致，非Q4数据。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125299,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "证据Operating cash flow条目为2024-FY合并口径125299百万美元，指标为经营活动现金流，期间与单位匹配。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52535,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "证据Capex条目为2024-FY合并口径52535百万美元，对应purchases of property and equipment支出绝对值，非2025预测或Q4。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 8.04,
+      "unit": "USD_per_share",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_alphabet"
+      ],
+      "rationale": "证据Diluted EPS条目为2024-FY合并口径8.04美元/股，为稀释每股收益全年数，非基本每股收益或Q4。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "所给片段仅含收入、净利润、经营现金流、资本开支与每股收益，无ROIC、WACC数值及其计算口径证据，无法核实差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_8c06fa3e4b22444a87f9a29896c98d74",
+    "http_status": 200,
+    "latency_s": 18.615,
+    "response_id": "b8acb426-f154-4508-83f6-a216fa761927_c6aaae86a4a2457284dc2127b4f9e91c",
+    "actual_model": "mimo-v2.6-pro",
+    "finish_reason": "stop",
+    "usage": {
+      "completion_tokens": 836,
+      "prompt_tokens": 1293,
+      "total_tokens": 2129,
+      "completion_tokens_details": {
+        "reasoning_tokens": 292
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.0055644,
+    "final_content_sha256": "bba451c308f4a534360aaee6986e9ffa274b747385989aeb99364f0ed0fbe9c0"
+  },
+  "wall_s": 18.623
+}

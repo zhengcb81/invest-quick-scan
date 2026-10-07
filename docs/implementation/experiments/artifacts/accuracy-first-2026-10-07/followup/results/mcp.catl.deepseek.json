@@ -1,0 +1,112 @@
+{
+  "arm": "mcp.catl.deepseek",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "08612149ed9886d10d1e6cc9061e80ced0f80ea747319b9a71a82af96143f525",
+  "questions_sha256": "c61c7907fd3b8832418d89ae1652624049e3d86dab9c11b800dd64434cf2c6f9",
+  "prompt_sha256": "b14bb9da3c4d320d573880ecb5356e79112f0c88fddf6066c426b3560231cf7b",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "mcp",
+  "cache_key": "94fd7fa9220211813a2840797fde3956f21a44424bc0451ec132d16bcf753d74",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:31:21.726303+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的证据片段未包含2024年上半年合并营业收入数据，无法核验。"
+    },
+    {
+      "question_id": "F02",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的证据片段未包含2024年上半年归属于母公司股东的净利润数据，无法核验。"
+    },
+    {
+      "question_id": "F03",
+      "status": "unknown",
+      "value": null,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "提供的证据片段未包含2024年上半年经营活动现金流数据，无法核验。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 26.5,
+      "unit": "percent",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Z514397b065cf"
+      ],
+      "rationale": "公司新闻稿称2024年上半年综合毛利率为26.5%，同比升4.9个百分点，与题目指标、期间和单位一致；按公司整体合并口径采用。"
+    },
+    {
+      "question_id": "F05",
+      "status": "unknown",
+      "value": null,
+      "unit": "percent",
+      "period": "2024-01/2024-05",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未包含SNE Research口径的2024年1-5月全球动力电池使用量市场份额，不可用其他市场或产品口径替代。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未提供ROIC、WACC及其计算口径，无法核验两者差值的精确数值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_8fd3398786604561a1c39262ac6ad0f9",
+    "http_status": 200,
+    "latency_s": 8.303,
+    "response_id": "e466c065-3f7f-4878-996a-656ce1c82807",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 1414,
+      "completion_tokens": 1759,
+      "total_tokens": 3173,
+      "prompt_tokens_details": {
+        "cached_tokens": 640
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1344
+      },
+      "prompt_cache_hit_tokens": 640,
+      "prompt_cache_miss_tokens": 774
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.010139999999999998,
+    "final_content_sha256": "054b5d63998cf2e7c8a38824f9e22564f5ed01431f93019c8aaba0d5c6bfb4ee"
+  },
+  "wall_s": 8.309
+}

@@ -1,0 +1,120 @@
+{
+  "arm": "matrix.cncb_h.deepseek.curated",
+  "company": "cncb_h",
+  "entity_id": "ENT_1af6804e-40c1-4c35-b190-ea691dba2c85",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "9a78c56d8005c1bacfa4142ec32c8bc1afa51eabf3ec30899e710d13ff1be845",
+  "questions_sha256": "d25f9f2d2d60ac7c69824dc0ae4dec1f444420a00fc6de3c56a157828b4d225d",
+  "prompt_sha256": "ff05a9d5499c6f7be6134a23a0af079ee86345c2bbdeedd692ea8108959c319b",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "curated",
+  "cache_key": "3a966e7570955936529217ee96a82ef2e7c2b3584bef4d1d1c777802b0bf6533",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:15:59.736706+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 14830,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据标题为06066 HKEX 2024中期报告，指标Total revenue and other income，2024-H1合并口径，14830百万人民币，非A股营业收入。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 2858,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据指标Parent net profit为归母口径，2024-H1合并，2858百万人民币，未含少数股东。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 2625,
+      "unit": "CNY_million",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据指标Operating cash flow，2024-H1合并口径，2625百万人民币。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 525115,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据指标Total assets，2024-06-30合并口径，525115百万人民币。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 102615,
+      "unit": "CNY_million",
+      "period": "2024-06-30",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_cncb_h"
+      ],
+      "rationale": "证据指标Parent equity为归母口径，2024-06-30合并，102615百万人民币，未含少数股东。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [],
+      "rationale": "证据未提供ROIC、WACC及其计算口径，无法核实精确差值。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_babb8c00e5d4410ba925f7ca18ae3391",
+    "http_status": 200,
+    "latency_s": 7.53,
+    "response_id": "edae7330-2eba-41ad-9c67-6d4837a098ea",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 1250,
+      "completion_tokens": 1682,
+      "total_tokens": 2932,
+      "prompt_tokens_details": {
+        "cached_tokens": 768
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1226
+      },
+      "prompt_cache_hit_tokens": 768,
+      "prompt_cache_miss_tokens": 482
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.009573599999999998,
+    "final_content_sha256": "5d641d82a636285b9b65d2d2071bd9b8e345de1d2d37fbfd82d647aee623b146"
+  },
+  "wall_s": 7.537
+}

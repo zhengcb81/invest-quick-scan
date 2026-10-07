@@ -1,0 +1,121 @@
+{
+  "arm": "matrix.catl.minimax.curated",
+  "company": "catl",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "question_ids": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06"
+  ],
+  "evidence_sha256": "191b0dbd9cd8d422040345827cfb5005e58589bba19a74e4e9005b4ffb0f6da3",
+  "questions_sha256": "c61c7907fd3b8832418d89ae1652624049e3d86dab9c11b800dd64434cf2c6f9",
+  "prompt_sha256": "d7c21eaff9e8a12f8560de9d2aa3768beb5df8dbf87e41d3d875e01fe1a668e1",
+  "run_fingerprint": "9213588b33b2c1432fc8388223a6146cc537db9def43b49604c67e7fc3bd7957",
+  "variant": "curated",
+  "cache_key": "701b841b4d28badcc4fd7b7c2dd38b688fe17aa305b998eb4ea3681210b2eefe",
+  "route": "minimax",
+  "created_at": "2026-10-07T22:15:57.585401+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F01",
+      "status": "answered",
+      "value": 166.77,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "CONTROL_catl片段明确列出合并口径Revenue=166.77 CNY_billion，期间2024-H1，与问题一致。"
+    },
+    {
+      "question_id": "F02",
+      "status": "answered",
+      "value": 22.87,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "CONTROL_catl片段列Parent net profit=22.87 CNY_billion，2024-H1合并口径，与问题一致。"
+    },
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 44.7,
+      "unit": "CNY_billion",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "CONTROL_catl片段列Operating cash flow=44.7 CNY_billion，2024-H1合并口径，与问题一致。"
+    },
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 26.5,
+      "unit": "percent",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "CONTROL_catl片段列Gross margin=26.5%，2024-H1合并口径，与问题一致。"
+    },
+    {
+      "question_id": "F05",
+      "status": "answered",
+      "value": 37.5,
+      "unit": "percent",
+      "period": "2024-01/2024-05",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "CONTROL_catl片段列Global EV battery share=37.5%，期间2024-01/2024-05，为全球动力电池使用量份额，非中国/NCM口径。"
+    },
+    {
+      "question_id": "F06",
+      "status": "unknown",
+      "value": null,
+      "unit": "percentage_points",
+      "period": "2024-H1",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "CONTROL_catl"
+      ],
+      "rationale": "证据中未提供ROIC、WACC或两者差值口径，无法核算，标记unknown。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_d3e245b88d0f4d4a8aaf391ba442260d",
+    "http_status": 200,
+    "latency_s": 6.322,
+    "response_id": "0715f79e7410dabc4d5350c88810b9ad",
+    "actual_model": "MiniMax-M3",
+    "finish_reason": "stop",
+    "usage": {
+      "total_tokens": 2069,
+      "total_characters": 0,
+      "prompt_tokens": 1251,
+      "completion_tokens": 818,
+      "completion_tokens_details": {
+        "reasoning_tokens": 270
+      },
+      "prompt_tokens_details": {
+        "cached_tokens": 128
+      }
+    },
+    "business_error_code": 0,
+    "state": "completed",
+    "upper_usd": 0.0054275999999999994,
+    "final_content_sha256": "4af3110fc93f4950c1ee29f2fb3752a9ce203cbf982f40f20853b3c919ecd59d"
+  },
+  "wall_s": 6.329
+}

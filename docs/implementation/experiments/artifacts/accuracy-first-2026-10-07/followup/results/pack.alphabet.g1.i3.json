@@ -1,0 +1,57 @@
+{
+  "arm": "pack.alphabet.g1.i3",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F04"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "f1359c2df1f46c3d9770945160f6d75596c70b36eb7101193e6080bd63cb1bc6",
+  "prompt_sha256": "e7f31dcb4263fb7a6f7488b8ca0fee9836aa51163f2c6a6f043ec9a0cec2bd92",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "31c90e4fb6d1800aedff8a76a92ae681fde94f73e583937f67a6aff9290b4083",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:34:50.131600+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F04",
+      "status": "answered",
+      "value": 52535,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "Taa88913a733a"
+      ],
+      "rationale": "2024年Q4业绩公告所附现金流量表列示全年Purchases of property and equipment为$(52,535) million，取绝对值52,535，合并口径。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_45b0f636f6964ef79559a83b10aad9e7",
+    "http_status": 200,
+    "latency_s": 5.282,
+    "response_id": "1a77d3bd-2f0f-43a1-ad50-30c2434d0a94",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12678,
+      "completion_tokens": 985,
+      "total_tokens": 13663,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 890
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12422
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.019941599999999997,
+    "final_content_sha256": "78bffaa77615b47022c6227294f337384ae2da9b6a9d09ef6ab2cd785cbce87e"
+  },
+  "wall_s": 5.292
+}

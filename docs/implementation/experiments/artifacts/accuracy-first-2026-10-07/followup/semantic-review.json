@@ -1,0 +1,86 @@
+{
+  "version": "accuracy-semantic-review/1",
+  "reviewer": "independent accuracy_reference_review agent; controller retained judgments",
+  "reviewed_scope": "terminal fact/score answers, source support, report arithmetic and operations boundary",
+  "numeric_result_not_full_answer_accuracy": true,
+  "narrative_issues": [
+    {
+      "arm": "enhanced.catl.minimax",
+      "question_id": "F01",
+      "reason": "billion yuan rewritten as 亿元; rationale tenfold inconsistency",
+      "status": "not_accepted"
+    },
+    {
+      "arm": "enhanced.catl.minimax",
+      "question_id": "F02",
+      "reason": "billion yuan rewritten as 亿元; rationale tenfold inconsistency",
+      "status": "not_accepted"
+    },
+    {
+      "arm": "enhanced.catl.minimax",
+      "question_id": "F03",
+      "reason": "billion yuan rewritten as 亿元; rationale tenfold inconsistency",
+      "status": "not_accepted"
+    },
+    {
+      "arm": "enhanced.alphabet.minimax",
+      "question_id": "F05",
+      "reason": "2024 basic EPS called 4.59, actually2022; 2024 basic8.13",
+      "status": "not_accepted"
+    },
+    {
+      "arm": "enhanced_more.alphabet.mimo",
+      "question_id": "F05",
+      "reason": "2024 basic EPS called5.84, actually2023; 2024 basic8.13",
+      "status": "not_accepted"
+    }
+  ],
+  "score_issues": [
+    {
+      "arm": "score.catl.minimax",
+      "question_id": "IQS_10",
+      "observed_score": 7,
+      "status": "insufficient_support_for_scored",
+      "reason": "rationale admits no comparable capital return or cost; profit/margin/OCF does not prove enduring excess return"
+    },
+    {
+      "arm": "score.catl.deepseek",
+      "question_id": "IQS_05",
+      "observed_score": 8,
+      "status": "not_highscore_whitelist_eligible",
+      "reason": "scale/share facts present, replication cost/mechanism not demonstrated"
+    },
+    {
+      "arm": "score.catl.minimax",
+      "question_id": "IQS_05",
+      "observed_score": 8,
+      "status": "not_highscore_whitelist_eligible",
+      "reason": "scale/share and industry concentration cannot alone prove moat"
+    },
+    {
+      "arm": "score.cncb_h.deepseek",
+      "question_id": "IQS_05",
+      "observed_score": 5,
+      "status": "hypothesis_not_validated_quality",
+      "reason": "branch/underwriting scale not demonstrated durable advantage"
+    }
+  ],
+  "registration_correction": {
+    "field": "score_facts_are_stale",
+    "frozen_value": true,
+    "corrected_interpretation": "enhanced context includes2024/2025 data and2026 releases; insufficiency is mechanism/capital-return evidence, not wholly stale2024",
+    "original_not_rewritten": true
+  },
+  "hash_encoding": {
+    "fact_invalid_final": "sha256(raw UTF-8 content)",
+    "score_invalid_final": "b.fingerprint(content): sha256(canonical JSON string encoding)",
+    "receipt_final": "sha256(raw UTF-8 content)"
+  },
+  "limitations": [
+    "invalid body/reasoning not retained; cannot replay invalid final text",
+    "Consensus is exact normalized fields only; not semantic agreement or independent sources",
+    "Model backend revision not guaranteed by alias match",
+    "1 processing attempt unknown remains fully budget-held"
+  ],
+  "conclusion": "Archive permitted for bounded diagnostic scope; no production/default/G3/F05 adoption; no15/15 fully reliable claim"
+}

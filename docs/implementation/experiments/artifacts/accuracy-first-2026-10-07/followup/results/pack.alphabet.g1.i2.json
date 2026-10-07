@@ -1,0 +1,58 @@
+{
+  "arm": "pack.alphabet.g1.i2",
+  "company": "alphabet",
+  "entity_id": "ENT_97bf6a65-a9e6-43f0-8409-c5695e2f6e1e",
+  "question_ids": [
+    "F03"
+  ],
+  "evidence_sha256": "c6466a94bea5483343fb9011ccecee1562ec6368e7996f772288688ec0cdd099",
+  "questions_sha256": "08efe91a6b4ef33c86be51b71051cc2432e7d73d62dca6a81ac01c4747f1babb",
+  "prompt_sha256": "5705d684c22f0787546daf98d2e5180bd26fde772213df24da7ee4ae5d3e946d",
+  "run_fingerprint": "b1b947935e4487bc5384af4f92d3e2ed67837d7d9b04f5088a8c78575608c532",
+  "variant": "enhanced",
+  "cache_key": "cf8f1eb9e469989a7746458a6391b849d2e8a40b65f02e530a6b787f9c954637",
+  "route": "deepseek",
+  "created_at": "2026-10-07T22:35:02.379501+00:00",
+  "state": "valid",
+  "answers": [
+    {
+      "question_id": "F03",
+      "status": "answered",
+      "value": 125299,
+      "unit": "USD_million",
+      "period": "2024-FY",
+      "scope": "consolidated",
+      "evidence_refs": [
+        "T1c46157d2304",
+        "Tf39369c84e0b"
+      ],
+      "rationale": "10-K现金流量表列示2024年经营活动现金流净额为125,299百万美元，与Q4业绩稿全年列示一致。"
+    }
+  ],
+  "receipt": {
+    "attempt_id": "ATT_bd930806724f4b12a5431b9b31468ec4",
+    "http_status": 200,
+    "latency_s": 6.666,
+    "response_id": "d3e099f8-4c87-4027-8ce2-bed60d24beae",
+    "actual_model": "deepseek-flash",
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 12663,
+      "completion_tokens": 1093,
+      "total_tokens": 13756,
+      "prompt_tokens_details": {
+        "cached_tokens": 256
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 995
+      },
+      "prompt_cache_hit_tokens": 256,
+      "prompt_cache_miss_tokens": 12407
+    },
+    "business_error_code": null,
+    "state": "completed",
+    "upper_usd": 0.020442,
+    "final_content_sha256": "76dda8937b60849130b73dadfcd5fb21bc8f70c37ca4933ebf09d8732e533a1d"
+  },
+  "wall_s": 6.681
+}
