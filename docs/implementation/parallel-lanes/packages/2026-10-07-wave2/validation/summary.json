@@ -1,0 +1,121 @@
+{
+  "schema": "iqs.parallel_package_validation/1",
+  "scope": "planning_artifacts_only_not_product_or_gate_acceptance",
+  "recorded_at_utc": "2026-10-07T21:24:40.735838Z",
+  "checks": [
+    {
+      "name": "affected_unit_and_integration",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_parallel_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "log_path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/validation/affected_unit_and_integration.log",
+      "log_sha256": "c42ff98edc1511cba062e61632ccbebdfae1ff494411326e67e98614218cc57e",
+      "tests_run": 23
+    },
+    {
+      "name": "public_handoff_QA-C06-02",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/parallel_handoff_cli.py",
+        "--catalog",
+        "docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\manifest.json",
+        "--package-id",
+        "QA-C06-02",
+        "--input",
+        "docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\QA-C06-02.handoff.template.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "log_path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/validation/public_handoff_QA-C06-02.log",
+      "log_sha256": "6e05c631feebe4a9936609026b9aa555b6a10eee534ea667c7d0b2f21c6ff896"
+    },
+    {
+      "name": "public_handoff_SW-REPAIR-02",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/parallel_handoff_cli.py",
+        "--catalog",
+        "docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\manifest.json",
+        "--package-id",
+        "SW-REPAIR-02",
+        "--input",
+        "docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\SW-REPAIR-02.handoff.template.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "log_path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/validation/public_handoff_SW-REPAIR-02.log",
+      "log_sha256": "cc9da617a04fda26fc7bc65f5aeeb7462f17b9c3d31b4fcfb06043c00cb028ba"
+    },
+    {
+      "name": "public_handoff_EVID-LAB-01",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "scripts/parallel_handoff_cli.py",
+        "--catalog",
+        "docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\manifest.json",
+        "--package-id",
+        "EVID-LAB-01",
+        "--input",
+        "docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\EVID-LAB-01.handoff.template.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "log_path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/validation/public_handoff_EVID-LAB-01.log",
+      "log_sha256": "49d85c7918dffb34cbc3cd7e03693353b4e30c54f4f3025de9c0cc5a3ae0cbef"
+    }
+  ],
+  "external_writes": false,
+  "network_calls": false,
+  "paid_calls": false,
+  "worker_dispatched": false,
+  "temporary_root": {
+    "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\iqs-wave2-validation-rzo94mkm",
+    "created": true,
+    "cleaned": true,
+    "known_child_processes_terminal": true
+  },
+  "static_checks": {
+    "json_files": 10,
+    "snapshot_schemas": 2,
+    "local_links": 62,
+    "frozen_python_ast": 5,
+    "result": "passed"
+  },
+  "frozen_inputs": {
+    "working_tree_snapshots": 13,
+    "inherited_qa_files": 9,
+    "iqs_input_hashes": 114,
+    "result_index_bound_files": 96,
+    "result": "passed_by_ownership_plan_test"
+  },
+  "not_verified": [
+    "Package implementation",
+    "Human writer transfer or source repository grants",
+    "G3/F05",
+    "Real owner identity/query golden",
+    "Paid/live E2E",
+    "Copied Phase92 product source GREEN"
+  ]
+}

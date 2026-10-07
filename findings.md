@@ -1584,3 +1584,15 @@ Phase92输入映射发现：IQS `standard_answers.build_observations`已定义fi
 独立审查实际源重建发现48次继承客户端temperature0.7，原ledger.parameters计划省略；用固定runtime AST确认默认后186/186 canonical payload SHA匹配。原收费结果/ledger事件/source不回写，新增实际参数provenance；未来explicit_only/2只继承model/messages、版本化cache、warm miss零发送、已归档ID拒prepare，已离线RED→GREEN，未收费重跑。等cap开关实际均显式0.7，MiMo/DeepSeek思考有效采样受官方规则影响，不是纯温度受控因果实验。
 
 全326来源支持盲评：claims支持162/部分150/不支持2/无claim12；191 scored仅14有限方向/区间有依据，177不足，135非评分。主要缺口为短片段表头/期间/单位、发行人自身融资与客户业务混淆、集团/segment/指标层级不匹配，换强模型或开思考不能替代证据覆盖。两agent未校准一致性，Pro开关跨分区，不能用review差异判世界准确率或宣布生产赢家。结果与价格/生成配置均结构化留档。
+
+### 新一轮独立施工包的实际边界（2026-10-07）
+
+用户再次要求可独立交给harness的大包。只读Git核对2026-10-07T20:58:52Z：QA09f68a69有总控Phase92九路径+原七未跟踪，StockWiki04dfc519 clean，Theme3c9a49c/Industry4a80f998 clean但消费者门未齐；company-wiki bfd6a4d3有活动acquisition/lock/测试及其PWF改动，且AGENTS规定来源系统不得新增研究型writer。因此不把company-wiki结果保存当可立即分派的实现；存储/评分/查询仍归StockWiki，不复制到CWP。
+
+本轮选三条互不重叠写根：StockQA完整观察生产链、StockWiki已复现六项恢复/查询/UI整改、独立新实验工作区的离线证据质量工具与下一轮实验设计。实验线只复用既有模型/搜索/账本工具，默认零联网/付费；不造新数据库或客户端，不拿已删片段的旧结果造gold。TH/IN已有包保留hold。
+
+只读勘察错误：默认沙箱外仓Git五次128，升级只读/禁可选锁重核成功；猜测projection-and-query.md与parallel-lanes/tasks.json不存在，改按实际目录和manifest相对路径定位，不把缺文件当产品阻断。
+
+21:20:29Z再次只读快照：QA/SW状态稳定，company-wiki活动状态已增至66条，证明不能将静态盘点当目录锁。仅复制九件QA有效首段和四件IQS私有上游，共13份原字节；其他脏项只记路径不读内容。实验交付索引96文件均匹配，本轮总计114项IQS只读依赖绑定。新评测根当时不存在，lane_id=iqs只指L02离线分析职责，不授予IQS写权；107任务/366case不新增、不重新分配整任务。
+
+计划校验暴露并修正一处文档错误：Answer文件实际是schemas/answer-content.schema.json，不是answer.schema.json。SW浏览器测试应外部网络0、独占loopback服务可用，不能把真实页面HTTP记成网络调用0。既有三个工具路径猜测失败（parallel_handoff.py、templates/QA-NET-01.handoff.json、contracts/projection-and-query.md）均只读，后按实际CLI/模板目录定位；不会重造handoff系统。新测试首次用了非package的tests.*导入，后用文件入口；新增施工包锁未生成时的1 error是准备检查RED，不是产品反例。一次合并patch引用错误handoff标题整体拒绝，拆成准确hunk后成功，无外仓写。

@@ -1,6 +1,6 @@
 # Invest Quick Scan 跨 Harness 并行施工总控
 
-**2026-10-07分派更新：** 当前以[本轮四个施工包](packages/2026-10-07/README.md)及其源仓/输入锁为准；StockQA与StockWiki可先做独立离线批次，Theme/Industry仍等G3/F05。两消费者的本轮唯一实现owner选各自独立Projects源仓，`local-skills`/安装镜像由总控验收后同步。下文旧local-skills归属和旧开工状态保留为历史，不覆盖这次选择。
+**2026-10-07晚间分派更新：** 最新入口是[第二轮三个独立大包](packages/2026-10-07-wave2/README.md)：QA-C06-02接续Phase92完整观察生产链，SW-REPAIR-02整改已复现六问题，EVID-LAB-01在新独立目录做离线质量工具。实际分派须由用户确认唯一writer和卡中授权范围；文档不会自动启动任务。原QA-NET-01/SW-READY-01交付保留，禁止重复施工。Theme/Industry仍按[原四包](packages/2026-10-07/README.md)等待G3/F05/真实公共query交付与写授权；其唯一实现owner为各自Projects源仓。下文旧local-skills归属和旧开工状态是历史，安装镜像由总控验收后同步。
 
 新接手harness先按[工作恢复与交接指南](../handoff-for-new-agent.md)刷新计划和各仓快照。本文件后文所列“开工/阻塞状态”均是带日期的历史观察，不得据此假定今天的HEAD、脏树或授权仍未变化。
 

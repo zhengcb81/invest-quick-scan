@@ -88,6 +88,54 @@ class ParallelLanePlanTests(unittest.TestCase):
                     f"owned project paths overlap: {lane_a}:{path_a} and {lane_b}:{path_b}",
                 )
 
+    def test_wave2_preserves_inherited_work_disjoint_ownership_and_frozen_boundaries(self):
+        folder = LANE_DIR / "packages" / "2026-10-07-wave2"
+        catalog = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
+        locked = json.loads((folder / "inputs.lock.json").read_text(encoding="utf-8"))
+        tasks = {task["id"]: task for task in self.tasks["tasks"]}
+        self.assertEqual((folder / catalog["task_source"]).resolve(), ROOT / "docs/implementation/tasks.json")
+        self.assertEqual({"QA-C06-02", "SW-REPAIR-02", "EVID-LAB-01"}, {p["id"] for p in catalog["packages"]})
+        scopes, assigned = [], set()
+        for package in catalog["packages"]:
+            scope = PurePosixPath(package["write_scope"].casefold()).as_posix().rstrip("/")
+            for previous in [*scopes, ROOT.as_posix().casefold()]:
+                self.assertFalse(scope == previous or scope.startswith(previous + "/") or previous.startswith(scope + "/"))
+            scopes.append(scope)
+            self.assertFalse(assigned.intersection(package["task_ids"]))
+            assigned.update(package["task_ids"])
+            deps = set()
+            for tid in package["task_ids"]:
+                self.assertEqual(tasks[tid]["owner"], package["lane_id"])
+                deps.update(tasks[tid]["depends_on"])
+            self.assertEqual(deps - set(package["task_ids"]), set(package["depends_on"]))
+            template = json.loads((folder / f"{package['id']}.handoff.template.json").read_text(encoding="utf-8"))
+            Draft202012Validator(self.handoff).validate(template)
+            self.assertEqual(template["snapshot"]["repository"], package["write_scope"])
+            self.assertIsNone(template["snapshot"]["result_commit"])
+            self.assertEqual([], template["scope"]["authorized_paths"])
+            self.assertEqual([], template["verification"]["checks"])
+            self.assertEqual("not_run", template["review"]["status"])
+        snapshots = locked["working_tree_snapshots"]
+        qa_snapshots = [i for i in snapshots if i["source_repository"].endswith("/StockQAbyLLM")]
+        self.assertEqual(9, len(qa_snapshots))
+        self.assertEqual(9, len({i["source_path"] for i in qa_snapshots}))
+        self.assertIn("tests/unit/test_quick_scan_observation_context.py", {i["source_path"] for i in qa_snapshots})
+        for item in [*locked["iqs_inputs"], *snapshots]:
+            payload = (ROOT / item["path"]).read_bytes()
+            self.assertEqual(len(payload), item["bytes"])
+            self.assertEqual(hashlib.sha256(payload).hexdigest(), item["sha256"])
+        self.assertFalse(locked["default_live_enabled"])
+        self.assertFalse(catalog["workers_dispatched"])
+        self.assertEqual("not_closed", locked["gates"]["G3"])
+        self.assertEqual("not_closed", locked["gates"]["F05"])
+        self.assertEqual({"TH-IMPL-01", "IN-IMPL-01"}, set(catalog["held_packages"]))
+        self.assertEqual("offline_subdeliverable_only", next(p for p in catalog["packages"] if p["id"] == "EVID-LAB-01")["delivery_scope"])
+        link_pattern = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+        for document in folder.glob("*.md"):
+            for target in link_pattern.findall(document.read_text(encoding="utf-8")):
+                if not target.startswith(("http://", "https://", "#")):
+                    self.assertTrue((document.parent / target.split("#", 1)[0]).exists(), f"{document.name}: {target}")
+
     def test_handoff_contract_has_reproducibility_and_scope_fields(self):
         self.assertEqual("object", self.handoff["type"])
         self.assertIn("snapshot", self.handoff["properties"])

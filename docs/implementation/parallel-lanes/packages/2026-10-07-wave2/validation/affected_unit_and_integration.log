@@ -1,0 +1,34 @@
+COMMAND ["C:\\Miniconda\\python.exe", "-B", "-X", "utf8", "-m", "unittest", "discover", "-s", "tests", "-p", "test_parallel_*.py", "-v"]
+STDOUT
+
+STDERR
+test_catalog_outside_package_directory_is_refused_before_read (test_parallel_handoff_cli.ParallelHandoffCliTests.test_catalog_outside_package_directory_is_refused_before_read) ... ok
+test_dated_catalog_intake_preserves_legacy_default (test_parallel_handoff_cli.ParallelHandoffCliTests.test_dated_catalog_intake_preserves_legacy_default) ... ok
+test_dated_waiting_consumer_cannot_claim_writes (test_parallel_handoff_cli.ParallelHandoffCliTests.test_dated_waiting_consumer_cannot_claim_writes) ... ok
+test_declared_authorized_file_inside_owner_repo_is_shape_valid (test_parallel_handoff_cli.ParallelHandoffCliTests.test_declared_authorized_file_inside_owner_repo_is_shape_valid) ... ok
+test_duplicate_json_key_and_sentinel_are_not_echoed (test_parallel_handoff_cli.ParallelHandoffCliTests.test_duplicate_json_key_and_sentinel_are_not_echoed) ... ok
+test_each_dated_package_template_is_shape_only (test_parallel_handoff_cli.ParallelHandoffCliTests.test_each_dated_package_template_is_shape_only) ... ok
+test_malformed_local_catalog_does_not_emit_its_content (test_parallel_handoff_cli.ParallelHandoffCliTests.test_malformed_local_catalog_does_not_emit_its_content) ... ok
+test_path_escape_and_unclean_temp_root_are_rejected (test_parallel_handoff_cli.ParallelHandoffCliTests.test_path_escape_and_unclean_temp_root_are_rejected) ... ok
+test_read_only_prestudy_cannot_claim_changed_files (test_parallel_handoff_cli.ParallelHandoffCliTests.test_read_only_prestudy_cannot_claim_changed_files) ... ok
+test_self_declared_authorization_cannot_escape_owner_repo (test_parallel_handoff_cli.ParallelHandoffCliTests.test_self_declared_authorization_cannot_escape_owner_repo) ... ok
+test_unknown_or_wrong_owner_package_is_rejected (test_parallel_handoff_cli.ParallelHandoffCliTests.test_unknown_or_wrong_owner_package_is_rejected) ... ok
+test_valid_partial_handoff_is_format_only_and_read_only (test_parallel_handoff_cli.ParallelHandoffCliTests.test_valid_partial_handoff_is_format_only_and_read_only) ... ok
+test_consumer_prestudy_archive_interface (test_parallel_lane_plan.ParallelLanePlanTests.test_consumer_prestudy_archive_interface) ... ok
+test_current_wave_has_disjoint_repositories_frozen_inputs_and_exact_dependencies (test_parallel_lane_plan.ParallelLanePlanTests.test_current_wave_has_disjoint_repositories_frozen_inputs_and_exact_dependencies) ... ok
+test_each_consumer_packet_is_self_contained_for_read_only_prestudy (test_parallel_lane_plan.ParallelLanePlanTests.test_each_consumer_packet_is_self_contained_for_read_only_prestudy) ... ok
+test_every_planned_task_has_exactly_one_matching_owner_lane (test_parallel_lane_plan.ParallelLanePlanTests.test_every_planned_task_has_exactly_one_matching_owner_lane) ... ok
+test_handoff_contract_has_reproducibility_and_scope_fields (test_parallel_lane_plan.ParallelLanePlanTests.test_handoff_contract_has_reproducibility_and_scope_fields) ... ok
+test_independent_packages_match_owner_dependencies_and_disjoint_write_scopes (test_parallel_lane_plan.ParallelLanePlanTests.test_independent_packages_match_owner_dependencies_and_disjoint_write_scopes) ... ok
+test_lane_docs_define_readme_contract_review_and_tdd (test_parallel_lane_plan.ParallelLanePlanTests.test_lane_docs_define_readme_contract_review_and_tdd) ... ok
+test_local_markdown_links_resolve (test_parallel_lane_plan.ParallelLanePlanTests.test_local_markdown_links_resolve) ... ok
+test_owned_project_scopes_are_disjoint_and_docs_exist (test_parallel_lane_plan.ParallelLanePlanTests.test_owned_project_scopes_are_disjoint_and_docs_exist) ... ok
+test_package_links_and_readiness_gates (test_parallel_lane_plan.ParallelLanePlanTests.test_package_links_and_readiness_gates) ... ok
+test_wave2_preserves_inherited_work_disjoint_ownership_and_frozen_boundaries (test_parallel_lane_plan.ParallelLanePlanTests.test_wave2_preserves_inherited_work_disjoint_ownership_and_frozen_boundaries) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 6.967s
+
+OK
+
+EXIT 0

@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "stockwiki",
+  "package_id": "SW-REPAIR-02",
+  "status": "partial",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/StockWiki",
+    "base_ref": "master",
+    "base_commit": "04dfc5190589a8bbe224a47e94b045779c884b80",
+    "result_ref": "",
+    "result_commit": null,
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "W12",
+      "U01",
+      "U02"
+    ],
+    "authorization_scope_ref": "not_authorized_template_only",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/StockWiki"
+    ],
+    "authorized_paths": [],
+    "changed_paths": [],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [],
+  "verification": {
+    "checks": [],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": []
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "TEMPLATE ONLY: no worker has been dispatched; this is not an executed handoff.",
+    "Replace repository base/worktree and all results with current actual evidence; human grant is required.",
+    "Complete means this package local subdelivery only; full task/G3/F05 acceptance remains with the coordinator."
+  ],
+  "next_action": "Read the card, handoff-rules.md, interfaces.md and inputs.lock.json. Do not start until human dispatch confirms sole writer and the defined path grant."
+}

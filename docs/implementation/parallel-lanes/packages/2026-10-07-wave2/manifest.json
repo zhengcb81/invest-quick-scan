@@ -1,0 +1,77 @@
+{
+  "format_version": "1.0.0",
+  "observed_at_utc": "2026-10-07T21:20:29.960037Z",
+  "task_source": "../../../tasks.json",
+  "coordinator_write_scope": "C:/Users/郑曾波/Projects/invest-quick-scan",
+  "workers_dispatched": false,
+  "default_live_enabled": false,
+  "packages": [
+    {
+      "id": "QA-C06-02",
+      "lane_id": "stockqa",
+      "document": "QA-C06-02.md",
+      "task_ids": [
+        "Q10"
+      ],
+      "depends_on": [
+        "C06",
+        "Q07",
+        "Q09"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "readiness": "conditional_unique_writer_inherited_overlay_and_prewrite_report",
+      "authorization": "human_dispatch_transfers_phase92_writer_then_exact_prewrite_report",
+      "delivery_scope": "Q10_remaining_producer_local_delivery_only",
+      "full_task_completion_delegated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "SW-REPAIR-02",
+      "lane_id": "stockwiki",
+      "document": "SW-REPAIR-02.md",
+      "task_ids": [
+        "W12",
+        "U01",
+        "U02"
+      ],
+      "depends_on": [
+        "G2",
+        "W05",
+        "W09",
+        "W11"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/StockWiki",
+      "readiness": "conditional_unique_writer_and_new_exact_stockwiki_grant",
+      "authorization": "human_dispatch_must_grant_card_paths",
+      "delivery_scope": "six_fixed_counterexamples_local_delivery_only",
+      "full_task_completion_delegated": false,
+      "live_enabled": false
+    },
+    {
+      "id": "EVID-LAB-01",
+      "lane_id": "iqs",
+      "document": "EVID-LAB-01.md",
+      "task_ids": [
+        "L02"
+      ],
+      "depends_on": [
+        "G1",
+        "W07",
+        "W08",
+        "W09"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-evidence-lab",
+      "readiness": "conditional_new_directory_grant_offline_only",
+      "authorization": "human_dispatch_must_grant_new_lab_root",
+      "delivery_scope": "offline_subdeliverable_only",
+      "full_task_completion_delegated": false,
+      "live_enabled": false
+    }
+  ],
+  "held_packages": [
+    "TH-IMPL-01",
+    "IN-IMPL-01"
+  ],
+  "supersedes_dispatch_advice_only": "../2026-10-07/README.md",
+  "previous_deliveries_preserved": true
+}

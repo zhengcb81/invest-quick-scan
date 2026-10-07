@@ -1,0 +1,960 @@
+{
+  "format_version": "1.0.0",
+  "recorded_at_utc": "2026-10-07T21:20:29.960037Z",
+  "coordinator_baseline": "c223cc92bb601ef70915d5cc6df061a3add57b30",
+  "observation_is_not_a_repository_lock": true,
+  "repositories": [
+    {
+      "repository": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "exists": true,
+      "base_ref": "master",
+      "base_commit": "c223cc92bb601ef70915d5cc6df061a3add57b30",
+      "worktree": {
+        "state": "dirty",
+        "dirty_path_count": 13,
+        "manifest_sha256": "1128ef0c8ae873f2759aed4d40607451fa8a92024bf4aafd6a2e7cb505f89ace"
+      },
+      "status_lines": [
+        " M docs/implementation/parallel-lanes/README.md",
+        " M docs/implementation/parallel-lanes/packages/2026-10-07/README.md",
+        " M findings.md",
+        " M scripts/standard_answers.py",
+        " M task_plan.md",
+        " M tests/test_parallel_lane_plan.py",
+        "?? docs/implementation/parallel-lanes/packages/2026-10-07-wave2/",
+        "?? docs/implementation/reviews/G3/c06-authority-v2-input-map-2026-10-07.md",
+        "?? docs/implementation/reviews/G3/c06_context_guarded.py",
+        "?? docs/implementation/reviews/G3/phase92-stockqa-write-scope.md",
+        "?? opencode.json",
+        "?? scripts/c06_authority.py",
+        "?? tests/test_c06_authority.py"
+      ],
+      "read_visibility": "unsandboxed_read_only_git_status",
+      "observed_at_utc": "2026-10-07T21:20:29.960037Z"
+    },
+    {
+      "repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "exists": true,
+      "base_ref": "master",
+      "base_commit": "09f68a69bbdbf76e3a4fff63043cdd4815572e5b",
+      "worktree": {
+        "state": "dirty",
+        "dirty_path_count": 16,
+        "manifest_sha256": "1db3051fd230ae7531f05be06e67641e2c48f9498201c05e385b2757030051fc"
+      },
+      "status_lines": [
+        " M .gitignore",
+        " M pyproject.toml",
+        "?? .codegraph/",
+        "?? .workbuddy-ai/",
+        "?? nul",
+        "?? pilot_runs/b2a_2026-10-03/",
+        "?? pilot_runs/g2b_alphabet_2026-10-04/",
+        "?? pilot_runs/l02_2026-10-04/",
+        "?? progress_update.txt",
+        "?? src/config/quick_scan_answer_content.schema.json",
+        "?? src/config/quick_scan_metric_registry.json",
+        "?? src/config/quick_scan_observation.schema.json",
+        "?? src/utils/quick_scan_observation_context.py",
+        "?? tests/fixtures/quick_scan_c06_authority_v2_fixture.json",
+        "?? tests/fixtures/quick_scan_c06_manifest_v2_fixture.json",
+        "?? tests/unit/test_quick_scan_observation_context.py"
+      ],
+      "read_visibility": "unsandboxed_read_only_git_status",
+      "observed_at_utc": "2026-10-07T21:20:29.960037Z"
+    },
+    {
+      "repository": "C:/Users/郑曾波/Projects/StockWiki",
+      "exists": true,
+      "base_ref": "master",
+      "base_commit": "04dfc5190589a8bbe224a47e94b045779c884b80",
+      "worktree": {
+        "state": "clean",
+        "dirty_path_count": 0,
+        "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status_lines": [],
+      "read_visibility": "unsandboxed_read_only_git_status",
+      "observed_at_utc": "2026-10-07T21:20:29.960037Z"
+    },
+    {
+      "repository": "C:/Users/郑曾波/Projects/iqs-evidence-lab",
+      "exists": false,
+      "base_ref": null,
+      "base_commit": null,
+      "worktree": null,
+      "status_lines": [],
+      "read_visibility": "path_existence_only"
+    },
+    {
+      "repository": "C:/Users/郑曾波/Projects/company-wiki",
+      "exists": true,
+      "base_ref": "master",
+      "base_commit": "bfd6a4d3b83a0539c44c40111ee1c35951fcdec4",
+      "worktree": {
+        "state": "dirty",
+        "dirty_path_count": 66,
+        "manifest_sha256": "a82463d7a2abf14c1892a0a1e0e919f70fd1a3e1ed8f54bd03326511b2c7b7e1"
+      },
+      "status_lines": [
+        " M docs/plans/narrative-evidence-pilot-2026-09-26/findings.md",
+        " M docs/plans/narrative-evidence-pilot-2026-09-26/progress.md",
+        " M docs/plans/narrative-evidence-pilot-2026-09-26/task_plan.md",
+        " M src/company_wiki/source_catalog/acquisition.py",
+        " M src/company_wiki/source_catalog/acquisition_service.py",
+        " M src/company_wiki/source_catalog/canonical_writer.py",
+        " M src/company_wiki/source_catalog/cli.py",
+        " M src/company_wiki/source_catalog/close_gap.py",
+        " M src/company_wiki/source_catalog/lock.py",
+        " M src/company_wiki/source_catalog/operation_contract.py",
+        " M src/company_wiki/source_catalog/operation_projection.py",
+        " M tests/contract/test_close_gap_concurrency_fc804.py",
+        " M tests/contract/test_close_gap_fc801.py",
+        " M tests/contract/test_source_catalog_acquisition.py",
+        " M tests/contract/test_source_catalog_download_authorization.py",
+        " M tests/contract/test_source_catalog_gap_plan.py",
+        " M tests/contract/test_source_operation_v2.py",
+        "?? .planning/g2-latest-red/",
+        "?? .planning/g2_ff_final_contract.py",
+        "?? .planning/g2_ff_future_test.py",
+        "?? .planning/g2_ff_impl.py",
+        "?? .planning/g2_ff_red.py",
+        "?? .planning/g2_ff_reuse_test.py",
+        "?? .planning/g2_ff_sync_tests.py",
+        "?? .planning/g2cliR/",
+        "?? .planning/g2d/",
+        "?? .planning/g2e-result.xml",
+        "?? .planning/g2e/",
+        "?? .planning/g2f/",
+        "?? .planning/g2g2/",
+        "?? .planning/g2g3/",
+        "?? .planning/g2h/",
+        "?? .planning/g2i/",
+        "?? .planning/g2j/",
+        "?? .planning/g2k/",
+        "?? .planning/g2n/",
+        "?? .planning/g2o/",
+        "?? .planning/g2p-result.xml",
+        "?? .planning/g2p/",
+        "?? .planning/g2q-result.xml",
+        "?? .planning/g2q/",
+        "?? .planning/g2r/",
+        "?? .planning/g2r2/",
+        "?? .planning/g2s/",
+        "?? .planning/g2t-result.xml",
+        "?? .planning/g2t/",
+        "?? .planning/g2u/",
+        "?? .planning/g2unit-result.xml",
+        "?? .planning/g2unit/",
+        "?? .planning/g2v/",
+        "?? .planning/g2x/",
+        "?? .planning/g2y/",
+        "?? .planning/g2z/",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_final_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_pass_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_retry1_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_retry2_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_retry3_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_retry4_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_retry5_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_retry6_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_retry7_2026-10-07.json",
+        "?? docs/plans/narrative-evidence-pilot-2026-09-26/harness_lanes/results/g2_chain_e2e_retry8_2026-10-07.json",
+        "?? tests/contract/test_single_intent_latest_acquisition.py",
+        "?? tools/g2_acquisition_chain_e2e.py"
+      ],
+      "read_visibility": "unsandboxed_read_only_git_status",
+      "observed_at_utc": "2026-10-07T21:20:29.960037Z"
+    },
+    {
+      "repository": "C:/Users/郑曾波/Projects/analyze-theme-value-chain",
+      "exists": true,
+      "base_ref": "master",
+      "base_commit": "3c9a49c7ce86f3e60eb9a6c8e6c835164cb8a903",
+      "worktree": {
+        "state": "clean",
+        "dirty_path_count": 0,
+        "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status_lines": [],
+      "read_visibility": "unsandboxed_read_only_git_status",
+      "observed_at_utc": "2026-10-07T21:20:29.960037Z"
+    },
+    {
+      "repository": "C:/Users/郑曾波/Projects/industry-research",
+      "exists": true,
+      "base_ref": "main",
+      "base_commit": "4a80f9988f9325fb0a348c8acd9e41d615005c5f",
+      "worktree": {
+        "state": "clean",
+        "dirty_path_count": 0,
+        "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status_lines": [],
+      "read_visibility": "unsandboxed_read_only_git_status",
+      "observed_at_utc": "2026-10-07T21:20:29.960037Z"
+    }
+  ],
+  "iqs_inputs": [
+    {
+      "path": "docs/implementation/contracts/exchange-and-query.md",
+      "bytes": 11680,
+      "sha256": "9f2559ba91c49210906fa3c1c75606f3c403e6ca7d5f896908fb1371675f398b"
+    },
+    {
+      "path": "docs/implementation/contracts/freshness-and-jobs.md",
+      "bytes": 12143,
+      "sha256": "2d8f6d4be7ae05ef996e7cdb71f58dff355bf3229de4241b6a0dc8acbeee3f93"
+    },
+    {
+      "path": "docs/implementation/contracts/providers-and-budget.md",
+      "bytes": 10607,
+      "sha256": "ccb50c59972a542d710e107d05f7ec0f08718bb9e48c8a146af14ba9af6119a0"
+    },
+    {
+      "path": "docs/implementation/contracts/question-modules.md",
+      "bytes": 6957,
+      "sha256": "039f789b0905c69705798288fbbfa8dc884b0fa70b7b2af9e1f221be804512a6"
+    },
+    {
+      "path": "docs/implementation/contracts/validation-MiMo-Pro-pilot-2026-10-07.json",
+      "bytes": 1702,
+      "sha256": "b37ba888e341df52afa547fa5c3c822bdc537331184975bd258e51d1cab7b422"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/analysis.json",
+      "bytes": 44941,
+      "sha256": "39dd40cd39b423a8c5edb3bf4563946d14a86cedfbc90581d43811713a67e8e4"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/archive-manifest.json",
+      "bytes": 25746,
+      "sha256": "cd21cfa052699b716423c6ca96b7bb945260082c0715b9da385a4c358d82324a"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/blocks.json",
+      "bytes": 43642,
+      "sha256": "5c3c98242dc698f7b9720c21fb3befb1d155da0d906f8440b0f5598ddf268548"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/inputs-manifest.json",
+      "bytes": 148752,
+      "sha256": "c1d68d5dcabd23941568652dcbf5a09e3c154b41979e38da6363826cf3cb6890"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/ledger.jsonl",
+      "bytes": 259642,
+      "sha256": "b071099b22236006be9119704002697d4bb8975de0113ff2a19caac2817fd85f"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/matrix-console.log",
+      "bytes": 2803,
+      "sha256": "e3907c6c98bcdd23e96605d26a6d311766ffaf6fdac58c7276c46224574afc80"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/prompt-profiles.json",
+      "bytes": 7995,
+      "sha256": "e451e846475ea4d5fe13723688ac5ac0164b6df6176ada6f91b318bd413d2c80"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/provenance-check.json",
+      "bytes": 80381,
+      "sha256": "c49aa2176de62e2f1964f3efab6c8fb2cd7f7c2275c8fe203180cb109c7d79ca"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/repeat-console.log",
+      "bytes": 1014,
+      "sha256": "268c8e5d43d285cc7b215f57a133c6a8eeeec8d0a9644a819d7e0cd6d78da53b"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/results.jsonl",
+      "bytes": 409058,
+      "sha256": "6d34ad0a58a84e0ad46dd8531b6dbfde38f0d725969918fdccce93245fe70821"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-batching_benchmark.py",
+      "bytes": 55705,
+      "sha256": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-batching_benchmark_archive.py",
+      "bytes": 7545,
+      "sha256": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-batching_benchmark_report.py",
+      "bytes": 8981,
+      "sha256": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-index.json",
+      "bytes": 117375,
+      "sha256": "b6bb185966caf12eb76be8139a0dd50888fdae0d3d1dee05bb4fff5916478b0c"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-mimo_pro_pilot.py",
+      "bytes": 13679,
+      "sha256": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/thinking-console.log",
+      "bytes": 416,
+      "sha256": "d76ea815b9ada1081486c59d55d8fd98c870ddfff6a46507e17e9ecd08ed38bd"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/analysis.json",
+      "bytes": 7774,
+      "sha256": "8d6ce71a1d74294e04364c59b3c548b111cb169c465f04f0bf47903563109df5"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/archive-manifest.json",
+      "bytes": 5211,
+      "sha256": "1404ff0f9e7656b022d69fb259ae57f9c6bc87f3f020d5248cb049175fe92f18"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/blocks.json",
+      "bytes": 5457,
+      "sha256": "eed3405ce6533f9591bdb647931f73ab7b6c50191606d58a1d86d8e5c0a9f3cd"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/inputs-manifest.json",
+      "bytes": 21960,
+      "sha256": "35a7261826b3890d963a9a88afe90a37c9209de7506123786c94fbda4a5442d6"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/ledger.jsonl",
+      "bytes": 22441,
+      "sha256": "6898d15cb47af52d87f71f62ec27c5749efacc38ec715fb281cdec3f2d584322"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-batching_benchmark.py",
+      "bytes": 55705,
+      "sha256": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-batching_benchmark_archive.py",
+      "bytes": 7545,
+      "sha256": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-batching_benchmark_report.py",
+      "bytes": 8981,
+      "sha256": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-mimo_pro_pilot.py",
+      "bytes": 13679,
+      "sha256": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/prompt-profiles.json",
+      "bytes": 7995,
+      "sha256": "e451e846475ea4d5fe13723688ac5ac0164b6df6176ada6f91b318bd413d2c80"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/provenance-check.json",
+      "bytes": 6754,
+      "sha256": "2ad70a9118dc799d831c9614e7206f465559d7a71e7cee345abeba5d87cfade2"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/results.jsonl",
+      "bytes": 30286,
+      "sha256": "f0c3e7c304ba1bd08dac1575513ed37fe767ce595685bff410b02cf391dd561e"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/run-console.log",
+      "bytes": 751,
+      "sha256": "6349b2eb0721bda1b49975a14ac94aba086008d690d3e4c940afbc83d65f9212"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-batching_benchmark.py",
+      "bytes": 55973,
+      "sha256": "788823f6bc3a2102b4ac744f3e05268020cbb72cdcb13324f79961c41fc9f159"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-batching_benchmark_archive.py",
+      "bytes": 8955,
+      "sha256": "adfdae340839aaa5cc5bc67910fe0cae6d184ec3e8e546cf99b5dee8f4fe8436"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-batching_benchmark_report.py",
+      "bytes": 10391,
+      "sha256": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-index.json",
+      "bytes": 31676,
+      "sha256": "a1dd9975fb517cf4cd203d52d10b6473632d5adc680231386448bdd74ac0ae29"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-mimo_pilot_extension.py",
+      "bytes": 13187,
+      "sha256": "4536567e20674ddfbabd44831e23890eac26989b320efee61806a86aa41c0ffe"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-mimo_pro_pilot.py",
+      "bytes": 13383,
+      "sha256": "558a9693ed43fd492e1a1dce86580165fd7c9c11342fa9d36c3dd6d93a297add"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/analysis.json",
+      "bytes": 22626,
+      "sha256": "f4886cecd22aa3af4a88829df3b642dfa3564d82fc07c2a921b179988b2e59cb"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/archive-manifest.json",
+      "bytes": 9450,
+      "sha256": "049c755b3710b02ed5bc31e27f3758b3abf4e035afd9e5fd05b2aadb7ea30057"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/blocks.json",
+      "bytes": 21438,
+      "sha256": "3635642babb144912475985c8f32130e155ad71381bb2e5182a2b4cb4194de5b"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/inputs-manifest.json",
+      "bytes": 22270,
+      "sha256": "2f3f0e70f11b89df02e73d0c09636057edcb119270933851e45b923cf9232f29"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/ledger.jsonl",
+      "bytes": 78027,
+      "sha256": "7e89fe222ea81ba1b2c333cc8f810c5d6efd09da1c028730a9dfdfe4b4fd13af"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-batching_benchmark.py",
+      "bytes": 55705,
+      "sha256": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-batching_benchmark_archive.py",
+      "bytes": 7545,
+      "sha256": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-batching_benchmark_report.py",
+      "bytes": 8981,
+      "sha256": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-mimo_pro_pilot.py",
+      "bytes": 13679,
+      "sha256": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/prompt-profiles.json",
+      "bytes": 7995,
+      "sha256": "e451e846475ea4d5fe13723688ac5ac0164b6df6176ada6f91b318bd413d2c80"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/provenance-check.json",
+      "bytes": 26897,
+      "sha256": "ee9ee34e96319654d6970bc008730371e7cbc544b791d64e25ed31017b5e1765"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/results.jsonl",
+      "bytes": 159024,
+      "sha256": "bcb70fe17378d5061baa05ca37326dbf28bb0c857c8ac137e57ae0e0d898a9cd"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/run-console.log",
+      "bytes": 2146,
+      "sha256": "372001cbff604a19afe6064b6cec2f6c2f0a2e8d00fc5d83718041a4fdfdaade"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-batching_benchmark.py",
+      "bytes": 55973,
+      "sha256": "788823f6bc3a2102b4ac744f3e05268020cbb72cdcb13324f79961c41fc9f159"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-batching_benchmark_archive.py",
+      "bytes": 8955,
+      "sha256": "adfdae340839aaa5cc5bc67910fe0cae6d184ec3e8e546cf99b5dee8f4fe8436"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-batching_benchmark_report.py",
+      "bytes": 10391,
+      "sha256": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-index.json",
+      "bytes": 31676,
+      "sha256": "a1dd9975fb517cf4cd203d52d10b6473632d5adc680231386448bdd74ac0ae29"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-mimo_pilot_extension.py",
+      "bytes": 13187,
+      "sha256": "4536567e20674ddfbabd44831e23890eac26989b320efee61806a86aa41c0ffe"
+    },
+    {
+      "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-mimo_pro_pilot.py",
+      "bytes": 13383,
+      "sha256": "558a9693ed43fd492e1a1dce86580165fd7c9c11342fa9d36c3dd6d93a297add"
+    },
+    {
+      "path": "docs/implementation/experiments/mimo-pilot-audit-builder-2026-10-07.py",
+      "bytes": 2649,
+      "sha256": "8d62ad3b2d3b48c6a040bde65b9b6ddeff2d131e2e176e198ecae9a7cd12e6ed"
+    },
+    {
+      "path": "docs/implementation/experiments/mimo-pilot-generation-policies-2026-10-07.json",
+      "bytes": 3410,
+      "sha256": "126dd1e771c35cee6823295a18c950183440784d0fdfd54f121a2e5129b89f61"
+    },
+    {
+      "path": "docs/implementation/experiments/mimo-pilot-pricing-2026-10-07.json",
+      "bytes": 1875,
+      "sha256": "eab72d583c48ce935e0fd153a9d79f5dc032ac9de950ad9d90c8b825109c7bb8"
+    },
+    {
+      "path": "docs/implementation/experiments/mimo-pro-cleanup-2026-10-07.ps1",
+      "bytes": 5798,
+      "sha256": "37ec89087d3056f95c1c361df23f59105bc1846c8d0f8b032fce170d75317581"
+    },
+    {
+      "path": "docs/implementation/experiments/mimo-pro-input-selection-2026-10-07.py",
+      "bytes": 3830,
+      "sha256": "ba612f0dcdc7ee41f5ed9f6f2e5d856a8fc6703c1a2aceeb6af245f5ad28a57c"
+    },
+    {
+      "path": "docs/implementation/experiments/mimo-pro-pilot-2026-10-07.md",
+      "bytes": 8336,
+      "sha256": "dd9ac0430bf1cf926182e80906ee335fc3211610364082abcc83bcd52505b5d9"
+    },
+    {
+      "path": "docs/implementation/experiments/mimo-pro-result-index-2026-10-07.json",
+      "bytes": 16922,
+      "sha256": "c731bec5b16911bf38ec52817960800cffd072236a93faca40c60697c35ad83c"
+    },
+    {
+      "path": "docs/implementation/experiments/mimo-pro-results-2026-10-07.md",
+      "bytes": 13901,
+      "sha256": "3844f9c6d84d6643776957084a80a78092320d8d603a1027d238967cd2d77072"
+    },
+    {
+      "path": "docs/implementation/intake/SW-READY-01/2026-10-07/export-manifest.json",
+      "bytes": 31504,
+      "sha256": "dfa5c397dc7af75fc133e30fb55d30fe51bf8e5c068dd7c678cb4a0c195dfc23"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/handoff.schema.json",
+      "bytes": 5598,
+      "sha256": "ed38a65aafed82649a071acbc9e6ee5b47c92120ad958713db4d7261a4b15c0e"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pilot-extension-source-support-2026-10-07.json",
+      "bytes": 56617,
+      "sha256": "051f54cff3995e7a9c39981aa8aff300fdbe8f97536484a261e67961edf99bc3"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pilot-extension-source-support-2026-10-07.md",
+      "bytes": 7158,
+      "sha256": "f33555e8c2b46651c2ecd29742f9c4c134c558808f967a978d7d57a28459bc5b"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pilot-primary-source-support-2026-10-07.json",
+      "bytes": 88092,
+      "sha256": "f966df6b09d193f213872b995c7afd5e4f2ff5c3d92d47dd59a1e95119dae619"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pilot-primary-source-support-2026-10-07.md",
+      "bytes": 3695,
+      "sha256": "c2005031e9d534e30b70bfc5c25ac9af44a270ca3738358b69f48f0e2d0a4bf2"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pilot-source-support-join-2026-10-07.json",
+      "bytes": 8120,
+      "sha256": "25b60b43df9111b58ec8c858ffdbf86ff84e18aa8389a7e0ec0c5f9ffdee9787"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-b01-regression.log",
+      "bytes": 4452,
+      "sha256": "c2462f197abcbff09fafd856ae9e036fb0e4dddf4c6d6da84befaea647870410"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-cleanup-receipt-2026-10-07.json",
+      "bytes": 178138,
+      "sha256": "3c4673b46e213541955b44efdee7f29b12c98311254a304732b47b24743ceac2"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-extension-guard-tests.log",
+      "bytes": 1298,
+      "sha256": "6b08d629bcbec2da2ab44961d524215d071c50680f57ebb2d8ec1102e708bdc0"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-final-b01-regression-GREEN.log",
+      "bytes": 4452,
+      "sha256": "acaad4849a306a57354e6002b8c9a95d4827b83b660e34a764b4b9ba201997e7"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-final-b01-regression.log",
+      "bytes": 7196,
+      "sha256": "79ab0afd9bb57fb27d4cad89960772a58e608f9430e0611a85797c2dbd0de509"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-final-offline-GREEN.log",
+      "bytes": 2779,
+      "sha256": "335bbef5cac490552b767bf4c9f631376e6dbafa1b4b2966f2141d94907f1852"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-offline-tests.log",
+      "bytes": 2041,
+      "sha256": "21096bc7852798fbdfbc153b0dec0af619cfaaf8ae006b37fa65ad0d3d72a580"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-output-separation-tests.log",
+      "bytes": 1213,
+      "sha256": "7071d40a2d9a9c3c69efb60e8575a7ed6947f38fcb90f8cc8430dd6a2341e9d6"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-public-jsonoff-report.log",
+      "bytes": 1334,
+      "sha256": "85db219e75a7615d80b62a9afc3200f924b47b9335760a7334eb16120be99b05"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-public-main-report.log",
+      "bytes": 1088,
+      "sha256": "1d2c4919a3881dee0b30e793bb0fe5414f817aae6dbea6e39006000c0cb70c4a"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-public-thinking-report.log",
+      "bytes": 1098,
+      "sha256": "a1a54b6bad0d125e06746ce22462de38a730e2dc516baf366898db1d9229a5f9"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-source-join-check-console.log",
+      "bytes": 8122,
+      "sha256": "08d0efa64813480d1e9186f202a826157e1517d57c1c43b04c7a15b0324f746e"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-source-join-console.log",
+      "bytes": 8122,
+      "sha256": "08d0efa64813480d1e9186f202a826157e1517d57c1c43b04c7a15b0324f746e"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-technical-review-2026-10-07.md",
+      "bytes": 26088,
+      "sha256": "7de4eb2a2b60b873d530c3b570e0a9d948fcadfe7e41b6570b8170e11f632d28"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-transport-default-GREEN.log",
+      "bytes": 2600,
+      "sha256": "2a81f4b71cb7c932ffe11c62466b9e341468f972caa817e4b715e3fab608982d"
+    },
+    {
+      "path": "docs/implementation/reviews/B01/mimo-pro-transport-default-RED.log",
+      "bytes": 1186,
+      "sha256": "550717e75a0b6e25d3a367dadcf414b493a35573ad4eaa747cf95895ffe1530e"
+    },
+    {
+      "path": "docs/implementation/reviews/SW-READY-01/acceptance_cases.py",
+      "bytes": 6601,
+      "sha256": "72b2e1250947a705f87426557ccdf8b09121d761ba09ae89da3df152db81d452"
+    },
+    {
+      "path": "docs/implementation/reviews/SW-READY-01/export_runtime.py",
+      "bytes": 2801,
+      "sha256": "3b43fcd390a14c94a59b8b12f68a3757133f4ca5dcb2789afd3cd5b0ada8152c"
+    },
+    {
+      "path": "docs/implementation/reviews/SW-READY-01/guarded_tests.py",
+      "bytes": 2583,
+      "sha256": "5de64cb14f2dce9289bfe4f9b1ed6fd3f905e140271e135b9549bcc059220da9"
+    },
+    {
+      "path": "docs/implementation/reviews/SW-READY-01/intake-review-2026-10-07.md",
+      "bytes": 12313,
+      "sha256": "752f494ec276083de2cf10e63a6ddda286a5129d4472858ac782d9e007a2ffd0"
+    },
+    {
+      "path": "docs/implementation/reviews/SW-READY-01/remediation-card-2026-10-07.md",
+      "bytes": 7249,
+      "sha256": "820371ffdbe38b1125ca08495c2495628a5e9ec938a6c61e2dae0f157036e1a8"
+    },
+    {
+      "path": "docs/implementation/tasks.json",
+      "bytes": 292749,
+      "sha256": "a7c6167d4bf9aca56b529bd85bd70b0ae01a99125033e06dcbcdcbb06731bf60"
+    },
+    {
+      "path": "docs/implementation/test-strategy.md",
+      "bytes": 40644,
+      "sha256": "b1eeb99b5ff00384dc930f25df9c0384b68bb77f0db9edb59c3f7397843e1429"
+    },
+    {
+      "path": "schemas/answer-content.schema.json",
+      "bytes": 14152,
+      "sha256": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547"
+    },
+    {
+      "path": "schemas/observation.schema.json",
+      "bytes": 7076,
+      "sha256": "6344d2afc9e0d937e05baba8aef27ad15c91770ab7ecb2ddbd549e5ab4fb70ec"
+    },
+    {
+      "path": "schemas/quick_scan/exchange.schema.json",
+      "bytes": 6965,
+      "sha256": "efdf0e3427d1bbb73892e9573fbf3b1f0389218e3f5a0c8dff4ca0cd63764122"
+    },
+    {
+      "path": "schemas/quick_scan/query.schema.json",
+      "bytes": 23536,
+      "sha256": "e7fc264b43d85e4cdd5c82a71b9fedb579dd0fc1196f3c5fde661f14fa1756f8"
+    },
+    {
+      "path": "scripts/batching_benchmark.py",
+      "bytes": 56544,
+      "sha256": "0e191cd5cdd5613427dd07d37fa79293cc2eeec1775f900226d5a38e61f72db3"
+    },
+    {
+      "path": "scripts/batching_benchmark_archive.py",
+      "bytes": 11702,
+      "sha256": "a3d75bfbaae17b63f49f66b8b76e725d08238b12bf46f4042c0ae9d19aa68878"
+    },
+    {
+      "path": "scripts/batching_benchmark_report.py",
+      "bytes": 10391,
+      "sha256": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb"
+    },
+    {
+      "path": "scripts/mimo_json_mode_probe.py",
+      "bytes": 198,
+      "sha256": "c2d0db865d061b02454ee8ab6a1cd09c32e36cec99a79e578fe73ab737321e66"
+    },
+    {
+      "path": "scripts/mimo_pilot_extension.py",
+      "bytes": 13328,
+      "sha256": "875e6149113a559bd530363343be39c20f1270157498b496753cdc5453280d39"
+    },
+    {
+      "path": "scripts/mimo_pilot_results.py",
+      "bytes": 4746,
+      "sha256": "fb9f81ab0f23446cf6f1785e456256f8537c13b19c3adc76e1fd1c58afe7a04d"
+    },
+    {
+      "path": "scripts/mimo_pilot_review_summary.py",
+      "bytes": 4459,
+      "sha256": "2df57cad56cdb83acd9d4595aff05e4342728b8792eefdd1d67a1de5a040ce25"
+    },
+    {
+      "path": "scripts/mimo_pro_pilot.py",
+      "bytes": 13524,
+      "sha256": "6a323908171b27a3997cf4ad3eb77e137d168742a3a08283bce5f63033dd71b4"
+    },
+    {
+      "path": "tests/test_batching_benchmark.py",
+      "bytes": 15756,
+      "sha256": "437f22ae52b6e66928086333224b40c5ba50cf19dc9419e0c8344f06cbe46829"
+    },
+    {
+      "path": "tests/test_batching_benchmark_archive.py",
+      "bytes": 4926,
+      "sha256": "762ef4b51eebae2ca81db0689c16c59ac4f09c8e36db34d898396125ae2e6636"
+    },
+    {
+      "path": "tests/test_batching_benchmark_report.py",
+      "bytes": 4663,
+      "sha256": "905815c4dff33288055d481f3200d77272382b7ff8d04e2c941f5ccda8959557"
+    },
+    {
+      "path": "tests/test_mimo_pilot_extension.py",
+      "bytes": 10039,
+      "sha256": "33066c4ed8c7b72d915090078618c07e1c3a4f9acc659b64d1d1edae4c009561"
+    },
+    {
+      "path": "tests/test_mimo_pro_pilot.py",
+      "bytes": 7528,
+      "sha256": "77fa5329c9ee7dc8f41d681e69b91eb22e816c566a63424392874513a0d40f8a"
+    }
+  ],
+  "working_tree_snapshots": [
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/.gitignore",
+      "bytes": 2267,
+      "sha256": "95c81146e7730a6e69926805117dbe21411008f6f16c33f633cf25ba3c0c3f89",
+      "source_repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "source_path": ".gitignore",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "incomplete_known_RED_preserved",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/pyproject.toml",
+      "bytes": 3721,
+      "sha256": "ee4a87a01f86d668f10fa02d5fd843ef1b5d8ac35049f156f0e23bf5ed898dbe",
+      "source_repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "source_path": "pyproject.toml",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "incomplete_known_RED_preserved",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/config/quick_scan_answer_content.schema.json",
+      "bytes": 14152,
+      "sha256": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547",
+      "source_repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "source_path": "src/config/quick_scan_answer_content.schema.json",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "incomplete_known_RED_preserved",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/config/quick_scan_metric_registry.json",
+      "bytes": 3521,
+      "sha256": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75",
+      "source_repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "source_path": "src/config/quick_scan_metric_registry.json",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "incomplete_known_RED_preserved",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/config/quick_scan_observation.schema.json",
+      "bytes": 7076,
+      "sha256": "6344d2afc9e0d937e05baba8aef27ad15c91770ab7ecb2ddbd549e5ab4fb70ec",
+      "source_repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "source_path": "src/config/quick_scan_observation.schema.json",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "incomplete_known_RED_preserved",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/utils/quick_scan_observation_context.py",
+      "bytes": 15504,
+      "sha256": "03ee6035285301e1e9d742ca00608a83d0a48d5feb313fbecaea27826b866200",
+      "source_repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "source_path": "src/utils/quick_scan_observation_context.py",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "incomplete_known_RED_preserved",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json",
+      "bytes": 54446,
+      "sha256": "e5bc782afd245374fff3bc224f04cb9dbcc0fb22b76d62faf2a16917db1ded43",
+      "source_repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "source_path": "tests/fixtures/quick_scan_c06_authority_v2_fixture.json",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "incomplete_known_RED_preserved",
+      "golden_class": "synthetic_only"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_manifest_v2_fixture.json",
+      "bytes": 449049,
+      "sha256": "a7e80a5bcaf2cb2499fa24f091b129d7e1a2ebbf6e91a5666359c5e91c90270c",
+      "source_repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "source_path": "tests/fixtures/quick_scan_c06_manifest_v2_fixture.json",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "incomplete_known_RED_preserved",
+      "golden_class": "synthetic_only"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/unit/test_quick_scan_observation_context.py",
+      "bytes": 12852,
+      "sha256": "485f1395cdcc1ee366c5c8492125846cf4a081597b650c20a3fda9dc7a6e65fb",
+      "source_repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "source_path": "tests/unit/test_quick_scan_observation_context.py",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "incomplete_known_RED_preserved",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/scripts/standard_answers.py",
+      "bytes": 29926,
+      "sha256": "dc4870362109e2cc19c9fdb98a15c688b43138c5e0d12cb4142b0c23098cf42a",
+      "source_repository": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "source_path": "scripts/standard_answers.py",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "private_producer_snapshot_not_formal_release",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/scripts/c06_authority.py",
+      "bytes": 9195,
+      "sha256": "ad2da1ce3ec1e16fc04d8b3a7298a7c209c583dcfa0df9d0cbf01d3bc7e60805",
+      "source_repository": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "source_path": "scripts/c06_authority.py",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "private_producer_snapshot_not_formal_release",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/tests/test_c06_authority.py",
+      "bytes": 9986,
+      "sha256": "fb839deaf429076d21bd25d13add73d34e892f7f79b551a7a9a3ebd7567e06ce",
+      "source_repository": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "source_path": "tests/test_c06_authority.py",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "private_producer_snapshot_not_formal_release",
+      "golden_class": "not_an_identity_golden"
+    },
+    {
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/c06-authority-v2-input-map-2026-10-07.md",
+      "bytes": 7249,
+      "sha256": "731996219adadd8cf3252d8a8f1a82ba40cf534cd915b81dff974f0d4dfb9c84",
+      "source_repository": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "source_path": "docs/implementation/reviews/G3/c06-authority-v2-input-map-2026-10-07.md",
+      "source_kind": "uncommitted_working_tree_snapshot",
+      "copied_at_utc": "2026-10-07T21:20:29.960037Z",
+      "status": "private_producer_snapshot_not_formal_release",
+      "golden_class": "not_an_identity_golden"
+    }
+  ],
+  "inherited_overlay": {
+    "repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+    "paths": [
+      ".gitignore",
+      "pyproject.toml",
+      "src/config/quick_scan_answer_content.schema.json",
+      "src/config/quick_scan_metric_registry.json",
+      "src/config/quick_scan_observation.schema.json",
+      "src/utils/quick_scan_observation_context.py",
+      "tests/fixtures/quick_scan_c06_authority_v2_fixture.json",
+      "tests/fixtures/quick_scan_c06_manifest_v2_fixture.json",
+      "tests/unit/test_quick_scan_observation_context.py"
+    ],
+    "source_head": "09f68a69bbdbf76e3a4fff63043cdd4815572e5b",
+    "known_red": "test_quick_scan_observation_context.py -k embedded_answer: 1 failed/44 deselected; producer/store not wired",
+    "overlay_is_not_committed_or_verified_delivery": true,
+    "other_paths_preserve_do_not_read_or_delete": [
+      ".codegraph/",
+      ".workbuddy-ai/",
+      "nul",
+      "pilot_runs/b2a_2026-10-03/",
+      "pilot_runs/g2b_alphabet_2026-10-04/",
+      "pilot_runs/l02_2026-10-04/",
+      "progress_update.txt"
+    ]
+  },
+  "experiment_inputs": {
+    "source_commit": "5edf5eb497a0a8d5b3e1057f77fe9af76b14ec9a",
+    "index_path": "docs/implementation/experiments/mimo-pro-result-index-2026-10-07.json",
+    "index_sha256": "c731bec5b16911bf38ec52817960800cffd072236a93faca40c60697c35ad83c",
+    "bound_file_count": 96,
+    "source_snippets_retained": false,
+    "human_gold_available": false,
+    "agent_reviews_are_not_gold": true
+  },
+  "default_live_enabled": false,
+  "gates": {
+    "G3": "not_closed",
+    "F05": "not_closed",
+    "W11": "delivered_but_not_sufficient_to_open_TH_IN",
+    "TH-IMPL-01": "hold_for_G3_F05_real_public_query_owner_golden_and_source_write_grant",
+    "IN-IMPL-01": "hold_for_G3_F05_real_public_query_owner_golden_and_source_write_grant"
+  },
+  "authorization_is_not_granted_by_this_file": true
+}

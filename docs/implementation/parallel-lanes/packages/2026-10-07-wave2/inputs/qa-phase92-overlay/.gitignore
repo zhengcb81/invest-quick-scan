@@ -1,0 +1,139 @@
+# ============================================================================
+# 密钥与凭证（防止意外提交敏感信息）
+# ============================================================================
+
+# 项目特定的 API 密钥文件
+llm_apis.json
+secrets.json
+credentials.json
+service-account*.json
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.development
+.env*.override
+
+# 密钥/证书/令牌文件
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.cert
+*.crt
+
+# 常见凭证目录
+credentials/
+secrets/
+keys/
+tokens/
+.aws/
+.gcp/
+
+# 包含敏感信息的配置
+**/config.secret.*
+**/config.local.*
+*secret*.json
+*secret*.yaml
+*secret*.yml
+*credential*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# 虚拟环境
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# 日志文件
+logs/
+*.log
+# QA-NET-01 交付日志的精确例外（不整类取消忽略）
+!docs/handoff/QA-NET-01/logs/
+!docs/handoff/QA-NET-01/logs/*.log
+
+# 输出文件
+outputs/
+*.json
+!src/config/quick_scan_model_policy.schema.json
+!src/config/quick_scan_rate_cards.schema.json
+!src/config/quick_scan_c06_authority.schema.json
+!src/config/quick_scan_search_policy.schema.json
+!examples/quick_scan_rate_cards.template.json
+!examples/quick_scan_search_policy.example.json
+!experiments/scoring_comparison/test_set.json
+!docs/handoff/QA-NET-01/handoff.json
+!docs/handoff/QA-NET-01/artifacts.json
+/quick_scan_health.sqlite*
+/quick_scan_work.sqlite*
+!llm_apis.json.example
+!.secrets.baseline
+
+# MkDocs 构建输出
+site/
+
+# 测试
+.pytest_cache/
+coverage.xml
+.coverage
+.coverage.*
+htmlcov/
+reports/
+.tox/
+.nox/
+.mypy_cache/
+.dmypy.json
+.pytest_cache/
+
+# 操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.bak
+*.tmp
+*.temp
+*~
+
+# Q10 complete context protocol snapshots and synthetic fixtures
+!src/config/quick_scan_observation.schema.json
+!src/config/quick_scan_answer_content.schema.json
+!src/config/quick_scan_metric_registry.json
+!tests/fixtures/quick_scan_c06_authority_v2_fixture.json
+!tests/fixtures/quick_scan_c06_manifest_v2_fixture.json

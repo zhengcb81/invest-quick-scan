@@ -407,11 +407,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前状态（2026-10-07）**：B01-b phase-1 数据和初版报告已完成；独立只读复核已执行，记录见[`B01 phase-1 独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)。终版540行矩阵及状态可复算；评分有效覆盖仅61.3%，低于预注册95%，所以结论仍为 **inconclusive，暂时保留逐题派发**，不宣称任何分组方法获胜。
+**当前状态（2026-10-07晚间）**：Phase93三公司四模型思考对照已经归档并提交推送，186模型/24搜索、0未知、上界USD2.877381；326来源复核仍不是人类gold，不能据结构有效改变生产默认或启动L03。Phase92完整观察生产链尚未完成，StockWiki六整改和G3/F05仍开放。Phase94根据用户新请求准备[第二轮三个独立大包](docs/implementation/parallel-lanes/packages/2026-10-07-wave2/README.md)，没有实际派发或外仓写入。
+
+**历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**下一步**：先完成用户新授权的Phase93 MiMo Pro三公司十题小实验（132模型/24搜索、保守USD5），记录同输入的完整性/耗时/价参考与来源支持边界，集中收尾后回到Phase92 Q10完整上下文、耐久封包及旧包兼容整改。原5+R1–R3/982项验收范围保留；新真实双公开CLI预检3fail/3pass证明producer缺必填观察元数据且独立扫描ID碰撞，不能直接称C06可导入。StockWiki六项整改仍等唯一writer选择，未授权不写它；TH/IN/G3/F05/L03暂缓，不刷新退役回执，不把本小实验当作L03启动。
+**下一步**：交付QA-C06-02、SW-REPAIR-02和EVID-LAB-01的完整卡与输入锁，用户实际分派时确定各仓唯一writer及路径授权。QA若交出，总控暂停StockQA写入；未交出时仍由总控接Phase92的embedded_answer RED、生产authority/store与旧包兼容。SW六问题有独立整改卡，未获该范围新授权不代改；Lab可在获准新目录独立离线实现。回收QA/SW后由总控集中做双公开CLI→ACK→恢复→查询/UI联调。TH/IN/G3/F05/L03暂缓，不刷新退役回执、不重跑已结束收费实验。
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
@@ -1358,3 +1360,11 @@ Status: complete_for_experiment_scope; no_production_default_or_gate_change
 - [x] 三最小归档公开CLI重算通过，实际payload132/42/12全匹配，继承温度6/42/0；最终45独立离线测试GREEN（17新+28受影响回归）。严格预检后537个三个自有root临时文件清除，Phase92/共享TEMP/外仓不动；Windows默认编码/CIM拒绝均删除前停止并留档。
 - [x] 一次集中独立复核终态确认无新实质归档阻断，MP-05历史回放/未来参数修订/缓存/归档/清理范围通过；仅本实验，Phase92未完产品源/opencode.json不得暂存。精确commit/push实际回执在progress记录，完整结果见`docs/implementation/experiments/mimo-pro-results-2026-10-07.md`。
 - 单一下一动作：接续Phase92的embedded_answer真实RED及生产authority/store接线。StockWiki仍只读，TH/IN仍暂缓，G3/F05不因本实验关闭；不重复本轮已通过实验或收费矩阵。
+
+### Phase 94: 新一轮三个独立大施工包
+Status: verified_for_package_planning_scope; pending_exact_commit_and_push
+- [x] 只读复核实际HEAD/脏树和已交付范围；保留QA首段九路径、IQS私有v2源及其他进程改动。company-wiki活动来源链不分派第二writer，TH/IN原包保持hold。
+- [x] 写QA-C06-02（StockQA）、SW-REPAIR-02（StockWiki）、EVID-LAB-01（新iqs-evidence-lab）的自包含卡、共同规范、接口、冻结输入与handoff模板；三写根无交集。13份原字节（QA九件+IQS四件）冻结，114项IQS输入含96件实验归档绑定，其他脏项不读/复制/删。
+- [x] 一次批次验证：23相关单元/集成通过、三公开handoff模板shape/scope valid、10 JSON/2协议schema/62链接/5冻结Python AST通过；专属临时根清除，外仓写/网络/付费0。文档准备不代表产品验收或用户授权，不增加小节点审查或变更中央107任务/366case。
+- [ ] 更新PWF/总控分派入口并精确提交推送，只写IQS文档与本包输入。用户实际分派前不移交唯一writer、不启动任何包或付费调用。
+- 单一下一动作：交付三个施工包和明确分派指令；QA实际交出去后总控停止写StockQA，回收交付后再做跨仓联合验收。

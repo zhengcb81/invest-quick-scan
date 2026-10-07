@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "stockqa",
+  "package_id": "QA-C06-02",
+  "status": "partial",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+    "base_ref": "master",
+    "base_commit": "09f68a69bbdbf76e3a4fff63043cdd4815572e5b",
+    "result_ref": "",
+    "result_commit": null,
+    "worktree_before": {
+      "state": "dirty",
+      "dirty_path_count": 16,
+      "manifest_sha256": "1db3051fd230ae7531f05be06e67641e2c48f9498201c05e385b2757030051fc"
+    },
+    "worktree_after": {
+      "state": "dirty",
+      "dirty_path_count": 16,
+      "manifest_sha256": "1db3051fd230ae7531f05be06e67641e2c48f9498201c05e385b2757030051fc"
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "Q10"
+    ],
+    "authorization_scope_ref": "not_authorized_template_only",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/StockQAbyLLM"
+    ],
+    "authorized_paths": [],
+    "changed_paths": [],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [],
+  "verification": {
+    "checks": [],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": []
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "TEMPLATE ONLY: no worker has been dispatched; this is not an executed handoff.",
+    "Replace repository base/worktree and all results with current actual evidence; human grant is required.",
+    "Complete means this package local subdelivery only; full task/G3/F05 acceptance remains with the coordinator."
+  ],
+  "next_action": "Read the card, handoff-rules.md, interfaces.md and inputs.lock.json. Do not start until human dispatch confirms sole writer and the defined path grant."
+}

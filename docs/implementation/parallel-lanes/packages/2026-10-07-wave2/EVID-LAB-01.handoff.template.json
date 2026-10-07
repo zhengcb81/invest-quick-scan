@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "iqs",
+  "package_id": "EVID-LAB-01",
+  "status": "partial",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/iqs-evidence-lab",
+    "base_ref": "NEW_REPOSITORY_TEMPLATE_ONLY",
+    "base_commit": "NEW_REPOSITORY_TEMPLATE_ONLY",
+    "result_ref": "",
+    "result_commit": null,
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": null
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": null
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "L02"
+    ],
+    "authorization_scope_ref": "not_authorized_template_only",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab"
+    ],
+    "authorized_paths": [],
+    "changed_paths": [],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [],
+  "verification": {
+    "checks": [],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": []
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "TEMPLATE ONLY: no worker has been dispatched; this is not an executed handoff.",
+    "Replace repository base/worktree and all results with current actual evidence; human grant is required.",
+    "Complete means this package local subdelivery only; full task/G3/F05 acceptance remains with the coordinator.",
+    "New directory did not exist when observed. All base fields are placeholders; set the first real repository commit after authorized creation. lane_id=iqs denotes L02 analysis, not IQS write authority. Live/human-gold calibration not delegated."
+  ],
+  "next_action": "Read the card, handoff-rules.md, interfaces.md and inputs.lock.json. Do not start until human dispatch confirms sole writer and the defined path grant."
+}
