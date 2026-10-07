@@ -113,3 +113,27 @@ single_next_action:
 ## 8. 完成这次工作与恢复主线
 
 当前接手文档补强属于规划工作，不能改变产品任务状态、任务数量或G0—G6门槛。改完后向用户说明文档路径与关键改动，提交仅包含本仓实际变更的精确文件；没有remote就说明未推送，不添加猜测的远端。之后若继续全项目实施，按第1节刷新事实并执行第3节的依赖选择，不重复已经通过且快照未变的批次。
+
+---
+
+## 2026-10-07 交接补充（B01-b phase-1 完成后的当前态；接手者先读本节再回读上文）
+
+### 当前各仓状态（恢复时以 git log 为准重新核对）
+- **IQS**（本仓）：HEAD 在 Phase 85 收口提交（B01-b 报告+PWF+本节）；工作树应净（`opencode.json` untracked 属既有杂物）。
+- **StockQA**（`C:\Users\郑曾波\Projects\StockQAbyLLM`）：HEAD 在 B01-b 产物终版提交（`6a9ff13` 之后）；工作树净（既有 untracked：`.codegraph/`、`.workbuddy-ai/`、`nul`、`pilot_runs/b2a_*`、`g2b_alphabet_*`、`l02_*`——**勿删，非本会话产物**）。
+- **StockWiki**（`C:\Users\郑曾波\Projects\StockWiki`）：HEAD `3fe5008` 未动（B01-b 全程经 CLI 写数据，无代码改动）；数据侧新增 3 实体（Alphabet verified + 宁德/中信建投 H provisional rev2，前置导入批三轮审查 approved）。
+
+### B01-b 状态（大节点，phase-1 完成、G3 待审）
+- **报告**：`docs/implementation/reviews/B01/phase1-report-2026-10-07.md`——预注册阈值对照后裁决 **inconclusive、维持逐题基线**；G3 独立审查**未做**（接手者第一步）。
+- **数据**：`StockQAbyLLM/pilot_runs/b01b_method_2026-10-07/`——合并 540 行（run3 基础段+131072 大组重跑段，合并 provenance 在回执）+ 全部无效轮归档（run1_invalid/run2b_partial/smoke）+ 诊断探针。
+- **关键教训（勿重犯）**：①catalog prompt 的对象口径块是演示占位，**必须按标的替换后人工核验**再开跑（run-1 329 请求因此作废）；②M3 必须 `thinking:{type:disabled}` + `max_completion_tokens`（非弃用 max_tokens）≥131072（官方推荐），否则推理烧 token 截断；③`load_identity_snapshot` 只返回 7 键投影，全量实体读快照文件 payload；④MiniMax 套餐=固定 5 小时窗，429 错误体 2056=Token Plan 用量上限（分钟级退避无效，须等窗/充值）；⑤PowerShell `>` 会把 stdout 写成 UTF-16、文件名含 `:` 会变 NTFS ADS——一律用 python 子进程字节级捕获。
+
+### 凭据与配额（接手者注意）
+- BRAVE_API_KEY / TAVILY_API_KEY / MINIMAX_API_KEY 均在 **Windows 用户级环境变量**（owner 设置；harness 子进程不继承，运行时须 `[Environment]::GetEnvironmentVariable(name,'User')` 显式注入；值不落盘不入库不入日志）。
+- MiniMax Token Plan 配额在 owner 控制台（对账挂账项）；窗口重置时点 owner 可见。
+
+### 下一步（按队列优先级）
+1. **G3 独立审查 B01-b phase-1 报告**（报告就绪、产物就绪；审查者可全离线复算：错误体 2056 定性、矩阵合并 provenance、非确定性双探针）。
+2. **L03 200 家试点**：维持逐题派发（B01-b 裁决）；启动需 owner 明示确认；前置=本报告 §7 局限的处置决定。
+3. 挂账：MiniMax 控制台对账（B01-b 实耗≈990 请求/≈6.5M prompt tokens + 历史批）；P2-5（IQS 契约 CLI 的 BND_/status 兼容，独立小项）。
+4. owner 最后指令（2026-10-07）：大节点收口+报告+PWF+推送后**停止**——接手者恢复工作前先向 owner 确认重启点。

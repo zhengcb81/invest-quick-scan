@@ -1264,3 +1264,8 @@ Status: freeze_documented; awaiting_prereq_r2_then_live
 - [x] **owner round-95 决定（三选一 a）**：「等 MiniMax Token Plan 窗口重置，时点我告诉你」→ 续跑工具已就绪（`--companies "HK:06066,US:NASDAQ:GOOGL"`=160 块、429 分钟级退避 30s×4^n、语法+离线过滤验证过）。**等待期间离线验证分析管线**：CN-A 单司矩阵 dry-run（6 方法×30 题、跨方法一致性）→ `cn_a_dryrun_analysis.json`。
 - [x] **执行序③ 全量矩阵完成（run-3 283 请求 + 131072 大组段重跑 32 请求，合并 540 行）**：健康段（sequential/concurrent_4/group_3）出 run-3 base；大组段（group_5/10/batch_30）因 finish=length 截断伪影（探针实证 131072 下 30/30）经官方推荐上限重跑（32 请求零失败）；**合并 540 行=phase-1 正式数据**：scored 331（61%）、证据引用高、跨方法 ±1 一致率 CN-A 80% / HK 92% / US 52%。**诚实发现**：大包完整性服务端非确定（diag 探针 30/30 vs 运行时 HK batch_30 1/30）——按 case 规则缺题行独立报告、不作正式评分；不作选择性重跑（防 cherry-picking）。产物与合并回执（含两段 provenance）全部入库。
 - [ ] **B01-b 报告（执行序⑦前置）**：覆盖 540/540 ✓；对照预注册阈值（有效评分覆盖 ≥95% → 实测 61% 未达 → 按预注册口径=inconclusive/维持逐题基线）；报告草拟 → G3 审查。
+
+### Phase 85 收口（round-97：owner 收尾指令）
+- [x] **B01-b phase-1 报告完成**：`reviews/B01/phase1-report-2026-10-07.md`（冻结输入一致/执行史七轮全录/540 行矩阵/预注册阈值逐条/裁决=**inconclusive 维持逐题基线**/五发现/局限/G3 交接）。裁决依据：有效覆盖 61.3% << 95% 门槛。
+- [x] **owner 收尾指令执行**：报告✓ → PWF（task_plan/progress/findings/handoff 四件全更，交接节=当前态+教训+下一步）→ 推送远端 → 停止。
+- **停止态（owner 2026-10-07 指令）**：B01-b=phase-1 完成、**G3 审查为接手者第一步**；L03 待 owner 启动确认；MiniMax 对账挂账。恢复前先读 `docs/implementation/handoff-for-new-agent.md` 的 2026-10-07 交接节。

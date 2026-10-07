@@ -1831,3 +1831,5 @@
 - **owner 要求推理分离（round-94）**：官方 thinking:disabled+reasoning_split 落地，单探 finish=stop/17.2s/零推理 token/content 直出 JSON；thinking-off smoke 重跑中（pwsh-308）。
 - **run-2b 撞 Token Plan 硬墙（round-94/95）**：CN-A 全 80 块有效（scored 均值 7.6）；01:05 起 HK/US 160 块全 HTTP 429——权威错误体 2056「已达到 Token Plan 用量上限（请升级套餐或购买积分）」=MiniMax 套餐 Token 配额耗尽（非 RPM；官方规格 M3 免费 RPM20/TPM1M、充值 200/10M）。修复率 5%（252=240+12）证明 thinking-off 设计成功。已打：429 分钟级退避（30s×4^n）+`--companies` 续跑过滤器。**待 owner：Token Plan 窗口重置时点/是否充值（其控制台可见，与挂账对账项同源）**。累计实耗≈645 请求/≈2.3M prompt tokens。
 - **run-3 全量重跑启动（owner round-96「MINIMAX已经重置了」）**：dry-run 分析发现 CN-A 的 concurrent_4 段也被 429 波及（19/30 报错、仅 11 行可用）+ sequential 2 错——故弃「HK+US 补跑」合并方案，**全量 240 重跑**（同窗单一回执、免合并口径）；run-2b 部分产物归档 `*_run2b_partial.*`。CN-A dry-run 有效段已示信号：group_3/batch_30 30/30 scored（均值 7.7/7.53）、跨方法 ±1 一致率 87%、分差均值 0.8。
+
+- **收尾（round-97，owner 指令：做完大节点→报告→PWF→推送→停止）**：B01-b phase-1 报告完成（inconclusive/维持逐题基线/G3 待审交接）；PWF 四件全更（含 handoff 2026-10-07 节：三仓 HEAD、B01-b 态、五教训、凭据规则、下一步优先级）；推送远端后停止。本窗口 live 实耗：检索 240+模型≈990 请求（含无效轮如实归档）。
