@@ -5,7 +5,7 @@
 - 实验：宁德时代/中信建投H/Alphabet、30题，最终410模型HTTP+48搜索、USD保守上界4.869098、未决0/usage缺失0。用户允许报备后超预算继续；本轮有限扩展已完成，不等于批准200家L03。生产逐题基线、G3/F05与现有大节点门不变。
 - 结论：DeepSeek每包5题、并发≤4是效率候选，中位配对提速1.56、参考模型费约降35%；十题更快但输出有变化。281匿名行分别三份agent-assisted片段支持审查，不是准确率gold；候选27评分19支撑不足，不能按高分/覆盖率直接推广。
 - 验证：28离线单元/集成/归档测试实际通过，独立技术审查27全套+1增量。全部410实际请求payload回放hash匹配；实际三模型warm cache及6stage接续都新增HTTP0。归档/审查版本`b01_improved_report/1`、parser4、v5主矩阵/v6范围口径组合，详见[预注册](experiments/b01-improved-2026-10-07.md)。
-- 交付：`experiments/artifacts/b01-improved-2026-10-07/`9文件：结构答案/receipt/ledger/blocks、题库/身份/预算/输入锁、source URL/fragment hash、prompt profiles、审查映射/摘要。相关源码复用StockQA固定commit6a9ff13十文件客户端；IQS脚本不是新生产client。源码hash见[技术报告](reviews/B01/improved-final-technical-review-2026-10-07.md)。本批提交/远端结果见progress末尾与git log，勿照抄旧HEAD。
+- 交付：`experiments/artifacts/b01-improved-2026-10-07/`9文件：结构答案/receipt/ledger/blocks、题库/身份/预算/输入锁、source URL/fragment hash、prompt profiles、审查映射/摘要。相关源码复用StockQA固定commit6a9ff13十文件客户端；IQS脚本不是新生产client。源码hash见[技术报告](reviews/B01/improved-final-technical-review-2026-10-07.md)。本批实现提交`0d19af9`已推送origin/master；随后PWF交付记录提交不改受审代码/归档。接手时以progress末尾与git log重核当前HEAD，勿照抄历史HEAD。
 - 清理：自有`runs/b01-improved-2026-10-07`904文件已删；无财报下载、无外仓/正式库/opencode.json清理。原搜索片段不长期保存，重新检索不能复现原相同context；初始orchestrator只存hash而未保存source，勿宣称每版可恢复。
 
 统计复现只运行下面离线命令，清理后已在DNS/socket/key/subprocess拒绝guard下验证exit0、临时目录恢复；无需密钥或付费请求：

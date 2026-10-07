@@ -1977,3 +1977,5 @@
 - PWF/接手指南/最终报告已更新；提交推送实际结果随后追加，不改中央107卡/366case或退役工程回执系统。
 
 - 提交前发现Git默认diff --check把`-text`保留的CRLF逐行报成空白错误（首次输出过量，随后改捕获摘要）；不修改hash绑定的代码/JSON原字节。使用单次`git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --cached --check`保留其他空白检查，只识别CR为行尾。随后仅发现候选Markdown多一个EOF空行，已去除；候选JSON标签/hash与六源码hash不变。精确-text同时覆盖六源码/测试及五审查JSON，避免下一次checkout改坏hash。
+
+- **本批提交与推送完成**：36精确文件提交`0d19af9`（master，Improve batching benchmark with audited live comparisons），已推送既有origin/master（933cff8→0d19af9），无force/新增remote/外仓提交。暂存前CRLF-aware whitespace check exit0，受hash绑定Git blob与执行原字节全部相同。提交后仅既有`?? opencode.json`保留；随后仅追加本交付记录，不改被审源码/标签/归档。
