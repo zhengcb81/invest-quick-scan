@@ -1,0 +1,10 @@
+COMMAND: python -B -X utf8 -m unittest discover -s tests -p test_parallel_lane_plan.py -q
+EXIT: 0
+----------------------------------------------------------------------
+Ran 10 tests in 0.218s
+
+OK
+
+COMMAND: python -B -X utf8 scripts/implementation_plan.py validate
+EXIT: 0
+{"planning_valid": true, "tasks": 107, "acceptance_cases": 366, "final_release_gate": "G6", "product_tests_executed": false}

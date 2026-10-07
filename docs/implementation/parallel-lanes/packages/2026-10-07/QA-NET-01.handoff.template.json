@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "stockqa",
+  "package_id": "QA-NET-01",
+  "status": "partial",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+    "base_ref": "master",
+    "base_commit": "6a9ff13864ebb160d5c4ab3cf2f42155d9f4aa99",
+    "result_ref": "",
+    "result_commit": null,
+    "worktree_before": {
+      "state": "dirty",
+      "dirty_path_count": 7,
+      "manifest_sha256": "dc0b3cad08c2a1b6bc17c5667e708e3f913e707d1c165b7471d53638255cba32"
+    },
+    "worktree_after": {
+      "state": "dirty",
+      "dirty_path_count": 7,
+      "manifest_sha256": "dc0b3cad08c2a1b6bc17c5667e708e3f913e707d1c165b7471d53638255cba32"
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "Q02",
+      "Q10",
+      "Q13"
+    ],
+    "authorization_scope_ref": "not_authorized",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/StockQAbyLLM"
+    ],
+    "authorized_paths": [],
+    "changed_paths": [],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [],
+  "verification": {
+    "checks": [],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": []
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "TEMPLATE ONLY: not an executed handoff; replace every result with observed evidence.",
+    "Confirm current baseline, human authorization and all package readiness gates."
+  ],
+  "next_action": "Read this package and handoff-rules.md; implement only after its opening gates are met."
+}

@@ -1,0 +1,78 @@
+{
+  "format_version": "1.0.0",
+  "observed_at": "2026-10-07",
+  "task_source": "../../../tasks.json",
+  "packages": [
+    {
+      "id": "QA-NET-01",
+      "lane_id": "stockqa",
+      "document": "QA-NET-01.md",
+      "task_ids": [
+        "Q02",
+        "Q10",
+        "Q13"
+      ],
+      "depends_on": [
+        "C06",
+        "Q01",
+        "Q07",
+        "Q09",
+        "S06"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/StockQAbyLLM",
+      "readiness": "conditional_offline_preflight",
+      "authorization": "stockqa_exact_prewrite_report"
+    },
+    {
+      "id": "SW-READY-01",
+      "lane_id": "stockwiki",
+      "document": "SW-READY-01.md",
+      "task_ids": [
+        "W12",
+        "U01",
+        "U02"
+      ],
+      "depends_on": [
+        "G2",
+        "W05",
+        "W09",
+        "W11"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/StockWiki",
+      "readiness": "conditional_offline_preflight",
+      "authorization": "human_confirmed_stockwiki_exact_scope"
+    },
+    {
+      "id": "TH-IMPL-01",
+      "lane_id": "theme",
+      "document": "TH-IMPL-01.md",
+      "task_ids": [
+        "T01"
+      ],
+      "depends_on": [
+        "F05",
+        "G3",
+        "W11"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/analyze-theme-value-chain",
+      "readiness": "read_only_waiting_for_G3_F05_public_golden_and_write_grant",
+      "authorization": "not_authorized_for_write"
+    },
+    {
+      "id": "IN-IMPL-01",
+      "lane_id": "industry",
+      "document": "IN-IMPL-01.md",
+      "task_ids": [
+        "T02"
+      ],
+      "depends_on": [
+        "F05",
+        "G3",
+        "W11"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/industry-research",
+      "readiness": "read_only_waiting_for_G3_F05_public_golden_and_write_grant",
+      "authorization": "not_authorized_for_write"
+    }
+  ]
+}

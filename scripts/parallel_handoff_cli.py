@@ -58,9 +58,45 @@ def _within(path: str, scope: str) -> bool:
     return path == scope or path.startswith(scope + "/")
 
 
-def validate_handoff(input_path: Path, package_id: str) -> tuple[int, dict]:
-    catalog = json.loads((LANE_DIR / "packages" / "manifest.json").read_text(encoding="utf-8"))
-    packages = {entry["id"]: entry for entry in catalog["packages"]}
+def validate_handoff(input_path: Path, package_id: str,
+                     catalog_path: Path | None = None) -> tuple[int, dict]:
+    package_dir = (LANE_DIR / "packages").resolve()
+    selected = catalog_path if catalog_path is not None else package_dir / "manifest.json"
+    try:
+        selected = selected.resolve()
+    except (OSError, RuntimeError):
+        return _outcome(package_id, "catalog_unreadable")
+    # A catalog selects known local package instructions, never an arbitrary
+    # private file supplied in a handoff. This remains a shape-only check.
+    if not selected.is_relative_to(package_dir):
+        return _outcome(package_id, "catalog_outside_package_directory")
+    try:
+        with selected.open("rb") as handle:
+            raw_catalog = handle.read(MAX_INPUT_BYTES + 1)
+    except OSError:
+        return _outcome(package_id, "catalog_unreadable")
+    if len(raw_catalog) > MAX_INPUT_BYTES:
+        return _outcome(package_id, "catalog_too_large")
+    try:
+        catalog = json.loads(raw_catalog.decode("utf-8"), object_pairs_hook=_unique_pairs)
+    except (UnicodeDecodeError, json.JSONDecodeError, DuplicateKeyError):
+        return _outcome(package_id, "catalog_invalid")
+    entries = catalog.get("packages") if isinstance(catalog, dict) else None
+    if not isinstance(entries, list):
+        return _outcome(package_id, "catalog_invalid")
+    packages = {}
+    for entry in entries:
+        if not isinstance(entry, dict) or any(
+            not isinstance(entry.get(key), str) or not entry[key]
+            for key in ("id", "lane_id", "write_scope", "readiness")
+        ):
+            return _outcome(package_id, "catalog_invalid")
+        ids = entry.get("task_ids")
+        if not isinstance(ids, list) or any(not isinstance(value, str) or not value for value in ids):
+            return _outcome(package_id, "catalog_invalid")
+        if entry["id"] in packages:
+            return _outcome(package_id, "catalog_invalid")
+        packages[entry["id"]] = entry
     package = packages.get(package_id)
     if package is None:
         return _outcome(package_id, "unknown_package_id")
@@ -121,8 +157,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", required=True, type=Path)
     parser.add_argument("--package-id", required=True)
+    parser.add_argument("--catalog", type=Path,
+                        help="Package catalog under this repository's parallel-lanes/packages directory.")
     args = parser.parse_args(argv)
-    code, result = validate_handoff(args.input, args.package_id)
+    code, result = validate_handoff(args.input, args.package_id, args.catalog)
     sys.stdout.write(json.dumps(result, ensure_ascii=False, separators=(",", ":")) + "\n")
     return code
 

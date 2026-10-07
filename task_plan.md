@@ -407,13 +407,11 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-## Next Step
-
 **当前状态（2026-10-07）**：B01-b phase-1 数据和初版报告已完成；独立只读复核已执行，记录见[`B01 phase-1 独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)。终版540行矩阵及状态可复算；评分有效覆盖仅61.3%，低于预注册95%，所以结论仍为 **inconclusive，暂时保留逐题派发**，不宣称任何分组方法获胜。
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**下一步**：L03 200家公司试点启动前，需 owner 明确放行试点范围/预算并处置 phase-1 局限；未收到该启动确认前不发live请求。W11已verified；G3仍未关闭，因为正式G3还依赖L03和W12恢复证据。本次B01报告审查不替代G3的REV/JOB/BUD/DB验收。接手入口为[`新接手模型工作指南`](docs/implementation/handoff-for-new-agent.md)的2026-10-07后续交接节。
+**下一步**：按用户要求交出[2026-10-07独立施工包](docs/implementation/parallel-lanes/packages/2026-10-07/README.md)，由用户分派QA-NET-01与SW-READY-01的离线实施，总控独占IQS契约/PWF并接收接口与跨仓联调。TH-IMPL-01/IN-IMPL-01等待G3/F05及真实公共query/golden，不重做预研。L03 200家公司试点仍需owner明确放行范围/预算并处置phase-1局限；确认前不发live请求。W11已verified；G3未关闭，W12恢复证据仍是硬前置。本次包准备不替代G3的REV/JOB/BUD/DB验收。
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
@@ -1290,3 +1288,12 @@ Status: phase1_reviewed_with_open_evidence_limits; G3_not_closed
 - [x] **报告与PWF更正**：在B01 phase-1报告§9追加复核数字/边界；更新本节、`progress.md`、`findings.md`和接手指南。初版报告审查SHA与所有关键StockQA工件SHA记录在独立复核报告。
 - [x] **不变量保持**：维持逐题作为暂定操作默认，但不称其通过gold/盲评或胜出；没有重跑历史live矩阵，不触碰真实公司库/股票池/下载目录；外仓未写。
 - [ ] **G3/L03**：G3仍依赖L03+W11，W11已verified；L03仍需owner明确启动范围/预算并决定phase-1局限的处置，且还需真实中断、租约、费用预留及W12备份恢复证据。在owner放行前不发L03 live请求。
+
+### Phase 87: 独立大包与可复用交接入口（2026-10-07）
+Status: package_documents_and_intake_tooling_prepared; implementation_not_started_by_this_batch
+
+- [x] 重新只读核对四个源仓Git根/HEAD与关键契约hash；沙箱外StockQA可见7个既有未跟踪项，锁和卡中明确保留，其他三仓clean。初始沙箱0项不作为最终clean结论。
+- [x] 新增QA-NET-01（Q10剩余接线/Q13/搜索增量）、SW-READY-01（W12/U01/U02）两个离线实施候选大包；新增TH-IMPL-01/IN-IMPL-01完整消费者实施指令，保持G3/F05/golden门未齐不能实施。
+- [x] 固定四个不重叠独立源仓、总控IQS独占、安装镜像统一同步；不增任务/case，不重新实现旧QA-04/SW-IDENT/预研，未分派新的写入者或启动live。
+- [x] 共用handoff schema 1.0.0，提供共同交接规范/输入锁/四模板；公开CLI增加可选`--catalog`，默认旧包路径兼容，只读校验，不认证授权/验收。
+- [x] 批次检查通过：handoff工具12项/施工包计划10项、6JSON/4schema/30本地链接、3Python AST和diff检查；独立只读审查无阻断，报告及15项包/代码hash已留档。精确提交/推送结果写入progress；包交付后等用户实际分派。中央107任务/366case结构不改，G3/G4/全系统实施状态不因文档准备而关闭。

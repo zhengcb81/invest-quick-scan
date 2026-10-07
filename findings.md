@@ -1,5 +1,13 @@
 # 设计调研与证据
 
+## 2026-10-07 — 新一轮独立施工包勘察
+
+- 当前只读 Git 观察：StockQA `6a9ff138`、StockWiki `9f552a67`、Theme `3c9a49c7`、Industry `4a80f998`；IQS `dca3c8f0` 保留既有未跟踪 `opencode.json`。首轮沙箱读StockQA报告0项，随后status读失败；沙箱外只读复核可见7个既有未跟踪项，最终锁与包以这次可见状态为准。其他三仓clean。不能将初始沙箱0项当clean证据或擅自归因他人改动；worker开工重查并保留未知文件。
+- Theme/Industry 各有独立 Git 根，与旧施工包指定的 `local-skills` 镜像不同。本轮选独立源仓作为唯一实现 owner，镜像/安装同步留给总控；避免两个源头同时写。
+- StockWiki W09 有 `query_capabilities/search/get_profiles` 查询原语，版本 `quick_scan_query/1.0.0`、facts/relations 均 false；`profiles_from_store` 目前只读身份/证券，没有接观察评分。因此 UI 包需要真实观察投影接线，不能用人工构造的 profile 冒充生产完整链。
+- 可以并行的两个大包为 StockQA 搜索/增量执行与 StockWiki 备份恢复/只读 UI；T01/T02 仍等待 G3/F05 和真实公开查询 golden，不重做已验收预研，不降低事实阶段开工门。中央 IQS 契约/PWF/跨仓整合继续由总控独占。
+- 最初试图按错误标题 `# Findings` 定位 findings 时 apply_patch 拒绝，零写入；读取真实标题后改用精确锚点，其他工作树未受影响。
+
 ## 2026-09-26 — Review/test cadence audit
 
 - The actual milestone cadence is already consolidated: P00 used one focused evidence batch and one review; C01–C07 used one shared 188-test regression batch, one combined review, and one recursive receipt-chain check; current Phase 27 plans one G0 review. This is a reasonable number of independent review gates for a multi-repository delivery.

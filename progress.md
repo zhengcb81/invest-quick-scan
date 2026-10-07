@@ -1879,3 +1879,18 @@
 - SKILL、搜索状态、上游接入和模型策略接入规范；模型文档的结果不明文字对齐outcome_unknown，未修改冻结schema/契约、题库、外仓或计划case数量。更新PWF/交接，仍按大节点审查，本批未发API、读密钥或改真实库。
 - 编辑中首次apply_patch因同一文件hunk顺序失败，确认零写入后按正确顺序重做成功，没有部分交付或外仓状态变化。
 - 校验通过：参考模板JSON及非执行/不盲重发/不重置等关键标记有效；6个入口文档47个本地链接可解析；skill-creator `quick_validate.py`返回`Skill is valid!`；`git diff --check`退出0。未跑产品测试或实际API；测试包仅作为后续adapter集成验收要求，未宣称实现已通过。
+
+## 2026-10-07 — 新一轮独立大施工包与交接工具
+
+- 用户要求可独立分派且互不影响的大包。沿用根目录PWF（resolver和ambiguity probe均为空，legacy计划），只改IQS文档/交接工具/测试；外仓只读，未分派实现写入者、未发搜索或LLM请求、未下载、未动真实数据库。
+- 新波次目录 `docs/implementation/parallel-lanes/packages/2026-10-07/`：QA-NET-01（Q02增量、Q10剩余glue、Q13）、SW-READY-01（W12/U01/U02）可先离线实施；TH-IMPL-01/IN-IMPL-01完整指令仍等G3/F05/真实公开query/golden及写授权。共用交接规范、输入lock、manifest与四个非执行handoff模板；模板未含实现commit、测试或review通过声明。
+- 四个源仓Git根不重叠；本轮指定Theme/Industry独立Projects源仓为唯一实现owner，local-skills/安装同步留总控。总控独占IQS契约/题库/PWF/最终跨仓整合，不在worker占用外仓时写其代码。不重做旧QA-04/SW-IDENT/两份已验收预研，不降低G3/F05门、不增加107任务/366case或小节点审查门。
+- 当前外仓快照：StockQA master@6a9ff13864ebb160d5c4ab3cf2f42155d9f4aa99；StockWiki master@9f552a6741dd093dc760ad6965458989cd027251；Theme master@3c9a49c7ce86f3e60eb9a6c8e6c835164cb8a903；Industry main@4a80f9988f9325fb0a348c8acd9e41d615005c5f。沙箱外只读复核StockQA有7个既有未跟踪项（SHA dc0b3cad08c2a1b6bc17c5667e708e3f913e707d1c165b7471d53638255cba32），全部保留；其余三仓clean。初始沙箱的0项状态被最终可见口径纠正，不归因他人删除/提交。
+- 发现W09 profiles_from_store只读身份/证券，facts/relations=false；UI包明确接真实已存观察并用导入→投影→浏览器E2E验证，不能用手工profile冒充完整查询生产链。研究消费者必须等真实公共envelope/能力/golden。
+- CLI复用现有handoff schema 1.0.0，增加可选--catalog限定本仓packages目录，大小/重复JSON键/非法结构/越界目录具名拒绝且不回显内容；无参数默认旧清单兼容。检查仍仅shape_and_declared_scope，不认证授权或签收。
+- TDD：先补3个公开CLI反例，正确隔离后的RED为10 tests/3 failures（缺--catalog）/7通过；实现后GREEN为12 tests通过，含四包模板、旧命令兼容、未齐consumer禁止写、越界目录拒读与非法catalog不回显。另10个parallel plan tests通过，校验独立owner/任务/依赖/hash；计划CLI为107 tasks/366 cases/G6 valid，product_tests_executed=false。原始日志validation-parallel-wave-{red,green,package-plan}-2026-10-07.log。
+- 文档校验：6 JSON解析、4模板schema、30个本地链接、3个Python AST、git diff --check均通过。没有运行产品完整回归或live E2E，未来包的测试矩阵仍是要求而非已执行结果。
+- 环境/编辑错误如实记录：两次apply_patch因猜标题/不完整锚点拒绝，均零写入后改精确锚点；首次JSON生成在外仓git status读权限异常时中止，没有JSON产出，改用沙箱外只读快照生成；首次unittest dotted导入因tests非package报3 ImportError，改discover；默认沙箱TEMP可创建目录但不能写/cleanup，首轮10项为环境错误而非RED。测试改用本仓唯一自有TEMP根并还原tempfile设置，后续RED/GREEN均清理成功，残留自有根0；错误输出明确的3个旧沙箱路径宿主Test-Path=false，没有扩大删除范围。
+- 独立只读审查在途；结果与精确提交/推送随后追加。既有opencode.json不检查内容、不清理、不暂存。L03仍等明确范围/预算/启动，G3未关闭。
+
+- **本批只读独立审查已完成**：`parallel_wave_review`未发现阻断问题，确认四owner独立、依赖一致、schema/四模板/旧默认命令可用、10个输入hash匹配；审查只覆盖文档/接收工具，不是产品实施验收。结论与15项包/代码快照hash入`reviews/IQS-lane/parallel-wave-review-2026-10-07.md`。按本批精确路径提交/推送，实际commit和远端结果随后记录。

@@ -34,6 +34,39 @@ class ParallelLanePlanTests(unittest.TestCase):
         for _lane_id, owner, task_id in assignments:
             self.assertEqual(task_owner[task_id], owner, f"{task_id} was assigned outside its task owner")
 
+    def test_current_wave_has_disjoint_repositories_frozen_inputs_and_exact_dependencies(self):
+        folder = LANE_DIR / "packages" / "2026-10-07"
+        catalog = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
+        locked = json.loads((folder / "inputs.lock.json").read_text(encoding="utf-8"))
+        tasks = {task["id"]: task for task in self.tasks["tasks"]}
+        self.assertEqual((folder / catalog["task_source"]).resolve(), ROOT / "docs/implementation/tasks.json")
+        scopes = []
+        assigned = set()
+        for package in catalog["packages"]:
+            self.assertTrue((folder / package["document"]).is_file())
+            scope = PurePosixPath(package["write_scope"].casefold()).as_posix().rstrip("/")
+            for prior in scopes:
+                self.assertFalse(scope == prior or scope.startswith(prior + "/") or prior.startswith(scope + "/"))
+            scopes.append(scope)
+            self.assertFalse(assigned.intersection(package["task_ids"]))
+            assigned.update(package["task_ids"])
+            dependencies = set()
+            for tid in package["task_ids"]:
+                self.assertEqual(tasks[tid]["owner"], package["lane_id"])
+                dependencies.update(tasks[tid]["depends_on"])
+            self.assertEqual(dependencies - set(package["task_ids"]), set(package["depends_on"]))
+            template = json.loads((folder / f"{package['id']}.handoff.template.json").read_text(encoding="utf-8"))
+            Draft202012Validator(self.handoff).validate(template)
+            self.assertEqual(template["snapshot"]["repository"], package["write_scope"])
+            self.assertIsNone(template["snapshot"]["result_commit"])
+            self.assertEqual(template["verification"]["checks"], [])
+        for item in locked["iqs_inputs"]:
+            payload = (ROOT / item["path"]).read_bytes()
+            self.assertEqual(len(payload), item["bytes"])
+            self.assertEqual(hashlib.sha256(payload).hexdigest(), item["sha256"])
+        self.assertFalse(locked["default_live_enabled"])
+        self.assertEqual(locked["gates"]["G3"], "not_closed")
+
     def test_owned_project_scopes_are_disjoint_and_docs_exist(self):
         scopes = []
         lane_ids = set()

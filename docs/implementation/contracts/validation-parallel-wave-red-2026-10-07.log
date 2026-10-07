@@ -1,0 +1,55 @@
+COMMAND: python -B -X utf8 -m unittest discover -s tests -p test_parallel_handoff_cli.py -q
+EXIT: 1
+======================================================================
+FAIL: test_catalog_outside_package_directory_is_refused_before_read (test_parallel_handoff_cli.ParallelHandoffCliTests.test_catalog_outside_package_directory_is_refused_before_read)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_parallel_handoff_cli.py", line 194, in test_catalog_outside_package_directory_is_refused_before_read
+    code, answer = self.run_cli(root, _report(), catalog=catalog)
+                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_parallel_handoff_cli.py", line 87, in run_cli
+    self.assertEqual(result.stderr, "")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+AssertionError: 'usage: parallel_handoff_cli.py [-h] --inp[214 chars]on\n' != ''
+- usage: parallel_handoff_cli.py [-h] --input INPUT --package-id PACKAGE_ID
+- parallel_handoff_cli.py: error: unrecognized arguments: --catalog C:\Users\郑曾波\Projects\invest-quick-scan\.iqs-handoff-tests-f8f0ujja\iqs-handoff-catalog-au4v46wn\private.json
+
+
+======================================================================
+FAIL: test_dated_catalog_intake_preserves_legacy_default (test_parallel_handoff_cli.ParallelHandoffCliTests.test_dated_catalog_intake_preserves_legacy_default)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_parallel_handoff_cli.py", line 168, in test_dated_catalog_intake_preserves_legacy_default
+    code, answer = self.run_cli(Path(temp), report, package_id="QA-NET-01",
+                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                catalog=folder / "manifest.json")
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_parallel_handoff_cli.py", line 87, in run_cli
+    self.assertEqual(result.stderr, "")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+AssertionError: 'usage: parallel_handoff_cli.py [-h] --inp[216 chars]on\n' != ''
+- usage: parallel_handoff_cli.py [-h] --input INPUT --package-id PACKAGE_ID
+- parallel_handoff_cli.py: error: unrecognized arguments: --catalog C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\parallel-lanes\packages\2026-10-07\manifest.json
+
+
+======================================================================
+FAIL: test_dated_waiting_consumer_cannot_claim_writes (test_parallel_handoff_cli.ParallelHandoffCliTests.test_dated_waiting_consumer_cannot_claim_writes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_parallel_handoff_cli.py", line 184, in test_dated_waiting_consumer_cannot_claim_writes
+    code, answer = self.run_cli(Path(temp), report, package_id="TH-IMPL-01",
+                   ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                catalog=folder / "manifest.json")
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\tests\test_parallel_handoff_cli.py", line 87, in run_cli
+    self.assertEqual(result.stderr, "")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+AssertionError: 'usage: parallel_handoff_cli.py [-h] --inp[216 chars]on\n' != ''
+- usage: parallel_handoff_cli.py [-h] --input INPUT --package-id PACKAGE_ID
+- parallel_handoff_cli.py: error: unrecognized arguments: --catalog C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\parallel-lanes\packages\2026-10-07\manifest.json
+
+
+----------------------------------------------------------------------
+Ran 10 tests in 4.104s
+
+FAILED (failures=3)
