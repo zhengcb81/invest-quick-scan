@@ -1522,3 +1522,5 @@ At the time of this entry, local focused evidence was `tests/test_identity_contr
 - 实现与89项/139子例相关回归支持本地兼容；CLI默认显式标profile、内部默认legacy。profile仅扩两个v2.1词法定义，严格状态字段与int修订同时适用于legacy，不能用旧active遮盖effective_status撤销。
 - 环境重要差异：identity schema当前原字节CRLF SHA671292a6…，Git冻结LF blob SHA4924b5e3…；自动断言只规范Git EOL且仍核原始工作树hash。三producer golden为LF归档原字节，以精确-text规则避免Windows新checkout变CRLF导致伪失败；不改变原schema文件或其他历史golden。
 - 独立设计审查发现work.schema.source_binding_refs仍只允许BND，以及CLI历史envelope无as_of。本批只证明归档DTO的结构/引用一致性，不能认证owner或证明现在准入，不把消费侧正例扩大成Work/Observation/C05/整条链已兼容。后续由契约owner联调批次处理。
+
+- P2-5当前范围已verified并提交推送a780a72：相关89测试/139子例、最终独立14测试通过。用户已启动两前包，当前总控不得向StockQA/StockWiki写代码；后续以完整handoff/result commit/interface golden为验收起点，不从活动施工的零散文件推断完成。

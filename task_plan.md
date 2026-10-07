@@ -411,7 +411,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**下一步**：精确提交并推送P2-5本地身份兼容已审快照（Phase 88；相关89测试/139子例、独立14测试通过），再按[独立施工包](docs/implementation/parallel-lanes/packages/2026-10-07/README.md)查收QA-NET-01/SW-READY-01交付并联调。两源仓由各自harness独占，TH-IMPL-01/IN-IMPL-01暂缓；后两包等G3/F05及真实公共query/golden，已有静默只读开工提醒。L03仍需owner明确范围/预算/启动，W12恢复证据仍是G3硬前置。
+**下一步**：按[独立施工包](docs/implementation/parallel-lanes/packages/2026-10-07/README.md)只读查收QA-NET-01/SW-READY-01的handoff目录、result commit及真实接口工件，交付齐后集中联调；未齐不把施工中的代码当可验收交付。P2-5本地兼容已审并提交推送a780a72。两源仓由各自harness独占，TH-IMPL-01/IN-IMPL-01暂缓；后两包等G3/F05及真实公共query/golden，已有静默只读开工提醒。L03仍需owner明确范围/预算/启动，W12恢复证据仍是G3硬前置。
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
@@ -1299,13 +1299,13 @@ Status: package_documents_and_intake_tooling_prepared; implementation_not_starte
 - [x] 批次检查通过：handoff工具12项/施工包计划10项、6JSON/4schema/30本地链接、3Python AST和diff检查；独立只读审查无阻断，报告及15项包/代码hash已留档。精确提交/推送结果写入progress；包交付后等用户实际分派。中央107任务/366case结构不改，G3/G4/全系统实施状态不因文档准备而关闭。
 
 ### Phase 88: P2-5 真实身份导出与公共校验器兼容（2026-10-07）
-Status: verified_for_read_wire_consistency_scope; exact_commit_pending
+Status: verified_for_read_wire_consistency_scope; implementation_committed_and_pushed
 
 - [x] 复现三份现有StockWiki W04真实导出：CATL/CNCB-H/Alphabet公开IQS CLI均exit 2；原字节hash对齐已验收的前置导入证据。另发现两份人工资格回执evidence_ref为null，不能伪造来源令其通过。
 - [x] 固定版本化wire兼容profile stockwiki-g2b/1.0.0及CLI1.1.0，保持已冻结C01 2.2.0 schema、原ID和历史快照不变；仅接受真实owner的BIND_UUIDv4、effective_status生命周期及有actor/精确scope的人工资格，拒绝状态冲突/撤销/错修订/错来源。CLI响应标profile，内部默认legacy不变。
 - [x] TDD公开CLI单元/协议集成与三市场现有真实样例消费侧离线E2E：相关六文件89 passed/139subtests，14项新测试含子进程隔离audit与canary；临时根清除，原输入不变、API/下载/生产写0。后续仅调整Git EOL hash断言并定向复跑2项通过，没有重复全套。
 - [x] 本身份批次集中独立审查无阻断，最终14测试/40.749s独立通过，报告`reviews/IQS-lane/P2-5-wire-review-2026-10-07.md`；更新PWF/接手说明，不关闭G3、不刷新退役工程回执、不改其他施工包输入锁。
-- [ ] 精确提交推送本地已审快照，交付commit另追加；不暂存既有opencode.json。
+- [x] 精确19文件提交`a780a724259b2a9915409567b0555cd3ef251a40`并成功推送既有origin/master（702eddb→a780a72）；既有opencode.json未暂存、未检查或删除。之后仅追加交付状态记录，不改被审代码/profile/golden。
 - 本轮恢复错误：误读不存在的handoff-guide.md、test_identity_contract_v21.py；均只读错误无写入，改用实际文件列表定位handoff-for-new-agent.md、test_identity_contract.py。此前summary提及的identity-validation-request.schema.json同为错误猜测，真实路径identity-cli-request.schema.json。
 - 用户后续状态：两个前包已开始施工，后两包暂缓。总控继续本目录，禁止与两外仓writer并发写。开工提醒已设本线程每小时只读heartbeat id=automation，条件未变静默；首次工具参数遗漏destination拒绝，修正后创建成功。
 - 原identity schema工作树CRLF vs Git blob LF双口径已记录（671292a6…/4924b5e3…），不改冻结schema；三golden各加精确-text属性防checkout字节漂移。work.schema BND边界与当前as_of未验证明确留档，本批不关闭整条工作链/G3。

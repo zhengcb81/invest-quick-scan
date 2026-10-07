@@ -167,4 +167,6 @@ single_next_action:
 
 本目录挂账P2-5采用[版本化身份wire兼容规则](../../references/identity-wire-compatibility.md)。CLI1.1.0默认stockwiki-g2b/1.0.0，原--schema-version 2.2.0不变且响应标记wire_profile；冻结C01 schema/hash和原ID不改，内部validate_entity默认legacy。真实三份W04归档快照及反例为消费侧离线测试，不称新producer导出/生产准入或完整跨仓完成。批次测试/独立审查实际状态以最新PWF与验证日志为准。
 
+P2-5本范围已收口：相关89 tests/139subtests、最终独立14tests通过；实施commit `a780a724259b2a9915409567b0555cd3ef251a40`已推送origin/master，审查及限制见[批次报告](reviews/IQS-lane/P2-5-wire-review-2026-10-07.md)。不要重复这批实现或扩大verified范围；只有后续行为变化/新失败才重跑受影响检查。
+
 特别保留后续缺口：work.schema的source_binding_refs仍只允许BND；当前身份CLI不校验现在as_of的有效性。不要用三正例关闭工作链或G3。用户要求后两包可开工时通知，已有本线程每小时只读follow-up（automationId=automation）；条件未变保持安静，不启动收费或代改仓库。不要创建重复提醒。
