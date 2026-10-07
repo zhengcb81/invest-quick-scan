@@ -1,5 +1,6 @@
 # Invest Quick Scan 跨 Harness 并行施工总控
 
+**当前占用更新：** 用户已确认QA-C06-02、SW-REPAIR-02、EVID-LAB-01均已开工；三个源仓writer分别归外包harness，总控只写IQS。波次2是不可变分派起点，里面workers_dispatched=false为制作时观察，不是今天的实时状态。IQS正在正式交付[authority上游](../contracts/iqs-authority-producer-2026-10-07.md)，QA接收其同SHA上游，联合验收仍由总控回收后执行。
 **2026-10-07晚间分派更新：** 最新入口是[第二轮三个独立大包](packages/2026-10-07-wave2/README.md)：QA-C06-02接续Phase92完整观察生产链，SW-REPAIR-02整改已复现六问题，EVID-LAB-01在新独立目录做离线质量工具。实际分派须由用户确认唯一writer和卡中授权范围；文档不会自动启动任务。原QA-NET-01/SW-READY-01交付保留，禁止重复施工。Theme/Industry仍按[原四包](packages/2026-10-07/README.md)等待G3/F05/真实公共query交付与写授权；其唯一实现owner为各自Projects源仓。下文旧local-skills归属和旧开工状态是历史，安装镜像由总控验收后同步。
 
 新接手harness先按[工作恢复与交接指南](../handoff-for-new-agent.md)刷新计划和各仓快照。本文件后文所列“开工/阻塞状态”均是带日期的历史观察，不得据此假定今天的HEAD、脏树或授权仍未变化。

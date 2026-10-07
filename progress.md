@@ -2079,3 +2079,13 @@
 - 修正根Next Step的“先跑Phase93”过时项及总控/旧包/接手入口；当前选择由人类实际分派决定，未分派不自动转writer。准备精确提交/推送施工文档、快照和相关测试/PWF；提交结果随后追加，不包含Phase92未完产品源或任何外仓提交。
 
 - **Phase94交付已提交推送**：`78ad21e163042630255d2ca9f22f9cea07fbf29f`，39精确文件，origin/master正常由c223cc9前进；30工件staged blob全部按size/SHA核对，工作范围whitespace通过。快照中的.gitignore会忽略JSON，所以仅对已核39确切路径使用git add -f，未使用add -A/clean/reset，原Phase92七条状态不变。随后对完整包补-text（不只inputs/logs），使卡/模板的已绑定hash也不被未来checkout EOL转换；原包字节/索引不改。追加本条真实Git回执和PWF完成状态后再精确提交，产品线仍未完、三个worker均未启动。
+
+## 2026-10-07 — Phase95 IQS生产者接口正式交付
+- 继续goal；上一轮是progress，不是等待/无进展。已重新读PWF技能/resolver（legacy root无named选择），IQS6f7d7db的原七路径状态/QA09f68a69的16条/SW04dfc519 clean均实际核对；外仓动态状态未变不能证明无人施工，所以发问是否已经分派QA/SW，同时只推进IQS自身上游。不会自动接管施工卡或写新Lab根。
+- CodeGraph已索引observation_metadata及真实跨仓入口，但私有新c06_authority仍未入返回；从已知源路径读取其12项原测试。原CLI测试只进程内main调用，故本轮补真正的独立CLI进程与子进程guard，保留已有原子link保证和35 GREEN范围；不开收费矩阵、不按老目标刷退役工程回执。
+
+- 用户明确“三个外包施工包已开工”，立即停止假设可写外仓：StockQA/StockWiki/Lab唯一writer分别归外包，总控仅IQS。未向任何thread派发/发送消息，未修改波次2已冻结包。新的当前占用写入PWF及总控/接手指南；初始manifest false留作历史原件。
+- IQS实际子进程guard新增--public-cli，运行真实c06_authority.py入口，11场景/31题metadata exit0；两个原输入/正例输出稳定hash，拒覆盖/duplicate不泄正文/篡改/错版本/缺run/已有目录/缺父目录均断言。没有改生产者三源或原字段映射，波次2四IQS源SHA仍相同。只在当前CLI guard/E2E新增代码，权限/key/live清可用性，网络/根外写canary每子进程通过。
+- 本批producer_and_standard真实回归**35 passed/24 subtests/24.97s**，不与子进程场景简单加总充功能数；日志原字节SHA 86dd3869…、bf4b11a0…留档。一次独立agent只读复核已签本地producer代码门，明确Python audit不限制任意读取/父harness、identity/model-policy版本和producer构建为声明、同helper等价测试另用真实Git diff佐证；清理尚pending时未冒称环境已恢复。
+- 自有两根28文件清理：逐文件SHA/bytes、Python lstat链接数1和PowerShell reparse/LinkType、严格CIM0相关argv+已知subprocess.run终态；先dry-run后Apply原生PowerShell精确删除和空目录移除，实际receipt applied=true/files_deleted28/old_phase92_root_preserved=true。原结果cleanup_pending不改，以附receipt闭环；旧Phase92根/共享TEMP/外仓9项不碰。保留CLI输入/正例/11日志，身份synthetic而非真实StockWiki golden。
+- 正式上游说明`contracts/iqs-authority-producer-2026-10-07.md`、集中review和intake/artifact索引准备交付；源加精确-text使实际review SHA不被checkout改写。只提交本IQS上游及本批证据/PWF，opencode.json原样排除；最后Git结果随后追加。整Q10/G3/F05未关闭，QA消费端原embedded_answer RED由已开工QA包接续，不代修。

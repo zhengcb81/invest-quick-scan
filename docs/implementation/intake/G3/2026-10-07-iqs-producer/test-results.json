@@ -1,0 +1,40 @@
+{
+  "recorded_at_utc": "2026-10-07T21:36:27.413137Z",
+  "scope": "IQS_producer_and_metadata_only",
+  "results": [
+    {
+      "name": "cli_e2e",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "docs/implementation/reviews/G3/iqs_c06_cli_e2e.py",
+        "--work-root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\c06-context-2026-10-07-producer-cli-01"
+      ],
+      "exit_code": 0,
+      "own_root": "runs/c06-context-2026-10-07-producer-cli-01",
+      "log_sha256": "bf4b11a0db78225c864a901ddb12641d6deefadcf0d969b3a79bac595328398d",
+      "result": "passed"
+    },
+    {
+      "name": "producer_and_standard_regression",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "docs/implementation/reviews/G3/c06_context_guarded.py",
+        "tests/test_c06_authority.py",
+        "tests/test_standard_answers.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "own_root": "runs/c06-context-2026-10-07-producer-unit-01",
+      "log_sha256": "86dd38695263d42f88c6ce7ca6d7304d2d74d3b70ecac82e63b221e81c4e9542",
+      "result": "passed"
+    }
+  ],
+  "cleanup_pending": true
+}

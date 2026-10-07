@@ -1,5 +1,6 @@
 # 新接手模型工作指南
 
+**Phase95当前占用优先：** 用户已确认三外包开工，总控禁止写StockQA/StockWiki/新Lab源仓；先完成本IQS的[authority生产者交付](contracts/iqs-authority-producer-2026-10-07.md)，源与波次2冻结快照相同，附真实CLI/回归/独审/清理证据。交接归档和其他包只读；G3/F05仍未签收，不重新跑已结束收费实验。波次2初始workers_dispatched=false保留为当时快照，不可误读为可以接管写入。
 **2026-10-07晚间Phase94优先入口**：用户请求新的独立大包，见[第二轮三个施工包](parallel-lanes/packages/2026-10-07-wave2/README.md)。QA-C06-02接续Phase92九件有效未提交工作/真实RED，SW-REPAIR-02闭合原六问题，EVID-LAB-01在新独立root做零收费离线评测；输入/接口/模板均在包目录。只准备文档，尚未分派。不得重复旧QA-NET/SW-READY/TH-IN预研；实际人类分派后才能移交唯一writer/授予卡中范围。总控保持IQS独占，回收后集中联调，不新增小节点门。Phase93实验已提交推送，不能按下文历史“先实验”再收费。
 
 **2026-10-07 Phase91最新增量（优先于Phase90“只等SW writer”）**：已用真实StockQA CLI生成原始sealed package交真实StockWiki `observation-import`，隔离预检3fail/3pass/4.56s，发现Q10两项未覆盖跨仓阻断：残缺观察必填元数据、不同actual attempt同obs ID。不是推翻原5+R1–R3/982验收，也不是真实owner golden/G3。证据13/13、483自有临时文件已清理，外仓HEAD/工作树未变。读[跨仓整改卡](reviews/G3/cross-owner-remediation-2026-10-07.md)和`intake/G3/2026-10-07-cross-owner/result.json`；下一步在已授权StockQA内先映射真实冻结输入并报备精确范围，再做完整生产整改与旧封包兼容。StockWiki仍待唯一writer授权；不用它接收残缺包来凑绿。

@@ -1,0 +1,117 @@
+{
+  "schema": "iqs.c06_producer_cli_e2e/1",
+  "scope": "IQS_private_authority_producer_only",
+  "fixture_class": "synthetic_not_StockWiki_owner_golden",
+  "cases": [
+    {
+      "id": "CLI01_export",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI01_export.log",
+      "log_sha256": "17c39c5374cb105a1ce255865683a375995b1322832a56058cb822f5c6bc930b"
+    },
+    {
+      "id": "CLI02_repeat_same_bytes",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI02_repeat_same_bytes.log",
+      "log_sha256": "4b44f4bc57bb723415c443175a88a97de4a4c2eef3f88e9953da3b996f342de2"
+    },
+    {
+      "id": "CLI03_overwrite_refused",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI03_overwrite_refused.log",
+      "log_sha256": "b7b2a9c604b58573fe302f676ea54f6a96688ec342a740b7736e84e48b0e434b"
+    },
+    {
+      "id": "CLI04_primary",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI04_primary.log",
+      "log_sha256": "d98dcd37d8d8adaf1a85de3f0880daed78d06db94e6da118c5dc9443dc2d1298"
+    },
+    {
+      "id": "CLI05_comparison",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI05_comparison.log",
+      "log_sha256": "a5e89db76d40bbffe32572762a26c8f1abe1797920de889ee7918539097e0a76"
+    },
+    {
+      "id": "CLI06_duplicate_json",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI06_duplicate_json.log",
+      "log_sha256": "336162edc3ad72b43f04742e200707a9355214bb2001379b8d4a4dbc912004f5"
+    },
+    {
+      "id": "CLI07_archived_definition_reject",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI07_archived_definition_reject.log",
+      "log_sha256": "7e29353fa2c02c4d140ce64138625f0e4e200f847392e206917e82a42feb2125"
+    },
+    {
+      "id": "CLI08_wrong_contract",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI08_wrong_contract.log",
+      "log_sha256": "2dd51809236918c447ebf3e0aa1707bc8ea47ecb300103eb1dae4abd3f06c41b"
+    },
+    {
+      "id": "CLI09_missing_context",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI09_missing_context.log",
+      "log_sha256": "5aa8a57481ce9786a3e65d3af19110552e8ef56913c3cd3ca049cba7d09499a1"
+    },
+    {
+      "id": "CLI10_existing_directory",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI10_existing_directory.log",
+      "log_sha256": "8dfc4cc597c3f30397d8ecca12f1bc1718bbef023f8843a0ce04fe8667d219ca"
+    },
+    {
+      "id": "CLI11_parent_absent",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "guard_canaries": true,
+      "result": "passed",
+      "log": "CLI11_parent_absent.log",
+      "log_sha256": "6076d8e3525168cfa65f5b3383fb66f66d3b80c801878dac9c44c8a0c25a4523"
+    }
+  ],
+  "question_count": 31,
+  "stable_output_sha256": "edb1a1c43ca95d527bd0bb47f1dd8f8b0f44438a75bf62f53db9e1f991e1b8a1",
+  "source_manifest_sha256": "a7e80a5bcaf2cb2499fa24f091b129d7e1a2ebbf6e91a5666359c5e91c90270c",
+  "source_authority_sha256": "e5bc782afd245374fff3bc224f04cb9dbcc0fb22b76d62faf2a16917db1ded43",
+  "source_inputs_unchanged": true,
+  "staging_files_remaining": 0,
+  "known_child_processes_terminal": true,
+  "actual_external_network_calls": 0,
+  "paid_calls": 0,
+  "identity_attested": false,
+  "cleanup_pending": true
+}

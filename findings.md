@@ -1596,3 +1596,7 @@ Phase92输入映射发现：IQS `standard_answers.build_observations`已定义fi
 21:20:29Z再次只读快照：QA/SW状态稳定，company-wiki活动状态已增至66条，证明不能将静态盘点当目录锁。仅复制九件QA有效首段和四件IQS私有上游，共13份原字节；其他脏项只记路径不读内容。实验交付索引96文件均匹配，本轮总计114项IQS只读依赖绑定。新评测根当时不存在，lane_id=iqs只指L02离线分析职责，不授予IQS写权；107任务/366case不新增、不重新分配整任务。
 
 计划校验暴露并修正一处文档错误：Answer文件实际是schemas/answer-content.schema.json，不是answer.schema.json。SW浏览器测试应外部网络0、独占loopback服务可用，不能把真实页面HTTP记成网络调用0。既有三个工具路径猜测失败（parallel_handoff.py、templates/QA-NET-01.handoff.json、contracts/projection-and-query.md）均只读，后按实际CLI/模板目录定位；不会重造handoff系统。新测试首次用了非package的tests.*导入，后用文件入口；新增施工包锁未生成时的1 error是准备检查RED，不是产品反例。一次合并patch引用错误handoff标题整体拒绝，拆成准确hunk后成功，无外仓写。
+
+Phase95收尾选择：QA/SW可能由用户交给其他harness，不能仅靠无Git差异假定可抢写；IQS production exporter和metadata纯公式仍由总控独占。现有CLI测试进程内调用main，不证明实际入口/import/子进程环境隔离，因此补独立guarded CLI测试是有意义的缺口；不新增LLM、身份认证或存储实现。v2只bind opaque身份原字节，不颁verified资格；测试必须明确synthetic，不代替G3。
+
+本地正式producer可在不修改已分派卡的前提下落定：四IQS冻结源原字节不变，提交将私有上游变成可按commit消费的源，而不会改协议/题义。真实11子进程场景31题逐题与冻结authority metadata相等，35回归/24子测试通过；独立review对原内联metadata的Git diff佐证语义等价。Python audit只覆盖子进程受监控事件，父fixture harness不是OS读隔离；identity_schema/model_policy_schema与build声明不能当版本/来源认证。收到QA的完整v2消费后仍要独立核其真实绑定/状态与原RED，不能因producer通过关闭联合门。

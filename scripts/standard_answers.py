@@ -302,6 +302,42 @@ def validate_observation(record, *, require_published=False, expected_observatio
     return record
 
 
+def observation_metadata(manifest, question, run_context):
+    """Derive metadata from an already validated frozen manifest, without execution.
+
+    Callers must use validate_manifest_metric_contract before trusting this input.
+    This is also the formula used by build_observations; no alternate field,
+    method, cohort, or version mapping lives in the StockQA exporter.
+    """
+    profile = manifest['profile']
+    published = 'module_package_id' in manifest
+    method_tail = question['semantic_sha256'][:16] if published else digest(
+        {k: v for k, v in question.items() if k != 'prompt'})[:16]
+    record = dict(schema_version='1.1.0' if published else '1.0.0', entity_id=profile['entity_id'],
+                  security_id=profile.get('security_id') if question['scope'] == 'security' else None,
+                  segment_id=profile.get('segment_id'),
+                  field_id=question.get('field_id', question.get('metric_id')),
+                  construct_id=question.get('construct_id'), question_id=question['id'],
+                  question_version=question['rubric_version'], template_version=manifest['template_version'],
+                  method_id=('module-locked-v1/' if published else '') + manifest['method_id'] + '/' + method_tail,
+                  scope='segment' if profile.get('segment_id') and question['scope'] == 'entity' else question['scope'],
+                  cohort=dict(company_type=profile.get('company_type', 'unclassified'),
+                              industries=sorted(profile.get('industry_modules', [])),
+                              stage=profile.get('stage', 'unclassified'),
+                              subtype=profile.get('business_subtype')),
+                  information_cutoff=profile['as_of'], run_id=run_context['run_id'],
+                  scan_id=run_context['scan_id'], inputset_id=run_context['inputset_id'],
+                  task_mode=run_context['task_mode'], comparison_group_id=run_context['comparison_group_id'],
+                  evidence_review_status='unreviewed')
+    if published:
+        record.update(module_package_id=manifest['module_package_id'],
+                      module_release_id=manifest['module_release_id'],
+                      question_definition_sha256=question['definition_sha256'],
+                      question_semantic_sha256=question['semantic_sha256'],
+                      cycle_sensitive=bool(profile.get('cycle_sensitive', False)))
+    return copy.deepcopy(record)
+
+
 def build_observations(manifest, answers, receipts):
     if manifest.get('answer_format') != 'standard-1':
         raise ValueError('standard manifest required; never relabel legacy records')
@@ -334,29 +370,8 @@ def build_observations(manifest, answers, receipts):
         execution = receipts['requests'][qid]
         if execution['prompt_sha256'] != hashlib.sha256(q['prompt'].encode()).hexdigest():
             raise ValueError('execution prompt mismatch')
-        method_tail = q['semantic_sha256'][:16] if published else digest(
-            {k: v for k, v in q.items() if k != 'prompt'})[:16]
-        record = dict(schema_version='1.1.0' if published else '1.0.0', entity_id=profile['entity_id'],
-                      security_id=profile.get('security_id') if q['scope'] == 'security' else None,
-                      segment_id=profile.get('segment_id'), field_id=q.get('field_id', q.get('metric_id')),
-                      construct_id=q.get('construct_id'), question_id=qid,
-                      question_version=q['rubric_version'], template_version=manifest['template_version'],
-                      method_id=('module-locked-v1/' if published else '') + manifest['method_id'] + '/' + method_tail,
-                      scope='segment' if profile.get('segment_id') and q['scope'] == 'entity' else q['scope'],
-                      cohort=dict(company_type=profile.get('company_type', 'unclassified'),
-                                  industries=sorted(profile.get('industry_modules', [])),
-                                  stage=profile.get('stage', 'unclassified'),
-                                  subtype=profile.get('business_subtype')),
-                      information_cutoff=profile['as_of'], run_id=receipts['run_id'], scan_id=receipts['scan_id'],
-                      inputset_id=receipts['inputset_id'], task_mode=receipts['task_mode'],
-                      comparison_group_id=receipts['comparison_group_id'], observed_at=execution['answered_at'],
-                      execution=execution, answer=answer, evidence_review_status='unreviewed')
-        if published:
-            record.update(module_package_id=manifest['module_package_id'],
-                          module_release_id=manifest['module_release_id'],
-                          question_definition_sha256=q['definition_sha256'],
-                          question_semantic_sha256=q['semantic_sha256'],
-                          cycle_sensitive=bool(profile.get('cycle_sensitive', False)))
+        record = dict(observation_metadata(manifest, q, receipts),
+                      observed_at=execution['answered_at'], execution=execution, answer=answer)
         # Detach from caller-owned mutable answers/receipts before creating an immutable snapshot.
         record = copy.deepcopy(record)
         record['observation_id'] = 'obs_' + digest(record)

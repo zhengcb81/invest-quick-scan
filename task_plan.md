@@ -407,13 +407,15 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前状态（2026-10-07晚间）**：Phase93三公司四模型思考对照已经归档并提交推送，186模型/24搜索、0未知、上界USD2.877381；326来源复核仍不是人类gold，不能据结构有效改变生产默认或启动L03。Phase92完整观察生产链尚未完成，StockWiki六整改和G3/F05仍开放。Phase94根据用户新请求准备[第二轮三个独立大包](docs/implementation/parallel-lanes/packages/2026-10-07-wave2/README.md)，没有实际派发或外仓写入。
+**当前状态（2026-10-07晚间）**：三个[外包大包](docs/implementation/parallel-lanes/packages/2026-10-07-wave2/README.md)已由用户确认开工；总控独占IQS并只读外仓。Phase95正在收口IQS authority上游，Phase92完整生产链/StockWiki六整改/G3/F05仍开放。Phase93收费实验已结束并推送，186模型/24搜索、0未知、上界USD2.877381；326来源复核不是人类gold，不据结构有效改生产默认或启动L03。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**下一步**：交付QA-C06-02、SW-REPAIR-02和EVID-LAB-01的完整卡与输入锁，用户实际分派时确定各仓唯一writer及路径授权。QA若交出，总控暂停StockQA写入；未交出时仍由总控接Phase92的embedded_answer RED、生产authority/store与旧包兼容。SW六问题有独立整改卡，未获该范围新授权不代改；Lab可在获准新目录独立离线实现。回收QA/SW后由总控集中做双公开CLI→ACK→恢复→查询/UI联调。TH/IN/G3/F05/L03暂缓，不刷新退役回执、不重跑已结束收费实验。
+**下一步**：完成IQS上游本批精确提交/推送，然后只读核三包真实handoff/commit是否交到；有新交付再按卡统一验收，QA/SW收齐后集中做双公开CLI→ACK→恢复→查询/UI联调，Lab先核只读归档重放与非执行提案。总控不抢写三个源仓、不自动派发其他任务；TH/IN/G3/F05/L03暂缓，不刷新退役回执或重跑已结束实验。
+
+**当前执行（Phase95）**：用户已确认三个外包开工，总控只写IQS，不接管QA/SW/Lab。IQS authority上游11真实子进程CLI场景、35相关回归/24子测试及集中独审通过，两本轮根28文件已核清除；正准备精确正式提交/推送。接收QA/SW交付前保持Phase92整链/G3/F05开放；波次2初始workers_dispatched=false为历史制作快照，不覆盖用户新占用状态。
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
 
@@ -1368,3 +1370,11 @@ Status: complete_for_package_delivery_scope; committed_and_pushed; workers_not_d
 - [x] 一次批次验证：23相关单元/集成通过、三公开handoff模板shape/scope valid、10 JSON/2协议schema/62链接/5冻结Python AST通过；专属临时根清除，外仓写/网络/付费0。文档准备不代表产品验收或用户授权，不增加小节点审查或变更中央107任务/366case。
 - [x] 更新PWF/总控分派入口，39精确文件提交`78ad21e163042630255d2ca9f22f9cea07fbf29f`且正常推送既有origin/master；30索引工件与staged blob逐字节匹配。只写IQS文档/本包输入/相关测试，完整包加-text防checkout破坏hash；原Phase92七条状态保留。用户实际分派前不移交唯一writer、不启动任何包或付费调用。
 - 单一下一动作：交付三个施工包和明确分派指令；QA实际交出去后总控停止写StockQA，回收交付后再做跨仓联合验收。
+
+### Phase 95: IQS上下文生产者正式交付
+Status: in_progress; local_producer_only; no_external_writer_assumed
+- [x] 将前回合分类为progress（39+3文件已提交推送）；resolver legacy root、Git实际状态与施工包输入匹配，QA/SW均未出现新commit/状态差异，但未用此推断无人施工。
+- [x] 保留Phase92同一metadata/generator实现和波次2四个IQS源SHA；11真实子进程CLI场景/31题metadata等价验证通过，包含正常/重放/拒覆盖/primary-comparison/错版本/篡改/重复JSON/目录/缺父目录；35回归/24子测试包括原子link失败，不把子测试算成独立方法或事实准确率。
+- [x] 一次相关回归和集中独立复核无本范围阻断，给源码/合成输入/工件hash和准确命令；明确不含QA消费端/StockWiki owner golden。原子发布不变；Python audit不证明任意读/父harness全树隔离，identity/model-policy版本仍由接收方独立核。
+- [x] 本轮两根28文件manifest、SHA、无link、严格CIM argv扫描+已知子进程终态核验并清理；旧Phase92根/共享TEMP/外仓保留。原test-results cleanup_pending保留，另附实际receipt闭环。
+- [ ] 只清本轮manifest根、更新PWF并精确提交推送本目录生产者和交接；旧Phase92 run/opencode/外仓九件不清不提交。G3/F05和整Q10继续开放。
