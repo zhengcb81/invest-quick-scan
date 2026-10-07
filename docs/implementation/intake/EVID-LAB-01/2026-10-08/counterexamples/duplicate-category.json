@@ -1,0 +1,24 @@
+{
+  "schema": "iqs_evidence_lab.fixture/1",
+  "schema_version": "1.0.0",
+  "fixture_id": "FX-001",
+  "source_category": "historical_model_output", "source_category": "synthetic",
+  "collected": true,
+  "title": "半年 vs 全年期间冲突",
+  "why": "半年数字错当全年是本轮常见依据缺口，必须能定位到期间维度。",
+  "case": {
+    "expected": {
+      "period": "2026H1"
+    },
+    "observed": {
+      "period": "2026全年"
+    }
+  },
+  "expect": [
+    {
+      "check": "semantic.period",
+      "outcome": "fail",
+      "error_code": "E_PERIOD_MISMATCH"
+    }
+  ]
+}

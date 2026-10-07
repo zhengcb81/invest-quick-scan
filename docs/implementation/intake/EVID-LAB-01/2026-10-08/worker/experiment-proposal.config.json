@@ -1,0 +1,125 @@
+{
+  "schema": "iqs_evidence_lab.experiment_preregistration/1",
+  "schema_version": "1.0.0",
+  "execution_enabled": false,
+  "live_not_run": true,
+  "package_id": "EVID-LAB-01",
+  "proposal_doc": "experiment-proposal.md",
+  "authorization": {
+    "status": "not_authorized",
+    "requires": [
+      "user_budget_grant_for_declared_caps",
+      "coordinator_live_go_with_sample_input_price_cleanup_plan"
+    ],
+    "note": "this file is a non-executed preregistration; flipping execution_enabled requires coordinator sign-off"
+  },
+  "sample": {
+    "companies": [
+      {"key": "catl", "name": "宁德时代", "ticker": "300750"},
+      {"key": "cncb_h", "name": "中信建投证券", "ticker": "06066"},
+      {"key": "alphabet", "name": "Alphabet Inc.", "ticker": "GOOGL"}
+    ],
+    "question_ids": ["IQS_01", "IQS_02", "IQS_04", "IQS_05", "IQS_08", "IQS_09", "IQS_10", "IQS_12", "IQS_13", "IQS_16"],
+    "rubric_version": "1.0.0",
+    "anchors_frozen": true,
+    "expansion": "user_decision_required_not_granted"
+  },
+  "factors": {
+    "packaging": ["mixed_five", "themed_five"],
+    "evidence": ["baseline_snippets", "annotated_subject_period_unit"],
+    "model_thinking": [
+      {"model": "deepseek-flash", "thinking": ["off", "on"], "role": "primary"},
+      {"model": "mimo-v2.6-pro", "thinking": ["off", "on"], "role": "small_control"}
+    ]
+  },
+  "cells": [
+    {"cell_id": "DS-A1B1C1", "model": "deepseek-flash", "packaging": "mixed_five", "evidence": "baseline_snippets", "thinking": "off", "planned_model_requests": 6},
+    {"cell_id": "DS-A1B1C2", "model": "deepseek-flash", "packaging": "mixed_five", "evidence": "baseline_snippets", "thinking": "on", "planned_model_requests": 6},
+    {"cell_id": "DS-A1B2C1", "model": "deepseek-flash", "packaging": "mixed_five", "evidence": "annotated_subject_period_unit", "thinking": "off", "planned_model_requests": 6},
+    {"cell_id": "DS-A1B2C2", "model": "deepseek-flash", "packaging": "mixed_five", "evidence": "annotated_subject_period_unit", "thinking": "on", "planned_model_requests": 6},
+    {"cell_id": "DS-A2B1C1", "model": "deepseek-flash", "packaging": "themed_five", "evidence": "baseline_snippets", "thinking": "off", "planned_model_requests": 6},
+    {"cell_id": "DS-A2B1C2", "model": "deepseek-flash", "packaging": "themed_five", "evidence": "baseline_snippets", "thinking": "on", "planned_model_requests": 6},
+    {"cell_id": "DS-A2B2C1", "model": "deepseek-flash", "packaging": "themed_five", "evidence": "annotated_subject_period_unit", "thinking": "off", "planned_model_requests": 6},
+    {"cell_id": "DS-A2B2C2", "model": "deepseek-flash", "packaging": "themed_five", "evidence": "annotated_subject_period_unit", "thinking": "on", "planned_model_requests": 6},
+    {"cell_id": "PRO-A1B1C1", "model": "mimo-v2.6-pro", "packaging": "mixed_five", "evidence": "baseline_snippets", "thinking": "off", "planned_model_requests": 6},
+    {"cell_id": "PRO-A1B1C2", "model": "mimo-v2.6-pro", "packaging": "mixed_five", "evidence": "baseline_snippets", "thinking": "on", "planned_model_requests": 6}
+  ],
+  "totals": {
+    "planned_model_requests": 60,
+    "planned_search_requests": 24,
+    "search_shape": "3 companies x 4 retrieval intents x (brave_basic + tavily_advanced), shared across cells",
+    "caps": {
+      "model_http_cap": 60,
+      "search_http_cap": 24,
+      "cash_usd_cap": 4.0
+    },
+    "token_reference_estimate_usd_max": 0.85,
+    "estimate_note": "public frozen price reference; never add to cash cap; invoice unknown"
+  },
+  "generation": {
+    "transport_policy": "explicit_only/2",
+    "stream": false,
+    "output_limit": 10000,
+    "temperature": "omitted unless declared",
+    "thinking": "official provider flags; deepseek ignores temperature when thinking; mimo forces sampling when thinking",
+    "finish_reason_length_is_failure": true
+  },
+  "order": {
+    "strategy": "seeded_shuffle",
+    "seed": 20261007,
+    "unit": "(cell, company)",
+    "recorded_in": "run registration"
+  },
+  "stop_and_resume": {
+    "reserve_before_send": true,
+    "archived_run_id_reprepare": "forbidden",
+    "unknown_outcome": "no_recharge_no_resend",
+    "crash_resume": "only_unfinished_reservations"
+  },
+  "failure_policy": {
+    "retries": 0,
+    "format_retries": 0,
+    "model_swap_to_fill_arm": false,
+    "failed_package_stays_failed": true
+  },
+  "cache": {
+    "application_cache": "cold_by_design",
+    "cache_credit_budgeted": false,
+    "cache_binds": [
+      "question_and_rubric", "identity", "cutoff", "source_context",
+      "model", "endpoint", "generation_parameters", "parser_version", "transport_parameter_policy"
+    ],
+    "provider_prefix_cache": "reported separately, never as application-cache success"
+  },
+  "denominators": {
+    "package": "planned model requests (60)",
+    "item": "answered items including unknown",
+    "score_basis": "scored items only",
+    "claim_support": "answers carrying claims",
+    "unknown_rule": "unknown counts in item denominator, excluded from score_basis denominator, still diagnosed when carrying claims",
+    "historical_denominators_must_not_be_mixed": ["186 model", "24 search", "396 answers", "70 repeat", "326 reviewed", "191 scored reviewed", "14 limited basis"]
+  },
+  "reporting_layers": [
+    "L1_data_engineering_success",
+    "L2_structural_recovery",
+    "L3_source_support",
+    "L4_score_anchor_basis"
+  ],
+  "review": {
+    "protocol": "two disjoint blinded agent partitions, same instructions",
+    "inter_rater_calibration": "not_run",
+    "human_gold_calibration": "not_run",
+    "not_human_or_world_gold": true
+  },
+  "open_gates": [
+    "user_budget_grant",
+    "coordinator_live_go",
+    "preregistration_signoff_before_flipping_execution_enabled"
+  ],
+  "not_run": [
+    "live_search_and_model_calls",
+    "human_gold_calibration",
+    "production_adoption",
+    "sample_expansion"
+  ]
+}

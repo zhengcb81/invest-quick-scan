@@ -1,0 +1,160 @@
+test_duplicate_fixture_source_category_rejected (__main__.AcceptanceCases.test_duplicate_fixture_source_category_rejected) ... ERROR
+test_half_dictionary_conflict (__main__.AcceptanceCases.test_half_dictionary_conflict) ... ERROR
+test_historical_chunk_answer_tampering_rejected (__main__.AcceptanceCases.test_historical_chunk_answer_tampering_rejected) ... FAIL
+test_io_failure_does_not_leave_partial_output (__main__.AcceptanceCases.test_io_failure_does_not_leave_partial_output) ... unexpected error: controller injected disk write failure
+FAIL
+test_missing_source_window_abstains (__main__.AcceptanceCases.test_missing_source_window_abstains) ... ERROR
+test_missing_year_abstains (__main__.AcceptanceCases.test_missing_year_abstains) ... ERROR
+test_quarter_dictionary_conflict (__main__.AcceptanceCases.test_quarter_dictionary_conflict) ... ERROR
+test_same_report_comparison_columns_not_conflict (__main__.AcceptanceCases.test_same_report_comparison_columns_not_conflict) ... ERROR
+test_wrong_locked_file_rejected_by_public_cli (__main__.AcceptanceCases.test_wrong_locked_file_rejected_by_public_cli) ... ERROR
+
+======================================================================
+ERROR: test_duplicate_fixture_source_category_rejected (__main__.AcceptanceCases.test_duplicate_fixture_source_category_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 63, in test_duplicate_fixture_source_category_rejected
+    result = public(['replay','--input',str(fixture),'--output',str(out)])
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 22, in public
+    return subprocess.run([sys.executable, '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', *args],
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        cwd=LAB, env=dict(os.environ), capture_output=True, timeout=180)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\subprocess.py", line 1550, in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\guard\sitecustomize.py", line 32, in audit
+    if Path(executable).resolve() != Path(sys.executable).resolve():
+       ~~~~^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\pathlib\_local.py", line 503, in __init__
+    super().__init__(*args)
+    ~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Miniconda\Lib\pathlib\_local.py", line 132, in __init__
+    raise TypeError(
+    ...<2 lines>...
+        f"not {type(path).__name__!r}")
+TypeError: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'NoneType'
+
+======================================================================
+ERROR: test_half_dictionary_conflict (__main__.AcceptanceCases.test_half_dictionary_conflict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 33, in test_half_dictionary_conflict
+    self.assertEqual(result['outcome'], 'fail', result)
+                     ~~~~~~^^^^^^^^^^^
+TypeError: 'CheckResult' object is not subscriptable
+
+======================================================================
+ERROR: test_missing_source_window_abstains (__main__.AcceptanceCases.test_missing_source_window_abstains)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 41, in test_missing_source_window_abstains
+    result = next(r for r in rows if r['check']=='source.url_window')
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 41, in <genexpr>
+    result = next(r for r in rows if r['check']=='source.url_window')
+                                     ~^^^^^^^^^
+TypeError: 'CheckResult' object is not subscriptable
+
+======================================================================
+ERROR: test_missing_year_abstains (__main__.AcceptanceCases.test_missing_year_abstains)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 37, in test_missing_year_abstains
+    self.assertEqual(result['outcome'], 'abstain', result)
+                     ~~~~~~^^^^^^^^^^^
+TypeError: 'CheckResult' object is not subscriptable
+
+======================================================================
+ERROR: test_quarter_dictionary_conflict (__main__.AcceptanceCases.test_quarter_dictionary_conflict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 29, in test_quarter_dictionary_conflict
+    self.assertEqual(result['outcome'], 'fail', result)
+                     ~~~~~~^^^^^^^^^^^
+TypeError: 'CheckResult' object is not subscriptable
+
+======================================================================
+ERROR: test_same_report_comparison_columns_not_conflict (__main__.AcceptanceCases.test_same_report_comparison_columns_not_conflict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 46, in test_same_report_comparison_columns_not_conflict
+    result = next(r for r in rows if r['check']=='source.url_window')
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 46, in <genexpr>
+    result = next(r for r in rows if r['check']=='source.url_window')
+                                     ~^^^^^^^^^
+TypeError: 'CheckResult' object is not subscriptable
+
+======================================================================
+ERROR: test_wrong_locked_file_rejected_by_public_cli (__main__.AcceptanceCases.test_wrong_locked_file_rejected_by_public_cli)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 52, in test_wrong_locked_file_rejected_by_public_cli
+    result = public(['replay','--input',str(wrong),'--output',str(out)])
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 22, in public
+    return subprocess.run([sys.executable, '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', *args],
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        cwd=LAB, env=dict(os.environ), capture_output=True, timeout=180)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\subprocess.py", line 1550, in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\guard\sitecustomize.py", line 32, in audit
+    if Path(executable).resolve() != Path(sys.executable).resolve():
+       ~~~~^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\pathlib\_local.py", line 503, in __init__
+    super().__init__(*args)
+    ~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Miniconda\Lib\pathlib\_local.py", line 132, in __init__
+    raise TypeError(
+    ...<2 lines>...
+        f"not {type(path).__name__!r}")
+TypeError: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'NoneType'
+
+======================================================================
+FAIL: test_historical_chunk_answer_tampering_rejected (__main__.AcceptanceCases.test_historical_chunk_answer_tampering_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 86, in test_historical_chunk_answer_tampering_rejected
+    self.assertTrue(archive_provenance_verifier(fixture), 'Historical full copied answers must be bound to the archive')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : Historical full copied answers must be bound to the archive
+
+======================================================================
+FAIL: test_io_failure_does_not_leave_partial_output (__main__.AcceptanceCases.test_io_failure_does_not_leave_partial_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 79, in test_io_failure_does_not_leave_partial_output
+    self.assertFalse(out.exists(), 'Failed publication must not poison an exclusive output path')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : Failed publication must not poison an exclusive output path
+
+----------------------------------------------------------------------
+Ran 9 tests in 1.734s
+
+FAILED (failures=2, errors=7)

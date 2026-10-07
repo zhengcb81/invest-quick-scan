@@ -1,0 +1,165 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "iqs",
+  "package_id": "EVID-LAB-01",
+  "status": "complete",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/iqs-evidence-lab",
+    "base_ref": "codex/evid-lab-01",
+    "base_commit": "cc3c38824c90a210196d63242797113247094b22",
+    "result_ref": "codex/evid-lab-01",
+    "result_commit": "35b98cd443c0adf05fae1ebc2bd6cc0e28760019",
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "L02"
+    ],
+    "authorization_scope_ref": "user dispatch in the assignment session explicitly authorized creating and sole-writing C:/Users/郑曾波/Projects/iqs-evidence-lab (answer: 授权创建并作为唯一writer); card EVID-LAB-01 defines the allowed paths inside that root",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab"
+    ],
+    "authorized_paths": [
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab"
+    ],
+    "changed_paths": [
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/README.md",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/pyproject.toml",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/src/iqs_evidence_lab",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/tests",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/fixtures",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/schemas",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/tools",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/reports/.gitkeep",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/docs/handoff/EVID-LAB-01"
+    ],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [
+    {
+      "name": "inputs.lock.json (IQS wave2 input lock)",
+      "version": "1.0.0",
+      "content_hash": "432272257ae79b3fb9de538ca37a775be3f21bc8303f8cd5a1165c7fad62a78e",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "mimo-pro-result-index-2026-10-07.json (mimo_pilot_delivery/1, 96 bound files)",
+      "version": "mimo_pilot_delivery/1",
+      "content_hash": "c731bec5b16911bf38ec52817960800cffd072236a93faca40c60697c35ad83c",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "mimo_pilot_source_support_join/1 (326-answer retained join)",
+      "version": "mimo_pilot_source_support_join/1",
+      "content_hash": "25b60b43df9111b58ec8c858ffdbf86ff84e18aa8389a7e0ec0c5f9ffdee9787",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "schemas/evidence-diagnostic-v1.schema.json",
+      "version": "1.0.0",
+      "content_hash": "319c52e31da2cc0dc89fe363541e909d192789e713737879ca1ab0dc54cdd268",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "schemas/fixture-v1.schema.json",
+      "version": "1.0.0",
+      "content_hash": "c249435773be42810c8889ec281b8884015acdc9c46e2875176b3732344d4c60",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "python -m iqs_evidence_lab replay / validate-fixtures",
+      "version": "0.1.0",
+      "content_hash": "827be9e3377da53a7b1adf92e6860c3b43417580be163d7787d61aa4a21cac71",
+      "direction": "produced",
+      "result": "compatible"
+    }
+  ],
+  "verification": {
+    "checks": [
+      {
+        "name": "final centralized regression (unit + integration + offline CLI E2E)",
+        "command": "python -m pytest tests/ -q",
+        "scope": "tests/ (54 tests)",
+        "result": "passed",
+        "passed": 54,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "input lock and experiment index SHA verification",
+        "command": "python -m pytest tests/test_inputs_verification.py -q",
+        "scope": "224 locked file hashes (iqs_inputs + snapshots + index + 96 bound files), read-only before/after",
+        "result": "passed",
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "fixture catalog, provenance and expectation validation",
+        "command": "PYTHONPATH=src python -m iqs_evidence_lab validate-fixtures",
+        "scope": "34 fixtures / 350 diagnostic records / 0 problems",
+        "result": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "three-archive read-only replay, exclusive output, stable stats, zero network/key/paid",
+        "command": "PYTHONPATH=src python -m iqs_evidence_lab replay --input index --output <new_dir>",
+        "scope": "three locked archives; equal_to_published=true; review_join_verified=true; repeated run byte-identical",
+        "result": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": [
+      {
+        "path_or_id": ".temp-roots/pytest-<pid>-<uuid> (per pytest session; TEMP/TMP/TMPDIR + pytest basetemp + subprocesses)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": ".temp-roots/smoke1 (CLI smoke)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": ".temp-roots/log-replay (log capture)",
+        "created": true,
+        "cleaned": true
+      }
+    ]
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "complete = this card's local offline subdelivery only; coordinator joint acceptance and gates (G3/F05/Q10/W12/L02 full-task) remain open and are not closed here",
+    "experiment-proposal.config.json is a preregistration with execution_enabled=false; live search/model runs need user budget grant plus coordinator go",
+    "human gold and inter-rater calibration stay not_run; agent review labels are reported only as agent_review_only, never as gold",
+    "real_source_snippet fixtures are collected=false (needs separate retrieval authorization); other categories must not impersonate them",
+    "per-item recoverability for the three archives is not_measurable (no preserved item_inspection); counts are reported, never invented",
+    "coordinator decides whether to run the proposed next-round experiment"
+  ],
+  "next_action": "总控验收：先用 README 公共 CLI 预检（validate-fixtures、replay --input index），再核源码/日志/工件hash与隔离记录；通过后决定是否以 experiment-proposal.config.json 为底稿安排下一轮小规模实验（需另行授权）。"
+}

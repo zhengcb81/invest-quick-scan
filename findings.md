@@ -1619,3 +1619,11 @@ Z.ai本轮真实对照：REST错误1113为余额/资源包不足，MCP仍有真�
 有限复问/第二模型可测稳定性，但15数值四答一致仅12项四次引用均支持；不足不能靠一致、多数票或换模型修复。三题事实包减少重复输入（66.3%）和参考费（47.9%），服务耗时之和仅减16.6%；不推成端到端并发加速或30评分题生产验收。正确拒答单列，不能全拒答零错误胜出。
 ZAI被拒的是REST资源桶（429/1113），MCP同key当次成功。工具结果域名级链接、错issuer或缺表头仍不可支持精确财务；本MCP只覆盖1/15，保留补充路由且endpoint细分健康。冻结transport和实验小接口均不等于原生搜索多轮生产最终答案已接线。
 本地处理递归的未知请求留原ledger和全部预算，停止重复，另登记不同查询；归档/删除临时文件不释放账务未知。原浮点评估留档，十进制端点以sidecar重算；原覆盖补标与说明独审分开。最小归档可复算结果/支持计数，不可还原全prompt、片段或invalid文本，不能夸称完整响应重放。
+
+Phase97核对范围：Lab卡锁IQS5edf5eb三历史归档/326agent labels，历史片段已经清除，不能反推人类gold。当前目录列出28 synthetic、5 historical和1 real-source-snippets fixture，交付来源/人工gold边界需集中核；默认本包无新网络/取源权限。
+
+Phase97真实查收：Lab codex/evid-lab-01@d87cf718a0fa90f2d0929e902ad2faa70c39580a，交接结果commit35b98cd443c0adf05fae1ebc2bd6cc0e28760019为代码/提案结果，后续仅交接/绝对scope/PWF更新；未创建remote，沙箱外Git status实际0项。交接shape公开CLI待实际回执判断；worker34fixture里的FX034是collected=false空槽，不是伪造真实来源正例。当前验收不认54自述直接过门，核实际公开CLI和输入边界。CodeGraph未初始化已按AGENTS询问，未写外仓。
+
+Phase97 hash口径：worker artifacts82/82匹配当前工作树原字节，公开handoff CLI shape valid。按HEAD git archive导出83跟踪文件，37工件与声明hash不同，全部仅CRLF/LF差异，非内容篡改；交接需明确工作树/commit字节和可复制办法，不能把工作树hash称Git原字节。集中agent已经复现期间字典丢quarter/half、缺year误pass、URL缺窗口pass/同报告比较列误fail，以及proposal answered-only分母/冻结题组query价格不足。工具回归与公开路径还在自有隔离副本验证，未代改Lab。
+
+Phase97终态：工具的历史重算/fixture来源分层可确认，语义和提案不可签全包。9固定补充case=8失败/1通过：Q1/Q4及H1/H2混同、缺year及源window误pass、比较列误fail、重复类别JSON静默接受、历史答案篡改没检出、IO失败留exclusive半成品。proposal主分母必须包含300计划槽而非answered-only；否则失败包能抬高看似准确率。原53方法与子进程1方法总54个唯一passed不证明这些新行为；最小副本原件不变、全部103临时文件已清，未知支持仍abstain而不造gold。

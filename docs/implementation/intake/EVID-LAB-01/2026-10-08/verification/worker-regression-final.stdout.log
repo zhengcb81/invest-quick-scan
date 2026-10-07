@@ -1,0 +1,81 @@
+.......F..............................................                   [100%]
+================================== FAILURES ===================================
+___________________ test_subprocess_replay_is_fully_offline ___________________
+
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-2026-10-08-01/lab/.temp-roots/pytest-22444-7b56d719/pytest-of-unknown/pytest-0/test_subprocess_replay_is_full0')
+
+    def test_subprocess_replay_is_fully_offline(lab_tmp_path: Path):
+        before = snapshot_input_hashes(default_lock_path())
+        env = dict(os.environ)
+        for name in list(env):
+            if name.endswith("_API_KEY"):
+                env.pop(name)
+        env["PYTHONPATH"] = str(LAB_ROOT / "src")
+        env["TEMP"] = env["TMP"] = env["TMPDIR"] = str(lab_tmp_path)
+        out = lab_tmp_path / "subprocess-out"
+>       proc = subprocess.run(
+            [
+                sys.executable,
+                "-B",
+                "-X",
+                "utf8",
+                "-m",
+                "iqs_evidence_lab",
+                "replay",
+                "--input",
+                "index",
+                "--output",
+                str(out),
+            ],
+            cwd=str(LAB_ROOT),
+            env=env,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            timeout=600,
+        )
+
+tests\test_cli_e2e.py:164: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'subprocess.Popen'
+args = (None, 'C:\\Miniconda\\python.exe -B -X utf8 -m iqs_evidence_lab replay --input index --output C:\\Users\\郑曾波\\Project...26-10-08-01\\lab', 'E97_OWNED_ROOT': 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-2026-10-08-01', ...})
+
+    def audit(event, args):
+        if event in {'socket.connect', 'socket.getaddrinfo', 'socket.bind', 'socket.sendto'}:
+            raise PermissionError('E97 network forbidden')
+        if event == 'open':
+            mode, flags = args[1], args[2]
+            if (isinstance(mode, str) and any(x in mode for x in 'wax+')) or (isinstance(flags, int) and flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND)):
+                writable(args[0])
+        if event in {'os.mkdir', 'os.remove', 'os.rmdir', 'os.chmod', 'os.utime'}:
+            writable(args[0])
+        if event in {'os.rename', 'os.replace', 'os.link', 'os.symlink'}:
+            writable(args[0]); writable(args[1])
+        if event in {'os.system', 'os.exec', 'os.posix_spawn'}:
+            raise PermissionError('E97 shell execution forbidden')
+        if event == 'subprocess.Popen':
+            executable, argv, cwd, env = args
+            # Windows audit exposes executable=None and a command-line string.
+            same_python = (Path(executable).resolve() == Path(sys.executable).resolve()) if executable else (
+                isinstance(argv,str) and argv.startswith(subprocess.list2cmdline([sys.executable])+' '))
+            if not same_python:
+                raise PermissionError('E97 only Python child processes allowed')
+            if cwd is None or not Path(cwd).resolve().is_relative_to(OWNED):
+                raise PermissionError('E97 child cwd outside owned root')
+            if env is None or env.get('E97_OWNED_ROOT') != str(OWNED) or str(OWNED / 'guard') not in env.get('PYTHONPATH', ''):
+>               raise PermissionError('E97 child guard not inherited')
+E               PermissionError: E97 child guard not inherited
+
+..\guard\sitecustomize.py:43: PermissionError
+=========================== short test summary info ===========================
+FAILED tests/test_cli_e2e.py::test_subprocess_replay_is_fully_offline - Permi...
+1 failed, 53 passed in 13.96s

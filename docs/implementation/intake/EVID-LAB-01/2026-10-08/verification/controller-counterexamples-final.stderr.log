@@ -1,0 +1,99 @@
+test_duplicate_fixture_source_category_rejected (__main__.AcceptanceCases.test_duplicate_fixture_source_category_rejected) ... FAIL
+test_half_dictionary_conflict (__main__.AcceptanceCases.test_half_dictionary_conflict) ... FAIL
+test_historical_chunk_answer_tampering_rejected (__main__.AcceptanceCases.test_historical_chunk_answer_tampering_rejected) ... FAIL
+test_io_failure_does_not_leave_partial_output (__main__.AcceptanceCases.test_io_failure_does_not_leave_partial_output) ... unexpected error: controller injected disk write failure
+FAIL
+test_missing_source_window_abstains (__main__.AcceptanceCases.test_missing_source_window_abstains) ... FAIL
+test_missing_year_abstains (__main__.AcceptanceCases.test_missing_year_abstains) ... FAIL
+test_quarter_dictionary_conflict (__main__.AcceptanceCases.test_quarter_dictionary_conflict) ... FAIL
+test_same_report_comparison_columns_not_conflict (__main__.AcceptanceCases.test_same_report_comparison_columns_not_conflict) ... FAIL
+test_wrong_locked_file_rejected_by_public_cli (__main__.AcceptanceCases.test_wrong_locked_file_rejected_by_public_cli) ... ok
+
+======================================================================
+FAIL: test_duplicate_fixture_source_category_rejected (__main__.AcceptanceCases.test_duplicate_fixture_source_category_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 66, in test_duplicate_fixture_source_category_rejected
+    self.assertEqual(result.returncode, 4, 'Conflicting provenance keys must not silently use the last value')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 4 : Conflicting provenance keys must not silently use the last value
+
+======================================================================
+FAIL: test_half_dictionary_conflict (__main__.AcceptanceCases.test_half_dictionary_conflict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 33, in test_half_dictionary_conflict
+    self.assertEqual(result.outcome, 'fail', result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : CheckResult(check='semantic.period', outcome='pass', error_code=None, abstain_reason=None, message='period: consistent', dimension='period')
+
+======================================================================
+FAIL: test_historical_chunk_answer_tampering_rejected (__main__.AcceptanceCases.test_historical_chunk_answer_tampering_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 86, in test_historical_chunk_answer_tampering_rejected
+    self.assertTrue(archive_provenance_verifier(fixture), 'Historical full copied answers must be bound to the archive')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true : Historical full copied answers must be bound to the archive
+
+======================================================================
+FAIL: test_io_failure_does_not_leave_partial_output (__main__.AcceptanceCases.test_io_failure_does_not_leave_partial_output)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 79, in test_io_failure_does_not_leave_partial_output
+    self.assertFalse(out.exists(), 'Failed publication must not poison an exclusive output path')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : Failed publication must not poison an exclusive output path
+
+======================================================================
+FAIL: test_missing_source_window_abstains (__main__.AcceptanceCases.test_missing_source_window_abstains)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 42, in test_missing_source_window_abstains
+    self.assertEqual(result.outcome, 'abstain', result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'pass' != 'abstain'
+- pass
++ abstain
+ : CheckResult(check='source.url_window', outcome='pass', error_code=None, abstain_reason=None, message='no cross-window URL reuse', dimension=None)
+
+======================================================================
+FAIL: test_missing_year_abstains (__main__.AcceptanceCases.test_missing_year_abstains)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 37, in test_missing_year_abstains
+    self.assertEqual(result.outcome, 'abstain', result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'pass' != 'abstain'
+- pass
++ abstain
+ : CheckResult(check='semantic.period', outcome='pass', error_code=None, abstain_reason=None, message='period: consistent', dimension='period')
+
+======================================================================
+FAIL: test_quarter_dictionary_conflict (__main__.AcceptanceCases.test_quarter_dictionary_conflict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 29, in test_quarter_dictionary_conflict
+    self.assertEqual(result.outcome, 'fail', result)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'pass' != 'fail'
+- pass
++ fail
+ : CheckResult(check='semantic.period', outcome='pass', error_code=None, abstain_reason=None, message='period: consistent', dimension='period')
+
+======================================================================
+FAIL: test_same_report_comparison_columns_not_conflict (__main__.AcceptanceCases.test_same_report_comparison_columns_not_conflict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-2026-10-08-01\acceptance_cases.py", line 47, in test_same_report_comparison_columns_not_conflict
+    self.assertNotEqual(result.outcome, 'fail', result)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'fail' == 'fail' : CheckResult(check='source.url_window', outcome='fail', error_code='E_URL_WINDOW_CONFLICT', abstain_reason=None, message='same URL reused across different periods: https://example.com/report', dimension=None)
+
+----------------------------------------------------------------------
+Ran 9 tests in 4.072s
+
+FAILED (failures=8)

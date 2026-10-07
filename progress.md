@@ -2124,3 +2124,16 @@
 - 更新SKILL/search规范、准确性手册/结果/交接与PWF；不改模型顺位、题包默认、schema或G3/F05。下一步回收三个外包真实交付做联合验收；Git精确提交与push实际结果随后追加，不在此虚填commit。
 
 - **Phase96实际Git交付**：`03e34aa6e4d414bc09b65dbf070ca3dbd59fcbef`，221精确文件，正常推送origin/master（323ab41→03e34aa，exit0）。213已索引源码/工件全部与staged blob原字节一致，diff --check通过（CR-at-EOL保留日志原字节）。只包含本实验/规范/证据/PWF；opencode.json未检查/未暂存/未删，三个外部writer和旧Phase92根不动。之后仅提交本回执，不改已审source/工件。
+
+## 2026-10-07 — Phase97接收EVID-LAB-01
+用户通知本包完成；已读卡/共同规范/接口/模板及PWF最新状态，恢复原选定root计划。Lab Git沙箱拒绝只读探针，待沙箱外核实际HEAD/状态；文件清单已有handoff与34fixture，其中FX034真实来源标签须核实际来源/权限，不拿目录存在作签收。只写IQS验收证据与PWF，收费/外仓写0。
+
+- Phase97独立大节点review完成：EL01期间、EL02 URL窗口、EL03 fixture追溯/duplicate keys、EL04写盘残留、EL05提案分母/冻结、EL06字节/hash/定位六组整改。FX034只是未收集空槽，不拿它指控伪造。
+- 从d87HEAD导出83Git文件到唯一IQS测试根；82worker工件当前工作树全匹配，37Git blob hash仅EOL不同。公开handoff shape valid，公开fixtures34/42expectation/350records、三归档replay186模型/24搜索/396答案/326join/48温度偏差复算一致。224校验重复绑定，实际128独立输入含lock，前后SHA不变。
+- 本批测试适配如实留档：初始pytest NUL sink、Windows Popen executable=None被总控guard误拦；controller误将CheckResult当dict，造成2failure/7error，不算有效反例。只改IQS测试harness，不改Lab；第二次worker53 passed/1 child guard failed，因该test改PYTHONPATH丢总控guard。启动边界重注入后只定向该test1 passed/4.91s，共54唯一方法通过，不称一次54全绿。controller修正后9tests/4.072s=8failed/1passed/0error，为真实RED，原错误/全部日志保留。
+- 公共非index锁定价格文件Windows实际被拒，故静态怀疑不列实际阻断。重复source_category公共CLI exit0、历史答案改score/rationale verifier仍[]、第二文件IO失败exit1留下input-verification均已真实复现。pytest子进程终态确认，网络/付费/下载0，原Lab未写。
+- 验收报告/整改卡和独审已落档IQS；现阶段changes_requested，不签全包/提案冻结，保留已有重算器交付。六组一批修复后一次回归/集中复审，不新增小节点门。清理基线已生成，实际Apply回执待补。
+
+- Phase97实际清理：单一自有根103文件经Python lstat nlink1、PowerShell绝对路径/精确set+SHA、strict CIM0与已知同步session终态核实，dry-run→Apply完成，receipt.applied=true。Lab原HEAD d87/clean未变，无remote；旧Phase92、共享TEMP、opencode.json保留。验收结束changes_requested，交回六组整改与9固定反例；不代改Lab，不以54已有测试过关覆盖8新增失败。PWF/交接已更新，精确Git提交随后记录。
+
+- Git原始日志检查报一处pytest traceback行的trailing blank（worker-regression-final.stdout.log:38）；保留原字节/SHA，用该唯一原始日志的精确whitespace属性豁免，不清洗日志或修改已审源。其他staged范围继续正常diff检查。

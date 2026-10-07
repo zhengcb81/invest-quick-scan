@@ -219,3 +219,11 @@ Phase96准确性优先实验已经结束，读[完整结果](experiments/accurac
 四实验根394临时文件已按hash/无进程/无link清除，未知费用不释放；old Phase92自有根和opencode.json保留。51离线测试+集中独审+skill校验+归档公开CLI移动重算通过。不要重复已结束测试/原探针收费；只有新行为/失败才做受影响检查。原生搜索最终答案、authority消费、StockWiki整改及G3/F05/TH/IN/L03仍待各自真实交付和大节点验收。
 
 ZAI官方link对应REST接口，本批同key REST429/1113为资源包不足，MCP成功；不要把REST拒绝扩散成MCP停用或普通限频自动重试。生产接线由QA owner按统一规范实施，IQS实验脚本不是第二调度器。Git实际交付见progress最新记录。
+
+### 2026-10-08最新：Phase97 EVID-LAB-01已查收，六组整改待原writer
+
+用户已通知Lab完成；总控核codex/evid-lab-01@d87cf718a0fa90f2d0929e902ad2faa70c39580a，代码结果35b98cd443c0adf05fae1ebc2bd6cc0e28760019，实际clean/无remote。只读验收完成，**changes_requested，不能签全包**。读[验收报告](reviews/EVID-LAB-01/acceptance-2026-10-08.md)、[整改卡](reviews/EVID-LAB-01/remediation-2026-10-08.md)与[intake真实日志](intake/EVID-LAB-01/2026-10-08/verification/result.json)。
+
+shape/82工件工作树hash、三归档复算和34fixtures通过，已有54唯一测试经过53+1方法通过；新9反例8失败：period/window误判、JSON重复类别/历史答案追溯、IO失败残留。提案分母answered-only、题组/query/费率尚未冻结，输入/答案hash/位置及EOL口径需修。FX034仅未收集占位没有伪造来源。原Lab writer按六组同批修，不重新做已做功能、不收费、不扩大样本、不自关L02/G3/F05；其他QA/SW独立线可继续。
+
+总控103临时文件已Apply清除，128独立冻结输入SHA不变，Lab未写。worker工具不能拿54测试通过替代新增反例GREEN；原case/log/HEAD留档，收到新commit后只做受影响回验+一次集中复审。请勿为了清树动opencode.json或旧Phase92根，也不要自动跑Lab60/24草案或重新发Phase96矩阵。当前选定PWF仍root，Git实际交付看progress最新记录。

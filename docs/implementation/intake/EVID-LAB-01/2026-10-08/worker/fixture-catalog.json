@@ -1,0 +1,419 @@
+{
+  "schema": "iqs_evidence_lab.fixture_catalog/1",
+  "schema_version": "1.0.0",
+  "package_id": "EVID-LAB-01",
+  "generated_from": "fixtures/catalog.json (regenerate: python -X utf8 tools/make_fixtures.py && copy with provenance+hash overlay)",
+  "counts": {
+    "synthetic": 28,
+    "historical_model_output": 5,
+    "real_source_snippet": 1,
+    "total": 34
+  },
+  "source_categories": {
+    "synthetic": "declared lab-authored cases",
+    "historical_model_output": "rows copied verbatim from the three locked archives",
+    "real_source_snippet": "not collected in this package; retrieval needs separate authorization"
+  },
+  "label_boundaries": {
+    "synthetic": "lab-authored explicit-input cases; never evidence of real-world factuality",
+    "historical_model_output": "verbatim rows from the three locked archives; agent review labels inside are fault shapes, never human/world gold; answer_sha256 cross-checked against archives",
+    "real_source_snippet": "not collected in this package (needs separate retrieval authorization); collected=false; other categories must not impersonate it",
+    "no_gold_claim": "no fixture asserts factual correctness; claim-level fact support is always abstain (snippet_not_available) until real snippets are authorized"
+  },
+  "fixtures": [
+    {
+      "fixture_id": "FX-001",
+      "path": "fixtures/synthetic/FX-001.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "半年 vs 全年期间冲突",
+      "why": "半年数字错当全年是本轮常见依据缺口，必须能定位到期间维度。",
+      "sha256": "a3ac8603e09a80cd9034495ca5d88bc7261ac8b6fdadaf21bf7b503984e780b6",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-002",
+      "path": "fixtures/synthetic/FX-002.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "半年 vs 年化期间冲突",
+      "why": "年化口径与半年口径不可互换。",
+      "sha256": "0bffead8d1b91dd2e3146aaf032e03d17d6e4dad3e1377bdd30dcbe555529ce2",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-003",
+      "path": "fixtures/synthetic/FX-003.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "claim未给出期间则abstain",
+      "why": "缺信息必须abstain，不能按关键词猜期间。",
+      "sha256": "ab35d59126e7d069ec485012e12e165a56d2b287f1f558ce5b822cbc848c916d",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-004",
+      "path": "fixtures/synthetic/FX-004.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "利润 vs 收入指标冲突",
+      "why": "利润和收入混用会直接改变评分依据。",
+      "sha256": "83d3e433fe9e1a36f40f5f3e78d41da352376aec287cb5905f2d1bc3598bb52e",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-005",
+      "path": "fixtures/synthetic/FX-005.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "CFO vs ROIC指标冲突",
+      "why": "现金流金额不能当作ROIC-WACC依据。",
+      "sha256": "aede8223eec73e78972526ed3c385de0a850db23f4ccf5b567a063d6a09b7c12",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-006",
+      "path": "fixtures/synthetic/FX-006.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "百分比与比例等价不误判",
+      "why": "50%与0.5比例是同一量纲，缩放差异不是矛盾。",
+      "sha256": "c3aab6609273ab292251e0de43548b98b8781b3536574d4f8a57b52d88b6addb",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-007",
+      "path": "fixtures/synthetic/FX-007.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "货币亿与万缩放不误判",
+      "why": "同币种不同数量级标注是换算关系，不是矛盾。",
+      "sha256": "5ec4a4d9e90e3b3fe910cad80a5886de06df73662b1096a92215b243be6de309",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-008",
+      "path": "fixtures/synthetic/FX-008.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "百分比 vs 货币单位冲突",
+      "why": "把百分比当货币是真实发生过的单位错误。",
+      "sha256": "b5b2639049b28699a7b01589183b3af035a5c6f885aae529549ebd4465bc8558",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-009",
+      "path": "fixtures/synthetic/FX-009.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "错主体：claim主体指向其他发行人",
+      "why": "结构通过掩盖主体错配是最危险的失败形态。",
+      "sha256": "e6847d642202c2e2f404a5417ed5d289bb0d84d59b6603191992e36a5ebdf399",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-010",
+      "path": "fixtures/synthetic/FX-010.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "同名公司：别名归一到同一主体",
+      "why": "别名与全称是同一发行人，不能误判。",
+      "sha256": "791a7612efceb8bcca02b43395e69d7821e59a7abd4f9bf04d314e3485305ce6",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-011",
+      "path": "fixtures/synthetic/FX-011.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "多挂牌：A/H股ticker属同一主体",
+      "why": "多挂牌不得复制发行人，也不得互相矛盾。",
+      "sha256": "6d0e17fedaab3fe0a62c435f96b7503d5c3f9a0f91c9b8053a68b37c0298ebe2",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-012",
+      "path": "fixtures/synthetic/FX-012.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "支持方向冲突",
+      "why": "显式方向相反时必须定位。",
+      "sha256": "d5cacc9f21f27bb96aa9cf914d9ccec703efab4b5b46d640030b3551b7f0547a",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-013",
+      "path": "fixtures/synthetic/FX-013.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "group vs segment口径冲突",
+      "why": "集团口径和分部口径混用是常见统计错误。",
+      "sha256": "c9e13101835751c5959d90e05faa424fe10a58156dd696333ff2e498e3cac95e",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-014",
+      "path": "fixtures/synthetic/FX-014.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "issuer融资 vs 客户承销角色冲突",
+      "why": "发行人自己发债不等于承销客户留存。",
+      "sha256": "dfd4ce85c41ccd4940a15f5cc914bb9445c39541c8c038cb6e84bb1809bdef8b",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-015",
+      "path": "fixtures/synthetic/FX-015.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "循环来源",
+      "why": "来源互相引用时证据独立性不成立。",
+      "sha256": "9634e9f0aff573913477c780f4b6fe4f6ac9a940640cbe9c0b26dd05231660ca",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-016",
+      "path": "fixtures/synthetic/FX-016.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "转述来源",
+      "why": "只有一手来源的转述不算第二来源。",
+      "sha256": "f1b177f0c354146ef1cc4186607510d130ef5973b44b03797435e709aca105e2",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-017",
+      "path": "fixtures/synthetic/FX-017.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "同URL不同窗口",
+      "why": "同一URL不能同时支撑两个不同期间。",
+      "sha256": "86dda029b39b6ccdac5ab7f0c9da03208e366216d942802580026f6ecb256c2d",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-018",
+      "path": "fixtures/synthetic/FX-018.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "来源关系未说明则abstain",
+      "why": "缺关系信息不能推断循环。",
+      "sha256": "79b413695bb2f2c7d5daaf86fa409193c91d4eb9ff87ab5826e3754931008f60",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-019",
+      "path": "fixtures/synthetic/FX-019.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "错误引用：claim引用不存在的source id",
+      "why": "claim必须引用实际提供的片段编号。",
+      "sha256": "291394150513de9bda600603134f8cd15db9107b09f22e60ba68e2d005927196",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-020",
+      "path": "fixtures/synthetic/FX-020.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "错误题ID：答案题号不在输入集合",
+      "why": "题号错位会让整包被拒。",
+      "sha256": "806bad177acc69294f5dabbf66f31837f7fdcfc1606a0f1fb09a9d62972de789",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-021",
+      "path": "fixtures/synthetic/FX-021.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "duplicate JSON键导致整包拒绝",
+      "why": "重复JSON键是真实发生过的整包失败形态。",
+      "sha256": "ff398e4561cc2356dbd6f3704c0095f5e2a80aff10234c34ca9716f78d1cc7bb",
+      "provenance": null,
+      "expectation_count": 3
+    },
+    {
+      "fixture_id": "FX-022",
+      "path": "fixtures/synthetic/FX-022.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "缺snippet：正文不可得只能abstain",
+      "why": "URL/hash不能重建当时正文。",
+      "sha256": "60c2babeeab4c7b8274950e89bb163c72ca02f5c14a69e8cda2514a2c0c104f8",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-023",
+      "path": "fixtures/synthetic/FX-023.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "缺usage：费用指标不可测",
+      "why": "缺usage时不得推断token费用。",
+      "sha256": "3f3c4b5d06f9457182aa1867d85a711cbc12f2d79ad7815a36796fafb9b32d87",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-024",
+      "path": "fixtures/synthetic/FX-024.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "套餐扣额未知",
+      "why": "套餐实扣不能由token推断。",
+      "sha256": "8cef2d252233ee6ee8bb852d37922ea3b5570fd16369127ba0186e74dfaa36d5",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-025",
+      "path": "fixtures/synthetic/FX-025.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "原温度偏差：声明省略实际发送0.7",
+      "why": "48次实际0.7的偏差必须显式暴露，不能被静默。",
+      "sha256": "165f390fa00e89f8c747cc60943e5494aed801e0fc9399d75a046606c66ae05e",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-026",
+      "path": "fixtures/synthetic/FX-026.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "高分弱证据：评分依据不足",
+      "why": ">=8高分必须有方向/区间依据；依据不足要报失败。",
+      "sha256": "cdf6004f420d30b1073f7228d449b2c9557f723f9237ddda233ebfe6820b1626",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-027",
+      "path": "fixtures/synthetic/FX-027.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "未知态仍带claim且期间冲突",
+      "why": "unknown不能免除诊断，也不能当已验证。",
+      "sha256": "53b973746820f52dd19eab432f3105ecab83b07a7eecba70bafa0f6b181c67d1",
+      "provenance": null,
+      "expectation_count": 2
+    },
+    {
+      "fixture_id": "FX-028",
+      "path": "fixtures/synthetic/FX-028.json",
+      "source_category": "synthetic",
+      "collected": true,
+      "title": "评分依据有限支持仍不等于精确分验证",
+      "why": "supported只代表方向/区间有据。",
+      "sha256": "ba53ba85e4501b4d63a48970e43ce5aa0271a2b97635a56d69e25b1259ced75b",
+      "provenance": null,
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-029",
+      "path": "fixtures/historical/FX-029.json",
+      "source_category": "historical_model_output",
+      "collected": true,
+      "title": "历史：claim引用契约拒绝的整包",
+      "why": "真实归档中因claim引用契约被拒的包，item_inspection未保留。",
+      "sha256": "8f70a5f63c4fdac6aea3ee91f2b9228c04dd0797baf33c39dba6ee3215728a78",
+      "provenance": {
+        "run": "mimo-pro-pilot-2026-10-07-01",
+        "chunk_id": "CHK_122b100ad05642e18e7cefe5916dbf09"
+      },
+      "expectation_count": 2
+    },
+    {
+      "fixture_id": "FX-030",
+      "path": "fixtures/historical/FX-030.json",
+      "source_category": "historical_model_output",
+      "collected": true,
+      "title": "历史：题号缺失/重复/乱序的整包",
+      "why": "题号契约失败必须整包拒绝且原错误保留。",
+      "sha256": "e470c6eca53c949282c41375eb2af356a6ec152dfa33d380f8f686e1c6f8ca19",
+      "provenance": {
+        "run": "mimo-pro-pilot-2026-10-07-01",
+        "chunk_id": "CHK_191ec4dc13274c23b1e8412a579035e9"
+      },
+      "expectation_count": 1
+    },
+    {
+      "fixture_id": "FX-031",
+      "path": "fixtures/historical/FX-031.json",
+      "source_category": "historical_model_output",
+      "collected": true,
+      "title": "历史：完整包装归一化后的有效包",
+      "why": "只去掉完整外层包装的行属于归一化有效，不是原始严格。",
+      "sha256": "522d41259591b555248f412dbe84aa7b4fbc7cb59d714ebfc06c252bb70e6b35",
+      "provenance": {
+        "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+        "chunk_id": "CHK_242670ba5b4d4dc3be6a4e72006eea82"
+      },
+      "expectation_count": 2
+    },
+    {
+      "fixture_id": "FX-032",
+      "path": "fixtures/historical/FX-032.json",
+      "source_category": "historical_model_output",
+      "collected": true,
+      "title": "历史：已评审高分弱证据回答",
+      "why": "agent评审标为依据不足的真实回答，只作故障形态不作gold。",
+      "sha256": "dbd1526aea1c42692e54b0967ca94ecfac4c82508af907f6d0ba0ecb6e07b54b",
+      "provenance": {
+        "run": "mimo-pro-pilot-2026-10-07-01",
+        "chunk_id": "CHK_19dedf1830c84fb9bf4aced8dc491b46",
+        "question_id": "IQS_08",
+        "answer_sha256": "58269ea8e20d3245ad0b7d6ae10de3aaad5eee8484dc8a7be0df68b312d212de",
+        "review_partition": "primary"
+      },
+      "expectation_count": 2
+    },
+    {
+      "fixture_id": "FX-033",
+      "path": "fixtures/historical/FX-033.json",
+      "source_category": "historical_model_output",
+      "collected": true,
+      "title": "历史：未知态仍带claim的真实回答",
+      "why": "insufficient_evidence不等于免审。",
+      "sha256": "49f1416d9392813b2476b9de1fe1391e0a46861300f43d91e2b53eec026ad019",
+      "provenance": {
+        "run": "mimo-pro-pilot-2026-10-07-01",
+        "chunk_id": "CHK_02fb1051daa94296acaa3faeb9e52bfc",
+        "question_id": "IQS_10",
+        "answer_sha256": "fabb6eff6887f83c6ff87b4b2e4e91a3f0e898d2de9bcaa19f7e3a17dbfb9d76"
+      },
+      "expectation_count": 2
+    },
+    {
+      "fixture_id": "FX-034",
+      "path": "fixtures/real-source-snippets/FX-034.json",
+      "source_category": "real_source_snippet",
+      "collected": false,
+      "title": "真实来源短片段：本包未收集",
+      "why": "第三类fixture需要新抓取授权，本包不冒充，全部abstain。",
+      "sha256": "339145db8393a275a643af8c0810be67a39284eec87a6dc2cf79527c62e09a67",
+      "provenance": null,
+      "expectation_count": 2
+    }
+  ]
+}
