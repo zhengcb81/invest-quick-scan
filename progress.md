@@ -1829,3 +1829,4 @@
 - **B01-b run-2 启动（round-93）**：owner 加预算+零低级错误要求入档；run-1 三缺陷（占位身份/契约尾冲突/7 键载入面）审计式定位并归档 invalid；六修复+证据守卫+载入面修正经 24/24 设计审计全绿后 run-2 live 起跑（cap 600、phase ≤929）。
 - **run-2 停跑与根因（round-93/94）**：sequential 22min 无完段→kill→探针铁证 finish_reason=length（模型先推理后 JSON 烧光 2000 token 截断）；四修复（max_tokens 提档/禁推理直出/finish 捕获/--smoke 小规模模式=owner 方案）落地，smoke 试跑中。
 - **owner 要求推理分离（round-94）**：官方 thinking:disabled+reasoning_split 落地，单探 finish=stop/17.2s/零推理 token/content 直出 JSON；thinking-off smoke 重跑中（pwsh-308）。
+- **run-2b 撞 Token Plan 硬墙（round-94/95）**：CN-A 全 80 块有效（scored 均值 7.6）；01:05 起 HK/US 160 块全 HTTP 429——权威错误体 2056「已达到 Token Plan 用量上限（请升级套餐或购买积分）」=MiniMax 套餐 Token 配额耗尽（非 RPM；官方规格 M3 免费 RPM20/TPM1M、充值 200/10M）。修复率 5%（252=240+12）证明 thinking-off 设计成功。已打：429 分钟级退避（30s×4^n）+`--companies` 续跑过滤器。**待 owner：Token Plan 窗口重置时点/是否充值（其控制台可见，与挂账对账项同源）**。累计实耗≈645 请求/≈2.3M prompt tokens。
