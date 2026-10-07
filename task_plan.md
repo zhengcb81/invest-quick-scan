@@ -407,7 +407,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**Phase 53 完成：W02 preview 入口已交付**（StockWiki `33dbf7f`），**真实 216 预览报告已产出**（`reviews/universe-identity-preview-2026-10-02.json`：216/216 unresolved 空库诚实状态、中信建投重叠组、零 membership/零 paid_work）——**当前第一等 owner 动作：审阅该报告并给出 216 导入写授权与消歧证据要求**。此前已闭环：Q02/Q03（Phase 52）、S03 改判(a)、ACL 解封+DWA-04 两未知组闭合（新基线 2401 条）、决定5/7/8。**Phase 54 完成：DWA 四仓 P1 处置**（rf `5319ee26`、SID `064a837`、QAbyLLM `ad389f8`、StockQA 无操作）。**Phase 55 完成：W03 verified**（`4fbda21`，六 case、37 测试、审查 approved、基线登记经审查接受）；DWA-04 扩盘分类归档（1985 条全为可重建 pytest 临时）——**owner 决策点：`.tmp-zr408-unit*`×3（各657条）与 14 scratch 删除或 ignore 二选一明示**。**Phase 56 完成：S06 verified**（收口复审 approved，147+20 passed 入隔离日志+12 哈希记档，五 case 全映射；诚实边界：2.1 仅合成、跨仓 ACK/E2E 归 W05/G1 域不声称）。**Phase 57 完成：L01 verified**（冻结钉版 IQS `51fbce1`；10 家真实探针 11 调用承载 20 请求=用满上限未超、41 搜索/388 源、18 题得分(4–9)、2 题 fail-closed、0 mock；试点包+三轮整改 StockQA `7a40a98..1f04a8f` 已推送；独立审查两轮 approved，四文件 SHA-256 记档，预算按问题级 20 请求口径修正）。**Phase 58 完成：G1 verified → M1 关闭**（独立复审 approved（ses_f0022a928ffewW1KsB6lHQRJE9），`reviews/G1/` 审查记录+60家范围说明+30检查脚本+三 log = IQS `f7860fb`；发现 F1 信息日期 20/20 null 与 F2 来源元数据缺失已绑定为 L02 进入条件）。**Phase 59 完成：W04/W05 双卡 verified**（StockWiki `5f2739a`+`aa3c6e6` 本地；两轮独立审查均 approved）+ **owner 八项决定已记录**（见 Phase 59 节：216 授权/1985 删除/账单通过含 5 小时限额/G2b 派 agent 后签收/StockWiki 全授权/34+2 清理/信息日期选 a/W03 签收）。**队列进度（2026-10-03）**：①②③④⑥ 中 ①②④ 已完成（1985 删+34+2 清理=Phase 60 前后、216 入库 Phase 60、W06=Phase 61）；**Phase 63 完成：W07 verified → M2 关键路径推进一格**（W08 现已解锁）。owner 第二批答复已入档：G2b A/C/D/B 全授权、补 W05/W13 CLI、7a 顺其自然、live 凭据预批、O01 不急、叙事三提交处置待定。**Phase 64 完成：CLI 批次 approved+committed（`cc7fc6b`）、G2b 证据检索归档（`5a7e996`，四类 0 READY 待 owner 签收）、W08 verified（`9fa8a7e`，差分 9646/0）→ W09 已解锁**。**Phase 65 完成：W09 verified（两轮审查）→ M2 主链 W01–W09 全齐**。L02 只剩自己的冻结条件（7a + 范围 §5 F1/F2 二选一），G2 只等 L02。**Phase 67 完成：W10 verified（两轮）→ W11 解锁；owner 第三批（B2/同意/按建议/保留）+ 通授全部入档；B2a 获批待执行**。**Phase 68 完成：B2a 全量跑完（216/216 分类 + 11/11 H股发现、3 提名；终账 406/420、771/840 在 caps 内；0 池写入）**。**Phase 69 完成：G2b-A 导入路径 approved+committed（`f701909`）+ Alphabet 首个真实 verified 样本入库（4 证券/回执/幂等复验，证据入 `G2b-alphabet-sample-2026-10-04.md`）**。**Phase 73 完成：两表六项决定全签（A/H 122 行按现态签+剔30+受纠偏；D 217 行信任 sha+排北交所+受 HK 注记 → `closes_g2b_d=true`，D 类证据闭合）**。当前队列：① **L02 冻结**（唯一剩余前置，owner 已批 2600/5200 内直接跑）→ ② L02 执行（live 分窗）→ ③ A/H bridge 导入批次（G2b 最后实物：issuer_bridge 表+导入+平安实体）→ ④ W11 → ⑤ W06 跟进。等 owner：MiniMax 对账（B2a 406/771）、叙事=保留（已定）。已完成：Phase 60 216、61 W06、62 W13、63 W07、64 CLI+证据+W08、65 W09、66 7a、67 W10。Q13 仍不可开工（Q06/Q07/Q09/Q10 partial）。L02 等 W07/W08/W09 且须先满足范围说明 §5 F1/F2 二选一。恢复工作时按[新接手模型工作指南](docs/implementation/handoff-for-new-agent.md)重核各仓 HEAD/工作树/handoff。等待（owner 侧）：216 导入授权、G2b owner 正样本、1985 条处置决定、MiniMax 账单核对（决定9，L01 本批 20 completions+41 searches）、QAbyLLM 34 项与 SID 2 盲区去留、W03 签收两点确认（基线登记+步骤5分离）。审查节奏沿用 G0—G6/高风险边界，不新增逐小节点review。
+## Next Step
+
+**当前状态（2026-10-07）**：B01-b phase-1 数据和初版报告已完成；独立只读复核已执行，记录见[`B01 phase-1 独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)。终版540行矩阵及状态可复算；评分有效覆盖仅61.3%，低于预注册95%，所以结论仍为 **inconclusive，暂时保留逐题派发**，不宣称任何分组方法获胜。
+
+复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
+
+**下一步**：L03 200家公司试点启动前，需 owner 明确放行试点范围/预算并处置 phase-1 局限；未收到该启动确认前不发live请求。W11已verified；G3仍未关闭，因为正式G3还依赖L03和W12恢复证据。本次B01报告审查不替代G3的REV/JOB/BUD/DB验收。接手入口为[`新接手模型工作指南`](docs/implementation/handoff-for-new-agent.md)的2026-10-07后续交接节。
 
 ### 历史执行状态（截至2026-09-30）
 
@@ -1269,3 +1275,12 @@ Status: freeze_documented; awaiting_prereq_r2_then_live
 - [x] **B01-b phase-1 报告完成**：`reviews/B01/phase1-report-2026-10-07.md`（冻结输入一致/执行史七轮全录/540 行矩阵/预注册阈值逐条/裁决=**inconclusive 维持逐题基线**/五发现/局限/G3 交接）。裁决依据：有效覆盖 61.3% << 95% 门槛。
 - [x] **owner 收尾指令执行**：报告✓ → PWF（task_plan/progress/findings/handoff 四件全更，交接节=当前态+教训+下一步）→ 推送远端 → 停止。
 - **停止态（owner 2026-10-07 指令）**：B01-b=phase-1 完成、**G3 审查为接手者第一步**；L03 待 owner 启动确认；MiniMax 对账挂账。恢复前先读 `docs/implementation/handoff-for-new-agent.md` 的 2026-10-07 交接节。
+
+### Phase 86: B01-b phase-1 独立复核与报告边界更正
+Status: phase1_reviewed_with_open_evidence_limits; G3_not_closed
+- [x] **独立只读复核完成**：只复核B01-b phase-1报告与真实归档矩阵/回执，未改外仓、未跑测试、未联网或发模型请求。审查报告：`docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md`。
+- [x] **矩阵核对**：终版540行/540个唯一公司×方法×题目键，18格各30题；状态331 scored、88 insufficient、110 missing、8 error、3 not_applicable，逐格均分和引用数均能复算。有效评分覆盖331/540=61.3%，按预注册规则仍是inconclusive。
+- [x] **关键证据缺口记档**：已存主回执的prompt tokens合计10,008,297，与旧稿约6.5M不一致；重跑ledger覆盖270题键、234行变化、36行同值，但无法证明同值行来源或所有行均绑定131072生成参数；合并引用率88%无明确分母；provider cached_tokens不证明端到端缓存或费用节省；batch30差异不足以断定服务端非确定性。
+- [x] **报告与PWF更正**：在B01 phase-1报告§9追加复核数字/边界；更新本节、`progress.md`、`findings.md`和接手指南。初版报告审查SHA与所有关键StockQA工件SHA记录在独立复核报告。
+- [x] **不变量保持**：维持逐题作为暂定操作默认，但不称其通过gold/盲评或胜出；没有重跑历史live矩阵，不触碰真实公司库/股票池/下载目录；外仓未写。
+- [ ] **G3/L03**：G3仍依赖L03+W11，W11已verified；L03仍需owner明确启动范围/预算并决定phase-1局限的处置，且还需真实中断、租约、费用预留及W12备份恢复证据。在owner放行前不发L03 live请求。

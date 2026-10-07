@@ -137,3 +137,16 @@ single_next_action:
 2. **L03 200 家试点**：维持逐题派发（B01-b 裁决）；启动需 owner 明示确认；前置=本报告 §7 局限的处置决定。
 3. 挂账：MiniMax 控制台对账（B01-b 实耗≈990 请求/≈6.5M prompt tokens + 历史批）；P2-5（IQS 契约 CLI 的 BND_/status 兼容，独立小项）。
 4. owner 最后指令（2026-10-07）：大节点收口+报告+PWF+推送后**停止**——接手者恢复工作前先向 owner 确认重启点。
+
+### 2026-10-07 后续：B01-b phase-1 独立复核完成
+
+接手时先读本节；它更新上方同日的“G3 待审”状态，但不取代 `task_plan.md`、`progress.md` 和本次审查报告。
+
+- **本次实际审查范围**：只读复核 B01-b phase-1 报告与 `StockQAbyLLM/pilot_runs/b01b_method_2026-10-07/` 的数据；独立审查者和 IQS 总控分别复算。未跑测试、未联网、未调用模型，未写入 StockQA/StockWiki。
+- **可确认部分**：终版矩阵 540 行、每公司×方法 30 个唯一题目，状态合计 331 scored / 88 insufficient / 110 missing / 8 error / 3 not_applicable，与逐格分数/引用数均可复算。维持逐题作为暂定安全默认仍成立；这不是逐题策略通过 gold/盲评。
+- **重要发现**：已保存主回执的 prompt token 合计 10,008,297，而旧报告写约 6.5M；重跑 ledger 覆盖 270 个键、终版有 234 行变化、36 行与 base 同值，但缺独立 rerun 结果快照/逐题 response ID/plan 的 max_completion_tokens，无法证实 36 行来源及全体 131072 设置；MiniMax 控制台仍待对账。
+- **一般发现**：报告合并引用率“约88%”无可复算分母（表格420项，按540槽=77.8%，按430非missing=97.7%）；cached_tokens 分布不支持笼统约16K/请求，且不能证明缓存节省费用；HK batch_30 探针与矩阵完整度不同，输入/参数没有逐请求绑定，故根因不能确定为服务端非确定性。
+- 独立审查记录：`docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md`。复核原报告后，在 `docs/implementation/reviews/B01/phase1-report-2026-10-07.md` §9 追加更正和证据边界（当前 SHA-256 `5e13b00d7cd3276e01aa64bb81132c95ecbc6695e30010a1d5e2271452f73169`）；历史参数/结果快照缺口和实际账单仍未闭合。
+- **门状态**：B01 phase-1 报告已有范围补充，但 B01 的预注册完整验收未完成。BENCH-01.A03 的数据结构部分通过；A05 未执行，其他 A01/A02/A04/A06/A07/A08/A09 未完整验收，BENCH-02 未运行。**G3 没有关闭**：其正式依赖为 L03 + W11，W11 已 verified，L03 等 owner 明确启动并处置 phase-1 局限；还须验收真实中断/租约/预留/备份恢复证据。
+- **当前下一步**：不重跑相同 live 矩阵补造历史来源；等待 owner 对 L03 试点的启动范围/预算明确放行，并按审查发现限定报告结论。未经明确启动前不发 L03 请求。
+- 本次复核环境快照：IQS `master@8143cd9bb7e0cc4224c684cd9fba948723bf1e6e`；StockQA `master@6a9ff13864ebb160d5c4ab3cf2f42155d9f4aa99`（既有状态摘要 hash `138279937e77405c5a1817f225ffcbb1e663807a8499fd87ae006ad135a0391c`）；StockWiki 观察到 `master@9f552a6741dd`、1 条状态项。所有外仓状态均只读保留。

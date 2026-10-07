@@ -1833,3 +1833,14 @@
 - **run-3 全量重跑启动（owner round-96「MINIMAX已经重置了」）**：dry-run 分析发现 CN-A 的 concurrent_4 段也被 429 波及（19/30 报错、仅 11 行可用）+ sequential 2 错——故弃「HK+US 补跑」合并方案，**全量 240 重跑**（同窗单一回执、免合并口径）；run-2b 部分产物归档 `*_run2b_partial.*`。CN-A dry-run 有效段已示信号：group_3/batch_30 30/30 scored（均值 7.7/7.53）、跨方法 ±1 一致率 87%、分差均值 0.8。
 
 - **收尾（round-97，owner 指令：做完大节点→报告→PWF→推送→停止）**：B01-b phase-1 报告完成（inconclusive/维持逐题基线/G3 待审交接）；PWF 四件全更（含 handoff 2026-10-07 节：三仓 HEAD、B01-b 态、五教训、凭据规则、下一步优先级）；推送远端后停止。本窗口 live 实耗：检索 240+模型≈990 请求（含无效轮如实归档）。
+
+## 2026-10-07 — B01-b phase-1 独立只读复核
+
+- 范围：独立审查者 + IQS 总控只读复算 B01-b phase-1 报告和 StockQA `pilot_runs/b01b_method_2026-10-07/`。没有运行测试、联网搜索、模型/API 调用、外仓写入或数据库操作。
+- 快照：IQS `master@8143cd9bb7e0cc4224c684cd9fba948723bf1e6e`，既有未跟踪 `opencode.json`；StockQA `master@6a9ff13864ebb160d5c4ab3cf2f42155d9f4aa99`，既有状态项未动。StockWiki 最新只读观察为 `master@9f552a6741dd`、1 条状态项，未动。
+- 独立复算通过：`method_results.json` 540 行/540 个唯一 `(company,method,question_id)` 键；18 格各 30 个唯一题；状态=331 scored、88 insufficient、110 missing、8 error、3 not_applicable，逐格分数和引用数与报告一致。
+- 重要 finding：保存回执的主 prompt token 总量为 **10,008,297**（run1 3,894,261 + run2b 1,058,876 + smoke 602,716 + merged run3 4,452,444；不重复计 base，也未包含其他探针），与原报告约6.5M不符；MiniMax控制台对账仍缺。
+- 重要 finding：rerun ledger 展开 270 个题键（group5/10/batch30 各90）；base/final 两矩阵键集相同，234 行变化均在 rerun 集，36 行同值。缺独立rerun结果快照、逐题response/attempt ID、plan中 `max_completion_tokens`，无法核验36行来源或全体重跑参数绑定。
+- 一般 finding：报告合并引用率约88%无可复算分母（420项/540槽=77.8%；420/430非missing=97.7%）；provider `cached_tokens` 基数分布差异很大且不证明现金节省；HK batch30 的1/30与探针30/30只证明观察到不同完整度，不能定位为服务端非确定性。
+- 复核后在 B01 phase-1 报告 §9 追加证据边界与更正。独立复核原件 `docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md`；原报告审查前 SHA=`66c5acd551219ff206866b894aa3945f4af82373084273df359b1a15e92ce2ac`。
+- 结论仍是 `inconclusive`，逐题只作为暂定操作默认，不构成胜出/盲评结论。BENCH-01.A03结构部分可复算；A05未运行，其余关键预注册断言未完整验收。G3未关闭，正式依赖L03+W11（W11已verified）；L03等owner明确启动，不能先发请求。完整发现、文件hash和门状态见独立复核报告。
