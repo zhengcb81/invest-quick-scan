@@ -1,0 +1,146 @@
+{
+  "action": "quick-scan-backup-restore",
+  "backup_name": "golden",
+  "counts": {
+    "analysis_subjects.sqlite:analysis_subject": 1,
+    "analysis_subjects.sqlite:reporting_perimeter_receipt": 1,
+    "scan.sqlite:quick_scan_candidate": 0,
+    "scan.sqlite:quick_scan_entity": 2,
+    "scan.sqlite:quick_scan_identity_event": 0,
+    "scan.sqlite:quick_scan_issuer_bridge": 0,
+    "scan.sqlite:quick_scan_listing_history": 0,
+    "scan.sqlite:quick_scan_maintenance_policy": 0,
+    "scan.sqlite:quick_scan_member": 2,
+    "scan.sqlite:quick_scan_member_history": 3,
+    "scan.sqlite:quick_scan_nomination": 0,
+    "scan.sqlite:quick_scan_scan_intent": 0,
+    "scan.sqlite:quick_scan_security": 3,
+    "scan.sqlite:quick_scan_segment": 0,
+    "scan.sqlite:quick_scan_source_binding": 3,
+    "scan.sqlite:quick_scan_universe": 1,
+    "scan_observations.sqlite:quick_scan_import_conflict": 0,
+    "scan_observations.sqlite:quick_scan_import_item": 3,
+    "scan_observations.sqlite:quick_scan_observation": 3,
+    "scan_observations.sqlite:quick_scan_observation_correction": 0
+  },
+  "created_at_utc": "2026-10-07T11:52:57Z",
+  "executor_side": {
+    "fee_ledger_included": false,
+    "fee_restoration": "prohibited",
+    "message": "执行侧未核验、禁止恢复收费",
+    "owned_by": "StockQA",
+    "paid_dispatch_included": false,
+    "paid_dispatch_restored": false,
+    "provided": false,
+    "status": "unverified"
+  },
+  "llm_calls": 0,
+  "manifest_sha256": "61c8e341b5bd0922c3883259c8e0c6bffd4de575a89023e05397813886d80e53",
+  "network_calls": 0,
+  "ok": true,
+  "reconciliation": {
+    "cross_process_atomic": false,
+    "newer_than_backup": false,
+    "newer_than_backup_note": "the restore target must be empty, so no target-side data can be newer than this snapshot; data written to the SOURCE store after this backup stays in the source and must be replayed/reconciled",
+    "preconditions": [
+      "target data/quick_scan must not exist or must be empty before restore",
+      "restore covers StockWiki-owned quick-scan stores only (data/quick_scan)",
+      "no cross-file atomicity: reconcile ACK / observation / member watermarks between owners before resuming any dispatch against the restored store",
+      "stop new dispatches or complete in-flight reconciliation before swapping stores",
+      "executor (StockQA) database, fee ledger and paid dispatch state are NOT in this backup: 执行侧未核验、禁止恢复收费",
+      "store_id is path-derived: ACKs written after a cross-root restore carry the new path-derived store_id while historical ACK rows keep the original value",
+      "verify_backup must pass before restore (enforced automatically)"
+    ]
+  },
+  "restored_files": [
+    "analysis_subjects.sqlite",
+    "scan.sqlite",
+    "scan_observations.sqlite"
+  ],
+  "versions": {
+    "ack": {
+      "max_ack_sequence": 3,
+      "max_received_at": "2026-10-07T11:52:56Z",
+      "user_version": 1
+    },
+    "observations": {
+      "module_package_ids": [
+        "modpkg_fixture_0001"
+      ],
+      "module_release_ids": [
+        "rel_fixture_1"
+      ],
+      "publication_status": {
+        "legacy_readonly": 2,
+        "published": 1
+      },
+      "question_versions": [
+        "1.0.0"
+      ],
+      "template_versions": [
+        "3.0.0"
+      ]
+    },
+    "roster": {
+      "maintenance_policies": {},
+      "manual_pins": 2,
+      "max_member_version": 2,
+      "members": 2,
+      "universe_ids": [
+        "UV_DEMO"
+      ]
+    },
+    "rules": {
+      "quick_scan_delivery": "quick_scan_delivery/1.0.0",
+      "quick_scan_freshness": "quick_scan_freshness/1.0.0",
+      "quick_scan_query": "quick_scan_query/1.0.0",
+      "quick_scan_recovery": "quick_scan_recovery/1.0.0",
+      "quick_scan_rules": "quick_scan_rules/1.0.0",
+      "recovery_policy_version": "recovery-watch-1"
+    },
+    "subjects": {
+      "max_revision": 1,
+      "rows": 1
+    }
+  },
+  "watermarks": {
+    "ack": {
+      "items": 3,
+      "max_ack_sequence": 3,
+      "max_received_at": "2026-10-07T11:52:56Z"
+    },
+    "candidates": {
+      "max_imported_at": null,
+      "rows": 0
+    },
+    "observation": {
+      "max_import_sequence": 3,
+      "max_imported_at": "2026-10-07T11:52:56Z",
+      "module_package_ids": [
+        "modpkg_fixture_0001"
+      ],
+      "module_release_ids": [
+        "rel_fixture_1"
+      ],
+      "publication_status": {
+        "legacy_readonly": 2,
+        "published": 1
+      },
+      "question_versions": [
+        "1.0.0"
+      ],
+      "rows": 3,
+      "template_versions": [
+        "3.0.0"
+      ]
+    },
+    "roster": {
+      "max_member_version": 2,
+      "members": 2
+    },
+    "subjects": {
+      "max_revision": 1,
+      "rows": 1
+    }
+  }
+}

@@ -1,0 +1,23 @@
+StockWiki checks �� mode=daily
+workspace root: C:\Users\֣����\Projects\StockWiki
+=== ruff ===
+  $ C:\Miniconda\python.exe -m ruff check stockwiki tests scripts
+All checks passed!
+PASS  ruff (0.2s)
+=== validate-framework ===
+  $ C:\Miniconda\python.exe -B -m stockwiki.cli --root C:\Users\֣����\Projects\StockWiki validate-framework --static
+[warning] stockwiki\quick_scan_backup.py: 模块 716 行（>600）：偏大，建议分解为 <600 行的子模块（诊断项，不阻断）
+[warning] stockwiki\quick_scan_query.py: 模块 694 行（>600）：偏大，建议分解为 <600 行的子模块（诊断项，不阻断）
+[warning] stockwiki\quick_scan_store.py: 模块 969 行（>600）：偏大，建议分解为 <600 行的子模块（诊断项，不阻断）
+Framework validation passed with 3 warning(s).
+PASS  validate-framework (0.7s)
+=== pytest ===
+  $ C:\Miniconda\python.exe -B -m pytest -q tests/test_checks.py tests/test_check_all_script.py tests/test_framework_validation.py tests/test_okf_conformance.py tests/test_identity_snapshot.py tests/test_identity_mapping.py tests/test_identity_g2b_export.py tests/test_source_export_v2_reader.py tests/test_narrative_source.py tests/test_cli_core.py tests/test_cli_smoke.py
+........................................................................ [ 23%]
+........................................................................ [ 47%]
+........................................................................ [ 71%]
+........................................................................ [ 94%]
+................                                                         [100%]
+304 passed in 9.73s
+PASS  pytest (13.4s)
+ALL CHECKS PASSED

@@ -1,0 +1,141 @@
+{
+  "c06_envelope_validated": false,
+  "condition_rules": {
+    "averaged_score_emitted": false,
+    "combine": "all",
+    "conditions": [
+      {
+        "field": "score.iqs_01",
+        "op": ">=",
+        "value": 8
+      }
+    ],
+    "evaluated_entities": 2,
+    "leaf_reasons": {
+      "score.iqs_01": {
+        "compared": 1,
+        "status_insufficient_evidence": 1
+      }
+    },
+    "outcome_counts": {
+      "fail": 0,
+      "pass": 1,
+      "unknown": 1
+    },
+    "policy_id": "quick_scan_score_filter",
+    "policy_version": "1.0.0",
+    "rules_sha256": "8488475a5eefeb04ff18b50fba31d0ffff360452809eb1fbccb33feaf99b170a",
+    "rules_version": "quick_scan_rules/1.0.0"
+  },
+  "empty_reason": null,
+  "facts_available": false,
+  "generated_at_utc": "2026-10-07T11:53:00Z",
+  "llm_calls": 0,
+  "network_calls": 0,
+  "next_page": null,
+  "page": 1,
+  "page_size": 10,
+  "projection_version": "quick_scan_profiles/1.0.0",
+  "protocol": "stockwiki_w09_read_primitives",
+  "refresh_recommended": false,
+  "rows": [
+    {
+      "aliases": [],
+      "canonical_name": "Fixture ENT_11111111-1111-4111-8111-111111111111",
+      "check_level": "unreviewed",
+      "citations": [],
+      "coarse": {
+        "company_type": "operating",
+        "industry": "industrial",
+        "market": [
+          "CN-A",
+          "HK"
+        ],
+        "security_type": [
+          "ordinary"
+        ],
+        "stage": "mature"
+      },
+      "entity_id": "ENT_11111111-1111-4111-8111-111111111111",
+      "facts_available": false,
+      "gaps": [
+        "quality_summary_unavailable",
+        "freshness_policy_unavailable",
+        "facts_relations_unavailable",
+        "cross_version_comparison_unavailable",
+        "history_view_unavailable",
+        "replacement_mapping_unavailable",
+        "recovery_summary_not_sourced"
+      ],
+      "model": "fixture-model",
+      "observation_date": "2026-10-01T09:01:00Z",
+      "recovery": {
+        "flags": [],
+        "status": "not_assessed"
+      },
+      "roster": [
+        {
+          "pinned": true,
+          "status": "active",
+          "universe_id": "UV_DEMO",
+          "version": 1
+        }
+      ],
+      "score_conditions": [
+        {
+          "actual": 8,
+          "critical_risk_gate": false,
+          "field": "score.iqs_01",
+          "op": ">=",
+          "outcome": "pass",
+          "reason": "compared",
+          "threshold": 8
+        }
+      ],
+      "score_fields": {
+        "score.iqs_01": {
+          "freshness": "missing_date",
+          "question_id": "IQS_LEG",
+          "score": 8,
+          "status": "scored"
+        },
+        "score.iqs_05": {
+          "freshness": "missing_date",
+          "question_id": "IQS_PUB",
+          "score": 6,
+          "status": "scored"
+        }
+      },
+      "score_summary": {
+        "marker": "missing",
+        "quality_score": null,
+        "quality_verified": false
+      },
+      "securities": [
+        {
+          "market": "CN-A",
+          "security_type": "ordinary",
+          "ticker": "600745"
+        },
+        {
+          "market": "HK",
+          "security_type": "ordinary",
+          "ticker": "0700"
+        }
+      ]
+    }
+  ],
+  "rules_version": "quick_scan_query/1.0.0",
+  "scope": "query_only",
+  "snapshot": {
+    "ordered_ids": [
+      "ENT_11111111-1111-4111-8111-111111111111"
+    ],
+    "query_hash": "f344828780d8d8246dd617bba18993c3e25b647fc8e137ea3e0487d1d961293e",
+    "snapshot_id": "SNP_374bd4f767fe5d5dce0b1ea3",
+    "view": "all_relevant"
+  },
+  "status": "ok",
+  "total": 1,
+  "view": "all_relevant"
+}

@@ -1,0 +1,37 @@
+{
+  "bulk_question_details": false,
+  "c06_envelope_validated": false,
+  "default_page_size": 50,
+  "detail_on_demand": true,
+  "fact_relations_available": false,
+  "facts_available": false,
+  "freshness_policy_available": false,
+  "freshness_rules_in_query_layer": false,
+  "generated_at_utc": "2026-10-07T11:53:00Z",
+  "llm_calls": 0,
+  "max_page_size": 100,
+  "network_calls": 0,
+  "projection_version": "quick_scan_profiles/1.0.0",
+  "protocol": "stockwiki_w09_read_primitives",
+  "protocol_note": "W09 read primitives (capabilities/search/get_profiles/coverage); NOT a schema-validated C06 exchange envelope — the C06 envelope must be frozen by the coordinator before anything is relabelled",
+  "routes": {
+    "capabilities": "GET /api/quickscan/capabilities",
+    "coverage": "GET /api/quickscan/coverage",
+    "entity": "GET /api/quickscan/entity?entity_id=",
+    "search": "POST /api/quickscan/search"
+  },
+  "rules_version": "quick_scan_query/1.0.0",
+  "score_condition_engine": "quick_scan_rules/1.0.0",
+  "score_conditions_supported": true,
+  "score_rules_in_query_layer": false,
+  "stable_sort_key": [
+    "entity_id"
+  ],
+  "views": [
+    "all_relevant",
+    "quality",
+    "recovery",
+    "pending"
+  ],
+  "workspace_root": "C:\\Users\\郑曾波\\AppData\\Local\\Temp\\tmpq13cmfjy\\golden_ws"
+}

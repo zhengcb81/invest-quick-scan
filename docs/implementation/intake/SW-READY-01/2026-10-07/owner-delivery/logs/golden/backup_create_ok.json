@@ -1,0 +1,77 @@
+{
+  "action": "quick-scan-backup-create",
+  "backup_dir": "C:\\Users\\郑曾波\\AppData\\Local\\Temp\\tmpq13cmfjy\\golden_ws\\backups\\quick_scan\\golden",
+  "created_at_utc": "2026-10-07T11:52:57Z",
+  "executor_side": {
+    "fee_ledger_included": false,
+    "fee_restoration": "prohibited",
+    "message": "执行侧未核验、禁止恢复收费",
+    "owned_by": "StockQA",
+    "paid_dispatch_included": false,
+    "paid_dispatch_restored": false,
+    "provided": false,
+    "status": "unverified"
+  },
+  "files": [
+    {
+      "bytes": 24576,
+      "path": "analysis_subjects.sqlite",
+      "sha256": "0da625450014cf1295d5301677637520422a9c761674d9ad29f9321b7c38a665"
+    },
+    {
+      "bytes": 163840,
+      "path": "scan.sqlite",
+      "sha256": "280b717d0d2b89503aaab2ee6e356294d6fe716971f3fb30a141963890ea86ec"
+    },
+    {
+      "bytes": 61440,
+      "path": "scan_observations.sqlite",
+      "sha256": "a278fda874c73ce6d26f2e0554aeaef25793919e14e1adbd6d78f93633691596"
+    }
+  ],
+  "llm_calls": 0,
+  "manifest_path": "C:\\Users\\郑曾波\\AppData\\Local\\Temp\\tmpq13cmfjy\\golden_ws\\backups\\quick_scan\\golden\\quick_scan_backup_manifest.json",
+  "manifest_sha256": "61c8e341b5bd0922c3883259c8e0c6bffd4de575a89023e05397813886d80e53",
+  "name": "golden",
+  "network_calls": 0,
+  "watermarks": {
+    "ack": {
+      "items": 3,
+      "max_ack_sequence": 3,
+      "max_received_at": "2026-10-07T11:52:56Z"
+    },
+    "candidates": {
+      "max_imported_at": null,
+      "rows": 0
+    },
+    "observation": {
+      "max_import_sequence": 3,
+      "max_imported_at": "2026-10-07T11:52:56Z",
+      "module_package_ids": [
+        "modpkg_fixture_0001"
+      ],
+      "module_release_ids": [
+        "rel_fixture_1"
+      ],
+      "publication_status": {
+        "legacy_readonly": 2,
+        "published": 1
+      },
+      "question_versions": [
+        "1.0.0"
+      ],
+      "rows": 3,
+      "template_versions": [
+        "3.0.0"
+      ]
+    },
+    "roster": {
+      "max_member_version": 2,
+      "members": 2
+    },
+    "subjects": {
+      "max_revision": 1,
+      "rows": 1
+    }
+  }
+}

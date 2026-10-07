@@ -1,0 +1,37 @@
+StockWiki checks �� mode=full
+workspace root: C:\Users\֣����\Projects\StockWiki
+=== ruff ===
+  $ C:\Miniconda\python.exe -m ruff check stockwiki tests scripts
+All checks passed!
+PASS  ruff (0.2s)
+=== validate-framework ===
+  $ C:\Miniconda\python.exe -B -m stockwiki.cli --root C:\Users\֣����\Projects\StockWiki validate-framework --static
+[warning] stockwiki\quick_scan_store.py: 模块 969 行（>600）：偏大，建议分解为 <600 行的子模块（诊断项，不阻断）
+Framework validation passed with 1 warning(s).
+PASS  validate-framework (1.1s)
+=== coverage-run ===
+  $ C:\Miniconda\python.exe -B -m coverage run -m pytest -q
+sssssssssssssssss....................................................... [  7%]
+........................................................................ [ 14%]
+........................................................................ [ 21%]
+......................................----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 63644)
+.................................. [ 28%]
+........................................................................ [ 35%]
+........................................................................ [ 42%]
+........................................s............................... [ 50%]
+........................................................................ [ 57%]
+........................................................................ [ 64%]
+........................................................................ [ 71%]
+........................................................................ [ 78%]
+........................................................................ [ 85%]
+........................................................................ [ 92%]
+........................................................................ [100%]
+990 passed, 18 skipped in 357.94s (0:05:57)
+PASS  coverage-run (364.4s)
+=== coverage-report ===
+  $ C:\Miniconda\python.exe -B -m coverage report
+DIAGNOSTIC coverage total (informational only): TOTAL                                         20492   3182   7226   1444    81%
+DIAGNOSTIC ui.py coverage (informational only): stockwiki\ui.py                                 145     33     66     19    75%   55-63, 84, 90, 94-95, 109, 111, 119, 123-126, 139, 141, 171-176, 184, 197, 206, 214, 228, 236, 238, 254, 273-274
+PASS  coverage-report (3.5s)
+ALL CHECKS PASSED

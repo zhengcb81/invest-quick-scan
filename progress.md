@@ -2008,3 +2008,7 @@
 - 收尾导出器真实Git验证：QA195件原执行字节匹配；SW182公共Git文件+1惰性fixture共183件hash匹配。新增SW replay184文件与6显式自有助手经ErrorAction Stop+CIM事前strict matching0/无reparse/逐hash清单后清理；不重跑7反例或982。8个intake/guard/export Python AST通过（前一次控制台误写Nine，实际8，末次计数已准确），handoff两个公开shape/scope均valid；不等于SW六失败消失。
 
 - IQS首暂存whitespace检查因原始pytest/log的行尾空格报错中止，未提交。原日志受hash绑定不能修剪；改只对本批新代码/计划/review文档执行CRLF-aware whitespace检查，完整原件留原字节并以hash核验。非忽略新代码空白错误，不重跑产品测试。
+
+- IQS验收/整改批82文件已提交46740146ce7f206ed3392352ae5542afa795dd57并推送（f3ceb62→4674014）；提交后仅原opencode.json保留。最终复核发现35个owner原日志/producer golden/浏览器图被通用logs/忽略，已为两条精确归档子树加.gitignore例外，补交原始字节，不扩大runtime日志入库。原QA交付是6文档/12日志（先前恢复摘要7/14错误），整改后才7文档/14日志；本次已纠正当前计划/外仓summary，原交付不改，历史progress此处明示更正。
+
+- StockQA最后仅两统计说明/索引文件提交09f68a69bbdbf76e3a4fff63043cdd4815572e5b并推送，源码84e24ef/982测试未变；原证据commit4779764仍保留。归档remediation-result已指最新09f68a6。

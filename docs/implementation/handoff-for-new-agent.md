@@ -1,6 +1,6 @@
 # 新接手模型工作指南
 
-**2026-10-07最新接手状态（优先于下方历史快照）**：Phase89实验已完成并归档，勿重复收费实验。Phase90 QA-NET-01原5阻断及R1–R3已整改验收，源码84e24ef、交接4779764已推送StockQA既有origin/master；982离线tests与六步骤全过、独立复审收口。whole package仍partial：external生产dispatcher/DeepSeek续写/真实StockWiki导入ACK未完成。用户已指定总控接管StockQA（不再只读等待原harness），仍须逐批精确报备。
+**2026-10-07最新接手状态（优先于下方历史快照）**：Phase89实验已完成并归档，勿重复收费实验。Phase90 QA-NET-01原5阻断及R1–R3已整改验收，源码84e24ef、交接4779764（统计纠正09f68a6）已推送StockQA既有origin/master；982离线tests与六步骤全过、独立复审收口。whole package仍partial：external生产dispatcher/DeepSeek续写/真实StockWiki导入ACK未完成。用户已指定总控接管StockQA（不再只读等待原harness），仍须逐批精确报备。
 
 StockWiki SW-READY-01完整交接已到，HEAD04dfc519、主体0d76dc39、48工件hash匹配，但集中7case为6fail/1pass。**等待用户指定唯一整改writer**；只读StockWiki，不能因为本卡或worker交接而自行取得写授权。读[SW整改卡](reviews/SW-READY-01/remediation-card-2026-10-07.md)和[独立报告](reviews/SW-READY-01/intake-review-2026-10-07.md)。六问题为空目标恢复、外来目录prune、finalize残留、不同subject/口径混用、UI单条件、旧query snapshot不兼容。UI反例是静态断言，其他五为真实Python路径；WAL备份正例实际通过，未复跑原990。TH/IN实施与G3/F05仍暂缓。P2-5身份read-wire已交付a780a72，勿重复实现。
 
