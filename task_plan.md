@@ -1485,5 +1485,5 @@ Status: complete_for_finite_software_acceptance_scope_verified; whole_project_ga
 - [x] 固定296文件／75原工件／具体blob_ref，43受影响backup、原2反例、7实际CLI（4成功／3具名拒绝）通过，一次有限独审无剩余软件阻断；[有限签收](docs/implementation/reviews/SW-REPAIR-02/sr02-4b-2026-10-08/acceptance.md)。原full/UI保留不复跑，controller首次argv错误已纠正并保留输出。
 - [x] 本轮6junction先非递归解节点，693文件／468目录strict CIM0、lstat单硬链、set-size-SHA、独立dry-run→Apply清理，根已无；296源／131输入／75原件＋2补充回执及源HEAD/clean收尾不变。
 - [x] 更新PWF/接手与有限签收边界。75字段40位OID误名、两漏索引真实回执另核、历史R3 nlink全0不能认证文字单硬链；旧R2/sharedTEMP取证仍open，不追认过去。
-- [ ] IQS精确提交推送，以progress实际Git回执为准；不提交/推送StockWiki，也不把局部签收扩大成G3/F05。
+- [x] IQS精确134文件已沙箱外提交`9f6146b45f70b323f1033a19ba6ca6a0d6a25f20`并正常推送origin/master；128工件与索引staged原字节核对、diff检查通过，仅原opencode未跟踪保留。随后仅PWF实际回执提交；不提交/推送StockWiki，也不把局部签收扩大成G3/F05。
 - 不重跑无变化full/UI、不修改外仓、不关闭G3/F05；QA/Lab原writer保留。

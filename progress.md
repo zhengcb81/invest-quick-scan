@@ -2258,3 +2258,5 @@
 - worker R3 dry-run538文件nlink全0，与文字nlink==1不符，过去根已删无法独立补证；R3删除回执／CIM0原件收到不等于总控见证过去。旧R2 not_performed、sharedTEMP删除者/时点不明继续open，retention仅推断，不代删陌生文件或扩大为软件新门。
 - 本轮OWN六个junction两端核内部、非递归解节点且目标保持；693文件／468目录lstat单硬链无reparse、精确set/size/SHA、strict CIM0、无自有服务监听，先dry再Apply。prepare41396、Apply87965和测试26819/56332均实际exit0，唯一根已不存在。296源／131IQS输入／75原件＋2补充回执收尾不变，源HEAD/clean不变，收费/下载/生产库/源仓写0。
 - [有限签收](docs/implementation/reviews/SW-REPAIR-02/sr02-4b-2026-10-08/acceptance.md)、一次独审、完整原日志、机器结果与PWF/接手已落档。QA四边界、Lab LR-02B仍原writer，QA/SW两端齐再既有联合12组，Lab不人为阻塞。真实gold/QA import-ACK-UI/双owner恢复/TTL/G3F05/THIN/L03未关；本仓精确Git提交推送待实际回执。
+
+- **Phase105实际Git交付**：134个精确IQS文件已沙箱外提交`9f6146b45f70b323f1033a19ba6ca6a0d6a25f20`并正常推送origin/master（4df0fa7→9f6146b，实际exit0，HEAD/远端跟踪一致）。128归档工件及索引本身staged原字节逐项匹配，43精确忽略路径局部-force，四原traceback日志／一实际guard保留原空白，其他diff检查通过；9 helper AST、6相对链接、131原输入与根已无检查通过，不额外重跑产品suite。仅原opencode.json未跟踪保留。693自有文件已严格清，所有外仓未写/未提交/未推送；SR02-4B有限软件已签收，历史取证/QA-Lab接续和全局门保持原边界。随后仅补本次实际PWF回执，不改冻结工件。
