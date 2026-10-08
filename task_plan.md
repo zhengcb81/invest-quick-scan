@@ -1467,3 +1467,4 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_s
 - [x] 一次集中独审、同SR02-4追加两路径均UnicodeDecodeError RED，收敛单P2，原12成果保持。[验收](docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08/acceptance.md)／单项卡/原日志留档。索引note把全部Git哈希写成result过宽（16当时无、11不同），接收HEAD全部匹配，交接补澄清。
 - [x] 8自有junction非递归解节点；814文件/654目录经strict CIM/端口/lstat单硬链/精确set-size-SHA dry-run→Apply清，旧根/sharedTEMP/opencode保留。PWF与接手更新，精确Git交付见progress实际回执。
 - [ ] 原SW writer补SR02-4B与必要交接文字，交新commit后仅受影响收口；历史worker清理/删除者取证缺口保持open，G3/F05/gold/QA联合/TH/IN/L03不关闭。
+- 实际IQS交付`1381901a5f8acb0b892246e6c84b2a0f3b47abd8`，110精确文件沙箱外提交并正常推送origin/master，104工件及索引staged原字节一致、diff通过。原opencode未跟踪保留；后续仅PWF实际回执，不改被审源仓/证据。
