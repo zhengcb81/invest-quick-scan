@@ -2186,3 +2186,4 @@
 - [验收](docs/implementation/reviews/QA-C06-02/acceptance-2026-10-08.md)/[四组+交接整改卡](docs/implementation/reviews/QA-C06-02/remediation-2026-10-08.md)/独审/固定反例及原日志已归档；partial_verified/changes_requested，QA原writer接续，SW五组/Lab六残余也等待原writer新交付。StockWiki实际import/ACK恢复/UI及golden/G3/F05仍not_run，不自动解锁TH/IN/L03。精确IQS提交推送待实际回执。
 - Git预检首次精确add被已有logs忽略规则拒绝（已部分暂存，尚未提交）；后续只对本交接3个原日志精确-force，不改全局忽略。-text保存原CRLF使Git初diff-check误认为CR行尾空白，限定本新intake/review加cr-at-eol，继续检查实际空格；不清洗受审工件原字节。原输出过大，后续捕获Git诊断只汇总路径/类型。
 - 最终仅5个精确原stdout日志存在pytest/CLI自身行尾空格，加同路径whitespace属性保留原字节；其他源/文档继续检查。88精确暂存文件含82索引工件，staged原bytes全部匹配；opencode/runs/外仓排除。
+- **Phase100实际Git交付（2026-10-08）**：`b804f1740c182fb82333d28cccd70d11b52b0c67`，88精确IQS文件，82索引工件与index staged原字节匹配，diff检查通过。沙箱外正常推送origin/master（0d7fa75→b804f17，exit0），本地HEAD/远端跟踪一致；仅原opencode.json未跟踪。StockQA及其他外仓未写/未提交，518本轮临时文件已清。状态仍partial_verified/changes_requested，四代码组+一交接卡交原QA writer；随后仅补本PWF实际回执，无被审工件或门变动。

@@ -1437,3 +1437,4 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_r
 - [x] 一次集中独审/9固定边界7RED2GREEN：definition/semantic/template绑定三例、foreign run/scan、两JSON重复键、full head脱离侧表。真实v5含旧包/ACK迁移及中途故障rollback两GREEN保留；不把这些小case设独立审查门。
 - [x] [验收](docs/implementation/reviews/QA-C06-02/acceptance-2026-10-08.md)/[同批整改卡](docs/implementation/reviews/QA-C06-02/remediation-2026-10-08.md)/独审/原日志留档；518文件229目录经lstat/CIM/set/SHA dry-run→Apply清除，旧根/sharedTEMP/opencode保留。更新PWF与接手；精确IQS提交推送见progress实际回执。
 - [ ] 原QA唯一writer同批四组+交接整改，返回实际新commit/handoff后再集中复验，源仓不接管。完整StockWiki流水线/owner golden/G3/F05未执行，TH/IN/L03不关闭；worker1037全套只接收日志。
+- 实际IQS交付`b804f1740c182fb82333d28cccd70d11b52b0c67`，88精确文件沙箱外提交并正常推送origin/master；82工件/index staged bytes匹配、diff检查通过。仅原opencode.json未跟踪保留；随后仅PWF实际回执，不改受审证据或源仓。
