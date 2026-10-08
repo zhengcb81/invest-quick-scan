@@ -1513,5 +1513,5 @@ Status: partial_verified_changes_requested; concentrated_acceptance_and_cleanup_
 - [x] 新根固定QA136/SW296字节及对应接收HEAD，432源字节/外仓状态前后不变；分Python进程、库、临时目录与guard，独立release在派发前冻结。
 - [x] J01–J12实际公开链集中运行：原17实例6P/11F，补批9实例7P/2F；三真阻断收JR1–JR3，控制器误差及partial/missing分列，不加总称整套GREEN。三次cold合计93合成HTTP，真实调用/收费0。
 - [x] 一次集中独审和同批补记；独立q8 warm/seal0HTTP，J11不混2/9入白名单，原ACK公开schema不合格。实际清理1074自有文件/78目录，严格lstat/set/SHA/CIM dry→Apply；源仓/共享TEMP/Phase92/opencode不动。
-- [ ] 仅本IQS结果/PWF精确沙箱外提交推送（以progress实际Git回执勾选），然后接续同一集中整改卡；StockWiki四文件新增写授权等待用户，StockQA历史全仓授权按卡报备。
+- [x] IQS516精确文件已沙箱外提交3097448f30b5b40f523b99bd7b673c1af99dba48并正常推送origin/master，510工件staged原字节一致、原opencode保留；随后仅PWF实际回执提交。接续同一集中整改卡，StockWiki四文件新增写授权等待用户，StockQA历史全仓授权按卡报备。
 - G3仍需L03+W11；F05/THIN/事实gold及源仓新写授权按原门处理，本批不自动放行。

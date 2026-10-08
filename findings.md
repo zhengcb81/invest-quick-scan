@@ -1693,3 +1693,4 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 错键既拒但快照形状不同是控制器错误；同一get_item补采五例不变。missingentity未migrate先拒环境，补migrate后观察0但entity_not_found违反公开枚举是真协议错；不能为让测试绿把expected公共码改为内部码。原17/补9分别存，不加总冒称整套通过。
 - 独立q8 unknown交付重启正例不依赖JR1导致的失败状态，恢复0HTTP/attempt和包不变；它仍不能替模型unknown/预留的完整Q10范围。SW单侧恢复不替双owner、UI builder不替浏览器、false capabilities不替F05、provisional合成不替真实gold。
 - 收尾校核纠正freeze初诊：Git blob为CRLF而已签raw为LF，initial漏LF候选。432逐文件Git字节域都有as-is/LF/CRLF可逆证明，mixed0；原先“混合EOL”是未经证明推测，不继续作为事实。补LF候选和保留initial错误，不能伪造原stderr raw。
+- 保留原字节的CRLF helper必须按cr-at-eol做正常空白检查；默认工具把CR报尾空白不意味着代码或原日志应被清洗。实际限定保留blank-at-eol/blank-at-eof/space-before-tab并加cr-at-eol后检查0，510 staged原件仍逐项SHA匹配，归档索引不能指Git自动规范化后的另一字节域。

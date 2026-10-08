@@ -2309,3 +2309,5 @@
 - 收尾collector首次读source-snapshot归档层级错、exit1；保留initial并复用已成功alias快照，不重跑cold。后置EOL proof纠正初freeze原因：初helper漏LF候选，并非混合EOL；432文件均可由固定Git blob的LF/CRLF重建、mixed0。helper补LF候选，原工具错误不伪造日志，不报产品坏。
 - 432固定源SHA与两外仓HEAD/status前后完全一致；CIM/lstat/单硬链/精确set-size-SHA dry→Apply严格清1074本批文件/78目录（session15424 exit0），根不存在；无server/listener，仅受控socketpair。原共享TEMP/Phase92/源七项/opencode保留。
 - Phase108验收/集中整改卡/PWF已写；StockWiki原授权不含本次四文件，已请求精确新增许可，答复前不写。StockQA全仓旧授权保留，但本批没写。下一动作同卡JR1–JR3 TDD/集中回验，alias追溯单列，G3/L03/F05/真实gold/THIN保持原门。IQS提交推送待真实回执。
+- **Phase108实际Git交付**：516精确IQS路径提交3097448f30b5b40f523b99bd7b673c1af99dba48，正常push origin/master（bf5708d→3097448，实际exit0）；HEAD与远端跟踪一致，仅原opencode未跟踪。510工件及索引staged原字节逐项一致，12本地链接/helper AST及106合成归档SHA验证通过；精确NUL pathspec文件创建后已删除，无残留测试根。
+- 默认diff whitespace把保留CR当尾空白，已明确保留默认空白检查并增加cr-at-eol后diff --cached --check实际exit0；未清洗收到的raw字节或改断言。当前提交仅IQS验收/固定原件/规划，未写/提交/推送外仓，不关三阻断或G3F05。接着只提交本PWF真实回执，不变510冻结工件。
