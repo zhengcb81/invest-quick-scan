@@ -1477,3 +1477,4 @@ Status: complete_for_finite_acceptance_scope_changes_requested
 - [x] 743文件/402目录完整SHA/lstat/strict CIM0 dry-run→Apply；唯一根已无，历史共享TEMP缺口保留。
 - [x] 更新PWF和接手；精确提交推送以progress实际Git回执为准，不提前宣称成功。
 - 本阶段不代表StockWiki真实import/ACK/UI、owner golden、G3/F05关闭；SW和Lab仍原writer接续。
+- Phase104实际提交/推送：`31e781c3143e837a08cfe4aa559e7bb59c71705f`，90精确IQS文件、84索引原字节核对通过，origin/master一致；后续仅PWF实际回执提交，不改变验收结论/冻结工件。原QA writer补四边界，SW/Lab各接续；G3/F05仍未关。

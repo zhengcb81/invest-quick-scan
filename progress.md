@@ -2243,3 +2243,5 @@
 - 743文件/402目录lstat单硬链无reparse、set/size/SHA、strict CIM0先dry再Apply，Apply session89437 exit0，根已无；相关prep/run/collect全部终态。源135/47不变，付费/下载/生产库/源仓写0。worker过去清理只有聚合manifestSHA、无逐文件清单，旧147/148 ownership不明；历史缺口单列不代删，公开handoff exit2 temporary_root_not_cleaned如实保留。
 - 验收、一次独审、四边界单一卡、原输出/真实库摘要/PWF与接手已落档。QA/SW/Lab原writer继续，真实gold/双owner恢复/联合import-ACK-UI及G3/F05/THIN/L03未关。IQS精确Git提交推送待实际回执。
 - Git预检精确暂存90文件，11个精确被忽略工件局部-force；3个原traceback/CLI日志保留行尾空白、3份原guard保留EOF空行，对这6个精确路径增加whitespace属性，不改原字节，其他diff检查继续。84索引工件及索引本身将逐项核staged SHA，排除opencode/runs/外仓；不重跑产品suite。
+
+- **Phase104实际Git交付**：90个精确IQS文件沙箱外提交 `31e781c3143e837a08cfe4aa559e7bb59c71705f`，84索引工件和索引自身staged原字节全部匹配、diff检查通过；正常推送origin/master（e35071e→31e781c，exit0），HEAD/远端跟踪一致。工作树仅原opencode.json未跟踪；743自有测试文件已严格清，StockQA及其他外仓未写/未提交。状态仍partial_verified/changes_requested，四同链边界交原QA writer；随后仅补本实际PWF回执，不改被审证据或关闭门。
