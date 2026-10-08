@@ -1,4 +1,8 @@
-**2026-10-08 Phase108最新，覆盖下方历史：** 已完成一批真实QA生成→SW公开导入→原ACK→恢复/查询的联合验收，结果partial_verified/changes_requested。读[实际验收](reviews/G3/joint-2026-10-08/acceptance.md)与[唯一集中整改卡JR1–JR3](reviews/G3/joint-2026-10-08/remediation.md)。原三包有限成果保留，不重做或复跑full/UI。当前真实阻断为公共ACK1.0额外字段/内部错误码、首ACK目标store未事前绑定、原始JSON重复键取last。原17实例6P/11F，补9实例7P/2F；控制器误差与未执行依赖已分列，不能加总称整套GREEN。
+**2026-10-08 Phase109最新，覆盖下方历史：** JR2事前目标绑定单侧已签收，StockQA `86b1e8ab1221e085f08718ed31d18e792e526d34`真实正常commit/push、原七未跟踪不变。读[JR2有限验收](reviews/G3/jr2-2026-10-08/acceptance.md)、[接口/七写路径](reviews/G3/jr2-2026-10-08/interface.md)。schema7独立绑定目标/head/revision/来源/hash；旧terminal原ACK精确重放、旧pending不学ACK，未改公共wire。最终136 passed/24.91s/执行七SHA不变、九静态0/mypy56、一次集中独审及格式附记可发布；首次22RED、135P/1F和控制器错误都保留。2419文件/487目录严格dry→Apply自有根已无，旧helpers硬编码已删根不得盲跑。当前源代码已交付，IQS实际Git看progress末尾。
+
+**单一下一动作：** 在既有StockQA全仓授权内，按Phase108卡另列的Q10 requested/resolved追溯范围先重核当前writer/hash并报备，TDD分别保留请求/真实HTTP模型与durable receipt，注册alias策略显式；不能改actual为requested或直接删相等断言。不重做JR2/full/UI/live。StockWiki JR1/JR3四新路径授权问题仍未答，保持只读；两owner新结果齐再集中公开链回验。SW owner getter/真实query identity/facts golden、G3/L03/F05/TH-IN/双owner恢复仍未因此完成，不刷新退役回执。
+
+**历史Phase108（JR2以上方为准）：** 已完成一批真实QA生成→SW公开导入→原ACK→恢复/查询的联合验收，结果partial_verified/changes_requested。读[实际验收](reviews/G3/joint-2026-10-08/acceptance.md)与[唯一集中整改卡JR1–JR3](reviews/G3/joint-2026-10-08/remediation.md)。原三包有限成果保留，不重做或复跑full/UI。原真实阻断为公共ACK1.0额外字段/内部错误码、首ACK目标store未事前绑定、原始JSON重复键取last；JR2现已单侧修复。原17实例6P/11F，补9实例7P/2F；控制器误差与未执行依赖已分列，不能加总称整套GREEN。
 
 已经通过的子范围包括31完整观察、低分/unknown/null/N/A/watch长body、第二次同模型独立run、不可比2/9不混入>=8名单、独立q8 warm/seal零HTTP以及SW单侧恢复。它们不替ACK闭环/双owner恢复/真实identity与facts golden/F05。原HTTP实际B而请求A场景当前unsupported，不是真B模型比较，另列durable requested/resolved追溯，不改actual为requested洗绿。
 

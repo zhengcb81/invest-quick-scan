@@ -1,0 +1,48 @@
+........................................................................ [ 52%]
+...............................F................................         [100%]
+================================== FAILURES ===================================
+____ test_result_delivery_package_and_event_ledger_are_database_immutable _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-green-01/test_result_delivery_package_a0')
+
+    def test_result_delivery_package_and_event_ledger_are_database_immutable(tmp_path):
+        store, item, checkpoint, _ = _checkpointed_work_item(tmp_path)
+        work_id = item["work_item_id"]
+        package = _c06_package_for_checkpoint(checkpoint)
+        delivery = store.prepare_result_delivery(work_id, package)
+        _bind_synthetic_delivery_target(store, work_id)
+        with closing(store._connect()) as connection, connection:
+            with pytest.raises(sqlite3.DatabaseError, match="immutable"):
+                connection.execute(
+                    "UPDATE quick_scan_result_delivery SET package_json='{}' WHERE delivery_id=?",
+                    (delivery["delivery_id"],),
+                )
+            with pytest.raises(sqlite3.DatabaseError, match="invalid quick-scan"):
+                connection.execute(
+                    "UPDATE quick_scan_result_delivery SET state='delivered',ack_json='{}',"
+                    "ack_sha256=?,consumer_store_id='test-store' WHERE delivery_id=?",
+                    ("a" * 64, delivery["delivery_id"]),
+                )
+            with pytest.raises(sqlite3.DatabaseError, match="immutable"):
+                connection.execute(
+                    "DELETE FROM quick_scan_result_delivery WHERE delivery_id=?",
+                    (delivery["delivery_id"],),
+                )
+            with pytest.raises(sqlite3.DatabaseError, match="immutable"):
+                connection.execute(
+                    "UPDATE quick_scan_result_delivery_event SET event_type='blocked' "
+                    "WHERE delivery_id=?",
+                    (delivery["delivery_id"],),
+                )
+        store.apply_result_delivery_ack(work_id, _ack_for_package(package))
+        with closing(store._connect()) as connection, connection:
+>           with pytest.raises(sqlite3.DatabaseError, match="ACK is immutable"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Regex pattern did not match.
+E             Expected regex: 'ACK is immutable'
+E             Actual message: 'invalid quick-scan consumer binding: missing or mismatched'
+
+tests\unit\test_quick_scan_work_store.py:1581: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_work_store.py::test_result_delivery_package_and_event_ledger_are_database_immutable
+1 failed, 135 passed in 22.52s

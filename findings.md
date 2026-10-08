@@ -1694,3 +1694,10 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 独立q8 unknown交付重启正例不依赖JR1导致的失败状态，恢复0HTTP/attempt和包不变；它仍不能替模型unknown/预留的完整Q10范围。SW单侧恢复不替双owner、UI builder不替浏览器、false capabilities不替F05、provisional合成不替真实gold。
 - 收尾校核纠正freeze初诊：Git blob为CRLF而已签raw为LF，initial漏LF候选。432逐文件Git字节域都有as-is/LF/CRLF可逆证明，mixed0；原先“混合EOL”是未经证明推测，不继续作为事实。补LF候选和保留initial错误，不能伪造原stderr raw。
 - 保留原字节的CRLF helper必须按cr-at-eol做正常空白检查；默认工具把CR报尾空白不意味着代码或原日志应被清洗。实际限定保留blank-at-eol/blank-at-eof/space-before-tab并加cr-at-eol后检查0，510 staged原件仍逐项SHA匹配，归档索引不能指Git自动规范化后的另一字节域。
+# 2026-10-08 Phase109：JR2首次真实RED
+
+- 公开消费目标必须在发送前来自操作员配置或接收方公开信息，不能把第一次ACK.consumer.store_id写入后再称“已绑定”。本轮仅operator-configured synthetic，不声称StockWiki owner golden已交付。
+- 首次隔离TDD为22 failed/88 deselected，pytest 5.39s、controller wall6.084s、未超时。现有实现未绑定就begin/接受ACK，新增目标API/v7迁移及expected_consumer参数尚不存在；保存原失败作为实施前证据，不用新用例缺接口的失败冒充已经覆盖全部生产链。
+- 目标记录独立于旧consumer_store_id，按delivery/head/package/revision耐久且不可改；旧v6终态原ACK精确重放保留，旧pending不得由历史或新ACK自动推导目标。JR1原StockWiki ACK格式、JR3严格JSON与G3/F05依然独立未关闭。
+- JR2 schema7/API/immutable SQL guard和旧迁移已落实；首次135P/1F发现新consumer guard抢先破坏旧terminal ACK错误语义，限制首次非terminal转换后原assert/不可变trigger保持。最终格式字节136P/24.91s、mypy56源/九静态全0，同批集中独审无阻断，StockQA86b1e8a已正常提交推送；并非跨仓ACK或真实owner golden签收。
+- 合成E2E确实读取自建offline-fixture-key配置，不能写key-file reads0。v1六相对名ledger仅有固定fixture来源解释；v2十二绝对自有tmp读取且根外同名文件先拒，移除真实key环境、network0，但Python audit不是完整OS读隔离。

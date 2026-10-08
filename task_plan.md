@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08 Phase108联合实测完成）**：按[集中整改卡JR1–JR3](docs/implementation/reviews/G3/joint-2026-10-08/remediation.md)接续公共ACK格式/错误码、事前目标库绑定、严格JSON三项；StockQA全仓旧授权有效但实施前报备/核writer，StockWiki四文件新增范围已问用户、未答前不写。先TDD受影响链，收到两owner真实结果后一次集中原公开链回验；已通过分值/unknown/重启/单侧恢复/变体子范围和原三包保留，不能重做全套。实际来源/测试/清理见[Phase108验收](docs/implementation/reviews/G3/joint-2026-10-08/acceptance.md)。G3/L03/F05/事实gold/THIN不自动放行，模型alias/resolved能力另列，不夹带扩大本卡。
+**单一下一步（2026-10-08 Phase109完成）**：接续Q10中已记录的requested/resolved模型追溯缺口，先按当前StockQA `86b1e8a`重查writer/输入并报备既有四源码及受影响测试，TDD保存独立请求模型与真实HTTP解析模型、receipt绑定和注册alias策略；不能直接删相等断言或把actual改成requested。JR2事前目标绑定已在[本批有限验收](docs/implementation/reviews/G3/jr2-2026-10-08/acceptance.md)签收，真实七文件commit/push及2419自有清理已完成，不重做本批/full/UI。StockWiki四文件新增范围已问用户、未答前只读，JR1/JR3沿用[唯一集中整改卡](docs/implementation/reviews/G3/joint-2026-10-08/remediation.md)；许可后两owner实际结果齐再一次公开链回验。G3/L03/F05/事实gold/THIN不自动放行。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1515,3 +1515,10 @@ Status: partial_verified_changes_requested; concentrated_acceptance_and_cleanup_
 - [x] 一次集中独审和同批补记；独立q8 warm/seal0HTTP，J11不混2/9入白名单，原ACK公开schema不合格。实际清理1074自有文件/78目录，严格lstat/set/SHA/CIM dry→Apply；源仓/共享TEMP/Phase92/opencode不动。
 - [x] IQS516精确文件已沙箱外提交3097448f30b5b40f523b99bd7b673c1af99dba48并正常推送origin/master，510工件staged原字节一致、原opencode保留；随后仅PWF实际回执提交。接续同一集中整改卡，StockWiki四文件新增写授权等待用户，StockQA历史全仓授权按卡报备。
 - G3仍需L03+W11；F05/THIN/事实gold及源仓新写授权按原门处理，本批不自动放行。
+
+## Phase109：JR2事前目标绑定TDD接续
+Status: complete_for_jr2_single_owner_software_scope; source_committed_and_pushed; IQS_delivery_pending
+- [x] 上一目标回合已完成Phase108实际联合及提交推送，属于progress；本回合从6d33a9b/root PWF继续。StockQA仍a39d7ea/原七项，StockWiki新增四文件授权未答不写。
+- [x] 按StockQA历史全仓授权先报备两个源码/三单元测试；新独占根固定b6eaa08的136文件，密钥/真实调用/源仓写0。接口约定及独立worker边界见docs/implementation/reviews/G3/jr2-2026-10-08/interface.md。
+- [x] 保存22真实RED及首次135P/1F，实施耐久绑定/迁移/历史兼容；最终五受影响文件136 passed/24.91s/pytest0，七执行SHA不变，不将旧ACK store当目标、不改公共wire。schema7保留旧终态exact replay，旧pending不学ACK。
+- [x] 同批一次集中独审及格式附记可发布七最终字节；owner静态九命令0/mypy56源无问题，format AST/import-scope与已审源相同，当前136源无漂移才发布。StockQA真实86b1e8a commit/push/正常钩子0，原七项保留；strict lstat/单硬链/set-SHA/CIM0 dry→Apply清2419文件/487目录，根不存在。IQS实际Git仍待回执，JR1/JR3/SW许可及全局门独立等待。

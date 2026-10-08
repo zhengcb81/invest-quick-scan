@@ -1,0 +1,360 @@
+FFFFFFFFFFFFFFFFFFFFFF                                                   [100%]
+================================== FAILURES ===================================
+___ test_jr2_ack_compares_operator_configured_target_without_changing_wire ____
+
+    def test_jr2_ack_compares_operator_configured_target_without_changing_wire():
+        package = _package()
+        ack = _ack(package)
+        # Explicit synthetic operator configuration, never derived from incoming ACK.
+        target = {"component": "StockWiki", "namespace": "quick_scan", "store_id": "test-store"}
+>       assert validate_import_ack(ack, _outbox(package), expected_consumer=target) == ack
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: validate_import_ack() got an unexpected keyword argument 'expected_consumer'
+
+tests\unit\test_quick_scan_result_outbox.py:181: TypeError
+___________ test_jr2_ack_rejects_invalid_expected_consumer[target0] ___________
+
+target = {'component': 'Other', 'namespace': 'quick_scan', 'store_id': 'test-store'}
+
+    @pytest.mark.parametrize("target", [
+        {"component": "Other", "namespace": "quick_scan", "store_id": "test-store"},
+        {"component": "StockWiki", "namespace": "other", "store_id": "test-store"},
+        {"component": "StockWiki", "namespace": "quick_scan", "store_id": ""},
+        {"component": "StockWiki", "namespace": "quick_scan", "store_id": "test-store", "extra": True},
+    ])
+    def test_jr2_ack_rejects_invalid_expected_consumer(target):
+        package = _package()
+        with pytest.raises(ValueError):
+>           validate_import_ack(_ack(package), _outbox(package), expected_consumer=target)
+E           TypeError: validate_import_ack() got an unexpected keyword argument 'expected_consumer'
+
+tests\unit\test_quick_scan_result_outbox.py:196: TypeError
+___________ test_jr2_ack_rejects_invalid_expected_consumer[target1] ___________
+
+target = {'component': 'StockWiki', 'namespace': 'other', 'store_id': 'test-store'}
+
+    @pytest.mark.parametrize("target", [
+        {"component": "Other", "namespace": "quick_scan", "store_id": "test-store"},
+        {"component": "StockWiki", "namespace": "other", "store_id": "test-store"},
+        {"component": "StockWiki", "namespace": "quick_scan", "store_id": ""},
+        {"component": "StockWiki", "namespace": "quick_scan", "store_id": "test-store", "extra": True},
+    ])
+    def test_jr2_ack_rejects_invalid_expected_consumer(target):
+        package = _package()
+        with pytest.raises(ValueError):
+>           validate_import_ack(_ack(package), _outbox(package), expected_consumer=target)
+E           TypeError: validate_import_ack() got an unexpected keyword argument 'expected_consumer'
+
+tests\unit\test_quick_scan_result_outbox.py:196: TypeError
+___________ test_jr2_ack_rejects_invalid_expected_consumer[target2] ___________
+
+target = {'component': 'StockWiki', 'namespace': 'quick_scan', 'store_id': ''}
+
+    @pytest.mark.parametrize("target", [
+        {"component": "Other", "namespace": "quick_scan", "store_id": "test-store"},
+        {"component": "StockWiki", "namespace": "other", "store_id": "test-store"},
+        {"component": "StockWiki", "namespace": "quick_scan", "store_id": ""},
+        {"component": "StockWiki", "namespace": "quick_scan", "store_id": "test-store", "extra": True},
+    ])
+    def test_jr2_ack_rejects_invalid_expected_consumer(target):
+        package = _package()
+        with pytest.raises(ValueError):
+>           validate_import_ack(_ack(package), _outbox(package), expected_consumer=target)
+E           TypeError: validate_import_ack() got an unexpected keyword argument 'expected_consumer'
+
+tests\unit\test_quick_scan_result_outbox.py:196: TypeError
+___________ test_jr2_ack_rejects_invalid_expected_consumer[target3] ___________
+
+target = {'component': 'StockWiki', 'namespace': 'quick_scan', 'store_id': 'test-store', 'extra': True}
+
+    @pytest.mark.parametrize("target", [
+        {"component": "Other", "namespace": "quick_scan", "store_id": "test-store"},
+        {"component": "StockWiki", "namespace": "other", "store_id": "test-store"},
+        {"component": "StockWiki", "namespace": "quick_scan", "store_id": ""},
+        {"component": "StockWiki", "namespace": "quick_scan", "store_id": "test-store", "extra": True},
+    ])
+    def test_jr2_ack_rejects_invalid_expected_consumer(target):
+        package = _package()
+        with pytest.raises(ValueError):
+>           validate_import_ack(_ack(package), _outbox(package), expected_consumer=target)
+E           TypeError: validate_import_ack() got an unexpected keyword argument 'expected_consumer'
+
+tests\unit\test_quick_scan_result_outbox.py:196: TypeError
+_______ test_jr2_missing_target_refuses_before_any_state_change[begin] ________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_missing_target_refuse0')
+action = 'begin'
+
+    @pytest.mark.parametrize("action", ["begin", "ack"])
+    def test_jr2_missing_target_refuses_before_any_state_change(tmp_path, action):
+        store, wid, ready = _jr2_ready(tmp_path)
+        before = _jr2_snapshot(store)
+>       with pytest.raises(ValueError, match="consumer.*binding|target.*binding"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_q10_delivery.py:482: Failed
+________ test_jr2_missing_target_refuses_before_any_state_change[ack] _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_missing_target_refuse1')
+action = 'ack'
+
+    @pytest.mark.parametrize("action", ["begin", "ack"])
+    def test_jr2_missing_target_refuses_before_any_state_change(tmp_path, action):
+        store, wid, ready = _jr2_ready(tmp_path)
+        before = _jr2_snapshot(store)
+>       with pytest.raises(ValueError, match="consumer.*binding|target.*binding"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_q10_delivery.py:482: Failed
+_ test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent[False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_wrong_store_after_pre0')
+sent = False
+
+    @pytest.mark.parametrize("sent", [False, True])
+    def test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent(tmp_path, sent):
+        store, wid, ready = _jr2_ready(tmp_path)
+>       store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:493: AttributeError
+_ test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent[True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_wrong_store_after_pre1')
+sent = True
+
+    @pytest.mark.parametrize("sent", [False, True])
+    def test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent(tmp_path, sent):
+        store, wid, ready = _jr2_ready(tmp_path)
+>       store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:493: AttributeError
+_ test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[accepted-None-delivered] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_correct_prebound_targ0')
+status = 'accepted', error = None, state = 'delivered'
+
+    @pytest.mark.parametrize("status,error,state", [
+        ("accepted", None, "delivered"), ("already_present", None, "delivered"),
+        ("rejected", "missing_entity", "rejected"),
+        ("conflict", "immutable_key_hash_conflict", "conflict"),
+    ])
+    def test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack(tmp_path, status, error, state):
+        store, wid, ready = _jr2_ready(tmp_path)
+        original = ready["package_bytes"], ready["delivery_key"], ready["package_sha256"]
+>       binding = store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:512: AttributeError
+_ test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[already_present-None-delivered] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_correct_prebound_targ1')
+status = 'already_present', error = None, state = 'delivered'
+
+    @pytest.mark.parametrize("status,error,state", [
+        ("accepted", None, "delivered"), ("already_present", None, "delivered"),
+        ("rejected", "missing_entity", "rejected"),
+        ("conflict", "immutable_key_hash_conflict", "conflict"),
+    ])
+    def test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack(tmp_path, status, error, state):
+        store, wid, ready = _jr2_ready(tmp_path)
+        original = ready["package_bytes"], ready["delivery_key"], ready["package_sha256"]
+>       binding = store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:512: AttributeError
+_ test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[rejected-missing_entity-rejected] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_correct_prebound_targ2')
+status = 'rejected', error = 'missing_entity', state = 'rejected'
+
+    @pytest.mark.parametrize("status,error,state", [
+        ("accepted", None, "delivered"), ("already_present", None, "delivered"),
+        ("rejected", "missing_entity", "rejected"),
+        ("conflict", "immutable_key_hash_conflict", "conflict"),
+    ])
+    def test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack(tmp_path, status, error, state):
+        store, wid, ready = _jr2_ready(tmp_path)
+        original = ready["package_bytes"], ready["delivery_key"], ready["package_sha256"]
+>       binding = store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:512: AttributeError
+_ test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[conflict-immutable_key_hash_conflict-conflict] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_correct_prebound_targ3')
+status = 'conflict', error = 'immutable_key_hash_conflict', state = 'conflict'
+
+    @pytest.mark.parametrize("status,error,state", [
+        ("accepted", None, "delivered"), ("already_present", None, "delivered"),
+        ("rejected", "missing_entity", "rejected"),
+        ("conflict", "immutable_key_hash_conflict", "conflict"),
+    ])
+    def test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack(tmp_path, status, error, state):
+        store, wid, ready = _jr2_ready(tmp_path)
+        original = ready["package_bytes"], ready["delivery_key"], ready["package_sha256"]
+>       binding = store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:512: AttributeError
+___ test_jr2_binding_is_idempotent_and_never_retargets_existing_head[ready] ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_binding_is_idempotent0')
+phase = 'ready'
+
+    @pytest.mark.parametrize("phase", ["ready", "send_uncertain", "terminal"])
+    def test_jr2_binding_is_idempotent_and_never_retargets_existing_head(tmp_path, phase):
+        store, wid, ready = _jr2_ready(tmp_path)
+>       binding = store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:539: AttributeError
+_ test_jr2_binding_is_idempotent_and_never_retargets_existing_head[send_uncertain] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_binding_is_idempotent1')
+phase = 'send_uncertain'
+
+    @pytest.mark.parametrize("phase", ["ready", "send_uncertain", "terminal"])
+    def test_jr2_binding_is_idempotent_and_never_retargets_existing_head(tmp_path, phase):
+        store, wid, ready = _jr2_ready(tmp_path)
+>       binding = store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:539: AttributeError
+_ test_jr2_binding_is_idempotent_and_never_retargets_existing_head[terminal] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_binding_is_idempotent2')
+phase = 'terminal'
+
+    @pytest.mark.parametrize("phase", ["ready", "send_uncertain", "terminal"])
+    def test_jr2_binding_is_idempotent_and_never_retargets_existing_head(tmp_path, phase):
+        store, wid, ready = _jr2_ready(tmp_path)
+>       binding = store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:539: AttributeError
+_____ test_jr2_superseded_head_needs_its_own_binding_and_rejects_old_ack ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_superseded_head_needs0')
+
+    def test_jr2_superseded_head_needs_its_own_binding_and_rejects_old_ack(tmp_path):
+        store, wid, ready = _jr2_ready(tmp_path)
+>       old_binding = store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_q10_delivery.py:555: AttributeError
+________ test_jr2_v6_migration_never_learns_target_from_old_ack[ready] ________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_v6_migration_never_le0')
+state = 'ready'
+
+    @pytest.mark.parametrize("state", ["ready", "send_uncertain", "delivered"])
+    def test_jr2_v6_migration_never_learns_target_from_old_ack(tmp_path, state):
+        store, wid, ack, clock = _jr2_legacy_v6_delivery(tmp_path, state)
+        before = store.get_result_delivery(wid)
+        migrated = _store(tmp_path, clock)
+        result = migrated.get_result_delivery(wid)
+>       assert result["consumer_binding"] is None
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'consumer_binding'
+
+tests\unit\test_quick_scan_work_store.py:1633: KeyError
+___ test_jr2_v6_migration_never_learns_target_from_old_ack[send_uncertain] ____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_v6_migration_never_le1')
+state = 'send_uncertain'
+
+    @pytest.mark.parametrize("state", ["ready", "send_uncertain", "delivered"])
+    def test_jr2_v6_migration_never_learns_target_from_old_ack(tmp_path, state):
+        store, wid, ack, clock = _jr2_legacy_v6_delivery(tmp_path, state)
+        before = store.get_result_delivery(wid)
+        migrated = _store(tmp_path, clock)
+        result = migrated.get_result_delivery(wid)
+>       assert result["consumer_binding"] is None
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'consumer_binding'
+
+tests\unit\test_quick_scan_work_store.py:1633: KeyError
+______ test_jr2_v6_migration_never_learns_target_from_old_ack[delivered] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_v6_migration_never_le2')
+state = 'delivered'
+
+    @pytest.mark.parametrize("state", ["ready", "send_uncertain", "delivered"])
+    def test_jr2_v6_migration_never_learns_target_from_old_ack(tmp_path, state):
+        store, wid, ack, clock = _jr2_legacy_v6_delivery(tmp_path, state)
+        before = store.get_result_delivery(wid)
+        migrated = _store(tmp_path, clock)
+        result = migrated.get_result_delivery(wid)
+>       assert result["consumer_binding"] is None
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'consumer_binding'
+
+tests\unit\test_quick_scan_work_store.py:1633: KeyError
+_________ test_jr2_target_binding_has_durable_database_tamper_guards __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_target_binding_has_du0')
+
+    def test_jr2_target_binding_has_durable_database_tamper_guards(tmp_path):
+        store, item, checkpoint, _ = _checkpointed_work_item(tmp_path)
+        wid = item["work_item_id"]
+        package = _c06_package_for_checkpoint(checkpoint)
+        store.prepare_result_delivery(wid, package)
+        target = {"component": "StockWiki", "namespace": "quick_scan", "store_id": "stockwiki-test-store"}
+>       binding = store.bind_result_delivery_consumer(wid, target, source_ref="operator-config:synthetic-test")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'bind_result_delivery_consumer'
+
+tests\unit\test_quick_scan_work_store.py:1657: AttributeError
+_________ test_jr2_failed_v7_migration_rolls_back_original_v6_schema __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/jr2-2026-10-08-01/tmp/jr2-red-01/test_jr2_failed_v7_migration_r0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DB9D493490>
+
+    def test_jr2_failed_v7_migration_rolls_back_original_v6_schema(tmp_path, monkeypatch):
+        from src.utils import quick_scan_work_store as module
+        store, wid, _, clock = _jr2_legacy_v6_delivery(tmp_path, "ready")
+        with closing(store._connect()) as connection:
+            before = tuple(connection.iterdump())
+>       monkeypatch.setattr(module, "_DDL_V7_ADDITIONS", (*module._DDL_V7_ADDITIONS, "CREATE TABLE broken("))
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'src.utils.quick_scan_work_store' has no attribute '_DDL_V7_ADDITIONS'. Did you mean: '_DDL_V2_ADDITIONS'?
+
+tests\unit\test_quick_scan_work_store.py:1676: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_result_outbox.py::test_jr2_ack_compares_operator_configured_target_without_changing_wire
+FAILED tests/unit/test_quick_scan_result_outbox.py::test_jr2_ack_rejects_invalid_expected_consumer[target0]
+FAILED tests/unit/test_quick_scan_result_outbox.py::test_jr2_ack_rejects_invalid_expected_consumer[target1]
+FAILED tests/unit/test_quick_scan_result_outbox.py::test_jr2_ack_rejects_invalid_expected_consumer[target2]
+FAILED tests/unit/test_quick_scan_result_outbox.py::test_jr2_ack_rejects_invalid_expected_consumer[target3]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_missing_target_refuses_before_any_state_change[begin]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_missing_target_refuses_before_any_state_change[ack]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent[False]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent[True]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[accepted-None-delivered]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[already_present-None-delivered]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[rejected-missing_entity-rejected]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[conflict-immutable_key_hash_conflict-conflict]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_binding_is_idempotent_and_never_retargets_existing_head[ready]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_binding_is_idempotent_and_never_retargets_existing_head[send_uncertain]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_binding_is_idempotent_and_never_retargets_existing_head[terminal]
+FAILED tests/unit/test_q10_delivery.py::test_jr2_superseded_head_needs_its_own_binding_and_rejects_old_ack
+FAILED tests/unit/test_quick_scan_work_store.py::test_jr2_v6_migration_never_learns_target_from_old_ack[ready]
+FAILED tests/unit/test_quick_scan_work_store.py::test_jr2_v6_migration_never_learns_target_from_old_ack[send_uncertain]
+FAILED tests/unit/test_quick_scan_work_store.py::test_jr2_v6_migration_never_learns_target_from_old_ack[delivered]
+FAILED tests/unit/test_quick_scan_work_store.py::test_jr2_target_binding_has_durable_database_tamper_guards
+FAILED tests/unit/test_quick_scan_work_store.py::test_jr2_failed_v7_migration_rolls_back_original_v6_schema
+22 failed, 88 deselected in 5.39s

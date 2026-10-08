@@ -1,0 +1,39 @@
+{
+  "command": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "tests/unit/test_quick_scan_result_outbox.py",
+    "tests/unit/test_q10_delivery.py",
+    "tests/unit/test_quick_scan_work_store.py",
+    "tests/unit/test_quick_scan_c06_complete_seal.py",
+    "tests/integration/test_qa_c06_02_e2e.py",
+    "-q",
+    "-o",
+    "addopts=",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\jr2-2026-10-08-01\\tmp\\jr2-green-02",
+    "--junitxml=C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\jr2-2026-10-08-01\\logs\\worker\\jr2-green-02\\junit.xml"
+  ],
+  "returncode": 0,
+  "timeout": false,
+  "wall_s": 22.362,
+  "key_environment_removed": true,
+  "paid_calls": 0,
+  "external_source_written": false,
+  "executed_source_hashes": {
+    "src/utils/quick_scan_result_outbox.py": "bf315bf9576dd4a17eed820b912b05f2a58a0926ea8301c39ae3f9de38fd4515",
+    "src/utils/quick_scan_work_store.py": "916e2b45597442c55a64c9ea4ff3921132f725d949dca462b0f0c0f3d399772a",
+    "tests/unit/test_quick_scan_result_outbox.py": "f7c5884e2981a5894ab53e625f926c54e75e2956a870b6da808cb468fcd0c3c3",
+    "tests/unit/test_q10_delivery.py": "e68b1958cc09ef2b0f24fe6d7a6d5e978f9331aea54f429ca8b85e56f2b93c9f",
+    "tests/unit/test_quick_scan_work_store.py": "3d5817b2b9f09869916f6b9a9457ea05dbc49c71a0b7270806b6913d94897d8d",
+    "tests/unit/test_quick_scan_c06_complete_seal.py": "aa800b561dbc838e6937ec01d76cbba3692f98430a7c4866164578336e81e7a8",
+    "tests/integration/test_qa_c06_02_e2e.py": "3702cef025828fbf9928a7336da86d40f2350f11cf9cd272410dec84ab321551"
+  },
+  "executed_guard_sha256": "c47c7b3cb00f30d3ea6464157b9bf8a112511eb9f3111211413c7fe478042a5f",
+  "executed_source_unchanged": true
+}
