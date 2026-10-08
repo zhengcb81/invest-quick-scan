@@ -1427,3 +1427,4 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_r
 - [ ] 原Lab唯一writer同批修六残余及旧隔离文案，交新commit/handoff后仅受影响复验一次集中大节点；不重建或代写外仓。
 - CodeGraph Lab仍未初始化，沿用Phase97已询问但未获新写授权状态，不自动建索引。首次只读探测旧intake/source-baseline.json不存在，改读实际交接与Git；不据不存在路径推断数据丢失。
 - L02完整校准/人类gold、G3/F05、TH/IN/L03不因本整改或shape通过自动关闭；不执行新proposal/live。
+- 实际IQS交付`1a30c7c6d09891acd4fb5beea6752e38a3c211cc`，182精确文件已沙箱外提交并正常推送origin/master；176工件/index staged bytes一致、diff检查通过，opencode.json保留。后续仅补PWF实际回执，未改Lab或被审工件。
