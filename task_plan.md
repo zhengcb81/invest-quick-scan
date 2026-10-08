@@ -1517,8 +1517,9 @@ Status: partial_verified_changes_requested; concentrated_acceptance_and_cleanup_
 - G3仍需L03+W11；F05/THIN/事实gold及源仓新写授权按原门处理，本批不自动放行。
 
 ## Phase109：JR2事前目标绑定TDD接续
-Status: complete_for_jr2_single_owner_software_scope; source_committed_and_pushed; IQS_delivery_pending
+Status: complete_for_jr2_single_owner_software_scope; source_and_IQS_committed_and_pushed
 - [x] 上一目标回合已完成Phase108实际联合及提交推送，属于progress；本回合从6d33a9b/root PWF继续。StockQA仍a39d7ea/原七项，StockWiki新增四文件授权未答不写。
 - [x] 按StockQA历史全仓授权先报备两个源码/三单元测试；新独占根固定b6eaa08的136文件，密钥/真实调用/源仓写0。接口约定及独立worker边界见docs/implementation/reviews/G3/jr2-2026-10-08/interface.md。
 - [x] 保存22真实RED及首次135P/1F，实施耐久绑定/迁移/历史兼容；最终五受影响文件136 passed/24.91s/pytest0，七执行SHA不变，不将旧ACK store当目标、不改公共wire。schema7保留旧终态exact replay，旧pending不学ACK。
 - [x] 同批一次集中独审及格式附记可发布七最终字节；owner静态九命令0/mypy56源无问题，format AST/import-scope与已审源相同，当前136源无漂移才发布。StockQA真实86b1e8a commit/push/正常钩子0，原七项保留；strict lstat/单硬链/set-SHA/CIM0 dry→Apply清2419文件/487目录，根不存在。IQS实际Git仍待回执，JR1/JR3/SW许可及全局门独立等待。
+- 实际IQS交付：107精确路径提交`a262c32cc9bde3e7f404feb85136f5cdf160f696`，101工件+索引staged原字节核对、diff检查通过，正常推送既有origin/master且HEAD相同，仅原opencode未跟踪保留。此前diff2的三raw guard EOF例外与PWF尾空行修正已留时序，不改被审源/日志；随后仅追加PWF本Git实际回执。
