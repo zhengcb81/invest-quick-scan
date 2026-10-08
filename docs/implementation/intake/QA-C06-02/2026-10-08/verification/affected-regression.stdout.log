@@ -1,0 +1,223 @@
+........................................................................ [ 35%]
+.....FFF............................................F................... [ 71%]
+.........................................................                [100%]
+================================== FAILURES ===================================
+____ test_v1_migration_preserves_work_rows_and_adds_empty_checkpoint_table ____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-02-2026-10-08-01/tmp/pytest/test_v1_migration_preserves_wo0')
+
+    def test_v1_migration_preserves_work_rows_and_adds_empty_checkpoint_table(tmp_path):
+        clock = [1_800_000_000.0]
+>       path = _install_v1_fixture(tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:756: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:34: in _install_v1_fixture
+    connection.executescript(fixture.read_text(encoding="utf-8"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-02-2026-10-08-01/qa/tests/fixtures/quick_scan_work_store_v1.sql')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\qa\\tests\\fixtures\\quick_scan_work_store_v1.sql'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+_________ test_v1_migration_rejects_completed_work_without_checkpoint _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-02-2026-10-08-01/tmp/pytest/test_v1_migration_rejects_comp0')
+
+    def test_v1_migration_rejects_completed_work_without_checkpoint(tmp_path):
+>       path = _install_v1_fixture(tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:781: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:34: in _install_v1_fixture
+    connection.executescript(fixture.read_text(encoding="utf-8"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-02-2026-10-08-01/qa/tests/fixtures/quick_scan_work_store_v1.sql')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\qa\\tests\\fixtures\\quick_scan_work_store_v1.sql'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+___ test_fixed_v2_migration_preserves_existing_rows_and_adds_budget_ledger ____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-02-2026-10-08-01/tmp/pytest/test_fixed_v2_migration_preser0')
+
+    def test_fixed_v2_migration_preserves_existing_rows_and_adds_budget_ledger(tmp_path):
+        path = tmp_path / "quick-scan-v2.sqlite"
+        fixture = Path(__file__).parents[1] / "fixtures" / "quick_scan_work_store_v2.sql"
+        with closing(sqlite3.connect(path)) as connection, connection:
+>           connection.executescript(fixture.read_text(encoding="utf-8"))
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:802: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-02-2026-10-08-01/qa/tests/fixtures/quick_scan_work_store_v2.sql')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\qa\\tests\\fixtures\\quick_scan_work_store_v2.sql'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+__________ test_async_search_settles_the_same_durable_budget_ledger ___________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-02-2026-10-08-01/tmp/pytest/test_async_search_settles_the_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025A12BDE060>
+
+    def test_async_search_settles_the_same_durable_budget_ledger(tmp_path, monkeypatch):
+        store = QuickScanWorkStore(tmp_path / "budget.sqlite")
+        policy = _policy(max_cost=10, max_cost_per_attempt=2)
+        response = Mock()
+        response.status_code = 200
+        response.headers = {"x-request-id": "async-budget-fixture"}
+        response.json.return_value = {
+            "id": "async-budget-response",
+            "status": "completed",
+            "model": "fixture-a",
+            "output": [
+                {
+                    "type": "web_search_call",
+                    "id": "async-budget-search",
+                    "status": "completed",
+                    "action": {
+                        "type": "search",
+                        "sources": [{"type": "url", "url": "https://example.test/async-budget"}],
+                    },
+                },
+                {
+                    "type": "message",
+                    "content": [{"type": "output_text", "text": "fixture"}],
+                },
+            ],
+        }
+        http_client = Mock()
+        http_client.post = AsyncMock(return_value=response)
+        monkeypatch.setattr(
+            "src.providers.llm_client.http_client_manager.get_async_client",
+            AsyncMock(return_value=http_client),
+        )
+        client = AsyncLLMClient(
+            api_key="fixture-only",
+            model="fixture-a",
+            base_url="https://api.openai.com/v1/responses",
+            provider_name="openai",
+        )
+    
+        async def dispatch():
+            with bind_quick_scan_budget(
+                store,
+                policy,
+                cost_resolver=lambda _receipt: {
+                    "actual_cost": 0.75,
+                    "pricing_ref": "fixture-price-v1",
+                    "source_ref": "async-provider-usage-fixture",
+                },
+            ):
+                with bind_quick_scan_route(
+                    route_id="route-a1",
+                    provider="provider-a1",
+                    model_requested="fixture-a",
+                    quota_group="A",
+                ):
+                    return await client.send_search_request_async("fixture question")
+    
+>       result = asyncio.run(dispatch())
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_budget.py:603: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\asyncio\runners.py:194: in run
+    with Runner(debug=debug, loop_factory=loop_factory) as runner:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\runners.py:58: in __enter__
+    self._lazy_init()
+C:\Miniconda\Lib\asyncio\runners.py:137: in _lazy_init
+    self._loop = events.new_event_loop()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\events.py:837: in new_event_loop
+    return get_event_loop_policy().new_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\events.py:734: in new_event_loop
+    return self._loop_factory()
+           ^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\windows_events.py:316: in __init__
+    super().__init__(proactor)
+C:\Miniconda\Lib\asyncio\proactor_events.py:639: in __init__
+    self._make_self_pipe()
+C:\Miniconda\Lib\asyncio\proactor_events.py:786: in _make_self_pipe
+    self._ssock, self._csock = socket.socketpair()
+                               ^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\socket.py:615: in _fallback_socketpair
+    lsock.bind((host, 0))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'socket.bind'
+args = (<socket.socket [closed] fd=-1, family=2, type=1, proto=0>, ('127.0.0.1', 0))
+
+    def audit(event, args):
+        if event in {'socket.connect', 'socket.getaddrinfo', 'socket.bind', 'socket.sendto'}:
+>           raise PermissionError('E97 network forbidden')
+E           PermissionError: E97 network forbidden
+
+..\guard\sitecustomize.py:22: PermissionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_work_store.py::test_v1_migration_preserves_work_rows_and_adds_empty_checkpoint_table
+FAILED tests/unit/test_quick_scan_work_store.py::test_v1_migration_rejects_completed_work_without_checkpoint
+FAILED tests/unit/test_quick_scan_work_store.py::test_fixed_v2_migration_preserves_existing_rows_and_adds_budget_ledger
+FAILED tests/unit/test_quick_scan_budget.py::test_async_search_settles_the_same_durable_budget_ledger
+4 failed, 197 passed in 25.23s

@@ -1,0 +1,50 @@
+[
+  {
+    "name": "iqs-public-compare-public-cli",
+    "command": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\standard_answers.py",
+      "compare",
+      "--left",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-observation.json",
+      "--right",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-observation.json",
+      "--axis",
+      "company",
+      "--output",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-comparison.json"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\qa",
+    "returncode": 0,
+    "wall_s": 0.65,
+    "stdout_sha256": "6e9d30608f0a7cbf1f29a5b9b683f90075da18c0bfc793a59b616415e15881a6",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "iqs-public-compare-public-cli-wrong-metadata",
+    "command": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\standard_answers.py",
+      "compare",
+      "--left",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata-observation.json",
+      "--right",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata-observation.json",
+      "--axis",
+      "company",
+      "--output",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata-comparison.json"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\qa",
+    "returncode": 2,
+    "wall_s": 0.521,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "9271a65d14b2d05d4c7fe5ec0debf1350bae9ccfc602416ada861262e0b6e2ae"
+  }
+]

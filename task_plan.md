@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08）**：Phase99已集中复验EVID-LAB-01整改，原81方法/固定9/三历史归档双重放/34fixture全通过，但六处残余边界已实际复现，仍changes_requested。原Lab writer按[六项残余卡](docs/implementation/reviews/EVID-LAB-01/remediation-2026-10-08/remaining-repairs.md)同批修后交新commit/handoff；总控只读，不重复已完成功能或原收费矩阵。SW Phase98原五组仍待原writer修，QA-C06-02仍等正式交付。各源仓归各harness独占，下一次新交付仅受影响回验及一次集中大节点审查，不为helper立门。TH/IN/G3/F05/L03仍暂缓，不刷新退役回执，不擅写外仓。
+**单一下一步（2026-10-08）**：Phase100集中验收QA-C06-02完成，200个唯一受影响方法及真实CLI恢复/旧迁移已确认，但7固定边界RED（四代码组）与交接清理证据待修，保持changes_requested。原QA writer按[同批整改卡](docs/implementation/reviews/QA-C06-02/remediation-2026-10-08.md)修后交新commit/handoff；总控只读，收到新交付再做受影响范围一次集中验收。SW Phase98五组、Lab Phase99六残余也由各原writer修；TH/IN/G3/F05/L03继续暂缓，不重跑收费、退役回执或小节点审查。
 
 **当前执行（Phase95）**：IQS上游40精确文件已正式提交并推送`a23bec03ec459fa036a8800acc1f43b1662b22b8`；11真实子进程CLI、35回归/24子测试及集中独审通过，本轮两根28文件已清。用户已确认三个外包开工，总控只写IQS；下一动作收实际交付，不接管源仓。整Phase92/G3/F05开放，波次2初始workers_dispatched=false为历史快照。
 
@@ -1428,3 +1428,12 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_r
 - CodeGraph Lab仍未初始化，沿用Phase97已询问但未获新写授权状态，不自动建索引。首次只读探测旧intake/source-baseline.json不存在，改读实际交接与Git；不据不存在路径推断数据丢失。
 - L02完整校准/人类gold、G3/F05、TH/IN/L03不因本整改或shape通过自动关闭；不执行新proposal/live。
 - 实际IQS交付`1a30c7c6d09891acd4fb5beea6752e38a3c211cc`，182精确文件已沙箱外提交并正常推送origin/master；176工件/index staged bytes一致、diff检查通过，opencode.json保留。后续仅补PWF实际回执，未改Lab或被审工件。
+
+## Phase100：QA-C06-02集中验收
+Status: review_completed_changes_requested; source_repository_read_only; owner_remediation_pending; no_gate_closed
+- [x] 用户通知交付，核实际master@a12bc29bf20f5fc48df69236f2e07c3c2472bacd，代码结果7e71b2cd8bbb042a72b282e83cb361a1ddcbb8b7；后续仅交接/日志，原七未跟踪保留。
+- [x] 36/36工件前后raw匹配、5仅EOL；133 Git锚定工作树原字节快照测试后不变，原7状态不变。公开handoff正确catalog exit2未清TEMP；实际scope诊断副本修正后仍exit2，未代改交接。
+- [x] 受影响首197pass/4 controller failure（漏SQL/Windows socketpair），补SQL3pass，200唯一方法确认；async纠正重试180秒timeout保留未确认，不算产品RED。真实进程cold31/warm0/seal0，正常31观察IQS验证通过；错metadata CLI仍31send/31ready、IQS拒1；两组实际run/scan均31不匹配。
+- [x] 一次集中独审/9固定边界7RED2GREEN：definition/semantic/template绑定三例、foreign run/scan、两JSON重复键、full head脱离侧表。真实v5含旧包/ACK迁移及中途故障rollback两GREEN保留；不把这些小case设独立审查门。
+- [x] [验收](docs/implementation/reviews/QA-C06-02/acceptance-2026-10-08.md)/[同批整改卡](docs/implementation/reviews/QA-C06-02/remediation-2026-10-08.md)/独审/原日志留档；518文件229目录经lstat/CIM/set/SHA dry-run→Apply清除，旧根/sharedTEMP/opencode保留。更新PWF与接手；精确IQS提交推送见progress实际回执。
+- [ ] 原QA唯一writer同批四组+交接整改，返回实际新commit/handoff后再集中复验，源仓不接管。完整StockWiki流水线/owner golden/G3/F05未执行，TH/IN/L03不关闭；worker1037全套只接收日志。

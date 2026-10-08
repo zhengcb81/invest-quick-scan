@@ -1,0 +1,121 @@
+{
+  "consumer": {
+    "component": "StockWiki",
+    "minimum_schema_version": "1.0.0",
+    "namespace": "quick_scan"
+  },
+  "contract_versions": {
+    "answer_schema": "1.0.0",
+    "identity_schema": "2.2.0",
+    "model_policy_schema": "2.0.0",
+    "observation_schema": "1.1.0",
+    "question_catalog": "3.2.0"
+  },
+  "created_at": "2026-10-08T08:07:24.586338Z",
+  "data_class": "lightweight_screening",
+  "document_payloads_included": false,
+  "extensions": [],
+  "items": [
+    {
+      "item_id": "itm_ad0c05fae0c85a7bf9dbdb7c1057a55d8986be09dbdc4e44c8698f666ce85c39",
+      "observation": {
+        "answer": {
+          "basis": "current",
+          "confidence": "medium",
+          "counterevidence": "Synthetic counterpoint kept for balance.",
+          "coverage": {
+            "reason": "Synthetic fixture covers only part of the company.",
+            "status": "partial"
+          },
+          "evidence": [
+            {
+              "claim": "Synthetic claim used only for offline validation.",
+              "id": "e1",
+              "published_at": "2026-09-01",
+              "title": "Synthetic primary source",
+              "url": "https://example.com/issuer"
+            }
+          ],
+          "information_as_of": "2026-09-01",
+          "items": [],
+          "metrics": [],
+          "missing_fields": [
+            "customer concentration"
+          ],
+          "period_end": "2026-06-30",
+          "period_start": "2026-01-01",
+          "question_id": "CROSS_BORDER_01",
+          "response_kind": "score",
+          "score": 8,
+          "status": "scored",
+          "summary": "Synthetic standard answer; not a real company conclusion.",
+          "trend": "stable",
+          "watch_triggers": [
+            "Synthetic watch trigger"
+          ]
+        },
+        "cohort": {
+          "company_type": "operating",
+          "industries": [
+            "industrial"
+          ],
+          "stage": "mature",
+          "subtype": null
+        },
+        "comparison_group_id": null,
+        "construct_id": null,
+        "cycle_sensitive": true,
+        "entity_id": "ENT_CONTEXT_FIXTURE",
+        "evidence_review_status": "unreviewed",
+        "execution": {
+          "answered_at": "2026-10-08T08:07:24.586338Z",
+          "attempt_id": "ccfb4b15-932c-41a8-9c77-8e747235833b",
+          "model_requested": "actual-fixture-model",
+          "model_resolved": "actual-fixture-model",
+          "model_revision": null,
+          "prompt_sha256": "6726d475bf084f1662ef565e58fcd54bdbf6a636c302001bd8fbe5915b1eb2a6",
+          "provider": "openai",
+          "request_id": "req_CROSS_BORDER_01",
+          "search_receipt_id": "ws_CROSS_BORDER_01",
+          "search_status": "executed",
+          "started_at": "2026-10-08T08:07:24Z"
+        },
+        "field_id": "score.cross_border_01",
+        "information_cutoff": "2026-09-22",
+        "inputset_id": "fixture-input",
+        "method_id": "module-locked-v1/core-constructs-v1/bf16a908fdc40d6f/ad002842c9ce0630",
+        "module_package_id": "pkg_24f07923f23cf0a2be5d7fb4b36a11925c779a8f4a68bdc9c81457084ded080f",
+        "module_release_id": "modrel_18c097b26b82746d3b48d9f2da4858a15ce216bce39c2572d10c2dcef23d32b9",
+        "observation_id": "obs_f3401534d8c0001e1ca490c4824c258332745c346a19bb0fde6fe56865dd0559",
+        "observed_at": "2026-10-08T08:07:24.586338Z",
+        "question_definition_sha256": "a4f42065aa6b5dae3880aad128eb3ec8776509398ca8baeb345228ebede93389",
+        "question_id": "CROSS_BORDER_01",
+        "question_semantic_sha256": "ad002842c9ce063020a5110e434f8d3e90be02800df8ff8fe0df55acb43fafa5",
+        "question_version": "1.0.0",
+        "run_id": "fixture-run",
+        "scan_id": "fixture-scan",
+        "schema_version": "1.1.0",
+        "scope": "entity",
+        "security_id": null,
+        "segment_id": null,
+        "task_mode": "primary",
+        "template_version": "99.0.0"
+      },
+      "observation_id": "obs_f3401534d8c0001e1ca490c4824c258332745c346a19bb0fde6fe56865dd0559",
+      "payload_sha256": "19ab5f2ec46f8450e938d8639e5f3b6040bd16ba8396e5961c23f0a68675d649"
+    }
+  ],
+  "package_id": "pkg_61b679aeea6c2f2649ed4793d567b5b5198ea3f65344f05e542d94f9f27c5c70",
+  "package_sha256": "61b679aeea6c2f2649ed4793d567b5b5198ea3f65344f05e542d94f9f27c5c70",
+  "producer": {
+    "build_id": "offline-synthetic-not-owner-golden",
+    "component": "StockQAbyLLM",
+    "component_version": "fixture-v2"
+  },
+  "required_capabilities": [
+    "entity_security_identity_v1",
+    "standard_observation_v1",
+    "score_v1"
+  ],
+  "schema_version": "1.0.0"
+}

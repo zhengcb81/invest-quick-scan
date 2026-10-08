@@ -1,5 +1,9 @@
 # 新接手模型工作指南
 
+**2026-10-08 Phase100最新（优先于下方历史快照）：** QA-C06-02已收到并集中验收，代码7e71b2c/交接a12bc29。200唯一受影响方法、真实进程cold31/warm0/seal0和真实v5迁移/rollback确认；7固定反例RED（四代码组），仍partial_verified/changes_requested。读[验收](reviews/QA-C06-02/acceptance-2026-10-08.md)和[同批整改卡](reviews/QA-C06-02/remediation-2026-10-08.md)。原QA writer修题义发布/run-scan/严格JSON/完整head绑定与交接；总控只读StockQA，不能把既有全仓授权误读成抢占唯一writer。SW Phase98五组、Lab Phase99六残余同样待原writer新交付。不要重复已有能力、收费实验或每小步审查。
+
+本轮133 Git锚定工作树源与36工件不变，5仅EOL；518临时文件已严格清除，原7 QA untracked/旧Phase92/sharedTEMP/opencode保留。注意controller漏SQL/async守卫失败不是产品RED：async纠正批180秒timeout仍未确认，不宣称201全绿，不按原focused.py再盲跑。收到新commit/handoff后只受影响复验与一次集中签收；真实StockWiki import/ACK恢复/UI及owner golden/G3/F05/TH/IN/L03仍未关闭。IQS新验收提交与推送以progress最末实际Git回执为准。
+
 **Phase95当前占用优先：** 用户已确认三外包开工，总控禁止写StockQA/StockWiki/新Lab源仓；先完成本IQS的[authority生产者交付](contracts/iqs-authority-producer-2026-10-07.md)，源与波次2冻结快照相同，附真实CLI/回归/独审/清理证据。交接归档和其他包只读；G3/F05仍未签收，不重新跑已结束收费实验。波次2初始workers_dispatched=false保留为当时快照，不可误读为可以接管写入。
 **2026-10-07晚间Phase94优先入口**：用户请求新的独立大包，见[第二轮三个施工包](parallel-lanes/packages/2026-10-07-wave2/README.md)。QA-C06-02接续Phase92九件有效未提交工作/真实RED，SW-REPAIR-02闭合原六问题，EVID-LAB-01在新独立root做零收费离线评测；输入/接口/模板均在包目录。只准备文档，尚未分派。不得重复旧QA-NET/SW-READY/TH-IN预研；实际人类分派后才能移交唯一writer/授予卡中范围。总控保持IQS独占，回收后集中联调，不新增小节点门。Phase93实验已提交推送，不能按下文历史“先实验”再收费。
 

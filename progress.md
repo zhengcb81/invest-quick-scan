@@ -2171,3 +2171,18 @@
 - PWF/接手已更新。原Lab writer按六残余同批修；SW五组待修，QA尚未正式交回，各源仓不接管。proposal只接收draft不执行；L02完整gold校准/G3/F05/TH/IN/L03保持等待。精确IQS提交推送待实际Git回执。
 - Git交付预检：182精确IQS文件暂存，176索引工件与index staged bytes逐项相符。diff检查仅review-followup.stdout.log的原traceback尾空白，给这唯一原日志精确whitespace属性豁免，不清洗字节；其他源码/文档/日志正常检查。opencode.json、runs和外仓均排除。
 - **Phase99实际Git交付（2026-10-08）**：`1a30c7c6d09891acd4fb5beea6752e38a3c211cc`，182精确文件，176索引工件及index staged原字节逐一匹配，diff检查通过。沙箱外正常推送origin/master（5b14f15→1a30c7c，exit0），本地HEAD/远端跟踪一致；工作树仅既有opencode.json未跟踪保留。Lab未写/未提交/未建remote；266自有临时文件已清。状态保持partial_verified/changes_requested，六项残余卡交原writer；后续提交仅本实际PWF回执，不改被审证据。
+
+## 2026-10-08 — Phase100接收QA-C06-02
+- 用户通知完成，总控只读接收代码7e71b2c、后续交接a12bc29；实际七原未跟踪与锁相同，交接after14与当前7属于不同时间快照，不能当当前dirty14。只写IQS。
+- PWF仍legacy root；已读规划和完整卡。CodeGraph上下文未涵盖新C06符号，转已知卡路径阅读，不写外仓索引。一次集中独审启动，测试只在新独占导出root。
+- 原1037全套记录接收不重复跑；新E2E调用main()和monkeypatch argv，尚不证明真实进程重启，需在HTTP边界stub/无key下独立实际CLI补证。首只读rg探测两个猜测旧路径不存在已记录，改读实际parallel_handoff_cli.py，不推断交付丢失。
+
+- Phase100只读冻结结果源131项，36交接工件原SHA全部匹配（5仅EOL）；opaque hash仅核.secrets.baseline未输出/复制内容，源HEAD/原七状态收尾相同。原首affected201方法197pass/4fail：3因遗漏SQL fixture，1是Windows asyncio socketpair被controller guard阻断。补两SQL为133项且原件不变，3 migration重验pass/0.68s；async+SQL纠正批180秒timeout，subprocess.run已kill/wait自身child，原stdout未被runner捕获，明确未确认该async，不用它声称产品失败。
+- 真实公开CLI另进程cold/warm/seal exit0，各7.335/1.780/2.384s；HTTP边界fake31次、后两撤stub仍新增0。31 ready封包非31真实StockWiki delivered。IQS公共validate API31/31和真实compare CLI exit0；worker synthetic golden仅结构有效。
+- 一次集中独审指导新9逻辑case=7fail2pass/1.27s，收敛四代码组：三metadata definition/semantic/template未绑manifest；foreign run/scan可附当前checkpoint；authority/body重复版本/分数取后值；公开supersede改claim/started_at全层重签后落新head、侧表仍旧。真实09f68a6 v5有旧包/ACK→v6所有原表不变、途中抛错全rollback两GREEN保留。
+- 额外真实CLI错误template=99.0.0重签，exit0/6.420s发送31且31ready；IQS拒其中1个catalog mismatch，真实compare exit2。正常与错metadata两组各31观察fixture-run/scan均不在实际run-*/scan-l02 refs；记录真实DB对照，不伪称只靠fixture。正/反CLI为同一组根因证据，不增加小门。
+- public handoff正确catalog后exit2 temporary_root_not_cleaned；changed_paths空/authorized_paths带解释，补实际Git路径和去说明的诊断副本仍exit2。正式worker工件未改、sharedTEMP未代删。guess catalog.json/read尚未落盘日志/cleanup内联Python PowerShell parse错误均保留为controller错误，改实际manifest/完整脚本，不凑产品失败。
+- 518自有文件229目录经lstat单硬链/无reparse、strict CIM0、文件集合/size/SHA dry→Apply清除；原Phase92/sharedTEMP/opencode.json与所有外仓保留。原133源SHA和36工件不变，外仓写/生产DB访问/复制/收费/下载0。Python audit不是全OS读隔离。
+- [验收](docs/implementation/reviews/QA-C06-02/acceptance-2026-10-08.md)/[四组+交接整改卡](docs/implementation/reviews/QA-C06-02/remediation-2026-10-08.md)/独审/固定反例及原日志已归档；partial_verified/changes_requested，QA原writer接续，SW五组/Lab六残余也等待原writer新交付。StockWiki实际import/ACK恢复/UI及golden/G3/F05仍not_run，不自动解锁TH/IN/L03。精确IQS提交推送待实际回执。
+- Git预检首次精确add被已有logs忽略规则拒绝（已部分暂存，尚未提交）；后续只对本交接3个原日志精确-force，不改全局忽略。-text保存原CRLF使Git初diff-check误认为CR行尾空白，限定本新intake/review加cr-at-eol，继续检查实际空格；不清洗受审工件原字节。原输出过大，后续捕获Git诊断只汇总路径/类型。
+- 最终仅5个精确原stdout日志存在pytest/CLI自身行尾空格，加同路径whitespace属性保留原字节；其他源/文档继续检查。88精确暂存文件含82索引工件，staged原bytes全部匹配；opencode/runs/外仓排除。

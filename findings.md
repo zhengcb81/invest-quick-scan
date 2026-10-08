@@ -1639,3 +1639,11 @@ Phase99：EVID整改有实质进展，原81方法/9冻结/39公共与回归命�
 custom日期边界被kind/year投影丢弃，相同年不同不重叠区间public一致；暂不支持须abstain，不硬增日期分析功能。混合source已冲突+未知不能移除未知后声称all conflict。FX021 synthetic duplicate-json一条硬编码historical，package subset正例不够；逐记录来源标签需保持。费用测试内部自洽不等于绑定运行cap，generation10000与公式5000实测0.82296>0.48276/0.49，仅接受draft。新增首5=2F3P、后6=6F有重复公共证明，收敛六残余组，原发布IO/rename恢复/Windows碰撞三正例保持；不以诊断维度一致升级完整事实正确。
 
 首冻结在mkdir前因结果后make_artifacts新增停止，核明确非运行器后显式接受交付工具差异；未假称之后全是doc。后置可选读取误用LiteralPath glob报不存在，collect本身已成功，不算产品失败。CodeGraph原待授权不擅init。266文件67目录单硬链/无link/strict CIM0及精确set/SHA后Apply清，仅本轮；原Lab.temp-roots一级0、HEAD380cb49/clean、104raw工件不变。旧归档/Phase92/sharedTEMP/opencode保留，剩余原writer同批整改，L02/G3/F05/TH/IN/L03不解锁。
+
+Phase100接收QA：新完整C06的manifest和schema依赖原CRLF字节，worker明确Git blob LF/工作树CRLF，隔离复验必须保留声明口径而不能用全LF快照假报产品失败。authority loader当前json.loads未显式拒重复键，完整上下文/标准答案/迁移/替代链的实际边界待集中核；此处静态观察不是已复现缺陷。handoff.changed_paths为空且授权路径夹说明，公开shape通过不代表实际Git范围签收。shared pytest TEMP cleaned=false如实披露但未达到共同规范独占清理承诺，不按编号代删。
+
+Phase100终态：四绑定问题已动态确认，不能仅凭hash自洽/200方法GREEN/worker1037签整包。两manifest题义hash与template可重签后通过loader；真实错误template公共CLI先发31/落31ready，IQS才拒一个。run/scan是冻结IQS元数据却与work_run_ref没有一致性校验或mapping，正常31个产物标签均不在实际refs；须明确两类运行语义并绑定，不能只改fixture消红。authority和完整body JSON两个新入口允许重复key，既有外层严格JSON不能传递保证。
+
+公开supersede的compact checkpoint绑定不覆盖full侧表/原started_at，实改claim+start并全层重签可成为新head。需在完整prepare/supersede耐久入口共同绑定，不仅正常seal局部校验；legacy compact历史兼容仍保留。真正v5有旧包/ACK迁移及故障rollback已GREEN，覆盖不足可补证，不应被统称所有迁移坏。
+
+controller缺SQL/过严socket guard是假RED，补SQL后三例GREEN；Windows asyncio纠正重试180秒timeout未确认，不扩大网络许可反复试，不算生产缺陷。200唯一方法通过而非201。真实三进程cold31/warm0/seal0；62合成HTTP stub（正常/错metadata各31）均不实际联网收费。所有133导出源和36工件前后不变，518文件strict manifest无link/CIM dry→Apply清，仅本轮，sharedTEMP与源仓不碰。handoff shared TEMP未清是真规则不满足，不依据名字或mtime删别人的数据。四代码组+一交接同批整改，一次大节点验收即可，StockWiki联合门与人类gold继续开放。

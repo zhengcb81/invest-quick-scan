@@ -1,0 +1,1207 @@
+{
+  "checks": [
+    {
+      "name": "bad-metadata-inputs",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\setup_cli.py"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata",
+      "returncode": 0,
+      "wall_s": 1.018,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "cli-bad-metadata",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\qa\\main_with_llm.py",
+        "--company",
+        "Fixture Corp",
+        "--entity-id",
+        "ENT_CONTEXT_FIXTURE",
+        "--provider",
+        "openai",
+        "--config",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata\\questions.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata\\result.json",
+        "--require-search",
+        "--identity-snapshot",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata\\identity.json",
+        "--spend-authorization",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata\\spend_authorization.json",
+        "--question-manifest",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata\\manifest.json",
+        "--security-scope-id",
+        "SEC_CONTEXT_FIXTURE",
+        "--c06-authority",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata\\quick_scan_c06_authority.json"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\public-cli-wrong-metadata",
+      "returncode": 0,
+      "wall_s": 6.42,
+      "stdout_sha256": "195b3502ead2c7fb1caaeb066b803e42fa49ec336264ccbc971a034b0d111f53",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "records": [
+    {
+      "case": "public-cli",
+      "synthetic_only": true,
+      "deliveries": 31,
+      "stub_sends": 31,
+      "run_mismatch_count": 31,
+      "run_mismatches": [
+        {
+          "work_item_id": "WORK_ba70adc4746f4f3193941ae5d15badbb",
+          "question_id": "IQS_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_c55c3d9dc57e4e0dbb978d75d59bacf3",
+          "question_id": "IQS_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_de3da4248d2b4cffbe5defc9c791b857",
+          "question_id": "IQS_04",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_ab08ca260f4743b4be8a9b0d9d7008ef",
+          "question_id": "IQS_05",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_ec408b03e4074d30895cd9309914e655",
+          "question_id": "IQS_06",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_65ba315346b944c880095c86d5f915c2",
+          "question_id": "IQS_07",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_e09af07eea4a4459adb94fab038c3d70",
+          "question_id": "IQS_08",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_6aab9d2c86934cfcaee92d98fa7ded9c",
+          "question_id": "IQS_09",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_8e036c10b4a14625937f37f4f9433f4b",
+          "question_id": "IQS_10",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_e6896ac0788740dba644d5c7f4ef5c4f",
+          "question_id": "IQS_12",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_c010ecec808141889de8615fcc115660",
+          "question_id": "IQS_13",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_d3cc3579e268407a93c1571ec64cd9f6",
+          "question_id": "IQS_14",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_08d050a4d7cb40358a61746b865b13e9",
+          "question_id": "IQS_15",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_78c659f887f44b14995fa1f283bd077b",
+          "question_id": "IQS_16",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_d69fac41d3b64696a8c7ddead966d407",
+          "question_id": "IQS_17",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_0ef4a1346a6242df9db2332aed1d8853",
+          "question_id": "IQS_18",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_f544d21ee4454fa8bd13c0038c1b610c",
+          "question_id": "IQS_19",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_b3ab0fd8dcee4b36a784b0bb48eb97e0",
+          "question_id": "IQS_20",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_7faa3bd049514d9ba9ec59dbae029ca0",
+          "question_id": "IQS_21",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_117cfbb0442a45e38e331d2ce2eea3c5",
+          "question_id": "IQS_22",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_651f9298950541028f4547ffa379ee07",
+          "question_id": "IQS_23",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_2290e68b265642ad8f7bffc9df1dc97d",
+          "question_id": "IQS_24",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_4810464c2ec34901a6c9f16f646a13f5",
+          "question_id": "OPERATING_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_edec08bfdb194dabbf325ffdcef23a6a",
+          "question_id": "OPERATING_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_cecda7440ce645548b8c77136ac93178",
+          "question_id": "INDUSTRIAL_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_28397e0f551a42f9bd0d9616d97f8c54",
+          "question_id": "INDUSTRIAL_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_1467482e63b34abda6ac1bb9e087c22c",
+          "question_id": "MATURE_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_30cd960300154babb5b59413509d7516",
+          "question_id": "MATURE_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_3b73fb00130948af85b4c5ea546e9129",
+          "question_id": "CYCLICAL_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_b081850cc2134a09b6ffa5d02e025937",
+          "question_id": "CYCLICAL_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_2a585801546441ffaf9d907c2548ba27",
+          "question_id": "CROSS_BORDER_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T075814Z",
+              "scan_id": "scan-l02"
+            },
+            {
+              "run_id": "run-20261008T075821Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        }
+      ],
+      "iqs_public_validation": [
+        {
+          "question_id": "IQS_01",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_02",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_04",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_05",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_06",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_07",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_08",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_09",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_10",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_12",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_13",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_14",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_15",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_16",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_17",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_18",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_19",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_20",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_21",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_22",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_23",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_24",
+          "valid": true
+        },
+        {
+          "question_id": "OPERATING_01",
+          "valid": true
+        },
+        {
+          "question_id": "OPERATING_02",
+          "valid": true
+        },
+        {
+          "question_id": "INDUSTRIAL_01",
+          "valid": true
+        },
+        {
+          "question_id": "INDUSTRIAL_02",
+          "valid": true
+        },
+        {
+          "question_id": "MATURE_01",
+          "valid": true
+        },
+        {
+          "question_id": "MATURE_02",
+          "valid": true
+        },
+        {
+          "question_id": "CYCLICAL_01",
+          "valid": true
+        },
+        {
+          "question_id": "CYCLICAL_02",
+          "valid": true
+        },
+        {
+          "question_id": "CROSS_BORDER_01",
+          "valid": true
+        }
+      ]
+    },
+    {
+      "case": "public-cli-wrong-metadata",
+      "synthetic_only": true,
+      "deliveries": 31,
+      "stub_sends": 31,
+      "run_mismatch_count": 31,
+      "run_mismatches": [
+        {
+          "work_item_id": "WORK_1c2c97e751e449e8a379e8d3633db5d0",
+          "question_id": "IQS_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_8b3ae09dc6714c6a859796a30e2dc615",
+          "question_id": "IQS_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_da00a9c9cabe4e5baadea463e08d0872",
+          "question_id": "IQS_04",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_23caf6bd92bb49dcbbc30699f3da3ffd",
+          "question_id": "IQS_05",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_d79cd07836434b229321cee5a9ae4475",
+          "question_id": "IQS_06",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_e11e33a923f445baa48dc87258bee330",
+          "question_id": "IQS_07",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_7d722bd229184be9b5ecc8f427f44ca3",
+          "question_id": "IQS_08",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_d48e1f7016414c01aba9aaec07c9f0c6",
+          "question_id": "IQS_09",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_92dbcc622cb0495db056678ede07dadb",
+          "question_id": "IQS_10",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_5cbb9320c7cb40a6bc2fc208c91cf59a",
+          "question_id": "IQS_12",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_e324ffde15ab435d9282c5da1c34901b",
+          "question_id": "IQS_13",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_495dd691001a4658ac0a5c4f88c3482d",
+          "question_id": "IQS_14",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_cff8b24ad5e34f0dabe1b4830db34c60",
+          "question_id": "IQS_15",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_8814ec0b85b5475badf672717645cb18",
+          "question_id": "IQS_16",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_39dbc81fb9f74f4d964788aa1b30f045",
+          "question_id": "IQS_17",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_d517ac5bb5a144eca778b1a06f81f515",
+          "question_id": "IQS_18",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_cd13d29bdf1c410fa6d84f631c4d4b59",
+          "question_id": "IQS_19",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_119ed0141db14e6293c562ffe7d1ccd5",
+          "question_id": "IQS_20",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_5b66e0b9f24b47f8b88e1c0976831c09",
+          "question_id": "IQS_21",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_4db2903a703e47ba864667ccbf05c2da",
+          "question_id": "IQS_22",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_8338a6bbd70841c98ead0adb03e93e4d",
+          "question_id": "IQS_23",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_5a2169b2959d4e5081ffb64c4784f3ca",
+          "question_id": "IQS_24",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_ef3d8ce88d114e1caea94d0f935ac6a3",
+          "question_id": "OPERATING_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_853c5c5277bc457cbf719e8b4b800b5f",
+          "question_id": "OPERATING_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_e96d2d72a69d4af9bbb9b968a878cd79",
+          "question_id": "INDUSTRIAL_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_b785417591984398b75fdef5f93206f4",
+          "question_id": "INDUSTRIAL_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_c89e6bdca3354c75b120d5dd950a0d30",
+          "question_id": "MATURE_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_b1aeef5bff2b4e17bf7a055c9b5a29a3",
+          "question_id": "MATURE_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_7f1ba8a7bedb439cbe02d90cacb620b5",
+          "question_id": "CYCLICAL_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_caaad2c97dc04615abfca06abb926d1e",
+          "question_id": "CYCLICAL_02",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        },
+        {
+          "work_item_id": "WORK_fe50264714cd465d8998e243f03b4d61",
+          "question_id": "CROSS_BORDER_01",
+          "observation_run_id": "fixture-run",
+          "observation_scan_id": "fixture-scan",
+          "actual_refs": [
+            {
+              "run_id": "run-20261008T080719Z",
+              "scan_id": "scan-l02"
+            }
+          ]
+        }
+      ],
+      "iqs_public_validation": [
+        {
+          "question_id": "IQS_01",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_02",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_04",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_05",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_06",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_07",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_08",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_09",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_10",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_12",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_13",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_14",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_15",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_16",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_17",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_18",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_19",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_20",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_21",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_22",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_23",
+          "valid": true
+        },
+        {
+          "question_id": "IQS_24",
+          "valid": true
+        },
+        {
+          "question_id": "OPERATING_01",
+          "valid": true
+        },
+        {
+          "question_id": "OPERATING_02",
+          "valid": true
+        },
+        {
+          "question_id": "INDUSTRIAL_01",
+          "valid": true
+        },
+        {
+          "question_id": "INDUSTRIAL_02",
+          "valid": true
+        },
+        {
+          "question_id": "MATURE_01",
+          "valid": true
+        },
+        {
+          "question_id": "MATURE_02",
+          "valid": true
+        },
+        {
+          "question_id": "CYCLICAL_01",
+          "valid": true
+        },
+        {
+          "question_id": "CYCLICAL_02",
+          "valid": true
+        },
+        {
+          "question_id": "CROSS_BORDER_01",
+          "valid": false,
+          "error": "ValueError",
+          "reason": "observation catalog version mismatch"
+        }
+      ]
+    }
+  ],
+  "worker_golden_iqs_validation": {
+    "valid": true
+  },
+  "snapshot_files": 133,
+  "snapshot_changed": [],
+  "source_written": false,
+  "paid_calls": 0,
+  "external_http": 0,
+  "real_stockwiki_joint": "not_run: producer binding defects + existing SW changes_requested",
+  "cleanup_pending": true
+}

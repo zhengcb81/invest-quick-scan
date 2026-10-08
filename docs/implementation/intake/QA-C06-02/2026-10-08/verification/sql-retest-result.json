@@ -1,0 +1,26 @@
+{
+  "name": "sql-fixture-retest",
+  "command": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "tests/unit/test_quick_scan_work_store.py::test_v1_migration_preserves_work_rows_and_adds_empty_checkpoint_table",
+    "tests/unit/test_quick_scan_work_store.py::test_v1_migration_rejects_completed_work_without_checkpoint",
+    "tests/unit/test_quick_scan_work_store.py::test_fixed_v2_migration_preserves_existing_rows_and_adds_budget_ledger",
+    "-q",
+    "-o",
+    "addopts=",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\tmp\\sql-retest"
+  ],
+  "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-02-2026-10-08-01\\qa",
+  "returncode": 0,
+  "wall_s": 1.142,
+  "stdout_sha256": "0ed4d387e4bc4fa83eb4d39a45bdfae032aa906beaca842f5cf140f6e0dbeafc",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
