@@ -1,0 +1,33 @@
+FF...                                                                    [100%]
+================================== FAILURES ===================================
+___________ test_custom_explicit_date_ranges_cannot_be_called_equal ___________
+
+    def test_custom_explicit_date_ranges_cannot_be_called_equal():
+        expected={'kind':'custom','year':2026,'start':'2026-01-01','end':'2026-03-31'}
+        observed={'kind':'custom','year':2026,'start':'2026-04-01','end':'2026-06-30'}
+        result=check_dimension('period',expected,observed)
+        save('custom-period.json',{'expected':expected,'observed':observed,'result':asdict(result)})
+>       assert result.outcome in {'fail','abstain'}, 'Explicit nonoverlapping date ranges passed'
+E       AssertionError: Explicit nonoverlapping date ranges passed
+E       assert 'pass' in {'abstain', 'fail'}
+E        +  where 'pass' = CheckResult(check='semantic.period', outcome='pass', error_code=None, abstain_reason=None, message='period: consistent', dimension='period').outcome
+
+..\boundary_cases.py:27: AssertionError
+________ test_numeric_overflow_is_not_an_admissible_finite_json_value _________
+
+    def test_numeric_overflow_is_not_an_admissible_finite_json_value():
+        text='{"value":1e400}'
+        try:
+            result=strict_loads(text)
+        except NonFiniteJSONError:
+            save('numeric-overflow.json',{'input':text,'rejected':True})
+            return
+        save('numeric-overflow.json',{'input':text,'rejected':False,'result_repr':repr(result)})
+>       pytest.fail('A strict finite JSON loader returned Infinity from numeric overflow')
+E       Failed: A strict finite JSON loader returned Infinity from numeric overflow
+
+..\boundary_cases.py:37: Failed
+=========================== short test summary info ===========================
+FAILED ..\boundary_cases.py::test_custom_explicit_date_ranges_cannot_be_called_equal
+FAILED ..\boundary_cases.py::test_numeric_overflow_is_not_an_admissible_finite_json_value
+2 failed, 3 passed in 2.68s

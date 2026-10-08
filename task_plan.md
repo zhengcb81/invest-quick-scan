@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08）**：Phase98已集中查收SW-REPAIR-02，原81回归/11真实浏览器通过，但12新边界失败及handoff/隔离缺口，裁决changes_requested。原StockWiki writer按[五组整改卡](docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08.md)修后交新commit/handoff，总控不代改源仓。EVID-LAB-01六组整改已交harness，仍等新commit/handoff；QA-C06-02仍等正式交付，各源仓继续归各harness独占。下一次有新交付时只做受影响回验和一次集中大节点审查，不为helper立门。Phase96已收口且收费停止；TH/IN/G3/F05/L03仍暂缓，不刷新退役回执，不重跑已结束的收费矩阵。
+**单一下一步（2026-10-08）**：Phase99已集中复验EVID-LAB-01整改，原81方法/固定9/三历史归档双重放/34fixture全通过，但六处残余边界已实际复现，仍changes_requested。原Lab writer按[六项残余卡](docs/implementation/reviews/EVID-LAB-01/remediation-2026-10-08/remaining-repairs.md)同批修后交新commit/handoff；总控只读，不重复已完成功能或原收费矩阵。SW Phase98原五组仍待原writer修，QA-C06-02仍等正式交付。各源仓归各harness独占，下一次新交付仅受影响回验及一次集中大节点审查，不为helper立门。TH/IN/G3/F05/L03仍暂缓，不刷新退役回执，不擅写外仓。
 
 **当前执行（Phase95）**：IQS上游40精确文件已正式提交并推送`a23bec03ec459fa036a8800acc1f43b1662b22b8`；11真实子进程CLI、35回归/24子测试及集中独审通过，本轮两根28文件已清。用户已确认三个外包开工，总控只写IQS；下一动作收实际交付，不接管源仓。整Phase92/G3/F05开放，波次2初始workers_dispatched=false为历史快照。
 
@@ -1416,3 +1416,14 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_r
 - F05/真实身份与事实golden、QA↔SW实际流水线/双owner恢复未交付，不据本包测试或handoff格式宣布G3/F05/TH/IN解锁。
 - [ ] 原StockWiki唯一writer接续五组整改，交回真实新commit/handoff/清理证据后再对受影响范围集中验收；本轮不自动接管或重复实施原六项。
 - 实际IQS交付`0168bb9d5675727edea68b004a862c3e48946f2e`，92精确文件已沙箱外提交并正常推送origin/master，86工件/index staged bytes相符、diff检查通过；仅opencode.json未跟踪保留。后续仅补PWF回执，无被审代码/工件变动。
+
+## Phase99：EVID-LAB-01六组整改集中复验
+Status: review_completed_changes_requested; source_repository_read_only; owner_residual_remediation_pending; no_gate_closed
+- [x] 接收实际Git基线/新结果/HEAD及交接范围：代码结果62fe8b2f51bf498d0925b65e998c7b0a4dba7192、交接HEAD380cb496f30c72128c2cc8e3c88e36924f3c4f2c，codex/evid-lab-01/实际clean；后续证据/PWF及新tools/make_artifacts.py，运行代码无后续变化。
+- [x] 冻结新105文件Git导出/intake；104/104工作树size/SHA+Git blob OID匹配，84差异仅EOL且已声明，公开handoff valid；旧Phase97结果/日志不变。
+- [x] 一批81方法passed/9.63s、原9固定反例passed/2.002s；公共34fixture/42expectation/350记录、三归档双新根核心payload逐字节一致、34逐fixture全部exit0，39集中命令0失败。原128独立IQS输入/105快照文件在所有追加案例后SHA不变，网络/下载/收费/生产库/源仓写0。
+- [x] 一次集中独审并定向证疑：首5case2failed3passed/2.68s、后6case6failed/0.64s，部分是同问题公共路径复证，不叫11独立缺口。六残余为custom期间误pass、删历史answer binding可发布篡改答案、1e400 public语义pass、混合未知source窗口误fail、synthetic诊断误标historical、草案10000/5000上限费用冲突。
+- [x] [验收](docs/implementation/reviews/EVID-LAB-01/remediation-2026-10-08/acceptance.md)/[六项残余卡](docs/implementation/reviews/EVID-LAB-01/remediation-2026-10-08/remaining-repairs.md)/独审/原日志和actual public输出留档。工具有限范围部分确认，draft_not_signed非执行不当预注册签核；266文件67目录strict CIM/lstat/set/SHA dry-run→Apply已清，源HEAD/clean及104raw工件收尾不变，原.temp-roots一级0项；PWF/接手更新，IQS提交推送见progress实际回执。
+- [ ] 原Lab唯一writer同批修六残余及旧隔离文案，交新commit/handoff后仅受影响复验一次集中大节点；不重建或代写外仓。
+- CodeGraph Lab仍未初始化，沿用Phase97已询问但未获新写授权状态，不自动建索引。首次只读探测旧intake/source-baseline.json不存在，改读实际交接与Git；不据不存在路径推断数据丢失。
+- L02完整校准/人类gold、G3/F05、TH/IN/L03不因本整改或shape通过自动关闭；不执行新proposal/live。

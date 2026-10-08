@@ -1,0 +1,174 @@
+{
+  "schema": "iqs_evidence_lab.diagnostic/1",
+  "schema_version": "1.1.0",
+  "tool": {
+    "name": "iqs_evidence_lab",
+    "version": "0.2.0",
+    "offline": true
+  },
+  "rule_versions": {
+    "structure": "structure-rules/2",
+    "semantic": "semantic-rules/1",
+    "metric": "metric-definitions/1"
+  },
+  "input": {
+    "kind": "fixture",
+    "ref": "FX-998",
+    "input_sha256": {
+      "overflow-input.json": "db7748387575e4793aca3f4b52c2bd77c02b3451fee9d90b4864198d71c894d8"
+    },
+    "answer_sha256": []
+  },
+  "records": [
+    {
+      "record_id": "REC_000001",
+      "check": "semantic.subject",
+      "outcome": "abstain",
+      "error_code": null,
+      "abstain_reason": "expected_not_stated",
+      "location": {
+        "field": "expected.subject"
+      },
+      "answer_sha256": null,
+      "message": "subject: input states neither side",
+      "support_source_type": "synthetic",
+      "original_error": null
+    },
+    {
+      "record_id": "REC_000002",
+      "check": "semantic.period",
+      "outcome": "abstain",
+      "error_code": null,
+      "abstain_reason": "expected_not_stated",
+      "location": {
+        "field": "expected.period"
+      },
+      "answer_sha256": null,
+      "message": "period: input states neither side",
+      "support_source_type": "synthetic",
+      "original_error": null
+    },
+    {
+      "record_id": "REC_000003",
+      "check": "semantic.metric",
+      "outcome": "abstain",
+      "error_code": null,
+      "abstain_reason": "expected_not_stated",
+      "location": {
+        "field": "expected.metric"
+      },
+      "answer_sha256": null,
+      "message": "metric: input states neither side",
+      "support_source_type": "synthetic",
+      "original_error": null
+    },
+    {
+      "record_id": "REC_000004",
+      "check": "semantic.unit",
+      "outcome": "abstain",
+      "error_code": null,
+      "abstain_reason": "expected_not_stated",
+      "location": {
+        "field": "expected.unit"
+      },
+      "answer_sha256": null,
+      "message": "unit: input states neither side",
+      "support_source_type": "synthetic",
+      "original_error": null
+    },
+    {
+      "record_id": "REC_000005",
+      "check": "semantic.direction",
+      "outcome": "pass",
+      "error_code": null,
+      "abstain_reason": null,
+      "location": {
+        "expected_field": "expected.direction",
+        "observed_field": "observed.direction",
+        "field": "observed.direction"
+      },
+      "answer_sha256": null,
+      "message": "direction: consistent",
+      "support_source_type": "synthetic",
+      "original_error": null
+    },
+    {
+      "record_id": "REC_000006",
+      "check": "semantic.scope",
+      "outcome": "abstain",
+      "error_code": null,
+      "abstain_reason": "expected_not_stated",
+      "location": {
+        "field": "expected.scope"
+      },
+      "answer_sha256": null,
+      "message": "scope: input states neither side",
+      "support_source_type": "synthetic",
+      "original_error": null
+    },
+    {
+      "record_id": "REC_000007",
+      "check": "semantic.role",
+      "outcome": "abstain",
+      "error_code": null,
+      "abstain_reason": "expected_not_stated",
+      "location": {
+        "field": "expected.role"
+      },
+      "answer_sha256": null,
+      "message": "role: input states neither side",
+      "support_source_type": "synthetic",
+      "original_error": null
+    },
+    {
+      "record_id": "REC_000008",
+      "check": "source.url_window",
+      "outcome": "abstain",
+      "error_code": null,
+      "abstain_reason": "expected_not_stated",
+      "location": {
+        "expected_field": "sources[].period",
+        "field": "sources[].period"
+      },
+      "answer_sha256": null,
+      "message": "no explicit source windows provided",
+      "support_source_type": "synthetic",
+      "original_error": null
+    },
+    {
+      "record_id": "REC_000009",
+      "check": "source.independence",
+      "outcome": "abstain",
+      "error_code": null,
+      "abstain_reason": "source_relation_not_stated",
+      "location": {
+        "field": "source_relations"
+      },
+      "answer_sha256": null,
+      "message": "input did not state source relations",
+      "support_source_type": "synthetic",
+      "original_error": null
+    }
+  ],
+  "summary": {
+    "pass": 1,
+    "fail": 0,
+    "abstain": 8,
+    "by_error_code": {},
+    "by_abstain_reason": {
+      "expected_not_stated": 7,
+      "source_relation_not_stated": 1
+    },
+    "by_check": {
+      "semantic.subject": 1,
+      "semantic.period": 1,
+      "semantic.metric": 1,
+      "semantic.unit": 1,
+      "semantic.direction": 1,
+      "semantic.scope": 1,
+      "semantic.role": 1,
+      "source.url_window": 1,
+      "source.independence": 1
+    }
+  }
+}

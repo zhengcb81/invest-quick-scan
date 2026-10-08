@@ -241,3 +241,13 @@ shape/82工件工作树hash、三归档复算和34fixtures通过，已有54唯�
 本轮总控769文件/555目录已Apply清理，六自有junction先仅解节点，296Git源测试后不变，StockWiki未写/0收费/未读写生产库。旧runs/c06-context-2026-10-07-01、共享TEMP、opencode.json全部保留。固定harness绑定旧result和已删除根，禁止原地重跑覆盖旧intake；回验新commit要新唯一根和新归档。
 
 下一步是接收各唯一writer真实新交付：SW五组整改待续，Lab六组整改已交harness，QA-C06-02尚未正式交回。不要对未交付QA动态工作树跑联合测试。真实identity/facts owner golden、QA→W05/ACK→UI、双owner恢复仍missing/not_run；G3/F05与TH/IN/L03不放行，不重跑历史收费矩阵，不刷退役回执。IQS本批提交/推送真实hash看progress最新Git回执。
+
+### 2026-10-08最新：Phase99 EVID整改已查收，六处残余待修
+
+本节覆盖上方“EVID第一轮整改待交回”旧口径。Lab codex/evid-lab-01代码结果62fe8b2f51bf498d0925b65e998c7b0a4dba7192、收到和收尾HEAD380cb496f30c72128c2cc8e3c88e36924f3c4f2c/实际clean/无remote。结果后handoff及工件生成器tools/make_artifacts.py变动，src/tests/fixtures未变。104工件双hash/84EOL与公开handoff valid真实核过，保持双字节说明，不能称篡改。源仓仍原writer独占，最新HEAD/status须重读，不根据本时点快照覆盖并发改动。
+
+读[复验报告](reviews/EVID-LAB-01/remediation-2026-10-08/acceptance.md)、[自包含六项残余卡](reviews/EVID-LAB-01/remediation-2026-10-08/remaining-repairs.md)、[原执行回执](intake/EVID-LAB-01/2026-10-08-remediation/verification/result.json)。原81方法/9固定/39公共与回归命令全GREEN，三归档双新根及34fixture真实CLI稳定；9已包含在81，新增首5与后6亦有重复证明，不混独立计数。**仍partial_verified/changes_requested**：custom期间误pass、删历史答案binding可发布篡改、1e400 public方向pass、混合未知source误fail、synthetic记录误标historical、draft cap10000/费用5000冲突。六项同批修后一次受影响回验，不重建、不重复旧成果、不给每helper立门。
+
+本轮只写IQS：105导出源/128独立IQS输入SHA不变；266临时文件67目录strict CIM/lstat/set/SHA Apply已清，原Lab未写且.temp-roots一级0，旧Phase92/sharedTEMP/opencode及原intake保留。测试guard不是完整OS读沙箱，网络/付费/下载0。旧harness绑定旧HEAD/已删除根，回验新commit用新的唯一根/intake，禁止覆盖历史证据。
+
+下一步接收Lab这六处新整改、SW五组以及QA真实handoff；总控不自动接管外仓。提案只接收未签非执行draft，当前0.48276/0.49费用上界不足，不将其翻live开关。L02完整校准/人类gold、G3/F05/TH/IN/L03和生产采用均未解锁，历史收费矩阵不重发。IQS精确提交/推送实际hash见progress最后回执。

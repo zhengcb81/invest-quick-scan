@@ -1,0 +1,443 @@
+{
+  "schema": "iqs_evidence_lab.experiment_preregistration/1",
+  "schema_version": "1.1.0",
+  "execution_enabled": false,
+  "live_not_run": true,
+  "package_id": "EVID-LAB-01",
+  "status": "draft_not_signed",
+  "proposal_doc": "experiment-proposal.md",
+  "authorization": {
+    "status": "not_authorized",
+    "requires": [
+      "user_budget_grant_for_declared_caps",
+      "coordinator_live_go_with_sample_input_price_cleanup_plan",
+      "preregistration_signoff_before_flipping_execution_enabled"
+    ],
+    "note": "draft preregistration; execution_enabled stays false until the user grants the declared caps and the coordinator signs the freeze"
+  },
+  "sample": {
+    "companies": [
+      {
+        "key": "catl",
+        "name": "宁德时代",
+        "ticker": "300750"
+      },
+      {
+        "key": "cncb_h",
+        "name": "中信建投证券",
+        "ticker": "06066"
+      },
+      {
+        "key": "alphabet",
+        "name": "Alphabet Inc.",
+        "ticker": "GOOGL"
+      }
+    ],
+    "question_ids": [
+      "IQS_01",
+      "IQS_02",
+      "IQS_04",
+      "IQS_05",
+      "IQS_08",
+      "IQS_09",
+      "IQS_10",
+      "IQS_12",
+      "IQS_13",
+      "IQS_16"
+    ],
+    "rubric_version": "1.0.0",
+    "anchors_frozen": true,
+    "expansion": "user_decision_required_not_granted",
+    "question_groups": {
+      "mixed_1": [
+        "IQS_01",
+        "IQS_09",
+        "IQS_04",
+        "IQS_13",
+        "IQS_10"
+      ],
+      "mixed_2": [
+        "IQS_02",
+        "IQS_05",
+        "IQS_12",
+        "IQS_08",
+        "IQS_16"
+      ],
+      "themed_customer_market": [
+        "IQS_01",
+        "IQS_02",
+        "IQS_05",
+        "IQS_08",
+        "IQS_04"
+      ],
+      "themed_governance_finance": [
+        "IQS_09",
+        "IQS_10",
+        "IQS_12",
+        "IQS_13",
+        "IQS_16"
+      ]
+    },
+    "frozen_hashes": {
+      "hash_rule": "sha256(canonical_json(sort_keys, compact)) of the object as stored in inputs-manifest questions.json; identities are the recorded identity_file_sha256; the cutoff hashes its explicit record",
+      "cutoff": {
+        "value": "2026-10-07",
+        "sha256": "cb306019b37e4bedb850bfca30530fe7d6f62321009c61e5f3f651b25e5170a4"
+      },
+      "question_sha256": {
+        "IQS_01": "169bf9d197cedfd1f7c9783e84a08b0a02263df9b08e7f10ea5a47216a099a3a",
+        "IQS_02": "0fb74ad3b629d47c254612471e58ded4d47dad91fb854b44be75a3f8e6a81691",
+        "IQS_04": "66cd4f882f188ed042f0909eb1c5cac439acb546e708359ee4ad46d75b0a8fc7",
+        "IQS_05": "379c05ea0ca0489f5808404ffc68219a7474c9f24700fe5c7f4c2dead9baae7d",
+        "IQS_08": "c989089ef7dbe03313c12b2153c3d2ff94caed1efdbf8293b9e49860007bb5d7",
+        "IQS_09": "6564b30fd8032a9a2262ee3c98899e178ba32a22a3a84220a0176528e6544603",
+        "IQS_10": "4c0d9107f21c482cbe1cfa5815a13c6349a080723a5e1aba585a0ad7c38716ce",
+        "IQS_12": "0ae707cee447fe57b3195923dac304d20b8f6df28d51c98c45902003277e7cbe",
+        "IQS_13": "018cd006e7d9c779e3df34fbec8adb8e9f8045be39adf6974febf6a6fdd28f23",
+        "IQS_16": "ac58ab7af8abe5245a173f19ed8e3d16e9138b6e252f7540391bb1011ae441ef"
+      },
+      "identity_file_sha256": {
+        "catl": "6929f0868243a271ccc35ab7b16005b11fe968f43f18213929d0651c3bf66db7",
+        "cncb_h": "884855433a431292da3e1dbf7382e757aab9dea41be8f321b464c79303ad908a",
+        "alphabet": "5ad1a45e287c945680fc4c23db7b4dcf32959a6c0021daea4ba226ebd4365278"
+      }
+    }
+  },
+  "factors": {
+    "packaging": [
+      "mixed_five",
+      "themed_five"
+    ],
+    "evidence": [
+      "baseline_snippets",
+      "annotated_subject_period_unit"
+    ],
+    "model_thinking": [
+      {
+        "model": "deepseek-flash",
+        "thinking": [
+          "off",
+          "on"
+        ],
+        "role": "primary"
+      },
+      {
+        "model": "mimo-v2.6-pro",
+        "thinking": [
+          "off",
+          "on"
+        ],
+        "role": "small_control"
+      }
+    ]
+  },
+  "cells": [
+    {
+      "cell_id": "DS-A1B1C1",
+      "model": "deepseek-flash",
+      "packaging": "mixed_five",
+      "evidence": "baseline_snippets",
+      "thinking": "off",
+      "planned_model_requests": 6
+    },
+    {
+      "cell_id": "DS-A1B1C2",
+      "model": "deepseek-flash",
+      "packaging": "mixed_five",
+      "evidence": "baseline_snippets",
+      "thinking": "on",
+      "planned_model_requests": 6
+    },
+    {
+      "cell_id": "DS-A1B2C1",
+      "model": "deepseek-flash",
+      "packaging": "mixed_five",
+      "evidence": "annotated_subject_period_unit",
+      "thinking": "off",
+      "planned_model_requests": 6
+    },
+    {
+      "cell_id": "DS-A1B2C2",
+      "model": "deepseek-flash",
+      "packaging": "mixed_five",
+      "evidence": "annotated_subject_period_unit",
+      "thinking": "on",
+      "planned_model_requests": 6
+    },
+    {
+      "cell_id": "DS-A2B1C1",
+      "model": "deepseek-flash",
+      "packaging": "themed_five",
+      "evidence": "baseline_snippets",
+      "thinking": "off",
+      "planned_model_requests": 6
+    },
+    {
+      "cell_id": "DS-A2B1C2",
+      "model": "deepseek-flash",
+      "packaging": "themed_five",
+      "evidence": "baseline_snippets",
+      "thinking": "on",
+      "planned_model_requests": 6
+    },
+    {
+      "cell_id": "DS-A2B2C1",
+      "model": "deepseek-flash",
+      "packaging": "themed_five",
+      "evidence": "annotated_subject_period_unit",
+      "thinking": "off",
+      "planned_model_requests": 6
+    },
+    {
+      "cell_id": "DS-A2B2C2",
+      "model": "deepseek-flash",
+      "packaging": "themed_five",
+      "evidence": "annotated_subject_period_unit",
+      "thinking": "on",
+      "planned_model_requests": 6
+    },
+    {
+      "cell_id": "PRO-A1B1C1",
+      "model": "mimo-v2.6-pro",
+      "packaging": "mixed_five",
+      "evidence": "baseline_snippets",
+      "thinking": "off",
+      "planned_model_requests": 6
+    },
+    {
+      "cell_id": "PRO-A1B1C2",
+      "model": "mimo-v2.6-pro",
+      "packaging": "mixed_five",
+      "evidence": "baseline_snippets",
+      "thinking": "on",
+      "planned_model_requests": 6
+    }
+  ],
+  "totals": {
+    "planned_model_requests": 60,
+    "planned_search_requests": 24,
+    "search_shape": "3 companies x 4 frozen intents x (brave_basic + tavily_advanced), executed once and shared by all 10 cells",
+    "caps": {
+      "model_http_cap": 60,
+      "search_http_cap": 24,
+      "cash_usd_cap": 4.0
+    },
+    "token_reference_estimate_usd_max": 0.49,
+    "estimate_note": "worst-case token formula below at frozen public rates with zero cache credit; never add to the cash cap; invoice unknown"
+  },
+  "retrieval": {
+    "phase": "targeted_v1",
+    "providers": [
+      {
+        "name": "brave_basic",
+        "result_count": 5,
+        "reserve_usd_per_request": 0.016
+      },
+      {
+        "name": "tavily_advanced",
+        "result_count": 5,
+        "reserve_usd_per_request": 0.016
+      }
+    ],
+    "query_params": {
+      "result_count": 5,
+      "freshness": "none",
+      "excerpt_chars": 500
+    },
+    "shared_rule": "queries run once per (company, intent) before any model call; the same snippets feed every cell; the annotation arm only adds offline subject/period/unit annotations",
+    "queries": [
+      {
+        "company_key": "alphabet",
+        "query": "Alphabet Inc. GOOGL 2025 2026 Google Search Cloud advertising customers competition retention"
+      },
+      {
+        "company_key": "alphabet",
+        "query": "Alphabet Inc. GOOGL 2025 2026 cash debt maturity shareholder equity returns capital"
+      },
+      {
+        "company_key": "alphabet",
+        "query": "Alphabet Inc. GOOGL 2025 2026 governance Class A B C voting rights management compensation"
+      },
+      {
+        "company_key": "alphabet",
+        "query": "Alphabet Inc. GOOGL 2025 2026 revenue net income operating cash flow capex AI"
+      },
+      {
+        "company_key": "cncb_h",
+        "query": "中信建投证券股份有限公司 06066 2025 2026 公司治理 管理层 永续资本 股东权益"
+      },
+      {
+        "company_key": "cncb_h",
+        "query": "中信建投证券股份有限公司 06066 2025 2026 净资本 风险覆盖率 客户资产 负债 到期债务"
+      },
+      {
+        "company_key": "cncb_h",
+        "query": "中信建投证券股份有限公司 06066 2025 2026 营业收入 净利润 经营现金流 加权净资产收益率"
+      },
+      {
+        "company_key": "cncb_h",
+        "query": "中信建投证券股份有限公司 06066 2025 2026 财富管理 投顾 客户 复购 竞争优势"
+      },
+      {
+        "company_key": "catl",
+        "query": "宁德时代新能源科技股份有限公司 300750 2025 2026 公司治理 管理层 关联交易 股权 激励"
+      },
+      {
+        "company_key": "catl",
+        "query": "宁德时代新能源科技股份有限公司 300750 2025 2026 净资产 股东权益 现金 负债 到期债务"
+      },
+      {
+        "company_key": "catl",
+        "query": "宁德时代新能源科技股份有限公司 300750 2025 2026 动力电池 储能电池 客户 复购 市占率"
+      },
+      {
+        "company_key": "catl",
+        "query": "宁德时代新能源科技股份有限公司 300750 2025 2026 营业收入 净利润 经营现金流 研发 资本支出"
+      }
+    ],
+    "context_rules": {
+      "per_question_selection": "only snippets matching that question's evidence bundle enter its context",
+      "header_unit_retention": "each snippet slice keeps its period header line and unit/table-header line; slices without them are dropped from the annotated arm",
+      "unknown_on_gap": "period or unit not determinable => structured unknown; the model should answer insufficient_evidence; diagnostics abstain, not fail"
+    },
+    "retrieval_cache": {
+      "version": "retrieval-cache/1",
+      "ttl_hours": 24,
+      "key_fields": [
+        "company",
+        "intent",
+        "query",
+        "provider",
+        "params",
+        "cutoff",
+        "snippet_set_sha256"
+      ],
+      "binding_rule": "warm miss rejects sending; provider prefix cache reported separately; budget assumes a cold application cache",
+      "declared_gap": "providers return only a model alias (no immutable backend revision id), so cache keys and receipts cannot bind the actual model revision"
+    }
+  },
+  "generation": {
+    "transport_policy": "explicit_only/2",
+    "stream": false,
+    "output_limit": 10000,
+    "temperature": "omitted unless declared",
+    "thinking": "official provider flags; deepseek ignores temperature when thinking; mimo forces sampling when thinking",
+    "finish_reason_length_is_failure": true
+  },
+  "token_reference_formula": {
+    "assumption": "zero cache credit; every request at its declared caps; frozen public rates from mimo-pilot-pricing-2026-10-07.json (deepseek peak)",
+    "deepseek_flash": {
+      "requests": 48,
+      "input_cap_tokens_per_request": 7000,
+      "output_cap_tokens_per_request": 5000,
+      "uncached_input_usd_per_m": 0.3,
+      "cached_input_usd_per_m": 0.006,
+      "output_usd_per_m": 1.2,
+      "per_request_usd": 0.0081
+    },
+    "mimo_pro": {
+      "requests": 12,
+      "input_cap_tokens_per_request": 8000,
+      "output_cap_tokens_per_request": 5000,
+      "uncached_input_usd_per_m": 0.435,
+      "cached_input_usd_per_m": 0.0036,
+      "output_usd_per_m": 0.87,
+      "per_request_usd": 0.00783
+    },
+    "worst_case_usd_total": 0.48276
+  },
+  "order": {
+    "strategy": "seeded_shuffle",
+    "seed": 20261007,
+    "unit": "(cell, company)",
+    "recorded_in": "run registration"
+  },
+  "stop_and_resume": {
+    "reserve_before_send": true,
+    "archived_run_id_reprepare": "forbidden",
+    "unknown_outcome": "no_recharge_no_resend",
+    "crash_resume": "only unfinished reservations may be settled; unknown reservations are listed for review, never replayed automatically",
+    "unknown_reservations": "report_and_require_human_decision",
+    "auto_resend_unknown": false
+  },
+  "failure_policy": {
+    "retries": 0,
+    "format_retries": 0,
+    "model_swap_to_fill_arm": false,
+    "failed_package_stays_failed": true
+  },
+  "cache": {
+    "application_cache": "cold_by_design",
+    "cache_credit_budgeted": false,
+    "cache_binds": [
+      "question_and_rubric",
+      "identity",
+      "cutoff",
+      "source_context",
+      "model",
+      "endpoint",
+      "generation_parameters",
+      "parser_version",
+      "transport_parameter_policy"
+    ],
+    "provider_prefix_cache": "reported separately, never as application-cache success"
+  },
+  "denominators": {
+    "main_item_denominator": "planned_slots",
+    "planned_slots": 300,
+    "questions_per_request": 5,
+    "answered_only": "conditional_metric_only",
+    "package": "planned model requests (60)",
+    "layers_reported": [
+      "planned_slots (frozen main denominator)",
+      "sent_slots",
+      "not_sent_slots",
+      "items_in_failed_packages",
+      "unknown_answers",
+      "structurally_valid_answers",
+      "answers_with_claims",
+      "answered/sent-only rates labeled conditional"
+    ],
+    "score_basis": "scored items only",
+    "claim_support": "answers carrying claims",
+    "unknown_rule": "unknown counts in the planned-slot item denominator, is excluded from the score_basis denominator, and is still diagnosed when carrying claims",
+    "historical_denominators_must_not_be_mixed": [
+      "186 model",
+      "24 search",
+      "396 answers",
+      "70 repeat",
+      "326 reviewed",
+      "191 scored reviewed",
+      "14 limited basis"
+    ]
+  },
+  "reporting_layers": [
+    "L1_data_engineering_success",
+    "L2_structural_recovery",
+    "L3_source_support",
+    "L4_score_anchor_basis"
+  ],
+  "review": {
+    "protocol": "two disjoint blinded agent partitions, same instructions",
+    "inter_rater_calibration": "not_run",
+    "human_gold_calibration": "not_run",
+    "not_human_or_world_gold": true
+  },
+  "phase96_relationship": {
+    "existing_results": "Phase96 accuracy-first run (108 model HTTP / 56 search-related HTTP, USD3.871962 conservative upper bound) with official numeric references, enhanced evidence and its operations manual",
+    "this_draft_differs": "tests packaging (mixed vs themed five-packs) and evidence-annotation effects on claim support and diagnostic abstain rates; numeric-accuracy claims stay with Phase96 references, not this design",
+    "non_overlap": "does not repeat the Phase96 matrix, does not re-issue its paid calls, and does not replace its operations manual; this package also never runs the 60/24 draft without separate authorization"
+  },
+  "open_gates": [
+    "user_budget_grant",
+    "coordinator_live_go",
+    "preregistration_signoff_before_flipping_execution_enabled"
+  ],
+  "not_run": [
+    "live_search_and_model_calls",
+    "human_gold_calibration",
+    "production_adoption",
+    "sample_expansion",
+    "phase96_rerun"
+  ]
+}

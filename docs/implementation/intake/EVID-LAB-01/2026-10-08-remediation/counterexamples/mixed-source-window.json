@@ -1,0 +1,24 @@
+{
+  "input": {
+    "observed": {
+      "period": "2026"
+    },
+    "sources": [
+      {
+        "url": "https://example.com/report-a",
+        "period": "2025"
+      },
+      {
+        "url": "https://example.com/report-b"
+      }
+    ]
+  },
+  "result": {
+    "check": "source.url_window",
+    "outcome": "fail",
+    "error_code": "E_URL_WINDOW_CONFLICT",
+    "abstain_reason": null,
+    "message": "claim target period conflicts with every cited window: https://example.com/report-a; independent_sources=2 distinct_fragments=2",
+    "dimension": null
+  }
+}

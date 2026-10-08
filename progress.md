@@ -2156,3 +2156,17 @@
 - StockWiki收尾实际master6d1dddbc1289a17a2fb91d40a0d4f57494fa1bfd/clean，卡内无diff、53原工件匹配，源仓写/生产库读写/付费API均0。下一步由原writer按五组同批修后交新commit/handoff；QA-C06-02未正式交付、EVID整改仍由另harness进行。真实identity/facts golden、联合流水线/双owner恢复missing/not_run，G3/F05/TH/IN/L03保持等待。PWF/接手已更新，精确IQS提交推送待实际Git回执。
 - Git交付预检：86索引工件加index的staged bytes逐一匹配。diff检查发现4份原RED traceback日志保留的行尾空白，给这4个精确日志路径加whitespace属性豁免，原字节不清洗；源码/文档和其他日志仍正常检查。精确暂存92个IQS文件，排除opencode.json、runs与所有外仓。
 - **Phase98实际Git交付（2026-10-08）**：`0168bb9d5675727edea68b004a862c3e48946f2e`，92精确文件，86索引工件与index的staged原字节匹配，diff检查通过。沙箱外正常推送origin/master（5024af9→0168bb9，exit0），本地HEAD与origin/master一致；工作树仅既有opencode.json未跟踪。StockWiki未提交/未推送/未修改，清理仅IQS本轮唯一根。整包仍changes_requested，五组整改卡交原writer；本次后续提交只补PWF实际回执，不改变被审工件或门状态。
+
+## 2026-10-08 — Phase99接收EVID-LAB-01整改
+- 用户通知整改交付完成。Lab只读实际codex/evid-lab-01@380cb496f30c72128c2cc8e3c88e36924f3c4f2c/clean；代码f5149b9、版本结果62fe8b2，之后a1889fc/bd7c738/380cb49为交接/工件/PWF。工具CLI0.2.0、diagnostic/fixture schema1.1.0、semantic/structure rules2；worker自述81方法、9固定RED→GREEN、34fixture/350diagnostics及三归档双重放待核。
+- 选定PWF resolver仍legacy root。Lab CodeGraph未初始化与Phase97相同，此前已按AGENTS问过，不擅写索引。旧intake/source-baseline.json不存在的初始读取错误已记，不覆盖或删除旧验收目录。
+- 本轮只写IQS证据/PWF，Lab及其他源仓只读；新独占根和intake单独编号，固定原Phase97反例/历史归档，禁API/key/下载/生产库。proposal明确draft_not_signed/非执行，不自关L02/G3/F05或启动TH/IN/L03。
+- 首次冻结在mkdir前安全停止：结果后另新增tools/make_artifacts.py，不全属于handoff目录。只读核确认其为获批工件生成器、没有src/tests/fixture运行时变化后，显式纳入“交付工具+证据”后续范围；旧“之后仅handoff”表述以此更正，未覆盖任何动态代码。
+- Phase99冻结成功：新私有Git副本105文件，worker104/104 raw size/SHA及当前Git blob OID全匹配，84字节差异仅CRLF/LF已声明。公开handoff shape/scope valid/exit0，旧Phase97/98归档均保留，不把格式valid当实现签收。
+- 实测原81 passed/9.63s（wall10.568）、总控9固定passed/2.002s（wall2.423）；只在IO边界将故障从final路径改匹配真实staging metrics.json，原断言保持，并新增stage无残留/同路径重试。34fixture/42expectation/350records，三历史归档两个新根5核心payload byte-identical，34逐fixture公开CLI全exit0，39命令0失败。9在81里已有重复，不叫90唯一方法。原128独立IQS输入/105导出源所有追加case后SHA不变。
+- 集中独审后的实际补充：首5case2fail3pass/2.68s（wall3.281），后6case6fail/0.64s（wall1.161），后批custom/overflow是重复公共证明，非11独立缺口。六项残余已实证：custom两不重叠季度日期period pass；FX032删answer_sha256并改score/rationale仍公开exit0且发布historical；1e400 public方向pass；mixed source已冲突+未知误判all conflict；FX021 synthetic duplicate-json记录错标historical；draft output_limit10000与formula5000，Decimal实际0.82296>0.48276/0.49。来源绑定/非有限/cust期间P1，其他P2；partial_verified/changes_requested，不签全包。
+- 三追加正例通过：同时改历史chunk selfhash仍被真实归档拒；final rename OSError清stage并同路径重试；Windows发布目标出现保留owner marker/exit3。保持原子发布已有成果，不将静态疑虑夸成动态失败。raw日志/公开错误发布输入输出、一次独审、验收与六项残余卡留档；没有第二轮helper审查或新收费实验。
+- controller错误留档：最初旧source-baseline路径不存在；结果后交付工具新增导致首次冻结安全停止；后置可选Get-Content -LiteralPath通配读取不展开报不存在，collect已成功。未改变worker源码或旧案例断言掩盖错误。
+- 本轮266文件/67目录经lstat nlink1/无重解析及严格CIM0、精确set/size/SHA dry-run→Apply已清；session88506与同步子命令均结束。Lab收尾HEAD380cb496f30c72128c2cc8e3c88e36924f3c4f2c/clean、104raw工件不变、原.temp-roots一级0。环境无key，Python audit继承子进程，网络/下载/费用/生产库/外仓写0；不声称OS完整读隔离。旧Phase92/sharedTEMP/opencode和旧intake保留。
+- PWF/接手已更新。原Lab writer按六残余同批修；SW五组待修，QA尚未正式交回，各源仓不接管。proposal只接收draft不执行；L02完整gold校准/G3/F05/TH/IN/L03保持等待。精确IQS提交推送待实际Git回执。
+- Git交付预检：182精确IQS文件暂存，176索引工件与index staged bytes逐项相符。diff检查仅review-followup.stdout.log的原traceback尾空白，给这唯一原日志精确whitespace属性豁免，不清洗字节；其他源码/文档/日志正常检查。opencode.json、runs和外仓均排除。

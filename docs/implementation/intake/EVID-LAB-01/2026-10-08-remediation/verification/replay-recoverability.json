@@ -1,0 +1,763 @@
+{
+  "schema": "iqs_evidence_lab.recoverability/1",
+  "per_run": {
+    "mimo-pro-pilot-2026-10-07-01": {
+      "package_success": {
+        "unit": "model_request_package",
+        "packages_total": 132,
+        "packages_success": 107,
+        "packages_failed": 25,
+        "success_rate": 0.810606,
+        "requested_items": 390,
+        "valid_items": 266,
+        "valid_item_rate": 0.682051,
+        "by_group": [
+          {
+            "stage": "pilot-matrix",
+            "route": "deepseek",
+            "group_size": 1,
+            "packages": 30,
+            "packages_success": 26,
+            "requested": 30,
+            "valid_rows": 26,
+            "success_rate": 0.866667
+          },
+          {
+            "stage": "pilot-matrix",
+            "route": "deepseek",
+            "group_size": 10,
+            "packages": 3,
+            "packages_success": 3,
+            "requested": 30,
+            "valid_rows": 30,
+            "success_rate": 1.0
+          },
+          {
+            "stage": "pilot-matrix",
+            "route": "deepseek",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 6,
+            "requested": 30,
+            "valid_rows": 30,
+            "success_rate": 1.0
+          },
+          {
+            "stage": "pilot-matrix",
+            "route": "mimo_pro",
+            "group_size": 1,
+            "packages": 30,
+            "packages_success": 27,
+            "requested": 30,
+            "valid_rows": 27,
+            "success_rate": 0.9
+          },
+          {
+            "stage": "pilot-matrix",
+            "route": "mimo_pro",
+            "group_size": 10,
+            "packages": 3,
+            "packages_success": 1,
+            "requested": 30,
+            "valid_rows": 10,
+            "success_rate": 0.333333
+          },
+          {
+            "stage": "pilot-matrix",
+            "route": "mimo_pro",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 2,
+            "requested": 30,
+            "valid_rows": 10,
+            "success_rate": 0.333333
+          },
+          {
+            "stage": "pilot-matrix",
+            "route": "mimo",
+            "group_size": 1,
+            "packages": 30,
+            "packages_success": 28,
+            "requested": 30,
+            "valid_rows": 28,
+            "success_rate": 0.933333
+          },
+          {
+            "stage": "pilot-matrix",
+            "route": "mimo",
+            "group_size": 10,
+            "packages": 3,
+            "packages_success": 0,
+            "requested": 30,
+            "valid_rows": 0,
+            "success_rate": 0.0
+          },
+          {
+            "stage": "pilot-matrix",
+            "route": "mimo",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 4,
+            "requested": 30,
+            "valid_rows": 20,
+            "success_rate": 0.666667
+          },
+          {
+            "stage": "pilot-repeat",
+            "route": "deepseek",
+            "group_size": 10,
+            "packages": 3,
+            "packages_success": 3,
+            "requested": 30,
+            "valid_rows": 30,
+            "success_rate": 1.0
+          },
+          {
+            "stage": "pilot-repeat",
+            "route": "mimo_pro",
+            "group_size": 10,
+            "packages": 3,
+            "packages_success": 3,
+            "requested": 30,
+            "valid_rows": 30,
+            "success_rate": 1.0
+          },
+          {
+            "stage": "pilot-repeat",
+            "route": "mimo",
+            "group_size": 10,
+            "packages": 3,
+            "packages_success": 1,
+            "requested": 30,
+            "valid_rows": 10,
+            "success_rate": 0.333333
+          },
+          {
+            "stage": "pilot-thinking",
+            "route": "mimo_pro",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 3,
+            "requested": 30,
+            "valid_rows": 15,
+            "success_rate": 0.5
+          }
+        ],
+        "note": "structural contract validity only; not factual accuracy"
+      },
+      "item_recoverability": {
+        "unit": "item_within_rejected_package",
+        "packages_rejected": 25,
+        "tiers": {
+          "no_preserved_inspection": 25
+        },
+        "items_in_rejected_packages": 124,
+        "items_measurable": 0,
+        "items_recovered": 0,
+        "items_rejected": 0,
+        "items_not_measurable": 124,
+        "recoverable_rate": null,
+        "not_measurable_rate": 1.0,
+        "envelope_decodable_chunks": 25,
+        "abstain_reason": "no_preserved_item_inspection",
+        "diagnostic_only": true,
+        "never_production_pass": true,
+        "details": [
+          {
+            "chunk_id": "CHK_0436944076694ea3a54c99f6870caee9",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+            "parse_error": "claims_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 1
+          },
+          {
+            "chunk_id": "CHK_076985cdee8c4f87b751c30ed4b65912",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+            "parse_error": "claims_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 1
+          },
+          {
+            "chunk_id": "CHK_122b100ad05642e18e7cefe5916dbf09",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.catl.mimo_pro.g1.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 1
+          },
+          {
+            "chunk_id": "CHK_191ec4dc13274c23b1e8412a579035e9",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.cncb_h.mimo_pro.g10.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 10
+          },
+          {
+            "chunk_id": "CHK_2998aeeaee6e45d6a2cc4f0102aa2474",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-thinking.cncb_h.mimo_pro.g5.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_2c0ea2087cb04a2e99b34aaadf44dc9a",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-repeat.cncb_h.mimo.g10.targeted",
+            "parse_error": "root_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 10
+          },
+          {
+            "chunk_id": "CHK_2f8357bd9aba43e385fc62178356c366",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-thinking.alphabet.mimo_pro.g5.targeted",
+            "parse_error": "item_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_378a72a44860481886eadd6714d94287",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.alphabet.mimo_pro.g10.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 10
+          },
+          {
+            "chunk_id": "CHK_51891b0f31a1453a94707814c18337ce",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-repeat.catl.mimo.g10.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 10
+          },
+          {
+            "chunk_id": "CHK_55c384264f294c39b2eca56e569e7799",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.catl.mimo.g5.targeted",
+            "parse_error": "root_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_5a7a4b86c1e541349e5d42bee86c2129",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.alphabet.deepseek.g1.targeted",
+            "parse_error": "claims_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 1
+          },
+          {
+            "chunk_id": "CHK_807615d22d414c62b045cdd84a2375cd",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.cncb_h.mimo_pro.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_809af8cb56a04b09926ff4f126c6390e",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.alphabet.mimo_pro.g1.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 1
+          },
+          {
+            "chunk_id": "CHK_8a540991f2c94a9b9b7bea07ab1aaa19",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.cncb_h.mimo_pro.g1.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 1
+          },
+          {
+            "chunk_id": "CHK_9cf184a5ae074f408e190e544da8fbd6",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.catl.mimo.g10.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 10
+          },
+          {
+            "chunk_id": "CHK_ae57fc8b50f84d1f91d198829cd857ca",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.alphabet.mimo.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_afad1a3e06fa416aad705672ba677e80",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.catl.deepseek.g1.targeted",
+            "parse_error": "claims_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 1
+          },
+          {
+            "chunk_id": "CHK_b68210fcf54e4436a1b07780373cf9cf",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-thinking.cncb_h.mimo_pro.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_bd9509ff54444c1f8b451ec08e947df1",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.alphabet.mimo.g10.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 10
+          },
+          {
+            "chunk_id": "CHK_cdbd5aa24f654edfba6be773c68d1c6b",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.catl.mimo_pro.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_d1099230402643d29fc1d89c46605ed9",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.alphabet.mimo_pro.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_dc42a21918cd415fa2c250f7da668c42",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.cncb_h.mimo.g10.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 10
+          },
+          {
+            "chunk_id": "CHK_e10adf874a3c4228b6c4b49786b8cfe3",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 1
+          },
+          {
+            "chunk_id": "CHK_f26022c08a204706b24cda30eeadd4b0",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.cncb_h.mimo_pro.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_f66ad58f16ba4c778f9019a190b07e37",
+            "run": "mimo-pro-pilot-2026-10-07-01",
+            "arm": "pilot-matrix.alphabet.mimo.g1.targeted",
+            "parse_error": "item_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 1
+          }
+        ]
+      }
+    },
+    "mimo-pro-pilot-2026-10-07-thinking-all": {
+      "package_success": {
+        "unit": "model_request_package",
+        "packages_total": 42,
+        "packages_success": 23,
+        "packages_failed": 19,
+        "success_rate": 0.547619,
+        "requested_items": 210,
+        "valid_items": 115,
+        "valid_item_rate": 0.547619,
+        "by_group": [
+          {
+            "stage": "paired-off",
+            "route": "deepseek",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 5,
+            "requested": 30,
+            "valid_rows": 25,
+            "success_rate": 0.833333
+          },
+          {
+            "stage": "paired-off",
+            "route": "mimo_pro",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 1,
+            "requested": 30,
+            "valid_rows": 5,
+            "success_rate": 0.166667
+          },
+          {
+            "stage": "paired-off",
+            "route": "mimo",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 4,
+            "requested": 30,
+            "valid_rows": 20,
+            "success_rate": 0.666667
+          },
+          {
+            "stage": "paired-off",
+            "route": "minimax",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 3,
+            "requested": 30,
+            "valid_rows": 15,
+            "success_rate": 0.5
+          },
+          {
+            "stage": "paired-on",
+            "route": "deepseek",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 6,
+            "requested": 30,
+            "valid_rows": 30,
+            "success_rate": 1.0
+          },
+          {
+            "stage": "paired-on",
+            "route": "mimo",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 1,
+            "requested": 30,
+            "valid_rows": 5,
+            "success_rate": 0.166667
+          },
+          {
+            "stage": "paired-on",
+            "route": "minimax",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 3,
+            "requested": 30,
+            "valid_rows": 15,
+            "success_rate": 0.5
+          }
+        ],
+        "note": "structural contract validity only; not factual accuracy"
+      },
+      "item_recoverability": {
+        "unit": "item_within_rejected_package",
+        "packages_rejected": 19,
+        "tiers": {
+          "no_preserved_inspection": 19
+        },
+        "items_in_rejected_packages": 95,
+        "items_measurable": 0,
+        "items_recovered": 0,
+        "items_rejected": 0,
+        "items_not_measurable": 95,
+        "recoverable_rate": null,
+        "not_measurable_rate": 1.0,
+        "envelope_decodable_chunks": 16,
+        "abstain_reason": "no_preserved_item_inspection",
+        "diagnostic_only": true,
+        "never_production_pass": true,
+        "details": [
+          {
+            "chunk_id": "CHK_0636e0a2d03445faafddce52624729ca",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.catl.minimax.g5.targeted",
+            "parse_error": "reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_0f0c22fb718346ffbaf2045abb3c1ff7",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.cncb_h.mimo.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_16f2fb31f76849e9880e7e76717436b0",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-on.alphabet.mimo.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_1b88d81c00a548218f39c9775fc6d0af",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.alphabet.mimo_pro.g5.targeted",
+            "parse_error": "root_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_2239c0261e274182a09828a3a6b76f59",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-on.catl.minimax.g5.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_28c535f8996547b7a4949218a0a0b926",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-on.cncb_h.mimo.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_3aad167c3d3c49058f14414310037ae8",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.alphabet.mimo.g5.targeted",
+            "parse_error": "root_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_4fdbd87f751b4cc4bae6368fe23eeafd",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-on.cncb_h.minimax.g5.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_57f36be91e1247338380641eacfad641",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.catl.mimo_pro.g5.targeted",
+            "parse_error": "root_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_64fb54c2e7224599809b190051e25709",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-on.catl.mimo.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_65fb27a270f14bc4bada4e4c653a0ac5",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-on.catl.mimo.g5.targeted",
+            "parse_error": "root_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_80007236bffb43cc80408b308687d19a",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-on.alphabet.minimax.g5.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_836dfca42e0b499cb7bdb3d3a8e979b4",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.cncb_h.mimo_pro.g5.targeted",
+            "parse_error": "root_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_ad50f44a7d7d4d879078e1724ab9e964",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.alphabet.minimax.g5.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_b2ee261cae9c4e659e493a9ceabbb86d",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.catl.deepseek.g5.targeted",
+            "parse_error": "claims_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_b797fa2916744f30ae487f16757a003a",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.cncb_h.minimax.g5.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_b80398e79ef5438ea41af72f736e6afc",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-on.cncb_h.mimo.g5.targeted",
+            "parse_error": "Expecting ',' delimiter: line 1 column 699 (char 698)",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_b80a6a3344bc4da19ba39a0e5bd98669",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.alphabet.mimo_pro.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_ea324a27ba4844d397720e7c398482c8",
+            "run": "mimo-pro-pilot-2026-10-07-thinking-all",
+            "arm": "paired-off.cncb_h.mimo_pro.g5.targeted",
+            "parse_error": "missing_duplicate_extra_or_reordered_qid",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          }
+        ]
+      }
+    },
+    "mimo-pro-pilot-2026-10-07-jsonoff": {
+      "package_success": {
+        "unit": "model_request_package",
+        "packages_total": 12,
+        "packages_success": 3,
+        "packages_failed": 9,
+        "success_rate": 0.25,
+        "requested_items": 60,
+        "valid_items": 15,
+        "valid_item_rate": 0.25,
+        "by_group": [
+          {
+            "stage": "paired-jsonoff",
+            "route": "mimo_nojson",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 1,
+            "requested": 30,
+            "valid_rows": 5,
+            "success_rate": 0.166667
+          },
+          {
+            "stage": "paired-jsonoff",
+            "route": "mimo_pro_nojson",
+            "group_size": 5,
+            "packages": 6,
+            "packages_success": 2,
+            "requested": 30,
+            "valid_rows": 10,
+            "success_rate": 0.333333
+          }
+        ],
+        "note": "structural contract validity only; not factual accuracy"
+      },
+      "item_recoverability": {
+        "unit": "item_within_rejected_package",
+        "packages_rejected": 9,
+        "tiers": {
+          "no_preserved_inspection": 9
+        },
+        "items_in_rejected_packages": 45,
+        "items_measurable": 0,
+        "items_recovered": 0,
+        "items_rejected": 0,
+        "items_not_measurable": 45,
+        "recoverable_rate": null,
+        "not_measurable_rate": 1.0,
+        "envelope_decodable_chunks": 1,
+        "abstain_reason": "no_preserved_item_inspection",
+        "diagnostic_only": true,
+        "never_production_pass": true,
+        "details": [
+          {
+            "chunk_id": "CHK_0b84313d2cdc46cf99d6a2116444848d",
+            "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+            "arm": "paired-jsonoff.alphabet.mimo_pro_nojson.g5.targeted",
+            "parse_error": "Expecting ',' delimiter: line 1 column 508 (char 507)",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_0ce8772c7b814357a99dfd3986fd7d4b",
+            "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+            "arm": "paired-jsonoff.catl.mimo_nojson.g5.targeted",
+            "parse_error": "Expecting ',' delimiter: line 1 column 500 (char 499)",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_16345d1e753040f4a20eccbb3a07bc50",
+            "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+            "arm": "paired-jsonoff.alphabet.mimo_nojson.g5.targeted",
+            "parse_error": "claim_reference_contract",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_45ba51f7f7e04182983ffc0382437af3",
+            "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+            "arm": "paired-jsonoff.cncb_h.mimo_pro_nojson.g5.targeted",
+            "parse_error": "Expecting value: line 1 column 1 (char 0)",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_4bac1e6444cc47839e3f4466a76f9f86",
+            "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+            "arm": "paired-jsonoff.cncb_h.mimo_nojson.g5.targeted",
+            "parse_error": "Expecting ',' delimiter: line 1 column 479 (char 478)",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_5ab3645009d04b70bc8da91a0973beeb",
+            "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+            "arm": "paired-jsonoff.cncb_h.mimo_nojson.g5.targeted",
+            "parse_error": "Expecting ',' delimiter: line 1 column 453 (char 452)",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_6ef999eeac3f4b51a314035e32029e45",
+            "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+            "arm": "paired-jsonoff.alphabet.mimo_nojson.g5.targeted",
+            "parse_error": "Expecting ',' delimiter: line 1 column 479 (char 478)",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_8b566b9252e9428f9925578b3021e264",
+            "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+            "arm": "paired-jsonoff.alphabet.mimo_pro_nojson.g5.targeted",
+            "parse_error": "Expecting ',' delimiter: line 1 column 382 (char 381)",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          },
+          {
+            "chunk_id": "CHK_dfb1990ba10546c691f404289d6ddda6",
+            "run": "mimo-pro-pilot-2026-10-07-jsonoff",
+            "arm": "paired-jsonoff.cncb_h.mimo_pro_nojson.g5.targeted",
+            "parse_error": "Extra data: line 1 column 914 (char 913)",
+            "tier": "no_preserved_inspection",
+            "expected_items": 5
+          }
+        ]
+      }
+    }
+  },
+  "aggregate": {
+    "packages_total": 186,
+    "packages_success": 133,
+    "rejected_packages": 53,
+    "items_in_rejected_packages": 264,
+    "items_measurable": 0,
+    "diagnostic_only": true,
+    "never_production_pass": true
+  }
+}

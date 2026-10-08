@@ -1633,3 +1633,9 @@ Phase98接收边界：SW-REPAIR-02结果9f9e0af，当前6d1dddb的卡内源码/�
 Phase98终态：原81受影响/冻结case与11真实浏览器GREEN并不证明比较维度完整；三个实际accepted=2的分部/结束期间/current-normalized输入只剩9分且>=8命中。SQL/字段投影/variant key必须端到端保留分部、期间、basis，默认不可比应ambiguous/null而非选最新或平均；subject/model/rubric已有隔离勿笼统误报。根/父junctioncreate实际越逻辑workspace但仍在IQS自有根，仅证create，不能谎称动态证明prune越界删除。registry unknown-version/foreign-owner/workspace三项授予删旧备份；JSON合法不等于形状合法，[]/null/0/files=null中断保留链。
 
 最终12逻辑反例全RED（初10/2.16s，junction2/0.84s，结束期aligned2/1.13s替代初始同两例，不叠加14）。原首次缺provider配置、dataclass序列化、Playwright探测/清理PowerShell适配均如实留档，controller error不能当产品failure。公开handoff按字面prefix不支持test glob，具体路径修正仅诊断副本，后续TEMP未清仍exit2；worker105截图与109–111库存需owner查清，不按编号代删。profiles接口hash错绑rows.py、9 EOL差异需交接明确。53工件和296Git源前后原字节校验一致，总控769文件经严格归属/无进程无监听/无link/单硬链清理完成，六个自有junction先解节点再清文件；源仓HEAD6d clean未写。本包仍changes_requested，五组同批整改一次集中回验，G3/F05/TH/IN/L03不解锁。
+
+Phase99：EVID整改有实质进展，原81方法/9冻结/39公共与回归命令全GREEN，128独立输入/105Git源全程SHA不变，104工件双hash与84EOL声明真实匹配。不能据固定反例全过认全部入口完备：historical case.answer可省answer_sha256绕过归档对比，public仍exit0且标historical；修改值同时改chunk selfhash已能被拒，说明缺的是可选绑定开关不是所有归档校验失效。严格JSON只parse_constant不挡1e400变inf；无answer/chunk时canonical hash防线不触发，实际direction pass进入公开输出。应统一入口拒非有限，不仅禁止输出Infinity字面。
+
+custom日期边界被kind/year投影丢弃，相同年不同不重叠区间public一致；暂不支持须abstain，不硬增日期分析功能。混合source已冲突+未知不能移除未知后声称all conflict。FX021 synthetic duplicate-json一条硬编码historical，package subset正例不够；逐记录来源标签需保持。费用测试内部自洽不等于绑定运行cap，generation10000与公式5000实测0.82296>0.48276/0.49，仅接受draft。新增首5=2F3P、后6=6F有重复公共证明，收敛六残余组，原发布IO/rename恢复/Windows碰撞三正例保持；不以诊断维度一致升级完整事实正确。
+
+首冻结在mkdir前因结果后make_artifacts新增停止，核明确非运行器后显式接受交付工具差异；未假称之后全是doc。后置可选读取误用LiteralPath glob报不存在，collect本身已成功，不算产品失败。CodeGraph原待授权不擅init。266文件67目录单硬链/无link/strict CIM0及精确set/SHA后Apply清，仅本轮；原Lab.temp-roots一级0、HEAD380cb49/clean、104raw工件不变。旧归档/Phase92/sharedTEMP/opencode保留，剩余原writer同批整改，L02/G3/F05/TH/IN/L03不解锁。
