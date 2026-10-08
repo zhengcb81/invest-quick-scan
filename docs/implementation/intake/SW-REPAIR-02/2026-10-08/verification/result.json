@@ -1,0 +1,89 @@
+{
+  "status": "changes_requested",
+  "result_commit": "9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f",
+  "core": {
+    "passed": 81,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 19.48,
+    "includes": "74 worker affected methods plus 7 original frozen intake cases"
+  },
+  "browser": {
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 79.64,
+    "requests": 143,
+    "ports": [
+      51836,
+      62466,
+      63872,
+      63886,
+      62194,
+      65188,
+      54093,
+      54708,
+      60065,
+      58926,
+      65348
+    ],
+    "existing_chromium": true,
+    "browser_downloads": 0
+  },
+  "additional": {
+    "methods": 12,
+    "failed": 12,
+    "setup_errors": 0,
+    "batches": [
+      {
+        "failed": 10,
+        "seconds": 2.16,
+        "period_basis_superseded": true
+      },
+      {
+        "failed": 2,
+        "deselected": 10,
+        "seconds": 0.84,
+        "cases": "junction"
+      },
+      {
+        "failed": 2,
+        "seconds": 1.13,
+        "cases": "completed_period_and_basis",
+        "supersedes": "initial period/basis; not two additional logical cases"
+      }
+    ],
+    "not_counted": "initial junction dataclass serialization failures were controller errors",
+    "period_basis_corrected": "two focused re-runs use completed FY2025 vs 2026H1 and current vs normalized on 2026H1; original forward-end cases retained and superseded"
+  },
+  "snapshot_files": 296,
+  "snapshot_changes_after_tests": [],
+  "network_scope": "Python audit permits loopback and exact read-only legacy Git command; browser page routes abort external requests",
+  "paid_api_requests": 0,
+  "keys_provided": 0,
+  "production_database_reads_or_writes": 0,
+  "source_repository_writes": 0,
+  "cleanup_pending": false,
+  "limits": [
+    "Python audit does not restrict all native child-process reads/writes; installed Chromium is allowed only for the browser test",
+    "browser background networking disabled and external DNS forced to NOTFOUND; page-route assertions are not a system-wide packet capture",
+    "worker 1032/1046 full-suite logs are received evidence, not re-run by coordinator",
+    "real identity/facts golden and QA joint flow remain missing/not_run"
+  ],
+  "cleanup": {
+    "applied": true,
+    "files_deleted": 769,
+    "junction_nodes_unlinked": 6,
+    "root_absent": true,
+    "scope": "only coordinator private IQS root; worker shared TEMP not cleaned by coordinator"
+  },
+  "source_after": {
+    "head": "6d1dddbc1289a17a2fb91d40a0d4f57494fa1bfd",
+    "branch": "master",
+    "status": "",
+    "result_commit": "9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f",
+    "card_code_diff_result_to_head": "",
+    "artifact_matches": 53,
+    "coordinator_source_writes": 0
+  }
+}

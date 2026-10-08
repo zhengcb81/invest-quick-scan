@@ -1,0 +1,107 @@
+{"mode": "extra", "canaries": "passed", "keys_provided": 0, "source_commit": "9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f"}
+FFFFFFFFFF
+================================== FAILURES ===================================
+____ test_malformed_json_shape_is_skipped_without_stopping_retention[bad0] ____
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:34: in test_malformed_json_shape_is_skipped_without_stopping_retention
+    receipt = backup.prune_backups(paths, keep=1)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:566: in prune_backups
+    for item in list_quick_scan_backups(paths):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:538: in list_quick_scan_backups
+    item["created_at_utc"] = manifest.get("created_at_utc")
+                             ^^^^^^^^^^^^
+E   AttributeError: 'list' object has no attribute 'get'
+____ test_malformed_json_shape_is_skipped_without_stopping_retention[None] ____
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:34: in test_malformed_json_shape_is_skipped_without_stopping_retention
+    receipt = backup.prune_backups(paths, keep=1)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:566: in prune_backups
+    for item in list_quick_scan_backups(paths):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:538: in list_quick_scan_backups
+    item["created_at_utc"] = manifest.get("created_at_utc")
+                             ^^^^^^^^^^^^
+E   AttributeError: 'NoneType' object has no attribute 'get'
+_____ test_malformed_json_shape_is_skipped_without_stopping_retention[0] ______
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:34: in test_malformed_json_shape_is_skipped_without_stopping_retention
+    receipt = backup.prune_backups(paths, keep=1)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:566: in prune_backups
+    for item in list_quick_scan_backups(paths):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:538: in list_quick_scan_backups
+    item["created_at_utc"] = manifest.get("created_at_utc")
+                             ^^^^^^^^^^^^
+E   AttributeError: 'int' object has no attribute 'get'
+____ test_malformed_json_shape_is_skipped_without_stopping_retention[bad3] ____
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:34: in test_malformed_json_shape_is_skipped_without_stopping_retention
+    receipt = backup.prune_backups(paths, keep=1)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:566: in prune_backups
+    for item in list_quick_scan_backups(paths):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:541: in list_quick_scan_backups
+    item["file_count"] = len(manifest.get("files", []))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: object of type 'NoneType' has no len()
+_ test_unknown_registry_version_or_foreign_owner_never_grants_delete[format_version] _
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:56: in test_unknown_registry_version_or_foreign_owner_never_grants_delete
+    assert (root / "backup_a").exists(), "unknown registry/foreign record granted delete authority"
+E   AssertionError: unknown registry/foreign record granted delete authority
+E   assert False
+E    +  where False = exists()
+E    +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-repair-2026-10-08-01/pytest-extra/test_unknown_registry_version_0/workspace/backups/quick_scan') / 'backup_a').exists
+_ test_unknown_registry_version_or_foreign_owner_never_grants_delete[owner_module] _
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:56: in test_unknown_registry_version_or_foreign_owner_never_grants_delete
+    assert (root / "backup_a").exists(), "unknown registry/foreign record granted delete authority"
+E   AssertionError: unknown registry/foreign record granted delete authority
+E   assert False
+E    +  where False = exists()
+E    +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-repair-2026-10-08-01/pytest-extra/test_unknown_registry_version_1/workspace/backups/quick_scan') / 'backup_a').exists
+_ test_unknown_registry_version_or_foreign_owner_never_grants_delete[workspace_root] _
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:56: in test_unknown_registry_version_or_foreign_owner_never_grants_delete
+    assert (root / "backup_a").exists(), "unknown registry/foreign record granted delete authority"
+E   AssertionError: unknown registry/foreign record granted delete authority
+E   assert False
+E    +  where False = exists()
+E    +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-repair-2026-10-08-01/pytest-extra/test_unknown_registry_version_2/workspace/backups/quick_scan') / 'backup_a').exists
+_ test_public_import_never_blends_incomparable_segments_periods_or_basis[segment] _
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:85: in test_public_import_never_blends_incomparable_segments_periods_or_basis
+    assert {field["score"] for field in fields} == {2, 9}, "incomparable accepted values disappeared"
+E   AssertionError: incomparable accepted values disappeared
+E   assert {9} == {2, 9}
+E     
+E     Extra items in the right set:
+E     2
+E     Use -v to get more diff
+_ test_public_import_never_blends_incomparable_segments_periods_or_basis[period] _
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:85: in test_public_import_never_blends_incomparable_segments_periods_or_basis
+    assert {field["score"] for field in fields} == {2, 9}, "incomparable accepted values disappeared"
+E   AssertionError: incomparable accepted values disappeared
+E   assert {9} == {2, 9}
+E     
+E     Extra items in the right set:
+E     2
+E     Use -v to get more diff
+_ test_public_import_never_blends_incomparable_segments_periods_or_basis[basis] _
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:85: in test_public_import_never_blends_incomparable_segments_periods_or_basis
+    assert {field["score"] for field in fields} == {2, 9}, "incomparable accepted values disappeared"
+E   AssertionError: incomparable accepted values disappeared
+E   assert {9} == {2, 9}
+E     
+E     Extra items in the right set:
+E     2
+E     Use -v to get more diff
+=========================== short test summary info ===========================
+FAILED ..::test_malformed_json_shape_is_skipped_without_stopping_retention[bad0]
+FAILED ..::test_malformed_json_shape_is_skipped_without_stopping_retention[None]
+FAILED ..::test_malformed_json_shape_is_skipped_without_stopping_retention[0]
+FAILED ..::test_malformed_json_shape_is_skipped_without_stopping_retention[bad3]
+FAILED ..::test_unknown_registry_version_or_foreign_owner_never_grants_delete[format_version]
+FAILED ..::test_unknown_registry_version_or_foreign_owner_never_grants_delete[owner_module]
+FAILED ..::test_unknown_registry_version_or_foreign_owner_never_grants_delete[workspace_root]
+FAILED ..::test_public_import_never_blends_incomparable_segments_periods_or_basis[segment]
+FAILED ..::test_public_import_never_blends_incomparable_segments_periods_or_basis[period]
+FAILED ..::test_public_import_never_blends_incomparable_segments_periods_or_basis[basis]
+10 failed in 2.16s

@@ -1,0 +1,196 @@
+{"mode": "core", "canaries": "passed", "keys_provided": 0, "source_commit": "9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f"}
+
+=================================== ERRORS ====================================
+______________ ERROR collecting runtime/tests/test_swr_cases.py _______________
+tests\test_swr_cases.py:31: in <module>
+    from test_quick_scan_observations import _observation, _package
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_observations.py:21: in <module>
+    from stockwiki.cli_registry import build_parser
+stockwiki\cli_registry.py:7: in <module>
+    from stockwiki.cli_parsers import (
+stockwiki\cli_parsers\company.py:5: in <module>
+    from stockwiki.llm_review import DEFAULT_DEEPSEEK_MODEL
+stockwiki\llm_review.py:22: in <module>
+    DEFAULT_DEEPSEEK_MODEL = default_model()
+                             ^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:96: in default_model
+    providers = load_providers()
+                ^^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:61: in load_providers
+    data = read_yaml(_config_path(), default={}) or {}
+                     ^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:53: in _config_path
+    raise FileNotFoundError("config/llm_providers.yaml not found")
+E   FileNotFoundError: config/llm_providers.yaml not found
+______________ ERROR collecting runtime/tests/test_swr_backup.py ______________
+tests\test_swr_backup.py:25: in <module>
+    from test_quick_scan_observations import _observation, _package, _seed_entity
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_observations.py:21: in <module>
+    from stockwiki.cli_registry import build_parser
+stockwiki\cli_registry.py:7: in <module>
+    from stockwiki.cli_parsers import (
+stockwiki\cli_parsers\company.py:5: in <module>
+    from stockwiki.llm_review import DEFAULT_DEEPSEEK_MODEL
+stockwiki\llm_review.py:22: in <module>
+    DEFAULT_DEEPSEEK_MODEL = default_model()
+                             ^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:96: in default_model
+    providers = load_providers()
+                ^^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:61: in load_providers
+    data = read_yaml(_config_path(), default={}) or {}
+                     ^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:53: in _config_path
+    raise FileNotFoundError("config/llm_providers.yaml not found")
+E   FileNotFoundError: config/llm_providers.yaml not found
+_____________ ERROR collecting runtime/tests/test_swr_profiles.py _____________
+tests\test_swr_profiles.py:20: in <module>
+    from test_quick_scan_observations import _observation, _package, _seed_entity
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_observations.py:21: in <module>
+    from stockwiki.cli_registry import build_parser
+stockwiki\cli_registry.py:7: in <module>
+    from stockwiki.cli_parsers import (
+stockwiki\cli_parsers\company.py:5: in <module>
+    from stockwiki.llm_review import DEFAULT_DEEPSEEK_MODEL
+stockwiki\llm_review.py:22: in <module>
+    DEFAULT_DEEPSEEK_MODEL = default_model()
+                             ^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:96: in default_model
+    providers = load_providers()
+                ^^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:61: in load_providers
+    data = read_yaml(_config_path(), default={}) or {}
+                     ^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:53: in _config_path
+    raise FileNotFoundError("config/llm_providers.yaml not found")
+E   FileNotFoundError: config/llm_providers.yaml not found
+__________ ERROR collecting runtime/tests/test_quick_scan_backup.py ___________
+tests\test_quick_scan_backup.py:34: in <module>
+    from test_quick_scan_observations import _observation, _package, _release, _seed_entity
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_observations.py:21: in <module>
+    from stockwiki.cli_registry import build_parser
+stockwiki\cli_registry.py:7: in <module>
+    from stockwiki.cli_parsers import (
+stockwiki\cli_parsers\company.py:5: in <module>
+    from stockwiki.llm_review import DEFAULT_DEEPSEEK_MODEL
+stockwiki\llm_review.py:22: in <module>
+    DEFAULT_DEEPSEEK_MODEL = default_model()
+                             ^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:96: in default_model
+    providers = load_providers()
+                ^^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:61: in load_providers
+    data = read_yaml(_config_path(), default={}) or {}
+                     ^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:53: in _config_path
+    raise FileNotFoundError("config/llm_providers.yaml not found")
+E   FileNotFoundError: config/llm_providers.yaml not found
+_________ ERROR collecting runtime/tests/test_quick_scan_profiles.py __________
+tests\test_quick_scan_profiles.py:20: in <module>
+    from test_quick_scan_observations import _observation, _package, _seed_entity
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_observations.py:21: in <module>
+    from stockwiki.cli_registry import build_parser
+stockwiki\cli_registry.py:7: in <module>
+    from stockwiki.cli_parsers import (
+stockwiki\cli_parsers\company.py:5: in <module>
+    from stockwiki.llm_review import DEFAULT_DEEPSEEK_MODEL
+stockwiki\llm_review.py:22: in <module>
+    DEFAULT_DEEPSEEK_MODEL = default_model()
+                             ^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:96: in default_model
+    providers = load_providers()
+                ^^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:61: in load_providers
+    data = read_yaml(_config_path(), default={}) or {}
+                     ^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:53: in _config_path
+    raise FileNotFoundError("config/llm_providers.yaml not found")
+E   FileNotFoundError: config/llm_providers.yaml not found
+____________ ERROR collecting runtime/tests/test_ui_quick_scan.py _____________
+tests\test_ui_quick_scan.py:31: in <module>
+    from test_quick_scan_profiles import E01, E02, _workspace
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_profiles.py:20: in <module>
+    from test_quick_scan_observations import _observation, _package, _seed_entity
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_observations.py:21: in <module>
+    from stockwiki.cli_registry import build_parser
+stockwiki\cli_registry.py:7: in <module>
+    from stockwiki.cli_parsers import (
+stockwiki\cli_parsers\company.py:5: in <module>
+    from stockwiki.llm_review import DEFAULT_DEEPSEEK_MODEL
+stockwiki\llm_review.py:22: in <module>
+    DEFAULT_DEEPSEEK_MODEL = default_model()
+                             ^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:96: in default_model
+    providers = load_providers()
+                ^^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:61: in load_providers
+    data = read_yaml(_config_path(), default={}) or {}
+                     ^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:53: in _config_path
+    raise FileNotFoundError("config/llm_providers.yaml not found")
+E   FileNotFoundError: config/llm_providers.yaml not found
+=========================== short test summary info ===========================
+ERROR tests\test_swr_cases.py - FileNotFoundError: config/llm_providers.yaml ...
+ERROR tests\test_swr_backup.py - FileNotFoundError: config/llm_providers.yaml...
+ERROR tests\test_swr_profiles.py - FileNotFoundError: config/llm_providers.ya...
+ERROR tests\test_quick_scan_backup.py - FileNotFoundError: config/llm_provide...
+ERROR tests\test_quick_scan_profiles.py - FileNotFoundError: config/llm_provi...
+ERROR tests\test_ui_quick_scan.py - FileNotFoundError: config/llm_providers.y...
+!!!!!!!!!!!!!!!!!!! Interrupted: 6 errors during collection !!!!!!!!!!!!!!!!!!!
+6 errors in 2.10s

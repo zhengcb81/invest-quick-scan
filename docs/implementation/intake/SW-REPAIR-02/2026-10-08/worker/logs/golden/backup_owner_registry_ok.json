@@ -1,0 +1,20 @@
+{
+  "generation_command": "python -B -X utf8 docs/handoff/SW-REPAIR-02/build_goldens.py --repo <StockWiki> --out <out>",
+  "golden_class": "synthetic_backup_owner_fixture",
+  "registry": {
+    "evidence_note": "owner_registry is a versioned provenance record written only by the create flow inside the existing backup area; it binds a directory name to the digest of the manifest that flow published. It is NOT a signature and does NOT claim to stop a same-privilege local process that can write the backup root from forging both the directory and the record.",
+    "format_version": "1.0.0",
+    "records": [
+      {
+        "created_at_utc": "2026-10-08T05:58:39Z",
+        "manifest_sha256": "cacbcd0b36bd330d27ba7fd6199f67c0405236d81656ac169a0b95d841cb97b8",
+        "name": "golden_backup",
+        "owner_module": "stockwiki.quick_scan_backup",
+        "record_version": "stockwiki.quick_scan_backup_owner_record/1.0.0",
+        "recorded_at_utc": "2026-10-08T05:58:39Z",
+        "workspace_root": "C:\\Users\\郑曾波\\AppData\\Local\\Temp\\swr02-golden-sz_hhsu_\\ws"
+      }
+    ],
+    "schema": "stockwiki.quick_scan_backup_owner_registry/1.0.0"
+  }
+}

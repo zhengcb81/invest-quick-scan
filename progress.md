@@ -2143,3 +2143,15 @@
 ## 2026-10-08 — EVID-LAB-01整改已交harness
 - 用户明确“我把整改施工卡让harness做了”，记录为owner_remediation_in_progress；原changes_requested和六组整改/9反例保持不变。Lab源仓继续由该harness独占，总控等新commit/handoff后做受影响回验及一次集中复审，不给小修改增加独立审查节点。
 - 本次只同步IQS计划/进度/接手说明；未读取或改写Lab动态源、未派发消息、未运行测试或收费请求，不改变其他施工线和TH/IN/G3/F05/L03的前置状态。
+
+## 2026-10-08 — Phase98接收SW-REPAIR-02
+- 用户通知本包完成。结果commit9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f；总控只读Git核当前master6d1dddbc1289a17a2fb91d40a0d4f57494fa1bfd/clean，结果后卡内源码/测试无diff，仅交接和其他narrative线变更。本轮StockWiki仍只读，IQS负责证据/PWF/隔离复验。
+- 交接自述74受影响、11浏览器、原7反例GREEN，精确结果full1032/18skip与合入后1046/18skip两份分开；不凭自述签收。真实身份/事实golden missing、跨owner恢复及真实QA流水线not_run；原pytest共享TEMP三根cleaned=false显式披露，不能宣称整体环境恢复。
+- CodeGraph索引未返回quick_scan新文件，按卡内已知路径读取。独立agent只读Git提升被自动审查限制拒绝，总控已独立成功取得只读Git范围证据，改为读取已确认与结果相同的精确路径；不让agent绕过或修改外仓。
+
+- Phase98验收完成=changes_requested，**不是整包通过**。53/53工件前后raw SHA/size匹配，9源工件Git/工作树差异仅EOL；准确代码快照296文件测试后不变。原74+最初冻结7=81 passed/19.48s；11真实浏览器passed/79.64s，实际143 loopback请求/11端口/0下载。worker1032/1046全套只接收历史日志，没有重复跑全套。
+- 新增12逻辑case全失败：分部、结束期FY2025/2026H1、同2026H1 current/normalized 2/9被混为9，详情和>=8查询误放；两个真实junction根/父接受create；registry version999/foreign owner/workspace仍删除；四种合法JSON坏形状中断list/prune。初10 fail/2.16s、junction最终2 fail/0.84s；期间/basis结束期定向2 fail/1.13s替代初始同两例，非14不同case。仅动态证junction create，未伪称prune越界已发生。
+- 公开handoff原exit2 changed_path_out_of_scope，已有test glob仅在诊断副本展开后exit2 temporary_root_not_cleaned；官方交接未改。原worker109/110/111和截图105的完整归属/清理待writer处理，总控不按编号代删。projection profiles hash误绑rows及EOL口径列入交接整改。独审一次收敛四代码根因+一组交接，报告/五组整改卡/intake原日志已落档，不增helper审查节点。
+- 本轮controller适配错误均留档：首次core配置收集失败，补providers=[]惰性无key环境；首次junction dataclass序列化错不算产品RED；Playwright初探中断，最终使用已安装Chromium无下载。清理第一次Target字符串索引安全停于解链前，第二次清单遇另四原测试junction安全拒绝；完整核六个自有节点后逐一非递归解链，目标保持，再清单/lstat/set/SHA/strict CIM0/监听0核769文件555目录。dry-run→Apply回执true，自有根不存在，旧Phase92/共享TEMP/opencode.json保留。
+- StockWiki收尾实际master6d1dddbc1289a17a2fb91d40a0d4f57494fa1bfd/clean，卡内无diff、53原工件匹配，源仓写/生产库读写/付费API均0。下一步由原writer按五组同批修后交新commit/handoff；QA-C06-02未正式交付、EVID整改仍由另harness进行。真实identity/facts golden、联合流水线/双owner恢复missing/not_run，G3/F05/TH/IN/L03保持等待。PWF/接手已更新，精确IQS提交推送待实际Git回执。
+- Git交付预检：86索引工件加index的staged bytes逐一匹配。diff检查发现4份原RED traceback日志保留的行尾空白，给这4个精确日志路径加whitespace属性豁免，原字节不清洗；源码/文档和其他日志仍正常检查。精确暂存92个IQS文件，排除opencode.json、runs与所有外仓。

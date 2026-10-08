@@ -1627,3 +1627,9 @@ Phase97真实查收：Lab codex/evid-lab-01@d87cf718a0fa90f2d0929e902ad2faa70c39
 Phase97 hash口径：worker artifacts82/82匹配当前工作树原字节，公开handoff CLI shape valid。按HEAD git archive导出83跟踪文件，37工件与声明hash不同，全部仅CRLF/LF差异，非内容篡改；交接需明确工作树/commit字节和可复制办法，不能把工作树hash称Git原字节。集中agent已经复现期间字典丢quarter/half、缺year误pass、URL缺窗口pass/同报告比较列误fail，以及proposal answered-only分母/冻结题组query价格不足。工具回归与公开路径还在自有隔离副本验证，未代改Lab。
 
 Phase97终态：工具的历史重算/fixture来源分层可确认，语义和提案不可签全包。9固定补充case=8失败/1通过：Q1/Q4及H1/H2混同、缺year及源window误pass、比较列误fail、重复类别JSON静默接受、历史答案篡改没检出、IO失败留exclusive半成品。proposal主分母必须包含300计划槽而非answered-only；否则失败包能抬高看似准确率。原53方法与子进程1方法总54个唯一passed不证明这些新行为；最小副本原件不变、全部103临时文件已清，未知支持仍abstain而不造gold。
+
+Phase98接收边界：SW-REPAIR-02结果9f9e0af，当前6d1dddb的卡内源码/测试未变，其他narrative提交不属于本包。worker公开query golden是synthetic/评分阶段，F05与真实身份golden明确missing。共享TEMP三pytest根保留是如实披露但不满足独占根全部清理承诺；总控本轮只创建IQS独占导出/测试根，不清理原共享TEMP或复制生产库。
+
+Phase98终态：原81受影响/冻结case与11真实浏览器GREEN并不证明比较维度完整；三个实际accepted=2的分部/结束期间/current-normalized输入只剩9分且>=8命中。SQL/字段投影/variant key必须端到端保留分部、期间、basis，默认不可比应ambiguous/null而非选最新或平均；subject/model/rubric已有隔离勿笼统误报。根/父junctioncreate实际越逻辑workspace但仍在IQS自有根，仅证create，不能谎称动态证明prune越界删除。registry unknown-version/foreign-owner/workspace三项授予删旧备份；JSON合法不等于形状合法，[]/null/0/files=null中断保留链。
+
+最终12逻辑反例全RED（初10/2.16s，junction2/0.84s，结束期aligned2/1.13s替代初始同两例，不叠加14）。原首次缺provider配置、dataclass序列化、Playwright探测/清理PowerShell适配均如实留档，controller error不能当产品failure。公开handoff按字面prefix不支持test glob，具体路径修正仅诊断副本，后续TEMP未清仍exit2；worker105截图与109–111库存需owner查清，不按编号代删。profiles接口hash错绑rows.py、9 EOL差异需交接明确。53工件和296Git源前后原字节校验一致，总控769文件经严格归属/无进程无监听/无link/单硬链清理完成，六个自有junction先解节点再清文件；源仓HEAD6d clean未写。本包仍changes_requested，五组同批整改一次集中回验，G3/F05/TH/IN/L03不解锁。

@@ -1,0 +1,225 @@
+{"mode": "browser", "canaries": "passed", "keys_provided": 0, "source_commit": "9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f"}
+[e2e] seeded workspace in 21.8s: C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\pytest-browser\qs-e2e-ws0
+[e2e] 2000-entity condition+pagination round took 4.9s
+[e2e] screenshot: C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\pytest-browser\test_list_conditions_views_and0\e2e-01-list-2000.png
+.[e2e] loopback HTTP only: 18 requests to ['127.0.0.1:51836']
+[e2e] screenshot: C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\pytest-browser\test_ticker_search_dedups_and_0\e2e-02-detail.png
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 63871)
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 240, in do_POST
+    self._send_json(build_quick_scan_search(paths, body))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 263, in _send_json
+    self.wfile.write(raw)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 436, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 424, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 244, in do_POST
+    self._send_json({"error": str(exc)}, status=400)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 262, in _send_json
+    self.end_headers()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 538, in end_headers
+    self.flush_headers()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 542, in flush_headers
+    self.wfile.write(b"".join(self._headers_buffer))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+----------------------------------------
+.[e2e] loopback HTTP only: 10 requests to ['127.0.0.1:62466']
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 49918)
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 240, in do_POST
+    self._send_json(build_quick_scan_search(paths, body))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 263, in _send_json
+    self.wfile.write(raw)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 436, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 424, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 244, in do_POST
+    self._send_json({"error": str(exc)}, status=400)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 262, in _send_json
+    self.end_headers()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 538, in end_headers
+    self.flush_headers()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 542, in flush_headers
+    self.wfile.write(b"".join(self._headers_buffer))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+----------------------------------------
+.[e2e] loopback HTTP only: 12 requests to ['127.0.0.1:63872']
+[e2e] screenshot: C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\pytest-browser\test_narrow_viewport_keyboard_0\e2e-03-narrow.png
+.[e2e] loopback HTTP only: 18 requests to ['127.0.0.1:63886']
+.[e2e] loopback HTTP only: 13 requests to ['127.0.0.1:62194']
+[e2e] screenshot: C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\pytest-browser\test_browser_two_conditions_ad0\e2e-05-multi-condition.png
+.[e2e] loopback HTTP only: 12 requests to ['127.0.0.1:65188']
+.[e2e] loopback HTTP only: 9 requests to ['127.0.0.1:54093']
+[e2e] screenshot: C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\pytest-browser\test_browser_multi_condition_c0\e2e-06-multi-condition-context.png
+.[e2e] loopback HTTP only: 18 requests to ['127.0.0.1:54708']
+.[e2e] loopback HTTP only: 10 requests to ['127.0.0.1:60065']
+[e2e] screenshot: C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\pytest-browser\test_browser_shows_both_import0\e2e-07-variants.png
+.[e2e] loopback HTTP only: 9 requests to ['127.0.0.1:58926']
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 60820)
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 240, in do_POST
+    self._send_json(build_quick_scan_search(paths, body))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 263, in _send_json
+    self.wfile.write(raw)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 436, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 424, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 244, in do_POST
+    self._send_json({"error": str(exc)}, status=400)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 262, in _send_json
+    self.end_headers()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 538, in end_headers
+    self.flush_headers()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 542, in flush_headers
+    self.wfile.write(b"".join(self._headers_buffer))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53151)
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 151, in do_GET
+    self._send_json(
+    ~~~~~~~~~~~~~~~^
+        build_quick_scan_coverage(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        )
+        ^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 263, in _send_json
+    self.wfile.write(raw)
+    ~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 436, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 424, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 164, in do_GET
+    self._send_json({"error": str(exc)}, status=400)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-repair-2026-10-08-01\runtime\stockwiki\ui.py", line 262, in _send_json
+    self.end_headers()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 538, in end_headers
+    self.flush_headers()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\http\server.py", line 542, in flush_headers
+    self.wfile.write(b"".join(self._headers_buffer))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] 你的主机中的软件中止了一个已建立的连接。
+----------------------------------------
+.[e2e] loopback HTTP only: 14 requests to ['127.0.0.1:65348']
+
+11 passed in 79.64s (0:01:19)

@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步**：用户已于2026-10-08将[EVID-LAB-01六组整改卡](docs/implementation/reviews/EVID-LAB-01/remediation-2026-10-08.md)交给harness实施，等待该Lab writer的新commit/handoff后一次集中回验。Lab整改中，原整包验收结论仍changes_requested；其他两外包仍等真实交付，不代改源仓。Phase96已完成有界准确性实验及[实操手册](references/accuracy-first-operations.md)，收费停止；原逐题/用户顺位不自动改。TH/IN/G3/F05/L03仍暂缓，不刷新退役回执，不重跑已结束的收费矩阵。
+**单一下一步（2026-10-08）**：Phase98已集中查收SW-REPAIR-02，原81回归/11真实浏览器通过，但12新边界失败及handoff/隔离缺口，裁决changes_requested。原StockWiki writer按[五组整改卡](docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08.md)修后交新commit/handoff，总控不代改源仓。EVID-LAB-01六组整改已交harness，仍等新commit/handoff；QA-C06-02仍等正式交付，各源仓继续归各harness独占。下一次有新交付时只做受影响回验和一次集中大节点审查，不为helper立门。Phase96已收口且收费停止；TH/IN/G3/F05/L03仍暂缓，不刷新退役回执，不重跑已结束的收费矩阵。
 
 **当前执行（Phase95）**：IQS上游40精确文件已正式提交并推送`a23bec03ec459fa036a8800acc1f43b1662b22b8`；11真实子进程CLI、35回归/24子测试及集中独审通过，本轮两根28文件已清。用户已确认三个外包开工，总控只写IQS；下一动作收实际交付，不接管源仓。整Phase92/G3/F05开放，波次2初始workers_dispatched=false为历史快照。
 
@@ -1405,3 +1405,13 @@ Status: acceptance_complete_changes_requested; owner_remediation_in_progress; co
 - 验收完成，不是实施验收通过：shape valid/82工件当前raw匹配/真实三归档replay与34fixture通过，54唯一worker方法经过53+1两次通过；9总控反例8失败1通过，六组整改保留。103自有临时文件严格清理Apply完成，LabHEAD/clean不变，原128独立IQS输入SHA不变，收费0。全项目门不关闭，原Lab writer修正后再签整包。
 - 实际Git交付：67精确文件提交`742dbb78a39ca9a1cb6f324dea4c992d28cc638c`，61已索引证据/helper与staged blob size/SHA逐字节匹配；origin/master正常83ec14a→742dbb7推送成功。仅既有opencode.json未跟踪保留；后续只补本交付回执，不改被审工件。
 - 2026-10-08用户确认已将整改卡交给harness实施；Lab唯一写入权继续归该harness，总控只读等待新交接。此确认仅证明整改已分派，不证明六组已修复或任何门已关闭。
+
+## Phase98：SW-REPAIR-02集中验收
+Status: review_completed_changes_requested; source_repository_read_only; owner_remediation_pending; no_gate_closed
+- [x] 读取本包交接及实际Git基线/结果/后续变动；限定卡内源码，不混入后续narrative提交。
+- [x] 核工件原字节、公开handoff范围、六组整改行为与真实浏览器/旧snapshot证据。53/53工件前后匹配，9源码/测试/doc与Git仅EOL不同；公开handoff exit2 scope，诊断展开原glob后exit2未清临时根。
+- [x] 按准确提交重建独占隔离副本，受影响测试及原七反例集中复验；81 passed/19.48s、11真实浏览器passed/79.64s，总控143 loopback请求/11临时端口。296导出源文件前后SHA不变，生产库/凭据/外仓写/收费0；worker1032/1046全套仅接收日志，不再次重跑。
+- [x] 一次集中独审和固定补充反例：12逻辑case全部失败，分部/期间/basis混成9分误入>=8、根/父junction接受create、registry归属/版本授予删除、合法JSON坏形状中断。最终期间/basis两例已用结束期对齐重验，controller适配错误留档不算产品RED。
+- [x] [验收报告](docs/implementation/reviews/SW-REPAIR-02/acceptance-2026-10-08.md)/[五组整改卡](docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08.md)/独审/原日志留档，保持changes_requested。自有根六个已知junction先非递归解链，769临时文件strict CIM/端口/lstat/set/SHA dry-run→Apply已清，旧Phase92/共享TEMP/opencode.json保留。更新PWF/接手说明，IQS精确提交推送见progress实际Git回执。
+- F05/真实身份与事实golden、QA↔SW实际流水线/双owner恢复未交付，不据本包测试或handoff格式宣布G3/F05/TH/IN解锁。
+- [ ] 原StockWiki唯一writer接续五组整改，交回真实新commit/handoff/清理证据后再对受影响范围集中验收；本轮不自动接管或重复实施原六项。

@@ -1,0 +1,219 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "stockwiki",
+  "package_id": "SW-REPAIR-02",
+  "status": "complete",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/StockWiki",
+    "base_ref": "master",
+    "base_commit": "04dfc5190589a8bbe224a47e94b045779c884b80",
+    "result_ref": "master",
+    "result_commit": "9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f",
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope": {
+    "task_ids": ["W12", "U01", "U02"],
+    "authorization_scope_ref": "user dispatch message for SW-REPAIR-02: sole writer granted the exact source/test/doc paths listed in authorized_paths; the extra persistent file backups/quick_scan/owner_registry.json and the new tests/test_swr_*.py + docs/handoff/SW-REPAIR-02/** were separately confirmed with the user during execution",
+    "owned_paths": ["C:/Users/郑曾波/Projects/StockWiki"],
+    "authorized_paths": [
+      "stockwiki/quick_scan_backup.py",
+      "stockwiki/quick_scan_backup_manifest.py",
+      "stockwiki/quick_scan_profiles.py",
+      "stockwiki/quick_scan_query.py",
+      "stockwiki/quick_scan_rows.py",
+      "stockwiki/ui_quick_scan.py",
+      "stockwiki/ui_static/app.js",
+      "stockwiki/ui_static/index.html",
+      "stockwiki/ui_static/styles.css",
+      "tests/test_quick_scan_backup.py",
+      "tests/test_quick_scan_profiles.py",
+      "tests/test_quick_scan_query.py",
+      "tests/test_ui_quick_scan.py",
+      "tests/test_e2e_quick_scan_ui.py",
+      "tests/test_swr_*.py",
+      "docs/quick-scan-backup-restore.md",
+      "docs/ui.md",
+      "docs/handoff/SW-REPAIR-02/",
+      "backups/quick_scan/owner_registry.json (runtime data file, individually confirmed with the user)"
+    ],
+    "changed_paths": [
+      "docs/quick-scan-backup-restore.md",
+      "docs/ui.md",
+      "stockwiki/quick_scan_backup.py",
+      "stockwiki/quick_scan_backup_manifest.py",
+      "stockwiki/quick_scan_profiles.py",
+      "stockwiki/quick_scan_query.py",
+      "stockwiki/quick_scan_rows.py",
+      "stockwiki/ui_static/app.js",
+      "stockwiki/ui_static/index.html",
+      "stockwiki/ui_static/styles.css",
+      "tests/test_e2e_quick_scan_ui.py",
+      "tests/test_swr_backup.py",
+      "tests/test_swr_cases.py",
+      "tests/test_swr_profiles.py",
+      "tests/test_swr_query.py",
+      "docs/handoff/SW-REPAIR-02/"
+    ],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [
+    {
+      "name": "stockwiki.quick_scan_backup_manifest/1.0.0",
+      "version": "1.0.0",
+      "content_hash": "6be07efa5009aa88e2ad7540b666d7a64c369e82dbecf95726a2e13bec1fef41",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "stockwiki.quick_scan_backup_owner_registry/1.0.0",
+      "version": "1.0.0",
+      "content_hash": "6be07efa5009aa88e2ad7540b666d7a64c369e82dbecf95726a2e13bec1fef41",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "quick_scan_query_snapshot/1.0.0",
+      "version": "quick_scan_query_snapshot/1.0.0",
+      "content_hash": "72332d88d4d48fe8e45c2415cdabd3838849cd4e803e1f72c3cbf376bf9def09",
+      "direction": "both",
+      "result": "changed"
+    },
+    {
+      "name": "stockwiki_w09_read_primitives",
+      "version": "quick_scan_query/1.0.0",
+      "content_hash": "72332d88d4d48fe8e45c2415cdabd3838849cd4e803e1f72c3cbf376bf9def09",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "legacy_query_producer_9f552a67",
+      "version": "quick_scan_query/1.0.0",
+      "content_hash": "271b1ba2434123180d27a64437e3f14487d390ffb5c6276471e5302a06c0639a",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "quick_scan_variant_projection",
+      "version": "quick_scan_profiles/1.0.0",
+      "content_hash": "ce206537d8c18db89fce0901345f51e7539fd3c2ec3e44b57b401d92241ec520",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "quickscan_search_http_payload",
+      "version": "ui_quick_scan/1.0.0",
+      "content_hash": "6f36f37c0cf505629e81a66f05d3cc3270a10c34aaccea6bc52cfb78deaa3aa2",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "sw_ready01_frozen_acceptance_cases",
+      "version": "acceptance_cases/1.0.0",
+      "content_hash": "72b2e1250947a705f87426557ccdf8b09121d761ba09ae89da3df152db81d452",
+      "direction": "consumed",
+      "result": "compatible"
+    }
+  ],
+  "verification": {
+    "checks": [
+      {
+        "name": "static_gate",
+        "command": "python -B scripts/checks.py --static-only",
+        "scope": "ruff over stockwiki/tests/scripts + validate-framework --static",
+        "result": "passed",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "affected_batch",
+        "command": "python -B -X utf8 -m pytest tests/test_swr_cases.py tests/test_swr_backup.py tests/test_swr_profiles.py tests/test_swr_query.py tests/test_quick_scan_backup.py tests/test_quick_scan_profiles.py tests/test_quick_scan_query.py tests/test_ui_quick_scan.py -q",
+        "scope": "unit/integration touched by this package",
+        "result": "passed",
+        "passed": 74,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "browser_e2e",
+        "command": "python -B -X utf8 -m pytest tests/test_e2e_quick_scan_ui.py -q -s",
+        "scope": "real Playwright chromium against the real StockWiki UI, loopback HTTP only",
+        "result": "passed",
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "frozen_acceptance_post_fix",
+        "command": "python -B -X utf8 docs/handoff/SW-REPAIR-02/run_frozen_acceptance.py --work-root <StockWiki>/runs/swr02-acceptance-<unique>",
+        "scope": "the ORIGINAL frozen SW-READY-01 acceptance_cases.py (sha256 72b2e125...) executed against this package's tree under an audit-hook guard",
+        "result": "passed",
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "full_gate_at_result_commit",
+        "command": "python -B scripts/checks.py --full",
+        "scope": "complete in-repo offline suite wrapped by coverage, run while HEAD == 9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f",
+        "result": "passed",
+        "passed": 1032,
+        "failed": 0,
+        "skipped": 18
+      },
+      {
+        "name": "full_gate_after_parallel_merge",
+        "command": "python -B scripts/checks.py --full",
+        "scope": "same full gate re-run on the merged tree after unrelated parallel narrative commits landed on master (log: logs/check_full.log)",
+        "result": "passed",
+        "passed": 1046,
+        "failed": 0,
+        "skipped": 18
+      }
+    ],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": [
+      {
+        "path_or_id": "C:/Users/郑曾波/Projects/StockWiki/runs/swr02-acceptance-20261007",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": "C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": "%TEMP%/pytest-of-郑曾波/pytest-{109,110,111}",
+        "created": true,
+        "cleaned": false
+      }
+    ]
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "complete only means THIS package's local delivery: the six SWR-1..6 counterexamples are closed and the frozen acceptance file goes 7/7 green against the fixed tree.",
+    "TTL/replacement policy, W15 replacement mapping, real QA C06 -> W05 import/ACK -> UI chain, double-store restore, and F05/golden remain not_run; see case-map.md.",
+    "Real StockWiki identity/owner golden is still missing and is reported as missing, never synthesised to look verified.",
+    "G3/F05 are not closed by this package and the coordinator still owns the joint QA/SW offline E2E.",
+    "review.status=not_run: no independent reviewer was dispatched for this package; the coordinator's concentrated review is still pending.",
+    "No push to any remote was performed; result_commit 9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f exists only on local master.",
+    "master moved during this package: an unrelated parallel worker fast-forwarded 42fba06878fc58c01f58c0206f4d694a68e4d451 (narrative files, zero overlap with this package's paths) between the code commit and the handoff commit 753dfcabd32b03887a3f340d4e5727f04549a94c, and further narrative commits followed. The full gate was therefore run twice: once at result_commit (1032 passed, logs/check_full_at_9f9e0af.log) and once on the merged tree (1046 passed, logs/check_full.log)."
+  ],
+  "next_action": "Coordinator: run the concentrated QA/SW joint offline E2E against commit 9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f, then dispatch an independent reviewer over docs/handoff/SW-REPAIR-02/."
+}

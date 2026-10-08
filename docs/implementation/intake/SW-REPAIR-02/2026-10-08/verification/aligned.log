@@ -1,0 +1,25 @@
+{"mode": "aligned", "canaries": "passed", "keys_provided": 0, "source_commit": "9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f"}
+FF
+================================== FAILURES ===================================
+_ test_public_import_never_blends_incomparable_segments_periods_or_basis[period] _
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:87: in test_public_import_never_blends_incomparable_segments_periods_or_basis
+    assert {field["score"] for field in fields} == {2, 9}, "incomparable accepted values disappeared"
+E   AssertionError: incomparable accepted values disappeared
+E   assert {9} == {2, 9}
+E     
+E     Extra items in the right set:
+E     2
+E     Use -v to get more diff
+_ test_public_import_never_blends_incomparable_segments_periods_or_basis[basis] _
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:87: in test_public_import_never_blends_incomparable_segments_periods_or_basis
+    assert {field["score"] for field in fields} == {2, 9}, "incomparable accepted values disappeared"
+E   AssertionError: incomparable accepted values disappeared
+E   assert {9} == {2, 9}
+E     
+E     Extra items in the right set:
+E     2
+E     Use -v to get more diff
+=========================== short test summary info ===========================
+FAILED ..::test_public_import_never_blends_incomparable_segments_periods_or_basis[period]
+FAILED ..::test_public_import_never_blends_incomparable_segments_periods_or_basis[basis]
+2 failed in 1.13s

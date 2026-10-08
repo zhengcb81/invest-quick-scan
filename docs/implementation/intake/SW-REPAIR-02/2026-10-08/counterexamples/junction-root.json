@@ -1,0 +1,68 @@
+{
+  "kind": "root",
+  "receipt": {
+    "backup_dir": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-repair-2026-10-08-01\\junction-fixtures\\root\\workspace\\backups\\quick_scan\\must_reject_junction_final",
+    "manifest_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-repair-2026-10-08-01\\junction-fixtures\\root\\workspace\\backups\\quick_scan\\must_reject_junction_final\\quick_scan_backup_manifest.json",
+    "manifest": {
+      "format_version": "1.0.0",
+      "schema": "stockwiki.quick_scan_backup_manifest/1.0.0",
+      "name": "must_reject_junction_final",
+      "created_at_utc": "2026-10-08T06:52:32Z",
+      "workspace_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-repair-2026-10-08-01\\junction-fixtures\\root\\workspace",
+      "quick_scan_dir": "data/quick_scan",
+      "files": [
+        {
+          "path": "marker.txt",
+          "workspace_path": "data/quick_scan/marker.txt",
+          "bytes": 13,
+          "sha256": "1c9bfa0492e48f0fcd317bd4532710cf611d39ebab2f6213567c0f1ae0fb3a41",
+          "backup_method": "byte_copy"
+        }
+      ],
+      "counts": {},
+      "watermarks": {},
+      "versions": {
+        "rules": {
+          "quick_scan_rules": "quick_scan_rules/1.0.0",
+          "quick_scan_recovery": "quick_scan_recovery/1.0.0",
+          "recovery_policy_version": "recovery-watch-1",
+          "quick_scan_freshness": "quick_scan_freshness/1.0.0",
+          "quick_scan_query": "quick_scan_query/1.0.0",
+          "quick_scan_delivery": "quick_scan_delivery/1.0.0"
+        },
+        "roster": {},
+        "observations": {},
+        "ack": {},
+        "subjects": {}
+      },
+      "store_identity": [],
+      "consistency": {
+        "method": "sqlite3_online_backup_per_file",
+        "cross_file_atomic": false,
+        "raw_live_copy": false,
+        "note": "Each store file is an independent consistent snapshot; the six stores are not captured in one transaction. Reconcile watermarks across owners instead of assuming cross-process atomicity."
+      },
+      "restore_preconditions": [
+        "target data/quick_scan must not exist or must be empty before restore",
+        "restore covers StockWiki-owned quick-scan stores only (data/quick_scan)",
+        "no cross-file atomicity: reconcile ACK / observation / member watermarks between owners before resuming any dispatch against the restored store",
+        "stop new dispatches or complete in-flight reconciliation before swapping stores",
+        "executor (StockQA) database, fee ledger and paid dispatch state are NOT in this backup: 执行侧未核验、禁止恢复收费",
+        "store_id is path-derived: ACKs written after a cross-root restore carry the new path-derived store_id while historical ACK rows keep the original value",
+        "verify_backup must pass before restore (enforced automatically)"
+      ],
+      "executor_side": {
+        "provided": false,
+        "status": "unverified",
+        "owned_by": "StockQA",
+        "fee_ledger_included": false,
+        "paid_dispatch_included": false,
+        "fee_restoration": "prohibited",
+        "paid_dispatch_restored": false,
+        "message": "执行侧未核验、禁止恢复收费"
+      },
+      "manifest_sha256": "5d1f49bbeac9fd25a2fcd6a217bd52cbdcd7ce3eb7bb493af5f7c114521207e5"
+    }
+  },
+  "error": null
+}

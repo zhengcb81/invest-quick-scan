@@ -1,0 +1,17 @@
+{"mode": "extra", "canaries": "passed", "keys_provided": 0, "source_commit": "9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f"}
+FF
+================================== FAILURES ===================================
+___ test_backup_root_and_parent_junction_never_write_beyond_workspace[root] ___
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:105: in test_backup_root_and_parent_junction_never_write_beyond_workspace
+    assert receipt is None and error, "a workspace backup ancestor junction granted external write access"
+E   AssertionError: a workspace backup ancestor junction granted external write access
+E   assert (BackupResult(backup_dir=WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-repair-2026-10-08-01/junction-fix...e, 'message': '执行侧未核验、禁止恢复收费'}, 'manifest_sha256': '5d1f49bbeac9fd25a2fcd6a217bd52cbdcd7ce3eb7bb493af5f7c114521207e5'}) is None)
+__ test_backup_root_and_parent_junction_never_write_beyond_workspace[parent] __
+..\..\..\docs\implementation\reviews\SW-REPAIR-02\acceptance_cases.py:105: in test_backup_root_and_parent_junction_never_write_beyond_workspace
+    assert receipt is None and error, "a workspace backup ancestor junction granted external write access"
+E   AssertionError: a workspace backup ancestor junction granted external write access
+E   assert (BackupResult(backup_dir=WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/sw-repair-2026-10-08-01/junction-fix...e, 'message': '执行侧未核验、禁止恢复收费'}, 'manifest_sha256': '0d8d1ef2d868941eeab2706408bb3d74018edc8b99451c832c578cb2a31305f4'}) is None)
+=========================== short test summary info ===========================
+FAILED ..::test_backup_root_and_parent_junction_never_write_beyond_workspace[root]
+FAILED ..::test_backup_root_and_parent_junction_never_write_beyond_workspace[parent]
+2 failed, 10 deselected in 0.84s

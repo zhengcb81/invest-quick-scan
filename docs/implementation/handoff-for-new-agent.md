@@ -229,3 +229,15 @@ shape/82工件工作树hash、三归档复算和34fixtures通过，已有54唯�
 总控103临时文件已Apply清除，128独立冻结输入SHA不变，Lab未写。worker工具不能拿54测试通过替代新增反例GREEN；原case/log/HEAD留档，收到新commit后只做受影响回验+一次集中复审。请勿为了清树动opencode.json或旧Phase92根，也不要自动跑Lab60/24草案或重新发Phase96矩阵。当前选定PWF仍root，Git实际交付看progress最新记录。
 
 用户随后明确已将整改卡交给harness实施，当前为owner_remediation_in_progress。该harness继续独占Lab写入，总控只读接收；不因分派确认认定修复完成或重复派发。新commit/handoff未交回前保留原changes_requested，其他QA/SW线独立推进。
+
+### 2026-10-08最新：Phase98 SW-REPAIR-02已查收，整包待五组整改
+
+本节覆盖上方“SW六项待实施/本包待查收”的旧口径。StockWiki master基线04dfc519、代码结果9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f，交接753dfcab，收到及收尾HEAD6d1dddbc1289a17a2fb91d40a0d4f57494fa1bfd/实际clean，卡内结果后无diff。总控只读查收完成，**changes_requested，不接管外仓**。唯一writer继续原harness，不根据本节时点clean覆盖它之后的动态改动。
+
+先读[验收报告](reviews/SW-REPAIR-02/acceptance-2026-10-08.md)、[可独立交付的五组整改卡](reviews/SW-REPAIR-02/remediation-2026-10-08.md)与[intake结果/原日志](intake/SW-REPAIR-02/2026-10-08/verification/result.json)。原81回归/11真实浏览器通过，worker1032/1046全套仅收到日志；新12逻辑case全RED，不能用GREEN总数替代。关键为分部/期间/current-normalized 2/9丢2只剩9误入>=8、备份根/父junction写出逻辑workspace、registry归属/版本授予删除、合法JSON坏形状中断。最后两个期间/basis重验使用已结束期，初始未来期留档并被替代；junction仅动态证create，不误报prune越界。
+
+公开handoff scope glob不被支持，诊断展开后仍有未清根；worker共享TEMP109/110/111及截图105需真正归属/清理证据，禁止按编号代删或虚填cleaned=true。profiles接口hash错绑rows，9 Git/工作树差异仅EOL，要注明绑定字节。全部五组一次修、一次受影响回验/集中独审，无helper小门。
+
+本轮总控769文件/555目录已Apply清理，六自有junction先仅解节点，296Git源测试后不变，StockWiki未写/0收费/未读写生产库。旧runs/c06-context-2026-10-07-01、共享TEMP、opencode.json全部保留。固定harness绑定旧result和已删除根，禁止原地重跑覆盖旧intake；回验新commit要新唯一根和新归档。
+
+下一步是接收各唯一writer真实新交付：SW五组整改待续，Lab六组整改已交harness，QA-C06-02尚未正式交回。不要对未交付QA动态工作树跑联合测试。真实identity/facts owner golden、QA→W05/ACK→UI、双owner恢复仍missing/not_run；G3/F05与TH/IN/L03不放行，不重跑历史收费矩阵，不刷退役回执。IQS本批提交/推送真实hash看progress最新Git回执。

@@ -1,0 +1,97 @@
+{
+  "ambiguous": true,
+  "entity_id": "ENT_11111111-1111-4111-8111-111111111111",
+  "field_id": "score.iqs_01",
+  "generation_command": "python -B -X utf8 docs/handoff/SW-REPAIR-02/build_goldens.py --repo <StockWiki> --out <out>",
+  "golden_class": "synthetic_public_import_fixture",
+  "score": null,
+  "status": "ambiguous",
+  "variant_count": 3,
+  "variants": [
+    {
+      "import_sequence": 11,
+      "information_cutoff": "2026-09-30",
+      "listing_id": null,
+      "model_resolved": "fixture-model",
+      "model_revision": "fixture-1",
+      "observation_id": "GOLDEN_OBS_SUBJ_A",
+      "observed_at": "2026-10-01T09:01:00Z",
+      "provider": "fixture_provider",
+      "question_id": "IQS_LEG",
+      "scope": "entity",
+      "score": 2,
+      "security_id": null,
+      "status": "scored",
+      "subject": {
+        "analysis_subject_id": "ASJ_11111111-1111-4111-8111-111111111111",
+        "analysis_subject_revision": 1,
+        "recorded": true
+      },
+      "variant_key": "ASJ_11111111-1111-4111-8111-111111111111|1|entity|∅|∅|IQS_LEG|1.0.0|3.0.0|core-constructs-v1/context-1/fixture|∅|∅|∅|fixture_provider|fixture-model|fixture-1",
+      "versions": {
+        "method_id": "core-constructs-v1/context-1/fixture",
+        "module_package_id": null,
+        "module_release_id": null,
+        "question_version": "1.0.0",
+        "template_version": "3.0.0"
+      }
+    },
+    {
+      "import_sequence": 12,
+      "information_cutoff": "2026-09-30",
+      "listing_id": null,
+      "model_resolved": "fixture-model",
+      "model_revision": "fixture-1",
+      "observation_id": "GOLDEN_OBS_SUBJ_B",
+      "observed_at": "2026-10-01T09:01:00Z",
+      "provider": "fixture_provider",
+      "question_id": "IQS_LEG",
+      "scope": "entity",
+      "score": 9,
+      "security_id": null,
+      "status": "scored",
+      "subject": {
+        "analysis_subject_id": "ASJ_22222222-2222-4222-8222-222222222222",
+        "analysis_subject_revision": 1,
+        "recorded": true
+      },
+      "variant_key": "ASJ_22222222-2222-4222-8222-222222222222|1|entity|∅|∅|IQS_LEG|1.0.0|3.0.0|core-constructs-v1/context-1/fixture|∅|∅|∅|fixture_provider|fixture-model|fixture-1",
+      "versions": {
+        "method_id": "core-constructs-v1/context-1/fixture",
+        "module_package_id": null,
+        "module_release_id": null,
+        "question_version": "1.0.0",
+        "template_version": "3.0.0"
+      }
+    },
+    {
+      "import_sequence": 1,
+      "information_cutoff": "2026-09-30",
+      "listing_id": null,
+      "model_resolved": "fixture-model",
+      "model_revision": "fixture-1",
+      "observation_id": "obs_p_iqs_leg",
+      "observed_at": "2026-10-01T09:01:00Z",
+      "provider": "fixture_provider",
+      "question_id": "IQS_LEG",
+      "scope": "entity",
+      "score": 8,
+      "security_id": null,
+      "status": "scored",
+      "subject": {
+        "analysis_subject_id": null,
+        "analysis_subject_revision": null,
+        "note": "历史未记录（旧观察未绑定 analysis subject，不补造）",
+        "recorded": false
+      },
+      "variant_key": "∅|∅|entity|∅|∅|IQS_LEG|1.0.0|3.0.0|core-constructs-v1/context-1/fixture|∅|∅|∅|fixture_provider|fixture-model|fixture-1",
+      "versions": {
+        "method_id": "core-constructs-v1/context-1/fixture",
+        "module_package_id": null,
+        "module_release_id": null,
+        "question_version": "1.0.0",
+        "template_version": "3.0.0"
+      }
+    }
+  ]
+}
