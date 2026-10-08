@@ -2196,3 +2196,9 @@
 - 后续只在原writer新交付后做受影响单批复验；Lab独立收回，QA/SW共同打通。本文档校验和Git交付结果待实际命令记录，不提前填passed或推送成功。
 - 准备文档校验实际通过：source-state JSON与三仓/未交付/未关门状态一致、11个本地链接存在、J01–J12无缺组；implementation_plan validate仍107卡/366case/G6且product_tests_executed=false，diff检查通过。只验证文档与规格，联合测试未运行；没有新增小节点审查。
 - **Phase101实际Git交付**：6个精确IQS文档沙箱外提交`691988f75cae8882d5ec20672df3b38a56f7b084`，正常推送origin/master（5a34fb8→691988f，exit0）；提交后HEAD/origin/master相同，仅nul/opencode.json未跟踪并保留。源仓及数据库未写、API0、联合测试not_run。后续只提交这条实际交付回执，三整改继续由原harness实施；等新交付再验收。
+
+## 2026-10-08 18:25 UTC — 正式交付前置连续等待
+- 三轮目标接续均仍缺QA/SW/Lab新正式commit/handoff。最新只读HEAD为a12bc29／6d1dddb／380cb49，三旧handoff的result和mtime都未变。QA新增计划改动，SW与Lab动态改动继续；不把这些改动当交付或签收。
+- 上一轮属于verified wait：工具先发现StockWiki相关Python PID102388／start18:22:43.3034750Z，30秒后按同PID轮询已不存在。没有读取原始命令行／密钥，没有控制进程；终态只属于该子进程，不推断外部harness停止或已成功。Codex线程列表没有这些外部harness的可跟进活thread；不凭意图／旧锁文件称仍在工具wait。
+- 联合准备已完成；其余本仓实现卡受G3/F05等前置约束，当前不能安全执行新的产品工作。按目标三轮阻塞规则置blocked，等待外部交付，不是暂停外部施工或完成全项目。任一新交付可先独立验收，QA/SW联合另核两端；不新增审核门、不重跑旧suite、不收费、不写外仓。
+- 本轮只更新等待条件/PWF和接手说明，不生成或刷新退役回执。IQS tracked初始clean，nul/opencode保留；无测试临时环境、数据库或下载清理。实际目标状态与Git交付以工具结果为准。

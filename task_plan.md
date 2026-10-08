@@ -415,6 +415,8 @@ Status: complete_for_planning_only
 
 **单一下一步（2026-10-08 Phase101）**：用户确认三个整改正在运行；总控已准备[联合验收执行说明](docs/implementation/reviews/G3/joint-acceptance-preparation-2026-10-08.md)，尚未运行。接收原QA／SW／Lab writer的新commit/handoff后，对新快照做受影响范围集中验收；QA/SW合并跑真实导入→ACK→恢复→查询，Lab独立回验六残余。三仓当前观察不是新的交付证明；不测试动态工作树、不接管writer。Phase100四代码组＋交接、SW五组、Lab六残余仍changes_requested；TH/IN/G3/F05/L03继续暂缓，不重跑收费、退役回执或小节点审查。
 
+**自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
+
 **当前执行（Phase95）**：IQS上游40精确文件已正式提交并推送`a23bec03ec459fa036a8800acc1f43b1662b22b8`；11真实子进程CLI、35回归/24子测试及集中独审通过，本轮两根28文件已清。用户已确认三个外包开工，总控只写IQS；下一动作收实际交付，不接管源仓。整Phase92/G3/F05开放，波次2初始workers_dispatched=false为历史快照。
 
 **搜索来源补充（2026-10-07）**：用户新增Z.ai Web Search已纳入[参考清单](examples/search-provider-inventory.json)，实际规则与接入状态见[搜索策略](references/search-policy.md)。随后按用户授权以`ZAI_API_KEY`完成REST与Streamable HTTP MCP真实检索探针；legacy SSE未测，StockQA生产外部adapter尚未实现。当前公开CLI仍走模型原生搜索，Brave/Tavily仅实验接通。后续外部adapter归StockQA，在相应集成批次处理，不另造IQS客户端、不改冻结实验、不增加小节点审查门；本次验证不改变上面的L03启动边界。
@@ -1447,3 +1449,4 @@ Status: preparation_complete; joint_execution_not_run; owner_remediation_in_prog
 - [ ] 等新commit／handoff再执行单批受影响联合验收和一次集中审查；G3／F05与消费端继续等待。
 - 本轮只读错误：外仓Git沙箱Permission denied已改用获批只读提升；AGENTS.md、parallel-lanes/iqs.md、SW prepare.py及旧共同规则猜测路径不存在，改用用户提供AGENTS与实际文件列表。初误探Lab目录名非实际iqs-evidence-lab，未写任何路径。本仓新增未跟踪nul保留不分类、不删除；opencode.json不读取。
 - 实际文档交付：6个精确IQS文件沙箱外提交`691988f75cae8882d5ec20672df3b38a56f7b084`并正常推送origin/master（5a34fb8→691988f，exit0）；本地与远端跟踪相同，仅nul/opencode.json未跟踪。11链接／12组／计划结构检查通过，不代表产品测试。后续仅追加本Git回执，不改执行边界或门状态。
+- 18:25 UTC只读复核三个HEAD与正式handoff仍为旧结果，QA计划／SW源码／Lab源码均有动态改动，不测不改。上一轮实际轮询曾存在的StockWiki相关Python PID102388，随后已缺失；只证明该进程结束，不能推断整改终态或成功。当前不再把它当活handle继续wait。正式交付缺口是外部状态阻塞，不是新的用户批准请求。
