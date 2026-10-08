@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08）**：Phase100集中验收QA-C06-02完成，200个唯一受影响方法及真实CLI恢复/旧迁移已确认，但7固定边界RED（四代码组）与交接清理证据待修，保持changes_requested。原QA writer按[同批整改卡](docs/implementation/reviews/QA-C06-02/remediation-2026-10-08.md)修后交新commit/handoff；总控只读，收到新交付再做受影响范围一次集中验收。SW Phase98五组、Lab Phase99六残余也由各原writer修；TH/IN/G3/F05/L03继续暂缓，不重跑收费、退役回执或小节点审查。
+**单一下一步（2026-10-08 Phase101）**：用户确认三个整改正在运行；总控已准备[联合验收执行说明](docs/implementation/reviews/G3/joint-acceptance-preparation-2026-10-08.md)，尚未运行。接收原QA／SW／Lab writer的新commit/handoff后，对新快照做受影响范围集中验收；QA/SW合并跑真实导入→ACK→恢复→查询，Lab独立回验六残余。三仓当前观察不是新的交付证明；不测试动态工作树、不接管writer。Phase100四代码组＋交接、SW五组、Lab六残余仍changes_requested；TH/IN/G3/F05/L03继续暂缓，不重跑收费、退役回执或小节点审查。
 
 **当前执行（Phase95）**：IQS上游40精确文件已正式提交并推送`a23bec03ec459fa036a8800acc1f43b1662b22b8`；11真实子进程CLI、35回归/24子测试及集中独审通过，本轮两根28文件已清。用户已确认三个外包开工，总控只写IQS；下一动作收实际交付，不接管源仓。整Phase92/G3/F05开放，波次2初始workers_dispatched=false为历史快照。
 
@@ -1438,3 +1438,11 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_r
 - [x] [验收](docs/implementation/reviews/QA-C06-02/acceptance-2026-10-08.md)/[同批整改卡](docs/implementation/reviews/QA-C06-02/remediation-2026-10-08.md)/独审/原日志留档；518文件229目录经lstat/CIM/set/SHA dry-run→Apply清除，旧根/sharedTEMP/opencode保留。更新PWF与接手；精确IQS提交推送见progress实际回执。
 - [ ] 原QA唯一writer同批四组+交接整改，返回实际新commit/handoff后再集中复验，源仓不接管。完整StockWiki流水线/owner golden/G3/F05未执行，TH/IN/L03不关闭；worker1037全套只接收日志。
 - 实际IQS交付`b804f1740c182fb82333d28cccd70d11b52b0c67`，88精确文件沙箱外提交并正常推送origin/master；82工件/index staged bytes匹配、diff检查通过。仅原opencode.json未跟踪保留；随后仅PWF实际回执，不改受审证据或源仓。
+
+## Phase101：整改运行中的联合验收准备
+Status: preparation_complete; joint_execution_not_run; owner_remediation_in_progress; no_gate_closed
+- [x] PWF resolver仍legacy root；只读重核三个源仓HEAD／status与旧handoff。QA HEAD不变；SW与Lab有未提交整改。用户确认三整改正在运行，此确认不等于实时进程handle核验或新交付。
+- [x] 写联合输入、真实入口、12组正反例、隔离清理及关闭边界；复用旧反例与字节清单，不新增中央卡／case或小节点review，不运行动态外仓代码。
+- [x] 明确公开ACK API与CLI区别、不能从观察反推release、synthetic与真实owner golden分开、controller超时须保留日志；真实query／恢复能力缺失如实not_run。
+- [ ] 等新commit／handoff再执行单批受影响联合验收和一次集中审查；G3／F05与消费端继续等待。
+- 本轮只读错误：外仓Git沙箱Permission denied已改用获批只读提升；AGENTS.md、parallel-lanes/iqs.md、SW prepare.py及旧共同规则猜测路径不存在，改用用户提供AGENTS与实际文件列表。初误探Lab目录名非实际iqs-evidence-lab，未写任何路径。本仓新增未跟踪nul保留不分类、不删除；opencode.json不读取。

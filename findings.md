@@ -1647,3 +1647,5 @@ Phase100终态：四绑定问题已动态确认，不能仅凭hash自洽/200方�
 公开supersede的compact checkpoint绑定不覆盖full侧表/原started_at，实改claim+start并全层重签可成为新head。需在完整prepare/supersede耐久入口共同绑定，不仅正常seal局部校验；legacy compact历史兼容仍保留。真正v5有旧包/ACK迁移及故障rollback已GREEN，覆盖不足可补证，不应被统称所有迁移坏。
 
 controller缺SQL/过严socket guard是假RED，补SQL后三例GREEN；Windows asyncio纠正重试180秒timeout未确认，不扩大网络许可反复试，不算生产缺陷。200唯一方法通过而非201。真实三进程cold31/warm0/seal0；62合成HTTP stub（正常/错metadata各31）均不实际联网收费。所有133导出源和36工件前后不变，518文件strict manifest无link/CIM dry→Apply清，仅本轮，sharedTEMP与源仓不碰。handoff shared TEMP未清是真规则不满足，不依据名字或mtime删别人的数据。四代码组+一交接同批整改，一次大节点验收即可，StockWiki联合门与人类gold继续开放。
+
+Phase101：用户确认三整改运行中，SW／Lab动态改动与旧HEAD并存，QA旧HEAD／handoff未变；不能用dirty、意图或旧complete字段代替新交付，更不能当已验证的活进程handle。总控联合验收须锁定新的实际commit，不读取动态文件执行。当前核实StockQA只有seal CLI，ACK可用owner API不等于已有ACK CLI；不得发明flag或在同进程混装两仓。StockWiki frozen release需来自独立题义发布，不从待验证Observation反推；合成身份／回答只证明软件接口，真实身份／事实golden缺口仍保留。准备12组一次联合验证不改变中央case清单和门状态。

@@ -2187,3 +2187,11 @@
 - Git预检首次精确add被已有logs忽略规则拒绝（已部分暂存，尚未提交）；后续只对本交接3个原日志精确-force，不改全局忽略。-text保存原CRLF使Git初diff-check误认为CR行尾空白，限定本新intake/review加cr-at-eol，继续检查实际空格；不清洗受审工件原字节。原输出过大，后续捕获Git诊断只汇总路径/类型。
 - 最终仅5个精确原stdout日志存在pytest/CLI自身行尾空格，加同路径whitespace属性保留原字节；其他源/文档继续检查。88精确暂存文件含82索引工件，staged原bytes全部匹配；opencode/runs/外仓排除。
 - **Phase100实际Git交付（2026-10-08）**：`b804f1740c182fb82333d28cccd70d11b52b0c67`，88精确IQS文件，82索引工件与index staged原字节匹配，diff检查通过。沙箱外正常推送origin/master（0d7fa75→b804f17，exit0），本地HEAD/远端跟踪一致；仅原opencode.json未跟踪。StockQA及其他外仓未写/未提交，518本轮临时文件已清。状态仍partial_verified/changes_requested，四代码组+一交接卡交原QA writer；随后仅补本PWF实际回执，无被审工件或门变动。
+
+## 2026-10-08 — Phase101整改运行中／联合验收准备
+- 目标自动接续恢复主线；之前heartbeat仅只读检查，无门状态变化，不能算验证活进程的wait。当前PWF resolver无选择器，仍legacy root；IQS HEAD5a34fb8，tracked diff为空，未跟踪nul/opencode.json均保留，内容不读。
+- 只读外仓Git原沙箱Permission denied；获批只读提升后QA a12bc29／原7项、SW6d1dddb／6修改＋1独占root、Lab380cb49／4修改＋2未跟踪。旧handoff结果均未变，新commit未交回；这是有日期的观察，不推定之后仍相同。用户明确三个整改正在跑；各原harness继续独占，总控不代改、不向其发送消息、不跑其动态测试。
+- 联合执行说明与源状态快照已落IQS：输入锁／EOL复现、真实公开producer/import、ACK owner API、进程重启与丢ACK、旧head、未知收费、双owner恢复／不可比query共12组；仅准备，未执行、不自造GREEN、不关G3/F05。复用原反例，不加中央case、小节点审查或新生产客户端。
+- 只读路径探测错误（AGENTS、旧iqs.md／SW prepare.py／旧共同规则路径及误猜Lab名）已改用实际文件列表和用户AGENTS；没有写外仓。真实API／下载／新测试运行／生产库访问0；本轮没有测试临时根需要清理。
+- 后续只在原writer新交付后做受影响单批复验；Lab独立收回，QA/SW共同打通。本文档校验和Git交付结果待实际命令记录，不提前填passed或推送成功。
+- 准备文档校验实际通过：source-state JSON与三仓/未交付/未关门状态一致、11个本地链接存在、J01–J12无缺组；implementation_plan validate仍107卡/366case/G6且product_tests_executed=false，diff检查通过。只验证文档与规格，联合测试未运行；没有新增小节点审查。

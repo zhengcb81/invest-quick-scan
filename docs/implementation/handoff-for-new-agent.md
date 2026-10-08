@@ -1,5 +1,7 @@
 # 新接手模型工作指南
 
+**2026-10-08 Phase101接续（优先于下方快照）：** 用户确认三个整改正在跑，原QA／SW／Lab harness各自独占外仓。只读观察QA a12bc29不变、SW／Lab出现未提交整改，旧handoff无新结果；不测试动态工作树、不抢写。总控已准备[一次联合验收](reviews/G3/joint-acceptance-preparation-2026-10-08.md)及[有日期的源状态](reviews/G3/joint-source-state-2026-10-08.json)，状态prepared_not_executed。新commit/handoff收到后，QA/SW按12组集中验证公开生成→导入→ACK→恢复→query，Lab六残余独立回验；原RED与关闭门保持不变。IQS新未跟踪nul与原opencode.json保留，不读取、暂存或删除。没有新的进程handle验证，不把用户施工状态当工具wait完成。
+
 **2026-10-08 Phase100最新（优先于下方历史快照）：** QA-C06-02已收到并集中验收，代码7e71b2c/交接a12bc29。200唯一受影响方法、真实进程cold31/warm0/seal0和真实v5迁移/rollback确认；7固定反例RED（四代码组），仍partial_verified/changes_requested。读[验收](reviews/QA-C06-02/acceptance-2026-10-08.md)和[同批整改卡](reviews/QA-C06-02/remediation-2026-10-08.md)。原QA writer修题义发布/run-scan/严格JSON/完整head绑定与交接；总控只读StockQA，不能把既有全仓授权误读成抢占唯一writer。SW Phase98五组、Lab Phase99六残余同样待原writer新交付。不要重复已有能力、收费实验或每小步审查。
 
 本轮133 Git锚定工作树源与36工件不变，5仅EOL；518临时文件已严格清除，原7 QA untracked/旧Phase92/sharedTEMP/opencode保留。注意controller漏SQL/async守卫失败不是产品RED：async纠正批180秒timeout仍未确认，不宣称201全绿，不按原focused.py再盲跑。收到新commit/handoff后只受影响复验与一次集中签收；真实StockWiki import/ACK恢复/UI及owner golden/G3/F05/TH/IN/L03仍未关闭。IQS新验收提交与推送以progress最末实际Git回执为准。
