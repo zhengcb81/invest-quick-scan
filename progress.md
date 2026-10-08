@@ -2217,3 +2217,14 @@
 - 验收/一次独审/单项接续卡/两批controller原回执和改动归档原字节已留档；PWF与接手更新。QA/SW继续原writer施工，收到新交接另验；Lab不阻塞两端联合。新intake/review精确-text/cr-at-eol保存原字节，Git交付以随后实际工具回执为准。
 - Git交付预检：230精确文件暂存，其中224工件及索引自身与staged原字节逐项匹配；39个被忽略的精确证据路径局部-force，不改全局忽略。diff只报收到的RED-remaining-repairs.log三处原traceback尾空白，对该唯一原日志加精确whitespace例外，保留字节；其余检查通过，13本地链接/helper AST/有限状态与已清根检查通过，不复跑产品suite。
 - **Phase102实际Git交付**：230文件沙箱外提交`2db1508ab52a466264ac65ba545f77bd1b066551`，224已索引工件和索引staged原字节全部匹配、diff检查通过；正常推送origin/master（37b3c11→2db1508，exit0）。546自有临时文件已清，外仓/旧根/opencode排除，Lab未写。状态仍partial_verified/changes_requested，仅LR-02B P1待原Lab writer；随后只补本PWF实际回执，不改被审证据或门状态。
+
+## 2026-10-08 — Phase103接收SW第二轮修复
+- 用户通知SW-REPAIR-02完成，当前实际StockWiki master@1831a73／clean，代码c83c148，后续f2d18eb/543d92a/1831a73为交接与清理/hash说明；IQS a62cb8a tracked clean，仅opencode未跟踪不读取。
+- 继续已用PWF，resolver仍legacy root；读取原五组整改卡和源AGENTS，原要求受影响迭代、static-only与大节点full一次，已有旧full日志不机械重复。新handoff自述89affected/269quickscan/7frozen/11browser待核，real owner golden/QA流水线和G3F05仍未交付。
+- 本轮原SW writer保留独占，总控只读；集中独审已交同一既有审查agent，动态验证仅在新固定commit独占副本。源worker明示未做per-fileSHA/硬链清理审计、历史sharedTEMP删除归属无法重构，不能用已消失/cleaned标记抹去历史缺口；不代删共享TEMP。
+- Phase103冻结成功：69工件raw size/SHA及接收HEAD Git bytes/SHA全匹配，36仅EOL；result之后28handoff路径无runtime变化。296 Git源码/测试/legacy导出，原12反例逐字节执行，空provider配置；worker索引note说所有Git blob来自c83c148过宽，16路径当时缺/11不同，实际69都对应接收1831a73，原件不改。
+- 单批公开handoff exit0；core96 passed/22.08s（wall22.768，89当前＋7原SW-READY）；旧12 passed/2.61s（wall3.367）；新增同SR02-4坏UTF8两条list/prune均UnicodeDecodeError，2failed/1.58s（wall2.358）；浏览器11 passed/wall87.115，142 loopback/11端口，无外部请求。原96和12有重复，不称108唯一方法。worker269/full日志接收不复跑，未借合成数据宣称真实owner/gold或QA联合。
+- 一次集中独审完成，唯一代码残余SR02-4B P2：外来manifest 0xff应invalid/skip继续合法retention，实际整体中断；外来及两合法备份未删，不夸为越界删除。已写最小解码链接续卡；同批交接澄清两ref和旧sharedTEMP retention推断，过去SHA/硬链/port缺口只记录真实not_performed，不伪补。多变体暂不支持查询期选择，单变体正例另workspace，保持默认ambiguous。
+- controller错误记录：初创建junction被沙箱拒绝；提升resume遇已知foreign目录存在后改Force，严格核marker/sentinel/无既有link后完成；cleanup首次把Target字符串[0]误当整路径，删节点前安全停止，改显式数组/空清单序列化。三次适配错误不当产品RED，不删外仓或已有陌生目录。stdout/stderr产品原日志、反例终态、两ref核验和3截图已留档；实际查看variants截图有2/9和不可比提示，不替代所有新维度视觉断言。
+- 8个自有真实Windows junction两端精确核归属后仅非递归解节点，目标保留；814文件/654目录strict CIM0、11端口无监听、lstat单硬链/无reparse、精确集合/size/SHA dry-run→Apply清理，dry和Apply分别留回执。run1309、prep78132、Apply17690均exit0；自有根已不存在。296源/130实际IQS输入SHA收尾不变、StockWiki HEAD1831a73/clean、69源工件相符。旧根/sharedTEMP/opencode/全部外仓保留，收费/下载/生产库/本轮外仓写0。
+- 验收/一次独审/单项卡/PWF/接手已更新，状态partial_verified/changes_requested。Lab和QA仍原writer，不夺写、不发消息或自动开新包；真实identity/facts、双owner恢复、QA↔SW/G3F05/THIN/L03未关。本轮精确Git提交推送待实际回执。

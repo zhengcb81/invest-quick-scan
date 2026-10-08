@@ -1,0 +1,547 @@
+.......FFF...............FFFFFFFFF...                                    [100%]
+================================== FAILURES ===================================
+_ test_public_import_never_blends_incomparable_segments_periods_or_basis[segment] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_public_import_never_blend0')
+dimension = 'segment'
+
+    @pytest.mark.parametrize("dimension", ["segment", "period", "basis"])
+    def test_public_import_never_blends_incomparable_segments_periods_or_basis(
+        tmp_path: Path, dimension: str
+    ) -> None:
+        paths = _bare_workspace(tmp_path / dimension)
+        _accepted(paths, _boundary_observations(dimension))
+    
+        fields = _field_rows(paths)
+>       assert {field["score"] for field in fields} == {2, 9}, (
+            "incomparable accepted values disappeared from the detail view"
+        )
+E       AssertionError: incomparable accepted values disappeared from the detail view
+E       assert {9} == {2, 9}
+E         
+E         Extra items in the right set:
+E         2
+E         Use -v to get more diff
+
+tests\test_swr_profiles.py:437: AssertionError
+_ test_public_import_never_blends_incomparable_segments_periods_or_basis[period] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_public_import_never_blend1')
+dimension = 'period'
+
+    @pytest.mark.parametrize("dimension", ["segment", "period", "basis"])
+    def test_public_import_never_blends_incomparable_segments_periods_or_basis(
+        tmp_path: Path, dimension: str
+    ) -> None:
+        paths = _bare_workspace(tmp_path / dimension)
+        _accepted(paths, _boundary_observations(dimension))
+    
+        fields = _field_rows(paths)
+>       assert {field["score"] for field in fields} == {2, 9}, (
+            "incomparable accepted values disappeared from the detail view"
+        )
+E       AssertionError: incomparable accepted values disappeared from the detail view
+E       assert {9} == {2, 9}
+E         
+E         Extra items in the right set:
+E         2
+E         Use -v to get more diff
+
+tests\test_swr_profiles.py:437: AssertionError
+_ test_public_import_never_blends_incomparable_segments_periods_or_basis[basis] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_public_import_never_blend2')
+dimension = 'basis'
+
+    @pytest.mark.parametrize("dimension", ["segment", "period", "basis"])
+    def test_public_import_never_blends_incomparable_segments_periods_or_basis(
+        tmp_path: Path, dimension: str
+    ) -> None:
+        paths = _bare_workspace(tmp_path / dimension)
+        _accepted(paths, _boundary_observations(dimension))
+    
+        fields = _field_rows(paths)
+>       assert {field["score"] for field in fields} == {2, 9}, (
+            "incomparable accepted values disappeared from the detail view"
+        )
+E       AssertionError: incomparable accepted values disappeared from the detail view
+E       assert {9} == {2, 9}
+E         
+E         Extra items in the right set:
+E         2
+E         Use -v to get more diff
+
+tests\test_swr_profiles.py:437: AssertionError
+_ test_foreign_manifest_json_shape_is_reported_and_never_stops_retention[bad_shape0] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_foreign_manifest_json_sha0')
+bad_shape = []
+
+    @pytest.mark.parametrize("bad_shape", [[], None, 0, {"files": None}])
+    def test_foreign_manifest_json_shape_is_reported_and_never_stops_retention(
+        tmp_path: Path, bad_shape
+    ) -> None:
+        """SR02-4: legal JSON is not a manifest. A foreign shape must be reported as
+        invalid/skipped and kept, without an AttributeError/TypeError aborting the
+        listing and without ever granting that directory delete authority."""
+        paths = _two_owned_backups(tmp_path)
+        root = quick_scan_backup_root(paths)
+        foreign = root / "foreign_shape"
+        foreign.mkdir()
+        payload = json.dumps(bad_shape)
+        (foreign / MANIFEST_NAME).write_text(payload, encoding="utf-8")
+    
+>       listed = {item["name"]: item for item in list_quick_scan_backups(paths)}
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_backup.py:455: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/t...s/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_foreign_manifest_json_sha0/workspace/runs/state'))
+
+    def list_quick_scan_backups(paths: WorkspacePaths) -> list[dict[str, Any]]:
+        """Backups under ``backups/quick_scan`` newest-first (foreign/partial flagged).
+    
+        SWR-03: an interrupted create leaves ``.<name>.partial-<id>``; it is reported
+        with ``partial=True``/``complete=False`` so neither a human nor ``prune``
+        can mistake it for a finished backup. This listing is descriptive only —
+        it never claims verification.
+        """
+        root = quick_scan_backup_root(paths)
+        if not root.exists():
+            return []
+        items: list[dict[str, Any]] = []
+        for path in root.iterdir():
+            if not path.is_dir():
+                continue
+            manifest_path = path / MANIFEST_NAME
+            partial = _is_partial_name(path.name)
+            linked = _is_link(path)
+            item: dict[str, Any] = {
+                "name": path.name,
+                "path": str(path),
+                "has_manifest": manifest_path.exists(),
+                "symlink": linked,
+                "partial": partial,
+                "complete": (not partial) and manifest_path.exists() and not linked,
+                "size_bytes": sum(f.stat().st_size for f in path.rglob("*") if f.is_file()),
+            }
+            if manifest_path.exists():
+                try:
+                    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+>                   item["created_at_utc"] = manifest.get("created_at_utc")
+                                             ^^^^^^^^^^^^
+E                   AttributeError: 'list' object has no attribute 'get'
+
+stockwiki\quick_scan_backup.py:538: AttributeError
+_ test_foreign_manifest_json_shape_is_reported_and_never_stops_retention[None] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_foreign_manifest_json_sha1')
+bad_shape = None
+
+    @pytest.mark.parametrize("bad_shape", [[], None, 0, {"files": None}])
+    def test_foreign_manifest_json_shape_is_reported_and_never_stops_retention(
+        tmp_path: Path, bad_shape
+    ) -> None:
+        """SR02-4: legal JSON is not a manifest. A foreign shape must be reported as
+        invalid/skipped and kept, without an AttributeError/TypeError aborting the
+        listing and without ever granting that directory delete authority."""
+        paths = _two_owned_backups(tmp_path)
+        root = quick_scan_backup_root(paths)
+        foreign = root / "foreign_shape"
+        foreign.mkdir()
+        payload = json.dumps(bad_shape)
+        (foreign / MANIFEST_NAME).write_text(payload, encoding="utf-8")
+    
+>       listed = {item["name"]: item for item in list_quick_scan_backups(paths)}
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_backup.py:455: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/t...s/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_foreign_manifest_json_sha1/workspace/runs/state'))
+
+    def list_quick_scan_backups(paths: WorkspacePaths) -> list[dict[str, Any]]:
+        """Backups under ``backups/quick_scan`` newest-first (foreign/partial flagged).
+    
+        SWR-03: an interrupted create leaves ``.<name>.partial-<id>``; it is reported
+        with ``partial=True``/``complete=False`` so neither a human nor ``prune``
+        can mistake it for a finished backup. This listing is descriptive only —
+        it never claims verification.
+        """
+        root = quick_scan_backup_root(paths)
+        if not root.exists():
+            return []
+        items: list[dict[str, Any]] = []
+        for path in root.iterdir():
+            if not path.is_dir():
+                continue
+            manifest_path = path / MANIFEST_NAME
+            partial = _is_partial_name(path.name)
+            linked = _is_link(path)
+            item: dict[str, Any] = {
+                "name": path.name,
+                "path": str(path),
+                "has_manifest": manifest_path.exists(),
+                "symlink": linked,
+                "partial": partial,
+                "complete": (not partial) and manifest_path.exists() and not linked,
+                "size_bytes": sum(f.stat().st_size for f in path.rglob("*") if f.is_file()),
+            }
+            if manifest_path.exists():
+                try:
+                    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+>                   item["created_at_utc"] = manifest.get("created_at_utc")
+                                             ^^^^^^^^^^^^
+E                   AttributeError: 'NoneType' object has no attribute 'get'
+
+stockwiki\quick_scan_backup.py:538: AttributeError
+__ test_foreign_manifest_json_shape_is_reported_and_never_stops_retention[0] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_foreign_manifest_json_sha2')
+bad_shape = 0
+
+    @pytest.mark.parametrize("bad_shape", [[], None, 0, {"files": None}])
+    def test_foreign_manifest_json_shape_is_reported_and_never_stops_retention(
+        tmp_path: Path, bad_shape
+    ) -> None:
+        """SR02-4: legal JSON is not a manifest. A foreign shape must be reported as
+        invalid/skipped and kept, without an AttributeError/TypeError aborting the
+        listing and without ever granting that directory delete authority."""
+        paths = _two_owned_backups(tmp_path)
+        root = quick_scan_backup_root(paths)
+        foreign = root / "foreign_shape"
+        foreign.mkdir()
+        payload = json.dumps(bad_shape)
+        (foreign / MANIFEST_NAME).write_text(payload, encoding="utf-8")
+    
+>       listed = {item["name"]: item for item in list_quick_scan_backups(paths)}
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_backup.py:455: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/t...s/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_foreign_manifest_json_sha2/workspace/runs/state'))
+
+    def list_quick_scan_backups(paths: WorkspacePaths) -> list[dict[str, Any]]:
+        """Backups under ``backups/quick_scan`` newest-first (foreign/partial flagged).
+    
+        SWR-03: an interrupted create leaves ``.<name>.partial-<id>``; it is reported
+        with ``partial=True``/``complete=False`` so neither a human nor ``prune``
+        can mistake it for a finished backup. This listing is descriptive only —
+        it never claims verification.
+        """
+        root = quick_scan_backup_root(paths)
+        if not root.exists():
+            return []
+        items: list[dict[str, Any]] = []
+        for path in root.iterdir():
+            if not path.is_dir():
+                continue
+            manifest_path = path / MANIFEST_NAME
+            partial = _is_partial_name(path.name)
+            linked = _is_link(path)
+            item: dict[str, Any] = {
+                "name": path.name,
+                "path": str(path),
+                "has_manifest": manifest_path.exists(),
+                "symlink": linked,
+                "partial": partial,
+                "complete": (not partial) and manifest_path.exists() and not linked,
+                "size_bytes": sum(f.stat().st_size for f in path.rglob("*") if f.is_file()),
+            }
+            if manifest_path.exists():
+                try:
+                    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+>                   item["created_at_utc"] = manifest.get("created_at_utc")
+                                             ^^^^^^^^^^^^
+E                   AttributeError: 'int' object has no attribute 'get'
+
+stockwiki\quick_scan_backup.py:538: AttributeError
+_ test_foreign_manifest_json_shape_is_reported_and_never_stops_retention[bad_shape3] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_foreign_manifest_json_sha3')
+bad_shape = {'files': None}
+
+    @pytest.mark.parametrize("bad_shape", [[], None, 0, {"files": None}])
+    def test_foreign_manifest_json_shape_is_reported_and_never_stops_retention(
+        tmp_path: Path, bad_shape
+    ) -> None:
+        """SR02-4: legal JSON is not a manifest. A foreign shape must be reported as
+        invalid/skipped and kept, without an AttributeError/TypeError aborting the
+        listing and without ever granting that directory delete authority."""
+        paths = _two_owned_backups(tmp_path)
+        root = quick_scan_backup_root(paths)
+        foreign = root / "foreign_shape"
+        foreign.mkdir()
+        payload = json.dumps(bad_shape)
+        (foreign / MANIFEST_NAME).write_text(payload, encoding="utf-8")
+    
+>       listed = {item["name"]: item for item in list_quick_scan_backups(paths)}
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_backup.py:455: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/t...s/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_foreign_manifest_json_sha3/workspace/runs/state'))
+
+    def list_quick_scan_backups(paths: WorkspacePaths) -> list[dict[str, Any]]:
+        """Backups under ``backups/quick_scan`` newest-first (foreign/partial flagged).
+    
+        SWR-03: an interrupted create leaves ``.<name>.partial-<id>``; it is reported
+        with ``partial=True``/``complete=False`` so neither a human nor ``prune``
+        can mistake it for a finished backup. This listing is descriptive only —
+        it never claims verification.
+        """
+        root = quick_scan_backup_root(paths)
+        if not root.exists():
+            return []
+        items: list[dict[str, Any]] = []
+        for path in root.iterdir():
+            if not path.is_dir():
+                continue
+            manifest_path = path / MANIFEST_NAME
+            partial = _is_partial_name(path.name)
+            linked = _is_link(path)
+            item: dict[str, Any] = {
+                "name": path.name,
+                "path": str(path),
+                "has_manifest": manifest_path.exists(),
+                "symlink": linked,
+                "partial": partial,
+                "complete": (not partial) and manifest_path.exists() and not linked,
+                "size_bytes": sum(f.stat().st_size for f in path.rglob("*") if f.is_file()),
+            }
+            if manifest_path.exists():
+                try:
+                    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                    item["created_at_utc"] = manifest.get("created_at_utc")
+                    item["format_version"] = manifest.get("format_version")
+                    item["manifest_sha256"] = manifest.get("manifest_sha256")
+>                   item["file_count"] = len(manifest.get("files", []))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                   TypeError: object of type 'NoneType' has no len()
+
+stockwiki\quick_scan_backup.py:541: TypeError
+_ test_unknown_registry_version_or_foreign_owner_never_grants_delete[format_version] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_unknown_registry_version_0')
+mutation = 'format_version'
+
+    @pytest.mark.parametrize("mutation", ["format_version", "owner_module", "workspace_root"])
+    def test_unknown_registry_version_or_foreign_owner_never_grants_delete(
+        tmp_path: Path, mutation: str
+    ) -> None:
+        """SR02-3: delete authority is bound to registry version + owner module +
+        workspace. An unknown version fails closed; a foreign record is kept and
+        reported. Nothing rebuilds or adopts a damaged registration."""
+        paths = _two_owned_backups(tmp_path)
+        root = quick_scan_backup_root(paths)
+        registry_path = root / OWNER_REGISTRY_NAME
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        if mutation == "format_version":
+            registry[mutation] = "999.0.0"
+        else:
+            old = next(r for r in registry["records"] if r["name"] == "backup_a")
+            old[mutation] = (
+                "foreign-module" if mutation == "owner_module" else str(tmp_path / "another-workspace")
+            )
+        registry_path.write_text(json.dumps(registry), encoding="utf-8")
+        damaged = registry_path.read_text(encoding="utf-8")
+    
+        receipt = None
+        error = None
+        try:
+            receipt = prune_backups(paths, keep=1)
+        except QuickScanBackupError as exc:
+            error = exc.error_code
+    
+>       assert (root / "backup_a").exists(), "unknown registry/foreign record granted delete authority"
+E       AssertionError: unknown registry/foreign record granted delete authority
+E       assert False
+E        +  where False = exists()
+E        +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_unknown_registry_version_0/workspace/backups/quick_scan') / 'backup_a').exists
+
+tests\test_swr_backup.py:500: AssertionError
+_ test_unknown_registry_version_or_foreign_owner_never_grants_delete[owner_module] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_unknown_registry_version_1')
+mutation = 'owner_module'
+
+    @pytest.mark.parametrize("mutation", ["format_version", "owner_module", "workspace_root"])
+    def test_unknown_registry_version_or_foreign_owner_never_grants_delete(
+        tmp_path: Path, mutation: str
+    ) -> None:
+        """SR02-3: delete authority is bound to registry version + owner module +
+        workspace. An unknown version fails closed; a foreign record is kept and
+        reported. Nothing rebuilds or adopts a damaged registration."""
+        paths = _two_owned_backups(tmp_path)
+        root = quick_scan_backup_root(paths)
+        registry_path = root / OWNER_REGISTRY_NAME
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        if mutation == "format_version":
+            registry[mutation] = "999.0.0"
+        else:
+            old = next(r for r in registry["records"] if r["name"] == "backup_a")
+            old[mutation] = (
+                "foreign-module" if mutation == "owner_module" else str(tmp_path / "another-workspace")
+            )
+        registry_path.write_text(json.dumps(registry), encoding="utf-8")
+        damaged = registry_path.read_text(encoding="utf-8")
+    
+        receipt = None
+        error = None
+        try:
+            receipt = prune_backups(paths, keep=1)
+        except QuickScanBackupError as exc:
+            error = exc.error_code
+    
+>       assert (root / "backup_a").exists(), "unknown registry/foreign record granted delete authority"
+E       AssertionError: unknown registry/foreign record granted delete authority
+E       assert False
+E        +  where False = exists()
+E        +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_unknown_registry_version_1/workspace/backups/quick_scan') / 'backup_a').exists
+
+tests\test_swr_backup.py:500: AssertionError
+_ test_unknown_registry_version_or_foreign_owner_never_grants_delete[workspace_root] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_unknown_registry_version_2')
+mutation = 'workspace_root'
+
+    @pytest.mark.parametrize("mutation", ["format_version", "owner_module", "workspace_root"])
+    def test_unknown_registry_version_or_foreign_owner_never_grants_delete(
+        tmp_path: Path, mutation: str
+    ) -> None:
+        """SR02-3: delete authority is bound to registry version + owner module +
+        workspace. An unknown version fails closed; a foreign record is kept and
+        reported. Nothing rebuilds or adopts a damaged registration."""
+        paths = _two_owned_backups(tmp_path)
+        root = quick_scan_backup_root(paths)
+        registry_path = root / OWNER_REGISTRY_NAME
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        if mutation == "format_version":
+            registry[mutation] = "999.0.0"
+        else:
+            old = next(r for r in registry["records"] if r["name"] == "backup_a")
+            old[mutation] = (
+                "foreign-module" if mutation == "owner_module" else str(tmp_path / "another-workspace")
+            )
+        registry_path.write_text(json.dumps(registry), encoding="utf-8")
+        damaged = registry_path.read_text(encoding="utf-8")
+    
+        receipt = None
+        error = None
+        try:
+            receipt = prune_backups(paths, keep=1)
+        except QuickScanBackupError as exc:
+            error = exc.error_code
+    
+>       assert (root / "backup_a").exists(), "unknown registry/foreign record granted delete authority"
+E       AssertionError: unknown registry/foreign record granted delete authority
+E       assert False
+E        +  where False = exists()
+E        +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_unknown_registry_version_2/workspace/backups/quick_scan') / 'backup_a').exists
+
+tests\test_swr_backup.py:500: AssertionError
+_ test_backup_root_and_parent_junction_never_write_beyond_the_workspace[root] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_backup_root_and_parent_ju0')
+kind = 'root'
+
+    @pytest.mark.parametrize("kind", ["root", "parent"])
+    def test_backup_root_and_parent_junction_never_write_beyond_the_workspace(
+        tmp_path: Path, kind: str
+    ) -> None:
+        """SR02-2: a reparse point on the backup root or on its ``backups`` parent
+        must be refused BEFORE any write — resolving first would hand the attacker's
+        target the role of 'safe root'. list/prune on the same path must not delete
+        the sentinel living outside the logical workspace either."""
+        _winapi = pytest.importorskip(
+            "_winapi", reason="real NTFS junction required; POSIX symlink is not accepted as proof"
+        )
+        fixture = tmp_path / "junction" / kind
+        workspace = fixture / "workspace"
+        foreign = fixture / "foreign"
+        data = workspace / "data" / "quick_scan"
+        data.mkdir(parents=True)
+        (data / "marker.txt").write_text("owned fixture", encoding="utf-8")
+        foreign.mkdir(parents=True)
+        sentinel = foreign / "sentinel.txt"
+        sentinel.write_text("foreign-to-workspace but test-owned", encoding="utf-8")
+        if kind == "root":
+            (workspace / "backups").mkdir(parents=True)
+            link = workspace / "backups" / "quick_scan"
+        else:
+            link = workspace / "backups"
+        _winapi.CreateJunction(str(foreign), str(link))
+        assert link.is_dir(), "the fixture must be a real junction"
+        paths = WorkspacePaths.from_root(workspace)
+    
+        error = None
+        try:
+            create_backup(paths, name="must_reject_junction_final")
+        except QuickScanBackupError as exc:
+            error = exc.error_code
+>       assert error, "a workspace backup ancestor junction granted external write access"
+E       AssertionError: a workspace backup ancestor junction granted external write access
+E       assert None
+
+tests\test_swr_backup.py:545: AssertionError
+_ test_backup_root_and_parent_junction_never_write_beyond_the_workspace[parent] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01/tmp/basetemp-red/test_backup_root_and_parent_ju1')
+kind = 'parent'
+
+    @pytest.mark.parametrize("kind", ["root", "parent"])
+    def test_backup_root_and_parent_junction_never_write_beyond_the_workspace(
+        tmp_path: Path, kind: str
+    ) -> None:
+        """SR02-2: a reparse point on the backup root or on its ``backups`` parent
+        must be refused BEFORE any write — resolving first would hand the attacker's
+        target the role of 'safe root'. list/prune on the same path must not delete
+        the sentinel living outside the logical workspace either."""
+        _winapi = pytest.importorskip(
+            "_winapi", reason="real NTFS junction required; POSIX symlink is not accepted as proof"
+        )
+        fixture = tmp_path / "junction" / kind
+        workspace = fixture / "workspace"
+        foreign = fixture / "foreign"
+        data = workspace / "data" / "quick_scan"
+        data.mkdir(parents=True)
+        (data / "marker.txt").write_text("owned fixture", encoding="utf-8")
+        foreign.mkdir(parents=True)
+        sentinel = foreign / "sentinel.txt"
+        sentinel.write_text("foreign-to-workspace but test-owned", encoding="utf-8")
+        if kind == "root":
+            (workspace / "backups").mkdir(parents=True)
+            link = workspace / "backups" / "quick_scan"
+        else:
+            link = workspace / "backups"
+        _winapi.CreateJunction(str(foreign), str(link))
+        assert link.is_dir(), "the fixture must be a real junction"
+        paths = WorkspacePaths.from_root(workspace)
+    
+        error = None
+        try:
+            create_backup(paths, name="must_reject_junction_final")
+        except QuickScanBackupError as exc:
+            error = exc.error_code
+>       assert error, "a workspace backup ancestor junction granted external write access"
+E       AssertionError: a workspace backup ancestor junction granted external write access
+E       assert None
+
+tests\test_swr_backup.py:545: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_swr_profiles.py::test_public_import_never_blends_incomparable_segments_periods_or_basis[segment]
+FAILED tests/test_swr_profiles.py::test_public_import_never_blends_incomparable_segments_periods_or_basis[period]
+FAILED tests/test_swr_profiles.py::test_public_import_never_blends_incomparable_segments_periods_or_basis[basis]
+FAILED tests/test_swr_backup.py::test_foreign_manifest_json_shape_is_reported_and_never_stops_retention[bad_shape0]
+FAILED tests/test_swr_backup.py::test_foreign_manifest_json_shape_is_reported_and_never_stops_retention[None]
+FAILED tests/test_swr_backup.py::test_foreign_manifest_json_shape_is_reported_and_never_stops_retention[0]
+FAILED tests/test_swr_backup.py::test_foreign_manifest_json_shape_is_reported_and_never_stops_retention[bad_shape3]
+FAILED tests/test_swr_backup.py::test_unknown_registry_version_or_foreign_owner_never_grants_delete[format_version]
+FAILED tests/test_swr_backup.py::test_unknown_registry_version_or_foreign_owner_never_grants_delete[owner_module]
+FAILED tests/test_swr_backup.py::test_unknown_registry_version_or_foreign_owner_never_grants_delete[workspace_root]
+FAILED tests/test_swr_backup.py::test_backup_root_and_parent_junction_never_write_beyond_the_workspace[root]
+FAILED tests/test_swr_backup.py::test_backup_root_and_parent_junction_never_write_beyond_the_workspace[parent]
+12 failed, 25 passed in 5.66s

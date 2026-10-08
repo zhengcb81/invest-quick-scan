@@ -1,0 +1,85 @@
+{
+  "ambiguous_field_probe": {
+    "conditions": [
+      {
+        "field": "score.iqs_01",
+        "op": ">=",
+        "value": 8
+      }
+    ],
+    "entity_ids": [],
+    "leaf_reasons": {
+      "score.iqs_01": {
+        "status_ambiguous": 1,
+        "status_insufficient_evidence": 1
+      }
+    },
+    "note": "score.iqs_01 carries incomparable subject variants, so the row evaluates to unknown and the imported 9 never satisfies >=8",
+    "outcome_counts": {
+      "fail": 0,
+      "pass": 0,
+      "unknown": 2
+    }
+  },
+  "c06_envelope_validated": false,
+  "condition_rules": {
+    "averaged_score_emitted": false,
+    "combine": "all",
+    "conditions": [
+      {
+        "field": "score.iqs_05",
+        "op": ">=",
+        "value": 1
+      }
+    ],
+    "evaluated_entities": 2,
+    "leaf_reasons": {
+      "score.iqs_05": {
+        "compared": 1,
+        "not_applicable": 1
+      }
+    },
+    "outcome_counts": {
+      "fail": 0,
+      "pass": 1,
+      "unknown": 1
+    },
+    "policy_id": "quick_scan_score_filter",
+    "policy_version": "1.0.0",
+    "rules_sha256": "261b8d7534be6128c4f5187fa35dbfcf5f06a61d304a3f06133336c812b5927c",
+    "rules_version": "quick_scan_rules/1.0.0"
+  },
+  "entity_ids": [
+    "ENT_11111111-1111-4111-8111-111111111111"
+  ],
+  "facts_available": false,
+  "generation_command": "python -B -X utf8 docs/handoff/SW-REPAIR-02/build_goldens.py --repo <StockWiki> --out <out>",
+  "golden_class": "synthetic_public_import_fixture",
+  "query": {
+    "condition_combine": "all",
+    "conditions": [
+      {
+        "field": "score.iqs_05",
+        "op": ">=",
+        "value": 1
+      }
+    ]
+  },
+  "score_condition_outcomes": [
+    {
+      "entity_id": "ENT_11111111-1111-4111-8111-111111111111",
+      "leaves": [
+        {
+          "actual": 6,
+          "critical_risk_gate": false,
+          "field": "score.iqs_05",
+          "op": ">=",
+          "outcome": "pass",
+          "reason": "compared",
+          "threshold": 1
+        }
+      ],
+      "outcome": "pass"
+    }
+  ]
+}

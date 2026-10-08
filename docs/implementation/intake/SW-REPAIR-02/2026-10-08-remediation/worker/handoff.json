@@ -1,0 +1,222 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "stockwiki",
+  "package_id": "SW-REPAIR-02",
+  "status": "complete",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/StockWiki",
+    "base_ref": "master",
+    "base_commit": "6d1dddbc1289a17a2fb91d40a0d4f57494fa1bfd",
+    "result_ref": "master",
+    "result_commit": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope": {
+    "task_ids": ["W12", "U01", "U02"],
+    "authorization_scope_ref": "user dispatch message for SW-REPAIR-02 (sole StockWiki writer over the paths listed in authorized_paths) plus the owner remediation card docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08.md for this second round; the runtime file backups/quick_scan/owner_registry.json was separately confirmed with the user in round 1 and stays authorized although it is not changed in round 2. Authorization comes from the user/owner messages, never from the harness or an enlarged validator.",
+    "owned_paths": ["C:/Users/郑曾波/Projects/StockWiki"],
+    "authorized_paths": [
+      "stockwiki/quick_scan_backup.py",
+      "stockwiki/quick_scan_backup_manifest.py",
+      "stockwiki/quick_scan_profiles.py",
+      "stockwiki/quick_scan_query.py",
+      "stockwiki/quick_scan_rows.py",
+      "stockwiki/ui_quick_scan.py",
+      "stockwiki/ui_static/app.js",
+      "stockwiki/ui_static/index.html",
+      "stockwiki/ui_static/styles.css",
+      "tests/test_quick_scan_backup.py",
+      "tests/test_quick_scan_profiles.py",
+      "tests/test_quick_scan_query.py",
+      "tests/test_ui_quick_scan.py",
+      "tests/test_e2e_quick_scan_ui.py",
+      "tests/test_swr_backup.py",
+      "tests/test_swr_cases.py",
+      "tests/test_swr_profiles.py",
+      "tests/test_swr_query.py",
+      "docs/quick-scan-backup-restore.md",
+      "docs/ui.md",
+      "docs/handoff/SW-REPAIR-02/",
+      "backups/quick_scan/owner_registry.json"
+    ],
+    "changed_paths": [
+      "docs/quick-scan-backup-restore.md",
+      "docs/ui.md",
+      "stockwiki/quick_scan_backup.py",
+      "stockwiki/quick_scan_backup_manifest.py",
+      "stockwiki/quick_scan_profiles.py",
+      "stockwiki/quick_scan_rows.py",
+      "stockwiki/ui_static/app.js",
+      "tests/test_swr_backup.py",
+      "tests/test_swr_profiles.py",
+      "docs/handoff/SW-REPAIR-02/"
+    ],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [
+    {
+      "name": "stockwiki.quick_scan_backup_manifest/1.0.0",
+      "version": "1.0.0",
+      "content_hash": "58897c13a190f55dc25b63889aa35a682932ff7cea89db8cd63358329e259fc6",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "stockwiki.quick_scan_backup_owner_registry/1.0.0",
+      "version": "1.0.0",
+      "content_hash": "58897c13a190f55dc25b63889aa35a682932ff7cea89db8cd63358329e259fc6",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "quick_scan_query_snapshot/1.0.0",
+      "version": "quick_scan_query/1.0.0",
+      "content_hash": "accedc49f4b0e20aa651ea246008f1b98e962a09128758a95ce93eb1e88b1f2e",
+      "direction": "both",
+      "result": "changed"
+    },
+    {
+      "name": "stockwiki_w09_read_primitives",
+      "version": "quick_scan_query/1.0.0",
+      "content_hash": "accedc49f4b0e20aa651ea246008f1b98e962a09128758a95ce93eb1e88b1f2e",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "legacy_query_producer_9f552a67",
+      "version": "quick_scan_query/1.0.0",
+      "content_hash": "271b1ba2434123180d27a64437e3f14487d390ffb5c6276471e5302a06c0639a",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "quick_scan_variant_projection",
+      "version": "quick_scan_profiles/1.1.0",
+      "content_hash": "cb068968cf577f81ed54edeb50f064f64e832c636c86ce00091749796e8e7bbc",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "quickscan_search_http_payload",
+      "version": "ui_quick_scan/1.0.0",
+      "content_hash": "2be992188da50470d84d28e6853249001ba47551b705b01e2b1eb31c8ba5456c",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "sw_ready01_frozen_acceptance_cases",
+      "version": "acceptance_cases/1.0.0",
+      "content_hash": "72b2e1250947a705f87426557ccdf8b09121d761ba09ae89da3df152db81d452",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "swr02_remediation_counterexamples",
+      "version": "acceptance_cases/1.0.0",
+      "content_hash": "e9f40166752d17e7324a729098c83a9f5a2f1e4558b9eeb974c29b2671ac68e2",
+      "direction": "consumed",
+      "result": "compatible"
+    }
+  ],
+  "verification": {
+    "checks": [
+      {
+        "name": "static_gate",
+        "command": "python -B scripts/checks.py --static-only",
+        "scope": "ruff over stockwiki/tests/scripts + validate-framework --static",
+        "result": "passed",
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "affected_batch",
+        "command": "python -B -X utf8 -m pytest tests/test_swr_cases.py tests/test_swr_backup.py tests/test_swr_profiles.py tests/test_swr_query.py tests/test_quick_scan_backup.py tests/test_quick_scan_profiles.py tests/test_quick_scan_query.py tests/test_ui_quick_scan.py -q",
+        "scope": "unit/integration touched by this package plus the 12 ported boundary counterexamples and the new positives",
+        "result": "passed",
+        "passed": 89,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "quickscan_family",
+        "command": "python -B -X utf8 -m pytest tests/ -q -k \"(quick_scan or swr) and not e2e\"",
+        "scope": "wider non-browser net over every quick_scan/swr test (observation store, delivery, evidence, identity, refresh, rules, CLI services)",
+        "result": "passed",
+        "passed": 269,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "frozen_acceptance_post_fix_r2",
+        "command": "python -B -X utf8 docs/handoff/SW-REPAIR-02/run_frozen_acceptance.py --work-root <StockWiki>/runs/swr02-acceptance-20261008-01 --runtime-sha eeedec7f08cff470ec8ca9370a8878d22e4b10468fd45c0ae4e41299470446f4",
+        "scope": "the ORIGINAL frozen SW-READY-01 acceptance_cases.py (sha256 72b2e125...) executed against the runtime exported FROM result_commit c83c148 under an audit-hook guard",
+        "result": "passed",
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "browser_e2e_r2",
+        "command": "python -B -X utf8 -m pytest tests/test_e2e_quick_scan_ui.py -q -s",
+        "scope": "real Playwright chromium against the real StockWiki UI, loopback HTTP only, screenshots under the exclusive basetemp",
+        "result": "passed",
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "handoff_cli_precheck",
+        "command": "python -B -X utf8 scripts/parallel_handoff_cli.py --catalog docs/implementation/parallel-lanes/packages/2026-10-07-wave2/manifest.json --package-id SW-REPAIR-02 --input C:/Users/郑曾波/Projects/StockWiki/docs/handoff/SW-REPAIR-02/handoff.json",
+        "scope": "IQS public read-only handoff shape/declared-scope precheck of THIS file (exit 0 = valid); the validator was not modified",
+        "result": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": [
+      {
+        "path_or_id": "C:/Users/郑曾波/Projects/StockWiki/runs/swr02-remediation-20261008-01",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": "C:/Users/郑曾波/Projects/StockWiki/runs/swr02-acceptance-20261008-01",
+        "created": true,
+        "cleaned": true
+      }
+    ]
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "complete only means THIS package's local delivery: SR02-1..4 code behaviour and SR02-5 handoff receivability are closed for this package; the coordinator still verifies the new commit, artifacts and a concentrated review before signing the package scope.",
+    "temporary_roots lists ONLY the two exclusive roots this round created (both cleaned with receipt logs/cleanup_receipt_r2.json, applied=true). The round-1 worker's shared %TEMP% roots pytest-105/109/110/111 are ABSENT as of logs/isolation_inventory_r2.json (os.lstat, junctions never followed) and were NOT deleted by this writer — pytest's numbered-retention (keep=3) during later runs by another lane removed them; the exact removal run is not reconstructable afterwards, so this package does not claim to have cleaned them, does not mark them cleaned=true, and does not claim the shared TEMP is restored. Ownership of that provenance gap stays open for the owner. pytest-146/147/148 under the same parent belong to another lane and were not touched.",
+    "All round-2 tests used a new exclusive --basetemp under runs/swr02-remediation-20261008-01 with TMP/TEMP/TMPDIR and the browser profile in the same root, so no new shared-TEMP residue was produced.",
+    "Round-2 handoff only records git-blob / multi-file-manifest content hashes (interfaces.md section 10). The round-1 record (worktree-byte hashes, projection bound to rows.py) is preserved verbatim at git show 6d1dddb:docs/handoff/SW-REPAIR-02/handoff.json; no old log was rewritten or re-hashed.",
+    "worktree_before/after describe the code worktree at the two code boundaries (start at 6d1dddb and result commit c83c148); at delivery time `git status --porcelain` is empty outside docs/handoff/SW-REPAIR-02/, which is this delivery itself.",
+    "Round-2 did NOT re-run `--full` (round-1 already has two passing full gates: logs/check_full_at_9f9e0af.log 1032 and logs/check_full.log 1046); the card forbids mechanically re-running unchanged suites. validate-framework --static now reports 2 warnings (round-1 had 1): quick_scan_backup.py at 647 lines newly crosses the non-blocking >600-line diagnostic, quick_scan_store.py stays at 969, quick_scan_profiles.py is exactly 600 and does not trigger it; splitting modules would need new files and was therefore not done unilaterally.",
+    "The controller only dynamically proved that create writes beyond the logical workspace; prune escape deletion was never dynamically proven by anyone. Round-2 adds list/prune refusals on the same junction paths and does not upgrade the controller's evidence.",
+    "Real StockWiki identity/owner golden is still missing and is reported as missing, never synthesised (logs/golden/identity_golden_status.json). Real QA C06 -> W05 import/ACK -> UI chain, dual-owner restore, TTL/replacement remain not_run.",
+    "G3/F05 are not closed by this package and TH-IMPL-01/IN-IMPL-01/L03 remain unreleased; the coordinator still owns the joint QA/SW offline E2E.",
+    "review.status=not_run: no independent reviewer was dispatched for this package; the coordinator's concentrated review is still pending.",
+    "No push to any remote was performed; result_commit c83c148af35407a5ae01072314ba9bd17e59b3d9 exists only on local master."
+  ],
+  "next_action": "Coordinator: verify commit c83c148af35407a5ae01072314ba9bd17e59b3d9 and the regenerated artifacts, run the affected re-verification and one concentrated review over docs/handoff/SW-REPAIR-02/, then sign THIS package's scope. G3/F05 stay open and TH/IN/L03 stay unreleased; the round-1 shared-TEMP provenance gap stays with the owner."
+}

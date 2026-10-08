@@ -1,0 +1,48 @@
+{"mode": "utf8", "canaries": "passed", "keys_provided": 0, "source_commit": "c83c148af35407a5ae01072314ba9bd17e59b3d9"}
+FF
+================================== FAILURES ===================================
+_ test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention[list] _
+..\corrupt_manifest_cases.py:20: in test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention
+    result = backup.list_quick_scan_backups(paths)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:563: in list_quick_scan_backups
+    manifest, shape = _read_manifest_object(manifest_path)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:589: in _read_manifest_object
+    raw = manifest_path.read_text(encoding="utf-8")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+<frozen codecs>:325: in decode
+    ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+_ test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention[prune] _
+..\corrupt_manifest_cases.py:22: in test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention
+    result = backup.prune_backups(paths, keep=1)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:625: in prune_backups
+    for item in list_quick_scan_backups(paths):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:563: in list_quick_scan_backups
+    manifest, shape = _read_manifest_object(manifest_path)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:589: in _read_manifest_object
+    raw = manifest_path.read_text(encoding="utf-8")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+<frozen codecs>:325: in decode
+    ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+=========================== short test summary info ===========================
+FAILED ..\corrupt_manifest_cases.py::test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention[list]
+FAILED ..\corrupt_manifest_cases.py::test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention[prune]
+2 failed in 1.58s

@@ -1655,3 +1655,7 @@ Phase101：用户确认三整改运行中，SW／Lab动态改动与旧HEAD并存
 Phase102：原六残余修复均已实证，108方法及旧9/5/6、42命令/三归档/34fixture全GREEN。仍不能将外置先验输入核验等同公开入口自证：fixtures._archive_rows读取当前archive、不验证lock，答案完整比较只能挡“只改fixture”。128锁输入自有副本保持原lock/index，同改archive答案与fixture会真实exit0发布historical/verified_before_write；同一副本index严格核锁exit2正确拒绝。原LR-02来源链剩LR-02B P1，单项接续不扩成新平台/人类gold/小节点门。完整原答案省略可选hash是允许正例，不误报。
 
 本次122工件双hash/102仅EOL、123源码和128原输入保持；546文件严格清理，源Lab HEADaeff0e6/clean/122工件不变。worker已披露IQS nul生成删除事故，测试external_writes=false只限定其测试运行，不能冒充全会话外写0；消失文件的历史归属/大小未独立证实。第一批补证output误置LAB外被exit3正确阻止，保存原日志后在LAB内新根纠正，只有后组3GREEN/1RED用于产品判断。proposal费用已修但仍非执行草案，既有准确性手册/Phase96不因离线工具进展重跑。
+
+Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认不可比观察维度保留且不误入白名单；但“合法JSON形状”修复不能替代文件解码边界。外来0xff manifest会真实UnicodeDecodeError中断list/prune，原SR02-4剩P2；只需局部明确损坏解码处理，不吞全部异常或重造解析平台，不复跑无关full/UI。外来/合法备份未删，不能夸大为删除越界。
+
+69工件双字节均匹配交接HEAD1831a73，36仅EOL；索引说全部来自结果c83c148不准确（16不存在/11变更），应分运行结果与后续证据ref。worker历史TEMP已消失没有删除者证据，retention只是解释；新strict cleanup不能追认过去SHA/硬链/port审计。总控296源码/130实际输入和69原件保持，8junction只解节点、814文件严格清；原PWF和大节点不自签。软件有限GREEN/损坏输入剩余/真实owner与联合门分开报告。

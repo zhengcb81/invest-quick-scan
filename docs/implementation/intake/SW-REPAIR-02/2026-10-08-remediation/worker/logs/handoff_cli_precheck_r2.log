@@ -1,0 +1,10 @@
+SW-REPAIR-02 round-2 public handoff CLI precheck (read-only; validator NOT modified)
+executed from: C:/Users/郑曾波/Projects/invest-quick-scan
+command: python -B -X utf8 scripts/parallel_handoff_cli.py --catalog docs/implementation/parallel-lanes/packages/2026-10-07-wave2/manifest.json --package-id SW-REPAIR-02 --input C:/Users/郑曾波/Projects/StockWiki/docs/handoff/SW-REPAIR-02/handoff.json
+exit=0
+output: {"status": "valid", "package_id": "SW-REPAIR-02", "validation_scope": "handoff_shape_and_declared_scope_only", "errors": []}
+
+Context (for the coordinator, not re-executed here):
+- round-1 formal handoff: exit 2 changed_path_out_of_scope (literal glob "tests/test_swr_*.py" is not supported by the validator) — archived in IQS intake scope-diagnostic-only.json / verification result
+- round-1 diagnostic copy that only expanded the existing glob: exit 2 temporary_root_not_cleaned (worker TEMP 109/110/111 recorded cleaned=false) — archived in IQS intake
+- round-2: authorized_paths now list the real approved test_swr file names, temporary_roots list only this round's two exclusive roots (both cleaned with receipt), and the validator was not changed in any way

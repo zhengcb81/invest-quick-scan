@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08 Phase102验收后）**：Lab原六残余均已GREEN，剩一处同LR-02来源链P1：历史fixture公共入口未核消费归档的锁SHA，同改副本archive/fixture可exit0发布。原Lab writer按[单项卡](docs/implementation/reviews/EVID-LAB-01/second-remediation-2026-10-08/remaining-repair.md)接续，收到实际新commit/handoff后只集中复验该链及受影响回归，不重复原六项／收费实验。QA/SW仍由原writer施工，待各自新交接回收；两端齐再按12组联合说明打通，Lab不人为阻塞该链。总控只读外仓，L02/G3/F05/TH/IN/L03和实验草案不自签。本轮查收/清理已完成，Git实际回执见progress末尾。
+**单一下一步（2026-10-08 Phase103验收后）**：SW原12反例／96相关回归／11真实浏览器已GREEN，仅同SR02-4剩P2：非UTF8损坏manifest使list/prune整体中断。原SW writer按[单项接续卡](docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08/remaining-repair.md)补解码边界，并同批澄清结果/交接hash与历史TEMP推断；收到新commit后仅受影响复验，不重做其他组或无关full/UI。Lab LR-02B及QA仍由原writer接续；QA/SW两端满足条件后再按12组联合说明打通，Lab不人为阻塞该链。保持只读外仓、G3/F05/gold/TH/IN/L03不自签；本轮验收/清理/PWF完成，Git实际回执见progress末尾。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1459,3 +1459,11 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_s
 - [x] 546文件/136目录strict CIM/lstat/set/SHA dry-run→Apply清理、Lab HEAD/clean及122工件收尾不变。PWF与接手更新；不写外仓、不执行live、不关闭门，精确Git交付见progress实际回执。
 - [ ] 原Lab writer交回LR-02B新commit/handoff后做一次受影响收口；当前仅partial_verified/changes_requested，不恢复其他已完成实施。
 - 实际IQS交付`2db1508ab52a466264ac65ba545f77bd1b066551`，230精确文件已沙箱外提交并正常推送origin/master，224工件及索引staged原字节匹配、diff检查通过。仅opencode未跟踪保留；后续仅PWF回执，Lab不写、不签全门。
+
+## Phase103：SW-REPAIR-02第二轮修复验收
+Status: review_completed_changes_requested; source_repository_read_only; owner_single_corrupt_input_repair_pending; no_gate_closed
+- [x] 用户通知交付，实际StockWiki master@1831a73b37a3ed1b67d3556f6425ed2b52594a24／clean，代码c83c148af35407a5ae01072314ba9bd17e59b3d9；后续交接说明双字节hash和清理范围，不据自述89/269/11直接签收。
+- [x] 69工件raw/接收HEAD Git双字节相符、36仅EOL；296固定导出，96passed＋原12passed、11真实浏览器/142 loopback、handoff exit0。130实际IQS输入/296源码和69工件收尾不变；已有全套只接收不复跑。
+- [x] 一次集中独审、同SR02-4追加两路径均UnicodeDecodeError RED，收敛单P2，原12成果保持。[验收](docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08/acceptance.md)／单项卡/原日志留档。索引note把全部Git哈希写成result过宽（16当时无、11不同），接收HEAD全部匹配，交接补澄清。
+- [x] 8自有junction非递归解节点；814文件/654目录经strict CIM/端口/lstat单硬链/精确set-size-SHA dry-run→Apply清，旧根/sharedTEMP/opencode保留。PWF与接手更新，精确Git交付见progress实际回执。
+- [ ] 原SW writer补SR02-4B与必要交接文字，交新commit后仅受影响收口；历史worker清理/删除者取证缺口保持open，G3/F05/gold/QA联合/TH/IN/L03不关闭。

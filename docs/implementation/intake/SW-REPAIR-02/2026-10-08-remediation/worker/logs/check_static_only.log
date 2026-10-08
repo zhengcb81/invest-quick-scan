@@ -1,0 +1,12 @@
+StockWiki checks �� mode=static
+workspace root: C:\Users\֣����\Projects\StockWiki
+=== ruff ===
+  $ C:\Miniconda\python.exe -m ruff check stockwiki tests scripts
+All checks passed!
+PASS  ruff (0.3s)
+=== validate-framework ===
+  $ C:\Miniconda\python.exe -B -m stockwiki.cli --root C:\Users\֣����\Projects\StockWiki validate-framework --static
+[warning] stockwiki\quick_scan_store.py: 模块 969 行（>600）：偏大，建议分解为 <600 行的子模块（诊断项，不阻断）
+Framework validation passed with 1 warning(s).
+PASS  validate-framework (1.2s)
+ALL CHECKS PASSED
