@@ -1,4 +1,12 @@
-**2026-10-08 Phase107最新，优先于以下历史快照：** QA再次整改结果b6eaa08／交接a39d7ea已有限软件签收：247受影响、原9、原7＋mirror16、segment2 GREEN，一次有限独审无阻断，wrongSEC真实CLI key0/http0/无DB/无result；正常31完整观察公开验证。读[本次签收](reviews/QA-C06-02/second-remediation-2026-10-08/acceptance.md)。136固定源／57工件（5仅EOL）不变；615文件/284目录strict CIM0/lstat/set-size-SHA dry-run→Apply已清，旧helper固定根不能盲跑。公共handoff历史清理声明仍exit2，过去sharedTEMP删除者不可伪证，软件签收与该保留并列。SW SR02-4B/Lab LR-02B签收保持；三源QA a39d7ea七未跟踪／SW d253fea clean／Lab2c0efb6 clean。下一大节点读[既有联合12组准备](reviews/G3/joint-acceptance-preparation-2026-10-08.md)，现在输入齐备但尚未执行，重新分配隔离根固定两owner后验证公开生成→导入→ACK→恢复/query；不抢外仓writer，不重复已通过包/full/UI。真实gold/事实评分准确性/L02整体/L03/G3F05/THIN门仍开放，原opencode保留；Git以progress最后实际回执为准。
+**2026-10-08 Phase108最新，覆盖下方历史：** 已完成一批真实QA生成→SW公开导入→原ACK→恢复/查询的联合验收，结果partial_verified/changes_requested。读[实际验收](reviews/G3/joint-2026-10-08/acceptance.md)与[唯一集中整改卡JR1–JR3](reviews/G3/joint-2026-10-08/remediation.md)。原三包有限成果保留，不重做或复跑full/UI。当前真实阻断为公共ACK1.0额外字段/内部错误码、首ACK目标store未事前绑定、原始JSON重复键取last。原17实例6P/11F，补9实例7P/2F；控制器误差与未执行依赖已分列，不能加总称整套GREEN。
+
+已经通过的子范围包括31完整观察、低分/unknown/null/N/A/watch长body、第二次同模型独立run、不可比2/9不混入>=8名单、独立q8 warm/seal零HTTP以及SW单侧恢复。它们不替ACK闭环/双owner恢复/真实identity与facts golden/F05。原HTTP实际B而请求A场景当前unsupported，不是真B模型比较，另列durable requested/resolved追溯，不改actual为requested洗绿。
+
+432固定源与外仓状态不变；源QA a39d7ea/master原七未跟踪、SW d253fea/master clean。106合成输入/原包/日志和原actor/JUnit已存intake/G3/2026-10-08-joint；1074本批自有文件/78目录经strict CIM/lstat/单硬链/set-size-SHA dry→Apply已清，旧helpers硬编码已删根不得盲跑。初freeze原因后置更正为漏LF候选，432 Git字节域均可重建，不是混合EOL。
+
+**唯一下一动作：** 按JR1–JR3卡TDD接续，StockQA历史全仓授权有效但写前报备/核writer，StockWiki四文件新授权已向用户提问、未答前只读。两owner只改各自范围，收到实际commit后一次集中联合回验，不每个helper新立门。总控继续IQS契约/PWF/汇合，TH/IN/200家公司不自动开工，G3/L03/F05/真实gold保持原门；Git提交推送只认progress最新实际回执。不要按下方旧“尚未联合/三包待交”快照重复准备或实施。
+
+**历史Phase107（以上方Phase108为准）：** QA再次整改结果b6eaa08／交接a39d7ea已有限软件签收：247受影响、原9、原7＋mirror16、segment2 GREEN，一次有限独审无阻断，wrongSEC真实CLI key0/http0/无DB/无result；正常31完整观察公开验证。读[本次签收](reviews/QA-C06-02/second-remediation-2026-10-08/acceptance.md)。136固定源／57工件（5仅EOL）不变；615文件/284目录strict CIM0/lstat/set-size-SHA dry-run→Apply已清，旧helper固定根不能盲跑。公共handoff历史清理声明仍exit2，过去sharedTEMP删除者不可伪证，软件签收与该保留并列。SW SR02-4B/Lab LR-02B签收保持；三源QA a39d7ea七未跟踪／SW d253fea clean／Lab2c0efb6 clean。下一大节点读[既有联合12组准备](reviews/G3/joint-acceptance-preparation-2026-10-08.md)，现在输入齐备但尚未执行，重新分配隔离根固定两owner后验证公开生成→导入→ACK→恢复/query；不抢外仓writer，不重复已通过包/full/UI。真实gold/事实评分准确性/L02整体/L03/G3F05/THIN门仍开放，原opencode保留；Git以progress最后实际回执为准。
 
 # 新接手模型工作指南
 

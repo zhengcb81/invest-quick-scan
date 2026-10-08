@@ -1,0 +1,34 @@
+.F.....F.                                                                [100%]
+================================== FAILURES ===================================
+_______________ test_j05_missing_entity_in_migrated_empty_store _______________
+
+    def test_j05_missing_entity_in_migrated_empty_store():
+        root = h.OWN / 'cases/emptyentity'
+        h.actor('sw', 'c-j05-empty', dict(op='empty', root=str(root)))
+        result = h.actor('sw', 'c-j05-import', dict(op='import', root=str(root),
+                         package=PRODUCED['packages']['IQS_01']['path'], release=str(RELEASE)))
+        assert result['cli_exit'] == 0 and result['receipt']['summary'] == {'rejected': 1}
+>       assert result['receipt']['acks'][0]['error_code'] == 'missing_entity'
+E       AssertionError: assert 'entity_not_found' == 'missing_entity'
+E         
+E         - missing_entity
+E         + entity_not_found
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint_controller_corrections.py:51: AssertionError
+____________ test_j07_wrong_store_cannot_settle_after_send_intent _____________
+
+uncertain_item = None
+
+    def test_j07_wrong_store_cannot_settle_after_send_intent(uncertain_item):
+        ack = {k: copy.deepcopy(v) for k, v in ACK.items() if k not in {'ack_sequence', 'original_import'}}
+        ack['consumer']['store_id'] = 'qsobs_unrelated_target'
+        result = h.actor('qa', 'c-j07-wrong-store', dict(op='ack', root=str(QA), question_id='IQS_07',
+                    ack=str(save('c-ack-wrong-store.json', ack))))
+>       assert not result['accepted'] and result['before'] == result['after']
+E       assert (not True)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint_controller_corrections.py:80: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint_controller_corrections.py::test_j05_missing_entity_in_migrated_empty_store
+FAILED ..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint_controller_corrections.py::test_j07_wrong_store_cannot_settle_after_send_intent
+2 failed, 7 passed in 31.75s

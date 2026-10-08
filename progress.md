@@ -2292,3 +2292,20 @@
 - 交付控制器首次staged原字节校验发现两份自写G3准备文档受Git autocrlf规范化；只将这两份controller文档按LF一致保存并重建本轮索引，收到的worker/执行日志原字节未变。不是产品RED，不复跑产品测试。
 
 - **Phase107实际Git交付**：90个精确IQS文件已沙箱外提交`d7c22d43d6f053846ab33601d207355e95ce6a57`并正常推送origin/master（d80ddf4→d7c22d4，实际exit0，HEAD/远端跟踪一致）。84索引工件及索引自身staged原字节逐项匹配，20精确忽略路径局部-force，diff检查通过；19本地链接和helper AST通过，仅原opencode未跟踪保留。两份自写G3文档换行口径已修正，所有worker/执行原件不清洗。外仓未写/提交/推送，不扩张QA有限软件签收为联合链或G3/F05关闭。随后仅PWF实际回执提交，不改变冻结工件。
+
+
+## 2026-10-08 — Phase108集中联合开工
+- 自动目标续行，上一目标工作完成QA有限软件签收并改变下一动作，属于progress；本次从bf5708d实际树恢复，resolver无歧义=root PWF。不把heartbeat状态复述当工程进展。
+- 既有12组现在可按真实两个新结果固定副本推进；总控只写IQS，独立owner进程防止src/stockwiki导入污染。CodeGraph已先查结构，查询没有命中观察/ACK的新接口；后续按已知具体文件和固定导出代码读取，不修改外仓索引。
+- controller初freeze在main_with_llm混合EOL hash停，exit1且独占两根仍空；不是产品RED。保留initial helper，空根lstat无链接后显式resume-empty；只允许与既有签收raw SHA完全相同且与固定blob仅EOL等价的原文件恢复，绝不按文件名接纳动态代码或补缺输入。原工具stderr在本轮工具记录，不伪造raw日志。
+- 成功固定QA136/SW296字节；读取具体冻结文件时两个猜测路径（test_swr_query_variants.py/web/app.py）不存在，已按snapshot定位实际test_swr_profiles/test_swr_query/ui.py，不运行猜测入口，非产品RED。独立消费者release将从预先冻结manifest题义/6个原artifact SHA构建，不能由产出观察逆推。
+- controller首次SW seed进程在导入test fixture前ModuleNotFoundError，tests非包且被环境同名目录遮蔽；无生产/导入逻辑执行。原stderr/process/initial driver与runner保留，改为已知固定fixture文件importlib加载并新seed标签/子根继续，不修改任一被测源码或断言。
+- corrected SW seed已正常建立provisional合成身份。首次cold actor在派发前KeyError IQS_03，原manifest含替换题而无该ID；是controller题号猜测，HTTP尚未开始。保留原process/stderr/runner，改用实际manifest中的IQS_04，新QA子根/标签续行；已成功seed不重做。
+- 初联合正例实际cold exit0/31次HTTP边界替身/31完整封包，scored低2、insufficient/null、N/A/null与security四包均由公开SW CLI接受，provisional身份不升级verified；UI/query builder实际protocol=W09、facts=false/C06=false。公开SW原ACK直接送QA被fields mismatch拒绝，ready未变；已得到真实跨仓新阻断，继续同批其他边界后一次复审。子CLI流经owner helper UTF8 text解码，外actor stdout/stderr才是raw，不冒称每层raw。
+- 集中真实suite实际17实例=6P/11F、68.10s、controller69.868s/session48975 exit1，无timeout。产品RED收为JR1 enriched ACK1.0与公共内部错误码、JR2 wrong-store首ACK可delivered、JR3重复summary最后值落库1；不把11失败都报产品缺陷。J07 before find摘要/after get完整是controller采集形状错误，J05未migrate是环境前置，J11依赖缺产物未跑。
+- 原第二cold只改HTTP actual B、请求仍A，31HTTP后checkpoint全拒；是requested≠resolved当前不支持，不是真B比较。不覆写actual、删校验或称已修。另新B_DIRECT同模型独立run/basis正常31完整包，补批9实例=7P/2F、31.75s/session94596 exit1；5错键统一get_item完整快照皆拒且不变，J11原2/9详情ambiguous、>=8总0。错误store从独立q7 send_intent后仍错delivered；迁移空库拒且观察0，但原ACK error entity_not_found违反公共missing_entity枚举，属JR1，不改断言迎合内部码。
+- 独立q8 ready→begin→warm/seal两真实CLI均0/额外HTTP0/attempt及包不变，不依赖J06故障；模型unknown/预留/fallback全范围仍partial。真实公开schema对accepted/rejected原ACK均拒；SW create/verify/restore/非空拒与新空目标水位保持GREEN，只证SW单侧。query为W09/C06false/factsfalse，不假称F05或浏览器测试。
+- 一次原集中独审和补记已收到，见docs/implementation/reviews/G3/joint-2026-10-08/independent-review.md；明确partial/missing覆盖。106合成原包/输入/日志、两JUnit与全部外actor raw归档；三cold合计93 HTTP替身，真实API/搜索/收费/下载0，两源只读。
+- 收尾collector首次读source-snapshot归档层级错、exit1；保留initial并复用已成功alias快照，不重跑cold。后置EOL proof纠正初freeze原因：初helper漏LF候选，并非混合EOL；432文件均可由固定Git blob的LF/CRLF重建、mixed0。helper补LF候选，原工具错误不伪造日志，不报产品坏。
+- 432固定源SHA与两外仓HEAD/status前后完全一致；CIM/lstat/单硬链/精确set-size-SHA dry→Apply严格清1074本批文件/78目录（session15424 exit0），根不存在；无server/listener，仅受控socketpair。原共享TEMP/Phase92/源七项/opencode保留。
+- Phase108验收/集中整改卡/PWF已写；StockWiki原授权不含本次四文件，已请求精确新增许可，答复前不写。StockQA全仓旧授权保留，但本批没写。下一动作同卡JR1–JR3 TDD/集中回验，alias追溯单列，G3/L03/F05/真实gold/THIN保持原门。IQS提交推送待真实回执。

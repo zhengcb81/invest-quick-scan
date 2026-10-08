@@ -1682,3 +1682,14 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 同链独审指出segment动态缺口，使用显式synthetic内存变体一正一反补验即可，不改冻结fixture或假造真实owner golden，也无需额外审查门。compact ACK夹具回八字段保留原关键断言，full守卫有独立测试。
 - worker清理逐文件SHA列表可核对，两manifest hash相符；这是收到的过去证据。公共handoff因历史cleaned=false仍exit2，过去sharedTEMP删除者不可证明，与有限软件GREEN分开登记。总控新根615/284严格清除，与外仓过去清理不混为一谈。
 - QA和SW的软件整改输入齐备，可进入既有联合12组大节点；联合未跑、真实身份/事实gold未齐，G3F05/THIN/L03不自动关闭。Lab的有限软件签收不人为阻塞该联合链，准确性结论仍需独立实证。
+
+## 2026-10-08 — Phase108真实联合初步证据
+- 独立release在派发前由冻结manifest和六个原模块artifact SHA建立，绝不由产出Observation反推。QA真实CLI在隔离副本cold exit0、31 HTTP边界替身生成31完整包；SW公开CLI接受低2分、insufficient/null、N/A/null与security四包，实际身份库保持provisional。这是合成软件链，非真实公司/owner golden。
+- 接收方公开durable ACK包含ack_sequence；QA公开apply_result_delivery_ack要求旧十字段精确集合。原ACK逐字传回实际报import ACK fields mismatch，ready前后不变。不能删字段造正例，跨owner兼容和目标store绑定要在同一大节点集中收口。
+- 查询/UI JSON builder实际protocol=stockwiki_w09_read_primitives、C06/facts/relations=false，不据页面或评分投影签F05；两个消费包依赖继续缺。准备说明的prepared_not_executed是Phase107历史，Phase108已初跑，最终以本批原回执/矩阵为准。
+- 控制器先按冻结公开形状修正J11查询field/operator与详情原分值/ambiguous/variants断言后再执行；详情保留2与9，聚合/默认筛选不可把它们变单一高分。此为运行前校准测试接口，未改被测源码或把产品RED改为GREEN。
+- 集中与补批确认三项跨仓边界：原public ACK1.0根字段扩展/内部error taxonomy不合格；QA首次ACK未预绑store，ready及send_intent均可错delivered；SW原始JSON重复summary取last并落库。公共四状态、历史原件不变/严格legacy策略、发送前目标绑定、深层重复键/有限float须按同卡一起修，不能只绿accepted正例。
+- 原J03不是B请求实验，只改response.model；当前模式强制actual=requested而阻断checkpoint，记录unsupported，不能改actual=A当修复。后续将durable actual与原响应/receipt绑定，保留requested独立路由；无证据的旧attempt不能从requested补resolved。另同模型独立B_DIRECT足够隔离run/basis查询试验，原2/9均留且默认>=8不命中，不扩大为多模型全矩阵。
+- 错键既拒但快照形状不同是控制器错误；同一get_item补采五例不变。missingentity未migrate先拒环境，补migrate后观察0但entity_not_found违反公开枚举是真协议错；不能为让测试绿把expected公共码改为内部码。原17/补9分别存，不加总冒称整套通过。
+- 独立q8 unknown交付重启正例不依赖JR1导致的失败状态，恢复0HTTP/attempt和包不变；它仍不能替模型unknown/预留的完整Q10范围。SW单侧恢复不替双owner、UI builder不替浏览器、false capabilities不替F05、provisional合成不替真实gold。
+- 收尾校核纠正freeze初诊：Git blob为CRLF而已签raw为LF，initial漏LF候选。432逐文件Git字节域都有as-is/LF/CRLF可逆证明，mixed0；原先“混合EOL”是未经证明推测，不继续作为事实。补LF候选和保留initial错误，不能伪造原stderr raw。

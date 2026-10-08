@@ -1,0 +1,2837 @@
+{
+    "schema_version": "stockqa.quick_scan_result/1.0.0",
+    "entity": {
+        "entity_id": "ENT_CONTEXT_FIXTURE",
+        "name": "Fixture Corp"
+    },
+    "observed_at": "2026-10-08T22:46:37.480698Z",
+    "provider": {
+        "name": "openai",
+        "requested_model": "actual-fixture-model"
+    },
+    "answers": {
+        "IQS_01": {
+            "question_id": "IQS_01",
+            "status": "scored",
+            "score": 2,
+            "description": "{\"question_id\": \"IQS_01\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 2, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e0\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e2\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e3\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e4\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e5\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e6\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e7\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e8\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_02": {
+            "question_id": "IQS_02",
+            "status": "insufficient_evidence",
+            "score": null,
+            "description": "{\"question_id\": \"IQS_02\", \"response_kind\": \"score\", \"status\": \"insufficient_evidence\", \"score\": null, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_04": {
+            "question_id": "IQS_04",
+            "status": "not_applicable",
+            "score": null,
+            "description": "{\"question_id\": \"IQS_04\", \"response_kind\": \"score\", \"status\": \"not_applicable\", \"score\": null, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"not_applicable\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_05": {
+            "question_id": "IQS_05",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_05\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_06": {
+            "question_id": "IQS_06",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_06\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_07": {
+            "question_id": "IQS_07",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_07\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_08": {
+            "question_id": "IQS_08",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_08\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_09": {
+            "question_id": "IQS_09",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_09\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_10": {
+            "question_id": "IQS_10",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_10\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_12": {
+            "question_id": "IQS_12",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_12\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_13": {
+            "question_id": "IQS_13",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_13\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_14": {
+            "question_id": "IQS_14",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_14\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_15": {
+            "question_id": "IQS_15",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_15\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_16": {
+            "question_id": "IQS_16",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_16\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_17": {
+            "question_id": "IQS_17",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_17\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_18": {
+            "question_id": "IQS_18",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_18\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_19": {
+            "question_id": "IQS_19",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_19\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_20": {
+            "question_id": "IQS_20",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_20\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_21": {
+            "question_id": "IQS_21",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_21\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_22": {
+            "question_id": "IQS_22",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_22\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_23": {
+            "question_id": "IQS_23",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_23\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "IQS_24": {
+            "question_id": "IQS_24",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_24\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "OPERATING_01": {
+            "question_id": "OPERATING_01",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"OPERATING_01\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "OPERATING_02": {
+            "question_id": "OPERATING_02",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"OPERATING_02\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "INDUSTRIAL_01": {
+            "question_id": "INDUSTRIAL_01",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"INDUSTRIAL_01\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "INDUSTRIAL_02": {
+            "question_id": "INDUSTRIAL_02",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"INDUSTRIAL_02\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "MATURE_01": {
+            "question_id": "MATURE_01",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"MATURE_01\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "MATURE_02": {
+            "question_id": "MATURE_02",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"MATURE_02\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "CYCLICAL_01": {
+            "question_id": "CYCLICAL_01",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"CYCLICAL_01\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "CYCLICAL_02": {
+            "question_id": "CYCLICAL_02",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"CYCLICAL_02\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        },
+        "CROSS_BORDER_01": {
+            "question_id": "CROSS_BORDER_01",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"CROSS_BORDER_01\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://example.com/issuer\", \"published_at\": \"2026-09-01\", \"claim\": \"Synthetic claim used only for offline validation.\"}], \"counterevidence\": \"Synthetic counterpoint kept for balance.\", \"watch_triggers\": [\"Synthetic watch trigger\"], \"missing_fields\": [\"customer concentration\"], \"coverage\": {\"status\": \"partial\", \"reason\": \"Synthetic fixture covers only part of the company.\"}}",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        }
+    },
+    "execution_receipts": {
+        "IQS_01": {
+            "answer_sha256": "8d54fde56cbd27e5af735c66b8a1c7177e2af54c61b4fdfa12ce781d39083869",
+            "answered_at": "2026-10-08T22:46:31.101005Z",
+            "input_question_sha256": "e283816b9c55f6417c464f84d9cc0a9585a7483d64ead488a30ac73cba61fb31",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_01",
+            "response_id": "resp_IQS_01",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:31.060763Z",
+            "completed_at": "2026-10-08T21:46:31.088836Z",
+            "attempt_id": "8da7f1a4-3c0f-410a-8262-72d12ec36912",
+            "prompt_sha256": "04512855f9c5b81818a9277ee991c9b17d32146b7d2cecc2f585857113b3cf1e",
+            "search_receipt_id": "ws_IQS_01",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_01",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_01",
+                    "response_id": "resp_IQS_01",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:31.060763Z",
+                    "completed_at": "2026-10-08T21:46:31.088836Z",
+                    "attempt_id": "8da7f1a4-3c0f-410a-8262-72d12ec36912",
+                    "prompt_sha256": "04512855f9c5b81818a9277ee991c9b17d32146b7d2cecc2f585857113b3cf1e",
+                    "search_receipt_id": "ws_IQS_01",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_01",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_02": {
+            "answer_sha256": "fa16bbdc2b30d8aed87438ceda472bf1e6ad395829952723db15a19c2804de2b",
+            "answered_at": "2026-10-08T22:46:31.306780Z",
+            "input_question_sha256": "8f858cac2449fa4a1b30d1bf9f72c77b5b1d6a6a7455d2ee9254d6c803def673",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_02",
+            "response_id": "resp_IQS_02",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:31.274388Z",
+            "completed_at": "2026-10-08T21:46:31.296126Z",
+            "attempt_id": "99dcd3a1-d6ae-4462-94c3-8fe35527622f",
+            "prompt_sha256": "596b11e72b89b7abc22e145989ad63167316c255c25fa8bfa56b16308c2a03c0",
+            "search_receipt_id": "ws_IQS_02",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_02",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_02",
+                    "response_id": "resp_IQS_02",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:31.274388Z",
+                    "completed_at": "2026-10-08T21:46:31.296126Z",
+                    "attempt_id": "99dcd3a1-d6ae-4462-94c3-8fe35527622f",
+                    "prompt_sha256": "596b11e72b89b7abc22e145989ad63167316c255c25fa8bfa56b16308c2a03c0",
+                    "search_receipt_id": "ws_IQS_02",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_02",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_04": {
+            "answer_sha256": "ef0e42dc0b20de84cb6b8a9d266d01a7c46796160cd2b63872eab7fdaeeefabb",
+            "answered_at": "2026-10-08T22:46:31.508384Z",
+            "input_question_sha256": "59219c8cb1ed5d0afaf369ffb83d878d120ac38a9568c48b977daf61bce62b17",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_04",
+            "response_id": "resp_IQS_04",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:31.472346Z",
+            "completed_at": "2026-10-08T21:46:31.496535Z",
+            "attempt_id": "87cabbb2-44d1-456f-9044-d4c7746c51ea",
+            "prompt_sha256": "890a888e8b6f6029b92d4f413e6206a74d95ca65ccc7cc373dd112eaf856c6c9",
+            "search_receipt_id": "ws_IQS_04",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_04",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_04",
+                    "response_id": "resp_IQS_04",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:31.472346Z",
+                    "completed_at": "2026-10-08T21:46:31.496535Z",
+                    "attempt_id": "87cabbb2-44d1-456f-9044-d4c7746c51ea",
+                    "prompt_sha256": "890a888e8b6f6029b92d4f413e6206a74d95ca65ccc7cc373dd112eaf856c6c9",
+                    "search_receipt_id": "ws_IQS_04",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_04",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_05": {
+            "answer_sha256": "0526a1e66261b95fd35ec584bea934402a0661b95c56ae80ab13f3669c2d9cf4",
+            "answered_at": "2026-10-08T22:46:31.738478Z",
+            "input_question_sha256": "0a51a0064309d2dbbf19f81d6993c574090d76d1a62bea57ba94ffc914efb3cf",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_05",
+            "response_id": "resp_IQS_05",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:31.693250Z",
+            "completed_at": "2026-10-08T21:46:31.724587Z",
+            "attempt_id": "30777e3b-b1f1-4d72-b4b4-298bd7497c44",
+            "prompt_sha256": "65a6b81b74eb042b8f69cfceaf6cc94d9fe33eadfdabbfbee8963028748e2b54",
+            "search_receipt_id": "ws_IQS_05",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_05",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_05",
+                    "response_id": "resp_IQS_05",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:31.693250Z",
+                    "completed_at": "2026-10-08T21:46:31.724587Z",
+                    "attempt_id": "30777e3b-b1f1-4d72-b4b4-298bd7497c44",
+                    "prompt_sha256": "65a6b81b74eb042b8f69cfceaf6cc94d9fe33eadfdabbfbee8963028748e2b54",
+                    "search_receipt_id": "ws_IQS_05",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_05",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_06": {
+            "answer_sha256": "19525d9aef4355bf499e1aceefe042bb7a76be7671dd67bf53430985929ef6d6",
+            "answered_at": "2026-10-08T22:46:31.986295Z",
+            "input_question_sha256": "49666dff46f6b08b17f0e1f13b20151f4b6b8e18d25200af527637a55c60e6a7",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_06",
+            "response_id": "resp_IQS_06",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:31.946300Z",
+            "completed_at": "2026-10-08T21:46:31.974761Z",
+            "attempt_id": "acb1d213-7e3d-42a3-a694-c8f632a46222",
+            "prompt_sha256": "8ced42f0cfcb38af66a127b0fa0ba697d46ee8061080bb25adee594a3222e7d8",
+            "search_receipt_id": "ws_IQS_06",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_06",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_06",
+                    "response_id": "resp_IQS_06",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:31.946300Z",
+                    "completed_at": "2026-10-08T21:46:31.974761Z",
+                    "attempt_id": "acb1d213-7e3d-42a3-a694-c8f632a46222",
+                    "prompt_sha256": "8ced42f0cfcb38af66a127b0fa0ba697d46ee8061080bb25adee594a3222e7d8",
+                    "search_receipt_id": "ws_IQS_06",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_06",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_07": {
+            "answer_sha256": "1980beff8e6188b2e37e3ea5ae339799c8e3c74d43152d428372dc41eb98d1f3",
+            "answered_at": "2026-10-08T22:46:32.220282Z",
+            "input_question_sha256": "cf8c70b9c3960b1b773b1f34b9c6dfb11006fae3510cc6e0474d7f56f3b6f7f8",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_07",
+            "response_id": "resp_IQS_07",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:32.185358Z",
+            "completed_at": "2026-10-08T21:46:32.207834Z",
+            "attempt_id": "88462836-e901-4e55-87ec-f8e8a1c6c699",
+            "prompt_sha256": "2cd5b9f32e658c17781ea754af429e9c1ce27bc7ee8af036469a5ca27afef841",
+            "search_receipt_id": "ws_IQS_07",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_07",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_07",
+                    "response_id": "resp_IQS_07",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:32.185358Z",
+                    "completed_at": "2026-10-08T21:46:32.207834Z",
+                    "attempt_id": "88462836-e901-4e55-87ec-f8e8a1c6c699",
+                    "prompt_sha256": "2cd5b9f32e658c17781ea754af429e9c1ce27bc7ee8af036469a5ca27afef841",
+                    "search_receipt_id": "ws_IQS_07",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_07",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_08": {
+            "answer_sha256": "cfc355edb44a10e35352a453292419f1d67c1175ff57430f031079a9006339a7",
+            "answered_at": "2026-10-08T22:46:32.419234Z",
+            "input_question_sha256": "05251261c9c783e960c321d304956de42a5c342cbe056aa079b193162eb8d03a",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_08",
+            "response_id": "resp_IQS_08",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:32.384278Z",
+            "completed_at": "2026-10-08T21:46:32.408368Z",
+            "attempt_id": "ffc6b6ca-55ab-4e8c-97ec-ef97fd90c01e",
+            "prompt_sha256": "9b0f5c5f72607aee3961e6cab549ab0ff740cef0383e5afa0b66b11adcf7100a",
+            "search_receipt_id": "ws_IQS_08",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_08",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_08",
+                    "response_id": "resp_IQS_08",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:32.384278Z",
+                    "completed_at": "2026-10-08T21:46:32.408368Z",
+                    "attempt_id": "ffc6b6ca-55ab-4e8c-97ec-ef97fd90c01e",
+                    "prompt_sha256": "9b0f5c5f72607aee3961e6cab549ab0ff740cef0383e5afa0b66b11adcf7100a",
+                    "search_receipt_id": "ws_IQS_08",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_08",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_09": {
+            "answer_sha256": "14f182265ccd9900de1243d9d78907107e86247c6d695448f0d43cf438fa7139",
+            "answered_at": "2026-10-08T22:46:32.604266Z",
+            "input_question_sha256": "9cb78889cd0a56bb8ace6ec6ec340517267a9516e8bba31fb06fc19fb2ca4dbb",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_09",
+            "response_id": "resp_IQS_09",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:32.570117Z",
+            "completed_at": "2026-10-08T21:46:32.592375Z",
+            "attempt_id": "12c6f550-c93b-4364-bce7-47915be0d069",
+            "prompt_sha256": "372e3c00f130297516c902a319af3a793b80c145f1b1b7ae9a2cdc28a151ac04",
+            "search_receipt_id": "ws_IQS_09",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_09",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_09",
+                    "response_id": "resp_IQS_09",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:32.570117Z",
+                    "completed_at": "2026-10-08T21:46:32.592375Z",
+                    "attempt_id": "12c6f550-c93b-4364-bce7-47915be0d069",
+                    "prompt_sha256": "372e3c00f130297516c902a319af3a793b80c145f1b1b7ae9a2cdc28a151ac04",
+                    "search_receipt_id": "ws_IQS_09",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_09",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_10": {
+            "answer_sha256": "c1f52b48b2c478f07b99dece29f48452dae1b56bdf5bac4a3a13ca9f8f906e5d",
+            "answered_at": "2026-10-08T22:46:32.804809Z",
+            "input_question_sha256": "820b5d44fd3acded8f7a30b4858a8ea700a4ac486258331f021c50fb9bb6237e",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_10",
+            "response_id": "resp_IQS_10",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:32.769098Z",
+            "completed_at": "2026-10-08T21:46:32.793337Z",
+            "attempt_id": "74d647c2-aa7d-4462-b1f1-2f0ebbe440d8",
+            "prompt_sha256": "2f7ba3a4a863cecfa564e82050b8c4a7ab4fae00fe14fb708639d32dcef85156",
+            "search_receipt_id": "ws_IQS_10",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_10",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_10",
+                    "response_id": "resp_IQS_10",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:32.769098Z",
+                    "completed_at": "2026-10-08T21:46:32.793337Z",
+                    "attempt_id": "74d647c2-aa7d-4462-b1f1-2f0ebbe440d8",
+                    "prompt_sha256": "2f7ba3a4a863cecfa564e82050b8c4a7ab4fae00fe14fb708639d32dcef85156",
+                    "search_receipt_id": "ws_IQS_10",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_10",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_12": {
+            "answer_sha256": "2dcbc04c17b2d64a595612176e0fc1810f9c9b54290b04459688b318d0708388",
+            "answered_at": "2026-10-08T22:46:32.991593Z",
+            "input_question_sha256": "9e7627f29c37faecbb59f1deb1ef33e29bd20ff592bef43b8b26d91ed62f73be",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_12",
+            "response_id": "resp_IQS_12",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:32.955242Z",
+            "completed_at": "2026-10-08T21:46:32.979362Z",
+            "attempt_id": "9986b56b-373c-4e02-b405-04cceff33c66",
+            "prompt_sha256": "b606d3de88a8ddd11d0db3f2021a138fe41b05e241a266d34b464d69605717aa",
+            "search_receipt_id": "ws_IQS_12",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_12",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_12",
+                    "response_id": "resp_IQS_12",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:32.955242Z",
+                    "completed_at": "2026-10-08T21:46:32.979362Z",
+                    "attempt_id": "9986b56b-373c-4e02-b405-04cceff33c66",
+                    "prompt_sha256": "b606d3de88a8ddd11d0db3f2021a138fe41b05e241a266d34b464d69605717aa",
+                    "search_receipt_id": "ws_IQS_12",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_12",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_13": {
+            "answer_sha256": "8a0e7544436ab505097c8f789a730d6f6164b7094fcba46ca69ece721835f136",
+            "answered_at": "2026-10-08T22:46:33.168018Z",
+            "input_question_sha256": "ae48b8ae5d746f439c99e4c7dd23c09c2bf4eb310f6581933c026dcfe7ac9351",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_13",
+            "response_id": "resp_IQS_13",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:33.134860Z",
+            "completed_at": "2026-10-08T21:46:33.156505Z",
+            "attempt_id": "d35da6dd-4212-461b-8cf5-bd50a3475a52",
+            "prompt_sha256": "fd7cfbb73644c2870828e97d7201389ed5d7cb482e26f39951eb7ef44c57504d",
+            "search_receipt_id": "ws_IQS_13",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_13",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_13",
+                    "response_id": "resp_IQS_13",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:33.134860Z",
+                    "completed_at": "2026-10-08T21:46:33.156505Z",
+                    "attempt_id": "d35da6dd-4212-461b-8cf5-bd50a3475a52",
+                    "prompt_sha256": "fd7cfbb73644c2870828e97d7201389ed5d7cb482e26f39951eb7ef44c57504d",
+                    "search_receipt_id": "ws_IQS_13",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_13",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_14": {
+            "answer_sha256": "c73ef65e22cafb4875580fb40cfcf33ca4f27d928f4068276aff7179a3c981c0",
+            "answered_at": "2026-10-08T22:46:33.354514Z",
+            "input_question_sha256": "61739b11a5dcd3a2357e6ab770c2fa991b38e19551eefd60cf52ca5c9353f9ca",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_14",
+            "response_id": "resp_IQS_14",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:33.319397Z",
+            "completed_at": "2026-10-08T21:46:33.343238Z",
+            "attempt_id": "4b2be4d1-a06e-475f-9a02-6f5da8e928f8",
+            "prompt_sha256": "e49a722551b257673f07aab06cf8f347a61ae5552ae0e3b3ee6d26de7ef6e415",
+            "search_receipt_id": "ws_IQS_14",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_14",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_14",
+                    "response_id": "resp_IQS_14",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:33.319397Z",
+                    "completed_at": "2026-10-08T21:46:33.343238Z",
+                    "attempt_id": "4b2be4d1-a06e-475f-9a02-6f5da8e928f8",
+                    "prompt_sha256": "e49a722551b257673f07aab06cf8f347a61ae5552ae0e3b3ee6d26de7ef6e415",
+                    "search_receipt_id": "ws_IQS_14",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_14",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_15": {
+            "answer_sha256": "80c14925091c988c72aa40b0f917a541965342dc544e22539d8876143cb762f9",
+            "answered_at": "2026-10-08T22:46:33.575785Z",
+            "input_question_sha256": "0b92c9f052b7e4ca9132b4b9439caf184a06c3a49c463e7d8769baead306c3c8",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_15",
+            "response_id": "resp_IQS_15",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:33.537214Z",
+            "completed_at": "2026-10-08T21:46:33.563123Z",
+            "attempt_id": "d12e2cc1-0678-499f-9164-fa1558f276d3",
+            "prompt_sha256": "127cc9ab0d7a8ca2be0b4aecdfe44ca68250c8be90a995c3a4b14291407c3110",
+            "search_receipt_id": "ws_IQS_15",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_15",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_15",
+                    "response_id": "resp_IQS_15",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:33.537214Z",
+                    "completed_at": "2026-10-08T21:46:33.563123Z",
+                    "attempt_id": "d12e2cc1-0678-499f-9164-fa1558f276d3",
+                    "prompt_sha256": "127cc9ab0d7a8ca2be0b4aecdfe44ca68250c8be90a995c3a4b14291407c3110",
+                    "search_receipt_id": "ws_IQS_15",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_15",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_16": {
+            "answer_sha256": "c420e1487d3d753d87a9282cad1473c4ff0b9addbdb2e853894a81ab6e41e11b",
+            "answered_at": "2026-10-08T22:46:33.815726Z",
+            "input_question_sha256": "9e3d023a6731a6865bc3c668e22d610934f34018304dc893e9280798b7e41c40",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_16",
+            "response_id": "resp_IQS_16",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:33.779125Z",
+            "completed_at": "2026-10-08T21:46:33.803522Z",
+            "attempt_id": "daf8d604-e5f2-4596-af31-81479efde5d9",
+            "prompt_sha256": "115b9ce198109bd29d5aad29527b826738310c455c39b742486250e9b00300a1",
+            "search_receipt_id": "ws_IQS_16",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_16",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_16",
+                    "response_id": "resp_IQS_16",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:33.779125Z",
+                    "completed_at": "2026-10-08T21:46:33.803522Z",
+                    "attempt_id": "daf8d604-e5f2-4596-af31-81479efde5d9",
+                    "prompt_sha256": "115b9ce198109bd29d5aad29527b826738310c455c39b742486250e9b00300a1",
+                    "search_receipt_id": "ws_IQS_16",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_16",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_17": {
+            "answer_sha256": "494058681d1d9026fee809d9658c38edb8a15aed744daf411ecc0a1277a51006",
+            "answered_at": "2026-10-08T22:46:34.008870Z",
+            "input_question_sha256": "f40bab3139cdb4f8080c5edaddb8cd7438fdab455f1a1cc8ec798da2c8f3c921",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_17",
+            "response_id": "resp_IQS_17",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:33.973046Z",
+            "completed_at": "2026-10-08T21:46:33.996729Z",
+            "attempt_id": "d0f3e04a-f640-4b34-a915-9b7ceffc4cac",
+            "prompt_sha256": "9c262916a9430e8ddea47e2d02bcbc106824c5ea613a54b3c75766971803c0b0",
+            "search_receipt_id": "ws_IQS_17",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_17",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_17",
+                    "response_id": "resp_IQS_17",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:33.973046Z",
+                    "completed_at": "2026-10-08T21:46:33.996729Z",
+                    "attempt_id": "d0f3e04a-f640-4b34-a915-9b7ceffc4cac",
+                    "prompt_sha256": "9c262916a9430e8ddea47e2d02bcbc106824c5ea613a54b3c75766971803c0b0",
+                    "search_receipt_id": "ws_IQS_17",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_17",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_18": {
+            "answer_sha256": "e1ba7ee4b017bc92a75591557c0bb7b9074aa24150e437a74c4c115d5d7702c2",
+            "answered_at": "2026-10-08T22:46:34.193150Z",
+            "input_question_sha256": "0b8643251344863e51f2e3f991f8af1d6a383f4b18e963d0b85eb53f40dcd414",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_18",
+            "response_id": "resp_IQS_18",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:34.158596Z",
+            "completed_at": "2026-10-08T21:46:34.182593Z",
+            "attempt_id": "3efb5de0-9c03-4d19-9a9b-820497f590d1",
+            "prompt_sha256": "a7629fccae2c605a9099595311752bbca9e044f224f08bd2fbfeb926a369dec7",
+            "search_receipt_id": "ws_IQS_18",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_18",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_18",
+                    "response_id": "resp_IQS_18",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:34.158596Z",
+                    "completed_at": "2026-10-08T21:46:34.182593Z",
+                    "attempt_id": "3efb5de0-9c03-4d19-9a9b-820497f590d1",
+                    "prompt_sha256": "a7629fccae2c605a9099595311752bbca9e044f224f08bd2fbfeb926a369dec7",
+                    "search_receipt_id": "ws_IQS_18",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_18",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_19": {
+            "answer_sha256": "7b0c85465345674e31504fe09c2abd125e700b030a7420898984c9d1ca6e3d79",
+            "answered_at": "2026-10-08T22:46:34.389881Z",
+            "input_question_sha256": "60fd00523237c835637f4ffc6456e07a2af7fceea1ca4c0644fa0f2eafd4e7a0",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_19",
+            "response_id": "resp_IQS_19",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:34.355329Z",
+            "completed_at": "2026-10-08T21:46:34.378881Z",
+            "attempt_id": "d3673f77-5c9e-4d44-9ab8-a1edc5cd9a82",
+            "prompt_sha256": "6a3b50c86c0556a2e83eb485cb1d2d7c1e16b37914b731458d66bd5dcbf3c2e1",
+            "search_receipt_id": "ws_IQS_19",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_19",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_19",
+                    "response_id": "resp_IQS_19",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:34.355329Z",
+                    "completed_at": "2026-10-08T21:46:34.378881Z",
+                    "attempt_id": "d3673f77-5c9e-4d44-9ab8-a1edc5cd9a82",
+                    "prompt_sha256": "6a3b50c86c0556a2e83eb485cb1d2d7c1e16b37914b731458d66bd5dcbf3c2e1",
+                    "search_receipt_id": "ws_IQS_19",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_19",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_20": {
+            "answer_sha256": "f4a117dc9776a7b61854cbd9b8c37caec0a4ca95a1bb9c42d3634686f318c3a6",
+            "answered_at": "2026-10-08T22:46:34.607566Z",
+            "input_question_sha256": "4364686ca9045dcd3cb858e124b98fcf3e558115098a109107228ed9af0e1466",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_20",
+            "response_id": "resp_IQS_20",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:34.572022Z",
+            "completed_at": "2026-10-08T21:46:34.596010Z",
+            "attempt_id": "0da3f4fd-b109-4040-ad8c-8720af1fce77",
+            "prompt_sha256": "ca67179a1bdd08409666082fd0f798e62f10ad25c2fcfc89a34d47f8d4fd44ee",
+            "search_receipt_id": "ws_IQS_20",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_20",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_20",
+                    "response_id": "resp_IQS_20",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:34.572022Z",
+                    "completed_at": "2026-10-08T21:46:34.596010Z",
+                    "attempt_id": "0da3f4fd-b109-4040-ad8c-8720af1fce77",
+                    "prompt_sha256": "ca67179a1bdd08409666082fd0f798e62f10ad25c2fcfc89a34d47f8d4fd44ee",
+                    "search_receipt_id": "ws_IQS_20",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_20",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_21": {
+            "answer_sha256": "2fd62564aa3e29ae5d3c61e0eb76621d05ddf621967f28e066002712b44cf6f8",
+            "answered_at": "2026-10-08T22:46:34.843956Z",
+            "input_question_sha256": "cfbd1efac3fd687729622dc664cc5c6b8b7e503d4f7f007a184896acc5f58360",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_21",
+            "response_id": "resp_IQS_21",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:34.806538Z",
+            "completed_at": "2026-10-08T21:46:34.832247Z",
+            "attempt_id": "83c67c34-f252-481e-803d-64605f57f846",
+            "prompt_sha256": "d4ef1c89b15c6cacedc9a508cf4ae5888e455a73e552e99e66ab2e4ee29b486d",
+            "search_receipt_id": "ws_IQS_21",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_21",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_21",
+                    "response_id": "resp_IQS_21",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:34.806538Z",
+                    "completed_at": "2026-10-08T21:46:34.832247Z",
+                    "attempt_id": "83c67c34-f252-481e-803d-64605f57f846",
+                    "prompt_sha256": "d4ef1c89b15c6cacedc9a508cf4ae5888e455a73e552e99e66ab2e4ee29b486d",
+                    "search_receipt_id": "ws_IQS_21",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_21",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_22": {
+            "answer_sha256": "cd043a66f0ca737cb1f89a946ef3b81e40a7b7e24c2b81d672e20c479557ded0",
+            "answered_at": "2026-10-08T22:46:35.059438Z",
+            "input_question_sha256": "4b221e371263aceb7411e4c67bbca8eb9326f6547cc17e9cee3a5494e94bf87d",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_22",
+            "response_id": "resp_IQS_22",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:35.018372Z",
+            "completed_at": "2026-10-08T21:46:35.045945Z",
+            "attempt_id": "600a269a-3a07-4387-9496-98d645e51491",
+            "prompt_sha256": "5bce62b5a61dceaa1fad060b6b41d3e0a73935fd97f4e7ee2f5150c48c80908b",
+            "search_receipt_id": "ws_IQS_22",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_22",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_22",
+                    "response_id": "resp_IQS_22",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:35.018372Z",
+                    "completed_at": "2026-10-08T21:46:35.045945Z",
+                    "attempt_id": "600a269a-3a07-4387-9496-98d645e51491",
+                    "prompt_sha256": "5bce62b5a61dceaa1fad060b6b41d3e0a73935fd97f4e7ee2f5150c48c80908b",
+                    "search_receipt_id": "ws_IQS_22",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_22",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_23": {
+            "answer_sha256": "974fb36cd28286f0a45627d10a08e4a9218c9f8a653bc7d25f5bdbbb787c3205",
+            "answered_at": "2026-10-08T22:46:35.244160Z",
+            "input_question_sha256": "ecabd96c67d98c5088bc8cd01bc71448c3d2f1ad8c4e341a939f770dddfb02fc",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_23",
+            "response_id": "resp_IQS_23",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:35.210195Z",
+            "completed_at": "2026-10-08T21:46:35.233149Z",
+            "attempt_id": "da4e59ec-e89c-4d40-a009-fb5ae31bbc68",
+            "prompt_sha256": "36bb88c9fdf9684088a91fb10a8e44c20ed5f2cd038df00615197b9e07f4c740",
+            "search_receipt_id": "ws_IQS_23",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_23",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_23",
+                    "response_id": "resp_IQS_23",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:35.210195Z",
+                    "completed_at": "2026-10-08T21:46:35.233149Z",
+                    "attempt_id": "da4e59ec-e89c-4d40-a009-fb5ae31bbc68",
+                    "prompt_sha256": "36bb88c9fdf9684088a91fb10a8e44c20ed5f2cd038df00615197b9e07f4c740",
+                    "search_receipt_id": "ws_IQS_23",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_23",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "IQS_24": {
+            "answer_sha256": "3c1155869f30d1fbd237f67a716a793521149f71351e6bdb525e8fb76c9f3803",
+            "answered_at": "2026-10-08T22:46:35.439063Z",
+            "input_question_sha256": "c72cb5a956f1eb90eee7e78ae0b0ed734765285021227c7970195e885e2165e4",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_IQS_24",
+            "response_id": "resp_IQS_24",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:35.405876Z",
+            "completed_at": "2026-10-08T21:46:35.428585Z",
+            "attempt_id": "06cf7c6f-ad63-4df1-8ad1-6abecb7a99e3",
+            "prompt_sha256": "93f053f206f2626262094cb565afd10a0dfeadb3c1cb1bfa631d19cf9242887b",
+            "search_receipt_id": "ws_IQS_24",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_IQS_24",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_IQS_24",
+                    "response_id": "resp_IQS_24",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:35.405876Z",
+                    "completed_at": "2026-10-08T21:46:35.428585Z",
+                    "attempt_id": "06cf7c6f-ad63-4df1-8ad1-6abecb7a99e3",
+                    "prompt_sha256": "93f053f206f2626262094cb565afd10a0dfeadb3c1cb1bfa631d19cf9242887b",
+                    "search_receipt_id": "ws_IQS_24",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_IQS_24",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "OPERATING_01": {
+            "answer_sha256": "a65df1bec1f0f3ed831a2658e55e86844c88ea5d69a89d35193664d992a08fc4",
+            "answered_at": "2026-10-08T22:46:35.623455Z",
+            "input_question_sha256": "232c36dc3238be2213523e43f546156c6c7a8677db7b394831d6df8893059ab4",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_OPERATING_01",
+            "response_id": "resp_OPERATING_01",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:35.586441Z",
+            "completed_at": "2026-10-08T21:46:35.611837Z",
+            "attempt_id": "b6a1a789-e5e3-4627-9ab3-f4942b40e786",
+            "prompt_sha256": "155d289fc2f0e6b5b49e36dd852d82cdb57dbc909e10765ed68e00067fd6059a",
+            "search_receipt_id": "ws_OPERATING_01",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_OPERATING_01",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_OPERATING_01",
+                    "response_id": "resp_OPERATING_01",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:35.586441Z",
+                    "completed_at": "2026-10-08T21:46:35.611837Z",
+                    "attempt_id": "b6a1a789-e5e3-4627-9ab3-f4942b40e786",
+                    "prompt_sha256": "155d289fc2f0e6b5b49e36dd852d82cdb57dbc909e10765ed68e00067fd6059a",
+                    "search_receipt_id": "ws_OPERATING_01",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_OPERATING_01",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "OPERATING_02": {
+            "answer_sha256": "27976c8867fce1a7ff9c368d0080b2215820d2d5e31fc3d6f835821fdfd47762",
+            "answered_at": "2026-10-08T22:46:35.811235Z",
+            "input_question_sha256": "4d68bc0b00e40131a70974582975eb5ba5cabe567822f10da1dd2a6a4d572dc2",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_OPERATING_02",
+            "response_id": "resp_OPERATING_02",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:35.775380Z",
+            "completed_at": "2026-10-08T21:46:35.799419Z",
+            "attempt_id": "7ad62ba2-938e-4647-a507-3e75af2237bb",
+            "prompt_sha256": "473ed5c54eefd060c36b89bc0f3e99855b9f7a0310afd7b530faed359a08f1d7",
+            "search_receipt_id": "ws_OPERATING_02",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_OPERATING_02",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_OPERATING_02",
+                    "response_id": "resp_OPERATING_02",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:35.775380Z",
+                    "completed_at": "2026-10-08T21:46:35.799419Z",
+                    "attempt_id": "7ad62ba2-938e-4647-a507-3e75af2237bb",
+                    "prompt_sha256": "473ed5c54eefd060c36b89bc0f3e99855b9f7a0310afd7b530faed359a08f1d7",
+                    "search_receipt_id": "ws_OPERATING_02",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_OPERATING_02",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "INDUSTRIAL_01": {
+            "answer_sha256": "761e7cb333cf4a98a378cc92427e8cf3f464e8f8f54f0573e86c05814899d4b0",
+            "answered_at": "2026-10-08T22:46:36.074691Z",
+            "input_question_sha256": "039c52559cf79f009a0fdf9459cc14ad485c66f774f750efcedaf940b210d6ce",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_INDUSTRIAL_01",
+            "response_id": "resp_INDUSTRIAL_01",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:36.020950Z",
+            "completed_at": "2026-10-08T21:46:36.057611Z",
+            "attempt_id": "cea2d11b-cf70-4747-809b-730357c5f683",
+            "prompt_sha256": "0939530fffc8ffdcef588ea8f95872c1d5e1fa6cf9013dc6f3731451534edd0e",
+            "search_receipt_id": "ws_INDUSTRIAL_01",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_INDUSTRIAL_01",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_INDUSTRIAL_01",
+                    "response_id": "resp_INDUSTRIAL_01",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:36.020950Z",
+                    "completed_at": "2026-10-08T21:46:36.057611Z",
+                    "attempt_id": "cea2d11b-cf70-4747-809b-730357c5f683",
+                    "prompt_sha256": "0939530fffc8ffdcef588ea8f95872c1d5e1fa6cf9013dc6f3731451534edd0e",
+                    "search_receipt_id": "ws_INDUSTRIAL_01",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_INDUSTRIAL_01",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "INDUSTRIAL_02": {
+            "answer_sha256": "2635a94b0cd7e11e4a2c01805028d28983205dc95d6323b9ee0c400c44272b30",
+            "answered_at": "2026-10-08T22:46:36.326621Z",
+            "input_question_sha256": "c19c40816bd10056bf9b989d9e36168a6301aefa028331b34cc356c3f20018d0",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_INDUSTRIAL_02",
+            "response_id": "resp_INDUSTRIAL_02",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:36.291127Z",
+            "completed_at": "2026-10-08T21:46:36.315861Z",
+            "attempt_id": "6a815a8e-38f0-4bef-8d2d-40a9871e19a6",
+            "prompt_sha256": "8e0fb33f731011d7245e8e62d9238d93c0b34bc014b1d02c34b6e910e7a71603",
+            "search_receipt_id": "ws_INDUSTRIAL_02",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_INDUSTRIAL_02",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_INDUSTRIAL_02",
+                    "response_id": "resp_INDUSTRIAL_02",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:36.291127Z",
+                    "completed_at": "2026-10-08T21:46:36.315861Z",
+                    "attempt_id": "6a815a8e-38f0-4bef-8d2d-40a9871e19a6",
+                    "prompt_sha256": "8e0fb33f731011d7245e8e62d9238d93c0b34bc014b1d02c34b6e910e7a71603",
+                    "search_receipt_id": "ws_INDUSTRIAL_02",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_INDUSTRIAL_02",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "MATURE_01": {
+            "answer_sha256": "f79a01529efe6baa59f39f030f764cf174177078abc860271041268951158c29",
+            "answered_at": "2026-10-08T22:46:36.509327Z",
+            "input_question_sha256": "1ca93db624152c7fbaf78eac68c6d620e4811979de1d4f3183f197e503a84f27",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_MATURE_01",
+            "response_id": "resp_MATURE_01",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:36.476583Z",
+            "completed_at": "2026-10-08T21:46:36.498626Z",
+            "attempt_id": "ffd622da-3454-4d67-8e83-926fde9a982c",
+            "prompt_sha256": "fe0c13cbe9daac483b3346711e0bdccd4d065c97c175ddb2a6821621d158082e",
+            "search_receipt_id": "ws_MATURE_01",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_MATURE_01",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_MATURE_01",
+                    "response_id": "resp_MATURE_01",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:36.476583Z",
+                    "completed_at": "2026-10-08T21:46:36.498626Z",
+                    "attempt_id": "ffd622da-3454-4d67-8e83-926fde9a982c",
+                    "prompt_sha256": "fe0c13cbe9daac483b3346711e0bdccd4d065c97c175ddb2a6821621d158082e",
+                    "search_receipt_id": "ws_MATURE_01",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_MATURE_01",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "MATURE_02": {
+            "answer_sha256": "29ea5407850d0aebfbf6184b5ccf0b54bcf9a1f37d82b37a85b9469685f9cb9b",
+            "answered_at": "2026-10-08T22:46:36.728108Z",
+            "input_question_sha256": "a5f9141ba39d9f1b47e6c00333b286b677a34a5f682fefc1b6018bf3c9e106d2",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_MATURE_02",
+            "response_id": "resp_MATURE_02",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:36.680150Z",
+            "completed_at": "2026-10-08T21:46:36.713948Z",
+            "attempt_id": "f77a68d8-2d04-4db4-a159-975bad95c1e2",
+            "prompt_sha256": "a2cd1594184a68fac4b96e22bd36ea9544d4113562d5ce70097685bb268cd01e",
+            "search_receipt_id": "ws_MATURE_02",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_MATURE_02",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_MATURE_02",
+                    "response_id": "resp_MATURE_02",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:36.680150Z",
+                    "completed_at": "2026-10-08T21:46:36.713948Z",
+                    "attempt_id": "f77a68d8-2d04-4db4-a159-975bad95c1e2",
+                    "prompt_sha256": "a2cd1594184a68fac4b96e22bd36ea9544d4113562d5ce70097685bb268cd01e",
+                    "search_receipt_id": "ws_MATURE_02",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_MATURE_02",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "CYCLICAL_01": {
+            "answer_sha256": "eeb8ad6c3019fb7c3ee26e8944e3979074507d02f76755b1ba23d5ab9ea4b52f",
+            "answered_at": "2026-10-08T22:46:37.079387Z",
+            "input_question_sha256": "1052b862f2232d21313163e65a82f5edb65f7de8480aa652c779148b696aa05d",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_CYCLICAL_01",
+            "response_id": "resp_CYCLICAL_01",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:37.034780Z",
+            "completed_at": "2026-10-08T21:46:37.065521Z",
+            "attempt_id": "1a5339a1-edb8-4c73-b055-9bc634d6b33c",
+            "prompt_sha256": "b1ec33c87f05ecd37c44c00134f2af9458e8742441e58f326b3a7f21c8a01538",
+            "search_receipt_id": "ws_CYCLICAL_01",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_CYCLICAL_01",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_CYCLICAL_01",
+                    "response_id": "resp_CYCLICAL_01",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:37.034780Z",
+                    "completed_at": "2026-10-08T21:46:37.065521Z",
+                    "attempt_id": "1a5339a1-edb8-4c73-b055-9bc634d6b33c",
+                    "prompt_sha256": "b1ec33c87f05ecd37c44c00134f2af9458e8742441e58f326b3a7f21c8a01538",
+                    "search_receipt_id": "ws_CYCLICAL_01",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_CYCLICAL_01",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "CYCLICAL_02": {
+            "answer_sha256": "c5e444b901c688a644f83abc5e2028e9bfe0291cefc1b914ba58b003254c6188",
+            "answered_at": "2026-10-08T22:46:37.271650Z",
+            "input_question_sha256": "4773cb5d6183926928c82565fa2d1e59bc6ab7c56733cdc49e4a060db837602c",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_CYCLICAL_02",
+            "response_id": "resp_CYCLICAL_02",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:37.235231Z",
+            "completed_at": "2026-10-08T21:46:37.258628Z",
+            "attempt_id": "db0c4d7e-ac36-43ec-adb9-5d9312cdc07d",
+            "prompt_sha256": "b643da3d823d46c6b9e0d461b713182391f589b5f6d7ab789aca311ca541aa92",
+            "search_receipt_id": "ws_CYCLICAL_02",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_CYCLICAL_02",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_CYCLICAL_02",
+                    "response_id": "resp_CYCLICAL_02",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:37.235231Z",
+                    "completed_at": "2026-10-08T21:46:37.258628Z",
+                    "attempt_id": "db0c4d7e-ac36-43ec-adb9-5d9312cdc07d",
+                    "prompt_sha256": "b643da3d823d46c6b9e0d461b713182391f589b5f6d7ab789aca311ca541aa92",
+                    "search_receipt_id": "ws_CYCLICAL_02",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_CYCLICAL_02",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        },
+        "CROSS_BORDER_01": {
+            "answer_sha256": "969307fcbda3fbcb3581da2009a55b1ad28b62fd405557344e3d0889a512101a",
+            "answered_at": "2026-10-08T22:46:37.480698Z",
+            "input_question_sha256": "90ecd7d088f2dd51cbc87ad8a282201a5f9d23ef5cf340081cfe3de419d02a89",
+            "provider": "openai",
+            "requested_model": "actual-fixture-model",
+            "actual_model": "actual-fixture-model",
+            "request_id": "req_CROSS_BORDER_01",
+            "response_id": "resp_CROSS_BORDER_01",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": "2026-10-08T21:46:37.443998Z",
+            "completed_at": "2026-10-08T21:46:37.466529Z",
+            "attempt_id": "6a47ad7a-f6b9-41dd-bf36-ed3296f19a47",
+            "prompt_sha256": "6726d475bf084f1662ef565e58fcd54bdbf6a636c302001bd8fbe5915b1eb2a6",
+            "search_receipt_id": "ws_CROSS_BORDER_01",
+            "search_status": "executed",
+            "source_urls": [
+                "https://example.com/issuer"
+            ],
+            "web_search_calls": [
+                {
+                    "id": "ws_CROSS_BORDER_01",
+                    "status": "completed",
+                    "action_type": "search",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "sources": [
+                        {
+                            "url": "https://example.com/issuer",
+                            "title": null,
+                            "published_date": null
+                        }
+                    ]
+                }
+            ],
+            "attempts": [
+                {
+                    "provider": "openai",
+                    "request_id": "req_CROSS_BORDER_01",
+                    "response_id": "resp_CROSS_BORDER_01",
+                    "actual_model": "actual-fixture-model",
+                    "search_status": "executed",
+                    "response_status": "completed",
+                    "http_status_code": 200,
+                    "started_at": "2026-10-08T21:46:37.443998Z",
+                    "completed_at": "2026-10-08T21:46:37.466529Z",
+                    "attempt_id": "6a47ad7a-f6b9-41dd-bf36-ed3296f19a47",
+                    "prompt_sha256": "6726d475bf084f1662ef565e58fcd54bdbf6a636c302001bd8fbe5915b1eb2a6",
+                    "search_receipt_id": "ws_CROSS_BORDER_01",
+                    "source_urls": [
+                        "https://example.com/issuer"
+                    ],
+                    "web_search_calls": [
+                        {
+                            "id": "ws_CROSS_BORDER_01",
+                            "status": "completed",
+                            "action_type": "search",
+                            "source_urls": [
+                                "https://example.com/issuer"
+                            ],
+                            "sources": [
+                                {
+                                    "url": "https://example.com/issuer",
+                                    "title": null,
+                                    "published_date": null
+                                }
+                            ]
+                        }
+                    ],
+                    "provider_config_ref": "openai"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": null
+        }
+    }
+}

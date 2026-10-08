@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="11" skipped="0" tests="17" time="68.030" timestamp="2026-10-08T22:59:38.862796+01:00" hostname="DESKTOP-156V213"><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j01_status_low_cycle_and_full_body" time="27.735" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j02_entry_and_independent_release" time="4.832" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j03_independent_execution_and_stable_replay" time="6.137"><failure message="assert (1 == 0)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j03_independent_execution_and_stable_replay(all_imported):
+        second = h.actor('qa', 'j03-independent-cold', dict(op='produce', root=str(h.OWN / 'cases/b'),
+                 run_label='J108_B', model_resolved='actual-fixture-model-B',
+                 answers={'IQS_01': dict(score=9, basis='normalized')}))
+&gt;       assert second['cli_exit'] == 0 and second['http_sends'] == 31
+E       assert (1 == 0)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:82: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j04_duplicate_json_is_refused_before_write" time="3.317"><failure message="assert (0 != 0)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j04_duplicate_json_is_refused_before_write(all_imported):
+        root = h.OWN / 'cases/duplicate'
+        h.actor('sw', 'j04-seed', dict(op='seed', root=str(root)))
+        raw = Path(PRODUCED['packages']['IQS_01']['path']).read_text('utf-8')
+        original = '"summary":' + json.dumps(package('IQS_01')['items'][0]['observation']['answer']['summary'])
+        assert raw.count(original) == 1
+        changed = raw.replace(original, '"summary":"Contradictory first value",' + original, 1)
+        path = h.OWN / 'cases/duplicate.package.json'
+        path.write_text(changed, encoding='utf-8')
+        result = consumer('j04-duplicate', path, root=root)
+        rows = h.actor('sw', 'j04-rows', dict(op='observations', root=str(root)))
+&gt;       assert result['cli_exit'] != 0 and rows['counts']['observations'] == 0
+E       assert (0 != 0)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:104: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j05_package_hash_and_missing_entity" time="2.178"><failure message="assert (2 == 0)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j05_package_hash_and_missing_entity(all_imported):
+        changed = package('IQS_01')
+        changed['items'][0]['observation']['answer']['score'] = 9
+        result = consumer('j05-hash', save('bad-hash.json', changed))
+        assert result['cli_exit'] == 2 and result['receipt']['error_code'] == 'package_hash_mismatch'
+        result = consumer('j05-entity', PRODUCED['packages']['IQS_01']['path'], root=h.OWN / 'cases/noentity')
+&gt;       assert result['cli_exit'] == 0 and result['receipt']['summary'] == {'rejected': 1}
+E       assert (2 == 0)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:113: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j06_real_ack_roundtrip_and_duplicate_settlement" time="2.705"><failure message="assert (False)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j06_real_ack_roundtrip_and_duplicate_settlement(all_imported):
+        begin = h.actor('qa', 'j06-begin', dict(op='begin', root=str(QA)))
+        assert begin['state'] == 'send_uncertain'
+        package_doc = package('IQS_01')
+        # Lost return: read the SAME committed receiver's public durable ACK.
+        recovered = h.actor('sw', 'j06-ack-read', dict(op='ack', root=str(SW),
+            package_id=package_doc['package_id'], item_id=package_doc['items'][0]['item_id']))
+        assert recovered == ACKS['IQS_01']
+        path = save('actual-recovered-ack.json', recovered)
+        first = h.actor('qa', 'j06-ack-apply', dict(op='ack', root=str(QA), ack=str(path)))
+&gt;       assert first['accepted'] and first['state'] == 'delivered'
+E       assert (False)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:127: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j07_wrong_ack_keys_leave_state[package_id]" time="0.905"><failure message="AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}&#10;  &#10;  Omitting 5 identical items, use -vv to show&#10;  Differing items:&#10;  {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}&#10;  Use -v to get more diff)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+field = 'package_id'
+
+    @pytest.mark.parametrize('field', ['package_id', 'item_id', 'observation_id', 'payload_sha256', 'namespace'])
+    def test_j07_wrong_ack_keys_leave_state(all_imported, field):
+        # Explicit manipulated negative fixture. This is NOT the normal owner ACK
+        # and is never counted as a successful production serializer/roundtrip.
+        ack = {k: copy.deepcopy(v) for k, v in ACKS['IQS_06'].items() if k not in {'ack_sequence', 'original_import'}}
+        if field == 'namespace':
+            ack['consumer']['namespace'] = 'foreign_namespace'
+        else:
+            ack[field] = 'f' * 64
+        result = h.actor('qa', 'j07-key-' + field, dict(op='ack', root=str(QA), question_id='IQS_06',
+                 ack=str(save('ack-bad-' + field + '.json', ack))))
+&gt;       assert not result['accepted'] and result['before'] == result['after']
+E       AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}
+E         
+E         Omitting 5 identical items, use -vv to show
+E         Differing items:
+E         {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}
+E         Use -v to get more diff)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:143: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j07_wrong_ack_keys_leave_state[item_id]" time="0.925"><failure message="AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}&#10;  &#10;  Omitting 5 identical items, use -vv to show&#10;  Differing items:&#10;  {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}&#10;  Use -v to get more diff)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+field = 'item_id'
+
+    @pytest.mark.parametrize('field', ['package_id', 'item_id', 'observation_id', 'payload_sha256', 'namespace'])
+    def test_j07_wrong_ack_keys_leave_state(all_imported, field):
+        # Explicit manipulated negative fixture. This is NOT the normal owner ACK
+        # and is never counted as a successful production serializer/roundtrip.
+        ack = {k: copy.deepcopy(v) for k, v in ACKS['IQS_06'].items() if k not in {'ack_sequence', 'original_import'}}
+        if field == 'namespace':
+            ack['consumer']['namespace'] = 'foreign_namespace'
+        else:
+            ack[field] = 'f' * 64
+        result = h.actor('qa', 'j07-key-' + field, dict(op='ack', root=str(QA), question_id='IQS_06',
+                 ack=str(save('ack-bad-' + field + '.json', ack))))
+&gt;       assert not result['accepted'] and result['before'] == result['after']
+E       AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}
+E         
+E         Omitting 5 identical items, use -vv to show
+E         Differing items:
+E         {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}
+E         Use -v to get more diff)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:143: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j07_wrong_ack_keys_leave_state[observation_id]" time="0.940"><failure message="AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}&#10;  &#10;  Omitting 5 identical items, use -vv to show&#10;  Differing items:&#10;  {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}&#10;  Use -v to get more diff)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+field = 'observation_id'
+
+    @pytest.mark.parametrize('field', ['package_id', 'item_id', 'observation_id', 'payload_sha256', 'namespace'])
+    def test_j07_wrong_ack_keys_leave_state(all_imported, field):
+        # Explicit manipulated negative fixture. This is NOT the normal owner ACK
+        # and is never counted as a successful production serializer/roundtrip.
+        ack = {k: copy.deepcopy(v) for k, v in ACKS['IQS_06'].items() if k not in {'ack_sequence', 'original_import'}}
+        if field == 'namespace':
+            ack['consumer']['namespace'] = 'foreign_namespace'
+        else:
+            ack[field] = 'f' * 64
+        result = h.actor('qa', 'j07-key-' + field, dict(op='ack', root=str(QA), question_id='IQS_06',
+                 ack=str(save('ack-bad-' + field + '.json', ack))))
+&gt;       assert not result['accepted'] and result['before'] == result['after']
+E       AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}
+E         
+E         Omitting 5 identical items, use -vv to show
+E         Differing items:
+E         {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}
+E         Use -v to get more diff)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:143: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j07_wrong_ack_keys_leave_state[payload_sha256]" time="0.942"><failure message="AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}&#10;  &#10;  Omitting 5 identical items, use -vv to show&#10;  Differing items:&#10;  {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}&#10;  Use -v to get more diff)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+field = 'payload_sha256'
+
+    @pytest.mark.parametrize('field', ['package_id', 'item_id', 'observation_id', 'payload_sha256', 'namespace'])
+    def test_j07_wrong_ack_keys_leave_state(all_imported, field):
+        # Explicit manipulated negative fixture. This is NOT the normal owner ACK
+        # and is never counted as a successful production serializer/roundtrip.
+        ack = {k: copy.deepcopy(v) for k, v in ACKS['IQS_06'].items() if k not in {'ack_sequence', 'original_import'}}
+        if field == 'namespace':
+            ack['consumer']['namespace'] = 'foreign_namespace'
+        else:
+            ack[field] = 'f' * 64
+        result = h.actor('qa', 'j07-key-' + field, dict(op='ack', root=str(QA), question_id='IQS_06',
+                 ack=str(save('ack-bad-' + field + '.json', ack))))
+&gt;       assert not result['accepted'] and result['before'] == result['after']
+E       AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}
+E         
+E         Omitting 5 identical items, use -vv to show
+E         Differing items:
+E         {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}
+E         Use -v to get more diff)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:143: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j07_wrong_ack_keys_leave_state[namespace]" time="0.924"><failure message="AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}&#10;  &#10;  Omitting 5 identical items, use -vv to show&#10;  Differing items:&#10;  {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}&#10;  Use -v to get more diff)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+field = 'namespace'
+
+    @pytest.mark.parametrize('field', ['package_id', 'item_id', 'observation_id', 'payload_sha256', 'namespace'])
+    def test_j07_wrong_ack_keys_leave_state(all_imported, field):
+        # Explicit manipulated negative fixture. This is NOT the normal owner ACK
+        # and is never counted as a successful production serializer/roundtrip.
+        ack = {k: copy.deepcopy(v) for k, v in ACKS['IQS_06'].items() if k not in {'ack_sequence', 'original_import'}}
+        if field == 'namespace':
+            ack['consumer']['namespace'] = 'foreign_namespace'
+        else:
+            ack[field] = 'f' * 64
+        result = h.actor('qa', 'j07-key-' + field, dict(op='ack', root=str(QA), question_id='IQS_06',
+                 ack=str(save('ack-bad-' + field + '.json', ack))))
+&gt;       assert not result['accepted'] and result['before'] == result['after']
+E       AssertionError: assert (not False and {'work_item':...', ...}], ...} == {'work_item':...', ...}], ...}
+E         
+E         Omitting 5 identical items, use -vv to show
+E         Differing items:
+E         {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'question_id': 'IQS_06', 'generation': 1, 'scope': 'entity', ...}} != {'work_item': {'work_item_id': 'WORK_219f46b41d464917a93580120ed278d6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'question_id': 'IQS_06', 'generation': 1, ...}}
+E         Use -v to get more diff)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:143: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j07_first_wrong_store_is_refused" time="0.945"><failure message="assert (not True)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j07_first_wrong_store_is_refused(all_imported):
+        # Contract-shaped NEGATIVE only; the actual unprojected ACK fails J06.
+        ack = {k: copy.deepcopy(v) for k, v in ACKS['IQS_06'].items() if k not in {'ack_sequence', 'original_import'}}
+        ack['consumer']['store_id'] = 'qsobs_unrelated_target'
+        result = h.actor('qa', 'j07-wrong-store', dict(op='ack', root=str(QA), question_id='IQS_06',
+                 ack=str(save('ack-wrong-store.json', ack))))
+&gt;       assert not result['accepted'] and result['before'] == result['after']
+E       assert (not True)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:152: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j08_legacy_additive_upgrade" time="1.193" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j09_uncertain_restart_never_reasks" time="5.661" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j10_stockwiki_backup_watermarks" time="7.159" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j11_variants_never_promote_a_high_score" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\joint-2026-10-08-01\\cases\\second-producer.json'">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...8d392846598e10f31875f8c9e3d5', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j11_variants_never_promote_a_high_score(all_imported):
+&gt;       second = json.loads((h.OWN / 'cases/second-producer.json').read_text('utf-8'))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/joint-2026-10-08-01/cases/second-producer.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\joint-2026-10-08-01\\cases\\second-producer.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint" name="test_j12_capabilities_keep_fact_and_c06_gaps" time="1.055" /></testsuite></testsuites>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="9" time="31.302" timestamp="2026-10-08T23:03:29.712841+01:00" hostname="DESKTOP-156V213"><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint_controller_corrections" name="test_j03_direct_second_execution_and_replay" time="17.396" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint_controller_corrections" name="test_j05_missing_entity_in_migrated_empty_store" time="3.853"><failure message="AssertionError: assert 'entity_not_found' == 'missing_entity'&#10;  &#10;  - missing_entity&#10;  + entity_not_found">def test_j05_missing_entity_in_migrated_empty_store():
+        root = h.OWN / 'cases/emptyentity'
+        h.actor('sw', 'c-j05-empty', dict(op='empty', root=str(root)))
+        result = h.actor('sw', 'c-j05-import', dict(op='import', root=str(root),
+                         package=PRODUCED['packages']['IQS_01']['path'], release=str(RELEASE)))
+        assert result['cli_exit'] == 0 and result['receipt']['summary'] == {'rejected': 1}
+&gt;       assert result['receipt']['acks'][0]['error_code'] == 'missing_entity'
+E       AssertionError: assert 'entity_not_found' == 'missing_entity'
+E         
+E         - missing_entity
+E         + entity_not_found
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint_controller_corrections.py:51: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint_controller_corrections" name="test_j07_negative_keys_preserve_full_snapshot[package_id]" time="1.950" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint_controller_corrections" name="test_j07_negative_keys_preserve_full_snapshot[item_id]" time="1.161" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint_controller_corrections" name="test_j07_negative_keys_preserve_full_snapshot[observation_id]" time="1.067" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint_controller_corrections" name="test_j07_negative_keys_preserve_full_snapshot[payload_sha256]" time="1.021" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint_controller_corrections" name="test_j07_negative_keys_preserve_full_snapshot[namespace]" time="1.093" /><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint_controller_corrections" name="test_j07_wrong_store_cannot_settle_after_send_intent" time="1.062"><failure message="assert (not True)">uncertain_item = None
+
+    def test_j07_wrong_store_cannot_settle_after_send_intent(uncertain_item):
+        ack = {k: copy.deepcopy(v) for k, v in ACK.items() if k not in {'ack_sequence', 'original_import'}}
+        ack['consumer']['store_id'] = 'qsobs_unrelated_target'
+        result = h.actor('qa', 'c-j07-wrong-store', dict(op='ack', root=str(QA), question_id='IQS_07',
+                    ack=str(save('c-ack-wrong-store.json', ack))))
+&gt;       assert not result['accepted'] and result['before'] == result['after']
+E       assert (not True)
+
+..\..\docs\implementation\reviews\G3\joint-2026-10-08\test_joint_controller_corrections.py:80: AssertionError</failure></testcase><testcase classname="docs.implementation.reviews.G3.joint-2026-10-08.test_joint_controller_corrections" name="test_j11_incomparable_basis_keeps_both_values" time="2.403" /></testsuite></testsuites>

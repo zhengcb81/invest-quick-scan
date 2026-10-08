@@ -407,13 +407,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前状态（2026-10-07晚间）**：三个[外包大包](docs/implementation/parallel-lanes/packages/2026-10-07-wave2/README.md)已由用户确认开工；总控独占IQS并只读外仓。Phase95上游已提交推送，Phase96准确性实验已收口；Phase92完整生产链/StockWiki六整改/G3/F05仍开放。Phase93收费实验已结束并推送，186模型/24搜索、0未知、上界USD2.877381；326来源复核不是人类gold，不据结构有效改生产默认或启动L03。
+**当前状态（2026-10-08 Phase108）**：三个[外包大包](docs/implementation/parallel-lanes/packages/2026-10-07-wave2/README.md)整改交付的有限软件范围已分别签收；真实QA→SW生成/导入已有正例，ACK闭环被JR1–JR3阻断，见本批验收。总控本批只写IQS；新StockWiki四文件授权等待用户，StockQA历史全仓授权有效。Phase96准确性实验已收口，人类gold/完整校准不据来源复核冒签；G3/F05/L03/THIN未放行。历史Phase93为186模型/24搜索、0未知、上界USD2.877381，不因本批93次合成HTTP重复收费实验或启动200家。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08 Phase107有限签收后）**：QA代码b6eaa08／交接a39d7ea原四边界已签收，247/原9/原7＋mirror16/segment2通过，615文件/284目录自有根已清；不得重做已通过包或1083full。SW SR02-4B与Lab LR-02B签收保留，三个源HEAD/状态已更新。下一大节点按[既有联合12组](docs/implementation/reviews/G3/joint-acceptance-preparation-2026-10-08.md)固定QA/SW新副本后执行公开生成→导入→ACK→恢复/query；仍未执行，真实gold/G3F05/THIN/L03不自动放行。外仓仍只读，原writer独占；公共handoff历史清理声明exit2与软件签收并列保留，不伪补过去。实际Git回执以progress末尾为准。
+**单一下一步（2026-10-08 Phase108联合实测完成）**：按[集中整改卡JR1–JR3](docs/implementation/reviews/G3/joint-2026-10-08/remediation.md)接续公共ACK格式/错误码、事前目标库绑定、严格JSON三项；StockQA全仓旧授权有效但实施前报备/核writer，StockWiki四文件新增范围已问用户、未答前不写。先TDD受影响链，收到两owner真实结果后一次集中原公开链回验；已通过分值/unknown/重启/单侧恢复/变体子范围和原三包保留，不能重做全套。实际来源/测试/清理见[Phase108验收](docs/implementation/reviews/G3/joint-2026-10-08/acceptance.md)。G3/L03/F05/事实gold/THIN不自动放行，模型alias/resolved能力另列，不夹带扩大本卡。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1505,3 +1505,13 @@ Status: complete_for_finite_software_acceptance_scope_verified; whole_project_ga
 - [x] 一次有限独审无同范围阻断，QA有限软件签收；615文件/284目录strict CIM0/lstat/set-size-SHA dry-run→Apply自有根已清，更新PWF/接手/联合准备。精确提交推送以progress实际回执为准。
 - 原SW SR02-4B与Lab LR-02B签收保留；QA通过后按既有联合12组准备推进，不自动关闭G3/F05/事实gold/TH-IN/L03。
 - Phase107实际交付`d7c22d43d6f053846ab33601d207355e95ce6a57`，90精确IQS文件已正常推送origin/master，84工件与索引staged原字节/差异检查通过；仅原opencode保留。后续仅PWF实际回执提交，下一大节点既有联合12组尚未执行。
+
+
+## Phase108：QA／StockWiki集中联合验收
+Status: partial_verified_changes_requested; concentrated_acceptance_and_cleanup_completed
+- [x] Phase107后两端有限软件整改输入齐备；恢复root PWF，IQS bf5708d仅opencode未跟踪保留。
+- [x] 新根固定QA136/SW296字节及对应接收HEAD，432源字节/外仓状态前后不变；分Python进程、库、临时目录与guard，独立release在派发前冻结。
+- [x] J01–J12实际公开链集中运行：原17实例6P/11F，补批9实例7P/2F；三真阻断收JR1–JR3，控制器误差及partial/missing分列，不加总称整套GREEN。三次cold合计93合成HTTP，真实调用/收费0。
+- [x] 一次集中独审和同批补记；独立q8 warm/seal0HTTP，J11不混2/9入白名单，原ACK公开schema不合格。实际清理1074自有文件/78目录，严格lstat/set/SHA/CIM dry→Apply；源仓/共享TEMP/Phase92/opencode不动。
+- [ ] 仅本IQS结果/PWF精确沙箱外提交推送（以progress实际Git回执勾选），然后接续同一集中整改卡；StockWiki四文件新增写授权等待用户，StockQA历史全仓授权按卡报备。
+- G3仍需L03+W11；F05/THIN/事实gold及源仓新写授权按原门处理，本批不自动放行。
