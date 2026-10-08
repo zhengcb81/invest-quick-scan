@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08 Phase103验收后）**：SW原12反例／96相关回归／11真实浏览器已GREEN，仅同SR02-4剩P2：非UTF8损坏manifest使list/prune整体中断。原SW writer按[单项接续卡](docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08/remaining-repair.md)补解码边界，并同批澄清结果/交接hash与历史TEMP推断；收到新commit后仅受影响复验，不重做其他组或无关full/UI。Lab LR-02B及QA仍由原writer接续；QA/SW两端满足条件后再按12组联合说明打通，Lab不人为阻塞该链。保持只读外仓、G3/F05/gold/TH/IN/L03不自签；本轮验收/清理/PWF完成，Git实际回执见progress末尾。
+**单一下一步（2026-10-08 Phase104验收后）**：QA四组原修复保留，247受影响／原9／真实subprocess四例GREEN；仍partial_verified/changes_requested，原QA writer按[唯一接续卡](docs/implementation/reviews/QA-C06-02/remediation-2026-10-08/remaining-repair.md)同批补具体scope ID早拒、完整write的run门、JSON数值溢出、缺持久完整输入fail-open四边界。总控收到新交付仅受影响复验，1083全套不机械重跑。743本轮自有文件已严格清，历史共享TEMP缺口保留；原七未跟踪/外仓不动。SW仅SR02-4B P2、Lab仅LR-02B P1各原writer接续，不夺写、不收费、不自关G3/F05/gold/TH/IN/L03。QA/SW两端满足条件后按既有12组联合说明执行，Lab不人为阻塞该链。实际Git回执见progress末尾。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1468,3 +1468,12 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_s
 - [x] 8自有junction非递归解节点；814文件/654目录经strict CIM/端口/lstat单硬链/精确set-size-SHA dry-run→Apply清，旧根/sharedTEMP/opencode保留。PWF与接手更新，精确Git交付见progress实际回执。
 - [ ] 原SW writer补SR02-4B与必要交接文字，交新commit后仅受影响收口；历史worker清理/删除者取证缺口保持open，G3/F05/gold/QA联合/TH/IN/L03不关闭。
 - 实际IQS交付`1381901a5f8acb0b892246e6c84b2a0f3b47abd8`，110精确文件沙箱外提交并正常推送origin/master，104工件及索引staged原字节一致、diff通过。原opencode未跟踪保留；后续仅PWF实际回执，不改被审源仓/证据。
+
+## Phase104：QA-C06-02四组整改查收
+Status: complete_for_finite_acceptance_scope_changes_requested
+- [x] 收到正式代码acb7dbfae0e6a45221924e2d1d5742a4999f4c9d及交接361a721df382c468640b27bbafc484e31c8aa321；只读源仓，原七未跟踪保留。
+- [x] 固定135源码/47工件，247受影响／原9反例／真实subprocess四例GREEN，完成一次集中独审。
+- [x] 1正常＋6邻接反例同批收敛原四组残余；单一接续卡，不增加小节点审查、不代改外仓。
+- [x] 743文件/402目录完整SHA/lstat/strict CIM0 dry-run→Apply；唯一根已无，历史共享TEMP缺口保留。
+- [x] 更新PWF和接手；精确提交推送以progress实际Git回执为准，不提前宣称成功。
+- 本阶段不代表StockWiki真实import/ACK/UI、owner golden、G3/F05关闭；SW和Lab仍原writer接续。

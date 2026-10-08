@@ -1,0 +1,92 @@
+{
+  "checks": [
+    {
+      "name": "affected-regression",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "tests/unit/test_quick_scan_observation_context.py",
+        "tests/unit/test_quick_scan_c06_authority_binding.py",
+        "tests/unit/test_quick_scan_c06_complete_seal.py",
+        "tests/unit/test_quick_scan_work_store.py",
+        "tests/unit/test_quick_scan_budget.py",
+        "tests/unit/test_quick_scan_result_outbox.py",
+        "tests/integration/test_qa_c06_02_e2e.py",
+        "tests/integration/test_quick_scan_cli.py",
+        "tests/integration/test_qa_c06_02_subprocess_cli.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-remediation-2026-10-08-01\\tmp\\affected-regression"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-remediation-2026-10-08-01\\qa",
+      "returncode": null,
+      "timed_out": true,
+      "wall_s": 300.042,
+      "stdout_sha256": "9effe8949bd1ceee1164f983eaa65ab808c4432077f4f12cdbe92d6c91375457",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "original-nine-boundaries",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-remediation-2026-10-08-01\\controller_cases.py",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-remediation-2026-10-08-01\\tmp\\original-nine-boundaries"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-remediation-2026-10-08-01\\qa",
+      "returncode": 0,
+      "timed_out": false,
+      "wall_s": 3.062,
+      "stdout_sha256": "eb0b05f4071d909c3fbbddb9804d2ab91b3ee446c36812d62ba2c4d33d4280de",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public-handoff",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\intake\\QA-C06-02\\2026-10-08-remediation\\worker\\handoff.json",
+        "--package-id",
+        "QA-C06-02",
+        "--catalog",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\manifest.json"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-remediation-2026-10-08-01\\qa",
+      "returncode": 2,
+      "timed_out": false,
+      "wall_s": 0.367,
+      "stdout_sha256": "1306475fc84e0e7b0627a9b8860d3fd17bf2a1e8effe6ae091093dc7ac87da1e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "snapshot_files": 135,
+  "snapshot_changed": [],
+  "source_written": false,
+  "external_http": 0,
+  "paid_calls": 0,
+  "downloads": 0,
+  "synthetic_only": true,
+  "cleanup_pending": true
+}

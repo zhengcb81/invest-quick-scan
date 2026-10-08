@@ -1,0 +1,736 @@
+{
+  "synthetic_only": true,
+  "external_http": 0,
+  "records": [
+    {
+      "case": "test_new_complete_write_requir0",
+      "database": {
+        "delivery_count": 1,
+        "states": [
+          "ready"
+        ],
+        "observations": [
+          {
+            "question_id": "IQS_01",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Forged claim not from the durable body",
+            "started_at": "2026-09-27T10:00:00Z",
+            "state": "ready",
+            "durable_contexts": 0,
+            "durable_answers": 0,
+            "run_refs": [
+              {
+                "run_id": "RUN_COMPLETE",
+                "scan_id": "SCAN_COMPLETE"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "case": "test_new_complete_write_requir1",
+      "database": {
+        "delivery_count": 1,
+        "states": [
+          "ready"
+        ],
+        "observations": [
+          {
+            "question_id": "IQS_01",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Forged claim not from the durable body",
+            "started_at": "2026-09-27T10:00:00Z",
+            "state": "ready",
+            "durable_contexts": 0,
+            "durable_answers": 0,
+            "run_refs": [
+              {
+                "run_id": "RUN_COMPLETE",
+                "scan_id": "SCAN_COMPLETE"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "case": "test_prepare_cannot_bypass_a_r0",
+      "database": {
+        "delivery_count": 1,
+        "states": [
+          "ready"
+        ],
+        "observations": [
+          {
+            "question_id": "IQS_01",
+            "run_id": "FOREIGN_RUN",
+            "scan_id": "FOREIGN_SCAN",
+            "claim": "Synthetic test claim only.",
+            "started_at": "2026-09-27T11:00:00Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "RUN_COMPLETE",
+                "scan_id": "SCAN_COMPLETE"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "case": "test_wrong_security_id_cli_is_0",
+      "database": {
+        "delivery_count": 30,
+        "states": [
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready",
+          "ready"
+        ],
+        "observations": [
+          {
+            "question_id": "IQS_01",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:16Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_02",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:16Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_04",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:16Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_05",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:16Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_06",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:16Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_07",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:16Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_08",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:17Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_09",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:17Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_10",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:17Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_12",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:17Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_13",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:17Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_14",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:18Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_15",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:18Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_16",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:18Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_17",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:18Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_18",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:19Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_19",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:19Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_20",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:19Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_21",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:19Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_23",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:20Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "IQS_24",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:20Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "OPERATING_01",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:20Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "OPERATING_02",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:20Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "INDUSTRIAL_01",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:21Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "INDUSTRIAL_02",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:21Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "MATURE_01",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:21Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "MATURE_02",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:21Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "CYCLICAL_01",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:22Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "CYCLICAL_02",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:22Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          },
+          {
+            "question_id": "CROSS_BORDER_01",
+            "run_id": "fixture-run",
+            "scan_id": "fixture-scan",
+            "claim": "Synthetic claim used only for offline validation.",
+            "started_at": "2026-10-08T19:55:22Z",
+            "state": "ready",
+            "durable_contexts": 1,
+            "durable_answers": 1,
+            "run_refs": [
+              {
+                "run_id": "fixture-run",
+                "scan_id": "fixture-scan"
+              },
+              {
+                "run_id": "run-20261008T195516Z",
+                "scan_id": "scan-l02"
+              }
+            ]
+          }
+        ]
+      },
+      "http_stub_sends": 31,
+      "key_opens": 2,
+      "network_attempts": 0,
+      "work_database_created": true,
+      "result_written": true
+    },
+    {
+      "case": "test_wrong_security_id_is_refu0",
+      "database": null
+    }
+  ]
+}

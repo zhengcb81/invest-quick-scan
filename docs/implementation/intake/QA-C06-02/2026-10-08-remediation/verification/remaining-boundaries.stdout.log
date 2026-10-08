@@ -1,0 +1,140 @@
+.FFFFFF                                                                  [100%]
+================================== FAILURES ===================================
+___________ test_overflow_number_is_refused_at_standard_body_entry ____________
+
+    def test_overflow_number_is_refused_at_standard_body_entry():
+        raw=json.dumps(f._standard_body()).replace('"metrics": []','"metrics": [{"value": 1e400}]')
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\remaining_cases.py:47: Failed
+____________ test_wrong_security_id_is_refused_by_authority_loader ____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-remediation-2026-10-08-01/tmp/remaining-boundaries/test_wrong_security_id_is_refu0')
+
+    def test_wrong_security_id_is_refused_by_authority_loader(tmp_path):
+        doc=copy.deepcopy(f.AUTHORITY_V2)
+        assert f.MANIFEST['profile']['security_id']=='SEC_CONTEXT_FIXTURE'
+        doc['observation_context']['questions']['IQS_22']['metadata']['security_id']='SEC_FOREIGN'
+>       with pytest.raises(AuthorityUnavailable):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE AuthorityUnavailable
+
+..\remaining_cases.py:54: Failed
+________ test_wrong_security_id_cli_is_refused_before_key_http_budget _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-remediation-2026-10-08-01/tmp/remaining-boundaries/test_wrong_security_id_cli_is_0')
+
+    def test_wrong_security_id_cli_is_refused_before_key_http_budget(tmp_path):
+        files=s._prepare_root(tmp_path)
+        document=json.loads(files['authority'].read_text('utf-8'))
+        document['observation_context']['questions']['IQS_22']['metadata']['security_id']='SEC_FOREIGN'
+        document['observation_context_sha256']=canonical_sha256(document['observation_context'])
+        files['authority'].write_text(json.dumps(document,ensure_ascii=False),encoding='utf-8')
+>       result=s._spawn(tmp_path,s._cold_argv(files),stub=True)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\remaining_cases.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\integration\test_qa_c06_02_subprocess_cli.py:235: in _spawn
+    return subprocess.run(
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1029: in __init__
+    self.stdout = io.open(c2pread, 'rb', bufsize)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\guard\sitecustomize.py:57: in audit
+    elif Path(os.fsdecode(args[0])).name == "llm_apis.json":
+              ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+filename = 26
+
+>   ???
+E   TypeError: expected str, bytes or os.PathLike object, not int
+
+<frozen os>:862: TypeError
+______ test_new_complete_write_requires_durable_complete_inputs[prepare] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-remediation-2026-10-08-01/tmp/remaining-boundaries/test_new_complete_write_requir0')
+method = 'prepare'
+
+    @pytest.mark.parametrize('method',['prepare','supersede'])
+    def test_new_complete_write_requires_durable_complete_inputs(tmp_path,method):
+        store,item,checkpoint,body=f._checkpointed(tmp_path,with_context=False)
+        wid=item['work_item_id']
+        assert store.get_observation_context(wid) is None and store.get_standard_answer(wid) is None
+        if method=='supersede':
+            assert f.seal_result_delivery(store,wid,authority=f.V1_AUTHORITY)['action']=='sealed'
+        before=store.get_result_delivery(wid)
+        revisions=store.list_delivery_revisions(wid)
+        package=complete(store,item,checkpoint,body,f.CONTEXT,f._v2_authority(tmp_path))
+        forged=f._forged_complete_package(package,lambda obs:f._mutate(obs,'claim_and_start'))
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\remaining_cases.py:80: Failed
+_____ test_new_complete_write_requires_durable_complete_inputs[supersede] _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-remediation-2026-10-08-01/tmp/remaining-boundaries/test_new_complete_write_requir1')
+method = 'supersede'
+
+    @pytest.mark.parametrize('method',['prepare','supersede'])
+    def test_new_complete_write_requires_durable_complete_inputs(tmp_path,method):
+        store,item,checkpoint,body=f._checkpointed(tmp_path,with_context=False)
+        wid=item['work_item_id']
+        assert store.get_observation_context(wid) is None and store.get_standard_answer(wid) is None
+        if method=='supersede':
+            assert f.seal_result_delivery(store,wid,authority=f.V1_AUTHORITY)['action']=='sealed'
+        before=store.get_result_delivery(wid)
+        revisions=store.list_delivery_revisions(wid)
+        package=complete(store,item,checkpoint,body,f.CONTEXT,f._v2_authority(tmp_path))
+        forged=f._forged_complete_package(package,lambda obs:f._mutate(obs,'claim_and_start'))
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\remaining_cases.py:80: Failed
+---------------------------- Captured stdout call -----------------------------
+INFO - C06 包已封存（WORK_9c0c88e3ef3346d9a4ac985a10a9908a）→ pkg_39462f5638051e7a76a7836952da4279073b38534714f8ba823cb2eb92342136
+------------------------------ Captured log call ------------------------------
+INFO     src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:263 C06 包已封存（WORK_9c0c88e3ef3346d9a4ac985a10a9908a）→ pkg_39462f5638051e7a76a7836952da4279073b38534714f8ba823cb2eb92342136
+_________________ test_prepare_cannot_bypass_a_run_scan_block _________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/qa-c06-remediation-2026-10-08-01/tmp/remaining-boundaries/test_prepare_cannot_bypass_a_r0')
+
+    def test_prepare_cannot_bypass_a_run_scan_block(tmp_path):
+        store,item,checkpoint,body=f._checkpointed(tmp_path,with_context=False)
+        wid=item['work_item_id']
+        doc=copy.deepcopy(f.AUTHORITY_V2)
+        for question in doc['observation_context']['questions'].values():
+            question['metadata']['run_id']='FOREIGN_RUN'
+            question['metadata']['scan_id']='FOREIGN_SCAN'
+        authority=load_c06_authority(authority_file(tmp_path,doc))
+        store.attach_standard_inputs(wid,observation_context=doc['observation_context'],standard_answer=body)
+        result=f.seal_result_delivery(store,wid,authority=authority)
+        assert result['action']=='blocked' and result['block_code']=='c06_run_scan_unbound'
+        before=store.get_result_delivery(wid)
+        package=complete(store,item,checkpoint,body,doc['observation_context'],authority)
+>       with pytest.raises(ValueError): store.prepare_result_delivery(wid,package)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+..\remaining_cases.py:100: Failed
+---------------------------- Captured stdout call -----------------------------
+WARNING - 封存 run/scan 绑定拒绝（WORK_6106f5e8e3504f18a0da2974863378b5）：冻结 run/scan 未映射到该 work 的实际执行
+WARNING - C06 封存阻断（WORK_6106f5e8e3504f18a0da2974863378b5）：c06_run_scan_unbound
+------------------------------ Captured log call ------------------------------
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:102 封存 run/scan 绑定拒绝（WORK_6106f5e8e3504f18a0da2974863378b5）：冻结 run/scan 未映射到该 work 的实际执行
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:130 C06 封存阻断（WORK_6106f5e8e3504f18a0da2974863378b5）：c06_run_scan_unbound
+=========================== short test summary info ===========================
+FAILED ..\remaining_cases.py::test_overflow_number_is_refused_at_standard_body_entry
+FAILED ..\remaining_cases.py::test_wrong_security_id_is_refused_by_authority_loader
+FAILED ..\remaining_cases.py::test_wrong_security_id_cli_is_refused_before_key_http_budget
+FAILED ..\remaining_cases.py::test_new_complete_write_requires_durable_complete_inputs[prepare]
+FAILED ..\remaining_cases.py::test_new_complete_write_requires_durable_complete_inputs[supersede]
+FAILED ..\remaining_cases.py::test_prepare_cannot_bypass_a_run_scan_block - F...
+6 failed, 1 passed in 3.36s

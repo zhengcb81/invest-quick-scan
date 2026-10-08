@@ -1659,3 +1659,9 @@ Phase102：原六残余修复均已实证，108方法及旧9/5/6、42命令/三�
 Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认不可比观察维度保留且不误入白名单；但“合法JSON形状”修复不能替代文件解码边界。外来0xff manifest会真实UnicodeDecodeError中断list/prune，原SR02-4剩P2；只需局部明确损坏解码处理，不吞全部异常或重造解析平台，不复跑无关full/UI。外来/合法备份未删，不能夸大为删除越界。
 
 69工件双字节均匹配交接HEAD1831a73，36仅EOL；索引说全部来自结果c83c148不准确（16不存在/11变更），应分运行结果与后续证据ref。worker历史TEMP已消失没有删除者证据，retention只是解释；新strict cleanup不能追认过去SHA/硬链/port审计。总控296源码/130实际输入和69原件保持，8junction只解节点、814文件严格清；原PWF和大节点不自签。软件有限GREEN/损坏输入剩余/真实owner与联合门分开报告。
+
+## 2026-10-08 — Phase104：原四组GREEN后仍有write入口边界
+- QA原metadata/重复JSON/run seal/full已有侧表校验已通过；247受影响和原9真实复跑GREEN。残余不是另起全项目审查：共享scope checker漏具体挂牌ID，完整write漏run门和缺侧表fail-open，strict float溢出漏在body入口。1正常/6反例归原四组，唯一接续卡由原writer同批修。
+- 真实CLI退出1不等于早拒：wrong security_id已经stub31、fixture key打开2、建库及保存结果，必须看调用与预算前置。完整package全层重签也不能替代不可变标准body/context/原attempt；缺数据应阻断新的完整write，兼容历史读取和compact应单独保持。
+- Windows asyncio内置socketpair在此沙箱阻塞；去key/禁止外网的guard下沙箱外Mock异步及集中247通过。保留timeout与FD controller误差，不用它们判产品RED或反复加审查节点。
+- 收到47工件SHA/135固定源码不变，743本轮自有文件严格清。worker历史清理聚合hash不是可复核逐文件清单，shared TEMP无法证明归属不代删；公开handoff对应缺口保留，不制造真实StockWiki/owner gold或关G3/F05。

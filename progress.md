@@ -2230,3 +2230,16 @@
 - 验收/一次独审/单项卡/PWF/接手已更新，状态partial_verified/changes_requested。Lab和QA仍原writer，不夺写、不发消息或自动开新包；真实identity/facts、双owner恢复、QA↔SW/G3F05/THIN/L03未关。本轮精确Git提交推送待实际回执。
 - Git预检：110精确文件暂存，104索引工件与索引自身staged原字节一致，130IQS原输入在文档更新后再次SHA一致。36被忽略的精确证据路径局部-force，三份收到的RED traceback日志尾空白加同路径whitespace例外，保留原字节，其他diff检查通过。13链接/helper AST/有限状态/已清根检查通过，仅文档与证据检查，不重跑产品suite。
 - **Phase103实际Git交付**：110文件沙箱外提交`1381901a5f8acb0b892246e6c84b2a0f3b47abd8`，104索引工件和索引原字节逐项匹配；正常推送origin/master（a62cb8a→1381901，exit0）。814自有临时文件已严格清，StockWiki HEAD1831a73/clean/69工件不变，外仓/共享TEMP/opencode未写。仍partial_verified/changes_requested，仅SR02-4B P2和必要交接澄清待原writer，不关闭G3F05；随后仅补此实际PWF回执。
+
+## 2026-10-08 — Phase104接收QA四组整改
+- 用户通知正式交付。只读实际StockQA master@361a721，代码acb7dbf，后续仅handoff；原七未跟踪保留。worker自述原9反例GREEN、新真实subprocess4GREEN、完整1083GREEN；未凭自述签收。
+- 沿用PWF根目录和已有集中审查agent，只写IQS新intake/helper/PWF，外仓仍原harness独占。新独占隔离副本将复验四组绑定和原migration/warm/async，不重复全套或收费。历史共享TEMP清理归属仍不明，不代删或伪造闭合。
+
+## 2026-10-08 — Phase104验收完成
+- 固定135源码/SQL、47索引工件SHA/size全匹配（5仅EOL），前后原七未跟踪及HEAD361a721相同。结果acb7dbf之后.gitignore仅精确放行清理回执，无runtime变化；.secrets.baseline只核opaque SHA不复制。
+- 一次集中247 passed/105.62s（wall106.376），原9 passed/2.32s（wall3.062）；含真实subprocess四例，cold31/warm-seal新增0。正常31观察IQS公开validate通过且run refs均已映射。worker1083全套仅收到不复跑；Mock异步单例1.21s通过且在247内，不相加。
+- 单次独审后的邻接批最终1pass6fail/11.74s（wall12.719），原四组边界：QR1B wrong security_id loader接受，真实CLI虽exit1仍stub31/key文件2/建库/结果；QR2B公开prepare将run已blocked变ready；QR3B标准body 1e400成inf（后canonical拒，未证明错误head）；QR4B无完整侧表prepare/supersede写入改claim/start的full ready。剩唯一接续卡，不增小节点门，不代改StockQA。
+- 初冻结漏计后续.gitignore，在mkdir前安全停，读hunk后纳入；初controller guard把整数FD当路径，一子进程case setup失败；首affected300秒及单async45秒沙箱socketpair timeout，直接child killed/waited并保留输出。controller纠正后沙箱外严格guard Mock异步和247全GREEN。首次sandbox CIM拒绝后严格提升核0。helper/PWF补丁一处精确行匹配失败已改明确文件入口，不当产品失败。
+- 743文件/402目录lstat单硬链无reparse、set/size/SHA、strict CIM0先dry再Apply，Apply session89437 exit0，根已无；相关prep/run/collect全部终态。源135/47不变，付费/下载/生产库/源仓写0。worker过去清理只有聚合manifestSHA、无逐文件清单，旧147/148 ownership不明；历史缺口单列不代删，公开handoff exit2 temporary_root_not_cleaned如实保留。
+- 验收、一次独审、四边界单一卡、原输出/真实库摘要/PWF与接手已落档。QA/SW/Lab原writer继续，真实gold/双owner恢复/联合import-ACK-UI及G3/F05/THIN/L03未关。IQS精确Git提交推送待实际回执。
+- Git预检精确暂存90文件，11个精确被忽略工件局部-force；3个原traceback/CLI日志保留行尾空白、3份原guard保留EOF空行，对这6个精确路径增加whitespace属性，不改原字节，其他diff检查继续。84索引工件及索引本身将逐项核staged SHA，排除opencode/runs/外仓；不重跑产品suite。
