@@ -1446,3 +1446,4 @@ Status: preparation_complete; joint_execution_not_run; owner_remediation_in_prog
 - [x] 明确公开ACK API与CLI区别、不能从观察反推release、synthetic与真实owner golden分开、controller超时须保留日志；真实query／恢复能力缺失如实not_run。
 - [ ] 等新commit／handoff再执行单批受影响联合验收和一次集中审查；G3／F05与消费端继续等待。
 - 本轮只读错误：外仓Git沙箱Permission denied已改用获批只读提升；AGENTS.md、parallel-lanes/iqs.md、SW prepare.py及旧共同规则猜测路径不存在，改用用户提供AGENTS与实际文件列表。初误探Lab目录名非实际iqs-evidence-lab，未写任何路径。本仓新增未跟踪nul保留不分类、不删除；opencode.json不读取。
+- 实际文档交付：6个精确IQS文件沙箱外提交`691988f75cae8882d5ec20672df3b38a56f7b084`并正常推送origin/master（5a34fb8→691988f，exit0）；本地与远端跟踪相同，仅nul/opencode.json未跟踪。11链接／12组／计划结构检查通过，不代表产品测试。后续仅追加本Git回执，不改执行边界或门状态。

@@ -2195,3 +2195,4 @@
 - 只读路径探测错误（AGENTS、旧iqs.md／SW prepare.py／旧共同规则路径及误猜Lab名）已改用实际文件列表和用户AGENTS；没有写外仓。真实API／下载／新测试运行／生产库访问0；本轮没有测试临时根需要清理。
 - 后续只在原writer新交付后做受影响单批复验；Lab独立收回，QA/SW共同打通。本文档校验和Git交付结果待实际命令记录，不提前填passed或推送成功。
 - 准备文档校验实际通过：source-state JSON与三仓/未交付/未关门状态一致、11个本地链接存在、J01–J12无缺组；implementation_plan validate仍107卡/366case/G6且product_tests_executed=false，diff检查通过。只验证文档与规格，联合测试未运行；没有新增小节点审查。
+- **Phase101实际Git交付**：6个精确IQS文档沙箱外提交`691988f75cae8882d5ec20672df3b38a56f7b084`，正常推送origin/master（5a34fb8→691988f，exit0）；提交后HEAD/origin/master相同，仅nul/opencode.json未跟踪并保留。源仓及数据库未写、API0、联合测试not_run。后续只提交这条实际交付回执，三整改继续由原harness实施；等新交付再验收。
