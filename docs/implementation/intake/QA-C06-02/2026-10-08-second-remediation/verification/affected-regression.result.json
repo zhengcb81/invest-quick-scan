@@ -1,0 +1,33 @@
+{
+  "name": "affected-regression",
+  "command": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "tests/unit/test_quick_scan_observation_context.py",
+    "tests/unit/test_quick_scan_c06_authority_binding.py",
+    "tests/unit/test_quick_scan_c06_complete_seal.py",
+    "tests/unit/test_quick_scan_work_store.py",
+    "tests/unit/test_quick_scan_budget.py",
+    "tests/unit/test_quick_scan_result_outbox.py",
+    "tests/integration/test_qa_c06_02_e2e.py",
+    "tests/integration/test_quick_scan_cli.py",
+    "tests/integration/test_qa_c06_02_subprocess_cli.py",
+    "-q",
+    "-o",
+    "addopts=",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-r2-2026-10-08-01\\tmp\\affected-regression"
+  ],
+  "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\qa-c06-r2-2026-10-08-01\\qa",
+  "returncode": 0,
+  "timed_out": false,
+  "wall_s": 52.427,
+  "stdout_sha256": "e3d1cfe3c45a0a56e5d85e4b00a00e5de7c6e3142c229191984ff3307a2966fb",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

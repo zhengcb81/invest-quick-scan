@@ -1675,3 +1675,10 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - LR-02B复用同一实际IQS根的verify_lock，将原archive字节校验前置于fixture派生／catalog／发布。原lock/index不变而同改副本archive/fixture，真实CLI从错误exit0发布转为exit2／无发布。synthetic无历史锁仍正常，完整历史答案省略可选hash仍接受。来源绑定有限签收，不能据此升级事实或评分准确性、人类gold或全局门。
 - 源库测试通过而总控隔离setup失败，可能是隔离前缀导致Windows MAX_PATH，不要改断言或报产品坏；只补跑受阻十项。缩短temp根同时要满足产品LAB输出边界，OWN/t被正确拒，OWN/lab/t成功；两次controller输出和适配留档，源142文件保持。108＋10是不同方法合计118通过，不冒充单次全套绿。
 - 141原件双hash／128原锁输入不变，396自有剩余文件严格清；源测试自动清理回执仅是聚合SHA，不能替代过去逐文件清单/OS/hardlink证明。新的严格自有清理只认证新根，旧nul/sharedTEMP取证限制保持可见，不为此重开软件门或追加小节点review。
+
+
+## 2026-10-08 — QA原四链再次整改的结论
+- 软件结果b6eaa08/交接a39d7ea有限签收：wrong-security入场0key/0HTTP/无DB，run/scan共享gate，finite-float入口拒绝，以及缺持久输入new-full failclosed均实际GREEN。247＋9＋16和segment2为本批结果；不重复1083full，不将语义重叠计成更多独立方法。
+- 同链独审指出segment动态缺口，使用显式synthetic内存变体一正一反补验即可，不改冻结fixture或假造真实owner golden，也无需额外审查门。compact ACK夹具回八字段保留原关键断言，full守卫有独立测试。
+- worker清理逐文件SHA列表可核对，两manifest hash相符；这是收到的过去证据。公共handoff因历史cleaned=false仍exit2，过去sharedTEMP删除者不可证明，与有限软件GREEN分开登记。总控新根615/284严格清除，与外仓过去清理不混为一谈。
+- QA和SW的软件整改输入齐备，可进入既有联合12组大节点；联合未跑、真实身份/事实gold未齐，G3F05/THIN/L03不自动关闭。Lab的有限软件签收不人为阻塞该联合链，准确性结论仍需独立实证。

@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08 Phase106有限签收后）**：Lab LR-02B代码cef3d95／交接2c0efb6已有限签收，118不同方法／原四真实CLI／三归档双根与34fixture通过，勿重复实施；SW SR02-4B同样已签收。等原QA writer按四边界接续卡交新commit/handoff并受影响复验；QA/SW两端齐后既有12组联合。Lab不人为阻塞该链。真实gold/联合链/G3F05/THIN/L03仍未放行；不写外仓、共享TEMP或收费。实际清理/Git回执见progress末尾。
+**单一下一步（2026-10-08 Phase107有限签收后）**：QA代码b6eaa08／交接a39d7ea原四边界已签收，247/原9/原7＋mirror16/segment2通过，615文件/284目录自有根已清；不得重做已通过包或1083full。SW SR02-4B与Lab LR-02B签收保留，三个源HEAD/状态已更新。下一大节点按[既有联合12组](docs/implementation/reviews/G3/joint-acceptance-preparation-2026-10-08.md)固定QA/SW新副本后执行公开生成→导入→ACK→恢复/query；仍未执行，真实gold/G3F05/THIN/L03不自动放行。外仓仍只读，原writer独占；公共handoff历史清理声明exit2与软件签收并列保留，不伪补过去。实际Git回执以progress末尾为准。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1496,3 +1496,11 @@ Status: complete_for_finite_lr02b_software_acceptance_scope_verified; whole_proj
 - [x] 更新PWF/接手；worker聚合清理hash及nul/sharedTEMP历史取证仍有限，提案草案不签、人类gold与事实/评分准确性不升级，软件有限签收不关闭L02整体或G3F05。
 - [x] IQS精确220文件已沙箱外提交`45c6cc89224b9049c09a3036e1eeaa0257b56fd1`并正常推送origin/master；214归档工件及索引staged原字节核对／diff检查通过，原opencode未跟踪保留。随后仅PWF实际回执提交；不提交或推送Lab，不再追加小节点审查。
 - 原Lab writer保留独占，不改源、不跑收费矩阵或签草案；旧六项与SW已通过交付保留，人类gold与G3F05/THIN/L03仍未关。
+
+
+## Phase107：QA-C06-02原四链剩余整改查收
+Status: complete_for_finite_software_acceptance_scope_verified; whole_project_gates_still_open
+- [x] 用户通知再次交付；只读核结果b6eaa08／接收a39d7ea／master与原七未跟踪条目，基线361a721。只审原四链，运行源码四文件及同包测试变化；后续交接与忽略规则变化另记。
+- [x] 新独占根冻结136源码／57工件，247／原9／原7＋mirror16／segment2通过；真实subprocess错证券ID key0/HTTP0/budget库未建，正常31完整观察公开验证，不重跑全套/UI/live。
+- [x] 一次有限独审无同范围阻断，QA有限软件签收；615文件/284目录strict CIM0/lstat/set-size-SHA dry-run→Apply自有根已清，更新PWF/接手/联合准备。精确提交推送以progress实际回执为准。
+- 原SW SR02-4B与Lab LR-02B签收保留；QA通过后按既有联合12组准备推进，不自动关闭G3/F05/事实gold/TH-IN/L03。

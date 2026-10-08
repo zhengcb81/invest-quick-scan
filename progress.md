@@ -2275,3 +2275,18 @@
 - [有限签收](docs/implementation/reviews/EVID-LAB-01/lr02b-2026-10-08/acceptance.md)、一次独审、机器结果和完整命令/原日志/PWF/接手已更新。来源字节完整性不等于事实或评分准确性；proposal仍draft_not_signed/execution_enabled=false/live_not_run=true，人类gold/L02整体/G3F05/THIN/L03未关。下一动作等QA原writer四边界新交接，QA/SW齐再既有联合12组，Lab不人为阻塞。只有IQS写入，外仓/正式库/名单/下载/收费0，本仓精确提交推送待实际回执。
 
 - **Phase106实际Git交付**：220个精确IQS文件已沙箱外提交`45c6cc89224b9049c09a3036e1eeaa0257b56fd1`并正常推送origin/master（3cf39df→45c6cc8，实际exit0，HEAD/远端跟踪一致）。214索引工件及索引本身staged原字节逐项相符，57精确忽略路径局部-force，四原traceback日志只加同路径空白属性不清洗字节，其余diff检查通过；10 helper AST／4相对链接／128原锁输入／根已无检查通过，不重复产品suite。原opencode未跟踪保留，所有外仓未写/提交/推送。LR-02B仅软件来源绑定签收；历史清理取证、QA接续、事实准确性/校准/全局门保持。随后仅PWF实际回执提交，不改冻结证据。
+
+
+## 2026-10-08 — Phase107接收QA再次整改
+- 用户通知QA-C06-02再次完成；只读StockQA master收到a39d7eafceacfa1114f5e5cb094eadb32030652c，代码b6eaa082e6e1df1306fa144bd623aa6de68213a1，基线361a721。四源码／两测试调整原四边界，原七未跟踪保留不读取；IQS初始d80ddf4，仅opencode未跟踪保留。
+- 对方自述16/9/247/190及static/precommit GREEN只作为received；总控新根runs/qa-c06-r2-2026-10-08-01计划固定复验，不测试动态外仓、不复跑1083full或UI/live。段作用域缺动态fixture明确披露，本轮独审同时核该分支。worker R2逐文件清理回执接收核hash，不据其声明追认过去共享TEMP删除者。
+
+
+## 2026-10-08 — Phase107原四链有限软件签收完成
+- 固定136源码/57工件，五CRLF仅EOL差异，raw长度/SHA全部相符；opaque .secrets只hash不复制。247 passed/51.48s（wall52.427）、原9 passed/1.83s（wall2.401）、原7＋mirror16 passed/5.29s（wall5.872）；一次独审无同范围阻断，按同批建议补segment2 passed/1.05s（wall1.566），内存synthetic、不改冻结输入。没有setup errors、timeout或失败，190/full/static只received，不重复UI/live；批次有语义重叠不相加称独立方法。
+- 实际错SEC两CLI key0/httpstub0/network0/DB不存在/result不存在；正常cold31、warm/seal额外0，31完整观察经IQS公开validator及持久映射核验。foreign run无法绕过blocked，缺durable输入new-full prepare/supersede拒绝，head/revision不变，溢出入口拒绝；compact/晚补/合法升级/已落定只读回归保持。
+- worker新两根逐文件回执hash重算相符（1238/535、1127/454），但过去CIM/清理仍received，历史round1不可重建/共享TEMP删除者未证不追认。公开handoff exit2 temporary_root_not_cleaned原样保留，与有限软件签收并列，不伪改cleaned声明、不另开小节点门。
+- 本轮615文件/284目录严格CIM0/lstat单硬链无reparse/精确set-size-SHA dry-run→Apply已清，已知52864/72795退出0，根不存在；136源/57原件及HEAD/七条状态收尾不变。外仓/旧根/sharedTEMP/nul/opencode未写、读生产库/下载/付费/外HTTP0。
+- 只读新三源状态：QA a39d7ea/master原七未跟踪，SW d253fea/master clean，Lab 2c0efb6/codex-evid-lab clean。更新既有联合12组准备为finite_inputs_received/prepared_not_executed，不把合成软件GREEN当真实gold/G3F05/L02整体/L03或THIN放行。外仓writer保持原归属。
+- 验收docs/implementation/reviews/QA-C06-02/second-remediation-2026-10-08/acceptance.md；PWF/接手已更新，随后精确沙箱外提交推送并追加实际Git回执，不预填成功。
+- 交付控制器首次staged原字节校验发现两份自写G3准备文档受Git autocrlf规范化；只将这两份controller文档按LF一致保存并重建本轮索引，收到的worker/执行日志原字节未变。不是产品RED，不复跑产品测试。

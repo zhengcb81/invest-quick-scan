@@ -1,10 +1,12 @@
 # QA／StockWiki 联合验收准备
 
-状态：`prepared_not_executed`。这是总控的单次联合验收执行说明，不是新的施工包、生产执行器或已通过的测试。三个整改由用户确认正在运行；不测试它们的未提交代码，不接管写入。当前观察见 [source-state](joint-source-state-2026-10-08.json)。
+状态：`prepared_not_executed/finite_inputs_received`（2026-10-08 Phase107后）。这是总控的单次联合验收说明，不是新施工包、生产执行器或已通过测试。QA原四链、SW SR02-4B、Lab LR-02B的有限软件整改已分别签收；总控仍只读各源仓、原writer归属不变。最新观察见[source-state](joint-source-state-2026-10-08-after-repairs.json)，旧[source-state](joint-source-state-2026-10-08.json)保留为历史。
 
 ## 输入与开工条件
 
-QA 原结果 `7e71b2cd8bbb042a72b282e83cb361a1ddcbb8b7`、StockWiki 原结果 `9f9e0afe16a327b475cb7a6e3d40bd1578bb9b0f` 已经分别验收为 changes_requested；不能拿这些旧结果宣布整改闭合。先接收两 owner 的新 result commit、handoff、实际 diff、工件 SHA、受影响 GREEN 和环境清理证据，再固定联合执行快照。Lab 的独立剩余整改按 [六项残余卡](../EVID-LAB-01/remediation-2026-10-08/remaining-repairs.md)接收，不等待联合执行、不混入评分正确性结论。
+当前接收的QA软件结果`b6eaa082e6e1df1306fa144bd623aa6de68213a1`／交接`a39d7eafceacfa1114f5e5cb094eadb32030652c`，见[QA有限签收](../QA-C06-02/second-remediation-2026-10-08/acceptance.md)；StockWiki软件结果`cc587a8cf76f2c50a0cdfb4693d3767dfa5944fa`／交接`d253fea5f4f6e4242d2b91eaf8d89d3dac8b45ff`，见[SW有限签收](../SW-REPAIR-02/sr02-4b-2026-10-08/acceptance.md)。两个输入已具备有限软件联合执行条件，仍需新编号隔离根和固定快照，不能复用已清根或测试动态树。QA公共handoff因历史TEMP声明exit2的保留按报告单列，不伪改原件为valid，也不扩大为已通过的软件新小门。
+
+Lab的来源绑定单项已[独立签收](../EVID-LAB-01/lr02b-2026-10-08/acceptance.md)，不人为阻塞QA/SW联合链；其准确性/校准与历史清理保留仍按原边界核实。本次联合仍未执行，不以准备说明或三局部GREEN关闭全局门。旧QA`7e71b2c`／SW`9f9e0af`与原changes_requested证据保留，不能将这些旧结果当新整改成果。
 
 既有输入与反例直接复用：
 
