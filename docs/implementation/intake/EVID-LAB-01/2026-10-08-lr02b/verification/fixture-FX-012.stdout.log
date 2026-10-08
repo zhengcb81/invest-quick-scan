@@ -1,0 +1,53 @@
+{
+  "schema": "iqs_evidence_lab.replay_summary/1",
+  "tool": {
+    "name": "iqs_evidence_lab",
+    "version": "0.2.2",
+    "tool_id": "iqs_evidence_lab/0.2.2"
+  },
+  "input": {
+    "kind": "fixture",
+    "ref": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-012.json",
+    "verified_before_write": true
+  },
+  "output_dir": ".controller-fixture-FX-012",
+  "live": false,
+  "environment": {
+    "network_attempts": 0,
+    "key_reads": 0,
+    "paid_model_calls": 0,
+    "search_calls": 0,
+    "downloads": 0,
+    "publish": "staged_under_.temp-roots_then_atomic_rename",
+    "note": "lab code contains no credential reader and no network client"
+  },
+  "results": {
+    "kind": "fixture",
+    "fixture_id": "FX-012",
+    "source_category": "synthetic",
+    "diagnostic_records": 9,
+    "diagnostic_summary": {
+      "pass": 0,
+      "fail": 1,
+      "abstain": 8,
+      "by_error_code": {
+        "E_DIRECTION_MISMATCH": 1
+      },
+      "by_abstain_reason": {
+        "expected_not_stated": 7,
+        "source_relation_not_stated": 1
+      },
+      "by_check": {
+        "semantic.subject": 1,
+        "semantic.period": 1,
+        "semantic.metric": 1,
+        "semantic.unit": 1,
+        "semantic.direction": 1,
+        "semantic.scope": 1,
+        "semantic.role": 1,
+        "source.url_window": 1,
+        "source.independence": 1
+      }
+    }
+  }
+}

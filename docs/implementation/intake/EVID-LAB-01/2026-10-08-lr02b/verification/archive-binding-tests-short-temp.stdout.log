@@ -1,0 +1,166 @@
+FFFFFFFF..                                                               [100%]
+================================== FAILURES ===================================
+_____________ test_intact_history_without_optional_hash_publishes _____________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/ab-fb91f26e')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/pytest-of-unknown/pytest-0/test_intact_history_without_op0')
+
+    def test_intact_history_without_optional_hash_publishes(
+        lab_iqs_copy: Path, lab_tmp_path: Path
+    ):
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "intact-no-hash", _intact_without_hash()
+        )
+>       assert process.returncode == 0, process.stderr.decode("utf-8", "replace")
+E       AssertionError: error: output must stay inside the lab root: C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-lr02b-2026-10-08-01\t\pytest-of-unknown\pytest-0\test_intact_history_without_op0\intact-no-hash-output
+E         
+E       assert 3 == 0
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input',...d-lab-lr02b-2026-10-08-01\\t\\pytest-of-unknown\\pytest-0\\test_intact_history_without_op0\\intact-no-hash-output\r\n').returncode
+
+tests\controller\test_archive_binding.py:209: AssertionError
+____________________ test_fixture_only_tamper_is_rejected _____________________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/ab-432c96cb')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/pytest-of-unknown/pytest-0/test_fixture_only_tamper_is_re0')
+
+    def test_fixture_only_tamper_is_rejected(lab_iqs_copy: Path, lab_tmp_path: Path):
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "fixture-only-tamper", _fixture_tamper()
+        )
+>       assert process.returncode == 4, process.stdout.decode("utf-8", "replace")
+E       AssertionError: 
+E       assert 3 == 4
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input',...-lr02b-2026-10-08-01\\t\\pytest-of-unknown\\pytest-0\\test_fixture_only_tamper_is_re0\\fixture-only-tamper-output\r\n').returncode
+
+tests\controller\test_archive_binding.py:222: AssertionError
+_________________ test_archive_and_fixture_tamper_is_rejected _________________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/ab-f00fc1b2')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/pytest-of-unknown/pytest-0/test_archive_and_fixture_tampe0')
+
+    def test_archive_and_fixture_tamper_is_rejected(lab_iqs_copy: Path, lab_tmp_path: Path):
+        body = _fixture_tamper()
+        _mutate_archive(lab_iqs_copy, body)
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "archive-and-fixture-tamper", body
+        )
+        # drift of the consumed archive is input drift: same class as the index entry
+>       assert process.returncode == 2, (
+            process.stdout.decode("utf-8", "replace"),
+            process.stderr.decode("utf-8", "replace"),
+        )
+E       AssertionError: ('', 'error: output must stay inside the lab root: C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\t\\pytest-of-unknown\\pytest-0\\test_archive_and_fixture_tampe0\\archive-and-fixture-tamper-output\r
+E         ')
+E       assert 3 == 2
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input',...2026-10-08-01\\t\\pytest-of-unknown\\pytest-0\\test_archive_and_fixture_tampe0\\archive-and-fixture-tamper-output\r\n').returncode
+
+tests\controller\test_archive_binding.py:233: AssertionError
+_______________ test_index_entry_rejects_the_same_archive_drift _______________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/ab-ce9d6874')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/pytest-of-unknown/pytest-0/test_index_entry_rejects_the_s0')
+
+    def test_index_entry_rejects_the_same_archive_drift(
+        lab_iqs_copy: Path, lab_tmp_path: Path
+    ):
+        body = _fixture_tamper()
+        _mutate_archive(lab_iqs_copy, body)
+        target = lab_tmp_path / "drifted-index-output"
+        process = _public(
+            ["replay", "--input", "index", "--output", str(target)], lab_iqs_copy
+        )
+>       assert process.returncode == 2
+E       AssertionError: assert 3 == 2
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input',...id-lab-lr02b-2026-10-08-01\\t\\pytest-of-unknown\\pytest-0\\test_index_entry_rejects_the_s0\\drifted-index-output\r\n').returncode
+
+tests\controller\test_archive_binding.py:251: AssertionError
+_____________ test_missing_lock_blocks_history_but_not_synthetic ______________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/ab-d4dd1224')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/pytest-of-unknown/pytest-0/test_missing_lock_blocks_histo0')
+
+    def test_missing_lock_blocks_history_but_not_synthetic(
+        lab_iqs_copy: Path, lab_tmp_path: Path
+    ):
+        (lab_iqs_copy / LOCK_REL).unlink()
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "missing-lock-historical", _intact_without_hash()
+        )
+>       assert process.returncode == 2, process.stderr.decode("utf-8", "replace")
+E       AssertionError: error: output must stay inside the lab root: C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-lr02b-2026-10-08-01\t\pytest-of-unknown\pytest-0\test_missing_lock_blocks_histo0\missing-lock-historical-output
+E         
+E       assert 3 == 2
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input',...2b-2026-10-08-01\\t\\pytest-of-unknown\\pytest-0\\test_missing_lock_blocks_histo0\\missing-lock-historical-output\r\n').returncode
+
+tests\controller\test_archive_binding.py:265: AssertionError
+__________________ test_missing_archive_file_blocks_history ___________________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/ab-732d6c19')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/pytest-of-unknown/pytest-0/test_missing_archive_file_bloc0')
+
+    def test_missing_archive_file_blocks_history(lab_iqs_copy: Path, lab_tmp_path: Path):
+        (lab_iqs_copy / ARCHIVE_REL).unlink()
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "missing-archive", _intact_without_hash()
+        )
+>       assert process.returncode == 2, process.stderr.decode("utf-8", "replace")
+E       AssertionError: error: output must stay inside the lab root: C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-lr02b-2026-10-08-01\t\pytest-of-unknown\pytest-0\test_missing_archive_file_bloc0\missing-archive-output
+E         
+E       assert 3 == 2
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input',...-lab-lr02b-2026-10-08-01\\t\\pytest-of-unknown\\pytest-0\\test_missing_archive_file_bloc0\\missing-archive-output\r\n').returncode
+
+tests\controller\test_archive_binding.py:280: AssertionError
+____________________ test_non_strict_lock_json_is_rejected ____________________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/ab-0ff9e505')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/pytest-of-unknown/pytest-0/test_non_strict_lock_json_is_r0')
+
+    def test_non_strict_lock_json_is_rejected(lab_iqs_copy: Path, lab_tmp_path: Path):
+        lock_path = lab_iqs_copy / LOCK_REL
+        raw = lock_path.read_text(encoding="utf-8-sig")
+        drifted = raw.replace(
+            '"format_version"', '"format_version": 1, "format_version"', 1
+        )
+        assert drifted != raw
+        lock_path.write_text(drifted, encoding="utf-8")
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "non-strict-lock", _intact_without_hash()
+        )
+>       assert process.returncode == 2, process.stderr.decode("utf-8", "replace")
+E       AssertionError: error: output must stay inside the lab root: C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-lr02b-2026-10-08-01\t\pytest-of-unknown\pytest-0\test_non_strict_lock_json_is_r0\non-strict-lock-output
+E         
+E       assert 3 == 2
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input',...-lab-lr02b-2026-10-08-01\\t\\pytest-of-unknown\\pytest-0\\test_non_strict_lock_json_is_r0\\non-strict-lock-output\r\n').returncode
+
+tests\controller\test_archive_binding.py:296: AssertionError
+_____________ test_unrelated_bound_file_drift_blocks_history_only _____________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/ab-4532efac')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/t/pytest-of-unknown/pytest-0/test_unrelated_bound_file_drif0')
+
+    def test_unrelated_bound_file_drift_blocks_history_only(
+        lab_iqs_copy: Path, lab_tmp_path: Path
+    ):
+        (lab_iqs_copy / UNRELATED_BOUND_REL).write_bytes(
+            (lab_iqs_copy / UNRELATED_BOUND_REL).read_bytes() + b"\n"
+        )
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "unrelated-drift-historical", _intact_without_hash()
+        )
+>       assert process.returncode == 2, process.stderr.decode("utf-8", "replace")
+E       AssertionError: error: output must stay inside the lab root: C:\Users\郑曾波\Projects\invest-quick-scan\runs\evid-lab-lr02b-2026-10-08-01\t\pytest-of-unknown\pytest-0\test_unrelated_bound_file_drif0\unrelated-drift-historical-output
+E         
+E       assert 3 == 2
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input',...2026-10-08-01\\t\\pytest-of-unknown\\pytest-0\\test_unrelated_bound_file_drif0\\unrelated-drift-historical-output\r\n').returncode
+
+tests\controller\test_archive_binding.py:309: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/controller/test_archive_binding.py::test_intact_history_without_optional_hash_publishes
+FAILED tests/controller/test_archive_binding.py::test_fixture_only_tamper_is_rejected
+FAILED tests/controller/test_archive_binding.py::test_archive_and_fixture_tamper_is_rejected
+FAILED tests/controller/test_archive_binding.py::test_index_entry_rejects_the_same_archive_drift
+FAILED tests/controller/test_archive_binding.py::test_missing_lock_blocks_history_but_not_synthetic
+FAILED tests/controller/test_archive_binding.py::test_missing_archive_file_blocks_history
+FAILED tests/controller/test_archive_binding.py::test_non_strict_lock_json_is_rejected
+FAILED tests/controller/test_archive_binding.py::test_unrelated_bound_file_drift_blocks_history_only
+8 failed, 2 passed in 38.03s

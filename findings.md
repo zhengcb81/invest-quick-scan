@@ -1670,3 +1670,8 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - StockWiki三个严格解码入口加入UnicodeError的具名处理，43受影响方法、原两反例、七次真实CLI确认list invalid／prune跳过并保持正常retention，verify/restore／registry拒绝。没有无关变化，只做一次集中有限审查与受影响批次；原full/UI结果保留，SR02-4B有限软件闭合。
 - 工件可信性应分算法与字节域：75项名为git_blob_sha256却实为40位SHA1 OID，按真实OID＋独立raw/Git SHA256均核验。两真实回执未入worker索引可另按收到HEAD归档，不能凭缺索引造新owner文件、改旧工件或直接指为代码漂移。
 - 历史R3逐文件nlink全0与文字nlink==1不符，根已删就无法补证明单硬链。新一批自有清理有严格lstat=1、set/size/SHA与终态，只认证新根，不能抹去旧R2/sharedTEMP缺口；软件有限签收与历史取证限制、真实联合/G3F05门分别记录。
+
+## 2026-10-08 — Phase106：可信原锁与公开历史入口收口
+- LR-02B复用同一实际IQS根的verify_lock，将原archive字节校验前置于fixture派生／catalog／发布。原lock/index不变而同改副本archive/fixture，真实CLI从错误exit0发布转为exit2／无发布。synthetic无历史锁仍正常，完整历史答案省略可选hash仍接受。来源绑定有限签收，不能据此升级事实或评分准确性、人类gold或全局门。
+- 源库测试通过而总控隔离setup失败，可能是隔离前缀导致Windows MAX_PATH，不要改断言或报产品坏；只补跑受阻十项。缩短temp根同时要满足产品LAB输出边界，OWN/t被正确拒，OWN/lab/t成功；两次controller输出和适配留档，源142文件保持。108＋10是不同方法合计118通过，不冒充单次全套绿。
+- 141原件双hash／128原锁输入不变，396自有剩余文件严格清；源测试自动清理回执仅是聚合SHA，不能替代过去逐文件清单/OS/hardlink证明。新的严格自有清理只认证新根，旧nul/sharedTEMP取证限制保持可见，不为此重开软件门或追加小节点review。

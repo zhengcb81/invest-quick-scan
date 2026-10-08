@@ -1,0 +1,31 @@
+# Public CLI batch for the LR-02B round (2026-10-08), run from the lab root.
+# Offline only: no network, no keys, no paid calls; outputs live under .temp-roots/ and are removed.
+#
+# 1) index replay twice into two new exclusive roots
+PYTHONPATH=src python -B -X utf8 -m iqs_evidence_lab replay --input index --output .temp-roots/e2e-second-remediation-<pid>/index-a
+PYTHONPATH=src python -B -X utf8 -m iqs_evidence_lab replay --input index --output .temp-roots/e2e-second-remediation-<pid>/index-b
+#
+# 2) every shipped fixture (34/34)
+PYTHONPATH=src python -B -X utf8 -m iqs_evidence_lab replay --input fixtures/<category>/<FX-id>.json --output .temp-roots/e2e-second-remediation-<pid>/fixture-<FX-id>
+#
+# 3) catalog validation
+PYTHONPATH=src python -B -X utf8 -m iqs_evidence_lab validate-fixtures
+#
+# 4) assertions actually made (recorded in public-cli-runs.json)
+#    - every command exit 0 (36/36 = 2 index + 34 fixtures), each output dir published
+#    - index-a vs index-b byte-identical for input-verification.json, metrics.json,
+#      recoverability.json, review-join.json, diagnostics.json, and summary.json
+#      after normalizing output_dir / input.ref
+#    - inputs.snapshot_input_hashes(inputs.lock.json) identical before/after (128 files)
+#    - no .temp-roots/staging-* leftovers, output root removed afterwards
+#    - validate-fixtures: 34 fixtures / 42 expectations / 350 records / problems=[]
+#      (each historical fixture first verified against the locked archive it consumes)
+#
+# 5) LR-02B counterexamples live in tests/controller/test_archive_binding.py; they run the
+#    real CLI as subprocesses with IQS_EVIDENCE_LAB_IQS_ROOT pointing at a byte-identical
+#    copy of the 128 locked inputs under the lab session temp root. RED reproduction used
+#    a `git archive aeff0e6 | tar -x` export of the baseline lab (worktree untouched).
+#
+# The batch was executed by a lab-local throwaway runner kept inside .temp-roots/
+# (gitignored) and deleted with the output root; the commands above are the exact
+# CLI invocations it issued.

@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08 Phase105有限签收后）**：SW SR02-4B代码cc587a8／交接d253fea已有限签收，43受影响／原2／7实际CLI通过，勿重复实施。等原QA writer交四边界的新commit/handoff并受影响复验；QA/SW两端齐后按既有12组联合准备集中联调。Lab LR-02B独立接续，不人为阻塞该链。真实gold/联合链/G3/F05/THIN/L03仍未放行；不写外仓、共享TEMP或重复full/UI。实际清理/Git结果见progress末尾。
+**单一下一步（2026-10-08 Phase106有限签收后）**：Lab LR-02B代码cef3d95／交接2c0efb6已有限签收，118不同方法／原四真实CLI／三归档双根与34fixture通过，勿重复实施；SW SR02-4B同样已签收。等原QA writer按四边界接续卡交新commit/handoff并受影响复验；QA/SW两端齐后既有12组联合。Lab不人为阻塞该链。真实gold/联合链/G3F05/THIN/L03仍未放行；不写外仓、共享TEMP或收费。实际清理/Git回执见progress末尾。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1457,7 +1457,7 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_s
 - [x] 新独占副本123文件，122工件双hash/102仅EOL相符；108 passed、原9/5/6 passed、三归档双重放与34fixture/350记录、公开handoff均通过，42命令0失败。原128IQS输入/123源全程不变，草案cap10000/Decimal0.82296正确且非执行。
 - [x] 一次集中独审后同源四项复证3GREEN/1RED：同改副本archive/fixture仍发布historical/verified_before_write，index正确拒漂移；原六项已修复，仅LR-02B P1待原writer。初controller output越界exit3保留不当产品RED。[验收](docs/implementation/reviews/EVID-LAB-01/second-remediation-2026-10-08/acceptance.md)/单项卡/原日志留档。
 - [x] 546文件/136目录strict CIM/lstat/set/SHA dry-run→Apply清理、Lab HEAD/clean及122工件收尾不变。PWF与接手更新；不写外仓、不执行live、不关闭门，精确Git交付见progress实际回执。
-- [ ] 原Lab writer交回LR-02B新commit/handoff后做一次受影响收口；当前仅partial_verified/changes_requested，不恢复其他已完成实施。
+- [x] 原Lab writer已交LR-02B代码cef3d95／交接2c0efb6，Phase106完成受影响有限签收；不恢复其他已完成实施、不把软件来源绑定当答案准确性或全门闭合。
 - 实际IQS交付`2db1508ab52a466264ac65ba545f77bd1b066551`，230精确文件已沙箱外提交并正常推送origin/master，224工件及索引staged原字节匹配、diff检查通过。仅opencode未跟踪保留；后续仅PWF回执，Lab不写、不签全门。
 
 ## Phase103：SW-REPAIR-02第二轮修复验收
@@ -1487,3 +1487,12 @@ Status: complete_for_finite_software_acceptance_scope_verified; whole_project_ga
 - [x] 更新PWF/接手与有限签收边界。75字段40位OID误名、两漏索引真实回执另核、历史R3 nlink全0不能认证文字单硬链；旧R2/sharedTEMP取证仍open，不追认过去。
 - [x] IQS精确134文件已沙箱外提交`9f6146b45f70b323f1033a19ba6ca6a0d6a25f20`并正常推送origin/master；128工件与索引staged原字节核对、diff检查通过，仅原opencode未跟踪保留。随后仅PWF实际回执提交；不提交/推送StockWiki，也不把局部签收扩大成G3/F05。
 - 不重跑无变化full/UI、不修改外仓、不关闭G3/F05；QA/Lab原writer保留。
+
+## Phase106：LR-02B单项收口查收
+Status: complete_for_finite_lr02b_software_acceptance_scope_verified; whole_project_gates_still_open
+- [x] 用户通知完成；只读核Lab codex/evid-lab-01@2c0efb6／clean，基线aeff0e6、代码cef3d95。仅来源绑定源码、版本、测试与交接变化；不凭worker118/36自述签收。
+- [x] 固定142文件／141双hash工件（118仅EOL）／128原锁输入。108原方法＋十项controller短路径适配后通过，原四CLI 0/4/2/2且三负例无发布；三归档双根稳定、34fixture/350record通过，一次有限独审无软件阻断。[有限签收](docs/implementation/reviews/EVID-LAB-01/lr02b-2026-10-08/acceptance.md)。首266字符setup errors、第一次OWN/t输出越LAB被正确拒绝等原日志保留，不重复旧108或原9/5/6。
+- [x] strict CIM0／lstat单硬链无reparse／set-size-SHA，dry-run→Apply清396文件/97目录，唯一根已无；142源／128输入／141原件及Lab HEAD/clean/.temp-roots零子项不变。
+- [x] 更新PWF/接手；worker聚合清理hash及nul/sharedTEMP历史取证仍有限，提案草案不签、人类gold与事实/评分准确性不升级，软件有限签收不关闭L02整体或G3F05。
+- [ ] IQS精确提交推送，仅本轮工件及PWF，实际结果以progress回执为准；不提交或推送Lab，不再追加小节点审查。
+- 原Lab writer保留独占，不改源、不跑收费矩阵或签草案；旧六项与SW已通过交付保留，人类gold与G3F05/THIN/L03仍未关。

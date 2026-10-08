@@ -1,0 +1,33 @@
+
+tests\controller\test_controller_counterexamples.py:75: AssertionError
+______ AcceptanceCases.test_same_report_comparison_columns_not_conflict _______
+
+self = <test_controller_counterexamples.AcceptanceCases testMethod=test_same_report_comparison_columns_not_conflict>
+
+    def test_same_report_comparison_columns_not_conflict(self):
+        rows = check_sources(
+            {
+                "sources": [
+                    {"url": "https://example.com/report", "period": "2026"},
+                    {"url": "https://example.com/report", "period": "2025"},
+                ]
+            }
+        )
+        result = next(r for r in rows if r.check == "source.url_window")
+>       self.assertNotEqual(result.outcome, "fail", result)
+E       AssertionError: 'fail' == 'fail' : CheckResult(check='source.url_window', outcome='fail', error_code='E_URL_WINDOW_CONFLICT', abstain_reason=None, message='same URL reused across different periods: https://example.com/report', dimension=None)
+
+tests\controller\test_controller_counterexamples.py:104: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_duplicate_fixture_source_category_rejected
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_half_dictionary_conflict
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_historical_chunk_answer_tampering_rejected
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_io_failure_does_not_leave_partial_output
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_missing_source_window_abstains
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_missing_year_abstains
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_quarter_dictionary_conflict
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_same_report_comparison_columns_not_conflict
+========================= 8 failed, 1 passed in 3.07s =========================
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_missing_year_abstains
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_quarter_dictionary_conflict
+FAILED tests/controller/test_controller_counterexamples.py::AcceptanceCases::test_same_report_comparison_columns_not_conflict

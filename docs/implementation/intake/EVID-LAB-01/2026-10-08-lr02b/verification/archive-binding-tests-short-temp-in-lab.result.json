@@ -1,0 +1,25 @@
+{
+  "name": "archive-binding-tests-short-temp-in-lab",
+  "command": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "tests/controller/test_archive_binding.py",
+    "-o",
+    "addopts=",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "short_temp_plugin"
+  ],
+  "returncode": 0,
+  "wall_s": 37.637,
+  "stdout_sha256": "c73f70bd6145f4e50ca517eaf52bfd8294849fb2a3637b6a62536b1331193f49",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "controller_correction": "Only conftest TEMP_ROOT/ENV/pytest basetemp overridden in memory to OWN/lab/t; delivered source bytes and all ten assertions unchanged",
+  "original_inputs_unchanged": true
+}

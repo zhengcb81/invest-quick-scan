@@ -1,0 +1,220 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+metadata: {'Python': '3.13.9', 'Platform': 'Windows-11-10.0.26300-SP0', 'Packages': {'pytest': '9.1.1', 'pluggy': '1.5.0'}, 'Plugins': {'anyio': '4.13.0', 'Faker': '40.19.1', 'langsmith': '0.14.4', 'asyncio': '1.3.0', 'base-url': '2.1.0', 'benchmark': '5.2.3', 'cov': '7.0.0', 'html': '4.1.1', 'metadata': '3.1.1', 'mock': '3.15.1', 'playwright': '0.7.2', 'timeout': '2.4.0', 'xdist': '3.8.0'}, 'Base URL': ''}
+rootdir: C:\Users\郑曾波\Projects\iqs-evidence-lab\.temp-roots\baseline-lab
+configfile: pyproject.toml
+plugins: anyio-4.13.0, Faker-40.19.1, langsmith-0.14.4, asyncio-1.3.0, base-url-2.1.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 10 items
+
+tests/controller/test_archive_binding.py::test_intact_history_without_optional_hash_publishes PASSED [ 10%]
+tests/controller/test_archive_binding.py::test_fixture_only_tamper_is_rejected PASSED [ 20%]
+tests/controller/test_archive_binding.py::test_archive_and_fixture_tamper_is_rejected FAILED [ 30%]
+tests/controller/test_archive_binding.py::test_index_entry_rejects_the_same_archive_drift PASSED [ 40%]
+tests/controller/test_archive_binding.py::test_missing_lock_blocks_history_but_not_synthetic FAILED [ 50%]
+tests/controller/test_archive_binding.py::test_missing_archive_file_blocks_history FAILED [ 60%]
+tests/controller/test_archive_binding.py::test_non_strict_lock_json_is_rejected FAILED [ 70%]
+tests/controller/test_archive_binding.py::test_unrelated_bound_file_drift_blocks_history_only FAILED [ 80%]
+tests/controller/test_archive_binding.py::test_validate_fixtures_rejects_a_drifted_archive FAILED [ 90%]
+tests/controller/test_archive_binding.py::test_validate_fixtures_still_passes_on_an_intact_copy PASSED [100%]
+
+================================== FAILURES ===================================
+_________________ test_archive_and_fixture_tamper_is_rejected _________________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/ab-fdce91ad')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/pytest-of-郑曾波/pytest-0/test_archive_and_fixture_tampe0')
+
+    def test_archive_and_fixture_tamper_is_rejected(lab_iqs_copy: Path, lab_tmp_path: Path):
+        body = _fixture_tamper()
+        _mutate_archive(lab_iqs_copy, body)
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "archive-and-fixture-tamper", body
+        )
+        # drift of the consumed archive is input drift: same class as the index entry
+>       assert process.returncode == 2, (
+            process.stdout.decode("utf-8", "replace"),
+            process.stderr.decode("utf-8", "replace"),
+        )
+E       AssertionError: ('{\r
+E           "schema": "iqs_evidence_lab.replay_summary/1",\r
+E           "tool": {\r
+E             "name": "iqs_evidence_lab",\r
+E             "version": "0.2.1",\r
+E             "tool_id": "iqs_evidence_lab/0.2.1"\r
+E           },\r
+E           "input": {\r
+E             "kind": "fixture",\r
+E             "ref": "C:\\\\Users\\\\郑曾波\\\\Projects\\\\iqs-evidence-lab\\\\.temp-roots\\\\baseline-lab\\\\.temp-roots\\\\pytest-33664-bd7c61b3\\\\pytest-of-郑曾波\\\\pytest-0\\\\test_archive_and_fixture_tampe0\\\\archive-and-fixture-tamper.json",\r
+E             "verified_before_write": true\r
+E           },\r
+E           "output_dir": "archive-and-fixture-tamper-output",\r
+E           "live": false,\r
+E           "environment": {\r
+E             "network_attempts": 0,\r
+E             "key_reads": 0,\r
+E             "paid_model_calls": 0,\r
+E             "search_calls": 0,\r
+E             "downloads": 0,\r
+E             "publish": "staged_under_.temp-roots_then_atomic_rename",\r
+E             "note": "lab code contains no credential reader and no network client"\r
+E           },\r
+E           "results": {\r
+E             "kind": "fixture",\r
+E             "fixture_id": "FX-032",\r
+E             "source_category": "historical_model_output",\r
+E             "diagnostic_records": 13,\r
+E             "diagnostic_summary": {\r
+E               "pass": 0,\r
+E               "fail": 1,\r
+E               "abstain": 12,\r
+E               "by_error_code": {\r
+E                 "E_SCORE_BASIS_UNSUPPORTED": 1\r
+E               },\r
+E               "by_abstain_reason": {\r
+E                 "expected_not_stated": 8,\r
+E                 "source_relation_not_stated": 1,\r
+E                 "snippet_not_available": 2,\r
+E                 "agent_review_only": 1\r
+E               },\r
+E               "by_check": {\r
+E                 "semantic.subject": 1,\r
+E                 "semantic.period": 1,\r
+E                 "semantic.metric": 1,\r
+E                 "semantic.unit": 1,\r
+E                 "semantic.direction": 1,\r
+E                 "semantic.scope": 1,\r
+E                 "semantic.role": 1,\r
+E                 "source.url_window": 1,\r
+E                 "source.independence": 1,\r
+E                 "structure.reference_contract": 1,\r
+E                 "support.review_label": 1,\r
+E                 "support.claim_fact_support": 1,\r
+E                 "support.score_basis": 1\r
+E               }\r
+E             }\r
+E           }\r
+E         }\r
+E         ', '')
+E       assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_archive_and_fixture_tampe0\\archive-and-fixture-tamper.json', '--output', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_archive_and_fixture_tampe0\\archive-and-fixture-tamper-output'], returncode=0, stdout=b'{\r\n  "schema": "iqs_evidence_lab.replay_summary/1",\r\n  "tool": {\r\n    "name": "iqs_evidence_lab",\r\n    "version": "0.2.1",\r\n    "tool_id": "iqs_evidence_lab/0.2.1"\r\n  },\r\n  "input": {\r\n    "kind": "fixture",\r\n    "ref": "C:\\\\Users\\\\\xe9\x83\x91\xe6\x9b\xbe\xe6\xb3\xa2\\\\Projects\\\\iqs-evidence-lab\\\\.temp-roots\\\\baseline-lab\\\\.temp-roots\\\\pytest-33664-bd7c61b3\\\\pytest-of-\xe9\x83\x91\xe6\x9b\xbe\xe6\xb3\xa2\\\\pytest-0\\\\test_archive_and_fixture_tampe0\\\\archive-and-fixture-tamper.json",\r\n    "verified_before_write": true\r\n  },\r\n  "output_dir": "archive-and-fixture-tamper-output",\r\n  "live":...under_.temp-roots_then_atomic_rename",\r\n    "note": "lab code contains no credential reader and no network client"\r\n  },\r\n  "results": {\r\n    "kind": "fixture",\r\n    "fixture_id": "FX-032",\r\n    "source_category": "historical_model_output",\r\n    "diagnostic_records": 13,\r\n    "diagnostic_summary": {\r\n      "pass": 0,\r\n      "fail": 1,\r\n      "abstain": 12,\r\n      "by_error_code": {\r\n        "E_SCORE_BASIS_UNSUPPORTED": 1\r\n      },\r\n      "by_abstain_reason": {\r\n        "expected_not_stated": 8,\r\n        "source_relation_not_stated": 1,\r\n        "snippet_not_available": 2,\r\n        "agent_review_only": 1\r\n      },\r\n      "by_check": {\r\n        "semantic.subject": 1,\r\n        "semantic.period": 1,\r\n        "semantic.metric": 1,\r\n        "semantic.unit": 1,\r\n        "semantic.direction": 1,\r\n        "semantic.scope": 1,\r\n        "semantic.role": 1,\r\n        "source.url_window": 1,\r\n        "source.independence": 1,\r\n        "structure.reference_contract": 1,\r\n        "support.review_label": 1,\r\n        "support.claim_fact_support": 1,\r\n        "support.score_basis": 1\r\n      }\r\n    }\r\n  }\r\n}\r\n', stderr=b'').returncode
+
+tests\controller\test_archive_binding.py:233: AssertionError
+_____________ test_missing_lock_blocks_history_but_not_synthetic ______________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/ab-da88900d')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/pytest-of-郑曾波/pytest-0/test_missing_lock_blocks_histo0')
+
+    def test_missing_lock_blocks_history_but_not_synthetic(
+        lab_iqs_copy: Path, lab_tmp_path: Path
+    ):
+        (lab_iqs_copy / LOCK_REL).unlink()
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "missing-lock-historical", _intact_without_hash()
+        )
+>       assert process.returncode == 2, process.stderr.decode("utf-8", "replace")
+E       AssertionError: 
+E       assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_missing_lock_blocks_histo0\\missing-lock-historical.json', '--output', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_missing_lock_blocks_histo0\\missing-lock-historical-output'], returncode=0, stdout=b'{\r\n  "schema": "iqs_evidence_lab.replay_summary/1",\r\n  "tool": {\r\n    "name": "iqs_evidence_lab",\r\n    "version": "0.2.1",\r\n    "tool_id": "iqs_evidence_lab/0.2.1"\r\n  },\r\n  "input": {\r\n    "kind": "fixture",\r\n    "ref": "C:\\\\Users\\\\\xe9\x83\x91\xe6\x9b\xbe\xe6\xb3\xa2\\\\Projects\\\\iqs-evidence-lab\\\\.temp-roots\\\\baseline-lab\\\\.temp-roots\\\\pytest-33664-bd7c61b3\\\\pytest-of-\xe9\x83\x91\xe6\x9b\xbe\xe6\xb3\xa2\\\\pytest-0\\\\test_missing_lock_blocks_histo0\\\\missing-lock-historical.json",\r\n    "verified_before_write": true\r\n  },\r\n  "output_dir": "missing-lock-historical-output",\r\n  "live": false,\r\n ...under_.temp-roots_then_atomic_rename",\r\n    "note": "lab code contains no credential reader and no network client"\r\n  },\r\n  "results": {\r\n    "kind": "fixture",\r\n    "fixture_id": "FX-032",\r\n    "source_category": "historical_model_output",\r\n    "diagnostic_records": 13,\r\n    "diagnostic_summary": {\r\n      "pass": 0,\r\n      "fail": 1,\r\n      "abstain": 12,\r\n      "by_error_code": {\r\n        "E_SCORE_BASIS_UNSUPPORTED": 1\r\n      },\r\n      "by_abstain_reason": {\r\n        "expected_not_stated": 8,\r\n        "source_relation_not_stated": 1,\r\n        "snippet_not_available": 2,\r\n        "agent_review_only": 1\r\n      },\r\n      "by_check": {\r\n        "semantic.subject": 1,\r\n        "semantic.period": 1,\r\n        "semantic.metric": 1,\r\n        "semantic.unit": 1,\r\n        "semantic.direction": 1,\r\n        "semantic.scope": 1,\r\n        "semantic.role": 1,\r\n        "source.url_window": 1,\r\n        "source.independence": 1,\r\n        "structure.reference_contract": 1,\r\n        "support.review_label": 1,\r\n        "support.claim_fact_support": 1,\r\n        "support.score_basis": 1\r\n      }\r\n    }\r\n  }\r\n}\r\n', stderr=b'').returncode
+
+tests\controller\test_archive_binding.py:265: AssertionError
+__________________ test_missing_archive_file_blocks_history ___________________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/ab-c2d51401')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/pytest-of-郑曾波/pytest-0/test_missing_archive_file_bloc0')
+
+    def test_missing_archive_file_blocks_history(lab_iqs_copy: Path, lab_tmp_path: Path):
+        (lab_iqs_copy / ARCHIVE_REL).unlink()
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "missing-archive", _intact_without_hash()
+        )
+>       assert process.returncode == 2, process.stderr.decode("utf-8", "replace")
+E       AssertionError: unexpected error: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\ab-c2d51401\\docs\\implementation\\experiments\\artifacts\\mimo-pro-pilot-2026-10-07-01\\results.jsonl'
+E         
+E       assert 1 == 2
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_missing_archive_file_bloc0\\missing-archive.json', '--output', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_missing_archive_file_bloc0\\missing-archive-output'], returncode=1, stdout=b'', stderr=b"unexpected error: [Errno 2] No such file or directory: 'C:\\\\Users\\\\\xe9\x83\x91\xe6\x9b\xbe\xe6\xb3\xa2\\\\Projects\\\\iqs-evidence-lab\\\\.temp-roots\\\\baseline-lab\\\\.temp-roots\\\\pytest-33664-bd7c61b3\\\\ab-c2d51401\\\\docs\\\\implementation\\\\experiments\\\\artifacts\\\\mimo-pro-pilot-2026-10-07-01\\\\results.jsonl'\r\n").returncode
+
+tests\controller\test_archive_binding.py:280: AssertionError
+____________________ test_non_strict_lock_json_is_rejected ____________________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/ab-93bfb593')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/pytest-of-郑曾波/pytest-0/test_non_strict_lock_json_is_r0')
+
+    def test_non_strict_lock_json_is_rejected(lab_iqs_copy: Path, lab_tmp_path: Path):
+        lock_path = lab_iqs_copy / LOCK_REL
+        raw = lock_path.read_text(encoding="utf-8-sig")
+        drifted = raw.replace(
+            '"format_version"', '"format_version": 1, "format_version"', 1
+        )
+        assert drifted != raw
+        lock_path.write_text(drifted, encoding="utf-8")
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "non-strict-lock", _intact_without_hash()
+        )
+>       assert process.returncode == 2, process.stderr.decode("utf-8", "replace")
+E       AssertionError: 
+E       assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_non_strict_lock_json_is_r0\\non-strict-lock.json', '--output', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_non_strict_lock_json_is_r0\\non-strict-lock-output'], returncode=0, stdout=b'{\r\n  "schema": "iqs_evidence_lab.replay_summary/1",\r\n  "tool": {\r\n    "name": "iqs_evidence_lab",\r\n    "version": "0.2.1",\r\n    "tool_id": "iqs_evidence_lab/0.2.1"\r\n  },\r\n  "input": {\r\n    "kind": "fixture",\r\n    "ref": "C:\\\\Users\\\\\xe9\x83\x91\xe6\x9b\xbe\xe6\xb3\xa2\\\\Projects\\\\iqs-evidence-lab\\\\.temp-roots\\\\baseline-lab\\\\.temp-roots\\\\pytest-33664-bd7c61b3\\\\pytest-of-\xe9\x83\x91\xe6\x9b\xbe\xe6\xb3\xa2\\\\pytest-0\\\\test_non_strict_lock_json_is_r0\\\\non-strict-lock.json",\r\n    "verified_before_write": true\r\n  },\r\n  "output_dir": "non-strict-lock-output",\r\n  "live": false,\r\n  "environment": {\r\n    "networ...under_.temp-roots_then_atomic_rename",\r\n    "note": "lab code contains no credential reader and no network client"\r\n  },\r\n  "results": {\r\n    "kind": "fixture",\r\n    "fixture_id": "FX-032",\r\n    "source_category": "historical_model_output",\r\n    "diagnostic_records": 13,\r\n    "diagnostic_summary": {\r\n      "pass": 0,\r\n      "fail": 1,\r\n      "abstain": 12,\r\n      "by_error_code": {\r\n        "E_SCORE_BASIS_UNSUPPORTED": 1\r\n      },\r\n      "by_abstain_reason": {\r\n        "expected_not_stated": 8,\r\n        "source_relation_not_stated": 1,\r\n        "snippet_not_available": 2,\r\n        "agent_review_only": 1\r\n      },\r\n      "by_check": {\r\n        "semantic.subject": 1,\r\n        "semantic.period": 1,\r\n        "semantic.metric": 1,\r\n        "semantic.unit": 1,\r\n        "semantic.direction": 1,\r\n        "semantic.scope": 1,\r\n        "semantic.role": 1,\r\n        "source.url_window": 1,\r\n        "source.independence": 1,\r\n        "structure.reference_contract": 1,\r\n        "support.review_label": 1,\r\n        "support.claim_fact_support": 1,\r\n        "support.score_basis": 1\r\n      }\r\n    }\r\n  }\r\n}\r\n', stderr=b'').returncode
+
+tests\controller\test_archive_binding.py:296: AssertionError
+_____________ test_unrelated_bound_file_drift_blocks_history_only _____________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/ab-89ae9e1d')
+lab_tmp_path = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/pytest-of-郑曾波/pytest-0/test_unrelated_bound_file_drif0')
+
+    def test_unrelated_bound_file_drift_blocks_history_only(
+        lab_iqs_copy: Path, lab_tmp_path: Path
+    ):
+        (lab_iqs_copy / UNRELATED_BOUND_REL).write_bytes(
+            (lab_iqs_copy / UNRELATED_BOUND_REL).read_bytes() + b"\n"
+        )
+        process, target = _replay_fixture(
+            lab_iqs_copy, lab_tmp_path, "unrelated-drift-historical", _intact_without_hash()
+        )
+>       assert process.returncode == 2, process.stderr.decode("utf-8", "replace")
+E       AssertionError: 
+E       assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'replay', '--input', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_unrelated_bound_file_drif0\\unrelated-drift-historical.json', '--output', 'C:\\Users\\郑曾波\\Projects\\iqs-evidence-lab\\.temp-roots\\baseline-lab\\.temp-roots\\pytest-33664-bd7c61b3\\pytest-of-郑曾波\\pytest-0\\test_unrelated_bound_file_drif0\\unrelated-drift-historical-output'], returncode=0, stdout=b'{\r\n  "schema": "iqs_evidence_lab.replay_summary/1",\r\n  "tool": {\r\n    "name": "iqs_evidence_lab",\r\n    "version": "0.2.1",\r\n    "tool_id": "iqs_evidence_lab/0.2.1"\r\n  },\r\n  "input": {\r\n    "kind": "fixture",\r\n    "ref": "C:\\\\Users\\\\\xe9\x83\x91\xe6\x9b\xbe\xe6\xb3\xa2\\\\Projects\\\\iqs-evidence-lab\\\\.temp-roots\\\\baseline-lab\\\\.temp-roots\\\\pytest-33664-bd7c61b3\\\\pytest-of-\xe9\x83\x91\xe6\x9b\xbe\xe6\xb3\xa2\\\\pytest-0\\\\test_unrelated_bound_file_drif0\\\\unrelated-drift-historical.json",\r\n    "verified_before_write": true\r\n  },\r\n  "output_dir": "unrelated-drift-historical-output",\r\n  "live":...under_.temp-roots_then_atomic_rename",\r\n    "note": "lab code contains no credential reader and no network client"\r\n  },\r\n  "results": {\r\n    "kind": "fixture",\r\n    "fixture_id": "FX-032",\r\n    "source_category": "historical_model_output",\r\n    "diagnostic_records": 13,\r\n    "diagnostic_summary": {\r\n      "pass": 0,\r\n      "fail": 1,\r\n      "abstain": 12,\r\n      "by_error_code": {\r\n        "E_SCORE_BASIS_UNSUPPORTED": 1\r\n      },\r\n      "by_abstain_reason": {\r\n        "expected_not_stated": 8,\r\n        "source_relation_not_stated": 1,\r\n        "snippet_not_available": 2,\r\n        "agent_review_only": 1\r\n      },\r\n      "by_check": {\r\n        "semantic.subject": 1,\r\n        "semantic.period": 1,\r\n        "semantic.metric": 1,\r\n        "semantic.unit": 1,\r\n        "semantic.direction": 1,\r\n        "semantic.scope": 1,\r\n        "semantic.role": 1,\r\n        "source.url_window": 1,\r\n        "source.independence": 1,\r\n        "structure.reference_contract": 1,\r\n        "support.review_label": 1,\r\n        "support.claim_fact_support": 1,\r\n        "support.score_basis": 1\r\n      }\r\n    }\r\n  }\r\n}\r\n', stderr=b'').returncode
+
+tests\controller\test_archive_binding.py:309: AssertionError
+______________ test_validate_fixtures_rejects_a_drifted_archive _______________
+
+lab_iqs_copy = WindowsPath('C:/Users/郑曾波/Projects/iqs-evidence-lab/.temp-roots/baseline-lab/.temp-roots/pytest-33664-bd7c61b3/ab-50574237')
+
+    def test_validate_fixtures_rejects_a_drifted_archive(lab_iqs_copy: Path):
+        archive = lab_iqs_copy / ARCHIVE_REL
+        # byte-level drift only: every row still parses and the shipped fixtures
+        # still match the archive contents, so only the lock can catch this.
+        archive.write_bytes(archive.read_bytes() + b"\n")
+        process = _public(["validate-fixtures"], lab_iqs_copy)
+>       assert process.returncode == 2, process.stdout.decode("utf-8", "replace")
+E       AssertionError: {
+E           "schema": "iqs_evidence_lab.fixture_catalog/1",
+E           "fixtures": 34,
+E           "records": 350,
+E           "counts": {
+E             "synthetic": 28,
+E             "historical_model_output": 5,
+E             "real_source_snippet": 1
+E           },
+E           "collected": {
+E             "synthetic": 28,
+E             "historical_model_output": 5,
+E             "real_source_snippet": 0
+E           },
+E           "problems": [],
+E           "ok": true
+E         }
+E         
+E       assert 0 == 2
+E        +  where 0 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'iqs_evidence_lab', 'validate-fixtures'], returncode=0, stdout=b'{\r\n  "schema": "iqs_evidence_lab.fixture_catalog/1",\r\n  "fixtures": 34,\r\n  "records": 350,\r\n  "counts": {\r\n    "synthetic": 28,\r\n    "historical_model_output": 5,\r\n    "real_source_snippet": 1\r\n  },\r\n  "collected": {\r\n    "synthetic": 28,\r\n    "historical_model_output": 5,\r\n    "real_source_snippet": 0\r\n  },\r\n  "problems": [],\r\n  "ok": true\r\n}\r\n', stderr=b'').returncode
+
+tests\controller\test_archive_binding.py:328: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/controller/test_archive_binding.py::test_archive_and_fixture_tamper_is_rejected
+FAILED tests/controller/test_archive_binding.py::test_missing_lock_blocks_history_but_not_synthetic
+FAILED tests/controller/test_archive_binding.py::test_missing_archive_file_blocks_history
+FAILED tests/controller/test_archive_binding.py::test_non_strict_lock_json_is_rejected
+FAILED tests/controller/test_archive_binding.py::test_unrelated_bound_file_drift_blocks_history_only
+FAILED tests/controller/test_archive_binding.py::test_validate_fixtures_rejects_a_drifted_archive
+======================== 6 failed, 4 passed in 20.92s =========================

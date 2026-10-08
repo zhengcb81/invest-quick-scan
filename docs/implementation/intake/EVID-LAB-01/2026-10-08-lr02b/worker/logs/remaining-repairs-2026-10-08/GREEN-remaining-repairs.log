@@ -1,0 +1,39 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.1.1, pluggy-1.5.0 -- C:\Miniconda\python.exe
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+metadata: {'Python': '3.13.9', 'Platform': 'Windows-11-10.0.26300-SP0', 'Packages': {'pytest': '9.1.1', 'pluggy': '1.5.0'}, 'Plugins': {'anyio': '4.13.0', 'Faker': '40.19.1', 'langsmith': '0.14.4', 'asyncio': '1.3.0', 'base-url': '2.1.0', 'benchmark': '5.2.3', 'cov': '7.0.0', 'html': '4.1.1', 'metadata': '3.1.1', 'mock': '3.15.1', 'playwright': '0.7.2', 'timeout': '2.4.0', 'xdist': '3.8.0'}, 'Base URL': ''}
+rootdir: C:\Users\郑曾波\Projects\iqs-evidence-lab
+configfile: pyproject.toml
+plugins: anyio-4.13.0, Faker-40.19.1, langsmith-0.14.4, asyncio-1.3.0, base-url-2.1.0, benchmark-5.2.3, cov-7.0.0, html-4.1.1, metadata-3.1.1, mock-3.15.1, playwright-0.7.2, timeout-2.4.0, xdist-3.8.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 27 items
+
+tests/controller/test_remaining_repairs.py::test_custom_nonoverlapping_ranges_never_publish_consistency_pass PASSED [  3%]
+tests/controller/test_remaining_repairs.py::test_custom_explicit_date_ranges_cannot_be_called_equal PASSED [  7%]
+tests/controller/test_remaining_repairs.py::test_custom_identical_ranges_are_the_only_positive_shape PASSED [ 11%]
+tests/controller/test_remaining_repairs.py::test_original_historical_fixture_still_replays PASSED [ 14%]
+tests/controller/test_remaining_repairs.py::test_missing_historical_answer_hash_cannot_authorize_tampered_answer PASSED [ 18%]
+tests/controller/test_remaining_repairs.py::test_tampered_historical_answer_with_hash_still_rejected PASSED [ 22%]
+tests/controller/test_remaining_repairs.py::test_empty_or_null_answer_binding_is_rejected[] PASSED [ 25%]
+tests/controller/test_remaining_repairs.py::test_empty_or_null_answer_binding_is_rejected[None] PASSED [ 29%]
+tests/controller/test_remaining_repairs.py::test_wrong_question_id_binding_is_rejected PASSED [ 33%]
+tests/controller/test_remaining_repairs.py::test_verifier_rejects_missing_binding_for_case_answer PASSED [ 37%]
+tests/controller/test_remaining_repairs.py::test_answer_sha_alone_is_not_a_history_proof PASSED [ 40%]
+tests/controller/test_remaining_repairs.py::test_numeric_overflow_is_not_an_admissible_finite_json_value PASSED [ 44%]
+tests/controller/test_remaining_repairs.py::test_normal_numbers_survive_the_strict_parser PASSED [ 48%]
+tests/controller/test_remaining_repairs.py::test_numeric_overflow_is_rejected_by_actual_fixture_replay PASSED [ 51%]
+tests/controller/test_remaining_repairs.py::test_every_cited_window_conflicting_still_fails PASSED [ 55%]
+tests/controller/test_remaining_repairs.py::test_one_matching_window_is_never_reported_as_all_conflicting PASSED [ 59%]
+tests/controller/test_remaining_repairs.py::test_all_unknown_windows_abstain PASSED [ 62%]
+tests/controller/test_remaining_repairs.py::test_unknown_source_window_does_not_mean_all_sources_conflict PASSED [ 66%]
+tests/controller/test_remaining_repairs.py::test_same_report_comparison_columns_and_no_window_cases_stay PASSED [ 70%]
+tests/controller/test_remaining_repairs.py::test_every_synthetic_fx021_record_keeps_synthetic_source_type PASSED [ 74%]
+tests/controller/test_remaining_repairs.py::test_historical_fixture_records_never_claim_synthetic PASSED [ 77%]
+tests/controller/test_remaining_repairs.py::test_uncollected_real_source_fixture_never_claims_real_snippet PASSED [ 81%]
+tests/controller/test_remaining_repairs.py::test_source_kind_verifier_rejects_category_morphing PASSED [ 85%]
+tests/controller/test_remaining_repairs.py::test_draft_reference_fee_upper_bound_covers_its_generation_cap PASSED [ 88%]
+tests/controller/test_remaining_repairs.py::test_changing_both_retained_answer_and_self_hash_still_rejected PASSED [ 92%]
+tests/controller/test_remaining_repairs.py::test_final_rename_failure_cleans_staging_and_same_path_is_retryable PASSED [ 96%]
+tests/controller/test_remaining_repairs.py::test_target_created_during_publish_is_preserved_on_this_windows_host PASSED [100%]
+
+============================= 27 passed in 7.68s ==============================

@@ -2260,3 +2260,16 @@
 - [有限签收](docs/implementation/reviews/SW-REPAIR-02/sr02-4b-2026-10-08/acceptance.md)、一次独审、完整原日志、机器结果与PWF/接手已落档。QA四边界、Lab LR-02B仍原writer，QA/SW两端齐再既有联合12组，Lab不人为阻塞。真实gold/QA import-ACK-UI/双owner恢复/TTL/G3F05/THIN/L03未关；本仓精确Git提交推送待实际回执。
 
 - **Phase105实际Git交付**：134个精确IQS文件已沙箱外提交`9f6146b45f70b323f1033a19ba6ca6a0d6a25f20`并正常推送origin/master（4df0fa7→9f6146b，实际exit0，HEAD/远端跟踪一致）。128归档工件及索引本身staged原字节逐项匹配，43精确忽略路径局部-force，四原traceback日志／一实际guard保留原空白，其他diff检查通过；9 helper AST、6相对链接、131原输入与根已无检查通过，不额外重跑产品suite。仅原opencode.json未跟踪保留。693自有文件已严格清，所有外仓未写/未提交/未推送；SR02-4B有限软件已签收，历史取证/QA-Lab接续和全局门保持原边界。随后仅补本次实际PWF回执，不改冻结工件。
+
+## 2026-10-08 — Phase106接收LR-02B
+- 用户通知单项完成，实际Lab codex/evid-lab-01@2c0efb6370e401ca84d5f23cd5047de2bbfdec0a／clean；基线aeff0e6，代码cef3d95969671d10b42138ed97010c9c164b5118。版本自述CLI0.2.2／structure-rules4／schema1.2.0保留；后续交接不执行动态源。
+- 沿用PWF legacy根，原opencode未跟踪保留。Lab唯一writer不变，总控只读；拟固定新独占副本复验同一历史锁来源链、原四真实CLI与相关catalog/synthetic，不复跑收费实验、不签proposal、不把锁完整性当事实准确性或G3F05签收。
+- 初批固定142源码／141工件双hash全匹配、118仅EOL；正常catalog／三归档双根／34fixture及handoff都exit0。回归108passed/10setup errors，最长复制路径266字符触发Windows MAX_PATH，是controller隔离前缀问题。第一次内存短根适配置OWN/t，8例被产品正确exit3拒LAB外输出、2catalog通过；原两组输出保留，改OWN/lab/t仅补跑10项，源字节/断言不变，不泛跑旧108。
+- 只读helper路径曾猜不存在guarded_run.py/finish.py，改用已有lab_sitecustomize及真实collect/close，未执行或伪造缺失文件；一次长补丁格式拒绝在写入前停止，拆成单文件补丁。独立审查已一次集中完成，无静态软件阻断，动态签收仍待实际终态。
+
+## 2026-10-08 — Phase106有限软件签收完成
+- 十项最终适配只在内存调整TEMP_ROOT到OWN/lab/t，原测试源/断言逐字节不变；10passed/31.45s（wall37.637），session45434exit0。首108passed/10setuperrors（79.18s，wall86.659），不同方法合计118实际通过，不冒充一次全绿。第一短根8fail/2pass是LAB外输出被正确拒，session27960exit1，原stdout/stderr/adapter保留。
+- 原四公开CLI真实结果0/4/2/2，wall共3.104；同改副本archive/fixture而原lock/index不变，先InputDriftError拒绝、无final/staging/已验证summary，原绕过闭合。完整原答案省略可选hash可过，只改fixture拒绝；缺锁/archive/strictJSON/catalog/synthetic十项保持。一次集中独审无剩余LR-02B软件阻断，仅有限来源绑定签收。
+- 初批40命令中39exit0＋1setup回归错误，纠正十项另回执。正常catalog＋36公开重放wall47.044；三归档两根五payload原字节一致，34fixture/350record无问题。CLI0.2.2／structure4／semantic3／diagnostic1.2.0／fixture1.1.0实际确认；原六项、原9/5/6和此前SW成果保留，不机械重复全部suite或收费实验。
+- 396文件/97目录strict CIM0、无自有服务器端口、lstat单硬链/无reparse、精确set/size/SHA独立dry→Apply清，Apply session91535exit0，唯一根已无。128原锁输入／142导出源码／141源工件收尾不变，Lab HEAD2c0efb6/codex分支/clean、.temp-roots无子项。测试内部三份新清理回执归档，原worker九份只有聚合manifestSHA，过去逐文件/硬链/OS证明限制和nul/sharedTEMP取证不伪补。
+- [有限签收](docs/implementation/reviews/EVID-LAB-01/lr02b-2026-10-08/acceptance.md)、一次独审、机器结果和完整命令/原日志/PWF/接手已更新。来源字节完整性不等于事实或评分准确性；proposal仍draft_not_signed/execution_enabled=false/live_not_run=true，人类gold/L02整体/G3F05/THIN/L03未关。下一动作等QA原writer四边界新交接，QA/SW齐再既有联合12组，Lab不人为阻塞。只有IQS写入，外仓/正式库/名单/下载/收费0，本仓精确提交推送待实际回执。

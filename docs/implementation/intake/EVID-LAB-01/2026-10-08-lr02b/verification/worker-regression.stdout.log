@@ -1,0 +1,425 @@
+EEEEEEEEEE.............................................................. [ 61%]
+..............................................                           [100%]
+=================================== ERRORS ====================================
+____ ERROR at setup of test_intact_history_without_optional_hash_publishes ____
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-9fe600ad\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+___________ ERROR at setup of test_fixture_only_tamper_is_rejected ____________
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-44548c04\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+________ ERROR at setup of test_archive_and_fixture_tamper_is_rejected ________
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-a6f98343\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+______ ERROR at setup of test_index_entry_rejects_the_same_archive_drift ______
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-7349eefb\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+____ ERROR at setup of test_missing_lock_blocks_history_but_not_synthetic _____
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-faeed24e\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+_________ ERROR at setup of test_missing_archive_file_blocks_history __________
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-11e1b3c6\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+___________ ERROR at setup of test_non_strict_lock_json_is_rejected ___________
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-995ea893\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+____ ERROR at setup of test_unrelated_bound_file_drift_blocks_history_only ____
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-d772ccee\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+_____ ERROR at setup of test_validate_fixtures_rejects_a_drifted_archive ______
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-ac1e5c2b\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+___ ERROR at setup of test_validate_fixtures_still_passes_on_an_intact_copy ___
+
+temp_root = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8bf84731')
+
+    @pytest.fixture()
+    def lab_iqs_copy(temp_root: Path) -> Path:
+        """Locked-input copy kept directly under the session temp root.
+    
+        Both `lab_tmp_path` and a long descriptive directory name push the deepest
+        locked path past MAX_PATH on Windows, so the copy is a short random
+        directory one level below `temp_root` (still inside the strict-manifest
+        cleanup scope of tests/conftest.py) while outputs stay in `lab_tmp_path`.
+        """
+        copy_root = temp_root / f"ab-{os.urandom(4).hex()}"
+>       _copy_locked_inputs(copy_root)
+
+tests\controller\test_archive_binding.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\controller\test_archive_binding.py:86: in _copy_locked_inputs
+    target.write_bytes(data)
+C:\Miniconda\Lib\pathlib\_abc.py:641: in write_bytes
+    with self.open(mode='wb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/evid-lab-lr02b-2026-10-08-01/lab/.temp-roots/pytest-37916-8b...lel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json')
+mode = 'wb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731\\ab-d46535d2\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\inputs\\qa-phase92-overlay\\tests\\fixtures\\quick_scan_c06_authority_v2_fixture.json'
+
+C:\Miniconda\Lib\pathlib\_local.py:537: FileNotFoundError
+=========================== short test summary info ===========================
+ERROR tests/controller/test_archive_binding.py::test_intact_history_without_optional_hash_publishes
+ERROR tests/controller/test_archive_binding.py::test_fixture_only_tamper_is_rejected
+ERROR tests/controller/test_archive_binding.py::test_archive_and_fixture_tamper_is_rejected
+ERROR tests/controller/test_archive_binding.py::test_index_entry_rejects_the_same_archive_drift
+ERROR tests/controller/test_archive_binding.py::test_missing_lock_blocks_history_but_not_synthetic
+ERROR tests/controller/test_archive_binding.py::test_missing_archive_file_blocks_history
+ERROR tests/controller/test_archive_binding.py::test_non_strict_lock_json_is_rejected
+ERROR tests/controller/test_archive_binding.py::test_unrelated_bound_file_drift_blocks_history_only
+ERROR tests/controller/test_archive_binding.py::test_validate_fixtures_rejects_a_drifted_archive
+ERROR tests/controller/test_archive_binding.py::test_validate_fixtures_still_passes_on_an_intact_copy
+108 passed, 10 errors in 79.18s (0:01:19)

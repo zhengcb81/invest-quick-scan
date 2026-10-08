@@ -1,0 +1,1186 @@
+{
+  "format_version": "1.0.0",
+  "package_id": "EVID-LAB-01",
+  "repository": "C:/Users/郑曾波/Projects/iqs-evidence-lab",
+  "source_result_commit": "cef3d95969671d10b42138ed97010c9c164b5118",
+  "self_hash_excluded_to_avoid_recursion": true,
+  "hash_policy": {
+    "worktree_sha256": "sha256 of the exact bytes on disk",
+    "git_blob_oid": "git hash-object --path=<path> <path> (blob id after the repository clean filter)",
+    "eol": "crlf|lf marker per file; EOL-only worktree/blob differences are declared, never called tampering",
+    "line_endings_rewritten": false
+  },
+  "export_restore": {
+    "export_blob": "git show <commit>:<path>  (exact committed bytes; LF under autocrlf=true)",
+    "export_worktree_bytes": "read the file from a checkout with the recorded core.autocrlf; verify worktree_sha256",
+    "restore": "git checkout -- <path> from the named commit restores the recorded worktree bytes for this configuration; do not renormalize the repo"
+  },
+  "file_count": 141,
+  "eol_counts": {
+    "crlf": 119,
+    "lf": 22
+  },
+  "diff_vs_result_commit_counts": {
+    "identical": 113,
+    "updated_after_result_commit": 10,
+    "not_in_result_commit": 18
+  },
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 169,
+      "worktree_sha256": "28c343a85fa051e2cb825c0f635d5525ad5bf0a47291c7f1831773ccbc82f9a3",
+      "eol": "lf",
+      "git_blob_oid": "e58cf3445f1eba74c14fe5e8489c60308c8bbdcf",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2296,
+      "worktree_sha256": "c4ecb015899699e252f23ae764aba0ec2bbb1435e044e4c9e583e70f95175104",
+      "eol": "crlf",
+      "git_blob_oid": "941c809164eb2070f3d5c8fdd7ee9123efc1cd6b",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/case-map.md",
+      "bytes": 13668,
+      "worktree_sha256": "92e3b6d01f24b544a2eb17f45ec963339c259d993fe403db5a5edeffbe8a0fa2",
+      "eol": "lf",
+      "git_blob_oid": "318976911e2d13f8616ef9bb4be33a9c248edc61",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/experiment-proposal.config.json",
+      "bytes": 15460,
+      "worktree_sha256": "f36a74283c572dd6944265e6f5041787952bb7083a3f80d8dd829a8288d57f5a",
+      "eol": "crlf",
+      "git_blob_oid": "c26c647abb5528f8f2829f5697c2d7142619d0e9",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/experiment-proposal.md",
+      "bytes": 10314,
+      "worktree_sha256": "86db8902a85d1c68f008820fa110eb72bdbc07191604cee0151582c9a00ab6a3",
+      "eol": "lf",
+      "git_blob_oid": "623071e869ad088eb5fa3cad955e3a6aa51e71d5",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/fixture-catalog.json",
+      "bytes": 18523,
+      "worktree_sha256": "ed4b74675b55b3b082ddfd14420d8090cdac8975b4d878a5b75888847f18a7b4",
+      "eol": "crlf",
+      "git_blob_oid": "730e5f7bac64f223adfeab6ca8930f30bc14bf6d",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/handoff.json",
+      "bytes": 11464,
+      "worktree_sha256": "54cad019634ac0db8f46e23945dae6296eb9ef4c027b0c7b888b55b241fed7df",
+      "eol": "crlf",
+      "git_blob_oid": "4babf14301f3fb42f38e160553eb8766c82f67af",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/interfaces.md",
+      "bytes": 9931,
+      "worktree_sha256": "cd34b5588e877d7ef2f0498ad99202313ddab0034b8270547f9dad31894f9c06",
+      "eol": "lf",
+      "git_blob_oid": "e23cb86dec6bd15c3fe07fd2e381c8446f68e6f2",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/isolation.md",
+      "bytes": 6046,
+      "worktree_sha256": "ecb68a307aaca7a22ea6a7ee2a6ab2489eb855f179de6bf0f99b4769fa9baf67",
+      "eol": "crlf",
+      "git_blob_oid": "ce0b53d1c2b6221e02375cdd3eab0c901c93ff19",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/RED-notes.md",
+      "bytes": 2205,
+      "worktree_sha256": "b84010da442f9883fe7e0a00f6abb2f95c2fd7eaba37309dba15e6f3d0a82761",
+      "eol": "lf",
+      "git_blob_oid": "96e8ba2e4b5a7c5a672f4f745b90fb6243fbbca6",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/final-regression-GREEN.log",
+      "bytes": 215,
+      "worktree_sha256": "f7de78e6c9cb3d49846b24d27210c78af34c473c1f692e0b447fcb729803035a",
+      "eol": "crlf",
+      "git_blob_oid": "660456344179e90d3e22ea323226a933b695bdc4",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/GREEN-remaining-repairs.log",
+      "bytes": 4400,
+      "worktree_sha256": "76178beec94b81c8e9178a1399c8d9639b711d346d18d5449ca45a772e8c4e9c",
+      "eol": "crlf",
+      "git_blob_oid": "de4398e52ef2b67fed4c8ee1b5a16b50d3dd6a9d",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/RED-remaining-repairs.log",
+      "bytes": 21906,
+      "worktree_sha256": "12cd654e7f66290acc9bd1c918317b2867121b663af35bef418c45b20777bd10",
+      "eol": "crlf",
+      "git_blob_oid": "a88bfc1b8c599b73c6218580fd868ab2af3e09a7",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/cleanup-receipt-p22248.json",
+      "bytes": 367,
+      "worktree_sha256": "b08c4b7cb0c8b23d7fb2625749c3cd3c96b5dd5dd9eb98abfb831cc2a7692757",
+      "eol": "crlf",
+      "git_blob_oid": "2d8eafec7207fe338ee2ab2ccf1bcd81a5b31afd",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/cleanup-receipt-p35492.json",
+      "bytes": 367,
+      "worktree_sha256": "742a188dbd54358dcd6f6642b10c61d5d9035d2d57bf38d05220b73c1eaf677b",
+      "eol": "crlf",
+      "git_blob_oid": "93ea99abbd154a114e346c993de372f971063d23",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/cleanup-receipt-p47600.json",
+      "bytes": 365,
+      "worktree_sha256": "e01fadde92c04ab3cb4b252e1400d1bcdb5fb532f907fa9ecc87524253a9ada1",
+      "eol": "crlf",
+      "git_blob_oid": "9d8bb30485f94fffd23a15cc21b34d264eaf16a8",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/cleanup-receipt-p59680.json",
+      "bytes": 365,
+      "worktree_sha256": "a12b06b2bf6665d694351f9e26339762ef67115d67dba8b10e7aa4a785cd89e8",
+      "eol": "crlf",
+      "git_blob_oid": "6e8a9e78d8a691002428d333273e6d02e7eaa4a1",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/cleanup-receipt-p65384.json",
+      "bytes": 367,
+      "worktree_sha256": "7ec15d21c64925d76112d3280e7afb2cea6cba1dbeefcba5cbc24b0b48d0f253",
+      "eol": "crlf",
+      "git_blob_oid": "a53012d8c62fe60ca90a9b1253e6fb58997b1c8d",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/cleanup-receipt-p68984.json",
+      "bytes": 367,
+      "worktree_sha256": "5c1a866b2f5558f4299aa6e31bf474ff118e9a4413e9a2fa5659a44dba63302b",
+      "eol": "crlf",
+      "git_blob_oid": "112472d90afa5887f66e2ab87017d7e00d83f2e3",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/cleanup-receipt-p84124.json",
+      "bytes": 365,
+      "worktree_sha256": "bc863a7c9b873638b2e81b12b14bd7055092e8d5152647ce872592c0e4f9bb46",
+      "eol": "crlf",
+      "git_blob_oid": "e1d6ef4486f5288c1165eaf098bf5525751de11a",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/cleanup-receipt-p85076.json",
+      "bytes": 365,
+      "worktree_sha256": "789556dff3b5db4d6f9e375493d779c60cc673f6f9991594c1351048b8811175",
+      "eol": "crlf",
+      "git_blob_oid": "d954adb8409b689fcf971144110a0236e9b8f281",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/final-regression.log",
+      "bytes": 184,
+      "worktree_sha256": "4329201ed815cafa8ade65f342e2d91a10e161e2a3a43206a6f5ca8793abe49f",
+      "eol": "crlf",
+      "git_blob_oid": "563cbc37c7b53c69f57ee1e1a4d850236b800ad2",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/handoff-shape-validation.json",
+      "bytes": 524,
+      "worktree_sha256": "32602e56ace47c49c66f0928f8dd588070e51afc982dd9106d30ca798509cafd",
+      "eol": "crlf",
+      "git_blob_oid": "677dcbba6bed34cd091f138aaf2176b3736ede2a",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/public-cli-commands.txt",
+      "bytes": 1615,
+      "worktree_sha256": "36c1053ce1ac376c468e6fb8315becf73b21c7db736ed0ebf17569da7135a0b3",
+      "eol": "lf",
+      "git_blob_oid": "bb398654f715fc269fd699cbec9fdcd3695a390f",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/public-cli-runs.json",
+      "bytes": 3629,
+      "worktree_sha256": "4aee4e3d74dc1b82a65e5058d08d6007257dd8a9e873dc283e2a37bac82394a4",
+      "eol": "crlf",
+      "git_blob_oid": "88243abdd0daa6c61ef57a2af6e6e3b9354db354",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/replay-index-a.log",
+      "bytes": 2267,
+      "worktree_sha256": "fb3416dbca7b83fab216d12c356c6e9389f2ba6017878bf1539aca3f0b310409",
+      "eol": "crlf",
+      "git_blob_oid": "b6178926c46b07aab4accb25e7a675e10546924e",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/replay-index-b.log",
+      "bytes": 2267,
+      "worktree_sha256": "bac325a8bd54f7bd7e5d586193437807577d5e0eb337329f8451a9d51f70471b",
+      "eol": "crlf",
+      "git_blob_oid": "1a7a2d50762c6ddd909059e07ba66865b7628929",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remaining-repairs-2026-10-08/validate-fixtures.log",
+      "bytes": 347,
+      "worktree_sha256": "b4b711b59d225f75c1883543115387c8b8a78caca34d4fedbf5f7c44b31836e4",
+      "eol": "crlf",
+      "git_blob_oid": "f34597cb5700bcfb146b9b6cfee1b2f128fbad3a",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/GREEN-controller-counterexamples.log",
+      "bytes": 1006,
+      "worktree_sha256": "19d442662456b3a30bb879560fb8d41a1cb412d14429657f99140c54c69ec36d",
+      "eol": "crlf",
+      "git_blob_oid": "7cc72e2071484450e2b9b0e521102ddeaba50877",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/RED-controller-counterexamples.log",
+      "bytes": 2527,
+      "worktree_sha256": "0623f8e2595c0f2874cc1b07692366e1b427468910c0ecbb5a2e35a1edfa873d",
+      "eol": "crlf",
+      "git_blob_oid": "62668ebd40aea409a6bc2e2ef7a5415a0e43bcd3",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p107180.json",
+      "bytes": 367,
+      "worktree_sha256": "eff3c27a44b68537f078106fc3ce0a01ece9c3129dd5fae4748bcb1ed5dbd74d",
+      "eol": "crlf",
+      "git_blob_oid": "9bcb3017cc5ad7f215965b2532531cd170a0f652",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p14272.json",
+      "bytes": 366,
+      "worktree_sha256": "6bf6fa69f538cea497252fa629de319e0989e5a1751639aa17811d2b8ae3e16d",
+      "eol": "crlf",
+      "git_blob_oid": "8bf8610914202da82748f8ebb6ab0b3f9b516f6a",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p61240.json",
+      "bytes": 366,
+      "worktree_sha256": "c18f50aa778d9c79422034017fa51ed1f671cdfcbe8d6d5196e57647efaa4eff",
+      "eol": "crlf",
+      "git_blob_oid": "1b38327b9b89bf740d98a9e9cff4d0ce7681de57",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p61580.json",
+      "bytes": 366,
+      "worktree_sha256": "76b7b8028de23f64a008a7bad22a050ee5fa050303aa08c8b76a6314f9dfc71f",
+      "eol": "crlf",
+      "git_blob_oid": "16e5d2e3be92e1591c00ee4782c7b641d6e1b733",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p71128.json",
+      "bytes": 366,
+      "worktree_sha256": "d3c006aa6fac79fc29b447dd1e853cf717532504b1cf0e3aa2324dbaf3fd90aa",
+      "eol": "crlf",
+      "git_blob_oid": "020c76da5e6230f33a275f44bf2e46d16275b367",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p71592.json",
+      "bytes": 358,
+      "worktree_sha256": "17d5f3322de255368b4ad6b5545d23dd16bd56cbd83eae9f71a551f5981f78d6",
+      "eol": "crlf",
+      "git_blob_oid": "5de7c87b94d71e11bc689b63346af81658f90318",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p72276.json",
+      "bytes": 358,
+      "worktree_sha256": "9891a7128d08247fcd087e8a207563f672c41f4dc8aab0cd94d0511f1bde88ae",
+      "eol": "crlf",
+      "git_blob_oid": "22d18741f2421db9964761318a1988645daa03d0",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p86592.json",
+      "bytes": 366,
+      "worktree_sha256": "bc49526d53f20829a8f0f0914bff52bd6f8e4c133481dc46fccdc2138852a5fa",
+      "eol": "crlf",
+      "git_blob_oid": "c0a10cba23612fecd730e38b8a66a2e44da9740f",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p87724.json",
+      "bytes": 366,
+      "worktree_sha256": "867c8c590ea1c99e8e5f764e7d802855ed9d9bd113f58950fab25bb197a6c66e",
+      "eol": "crlf",
+      "git_blob_oid": "5cd4f3faccadd939353d1a0a5cc2667082e61aa3",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/cleanup-receipt-p88632.json",
+      "bytes": 366,
+      "worktree_sha256": "a75eb28a3ce006144740eed7ac712b0ddfdd8a09d199f2b6da04b45f1cfc13e5",
+      "eol": "crlf",
+      "git_blob_oid": "f20aa3cc89e4804512c5c91d0e7b6ca4fdd8d965",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/final-regression.log",
+      "bytes": 229,
+      "worktree_sha256": "b36c4cc35b352fba71b6e19b960bed0103eea7cc24f665fe1cbbd9a819de08f1",
+      "eol": "crlf",
+      "git_blob_oid": "4399d8118d2a80b12b99a4cb266165b660079d31",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/public-cli-runs.json",
+      "bytes": 456,
+      "worktree_sha256": "2d6954f8cebb9ed760277a3077d9842799c6edca98be333e342ea8955792a84e",
+      "eol": "crlf",
+      "git_blob_oid": "27464a4565c8d033c89939c481440710e842b629",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/replay-index-a.log",
+      "bytes": 2391,
+      "worktree_sha256": "1a598a5792349bf33cdc585d4a6d00edc937c262a8cc8f3bfd3c5c2d9a04a366",
+      "eol": "crlf",
+      "git_blob_oid": "bf88c7e8eb3040b56480e6b1f51bfd4de7686464",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/replay-index-b.log",
+      "bytes": 2391,
+      "worktree_sha256": "3fe99caf8030d07806c5c88a5a5ca239eb2fc652b57175948e6c65c49d4913da",
+      "eol": "crlf",
+      "git_blob_oid": "f72b377e47c5cacbbcfbc77489fda26767d39e4d",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/remediation-2026-10-08/validate-fixtures.log",
+      "bytes": 427,
+      "worktree_sha256": "5255173f8c76a56490badefae8a1d56d16f2bd090f4af00cc54ec41ab6481c48",
+      "eol": "crlf",
+      "git_blob_oid": "66d8402d62014e9316326d4abfedc4c220359ffa",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/replay-index-stdout.log",
+      "bytes": 2129,
+      "worktree_sha256": "4f28241ec998c42f0770b6f71fea9fae034694f032d866c9ff45c808faae686a",
+      "eol": "crlf",
+      "git_blob_oid": "bd2c124cab811d63480c8a24bba7dfcb237152f5",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/replay-verification.json",
+      "bytes": 1015,
+      "worktree_sha256": "ddd7e4d041e8338fd019005d10403a2043541a56795e72163384d7b838c7462d",
+      "eol": "crlf",
+      "git_blob_oid": "cf00d8232493a93ddcd51324b38c6d6a73fff383",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/GREEN-archive-binding.log",
+      "bytes": 2323,
+      "worktree_sha256": "915ddc5d2e8fcc188e091c83e5cb4e5306799817fa4a105188dae951614b4110",
+      "eol": "crlf",
+      "git_blob_oid": "15a36ec4fa085e92735f361beac2f367fafa6d87",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/RED-archive-binding.log",
+      "bytes": 23768,
+      "worktree_sha256": "fde175db7b955b1fbb40944b143f50ce5300975c0da3d158e15f027775eac4a6",
+      "eol": "crlf",
+      "git_blob_oid": "56c5cad5cae11324fdfbeed4b72d8e6133a56395",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/cleanup-receipt-p10120.json",
+      "bytes": 358,
+      "worktree_sha256": "07d33cd6deaece5a0877fb19faf8cf4a1350698537f6133ac7258f863224d8b3",
+      "eol": "crlf",
+      "git_blob_oid": "5f017bd86c177bd88912b2593eb6abeed2784070",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/cleanup-receipt-p105068.json",
+      "bytes": 369,
+      "worktree_sha256": "b8219df79dc12bfc3c0710b913b4be9b0f63e3b08e2d9b2169b5f472c61fcff4",
+      "eol": "crlf",
+      "git_blob_oid": "8a15a5703cfeabeafcf4c8a61788aa8a656ed18c",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/cleanup-receipt-p105556.json",
+      "bytes": 369,
+      "worktree_sha256": "fc01c66d78a902d539e90df7a7a265506cba735af14330df467d10bab34ee6f3",
+      "eol": "crlf",
+      "git_blob_oid": "7efb998bf32af25c5f18a2af0e06cc49bfbe71f7",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/cleanup-receipt-p21016.json",
+      "bytes": 368,
+      "worktree_sha256": "befcb33e977a7a6e40481f1984ccdc466e513d8f0687085a575eaa57acf6a012",
+      "eol": "crlf",
+      "git_blob_oid": "a953971be6b281dbec91d0ed8b60ff2a782762cc",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/cleanup-receipt-p22108.json",
+      "bytes": 368,
+      "worktree_sha256": "c8e481317bf00f72ab918c7ac67234dd0bd267c09c32dc6acd7c1d1a7c6fd9fd",
+      "eol": "crlf",
+      "git_blob_oid": "72b283a6f121c6c4c4cefa9ac88ae9e61f2e7aa7",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/cleanup-receipt-p52976.json",
+      "bytes": 366,
+      "worktree_sha256": "e6e865bafac69c6a3c266ddfc8ce12c4973964935aa5608c2b7bad8c6c17e09e",
+      "eol": "crlf",
+      "git_blob_oid": "b0b942f4488ee7aa75b50207c4e7cd20ad818cbd",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/cleanup-receipt-p55712.json",
+      "bytes": 368,
+      "worktree_sha256": "6988631eb4e24cfd5ec4256947babadd63ec169e5a6335415592c7e63dde95a0",
+      "eol": "crlf",
+      "git_blob_oid": "fe27408b119aa5d7068bf65662d9ed7e8537a1fe",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/cleanup-receipt-p67884.json",
+      "bytes": 368,
+      "worktree_sha256": "d7af518f613774f86a4bae6210a25d9c3c38092d835aa00754166766103e3c52",
+      "eol": "crlf",
+      "git_blob_oid": "abca739767b2e5a484f688c906f14769577fd36d",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/cleanup-receipt-p99268.json",
+      "bytes": 367,
+      "worktree_sha256": "e30d4cafd49c5611395a8f4f3f6513dc967e0138ae499857f102e8fbc85f3bcc",
+      "eol": "crlf",
+      "git_blob_oid": "156675259b0bd223aab3df264529998ffe08aa37",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/final-regression.log",
+      "bytes": 184,
+      "worktree_sha256": "df15d8ec9297838e7889c73c47ede8aeacf7f3cbe2c04e2062ca1de41be5381c",
+      "eol": "crlf",
+      "git_blob_oid": "becef797cfd27c8099ce44dda10d44da6146619e",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/handoff-shape-validation.json",
+      "bytes": 513,
+      "worktree_sha256": "4976f3e893ae644716ebf66ced3811b2cb8ae4bbe15b9aca99e618de6e30185d",
+      "eol": "lf",
+      "git_blob_oid": "677dcbba6bed34cd091f138aaf2176b3736ede2a",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/public-cli-commands.txt",
+      "bytes": 2054,
+      "worktree_sha256": "b211f1f410b23baaaf116a6467cdc2829735cdef7c7280b0ea6df8e4074e504f",
+      "eol": "lf",
+      "git_blob_oid": "d134423bb409c24e028662ab915b4a05cf92a729",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/public-cli-runs.json",
+      "bytes": 3680,
+      "worktree_sha256": "36a4a7d700ce0ce78068b69593b200cfb62695e02045dbc2715e6b0ba1ab6c76",
+      "eol": "crlf",
+      "git_blob_oid": "16358b3cccb63ab10fb87681aad734a42236f4d7",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/replay-index-a.log",
+      "bytes": 2267,
+      "worktree_sha256": "ea0ccb49882dbdfdd2b32763f3f48f47d3cb2068595bf6ee76cc3302ff74ad1f",
+      "eol": "crlf",
+      "git_blob_oid": "2fb684febe79ca716eea23b9feb531d798a8a621",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/replay-index-b.log",
+      "bytes": 2267,
+      "worktree_sha256": "a52baaac65fd63cf20d0f4c190f52eab195b38014b1bcc331ab370c9de44275d",
+      "eol": "crlf",
+      "git_blob_oid": "95a2338784e9ac39c961a1c737f85e8b972a31f8",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/second-remediation-2026-10-08/validate-fixtures.log",
+      "bytes": 347,
+      "worktree_sha256": "b4b711b59d225f75c1883543115387c8b8a78caca34d4fedbf5f7c44b31836e4",
+      "eol": "crlf",
+      "git_blob_oid": "f34597cb5700bcfb146b9b6cfee1b2f128fbad3a",
+      "diff_vs_result_commit": "not_in_result_commit",
+      "blob_note": "evidence file; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/logs/validate-fixtures.log",
+      "bytes": 427,
+      "worktree_sha256": "5255173f8c76a56490badefae8a1d56d16f2bd090f4af00cc54ec41ab6481c48",
+      "eol": "crlf",
+      "git_blob_oid": "66d8402d62014e9316326d4abfedc4c220359ffa",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/metric-definitions.md",
+      "bytes": 8842,
+      "worktree_sha256": "37392a64f0a6ddc5a345acc07285ce0e014efcc2e2c4b6d34690d962342ef4a1",
+      "eol": "crlf",
+      "git_blob_oid": "e4450eae61d85bf618d08a29254d5c0d6a127da3",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/planning/findings.md",
+      "bytes": 5611,
+      "worktree_sha256": "73f17a9dc88f097c6512af2cf5a37b4a3cab5134cca202cd697e11dc46b56102",
+      "eol": "crlf",
+      "git_blob_oid": "1319f71f86ee3317bd2428c8c7992d6a2ffd25d2",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/planning/progress.md",
+      "bytes": 9872,
+      "worktree_sha256": "f8eb91f0fe98cc2d746090bd568c620a4579381fd18210265647bd3b514fdb3d",
+      "eol": "crlf",
+      "git_blob_oid": "d577fff6cd7599c957dff0b59eb8c493e7ae9ced",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/planning/task_plan.md",
+      "bytes": 9149,
+      "worktree_sha256": "2ed9fc34357f7c0f74f8282b5ef4c28d42dca5b2ee4da9daa182ebf6d224a39d",
+      "eol": "crlf",
+      "git_blob_oid": "7081388c5dde0a4ec5c441162b401a9cbbd664d2",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "docs/handoff/EVID-LAB-01/summary.md",
+      "bytes": 16153,
+      "worktree_sha256": "80e516fcb510b4bfd7fc55f05b2230f600a60bc449f94c63451ab021492cd45b",
+      "eol": "crlf",
+      "git_blob_oid": "85020a3e4bc3eb62368377f983ccd6f1aaeb5985",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "fixtures/catalog.json",
+      "bytes": 7571,
+      "worktree_sha256": "b927ecd96e62c8fae93cc722b64f6d512bfd23721cd078c83bd983a663ad0f41",
+      "eol": "crlf",
+      "git_blob_oid": "079350ac7e6fcc19f4755faffff2714455b95042",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/historical/FX-029.json",
+      "bytes": 1968,
+      "worktree_sha256": "ff4655ae5931878f055ec17f2cb717bb977cf4652b3ff9bc5587a3315f6b192b",
+      "eol": "crlf",
+      "git_blob_oid": "5f5aa851f0cd93aa857a9d2af7682d00bc3c5e2e",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/historical/FX-030.json",
+      "bytes": 2000,
+      "worktree_sha256": "cb2db0ea8b94a60e757d6f54e2b0a8bbcd98224d680e756e3e4a0e95fafa03a7",
+      "eol": "crlf",
+      "git_blob_oid": "d5c5f2abb8bbac7911f5370f176eb0fc7b1b0482",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/historical/FX-031.json",
+      "bytes": 8910,
+      "worktree_sha256": "7c44029aec5ff98971eb192cbc6c1d37a4b73d3394589fb91bb10743fc28250c",
+      "eol": "crlf",
+      "git_blob_oid": "2bd3fbc03b15762116ea4f029fcce4447ee8347d",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/historical/FX-032.json",
+      "bytes": 2274,
+      "worktree_sha256": "1cb118db1741df9b5973b53d701bb2f684b4dc0630321c6bf4dcc7743a82e631",
+      "eol": "crlf",
+      "git_blob_oid": "bc0df0f79b5728980e21a68fc7d0fa4bd4f93dd3",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/historical/FX-033.json",
+      "bytes": 2097,
+      "worktree_sha256": "e722b2c6b9eab4a647d8ea0e961f0391530a7a331c9087c4a0a396965c5d8f55",
+      "eol": "crlf",
+      "git_blob_oid": "c408e667a26e50a6a20dd02f7220705d11011afc",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/real-source-snippets/FX-034.json",
+      "bytes": 616,
+      "worktree_sha256": "43f6d5c878e6fcd35abe8203a0df676f29273d770aa5988138230aaebc72f154",
+      "eol": "crlf",
+      "git_blob_oid": "017199ee73edb674c39bdc6a4699ad91160e8d91",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/real-source-snippets/README.md",
+      "bytes": 563,
+      "worktree_sha256": "f96176bc8ade53459d57a67ed3d27079b7484dbaa2eb517fe9a41ff8179caa55",
+      "eol": "lf",
+      "git_blob_oid": "6b223bd9fa59ad2400c1c67c86e2a69622bf5ba2",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-001.json",
+      "bytes": 572,
+      "worktree_sha256": "7c789d226493d0cd2474543806a1ce982ffed2e36dbdf3ffdc50569d3f393699",
+      "eol": "crlf",
+      "git_blob_oid": "a8f41b7c5ecf266c3b4a9c5c374474543ed0f39d",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-002.json",
+      "bytes": 523,
+      "worktree_sha256": "894b26c817d3ea45ac161123e4405e894dfc25467c4f426bdbb7b1a64198d5db",
+      "eol": "crlf",
+      "git_blob_oid": "11d677580a2777d0b77ecb0c228c5187bdfdf951",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-003.json",
+      "bytes": 518,
+      "worktree_sha256": "173506b1e9a9d6513be00db58fd9e6e4d4902fa31844c49af42bef58f2b1d9a6",
+      "eol": "crlf",
+      "git_blob_oid": "e168afab087299455c06f7c522f8df985a04355b",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-004.json",
+      "bytes": 541,
+      "worktree_sha256": "9c3b3d206071452f4f347583a2c58adb25c125badbaef57c19da9b26f86d5397",
+      "eol": "crlf",
+      "git_blob_oid": "2f796f0292e764a5e5d03556f3ddfa14ba7627e7",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-005.json",
+      "bytes": 516,
+      "worktree_sha256": "69d32cd91655b76c4656acbc888ef4a0cf7c1d66627114d5539e5757db1e70e0",
+      "eol": "crlf",
+      "git_blob_oid": "79c55266a7b9c56b15266d5b8bfbe258a7dd3022",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-006.json",
+      "bytes": 601,
+      "worktree_sha256": "9d019dfea61d34c2574895fc4ca520bd90f36dcee1536a4c8af3b384282949ca",
+      "eol": "crlf",
+      "git_blob_oid": "8474e9e48eb2f238fd97fd86f78d2d171e4c571b",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-007.json",
+      "bytes": 652,
+      "worktree_sha256": "f68047087b8ce5003a6f6e8a364239fd6712fb212c34285b0dbcc24b9a81db19",
+      "eol": "crlf",
+      "git_blob_oid": "f707294a7171951732c3b7eb25f839b5257d2d37",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-008.json",
+      "bytes": 633,
+      "worktree_sha256": "75fe2b77c92d0f4a58e8d65c3be2427b4a4cf0a935becf30e829b874d5e4aef3",
+      "eol": "crlf",
+      "git_blob_oid": "64e2b9276500d048ab546c6a6c512d3a1ac66184",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-009.json",
+      "bytes": 1180,
+      "worktree_sha256": "7b4bdcd2112b03a2fe303ad448ca5440a17360924f8f065a881ac90121363b62",
+      "eol": "crlf",
+      "git_blob_oid": "3bcc98d629ff32307f692b14c50cef49393354e9",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-010.json",
+      "bytes": 932,
+      "worktree_sha256": "77d7fe3c985b1616d8cdacd8b991c8f14f943d6c6bb676f88a6fb9896a2ec546",
+      "eol": "crlf",
+      "git_blob_oid": "c4a160502ad90bef7f696a4c13e23c7558811332",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-011.json",
+      "bytes": 763,
+      "worktree_sha256": "f124d093d2b9cef2e018f6ddc39cf6ed4578f23682ee83d4a665406f4f810c82",
+      "eol": "crlf",
+      "git_blob_oid": "3b9e4b1d07c10e70f74d68fc4f51b2e92ef45580",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-012.json",
+      "bytes": 523,
+      "worktree_sha256": "42826375f85eb7b56a8637d9d826732938b038700f1c0d8dc16ea3197c4a2f44",
+      "eol": "crlf",
+      "git_blob_oid": "044afd144de088eb0dedd384ef61ec34d52c2baa",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-013.json",
+      "bytes": 534,
+      "worktree_sha256": "4ce1dfccb6b836de7aa56cc295bcc7b3bf6872f69a506191834904e98e815cbb",
+      "eol": "crlf",
+      "git_blob_oid": "a7ca06a119d00ca57d153310730fb24dd95c0905",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-014.json",
+      "bytes": 548,
+      "worktree_sha256": "cc477d2d09a3a91ca2b411fac1d4b52cb10b760f7bfa62eba660507309fb5e5e",
+      "eol": "crlf",
+      "git_blob_oid": "b0a4b24d8a3978647b9299cd712afabf860307a1",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-015.json",
+      "bytes": 633,
+      "worktree_sha256": "d48304e75ad517056feff74e976a91f3b33b5c2ed785dc688b53a73a4225d2c1",
+      "eol": "crlf",
+      "git_blob_oid": "dab12315dce329e8e73c84b940c6e00d392f44ba",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-016.json",
+      "bytes": 542,
+      "worktree_sha256": "0e09e8f3074726d8d8ec5d76d5bf6f51ba01e9ebf33b0517ff32cec71d5e6f47",
+      "eol": "crlf",
+      "git_blob_oid": "a30f3aee3e5fb1eb842e2713bd372af430391ac1",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-017.json",
+      "bytes": 751,
+      "worktree_sha256": "2169b43f6e04ee502f1cd6e857a6e01197e539dea3558a3ea79e71f1522062c3",
+      "eol": "crlf",
+      "git_blob_oid": "9f0100660133521e1fab9c19fb9ed40889cca706",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-018.json",
+      "bytes": 431,
+      "worktree_sha256": "6660b5cd2de0dad75205244455a5b21b23c65d36ad151791d64cffc133d44a0e",
+      "eol": "crlf",
+      "git_blob_oid": "859d0fbf11668bcb9b9fa368c43faa228e490186",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-019.json",
+      "bytes": 1066,
+      "worktree_sha256": "2acbb21285c7a6c1efd3ddf5009019f7c9054fe24f255e808141f41405721400",
+      "eol": "crlf",
+      "git_blob_oid": "9df229486a80e5dd26634c6262d85e99832e3559",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-020.json",
+      "bytes": 1028,
+      "worktree_sha256": "76336412e32bc3083c6ab5f37260602b8c1bb060d2adde596c6d418a40cfc8ce",
+      "eol": "crlf",
+      "git_blob_oid": "d8d295155f7761edfaa4907a50d51049e51c5692",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-021.json",
+      "bytes": 1071,
+      "worktree_sha256": "72ff185017ddf59a00a97360d47dcb6017eb66ad85161b33ef89bd121b902b42",
+      "eol": "crlf",
+      "git_blob_oid": "2c71d799f6e1de2c6945095f450bbca47814b9c3",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-022.json",
+      "bytes": 1012,
+      "worktree_sha256": "d0db9a24ca10ce7912b044006e4e1287b4e77b3f41f13c4e8eaf66d14ae516fc",
+      "eol": "crlf",
+      "git_blob_oid": "ebb3c02536c3c34c6a58351c18d7e6a42cec8dc1",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-023.json",
+      "bytes": 450,
+      "worktree_sha256": "e508bd7d852563854d5145928cc737f3e45e950a0fe2a3b902d4a7a542ac4df4",
+      "eol": "crlf",
+      "git_blob_oid": "3dedb9fac9af1013794bfcd1b40575ea4d805ebd",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-024.json",
+      "bytes": 474,
+      "worktree_sha256": "2b02105dac1a97ba5fc8ab590f07d050e7fc79ea6232bd94c3a4f368b5080019",
+      "eol": "crlf",
+      "git_blob_oid": "c9db4fcb77930fe9a430fde53a2cde308b1709d2",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-025.json",
+      "bytes": 598,
+      "worktree_sha256": "4732d1fcd248402c705ab305157dff42ccf88fc78c355fa3fe361aab48da6974",
+      "eol": "crlf",
+      "git_blob_oid": "e9dc0d1bbb839c3bd80f7a028dd4d4b00b9beaa4",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-026.json",
+      "bytes": 1023,
+      "worktree_sha256": "ad38958d12f906e8ebf03523a0ac502d522237074f61268c2ae022ac1e2da50e",
+      "eol": "crlf",
+      "git_blob_oid": "3b2916193dbc0e3bd87302e5d968158941032022",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-027.json",
+      "bytes": 1165,
+      "worktree_sha256": "33300dd340abb242b091678ac34ad94ae3d0870b309156e2695c680b77d86b57",
+      "eol": "crlf",
+      "git_blob_oid": "1468dbbe37431ede860e16dedc1d9d1b35ce6dfa",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "fixtures/synthetic/FX-028.json",
+      "bytes": 958,
+      "worktree_sha256": "f45c857510f05cde0470e05231cb870bd9bfabd12ce8e6560c8f7cbfdba908cd",
+      "eol": "crlf",
+      "git_blob_oid": "05f8c0690a63bf1602d5e1698164be2672102b96",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 767,
+      "worktree_sha256": "8307e422d776637a3f135de5b957f16bf2b42755cac24242bd3e8571bff63378",
+      "eol": "crlf",
+      "git_blob_oid": "3fad74a74618c828737fa16ae25793dfb517900c",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "reports/.gitkeep",
+      "bytes": 0,
+      "worktree_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eol": "lf",
+      "git_blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "schemas/evidence-diagnostic-v1.schema.json",
+      "bytes": 8596,
+      "worktree_sha256": "6722e071ff291ad939d96efa32bfbd6fca532410bcbedf5b7e869ea952f01a9a",
+      "eol": "crlf",
+      "git_blob_oid": "c71b0a7ef8c58e8cb675133905d0814d911f518e",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "schemas/fixture-v1.schema.json",
+      "bytes": 3036,
+      "worktree_sha256": "37fbe0a833645e6732b42d1e3ef6cb077233ccc1503d4e027586b3c54fbf6385",
+      "eol": "crlf",
+      "git_blob_oid": "acb06f72825da685dce49b67d67df70a3d9a26b2",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/__init__.py",
+      "bytes": 494,
+      "worktree_sha256": "c31c7de8bf30dd69a56019ca42787204d7267451edbb0be91e47b2517759902d",
+      "eol": "crlf",
+      "git_blob_oid": "09d56e4d80274e90bae169e12d4502c4da08d821",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/__main__.py",
+      "bytes": 52,
+      "worktree_sha256": "13a1a5b340cdcfc1902b62be90e508c7c71886000d5bf087e7854aadf09fb35e",
+      "eol": "lf",
+      "git_blob_oid": "dd8a8c90e6b7af74ed3657ef5b74aaa5ebf0abd4",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/archive.py",
+      "bytes": 4135,
+      "worktree_sha256": "8112e29e9096849045fd0459aa5d33e3b36589cfd4dd730c7f716570712b7894",
+      "eol": "crlf",
+      "git_blob_oid": "5e52e0bfebbdd97f76ea8e8296a64628431e5b65",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/cli.py",
+      "bytes": 15827,
+      "worktree_sha256": "ed53582abac9981cce2fe9619eddaeeda3b845a9c02fba806c4f6163aa70180c",
+      "eol": "crlf",
+      "git_blob_oid": "4d5d9983c48132d7326add3237daf2d4be56c932",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/diagnostics.py",
+      "bytes": 28676,
+      "worktree_sha256": "7f79d550d4a6228150f9d3d7237f13b9e1232c5eb77e3bcdfd65a587d1121db9",
+      "eol": "crlf",
+      "git_blob_oid": "61ae3a3e4cba4a6d8ed69fd2ab8fca1558907495",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/errors.py",
+      "bytes": 1463,
+      "worktree_sha256": "40c51491c76743f4a9afd3045cbd190ba5ce742975056833df1bd3c75d53cfd9",
+      "eol": "crlf",
+      "git_blob_oid": "5a20b3233be3e7c656903b3c6d8835f622773ac2",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/fixtures.py",
+      "bytes": 16044,
+      "worktree_sha256": "87922572c2ec4fb31e58edfaf4cea0a397dd71ad21735f137ca8971810da27f8",
+      "eol": "crlf",
+      "git_blob_oid": "73e0e0ed610ee15a45f0267f5cceab9d3c6b1117",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/guards.py",
+      "bytes": 1516,
+      "worktree_sha256": "dd5eaa095943b67f3a3aaca31b1192d515b6474eac1c03f9bf313565e2c12742",
+      "eol": "lf",
+      "git_blob_oid": "70e28173c9c63ebe1024bf3a26216127e8a8c6c6",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/hashing.py",
+      "bytes": 2868,
+      "worktree_sha256": "01cc62e52453821d4fada5ca1d62999ce4d673b7323e8a3d92e71698341651f9",
+      "eol": "crlf",
+      "git_blob_oid": "b3109a2c48461e01d56555de371af9ae94080fc9",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/inputs.py",
+      "bytes": 9595,
+      "worktree_sha256": "710163ad0f6851524a4d89df18e4fd4316886241049e67a30f7b4079a65e1240",
+      "eol": "crlf",
+      "git_blob_oid": "22d2defc3b1c2f137d4a1e24d207dedb76b90612",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/recoverability.py",
+      "bytes": 5043,
+      "worktree_sha256": "c8b7fdfd183db0a364da96dab062ae612ee6b53486b4dac864dd617321686cf7",
+      "eol": "lf",
+      "git_blob_oid": "3399d2ead7ad13fed47f89e10a3f72013b4c7967",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/review.py",
+      "bytes": 7530,
+      "worktree_sha256": "29906295f96d11efc3a1e873df6b1c86ad79c6d41d1a3f555a8e248aa38258de",
+      "eol": "lf",
+      "git_blob_oid": "a31d32a03bb6c7b3b0dc86dee106797cee5d9b7d",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/semantic.py",
+      "bytes": 25725,
+      "worktree_sha256": "5e3b472ac5157a6f4b3595565a1bf14d0f791608611c9e75c7fdcbcf1df7e63f",
+      "eol": "crlf",
+      "git_blob_oid": "88f0e4d1e265bdf45078f9a006173efbc9cc9d82",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "src/iqs_evidence_lab/stats.py",
+      "bytes": 17893,
+      "worktree_sha256": "445043ae18e2ab34a899d6b5eb4fd7af22f26cdfef8bfab0cb2d3a932256c5d5",
+      "eol": "crlf",
+      "git_blob_oid": "e66e47145b0fdb651cb5bc2bde60b55e9d48fce2",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/conftest.py",
+      "bytes": 5352,
+      "worktree_sha256": "7b233212d876c38509de48a0d467a98a82dca5b9aa166781c23ee890f7632b2e",
+      "eol": "lf",
+      "git_blob_oid": "b67cddfc7028bbb546260fe199c0c99393c8cf06",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/controller/acceptance_cases.frozen.py",
+      "bytes": 4486,
+      "worktree_sha256": "5c1a95137573d5b1e23c107a4e1c6bcf7ad1993038f577b3c289a817e5d1753f",
+      "eol": "lf",
+      "git_blob_oid": "be793e59fb41a017dcc2874da3608a46fa7270b5",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/controller/test_archive_binding.py",
+      "bytes": 13579,
+      "worktree_sha256": "eda600ffec2b71657f4d07e981d831b4a8c474b9e20713f218a39aa5759b4539",
+      "eol": "crlf",
+      "git_blob_oid": "3a5d22c791e75cbb1de51bd99b9fe97e42122a03",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/controller/test_controller_counterexamples.py",
+      "bytes": 7329,
+      "worktree_sha256": "1fc6118e4c7086eb202be126e67b232c1d26af73772a7cbce3418ceab4caf718",
+      "eol": "crlf",
+      "git_blob_oid": "e0757878963973c484ea94d01b613aaa5646b90f",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/controller/test_remaining_repairs.py",
+      "bytes": 18219,
+      "worktree_sha256": "5152d2f4bb1ca44366ee661c8a82d4b3baef8f13369cd360160986344d1b679d",
+      "eol": "crlf",
+      "git_blob_oid": "cc9e1311c76cb2712808488757f4ba998e7c11e1",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/test_cli_e2e.py",
+      "bytes": 7206,
+      "worktree_sha256": "7dbdc4fc9e41bdea2ddbe0a0f4929ccf228ab89381896161618e775ea44bb99a",
+      "eol": "crlf",
+      "git_blob_oid": "205429d1943f8b5ea55f3f3d9d70b035c87ea5fb",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/test_diagnostics_and_review.py",
+      "bytes": 5042,
+      "worktree_sha256": "89dc9632f00ef338ecca15e9c51231779bc531c0005e4eccf32aa20cc94e850f",
+      "eol": "lf",
+      "git_blob_oid": "af525af56958b590f24e5b06ed4f972d6bf29196",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/test_fixtures.py",
+      "bytes": 2965,
+      "worktree_sha256": "5b019e78d21e78dd888e3c528d1191eb44c24ce6ec3c5fd8a441202e4eeb0505",
+      "eol": "crlf",
+      "git_blob_oid": "3854f923c8e7de696ee31612979147a344f0d069",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/test_inputs_verification.py",
+      "bytes": 3283,
+      "worktree_sha256": "b8e29f75a5ef6df1a7a1f4f5b1f2e238ed137340658079fa9a589f86fa8f55cf",
+      "eol": "lf",
+      "git_blob_oid": "662816177db7fa6b224ce698787f6e45d74de832",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/test_recoverability.py",
+      "bytes": 3852,
+      "worktree_sha256": "6b5f735fb70a3abced4c6f5cfdc586e601c413d735ee6a3a269c85b78ea618ce",
+      "eol": "lf",
+      "git_blob_oid": "9737912faade4f4ad2309d93158ac28efb206e9e",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/test_remediation_2026_10_08.py",
+      "bytes": 11345,
+      "worktree_sha256": "0f6e90c267f428a2771f8d9aff4afbc28300042f06468acf9e5a055d0a570f1e",
+      "eol": "crlf",
+      "git_blob_oid": "9d27ff34cdd8a3b708db277d5a1f87d4848f6aab",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/test_semantic.py",
+      "bytes": 8495,
+      "worktree_sha256": "079da73a02a5afdc5bf89784a7c75da702e51c3b0e9c02403a430e03103894ef",
+      "eol": "crlf",
+      "git_blob_oid": "5378101fd91f44e47881fbd50f1fd080bd17dd00",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tests/test_stats_recompute.py",
+      "bytes": 5125,
+      "worktree_sha256": "8a229b96f1d1f0379e0cb3493b88c3837beddcd4492b89a0620826b2e5c945c0",
+      "eol": "lf",
+      "git_blob_oid": "9db58e634ee8073b0cd601acfe2be7f0f11078ba",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tools/gen_proposal_config.py",
+      "bytes": 17184,
+      "worktree_sha256": "6996976fbf4cbc3f6de6d5bac34881d64e9ce790557966ae479e9d733f52ef9f",
+      "eol": "lf",
+      "git_blob_oid": "49b3ecff74d3b9d2bdcdc2826c8427e2901fc3ea",
+      "diff_vs_result_commit": "identical"
+    },
+    {
+      "path": "tools/make_artifacts.py",
+      "bytes": 4952,
+      "worktree_sha256": "ffb2f49cd8522086ecefa5082742ba3909bee6d9b92d33098207c8a9f25b3f81",
+      "eol": "lf",
+      "git_blob_oid": "c932244a84f11d438e0a8bb283334fd8c93b91f6",
+      "diff_vs_result_commit": "updated_after_result_commit",
+      "blob_note": "evidence file revised after the source-result commit; committed by the following handoff commit"
+    },
+    {
+      "path": "tools/make_fixtures.py",
+      "bytes": 29684,
+      "worktree_sha256": "02a4334cc09955f946584e5729f7f81de200b5afcb0f1454c8c07d2e99585f26",
+      "eol": "crlf",
+      "git_blob_oid": "0031e165ad47ae23e1984b53b53c1686e9696c63",
+      "diff_vs_result_commit": "identical"
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+# EVID-LAB-01 progress
+
+## 2026-10-07（会话1）
+- 读卡、handoff-rules、interfaces、inputs.lock、README、结果报告模板与实验结果MD。
+- 向用户确认Lab目录授权 → 回答“授权创建并作为唯一writer”。
+- 建仓：`C:/Users/郑曾波/Projects/iqs-evidence-lab`，分支 `codex/evid-lab-01`，
+  起点commit `cc3c38824c90a210196d63242797113247094b22`（README/.gitignore/pyproject）。
+- PWF pin 实测 fail-closed：`PWF_PLAN_ROOT=<lab根> PLAN_ID=EVID-LAB-01` 输出为空，不回落。
+- 勘察三归档/review/join/价格/生成策略/final-statistics 结构（见 findings.md）。
+- 下一步：验证 inputs.lock 全部 SHA → Phase 3 schema/metric。
+
+（每完成一个 Phase 追加一条：时间、做了什么、命令、结果、测试计数、错误。）
+
+## 2026-10-07（会话1 续）
+- Chunk A：inputs/hashing/errors/guards + 5 tests GREEN（224项SHA核验、只读快照对比）。
+- Chunk B：archive/stats 重算与已发布 final-statistics 六段逐字段一致（186/24/2.877381/0.392538）；8 tests GREEN。
+- Chunk C：recoverability（整包=模型请求；三归档53被拒包、264在包项全部 not_measurable）；4 tests GREEN。
+- Chunk D：diagnostic schema v1 + semantic-rules/1 + review join 重算（326=196+130互斥、非gold）；24 tests GREEN（含4次RED修复）。
+- Chunk E：34 fixtures（synthetic 28/historical 5/real 1 collected=false）+ catalog 校验 + provenance 指纹回链；4 tests GREEN。
+- Chunk F：CLI replay/validate-fixtures + 9 E2E GREEN（独占输出、字节级稳定、hash不变、网络/key/付费0、subprocess离线）。
+- 最终集中回归：`python -m pytest tests/ -q` → 54 passed，exit0（logs/final-regression-GREEN.log）。
+- CLI 日志：validate-fixtures exit0（34/350/problems=[]）、replay index exit0（equal_to_published=true）。
+- 交付文档：metric-definitions、experiment-proposal(+config execution_enabled=false)、fixture-catalog、interfaces、case-map、isolation、RED/GREEN 日志。
+- 下一步：handoff.json/artifacts.json/summary.md 与最终提交。
+
+## 2026-10-07（会话1 终）
+- 交接件齐备：handoff.json（通过IQS handoff.schema.json校验）、summary/interfaces/case-map/isolation、
+  metric-definitions、fixture-catalog、experiment-proposal(+config)、logs（RED/GREEN/CLI/验证）。
+- 总控预检 `scripts/parallel_handoff_cli.py --package-id EVID-LAB-01` → status=valid（errors=[]）；
+  首次 changed_path_out_of_scope 已改为绝对路径后通过。
+- 提交链：cc3c388(起点) → 5bff8cd(实现) → 35b98cd(交付文档,result_commit) →
+  f582e43(交接证据) → 最终提交(预检修正与计划收尾)。
+- 最终回归 54 passed exit0；artifacts.json 82项hash复核一致；.temp-roots 空。
+- Phase 7 → complete。剩余全部为 not_run（等总控）。
+
+## 2026-10-08（会话2：整改开工）
+- 读整改卡/验收/独审/9反例。开工核验：Lab HEAD=d87cf718（与卡一致），工作树clean，无其他writer。
+- 计划：先把总控反例复制+适配为Lab RED（8失败/1通过原样保留），再按EL-01..EL-06一批修复。
+
+## 2026-10-08（会话2：整改实施）
+- EL-01：period dict保留half/quarter、缺年份/子期按具体理由abstain（claim/expected_period_year_missing等）。
+- EL-02：无窗口→source_window_not_stated abstain；无claim目标→比较列互补pass；
+  仅当claim目标与全部引用窗口冲突→fail；source_counts URL去重与片段hash分离。
+- EL-03：strict_loads（重复键/NaN/Inf）覆盖全部公共JSON入口；fixture/lock错误分别映射4/2；
+  historical fixture深度绑定归档全字段投影+provenance.chunk_sha256；锁文件校验=224次/128独立文件。
+- EL-04：staging(.temp-roots/staging-*)写齐并严格复读后os.rename原子发布；失败清staging、
+  目标不变、同路径可重试（反例内含重试断言）。
+- EL-05：config 1.1.0 = 60请求×5=300计划槽分层分母、mixed/themed四组题号、题面/身份/截止日
+  hash、12条冻结query+24共享规则、context/表头约束、token上界公式0.48276、检索缓存key/version/TTL、
+  模型revision缺口、unknown预约禁自动重发、Phase96差异、execution_enabled=false。
+- EL-06：fixture input/answer SHA入diagnostic；semantic expected/observed字段定位；
+  evidence_kind不再被硬编码historical；agent标签→agent_review；artifacts双hash口径（见交接）；
+  pyproject声明jsonschema运行依赖；schema/rules升1.1.0/2。
+- 严格清理：conftest清单(逐文件hash)+link/junction检测+失败打印[cleanup-gap]+cleanup-receipt；
+  控制器用例根atexit清理；无残留。
+- 结果commit f5149b9；公开CLI三归档×2根+34 fixture重放全绿（public-cli-runs.json）。
+
+## 2026-10-08（会话3：残余整改开工）
+- 读残余整改卡/验收/独审/新6反例。开工核验：Lab HEAD=380cb496（与卡一致），工作树clean，无活动writer，无remote。
+- 计划：先适配 followup_cases.py(6)+boundary_cases.py(5) 成Lab内RED，再按LR-01..LR-06同批修复。
+- RED：`tests/controller/test_remaining_repairs.py` 修复前 10 failed / 17 passed / 0 error（六项全部命中）。
+
+## 2026-10-08（会话3：残余整改实施）
+- LR-01：normalize_period 保留 custom start/end（ISO归一）；_custom_boundary_conflict 只比明示边界，
+  缺边界/未知形态abstain（custom_boundary_not_stated、claim/expected_custom_boundary_missing）。
+- LR-02：archive_provenance_verifier 始终独立回链归档比对 case.answer，answer_sha256 降为额外校验；
+  空/null/非64hex、缺question_id、错question_id 一律成问题→exit4且不建输出。
+- LR-03：strict_loads 增 parse_float，指数溢出→NonFiniteJSONError；嵌套与JSONL同源；
+  schema读取与provenance读取改走严格入口。
+- LR-04：check_sources 在存在未知窗口时 abstain（unknown_source_window_present）并报明确冲突数；
+  全明确冲突仍fail、有匹配仍pass、全未知仍source_window_not_stated。
+- LR-05：source_kind_for 统一映射 + source_kind_problems 全document校验；
+  duplicate_json/答案维度改用传入 evidence_kind；FX-034 未收集 → support_source_type=none。
+- LR-06：output_cap=output_limit=10000，Decimal复算 per_request 0.0141/0.01218、
+  worst_case 0.82296、上限 0.83；generator/config/Markdown/totals 同步；测试断言生成上限进入公式。
+- 版本：tool 0.2.1、diagnostic schema 1.2.0（+4个abstain reason）、semantic-rules/3、structure-rules/3。
+- isolation 口径更正 224/127/128 与“按锁只读IQS”；新增本批日志/回执目录，上一批不覆盖。
+- GREEN：27 passed；全量 108 passed；validate-fixtures 34/42/350 problems=[]；
+  公开CLI 36/36 exit0、双根字节一致、128输入SHA不变、无staging残留。
+
+## 2026-10-08（会话3：残余整改交付）
+- 源码结果 commit `d4360fdbbd9a83d2830066546edf1827ab424834`（tool 0.2.1，含LR-01..LR-06修复、
+  27个RED/GREEN测试、schema/rule版本、提案费用更正）；交接证据commit随后；交付后 Lab clean、无remote。
+- 交接 shape 校验 `status=valid`（只读调用 IQS `scripts/parallel_handoff_cli.py`，未写IQS）。
+- 并发差异归属：本会话期间他人在IQS提交 2d45452/54b01db/37b3c11（19:22-19:28）；
+  本会话零IQS提交、零已跟踪文件改动、128锁定输入SHA前后一致。
+- 披露：一条 `2>nul` 重定向曾在IQS根生成0字节 `nul`，发现后立即删除并复核 git status。
+- 等待总控一次受影响回验；L02/G3/F05、TH/IN/L03 与提案签核不自关。
+## 2026-10-08（会话4：第二次整改 LR-02B 开工）
+- 读单项卡/验收/独审/总控四项回执。开工核验：Lab HEAD=aeff0e68（与卡一致）、clean、无remote、122工件匹配。
+- IQS 侧他仓并发活跃（progress/task_plan 被改、SW-REPAIR-02 intake 未跟踪、HEAD 已到 a62cb8a），只读不动。
+- 定位缺口：`_archive_rows()` 读归档不验锁；`prepare_fixture_replay()` 不做 `verify_lock`，
+  副本归档与 fixture 同步修改即可 exit0 发布 historical（总控实证 exit0/verified_before_write=true）。
+- RED：把 128 锁定输入逐字节复制到 Lab 独占 temp root 短名目录，真实 CLI 指向副本；
+  在 `git archive aeff0e6` 导出的基线副本上跑当前测试 → 6 failed / 4 passed（日志 rootdir 即基线副本）。
+
+## 2026-10-08（会话4：LR-02B 实施与交付）
+- 新增 `inputs.verify_consumed_archive(run)`：复用现有 lock+index 全量严格校验，确认该 run 的
+  `results.jsonl` 仍匹配记录 SHA 才返回可读路径；缺锁/缺索引/缺归档/漂移/非严格JSON → `InputDriftError`。
+- `fixtures._archive_rows()` 读取前必经该闸；`fixtures.verify_fixture_archive_binding()` 在
+  `prepare_fixture_replay` 与 `validate_catalog` 读取 fixture 后、schema/records/发布之前提前校验；
+  纯 synthetic/未收集不消费归档 → 不被无关历史锁阻断。
+- 版本：tool 0.2.1→0.2.2、structure-rules/3→/4（diagnostic schema 1.2.0、fixture schema 1.1.0、
+  semantic-rules/3 不变，34 fixture 字节不变）。
+- GREEN 10 passed；全量 118 passed；validate-fixtures 34/42/350 problems=[]；
+  公开CLI 36/36 exit0、双根字节一致、128输入SHA前后不变、无 staging 残留。
+- 文档：interfaces（锁闸+退出码+反例）、isolation（新临时根+三批回执+事故归属）、case-map（LR-02B行）、
+  summary（HEAD/并发/结论/版本/证据）、handoff.json、planning；artifacts 双hash 随证据commit刷新。
+- 等待总控一次受影响复验；L02/G3/F05、TH/IN/L03、提案签核不自关。

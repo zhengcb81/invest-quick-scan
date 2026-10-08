@@ -1,0 +1,176 @@
+{
+  "schema": "iqs_evid_lab_archive_binding_counterexample/1",
+  "checks": [
+    {
+      "name": "archive-intact-optional-hash-omitted",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-intact-optional-hash-omitted-input.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-intact-optional-hash-omitted-output"
+      ],
+      "returncode": 0,
+      "expected_exit": 0,
+      "published": true,
+      "wall_s": 0.936,
+      "stdout_sha256": "a9dcce0a745df659791c8be2dff7ec30a789df0ffe2df99e27a64bb685057e4a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": {
+        "schema": "iqs_evidence_lab.replay_summary/1",
+        "tool": {
+          "name": "iqs_evidence_lab",
+          "version": "0.2.2",
+          "tool_id": "iqs_evidence_lab/0.2.2"
+        },
+        "input": {
+          "kind": "fixture",
+          "ref": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-intact-optional-hash-omitted-input.json",
+          "verified_before_write": true
+        },
+        "output_dir": "archive-intact-optional-hash-omitted-output",
+        "live": false,
+        "environment": {
+          "network_attempts": 0,
+          "key_reads": 0,
+          "paid_model_calls": 0,
+          "search_calls": 0,
+          "downloads": 0,
+          "publish": "staged_under_.temp-roots_then_atomic_rename",
+          "note": "lab code contains no credential reader and no network client"
+        },
+        "results": {
+          "kind": "fixture",
+          "fixture_id": "FX-032",
+          "source_category": "historical_model_output",
+          "diagnostic_records": 13,
+          "diagnostic_summary": {
+            "pass": 0,
+            "fail": 1,
+            "abstain": 12,
+            "by_error_code": {
+              "E_SCORE_BASIS_UNSUPPORTED": 1
+            },
+            "by_abstain_reason": {
+              "expected_not_stated": 8,
+              "source_relation_not_stated": 1,
+              "snippet_not_available": 2,
+              "agent_review_only": 1
+            },
+            "by_check": {
+              "semantic.subject": 1,
+              "semantic.period": 1,
+              "semantic.metric": 1,
+              "semantic.unit": 1,
+              "semantic.direction": 1,
+              "semantic.scope": 1,
+              "semantic.role": 1,
+              "source.url_window": 1,
+              "source.independence": 1,
+              "structure.reference_contract": 1,
+              "support.review_label": 1,
+              "support.claim_fact_support": 1,
+              "support.score_basis": 1
+            }
+          }
+        }
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "fixture-only-tamper",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\fixture-only-tamper-input.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\fixture-only-tamper-output"
+      ],
+      "returncode": 4,
+      "expected_exit": 4,
+      "published": false,
+      "wall_s": 1.001,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a12f6b04fec9b44181a4e281a96d7b43eda192aaefb510109a964132e45ee947",
+      "expectation_met": true
+    },
+    {
+      "name": "archive-and-fixture-tamper",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-and-fixture-tamper-input.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-and-fixture-tamper-output"
+      ],
+      "returncode": 2,
+      "expected_exit": 2,
+      "published": false,
+      "wall_s": 0.58,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "dd970201a926abf676da30c98ee2e30fd52b369ef0a0afc1a8030135c9d7fd03",
+      "expectation_met": true
+    },
+    {
+      "name": "index-rejects-same-archive-drift",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "index",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\drifted-index-output"
+      ],
+      "returncode": 2,
+      "expected_exit": 2,
+      "published": false,
+      "wall_s": 0.587,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "dd970201a926abf676da30c98ee2e30fd52b369ef0a0afc1a8030135c9d7fd03",
+      "expectation_met": true
+    }
+  ],
+  "copied_input_files": 128,
+  "copy_initially_byte_identical": true,
+  "clone_changed_paths": [
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/results.jsonl"
+  ],
+  "lock_bytes_unchanged": true,
+  "archive_mutation": {
+    "relative_path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/results.jsonl",
+    "chunk_id": "CHK_19dedf1830c84fb9bf4aced8dc491b46",
+    "question_id": "IQS_08",
+    "original_sha256": "6d34ad0a58a84e0ad46dd8531b6dbfde38f0d725969918fdccce93245fe70821",
+    "modified_sha256": "e52410f5a0e8d7d73571835e020db08e1c34bf5f7f53baddd02d27f0daadedb5"
+  },
+  "original_inputs_unchanged": true,
+  "snapshot_changed": [],
+  "worker_repository_written": false,
+  "paid_calls": 0,
+  "downloads": 0,
+  "not_historical_or_human_gold": true,
+  "cleanup_pending": true
+}

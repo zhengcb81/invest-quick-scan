@@ -1,0 +1,201 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "iqs",
+  "package_id": "EVID-LAB-01",
+  "status": "complete",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/iqs-evidence-lab",
+    "base_ref": "codex/evid-lab-01",
+    "base_commit": "aeff0e68022f56b331a58503df7b53ed8d2b3882",
+    "result_ref": "codex/evid-lab-01",
+    "result_commit": "cef3d95969671d10b42138ed97010c9c164b5118",
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "L02"
+    ],
+    "authorization_scope_ref": "user dispatch in the assignment session explicitly authorized creating and sole-writing C:/Users/郑曾波/Projects/iqs-evidence-lab (answer: 授权创建并作为唯一writer); card EVID-LAB-01 defines the allowed paths inside that root",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab"
+    ],
+    "authorized_paths": [
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab"
+    ],
+    "changed_paths": [
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/pyproject.toml",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/src/iqs_evidence_lab",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/tests",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/tools",
+      "C:/Users/郑曾波/Projects/iqs-evidence-lab/docs/handoff/EVID-LAB-01"
+    ],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [
+    {
+      "name": "inputs.lock.json (IQS wave2 input lock)",
+      "version": "1.0.0",
+      "content_hash": "432272257ae79b3fb9de538ca37a775be3f21bc8303f8cd5a1165c7fad62a78e",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "mimo-pro-result-index-2026-10-07.json (mimo_pilot_delivery/1, 96 bound files; 224 checks over 127 paths, 128 distinct files incl. lock)",
+      "version": "mimo_pilot_delivery/1",
+      "content_hash": "c731bec5b16911bf38ec52817960800cffd072236a93faca40c60697c35ad83c",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "mimo_pilot_source_support_join/1 (326-answer retained join)",
+      "version": "mimo_pilot_source_support_join/1",
+      "content_hash": "25b60b43df9111b58ec8c858ffdbf86ff84e18aa8389a7e0ec0c5f9ffdee9787",
+      "direction": "consumed",
+      "result": "compatible"
+    },
+    {
+      "name": "schemas/evidence-diagnostic-v1.schema.json (abstain_reason enum from semantic-rules/3; unchanged by this round - structure-rules/4 adds no new reason)",
+      "version": "1.2.0",
+      "content_hash": "6722e071ff291ad939d96efa32bfbd6fca532410bcbedf5b7e869ea952f01a9a",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "schemas/fixture-v1.schema.json (provenance.chunk_sha256 binding; unchanged by this round, 34 fixtures keep their bytes)",
+      "version": "1.1.0",
+      "content_hash": "37fbe0a833645e6732b42d1e3ef6cb077233ccc1503d4e027586b3c54fbf6385",
+      "direction": "produced",
+      "result": "compatible"
+    },
+    {
+      "name": "python -m iqs_evidence_lab replay / validate-fixtures (staged atomic publish + historical archive lock gate, structure-rules/4)",
+      "version": "0.2.2",
+      "content_hash": "ed53582abac9981cce2fe9619eddaeeda3b845a9c02fba806c4f6163aa70180c",
+      "direction": "produced",
+      "result": "changed"
+    },
+    {
+      "name": "docs/handoff/EVID-LAB-01/experiment-proposal.config.json (draft preregistration, not executed; unchanged by this round)",
+      "version": "1.1.0",
+      "content_hash": "f36a74283c572dd6944265e6f5041787952bb7083a3f80d8dd829a8288d57f5a",
+      "direction": "produced",
+      "result": "compatible"
+    }
+  ],
+  "verification": {
+    "checks": [
+      {
+        "name": "LR-02B archive-lock counterexamples RED reproduction then GREEN",
+        "command": "python -B -X utf8 -m pytest tests/controller/test_archive_binding.py -v -o addopts= -p no:cacheprovider",
+        "scope": "10 tests = 4 coordinator cases + 6 lock/catalog cases; RED run against a `git archive aeff0e6` export of the baseline lab (worktree untouched): 6 failed / 4 passed - archive+fixture tamper published as historical, catalog printed ok:true on a byte-drifted archive, missing lock/archive and unrelated drift all passed; GREEN after the repair: 10 passed",
+        "result": "passed",
+        "passed": 10,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "final centralized regression after the archive-lock gate",
+        "command": "python -B -X utf8 -m pytest tests/ -o addopts= -q -p no:cacheprovider",
+        "scope": "118 tests = original 54 + 9 frozen controller counterexamples + 18 first remediation additions + 27 remaining-repairs additions + 10 archive-binding additions",
+        "result": "passed",
+        "passed": 118,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "fixture catalog, provenance, expectation and source-kind validation",
+        "command": "PYTHONPATH=src python -B -X utf8 -m iqs_evidence_lab validate-fixtures",
+        "scope": "34 fixtures / 42 expectations / 350 diagnostic records / 0 problems (every record checked for source kind, every historical fixture checked against the verified archive)",
+        "result": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "public CLI replay: three archives twice + every fixture",
+        "command": "PYTHONPATH=src python -B -X utf8 -m iqs_evidence_lab replay --input index --output <new_root> ; replay each of 34 fixtures",
+        "scope": "36/36 exit 0, two new index roots byte-identical, 128 locked input files unchanged before/after, no staging leftovers, output root removed",
+        "result": "passed",
+        "passed": 36,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "input lock SHA verification (read-only, before/after)",
+        "command": "python -B -X utf8 -m pytest tests/test_inputs_verification.py -q -o addopts=",
+        "scope": "224 checks over 127 paths (128 distinct files incl. lock), 0 drift before copy / after copy / after every case; IQS read-only per lock",
+        "result": "passed",
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": [
+      {
+        "path_or_id": ".temp-roots/pytest-<pid>-<uuid> (session root; TEMP/TMP/TMPDIR + pytest basetemp + subprocesses; strict manifest cleanup with receipt)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": ".temp-roots/staging-<pid>-<uuid> (replay publish staging; consumed by rename or removed on failure)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": ".temp-roots/controller-cases-<pid>-<uuid> (first remediation counterexample outputs; tearDownClass + atexit)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": ".temp-roots/e2e-public-runs (first remediation index x2 + 34 fixture replay outputs; removed by its run script)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": ".temp-roots/e2e-remaining-repairs-<pid> (previous round index x2 + 34 fixture replay outputs and its throwaway runner; removed after verification)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": ".temp-roots/pytest-<pid>-<uuid>/ab-<hex> (LR-02B byte-identical copies of the 128 locked inputs; read target of IQS_EVIDENCE_LAB_IQS_ROOT, inside the strict manifest scope)",
+        "created": true,
+        "cleaned": true
+      },
+      {
+        "path_or_id": ".temp-roots/e2e-second-remediation-<pid> (this round index x2 + 34 fixture replay outputs and the throwaway runner; removed by the runner after verification)",
+        "created": true,
+        "cleaned": true
+      }
+    ]
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "complete = the LR-02B archive-lock subdelivery only (one gap of the LR-02 provenance chain); coordinator one-shot re-verification of this gap + the affected public CLI cases is pending; the earlier six residual repairs stay as delivered; L02/G3/F05 remain open and are not self-closed",
+    "the archive lock gate is a provenance/integrity gate: it proves the bytes consumed match the locked inputs, it does not make any fact, score or model output accurate",
+    "experiment-proposal.config.json is a draft preregistration (status=draft_not_signed, execution_enabled=false, live_not_run=true); receiving the draft is not a signed preregistration; user budget grant + coordinator go + sign-off required before any switch is flipped",
+    "the draft fee bound (previous round) prices the actual generation.output_limit=10000 as 0.82296 USD with a 0.83 display cap; frozen prices, input caps, 300-slot denominator and every execution gate are unchanged",
+    "human gold and inter-rater calibration stay not_run; agent review labels appear only as agent_review_only, never as gold; scoring accuracy is not claimed by these structural checks",
+    "real_source_snippet fixtures stay collected=false (FX-034 records carry support_source_type=none, never real_snippet); per-item recoverability for the three archives stays not_measurable; 264 in-package items never invented",
+    "artifacts.json declares both worktree bytes and git blob bytes (EOL-only differences); no repo-wide line-ending change was made and no difference is called content tampering; frozen fixture bytes and the original experiment archives are not rewritten",
+    "scope disclosure (previous session, kept visible): a shell redirect (`2>nul`) created a 0-byte untracked file `nul` at the IQS root, it was deleted immediately, `git status` there shows only the pre-existing `?? opencode.json`, no tracked file changed and no commit was made; this LR-02B session performed no out-of-session write at all - verification.external_writes=false describes the verification/test/CLI runs themselves and never the whole session",
+    "concurrent writers: during this LR-02B session the read-only IQS checkout had other lanes active (worktree modifications to progress.md/task_plan.md, untracked docs/implementation/intake/SW-REPAIR-02, HEAD advanced to a62cb8a); those changes belong to those writers, nothing of theirs was reset, cleaned or deleted, and the 128 locked inputs stayed SHA-identical (0 drift) before the copy, after the copy and after every case",
+    "coordinator decides whether to run the proposed experiment or reuse Phase96 results"
+  ],
+  "next_action": "总控按 LR-02B 单项卡做一次受影响复验：10个selector（RED 6失败→GREEN 10通过）+ 受影响回归118 + 三归档双根/34 fixture 公开CLI + 版本核对（0.2.2 / structure-rules/4 / diagnostic schema 1.2.0 未变）+ 三批清理回执与 artifacts 双hash；随后单独决定预注册草案处置。"
+}

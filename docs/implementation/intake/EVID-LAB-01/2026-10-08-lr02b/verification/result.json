@@ -1,0 +1,1640 @@
+{
+  "schema": "iqs_evid_lab_lr02b_acceptance/1",
+  "status": "finite_lr02b_software_scope_verified",
+  "checks": [
+    {
+      "name": "isolation-canaries",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import json, os, socket, subprocess, sys\nfrom pathlib import Path\nimport sitecustomize\nfrom iqs_evidence_lab import __version__, STRUCTURE_RULE_VERSION, SEMANTIC_RULE_VERSION, DIAGNOSTIC_SCHEMA_VERSION\nowned=Path(os.environ['E97_OWNED_ROOT'])\ndef denied(fn):\n    try: fn()\n    except PermissionError: return\n    raise AssertionError('controller isolation was not enforced')\nassert not any(k.upper().endswith('_API_KEY') for k in os.environ)\nfor path in [owned.parent/'lr02b-must-not-write.txt']:\n    assert not path.exists()\n    denied(lambda: path.write_bytes(b'canary'))\ndenied(lambda: socket.create_connection(('127.0.0.1',9),timeout=1))\ndenied(lambda: subprocess.run(['cmd','/c','exit','0'],cwd=owned,env=dict(os.environ),capture_output=True))\nprint(json.dumps({'canaries':'passed','keys_provided':0,'cli':__version__,'structure_rules':STRUCTURE_RULE_VERSION,'semantic_rules':SEMANTIC_RULE_VERSION,'diagnostic_schema':DIAGNOSTIC_SCHEMA_VERSION}))\n"
+      ],
+      "returncode": 0,
+      "wall_s": 0.218,
+      "stdout_sha256": "35af03fcb138c8fa2d676512f2a0387f73655befb5ca078629577a49e03c0032",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "worker-regression",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "tests/",
+        "-o",
+        "addopts=",
+        "-q",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "returncode": 1,
+      "wall_s": 86.659,
+      "stdout_sha256": "65c9ae910087addd68dfd2653c5005a3e280e60484ccba8e83e37c22826bdfdf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public-fixtures",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "validate-fixtures"
+      ],
+      "returncode": 0,
+      "wall_s": 2.785,
+      "stdout_sha256": "b4b711b59d225f75c1883543115387c8b8a78caca34d4fedbf5f7c44b31836e4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public-index-a",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "index",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-replay-a"
+      ],
+      "returncode": 0,
+      "wall_s": 2.942,
+      "stdout_sha256": "d442b83a3942610dd7a006b61ede8a0e9eee6ae8c1aa916dd273083fdbe3866a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public-index-b",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "index",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-replay-b"
+      ],
+      "returncode": 0,
+      "wall_s": 2.173,
+      "stdout_sha256": "e284a795b7784ca80cd136e958eb698081883f35af9949ff1e2910f25be03c24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-029",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\historical\\FX-029.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-029"
+      ],
+      "returncode": 0,
+      "wall_s": 1.165,
+      "stdout_sha256": "86f7874d06a0b3a466d2617a06739d9f004085f3db480a49154d5aa93079690b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-030",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\historical\\FX-030.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-030"
+      ],
+      "returncode": 0,
+      "wall_s": 1.055,
+      "stdout_sha256": "8843b138903505aab730e12c4f325ed883acb6900d989fc7eca89eca8a21c4e7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-031",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\historical\\FX-031.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-031"
+      ],
+      "returncode": 0,
+      "wall_s": 1.0,
+      "stdout_sha256": "8432d4d512fa565f349a349be07e579f92f9737876f9a12f7bd01072f1a74771",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-032",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\historical\\FX-032.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-032"
+      ],
+      "returncode": 0,
+      "wall_s": 1.146,
+      "stdout_sha256": "68c34eb1178bd09d825fc4766f27977652f9589e6c18574165f14155efdb0d7f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-033",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\historical\\FX-033.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-033"
+      ],
+      "returncode": 0,
+      "wall_s": 0.988,
+      "stdout_sha256": "798aaedcd6b147238385203f0c3cfc67aeabcbb48dadcd24557fcc5076d52947",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-034",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\real-source-snippets\\FX-034.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-034"
+      ],
+      "returncode": 0,
+      "wall_s": 0.965,
+      "stdout_sha256": "b4ef3fc2ba6ed5269f1e61d36b3d61492b2b67d66e1f84310ecd2d67aaff2c24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-001",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-001.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-001"
+      ],
+      "returncode": 0,
+      "wall_s": 0.878,
+      "stdout_sha256": "2d4e642823e58c4888f1ce1d2c8536d8fde52dd45107063e4eb9f46e70306e22",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-002",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-002.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-002"
+      ],
+      "returncode": 0,
+      "wall_s": 0.996,
+      "stdout_sha256": "4d8d3e871247c67a3aca59dd8b7f5014f80c0809978db1232522d6e1fc257eb2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-003",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-003.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-003"
+      ],
+      "returncode": 0,
+      "wall_s": 1.076,
+      "stdout_sha256": "2e3048c40bada23932dd62dd18091ac662c7383e74c432fcd972e9ab6a5a4a2d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-004",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-004.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-004"
+      ],
+      "returncode": 0,
+      "wall_s": 1.057,
+      "stdout_sha256": "82b85cc5e50630d00d7a822ad57826b6b3cc56448dd33812516e2bb96de3abc7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-005",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-005.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-005"
+      ],
+      "returncode": 0,
+      "wall_s": 0.979,
+      "stdout_sha256": "ba0c7a48668c6e6919b927141d5e6c17036d040a8b6168c1aeb956fae850e31c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-006",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-006.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-006"
+      ],
+      "returncode": 0,
+      "wall_s": 0.888,
+      "stdout_sha256": "b4dce37c6abb1dead2505de1c7fa2e860ea47c34874722de6b5c31f38ecc590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-007",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-007.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-007"
+      ],
+      "returncode": 0,
+      "wall_s": 0.881,
+      "stdout_sha256": "24b9871c11b2123c049782999046feb2d5acbb44bfabd0f26ab140d091d49cab",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-008",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-008.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-008"
+      ],
+      "returncode": 0,
+      "wall_s": 0.906,
+      "stdout_sha256": "cd1f06c36108a25decb0cd0f2007188722cb4ef46f74fdf0a91d9d3ab2bf8e8c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-009",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-009.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-009"
+      ],
+      "returncode": 0,
+      "wall_s": 0.977,
+      "stdout_sha256": "13cc383232afd993fa2fe2539d47dadf093cf70fb0ac5d07c2f479ccb4a6120c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-010",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-010.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-010"
+      ],
+      "returncode": 0,
+      "wall_s": 1.118,
+      "stdout_sha256": "d9c227a3cfda5d798705a2fbf24c818b9896636d9316260e84f369585e754f5a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-011",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-011.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-011"
+      ],
+      "returncode": 0,
+      "wall_s": 1.154,
+      "stdout_sha256": "b9d94c1bfceef5bcf712feb8a54473f8848a5d5ce5efbc700ded0f51eec4f9f6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-012",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-012.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-012"
+      ],
+      "returncode": 0,
+      "wall_s": 1.269,
+      "stdout_sha256": "ea308f383287df1a6e50baff73dd9bbfdccad5e62228b3150341bac32b72d342",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-013",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-013.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-013"
+      ],
+      "returncode": 0,
+      "wall_s": 1.1,
+      "stdout_sha256": "0fd6aec9d1c2ff15b166a21a31ea4c5d0ea61af2e896ffb00a1ea73d8c2aea0e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-014",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-014.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-014"
+      ],
+      "returncode": 0,
+      "wall_s": 1.288,
+      "stdout_sha256": "caaa8f65c5514a005632492d47ad1d57ca0507e3bc2d35ad9b6c8092e7ee3064",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-015",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-015.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-015"
+      ],
+      "returncode": 0,
+      "wall_s": 1.17,
+      "stdout_sha256": "41e6862465da085d5afa5dadb5c8fc80e267cebefff182dc97e05109e62689c7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-016",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-016.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-016"
+      ],
+      "returncode": 0,
+      "wall_s": 1.885,
+      "stdout_sha256": "df4817ab94432224d5d851e398924d5de48ed1038cd265fa23d707974fcd7a7c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-017",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-017.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-017"
+      ],
+      "returncode": 0,
+      "wall_s": 2.064,
+      "stdout_sha256": "c85b9cdb087743b40d22f8070044eaf4531668c6cce22665b773a973152817c9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-018",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-018.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-018"
+      ],
+      "returncode": 0,
+      "wall_s": 1.616,
+      "stdout_sha256": "ab61184f04e3cfffbc66aa5b0849d2a32d7ac4816636e12f3d3ce7240eaf7752",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-019",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-019.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-019"
+      ],
+      "returncode": 0,
+      "wall_s": 1.396,
+      "stdout_sha256": "75023493d4af8fa7e0eacc06462aba5e8b3c9e7e1c41eb989e53134d88645be6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-020",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-020.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-020"
+      ],
+      "returncode": 0,
+      "wall_s": 1.098,
+      "stdout_sha256": "2ad2970735335d0532d0354eedfdc674e4730180e23d5db7dfb6aca1b4e80eef",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-021",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-021.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-021"
+      ],
+      "returncode": 0,
+      "wall_s": 1.237,
+      "stdout_sha256": "1174ea2286436aff05ea4291371aba8f184bf30b6ef9d2e20372e7da4c4909ed",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-022",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-022.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-022"
+      ],
+      "returncode": 0,
+      "wall_s": 1.71,
+      "stdout_sha256": "e2d4d23ac018719e5a4bfe83f0d8706258265ba0e94dc53b112f2aa5d88d4e5f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-023",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-023.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-023"
+      ],
+      "returncode": 0,
+      "wall_s": 1.995,
+      "stdout_sha256": "0d9c44ebab9e065c2764708e0629dd2cabae1a651ef7b91fc62cc245c3f72eaa",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-024",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-024.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-024"
+      ],
+      "returncode": 0,
+      "wall_s": 1.371,
+      "stdout_sha256": "df8596ecc095de840a0b2a3f9a4ccaa6ee2ecb8bc9f2bb955e31dc2ebed94183",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-025",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-025.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-025"
+      ],
+      "returncode": 0,
+      "wall_s": 0.778,
+      "stdout_sha256": "deeff3710d7778985fa377f0bddd95d25b4f76c227fe44d8fecd132d2046444c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-026",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-026.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-026"
+      ],
+      "returncode": 0,
+      "wall_s": 0.548,
+      "stdout_sha256": "5fc738e52c8aacf17baa30d887859e4ce37966dab4c02f79cc84b6451afa073b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-027",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-027.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-027"
+      ],
+      "returncode": 0,
+      "wall_s": 0.548,
+      "stdout_sha256": "caf97107163926a1efc777c4fac2500b9f4ef645eba65fa69863fda5351f27bb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fixture-FX-028",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\fixtures\\synthetic\\FX-028.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-fixture-FX-028"
+      ],
+      "returncode": 0,
+      "wall_s": 0.842,
+      "stdout_sha256": "63cc3681f20640d611b5b2af9c8769f1974dad34d718f09d6d62b2093d25dd4c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "public-handoff",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+        "--catalog",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\manifest.json",
+        "--package-id",
+        "EVID-LAB-01",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\intake\\EVID-LAB-01\\2026-10-08-lr02b\\worker\\handoff.json"
+      ],
+      "returncode": 0,
+      "wall_s": 0.491,
+      "stdout_sha256": "de23bdd61fc1c08a2f490d0c46a7b0614af75ed83441682caf737d5ae042046a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "fixture_results": [
+    {
+      "fixture_id": "FX-029",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-029.json": "ff4655ae5931878f055ec17f2cb717bb977cf4652b3ff9bc5587a3315f6b192b"
+      },
+      "answer_sha256": [],
+      "records": 12
+    },
+    {
+      "fixture_id": "FX-030",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-030.json": "cb2db0ea8b94a60e757d6f54e2b0a8bbcd98224d680e756e3e4a0e95fafa03a7"
+      },
+      "answer_sha256": [],
+      "records": 12
+    },
+    {
+      "fixture_id": "FX-031",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-031.json": "7c44029aec5ff98971eb192cbc6c1d37a4b73d3394589fb91bb10743fc28250c"
+      },
+      "answer_sha256": [
+        "3a9aa41a4be0da00358d0b915944a563bdfcb2775e41458da8ee4d5cb66b0237",
+        "15cb24a779b5d6646a19bef91bacedea29b1b7af4e07ecbe62f858882e700234",
+        "acef36cf94cbe781a9758dc5c3a149f46abb0b5e861956f575d4207b5476c093",
+        "c6dd7cee30378f9fd6479b03e8a43fba627e52cb6bb1931a89103d2e8d2addbf",
+        "326a69085d82b9ba07f125657c21128f6342b31429d3bdcf2f921da55773089f"
+      ],
+      "records": 12
+    },
+    {
+      "fixture_id": "FX-032",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-032.json": "1cb118db1741df9b5973b53d701bb2f684b4dc0630321c6bf4dcc7743a82e631"
+      },
+      "answer_sha256": [
+        "58269ea8e20d3245ad0b7d6ae10de3aaad5eee8484dc8a7be0df68b312d212de"
+      ],
+      "records": 13
+    },
+    {
+      "fixture_id": "FX-033",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-033.json": "e722b2c6b9eab4a647d8ea0e961f0391530a7a331c9087c4a0a396965c5d8f55"
+      },
+      "answer_sha256": [
+        "fabb6eff6887f83c6ff87b4b2e4e91a3f0e898d2de9bcaa19f7e3a17dbfb9d76"
+      ],
+      "records": 12
+    },
+    {
+      "fixture_id": "FX-034",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-034.json": "43f6d5c878e6fcd35abe8203a0df676f29273d770aa5988138230aaebc72f154"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-001",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-001.json": "7c789d226493d0cd2474543806a1ce982ffed2e36dbdf3ffdc50569d3f393699"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-002",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-002.json": "894b26c817d3ea45ac161123e4405e894dfc25467c4f426bdbb7b1a64198d5db"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-003",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-003.json": "173506b1e9a9d6513be00db58fd9e6e4d4902fa31844c49af42bef58f2b1d9a6"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-004",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-004.json": "9c3b3d206071452f4f347583a2c58adb25c125badbaef57c19da9b26f86d5397"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-005",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-005.json": "69d32cd91655b76c4656acbc888ef4a0cf7c1d66627114d5539e5757db1e70e0"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-006",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-006.json": "9d019dfea61d34c2574895fc4ca520bd90f36dcee1536a4c8af3b384282949ca"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-007",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-007.json": "f68047087b8ce5003a6f6e8a364239fd6712fb212c34285b0dbcc24b9a81db19"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-008",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-008.json": "75fe2b77c92d0f4a58e8d65c3be2427b4a4cf0a935becf30e829b874d5e4aef3"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-009",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-009.json": "7b4bdcd2112b03a2fe303ad448ca5440a17360924f8f065a881ac90121363b62"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-010",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-010.json": "77d7fe3c985b1616d8cdacd8b991c8f14f943d6c6bb676f88a6fb9896a2ec546"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-011",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-011.json": "f124d093d2b9cef2e018f6ddc39cf6ed4578f23682ee83d4a665406f4f810c82"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-012",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-012.json": "42826375f85eb7b56a8637d9d826732938b038700f1c0d8dc16ea3197c4a2f44"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-013",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-013.json": "4ce1dfccb6b836de7aa56cc295bcc7b3bf6872f69a506191834904e98e815cbb"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-014",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-014.json": "cc477d2d09a3a91ca2b411fac1d4b52cb10b760f7bfa62eba660507309fb5e5e"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-015",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-015.json": "d48304e75ad517056feff74e976a91f3b33b5c2ed785dc688b53a73a4225d2c1"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-016",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-016.json": "0e09e8f3074726d8d8ec5d76d5bf6f51ba01e9ebf33b0517ff32cec71d5e6f47"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-017",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-017.json": "2169b43f6e04ee502f1cd6e857a6e01197e539dea3558a3ea79e71f1522062c3"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-018",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-018.json": "6660b5cd2de0dad75205244455a5b21b23c65d36ad151791d64cffc133d44a0e"
+      },
+      "answer_sha256": [],
+      "records": 9
+    },
+    {
+      "fixture_id": "FX-019",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-019.json": "2acbb21285c7a6c1efd3ddf5009019f7c9054fe24f255e808141f41405721400"
+      },
+      "answer_sha256": [
+        "2d438cc9c570b294a8527c61856390e6856b09ad0c5d96df8c43cebb0b9faf88"
+      ],
+      "records": 12
+    },
+    {
+      "fixture_id": "FX-020",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-020.json": "76336412e32bc3083c6ab5f37260602b8c1bb060d2adde596c6d418a40cfc8ce"
+      },
+      "answer_sha256": [
+        "4c903fbf44752aec337879028c8cb523d12b9e82f315c2827155b33ab2813d0b"
+      ],
+      "records": 13
+    },
+    {
+      "fixture_id": "FX-021",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-021.json": "72ff185017ddf59a00a97360d47dcb6017eb66ad85161b33ef89bd121b902b42"
+      },
+      "answer_sha256": [],
+      "records": 13
+    },
+    {
+      "fixture_id": "FX-022",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-022.json": "d0db9a24ca10ce7912b044006e4e1287b4e77b3f41f13c4e8eaf66d14ae516fc"
+      },
+      "answer_sha256": [
+        "b96b1615909dc0cf4e0980eb3f14b469883c31ad8192beec267adac39525bf70"
+      ],
+      "records": 13
+    },
+    {
+      "fixture_id": "FX-023",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-023.json": "e508bd7d852563854d5145928cc737f3e45e950a0fe2a3b902d4a7a542ac4df4"
+      },
+      "answer_sha256": [],
+      "records": 10
+    },
+    {
+      "fixture_id": "FX-024",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-024.json": "2b02105dac1a97ba5fc8ab590f07d050e7fc79ea6232bd94c3a4f368b5080019"
+      },
+      "answer_sha256": [],
+      "records": 10
+    },
+    {
+      "fixture_id": "FX-025",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-025.json": "4732d1fcd248402c705ab305157dff42ccf88fc78c355fa3fe361aab48da6974"
+      },
+      "answer_sha256": [],
+      "records": 11
+    },
+    {
+      "fixture_id": "FX-026",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-026.json": "ad38958d12f906e8ebf03523a0ac502d522237074f61268c2ae022ac1e2da50e"
+      },
+      "answer_sha256": [
+        "a3aba86f8a2ad41029031e18fab02dac517d3e0b8f1c7ee216bf21f947034007"
+      ],
+      "records": 12
+    },
+    {
+      "fixture_id": "FX-027",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-027.json": "33300dd340abb242b091678ac34ad94ae3d0870b309156e2695c680b77d86b57"
+      },
+      "answer_sha256": [
+        "2892214da279884f9da14efc442d9caaf3950a5f0bd7009e8f3253ac9fc54fdd"
+      ],
+      "records": 12
+    },
+    {
+      "fixture_id": "FX-028",
+      "returncode": 0,
+      "input_sha256": {
+        "FX-028.json": "f45c857510f05cde0470e05231cb870bd9bfabd12ce8e6560c8f7cbfdba908cd"
+      },
+      "answer_sha256": [
+        "c4f90ca5848141e00b8c65707c3eb2579e37a2de8000debdae63f2d142802b9c"
+      ],
+      "records": 12
+    }
+  ],
+  "replay_payloads_stable": true,
+  "input_files": 128,
+  "original_inputs_before": {
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs.lock.json": "432272257ae79b3fb9de538ca37a775be3f21bc8303f8cd5a1165c7fad62a78e",
+    "docs/implementation/contracts/exchange-and-query.md": "9f2559ba91c49210906fa3c1c75606f3c403e6ca7d5f896908fb1371675f398b",
+    "docs/implementation/contracts/freshness-and-jobs.md": "2d8f6d4be7ae05ef996e7cdb71f58dff355bf3229de4241b6a0dc8acbeee3f93",
+    "docs/implementation/contracts/providers-and-budget.md": "ccb50c59972a542d710e107d05f7ec0f08718bb9e48c8a146af14ba9af6119a0",
+    "docs/implementation/contracts/question-modules.md": "039f789b0905c69705798288fbbfa8dc884b0fa70b7b2af9e1f221be804512a6",
+    "docs/implementation/contracts/validation-MiMo-Pro-pilot-2026-10-07.json": "b37ba888e341df52afa547fa5c3c822bdc537331184975bd258e51d1cab7b422",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/analysis.json": "39dd40cd39b423a8c5edb3bf4563946d14a86cedfbc90581d43811713a67e8e4",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/archive-manifest.json": "cd21cfa052699b716423c6ca96b7bb945260082c0715b9da385a4c358d82324a",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/blocks.json": "5c3c98242dc698f7b9720c21fb3befb1d155da0d906f8440b0f5598ddf268548",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/inputs-manifest.json": "c1d68d5dcabd23941568652dcbf5a09e3c154b41979e38da6363826cf3cb6890",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/ledger.jsonl": "b071099b22236006be9119704002697d4bb8975de0113ff2a19caac2817fd85f",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/matrix-console.log": "e3907c6c98bcdd23e96605d26a6d311766ffaf6fdac58c7276c46224574afc80",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/prompt-profiles.json": "e451e846475ea4d5fe13723688ac5ac0164b6df6176ada6f91b318bd413d2c80",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/provenance-check.json": "c49aa2176de62e2f1964f3efab6c8fb2cd7f7c2275c8fe203180cb109c7d79ca",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/repeat-console.log": "268c8e5d43d285cc7b215f57a133c6a8eeeec8d0a9644a819d7e0cd6d78da53b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/results.jsonl": "6d34ad0a58a84e0ad46dd8531b6dbfde38f0d725969918fdccce93245fe70821",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-index.json": "b6bb185966caf12eb76be8139a0dd50888fdae0d3d1dee05bb4fff5916478b0c",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/thinking-console.log": "d76ea815b9ada1081486c59d55d8fd98c870ddfff6a46507e17e9ecd08ed38bd",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/analysis.json": "8d6ce71a1d74294e04364c59b3c548b111cb169c465f04f0bf47903563109df5",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/archive-manifest.json": "1404ff0f9e7656b022d69fb259ae57f9c6bc87f3f020d5248cb049175fe92f18",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/blocks.json": "eed3405ce6533f9591bdb647931f73ab7b6c50191606d58a1d86d8e5c0a9f3cd",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/inputs-manifest.json": "35a7261826b3890d963a9a88afe90a37c9209de7506123786c94fbda4a5442d6",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/ledger.jsonl": "6898d15cb47af52d87f71f62ec27c5749efacc38ec715fb281cdec3f2d584322",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/prompt-profiles.json": "e451e846475ea4d5fe13723688ac5ac0164b6df6176ada6f91b318bd413d2c80",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/provenance-check.json": "2ad70a9118dc799d831c9614e7206f465559d7a71e7cee345abeba5d87cfade2",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/results.jsonl": "f0c3e7c304ba1bd08dac1575513ed37fe767ce595685bff410b02cf391dd561e",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/run-console.log": "6349b2eb0721bda1b49975a14ac94aba086008d690d3e4c940afbc83d65f9212",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-batching_benchmark.py": "788823f6bc3a2102b4ac744f3e05268020cbb72cdcb13324f79961c41fc9f159",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-batching_benchmark_archive.py": "adfdae340839aaa5cc5bc67910fe0cae6d184ec3e8e546cf99b5dee8f4fe8436",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-batching_benchmark_report.py": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-index.json": "a1dd9975fb517cf4cd203d52d10b6473632d5adc680231386448bdd74ac0ae29",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-mimo_pilot_extension.py": "4536567e20674ddfbabd44831e23890eac26989b320efee61806a86aa41c0ffe",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-mimo_pro_pilot.py": "558a9693ed43fd492e1a1dce86580165fd7c9c11342fa9d36c3dd6d93a297add",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/analysis.json": "f4886cecd22aa3af4a88829df3b642dfa3564d82fc07c2a921b179988b2e59cb",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/archive-manifest.json": "049c755b3710b02ed5bc31e27f3758b3abf4e035afd9e5fd05b2aadb7ea30057",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/blocks.json": "3635642babb144912475985c8f32130e155ad71381bb2e5182a2b4cb4194de5b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/inputs-manifest.json": "2f3f0e70f11b89df02e73d0c09636057edcb119270933851e45b923cf9232f29",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/ledger.jsonl": "7e89fe222ea81ba1b2c333cc8f810c5d6efd09da1c028730a9dfdfe4b4fd13af",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/prompt-profiles.json": "e451e846475ea4d5fe13723688ac5ac0164b6df6176ada6f91b318bd413d2c80",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/provenance-check.json": "ee9ee34e96319654d6970bc008730371e7cbc544b791d64e25ed31017b5e1765",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/results.jsonl": "bcb70fe17378d5061baa05ca37326dbf28bb0c857c8ac137e57ae0e0d898a9cd",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/run-console.log": "372001cbff604a19afe6064b6cec2f6c2f0a2e8d00fc5d83718041a4fdfdaade",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-batching_benchmark.py": "788823f6bc3a2102b4ac744f3e05268020cbb72cdcb13324f79961c41fc9f159",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-batching_benchmark_archive.py": "adfdae340839aaa5cc5bc67910fe0cae6d184ec3e8e546cf99b5dee8f4fe8436",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-batching_benchmark_report.py": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-index.json": "a1dd9975fb517cf4cd203d52d10b6473632d5adc680231386448bdd74ac0ae29",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-mimo_pilot_extension.py": "4536567e20674ddfbabd44831e23890eac26989b320efee61806a86aa41c0ffe",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-mimo_pro_pilot.py": "558a9693ed43fd492e1a1dce86580165fd7c9c11342fa9d36c3dd6d93a297add",
+    "docs/implementation/experiments/mimo-pilot-audit-builder-2026-10-07.py": "8d62ad3b2d3b48c6a040bde65b9b6ddeff2d131e2e176e198ecae9a7cd12e6ed",
+    "docs/implementation/experiments/mimo-pilot-generation-policies-2026-10-07.json": "126dd1e771c35cee6823295a18c950183440784d0fdfd54f121a2e5129b89f61",
+    "docs/implementation/experiments/mimo-pilot-pricing-2026-10-07.json": "eab72d583c48ce935e0fd153a9d79f5dc032ac9de950ad9d90c8b825109c7bb8",
+    "docs/implementation/experiments/mimo-pro-cleanup-2026-10-07.ps1": "37ec89087d3056f95c1c361df23f59105bc1846c8d0f8b032fce170d75317581",
+    "docs/implementation/experiments/mimo-pro-input-selection-2026-10-07.py": "ba612f0dcdc7ee41f5ed9f6f2e5d856a8fc6703c1a2aceeb6af245f5ad28a57c",
+    "docs/implementation/experiments/mimo-pro-pilot-2026-10-07.md": "dd9ac0430bf1cf926182e80906ee335fc3211610364082abcc83bcd52505b5d9",
+    "docs/implementation/experiments/mimo-pro-result-index-2026-10-07.json": "c731bec5b16911bf38ec52817960800cffd072236a93faca40c60697c35ad83c",
+    "docs/implementation/experiments/mimo-pro-results-2026-10-07.md": "3844f9c6d84d6643776957084a80a78092320d8d603a1027d238967cd2d77072",
+    "docs/implementation/intake/SW-READY-01/2026-10-07/export-manifest.json": "dfa5c397dc7af75fc133e30fb55d30fe51bf8e5c068dd7c678cb4a0c195dfc23",
+    "docs/implementation/parallel-lanes/handoff.schema.json": "ed38a65aafed82649a071acbc9e6ee5b47c92120ad958713db4d7261a4b15c0e",
+    "docs/implementation/reviews/B01/mimo-pilot-extension-source-support-2026-10-07.json": "051f54cff3995e7a9c39981aa8aff300fdbe8f97536484a261e67961edf99bc3",
+    "docs/implementation/reviews/B01/mimo-pilot-extension-source-support-2026-10-07.md": "f33555e8c2b46651c2ecd29742f9c4c134c558808f967a978d7d57a28459bc5b",
+    "docs/implementation/reviews/B01/mimo-pilot-primary-source-support-2026-10-07.json": "f966df6b09d193f213872b995c7afd5e4f2ff5c3d92d47dd59a1e95119dae619",
+    "docs/implementation/reviews/B01/mimo-pilot-primary-source-support-2026-10-07.md": "c2005031e9d534e30b70bfc5c25ac9af44a270ca3738358b69f48f0e2d0a4bf2",
+    "docs/implementation/reviews/B01/mimo-pilot-source-support-join-2026-10-07.json": "25b60b43df9111b58ec8c858ffdbf86ff84e18aa8389a7e0ec0c5f9ffdee9787",
+    "docs/implementation/reviews/B01/mimo-pro-b01-regression.log": "c2462f197abcbff09fafd856ae9e036fb0e4dddf4c6d6da84befaea647870410",
+    "docs/implementation/reviews/B01/mimo-pro-cleanup-receipt-2026-10-07.json": "3c4673b46e213541955b44efdee7f29b12c98311254a304732b47b24743ceac2",
+    "docs/implementation/reviews/B01/mimo-pro-extension-guard-tests.log": "6b08d629bcbec2da2ab44961d524215d071c50680f57ebb2d8ec1102e708bdc0",
+    "docs/implementation/reviews/B01/mimo-pro-final-b01-regression-GREEN.log": "acaad4849a306a57354e6002b8c9a95d4827b83b660e34a764b4b9ba201997e7",
+    "docs/implementation/reviews/B01/mimo-pro-final-b01-regression.log": "79ab0afd9bb57fb27d4cad89960772a58e608f9430e0611a85797c2dbd0de509",
+    "docs/implementation/reviews/B01/mimo-pro-final-offline-GREEN.log": "335bbef5cac490552b767bf4c9f631376e6dbafa1b4b2966f2141d94907f1852",
+    "docs/implementation/reviews/B01/mimo-pro-offline-tests.log": "21096bc7852798fbdfbc153b0dec0af619cfaaf8ae006b37fa65ad0d3d72a580",
+    "docs/implementation/reviews/B01/mimo-pro-output-separation-tests.log": "7071d40a2d9a9c3c69efb60e8575a7ed6947f38fcb90f8cc8430dd6a2341e9d6",
+    "docs/implementation/reviews/B01/mimo-pro-public-jsonoff-report.log": "85db219e75a7615d80b62a9afc3200f924b47b9335760a7334eb16120be99b05",
+    "docs/implementation/reviews/B01/mimo-pro-public-main-report.log": "1d2c4919a3881dee0b30e793bb0fe5414f817aae6dbea6e39006000c0cb70c4a",
+    "docs/implementation/reviews/B01/mimo-pro-public-thinking-report.log": "a1a54b6bad0d125e06746ce22462de38a730e2dc516baf366898db1d9229a5f9",
+    "docs/implementation/reviews/B01/mimo-pro-source-join-check-console.log": "08d0efa64813480d1e9186f202a826157e1517d57c1c43b04c7a15b0324f746e",
+    "docs/implementation/reviews/B01/mimo-pro-source-join-console.log": "08d0efa64813480d1e9186f202a826157e1517d57c1c43b04c7a15b0324f746e",
+    "docs/implementation/reviews/B01/mimo-pro-technical-review-2026-10-07.md": "7de4eb2a2b60b873d530c3b570e0a9d948fcadfe7e41b6570b8170e11f632d28",
+    "docs/implementation/reviews/B01/mimo-pro-transport-default-GREEN.log": "2a81f4b71cb7c932ffe11c62466b9e341468f972caa817e4b715e3fab608982d",
+    "docs/implementation/reviews/B01/mimo-pro-transport-default-RED.log": "550717e75a0b6e25d3a367dadcf414b493a35573ad4eaa747cf95895ffe1530e",
+    "docs/implementation/reviews/SW-READY-01/acceptance_cases.py": "72b2e1250947a705f87426557ccdf8b09121d761ba09ae89da3df152db81d452",
+    "docs/implementation/reviews/SW-READY-01/export_runtime.py": "3b43fcd390a14c94a59b8b12f68a3757133f4ca5dcb2789afd3cd5b0ada8152c",
+    "docs/implementation/reviews/SW-READY-01/guarded_tests.py": "5de64cb14f2dce9289bfe4f9b1ed6fd3f905e140271e135b9549bcc059220da9",
+    "docs/implementation/reviews/SW-READY-01/intake-review-2026-10-07.md": "752f494ec276083de2cf10e63a6ddda286a5129d4472858ac782d9e007a2ffd0",
+    "docs/implementation/reviews/SW-READY-01/remediation-card-2026-10-07.md": "820371ffdbe38b1125ca08495c2495628a5e9ec938a6c61e2dae0f157036e1a8",
+    "docs/implementation/tasks.json": "a7c6167d4bf9aca56b529bd85bd70b0ae01a99125033e06dcbcdcbb06731bf60",
+    "docs/implementation/test-strategy.md": "b1eeb99b5ff00384dc930f25df9c0384b68bb77f0db9edb59c3f7397843e1429",
+    "schemas/answer-content.schema.json": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547",
+    "schemas/observation.schema.json": "6344d2afc9e0d937e05baba8aef27ad15c91770ab7ecb2ddbd549e5ab4fb70ec",
+    "schemas/quick_scan/exchange.schema.json": "efdf0e3427d1bbb73892e9573fbf3b1f0389218e3f5a0c8dff4ca0cd63764122",
+    "schemas/quick_scan/query.schema.json": "e7fc264b43d85e4cdd5c82a71b9fedb579dd0fc1196f3c5fde661f14fa1756f8",
+    "scripts/batching_benchmark.py": "0e191cd5cdd5613427dd07d37fa79293cc2eeec1775f900226d5a38e61f72db3",
+    "scripts/batching_benchmark_archive.py": "a3d75bfbaae17b63f49f66b8b76e725d08238b12bf46f4042c0ae9d19aa68878",
+    "scripts/batching_benchmark_report.py": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb",
+    "scripts/mimo_json_mode_probe.py": "c2d0db865d061b02454ee8ab6a1cd09c32e36cec99a79e578fe73ab737321e66",
+    "scripts/mimo_pilot_extension.py": "875e6149113a559bd530363343be39c20f1270157498b496753cdc5453280d39",
+    "scripts/mimo_pilot_results.py": "fb9f81ab0f23446cf6f1785e456256f8537c13b19c3adc76e1fd1c58afe7a04d",
+    "scripts/mimo_pilot_review_summary.py": "2df57cad56cdb83acd9d4595aff05e4342728b8792eefdd1d67a1de5a040ce25",
+    "scripts/mimo_pro_pilot.py": "6a323908171b27a3997cf4ad3eb77e137d168742a3a08283bce5f63033dd71b4",
+    "tests/test_batching_benchmark.py": "437f22ae52b6e66928086333224b40c5ba50cf19dc9419e0c8344f06cbe46829",
+    "tests/test_batching_benchmark_archive.py": "762ef4b51eebae2ca81db0689c16c59ac4f09c8e36db34d898396125ae2e6636",
+    "tests/test_batching_benchmark_report.py": "905815c4dff33288055d481f3200d77272382b7ff8d04e2c941f5ccda8959557",
+    "tests/test_mimo_pilot_extension.py": "33066c4ed8c7b72d915090078618c07e1c3a4f9acc659b64d1d1edae4c009561",
+    "tests/test_mimo_pro_pilot.py": "77fa5329c9ee7dc8f41d681e69b91eb22e816c566a63424392874513a0d40f8a",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/.gitignore": "95c81146e7730a6e69926805117dbe21411008f6f16c33f633cf25ba3c0c3f89",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/pyproject.toml": "ee4a87a01f86d668f10fa02d5fd843ef1b5d8ac35049f156f0e23bf5ed898dbe",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/config/quick_scan_answer_content.schema.json": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/config/quick_scan_metric_registry.json": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/config/quick_scan_observation.schema.json": "6344d2afc9e0d937e05baba8aef27ad15c91770ab7ecb2ddbd549e5ab4fb70ec",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/utils/quick_scan_observation_context.py": "03ee6035285301e1e9d742ca00608a83d0a48d5feb313fbecaea27826b866200",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json": "e5bc782afd245374fff3bc224f04cb9dbcc0fb22b76d62faf2a16917db1ded43",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_manifest_v2_fixture.json": "a7e80a5bcaf2cb2499fa24f091b129d7e1a2ebbf6e91a5666359c5e91c90270c",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/unit/test_quick_scan_observation_context.py": "485f1395cdcc1ee366c5c8492125846cf4a081597b650c20a3fda9dc7a6e65fb",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/scripts/standard_answers.py": "dc4870362109e2cc19c9fdb98a15c688b43138c5e0d12cb4142b0c23098cf42a",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/scripts/c06_authority.py": "ad2da1ce3ec1e16fc04d8b3a7298a7c209c583dcfa0df9d0cbf01d3bc7e60805",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/tests/test_c06_authority.py": "fb839deaf429076d21bd25d13add73d34e892f7f79b551a7a9a3ebd7567e06ce",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/c06-authority-v2-input-map-2026-10-07.md": "731996219adadd8cf3252d8a8f1a82ba40cf534cd915b81dff974f0d4dfb9c84"
+  },
+  "original_inputs_after": {
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs.lock.json": "432272257ae79b3fb9de538ca37a775be3f21bc8303f8cd5a1165c7fad62a78e",
+    "docs/implementation/contracts/exchange-and-query.md": "9f2559ba91c49210906fa3c1c75606f3c403e6ca7d5f896908fb1371675f398b",
+    "docs/implementation/contracts/freshness-and-jobs.md": "2d8f6d4be7ae05ef996e7cdb71f58dff355bf3229de4241b6a0dc8acbeee3f93",
+    "docs/implementation/contracts/providers-and-budget.md": "ccb50c59972a542d710e107d05f7ec0f08718bb9e48c8a146af14ba9af6119a0",
+    "docs/implementation/contracts/question-modules.md": "039f789b0905c69705798288fbbfa8dc884b0fa70b7b2af9e1f221be804512a6",
+    "docs/implementation/contracts/validation-MiMo-Pro-pilot-2026-10-07.json": "b37ba888e341df52afa547fa5c3c822bdc537331184975bd258e51d1cab7b422",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/analysis.json": "39dd40cd39b423a8c5edb3bf4563946d14a86cedfbc90581d43811713a67e8e4",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/archive-manifest.json": "cd21cfa052699b716423c6ca96b7bb945260082c0715b9da385a4c358d82324a",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/blocks.json": "5c3c98242dc698f7b9720c21fb3befb1d155da0d906f8440b0f5598ddf268548",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/inputs-manifest.json": "c1d68d5dcabd23941568652dcbf5a09e3c154b41979e38da6363826cf3cb6890",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/ledger.jsonl": "b071099b22236006be9119704002697d4bb8975de0113ff2a19caac2817fd85f",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/matrix-console.log": "e3907c6c98bcdd23e96605d26a6d311766ffaf6fdac58c7276c46224574afc80",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/prompt-profiles.json": "e451e846475ea4d5fe13723688ac5ac0164b6df6176ada6f91b318bd413d2c80",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/provenance-check.json": "c49aa2176de62e2f1964f3efab6c8fb2cd7f7c2275c8fe203180cb109c7d79ca",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/repeat-console.log": "268c8e5d43d285cc7b215f57a133c6a8eeeec8d0a9644a819d7e0cd6d78da53b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/results.jsonl": "6d34ad0a58a84e0ad46dd8531b6dbfde38f0d725969918fdccce93245fe70821",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-index.json": "b6bb185966caf12eb76be8139a0dd50888fdae0d3d1dee05bb4fff5916478b0c",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/source-mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/thinking-console.log": "d76ea815b9ada1081486c59d55d8fd98c870ddfff6a46507e17e9ecd08ed38bd",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/analysis.json": "8d6ce71a1d74294e04364c59b3c548b111cb169c465f04f0bf47903563109df5",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/archive-manifest.json": "1404ff0f9e7656b022d69fb259ae57f9c6bc87f3f020d5248cb049175fe92f18",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/blocks.json": "eed3405ce6533f9591bdb647931f73ab7b6c50191606d58a1d86d8e5c0a9f3cd",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/inputs-manifest.json": "35a7261826b3890d963a9a88afe90a37c9209de7506123786c94fbda4a5442d6",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/ledger.jsonl": "6898d15cb47af52d87f71f62ec27c5749efacc38ec715fb281cdec3f2d584322",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/parent-source-mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/prompt-profiles.json": "e451e846475ea4d5fe13723688ac5ac0164b6df6176ada6f91b318bd413d2c80",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/provenance-check.json": "2ad70a9118dc799d831c9614e7206f465559d7a71e7cee345abeba5d87cfade2",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/results.jsonl": "f0c3e7c304ba1bd08dac1575513ed37fe767ce595685bff410b02cf391dd561e",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/run-console.log": "6349b2eb0721bda1b49975a14ac94aba086008d690d3e4c940afbc83d65f9212",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-batching_benchmark.py": "788823f6bc3a2102b4ac744f3e05268020cbb72cdcb13324f79961c41fc9f159",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-batching_benchmark_archive.py": "adfdae340839aaa5cc5bc67910fe0cae6d184ec3e8e546cf99b5dee8f4fe8436",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-batching_benchmark_report.py": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-index.json": "a1dd9975fb517cf4cd203d52d10b6473632d5adc680231386448bdd74ac0ae29",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-mimo_pilot_extension.py": "4536567e20674ddfbabd44831e23890eac26989b320efee61806a86aa41c0ffe",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/source-mimo_pro_pilot.py": "558a9693ed43fd492e1a1dce86580165fd7c9c11342fa9d36c3dd6d93a297add",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/analysis.json": "f4886cecd22aa3af4a88829df3b642dfa3564d82fc07c2a921b179988b2e59cb",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/archive-manifest.json": "049c755b3710b02ed5bc31e27f3758b3abf4e035afd9e5fd05b2aadb7ea30057",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/blocks.json": "3635642babb144912475985c8f32130e155ad71381bb2e5182a2b4cb4194de5b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/inputs-manifest.json": "2f3f0e70f11b89df02e73d0c09636057edcb119270933851e45b923cf9232f29",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/ledger.jsonl": "7e89fe222ea81ba1b2c333cc8f810c5d6efd09da1c028730a9dfdfe4b4fd13af",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-batching_benchmark.py": "4162755fc16a4bad926e5c9719a2e4bd402ad054285005456dd259a6e023fc7b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-batching_benchmark_archive.py": "69dad3fc3991f5658c29ec09602c5fb9f0f14a9fcec4bd7184b7569cff1ead9b",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-batching_benchmark_report.py": "519e9443a53a9da846f6890034b1601e8cd853e1916f657ef8a735ecf315d38c",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/parent-source-mimo_pro_pilot.py": "d3ce4cdf5f63659697eb9aed51df1d83e0ecea744500d24c77b053465f2fbc65",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/prompt-profiles.json": "e451e846475ea4d5fe13723688ac5ac0164b6df6176ada6f91b318bd413d2c80",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/provenance-check.json": "ee9ee34e96319654d6970bc008730371e7cbc544b791d64e25ed31017b5e1765",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/results.jsonl": "bcb70fe17378d5061baa05ca37326dbf28bb0c857c8ac137e57ae0e0d898a9cd",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/run-console.log": "372001cbff604a19afe6064b6cec2f6c2f0a2e8d00fc5d83718041a4fdfdaade",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-batching_benchmark.py": "788823f6bc3a2102b4ac744f3e05268020cbb72cdcb13324f79961c41fc9f159",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-batching_benchmark_archive.py": "adfdae340839aaa5cc5bc67910fe0cae6d184ec3e8e546cf99b5dee8f4fe8436",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-batching_benchmark_report.py": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-index.json": "a1dd9975fb517cf4cd203d52d10b6473632d5adc680231386448bdd74ac0ae29",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-mimo_pilot_extension.py": "4536567e20674ddfbabd44831e23890eac26989b320efee61806a86aa41c0ffe",
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/source-mimo_pro_pilot.py": "558a9693ed43fd492e1a1dce86580165fd7c9c11342fa9d36c3dd6d93a297add",
+    "docs/implementation/experiments/mimo-pilot-audit-builder-2026-10-07.py": "8d62ad3b2d3b48c6a040bde65b9b6ddeff2d131e2e176e198ecae9a7cd12e6ed",
+    "docs/implementation/experiments/mimo-pilot-generation-policies-2026-10-07.json": "126dd1e771c35cee6823295a18c950183440784d0fdfd54f121a2e5129b89f61",
+    "docs/implementation/experiments/mimo-pilot-pricing-2026-10-07.json": "eab72d583c48ce935e0fd153a9d79f5dc032ac9de950ad9d90c8b825109c7bb8",
+    "docs/implementation/experiments/mimo-pro-cleanup-2026-10-07.ps1": "37ec89087d3056f95c1c361df23f59105bc1846c8d0f8b032fce170d75317581",
+    "docs/implementation/experiments/mimo-pro-input-selection-2026-10-07.py": "ba612f0dcdc7ee41f5ed9f6f2e5d856a8fc6703c1a2aceeb6af245f5ad28a57c",
+    "docs/implementation/experiments/mimo-pro-pilot-2026-10-07.md": "dd9ac0430bf1cf926182e80906ee335fc3211610364082abcc83bcd52505b5d9",
+    "docs/implementation/experiments/mimo-pro-result-index-2026-10-07.json": "c731bec5b16911bf38ec52817960800cffd072236a93faca40c60697c35ad83c",
+    "docs/implementation/experiments/mimo-pro-results-2026-10-07.md": "3844f9c6d84d6643776957084a80a78092320d8d603a1027d238967cd2d77072",
+    "docs/implementation/intake/SW-READY-01/2026-10-07/export-manifest.json": "dfa5c397dc7af75fc133e30fb55d30fe51bf8e5c068dd7c678cb4a0c195dfc23",
+    "docs/implementation/parallel-lanes/handoff.schema.json": "ed38a65aafed82649a071acbc9e6ee5b47c92120ad958713db4d7261a4b15c0e",
+    "docs/implementation/reviews/B01/mimo-pilot-extension-source-support-2026-10-07.json": "051f54cff3995e7a9c39981aa8aff300fdbe8f97536484a261e67961edf99bc3",
+    "docs/implementation/reviews/B01/mimo-pilot-extension-source-support-2026-10-07.md": "f33555e8c2b46651c2ecd29742f9c4c134c558808f967a978d7d57a28459bc5b",
+    "docs/implementation/reviews/B01/mimo-pilot-primary-source-support-2026-10-07.json": "f966df6b09d193f213872b995c7afd5e4f2ff5c3d92d47dd59a1e95119dae619",
+    "docs/implementation/reviews/B01/mimo-pilot-primary-source-support-2026-10-07.md": "c2005031e9d534e30b70bfc5c25ac9af44a270ca3738358b69f48f0e2d0a4bf2",
+    "docs/implementation/reviews/B01/mimo-pilot-source-support-join-2026-10-07.json": "25b60b43df9111b58ec8c858ffdbf86ff84e18aa8389a7e0ec0c5f9ffdee9787",
+    "docs/implementation/reviews/B01/mimo-pro-b01-regression.log": "c2462f197abcbff09fafd856ae9e036fb0e4dddf4c6d6da84befaea647870410",
+    "docs/implementation/reviews/B01/mimo-pro-cleanup-receipt-2026-10-07.json": "3c4673b46e213541955b44efdee7f29b12c98311254a304732b47b24743ceac2",
+    "docs/implementation/reviews/B01/mimo-pro-extension-guard-tests.log": "6b08d629bcbec2da2ab44961d524215d071c50680f57ebb2d8ec1102e708bdc0",
+    "docs/implementation/reviews/B01/mimo-pro-final-b01-regression-GREEN.log": "acaad4849a306a57354e6002b8c9a95d4827b83b660e34a764b4b9ba201997e7",
+    "docs/implementation/reviews/B01/mimo-pro-final-b01-regression.log": "79ab0afd9bb57fb27d4cad89960772a58e608f9430e0611a85797c2dbd0de509",
+    "docs/implementation/reviews/B01/mimo-pro-final-offline-GREEN.log": "335bbef5cac490552b767bf4c9f631376e6dbafa1b4b2966f2141d94907f1852",
+    "docs/implementation/reviews/B01/mimo-pro-offline-tests.log": "21096bc7852798fbdfbc153b0dec0af619cfaaf8ae006b37fa65ad0d3d72a580",
+    "docs/implementation/reviews/B01/mimo-pro-output-separation-tests.log": "7071d40a2d9a9c3c69efb60e8575a7ed6947f38fcb90f8cc8430dd6a2341e9d6",
+    "docs/implementation/reviews/B01/mimo-pro-public-jsonoff-report.log": "85db219e75a7615d80b62a9afc3200f924b47b9335760a7334eb16120be99b05",
+    "docs/implementation/reviews/B01/mimo-pro-public-main-report.log": "1d2c4919a3881dee0b30e793bb0fe5414f817aae6dbea6e39006000c0cb70c4a",
+    "docs/implementation/reviews/B01/mimo-pro-public-thinking-report.log": "a1a54b6bad0d125e06746ce22462de38a730e2dc516baf366898db1d9229a5f9",
+    "docs/implementation/reviews/B01/mimo-pro-source-join-check-console.log": "08d0efa64813480d1e9186f202a826157e1517d57c1c43b04c7a15b0324f746e",
+    "docs/implementation/reviews/B01/mimo-pro-source-join-console.log": "08d0efa64813480d1e9186f202a826157e1517d57c1c43b04c7a15b0324f746e",
+    "docs/implementation/reviews/B01/mimo-pro-technical-review-2026-10-07.md": "7de4eb2a2b60b873d530c3b570e0a9d948fcadfe7e41b6570b8170e11f632d28",
+    "docs/implementation/reviews/B01/mimo-pro-transport-default-GREEN.log": "2a81f4b71cb7c932ffe11c62466b9e341468f972caa817e4b715e3fab608982d",
+    "docs/implementation/reviews/B01/mimo-pro-transport-default-RED.log": "550717e75a0b6e25d3a367dadcf414b493a35573ad4eaa747cf95895ffe1530e",
+    "docs/implementation/reviews/SW-READY-01/acceptance_cases.py": "72b2e1250947a705f87426557ccdf8b09121d761ba09ae89da3df152db81d452",
+    "docs/implementation/reviews/SW-READY-01/export_runtime.py": "3b43fcd390a14c94a59b8b12f68a3757133f4ca5dcb2789afd3cd5b0ada8152c",
+    "docs/implementation/reviews/SW-READY-01/guarded_tests.py": "5de64cb14f2dce9289bfe4f9b1ed6fd3f905e140271e135b9549bcc059220da9",
+    "docs/implementation/reviews/SW-READY-01/intake-review-2026-10-07.md": "752f494ec276083de2cf10e63a6ddda286a5129d4472858ac782d9e007a2ffd0",
+    "docs/implementation/reviews/SW-READY-01/remediation-card-2026-10-07.md": "820371ffdbe38b1125ca08495c2495628a5e9ec938a6c61e2dae0f157036e1a8",
+    "docs/implementation/tasks.json": "a7c6167d4bf9aca56b529bd85bd70b0ae01a99125033e06dcbcdcbb06731bf60",
+    "docs/implementation/test-strategy.md": "b1eeb99b5ff00384dc930f25df9c0384b68bb77f0db9edb59c3f7397843e1429",
+    "schemas/answer-content.schema.json": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547",
+    "schemas/observation.schema.json": "6344d2afc9e0d937e05baba8aef27ad15c91770ab7ecb2ddbd549e5ab4fb70ec",
+    "schemas/quick_scan/exchange.schema.json": "efdf0e3427d1bbb73892e9573fbf3b1f0389218e3f5a0c8dff4ca0cd63764122",
+    "schemas/quick_scan/query.schema.json": "e7fc264b43d85e4cdd5c82a71b9fedb579dd0fc1196f3c5fde661f14fa1756f8",
+    "scripts/batching_benchmark.py": "0e191cd5cdd5613427dd07d37fa79293cc2eeec1775f900226d5a38e61f72db3",
+    "scripts/batching_benchmark_archive.py": "a3d75bfbaae17b63f49f66b8b76e725d08238b12bf46f4042c0ae9d19aa68878",
+    "scripts/batching_benchmark_report.py": "d907253b97de65194bdf35ceb63194aecd28ca65a144747101bae6212c2585fb",
+    "scripts/mimo_json_mode_probe.py": "c2d0db865d061b02454ee8ab6a1cd09c32e36cec99a79e578fe73ab737321e66",
+    "scripts/mimo_pilot_extension.py": "875e6149113a559bd530363343be39c20f1270157498b496753cdc5453280d39",
+    "scripts/mimo_pilot_results.py": "fb9f81ab0f23446cf6f1785e456256f8537c13b19c3adc76e1fd1c58afe7a04d",
+    "scripts/mimo_pilot_review_summary.py": "2df57cad56cdb83acd9d4595aff05e4342728b8792eefdd1d67a1de5a040ce25",
+    "scripts/mimo_pro_pilot.py": "6a323908171b27a3997cf4ad3eb77e137d168742a3a08283bce5f63033dd71b4",
+    "tests/test_batching_benchmark.py": "437f22ae52b6e66928086333224b40c5ba50cf19dc9419e0c8344f06cbe46829",
+    "tests/test_batching_benchmark_archive.py": "762ef4b51eebae2ca81db0689c16c59ac4f09c8e36db34d898396125ae2e6636",
+    "tests/test_batching_benchmark_report.py": "905815c4dff33288055d481f3200d77272382b7ff8d04e2c941f5ccda8959557",
+    "tests/test_mimo_pilot_extension.py": "33066c4ed8c7b72d915090078618c07e1c3a4f9acc659b64d1d1edae4c009561",
+    "tests/test_mimo_pro_pilot.py": "77fa5329c9ee7dc8f41d681e69b91eb22e816c566a63424392874513a0d40f8a",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/.gitignore": "95c81146e7730a6e69926805117dbe21411008f6f16c33f633cf25ba3c0c3f89",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/pyproject.toml": "ee4a87a01f86d668f10fa02d5fd843ef1b5d8ac35049f156f0e23bf5ed898dbe",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/config/quick_scan_answer_content.schema.json": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/config/quick_scan_metric_registry.json": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/config/quick_scan_observation.schema.json": "6344d2afc9e0d937e05baba8aef27ad15c91770ab7ecb2ddbd549e5ab4fb70ec",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/src/utils/quick_scan_observation_context.py": "03ee6035285301e1e9d742ca00608a83d0a48d5feb313fbecaea27826b866200",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_authority_v2_fixture.json": "e5bc782afd245374fff3bc224f04cb9dbcc0fb22b76d62faf2a16917db1ded43",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/fixtures/quick_scan_c06_manifest_v2_fixture.json": "a7e80a5bcaf2cb2499fa24f091b129d7e1a2ebbf6e91a5666359c5e91c90270c",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/qa-phase92-overlay/tests/unit/test_quick_scan_observation_context.py": "485f1395cdcc1ee366c5c8492125846cf4a081597b650c20a3fda9dc7a6e65fb",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/scripts/standard_answers.py": "dc4870362109e2cc19c9fdb98a15c688b43138c5e0d12cb4142b0c23098cf42a",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/scripts/c06_authority.py": "ad2da1ce3ec1e16fc04d8b3a7298a7c209c583dcfa0df9d0cbf01d3bc7e60805",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/tests/test_c06_authority.py": "fb839deaf429076d21bd25d13add73d34e892f7f79b551a7a9a3ebd7567e06ce",
+    "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/inputs/iqs-phase92/c06-authority-v2-input-map-2026-10-07.md": "731996219adadd8cf3252d8a8f1a82ba40cf534cd915b81dff974f0d4dfb9c84"
+  },
+  "input_bytes_unchanged": true,
+  "snapshot_files": 142,
+  "snapshot_changed": [],
+  "generated_test_cleanup_receipts": [
+    {
+      "path": "verification/generated-test-cleanup/cleanup-receipt-p37916.json",
+      "root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.temp-roots\\pytest-37916-8bf84731",
+      "files_reported": 890,
+      "root_absent": true
+    },
+    {
+      "path": "verification/generated-test-cleanup/cleanup-receipt-p63968.json",
+      "root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\t",
+      "files_reported": 1296,
+      "root_absent": true
+    },
+    {
+      "path": "verification/generated-test-cleanup/cleanup-receipt-p70140.json",
+      "root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\t",
+      "files_reported": 1285,
+      "root_absent": true
+    }
+  ],
+  "worker_repository_written": false,
+  "paid_calls": 0,
+  "downloads": 0,
+  "keys_in_child_env": 0,
+  "guard": "inherited Python audit, no sockets or arbitrary non-Python child; private-root writes; not full OS read isolation",
+  "cleanup_pending": false,
+  "snapshot_changed_after_all_cases": [],
+  "additional_case_result": "archive-binding/archive-binding-result.json",
+  "snapshot_changes_after_tests": [],
+  "source_repository_writes": 0,
+  "paid_api_requests": 0,
+  "browser": {
+    "ports": []
+  },
+  "corrected_archive_binding_tests": {
+    "name": "archive-binding-tests-short-temp-in-lab",
+    "command": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "tests/controller/test_archive_binding.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "-p",
+      "short_temp_plugin"
+    ],
+    "returncode": 0,
+    "wall_s": 37.637,
+    "stdout_sha256": "c73f70bd6145f4e50ca517eaf52bfd8294849fb2a3637b6a62536b1331193f49",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "controller_correction": "Only conftest TEMP_ROOT/ENV/pytest basetemp overridden in memory to OWN/lab/t; delivered source bytes and all ten assertions unchanged",
+    "original_inputs_unchanged": true
+  },
+  "original_four_public_cases": [
+    {
+      "name": "archive-intact-optional-hash-omitted",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-intact-optional-hash-omitted-input.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-intact-optional-hash-omitted-output"
+      ],
+      "returncode": 0,
+      "expected_exit": 0,
+      "published": true,
+      "wall_s": 0.936,
+      "stdout_sha256": "a9dcce0a745df659791c8be2dff7ec30a789df0ffe2df99e27a64bb685057e4a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": {
+        "schema": "iqs_evidence_lab.replay_summary/1",
+        "tool": {
+          "name": "iqs_evidence_lab",
+          "version": "0.2.2",
+          "tool_id": "iqs_evidence_lab/0.2.2"
+        },
+        "input": {
+          "kind": "fixture",
+          "ref": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-intact-optional-hash-omitted-input.json",
+          "verified_before_write": true
+        },
+        "output_dir": "archive-intact-optional-hash-omitted-output",
+        "live": false,
+        "environment": {
+          "network_attempts": 0,
+          "key_reads": 0,
+          "paid_model_calls": 0,
+          "search_calls": 0,
+          "downloads": 0,
+          "publish": "staged_under_.temp-roots_then_atomic_rename",
+          "note": "lab code contains no credential reader and no network client"
+        },
+        "results": {
+          "kind": "fixture",
+          "fixture_id": "FX-032",
+          "source_category": "historical_model_output",
+          "diagnostic_records": 13,
+          "diagnostic_summary": {
+            "pass": 0,
+            "fail": 1,
+            "abstain": 12,
+            "by_error_code": {
+              "E_SCORE_BASIS_UNSUPPORTED": 1
+            },
+            "by_abstain_reason": {
+              "expected_not_stated": 8,
+              "source_relation_not_stated": 1,
+              "snippet_not_available": 2,
+              "agent_review_only": 1
+            },
+            "by_check": {
+              "semantic.subject": 1,
+              "semantic.period": 1,
+              "semantic.metric": 1,
+              "semantic.unit": 1,
+              "semantic.direction": 1,
+              "semantic.scope": 1,
+              "semantic.role": 1,
+              "source.url_window": 1,
+              "source.independence": 1,
+              "structure.reference_contract": 1,
+              "support.review_label": 1,
+              "support.claim_fact_support": 1,
+              "support.score_basis": 1
+            }
+          }
+        }
+      },
+      "expectation_met": true
+    },
+    {
+      "name": "fixture-only-tamper",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\fixture-only-tamper-input.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\fixture-only-tamper-output"
+      ],
+      "returncode": 4,
+      "expected_exit": 4,
+      "published": false,
+      "wall_s": 1.001,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a12f6b04fec9b44181a4e281a96d7b43eda192aaefb510109a964132e45ee947",
+      "expectation_met": true
+    },
+    {
+      "name": "archive-and-fixture-tamper",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-and-fixture-tamper-input.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\archive-and-fixture-tamper-output"
+      ],
+      "returncode": 2,
+      "expected_exit": 2,
+      "published": false,
+      "wall_s": 0.58,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "dd970201a926abf676da30c98ee2e30fd52b369ef0a0afc1a8030135c9d7fd03",
+      "expectation_met": true
+    },
+    {
+      "name": "index-rejects-same-archive-drift",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "index",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-lr02b-2026-10-08-01\\lab\\.controller-archive-binding\\drifted-index-output"
+      ],
+      "returncode": 2,
+      "expected_exit": 2,
+      "published": false,
+      "wall_s": 0.587,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "dd970201a926abf676da30c98ee2e30fd52b369ef0a0afc1a8030135c9d7fd03",
+      "expectation_met": true
+    }
+  ],
+  "regression": {
+    "prior_methods_passed": 108,
+    "initial_controller_setup_errors": 10,
+    "new_methods_corrected_passed": 10,
+    "unique_methods_passed_across_disjoint_batches": 118
+  },
+  "source_after": {
+    "head": "2c0efb6370e401ca84d5f23cd5047de2bbfdec0a",
+    "branch": "codex/evid-lab-01",
+    "status": "",
+    "artifact_matches": 141,
+    "source_written": false,
+    "source_temp_root_children": 0
+  },
+  "remaining_findings": [],
+  "review_status": "one_concentrated_independent_review_completed",
+  "lr02b_software_closed": true,
+  "whole_project_gates_closed": false,
+  "not_closed": [
+    "fact/score accuracy",
+    "human gold",
+    "L02 full calibration",
+    "G3",
+    "F05",
+    "TH-IMPL-01",
+    "IN-IMPL-01",
+    "L03"
+  ],
+  "proposal_status": "draft_not_signed_not_executed",
+  "cleanup": {
+    "applied": true,
+    "files_deleted": 396,
+    "directories_deleted": 97,
+    "root_absent": true
+  }
+}
