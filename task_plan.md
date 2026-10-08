@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步**：交回[EVID-LAB-01六组整改卡](docs/implementation/reviews/EVID-LAB-01/remediation-2026-10-08.md)，等待原Lab writer的新commit/handoff后一次集中回验。Lab查收已完成但整包changes_requested；其他两外包仍等真实交付，不代改源仓。Phase96已完成有界准确性实验及[实操手册](references/accuracy-first-operations.md)，收费停止；原逐题/用户顺位不自动改。TH/IN/G3/F05/L03仍暂缓，不刷新退役回执，不重跑已结束的收费矩阵。
+**单一下一步**：用户已于2026-10-08将[EVID-LAB-01六组整改卡](docs/implementation/reviews/EVID-LAB-01/remediation-2026-10-08.md)交给harness实施，等待该Lab writer的新commit/handoff后一次集中回验。Lab整改中，原整包验收结论仍changes_requested；其他两外包仍等真实交付，不代改源仓。Phase96已完成有界准确性实验及[实操手册](references/accuracy-first-operations.md)，收费停止；原逐题/用户顺位不自动改。TH/IN/G3/F05/L03仍暂缓，不刷新退役回执，不重跑已结束的收费矩阵。
 
 **当前执行（Phase95）**：IQS上游40精确文件已正式提交并推送`a23bec03ec459fa036a8800acc1f43b1662b22b8`；11真实子进程CLI、35回归/24子测试及集中独审通过，本轮两根28文件已清。用户已确认三个外包开工，总控只写IQS；下一动作收实际交付，不接管源仓。整Phase92/G3/F05开放，波次2初始workers_dispatched=false为历史快照。
 
@@ -1395,7 +1395,7 @@ Status: complete_for_bounded_experiment_and_operations_scope; committed_and_push
 - Phase96正式交付：221精确文件提交`03e34aa6e4d414bc09b65dbf070ca3dbd59fcbef`，origin/master正常323ab41→03e34aa推送成功；213个已索引源/工件staged blob size/SHA逐字节一致。仅既有opencode.json未跟踪保留；不提交外仓、旧未完源或Phase92临时根。随后仅补本Git回执。
 
 ## Phase97：EVID-LAB-01交付验收
-Status: acceptance_complete_changes_requested; owner_remediation_pending; committed_and_pushed
+Status: acceptance_complete_changes_requested; owner_remediation_in_progress; committed_and_pushed
 - [x] 核实际Git起点/结果commit、唯一写根、handoff shape及工件原字节SHA；保留动态状态不改Lab。
 - [x] 集中复核34fixture来源/标签边界、语义与分母/缓存/费用、非执行proposal及原IQS冻结输入。
 - [x] 从准确提交导出隔离快照，运行受影响单元/集成与真实公开CLI重放/负例；网络/收费0、原件不变、清自有环境。
@@ -1404,3 +1404,4 @@ Status: acceptance_complete_changes_requested; owner_remediation_pending; commit
 
 - 验收完成，不是实施验收通过：shape valid/82工件当前raw匹配/真实三归档replay与34fixture通过，54唯一worker方法经过53+1两次通过；9总控反例8失败1通过，六组整改保留。103自有临时文件严格清理Apply完成，LabHEAD/clean不变，原128独立IQS输入SHA不变，收费0。全项目门不关闭，原Lab writer修正后再签整包。
 - 实际Git交付：67精确文件提交`742dbb78a39ca9a1cb6f324dea4c992d28cc638c`，61已索引证据/helper与staged blob size/SHA逐字节匹配；origin/master正常83ec14a→742dbb7推送成功。仅既有opencode.json未跟踪保留；后续只补本交付回执，不改被审工件。
+- 2026-10-08用户确认已将整改卡交给harness实施；Lab唯一写入权继续归该harness，总控只读等待新交接。此确认仅证明整改已分派，不证明六组已修复或任何门已关闭。

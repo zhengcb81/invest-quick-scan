@@ -2139,3 +2139,7 @@
 - Git原始日志检查报一处pytest traceback行的trailing blank（worker-regression-final.stdout.log:38）；保留原字节/SHA，用该唯一原始日志的精确whitespace属性豁免，不清洗日志或修改已审源。其他staged范围继续正常diff检查。
 
 - **Phase97实际Git交付（2026-10-08）**：`742dbb78a39ca9a1cb6f324dea4c992d28cc638c`，67精确文件，正常推送origin/master（83ec14a→742dbb7，exit0）。61已索引证据/helper全部与staged blob size/SHA一致，diff --check通过。IQS工作树仅既有opencode.json未跟踪保留；未提交或修改Lab/StockQA/StockWiki、旧Phase92根。验收结果仍changes_requested，六组整改由原Lab writer接续；随后只提交PWF实际交付回执，不改被审工件。
+
+## 2026-10-08 — EVID-LAB-01整改已交harness
+- 用户明确“我把整改施工卡让harness做了”，记录为owner_remediation_in_progress；原changes_requested和六组整改/9反例保持不变。Lab源仓继续由该harness独占，总控等新commit/handoff后做受影响回验及一次集中复审，不给小修改增加独立审查节点。
+- 本次只同步IQS计划/进度/接手说明；未读取或改写Lab动态源、未派发消息、未运行测试或收费请求，不改变其他施工线和TH/IN/G3/F05/L03的前置状态。
