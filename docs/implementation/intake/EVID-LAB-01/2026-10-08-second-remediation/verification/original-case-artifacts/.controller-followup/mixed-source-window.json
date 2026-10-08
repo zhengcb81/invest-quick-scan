@@ -1,0 +1,24 @@
+{
+  "input": {
+    "observed": {
+      "period": "2026"
+    },
+    "sources": [
+      {
+        "url": "https://example.com/report-a",
+        "period": "2025"
+      },
+      {
+        "url": "https://example.com/report-b"
+      }
+    ]
+  },
+  "result": {
+    "check": "source.url_window",
+    "outcome": "abstain",
+    "error_code": null,
+    "abstain_reason": "unknown_source_window_present",
+    "message": "1 cited source(s) state no period window, so all-cited conflict cannot be established; 1 explicit conflict(s) recorded among 1 stated window(s); independent_sources=2 distinct_fragments=2",
+    "dimension": null
+  }
+}

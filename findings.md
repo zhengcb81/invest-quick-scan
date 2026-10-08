@@ -1651,3 +1651,7 @@ controller缺SQL/过严socket guard是假RED，补SQL后三例GREEN；Windows as
 Phase101：用户确认三整改运行中，SW／Lab动态改动与旧HEAD并存，QA旧HEAD／handoff未变；不能用dirty、意图或旧complete字段代替新交付，更不能当已验证的活进程handle。总控联合验收须锁定新的实际commit，不读取动态文件执行。当前核实StockQA只有seal CLI，ACK可用owner API不等于已有ACK CLI；不得发明flag或在同进程混装两仓。StockWiki frozen release需来自独立题义发布，不从待验证Observation反推；合成身份／回答只证明软件接口，真实身份／事实golden缺口仍保留。准备12组一次联合验证不改变中央case清单和门状态。
 
 18:25 UTC阻塞复核：一次有证据的进程wait与外部整改交付是不同层。StockWiki相关Python PID终态不证明writer终态，外部worker不在可跟进Codex线程列表中；未提交改动增长也不能放行。正式交付连续未到且准备已完成时应停止自动空转，将目标blocked等外部状态改变，不再制造准备文档或旧测试GREEN当实施进度。三个整改可分别验收，不人为让Lab阻塞QA/SW联合。
+
+Phase102：原六残余修复均已实证，108方法及旧9/5/6、42命令/三归档/34fixture全GREEN。仍不能将外置先验输入核验等同公开入口自证：fixtures._archive_rows读取当前archive、不验证lock，答案完整比较只能挡“只改fixture”。128锁输入自有副本保持原lock/index，同改archive答案与fixture会真实exit0发布historical/verified_before_write；同一副本index严格核锁exit2正确拒绝。原LR-02来源链剩LR-02B P1，单项接续不扩成新平台/人类gold/小节点门。完整原答案省略可选hash是允许正例，不误报。
+
+本次122工件双hash/102仅EOL、123源码和128原输入保持；546文件严格清理，源Lab HEADaeff0e6/clean/122工件不变。worker已披露IQS nul生成删除事故，测试external_writes=false只限定其测试运行，不能冒充全会话外写0；消失文件的历史归属/大小未独立证实。第一批补证output误置LAB外被exit3正确阻止，保存原日志后在LAB内新根纠正，只有后组3GREEN/1RED用于产品判断。proposal费用已修但仍非执行草案，既有准确性手册/Phase96不因离线工具进展重跑。

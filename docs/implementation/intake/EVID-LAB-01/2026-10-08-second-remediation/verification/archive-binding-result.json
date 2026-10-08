@@ -1,0 +1,117 @@
+{
+  "schema": "iqs_evid_lab_archive_binding_counterexample/1",
+  "checks": [
+    {
+      "name": "archive-intact-optional-hash-omitted",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-second-remediation-2026-10-08-01\\archive-binding-cases\\archive-intact-optional-hash-omitted-input.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-second-remediation-2026-10-08-01\\archive-binding-cases\\archive-intact-optional-hash-omitted-output"
+      ],
+      "returncode": 3,
+      "expected_exit": 0,
+      "published": false,
+      "wall_s": 0.386,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5b32cea8a9486bcf2d4c13f99833f1756da0d0a77bb73c4c95386a68962f7ebe",
+      "expectation_met": false
+    },
+    {
+      "name": "fixture-only-tamper",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-second-remediation-2026-10-08-01\\archive-binding-cases\\fixture-only-tamper-input.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-second-remediation-2026-10-08-01\\archive-binding-cases\\fixture-only-tamper-output"
+      ],
+      "returncode": 3,
+      "expected_exit": 4,
+      "published": false,
+      "wall_s": 0.405,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3a94e6b0b9f482c3a7b81db11209987206191253dd08702d49b072eb4ca42f32",
+      "expectation_met": false
+    },
+    {
+      "name": "archive-and-fixture-tamper",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-second-remediation-2026-10-08-01\\archive-binding-cases\\archive-and-fixture-tamper-input.json",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-second-remediation-2026-10-08-01\\archive-binding-cases\\archive-and-fixture-tamper-output"
+      ],
+      "returncode": 3,
+      "expected_exit": 4,
+      "published": false,
+      "wall_s": 0.418,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ac504a612614ad9ffd2c881508a4d2d34b692a085e9f4f9ffd37a3e47cc935d8",
+      "expectation_met": false
+    },
+    {
+      "name": "index-rejects-same-archive-drift",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_evidence_lab",
+        "replay",
+        "--input",
+        "index",
+        "--output",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\evid-lab-second-remediation-2026-10-08-01\\archive-binding-cases\\drifted-index-output"
+      ],
+      "returncode": 3,
+      "expected_exit": 2,
+      "published": false,
+      "wall_s": 0.599,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "de34fcd9a0aee08781fe0d2e0d61805c21d0fd3e9172785c33c9ef74fc8a32b6",
+      "expectation_met": false
+    }
+  ],
+  "copied_input_files": 128,
+  "copy_initially_byte_identical": true,
+  "clone_changed_paths": [
+    "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/results.jsonl"
+  ],
+  "lock_bytes_unchanged": true,
+  "archive_mutation": {
+    "relative_path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/results.jsonl",
+    "chunk_id": "CHK_19dedf1830c84fb9bf4aced8dc491b46",
+    "question_id": "IQS_08",
+    "original_sha256": "6d34ad0a58a84e0ad46dd8531b6dbfde38f0d725969918fdccce93245fe70821",
+    "modified_sha256": "e52410f5a0e8d7d73571835e020db08e1c34bf5f7f53baddd02d27f0daadedb5"
+  },
+  "original_inputs_unchanged": true,
+  "snapshot_changed": [],
+  "worker_repository_written": false,
+  "paid_calls": 0,
+  "downloads": 0,
+  "not_historical_or_human_gold": true,
+  "cleanup_pending": true
+}

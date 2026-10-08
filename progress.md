@@ -2203,3 +2203,15 @@
 - 联合准备已完成；其余本仓实现卡受G3/F05等前置约束，当前不能安全执行新的产品工作。按目标三轮阻塞规则置blocked，等待外部交付，不是暂停外部施工或完成全项目。任一新交付可先独立验收，QA/SW联合另核两端；不新增审核门、不重跑旧suite、不收费、不写外仓。
 - 本轮只更新等待条件/PWF和接手说明，不生成或刷新退役回执。IQS tracked初始clean，nul/opencode保留；无测试临时环境、数据库或下载清理。实际目标状态与Git交付以工具结果为准。
 - 等待说明实际交付`54b01db145e1c56413b88dfee41716b77f30c18c`：4个精确IQS文档沙箱外提交，正常推送origin/master（2d45452→54b01db，exit0）；HEAD/远端跟踪相同，仅nul/opencode未跟踪。后续仅记本真实Git回执；自动目标blocked由目标工具另行确认，不将整项目标complete。
+
+## 2026-10-08 — Phase102接收Lab第二次整改
+- 用户通知正式交付，本次解除Lab缺新交接的条件，可执行具体查收。源仓只读实际HEADaeff0e6／clean，代码d4360fd（基线380cb49）；CLI0.2.1／diagnostic1.2.0／rules3，worker自述108回归、27残余测试、三归档双重放＋34fixture。尚未据自述签收。
+- 沿用已读PWF skill，resolver仍legacy root；新独占根与intake编号，不覆盖第一轮两次旧日志／反例，计划单批受影响验收与一次集中独审。QA/SW保留原writer，不跟新Lab查收一起夺写权；收费／下载／生产库0。
+- Lab披露越界在IQS生成并删除nul，本轮实际IQS仅opencode未跟踪，tracked初始clean；这不是从名字独立证实历史归属或0bytes。此事故与验证运行external_writes=false的范围应分别保留，128锁定输入将实核。
+
+- Phase102隔离接收完成：新123文件Git快照，122工件size/worktreeSHA/GitOID相符、102件仅EOL。原108 passed/14.67s（wall15.871）、旧9反例及原5/6边界分别GREEN；IO定位只适配真实staging，断言/旧源不改。catalog34/42/350无问题，三归档两个新根5核心payload byte-identical、34逐fixture/公开handoff通过，42命令0失败；重叠case不相加报唯一方法数。
+- 一次集中独审后针对同LR02来源链再跑四公共正反例：128锁输入逐字节副本、原lock/index不动，完整答案省hashexit0、只改fixtureexit4、同改副本archive和fixtureexit0且发布historical/verified_before_write=true、index同漂移exit2。正式3GREEN/1RED，原六项已验证，仅LR-02B P1保留changes_requested；不代写Lab。首次controller output在LAB外被exit3正当拒，四原日志/初版helper保留，随后LAB内新根复跑，不将controller错误算产品失败。
+- 补证只改副本一条archive文件，原128IQS输入/123导出源全程SHA不变；122源工件收尾匹配，Lab HEADaeff0e6/clean、原.temp-roots一级0/no remote。草案10000/Decimal0.82296/0.83正确，仍draft_not_signed/execution_enabled=false/live_not_run=true；不运行新收费实验、不将agent标签当gold、不关闭完整L02/G3/F05/TH/IN/L03。
+- 已知只读错误：猜测historical_model_output/FX032路径不存在，按实际historical目录改读；rg文档通配参数在Windows无效，改读实际handoff-for-new-agent。没有写外仓或改worker源码，controller纠正证据留档。
+- 546临时文件/136目录按精确set/size/SHA、单硬链/无reparse与严格CIM0先dry-run后Apply逐项清；prepare session61220/run37207已exit0，补证/collect同步child结束，自有根已不存在。继承Python审计、子环境无key、网络/下载/付费/生产库/本轮源仓写0，不声称完整OS读隔离。旧Phase92/sharedTEMP/opencode保留；worker披露的历史nul事故单列而非全会话零外写。
+- 验收/一次独审/单项接续卡/两批controller原回执和改动归档原字节已留档；PWF与接手更新。QA/SW继续原writer施工，收到新交接另验；Lab不阻塞两端联合。新intake/review精确-text/cr-at-eol保存原字节，Git交付以随后实际工具回执为准。

@@ -1,0 +1,22 @@
+{
+  "expected": {
+    "kind": "custom",
+    "year": 2026,
+    "start": "2026-01-01",
+    "end": "2026-03-31"
+  },
+  "observed": {
+    "kind": "custom",
+    "year": 2026,
+    "start": "2026-04-01",
+    "end": "2026-06-30"
+  },
+  "result": {
+    "check": "semantic.period",
+    "outcome": "fail",
+    "error_code": "E_PERIOD_MISMATCH",
+    "abstain_reason": null,
+    "message": "period: expected {'kind': 'custom', 'year': 2026, 'start': '2026-01-01', 'end': '2026-03-31'} vs claim {'kind': 'custom', 'year': 2026, 'start': '2026-04-01', 'end': '2026-06-30'}",
+    "dimension": "period"
+  }
+}

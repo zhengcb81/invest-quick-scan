@@ -1,0 +1,63 @@
+{
+  "schema": "iqs_evidence_lab.fixture/1",
+  "schema_version": "1.1.0",
+  "fixture_id": "FX-032",
+  "source_category": "historical_model_output",
+  "collected": true,
+  "title": "历史：已评审高分弱证据回答",
+  "why": "agent评审标为依据不足的真实回答，只作故障形态不作gold。",
+  "case": {
+    "answer": {
+      "question_id": "IQS_08",
+      "status": "scored",
+      "score": 5,
+      "confidence": "low",
+      "rationale": "证据显示2026年Q1/Q2收入与分部营业利润同步扩张（含Cloud大幅增长），但未见交付质量、客户满意度或单位成本纪律的直接度量，也无多周期压力测试证据。",
+      "evidence_refs": [
+        "TFf936083ed9",
+        "TFf80fa9d5d7",
+        "TF246fda1ed2"
+      ],
+      "claims": [
+        {
+          "text": "2026年Q2 Google Cloud收入由136.24亿美元增至247.68亿美元，同期Cloud营业利润由28.26亿增至88.14亿美元。",
+          "source_ids": [
+            "TFf936083ed9",
+            "TFf80fa9d5d7"
+          ]
+        },
+        {
+          "text": "2026年Q1 Google Services营业利润由326.82亿美元增至405.89亿美元，同期Other Bets亏损扩大。",
+          "source_ids": [
+            "TF246fda1ed2"
+          ]
+        }
+      ],
+      "counterevidence": "无交付质量、SLA、客户留存或单位成本数据，无法验证质量与成本同步受控。",
+      "sensitivity": "若出现交付事故、客户流失或单位成本上升证据，评分下调。"
+    },
+    "score_basis": "insufficient",
+    "review": {
+      "claim_support": "partial",
+      "score_basis": "insufficient"
+    }
+  },
+  "expect": [
+    {
+      "check": "support.score_basis",
+      "outcome": "fail",
+      "error_code": "E_SCORE_BASIS_UNSUPPORTED"
+    },
+    {
+      "check": "support.claim_fact_support",
+      "outcome": "abstain",
+      "abstain_reason": "snippet_not_available"
+    }
+  ],
+  "provenance": {
+    "run": "mimo-pro-pilot-2026-10-07-01",
+    "chunk_id": "CHK_19dedf1830c84fb9bf4aced8dc491b46",
+    "question_id": "IQS_08",
+    "review_partition": "primary"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "iqs_evidence_lab.replay_summary/1",
+  "tool": {
+    "name": "iqs_evidence_lab",
+    "version": "0.2.1",
+    "tool_id": "iqs_evidence_lab/0.2.1"
+  },
+  "input": {
+    "kind": "result_index",
+    "ref": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\experiments\\mimo-pro-result-index-2026-10-07.json",
+    "verified_before_write": true
+  },
+  "output_dir": ".controller-replay-a",
+  "live": false,
+  "environment": {
+    "network_attempts": 0,
+    "key_reads": 0,
+    "paid_model_calls": 0,
+    "search_calls": 0,
+    "downloads": 0,
+    "publish": "staged_under_.temp-roots_then_atomic_rename",
+    "note": "lab code contains no credential reader and no network client"
+  },
+  "results": {
+    "kind": "result_index",
+    "input_checks": 224,
+    "input_distinct_files": 128,
+    "input_checks_ok": 224,
+    "runs": [
+      "mimo-pro-pilot-2026-10-07-01",
+      "mimo-pro-pilot-2026-10-07-thinking-all",
+      "mimo-pro-pilot-2026-10-07-jsonoff"
+    ],
+    "diagnostic_records": 3773,
+    "diagnostic_summary": {
+      "pass": 452,
+      "fail": 232,
+      "abstain": 3089,
+      "by_error_code": {
+        "E_GENERATION_PARAMETER_DEVIATION": 2,
+        "E_PACKAGE_CONTRACT": 53,
+        "E_SCORE_BASIS_UNSUPPORTED": 177
+      },
+      "by_abstain_reason": {
+        "snippet_not_available": 396,
+        "claim_value_not_stated": 396,
+        "expected_not_stated": 1584,
+        "agent_review_only": 606,
+        "not_measurable_without_full_output": 53,
+        "no_human_gold": 53,
+        "package_quota_unknown": 1
+      },
+      "by_check": {
+        "structure.generation_parameter_deviation": 2,
+        "structure.package_contract": 186,
+        "structure.item_qids": 186,
+        "structure.usage_present": 186,
+        "support.claim_fact_support": 396,
+        "semantic.subject": 396,
+        "semantic.period": 396,
+        "semantic.metric": 396,
+        "semantic.unit": 396,
+        "semantic.direction": 396,
+        "support.unknown_state_claims": 280,
+        "support.review_label": 326,
+        "support.score_basis": 230,
+        "cost.package_quota": 1
+      }
+    },
+    "equal_to_published": true,
+    "review_join_verified": true
+  }
+}

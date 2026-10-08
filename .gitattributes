@@ -105,3 +105,9 @@ docs/implementation/intake/QA-C06-02/2026-10-08/verification/cli-bad-metadata.st
 docs/implementation/intake/QA-C06-02/2026-10-08/verification/cli-cold.stdout.log whitespace=cr-at-eol,-blank-at-eol
 docs/implementation/intake/QA-C06-02/2026-10-08/verification/cli-warm.stdout.log whitespace=cr-at-eol,-blank-at-eol
 docs/implementation/intake/QA-C06-02/2026-10-08/verification/controller-boundaries.stdout.log whitespace=cr-at-eol,-blank-at-eol
+
+# Preserve second Lab remediation's raw worktree evidence and original CLI logs.
+docs/implementation/intake/EVID-LAB-01/2026-10-08-second-remediation/** -text whitespace=cr-at-eol
+docs/implementation/reviews/EVID-LAB-01/second-remediation-2026-10-08/** -text whitespace=cr-at-eol
+# Retain the received RED log's three original traceback whitespace lines.
+docs/implementation/intake/EVID-LAB-01/2026-10-08-second-remediation/worker/logs/remaining-repairs-2026-10-08/RED-remaining-repairs.log whitespace=cr-at-eol,-blank-at-eol

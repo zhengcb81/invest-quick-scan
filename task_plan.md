@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08 Phase101）**：用户确认三个整改正在运行；总控已准备[联合验收执行说明](docs/implementation/reviews/G3/joint-acceptance-preparation-2026-10-08.md)，尚未运行。接收原QA／SW／Lab writer的新commit/handoff后，对新快照做受影响范围集中验收；QA/SW合并跑真实导入→ACK→恢复→查询，Lab独立回验六残余。三仓当前观察不是新的交付证明；不测试动态工作树、不接管writer。Phase100四代码组＋交接、SW五组、Lab六残余仍changes_requested；TH/IN/G3/F05/L03继续暂缓，不重跑收费、退役回执或小节点审查。
+**单一下一步（2026-10-08 Phase102验收后）**：Lab原六残余均已GREEN，剩一处同LR-02来源链P1：历史fixture公共入口未核消费归档的锁SHA，同改副本archive/fixture可exit0发布。原Lab writer按[单项卡](docs/implementation/reviews/EVID-LAB-01/second-remediation-2026-10-08/remaining-repair.md)接续，收到实际新commit/handoff后只集中复验该链及受影响回归，不重复原六项／收费实验。QA/SW仍由原writer施工，待各自新交接回收；两端齐再按12组联合说明打通，Lab不人为阻塞该链。总控只读外仓，L02/G3/F05/TH/IN/L03和实验草案不自签。本轮查收/清理已完成，Git实际回执见progress末尾。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1450,3 +1450,11 @@ Status: preparation_complete; joint_execution_not_run; owner_remediation_in_prog
 - 本轮只读错误：外仓Git沙箱Permission denied已改用获批只读提升；AGENTS.md、parallel-lanes/iqs.md、SW prepare.py及旧共同规则猜测路径不存在，改用用户提供AGENTS与实际文件列表。初误探Lab目录名非实际iqs-evidence-lab，未写任何路径。本仓新增未跟踪nul保留不分类、不删除；opencode.json不读取。
 - 实际文档交付：6个精确IQS文件沙箱外提交`691988f75cae8882d5ec20672df3b38a56f7b084`并正常推送origin/master（5a34fb8→691988f，exit0）；本地与远端跟踪相同，仅nul/opencode.json未跟踪。11链接／12组／计划结构检查通过，不代表产品测试。后续仅追加本Git回执，不改执行边界或门状态。
 - 18:25 UTC只读复核三个HEAD与正式handoff仍为旧结果，QA计划／SW源码／Lab源码均有动态改动，不测不改。上一轮实际轮询曾存在的StockWiki相关Python PID102388，随后已缺失；只证明该进程结束，不能推断整改终态或成功。当前不再把它当活handle继续wait。正式交付缺口是外部状态阻塞，不是新的用户批准请求。
+
+## Phase102：EVID-LAB-01第二次残余整改验收
+Status: review_completed_changes_requested; source_repository_read_only; owner_single_source_binding_repair_pending; no_gate_closed
+- [x] 用户通知交付，核实际codex/evid-lab-01@aeff0e68022f56b331a58503df7b53ed8d2b3882／clean；新代码d4360fdbbd9a83d2830066546edf1827ab424834，基线380cb496。旧IQS nul已消失，worker披露误越界生成／删除；opencode不读取，输入是否不变另核。
+- [x] 新独占副本123文件，122工件双hash/102仅EOL相符；108 passed、原9/5/6 passed、三归档双重放与34fixture/350记录、公开handoff均通过，42命令0失败。原128IQS输入/123源全程不变，草案cap10000/Decimal0.82296正确且非执行。
+- [x] 一次集中独审后同源四项复证3GREEN/1RED：同改副本archive/fixture仍发布historical/verified_before_write，index正确拒漂移；原六项已修复，仅LR-02B P1待原writer。初controller output越界exit3保留不当产品RED。[验收](docs/implementation/reviews/EVID-LAB-01/second-remediation-2026-10-08/acceptance.md)/单项卡/原日志留档。
+- [x] 546文件/136目录strict CIM/lstat/set/SHA dry-run→Apply清理、Lab HEAD/clean及122工件收尾不变。PWF与接手更新；不写外仓、不执行live、不关闭门，精确Git交付见progress实际回执。
+- [ ] 原Lab writer交回LR-02B新commit/handoff后做一次受影响收口；当前仅partial_verified/changes_requested，不恢复其他已完成实施。
