@@ -2273,3 +2273,5 @@
 - 初批40命令中39exit0＋1setup回归错误，纠正十项另回执。正常catalog＋36公开重放wall47.044；三归档两根五payload原字节一致，34fixture/350record无问题。CLI0.2.2／structure4／semantic3／diagnostic1.2.0／fixture1.1.0实际确认；原六项、原9/5/6和此前SW成果保留，不机械重复全部suite或收费实验。
 - 396文件/97目录strict CIM0、无自有服务器端口、lstat单硬链/无reparse、精确set/size/SHA独立dry→Apply清，Apply session91535exit0，唯一根已无。128原锁输入／142导出源码／141源工件收尾不变，Lab HEAD2c0efb6/codex分支/clean、.temp-roots无子项。测试内部三份新清理回执归档，原worker九份只有聚合manifestSHA，过去逐文件/硬链/OS证明限制和nul/sharedTEMP取证不伪补。
 - [有限签收](docs/implementation/reviews/EVID-LAB-01/lr02b-2026-10-08/acceptance.md)、一次独审、机器结果和完整命令/原日志/PWF/接手已更新。来源字节完整性不等于事实或评分准确性；proposal仍draft_not_signed/execution_enabled=false/live_not_run=true，人类gold/L02整体/G3F05/THIN/L03未关。下一动作等QA原writer四边界新交接，QA/SW齐再既有联合12组，Lab不人为阻塞。只有IQS写入，外仓/正式库/名单/下载/收费0，本仓精确提交推送待实际回执。
+
+- **Phase106实际Git交付**：220个精确IQS文件已沙箱外提交`45c6cc89224b9049c09a3036e1eeaa0257b56fd1`并正常推送origin/master（3cf39df→45c6cc8，实际exit0，HEAD/远端跟踪一致）。214索引工件及索引本身staged原字节逐项相符，57精确忽略路径局部-force，四原traceback日志只加同路径空白属性不清洗字节，其余diff检查通过；10 helper AST／4相对链接／128原锁输入／根已无检查通过，不重复产品suite。原opencode未跟踪保留，所有外仓未写/提交/推送。LR-02B仅软件来源绑定签收；历史清理取证、QA接续、事实准确性/校准/全局门保持。随后仅PWF实际回执提交，不改冻结证据。

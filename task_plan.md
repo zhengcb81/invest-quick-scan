@@ -1494,5 +1494,5 @@ Status: complete_for_finite_lr02b_software_acceptance_scope_verified; whole_proj
 - [x] 固定142文件／141双hash工件（118仅EOL）／128原锁输入。108原方法＋十项controller短路径适配后通过，原四CLI 0/4/2/2且三负例无发布；三归档双根稳定、34fixture/350record通过，一次有限独审无软件阻断。[有限签收](docs/implementation/reviews/EVID-LAB-01/lr02b-2026-10-08/acceptance.md)。首266字符setup errors、第一次OWN/t输出越LAB被正确拒绝等原日志保留，不重复旧108或原9/5/6。
 - [x] strict CIM0／lstat单硬链无reparse／set-size-SHA，dry-run→Apply清396文件/97目录，唯一根已无；142源／128输入／141原件及Lab HEAD/clean/.temp-roots零子项不变。
 - [x] 更新PWF/接手；worker聚合清理hash及nul/sharedTEMP历史取证仍有限，提案草案不签、人类gold与事实/评分准确性不升级，软件有限签收不关闭L02整体或G3F05。
-- [ ] IQS精确提交推送，仅本轮工件及PWF，实际结果以progress回执为准；不提交或推送Lab，不再追加小节点审查。
+- [x] IQS精确220文件已沙箱外提交`45c6cc89224b9049c09a3036e1eeaa0257b56fd1`并正常推送origin/master；214归档工件及索引staged原字节核对／diff检查通过，原opencode未跟踪保留。随后仅PWF实际回执提交；不提交或推送Lab，不再追加小节点审查。
 - 原Lab writer保留独占，不改源、不跑收费矩阵或签草案；旧六项与SW已通过交付保留，人类gold与G3F05/THIN/L03仍未关。
