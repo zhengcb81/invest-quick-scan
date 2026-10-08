@@ -413,7 +413,7 @@ Status: complete_for_planning_only
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08 Phase104验收后）**：QA四组原修复保留，247受影响／原9／真实subprocess四例GREEN；仍partial_verified/changes_requested，原QA writer按[唯一接续卡](docs/implementation/reviews/QA-C06-02/remediation-2026-10-08/remaining-repair.md)同批补具体scope ID早拒、完整write的run门、JSON数值溢出、缺持久完整输入fail-open四边界。总控收到新交付仅受影响复验，1083全套不机械重跑。743本轮自有文件已严格清，历史共享TEMP缺口保留；原七未跟踪/外仓不动。SW仅SR02-4B P2、Lab仅LR-02B P1各原writer接续，不夺写、不收费、不自关G3/F05/gold/TH/IN/L03。QA/SW两端满足条件后按既有12组联合说明执行，Lab不人为阻塞该链。实际Git回执见progress末尾。
+**单一下一步（2026-10-08 Phase105有限签收后）**：SW SR02-4B代码cc587a8／交接d253fea已有限签收，43受影响／原2／7实际CLI通过，勿重复实施。等原QA writer交四边界的新commit/handoff并受影响复验；QA/SW两端齐后按既有12组联合准备集中联调。Lab LR-02B独立接续，不人为阻塞该链。真实gold/联合链/G3/F05/THIN/L03仍未放行；不写外仓、共享TEMP或重复full/UI。实际清理/Git结果见progress末尾。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1466,7 +1466,7 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_s
 - [x] 69工件raw/接收HEAD Git双字节相符、36仅EOL；296固定导出，96passed＋原12passed、11真实浏览器/142 loopback、handoff exit0。130实际IQS输入/296源码和69工件收尾不变；已有全套只接收不复跑。
 - [x] 一次集中独审、同SR02-4追加两路径均UnicodeDecodeError RED，收敛单P2，原12成果保持。[验收](docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08/acceptance.md)／单项卡/原日志留档。索引note把全部Git哈希写成result过宽（16当时无、11不同），接收HEAD全部匹配，交接补澄清。
 - [x] 8自有junction非递归解节点；814文件/654目录经strict CIM/端口/lstat单硬链/精确set-size-SHA dry-run→Apply清，旧根/sharedTEMP/opencode保留。PWF与接手更新，精确Git交付见progress实际回执。
-- [ ] 原SW writer补SR02-4B与必要交接文字，交新commit后仅受影响收口；历史worker清理/删除者取证缺口保持open，G3/F05/gold/QA联合/TH/IN/L03不关闭。
+- [x] 原SW writer已交SR02-4B新代码cc587a8／交接d253fea，经Phase105受影响收口；历史worker清理/删除者取证缺口保持open，G3/F05/gold/QA联合/TH/IN/L03不关闭。
 - 实际IQS交付`1381901a5f8acb0b892246e6c84b2a0f3b47abd8`，110精确文件沙箱外提交并正常推送origin/master，104工件及索引staged原字节一致、diff通过。原opencode未跟踪保留；后续仅PWF实际回执，不改被审源仓/证据。
 
 ## Phase104：QA-C06-02四组整改查收
@@ -1478,3 +1478,12 @@ Status: complete_for_finite_acceptance_scope_changes_requested
 - [x] 更新PWF和接手；精确提交推送以progress实际Git回执为准，不提前宣称成功。
 - 本阶段不代表StockWiki真实import/ACK/UI、owner golden、G3/F05关闭；SW和Lab仍原writer接续。
 - Phase104实际提交/推送：`31e781c3143e837a08cfe4aa559e7bb59c71705f`，90精确IQS文件、84索引原字节核对通过，origin/master一致；后续仅PWF实际回执提交，不改变验收结论/冻结工件。原QA writer补四边界，SW/Lab各接续；G3/F05仍未关。
+
+## Phase105：SR02-4B单项接续验收
+Status: complete_for_finite_software_acceptance_scope_verified; whole_project_gates_still_open
+- [x] 收到StockWiki代码cc587a8、交接d253fea/master clean；基线1831a73，运行改动仅backup源码/测试与说明三文件，后续仅交接。
+- [x] 固定296文件／75原工件／具体blob_ref，43受影响backup、原2反例、7实际CLI（4成功／3具名拒绝）通过，一次有限独审无剩余软件阻断；[有限签收](docs/implementation/reviews/SW-REPAIR-02/sr02-4b-2026-10-08/acceptance.md)。原full/UI保留不复跑，controller首次argv错误已纠正并保留输出。
+- [x] 本轮6junction先非递归解节点，693文件／468目录strict CIM0、lstat单硬链、set-size-SHA、独立dry-run→Apply清理，根已无；296源／131输入／75原件＋2补充回执及源HEAD/clean收尾不变。
+- [x] 更新PWF/接手与有限签收边界。75字段40位OID误名、两漏索引真实回执另核、历史R3 nlink全0不能认证文字单硬链；旧R2/sharedTEMP取证仍open，不追认过去。
+- [ ] IQS精确提交推送，以progress实际Git回执为准；不提交/推送StockWiki，也不把局部签收扩大成G3/F05。
+- 不重跑无变化full/UI、不修改外仓、不关闭G3/F05；QA/Lab原writer保留。

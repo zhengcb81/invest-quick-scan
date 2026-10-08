@@ -2245,3 +2245,16 @@
 - Git预检精确暂存90文件，11个精确被忽略工件局部-force；3个原traceback/CLI日志保留行尾空白、3份原guard保留EOF空行，对这6个精确路径增加whitespace属性，不改原字节，其他diff检查继续。84索引工件及索引本身将逐项核staged SHA，排除opencode/runs/外仓；不重跑产品suite。
 
 - **Phase104实际Git交付**：90个精确IQS文件沙箱外提交 `31e781c3143e837a08cfe4aa559e7bb59c71705f`，84索引工件和索引自身staged原字节全部匹配、diff检查通过；正常推送origin/master（e35071e→31e781c，exit0），HEAD/远端跟踪一致。工作树仅原opencode.json未跟踪；743自有测试文件已严格清，StockQA及其他外仓未写/未提交。状态仍partial_verified/changes_requested，四同链边界交原QA writer；随后仅补本实际PWF回执，不改被审证据或关闭门。
+
+## 2026-10-08 — Phase105接收SR02-4B
+- 用户正式通知接续完成。StockWiki只读实际master d253fea／clean，代码cc587a8；基线1831a73，仅backup.py、test_swr_backup.py、backup说明三文件。后续交接，不测动态源、不写StockWiki。
+- 沿用PWF根和原集中审查agent；只复验同损坏UTF8链、原2反例和受影响backup，UI/full旧证据保留。本轮新独占副本、去key/零外网/生产库/收费。
+- 新索引75项提供每项blob_ref，但git_blob_sha256全部40位，实为Git对象OID；将按OID验证并另算真实SHA256，保留原件、报告命名误标，不把可验证对象当字节漂移或另开代码整改门。R3清理与旧R2未做历史审计单列，不伪补。
+
+## 2026-10-08 — Phase105有限验收完成
+- 固定StockWiki结果cc587a8／收到d253fea/master clean，296源、75原件raw/SHA及每项blob_ref/OID一致，41仅EOL；6路径在结果时尚无、5后来改交接，按实际ref核，不误报runtime漂移。两真实R3回执漏worker索引，另按收到HEAD双字节核验归档；未改原索引或外仓。
+- 单批43 passed/13.28s（wall14.474）、原2 passed/1.10s（wall1.829），7真实公开CLI（4正常／3预期manifest_invalid/owner_registry_invalid）wall14.755。一次集中有限独审无剩余软件阻断，SR02-4B有限软件范围签收；旧96/12/11浏览器与full成果保留不复跑，不相加独立方法数。公开handoff exit0只证明结构。
+- 初CLI verify遗漏--name，实际argparse拒绝，纠正为公开文档参数后只重跑CLI；新子根／唯一标签，原stdout/stderr/初始脚本保留。少数只读路径猜错按实际文件定位；均controller适配，不当产品RED、不写外仓。
+- worker R3 dry-run538文件nlink全0，与文字nlink==1不符，过去根已删无法独立补证；R3删除回执／CIM0原件收到不等于总控见证过去。旧R2 not_performed、sharedTEMP删除者/时点不明继续open，retention仅推断，不代删陌生文件或扩大为软件新门。
+- 本轮OWN六个junction两端核内部、非递归解节点且目标保持；693文件／468目录lstat单硬链无reparse、精确set/size/SHA、strict CIM0、无自有服务监听，先dry再Apply。prepare41396、Apply87965和测试26819/56332均实际exit0，唯一根已不存在。296源／131IQS输入／75原件＋2补充回执收尾不变，源HEAD/clean不变，收费/下载/生产库/源仓写0。
+- [有限签收](docs/implementation/reviews/SW-REPAIR-02/sr02-4b-2026-10-08/acceptance.md)、一次独审、完整原日志、机器结果与PWF/接手已落档。QA四边界、Lab LR-02B仍原writer，QA/SW两端齐再既有联合12组，Lab不人为阻塞。真实gold/QA import-ACK-UI/双owner恢复/TTL/G3F05/THIN/L03未关；本仓精确Git提交推送待实际回执。

@@ -1,0 +1,333 @@
+FFFFFFF                                                                  [100%]
+================================== FAILURES ===================================
+_ test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention[list] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-4b-20261008-01/tmp/basetemp-red/test_non_utf8_foreign_manifest0')
+operation = 'list'
+
+    @pytest.mark.parametrize("operation", ["list", "prune"])
+    def test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention(
+        tmp_path: Path, operation: str
+    ) -> None:
+        """SR02-4B (frozen intake case): a single ``0xff`` byte in a foreign manifest
+        must be classified invalid/skipped through the PUBLIC path — it may never
+        abort ``list``/``prune``, rewrite the foreign bytes or stop retention of the
+        two legal backups."""
+        paths, root, foreign, manifest = _corrupt_manifest_root(tmp_path, b"\xff")
+    
+        if operation == "list":
+>           rows = list_quick_scan_backups(paths)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_backup.py:651: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup.py:563: in list_quick_scan_backups
+    manifest, shape = _read_manifest_object(manifest_path)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:589: in _read_manifest_object
+    raw = manifest_path.read_text(encoding="utf-8")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000002E0D8F11FD0>
+input = b'\xff', final = True
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+
+<frozen codecs>:325: UnicodeDecodeError
+_ test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention[prune] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-4b-20261008-01/tmp/basetemp-red/test_non_utf8_foreign_manifest1')
+operation = 'prune'
+
+    @pytest.mark.parametrize("operation", ["list", "prune"])
+    def test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention(
+        tmp_path: Path, operation: str
+    ) -> None:
+        """SR02-4B (frozen intake case): a single ``0xff`` byte in a foreign manifest
+        must be classified invalid/skipped through the PUBLIC path — it may never
+        abort ``list``/``prune``, rewrite the foreign bytes or stop retention of the
+        two legal backups."""
+        paths, root, foreign, manifest = _corrupt_manifest_root(tmp_path, b"\xff")
+    
+        if operation == "list":
+            rows = list_quick_scan_backups(paths)
+            row = next(row for row in rows if row["name"] == foreign.name)
+            assert row["manifest_shape"] == "invalid" and not row["complete"]
+            assert (root / "backup_a").exists() and (root / "backup_z").exists()
+        else:
+>           receipt = prune_backups(paths, keep=1)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_backup.py:656: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup.py:625: in prune_backups
+    for item in list_quick_scan_backups(paths):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:563: in list_quick_scan_backups
+    manifest, shape = _read_manifest_object(manifest_path)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:589: in _read_manifest_object
+    raw = manifest_path.read_text(encoding="utf-8")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000002E0D8F12090>
+input = b'\xff', final = True
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+
+<frozen codecs>:325: UnicodeDecodeError
+_ test_truncated_multibyte_manifest_is_invalid_and_does_not_stop_retention[list] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-4b-20261008-01/tmp/basetemp-red/test_truncated_multibyte_manif0')
+operation = 'list'
+
+    @pytest.mark.parametrize("operation", ["list", "prune"])
+    def test_truncated_multibyte_manifest_is_invalid_and_does_not_stop_retention(
+        tmp_path: Path, operation: str
+    ) -> None:
+        """A UTF-8 sequence cut in half is the same class of damage as ``0xff``:
+        invalid, reported, kept — never a crash and never a disguised success."""
+        truncated = b'{"files": ["\xe4\xb8'
+        paths, root, foreign, manifest = _corrupt_manifest_root(
+            tmp_path, truncated, name="foreign_truncated_bytes"
+        )
+    
+        if operation == "list":
+>           rows = list_quick_scan_backups(paths)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_backup.py:675: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup.py:563: in list_quick_scan_backups
+    manifest, shape = _read_manifest_object(manifest_path)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:589: in _read_manifest_object
+    raw = manifest_path.read_text(encoding="utf-8")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000002E0D61EBB30>
+input = b'{"files": ["\xe4\xb8', final = True
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode bytes in position 12-13: unexpected end of data
+
+<frozen codecs>:325: UnicodeDecodeError
+_ test_truncated_multibyte_manifest_is_invalid_and_does_not_stop_retention[prune] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-4b-20261008-01/tmp/basetemp-red/test_truncated_multibyte_manif1')
+operation = 'prune'
+
+    @pytest.mark.parametrize("operation", ["list", "prune"])
+    def test_truncated_multibyte_manifest_is_invalid_and_does_not_stop_retention(
+        tmp_path: Path, operation: str
+    ) -> None:
+        """A UTF-8 sequence cut in half is the same class of damage as ``0xff``:
+        invalid, reported, kept — never a crash and never a disguised success."""
+        truncated = b'{"files": ["\xe4\xb8'
+        paths, root, foreign, manifest = _corrupt_manifest_root(
+            tmp_path, truncated, name="foreign_truncated_bytes"
+        )
+    
+        if operation == "list":
+            rows = list_quick_scan_backups(paths)
+            row = next(row for row in rows if row["name"] == foreign.name)
+            assert row["manifest_shape"] == "invalid" and not row["complete"]
+            assert (root / "backup_a").exists() and (root / "backup_z").exists()
+        else:
+>           receipt = prune_backups(paths, keep=1)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_backup.py:680: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup.py:625: in prune_backups
+    for item in list_quick_scan_backups(paths):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:563: in list_quick_scan_backups
+    manifest, shape = _read_manifest_object(manifest_path)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:589: in _read_manifest_object
+    raw = manifest_path.read_text(encoding="utf-8")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000002E0D6208350>
+input = b'{"files": ["\xe4\xb8', final = True
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode bytes in position 12-13: unexpected end of data
+
+<frozen codecs>:325: UnicodeDecodeError
+_ test_manifest_damage_family_is_all_reported_invalid_and_retention_continues _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-4b-20261008-01/tmp/basetemp-red/test_manifest_damage_family_is0')
+
+    def test_manifest_damage_family_is_all_reported_invalid_and_retention_continues(
+        tmp_path: Path,
+    ) -> None:
+        """UTF-8-valid manifests keep being read normally while EVERY damaged foreign
+        class — bad JSON, non-object, bad ``files``, ``0xff``, truncated multi-byte —
+        is reported invalid/skipped and left byte-for-byte untouched."""
+        paths = _two_owned_backups(tmp_path)
+        root = quick_scan_backup_root(paths)
+        damaged = {
+            "foreign_bad_json": b"{not json",
+            "foreign_non_object": json.dumps([]).encode("utf-8"),
+            "foreign_bad_files": json.dumps({"files": None}).encode("utf-8"),
+            "foreign_ff_byte": b"\xff",
+            "foreign_truncated_utf8": b'{"files": ["\xe4\xb8',
+        }
+        for name, payload in damaged.items():
+            directory = root / name
+            directory.mkdir()
+            (directory / MANIFEST_NAME).write_bytes(payload)
+    
+>       listed = {item["name"]: item for item in list_quick_scan_backups(paths)}
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_backup.py:707: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup.py:563: in list_quick_scan_backups
+    manifest, shape = _read_manifest_object(manifest_path)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:589: in _read_manifest_object
+    raw = manifest_path.read_text(encoding="utf-8")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000002E0D94BE570>
+input = b'\xff', final = True
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+
+<frozen codecs>:325: UnicodeDecodeError
+_____ test_undecodable_manifest_is_a_named_refusal_for_verify_and_restore _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-4b-20261008-01/tmp/basetemp-red/test_undecodable_manifest_is_a0')
+
+    def test_undecodable_manifest_is_a_named_refusal_for_verify_and_restore(
+        tmp_path: Path,
+    ) -> None:
+        """Every other reader of the same chain fails closed with a NAMED error
+        instead of leaking ``UnicodeDecodeError``: verify/restore refuse, nothing is
+        written, and the damaged bytes stay put."""
+        paths, _root, foreign, manifest = _corrupt_manifest_root(tmp_path, b"\xff")
+    
+        for operation in (
+            lambda: verify_backup(paths, foreign.name),
+            lambda: restore_backup(paths, foreign.name),
+        ):
+            with pytest.raises(QuickScanBackupError) as exc:
+>               operation()
+
+tests\test_swr_backup.py:736: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_swr_backup.py:732: in <lambda>
+    lambda: verify_backup(paths, foreign.name),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:428: in verify_backup
+    manifest = _load_manifest(backup_dir)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:352: in _load_manifest
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000002E0D94BF350>
+input = b'\xff', final = True
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+
+<frozen codecs>:325: UnicodeDecodeError
+____ test_corrupt_bytes_owner_registry_refuses_prune_and_grants_no_delete _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-4b-20261008-01/tmp/basetemp-red/test_corrupt_bytes_owner_regis0')
+
+    def test_corrupt_bytes_owner_registry_refuses_prune_and_grants_no_delete(
+        tmp_path: Path,
+    ) -> None:
+        """Undecodable owner-registry bytes fail closed with a named error: no
+        directory is deleted, the registry itself is never rewritten."""
+        paths = _two_owned_backups(tmp_path)
+        root = quick_scan_backup_root(paths)
+        registry_path = root / OWNER_REGISTRY_NAME
+        registry_path.write_bytes(b"\xff")
+    
+        error = None
+        try:
+>           prune_backups(paths, keep=1)
+
+tests\test_swr_backup.py:753: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup.py:622: in prune_backups
+    _load_registry(root)  # unknown version ⇒ refusal, nothing deleted
+    ^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup.py:269: in _load_registry
+    data = json.loads(path.read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\pathlib\_abc.py:633: in read_text
+    return f.read()
+           ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000002E0D94BDA30>
+input = b'\xff', final = True
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+
+<frozen codecs>:325: UnicodeDecodeError
+=========================== short test summary info ===========================
+FAILED tests/test_swr_backup.py::test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention[list]
+FAILED tests/test_swr_backup.py::test_non_utf8_foreign_manifest_is_invalid_and_does_not_stop_retention[prune]
+FAILED tests/test_swr_backup.py::test_truncated_multibyte_manifest_is_invalid_and_does_not_stop_retention[list]
+FAILED tests/test_swr_backup.py::test_truncated_multibyte_manifest_is_invalid_and_does_not_stop_retention[prune]
+FAILED tests/test_swr_backup.py::test_manifest_damage_family_is_all_reported_invalid_and_retention_continues
+FAILED tests/test_swr_backup.py::test_undecodable_manifest_is_a_named_refusal_for_verify_and_restore
+FAILED tests/test_swr_backup.py::test_corrupt_bytes_owner_registry_refuses_prune_and_grants_no_delete
+7 failed, 24 deselected in 2.81s

@@ -1,0 +1,137 @@
+{
+  "synthetic_only": true,
+  "checks": [
+    {
+      "case": "workspace",
+      "operation": "list",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-sr02-4b-2026-10-08-01\\public-cli-corrected\\ff\\workspace",
+        "quick-scan-backup",
+        "list"
+      ],
+      "returncode": 0
+    },
+    {
+      "case": "workspace",
+      "operation": "prune",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-sr02-4b-2026-10-08-01\\public-cli-corrected\\ff\\workspace",
+        "quick-scan-backup",
+        "prune",
+        "--keep",
+        "1"
+      ],
+      "returncode": 0
+    },
+    {
+      "case": "workspace",
+      "operation": "verify",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-sr02-4b-2026-10-08-01\\public-cli-corrected\\ff\\workspace",
+        "quick-scan-backup",
+        "verify",
+        "--name",
+        "foreign_corrupt_bytes"
+      ],
+      "returncode": 2
+    },
+    {
+      "case": "workspace",
+      "operation": "list",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-sr02-4b-2026-10-08-01\\public-cli-corrected\\truncated\\workspace",
+        "quick-scan-backup",
+        "list"
+      ],
+      "returncode": 0
+    },
+    {
+      "case": "workspace",
+      "operation": "prune",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-sr02-4b-2026-10-08-01\\public-cli-corrected\\truncated\\workspace",
+        "quick-scan-backup",
+        "prune",
+        "--keep",
+        "1"
+      ],
+      "returncode": 0
+    },
+    {
+      "case": "workspace",
+      "operation": "verify",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-sr02-4b-2026-10-08-01\\public-cli-corrected\\truncated\\workspace",
+        "quick-scan-backup",
+        "verify",
+        "--name",
+        "foreign_corrupt_bytes"
+      ],
+      "returncode": 2
+    },
+    {
+      "case": "workspace",
+      "operation": "prune",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\sw-sr02-4b-2026-10-08-01\\public-cli-corrected\\registry\\workspace",
+        "quick-scan-backup",
+        "prune",
+        "--keep",
+        "1"
+      ],
+      "returncode": 2
+    }
+  ],
+  "outside_http": 0,
+  "paid_calls": 0,
+  "downloads": 0
+}

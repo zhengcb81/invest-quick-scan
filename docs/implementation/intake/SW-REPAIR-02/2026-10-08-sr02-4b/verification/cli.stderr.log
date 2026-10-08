@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\SW-REPAIR-02\sr02-4b-2026-10-08\guarded_run.py", line 123, in <module>
+    runpy.run_path(str(OWN / "public_cli_cases.py"),run_name="__main__")
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\sw-sr02-4b-2026-10-08-01\public_cli_cases.py", line 54, in <module>
+    assert refused.returncode!=0 and b'manifest_invalid' in refused.stdout+refused.stderr
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

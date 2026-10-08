@@ -1,0 +1,51 @@
+{
+  "bulk_question_details": false,
+  "c06_envelope_validated": false,
+  "default_page_size": 50,
+  "detail_on_demand": true,
+  "fact_relations_available": false,
+  "facts_available": false,
+  "freshness_policy_available": false,
+  "freshness_rules_in_query_layer": false,
+  "generated_by": "python -B -X utf8 docs/handoff/SW-REPAIR-02/build_goldens.py --repo <StockWiki> --out <StockWiki>/docs/handoff/SW-REPAIR-02/logs/golden",
+  "golden_class": "synthetic_public_import_fixture",
+  "llm_calls": 0,
+  "max_page_size": 100,
+  "multi_leaf_conditions": true,
+  "network_calls": 0,
+  "protocol": "stockwiki_w09_read_primitives",
+  "protocol_note": "W09 read primitives (capabilities/search/get_profiles/coverage); NOT a schema-validated C06 exchange envelope — the C06 envelope must be frozen by the coordinator before anything is relabelled",
+  "rules_version": "quick_scan_query/1.0.0",
+  "score_condition_engine": "quick_scan_rules/1.0.0",
+  "score_conditions_supported": true,
+  "score_rules_in_query_layer": false,
+  "snapshot_protocol": {
+    "conditioned_hash_keys": [
+      "text",
+      "filters",
+      "view",
+      "conditions",
+      "combine"
+    ],
+    "cross_query_snapshot_reuse": "refused",
+    "leaf_or_combine_change_invalidates_snapshot": true,
+    "legacy_no_condition_snapshot_readable": true,
+    "legacy_producer_commit": "9f552a67",
+    "no_conditions_hash_keys": [
+      "text",
+      "filters",
+      "view"
+    ],
+    "rules_version": "quick_scan_query/1.0.0",
+    "version": "quick_scan_query_snapshot/1.0.0"
+  },
+  "stable_sort_key": [
+    "entity_id"
+  ],
+  "views": [
+    "all_relevant",
+    "quality",
+    "recovery",
+    "pending"
+  ]
+}

@@ -1,0 +1,769 @@
+{
+  "format_version": "1.0.0",
+  "package_id": "SW-REPAIR-02",
+  "generated_at_utc": "2026-10-08T20:12:16Z",
+  "note": "SHA-256 over exact file bytes; artifacts.json does not hash itself. sha256/bytes = the delivered working-tree bytes (this checkout uses core.autocrlf, so some files are CRLF in the worktree). git_blob_sha256/git_blob_bytes are taken at `blob_ref`: the EARLIEST commit in blob_ref_scan (6 commits, runtime result c83c148 .. evidence snapshot eab0f0f) whose blob equals these bytes after CRLF/LF normalisation — so every item is attributed to a commit that really carried it instead of one commit for everything. runtime_result_ref=c83c148af35407a5ae01072314ba9bd17e59b3d9 is the SR02-1..4 runtime (SR02-4B code at cc587a8cf76f2c50a0cdfb4693d3767dfa5944fa); evidence_snapshot_ref=eab0f0f0aa964b86e239c5aee2c83771966a11dd is the receiving HEAD at generation. eol_only_difference=true marks entries whose worktree bytes differ from that blob by CRLF/LF alone (41 of 75; 34 byte-identical; content differences: 0). Runtime source/test/doc bytes come from the code result commits; handoff evidence (logs, screenshots, goldens, handoff docs, planning) comes from the handoff commits that actually carried it — the earlier note attributing every git blob to c83c148 was too wide (16 paths did not exist there and 11 had different content) and is corrected here. Round-1 logs/goldens/screenshots keep their ORIGINAL bytes (never rewritten or re-hashed); round-2/round-3 evidence is recorded as *_r2.* / *_r3.* / r2-* / red_swr02_* files. Regenerate with the same walk over docs/handoff/SW-REPAIR-02 plus the listed repository paths.",
+  "items": [
+    {
+      "path": "docs/quick-scan-backup-restore.md",
+      "kind": "doc",
+      "bytes": 14948,
+      "sha256": "aa651a44a5924c2ca35ce66c3e74ff8391106d9b4f49d17f6cfe163e7f0ce36f",
+      "blob_ref": "cc587a8cf76f2c50a0cdfb4693d3767dfa5944fa",
+      "git_blob_bytes": 14948,
+      "git_blob_sha256": "f31e705143c9e91aa1d711d499970368a68c327b",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/ui.md",
+      "kind": "doc",
+      "bytes": 6869,
+      "sha256": "cd647085950e19dd5f2d1f498f8b79057f7dd2a9794d6f4d847a2f98031ae64f",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 6869,
+      "git_blob_sha256": "8ad1bffd404b4064962a4f6f5d457977b60a79be",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/golden/backup_owner_registry_ok.json",
+      "kind": "golden",
+      "bytes": 1221,
+      "sha256": "ef32e9f0b370142a2048f98ba1708130c1106c47aef1f31e0266e6964c14e164",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 1202,
+      "git_blob_sha256": "c802119d1190d3392d42d43268d44f8bda24c350",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/golden/identity_golden_status.json",
+      "kind": "golden",
+      "bytes": 247,
+      "sha256": "4d32a7d78a0cd009bd11e1035bcff6de178b0ffd2147647d3268428ee5a9e698",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 242,
+      "git_blob_sha256": "a2cb17c3b2ea99a4fdabd54ae31853fde16128de",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/golden/query_capabilities_ok.json",
+      "kind": "golden",
+      "bytes": 1721,
+      "sha256": "957b8b187b1dbef50f5fcb77afdedf370a7d70de98b7476f3d15d817913bf76b",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 1671,
+      "git_blob_sha256": "9108806c64182f385ea1bfc253fdbe4478268fb2",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/golden/query_legacy_snapshot_page2_ok.json",
+      "kind": "golden",
+      "bytes": 5603,
+      "sha256": "208460fa1db5b39767562e19a26fcb8c78aef95b9af046f66ac433df023d17c1",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 5333,
+      "git_blob_sha256": "1ce52782b8b0b1c2f779b46e74a6bfc7d8ac446c",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/golden/query_search_condition_ok.json",
+      "kind": "golden",
+      "bytes": 2105,
+      "sha256": "6349f0ee18aaa6d18248fbbb6df6d072463f93e90b318a92aff7a8e0b3f30019",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 2021,
+      "git_blob_sha256": "5f9e48e60c99870422a06af635731c29b9d383d8",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/golden/query_variant_ambiguous_ok.json",
+      "kind": "golden",
+      "bytes": 3949,
+      "sha256": "cbf347b823940050ef81471811781786db15031636db72184347058419c26365",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 3841,
+      "git_blob_sha256": "847220ebe9021a33c79bfbda7157ae72f6ec0a03",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/export-manifest.json",
+      "kind": "handoff",
+      "bytes": 10207,
+      "sha256": "eeedec7f08cff470ec8ca9370a8878d22e4b10468fd45c0ae4e41299470446f4",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 9980,
+      "git_blob_sha256": "b88576ce10ac655241062ec0a78ced026bdb2828",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/handoff.json",
+      "kind": "handoff",
+      "bytes": 14237,
+      "sha256": "1044567f1bce31a07abd3e986f42f4b28379710b21a16dd25668754141315228",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 14237,
+      "git_blob_sha256": "d0bcc9575d16d71bf14f2530c77154ba068d2a25",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/case-map.md",
+      "kind": "handoff_doc",
+      "bytes": 22169,
+      "sha256": "346a26ef8baf246c0f82d9ab5a14eb8f7f247c76f49e10bae45ce5b2fdf40b06",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 21941,
+      "git_blob_sha256": "dbf28c1094a490d5d0a356bfef7a7f209f6d4e6f",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/interfaces.md",
+      "kind": "handoff_doc",
+      "bytes": 16262,
+      "sha256": "d374174a0bd227732083b23e9bd3d8d266d3d83ca6170b85598acda0746aa380",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 16262,
+      "git_blob_sha256": "05329f1c03b418fbb773d66ccd1d221bc6a58026",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/isolation.md",
+      "kind": "handoff_doc",
+      "bytes": 13540,
+      "sha256": "246aebf2ba9e10aee2703fc8820b3dd85410c8a80ade12697c70bb6201acbc86",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 13540,
+      "git_blob_sha256": "e2c26f85b1e43e2e3e03a8cdf43f2d4064d097e8",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/six-fix-closure.md",
+      "kind": "handoff_doc",
+      "bytes": 12321,
+      "sha256": "128781507e1ea34892a6fcd6d0e0c96b08dc825650a8458f980da3e82362e249",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 12321,
+      "git_blob_sha256": "f22f941dc9397619195aaa3cc66c6ed51be768f2",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/summary.md",
+      "kind": "handoff_doc",
+      "bytes": 19212,
+      "sha256": "da0a04f269690ff5fbc241dfcfa605c1045080c868ce65ff30f32a9e4606cd69",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 19212,
+      "git_blob_sha256": "7916d779cd4622829b12887183d84f6b736ba89c",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/build_export_manifest.py",
+      "kind": "handoff_tool",
+      "bytes": 5620,
+      "sha256": "353ceab75ad26afcbc88c260af885b7626090d4ca376a7e6d1c96da59518b53a",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 5620,
+      "git_blob_sha256": "b3a45d255c93b94e0c8dd192d12b8ebf75e0cb4d",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/build_goldens.py",
+      "kind": "handoff_tool",
+      "bytes": 11238,
+      "sha256": "540e305fed82b80af353b8f094ba4aae56b522633000c704f77e4ef33bbf9d4e",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 11238,
+      "git_blob_sha256": "b296770077dae2c86416ae0038647033e6d95071",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/run_frozen_acceptance.py",
+      "kind": "handoff_tool",
+      "bytes": 5156,
+      "sha256": "6fef05625399918acf50610e5674dd5df0d723fd0afc72a816a60e4d219c77e5",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 5156,
+      "git_blob_sha256": "68b20b2a39c1bd3bb47b416f502e4dcb0856a5a2",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/check_full.log",
+      "kind": "log",
+      "bytes": 2443,
+      "sha256": "436f2c9058f2677b9adc2e2140d5b57cf01c0269869399122703bf4821a3442b",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 2408,
+      "git_blob_sha256": "8e31e5c6e9c2467ee384ae458fc2ffbf0ccd7ba5",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/check_full_at_9f9e0af.log",
+      "kind": "log",
+      "bytes": 2523,
+      "sha256": "34551e7f8ad9f36601889f9f8f8e2c941c0717d9ef0e7269705b25901aad01d5",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 2523,
+      "git_blob_sha256": "2af0281f2d5c39af5297a1912652ab0890249e22",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/check_static_only.log",
+      "kind": "log",
+      "bytes": 593,
+      "sha256": "e453493987dfb5239bf2c4b8e76e09ca4e1e6026e7038ac73e1d84c6c5036592",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 582,
+      "git_blob_sha256": "6c843ff7edfe876e9a122a9eff4b1c99b90e0e1e",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/check_static_only_r2.log",
+      "kind": "log",
+      "bytes": 736,
+      "sha256": "bca770b77b6695235ca1191c046b43b9a57d3ca5e75cec4e050ff766ff70ec16",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 724,
+      "git_blob_sha256": "ecde6e2bc761ca3ed8ef5942802674a63ee1217e",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/check_static_only_r3.log",
+      "kind": "log",
+      "bytes": 736,
+      "sha256": "81f296e8e7e2c391bdc0af3fa086fb86a1d05f945d377670dd36162cda8a287c",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 724,
+      "git_blob_sha256": "023b42949348fb8b6ef5a80b9bb8e15b755b8ab2",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/cleanup-dry-run-r3.json",
+      "kind": "log",
+      "bytes": 193797,
+      "sha256": "4a45fd64500a5d76ec4f44c8f3425a530c7ef8d5a73497f9c787e8700d1fc5c1",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 189842,
+      "git_blob_sha256": "a91e60861cf3424f4653fc2af1da3cc820e21410",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/cleanup_receipt_r2.json",
+      "kind": "log",
+      "bytes": 35266,
+      "sha256": "9ff67a633ea00c620b787d9ad0201983692174c12f9aab4069a9cdec5f9c2980",
+      "blob_ref": "543d92a12058100b14809ee0742626581c63906c",
+      "git_blob_bytes": 34773,
+      "git_blob_sha256": "7619f2c2b463e14c8d03e1ea1ba85b10bc6294af",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/evidence_index_r2.json",
+      "kind": "log",
+      "bytes": 2294,
+      "sha256": "1ce4275a1563251f8d30a64d7af62c46a675dc6add1b64d05dd0a7ed7626aff7",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 2240,
+      "git_blob_sha256": "5b4f2bfa944c09c89d7caa13f2848cce171bb7d4",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/frozen_acceptance_post_fix.log",
+      "kind": "log",
+      "bytes": 218,
+      "sha256": "616b5fc2369cccf9ad14efc596b8a43f18f01f4774ddb25353831d116852d4eb",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 214,
+      "git_blob_sha256": "739e37b094765d4a42bf3c1f0444e1995cfa4267",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/green_affected_batch.log",
+      "kind": "log",
+      "bytes": 183,
+      "sha256": "f18626f60f77ebdfb3803b38b60f978d9c6726d3a0bcb4b2c0cefd3e7d074842",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 180,
+      "git_blob_sha256": "3bce873037480ebf139634c2a7fe768a3bbe4552",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/green_affected_batch_r2.log",
+      "kind": "log",
+      "bytes": 183,
+      "sha256": "44a4b1a8c320a59288d48480f70c5a9581add23b8bc3cf3828baee5faa27a63f",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 180,
+      "git_blob_sha256": "3109fb1e8c617fd1059369651a481614f9f9a21c",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/green_affected_batch_r3.log",
+      "kind": "log",
+      "bytes": 183,
+      "sha256": "c0b78912869821799868ca0c6b065183eb73472f42cda8d441f122ccf73313cf",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 180,
+      "git_blob_sha256": "4fc2e3ba4bef17ac817894e42c4dbb30d7c0a04c",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/green_e2e_browser.log",
+      "kind": "log",
+      "bytes": 11511,
+      "sha256": "6a3f128f6888ca7fc0ecb7fc1693d6bc054e055d3767aa4045da37802a94dee4",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 11287,
+      "git_blob_sha256": "94ca43b2aedbab5c22dab0da9337bfdd2451662f",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/green_e2e_browser_r2.log",
+      "kind": "log",
+      "bytes": 6759,
+      "sha256": "f516c2f7fbba414ce648f3f7407dfa3a047e8ee578687bdf1d39a4a20fa54123",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 6640,
+      "git_blob_sha256": "67536198d9d0ce2de425be54dd7667c2ea413476",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/green_frozen_acceptance_r2.log",
+      "kind": "log",
+      "bytes": 218,
+      "sha256": "489166f3030587581104e490ab2c759eca84b0ff69908e7f81063e86a888b5a0",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 214,
+      "git_blob_sha256": "3e496fb6034d37c5308352883c363fc084353a03",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/green_quickscan_family_r2.log",
+      "kind": "log",
+      "bytes": 372,
+      "sha256": "c2140ed62ce45e040f64204b72e786061b8aeb084b5f44474c664db4c4ce04d0",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 367,
+      "git_blob_sha256": "acf8c4ebbe8cb81b2ac11b23e0362e1c993803a3",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/handoff_cli_precheck_r2.log",
+      "kind": "log",
+      "bytes": 1184,
+      "sha256": "9953f83e9dafc6d31704f38a2dc53ff6ed6397d12f02317e7888d6458d4eb52e",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 1184,
+      "git_blob_sha256": "dc099da29ee1f5658010913d269f06db21c1edc8",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/handoff_cli_precheck_r3.log",
+      "kind": "log",
+      "bytes": 882,
+      "sha256": "b41a47fbe94ee7534a98952c18ab628bfbbdf746ae046414e98e6dd8d4f345d9",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 882,
+      "git_blob_sha256": "e2f67907ffd834f0de277342629ef08f2744e509",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/isolation_inventory_r2.json",
+      "kind": "log",
+      "bytes": 26828,
+      "sha256": "55a9b00a053356406bad454f49644bc3314dd094052a83bd19163b28920c9c17",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 26457,
+      "git_blob_sha256": "ca185277d38f6fbbc722267999c9d32118ef58ab",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/process-listener-final-state-r3.json",
+      "kind": "log",
+      "bytes": 546,
+      "sha256": "0bf4dc039001f06b98c7f8134247a3d008afb395755a1c62abd0cee2106222c3",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 535,
+      "git_blob_sha256": "68ee2ef753a78c923b7ac3f6a5cacbfddd5352f2",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/red_swr02_12_boundary_at_6d1dddb.log",
+      "kind": "log",
+      "bytes": 28804,
+      "sha256": "38a527e3c44092e981bddd32ae901e8e09e30a5e889bcb649b700c171cabd10f",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 28257,
+      "git_blob_sha256": "9d78098c6f21c68e1ac600f1776c1ddfcd4be2f4",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/red_swr02_4b_utf8_at_1831a73.log",
+      "kind": "log",
+      "bytes": 16501,
+      "sha256": "92a710e5c82068e2499b441b6729dd9c0d9d5ef52ec148935b2e24bf4059ae32",
+      "blob_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+      "git_blob_bytes": 16168,
+      "git_blob_sha256": "ccb25c09a39a47d75764226e811adbb34732d591",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/red_swr_cases_baseline.log",
+      "kind": "log",
+      "bytes": 15698,
+      "sha256": "60a007d25374a6e4d03b88d5ff4313d49622241e95eca26ac5f3651e07aaa526",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 15401,
+      "git_blob_sha256": "879a7052a9dce171fa03f171f73b5cfdf1669821",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/red_swr_cases_vs_base_commit.log",
+      "kind": "log",
+      "bytes": 15608,
+      "sha256": "9328c160b27c2962c6276b2d701fea2ae6868a8ccabbcfc60901ccdcdd2d2e52",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 15313,
+      "git_blob_sha256": "520ea32ef6c788e79f5ec5e9f704b3e3fdc386a4",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/planning/findings.md",
+      "kind": "planning",
+      "bytes": 5680,
+      "sha256": "48dadfe33ae8bf1538936455cc982f52f8c8b242b0cf370fdfd05f4a0caedebd",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 5593,
+      "git_blob_sha256": "558f8704c7aab49f1e78259a172e81c5024aaf5f",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/planning/progress.md",
+      "kind": "planning",
+      "bytes": 5409,
+      "sha256": "7f657a2bfb1578e29ddfe3ebc06076cbde6883d52b06092b414278f910d09a7f",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 5338,
+      "git_blob_sha256": "4237f8f55e00fd2328053b7a0a0792e7bef50c29",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/planning/task_plan.md",
+      "kind": "planning",
+      "bytes": 7664,
+      "sha256": "7b34cc343bb47f88c8f2a34b5a5dca234801547f28a9cb1bfc09e213831f5c8c",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 7561,
+      "git_blob_sha256": "d798b7c67f708e5b6f9f97f56366f3a5cbc86149",
+      "eol_only_difference": true
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/e2e-01-list-2000.png",
+      "kind": "screenshot",
+      "bytes": 598881,
+      "sha256": "8b06803a7f576be54dee048e506f87257a843b8be7344f6442f07864055eac66",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 598881,
+      "git_blob_sha256": "3eb1b470039f6f38ecc9919bf857de51e62d04ac",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/e2e-02-detail.png",
+      "kind": "screenshot",
+      "bytes": 391577,
+      "sha256": "d8bc0c201881ec5e29188bcd0cad590e6fa14e7c2095a256b5f626523560f3ec",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 391577,
+      "git_blob_sha256": "3dc2ba037d597c732444db0c26bd5d284dfcc524",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/e2e-03-narrow.png",
+      "kind": "screenshot",
+      "bytes": 369508,
+      "sha256": "e666282c30ac016c5d06cd640a94a5fa8e308e451131e5742ad97681fb283a9e",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 369508,
+      "git_blob_sha256": "d37698079c3859309ff792eb17ed28d71cea011f",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/e2e-05-multi-condition.png",
+      "kind": "screenshot",
+      "bytes": 640289,
+      "sha256": "c1e66194162d31a99dd732f20442a8f892285abb06d055fbb9cae7c907e4d7a7",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 640289,
+      "git_blob_sha256": "47234910dbd529d41f80e8b13c6d718110a7540a",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/e2e-06-multi-condition-context.png",
+      "kind": "screenshot",
+      "bytes": 649977,
+      "sha256": "b02496b617c6f0a6f25982431d205aed04e30de3e8a0fd4af6e36ce6f2bb0602",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 649977,
+      "git_blob_sha256": "ed417073ffce6e555683874905440b5652c9baa9",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/e2e-07-variants.png",
+      "kind": "screenshot",
+      "bytes": 392506,
+      "sha256": "f4dc95247e76d6f2bd62e7cb1998fd65fe4d393664143ede371234de856a5c23",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 392506,
+      "git_blob_sha256": "1a3db125bc2fcfd614482e4af369dd8689ae5731",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/r2-e2e-01-list-2000.png",
+      "kind": "screenshot",
+      "bytes": 598881,
+      "sha256": "8b06803a7f576be54dee048e506f87257a843b8be7344f6442f07864055eac66",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 598881,
+      "git_blob_sha256": "3eb1b470039f6f38ecc9919bf857de51e62d04ac",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/r2-e2e-02-detail.png",
+      "kind": "screenshot",
+      "bytes": 394772,
+      "sha256": "f055b1e7e6bff42665e1e0e480cfd49313ca428274e1c42221bbc6c4352413c0",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 394772,
+      "git_blob_sha256": "b82ec2ab55c856ca4e9ff0973abe150064b60dd0",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/r2-e2e-03-narrow.png",
+      "kind": "screenshot",
+      "bytes": 373291,
+      "sha256": "72fe36af6e492ab8225317eca2175a291761f83f581c18ad21f1a0d841d1480c",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 373291,
+      "git_blob_sha256": "f0249312bac2f20f7b71b1df185d02aaec7dc328",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/r2-e2e-05-multi-condition.png",
+      "kind": "screenshot",
+      "bytes": 640289,
+      "sha256": "c1e66194162d31a99dd732f20442a8f892285abb06d055fbb9cae7c907e4d7a7",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 640289,
+      "git_blob_sha256": "47234910dbd529d41f80e8b13c6d718110a7540a",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/r2-e2e-06-multi-condition-context.png",
+      "kind": "screenshot",
+      "bytes": 649977,
+      "sha256": "b02496b617c6f0a6f25982431d205aed04e30de3e8a0fd4af6e36ce6f2bb0602",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 649977,
+      "git_blob_sha256": "ed417073ffce6e555683874905440b5652c9baa9",
+      "eol_only_difference": false
+    },
+    {
+      "path": "docs/handoff/SW-REPAIR-02/logs/screenshots/r2-e2e-07-variants.png",
+      "kind": "screenshot",
+      "bytes": 395766,
+      "sha256": "ebcd47561ec8cdc8ccb0ab8e7237e05bc4fa78229351ea1a0a4365be4c442c41",
+      "blob_ref": "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+      "git_blob_bytes": 395766,
+      "git_blob_sha256": "56ec8a9b5df3c91a0bbc3d04dd21d9e0c22ec586",
+      "eol_only_difference": false
+    },
+    {
+      "path": "stockwiki/quick_scan_backup.py",
+      "kind": "source",
+      "bytes": 28571,
+      "sha256": "da7d200ebe62c5aae65f853bbac0d213bebe3f6fc42e69a279009079a390e33e",
+      "blob_ref": "cc587a8cf76f2c50a0cdfb4693d3767dfa5944fa",
+      "git_blob_bytes": 27915,
+      "git_blob_sha256": "557ee063f61059ad8fe8fa55b5c893cf92833e4c",
+      "eol_only_difference": true
+    },
+    {
+      "path": "stockwiki/quick_scan_backup_manifest.py",
+      "kind": "source",
+      "bytes": 22518,
+      "sha256": "1203c365fc53ff89606738dc8343619cf4b15863ff38340c4aae9adb0e718d30",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 21994,
+      "git_blob_sha256": "2c712f05cc8a46987978540e804253363c6e7764",
+      "eol_only_difference": true
+    },
+    {
+      "path": "stockwiki/quick_scan_profiles.py",
+      "kind": "source",
+      "bytes": 25133,
+      "sha256": "8f2ac3b08cdce083d3d68b1f3dcf9ccb0ec06917122ed1d26e30710e5f73d7a1",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 24533,
+      "git_blob_sha256": "0e879fe86a0d28e4cce2000f9480729983afe6e4",
+      "eol_only_difference": true
+    },
+    {
+      "path": "stockwiki/quick_scan_query.py",
+      "kind": "source",
+      "bytes": 24483,
+      "sha256": "72332d88d4d48fe8e45c2415cdabd3838849cd4e803e1f72c3cbf376bf9def09",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 23905,
+      "git_blob_sha256": "257714ecddd6e29dcc8fd1a4ee9a9dd33c68ced2",
+      "eol_only_difference": true
+    },
+    {
+      "path": "stockwiki/quick_scan_rows.py",
+      "kind": "source",
+      "bytes": 12136,
+      "sha256": "a9a81d4cb67a176443d5092dc2eb86edc75c28591035a8ab8f62b1326a00a04a",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 11854,
+      "git_blob_sha256": "a050a3a51a7a0838ba4bb300048ddc4b128cbf9e",
+      "eol_only_difference": true
+    },
+    {
+      "path": "stockwiki/ui_quick_scan.py",
+      "kind": "source",
+      "bytes": 4328,
+      "sha256": "dd319b2385c42e8e448051426ea4fc093cb3dae3747eade0be52bc9784baf9b6",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 4328,
+      "git_blob_sha256": "ad237c0ce815a0d61aa6c95a69fb29ee41f58433",
+      "eol_only_difference": false
+    },
+    {
+      "path": "stockwiki/ui_static/app.js",
+      "kind": "source",
+      "bytes": 105896,
+      "sha256": "bd83baca47ef8b36b873b796078d135e6af5fa9adcc17fc96108508552c3aff7",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 103350,
+      "git_blob_sha256": "dd02241657b3d02c61d6652b1a7c9d5dd9c0162c",
+      "eol_only_difference": true
+    },
+    {
+      "path": "stockwiki/ui_static/index.html",
+      "kind": "source",
+      "bytes": 13677,
+      "sha256": "25c18f24ef66a43c0f8166d0e5505b2873a48bfd9621a457d644398294ac5a30",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 13677,
+      "git_blob_sha256": "5656072dec769fa7ab399cf00a6864851eca0fd8",
+      "eol_only_difference": false
+    },
+    {
+      "path": "stockwiki/ui_static/styles.css",
+      "kind": "source",
+      "bytes": 19941,
+      "sha256": "116bcf0a5f06d7905ab6b5486abb9c3f4fcef248d246996533b9f980cc82da5a",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 18853,
+      "git_blob_sha256": "8aa37f95379e7a4e6613c4d2addf4a87e18fddc6",
+      "eol_only_difference": true
+    },
+    {
+      "path": "tests/test_e2e_quick_scan_ui.py",
+      "kind": "test",
+      "bytes": 39806,
+      "sha256": "b0427dd47b02cb17c4d1fefb486d125af820108e3ff2e6a606fe0435a22cc186",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 38855,
+      "git_blob_sha256": "a34578d7d38b31c40b47d550a7fd5a3994ddd5fa",
+      "eol_only_difference": true
+    },
+    {
+      "path": "tests/test_quick_scan_backup.py",
+      "kind": "test",
+      "bytes": 23219,
+      "sha256": "065b4ff5d25e8662ffd93726ad3ba3c6c98667f7ad588e4223322ffccb7a5d96",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 23219,
+      "git_blob_sha256": "1e4eb64305ecb5447d68fab2f92a17f7548115d1",
+      "eol_only_difference": false
+    },
+    {
+      "path": "tests/test_quick_scan_profiles.py",
+      "kind": "test",
+      "bytes": 20629,
+      "sha256": "5a4e05ae0206af77ab04b34e9c809bca42958f675c7098a9e5df6af5b5b250ec",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 20629,
+      "git_blob_sha256": "4f277836da52a78911748161e603f8fdf43ccd57",
+      "eol_only_difference": false
+    },
+    {
+      "path": "tests/test_quick_scan_query.py",
+      "kind": "test",
+      "bytes": 18352,
+      "sha256": "4613839b05ffb7866d286b3bd708209d58d9ffda2b454be1c7f48eeed3221752",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 18352,
+      "git_blob_sha256": "a3d8f7412f4267fe6dbb790a08623e02c3144f2c",
+      "eol_only_difference": false
+    },
+    {
+      "path": "tests/test_swr_backup.py",
+      "kind": "test",
+      "bytes": 31470,
+      "sha256": "d6c3f888bf59bcad9eb95a3cff85bc15a4437618172f132f8e88d3010cc05354",
+      "blob_ref": "cc587a8cf76f2c50a0cdfb4693d3767dfa5944fa",
+      "git_blob_bytes": 30711,
+      "git_blob_sha256": "12be0804e0295a9bf03a3f44a2c0b8c3c9122d8a",
+      "eol_only_difference": true
+    },
+    {
+      "path": "tests/test_swr_cases.py",
+      "kind": "test",
+      "bytes": 10068,
+      "sha256": "b82942b7e4e08e825016279028f569406d31f2d269122008e14924bfd478ce63",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 10068,
+      "git_blob_sha256": "68b19a501e7e5b9e8b508b2bce264b82ebaf9ec8",
+      "eol_only_difference": false
+    },
+    {
+      "path": "tests/test_swr_profiles.py",
+      "kind": "test",
+      "bytes": 18204,
+      "sha256": "5efda829ef2d6f4da2e6786732cbb84ba1be00d07ae429f784a03952421de008",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 18204,
+      "git_blob_sha256": "45cde034fd3609e9b6539a39d428a6bb209222cd",
+      "eol_only_difference": false
+    },
+    {
+      "path": "tests/test_swr_query.py",
+      "kind": "test",
+      "bytes": 6985,
+      "sha256": "21d7906b633a9f08f94d31be6a42aa5750ca5bf783ac9912d83e3e400a4b515b",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 6985,
+      "git_blob_sha256": "7f3d412de67fd0b570ac54bd37f70556eae2d4e5",
+      "eol_only_difference": false
+    },
+    {
+      "path": "tests/test_ui_quick_scan.py",
+      "kind": "test",
+      "bytes": 11694,
+      "sha256": "b01c746246a446a9b18c93b95e8eb2245cd8a98078652a50c83871b69ef24592",
+      "blob_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+      "git_blob_bytes": 11694,
+      "git_blob_sha256": "c7cbe06f0adb88ded2950e5214633ced1495c724",
+      "eol_only_difference": false
+    }
+  ],
+  "runtime_result_ref": "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+  "runtime_sr02_4b_code_ref": "cc587a8cf76f2c50a0cdfb4693d3767dfa5944fa",
+  "evidence_snapshot_ref": "eab0f0f0aa964b86e239c5aee2c83771966a11dd",
+  "blob_ref_scan": [
+    "c83c148af35407a5ae01072314ba9bd17e59b3d9",
+    "f2d18eb7b020ed9d7d3d22a7083f6f4faa48d79f",
+    "543d92a12058100b14809ee0742626581c63906c",
+    "1831a73b37a3ed1b67d3556f6425ed2b52594a24",
+    "cc587a8cf76f2c50a0cdfb4693d3767dfa5944fa",
+    "eab0f0f0aa964b86e239c5aee2c83771966a11dd"
+  ]
+}

@@ -1,0 +1,295 @@
+FFFFFF.                                                                  [100%]
+================================== FAILURES ===================================
+___________ test_swr1_restore_accepts_already_existing_empty_target ___________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr1_restore_accepts_alre0')
+
+    def test_swr1_restore_accepts_already_existing_empty_target(tmp_path: Path) -> None:
+        paths, _ = _fixture_backup(tmp_path)
+        quick_scan_data_dir(paths).joinpath("marker.txt").unlink()
+        assert quick_scan_data_dir(paths).exists(), "target exists and is empty"
+        assert not any(quick_scan_data_dir(paths).iterdir())
+    
+>       receipt = restore_backup(paths, "owned_backup")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_cases.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr1_restore_acce...'C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr1_restore_accepts_alre0/workspace/runs/state'))
+name = 'owned_backup'
+
+    def restore_backup(paths: WorkspacePaths, name: str) -> dict[str, Any]:
+        """Restore this workspace's ``data/quick_scan`` from a verified backup.
+    
+        The target must be absent/empty (REV-04: never overwrite history) and the
+        backup must verify fully before a single byte is written.
+        """
+        backup_dir = resolve_backup_dir(paths, name)
+        manifest = _load_manifest(backup_dir)
+        checked = _verify_dir(backup_dir, manifest)
+    
+        target = quick_scan_data_dir(paths)
+        if target.exists() and any(target.iterdir()):
+            raise _bad("restore_target_not_empty", str(target))
+    
+        staging = target.parent / f".quick_scan.restore-{uuid.uuid4().hex[:8]}"
+        staging.mkdir(parents=True, exist_ok=False)
+        try:
+            for entry in manifest["files"]:
+                rel = Path(entry["path"])
+                source = backup_dir / rel
+                destination = staging / rel
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, destination)
+                if _sha256_file(destination) != entry["sha256"]:
+                    raise _bad("file_hash_mismatch", entry["path"])
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if target.exists():
+>               raise _bad("restore_target_not_empty", str(target))
+E               stockwiki.quick_scan_backup_manifest.QuickScanBackupError: restore_target_not_empty: C:\Users\郑曾波\Projects\StockWiki\runs\swr02-red-20261007\pytest\test_swr1_restore_accepts_alre0\workspace\data\quick_scan
+
+stockwiki\quick_scan_backup.py:293: QuickScanBackupError
+_________ test_swr2_foreign_self_consistent_manifest_is_never_pruned __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr2_foreign_self_consist0')
+
+    def test_swr2_foreign_self_consistent_manifest_is_never_pruned(tmp_path: Path) -> None:
+        paths, _ = _fixture_backup(tmp_path)
+        foreign = quick_scan_backup_root(paths) / "foreign_fixture"
+        foreign.mkdir()
+        body = {
+            "format_version": "1.0.0",
+            "files": [],
+            "created_at_utc": "2000-01-01T00:00:00Z",
+        }
+        body["manifest_sha256"] = manifest_digest(body)
+        (foreign / MANIFEST_NAME).write_text(json.dumps(body), encoding="utf-8")
+    
+        receipt = prune_backups(paths, keep=1)
+    
+>       assert foreign.exists(), "a self-consistent foreign manifest is not an owner proof"
+E       AssertionError: a self-consistent foreign manifest is not an owner proof
+E       assert False
+E        +  where False = exists()
+E        +    where exists = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr2_foreign_self_consist0/workspace/backups/quick_scan/foreign_fixture').exists
+
+tests\test_swr_cases.py:117: AssertionError
+_______ test_swr3_failed_final_rename_never_leaves_publishable_partial ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D7CBE74B00>
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr3_failed_final_rename_0')
+
+    def test_swr3_failed_final_rename_never_leaves_publishable_partial(
+        monkeypatch, tmp_path: Path
+    ) -> None:
+        paths = WorkspacePaths.from_root(tmp_path / "workspace")
+        data = quick_scan_data_dir(paths)
+        data.mkdir(parents=True)
+        (data / "marker.txt").write_text("fixture", encoding="utf-8")
+        original = Path.rename
+    
+        def fail_finalize(path, destination):
+            if ".partial-" in str(path):
+                raise OSError("synthetic final rename failure")
+            return original(path, destination)
+    
+        monkeypatch.setattr(Path, "rename", fail_finalize)
+        with pytest.raises((OSError, QuickScanBackupError)):
+            create_backup(paths, name="must_not_finalize")
+        monkeypatch.setattr(Path, "rename", original)
+    
+        root = quick_scan_backup_root(paths)
+>       assert not list(root.glob("*.partial-*")), "no staging directory may survive"
+E       AssertionError: no staging directory may survive
+E       assert not [WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr3_failed_final_rename_0/workspace/backups/quick_scan/.must_not_finalize.partial-608adf56')]
+E        +  where [WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr3_failed_final_rename_0/workspace/backups/quick_scan/.must_not_finalize.partial-608adf56')] = list(<map object at 0x000001D7CBDA21D0>)
+E        +    where <map object at 0x000001D7CBDA21D0> = glob('*.partial-*')
+E        +      where glob = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr3_failed_final_rename_0/workspace/backups/quick_scan').glob
+
+tests\test_swr_cases.py:142: AssertionError
+________ test_swr4_two_subjects_of_one_issuer_never_silently_collapse _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/StockWiki/runs/swr02-red-20261007/pytest/test_swr4_two_subjects_of_one_0')
+
+    def test_swr4_two_subjects_of_one_issuer_never_silently_collapse(tmp_path) -> None:
+        paths = _workspace(tmp_path / "workspace")
+        observations = []
+        for index, score in enumerate((2, 9), 1):
+            subject = "ASJ_" + (
+                "11111111-1111-4111-8111-111111111111"
+                if index == 1
+                else "22222222-2222-4222-8222-222222222222"
+            )
+            observations.append(
+                _observation(
+                    "OBS_" + str(index) * 64,
+                    entity_id=E01,
+                    score=score,
+                    request_id=f"request-{index}",
+                    attempt_id=f"attempt-{index}",
+                    extra={
+                        "analysis_subject": {
+                            "analysis_subject_id": subject,
+                            "analysis_subject_revision": 1,
+                            "entity_id": E01,
+                            "primary_issuer_id": E01,
+                        }
+                    },
+                )
+            )
+        receipt = import_package(
+            QuickScanObservationStore(paths),
+            _package(observations),
+            frozen_release=_release(),
+            identity_store=QuickScanStore(paths),
+        )
+        assert len(receipt["acks"]) == 2 and all(
+            item["status"] == "accepted" for item in receipt["acks"]
+        ), receipt["acks"]
+    
+        detail = build_entity_detail(paths, E01)
+        assert detail is not None
+        fields = [
+            field
+            for group in detail["groups"]
+            for field in group["fields"]
+            if field["field_id"] == "score.iqs_01"
+        ]
+        represented = {
+            field.get("subject", {}).get("analysis_subject_id")
+            for field in fields
+            if field.get("subject", {}).get("recorded")
+        }
+        explicitly_ambiguous = any(
+            field.get("status") == "ambiguous" or field.get("ambiguous") for field in fields
+        )
+>       assert (
+            represented
+            == {
+                "ASJ_11111111-1111-4111-8111-111111111111",
+                "ASJ_22222222-2222-4222-8222-222222222222",
+            }
+            or explicitly_ambiguous
+        ), f"two accepted subjects must stay visible/ambiguous, got {sorted(map(str, represented))}"
+E       AssertionError: two accepted subjects must stay visible/ambiguous, got ['ASJ_22222222-2222-4222-8222-222222222222']
+E       assert ({'ASJ_2222222...222222222222'} == {'ASJ_1111111...222222222222'}
+E         
+E         Extra items in the right set:
+E         'ASJ_11111111-1111-4111-8111-111111111111'
+E         Use -v to get more diff or False)
+
+tests\test_swr_cases.py:208: AssertionError
+________ test_swr5_browser_must_not_hard_code_a_single_condition_leaf _________
+
+    def test_swr5_browser_must_not_hard_code_a_single_condition_leaf() -> None:
+        """Static guard only — the real proof is the Playwright E2E in this repo."""
+        source = (REPO_ROOT / "stockwiki" / "ui_static" / "app.js").read_text(encoding="utf-8")
+        start = source.index("function qsPayload() {")
+        end = source.index("function qsSetStatus(")
+        payload = source[start:end]
+>       assert "payload.conditions = [{ field: q.field, op: q.op, value: q.value }]" not in payload, (
+            "one hard-coded leaf makes AND/OR identical"
+        )
+E       AssertionError: one hard-coded leaf makes AND/OR identical
+E       assert 'payload.con...: q.value }]' not in 'function qs...load;\n}\n\n'
+E         
+E         'payload.conditions..., value: q.value }]' is contained here:
+E           ld) {
+E               payload.conditions = [{ field: q.field, op: q.op, value: q.value }];
+E               payload.condition_combine = q.combine;
+E             }
+E             if (q.snapshot && q.snapshotKey === qsStateKey()) payload.snapshot = q.snapshot;...
+E         
+E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+tests\test_swr_cases.py:224: AssertionError
+________ test_swr6_real_legacy_public_snapshot_stays_readable_on_page2 ________
+
+legacy_query_module = <module 'swr_legacy_quick_scan_query' from 'C:\\Users\\郑曾波\\Projects\\StockWiki\\runs\\swr02-red-20261007\\pytest\\swr-legacy-producer0\\legacy_quick_scan_query.py'>
+
+    def test_swr6_real_legacy_public_snapshot_stays_readable_on_page2(
+        legacy_query_module,
+    ) -> None:
+        from stockwiki.quick_scan_query import search
+    
+        profiles = [
+            {"entity_id": "ENT_" + str(index).zfill(6), "canonical_name": f"Fixture {index}"}
+            for index in range(101)
+        ]
+        old = legacy_query_module.search(profiles, page=1, page_size=50)
+>       current = search(profiles, page=2, page_size=50, snapshot=old["snapshot"])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_swr_cases.py:239: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+profiles = [{'entity_id': 'ENT_000000', 'canonical_name': 'Fixture 0'}, {'entity_id': 'ENT_000001', 'canonical_name': 'Fixture 1'...ity_id': 'ENT_000004', 'canonical_name': 'Fixture 4'}, {'entity_id': 'ENT_000005', 'canonical_name': 'Fixture 5'}, ...]
+text = None, filters = None, view = 'all_relevant', page = 2, page_size = 50
+snapshot = {'snapshot_id': 'SNP_2a3fd23c20c1c67ba297d5c1', 'query_hash': '1994fd9fe7a740018e648fb90d0fa970741dd4c3b7396ba3a43a4e2...ds': ['ENT_000000', 'ENT_000001', 'ENT_000002', 'ENT_000003', 'ENT_000004', 'ENT_000005', ...], 'view': 'all_relevant'}
+conditions = None, condition_combine = 'all'
+
+    def search(
+        profiles: list[dict[str, Any]],
+        *,
+        text: str | None = None,
+        filters: dict[str, Any] | None = None,
+        view: str = "all_relevant",
+        page: int = 1,
+        page_size: int | None = None,
+        snapshot: dict[str, Any] | None = None,
+        conditions: list[dict[str, Any]] | None = None,
+        condition_combine: str = "all",
+    ) -> dict[str, Any]:
+        """Paginated, snapshot-frozen search over entity rows."""
+        if view not in VIEWS:
+            raise _bad("view_invalid", str(view))
+        if text is not None and not isinstance(text, str):
+            raise _bad("query_shape", type(text).__name__)
+        if filters is not None and not isinstance(filters, dict):
+            raise _bad("filters_shape", type(filters).__name__)
+        page, size = _clamp_page(page, page_size)
+        try:
+            policy, parsed_conditions = parse_conditions(conditions, condition_combine)
+        except ConditionError as exc:
+            raise _bad(exc.error_code, exc.detail) from exc
+        rows_all = _entity_rows(profiles)
+        current_query_hash = _query_hash(text, filters, view, parsed_conditions, condition_combine)
+    
+        base_rows = [r for r in rows_all if _matches(r, text, filters) and _in_view(r, view)]
+        if policy is None:
+            evaluation = {}
+            counts: dict[str, int] = {}
+            leaf_reasons: dict[str, dict[str, int]] = {}
+            live_rows = base_rows
+        else:
+            live_rows, evaluation, counts, leaf_reasons = evaluate_rows(base_rows, policy)
+        live_ids = [r["entity_id"] for r in live_rows]
+    
+        if snapshot is None:
+            ordered_ids = list(live_ids)
+            snapshot = {
+                "snapshot_id": "SNP_" + _canon_sha({"q": current_query_hash, "ids": ordered_ids})[:24],
+                "query_hash": current_query_hash,
+                "ordered_ids": ordered_ids,
+                "view": view,
+            }
+        else:
+            frozen_input = snapshot.get("ordered_ids") if isinstance(snapshot, dict) else None
+            if not isinstance(frozen_input, list) or any(
+                not isinstance(entity_id, str) or not entity_id for entity_id in frozen_input
+            ):
+                raise _bad("snapshot_shape", "pass the snapshot returned by search()")
+            if snapshot.get("query_hash") != current_query_hash:
+>               raise _bad("snapshot_query_mismatch", str(snapshot.get("snapshot_id")))
+E               stockwiki.quick_scan_query.QueryError: snapshot_query_mismatch: SNP_2a3fd23c20c1c67ba297d5c1
+
+stockwiki\quick_scan_query.py:313: QueryError
+=========================== short test summary info ===========================
+FAILED tests\test_swr_cases.py::test_swr1_restore_accepts_already_existing_empty_target
+FAILED tests\test_swr_cases.py::test_swr2_foreign_self_consistent_manifest_is_never_pruned
+FAILED tests\test_swr_cases.py::test_swr3_failed_final_rename_never_leaves_publishable_partial
+FAILED tests\test_swr_cases.py::test_swr4_two_subjects_of_one_issuer_never_silently_collapse
+FAILED tests\test_swr_cases.py::test_swr5_browser_must_not_hard_code_a_single_condition_leaf
+FAILED tests\test_swr_cases.py::test_swr6_real_legacy_public_snapshot_stays_readable_on_page2
+6 failed, 1 passed in 2.88s

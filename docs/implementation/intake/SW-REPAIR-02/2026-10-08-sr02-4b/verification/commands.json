@@ -1,0 +1,74 @@
+{
+  "schema": "iqs_sw_remediation_commands/1",
+  "checks": [
+    {
+      "name": "public-handoff",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\parallel_handoff_cli.py",
+        "--catalog",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-07-wave2\\manifest.json",
+        "--package-id",
+        "SW-REPAIR-02",
+        "--input",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\intake\\SW-REPAIR-02\\2026-10-08-sr02-4b\\worker\\handoff.json"
+      ],
+      "returncode": 0,
+      "wall_s": 0.704,
+      "stdout_sha256": "3d7346d081ac6c5d4ac8b0e40603cea8de4898ad5d2bd326a3695fa5226b76b9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "core",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\reviews\\SW-REPAIR-02\\sr02-4b-2026-10-08\\guarded_run.py",
+        "core"
+      ],
+      "returncode": 0,
+      "wall_s": 14.474,
+      "stdout_sha256": "bfa472506df2d9542505560981f61c6e2aae46fee1026d355964e1dec097ea4c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "utf8",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\reviews\\SW-REPAIR-02\\sr02-4b-2026-10-08\\guarded_run.py",
+        "utf8"
+      ],
+      "returncode": 0,
+      "wall_s": 1.829,
+      "stdout_sha256": "d4b350196be50bae5b46830c8e5ed219bc3d995eba7ed750e57f580dd4155177",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "cli",
+      "command": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\reviews\\SW-REPAIR-02\\sr02-4b-2026-10-08\\guarded_run.py",
+        "cli"
+      ],
+      "returncode": 1,
+      "wall_s": 3.764,
+      "stdout_sha256": "a1c035832cced8bc6f79052517caed037daaa0bdc1b2964c801e56eca18c4c3b",
+      "stderr_sha256": "16935383a47c2f284b319fa6f0af22d7a9df0c2d1f788a27ce6975b9da6b6925"
+    }
+  ],
+  "paid_calls": 0,
+  "keys_in_child_environment": 0,
+  "source_written": false,
+  "cleanup_pending": true
+}

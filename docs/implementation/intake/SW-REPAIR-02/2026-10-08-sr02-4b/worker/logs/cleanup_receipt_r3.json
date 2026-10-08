@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-10-08T20:06:36Z",
+  "root": "C:\\Users\\郑曾波\\Projects\\StockWiki\\runs\\swr02-4b-20261008-01",
+  "dry_run_ref": "docs/handoff/SW-REPAIR-02/logs/cleanup-dry-run-r3.json",
+  "phases": {
+    "unlinked": {
+      "count": 6,
+      "failed": [],
+      "targets_after_unlink": [
+        {
+          "target": "C:\\Users\\郑曾波\\Projects\\StockWiki\\runs\\swr02-4b-20261008-01\\tmp\\basetemp-aff\\test_restore_refuses_a_junctio1\\elsewhere_parent",
+          "still_exists": true
+        },
+        {
+          "target": "C:\\Users\\郑曾波\\Projects\\StockWiki\\runs\\swr02-4b-20261008-01\\tmp\\basetemp-aff\\test_restore_refuses_a_junctio0\\elsewhere",
+          "still_exists": true
+        },
+        {
+          "target": "C:\\Users\\郑曾波\\Projects\\StockWiki\\runs\\swr02-4b-20261008-01\\tmp\\basetemp-aff\\test_restore_of_a_link_inside_0\\target_src_link_ok\\backups\\quick_scan\\real_elsewhere",
+          "still_exists": true
+        },
+        {
+          "target": "C:\\Users\\郑曾波\\Projects\\StockWiki\\runs\\swr02-4b-20261008-01\\tmp\\basetemp-aff\\test_prune_skips_damaged_unkno0\\linked_elsewhere",
+          "still_exists": true
+        },
+        {
+          "target": "C:\\Users\\郑曾波\\Projects\\StockWiki\\runs\\swr02-4b-20261008-01\\tmp\\basetemp-aff\\test_backup_root_and_parent_ju1\\junction\\parent\\foreign",
+          "still_exists": true
+        },
+        {
+          "target": "C:\\Users\\郑曾波\\Projects\\StockWiki\\runs\\swr02-4b-20261008-01\\tmp\\basetemp-aff\\test_backup_root_and_parent_ju0\\junction\\root\\foreign",
+          "still_exists": true
+        }
+      ]
+    },
+    "links_after_unlink": 0,
+    "deleted_files": {
+      "expected": 538,
+      "deleted": 538,
+      "bytes": 24044499,
+      "missing": [],
+      "size_or_sha_mismatch": []
+    },
+    "removed_dirs": {
+      "expected": 671,
+      "first_pass": "671 subdirectories removed; the root itself was attempted too early because '.' and top-level dirs tie on depth and the depth sort kept insertion order (ordering bug in the cleanup helper, not a verification failure)",
+      "second_pass": "re-walk found 0 remaining subdirectories and 0 leftover entries; os.rmdir(ROOT) then succeeded"
+    },
+    "root_exists_after_cleanup": false
+  },
+  "applied": true,
+  "verification_scope": {
+    "performed": [
+      "process final state via Win32_Process (CIM): zero processes reference our root, zero playwright-chromium leftovers, zero python leftovers of ours",
+      "listener final state via Get-NetTCPConnection: host listening set recorded, none owned by any process of ours (test servers used 127.0.0.1:0 and died with their process)",
+      "exact file set recorded in cleanup-dry-run-r3.json: 538 files / 671 dirs / 24044499 bytes",
+      "per-file SHA-256 + byte size verified immediately BEFORE each unlink (0 mismatches, 0 missing)",
+      "reparse points enumerated without following links; both ends resolved to absolute paths and asserted inside this writer's own root (6 links, all internal)",
+      "link nodes themselves removed with non-recursive os.rmdir; targets re-checked present afterwards",
+      "hard-link audit: every file nlink==1 (0 files with nlink>1)",
+      "directories removed only with os.rmdir (empty-or-fail), root re-checked with lstat",
+      "root absence re-checked with a fresh lstat after a second empty-directory pass"
+    ],
+    "not_performed": [
+      "a system-wide packet capture or full OS-level sandbox claim (not attempted, not claimed)",
+      "backfill of the R2 receipt's not_performed items (per-file SHA / hard-link audit / formal port sweep of the already-deleted R2 roots) — those stay honestly not_performed",
+      "any deletion of other lanes' directories (shared TEMP pytest-146/147/148 untouched)"
+    ]
+  },
+  "updated_at": "2026-10-08T20:07:25Z"
+}

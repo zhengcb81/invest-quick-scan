@@ -1665,3 +1665,8 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 真实CLI退出1不等于早拒：wrong security_id已经stub31、fixture key打开2、建库及保存结果，必须看调用与预算前置。完整package全层重签也不能替代不可变标准body/context/原attempt；缺数据应阻断新的完整write，兼容历史读取和compact应单独保持。
 - Windows asyncio内置socketpair在此沙箱阻塞；去key/禁止外网的guard下沙箱外Mock异步及集中247通过。保留timeout与FD controller误差，不用它们判产品RED或反复加审查节点。
 - 收到47工件SHA/135固定源码不变，743本轮自有文件严格清。worker历史清理聚合hash不是可复核逐文件清单，shared TEMP无法证明归属不代删；公开handoff对应缺口保留，不制造真实StockWiki/owner gold或关G3/F05。
+
+## 2026-10-08 — Phase105：损坏UTF8软件范围收口与证据边界
+- StockWiki三个严格解码入口加入UnicodeError的具名处理，43受影响方法、原两反例、七次真实CLI确认list invalid／prune跳过并保持正常retention，verify/restore／registry拒绝。没有无关变化，只做一次集中有限审查与受影响批次；原full/UI结果保留，SR02-4B有限软件闭合。
+- 工件可信性应分算法与字节域：75项名为git_blob_sha256却实为40位SHA1 OID，按真实OID＋独立raw/Git SHA256均核验。两真实回执未入worker索引可另按收到HEAD归档，不能凭缺索引造新owner文件、改旧工件或直接指为代码漂移。
+- 历史R3逐文件nlink全0与文字nlink==1不符，根已删就无法补证明单硬链。新一批自有清理有严格lstat=1、set/size/SHA与终态，只认证新根，不能抹去旧R2/sharedTEMP缺口；软件有限签收与历史取证限制、真实联合/G3F05门分别记录。
