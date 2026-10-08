@@ -1415,3 +1415,4 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_r
 - [x] [验收报告](docs/implementation/reviews/SW-REPAIR-02/acceptance-2026-10-08.md)/[五组整改卡](docs/implementation/reviews/SW-REPAIR-02/remediation-2026-10-08.md)/独审/原日志留档，保持changes_requested。自有根六个已知junction先非递归解链，769临时文件strict CIM/端口/lstat/set/SHA dry-run→Apply已清，旧Phase92/共享TEMP/opencode.json保留。更新PWF/接手说明，IQS精确提交推送见progress实际Git回执。
 - F05/真实身份与事实golden、QA↔SW实际流水线/双owner恢复未交付，不据本包测试或handoff格式宣布G3/F05/TH/IN解锁。
 - [ ] 原StockWiki唯一writer接续五组整改，交回真实新commit/handoff/清理证据后再对受影响范围集中验收；本轮不自动接管或重复实施原六项。
+- 实际IQS交付`0168bb9d5675727edea68b004a862c3e48946f2e`，92精确文件已沙箱外提交并正常推送origin/master，86工件/index staged bytes相符、diff检查通过；仅opencode.json未跟踪保留。后续仅补PWF回执，无被审代码/工件变动。
