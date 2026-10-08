@@ -1458,3 +1458,4 @@ Status: review_completed_changes_requested; source_repository_read_only; owner_s
 - [x] 一次集中独审后同源四项复证3GREEN/1RED：同改副本archive/fixture仍发布historical/verified_before_write，index正确拒漂移；原六项已修复，仅LR-02B P1待原writer。初controller output越界exit3保留不当产品RED。[验收](docs/implementation/reviews/EVID-LAB-01/second-remediation-2026-10-08/acceptance.md)/单项卡/原日志留档。
 - [x] 546文件/136目录strict CIM/lstat/set/SHA dry-run→Apply清理、Lab HEAD/clean及122工件收尾不变。PWF与接手更新；不写外仓、不执行live、不关闭门，精确Git交付见progress实际回执。
 - [ ] 原Lab writer交回LR-02B新commit/handoff后做一次受影响收口；当前仅partial_verified/changes_requested，不恢复其他已完成实施。
+- 实际IQS交付`2db1508ab52a466264ac65ba545f77bd1b066551`，230精确文件已沙箱外提交并正常推送origin/master，224工件及索引staged原字节匹配、diff检查通过。仅opencode未跟踪保留；后续仅PWF回执，Lab不写、不签全门。
