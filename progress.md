@@ -2509,3 +2509,5 @@
 - 在已报备tests/unit/test_quick_scan_external_context.py新增五项；产品源码及其他执行范围与16文件776批次均不变，没有重跑无变化全套或新增小节点review。cross-lease-first-01实际exit0，5P/195 deselected/0失败错误跳过，pytest2.53s/controller3.079s，执行源SHA不变，无活运行handle。
 - 真实SQLite/client路径覆盖：external-only和hybrid均在搜索结算后租约过期→重新打开→新lease复用原context/时间/费用→一次模型HTTP→checkpoint再次读取零HTTP；删除synthetic搜索凭据仍能warm。unknown搜索跨lease保持原预留且模型0HTTP；旧lease/context在HTTP前fence；迟到模型保存actual响应并结算已知费用，但无有效use proof/无checkpoint、work uncertain且不能claim重发。只有HTTP替身与synthetic身份/价格，不认证真实API/公司事实或独立进程被杀。
 - recovery-interface.md明确这五条边界与未覆盖部分；过期但未发送检索意图仍保守等待明确处理。下一步MCP逐HTTP计费、真正OS子进程CLI/恢复，然后完整Phase111一次集中静态/回归/独审/正常源发布与严格清理；全局门及外仓许可不变。checkpoint08仅追加私有测试证据，Git完成须等实际回执。
+- checkpoint08 prepare和正常Git均实际exit0：43原工件、50精确选择（scope.json字节未变故49实际变化），提交并推送c8f414edc432c3308392c5706234fab4d4f1e4ca；staged/committed工件和索引原字节核对通过，HEAD=origin/master，仅原opencode未跟踪。旧07/补充/index未修改，源仓未写/发布、自有环境保留。随后只补PWF实际回执与官方协议发现，不改冻结工件或重跑测试。
+- 已只读核Z.ai官方devpack Web Search MCP文档和MCP 2025-03-26 lifecycle/transports，为下一实施段明确initialized通知/202空body、会话header及JSON/SSE响应边界；不是服务连通验证，没有调用收费MCP或读真实key。首搜索site.docs写法不准确，返回第三方材料仅作官方URL定位，不采用其技术结论；以最终官方页面为依据。
