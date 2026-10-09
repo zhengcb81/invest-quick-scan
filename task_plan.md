@@ -1558,3 +1558,4 @@ Status: in_progress_private_implementation_not_published
 - 冷跑、缓存/重复恢复、确认且可计价的拒绝/坏JSON/错实体/空结果转下一route、unknown/无usage/保存失败停机、并发一次许可、同查询跨题共享、TTL新轮刷新、两query之间真实持久中断及Retry-After/超价界均覆盖。20项初RED是协调入口尚缺，不冒充20个独立旧漏洞；原中间失败保留。
 - 同URL跨查询去重曾丢第二query覆盖，是真实新增反例；复用既有normalizer按query处理、最终URL去重并保留各次短摘要/日期/operation/检索时间，metadata仍受总cap。两处中间fixture错误是未配对pricing basis/usage unit使主route不准入，已修正并断言全部预期route准入，不扩大产品口径。
 - 当前无活测试或Git handle：27720和35856均已实际终态exit0。runs/n111a保留供完整Phase111接线，不能清理或重启旧helper。新IQS checkpoint03以实际Git回执为准；这不是集中签收，不发布schema9，也不关闭其他门。
+- 本轮checkpoint03已实际正常提交推送`35df1184c028b7c2a79446004d32c439c791316d`：233精确路径、227归档/控制器工件及index03 staged/committed原字节一致；七批原执行留档、118非写范围支持文件不变。prepare12477与Git73365均终态exit0，HEAD/远端跟踪一致，仅原opencode未跟踪。StockQA仍42a517c/原七条未写未发布；Phase111继续接LLM/proof/MCP/公开CLI，随后仅补此PWF实际回执，不改冻结工件。
