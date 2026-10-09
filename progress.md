@@ -2692,3 +2692,9 @@
 - 自有runs/w15a实际清理20051文件/13167目录，真实lstat单硬链/无reparse、精确集合与SHA、CIM0，dry→Apply；根已不存在。20件真正OS producer合成原文已归档，不归档真实SQLite/公司metadata克隆/配置，不清共享TEMP或其他仓未知项。
 - 更新Next Step/Phase113基础步骤与唯一当前handoff；下一项原步骤4正式query/refresh及真实owner golden继续实施。本仓IQS正常Git/push实际回执待本批工具完成，暂不写虚构commit；不由基础软件关闭W15/G3/L03/B01/F05/TH-IN或200家live。
 - 本批IQS发布首次在任何stage/commit前按allowlist拒绝：Git默认将未跟踪工件折叠为上级目录；改为-uall逐路径核验，仍保留相同精确写范围，不放宽整个父目录。原source publication与清理结果不变，接续实际Git待工具回执。
+
+
+### W15基础归档实际Git回执
+
+- IQS正常提交推送929d76226dc2efa8b02e094312baa51fe71076c8，555精确路径，远端origin/master同HEAD；冻结工件staged原字节与工作树SHA核对通过，原opencode保留。原-uall目录折叠拒绝在stage前停止；随后index.lock竞争在535项暂存后停止，只读确认锁自行消失，无删锁/杀外来进程。精确续收保留原selection/失败记录；diff检查发现交接PWF尾空行，只修该文档，原raw证据不动，正常commit/push终态0。
+- 本条与实际提交/推送日志仅补记已完成交付，不改candidate02、受审产品或清理回执，不再次测试/审查。Phase113步骤4继续按c06-next实施，整个项目目标active；下一IQS提交仅包含本PWF补记及实际Git日志，不预报其commit。

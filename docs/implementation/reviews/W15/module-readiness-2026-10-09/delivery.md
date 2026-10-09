@@ -8,7 +8,7 @@
 |---|---|---|---|
 | StockWiki | master / a5a97d6efbf5f0ee79122a1ec375def388700690 | 15精确路径，路由存储/CLI/增量刷新/备份及测试 | 既有owner决定7无remote，本地交付 |
 | StockQAbyLLM | master / 6aafc32eae5339668e893b8a2b246d0655075584 | 16精确路径，Q13动作与原费用/派发事务接线、schema及测试 | origin/master已核与commit相同 |
-| invest-quick-scan | 本批实际提交以intake/iqs-publication/result.json及progress回执为准 | 5公共代码/schema、PWF和原字节证据 | 正常提交/推送进行时不预报成功 |
+| invest-quick-scan | master / 929d76226dc2efa8b02e094312baa51fe71076c8 | 555精确路径，含5公共代码/schema、PWF和原字节证据 | origin/master已核与commit相同 |
 
 源交付原件：[source-publication](../../../intake/W15/module-readiness-2026-10-09/source-publication/)。原未知opencode和QA11未知路径不读、不暂存、不清理；保护源码SHA核验通过。StockWiki正常static hook通过，StockQA原正常格式/类型/密钥等钩子均通过，未跳过检查。
 
