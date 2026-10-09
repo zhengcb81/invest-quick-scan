@@ -2502,3 +2502,10 @@
 - 新runtime-dispatch-interface.md说明actual owner/时间线、DeepSeek文本模式、版本兼容、schema12事件及恢复边界；新checkpoint_07.py只归档本IQS私有实施，不发布StockQA。19原执行批次/旧01–06索引保留，正常Git结果尚待实际回执。完整Phase111、MCP/跨租约/独立进程CLI、整批静态/集中审查/源发布/严格清理与所有全局门继续开放。
 - checkpoint07首prepare原26228实际exit1，控制器把route-decision.schema.json的Git LF字节与工作树CRLF误作同一域；五IQS消费者工作字节均与checkpoint06真实执行SHA相同，只有该JSON的Git SHA不同且LF规范化后完全相同。未产新index/清单、未暂存提交或重跑产品测试。新helper改为核原执行字节，并分列Git/working SHA，仅该明确JSON允许LF域核对；不修改冻结原记录。
 - 接续prepare原13799实际exit0：732工件、739精确选择、19原执行批次、111支持文件不变；随后git模式在只读diff的739路径argv发生WinError206，尚未暂存/commit/push。冻结checkpoint07/index不修改，新增checkpoint_07_resume.py与独立补充索引，用原NUL清单和批量Git blob读核原字节后接续正常Git；不重跑产品测试、不以工具失败声明产品失败或已发布。
+- checkpoint07补充prepare及正常Git均实际exit0，真实提交/推送4884e7baa03a2cbda7ba55920c8987032a9f2c88，741精确变化路径，732原工件及补充/index共735 Git blobs的staged/committed原字节核对通过，HEAD=origin/master，仅原opencode未跟踪。旧01–06和原07冻结helper/index保持；StockQA源42a517c/原七项未写未发布，runs/n111a仍保留供完整Phase111，不做最终清理。
+
+## Phase111 两阶段/跨租约恢复追加：2026-10-09
+
+- 在已报备tests/unit/test_quick_scan_external_context.py新增五项；产品源码及其他执行范围与16文件776批次均不变，没有重跑无变化全套或新增小节点review。cross-lease-first-01实际exit0，5P/195 deselected/0失败错误跳过，pytest2.53s/controller3.079s，执行源SHA不变，无活运行handle。
+- 真实SQLite/client路径覆盖：external-only和hybrid均在搜索结算后租约过期→重新打开→新lease复用原context/时间/费用→一次模型HTTP→checkpoint再次读取零HTTP；删除synthetic搜索凭据仍能warm。unknown搜索跨lease保持原预留且模型0HTTP；旧lease/context在HTTP前fence；迟到模型保存actual响应并结算已知费用，但无有效use proof/无checkpoint、work uncertain且不能claim重发。只有HTTP替身与synthetic身份/价格，不认证真实API/公司事实或独立进程被杀。
+- recovery-interface.md明确这五条边界与未覆盖部分；过期但未发送检索意图仍保守等待明确处理。下一步MCP逐HTTP计费、真正OS子进程CLI/恢复，然后完整Phase111一次集中静态/回归/独审/正常源发布与严格清理；全局门及外仓许可不变。checkpoint08仅追加私有测试证据，Git完成须等实际回执。

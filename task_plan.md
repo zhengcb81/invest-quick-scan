@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前下一动作（2026-10-09 Phase111）**：接续两阶段/跨租约恢复，随后逐HTTP计费MCP与真正子进程CLI。DeepSeek Responses external-only文本协议、开启思考而仅输出最终答案、混合搜索及公开main冷暖恢复已有隔离证据；私有schema12的旧库迁移/回滚、事件不可变/损坏拒绝及禁止历史补写已验证，16文件最新native-events-runtime-affected-green-01实际776P/0失败错误跳过/86.57s。原生事件独立保存，历史HTTP回执哈希不变；回答时点来自原durable response记录。仍是HTTP替身和synthetic身份，不替代独立进程CLI、金融事实或真实API验收。旧682P、42P和IQS110P/1F＋整改1P保留，不与776相加。读[最新接续接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/runtime-dispatch-interface.md)。checkpoint07正常Git结果以progress实际回执为准；Phase111保持in_progress，StockQA42a517c/schema8未发布，整批静态/一次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
+**当前下一动作（2026-10-09 Phase111）**：逐HTTP计费MCP接线，随后真正OS子进程CLI冷暖/中断恢复。16文件776P验证私有schema12/runtime；另新增五项真实store/client跨租约路径5P，覆盖已付费搜索→新租约回答→checkpoint、unknown搜索不重发、旧lease fence及迟到模型仅留账。该追加只有一测试文件变化，不重复776也不跨批相加，读[恢复边界](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/recovery-interface.md)。过期且未发送的旧检索意图仍保守等待明确处理，不声称任意断点自动恢复。checkpoint07已正常提交推送4884e7b，732原工件/735 Git blob核对一致；checkpoint08实际Git看progress。所有运行仍是HTTP替身与synthetic身份，独立进程CLI/金融事实/真实厂商计价未验。Phase111保持in_progress，StockQA42a517c/schema8未发布；整批静态/一次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 

@@ -1775,3 +1775,4 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 新版external公开attempts从真实work owner逐次读HTTP回执，因此401/明确额度429后的备用成功在冷暖输出一致；正文、模型顺位和来源均不用于回填actual。10项main测试含损坏恢复与具名manifest拒绝，属于软件隔离集成，不是StockWiki真实身份golden、子进程E2E或答案准确性。
 - 2026-10-09后续时点反例更正上条早期方案：answered_at采用实际持久response.recorded_at，原HTTP.completed_at单独保持；应满足HTTP完成≤context-use保存≤回答记录，不能将HTTP完成时点直接当已持久回答时点。私有schema12把实际native事件独立保存并与原HTTP哈希绑定，不修改旧receipt哈希配方或为历史空记录补造事件。最新42项隔离GREEN不关闭迁移、跨租约/MCP、子进程CLI或金融准确性验收。
 - 新schema12迁移必须防止事后填充：空表升级本身不补历史，但原_persist_response_tx重放分支仍能给旧HTTP补事件，真实新增反例1F已定位。事件插入现在只允许同事务的新HTTP响应；原行有事件只精确重放，原行缺事件保持缺失。最新16文件776P覆盖迁移/回滚、保存上限与原native调用，没有收费请求或真实身份/事实认证。
+- 跨租约工作行回到pending不等于检索可重发：已结算搜索可在TTL内由新lease复用原证据；unknown外部operation仍由原journal/Q09保持阻断/预留。实际五项恢复追加已GREEN，旧lease不能发送、晚到模型仅留actual响应和费用不发布答案。过期且未发送检索意图保持保守hold，公开子进程杀停/恢复与MCP仍待；不将五项低层覆盖扩大为全部自动恢复。

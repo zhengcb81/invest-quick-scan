@@ -56,3 +56,9 @@ runner/cascade检索协调与async投影已私有实现。独立identity/manifes
 原42项GREEN之后，新增迁移保护18项首轮17P/1F定位真实历史补写缺口；现在事件首次插入只随新响应同事务，旧缺失不补写。16文件最终776P/0失败错误跳过/86.57s（controller87.324s），覆盖旧库真实DDL/回滚、事件不可变与坏恢复/上限及既有runtime路径。原失败仅增量归档，不跨批相加；这不是金融事实准确性、真实厂商计价或完整Phase111验收。
 
 下一步两阶段/跨lease恢复→MCP每HTTP独立费用→真正OS子进程CLI，再在完整Phase111同一大节点最终回归/静态/集中一次独审/正常源发布/严格自有根清理。读runtime-dispatch-interface.md；checkpoint07仅IQS进度留档，实际Git看progress。StockWiki许可/联合ACK/真实gold及G3/F05/TH-IN/L03原门保持。
+
+## 两阶段/跨租约追加：下一步转MCP
+
+checkpoint07已正常提交推送4884e7b。追加五项真实client/store恢复路径5P/195 deselected/2.53s，无产品变更，原776执行源只新增一测试文件，不重复全套。已结算搜索跨lease保留context和费用，unknown检索不重发、旧lease在HTTP前fence、晚到模型只留响应与账务；读recovery-interface.md。不是公开OS进程杀停/恢复，过期未发送外部意图仍保守hold。
+
+下一动作逐HTTP计费MCP，必须把initialize、initialized通知（若协议要求）、tools/list和tools/call各自记为真实发送及费用操作，不把工具会话协商隐藏在一次检索中；unknown任一步都停、已有结果恢复不重复计费。随后真正子进程CLI/恢复，最终完整Phase111集中一次审查/源发布/严格清理。当前只是私有进度，不关闭任何跨仓或准确性门。
