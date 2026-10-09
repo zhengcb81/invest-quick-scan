@@ -2630,3 +2630,18 @@
 - IQS第一次归档Git工具e177aa实际exit1，仅部分精确stage；原项目logs忽略规则阻断git add，未执行commit/push。冻结selected-before和具名first-stage-note保留；新增resume helper验证HEAD/范围/原部分staged均属于当前allowlist，只对已核验原档精确-f add，不改gitignore、不绕hook、不读/暂存未知opencode、无源写入。
 
 - IQS精确resume归档原14709真实终态exit0：正常hooks/commit/push a0b4838a8eb9e4d6560364e0d165981c5a37ea82，3101精确路径全部stage与Git blob原bytes相同，远端master已确认同commit；-f仅用于此前项目logs忽略的具体已审档案，不改配置、不force push。原first-stage选择和失败note保持，未知opencode未读/未暂存。所有候选、62原包、253最终独审原件、历史失败和5029/2151严格清理终态均已交付。StockWiki仍源0写入、一行cap路径授权pending；本次仅追加该实际PWF/Git回执，不再测已绿代码，不擅自关闭任何全局门或把等待称目标完成。
+
+## 2026-10-09 后续全部授权与StockWiki发布接续
+
+- 用户明确“给你全部后续所需的授权”，之前第五备份路径及后续既有计划跨仓写许可已解除；不重复询问、不把权限当证据关闭门。根PWF resolver CheckAmbiguity无选择输出，legacy root保持；自动goal实际active，IQS ecd01ab/仅原opencode未跟踪。
+- 最新只读StockWiki HEAD仍c40de21403720306ba21edbf71b9634a40ee58f8/master/clean；AGENTS与precommit统一static-only接口已读取，所需五候选与签收SHA已有冻结；计划先精确源发布、正常hooks/Git/push。仅源权限条件改变，不改历史验收/输出/authority、不重造测试根。
+- 同一既有独立agent只读盘点后续顺序，非重审JR1/3、不新增测试/门/外仓writer；主控仍唯一计划和源码实施owner。
+
+- 实际源发布控制器工具e443f0终态exit1：五获准候选已复制并精确暂存，提交/钩子/推送尚未执行；Git保护核验拦下`tests/test_quick_scan_delivery.py`的496处CRLF→LF。工作树五SHA均保持最终受审字节，其他四Git blob逐字节相同，delivery执行b50ef0e4与Git bda18d2e分域记录。原一次性publisher/input/诊断保持，新resume只对已暂存五路径接续，不盲跑旧脚本、不改全局换行配置、不重跑已绿测试。
+
+- 双域resume工具589f66实际exit1在提交前确认源仓缺少pre-commit安装；resume-input未生成、无commit/push，源五执行SHA/326保护文件校验已过。先确认实际Git hooks路径、按现有配置安装正常钩子，再接续；不是自动审批拒绝，也不跳过仓库static-only要求。
+
+- 原生未隔离read命令5df2c3受继承Git环境影响，status报告非工作树；没有写入。后续均用已限定且无密钥Git环境。hook-install工具2fdb83实际exit0，仅安装既有static-only钩子，不改产品/配置；commit原PID85316已终态exit0，StockWiki实际6c46f03b486d215d696d32bee618793bc7fcb410、5变化、正常检查Passed。五执行SHA、Git双域与326保护源重核相同，源clean。
+- resume工具91cf29的push原PID3676终态128：源仓没有origin；只读1920b8证实remote_names=[]，既有PWF决定7本就保持StockWiki本地无remote。保留原失败而不新加远端，不重复commit；finalize工具59f487实际exit0，result明确source_published=true/pushed=false/local_only_existing_owner_decision_7。软件交付完成不冒充远端发布、金融准确性或全局门。
+- 独占runtime inventory真实os.lstat核9缓存文件/4子目录，0链接/0reparse。native dry工具18e90d和Apply工具5fca24均终态exit0，CIM0活进程、331源执行文件SHA不变，逐个仅清runs/s13p/root；共享TEMP、其他仓库、DB/名单、未知opencode均保留。正常钩子已装仍保留Git本地基础设施，cache清完。新本仓Git尚待本次实际回执。
+- 后续只读盘点明确实际缺口：W15模块增量刷新、公共query/refresh envelope及当前真实owner golden先于L03/G3；B01仍无准确性结论，facts/relations未生产、F05和TH/IN未解锁。先按W15原卡核W06/W11/Q13，不重做G2b、已签收W11/W12或JR软件。
