@@ -2628,3 +2628,5 @@
 - acceptance.md/json与publication-handoff已写；用户四路径/唯一writer授权有效，唯额外backup manifest cap1→2许可仍未答复。因此软件候选signed off不等源发布，更不关闭G3/F05/L03/真实identity/facts/query golden/金融准确性或TH-IN。一行许可后只做精确源重核/正常Git发布接续，无新小节点review，不能复跑被清根的一次性helper。当前IQS归档/PWF提交推送待实际终态回执。
 
 - IQS第一次归档Git工具e177aa实际exit1，仅部分精确stage；原项目logs忽略规则阻断git add，未执行commit/push。冻结selected-before和具名first-stage-note保留；新增resume helper验证HEAD/范围/原部分staged均属于当前allowlist，只对已核验原档精确-f add，不改gitignore、不绕hook、不读/暂存未知opencode、无源写入。
+
+- IQS精确resume归档原14709真实终态exit0：正常hooks/commit/push a0b4838a8eb9e4d6560364e0d165981c5a37ea82，3101精确路径全部stage与Git blob原bytes相同，远端master已确认同commit；-f仅用于此前项目logs忽略的具体已审档案，不改配置、不force push。原first-stage选择和失败note保持，未知opencode未读/未暂存。所有候选、62原包、253最终独审原件、历史失败和5029/2151严格清理终态均已交付。StockWiki仍源0写入、一行cap路径授权pending；本次仅追加该实际PWF/Git回执，不再测已绿代码，不擅自关闭任何全局门或把等待称目标完成。

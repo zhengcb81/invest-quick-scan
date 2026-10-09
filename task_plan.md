@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**JR1/JR3 最新接管进展（2026-10-09，优先于以下快照）：** 四文件修复候选与同次集中独审已完成：affected-final04 113P/14.88s、static05成功、joint07 18P/131.36s，当前五SHA一致且source_changed为空；F1–F5软件发现全关闭。最终76原件含两模型各31合成原包、480非秘密源依赖锁、253独审原件已验证；唯一自有 runs/r13a 已严格清除5029文件/2151子目录，所有实际进程终态。StockWiki仍c40de21/clean、源未写；第五路径 backup manifest单行cap1→2仍待明确许可，原四路径授权不重复问，也不发布已知破坏备份的半批。接续先读 [验收](docs/implementation/reviews/G3/jr13-2026-10-09/acceptance.md) 与 [发布交接](docs/implementation/reviews/G3/jr13-2026-10-09/publication-handoff.md)，获许可后重核源树→精确五候选→正常外仓Git/hooks/push→追加实际PWF回执；不可盲跑已清理固定根/旧helpers。当前IQS材料正常提交推送收尾中，实际commit以progress最新回执为准。G3/F05/L03/真实gold/金融准确性/TH-IN仍各按原门，不刷新退役回执、不增小节点审查。
+**JR1/JR3 最新接管进展（2026-10-09，优先于以下快照）：** 四文件修复候选与同次集中独审已完成：affected-final04 113P/14.88s、static05成功、joint07 18P/131.36s，当前五SHA一致且source_changed为空；F1–F5软件发现全关闭。最终76原件含两模型各31合成原包、480非秘密源依赖锁、253独审原件已验证；唯一自有 runs/r13a 已严格清除5029文件/2151子目录，所有实际进程终态。StockWiki仍c40de21/clean、源未写；第五路径 backup manifest单行cap1→2仍待明确许可，原四路径授权不重复问，也不发布已知破坏备份的半批。接续先读 [验收](docs/implementation/reviews/G3/jr13-2026-10-09/acceptance.md) 与 [发布交接](docs/implementation/reviews/G3/jr13-2026-10-09/publication-handoff.md)，获许可后重核源树→精确五候选→正常外仓Git/hooks/push→追加实际PWF回执；不可盲跑已清理固定根/旧helpers。IQS候选/证据已正常提交推送a0b4838a8eb9e4d6560364e0d165981c5a37ea82，3101精确路径staged/committed原字节核验一致、HEAD/远端相同；本实际PWF回执随即单独提交。G3/F05/L03/真实gold/金融准确性/TH-IN仍各按原门，不刷新退役回执、不增小节点审查。
 
 
 **JR1/JR3 当前实际结果（2026-10-09，覆盖以下旧时点）：** 人类四文件/总控writer授权已生效；候选仍只在IQS runs/r13a，SW源未写。集中独审一P1/两P2已补10RED→10GREEN，当前最终受影响103P/13.29s、公开双owner链joint05实际18P/124.67s、静态03通过。该同一独审正在复验历史地址兼容与控制器synthetic配置判定，完成后冻结候选/归档、正常Git及严格自有清理。第五路径backup manifest一行cap1→2授权待人类答复，不发布已知破坏备份的半批。只关闭实际证明的软件子范围；G3/F05/L03/真实gold/金融/TH-IN仍开放。
