@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前下一动作（2026-10-09 Phase111）**：把已实现的外部检索调度接入既有LLM回答路径，绑定实际prompt/attempt与独立context-use proof，再验证两阶段恢复/MCP/公开CLI。私有六受影响文件最终276P/20.36s；其中检索调度可冷跑、warm零HTTP、已知且已计价失败换下一搜索路由、未知发送/计价停机，同一live lease下未发送意图可原预留续接。收到Retry-After才记已知等待；实际用量超界不可通过新generation绕过。同网页不同查询保留各自短摘要/检索时点/operation，来源数据仍不是事实认证。见本批[接线接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/coordinator-interface.md)。原REST调度未实现的历史已更新，LLM/来源proof/MCP/公开CLI、最终静态/一次集中review/源发布/严格清理仍待执行；Phase111保持in_progress，模型cascade继续只用原模型policy，Q09共享投影只作会计。StockQA旧全仓授权须先报备；StockWiki JR1/JR3四新路径、G3/L03/F05/真实identity/facts golden/THIN授权原门不变，不启动收费API/200家live、不刷新退役工程回执。
+**当前下一动作（2026-10-09 Phase111）**：接通真实store验证的上下文使用proof、来源URL与通用结果/检查点/C06投影，再接runner、两阶段/跨租约恢复、MCP和公开CLI。实际LLM同步/异步四接口已绑定外部短context，external-only不发送native工具，explicit hybrid保留独立原生事件。私有schema10；八受影响文件455P/36.24s，0失败错误跳过，执行源码不变；不与历史重叠批次相加。原native回执和实际model/SHA保持，proof仅由实际检索与回答记录派生。原checkpoint1的CHECK/读取/恢复仍只认native，下一段须显式版本/原子迁移并保留历史字节，不能暗改旧解释。读[实际回答接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/answer-use-interface.md)。Phase111保持in_progress，StockQA42a517c/schema8未发布；完整批次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 

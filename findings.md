@@ -1747,3 +1747,8 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 公司网页URL可被不同query返回不同短摘要/报告日期；URL去重不是抹掉查询及检索来源。按query复用既有normalizer，context URL单列、retrieval_provenance保留每个实际operation的原摘要与时点；不得给旧摘要加上新retrieved_at，最终上下文及metadata统一cap。
 - Retry-After仅解析实际delta秒、无原headers保存；日期/非法header暂按unknown等待，不声称已知quota reset。超verified usage仍按observed units结算，但同计价版本不能凭换generation再跑；修改并获准的计价版本是另一显式配置动作，未扩大额度或重置历史费用。
 - 当前实现只解决私有检索调度。真实回答prompt/attempt/use-proof、原生＋external混合来源隔离、publicCLI和MCP/跨lease恢复尚缺，不能把276P扩大成完整Phase111或答案准确性验收。
+
+
+## Phase111 实际LLM上下文使用接续：2026-10-09
+- 实际HTTP和原记录绑定才证明context使用，不能由回答JSON补一个search=true。hybrid原生完成仍必须核外部proof；provider/type/actual模型/实际work_transport attempt及六个检索引用字段都需同源。原receipt_sha256不包含私有proof，保留native历史原字节；最终检查点必须回读owner，而不能仅认自洽hash。
+- 原checkpoint schema1从SQL CHECK到恢复/标准body/C06 adapter都有版本1假设。后续需显式版本化兼容及原子迁移反例，不能绕过native成功条件或把额外键暗塞进旧版。当前455P是软件隔离覆盖，不认证真实issuer gold、事实正确性或真实厂商计价。

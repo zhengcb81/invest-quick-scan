@@ -2427,3 +2427,13 @@
 - 仅相同有效lease的无dispatch意图能复用原operation/预留继续；dispatch存在或结果/费用未知不重发/不failover。过期旧lease的未发送意图安全停机，跨owner接续尚待完整两阶段恢复，不称已完成。MCP明确before-reservation block，仍必须实施分阶段计费握手，不把REST通过当MCP通过。
 - 已更新PWF/接线接口/接手说明；下一动作原LLM发送边界及context-use proof，最终受影响/静态/公开CLI和一次集中review留到完整批次。不新增小节点审查门，G3/F05/THIN/StockWiki四新路径许可不变；当前自有根不清理。IQS checkpoint03 Git实际结果随后追加。
 - **Phase111本轮实际Git交付**：prepare12477已终态exit0，233精确IQS路径正常提交`35df1184c028b7c2a79446004d32c439c791316d`并push origin/master；Git73365实际exit0，HEAD/远端跟踪一致。227归档/控制器与index03 staged及committed原字节逐项核对，7实际批次/118支持文件不变，index01/02未覆写，仅原opencode未跟踪保留。StockQA源42a517c及原七条未写，schema8生产边界不变；runs/n111a继续保留，全部本轮测试/Git handles终态。随后只补PWF这条实际回执，不关Phase111或全局门。
+
+
+## Phase111 实际LLM上下文使用接续：2026-10-09
+- 前一heartbeat只读核开工门，三源HEAD及缺前置不变；本goal接续实际实现。仅写IQS隔离副本，没有StockQA或其他源仓写入。
+- use-red-01实际9F/109deselected/2.50s，新binding缺失；use-green-01实际9F/3.76s，fixture provider_config_ref与真实provider不一致，原Q09拒绝正确。修fixture并保留原日志，use-green-02为9P/0失败，未放宽生产路由。
+- use-boundary-red-01实际7F/14P/109deselected/4.99s：缺外部proof的hybrid误成功、外来attempt自签、四项检索引用漂移为六真实缺口；另一项为fixture猜错稳定拒绝文字。green-01实际9F/12P/6.18s，实际attempt位于work_transport嵌套字段，错误读取造成回归；修真实嵌套路径后green-02为21P/5.05s。
+- use-affected-green-01原79500已终态exit0：八文件455P/pytest36.24s/controller37.077s，无失败错误跳过、执行源码SHA不变。覆盖同步/异步OpenAI Responses、MiniMax Responses/Messages、MiMo Chat及explicit hybrid；HTTP替身、真实SQLite/预算。native回执SHA/实际模型不伪改，不保存prompt/reasoning正文，真实API/密钥/下载/外仓写0。
+- 新私有schema10使用意图不可改写，原实际回答记录派生proof；schema9付费搜索迁移后不变/无假使用。落库失败未发送或发送后未知不重发，原预留守恒。原checkpoint/C06生产投影尚未接，不把客户端GREEN称完整公开CLI或公司答案准确性。
+- 活跃回归中提前读取OUT stdout路径报不存在：runner capture尚未完成，原79500仍活且只继续poll，没有重启；终态后raw正常归档。该错误是控制器读取时机，不是产品失败。
+- 已更新计划/发现/接手与实际接口；完整Phase111仍in_progress，集中review留到完整批次。源42a517c/schema8及原七未知项不动，runs/n111a保留；checkpoint04正常IQS Git实际结果随后追加，旧01–03索引/原工件不得覆写。

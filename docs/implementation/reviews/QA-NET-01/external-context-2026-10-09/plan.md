@@ -26,3 +26,7 @@
 协调入口现已私有实现：lookup→必要时Q08 admission→Q09原预留/intent→单次adapter→原journal计价settle→重建短context；真实保存故障、并发和跨query中断都覆盖。最新276相关测试通过，原失败保留；没有集中review、LLM/公开CLI/MCP或源发布。
 
 下一实际接线点是现有LLMClient/AsyncLLMClient.send_search_request、_search_request_payload、_parse_protocol_search_response及begin_quick_scan_send。不得改走不记账send_request：原生prompt/receipt SHA和Q10实际模型都保留原HTTP来源。external-only真实payload不提供native工具；hybrid按显式计划，同时分别证明外部context和原生工具；BaseLLMProvider不得继续无条件要求模型native搜索。先以实际HTTP payload与SQLite反例RED，再建立版本化私有context-use intent/result（绑定实际work/lease/attempt、context SHA、最终prompt SHA、原retrieval receipt SHA、实际response receipt SHA），调用点前后原子、不可由回答正文回填。不向native receipt插外部搜索事件/搜索route actual_model；公开C06 generic搜索状态只能在独立use-proof通过后投影。格式修复/备用模型是新的实际HTTP收费attempt，但复用原冻结上下文，warm/返回结果未知不得重复请求。MCP每个init/discovery/search单独Q09 operation，尚未完成，不把before-reservation拒绝作为最终交付。
+
+
+## Phase111 实际LLM上下文使用接续：2026-10-09
+实际客户端接线和新schema10 intent已完成私有TDD，八文件455P；见answer-use-interface.md。下一段必须以实际store核proof/来源URL，并明确checkpoint版本/迁移，原schema1 SQL CHECK及消费者假设不可静默放宽。runner/两阶段/跨租约/MCP/公开CLI、整批静态/一次review/源发布/严格清理仍待。只存hash/引用，没有prompt/reasoning正文；源schema8未发布，其他仓0写。

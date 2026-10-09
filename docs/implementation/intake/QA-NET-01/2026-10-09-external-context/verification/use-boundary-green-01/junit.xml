@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="21" time="6.115" timestamp="2026-10-09T06:46:45.793102+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-openai-responses]" time="0.345"><failure message="assert False&#10; +  where False = LLMSearchResponse(content='{&quot;entity_id&quot;:&quot;ENT_BYD&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;status&quot;:&quot;scored&quot;,&quot;score&quot;:6,&quot;description&quot;:&quot;Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '9891aab6c902e51b85a83625fb5a9995e02db6922b819590eb880cd38db457c2'}}).search_verified">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-green-01/test_external_use_actual_llm_p0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026A2B666D70&gt;
+provider = 'openai', protocol = 'responses', asynchronous = False
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+        with _external_answer_bindings(args, context, provider, model):
+            if asynchronous:
+                result = asyncio.run(AsyncLLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request_async("Answer IQS_05", "Trusted system instruction"))
+                sent = async_client.post.call_args.kwargs["json"]
+            else:
+                result = LLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request("Answer IQS_05", "Trusted system instruction")
+                sent = sync.post.call_args.kwargs["json"]
+        prompt = sent["input"] if protocol == "responses" else sent["messages"][-1]["content"]
+        system = sent["instructions"] if protocol == "responses" else sent.get("system", sent["messages"][0]["content"])
+        assert context["context_sha256"] in prompt and "Margin disclosure" in prompt
+        assert "tools" not in sent and "tool_choice" not in sent and "include" not in sent
+        assert result.content == content and "PRIVATE_REASONING" not in result.content
+        assert result.execution_metadata["search_status"] == "unverified"  # Original native receipt stays truthful.
+        assert result.execution_metadata["web_search_calls"] == []
+&gt;       assert result.search_verified
+E       assert False
+E        +  where False = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '9891aab6c902e51b85a83625fb5a9995e02db6922b819590eb880cd38db457c2'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1198: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-minimax-responses]" time="0.232"><failure message="assert False&#10; +  where False = LLMSearchResponse(content='{&quot;entity_id&quot;:&quot;ENT_BYD&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;status&quot;:&quot;scored&quot;,&quot;score&quot;:6,&quot;description&quot;:&quot;Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '177ec478963ce3e3d2d87bd01e598e62eaee2a0941b575e2d8ad17a75ac6216d'}}).search_verified">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-green-01/test_external_use_actual_llm_p1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026A2B38EEA0&gt;
+provider = 'minimax', protocol = 'responses', asynchronous = False
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+        with _external_answer_bindings(args, context, provider, model):
+            if asynchronous:
+                result = asyncio.run(AsyncLLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request_async("Answer IQS_05", "Trusted system instruction"))
+                sent = async_client.post.call_args.kwargs["json"]
+            else:
+                result = LLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request("Answer IQS_05", "Trusted system instruction")
+                sent = sync.post.call_args.kwargs["json"]
+        prompt = sent["input"] if protocol == "responses" else sent["messages"][-1]["content"]
+        system = sent["instructions"] if protocol == "responses" else sent.get("system", sent["messages"][0]["content"])
+        assert context["context_sha256"] in prompt and "Margin disclosure" in prompt
+        assert "tools" not in sent and "tool_choice" not in sent and "include" not in sent
+        assert result.content == content and "PRIVATE_REASONING" not in result.content
+        assert result.execution_metadata["search_status"] == "unverified"  # Original native receipt stays truthful.
+        assert result.execution_metadata["web_search_calls"] == []
+&gt;       assert result.search_verified
+E       assert False
+E        +  where False = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '177ec478963ce3e3d2d87bd01e598e62eaee2a0941b575e2d8ad17a75ac6216d'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1198: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-minimax-anthropic_messages]" time="0.245"><failure message="assert False&#10; +  where False = LLMSearchResponse(content='{&quot;entity_id&quot;:&quot;ENT_BYD&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;status&quot;:&quot;scored&quot;,&quot;score&quot;:6,&quot;description&quot;:&quot;Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': 'df6d03c13f6ec910d38e3eb5fed8372d37c0af250e39b8821843173a80914977'}}).search_verified">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-green-01/test_external_use_actual_llm_p2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026A2DC2B530&gt;
+provider = 'minimax', protocol = 'anthropic_messages', asynchronous = False
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+        with _external_answer_bindings(args, context, provider, model):
+            if asynchronous:
+                result = asyncio.run(AsyncLLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request_async("Answer IQS_05", "Trusted system instruction"))
+                sent = async_client.post.call_args.kwargs["json"]
+            else:
+                result = LLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request("Answer IQS_05", "Trusted system instruction")
+                sent = sync.post.call_args.kwargs["json"]
+        prompt = sent["input"] if protocol == "responses" else sent["messages"][-1]["content"]
+        system = sent["instructions"] if protocol == "responses" else sent.get("system", sent["messages"][0]["content"])
+        assert context["context_sha256"] in prompt and "Margin disclosure" in prompt
+        assert "tools" not in sent and "tool_choice" not in sent and "include" not in sent
+        assert result.content == content and "PRIVATE_REASONING" not in result.content
+        assert result.execution_metadata["search_status"] == "unverified"  # Original native receipt stays truthful.
+        assert result.execution_metadata["web_search_calls"] == []
+&gt;       assert result.search_verified
+E       assert False
+E        +  where False = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': 'df6d03c13f6ec910d38e3eb5fed8372d37c0af250e39b8821843173a80914977'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1198: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-mimo-mimo_chat_completions]" time="0.238"><failure message="assert False&#10; +  where False = LLMSearchResponse(content='{&quot;entity_id&quot;:&quot;ENT_BYD&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;status&quot;:&quot;scored&quot;,&quot;score&quot;:6,&quot;description&quot;:&quot;Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '45f068a86b8e5efdc0b9c62bec1ce6518afa7577b2c624b24a380922a40e12c0'}}).search_verified">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-green-01/test_external_use_actual_llm_p3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026A28F79F20&gt;
+provider = 'mimo', protocol = 'mimo_chat_completions', asynchronous = False
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+        with _external_answer_bindings(args, context, provider, model):
+            if asynchronous:
+                result = asyncio.run(AsyncLLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request_async("Answer IQS_05", "Trusted system instruction"))
+                sent = async_client.post.call_args.kwargs["json"]
+            else:
+                result = LLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request("Answer IQS_05", "Trusted system instruction")
+                sent = sync.post.call_args.kwargs["json"]
+        prompt = sent["input"] if protocol == "responses" else sent["messages"][-1]["content"]
+        system = sent["instructions"] if protocol == "responses" else sent.get("system", sent["messages"][0]["content"])
+        assert context["context_sha256"] in prompt and "Margin disclosure" in prompt
+        assert "tools" not in sent and "tool_choice" not in sent and "include" not in sent
+        assert result.content == content and "PRIVATE_REASONING" not in result.content
+        assert result.execution_metadata["search_status"] == "unverified"  # Original native receipt stays truthful.
+        assert result.execution_metadata["web_search_calls"] == []
+&gt;       assert result.search_verified
+E       assert False
+E        +  where False = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '45f068a86b8e5efdc0b9c62bec1ce6518afa7577b2c624b24a380922a40e12c0'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1198: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-openai-responses]" time="0.233"><failure message="assert False&#10; +  where False = LLMSearchResponse(content='{&quot;entity_id&quot;:&quot;ENT_BYD&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;status&quot;:&quot;scored&quot;,&quot;score&quot;:6,&quot;description&quot;:&quot;Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': 'a2a703539e535e59c0e97b0b605b0481bde57f3e51ccf8e06d30d60120e6ba2b'}}).search_verified">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-green-01/test_external_use_actual_llm_p4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026A2DC06F10&gt;
+provider = 'openai', protocol = 'responses', asynchronous = True
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+        with _external_answer_bindings(args, context, provider, model):
+            if asynchronous:
+                result = asyncio.run(AsyncLLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request_async("Answer IQS_05", "Trusted system instruction"))
+                sent = async_client.post.call_args.kwargs["json"]
+            else:
+                result = LLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request("Answer IQS_05", "Trusted system instruction")
+                sent = sync.post.call_args.kwargs["json"]
+        prompt = sent["input"] if protocol == "responses" else sent["messages"][-1]["content"]
+        system = sent["instructions"] if protocol == "responses" else sent.get("system", sent["messages"][0]["content"])
+        assert context["context_sha256"] in prompt and "Margin disclosure" in prompt
+        assert "tools" not in sent and "tool_choice" not in sent and "include" not in sent
+        assert result.content == content and "PRIVATE_REASONING" not in result.content
+        assert result.execution_metadata["search_status"] == "unverified"  # Original native receipt stays truthful.
+        assert result.execution_metadata["web_search_calls"] == []
+&gt;       assert result.search_verified
+E       assert False
+E        +  where False = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': 'a2a703539e535e59c0e97b0b605b0481bde57f3e51ccf8e06d30d60120e6ba2b'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1198: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-minimax-responses]" time="0.244"><failure message="assert False&#10; +  where False = LLMSearchResponse(content='{&quot;entity_id&quot;:&quot;ENT_BYD&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;status&quot;:&quot;scored&quot;,&quot;score&quot;:6,&quot;description&quot;:&quot;Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '760a871204aaa294dd3bfe4cd561c134924c1d9b07ecaba436036ff54db681b2'}}).search_verified">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-green-01/test_external_use_actual_llm_p5')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026A2D384450&gt;
+provider = 'minimax', protocol = 'responses', asynchronous = True
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+        with _external_answer_bindings(args, context, provider, model):
+            if asynchronous:
+                result = asyncio.run(AsyncLLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request_async("Answer IQS_05", "Trusted system instruction"))
+                sent = async_client.post.call_args.kwargs["json"]
+            else:
+                result = LLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request("Answer IQS_05", "Trusted system instruction")
+                sent = sync.post.call_args.kwargs["json"]
+        prompt = sent["input"] if protocol == "responses" else sent["messages"][-1]["content"]
+        system = sent["instructions"] if protocol == "responses" else sent.get("system", sent["messages"][0]["content"])
+        assert context["context_sha256"] in prompt and "Margin disclosure" in prompt
+        assert "tools" not in sent and "tool_choice" not in sent and "include" not in sent
+        assert result.content == content and "PRIVATE_REASONING" not in result.content
+        assert result.execution_metadata["search_status"] == "unverified"  # Original native receipt stays truthful.
+        assert result.execution_metadata["web_search_calls"] == []
+&gt;       assert result.search_verified
+E       assert False
+E        +  where False = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '760a871204aaa294dd3bfe4cd561c134924c1d9b07ecaba436036ff54db681b2'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1198: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-minimax-anthropic_messages]" time="0.232"><failure message="assert False&#10; +  where False = LLMSearchResponse(content='{&quot;entity_id&quot;:&quot;ENT_BYD&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;status&quot;:&quot;scored&quot;,&quot;score&quot;:6,&quot;description&quot;:&quot;Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '7becb2858be39ab8cb9e06397c8fc5f255b1411344b586947af39c3d3f9a94c0'}}).search_verified">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-green-01/test_external_use_actual_llm_p6')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026A2D384650&gt;
+provider = 'minimax', protocol = 'anthropic_messages', asynchronous = True
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+        with _external_answer_bindings(args, context, provider, model):
+            if asynchronous:
+                result = asyncio.run(AsyncLLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request_async("Answer IQS_05", "Trusted system instruction"))
+                sent = async_client.post.call_args.kwargs["json"]
+            else:
+                result = LLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request("Answer IQS_05", "Trusted system instruction")
+                sent = sync.post.call_args.kwargs["json"]
+        prompt = sent["input"] if protocol == "responses" else sent["messages"][-1]["content"]
+        system = sent["instructions"] if protocol == "responses" else sent.get("system", sent["messages"][0]["content"])
+        assert context["context_sha256"] in prompt and "Margin disclosure" in prompt
+        assert "tools" not in sent and "tool_choice" not in sent and "include" not in sent
+        assert result.content == content and "PRIVATE_REASONING" not in result.content
+        assert result.execution_metadata["search_status"] == "unverified"  # Original native receipt stays truthful.
+        assert result.execution_metadata["web_search_calls"] == []
+&gt;       assert result.search_verified
+E       assert False
+E        +  where False = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '7becb2858be39ab8cb9e06397c8fc5f255b1411344b586947af39c3d3f9a94c0'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1198: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-mimo-mimo_chat_completions]" time="0.250"><failure message="assert False&#10; +  where False = LLMSearchResponse(content='{&quot;entity_id&quot;:&quot;ENT_BYD&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;status&quot;:&quot;scored&quot;,&quot;score&quot;:6,&quot;description&quot;:&quot;Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': 'd320bf85e02f25020f214b0a837f3e9996f90dc0bcd260265a98307f37bb17a9'}}).search_verified">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-green-01/test_external_use_actual_llm_p7')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026A2DC7EA80&gt;
+provider = 'mimo', protocol = 'mimo_chat_completions', asynchronous = True
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+        with _external_answer_bindings(args, context, provider, model):
+            if asynchronous:
+                result = asyncio.run(AsyncLLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request_async("Answer IQS_05", "Trusted system instruction"))
+                sent = async_client.post.call_args.kwargs["json"]
+            else:
+                result = LLMClient("synthetic-test-only", model, url, provider_name=provider).send_search_request("Answer IQS_05", "Trusted system instruction")
+                sent = sync.post.call_args.kwargs["json"]
+        prompt = sent["input"] if protocol == "responses" else sent["messages"][-1]["content"]
+        system = sent["instructions"] if protocol == "responses" else sent.get("system", sent["messages"][0]["content"])
+        assert context["context_sha256"] in prompt and "Margin disclosure" in prompt
+        assert "tools" not in sent and "tool_choice" not in sent and "include" not in sent
+        assert result.content == content and "PRIVATE_REASONING" not in result.content
+        assert result.execution_metadata["search_status"] == "unverified"  # Original native receipt stays truthful.
+        assert result.execution_metadata["web_search_calls"] == []
+&gt;       assert result.search_verified
+E       assert False
+E        +  where False = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': 'd320bf85e02f25020f214b0a837f3e9996f90dc0bcd260265a98307f37bb17a9'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1198: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_hybrid_preserves_real_native_events_and_separate_context_proof" time="0.225"><failure message="assert ('{&quot;entity_id&quot;...ased answer&quot;}' == '{&quot;entity_id&quot;...ased answer&quot;}'&#10;  &#10;  Skipping 111 identical leading characters in diff, use -v to show&#10;    ed answer&quot;} and False)&#10; +  where False = LLMSearchResponse(content='{&quot;entity_id&quot;:&quot;ENT_BYD&quot;,&quot;question_id&quot;:&quot;IQS_05&quot;,&quot;status&quot;:&quot;scored&quot;,&quot;score&quot;:6,&quot;description&quot;:&quot;Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '3312bb05ee98e6855d766aeb79386446e5f5505f68434472d8138b51f1881579'}}).search_verified">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-green-01/test_external_use_hybrid_prese0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026A2DC7E7B0&gt;
+
+    def test_external_use_hybrid_preserves_real_native_events_and_separate_context_proof(tmp_path, monkeypatch):
+        from src.providers.llm_client import LLMClient
+        args, context, _, sync, _, model, url, content, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=True)
+        with _external_answer_bindings(args, context, "openai", model):
+            result = LLMClient("synthetic-test-only", model, url, provider_name="openai").send_search_request("Answer IQS_05")
+        assert sync.post.call_args.kwargs["json"]["tools"] == [{"type": "web_search"}]
+&gt;       assert result.content == content and result.search_verified
+E       assert ('{"entity_id"...ased answer"}' == '{"entity_id"...ased answer"}'
+E         
+E         Skipping 111 identical leading characters in diff, use -v to show
+E           ed answer"} and False)
+E        +  where False = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '3312bb05ee98e6855d766aeb79386446e5f5505f68434472d8138b51f1881579'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1219: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_hybrid_requires_external_proof_even_when_native_search_executed" time="0.256" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_self_signed_foreign_attempt_cannot_verify_this_response" time="0.219" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[route_id-another-paid-route]" time="0.263" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[route_kind-tavily]" time="0.238" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[retrieved_at-2020-01-01T00:00:00Z]" time="0.223" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[unapproved_extra-bad]" time="0.193" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_expired_context_blocks_before_llm_budget_or_http" time="0.118" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_prompt_cannot_omit_bound_context" time="0.107" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_intent_save_failure_has_no_llm_charge_or_http" time="0.148" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_response_save_failure_keeps_unknown_reservation_without_resend" time="0.174" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_unapproved_actual_model_is_preserved_without_usable_proof" time="0.166" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_v9_migration_preserves_paid_search_and_creates_no_fake_use" time="0.150" /></testsuite></testsuites>

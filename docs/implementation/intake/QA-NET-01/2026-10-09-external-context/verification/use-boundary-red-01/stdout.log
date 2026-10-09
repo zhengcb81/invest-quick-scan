@@ -1,0 +1,158 @@
+.........FFFFFF..F...                                                    [100%]
+================================== FAILURES ===================================
+_ test_external_use_hybrid_requires_external_proof_even_when_native_search_executed _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-red-01/test_external_use_hybrid_requi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DBC4D20BB0>
+
+    def test_external_use_hybrid_requires_external_proof_even_when_native_search_executed(tmp_path, monkeypatch):
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=True)
+        result = _send_external_answer(args, context, model, url)
+        result.execution_metadata["external_context_use"] = None
+>       assert not result.search_verified
+E       assert not True
+E        +  where True = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...okens': 0, 'output_tokens': 50, 'reasoning_output_tokens': 0, 'search_tool_calls': 1}}}, 'external_context_use': None}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1236: AssertionError
+__ test_external_use_self_signed_foreign_attempt_cannot_verify_this_response __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-red-01/test_external_use_self_signed_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DBC4CF4910>
+
+    def test_external_use_self_signed_foreign_attempt_cannot_verify_this_response(tmp_path, monkeypatch):
+        import hashlib
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        result = _send_external_answer(args, context, model, url)
+        proof = result.execution_metadata["external_context_use"]
+        proof["work_attempt_id"] = "ATTEMPT_another_question"
+        proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+>       assert not result.search_verified
+E       assert not True
+E        +  where True = LLMSearchResponse(content='{"entity_id":"ENT_BYD","question_id":"IQS_05","status":"scored","score":6,"description":"Sy...rimary', 'route_kind': 'brave'}], 'proof_sha256': '82b8fe4ed6ab03fbfa2ecde55b046151d6913658261613c4ae1d4bf097756242'}}).search_verified
+
+tests\unit\test_quick_scan_external_context.py:1246: AssertionError
+_ test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[route_id-another-paid-route] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-red-01/test_external_use_rehashed_ref0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DBC4CBE8F0>
+field = 'route_id', value = 'another-paid-route'
+
+    @pytest.mark.parametrize("field,value", [("route_id", "another-paid-route"), ("route_kind", "tavily"), ("retrieved_at", "2020-01-01T00:00:00Z"), ("unapproved_extra", "bad")])
+    def test_external_use_rehashed_reference_drift_is_detected_by_actual_owner(tmp_path, monkeypatch, field, value):
+        import hashlib
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        with closing(args["store"]._connect()) as connection:
+            row = connection.execute("SELECT * FROM quick_scan_external_use_intent WHERE attempt_id=?", (attempt_id,)).fetchone()
+            meta = json.loads(row["metadata_json"])
+            meta["retrievals"][0][field] = value
+            encoded = json.dumps(meta, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+            digest = hashlib.sha256(encoded.encode()).hexdigest()
+            connection.execute("DROP TRIGGER quick_scan_external_use_no_update")
+            connection.execute("UPDATE quick_scan_external_use_intent SET metadata_json=?,metadata_sha256=?,use_id=? WHERE attempt_id=?", (encoded, digest, "EXTUSE_" + digest, attempt_id))
+>       with pytest.raises(ValueError, match="retrieval"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:1263: Failed
+_ test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[route_kind-tavily] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-red-01/test_external_use_rehashed_ref1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DBC750DCD0>
+field = 'route_kind', value = 'tavily'
+
+    @pytest.mark.parametrize("field,value", [("route_id", "another-paid-route"), ("route_kind", "tavily"), ("retrieved_at", "2020-01-01T00:00:00Z"), ("unapproved_extra", "bad")])
+    def test_external_use_rehashed_reference_drift_is_detected_by_actual_owner(tmp_path, monkeypatch, field, value):
+        import hashlib
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        with closing(args["store"]._connect()) as connection:
+            row = connection.execute("SELECT * FROM quick_scan_external_use_intent WHERE attempt_id=?", (attempt_id,)).fetchone()
+            meta = json.loads(row["metadata_json"])
+            meta["retrievals"][0][field] = value
+            encoded = json.dumps(meta, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+            digest = hashlib.sha256(encoded.encode()).hexdigest()
+            connection.execute("DROP TRIGGER quick_scan_external_use_no_update")
+            connection.execute("UPDATE quick_scan_external_use_intent SET metadata_json=?,metadata_sha256=?,use_id=? WHERE attempt_id=?", (encoded, digest, "EXTUSE_" + digest, attempt_id))
+>       with pytest.raises(ValueError, match="retrieval"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:1263: Failed
+_ test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[retrieved_at-2020-01-01T00:00:00Z] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-red-01/test_external_use_rehashed_ref2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DBC750DA90>
+field = 'retrieved_at', value = '2020-01-01T00:00:00Z'
+
+    @pytest.mark.parametrize("field,value", [("route_id", "another-paid-route"), ("route_kind", "tavily"), ("retrieved_at", "2020-01-01T00:00:00Z"), ("unapproved_extra", "bad")])
+    def test_external_use_rehashed_reference_drift_is_detected_by_actual_owner(tmp_path, monkeypatch, field, value):
+        import hashlib
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        with closing(args["store"]._connect()) as connection:
+            row = connection.execute("SELECT * FROM quick_scan_external_use_intent WHERE attempt_id=?", (attempt_id,)).fetchone()
+            meta = json.loads(row["metadata_json"])
+            meta["retrievals"][0][field] = value
+            encoded = json.dumps(meta, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+            digest = hashlib.sha256(encoded.encode()).hexdigest()
+            connection.execute("DROP TRIGGER quick_scan_external_use_no_update")
+            connection.execute("UPDATE quick_scan_external_use_intent SET metadata_json=?,metadata_sha256=?,use_id=? WHERE attempt_id=?", (encoded, digest, "EXTUSE_" + digest, attempt_id))
+>       with pytest.raises(ValueError, match="retrieval"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:1263: Failed
+_ test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[unapproved_extra-bad] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-red-01/test_external_use_rehashed_ref3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DBC754CEC0>
+field = 'unapproved_extra', value = 'bad'
+
+    @pytest.mark.parametrize("field,value", [("route_id", "another-paid-route"), ("route_kind", "tavily"), ("retrieved_at", "2020-01-01T00:00:00Z"), ("unapproved_extra", "bad")])
+    def test_external_use_rehashed_reference_drift_is_detected_by_actual_owner(tmp_path, monkeypatch, field, value):
+        import hashlib
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        with closing(args["store"]._connect()) as connection:
+            row = connection.execute("SELECT * FROM quick_scan_external_use_intent WHERE attempt_id=?", (attempt_id,)).fetchone()
+            meta = json.loads(row["metadata_json"])
+            meta["retrievals"][0][field] = value
+            encoded = json.dumps(meta, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+            digest = hashlib.sha256(encoded.encode()).hexdigest()
+            connection.execute("DROP TRIGGER quick_scan_external_use_no_update")
+            connection.execute("UPDATE quick_scan_external_use_intent SET metadata_json=?,metadata_sha256=?,use_id=? WHERE attempt_id=?", (encoded, digest, "EXTUSE_" + digest, attempt_id))
+>       with pytest.raises(ValueError, match="retrieval"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:1263: Failed
+_______ test_external_use_intent_save_failure_has_no_llm_charge_or_http _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-boundary-red-01/test_external_use_intent_save_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DBC759DD10>
+
+    def test_external_use_intent_save_failure_has_no_llm_charge_or_http(tmp_path, monkeypatch):
+        args, context, _, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        with closing(args["store"]._connect()) as connection:
+            connection.execute("CREATE TRIGGER synthetic_use_save_failure BEFORE INSERT ON quick_scan_external_use_intent BEGIN SELECT RAISE(ABORT,'synthetic use save failure'); END")
+>       with pytest.raises(Exception, match="synthetic use save failure"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'synthetic use save failure'
+E         Actual message: 'quick-scan durable send admission failed'
+
+tests\unit\test_quick_scan_external_context.py:1289: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_use_hybrid_requires_external_proof_even_when_native_search_executed
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_use_self_signed_foreign_attempt_cannot_verify_this_response
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[route_id-another-paid-route]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[route_kind-tavily]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[retrieved_at-2020-01-01T00:00:00Z]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_use_rehashed_reference_drift_is_detected_by_actual_owner[unapproved_extra-bad]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_use_intent_save_failure_has_no_llm_charge_or_http
+7 failed, 14 passed, 109 deselected in 4.99s

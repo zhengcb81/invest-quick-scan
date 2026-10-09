@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="9" time="2.439" timestamp="2026-10-09T06:33:11.976510+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-openai-responses]" time="0.192"><failure message="ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-red-01/test_external_use_actual_llm_p0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C55669E0&gt;
+provider = 'openai', protocol = 'responses', asynchronous = False
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+&gt;       with _external_answer_bindings(args, context, provider, model):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D2C7AA8440&gt;, 'work_item_id': 'WORK_aad...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+context = {'schema': 'stockqa.external_question_context/1.0.0', 'content_trust': 'untrusted_source_data', 'claim_verification': 'not_automatic', 'entity_id': 'ENT_BYD', ...}
+provider = 'openai', model = 'gpt-4.1'
+
+    def _external_answer_bindings(args, context, provider, model):
+        from contextlib import ExitStack
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+&gt;       from src.utils.quick_scan_work_transport import bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work, bind_external_question_context
+E       ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:1163: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-minimax-responses]" time="0.107"><failure message="ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-red-01/test_external_use_actual_llm_p1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C528EEA0&gt;
+provider = 'minimax', protocol = 'responses', asynchronous = False
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+&gt;       with _external_answer_bindings(args, context, provider, model):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D2C7C00050&gt;, 'work_item_id': 'WORK_579...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+context = {'schema': 'stockqa.external_question_context/1.0.0', 'content_trust': 'untrusted_source_data', 'claim_verification': 'not_automatic', 'entity_id': 'ENT_BYD', ...}
+provider = 'minimax', model = 'MiniMax-M3'
+
+    def _external_answer_bindings(args, context, provider, model):
+        from contextlib import ExitStack
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+&gt;       from src.utils.quick_scan_work_transport import bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work, bind_external_question_context
+E       ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:1163: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-minimax-anthropic_messages]" time="0.104"><failure message="ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-red-01/test_external_use_actual_llm_p2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C7C58DD0&gt;
+provider = 'minimax', protocol = 'anthropic_messages', asynchronous = False
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+&gt;       with _external_answer_bindings(args, context, provider, model):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D2C7C00A50&gt;, 'work_item_id': 'WORK_9b1...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+context = {'schema': 'stockqa.external_question_context/1.0.0', 'content_trust': 'untrusted_source_data', 'claim_verification': 'not_automatic', 'entity_id': 'ENT_BYD', ...}
+provider = 'minimax', model = 'MiniMax-M3'
+
+    def _external_answer_bindings(args, context, provider, model):
+        from contextlib import ExitStack
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+&gt;       from src.utils.quick_scan_work_transport import bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work, bind_external_question_context
+E       ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:1163: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-mimo-mimo_chat_completions]" time="0.114"><failure message="ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-red-01/test_external_use_actual_llm_p3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C7B539B0&gt;
+provider = 'mimo', protocol = 'mimo_chat_completions', asynchronous = False
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+&gt;       with _external_answer_bindings(args, context, provider, model):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D2C7A9D940&gt;, 'work_item_id': 'WORK_6ae...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+context = {'schema': 'stockqa.external_question_context/1.0.0', 'content_trust': 'untrusted_source_data', 'claim_verification': 'not_automatic', 'entity_id': 'ENT_BYD', ...}
+provider = 'mimo', model = 'mimo-v2.6-pro'
+
+    def _external_answer_bindings(args, context, provider, model):
+        from contextlib import ExitStack
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+&gt;       from src.utils.quick_scan_work_transport import bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work, bind_external_question_context
+E       ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:1163: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-openai-responses]" time="0.108"><failure message="ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-red-01/test_external_use_actual_llm_p4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C2E99D00&gt;
+provider = 'openai', protocol = 'responses', asynchronous = True
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+&gt;       with _external_answer_bindings(args, context, provider, model):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D2C7A9D220&gt;, 'work_item_id': 'WORK_26c...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+context = {'schema': 'stockqa.external_question_context/1.0.0', 'content_trust': 'untrusted_source_data', 'claim_verification': 'not_automatic', 'entity_id': 'ENT_BYD', ...}
+provider = 'openai', model = 'gpt-4.1'
+
+    def _external_answer_bindings(args, context, provider, model):
+        from contextlib import ExitStack
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+&gt;       from src.utils.quick_scan_work_transport import bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work, bind_external_question_context
+E       ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:1163: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-minimax-responses]" time="0.124"><failure message="ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-red-01/test_external_use_actual_llm_p5')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C7AFBA50&gt;
+provider = 'minimax', protocol = 'responses', asynchronous = True
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+&gt;       with _external_answer_bindings(args, context, provider, model):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D2C52E2C30&gt;, 'work_item_id': 'WORK_a58...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+context = {'schema': 'stockqa.external_question_context/1.0.0', 'content_trust': 'untrusted_source_data', 'claim_verification': 'not_automatic', 'entity_id': 'ENT_BYD', ...}
+provider = 'minimax', model = 'MiniMax-M3'
+
+    def _external_answer_bindings(args, context, provider, model):
+        from contextlib import ExitStack
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+&gt;       from src.utils.quick_scan_work_transport import bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work, bind_external_question_context
+E       ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:1163: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-minimax-anthropic_messages]" time="0.104"><failure message="ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-red-01/test_external_use_actual_llm_p6')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C7AFBE50&gt;
+provider = 'minimax', protocol = 'anthropic_messages', asynchronous = True
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+&gt;       with _external_answer_bindings(args, context, provider, model):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D2C7B52E00&gt;, 'work_item_id': 'WORK_be2...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+context = {'schema': 'stockqa.external_question_context/1.0.0', 'content_trust': 'untrusted_source_data', 'claim_verification': 'not_automatic', 'entity_id': 'ENT_BYD', ...}
+provider = 'minimax', model = 'MiniMax-M3'
+
+    def _external_answer_bindings(args, context, provider, model):
+        from contextlib import ExitStack
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+&gt;       from src.utils.quick_scan_work_transport import bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work, bind_external_question_context
+E       ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:1163: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-mimo-mimo_chat_completions]" time="0.110"><failure message="ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-red-01/test_external_use_actual_llm_p7')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C7C11400&gt;
+provider = 'mimo', protocol = 'mimo_chat_completions', asynchronous = True
+
+    @pytest.mark.parametrize("provider,protocol", [("openai", "responses"), ("minimax", "responses"), ("minimax", "anthropic_messages"), ("mimo", "mimo_chat_completions")])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_external_use_actual_llm_payload_and_durable_response_proof(tmp_path, monkeypatch, provider, protocol, asynchronous):
+        import asyncio
+        import hashlib
+        from src.providers.llm_client import LLMClient, AsyncLLMClient
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, async_client, model, url, content, clock = _external_answer_fixture(tmp_path, monkeypatch, provider=provider, protocol=protocol)
+        clock[0] += 1
+&gt;       with _external_answer_bindings(args, context, provider, model):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D2C7B53F00&gt;, 'work_item_id': 'WORK_9c3...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+context = {'schema': 'stockqa.external_question_context/1.0.0', 'content_trust': 'untrusted_source_data', 'claim_verification': 'not_automatic', 'entity_id': 'ENT_BYD', ...}
+provider = 'mimo', model = 'mimo-v2.6-pro'
+
+    def _external_answer_bindings(args, context, provider, model):
+        from contextlib import ExitStack
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+&gt;       from src.utils.quick_scan_work_transport import bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work, bind_external_question_context
+E       ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:1163: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_hybrid_preserves_real_native_events_and_separate_context_proof" time="0.125"><failure message="ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/use-red-01/test_external_use_hybrid_prese0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D2C7C11040&gt;
+
+    def test_external_use_hybrid_preserves_real_native_events_and_separate_context_proof(tmp_path, monkeypatch):
+        from src.providers.llm_client import LLMClient
+        args, context, _, sync, _, model, url, content, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=True)
+&gt;       with _external_answer_bindings(args, context, "openai", model):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D2C7C50750&gt;, 'work_item_id': 'WORK_605...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+context = {'schema': 'stockqa.external_question_context/1.0.0', 'content_trust': 'untrusted_source_data', 'claim_verification': 'not_automatic', 'entity_id': 'ENT_BYD', ...}
+provider = 'openai', model = 'gpt-4.1'
+
+    def _external_answer_bindings(args, context, provider, model):
+        from contextlib import ExitStack
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+&gt;       from src.utils.quick_scan_work_transport import bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work, bind_external_question_context
+E       ImportError: cannot import name 'bind_external_question_context' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:1163: ImportError</failure></testcase></testsuite></testsuites>
