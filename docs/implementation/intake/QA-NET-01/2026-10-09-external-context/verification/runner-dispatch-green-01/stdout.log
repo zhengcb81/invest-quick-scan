@@ -1,0 +1,99 @@
+....FFF..                                                                [100%]
+================================== FAILURES ===================================
+_____ test_runtime_dispatch_context_executes_cold_retrieval_before_answer _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-green-01/test_runtime_dispatch_context_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002115D1E3AC0>
+
+    def test_runtime_dispatch_context_executes_cold_retrieval_before_answer(tmp_path, monkeypatch):
+        from src.utils.quick_scan_work_transport import _EXTERNAL_CONTEXT, _WORK_BINDING
+        args, search, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        args["model_policy"]["routes"][0]["provider_config_ref"] = "openai"
+>       lifecycle = _runtime_lifecycle(args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1884: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000002115D58E060>, 'work_item_id': 'WORK_ba0...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _runtime_lifecycle(args):
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        item = args["store"].get_item(args["work_item_id"])
+>       identity = {key: item[key] for key in ("identity_revision", "source_binding_version",
+                         ^^^^^^^^^
+            "identity_state", "source_binding_ref", "source_binding_refs", "identity_snapshot_sha256")}
+E       KeyError: 'source_binding_refs'
+
+tests\unit\test_quick_scan_external_context.py:1839: KeyError
+_ test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[unknown_send] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-green-01/test_runtime_dispatch_context_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002115E3B0E50>
+failure = 'unknown_send'
+
+    @pytest.mark.parametrize("failure", ["unknown_send", "wrong_manifest"])
+    def test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model(tmp_path, monkeypatch, failure):
+        import requests
+        from src.core.exceptions import ProcessingError
+        from src.utils.quick_scan_work_transport import _EXTERNAL_CONTEXT, _WORK_BINDING, _ROUTE_BINDING
+        args, search, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        if failure == "wrong_manifest":
+            args["question_manifest_sha256"] = "e" * 64
+        else:
+            search.request.side_effect = requests.Timeout("synthetic timeout")
+>       lifecycle = _runtime_lifecycle(args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1906: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000002115D181C70>, 'work_item_id': 'WORK_651...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _runtime_lifecycle(args):
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        item = args["store"].get_item(args["work_item_id"])
+>       identity = {key: item[key] for key in ("identity_revision", "source_binding_version",
+                         ^^^^^^^^^
+            "identity_state", "source_binding_ref", "source_binding_refs", "identity_snapshot_sha256")}
+E       KeyError: 'source_binding_refs'
+
+tests\unit\test_quick_scan_external_context.py:1839: KeyError
+_ test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[wrong_manifest] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-green-01/test_runtime_dispatch_context_2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002115E3B0F50>
+failure = 'wrong_manifest'
+
+    @pytest.mark.parametrize("failure", ["unknown_send", "wrong_manifest"])
+    def test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model(tmp_path, monkeypatch, failure):
+        import requests
+        from src.core.exceptions import ProcessingError
+        from src.utils.quick_scan_work_transport import _EXTERNAL_CONTEXT, _WORK_BINDING, _ROUTE_BINDING
+        args, search, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        if failure == "wrong_manifest":
+            args["question_manifest_sha256"] = "e" * 64
+        else:
+            search.request.side_effect = requests.Timeout("synthetic timeout")
+>       lifecycle = _runtime_lifecycle(args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1906: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000002115D6059D0>, 'work_item_id': 'WORK_915...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _runtime_lifecycle(args):
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        item = args["store"].get_item(args["work_item_id"])
+>       identity = {key: item[key] for key in ("identity_revision", "source_binding_version",
+                         ^^^^^^^^^
+            "identity_state", "source_binding_ref", "source_binding_refs", "identity_snapshot_sha256")}
+E       KeyError: 'source_binding_refs'
+
+tests\unit\test_quick_scan_external_context.py:1839: KeyError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_dispatch_context_executes_cold_retrieval_before_answer
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[unknown_send]
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[wrong_manifest]
+3 failed, 6 passed, 169 deselected in 4.79s

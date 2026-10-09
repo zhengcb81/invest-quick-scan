@@ -40,3 +40,19 @@
 公开producer1.1与IQS消费者兼容已经接线：actual store/原HTTP/use proof验证后才输出external binding，native-only仍1.0；actual client/SQLite→JSON→IQS route的external/hybrid通过，原模型/receipt hash/真实native事件保留。读public-result-interface.md。StockQA十四相关文件682P/71.45s；IQS完整相关110P/1F及过期native CLI fixture修正后的原失败1P，原timeout/失败均留档，不声称同一调用111P，也不新增小节点独审。
 
 下一实际动作：原runner/cascade检索协调和async provider投影；随后跨阶段/跨lease恢复、逐HTTP MCP init/discovery/search、公开CLI冷/暖/恢复/失败，最后完整批次一次集中相关回归/静态/审查/正常源发布及严格自有根清理。source仍42a517c/schema8，当前新public1.1仅私有producer；其他外仓、新授权和全局门不自动关闭。
+
+## Phase111 正式调度接续：2026-10-09
+
+runner/cascade检索协调与async投影已私有实现。独立identity/manifest/query覆盖在DB和HTTP前验证；retrieve完成后仅由owner绑定原context，再由真实发送边界记每次模型使用。同步/异步以及external-only/hybrid区分保持。失败关闭工作/路由/context绑定，unknown搜索保留费用与原操作，不让模型抢先回答。
+
+实际public main()集成（不是OS子进程）10项通过：冷暖原回执一致、原上下文及全部失败/成功模型attempt恢复、401/明确429切换、独立manifest具名早拒、unknown搜索停机和损坏SQLite use证据不覆写原答案。真实根UTC/answered_at采用已保存HTTP时点；新版1.1的attempts采用owner持久HTTP，不复用仅在内存的route装饰。旧1.0未变，frozen public-result-interface.md不回写。本批synthetic身份/模型/价格及HTTP替身不能作为真实gold或准确率。
+
+下一动作无原生搜索模型的实际external-only文本协议，随后跨阶段/跨lease恢复、MCP逐HTTP收费、真正公开子进程CLI，整个Phase111一次集中回归/静态/独审/正常源发布及严格自有根清理。33路径源范围已先报备，均只在IQS独占副本；其他原门不动。
+
+## 最新接续：DeepSeek文本与schema12历史保护
+
+本段优先于上方历史下一步/时点方案。36路径已先报备且仍仅私有副本；DeepSeek官方Responses external-only、显式model-resolution1.1及同步/异步/级联/公开main接通。answered_at采用实际durable response.recorded_at，原HTTP完成时点单独保持；native短事件通过schema12独立保存，不改变旧HTTP receipt哈希。
+
+原42项GREEN之后，新增迁移保护18项首轮17P/1F定位真实历史补写缺口；现在事件首次插入只随新响应同事务，旧缺失不补写。16文件最终776P/0失败错误跳过/86.57s（controller87.324s），覆盖旧库真实DDL/回滚、事件不可变与坏恢复/上限及既有runtime路径。原失败仅增量归档，不跨批相加；这不是金融事实准确性、真实厂商计价或完整Phase111验收。
+
+下一步两阶段/跨lease恢复→MCP每HTTP独立费用→真正OS子进程CLI，再在完整Phase111同一大节点最终回归/静态/集中一次独审/正常源发布/严格自有根清理。读runtime-dispatch-interface.md；checkpoint07仅IQS进度留档，实际Git看progress。StockWiki许可/联合ACK/真实gold及G3/F05/TH-IN/L03原门保持。

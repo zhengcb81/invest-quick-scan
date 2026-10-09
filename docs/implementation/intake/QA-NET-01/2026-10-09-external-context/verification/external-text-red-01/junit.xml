@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.522" timestamp="2026-10-09T09:25:55.039295+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores" time="0.247"><failure message="assert (1 == 0)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-text-red-01/test_public_external_main_deep0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A230D2AB10&gt;
+
+    def test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores(tmp_path, monkeypatch):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        kwargs["model_policy"]["models"][0].update(provider_config_ref="deepseek", model="deepseek-flash")
+        kwargs.update(provider_name="deepseek", provider_configs={"deepseek": {
+            "enabled": True, "api_key": "synthetic-only", "model": "deepseek-flash",
+            "base_url": "https://api.deepseek.com/responses", "max_retries": 1}})
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "deepseek-flash"
+        response.json.return_value["output"].insert(0, {"type": "reasoning", "content": [
+            {"type": "reasoning_text", "text": "synthetic-thinking-MUST-NOT-LEAK"}]})
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0 and models.post.call_count == 1 and search.request.call_count == 1
+E       assert (1 == 0)
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:202: AssertionError</failure></testcase></testsuite></testsuites>

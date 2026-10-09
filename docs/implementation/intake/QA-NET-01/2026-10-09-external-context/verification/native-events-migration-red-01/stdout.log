@@ -1,0 +1,22 @@
+............F.....                                                       [100%]
+================================== FAILURES ===================================
+_ test_native_event_journal_historical_response_cannot_be_backfilled_on_replay _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/native-events-migration-red-01/test_native_event_journal_hist0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000181F17F7860>
+
+    def test_native_event_journal_historical_response_cannot_be_backfilled_on_replay(tmp_path, monkeypatch):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore
+        args, result, attempt_id, _, sync, clock = _native_event_answer(tmp_path, monkeypatch)
+        _install_native_event_v11(args["store"])
+        reopened = QuickScanWorkStore(args["store"].path, clock=lambda: clock[0])
+        before = reopened.get_attempt_response(attempt_id)
+        with closing(reopened._connect()) as connection, connection:
+>           with pytest.raises(WorkConflictError, match="historical|absent|immutable"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE WorkConflictError
+
+tests\unit\test_quick_scan_external_context.py:2052: Failed
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_native_event_journal_historical_response_cannot_be_backfilled_on_replay
+1 failed, 17 passed, 177 deselected in 5.37s

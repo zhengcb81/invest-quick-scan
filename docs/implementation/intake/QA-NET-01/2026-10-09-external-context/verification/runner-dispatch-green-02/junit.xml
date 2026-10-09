@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="9" time="3.827" timestamp="2026-10-09T08:54:33.598080+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[False-False]" time="0.349" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[False-True]" time="0.263" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[True-False]" time="0.279" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[True-True]" time="0.282" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_executes_cold_retrieval_before_answer" time="0.181"><failure message="KeyError: 'run_id'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-green-02/test_runtime_dispatch_context_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028572B53AC0&gt;
+
+    def test_runtime_dispatch_context_executes_cold_retrieval_before_answer(tmp_path, monkeypatch):
+        from src.utils.quick_scan_work_transport import _EXTERNAL_CONTEXT, _WORK_BINDING
+        args, search, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        args["model_policy"]["routes"][0]["provider_config_ref"] = "openai"
+&gt;       lifecycle = _runtime_lifecycle(args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1885: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000028572706190&gt;, 'work_item_id': 'WORK_58b...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _runtime_lifecycle(args):
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        item = args["store"].get_item(args["work_item_id"])
+        identity = {key: item[key] for key in ("identity_revision", "source_binding_version",
+            "identity_state", "source_binding_ref", "identity_snapshot_sha256")}
+        identity["source_binding_refs"] = json.loads(item["source_binding_refs_json"])
+&gt;       return QuickScanWorkLifecycle(args["store"], entity_id=item["entity_id"], run_id=item["run_id"],
+                                                                                         ^^^^^^^^^^^^^^
+            scan_id=item["scan_id"], identity=identity, transport_managed=True,
+            route_id="route-a1", provider_name="openai", model_requested="gpt-4.1",
+            external_retrieval={key: args[key] for key in ("policy", "model_policy", "question_manifest_sha256",
+                "health_store", "unknown_reset_cooldown_seconds", "rate_limit_cooldown_seconds")})
+E       KeyError: 'run_id'
+
+tests\unit\test_quick_scan_external_context.py:1842: KeyError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[unknown_send]" time="0.136"><failure message="KeyError: 'run_id'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-green-02/test_runtime_dispatch_context_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028573734E50&gt;
+failure = 'unknown_send'
+
+    @pytest.mark.parametrize("failure", ["unknown_send", "wrong_manifest"])
+    def test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model(tmp_path, monkeypatch, failure):
+        import requests
+        from src.core.exceptions import ProcessingError
+        from src.utils.quick_scan_work_transport import _EXTERNAL_CONTEXT, _WORK_BINDING, _ROUTE_BINDING
+        args, search, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        if failure == "wrong_manifest":
+            args["question_manifest_sha256"] = "e" * 64
+        else:
+            search.request.side_effect = requests.Timeout("synthetic timeout")
+&gt;       lifecycle = _runtime_lifecycle(args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1907: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000002857270DC70&gt;, 'work_item_id': 'WORK_a6e...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _runtime_lifecycle(args):
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        item = args["store"].get_item(args["work_item_id"])
+        identity = {key: item[key] for key in ("identity_revision", "source_binding_version",
+            "identity_state", "source_binding_ref", "identity_snapshot_sha256")}
+        identity["source_binding_refs"] = json.loads(item["source_binding_refs_json"])
+&gt;       return QuickScanWorkLifecycle(args["store"], entity_id=item["entity_id"], run_id=item["run_id"],
+                                                                                         ^^^^^^^^^^^^^^
+            scan_id=item["scan_id"], identity=identity, transport_managed=True,
+            route_id="route-a1", provider_name="openai", model_requested="gpt-4.1",
+            external_retrieval={key: args[key] for key in ("policy", "model_policy", "question_manifest_sha256",
+                "health_store", "unknown_reset_cooldown_seconds", "rate_limit_cooldown_seconds")})
+E       KeyError: 'run_id'
+
+tests\unit\test_quick_scan_external_context.py:1842: KeyError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[wrong_manifest]" time="0.066"><failure message="KeyError: 'run_id'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-green-02/test_runtime_dispatch_context_2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028573734F50&gt;
+failure = 'wrong_manifest'
+
+    @pytest.mark.parametrize("failure", ["unknown_send", "wrong_manifest"])
+    def test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model(tmp_path, monkeypatch, failure):
+        import requests
+        from src.core.exceptions import ProcessingError
+        from src.utils.quick_scan_work_transport import _EXTERNAL_CONTEXT, _WORK_BINDING, _ROUTE_BINDING
+        args, search, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        if failure == "wrong_manifest":
+            args["question_manifest_sha256"] = "e" * 64
+        else:
+            search.request.side_effect = requests.Timeout("synthetic timeout")
+&gt;       lifecycle = _runtime_lifecycle(args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1907: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x00000285727019D0&gt;, 'work_item_id': 'WORK_673...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _runtime_lifecycle(args):
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        item = args["store"].get_item(args["work_item_id"])
+        identity = {key: item[key] for key in ("identity_revision", "source_binding_version",
+            "identity_state", "source_binding_ref", "identity_snapshot_sha256")}
+        identity["source_binding_refs"] = json.loads(item["source_binding_refs_json"])
+&gt;       return QuickScanWorkLifecycle(args["store"], entity_id=item["entity_id"], run_id=item["run_id"],
+                                                                                         ^^^^^^^^^^^^^^
+            scan_id=item["scan_id"], identity=identity, transport_managed=True,
+            route_id="route-a1", provider_name="openai", model_requested="gpt-4.1",
+            external_retrieval={key: args[key] for key in ("policy", "model_policy", "question_manifest_sha256",
+                "health_store", "unknown_reset_cooldown_seconds", "rate_limit_cooldown_seconds")})
+E       KeyError: 'run_id'
+
+tests\unit\test_quick_scan_external_context.py:1842: KeyError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_cascade_external_only_does_not_require_native_capability" time="0.241" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_search_admission_only_marks_explicit_bound_dispatch" time="0.068" /></testsuite></testsuites>

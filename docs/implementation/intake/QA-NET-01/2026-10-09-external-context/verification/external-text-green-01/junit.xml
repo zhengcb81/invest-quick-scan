@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="11" time="5.255" timestamp="2026-10-09T09:29:53.560481+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]" time="0.466" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]" time="0.404" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_wrong_manifest_fails_before_store_or_http" time="0.052" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_uncertain_search_preserves_reservation_and_stops_model" time="0.169" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-False]" time="0.475" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-True]" time="0.455" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-False]" time="0.494" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-True]" time="0.508" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[missing_use]" time="0.341" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[corrupt_use]" time="0.331" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores" time="0.248"><failure message="assert (1 == 0)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-text-green-01/test_public_external_main_deep0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B8ADD5EF90&gt;
+
+    def test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores(tmp_path, monkeypatch):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        kwargs["model_policy"]["models"][0].update(provider_config_ref="deepseek", model="deepseek-flash")
+        kwargs.update(provider_name="deepseek", provider_configs={"deepseek": {
+            "enabled": True, "api_key": "synthetic-only", "model": "deepseek-flash",
+            "base_url": "https://api.deepseek.com/responses", "max_retries": 1}})
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "deepseek-flash"
+        response.json.return_value["output"].insert(0, {"type": "reasoning", "content": [
+            {"type": "reasoning_text", "text": "synthetic-thinking-MUST-NOT-LEAK"}]})
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0 and models.post.call_count == 1 and search.request.call_count == 1
+E       assert (1 == 0)
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:207: AssertionError</failure></testcase></testsuite></testsuites>

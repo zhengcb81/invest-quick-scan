@@ -1,0 +1,258 @@
+.........FF.F                                                            [100%]
+================================== FAILURES ===================================
+_ test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-02/test_public_external_main_cold0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F0FFF10670>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:75: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-02\test_public_external_main_cold0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": false, "external_dispatch_reason": "external_context_not_implemented", "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+ERROR - 运行失败: external_context_not_implemented: admitted routes have no production dispatcher
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1401, in _run_single_company
+    raise ValueError(
+        "external_context_not_implemented: admitted routes have no production dispatcher"
+    )
+ValueError: external_context_not_implemented: admitted routes have no production dispatcher
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1256 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1258 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1259 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-02\test_public_external_main_cold0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1370 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external_context_not_implemented: admitted routes have no production dispatcher
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1401, in _run_single_company
+    raise ValueError(
+        "external_context_not_implemented: admitted routes have no production dispatcher"
+    )
+ValueError: external_context_not_implemented: admitted routes have no production dispatcher
+__ test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-02/test_public_external_main_cold1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F082D749F0>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:75: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-02\test_public_external_main_cold1\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": false, "external_dispatch_reason": "external_context_not_implemented", "mode": "explicit_hybrid", "policy_id": "quick-scan-search-offline", "policy_sha256": "64274eec4da0ca4526fefa3c39117729d1be8044a2d9509dc0c1be5c173ecf55", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+ERROR - 运行失败: external_context_not_implemented: admitted routes have no production dispatcher
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1401, in _run_single_company
+    raise ValueError(
+        "external_context_not_implemented: admitted routes have no production dispatcher"
+    )
+ValueError: external_context_not_implemented: admitted routes have no production dispatcher
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1256 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1258 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1259 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-02\test_public_external_main_cold1\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1370 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external_context_not_implemented: admitted routes have no production dispatcher
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1401, in _run_single_company
+    raise ValueError(
+        "external_context_not_implemented: admitted routes have no production dispatcher"
+    )
+ValueError: external_context_not_implemented: admitted routes have no production dispatcher
+_ test_public_external_main_uncertain_search_preserves_reservation_and_stops_model _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-02/test_public_external_main_unce0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F0FFEC5E50>
+
+    def test_public_external_main_uncertain_search_preserves_reservation_and_stops_model(tmp_path, monkeypatch):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        search.request.side_effect = requests.Timeout("synthetic timeout")
+        code, _, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code != 0
+>       assert search.request.call_count == 1 and models.post.call_count == 0
+E       AssertionError: assert (0 == 1)
+E        +  where 0 = <Mock name='mock.request' id='2134596946304'>.call_count
+E        +    where <Mock name='mock.request' id='2134596946304'> = <Mock id='2134596945632'>.request
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:111: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-02\test_public_external_main_unce0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": false, "external_dispatch_reason": "external_context_not_implemented", "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+ERROR - 运行失败: external_context_not_implemented: admitted routes have no production dispatcher
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1401, in _run_single_company
+    raise ValueError(
+        "external_context_not_implemented: admitted routes have no production dispatcher"
+    )
+ValueError: external_context_not_implemented: admitted routes have no production dispatcher
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1256 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1258 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1259 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-02\test_public_external_main_unce0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1370 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external_context_not_implemented: admitted routes have no production dispatcher
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1401, in _run_single_company
+    raise ValueError(
+        "external_context_not_implemented: admitted routes have no production dispatcher"
+    )
+ValueError: external_context_not_implemented: admitted routes have no production dispatcher
+=========================== short test summary info ===========================
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_uncertain_search_preserves_reservation_and_stops_model
+3 failed, 10 passed, 169 deselected in 4.31s

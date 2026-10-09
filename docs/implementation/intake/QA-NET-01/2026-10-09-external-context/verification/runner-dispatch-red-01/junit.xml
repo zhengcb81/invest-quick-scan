@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="9" time="6.294" timestamp="2026-10-09T08:49:57.012910+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[False-False]" time="0.507"><failure message="AssertionError: assert ('unknown' == 'scored'&#10;  &#10;  - scored&#10;  + unknown)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-red-01/test_runtime_provider_projects0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001284C005BA0&gt;
+hybrid = False, asynchronous = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_runtime_provider_projects_owner_search_without_faking_native_events(tmp_path, monkeypatch, hybrid, asynchronous):
+        import asyncio
+        from datetime import datetime, timezone
+        from src.core.models import Question
+        args, context, search, sync, async_http, model, _, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        monkeypatch.setattr("src.providers.llm_client._utc_now", lambda: datetime.fromtimestamp(clock[0], timezone.utc).isoformat().replace("+00:00", "Z"))
+        provider = _runtime_provider(tmp_path, asynchronous=asynchronous, model=model)
+        with _external_answer_bindings(args, context, "openai", model):
+            results = (asyncio.run(provider.search_question_async(Question(text="question", question_id="IQS_05")))
+                if asynchronous else provider.search_question(Question(text="question", question_id="IQS_05")))
+        result = results[0]
+&gt;       assert result.status == "scored" and result.score == 6
+E       AssertionError: assert ('unknown' == 'scored'
+E         
+E         - scored
+E         + unknown)
+
+tests\unit\test_quick_scan_external_context.py:1854: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[False-True]" time="0.334"><failure message="AssertionError: assert ('unknown' == 'scored'&#10;  &#10;  - scored&#10;  + unknown)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-red-01/test_runtime_provider_projects1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001284A5DAEA0&gt;
+hybrid = True, asynchronous = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_runtime_provider_projects_owner_search_without_faking_native_events(tmp_path, monkeypatch, hybrid, asynchronous):
+        import asyncio
+        from datetime import datetime, timezone
+        from src.core.models import Question
+        args, context, search, sync, async_http, model, _, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        monkeypatch.setattr("src.providers.llm_client._utc_now", lambda: datetime.fromtimestamp(clock[0], timezone.utc).isoformat().replace("+00:00", "Z"))
+        provider = _runtime_provider(tmp_path, asynchronous=asynchronous, model=model)
+        with _external_answer_bindings(args, context, "openai", model):
+            results = (asyncio.run(provider.search_question_async(Question(text="question", question_id="IQS_05")))
+                if asynchronous else provider.search_question(Question(text="question", question_id="IQS_05")))
+        result = results[0]
+&gt;       assert result.status == "scored" and result.score == 6
+E       AssertionError: assert ('unknown' == 'scored'
+E         
+E         - scored
+E         + unknown)
+
+tests\unit\test_quick_scan_external_context.py:1854: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[True-False]" time="0.445"><failure message="AssertionError: assert ('unknown' == 'scored'&#10;  &#10;  - scored&#10;  + unknown)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-red-01/test_runtime_provider_projects2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001284C0670B0&gt;
+hybrid = False, asynchronous = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_runtime_provider_projects_owner_search_without_faking_native_events(tmp_path, monkeypatch, hybrid, asynchronous):
+        import asyncio
+        from datetime import datetime, timezone
+        from src.core.models import Question
+        args, context, search, sync, async_http, model, _, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        monkeypatch.setattr("src.providers.llm_client._utc_now", lambda: datetime.fromtimestamp(clock[0], timezone.utc).isoformat().replace("+00:00", "Z"))
+        provider = _runtime_provider(tmp_path, asynchronous=asynchronous, model=model)
+        with _external_answer_bindings(args, context, "openai", model):
+            results = (asyncio.run(provider.search_question_async(Question(text="question", question_id="IQS_05")))
+                if asynchronous else provider.search_question(Question(text="question", question_id="IQS_05")))
+        result = results[0]
+&gt;       assert result.status == "scored" and result.score == 6
+E       AssertionError: assert ('unknown' == 'scored'
+E         
+E         - scored
+E         + unknown)
+
+tests\unit\test_quick_scan_external_context.py:1854: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[True-True]" time="0.318"><failure message="AssertionError: assert ('unknown' == 'scored'&#10;  &#10;  - scored&#10;  + unknown)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-red-01/test_runtime_provider_projects3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001284BC838A0&gt;
+hybrid = True, asynchronous = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("asynchronous", [False, True])
+    def test_runtime_provider_projects_owner_search_without_faking_native_events(tmp_path, monkeypatch, hybrid, asynchronous):
+        import asyncio
+        from datetime import datetime, timezone
+        from src.core.models import Question
+        args, context, search, sync, async_http, model, _, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        monkeypatch.setattr("src.providers.llm_client._utc_now", lambda: datetime.fromtimestamp(clock[0], timezone.utc).isoformat().replace("+00:00", "Z"))
+        provider = _runtime_provider(tmp_path, asynchronous=asynchronous, model=model)
+        with _external_answer_bindings(args, context, "openai", model):
+            results = (asyncio.run(provider.search_question_async(Question(text="question", question_id="IQS_05")))
+                if asynchronous else provider.search_question(Question(text="question", question_id="IQS_05")))
+        result = results[0]
+&gt;       assert result.status == "scored" and result.score == 6
+E       AssertionError: assert ('unknown' == 'scored'
+E         
+E         - scored
+E         + unknown)
+
+tests\unit\test_quick_scan_external_context.py:1854: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_executes_cold_retrieval_before_answer" time="0.248"><failure message="KeyError: 'source_binding_refs'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-red-01/test_runtime_dispatch_context_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001284BC83DF0&gt;
+
+    def test_runtime_dispatch_context_executes_cold_retrieval_before_answer(tmp_path, monkeypatch):
+        from src.utils.quick_scan_work_transport import _EXTERNAL_CONTEXT, _WORK_BINDING
+        args, search, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        args["model_policy"]["routes"][0]["provider_config_ref"] = "openai"
+&gt;       lifecycle = _runtime_lifecycle(args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1870: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001284BFAF5C0&gt;, 'work_item_id': 'WORK_871...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _runtime_lifecycle(args):
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        item = args["store"].get_item(args["work_item_id"])
+&gt;       identity = {key: item[key] for key in ("identity_revision", "source_binding_version",
+                         ^^^^^^^^^
+            "identity_state", "source_binding_ref", "source_binding_refs", "identity_snapshot_sha256")}
+E       KeyError: 'source_binding_refs'
+
+tests\unit\test_quick_scan_external_context.py:1825: KeyError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[unknown_send]" time="0.099"><failure message="KeyError: 'source_binding_refs'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-red-01/test_runtime_dispatch_context_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001284CEA1750&gt;
+failure = 'unknown_send'
+
+    @pytest.mark.parametrize("failure", ["unknown_send", "wrong_manifest"])
+    def test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model(tmp_path, monkeypatch, failure):
+        import requests
+        from src.core.exceptions import ProcessingError
+        from src.utils.quick_scan_work_transport import _EXTERNAL_CONTEXT, _WORK_BINDING, _ROUTE_BINDING
+        args, search, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        if failure == "wrong_manifest":
+            args["question_manifest_sha256"] = "e" * 64
+        else:
+            search.request.side_effect = requests.Timeout("synthetic timeout")
+&gt;       lifecycle = _runtime_lifecycle(args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1892: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001284CEC20F0&gt;, 'work_item_id': 'WORK_04c...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _runtime_lifecycle(args):
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        item = args["store"].get_item(args["work_item_id"])
+&gt;       identity = {key: item[key] for key in ("identity_revision", "source_binding_version",
+                         ^^^^^^^^^
+            "identity_state", "source_binding_ref", "source_binding_refs", "identity_snapshot_sha256")}
+E       KeyError: 'source_binding_refs'
+
+tests\unit\test_quick_scan_external_context.py:1825: KeyError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[wrong_manifest]" time="0.085"><failure message="KeyError: 'source_binding_refs'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-red-01/test_runtime_dispatch_context_2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001284CEA2150&gt;
+failure = 'wrong_manifest'
+
+    @pytest.mark.parametrize("failure", ["unknown_send", "wrong_manifest"])
+    def test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model(tmp_path, monkeypatch, failure):
+        import requests
+        from src.core.exceptions import ProcessingError
+        from src.utils.quick_scan_work_transport import _EXTERNAL_CONTEXT, _WORK_BINDING, _ROUTE_BINDING
+        args, search, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        if failure == "wrong_manifest":
+            args["question_manifest_sha256"] = "e" * 64
+        else:
+            search.request.side_effect = requests.Timeout("synthetic timeout")
+&gt;       lifecycle = _runtime_lifecycle(args)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1892: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001284CEE1480&gt;, 'work_item_id': 'WORK_34d...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _runtime_lifecycle(args):
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        item = args["store"].get_item(args["work_item_id"])
+&gt;       identity = {key: item[key] for key in ("identity_revision", "source_binding_version",
+                         ^^^^^^^^^
+            "identity_state", "source_binding_ref", "source_binding_refs", "identity_snapshot_sha256")}
+E       KeyError: 'source_binding_refs'
+
+tests\unit\test_quick_scan_external_context.py:1825: KeyError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_cascade_external_only_does_not_require_native_capability" time="0.199"><failure message="AssertionError: assert ('error' == 'scored'&#10;  &#10;  - scored&#10;  + error)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-red-01/test_runtime_cascade_external_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001284CE34140&gt;
+
+    def test_runtime_cascade_external_only_does_not_require_native_capability(tmp_path, monkeypatch):
+        from datetime import datetime, timezone
+        from src.core.models import Question
+        from src.utils.llm_integration import OrderedSearchProviderCascade
+        args, context, search, sync, _, model, _, _, clock = _external_answer_fixture(tmp_path, monkeypatch)
+        monkeypatch.setattr("src.providers.llm_client._utc_now", lambda: datetime.fromtimestamp(clock[0], timezone.utc).isoformat().replace("+00:00", "Z"))
+        provider = _runtime_provider(tmp_path, model=model)
+        # Isolate the native-capability gate. The actual allowlisted HTTP endpoint,
+        # external context, store and response remain real code paths.
+        monkeypatch.setattr(type(provider.client), "supports_web_search", property(lambda self: False))
+        cascade = OrderedSearchProviderCascade([provider], args["model_policy"]["routes"][:1],
+            policy_version="synthetic-model-policy/1", max_attempts_per_dispatch_round=1, require_search=True)
+        with _external_answer_bindings(args, context, "openai", model):
+            result = cascade.search_question(Question(text="question", question_id="IQS_05"))[0]
+&gt;       assert result.status == "scored" and result.score == 6
+E       AssertionError: assert ('error' == 'scored'
+E         
+E         - scored
+E         + error)
+
+tests\unit\test_quick_scan_external_context.py:1918: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_search_admission_only_marks_explicit_bound_dispatch" time="0.081"><failure message="TypeError: policy_receipt() got an unexpected keyword argument 'external_dispatch_enabled'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runner-dispatch-red-01/test_runtime_search_admission_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001284CE34320&gt;
+
+    def test_runtime_search_admission_only_marks_explicit_bound_dispatch(tmp_path, monkeypatch):
+        from src.config.quick_scan_search_policy import policy_receipt
+        args, _, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        assert policy_receipt(args["policy"])["external_dispatch_enabled"] is False
+&gt;       actual = policy_receipt(args["policy"], external_dispatch_enabled=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: policy_receipt() got an unexpected keyword argument 'external_dispatch_enabled'
+
+tests\unit\test_quick_scan_external_context.py:1928: TypeError</failure></testcase></testsuite></testsuites>

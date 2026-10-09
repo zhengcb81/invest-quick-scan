@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前下一动作（2026-10-09 Phase111）**：接实际runner/cascade检索调度与async provider投影，再接两阶段/跨租约恢复、逐HTTP计费MCP和公开CLI。公开producer1.1已在私有副本由真实store认证use/native receipt；IQS消费者支持1.0/1.1并核来源、模型、时间及独立identity snapshot，actual client/SQLite→JSON→IQS route的external/hybrid正例通过。14受影响StockQA文件682P/71.45s；IQS四文件110P/1F＋修正过期CLI fixture后原失败1P，原300秒timeout保留、不称单次111全绿。原native与历史行为保持，金融事实/真实API未认证。读[公开结果接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/public-result-interface.md)。Phase111保持in_progress，StockQA42a517c/schema8未发布；完整批次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
+**当前下一动作（2026-10-09 Phase111）**：接续两阶段/跨租约恢复，随后逐HTTP计费MCP与真正子进程CLI。DeepSeek Responses external-only文本协议、开启思考而仅输出最终答案、混合搜索及公开main冷暖恢复已有隔离证据；私有schema12的旧库迁移/回滚、事件不可变/损坏拒绝及禁止历史补写已验证，16文件最新native-events-runtime-affected-green-01实际776P/0失败错误跳过/86.57s。原生事件独立保存，历史HTTP回执哈希不变；回答时点来自原durable response记录。仍是HTTP替身和synthetic身份，不替代独立进程CLI、金融事实或真实API验收。旧682P、42P和IQS110P/1F＋整改1P保留，不与776相加。读[最新接续接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/runtime-dispatch-interface.md)。checkpoint07正常Git结果以progress实际回执为准；Phase111保持in_progress，StockQA42a517c/schema8未发布，整批静态/一次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 

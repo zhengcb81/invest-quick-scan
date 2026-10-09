@@ -1770,3 +1770,8 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 既有IQS S02 native CLI fixture缺当前强制spend_authorization，入口明确status2/HTTP0，不能删产品费用预检来恢复测试。fixture应提供标注synthetic的临时授权、完整HTTP.body/文本，并在原finally恢复环境/文件/模块/bytecode。完整consumer批次110P/1F，针对该唯一旧fixture整改1P；不用为此再重复110个无变化case，也不把两批合成单次111P。
 
 - 2026-10-09状态核对：StockWiki新HEAD c40de21仅追加UI启动意图相关五文件；旧验收输入d253fea仍保留，新增范围须在下一大节点固定并纳入，不据此关闭ACK/事实查询/研究联动门。checkpoint06 prepare的JUnit计数断言失败属于归档控制器，实际产品执行日志不应为适配硬编码而修改。
+
+- 公开main实际冷暖对照发现Answer.created_at为本地naive时钟，而旧序列化将它标Z；新版external结果必须使用已保存原HTTP completed_at，并规范root UTC，不能把续跑时间当原回答时间。恢复checkpoint2时需要原始HTTP native回执及真实use owner，compact generic来源不足以重建native metadata。
+- 新版external公开attempts从真实work owner逐次读HTTP回执，因此401/明确额度429后的备用成功在冷暖输出一致；正文、模型顺位和来源均不用于回填actual。10项main测试含损坏恢复与具名manifest拒绝，属于软件隔离集成，不是StockWiki真实身份golden、子进程E2E或答案准确性。
+- 2026-10-09后续时点反例更正上条早期方案：answered_at采用实际持久response.recorded_at，原HTTP.completed_at单独保持；应满足HTTP完成≤context-use保存≤回答记录，不能将HTTP完成时点直接当已持久回答时点。私有schema12把实际native事件独立保存并与原HTTP哈希绑定，不修改旧receipt哈希配方或为历史空记录补造事件。最新42项隔离GREEN不关闭迁移、跨租约/MCP、子进程CLI或金融准确性验收。
+- 新schema12迁移必须防止事后填充：空表升级本身不补历史，但原_persist_response_tx重放分支仍能给旧HTTP补事件，真实新增反例1F已定位。事件插入现在只允许同事务的新HTTP响应；原行有事件只精确重放，原行缺事件保持缺失。最新16文件776P覆盖迁移/回滚、保存上限与原native调用，没有收费请求或真实身份/事实认证。

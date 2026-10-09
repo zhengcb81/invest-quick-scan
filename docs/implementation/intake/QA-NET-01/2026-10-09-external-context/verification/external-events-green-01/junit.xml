@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="14" skipped="0" tests="42" time="12.219" timestamp="2026-10-09T09:39:03.906121+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]" time="0.373"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_cold0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001400835F360&gt;
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:78: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]" time="0.291"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_cold1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001400598AEA0&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:78: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_wrong_manifest_fails_before_store_or_http" time="0.029" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_uncertain_search_preserves_reservation_and_stops_model" time="0.139" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-False]" time="0.355"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_fall0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014008437350&gt;
+hybrid = False, status = 401
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:145: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-True]" time="0.326"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_fall1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014007157B50&gt;
+hybrid = True, status = 401
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:145: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-False]" time="0.364"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_fall2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B28650&gt;
+hybrid = False, status = 429
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:145: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-True]" time="0.338"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_fall3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014007C472F0&gt;
+hybrid = True, status = 429
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:145: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[missing_use]" time="0.278"><failure message="assert (1 == 0)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_corr0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014008500320&gt;
+mutation = 'missing_use'
+
+    @pytest.mark.parametrize("mutation", ["missing_use", "corrupt_use"])
+    def test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer(tmp_path, monkeypatch, mutation):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0 and models.post.call_count == 1
+E       assert (1 == 0)
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:172: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[corrupt_use]" time="0.280"><failure message="assert (1 == 0)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_corr1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B0D630&gt;
+mutation = 'corrupt_use'
+
+    @pytest.mark.parametrize("mutation", ["missing_use", "corrupt_use"])
+    def test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer(tmp_path, monkeypatch, mutation):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0 and models.post.call_count == 1
+E       assert (1 == 0)
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:172: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores" time="0.286"><failure message="assert (1 == 0)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_deep0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B0EA50&gt;
+
+    def test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores(tmp_path, monkeypatch):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        kwargs["model_policy"]["models"][0].update(provider_config_ref="deepseek", model="deepseek-flash")
+        kwargs.update(provider_name="deepseek", provider_configs={"deepseek": {
+            "enabled": True, "api_key": "synthetic-only", "model": "deepseek-flash",
+            "base_url": "https://api.deepseek.com/responses", "max_retries": 1}})
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "deepseek-flash"
+        response.json.return_value["output"].insert(0, {"type": "reasoning", "content": [
+            {"type": "reasoning_text", "text": "synthetic-thinking-MUST-NOT-LEAK"}]})
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0 and models.post.call_count == 1 and search.request.call_count == 1
+E       assert (1 == 0)
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:207: AssertionError</failure></testcase><testcase classname="tests.unit.test_model_resolution" name="test_external_resolution_1_1_adds_scoped_deepseek_without_reinterpreting_old_aliases" time="0.008" /><testcase classname="tests.unit.test_model_resolution" name="test_external_text_endpoint_rejects_untrusted_host_path_and_provider[http://api.deepseek.com/responses-deepseek]" time="0.001" /><testcase classname="tests.unit.test_model_resolution" name="test_external_text_endpoint_rejects_untrusted_host_path_and_provider[https://api.deepseek.com.evil.invalid/responses-deepseek]" time="0.001" /><testcase classname="tests.unit.test_model_resolution" name="test_external_text_endpoint_rejects_untrusted_host_path_and_provider[https://api.deepseek.com:444/responses-deepseek]" time="0.001" /><testcase classname="tests.unit.test_model_resolution" name="test_external_text_endpoint_rejects_untrusted_host_path_and_provider[https://api.deepseek.com/responses?token=synthetic-deepseek]" time="0.001" /><testcase classname="tests.unit.test_model_resolution" name="test_external_text_endpoint_rejects_untrusted_host_path_and_provider[https://synthetic@api.deepseek.com/responses-deepseek]" time="0.001" /><testcase classname="tests.unit.test_model_resolution" name="test_external_text_endpoint_rejects_untrusted_host_path_and_provider[https://api.deepseek.com/anthropic/v1/messages-deepseek]" time="0.001" /><testcase classname="tests.unit.test_model_resolution" name="test_external_text_endpoint_rejects_untrusted_host_path_and_provider[https://api.deepseek.com/responses-openai]" time="0.001" /><testcase classname="tests.unit.test_model_resolution" name="test_deepseek_external_text_does_not_claim_native_search_capability" time="0.000" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_is_explicitly_versioned_and_owner_bound[False]" time="0.204"><failure message="ValueError: external public output could not verify its actual owner">self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 8, 642075, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007C47980&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+&gt;                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_result_is0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014008520FC0&gt;
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_result_is_explicitly_versioned_and_owner_bound(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        response = _send_external_answer(args, context, model, url)
+        original = copy.deepcopy(response.execution_metadata)
+        batch = _public_batch(response)
+&gt;       result = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name="Synthetic issuer",
+            provider_name="openai", requested_model=model, work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 8, 642075, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007C47980&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+&gt;                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_is_explicitly_versioned_and_owner_bound[True]" time="0.173"><failure message="ValueError: external public output could not verify its actual owner">self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 8, 874684, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007B0D550&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+&gt;                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_result_is1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B8B710&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_result_is_explicitly_versioned_and_owner_bound(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        response = _send_external_answer(args, context, model, url)
+        original = copy.deepcopy(response.execution_metadata)
+        batch = _public_batch(response)
+&gt;       result = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name="Synthetic issuer",
+            provider_name="openai", requested_model=model, work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 8, 874684, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007B0D550&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+&gt;                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[missing_owner]" time="0.169" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[wrong_entity]" time="0.175" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[wrong_question]" time="0.168" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[self_signed]" time="0.179" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_uses_actual_model_instead_of_outer_metadata" time="0.186"><failure message="ValueError: external public output could not verify its actual owner">self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 9, 811851, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'wrong'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007A575F0&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+&gt;                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_result_us0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B46CB0&gt;
+
+    def test_public_external_result_uses_actual_model_instead_of_outer_metadata(tmp_path, monkeypatch):
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        response = _send_external_answer(args, context, model, url)
+        batch = _public_batch(response)
+        batch.results[0].answer.metadata.update(actual_model="wrong", model_requested="wrong", request_id="wrong")
+&gt;       result = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name="Synthetic issuer",
+            provider_name="openai", requested_model="wrong", work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:257: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 9, 811851, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'wrong'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007A575F0&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+&gt;                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_raw_native_receipt_drift" time="0.179" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_actual_producer_to_iqs_routing_preserves_binding[False]" time="1.674"><failure message="ValueError: external public output could not verify its actual owner">self = QABatchResult(results=[QAResult(question=Question(text='Return only a StockQA native JSON object with question_id=ROUT...tions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 11, 624413, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x00000140084F42D0&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+&gt;                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_actual_producer_to0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B3FAD0&gt;
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_actual_producer_to_iqs_routing_preserves_binding(tmp_path, monkeypatch, hybrid):
+        """Real durable producer -&gt; public JSON -&gt; pure consumer; HTTP only is fake."""
+        import sys
+        from pathlib import Path
+        from datetime import datetime, timezone
+        from src.providers.llm_client import LLMClient
+        root = Path(__file__).resolve().parents[5]
+        monkeypatch.syspath_prepend(str(root / "scripts"))
+        monkeypatch.syspath_prepend(str(root / "tests"))
+        import routing
+        import test_routing as fixtures
+        fixture = fixtures.RoutingFixture()
+        fixture.setUp()
+        try:
+            identity = {**fixture.identity, "entity_id": "ENT_BYD", "company": "Synthetic issuer", "as_of": "2026-10-08"}
+            request = routing.build_route_request(identity, package_id=fixture.package_id, root=fixture.root)
+            prompt = request["questions"][0]["questions"][0]["text"]
+            args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid, question_id="ROUTE_02")
+            facts = fixture.normal()
+            for fact in facts:
+                for source in fact["sources"]:
+                    source.update(entity_id="ENT_BYD", url="https://fixture.example/ir", published_at="2026-10-01")
+            body = sync.post.return_value.json.return_value
+            answer = {"entity_id": "ENT_BYD", "company_name": identity["company"], "question_id": "ROUTE_02", "status": "scored", "score": 8,
+                "description": json.dumps({"schema_version": "2.0.0", "question_id": "ROUTE_02", "candidates": facts})}
+            body["output"][-1]["content"][0]["text"] = json.dumps(answer)
+            sync.post.return_value.content = json.dumps(body).encode()
+            sync.post.return_value.text = sync.post.return_value.content.decode()
+            clock[0] += 1
+            class FixtureDateTime(datetime):
+                @classmethod
+                def now(cls, tz=None): return datetime.fromtimestamp(clock[0], tz or timezone.utc)
+            monkeypatch.setattr("src.providers.llm_client.datetime", FixtureDateTime)
+            with _external_answer_bindings(args, context, "openai", model):
+                response = LLMClient("synthetic-test-only", model, url, provider_name="openai").send_search_request(prompt)
+            batch = _public_batch(response, question_id="ROUTE_02", question_text=prompt, score=8)
+            batch.results[0].answer.text = answer["description"]  # Same provider-parser output boundary.
+&gt;           public = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name=identity["company"], provider_name="openai",
+                requested_model=model, work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:312: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Return only a StockQA native JSON object with question_id=ROUT...tions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 11, 624413, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x00000140084F42D0&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+&gt;                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_actual_producer_to_iqs_routing_preserves_binding[True]" time="1.709"><failure message="ValueError: external public output could not verify its actual owner">self = QABatchResult(results=[QAResult(question=Question(text='Return only a StockQA native JSON object with question_id=ROUT...tions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 13, 436867, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014008541EF0&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+&gt;                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_actual_producer_to1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000014008296FD0&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_actual_producer_to_iqs_routing_preserves_binding(tmp_path, monkeypatch, hybrid):
+        """Real durable producer -&gt; public JSON -&gt; pure consumer; HTTP only is fake."""
+        import sys
+        from pathlib import Path
+        from datetime import datetime, timezone
+        from src.providers.llm_client import LLMClient
+        root = Path(__file__).resolve().parents[5]
+        monkeypatch.syspath_prepend(str(root / "scripts"))
+        monkeypatch.syspath_prepend(str(root / "tests"))
+        import routing
+        import test_routing as fixtures
+        fixture = fixtures.RoutingFixture()
+        fixture.setUp()
+        try:
+            identity = {**fixture.identity, "entity_id": "ENT_BYD", "company": "Synthetic issuer", "as_of": "2026-10-08"}
+            request = routing.build_route_request(identity, package_id=fixture.package_id, root=fixture.root)
+            prompt = request["questions"][0]["questions"][0]["text"]
+            args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid, question_id="ROUTE_02")
+            facts = fixture.normal()
+            for fact in facts:
+                for source in fact["sources"]:
+                    source.update(entity_id="ENT_BYD", url="https://fixture.example/ir", published_at="2026-10-01")
+            body = sync.post.return_value.json.return_value
+            answer = {"entity_id": "ENT_BYD", "company_name": identity["company"], "question_id": "ROUTE_02", "status": "scored", "score": 8,
+                "description": json.dumps({"schema_version": "2.0.0", "question_id": "ROUTE_02", "candidates": facts})}
+            body["output"][-1]["content"][0]["text"] = json.dumps(answer)
+            sync.post.return_value.content = json.dumps(body).encode()
+            sync.post.return_value.text = sync.post.return_value.content.decode()
+            clock[0] += 1
+            class FixtureDateTime(datetime):
+                @classmethod
+                def now(cls, tz=None): return datetime.fromtimestamp(clock[0], tz or timezone.utc)
+            monkeypatch.setattr("src.providers.llm_client.datetime", FixtureDateTime)
+            with _external_answer_bindings(args, context, "openai", model):
+                response = LLMClient("synthetic-test-only", model, url, provider_name="openai").send_search_request(prompt)
+            batch = _public_batch(response, question_id="ROUTE_02", question_text=prompt, score=8)
+            batch.results[0].answer.text = answer["description"]  # Same provider-parser output boundary.
+&gt;           public = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name=identity["company"], provider_name="openai",
+                requested_model=model, work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:312: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Return only a StockQA native JSON object with question_id=ROUT...tions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 13, 436867, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014008541EF0&gt;
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -&gt; Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+&gt;                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_provider_preserves_native_receipt_and_projects_actual_external_use[False]" time="0.182" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_provider_preserves_native_receipt_and_projects_actual_external_use[True]" time="0.193" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-openai-responses]" time="0.241" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-minimax-responses]" time="0.214" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-minimax-anthropic_messages]" time="0.240" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-mimo-mimo_chat_completions]" time="0.229" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[False-deepseek-responses]" time="0.229" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-openai-responses]" time="0.230" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-minimax-responses]" time="0.195" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-minimax-anthropic_messages]" time="0.193" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-mimo-mimo_chat_completions]" time="0.181" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_external_use_actual_llm_payload_and_durable_response_proof[True-deepseek-responses]" time="0.207" /></testsuite></testsuites>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="4" time="1.826" timestamp="2026-10-09T08:59:30.544511+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]" time="0.085"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-01/test_public_external_main_cold0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001BD80A5E780&gt;
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:75: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]" time="0.054"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-01/test_public_external_main_cold1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001BDFE09EFD0&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:75: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_wrong_manifest_fails_before_store_or_http" time="0.060" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_uncertain_search_preserves_reservation_and_stops_model" time="0.051"><failure message="AssertionError: assert (0 == 1)&#10; +  where 0 = &lt;Mock name='mock.request' id='1913419148528'&gt;.call_count&#10; +    where &lt;Mock name='mock.request' id='1913419148528'&gt; = &lt;Mock id='1913419147184'&gt;.request">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-01/test_public_external_main_unce0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001BD80A83790&gt;
+
+    def test_public_external_main_uncertain_search_preserves_reservation_and_stops_model(tmp_path, monkeypatch):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        search.request.side_effect = requests.Timeout("synthetic timeout")
+        code, _, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code != 0
+&gt;       assert search.request.call_count == 1 and models.post.call_count == 0
+E       AssertionError: assert (0 == 1)
+E        +  where 0 = &lt;Mock name='mock.request' id='1913419148528'&gt;.call_count
+E        +    where &lt;Mock name='mock.request' id='1913419148528'&gt; = &lt;Mock id='1913419147184'&gt;.request
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:111: AssertionError</failure></testcase></testsuite></testsuites>

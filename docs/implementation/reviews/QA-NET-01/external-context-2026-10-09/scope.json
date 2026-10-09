@@ -13,6 +13,10 @@
     "src/providers/llm_client.py",
     "src/providers/base_llm_provider.py",
     "src/providers/llm_provider.py",
+    "src/providers/async_llm_provider.py",
+    "src/providers/model_resolution.py",
+    "src/config/quick_scan_model_resolution_v1_1.schema.json",
+    "tests/unit/test_model_resolution.py",
     "src/utils/llm_integration.py",
     "src/utils/http_client.py",
     "src/utils/quick_scan_evidence.py",
@@ -23,6 +27,7 @@
     "src/utils/quick_scan_cost_resolver.py",
     "src/runners/llm_runner.py",
     "src/core/models.py",
+    "src/core/qa_engine.py",
     "src/utils/quick_scan_observation_context.py",
     "src/utils/quick_scan_c06_adapter.py",
     "tests/unit/test_quick_scan_external_context.py",
@@ -38,5 +43,5 @@
   ],
   "external_publish_status": "not_published",
   "real_api_calls_authorized_for_this_batch": false,
-  "scope_addition_reason": "Advance report: explicit checkpoint2 exchange binding and actual-response/old-DDL fixture corrections; IQS private copy only, production not published."
+  "scope_addition_reason": "Advance report: checkpoint2, async and QAEngine recovery, exact DeepSeek external text protocol/model resolution 1.1 with tests; 36 paths in IQS private copy only, production not published."
 }

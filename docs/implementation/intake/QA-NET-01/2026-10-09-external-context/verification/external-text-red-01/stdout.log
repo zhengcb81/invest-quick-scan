@@ -1,0 +1,121 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-text-red-01/test_public_external_main_deep0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A230D2AB10>
+
+    def test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores(tmp_path, monkeypatch):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        kwargs["model_policy"]["models"][0].update(provider_config_ref="deepseek", model="deepseek-flash")
+        kwargs.update(provider_name="deepseek", provider_configs={"deepseek": {
+            "enabled": True, "api_key": "synthetic-only", "model": "deepseek-flash",
+            "base_url": "https://api.deepseek.com/responses", "max_retries": 1}})
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "deepseek-flash"
+        response.json.return_value["output"].insert(0, {"type": "reasoning", "content": [
+            {"type": "reasoning_text", "text": "synthetic-thinking-MUST-NOT-LEAK"}]})
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0 and models.post.call_count == 1 and search.request.call_count == 1
+E       assert (1 == 0)
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:202: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-text-red-01\test_public_external_main_deep0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-text-red-01\test_public_external_main_deep0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-text-red-01\test_public_external_main_deep0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: deepseek, model: deepseek-flash, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: deepseek, model: deepseek-flash, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 deepseek API... (尝试 1/1)
+INFO - LLM答案生成完成 (状态: insufficient_evidence)
+WARNING - transport checkpoint 拒绝（missing authoritative transport binding）——原请求状态保留
+ERROR - [1/1] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+[1/1] 进度: 100.0% - [FAIL] 失败: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: —
+
+处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-text-red-01\test_public_external_main_deep0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 0
+[INFO] 未评分问题: 1
+[OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-text-red-01\test_public_external_main_deep0\result.json
+ERROR - Quick-scan contains 1 failed question(s); partial results were saved.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1271 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1273 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1274 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-text-red-01\test_public_external_main_deep0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1388 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1454 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1459 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1460 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-text-red-01\test_public_external_main_deep0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1461 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-text-red-01\test_public_external_main_deep0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1491 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: deepseek, model: deepseek-flash, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: deepseek, model: deepseek-flash, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 deepseek API... (尝试 1/1)
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: insufficient_evidence)
+WARNING  src.runners.llm_runner:llm_runner.py:579 transport checkpoint 拒绝（missing authoritative transport binding）——原请求状态保留
+ERROR    src.core.qa_engine:qa_engine.py:308 [1/1] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+INFO     src.core.qa_engine:qa_engine.py:371 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-text-red-01\test_public_external_main_deep0\result.json
+ERROR    src.runners.llm_runner:llm_runner.py:1795 Quick-scan contains 1 failed question(s); partial results were saved.
+=========================== short test summary info ===========================
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores
+1 failed, 10 deselected in 1.61s

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="10" time="4.669" timestamp="2026-10-09T09:20:07.020216+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]" time="0.474" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]" time="0.451" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_wrong_manifest_fails_before_store_or_http" time="0.032"><failure message="AssertionError: assert 'external_policy_manifest_mismatch' in ('' + '')&#10; +  where '' = CaptureResult(out='', err='').out&#10; +  and   '' = CaptureResult(out='', err='').err">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_wron0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D790165490&gt;
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x000001D790A49BE0&gt;
+
+    def test_public_external_main_wrong_manifest_fails_before_store_or_http(tmp_path, monkeypatch, capsys):
+        kwargs, search, path = _inputs(tmp_path, monkeypatch)
+        document = json.loads(path.read_text("utf-8"))
+        document["execution_plan"]["question_manifest_sha256"] = "e" * 64
+        path.write_text(json.dumps(document), encoding="utf-8")
+        code, _, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code != 0
+        captured = capsys.readouterr()
+&gt;       assert "external_policy_manifest_mismatch" in captured.out + captured.err
+E       AssertionError: assert 'external_policy_manifest_mismatch' in ('' + '')
+E        +  where '' = CaptureResult(out='', err='').out
+E        +  and   '' = CaptureResult(out='', err='').err
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:106: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_uncertain_search_preserves_reservation_and_stops_model" time="0.163" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-False]" time="0.356"><failure message="KeyError: 'metadata'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_fall0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D79095BAC0&gt;
+hybrid = False, status = 401
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        receipt = json.loads(output.read_text("utf-8"))["execution_receipts"]["IQS_05"]
+        assert receipt["requested_model"] == receipt["actual_model"] == "gpt-4.1-mini"
+        assert [attempt["http_status_code"] for attempt in receipt["attempts"]] == [status, 200]
+        assert [attempt["requested_model"] for attempt in receipt["attempts"]] == ["gpt-4.1", "gpt-4.1-mini"]
+        assert search.request.call_count == 1 and models.post.call_count == 2
+        payloads = [call.kwargs["json"] for call in models.post.call_args_list]
+        assert payloads[0]["input"] == payloads[1]["input"]
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        attempts = store.list_attempts(proof["work_item_id"])
+        assert [attempt["route_id"] for attempt in attempts] == ["primary-route", "backup-route"]
+&gt;       contexts = [store.get_external_context_use(attempt["attempt_id"])["metadata"] for attempt in attempts]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'metadata'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:154: KeyError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-True]" time="0.376"><failure message="KeyError: 'metadata'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_fall1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D7907D9350&gt;
+hybrid = True, status = 401
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        receipt = json.loads(output.read_text("utf-8"))["execution_receipts"]["IQS_05"]
+        assert receipt["requested_model"] == receipt["actual_model"] == "gpt-4.1-mini"
+        assert [attempt["http_status_code"] for attempt in receipt["attempts"]] == [status, 200]
+        assert [attempt["requested_model"] for attempt in receipt["attempts"]] == ["gpt-4.1", "gpt-4.1-mini"]
+        assert search.request.call_count == 1 and models.post.call_count == 2
+        payloads = [call.kwargs["json"] for call in models.post.call_args_list]
+        assert payloads[0]["input"] == payloads[1]["input"]
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        attempts = store.list_attempts(proof["work_item_id"])
+        assert [attempt["route_id"] for attempt in attempts] == ["primary-route", "backup-route"]
+&gt;       contexts = [store.get_external_context_use(attempt["attempt_id"])["metadata"] for attempt in attempts]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'metadata'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:154: KeyError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-False]" time="0.407"><failure message="KeyError: 'metadata'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_fall2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D7907DA150&gt;
+hybrid = False, status = 429
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        receipt = json.loads(output.read_text("utf-8"))["execution_receipts"]["IQS_05"]
+        assert receipt["requested_model"] == receipt["actual_model"] == "gpt-4.1-mini"
+        assert [attempt["http_status_code"] for attempt in receipt["attempts"]] == [status, 200]
+        assert [attempt["requested_model"] for attempt in receipt["attempts"]] == ["gpt-4.1", "gpt-4.1-mini"]
+        assert search.request.call_count == 1 and models.post.call_count == 2
+        payloads = [call.kwargs["json"] for call in models.post.call_args_list]
+        assert payloads[0]["input"] == payloads[1]["input"]
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        attempts = store.list_attempts(proof["work_item_id"])
+        assert [attempt["route_id"] for attempt in attempts] == ["primary-route", "backup-route"]
+&gt;       contexts = [store.get_external_context_use(attempt["attempt_id"])["metadata"] for attempt in attempts]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'metadata'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:154: KeyError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-True]" time="0.363"><failure message="KeyError: 'metadata'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_fall3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D7907B24E0&gt;
+hybrid = True, status = 429
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        receipt = json.loads(output.read_text("utf-8"))["execution_receipts"]["IQS_05"]
+        assert receipt["requested_model"] == receipt["actual_model"] == "gpt-4.1-mini"
+        assert [attempt["http_status_code"] for attempt in receipt["attempts"]] == [status, 200]
+        assert [attempt["requested_model"] for attempt in receipt["attempts"]] == ["gpt-4.1", "gpt-4.1-mini"]
+        assert search.request.call_count == 1 and models.post.call_count == 2
+        payloads = [call.kwargs["json"] for call in models.post.call_args_list]
+        assert payloads[0]["input"] == payloads[1]["input"]
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        attempts = store.list_attempts(proof["work_item_id"])
+        assert [attempt["route_id"] for attempt in attempts] == ["primary-route", "backup-route"]
+&gt;       contexts = [store.get_external_context_use(attempt["attempt_id"])["metadata"] for attempt in attempts]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'metadata'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:154: KeyError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[missing_use]" time="0.323" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[corrupt_use]" time="0.319" /></testsuite></testsuites>

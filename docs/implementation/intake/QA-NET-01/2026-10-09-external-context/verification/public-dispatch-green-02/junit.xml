@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="4" time="2.655" timestamp="2026-10-09T09:06:17.671020+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]" time="0.511"><failure message="AssertionError: assert '2026-10-09T08:06:19.196086Z' == '2026-10-09T09:06:19.220352Z'&#10;  &#10;  - 2026-10-09T09:06:19.220352Z&#10;  ?             ^       ^^ ^^^&#10;  + 2026-10-09T08:06:19.196086Z&#10;  ?             ^       ^^^ ^^">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-green-02/test_public_external_main_cold0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000025CAEAEE8B0&gt;
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        first = json.loads(output.read_text("utf-8"))
+        assert first["schema_version"] == "stockqa.quick_scan_result/1.1.0"
+        receipt = first["execution_receipts"]["IQS_05"]
+        assert receipt["search_status"] == "executed" and "search_binding" in receipt
+        assert first["answers"]["IQS_05"]["score"] == 6
+        assert search.request.call_count == 1 and models.post.call_count == 1
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        assert store.get_answer_checkpoint(proof["work_item_id"])["checkpoint_schema_version"] == 2
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        second = json.loads(output.read_text("utf-8"))
+&gt;       assert second["execution_receipts"]["IQS_05"]["answered_at"] == receipt["answered_at"]
+E       AssertionError: assert '2026-10-09T08:06:19.196086Z' == '2026-10-09T09:06:19.220352Z'
+E         
+E         - 2026-10-09T09:06:19.220352Z
+E         ?             ^       ^^ ^^^
+E         + 2026-10-09T08:06:19.196086Z
+E         ?             ^       ^^^ ^^
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:90: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]" time="0.564"><failure message="AssertionError: assert '2026-10-09T08:06:19.832742Z' == '2026-10-09T09:06:19.869523Z'&#10;  &#10;  - 2026-10-09T09:06:19.869523Z&#10;  ?             ^        ^^^ ^&#10;  + 2026-10-09T08:06:19.832742Z&#10;  ?             ^        ^ ^^^">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-green-02/test_public_external_main_cold1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000025CAE4DEFD0&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        first = json.loads(output.read_text("utf-8"))
+        assert first["schema_version"] == "stockqa.quick_scan_result/1.1.0"
+        receipt = first["execution_receipts"]["IQS_05"]
+        assert receipt["search_status"] == "executed" and "search_binding" in receipt
+        assert first["answers"]["IQS_05"]["score"] == 6
+        assert search.request.call_count == 1 and models.post.call_count == 1
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        assert store.get_answer_checkpoint(proof["work_item_id"])["checkpoint_schema_version"] == 2
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        second = json.loads(output.read_text("utf-8"))
+&gt;       assert second["execution_receipts"]["IQS_05"]["answered_at"] == receipt["answered_at"]
+E       AssertionError: assert '2026-10-09T08:06:19.832742Z' == '2026-10-09T09:06:19.869523Z'
+E         
+E         - 2026-10-09T09:06:19.869523Z
+E         ?             ^        ^^^ ^
+E         + 2026-10-09T08:06:19.832742Z
+E         ?             ^        ^ ^^^
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:90: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_wrong_manifest_fails_before_store_or_http" time="0.031" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_uncertain_search_preserves_reservation_and_stops_model" time="0.192" /></testsuite></testsuites>

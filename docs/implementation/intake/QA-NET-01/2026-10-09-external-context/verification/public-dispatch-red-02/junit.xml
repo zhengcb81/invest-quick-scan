@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="13" time="4.207" timestamp="2026-10-09T09:00:46.631224+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[False-False]" time="0.355" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[False-True]" time="0.317" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[True-False]" time="0.373" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[True-True]" time="0.357" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_executes_cold_retrieval_before_answer" time="0.228" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[unknown_send]" time="0.181" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[wrong_manifest]" time="0.113" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_cascade_external_only_does_not_require_native_capability" time="0.270" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_search_admission_only_marks_explicit_bound_dispatch" time="0.062" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]" time="0.071"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-02/test_public_external_main_cold0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F0FFF10670&gt;
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:75: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]" time="0.061"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-02/test_public_external_main_cold1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F082D749F0&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:75: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_wrong_manifest_fails_before_store_or_http" time="0.080" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_uncertain_search_preserves_reservation_and_stops_model" time="0.086"><failure message="AssertionError: assert (0 == 1)&#10; +  where 0 = &lt;Mock name='mock.request' id='2134596946304'&gt;.call_count&#10; +    where &lt;Mock name='mock.request' id='2134596946304'&gt; = &lt;Mock id='2134596945632'&gt;.request">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-02/test_public_external_main_unce0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F0FFEC5E50&gt;
+
+    def test_public_external_main_uncertain_search_preserves_reservation_and_stops_model(tmp_path, monkeypatch):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        search.request.side_effect = requests.Timeout("synthetic timeout")
+        code, _, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code != 0
+&gt;       assert search.request.call_count == 1 and models.post.call_count == 0
+E       AssertionError: assert (0 == 1)
+E        +  where 0 = &lt;Mock name='mock.request' id='2134596946304'&gt;.call_count
+E        +    where &lt;Mock name='mock.request' id='2134596946304'&gt; = &lt;Mock id='2134596945632'&gt;.request
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:111: AssertionError</failure></testcase></testsuite></testsuites>

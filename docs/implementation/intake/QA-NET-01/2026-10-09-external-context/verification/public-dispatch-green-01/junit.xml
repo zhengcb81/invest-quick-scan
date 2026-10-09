@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="13" time="4.366" timestamp="2026-10-09T09:01:58.493841+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[False-False]" time="0.299" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[False-True]" time="0.234" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[True-False]" time="0.252" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_provider_projects_owner_search_without_faking_native_events[True-True]" time="0.303" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_executes_cold_retrieval_before_answer" time="0.221" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[unknown_send]" time="0.154" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_dispatch_context_failure_never_leaks_bindings_or_calls_model[wrong_manifest]" time="0.104" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_cascade_external_only_does_not_require_native_capability" time="0.251" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_runtime_search_admission_only_marks_explicit_bound_dispatch" time="0.058" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]" time="0.275"><failure message="assert 1 == 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-green-01/test_public_external_main_cold0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C02A8C90F0&gt;
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+&gt;       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:75: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]" time="0.464"><failure message="KeyError: 0">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-green-01/test_public_external_main_cold1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C02ADE2A50&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        first = json.loads(output.read_text("utf-8"))
+        assert first["schema_version"] == "stockqa.quick_scan_result/1.1.0"
+&gt;       receipt = first["answers"][0]["execution_receipt"]
+                  ^^^^^^^^^^^^^^^^^^^
+E       KeyError: 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:78: KeyError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_wrong_manifest_fails_before_store_or_http" time="0.045" /><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_uncertain_search_preserves_reservation_and_stops_model" time="0.235" /></testsuite></testsuites>

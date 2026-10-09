@@ -2473,3 +2473,32 @@
 - 本次只读核对当前根PWF（resolver为空/legacy fallback）、交接、有限验收及实际Git；不新增产品实施或测试，不关闭Phase111/G3/F05。StockQA实际HEAD仍42a517c；StockWiki已从已验输入d253fea推进至c40de21，新增d98acdc及merge只涉及README、ui_jobs、app.js及两份UI测试，共五文件；既有import/observations不在新增差异中。新UI范围尚未由本总控验收，下一次联合验收需固定新HEAD，不重复旧存储验收。
 - 默认沙箱只读外仓Git发生Permission denied；改用已授权的提升只读查询成功，没有外仓写入、网络或付费请求。IQS实际HEAD/origin仍033d77a，本段消费者改动未提交。
 - 续收原checkpoint06 prepare会话95998：实际exit1，失败为控制器把consumer JUnit计数硬编码为111导致断言；并非新增产品测试失败。未执行其git模式，不宣称checkpoint06提交/推送，不覆盖旧索引/日志。后续先按真实JUnit口径修归档断言，再正常精确提交；682P与110P/1F＋原失败整改1P的原始证据保持。
+
+## Phase111 正式调度接续：2026-10-09
+
+- checkpoint06 prepare原50645实际exit0：302工件、314选择、14批次、115支持文件不变。JUnit实际327=111方法＋216子断言，控制器按真实口径修正。git模式先因scope.json没有字节改动而误要求314项均出现diff失败；只读证明仅该文件与HEAD原字节一致，无额外暂存项，未改冻结helper/index/日志。随后正常提交推送原81398实际exit0，结果d2f6281815261e0a18b8a36d5e5e73e6b0375396，313实际变化路径、302工件staged/committed SHA一致，HEAD=origin/master，仅原opencode保留。StockQA源42a517c未写未发布。
+- 按用户既有全仓授权先报备，仅IQS私有副本接续runner dispatch_context、级联和公开输出，并补async提供者投影；scope在原31路径增加src/providers/async_llm_provider.py，32路径。原公开QAEngine已直接转发quick_scan_context，可复用而不新增源码修改；原integration/test_external_context_cli_e2e.py尚不存在，将在已报备范围创建。读缺文件是定位诊断，非测试失败。
+- 下一步先正式生命周期/异步projection/CLI入口RED，再同批修复。实际外仓源与收费API仍0；StockWiki当前新UI c40de21只读，不抢写者，不关闭整体门；完整Phase111一次集中审查仍留到批次末。
+
+- 续接实际范围为33路径：追加async provider与core/qa_engine恢复metadata（均为IQS私有副本且已先报备）；原“QAEngine无需修改”的判断已由真正warm反例纠正。runner派发前核独立identity/manifest/问题覆盖，复用Q08/Q09和原级联；retrieval intent不是回答attempt。失败关闭ExitStack，external-only能力门与hybrid原生门分开。
+- runner-dispatch-red-01原9F；修合成回答缺company_name后red-02为7F/2P，其中实际缺口为async投影、生命周期检索、级联能力门与显式准入。green-01/02各3F/6P是测试猜错source_binding_refs_json/run_id字段，保留原件后修fixture。后续public-dispatch-green-01九runtime项全部通过，不回写原失败。
+- public-dispatch-red-01为3F/1P，synthetic实体未满足ENT_ schema；修fixture后red-02继续记录实际入口缺口。接runner后green-01为11P/2F：一处synthetic HTTP少assistant role被严格解析拒绝，一处测试把answers mapping当数组；不是产品漏洞。修fixture的green-02为2P/2F，真正暴露本地时间冒充UTC、warm外部绑定未恢复。
+- 产品只改新版1.1的durable来源：从实际保存HTTP回执取得模型/时点/所有attempt，checkpoint2恢复实际use/native metadata；native1.0保持。public-dispatch-green-03实际exit0，4P/pytest2.48s/controller3.074s，executed_source_unchanged=true。冷/暖receipt一致，warm搜索和模型请求均不新增，预算不变。
+- 新增模型切换与损坏恢复六项：public-dispatch-adjacent-red-01实际5F/5P/4.74s，其中五失败全为测试读取caplog/intent字段的错误，产品已正确切换并保存两次HTTP。仅修fixture后adjacent-green-01实际exit0，10P，controller5.815s。401/明确429及external/hybrid均一次搜索两次模型；费用真实synthetic账为23000micros，不填免费，warm零增量；损坏独占SQLite的use行/摘要时零新HTTP、原输出不覆写。manifest具名拒绝且DB未建。
+- 上一用户状态答复是只读说明，无工程进展；本目标续接有实际GREEN与实施状态变化。现无活测试handle；所有新工件/原失败只增不覆写。源仓发布/收费API/下载/生产库0，完整Phase111仍开放；下一动作无原生搜索模型文本协议→跨阶段/跨lease→逐HTTP MCP→子进程CLI和整批集中审查，不为这10项加小节点review。
+
+## 用户整体进度核对与最新原始执行记录：2026-10-09
+
+- 本次读取根PWF、handoff、Git及最新执行记录，未新增产品实现或测试。IQS实际HEAD为d2f6281；本轮新增实施与原失败日志尚待checkpoint07归档，不能声称已提交或发布。既有软件有限签收保留，G3/F05/真实身份与事实样本/TH-IN/L03仍未关闭。
+- 前一实施段最新external-events-green-02经本次process.json、JUnit及原stdout.log核实：returncode=0、timeout=false、42 passed、206 deselected、0失败/错误/跳过，pytest14.36s/controller15.016s，executed_source_unchanged=true。包含DeepSeek外部证据文本回答、思考不进入最终结果及混合搜索冷暖恢复；只认本批42，不与旧批次累加。私有work_store当前schema12，生产源仍schema8；旧库迁移、整批受影响回归及集中审查尚待执行。
+- 用户状态读取误猜stdout.txt不存在，已按实际目录改读stdout.log；仅控制器读取错误，未重跑测试或改工件。图示按已交付软件、隔离实现中及待真实联调分别展示，不给无依据的完成百分比。
+
+## Phase111 原生事件历史保护与受影响回归：2026-10-09
+
+- 上一目标回合为只读用户状态及PWF说明，未新增产品进展；本回合按既有报备范围继续IQS独占副本，外部源仓仍未写。本次提升只读再次核StockQA HEAD42a517c和原七未跟踪项保持；不输出密钥、不改共享TEMP或生产库。
+- 原external-text-red-01、public-time-binding-red-01及green-01/02均保留。DeepSeek默认native能力拒绝与external-only文本准入分开，精确官方Responses协议/显式1.1模型解析许可已接；级联provider归属及事件owner保存缺口经原external-events-green-01的28P/14F修复，green-02实际42P/206 deselected。PRIVATE_REASONING不进入结果或SQLite，未做真实API/金融准确性认证。
+- 更新两份已报备旧库fixture：移除完整v12表后再装旧DDL/user_version，不仅篡版本号。新增事件绑定、UPDATE/DELETE不可变、三摘要坏restore拒绝、v11空表升级/原响应与现金保留、迁移中断回滚、事件/来源/总保存量上限及禁止历史补写。native-events-migration-red-01实际1F/17P/177 deselected（pytest5.37s/controller6.09s），唯一失败为既存HTTP响应能在重放时被补写事件。修复限制事件首次插入必须与新响应同事务，旧缺失记录不可补写；不是补造历史工具成功。
+- 原session12472实际终态exit0，native-events-runtime-affected-green-01为16文件776P、0失败/错误/跳过，pytest86.57s/controller87.324s，执行源SHA不变。涵盖旧native、同步/异步/级联/公开main、DeepSeek及schema12相关路径；旧批次不相加，无额外小节点review。读取未完成controller的stdout.log时文件尚未生成是一次控制器读取错误，续poll原handle至终态后才读取，没有重启或改日志。
+- 新runtime-dispatch-interface.md说明actual owner/时间线、DeepSeek文本模式、版本兼容、schema12事件及恢复边界；新checkpoint_07.py只归档本IQS私有实施，不发布StockQA。19原执行批次/旧01–06索引保留，正常Git结果尚待实际回执。完整Phase111、MCP/跨租约/独立进程CLI、整批静态/集中审查/源发布/严格清理与所有全局门继续开放。
+- checkpoint07首prepare原26228实际exit1，控制器把route-decision.schema.json的Git LF字节与工作树CRLF误作同一域；五IQS消费者工作字节均与checkpoint06真实执行SHA相同，只有该JSON的Git SHA不同且LF规范化后完全相同。未产新index/清单、未暂存提交或重跑产品测试。新helper改为核原执行字节，并分列Git/working SHA，仅该明确JSON允许LF域核对；不修改冻结原记录。
+- 接续prepare原13799实际exit0：732工件、739精确选择、19原执行批次、111支持文件不变；随后git模式在只读diff的739路径argv发生WinError206，尚未暂存/commit/push。冻结checkpoint07/index不修改，新增checkpoint_07_resume.py与独立补充索引，用原NUL清单和批量Git blob读核原字节后接续正常Git；不重跑产品测试、不以工具失败声明产品失败或已发布。

@@ -1,0 +1,761 @@
+..F.FFFF..                                                               [100%]
+================================== FAILURES ===================================
+_____ test_public_external_main_wrong_manifest_fails_before_store_or_http _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_wron0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D790165490>
+capsys = <_pytest.capture.CaptureFixture object at 0x000001D790A49BE0>
+
+    def test_public_external_main_wrong_manifest_fails_before_store_or_http(tmp_path, monkeypatch, capsys):
+        kwargs, search, path = _inputs(tmp_path, monkeypatch)
+        document = json.loads(path.read_text("utf-8"))
+        document["execution_plan"]["question_manifest_sha256"] = "e" * 64
+        path.write_text(json.dumps(document), encoding="utf-8")
+        code, _, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code != 0
+        captured = capsys.readouterr()
+>       assert "external_policy_manifest_mismatch" in captured.out + captured.err
+E       AssertionError: assert 'external_policy_manifest_mismatch' in ('' + '')
+E        +  where '' = CaptureResult(out='', err='').out
+E        +  and   '' = CaptureResult(out='', err='').err
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:106: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_wron0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR - 运行失败: external_policy_manifest_mismatch
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1275, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1423, in _run_single_company
+    raise ValueError("external_policy_manifest_mismatch")
+ValueError: external_policy_manifest_mismatch
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1271 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1273 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1274 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_wron0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1388 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external_policy_manifest_mismatch
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1275, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1423, in _run_single_company
+    raise ValueError("external_policy_manifest_mismatch")
+ValueError: external_policy_manifest_mismatch
+_ test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_fall0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D79095BAC0>
+hybrid = False, status = 401
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        receipt = json.loads(output.read_text("utf-8"))["execution_receipts"]["IQS_05"]
+        assert receipt["requested_model"] == receipt["actual_model"] == "gpt-4.1-mini"
+        assert [attempt["http_status_code"] for attempt in receipt["attempts"]] == [status, 200]
+        assert [attempt["requested_model"] for attempt in receipt["attempts"]] == ["gpt-4.1", "gpt-4.1-mini"]
+        assert search.request.call_count == 1 and models.post.call_count == 2
+        payloads = [call.kwargs["json"] for call in models.post.call_args_list]
+        assert payloads[0]["input"] == payloads[1]["input"]
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        attempts = store.list_attempts(proof["work_item_id"])
+        assert [attempt["route_id"] for attempt in attempts] == ["primary-route", "backup-route"]
+>       contexts = [store.get_external_context_use(attempt["attempt_id"])["metadata"] for attempt in attempts]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'metadata'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:154: KeyError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_0dd550e2630941a385feff3748e70e7b）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_0dd550e2630941a385feff3748e70e7b）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_0dd550e2630941a385feff3748e70e7b）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall0\result.json
+[OK] 平均评分: 6.0/10
+[OK] 评分分布: {6: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1271 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1273 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1274 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1388 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1454 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1459 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1460 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1461 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1491 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:339 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_0dd550e2630941a385feff3748e70e7b）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_0dd550e2630941a385feff3748e70e7b）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:424 Q10 检查点落定 → blocked（WORK_0dd550e2630941a385feff3748e70e7b）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:371 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall0\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1801 
+Question processing completed.
+_ test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_fall1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D7907D9350>
+hybrid = True, status = 401
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        receipt = json.loads(output.read_text("utf-8"))["execution_receipts"]["IQS_05"]
+        assert receipt["requested_model"] == receipt["actual_model"] == "gpt-4.1-mini"
+        assert [attempt["http_status_code"] for attempt in receipt["attempts"]] == [status, 200]
+        assert [attempt["requested_model"] for attempt in receipt["attempts"]] == ["gpt-4.1", "gpt-4.1-mini"]
+        assert search.request.call_count == 1 and models.post.call_count == 2
+        payloads = [call.kwargs["json"] for call in models.post.call_args_list]
+        assert payloads[0]["input"] == payloads[1]["input"]
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        attempts = store.list_attempts(proof["work_item_id"])
+        assert [attempt["route_id"] for attempt in attempts] == ["primary-route", "backup-route"]
+>       contexts = [store.get_external_context_use(attempt["attempt_id"])["metadata"] for attempt in attempts]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'metadata'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:154: KeyError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall1\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall1\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall1\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "explicit_hybrid", "policy_id": "quick-scan-search-offline", "policy_sha256": "64274eec4da0ca4526fefa3c39117729d1be8044a2d9509dc0c1be5c173ecf55", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_d468af3107004cdf853ca3fb67109ccd）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_d468af3107004cdf853ca3fb67109ccd）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_d468af3107004cdf853ca3fb67109ccd）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall1\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall1\result.json
+[OK] 平均评分: 6.0/10
+[OK] 评分分布: {6: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1271 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1273 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1274 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall1\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1388 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1454 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1459 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1460 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall1\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1461 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall1\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1491 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:339 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_d468af3107004cdf853ca3fb67109ccd）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_d468af3107004cdf853ca3fb67109ccd）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:424 Q10 检查点落定 → blocked（WORK_d468af3107004cdf853ca3fb67109ccd）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:371 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall1\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1801 
+Question processing completed.
+_ test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_fall2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D7907DA150>
+hybrid = False, status = 429
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        receipt = json.loads(output.read_text("utf-8"))["execution_receipts"]["IQS_05"]
+        assert receipt["requested_model"] == receipt["actual_model"] == "gpt-4.1-mini"
+        assert [attempt["http_status_code"] for attempt in receipt["attempts"]] == [status, 200]
+        assert [attempt["requested_model"] for attempt in receipt["attempts"]] == ["gpt-4.1", "gpt-4.1-mini"]
+        assert search.request.call_count == 1 and models.post.call_count == 2
+        payloads = [call.kwargs["json"] for call in models.post.call_args_list]
+        assert payloads[0]["input"] == payloads[1]["input"]
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        attempts = store.list_attempts(proof["work_item_id"])
+        assert [attempt["route_id"] for attempt in attempts] == ["primary-route", "backup-route"]
+>       contexts = [store.get_external_context_use(attempt["attempt_id"])["metadata"] for attempt in attempts]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'metadata'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:154: KeyError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall2\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall2\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall2\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_ab1c173ed5834428881bdb80a5adacd8）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_ab1c173ed5834428881bdb80a5adacd8）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_ab1c173ed5834428881bdb80a5adacd8）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall2\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall2\result.json
+[OK] 平均评分: 6.0/10
+[OK] 评分分布: {6: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1271 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1273 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1274 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall2\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1388 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1454 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1459 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1460 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall2\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1461 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall2\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1491 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:339 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_ab1c173ed5834428881bdb80a5adacd8）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_ab1c173ed5834428881bdb80a5adacd8）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:424 Q10 检查点落定 → blocked（WORK_ab1c173ed5834428881bdb80a5adacd8）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:371 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall2\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1801 
+Question processing completed.
+_ test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-adjacent-red-01/test_public_external_main_fall3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D7907B24E0>
+hybrid = True, status = 429
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        receipt = json.loads(output.read_text("utf-8"))["execution_receipts"]["IQS_05"]
+        assert receipt["requested_model"] == receipt["actual_model"] == "gpt-4.1-mini"
+        assert [attempt["http_status_code"] for attempt in receipt["attempts"]] == [status, 200]
+        assert [attempt["requested_model"] for attempt in receipt["attempts"]] == ["gpt-4.1", "gpt-4.1-mini"]
+        assert search.request.call_count == 1 and models.post.call_count == 2
+        payloads = [call.kwargs["json"] for call in models.post.call_args_list]
+        assert payloads[0]["input"] == payloads[1]["input"]
+        proof = receipt["search_binding"]["external_context_use"]
+        store = QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite")
+        attempts = store.list_attempts(proof["work_item_id"])
+        assert [attempt["route_id"] for attempt in attempts] == ["primary-route", "backup-route"]
+>       contexts = [store.get_external_context_use(attempt["attempt_id"])["metadata"] for attempt in attempts]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'metadata'
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:154: KeyError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall3\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall3\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall3\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "explicit_hybrid", "policy_id": "quick-scan-search-offline", "policy_sha256": "64274eec4da0ca4526fefa3c39117729d1be8044a2d9509dc0c1be5c173ecf55", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_2de62d82e1974ce4adc7a4906f072227）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_2de62d82e1974ce4adc7a4906f072227）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_2de62d82e1974ce4adc7a4906f072227）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall3\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall3\result.json
+[OK] 平均评分: 6.0/10
+[OK] 评分分布: {6: 1}
+INFO - 
+Question processing completed.
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1271 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1273 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1274 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall3\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1388 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1454 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1459 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1460 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall3\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1461 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall3\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1491 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:339 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_2de62d82e1974ce4adc7a4906f072227）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_2de62d82e1974ce4adc7a4906f072227）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:424 Q10 检查点落定 → blocked（WORK_2de62d82e1974ce4adc7a4906f072227）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+INFO     src.core.qa_engine:qa_engine.py:371 [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-adjacent-red-01\test_public_external_main_fall3\result.json
+INFO     src.runners.llm_runner:llm_runner.py:1801 
+Question processing completed.
+=========================== short test summary info ===========================
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_wrong_manifest_fails_before_store_or_http
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-False]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-True]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-False]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-True]
+5 failed, 5 passed in 4.74s

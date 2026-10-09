@@ -1,0 +1,291 @@
+FF.F                                                                     [100%]
+================================== FAILURES ===================================
+_ test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-01/test_public_external_main_cold0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BD80A5E780>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:75: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-01\test_public_external_main_cold0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR - 运行失败: execution_policy_schema_invalid
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1386, in _run_single_company
+    search_document = load_search_policy(search_policy)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 461, in load_search_policy
+    _validate_shape(document)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 269, in _validate_shape
+    _validate_execution_shape(document)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 160, in _validate_execution_shape
+    raise SearchPolicyRejected("execution_policy_schema_invalid")
+src.config.quick_scan_search_policy.SearchPolicyRejected: execution_policy_schema_invalid
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1256 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1258 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1259 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-01\test_public_external_main_cold0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1370 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: execution_policy_schema_invalid
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1386, in _run_single_company
+    search_document = load_search_policy(search_policy)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 461, in load_search_policy
+    _validate_shape(document)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 269, in _validate_shape
+    _validate_execution_shape(document)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 160, in _validate_execution_shape
+    raise SearchPolicyRejected("execution_policy_schema_invalid")
+src.config.quick_scan_search_policy.SearchPolicyRejected: execution_policy_schema_invalid
+__ test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-01/test_public_external_main_cold1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BDFE09EFD0>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:75: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-01\test_public_external_main_cold1\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR - 运行失败: execution_policy_schema_invalid
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1386, in _run_single_company
+    search_document = load_search_policy(search_policy)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 461, in load_search_policy
+    _validate_shape(document)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 269, in _validate_shape
+    _validate_execution_shape(document)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 160, in _validate_execution_shape
+    raise SearchPolicyRejected("execution_policy_schema_invalid")
+src.config.quick_scan_search_policy.SearchPolicyRejected: execution_policy_schema_invalid
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1256 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1258 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1259 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-01\test_public_external_main_cold1\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1370 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: execution_policy_schema_invalid
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1386, in _run_single_company
+    search_document = load_search_policy(search_policy)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 461, in load_search_policy
+    _validate_shape(document)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 269, in _validate_shape
+    _validate_execution_shape(document)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 160, in _validate_execution_shape
+    raise SearchPolicyRejected("execution_policy_schema_invalid")
+src.config.quick_scan_search_policy.SearchPolicyRejected: execution_policy_schema_invalid
+_ test_public_external_main_uncertain_search_preserves_reservation_and_stops_model _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-dispatch-red-01/test_public_external_main_unce0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BD80A83790>
+
+    def test_public_external_main_uncertain_search_preserves_reservation_and_stops_model(tmp_path, monkeypatch):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        search.request.side_effect = requests.Timeout("synthetic timeout")
+        code, _, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code != 0
+>       assert search.request.call_count == 1 and models.post.call_count == 0
+E       AssertionError: assert (0 == 1)
+E        +  where 0 = <Mock name='mock.request' id='1913419148528'>.call_count
+E        +    where <Mock name='mock.request' id='1913419148528'> = <Mock id='1913419147184'>.request
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:111: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-01\test_public_external_main_unce0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR - 运行失败: execution_policy_schema_invalid
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1386, in _run_single_company
+    search_document = load_search_policy(search_policy)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 461, in load_search_policy
+    _validate_shape(document)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 269, in _validate_shape
+    _validate_execution_shape(document)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 160, in _validate_execution_shape
+    raise SearchPolicyRejected("execution_policy_schema_invalid")
+src.config.quick_scan_search_policy.SearchPolicyRejected: execution_policy_schema_invalid
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1256 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1258 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1259 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\public-dispatch-red-01\test_public_external_main_unce0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1370 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: execution_policy_schema_invalid
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1260, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1386, in _run_single_company
+    search_document = load_search_policy(search_policy)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 461, in load_search_policy
+    _validate_shape(document)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 269, in _validate_shape
+    _validate_execution_shape(document)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py", line 160, in _validate_execution_shape
+    raise SearchPolicyRejected("execution_policy_schema_invalid")
+src.config.quick_scan_search_policy.SearchPolicyRejected: execution_policy_schema_invalid
+=========================== short test summary info ===========================
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_uncertain_search_preserves_reservation_and_stops_model
+3 failed, 1 passed in 2.06s

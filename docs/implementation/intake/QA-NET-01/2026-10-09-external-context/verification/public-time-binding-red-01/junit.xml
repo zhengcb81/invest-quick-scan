@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="2.029" timestamp="2026-10-09T09:28:42.204303+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]" time="0.378"><failure message="AssertionError: assert datetime.datetime(2026, 10, 9, 8, 28, 43, 653335, tzinfo=datetime.timezone.utc) &lt;= datetime.datetime(2026, 10, 9, 8, 28, 43, 653225, tzinfo=datetime.timezone.utc)&#10; +  where datetime.datetime(2026, 10, 9, 8, 28, 43, 653335, tzinfo=datetime.timezone.utc) = &lt;built-in method fromtimestamp of type object at 0x00007FFF625BD780&gt;(1791534523.6533349, datetime.timezone.utc)&#10; +    where &lt;built-in method fromtimestamp of type object at 0x00007FFF625BD780&gt; = datetime.fromtimestamp&#10; +    and   datetime.timezone.utc = timezone.utc&#10; +  and   datetime.datetime(2026, 10, 9, 8, 28, 43, 653225, tzinfo=datetime.timezone.utc) = &lt;built-in method fromisoformat of type object at 0x00007FFF625BD780&gt;('2026-10-09T08:28:43.653225+00:00')&#10; +    where &lt;built-in method fromisoformat of type object at 0x00007FFF625BD780&gt; = datetime.fromisoformat&#10; +    and   '2026-10-09T08:28:43.653225+00:00' = &lt;built-in method replace of str object at 0x000002523D615890&gt;('Z', '+00:00')&#10; +      where &lt;built-in method replace of str object at 0x000002523D615890&gt; = '2026-10-09T08:28:43.653225Z'.replace">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-time-binding-red-01/test_public_external_main_cold0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002523D69EEA0&gt;
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        first = json.loads(output.read_text("utf-8"))
+        assert first["schema_version"] == "stockqa.quick_scan_result/1.1.0"
+        receipt = first["execution_receipts"]["IQS_05"]
+        assert receipt["search_status"] == "executed" and "search_binding" in receipt
+        assert first["answers"]["IQS_05"]["score"] == 6
+        assert search.request.call_count == 1 and models.post.call_count == 1
+        proof = receipt["search_binding"]["external_context_use"]
+        # Consumer's public temporal contract: persistence/use occurs after the
+        # original HTTP completion and no later than the durable answer time.
+        assert datetime.fromisoformat(receipt["completed_at"].replace("Z", "+00:00")) &lt;= datetime.fromtimestamp(proof["used_at"], timezone.utc)
+&gt;       assert datetime.fromtimestamp(proof["used_at"], timezone.utc) &lt;= datetime.fromisoformat(receipt["answered_at"].replace("Z", "+00:00"))
+E       AssertionError: assert datetime.datetime(2026, 10, 9, 8, 28, 43, 653335, tzinfo=datetime.timezone.utc) &lt;= datetime.datetime(2026, 10, 9, 8, 28, 43, 653225, tzinfo=datetime.timezone.utc)
+E        +  where datetime.datetime(2026, 10, 9, 8, 28, 43, 653335, tzinfo=datetime.timezone.utc) = &lt;built-in method fromtimestamp of type object at 0x00007FFF625BD780&gt;(1791534523.6533349, datetime.timezone.utc)
+E        +    where &lt;built-in method fromtimestamp of type object at 0x00007FFF625BD780&gt; = datetime.fromtimestamp
+E        +    and   datetime.timezone.utc = timezone.utc
+E        +  and   datetime.datetime(2026, 10, 9, 8, 28, 43, 653225, tzinfo=datetime.timezone.utc) = &lt;built-in method fromisoformat of type object at 0x00007FFF625BD780&gt;('2026-10-09T08:28:43.653225+00:00')
+E        +    where &lt;built-in method fromisoformat of type object at 0x00007FFF625BD780&gt; = datetime.fromisoformat
+E        +    and   '2026-10-09T08:28:43.653225+00:00' = &lt;built-in method replace of str object at 0x000002523D615890&gt;('Z', '+00:00')
+E        +      where &lt;built-in method replace of str object at 0x000002523D615890&gt; = '2026-10-09T08:28:43.653225Z'.replace
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:89: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]" time="0.330"><failure message="AssertionError: assert datetime.datetime(2026, 10, 9, 8, 28, 44, 127683, tzinfo=datetime.timezone.utc) &lt;= datetime.datetime(2026, 10, 9, 8, 28, 44, 127538, tzinfo=datetime.timezone.utc)&#10; +  where datetime.datetime(2026, 10, 9, 8, 28, 44, 127683, tzinfo=datetime.timezone.utc) = &lt;built-in method fromtimestamp of type object at 0x00007FFF625BD780&gt;(1791534524.1276834, datetime.timezone.utc)&#10; +    where &lt;built-in method fromtimestamp of type object at 0x00007FFF625BD780&gt; = datetime.fromtimestamp&#10; +    and   datetime.timezone.utc = timezone.utc&#10; +  and   datetime.datetime(2026, 10, 9, 8, 28, 44, 127538, tzinfo=datetime.timezone.utc) = &lt;built-in method fromisoformat of type object at 0x00007FFF625BD780&gt;('2026-10-09T08:28:44.127538+00:00')&#10; +    where &lt;built-in method fromisoformat of type object at 0x00007FFF625BD780&gt; = datetime.fromisoformat&#10; +    and   '2026-10-09T08:28:44.127538+00:00' = &lt;built-in method replace of str object at 0x000002523CE9B460&gt;('Z', '+00:00')&#10; +      where &lt;built-in method replace of str object at 0x000002523CE9B460&gt; = '2026-10-09T08:28:44.127538Z'.replace">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-time-binding-red-01/test_public_external_main_cold1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002523AC5EFD0&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+        assert code == 0
+        first = json.loads(output.read_text("utf-8"))
+        assert first["schema_version"] == "stockqa.quick_scan_result/1.1.0"
+        receipt = first["execution_receipts"]["IQS_05"]
+        assert receipt["search_status"] == "executed" and "search_binding" in receipt
+        assert first["answers"]["IQS_05"]["score"] == 6
+        assert search.request.call_count == 1 and models.post.call_count == 1
+        proof = receipt["search_binding"]["external_context_use"]
+        # Consumer's public temporal contract: persistence/use occurs after the
+        # original HTTP completion and no later than the durable answer time.
+        assert datetime.fromisoformat(receipt["completed_at"].replace("Z", "+00:00")) &lt;= datetime.fromtimestamp(proof["used_at"], timezone.utc)
+&gt;       assert datetime.fromtimestamp(proof["used_at"], timezone.utc) &lt;= datetime.fromisoformat(receipt["answered_at"].replace("Z", "+00:00"))
+E       AssertionError: assert datetime.datetime(2026, 10, 9, 8, 28, 44, 127683, tzinfo=datetime.timezone.utc) &lt;= datetime.datetime(2026, 10, 9, 8, 28, 44, 127538, tzinfo=datetime.timezone.utc)
+E        +  where datetime.datetime(2026, 10, 9, 8, 28, 44, 127683, tzinfo=datetime.timezone.utc) = &lt;built-in method fromtimestamp of type object at 0x00007FFF625BD780&gt;(1791534524.1276834, datetime.timezone.utc)
+E        +    where &lt;built-in method fromtimestamp of type object at 0x00007FFF625BD780&gt; = datetime.fromtimestamp
+E        +    and   datetime.timezone.utc = timezone.utc
+E        +  and   datetime.datetime(2026, 10, 9, 8, 28, 44, 127538, tzinfo=datetime.timezone.utc) = &lt;built-in method fromisoformat of type object at 0x00007FFF625BD780&gt;('2026-10-09T08:28:44.127538+00:00')
+E        +    where &lt;built-in method fromisoformat of type object at 0x00007FFF625BD780&gt; = datetime.fromisoformat
+E        +    and   '2026-10-09T08:28:44.127538+00:00' = &lt;built-in method replace of str object at 0x000002523CE9B460&gt;('Z', '+00:00')
+E        +      where &lt;built-in method replace of str object at 0x000002523CE9B460&gt; = '2026-10-09T08:28:44.127538Z'.replace
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:89: AssertionError</failure></testcase></testsuite></testsuites>

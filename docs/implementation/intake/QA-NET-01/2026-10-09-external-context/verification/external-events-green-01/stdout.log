@@ -1,0 +1,2690 @@
+FF..FFFFFFF.........FF....F.FF............                               [100%]
+================================== FAILURES ===================================
+_ test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_cold0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001400835F360>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:78: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_f8b1ca4112434d5a90de35b2c843f1bd）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_f8b1ca4112434d5a90de35b2c843f1bd）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_f8b1ca4112434d5a90de35b2c843f1bd）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+ERROR - 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1275 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1277 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1278 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1392 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1458 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1463 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1464 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1465 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1495 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+INFO     src.runners.llm_runner:llm_runner.py:427 Q10 检查点落定 → blocked（WORK_f8b1ca4112434d5a90de35b2c843f1bd）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+__ test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_cold1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001400598AEA0>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http(tmp_path, monkeypatch, hybrid):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:78: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold1\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold1\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold1\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "explicit_hybrid", "policy_id": "quick-scan-search-offline", "policy_sha256": "64274eec4da0ca4526fefa3c39117729d1be8044a2d9509dc0c1be5c173ecf55", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_125dd4fc3ae342389c4ab8b0b9c4e2b7）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_125dd4fc3ae342389c4ab8b0b9c4e2b7）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_125dd4fc3ae342389c4ab8b0b9c4e2b7）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+ERROR - 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1275 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1277 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1278 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold1\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1392 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1458 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1463 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1464 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold1\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1465 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_cold1\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1495 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_125dd4fc3ae342389c4ab8b0b9c4e2b7）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_125dd4fc3ae342389c4ab8b0b9c4e2b7）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:427 Q10 检查点落定 → blocked（WORK_125dd4fc3ae342389c4ab8b0b9c4e2b7）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+_ test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_fall0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014008437350>
+hybrid = False, status = 401
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:145: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_95bcdfcf6a764850aaf07cd1acdf749a）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_95bcdfcf6a764850aaf07cd1acdf749a）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_95bcdfcf6a764850aaf07cd1acdf749a）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+ERROR - 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1275 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1277 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1278 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1392 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1458 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1463 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1464 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1465 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1495 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:339 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_95bcdfcf6a764850aaf07cd1acdf749a）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_95bcdfcf6a764850aaf07cd1acdf749a）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:427 Q10 检查点落定 → blocked（WORK_95bcdfcf6a764850aaf07cd1acdf749a）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+_ test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_fall1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014007157B50>
+hybrid = True, status = 401
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:145: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall1\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall1\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall1\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "explicit_hybrid", "policy_id": "quick-scan-search-offline", "policy_sha256": "64274eec4da0ca4526fefa3c39117729d1be8044a2d9509dc0c1be5c173ecf55", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_75a0b95093d545dc9f39ef9e4fd74417）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_75a0b95093d545dc9f39ef9e4fd74417）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_75a0b95093d545dc9f39ef9e4fd74417）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+ERROR - 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1275 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1277 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1278 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall1\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1392 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1458 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1463 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1464 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall1\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1465 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall1\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1495 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:339 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_75a0b95093d545dc9f39ef9e4fd74417）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_75a0b95093d545dc9f39ef9e4fd74417）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:427 Q10 检查点落定 → blocked（WORK_75a0b95093d545dc9f39ef9e4fd74417）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+_ test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_fall2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B28650>
+hybrid = False, status = 429
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:145: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall2\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall2\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall2\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_f3cfab8ba9d44e83a0d5aaf5d7a95f95）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_f3cfab8ba9d44e83a0d5aaf5d7a95f95）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_f3cfab8ba9d44e83a0d5aaf5d7a95f95）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+ERROR - 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1275 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1277 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1278 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall2\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1392 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1458 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1463 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1464 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall2\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1465 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall2\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1495 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:339 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_f3cfab8ba9d44e83a0d5aaf5d7a95f95）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_f3cfab8ba9d44e83a0d5aaf5d7a95f95）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:427 Q10 检查点落定 → blocked（WORK_f3cfab8ba9d44e83a0d5aaf5d7a95f95）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+_ test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_fall3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014007C472F0>
+hybrid = True, status = 429
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("status", [401, 429])
+    def test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts(tmp_path, monkeypatch, hybrid, status):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch, hybrid=hybrid)
+        model = _ordered_policy(max_attempts=2)
+        model["models"][0]["model"] = "gpt-4.1"
+        model["models"][1]["model"] = "gpt-4.1-mini"
+        model["budget"]["max_cost"] = 25
+        primary = dict(kwargs["provider_configs"]["openai"])
+        backup = {**primary, "model": "gpt-4.1-mini"}
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "gpt-4.1-mini"
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        rejection = _http_failure(status, error_code="insufficient_quota" if status == 429 else None)
+        rejection.content = json.dumps(rejection.json.return_value).encode()
+        rejection.text = rejection.content.decode()
+        kwargs.update(model_policy=model, provider_name="primary", provider_configs={"primary": primary, "backup": backup},
+                      responses=[rejection, response])
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0
+E       assert 1 == 0
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:145: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall3\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall3\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall3\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "explicit_hybrid", "policy_id": "quick-scan-search-offline", "policy_sha256": "64274eec4da0ca4526fefa3c39117729d1be8044a2d9509dc0c1be5c173ecf55", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: ***
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 primary API... (尝试 1/1)
+ERROR - primary API请求失败，已尝试 1 次（HTTPError）
+INFO - LLM答案生成完成 (状态: error)
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 backup API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_53a3bbf1536045ac89debe9d77b6028d）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_53a3bbf1536045ac89debe9d77b6028d）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_53a3bbf1536045ac89debe9d77b6028d）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+ERROR - 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1275 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1277 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1278 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall3\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1392 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1458 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1463 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1464 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall3\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1465 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_fall3\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1495 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: primary, model: gpt-4.1, api_key: synt...only)
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: backup, model: gpt-4.1-mini, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 primary API... (尝试 1/1)
+ERROR    src.providers.llm_provider:llm_provider.py:339 primary API请求失败，已尝试 1 次（HTTPError）
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: error)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 backup API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_53a3bbf1536045ac89debe9d77b6028d）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_53a3bbf1536045ac89debe9d77b6028d）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:427 Q10 检查点落定 → blocked（WORK_53a3bbf1536045ac89debe9d77b6028d）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+_ test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[missing_use] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_corr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014008500320>
+mutation = 'missing_use'
+
+    @pytest.mark.parametrize("mutation", ["missing_use", "corrupt_use"])
+    def test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer(tmp_path, monkeypatch, mutation):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0 and models.post.call_count == 1
+E       assert (1 == 0)
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:172: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_3beaa147e8ae4ce08ed3349a91129196）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_3beaa147e8ae4ce08ed3349a91129196）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_3beaa147e8ae4ce08ed3349a91129196）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+ERROR - 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1275 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1277 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1278 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1392 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1458 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1463 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1464 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1465 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1495 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_3beaa147e8ae4ce08ed3349a91129196）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_3beaa147e8ae4ce08ed3349a91129196）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:427 Q10 检查点落定 → blocked（WORK_3beaa147e8ae4ce08ed3349a91129196）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+_ test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[corrupt_use] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_corr1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B0D630>
+mutation = 'corrupt_use'
+
+    @pytest.mark.parametrize("mutation", ["missing_use", "corrupt_use"])
+    def test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer(tmp_path, monkeypatch, mutation):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0 and models.post.call_count == 1
+E       assert (1 == 0)
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:172: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr1\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr1\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr1\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_ba56b3245e064b31bfe268f8dcfd708e）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_ba56b3245e064b31bfe268f8dcfd708e）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_ba56b3245e064b31bfe268f8dcfd708e）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+ERROR - 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1275 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1277 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1278 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr1\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1392 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1458 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1463 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1464 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr1\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1465 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_corr1\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1495 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 openai API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_ba56b3245e064b31bfe268f8dcfd708e）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_ba56b3245e064b31bfe268f8dcfd708e）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:427 Q10 检查点落定 → blocked（WORK_ba56b3245e064b31bfe268f8dcfd708e）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+_ test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_main_deep0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B0EA50>
+
+    def test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores(tmp_path, monkeypatch):
+        kwargs, search, _ = _inputs(tmp_path, monkeypatch)
+        kwargs["model_policy"]["models"][0].update(provider_config_ref="deepseek", model="deepseek-flash")
+        kwargs.update(provider_name="deepseek", provider_configs={"deepseek": {
+            "enabled": True, "api_key": "synthetic-only", "model": "deepseek-flash",
+            "base_url": "https://api.deepseek.com/responses", "max_retries": 1}})
+        response = kwargs["responses"][0]
+        response.json.return_value["model"] = "deepseek-flash"
+        response.json.return_value["output"].insert(0, {"type": "reasoning", "content": [
+            {"type": "reasoning_text", "text": "synthetic-thinking-MUST-NOT-LEAK"}]})
+        response.content = json.dumps(response.json.return_value).encode()
+        response.text = response.content.decode()
+        code, output, models = _invoke(monkeypatch, tmp_path, **kwargs)
+>       assert code == 0 and models.post.call_count == 1 and search.request.call_count == 1
+E       assert (1 == 0)
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\tests\integration\test_external_context_cli_e2e.py:207: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_deep0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_deep0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_deep0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: deepseek, model: deepseek-flash, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 1, "module_package_id": null, "questions": [{"action": "dispatch", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "46c3f7273b0a76785d11516b404e7bfe818be14fea6432cda0281c5138feaee5", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: deepseek, model: deepseek-flash, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 deepseek API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_eafebabe754d40fbb60df4d45b00e7da）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_eafebabe754d40fbb60df4d45b00e7da）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_eafebabe754d40fbb60df4d45b00e7da）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+ERROR - 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1275 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1277 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1278 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_deep0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1392 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING  src.runners.llm_runner:llm_runner.py:1458 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO     src.runners.llm_runner:llm_runner.py:1463 
+成功加载 1 个问题
+INFO     src.runners.llm_runner:llm_runner.py:1464 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_deep0\questions.json (json格式)
+INFO     src.runners.llm_runner:llm_runner.py:1465 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\external-events-green-01\test_public_external_main_deep0\result.json
+
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.runners.llm_runner:llm_runner.py:1495 Quick-scan rate card fixture-cli-rate-card-v1 is unavailable; after the first provider attempt its reserved cost will remain unpriced and dispatch will pause.
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: deepseek, model: deepseek-flash, api_key: synt...only)
+INFO     src.core.qa_engine:qa_engine.py:105 QAEngine 初始化完成（搜索提供者: None）
+INFO     src.core.qa_engine:qa_engine.py:182 开始批量处理 1 个问题
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+INFO     src.config.llm_config:llm_config.py:47 成功加载 LLM 配置文件: llm_apis.json
+WARNING  src.providers.base_llm_provider:base_llm_provider.py:157 从配置文件读取 API 密钥（建议使用环境变量）
+INFO     src.providers.base_llm_provider:base_llm_provider.py:160 LLMProvider initialized (provider: deepseek, model: deepseek-flash, api_key: synt...only)
+INFO     src.providers.llm_provider:llm_provider.py:74 LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO     src.providers.llm_provider:llm_provider.py:246 正在调用 deepseek API... (尝试 1/1)
+INFO     src.providers.llm_response_parser:llm_response_parser.py:343 成功解析LLM响应（直接JSON），评分: 6/10
+INFO     src.providers.llm_provider:llm_provider.py:135 LLM答案生成完成 (状态: scored)
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:255 C06 封存阻断（WORK_eafebabe754d40fbb60df4d45b00e7da）：c06 authority is not configured
+WARNING  src.utils.quick_scan_delivery_seal:quick_scan_delivery_seal.py:132 C06 封存阻断（WORK_eafebabe754d40fbb60df4d45b00e7da）：c06_authority_unavailable
+INFO     src.runners.llm_runner:llm_runner.py:427 Q10 检查点落定 → blocked（WORK_eafebabe754d40fbb60df4d45b00e7da）
+INFO     src.core.qa_engine:qa_engine.py:301 [1/1] 处理成功
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external public output could not verify its actual owner
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 526, in to_quick_scan_dict
+    raise ValueError("external public output native events differ from their actual owner")
+ValueError: external public output native events differ from their actual owner
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1279, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\runners\llm_runner.py", line 1748, in _run_single_company
+    qa_engine.output_results(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        batch_result,
+        ^^^^^^^^^^^^^
+    ...<9 lines>...
+        },
+        ^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\qa_engine.py", line 358, in output_results
+    batch_result.to_quick_scan_dict(**quick_scan_context)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\core\models.py", line 535, in to_quick_scan_dict
+    raise ValueError("external public output could not verify its actual owner") from error
+ValueError: external public output could not verify its actual owner
+_ test_public_external_result_is_explicitly_versioned_and_owner_bound[False] __
+
+self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 8, 642075, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007C47980>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+>                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_result_is0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014008520FC0>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_result_is_explicitly_versioned_and_owner_bound(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        response = _send_external_answer(args, context, model, url)
+        original = copy.deepcopy(response.execution_metadata)
+        batch = _public_batch(response)
+>       result = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name="Synthetic issuer",
+            provider_name="openai", requested_model=model, work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 8, 642075, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007C47980>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+>                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError
+__ test_public_external_result_is_explicitly_versioned_and_owner_bound[True] __
+
+self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 8, 874684, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007B0D550>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+>                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_result_is1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B8B710>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_result_is_explicitly_versioned_and_owner_bound(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        response = _send_external_answer(args, context, model, url)
+        original = copy.deepcopy(response.execution_metadata)
+        batch = _public_batch(response)
+>       result = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name="Synthetic issuer",
+            provider_name="openai", requested_model=model, work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 8, 874684, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007B0D550>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+>                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError
+___ test_public_external_result_uses_actual_model_instead_of_outer_metadata ___
+
+self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 9, 811851, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'wrong'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007A575F0>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+>                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_external_result_us0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B46CB0>
+
+    def test_public_external_result_uses_actual_model_instead_of_outer_metadata(tmp_path, monkeypatch):
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        response = _send_external_answer(args, context, model, url)
+        batch = _public_batch(response)
+        batch.results[0].answer.metadata.update(actual_model="wrong", model_requested="wrong", request_id="wrong")
+>       result = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name="Synthetic issuer",
+            provider_name="openai", requested_model="wrong", work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:257: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 9, 3...stions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 9, 811851, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'wrong'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014007A575F0>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+>                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError
+_____ test_public_actual_producer_to_iqs_routing_preserves_binding[False] _____
+
+self = QABatchResult(results=[QAResult(question=Question(text='Return only a StockQA native JSON object with question_id=ROUT...tions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 11, 624413, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x00000140084F42D0>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+>                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_actual_producer_to0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014007B3FAD0>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_actual_producer_to_iqs_routing_preserves_binding(tmp_path, monkeypatch, hybrid):
+        """Real durable producer -> public JSON -> pure consumer; HTTP only is fake."""
+        import sys
+        from pathlib import Path
+        from datetime import datetime, timezone
+        from src.providers.llm_client import LLMClient
+        root = Path(__file__).resolve().parents[5]
+        monkeypatch.syspath_prepend(str(root / "scripts"))
+        monkeypatch.syspath_prepend(str(root / "tests"))
+        import routing
+        import test_routing as fixtures
+        fixture = fixtures.RoutingFixture()
+        fixture.setUp()
+        try:
+            identity = {**fixture.identity, "entity_id": "ENT_BYD", "company": "Synthetic issuer", "as_of": "2026-10-08"}
+            request = routing.build_route_request(identity, package_id=fixture.package_id, root=fixture.root)
+            prompt = request["questions"][0]["questions"][0]["text"]
+            args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid, question_id="ROUTE_02")
+            facts = fixture.normal()
+            for fact in facts:
+                for source in fact["sources"]:
+                    source.update(entity_id="ENT_BYD", url="https://fixture.example/ir", published_at="2026-10-01")
+            body = sync.post.return_value.json.return_value
+            answer = {"entity_id": "ENT_BYD", "company_name": identity["company"], "question_id": "ROUTE_02", "status": "scored", "score": 8,
+                "description": json.dumps({"schema_version": "2.0.0", "question_id": "ROUTE_02", "candidates": facts})}
+            body["output"][-1]["content"][0]["text"] = json.dumps(answer)
+            sync.post.return_value.content = json.dumps(body).encode()
+            sync.post.return_value.text = sync.post.return_value.content.decode()
+            clock[0] += 1
+            class FixtureDateTime(datetime):
+                @classmethod
+                def now(cls, tz=None): return datetime.fromtimestamp(clock[0], tz or timezone.utc)
+            monkeypatch.setattr("src.providers.llm_client.datetime", FixtureDateTime)
+            with _external_answer_bindings(args, context, "openai", model):
+                response = LLMClient("synthetic-test-only", model, url, provider_name="openai").send_search_request(prompt)
+            batch = _public_batch(response, question_id="ROUTE_02", question_text=prompt, score=8)
+            batch.results[0].answer.text = answer["description"]  # Same provider-parser output boundary.
+>           public = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name=identity["company"], provider_name="openai",
+                requested_model=model, work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:312: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Return only a StockQA native JSON object with question_id=ROUT...tions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 11, 624413, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x00000140084F42D0>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+>                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError
+_____ test_public_actual_producer_to_iqs_routing_preserves_binding[True] ______
+
+self = QABatchResult(results=[QAResult(question=Question(text='Return only a StockQA native JSON object with question_id=ROUT...tions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 13, 436867, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014008541EF0>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+>                       raise ValueError("external public output native events differ from their actual owner")
+E                       ValueError: external public output native events differ from their actual owner
+
+src\core\models.py:526: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/external-events-green-01/test_public_actual_producer_to1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014008296FD0>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_actual_producer_to_iqs_routing_preserves_binding(tmp_path, monkeypatch, hybrid):
+        """Real durable producer -> public JSON -> pure consumer; HTTP only is fake."""
+        import sys
+        from pathlib import Path
+        from datetime import datetime, timezone
+        from src.providers.llm_client import LLMClient
+        root = Path(__file__).resolve().parents[5]
+        monkeypatch.syspath_prepend(str(root / "scripts"))
+        monkeypatch.syspath_prepend(str(root / "tests"))
+        import routing
+        import test_routing as fixtures
+        fixture = fixtures.RoutingFixture()
+        fixture.setUp()
+        try:
+            identity = {**fixture.identity, "entity_id": "ENT_BYD", "company": "Synthetic issuer", "as_of": "2026-10-08"}
+            request = routing.build_route_request(identity, package_id=fixture.package_id, root=fixture.root)
+            prompt = request["questions"][0]["questions"][0]["text"]
+            args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid, question_id="ROUTE_02")
+            facts = fixture.normal()
+            for fact in facts:
+                for source in fact["sources"]:
+                    source.update(entity_id="ENT_BYD", url="https://fixture.example/ir", published_at="2026-10-01")
+            body = sync.post.return_value.json.return_value
+            answer = {"entity_id": "ENT_BYD", "company_name": identity["company"], "question_id": "ROUTE_02", "status": "scored", "score": 8,
+                "description": json.dumps({"schema_version": "2.0.0", "question_id": "ROUTE_02", "candidates": facts})}
+            body["output"][-1]["content"][0]["text"] = json.dumps(answer)
+            sync.post.return_value.content = json.dumps(body).encode()
+            sync.post.return_value.text = sync.post.return_value.content.decode()
+            clock[0] += 1
+            class FixtureDateTime(datetime):
+                @classmethod
+                def now(cls, tz=None): return datetime.fromtimestamp(clock[0], tz or timezone.utc)
+            monkeypatch.setattr("src.providers.llm_client.datetime", FixtureDateTime)
+            with _external_answer_bindings(args, context, "openai", model):
+                response = LLMClient("synthetic-test-only", model, url, provider_name="openai").send_search_request(prompt)
+            batch = _public_batch(response, question_id="ROUTE_02", question_text=prompt, score=8)
+            batch.results[0].answer.text = answer["description"]  # Same provider-parser output boundary.
+>           public = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name=identity["company"], provider_name="openai",
+                requested_model=model, work_store=args["store"])
+
+tests\unit\test_quick_scan_external_context.py:312: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QABatchResult(results=[QAResult(question=Question(text='Return only a StockQA native JSON object with question_id=ROUT...tions=1, processed_count=1, created_at=datetime.datetime(2026, 10, 9, 8, 39, 13, 436867, tzinfo=datetime.timezone.utc))
+entity_id = 'ENT_BYD', company_name = 'Synthetic issuer'
+provider_name = 'openai', requested_model = 'gpt-4.1'
+work_store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000014008541EF0>
+
+    def to_quick_scan_dict(
+        self,
+        *,
+        entity_id: str,
+        company_name: str,
+        provider_name: Optional[str],
+        requested_model: Optional[str],
+        work_store: Any = None,
+    ) -> Dict[str, Any]:
+        """Serialize a stable, per-question quick-scan envelope with a separate execution receipt."""
+        answers: Dict[str, Dict[str, Any]] = {}
+        execution_receipts: Dict[str, Dict[str, Any]] = {}
+        transport_providers: set[str] = set()
+        transport_models: set[str] = set()
+        public_version = "stockqa.quick_scan_result/1.0.0"
+        for result in self.results:
+            question_id = result.question.question_id
+            if not question_id:
+                raise ValueError("quick-scan结果必须带有显式question_id，不能按位置补ID")
+            if question_id in answers:
+                raise ValueError(f"quick-scan结果包含重复question_id: {question_id}")
+    
+            metadata = result.answer.metadata
+            execution = metadata.get("execution", {})
+            execution = execution if isinstance(execution, dict) else {}
+            search_projection = None
+            search_binding = None
+            public_original = None
+            if "external_context_use" in execution:
+                from src.utils.quick_scan_work_store import QuickScanWorkStore, _sanitized_receipt, _canonical_native_events
+                from src.utils.quick_scan_work_transport import project_quick_scan_search
+    
+                try:
+                    if not isinstance(work_store, QuickScanWorkStore):
+                        raise ValueError("external public output requires its actual work store")
+                    proof = execution["external_context_use"]
+                    item = work_store.get_item(proof["work_item_id"])
+                    if item["entity_id"] != entity_id or item["question_id"] != question_id:
+                        raise ValueError("external public output identity differs from its actual owner")
+                    search_projection = project_quick_scan_search(execution,
+                        work_store=work_store, work_item_id=item["work_item_id"])
+                    original = work_store.get_attempt_response(proof["work_attempt_id"])
+                    if original is None:
+                        raise ValueError("external public output has no actual final response")
+                    if _sanitized_receipt(execution) != original["receipt"]:
+                        raise ValueError("external public output original HTTP receipt drifted")
+                    public_original = original["receipt"]
+                    native_events = original.get("native_search_events")
+                    if native_events is None or _canonical_native_events(execution.get("web_search_calls", [])) != native_events:
+                        raise ValueError("external public output native events differ from their actual owner")
+                    search_binding = {
+                        "schema": "stockqa.search_binding/1.1.0",
+                        "entity_id": entity_id, "question_id": question_id,
+                        "identity_snapshot_sha256": item["identity_snapshot_sha256"],
+                        "external_context_use": copy.deepcopy(search_projection["external_context_use"]),
+                        "native_receipt": copy.deepcopy(original["receipt"]),
+                    }
+                except Exception as error:
+>                   raise ValueError("external public output could not verify its actual owner") from error
+E                   ValueError: external public output could not verify its actual owner
+
+src\core\models.py:535: ValueError
+=========================== short test summary info ===========================
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[False]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_cold_and_warm_keep_receipt_and_avoid_http[True]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-False]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[401-True]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-False]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_fallback_reuses_context_and_recovers_all_actual_attempts[429-True]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[missing_use]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_corrupt_saved_evidence_never_reasks_or_overwrites_answer[corrupt_use]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_public_external_main_deepseek_text_endpoint_keeps_thinking_out_of_output_and_restores
+FAILED tests/unit/test_quick_scan_external_context.py::test_public_external_result_is_explicitly_versioned_and_owner_bound[False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_public_external_result_is_explicitly_versioned_and_owner_bound[True]
+FAILED tests/unit/test_quick_scan_external_context.py::test_public_external_result_uses_actual_model_instead_of_outer_metadata
+FAILED tests/unit/test_quick_scan_external_context.py::test_public_actual_producer_to_iqs_routing_preserves_binding[False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_public_actual_producer_to_iqs_routing_preserves_binding[True]
+14 failed, 28 passed, 206 deselected in 12.41s
