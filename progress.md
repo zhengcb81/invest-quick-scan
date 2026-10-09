@@ -2377,3 +2377,5 @@
 - 清理dry-run原78550和Apply原48950均沿原handle终态exit0：CIM0/lstat单硬链无reparse/set-size-SHA核5492文件/2530目录，仅固定OWN逐文件删除后空目录删除，根已不存在；共享TEMP/Phase92/源未知项未动。更新操作规范、有限验收与接手，source42a517c已交，IQS本批归档正常Git尚待实际回执。
 
 - IQS首交付原79381终态exit1：diff step0实际2，仅12原pytest stdout/JUnit路径尾空白，未commit/push；729原索引字节全不变。只为12精确原日志属性加blank-at-eol例外，保留raw诊断/原index；初诊断header计数assert误计traceback正文，写前拒绝，纠正锚定Git header后实际12路径。新index733工件（原729+诊断3+旧index1）、63JSON/394AST，功能源码不改不重测；正常Git以739精确路径resume，结果待原handle。
+
+- IQS修正仅原日志精确格式例外后，normal resume原33210实际终态exit0：170b2ac18f05e2a608f13c042037d5a22dff020d、739精确路径、733索引raw与staged相符，正常push origin/master，原opencode保留。原失败及729初index保留；新raw diff stdout自身包含相同尾空白，另给其精确例外，源功能/测试/审批不改。Phase110有限软件范围完成，后续仅本PWF实际回执提交，不闭G3/F05/THIN/L03/真实gold或扩大StockWiki写权限。

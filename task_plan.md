@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前状态（2026-10-09 Phase110）**：Q10来源追溯有限范围已交StockQA42a517c（正常钩子／push，24精确路径、原七未知项保留）。final04实际606P／14文件、source02 SHA387dc2442e88a192ce45ec497cb7aba41d40f7a84476777d502055f091b99506，117原源不变／141终态匹配；5492自有文件／2530目录严格清，根已无。单一下一动作：本IQS归档正常提交推送及PWF实际回执收口。其后JR1/JR3仍待StockWiki四文件确切写许可／owner交付，两端齐按既有集中卡回验。G3/L03/F05/THIN及真实gold门保持，不用软件通过代替真实答案准确性，不重跑full/UI/收费矩阵或退役回执。
+**当前状态（2026-10-09 Phase110）**：Q10来源追溯有限软件范围已完成：StockQA42a517c、IQS170b2ac均正常提交推送，final04实际606P／14文件，141源实比／117原文件不变，5492自有文件／2530目录严格清。单一下一动作：仍按JR1/JR3集中整改卡，在StockWiki四文件新写授权／owner交付到位后实施与一次联合回验；当前许可未答，只读，不重复本Q10或已通过full/UI/live。G3/L03/F05/THIN及真实identity/facts golden依旧缺，不能由本软件验收替代真实准确性或全池运行许可，不刷新退役工程回执。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
@@ -1525,12 +1525,14 @@ Status: complete_for_jr2_single_owner_software_scope; source_and_IQS_committed_a
 - 实际IQS交付：107精确路径提交`a262c32cc9bde3e7f404feb85136f5cdf160f696`，101工件+索引staged原字节核对、diff检查通过，正常推送既有origin/master且HEAD相同，仅原opencode未跟踪保留。此前diff2的三raw guard EOF例外与PWF尾空行修正已留时序，不改被审源/日志；随后仅追加PWF本Git实际回执。
 
 ## Phase110：Q10请求／实际模型耐久追溯
-Status: source_delivered_and_private_cleanup_complete; IQS_archive_delivery_pending; whole_project_gates_still_open
+Status: complete_for_model_provenance_software_scope; source_and_IQS_committed_and_pushed; whole_project_gates_still_open
 - [x] IQS bc6e63a／StockQA86b1e8a当前已跟踪树无改动；原opencode及QA七未跟踪保留。resolver成功为空，沿用根PWF；不回放会话历史。上一工程目标回合完成JR2交付，属于progress；期间heartbeat只读监控不计工程进展。
 - [x] 独立只读调用链勘察已完成：请求实值与route未在发送边界核对、成功attempt缺durable actual、三个原生parser及checkpoint有相等门。C06原字段已有requested/resolved；不削弱封包重建或用正文推断模型。
 - [x] 固定独占副本并保存真实RED；严格显式alias配置纳入策略指纹，派发前冻结许可，HTTP模型／response摘要／receipt／durable checkpoint同一来源链已实施但仍待整批验证。
 - [x] 实施空表迁移、旧历史exact读取、不由requested回填；冷跑／warm／seal／fallback／repair／late lease／未知计费与最终attempt/异步POST窗口反例已覆盖。606受影响测试及一次集中独审通过；正常钩子统一11 EOL后final04再次606P，source02已冻结，等同批最终字节附记后正常Git，不重开小节点门。
-- [ ] hash核对后报备并发布获授权StockQA精确路径，正常提交／推送，严格清理本批自有根；更新PWF和实际回执。StockWiki四文件许可和全局门不随本批关闭。
+- [x] 原24路径精确发布StockQA并正常钩子提交／推送42a517c，11EOL按source02及同次独审附记续收；final04 606P／141终态匹配，5492自有文件／2530目录严格清。IQS739精确路径正常提交推送170b2ac，733归档原字节与索引staged核对通过，原opencode保留。StockWiki四文件许可和全局门不随本批关闭。
 - 控制器记录：第一次PWF补丁含不存在的`## Phase109`单独匹配行，工具整批拒绝未写；已改为真实精确段落，不报产品失败。
 
 - Phase110源交付已为42a517c，最终606P／同批独审／新字节续收及正常Git完成；原5492文件／2530目录strict dry→Apply清、自有根已无。本IQS归档实际Git尚待本批回执，不提前标完成。
+
+- Phase110实际IQS归档交付：739精确路径正常提交`170b2ac18f05e2a608f13c042037d5a22dff020d`并推送origin/master；733归档raw/staged SHA相符，仅原opencode未跟踪保留。原735首次diff失败及诊断计数controller错误已保留；12原raw stdout/JUnit与新增诊断stdout仅精确格式例外，日志原字节不动。后续只追加本实际PWF回执，不改受审工件或重测。
