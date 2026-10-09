@@ -1,0 +1,181 @@
+FFFFFFFFFFFFF                                                            [100%]
+================================== FAILURES ===================================
+___ test_confirmed_storage_requires_a_nonempty_entitlement_reference[None] ____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/boundary-red-02/test_confirmed_storage_require0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000244E39D5A70>
+reference = None
+
+    @pytest.mark.parametrize("reference", [None, "", "   "])
+    def test_confirmed_storage_requires_a_nonempty_entitlement_reference(tmp_path, monkeypatch, reference):
+        policy = _policy(tmp_path, monkeypatch, lambda d: d["external_routes"][0]["storage_rights"].update(entitlement_ref=reference))
+>       assert policy.admitted == ()
+E       AssertionError: assert ('brave-primary',) == ()
+E         
+E         Left contains one more item: 'brave-primary'
+E         Use -v to get more diff
+
+tests\unit\test_quick_scan_external_context.py:29: AssertionError
+_____ test_confirmed_storage_requires_a_nonempty_entitlement_reference[] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/boundary-red-02/test_confirmed_storage_require1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000244E207EEA0>
+reference = ''
+
+    @pytest.mark.parametrize("reference", [None, "", "   "])
+    def test_confirmed_storage_requires_a_nonempty_entitlement_reference(tmp_path, monkeypatch, reference):
+        policy = _policy(tmp_path, monkeypatch, lambda d: d["external_routes"][0]["storage_rights"].update(entitlement_ref=reference))
+>       assert policy.admitted == ()
+E       AssertionError: assert ('brave-primary',) == ()
+E         
+E         Left contains one more item: 'brave-primary'
+E         Use -v to get more diff
+
+tests\unit\test_quick_scan_external_context.py:29: AssertionError
+____ test_confirmed_storage_requires_a_nonempty_entitlement_reference[   ] ____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/boundary-red-02/test_confirmed_storage_require2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000244E3A6CEF0>
+reference = '   '
+
+    @pytest.mark.parametrize("reference", [None, "", "   "])
+    def test_confirmed_storage_requires_a_nonempty_entitlement_reference(tmp_path, monkeypatch, reference):
+        policy = _policy(tmp_path, monkeypatch, lambda d: d["external_routes"][0]["storage_rights"].update(entitlement_ref=reference))
+>       assert policy.admitted == ()
+E       AssertionError: assert ('brave-primary',) == ()
+E         
+E         Left contains one more item: 'brave-primary'
+E         Use -v to get more diff
+
+tests\unit\test_quick_scan_external_context.py:29: AssertionError
+_____ test_unknown_execution_fields_cannot_be_silently_ignored[selection] _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/boundary-red-02/test_unknown_execution_fields_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000244E39B3680>
+field = 'selection'
+
+    @pytest.mark.parametrize("field", ["selection", "retrieval", "budget"])
+    def test_unknown_execution_fields_cannot_be_silently_ignored(tmp_path, monkeypatch, field):
+>       with pytest.raises(SearchPolicyRejected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SearchPolicyRejected
+
+tests\unit\test_quick_scan_external_context.py:35: Failed
+_____ test_unknown_execution_fields_cannot_be_silently_ignored[retrieval] _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/boundary-red-02/test_unknown_execution_fields_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000244E39B28B0>
+field = 'retrieval'
+
+    @pytest.mark.parametrize("field", ["selection", "retrieval", "budget"])
+    def test_unknown_execution_fields_cannot_be_silently_ignored(tmp_path, monkeypatch, field):
+>       with pytest.raises(SearchPolicyRejected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SearchPolicyRejected
+
+tests\unit\test_quick_scan_external_context.py:35: Failed
+______ test_unknown_execution_fields_cannot_be_silently_ignored[budget] _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/boundary-red-02/test_unknown_execution_fields_2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000244E3A0EF50>
+field = 'budget'
+
+    @pytest.mark.parametrize("field", ["selection", "retrieval", "budget"])
+    def test_unknown_execution_fields_cannot_be_silently_ignored(tmp_path, monkeypatch, field):
+>       with pytest.raises(SearchPolicyRejected):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SearchPolicyRejected
+
+tests\unit\test_quick_scan_external_context.py:35: Failed
+_ test_ambiguous_or_nonfinite_search_json_is_refused[{"results": [], "results": [1]}] _
+
+raw = '{"results": [], "results": [1]}'
+
+    @pytest.mark.parametrize("raw", ['{"results": [], "results": [1]}', '{"results": [], "value": NaN}', '{"results": [], "value": 1e400}'])
+    def test_ambiguous_or_nonfinite_search_json_is_refused(raw):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:41: Failed
+_ test_ambiguous_or_nonfinite_search_json_is_refused[{"results": [], "value": NaN}] _
+
+raw = '{"results": [], "value": NaN}'
+
+    @pytest.mark.parametrize("raw", ['{"results": [], "results": [1]}', '{"results": [], "value": NaN}', '{"results": [], "value": 1e400}'])
+    def test_ambiguous_or_nonfinite_search_json_is_refused(raw):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:41: Failed
+_ test_ambiguous_or_nonfinite_search_json_is_refused[{"results": [], "value": 1e400}] _
+
+raw = '{"results": [], "value": 1e400}'
+
+    @pytest.mark.parametrize("raw", ['{"results": [], "results": [1]}', '{"results": [], "value": NaN}', '{"results": [], "value": 1e400}'])
+    def test_ambiguous_or_nonfinite_search_json_is_refused(raw):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:41: Failed
+________ test_object_input_does_not_bypass_search_response_byte_bound _________
+
+    def test_object_input_does_not_bypass_search_response_byte_bound():
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:46: Failed
+________ test_query_target_alone_does_not_certify_a_candidate_company _________
+
+    def test_query_target_alone_does_not_certify_a_candidate_company():
+        package = build_evidence_package(
+            [{"url": "https://example.com/another-issuer", "title": "Other issuer", "snippet": "Other issuer has margins of 99%", "published_at": "2026-10-01", "query": "target margins"}],
+            entity_id="ENT_target", as_of="2026-10-08", retrieved_at="2026-10-08T12:00:00Z",
+            adapter_version="fixture/1", request_id="search-1", query_bindings={"target margins": ["IQS_01"]}, question_ids=["IQS_01"],
+        )
+>       assert not any(e["eligible"] for e in package["entries"])
+E       assert not True
+E        +  where True = any(<generator object test_query_target_alone_does_not_certify_a_candidate_company.<locals>.<genexpr> at 0x00000244E3A62C20>)
+
+tests\unit\test_quick_scan_external_context.py:56: AssertionError
+______ test_entity_and_question_must_be_bound_by_the_same_evidence_entry ______
+
+    def test_entity_and_question_must_be_bound_by_the_same_evidence_entry():
+        verdict = verify_evidence_binding(
+            [{"entity_id": "ENT_target", "question_ids": ["other"], "published_at": "2026-10-01"},
+             {"entity_id": "ENT_other", "question_ids": ["IQS_01"], "published_at": "2026-10-01"}],
+            entity_id="ENT_target", question_ids=["IQS_01"], as_of="2026-10-08",
+        )
+>       assert verdict.ok is False
+E       AssertionError: assert True is False
+E        +  where True = Verdict(ok=True, reason='evidence_bound').ok
+
+tests\unit\test_quick_scan_external_context.py:66: AssertionError
+___ test_company_limit_bounds_retained_evidence_not_only_selected_snippets ____
+
+    def test_company_limit_bounds_retained_evidence_not_only_selected_snippets():
+        candidates = [{"url": f"https://example.com/{i}", "entity_id": "ENT_target", "title": "T" * 500, "snippet": "S" * 500, "publisher": "P" * 100, "published_at": "2026-10-01", "query": "target margins"} for i in range(20)]
+        package = build_evidence_package(candidates, entity_id="ENT_target", as_of="2026-10-08", retrieved_at="2026-10-08T12:00:00Z", adapter_version="fixture/1", request_id="search-1", query_bindings={"target margins": ["IQS_01"]}, question_ids=["IQS_01"], company_limit=1200)
+        retained = sum(len(e.get("title") or "") + len(e.get("short_snippet") or "") + len(e.get("publisher") or "") for e in package["entries"])
+>       assert retained <= 1200
+E       assert 22000 <= 1200
+
+tests\unit\test_quick_scan_external_context.py:73: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_confirmed_storage_requires_a_nonempty_entitlement_reference[None]
+FAILED tests/unit/test_quick_scan_external_context.py::test_confirmed_storage_requires_a_nonempty_entitlement_reference[]
+FAILED tests/unit/test_quick_scan_external_context.py::test_confirmed_storage_requires_a_nonempty_entitlement_reference[   ]
+FAILED tests/unit/test_quick_scan_external_context.py::test_unknown_execution_fields_cannot_be_silently_ignored[selection]
+FAILED tests/unit/test_quick_scan_external_context.py::test_unknown_execution_fields_cannot_be_silently_ignored[retrieval]
+FAILED tests/unit/test_quick_scan_external_context.py::test_unknown_execution_fields_cannot_be_silently_ignored[budget]
+FAILED tests/unit/test_quick_scan_external_context.py::test_ambiguous_or_nonfinite_search_json_is_refused[{"results": [], "results": [1]}]
+FAILED tests/unit/test_quick_scan_external_context.py::test_ambiguous_or_nonfinite_search_json_is_refused[{"results": [], "value": NaN}]
+FAILED tests/unit/test_quick_scan_external_context.py::test_ambiguous_or_nonfinite_search_json_is_refused[{"results": [], "value": 1e400}]
+FAILED tests/unit/test_quick_scan_external_context.py::test_object_input_does_not_bypass_search_response_byte_bound
+FAILED tests/unit/test_quick_scan_external_context.py::test_query_target_alone_does_not_certify_a_candidate_company
+FAILED tests/unit/test_quick_scan_external_context.py::test_entity_and_question_must_be_bound_by_the_same_evidence_entry
+FAILED tests/unit/test_quick_scan_external_context.py::test_company_limit_bounds_retained_evidence_not_only_selected_snippets
+13 failed in 0.97s

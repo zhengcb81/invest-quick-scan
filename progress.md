@@ -2379,3 +2379,27 @@
 - IQS首交付原79381终态exit1：diff step0实际2，仅12原pytest stdout/JUnit路径尾空白，未commit/push；729原索引字节全不变。只为12精确原日志属性加blank-at-eol例外，保留raw诊断/原index；初诊断header计数assert误计traceback正文，写前拒绝，纠正锚定Git header后实际12路径。新index733工件（原729+诊断3+旧index1）、63JSON/394AST，功能源码不改不重测；正常Git以739精确路径resume，结果待原handle。
 
 - IQS修正仅原日志精确格式例外后，normal resume原33210实际终态exit0：170b2ac18f05e2a608f13c042037d5a22dff020d、739精确路径、733索引raw与staged相符，正常push origin/master，原opencode保留。原失败及729初index保留；新raw diff stdout自身包含相同尾空白，另给其精确例外，源功能/测试/审批不改。Phase110有限软件范围完成，后续仅本PWF实际回执提交，不闭G3/F05/THIN/L03/真实gold或扩大StockWiki写权限。
+
+
+### 2026-10-09 Phase111：接续原QA-NET外部证据生产链
+
+- 上次目标实施Phase110完成源/IQS提交推送与606P验收，属于progress；随后heartbeat只读核对三源HEAD与开工门，仍无变化，没有实现/测试/Git写。当前目标续接先完成可独立推进的原QA-NET遗留链，PWF单一下一动作已调整，StockWiki四路径和G3/F05/THIN原门不变。
+- 两位内部agent仅做接口/合同只读设计，总控独占PWF；还没有创建测试根、修改StockQA或调用真实API。StockQAAGENTS.md不存在，首PWF前缀匹配补丁原子拒绝，已按完整段落修正并记录。
+
+- Phase111已实际建立独占runs/n111a：固定42a517c的137安全跟踪文件，另显式导入1个routes全disabled公开例子，不读真实配置/密钥/原七未知项。首boundary-red-01因JUnit被错误指到归档根而遭guard拒绝，原stderr保留；控制器修正为私有log后boundary-red-02真实13F/0.97s，源码冻结不变。
+- boundary-green-01为20P/4F：13新反例通过；原测试两既有具名错误码因schema提前校验变更、一个原正例缺显式issuer绑定，以及一公开fixture漏导出。均如实保留；后置完整schema验证维持旧reason、原正例补可信entity fixture（未放宽负例）、显式导入惰性公开例子。boundary-green-02真实24P/0失败错误跳过，pytest1.07s/controller1.732s，执行源不变。尚仅为私有副本基础边界，生产externaldispatcher未实现，不声称整批验收。scope已补search_capability.py与原边界测试fixture路径，其他外仓0写。
+- 内部合同agent续读触发模型usage limit，未再产生测试或写入；已收的两份只读设计不冒充独立实施审查。原13RED/guard拒绝与4回归失败不可改写。
+
+- transport-red-01实际9F（此前工具justification误写10，实际JUnit为9）；transport-green-01实际60P/0失败错误跳过，pytest9.34s/controller10.358s，原session66094已终态exit0，源冻结不变。仅传输单元证明，Mock budget owner不证明耐久预留、恢复或公开CLI。
+- 本次goal续接：上一goal已有真实RED→GREEN和私有代码进展；其后heartbeat仅只读核门、三源HEAD不变，非新实施。继续原生产链，新增精确external_journal路径已先报备，只写私有副本；StockWiki未批四路径/THIN/G3F05原门不动。读取曾猜test_quick_scan_budget_store.py不存在，改用已存在test_q09_budget_concurrency.py/test_quick_scan_budget.py；PowerShell先前数组LineNumber减法错误也属于控制器读取错误，无产品或源仓写入。
+
+- journal-red-01实际20F/13deselected，pytest3.38s/controller4.234s，源冻结不变；主要为新API/DDL缺失，不虚称20个独立现存缺陷。已在私有副本追加schema9检索意图/单用dispatch/短结果模块，复用原Q09事务预算；源仓仍schema8未发布。
+- journal-green-01原session86609终态timeout=true/300.041s，stdout45点后1F再4点，无最终JUnit，不能记通过。默认沙箱CIM只读失败，提升后只核本批原73580/47136及直接子进程，超时后全部已无。按历史Windows异步socketpair限制，在同严格guard、无key/根外写/外网、原输入不变条件下启动沙箱外journal-green-02，原session17210待实际终态；不重新启动仍活的原handle、不清理共享TEMP。根交接已更新为Phase111真实状态。
+
+- journal-green-02原17210已终态exit1/35.965s，实际141P/14F（pytest35.31s），22新journal实例及13原边界均GREEN。两真实OS子进程发现新journal顶层导入providers包产生循环；其余12迁移夹具残留更晚表/一个当前版本硬编码，不降产品schema检查。已先报备work_store/budget两个测试路径：旧schema夹具去掉新增表、v3同时移除v7/v8残留、当前版本断言引用SCHEMA_VERSION；共享严格parser改运行时导入，未另造解析器。journal-green-03同三文件实际运行中，原71783待终态，无源仓发布。
+
+- journal-green-03原71783终态exit0，155P/20.54s（wall21.43）；cache-red-01真实4F/35deselected/2.02s，随后同批cache-green-01原66689终态exit0，159P/19.13s（wall19.958）。四反例涵盖多题共用查询仍二次计费、跨查询公司保存cap失守、计费行篡改及parse_failure被误拒；已保存原RED，不称此为完整生产CLI。
+- durable-transport-red-01真实4F/9deselected/2.34s；已接QuickScanSendAttempt→实际不可变dispatch事务，冻结route/检索参数，错query、路由变更、缺external intent与重建handle重复发送均在HTTP前拒绝。原HTTP边界测试改用真实SQLite/Q09，仅HTTP替身；durable-transport-green-01原24906终态exit0，82P/8.89s（wall10.199），涵盖相关原native transport回归。当前本批所有handle终态，无real API/外仓写。
+- 本轮只形成私有foundation及IQS证据/PWF checkpoint；完整Phase111仍in_progress。尚需v1.1执行计划/计价、跨两阶段恢复、MCP握手、context→LLM/来源proof及公开CLI、整批静态和一次集中review；源StockQA/schema8未发布。本轮私有schema9不冒充生产升级，G3/F05/StockWiki新写许可/THIN原门不变。精确IQS checkpoint提交推送待真实Git回执。
+
+- IQS checkpoint首次Git控制器已完成389精准暂存、383工件与index staged原字节核对；diff检查exit1只报可编辑handoff末尾多空行，未commit/push。原归档/index/helper不变，只规范化handoff最终换行并记录这条工具报错；不是产品失败或测试重跑。接续正常Git结果仍待实际回执。

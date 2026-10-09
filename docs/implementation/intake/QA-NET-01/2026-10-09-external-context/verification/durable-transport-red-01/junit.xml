@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="2.207" timestamp="2026-10-09T04:43:54.003528+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_external_search_provider" name="test_wrong_query_is_refused_before_the_real_journal_dispatch" time="0.112"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/durable-transport-red-01/test_wrong_query_is_refused_be0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000288619DF100&gt;
+
+    def test_wrong_query_is_refused_before_the_real_journal_dispatch(tmp_path, monkeypatch):
+        provider = _provider(tmp_path, monkeypatch, "brave")
+        permit = _permit(tmp_path, provider)
+        session = Mock()
+        session.request.return_value = _response(b'{"web":{"results":[]}}')
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+&gt;       with pytest.raises(ValueError, match="binding"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_external_search_provider.py:138: Failed</failure></testcase><testcase classname="tests.unit.test_external_search_provider" name="test_mutated_route_is_refused_before_any_credential_or_http" time="0.156"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/durable-transport-red-01/test_mutated_route_is_refused_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002885FE6AFD0&gt;
+
+    def test_mutated_route_is_refused_before_any_credential_or_http(tmp_path, monkeypatch):
+        provider = _provider(tmp_path, monkeypatch, "brave")
+        permit = _permit(tmp_path, provider)
+        provider.route["endpoint"] = "https://another.example/search"
+        session = Mock()
+        session.request.return_value = _response(b'{"web":{"results":[]}}')
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+&gt;       with pytest.raises(ValueError, match="frozen"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_external_search_provider.py:151: Failed</failure></testcase><testcase classname="tests.unit.test_external_search_provider" name="test_fresh_handle_cannot_repeat_an_already_consumed_durable_dispatch" time="0.108"><failure message="Failed: DID NOT RAISE RuntimeError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/durable-transport-red-01/test_fresh_handle_cannot_repea0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028861A7ED50&gt;
+
+    def test_fresh_handle_cannot_repeat_an_already_consumed_durable_dispatch(tmp_path, monkeypatch):
+        provider = _provider(tmp_path, monkeypatch, "brave")
+        permit = _permit(tmp_path, provider)
+        session = Mock()
+        session.request.return_value = _response(b'{"web":{"results":[]}}')
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        provider.fetch(permit, query="Fixture", top_k=2, locale="en-US")
+        replay = QuickScanSendAttempt(None, permit.attempt_id, permit.permit, budget_binding=permit.budget_binding, budget_attempt_id=permit.budget_attempt_id)
+        replay.external_operation_id = permit.external_operation_id
+&gt;       with pytest.raises(RuntimeError, match="persist"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests\unit\test_external_search_provider.py:165: Failed</failure></testcase><testcase classname="tests.unit.test_external_search_provider" name="test_a_native_budget_only_permit_without_external_intent_never_sends" time="0.108"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/durable-transport-red-01/test_a_native_budget_only_perm0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002886283C050&gt;
+
+    def test_a_native_budget_only_permit_without_external_intent_never_sends(tmp_path, monkeypatch):
+        provider = _provider(tmp_path, monkeypatch, "brave")
+        permit = _permit(tmp_path, provider)
+        permit.external_operation_id = None
+        session = Mock()
+        session.request.return_value = _response(b'{"web":{"results":[]}}')
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+&gt;       with pytest.raises(ValueError, match="permit"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_external_search_provider.py:177: Failed</failure></testcase></testsuite></testsuites>

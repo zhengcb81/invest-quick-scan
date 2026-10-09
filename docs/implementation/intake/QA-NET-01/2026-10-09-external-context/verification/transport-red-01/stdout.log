@@ -1,0 +1,176 @@
+FFFFFFFFF                                                                [100%]
+================================== FAILURES ===================================
+_ test_one_metered_request_keeps_external_origin_and_never_adds_native_events[brave] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_one_metered_request_keeps0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B9339E1940>
+kind = 'brave'
+
+    @pytest.mark.parametrize("kind", list(ENDPOINTS))
+    def test_one_metered_request_keeps_external_origin_and_never_adds_native_events(tmp_path, monkeypatch, kind):
+>       provider = _provider(tmp_path, monkeypatch, kind)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_external_search_provider.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_one_metered_request_keeps0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B9339E1940>
+kind = 'brave', endpoint = None
+
+    def _provider(tmp_path, monkeypatch, kind, *, endpoint=None):
+>       from src.providers.external_search_provider import ExternalSearchProvider
+E       ModuleNotFoundError: No module named 'src.providers.external_search_provider'
+
+tests\unit\test_external_search_provider.py:21: ModuleNotFoundError
+_ test_one_metered_request_keeps_external_origin_and_never_adds_native_events[tavily] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_one_metered_request_keeps1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B931E8EFD0>
+kind = 'tavily'
+
+    @pytest.mark.parametrize("kind", list(ENDPOINTS))
+    def test_one_metered_request_keeps_external_origin_and_never_adds_native_events(tmp_path, monkeypatch, kind):
+>       provider = _provider(tmp_path, monkeypatch, kind)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_external_search_provider.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_one_metered_request_keeps1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B931E8EFD0>
+kind = 'tavily', endpoint = None
+
+    def _provider(tmp_path, monkeypatch, kind, *, endpoint=None):
+>       from src.providers.external_search_provider import ExternalSearchProvider
+E       ModuleNotFoundError: No module named 'src.providers.external_search_provider'
+
+tests\unit\test_external_search_provider.py:21: ModuleNotFoundError
+_ test_one_metered_request_keeps_external_origin_and_never_adds_native_events[zai_rest] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_one_metered_request_keeps2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B9339EA450>
+kind = 'zai_rest'
+
+    @pytest.mark.parametrize("kind", list(ENDPOINTS))
+    def test_one_metered_request_keeps_external_origin_and_never_adds_native_events(tmp_path, monkeypatch, kind):
+>       provider = _provider(tmp_path, monkeypatch, kind)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_external_search_provider.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_one_metered_request_keeps2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B9339EA450>
+kind = 'zai_rest', endpoint = None
+
+    def _provider(tmp_path, monkeypatch, kind, *, endpoint=None):
+>       from src.providers.external_search_provider import ExternalSearchProvider
+E       ModuleNotFoundError: No module named 'src.providers.external_search_provider'
+
+tests\unit\test_external_search_provider.py:21: ModuleNotFoundError
+_ test_official_zai_search_result_shape_is_not_misclassified_as_parse_failure _
+
+    def test_official_zai_search_result_shape_is_not_misclassified_as_parse_failure():
+        parsed = parse_zai_rest({"request_id": "zai-id", "search_result": [{"title": "Fixture", "link": "https://fixture.example", "content": "Short evidence", "publish_date": "2026-10-01"}]})
+>       assert parsed["status"] == "ok" and len(parsed["entries"]) == 1
+E       AssertionError: assert ('parse_failure' == 'ok'
+E         
+E         - ok
+E         + parse_failure)
+
+tests\unit\test_external_search_provider.py:70: AssertionError
+__________ test_retrieval_host_mismatch_is_rejected_before_transport __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_retrieval_host_mismatch_i0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B93396AF10>
+
+    def test_retrieval_host_mismatch_is_rejected_before_transport(tmp_path, monkeypatch):
+        with pytest.raises(ValueError, match="endpoint"):
+>           _provider(tmp_path, monkeypatch, "brave", endpoint="https://api.tavily.com/search")
+
+tests\unit\test_external_search_provider.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_retrieval_host_mismatch_i0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B93396AF10>
+kind = 'brave', endpoint = 'https://api.tavily.com/search'
+
+    def _provider(tmp_path, monkeypatch, kind, *, endpoint=None):
+>       from src.providers.external_search_provider import ExternalSearchProvider
+E       ModuleNotFoundError: No module named 'src.providers.external_search_provider'
+
+tests\unit\test_external_search_provider.py:21: ModuleNotFoundError
+_______ test_sent_timeout_is_one_unknown_operation_without_hidden_retry _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_sent_timeout_is_one_unkno0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B93396B020>
+
+    def test_sent_timeout_is_one_unknown_operation_without_hidden_retry(tmp_path, monkeypatch):
+>       from src.providers.external_search_provider import ExternalSearchTransportError
+E       ModuleNotFoundError: No module named 'src.providers.external_search_provider'
+
+tests\unit\test_external_search_provider.py:79: ModuleNotFoundError
+________________ test_missing_server_request_id_stays_missing _________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_missing_server_request_id0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B933A9CB50>
+
+    def test_missing_server_request_id_stays_missing(tmp_path, monkeypatch):
+>       provider = _provider(tmp_path, monkeypatch, "brave")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_external_search_provider.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_missing_server_request_id0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B933A9CB50>
+kind = 'brave', endpoint = None
+
+    def _provider(tmp_path, monkeypatch, kind, *, endpoint=None):
+>       from src.providers.external_search_provider import ExternalSearchProvider
+E       ModuleNotFoundError: No module named 'src.providers.external_search_provider'
+
+tests\unit\test_external_search_provider.py:21: ModuleNotFoundError
+____________________ test_no_durable_permit_means_no_http _____________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_no_durable_permit_means_n0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B933A9E050>
+
+    def test_no_durable_permit_means_no_http(tmp_path, monkeypatch):
+>       provider = _provider(tmp_path, monkeypatch, "brave")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_external_search_provider.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/transport-red-01/test_no_durable_permit_means_n0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B933A9E050>
+kind = 'brave', endpoint = None
+
+    def _provider(tmp_path, monkeypatch, kind, *, endpoint=None):
+>       from src.providers.external_search_provider import ExternalSearchProvider
+E       ModuleNotFoundError: No module named 'src.providers.external_search_provider'
+
+tests\unit\test_external_search_provider.py:21: ModuleNotFoundError
+________ test_metered_get_has_no_adapter_retry_or_cross_host_redirect _________
+
+    def test_metered_get_has_no_adapter_retry_or_cross_host_redirect():
+        from src.utils.http_client import http_client_manager
+    
+>       session = http_client_manager.get_metered_sync_session()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'HTTPClientManager' object has no attribute 'get_metered_sync_session'
+
+tests\unit\test_external_search_provider.py:113: AttributeError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_external_search_provider.py::test_one_metered_request_keeps_external_origin_and_never_adds_native_events[brave]
+FAILED tests/unit/test_external_search_provider.py::test_one_metered_request_keeps_external_origin_and_never_adds_native_events[tavily]
+FAILED tests/unit/test_external_search_provider.py::test_one_metered_request_keeps_external_origin_and_never_adds_native_events[zai_rest]
+FAILED tests/unit/test_external_search_provider.py::test_official_zai_search_result_shape_is_not_misclassified_as_parse_failure
+FAILED tests/unit/test_external_search_provider.py::test_retrieval_host_mismatch_is_rejected_before_transport
+FAILED tests/unit/test_external_search_provider.py::test_sent_timeout_is_one_unknown_operation_without_hidden_retry
+FAILED tests/unit/test_external_search_provider.py::test_missing_server_request_id_stays_missing
+FAILED tests/unit/test_external_search_provider.py::test_no_durable_permit_means_no_http
+FAILED tests/unit/test_external_search_provider.py::test_metered_get_has_no_adapter_retry_or_cross_host_redirect
+9 failed in 1.06s

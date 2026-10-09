@@ -1721,3 +1721,15 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - IQS原始pytest错误trace自带尾空白，不能格式化日志来通过diff。只给实际12 stdout/JUnit文件精确属性例外，原729归档SHA全部保留；补3真实diff诊断和原index字节到新733清单，不删旧审证据、不关闭检查或跳正常钩子。
 
 - Phase110完成的权威软件交付是StockQA42a517c＋IQS170b2ac；最终606P／一次独审EOL附记／141终态／自有5492清理均实证。739路径归档包含733原字节工件与旧index；精确raw日志属性例外不会放宽生产代码格式检查。下一链JR1/JR3仍须StockWiki四新增路径许可，F05公共facts/relations query和真实gold、G3/L03及消费端授权仍独立未满足。
+
+
+- Phase111：StockQA external_context即使通过计价/存储准入，当前仍固定dispatch=false并由runner返回external_context_not_implemented。原五阻断整改没有完成原QA-NET步骤3–6生产接线；这是可按既有StockQA报备授权独立推进的剩余范围，不依赖StockWiki新写许可。C06 external可表达性/两阶段预算来源仍需核实，不能只删除闸门或造native proof。
+
+- Phase111私有TDD实证：无ENT归属的候选不能借query贴目标；entity与题目绑定必须来自同条证据；保存量包括条目文本/元数据，不只发送snippet。JSON重复键、NaN及1e400、对象输入绕字节cap均需拒绝。confirmed=true但授权ref空不能准入，完整schema需维护旧错误码顺序。13反例已由红转绿，仍未接外部生产链。
+- C06公共search_status/search_receipt_id通用；可用独立external使用回执链接真实搜索与真实回答，不需改公共schema。Phase110原HTTP response摘要/无native事件必须保持，不得向原receipt补工具事件；checkpoint另设proof验证。检索要budget-only linked operation，不能在已成功搜索work attempt后造回答attempt。
+
+- 单次外部传输已有60项相关GREEN，关闭隐式HTTP GET重试、重定向和环境代理继承；Z.ai官方REST的search_result形状已覆盖。检索adapter不自行重试/结算，MCP尚未握手，不能据REST通过称MCP或生产链完成。下一段必须用实际SQLite/Q09事务而非Mock owner验证发送意图、重复恢复、计费未知和晚到响应。
+
+- 检索journal导入共享providers parser必须延后：providers包初始化依赖transport/store，pytest父进程先导入providers会掩盖循环，两个真实OS crash/race子进程才暴露。应保持独立store启动与准确旧schema夹具，不能为通过新迁移删掉schema严格检查。新journal本身22实例GREEN仍不证明多题共享搜索、总保存cap或回答/公开CLI接线。
+
+- 检索缓存应以固定身份/范围、manifest、查询计划、搜索策略/adapter及预算owner绑定；不能以单题work_item_id造成同一冻结查询重复收费。结果仍留原owner、原retrieval时间与费用，不伪成新搜索。公司保存cap由同事务累计各查询实际保存的条目/元数据字符，HTTP/原短receipt只保留hash，截断不改变实际HTTP费用或provider返回条数。四实证RED→GREEN完成；真实adapter已消费此journal的单次许可，仍需后续context-use proof与公开CLI验证。

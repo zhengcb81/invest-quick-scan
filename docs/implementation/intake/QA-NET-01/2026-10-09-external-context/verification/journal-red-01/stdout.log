@@ -1,0 +1,588 @@
+FFFFFFFFFFFFFFFFFFFF                                                     [100%]
+================================== FAILURES ===================================
+_ test_search_intent_and_budget_are_linked_before_http_without_answer_attempt _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_search_intent_and_budget_0')
+
+    def test_search_intent_and_budget_are_linked_before_http_without_answer_attempt(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB89C1160>
+item = {'work_item_id': 'WORK_55f1d7bc7e384230addcd8f401333ee9', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='846f19ae7ab949668ea2261d757f8685', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+________ test_process_restart_cannot_repeat_an_unresolved_paid_search _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_process_restart_cannot_re0')
+
+    def test_process_restart_cannot_repeat_an_unresolved_paid_search(tmp_path):
+        store, item, lease, clock = _journal(tmp_path)
+>       _begin_search(store, item, lease)
+
+tests\unit\test_quick_scan_external_context.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB96751D0>
+item = {'work_item_id': 'WORK_203d51e143344f55a7011cdc2c1a2d5f', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='4e08a92aef3047688fe4d543bb2cece9', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+_________ test_concurrent_workers_obtain_only_one_search_send_intent __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_concurrent_workers_obtain0')
+
+    def test_concurrent_workers_obtain_only_one_search_send_intent(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+        def start(_):
+            try:
+                return _begin_search(store, item, lease)["send_required"]
+            except BudgetAdmissionError as error:
+                assert error.reason == "external_search_unresolved"
+                return False
+        with ThreadPoolExecutor(max_workers=4) as pool:
+>           assert sum(pool.map(start, range(4))) == 1
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\concurrent\futures\_base.py:619: in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\concurrent\futures\_base.py:317: in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Miniconda\Lib\concurrent\futures\thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_quick_scan_external_context.py:164: in start
+    return _begin_search(store, item, lease)["send_required"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9675D10>
+item = {'work_item_id': 'WORK_76e871bc150f4a7bbe5fe8ad03643886', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='952ffee8687347dbaf6ee54370c531ce', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+_ test_search_plan_identity_or_question_mismatch_has_no_reservation[change0] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_search_plan_identity_or_q0')
+change = {'entity_id': 'ENT_OTHER'}
+
+    @pytest.mark.parametrize("change", [{"entity_id": "ENT_OTHER"}, {"identity_snapshot_sha256": "0" * 64}, {"question_ids": ["IQS_99"]}])
+    def test_search_plan_identity_or_question_mismatch_has_no_reservation(tmp_path, change):
+        store, item, lease, _ = _journal(tmp_path)
+        plan = _journal_plan()
+        plan.update(change)
+        with pytest.raises(ValueError):
+>           _begin_search(store, item, lease, plan=plan)
+
+tests\unit\test_quick_scan_external_context.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9676850>
+item = {'work_item_id': 'WORK_7353cd2c21a84ee3b4c7f7b31c08029e', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='5733bccd849348dc947554c11abb6e27', lease_epoch=1)
+changes = {'plan': {'schema_version': 'quick_scan_external_plan/1.0.0', 'entity_id': 'ENT_OTHER', 'identity_snapshot_sha256': 'a...aaaaaaaaaaaaaaa', 'question_manifest_sha256': 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', ...}}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+_ test_search_plan_identity_or_question_mismatch_has_no_reservation[change1] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_search_plan_identity_or_q1')
+change = {'identity_snapshot_sha256': '0000000000000000000000000000000000000000000000000000000000000000'}
+
+    @pytest.mark.parametrize("change", [{"entity_id": "ENT_OTHER"}, {"identity_snapshot_sha256": "0" * 64}, {"question_ids": ["IQS_99"]}])
+    def test_search_plan_identity_or_question_mismatch_has_no_reservation(tmp_path, change):
+        store, item, lease, _ = _journal(tmp_path)
+        plan = _journal_plan()
+        plan.update(change)
+        with pytest.raises(ValueError):
+>           _begin_search(store, item, lease, plan=plan)
+
+tests\unit\test_quick_scan_external_context.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9676FD0>
+item = {'work_item_id': 'WORK_00a42a6b16f44bcd914a5238239704bf', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='b0cd626de9ad4532905b34f249e34ff7', lease_epoch=1)
+changes = {'plan': {'schema_version': 'quick_scan_external_plan/1.0.0', 'entity_id': 'ENT_BYD', 'identity_snapshot_sha256': '000...000000000000000', 'question_manifest_sha256': 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', ...}}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+_ test_search_plan_identity_or_question_mismatch_has_no_reservation[change2] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_search_plan_identity_or_q2')
+change = {'question_ids': ['IQS_99']}
+
+    @pytest.mark.parametrize("change", [{"entity_id": "ENT_OTHER"}, {"identity_snapshot_sha256": "0" * 64}, {"question_ids": ["IQS_99"]}])
+    def test_search_plan_identity_or_question_mismatch_has_no_reservation(tmp_path, change):
+        store, item, lease, _ = _journal(tmp_path)
+        plan = _journal_plan()
+        plan.update(change)
+        with pytest.raises(ValueError):
+>           _begin_search(store, item, lease, plan=plan)
+
+tests\unit\test_quick_scan_external_context.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9677250>
+item = {'work_item_id': 'WORK_d90a2fa98392478abb3b636e34ce8190', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='59a811d67e5a49aabc8b556a45ad0c43', lease_epoch=1)
+changes = {'plan': {'schema_version': 'quick_scan_external_plan/1.0.0', 'entity_id': 'ENT_BYD', 'identity_snapshot_sha256': 'aaa...aaaaaaaaaaaaaaa', 'question_manifest_sha256': 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', ...}}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+_ test_sql_failure_rolls_back_search_intent_and_budget_in_the_same_transaction _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_sql_failure_rolls_back_se0')
+
+    def test_sql_failure_rolls_back_search_intent_and_budget_in_the_same_transaction(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+        with closing(sqlite3.connect(store.path)) as connection:
+>           connection.execute("CREATE TRIGGER fail_external_operation BEFORE INSERT ON quick_scan_external_operation BEGIN SELECT RAISE(ABORT,'synthetic disk failure'); END")
+E           sqlite3.OperationalError: no such table: main.quick_scan_external_operation
+
+tests\unit\test_quick_scan_external_context.py:187: OperationalError
+____ test_search_result_and_settlement_are_atomic_and_exact_replay_is_free ____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_search_result_and_settlem0')
+
+    def test_search_result_and_settlement_are_atomic_and_exact_replay_is_free(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:199: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB6F38410>
+item = {'work_item_id': 'WORK_3098a5146d964386989e25134b3ae2e0', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='b53389216a49454383886726baded80f', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+__ test_result_insert_failure_keeps_original_reservation_until_durable_retry __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_result_insert_failure_kee0')
+
+    def test_result_insert_failure_keeps_original_reservation_until_durable_retry(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:216: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9677750>
+item = {'work_item_id': 'WORK_ad6a320c7c324bf1a566dd9a234e53e8', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='efb3aa9425aa48668619d860928944a9', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+_ test_unpriced_search_success_retains_reservation_and_requires_reconciliation _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_unpriced_search_success_r0')
+
+    def test_unpriced_search_success_retains_reservation_and_requires_reconciliation(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:228: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9677390>
+item = {'work_item_id': 'WORK_358cd74c3495479daf2adb18d512909b', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='11ac258a57394a849dd32ef9d0448409', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+____ test_timeout_cannot_be_replayed_even_after_zero_cost_unknown_receipt _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_timeout_cannot_be_replaye0')
+
+    def test_timeout_cannot_be_replayed_even_after_zero_cost_unknown_receipt(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:241: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9677110>
+item = {'work_item_id': 'WORK_5a2183ad06054252b4817fb20b1b7a82', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='56a7da6fc15e4e0782618cc7b78035f1', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+____ test_late_search_reply_retains_billing_without_advancing_a_new_lease _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_late_search_reply_retains0')
+
+    def test_late_search_reply_retains_billing_without_advancing_a_new_lease(tmp_path):
+        store, item, lease, clock = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:252: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9676850>
+item = {'work_item_id': 'WORK_770bc80233fe4a2ba479cb43374ffd86', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='182ce42c2768435e9741cc94e7a06be4', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+__ test_external_receipt_never_accepts_native_or_raw_document_fields[extra0] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_external_receipt_never_ac0')
+extra = {'actual_model': 'fake-search-model'}
+
+    @pytest.mark.parametrize("extra", [{"actual_model": "fake-search-model"}, {"web_search_calls": [{"status": "completed"}]}, {"raw_content": "private full page"}])
+    def test_external_receipt_never_accepts_native_or_raw_document_fields(tmp_path, extra):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:269: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9676210>
+item = {'work_item_id': 'WORK_e29b82553bc741648dfc00a2b5400098', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='c3d6eb2312f94336b66606e91646038d', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+__ test_external_receipt_never_accepts_native_or_raw_document_fields[extra1] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_external_receipt_never_ac1')
+extra = {'web_search_calls': [{'status': 'completed'}]}
+
+    @pytest.mark.parametrize("extra", [{"actual_model": "fake-search-model"}, {"web_search_calls": [{"status": "completed"}]}, {"raw_content": "private full page"}])
+    def test_external_receipt_never_accepts_native_or_raw_document_fields(tmp_path, extra):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:269: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9675F90>
+item = {'work_item_id': 'WORK_663f847fe04a44b0afeeb935a7a4fc8f', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='1acea40bab2f4255b5e50751eec49861', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+__ test_external_receipt_never_accepts_native_or_raw_document_fields[extra2] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_external_receipt_never_ac2')
+extra = {'raw_content': 'private full page'}
+
+    @pytest.mark.parametrize("extra", [{"actual_model": "fake-search-model"}, {"web_search_calls": [{"status": "completed"}]}, {"raw_content": "private full page"}])
+    def test_external_receipt_never_accepts_native_or_raw_document_fields(tmp_path, extra):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:269: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9676AD0>
+item = {'work_item_id': 'WORK_fe8fa5beec254229a46c021f3753bbb9', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='96eff73f9b524c138927f119880a811a', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+___ test_external_result_cannot_be_rebound_to_a_different_transport_attempt ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_external_result_cannot_be0')
+
+    def test_external_result_cannot_be_rebound_to_a_different_transport_attempt(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:278: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9676490>
+item = {'work_item_id': 'WORK_3a4de11cdebd4e08bf87aca9a142be8c', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='9c159251fa134bbf82ad0f57115a98e8', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+_ test_expired_search_context_requires_new_generation_instead_of_blind_rerun __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_expired_search_context_re0')
+
+    def test_expired_search_context_requires_new_generation_instead_of_blind_rerun(tmp_path):
+        store, item, lease, clock = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9675310>
+item = {'work_item_id': 'WORK_76979c5c8aca4ab0bc7283dda72dbca0', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='9433cc02f6774a4396eb8f1854162554', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+_ test_external_journal_sql_rows_are_immutable[quick_scan_external_operation] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_external_journal_sql_rows0')
+table = 'quick_scan_external_operation'
+
+    @pytest.mark.parametrize("table", ["quick_scan_external_operation", "quick_scan_external_result"])
+    def test_external_journal_sql_rows_are_immutable(tmp_path, table):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:299: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9677C50>
+item = {'work_item_id': 'WORK_34473a8933154a39a74ec6f354247461', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='1aefd2fdde114bd59a82546f31c6697d', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+__ test_external_journal_sql_rows_are_immutable[quick_scan_external_result] ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_external_journal_sql_rows1')
+table = 'quick_scan_external_result'
+
+    @pytest.mark.parametrize("table", ["quick_scan_external_operation", "quick_scan_external_result"])
+    def test_external_journal_sql_rows_are_immutable(tmp_path, table):
+        store, item, lease, _ = _journal(tmp_path)
+>       op = _begin_search(store, item, lease)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:299: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000015DB9677ED0>
+item = {'work_item_id': 'WORK_0bccc8757ac94a74b07049024054f3b8', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+lease = Lease(lease_token='e28cc92cc99245d89beb4d653b13af66', lease_epoch=1)
+changes = {}
+
+    def _begin_search(store, item, lease, **changes):
+        args = dict(policy=_journal_budget(), plan=_journal_plan(), route_id="brave-primary",
+                    provider="brave", quota_group="search", adapter_version="stockqa.external_retrieval/1.0.0",
+                    search_policy_sha256="e" * 64, endpoint="https://api.search.brave.com/res/v1/web/search")
+        args.update(changes)
+>       return store.begin_external_search(item["work_item_id"], lease, **args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'QuickScanWorkStore' object has no attribute 'begin_external_search'
+
+tests\unit\test_quick_scan_external_context.py:111: AttributeError
+______ test_v8_upgrade_preserves_work_and_creates_no_fake_search_history ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/journal-red-01/test_v8_upgrade_preserves_work0')
+
+    def test_v8_upgrade_preserves_work_and_creates_no_fake_search_history(tmp_path):
+        from src.utils import quick_scan_work_store as module
+        store, item, _, _ = _journal(tmp_path)
+        with closing(sqlite3.connect(store.path)) as connection:
+            objects = connection.execute("SELECT type,name FROM sqlite_master WHERE name LIKE 'quick_scan_external_%' AND type='trigger'").fetchall()
+            for _, name in objects:
+                connection.execute(f"DROP TRIGGER {name}")
+            for _, name in connection.execute("SELECT type,name FROM sqlite_master WHERE name LIKE 'quick_scan_external_%' AND type='table'").fetchall():
+                connection.execute(f"DROP TABLE {name}")
+            connection.execute("PRAGMA user_version=8")
+            connection.commit()
+        reopened = type(store)(store.path)
+>       assert module.SCHEMA_VERSION == 9
+E       AssertionError: assert 8 == 9
+E        +  where 8 = <module 'src.utils.quick_scan_work_store' from 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_work_store.py'>.SCHEMA_VERSION
+
+tests\unit\test_quick_scan_external_context.py:319: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_search_intent_and_budget_are_linked_before_http_without_answer_attempt
+FAILED tests/unit/test_quick_scan_external_context.py::test_process_restart_cannot_repeat_an_unresolved_paid_search
+FAILED tests/unit/test_quick_scan_external_context.py::test_concurrent_workers_obtain_only_one_search_send_intent
+FAILED tests/unit/test_quick_scan_external_context.py::test_search_plan_identity_or_question_mismatch_has_no_reservation[change0]
+FAILED tests/unit/test_quick_scan_external_context.py::test_search_plan_identity_or_question_mismatch_has_no_reservation[change1]
+FAILED tests/unit/test_quick_scan_external_context.py::test_search_plan_identity_or_question_mismatch_has_no_reservation[change2]
+FAILED tests/unit/test_quick_scan_external_context.py::test_sql_failure_rolls_back_search_intent_and_budget_in_the_same_transaction
+FAILED tests/unit/test_quick_scan_external_context.py::test_search_result_and_settlement_are_atomic_and_exact_replay_is_free
+FAILED tests/unit/test_quick_scan_external_context.py::test_result_insert_failure_keeps_original_reservation_until_durable_retry
+FAILED tests/unit/test_quick_scan_external_context.py::test_unpriced_search_success_retains_reservation_and_requires_reconciliation
+FAILED tests/unit/test_quick_scan_external_context.py::test_timeout_cannot_be_replayed_even_after_zero_cost_unknown_receipt
+FAILED tests/unit/test_quick_scan_external_context.py::test_late_search_reply_retains_billing_without_advancing_a_new_lease
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_receipt_never_accepts_native_or_raw_document_fields[extra0]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_receipt_never_accepts_native_or_raw_document_fields[extra1]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_receipt_never_accepts_native_or_raw_document_fields[extra2]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_result_cannot_be_rebound_to_a_different_transport_attempt
+FAILED tests/unit/test_quick_scan_external_context.py::test_expired_search_context_requires_new_generation_instead_of_blind_rerun
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_journal_sql_rows_are_immutable[quick_scan_external_operation]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_journal_sql_rows_are_immutable[quick_scan_external_result]
+FAILED tests/unit/test_quick_scan_external_context.py::test_v8_upgrade_preserves_work_and_creates_no_fake_search_history
+20 failed, 13 deselected in 3.38s

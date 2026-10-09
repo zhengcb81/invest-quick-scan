@@ -407,13 +407,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前状态（2026-10-09 Phase110）**：Q10来源追溯有限软件范围已完成：StockQA42a517c、IQS170b2ac均正常提交推送，final04实际606P／14文件，141源实比／117原文件不变，5492自有文件／2530目录严格清。单一下一动作：仍按JR1/JR3集中整改卡，在StockWiki四文件新写授权／owner交付到位后实施与一次联合回验；当前许可未答，只读，不重复本Q10或已通过full/UI/live。G3/L03/F05/THIN及真实identity/facts golden依旧缺，不能由本软件验收替代真实准确性或全池运行许可，不刷新退役工程回执。
+**当前下一动作（2026-10-09 Phase111）**：接续既有QA-NET-01步骤3–6中尚未接通的外部搜索→证据context→LLM生产链。在StockQA既有全仓报备授权内先固定42a517c输入、明确预算/attempt/证据与C06可表达边界及精确文件，再以TDD完成一个公开CLI离线批次和一次集中审查。原生路径/Q10已交付，不重做。此为原计划独立剩余线的执行顺序调整，不绕过任何关闭门：StockWiki JR1/JR3四新路径仍未获授权，G3/L03/F05/真实identity与facts golden/THIN授权仍缺；收到其确切许可或owner交付后再做联合回验。缺计价/存储权的真实external route与未验证DeepSeek续写继续拒发，不启动收费API或200家live，不刷新退役工程回执。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-09 Phase110进行中）**：固定StockQA `86b1e8a`隔离副本，接续Q10 requested/resolved追溯，以TDD实现事前冻结的显式模型别名许可、真实HTTP模型与回执的耐久绑定，再一次集中验证冷跑/恢复/封包。默认仍严格同名；不注册任意替换、不由requested回填actual。JR2七文件commit/push及2419自有清理已完成，不重做本批/full/UI。StockWiki四文件新增范围未答前只读，JR1/JR3沿用[唯一集中整改卡](docs/implementation/reviews/G3/joint-2026-10-08/remediation.md)；许可后两owner实际结果齐再公开链回验。G3/L03/F05/事实gold/THIN不自动放行。
+**历史下一步（2026-10-09 Phase110，已完成）**：固定StockQA `86b1e8a`隔离副本，接续Q10 requested/resolved追溯，以TDD实现事前冻结的显式模型别名许可、真实HTTP模型与回执的耐久绑定，再一次集中验证冷跑/恢复/封包。默认仍严格同名；不注册任意替换、不由requested回填actual。JR2七文件commit/push及2419自有清理已完成，不重做本批/full/UI。StockWiki四文件新增范围未答前只读，JR1/JR3沿用[唯一集中整改卡](docs/implementation/reviews/G3/joint-2026-10-08/remediation.md)；许可后两owner实际结果齐再公开链回验。G3/L03/F05/事实gold/THIN不自动放行。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1536,3 +1536,14 @@ Status: complete_for_model_provenance_software_scope; source_and_IQS_committed_a
 - Phase110源交付已为42a517c，最终606P／同批独审／新字节续收及正常Git完成；原5492文件／2530目录strict dry→Apply清、自有根已无。本IQS归档实际Git尚待本批回执，不提前标完成。
 
 - Phase110实际IQS归档交付：739精确路径正常提交`170b2ac18f05e2a608f13c042037d5a22dff020d`并推送origin/master；733归档raw/staged SHA相符，仅原opencode未跟踪保留。原735首次diff失败及诊断计数controller错误已保留；12原raw stdout/JUnit与新增诊断stdout仅精确格式例外，日志原字节不动。后续只追加本实际PWF回执，不改受审工件或重测。
+
+
+### Phase 111: QA-NET-01外部证据生产链接续
+Status: in_progress_private_implementation_not_published
+
+- [x] 只读确认现行external路径尚未接通，属于原QA-NET步骤3–6；调整执行顺序，不改变上游关闭门。
+- [x] 固定42a517c输入并逐批报备范围；C06保留公共schema，以私有external context-use proof链接真实检索和回答，预算复用Q09。
+- [ ] 独占隔离环境TDD实现生产路径，完成受影响单元/集成/公开CLI批次。
+- [ ] 一次集中审查、真实Git交付、逐文件清理及PWF/交接。
+
+实施说明：docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/plan.md。

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="1.906" timestamp="2026-10-09T04:39:28.299785+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_same_frozen_query_is_shared_by_two_questions_without_another_paid_request" time="0.188"><failure message="assert True is False">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/cache-red-01/test_same_frozen_query_is_shar0')
+
+    def test_same_frozen_query_is_shared_by_two_questions_without_another_paid_request(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+        plan = _journal_plan()
+        plan["question_ids"] = ["IQS_05", "IQS_06"]
+        op = _begin_search(store, item, lease, plan=plan)
+        store.record_external_search(op["operation_id"], receipt=_search_receipt(op), actual_cost=0.004, cost_source_ref="synthetic-pricing/1")
+        other = _created(store, question_id="IQS_06")
+        other_lease = store.claim(other["work_item_id"], lease_seconds=60)
+        shared = _begin_search(store, other, other_lease, plan=plan)
+&gt;       assert shared["send_required"] is False
+E       assert True is False
+
+tests\unit\test_quick_scan_external_context.py:361: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_company_retention_cap_is_shared_across_distinct_queries" time="0.175"><failure message="assert 367 &lt;= 300">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/cache-red-01/test_company_retention_cap_is_0')
+
+    def test_company_retention_cap_is_shared_across_distinct_queries(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+        plan = _journal_plan()
+        plan["company_limit"] = 300
+        first = _begin_search(store, item, lease, plan=plan)
+        store.record_external_search(first["operation_id"], receipt=_search_receipt(first), actual_cost=0.004, cost_source_ref="synthetic-pricing/1")
+        next_plan = dict(plan, query_id="cashflow", query="Synthetic issuer cash flow")
+        second = _begin_search(store, item, lease, plan=next_plan)
+        receipt = _search_receipt(second)
+        receipt["entries"][0]["query"] = next_plan["query"]
+        store.record_external_search(second["operation_id"], receipt=receipt, actual_cost=0.004, cost_source_ref="synthetic-pricing/1")
+        retained = sum(len(json.dumps(entry, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+                       for operation in (first, second)
+                       for entry in store.get_external_search(operation["operation_id"])["result"]["receipt"]["entries"])
+&gt;       assert retained &lt;= 300
+E       assert 367 &lt;= 300
+
+tests\unit\test_quick_scan_external_context.py:380: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_priced_search_receipt_rejects_a_later_ledger_cost_tamper" time="0.129"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/cache-red-01/test_priced_search_receipt_rej0')
+
+    def test_priced_search_receipt_rejects_a_later_ledger_cost_tamper(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+        op = _begin_search(store, item, lease)
+        store.record_external_search(op["operation_id"], receipt=_search_receipt(op), actual_cost=0.004, cost_source_ref="synthetic-pricing/1")
+        with closing(sqlite3.connect(store.path)) as connection:
+            connection.execute("UPDATE quick_scan_budget_attempt SET actual_cost_micros=9000 WHERE budget_attempt_id=?", (op["budget_attempt_id"],))
+            connection.commit()
+&gt;       with pytest.raises(ValueError, match="charge"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:394: Failed</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_paid_malformed_search_is_recorded_without_claiming_empty_or_retrying" time="0.094"><failure message="ValueError: invalid external parse status">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/cache-red-01/test_paid_malformed_search_is_0')
+
+    def test_paid_malformed_search_is_recorded_without_claiming_empty_or_retrying(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+        op = _begin_search(store, item, lease)
+        receipt = _search_receipt(op, parse_status="parse_failure", entries=[], provider_result_count=0)
+&gt;       result = store.record_external_search(op["operation_id"], receipt=receipt, actual_cost=0.004, cost_source_ref="synthetic-pricing/1")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:402: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:1910: in record_external_search
+    return record_result(self, operation_id, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_external_journal.py:340: in record_result
+    safe = _receipt(receipt, record["context"], row["budget_attempt_id"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'origin': 'external', 'adapter_version': 'stockqa.external_retrieval/1.0.0', 'route_id': 'brave-primary', 'route_kind': 'brave', ...}
+context = {'budget': {'policy_id': 'external-fixture-budget', 'policy_snapshot_sha256': '78964b7e05601fc555dd616e1b0adba91963209...roup': 'search', ...}, 'search_policy_sha256': 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', ...}
+budget_attempt_id = 'DISPATCH_66c735f99fcf29aa71faf69469b65255837cdc267cd94fc0703cb69d36dc9d55'
+
+    def _receipt(value: Any, context: dict, budget_attempt_id: str) -&gt; dict:
+        if not isinstance(value, dict) or not set(value) &lt;= _RECEIPT_KEYS:
+            raise ValueError("invalid external receipt fields")
+        result = strict_search_json(_canonical(value))
+        route = context["route"]
+        if (result.get("origin") != "external" or result.get("adapter_version") != route["adapter_version"]
+            or result.get("route_id") != route["route_id"] or result.get("route_kind") != route["provider"]
+            or result.get("attempt_id") != budget_attempt_id or type(result.get("http_request_count")) is not int
+            or result["http_request_count"] != 1):
+            raise ValueError("external receipt transport binding mismatch")
+        status = result.get("http_status_code")
+        outcome = result.get("outcome")
+        if outcome not in {"response_available", "confirmed_failure", "unknown"}:
+            raise ValueError("invalid external receipt outcome")
+        if status is not None and (type(status) is not int or not 100 &lt;= status &lt;= 599):
+            raise ValueError("invalid external receipt HTTP status")
+        if outcome == "response_available" and (status is None or not 200 &lt;= status &lt; 300):
+            raise ValueError("external success requires a 2xx response")
+        if outcome == "confirmed_failure" and (status not in (401, 403, 404, 429)):
+            raise ValueError("external failure is not a confirmed rejection")
+        if result.get("request_id") is not None:
+            _text(result["request_id"], 300)
+        if result.get("response_body_sha256") is not None:
+            _hash(result["response_body_sha256"])
+        if outcome == "response_available":
+            _hash(result.get("response_body_sha256"))
+            if result.get("parse_status") not in {"ok", "empty", "parse_failed"}:
+&gt;               raise ValueError("invalid external parse status")
+E               ValueError: invalid external parse status
+
+src\utils\quick_scan_external_journal.py:189: ValueError</failure></testcase></testsuite></testsuites>
