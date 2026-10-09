@@ -1849,3 +1849,5 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 真实26 metadata/四只读备份克隆只用于诊断，不保存真实观察golden或公司文档；源schema5不迁移。正式pure-information answered复用/relations/C06事实投影尚未接线，F05保持开放。
 
 - W15正常源发布实际完成：QA6aafc32远端同HEAD、SWa5a97d6本地无remote。钩子安装超时属于控制/工具故障，精确结束自有树后复用已安装同版本hook；.gitignore唯一变化为正常hook换行规范化，原审字节与新执行/Git摘要明确分域。既有cache不删除/恢复覆盖，公共安装metadata前后SHA相同；隔离测试与TEMP仍自有，不能把工具故障改称产品测试通过。基础软件及自有清理完成，真实query v2/owner golden、金融准确性与facts仍未完成。
+
+- C06私有query v2首21项通过仅证明空覆盖结构/精确主体和范围/原request与独立owner地址绑定；法律issuer与快扫entity可不同，不能互相猜填。原Observation、模型/时间/水位与分页尚待同批TDD，maxItems0故意拒非空输出，不声称正式C06已实现。新runs/c15a保持独占，原64公开输入不变；Windows guard两域摘要明确，未修改guard安全内容，当前外仓源不写/0API。

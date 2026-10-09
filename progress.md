@@ -2698,3 +2698,12 @@
 
 - IQS正常提交推送929d76226dc2efa8b02e094312baa51fe71076c8，555精确路径，远端origin/master同HEAD；冻结工件staged原字节与工作树SHA核对通过，原opencode保留。原-uall目录折叠拒绝在stage前停止；随后index.lock竞争在535项暂存后停止，只读确认锁自行消失，无删锁/杀外来进程。精确续收保留原selection/失败记录；diff检查发现交接PWF尾空行，只修该文档，原raw证据不动，正常commit/push终态0。
 - 本条与实际提交/推送日志仅补记已完成交付，不改candidate02、受审产品或清理回执，不再次测试/审查。Phase113步骤4继续按c06-next实施，整个项目目标active；下一IQS提交仅包含本PWF补记及实际Git日志，不预报其commit。
+
+
+## 2026-10-09 原W15步骤4接续：私有query v2首组TDD（当前）
+
+- 基础源与555件IQS归档929d762已推送，随后仅15件PWF/实际Git日志补记bc9ab49已推送，远端同HEAD、原opencode保留；源SWa5a97d6/QAc6aafc32不变。新prepare只读核三仓实际基线，固定64件IQS非秘密scripts/schema到runs/c15a，0外仓产品写/真实数据读取/API。
+- 先冻结query-v2-interface实施约定，EntityId与法律issuer保持分层、明确SubjectRef/expected request/owner绑定，原legacy v1文件不改。首次控制器在pytest前因Windows guard字符串LF摘要与raw CRLF不符拒绝，0测试执行；保留inputs01，以guard-byte-domains01明确内容/执行两域，守卫内容不变。
+- 实际RED contract-red-02原70668/pytest2，1 collection error为新query_contract模块缺失，不能称21个产品漏洞。私有实施后GREEN contract-green-01原67912/pytest0，21P/0.38s/controller0.835s，67文件执行SHA前后不变；只验证合成空覆盖/主体/范围/重复键/非有限JSON。snapshot三候选＋原guard字节留档，未独审未发布；非空Observation仍maxItems0/具名拒绝，不冒充支持真实评分或完整query。
+- 当前原步骤4在新独占runs/c15a连续实施，64原IQS输入不变；私有query v2首批21P只覆盖get_profiles空覆盖/主体绑定/严格JSON，未审未发布且非空Observation故意拒绝。唯一下一动作补原Observation/模型时间/范围/水位及legacy读取反例，再公共只读producer/受控刷新/真实serializer golden，同一完整查询节点结束集中审查。不能把private-source-01发布或把C06标通过；根仍在使用，不能清理。 legacy query/W09/UI/三仓生产源未变；金融准确性、F05/G3/L03/THIN/200家live原门仍开放。本私有进度checkpoint只归档/提交，实际Git以工具回执为准，不新设小节点审查。
+- checkpoint首执行在任何归档写入前因Windows sources键的反斜杠与逻辑路径斜杠不同拒绝；改为当前平台Path键后原执行SHA精确匹配，三候选/guard原字节已归档，原测试不重跑。此为控制器路径口径错误，不称产品失败。
