@@ -2586,3 +2586,13 @@
 - 下一实际跨仓步骤仍需人类答复StockWiki四文件/writer授权。未获许可不实施JR1/JR3、不调用付费API或运行旧固定根helpers；本轮IQS精确Git交付待实际回执，原opencode不读取/暂存/清理。全项目目标active，G3/F05/L03/金融/真实gold/TH-IN原门继续开放。
 - 首Git控制cb3120在已暂存11件之后、commit之前按原字节校验停止：Git会将freeze.stdout.log原CRLF归一成LF。原日志不改，只在本仓.gitattributes为这两个新日志加精确-text/CR规则；既有冻结目录和日志保持。接续先验证index只含本批11件，再加这一个属性文件，最终12路径字节与远端回执以实际后续Git为准；无测试失败、未重复运行freeze或新增审查。
 - 接续Git49d96a实际终态exit0，正常提交推送 `fa99bce9916154f71d9d79e54a4f9ee94f963706`；12件精确变化、7新工件staged/committed与原字节SHA一致，全部worktree SHA不变，远端refs/heads/master同HEAD，仅原opencode未跟踪。当前只补本实际Git回执/PWF，不改新inputs或运行时状态，目标未完成，StockWiki授权/联合ACK及全局原门仍待。
+
+- 随后四份PWF实际发布回执由be16a1正常提交推送 `0addcb552fbbc4305cb21b14d3f2fb5287636a74`，仅4路径，远端同HEAD、原opencode保留。这是上回合已完成的进展，不应在后续等待回合重复计算。
+
+## 2026-10-09 — 授权等待核查，连续第1个无可执行主线回合
+
+- 上回合为实际联调输入留档及Git发布进展。本回合262f50核IQS 0addcb5/仅opencode未跟踪，de7df2只读核QA bc41908与SW c40de21/clean，SW四待授权文件相对d253fea无变化；没有收到明确授权或新修复交付。
+- 核对107任务依赖与当前PWF：已完成的IQS M0/M1及输入准备不重复；F01/F06和后续演进/启动卡受G3等原门限制，Q13依赖Q10闭环，TH/IN依赖G3/F05/真实查询交付及各源写授权。不能为绕过StockWiki权限而将已完成的准备再算新实施，或用合成ACK/目标投影代替真实接收端修复。
+- 这是明确人类授权阻塞，非verified wait；没有已确认存活的自有测试/Git handle可轮询。本回合无新增产品实施、软件测试、付费调用或外仓写入；记录不计目标进展。目标仍active，未达到连续三回合blocked阈值。下一动作仍是收到四文件与本批唯一writer许可后实施JR1/JR3，原问题不重复发送；所有未完成门保持。
+- 连续第2个阻塞目标回合：075eca核IQS仅本段progress未提交和原opencode；5d9ccc实际只读核QA bc41908、SW c40de21/clean，四文件相对d253fea仍无差异，未收到新授权/交付。上一回合为no progress，本回合同一人类授权阻塞，无可确认活handle或独立可执行任务；不重复准备/测试，不写外仓，不把本记录计为进展。目标仍active，三回合blocked阈值尚未满足。
+- 连续第3个阻塞目标回合：c334bb核同一本仓状态与记录，28255a实际只读核QA bc41908、SW c40de21/clean及四文件无新差异；人类许可仍未到。前两回合均no progress，条件连续三回合满足且无法独立推进主线，`update_goal(status="blocked")` 已实际返回blocked（updatedAt=1791565307）。未重测/付费/写外仓或关闭验收门；只收尾本次PWF状态留档与提交，不把该文档记为产品进展。解除需此前四文件＋唯一writer明确许可或获准owner真实修复交付，不再自动空转。
