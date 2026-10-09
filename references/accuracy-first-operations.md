@@ -1,6 +1,6 @@
 # 快扫的准确性优先实操
 
-版本1.0.0，2026-10-07。结合[真实实验](../docs/implementation/experiments/accuracy-first-results-2026-10-07.md)使用。这是操作规范，不代表外部adapter、题包或StockWiki入库已经验收。请求只走StockQA已接线公开入口和用户顺位，实验脚本不是生产调度器。
+版本1.1.0，2026-10-09；原2026-10-07实验结论保持。结合[真实实验](../docs/implementation/experiments/accuracy-first-results-2026-10-07.md)使用。StockQA外部执行链已在`bc41908`发布并通过隔离软件验收，见[交付说明](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)；金融事实准确性、题包推广及StockWiki联合入库仍须各自证据。请求只走已接线公开入口和用户顺位，实验脚本不是生产调度器，不因软件发布默认启用收费路线。
 
 ## 先取证，再补问
 
@@ -46,7 +46,7 @@
 
 明确认证/权限/资源包拒绝停相应路由，只按配置转下一合格路由；明确普通429按实际Retry-After有界恢复。POST超时、崩溃、本地响应处理异常保留原attempt和预算，不盲重发。区分供应商拒绝、已收到但本地解析失败、是否收到不明；MCP协议HTTP和实际搜索次数分列。
 
-检索缓存、供应商prompt缓存、答案/检查点分别记录。检索键含实体/接口/query/语言/过滤/深度/版本/有效期；答案键还含题义、期间、实际模型revision、参数/证据hash。题包共享检索仍产生重复prompt token。warm须验证零HTTP、零key读取、账本不变；实验warm不证明生产三层缓存全接通。
+检索缓存、供应商prompt缓存、答案/检查点分别记录。检索键含实体/接口/query/语言/过滤/深度/版本/有效期；答案键还含题义、期间、实际模型revision、参数/证据hash。题包共享检索仍产生重复prompt token。warm按验证范围核零增量HTTP、凭据依赖和账本；Phase111已在公开CLI隔离验证已结算外部证据的同generation/新lease复用、撤搜索key后warm和旧generation拒绝。不能把软件缓存或实验usage字段说成实际厂商prompt缓存/账单节省认证。
 
 分列套餐消耗、现金账单、按量参考、保守预约。MiniMax套餐、MiMo普通按量key不推定免费；DeepSeek高低峰/缓存价分别估算。用[核价表](../docs/implementation/experiments/accuracy-pricing-2026-10-07.json)，不回写历史费率，不凭cached token宣布实际省钱；未知费用保留全预约。
 

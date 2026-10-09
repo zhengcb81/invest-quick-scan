@@ -1,6 +1,6 @@
 # 联网搜索与LLM统一使用规范
 
-规范版本：1.1.0；日期：2026-10-07。用于上市公司评分、事实采集与补扫。本文定义操作及后续adapter验收要求，**不是已部署功能清单**。接口能力/探针见[搜索接入状态](search-policy.md)；attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。
+规范版本：1.2.0；日期：2026-10-09。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
 
 StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检查点和费用账本；IQS只维护题面与规范；StockWiki提供名单、缺口及观察入库，不能另包请求重试。[配置参考模板](../examples/search-and-llm-policy.template.json)仅供填写需求，执行器尚不读取；`template_only=true`、`execution_enabled=false`保持不变，不是第二份生效配置或调用授权。
 
@@ -14,7 +14,9 @@ StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检
 
 回答模型顺序由用户配置；外部检索器顺序另由用户给定，不能按清单排列擅定顺位。相同primary题不同时发给多个模型抢答；首选只是容量满时等待，明确不可用才转下一合格路由。直连阳性而尚未接入公开CLI的接口不能靠模板启用。
 
-当前：指定MiMo按量/MiniMax原生协议已接线；DeepSeek Responses忽略web_search，Anthropic兼容搜索有直连阳性但生产未接入；Brave/Tavily用于实验；Z.ai REST/Streamable HTTP MCP直连通过但生产adapter未完成。Z.ai外部MCP/API与GLM内建搜索不同，不因此更改回答模型。
+当前：指定MiMo按量/MiniMax原生协议已接线；DeepSeek Responses忽略原生web_search，Anthropic兼容搜索仍只有历史直连证据。StockQA `bc41908e4cdc44c13fefda97f3118e5434aed5f8`已发布Brave/Tavily/Z.ai REST与Z.ai Streamable HTTP MCP的外部执行链，支持短context→实际LLM→耐久proof/checkpoint→公开结果；DeepSeek Responses可作为external-only高思考回答模型。该批采用HTTP替身验证，不能宣称各厂商现在可用或套餐费用已核准；Z.ai REST与MCP的历史权限/余额结果必须分别判断。Z.ai外部MCP/API与GLM内建搜索不同，不更改回答模型顺位。
+
+公开入口仍是StockQA `main_with_llm.py`。外部模式需要独立确认的`--identity-snapshot`、`--question-manifest`、1.1 `--search-policy`、原`--config`/模型策略及`--spend-authorization`；完整C06封包另需`--c06-authority`。不能把本规范的非执行模板、合成测试身份/价格或历史探针当有效生产授权。只补封的`--seal-deliveries`不调用模型；本次没有迁移真实库、启用付费路由或改变用户顺位。
 
 启动前只检查本批命名环境变量是否存在、配置ID、能力版本和预算，不展示密钥。健康/能力证据按endpoint、协议、凭据配置revision、实际模型映射及adapter/tool schema版本复用，变更后失效；不要每家公司先做收费探针。MCP按协商版本initialize→initialized→tools/list，以真实工具名/inputSchema构造调用。握手成功不证明搜索权限；schema改变先停用旧适配，不猜字段重发。
 
@@ -37,7 +39,7 @@ StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检
 
 来源按URL去重、不同有效片段按内容hash保留，再按实体、分部、相关性、来源权威和时点筛选，不照抄搜索排名。公司/交易所/监管机构原始披露优先；关键数值须有期间、币种、单位、集团/归母及指标口径的原始证据。摘要不能证明就留缺口。错公司、晚于截止日、无日期且无法确认当时可知、来源冲突的材料不能支持对应主张；第三方新闻不能声称为官方披露。
 
-只给模型该题相关短证据；固定system/题库前缀在前、公司证据和题目在后。预算预演用实际渲染输入估计token，字符数不是token数。新外部adapter沿用片段每条≤500个Unicode字符、每公司本轮累计≤30,000字符的设计边界，同时受上下文和输出预算限制；超限删减/分阶段，不放宽存储。这是接线要求，不代表现有原生工具能限制厂商返回长度。
+只给模型该题相关短证据；固定system/题库前缀在前、公司证据和题目在后。预算预演用实际渲染输入估计token，字符数不是token数。已发布外部执行链按冻结policy限制每条短摘要≤500个Unicode字符、公司本轮context≤30,000字符（包含必要元数据），用户可配置更严格限制；同时受上下文与输出预算约束。原生工具的厂商返回长度仍不能据此宣称受本地上限控制。
 
 本轮证据内容上限与发送量分开统计：同一证据包复用不重复保存，但每次prompt实际发送的重复内容仍纳入token/费用。不要用唯一来源数或证据库大小估算总输入成本。
 
@@ -97,6 +99,10 @@ LLM finish_reason=length或response incomplete先标不完整，不能取半截�
 
 三层缓存独立：搜索key含实体/查询/接口/locale/过滤/top-k/深度/adapter版本及有效期；prompt缓存只按供应商usage记hit；答案缓存沿用实体revision、题目/release/prompt/rubric、resolved model revision、截止日、证据hash和生成/工具参数契约。TTL显式填写，默认不用过期证据；空结果单独cooldown，不永久fresh、不每次重启重问。
 
+已发布外部链的恢复限定：同generation、已结算且TTL内的REST短证据，可由新lease重核后复用原时间/operation/费用；不同generation不能复用旧operation来冒充新扫描。旧worker、迟到模型或MCP旧控制session不能推进新lease。未知发送/未知费用保留预留，不因换路线或租约到期重发；过期但未发送的旧检索意图仍保守hold，不声称所有断点都会自动恢复。warm读取已核缓存可以不提供搜索key，新HTTP前仍必须验证凭据。
+
+MCP每个冻结query目前分别执行initialize、initialized通知、tools/list和tools/call，各HTTP分别预算准入与结算；不能用“整个公司池只握手一次”估价。只有明确覆盖全部HTTP/失败情况的计价依据才准入，未核实厂商收费不能默认记零。
+
 primary逻辑键不含fallback模型/run；缓存键与幂等派发键用途不同。题目可引用同一冻结证据包，换顺位不自动作废全部已完成primary答案；只刷新受材料性变化影响的题。comparison使用独立预算和目标模型，不能拿fallback结果冒充公平对照。
 
 ## 7. 费用、次数和数据保存
@@ -111,7 +117,7 @@ max_keyword/max_uses/count不是已验证硬限额：DeepSeek实测max_uses1→3
 
 ## 8. 同一集成批次的测试与交接
 
-下表是后续StockQA adapter测试包，不增加计划case计数或小节点审查门。隔离临时库/缓存、假时钟及可控传输先覆盖失败，再在已授权小样本预算用公开CLI验证；集中在集成批次和既有大节点验收。
+下表是StockQA adapter的验证要求，不增加计划case计数或小节点审查门。Phase111已完成相关隔离软件批次：最终861项主回归、24新OS场景/11实际强杀位置及同一次集中复审，原命令/日志/边界见[交付说明](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。这些不能替代真实厂商互通、费用和金融事实验证；后续只在有新变更/故障或获批live范围时重验相关路径。
 
 | 层级 | 案例 | 必须观察的结果 |
 |---|---|---|

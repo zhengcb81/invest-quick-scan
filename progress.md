@@ -2569,3 +2569,7 @@
 
 - 最终freeze原55907实际exit0：1378工件（含NUL manifest）、1384精确选择，4578旧tracked工件逐Git原字节核对不变；最终Git原54372实际exit0，提交推送c5562157815a9dd886b52a1d5d7cfacf344dc0c4，1384全部实际变化，1379工件＋index staged/committed精确一致，远端ls-remote同HEAD、owned root仍不存在。没有重复861/128/IQS消费者或新增review。final-git-result与Git原stdout/stderr在本次推送后生成，下一普通文档提交只交实际回执/PWF。PWF后补patch曾先定位Phase111再反向找Next Step，工具原子拒绝；按文件顺序重排hunk，不改产品或冻结工件。
 - 下一跨仓准备只读StockWiki当前c40de21403720306ba21edbf71b9634a40ee58f8、clean；四候选路径相对原卡d253fea实际git diff为空，未偷偷改权限或重跑旧测试。用户四文件＋唯一writer问题已通过async发出，授权不是超时默认值；未答前不写StockWiki。搜索运行手册仍有“生产adapter未完成”的旧状态措辞，属于可独立更新的IQS后续发布同步，不影响受审软件或改动默认付费配置。
+
+- 实际回执Git原9efea1已终态exit0：57d7a6d42bbe36cc123a87a93ca27d200fda94b6已推送，IQS只剩原opencode未跟踪，sourcebc41908和root不存在再次核实。之后独立同步本目录三份搜索/准确性手册与无密钥inventory的发布状态，原软件/1379冻结工件及实验不改，template_only/execution_enabled与模型顺位不动。从StockQA bc41908公开handoff只读核CLI flags和实际范围；tests/scripts字面检索无inventory引用，不把它升级为生效配置。新增文档版本playbook1.2、inventory1.2、accuracy1.1；分开披露隔离实现、历史REST拒绝/MCP成功与未重新live核验，仍需轻量格式/JSON及实际提交，无额外小节点review。
+
+- 文档同步轻量核查实际exit0：inventory JSON合法、26个内部手册链接存在、参考provider_order仍null、非执行模板/原模型连接profile的JSON和Git变更均不变；frozen final-delivery-index原字节不变，付费请求0。首核查错误地要求未修改profile的Windows CRLF与Git LF原字节相等而失败，改为正面比较规范EOL/JSON并git diff exit0，未修改profile。后补日志patch误写锚点从/原被拒且零写，改按当前文件明确追加；这些是文档控制诊断，不是产品/金融测试失败。只交这8件本地文档/参考数据，不追加测试或独审小节点。

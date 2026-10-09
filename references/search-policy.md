@@ -1,6 +1,6 @@
 # 搜索来源、执行规则与接入状态
 
-核查日期：2026-10-07。搜索和模型客户端归 StockQAbyLLM；本 skill 维护题面、契约和[无密钥搜索来源清单](../examples/search-provider-inventory.json)。清单仅供参考，执行器尚不读取它，也没有默认搜索引擎顺序。模型的用户优先级仍由[模型策略](model-policy.md)管理；搜索来源顺序不能由清单排列暗中决定。
+软件状态核查日期：2026-10-09；下文真实连通探针仍为各自标注的2026-10-07历史证据。搜索和模型客户端归 StockQAbyLLM；本 skill 维护题面、契约和[无密钥搜索来源清单](../examples/search-provider-inventory.json)。清单仅供参考，执行器不读取它，也没有默认搜索引擎顺序。模型的用户优先级仍由[模型策略](model-policy.md)管理；搜索来源顺序不能由清单排列暗中决定。
 
 本文件记录接口能力与实测边界；实际使用及请求失败处理统一读[联网搜索与LLM使用规范](search-and-llm-playbook.md)。它继承C05终态/费用/顺位规则，提供参考配置及同批次测试包，不另建重试器或新审查门。
 
@@ -8,9 +8,10 @@
 
 | 路径 | 实际行为 | 当前边界 |
 |---|---|---|
-| StockQA 公开 CLI `--require-search` | 在 LLM 请求中传供应商的原生搜索工具，并验证响应中的搜索证明 | 已接线；不是仅在提示词写“请联网” |
-| B01-b 外部搜索实验 | Brave/Tavily 返回短证据，实验 runner 将其作为 context 交给 MiniMax-M3 | 实验已执行；未找到公开 CLI 的外部搜索 adapter |
-| Z.ai Web Search MCP / REST | REST与Streamable HTTP MCP已做直接搜索探针，可作为外部检索来源 | 直接连通性通过；尚未安装到本会话工具列表或接入生产CLI，legacy SSE未测 |
+| StockQA 公开 CLI原生模式 | 在 LLM 请求中传供应商的原生搜索工具，并验证响应中的搜索证明 | 原路径已接线；`--require-search`本身不选定外部路线 |
+| StockQA 1.1外部/显式混合模式 | Brave/Tavily/Z.ai REST或Z.ai Streamable MCP→有界短context→实际LLM→proof/checkpoint/public1.1 | `bc41908`已发布、隔离软件验收通过；须有效policy/身份/manifest/费用授权，不自动启用或认证当前厂商连通 |
+| B01-b 外部搜索实验 | Brave/Tavily 返回短证据，实验 runner 将其作为 context 交给 MiniMax-M3 | 原实验结果保持；其方法与新生产实现分别记录 |
+| Z.ai历史连通探针 | REST及Streamable MCP的独立探针、后续余额诊断 | 2026-10-07末REST余额拒绝、MCP成功；不因软件发布重置健康状态。legacy SSE仍未接线/未测 |
 
 原生搜索的当前协议白名单：MiMo 的指定官方 host 与 `mimo-v2.6-flash/pro/pro-ultraspeed` 走 Chat Completions；MiniMax-M3 的指定官方 host 走 Responses 或 Anthropic Messages。**MiniMax 的普通 Chat Completions 实验请求不因此具备搜索。** DeepSeek 虽有历史 Anthropic 直连探针，当前 StockQA `--require-search` 尚未接入它；顺位策略会跳过缺搜索能力的路由，不把离线答案当作已联网。
 
@@ -32,13 +33,13 @@ StockQA 检查执行证明：MiniMax 需要完成的搜索事件及来源 URL；
 
 ## 外部搜索如何喂给 LLM
 
-目标流程：确认实体与截止日 → 检索 → 来源去重/关联题目 → 短证据包 → LLM 结构化答案 → 来源审核。证据项使用 `source_id/title/publisher/url/published_at/retrieved_at/short_snippet`；模型按 `source_id` 引用。检索时间不能代替发表时间；来源未知日期留空；超过信息截止日的内容不用于证明当时已知事实。
+已发布外部链：确认实体与截止日 → 冻结查询/策略/费用 → 检索 → 来源去重/关联题目 → 有界短证据context → 实际LLM回答/使用proof → 检查点与公开结果；事实足以支持主张的审核仍独立。证据项使用 `source_id/title/publisher/url/published_at/retrieved_at/short_snippet`；模型按 `source_id` 引用。检索时间不能代替发表时间；来源未知日期留空；超过信息截止日的内容不用于证明当时已知事实。
 
-外部返回内容作为不可信证据 context，不作为指令。不下载网页或公司文档；生产只保存必要短事实、来源、回执和时间。实验片段按既定边界每条最多500个Unicode字符、每公司证据最多30,000字符，实验精确输入按清理manifest管理；不能把这些上限误称为当前公开CLI已经实现的全局限制。
+外部返回内容作为不可信证据context，不作为指令。不下载网页或公司文档；只保存有限短摘要/必要来源元数据、回执hash、时间和答案。已发布1.1外部链按冻结policy实施每条摘要≤500 Unicode字符、公司本轮context≤30,000字符的上限，元数据也受总cap约束，可配置更严格；这不是原生工具厂商正文的全局限制。实验精确输入仍按原清理manifest管理。
 
 **B01-b 实际做法**：查询是“公司名称 + 题目”，Brave/Tavily 结果按 URL 去重；同公司整个有界证据块随每次请求一起发送，未实现按题精挑来源。MiniMax-M3 请求没有 `tools`，因此这批没有另开原生搜索。六类检索意图、按题选证据和缓存正交实验属于[后续实验设计](../docs/implementation/experiments/llm-search-and-batching-benchmark.md)，不能用设计代替实测。低URL重叠也不能直接证明双引擎总是更好。
 
-未来外部 adapter 由 StockQA 实现，并需显式区分 `external_context` 和 `native_web_search` 的执行来源及回执。MCP/REST 的检索回执不能伪装成回答模型的原生工具事件；不可用或没有可靠证据时留空，不绕过公开输出校验。IQS 不另建搜索客户端。
+外部adapter已由StockQA实现，使用独立context-use proof/公开1.1绑定实际检索和模型HTTP；原native-only结果仍1.0。MCP/REST检索回执不能伪装成回答模型的原生工具事件。旧回执缺事件不补造；不可用/unknown/来源越界失败关闭，事实支撑不足留缺口。详见[软件交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)；IQS不另建搜索客户端。
 
 ## Z.ai 登记内容
 
@@ -52,13 +53,13 @@ StockQA 检查执行证明：MiniMax 需要完成的搜索事件及来源 URL；
 
 本次[REST探针](../docs/implementation/experiments/zai-connectivity-probe-2026-10-07.json)HTTP200、2.923秒，请求`count=3`但只返回1条；不能保证指定条数。未做domain/recency或信息截止日有效性测试。全批1次REST搜索+2次MCP工具搜索，另7次MCP握手/发现HTTP请求，无LLM调用或文档下载；未读取账单，不能宣称搜索免费。本次探针没有把服务接入StockQA生产执行器。
 
-实际接入前在 StockQA 的同一集成批次完成工具发现/接口选择、证据适配和回执验证，覆盖成功与无结果、身份错配、日期/过滤不生效、额度拒绝、超时结果不明及凭据脱敏；再用隔离小样本验收。此处不新增小节点审查门，不修改已冻结的B01实验，也不自动发起收费调用。
+StockQA同一集成批次已完成REST/MCP外部链隔离软件验收，包括协议/实际工具schema、逐HTTP计费、来源/身份/日期、unknown保留预留、凭据和会话边界，以及公开CLI恢复。当前软件依据是`bc41908e4cdc44c13fefda97f3118e5434aed5f8`及对应实际publication/复审；这不替代新的真实小样本互通、账单或金融准确性认证。后续仅在获批范围实跑，不增加小节点审查门、不修改冻结B01实验或默认发起收费调用。
 
 ## 搜索次数、成本与缓存
 
 一次原生 LLM 请求可能产生多次搜索；外部检索则是独立请求，再产生回答模型的token成本。统一统计实际搜索调用、模型调用/修复、等待与总耗时，套餐消耗与按量费用分别列示，不能只算LLM价格。Brave/Tavily清单中的额度是用户历史提供的计划，当前权益未复核；Z.ai价格/配额未验证，不假定免费或继承GLM套餐额度。
 
-目标有三层独立缓存：搜索结果缓存、供应商prompt缓存、应用答案/checkpoint。搜索缓存键须覆盖供应商/接口、查询、语言/地区、过滤、结果数、版本和有效期；答案复用另核对实体、截止日、题义/模板和模型等执行契约。只有TTL与相关条件满足才能复用。当前B01只记录到供应商的缓存字段，不能据此宣称三层缓存已通过验收或节省了账单；不因缓存引用存在就补造本次实际搜索事件。
+三层缓存分别记录：搜索结果、供应商prompt缓存、应用答案/checkpoint。新外部软件链已验证同generation已结算短证据在TTL内跨题/新lease重核复用和warm零增量HTTP；不同generation拒绝旧引用，未知发送不重发。答案复用另核实体/manifest/policy/模型/时点等条件，费用与原回执保持。供应商prompt缓存及真实账单节省仍只按实际usage/实验说明，不把软件缓存测试当账单证明，不补造本次搜索事件；未发送旧意图保持保守hold。
 
 
-最新2026-10-07T22:13诊断：同一ZAI_API_KEY的REST429/error1113明确余额或资源包不足；Streamable HTTP MCP握手/发现/搜索成功，返回4条。随后公司MCP九查询均成功但只一项所需事实有完整片段支持；可联网不是准确性保证。见[分接口实测](../docs/implementation/experiments/zai-rest-vs-mcp-diagnostic-2026-10-07.json)和[准确性实操](accuracy-first-operations.md)。旧早期阳性原件保留；生产adapter仍未因此接通。
+历史2026-10-07T22:13诊断：同一ZAI_API_KEY的REST429/error1113明确余额或资源包不足；Streamable HTTP MCP握手/发现/搜索成功，返回4条。随后公司MCP九查询均成功但只一项所需事实有完整片段支持；可联网不是准确性保证。见[分接口实测](../docs/implementation/experiments/zai-rest-vs-mcp-diagnostic-2026-10-07.json)和[准确性实操](accuracy-first-operations.md)。旧早期阳性原件保留；2026-10-09的软件接线发布依据是独立Phase111验收，不是由历史探针自动推定。本轮未读取key或再次付费探测。

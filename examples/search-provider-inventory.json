@@ -1,11 +1,22 @@
 {
-  "inventory_version": "1.1.0",
-  "as_of": "2026-10-07",
+  "inventory_version": "1.2.0",
+  "as_of": "2026-10-09",
   "purpose": "Reference inventory only; not consumed by the dispatcher and does not enable providers or set priority.",
   "runtime_owner": "StockQAbyLLM",
   "policy_reference": "../references/search-policy.md",
   "native_search_inventory": "provider-connectivity-profiles.json",
   "provider_order": null,
+  "software_delivery": {
+    "owner": "StockQAbyLLM",
+    "commit": "bc41908e4cdc44c13fefda97f3118e5434aed5f8",
+    "evidence_reference": "../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md",
+    "scope": "Published external REST/Streamable HTTP MCP dispatcher, short context, actual LLM binding and durable recovery; isolated HTTP/software verification only.",
+    "production_dispatch_automatically_enabled": false,
+    "new_live_probe_performed": false,
+    "vendor_prices_certified": false,
+    "financial_accuracy_certified": false,
+    "historical_probe_dates_preserved": true
+  },
   "providers": [
     {
       "provider_id": "brave",
@@ -14,7 +25,7 @@
       "status": {
         "registration": "listed",
         "historical_probe": "B01-b retriever experiment executed on 2026-10-07",
-        "production_integration": "not_found_in_current_public_cli",
+        "production_integration": "implemented_offline_verified_not_live_certified",
         "current_connectivity": "not_probed"
       },
       "evidence_reference": "StockQAbyLLM/pilot_runs/b01b_retriever_2026-10-07/retriever_compare_report.json",
@@ -31,7 +42,7 @@
       "status": {
         "registration": "listed",
         "historical_probe": "B01-b retriever experiment executed on 2026-10-07",
-        "production_integration": "not_found_in_current_public_cli",
+        "production_integration": "implemented_offline_verified_not_live_certified",
         "current_connectivity": "not_probed"
       },
       "evidence_reference": "StockQAbyLLM/pilot_runs/b01b_retriever_2026-10-07/retriever_compare_report.json",
@@ -54,9 +65,12 @@
       "status": {
         "registration": "listed",
         "historical_probe": "REST search and Streamable HTTP MCP search passed on 2026-10-07; legacy SSE not probed.",
-        "production_integration": "not_implemented",
-        "current_connectivity": "direct_rest_and_streamable_mcp_probes_passed_2026-10-07",
-        "mcp_tool_exposed_in_this_session": false
+        "production_integration": "implemented_offline_verified_not_live_certified",
+        "current_connectivity": "not_reprobed_2026-10-09; last_2026-10-07T22:13_REST_429_error1113_MCP_success",
+        "mcp_tool_exposed_in_this_session": false,
+        "session_exposure_observed_on": "2026-10-07",
+        "current_session_exposure_rechecked": false,
+        "latest_probe_reference": "../docs/implementation/experiments/zai-rest-vs-mcp-diagnostic-2026-10-07.json"
       },
       "documented_interfaces": [
         {
@@ -101,7 +115,7 @@
             "content": "short_snippet",
             "refer": "provider_reference"
           },
-          "source_mapping_status": "planned_not_implemented",
+          "source_mapping_status": "implemented_offline_verified_not_live_certified",
           "search_probe_result": "passed",
           "search_probe_reference": "../docs/implementation/experiments/zai-connectivity-probe-2026-10-07.json",
           "count_probe_observation": {

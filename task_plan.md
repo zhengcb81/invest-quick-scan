@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**搜索手册发布同步（2026-10-09，优先于以下旧时点）：** Phase111源码/证据/PWF已正常交付，IQS最近回执57d7a6d、StockQAbc41908。当前独立收口IQS搜索规范、准确性手册和无密钥参考清单的旧实现状态措辞，保持模板不可执行、模型/搜索顺位不变、历史探针/实验不覆写；仅文档/参考数据，无新增小节点review。StockWiki四路径/唯一writer授权问题仍待用户回答，其当前只读c40de21/clean、四路径相对d253fea未变；未答前不实施。文档同步提交后仍按已有JR1/JR3卡申请范围接续，不关闭G3/F05/金融准确性/真实gold/TH-IN。
+
 **Phase111实际Git收尾已到（2026-10-09，优先于下文）：** IQS本批证据已正常提交推送`c5562157815a9dd886b52a1d5d7cfacf344dc0c4`，1384精确变化/1379工件及index Git blob一致，4578旧tracked工件不变。StockQA源码已推送bc41908，严格自有清理完成；当前只补本实际Git回执和PWF，不改冻结软件/工件。StockWiki刚只读核c40de21、clean，JR1/JR3四路径相对原d253fea未变；已向用户申请这四文件及本批唯一writer授权，未答前只读。后续在授权后执行已有联合整改卡，不重复三包/Phase111或收费实验；金融准确性/真实gold/G3/F05/L03/TH-IN原门继续开放。
 
 **Phase111有限软件已发布并清理（2026-10-09，优先于下文历史）：** static04全部exit0/mypy61源、regression02实际861 passed；同一次独审关闭两P2，38路径全部有限批准。StockQA已正常提交推送`bc41908e4cdc44c13fefda97f3118e5434aed5f8`，38 Git blob与受审SHA一致，111保护文件及原7未知项不变。schema13是源码迁移能力，没有迁移真实库。20,025自有文件/8,999目录已严格清除，必要日志/独审程序/执行快照保留，见[交付说明](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。IQS本批证据/PWF最后Git交付尚待实际回执，最近已推送5f4e518。随后唯一跨仓下一动作：只读重核StockWiki当前接口/唯一writer，取得四路径明确许可后收口JR1/JR3和公开CLI联合ACK；未获许可不写StockWiki。金融准确性、真实厂商计价、真实gold/G3/F05/L03/TH-IN仍开放，不启动200家扫描或刷新退役回执。

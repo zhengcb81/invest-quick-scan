@@ -4,6 +4,8 @@
 
 以下旧时点保留，不覆盖本段。
 
+**后补发布规范同步（2026-10-09）：** Phase111实际IQS回执57d7a6d已推送，受审交付证据c556215不变。当前只改IQS search-policy、search-and-llm-playbook、accuracy-first-operations与无密钥inventory，将原“未实现外部adapter”同步成StockQAbc41908已发布/隔离软件验收，仍无新live认证；不改不可执行模板、配置/顺位、实验/工件或默认paid资格。StockWiki四路径许可未答，保持只读；下一汇合仍JR1/JR3＋联合ACK，金融/真实gold/G3/F05/L03/TH-IN原门不动。
+
 **本批实际Git回执（2026-10-09，覆盖上文“尚待IQS最后Git”）：** IQS证据交付`c5562157815a9dd886b52a1d5d7cfacf344dc0c4`已推送；1384变化/1379 raw工件及index staged/committed核对一致，4578旧tracked工件不变。其后仅补实际Git日志/receipt及PWF，不改变受审软件或冻结索引。StockWiki当前只读c40de21、clean，四待授权文件相对d253fea未变；用户四路径/唯一writer问题已发出，未答前不写。StockQA源码bc41908及清理已完成，无活测试/Git handle，不把等待问题当活进程。下一汇合JR1/JR3＋联合ACK；全部金融/真实gold/规模及TH-IN门保持。
 
 **2026-10-09 MCP接线最新，优先于下方历史：** 唯一下一动作是真正OS子进程CLI冷暖/中断恢复（MCP四HTTP→LLM→公共输出），再完整Phase111同一大节点静态/回归/一次集中独审/源发布/严格清理。38路径报备、37当前执行文件，private schema13未发布，生产StockQA42a517c/schema8及原七未知项不动。读[MCP实际接口](reviews/QA-NET-01/external-context-2026-10-09/mcp-interface.md)。控制/REST两文件55P；六文件397P/1F中MCP47项全通过，唯一旧未实现断言只改测试后1P，产品源码不变，不合成一次398P。旧真实协议/工具名与文档不同，两已知值显式支持；真实schema决定query-only调用，不猜count。三控制每HTTP独立入Q09，最终search绑定实际记录；unknown不重发、session不公开、SSE及时关闭、nested tool error不作证据。原失败/旧01–08保持，所有测试终态，无活handle。新checkpoint09仅IQS私有进度，实际Git看progress；仍缺OS子进程、完整集中验收及源发布，不清runs/n111a，不盲跑旧helpers。StockWiki四路径许可/G3/F05/L03/真实gold/TH-IN保持，不刷新退役回执或启动200家。
