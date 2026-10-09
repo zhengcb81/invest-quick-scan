@@ -1808,3 +1808,6 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - Phase111最终IQS归档已实际提交推送c556215：1384变化，1379 raw工件及index Git byte核对一致；4578历史tracked工件未变。StockWiki当前c40de21且clean，JR1/JR3四路径与d253fea相同，不因为后续UI提交猜测这些缺陷已修复。四路径许可待用户回答，公开搜索手册的旧“外部生产adapter未实现”文字需按bc41908有限交付同步，真实互通/收费授权/金融准确性仍分开披露。
 
 - 软件发布日期与服务探针日期不能混写：inventory1.2的as_of更新软件状态，同时保留各历史探针/会话观察日期，ZAI晚期REST429/error1113与MCP成功分开记。清单仍不由dispatcher读取，provider_order=null、有效配置/模板与预算/模型顺位均不改；HTTP替身验收不能刷新供应商健康或收费权益。三个搜索手册同步只是本地发布说明，不新增投资准确率结论或关闭StockWiki联合验收。
+
+- 2026-10-09联合输入重核：公开StockQA begin前已要求持久consumer binding，旧联合driver未做，不能盲跑旧测试并回退生产验证。准备的新薄adapter先从合成接收工作区真实store_id取得目标，再调用公开binding API，source_ref含独立描述SHA，完全不从incoming ACK推断。该描述仅测试fixture，不是新的生产owner端点或真实identity/facts/query golden。
+- 只读freeze实际锁定QA bc41908/SW c40de21共12固定Git文件、真实AST签名、六内部原依赖及四新文件；SW四候选与d253fea保持一致。准备观察与未来修复后的执行锁分开且不可覆写，AST/文档核查通过不能声称运行时适配器或联合ACK已通过。授权未答是人类边界，不是存活进程或默认许可；后续按原JR1/JR3卡一次集中联调，不增逐helper审查。

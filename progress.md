@@ -2575,3 +2575,13 @@
 - 文档同步轻量核查实际exit0：inventory JSON合法、26个内部手册链接存在、参考provider_order仍null、非执行模板/原模型连接profile的JSON和Git变更均不变；frozen final-delivery-index原字节不变，付费请求0。首核查错误地要求未修改profile的Windows CRLF与Git LF原字节相等而失败，改为正面比较规范EOL/JSON并git diff exit0，未修改profile。后补日志patch误写锚点从/原被拒且零写，改按当前文件明确追加；这些是文档控制诊断，不是产品/金融测试失败。只交这8件本地文档/参考数据，不追加测试或独审小节点。
 
 - 搜索规范同步正常Git原3b12ff实际exit0：92b0fd0f6af49c51f654649d57c895ce4fa93265已推送，8件精确变化、远端HEAD一致、工作树仅原opencode未跟踪，旧owned root不存在；没有改变受审软件/冻结index或原生模型策略，也没有收费API。当前只补本实际回执与单一下一步PWF；StockWiki四路径授权未答，其他门保持。完整目标仍active，本轮不是全项目完成。
+
+## 2026-10-09 — 新版联合输入与测试适配准备
+
+- 上一目标/用户进度回合仅只读说明，不算新增实施或verified wait。本回合完成已有IQS准备：旧联合驱动begin缺新版事前consumer binding，不能直接重跑并把拒绝算成ACK错误；原驱动、固定schema、旧日志和已删运行根保持。
+- 新 `joint-2026-10-09-rebase` 中qa/sw薄测试适配器只补接收工作区store_id描述与公开bind调用，描述带synthetic标记和source SHA，取得目标在ACK前；已补操作白名单及包/release/ACK的owned-root路径约束。README明确权限、隔离根、完整非秘密依赖锁、真实CLI顺序、原ACK全状态/历史兼容/严格JSON/零重复HTTP正反例与清理；不是生产客户端或真实identity/facts/query golden。
+- `freeze_inputs.py` 实际55d3a0 exit0（实际Python argv为 `python -B -X utf8 C:\Users\郑曾波\Projects\invest-quick-scan\docs\implementation\reviews\G3\joint-2026-10-09-rebase\freeze_inputs.py`，原stdout/stderr已保留），固定12外仓Git文件及当前签名，QA bc41908/master原7未知项、SW c40de21/master/clean前后相同，SW四候选与d253fea原字节相同；六原内部依赖Git/工作树原字节一致。`inputs-01.json` 记录真实观察时点/HEAD，明确prepared_not_executed/tests_passed=null/joint_ACK_closed=false，不能覆盖成修复后执行锁。
+- 本地字节/AST/链接核查22accd实际exit0：4新文件＋6旧依赖SHA/大小一致，3 Python AST可解析、7 README本地链接有效。软件运行时测试0、收费请求0、源仓/真实库/名单写入0；不把语法/文档核查当软件或金融验收，不重复861/128/消费者或新增小节点独审。
+- 只读源Git默认sandbox访问被拒，按已有外仓读取授权提升后62df9c实际返回QA bc41908、SW c40de21/clean；无写。一次定位把publication/input猜在reviews下，Get-Content具名不存在，随后用既有intake原件核查，未修改旧证据。这些是本轮控制诊断，不是产品失败。
+- 下一实际跨仓步骤仍需人类答复StockWiki四文件/writer授权。未获许可不实施JR1/JR3、不调用付费API或运行旧固定根helpers；本轮IQS精确Git交付待实际回执，原opencode不读取/暂存/清理。全项目目标active，G3/F05/L03/金融/真实gold/TH-IN原门继续开放。
+- 首Git控制cb3120在已暂存11件之后、commit之前按原字节校验停止：Git会将freeze.stdout.log原CRLF归一成LF。原日志不改，只在本仓.gitattributes为这两个新日志加精确-text/CR规则；既有冻结目录和日志保持。接续先验证index只含本批11件，再加这一个属性文件，最终12路径字节与远端回执以实际后续Git为准；无测试失败、未重复运行freeze或新增审查。

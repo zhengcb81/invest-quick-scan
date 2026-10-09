@@ -1,0 +1,170 @@
+{
+  "schema": "joint-rebase-preparation/1.0.0",
+  "observed_on": "2026-10-09",
+  "observed_at_utc": "2026-10-09T16:51:08.273650+00:00",
+  "iqs_observed_head": "6e94f0f5519997e7a4f3fae8c006485654ae55bf",
+  "owners": {
+    "StockQAbyLLM": {
+      "head": "bc41908e4cdc44c13fefda97f3118e5434aed5f8",
+      "branch": "master",
+      "status": "?? .codegraph/\n?? .workbuddy-ai/\n?? nul\n?? pilot_runs/b2a_2026-10-03/\n?? pilot_runs/g2b_alphabet_2026-10-04/\n?? pilot_runs/l02_2026-10-04/\n?? progress_update.txt\n",
+      "files": [
+        {
+          "path": "src/utils/quick_scan_work_store.py",
+          "git_blob_bytes": 230565,
+          "git_blob_sha256": "3ad67286d6936ffbd86d6c68c3531be01c771e5bdfc10df2df53218a5d5a5d49",
+          "current_public_signatures": {
+            "bind_result_delivery_consumer": "self, work_item_id: str, consumer: dict, *, source_ref: str",
+            "begin_result_delivery": "self, work_item_id: str",
+            "apply_result_delivery_ack": "self, work_item_id: str, ack: dict"
+          }
+        },
+        {
+          "path": "src/utils/quick_scan_result_outbox.py",
+          "git_blob_bytes": 20032,
+          "git_blob_sha256": "f71b9aefae6381f7f75d8c10cdbdc2701b5849a806accc4cc6fa2dfc7315ee2e",
+          "current_public_signatures": {}
+        },
+        {
+          "path": "src/utils/quick_scan_delivery_seal.py",
+          "git_blob_bytes": 12569,
+          "git_blob_sha256": "c0a860bc47c91da6218cfc900aa715c61b8024bbd48cfe315d5aaac26cae3dc2",
+          "current_public_signatures": {}
+        },
+        {
+          "path": "src/utils/quick_scan_observation_context.py",
+          "git_blob_bytes": 22527,
+          "git_blob_sha256": "8780ee2a04c32faa6ab1168e32943c18f8d2eaa2b9040747229e58e4a07bd812",
+          "current_public_signatures": {}
+        },
+        {
+          "path": "tests/integration/test_qa_c06_02_subprocess_cli.py",
+          "git_blob_bytes": 20015,
+          "git_blob_sha256": "bdb0483a1147649fc05726e962515c02f838b2e33f78b92e2d9e73512cb41e24",
+          "current_public_signatures": {}
+        },
+        {
+          "path": "tests/fixtures/quick_scan_c06_manifest_v2_fixture.json",
+          "git_blob_bytes": 447253,
+          "git_blob_sha256": "73853233364ea3cb019d02b13cd774f1cbaa3f6e3c671b891b37ae835271977d"
+        }
+      ],
+      "source_written": false
+    },
+    "StockWiki": {
+      "head": "c40de21403720306ba21edbf71b9634a40ee58f8",
+      "branch": "master",
+      "status": "",
+      "files": [
+        {
+          "path": "stockwiki/quick_scan_import.py",
+          "git_blob_bytes": 24477,
+          "git_blob_sha256": "87c77921428cb52239f0276a647198aeb3988954f07b4debb468a1a1237dfa56",
+          "current_public_signatures": {},
+          "unchanged_from_previous_joint_baseline": true
+        },
+        {
+          "path": "stockwiki/quick_scan_observations.py",
+          "git_blob_bytes": 23304,
+          "git_blob_sha256": "c06f4c58ea5557ab678721f78c5a14d595c26fef5fb1e55843382be956866691",
+          "current_public_signatures": {
+            "store_id": "self",
+            "ack_for": "self, package_id: str, item_id: str"
+          },
+          "unchanged_from_previous_joint_baseline": true
+        },
+        {
+          "path": "tests/test_quick_scan_observations.py",
+          "git_blob_bytes": 39494,
+          "git_blob_sha256": "b5a83507fdf8eb5d119eae8f244fc1860909af4390e5d6c45df1ca143eb2e297",
+          "current_public_signatures": {},
+          "unchanged_from_previous_joint_baseline": true
+        },
+        {
+          "path": "tests/test_quick_scan_delivery.py",
+          "git_blob_bytes": 12930,
+          "git_blob_sha256": "83590abb5801c343f409a7c7f291784919f979c8644533ec189867a1c6fc037e",
+          "current_public_signatures": {},
+          "unchanged_from_previous_joint_baseline": true
+        },
+        {
+          "path": "stockwiki/cli.py",
+          "git_blob_bytes": 708,
+          "git_blob_sha256": "872dd5f810cd7f3a3a7c0ad9d30e5259dd8cddc855d639534805510adb44cde2",
+          "current_public_signatures": {}
+        },
+        {
+          "path": "stockwiki/paths.py",
+          "git_blob_bytes": 2386,
+          "git_blob_sha256": "7d6ce107efe77681b5afe4d7aa39ffec075eb5fb0e474b0c1ee28b9cf2914b3d",
+          "current_public_signatures": {}
+        }
+      ],
+      "source_written": false
+    }
+  },
+  "fixed_internal_dependencies": [
+    {
+      "path": "schemas/quick_scan/exchange.schema.json",
+      "bytes": 6965,
+      "sha256": "efdf0e3427d1bbb73892e9573fbf3b1f0389218e3f5a0c8dff4ca0cd63764122"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/joint-2026-10-08/qa_driver.py",
+      "bytes": 8292,
+      "sha256": "4cc110605f60b2014fade051493cd3f8e7df944bac1d9a34b99ce2a4eb94466c"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/joint-2026-10-08/sw_driver.py",
+      "bytes": 3679,
+      "sha256": "9c7c0bab6b131ecda0ef40e0657c70044594eb7b729ef5ed547408cb7340d8e4"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/joint-2026-10-08/remediation.md",
+      "bytes": 8114,
+      "sha256": "532959877789c90d1f601ef6121e83dac233a50f14fc39762f49a44fd68e7af1"
+    },
+    {
+      "path": "docs/implementation/reviews/QA-C06-02/second-remediation-2026-10-08/sitecustomize.py",
+      "bytes": 3697,
+      "sha256": "696dfeecfc0aedc0732a3677faafa97c539cb3aaf12a04303359b109089d3858"
+    },
+    {
+      "path": "docs/implementation/intake/SW-REPAIR-02/2026-10-08-sr02-4b/verification/llm_providers.inert.yaml",
+      "bytes": 14,
+      "sha256": "76ade74b72b7b86ba56b4a8fbaa909a367d33f4ba6ec9f9667f840c72418477b"
+    }
+  ],
+  "new_test_adapters": [
+    {
+      "path": "qa_actor.py",
+      "bytes": 3213,
+      "sha256": "4fb6ddc06b24f05798428fc640e2ceb09b94cd720005681ea58d658a86c30c66"
+    },
+    {
+      "path": "sw_actor.py",
+      "bytes": 1725,
+      "sha256": "799ae60bb126c8fbc33cfea4643d240cc4d5ffca8823066aa1babca3e4083dcf"
+    },
+    {
+      "path": "freeze_inputs.py",
+      "bytes": 5650,
+      "sha256": "a97cfab1b5fbd5d9ad85e31fa601125d5eb772c720cb1fc719befbcb9bf598f9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 9252,
+      "sha256": "0c4a6b975ef88b89fc6aab2b4e8797c09a1ce30653cbaf11e72bad2675b0c7f6"
+    }
+  ],
+  "execution_status": "prepared_not_executed",
+  "StockWiki_write_authorization": "pending_human_answer",
+  "fixture_is_real_owner_golden": false,
+  "new_public_CLI_capability": false,
+  "tests_passed": null,
+  "joint_ACK_closed": false,
+  "whole_project_gates_closed": false,
+  "production_DBs_read_or_written": false,
+  "real_API_calls": 0,
+  "next": "After exact StockWiki authorization/fix, create a NEW input lock and guarded runtime; never run old fixed-root helpers"
+}
