@@ -2416,3 +2416,4 @@
 - context-adjacent-green-01原35833终态exit0：246P/18.39s（controller19.037s），六相关文件/执行源不变。随后shared-owner-red-01实证1F/79deselected/1.56s（controller2.268s）：把整个公司search policy SHA放预算版本，会在第二家公司进入时触发真实Q09 active policy冲突；不是跨公司密钥或额度问题。改为只绑定模型预算和搜索路由/dispatch/计价，query/entity/manifest由各自journal绑定。
 - shared-owner-green-01原62647终态exit0：247P/20.94s（controller21.526s），失败/错误/跳过0、执行源不变；同一真实SQLite预算可同时接两家公司不同冻结计划，原现金/请求上限不扩大、费用不重置。原所有RED/96P4F夹具诊断保留。读取source-snapshot诊断误以为dict、实际list导致AttributeError，未写入；按list结构核对即可，非产品失败。
 - 本轮没有StockQA源发布、付费API或整Phase111验收；接续REST调度→实际LLM上下文和来源proof/MCP/公开CLI，同一个完整批次结束才集中review、正常源Git与严格自有根清理。当前全部测试handle终态，runs/n111a继续保留，不用旧checkpoint.py或清理其他进程的文件。
+- 本轮checkpoint02已实际正常提交并推送`537a174a7c024a59dbe0b6159660df77a1cabd40`：357精确IQS路径，351归档/控制器与index02的staged/committed原字节均核对，11批原始执行、118非写范围支持文件不变。prepare原39044、Git原72340均终态exit0；origin/master与HEAD一致，仅原opencode未跟踪。StockQA仍42a517c/原七条，未发布本批源代码；旧index01原字节核对、未覆写。随后仅补本PWF实际回执提交，私有环境与完整生产接线继续，未关闭其他门。
