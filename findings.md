@@ -1733,3 +1733,10 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 检索journal导入共享providers parser必须延后：providers包初始化依赖transport/store，pytest父进程先导入providers会掩盖循环，两个真实OS crash/race子进程才暴露。应保持独立store启动与准确旧schema夹具，不能为通过新迁移删掉schema严格检查。新journal本身22实例GREEN仍不证明多题共享搜索、总保存cap或回答/公开CLI接线。
 
 - 检索缓存应以固定身份/范围、manifest、查询计划、搜索策略/adapter及预算owner绑定；不能以单题work_item_id造成同一冻结查询重复收费。结果仍留原owner、原retrieval时间与费用，不伪成新搜索。公司保存cap由同事务累计各查询实际保存的条目/元数据字符，HTTP/原短receipt只保留hash，截断不改变实际HTTP费用或provider返回条数。四实证RED→GREEN完成；真实adapter已消费此journal的单次许可，仍需后续context-use proof与公开CLI验证。
+
+- v1.1显式执行计划绑定entity/identity snapshot、题目manifest、cutoff、域名或发行人路径凭证和查询题篮；旧1.0 schema保留。搜索路由只加入共享Q09计费投影，不能进入回答模型cascade顺位；同名route/group冲突、币种不一致及超单次成本上界必须早拒，不扩大原全局额度。失败请求不能因confirmed rejection便按0结算。
+- Tavily官方Search API说明支持`include_usage`，响应`usage.credits`与body `request_id`；来源：https://docs.tavily.com/documentation/api-reference/endpoint/search。下一步按实际返回单位计价，缺usage保持未知，不能以配置最大单位当实际费用。该文档阅读不等于真实计费认证，没有发收费API。
+- v1.1不能只核journal与请求参数自洽，还必须核journal plan属于实际加载的冻结执行计划；否则调用者可用正确policy SHA包装未经批准query。真实HTTP前反例已RED。实际超verified单位仍按返回值计费，但停止context复用；缺usage不假定免费，也不为报错自动补发。
+- 上下文需要生产者独立冻结的manifest SHA作为必填参数，不从search policy自称的版本推定；真实Q09费用也重新对冻结外部计价核对。来源日期接受明确ISO/RFC含时区格式，拒绝仅截前十字符伪日期；来源host/path和检索时间逐条保留，snippet始终是不可信数据，提供来源不等于自动证明答案准确。
+- 缓存去掉单题ID是共享查询所需，但去掉扫描generation会使新轮永远命中过期唯一键；本批私有9反例已实证。采用同轮共享、明确新轮新操作/原费用不重置，发送未知跨轮仍保持阻断。正常近期跳过由上层刷新规划决定，不能靠把旧retrieved_at改成当前时间。相同冻结query不同ID应合并题篮，不能双收费。
+- 多公司并行不能将含entity/query/manifest的整个search policy SHA用于共享预算版本，否则Q09会在另一家公司费用在途时拒绝换版。真实两公司同库RED已复现；预算版本只绑原模型预算及外部route/dispatch/计价，检索意图独立绑完整search policy SHA。两条轴分开，但仍同一费用owner/计数器，未增加第二账本或额度。

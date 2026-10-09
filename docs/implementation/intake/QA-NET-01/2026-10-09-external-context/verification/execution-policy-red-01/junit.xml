@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="15" skipped="0" tests="25" time="2.030" timestamp="2026-10-09T05:06:23.377779+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_frozen_plan_is_valid_but_does_not_claim_an_unwired_dispatcher" time="0.009"><failure message="ImportError: cannot import name 'execution_query_plans' from 'src.config.quick_scan_search_policy' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_v11_frozen_plan_is_valid_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A302DF30&gt;
+
+    def test_v11_frozen_plan_is_valid_but_does_not_claim_an_unwired_dispatcher(tmp_path, monkeypatch):
+&gt;       from src.config.quick_scan_search_policy import execution_query_plans, policy_receipt
+E       ImportError: cannot import name 'execution_query_plans' from 'src.config.quick_scan_search_policy' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py)
+
+tests\unit\test_quick_scan_external_context.py:446: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;0]" time="0.021" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;1]" time="0.022" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;2]" time="0.023" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;3]" time="0.024" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;4]" time="0.023" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;5]" time="0.022" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;6]" time="0.022" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;7]" time="0.025" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;8]" time="0.030" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_invalid_execution_plan_is_rejected_before_any_store[&lt;lambda&gt;9]" time="0.024" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_route_without_provable_price_or_protocol_is_not_admitted[&lt;lambda&gt;0]" time="0.027"><failure message="src.config.quick_scan_search_policy.SearchPolicyRejected: policy_field_set">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_v11_route_without_provabl0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A306DF30&gt;
+mutation = &lt;function &lt;lambda&gt; at 0x00000274A30D47C0&gt;
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["external_routes"][0]["metering"].update(source_ref="   "),
+        lambda d: d["external_routes"][0]["metering"].update(pricing_ref="   "),
+        lambda d: d["external_routes"][0]["pricing"].update(unit_cost_micros=None),
+        lambda d: d["external_routes"][0].update(endpoint="https://another.example/search"),
+    ])
+    def test_v11_route_without_provable_price_or_protocol_is_not_admitted(tmp_path, monkeypatch, mutation):
+&gt;       policy = _execution_policy(tmp_path, monkeypatch, mutation)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:485: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_external_context.py:442: in _execution_policy
+    return load_search_policy(path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+src\config\quick_scan_search_policy.py:293: in load_search_policy
+    _validate_shape(document)
+src\config\quick_scan_search_policy.py:112: in _validate_shape
+    _require(set(document) &lt;= required | {"source_reference"}, "policy_field_set")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'policy_field_set'
+
+    def _require(condition: bool, reason: str) -&gt; None:
+        if not condition:
+&gt;           raise SearchPolicyRejected(reason)
+E           src.config.quick_scan_search_policy.SearchPolicyRejected: policy_field_set
+
+src\config\quick_scan_search_policy.py:47: SearchPolicyRejected</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_route_without_provable_price_or_protocol_is_not_admitted[&lt;lambda&gt;1]" time="0.024"><failure message="src.config.quick_scan_search_policy.SearchPolicyRejected: policy_field_set">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_v11_route_without_provabl1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A1D9E690&gt;
+mutation = &lt;function &lt;lambda&gt; at 0x00000274A30D4860&gt;
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["external_routes"][0]["metering"].update(source_ref="   "),
+        lambda d: d["external_routes"][0]["metering"].update(pricing_ref="   "),
+        lambda d: d["external_routes"][0]["pricing"].update(unit_cost_micros=None),
+        lambda d: d["external_routes"][0].update(endpoint="https://another.example/search"),
+    ])
+    def test_v11_route_without_provable_price_or_protocol_is_not_admitted(tmp_path, monkeypatch, mutation):
+&gt;       policy = _execution_policy(tmp_path, monkeypatch, mutation)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:485: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_external_context.py:442: in _execution_policy
+    return load_search_policy(path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+src\config\quick_scan_search_policy.py:293: in load_search_policy
+    _validate_shape(document)
+src\config\quick_scan_search_policy.py:112: in _validate_shape
+    _require(set(document) &lt;= required | {"source_reference"}, "policy_field_set")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'policy_field_set'
+
+    def _require(condition: bool, reason: str) -&gt; None:
+        if not condition:
+&gt;           raise SearchPolicyRejected(reason)
+E           src.config.quick_scan_search_policy.SearchPolicyRejected: policy_field_set
+
+src\config\quick_scan_search_policy.py:47: SearchPolicyRejected</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_route_without_provable_price_or_protocol_is_not_admitted[&lt;lambda&gt;2]" time="0.021"><failure message="src.config.quick_scan_search_policy.SearchPolicyRejected: policy_field_set">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_v11_route_without_provabl2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A3C71E50&gt;
+mutation = &lt;function &lt;lambda&gt; at 0x00000274A30D4900&gt;
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["external_routes"][0]["metering"].update(source_ref="   "),
+        lambda d: d["external_routes"][0]["metering"].update(pricing_ref="   "),
+        lambda d: d["external_routes"][0]["pricing"].update(unit_cost_micros=None),
+        lambda d: d["external_routes"][0].update(endpoint="https://another.example/search"),
+    ])
+    def test_v11_route_without_provable_price_or_protocol_is_not_admitted(tmp_path, monkeypatch, mutation):
+&gt;       policy = _execution_policy(tmp_path, monkeypatch, mutation)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:485: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_external_context.py:442: in _execution_policy
+    return load_search_policy(path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+src\config\quick_scan_search_policy.py:293: in load_search_policy
+    _validate_shape(document)
+src\config\quick_scan_search_policy.py:112: in _validate_shape
+    _require(set(document) &lt;= required | {"source_reference"}, "policy_field_set")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'policy_field_set'
+
+    def _require(condition: bool, reason: str) -&gt; None:
+        if not condition:
+&gt;           raise SearchPolicyRejected(reason)
+E           src.config.quick_scan_search_policy.SearchPolicyRejected: policy_field_set
+
+src\config\quick_scan_search_policy.py:47: SearchPolicyRejected</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_route_without_provable_price_or_protocol_is_not_admitted[&lt;lambda&gt;3]" time="0.023"><failure message="src.config.quick_scan_search_policy.SearchPolicyRejected: policy_field_set">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_v11_route_without_provabl3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A3BD07E0&gt;
+mutation = &lt;function &lt;lambda&gt; at 0x00000274A30D49A0&gt;
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["external_routes"][0]["metering"].update(source_ref="   "),
+        lambda d: d["external_routes"][0]["metering"].update(pricing_ref="   "),
+        lambda d: d["external_routes"][0]["pricing"].update(unit_cost_micros=None),
+        lambda d: d["external_routes"][0].update(endpoint="https://another.example/search"),
+    ])
+    def test_v11_route_without_provable_price_or_protocol_is_not_admitted(tmp_path, monkeypatch, mutation):
+&gt;       policy = _execution_policy(tmp_path, monkeypatch, mutation)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:485: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_external_context.py:442: in _execution_policy
+    return load_search_policy(path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+src\config\quick_scan_search_policy.py:293: in load_search_policy
+    _validate_shape(document)
+src\config\quick_scan_search_policy.py:112: in _validate_shape
+    _require(set(document) &lt;= required | {"source_reference"}, "policy_field_set")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'policy_field_set'
+
+    def _require(condition: bool, reason: str) -&gt; None:
+        if not condition:
+&gt;           raise SearchPolicyRejected(reason)
+E           src.config.quick_scan_search_policy.SearchPolicyRejected: policy_field_set
+
+src\config\quick_scan_search_policy.py:47: SearchPolicyRejected</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_shared_budget_adds_search_without_mutating_answer_model_priority" time="0.006"><failure message="ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_shared_budget_adds_search0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A3BD1020&gt;
+
+    def test_shared_budget_adds_search_without_mutating_answer_model_priority(tmp_path, monkeypatch):
+&gt;       from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+E       ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'
+
+tests\unit\test_quick_scan_external_context.py:490: ModuleNotFoundError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_shared_budget_refuses_id_currency_cost_or_group_ambiguity[&lt;lambda&gt;0]" time="0.005"><failure message="ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_shared_budget_refuses_id_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A30CACB0&gt;
+mutation = &lt;function &lt;lambda&gt; at 0x00000274A30D4B80&gt;
+
+    @pytest.mark.parametrize("mutation", [
+        lambda m: m["routes"][0].update(id="brave-primary"),
+        lambda m: m["budget"].update(currency="CNY"),
+        lambda m: m["budget"].update(max_cost_per_attempt=0.001),
+        lambda m: m["quota_groups"].append({"id": "search-brave", "max_in_flight": 1}),
+    ])
+    def test_shared_budget_refuses_id_currency_cost_or_group_ambiguity(tmp_path, monkeypatch, mutation):
+&gt;       from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+E       ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'
+
+tests\unit\test_quick_scan_external_context.py:513: ModuleNotFoundError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_shared_budget_refuses_id_currency_cost_or_group_ambiguity[&lt;lambda&gt;1]" time="0.005"><failure message="ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_shared_budget_refuses_id_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A30CB1B0&gt;
+mutation = &lt;function &lt;lambda&gt; at 0x00000274A30D4C20&gt;
+
+    @pytest.mark.parametrize("mutation", [
+        lambda m: m["routes"][0].update(id="brave-primary"),
+        lambda m: m["budget"].update(currency="CNY"),
+        lambda m: m["budget"].update(max_cost_per_attempt=0.001),
+        lambda m: m["quota_groups"].append({"id": "search-brave", "max_in_flight": 1}),
+    ])
+    def test_shared_budget_refuses_id_currency_cost_or_group_ambiguity(tmp_path, monkeypatch, mutation):
+&gt;       from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+E       ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'
+
+tests\unit\test_quick_scan_external_context.py:513: ModuleNotFoundError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_shared_budget_refuses_id_currency_cost_or_group_ambiguity[&lt;lambda&gt;2]" time="0.006"><failure message="ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_shared_budget_refuses_id_2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A3C2E4E0&gt;
+mutation = &lt;function &lt;lambda&gt; at 0x00000274A30D4CC0&gt;
+
+    @pytest.mark.parametrize("mutation", [
+        lambda m: m["routes"][0].update(id="brave-primary"),
+        lambda m: m["budget"].update(currency="CNY"),
+        lambda m: m["budget"].update(max_cost_per_attempt=0.001),
+        lambda m: m["quota_groups"].append({"id": "search-brave", "max_in_flight": 1}),
+    ])
+    def test_shared_budget_refuses_id_currency_cost_or_group_ambiguity(tmp_path, monkeypatch, mutation):
+&gt;       from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+E       ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'
+
+tests\unit\test_quick_scan_external_context.py:513: ModuleNotFoundError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_shared_budget_refuses_id_currency_cost_or_group_ambiguity[&lt;lambda&gt;3]" time="0.005"><failure message="ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_shared_budget_refuses_id_3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A36FA350&gt;
+mutation = &lt;function &lt;lambda&gt; at 0x00000274A30D4D60&gt;
+
+    @pytest.mark.parametrize("mutation", [
+        lambda m: m["routes"][0].update(id="brave-primary"),
+        lambda m: m["budget"].update(currency="CNY"),
+        lambda m: m["budget"].update(max_cost_per_attempt=0.001),
+        lambda m: m["quota_groups"].append({"id": "search-brave", "max_in_flight": 1}),
+    ])
+    def test_shared_budget_refuses_id_currency_cost_or_group_ambiguity(tmp_path, monkeypatch, mutation):
+&gt;       from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+E       ModuleNotFoundError: No module named 'src.utils.quick_scan_external_context'
+
+tests\unit\test_quick_scan_external_context.py:513: ModuleNotFoundError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_policy_mutation_after_admission_cannot_change_execution_or_prices" time="0.005"><failure message="ImportError: cannot import name 'execution_query_plans' from 'src.config.quick_scan_search_policy' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_policy_mutation_after_adm0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A36F8450&gt;
+
+    def test_policy_mutation_after_admission_cannot_change_execution_or_prices(tmp_path, monkeypatch):
+&gt;       from src.config.quick_scan_search_policy import execution_query_plans
+E       ImportError: cannot import name 'execution_query_plans' from 'src.config.quick_scan_search_policy' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py)
+
+tests\unit\test_quick_scan_external_context.py:523: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_all_http_requests_price_keeps_rejected_request_cost_nonzero" time="0.009"><failure message="ImportError: cannot import name 'ExternalSearchCostResolver' from 'src.utils.quick_scan_cost_resolver' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_cost_resolver.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_all_http_requests_price_k0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A3AE55C0&gt;
+
+    def test_all_http_requests_price_keeps_rejected_request_cost_nonzero(tmp_path, monkeypatch):
+&gt;       from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+E       ImportError: cannot import name 'ExternalSearchCostResolver' from 'src.utils.quick_scan_cost_resolver' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_cost_resolver.py)
+
+tests\unit\test_quick_scan_external_context.py:536: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_success_only_pricing_needs_explicit_rejected_charge_and_received_result" time="0.005"><failure message="ImportError: cannot import name 'ExternalSearchCostResolver' from 'src.utils.quick_scan_cost_resolver' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_cost_resolver.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_success_only_pricing_need0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A3AE6040&gt;
+
+    def test_success_only_pricing_needs_explicit_rejected_charge_and_received_result(tmp_path, monkeypatch):
+&gt;       from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+E       ImportError: cannot import name 'ExternalSearchCostResolver' from 'src.utils.quick_scan_cost_resolver' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_cost_resolver.py)
+
+tests\unit\test_quick_scan_external_context.py:546: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_provider_usage_pricing_uses_only_observed_units_and_exact_decimals" time="0.004"><failure message="ImportError: cannot import name 'ExternalSearchCostResolver' from 'src.utils.quick_scan_cost_resolver' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_cost_resolver.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_provider_usage_pricing_us0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A3AE5860&gt;
+
+    def test_provider_usage_pricing_uses_only_observed_units_and_exact_decimals(tmp_path, monkeypatch):
+&gt;       from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+E       ImportError: cannot import name 'ExternalSearchCostResolver' from 'src.utils.quick_scan_cost_resolver' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_cost_resolver.py)
+
+tests\unit\test_quick_scan_external_context.py:563: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_v11_search_and_answer_reservations_use_the_same_real_budget_ledger" time="0.005"><failure message="ImportError: cannot import name 'execution_query_plans' from 'src.config.quick_scan_search_policy' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/execution-policy-red-01/test_v11_search_and_answer_res0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000274A3AE6C80&gt;
+
+    def test_v11_search_and_answer_reservations_use_the_same_real_budget_ledger(tmp_path, monkeypatch):
+&gt;       from src.config.quick_scan_search_policy import execution_query_plans
+E       ImportError: cannot import name 'execution_query_plans' from 'src.config.quick_scan_search_policy' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\config\quick_scan_search_policy.py)
+
+tests\unit\test_quick_scan_external_context.py:577: ImportError</failure></testcase></testsuite></testsuites>

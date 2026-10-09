@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前下一动作（2026-10-09 Phase111）**：以TDD实现版本化v1.1外部检索执行配置和已验证计价投影，接入已有检索journal，再推进context→LLM与checkpoint来源proof/公开CLI。输入42a517c、精确范围和私有耐久/缓存/HTTP单次许可已固定，159与82相关回归通过；不要重复已完成基础或提前发布。本批完整生产链仍未验收，尚需MCP/两阶段恢复、最终受影响批次和一次集中审查。原生路径/Q10不重做。StockQA按旧全仓授权先报备；StockWiki JR1/JR3四新路径仍未获授权，G3/L03/F05/真实identity与facts golden/THIN授权仍缺；收到其确切许可或owner交付后再做联合回验。缺计价/存储权的真实external route与未验证DeepSeek续写继续拒发，不启动收费API或200家live，不刷新退役工程回执。
+**当前下一动作（2026-10-09 Phase111）**：接外部检索调度与既有LLM回答路径，绑定实际prompt/attempt的独立context-use proof，并覆盖跨两阶段恢复与公开CLI。v1.1冻结查询/计价、共享Q09预算投影、实际Tavily用量与短上下文已在私有副本完成本批247相关回归；不相加此前批次计独立覆盖率，不重做已通过基础或提前发布。预算版本仅绑定共享模型预算/检索路由与计价，不能因不同公司查询而互相fence；同轮共用查询，新轮可刷新，未知发送跨轮仍不得重发。完整生产链尚需MCP/两阶段恢复、受影响最终批次和一次集中审查，原生/Q10不重做。StockQA按旧全仓授权先报备；StockWiki JR1/JR3四新路径、G3/L03/F05/真实identity/facts golden/THIN授权原门未齐，不启动收费API/200家live或刷新退役工程回执。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
@@ -1549,3 +1549,5 @@ Status: in_progress_private_implementation_not_published
 实施说明：docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/plan.md。
 
 - 本轮IQS进度/证据checkpoint已正常提交推送`6ee1abd68d91d358116ee3f6869fbaae94f5de12`：389精确路径，383工件和index的staged原字节核对通过，仅原opencode未跟踪保留。这是私有实施留档，不是StockQA生产交付、集中review或Phase111完成；独占runs/n111a仍需继续使用并最终严格清理。
+
+- 本次配置/计价/来源数据段已在私有副本实作，最终六受影响文件247P/20.94s；新轮刷新、逐query缺口和多公司共用预算有独立RED→GREEN。源仓仍42a517c/schema8，schema9/执行policy1.1仍私有；REST调度、回答proof、MCP和公开CLI尚未完成。新IQS留档checkpoint以progress真实Git回执为准；旧index01和原失败均不覆写，不添helper级审查。

@@ -2405,3 +2405,14 @@
 - IQS checkpoint首次Git控制器已完成389精准暂存、383工件与index staged原字节核对；diff检查exit1只报可编辑handoff末尾多空行，未commit/push。原归档/index/helper不变，只规范化handoff最终换行并记录这条工具报错；不是产品失败或测试重跑。接续正常Git结果仍待实际回执。
 
 - **Phase111本轮实际IQS checkpoint交付**：原resume session45649终态exit0；389精准路径正常提交`6ee1abd68d91d358116ee3f6869fbaae94f5de12`并push origin/master，两Git命令均0，工作树仅原opencode未跟踪。383冻结工件/index保持原staged SHA，首EOF失败工具输出未冒充raw归档，resume只规范化可编辑handoff尾部并记PWF。StockQA源/所有外仓未写或发布，生产仍schema8；私有schema9/full Phase111仍进行中，runs/n111a保留且当前无活跃测试/Git handle。后续只补本PWF实际回执，不改变本轮冻结工件或关闭G3/F05/THIN。
+
+- 后续PWF实际回执提交为`4f66454598abaa73cee4e091cf32536dd4412704`，本次git log已核实；不重写原checkpoint索引。上一goal实际新增配置/计价TDD，属于progress；其后heartbeat仅只读查门，不是实施续跑。三外仓HEAD保持d253fea/3c9a49c/4a80f99且clean，G3/F05/真实gold/THIN写授权仍缺，无开工通知。只读git沙箱拒绝经原授权提升核实；两个猜测目录schemas/receipts不存在，只属读取错误，不创建或修改外仓。
+- execution-policy-red-01已终态exit1/无timeout：15F、10P、39deselected，pytest2.15s/controller2.928s，执行源不变。新API缺失是主要RED；10个负例因旧实现整体拒绝1.1而通过，不能当成各新约束已独立验证。接续仅在runs/n111a私有副本实施已报备的1.1新schema、冻结计划、复用预算投影和外部计价；生产1.0 schema原字节保留，没有真实API或外仓发布。
+- execution-policy-green-01原62525终态exit0：六受影响文件224P/19.32s（controller20.009s），无失败/错误/跳过，执行源不变。新1.1 schema已生成，旧1.0 SHA e525f6dc…且原字节不变；共享Q09真实ledger搜索与模型合计requests=2，未改变原模型顺位或预算上限。配置ready仍不声称production dispatch完成。
+- provider-usage-red-01实际7F/13deselected/2.09s（controller2.832s）：实际Tavily credits/header与body request_id、缺/错units保留预留、冻结策略外自洽query及超上界实际计费/停复用尚缺。传输与journal正在同批接线；超上界缓存测试重用原store/lease，避免二次claim夹具误差，保留原失败。没有新增审查门或收费调用。
+- provider-usage-green-01实际96P/4F/6.14s（controller6.874s），四失败仅测试猜测旧Q09状态名unpriced，实际既有稳定名response_unpriced；不改产品状态或错误契约。测试按原Q09真实状态修正并加强reserved_micros仍6,000,000断言，真实cost仍null，没有放宽未知费用预留要求。
+- provider-usage-green-02实际100P/6.15s（controller6.89s），执行源不变。context-data-red-01为11F/64deselected/1.54s（controller2.271s），均新上下文API尚缺；随后私有接公司/题目/独立manifest、路径与严格日期、实际计费/来源hash/TTL，context-data-green-01原96889终态exit0，111P/6.97s（controller7.762s）。缓存复建不生成新retrieved_at，也不创建回答attempt；没有实际LLM或公开CLI接线。
+- context-adjacent-red-01实际4F/75deselected/2.06s（controller2.942s）：新轮仍命中过期cache、相同query换ID重复收费、all-HTTP与拒绝价格互相矛盾，以及缺逐query覆盖标记。均为实际已有私有实现的反例，不是collection失败；同批修正，旧schema9仍私有未发布，不宣称其原型数据库兼容为生产交付。
+- context-adjacent-green-01原35833终态exit0：246P/18.39s（controller19.037s），六相关文件/执行源不变。随后shared-owner-red-01实证1F/79deselected/1.56s（controller2.268s）：把整个公司search policy SHA放预算版本，会在第二家公司进入时触发真实Q09 active policy冲突；不是跨公司密钥或额度问题。改为只绑定模型预算和搜索路由/dispatch/计价，query/entity/manifest由各自journal绑定。
+- shared-owner-green-01原62647终态exit0：247P/20.94s（controller21.526s），失败/错误/跳过0、执行源不变；同一真实SQLite预算可同时接两家公司不同冻结计划，原现金/请求上限不扩大、费用不重置。原所有RED/96P4F夹具诊断保留。读取source-snapshot诊断误以为dict、实际list导致AttributeError，未写入；按list结构核对即可，非产品失败。
+- 本轮没有StockQA源发布、付费API或整Phase111验收；接续REST调度→实际LLM上下文和来源proof/MCP/公开CLI，同一个完整批次结束才集中review、正常源Git与严格自有根清理。当前全部测试handle终态，runs/n111a继续保留，不用旧checkpoint.py或清理其他进程的文件。

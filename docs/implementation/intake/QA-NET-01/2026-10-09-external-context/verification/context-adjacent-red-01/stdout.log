@@ -1,0 +1,106 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_new_scan_generation_can_refresh_expired_search_without_resetting_budget _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-adjacent-red-01/test_new_scan_generation_can_r0')
+
+    def test_new_scan_generation_can_refresh_expired_search_without_resetting_budget(tmp_path):
+        store, item, lease, clock = _journal(tmp_path)
+        plan = dict(_journal_plan(), ttl_seconds=5)
+        original = _begin_search(store, item, lease, plan=plan)
+        store.record_external_search(original["operation_id"], receipt=_search_receipt(original), actual_cost=Decimal("0.004"), cost_source_ref="synthetic-pricing/1")
+        clock[0] += 6
+        fresh = _created(store, generation=2)
+        fresh_lease = store.claim(fresh["work_item_id"], lease_seconds=60)
+>       renewed = _begin_search(store, fresh, fresh_lease, plan=plan)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:713: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_external_context.py:113: in _begin_search
+    operation = store.begin_external_search(item["work_item_id"], lease, **args)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1899: in begin_external_search
+    return begin(self, work_item_id, lease, policy=policy, plan=plan,
+src\utils\quick_scan_external_journal.py:351: in begin
+    _reusable(record, now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = {'operation_id': 'SEARCH_b197a1a0a0f784539e340d6a2eafa8c84552d5d1dbf4ad8d0aaf49ce8445ff82', 'cache_key': '46a28fdfdb76...d6faf9f9456ac30541d958f24692bad0c279dc2dee62766d260cb37', 'work_item_id': 'WORK_795cc12e43e54c55805f0ed1a1d63896', ...}
+now = 1800000006.0
+
+    def _reusable(record: dict, now: float) -> None:
+        from src.utils.quick_scan_work_store import BudgetAdmissionError
+        if record["budget"]["status"] != "settled" or record["result"] is None:
+            raise BudgetAdmissionError("external_search_unresolved")
+        result = record["result"]
+        receipt = result["receipt"]
+        if receipt.get("usage_status") == "exceeds_verified_bound":
+            raise BudgetAdmissionError("external_pricing_bound_exceeded")
+        if receipt["outcome"] != "response_available":
+            raise BudgetAdmissionError("external_search_failed")
+        if receipt["parse_status"] != "ok" or not receipt["entries"]:
+            raise BudgetAdmissionError("external_evidence_insufficient")
+        if now >= result["recorded_at"] + record["plan"]["ttl_seconds"]:
+>           raise BudgetAdmissionError("external_search_stale_generation_required")
+E           src.utils.quick_scan_work_store.BudgetAdmissionError: external_search_stale_generation_required
+
+src\utils\quick_scan_external_journal.py:327: BudgetAdmissionError
+_ test_one_identical_query_cannot_be_charged_twice_under_different_query_ids __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-adjacent-red-01/test_one_identical_query_canno0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A3BC70EEA0>
+
+    def test_one_identical_query_cannot_be_charged_twice_under_different_query_ids(tmp_path, monkeypatch):
+        def duplicate(document):
+            document["execution_plan"]["queries"].append(dict(document["execution_plan"]["queries"][0], query_id="another-id"))
+>       with pytest.raises(SearchPolicyRejected, match="duplicate.*query"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SearchPolicyRejected
+
+tests\unit\test_quick_scan_external_context.py:723: Failed
+__ test_all_http_metering_cannot_silently_ignore_a_different_rejection_price __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-adjacent-red-01/test_all_http_metering_cannot_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A3BE22ED70>
+
+    def test_all_http_metering_cannot_silently_ignore_a_different_rejection_price(tmp_path, monkeypatch):
+        policy = _execution_policy(tmp_path, monkeypatch,
+            lambda d: d["external_routes"][0]["metering"].update(rejected_request_cost_micros=0))
+>       assert not policy.admitted
+E       AssertionError: assert not ('brave-primary',)
+E        +  where ('brave-primary',) = SearchPolicy(policy_id='quick-scan-search-offline', schema_id='stockqa.quick_scan_search_policy/1.1.0', policy_sha256=...'}], 'queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}).admitted
+
+tests\unit\test_quick_scan_external_context.py:730: AssertionError
+_ test_context_reports_missing_query_evidence_and_does_not_claim_fact_verification _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-adjacent-red-01/test_context_reports_missing_q0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002A3BE340710>
+
+    def test_context_reports_missing_query_evidence_and_does_not_claim_fact_verification(tmp_path, monkeypatch):
+        from src.config.quick_scan_search_policy import execution_query_plans
+        from src.utils.quick_scan_external_context import build_external_question_context, build_shared_external_budget_policy
+        from tests.unit.test_quick_scan_budget import _policy as model_policy
+    
+        def extra_query(document):
+            document["execution_plan"]["queries"].append({"query_id": "cashflow", "query": "Synthetic issuer cash flow", "question_ids": ["IQS_05"], "top_k": 3})
+        store, item, lease, _, policy, first = _question_context_fixture(tmp_path, monkeypatch, policy_mutate=extra_query)
+        plan = execution_query_plans(policy)[1]
+        second = _begin_search(store, item, lease, plan=plan, policy=build_shared_external_budget_policy(model_policy(), policy),
+                              quota_group="search-brave", search_policy_sha256=policy.policy_sha256)
+        receipt = _search_receipt(second)
+        receipt["entries"][0].update(query=plan["query"], url="https://fixture.example/cashflow", published_at=None)
+        store.record_external_search(second["operation_id"], receipt=receipt, actual_cost=Decimal("0.003"), cost_source_ref="operator-synthetic-pricing/1")
+        context = build_external_question_context(store, item["work_item_id"], lease, policy,
+            [first["operation_id"], second["operation_id"]], question_manifest_sha256="d" * 64)
+>       assert context["query_coverage"] == {"required": ["margins", "cashflow"], "eligible": ["margins"], "missing": ["cashflow"]}
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'query_coverage'
+
+tests\unit\test_quick_scan_external_context.py:750: KeyError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_new_scan_generation_can_refresh_expired_search_without_resetting_budget
+FAILED tests/unit/test_quick_scan_external_context.py::test_one_identical_query_cannot_be_charged_twice_under_different_query_ids
+FAILED tests/unit/test_quick_scan_external_context.py::test_all_http_metering_cannot_silently_ignore_a_different_rejection_price
+FAILED tests/unit/test_quick_scan_external_context.py::test_context_reports_missing_query_evidence_and_does_not_claim_fact_verification
+4 failed, 75 deselected in 2.06s

@@ -1,0 +1,153 @@
+FFFFFFFFFFF                                                              [100%]
+================================== FAILURES ===================================
+_ test_question_context_is_short_bound_and_treats_commands_as_untrusted_data __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_question_context_is_short0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353C95A190>
+
+    def test_question_context_is_short_bound_and_treats_commands_as_untrusted_data(tmp_path, monkeypatch):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:612: ImportError
+_ test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context[entry0] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_wrong_issuer_or_unknowabl0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353AE1EEA0>
+entry = {'url': 'https://fixture.example.evil/ir'}
+
+    @pytest.mark.parametrize("entry", [
+        {"url": "https://fixture.example.evil/ir"},
+        {"published_at": "2026-10-09"},
+        {"published_at": None},
+        {"published_at": "2026-10-01not-a-date"},
+    ])
+    def test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context(tmp_path, monkeypatch, entry):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:634: ImportError
+_ test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context[entry1] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_wrong_issuer_or_unknowabl1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353CA32F90>
+entry = {'published_at': '2026-10-09'}
+
+    @pytest.mark.parametrize("entry", [
+        {"url": "https://fixture.example.evil/ir"},
+        {"published_at": "2026-10-09"},
+        {"published_at": None},
+        {"published_at": "2026-10-01not-a-date"},
+    ])
+    def test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context(tmp_path, monkeypatch, entry):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:634: ImportError
+_ test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context[entry2] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_wrong_issuer_or_unknowabl2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353C907790>
+entry = {'published_at': None}
+
+    @pytest.mark.parametrize("entry", [
+        {"url": "https://fixture.example.evil/ir"},
+        {"published_at": "2026-10-09"},
+        {"published_at": None},
+        {"published_at": "2026-10-01not-a-date"},
+    ])
+    def test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context(tmp_path, monkeypatch, entry):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:634: ImportError
+_ test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context[entry3] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_wrong_issuer_or_unknowabl3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353D7046B0>
+entry = {'published_at': '2026-10-01not-a-date'}
+
+    @pytest.mark.parametrize("entry", [
+        {"url": "https://fixture.example.evil/ir"},
+        {"published_at": "2026-10-09"},
+        {"published_at": None},
+        {"published_at": "2026-10-01not-a-date"},
+    ])
+    def test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context(tmp_path, monkeypatch, entry):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:634: ImportError
+____ test_shared_publisher_path_match_uses_path_segments_not_string_prefix ____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_shared_publisher_path_mat0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353D7BB750>
+
+    def test_shared_publisher_path_match_uses_path_segments_not_string_prefix(tmp_path, monkeypatch):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:643: ImportError
+___ test_actual_rfc_publication_date_is_normalized_without_inventing_a_date ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_actual_rfc_publication_da0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353D7BB950>
+
+    def test_actual_rfc_publication_date_is_normalized_without_inventing_a_date(tmp_path, monkeypatch):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:654: ImportError
+____ test_context_warm_rebuild_keeps_the_original_retrieval_time_and_hash _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_context_warm_rebuild_keep0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353D6364E0>
+
+    def test_context_warm_rebuild_keeps_the_original_retrieval_time_and_hash(tmp_path, monkeypatch):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:663: ImportError
+______ test_expired_retrieval_cannot_be_retimed_by_building_new_context _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_expired_retrieval_cannot_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353D636990>
+
+    def test_expired_retrieval_cannot_be_retimed_by_building_new_context(tmp_path, monkeypatch):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:675: ImportError
+____ test_context_rejects_wrong_frozen_policy_and_duplicate_operation_ids _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_context_rejects_wrong_fro0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353D6D8C90>
+
+    def test_context_rejects_wrong_frozen_policy_and_duplicate_operation_ids(tmp_path, monkeypatch):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:685: ImportError
+________ test_context_total_metadata_and_sources_share_the_company_cap ________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/context-data-red-01/test_context_total_metadata_an0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002353D6D97F0>
+
+    def test_context_total_metadata_and_sources_share_the_company_cap(tmp_path, monkeypatch):
+>       from src.utils.quick_scan_external_context import build_external_question_context
+E       ImportError: cannot import name 'build_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:696: ImportError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_question_context_is_short_bound_and_treats_commands_as_untrusted_data
+FAILED tests/unit/test_quick_scan_external_context.py::test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context[entry0]
+FAILED tests/unit/test_quick_scan_external_context.py::test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context[entry1]
+FAILED tests/unit/test_quick_scan_external_context.py::test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context[entry2]
+FAILED tests/unit/test_quick_scan_external_context.py::test_wrong_issuer_or_unknowable_publication_never_becomes_answer_context[entry3]
+FAILED tests/unit/test_quick_scan_external_context.py::test_shared_publisher_path_match_uses_path_segments_not_string_prefix
+FAILED tests/unit/test_quick_scan_external_context.py::test_actual_rfc_publication_date_is_normalized_without_inventing_a_date
+FAILED tests/unit/test_quick_scan_external_context.py::test_context_warm_rebuild_keeps_the_original_retrieval_time_and_hash
+FAILED tests/unit/test_quick_scan_external_context.py::test_expired_retrieval_cannot_be_retimed_by_building_new_context
+FAILED tests/unit/test_quick_scan_external_context.py::test_context_rejects_wrong_frozen_policy_and_duplicate_operation_ids
+FAILED tests/unit/test_quick_scan_external_context.py::test_context_total_metadata_and_sources_share_the_company_cap
+11 failed, 64 deselected in 1.54s

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.442" timestamp="2026-10-09T05:44:35.402761+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_two_company_plans_share_one_budget_version_and_admit_concurrently" time="0.183"><failure message="src.utils.quick_scan_work_store.BudgetPolicyConflict: policy version cannot change while attempts are active or unreconciled">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/shared-owner-red-01/test_two_company_plans_share_o0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001CC44222520&gt;
+
+    def test_two_company_plans_share_one_budget_version_and_admit_concurrently(tmp_path, monkeypatch):
+        from src.config.quick_scan_search_policy import execution_query_plans
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+        from tests.unit.test_quick_scan_budget import _policy as model_policy
+    
+        first_policy = _execution_policy(tmp_path, monkeypatch)
+        def other_company(document):
+            document["execution_plan"].update(entity_id="ENT_OTHER", identity_snapshot_sha256="b" * 64)
+            document["execution_plan"]["entity_domain_bindings"][0].update(identity_snapshot_sha256="b" * 64)
+            document["execution_plan"]["queries"][0]["query"] = "Synthetic other issuer margin"
+        second_policy = _execution_policy(tmp_path, monkeypatch, other_company)
+        model = model_policy(max_cost=100)
+        first_budget = build_shared_external_budget_policy(model, first_policy)
+        second_budget = build_shared_external_budget_policy(model, second_policy)
+        store, first_item, first_lease, _ = _journal(tmp_path)
+        first = _begin_search(store, first_item, first_lease, policy=first_budget, plan=execution_query_plans(first_policy)[0],
+                              quota_group="search-brave", search_policy_sha256=first_policy.policy_sha256)
+        second_item = _created(store, entity_id="ENT_OTHER", scope_id="ENT_OTHER", identity_snapshot_sha256="b" * 64)
+        second_lease = store.claim(second_item["work_item_id"], lease_seconds=60)
+&gt;       second = _begin_search(store, second_item, second_lease, policy=second_budget, plan=execution_query_plans(second_policy)[0],
+                               quota_group="search-brave", search_policy_sha256=second_policy.policy_sha256)
+
+tests\unit\test_quick_scan_external_context.py:773: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_external_context.py:113: in _begin_search
+    operation = store.begin_external_search(item["work_item_id"], lease, **args)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1899: in begin_external_search
+    return begin(self, work_item_id, lease, policy=policy, plan=plan,
+src\utils\quick_scan_external_journal.py:341: in begin
+    normalized = store.configure_quick_scan_budget(policy)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001CC441FBCB0&gt;
+policy = {'configured': True, 'policy_id': 'q09-fixture', 'policy_version': 'external_budget/1.0.0:1132e7e91ddd36f5564949e544e1...e33a27fbb90a97967', 'budget': {'currency': 'USD', 'max_cost': 100, 'max_requests': 20, 'max_cost_per_attempt': 6}, ...}
+
+    def configure_quick_scan_budget(self, policy: dict) -&gt; dict:
+        """Persist a secret-free budget/dispatch snapshot without resetting spend."""
+        normalized = _budget_policy_projection(policy)
+        now = self._now()
+        with self._transaction() as connection:
+            previous = connection.execute(
+                "SELECT * FROM quick_scan_budget_policy WHERE policy_id=?",
+                (normalized["policy_id"],),
+            ).fetchone()
+            attempts = connection.execute(
+                "SELECT COUNT(*) FROM quick_scan_budget_attempt WHERE policy_id=?",
+                (normalized["policy_id"],),
+            ).fetchone()[0]
+            if previous is not None:
+                if previous["currency"] != normalized["currency"] and attempts:
+                    raise BudgetPolicyConflict("currency cannot change after budget attempts")
+                if (
+                    previous["policy_version"] != normalized["policy_version"]
+                    and connection.execute(
+                        "SELECT COUNT(*) FROM quick_scan_budget_attempt "
+                        "WHERE policy_id=? AND status!='settled'",
+                        (normalized["policy_id"],),
+                    ).fetchone()[0]
+                ):
+&gt;                   raise BudgetPolicyConflict(
+                        "policy version cannot change while attempts are active or unreconciled"
+                    )
+E                   src.utils.quick_scan_work_store.BudgetPolicyConflict: policy version cannot change while attempts are active or unreconciled
+
+src\utils\quick_scan_work_store.py:1700: BudgetPolicyConflict</failure></testcase></testsuite></testsuites>

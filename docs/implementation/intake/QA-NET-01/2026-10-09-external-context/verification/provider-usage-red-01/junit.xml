@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="7" time="1.965" timestamp="2026-10-09T05:21:37.957661+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_external_search_provider" name="test_tavily_actual_usage_and_body_request_id_reach_the_real_journal" time="0.135"><failure message="KeyError: 'include_usage'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-red-01/test_tavily_actual_usage_and_b0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002A7783B5810&gt;
+
+    def test_tavily_actual_usage_and_body_request_id_reach_the_real_journal(tmp_path, monkeypatch):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        body = {"request_id": "actual-vendor-id", "usage": {"credits": 2}, "results": [
+            {"title": "Fixture", "url": "https://fixture.example/ir", "content": "Margin", "published_date": "2026-10-01"}]}
+        session = Mock()
+        session.request.return_value = _response(json.dumps(body).encode(), request_id=None)
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+&gt;       assert session.request.call_args.kwargs["json"]["include_usage"] is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'include_usage'
+
+tests\unit\test_external_search_provider.py:225: KeyError</failure></testcase><testcase classname="tests.unit.test_external_search_provider" name="test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[None]" time="0.106"><failure message="KeyError: 'usage_status'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-red-01/test_missing_or_invalid_tavily0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002A7768EAFD0&gt;
+credits = None
+
+    @pytest.mark.parametrize("credits", [None, True, "2", -1])
+    def test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing(tmp_path, monkeypatch, credits):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        body = {"results": []}
+        if credits is not None:
+            body["usage"] = {"credits": credits}
+        session = Mock()
+        session.request.return_value = _response(json.dumps(body).encode())
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+&gt;       assert receipt["usage_status"] == ("missing" if credits is None else "invalid")
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'usage_status'
+
+tests\unit\test_external_search_provider.py:249: KeyError</failure></testcase><testcase classname="tests.unit.test_external_search_provider" name="test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[True]" time="0.099"><failure message="KeyError: 'usage_status'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-red-01/test_missing_or_invalid_tavily1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002A7791DC4D0&gt;
+credits = True
+
+    @pytest.mark.parametrize("credits", [None, True, "2", -1])
+    def test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing(tmp_path, monkeypatch, credits):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        body = {"results": []}
+        if credits is not None:
+            body["usage"] = {"credits": credits}
+        session = Mock()
+        session.request.return_value = _response(json.dumps(body).encode())
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+&gt;       assert receipt["usage_status"] == ("missing" if credits is None else "invalid")
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'usage_status'
+
+tests\unit\test_external_search_provider.py:249: KeyError</failure></testcase><testcase classname="tests.unit.test_external_search_provider" name="test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[2]" time="0.095"><failure message="KeyError: 'usage_status'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-red-01/test_missing_or_invalid_tavily2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002A77847D590&gt;
+credits = '2'
+
+    @pytest.mark.parametrize("credits", [None, True, "2", -1])
+    def test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing(tmp_path, monkeypatch, credits):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        body = {"results": []}
+        if credits is not None:
+            body["usage"] = {"credits": credits}
+        session = Mock()
+        session.request.return_value = _response(json.dumps(body).encode())
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+&gt;       assert receipt["usage_status"] == ("missing" if credits is None else "invalid")
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'usage_status'
+
+tests\unit\test_external_search_provider.py:249: KeyError</failure></testcase><testcase classname="tests.unit.test_external_search_provider" name="test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[-1]" time="0.099"><failure message="KeyError: 'usage_status'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-red-01/test_missing_or_invalid_tavily3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002A77847D9D0&gt;
+credits = -1
+
+    @pytest.mark.parametrize("credits", [None, True, "2", -1])
+    def test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing(tmp_path, monkeypatch, credits):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        body = {"results": []}
+        if credits is not None:
+            body["usage"] = {"credits": credits}
+        session = Mock()
+        session.request.return_value = _response(json.dumps(body).encode())
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+&gt;       assert receipt["usage_status"] == ("missing" if credits is None else "invalid")
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'usage_status'
+
+tests\unit\test_external_search_provider.py:249: KeyError</failure></testcase><testcase classname="tests.unit.test_external_search_provider" name="test_a_self_consistent_journal_query_outside_the_frozen_policy_sends_zero_http" time="0.092"><failure message="src.providers.external_search_provider.ExternalSearchTransportError: external retrieval transport failed">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-red-01/test_a_self_consistent_journal0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002A77848AA50&gt;
+
+    def test_a_self_consistent_journal_query_outside_the_frozen_policy_sends_zero_http(tmp_path, monkeypatch):
+        policy, provider = _execution_provider(tmp_path, monkeypatch, "brave")
+        permit, plan = _execution_permit(tmp_path, policy, mutate=lambda p: p.update(query="Another unapproved query"))
+        session = Mock()
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        with pytest.raises(ValueError, match="frozen.*plan"):
+&gt;           provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+
+tests\unit\test_external_search_provider.py:262: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;src.providers.external_search_provider.ExternalSearchProvider object at 0x000002A7791ACEF0&gt;
+permit = QuickScanSendAttempt(binding=None, attempt_id='DISPATCH_c8e6c6be1b5493de1c3c2e490014872fb35ac51654b8c241bf46f17de36ae6...bb07647ab6e0665a764156458bac70ccf7a54b7fa', _consumed=True, _lock=&lt;unlocked _thread.lock object at 0x000002A7790542D0&gt;)
+query = 'Another unapproved query', top_k = 3, locale = 'en-US'
+
+    def fetch(self, permit: QuickScanSendAttempt, *, query: str, top_k: int, locale: str) -&gt; dict[str, Any]:
+        """Read short search data; caller must durably settle the returned outcome."""
+        if self._configuration_sha256() != self._frozen_sha256:
+            raise ValueError("external configuration no longer matches its frozen policy")
+        if not isinstance(permit, QuickScanSendAttempt) or permit.binding is not None or permit.budget_binding is None or permit.budget_attempt_id != permit.attempt_id or not isinstance(permit.budget_binding.store, QuickScanWorkStore) or not isinstance(permit.external_operation_id, str):
+            raise ValueError("external retrieval requires a budget-only durable permit")
+        if not isinstance(query, str) or not query.strip() or len(query) &gt; 2000 or type(top_k) is not int or not 1 &lt;= top_k &lt;= 10:
+            raise ValueError("external query or result bound is invalid")
+        if not isinstance(locale, str) or re.fullmatch(r"[a-z]{2}-[A-Z]{2}", locale) is None:
+            raise ValueError("external locale is invalid")
+        operation = permit.budget_binding.store.get_external_search(permit.external_operation_id)
+        route = operation["context"]["route"]
+        plan = operation["plan"]
+        if (operation["budget_attempt_id"] != permit.attempt_id or operation["budget"]["status"] != "in_flight"
+            or operation["context"]["search_policy_sha256"] != self.policy_sha256
+            or route["route_id"] != self.route["route_id"] or route["provider"] != self.route["kind"]
+            or route["endpoint"] != self.route["endpoint"] or route["adapter_version"] != ADAPTER_VERSION
+            or plan["query"] != query or plan["top_k"] != top_k or plan["locale"] != locale):
+            raise ValueError("external request binding does not match its frozen intent")
+        if self.route["kind"] == "zai_mcp_streamable":
+            # MCP initialize/discovery/search are separate metered operations.
+            # The forthcoming coordinator must negotiate and journal them; a
+            # tools/call without that proof cannot silently stand in for MCP.
+            raise ValueError("mcp_handshake_required")
+        key = os.environ.get(self.route["credential_env"])
+        if not isinstance(key, str) or not key:
+            raise ValueError("credential_env_unset")
+        headers = {"Accept": "application/json"}
+        kind = self.route["kind"]
+        if kind == "brave":
+            headers["X-Subscription-Token"] = key
+            language, country = locale.split("-")
+            params = {"q": query, "count": top_k, "country": country, "search_lang": "zh-hans" if locale == "zh-CN" else language}
+            method, data = "GET", {"params": params}
+        else:
+            headers["Authorization"] = "Bearer " + key
+            if kind == "tavily":
+                body = {"query": query, "max_results": top_k, "search_depth": "basic", "include_answer": False, "include_raw_content": False, "include_images": False, "include_published_date": True, "auto_parameters": False}
+            else:
+                body = {"search_query": query, "count": top_k, "search_engine": "search-prime", "search_recency_filter": "noLimit"}
+            method, data = "POST", {"json": body}
+        session = http_client_manager.get_metered_sync_session()
+        permit.consume_for_post()
+        receipt: dict[str, Any] = {"origin": "external", "adapter_version": ADAPTER_VERSION, "route_id": self.route["route_id"], "route_kind": kind, "attempt_id": permit.attempt_id, "http_request_count": 1, "http_status_code": None, "request_id": None, "outcome": "unknown"}
+        response = None
+        try:
+            response = session.request(method, self.route["endpoint"], headers=headers, timeout=30, stream=True, allow_redirects=False, **data)
+            status = response.status_code
+            if type(status) is not int:
+                raise ValueError("invalid_http_status")
+            receipt["http_status_code"] = status
+            receipt["request_id"] = self._request_id(response.headers)
+            body_parts, size = [], 0
+            for part in response.iter_content(chunk_size=8192):
+                if not isinstance(part, bytes):
+                    raise ValueError("invalid_response_chunk")
+                size += len(part)
+                if size &gt; self.retrieval["max_in_memory_response_bytes"]:
+                    raise ValueError("response_exceeds_in_memory_cap")
+                body_parts.append(part)
+            raw = b"".join(body_parts)
+            receipt["response_body_sha256"] = hashlib.sha256(raw).hexdigest()
+            if not 200 &lt;= status &lt; 300:
+                try:
+                    document = strict_search_json(raw.decode("utf-8"))
+                except (UnicodeDecodeError, ValueError):
+                    document = None
+                error = document.get("error") if isinstance(document, dict) else None
+                code = error.get("code") if isinstance(error, dict) else None
+                if isinstance(code, str) and code in _ERROR_CODES:
+                    receipt["provider_error_code"] = code
+                if status in (401, 403, 404) or (status == 429 and receipt.get("provider_error_code") in _ERROR_CODES):
+                    receipt["outcome"] = "confirmed_failure"
+                raise ExternalSearchTransportError(receipt)
+            parsed = parse_route(kind, raw, max_layers=self.retrieval["max_json_unwrap_layers"], max_bytes=self.retrieval["max_in_memory_response_bytes"])
+            receipt.update(outcome="response_available", parse_status=parsed["status"], provider_result_count=len(parsed["entries"]))
+            # Short data only. Raw HTTP bytes exist in memory only for the
+            # bounded parse and digest above; they never enter the journal.
+            receipt["entries"] = [dict(entry, query=query, title=entry["title"][:500], snippet=entry["snippet"][:500], publisher=(entry["publisher"][:500] if isinstance(entry.get("publisher"), str) else None)) for entry in parsed["entries"][:top_k] if len(entry["url"]) &lt;= 2048]
+            return receipt
+        except ExternalSearchTransportError:
+            raise
+        except Exception as error:
+            receipt["failure_type"] = type(error).__name__
+&gt;           raise ExternalSearchTransportError(receipt) from None
+E           src.providers.external_search_provider.ExternalSearchTransportError: external retrieval transport failed
+
+src\providers\external_search_provider.py:152: ExternalSearchTransportError</failure></testcase><testcase classname="tests.unit.test_external_search_provider" name="test_actual_usage_over_the_verified_bound_is_charged_but_not_reusable" time="0.092"><failure message="KeyError: 'usage_status'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-red-01/test_actual_usage_over_the_ver0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002A77848A950&gt;
+
+    def test_actual_usage_over_the_verified_bound_is_charged_but_not_reusable(tmp_path, monkeypatch):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+        from src.utils.quick_scan_work_store import BudgetAdmissionError
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        session = Mock()
+        session.request.return_value = _response(b'{"usage":{"credits":3},"results":[{"url":"https://fixture.example/ir","title":"Fixture","content":"Margin","published_date":"2026-10-01"}]}')
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+&gt;       assert receipt["usage_status"] == "exceeds_verified_bound"
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'usage_status'
+
+tests\unit\test_external_search_provider.py:277: KeyError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,125 @@
+..............FFFF...................................................... [ 72%]
+............................                                             [100%]
+================================== FAILURES ===================================
+_ test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[None] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-green-01/test_missing_or_invalid_tavily0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000245414AAED0>
+credits = None
+
+    @pytest.mark.parametrize("credits", [None, True, "2", -1])
+    def test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing(tmp_path, monkeypatch, credits):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        body = {"results": []}
+        if credits is not None:
+            body["usage"] = {"credits": credits}
+        session = Mock()
+        session.request.return_value = _response(json.dumps(body).encode())
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+        assert receipt["usage_status"] == ("missing" if credits is None else "invalid")
+        assert receipt.get("usage") is None and ExternalSearchCostResolver(policy)(receipt) is None
+        saved = permit.budget_binding.store.record_external_search(permit.external_operation_id, receipt=receipt)
+>       assert saved["budget"]["status"] == "unpriced" and saved["budget"]["actual_cost_micros"] is None
+E       AssertionError: assert ('response_unpriced' == 'unpriced'
+E         
+E         - unpriced
+E         + response_unpriced)
+
+tests\unit\test_external_search_provider.py:252: AssertionError
+_ test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-green-01/test_missing_or_invalid_tavily1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000245445668D0>
+credits = True
+
+    @pytest.mark.parametrize("credits", [None, True, "2", -1])
+    def test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing(tmp_path, monkeypatch, credits):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        body = {"results": []}
+        if credits is not None:
+            body["usage"] = {"credits": credits}
+        session = Mock()
+        session.request.return_value = _response(json.dumps(body).encode())
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+        assert receipt["usage_status"] == ("missing" if credits is None else "invalid")
+        assert receipt.get("usage") is None and ExternalSearchCostResolver(policy)(receipt) is None
+        saved = permit.budget_binding.store.record_external_search(permit.external_operation_id, receipt=receipt)
+>       assert saved["budget"]["status"] == "unpriced" and saved["budget"]["actual_cost_micros"] is None
+E       AssertionError: assert ('response_unpriced' == 'unpriced'
+E         
+E         - unpriced
+E         + response_unpriced)
+
+tests\unit\test_external_search_provider.py:252: AssertionError
+_ test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[2] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-green-01/test_missing_or_invalid_tavily2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000245446E6D00>
+credits = '2'
+
+    @pytest.mark.parametrize("credits", [None, True, "2", -1])
+    def test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing(tmp_path, monkeypatch, credits):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        body = {"results": []}
+        if credits is not None:
+            body["usage"] = {"credits": credits}
+        session = Mock()
+        session.request.return_value = _response(json.dumps(body).encode())
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+        assert receipt["usage_status"] == ("missing" if credits is None else "invalid")
+        assert receipt.get("usage") is None and ExternalSearchCostResolver(policy)(receipt) is None
+        saved = permit.budget_binding.store.record_external_search(permit.external_operation_id, receipt=receipt)
+>       assert saved["budget"]["status"] == "unpriced" and saved["budget"]["actual_cost_micros"] is None
+E       AssertionError: assert ('response_unpriced' == 'unpriced'
+E         
+E         - unpriced
+E         + response_unpriced)
+
+tests\unit\test_external_search_provider.py:252: AssertionError
+_ test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[-1] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/provider-usage-green-01/test_missing_or_invalid_tavily3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000245446E6F10>
+credits = -1
+
+    @pytest.mark.parametrize("credits", [None, True, "2", -1])
+    def test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing(tmp_path, monkeypatch, credits):
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+    
+        policy, provider = _execution_provider(tmp_path, monkeypatch)
+        permit, plan = _execution_permit(tmp_path, policy)
+        body = {"results": []}
+        if credits is not None:
+            body["usage"] = {"credits": credits}
+        session = Mock()
+        session.request.return_value = _response(json.dumps(body).encode())
+        monkeypatch.setattr("src.utils.http_client.http_client_manager.get_metered_sync_session", lambda: session)
+        receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+        assert receipt["usage_status"] == ("missing" if credits is None else "invalid")
+        assert receipt.get("usage") is None and ExternalSearchCostResolver(policy)(receipt) is None
+        saved = permit.budget_binding.store.record_external_search(permit.external_operation_id, receipt=receipt)
+>       assert saved["budget"]["status"] == "unpriced" and saved["budget"]["actual_cost_micros"] is None
+E       AssertionError: assert ('response_unpriced' == 'unpriced'
+E         
+E         - unpriced
+E         + response_unpriced)
+
+tests\unit\test_external_search_provider.py:252: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_external_search_provider.py::test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[None]
+FAILED tests/unit/test_external_search_provider.py::test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[True]
+FAILED tests/unit/test_external_search_provider.py::test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[2]
+FAILED tests/unit/test_external_search_provider.py::test_missing_or_invalid_tavily_usage_retains_reservation_without_guessing[-1]
+4 failed, 96 passed in 6.14s
