@@ -1587,3 +1587,4 @@ Status: private_implementation_verified_for_os_cli_scope_not_source_published
 
 - [x] 五文件313P与实际OS冷暖/11强杀/完整标准封包，原失败及子进程轨迹留档。
 - [ ] 最终整个Phase111集中静态/回归/独审、源发布及严格清理。
+- IQS实际已正常提交推送`345fbd13e51100636577c5a6ec59c864d2d0f008`：1361精确选择/1360实际变化、1354工件及索引原字节核对通过；scope.json未变化故未计变化，原opencode保留。StockQA未发布，自有环境供最终集中节点继续使用。

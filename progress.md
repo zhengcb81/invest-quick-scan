@@ -2535,3 +2535,5 @@
 - 最终原session25656实际exit0，五文件313P/0失败错误跳过，pytest102.41s/controller103.027s，37执行SHA不变。含47MCP与35集成实例、其中24新OS场景；不与263/3/776重叠相加。所有测试handle终态，收费API/真实key/下载/外仓写/生产迁移0。
 - 十原批次及实际子进程stdout/stderr/PID/强杀退出/HTTP轨迹/合成轻量结果/guard按白名单短编号原字节归档。部分原集成案例只有结果日志，case_logs数不等于OS用例数；配置/密钥/数据库/任意temp不入档。根handoff定位错误已改读docs路径；外仓默认沙箱只读拒绝后按既有授权提升只读Git核QA42a517c七项/SWc40de21clean，未写。一次PWF整批补丁findings锚点误猜，工具整批拒绝零写，现由本脚本先验证全输入再更新，不报产品失败。
 - 下一实际动作完整Phase111一次集中静态/全受影响回归/独审/精确源Git/严格清理；新checkpoint10只私有证据归档，Git等实际回执。原01–09/index/日志保持，不放行全局门。
+
+- checkpoint10 prepare原52641与正常Git原81016均实际终态exit0：提交并推送`345fbd13e51100636577c5a6ec59c864d2d0f008`，1361精确选择/1360变化（scope.json原字节不变）、1354工件及索引staged/committed SHA一致，111支持文件不变，HEAD=origin/master，仅原opencode未跟踪。十批原执行和全部子进程日志保持。StockQA42a517c未写/发布，runs/n111a继续保留待完整Phase111静态/回归/一次集中独审/源Git与严格清理，不盲跑已经一次性冻结的helpers。随后只提交本实际PWF回执，不新增小节点审查或重测已绿批次。
