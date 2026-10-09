@@ -1,0 +1,145 @@
+{
+    "schema_version": "stockqa.quick_scan_result/1.1.0",
+    "entity": {
+        "entity_id": "ENT_SYNTHETIC",
+        "name": "Fixture Corp"
+    },
+    "observed_at": "2026-10-09T10:44:09.413473Z",
+    "provider": {
+        "name": "openai",
+        "requested_model": "gpt-4.1"
+    },
+    "answers": {
+        "IQS_05": {
+            "question_id": "IQS_05",
+            "status": "scored",
+            "score": 8,
+            "description": "{\"question_id\": \"IQS_05\", \"response_kind\": \"score\", \"status\": \"scored\", \"score\": 8, \"summary\": \"Synthetic standard answer; not a real company conclusion.\", \"information_as_of\": \"2026-09-01\", \"period_start\": \"2026-01-01\", \"period_end\": \"2026-06-30\", \"basis\": \"current\", \"trend\": \"stable\", \"confidence\": \"medium\", \"metrics\": [], \"items\": [], \"evidence\": [{\"id\": \"e0\", \"title\": \"Synthetic primary source\", \"url\": \"https://fixture.example/ir\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e1\", \"title\": \"Synthetic primary source\", \"url\": \"https://fixture.example/ir\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e2\", \"title\": \"Synthetic primary source\", \"url\": \"https://fixture.example/ir\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e3\", \"title\": \"Synthetic primary source\", \"url\": \"https://fixture.example/ir\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e4\", \"title\": \"Synthetic primary source\", \"url\": \"https://fixture.example/ir\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e5\", \"title\": \"Synthetic primary source\", \"url\": \"https://fixture.example/ir\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e6\", \"title\": \"Synthetic primary source\", \"url\": \"https://fixture.example/ir\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e7\", \"title\": \"Synthetic primary source\", \"url\": \"https://fixture.example/ir\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}, {\"id\": \"e8\", \"title\": \"Synthetic primary source\", \"url\": \"https://fixture.example/ir\", \"published_at\": \"2026-09-01\", \"claim\": \"synthetic xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "published_date": null,
+            "information_as_of": "2026-09-01",
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        }
+    },
+    "execution_receipts": {
+        "IQS_05": {
+            "answer_sha256": "983aff58bfd50ad70d06e678864596464db0b8105e331565450699711410ecb7",
+            "answered_at": "2026-10-09T10:44:08.063866Z",
+            "input_question_sha256": "01e78e9053d06b068da47f9e187b8ec0f972bb93027cedd20a5b557b5e096519",
+            "provider": "openai",
+            "requested_model": "gpt-4.1",
+            "actual_model": "gpt-4.1",
+            "request_id": "synthetic-child-request",
+            "response_id": "synthetic-child-model",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": null,
+            "completed_at": "2026-10-09T10:44:09.380387Z",
+            "attempt_id": "fcae96db-1ffc-490a-8114-b6e0c40601de",
+            "prompt_sha256": "2c8b599aca73a1f03923ec7512ac5a4547772d54fdf31692c9c9d86b516e73ee",
+            "search_receipt_id": "EXTUSE_a64cb601f9b644f347c90a8583038fed6fa65ba977bb74c0669cc3a3e5a0260c",
+            "search_status": "executed",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "web_search_calls": [],
+            "attempts": [
+                {
+                    "actual_model": "gpt-4.1",
+                    "attempt_id": "fcae96db-1ffc-490a-8114-b6e0c40601de",
+                    "completed_at": "2026-10-09T10:44:09.380387Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "2c8b599aca73a1f03923ec7512ac5a4547772d54fdf31692c9c9d86b516e73ee",
+                    "provider": "openai",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "gpt-4.1",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "5207aed760007c8f389bb0b1b03c9947841fe26433975723c29364de891d8d5e",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": null,
+                    "search_status": "unverified",
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 0
+                    }
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": "answered",
+            "search_binding": {
+                "schema": "stockqa.search_binding/1.1.0",
+                "entity_id": "ENT_SYNTHETIC",
+                "question_id": "IQS_05",
+                "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47",
+                "external_context_use": {
+                    "schema": "stockqa.external_context_use/1.1.0",
+                    "state": "request_and_response_bound",
+                    "use_id": "EXTUSE_a64cb601f9b644f347c90a8583038fed6fa65ba977bb74c0669cc3a3e5a0260c",
+                    "work_item_id": "WORK_3e6a6df181f8466f9fac65b40b274c50",
+                    "work_attempt_id": "ATTEMPT_c87585d4640e49f099f8e8557213ad97",
+                    "context_sha256": "fe5d214d14e0e845d60a7932df49e4b8653784c4e2e756c8003925fc2f1bafa5",
+                    "question_manifest_sha256": "c32233924714a4e1eb096531fb16a785ae08d7b1efb793ac7780395f64db0829",
+                    "answer_search_mode": "external_context_only",
+                    "request_prompt_sha256": "4a58c32aa116b3c60dad22d783d1c62908619688aac821b2026aca36e7444681",
+                    "llm_receipt_sha256": "f719d56f0a8909c47fafaf817309a1bcbb18efdf7466be71142a1158e6988a60",
+                    "provider": "openai",
+                    "actual_model": "gpt-4.1",
+                    "used_at": 1791542648.063866,
+                    "retrievals": [
+                        {
+                            "operation_id": "SEARCH_398f56ff36721c0a95ef99b5cd2f8a08d0a0d69239e6dd1f3b9a0512358b7bc1",
+                            "query_id": "margins",
+                            "receipt_sha256": "4bf583c5ff4dc2503874737e6019a366e1680047296f607915ce53bcee4c73e9",
+                            "retrieved_at": "2026-10-09T10:44:08.063866Z",
+                            "route_id": "brave-primary",
+                            "route_kind": "zai_mcp_streamable"
+                        }
+                    ],
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "proof_sha256": "bacbbc6f3624da6f499f793f52a5d2649210da1adac571b3c8f89b5f851edbe0"
+                },
+                "native_receipt": {
+                    "actual_model": "gpt-4.1",
+                    "attempt_id": "fcae96db-1ffc-490a-8114-b6e0c40601de",
+                    "completed_at": "2026-10-09T10:44:09.380387Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "2c8b599aca73a1f03923ec7512ac5a4547772d54fdf31692c9c9d86b516e73ee",
+                    "provider": "openai",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "gpt-4.1",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "5207aed760007c8f389bb0b1b03c9947841fe26433975723c29364de891d8d5e",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": null,
+                    "search_status": "unverified",
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 0
+                    }
+                }
+            }
+        }
+    }
+}

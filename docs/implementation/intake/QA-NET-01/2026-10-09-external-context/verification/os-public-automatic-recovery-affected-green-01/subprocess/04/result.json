@@ -1,0 +1,167 @@
+{
+    "schema_version": "stockqa.quick_scan_result/1.1.0",
+    "entity": {
+        "entity_id": "ENT_SYNTHETIC",
+        "name": "Fixture Corp"
+    },
+    "observed_at": "2026-10-09T10:48:58.774571Z",
+    "provider": {
+        "name": "openai",
+        "requested_model": "gpt-4.1"
+    },
+    "answers": {
+        "IQS_05": {
+            "question_id": "IQS_05",
+            "status": "scored",
+            "score": 6,
+            "description": "Synthetic supported answer",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "published_date": null,
+            "information_as_of": null,
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        }
+    },
+    "execution_receipts": {
+        "IQS_05": {
+            "answer_sha256": "e34da1b902d06d4a2ccd55a4d95352fb1d35d21709b97c8afa06b67c038a16c8",
+            "answered_at": "2026-10-09T10:48:56.812876Z",
+            "input_question_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761",
+            "provider": "openai",
+            "requested_model": "gpt-4.1",
+            "actual_model": "gpt-4.1",
+            "request_id": "synthetic-child-request",
+            "response_id": "synthetic-child-model",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": null,
+            "completed_at": "2026-10-09T10:48:57.817468Z",
+            "attempt_id": "7990f84d-3c6f-4ff7-a3a1-4b0945f82fb7",
+            "prompt_sha256": "80742370c0fd0b327634a908ecd312831d0af4c7c23ef29cb39a3670c503511f",
+            "search_receipt_id": "EXTUSE_67f89250562f72521d6d88cb90038bf77c5a62de7efa4a9835c0323141f54662",
+            "search_status": "executed",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "web_search_calls": [
+                {
+                    "action_type": "search",
+                    "id": "synthetic-native-call",
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "sources": [
+                        {
+                            "published_date": null,
+                            "title": null,
+                            "url": "https://fixture.example/ir"
+                        }
+                    ],
+                    "status": "completed"
+                }
+            ],
+            "attempts": [
+                {
+                    "actual_model": "gpt-4.1",
+                    "attempt_id": "7990f84d-3c6f-4ff7-a3a1-4b0945f82fb7",
+                    "completed_at": "2026-10-09T10:48:57.817468Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "80742370c0fd0b327634a908ecd312831d0af4c7c23ef29cb39a3670c503511f",
+                    "provider": "openai",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "gpt-4.1",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "084d9dcfb0816abff98b53021fb11756b057b4ecc1612ee7f351f4d6fb9374d7",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": "synthetic-native-call",
+                    "search_status": "executed",
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 1
+                    }
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": "answered",
+            "search_binding": {
+                "schema": "stockqa.search_binding/1.1.0",
+                "entity_id": "ENT_SYNTHETIC",
+                "question_id": "IQS_05",
+                "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47",
+                "external_context_use": {
+                    "schema": "stockqa.external_context_use/1.1.0",
+                    "state": "request_and_response_bound",
+                    "use_id": "EXTUSE_67f89250562f72521d6d88cb90038bf77c5a62de7efa4a9835c0323141f54662",
+                    "work_item_id": "WORK_f202621a58a94389981f0a0222e23531",
+                    "work_attempt_id": "ATTEMPT_5ec75d9e02214b8b92476a27e109c5d0",
+                    "context_sha256": "dcf233463e1d7733f6158e9601de84b6e7145e019de829809cb692ee72b94ba3",
+                    "question_manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05",
+                    "answer_search_mode": "native_with_external_context",
+                    "request_prompt_sha256": "731ce8ec03319f9ae513a324a47c7bae25233ed485e372641f6fc65c763cac11",
+                    "llm_receipt_sha256": "b06f59bab47c990f8266f8602b9f36858a605c21ba855641b92359340f0e6f69",
+                    "provider": "openai",
+                    "actual_model": "gpt-4.1",
+                    "used_at": 1791542936.8128762,
+                    "retrievals": [
+                        {
+                            "operation_id": "SEARCH_a663b2fe4a8a2e49166ae89a225978cbac15d9af2e65f01957d4ff11786bf889",
+                            "query_id": "margins",
+                            "receipt_sha256": "c3c91f1a7a308215761546d26faa54e4f16fd368e3b0585bd5e203b066b0e85c",
+                            "retrieved_at": "2026-10-09T10:48:56.812876Z",
+                            "route_id": "brave-primary",
+                            "route_kind": "brave"
+                        }
+                    ],
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "proof_sha256": "6aac821ec31378355b2cffe19e3c1ee824e6b9de66690762848b8aa9478929df"
+                },
+                "native_receipt": {
+                    "actual_model": "gpt-4.1",
+                    "attempt_id": "7990f84d-3c6f-4ff7-a3a1-4b0945f82fb7",
+                    "completed_at": "2026-10-09T10:48:57.817468Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "80742370c0fd0b327634a908ecd312831d0af4c7c23ef29cb39a3670c503511f",
+                    "provider": "openai",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "gpt-4.1",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "084d9dcfb0816abff98b53021fb11756b057b4ecc1612ee7f351f4d6fb9374d7",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": "synthetic-native-call",
+                    "search_status": "executed",
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 1
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,167 @@
+{
+    "schema_version": "stockqa.quick_scan_result/1.1.0",
+    "entity": {
+        "entity_id": "ENT_SYNTHETIC",
+        "name": "Fixture Corp"
+    },
+    "observed_at": "2026-10-09T10:36:06.264011Z",
+    "provider": {
+        "name": "openai",
+        "requested_model": "gpt-4.1"
+    },
+    "answers": {
+        "IQS_05": {
+            "question_id": "IQS_05",
+            "status": "scored",
+            "score": 6,
+            "description": "Synthetic supported answer",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "published_date": null,
+            "information_as_of": null,
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        }
+    },
+    "execution_receipts": {
+        "IQS_05": {
+            "answer_sha256": "e34da1b902d06d4a2ccd55a4d95352fb1d35d21709b97c8afa06b67c038a16c8",
+            "answered_at": "2026-10-09T10:36:03.412950Z",
+            "input_question_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761",
+            "provider": "openai",
+            "requested_model": "gpt-4.1",
+            "actual_model": "gpt-4.1",
+            "request_id": "synthetic-child-request",
+            "response_id": "synthetic-child-model",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": null,
+            "completed_at": "2026-10-09T10:36:04.852625Z",
+            "attempt_id": "4a17b7b7-f052-4740-84fa-d3a491104e26",
+            "prompt_sha256": "ad6ef1b389f6542f36ab968ad2edb4df6097d41dae69059b23ef87bebf58c31a",
+            "search_receipt_id": "EXTUSE_5a8282ef00bbe24e763301cf5ce0fc808aad12754b90cc62a0c909573b50578f",
+            "search_status": "executed",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "web_search_calls": [
+                {
+                    "action_type": "search",
+                    "id": "synthetic-native-call",
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "sources": [
+                        {
+                            "published_date": null,
+                            "title": null,
+                            "url": "https://fixture.example/ir"
+                        }
+                    ],
+                    "status": "completed"
+                }
+            ],
+            "attempts": [
+                {
+                    "actual_model": "gpt-4.1",
+                    "attempt_id": "4a17b7b7-f052-4740-84fa-d3a491104e26",
+                    "completed_at": "2026-10-09T10:36:04.852625Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "ad6ef1b389f6542f36ab968ad2edb4df6097d41dae69059b23ef87bebf58c31a",
+                    "provider": "openai",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "gpt-4.1",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "084d9dcfb0816abff98b53021fb11756b057b4ecc1612ee7f351f4d6fb9374d7",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": "synthetic-native-call",
+                    "search_status": "executed",
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 1
+                    }
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": "answered",
+            "search_binding": {
+                "schema": "stockqa.search_binding/1.1.0",
+                "entity_id": "ENT_SYNTHETIC",
+                "question_id": "IQS_05",
+                "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47",
+                "external_context_use": {
+                    "schema": "stockqa.external_context_use/1.1.0",
+                    "state": "request_and_response_bound",
+                    "use_id": "EXTUSE_5a8282ef00bbe24e763301cf5ce0fc808aad12754b90cc62a0c909573b50578f",
+                    "work_item_id": "WORK_abcc8310a55a481f9d8ebea0ff36d7df",
+                    "work_attempt_id": "ATTEMPT_84978a6bbdab4f5aa58bf40fda69bdf6",
+                    "context_sha256": "ecd82664ce5193408991909dba9f44ef467ce19c7c835faa374e36b1de0e36ee",
+                    "question_manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05",
+                    "answer_search_mode": "native_with_external_context",
+                    "request_prompt_sha256": "8fc386fa361c83613db5b0c260939d6d2537c0d7c287c54c22d0f7dd1a301171",
+                    "llm_receipt_sha256": "0fc8e2fee34e862a40b939c921e928f43444b880c90e3806e56345b741a982a8",
+                    "provider": "openai",
+                    "actual_model": "gpt-4.1",
+                    "used_at": 1791542163.41295,
+                    "retrievals": [
+                        {
+                            "operation_id": "SEARCH_d9f21dc0c07340869af1f6caf1d6d548121dfceecc65d9b24220845f1932a12d",
+                            "query_id": "margins",
+                            "receipt_sha256": "9b499a2b82ae03e335ffc18292904cacb52f2242b97c4be902b566bc9ca31414",
+                            "retrieved_at": "2026-10-09T10:36:03.412950Z",
+                            "route_id": "brave-primary",
+                            "route_kind": "zai_mcp_streamable"
+                        }
+                    ],
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "proof_sha256": "2604c0510ccd4dd58d42af72471d44222fd1dcb7b5ffdcd279d35a7105667176"
+                },
+                "native_receipt": {
+                    "actual_model": "gpt-4.1",
+                    "attempt_id": "4a17b7b7-f052-4740-84fa-d3a491104e26",
+                    "completed_at": "2026-10-09T10:36:04.852625Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "ad6ef1b389f6542f36ab968ad2edb4df6097d41dae69059b23ef87bebf58c31a",
+                    "provider": "openai",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "gpt-4.1",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "084d9dcfb0816abff98b53021fb11756b057b4ecc1612ee7f351f4d6fb9374d7",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": "synthetic-native-call",
+                    "search_status": "executed",
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 1
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1784,3 +1784,10 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 控制HTTP各入原Q09，不是模型回答attempt或公司来源；三控制记录实际一次派发和已结算hash才允许正式搜索。unknown即使已核对现金仍未知，换route/预算/恢复不能消除同scope阻断。保存失败回滚结算，已耗发送许可保持，禁止重发洗绿。
 - 私有schema13空表升级保留旧HTTP/native/现金、不造历史；旧fixture需完整移除新四表。Session有限私有保存、不进公司context/公共回执，已知API key echo拒绝。SSE收到关联回应立即关闭，无隐含GET/DELETE/旧SSE回退、不执行server requests；RPC错ID/工具result.isError不作证据。
 - 六文件397P/1F唯一旧未实施断言改为畸形初始化只计一次控制费用、禁止正式search并warm不重发，追加1P；不写成单次398P。OS CLI/整批集中审查/源发布仍待。每冻结query三协商＋search的成本须计，不宣称全池共一次握手、真实厂商计价或金融事实已认证。
+
+
+## Phase111 OS子进程CLI与自动恢复：2026-10-09
+
+- 新进程必须区分验证已有缓存与获得新发送许可。只对明确1.1的CLI恢复延迟凭据检查，保留完整schema/身份/价格/存储准入；实际provider在Q09预留和HTTP前仍检查密钥。
+- 强杀E2E不能靠测试端先恢复work再声称CLI自动恢复；撤掉该调用后真实6F/5P已驱动入口修复。活lease与未知发送不得被自动过期当作重发许可。
+- 未知失败可生成无分数失败JSON，不等于成功checkpoint。标准Observation分数在answer内，getter原包bytes不可强行JSON化；相应fixture错误与产品漏洞分列。

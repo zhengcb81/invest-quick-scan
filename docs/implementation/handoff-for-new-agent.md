@@ -1,3 +1,7 @@
+**Phase111 OS子进程CLI与自动恢复：2026-10-09（优先于下文历史）：** 完整Phase111同一大节点最终静态/全受影响回归/一次集中独审，满足标准后精确源Git发布并严格自有清理。五文件313P/pytest102.41s/controller103.027s，37执行SHA不变，38已报备路径。真正OS CLI冷暖、24新OS场景含11强杀断点现由CLI自己恢复，MCP→LLM→公共结果/完整标准C06已验证；读[CLI恢复接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/cli-recovery-interface.md)。仍仅private schema13，生产StockQA42a517c/schema8未发布；StockWiki四路径许可/联合ACK/G3/L03/F05/真实gold/TH-IN原门保持，不刷新退役回执或启动200家live。IQS归档提交以progress实际回执为准。
+
+以下旧时点保留，不覆盖本段。
+
 **2026-10-09 MCP接线最新，优先于下方历史：** 唯一下一动作是真正OS子进程CLI冷暖/中断恢复（MCP四HTTP→LLM→公共输出），再完整Phase111同一大节点静态/回归/一次集中独审/源发布/严格清理。38路径报备、37当前执行文件，private schema13未发布，生产StockQA42a517c/schema8及原七未知项不动。读[MCP实际接口](reviews/QA-NET-01/external-context-2026-10-09/mcp-interface.md)。控制/REST两文件55P；六文件397P/1F中MCP47项全通过，唯一旧未实现断言只改测试后1P，产品源码不变，不合成一次398P。旧真实协议/工具名与文档不同，两已知值显式支持；真实schema决定query-only调用，不猜count。三控制每HTTP独立入Q09，最终search绑定实际记录；unknown不重发、session不公开、SSE及时关闭、nested tool error不作证据。原失败/旧01–08保持，所有测试终态，无活handle。新checkpoint09仅IQS私有进度，实际Git看progress；仍缺OS子进程、完整集中验收及源发布，不清runs/n111a，不盲跑旧helpers。StockWiki四路径许可/G3/F05/L03/真实gold/TH-IN保持，不刷新退役回执或启动200家。
 
 以下旧入口按原时点保留，不覆盖本段。

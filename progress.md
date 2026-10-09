@@ -2521,3 +2521,17 @@
 - mcp-retrieval-owner-affected-green-01六文件398实例实际397P/1F、0errors/skips、pytest54.01s/controller54.618s，MCP文件47项全部通过。唯一旧测试要求MCP未实现所以零HTTP/预留；改验畸形initialize只消费一次控制费用、不准入search/warm不重发。mcp-old-blocker-fixture-green-01为1P/199 deselected/pytest1.50s/controller2.089s，只有该测试文件SHA变化，产品源及其他36执行文件不变，不重跑397、不合成同次398P。
 - 新mcp-interface.md固定private schema13、真实工具/参数/会话/费用/恢复边界；每冻结query当前分别协商，不能说全池只握手一次，成本实验须计四HTTP。只准核验来源的all_http_requests/per_request计价，只有搜索计价不准入、不默认免费。
 - 本轮只读路径定位误猜index-08.json/guarded_static.py不存在；另一次PWF整批补丁末尾误匹配独立标题，工具拒绝、全批零写，已用本控制器按真实段落更新。未制造替代owner工件或重测。当前所有测试handle已终态，旧01–08/原日志冻结；下一步OS子进程CLI/恢复→完整Phase111一次集中静态/独审/源Git/严格清理。StockWiki四路径/G3/F05/真实gold/TH-IN/L03保持。checkpoint09只留档私有进度，commit/push等实际Git回执。
+
+- checkpoint09 正常 Git 实际 exit0：提交并推送 `eb2fb493a1b0014f6113cde23b4e1421262c6ed4`，439 精确变化路径、432 原工件及索引 staged/committed 字节核对通过，HEAD=origin/master，仅原 opencode 未跟踪保留。StockQA 原源仓及未知项未写；这是隔离实施证据归档，不是生产发布。上一用户进度答复仅只读核对 PWF 与两源 HEAD，不算新增实施；本回合接续已报备的 `tests/integration/test_external_context_cli_e2e.py`，只在 IQS 独占副本增加真正 OS 子进程冷暖与强制终止恢复测试，不增加小节点审查、真实 API 或外仓写入。
+
+
+## Phase111 OS子进程CLI与自动恢复：2026-10-09
+
+- checkpoint09正常Git提交推送eb2fb493a1b0014f6113cde23b4e1421262c6ed4，439变化/432原工件staged与committed原字节核对通过，仅原opencode保留；StockQA未发布。
+- cold-first-01为5F：两REST准确暴露撤钥后loader拒缓存，三MCP另有新fixture把数组误包成对象。只修fixture后的cold-red-02仍5F，同一缓存准入缺口；config/runner显式1.1延迟密钥校验已修，默认/旧1.0保持、provider在预留/HTTP前仍检查。cold-green-01实际5P/18.489s。
+- interruption-first-01为5P/6F/28.036s，五已付费当时用测试端公开恢复API接续；未知六实际无重发，失败是测试错误要求不能保存无分数失败JSON。更正后保留可用synthetic key/HTTP替身证明unknown本身阻断；四文件263P/pytest90.59s/controller91.35s，当时仍不能证明CLI自动恢复。
+- 完整标准C06三场景由原synthetic31题fixture派生单题：18证据/完整大body/合法封包，独立warm与seal原包及账不变。两次3F分别误读observation.score、误JSON序列化getter bytes，产品不改；complete-seal-green-02为3P/controller11.757s。不伪造StockWiki ACK/golden。
+- 加强11强杀断点移除测试端recover调用，原row确实仍leased；automatic-recovery-red-01为6F/5P/controller25.12s，五已付费不能由CLI接续、模型unknown未转uncertain。runner只在精确create_or_attach后接原owner恢复事务，活租约不动，模型发送意图uncertain；外部unknown仍原journal/Q09阻断。
+- 最终原session25656实际exit0，五文件313P/0失败错误跳过，pytest102.41s/controller103.027s，37执行SHA不变。含47MCP与35集成实例、其中24新OS场景；不与263/3/776重叠相加。所有测试handle终态，收费API/真实key/下载/外仓写/生产迁移0。
+- 十原批次及实际子进程stdout/stderr/PID/强杀退出/HTTP轨迹/合成轻量结果/guard按白名单短编号原字节归档。部分原集成案例只有结果日志，case_logs数不等于OS用例数；配置/密钥/数据库/任意temp不入档。根handoff定位错误已改读docs路径；外仓默认沙箱只读拒绝后按既有授权提升只读Git核QA42a517c七项/SWc40de21clean，未写。一次PWF整批补丁findings锚点误猜，工具整批拒绝零写，现由本脚本先验证全输入再更新，不报产品失败。
+- 下一实际动作完整Phase111一次集中静态/全受影响回归/独审/精确源Git/严格清理；新checkpoint10只私有证据归档，Git等实际回执。原01–09/index/日志保持，不放行全局门。

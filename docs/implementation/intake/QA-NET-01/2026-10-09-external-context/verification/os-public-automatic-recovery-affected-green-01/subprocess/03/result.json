@@ -1,0 +1,145 @@
+{
+    "schema_version": "stockqa.quick_scan_result/1.1.0",
+    "entity": {
+        "entity_id": "ENT_SYNTHETIC",
+        "name": "Fixture Corp"
+    },
+    "observed_at": "2026-10-09T10:48:56.678002Z",
+    "provider": {
+        "name": "openai",
+        "requested_model": "gpt-4.1"
+    },
+    "answers": {
+        "IQS_05": {
+            "question_id": "IQS_05",
+            "status": "scored",
+            "score": 6,
+            "description": "Synthetic supported answer",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "published_date": null,
+            "information_as_of": null,
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        }
+    },
+    "execution_receipts": {
+        "IQS_05": {
+            "answer_sha256": "e34da1b902d06d4a2ccd55a4d95352fb1d35d21709b97c8afa06b67c038a16c8",
+            "answered_at": "2026-10-09T10:48:54.763615Z",
+            "input_question_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761",
+            "provider": "openai",
+            "requested_model": "gpt-4.1",
+            "actual_model": "gpt-4.1",
+            "request_id": "synthetic-child-request",
+            "response_id": "synthetic-child-model",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": null,
+            "completed_at": "2026-10-09T10:48:55.751533Z",
+            "attempt_id": "9f20bc86-7ca4-4643-b7cf-060e994ec168",
+            "prompt_sha256": "93a100d0d6b02316d3597e1c59e064245eb23360b0cd48e60eef11d0887aca44",
+            "search_receipt_id": "EXTUSE_1314d87ca259421c707f9368b14125dca859c1dab25c84294203a01ca8247680",
+            "search_status": "executed",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "web_search_calls": [],
+            "attempts": [
+                {
+                    "actual_model": "gpt-4.1",
+                    "attempt_id": "9f20bc86-7ca4-4643-b7cf-060e994ec168",
+                    "completed_at": "2026-10-09T10:48:55.751533Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "93a100d0d6b02316d3597e1c59e064245eb23360b0cd48e60eef11d0887aca44",
+                    "provider": "openai",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "gpt-4.1",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "5e3bf615ff258006f3bdebf129fe01bc126320219dfb85434f43d09c679f57b2",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": null,
+                    "search_status": "unverified",
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 0
+                    }
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": "answered",
+            "search_binding": {
+                "schema": "stockqa.search_binding/1.1.0",
+                "entity_id": "ENT_SYNTHETIC",
+                "question_id": "IQS_05",
+                "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47",
+                "external_context_use": {
+                    "schema": "stockqa.external_context_use/1.1.0",
+                    "state": "request_and_response_bound",
+                    "use_id": "EXTUSE_1314d87ca259421c707f9368b14125dca859c1dab25c84294203a01ca8247680",
+                    "work_item_id": "WORK_71caa7af031d47f4940adfce475eb113",
+                    "work_attempt_id": "ATTEMPT_c41d8800b63c41f78aea6ae1bc80d207",
+                    "context_sha256": "c06ea65f10df4f419f36a7a69dabd30b73fbe25cf824893d2652b46f03ec7787",
+                    "question_manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05",
+                    "answer_search_mode": "external_context_only",
+                    "request_prompt_sha256": "26d5747d3fcc45705dd5a7192793f99d5ba0d41b395bbfc945f90faab0633fd5",
+                    "llm_receipt_sha256": "a1cefa7d21512a52b567f42e4a7d83a982a56b74150ebc2bc512ab7a3adf1338",
+                    "provider": "openai",
+                    "actual_model": "gpt-4.1",
+                    "used_at": 1791542934.7636151,
+                    "retrievals": [
+                        {
+                            "operation_id": "SEARCH_96e5499ad84f79debf979756104f7d6b2257d001c980a90327a8cbd7b5b21d9d",
+                            "query_id": "margins",
+                            "receipt_sha256": "b3ef1098316b7179adf008ea853578766b3414d026e1eed44cc80edcbeabb3de",
+                            "retrieved_at": "2026-10-09T10:48:54.763615Z",
+                            "route_id": "brave-primary",
+                            "route_kind": "brave"
+                        }
+                    ],
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "proof_sha256": "8c3875f913fb80cdb91fe5fa02a9fb52f9f1d3968a222b6c532fc63ead7a3e44"
+                },
+                "native_receipt": {
+                    "actual_model": "gpt-4.1",
+                    "attempt_id": "9f20bc86-7ca4-4643-b7cf-060e994ec168",
+                    "completed_at": "2026-10-09T10:48:55.751533Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "93a100d0d6b02316d3597e1c59e064245eb23360b0cd48e60eef11d0887aca44",
+                    "provider": "openai",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "gpt-4.1",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "5e3bf615ff258006f3bdebf129fe01bc126320219dfb85434f43d09c679f57b2",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": null,
+                    "search_status": "unverified",
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 0
+                    }
+                }
+            }
+        }
+    }
+}

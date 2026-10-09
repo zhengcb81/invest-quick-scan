@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**最新唯一下一动作（OS CLI自动恢复后，优先于以下历史）：** 完整Phase111同一大节点最终静态/全受影响回归/一次集中独审，满足标准后精确源Git发布并严格自有清理。五文件313P/pytest102.41s/controller103.027s，37执行SHA不变，38已报备路径。真正OS CLI冷暖、24新OS场景含11强杀断点现由CLI自己恢复，MCP→LLM→公共结果/完整标准C06已验证；读[CLI恢复接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/cli-recovery-interface.md)。仍仅private schema13，生产StockQA42a517c/schema8未发布；StockWiki四路径许可/联合ACK/G3/L03/F05/真实gold/TH-IN原门保持，不刷新退役回执或启动200家live。IQS归档提交以progress实际回执为准。
+
 **最新唯一下一动作（2026-10-09，MCP接线后；优先于下文历史）**：真正独立OS子进程CLI冷暖/中断恢复，含MCP四HTTP→LLM→公共结果；然后完整Phase111同一大节点静态/受影响回归/一次集中独审/正常源发布/严格自有根清理。MCP现已在38路径报备的私有副本接线，schema13；读[实际接口与边界](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/mcp-interface.md)。六文件397P/1F（MCP47项全通过），唯一旧未实现断言更新后追加1P，产品源码未变，不合并成一次398P。最新归档Git以progress实际回执为准。StockQA生产仍42a517c/schema8，非真实MCP/厂商计价/金融准确性认证；StockWiki四文件许可、G3/L03/F05/真实gold/TH-IN原门开放。不刷新退役工程回执、不启动200家扫描。
 
 **当前下一动作（2026-10-09 Phase111）**：逐HTTP计费MCP接线，随后真正OS子进程CLI冷暖/中断恢复。16文件776P验证私有schema12/runtime；另新增五项真实store/client跨租约路径5P，覆盖已付费搜索→新租约回答→checkpoint、unknown搜索不重发、旧lease fence及迟到模型仅留账。该追加只有一测试文件变化，不重复776也不跨批相加，读[恢复边界](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/recovery-interface.md)。过期且未发送的旧检索意图仍保守等待明确处理，不声称任意断点自动恢复。checkpoint07已正常提交推送4884e7b，732原工件/735 Git blob核对一致；checkpoint08实际Git看progress。所有运行仍是HTTP替身与synthetic身份，独立进程CLI/金融事实/真实厂商计价未验。Phase111保持in_progress，StockQA42a517c/schema8未发布；整批静态/一次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
@@ -1545,7 +1547,7 @@ Status: in_progress_private_implementation_not_published
 
 - [x] 只读确认现行external路径尚未接通，属于原QA-NET步骤3–6；调整执行顺序，不改变上游关闭门。
 - [x] 固定42a517c输入并逐批报备范围；C06保留公共schema，以私有external context-use proof链接真实检索和回答，预算复用Q09。
-- [ ] 独占隔离环境TDD实现生产路径，完成受影响单元/集成/公开CLI批次。
+- [x] 独占隔离环境TDD实现并完成本段受影响单元/集成/真正OS公开CLI；仍仅私有副本，完整集中验收/发布待下项。
 - [ ] 一次集中审查、真实Git交付、逐文件清理及PWF/交接。
 
 实施说明：docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/plan.md。
@@ -1578,3 +1580,10 @@ Status: in_progress_private_implementation_not_published
 - [x] 旧真实探针实际2024-11-05/web_search_prime与文档不同，两协议/两名字显式支持，以实际schema决定query-only参数、不猜count；JSON/SSE有界、通知202空body、session私有、工具错误不作证据。
 - [x] 四文件345P、控制/REST两文件55P；六文件397P/1F，MCP47项全通过。唯一旧MCP未实现断言只改测试后追加1P，产品源不变、不机械重跑397无变化项、不跨批合成GREEN；原RED及fixture错误保留。
 - [ ] OS子进程CLI、整Phase111集中审查/源发布/严格清理仍待；本段不关闭全局门。新IQS留档实际Git以progress回执为准，不提前宣称发布或清理。
+
+
+## Phase111 OS子进程CLI与自动恢复：2026-10-09
+Status: private_implementation_verified_for_os_cli_scope_not_source_published
+
+- [x] 五文件313P与实际OS冷暖/11强杀/完整标准封包，原失败及子进程轨迹留档。
+- [ ] 最终整个Phase111集中静态/回归/独审、源发布及严格清理。

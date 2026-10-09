@@ -1,0 +1,127 @@
+{
+    "schema_version": "stockqa.quick_scan_result/1.1.0",
+    "entity": {
+        "entity_id": "ENT_SYNTHETIC",
+        "name": "Fixture Corp"
+    },
+    "observed_at": "2026-10-09T10:48:54.686070Z",
+    "provider": {
+        "name": "deepseek",
+        "requested_model": "deepseek-flash"
+    },
+    "answers": {
+        "IQS_05": {
+            "question_id": "IQS_05",
+            "status": "scored",
+            "score": 6,
+            "description": "Synthetic supported answer",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "published_date": null,
+            "information_as_of": null,
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        }
+    },
+    "execution_receipts": {
+        "IQS_05": {
+            "answer_sha256": "e34da1b902d06d4a2ccd55a4d95352fb1d35d21709b97c8afa06b67c038a16c8",
+            "answered_at": "2026-10-09T10:48:54.535951Z",
+            "input_question_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761",
+            "provider": "deepseek",
+            "requested_model": "deepseek-flash",
+            "actual_model": "deepseek-flash",
+            "request_id": "req_e2e_01",
+            "response_id": "resp_e2e_01",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": null,
+            "completed_at": "2026-10-09T10:48:54.535840Z",
+            "attempt_id": "a59333fd-4ce3-4a54-8bdc-f9512784ae64",
+            "prompt_sha256": "360c5f4c11f0c9117a61af38daec3e2638050d5d442871f8d00e6fe3e5c2a175",
+            "search_receipt_id": "EXTUSE_8b2a60ebc437d74f0b289c2ed26b71c48a932f832d1dca1b8dddf69bf8309be9",
+            "search_status": "executed",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "web_search_calls": [],
+            "attempts": [
+                {
+                    "actual_model": "deepseek-flash",
+                    "attempt_id": "a59333fd-4ce3-4a54-8bdc-f9512784ae64",
+                    "completed_at": "2026-10-09T10:48:54.535840Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "360c5f4c11f0c9117a61af38daec3e2638050d5d442871f8d00e6fe3e5c2a175",
+                    "provider": "deepseek",
+                    "request_id": "req_e2e_01",
+                    "requested_model": "deepseek-flash",
+                    "response_id": "resp_e2e_01",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "9eceecab0ecd024c2d8a105a3a503d454405cdf75de766a557888b0103e185a7",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": null,
+                    "search_status": "unverified"
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": "answered",
+            "search_binding": {
+                "schema": "stockqa.search_binding/1.1.0",
+                "entity_id": "ENT_SYNTHETIC",
+                "question_id": "IQS_05",
+                "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47",
+                "external_context_use": {
+                    "schema": "stockqa.external_context_use/1.1.0",
+                    "state": "request_and_response_bound",
+                    "use_id": "EXTUSE_8b2a60ebc437d74f0b289c2ed26b71c48a932f832d1dca1b8dddf69bf8309be9",
+                    "work_item_id": "WORK_73cf1eb3d07a477da025b11599fed03e",
+                    "work_attempt_id": "ATTEMPT_406d0fcdb19c4e6e9f67d533f42a3bfb",
+                    "context_sha256": "e1bc96018a8c45897ac080b9eaf427d77d7e561689b97a7aa52f9bd398a2b15d",
+                    "question_manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05",
+                    "answer_search_mode": "external_context_only",
+                    "request_prompt_sha256": "da48a3d046d66f0be6e75255cbff769d9e128e372d37cabeffde920fe94874a8",
+                    "llm_receipt_sha256": "7740b2433543fa2d87858c55cf627669daee5f4ca2c1aabbc99d1ea6a0ac0fc0",
+                    "provider": "deepseek",
+                    "actual_model": "deepseek-flash",
+                    "used_at": 1791542934.5359511,
+                    "retrievals": [
+                        {
+                            "operation_id": "SEARCH_ea959624275e025866393e0d3a40645ceeda661db118dbda69685774eaa80735",
+                            "query_id": "margins",
+                            "receipt_sha256": "fcec339a6cc3ea9ac8a82d76c0cfc8e8964977b448009bd2e664d66f56f6159d",
+                            "retrieved_at": "2026-10-09T10:48:54.463178Z",
+                            "route_id": "brave-primary",
+                            "route_kind": "brave"
+                        }
+                    ],
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "proof_sha256": "faead12894a6865d8ef23dd149220f636f3bbbc7bf426da271e07968c8ba6f1b"
+                },
+                "native_receipt": {
+                    "actual_model": "deepseek-flash",
+                    "attempt_id": "a59333fd-4ce3-4a54-8bdc-f9512784ae64",
+                    "completed_at": "2026-10-09T10:48:54.535840Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "360c5f4c11f0c9117a61af38daec3e2638050d5d442871f8d00e6fe3e5c2a175",
+                    "provider": "deepseek",
+                    "request_id": "req_e2e_01",
+                    "requested_model": "deepseek-flash",
+                    "response_id": "resp_e2e_01",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "9eceecab0ecd024c2d8a105a3a503d454405cdf75de766a557888b0103e185a7",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": null,
+                    "search_status": "unverified"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\os-public-automatic-recovery-affected-green-01\test_os_external_cli_full_stan0\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest c32233924714a4e1）
+INFO - C06 权威文档已加载（134cb62a9e3afb24）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\os-public-automatic-recovery-affected-green-01\test_os_external_cli_full_stan0\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\os-public-automatic-recovery-affected-green-01\test_os_external_cli_full_stan0\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"dispatch": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "c32233924714a4e1eb096531fb16a785ae08d7b1efb793ac7780395f64db0829", "model_calls_planned": 1, "module_package_id": "pkg_24f07923f23cf0a2be5d7fb4b36a11925c779a8f4a68bdc9c81457084ded080f", "questions": [{"action": "dispatch", "generation": 1, "module_id": "common", "prompt_sha256": "01e78e9053d06b068da47f9e187b8ec0f972bb93027cedd20a5b557b5e096519", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "2d8eccbbf65836de525b422224a0f9128b869e15864e243bfee1d468a9d6b144", "work_item_id": null}], "routing_fingerprint_by_question": {}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "3.2.0"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "046e83c94b0708d24474f0160de14801b13d910cff60c3331d61ccefe341f217", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: [IQS_05] 对象与口径={"company": "Fixture Corp", "ticker...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+INFO - LLM处理问题: [IQS_05] 对象与口径={"company": "Fixture Corp", "ticker...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+INFO - LLM答案生成完成 (状态: scored)
+INFO - C06 完整包已封存（WORK_fa5a03ef1f9948838300266e2646095e）→ pkg_a0f9632f1fbfec201253128548e44b39190e69c771eb88376bf36c582d4e8b38
+INFO - Q10 检查点落定 → sealed（WORK_fa5a03ef1f9948838300266e2646095e）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: [IQS_05] 对象与口径={"company": "Fixture Corp", "ticker...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] [IQS_05] 对象与口径={"company": "Fixture Corp", "ticker": "FIXTUR...
+──────────────────────────────────────────────────────────────────────
+Score: 8/10
+
+{"question_id": "IQS_05", "response_kind": "score", "status": "scored", "score": 8, "summary": "Synthetic standard answer; not a real company conclusion.", "information_as_of": "2026-09-01", "period_s...
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\os-public-automatic-recovery-affected-green-01\test_os_external_cli_full_stan0\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\os-public-automatic-recovery-affected-green-01\test_os_external_cli_full_stan0\result.json
+[OK] 平均评分: 8.0/10
+[OK] 评分分布: {8: 1}
+INFO - 
+Question processing completed.

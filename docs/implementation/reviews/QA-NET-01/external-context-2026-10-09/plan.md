@@ -68,3 +68,8 @@ checkpoint07已正常提交推送4884e7b。追加五项真实client/store恢复�
 MCP控制及正式检索已在private schema13接线，38报备/37执行文件，源仍42a517c/schema8。读mcp-interface.md：三控制独立HTTP/Q09，正式search绑定真实三记录，采用已协商协议/实际发现名字与query-only schema，unknown保持原预留不重发。四文件345P、控制/REST两文件55P；六文件397P/1F中MCP47全通过，唯一旧未实现断言只改测试后追加1P，不合成398P、不加小节点review。旧01–08/原RED冻结。
 
 下一动作OS子进程CLI冷暖/中断恢复（含MCP→LLM/public），随后完整Phase111一次集中静态/回归/独审/正常源Git/严格清理。当前仍私有实施、没有收费API/下载/外仓源写，不关闭金融准确性或任何跨仓门；实际新IQS Git看progress回执。
+
+
+## Phase111 OS子进程CLI与自动恢复：2026-10-09
+
+完整Phase111同一大节点最终静态/全受影响回归/一次集中独审，满足标准后精确源Git发布并严格自有清理。五文件313P/pytest102.41s/controller103.027s，37执行SHA不变，38已报备路径。真正OS CLI冷暖、24新OS场景含11强杀断点现由CLI自己恢复，MCP→LLM→公共结果/完整标准C06已验证；读[CLI恢复接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/cli-recovery-interface.md)。仍仅private schema13，生产StockQA42a517c/schema8未发布；StockWiki四路径许可/联合ACK/G3/L03/F05/真实gold/TH-IN原门保持，不刷新退役回执或启动200家live。IQS归档提交以progress实际回执为准。

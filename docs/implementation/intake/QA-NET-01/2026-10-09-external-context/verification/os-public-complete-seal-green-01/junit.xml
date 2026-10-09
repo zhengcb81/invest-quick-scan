@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="6.052" timestamp="2026-10-09T11:44:44.186424+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_os_external_cli_full_standard_answer_seals_and_recovers_without_http[False-False]" time="1.381"><failure message="TypeError: Object of type bytes is not JSON serializable">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-complete-seal-green-01/test_os_external_cli_full_stan0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D96A54C050&gt;
+mcp = False, deepseek = False
+
+    @pytest.mark.parametrize("mcp,deepseek", [(False, False), (True, False), (True, True)])
+    def test_os_external_cli_full_standard_answer_seals_and_recovers_without_http(tmp_path, monkeypatch, mcp, deepseek):
+        argv, authority_path, body = _complete_subprocess_inputs(tmp_path, monkeypatch, mcp=mcp, deepseek=deepseek)
+        cold = _external_spawn(tmp_path, argv, stub=True, label="cold")
+        assert cold.returncode == 0, cold.stdout[-3500:] + cold.stderr[-2000:]
+        public = json.loads((tmp_path / "result.json").read_text("utf-8"))
+        receipt = public["execution_receipts"]["IQS_05"]
+        work_id = receipt["search_binding"]["external_context_use"]["work_item_id"]
+        store = _external_store(tmp_path)
+        standard = store.get_standard_answer(work_id)
+        assert standard is not None
+        delivery = store.get_result_delivery(work_id)
+        assert delivery["state"] == "ready"
+        from src.utils.quick_scan_result_outbox import validate_exchange_package
+        validate_exchange_package(delivery["package"])
+        observation = delivery["package"]["items"][0]["observation"]
+        assert observation["answer"] == standard["answer"] == body
+        assert observation["answer"]["score"] == 8
+        assert len(observation["answer"]["evidence"]) == len(body["evidence"]) == 18
+        assert {e["url"] for e in observation["answer"]["evidence"]} == {"https://fixture.example/ir"}
+        assert "PRIVATE_CHILD_THINKING" not in json.dumps(observation)
+&gt;       assert "SYNTHETIC_PRIVATE_SESSION" not in json.dumps(delivery)
+                                                  ^^^^^^^^^^^^^^^^^^^^
+
+tests\integration\test_external_context_cli_e2e.py:639: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\json\__init__.py:231: in dumps
+    return _default_encoder.encode(obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\json\encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\json\encoder.py:261: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.encoder.JSONEncoder object at 0x000001D9646706E0&gt;
+o = b'{"consumer":{"component":"StockWiki","minimum_schema_version":"1.0.0","namespace":"quick_scan"},"contract_versions":..."required_capabilities":["entity_security_identity_v1","standard_observation_v1","score_v1"],"schema_version":"1.0.0"}'
+
+    def default(self, o):
+        """Implement this method in a subclass such that it returns
+        a serializable object for ``o``, or calls the base implementation
+        (to raise a ``TypeError``).
+    
+        For example, to support arbitrary iterators, you could
+        implement default like this::
+    
+            def default(self, o):
+                try:
+                    iterable = iter(o)
+                except TypeError:
+                    pass
+                else:
+                    return list(iterable)
+                # Let the base class default method raise the TypeError
+                return super().default(o)
+    
+        """
+&gt;       raise TypeError(f'Object of type {o.__class__.__name__} '
+                        f'is not JSON serializable')
+E       TypeError: Object of type bytes is not JSON serializable
+
+C:\Miniconda\Lib\json\encoder.py:180: TypeError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_os_external_cli_full_standard_answer_seals_and_recovers_without_http[True-False]" time="1.475"><failure message="TypeError: Object of type bytes is not JSON serializable">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-complete-seal-green-01/test_os_external_cli_full_stan1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D96785EFD0&gt;
+mcp = True, deepseek = False
+
+    @pytest.mark.parametrize("mcp,deepseek", [(False, False), (True, False), (True, True)])
+    def test_os_external_cli_full_standard_answer_seals_and_recovers_without_http(tmp_path, monkeypatch, mcp, deepseek):
+        argv, authority_path, body = _complete_subprocess_inputs(tmp_path, monkeypatch, mcp=mcp, deepseek=deepseek)
+        cold = _external_spawn(tmp_path, argv, stub=True, label="cold")
+        assert cold.returncode == 0, cold.stdout[-3500:] + cold.stderr[-2000:]
+        public = json.loads((tmp_path / "result.json").read_text("utf-8"))
+        receipt = public["execution_receipts"]["IQS_05"]
+        work_id = receipt["search_binding"]["external_context_use"]["work_item_id"]
+        store = _external_store(tmp_path)
+        standard = store.get_standard_answer(work_id)
+        assert standard is not None
+        delivery = store.get_result_delivery(work_id)
+        assert delivery["state"] == "ready"
+        from src.utils.quick_scan_result_outbox import validate_exchange_package
+        validate_exchange_package(delivery["package"])
+        observation = delivery["package"]["items"][0]["observation"]
+        assert observation["answer"] == standard["answer"] == body
+        assert observation["answer"]["score"] == 8
+        assert len(observation["answer"]["evidence"]) == len(body["evidence"]) == 18
+        assert {e["url"] for e in observation["answer"]["evidence"]} == {"https://fixture.example/ir"}
+        assert "PRIVATE_CHILD_THINKING" not in json.dumps(observation)
+&gt;       assert "SYNTHETIC_PRIVATE_SESSION" not in json.dumps(delivery)
+                                                  ^^^^^^^^^^^^^^^^^^^^
+
+tests\integration\test_external_context_cli_e2e.py:639: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\json\__init__.py:231: in dumps
+    return _default_encoder.encode(obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\json\encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\json\encoder.py:261: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.encoder.JSONEncoder object at 0x000001D9646706E0&gt;
+o = b'{"consumer":{"component":"StockWiki","minimum_schema_version":"1.0.0","namespace":"quick_scan"},"contract_versions":..."required_capabilities":["entity_security_identity_v1","standard_observation_v1","score_v1"],"schema_version":"1.0.0"}'
+
+    def default(self, o):
+        """Implement this method in a subclass such that it returns
+        a serializable object for ``o``, or calls the base implementation
+        (to raise a ``TypeError``).
+    
+        For example, to support arbitrary iterators, you could
+        implement default like this::
+    
+            def default(self, o):
+                try:
+                    iterable = iter(o)
+                except TypeError:
+                    pass
+                else:
+                    return list(iterable)
+                # Let the base class default method raise the TypeError
+                return super().default(o)
+    
+        """
+&gt;       raise TypeError(f'Object of type {o.__class__.__name__} '
+                        f'is not JSON serializable')
+E       TypeError: Object of type bytes is not JSON serializable
+
+C:\Miniconda\Lib\json\encoder.py:180: TypeError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_os_external_cli_full_standard_answer_seals_and_recovers_without_http[True-True]" time="1.612"><failure message="TypeError: Object of type bytes is not JSON serializable">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-complete-seal-green-01/test_os_external_cli_full_stan2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D96A4F8DD0&gt;
+mcp = True, deepseek = True
+
+    @pytest.mark.parametrize("mcp,deepseek", [(False, False), (True, False), (True, True)])
+    def test_os_external_cli_full_standard_answer_seals_and_recovers_without_http(tmp_path, monkeypatch, mcp, deepseek):
+        argv, authority_path, body = _complete_subprocess_inputs(tmp_path, monkeypatch, mcp=mcp, deepseek=deepseek)
+        cold = _external_spawn(tmp_path, argv, stub=True, label="cold")
+        assert cold.returncode == 0, cold.stdout[-3500:] + cold.stderr[-2000:]
+        public = json.loads((tmp_path / "result.json").read_text("utf-8"))
+        receipt = public["execution_receipts"]["IQS_05"]
+        work_id = receipt["search_binding"]["external_context_use"]["work_item_id"]
+        store = _external_store(tmp_path)
+        standard = store.get_standard_answer(work_id)
+        assert standard is not None
+        delivery = store.get_result_delivery(work_id)
+        assert delivery["state"] == "ready"
+        from src.utils.quick_scan_result_outbox import validate_exchange_package
+        validate_exchange_package(delivery["package"])
+        observation = delivery["package"]["items"][0]["observation"]
+        assert observation["answer"] == standard["answer"] == body
+        assert observation["answer"]["score"] == 8
+        assert len(observation["answer"]["evidence"]) == len(body["evidence"]) == 18
+        assert {e["url"] for e in observation["answer"]["evidence"]} == {"https://fixture.example/ir"}
+        assert "PRIVATE_CHILD_THINKING" not in json.dumps(observation)
+&gt;       assert "SYNTHETIC_PRIVATE_SESSION" not in json.dumps(delivery)
+                                                  ^^^^^^^^^^^^^^^^^^^^
+
+tests\integration\test_external_context_cli_e2e.py:639: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\json\__init__.py:231: in dumps
+    return _default_encoder.encode(obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\json\encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\json\encoder.py:261: in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.encoder.JSONEncoder object at 0x000001D9646706E0&gt;
+o = b'{"consumer":{"component":"StockWiki","minimum_schema_version":"1.0.0","namespace":"quick_scan"},"contract_versions":..."required_capabilities":["entity_security_identity_v1","standard_observation_v1","score_v1"],"schema_version":"1.0.0"}'
+
+    def default(self, o):
+        """Implement this method in a subclass such that it returns
+        a serializable object for ``o``, or calls the base implementation
+        (to raise a ``TypeError``).
+    
+        For example, to support arbitrary iterators, you could
+        implement default like this::
+    
+            def default(self, o):
+                try:
+                    iterable = iter(o)
+                except TypeError:
+                    pass
+                else:
+                    return list(iterable)
+                # Let the base class default method raise the TypeError
+                return super().default(o)
+    
+        """
+&gt;       raise TypeError(f'Object of type {o.__class__.__name__} '
+                        f'is not JSON serializable')
+E       TypeError: Object of type bytes is not JSON serializable
+
+C:\Miniconda\Lib\json\encoder.py:180: TypeError</failure></testcase></testsuite></testsuites>

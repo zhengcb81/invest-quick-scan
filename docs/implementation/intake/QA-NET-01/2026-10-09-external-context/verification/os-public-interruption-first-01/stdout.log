@@ -1,0 +1,172 @@
+.....FFFFFF                                                              [100%]
+================================== FAILURES ===================================
+_ test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[False-sent:search] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BF5D33E850>
+mcp = False, point = 'sent:search'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "sent:search"), (True, "sent:initialize"),
+        (True, "sent:notifications/initialized"), (True, "sent:tools/list"), (True, "sent:tools/call"), (True, "sent:model")])
+    def test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        store, work_id = _expire_child_lease(tmp_path)
+        state = store.recover_expired(work_id)
+        assert state == ("uncertain" if point == "sent:model" else "pending")
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        assert before["reserved_micros"] > 0
+        retry = _external_spawn(tmp_path, argv, stub=False, label="unknown-reopen")
+        assert retry.returncode != 0
+>       assert _external_sends(tmp_path) == sends and not (tmp_path / "result.json").exists()
+E       AssertionError: assert ([{'kind': 'se..._only': True}] == [{'kind': 'se..._only': True}]
+E         
+E         Use -v to get more diff and not True)
+E        +  where True = exists()
+E        +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate5') / 'result.json').exists
+
+tests\integration\test_external_context_cli_e2e.py:521: AssertionError
+_ test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:initialize] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate6')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BF5DA34750>
+mcp = True, point = 'sent:initialize'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "sent:search"), (True, "sent:initialize"),
+        (True, "sent:notifications/initialized"), (True, "sent:tools/list"), (True, "sent:tools/call"), (True, "sent:model")])
+    def test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        store, work_id = _expire_child_lease(tmp_path)
+        state = store.recover_expired(work_id)
+        assert state == ("uncertain" if point == "sent:model" else "pending")
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        assert before["reserved_micros"] > 0
+        retry = _external_spawn(tmp_path, argv, stub=False, label="unknown-reopen")
+        assert retry.returncode != 0
+>       assert _external_sends(tmp_path) == sends and not (tmp_path / "result.json").exists()
+E       AssertionError: assert ([{'kind': 'in..._only': True}] == [{'kind': 'in..._only': True}]
+E         
+E         Use -v to get more diff and not True)
+E        +  where True = exists()
+E        +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate6') / 'result.json').exists
+
+tests\integration\test_external_context_cli_e2e.py:521: AssertionError
+_ test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:notifications/initialized] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate7')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BF5D9D06E0>
+mcp = True, point = 'sent:notifications/initialized'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "sent:search"), (True, "sent:initialize"),
+        (True, "sent:notifications/initialized"), (True, "sent:tools/list"), (True, "sent:tools/call"), (True, "sent:model")])
+    def test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        store, work_id = _expire_child_lease(tmp_path)
+        state = store.recover_expired(work_id)
+        assert state == ("uncertain" if point == "sent:model" else "pending")
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        assert before["reserved_micros"] > 0
+        retry = _external_spawn(tmp_path, argv, stub=False, label="unknown-reopen")
+        assert retry.returncode != 0
+>       assert _external_sends(tmp_path) == sends and not (tmp_path / "result.json").exists()
+E       AssertionError: assert ([{'kind': 'in..._only': True}] == [{'kind': 'in..._only': True}]
+E         
+E         Use -v to get more diff and not True)
+E        +  where True = exists()
+E        +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate7') / 'result.json').exists
+
+tests\integration\test_external_context_cli_e2e.py:521: AssertionError
+_ test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:tools/list] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate8')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BF5D9D0C80>
+mcp = True, point = 'sent:tools/list'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "sent:search"), (True, "sent:initialize"),
+        (True, "sent:notifications/initialized"), (True, "sent:tools/list"), (True, "sent:tools/call"), (True, "sent:model")])
+    def test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        store, work_id = _expire_child_lease(tmp_path)
+        state = store.recover_expired(work_id)
+        assert state == ("uncertain" if point == "sent:model" else "pending")
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        assert before["reserved_micros"] > 0
+        retry = _external_spawn(tmp_path, argv, stub=False, label="unknown-reopen")
+        assert retry.returncode != 0
+>       assert _external_sends(tmp_path) == sends and not (tmp_path / "result.json").exists()
+E       AssertionError: assert ([{'kind': 'in..._only': True}] == [{'kind': 'in..._only': True}]
+E         
+E         Use -v to get more diff and not True)
+E        +  where True = exists()
+E        +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate8') / 'result.json').exists
+
+tests\integration\test_external_context_cli_e2e.py:521: AssertionError
+_ test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:tools/call] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate9')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BF5D9F3AF0>
+mcp = True, point = 'sent:tools/call'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "sent:search"), (True, "sent:initialize"),
+        (True, "sent:notifications/initialized"), (True, "sent:tools/list"), (True, "sent:tools/call"), (True, "sent:model")])
+    def test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        store, work_id = _expire_child_lease(tmp_path)
+        state = store.recover_expired(work_id)
+        assert state == ("uncertain" if point == "sent:model" else "pending")
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        assert before["reserved_micros"] > 0
+        retry = _external_spawn(tmp_path, argv, stub=False, label="unknown-reopen")
+        assert retry.returncode != 0
+>       assert _external_sends(tmp_path) == sends and not (tmp_path / "result.json").exists()
+E       AssertionError: assert ([{'kind': 'in..._only': True}] == [{'kind': 'in..._only': True}]
+E         
+E         Use -v to get more diff and not True)
+E        +  where True = exists()
+E        +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate9') / 'result.json').exists
+
+tests\integration\test_external_context_cli_e2e.py:521: AssertionError
+_ test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:model] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate10')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001BF5D38F070>
+mcp = True, point = 'sent:model'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "sent:search"), (True, "sent:initialize"),
+        (True, "sent:notifications/initialized"), (True, "sent:tools/list"), (True, "sent:tools/call"), (True, "sent:model")])
+    def test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        store, work_id = _expire_child_lease(tmp_path)
+        state = store.recover_expired(work_id)
+        assert state == ("uncertain" if point == "sent:model" else "pending")
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        assert before["reserved_micros"] > 0
+        retry = _external_spawn(tmp_path, argv, stub=False, label="unknown-reopen")
+        assert retry.returncode != 0
+>       assert _external_sends(tmp_path) == sends and not (tmp_path / "result.json").exists()
+E       AssertionError: assert ([{'kind': 'in...pt-4.1', ...}] == [{'kind': 'in...pt-4.1', ...}]
+E         
+E         Use -v to get more diff and not True)
+E        +  where True = exists()
+E        +    where exists = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-interruption-first-01/test_os_external_cli_terminate10') / 'result.json').exists
+
+tests\integration\test_external_context_cli_e2e.py:521: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[False-sent:search]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:initialize]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:notifications/initialized]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:tools/list]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:tools/call]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:model]
+6 failed, 5 passed, 16 deselected in 27.50s

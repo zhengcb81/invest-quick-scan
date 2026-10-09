@@ -1,0 +1,145 @@
+{
+    "schema_version": "stockqa.quick_scan_result/1.1.0",
+    "entity": {
+        "entity_id": "ENT_SYNTHETIC",
+        "name": "Fixture Corp"
+    },
+    "observed_at": "2026-10-09T10:36:08.687553Z",
+    "provider": {
+        "name": "deepseek",
+        "requested_model": "deepseek-flash"
+    },
+    "answers": {
+        "IQS_05": {
+            "question_id": "IQS_05",
+            "status": "scored",
+            "score": 6,
+            "description": "Synthetic supported answer",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "published_date": null,
+            "information_as_of": null,
+            "check_level": "unverified_model_output",
+            "check_level_receipt_id": null
+        }
+    },
+    "execution_receipts": {
+        "IQS_05": {
+            "answer_sha256": "e34da1b902d06d4a2ccd55a4d95352fb1d35d21709b97c8afa06b67c038a16c8",
+            "answered_at": "2026-10-09T10:36:06.419175Z",
+            "input_question_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761",
+            "provider": "deepseek",
+            "requested_model": "deepseek-flash",
+            "actual_model": "deepseek-flash",
+            "request_id": "synthetic-child-request",
+            "response_id": "synthetic-child-model",
+            "response_status": "completed",
+            "http_status_code": 200,
+            "failure_type": null,
+            "started_at": null,
+            "completed_at": "2026-10-09T10:36:07.599404Z",
+            "attempt_id": "c209305b-a7e6-4c9d-8aa7-db5cfaa6578b",
+            "prompt_sha256": "047f9a27e0d8ddb6c02bc729a3edae0ca3b47185e682501fdbfd3f2f28277f5a",
+            "search_receipt_id": "EXTUSE_5aeeeb222a9f6d4b1f50976b32b94e25eda7ed2b64ba543d77e38d0643294c81",
+            "search_status": "executed",
+            "source_urls": [
+                "https://fixture.example/ir"
+            ],
+            "web_search_calls": [],
+            "attempts": [
+                {
+                    "actual_model": "deepseek-flash",
+                    "attempt_id": "c209305b-a7e6-4c9d-8aa7-db5cfaa6578b",
+                    "completed_at": "2026-10-09T10:36:07.599404Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "047f9a27e0d8ddb6c02bc729a3edae0ca3b47185e682501fdbfd3f2f28277f5a",
+                    "provider": "deepseek",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "deepseek-flash",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "a3fecf3047b14be35eb99499d7f6672dcf12e6187a6a47acae52fa8178f32353",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": null,
+                    "search_status": "unverified",
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 0
+                    }
+                }
+            ],
+            "format_repair": null,
+            "dispatch_outcome": "answered",
+            "search_binding": {
+                "schema": "stockqa.search_binding/1.1.0",
+                "entity_id": "ENT_SYNTHETIC",
+                "question_id": "IQS_05",
+                "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47",
+                "external_context_use": {
+                    "schema": "stockqa.external_context_use/1.1.0",
+                    "state": "request_and_response_bound",
+                    "use_id": "EXTUSE_5aeeeb222a9f6d4b1f50976b32b94e25eda7ed2b64ba543d77e38d0643294c81",
+                    "work_item_id": "WORK_102f674853f14d12aca8ecb0bf6b1d9d",
+                    "work_attempt_id": "ATTEMPT_a25fb5acf3fe45c6b25670989bf530e9",
+                    "context_sha256": "ce66e7ab9c61834e23595e5888b319b9b894640a8c97df643d03feb55c432b16",
+                    "question_manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05",
+                    "answer_search_mode": "external_context_only",
+                    "request_prompt_sha256": "17caec5979e843db0d1d3cbf8ecb3c3453f74af76c093e6d193944b91a6c6eaf",
+                    "llm_receipt_sha256": "e37ff0b7c46f0903023ada19c7eb9c719b04fc8f936a2e42db880e804af68ac9",
+                    "provider": "deepseek",
+                    "actual_model": "deepseek-flash",
+                    "used_at": 1791542166.4191754,
+                    "retrievals": [
+                        {
+                            "operation_id": "SEARCH_1821859dfc5cea42df395f52d3ea19a92476968d0c59d94120b39edfc1fa9c96",
+                            "query_id": "margins",
+                            "receipt_sha256": "6cab111d3eb2f9ba38ee4ebc7bf73f59c8128c33abeb979af6af60322565ba11",
+                            "retrieved_at": "2026-10-09T10:36:06.419175Z",
+                            "route_id": "brave-primary",
+                            "route_kind": "zai_mcp_streamable"
+                        }
+                    ],
+                    "source_urls": [
+                        "https://fixture.example/ir"
+                    ],
+                    "proof_sha256": "2e27ca530c9442c678ebb7dce5110006117a861028b23c02a230896937612485"
+                },
+                "native_receipt": {
+                    "actual_model": "deepseek-flash",
+                    "attempt_id": "c209305b-a7e6-4c9d-8aa7-db5cfaa6578b",
+                    "completed_at": "2026-10-09T10:36:07.599404Z",
+                    "http_status_code": 200,
+                    "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+                    "prompt_sha256": "047f9a27e0d8ddb6c02bc729a3edae0ca3b47185e682501fdbfd3f2f28277f5a",
+                    "provider": "deepseek",
+                    "request_id": "synthetic-child-request",
+                    "requested_model": "deepseek-flash",
+                    "response_id": "synthetic-child-model",
+                    "response_json_basis": "strict_http_json",
+                    "response_sha256": "a3fecf3047b14be35eb99499d7f6672dcf12e6187a6a47acae52fa8178f32353",
+                    "response_status": "completed",
+                    "search_protocol": "responses",
+                    "search_receipt_id": null,
+                    "search_status": "unverified",
+                    "usage": {
+                        "cache_creation_input_tokens": 0,
+                        "cached_input_tokens": 0,
+                        "input_tokens": 1000,
+                        "output_tokens": 10,
+                        "reasoning_output_tokens": 0,
+                        "schema": "quick-scan-usage-v1",
+                        "search_tool_calls": 0
+                    }
+                }
+            }
+        }
+    }
+}

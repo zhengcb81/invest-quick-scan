@@ -1,0 +1,159 @@
+FFFFF.....F                                                              [100%]
+================================== FAILURES ===================================
+_ test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[False-search_settled] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-automatic-recovery-red-01/test_os_external_cli_terminate0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024A41240050>
+mcp = False, point = 'search_settled'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "search_settled"), (True, "search_settled"),
+        (True, "settled:initialize"), (True, "settled:initialized"), (True, "settled:discovery")])
+    def test_os_external_cli_terminated_after_paid_result_resumes_without_repaying(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        assert not (tmp_path / "result.json").exists() and all(row["kind"] != "model" for row in sends)
+        store, work_id = _expire_child_lease(tmp_path)
+        assert store.get_item(work_id)["status"] == "leased"
+        resumed = _external_spawn(tmp_path, argv, stub=True, label="resumed")
+>       assert resumed.returncode == 0, resumed.stdout[-3000:] + resumed.stderr[-3000:]
+E       AssertionError: b'YNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": "W...ernal_cli_terminate0\\result.json\r
+E         ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...minate0\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:505: AssertionError
+_ test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[True-search_settled] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-automatic-recovery-red-01/test_os_external_cli_terminate1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024A3E52EFD0>
+mcp = True, point = 'search_settled'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "search_settled"), (True, "search_settled"),
+        (True, "settled:initialize"), (True, "settled:initialized"), (True, "settled:discovery")])
+    def test_os_external_cli_terminated_after_paid_result_resumes_without_repaying(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        assert not (tmp_path / "result.json").exists() and all(row["kind"] != "model" for row in sends)
+        store, work_id = _expire_child_lease(tmp_path)
+        assert store.get_item(work_id)["status"] == "leased"
+        resumed = _external_spawn(tmp_path, argv, stub=True, label="resumed")
+>       assert resumed.returncode == 0, resumed.stdout[-3000:] + resumed.stderr[-3000:]
+E       AssertionError: b'YNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": "W...ernal_cli_terminate1\\result.json\r
+E         ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...minate1\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:505: AssertionError
+_ test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[True-settled:initialize] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-automatic-recovery-red-01/test_os_external_cli_terminate2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024A40A39250>
+mcp = True, point = 'settled:initialize'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "search_settled"), (True, "search_settled"),
+        (True, "settled:initialize"), (True, "settled:initialized"), (True, "settled:discovery")])
+    def test_os_external_cli_terminated_after_paid_result_resumes_without_repaying(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        assert not (tmp_path / "result.json").exists() and all(row["kind"] != "model" for row in sends)
+        store, work_id = _expire_child_lease(tmp_path)
+        assert store.get_item(work_id)["status"] == "leased"
+        resumed = _external_spawn(tmp_path, argv, stub=True, label="resumed")
+>       assert resumed.returncode == 0, resumed.stdout[-3000:] + resumed.stderr[-3000:]
+E       AssertionError: b'YNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": "W...ernal_cli_terminate2\\result.json\r
+E         ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...minate2\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:505: AssertionError
+_ test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[True-settled:initialized] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-automatic-recovery-red-01/test_os_external_cli_terminate3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024A40982470>
+mcp = True, point = 'settled:initialized'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "search_settled"), (True, "search_settled"),
+        (True, "settled:initialize"), (True, "settled:initialized"), (True, "settled:discovery")])
+    def test_os_external_cli_terminated_after_paid_result_resumes_without_repaying(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        assert not (tmp_path / "result.json").exists() and all(row["kind"] != "model" for row in sends)
+        store, work_id = _expire_child_lease(tmp_path)
+        assert store.get_item(work_id)["status"] == "leased"
+        resumed = _external_spawn(tmp_path, argv, stub=True, label="resumed")
+>       assert resumed.returncode == 0, resumed.stdout[-3000:] + resumed.stderr[-3000:]
+E       AssertionError: b'YNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": "W...ernal_cli_terminate3\\result.json\r
+E         ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...minate3\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:505: AssertionError
+_ test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[True-settled:discovery] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-automatic-recovery-red-01/test_os_external_cli_terminate4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024A40981AE0>
+mcp = True, point = 'settled:discovery'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "search_settled"), (True, "search_settled"),
+        (True, "settled:initialize"), (True, "settled:initialized"), (True, "settled:discovery")])
+    def test_os_external_cli_terminated_after_paid_result_resumes_without_repaying(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        assert not (tmp_path / "result.json").exists() and all(row["kind"] != "model" for row in sends)
+        store, work_id = _expire_child_lease(tmp_path)
+        assert store.get_item(work_id)["status"] == "leased"
+        resumed = _external_spawn(tmp_path, argv, stub=True, label="resumed")
+>       assert resumed.returncode == 0, resumed.stdout[-3000:] + resumed.stderr[-3000:]
+E       AssertionError: b'YNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": "W...ernal_cli_terminate4\\result.json\r
+E         ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...minate4\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:505: AssertionError
+_ test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:model] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-automatic-recovery-red-01/test_os_external_cli_terminate10')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024A3FE044B0>
+mcp = True, point = 'sent:model'
+
+    @pytest.mark.parametrize("mcp,point", [(False, "sent:search"), (True, "sent:initialize"),
+        (True, "sent:notifications/initialized"), (True, "sent:tools/list"), (True, "sent:tools/call"), (True, "sent:model")])
+    def test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats(tmp_path, monkeypatch, mcp, point):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp)
+        _external_kill(tmp_path, argv, point)
+        sends = _external_sends(tmp_path)
+        store, work_id = _expire_child_lease(tmp_path)
+        assert store.get_item(work_id)["status"] == "leased"
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        assert before["reserved_micros"] > 0
+        # Keep a valid synthetic key and HTTP stub: absence of either must not be
+        # what prevents a second paid send. The actual durable unknown must stop it.
+        retry = _external_spawn(tmp_path, argv, stub=True, label="unknown-reopen")
+        assert retry.returncode != 0
+        assert _external_sends(tmp_path) == sends
+        if point == "sent:model":
+>           assert store.get_item(work_id)["status"] == "uncertain"
+E           AssertionError: assert 'leased' == 'uncertain'
+E             
+E             - uncertain
+E             + leased
+
+tests\integration\test_external_context_cli_e2e.py:531: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[False-search_settled]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[True-search_settled]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[True-settled:initialize]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[True-settled:initialized]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_after_paid_result_resumes_without_repaying[True-settled:discovery]
+FAILED tests/integration/test_external_context_cli_e2e.py::test_os_external_cli_terminated_with_unknown_send_never_automatically_repeats[True-sent:model]
+6 failed, 5 passed, 24 deselected in 24.47s

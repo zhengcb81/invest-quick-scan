@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="10.558" timestamp="2026-10-09T11:32:33.630571+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_os_external_cli_cold_then_independent_warm_without_http_or_search_key[False-False-False]" time="3.223"><failure message="AssertionError: b'INFO - ======================================================================\r&#10;  INFO - \xe5\x85\xac\xe5\x8f\xb8\xe5...\r&#10;  ValueError: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route\r&#10;  '&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...r: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route\r\n', stderr=b'').returncode">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-cold-first-01/test_os_external_cli_cold_then0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002899A9C7CE0&gt;
+mcp = False, hybrid = False, deepseek = False
+
+    @pytest.mark.parametrize("mcp,hybrid,deepseek", [(False, False, False), (False, True, False),
+        (True, False, False), (True, True, False), (True, False, True)])
+    def test_os_external_cli_cold_then_independent_warm_without_http_or_search_key(tmp_path, monkeypatch, mcp, hybrid, deepseek):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp, hybrid=hybrid, deepseek=deepseek)
+        cold = _external_spawn(tmp_path, argv, stub=True, label="cold")
+        assert cold.returncode == 0, cold.stdout[-3000:] + cold.stderr[-3000:]
+        first = json.loads((tmp_path / "result.json").read_text("utf-8"))
+        receipt = first["execution_receipts"]["IQS_05"]
+        sends = _external_sends(tmp_path)
+        expected = ["initialize", "notifications/initialized", "tools/list", "tools/call", "model"] if mcp else ["search", "model"]
+        assert [row["kind"] for row in sends] == expected
+        assert len({row["pid"] for row in sends}) == 1 and sends[0]["pid"] != os.getpid()
+        assert sends[-1]["has_context"] and sends[-1]["native_tools"] == hybrid
+        if deepseek:
+            assert sends[-1]["thinking"] == {"effort": "high"}
+        assert receipt["search_status"] == "executed" and first["answers"]["IQS_05"]["score"] == 6
+        assert "SYNTHETIC_PRIVATE_SESSION" not in json.dumps(first)
+        assert "PRIVATE_CHILD_THINKING" not in json.dumps(first)
+        store = _external_store(tmp_path)
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        assert before["requests"] == len(expected) and before["spent_micros"] == (22000 if mcp else 13000)
+        assert before["reserved_micros"] == 0
+        warm = _external_spawn(tmp_path, argv, stub=False, label="warm")
+&gt;       assert warm.returncode == 0, warm.stdout[-3000:] + warm.stderr[-3000:]
+E       AssertionError: b'INFO - ======================================================================\r
+E         INFO - \xe5\x85\xac\xe5\x8f\xb8\xe5...\r
+E         ValueError: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...r: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:481: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_os_external_cli_cold_then_independent_warm_without_http_or_search_key[False-True-False]" time="2.115"><failure message="AssertionError: b'INFO - ======================================================================\r&#10;  INFO - \xe5\x85\xac\xe5\x8f\xb8\xe5...\r&#10;  ValueError: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route\r&#10;  '&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...r: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route\r\n', stderr=b'').returncode">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-cold-first-01/test_os_external_cli_cold_then1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028997C6EFD0&gt;
+mcp = False, hybrid = True, deepseek = False
+
+    @pytest.mark.parametrize("mcp,hybrid,deepseek", [(False, False, False), (False, True, False),
+        (True, False, False), (True, True, False), (True, False, True)])
+    def test_os_external_cli_cold_then_independent_warm_without_http_or_search_key(tmp_path, monkeypatch, mcp, hybrid, deepseek):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp, hybrid=hybrid, deepseek=deepseek)
+        cold = _external_spawn(tmp_path, argv, stub=True, label="cold")
+        assert cold.returncode == 0, cold.stdout[-3000:] + cold.stderr[-3000:]
+        first = json.loads((tmp_path / "result.json").read_text("utf-8"))
+        receipt = first["execution_receipts"]["IQS_05"]
+        sends = _external_sends(tmp_path)
+        expected = ["initialize", "notifications/initialized", "tools/list", "tools/call", "model"] if mcp else ["search", "model"]
+        assert [row["kind"] for row in sends] == expected
+        assert len({row["pid"] for row in sends}) == 1 and sends[0]["pid"] != os.getpid()
+        assert sends[-1]["has_context"] and sends[-1]["native_tools"] == hybrid
+        if deepseek:
+            assert sends[-1]["thinking"] == {"effort": "high"}
+        assert receipt["search_status"] == "executed" and first["answers"]["IQS_05"]["score"] == 6
+        assert "SYNTHETIC_PRIVATE_SESSION" not in json.dumps(first)
+        assert "PRIVATE_CHILD_THINKING" not in json.dumps(first)
+        store = _external_store(tmp_path)
+        before = store.get_quick_scan_budget_status("quick-scan-test-policy")
+        assert before["requests"] == len(expected) and before["spent_micros"] == (22000 if mcp else 13000)
+        assert before["reserved_micros"] == 0
+        warm = _external_spawn(tmp_path, argv, stub=False, label="warm")
+&gt;       assert warm.returncode == 0, warm.stdout[-3000:] + warm.stderr[-3000:]
+E       AssertionError: b'INFO - ======================================================================\r
+E         INFO - \xe5\x85\xac\xe5\x8f\xb8\xe5...\r
+E         ValueError: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...r: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:481: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_os_external_cli_cold_then_independent_warm_without_http_or_search_key[True-False-False]" time="1.209"><failure message="AssertionError: b' &quot;generation&quot;: 1, &quot;module_id&quot;: &quot;synthetic/core&quot;, &quot;prompt_sha256&quot;: &quot;b1b14b309c456f8ae81483a427fc9f4159c77986df85f1646...ernal_cli_cold_then2\\result.json\r&#10;  ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r&#10;  '&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...d_then2\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-cold-first-01/test_os_external_cli_cold_then2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002899A0DCDD0&gt;
+mcp = True, hybrid = False, deepseek = False
+
+    @pytest.mark.parametrize("mcp,hybrid,deepseek", [(False, False, False), (False, True, False),
+        (True, False, False), (True, True, False), (True, False, True)])
+    def test_os_external_cli_cold_then_independent_warm_without_http_or_search_key(tmp_path, monkeypatch, mcp, hybrid, deepseek):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp, hybrid=hybrid, deepseek=deepseek)
+        cold = _external_spawn(tmp_path, argv, stub=True, label="cold")
+&gt;       assert cold.returncode == 0, cold.stdout[-3000:] + cold.stderr[-3000:]
+E       AssertionError: b' "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f1646...ernal_cli_cold_then2\\result.json\r
+E         ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...d_then2\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:463: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_os_external_cli_cold_then_independent_warm_without_http_or_search_key[True-True-False]" time="1.262"><failure message="AssertionError: b', &quot;generation&quot;: 1, &quot;module_id&quot;: &quot;synthetic/core&quot;, &quot;prompt_sha256&quot;: &quot;b1b14b309c456f8ae81483a427fc9f4159c77986df85f164...ernal_cli_cold_then3\\result.json\r&#10;  ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r&#10;  '&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...d_then3\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-cold-first-01/test_os_external_cli_cold_then3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002899A0EA470&gt;
+mcp = True, hybrid = True, deepseek = False
+
+    @pytest.mark.parametrize("mcp,hybrid,deepseek", [(False, False, False), (False, True, False),
+        (True, False, False), (True, True, False), (True, False, True)])
+    def test_os_external_cli_cold_then_independent_warm_without_http_or_search_key(tmp_path, monkeypatch, mcp, hybrid, deepseek):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp, hybrid=hybrid, deepseek=deepseek)
+        cold = _external_spawn(tmp_path, argv, stub=True, label="cold")
+&gt;       assert cold.returncode == 0, cold.stdout[-3000:] + cold.stderr[-3000:]
+E       AssertionError: b', "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f164...ernal_cli_cold_then3\\result.json\r
+E         ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...d_then3\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:463: AssertionError</failure></testcase><testcase classname="tests.integration.test_external_context_cli_e2e" name="test_os_external_cli_cold_then_independent_warm_without_http_or_search_key[True-False-True]" time="1.240"><failure message="AssertionError: b' &quot;generation&quot;: 1, &quot;module_id&quot;: &quot;synthetic/core&quot;, &quot;prompt_sha256&quot;: &quot;b1b14b309c456f8ae81483a427fc9f4159c77986df85f1646...ernal_cli_cold_then4\\result.json\r&#10;  ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r&#10;  '&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...d_then4\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/os-public-cold-first-01/test_os_external_cli_cold_then4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002899A0EA360&gt;
+mcp = True, hybrid = False, deepseek = True
+
+    @pytest.mark.parametrize("mcp,hybrid,deepseek", [(False, False, False), (False, True, False),
+        (True, False, False), (True, True, False), (True, False, True)])
+    def test_os_external_cli_cold_then_independent_warm_without_http_or_search_key(tmp_path, monkeypatch, mcp, hybrid, deepseek):
+        argv = _subprocess_inputs(tmp_path, monkeypatch, mcp=mcp, hybrid=hybrid, deepseek=deepseek)
+        cold = _external_spawn(tmp_path, argv, stub=True, label="cold")
+&gt;       assert cold.returncode == 0, cold.stdout[-3000:] + cold.stderr[-3000:]
+E       AssertionError: b' "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f1646...ernal_cli_cold_then4\\result.json\r
+E         ERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r
+E         '
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\...d_then4\\result.json\r\nERROR - Quick-scan contains 1 failed question(s); partial results were saved.\r\n', stderr=b'').returncode
+
+tests\integration\test_external_context_cli_e2e.py:463: AssertionError</failure></testcase></testsuite></testsuites>
