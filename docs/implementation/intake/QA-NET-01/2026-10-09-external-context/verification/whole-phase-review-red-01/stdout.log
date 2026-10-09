@@ -1,0 +1,358 @@
+FFFFFFFFF                                                                [100%]
+================================== FAILURES ===================================
+_ test_previous_generation_external_evidence_is_rejected_before_new_model_http[context] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-red-01/test_previous_generation_exter0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018EAE04B950>
+entry = 'context'
+
+    @pytest.mark.parametrize("entry", ["context", "actual_send"])
+    def test_previous_generation_external_evidence_is_rejected_before_new_model_http(
+        tmp_path, monkeypatch, entry
+    ):
+        from src.utils.quick_scan_external_context import build_external_question_context
+    
+        args, old_context, search, sync, _, model, url, _, _ = _external_answer_fixture(
+            tmp_path, monkeypatch
+        )
+        fresh = _created(args["store"], generation=2)
+        args.update(
+            work_item_id=fresh["work_item_id"],
+            lease=args["store"].claim(fresh["work_item_id"], lease_seconds=60),
+        )
+        before = args["store"].get_quick_scan_budget_status("q09-fixture")
+>       with pytest.raises(ValueError, match="binding"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:2793: Failed
+_ test_previous_generation_external_evidence_is_rejected_before_new_model_http[actual_send] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-red-01/test_previous_generation_exter1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018EAC13EFD0>
+entry = 'actual_send'
+
+    @pytest.mark.parametrize("entry", ["context", "actual_send"])
+    def test_previous_generation_external_evidence_is_rejected_before_new_model_http(
+        tmp_path, monkeypatch, entry
+    ):
+        from src.utils.quick_scan_external_context import build_external_question_context
+    
+        args, old_context, search, sync, _, model, url, _, _ = _external_answer_fixture(
+            tmp_path, monkeypatch
+        )
+        fresh = _created(args["store"], generation=2)
+        args.update(
+            work_item_id=fresh["work_item_id"],
+            lease=args["store"].claim(fresh["work_item_id"], lease_seconds=60),
+        )
+        before = args["store"].get_quick_scan_budget_status("q09-fixture")
+>       with pytest.raises(ValueError, match="binding"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:2793: Failed
+_ test_external_use_rehashed_previous_generation_reference_is_rejected_by_owner _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-red-01/test_external_use_rehashed_pre0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018EAE961010>
+
+    def test_external_use_rehashed_previous_generation_reference_is_rejected_by_owner(
+        tmp_path, monkeypatch
+    ):
+        from src.utils.quick_scan_external_journal import _canonical, _digest
+    
+        args, old_context, search, sync, _, model, url, _, _ = _external_answer_fixture(
+            tmp_path, monkeypatch
+        )
+        fresh = _created(args["store"], generation=2)
+        args.update(
+            work_item_id=fresh["work_item_id"],
+            lease=args["store"].claim(fresh["work_item_id"], lease_seconds=60),
+        )
+        fresh_context = _retrieve(args)
+        assert fresh_context["retrievals"] != old_context["retrievals"]
+        result = _send_external_answer(args, fresh_context, model, url)
+        attempt_id = result.execution_metadata["external_context_use"]["work_attempt_id"]
+        assert args["store"].get_external_context_use(attempt_id)["proof"] is not None
+        before = args["store"].get_quick_scan_budget_status("q09-fixture")
+        with closing(args["store"]._connect()) as connection:
+            row = connection.execute(
+                "SELECT * FROM quick_scan_external_use_intent WHERE attempt_id=?", (attempt_id,)
+            ).fetchone()
+            meta = json.loads(row["metadata_json"])
+            meta["retrievals"] = old_context["retrievals"]
+            digest = _digest(meta)
+            connection.execute("DROP TRIGGER quick_scan_external_use_no_update")
+            connection.execute(
+                "UPDATE quick_scan_external_use_intent SET metadata_json=?,metadata_sha256=?,use_id=? WHERE attempt_id=?",
+                (_canonical(meta), digest, "EXTUSE_" + digest, attempt_id),
+            )
+>       with pytest.raises(ValueError, match="retrieval binding"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:2841: Failed
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-red-01/test_mcp_invalid_server_info_s0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018EAE9A5D00>
+defect = 'missing'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ExternalRetrievalBlocked
+
+tests\unit\test_quick_scan_mcp.py:874: Failed
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[non_object] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-red-01/test_mcp_invalid_server_info_s1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018EAE9A5AE0>
+defect = 'non_object'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ExternalRetrievalBlocked
+
+tests\unit\test_quick_scan_mcp.py:874: Failed
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing_name] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-red-01/test_mcp_invalid_server_info_s2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018EAE968050>
+defect = 'missing_name'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ExternalRetrievalBlocked
+
+tests\unit\test_quick_scan_mcp.py:874: Failed
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[name_type] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-red-01/test_mcp_invalid_server_info_s3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018EAE968350>
+defect = 'name_type'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ExternalRetrievalBlocked
+
+tests\unit\test_quick_scan_mcp.py:874: Failed
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing_version] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-red-01/test_mcp_invalid_server_info_s4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018EAE9F4D70>
+defect = 'missing_version'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ExternalRetrievalBlocked
+
+tests\unit\test_quick_scan_mcp.py:874: Failed
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[version_type] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-red-01/test_mcp_invalid_server_info_s5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018EAE9F56D0>
+defect = 'version_type'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ExternalRetrievalBlocked
+
+tests\unit\test_quick_scan_mcp.py:874: Failed
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_previous_generation_external_evidence_is_rejected_before_new_model_http[context]
+FAILED tests/unit/test_quick_scan_external_context.py::test_previous_generation_external_evidence_is_rejected_before_new_model_http[actual_send]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_use_rehashed_previous_generation_reference_is_rejected_by_owner
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[non_object]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing_name]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[name_type]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing_version]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[version_type]
+9 failed, 247 deselected in 4.09s

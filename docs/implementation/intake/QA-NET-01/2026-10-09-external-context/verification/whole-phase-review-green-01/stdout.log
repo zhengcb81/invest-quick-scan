@@ -1,0 +1,274 @@
+...FFFFFF                                                                [100%]
+================================== FAILURES ===================================
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-green-01/test_mcp_invalid_server_info_s0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E40789480>
+defect = 'missing'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'mcp_control_failed'
+E         Actual message: 'mcp_control_unusable'
+
+tests\unit\test_quick_scan_mcp.py:874: AssertionError
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[non_object] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-green-01/test_mcp_invalid_server_info_s1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E40789370>
+defect = 'non_object'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'mcp_control_failed'
+E         Actual message: 'mcp_control_unusable'
+
+tests\unit\test_quick_scan_mcp.py:874: AssertionError
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing_name] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-green-01/test_mcp_invalid_server_info_s2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E3FA2B150>
+defect = 'missing_name'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'mcp_control_failed'
+E         Actual message: 'mcp_control_unusable'
+
+tests\unit\test_quick_scan_mcp.py:874: AssertionError
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[name_type] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-green-01/test_mcp_invalid_server_info_s3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E3FA2B850>
+defect = 'name_type'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'mcp_control_failed'
+E         Actual message: 'mcp_control_unusable'
+
+tests\unit\test_quick_scan_mcp.py:874: AssertionError
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing_version] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-green-01/test_mcp_invalid_server_info_s4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E3FAB76B0>
+defect = 'missing_version'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'mcp_control_failed'
+E         Actual message: 'mcp_control_unusable'
+
+tests\unit\test_quick_scan_mcp.py:874: AssertionError
+_ test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[version_type] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/whole-phase-review-green-01/test_mcp_invalid_server_info_s5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026E3FAB0320>
+defect = 'version_type'
+
+    @pytest.mark.parametrize(
+        "defect", ["missing", "non_object", "missing_name", "name_type", "missing_version", "version_type"]
+    )
+    def test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend(
+        tmp_path, monkeypatch, defect
+    ):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+    
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        ordinary = _mcp_replies()
+    
+        def reply(method, endpoint, **kwargs):
+            message = kwargs["json"]
+            if message["method"] != "initialize":
+                return ordinary(method, endpoint, **kwargs)
+            info = {"name": "synthetic", "version": "1"}
+            if defect == "missing_name":
+                info.pop("name")
+            elif defect == "name_type":
+                info["name"] = 17
+            elif defect == "missing_version":
+                info.pop("version")
+            elif defect == "version_type":
+                info["version"] = None
+            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}
+            if defect != "missing":
+                result["serverInfo"] = [] if defect == "non_object" else info
+            return _mcp_response({"jsonrpc": "2.0", "id": message["id"], "result": result})
+    
+        session.request.side_effect = reply
+>       with pytest.raises(ExternalRetrievalBlocked, match="mcp_control_failed"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'mcp_control_failed'
+E         Actual message: 'mcp_control_unusable'
+
+tests\unit\test_quick_scan_mcp.py:874: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[non_object]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing_name]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[name_type]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[missing_version]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_invalid_server_info_stops_after_one_paid_http_and_reopens_without_resend[version_type]
+6 failed, 3 passed, 247 deselected in 2.73s

@@ -2537,3 +2537,32 @@
 - 下一实际动作完整Phase111一次集中静态/全受影响回归/独审/精确源Git/严格清理；新checkpoint10只私有证据归档，Git等实际回执。原01–09/index/日志保持，不放行全局门。
 
 - checkpoint10 prepare原52641与正常Git原81016均实际终态exit0：提交并推送`345fbd13e51100636577c5a6ec59c864d2d0f008`，1361精确选择/1360变化（scope.json原字节不变）、1354工件及索引staged/committed SHA一致，111支持文件不变，HEAD=origin/master，仅原opencode未跟踪。十批原执行和全部子进程日志保持。StockQA42a517c未写/发布，runs/n111a继续保留待完整Phase111静态/回归/一次集中独审/源Git与严格清理，不盲跑已经一次性冻结的helpers。随后只提交本实际PWF回执，不新增小节点审查或重测已绿批次。
+
+## Phase111 完整批次静态与发布验收：2026-10-09
+
+- 上一用户进度答复只读，不计工程进展。恢复根PWF与当前Git：IQS `5f4e518`；原opencode未跟踪保留，新静态工件与控制器尚未提交。此前313P/776P属于各自原执行快照，格式/类型修订后不能冒充最终新快照全绿。
+- `whole-phase-static-first-01` 原97233终态exit1：isort 1/0.537s、Black 1/20.101s、mypy 1/24.885s，61源中的8文件37项类型错误；没有工具修改源码。`whole-phase-format-01` 原27122终态exit0：isort 0/0.579s、Black 0/22.361s，31范围文件整理并在受审前统一LF；111保护支持文件不变。
+- 按已报备38路径仅私有副本修类型边界，不放宽来源/预算/unknown规则。检查器无法跨 `_require` 和不同分支推断非空的情况改为显式守卫；动态JSON映射/事件集合显式类型；lease检查接纳原owner返回的字典及SQLite Row。尚待最终静态/完整受影响回归/一次集中独审，源StockQA未发布、全局门不变。
+- 第二格式化原97353仍活，CIM沙箱只读拒绝后按低风险提升核实原PID14864/子PID42852存活，不重启或停止。私人副本未带owner `.pre-commit-config.yaml`，已纠正为源Git只读取配置；采用owner Black/isort/mypy与LF规则，缺文件/CIM是控制器诊断，非产品失败。
+
+- 原97353随后真实终态exit1，Black 180s TimeoutExpired；旧controller未持久化该子进程partial输出/process.json，不补造，已在format-02加明确事后note、保留原before/isort。新controller保存未来timeout与执行源码/guard；保持同guard的沙箱外format-03终态exit0（0.615/5.034s，1文件整理）。static-02终态exit1，剩1个health拒绝可选reason类型；加明确缺原因早拒后static-03终态exit0：isort0/0.456s、Black0/0.519s、mypy0/2.567s（61源），无源码修改，111支持不变。
+- 完整QA主批17套、邻接五套及IQS消费者四套已启动，执行各自独占子根、冻结SHA、strip env和原guard；一次集中独审agent已获用户既有授权启动。测试/审查未终态前不宣布GREEN或发布。一次PWF组合patch因handoff只匹配行前缀被工具原子拒绝，确认根计划未写后改为完整锚点；Windows rg字面glob诊断已改为目录inventory，不作为产品失败。
+
+- 三测试handle均已终态：主批13301 exit0，852P/0F/E/skip（pytest165.250s/controller166.135s）；邻接27652 exit0，128P/0F/E/skip（8.975/9.876s）；IQS消费者98606 exit0/controller266.366s，原执行源码不变。各批独立归档，不机械合并或冒充金融准确性。集中审查仍在继续，候选MCP serverInfo校验与跨generation绑定须以正式反例判断；产品保持冻结，不发布。
+
+- 首次完整独审 `final-review.md/json` requires_fixes，37 StockQA/6 IQS SHA匹配；正式两P2为PH111-R1 serverInfo与PH111-R2 generation。原独占review根保留inline程序、stdout/stderr与hash；没有其他重复收费/unknown重发/native冒用阻断。主批stdout165.36s/邻接9.07s、JUnit分别165.250/8.975s，分开记录。IQS stdout111P+216子测试/265.72s、JUnit327含子测试，不称327独立测试。
+- 只增现有两测试文件跑`whole-phase-review-red-01`：9F/247 deselected，4.09s/controller4.668s，所有失败均DID NOT RAISE。随后原报备范围三函数最小修复，`whole-phase-review-green-01`实际3P/6F：generation三条已通过，六MCP实际具名拒绝是mcp_control_unusable，测试误猜mcp_control_failed；只改fixture预期、不改产品错误码。原失败保持，新增最终`whole-phase-regression-02`全17套正在执行，原19466活；同一次独审待新实际回执后复验，不增加小节点门。
+
+## Phase111 最终复验签收与用户进度说明：2026-10-09
+
+- 最终原19466已实际终态exit0：17套861 passed、0失败/错误/跳过；stdout145.23s、JUnit145.012s、controller145.863s。static04的isort/Black/mypy实际全部exit0，61源检查完成；37受审源码的执行/检查SHA一致，111支持文件不变。旧失败及原首次审查保留，不把两次批次合成一次通过。
+- 同一独立审查agent完成final-review-recheck.md/json：两P2关闭、无开放发现；独立新guard wrapper实际exit0、网络尝试0。最终批准38件报备路径的有限软件发布，含单独核验的第38件handoff SHA600110573428bbde761772949735dae0e05d14020ed1e0dbe886da5eac3026b9；IQS六件仍原SHA。报告SHA分别87daced9fa053a933a1fdda9d17f7d250d15d795d666686954f747b23c27363d、e6b25618783a6d7c365a5eeb4e671d2ddd9b40e6fe247645bf96cd151bdd9d5b。
+- 为回答用户整体进度重新只读恢复PWF/resolver及Git；源StockQA沙箱只读Git被拒，提升后的只读log实际返回42a517c4bd6bc8219f926957c6c332944da3278a。没有源写入、发布、付费请求、生产库或名单变更；IQS新报告/静态/回归/PWF尚未提交，opencode.json保留。全局金融事实/费用认证、StockWiki联合ACK/真实gold及G3/F05/L03/TH-IN仍开放；下一实施动作是已获有限批准范围的精确源发布与留档清理，不重新跑已绿批次或新开小节点审查。
+
+## Phase111 正式源发布与严格自有清理：2026-10-09
+
+- 上一用户状态回合更新最终复验的PWF事实；本目标回合实作正式发布和清理，不重复收费/已绿测试。发布前鲜核StockQA42a517c、master和原7未知项，与授权scope38/受审SHA一致。publication/input保存111保护文件的真实工作树SHA，不拿Git LF当Windows原字节。
+- prepare控制器实际exit0，最终两主批子进程轨迹及两独审程序/日志按白名单留档；未复制配置/密钥/DB。source原88069实际终态exit0：正常钩子适用项通过，YAML/TOML无文件原样Skipped；提交推送bc41908e4cdc44c13fefda97f3118e5434aed5f8，远端ls-remote同HEAD，38 staged/committed Git blob与受审SHA一致，111保护路径和原7未知项保留。收费API、名单及真实DB迁移0。
+- 初始清理inventory误用DirEntry.stat的Windows缓存，所有nlink=0导致诊断输出过大（并非真实硬链接）；未据此删文件。改为真实os.lstat逐文件断言nlink==1，prepare原9128实际exit0：20,025文件/8,999目录、0hardlinks/0reparse。IQS无.git/hooks/pre-commit的只读诊断不当作StockQA钩子缺失。
+- Native PowerShell dry原82151及Apply原98570均实际终态exit0；删除前CIM实际0匹配进程、集合/每文件SHA全部复核，随后逐文件删除20,025件及8,999目录/精确root。原runs/n111a不存在，禁止重跑一次性cleanup或旧固定roothelpers；不清共享TEMP/Phase92/外仓未知项/生产库。
+- delivery.md明确有限软件/版本、原日志、复现和下一汇合。一次组合PWF补丁误猜plan标题被原子拒绝，确认delivery未创建/根计划未改后按实读标题分批更新，不计产品失败。Phase111的软件发布/集中审查/清理项完成，IQS最后证据/PWF Git尚待实际回执；QA-NET整包及金融准确性/真实价格/StockWiki四路径许可、联合ACK、真实gold/G3/F05/L03/TH-IN仍开放，不追加小节点review或刷新旧C01–C07回执。

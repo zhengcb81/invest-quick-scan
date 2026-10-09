@@ -1,0 +1,67 @@
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\whole-phase-regression-01\test_os_external_cli_terminate4\questions.json
+INFO - 成功从JSON配置加载 1 个问题
+INFO - 冻结问卷已校验（1 题，manifest 4d945c8b5731e314）
+WARNING - 未找到 C06 权威文档：检查点将记录 durable block，稍后由 --seal-deliveries 补封（模型请求不增加）
+INFO - 
+成功加载 1 个问题
+INFO - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\whole-phase-regression-01\test_os_external_cli_terminate4\questions.json (json格式)
+INFO - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\whole-phase-regression-01\test_os_external_cli_terminate4\result.json
+
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+{"contract_id": "stockqa.consumes_iqs_question_manifest/1.0.0", "counts": {"in_flight": 1}, "entity_id": "ENT_SYNTHETIC", "generation_by_question": {}, "identity_snapshot_sha256": "b4e469952b0f92f665a29ee60d282ff36a661b7311e9e3b1a529330c314a2d47", "manifest_sha256": "4d945c8b5731e314fee22c6b82e908b0c4893f24b45a0ba05d3a37101cc37a05", "model_calls_planned": 0, "module_package_id": null, "questions": [{"action": "in_flight", "generation": 1, "module_id": "synthetic/core", "prompt_sha256": "b1b14b309c456f8ae81483a427fc9f4159c77986df85f16463a5a2b9a6e4d761", "question_id": "IQS_05", "scope": "entity", "scope_id": "ENT_SYNTHETIC", "semantic_sha256": "6901245c64d4504d1357ce6c40f8c5266a2d76bf5230bbd59bd2f5e6504de75a", "work_item_id": "WORK_2c5d6e926bc74d2ea667fc78c7d58b7f"}], "routing_fingerprint_by_question": {"IQS_05": "a48fcc9b05af45780cc6bd3d68dbdca94a411fe8eef21e2841f011417f6b95d0"}, "schema": "stockqa.question_manifest_plan/1.0.0", "template_version": "synthetic/1"}
+INFO - QAEngine 初始化完成（搜索提供者: None）
+{"admitted_routes": ["brave-primary"], "execution_plan_ready": true, "external_dispatch_enabled": true, "external_dispatch_reason": null, "mode": "external_context", "policy_id": "quick-scan-search-offline", "policy_sha256": "d000b6264111e63de750fd712fae9ac3067c2b8db868aa19fab07210609ee4df", "route_rejections": [], "schema": "stockqa.search_policy_admission/1.0.0", "schema_id": "stockqa.quick_scan_search_policy/1.1.0"}
+INFO - 开始批量处理 1 个问题
+
+======================================================================
+开始处理 1 个任务...
+======================================================================
+
+[1/1] 进度: 100.0% - 正在处理: 公司的第1项核心优势是否持久？...INFO - 成功加载 LLM 配置文件: llm_apis.json
+INFO - 成功加载 LLM 配置文件: llm_apis.json
+WARNING - 从配置文件读取 API 密钥（建议使用环境变量）
+INFO - LLMProvider initialized (provider: openai, model: gpt-4.1, api_key: ***
+INFO - LLM处理问题: 公司的第1项核心优势是否持久？...
+INFO - 正在调用 openai API... (尝试 1/1)
+INFO - 成功解析LLM响应（直接JSON），评分: 6/10
+INFO - LLM答案生成完成 (状态: scored)
+WARNING - C06 封存阻断（WORK_2c5d6e926bc74d2ea667fc78c7d58b7f）：c06 authority is not configured
+WARNING - C06 封存阻断（WORK_2c5d6e926bc74d2ea667fc78c7d58b7f）：c06_authority_unavailable
+INFO - Q10 检查点落定 → blocked（WORK_2c5d6e926bc74d2ea667fc78c7d58b7f）
+INFO - [1/1] 处理成功
+[1/1] 进度: 100.0% - [OK] 完成: 公司的第1项核心优势是否持久？...  
+
+======================================================================
+批量处理完成，成功: 1/1
+======================================================================
+
+
+======================================================================
+Fixture Corp 分析报告
+======================================================================
+
+──────────────────────────────────────────────────────────────────────
+[1/1] 公司的第1项核心优势是否持久？
+──────────────────────────────────────────────────────────────────────
+Score: 6/10
+
+Synthetic supported answer
+INFO - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\whole-phase-regression-01\test_os_external_cli_terminate4\result.json
+
+======================================================================
+分析完成统计
+======================================================================
+[OK] 处理问题数: 1
+[OK] 成功处理: 1
+[INFO] 未评分问题: 0
+[OK] 完整报告已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\tmp\whole-phase-regression-01\test_os_external_cli_terminate4\result.json
+[OK] 平均评分: 6.0/10
+[OK] 评分分布: {6: 1}
+INFO - 
+Question processing completed.

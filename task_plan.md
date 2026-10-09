@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**Phase111有限软件已发布并清理（2026-10-09，优先于下文历史）：** static04全部exit0/mypy61源、regression02实际861 passed；同一次独审关闭两P2，38路径全部有限批准。StockQA已正常提交推送`bc41908e4cdc44c13fefda97f3118e5434aed5f8`，38 Git blob与受审SHA一致，111保护文件及原7未知项不变。schema13是源码迁移能力，没有迁移真实库。20,025自有文件/8,999目录已严格清除，必要日志/独审程序/执行快照保留，见[交付说明](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。IQS本批证据/PWF最后Git交付尚待实际回执，最近已推送5f4e518。随后唯一跨仓下一动作：只读重核StockWiki当前接口/唯一writer，取得四路径明确许可后收口JR1/JR3和公开CLI联合ACK；未获许可不写StockWiki。金融准确性、真实厂商计价、真实gold/G3/F05/L03/TH-IN仍开放，不启动200家扫描或刷新退役回执。
+
 **最新唯一下一动作（OS CLI自动恢复后，优先于以下历史）：** 完整Phase111同一大节点最终静态/全受影响回归/一次集中独审，满足标准后精确源Git发布并严格自有清理。五文件313P/pytest102.41s/controller103.027s，37执行SHA不变，38已报备路径。真正OS CLI冷暖、24新OS场景含11强杀断点现由CLI自己恢复，MCP→LLM→公共结果/完整标准C06已验证；读[CLI恢复接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/cli-recovery-interface.md)。仍仅private schema13，生产StockQA42a517c/schema8未发布；StockWiki四路径许可/联合ACK/G3/L03/F05/真实gold/TH-IN原门保持，不刷新退役回执或启动200家live。IQS归档提交以progress实际回执为准。
 
 **最新唯一下一动作（2026-10-09，MCP接线后；优先于下文历史）**：真正独立OS子进程CLI冷暖/中断恢复，含MCP四HTTP→LLM→公共结果；然后完整Phase111同一大节点静态/受影响回归/一次集中独审/正常源发布/严格自有根清理。MCP现已在38路径报备的私有副本接线，schema13；读[实际接口与边界](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/mcp-interface.md)。六文件397P/1F（MCP47项全通过），唯一旧未实现断言更新后追加1P，产品源码未变，不合并成一次398P。最新归档Git以progress实际回执为准。StockQA生产仍42a517c/schema8，非真实MCP/厂商计价/金融准确性认证；StockWiki四文件许可、G3/L03/F05/真实gold/TH-IN原门开放。不刷新退役工程回执、不启动200家扫描。
@@ -1543,12 +1545,12 @@ Status: complete_for_model_provenance_software_scope; source_and_IQS_committed_a
 
 
 ### Phase 111: QA-NET-01外部证据生产链接续
-Status: in_progress_private_implementation_not_published
+Status: complete_for_limited_software_delivery_IQS_git_receipt_pending
 
 - [x] 只读确认现行external路径尚未接通，属于原QA-NET步骤3–6；调整执行顺序，不改变上游关闭门。
 - [x] 固定42a517c输入并逐批报备范围；C06保留公共schema，以私有external context-use proof链接真实检索和回答，预算复用Q09。
-- [x] 独占隔离环境TDD实现并完成本段受影响单元/集成/真正OS公开CLI；仍仅私有副本，完整集中验收/发布待下项。
-- [ ] 一次集中审查、真实Git交付、逐文件清理及PWF/交接。
+- [x] 独占隔离环境TDD实现，完成最终静态、受影响单元/集成和真正OS公开CLI。
+- [x] 一次集中审查及同会话修复复验、StockQA真实Git交付和20,025自有文件严格清理；IQS证据/PWF最终Git回执另看最新progress，不等于全项目门关闭。
 
 实施说明：docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/plan.md。
 

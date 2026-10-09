@@ -1,5 +1,7 @@
 # QA-NET-01 外部证据生产链接续
 
+**2026-10-09最终交付，优先于下方历史状态：** StockQA已正常提交推送bc41908e4cdc44c13fefda97f3118e5434aed5f8，38受审Git blob精确一致，111保护文件和7原未知项保持。static04全部0、最终regression02实际861 passed，同一次独审两P2关闭；24新OS场景/11真实kill有原日志。20,025自有文件/8,999目录已严格清除，runs/n111a不存在，不盲跑固定根helper。见[交付说明](delivery.md)、final-review-recheck.md/json及publication/result.json。IQS最终Git以progress实际回执为准；本批只闭合有限软件交付，不关闭金融准确性、真实费用/owner golden、StockWiki四路径授权/联合ACK、G3/F05/L03/TH-IN或200家live，不刷新退役回执。
+
 这是原施工包步骤3–6的剩余实施批次，不重做已签收parser、准入、原生搜索、Q10来源追溯或StockWiki整改。总控拥有IQS/PWF与本批StockQA唯一写线；StockQA按既有全仓授权逐批报备精确范围，其他仓只读。
 
 当前StockQA输入为42a517c4bd6bc8219f926957c6c332944da3278a，IQS基线8363b49；已建立runs/n111a私有副本，基础边界24项和单次检索传输相关60项通过，尚无外仓发布。现行生产策略即使准入external仍固定dispatch=false，runner返回external_context_not_implemented。原整改只验失败关闭，不证明生产外部链完成。CodeGraph对新模块未命中、旧store上下文行号与当前文件不符，按已定位文件读取，不能据旧结构片段重造客户端。

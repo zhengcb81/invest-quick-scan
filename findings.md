@@ -1791,3 +1791,16 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 新进程必须区分验证已有缓存与获得新发送许可。只对明确1.1的CLI恢复延迟凭据检查，保留完整schema/身份/价格/存储准入；实际provider在Q09预留和HTTP前仍检查密钥。
 - 强杀E2E不能靠测试端先恢复work再声称CLI自动恢复；撤掉该调用后真实6F/5P已驱动入口修复。活lease与未知发送不得被自动过期当作重发许可。
 - 未知失败可生成无分数失败JSON，不等于成功checkpoint。标准Observation分数在answer内，getter原包bytes不可强行JSON化；相应fixture错误与产品漏洞分列。
+
+## Phase111 最终静态边界：2026-10-09
+
+- 首整批静态发现37个类型诊断/8文件；动态JSON映射、可选执行计划及跨函数lease验证应显式表达，不能通过全局ignore或删除原验证压绿。原HTTP响应bytes与解包后RPC字典使用不同类型，body SHA继续按实际读取bytes计算。
+- 之前313P是格式修订前的测试证据；31文件格式变化后必须对当前最终源码重新做完整受影响回归和集中审查，再发布。静态整理不认证金融事实/真实厂商费用，也不关闭StockWiki授权/ACK/真实gold/G3/F05/L03/TH-IN。
+
+- 同一次完整独审确认PH111-R1/R2两P2：MCP必填serverInfo缺失/畸形仍parse ok，context/use owner可被直接跨generation绑定（正常coordinator cache已有generation）。9个新增实际store/client反例全部RED且均为DID NOT RAISE，不是fixture缺字段伪失败。最小修复核serverInfo.name/version字符串及构建/耐久回读同generation，不保存serverInfo或改旧HTTP哈希。
+- 已收到/已结算/TTL内REST短证据可由新lease在同generation重核复用；旧worker仍不能advance新lease。模型迟到仅response/账务、无有效use/checkpoint；MCP旧控制session禁止推进新lease。不能笼统把全部late数据等同禁止复用，也不能把新generation理解为原租约恢复。
+
+- 2026-10-09最终861项回归及同一集中独审复验已完成，两P2关闭，无开放发现；有限软件发布批准绑定38件精确交付字节和六件IQS消费者。这只证明隔离HTTP/合成身份与价格环境下的软件行为，不证明公司答案准确率、真实厂商费用或StockWiki实际导入ACK。只读重核生产StockQA仍42a517c，源码发布尚未执行；不能把审查批准说成已上线或以测试数计算全项目完成百分比。
+
+- 2026-10-09后续真实发布已完成：StockQA bc41908e4cdc44c13fefda97f3118e5434aed5f8已推送、38受审Git blob精确一致；schema13是已发布源码迁移支持，不是已改真实库。111保护文件的工作树SHA和7未知项保持；原scope/input不覆写，当前发布以publication/result和delivery为准。
+- Windows os.DirEntry.stat会从目录枚举返回nlink=0缓存值，不能用作无硬链接证明，也不能把0放宽成1。实际os.lstat/os.stat给出1，严格清理使用真实os.lstat逐文件正面证明；20,025文件/8,999目录已native逐项清除。后续复现必须新root/非秘密allowlist/归档guard，不能因历史固定根消失而重启或清理其他环境。
