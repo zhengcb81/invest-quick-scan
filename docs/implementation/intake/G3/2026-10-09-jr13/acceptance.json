@@ -1,0 +1,1073 @@
+{
+  "schema": "jr13-control-acceptance/1",
+  "created_at": "2026-10-09T18:37:38.603444+00:00",
+  "status": "software_verified_publication_pending",
+  "source_written": false,
+  "source_base": "c40de21403720306ba21edbf71b9634a40ee58f8",
+  "StockQA_published_base": "bc41908e4cdc44c13fefda97f3118e5434aed5f8",
+  "candidate_sha256": {
+    "stockwiki/quick_scan_import.py": "9ce116b34365a35490a5f0e0d9298e0fa8ea20982294bf5314253689ac9deddd",
+    "stockwiki/quick_scan_observations.py": "d0e0b5e9dbfa37a536ee929e11ce9901e62119ce4458f7974911beb61fde11ff",
+    "tests/test_quick_scan_observations.py": "22011d69fffdb1440ad45159fe85a30476b24caac6ad2857352a24ddaec2c2f1",
+    "tests/test_quick_scan_delivery.py": "b50ef0e46cc2a335a93f72eeb3fde6f76b1838ebbc0f637d6df6ae81ee4faeab",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2"
+  },
+  "authorized_paths": [
+    "stockwiki/quick_scan_import.py",
+    "stockwiki/quick_scan_observations.py",
+    "tests/test_quick_scan_observations.py",
+    "tests/test_quick_scan_delivery.py"
+  ],
+  "conditional_path": "stockwiki/quick_scan_backup_manifest.py",
+  "conditional_change": "scan_observations.sqlite backup cap 1 -> 2; human authorization pending",
+  "open_software_findings": 0,
+  "review_evidence": [
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck.json",
+      "sha256": "a0550d278b1ec67b2d58a4e3e56d308dadf0491fb50165d73ee7c760dacbdf64"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck.md",
+      "sha256": "9209cea8496cc48fda9893afd3a6814915edd5a72b5b3d2334b72949786f8042"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/evidence-manifest.json",
+      "sha256": "b8511486d378141bf477fc9141ee79c685b6dd7c24a8be2b25af953f92729f34"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/compatibility_probe_02.py",
+      "sha256": "9ddc403f84aec7925b514b4f7613b644bd360fefb77b39b0b587e9618fd917cc"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/compatibility_probe.py",
+      "sha256": "e1f344d9ca113538fe9b7d6b8ba75dba8c9efc93b29765f1a052092d8de0adae"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/mixed_probe.py",
+      "sha256": "c46b1f054e0c3a4e378ae191a08dcd47cc2b81f9ed8af79c486f691906c23346"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/mixed-results.json",
+      "sha256": "a209c149d77212021d5206375e7183df0ca28f1648dfbf785f62d0e545f52edb"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/mixed.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/mixed.stdout.log",
+      "sha256": "6f2009b9c7587150775fc80ab0ad4131a0f94b3e8f5d8107d0e2ea4de6809bd0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/qa_accepted_probe.py",
+      "sha256": "25f6c1897745e0eed341587d20b062702ca1770c72dcfc0ba1f618fdd78e5599"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression_probe_02.py",
+      "sha256": "7c975af33774d49532f1cfa95dabbe3d989a519e96cc1225a9b400d208fc8088"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression_probe.py",
+      "sha256": "f9fa4c73279e77c4911446ebf1e90e3b682a0b7722fdf05b58be79010d1492fc"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/probe.stderr.log",
+      "sha256": "89a72b561da9fedb002830ededbb8d5ad237c30d70731354eab8a2de21ed90bb"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/probe.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/canonical_history/exact_replay_again.package.json",
+      "sha256": "89212094499902d0d9d2accbf4e0f8a430374b268b7ddd03ff5ecfd4c5bca7bf"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/canonical_history/exact_replay_again.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/canonical_history/exact_replay_again.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/canonical_history/exact_replay_again.stdout.log",
+      "sha256": "c99e16f53a6b8cd1115ed7fc3bce3db335ebeaaefcc1c869e580977b37c6f654"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/canonical_history/exact_replay.package.json",
+      "sha256": "89212094499902d0d9d2accbf4e0f8a430374b268b7ddd03ff5ecfd4c5bca7bf"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/canonical_history/exact_replay.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/canonical_history/exact_replay.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/canonical_history/exact_replay.stdout.log",
+      "sha256": "c99e16f53a6b8cd1115ed7fc3bce3db335ebeaaefcc1c869e580977b37c6f654"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/logs/stock_qa_20261009.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/array_duplicate.package.json",
+      "sha256": "077b3e9ae1afbb51de0755329bef4035fe02422e86028e70a84a469c1f794013"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/array_duplicate.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/array_duplicate.stderr.log",
+      "sha256": "35359370453fe10d2fe01d29f0c0fb05d330f12122f51f9c685ff8c2c02a05aa"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/array_duplicate.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/deep_duplicate.package.json",
+      "sha256": "068baae36816a751bcf67a47e771029567ca623a043f7b9ff9489c1456a81b8b"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/deep_duplicate.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/deep_duplicate.stderr.log",
+      "sha256": "4c91f22ee7d524b3caa2380612be2b5cd454cae36dd276fd5fda4565e7724ea6"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/deep_duplicate.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/exact_replay_again.package.json",
+      "sha256": "b8a664fe1a4cd605ab85f0abeaf732e4f01b143cd94c3424caf26ef0c31b054e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/exact_replay_again.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/exact_replay_again.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/exact_replay_again.stdout.log",
+      "sha256": "dddce4274573fc61643304171fc38d6762602fef009936303fdf257fdd25def8"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/exact_replay.package.json",
+      "sha256": "b8a664fe1a4cd605ab85f0abeaf732e4f01b143cd94c3424caf26ef0c31b054e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/exact_replay.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/exact_replay.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/exact_replay.stdout.log",
+      "sha256": "dddce4274573fc61643304171fc38d6762602fef009936303fdf257fdd25def8"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/missing_field.package.json",
+      "sha256": "d1961fc053b6158de6b0c889289e67247b9b8db956b392c314c7c8eb99873644"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/missing_field.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/missing_field.stderr.log",
+      "sha256": "533d79e7c1c7d3be403d3b219de63245a6073932b9431e6553baf304777598d2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/missing_field.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/mixed_old_and_empty.package.json",
+      "sha256": "13e63ba76bf41a5a34b1fa0bf338fed94a61d7945fbf753d30100a79c1945985"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/mixed_old_and_empty.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/mixed_old_and_empty.stderr.log",
+      "sha256": "85ecf31adcad8869307572139383ff4c553480a4c6e0207ddd9d357c7fd6fad7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/mixed_old_and_empty.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/raw_hash_tamper.package.json",
+      "sha256": "c950f49499b13bd43a60e53f16cd1586d7ae8d715c81a873dc550482f93d75d8"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/raw_hash_tamper.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/raw_hash_tamper.stderr.log",
+      "sha256": "c54eae1aaa7bf1b49bb5753448785173ed8407958e94f3057a0855c2640a5e73"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/raw_hash_tamper.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/signed_new_short.package.json",
+      "sha256": "6d9ea9cc39fdf0df40087af7109b262d6282358e02b449f6bd874eacf06efb7f"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/signed_new_short.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/signed_new_short.stderr.log",
+      "sha256": "533d79e7c1c7d3be403d3b219de63245a6073932b9431e6553baf304777598d2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-01/short_history/signed_new_short.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/probe.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/probe.stdout.log",
+      "sha256": "86aadd45de0d1fad23fb924181d6005ce9d16a8fa0c3aa1f9d0465875490b431"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/results.json",
+      "sha256": "0571adfb3b9b1f1b915d9f83fd9e9cd63243a28273c63cca5409da693244bf88"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/canonical_history/exact_replay_again.package.json",
+      "sha256": "89212094499902d0d9d2accbf4e0f8a430374b268b7ddd03ff5ecfd4c5bca7bf"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/canonical_history/exact_replay_again.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/canonical_history/exact_replay_again.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/canonical_history/exact_replay_again.stdout.log",
+      "sha256": "da02d180a85e648d9d84f2caf5c6c531dbec401002f76719699b7995bb0a2879"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/canonical_history/exact_replay.package.json",
+      "sha256": "89212094499902d0d9d2accbf4e0f8a430374b268b7ddd03ff5ecfd4c5bca7bf"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/canonical_history/exact_replay.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/canonical_history/exact_replay.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/canonical_history/exact_replay.stdout.log",
+      "sha256": "da02d180a85e648d9d84f2caf5c6c531dbec401002f76719699b7995bb0a2879"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/logs/stock_qa_20261009.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/qa_old_receiver/qa_legacy_replay.package.json",
+      "sha256": "58f3e728d2ba0dd80d1b929bdb41ea4533c7c96b141d81e4498f2636be1b12b5"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/qa_old_receiver/qa_legacy_replay.release.json",
+      "sha256": "696cf07370058cf7c0c61937b9de2d0f69e7011737ae967f523077fe3162597f"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/qa_old_receiver/qa_legacy_replay.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/qa_old_receiver/qa_legacy_replay.stdout.log",
+      "sha256": "d1f8939cb95a8af511f8a6e651c0384d206ff32b27317ee415696a5d34b7e0c4"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/array_duplicate.package.json",
+      "sha256": "077b3e9ae1afbb51de0755329bef4035fe02422e86028e70a84a469c1f794013"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/array_duplicate.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/array_duplicate.stderr.log",
+      "sha256": "35359370453fe10d2fe01d29f0c0fb05d330f12122f51f9c685ff8c2c02a05aa"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/array_duplicate.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/deep_duplicate.package.json",
+      "sha256": "068baae36816a751bcf67a47e771029567ca623a043f7b9ff9489c1456a81b8b"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/deep_duplicate.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/deep_duplicate.stderr.log",
+      "sha256": "4c91f22ee7d524b3caa2380612be2b5cd454cae36dd276fd5fda4565e7724ea6"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/deep_duplicate.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/exact_replay_again.package.json",
+      "sha256": "b8a664fe1a4cd605ab85f0abeaf732e4f01b143cd94c3424caf26ef0c31b054e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/exact_replay_again.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/exact_replay_again.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/exact_replay_again.stdout.log",
+      "sha256": "bbb7791d4b9c3e091b4901f0163214b2a00459310967abee6d0c9a339a2de2b7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/exact_replay.package.json",
+      "sha256": "b8a664fe1a4cd605ab85f0abeaf732e4f01b143cd94c3424caf26ef0c31b054e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/exact_replay.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/exact_replay.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/exact_replay.stdout.log",
+      "sha256": "bbb7791d4b9c3e091b4901f0163214b2a00459310967abee6d0c9a339a2de2b7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/missing_field.package.json",
+      "sha256": "d1961fc053b6158de6b0c889289e67247b9b8db956b392c314c7c8eb99873644"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/missing_field.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/missing_field.stderr.log",
+      "sha256": "533d79e7c1c7d3be403d3b219de63245a6073932b9431e6553baf304777598d2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/missing_field.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/mixed_old_and_empty.package.json",
+      "sha256": "13e63ba76bf41a5a34b1fa0bf338fed94a61d7945fbf753d30100a79c1945985"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/mixed_old_and_empty.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/mixed_old_and_empty.stderr.log",
+      "sha256": "85ecf31adcad8869307572139383ff4c553480a4c6e0207ddd9d357c7fd6fad7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/mixed_old_and_empty.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/raw_hash_tamper.package.json",
+      "sha256": "c950f49499b13bd43a60e53f16cd1586d7ae8d715c81a873dc550482f93d75d8"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/raw_hash_tamper.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/raw_hash_tamper.stderr.log",
+      "sha256": "c54eae1aaa7bf1b49bb5753448785173ed8407958e94f3057a0855c2640a5e73"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/raw_hash_tamper.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/signed_new_short.package.json",
+      "sha256": "6d9ea9cc39fdf0df40087af7109b262d6282358e02b449f6bd874eacf06efb7f"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/signed_new_short.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/signed_new_short.stderr.log",
+      "sha256": "533d79e7c1c7d3be403d3b219de63245a6073932b9431e6553baf304777598d2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/final-02/short_history/signed_new_short.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/legacy/quick_scan_import.py",
+      "sha256": "87c77921428cb52239f0276a647198aeb3988954f07b4debb468a1a1237dfa56"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/legacy/quick_scan_observations.py",
+      "sha256": "c06f4c58ea5557ab678721f78c5a14d595c26fef5fb1e55843382be956866691"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/qa-accepted-01/probe.stderr.log",
+      "sha256": "f119a2796605f8ec3bdb75f7de96d8cdee74ac7d75d415d51414fae5bdcd1247"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/qa-accepted-01/probe.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/qa-accepted-01/logs/stock_qa_20261009.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/probe.stderr.log",
+      "sha256": "ea37400853a06322f9b8e91f456ec8c82e198c0b69ac168aec6a8ad74114e8e3"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/probe.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/bad_item/bad_item.package.json",
+      "sha256": "3fbf0bc8dc23f1214163a25409647177c21a7ce0978a2d5ab0a1b682771bf28a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/bad_item/bad_item.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/bad_item/bad_item.stderr.log",
+      "sha256": "85ecf31adcad8869307572139383ff4c553480a4c6e0207ddd9d357c7fd6fad7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/bad_item/bad_item.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/bad_sha/bad_sha.package.json",
+      "sha256": "8c3fe940d93ab75f23e272d7c48d99419041f933d1a0b22247c52a508085d837"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/bad_sha/bad_sha.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/bad_sha/bad_sha.stderr.log",
+      "sha256": "26ba6598a479a9e2df63a8bbb728ca8b4dff44b48683eab801ae8f3eac2b636b"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/bad_sha/bad_sha.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/empty_item/empty_item.package.json",
+      "sha256": "23bb543a70af65bd183e1eb1130cd3276c92ab1165ead826364c7bdb0707463a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/empty_item/empty_item.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/empty_item/empty_item.stderr.log",
+      "sha256": "85ecf31adcad8869307572139383ff4c553480a4c6e0207ddd9d357c7fd6fad7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/empty_item/empty_item.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/null_obs/null_obs.package.json",
+      "sha256": "1bb6bc29e6d9750bbd3049f5540239c84b6b452b4dcf7ca2fdceff5f4cb53564"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/null_obs/null_obs.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/null_obs/null_obs.stderr.log",
+      "sha256": "533d79e7c1c7d3be403d3b219de63245a6073932b9431e6553baf304777598d2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/null_obs/null_obs.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/short_obs/short_obs.package.json",
+      "sha256": "a19a7c8137e17a3b71c5aa6b6aa6bf1d3e0b6bc1b52c0799bcf08bd89c38ef1a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/short_obs/short_obs.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/short_obs/short_obs.stderr.log",
+      "sha256": "533d79e7c1c7d3be403d3b219de63245a6073932b9431e6553baf304777598d2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/short_obs/short_obs.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_then_empty/valid_then_empty.package.json",
+      "sha256": "225bc91dc16ddd7415341d79e46e3af11a95951416c087ab08296a515ec22604"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_then_empty/valid_then_empty.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_then_empty/valid_then_empty.stderr.log",
+      "sha256": "85ecf31adcad8869307572139383ff4c553480a4c6e0207ddd9d357c7fd6fad7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_then_empty/valid_then_empty.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/accepted.package.json",
+      "sha256": "a65e97f287ababbda2a7a4a5bf59f29cf68d3a40976763cfd88cbbd33d8f3e86"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/accepted.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/accepted.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/accepted.stdout.log",
+      "sha256": "48513a218157116a252d419758b1aab3f67984825d6b30ba58c662a441cd7ccb"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/conflict.package.json",
+      "sha256": "9b166c1f483cd1680f9d63a91677df2b74eff611b1e3e07c1b4b2da9752c3811"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/conflict.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/conflict.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/conflict.stdout.log",
+      "sha256": "cc11c69a74d8a3e74bce569e3f1972f8d9fa2dfe318cf1434d9a3062beaee767"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/present.package.json",
+      "sha256": "58fe73b3418f00bac158cef22783986627c8fed4ebc72f9bd08a7ff40f9e1c63"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/present.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/present.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/present.stdout.log",
+      "sha256": "d791fda78e2ad44c9c76d61b8bd415bc100fabce39cf5d39fe9f68f142dffd14"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/rejected.package.json",
+      "sha256": "2be17e5283c4bf6c0cbda28870aad5253a80413dd06ec34e5b13b796c339428a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/rejected.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/rejected.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-01/valid_wire_states/rejected.stdout.log",
+      "sha256": "5a196b7b433c5ac1445f8461dbde8ad66af169c3c4f2b1c683536727cf7ec9a2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/probe.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/probe.stdout.log",
+      "sha256": "7ca2045b696c761b612ebdc3693fd8168618270831fd78fdf64d1868b2e77375"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/regression-results.json",
+      "sha256": "32baa4d557cd6348837f0d4cb32a51e4b0c4bf983dc20116495ef502e7165c9e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/bad_item/bad_item.package.json",
+      "sha256": "3fbf0bc8dc23f1214163a25409647177c21a7ce0978a2d5ab0a1b682771bf28a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/bad_item/bad_item.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/bad_item/bad_item.stderr.log",
+      "sha256": "85ecf31adcad8869307572139383ff4c553480a4c6e0207ddd9d357c7fd6fad7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/bad_item/bad_item.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/bad_sha/bad_sha.package.json",
+      "sha256": "8c3fe940d93ab75f23e272d7c48d99419041f933d1a0b22247c52a508085d837"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/bad_sha/bad_sha.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/bad_sha/bad_sha.stderr.log",
+      "sha256": "26ba6598a479a9e2df63a8bbb728ca8b4dff44b48683eab801ae8f3eac2b636b"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/bad_sha/bad_sha.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/empty_item/empty_item.package.json",
+      "sha256": "23bb543a70af65bd183e1eb1130cd3276c92ab1165ead826364c7bdb0707463a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/empty_item/empty_item.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/empty_item/empty_item.stderr.log",
+      "sha256": "85ecf31adcad8869307572139383ff4c553480a4c6e0207ddd9d357c7fd6fad7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/empty_item/empty_item.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/null_obs/null_obs.package.json",
+      "sha256": "1bb6bc29e6d9750bbd3049f5540239c84b6b452b4dcf7ca2fdceff5f4cb53564"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/null_obs/null_obs.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/null_obs/null_obs.stderr.log",
+      "sha256": "533d79e7c1c7d3be403d3b219de63245a6073932b9431e6553baf304777598d2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/null_obs/null_obs.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/short_obs/short_obs.package.json",
+      "sha256": "a19a7c8137e17a3b71c5aa6b6aa6bf1d3e0b6bc1b52c0799bcf08bd89c38ef1a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/short_obs/short_obs.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/short_obs/short_obs.stderr.log",
+      "sha256": "533d79e7c1c7d3be403d3b219de63245a6073932b9431e6553baf304777598d2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/short_obs/short_obs.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_then_empty/valid_then_empty.package.json",
+      "sha256": "225bc91dc16ddd7415341d79e46e3af11a95951416c087ab08296a515ec22604"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_then_empty/valid_then_empty.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_then_empty/valid_then_empty.stderr.log",
+      "sha256": "85ecf31adcad8869307572139383ff4c553480a4c6e0207ddd9d357c7fd6fad7"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_then_empty/valid_then_empty.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/accepted.package.json",
+      "sha256": "a65e97f287ababbda2a7a4a5bf59f29cf68d3a40976763cfd88cbbd33d8f3e86"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/accepted.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/accepted.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/accepted.stdout.log",
+      "sha256": "1ae8ced4cccdafc5979e7823c7f18c87433f1442fb85201603e8c7aa2c591a0f"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/conflict.package.json",
+      "sha256": "9b166c1f483cd1680f9d63a91677df2b74eff611b1e3e07c1b4b2da9752c3811"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/conflict.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/conflict.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/conflict.stdout.log",
+      "sha256": "633413279dbc112e6d08162e9cfe92604c8672c560b5d5bb6214163167efda89"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/present.package.json",
+      "sha256": "58fe73b3418f00bac158cef22783986627c8fed4ebc72f9bd08a7ff40f9e1c63"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/present.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/present.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/present.stdout.log",
+      "sha256": "b43b09b64991ff1a4f8c6e376d6309a2b16ae2e9075c0ac7dc25185de5963a09"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/rejected.package.json",
+      "sha256": "2be17e5283c4bf6c0cbda28870aad5253a80413dd06ec34e5b13b796c339428a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/rejected.release.json",
+      "sha256": "bc00a1307d4c0c5c2598c5d1e8f397d416a210444c55b02944a0b2bf32e32aa0"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/rejected.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/regression-02/valid_wire_states/rejected.stdout.log",
+      "sha256": "ba505cd635d277453caa375a2592ad3375a50449f4b40be8470380636f23ec7a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-red-01/junit.xml",
+      "sha256": "c9ddace6c82116e908e28960e01065ec1b4ffb250ea01e3a5fd89303af2cf759"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-red-01/key-opens.jsonl",
+      "sha256": "79505ed46d13833ebaecf3040e14f7e743be2f3ca8a9ad1d62d1f2756563a255"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-red-01/process.json",
+      "sha256": "b4deb669eb67890c092699b2b09fa648ef2dcdccaa94970a6966c1549016d398"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-red-01/source-before.json",
+      "sha256": "60803178b3d04ecb08e885201c70bc287205d0ca553f6f07c7f1e68a5bfd8dd5"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-red-01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-red-01/stdout.log",
+      "sha256": "859f07a07b009b774385783e8cd0c2a747d73823a6763098d16674c23059cea6"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-green-01/junit.xml",
+      "sha256": "cddcd318f0c2d50aa9b421ccd91b015013ec3e9e66a4b39f087058c2148beeb5"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-green-01/key-opens.jsonl",
+      "sha256": "79505ed46d13833ebaecf3040e14f7e743be2f3ca8a9ad1d62d1f2756563a255"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-green-01/process.json",
+      "sha256": "cd548cd388380195b6c9af1d15ea7ef0d8b5b5036457e11b38d77c973c9de02b"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-green-01/source-before.json",
+      "sha256": "028f9da7de490fca5196acb8c3d63718b04f667d978506a450e7c3d6ddabc87f"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-green-01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/compatibility-green-01/stdout.log",
+      "sha256": "8a7c8448c0f1313efd5e56982aa5aa31da99a08c4c3a9a5ab1cd409a08177533"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-red-01/junit.xml",
+      "sha256": "1ab0bd6dd326a05cbb7d097fe2bb80ab57d0569583459e3c5605204e8ad15dfe"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-red-01/key-opens.jsonl",
+      "sha256": "abf254d4863807d31644116dd668bcc12d4b8759d84c4fd8076d97f39c16a4a2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-red-01/process.json",
+      "sha256": "9cfb0047e94f0434baf82d425c58558f87b7320928c405fa3784a3dcc87a3870"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-red-01/source-before.json",
+      "sha256": "e4c215683d4cee83dfb2ae34ae757d3b3206363127dbf05ef7fd4d894266954a"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-red-01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-red-01/stdout.log",
+      "sha256": "5beeb9569f1d75c66be148683ee5440160d87a89796c65cf1be5ddc85b63196d"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-green-01/junit.xml",
+      "sha256": "559904c470fae7bc2ae0a39a60bf61c157495ca568d13e977ddd7c557d2052ea"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-green-01/key-opens.jsonl",
+      "sha256": "abf254d4863807d31644116dd668bcc12d4b8759d84c4fd8076d97f39c16a4a2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-green-01/process.json",
+      "sha256": "3589ea509549f99061b6c3ded77fd238f1901f0b63f477ee6a1d505ddedd6ec6"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-green-01/source-before.json",
+      "sha256": "70f9b9378aae7cae268ab2a68db305be9f46e9559d0e29a5c93ede1516dc2d1e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-green-01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/mixed-green-01/stdout.log",
+      "sha256": "f2fea5a487f6b180050ebbd79a5095edea77e3c0fc2ebd8e2054ba8255ddf15e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-03/junit.xml",
+      "sha256": "1e4b3a95ca06ee23d3aa4d741eadda8efcea32e8bef71cabbb9b0e7df68bdca8"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-03/key-opens.jsonl",
+      "sha256": "79505ed46d13833ebaecf3040e14f7e743be2f3ca8a9ad1d62d1f2756563a255"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-03/process.json",
+      "sha256": "d45d805cc7c9f60f72f9b835ed31382ce0ef6502495b0197357331fd5eaf8791"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-03/source-before.json",
+      "sha256": "028f9da7de490fca5196acb8c3d63718b04f667d978506a450e7c3d6ddabc87f"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-03/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-03/stdout.log",
+      "sha256": "2f013070bd3a3da1659fddc9f09f6f2720d2d49c844d9bf58b52d8e86febb812"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-04/junit.xml",
+      "sha256": "6f1db214543ffa12868e55f0fd35e0034cbb567b462f573465675d99299ca668"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-04/key-opens.jsonl",
+      "sha256": "abf254d4863807d31644116dd668bcc12d4b8759d84c4fd8076d97f39c16a4a2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-04/process.json",
+      "sha256": "a513e968472883ed1a60999a4bfbb8fa38eee45e428974a42b115492a16690b1"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-04/source-before.json",
+      "sha256": "70f9b9378aae7cae268ab2a68db305be9f46e9559d0e29a5c93ede1516dc2d1e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-04/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/affected-final-04/stdout.log",
+      "sha256": "9b16adfb6e92acbb85ea24163cdacc017e3de5d73d0fadfbb8641f5ab3e46488"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-06/junit.xml",
+      "sha256": "6f926f9b2f7678d88145ebec8a0da6d892c68385108d7c86b2199355867f5ffc"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-06/key-opens.jsonl",
+      "sha256": "abf254d4863807d31644116dd668bcc12d4b8759d84c4fd8076d97f39c16a4a2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-06/process.json",
+      "sha256": "53fd7b63b6cd1423f28c16aafedce9d611994e741a766a28bfa5a3d3fd25f712"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-06/source-before.json",
+      "sha256": "028f9da7de490fca5196acb8c3d63718b04f667d978506a450e7c3d6ddabc87f"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-06/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-06/stdout.log",
+      "sha256": "2e99f24244afddc9e959935a2570c815ab5b29ae671c10d623e4ffca6aee2e76"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-07/junit.xml",
+      "sha256": "8340e75a52f3cc059de8a927d10a85b37201af1db86f7cbaa0946e9326cf4045"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-07/key-opens.jsonl",
+      "sha256": "75f492e7720a9c48cddb8b7cc29399bf957f65221edd1fdf891ae194677481bf"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-07/process.json",
+      "sha256": "3abdfd0739625a727a2a87bafe81800e4868455cb32752035eafd0eae8b8bef8"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-07/source-before.json",
+      "sha256": "70f9b9378aae7cae268ab2a68db305be9f46e9559d0e29a5c93ede1516dc2d1e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-07/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/joint-07/stdout.log",
+      "sha256": "dc027337c07c29b0f884571dacbf0ecb70f4a06513f12fac53e01059c5fd5fde"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/static-05/0.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/static-05/0.stdout.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/static-05/1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/static-05/1.stdout.log",
+      "sha256": "2f5fa1b6ae112396ee7df2721a23e00ab50657d2f2a79b51a8b63f214837523f"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/batches/static-05/process.json",
+      "sha256": "4a48becea0ea08a2432b456bb6f589112f454856fd19dcfd2cc728ce67052f60"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/candidate/stockwiki/quick_scan_import.py",
+      "sha256": "9ce116b34365a35490a5f0e0d9298e0fa8ea20982294bf5314253689ac9deddd"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/candidate/stockwiki/quick_scan_observations.py",
+      "sha256": "d0e0b5e9dbfa37a536ee929e11ce9901e62119ce4458f7974911beb61fde11ff"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/candidate/stockwiki/quick_scan_backup_manifest.py",
+      "sha256": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/candidate/tests/test_quick_scan_observations.py",
+      "sha256": "22011d69fffdb1440ad45159fe85a30476b24caac6ad2857352a24ddaec2c2f1"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/candidate/tests/test_quick_scan_delivery.py",
+      "sha256": "b50ef0e46cc2a335a93f72eeb3fde6f76b1838ebbc0f637d6df6ae81ee4faeab"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/guard/sitecustomize.py",
+      "sha256": "696dfeecfc0aedc0732a3677faafa97c539cb3aaf12a04303359b109089d3858"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/qa-source/tests/unit/test_q10_delivery.py",
+      "sha256": "b18df3c5b4d507f0b4deed5ec6808ca95272116628af79b8a5914af32f056007"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/qa-source/src/utils/quick_scan_result_outbox.py",
+      "sha256": "f71b9aefae6381f7f75d8c10cdbdc2701b5849a806accc4cc6fa2dfc7315ee2e"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/qa-source/src/utils/quick_scan_work_store.py",
+      "sha256": "3ad67286d6936ffbd86d6c68c3531be01c771e5bdfc10df2df53218a5d5a5d49"
+    },
+    {
+      "path": "docs/implementation/reviews/G3/jr13-2026-10-09/compatibility-recheck-evidence/probes/processes-final.json",
+      "sha256": "a09ded1f2a35a486185d861f551929ddc3f75e6dbba6833315b07bdbe7d59028"
+    }
+  ],
+  "final_snapshot_lock_sha256": "587c17b9f64ac0bb9d6d67c933af516c1c80d780bd86a1fd2a7b6ace9fde7127",
+  "final_batches": {
+    "affected": {
+      "label": "affected-final-04",
+      "passed": 113,
+      "pytest_seconds": 14.88,
+      "controller_seconds": 15.48
+    },
+    "joint": {
+      "label": "joint-07",
+      "passed": 18,
+      "pytest_seconds": 131.36,
+      "controller_seconds": 131.882
+    },
+    "static": "static-05 both exit0"
+  },
+  "synthetic_packages": 62,
+  "actual_paid_API_calls": 0,
+  "production_database_changes": 0,
+  "real_golden": false,
+  "global_gates_closed": false,
+  "review_probe_processes_alive": 0,
+  "cleanup_status": "see cleanup-receipt.json, not yet performed at this acceptance timestamp"
+}

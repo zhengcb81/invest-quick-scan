@@ -407,6 +407,15 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**JR1/JR3 最新接管进展（2026-10-09，优先于以下快照）：** 四文件修复候选与同次集中独审已完成：affected-final04 113P/14.88s、static05成功、joint07 18P/131.36s，当前五SHA一致且source_changed为空；F1–F5软件发现全关闭。最终76原件含两模型各31合成原包、480非秘密源依赖锁、253独审原件已验证；唯一自有 runs/r13a 已严格清除5029文件/2151子目录，所有实际进程终态。StockWiki仍c40de21/clean、源未写；第五路径 backup manifest单行cap1→2仍待明确许可，原四路径授权不重复问，也不发布已知破坏备份的半批。接续先读 [验收](docs/implementation/reviews/G3/jr13-2026-10-09/acceptance.md) 与 [发布交接](docs/implementation/reviews/G3/jr13-2026-10-09/publication-handoff.md)，获许可后重核源树→精确五候选→正常外仓Git/hooks/push→追加实际PWF回执；不可盲跑已清理固定根/旧helpers。当前IQS材料正常提交推送收尾中，实际commit以progress最新回执为准。G3/F05/L03/真实gold/金融准确性/TH-IN仍各按原门，不刷新退役回执、不增小节点审查。
+
+
+**JR1/JR3 当前实际结果（2026-10-09，覆盖以下旧时点）：** 人类四文件/总控writer授权已生效；候选仍只在IQS runs/r13a，SW源未写。集中独审一P1/两P2已补10RED→10GREEN，当前最终受影响103P/13.29s、公开双owner链joint05实际18P/124.67s、静态03通过。该同一独审正在复验历史地址兼容与控制器synthetic配置判定，完成后冻结候选/归档、正常Git及严格自有清理。第五路径backup manifest一行cap1→2授权待人类答复，不发布已知破坏备份的半批。只关闭实际证明的软件子范围；G3/F05/L03/真实gold/金融/TH-IN仍开放。
+
+**当前实际推进（2026-10-09）：** 用户四路径/writer授权已到，goal实际查询 active。JR1/JR3 新22用例 GREEN，观察/交付/备份61P；第五路径备份上界1→2的精确扩展问题待答，源仓尚未写。继续同一次联合CLI链与集中独审，候选/原日志见 `docs/implementation/reviews/G3/jr13-2026-10-09/` 与 `docs/implementation/intake/G3/2026-10-09-jr13/`。不重做Phase111，不用软件测试关闭金融/真实gold/G3/F05/L03/TH-IN。
+
+**当前用户指令接续（2026-10-09，覆盖下方等待）：** 用户已明确回复“授权这4个文件，由你接管”，StockWiki JR1/JR3四路径及本批唯一writer边界已经解除。当前源SW c40de21/clean、QA bc41908；先在IQS全新独占runs/r13a内TDD，22新例候选GREEN，原日志保留。仅四获准源文件，其他源文件仍只读；审计持久化与备份schema兼容继续核对，源仓尚未写。下一动作为完成受影响/迁移回归和一次联合CLI验收，再集中独审、精确发布及严格自有清理。goal服务最后仍返回blocked，工具不支持自行resume；本轮按用户新指令实际推进，不伪称API已active。G3/F05/L03/金融/真实gold/TH-IN仍按原门，退役回执不刷新。
+
 **当前目标状态（2026-10-09）：blocked，等待人类授权。** 连续三次目标回合实际核查同一StockWiki四文件/writer授权阻塞，QA bc41908、SW c40de21/clean及待修文件未变；独立本仓准备已完成，无可确认活handle或其余可执行主线。`update_goal(status="blocked")` 已实际返回blocked；停止自动空转，整体目标未完成。唯一解除条件是收到此前四文件＋本批唯一writer明确许可，或收到其他获准owner的真实修复交付；届时重核源状态并按JR1/JR3卡接续，不重做已签收软件/实验、不关闭原门。以下最新准备交付仍有效。
 
 **最新联调准备（2026-10-09）：** 本仓新版[输入与适配说明](docs/implementation/reviews/G3/joint-2026-10-09-rebase/README.md)及只读 `inputs-01.json` 已完成并提交推送 `fa99bce9916154f71d9d79e54a4f9ee94f963706`：12精确变化路径，7新工件staged/committed原字节一致，远端master一致，原opencode保留。实际freeze exit0，12外仓Git文件/接口签名、6既有依赖、4新文件SHA与AST核验，7本地链接有效。已确认StockQA begin前必须预绑consumer，旧驱动不得盲跑；新薄适配器先取得合成接收工作区的真实store_id再调用公开binding API，不从ACK补目标。仅准备、0运行时软件测试、0收费请求、无源仓/生产DB写入；StockQA bc41908与StockWiki c40de21/clean未变。唯一下一跨仓动作仍是收到StockWiki四文件＋唯一writer授权，按JR1/JR3卡修复后新执行锁/一次联合公开CLI ACK；授权未答，不反复重问或模拟已批准。G3/F05/L03/金融准确性/真实gold/TH-IN原门开放；不新增小节点审查、不刷新退役回执。

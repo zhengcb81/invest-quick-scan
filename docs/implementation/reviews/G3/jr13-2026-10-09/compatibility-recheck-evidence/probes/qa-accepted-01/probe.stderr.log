@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\reviewer-compatibility\qa_accepted_probe.py", line 99, in <module>
+    ready = qa_store.prepare_result_delivery(wid, qa_package)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_work_store.py", line 4391, in prepare_result_delivery
+    self._assert_complete_observation_binding(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        connection,
+        ^^^^^^^^^^^
+    ...<3 lines>...
+        package=validated,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_work_store.py", line 4316, in _assert_complete_observation_binding
+    raise WorkConflictError(
+        "complete observation write requires the durable context and standard answer"
+    )
+src.utils.quick_scan_work_store.WorkConflictError: complete observation write requires the durable context and standard answer

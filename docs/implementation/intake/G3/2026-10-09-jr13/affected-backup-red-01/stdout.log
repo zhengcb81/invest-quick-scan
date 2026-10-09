@@ -1,0 +1,142 @@
+.........F....................................F..                        [100%]
+================================== FAILURES ===================================
+_____________ test_id_23_subject_revision_binding_and_legacy_null _____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/affected-backup-red-01/test_id_23_subject_revision_bi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F34C86B230>
+
+    def test_id_23_subject_revision_binding_and_legacy_null(tmp_path, monkeypatch) -> None:
+        _no_network(monkeypatch)
+        obs_store, identity = _workspace(tmp_path)
+        old = _observation(
+            "obs_id23_old",
+            request_id="REQ_S1",
+            attempt_id="ATT_S1",
+            extra={
+                "analysis_subject": {
+                    "analysis_subject_id": "ASJ_1",
+                    "analysis_subject_revision": 1,
+                    "entity_id": "E01",
+                    "primary_issuer_id": "ISS_1",
+                }
+            },
+        )
+        new = _observation(
+            "obs_id23_new",
+            request_id="REQ_S2",
+            attempt_id="ATT_S2",
+            extra={
+                "analysis_subject": {
+                    "analysis_subject_id": "ASJ_1",
+                    "analysis_subject_revision": 2,
+                    "entity_id": "E01",
+                    "primary_issuer_id": "ISS_1",
+                }
+            },
+        )
+        legacy = _observation("obs_id23_legacy", request_id="REQ_S3", attempt_id="ATT_S3")
+        mismatched = _observation(
+            "obs_id23_bad",
+            request_id="REQ_S4",
+            attempt_id="ATT_S4",
+            extra={
+                "analysis_subject": {
+                    "analysis_subject_id": "ASJ_9",
+                    "analysis_subject_revision": 1,
+                    "entity_id": "E10",
+                }
+            },
+        )
+        result = import_package(
+            obs_store,
+            _package([old, new, legacy, mismatched]),
+            frozen_release=_release(),
+            identity_store=identity,
+        )
+        statuses = {ack["observation_id"]: ack["status"] for ack in result["acks"]}
+        assert statuses["obs_id23_old"] == "accepted"
+        assert statuses["obs_id23_new"] == "accepted"
+        assert statuses["obs_id23_legacy"] == "accepted"
+        assert statuses["obs_id23_bad"] == "rejected"
+>       assert result["acks"][3]["error_code"] == "analysis_subject_scope_mismatch"
+E       AssertionError: assert 'lineage_violation' == 'analysis_sub...cope_mismatch'
+E         
+E         - analysis_subject_scope_mismatch
+E         + lineage_violation
+
+tests\test_quick_scan_observations.py:765: AssertionError
+_________ test_jr13_schema2_backup_and_restore_preserves_original_ack _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/affected-backup-red-01/test_jr13_schema2_backup_and_r0')
+
+    def test_jr13_schema2_backup_and_restore_preserves_original_ack(tmp_path):
+        from stockwiki.quick_scan_backup import create_backup, verify_backup, restore_backup
+        paths=WorkspacePaths.from_root(tmp_path)
+        store=QuickScanObservationStore(paths); store.migrate()
+        decision=_decision("itm_backup","obs_backup","b"*64)
+        ack=store.apply_decisions([decision])[0]
+>       snapshot=create_backup(paths,name="jr13-schema2")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_delivery.py:349: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup.py:228: in create_backup
+    _verify_dir(staging, manifest, expect_name=resolved_name)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+backup_dir = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/affected-backup-red-01/test_jr13_schema2_backup_and_r0/backups/quick_scan/.jr13-schema2.partial-4597054b')
+manifest = {'format_version': '1.0.0', 'schema': 'stockwiki.quick_scan_backup_manifest/1.0.0', 'name': 'jr13-schema2', 'created_at_utc': '2026-10-09T17:27:19Z', ...}
+expect_name = 'jr13-schema2'
+
+    def _verify_dir(backup_dir: Path, manifest: dict[str, Any], *, expect_name: str) -> dict[str, Any]:
+        """Full verification: frozen structure/owner-shape FIRST, then byte evidence.
+    
+        Deliberate order (SWR-02): the digest only proves that the recorded bytes
+        hash to the recorded digest — it says nothing about schema, required fields,
+        name↔directory binding or path safety, so those are checked before any file
+        content is trusted.
+        """
+        validate_manifest_shape(manifest, expect_name=expect_name)
+        recorded = manifest.get("manifest_sha256")
+        body = {k: v for k, v in manifest.items() if k != "manifest_sha256"}
+        if not isinstance(recorded, str) or manifest_digest(body) != recorded:
+            raise _bad("manifest_hash_mismatch", str(recorded))
+    
+        if _is_link(backup_dir):
+            raise _bad("backup_link_refused", str(backup_dir))
+        for entry_path in sorted(backup_dir.rglob("*")):
+            if _is_link(entry_path):
+                raise _bad("backup_link_refused", entry_path.relative_to(backup_dir).as_posix())
+    
+        seen: set[str] = set()
+        for entry in manifest["files"]:
+            rel = entry["path"]
+            target = backup_dir / rel
+            if not target.is_file():
+                raise _bad("file_missing", rel)
+            if _sha256_file(target) != entry.get("sha256"):
+                raise _bad("file_hash_mismatch", rel)
+            if target.suffix == ".sqlite":
+                con = sqlite3.connect(f"file:{target}?mode=ro", uri=True)
+                try:
+                    user_version = int(con.execute("PRAGMA user_version").fetchone()[0])
+                    integrity = str(con.execute("PRAGMA integrity_check").fetchone()[0])
+                finally:
+                    con.close()
+                if integrity != "ok":
+                    raise _bad("integrity_check_failed", rel)
+                if entry.get("user_version") is not None and user_version != int(entry["user_version"]):
+                    raise _bad("schema_mismatch", f"{rel}: {user_version} != {entry['user_version']}")
+                supported = SUPPORTED_USER_VERSIONS.get(target.name)
+                if supported is not None and user_version > supported:
+>                   raise _bad(
+                        "schema_newer_than_supported",
+                        f"{rel}: {user_version} > {supported}",
+                    )
+E                   stockwiki.quick_scan_backup_manifest.QuickScanBackupError: schema_newer_than_supported: scan_observations.sqlite: 2 > 1
+
+stockwiki\quick_scan_backup.py:407: QuickScanBackupError
+=========================== short test summary info ===========================
+FAILED tests/test_quick_scan_observations.py::test_id_23_subject_revision_binding_and_legacy_null
+FAILED tests/test_quick_scan_delivery.py::test_jr13_schema2_backup_and_restore_preserves_original_ack
+2 failed, 47 passed in 8.11s

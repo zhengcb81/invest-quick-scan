@@ -1,0 +1,38 @@
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\a-selected\questions.json
+INFO - 成功从JSON配置加载 31 个问题
+INFO - 冻结问卷已校验（31 题，manifest 73853233364ea3cb）
+ERROR - 处理失败: [Errno 2] No such file or directory: 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\qa\\src\\config\\quick_scan_metric_registry.json'
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\runners\llm_runner.py", line 1520, in _run_single_company
+    c06_authority = load_run_c06_authority(
+        c06_authority_path,
+        manifest=manifest,
+        identity_snapshot_sha256=identity_snapshot_sha256,
+    )
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\runners\llm_runner.py", line 1008, in load_run_c06_authority
+    return load_c06_authority(
+        path,
+        manifest=manifest,
+        identity_snapshot_sha256=identity_snapshot_sha256,
+    )
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_c06_authority.py", line 228, in load_c06_authority
+    validated = _validate_v2(
+        document,
+        manifest=manifest,
+        identity_snapshot_sha256=identity_snapshot_sha256,
+    )
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_c06_authority.py", line 164, in _validate_v2
+    validated = validate_context_document(context, expected_sha256=expected)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_observation_context.py", line 127, in validate_context_document
+    _resource_hashes(context)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_observation_context.py", line 107, in _resource_hashes
+    observation, answer, metrics, _ = _resources()
+                                      ~~~~~~~~~~^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_observation_context.py", line 51, in _resources
+    metrics = json.loads((root / "quick_scan_metric_registry.json").read_text(encoding="utf-8"))
+                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\...[truncated]

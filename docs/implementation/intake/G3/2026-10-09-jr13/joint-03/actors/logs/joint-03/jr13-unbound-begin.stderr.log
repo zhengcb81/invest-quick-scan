@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa_actor.py", line 66, in <module>
+    result = main(request)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa_actor.py", line 33, in main
+    return legacy.main(request)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\legacy_qa_actor.py", line 106, in main
+    result = store.begin_result_delivery(item['work_item_id'])
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_work_store.py", line 4769, in begin_result_delivery
+    self._consumer_binding_for_delivery(connection, row, required=True)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_work_store.py", line 4013, in _consumer_binding_for_delivery
+    raise WorkConflictError("result delivery consumer target binding is missing")
+src.utils.quick_scan_work_store.WorkConflictError: result delivery consumer target binding is missing

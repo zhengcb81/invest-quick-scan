@@ -1,0 +1,47 @@
+2026-10-09 19:15:06 - src.runners.llm_runner - INFO - run:1340 - ======================================================================
+2026-10-09 19:15:06 - src.runners.llm_runner - INFO - run:1342 - 公司分析 - Fixture Corp
+2026-10-09 19:15:06 - src.runners.llm_runner - INFO - run:1343 - ======================================================================
+2026-10-09 19:15:06 - src.config.json_config_manager - INFO - load_questions:37 - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\joint-06\entrybad\questions.json
+2026-10-09 19:15:06 - src.config.json_config_manager - INFO - load_questions:63 - 成功从JSON配置加载 31 个问题
+2026-10-09 19:15:06 - src.runners.llm_runner - INFO - _run_single_company:1457 - 冻结问卷已校验（31 题，manifest a7e80a5bcaf2cb24）
+2026-10-09 19:15:06 - __main__ - ERROR - main:350 - 运行失败: c06 authority manifest cross-check failed: context security_id differs from the frozen manifest profile for IQS_22
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_c06_authority.py", line 178, in _validate_v2
+    _crosscheck_manifest(validated, manifest)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_c06_authority.py", line 128, in _crosscheck_manifest
+    check_context_matches_manifest(context, manifest)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\utils\quick_scan_observation_context.py", line 235, in check_context_matches_manifest
+    raise ValueError(
+        f"context security_id differs from the frozen manifest profile for {question_id}"
+    )
+ValueError: context security_id differs from the frozen manifest profile for IQS_22
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\runners\llm_runner.py", line 1344, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\qa\src\runners\llm_runner.py", line 1520, in _run_single_company
+    c06_authority = load_run_c06_authority(
+        c06_authority_path,
+        manifest=...[truncated]

@@ -1,0 +1,20 @@
+....F
+================================== FAILURES ===================================
+__________________ test_j05_package_hash_and_missing_entity ___________________
+
+all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...889b817687aaddebd7f054feb16b', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j05_package_hash_and_missing_entity(all_imported):
+        changed = package('IQS_01')
+        changed['items'][0]['observation']['answer']['score'] = 9
+        result = consumer('j05-hash', save('bad-hash.json', changed))
+        assert result['cli_exit'] == 2 and result['receipt']['error_code'] == 'package_hash_mismatch'
+        result = consumer('j05-entity', PRODUCED['packages']['IQS_01']['path'], root=h.CASES / 'noentity')
+>       assert result['cli_exit'] == 0 and result['receipt']['summary'] == {'rejected': 1}
+E       assert (2 == 0)
+
+..\test_joint.py:134: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\test_joint.py::test_j05_package_hash_and_missing_entity - assert (2...
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 4 passed in 107.01s (0:01:47)

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="68.617" timestamp="2026-10-09T18:40:34.306008+01:00" hostname="DESKTOP-156V213"><testcase classname="test_joint" name="test_j01_status_low_cycle_and_full_body" time="56.405" /><testcase classname="test_joint" name="test_j02_entry_and_independent_release" time="6.683" /><testcase classname="test_joint" name="test_j03_independent_execution_and_stable_replay" time="5.228"><failure message="assert (1 == 0)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...0a2bea6a0e753279b42893f2def6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j03_independent_execution_and_stable_replay(all_imported):
+        second = h.actor('qa', 'j03-independent-cold', dict(op='produce', root=str(h.CASES / 'b'),
+                 run_label='J108_B', model_resolved='actual-fixture-model-B',
+                 answers={'IQS_01': dict(score=9, basis='normalized')}))
+&gt;       assert second['cli_exit'] == 0 and second['http_sends'] == 31
+E       assert (1 == 0)
+
+..\test_joint.py:103: AssertionError</failure></testcase></testsuite></testsuites>

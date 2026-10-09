@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="5.771" timestamp="2026-10-09T18:36:25.043836+01:00" hostname="DESKTOP-156V213"><testcase classname="test_joint" name="test_j01_status_low_cycle_and_full_body" time="5.461"><error message="failed on setup with &quot;assert (1 == 0)&quot;">@pytest.fixture(scope='module')
+    def all_imported():
+        seed = h.actor('sw', 'jr13-seed', dict(op='seed',root=str(SW)))
+        assert seed['identity_state']=='provisional'
+        owner = h.actor('sw','jr13-receiver',dict(op='receiver-owner',root=str(SW)))
+        assert owner['synthetic_only'] and not ACKS
+        PRODUCED.update(h.actor('qa','jr13-cold',dict(op='produce',root=str(QA),run_label='JR13',answers={
+            'IQS_01':dict(score=2,large=True),
+            'IQS_02':dict(status='insufficient_evidence',score=None),
+            'IQS_04':dict(status='not_applicable',score=None,basis='not_applicable')})))
+&gt;       assert PRODUCED['cli_exit']==0 and len(PRODUCED['packages'])==PRODUCED['http_sends']==31
+E       assert (1 == 0)
+
+..\test_joint.py:48: AssertionError</error></testcase></testsuite></testsuites>

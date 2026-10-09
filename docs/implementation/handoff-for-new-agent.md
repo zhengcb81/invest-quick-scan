@@ -1,4 +1,11 @@
-**当前目标状态（2026-10-09）：blocked，等待人类授权。** 三次连续实际核查均为同一StockWiki四文件/writer边界，未收到新许可或交付；update_goal已返回blocked。停止重复自动核查/留档，不把本状态记录计成实施进展。解除后先重新核对源HEAD/status/writer，按既有JR1/JR3卡接续并一次联合回验。目标未完成、原交付保留、原全局门不变；此状态优先于以下历史active与接续说明。
+**当前接续（2026-10-09，优先于所有下文历史）：** 人类已明确“授权这4个文件，由你接管”，总控独占 StockWiki JR1/JR3 四文件 writer。本轮 goal 查询实际返回 active，旧 blocked 已解除。IQS 自有 runs/r13a 已导出 SW c40de21 的331非秘密源文件；源仓尚未写。新增22反例 GREEN；扩展观察/交付/备份61P，原 RED 日志不覆写。审计持久表采用 schema2、保留历史 ACK 原JSON/ID/SHA，现有备份上界1实测拒绝；只在私有副本把上界改2，额外 `stockwiki/quick_scan_backup_manifest.py` 一行授权问题正在等待人类答复，具体候选见 [扩展范围](reviews/G3/jr13-2026-10-09/backup-scope-extension.md)。继续同一大节点的实际联合CLI链和一次集中独审；第五路径未授权前不能向源仓发布。其他源文件、真实DB/名单、API/密钥均不动。运行控制器在 reviews/G3/jr13-2026-10-09，原件在 intake/G3/2026-10-09-jr13；不盲跑历史已删根helpers。Git只读导出需要沙箱外执行，首次沙箱拒绝未改变源；实际新锁以终态日志为准。G3/F05/L03/真实 owner gold/金融准确性/TH-IN仍开放，不刷新退役回执。
+
+**JR1/JR3 最新接管进展（2026-10-09，优先于以下快照）：** 四文件修复候选与同次集中独审已完成：affected-final04 113P/14.88s、static05成功、joint07 18P/131.36s，当前五SHA一致且source_changed为空；F1–F5软件发现全关闭。最终76原件含两模型各31合成原包、480非秘密源依赖锁、253独审原件已验证；唯一自有 runs/r13a 已严格清除5029文件/2151子目录，所有实际进程终态。StockWiki仍c40de21/clean、源未写；第五路径 backup manifest单行cap1→2仍待明确许可，原四路径授权不重复问，也不发布已知破坏备份的半批。接续先读 [验收](reviews/G3/jr13-2026-10-09/acceptance.md) 与 [发布交接](reviews/G3/jr13-2026-10-09/publication-handoff.md)，获许可后重核源树→精确五候选→正常外仓Git/hooks/push→追加实际PWF回执；不可盲跑已清理固定根/旧helpers。当前IQS材料正常提交推送收尾中，实际commit以progress最新回执为准。G3/F05/L03/真实gold/金融准确性/TH-IN仍各按原门，不刷新退役回执、不增小节点审查。
+
+
+以下为历史授权等待记录，不覆盖上方新指令。
+
+**历史目标状态（2026-10-09）：blocked，等待人类授权。** 三次连续实际核查均为同一StockWiki四文件/writer边界，未收到新许可或交付；update_goal已返回blocked。停止重复自动核查/留档，不把本状态记录计成实施进展。解除后先重新核对源HEAD/status/writer，按既有JR1/JR3卡接续并一次联合回验。目标未完成、原交付保留、原全局门不变。
 
 **当前唯一接续（2026-10-09，新版输入准备已推送，覆盖下方旧时点）：** IQS新准备已提交推送 `fa99bce9916154f71d9d79e54a4f9ee94f963706`，12精确变化/7原字节工件核对一致；原opencode保留。StockQA bc41908、StockWiki c40de21/clean实际未变，StockWiki四文件/writer授权仍未答。[新联调准备](reviews/G3/joint-2026-10-09-rebase/README.md)和 `inputs-01.json` 已固定12源Git文件/签名、六原依赖及四新文件；freeze实际exit0、AST/10字节摘要/7链接有效，运行时软件测试为0。当前begin必须先绑定目标，先取synthetic接收工作区的公开store_id，再持久绑定其来源SHA；严禁从ACK反推或盲跑已删旧固定根。新薄适配器只是准备，不能说联合软件/真实owner golden已通过。下一动作仅在收到明确四文件＋唯一writer许可后按JR1/JR3修复，再固定新执行输入并一次集中联合验收。已推送的Phase111软件/归档/规范不重做，全部真实gold/金融/G3/F05/L03/TH-IN原门仍开放，不加小节点审查或刷新退役回执。
 

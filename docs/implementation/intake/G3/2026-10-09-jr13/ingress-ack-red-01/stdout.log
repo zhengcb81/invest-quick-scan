@@ -1,0 +1,1055 @@
+FFFFFFFF...FFFFFFFFFF.                                                   [100%]
+================================== FAILURES ===================================
+_________________ test_jr13_public_ack_all_outcomes_and_audit _________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_public_ack_all_outco0')
+
+    def test_jr13_public_ack_all_outcomes_and_audit(tmp_path):
+        store, identity = _workspace(tmp_path)
+        original=_jr13_obs(request_id="REQ_JR13", attempt_id="ATT_JR13")
+        package=_package([original])
+        first=import_package(store,package,frozen_release=_release(),identity_store=identity)["acks"][0]
+>       _jr13_public_ack(first)
+
+tests\test_quick_scan_observations.py:1123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ack = {'schema_version': '1.0.0', 'ack_id': 'ack_520dd3cc1b6e51c5e3d20402', 'package_id': 'pkg_a8272829fde4bbf9cb6069d125769...a0912f6fc6966784929a15eff9882', 'item_id': 'itm_45d24815b22fad3247247335fc6530299197e023ea07d965bca82a1394b92652', ...}
+
+    def _jr13_public_ack(ack):
+>       assert set(ack) == _JR13_ACK_KEYS
+E       AssertionError: assert {'ack_id', 'a...tion_id', ...} == {'ack_id', 'c...kage_id', ...}
+E         
+E         Extra items in the left set:
+E         'ack_sequence'
+E         Use -v to get more diff
+
+tests\test_quick_scan_observations.py:1096: AssertionError
+_______ test_jr13_public_rejection_taxonomy[changes0-unknown_question] ________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_public_rejection_tax0')
+changes = {'question_id': 'UNKNOWN'}, expected = 'unknown_question'
+
+    @pytest.mark.parametrize("changes,expected", [
+        ({"question_id":"UNKNOWN"},"unknown_question"),
+        ({"schema_version":"9.0.0"},"unsupported_schema"),
+        ({"field_id":"score.other"},"lineage_violation"),
+        ({"answer": {"question_id":"IQS_LEG","response_kind":"score","status":"scored","score":11}},"invalid_payload")])
+    def test_jr13_public_rejection_taxonomy(tmp_path,changes,expected):
+        store,identity=_workspace(tmp_path)
+        observation=_jr13_obs("reject"); observation.update(changes)
+        if "question_id" in changes: observation["answer"]["question_id"]=changes["question_id"]
+        ack=import_package(store,_package([observation]),frozen_release=_release(),identity_store=identity)["acks"][0]
+>       _jr13_public_ack(ack); assert ack["error_code"]==expected
+        ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ack = {'schema_version': '1.0.0', 'ack_id': 'ack_e31c4a4f43e0a3792e5e0d37', 'package_id': 'pkg_dc754a5e8e1477457b0c340c666b4...98bdd5650f27329ba8132a31e213e', 'item_id': 'itm_ce9ae6a3b1fb3919f32cfe1e801251526cb7e8563691994b336efa705c0777d6', ...}
+
+    def _jr13_public_ack(ack):
+>       assert set(ack) == _JR13_ACK_KEYS
+E       AssertionError: assert {'ack_id', 'a...tion_id', ...} == {'ack_id', 'c...kage_id', ...}
+E         
+E         Extra items in the left set:
+E         'ack_sequence'
+E         Use -v to get more diff
+
+tests\test_quick_scan_observations.py:1096: AssertionError
+______ test_jr13_public_rejection_taxonomy[changes1-unsupported_schema] _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_public_rejection_tax1')
+changes = {'schema_version': '9.0.0'}, expected = 'unsupported_schema'
+
+    @pytest.mark.parametrize("changes,expected", [
+        ({"question_id":"UNKNOWN"},"unknown_question"),
+        ({"schema_version":"9.0.0"},"unsupported_schema"),
+        ({"field_id":"score.other"},"lineage_violation"),
+        ({"answer": {"question_id":"IQS_LEG","response_kind":"score","status":"scored","score":11}},"invalid_payload")])
+    def test_jr13_public_rejection_taxonomy(tmp_path,changes,expected):
+        store,identity=_workspace(tmp_path)
+        observation=_jr13_obs("reject"); observation.update(changes)
+        if "question_id" in changes: observation["answer"]["question_id"]=changes["question_id"]
+        ack=import_package(store,_package([observation]),frozen_release=_release(),identity_store=identity)["acks"][0]
+>       _jr13_public_ack(ack); assert ack["error_code"]==expected
+        ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ack = {'schema_version': '1.0.0', 'ack_id': 'ack_29891c30d2c6954a34822352', 'package_id': 'pkg_5498d96603c1e5185c2ce3fc4251b...e1aee94c3a168b46334f51e1106b3', 'item_id': 'itm_9e2c0c68a662cb3e2bd8fe6f0bf1c82975abc0a1f3a96c2448125e2edb822131', ...}
+
+    def _jr13_public_ack(ack):
+>       assert set(ack) == _JR13_ACK_KEYS
+E       AssertionError: assert {'ack_id', 'a...tion_id', ...} == {'ack_id', 'c...kage_id', ...}
+E         
+E         Extra items in the left set:
+E         'ack_sequence'
+E         Use -v to get more diff
+
+tests\test_quick_scan_observations.py:1096: AssertionError
+_______ test_jr13_public_rejection_taxonomy[changes2-lineage_violation] _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_public_rejection_tax2')
+changes = {'field_id': 'score.other'}, expected = 'lineage_violation'
+
+    @pytest.mark.parametrize("changes,expected", [
+        ({"question_id":"UNKNOWN"},"unknown_question"),
+        ({"schema_version":"9.0.0"},"unsupported_schema"),
+        ({"field_id":"score.other"},"lineage_violation"),
+        ({"answer": {"question_id":"IQS_LEG","response_kind":"score","status":"scored","score":11}},"invalid_payload")])
+    def test_jr13_public_rejection_taxonomy(tmp_path,changes,expected):
+        store,identity=_workspace(tmp_path)
+        observation=_jr13_obs("reject"); observation.update(changes)
+        if "question_id" in changes: observation["answer"]["question_id"]=changes["question_id"]
+        ack=import_package(store,_package([observation]),frozen_release=_release(),identity_store=identity)["acks"][0]
+>       _jr13_public_ack(ack); assert ack["error_code"]==expected
+        ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ack = {'schema_version': '1.0.0', 'ack_id': 'ack_ad17b06b1808a3add5512296', 'package_id': 'pkg_5089e3eed14d4d8c93a3995915a97...411130e2cbcb3d02254d69086389d', 'item_id': 'itm_29c28c0381bcbe87c72320bc9166814e003dc202867d96afab5fdabd3dcab7a5', ...}
+
+    def _jr13_public_ack(ack):
+>       assert set(ack) == _JR13_ACK_KEYS
+E       AssertionError: assert {'ack_id', 'a...tion_id', ...} == {'ack_id', 'c...kage_id', ...}
+E         
+E         Extra items in the left set:
+E         'ack_sequence'
+E         Use -v to get more diff
+
+tests\test_quick_scan_observations.py:1096: AssertionError
+________ test_jr13_public_rejection_taxonomy[changes3-invalid_payload] ________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_public_rejection_tax3')
+changes = {'answer': {'question_id': 'IQS_LEG', 'response_kind': 'score', 'status': 'scored', 'score': 11}}
+expected = 'invalid_payload'
+
+    @pytest.mark.parametrize("changes,expected", [
+        ({"question_id":"UNKNOWN"},"unknown_question"),
+        ({"schema_version":"9.0.0"},"unsupported_schema"),
+        ({"field_id":"score.other"},"lineage_violation"),
+        ({"answer": {"question_id":"IQS_LEG","response_kind":"score","status":"scored","score":11}},"invalid_payload")])
+    def test_jr13_public_rejection_taxonomy(tmp_path,changes,expected):
+        store,identity=_workspace(tmp_path)
+        observation=_jr13_obs("reject"); observation.update(changes)
+        if "question_id" in changes: observation["answer"]["question_id"]=changes["question_id"]
+        ack=import_package(store,_package([observation]),frozen_release=_release(),identity_store=identity)["acks"][0]
+>       _jr13_public_ack(ack); assert ack["error_code"]==expected
+        ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1153: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ack = {'schema_version': '1.0.0', 'ack_id': 'ack_0e9053896e76638a82e2e0b1', 'package_id': 'pkg_81bf91a9a402afcb34c5f8c2b9dec...e6be93980262afc737daed336b68f', 'item_id': 'itm_410864e24c31c6db96e33f4193705e939ebc466e630226a50a98d988cd0123db', ...}
+
+    def _jr13_public_ack(ack):
+>       assert set(ack) == _JR13_ACK_KEYS
+E       AssertionError: assert {'ack_id', 'a...tion_id', ...} == {'ack_id', 'c...kage_id', ...}
+E         
+E         Extra items in the left set:
+E         'ack_sequence'
+E         Use -v to get more diff
+
+tests\test_quick_scan_observations.py:1096: AssertionError
+_ test_jr13_raw_json_rejects_before_decisions[{"x":1,"x":1}-json_duplicate_key] _
+
+raw = '{"x":1,"x":1}', code = 'json_duplicate_key'
+
+    @pytest.mark.parametrize("raw,code", [
+        ('{"x":1,"x":1}',"json_duplicate_key"),
+        ('{"a":{"x":1,"x":1}}',"json_duplicate_key"),
+        ('{"a":[{"x":1,"x":1}]}',"json_duplicate_key"),
+        ('{"x":NaN}',"json_constant_forbidden"),
+        ('{"x":Infinity}',"json_constant_forbidden"),
+        ('{"x":-Infinity}',"json_constant_forbidden"),
+        ('{"x":1e400}',"json_number_nonfinite"),
+        ('{"x":-1e400}',"json_number_nonfinite")])
+    def test_jr13_raw_json_rejects_before_decisions(raw,code):
+>       with pytest.raises(ImportValidationError) as caught: parse_package(raw)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ImportValidationError
+
+tests\test_quick_scan_observations.py:1166: Failed
+_ test_jr13_raw_json_rejects_before_decisions[{"a":{"x":1,"x":1}}-json_duplicate_key] _
+
+raw = '{"a":{"x":1,"x":1}}', code = 'json_duplicate_key'
+
+    @pytest.mark.parametrize("raw,code", [
+        ('{"x":1,"x":1}',"json_duplicate_key"),
+        ('{"a":{"x":1,"x":1}}',"json_duplicate_key"),
+        ('{"a":[{"x":1,"x":1}]}',"json_duplicate_key"),
+        ('{"x":NaN}',"json_constant_forbidden"),
+        ('{"x":Infinity}',"json_constant_forbidden"),
+        ('{"x":-Infinity}',"json_constant_forbidden"),
+        ('{"x":1e400}',"json_number_nonfinite"),
+        ('{"x":-1e400}',"json_number_nonfinite")])
+    def test_jr13_raw_json_rejects_before_decisions(raw,code):
+>       with pytest.raises(ImportValidationError) as caught: parse_package(raw)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ImportValidationError
+
+tests\test_quick_scan_observations.py:1166: Failed
+_ test_jr13_raw_json_rejects_before_decisions[{"a":[{"x":1,"x":1}]}-json_duplicate_key] _
+
+raw = '{"a":[{"x":1,"x":1}]}', code = 'json_duplicate_key'
+
+    @pytest.mark.parametrize("raw,code", [
+        ('{"x":1,"x":1}',"json_duplicate_key"),
+        ('{"a":{"x":1,"x":1}}',"json_duplicate_key"),
+        ('{"a":[{"x":1,"x":1}]}',"json_duplicate_key"),
+        ('{"x":NaN}',"json_constant_forbidden"),
+        ('{"x":Infinity}',"json_constant_forbidden"),
+        ('{"x":-Infinity}',"json_constant_forbidden"),
+        ('{"x":1e400}',"json_number_nonfinite"),
+        ('{"x":-1e400}',"json_number_nonfinite")])
+    def test_jr13_raw_json_rejects_before_decisions(raw,code):
+>       with pytest.raises(ImportValidationError) as caught: parse_package(raw)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ImportValidationError
+
+tests\test_quick_scan_observations.py:1166: Failed
+_ test_jr13_raw_json_rejects_before_decisions[{"x":1e400}-json_number_nonfinite] _
+
+raw = '{"x":1e400}', code = 'json_number_nonfinite'
+
+    @pytest.mark.parametrize("raw,code", [
+        ('{"x":1,"x":1}',"json_duplicate_key"),
+        ('{"a":{"x":1,"x":1}}',"json_duplicate_key"),
+        ('{"a":[{"x":1,"x":1}]}',"json_duplicate_key"),
+        ('{"x":NaN}',"json_constant_forbidden"),
+        ('{"x":Infinity}',"json_constant_forbidden"),
+        ('{"x":-Infinity}',"json_constant_forbidden"),
+        ('{"x":1e400}',"json_number_nonfinite"),
+        ('{"x":-1e400}',"json_number_nonfinite")])
+    def test_jr13_raw_json_rejects_before_decisions(raw,code):
+>       with pytest.raises(ImportValidationError) as caught: parse_package(raw)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ImportValidationError
+
+tests\test_quick_scan_observations.py:1166: Failed
+_ test_jr13_raw_json_rejects_before_decisions[{"x":-1e400}-json_number_nonfinite] _
+
+raw = '{"x":-1e400}', code = 'json_number_nonfinite'
+
+    @pytest.mark.parametrize("raw,code", [
+        ('{"x":1,"x":1}',"json_duplicate_key"),
+        ('{"a":{"x":1,"x":1}}',"json_duplicate_key"),
+        ('{"a":[{"x":1,"x":1}]}',"json_duplicate_key"),
+        ('{"x":NaN}',"json_constant_forbidden"),
+        ('{"x":Infinity}',"json_constant_forbidden"),
+        ('{"x":-Infinity}',"json_constant_forbidden"),
+        ('{"x":1e400}',"json_number_nonfinite"),
+        ('{"x":-1e400}',"json_number_nonfinite")])
+    def test_jr13_raw_json_rejects_before_decisions(raw,code):
+>       with pytest.raises(ImportValidationError) as caught: parse_package(raw)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ImportValidationError
+
+tests\test_quick_scan_observations.py:1166: Failed
+______________ test_jr13_direct_dict_cannot_bypass_ingress[nan] _______________
+
+observation_store = <stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000188B0BB9FD0>
+package_raw = {'nested': [{'value': nan}]}
+frozen_release = {'module_package_id': 'modpkg_fixture_0001', 'release_id': 'rel_fixture_1', 'catalog_version': '3.0.0', 'semantic_fingerprint_version': '2.0.0', ...}
+identity_store = <stockwiki.quick_scan_store.QuickScanStore object at 0x00000188B0BB9C70>
+
+    def import_package(
+        observation_store: QuickScanObservationStore,
+        package_raw: Any,
+        *,
+        frozen_release: dict[str, Any],
+        identity_store: QuickScanStore,
+    ) -> dict[str, Any]:
+        """Verify, decide and persist one exchange package; returns its ACKs.
+    
+        Package-level integrity failure rejects the WHOLE package with an
+        ``ObservationImportError`` (no partial accept, no ledger writes).
+        Item-level validation failures become per-item ``rejected`` ACKs.
+        """
+        if not isinstance(frozen_release, dict):
+            raise _reject("frozen_release_invalid", "manifest must be an object")
+        for key in (
+            "module_package_id",
+            "release_id",
+            "catalog_version",
+            "semantic_fingerprint_version",
+            "questions",
+        ):
+            if key not in frozen_release:
+                raise _reject("frozen_release_missing", key)
+        if not isinstance(frozen_release["questions"], dict):
+            raise _reject("frozen_release_invalid", "questions must be an object")
+        package = parse_package(package_raw)
+        try:
+>           verify_package_integrity(package)
+
+stockwiki\quick_scan_import.py:558: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+package = {'nested': [{'value': nan}]}
+
+    def verify_package_integrity(package: dict[str, Any]) -> dict[str, Any]:
+        """Recompute every content address; any mismatch rejects the package."""
+        unknown = sorted(set(package) - _PACKAGE_KEYS)
+        if unknown:
+>           raise _reject("package_unknown_field", ",".join(unknown))
+E           stockwiki.quick_scan_import.ImportValidationError: package_unknown_field: nested
+
+stockwiki\quick_scan_import.py:181: ImportValidationError
+
+The above exception was the direct cause of the following exception:
+
+value = nan
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_direct_dict_cannot_b0')
+
+    @pytest.mark.parametrize("value", [float("nan"),float("inf"),float("-inf"),(1,2)])
+    def test_jr13_direct_dict_cannot_bypass_ingress(value,tmp_path):
+        store,identity=_workspace(tmp_path); before=store.counts()
+        with pytest.raises(ImportValidationError):
+>           import_package(store,{"nested":[{"value":value}]},frozen_release=_release(),identity_store=identity)
+
+tests\test_quick_scan_observations.py:1173: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+observation_store = <stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000188B0BB9FD0>
+package_raw = {'nested': [{'value': nan}]}
+frozen_release = {'module_package_id': 'modpkg_fixture_0001', 'release_id': 'rel_fixture_1', 'catalog_version': '3.0.0', 'semantic_fingerprint_version': '2.0.0', ...}
+identity_store = <stockwiki.quick_scan_store.QuickScanStore object at 0x00000188B0BB9C70>
+
+    def import_package(
+        observation_store: QuickScanObservationStore,
+        package_raw: Any,
+        *,
+        frozen_release: dict[str, Any],
+        identity_store: QuickScanStore,
+    ) -> dict[str, Any]:
+        """Verify, decide and persist one exchange package; returns its ACKs.
+    
+        Package-level integrity failure rejects the WHOLE package with an
+        ``ObservationImportError`` (no partial accept, no ledger writes).
+        Item-level validation failures become per-item ``rejected`` ACKs.
+        """
+        if not isinstance(frozen_release, dict):
+            raise _reject("frozen_release_invalid", "manifest must be an object")
+        for key in (
+            "module_package_id",
+            "release_id",
+            "catalog_version",
+            "semantic_fingerprint_version",
+            "questions",
+        ):
+            if key not in frozen_release:
+                raise _reject("frozen_release_missing", key)
+        if not isinstance(frozen_release["questions"], dict):
+            raise _reject("frozen_release_invalid", "questions must be an object")
+        package = parse_package(package_raw)
+        try:
+            verify_package_integrity(package)
+        except ImportValidationError as exc:
+>           raise ObservationImportError(exc.error_code, exc.detail) from exc
+E           stockwiki.quick_scan_observations.ObservationImportError: package_unknown_field: nested
+
+stockwiki\quick_scan_import.py:560: ObservationImportError
+______________ test_jr13_direct_dict_cannot_bypass_ingress[inf] _______________
+
+observation_store = <stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000188B1CEC160>
+package_raw = {'nested': [{'value': inf}]}
+frozen_release = {'module_package_id': 'modpkg_fixture_0001', 'release_id': 'rel_fixture_1', 'catalog_version': '3.0.0', 'semantic_fingerprint_version': '2.0.0', ...}
+identity_store = <stockwiki.quick_scan_store.QuickScanStore object at 0x00000188B1CEC270>
+
+    def import_package(
+        observation_store: QuickScanObservationStore,
+        package_raw: Any,
+        *,
+        frozen_release: dict[str, Any],
+        identity_store: QuickScanStore,
+    ) -> dict[str, Any]:
+        """Verify, decide and persist one exchange package; returns its ACKs.
+    
+        Package-level integrity failure rejects the WHOLE package with an
+        ``ObservationImportError`` (no partial accept, no ledger writes).
+        Item-level validation failures become per-item ``rejected`` ACKs.
+        """
+        if not isinstance(frozen_release, dict):
+            raise _reject("frozen_release_invalid", "manifest must be an object")
+        for key in (
+            "module_package_id",
+            "release_id",
+            "catalog_version",
+            "semantic_fingerprint_version",
+            "questions",
+        ):
+            if key not in frozen_release:
+                raise _reject("frozen_release_missing", key)
+        if not isinstance(frozen_release["questions"], dict):
+            raise _reject("frozen_release_invalid", "questions must be an object")
+        package = parse_package(package_raw)
+        try:
+>           verify_package_integrity(package)
+
+stockwiki\quick_scan_import.py:558: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+package = {'nested': [{'value': inf}]}
+
+    def verify_package_integrity(package: dict[str, Any]) -> dict[str, Any]:
+        """Recompute every content address; any mismatch rejects the package."""
+        unknown = sorted(set(package) - _PACKAGE_KEYS)
+        if unknown:
+>           raise _reject("package_unknown_field", ",".join(unknown))
+E           stockwiki.quick_scan_import.ImportValidationError: package_unknown_field: nested
+
+stockwiki\quick_scan_import.py:181: ImportValidationError
+
+The above exception was the direct cause of the following exception:
+
+value = inf
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_direct_dict_cannot_b1')
+
+    @pytest.mark.parametrize("value", [float("nan"),float("inf"),float("-inf"),(1,2)])
+    def test_jr13_direct_dict_cannot_bypass_ingress(value,tmp_path):
+        store,identity=_workspace(tmp_path); before=store.counts()
+        with pytest.raises(ImportValidationError):
+>           import_package(store,{"nested":[{"value":value}]},frozen_release=_release(),identity_store=identity)
+
+tests\test_quick_scan_observations.py:1173: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+observation_store = <stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000188B1CEC160>
+package_raw = {'nested': [{'value': inf}]}
+frozen_release = {'module_package_id': 'modpkg_fixture_0001', 'release_id': 'rel_fixture_1', 'catalog_version': '3.0.0', 'semantic_fingerprint_version': '2.0.0', ...}
+identity_store = <stockwiki.quick_scan_store.QuickScanStore object at 0x00000188B1CEC270>
+
+    def import_package(
+        observation_store: QuickScanObservationStore,
+        package_raw: Any,
+        *,
+        frozen_release: dict[str, Any],
+        identity_store: QuickScanStore,
+    ) -> dict[str, Any]:
+        """Verify, decide and persist one exchange package; returns its ACKs.
+    
+        Package-level integrity failure rejects the WHOLE package with an
+        ``ObservationImportError`` (no partial accept, no ledger writes).
+        Item-level validation failures become per-item ``rejected`` ACKs.
+        """
+        if not isinstance(frozen_release, dict):
+            raise _reject("frozen_release_invalid", "manifest must be an object")
+        for key in (
+            "module_package_id",
+            "release_id",
+            "catalog_version",
+            "semantic_fingerprint_version",
+            "questions",
+        ):
+            if key not in frozen_release:
+                raise _reject("frozen_release_missing", key)
+        if not isinstance(frozen_release["questions"], dict):
+            raise _reject("frozen_release_invalid", "questions must be an object")
+        package = parse_package(package_raw)
+        try:
+            verify_package_integrity(package)
+        except ImportValidationError as exc:
+>           raise ObservationImportError(exc.error_code, exc.detail) from exc
+E           stockwiki.quick_scan_observations.ObservationImportError: package_unknown_field: nested
+
+stockwiki\quick_scan_import.py:560: ObservationImportError
+______________ test_jr13_direct_dict_cannot_bypass_ingress[-inf] ______________
+
+observation_store = <stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000188B1CEC9E0>
+package_raw = {'nested': [{'value': -inf}]}
+frozen_release = {'module_package_id': 'modpkg_fixture_0001', 'release_id': 'rel_fixture_1', 'catalog_version': '3.0.0', 'semantic_fingerprint_version': '2.0.0', ...}
+identity_store = <stockwiki.quick_scan_store.QuickScanStore object at 0x00000188B1CEC8D0>
+
+    def import_package(
+        observation_store: QuickScanObservationStore,
+        package_raw: Any,
+        *,
+        frozen_release: dict[str, Any],
+        identity_store: QuickScanStore,
+    ) -> dict[str, Any]:
+        """Verify, decide and persist one exchange package; returns its ACKs.
+    
+        Package-level integrity failure rejects the WHOLE package with an
+        ``ObservationImportError`` (no partial accept, no ledger writes).
+        Item-level validation failures become per-item ``rejected`` ACKs.
+        """
+        if not isinstance(frozen_release, dict):
+            raise _reject("frozen_release_invalid", "manifest must be an object")
+        for key in (
+            "module_package_id",
+            "release_id",
+            "catalog_version",
+            "semantic_fingerprint_version",
+            "questions",
+        ):
+            if key not in frozen_release:
+                raise _reject("frozen_release_missing", key)
+        if not isinstance(frozen_release["questions"], dict):
+            raise _reject("frozen_release_invalid", "questions must be an object")
+        package = parse_package(package_raw)
+        try:
+>           verify_package_integrity(package)
+
+stockwiki\quick_scan_import.py:558: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+package = {'nested': [{'value': -inf}]}
+
+    def verify_package_integrity(package: dict[str, Any]) -> dict[str, Any]:
+        """Recompute every content address; any mismatch rejects the package."""
+        unknown = sorted(set(package) - _PACKAGE_KEYS)
+        if unknown:
+>           raise _reject("package_unknown_field", ",".join(unknown))
+E           stockwiki.quick_scan_import.ImportValidationError: package_unknown_field: nested
+
+stockwiki\quick_scan_import.py:181: ImportValidationError
+
+The above exception was the direct cause of the following exception:
+
+value = -inf
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_direct_dict_cannot_b2')
+
+    @pytest.mark.parametrize("value", [float("nan"),float("inf"),float("-inf"),(1,2)])
+    def test_jr13_direct_dict_cannot_bypass_ingress(value,tmp_path):
+        store,identity=_workspace(tmp_path); before=store.counts()
+        with pytest.raises(ImportValidationError):
+>           import_package(store,{"nested":[{"value":value}]},frozen_release=_release(),identity_store=identity)
+
+tests\test_quick_scan_observations.py:1173: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+observation_store = <stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000188B1CEC9E0>
+package_raw = {'nested': [{'value': -inf}]}
+frozen_release = {'module_package_id': 'modpkg_fixture_0001', 'release_id': 'rel_fixture_1', 'catalog_version': '3.0.0', 'semantic_fingerprint_version': '2.0.0', ...}
+identity_store = <stockwiki.quick_scan_store.QuickScanStore object at 0x00000188B1CEC8D0>
+
+    def import_package(
+        observation_store: QuickScanObservationStore,
+        package_raw: Any,
+        *,
+        frozen_release: dict[str, Any],
+        identity_store: QuickScanStore,
+    ) -> dict[str, Any]:
+        """Verify, decide and persist one exchange package; returns its ACKs.
+    
+        Package-level integrity failure rejects the WHOLE package with an
+        ``ObservationImportError`` (no partial accept, no ledger writes).
+        Item-level validation failures become per-item ``rejected`` ACKs.
+        """
+        if not isinstance(frozen_release, dict):
+            raise _reject("frozen_release_invalid", "manifest must be an object")
+        for key in (
+            "module_package_id",
+            "release_id",
+            "catalog_version",
+            "semantic_fingerprint_version",
+            "questions",
+        ):
+            if key not in frozen_release:
+                raise _reject("frozen_release_missing", key)
+        if not isinstance(frozen_release["questions"], dict):
+            raise _reject("frozen_release_invalid", "questions must be an object")
+        package = parse_package(package_raw)
+        try:
+            verify_package_integrity(package)
+        except ImportValidationError as exc:
+>           raise ObservationImportError(exc.error_code, exc.detail) from exc
+E           stockwiki.quick_scan_observations.ObservationImportError: package_unknown_field: nested
+
+stockwiki\quick_scan_import.py:560: ObservationImportError
+_____________ test_jr13_direct_dict_cannot_bypass_ingress[value3] _____________
+
+observation_store = <stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000188B0C4CC50>
+package_raw = {'nested': [{'value': (1, 2)}]}
+frozen_release = {'module_package_id': 'modpkg_fixture_0001', 'release_id': 'rel_fixture_1', 'catalog_version': '3.0.0', 'semantic_fingerprint_version': '2.0.0', ...}
+identity_store = <stockwiki.quick_scan_store.QuickScanStore object at 0x00000188B0C4CD50>
+
+    def import_package(
+        observation_store: QuickScanObservationStore,
+        package_raw: Any,
+        *,
+        frozen_release: dict[str, Any],
+        identity_store: QuickScanStore,
+    ) -> dict[str, Any]:
+        """Verify, decide and persist one exchange package; returns its ACKs.
+    
+        Package-level integrity failure rejects the WHOLE package with an
+        ``ObservationImportError`` (no partial accept, no ledger writes).
+        Item-level validation failures become per-item ``rejected`` ACKs.
+        """
+        if not isinstance(frozen_release, dict):
+            raise _reject("frozen_release_invalid", "manifest must be an object")
+        for key in (
+            "module_package_id",
+            "release_id",
+            "catalog_version",
+            "semantic_fingerprint_version",
+            "questions",
+        ):
+            if key not in frozen_release:
+                raise _reject("frozen_release_missing", key)
+        if not isinstance(frozen_release["questions"], dict):
+            raise _reject("frozen_release_invalid", "questions must be an object")
+        package = parse_package(package_raw)
+        try:
+>           verify_package_integrity(package)
+
+stockwiki\quick_scan_import.py:558: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+package = {'nested': [{'value': (1, 2)}]}
+
+    def verify_package_integrity(package: dict[str, Any]) -> dict[str, Any]:
+        """Recompute every content address; any mismatch rejects the package."""
+        unknown = sorted(set(package) - _PACKAGE_KEYS)
+        if unknown:
+>           raise _reject("package_unknown_field", ",".join(unknown))
+E           stockwiki.quick_scan_import.ImportValidationError: package_unknown_field: nested
+
+stockwiki\quick_scan_import.py:181: ImportValidationError
+
+The above exception was the direct cause of the following exception:
+
+value = (1, 2)
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_direct_dict_cannot_b3')
+
+    @pytest.mark.parametrize("value", [float("nan"),float("inf"),float("-inf"),(1,2)])
+    def test_jr13_direct_dict_cannot_bypass_ingress(value,tmp_path):
+        store,identity=_workspace(tmp_path); before=store.counts()
+        with pytest.raises(ImportValidationError):
+>           import_package(store,{"nested":[{"value":value}]},frozen_release=_release(),identity_store=identity)
+
+tests\test_quick_scan_observations.py:1173: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+observation_store = <stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000188B0C4CC50>
+package_raw = {'nested': [{'value': (1, 2)}]}
+frozen_release = {'module_package_id': 'modpkg_fixture_0001', 'release_id': 'rel_fixture_1', 'catalog_version': '3.0.0', 'semantic_fingerprint_version': '2.0.0', ...}
+identity_store = <stockwiki.quick_scan_store.QuickScanStore object at 0x00000188B0C4CD50>
+
+    def import_package(
+        observation_store: QuickScanObservationStore,
+        package_raw: Any,
+        *,
+        frozen_release: dict[str, Any],
+        identity_store: QuickScanStore,
+    ) -> dict[str, Any]:
+        """Verify, decide and persist one exchange package; returns its ACKs.
+    
+        Package-level integrity failure rejects the WHOLE package with an
+        ``ObservationImportError`` (no partial accept, no ledger writes).
+        Item-level validation failures become per-item ``rejected`` ACKs.
+        """
+        if not isinstance(frozen_release, dict):
+            raise _reject("frozen_release_invalid", "manifest must be an object")
+        for key in (
+            "module_package_id",
+            "release_id",
+            "catalog_version",
+            "semantic_fingerprint_version",
+            "questions",
+        ):
+            if key not in frozen_release:
+                raise _reject("frozen_release_missing", key)
+        if not isinstance(frozen_release["questions"], dict):
+            raise _reject("frozen_release_invalid", "questions must be an object")
+        package = parse_package(package_raw)
+        try:
+            verify_package_integrity(package)
+        except ImportValidationError as exc:
+>           raise ObservationImportError(exc.error_code, exc.detail) from exc
+E           stockwiki.quick_scan_observations.ObservationImportError: package_unknown_field: nested
+
+stockwiki\quick_scan_import.py:560: ObservationImportError
+_______ test_jr13_real_cli_invalid_raw_json_zero_writes[duplicate_root] _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_real_cli_invalid_raw0')
+mutation = 'duplicate_root'
+
+    @pytest.mark.parametrize("mutation", ["duplicate_root","duplicate_nested","duplicate_array","overflow"])
+    def test_jr13_real_cli_invalid_raw_json_zero_writes(tmp_path,mutation):
+        import subprocess
+        import sys
+        store,identity=_workspace(tmp_path)
+        package=_package([_jr13_obs("cli")]); raw=json.dumps(package)
+        if mutation=="duplicate_root": raw=raw.replace('"schema_version": "1.0.0"','"schema_version": "1.0.0", "schema_version": "1.0.0"',1)
+        elif mutation=="duplicate_nested": raw=raw.replace('"summary": "fixture summary"','"summary": "fixture summary", "summary": "fixture summary"',1)
+        elif mutation=="duplicate_array": raw=raw.replace('"items": [','"items": [',1).replace('"item_id":','"item_id": "ignored", "item_id":',1)
+        else: raw=raw.replace('"summary": "fixture summary"','"summary": 1e400',1)
+        packet=tmp_path/"packet.json"; packet.write_text(raw,encoding="utf-8")
+        release=tmp_path/"release.json"; release.write_text(json.dumps(_release()),encoding="utf-8")
+        before=store.counts()
+>       proc=subprocess.run([sys.executable,"-B","-X","utf8","-m","stockwiki.cli","--root",str(tmp_path),"observation-import","--package",str(packet),"--release",str(release)],cwd=Path(__file__).parent.parent,capture_output=True,timeout=30)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'subprocess.Popen'
+args = (None, 'C:\\Miniconda\\python.exe -B -X utf8 -m stockwiki.cli --root C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs...1\\test_jr13_real_cli_invalid_raw0\\release.json', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\sw', None)
+
+    def audit(event, args):
+        if event in {"socket.connect", "socket.getaddrinfo", "socket.bind", "socket.sendto"}:
+            # Windows asyncio's internal socketpair: the exact ephemeral loopback
+            # bind (127.0.0.1 or ::1, port 0) and connects to exactly that socket.
+            # No external address, listener or model/search HTTP is admitted, so
+            # the pair never counts as a network attempt.
+            if event == "socket.bind" and args[1] in {("127.0.0.1", 0), ("::1", 0)}:
+                _pair_sockets.append(args[0])
+                return
+            if event == "socket.connect":
+                for sock in _pair_sockets:
+                    try:
+                        if sock.getsockname() == args[1]:
+                            return
+                    except OSError:
+                        pass
+            _append(NET_LEDGER, event)
+            raise PermissionError("network is forbidden in this test root")
+        if event == "open":
+            mode, flags = args[1], args[2]
+            writing = (isinstance(mode, str) and any(ch in mode for ch in "wax+")) or (
+                isinstance(flags, int)
+                and flags
+                & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND)
+            )
+            if writing:
+                if not _inside(args[0]):
+                    raise PermissionError("write outside the owned test root")
+            elif not isinstance(args[0], int) and Path(os.fsdecode(args[0])).name == "llm_apis.json":
+                _append(KEY_LEDGER, os.fsdecode(args[0]))
+        if event in {"os.mkdir", "os.remove", "os.rmdir", "os.chmod", "os.utime"}:
+            if not _inside(args[0]):
+                raise PermissionError("write outside the owned test root")
+        if event in {"os.rename", "os.replace", "os.link", "os.symlink"}:
+            if not (_inside(args[0]) and _inside(args[1])):
+                raise PermissionError("write outside the owned test root")
+        if event in {"os.system", "os.exec", "os.posix_spawn"}:
+            raise PermissionError("shell execution is forbidden in this test root")
+        if event == "subprocess.Popen":
+            executable, argv, cwd, env = args
+            same_python = (
+                (Path(executable).resolve() == Path(sys.executable).resolve())
+                if executable
+                else (
+                    isinstance(argv, str)
+                    and argv.startswith(subprocess.list2cmdline([sys.executable]) + " ")
+                )
+            )
+            if not same_python:
+                raise PermissionError("only Python child processes are allowed")
+            if cwd is None or not Path(cwd).resolve().is_relative_to(OWNED):
+                raise PermissionError("child cwd outside the owned test root")
+            if env is None or not Path(env.get("E97_OWNED_ROOT", "__missing__")).resolve().is_relative_to(OWNED):
+>               raise PermissionError("child guard not inherited")
+E               PermissionError: child guard not inherited
+
+..\guard\sitecustomize.py:82: PermissionError
+______ test_jr13_real_cli_invalid_raw_json_zero_writes[duplicate_nested] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_real_cli_invalid_raw1')
+mutation = 'duplicate_nested'
+
+    @pytest.mark.parametrize("mutation", ["duplicate_root","duplicate_nested","duplicate_array","overflow"])
+    def test_jr13_real_cli_invalid_raw_json_zero_writes(tmp_path,mutation):
+        import subprocess
+        import sys
+        store,identity=_workspace(tmp_path)
+        package=_package([_jr13_obs("cli")]); raw=json.dumps(package)
+        if mutation=="duplicate_root": raw=raw.replace('"schema_version": "1.0.0"','"schema_version": "1.0.0", "schema_version": "1.0.0"',1)
+        elif mutation=="duplicate_nested": raw=raw.replace('"summary": "fixture summary"','"summary": "fixture summary", "summary": "fixture summary"',1)
+        elif mutation=="duplicate_array": raw=raw.replace('"items": [','"items": [',1).replace('"item_id":','"item_id": "ignored", "item_id":',1)
+        else: raw=raw.replace('"summary": "fixture summary"','"summary": 1e400',1)
+        packet=tmp_path/"packet.json"; packet.write_text(raw,encoding="utf-8")
+        release=tmp_path/"release.json"; release.write_text(json.dumps(_release()),encoding="utf-8")
+        before=store.counts()
+>       proc=subprocess.run([sys.executable,"-B","-X","utf8","-m","stockwiki.cli","--root",str(tmp_path),"observation-import","--package",str(packet),"--release",str(release)],cwd=Path(__file__).parent.parent,capture_output=True,timeout=30)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'subprocess.Popen'
+args = (None, 'C:\\Miniconda\\python.exe -B -X utf8 -m stockwiki.cli --root C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs...1\\test_jr13_real_cli_invalid_raw1\\release.json', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\sw', None)
+
+    def audit(event, args):
+        if event in {"socket.connect", "socket.getaddrinfo", "socket.bind", "socket.sendto"}:
+            # Windows asyncio's internal socketpair: the exact ephemeral loopback
+            # bind (127.0.0.1 or ::1, port 0) and connects to exactly that socket.
+            # No external address, listener or model/search HTTP is admitted, so
+            # the pair never counts as a network attempt.
+            if event == "socket.bind" and args[1] in {("127.0.0.1", 0), ("::1", 0)}:
+                _pair_sockets.append(args[0])
+                return
+            if event == "socket.connect":
+                for sock in _pair_sockets:
+                    try:
+                        if sock.getsockname() == args[1]:
+                            return
+                    except OSError:
+                        pass
+            _append(NET_LEDGER, event)
+            raise PermissionError("network is forbidden in this test root")
+        if event == "open":
+            mode, flags = args[1], args[2]
+            writing = (isinstance(mode, str) and any(ch in mode for ch in "wax+")) or (
+                isinstance(flags, int)
+                and flags
+                & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND)
+            )
+            if writing:
+                if not _inside(args[0]):
+                    raise PermissionError("write outside the owned test root")
+            elif not isinstance(args[0], int) and Path(os.fsdecode(args[0])).name == "llm_apis.json":
+                _append(KEY_LEDGER, os.fsdecode(args[0]))
+        if event in {"os.mkdir", "os.remove", "os.rmdir", "os.chmod", "os.utime"}:
+            if not _inside(args[0]):
+                raise PermissionError("write outside the owned test root")
+        if event in {"os.rename", "os.replace", "os.link", "os.symlink"}:
+            if not (_inside(args[0]) and _inside(args[1])):
+                raise PermissionError("write outside the owned test root")
+        if event in {"os.system", "os.exec", "os.posix_spawn"}:
+            raise PermissionError("shell execution is forbidden in this test root")
+        if event == "subprocess.Popen":
+            executable, argv, cwd, env = args
+            same_python = (
+                (Path(executable).resolve() == Path(sys.executable).resolve())
+                if executable
+                else (
+                    isinstance(argv, str)
+                    and argv.startswith(subprocess.list2cmdline([sys.executable]) + " ")
+                )
+            )
+            if not same_python:
+                raise PermissionError("only Python child processes are allowed")
+            if cwd is None or not Path(cwd).resolve().is_relative_to(OWNED):
+                raise PermissionError("child cwd outside the owned test root")
+            if env is None or not Path(env.get("E97_OWNED_ROOT", "__missing__")).resolve().is_relative_to(OWNED):
+>               raise PermissionError("child guard not inherited")
+E               PermissionError: child guard not inherited
+
+..\guard\sitecustomize.py:82: PermissionError
+______ test_jr13_real_cli_invalid_raw_json_zero_writes[duplicate_array] _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_real_cli_invalid_raw2')
+mutation = 'duplicate_array'
+
+    @pytest.mark.parametrize("mutation", ["duplicate_root","duplicate_nested","duplicate_array","overflow"])
+    def test_jr13_real_cli_invalid_raw_json_zero_writes(tmp_path,mutation):
+        import subprocess
+        import sys
+        store,identity=_workspace(tmp_path)
+        package=_package([_jr13_obs("cli")]); raw=json.dumps(package)
+        if mutation=="duplicate_root": raw=raw.replace('"schema_version": "1.0.0"','"schema_version": "1.0.0", "schema_version": "1.0.0"',1)
+        elif mutation=="duplicate_nested": raw=raw.replace('"summary": "fixture summary"','"summary": "fixture summary", "summary": "fixture summary"',1)
+        elif mutation=="duplicate_array": raw=raw.replace('"items": [','"items": [',1).replace('"item_id":','"item_id": "ignored", "item_id":',1)
+        else: raw=raw.replace('"summary": "fixture summary"','"summary": 1e400',1)
+        packet=tmp_path/"packet.json"; packet.write_text(raw,encoding="utf-8")
+        release=tmp_path/"release.json"; release.write_text(json.dumps(_release()),encoding="utf-8")
+        before=store.counts()
+>       proc=subprocess.run([sys.executable,"-B","-X","utf8","-m","stockwiki.cli","--root",str(tmp_path),"observation-import","--package",str(packet),"--release",str(release)],cwd=Path(__file__).parent.parent,capture_output=True,timeout=30)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'subprocess.Popen'
+args = (None, 'C:\\Miniconda\\python.exe -B -X utf8 -m stockwiki.cli --root C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs...1\\test_jr13_real_cli_invalid_raw2\\release.json', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\sw', None)
+
+    def audit(event, args):
+        if event in {"socket.connect", "socket.getaddrinfo", "socket.bind", "socket.sendto"}:
+            # Windows asyncio's internal socketpair: the exact ephemeral loopback
+            # bind (127.0.0.1 or ::1, port 0) and connects to exactly that socket.
+            # No external address, listener or model/search HTTP is admitted, so
+            # the pair never counts as a network attempt.
+            if event == "socket.bind" and args[1] in {("127.0.0.1", 0), ("::1", 0)}:
+                _pair_sockets.append(args[0])
+                return
+            if event == "socket.connect":
+                for sock in _pair_sockets:
+                    try:
+                        if sock.getsockname() == args[1]:
+                            return
+                    except OSError:
+                        pass
+            _append(NET_LEDGER, event)
+            raise PermissionError("network is forbidden in this test root")
+        if event == "open":
+            mode, flags = args[1], args[2]
+            writing = (isinstance(mode, str) and any(ch in mode for ch in "wax+")) or (
+                isinstance(flags, int)
+                and flags
+                & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND)
+            )
+            if writing:
+                if not _inside(args[0]):
+                    raise PermissionError("write outside the owned test root")
+            elif not isinstance(args[0], int) and Path(os.fsdecode(args[0])).name == "llm_apis.json":
+                _append(KEY_LEDGER, os.fsdecode(args[0]))
+        if event in {"os.mkdir", "os.remove", "os.rmdir", "os.chmod", "os.utime"}:
+            if not _inside(args[0]):
+                raise PermissionError("write outside the owned test root")
+        if event in {"os.rename", "os.replace", "os.link", "os.symlink"}:
+            if not (_inside(args[0]) and _inside(args[1])):
+                raise PermissionError("write outside the owned test root")
+        if event in {"os.system", "os.exec", "os.posix_spawn"}:
+            raise PermissionError("shell execution is forbidden in this test root")
+        if event == "subprocess.Popen":
+            executable, argv, cwd, env = args
+            same_python = (
+                (Path(executable).resolve() == Path(sys.executable).resolve())
+                if executable
+                else (
+                    isinstance(argv, str)
+                    and argv.startswith(subprocess.list2cmdline([sys.executable]) + " ")
+                )
+            )
+            if not same_python:
+                raise PermissionError("only Python child processes are allowed")
+            if cwd is None or not Path(cwd).resolve().is_relative_to(OWNED):
+                raise PermissionError("child cwd outside the owned test root")
+            if env is None or not Path(env.get("E97_OWNED_ROOT", "__missing__")).resolve().is_relative_to(OWNED):
+>               raise PermissionError("child guard not inherited")
+E               PermissionError: child guard not inherited
+
+..\guard\sitecustomize.py:82: PermissionError
+__________ test_jr13_real_cli_invalid_raw_json_zero_writes[overflow] __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/ingress-ack-red-01/test_jr13_real_cli_invalid_raw3')
+mutation = 'overflow'
+
+    @pytest.mark.parametrize("mutation", ["duplicate_root","duplicate_nested","duplicate_array","overflow"])
+    def test_jr13_real_cli_invalid_raw_json_zero_writes(tmp_path,mutation):
+        import subprocess
+        import sys
+        store,identity=_workspace(tmp_path)
+        package=_package([_jr13_obs("cli")]); raw=json.dumps(package)
+        if mutation=="duplicate_root": raw=raw.replace('"schema_version": "1.0.0"','"schema_version": "1.0.0", "schema_version": "1.0.0"',1)
+        elif mutation=="duplicate_nested": raw=raw.replace('"summary": "fixture summary"','"summary": "fixture summary", "summary": "fixture summary"',1)
+        elif mutation=="duplicate_array": raw=raw.replace('"items": [','"items": [',1).replace('"item_id":','"item_id": "ignored", "item_id":',1)
+        else: raw=raw.replace('"summary": "fixture summary"','"summary": 1e400',1)
+        packet=tmp_path/"packet.json"; packet.write_text(raw,encoding="utf-8")
+        release=tmp_path/"release.json"; release.write_text(json.dumps(_release()),encoding="utf-8")
+        before=store.counts()
+>       proc=subprocess.run([sys.executable,"-B","-X","utf8","-m","stockwiki.cli","--root",str(tmp_path),"observation-import","--package",str(packet),"--release",str(release)],cwd=Path(__file__).parent.parent,capture_output=True,timeout=30)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\subprocess.py:554: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+C:\Miniconda\Lib\subprocess.py:1550: in _execute_child
+    sys.audit("subprocess.Popen", executable, args, cwd, env)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+event = 'subprocess.Popen'
+args = (None, 'C:\\Miniconda\\python.exe -B -X utf8 -m stockwiki.cli --root C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs...1\\test_jr13_real_cli_invalid_raw3\\release.json', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\sw', None)
+
+    def audit(event, args):
+        if event in {"socket.connect", "socket.getaddrinfo", "socket.bind", "socket.sendto"}:
+            # Windows asyncio's internal socketpair: the exact ephemeral loopback
+            # bind (127.0.0.1 or ::1, port 0) and connects to exactly that socket.
+            # No external address, listener or model/search HTTP is admitted, so
+            # the pair never counts as a network attempt.
+            if event == "socket.bind" and args[1] in {("127.0.0.1", 0), ("::1", 0)}:
+                _pair_sockets.append(args[0])
+                return
+            if event == "socket.connect":
+                for sock in _pair_sockets:
+                    try:
+                        if sock.getsockname() == args[1]:
+                            return
+                    except OSError:
+                        pass
+            _append(NET_LEDGER, event)
+            raise PermissionError("network is forbidden in this test root")
+        if event == "open":
+            mode, flags = args[1], args[2]
+            writing = (isinstance(mode, str) and any(ch in mode for ch in "wax+")) or (
+                isinstance(flags, int)
+                and flags
+                & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND)
+            )
+            if writing:
+                if not _inside(args[0]):
+                    raise PermissionError("write outside the owned test root")
+            elif not isinstance(args[0], int) and Path(os.fsdecode(args[0])).name == "llm_apis.json":
+                _append(KEY_LEDGER, os.fsdecode(args[0]))
+        if event in {"os.mkdir", "os.remove", "os.rmdir", "os.chmod", "os.utime"}:
+            if not _inside(args[0]):
+                raise PermissionError("write outside the owned test root")
+        if event in {"os.rename", "os.replace", "os.link", "os.symlink"}:
+            if not (_inside(args[0]) and _inside(args[1])):
+                raise PermissionError("write outside the owned test root")
+        if event in {"os.system", "os.exec", "os.posix_spawn"}:
+            raise PermissionError("shell execution is forbidden in this test root")
+        if event == "subprocess.Popen":
+            executable, argv, cwd, env = args
+            same_python = (
+                (Path(executable).resolve() == Path(sys.executable).resolve())
+                if executable
+                else (
+                    isinstance(argv, str)
+                    and argv.startswith(subprocess.list2cmdline([sys.executable]) + " ")
+                )
+            )
+            if not same_python:
+                raise PermissionError("only Python child processes are allowed")
+            if cwd is None or not Path(cwd).resolve().is_relative_to(OWNED):
+                raise PermissionError("child cwd outside the owned test root")
+            if env is None or not Path(env.get("E97_OWNED_ROOT", "__missing__")).resolve().is_relative_to(OWNED):
+>               raise PermissionError("child guard not inherited")
+E               PermissionError: child guard not inherited
+
+..\guard\sitecustomize.py:82: PermissionError
+=========================== short test summary info ===========================
+FAILED tests/test_quick_scan_observations.py::test_jr13_public_ack_all_outcomes_and_audit
+FAILED tests/test_quick_scan_observations.py::test_jr13_public_rejection_taxonomy[changes0-unknown_question]
+FAILED tests/test_quick_scan_observations.py::test_jr13_public_rejection_taxonomy[changes1-unsupported_schema]
+FAILED tests/test_quick_scan_observations.py::test_jr13_public_rejection_taxonomy[changes2-lineage_violation]
+FAILED tests/test_quick_scan_observations.py::test_jr13_public_rejection_taxonomy[changes3-invalid_payload]
+FAILED tests/test_quick_scan_observations.py::test_jr13_raw_json_rejects_before_decisions[{"x":1,"x":1}-json_duplicate_key]
+FAILED tests/test_quick_scan_observations.py::test_jr13_raw_json_rejects_before_decisions[{"a":{"x":1,"x":1}}-json_duplicate_key]
+FAILED tests/test_quick_scan_observations.py::test_jr13_raw_json_rejects_before_decisions[{"a":[{"x":1,"x":1}]}-json_duplicate_key]
+FAILED tests/test_quick_scan_observations.py::test_jr13_raw_json_rejects_before_decisions[{"x":1e400}-json_number_nonfinite]
+FAILED tests/test_quick_scan_observations.py::test_jr13_raw_json_rejects_before_decisions[{"x":-1e400}-json_number_nonfinite]
+FAILED tests/test_quick_scan_observations.py::test_jr13_direct_dict_cannot_bypass_ingress[nan]
+FAILED tests/test_quick_scan_observations.py::test_jr13_direct_dict_cannot_bypass_ingress[inf]
+FAILED tests/test_quick_scan_observations.py::test_jr13_direct_dict_cannot_bypass_ingress[-inf]
+FAILED tests/test_quick_scan_observations.py::test_jr13_direct_dict_cannot_bypass_ingress[value3]
+FAILED tests/test_quick_scan_observations.py::test_jr13_real_cli_invalid_raw_json_zero_writes[duplicate_root]
+FAILED tests/test_quick_scan_observations.py::test_jr13_real_cli_invalid_raw_json_zero_writes[duplicate_nested]
+FAILED tests/test_quick_scan_observations.py::test_jr13_real_cli_invalid_raw_json_zero_writes[duplicate_array]
+FAILED tests/test_quick_scan_observations.py::test_jr13_real_cli_invalid_raw_json_zero_writes[overflow]
+18 failed, 4 passed, 19 deselected in 6.65s

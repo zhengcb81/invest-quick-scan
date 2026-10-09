@@ -1,0 +1,175 @@
+2026-10-09 18:41:40 - src.runners.llm_runner - INFO - run:1340 - ======================================================================
+2026-10-09 18:41:40 - src.runners.llm_runner - INFO - run:1342 - 公司分析 - Fixture Corp
+2026-10-09 18:41:40 - src.runners.llm_runner - INFO - run:1343 - ======================================================================
+2026-10-09 18:41:40 - src.config.json_config_manager - INFO - load_questions:37 - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\joint-03\b\questions.json
+2026-10-09 18:41:40 - src.config.json_config_manager - INFO - load_questions:63 - 成功从JSON配置加载 31 个问题
+2026-10-09 18:41:40 - src.runners.llm_runner - INFO - _run_single_company:1457 - 冻结问卷已校验（31 题，manifest a7e80a5bcaf2cb24）
+2026-10-09 18:41:40 - src.runners.llm_runner - INFO - _run_single_company:1536 - C06 权威文档已加载（c5c1e7768b083a0b）
+2026-10-09 18:41:40 - src.runners.llm_runner - INFO - _run_single_company:1543 - 
+成功加载 31 个问题
+2026-10-09 18:41:40 - src.runners.llm_runner - INFO - _run_single_company:1544 - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\joint-03\b\questions.json (json格式)
+2026-10-09 18:41:40 - src.runners.llm_runner - INFO - _run_single_company:1545 - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\joint-03\b\result.json
+
+2026-10-09 18:41:40 - src.config.llm_config - INFO - _load_config:47 - 成功加载 LLM 配置文件: llm_apis.json
+2026-10-09 18:41:40 - src.config.llm_config - INFO - _load_config:47 - 成功加载 LLM 配置文件: llm_apis.json
+2026-10-09 18:41:40 - src.providers.base_llm_provider - WARNING - _load_config:157 - 从配置文件读取 API 密钥（建议使用环境变量）
+2026-10-09 18:41:40 - src.providers.base_llm_provider - INFO - _load_config:160 - LLMProvider initialized (provider: openai, model: actual-fixture-model, api_key: ***
+2026-10-09 18:41:40 - src.core.qa_engine - INFO - __init__:105 - QAEngine 初始化完成（搜索提供者: openai）
+2026-10-09 18:41:40 - src.core.qa_engine - INFO - process_questions:182 - 开始批量处理 31 个问题
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_01] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:40 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:40 - src.core.qa_engine - ERROR - process_questions:310 - [1/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_02] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:40 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:40 - src.core.qa_engine - ERROR - process_questions:310 - [2/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_04] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:40 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:40 - src.core.qa_engine - ERROR - process_questions:310 - [3/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_05] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:40 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:40 - src.core.qa_engine - ERROR - process_questions:310 - [4/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_06] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:40 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:40 - src.core.qa_engine - ERROR - process_questions:310 - [5/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_07] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:40 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:40 - src.core.qa_engine - ERROR - process_questions:310 - [6/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_08] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:40 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:40 - src.core.qa_engine - ERROR - process_questions:310 - [7/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_09] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:40 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:40 - src.core.qa_engine - ERROR - process_questions:310 - [8/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_10] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [9/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_12] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [10/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_13] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [11/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_14] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [12/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_15] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [13/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_16] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [14/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_17] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [15/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_18] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [16/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_19] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [17/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_20] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [18/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_21] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [19/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_22] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [20/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_23] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [21/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_24] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:41 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:41 - src.core.qa_engine - ERROR - process_questions:310 - [22/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [OPERATING_01] 对象与口径={"company": "Fixture Corp", "...
+2026-10-09 18:41:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:42 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:42 - src.core.qa_engine - ERROR - process_questions:310 - [23/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [OPERATING_02] 对象与口径={"company": "Fixture Corp", "...
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:42 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:42 - src.core.qa_engine - ERROR - process_questions:310 - [24/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [INDUSTRIAL_01] 对象与口径={"company": "Fixture Corp", ...
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:42 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:42 - src.core.qa_engine - ERROR - process_questions:310 - [25/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [INDUSTRIAL_02] 对象与口径={"company": "Fixture Corp", ...
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:42 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:42 - src.core.qa_engine - ERROR - process_questions:310 - [26/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [MATURE_01] 对象与口径={"company": "Fixture Corp", "tic...
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:42 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:42 - src.core.qa_engine - ERROR - process_questions:310 - [27/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [MATURE_02] 对象与口径={"company": "Fixture Corp", "tic...
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:42 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:42 - src.core.qa_engine - ERROR - process_questions:310 - [28/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [CYCLICAL_01] 对象与口径={"company": "Fixture Corp", "t...
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:42 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:42 - src.core.qa_engine - ERROR - process_questions:310 - [29/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [CYCLICAL_02] 对象与口径={"company": "Fixture Corp", "t...
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:42 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:42 - src.core.qa_engine - ERROR - process_questions:310 - [30/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [CROSS_BORDER_01] 对象与口径={"company": "Fixture Corp"...
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:41:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:41:42 - src.runners.llm_runner - WARNING - _save_transport_checkpoint:642 - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+2026-10-09 18:41:42 - src.core.qa_engine - ERROR - process_questions:310 - [31/31] 处理失败: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+2026-10-09 18:41:42 - src.core.qa_engine - INFO - output_results:373 - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\joint-03\b\result.json
+2026-10-09 18:41:42 - src.runners.llm_runner - ERROR - _run_single_company:1898 - Quick-scan contains 31 failed question(s); partial results were saved.

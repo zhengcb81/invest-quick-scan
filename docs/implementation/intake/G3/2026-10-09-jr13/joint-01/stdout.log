@@ -1,0 +1,22 @@
+E
+=================================== ERRORS ====================================
+__________ ERROR at setup of test_j01_status_low_cycle_and_full_body __________
+
+    @pytest.fixture(scope='module')
+    def all_imported():
+        seed = h.actor('sw', 'jr13-seed', dict(op='seed',root=str(SW)))
+        assert seed['identity_state']=='provisional'
+        owner = h.actor('sw','jr13-receiver',dict(op='receiver-owner',root=str(SW)))
+        assert owner['synthetic_only'] and not ACKS
+        PRODUCED.update(h.actor('qa','jr13-cold',dict(op='produce',root=str(QA),run_label='JR13',answers={
+            'IQS_01':dict(score=2,large=True),
+            'IQS_02':dict(status='insufficient_evidence',score=None),
+            'IQS_04':dict(status='not_applicable',score=None,basis='not_applicable')})))
+>       assert PRODUCED['cli_exit']==0 and len(PRODUCED['packages'])==PRODUCED['http_sends']==31
+E       assert (1 == 0)
+
+..\test_joint.py:48: AssertionError
+=========================== short test summary info ===========================
+ERROR ..\test_joint.py::test_j01_status_low_cycle_and_full_body - assert (1 =...
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 error in 5.89s

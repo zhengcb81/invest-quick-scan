@@ -1,0 +1,2780 @@
+--- a/stockwiki/quick_scan_import.py
++++ b/stockwiki/quick_scan_import.py
+@@ -38,6 +38,7 @@
+ 
+ import hashlib
+ import json
++import math
+ import re
+ from datetime import date, datetime
+ from typing import Any
+@@ -45,6 +46,8 @@
+ from stockwiki.quick_scan_observations import (
+     ObservationImportError,
+     QuickScanObservationStore,
++    legacy_wire_pending,
++    validate_ack_addresses,
+ )
+ from stockwiki.quick_scan_store import QuickScanStore
+ 
+@@ -65,7 +68,8 @@
+     }
+ )
+ _ITEM_KEYS = frozenset({"item_id", "observation_id", "payload_sha256", "observation"})
+-_OBSERVATION_KEYS = frozenset("""
++_OBSERVATION_KEYS = frozenset(
++    """
+     schema_version entity_id security_id segment_id field_id construct_id
+     question_id question_version template_version method_id scope cohort
+     information_cutoff run_id scan_id inputset_id task_mode comparison_group_id
+@@ -74,7 +78,8 @@
+     analysis_subject_id analysis_subject_revision primary_issuer_id
+     module_package_id module_release_id question_definition_sha256
+     question_semantic_sha256 cycle_sensitive
+-    """.split())
++    """.split()
++)
+ _EXECUTION_REQUIRED = (
+     "provider",
+     "model_resolved",
+@@ -156,18 +161,64 @@
+     raise _reject("json_constant_forbidden", token)
+ 
+ 
++def _json_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
++    result: dict[str, Any] = {}
++    for key, value in pairs:
++        if key in result:
++            raise _reject("json_duplicate_key", key)
++        result[key] = value
++    return result
++
++
++def _finite_float(token: str) -> float:
++    value = float(token)
++    if not math.isfinite(value):
++        raise _reject("json_number_nonfinite", token)
++    return value
++
++
++def _validate_json_value(value: Any) -> None:
++    """Validate direct objects too; shared aliases are allowed, cycles are not."""
++    active: set[int] = set()
++    stack: list[tuple[Any, bool]] = [(value, False)]
++    while stack:
++        node, leaving = stack.pop()
++        if leaving:
++            active.remove(id(node))
++        elif isinstance(node, (dict, list)):
++            if id(node) in active:
++                raise _reject("json_value_invalid", "circular object")
++            if isinstance(node, dict) and any(not isinstance(key, str) for key in node):
++                raise _reject("json_value_invalid", "object keys must be strings")
++            active.add(id(node))
++            stack.append((node, True))
++            children = node.values() if isinstance(node, dict) else node
++            stack.extend((child, False) for child in children)
++        elif isinstance(node, float):
++            if not math.isfinite(node):
++                raise _reject("json_number_nonfinite", str(node))
++        elif node is not None and not isinstance(node, (str, int, bool)):
++            raise _reject("json_value_invalid", type(node).__name__)
++
++
+ def parse_package(raw: Any) -> dict[str, Any]:
+     if isinstance(raw, dict):
++        _validate_json_value(raw)
+         return raw
+-    if isinstance(raw, (bytes, bytearray)):
+-        raw = raw.decode("utf-8")
+-    if not isinstance(raw, str):
++    if not isinstance(raw, (str, bytes, bytearray)):
+         raise _reject("package_shape", "package must be JSON text, bytes or object")
+     try:
+-        parsed = json.loads(raw, parse_constant=_reject_constant)
++        if isinstance(raw, (bytes, bytearray)):
++            raw = raw.decode("utf-8")
++        parsed = json.loads(
++            raw,
++            parse_constant=_reject_constant,
++            parse_float=_finite_float,
++            object_pairs_hook=_json_pairs,
++        )
+     except ImportValidationError:
+         raise
+-    except ValueError as exc:
++    except (ValueError, RecursionError) as exc:
+         raise _reject("package_json_invalid", str(exc)) from exc
+     if not isinstance(parsed, dict):
+         raise _reject("package_shape", "package root must be an object")
+@@ -507,18 +558,13 @@
+     item: Any,
+     error_code: str,
+     detail: str = "",
+-    *,
+-    fallback_index: int = 0,
+ ) -> dict[str, Any]:
+-    item = item if isinstance(item, dict) else {}
+     observation = item.get("observation") if isinstance(item.get("observation"), dict) else {}
+     return {
+-        "package_id": package.get("package_id", "pkg_unknown"),
+-        "item_id": str(item.get("item_id") or f"itm_invalid_{fallback_index}"),
+-        "observation_id": str(
+-            item.get("observation_id") or observation.get("observation_id") or "obs_unknown"
+-        ),
+-        "payload_sha256": str(item.get("payload_sha256") or ""),
++        "package_id": package["package_id"],
++        "item_id": item["item_id"],
++        "observation_id": item["observation_id"],
++        "payload_sha256": item["payload_sha256"],
+         "exec_key": None,
+         "status": "rejected",
+         "error_code": error_code,
+@@ -559,8 +605,38 @@
+     except ImportValidationError as exc:
+         raise ObservationImportError(exc.error_code, exc.detail) from exc
+ 
++    replay = observation_store.replay_decisions(
++        [
++            {
++                "package_id": package["package_id"],
++                **{
++                    field: item.get(field)
++                    for field in ("item_id", "observation_id", "payload_sha256")
++                },
++            }
++            for item in package["items"]
++        ]
++    )
++    if replay is not None:
++        summary: dict[str, int] = {}
++        for ack in replay:
++            summary[ack["status"]] = summary.get(ack["status"], 0) + 1
++        receipt = {
++            "package_id": package["package_id"],
++            "store_id": observation_store.store_id,
++            "acks": replay,
++            "summary": summary,
++        }
++        if any(legacy_wire_pending(ack) for ack in replay):
++            receipt["legacy_wire_pending"] = True
++        return receipt
++
++    # All echo addresses must be representable in the strict public ACK. If
++    # even one is missing/malformed, refuse the whole batch before any writes.
++    for item in package["items"]:
++        validate_ack_addresses({"package_id": package["package_id"], **item})
+     decisions: list[dict[str, Any]] = []
+-    for index, item in enumerate(package["items"]):
++    for item in package["items"]:
+         try:
+             decisions.append(
+                 validate_item(
+@@ -577,12 +653,11 @@
+                     item,
+                     exc.error_code,
+                     exc.detail,
+-                    fallback_index=index,
+                 )
+             )
+ 
+     acks = observation_store.apply_decisions(decisions, identity_lookup=identity_store)
+-    summary: dict[str, int] = {}
++    summary = {}
+     for ack in acks:
+         summary[ack["status"]] = summary.get(ack["status"], 0) + 1
+     return {
+--- a/stockwiki/quick_scan_observations.py
++++ b/stockwiki/quick_scan_observations.py
+@@ -16,12 +16,17 @@
+   kind. Corrections append a new row; old observations keep their original
+   payload, subject revision, model, timestamps and hashes forever (ID-17).
+ * Same ``package_id+item_id`` replay returns the ORIGINAL stored ACK with
+-  the original sequence/received_at (DB-02). Same ``observation_id`` with the
++  the original ID/received_at (DB-02); internal sequence stays in the ledger.
++  New public ACKs match C06 1.0.0 exactly; internal reason/detail/original-import
++  reference are saved separately in schema-2 audit rows, in the same transaction.
++  Historical enriched ACK JSON is never projected or rewritten on read.
++  Same ``observation_id`` with the
+   same payload hash → ``already_present`` (never a second authoritative row,
+   information time untouched). Same ``observation_id`` with a different hash
+   → ``conflict``/``immutable_key_hash_conflict``. A different
+   ``observation_id`` reusing an already-stored logical execution key →
+-  ``conflict``/``execution_key_id_mismatch``. Nothing is ever
++  public ``conflict``/``immutable_key_hash_conflict`` with internal
++  ``execution_key_id_mismatch`` retained in the audit. Nothing is ever
+   last-write-wins (DB-03/STORE-02).
+ * Every imported observation persists identity_revision, security_id,
+   listing/source-binding scope, and analysis_subject_id/revision exactly as
+@@ -36,6 +41,7 @@
+ 
+ import hashlib
+ import json
++import re
+ import sqlite3
+ from contextlib import closing
+ from datetime import datetime, timezone
+@@ -44,9 +50,80 @@
+ from stockwiki.paths import WorkspacePaths
+ from stockwiki.quick_scan_store import QuickScanStore
+ 
+-SCHEMA_VERSION = 1
++SCHEMA_VERSION = 2
+ _DATABASE_NAME = "scan_observations.sqlite"
+ _LEDGER_STATUSES = frozenset({"accepted", "already_present", "conflict", "rejected"})
++_ACK_ADDRESS_PATTERNS = {
++    "package_id": re.compile(r"pkg_[a-f0-9]{64}"),
++    "item_id": re.compile(r"itm_[a-f0-9]{64}"),
++    "observation_id": re.compile(r"obs_[a-f0-9]{64}"),
++    "payload_sha256": re.compile(r"[a-f0-9]{64}"),
++}
++_PUBLIC_ACK_FIELDS = frozenset(
++    {
++        "schema_version",
++        "ack_id",
++        "package_id",
++        "item_id",
++        "observation_id",
++        "payload_sha256",
++        "status",
++        "error_code",
++        "received_at",
++        "consumer",
++    }
++)
++_LINEAGE_ERRORS = frozenset(
++    {
++        "field_identity_mismatch",
++        "scope_mismatch",
++        "scope_requires_security",
++        "scope_requires_segment",
++        "security_scope_invalid",
++        "identity_revision_invalid",
++        "analysis_subject_scope_mismatch",
++        "analysis_subject_invalid",
++        "analysis_subject_id_invalid",
++        "analysis_subject_revision_invalid",
++        "partial_module_binding",
++        "published_binding_missing",
++        "module_package_mismatch",
++        "module_release_mismatch",
++        "question_definition_mismatch",
++        "question_semantic_mismatch",
++        "method_semantic_binding_mismatch",
++        "method_definition_binding_mismatch",
++        "method_family_mismatch",
++        "question_version_mismatch",
++        "template_version_mismatch",
++        "catalog_version_mismatch",
++        "construct_mismatch",
++        "rubric_version_mismatch",
++        "published_binding_incomplete",
++        "published_requires_schema_1_1",
++        "answer_question_mismatch",
++    }
++)
++
++
++def _public_error_code(status: str, internal: str | None) -> str | None:
++    if status in {"accepted", "already_present"}:
++        return None
++    if status == "conflict":
++        return "immutable_key_hash_conflict"
++    if internal == "question_missing_from_release":
++        return "unknown_question"
++    if internal == "entity_not_found":
++        return "missing_entity"
++    if internal in {
++        "unsupported_schema",
++        "missing_entity",
++        "unknown_question",
++        "invalid_payload",
++        "lineage_violation",
++    }:
++        return internal
++    return "lineage_violation" if internal in _LINEAGE_ERRORS else "invalid_payload"
+ 
+ 
+ class ObservationImportError(RuntimeError):
+@@ -56,6 +133,23 @@
+         self.error_code = error_code
+         self.detail = detail
+         super().__init__(f"{error_code}: {detail}" if detail else error_code)
++
++
++def validate_ack_addresses(value: dict[str, Any]) -> None:
++    """Refuse unaddressable new deliveries; never manufacture public IDs."""
++    for field, pattern in _ACK_ADDRESS_PATTERNS.items():
++        address = value.get(field)
++        if not isinstance(address, str) or not pattern.fullmatch(address):
++            raise ObservationImportError("ack_address_invalid", field)
++
++
++def legacy_wire_pending(ack: dict[str, Any]) -> bool:
++    """Classify a preserved legacy wire, without projecting or changing it."""
++    try:
++        validate_ack_addresses(ack)
++    except ObservationImportError:
++        return True
++    return set(ack) != _PUBLIC_ACK_FIELDS or ack.get("schema_version") != "1.0.0"
+ 
+ 
+ def _now() -> str:
+@@ -87,6 +181,9 @@
+         self.database_path.parent.mkdir(parents=True, exist_ok=True)
+         con = sqlite3.connect(self.database_path, timeout=30.0)
+         try:
++            # Read the version only after acquiring the migration write lock.
++            # A second importer then sees the first importer's committed schema.
++            con.execute("BEGIN IMMEDIATE")
+             version = int(con.execute("PRAGMA user_version").fetchone()[0] or 0)
+             if version > SCHEMA_VERSION:
+                 raise ObservationImportError(
+@@ -94,7 +191,15 @@
+                 )
+             if version == SCHEMA_VERSION:
+                 return version
+-            con.execute("BEGIN IMMEDIATE")
++            if version == 1:
++                try:
++                    self._create_import_audit(con)
++                    con.execute(f"PRAGMA user_version={SCHEMA_VERSION}")
++                    con.commit()
++                except Exception as exc:
++                    con.rollback()
++                    raise ObservationImportError("observation_migration_failed", str(exc)) from exc
++                return SCHEMA_VERSION
+             try:
+                 con.execute("""CREATE TABLE quick_scan_observation (
+                     observation_id TEXT PRIMARY KEY,
+@@ -167,6 +272,7 @@
+                     "CREATE INDEX idx_qsconflict_obs "
+                     "ON quick_scan_import_conflict(observation_id, conflict_kind)"
+                 )
++                self._create_import_audit(con)
+                 con.execute(f"PRAGMA user_version={SCHEMA_VERSION}")
+                 con.commit()
+             except Exception as exc:
+@@ -175,6 +281,19 @@
+             return SCHEMA_VERSION
+         finally:
+             con.close()
++
++    @staticmethod
++    def _create_import_audit(con: sqlite3.Connection) -> None:
++        con.execute("""CREATE TABLE quick_scan_import_audit (
++            package_id TEXT NOT NULL,
++            item_id TEXT NOT NULL,
++            internal_error_code TEXT,
++            detail TEXT NOT NULL,
++            original_import_json TEXT,
++            recorded_at TEXT NOT NULL,
++            PRIMARY KEY(package_id, item_id),
++            FOREIGN KEY(package_id, item_id)
++                REFERENCES quick_scan_import_item(package_id, item_id))""")
+ 
+     @staticmethod
+     def _observation_row(
+@@ -237,7 +356,11 @@
+         conflict and ACK rows commit atomically. Replayed
+         ``(package_id, item_id)`` pairs return the originally stored ACK.
+         """
++        replay = self.replay_decisions(decisions)
++        if replay is not None:
++            return replay
+         for decision in decisions:
++            validate_ack_addresses(decision)
+             if decision.get("status") not in _LEDGER_STATUSES:
+                 raise ObservationImportError("unknown_decision_status", str(decision.get("status")))
+         if identity_lookup is not None:
+@@ -249,6 +372,7 @@
+                     raise ObservationImportError(
+                         "entity_not_found", f"cannot import for missing entity {entity_id}"
+                     )
++        self.migrate()
+         con = self._connect()
+         try:
+             con.execute("BEGIN IMMEDIATE")
+@@ -275,15 +399,38 @@
+         ).fetchone()
+         return int(row["next"])
+ 
++    def _checked_original_ack(self, row: sqlite3.Row, decision: dict[str, Any]) -> dict[str, Any]:
++        """Reconcile every immutable binding before returning original wire."""
++        fields = ("package_id", "item_id", "observation_id", "payload_sha256")
++        if any(decision.get(field) != row[field] for field in fields):
++            raise ObservationImportError("historical_ack_binding_mismatch", decision["item_id"])
++        try:
++            ack = json.loads(row["ack_json"])
++            matches = (
++                isinstance(ack, dict)
++                and isinstance(ack.get("consumer"), dict)
++                and all(
++                    ack.get(field) == row[field] for field in (*fields, "status", "received_at")
++                )
++                and ack["consumer"].get("store_id") == row["store_id"]
++            )
++        except (TypeError, ValueError):
++            matches = False
++        if not matches:
++            raise ObservationImportError("historical_ack_binding_mismatch", decision["item_id"])
++        return ack
++
+     def _apply_one(self, con: sqlite3.Connection, decision: dict[str, Any]) -> dict[str, Any]:
+         package_id = decision["package_id"]
+         item_id = decision["item_id"]
+         original = con.execute(
+-            "SELECT ack_json FROM quick_scan_import_item WHERE package_id=? AND item_id=?",
++            "SELECT * FROM quick_scan_import_item WHERE package_id=? AND item_id=?",
+             (package_id, item_id),
+         ).fetchone()
+         if original is not None:
+-            return json.loads(original["ack_json"])
++            # A slot can appear after the read-only snapshot; recheck inside
++            # this write transaction so any earlier new items roll back too.
++            return self._checked_original_ack(original, decision)
+ 
+         sequence = self._next_sequence(con)
+         received_at = _now()
+@@ -346,13 +493,14 @@
+         original_reference = None
+         if status == "already_present":
+             first = con.execute(
+-                "SELECT package_id, ack_sequence, received_at FROM quick_scan_import_item "
+-                "WHERE observation_id=? ORDER BY ack_sequence LIMIT 1",
++                "SELECT package_id, item_id, ack_sequence, received_at FROM quick_scan_import_item "
++                "WHERE observation_id=? AND status='accepted' ORDER BY ack_sequence LIMIT 1",
+                 (observation_id,),
+             ).fetchone()
+             if first is not None:
+                 original_reference = {
+                     "package_id": first["package_id"],
++                    "item_id": first["item_id"],
+                     "ack_sequence": int(first["ack_sequence"]),
+                     "received_at": first["received_at"],
+                 }
+@@ -366,17 +514,14 @@
+             "observation_id": observation_id,
+             "payload_sha256": payload_sha256,
+             "status": status,
+-            "error_code": error_code,
++            "error_code": _public_error_code(status, error_code),
+             "received_at": received_at,
+             "consumer": {
+                 "component": "StockWiki",
+                 "namespace": "quick_scan",
+                 "store_id": self.store_id,
+             },
+-            "ack_sequence": sequence,
+         }
+-        if original_reference is not None:
+-            ack["original_import"] = original_reference
+         con.execute(
+             """INSERT INTO quick_scan_import_item
+             (package_id,item_id,observation_id,payload_sha256,status,error_code,
+@@ -393,6 +538,21 @@
+                 received_at,
+                 self.store_id,
+                 json.dumps(ack, ensure_ascii=False, sort_keys=True, separators=(",", ":")),
++            ),
++        )
++        con.execute(
++            "INSERT INTO quick_scan_import_audit "
++            "(package_id,item_id,internal_error_code,detail,original_import_json,recorded_at) "
++            "VALUES (?,?,?,?,?,?)",
++            (
++                package_id,
++                item_id,
++                error_code,
++                str(decision.get("_detail", "")),
++                json.dumps(original_reference, ensure_ascii=False, sort_keys=True)
++                if original_reference is not None
++                else None,
++                received_at,
+             ),
+         )
+         return ack
+@@ -496,6 +656,51 @@
+             )
+             return [self._decode_observation(r) for r in rows]
+ 
++    def replay_decisions(self, decisions: list[dict[str, Any]]) -> list[dict[str, Any]] | None:
++        """Return only an exact ALL-item ledger replay, using read-only SQLite.
++
++        This reconciles historical wire bytes; it never generates a new ACK,
++        upgrades a store, backfills audit or reinterprets the old outcome.
++        """
++        if not decisions or not self.database_path.exists():
++            return None
++        fields = ("package_id", "item_id", "observation_id", "payload_sha256")
++        if any(
++            not isinstance(value, dict)
++            or any(not isinstance(value.get(field), str) for field in fields)
++            for value in decisions
++        ):
++            return None
++        with closing(
++            sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
++        ) as con:
++            con.row_factory = sqlite3.Row
++            con.execute("BEGIN")
++            version = int(con.execute("PRAGMA user_version").fetchone()[0])
++            if version > SCHEMA_VERSION:
++                raise ObservationImportError("observation_store_newer_schema", str(version))
++            if (
++                con.execute(
++                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name='quick_scan_import_item'"
++                ).fetchone()
++                is None
++            ):
++                return None
++            result = []
++            missing = False
++            for value in decisions:
++                row = con.execute(
++                    "SELECT * FROM quick_scan_import_item WHERE package_id=? AND item_id=?",
++                    (value["package_id"], value["item_id"]),
++                ).fetchone()
++                if row is None:
++                    missing = True
++                    continue
++                result.append(self._checked_original_ack(row, value))
++            # Scan all existing slots even when one new item was encountered.
++            # Otherwise rejection could depend on the batch's item order.
++            return None if missing else result
++
+     def ack_for(self, package_id: str, item_id: str) -> dict[str, Any] | None:
+         with closing(self._connect()) as con:
+             row = con.execute(
+@@ -503,6 +708,29 @@
+                 (package_id, item_id),
+             ).fetchone()
+             return json.loads(row["ack_json"]) if row is not None else None
++
++    def import_audit_for(self, package_id: str, item_id: str) -> dict[str, Any] | None:
++        """Internal audit only; historical rows are never backfilled or projected."""
++        with closing(self._connect()) as con:
++            if (
++                con.execute(
++                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name='quick_scan_import_audit'"
++                ).fetchone()
++                is None
++            ):
++                return None
++            row = con.execute(
++                "SELECT audit.*, ledger.ack_sequence FROM quick_scan_import_audit audit "
++                "JOIN quick_scan_import_item ledger USING(package_id,item_id) "
++                "WHERE audit.package_id=? AND audit.item_id=?",
++                (package_id, item_id),
++            ).fetchone()
++            if row is None:
++                return None
++            result = dict(row)
++            raw = result.pop("original_import_json")
++            result["original_import"] = json.loads(raw) if raw is not None else None
++            return result
+ 
+     def list_conflicts(self) -> list[dict[str, Any]]:
+         with closing(self._connect()) as con:
+--- a/tests/test_quick_scan_observations.py
++++ b/tests/test_quick_scan_observations.py
+@@ -12,8 +12,11 @@
+ from __future__ import annotations
+ 
+ import copy
++import hashlib
+ import json
++import re
+ import socket
++import sqlite3
+ from pathlib import Path
+ 
+ import pytest
+@@ -32,6 +35,24 @@
+     QuickScanObservationStore,
+ )
+ from stockwiki.quick_scan_store import QuickScanStore
++
++
++def test_jr13_audit_insert_failure_rolls_back_observation_and_ack(tmp_path, monkeypatch):
++    _no_network(monkeypatch)
++    store, identity = _workspace(tmp_path)
++    with sqlite3.connect(store.database_path) as con:
++        con.execute("""CREATE TRIGGER reject_audit BEFORE INSERT ON quick_scan_import_audit
++            BEGIN SELECT RAISE(ABORT, 'synthetic audit write failure'); END""")
++    obs = _jr13_obs()
++    package = _package([obs])
++    with pytest.raises(ObservationImportError) as error:
++        import_package(store, package, frozen_release=_release(), identity_store=identity)
++    assert error.value.error_code == "observation_integrity_error"
++    assert store.get_observation(obs["observation_id"]) is None
++    assert store.ack_for(package["package_id"], package["items"][0]["item_id"]) is None
++    assert store.import_audit_for(package["package_id"], package["items"][0]["item_id"]) is None
++    assert all(value == 0 for value in store.counts().values())
++
+ 
+ FIXTURE_PACKAGE = Path(__file__).parent / "fixtures" / "quick_scan_exchange_example.json"
+ SEMANTIC = "a" * 64
+@@ -153,6 +174,10 @@
+     answer_extra: dict | None = None,
+     published: bool = False,
+ ) -> dict:
++    # This shared helper is also consumed by backup tests with old labels.
++    # Normalize synthetic fixture addresses, never product/company identity.
++    if not re.fullmatch(r"obs_[a-f0-9]{64}", observation_id):
++        observation_id = "obs_" + hashlib.sha256(observation_id.encode()).hexdigest()
+     observation = {
+         "schema_version": "1.1.0" if published else "1.0.0",
+         "entity_id": entity_id,
+@@ -297,9 +322,13 @@
+     obs_store, identity = _workspace(tmp_path)
+     package = _package(
+         [
+-            _observation("obs_db02_a", request_id="REQ_A", attempt_id="ATT_A"),
+             _observation(
+-                "obs_db02_b",
++                "obs_596428cb7cb4c1a8f3baaa88801c571cc3626d546f27e5b7433d6a8d1ff7787d",
++                request_id="REQ_A",
++                attempt_id="ATT_A",
++            ),
++            _observation(
++                "obs_f0af320642c5d4a4270cf11dca07727e6d8f43fcad7c6afd9c478993bb42a3ac",
+                 request_id="REQ_B",
+                 attempt_id="ATT_B",
+                 score=7,
+@@ -311,17 +340,30 @@
+     assert first["summary"] == {"accepted": 2}
+     second = import_package(obs_store, raw, frozen_release=_release(), identity_store=identity)
+     assert second["acks"][0]["ack_id"] == first["acks"][0]["ack_id"]
+-    assert second["acks"][0]["ack_sequence"] == first["acks"][0]["ack_sequence"]
++    assert (
++        obs_store.import_audit_for(second["acks"][0]["package_id"], second["acks"][0]["item_id"])[
++            "ack_sequence"
++        ]
++        == obs_store.import_audit_for(first["acks"][0]["package_id"], first["acks"][0]["item_id"])[
++            "ack_sequence"
++        ]
++    )
+     counts = obs_store.counts()
+     assert counts["observations"] == 2
+     assert counts["acked_items"] == 2
+-    stored = obs_store.get_observation("obs_db02_a")
++    stored = obs_store.get_observation(
++        "obs_596428cb7cb4c1a8f3baaa88801c571cc3626d546f27e5b7433d6a8d1ff7787d"
++    )
+     assert stored["observed_at"] == "2026-10-01T09:01:00Z"
+     assert stored["reported_score"] == 8
+ 
+     replay = _package(
+         [
+-            _observation("obs_db02_a", request_id="REQ_A", attempt_id="ATT_A"),
++            _observation(
++                "obs_596428cb7cb4c1a8f3baaa88801c571cc3626d546f27e5b7433d6a8d1ff7787d",
++                request_id="REQ_A",
++                attempt_id="ATT_A",
++            ),
+         ]
+     )
+     replay["created_at"] = "2026-10-01T11:00:00Z"
+@@ -333,14 +375,23 @@
+     third = import_package(obs_store, replay, frozen_release=_release(), identity_store=identity)
+     assert third["summary"] == {"already_present": 1}
+     ack = third["acks"][0]
+-    assert ack["original_import"]["package_id"] == package["package_id"]
++    assert (
++        obs_store.import_audit_for(ack["package_id"], ack["item_id"])["original_import"][
++            "package_id"
++        ]
++        == package["package_id"]
++    )
+     assert obs_store.counts()["observations"] == 2
+ 
+ 
+ def test_db_03_conflicts_rejected_and_execution_key_isolation(tmp_path, monkeypatch) -> None:
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+-    original = _observation("obs_db03", request_id="REQ_C", attempt_id="ATT_C")
++    original = _observation(
++        "obs_7f914d4679f16717c78f388b47b06a630a10c924ebb6fcf173eb4874e040b311",
++        request_id="REQ_C",
++        attempt_id="ATT_C",
++    )
+     accepted = import_package(
+         obs_store, _package([original]), frozen_release=_release(), identity_store=identity
+     )
+@@ -355,14 +406,19 @@
+         identity_store=identity,
+     )
+     assert conflict["summary"] == {"conflict": 1}
+-    assert conflict["acks"][0]["error_code"] == "immutable_key_hash_conflict"
+-    stored = obs_store.get_observation("obs_db03")
++    assert _jr13_internal_codes(obs_store, conflict)[0] == "immutable_key_hash_conflict"
++    stored = obs_store.get_observation(
++        "obs_7f914d4679f16717c78f388b47b06a630a10c924ebb6fcf173eb4874e040b311"
++    )
+     assert stored["reported_score"] == 8
+     conflicts = obs_store.list_conflicts()
+     assert conflicts[-1]["conflict_kind"] == "immutable_key_hash_conflict"
+ 
+     missing_entity = _observation(
+-        "obs_db03_missing", entity_id="E99", request_id="REQ_D", attempt_id="ATT_D"
++        "obs_d8c8795aad33efca97a782e6008e3a75ffdc133c9d4e32adcff7ef49f3e2d15e",
++        entity_id="E99",
++        request_id="REQ_D",
++        attempt_id="ATT_D",
+     )
+     rejected = import_package(
+         obs_store,
+@@ -371,11 +427,16 @@
+         identity_store=identity,
+     )
+     assert rejected["summary"] == {"rejected": 1}
+-    assert rejected["acks"][0]["error_code"] == "entity_not_found"
+-    assert obs_store.get_observation("obs_db03_missing") is None
++    assert _jr13_internal_codes(obs_store, rejected)[0] == "entity_not_found"
++    assert (
++        obs_store.get_observation(
++            "obs_d8c8795aad33efca97a782e6008e3a75ffdc133c9d4e32adcff7ef49f3e2d15e"
++        )
++        is None
++    )
+ 
+     unknown_question = _observation(
+-        "obs_db03_q",
++        "obs_b700e4f5dc775127ddb31f5ccfc13bffcc7d9abc6e621a486564a2d3856e7ee4",
+         question_id="IQS_GHOST",
+         field_id="score.ghost",
+         request_id="REQ_E",
+@@ -387,10 +448,10 @@
+         frozen_release=_release(),
+         identity_store=identity,
+     )
+-    assert unknown["acks"][0]["error_code"] == "unknown_question"
++    assert _jr13_internal_codes(obs_store, unknown)[0] == "unknown_question"
+ 
+     forged_published = _observation(
+-        "obs_db03_pub",
++        "obs_f5d723fca4d03dd1285551e3de0983d52ea2658bf5ca6faa7e022681221c850a",
+         question_id="IQS_PUB",
+         field_id="score.iqs_05",
+         request_id="REQ_F",
+@@ -404,10 +465,10 @@
+         frozen_release=_release(),
+         identity_store=identity,
+     )
+-    assert forged_pub["acks"][0]["error_code"] == "question_semantic_mismatch"
++    assert _jr13_internal_codes(obs_store, forged_pub)[0] == "question_semantic_mismatch"
+ 
+     stripped = _observation(
+-        "obs_db03_stripped",
++        "obs_c29b63975b9ec8ecfada198909f317f953a898575f14ed161a01df7f98223b37",
+         question_id="IQS_PUB",
+         field_id="score.iqs_05",
+         request_id="REQ_G",
+@@ -429,13 +490,13 @@
+         frozen_release=_release(),
+         identity_store=identity,
+     )
+-    assert stripped_result["acks"][0]["error_code"] in {
++    assert _jr13_internal_codes(obs_store, stripped_result)[0] in {
+         "partial_module_binding",
+         "published_binding_missing",
+     }
+ 
+     exec_twin = _observation(
+-        "obs_db03_twin",
++        "obs_93c1cc86163cea867e8a4ed05f1357c9bb0f8c0bb90ca32342b3dda0ba5f750a",
+         request_id="REQ_C",
+         attempt_id="ATT_C",
+         score=5,
+@@ -447,8 +508,13 @@
+         identity_store=identity,
+     )
+     assert twin["summary"] == {"conflict": 1}
+-    assert twin["acks"][0]["error_code"] == "execution_key_id_mismatch"
+-    assert obs_store.get_observation("obs_db03_twin") is None
++    assert _jr13_internal_codes(obs_store, twin)[0] == "execution_key_id_mismatch"
++    assert (
++        obs_store.get_observation(
++            "obs_93c1cc86163cea867e8a4ed05f1357c9bb0f8c0bb90ca32342b3dda0ba5f750a"
++        )
++        is None
++    )
+     kinds = {row["conflict_kind"] for row in obs_store.list_conflicts()}
+     assert "execution_key_id_mismatch" in kinds
+ 
+@@ -458,7 +524,7 @@
+     before = sorted(str(p.relative_to(tmp_path)) for p in tmp_path.rglob("*") if p.is_file())
+     obs_store, identity = _workspace(tmp_path)
+     carrier = _observation(
+-        "obs_db06",
++        "obs_6f23f137308da1f2c95d9acc4be1af05d9c110cd7c3ca88cf6023366388715d0",
+         request_id="REQ_H",
+         attempt_id="ATT_H",
+         extra={"source_manifest": {"spans": ["fake"]}},
+@@ -466,8 +532,13 @@
+     result = import_package(
+         obs_store, _package([carrier]), frozen_release=_release(), identity_store=identity
+     )
+-    assert result["acks"][0]["error_code"] == "forbidden_field"
+-    assert obs_store.get_observation("obs_db06") is None
++    assert _jr13_internal_codes(obs_store, result)[0] == "forbidden_field"
++    assert (
++        obs_store.get_observation(
++            "obs_6f23f137308da1f2c95d9acc4be1af05d9c110cd7c3ca88cf6023366388715d0"
++        )
++        is None
++    )
+     after = sorted(str(p.relative_to(tmp_path)) for p in tmp_path.rglob("*") if p.is_file())
+     created = [p for p in after if p not in before]
+     assert created, "import must persist its own store under data/quick_scan"
+@@ -475,12 +546,22 @@
+     assert not any("compan" in part.lower() and "wiki" in part.lower() for part in created)
+     accepted = import_package(
+         obs_store,
+-        _package([_observation("obs_db06_ok", request_id="REQ_I", attempt_id="ATT_I")]),
++        _package(
++            [
++                _observation(
++                    "obs_53d9c820a4932e7ae8db65f811335ab1948d6b0ed167fd84af037838aba7c6b2",
++                    request_id="REQ_I",
++                    attempt_id="ATT_I",
++                )
++            ]
++        ),
+         frozen_release=_release(),
+         identity_store=identity,
+     )
+     assert accepted["summary"] == {"accepted": 1}
+-    row = obs_store.get_observation("obs_db06_ok")
++    row = obs_store.get_observation(
++        "obs_53d9c820a4932e7ae8db65f811335ab1948d6b0ed167fd84af037838aba7c6b2"
++    )
+     assert row["qualification_status"] == "review_pending"
+ 
+ 
+@@ -488,13 +569,13 @@
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+     legacy = _observation(
+-        "obs_sc05_legacy",
++        "obs_b62145f03b6a4f3c8d547de9a8f993fb3ad62da2cfb1b6efbbf3c03d4d3c896c",
+         request_id="REQ_J",
+         attempt_id="ATT_J",
+         answer_extra={"accepted_ids": ["c01"]},
+     )
+     screening = _observation(
+-        "obs_sc05_screen",
++        "obs_6e93d808f0091d98f1049ec89cb707ed6ec99dc2761b2ad5da8e75bb66ac39b5",
+         question_id="IQS_PUB",
+         field_id="score.iqs_05",
+         request_id="REQ_K",
+@@ -503,7 +584,7 @@
+         answer_extra={"search_verified": True},
+     )
+     elevated = _observation(
+-        "obs_sc05_level",
++        "obs_f080d2f8e650ce8a8a04817b6aaf190a53f805742ee93eff885f2e4e3515f203",
+         request_id="REQ_L",
+         attempt_id="ATT_L",
+         answer_extra={"check_level": "independently_checked"},
+@@ -515,18 +596,29 @@
+         identity_store=identity,
+     )
+     assert result["summary"] == {"rejected": 3}
+-    codes = {ack["error_code"] for ack in result["acks"]}
++    codes = set(_jr13_internal_codes(obs_store, result))
+     assert codes == {"self_granted_qualification"}
+     assert obs_store.counts()["observations"] == 0
+ 
+     kept_score = import_package(
+         obs_store,
+-        _package([_observation("obs_sc05_keep", request_id="REQ_M", attempt_id="ATT_M", score=6)]),
++        _package(
++            [
++                _observation(
++                    "obs_8948deb0cc5314627abb6c304ac91dbaa5ab1a6effd7a8bee9cbb69203de9a3f",
++                    request_id="REQ_M",
++                    attempt_id="ATT_M",
++                    score=6,
++                )
++            ]
++        ),
+         frozen_release=_release(),
+         identity_store=identity,
+     )
+     assert kept_score["summary"] == {"accepted": 1}
+-    row = obs_store.get_observation("obs_sc05_keep")
++    row = obs_store.get_observation(
++        "obs_8948deb0cc5314627abb6c304ac91dbaa5ab1a6effd7a8bee9cbb69203de9a3f"
++    )
+     assert row["reported_score"] == 6
+     assert row["qualification_status"] == "review_pending"
+ 
+@@ -534,9 +626,14 @@
+ def test_sc_06_legacy_strict_stays_review_pending(tmp_path, monkeypatch) -> None:
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+-    legacy_strict = _observation("obs_sc06_a", request_id="REQ_N", attempt_id="ATT_N", score=9)
++    legacy_strict = _observation(
++        "obs_248a5b9ac0513f314e9883f4fa8a0399407d047d1723d4f3369a83679fd341e5",
++        request_id="REQ_N",
++        attempt_id="ATT_N",
++        score=9,
++    )
+     screening = _observation(
+-        "obs_sc06_b",
++        "obs_0b5ce0997fffb6278d5ad010c1115c5d7c400847ed89ec8534a7c69925df9d30",
+         question_id="IQS_PUB",
+         field_id="score.iqs_05",
+         request_id="REQ_O",
+@@ -551,7 +648,10 @@
+         identity_store=identity,
+     )
+     assert result["summary"] == {"accepted": 2}
+-    for observation_id in ("obs_sc06_a", "obs_sc06_b"):
++    for observation_id in (
++        "obs_248a5b9ac0513f314e9883f4fa8a0399407d047d1723d4f3369a83679fd341e5",
++        "obs_0b5ce0997fffb6278d5ad010c1115c5d7c400847ed89ec8534a7c69925df9d30",
++    ):
+         row = obs_store.get_observation(observation_id)
+         assert row["qualification_status"] == "review_pending"
+     source = (Path(__file__).parent.parent / "stockwiki" / "quick_scan_observations.py").read_text(
+@@ -575,11 +675,19 @@
+     run_b = tmp_path / "runs" / "run_b"
+     run_a.mkdir(parents=True)
+     run_b.mkdir(parents=True)
+-    pkg_a = _package([_observation("obs_store01_a", request_id="REQ_SA", attempt_id="ATT_SA")])
++    pkg_a = _package(
++        [
++            _observation(
++                "obs_f04e58bc3dfccee277821fecc59b0f54d82da9203b956b2745ed3b8465c1e81a",
++                request_id="REQ_SA",
++                attempt_id="ATT_SA",
++            )
++        ]
++    )
+     pkg_b = _package(
+         [
+             _observation(
+-                "obs_store01_b",
++                "obs_54e0ffca49a91f80ed81012708d864ec63562376ec9db6855194741667fed220",
+                 question_id="FACT_10",
+                 field_id="facts.customers",
+                 response_kind="fact",
+@@ -629,7 +737,10 @@
+         assert ack["consumer"]["store_id"] == obs_store.store_id
+         assert ack["payload_sha256"]
+     view = obs_store.observations_for_entity("E01")
+-    assert {row["observation_id"] for row in view} == {"obs_store01_a", "obs_store01_b"}
++    assert {row["observation_id"] for row in view} == {
++        "obs_f04e58bc3dfccee277821fecc59b0f54d82da9203b956b2745ed3b8465c1e81a",
++        "obs_54e0ffca49a91f80ed81012708d864ec63562376ec9db6855194741667fed220",
++    }
+     for path, content in producer_state_before.items():
+         assert Path(path).read_bytes() == content
+     assert obs_store.counts()["observations"] == 2
+@@ -638,7 +749,15 @@
+ def test_store_02_lost_ack_replay_and_conflicting_copy(tmp_path, monkeypatch) -> None:
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+-    package = _package([_observation("obs_store02", request_id="REQ_X", attempt_id="ATT_X")])
++    package = _package(
++        [
++            _observation(
++                "obs_5521958b749f22cf172ca359d969e4e49b34d6675ed75f201b1547db27d8c496",
++                request_id="REQ_X",
++                attempt_id="ATT_X",
++            )
++        ]
++    )
+     raw = json.dumps(package, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+     first = import_package(obs_store, raw, frozen_release=_release(), identity_store=identity)
+     assert first["summary"] == {"accepted": 1}
+@@ -646,7 +765,14 @@
+     assert lost["acks"][0]["ack_id"] == first["acks"][0]["ack_id"]
+ 
+     copy_package = _package(
+-        [_observation("obs_store02", request_id="REQ_X", attempt_id="ATT_X", score=2)]
++        [
++            _observation(
++                "obs_5521958b749f22cf172ca359d969e4e49b34d6675ed75f201b1547db27d8c496",
++                request_id="REQ_X",
++                attempt_id="ATT_X",
++                score=2,
++            )
++        ]
+     )
+     conflicting = import_package(
+         obs_store,
+@@ -655,8 +781,10 @@
+         identity_store=identity,
+     )
+     assert conflicting["acks"][0]["status"] == "conflict"
+-    assert conflicting["acks"][0]["error_code"] == "immutable_key_hash_conflict"
+-    stored = obs_store.get_observation("obs_store02")
++    assert _jr13_internal_codes(obs_store, conflicting)[0] == "immutable_key_hash_conflict"
++    stored = obs_store.get_observation(
++        "obs_5521958b749f22cf172ca359d969e4e49b34d6675ed75f201b1547db27d8c496"
++    )
+     assert stored["reported_score"] == 8
+     assert obs_store.counts()["observations"] == 1
+ 
+@@ -676,7 +804,10 @@
+         _package(
+             [
+                 _observation(
+-                    "obs_id17_old", entity_id="E01", request_id="REQ_1G", attempt_id="ATT_1G"
++                    "obs_01171ed0221aa1d120df250e285c63d639d73fae6d9106de504398805fc6b8fd",
++                    entity_id="E01",
++                    request_id="REQ_1G",
++                    attempt_id="ATT_1G",
+                 )
+             ]
+         ),
+@@ -684,17 +815,24 @@
+         identity_store=identity,
+     )
+     assert first["summary"] == {"accepted": 1}
+-    before = obs_store.get_observation("obs_id17_old")
++    before = obs_store.get_observation(
++        "obs_01171ed0221aa1d120df250e285c63d639d73fae6d9106de504398805fc6b8fd"
++    )
+     before_bytes = json.dumps(before["payload"], sort_keys=True, ensure_ascii=False)
+ 
+     successor = _observation(
+-        "obs_id17_new", entity_id="E10", request_id="REQ_2G", attempt_id="ATT_2G"
++        "obs_04f6cd61472ac1734266393c8cea997afe9059805e7f9c43a4f6b5b8e6601b83",
++        entity_id="E10",
++        request_id="REQ_2G",
++        attempt_id="ATT_2G",
+     )
+     second = import_package(
+         obs_store, _package([successor]), frozen_release=_release(), identity_store=identity
+     )
+     assert second["summary"] == {"accepted": 1}
+-    after = obs_store.get_observation("obs_id17_old")
++    after = obs_store.get_observation(
++        "obs_01171ed0221aa1d120df250e285c63d639d73fae6d9106de504398805fc6b8fd"
++    )
+     after_bytes = json.dumps(after["payload"], sort_keys=True, ensure_ascii=False)
+     assert before_bytes == after_bytes
+     assert after["payload_sha256"] == before["payload_sha256"]
+@@ -713,7 +851,7 @@
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+     old = _observation(
+-        "obs_id23_old",
++        "obs_ef4ed0e39cceb5fd636b582cb977039e97772439bc8e11daf8b8189809c0df29",
+         request_id="REQ_S1",
+         attempt_id="ATT_S1",
+         extra={
+@@ -726,7 +864,7 @@
+         },
+     )
+     new = _observation(
+-        "obs_id23_new",
++        "obs_3b55a20d2cb13c221416bc98cac94f5ebbd3393613d387a95316cd0b1fe775b7",
+         request_id="REQ_S2",
+         attempt_id="ATT_S2",
+         extra={
+@@ -738,9 +876,13 @@
+             }
+         },
+     )
+-    legacy = _observation("obs_id23_legacy", request_id="REQ_S3", attempt_id="ATT_S3")
++    legacy = _observation(
++        "obs_a05cdcbd2f8c8b90b70280e939ed90192e8cbdd1f4b94740e791ca0b3ca6df4d",
++        request_id="REQ_S3",
++        attempt_id="ATT_S3",
++    )
+     mismatched = _observation(
+-        "obs_id23_bad",
++        "obs_5d00115c6723df86ce70f5e5c09302df19ca1f0f9a9ad302d1bb361010481408",
+         request_id="REQ_S4",
+         attempt_id="ATT_S4",
+         extra={
+@@ -758,15 +900,33 @@
+         identity_store=identity,
+     )
+     statuses = {ack["observation_id"]: ack["status"] for ack in result["acks"]}
+-    assert statuses["obs_id23_old"] == "accepted"
+-    assert statuses["obs_id23_new"] == "accepted"
+-    assert statuses["obs_id23_legacy"] == "accepted"
+-    assert statuses["obs_id23_bad"] == "rejected"
+-    assert result["acks"][3]["error_code"] == "analysis_subject_scope_mismatch"
+-
+-    old_row = obs_store.get_observation("obs_id23_old")
+-    new_row = obs_store.get_observation("obs_id23_new")
+-    legacy_row = obs_store.get_observation("obs_id23_legacy")
++    assert (
++        statuses["obs_ef4ed0e39cceb5fd636b582cb977039e97772439bc8e11daf8b8189809c0df29"]
++        == "accepted"
++    )
++    assert (
++        statuses["obs_3b55a20d2cb13c221416bc98cac94f5ebbd3393613d387a95316cd0b1fe775b7"]
++        == "accepted"
++    )
++    assert (
++        statuses["obs_a05cdcbd2f8c8b90b70280e939ed90192e8cbdd1f4b94740e791ca0b3ca6df4d"]
++        == "accepted"
++    )
++    assert (
++        statuses["obs_5d00115c6723df86ce70f5e5c09302df19ca1f0f9a9ad302d1bb361010481408"]
++        == "rejected"
++    )
++    assert _jr13_internal_codes(obs_store, result)[3] == "analysis_subject_scope_mismatch"
++
++    old_row = obs_store.get_observation(
++        "obs_ef4ed0e39cceb5fd636b582cb977039e97772439bc8e11daf8b8189809c0df29"
++    )
++    new_row = obs_store.get_observation(
++        "obs_3b55a20d2cb13c221416bc98cac94f5ebbd3393613d387a95316cd0b1fe775b7"
++    )
++    legacy_row = obs_store.get_observation(
++        "obs_a05cdcbd2f8c8b90b70280e939ed90192e8cbdd1f4b94740e791ca0b3ca6df4d"
++    )
+     assert old_row["analysis_subject_revision"] == 1
+     assert old_row["analysis_subject_id"] == "ASJ_1"
+     assert new_row["analysis_subject_revision"] == 2
+@@ -779,7 +939,7 @@
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+     published = _observation(
+-        "obs_pub_ok",
++        "obs_c6844e4fb995c4f08c759edd1c1e40a03bac128c5688af77d384a35a51a50ea7",
+         question_id="IQS_PUB",
+         field_id="score.iqs_05",
+         request_id="REQ_P",
+@@ -791,7 +951,9 @@
+         obs_store, _package([published]), frozen_release=_release(), identity_store=identity
+     )
+     assert result["summary"] == {"accepted": 1}
+-    row = obs_store.get_observation("obs_pub_ok")
++    row = obs_store.get_observation(
++        "obs_c6844e4fb995c4f08c759edd1c1e40a03bac128c5688af77d384a35a51a50ea7"
++    )
+     assert row["publication_status"] == "published"
+     assert row["reported_score"] == 9
+ 
+@@ -800,7 +962,7 @@
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+     wrong_security = _observation(
+-        "obs_scope_bad",
++        "obs_db099fb3ad261cded6ea6fae37dbb59f6076f71d86a46f21d8866e75fe6af185",
+         question_id="SEC_Q",
+         field_id="quote.price",
+         request_id="REQ_Z",
+@@ -810,10 +972,10 @@
+     result = import_package(
+         obs_store, _package([wrong_security]), frozen_release=_release(), identity_store=identity
+     )
+-    assert result["acks"][0]["error_code"] == "security_scope_invalid"
++    assert _jr13_internal_codes(obs_store, result)[0] == "security_scope_invalid"
+ 
+     good_security = _observation(
+-        "obs_scope_ok",
++        "obs_d41b4680198b01ce0e1c9d6a79cf52dda77ae4fe05acb88dbc78f6f0a5024ef8",
+         question_id="SEC_Q",
+         field_id="quote.price",
+         request_id="REQ_Z2",
+@@ -849,26 +1011,44 @@
+     obs_store, identity = _workspace(tmp_path)
+     import_package(
+         obs_store,
+-        _package([_observation("obs_corr", request_id="REQ_COR", attempt_id="ATT_COR")]),
+-        frozen_release=_release(),
+-        identity_store=identity,
+-    )
+-    before = obs_store.get_observation("obs_corr")
++        _package(
++            [
++                _observation(
++                    "obs_fd8555892671ef436d14f872326e6077a2f4e3725a32653083143167ff1b7b72",
++                    request_id="REQ_COR",
++                    attempt_id="ATT_COR",
++                )
++            ]
++        ),
++        frozen_release=_release(),
++        identity_store=identity,
++    )
++    before = obs_store.get_observation(
++        "obs_fd8555892671ef436d14f872326e6077a2f4e3725a32653083143167ff1b7b72"
++    )
+     correction_id = obs_store.append_correction(
+-        "obs_corr",
++        "obs_fd8555892671ef436d14f872326e6077a2f4e3725a32653083143167ff1b7b72",
+         corrected_observation={"note": "typo fix", "score": 8},
+         reason="source date corrected",
+     )
+     assert correction_id >= 1
+-    after = obs_store.get_observation("obs_corr")
++    after = obs_store.get_observation(
++        "obs_fd8555892671ef436d14f872326e6077a2f4e3725a32653083143167ff1b7b72"
++    )
+     assert json.dumps(before["payload"], sort_keys=True) == json.dumps(
+         after["payload"], sort_keys=True
+     )
+-    rows = obs_store.list_corrections("obs_corr")
++    rows = obs_store.list_corrections(
++        "obs_fd8555892671ef436d14f872326e6077a2f4e3725a32653083143167ff1b7b72"
++    )
+     assert len(rows) == 1
+     assert rows[0]["reason"] == "source date corrected"
+     with pytest.raises(ObservationImportError) as exc:
+-        obs_store.append_correction("obs_missing", corrected_observation={}, reason="x")
++        obs_store.append_correction(
++            "obs_9685b2fbb8ce920e5bbccaa8130ff4718473905411b7ffb46ce17bf8d62d1b4c",
++            corrected_observation={},
++            reason="x",
++        )
+     assert exc.value.error_code == "correction_target_missing"
+ 
+ 
+@@ -894,19 +1074,19 @@
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+     nested_manifest = _observation(
+-        "obs_db06_nested",
++        "obs_789b311a99395dd9004c7d3fce4699c104bd97518165c109167429d7f0c25fa0",
+         request_id="REQ_NM",
+         attempt_id="ATT_NM",
+         answer_extra={"source_manifest": {"spans": ["fake"]}},
+     )
+     nested_span = _observation(
+-        "obs_db06_span",
++        "obs_a49d284eb6403aaafe6e09de43e66bb958577ffb54dfcb589fcc41331a80dccd",
+         request_id="REQ_NS",
+         attempt_id="ATT_NS",
+         answer_extra={"evidence_span_ids": ["span_1"]},
+     )
+     nested_document = _observation(
+-        "obs_db06_doc",
++        "obs_ad494bcc438230fab4859117936ae8fd2158d81704369a2e3120de39c9d5db92",
+         question_id="FACT_10",
+         field_id="facts.customers",
+         response_kind="fact",
+@@ -938,7 +1118,7 @@
+         identity_store=identity,
+     )
+     assert result["summary"] == {"rejected": 3}
+-    codes = {ack["error_code"] for ack in result["acks"]}
++    codes = set(_jr13_internal_codes(obs_store, result))
+     assert codes == {"forbidden_field"}
+     assert obs_store.counts()["observations"] == 0
+ 
+@@ -947,7 +1127,7 @@
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+     unbound_security = _observation(
+-        "obs_subj_unbound",
++        "obs_81bc6d8c9128e737b1a10546932fe3da878d72af38108eae6acdfd38682ab774",
+         request_id="REQ_US",
+         attempt_id="ATT_US",
+         extra={
+@@ -960,7 +1140,7 @@
+         },
+     )
+     unbound_listing = _observation(
+-        "obs_subj_listing",
++        "obs_da8595d7ec0e2d7ca4d582d46522c46e2e46e830d553bb453fffcd1c77cf2ed0",
+         request_id="REQ_UL",
+         attempt_id="ATT_UL",
+         extra={
+@@ -979,7 +1159,7 @@
+         identity_store=identity,
+     )
+     assert result["summary"] == {"rejected": 2}
+-    details = {ack["error_code"] for ack in result["acks"]}
++    details = set(_jr13_internal_codes(obs_store, result))
+     assert details == {"analysis_subject_scope_mismatch"}
+     assert obs_store.counts()["observations"] == 0
+ 
+@@ -988,7 +1168,7 @@
+     _no_network(monkeypatch)
+     obs_store, identity = _workspace(tmp_path)
+     evil = _observation(
+-        "obs_evil_core",
++        "obs_5cb56a81b457b77e2a28dfb74390452fd94c13f1365653cd03a85064a2c8b418",
+         question_id="IQS_PUB",
+         field_id="score.iqs_05",
+         request_id="REQ_EC",
+@@ -999,8 +1179,13 @@
+     result = import_package(
+         obs_store, _package([evil]), frozen_release=_release(), identity_store=identity
+     )
+-    assert result["acks"][0]["error_code"] == "method_semantic_binding_mismatch"
+-    assert obs_store.get_observation("obs_evil_core") is None
++    assert _jr13_internal_codes(obs_store, result)[0] == "method_semantic_binding_mismatch"
++    assert (
++        obs_store.get_observation(
++            "obs_5cb56a81b457b77e2a28dfb74390452fd94c13f1365653cd03a85064a2c8b418"
++        )
++        is None
++    )
+ 
+ 
+ def test_db_03_failed_transaction_leaves_no_partial_snapshot(tmp_path, monkeypatch) -> None:
+@@ -1008,8 +1193,16 @@
+     obs_store, identity = _workspace(tmp_path)
+     package = _package(
+         [
+-            _observation("obs_tx_a", request_id="REQ_TA", attempt_id="ATT_TA"),
+-            _observation("obs_tx_b", request_id="REQ_TB", attempt_id="ATT_TB"),
++            _observation(
++                "obs_8aae580b7c2f28a3c7c986e2ab37e5a60823c4aba1cd2a2f14525c5bd9e0655d",
++                request_id="REQ_TA",
++                attempt_id="ATT_TA",
++            ),
++            _observation(
++                "obs_1a5265ec87277d178f290143a3cc633910ff1cf515e2142bd4403c8ae6c12d64",
++                request_id="REQ_TB",
++                attempt_id="ATT_TB",
++            ),
+         ]
+     )
+     original = QuickScanObservationStore._apply_one
+@@ -1043,7 +1236,15 @@
+     """CLI wiring for `observation-import` (W05 entry): single-line receipt, replay-safe."""
+     _no_network(monkeypatch)
+     _workspace(tmp_path)
+-    package = _package([_observation("obs_cli_1", request_id="REQ_CLI1", attempt_id="ATT_CLI1")])
++    package = _package(
++        [
++            _observation(
++                "obs_f12e6f356185c9aa81f92472d37598b1586bd7b9622cda4788e9b8f3f12be5b2",
++                request_id="REQ_CLI1",
++                attempt_id="ATT_CLI1",
++            )
++        ]
++    )
+     pkg_path = tmp_path / "package.json"
+     pkg_path.write_text(json.dumps(package, ensure_ascii=False, sort_keys=True), encoding="utf-8")
+     rel_path = tmp_path / "release.json"
+@@ -1085,4 +1286,573 @@
+     out2 = capsys.readouterr()
+     receipt2 = json.loads(out2.out.strip())
+     assert receipt2["acks"][0]["ack_id"] == receipt["acks"][0]["ack_id"]
+-    assert receipt2["acks"][0]["observation_id"] == "obs_cli_1"
++    assert (
++        receipt2["acks"][0]["observation_id"]
++        == "obs_f12e6f356185c9aa81f92472d37598b1586bd7b9622cda4788e9b8f3f12be5b2"
++    )
++
++
++def _jr13_internal_codes(store, receipt):
++    """Old tests retain exact internal refusals; public errors have separate tests."""
++    return [
++        store.import_audit_for(ack["package_id"], ack["item_id"])["internal_error_code"]
++        for ack in receipt["acks"]
++    ]
++
++
++# JR1/JR3: public wire format and raw ingress, independent of internal ledger.
++_JR13_ACK_KEYS = {
++    "schema_version",
++    "ack_id",
++    "package_id",
++    "item_id",
++    "observation_id",
++    "payload_sha256",
++    "status",
++    "error_code",
++    "received_at",
++    "consumer",
++}
++
++
++def _jr13_public_ack(ack):
++    assert set(ack) == _JR13_ACK_KEYS
++    assert ack["schema_version"] == "1.0.0"
++    assert set(ack["consumer"]) == {"component", "namespace", "store_id"}
++    assert ack["consumer"]["component"] == "StockWiki"
++    assert ack["consumer"]["namespace"] == "quick_scan"
++    if ack["status"] in {"accepted", "already_present"}:
++        assert ack["error_code"] is None
++    elif ack["status"] == "conflict":
++        assert ack["error_code"] == "immutable_key_hash_conflict"
++    else:
++        assert ack["status"] == "rejected"
++        assert ack["error_code"] in {
++            "unsupported_schema",
++            "missing_entity",
++            "unknown_question",
++            "invalid_payload",
++            "lineage_violation",
++        }
++    import os
++
++    if os.environ.get("IQS_JR13_SCHEMA"):
++        from jsonschema import Draft202012Validator, FormatChecker
++
++        contract = json.loads(Path(os.environ["IQS_JR13_SCHEMA"]).read_text("utf-8"))
++        Draft202012Validator(
++            {"$ref": "#/$defs/ImportAck", "$defs": contract["$defs"]},
++            format_checker=FormatChecker(),
++        ).validate(ack)
++
++
++def _jr13_obs(tag="a", **kwargs):
++    import hashlib
++
++    return _observation("obs_" + hashlib.sha256(tag.encode()).hexdigest(), **kwargs)
++
++
++def test_jr13_public_ack_all_outcomes_and_audit(tmp_path):
++    store, identity = _workspace(tmp_path)
++    original = _jr13_obs(request_id="REQ_JR13", attempt_id="ATT_JR13")
++    package = _package([original])
++    first = import_package(store, package, frozen_release=_release(), identity_store=identity)[
++        "acks"
++    ][0]
++    _jr13_public_ack(first)
++    replay = _package([original])
++    replay["created_at"] = "2026-10-01T11:00:00Z"
++    seed = {k: v for k, v in replay.items() if k not in {"package_id", "package_sha256"}}
++    replay["package_sha256"] = canonical_sha256(seed)
++    replay["package_id"] = "pkg_" + replay["package_sha256"]
++    duplicate = import_package(store, replay, frozen_release=_release(), identity_store=identity)[
++        "acks"
++    ][0]
++    changed = copy.deepcopy(original)
++    changed["answer"]["score"] = 3
++    collision = import_package(
++        store, _package([changed]), frozen_release=_release(), identity_store=identity
++    )["acks"][0]
++    for ack in (duplicate, collision):
++        _jr13_public_ack(ack)
++    assert [first["status"], duplicate["status"], collision["status"]] == [
++        "accepted",
++        "already_present",
++        "conflict",
++    ]
++    missing = import_package(
++        store,
++        _package([_jr13_obs("missing", entity_id="MISSING")]),
++        frozen_release=_release(),
++        identity_store=identity,
++    )["acks"][0]
++    _jr13_public_ack(missing)
++    assert missing["error_code"] == "missing_entity"
++    audit = store.import_audit_for(duplicate["package_id"], duplicate["item_id"])
++    assert audit["original_import"]["package_id"] == package["package_id"]
++    rejected_audit = store.import_audit_for(missing["package_id"], missing["item_id"])
++    assert rejected_audit["internal_error_code"] == "entity_not_found"
++    assert rejected_audit["detail"] == "MISSING"
++    reopened = QuickScanObservationStore(store.paths)
++    assert reopened.ack_for(first["package_id"], first["item_id"]) == first
++    assert (
++        import_package(reopened, package, frozen_release=_release(), identity_store=identity)[
++            "acks"
++        ][0]
++        == first
++    )
++
++
++@pytest.mark.parametrize(
++    "changes,expected",
++    [
++        ({"question_id": "UNKNOWN"}, "unknown_question"),
++        ({"schema_version": "9.0.0"}, "unsupported_schema"),
++        ({"field_id": "score.other"}, "lineage_violation"),
++        (
++            {
++                "answer": {
++                    "question_id": "IQS_LEG",
++                    "response_kind": "score",
++                    "status": "scored",
++                    "score": 11,
++                }
++            },
++            "invalid_payload",
++        ),
++    ],
++)
++def test_jr13_public_rejection_taxonomy(tmp_path, changes, expected):
++    store, identity = _workspace(tmp_path)
++    observation = _jr13_obs("reject")
++    observation.update(changes)
++    if "question_id" in changes:
++        observation["answer"]["question_id"] = changes["question_id"]
++    ack = import_package(
++        store, _package([observation]), frozen_release=_release(), identity_store=identity
++    )["acks"][0]
++    _jr13_public_ack(ack)
++    assert ack["error_code"] == expected
++    assert store.counts()["observations"] == 0
++
++
++@pytest.mark.parametrize(
++    "raw,code",
++    [
++        ('{"x":1,"x":1}', "json_duplicate_key"),
++        ('{"a":{"x":1,"x":1}}', "json_duplicate_key"),
++        ('{"a":[{"x":1,"x":1}]}', "json_duplicate_key"),
++        ('{"x":NaN}', "json_constant_forbidden"),
++        ('{"x":Infinity}', "json_constant_forbidden"),
++        ('{"x":-Infinity}', "json_constant_forbidden"),
++        ('{"x":1e400}', "json_number_nonfinite"),
++        ('{"x":-1e400}', "json_number_nonfinite"),
++    ],
++)
++def test_jr13_raw_json_rejects_before_decisions(raw, code):
++    with pytest.raises(ImportValidationError) as caught:
++        parse_package(raw)
++    assert caught.value.error_code == code
++
++
++@pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf"), (1, 2)])
++def test_jr13_direct_dict_cannot_bypass_ingress(value, tmp_path):
++    store, identity = _workspace(tmp_path)
++    before = store.counts()
++    with pytest.raises(ImportValidationError) as caught:
++        import_package(
++            store,
++            {"nested": [{"value": value}]},
++            frozen_release=_release(),
++            identity_store=identity,
++        )
++    assert caught.value.error_code == (
++        "json_number_nonfinite" if isinstance(value, float) else "json_value_invalid"
++    )
++    assert store.counts() == before
++
++
++@pytest.mark.parametrize(
++    "mutation", ["duplicate_root", "duplicate_nested", "duplicate_array", "overflow"]
++)
++def test_jr13_real_cli_invalid_raw_json_zero_writes(tmp_path, mutation):
++    import os
++    import subprocess
++    import sys
++
++    store, identity = _workspace(tmp_path)
++    package = _package([_jr13_obs("cli")])
++    raw = json.dumps(package)
++    if mutation == "duplicate_root":
++        raw = raw.replace(
++            '"schema_version": "1.0.0"', '"schema_version": "1.0.0", "schema_version": "1.0.0"', 1
++        )
++    elif mutation == "duplicate_nested":
++        raw = raw.replace(
++            '"summary": "fixture summary"',
++            '"summary": "fixture summary", "summary": "fixture summary"',
++            1,
++        )
++    elif mutation == "duplicate_array":
++        raw = raw.replace('"items": [', '"items": [', 1).replace(
++            '"item_id":', '"item_id": "ignored", "item_id":', 1
++        )
++    else:
++        raw = raw.replace('"summary": "fixture summary"', '"summary": 1e400', 1)
++    packet = tmp_path / "packet.json"
++    packet.write_text(raw, encoding="utf-8")
++    release = tmp_path / "release.json"
++    release.write_text(json.dumps(_release()), encoding="utf-8")
++    before = store.counts()
++    proc = subprocess.run(
++        [
++            sys.executable,
++            "-B",
++            "-X",
++            "utf8",
++            "-m",
++            "stockwiki.cli",
++            "--root",
++            str(tmp_path),
++            "observation-import",
++            "--package",
++            str(packet),
++            "--release",
++            str(release),
++        ],
++        cwd=Path(__file__).parent.parent,
++        env=dict(os.environ),
++        capture_output=True,
++        timeout=30,
++    )
++    assert proc.returncode != 0, proc.stdout.decode()
++    assert store.counts() == before
++
++
++def test_jr13_historical_ack_bytes_are_not_projected_on_replay(tmp_path):
++    import hashlib
++    import sqlite3
++
++    store, identity = _workspace(tmp_path)
++    package = _package([_jr13_obs("legacy")])
++    ack = import_package(store, package, frozen_release=_release(), identity_store=identity)[
++        "acks"
++    ][0]
++    historical = {
++        **ack,
++        "ack_sequence": 1,
++        "original_import": {
++            "package_id": package["package_id"],
++            "ack_sequence": 1,
++            "received_at": ack["received_at"],
++        },
++    }
++    raw = json.dumps(historical, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
++    with sqlite3.connect(store.database_path) as con:
++        con.execute(
++            "UPDATE quick_scan_import_item SET ack_json=? WHERE package_id=? AND item_id=?",
++            (raw, ack["package_id"], ack["item_id"]),
++        )
++    before = hashlib.sha256(raw.encode()).hexdigest()
++    assert store.ack_for(ack["package_id"], ack["item_id"]) == historical
++    assert (
++        import_package(store, package, frozen_release=_release(), identity_store=identity)["acks"][
++            0
++        ]
++        == historical
++    )
++    with sqlite3.connect(store.database_path) as con:
++        actual = con.execute("SELECT ack_json FROM quick_scan_import_item").fetchone()[0]
++    assert actual == raw and hashlib.sha256(actual.encode()).hexdigest() == before
++
++
++@pytest.mark.parametrize(
++    "field,value",
++    [
++        ("item_id", "bad"),
++        ("item_id", None),
++        ("observation_id", "obs_short"),
++        ("observation_id", None),
++        ("payload_sha256", ""),
++        ("payload_sha256", None),
++    ],
++)
++def test_jr13_review_unacknowledgeable_address_zero_writes(tmp_path, monkeypatch, field, value):
++    _no_network(monkeypatch)
++    store, identity = _workspace(tmp_path)
++    package = _package([_jr13_obs("address")])
++    package["items"][0][field] = value
++    seed = {key: val for key, val in package.items() if key not in {"package_id", "package_sha256"}}
++    package["package_sha256"] = canonical_sha256(seed)
++    package["package_id"] = "pkg_" + package["package_sha256"]
++    with pytest.raises(ObservationImportError) as error:
++        import_package(store, package, frozen_release=_release(), identity_store=identity)
++    assert error.value.error_code == "ack_address_invalid"
++    assert all(value == 0 for value in store.counts().values())
++
++
++def test_jr13_review_empty_item_after_valid_item_zero_writes(tmp_path, monkeypatch):
++    _no_network(monkeypatch)
++    store, identity = _workspace(tmp_path)
++    package = _package([_jr13_obs("good")])
++    package["items"].append({})
++    seed = {key: val for key, val in package.items() if key not in {"package_id", "package_sha256"}}
++    package["package_sha256"] = canonical_sha256(seed)
++    package["package_id"] = "pkg_" + package["package_sha256"]
++    with pytest.raises(ObservationImportError) as error:
++        import_package(store, package, frozen_release=_release(), identity_store=identity)
++    assert error.value.error_code == "ack_address_invalid"
++    assert all(value == 0 for value in store.counts().values())
++
++
++def test_jr13_review_internal_decision_cannot_create_bad_public_ack(tmp_path, monkeypatch):
++    _no_network(monkeypatch)
++    store, _ = _workspace(tmp_path)
++    bad = {
++        "package_id": "pkg_" + "a" * 64,
++        "item_id": "bad",
++        "observation_id": "obs_" + "b" * 64,
++        "payload_sha256": "c" * 64,
++        "status": "rejected",
++        "error_code": "shape_invalid",
++    }
++    with pytest.raises(ObservationImportError) as error:
++        store.apply_decisions([bad])
++    assert error.value.error_code == "ack_address_invalid"
++    assert all(value == 0 for value in store.counts().values())
++
++
++def test_jr13_review_already_present_references_accepted_import(tmp_path, monkeypatch):
++    _no_network(monkeypatch)
++    store, identity = _workspace(tmp_path)
++    obs = _jr13_obs("reference", entity_id="E99")
++    first = import_package(
++        store, _package([obs], producer="First"), frozen_release=_release(), identity_store=identity
++    )
++    assert first["acks"][0]["status"] == "rejected"
++    entity = _seed_entity("E99")
++    bindings = entity.pop("_bindings")
++    identity.save_entity(entity, source_bindings=bindings)
++    accepted = import_package(
++        store,
++        _package([obs], producer="Second"),
++        frozen_release=_release(),
++        identity_store=identity,
++    )
++    assert accepted["acks"][0]["status"] == "accepted"
++    third = import_package(
++        store, _package([obs], producer="Third"), frozen_release=_release(), identity_store=identity
++    )
++    assert third["acks"][0]["status"] == "already_present"
++    ack = third["acks"][0]
++    audit = store.import_audit_for(ack["package_id"], ack["item_id"])
++    assert audit["original_import"]["package_id"] == accepted["package_id"]
++    assert audit["original_import"]["item_id"] == accepted["acks"][0]["item_id"]
++
++
++def test_jr13_review_concurrent_schema1_upgrade_is_serialized(tmp_path, monkeypatch):
++    import threading
++    from concurrent.futures import ThreadPoolExecutor
++
++    store, _ = _workspace(tmp_path)
++    with sqlite3.connect(store.database_path) as con:
++        con.execute("DROP TABLE quick_scan_import_audit")
++        con.execute("PRAGMA user_version=1")
++    barrier = threading.Barrier(2)
++    original_connect = sqlite3.connect
++
++    class OrderedConnection(sqlite3.Connection):
++        def execute(self, sql, *args, **kwargs):
++            cursor = super().execute(sql, *args, **kwargs)
++            if sql == "PRAGMA user_version" and not self.in_transaction:
++                # Old code reads version before write lock: force both real reads
++                # before either CREATE. Correct code reads under BEGIN and bypasses.
++                barrier.wait(timeout=5)
++            return cursor
++
++    def connect(*args, **kwargs):
++        kwargs["factory"] = OrderedConnection
++        return original_connect(*args, **kwargs)
++
++    monkeypatch.setattr(sqlite3, "connect", connect)
++    with ThreadPoolExecutor(max_workers=2) as executor:
++        futures = [executor.submit(store.migrate) for _ in range(2)]
++        assert [future.result(timeout=10) for future in futures] == [2, 2]
++
++
++def _jr13_historical_short_fixture(tmp_path):
++    """Synthetic schema-1 forensic fixture; not a real issuer/owner golden."""
++    store, identity = _workspace(tmp_path)
++    obs = _jr13_obs("old-short")
++    obs["observation_id"] = "obs_historical_short"
++    package = _package([obs])
++    item = package["items"][0]
++    decision = dict(item, package_id=package["package_id"], exec_key="synthetic-old-exec")
++    row, _ = store._observation_row(decision, 1)
++    received = "2026-10-01T09:02:00Z"
++    ack = dict(
++        schema_version="1.0.0",
++        ack_id="ack_historical_short_fixture",
++        package_id=package["package_id"],
++        item_id=item["item_id"],
++        observation_id=item["observation_id"],
++        payload_sha256=item["payload_sha256"],
++        status="accepted",
++        error_code=None,
++        received_at=received,
++        consumer=dict(component="StockWiki", namespace="quick_scan", store_id=store.store_id),
++        ack_sequence=1,
++        original_import=None,
++    )
++    raw = json.dumps(ack, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
++    with sqlite3.connect(store.database_path) as con:
++        con.execute("DROP TABLE quick_scan_import_audit")
++        con.execute("PRAGMA user_version=1")
++        con.execute(
++            "INSERT INTO quick_scan_observation ("
++            + ",".join(row)
++            + ") VALUES ("
++            + ",".join("?" for _ in row)
++            + ")",
++            list(row.values()),
++        )
++        con.execute(
++            """INSERT INTO quick_scan_import_item
++            (package_id,item_id,observation_id,payload_sha256,status,error_code,ack_sequence,received_at,store_id,ack_json)
++            VALUES (?,?,?,?,?,?,?,?,?,?)""",
++            (
++                package["package_id"],
++                item["item_id"],
++                item["observation_id"],
++                item["payload_sha256"],
++                "accepted",
++                None,
++                1,
++                received,
++                store.store_id,
++                raw,
++            ),
++        )
++    return store, identity, package, ack
++
++
++def test_jr13_review_short_history_exact_replay_is_read_only(tmp_path, monkeypatch):
++    _no_network(monkeypatch)
++    store, identity, package, ack = _jr13_historical_short_fixture(tmp_path)
++    before = hashlib.sha256(store.database_path.read_bytes()).hexdigest()
++    result = import_package(store, package, frozen_release=_release(), identity_store=identity)
++    assert result["acks"] == [ack] and result["legacy_wire_pending"] is True
++    assert store.ack_for(ack["package_id"], ack["item_id"]) == ack
++    assert store.import_audit_for(ack["package_id"], ack["item_id"]) is None
++    assert hashlib.sha256(store.database_path.read_bytes()).hexdigest() == before
++    with sqlite3.connect(store.database_path) as con:
++        assert con.execute("PRAGMA user_version").fetchone()[0] == 1
++    decision = {
++        field: ack[field] for field in ["package_id", "item_id", "observation_id", "payload_sha256"]
++    }
++    assert store.apply_decisions([decision]) == [ack]
++    assert hashlib.sha256(store.database_path.read_bytes()).hexdigest() == before
++
++
++def test_jr13_review_short_history_binding_conflict_never_replays(tmp_path, monkeypatch):
++    _no_network(monkeypatch)
++    store, _, _, ack = _jr13_historical_short_fixture(tmp_path)
++    decision = {
++        field: ack[field] for field in ["package_id", "item_id", "observation_id", "payload_sha256"]
++    }
++    decision["payload_sha256"] = "f" * 64
++    before = hashlib.sha256(store.database_path.read_bytes()).hexdigest()
++    with pytest.raises(ObservationImportError) as error:
++        store.apply_decisions([decision])
++    assert error.value.error_code == "historical_ack_binding_mismatch"
++    assert hashlib.sha256(store.database_path.read_bytes()).hexdigest() == before
++
++
++def test_jr13_review_short_history_does_not_bypass_package_hash(tmp_path, monkeypatch):
++    _no_network(monkeypatch)
++    store, identity, package, _ = _jr13_historical_short_fixture(tmp_path)
++    package["items"][0]["observation"]["answer"]["score"] = 10
++    before = hashlib.sha256(store.database_path.read_bytes()).hexdigest()
++    with pytest.raises(ObservationImportError) as error:
++        import_package(store, package, frozen_release=_release(), identity_store=identity)
++    assert error.value.error_code == "package_hash_mismatch"
++    assert hashlib.sha256(store.database_path.read_bytes()).hexdigest() == before
++
++
++@pytest.mark.parametrize("field", ["payload_sha256", "observation_id"])
++@pytest.mark.parametrize("old_first", [False, True])
++def test_jr13_review_mixed_conflicting_slot_is_atomic(tmp_path, field, old_first):
++    store, identity = _workspace(tmp_path)
++    old = _package([_jr13_obs("mixed-old")])
++    ack = import_package(store, old, frozen_release=_release(), identity_store=identity)["acks"][0]
++    wrong = {key: ack[key] for key in ["package_id", "item_id", "observation_id", "payload_sha256"]}
++    wrong.update(status="rejected", error_code="unknown_question")
++    wrong[field] = "f" * 64 if field == "payload_sha256" else "obs_" + "f" * 64
++    new = dict(
++        package_id="pkg_" + "c" * 64,
++        item_id="itm_" + "b" * 64,
++        observation_id="obs_" + "a" * 64,
++        payload_sha256="d" * 64,
++        status="rejected",
++        error_code="unknown_question",
++    )
++    before = hashlib.sha256(store.database_path.read_bytes()).hexdigest()
++    counts = store.counts()
++    with pytest.raises(ObservationImportError) as error:
++        store.apply_decisions([wrong, new] if old_first else [new, wrong], identity_lookup=identity)
++    assert error.value.error_code == "historical_ack_binding_mismatch"
++    assert store.counts() == counts
++    assert store.ack_for(new["package_id"], new["item_id"]) is None
++    assert hashlib.sha256(store.database_path.read_bytes()).hexdigest() == before
++
++
++@pytest.mark.parametrize("field", ["payload_sha256", "observation_id"])
++def test_jr13_review_slot_created_after_read_is_rechecked_in_transaction(
++    tmp_path, monkeypatch, field
++):
++    store, identity = _workspace(tmp_path)
++    old = _package([_jr13_obs("race-old")])
++    ack = import_package(store, old, frozen_release=_release(), identity_store=identity)["acks"][0]
++    wrong = {key: ack[key] for key in ["package_id", "item_id", "observation_id", "payload_sha256"]}
++    wrong.update(status="rejected", error_code="unknown_question")
++    wrong[field] = "f" * 64 if field == "payload_sha256" else "obs_" + "f" * 64
++    new = dict(
++        package_id="pkg_" + "c" * 64,
++        item_id="itm_" + "b" * 64,
++        observation_id="obs_" + "a" * 64,
++        payload_sha256="d" * 64,
++        status="rejected",
++        error_code="unknown_question",
++    )
++    # Emulate the absence of the old slot in the pre-transaction snapshot.
++    # The actual SQLite write transaction must recheck the now-present row.
++    monkeypatch.setattr(store, "replay_decisions", lambda decisions: None)
++    before = hashlib.sha256(store.database_path.read_bytes()).hexdigest()
++    counts = store.counts()
++    with pytest.raises(ObservationImportError) as error:
++        store.apply_decisions([new, wrong], identity_lookup=identity)
++    assert error.value.error_code == "historical_ack_binding_mismatch"
++    assert store.counts() == counts
++    assert store.ack_for(new["package_id"], new["item_id"]) is None
++    assert hashlib.sha256(store.database_path.read_bytes()).hexdigest() == before
++
++
++def test_jr13_review_mixed_exact_slot_and_new_item_is_supported(tmp_path):
++    store, identity = _workspace(tmp_path)
++    old = _package([_jr13_obs("mixed-exact")])
++    ack = import_package(store, old, frozen_release=_release(), identity_store=identity)["acks"][0]
++    replay = {
++        key: ack[key] for key in ["package_id", "item_id", "observation_id", "payload_sha256"]
++    }
++    replay.update(status="rejected", error_code="unknown_question")
++    new = dict(
++        package_id="pkg_" + "c" * 64,
++        item_id="itm_" + "b" * 64,
++        observation_id="obs_" + "a" * 64,
++        payload_sha256="d" * 64,
++        status="rejected",
++        error_code="unknown_question",
++    )
++    result = store.apply_decisions([new, replay], identity_lookup=identity)
++    assert result[1] == ack and result[0]["status"] == "rejected"
++    assert store.ack_for(new["package_id"], new["item_id"]) == result[0]
+--- a/tests/test_quick_scan_delivery.py
++++ b/tests/test_quick_scan_delivery.py
+@@ -1,340 +1,496 @@
+-"""W10 delivery/ACK projection tests.
+-
+-Binds acceptance cases JOB-07, JOB-08, PAR-06 (plus read-side re-checks of
+-DB-02/DB-03) to real selectors. Fixtures are built through the REAL W05
+-transactional write path (`apply_decisions`), never by mocking the ledger;
+-every test runs under a socket bomb because recovery must never call an LLM.
+-"""
+-
+-from __future__ import annotations
+-
+-import socket
+-from pathlib import Path
+-
+-import pytest
+-
+-from stockwiki.paths import WorkspacePaths
+-from stockwiki.quick_scan_delivery import (
+-    DeliveryProjectionError,
+-    ack_status,
+-    apply_delivery_transition,
+-    project_runtime_status,
+-    reconcile_delivery,
+-    validate_ack,
+-)
+-from stockwiki.quick_scan_observations import QuickScanObservationStore
+-
+-
+-def _no_network(monkeypatch) -> None:
+-    def _bomb(*args, **kwargs):
+-        raise AssertionError("network call attempted from delivery projection")
+-
+-    monkeypatch.setattr(socket, "socket", _bomb)
+-    monkeypatch.setattr(socket, "create_connection", _bomb)
+-
+-
+-def _observation(obs_id: str, entity_id: str = "ENT_A") -> dict:
+-    return {
+-        "observation_id": obs_id,
+-        "entity_id": entity_id,
+-        "security_id": None,
+-        "listing_id": None,
+-        "segment_id": None,
+-        "source_binding_ref": None,
+-        "identity_revision": 1,
+-        "analysis_subject": None,
+-        "field_id": "score.iqs_05",
+-        "question_id": "IQS_05",
+-        "scope": "entity",
+-        "observed_at": "2026-10-03T09:00:00Z",
+-        "information_cutoff": "2026-09-01",
+-        "answer": {"status": "scored", "score": 7},
+-    }
+-
+-
+-def _decision(
+-    item_id: str,
+-    obs_id: str,
+-    payload_sha: str,
+-    *,
+-    status: str = "accepted",
+-    entity_id: str = "ENT_A",
+-    package_id: str = "pkg_loop",
+-) -> dict:
+-    return {
+-        "package_id": package_id,
+-        "item_id": item_id,
+-        "observation_id": obs_id,
+-        "payload_sha256": payload_sha,
+-        "exec_key": f"exec_{item_id}",
+-        "status": status,
+-        "error_code": None if status == "accepted" else "rejected_by_fixture",
+-        "observation": _observation(obs_id, entity_id),
+-    }
+-
+-
+-def _store(tmp_path: Path) -> QuickScanObservationStore:
+-    store = QuickScanObservationStore(WorkspacePaths.from_root(tmp_path))
+-    store.migrate()
+-    return store
+-
+-
+-def _seed_loop(store: QuickScanObservationStore) -> tuple[str, str]:
+-    """Land one accepted item through the real transactional path."""
+-    item_id = "itm_loop_1"
+-    payload_sha = "a" * 64
+-    acks = store.apply_decisions(
+-        [_decision(item_id, "obs_loop_1", payload_sha)], identity_lookup=None
+-    )
+-    assert acks[0]["status"] == "accepted"
+-    return item_id, payload_sha
+-
+-
+-def test_job_07_unknown_send_never_becomes_acked_without_receipt(tmp_path, monkeypatch) -> None:
+-    """JOB-07: unknown send stays unknown; a real ACK advances it once, idempotently."""
+-    _no_network(monkeypatch)
+-    store = _store(tmp_path)
+-    item_id, payload_sha = _seed_loop(store)
+-
+-    # JOB-07 recovery: caller has no ACK in hand, so the exact receipt in the
+-    # ledger is consumed first -> sent_unknown advances to acked, settling once
+-    no_ack = reconcile_delivery(
+-        store,
+-        package_id="pkg_loop",
+-        item_id=item_id,
+-        expected_payload_sha256=payload_sha,
+-        current="sent_unknown",
+-        incoming_ack=None,
+-    )
+-    assert no_ack["state"] == "acked"
+-    assert no_ack["ack_found_in_ledger"] is True
+-    assert no_ack["incoming_ack_accepted"] is False
+-    assert no_ack["settled_once"] is True
+-    assert no_ack["llm_calls"] == 0
+-
+-    # replaying the same situation yields the same state (idempotent)
+-    again = reconcile_delivery(
+-        store,
+-        package_id="pkg_loop",
+-        item_id=item_id,
+-        expected_payload_sha256=payload_sha,
+-        current="acked",
+-        incoming_ack=None,
+-    )
+-    assert again["state"] == "acked"
+-    assert again["llm_calls"] == 0 and again["network_calls"] == 0
+-
+-    # a genuinely missing receipt keeps the unknown state
+-    unseen = reconcile_delivery(
+-        store,
+-        package_id="pkg_other",
+-        item_id="itm_never_imported",
+-        expected_payload_sha256="b" * 64,
+-        current="sent_unknown",
+-        incoming_ack=None,
+-    )
+-    assert unseen["state"] == "sent_unknown"
+-    assert unseen["ack_found_in_ledger"] is False
+-    assert unseen["settled_once"] is False
+-
+-
+-def test_job_08_mismatched_ack_and_illegal_transitions_refused(tmp_path, monkeypatch) -> None:
+-    """JOB-08: wrong item/hash ACK rejected; illegal jumps refused; no fake delivered."""
+-    _no_network(monkeypatch)
+-    store = _store(tmp_path)
+-    item_id, payload_sha = _seed_loop(store)
+-    ledger = ack_status(store, package_id="pkg_loop")
+-    good_ack = ledger["receipts"][0]["ack"]
+-
+-    validated = validate_ack(
+-        good_ack, expected_item_id=item_id, expected_payload_sha256=payload_sha
+-    )
+-    assert validated["status"] == "accepted"
+-
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        validate_ack(good_ack, expected_item_id="itm_other", expected_payload_sha256=payload_sha)
+-    assert exc.value.error_code == "ack_item_mismatch"
+-
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        validate_ack(good_ack, expected_item_id=item_id, expected_payload_sha256="c" * 64)
+-    assert exc.value.error_code == "ack_payload_hash_mismatch"
+-
+-    bad_status = dict(good_ack, status="made_up")
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        validate_ack(bad_status, expected_item_id=item_id, expected_payload_sha256=payload_sha)
+-    assert exc.value.error_code == "ack_status_invalid"
+-
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        validate_ack(
+-            {"item_id": "", "payload_sha256": "", "status": ""},
+-            expected_item_id="x",
+-            expected_payload_sha256="y",
+-        )
+-    assert exc.value.error_code == "ack_shape"
+-
+-    # illegal state jumps are refused, never coerced
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        apply_delivery_transition("pending", "acked", has_ack=True)
+-    assert exc.value.error_code == "delivery_transition_illegal"
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        apply_delivery_transition("pending", "delivered", has_ack=False)
+-    assert exc.value.error_code == "delivery_transition_illegal"
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        apply_delivery_transition("failed", "acked", has_ack=True)
+-    assert exc.value.error_code == "delivery_transition_illegal"
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        apply_delivery_transition("sent_unknown", "acked", has_ack=False)
+-    assert exc.value.error_code == "delivery_ack_required"
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        apply_delivery_transition("pending", "teleported", has_ack=True)
+-    assert exc.value.error_code == "delivery_state_invalid"
+-
+-    # a mismatched late ACK is refused outright: state held, reason named
+-    stuck = reconcile_delivery(
+-        store,
+-        package_id="pkg_loop",
+-        item_id=item_id,
+-        expected_payload_sha256=payload_sha,
+-        current="sent_unknown",
+-        incoming_ack=dict(good_ack, item_id="itm_other"),
+-    )
+-    assert stuck["state"] == "sent_unknown"
+-    assert stuck["incoming_ack_accepted"] is False
+-    assert stuck["incoming_ack_error"] == "ack_item_mismatch"
+-    assert stuck["settled_once"] is False
+-
+-    # error receipts stay errors (never masquerade as delivered)
+-    store.apply_decisions(
+-        [_decision("itm_bad_1", "obs_bad_1", "d" * 64, status="rejected")],
+-        identity_lookup=None,
+-    )
+-    err = ack_status(store, package_id="pkg_loop", item_id="itm_bad_1")
+-    assert err["count"] == 1
+-    assert err["error_receipts"] == 1
+-    assert err["receipts"][0]["status"] == "rejected"
+-    assert err["receipts"][0]["error_code"] == "rejected_by_fixture"
+-    assert err["llm_calls"] == 0
+-
+-
+-def test_par_06_late_ack_settles_once_and_replay_is_import_only(tmp_path, monkeypatch) -> None:
+-    """PAR-06: late valid receipt settles the unknown result exactly once, no LLM."""
+-    _no_network(monkeypatch)
+-    store = _store(tmp_path)
+-    item_id, payload_sha = _seed_loop(store)
+-    ledger = ack_status(store, package_id="pkg_loop")
+-    late_ack = ledger["receipts"][0]["ack"]
+-
+-    first = reconcile_delivery(
+-        store,
+-        package_id="pkg_loop",
+-        item_id=item_id,
+-        expected_payload_sha256=payload_sha,
+-        current="sent_unknown",
+-        incoming_ack=late_ack,
+-    )
+-    assert first["state"] == "acked"
+-    assert first["incoming_ack_accepted"] is True
+-    assert first["settled_once"] is True
+-    assert first["llm_calls"] == 0
+-
+-    # an identical late ACK settles to the SAME state (idempotent, no re-settle)
+-    replay = reconcile_delivery(
+-        store,
+-        package_id="pkg_loop",
+-        item_id=item_id,
+-        expected_payload_sha256=payload_sha,
+-        current="acked",
+-        incoming_ack=late_ack,
+-    )
+-    assert replay["state"] == "acked"
+-    assert replay["llm_calls"] == 0 and replay["network_calls"] == 0
+-
+-    # a late ACK for the WRONG payload is refused and nothing advances
+-    wrong = reconcile_delivery(
+-        store,
+-        package_id="pkg_loop",
+-        item_id=item_id,
+-        expected_payload_sha256=payload_sha,
+-        current="sent_unknown",
+-        incoming_ack=dict(late_ack, payload_sha256="e" * 64),
+-    )
+-    assert wrong["incoming_ack_accepted"] is False
+-    assert wrong["incoming_ack_error"] == "ack_payload_hash_mismatch"
+-    assert wrong["state"] == "sent_unknown"
+-
+-
+-def test_db_02_03_read_side_idempotency_and_conflict_counts(tmp_path, monkeypatch) -> None:
+-    """DB-02/DB-03 read-side: original receipt preserved; conflicts surfaced as unknown."""
+-    _no_network(monkeypatch)
+-    store = _store(tmp_path)
+-    item_id, payload_sha = _seed_loop(store)
+-
+-    # same package+item replay returns the ORIGINAL receipt (DB-02)
+-    replayed = store.apply_decisions(
+-        [_decision(item_id, "obs_loop_1", payload_sha)], identity_lookup=None
+-    )
+-    assert replayed[0]["status"] == "accepted"  # ledger returns the ORIGINAL ack
+-    original = ack_status(store, package_id="pkg_loop", item_id=item_id)
+-    assert original["count"] == 1, "one ledger row per package+item (idempotent)"
+-    assert (
+-        original["receipts"][0]["ack"]["ack_id"]
+-        == ack_status(store, package_id="pkg_loop", item_id=item_id)["receipts"][0]["ack"]["ack_id"]
+-    )
+-
+-    # same observation id with a different payload -> conflict (DB-03), counted as unknown
+-    store.apply_decisions(
+-        [_decision("itm_conf_1", "obs_loop_1", "f" * 64, package_id="pkg_conf")],
+-        identity_lookup=None,
+-    )
+-    status = project_runtime_status(store)
+-    assert status["import_items"]["conflict"] == 1
+-    assert status["unknown"] == 1
+-    assert status["conflicts"] == 1
+-    assert status["observations"] == 1, "conflict never becomes a second observation"
+-
+-    # executions are never counted as companies (W10 step 3)
+-    store.apply_decisions(
+-        [
+-            _decision("itm_a", "obs_a_1", "1" * 64, package_id="pkg_multi"),
+-            _decision("itm_b", "obs_a_1_x", "2" * 64, package_id="pkg_multi"),
+-        ],
+-        identity_lookup=None,
+-    )
+-    status2 = project_runtime_status(store)
+-    assert (
+-        status2["import_attempts"] > status2["distinct_companies"]
+-    ), "attempts (items) must not be presented as company counts"
+-    assert status2["counting_note"]
+-    assert status2["llm_calls"] == 0 and status2["network_calls"] == 0
+-    assert status2["coverage"]["facts_available"] is False
+-
+-
+-def test_ack_status_requires_a_query_and_tolerates_unmigrated_store(tmp_path, monkeypatch) -> None:
+-    _no_network(monkeypatch)
+-    store = _store(tmp_path)
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        ack_status(store)
+-    assert exc.value.error_code == "ack_query_shape"
+-
+-    from stockwiki.quick_scan_observations import QuickScanObservationStore as ObsStore
+-
+-    unmigrated = ObsStore(WorkspacePaths.from_root(tmp_path / "fresh"))
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        project_runtime_status(unmigrated)
+-    assert exc.value.error_code == "store_not_migrated"
+-
+-    # file exists but migrate() never committed its schema -> same named refusal
+-    empty_root = WorkspacePaths.from_root(tmp_path / "empty_db")
+-    half = ObsStore(empty_root)
+-    half.database_path.parent.mkdir(parents=True, exist_ok=True)
+-    half.database_path.write_bytes(b"")
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        project_runtime_status(half)
+-    assert exc.value.error_code == "store_not_migrated"
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        ack_status(half, package_id="pkg_x")
+-    assert exc.value.error_code == "store_not_migrated"
+-
+-    with pytest.raises(DeliveryProjectionError) as exc:
+-        ack_status("not-a-store", package_id="p")
+-    assert exc.value.error_code == "store_shape"
++"""W10 delivery/ACK projection tests.
++
++Binds acceptance cases JOB-07, JOB-08, PAR-06 (plus read-side re-checks of
++DB-02/DB-03) to real selectors. Fixtures are built through the REAL W05
++transactional write path (`apply_decisions`), never by mocking the ledger;
++every test runs under a socket bomb because recovery must never call an LLM.
++"""
++
++from __future__ import annotations
++
++import socket
++from pathlib import Path
++
++import pytest
++
++from stockwiki.paths import WorkspacePaths
++from stockwiki.quick_scan_delivery import (
++    DeliveryProjectionError,
++    ack_status,
++    apply_delivery_transition,
++    project_runtime_status,
++    reconcile_delivery,
++    validate_ack,
++)
++from stockwiki.quick_scan_observations import QuickScanObservationStore
++
++
++def _no_network(monkeypatch) -> None:
++    def _bomb(*args, **kwargs):
++        raise AssertionError("network call attempted from delivery projection")
++
++    monkeypatch.setattr(socket, "socket", _bomb)
++    monkeypatch.setattr(socket, "create_connection", _bomb)
++
++
++def _observation(obs_id: str, entity_id: str = "ENT_A") -> dict:
++    return {
++        "observation_id": obs_id,
++        "entity_id": entity_id,
++        "security_id": None,
++        "listing_id": None,
++        "segment_id": None,
++        "source_binding_ref": None,
++        "identity_revision": 1,
++        "analysis_subject": None,
++        "field_id": "score.iqs_05",
++        "question_id": "IQS_05",
++        "scope": "entity",
++        "observed_at": "2026-10-03T09:00:00Z",
++        "information_cutoff": "2026-09-01",
++        "answer": {"status": "scored", "score": 7},
++    }
++
++
++def _decision(
++    item_id: str,
++    obs_id: str,
++    payload_sha: str,
++    *,
++    status: str = "accepted",
++    entity_id: str = "ENT_A",
++    package_id: str = "pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++) -> dict:
++    return {
++        "package_id": package_id,
++        "item_id": item_id,
++        "observation_id": obs_id,
++        "payload_sha256": payload_sha,
++        "exec_key": f"exec_{item_id}",
++        "status": status,
++        "error_code": None if status == "accepted" else "rejected_by_fixture",
++        "observation": _observation(obs_id, entity_id),
++    }
++
++
++def _store(tmp_path: Path) -> QuickScanObservationStore:
++    store = QuickScanObservationStore(WorkspacePaths.from_root(tmp_path))
++    store.migrate()
++    return store
++
++
++def _seed_loop(store: QuickScanObservationStore) -> tuple[str, str]:
++    """Land one accepted item through the real transactional path."""
++    item_id = "itm_8eb12ba77c9e16c038840efad756492de09bdb3aa01e3533ddc6d0eb444d217a"
++    payload_sha = "a" * 64
++    acks = store.apply_decisions(
++        [
++            _decision(
++                item_id,
++                "obs_b272796b8cc0d26970fa8bfd9dfddcbb53ce2336e2d825daf76d9a689575b0a0",
++                payload_sha,
++            )
++        ],
++        identity_lookup=None,
++    )
++    assert acks[0]["status"] == "accepted"
++    return item_id, payload_sha
++
++
++def test_job_07_unknown_send_never_becomes_acked_without_receipt(tmp_path, monkeypatch) -> None:
++    """JOB-07: unknown send stays unknown; a real ACK advances it once, idempotently."""
++    _no_network(monkeypatch)
++    store = _store(tmp_path)
++    item_id, payload_sha = _seed_loop(store)
++
++    # JOB-07 recovery: caller has no ACK in hand, so the exact receipt in the
++    # ledger is consumed first -> sent_unknown advances to acked, settling once
++    no_ack = reconcile_delivery(
++        store,
++        package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++        item_id=item_id,
++        expected_payload_sha256=payload_sha,
++        current="sent_unknown",
++        incoming_ack=None,
++    )
++    assert no_ack["state"] == "acked"
++    assert no_ack["ack_found_in_ledger"] is True
++    assert no_ack["incoming_ack_accepted"] is False
++    assert no_ack["settled_once"] is True
++    assert no_ack["llm_calls"] == 0
++
++    # replaying the same situation yields the same state (idempotent)
++    again = reconcile_delivery(
++        store,
++        package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++        item_id=item_id,
++        expected_payload_sha256=payload_sha,
++        current="acked",
++        incoming_ack=None,
++    )
++    assert again["state"] == "acked"
++    assert again["llm_calls"] == 0 and again["network_calls"] == 0
++
++    # a genuinely missing receipt keeps the unknown state
++    unseen = reconcile_delivery(
++        store,
++        package_id="pkg_3b77c99ab9ae36ccb2103991d09adcb9e664aa493f83ead3cf8164a71bf97ea0",
++        item_id="itm_ac8913dba9b986e0d2c0ee89006f6954857addc1276d015cb5df16b76ee895c2",
++        expected_payload_sha256="b" * 64,
++        current="sent_unknown",
++        incoming_ack=None,
++    )
++    assert unseen["state"] == "sent_unknown"
++    assert unseen["ack_found_in_ledger"] is False
++    assert unseen["settled_once"] is False
++
++
++def test_job_08_mismatched_ack_and_illegal_transitions_refused(tmp_path, monkeypatch) -> None:
++    """JOB-08: wrong item/hash ACK rejected; illegal jumps refused; no fake delivered."""
++    _no_network(monkeypatch)
++    store = _store(tmp_path)
++    item_id, payload_sha = _seed_loop(store)
++    ledger = ack_status(
++        store, package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33"
++    )
++    good_ack = ledger["receipts"][0]["ack"]
++
++    validated = validate_ack(
++        good_ack, expected_item_id=item_id, expected_payload_sha256=payload_sha
++    )
++    assert validated["status"] == "accepted"
++
++    with pytest.raises(DeliveryProjectionError) as exc:
++        validate_ack(
++            good_ack,
++            expected_item_id="itm_5bc615141fcd2eee0004969c31884cff61982f007cfead1659a0ba0aeca6b576",
++            expected_payload_sha256=payload_sha,
++        )
++    assert exc.value.error_code == "ack_item_mismatch"
++
++    with pytest.raises(DeliveryProjectionError) as exc:
++        validate_ack(good_ack, expected_item_id=item_id, expected_payload_sha256="c" * 64)
++    assert exc.value.error_code == "ack_payload_hash_mismatch"
++
++    bad_status = dict(good_ack, status="made_up")
++    with pytest.raises(DeliveryProjectionError) as exc:
++        validate_ack(bad_status, expected_item_id=item_id, expected_payload_sha256=payload_sha)
++    assert exc.value.error_code == "ack_status_invalid"
++
++    with pytest.raises(DeliveryProjectionError) as exc:
++        validate_ack(
++            {"item_id": "", "payload_sha256": "", "status": ""},
++            expected_item_id="x",
++            expected_payload_sha256="y",
++        )
++    assert exc.value.error_code == "ack_shape"
++
++    # illegal state jumps are refused, never coerced
++    with pytest.raises(DeliveryProjectionError) as exc:
++        apply_delivery_transition("pending", "acked", has_ack=True)
++    assert exc.value.error_code == "delivery_transition_illegal"
++    with pytest.raises(DeliveryProjectionError) as exc:
++        apply_delivery_transition("pending", "delivered", has_ack=False)
++    assert exc.value.error_code == "delivery_transition_illegal"
++    with pytest.raises(DeliveryProjectionError) as exc:
++        apply_delivery_transition("failed", "acked", has_ack=True)
++    assert exc.value.error_code == "delivery_transition_illegal"
++    with pytest.raises(DeliveryProjectionError) as exc:
++        apply_delivery_transition("sent_unknown", "acked", has_ack=False)
++    assert exc.value.error_code == "delivery_ack_required"
++    with pytest.raises(DeliveryProjectionError) as exc:
++        apply_delivery_transition("pending", "teleported", has_ack=True)
++    assert exc.value.error_code == "delivery_state_invalid"
++
++    # a mismatched late ACK is refused outright: state held, reason named
++    stuck = reconcile_delivery(
++        store,
++        package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++        item_id=item_id,
++        expected_payload_sha256=payload_sha,
++        current="sent_unknown",
++        incoming_ack=dict(
++            good_ack, item_id="itm_5bc615141fcd2eee0004969c31884cff61982f007cfead1659a0ba0aeca6b576"
++        ),
++    )
++    assert stuck["state"] == "sent_unknown"
++    assert stuck["incoming_ack_accepted"] is False
++    assert stuck["incoming_ack_error"] == "ack_item_mismatch"
++    assert stuck["settled_once"] is False
++
++    # error receipts stay errors (never masquerade as delivered)
++    store.apply_decisions(
++        [
++            _decision(
++                "itm_2152bd4f36cd140893609ff8d41c7657abd563c1aae54fa894fd1999cff40508",
++                "obs_6e9fed04cedf18764e56a11b04c1bcacca9520b1651579350dc2df2490eb976a",
++                "d" * 64,
++                status="rejected",
++            )
++        ],
++        identity_lookup=None,
++    )
++    err = ack_status(
++        store,
++        package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++        item_id="itm_2152bd4f36cd140893609ff8d41c7657abd563c1aae54fa894fd1999cff40508",
++    )
++    assert err["count"] == 1
++    assert err["error_receipts"] == 1
++    assert err["receipts"][0]["status"] == "rejected"
++    assert err["receipts"][0]["error_code"] == "rejected_by_fixture"
++    assert err["llm_calls"] == 0
++
++
++def test_par_06_late_ack_settles_once_and_replay_is_import_only(tmp_path, monkeypatch) -> None:
++    """PAR-06: late valid receipt settles the unknown result exactly once, no LLM."""
++    _no_network(monkeypatch)
++    store = _store(tmp_path)
++    item_id, payload_sha = _seed_loop(store)
++    ledger = ack_status(
++        store, package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33"
++    )
++    late_ack = ledger["receipts"][0]["ack"]
++
++    first = reconcile_delivery(
++        store,
++        package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++        item_id=item_id,
++        expected_payload_sha256=payload_sha,
++        current="sent_unknown",
++        incoming_ack=late_ack,
++    )
++    assert first["state"] == "acked"
++    assert first["incoming_ack_accepted"] is True
++    assert first["settled_once"] is True
++    assert first["llm_calls"] == 0
++
++    # an identical late ACK settles to the SAME state (idempotent, no re-settle)
++    replay = reconcile_delivery(
++        store,
++        package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++        item_id=item_id,
++        expected_payload_sha256=payload_sha,
++        current="acked",
++        incoming_ack=late_ack,
++    )
++    assert replay["state"] == "acked"
++    assert replay["llm_calls"] == 0 and replay["network_calls"] == 0
++
++    # a late ACK for the WRONG payload is refused and nothing advances
++    wrong = reconcile_delivery(
++        store,
++        package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++        item_id=item_id,
++        expected_payload_sha256=payload_sha,
++        current="sent_unknown",
++        incoming_ack=dict(late_ack, payload_sha256="e" * 64),
++    )
++    assert wrong["incoming_ack_accepted"] is False
++    assert wrong["incoming_ack_error"] == "ack_payload_hash_mismatch"
++    assert wrong["state"] == "sent_unknown"
++
++
++def test_db_02_03_read_side_idempotency_and_conflict_counts(tmp_path, monkeypatch) -> None:
++    """DB-02/DB-03 read-side: original receipt preserved; conflicts surfaced as unknown."""
++    _no_network(monkeypatch)
++    store = _store(tmp_path)
++    item_id, payload_sha = _seed_loop(store)
++
++    # same package+item replay returns the ORIGINAL receipt (DB-02)
++    replayed = store.apply_decisions(
++        [
++            _decision(
++                item_id,
++                "obs_b272796b8cc0d26970fa8bfd9dfddcbb53ce2336e2d825daf76d9a689575b0a0",
++                payload_sha,
++            )
++        ],
++        identity_lookup=None,
++    )
++    assert replayed[0]["status"] == "accepted"  # ledger returns the ORIGINAL ack
++    original = ack_status(
++        store,
++        package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++        item_id=item_id,
++    )
++    assert original["count"] == 1, "one ledger row per package+item (idempotent)"
++    assert (
++        original["receipts"][0]["ack"]["ack_id"]
++        == ack_status(
++            store,
++            package_id="pkg_56febcfa6f28061c711405f664b7f9c469a4d9d9bf5ce488fd58e19883b34a33",
++            item_id=item_id,
++        )["receipts"][0]["ack"]["ack_id"]
++    )
++
++    # same observation id with a different payload -> conflict (DB-03), counted as unknown
++    store.apply_decisions(
++        [
++            _decision(
++                "itm_0eaf7897e7344564dde6f107d715ddf8a7f0bfb8cbb465fc08d95677d1d306a3",
++                "obs_b272796b8cc0d26970fa8bfd9dfddcbb53ce2336e2d825daf76d9a689575b0a0",
++                "f" * 64,
++                package_id="pkg_0efe81e52cf12cc283f218f73390a1805cba497bac78beb34611110514b15340",
++            )
++        ],
++        identity_lookup=None,
++    )
++    status = project_runtime_status(store)
++    assert status["import_items"]["conflict"] == 1
++    assert status["unknown"] == 1
++    assert status["conflicts"] == 1
++    assert status["observations"] == 1, "conflict never becomes a second observation"
++
++    # executions are never counted as companies (W10 step 3)
++    store.apply_decisions(
++        [
++            _decision(
++                "itm_a8ae2e6f37ed80073411b8899777dcffa17102fdcd87cb924d6da4b936cb8f4e",
++                "obs_14fe042a27e6d9330fe6705c97c888296cd289f34b6f70f7bab27ee2f8c9d844",
++                "1" * 64,
++                package_id="pkg_dc6f14bcc79a981028291cfb69157b6682029aa0fd46a613e0e3cb2a67465d59",
++            ),
++            _decision(
++                "itm_ad068dfcd14cfcafef70fbe1800450456ae20a7a61a1b3719a938eb3718e5bbd",
++                "obs_f05ff916d779b8369c4d5d561bdbac33fa28db3333a8b74587353a747dfccfe6",
++                "2" * 64,
++                package_id="pkg_dc6f14bcc79a981028291cfb69157b6682029aa0fd46a613e0e3cb2a67465d59",
++            ),
++        ],
++        identity_lookup=None,
++    )
++    status2 = project_runtime_status(store)
++    assert status2["import_attempts"] > status2["distinct_companies"], (
++        "attempts (items) must not be presented as company counts"
++    )
++    assert status2["counting_note"]
++    assert status2["llm_calls"] == 0 and status2["network_calls"] == 0
++    assert status2["coverage"]["facts_available"] is False
++
++
++def test_ack_status_requires_a_query_and_tolerates_unmigrated_store(tmp_path, monkeypatch) -> None:
++    _no_network(monkeypatch)
++    store = _store(tmp_path)
++    with pytest.raises(DeliveryProjectionError) as exc:
++        ack_status(store)
++    assert exc.value.error_code == "ack_query_shape"
++
++    from stockwiki.quick_scan_observations import QuickScanObservationStore as ObsStore
++
++    unmigrated = ObsStore(WorkspacePaths.from_root(tmp_path / "fresh"))
++    with pytest.raises(DeliveryProjectionError) as exc:
++        project_runtime_status(unmigrated)
++    assert exc.value.error_code == "store_not_migrated"
++
++    # file exists but migrate() never committed its schema -> same named refusal
++    empty_root = WorkspacePaths.from_root(tmp_path / "empty_db")
++    half = ObsStore(empty_root)
++    half.database_path.parent.mkdir(parents=True, exist_ok=True)
++    half.database_path.write_bytes(b"")
++    with pytest.raises(DeliveryProjectionError) as exc:
++        project_runtime_status(half)
++    assert exc.value.error_code == "store_not_migrated"
++    with pytest.raises(DeliveryProjectionError) as exc:
++        ack_status(
++            half, package_id="pkg_349ef0158bf93e9bdece509a8dcffbcbc1d6f1f96c0ea7034a0efbdfddc0efc3"
++        )
++    assert exc.value.error_code == "store_not_migrated"
++
++    with pytest.raises(DeliveryProjectionError) as exc:
++        ack_status("not-a-store", package_id="p")
++    assert exc.value.error_code == "store_shape"
++
++
++def test_jr13_schema2_backup_and_restore_preserves_original_ack(tmp_path):
++    from stockwiki.quick_scan_backup import create_backup, restore_backup, verify_backup
++
++    paths = WorkspacePaths.from_root(tmp_path)
++    store = QuickScanObservationStore(paths)
++    store.migrate()
++    decision = _decision(
++        "itm_7ecacc4ff4034249c562dafa9c69e050e6a9a4dd19ab8e6fa33962e3a6a44484",
++        "obs_3145a514677f4233f1d1198ffe9e6605cdd4dfd04f1f1e4a15b9c660b9ec8888",
++        "b" * 64,
++    )
++    ack = store.apply_decisions([decision])[0]
++    snapshot = create_backup(paths, name="jr13-schema2")
++    assert snapshot is not None
++    verify_backup(paths, "jr13-schema2")
++    import shutil
++
++    # Only this synthetic pytest workspace is removed, never the source repo.
++    shutil.rmtree(paths.data_dir / "quick_scan")
++    restore_backup(paths, "jr13-schema2")
++    restored = QuickScanObservationStore(paths)
++    assert restored.ack_for(decision["package_id"], decision["item_id"]) == ack
++    assert (
++        restored.import_audit_for(decision["package_id"], decision["item_id"])[
++            "internal_error_code"
++        ]
++        is None
++    )
++
++
++def test_jr13_schema1_migration_preserves_legacy_ack_and_does_not_backfill(tmp_path):
++    import json
++    import sqlite3
++
++    store = _store(tmp_path)
++    decision = _decision(
++        "itm_ffddd1a9fe95e98c7cd2c912564e6044f27e95d3b668e1035a5dcd10769571ee",
++        "obs_aa4839925d74278774aea2379a0cc020a446b039d46ad2779fee685b2ea5fd55",
++        "c" * 64,
++    )
++    ack = store.apply_decisions([decision])[0]
++    legacy = {**ack, "ack_sequence": 1}
++    raw = json.dumps(legacy, sort_keys=True, separators=(",", ":"))
++    with sqlite3.connect(store.database_path) as con:
++        con.execute("UPDATE quick_scan_import_item SET ack_json=?", (raw,))
++        con.execute("DROP TABLE quick_scan_import_audit")
++        con.execute("PRAGMA user_version=1")
++    assert store.ack_for(decision["package_id"], decision["item_id"]) == legacy
++    assert store.import_audit_for(decision["package_id"], decision["item_id"]) is None
++    assert store.migrate() == 2
++    assert store.apply_decisions([decision])[0] == legacy
++    assert store.import_audit_for(decision["package_id"], decision["item_id"]) is None
++    with sqlite3.connect(store.database_path) as con:
++        assert con.execute("SELECT ack_json FROM quick_scan_import_item").fetchone()[0] == raw
++
++
++def test_jr13_newer_schema_and_failed_upgrade_are_atomic(tmp_path, monkeypatch):
++    import sqlite3
++
++    import pytest
++
++    from stockwiki.quick_scan_observations import ObservationImportError
++
++    store = _store(tmp_path)
++    decision = _decision(
++        "itm_ac1f3ee6a5945de810d83a394518f1ee6778e5cee66b94fc35398fd432996190",
++        "obs_bb61b8515bbbcfb97af23be4f838737129c8f926bd6784b4887558ce0a683a6e",
++        "d" * 64,
++    )
++    ack = store.apply_decisions([decision])[0]
++    with sqlite3.connect(store.database_path) as con:
++        con.execute("DROP TABLE quick_scan_import_audit")
++        con.execute("PRAGMA user_version=1")
++
++    def fail(con):
++        con.execute("CREATE TABLE rollback_probe (value TEXT)")
++        raise RuntimeError("injected migration interruption")
++
++    with monkeypatch.context() as patch:
++        patch.setattr(store, "_create_import_audit", fail)
++        with pytest.raises(ObservationImportError, match="observation_migration_failed"):
++            store.migrate()
++    with sqlite3.connect(store.database_path) as con:
++        assert con.execute("PRAGMA user_version").fetchone()[0] == 1
++        assert (
++            con.execute("SELECT 1 FROM sqlite_master WHERE name='rollback_probe'").fetchone()
++            is None
++        )
++        con.execute("PRAGMA user_version=99")
++    with pytest.raises(ObservationImportError, match="observation_store_newer_schema"):
++        store.migrate()
++    assert store.ack_for(decision["package_id"], decision["item_id"]) == ack
+--- a/stockwiki/quick_scan_backup_manifest.py
++++ b/stockwiki/quick_scan_backup_manifest.py
+@@ -64,7 +64,7 @@
+ # A backup whose stored schema is newer than this must not be restored.
+ SUPPORTED_USER_VERSIONS = {
+     "scan.sqlite": 5,
+-    "scan_observations.sqlite": 1,
++    "scan_observations.sqlite": 2,
+     "analysis_subjects.sqlite": 1,
+     "identity_receipts.sqlite": 1,
+     "scan_evidence.sqlite": 1,

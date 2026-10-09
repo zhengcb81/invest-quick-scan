@@ -1,0 +1,18 @@
+..F
+================================== FAILURES ===================================
+______________ test_j03_independent_execution_and_stable_replay _______________
+
+all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...0a2bea6a0e753279b42893f2def6', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j03_independent_execution_and_stable_replay(all_imported):
+        second = h.actor('qa', 'j03-independent-cold', dict(op='produce', root=str(h.CASES / 'b'),
+                 run_label='J108_B', model_resolved='actual-fixture-model-B',
+                 answers={'IQS_01': dict(score=9, basis='normalized')}))
+>       assert second['cli_exit'] == 0 and second['http_sends'] == 31
+E       assert (1 == 0)
+
+..\test_joint.py:103: AssertionError
+=========================== short test summary info ===========================
+FAILED ..\test_joint.py::test_j03_independent_execution_and_stable_replay - a...
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 2 passed in 68.74s (0:01:08)

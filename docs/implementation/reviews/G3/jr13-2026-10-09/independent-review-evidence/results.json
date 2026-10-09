@@ -1,0 +1,271 @@
+{
+  "candidate_before": {
+    "stockwiki/quick_scan_import.py": "5bf472347b29064162fa4ba8d0944ee8566f62cb09bd6f201e4007a88be54b53",
+    "stockwiki/quick_scan_observations.py": "5010fce6c906b04787ebcaab61c6174df4fd8fa91b53992e037479075b1c8934",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2",
+    "tests/test_quick_scan_observations.py": "f54b4d0068d34a4e98865e5821b8265ab4f534dbd2edec12b5a1c4e9d01fcc27",
+    "tests/test_quick_scan_delivery.py": "6beb0785fffd764aa3cb5fb95a286dd871bf3bfacf29df5557b5ce6167fec309"
+  },
+  "synthetic_only": true,
+  "production_DB_access": false,
+  "real_API_calls": 0,
+  "malformed_item_id": {
+    "argv": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "stockwiki.cli",
+      "--root",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-unique\\malformed-item-id",
+      "observation-import",
+      "--package",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-unique\\malformed-item-id\\packet.json",
+      "--release",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-unique\\malformed-item-id\\release.json"
+    ],
+    "returncode": 0,
+    "ack": {
+      "ack_id": "ack_dd640f0638aa4ae0d8683de9",
+      "consumer": {
+        "component": "StockWiki",
+        "namespace": "quick_scan",
+        "store_id": "qsobs_7fcdc7bb8a4c04af"
+      },
+      "error_code": "invalid_payload",
+      "item_id": "bad",
+      "observation_id": "obs_6db5820013d375f26fa9044928dfe248fbf03ad8462db7e2ecac77eb48a14305",
+      "package_id": "pkg_55cba41c055f60094264722a4d70740a5f44b59e021b2781d11510647f9061cc",
+      "payload_sha256": "9d7fb5e3d33390da703a694464e7bc8581c101d91209cd2beb70c3f3cf051559",
+      "received_at": "2026-10-09T17:48:56Z",
+      "schema_version": "1.0.0",
+      "status": "rejected"
+    },
+    "schema_errors": [
+      {
+        "path": [
+          "item_id"
+        ],
+        "message": "'bad' does not match '^itm_[a-f0-9]{64}$'"
+      }
+    ],
+    "durable_ack_equal": true,
+    "counts": {
+      "observations": 0,
+      "acked_items": 1,
+      "conflicts": 0,
+      "corrections": 0
+    },
+    "audit": {
+      "package_id": "pkg_55cba41c055f60094264722a4d70740a5f44b59e021b2781d11510647f9061cc",
+      "item_id": "bad",
+      "internal_error_code": "item_id_mismatch",
+      "detail": "bad",
+      "recorded_at": "2026-10-09T17:48:56Z",
+      "ack_sequence": 1,
+      "original_import": null
+    }
+  },
+  "missing_item_fields": {
+    "argv": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "stockwiki.cli",
+      "--root",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-unique\\missing-item-fields",
+      "observation-import",
+      "--package",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-unique\\missing-item-fields\\packet.json",
+      "--release",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-unique\\missing-item-fields\\release.json"
+    ],
+    "returncode": 0,
+    "ack": {
+      "ack_id": "ack_506aab03755e2fb9c69f62c4",
+      "consumer": {
+        "component": "StockWiki",
+        "namespace": "quick_scan",
+        "store_id": "qsobs_487a829a6dc97274"
+      },
+      "error_code": "invalid_payload",
+      "item_id": "itm_invalid_0",
+      "observation_id": "obs_unknown",
+      "package_id": "pkg_c089729de8c566c7a6c02acf9ef1de4677e2cd221ba8d50bfdfb3ad88d36d877",
+      "payload_sha256": "",
+      "received_at": "2026-10-09T17:48:57Z",
+      "schema_version": "1.0.0",
+      "status": "rejected"
+    },
+    "schema_errors": [
+      {
+        "path": [
+          "item_id"
+        ],
+        "message": "'itm_invalid_0' does not match '^itm_[a-f0-9]{64}$'"
+      },
+      {
+        "path": [
+          "observation_id"
+        ],
+        "message": "'obs_unknown' does not match '^obs_[a-f0-9]{64}$'"
+      },
+      {
+        "path": [
+          "payload_sha256"
+        ],
+        "message": "'' does not match '^[a-f0-9]{64}$'"
+      }
+    ],
+    "durable_ack_equal": true,
+    "counts": {
+      "observations": 0,
+      "acked_items": 1,
+      "conflicts": 0,
+      "corrections": 0
+    },
+    "audit": {
+      "package_id": "pkg_c089729de8c566c7a6c02acf9ef1de4677e2cd221ba8d50bfdfb3ad88d36d877",
+      "item_id": "itm_invalid_0",
+      "internal_error_code": "item_shape",
+      "detail": "[]",
+      "recorded_at": "2026-10-09T17:48:57Z",
+      "ack_sequence": 1,
+      "original_import": null
+    }
+  },
+  "noncanonical_observation_id": {
+    "argv": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "stockwiki.cli",
+      "--root",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-unique\\noncanonical-observation-id",
+      "observation-import",
+      "--package",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-unique\\noncanonical-observation-id\\packet.json",
+      "--release",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-unique\\noncanonical-observation-id\\release.json"
+    ],
+    "returncode": 0,
+    "ack": {
+      "ack_id": "ack_a00fe6be9e3785e2e491a347",
+      "consumer": {
+        "component": "StockWiki",
+        "namespace": "quick_scan",
+        "store_id": "qsobs_e5b5115e8d9b99b1"
+      },
+      "error_code": null,
+      "item_id": "itm_daef463332553ef0630bd82d8e08bc39691d585b9d5ff096dec6e47e487118a7",
+      "observation_id": "obs_cli_1",
+      "package_id": "pkg_8913be77ef1dc1a2b726a763f918d829782bf988a6e37bd57594adeb708f85cb",
+      "payload_sha256": "d7063c69346e33f9bca9e0eaefbc19e0c977078bb0cf14c1afb2b2ce0b1354e7",
+      "received_at": "2026-10-09T17:48:59Z",
+      "schema_version": "1.0.0",
+      "status": "accepted"
+    },
+    "schema_errors": [
+      {
+        "path": [
+          "observation_id"
+        ],
+        "message": "'obs_cli_1' does not match '^obs_[a-f0-9]{64}$'"
+      }
+    ],
+    "durable_ack_equal": true,
+    "counts": {
+      "observations": 1,
+      "acked_items": 1,
+      "conflicts": 0,
+      "corrections": 0
+    },
+    "audit": {
+      "package_id": "pkg_8913be77ef1dc1a2b726a763f918d829782bf988a6e37bd57594adeb708f85cb",
+      "item_id": "itm_daef463332553ef0630bd82d8e08bc39691d585b9d5ff096dec6e47e487118a7",
+      "internal_error_code": null,
+      "detail": "",
+      "recorded_at": "2026-10-09T17:48:59Z",
+      "ack_sequence": 1,
+      "original_import": null
+    }
+  },
+  "wrong_original_reference": {
+    "first": {
+      "schema_version": "1.0.0",
+      "ack_id": "ack_8eddd05f7778bd8f7b779686",
+      "package_id": "pkg_1993e9d036c8fba68fb50cea6b088fefb68d6ba84cca4612c118fba580b5ca6c",
+      "item_id": "itm_05050ba86819909d10fecc8b9a169a38994c10ed16ffc8d50632b7b746f922d1",
+      "observation_id": "obs_52367a6622b19f08825e915fad80c542ad4f4c34dbcebad9f5007994b3e39208",
+      "payload_sha256": "bd5717aece661783e0c1884943b3eeaf1a503a6960da41df2b8e3d38365ddef5",
+      "status": "rejected",
+      "error_code": "missing_entity",
+      "received_at": "2026-10-09T17:48:59Z",
+      "consumer": {
+        "component": "StockWiki",
+        "namespace": "quick_scan",
+        "store_id": "qsobs_29d5a57b582537b2"
+      }
+    },
+    "second": {
+      "schema_version": "1.0.0",
+      "ack_id": "ack_79f57bebb4a4379e232e13b3",
+      "package_id": "pkg_81e1b5653274150452a162f6de76a7b5c4eb51b06ceb93dee407d6b16424abaf",
+      "item_id": "itm_05050ba86819909d10fecc8b9a169a38994c10ed16ffc8d50632b7b746f922d1",
+      "observation_id": "obs_52367a6622b19f08825e915fad80c542ad4f4c34dbcebad9f5007994b3e39208",
+      "payload_sha256": "bd5717aece661783e0c1884943b3eeaf1a503a6960da41df2b8e3d38365ddef5",
+      "status": "accepted",
+      "error_code": null,
+      "received_at": "2026-10-09T17:48:59Z",
+      "consumer": {
+        "component": "StockWiki",
+        "namespace": "quick_scan",
+        "store_id": "qsobs_29d5a57b582537b2"
+      }
+    },
+    "third": {
+      "schema_version": "1.0.0",
+      "ack_id": "ack_033ef16b52a7ade128cdbfb9",
+      "package_id": "pkg_c312f7115cccb15b2dc051a66b83a2765649c9f1cc1ab3e20196d2c3c8736143",
+      "item_id": "itm_05050ba86819909d10fecc8b9a169a38994c10ed16ffc8d50632b7b746f922d1",
+      "observation_id": "obs_52367a6622b19f08825e915fad80c542ad4f4c34dbcebad9f5007994b3e39208",
+      "payload_sha256": "bd5717aece661783e0c1884943b3eeaf1a503a6960da41df2b8e3d38365ddef5",
+      "status": "already_present",
+      "error_code": null,
+      "received_at": "2026-10-09T17:48:59Z",
+      "consumer": {
+        "component": "StockWiki",
+        "namespace": "quick_scan",
+        "store_id": "qsobs_29d5a57b582537b2"
+      }
+    },
+    "third_audit": {
+      "package_id": "pkg_c312f7115cccb15b2dc051a66b83a2765649c9f1cc1ab3e20196d2c3c8736143",
+      "item_id": "itm_05050ba86819909d10fecc8b9a169a38994c10ed16ffc8d50632b7b746f922d1",
+      "internal_error_code": null,
+      "detail": "",
+      "recorded_at": "2026-10-09T17:48:59Z",
+      "ack_sequence": 3,
+      "original_import": {
+        "ack_sequence": 1,
+        "package_id": "pkg_1993e9d036c8fba68fb50cea6b088fefb68d6ba84cca4612c118fba580b5ca6c",
+        "received_at": "2026-10-09T17:48:59Z"
+      }
+    },
+    "third_reference_points_to_rejected": true
+  },
+  "candidate_after": {
+    "stockwiki/quick_scan_import.py": "5bf472347b29064162fa4ba8d0944ee8566f62cb09bd6f201e4007a88be54b53",
+    "stockwiki/quick_scan_observations.py": "5010fce6c906b04787ebcaab61c6174df4fd8fa91b53992e037479075b1c8934",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2",
+    "tests/test_quick_scan_observations.py": "f54b4d0068d34a4e98865e5821b8265ab4f534dbd2edec12b5a1c4e9d01fcc27",
+    "tests/test_quick_scan_delivery.py": "6beb0785fffd764aa3cb5fb95a286dd871bf3bfacf29df5557b5ce6167fec309"
+  },
+  "candidate_unchanged": true,
+  "guard_ledgers_empty": true
+}

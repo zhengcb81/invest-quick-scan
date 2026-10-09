@@ -1,0 +1,58 @@
+{
+  "outcomes": [
+    {
+      "tag": "race-a",
+      "outcome": "ObservationImportError",
+      "error_code": "observation_migration_failed",
+      "message": "observation_migration_failed: table quick_scan_import_audit already exists"
+    },
+    {
+      "tag": "race-b",
+      "outcome": "success",
+      "ack": {
+        "schema_version": "1.0.0",
+        "ack_id": "ack_9a11247fdeeb99979192f7e1",
+        "package_id": "pkg_dc10d0fa97edf768c7626be1723657bbbcaaadebd8c626fe31580a8c0fb20f0d",
+        "item_id": "itm_60dbef6f101c8a1e7e0ece6e8e0280a71cd711c4a5821b36fe61ba1ab673f42c",
+        "observation_id": "obs_4ca7a24603f08ec1c45b5928abf510a548d362ae7181a45e86c1378d999550bd",
+        "payload_sha256": "f7fd5bf0d3188dd54281260ea6e8b3649168ff390627fb62042832b8d0c9f3b3",
+        "status": "accepted",
+        "error_code": null,
+        "received_at": "2026-10-09T17:50:02Z",
+        "consumer": {
+          "component": "StockWiki",
+          "namespace": "quick_scan",
+          "store_id": "qsobs_517d772b98397b1f"
+        }
+      }
+    }
+  ],
+  "final_version": 2,
+  "audit_table_count": 1,
+  "counts": {
+    "observations": 2,
+    "acked_items": 2,
+    "conflicts": 0,
+    "corrections": 0
+  },
+  "old_ack_unchanged": true,
+  "candidate_before": {
+    "stockwiki/quick_scan_import.py": "5bf472347b29064162fa4ba8d0944ee8566f62cb09bd6f201e4007a88be54b53",
+    "stockwiki/quick_scan_observations.py": "5010fce6c906b04787ebcaab61c6174df4fd8fa91b53992e037479075b1c8934",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2",
+    "tests/test_quick_scan_observations.py": "f54b4d0068d34a4e98865e5821b8265ab4f534dbd2edec12b5a1c4e9d01fcc27",
+    "tests/test_quick_scan_delivery.py": "6beb0785fffd764aa3cb5fb95a286dd871bf3bfacf29df5557b5ce6167fec309"
+  },
+  "candidate_after": {
+    "stockwiki/quick_scan_import.py": "5bf472347b29064162fa4ba8d0944ee8566f62cb09bd6f201e4007a88be54b53",
+    "stockwiki/quick_scan_observations.py": "5010fce6c906b04787ebcaab61c6174df4fd8fa91b53992e037479075b1c8934",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2",
+    "tests/test_quick_scan_observations.py": "f54b4d0068d34a4e98865e5821b8265ab4f534dbd2edec12b5a1c4e9d01fcc27",
+    "tests/test_quick_scan_delivery.py": "6beb0785fffd764aa3cb5fb95a286dd871bf3bfacf29df5557b5ce6167fec309"
+  },
+  "candidate_unchanged": true,
+  "guard_ledgers_empty": true,
+  "synthetic_only": true,
+  "real_API_calls": 0,
+  "production_DB_access": false
+}

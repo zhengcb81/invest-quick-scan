@@ -1,0 +1,55 @@
+FF.                                                                      [100%]
+================================== FAILURES ===================================
+__________ test_jr13_review_short_history_exact_replay_is_read_only ___________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/compatibility-red-01/test_jr13_review_short_history0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000029D334CEFD0>
+
+    def test_jr13_review_short_history_exact_replay_is_read_only(tmp_path, monkeypatch):
+        _no_network(monkeypatch)
+        store,identity,package,ack=_jr13_historical_short_fixture(tmp_path)
+        before=hashlib.sha256(store.database_path.read_bytes()).hexdigest()
+>       result=import_package(store,package,frozen_release=_release(),identity_store=identity)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1713: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_import.py:610: in import_package
+    validate_ack_addresses({"package_id": package["package_id"], **item})
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'package_id': 'pkg_d457e0f60d3e4aef1a44d1c49d3b62bf411ff74b9cab5da9ebdebe18c23dc702', 'item_id': 'itm_02e9ca34c383df8...id': 'obs_historical_short', 'payload_sha256': 'c21ab38c1e8ac627cd9b44ca4a1fe52cf55588969dc738a84f0b0aaf8dd7fe66', ...}
+
+    def validate_ack_addresses(value: dict[str, Any]) -> None:
+        """Refuse unaddressable new deliveries; never manufacture public IDs."""
+        for field, pattern in _ACK_ADDRESS_PATTERNS.items():
+            address = value.get(field)
+            if not isinstance(address, str) or not pattern.fullmatch(address):
+>               raise ObservationImportError("ack_address_invalid", field)
+E               stockwiki.quick_scan_observations.ObservationImportError: ack_address_invalid: observation_id
+
+stockwiki\quick_scan_observations.py:129: ObservationImportError
+________ test_jr13_review_short_history_binding_conflict_never_replays ________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/compatibility-red-01/test_jr13_review_short_history1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000029D334CED70>
+
+    def test_jr13_review_short_history_binding_conflict_never_replays(tmp_path, monkeypatch):
+        _no_network(monkeypatch)
+        store,_,_,ack=_jr13_historical_short_fixture(tmp_path)
+        decision={field:ack[field] for field in ["package_id","item_id","observation_id","payload_sha256"]}
+        decision["payload_sha256"]="f"*64
+        before=hashlib.sha256(store.database_path.read_bytes()).hexdigest()
+        with pytest.raises(ObservationImportError) as error:
+            store.apply_decisions([decision])
+>       assert error.value.error_code=="historical_ack_binding_mismatch"
+E       AssertionError: assert 'ack_address_invalid' == 'historical_a...ding_mismatch'
+E         
+E         - historical_ack_binding_mismatch
+E         + ack_address_invalid
+
+tests\test_quick_scan_observations.py:1733: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_quick_scan_observations.py::test_jr13_review_short_history_exact_replay_is_read_only
+FAILED tests/test_quick_scan_observations.py::test_jr13_review_short_history_binding_conflict_never_replays
+2 failed, 1 passed, 52 deselected in 1.55s

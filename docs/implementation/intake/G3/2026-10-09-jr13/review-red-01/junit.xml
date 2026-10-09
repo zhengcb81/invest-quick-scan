@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="10" time="2.469" timestamp="2026-10-09T18:52:19.496351+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_unacknowledgeable_address_zero_writes[item_id-bad]" time="0.093"><failure message="Failed: DID NOT RAISE ObservationImportError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_unacknowledge0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A866452FD0&gt;
+field = 'item_id', value = 'bad'
+
+    @pytest.mark.parametrize("field,value", [
+        ("item_id", "bad"), ("item_id", None),
+        ("observation_id", "obs_short"), ("observation_id", None),
+        ("payload_sha256", ""), ("payload_sha256", None),
+    ])
+    def test_jr13_review_unacknowledgeable_address_zero_writes(tmp_path, monkeypatch, field, value):
+        _no_network(monkeypatch)
+        store, identity = _workspace(tmp_path)
+        package = _package([_jr13_obs("address")])
+        package["items"][0][field] = value
+        seed = {key:val for key,val in package.items() if key not in {"package_id","package_sha256"}}
+        package["package_sha256"] = canonical_sha256(seed)
+        package["package_id"] = "pkg_" + package["package_sha256"]
+&gt;       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1409: Failed</failure></testcase><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_unacknowledgeable_address_zero_writes[item_id-None]" time="0.096"><failure message="Failed: DID NOT RAISE ObservationImportError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_unacknowledge1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A866452520&gt;
+field = 'item_id', value = None
+
+    @pytest.mark.parametrize("field,value", [
+        ("item_id", "bad"), ("item_id", None),
+        ("observation_id", "obs_short"), ("observation_id", None),
+        ("payload_sha256", ""), ("payload_sha256", None),
+    ])
+    def test_jr13_review_unacknowledgeable_address_zero_writes(tmp_path, monkeypatch, field, value):
+        _no_network(monkeypatch)
+        store, identity = _workspace(tmp_path)
+        package = _package([_jr13_obs("address")])
+        package["items"][0][field] = value
+        seed = {key:val for key,val in package.items() if key not in {"package_id","package_sha256"}}
+        package["package_sha256"] = canonical_sha256(seed)
+        package["package_id"] = "pkg_" + package["package_sha256"]
+&gt;       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1409: Failed</failure></testcase><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_unacknowledgeable_address_zero_writes[observation_id-obs_short]" time="0.087"><failure message="Failed: DID NOT RAISE ObservationImportError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_unacknowledge2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A866474830&gt;
+field = 'observation_id', value = 'obs_short'
+
+    @pytest.mark.parametrize("field,value", [
+        ("item_id", "bad"), ("item_id", None),
+        ("observation_id", "obs_short"), ("observation_id", None),
+        ("payload_sha256", ""), ("payload_sha256", None),
+    ])
+    def test_jr13_review_unacknowledgeable_address_zero_writes(tmp_path, monkeypatch, field, value):
+        _no_network(monkeypatch)
+        store, identity = _workspace(tmp_path)
+        package = _package([_jr13_obs("address")])
+        package["items"][0][field] = value
+        seed = {key:val for key,val in package.items() if key not in {"package_id","package_sha256"}}
+        package["package_sha256"] = canonical_sha256(seed)
+        package["package_id"] = "pkg_" + package["package_sha256"]
+&gt;       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1409: Failed</failure></testcase><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_unacknowledgeable_address_zero_writes[observation_id-None]" time="0.123"><failure message="Failed: DID NOT RAISE ObservationImportError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_unacknowledge3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A866422580&gt;
+field = 'observation_id', value = None
+
+    @pytest.mark.parametrize("field,value", [
+        ("item_id", "bad"), ("item_id", None),
+        ("observation_id", "obs_short"), ("observation_id", None),
+        ("payload_sha256", ""), ("payload_sha256", None),
+    ])
+    def test_jr13_review_unacknowledgeable_address_zero_writes(tmp_path, monkeypatch, field, value):
+        _no_network(monkeypatch)
+        store, identity = _workspace(tmp_path)
+        package = _package([_jr13_obs("address")])
+        package["items"][0][field] = value
+        seed = {key:val for key,val in package.items() if key not in {"package_id","package_sha256"}}
+        package["package_sha256"] = canonical_sha256(seed)
+        package["package_id"] = "pkg_" + package["package_sha256"]
+&gt;       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1409: Failed</failure></testcase><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_unacknowledgeable_address_zero_writes[payload_sha256-]" time="0.099"><failure message="Failed: DID NOT RAISE ObservationImportError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_unacknowledge4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A866422AD0&gt;
+field = 'payload_sha256', value = ''
+
+    @pytest.mark.parametrize("field,value", [
+        ("item_id", "bad"), ("item_id", None),
+        ("observation_id", "obs_short"), ("observation_id", None),
+        ("payload_sha256", ""), ("payload_sha256", None),
+    ])
+    def test_jr13_review_unacknowledgeable_address_zero_writes(tmp_path, monkeypatch, field, value):
+        _no_network(monkeypatch)
+        store, identity = _workspace(tmp_path)
+        package = _package([_jr13_obs("address")])
+        package["items"][0][field] = value
+        seed = {key:val for key,val in package.items() if key not in {"package_id","package_sha256"}}
+        package["package_sha256"] = canonical_sha256(seed)
+        package["package_id"] = "pkg_" + package["package_sha256"]
+&gt;       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1409: Failed</failure></testcase><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_unacknowledgeable_address_zero_writes[payload_sha256-None]" time="0.102"><failure message="Failed: DID NOT RAISE ObservationImportError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_unacknowledge5')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A866448F50&gt;
+field = 'payload_sha256', value = None
+
+    @pytest.mark.parametrize("field,value", [
+        ("item_id", "bad"), ("item_id", None),
+        ("observation_id", "obs_short"), ("observation_id", None),
+        ("payload_sha256", ""), ("payload_sha256", None),
+    ])
+    def test_jr13_review_unacknowledgeable_address_zero_writes(tmp_path, monkeypatch, field, value):
+        _no_network(monkeypatch)
+        store, identity = _workspace(tmp_path)
+        package = _package([_jr13_obs("address")])
+        package["items"][0][field] = value
+        seed = {key:val for key,val in package.items() if key not in {"package_id","package_sha256"}}
+        package["package_sha256"] = canonical_sha256(seed)
+        package["package_id"] = "pkg_" + package["package_sha256"]
+&gt;       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1409: Failed</failure></testcase><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_empty_item_after_valid_item_zero_writes" time="0.107"><failure message="Failed: DID NOT RAISE ObservationImportError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_empty_item_af0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A86644BE50&gt;
+
+    def test_jr13_review_empty_item_after_valid_item_zero_writes(tmp_path, monkeypatch):
+        _no_network(monkeypatch)
+        store, identity = _workspace(tmp_path)
+        package = _package([_jr13_obs("good")])
+        package["items"].append({})
+        seed = {key:val for key,val in package.items() if key not in {"package_id","package_sha256"}}
+        package["package_sha256"] = canonical_sha256(seed)
+        package["package_id"] = "pkg_" + package["package_sha256"]
+&gt;       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1423: Failed</failure></testcase><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_internal_decision_cannot_create_bad_public_ack" time="0.093"><failure message="Failed: DID NOT RAISE ObservationImportError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_internal_deci0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A8664F0B90&gt;
+
+    def test_jr13_review_internal_decision_cannot_create_bad_public_ack(tmp_path, monkeypatch):
+        _no_network(monkeypatch)
+        store, _ = _workspace(tmp_path)
+        bad = {"package_id":"pkg_"+"a"*64,"item_id":"bad","observation_id":"obs_"+"b"*64,
+            "payload_sha256":"c"*64,"status":"rejected","error_code":"shape_invalid"}
+&gt;       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1434: Failed</failure></testcase><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_already_present_references_accepted_import" time="0.159"><failure message="AssertionError: assert 'pkg_61ce236a...4d492ad98cd30' == 'pkg_6ada85fe...8588bb35296cd'&#10;  &#10;  - pkg_6ada85fe9744a5d09f74165b338f6189e2eb685f8a8ffd5b6808588bb35296cd&#10;  + pkg_61ce236a01a1b8e5558aae0fd40e3f2973640008293cfb9cb604d492ad98cd30">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_already_prese0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A8664F1040&gt;
+
+    def test_jr13_review_already_present_references_accepted_import(tmp_path, monkeypatch):
+        _no_network(monkeypatch)
+        store, identity = _workspace(tmp_path)
+        obs = _jr13_obs("reference",entity_id="E99")
+        first = import_package(store, _package([obs],producer="First"),frozen_release=_release(),identity_store=identity)
+        assert first["acks"][0]["status"] == "rejected"
+        entity = _seed_entity("E99")
+        bindings = entity.pop("_bindings")
+        identity.save_entity(entity,source_bindings=bindings)
+        accepted = import_package(store, _package([obs],producer="Second"),frozen_release=_release(),identity_store=identity)
+        assert accepted["acks"][0]["status"] == "accepted"
+        third = import_package(store, _package([obs],producer="Third"),frozen_release=_release(),identity_store=identity)
+        assert third["acks"][0]["status"] == "already_present"
+        ack=third["acks"][0]
+        audit=store.import_audit_for(ack["package_id"],ack["item_id"])
+&gt;       assert audit["original_import"]["package_id"] == accepted["package_id"]
+E       AssertionError: assert 'pkg_61ce236a...4d492ad98cd30' == 'pkg_6ada85fe...8588bb35296cd'
+E         
+E         - pkg_6ada85fe9744a5d09f74165b338f6189e2eb685f8a8ffd5b6808588bb35296cd
+E         + pkg_61ce236a01a1b8e5558aae0fd40e3f2973640008293cfb9cb604d492ad98cd30
+
+tests\test_quick_scan_observations.py:1455: AssertionError</failure></testcase><testcase classname="tests.test_quick_scan_observations" name="test_jr13_review_concurrent_schema1_upgrade_is_serialized" time="0.144"><failure message="stockwiki.quick_scan_observations.ObservationImportError: observation_migration_failed: table quick_scan_import_audit already exists">self = &lt;test_quick_scan_observations.test_jr13_review_concurrent_schema1_upgrade_is_serialized.&lt;locals&gt;.OrderedConnection object at 0x000001A866571E50&gt;
+sql = 'CREATE TABLE quick_scan_import_audit (\n            package_id TEXT NOT NULL,\n            item_id TEXT NOT NULL,\n  ...n            FOREIGN KEY(package_id, item_id)\n                REFERENCES quick_scan_import_item(package_id, item_id))'
+args = (), kwargs = {}
+
+    def execute(self, sql, *args, **kwargs):
+&gt;       cursor = super().execute(sql,*args,**kwargs)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.OperationalError: table quick_scan_import_audit already exists
+
+tests\test_quick_scan_observations.py:1469: OperationalError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/review-red-01/test_jr13_review_concurrent_sc0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A866519630&gt;
+
+    def test_jr13_review_concurrent_schema1_upgrade_is_serialized(tmp_path, monkeypatch):
+        import threading
+        from concurrent.futures import ThreadPoolExecutor
+        store, _ = _workspace(tmp_path)
+        with sqlite3.connect(store.database_path) as con:
+            con.execute("DROP TABLE quick_scan_import_audit")
+            con.execute("PRAGMA user_version=1")
+        barrier = threading.Barrier(2)
+        original_connect = sqlite3.connect
+        class OrderedConnection(sqlite3.Connection):
+            def execute(self, sql, *args, **kwargs):
+                cursor = super().execute(sql,*args,**kwargs)
+                if sql == "PRAGMA user_version" and not self.in_transaction:
+                    # Old code reads version before write lock: force both real reads
+                    # before either CREATE. Correct code reads under BEGIN and bypasses.
+                    barrier.wait(timeout=5)
+                return cursor
+        def connect(*args,**kwargs):
+            kwargs["factory"] = OrderedConnection
+            return original_connect(*args,**kwargs)
+        monkeypatch.setattr(sqlite3,"connect",connect)
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            futures = [executor.submit(store.migrate) for _ in range(2)]
+&gt;           assert [future.result(timeout=10) for future in futures] == [2,2]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_observations.py:1481: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Miniconda\Lib\concurrent\futures\thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x000001A866571B50&gt;
+
+    def migrate(self) -&gt; int:
+        self.database_path.parent.mkdir(parents=True, exist_ok=True)
+        con = sqlite3.connect(self.database_path, timeout=30.0)
+        try:
+            version = int(con.execute("PRAGMA user_version").fetchone()[0] or 0)
+            if version &gt; SCHEMA_VERSION:
+                raise ObservationImportError(
+                    "observation_store_newer_schema", f"{version} &gt; {SCHEMA_VERSION}"
+                )
+            if version == SCHEMA_VERSION:
+                return version
+            if version == 1:
+                con.execute("BEGIN IMMEDIATE")
+                try:
+                    self._create_import_audit(con)
+                    con.execute(f"PRAGMA user_version={SCHEMA_VERSION}")
+                    con.commit()
+                except Exception as exc:
+                    con.rollback()
+&gt;                   raise ObservationImportError("observation_migration_failed", str(exc)) from exc
+E                   stockwiki.quick_scan_observations.ObservationImportError: observation_migration_failed: table quick_scan_import_audit already exists
+
+stockwiki\quick_scan_observations.py:161: ObservationImportError</failure></testcase></testsuite></testsuites>

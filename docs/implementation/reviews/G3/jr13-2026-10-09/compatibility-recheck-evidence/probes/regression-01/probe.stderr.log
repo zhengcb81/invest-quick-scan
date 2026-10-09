@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\reviewer-compatibility\regression_probe.py", line 202, in <module>
+    result["F3_schema1_concurrent_imports"] = concurrent_imports("schema1_concurrent", 1)
+                                              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\reviewer-compatibility\regression_probe.py", line 194, in concurrent_imports
+    assert len(trace) == 2 and all(entry["in_transaction"] for entry in trace)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

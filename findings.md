@@ -1813,3 +1813,13 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 只读freeze实际锁定QA bc41908/SW c40de21共12固定Git文件、真实AST签名、六内部原依赖及四新文件；SW四候选与d253fea保持一致。准备观察与未来修复后的执行锁分开且不可覆写，AST/文档核查通过不能声称运行时适配器或联合ACK已通过。授权未答是人类边界，不是存活进程或默认许可；后续按原JR1/JR3卡一次集中联调，不增逐helper审查。
 - 联调准备已实际推送fa99bce；首stage发现Git会改新stdout的CRLF，原日志保持、只加两日志精确属性后原字节提交一致。这类控制器拦截不能算产品失败或去改原测试输出。最终12变化/7新原字节工件与远端一致，不把Git留档完成扩大成联合ACK或金融准确性通过。
 - 2026-10-09三次连续目标核查已证实同一StockWiki四文件写授权/唯一writer阻塞，无新源交付或可独立执行主线，update_goal实际返回blocked。此为等待人类边界，不是产品完成/用户要求暂停/活进程等待；后续仅在许可或获准owner新交付到达后接续，所有原交付与未关闭门保留。
+- 2026-10-09后续人类已授权StockWiki四文件接管。真实重复键要在raw JSON hook处理；dict路径另核有限值、类型和循环，不能只依赖hash序列化失败。公共ACK与内部诊断需分开持久，历史enriched ACK不可读时删字段。新审计表的版本提升还会触发既有backup manifest最大schema1，必须解决兼容再发布，不能只拿22隔离GREEN宣布全链通过。
+- 联合导出不能将Git blob字节与独立fixture原工作树file SHA混为一谈；本批Git LF对应73853233，authority独立冻CRLF对应a7e80a5b，两者canonical JSON相同，恢复后明确记录执行域，不改authority凑SHA。较新Q10会正确拒绝旧“只改返回model B”的fixture；独立执行应在派发前明确请求B，不能修改产品actual/alias规则。
+- 模块只保证根字段数与公共taxonomy仍不等于完整ACK schema：每个package/item/observation/SHA地址也须合法。不可为缺失/恶意地址填伪造ID再输出ACK；旧已存legacy ACK兼容与新wire严格地址分开。当前集中独审具体反例待收，不把93P扩大为无遗漏完整互通。
+- Python guard可正面拦Rust静态工具及自有synthetic配置读取；记录应明确工具边界与fixture读，不说实际真实密钥泄漏，也不能清空原ledger。测试源码必须冻结到进程终态；中途格式修订的结果作废，即使部分测试通过也不认证混合版本。
+
+- JR1/JR3 历史兼容必须在严格raw JSON/原包hash之后只读对账，并在新标识准入前处理精确旧ledger；旧ACK原status/字段/ID/时间/SHA不投影，legacy_wire_pending只放receipt侧，生产消费者仍strict拒旧wire。
+- 混合批次不能因首个new slot就提前放弃已有槽对账，否则后置历史四绑定冲突会造成顺序依赖；readonly扫描全部已有槽，写事务再次核每个原槽，以覆盖快照后并发新增，整批具名拒绝回滚。7回归包含两种冲突字段、两顺序、模拟快照后已出现槽的真实事务以及合法混合positive；不把后者模拟边界称真实并发进程证据。
+
+- JR1/JR3 同次最终签收：真实双连接交错另证快照后竞争槽检查/原子回滚，不能把母测试mockNone称真实并发；旧accepted原ACK保真在SW实证，QA严格旧wire拒收独立使用rejected enriched，能力范围须准确披露。
+- 最终软件验证与发布权限分开：113P/18P/零开放软件缺陷不自动取得第五备份manifest路径写权；不发布已知cap1拒schema2的半批。所有源写仍0，候选完整原字节归档后自有5029文件/2151子目录可清理；恢复无需保留测试数据库或盲跑旧固定根。

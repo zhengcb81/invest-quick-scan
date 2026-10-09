@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="5" time="106.887" timestamp="2026-10-09T18:44:18.891921+01:00" hostname="DESKTOP-156V213"><testcase classname="test_joint" name="test_j01_status_low_cycle_and_full_body" time="72.694" /><testcase classname="test_joint" name="test_j02_entry_and_independent_release" time="11.696" /><testcase classname="test_joint" name="test_j03_independent_execution_and_stable_replay" time="15.402" /><testcase classname="test_joint" name="test_j04_duplicate_json_is_refused_before_write" time="4.380" /><testcase classname="test_joint" name="test_j05_package_hash_and_missing_entity" time="2.430"><failure message="assert (2 == 0)">all_imported = {'counts': {'observations': 31, 'acked_items': 31, 'conflicts': 0, 'corrections': 0}, 'observations': [{'observation_i...889b817687aaddebd7f054feb16b', 'entity_id': 'ENT_CONTEXT_FIXTURE', 'security_id': None, 'listing_id': None, ...}, ...]}
+
+    def test_j05_package_hash_and_missing_entity(all_imported):
+        changed = package('IQS_01')
+        changed['items'][0]['observation']['answer']['score'] = 9
+        result = consumer('j05-hash', save('bad-hash.json', changed))
+        assert result['cli_exit'] == 2 and result['receipt']['error_code'] == 'package_hash_mismatch'
+        result = consumer('j05-entity', PRODUCED['packages']['IQS_01']['path'], root=h.CASES / 'noentity')
+&gt;       assert result['cli_exit'] == 0 and result['receipt']['summary'] == {'rejected': 1}
+E       assert (2 == 0)
+
+..\test_joint.py:134: AssertionError</failure></testcase></testsuite></testsuites>

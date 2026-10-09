@@ -1,0 +1,153 @@
+{
+  "schema": "jr13-independent-compatibility-review/1",
+  "same_concentrated_review": true,
+  "outcome": "limited_software_signed_off",
+  "software_open_findings": 0,
+  "source_head": "c40de21403720306ba21edbf71b9634a40ee58f8",
+  "source_publication_performed": false,
+  "fifth_source_path_authorization": "human_pending",
+  "global_G3_F05_financial_real_golden_gates_closed": false,
+  "candidate_sha256": {
+    "stockwiki/quick_scan_import.py": "9ce116b34365a35490a5f0e0d9298e0fa8ea20982294bf5314253689ac9deddd",
+    "stockwiki/quick_scan_observations.py": "d0e0b5e9dbfa37a536ee929e11ce9901e62119ce4458f7974911beb61fde11ff",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2",
+    "tests/test_quick_scan_observations.py": "22011d69fffdb1440ad45159fe85a30476b24caac6ad2857352a24ddaec2c2f1",
+    "tests/test_quick_scan_delivery.py": "b50ef0e46cc2a335a93f72eeb3fde6f76b1838ebbc0f637d6df6ae81ee4faeab"
+  },
+  "candidate_matches_affected_final04": true,
+  "independent_before_after_unchanged": true,
+  "findings": [
+    {
+      "status": "closed",
+      "id": "F1",
+      "proof": "regression-02 six actual CLI admission failures plus direct mixed zero-write and four public wire states",
+      "priority": "P1"
+    },
+    {
+      "status": "closed",
+      "id": "F2",
+      "proof": "actual rejected->accepted->already_present audit selects accepted package and item_id",
+      "priority": "P2"
+    },
+    {
+      "status": "closed",
+      "id": "F3",
+      "proof": "actual two-importer schema1/schema0 migration, BEGIN IMMEDIATE trace and original ACK preserved",
+      "priority": "P2"
+    },
+    {
+      "status": "closed",
+      "id": "F4",
+      "proof": "c40 actual serializer original short/canonical enriched schema1 CLI replay with whole DB SHA unchanged",
+      "priority": "P2"
+    },
+    {
+      "status": "closed",
+      "id": "F5",
+      "proof": "actual direct mixed batches both orders and real second SQLite connection interleaving with atomic rollback",
+      "priority": "P1"
+    }
+  ],
+  "original_mixed_failure": "probes/mixed-results.json",
+  "original_mixed_failure_candidate_is_old_106P": true,
+  "parent_mixed_TDD_red": {
+    "failed": 4,
+    "passed": 3,
+    "transaction_boundary_is_simulated": true
+  },
+  "parent_mixed_TDD_green": {
+    "transaction_boundary_is_simulated": true,
+    "passed": 7
+  },
+  "independent_interleaving": {
+    "mocked_none": false,
+    "actual_readonly_lookup": true,
+    "actual_second_SQLite_connection": true,
+    "snapshot_equals_committed_competitor": true,
+    "outer_first_insert_rolled_back": true
+  },
+  "historic_ACK": {
+    "manually_created_positive_ACK": false,
+    "exact_ACK_JSON_ID_time_SHA_preserved": true,
+    "receipt_root_legacy_wire_pending_only": true,
+    "schema1_no_migration_no_audit_write": true,
+    "actual_c40_serializer": true
+  },
+  "QA_old_wire": {
+    "state": "send_uncertain",
+    "delivered": false,
+    "actual_work_store_prepare_bind_begin_apply": true,
+    "consumer_prebound": true,
+    "strict_error": "import ACK fields mismatch",
+    "original_ACK_status": "rejected",
+    "entire_dump_unchanged": true,
+    "independent_old_accepted_cross_owner_test_completed": false,
+    "SW_old_accepted_exact_replay_completed": true
+  },
+  "probe_failures_retained": [
+    {
+      "cause": "reviewer assumed field_id in minimal QA observation",
+      "product_red": false,
+      "root": "final-01",
+      "fixed_owned_probe": "final-02"
+    },
+    {
+      "cause": "reviewer assumed only two PRAGMA checks before new readonly replay",
+      "product_red": false,
+      "root": "regression-01",
+      "fixed_owned_probe": "regression-02"
+    },
+    {
+      "accepted_old_QA_claimed": false,
+      "cause": "synthetic added complete fields without durable complete context; QA correctly refused",
+      "product_red": false,
+      "root": "qa-accepted-01",
+      "production_requirement_weakened": false
+    }
+  ],
+  "terminal_batches": {
+    "both_test_batches_source_changed": [],
+    "affected_final04": {
+      "passed": 113,
+      "controller_seconds": 15.48,
+      "pytest_seconds": 14.88
+    },
+    "joint07": {
+      "passed": 18,
+      "controller_seconds": 131.882,
+      "pytest_seconds": 131.36
+    },
+    "static05": "Ruff and framework static both returncode 0"
+  },
+  "process_terminal": {
+    "checked_owned_pids": [
+      37568,
+      60048,
+      42436,
+      39344,
+      80772
+    ],
+    "alive_owned_processes": [],
+    "synchronous_cli_children_returned": true,
+    "concurrency_threads_joined": true,
+    "older_probes_completed_before_final_recheck": true,
+    "no_background_helpers_started": true
+  },
+  "independent_threads_joined": true,
+  "independent_guard_ledgers_empty": {
+    "compatibility": true,
+    "regression": true
+  },
+  "guard_sha256": "696dfeecfc0aedc0732a3677faafa97c539cb3aaf12a04303359b109089d3858",
+  "real_API_calls": 0,
+  "production_DB_access": false,
+  "synthetic_only": true,
+  "database_or_configuration_contents_archived": false,
+  "evidence_archive": {
+    "directory": "compatibility-recheck-evidence",
+    "file_count": 253,
+    "manifest_sha256": "b8511486d378141bf477fc9141ee79c685b6dd7c24a8be2b25af953f92729f34",
+    "all_raw_original_copy_SHA_equal": true
+  },
+  "report": "compatibility-recheck.md"
+}

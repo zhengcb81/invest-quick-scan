@@ -1,0 +1,110 @@
+FF..FF.                                                                  [100%]
+================================== FAILURES ===================================
+___ test_jr13_review_mixed_conflicting_slot_is_atomic[False-payload_sha256] ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/mixed-red-01/test_jr13_review_mixed_conflic0')
+field = 'payload_sha256', old_first = False
+
+    @pytest.mark.parametrize("field", ["payload_sha256", "observation_id"])
+    @pytest.mark.parametrize("old_first", [False, True])
+    def test_jr13_review_mixed_conflicting_slot_is_atomic(tmp_path, field, old_first):
+        store, identity = _workspace(tmp_path)
+        old = _package([_jr13_obs("mixed-old")])
+        ack = import_package(store, old, frozen_release=_release(), identity_store=identity)["acks"][0]
+        wrong = {key: ack[key] for key in ["package_id", "item_id", "observation_id", "payload_sha256"]}
+        wrong.update(status="rejected", error_code="unknown_question")
+        wrong[field] = "f" * 64 if field == "payload_sha256" else "obs_" + "f" * 64
+        new = dict(package_id="pkg_" + "c" * 64, item_id="itm_" + "b" * 64,
+                   observation_id="obs_" + "a" * 64, payload_sha256="d" * 64,
+                   status="rejected", error_code="unknown_question")
+        before = hashlib.sha256(store.database_path.read_bytes()).hexdigest()
+        counts = store.counts()
+>       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1796: Failed
+___ test_jr13_review_mixed_conflicting_slot_is_atomic[False-observation_id] ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/mixed-red-01/test_jr13_review_mixed_conflic1')
+field = 'observation_id', old_first = False
+
+    @pytest.mark.parametrize("field", ["payload_sha256", "observation_id"])
+    @pytest.mark.parametrize("old_first", [False, True])
+    def test_jr13_review_mixed_conflicting_slot_is_atomic(tmp_path, field, old_first):
+        store, identity = _workspace(tmp_path)
+        old = _package([_jr13_obs("mixed-old")])
+        ack = import_package(store, old, frozen_release=_release(), identity_store=identity)["acks"][0]
+        wrong = {key: ack[key] for key in ["package_id", "item_id", "observation_id", "payload_sha256"]}
+        wrong.update(status="rejected", error_code="unknown_question")
+        wrong[field] = "f" * 64 if field == "payload_sha256" else "obs_" + "f" * 64
+        new = dict(package_id="pkg_" + "c" * 64, item_id="itm_" + "b" * 64,
+                   observation_id="obs_" + "a" * 64, payload_sha256="d" * 64,
+                   status="rejected", error_code="unknown_question")
+        before = hashlib.sha256(store.database_path.read_bytes()).hexdigest()
+        counts = store.counts()
+>       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1796: Failed
+_ test_jr13_review_slot_created_after_read_is_rechecked_in_transaction[payload_sha256] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/mixed-red-01/test_jr13_review_slot_created_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F91559C3E0>
+field = 'payload_sha256'
+
+    @pytest.mark.parametrize("field", ["payload_sha256", "observation_id"])
+    def test_jr13_review_slot_created_after_read_is_rechecked_in_transaction(tmp_path, monkeypatch, field):
+        store, identity = _workspace(tmp_path)
+        old = _package([_jr13_obs("race-old")])
+        ack = import_package(store, old, frozen_release=_release(), identity_store=identity)["acks"][0]
+        wrong = {key: ack[key] for key in ["package_id", "item_id", "observation_id", "payload_sha256"]}
+        wrong.update(status="rejected", error_code="unknown_question")
+        wrong[field] = "f" * 64 if field == "payload_sha256" else "obs_" + "f" * 64
+        new = dict(package_id="pkg_" + "c" * 64, item_id="itm_" + "b" * 64,
+                   observation_id="obs_" + "a" * 64, payload_sha256="d" * 64,
+                   status="rejected", error_code="unknown_question")
+        # Emulate the absence of the old slot in the pre-transaction snapshot.
+        # The actual SQLite write transaction must recheck the now-present row.
+        monkeypatch.setattr(store, "replay_decisions", lambda decisions: None)
+        before = hashlib.sha256(store.database_path.read_bytes()).hexdigest()
+        counts = store.counts()
+>       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1820: Failed
+_ test_jr13_review_slot_created_after_read_is_rechecked_in_transaction[observation_id] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/r13a/tmp/mixed-red-01/test_jr13_review_slot_created_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F915463CE0>
+field = 'observation_id'
+
+    @pytest.mark.parametrize("field", ["payload_sha256", "observation_id"])
+    def test_jr13_review_slot_created_after_read_is_rechecked_in_transaction(tmp_path, monkeypatch, field):
+        store, identity = _workspace(tmp_path)
+        old = _package([_jr13_obs("race-old")])
+        ack = import_package(store, old, frozen_release=_release(), identity_store=identity)["acks"][0]
+        wrong = {key: ack[key] for key in ["package_id", "item_id", "observation_id", "payload_sha256"]}
+        wrong.update(status="rejected", error_code="unknown_question")
+        wrong[field] = "f" * 64 if field == "payload_sha256" else "obs_" + "f" * 64
+        new = dict(package_id="pkg_" + "c" * 64, item_id="itm_" + "b" * 64,
+                   observation_id="obs_" + "a" * 64, payload_sha256="d" * 64,
+                   status="rejected", error_code="unknown_question")
+        # Emulate the absence of the old slot in the pre-transaction snapshot.
+        # The actual SQLite write transaction must recheck the now-present row.
+        monkeypatch.setattr(store, "replay_decisions", lambda decisions: None)
+        before = hashlib.sha256(store.database_path.read_bytes()).hexdigest()
+        counts = store.counts()
+>       with pytest.raises(ObservationImportError) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ObservationImportError
+
+tests\test_quick_scan_observations.py:1820: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_quick_scan_observations.py::test_jr13_review_mixed_conflicting_slot_is_atomic[False-payload_sha256]
+FAILED tests/test_quick_scan_observations.py::test_jr13_review_mixed_conflicting_slot_is_atomic[False-observation_id]
+FAILED tests/test_quick_scan_observations.py::test_jr13_review_slot_created_after_read_is_rechecked_in_transaction[payload_sha256]
+FAILED tests/test_quick_scan_observations.py::test_jr13_review_slot_created_after_read_is_rechecked_in_transaction[observation_id]
+4 failed, 3 passed, 55 deselected in 2.15s

@@ -1,0 +1,991 @@
+{
+  "candidate_before": {
+    "stockwiki/quick_scan_import.py": "9ce116b34365a35490a5f0e0d9298e0fa8ea20982294bf5314253689ac9deddd",
+    "stockwiki/quick_scan_observations.py": "d0e0b5e9dbfa37a536ee929e11ce9901e62119ce4458f7974911beb61fde11ff",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2",
+    "tests/test_quick_scan_observations.py": "22011d69fffdb1440ad45159fe85a30476b24caac6ad2857352a24ddaec2c2f1",
+    "tests/test_quick_scan_delivery.py": "b50ef0e46cc2a335a93f72eeb3fde6f76b1838ebbc0f637d6df6ae81ee4faeab"
+  },
+  "synthetic_only": true,
+  "real_API_calls": 0,
+  "production_DB_access": false,
+  "old_source_commit": "c40de21403720306ba21edbf71b9634a40ee58f8",
+  "old_source_sha256": {
+    "quick_scan_import": "87c77921428cb52239f0276a647198aeb3988954f07b4debb468a1a1237dfa56",
+    "quick_scan_observations": "c06f4c58ea5557ab678721f78c5a14d595c26fef5fb1e55843382be956866691"
+  },
+  "histories": {
+    "short_history": {
+      "original_ack": {
+        "schema_version": "1.0.0",
+        "ack_id": "ack_ff910d6465b13d4dd58add98",
+        "package_id": "pkg_0dc90cfdfa914a8b32a15e5972ccc1bcf5dd08403866b3b2b39242f73a761516",
+        "item_id": "itm_97ece97c0aa8c00015794382fe9770be964f8399522cd72eef9e482bc38c9190",
+        "observation_id": "obs_legacy_short",
+        "payload_sha256": "c6ce19f233df77590524562ee8426701757515016c3bc4e665a7451bf7a29707",
+        "status": "accepted",
+        "error_code": null,
+        "received_at": "2026-10-09T18:26:38Z",
+        "consumer": {
+          "component": "StockWiki",
+          "namespace": "quick_scan",
+          "store_id": "qsobs_922b9767945d76c4"
+        },
+        "ack_sequence": 1
+      },
+      "replay": {
+        "argv": [
+          "C:\\Miniconda\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "stockwiki.cli",
+          "--root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history",
+          "observation-import",
+          "--package",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\exact_replay.package.json",
+          "--release",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\exact_replay.release.json"
+        ],
+        "returncode": 0,
+        "receipt": {
+          "acks": [
+            {
+              "ack_id": "ack_ff910d6465b13d4dd58add98",
+              "ack_sequence": 1,
+              "consumer": {
+                "component": "StockWiki",
+                "namespace": "quick_scan",
+                "store_id": "qsobs_922b9767945d76c4"
+              },
+              "error_code": null,
+              "item_id": "itm_97ece97c0aa8c00015794382fe9770be964f8399522cd72eef9e482bc38c9190",
+              "observation_id": "obs_legacy_short",
+              "package_id": "pkg_0dc90cfdfa914a8b32a15e5972ccc1bcf5dd08403866b3b2b39242f73a761516",
+              "payload_sha256": "c6ce19f233df77590524562ee8426701757515016c3bc4e665a7451bf7a29707",
+              "received_at": "2026-10-09T18:26:38Z",
+              "schema_version": "1.0.0",
+              "status": "accepted"
+            }
+          ],
+          "action": "observation-import",
+          "legacy_wire_pending": true,
+          "package_id": "pkg_0dc90cfdfa914a8b32a15e5972ccc1bcf5dd08403866b3b2b39242f73a761516",
+          "store_id": "qsobs_922b9767945d76c4",
+          "summary": {
+            "accepted": 1
+          }
+        }
+      },
+      "repeated": {
+        "argv": [
+          "C:\\Miniconda\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "stockwiki.cli",
+          "--root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history",
+          "observation-import",
+          "--package",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\exact_replay_again.package.json",
+          "--release",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\exact_replay_again.release.json"
+        ],
+        "returncode": 0,
+        "receipt": {
+          "acks": [
+            {
+              "ack_id": "ack_ff910d6465b13d4dd58add98",
+              "ack_sequence": 1,
+              "consumer": {
+                "component": "StockWiki",
+                "namespace": "quick_scan",
+                "store_id": "qsobs_922b9767945d76c4"
+              },
+              "error_code": null,
+              "item_id": "itm_97ece97c0aa8c00015794382fe9770be964f8399522cd72eef9e482bc38c9190",
+              "observation_id": "obs_legacy_short",
+              "package_id": "pkg_0dc90cfdfa914a8b32a15e5972ccc1bcf5dd08403866b3b2b39242f73a761516",
+              "payload_sha256": "c6ce19f233df77590524562ee8426701757515016c3bc4e665a7451bf7a29707",
+              "received_at": "2026-10-09T18:26:38Z",
+              "schema_version": "1.0.0",
+              "status": "accepted"
+            }
+          ],
+          "action": "observation-import",
+          "legacy_wire_pending": true,
+          "package_id": "pkg_0dc90cfdfa914a8b32a15e5972ccc1bcf5dd08403866b3b2b39242f73a761516",
+          "store_id": "qsobs_922b9767945d76c4",
+          "summary": {
+            "accepted": 1
+          }
+        }
+      },
+      "before": {
+        "version": 1,
+        "audit_table": false,
+        "audits": null,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "dfd0f04d90802b6dc6d7ae3df01171ed824d67fed2d37a30dc49a63eeac23ef6",
+        "ack_json_sha256": [
+          "95e1da7acbdb36f2d0d9d18ecd6274e67dfeec5ce662bfe48f529007d2c8f2c2"
+        ]
+      },
+      "after": {
+        "version": 1,
+        "audit_table": false,
+        "audits": null,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "dfd0f04d90802b6dc6d7ae3df01171ed824d67fed2d37a30dc49a63eeac23ef6",
+        "ack_json_sha256": [
+          "95e1da7acbdb36f2d0d9d18ecd6274e67dfeec5ce662bfe48f529007d2c8f2c2"
+        ]
+      },
+      "package": {
+        "schema_version": "1.0.0",
+        "producer": {
+          "component": "StockQAbyLLM",
+          "component_version": "fixture",
+          "build_id": "FIXTURE"
+        },
+        "consumer": {
+          "component": "StockWiki",
+          "namespace": "quick_scan",
+          "minimum_schema_version": "1.0.0"
+        },
+        "created_at": "2026-10-01T10:00:00Z",
+        "data_class": "lightweight_screening",
+        "required_capabilities": [
+          "entity_security_identity_v1",
+          "standard_observation_v1"
+        ],
+        "contract_versions": {
+          "identity_schema": "1.0.0",
+          "answer_schema": "standard-1",
+          "observation_schema": "1.0.0",
+          "question_catalog": "3.0.0",
+          "model_policy_schema": "2.0.0"
+        },
+        "document_payloads_included": false,
+        "items": [
+          {
+            "item_id": "itm_97ece97c0aa8c00015794382fe9770be964f8399522cd72eef9e482bc38c9190",
+            "observation_id": "obs_legacy_short",
+            "payload_sha256": "c6ce19f233df77590524562ee8426701757515016c3bc4e665a7451bf7a29707",
+            "observation": {
+              "schema_version": "1.0.0",
+              "entity_id": "E01",
+              "security_id": null,
+              "segment_id": null,
+              "field_id": "score.iqs_01",
+              "construct_id": null,
+              "question_id": "IQS_LEG",
+              "question_version": "1.0.0",
+              "template_version": "3.0.0",
+              "method_id": "core-constructs-v1/context-1/fixture",
+              "scope": "entity",
+              "cohort": {
+                "company_type": "operating",
+                "industries": [
+                  "industrial"
+                ],
+                "stage": "mature",
+                "subtype": null
+              },
+              "information_cutoff": "2026-09-30",
+              "run_id": "RUN_REQ_1",
+              "scan_id": "SCAN_REQ_1",
+              "inputset_id": "INPUT_V1",
+              "task_mode": "single",
+              "comparison_group_id": null,
+              "observed_at": "2026-10-01T09:01:00Z",
+              "execution": {
+                "provider": "fixture_provider",
+                "model_requested": "fixture-model",
+                "model_resolved": "fixture-model",
+                "model_revision": "fixture-1",
+                "request_id": "REQ_1",
+                "attempt_id": "ATT_1",
+                "started_at": "2026-10-01T09:00:00Z",
+                "answered_at": "2026-10-01T09:01:00Z",
+                "search_status": "executed",
+                "search_receipt_id": "FIXTURE_NOT_SEARCH_PROOF",
+                "prompt_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+              },
+              "answer": {
+                "question_id": "IQS_LEG",
+                "response_kind": "score",
+                "status": "scored",
+                "score": 8,
+                "summary": "fixture summary"
+              },
+              "evidence_review_status": "unreviewed",
+              "observation_id": "obs_legacy_short"
+            }
+          }
+        ],
+        "extensions": [],
+        "package_sha256": "0dc90cfdfa914a8b32a15e5972ccc1bcf5dd08403866b3b2b39242f73a761516",
+        "package_id": "pkg_0dc90cfdfa914a8b32a15e5972ccc1bcf5dd08403866b3b2b39242f73a761516"
+      }
+    },
+    "canonical_history": {
+      "original_ack": {
+        "schema_version": "1.0.0",
+        "ack_id": "ack_afcddf849189ff397931ed5e",
+        "package_id": "pkg_d0bdfcff92f00a4488941496954cdf8a8f05ed941f2b1bfe1dcee1e340af88dd",
+        "item_id": "itm_ea0b094bb994efdc679d275092a33392166b5962d949877070efa05a5359c8ab",
+        "observation_id": "obs_981d40bfa3ff41effc0732caf132ffdc49e389b23da8fd7130aeb41a48957ffe",
+        "payload_sha256": "e2e1c5de939980c313cfb02e49c383fea01d717878649cbf98cc63b421d8ca87",
+        "status": "accepted",
+        "error_code": null,
+        "received_at": "2026-10-09T18:26:39Z",
+        "consumer": {
+          "component": "StockWiki",
+          "namespace": "quick_scan",
+          "store_id": "qsobs_2ae119b5cf335e8d"
+        },
+        "ack_sequence": 1
+      },
+      "replay": {
+        "argv": [
+          "C:\\Miniconda\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "stockwiki.cli",
+          "--root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\canonical_history",
+          "observation-import",
+          "--package",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\canonical_history\\exact_replay.package.json",
+          "--release",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\canonical_history\\exact_replay.release.json"
+        ],
+        "returncode": 0,
+        "receipt": {
+          "acks": [
+            {
+              "ack_id": "ack_afcddf849189ff397931ed5e",
+              "ack_sequence": 1,
+              "consumer": {
+                "component": "StockWiki",
+                "namespace": "quick_scan",
+                "store_id": "qsobs_2ae119b5cf335e8d"
+              },
+              "error_code": null,
+              "item_id": "itm_ea0b094bb994efdc679d275092a33392166b5962d949877070efa05a5359c8ab",
+              "observation_id": "obs_981d40bfa3ff41effc0732caf132ffdc49e389b23da8fd7130aeb41a48957ffe",
+              "package_id": "pkg_d0bdfcff92f00a4488941496954cdf8a8f05ed941f2b1bfe1dcee1e340af88dd",
+              "payload_sha256": "e2e1c5de939980c313cfb02e49c383fea01d717878649cbf98cc63b421d8ca87",
+              "received_at": "2026-10-09T18:26:39Z",
+              "schema_version": "1.0.0",
+              "status": "accepted"
+            }
+          ],
+          "action": "observation-import",
+          "legacy_wire_pending": true,
+          "package_id": "pkg_d0bdfcff92f00a4488941496954cdf8a8f05ed941f2b1bfe1dcee1e340af88dd",
+          "store_id": "qsobs_2ae119b5cf335e8d",
+          "summary": {
+            "accepted": 1
+          }
+        }
+      },
+      "repeated": {
+        "argv": [
+          "C:\\Miniconda\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-m",
+          "stockwiki.cli",
+          "--root",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\canonical_history",
+          "observation-import",
+          "--package",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\canonical_history\\exact_replay_again.package.json",
+          "--release",
+          "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\canonical_history\\exact_replay_again.release.json"
+        ],
+        "returncode": 0,
+        "receipt": {
+          "acks": [
+            {
+              "ack_id": "ack_afcddf849189ff397931ed5e",
+              "ack_sequence": 1,
+              "consumer": {
+                "component": "StockWiki",
+                "namespace": "quick_scan",
+                "store_id": "qsobs_2ae119b5cf335e8d"
+              },
+              "error_code": null,
+              "item_id": "itm_ea0b094bb994efdc679d275092a33392166b5962d949877070efa05a5359c8ab",
+              "observation_id": "obs_981d40bfa3ff41effc0732caf132ffdc49e389b23da8fd7130aeb41a48957ffe",
+              "package_id": "pkg_d0bdfcff92f00a4488941496954cdf8a8f05ed941f2b1bfe1dcee1e340af88dd",
+              "payload_sha256": "e2e1c5de939980c313cfb02e49c383fea01d717878649cbf98cc63b421d8ca87",
+              "received_at": "2026-10-09T18:26:39Z",
+              "schema_version": "1.0.0",
+              "status": "accepted"
+            }
+          ],
+          "action": "observation-import",
+          "legacy_wire_pending": true,
+          "package_id": "pkg_d0bdfcff92f00a4488941496954cdf8a8f05ed941f2b1bfe1dcee1e340af88dd",
+          "store_id": "qsobs_2ae119b5cf335e8d",
+          "summary": {
+            "accepted": 1
+          }
+        }
+      },
+      "before": {
+        "version": 1,
+        "audit_table": false,
+        "audits": null,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "15de2eebfbc06d3e83bdb8bc1ca55202d160ac0beb62e32fecebf4e610a7d0aa",
+        "ack_json_sha256": [
+          "17e275e4be0b84c4381946eb2ef03299c08061166c6f787f2bd5ba8bf950037a"
+        ]
+      },
+      "after": {
+        "version": 1,
+        "audit_table": false,
+        "audits": null,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "15de2eebfbc06d3e83bdb8bc1ca55202d160ac0beb62e32fecebf4e610a7d0aa",
+        "ack_json_sha256": [
+          "17e275e4be0b84c4381946eb2ef03299c08061166c6f787f2bd5ba8bf950037a"
+        ]
+      },
+      "package": {
+        "schema_version": "1.0.0",
+        "producer": {
+          "component": "StockQAbyLLM",
+          "component_version": "fixture",
+          "build_id": "FIXTURE"
+        },
+        "consumer": {
+          "component": "StockWiki",
+          "namespace": "quick_scan",
+          "minimum_schema_version": "1.0.0"
+        },
+        "created_at": "2026-10-01T10:00:00Z",
+        "data_class": "lightweight_screening",
+        "required_capabilities": [
+          "entity_security_identity_v1",
+          "standard_observation_v1"
+        ],
+        "contract_versions": {
+          "identity_schema": "1.0.0",
+          "answer_schema": "standard-1",
+          "observation_schema": "1.0.0",
+          "question_catalog": "3.0.0",
+          "model_policy_schema": "2.0.0"
+        },
+        "document_payloads_included": false,
+        "items": [
+          {
+            "item_id": "itm_ea0b094bb994efdc679d275092a33392166b5962d949877070efa05a5359c8ab",
+            "observation_id": "obs_981d40bfa3ff41effc0732caf132ffdc49e389b23da8fd7130aeb41a48957ffe",
+            "payload_sha256": "e2e1c5de939980c313cfb02e49c383fea01d717878649cbf98cc63b421d8ca87",
+            "observation": {
+              "schema_version": "1.0.0",
+              "entity_id": "E01",
+              "security_id": null,
+              "segment_id": null,
+              "field_id": "score.iqs_01",
+              "construct_id": null,
+              "question_id": "IQS_LEG",
+              "question_version": "1.0.0",
+              "template_version": "3.0.0",
+              "method_id": "core-constructs-v1/context-1/fixture",
+              "scope": "entity",
+              "cohort": {
+                "company_type": "operating",
+                "industries": [
+                  "industrial"
+                ],
+                "stage": "mature",
+                "subtype": null
+              },
+              "information_cutoff": "2026-09-30",
+              "run_id": "RUN_REQ_1",
+              "scan_id": "SCAN_REQ_1",
+              "inputset_id": "INPUT_V1",
+              "task_mode": "single",
+              "comparison_group_id": null,
+              "observed_at": "2026-10-01T09:01:00Z",
+              "execution": {
+                "provider": "fixture_provider",
+                "model_requested": "fixture-model",
+                "model_resolved": "fixture-model",
+                "model_revision": "fixture-1",
+                "request_id": "REQ_1",
+                "attempt_id": "ATT_1",
+                "started_at": "2026-10-01T09:00:00Z",
+                "answered_at": "2026-10-01T09:01:00Z",
+                "search_status": "executed",
+                "search_receipt_id": "FIXTURE_NOT_SEARCH_PROOF",
+                "prompt_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+              },
+              "answer": {
+                "question_id": "IQS_LEG",
+                "response_kind": "score",
+                "status": "scored",
+                "score": 8,
+                "summary": "fixture summary"
+              },
+              "evidence_review_status": "unreviewed",
+              "observation_id": "obs_981d40bfa3ff41effc0732caf132ffdc49e389b23da8fd7130aeb41a48957ffe"
+            }
+          }
+        ],
+        "extensions": [],
+        "package_sha256": "d0bdfcff92f00a4488941496954cdf8a8f05ed941f2b1bfe1dcee1e340af88dd",
+        "package_id": "pkg_d0bdfcff92f00a4488941496954cdf8a8f05ed941f2b1bfe1dcee1e340af88dd"
+      }
+    }
+  },
+  "negative_cli": {
+    "raw_hash_tamper": {
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history",
+        "observation-import",
+        "--package",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\raw_hash_tamper.package.json",
+        "--release",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\raw_hash_tamper.release.json"
+      ],
+      "returncode": 2,
+      "receipt": {
+        "detail": "package_hash_mismatch: pkg_0dc90cfdfa914a8b32a15e5972ccc1bcf5dd08403866b3b2b39242f73a761516",
+        "error_code": "package_hash_mismatch"
+      }
+    },
+    "deep_duplicate": {
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history",
+        "observation-import",
+        "--package",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\deep_duplicate.package.json",
+        "--release",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\deep_duplicate.release.json"
+      ],
+      "returncode": 2,
+      "receipt": {
+        "detail": "json_duplicate_key: summary",
+        "error_code": "json_duplicate_key"
+      }
+    },
+    "array_duplicate": {
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history",
+        "observation-import",
+        "--package",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\array_duplicate.package.json",
+        "--release",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\array_duplicate.release.json"
+      ],
+      "returncode": 2,
+      "receipt": {
+        "detail": "json_duplicate_key: item_id",
+        "error_code": "json_duplicate_key"
+      }
+    },
+    "signed_new_short": {
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history",
+        "observation-import",
+        "--package",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\signed_new_short.package.json",
+        "--release",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\signed_new_short.release.json"
+      ],
+      "returncode": 2,
+      "receipt": {
+        "detail": "ack_address_invalid: observation_id",
+        "error_code": "ack_address_invalid"
+      }
+    },
+    "mixed_old_and_empty": {
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history",
+        "observation-import",
+        "--package",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\mixed_old_and_empty.package.json",
+        "--release",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\mixed_old_and_empty.release.json"
+      ],
+      "returncode": 2,
+      "receipt": {
+        "detail": "ack_address_invalid: item_id",
+        "error_code": "ack_address_invalid"
+      }
+    },
+    "missing_field": {
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history",
+        "observation-import",
+        "--package",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\missing_field.package.json",
+        "--release",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\short_history\\missing_field.release.json"
+      ],
+      "returncode": 2,
+      "receipt": {
+        "detail": "ack_address_invalid: observation_id",
+        "error_code": "ack_address_invalid"
+      }
+    }
+  },
+  "wrong_history_slots": {
+    "observation_id": {
+      "error_code": "historical_ack_binding_mismatch",
+      "detail": "itm_97ece97c0aa8c00015794382fe9770be964f8399522cd72eef9e482bc38c9190"
+    },
+    "payload_sha256": {
+      "error_code": "historical_ack_binding_mismatch",
+      "detail": "itm_97ece97c0aa8c00015794382fe9770be964f8399522cd72eef9e482bc38c9190"
+    }
+  },
+  "mixed_batches": {
+    "correct_new_first": {
+      "acks": [
+        {
+          "schema_version": "1.0.0",
+          "ack_id": "ack_95a4ab91f25dc0cd5f2d0190",
+          "package_id": "pkg_2e903d8b443b80f18fe6c14e569fd67889600a61d1037479026eec14431d0a70",
+          "item_id": "itm_79e0ec85e1c1312bd1d56ec993e858339d8bdc73b0f4cf96f849d641f76f6e8c",
+          "observation_id": "obs_7adeffcf588bf3d3c50a05ecc45e474e2d9676282880435f6b7ab771344da4e5",
+          "payload_sha256": "e1ca0790920591dd225d5681113af735f19426fc1c9c680103bc363a2a1c9d63",
+          "status": "accepted",
+          "error_code": null,
+          "received_at": "2026-10-09T18:26:46Z",
+          "consumer": {
+            "component": "StockWiki",
+            "namespace": "quick_scan",
+            "store_id": "qsobs_9344a7671a2fd760"
+          }
+        },
+        {
+          "ack_id": "ack_607d205d984a56506d1d8f93",
+          "consumer": {
+            "component": "StockWiki",
+            "namespace": "quick_scan",
+            "store_id": "qsobs_9344a7671a2fd760"
+          },
+          "error_code": null,
+          "item_id": "itm_e5528423377500c2645505749cae650e9563280e8f964c48c259571290ce55d4",
+          "observation_id": "obs_8a6bc235d581cd6648bed911388ebebbadc247c4406f791092de631a342da223",
+          "package_id": "pkg_687b615f33c16a16e48230243a2f91fdd733454c74a004cfcca165ac1e2ba17d",
+          "payload_sha256": "429dcc2660a413d43f95cc27dbd0cf8d564f048a0a85991b03dcf152fd5857ab",
+          "received_at": "2026-10-09T18:26:46Z",
+          "schema_version": "1.0.0",
+          "status": "accepted"
+        }
+      ],
+      "before": {
+        "version": 2,
+        "audit_table": true,
+        "audits": 1,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "187be30063b2affa8d9819ebd742a66b5c16b9511ebf1fc344cd37e8e3da2a2c",
+        "ack_json_sha256": [
+          "88302d4c1287058ded2ce00f33b542e3a3c55f80bfccabbcc1073ea1c22cb78b"
+        ]
+      },
+      "after": {
+        "version": 2,
+        "audit_table": true,
+        "audits": 2,
+        "counts": {
+          "observations": 2,
+          "acked_items": 2,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "7afc565d746787a8c610614bbfc10ab672e93cb2c27b634b647999dbf1fc59fe",
+        "ack_json_sha256": [
+          "88302d4c1287058ded2ce00f33b542e3a3c55f80bfccabbcc1073ea1c22cb78b",
+          "e7301324d9926723ac03c2df8590917a75d1baca4c785dc73410c82f36b47824"
+        ]
+      }
+    },
+    "correct_existing_first": {
+      "acks": [
+        {
+          "ack_id": "ack_618dee1060f473b3d49d8edc",
+          "consumer": {
+            "component": "StockWiki",
+            "namespace": "quick_scan",
+            "store_id": "qsobs_330e93955a8e4304"
+          },
+          "error_code": null,
+          "item_id": "itm_c359332bb42fdec20e5331c75dd35d9786af318c607059b5173721c295dcc3a6",
+          "observation_id": "obs_0782ee7bebe27436625ca4dfadce2c599d6ed5f89c6d7cf3aa381d1dc643c610",
+          "package_id": "pkg_dba41b519ac2383418f5ca8cfe34e454c6258daf41c1d735c4274723027edf3e",
+          "payload_sha256": "ec3e38ed61c29fd37bbd647b8ab96a5ff380710a19ea2afec7df8c578fca4433",
+          "received_at": "2026-10-09T18:26:46Z",
+          "schema_version": "1.0.0",
+          "status": "accepted"
+        },
+        {
+          "schema_version": "1.0.0",
+          "ack_id": "ack_5327549ce3302141139be02c",
+          "package_id": "pkg_66e56af0f24e2f0c62f85ea9cb6ef9fb9b948a16440f17910ebffd0e1c2b3141",
+          "item_id": "itm_c629c38e423e11cc0731cd9f1a4e8dbf284ce5df13da7576dd9328e0a9f54294",
+          "observation_id": "obs_e86d713cf08f35775519848fe6589ecfd8103c32ebf744a3b5305be3273abbf8",
+          "payload_sha256": "b7f25fefbba2e59ff0454680438c850f6dbfa0fd9cf7a59abae1e484f679a9e7",
+          "status": "accepted",
+          "error_code": null,
+          "received_at": "2026-10-09T18:26:46Z",
+          "consumer": {
+            "component": "StockWiki",
+            "namespace": "quick_scan",
+            "store_id": "qsobs_330e93955a8e4304"
+          }
+        }
+      ],
+      "before": {
+        "version": 2,
+        "audit_table": true,
+        "audits": 1,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "4de1c59fb9706a3b1d60abd0292c86a688cbde2028b9e95520fe0d520428233d",
+        "ack_json_sha256": [
+          "c21cea6fc8d36873b08cc9c35622c13bbd094b4a3c90802470ce2a2492bd1553"
+        ]
+      },
+      "after": {
+        "version": 2,
+        "audit_table": true,
+        "audits": 2,
+        "counts": {
+          "observations": 2,
+          "acked_items": 2,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "ea294ede2b3977d08baf70f9d39b81829bd74f8ad46e43fcf484acfa31e5d5bf",
+        "ack_json_sha256": [
+          "c21cea6fc8d36873b08cc9c35622c13bbd094b4a3c90802470ce2a2492bd1553",
+          "626d3444027e243f067decb99a291282281820a51e782da6b272873314e98d4a"
+        ]
+      }
+    },
+    "wrong_new_first": {
+      "error_code": "historical_ack_binding_mismatch",
+      "before": {
+        "version": 2,
+        "audit_table": true,
+        "audits": 1,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "be9cf1946f26be4e7ec6e04c716d5422cb83c5a1d999a21dc63a48cc1b3c6650",
+        "ack_json_sha256": [
+          "f4883b184977b152f71aa19c124b0d06da84c604041ee6e29603750c4f41aabf"
+        ]
+      },
+      "after": {
+        "version": 2,
+        "audit_table": true,
+        "audits": 1,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "be9cf1946f26be4e7ec6e04c716d5422cb83c5a1d999a21dc63a48cc1b3c6650",
+        "ack_json_sha256": [
+          "f4883b184977b152f71aa19c124b0d06da84c604041ee6e29603750c4f41aabf"
+        ]
+      }
+    },
+    "wrong_existing_first": {
+      "error_code": "historical_ack_binding_mismatch",
+      "before": {
+        "version": 2,
+        "audit_table": true,
+        "audits": 1,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "e3f2dab8a1c82450b462f5ffa02acb226218a03555d69e301fd4212f99cefecb",
+        "ack_json_sha256": [
+          "fd8ba5304114fefdabf95031c178e66c1f8cbb3ab159da7145ee3f40c40b81ef"
+        ]
+      },
+      "after": {
+        "version": 2,
+        "audit_table": true,
+        "audits": 1,
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "database_sha256": "e3f2dab8a1c82450b462f5ffa02acb226218a03555d69e301fd4212f99cefecb",
+        "ack_json_sha256": [
+          "fd8ba5304114fefdabf95031c178e66c1f8cbb3ab159da7145ee3f40c40b81ef"
+        ]
+      }
+    }
+  },
+  "interleaved_real_connection": {
+    "competing_ack": {
+      "schema_version": "1.0.0",
+      "ack_id": "ack_7c8839de0fc63459bcb80e7e",
+      "package_id": "pkg_141efb8cfcf59759c7a1c86bc0d8fbb2b8935846e3d455ed904669255e85e3f2",
+      "item_id": "itm_86249d013afc86cc82ea0d38a3ed814899a799fbaf890ab4b99a7decbb6de8fe",
+      "observation_id": "obs_bf5ea2f201d2841e095d719c34de0246d68b84b1a254060f4ef776403e36f11c",
+      "payload_sha256": "45a07402bcb2d701a30879c91b306171d7eaa09dac716688e90bddae9b9ea609",
+      "status": "accepted",
+      "error_code": null,
+      "received_at": "2026-10-09T18:26:46Z",
+      "consumer": {
+        "component": "StockWiki",
+        "namespace": "quick_scan",
+        "store_id": "qsobs_da73d1144fdadfae"
+      }
+    },
+    "committed_snapshot": {
+      "version": 2,
+      "audit_table": true,
+      "audits": 1,
+      "counts": {
+        "observations": 1,
+        "acked_items": 1,
+        "conflicts": 0,
+        "corrections": 0
+      },
+      "database_sha256": "69feabdbc511a996de2ca2b654a998efd42f903ad25cd2adffbcaf6eb8eb259c",
+      "ack_json_sha256": [
+        "f1186883e557e6add4b0c2b85fb3e5f42e20592af982fbf8d284cd4405ed4525"
+      ]
+    },
+    "outer_error_code": "historical_ack_binding_mismatch",
+    "outer_after": {
+      "version": 2,
+      "audit_table": true,
+      "audits": 1,
+      "counts": {
+        "observations": 1,
+        "acked_items": 1,
+        "conflicts": 0,
+        "corrections": 0
+      },
+      "database_sha256": "69feabdbc511a996de2ca2b654a998efd42f903ad25cd2adffbcaf6eb8eb259c",
+      "ack_json_sha256": [
+        "f1186883e557e6add4b0c2b85fb3e5f42e20592af982fbf8d284cd4405ed4525"
+      ]
+    },
+    "first_insert_rolled_back": true,
+    "real_read_not_mocked_none": true
+  },
+  "accepted_reference_with_item_id": {
+    "accepted": {
+      "schema_version": "1.0.0",
+      "ack_id": "ack_79f57bebb4a4379e232e13b3",
+      "package_id": "pkg_81e1b5653274150452a162f6de76a7b5c4eb51b06ceb93dee407d6b16424abaf",
+      "item_id": "itm_05050ba86819909d10fecc8b9a169a38994c10ed16ffc8d50632b7b746f922d1",
+      "observation_id": "obs_52367a6622b19f08825e915fad80c542ad4f4c34dbcebad9f5007994b3e39208",
+      "payload_sha256": "bd5717aece661783e0c1884943b3eeaf1a503a6960da41df2b8e3d38365ddef5",
+      "status": "accepted",
+      "error_code": null,
+      "received_at": "2026-10-09T18:26:47Z",
+      "consumer": {
+        "component": "StockWiki",
+        "namespace": "quick_scan",
+        "store_id": "qsobs_7c173a808afc4d2d"
+      }
+    },
+    "audit": {
+      "package_id": "pkg_c312f7115cccb15b2dc051a66b83a2765649c9f1cc1ab3e20196d2c3c8736143",
+      "item_id": "itm_05050ba86819909d10fecc8b9a169a38994c10ed16ffc8d50632b7b746f922d1",
+      "internal_error_code": null,
+      "detail": "",
+      "recorded_at": "2026-10-09T18:26:47Z",
+      "ack_sequence": 3,
+      "original_import": {
+        "ack_sequence": 2,
+        "item_id": "itm_05050ba86819909d10fecc8b9a169a38994c10ed16ffc8d50632b7b746f922d1",
+        "package_id": "pkg_81e1b5653274150452a162f6de76a7b5c4eb51b06ceb93dee407d6b16424abaf",
+        "received_at": "2026-10-09T18:26:47Z"
+      }
+    }
+  },
+  "QA_legacy_wire_refusal": {
+    "state": "send_uncertain",
+    "error": "import ACK fields mismatch",
+    "before_dump_sha256": "4fe1e7ba2156b4b909c423919648426372842dba6b5a733294e509acd47627a2",
+    "after_dump_sha256": "4fe1e7ba2156b4b909c423919648426372842dba6b5a733294e509acd47627a2",
+    "prebound_receiver_descriptor": {
+      "component": "StockWiki",
+      "namespace": "quick_scan",
+      "store_id": "qsobs_28ff179c7b736fb8"
+    },
+    "actual_old_ack": {
+      "schema_version": "1.0.0",
+      "ack_id": "ack_9150a67822fe37b4c45d38f4",
+      "package_id": "pkg_2f5eaf34852acb810ff703312a450dd2516313004ebf8c64f82760fd6f376ed6",
+      "item_id": "itm_29987ca5583158eb3660c694281672569982757b62d10ac99aa560f5be28e37e",
+      "observation_id": "obs_f426f85de46ab2359f379bbe78aee9c97b8253e71a0aa176b7e170ea1f11b5e4",
+      "payload_sha256": "858b0a2f349344e07cd68d5f8f66064ec142f3324933affafd4635fe298c48c0",
+      "status": "rejected",
+      "error_code": "observation_missing_field",
+      "received_at": "2026-10-09T18:26:47Z",
+      "consumer": {
+        "component": "StockWiki",
+        "namespace": "quick_scan",
+        "store_id": "qsobs_28ff179c7b736fb8"
+      },
+      "ack_sequence": 1
+    },
+    "actual_current_cli_receipt": {
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "stockwiki.cli",
+        "--root",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\qa_old_receiver",
+        "observation-import",
+        "--package",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\qa_old_receiver\\qa_legacy_replay.package.json",
+        "--release",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r13a\\reviewer-compatibility\\final-02\\qa_old_receiver\\qa_legacy_replay.release.json"
+      ],
+      "returncode": 0,
+      "receipt": {
+        "acks": [
+          {
+            "ack_id": "ack_9150a67822fe37b4c45d38f4",
+            "ack_sequence": 1,
+            "consumer": {
+              "component": "StockWiki",
+              "namespace": "quick_scan",
+              "store_id": "qsobs_28ff179c7b736fb8"
+            },
+            "error_code": "observation_missing_field",
+            "item_id": "itm_29987ca5583158eb3660c694281672569982757b62d10ac99aa560f5be28e37e",
+            "observation_id": "obs_f426f85de46ab2359f379bbe78aee9c97b8253e71a0aa176b7e170ea1f11b5e4",
+            "package_id": "pkg_2f5eaf34852acb810ff703312a450dd2516313004ebf8c64f82760fd6f376ed6",
+            "payload_sha256": "858b0a2f349344e07cd68d5f8f66064ec142f3324933affafd4635fe298c48c0",
+            "received_at": "2026-10-09T18:26:47Z",
+            "schema_version": "1.0.0",
+            "status": "rejected"
+          }
+        ],
+        "action": "observation-import",
+        "legacy_wire_pending": true,
+        "package_id": "pkg_2f5eaf34852acb810ff703312a450dd2516313004ebf8c64f82760fd6f376ed6",
+        "store_id": "qsobs_28ff179c7b736fb8",
+        "summary": {
+          "rejected": 1
+        }
+      }
+    },
+    "no_projection": true,
+    "delivered": false,
+    "fixture_identity_is_synthetic_test_data_not_owner_golden": true
+  },
+  "candidate_after": {
+    "stockwiki/quick_scan_import.py": "9ce116b34365a35490a5f0e0d9298e0fa8ea20982294bf5314253689ac9deddd",
+    "stockwiki/quick_scan_observations.py": "d0e0b5e9dbfa37a536ee929e11ce9901e62119ce4458f7974911beb61fde11ff",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2",
+    "tests/test_quick_scan_observations.py": "22011d69fffdb1440ad45159fe85a30476b24caac6ad2857352a24ddaec2c2f1",
+    "tests/test_quick_scan_delivery.py": "b50ef0e46cc2a335a93f72eeb3fde6f76b1838ebbc0f637d6df6ae81ee4faeab"
+  },
+  "candidate_unchanged": true,
+  "guard_ledgers_empty": true,
+  "all_probe_processes_completed": true
+}

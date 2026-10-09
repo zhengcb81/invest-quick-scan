@@ -1,0 +1,236 @@
+2026-10-09 18:40:38 - src.runners.llm_runner - INFO - run:1340 - ======================================================================
+2026-10-09 18:40:38 - src.runners.llm_runner - INFO - run:1342 - 公司分析 - Fixture Corp
+2026-10-09 18:40:38 - src.runners.llm_runner - INFO - run:1343 - ======================================================================
+2026-10-09 18:40:38 - src.config.json_config_manager - INFO - load_questions:37 - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\joint-03\a-selected\questions.json
+2026-10-09 18:40:38 - src.config.json_config_manager - INFO - load_questions:63 - 成功从JSON配置加载 31 个问题
+2026-10-09 18:40:38 - src.runners.llm_runner - INFO - _run_single_company:1457 - 冻结问卷已校验（31 题，manifest a7e80a5bcaf2cb24）
+2026-10-09 18:40:38 - src.runners.llm_runner - INFO - _run_single_company:1536 - C06 权威文档已加载（5b76a105b55f69d3）
+2026-10-09 18:40:38 - src.runners.llm_runner - INFO - _run_single_company:1543 - 
+成功加载 31 个问题
+2026-10-09 18:40:38 - src.runners.llm_runner - INFO - _run_single_company:1544 - 配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\joint-03\a-selected\questions.json (json格式)
+2026-10-09 18:40:38 - src.runners.llm_runner - INFO - _run_single_company:1545 - 输出文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\joint-03\a-selected\result.json
+
+2026-10-09 18:40:38 - src.config.llm_config - INFO - _load_config:47 - 成功加载 LLM 配置文件: llm_apis.json
+2026-10-09 18:40:38 - src.config.llm_config - INFO - _load_config:47 - 成功加载 LLM 配置文件: llm_apis.json
+2026-10-09 18:40:38 - src.providers.base_llm_provider - WARNING - _load_config:157 - 从配置文件读取 API 密钥（建议使用环境变量）
+2026-10-09 18:40:38 - src.providers.base_llm_provider - INFO - _load_config:160 - LLMProvider initialized (provider: openai, model: actual-fixture-model, api_key: ***
+2026-10-09 18:40:38 - src.core.qa_engine - INFO - __init__:105 - QAEngine 初始化完成（搜索提供者: openai）
+2026-10-09 18:40:38 - src.core.qa_engine - INFO - process_questions:182 - 开始批量处理 31 个问题
+2026-10-09 18:40:38 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_01] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:38 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:39 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 2/10
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:39 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_e3576a7956364aa9b46f7f3e7b254597）→ pkg_2aabba3a42ed22eb2bf67160ae2b0b9af6cc3dd9a4c8b887d9e37ddac5e99d41
+2026-10-09 18:40:39 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_e3576a7956364aa9b46f7f3e7b254597）
+2026-10-09 18:40:39 - src.core.qa_engine - INFO - process_questions:303 - [1/31] 处理成功
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_02] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: insufficient_evidence)
+2026-10-09 18:40:39 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_7031bf7850614211affd6b5b96c8ecf2）→ pkg_36b48a5b381389c905b1ca7599848b9463b1e0fa185b53c60941a8eac8a29036
+2026-10-09 18:40:39 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_7031bf7850614211affd6b5b96c8ecf2）
+2026-10-09 18:40:39 - src.core.qa_engine - INFO - process_questions:303 - [2/31] 处理成功
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_04] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: not_applicable)
+2026-10-09 18:40:39 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_302db5373f0943d6bbc1219815ec51b8）→ pkg_20cad74f5962beb8e019930ad872fab1018478a8cca11412a10efcb3e14f5c57
+2026-10-09 18:40:39 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_302db5373f0943d6bbc1219815ec51b8）
+2026-10-09 18:40:39 - src.core.qa_engine - INFO - process_questions:303 - [3/31] 处理成功
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_05] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:39 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:39 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_3649661fcad1410ba55e6b00937e5149）→ pkg_628f4765d5d844addbe9747b3934cc891cccfdc67df77e67708915897462154d
+2026-10-09 18:40:39 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_3649661fcad1410ba55e6b00937e5149）
+2026-10-09 18:40:39 - src.core.qa_engine - INFO - process_questions:303 - [4/31] 处理成功
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_06] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:39 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:39 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_7fe97129503f49bbbe06143cd69e8c25）→ pkg_22ad8d1f51d9e6f8420a90f92b5d37a14b6cbc4ab12f796c2d147d73f7be423a
+2026-10-09 18:40:39 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_7fe97129503f49bbbe06143cd69e8c25）
+2026-10-09 18:40:39 - src.core.qa_engine - INFO - process_questions:303 - [5/31] 处理成功
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_07] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:39 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:40 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:40 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_12abdf1486c54b10ab4862f002c29372）→ pkg_b6aac4d1df9ed3c97bd42866c2e3fe1a6f8f0c06af2587439a657a99a67214f2
+2026-10-09 18:40:40 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_12abdf1486c54b10ab4862f002c29372）
+2026-10-09 18:40:40 - src.core.qa_engine - INFO - process_questions:303 - [6/31] 处理成功
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_08] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:40 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:40 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_2dc0495602d74c6fb5fd262a96d0514d）→ pkg_b5bf73fb53dbde3ae9435c1df81fb15b14d51269c62e4d647da59ef065e38cba
+2026-10-09 18:40:40 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_2dc0495602d74c6fb5fd262a96d0514d）
+2026-10-09 18:40:40 - src.core.qa_engine - INFO - process_questions:303 - [7/31] 处理成功
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_09] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:40 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:40 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_0450233996f34b51b82b4f075d7554a8）→ pkg_fd426a5ede1e432f557316b2d6c44f6370b2ea34d3a489a978ae09b1c9486255
+2026-10-09 18:40:40 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_0450233996f34b51b82b4f075d7554a8）
+2026-10-09 18:40:40 - src.core.qa_engine - INFO - process_questions:303 - [8/31] 处理成功
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_10] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:40 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:40 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_52ed154996a040199108ba80bb59271a）→ pkg_de337f922c891a56ed3b0ab702937d2d1205023d0d0dff733142225af6bd3279
+2026-10-09 18:40:40 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_52ed154996a040199108ba80bb59271a）
+2026-10-09 18:40:40 - src.core.qa_engine - INFO - process_questions:303 - [9/31] 处理成功
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_12] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:40 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:40 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_cba355ee2b4a4789ba38f710d5e1d6a1）→ pkg_2034f3c9b030a8ec78fcc91297954b3d332ef38201bd3f2f8ca09f95ab5c5699
+2026-10-09 18:40:40 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_cba355ee2b4a4789ba38f710d5e1d6a1）
+2026-10-09 18:40:40 - src.core.qa_engine - INFO - process_questions:303 - [10/31] 处理成功
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_13] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:40 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:40 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:41 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_7191c0a975f346d09b210bea72e9ec95）→ pkg_459f241bd7a1746ba906cfa849a9f1052f4dac66daec5c61bb371ce0366eb882
+2026-10-09 18:40:41 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_7191c0a975f346d09b210bea72e9ec95）
+2026-10-09 18:40:41 - src.core.qa_engine - INFO - process_questions:303 - [11/31] 处理成功
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_14] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:41 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:41 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_7be92494fcee4f4489f1b5a93e0c4f0f）→ pkg_baa74b09501d127eca6eb61a58434e15af8ea33894db4ad38979edfc5029d59b
+2026-10-09 18:40:41 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_7be92494fcee4f4489f1b5a93e0c4f0f）
+2026-10-09 18:40:41 - src.core.qa_engine - INFO - process_questions:303 - [12/31] 处理成功
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_15] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:41 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:41 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_aef5b307fe34419090e64ea3c6e7306e）→ pkg_c863a55b5e8c021df549bb32ed5efcc855da3b7362d87bd59915e0e6cd6b2d6e
+2026-10-09 18:40:41 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_aef5b307fe34419090e64ea3c6e7306e）
+2026-10-09 18:40:41 - src.core.qa_engine - INFO - process_questions:303 - [13/31] 处理成功
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_16] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:41 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:41 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_6b5472489ab34528abe74e8e7257534a）→ pkg_14b49ed788e697766bf7207070c5bcf6c19878b84711a525ce8de89355d92337
+2026-10-09 18:40:41 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_6b5472489ab34528abe74e8e7257534a）
+2026-10-09 18:40:41 - src.core.qa_engine - INFO - process_questions:303 - [14/31] 处理成功
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_17] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:41 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:41 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_b01c5360e3a24b299472cfbaada2ae2e）→ pkg_2e2b2b80ae83303800f2514084bfd47e801224c76fe110639f76b34daa33c9cc
+2026-10-09 18:40:41 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_b01c5360e3a24b299472cfbaada2ae2e）
+2026-10-09 18:40:41 - src.core.qa_engine - INFO - process_questions:303 - [15/31] 处理成功
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_18] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:41 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:41 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:41 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_18166ac0fff74527b85dc53956ef8cd1）→ pkg_fe3910f58d73375f500435dac9e79ce7d7f1ca281ba5ed1d6a70c559673ad93f
+2026-10-09 18:40:41 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_18166ac0fff74527b85dc53956ef8cd1）
+2026-10-09 18:40:41 - src.core.qa_engine - INFO - process_questions:303 - [16/31] 处理成功
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_19] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:42 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:42 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_b385f0905a1c42a593cb5824877e286e）→ pkg_84bbc095cdfb50c28fc8b9f6c5a598fe79746f864ec710835b032628f644b250
+2026-10-09 18:40:42 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_b385f0905a1c42a593cb5824877e286e）
+2026-10-09 18:40:42 - src.core.qa_engine - INFO - process_questions:303 - [17/31] 处理成功
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_20] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:42 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:42 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_ffe6784a49d143c985ee6a0452e67a7a）→ pkg_c96a30484828969f85d1e7122a40e8465b222e96165c9c4705a07a3498a91af8
+2026-10-09 18:40:42 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_ffe6784a49d143c985ee6a0452e67a7a）
+2026-10-09 18:40:42 - src.core.qa_engine - INFO - process_questions:303 - [18/31] 处理成功
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_21] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:42 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:42 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_83404cd51d234f759fc74d105eba985f）→ pkg_de3937155f8b87df0fdb9521f932180d485bb00e4438a591704288af78cc574d
+2026-10-09 18:40:42 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_83404cd51d234f759fc74d105eba985f）
+2026-10-09 18:40:42 - src.core.qa_engine - INFO - process_questions:303 - [19/31] 处理成功
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_22] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:42 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:42 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_9f55256379b6425bb002ca94dcda4827）→ pkg_8b7a9f2ae3015bd4a140c8336ded250024812f6fe2877baf7261a7a83296bbf5
+2026-10-09 18:40:42 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_9f55256379b6425bb002ca94dcda4827）
+2026-10-09 18:40:42 - src.core.qa_engine - INFO - process_questions:303 - [20/31] 处理成功
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_23] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:42 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:42 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_1af4429c717b415fb95bbc35d017d63b）→ pkg_25b0f113fccb96ff00a7da6f8f31a3b576451e2faa62ea631230bee1b3080e90
+2026-10-09 18:40:42 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_1af4429c717b415fb95bbc35d017d63b）
+2026-10-09 18:40:42 - src.core.qa_engine - INFO - process_questions:303 - [21/31] 处理成功
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [IQS_24] 对象与口径={"company": "Fixture Corp", "ticker...
+2026-10-09 18:40:42 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:43 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:43 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_90c4f75be79b4ad2bef2ca7d62618d4a）→ pkg_87118812a21cc8642dfb119668979cb5d79b3156482a039e27f632ea95e5b937
+2026-10-09 18:40:43 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_90c4f75be79b4ad2bef2ca7d62618d4a）
+2026-10-09 18:40:43 - src.core.qa_engine - INFO - process_questions:303 - [22/31] 处理成功
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [OPERATING_01] 对象与口径={"company": "Fixture Corp", "...
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:43 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:43 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_bc665704f1e643698066e329ff455166）→ pkg_83ca99a5e10da41d956290f2bc1edf0cd428c84f87fbc32ddbc4677ad50ab95e
+2026-10-09 18:40:43 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_bc665704f1e643698066e329ff455166）
+2026-10-09 18:40:43 - src.core.qa_engine - INFO - process_questions:303 - [23/31] 处理成功
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [OPERATING_02] 对象与口径={"company": "Fixture Corp", "...
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:43 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:43 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_c056919406c849bb9a6a8b22b349f743）→ pkg_c950a4ebcb799647f7f83e8595324bfaf87825baa8487930446de37355efa4c6
+2026-10-09 18:40:43 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_c056919406c849bb9a6a8b22b349f743）
+2026-10-09 18:40:43 - src.core.qa_engine - INFO - process_questions:303 - [24/31] 处理成功
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [INDUSTRIAL_01] 对象与口径={"company": "Fixture Corp", ...
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:43 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:43 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_9c5b9ebcee57498f9a9bdef484b0ca76）→ pkg_139eef5ae3c85d1a4463642311f729c19416c5f97ff764462b88a16566e35023
+2026-10-09 18:40:43 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_9c5b9ebcee57498f9a9bdef484b0ca76）
+2026-10-09 18:40:43 - src.core.qa_engine - INFO - process_questions:303 - [25/31] 处理成功
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [INDUSTRIAL_02] 对象与口径={"company": "Fixture Corp", ...
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:43 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:43 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_b89737d07f4e4c29a476b848537c7521）→ pkg_368cb14799cf746b2e33d31e90eebc3b0734de1236a89fc839155831a67479fe
+2026-10-09 18:40:43 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_b89737d07f4e4c29a476b848537c7521）
+2026-10-09 18:40:43 - src.core.qa_engine - INFO - process_questions:303 - [26/31] 处理成功
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [MATURE_01] 对象与口径={"company": "Fixture Corp", "tic...
+2026-10-09 18:40:43 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:44 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:44 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_d4cd79e24bb14d8a8d53e487747c049e）→ pkg_86e522b6e6e1e7c7de62173b7e6c42cd05c691e3309c2d2c8ae047bb1c169f47
+2026-10-09 18:40:44 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_d4cd79e24bb14d8a8d53e487747c049e）
+2026-10-09 18:40:44 - src.core.qa_engine - INFO - process_questions:303 - [27/31] 处理成功
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [MATURE_02] 对象与口径={"company": "Fixture Corp", "tic...
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:44 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:44 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_b13727b9ac7e40ea9c5092988d55f707）→ pkg_3d6e005ba7f5817158a371f5afa3f0096f53b8d6ffaa490eb1026beba5329df9
+2026-10-09 18:40:44 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_b13727b9ac7e40ea9c5092988d55f707）
+2026-10-09 18:40:44 - src.core.qa_engine - INFO - process_questions:303 - [28/31] 处理成功
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [CYCLICAL_01] 对象与口径={"company": "Fixture Corp", "t...
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:44 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:44 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_c75d67e1124347dc87954375a180cfa3）→ pkg_8c4649f80efb72808bbe563281b53f5e10a300214602e4279fae42f3e9b798c6
+2026-10-09 18:40:44 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_c75d67e1124347dc87954375a180cfa3）
+2026-10-09 18:40:44 - src.core.qa_engine - INFO - process_questions:303 - [29/31] 处理成功
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [CYCLICAL_02] 对象与口径={"company": "Fixture Corp", "t...
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:44 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:44 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_b1a02c6a67414b2d88fbae50801a60b5）→ pkg_ad19cf86f8789e767de580c0bda4947c776dbca0225a44f4970465f49dc4da1f
+2026-10-09 18:40:44 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_b1a02c6a67414b2d88fbae50801a60b5）
+2026-10-09 18:40:44 - src.core.qa_engine - INFO - process_questions:303 - [30/31] 处理成功
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _search:79 - LLM处理问题: [CROSS_BORDER_01] 对象与口径={"company": "Fixture Corp"...
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _call_llm_api:254 - 正在调用 openai API... (尝试 1/1)
+2026-10-09 18:40:44 - src.providers.llm_response_parser - INFO - _validate_and_extract:343 - 成功解析LLM响应（直接JSON），评分: 8/10
+2026-10-09 18:40:44 - src.providers.llm_provider - INFO - _search:140 - LLM答案生成完成 (状态: scored)
+2026-10-09 18:40:44 - src.utils.quick_scan_delivery_seal - INFO - seal_result_delivery:225 - C06 完整包已封存（WORK_c1e64a1ff81140fda398cbc90a6467c5）→ pkg_0432d3e2631955192808e299c0a5263015ff3b55506232b02e44449193bcb461
+2026-10-09 18:40:44 - src.runners.llm_runner - INFO - _seal_delivery:458 - Q10 检查点落定 → sealed（WORK_c1e64a1ff81140fda398cbc90a6467c5）
+2026-10-09 18:40:44 - src.core.qa_engine - INFO - process_questions:303 - [31/31] 处理成功
+2026-10-09 18:40:44 - src.core.qa_engine - INFO - output_results:373 - [OK] 结果已保存到: C:\Users\郑曾波\Projects\invest-quick-scan\runs\r13a\cases\joint-03\a-selected\result.json
+2026-10-09 18:40:44 - src.runners.llm_runner - INFO - _run_single_company:1904 - 
+Question processing completed.

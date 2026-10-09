@@ -1,0 +1,361 @@
+{
+  "candidate_before": {
+    "stockwiki/quick_scan_import.py": "9ce116b34365a35490a5f0e0d9298e0fa8ea20982294bf5314253689ac9deddd",
+    "stockwiki/quick_scan_observations.py": "f2dd377f69bd0b2ec9881ee04394167b1f373da0a6501088840a41c971bc9176",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2",
+    "tests/test_quick_scan_observations.py": "976f247b32ee470c227b5a1574b54641fd1f96a1e0665da6569fb7d3458fb82f",
+    "tests/test_quick_scan_delivery.py": "b50ef0e46cc2a335a93f72eeb3fde6f76b1838ebbc0f637d6df6ae81ee4faeab"
+  },
+  "candidate_after": {
+    "stockwiki/quick_scan_import.py": "9ce116b34365a35490a5f0e0d9298e0fa8ea20982294bf5314253689ac9deddd",
+    "stockwiki/quick_scan_observations.py": "f2dd377f69bd0b2ec9881ee04394167b1f373da0a6501088840a41c971bc9176",
+    "stockwiki/quick_scan_backup_manifest.py": "ad75cacec6e83590dbe25cfbe63f557ef828909c0fafb891ea4fcb21cf1175c2",
+    "tests/test_quick_scan_observations.py": "976f247b32ee470c227b5a1574b54641fd1f96a1e0665da6569fb7d3458fb82f",
+    "tests/test_quick_scan_delivery.py": "b50ef0e46cc2a335a93f72eeb3fde6f76b1838ebbc0f637d6df6ae81ee4faeab"
+  },
+  "candidate_unchanged": true,
+  "outcomes": {
+    "missing_first": {
+      "returned": true,
+      "acks": [
+        {
+          "schema_version": "1.0.0",
+          "ack_id": "ack_0808629944cce8aadeec0bb4",
+          "package_id": "pkg_7e2392468da9173441c287ae036bd8a09edb4e56defb751650660782f0aa2cff",
+          "item_id": "itm_2757437a824e4af48bb6ecd26db6b5a109b702b8fab1921154a0d3dd6c003eb6",
+          "observation_id": "obs_4898add413ed576ee2f216a55efe828b2e33641ad677582e7718b7aef91f8f79",
+          "payload_sha256": "94961112ae0110f2be956f28ce48f68bbd1b5f7de8cfe06076cfe95a449f9e4a",
+          "status": "accepted",
+          "error_code": null,
+          "received_at": "2026-10-09T18:17:29Z",
+          "consumer": {
+            "component": "StockWiki",
+            "namespace": "quick_scan",
+            "store_id": "qsobs_fb0951104cd125b1"
+          }
+        },
+        {
+          "ack_id": "ack_57617d5c7bd25c41be52b3fb",
+          "consumer": {
+            "component": "StockWiki",
+            "namespace": "quick_scan",
+            "store_id": "qsobs_fb0951104cd125b1"
+          },
+          "error_code": null,
+          "item_id": "itm_e177def0cc30eb5c7c67523361276f9ce81a69e70d5e956e78240d8c1153f5b9",
+          "observation_id": "obs_a9e7d03b957b2163e90259f49b87051631bf98596e516127de0d7de218871d76",
+          "package_id": "pkg_53c4d8f7066be696860c8744492ba2ee94c39b332d3b98fe12773bc0277b50e2",
+          "payload_sha256": "8f9419efb5dc5f0ed200ada0153036a7fe0f258aa81e2e9c8f6e64aec0e0468c",
+          "received_at": "2026-10-09T18:17:29Z",
+          "schema_version": "1.0.0",
+          "status": "accepted"
+        }
+      ],
+      "wrong_old_incoming_payload_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "old_ack": {
+        "schema_version": "1.0.0",
+        "ack_id": "ack_57617d5c7bd25c41be52b3fb",
+        "package_id": "pkg_53c4d8f7066be696860c8744492ba2ee94c39b332d3b98fe12773bc0277b50e2",
+        "item_id": "itm_e177def0cc30eb5c7c67523361276f9ce81a69e70d5e956e78240d8c1153f5b9",
+        "observation_id": "obs_a9e7d03b957b2163e90259f49b87051631bf98596e516127de0d7de218871d76",
+        "payload_sha256": "8f9419efb5dc5f0ed200ada0153036a7fe0f258aa81e2e9c8f6e64aec0e0468c",
+        "status": "accepted",
+        "error_code": null,
+        "received_at": "2026-10-09T18:17:29Z",
+        "consumer": {
+          "component": "StockWiki",
+          "namespace": "quick_scan",
+          "store_id": "qsobs_fb0951104cd125b1"
+        }
+      },
+      "before": {
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "audits": 1,
+        "database_sha256": "452752e8b4d859db71f21a5852f180e68987f2fa7dc90ec8ccd7278af32009bb"
+      },
+      "after": {
+        "counts": {
+          "observations": 2,
+          "acked_items": 2,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "audits": 2,
+        "database_sha256": "1d1a0c68f0fc5a7072b684c7b1c44fa59af5de38fd35c571fb445e2bc6134eea"
+      },
+      "decisions": [
+        {
+          "package_id": "pkg_7e2392468da9173441c287ae036bd8a09edb4e56defb751650660782f0aa2cff",
+          "item_id": "itm_2757437a824e4af48bb6ecd26db6b5a109b702b8fab1921154a0d3dd6c003eb6",
+          "observation_id": "obs_4898add413ed576ee2f216a55efe828b2e33641ad677582e7718b7aef91f8f79",
+          "payload_sha256": "94961112ae0110f2be956f28ce48f68bbd1b5f7de8cfe06076cfe95a449f9e4a",
+          "exec_key": "0d5ace0b5bbaefae948e3a3dfb3e29cc85db49e3f0f5876c4e797d81c29b9ba5",
+          "status": "accepted",
+          "error_code": null,
+          "observation": {
+            "schema_version": "1.0.0",
+            "entity_id": "E01",
+            "security_id": null,
+            "segment_id": null,
+            "field_id": "score.iqs_01",
+            "construct_id": null,
+            "question_id": "IQS_LEG",
+            "question_version": "1.0.0",
+            "template_version": "3.0.0",
+            "method_id": "core-constructs-v1/context-1/fixture",
+            "scope": "entity",
+            "cohort": {
+              "company_type": "operating",
+              "industries": [
+                "industrial"
+              ],
+              "stage": "mature",
+              "subtype": null
+            },
+            "information_cutoff": "2026-09-30",
+            "run_id": "RUN_REQ_NEW",
+            "scan_id": "SCAN_REQ_NEW",
+            "inputset_id": "INPUT_V1",
+            "task_mode": "single",
+            "comparison_group_id": null,
+            "observed_at": "2026-10-01T09:01:00Z",
+            "execution": {
+              "provider": "fixture_provider",
+              "model_requested": "fixture-model",
+              "model_resolved": "fixture-model",
+              "model_revision": "fixture-1",
+              "request_id": "REQ_NEW",
+              "attempt_id": "ATT_NEW",
+              "started_at": "2026-10-01T09:00:00Z",
+              "answered_at": "2026-10-01T09:01:00Z",
+              "search_status": "executed",
+              "search_receipt_id": "FIXTURE_NOT_SEARCH_PROOF",
+              "prompt_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "answer": {
+              "question_id": "IQS_LEG",
+              "response_kind": "score",
+              "status": "scored",
+              "score": 8,
+              "summary": "fixture summary"
+            },
+            "evidence_review_status": "unreviewed",
+            "observation_id": "obs_4898add413ed576ee2f216a55efe828b2e33641ad677582e7718b7aef91f8f79"
+          }
+        },
+        {
+          "package_id": "pkg_53c4d8f7066be696860c8744492ba2ee94c39b332d3b98fe12773bc0277b50e2",
+          "item_id": "itm_e177def0cc30eb5c7c67523361276f9ce81a69e70d5e956e78240d8c1153f5b9",
+          "observation_id": "obs_a9e7d03b957b2163e90259f49b87051631bf98596e516127de0d7de218871d76",
+          "payload_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "exec_key": "a6f2ed403285cfd58bca8a4359d74f461044ee383e9dcab852fdf9e07d206cbe",
+          "status": "accepted",
+          "error_code": null,
+          "observation": {
+            "schema_version": "1.0.0",
+            "entity_id": "E01",
+            "security_id": null,
+            "segment_id": null,
+            "field_id": "score.iqs_01",
+            "construct_id": null,
+            "question_id": "IQS_LEG",
+            "question_version": "1.0.0",
+            "template_version": "3.0.0",
+            "method_id": "core-constructs-v1/context-1/fixture",
+            "scope": "entity",
+            "cohort": {
+              "company_type": "operating",
+              "industries": [
+                "industrial"
+              ],
+              "stage": "mature",
+              "subtype": null
+            },
+            "information_cutoff": "2026-09-30",
+            "run_id": "RUN_REQ_OLD",
+            "scan_id": "SCAN_REQ_OLD",
+            "inputset_id": "INPUT_V1",
+            "task_mode": "single",
+            "comparison_group_id": null,
+            "observed_at": "2026-10-01T09:01:00Z",
+            "execution": {
+              "provider": "fixture_provider",
+              "model_requested": "fixture-model",
+              "model_resolved": "fixture-model",
+              "model_revision": "fixture-1",
+              "request_id": "REQ_OLD",
+              "attempt_id": "ATT_OLD",
+              "started_at": "2026-10-01T09:00:00Z",
+              "answered_at": "2026-10-01T09:01:00Z",
+              "search_status": "executed",
+              "search_receipt_id": "FIXTURE_NOT_SEARCH_PROOF",
+              "prompt_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "answer": {
+              "question_id": "IQS_LEG",
+              "response_kind": "score",
+              "status": "scored",
+              "score": 8,
+              "summary": "fixture summary"
+            },
+            "evidence_review_status": "unreviewed",
+            "observation_id": "obs_a9e7d03b957b2163e90259f49b87051631bf98596e516127de0d7de218871d76"
+          }
+        }
+      ]
+    },
+    "existing_first": {
+      "returned": false,
+      "error_code": "historical_ack_binding_mismatch",
+      "detail": "itm_39098e0ef33015b37cbc89977a1bd9bd6d1fad177b8cdbb2abf6cc5abb5079c2",
+      "before": {
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "audits": 1,
+        "database_sha256": "94198cc8f44c36edfadf364c7921b6957425f6869d5a78a2719e6af7a387b67d"
+      },
+      "after": {
+        "counts": {
+          "observations": 1,
+          "acked_items": 1,
+          "conflicts": 0,
+          "corrections": 0
+        },
+        "audits": 1,
+        "database_sha256": "94198cc8f44c36edfadf364c7921b6957425f6869d5a78a2719e6af7a387b67d"
+      },
+      "decisions": [
+        {
+          "package_id": "pkg_7be997cc34e3466894c755d791dde8ad6994508665c565a6de29be03743cf709",
+          "item_id": "itm_39098e0ef33015b37cbc89977a1bd9bd6d1fad177b8cdbb2abf6cc5abb5079c2",
+          "observation_id": "obs_501ef5484cf8eef9554c9ec4e020c7a9d58671b24fd1d1aaacfdf3c259792f07",
+          "payload_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "exec_key": "a6f2ed403285cfd58bca8a4359d74f461044ee383e9dcab852fdf9e07d206cbe",
+          "status": "accepted",
+          "error_code": null,
+          "observation": {
+            "schema_version": "1.0.0",
+            "entity_id": "E01",
+            "security_id": null,
+            "segment_id": null,
+            "field_id": "score.iqs_01",
+            "construct_id": null,
+            "question_id": "IQS_LEG",
+            "question_version": "1.0.0",
+            "template_version": "3.0.0",
+            "method_id": "core-constructs-v1/context-1/fixture",
+            "scope": "entity",
+            "cohort": {
+              "company_type": "operating",
+              "industries": [
+                "industrial"
+              ],
+              "stage": "mature",
+              "subtype": null
+            },
+            "information_cutoff": "2026-09-30",
+            "run_id": "RUN_REQ_OLD",
+            "scan_id": "SCAN_REQ_OLD",
+            "inputset_id": "INPUT_V1",
+            "task_mode": "single",
+            "comparison_group_id": null,
+            "observed_at": "2026-10-01T09:01:00Z",
+            "execution": {
+              "provider": "fixture_provider",
+              "model_requested": "fixture-model",
+              "model_resolved": "fixture-model",
+              "model_revision": "fixture-1",
+              "request_id": "REQ_OLD",
+              "attempt_id": "ATT_OLD",
+              "started_at": "2026-10-01T09:00:00Z",
+              "answered_at": "2026-10-01T09:01:00Z",
+              "search_status": "executed",
+              "search_receipt_id": "FIXTURE_NOT_SEARCH_PROOF",
+              "prompt_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "answer": {
+              "question_id": "IQS_LEG",
+              "response_kind": "score",
+              "status": "scored",
+              "score": 8,
+              "summary": "fixture summary"
+            },
+            "evidence_review_status": "unreviewed",
+            "observation_id": "obs_501ef5484cf8eef9554c9ec4e020c7a9d58671b24fd1d1aaacfdf3c259792f07"
+          }
+        },
+        {
+          "package_id": "pkg_6d837d85373a35d6ec483218b3f276ae850e184a40e023e214e001f1e46e936a",
+          "item_id": "itm_2436c8dc935385f7a5b42976a4f0a008ba3be76750bd08ad46916c14a4ec1dcc",
+          "observation_id": "obs_36296d6ccbc4ca41c2b4641a1af209aacd0b2039ff07c255257d42b8fb65ae81",
+          "payload_sha256": "3276921a498d1ce3a9e983e759ba323ef0995ba076ee2c84f1fa6ae3d3d10185",
+          "exec_key": "0d5ace0b5bbaefae948e3a3dfb3e29cc85db49e3f0f5876c4e797d81c29b9ba5",
+          "status": "accepted",
+          "error_code": null,
+          "observation": {
+            "schema_version": "1.0.0",
+            "entity_id": "E01",
+            "security_id": null,
+            "segment_id": null,
+            "field_id": "score.iqs_01",
+            "construct_id": null,
+            "question_id": "IQS_LEG",
+            "question_version": "1.0.0",
+            "template_version": "3.0.0",
+            "method_id": "core-constructs-v1/context-1/fixture",
+            "scope": "entity",
+            "cohort": {
+              "company_type": "operating",
+              "industries": [
+                "industrial"
+              ],
+              "stage": "mature",
+              "subtype": null
+            },
+            "information_cutoff": "2026-09-30",
+            "run_id": "RUN_REQ_NEW",
+            "scan_id": "SCAN_REQ_NEW",
+            "inputset_id": "INPUT_V1",
+            "task_mode": "single",
+            "comparison_group_id": null,
+            "observed_at": "2026-10-01T09:01:00Z",
+            "execution": {
+              "provider": "fixture_provider",
+              "model_requested": "fixture-model",
+              "model_resolved": "fixture-model",
+              "model_revision": "fixture-1",
+              "request_id": "REQ_NEW",
+              "attempt_id": "ATT_NEW",
+              "started_at": "2026-10-01T09:00:00Z",
+              "answered_at": "2026-10-01T09:01:00Z",
+              "search_status": "executed",
+              "search_receipt_id": "FIXTURE_NOT_SEARCH_PROOF",
+              "prompt_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            },
+            "answer": {
+              "question_id": "IQS_LEG",
+              "response_kind": "score",
+              "status": "scored",
+              "score": 8,
+              "summary": "fixture summary"
+            },
+            "evidence_review_status": "unreviewed",
+            "observation_id": "obs_36296d6ccbc4ca41c2b4641a1af209aacd0b2039ff07c255257d42b8fb65ae81"
+          }
+        }
+      ]
+    }
+  },
+  "real_API_calls": 0,
+  "production_DB_access": false,
+  "guard_ledgers_empty": true
+}

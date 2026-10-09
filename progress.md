@@ -2596,3 +2596,35 @@
 - 这是明确人类授权阻塞，非verified wait；没有已确认存活的自有测试/Git handle可轮询。本回合无新增产品实施、软件测试、付费调用或外仓写入；记录不计目标进展。目标仍active，未达到连续三回合blocked阈值。下一动作仍是收到四文件与本批唯一writer许可后实施JR1/JR3，原问题不重复发送；所有未完成门保持。
 - 连续第2个阻塞目标回合：075eca核IQS仅本段progress未提交和原opencode；5d9ccc实际只读核QA bc41908、SW c40de21/clean，四文件相对d253fea仍无差异，未收到新授权/交付。上一回合为no progress，本回合同一人类授权阻塞，无可确认活handle或独立可执行任务；不重复准备/测试，不写外仓，不把本记录计为进展。目标仍active，三回合blocked阈值尚未满足。
 - 连续第3个阻塞目标回合：c334bb核同一本仓状态与记录，28255a实际只读核QA bc41908、SW c40de21/clean及四文件无新差异；人类许可仍未到。前两回合均no progress，条件连续三回合满足且无法独立推进主线，`update_goal(status="blocked")` 已实际返回blocked（updatedAt=1791565307）。未重测/付费/写外仓或关闭验收门；只收尾本次PWF状态留档与提交，不把该文档记为产品进展。解除需此前四文件＋唯一writer明确许可或获准owner真实修复交付，不再自动空转。
+
+## 2026-10-09 — 用户授权StockWiki四路径，JR1/JR3接管TDD
+
+- 用户明确“授权这4个文件，由你接管”，按前一提问范围接管quick_scan_import.py、quick_scan_observations.py及两个测试文件；不扩大其他源路径。202950实际核SW c40de21/clean，读取AGENTS，用户大节点测试规则优先、不重复未变全仓/UI；IQS54703f4/原opencode。goal工具仍返回blocked，不能伪造resume；本轮按最新人类授权推进，原任务未完成。
+- CodeGraph具体上下文只返回无关metric_observations，未含已知目标符号；因此读取已经确定的四源码/测试路径，不用过期索引推断函数。prepare.py b0b5ce→原78544终态0，331固定非秘密Git源码/公共资产导出到新runs/r13a；真实名单/配置/DB不复制，配置为惰性或空值，原守卫和源SHA锁定，源未写。
+- ingress-ack-red-01原25784/316099终态1：22新参数例中18F/4P；四OS CLI为fixture缺显式继承env，被guard正面拒绝，不算四个产品反例。其余真实反例驱动JSON重复键/非有限/直接dict与新ACK格式修复；历史回执原件读取不改。修fixture环境后ingress-ack-green-01 e5f487终态0：22P/19deselected/pytest5.77s，网络/真实key读取账本为空。测试只在独占副本，源写入、真实API及真实DB访问0。
+- 候选新ACK严格10根字段，内部序号/原引用/原错误与detail转独立审计；现发现backup manifest硬编码观测库最大schema1。候选审计表加法schema2尚在隔离回归，备份兼容需先明确解决，不发布会破坏备份的源代码。其他仓库/额外源文件保持只读，本轮集中门及实际提交清理待完成。
+- 本轮 get_goal 实际返回active，覆盖上一条早期blocked观察；不伪造工具resume。affected-backup-red-01 为47P/2F：旧断言索引3未查audit与实际backup cap1；隔离修正后 affected-backup-green-01 原38284/03a706终态0、61P/12.23s。已提出仅 `stockwiki/quick_scan_backup_manifest.py` 一值1→2许可，详见本批 backup-scope-extension.md，人类答复待收；源尚未写。
+- 格式后 affected-final-01 原7579/2ca93a终态0，93P/13.69s：五个受影响测试文件，包括新审计SQL trigger失败原子回滚；静态02 Ruff与框架命令通过，格式只五候选。static01的Python-only guard拒Ruff Rust子进程为工具边界，不是代码违规；02明确直接执行已安装Rust静态工具、去密钥环境，框架CLI仍守卫，不放宽原Python guard。未重做全仓/UI。
+- StockQA只读Git导出首默认沙箱报“not a work tree”/permission denied，沙箱外47627终态0导出148非秘密代码/schema/quick_scan fixtures；联合01漏注册表、02 Git LF不匹配既有fixture authority冻CRLF，均真实发送前停止。明确补唯一非秘密指标注册表及恢复已冻结字节域，记录前后SHA，canonical JSON/authority/题义均未改。旧inputs和失败原件不覆写。
+- joint03原3292/6469fa终态1：pytest2P/1F，原Q10正确拒旧独立模型fixture只改返回B不改请求；更因格式在测试未终态时修订，source SHA guard整批作废，不算有效通过。current测试actor在第二synthetic执行派发前明确requested B，产品alias/actual验证不改。
+- joint04原60617/7acec0终态1：pytest4P/1F（107.01s）。missingentity fixture未migrate空身份库被CLI正确拒，尚未原ACK往返通过；runner另发现自己明确读取的自有synthetic llm_apis被原全空ledger断言误算，必须分类并留原账本、不能清空洗绿。已启动一个获授权集中独审 jr13_concentrated_review；初步发现未合法地址仍可生成schema-invalid新ACK，等待具体反例后同批TDD整改，不另开helper审查。source-preflight01实际9f2581：SW c40de21/master/clean；源写入0、真实API0。
+- 集中独审实际收3发现（一P1新ACK非法地址、两P2原引用选到rejected/锁前读PRAGMA竞态），原报告/真实CLI/并发guard证据已归档，不改旧日志。review-red01真实10F/42deselected/2.59s；green01出现bare星号SyntaxError集合失败，原件保留；修正后green02 ae01a2终态0，10P/1.85s。产品按全items严格地址预检且不造fallback、ledger只选accepted原导入、持BEGIN后读version改；旧已存ACK getter原读。
+- 仅两获批unit文件的107个正例短地址标签规范化为synthetic *_sha，shared _observation也供backup旧label使用，明确不是生产身份；恶意类型/地址以及错hash/scope/score负例保持。format03后 affected-final02 原2113/e13552终态0：103P/13.29s；static03 Ruff及框架成功（模块大小只诊断）。未改变其他source/test或真实库。
+- joint05原69789/f9961a终态0：18P/124.67s（controller125.212s），当前5SHA中途不变；31实际QA公开CLI包→SW导入均严格schema ACK，真实ack_for原件→QA预先绑定target落定/幂等，错误head/target与包hash明确拒，warm/seal零新增HTTP，原body/包/attempt保持，实际备份与独立跨root恢复通过。两独立synthetic模型执行各31个HTTP边界替身，不是62次收费请求；真实API/生产DB均0。synthetic配置ledger保存不清空；后续控制器收紧精确配置及raw路径lstat，同一独审复验中。金融/身份gold/事实query/G3/F05/L03/TH-IN仍不闭合，额外cap路径许可待答。
+
+## JR1/JR3 历史兼容与混合事务收口：2026-10-09
+
+- compatibility-red-01实际2F/1P，历史短ID原包只读对账修复后 compatibility-green-01 13P；affected-final-03 106P/13.62s，static04通过，joint06实际18P/138.65s。原103P/18P属于更早SHA，不替代新版本。
+- 同一集中审查实证 direct apply_decisions 新+旧错槽时顺序依赖：先new静默新增、反序拒绝；不泛称CLI包hash绕过。7新回归mixed-red01 4F/3P→mixed-green01 7P，完整readonly扫描＋写事务重新核四绑定；affected-final04实际113P/14.88s/controller15.48s，static05通过。joint07/最终独审仍活，不边测边改、不发布源仓。
+- 自有归档/清理helper正在准备；首次猜测 strict_cleanup.py 文件名不存在，以及 cleanup helper替换路径断言失败均为控制器诊断，无产品/源仓/删除操作；已按实际owner脚本路径重做。一次PWF组合patch因handoff错误锚点被原子拒绝，改为全部输入验证后实际更新。
+- 外部read-only source-preflight02实际exit0：StockWiki c40de21/clean、源未写；四路径授权有效，第五单行backup cap仍等明确许可，不发布已知破坏备份的四文件半批。原失败、旧独审、旧重放authority保持，目标active且项目未完成。
+
+## JR1/JR3 最终软件签收、归档与自有清理：2026-10-09
+
+- affected-final04 原43048实际exit0：113P/14.88s/controller15.48；joint07 原98057实际exit0：18P/131.36s/controller131.882；static05两命令0。五执行SHA不变，保留所有旧RED/setup/controller失败，不相加或用旧版本替代。
+- 同一集中独审最终 compatibility-recheck.md/json签收F1–F5全关闭；报告SHA9209cea8…/a0550d27…，253 raw索引SHA b8511486…，总控全部核 original/archive SHA、大小一致。历史旧accepted CLI重放两类schema1全DB SHA零变；QA旧wire独立负例为真实旧serializer rejected enriched，strict拒且send_uncertain，全dump SHA不变；没有冒称旧accepted跨owner完成。真正第二SQLite连接交错另证写事务错槽整批回滚，母用例mock快照单独披露。
+- final-snapshot固定76原件（5候选、guard/adapters、执行manifest及两轮各31包）、480非秘密owner源依赖锁；实际freeze终态exit0，不保存SQLite/配置内容/真实key/公司文档。residual actor实际6358终态exit0：2146原记录逐字节核验，643补档，不造缺失历史process metadata。候选补丁与source-candidate-diff清单来自只读Git，SW仍c40de21/clean，源0写入。
+- prepare_cleanup原50543实际exit0：os.lstat核5029普通文件/单硬链1、2151目录，无reparse；正常沙箱外native dry exit0，再原84802实际终态apply exit0，逐文件SHA再核/删除、空目录逐个删除，唯一本批runs/r13a已无。cleanup-receipt原bytes保留；没有清共享TEMP、外仓、生产库/名单或未知opencode。所有模型/搜索收费调用0；guard不称wholeOS认证。
+- acceptance.md/json与publication-handoff已写；用户四路径/唯一writer授权有效，唯额外backup manifest cap1→2许可仍未答复。因此软件候选signed off不等源发布，更不关闭G3/F05/L03/真实identity/facts/query golden/金融准确性或TH-IN。一行许可后只做精确源重核/正常Git发布接续，无新小节点review，不能复跑被清根的一次性helper。当前IQS归档/PWF提交推送待实际终态回执。
+
+- IQS第一次归档Git工具e177aa实际exit1，仅部分精确stage；原项目logs忽略规则阻断git add，未执行commit/push。冻结selected-before和具名first-stage-note保留；新增resume helper验证HEAD/范围/原部分staged均属于当前allowlist，只对已核验原档精确-f add，不改gitignore、不绕hook、不读/暂存未知opencode、无源写入。
