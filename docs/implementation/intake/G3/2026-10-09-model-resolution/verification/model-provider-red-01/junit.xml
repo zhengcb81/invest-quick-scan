@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="4" time="1.802" timestamp="2026-10-09T00:21:02.029957+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_llm_provider" name="test_q10_sync_repair_records_two_attempts_and_final_http_identity[False]" time="0.197" /><testcase classname="tests.unit.test_llm_provider" name="test_q10_sync_repair_records_two_attempts_and_final_http_identity[True]" time="0.173" /><testcase classname="tests.unit.test_llm_provider" name="test_q10_sync_repair_uncertain_outcome_propagates_without_third_post" time="0.141"><failure message="Failed: DID NOT RAISE QuickScanWorkUncertainError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-provider-red-01/test_q10_sync_repair_uncertain0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002968377D5B0&gt;
+
+    def test_q10_sync_repair_uncertain_outcome_propagates_without_third_post(tmp_path, monkeypatch):
+        provider, _ = _q10_sync_provider(tmp_path)
+        store, work_id, lease = _q10_sync_claimed(tmp_path)
+        session = _q10_sync_http(monkeypatch, [_q10_sync_response("initial"), requests.Timeout("synthetic uncertain repair")])
+        with bind_quick_scan_work(store, work_id, lease), bind_quick_scan_route(route_id="openai-route", provider="openai", model_requested="model-a"):
+&gt;           with pytest.raises(QuickScanWorkUncertainError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE QuickScanWorkUncertainError
+
+tests\unit\test_llm_provider.py:127: Failed</failure></testcase><testcase classname="tests.unit.test_llm_provider" name="test_q10_sync_repair_persistence_error_propagates_without_retry_or_success" time="0.137" /></testsuite></testsuites>

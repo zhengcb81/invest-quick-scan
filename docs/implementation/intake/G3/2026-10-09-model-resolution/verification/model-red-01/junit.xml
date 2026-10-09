@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="1.375" timestamp="2026-10-09T00:14:06.797570+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_llm_client" name="test_q10_unregistered_openai_model_does_not_verify" time="0.002"><failure message="AssertionError: assert True is False&#10; +  where True = LLMSearchResponse(content='synthetic answer', request_id='q10-request', response_id='q10-response', actual_model='fixt...//example.org/source'], 'sources': [{'url': 'https://example.org/source', 'title': None, 'published_date': None}]}]}]}).search_verified">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000022753D4C2B0&gt;
+
+    def test_q10_unregistered_openai_model_does_not_verify(monkeypatch):
+        session = Mock()
+        session.post.return_value = _q10_response("fixture-resolved")
+        monkeypatch.setattr("src.providers.llm_client.http_client_manager.get_sync_session", lambda: session)
+        result = LLMClient("synthetic", "fixture-requested", "https://api.openai.com/v1/responses").send_search_request("synthetic")
+        assert result.actual_model == "fixture-resolved"
+&gt;       assert result.search_verified is False
+E       AssertionError: assert True is False
+E        +  where True = LLMSearchResponse(content='synthetic answer', request_id='q10-request', response_id='q10-response', actual_model='fixt...//example.org/source'], 'sources': [{'url': 'https://example.org/source', 'title': None, 'published_date': None}]}]}]}).search_verified
+
+tests\unit\test_llm_client.py:36: AssertionError</failure></testcase><testcase classname="tests.unit.test_llm_client" name="test_q10_registered_openai_alias_preserves_both_models" time="0.001"><failure message="TypeError: LLMClient.__init__() got an unexpected keyword argument 'model_resolution'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000022753D4C770&gt;
+
+    def test_q10_registered_openai_alias_preserves_both_models(monkeypatch):
+        session = Mock()
+        session.post.return_value = _q10_response("fixture-resolved")
+        monkeypatch.setattr("src.providers.llm_client.http_client_manager.get_sync_session", lambda: session)
+        policy = {"schema_version": "1.0.0", "aliases": [{
+            "provider": "openai", "protocol": "responses", "requested_model": "fixture-requested",
+            "resolved_model": "fixture-resolved"}]}
+&gt;       client = LLMClient("synthetic", "fixture-requested", "https://api.openai.com/v1/responses", model_resolution=policy)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: LLMClient.__init__() got an unexpected keyword argument 'model_resolution'
+
+tests\unit\test_llm_client.py:46: TypeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_work_store" name="test_q10_bare_old_response_available_cannot_create_new_checkpoint" time="0.105"><failure message="Failed: DID NOT RAISE WorkConflictError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-red-01/test_q10_bare_old_response_ava0')
+
+    def test_q10_bare_old_response_available_cannot_create_new_checkpoint(tmp_path):
+        store = _store(tmp_path, [1_800_000_000.0])
+        item = _created(store)
+        lease, attempt, receipt = _successful_search_attempt(store, item["work_item_id"])
+&gt;       with pytest.raises(WorkConflictError, match="durable response"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE WorkConflictError
+
+tests\unit\test_quick_scan_work_store.py:490: Failed</failure></testcase></testsuite></testsuites>

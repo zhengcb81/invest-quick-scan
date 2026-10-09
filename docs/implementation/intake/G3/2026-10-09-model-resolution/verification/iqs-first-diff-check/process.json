@@ -1,0 +1,31 @@
+{
+  "schema": "iqs_original_artifact_whitespace/1",
+  "command": [
+    "git",
+    "--no-optional-locks",
+    "-C",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan",
+    "-c",
+    "core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol",
+    "diff",
+    "--cached",
+    "--check"
+  ],
+  "returncode": 2,
+  "paths": [
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-affected-check-02/junit.xml",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-affected-check-02/stdout.log",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-affected-final-02/junit.xml",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-affected-final-02/stdout.log",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-async-model-red-01/junit.xml",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-async-model-red-01/stdout.log",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-async-red-02/junit.xml",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-async-red-02/stdout.log",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-core-check-01/junit.xml",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-core-check-01/stdout.log",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-regression-check-01/junit.xml",
+    "docs/implementation/intake/G3/2026-10-09-model-resolution/verification/model-regression-check-01/stdout.log"
+  ],
+  "diagnosis": "Only observed pytest raw trailing whitespace; original artifact bytes unchanged; first IQS commit not attempted",
+  "controller_initial_error": "First diagnostic counted traceback source lines as Git headers; assertion before any file/attributes write; now only anchored non-added-line headers"
+}

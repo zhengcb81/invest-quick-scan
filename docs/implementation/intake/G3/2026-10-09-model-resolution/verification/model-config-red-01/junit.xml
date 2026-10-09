@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="1.583" timestamp="2026-10-09T00:15:14.092235+01:00" hostname="DESKTOP-156V213"><testcase classname="" name="tests.unit.test_model_resolution" time="0.000"><error message="collection failure">ImportError while importing test module 'C:\Users\郑曾波\Projects\invest-quick-scan\runs\model-resolution-2026-10-09-01\qa\tests\unit\test_model_resolution.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Miniconda\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_model_resolution.py:10: in &lt;module&gt;
+    from src.providers.model_resolution import (
+src\providers\__init__.py:8: in &lt;module&gt;
+    from src.providers.async_llm_provider import AsyncLLMProvider
+src\providers\async_llm_provider.py:18: in &lt;module&gt;
+    from .llm_client import (
+src\providers\llm_client.py:22: in &lt;module&gt;
+    from src.providers.model_resolution import (
+E   ModuleNotFoundError: No module named 'src.providers.model_resolution'</error></testcase></testsuite></testsuites>

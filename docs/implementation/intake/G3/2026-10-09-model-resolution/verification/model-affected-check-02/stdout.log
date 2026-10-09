@@ -1,0 +1,32 @@
+........................................................................ [ 11%]
+........................................................................ [ 23%]
+........................................................................ [ 35%]
+........................................................................ [ 47%]
+........................................................................ [ 59%]
+........................................................................ [ 71%]
+.....................F.................................................. [ 83%]
+........................................................................ [ 95%]
+..............................                                           [100%]
+================================== FAILURES ===================================
+______ test_q10_abandoned_unsent_repair_allows_new_lease_final_response _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-affected-check-02/test_q10_abandoned_unsent_repa0')
+
+    def test_q10_abandoned_unsent_repair_allows_new_lease_final_response(tmp_path):
+        now = [1_800_000_000.0]
+        store = _store(tmp_path, now)
+        item = _created(store)
+        work_id = item["work_item_id"]
+        old_lease, first, first_receipt = _successful_search_attempt(store, work_id)
+        unsent, _ = _q10_repair_attempt(store, item, old_lease)
+        now[0] += 61
+>       assert store.recover_expired(work_id) == "pending"
+E       AssertionError: assert 'uncertain' == 'pending'
+E         
+E         - pending
+E         + uncertain
+
+tests\unit\test_quick_scan_work_store.py:1100: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_abandoned_unsent_repair_allows_new_lease_final_response
+1 failed, 605 passed in 76.93s (0:01:16)

@@ -1,0 +1,48 @@
+{
+  "schema": "model_resolution_publish_approval/1",
+  "approved_for_model_resolution_publish": true,
+  "snapshot_label": "model-release-01",
+  "reviewed_source_sha256": "3c38dd7a3ada47f18bc1ac4dc21ca6d37f62c206d0e84dd6537e3556886ba72c",
+  "approved_paths": [
+    ".gitignore",
+    "src/config/llm_config.py",
+    "src/config/quick_scan_model_resolution.schema.json",
+    "src/providers/async_llm_provider.py",
+    "src/providers/base_llm_provider.py",
+    "src/providers/llm_client.py",
+    "src/providers/llm_provider.py",
+    "src/providers/model_resolution.py",
+    "src/runners/llm_runner.py",
+    "src/utils/llm_integration.py",
+    "src/utils/quick_scan_work_store.py",
+    "src/utils/quick_scan_work_transport.py",
+    "tests/integration/test_qa_c06_02_subprocess_cli.py",
+    "tests/unit/test_async_llm_provider.py",
+    "tests/unit/test_llm_client.py",
+    "tests/unit/test_llm_config.py",
+    "tests/unit/test_llm_integration.py",
+    "tests/unit/test_llm_provider.py",
+    "tests/unit/test_model_resolution.py",
+    "tests/unit/test_q10_delivery.py",
+    "tests/unit/test_quick_scan_c06_complete_seal.py",
+    "tests/unit/test_quick_scan_cost_resolver.py",
+    "tests/unit/test_quick_scan_work_store.py",
+    "tests/unit/test_quick_scan_work_transport.py"
+  ],
+  "approved_junit_totals": {
+    "tests": 606,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "independent_review": "docs/implementation/reviews/G3/model-resolution-2026-10-09/independent-review.md",
+  "independent_review_sha256": "6dc97181f2ec7cf5eeec37a2c241342c88e388b65581042f9f6c62fa685672a3",
+  "authority": "Human whole-StockQA authorization with advance 24-path report; independent finite software review completed",
+  "not_authorized_by_this_receipt": [
+    "StockWiki new files",
+    "other repositories",
+    "production data",
+    "live paid API",
+    "G3/F05/THIN/L03 closure"
+  ]
+}

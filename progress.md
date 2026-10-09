@@ -2325,3 +2325,55 @@
 - finish实际136源/副本对照、129原未改/7授权最终raw及sourceGitHEAD/status/最终执行SHA均符合；生成2419文件/487目录lstat单硬链/无reparse清单。严格CIM0/set-size-SHA dry-run实际0，Apply session24049终态0、已清2419文件/487目录，唯一root不存在；source helper6994已终态0，所有测试/静态/原Black已确认结束，无server/listener。shared TEMP、Phase92、源未跟踪/nul/opencode保留，未追认历史删除者。
 - IQS首次交付helper核101原字节工件/索引、107精确暂存成功，diff --cached --check实际2，尚未commit/push：三执行guard原EOF空行与可编辑findings尾空行被具名指出。为三原guard添加精确blank-at-eof例外保持SHA，不清洗证据；仅收可编辑findings多余尾空行。helper明确--resume-staged需现有staged精确107集合且无其他writer路径，重建本索引后再继续，不重跑产品测试或冒称首次成功。
 - **Phase109实际IQS Git交付**：107精确路径已沙箱外提交`a262c32cc9bde3e7f404feb85136f5cdf160f696`，正常push origin/master（6d33a9b→a262c32，actual exit0，HEAD/远端跟踪相同）；101工件及索引staged原字节逐项相符、23JSON/35AST/6链接/136最终JUnit（28JR2实例）通过，diff0。原opencode未跟踪保留，2419私有文件/487目录已清；StockQA86b1e8a独立已提交推送，SW未写。JR2单侧签收不关闭JR1/JR3/G3/F05/TH-IN/L03/真实gold；下一动作沿原Q10另列requested/resolved。随后仅提交这两PWF实际回执，不改101冻结工件。
+
+## 2026-10-09 — Phase110开工
+- 从IQS bc6e63a／StockQA86b1e8a当前状态恢复；源仓七未跟踪保留，IQS只原opencode。resolver成功为空=root PWF。上一工程回合完成JR2实际Git与清理属progress；只读heartbeat没有完成工程动作，不冒记为progress。
+- 独立model_resolution_flow只读勘察完成，不写外仓／索引、不跑测试或API。现有HTTP actual可解析但attempt未耐久保存，三个parser和checkpoint均有exact门，route requested与POST尚靠装配一致；本批需连通而不是删校验。
+- 预备隔离TDD，冻结明确alias许可与真实response摘要，schema8新增不可变旁表，migration不回填actual；现有C06 requested/resolved字段与durable重建保留。暂未执行新测试或发布源码。
+- 一次PWF精确补丁带不存在的简写heading被原子拒绝，改真实段落后成功，无外仓写。StockWiki新增四文件问询仍未答，JR1/JR3/G3/F05/THIN/L03保持原边界。
+- 准备helper首次沙箱只读外Git遭Permission denied，创建私有根之前已停止；提升后固定136已签收文件＋非秘密gitignore成功，无外仓写。guard实际文件为executed-guard.py，执行前按真实目录修正猜名。新scope21路径已先报备，worker仅写独占副本，parent独占文档／PWF。
+- model-red-01实际3 failed/157 deselected、exit1、无超时、源码hash不变：未注册OpenAI替换被错误认可、alias constructor未接线、裸成功attempt可无durable响应checkpoint。async插件自动加载被禁导致未知mark，本选择未跑async；保留原runner，之后明确只加载pytest_asyncio.plugin以确保后续异步测试实际执行。第一次插件补丁hunk顺序错误整批拒绝，已最小精确修改；不改变RED原日志。
+- 同批设计审读补齐failure无usage实际来源、budget-only、fallback最终route、async repair未知态及历史不追认六约束；已交worker，无额外批准门。报备scope增至23路径，新增async provider测试与既有sync provider测试，源码原范围不扩；只在私有qa实施，真实外仓尚未发布。
+- 另config RED为1 collection error/86 deselected（缺helper模块），不与三动态RED混为规则验证；原stdout/runner保留。后续新label在运行前自动冻结允许源码/guard/helper字节；前两label没有完整源码snapshot，不伪填当前已变化源。handoff已置顶当前唯一writer／私有根／未发布边界。控制器partial-line接手补丁曾失败，已用完整真实行改正。
+- sender mismatch约束澄清为费用reserve/send意图/HTTP前拒；provider构造已解析的合成凭证配置不能冒称未读。原wrong-security公司入场0key要求不变，两个不同边界不混同。
+- model-provider-red-01 worker实测sync选择1failed/3passed；async model-async-red-01 session14263仍活跃，capture无实时输出，沙箱CIM拒绝后父提升只读两次确认同pwsh64544→runner51104→pytest47484活跃；未起替代、未停止、未报终态或产品RED。等待原300秒runner结束；提升仅准同禁网／去key／私有写域。
+- alias配置/API最小例已稳定，实操说明operations.md已留档但明确未验收／未发布，不填真实厂商映射、不启收费扫描；底层接线已写副本，async／legacy／fixture／CLI剩余仍在做。
+- 原async session14263实际timeout=true/returncode=null/wall300.027s、两输出空；子worker修改phase拼写与运行重叠使source_unchanged=false，因此不计产品RED。parent第3次CIM证同pytest age278.2s尚未超时，没有误终止／重启。
+- 子worker对同新label model-async-red-02提升申请被自动审批拒绝：按早先只读任务／heartbeat禁止启动判断。parent直接列当前用户全计划实施测试及StockQA全仓报备授权，复核同命令／同label得到批准；没有改工具绕过或扩大范围。实际4failed/1.23s（wall2.033）、exit1、无timeout／源码不变：async repair两attempt与alias、uncertain/persistence吞异常均真实RED。之后提升CIM匹配0，原／新进程已退出；原拒绝／超时／源码重叠均留档。继续同批修复，不新增批准门或收费调用。
+- worker已报告schema8/耐久response/native同步异步接线写完，继续补checkpoint marker历史边界、repair/budget-only冻结与transport失败来源测试；无活跃测试。子worker已交helper/schema/config及后续分配测试，未自行运行，故不写GREEN；最后两文件由其明确独占完成后停写，主worker统一测试。源码均未发布/签收，parent尚未格式化，不并发改源。
+- 追加报备24th路径tests/unit/test_q10_delivery.py，仅补原synthetic receipt字段及record_outcome来源接线，保留ACK/outbox/JR2断言。result_outbox与旧e2e目前只测不改，后续以实际失败必要性为准。子worker10个指定文件已交接并停止写、无独立测试；主worker唯一后续源码writer。文档模板对真实schema/JSON、四helper AST和scope唯一性检查通过，不当产品GREEN。
+- model-core-check-01真实512P/4F、wall37.834s、无timeout／源码不变：两个新429 fixture缺required provider_error_code，两个旧302负例发现失败响应身份采集过宽。保留原redirect断言，仅采canonical摘要而不信fake completed model/id/usage；fixture补必需错误码。修正后尚未复测，不写516GREEN。
+- model-regression-check-01真实55P/19F、wall44.378s、无timeout／源码不变：18个q10旧裸receipt夹具被新来源门拒绝，1个schema7旧断言需升级8。原公开CLIalias冷跑→独立warm→移除当前alias后独立seal同包、0新增HTTP正例已过；这不替整批GREEN。其后heartbeat要求只读，所有writer与测试原handle终态后暂停，未发布／提交／清理。
+- 本次工程goal续行重新核IQS bc6e63a及本批文档/归档、QA86b1e8a和原七未跟踪，无外仓漂移。scope24已经报备；已授权synthetic夹具补完整来源，C06保留旧v6/v7侧表并加入v8两表。worker冻结全源后model-affected-check-01实际session66532启动、完整14受影响文件；沿原handle收集，不计尚未结束为通过。StockWiki授权仍未答、TH/IN原门保持，仅读Git提升不写它们。
+- model-affected-check-01已沿66532终态exit0：14文件590 passed/78.47s（wall79.118），无timeout、执行源hash不变；九core516P、outbox30P/q10 18P/C06seal18P、两个CLI8P。原fixture修正保留所有ACK/JR2断言；worker停写且无活跃session。parent接格式/mypy与一次集中最终审查；这是未格式前GREEN，尚未发布。
+- 发布/清理controller草拟仅写IQS；静态AST/24scope后字符串路径断言失败（同源forward-slash记录与Windows反斜杠str不同），未执行发布/Git/清理。改为resolve后精确Path相等；不把controller校验错误算产品RED，不覆写已有证明。
+- model-static-01格式/isort23命令0，但mypy57源5个type errors（两client Optional与runner三str类型）。worker在原两允许文件保留严格runtime语义局部修复；model-static-02实际24命令0/32.247s，mypy57源无问题。第一次真实失败日志不改。
+- 格式后model-affected-final-01原session1074真实590P/79.928s、exit0、无timeout／源不变；提升CIM匹配0，无重启。集中审查与case映射发现MR08缺直接first-repair receipt抢占反例，源码只核指定attempt而不核最终ordinal；目前为已证源码缺口，未冒记运行RED。同批允许主writer先补直接RED、再修store/readguard及MR12 prepare actual、request_id、failure真正usage与不同requested backup正例；最终发布须再依据新字节GREEN，不升级本590为完整验收。
+- MR08 model-final-attempt-red-01实际6F/2P/93deselected、wall2.718s、无timeout、执行源不变：四latest状态/未许可新actual/重签旧来源读取均DID NOT RAISE；unknown及late lease两原保护通过。已成为真实产品RED，主worker同批修最终ordinal/write/read、原历史exact分支保留。
+- 集中审查同时指出publish前应交叉锁snapshot与GREEN执行字节、JUnit，而不能等commit/push后finish才比；lifecycle.load_release已加入changed SHA逐项与executed_source_hashes对照及准确JUnit总数／fail-error-skip0。仅控制器静态改动，未调用发布或清理；无需新增小审查门。
+- 同一集中审查发现MR03异步await窗口：begin按A记录后，get_async_client期间若同client.model被改C，后续payload仍热读。已交同批worker先补实际async反例、再将sync/async endpoint／POST／parser／receipt固定同一local requested。此条尚未实测，不假记RED；v3/v5入口因统一升级链覆盖且未改旧DDL如实保留间接口径，不追加无效排列测试。
+- 为原guard及历史test_model_resolution执行副本的已观察EOF空行加精确.gitattributes例外，保持原SHA；新review根统一-text以保留PS1原字节。控制器AST与cleanup PS语法有效，但这不是产品验收或删除授权证明。
+- MR03 model-async-model-red-01真实1F/127deselected、wall1.491s、无timeout／源不变：await期间同client.model变更，POST确实mutated-after-durable-intent，route/attempt/reserve仍fixture-requested。主writer随后才改sync/async同一local requested；同时统一新alias helper/schema160字边界以匹配既有耐久限制，补160/161正反例。集中审查确认其余主体无新P1/P2，仍待本批最终冻结GREEN，不提前批准发布。
+- 原worker model-affected-check-02在parent减重复指令抵达前已实际启动71366，parent未并发format；沿该原handle终态真实605P/1F/wall77.527s、无timeout／源不变。唯一F是新增unsent-repair恢复测试忽略前一attempt已发送且无checkpoint，错误期待pending；原recover诚实uncertain正确。仅改该测试为来源保留／uncertain／不重放，不改变产品恢复规则；MR03/MR08和prepare实际模型等增强已通过。完整最终新字节仍待格式与GREEN。
+- 该恢复测试已改准确名test_q10_unsent_repair_after_prior_response_remains_uncertain_without_replay；核uncertain_attempt_id=first、second仍prepared、claimNone、旧lease拒、无第三attempt及原durable来源，2USD reserve/unreconciled1不变。原recover源码未改。主writer全部停写，parent model-static-03实际24命令0/12.588s、mypy57源无问题；控制器AST实际6个（先前打印7为固定文字误计，不作为覆盖数）。最终model-affected-final-02实际session4363已启动14文件，未终态前不记GREEN；沿原handle，不并发写源。
+- model-affected-final-02沿4363真实终态605P/1F/77.337s、exit1、无timeout／源不变。恢复fixture新加预算前置漏configure_budget_policy，mark_send_intent被budget_policy_not_configured严格拒绝，尚未跑后续恢复assert；不将配置字典configured=True当持久注册。不改产品准入，主worker仅补该测试正确前置并先select真实验证，再交父完整最终字节回归；保留原两次fixture错预期／错设置日志。
+- fixture实际补的是owner公开store.configure_quick_scan_budget(policy)入库；model-recovery-fixture-check-01真实1P/103deselected/wall1.452、exit0、无timeout／源不变，预算2USD/unreconciled1及来源／uncertain不重问全断言通过。产品没改。parent接model-static-04最终格式／mypy，主writer已停写；随后完整14文件最终回归，不再用旧fail/阶段GREEN批准最终源。
+- model-static-04最终24命令0/7.436s、mypy57源无问题；与static03比源码SHA全相同，仅恢复测试变。最终model-affected-final-03沿84096真实606P/76.31s（wall76.898）、exit0、fail/error/skip0、无timeout／源不变。一次集中审查待manifest最终字节附记，无新实现writer。
+- collect首轮在写snapshot之前被“undeclared source file”拒；仅额外qa/logs/stock_qa_20261009.log（678306bytes），来自固定owner logger源码104–105的dated FileHandler，不是源码漂移。collect-initial保留；只为此精确生成日志记录SHA/bytes并排除发布来源，任意其他未声明文件仍拒。日志仍保留OWN，最终按自有清单严格清理；未删文件/发布、不洗原log。随后误读尚未创建source.json导致FileNotFound，已按实际失败顺序纠正，不当产品失败。
+- 最终collector成功：24changed／117原未改／原137保护、新4共141，network0／累计846自有synthetic配置读取；manifest SHA3c38dd7a3ada47f18bc1ac4dc21ca6d37f62c206d0e84dd6537e3556886ba72c。一次集中独审最终字节附记准许本24有限发布，24snapshot与执行hash、606JUnit、22Python与静态SHA逐项一致；无本范围剩余P1/P2，不闭全局门。
+- root存实际独审／approval、重新报备24发布；lifecycle先审查文SHA／明确路径／execution SHA／JUnit核对，dry-run0后Apply实际发布24对应原字节，原sourceHEAD/status/hash全匹配。仅StockQA原全仓授权内写，SW不写。正常source commit/push原session38394已启动，警告仅Git将来EOL转换，不宣称hook或push成功；禁止修改源／重启另一Git进程。
+
+- 前一goal期间正常source Git原38394终态exit1：mixed-line-ending统一11文件并要求重提，其他black/isort/mypy/detect-secrets等钩子通过，没有新commit/push。只读heartbeat重核SW/Theme/Industry HEAD无变化，W11已verified、真实C06/facts/relations仍false，G3/F05/THIN前置不变；无工程状态改动，不算verified wait。
+- 工程goal本回合恢复后重核IQS bc6e63a／QA86b1e8a，24精确staged、11仅EOL未暂存、原七unknown。原审批/raw snapshot/失败Git controller保持；仅IQS helper实现EOL续收，final04须绑定新raw，再同一次集中审查附记与正常commit/push，禁止hook skip/reset/force。前置恢复子worker状态仍running已明确中断，无新写范围。
+- 本轮handoff插入先用了partial-line hunk，工具验证拒绝未写；改为核真实前缀再插入完整段，controller错误保留，不当产品失败。
+
+- EOL两helper已交并停写，parent四controller AST有效；reconcile实际exit0，仅同步11 OWN文件，原117双侧raw不变、24 source normLF同原审、原beforeSHA和三证据/失败日志保持。proof SHA7c9cbea594a9c660fb50deb59f9d3c01a0e3fbe3a9eed41c4777d13fa78805cc，source/index写0。final04完整14文件原session70547实际运行中，尚未终态，不提前记606GREEN或开第二运行器。
+
+- final04沿原70547实际终态exit0/wall76.591s、无timeout／source unchanged；完整14文件606P、fail/error/skip0。新collector明确--published-eol实际exit0，source02排他冻结：24改／117原raw不变、11仅EOL、原137+4new，原beforeSHA和原三证据关联；network0、987累计自有合成config读。同一集中独审正在核最终附记，尚未新commit/push，不替全局门。
+
+- 同一次独审EOL最终附记允许原24：source02 SHA387dc2442e88a192ce45ec497cb7aba41d40f7a84476777d502055f091b99506，raw/exec/JUnit/原三证据/117 OWN均核，新独立审批锁附记SHA；原review／approval／第一次失败Git logs不改。
+- 源正常Git沿27034终态exit0：StockQA24文件提交42a517c4bd6bc8219f926957c6c332944da3278a并正常push origin/master，三个命令均0、owner钩子全过、原七untracked保留，当前source raw匹配最终执行；没跳hook/reset/force。finish沿86881终态exit0，实比141源码/副本、原117不变／24授权。自有清理baseline5492文件/2530目录，dry-run原78550运行中，仅核路径/CIM/link/set-size-SHA，不提前称已删。
+
+- 清理dry-run原78550和Apply原48950均沿原handle终态exit0：CIM0/lstat单硬链无reparse/set-size-SHA核5492文件/2530目录，仅固定OWN逐文件删除后空目录删除，根已不存在；共享TEMP/Phase92/源未知项未动。更新操作规范、有限验收与接手，source42a517c已交，IQS本批归档正常Git尚待实际回执。
+
+- IQS首交付原79381终态exit1：diff step0实际2，仅12原pytest stdout/JUnit路径尾空白，未commit/push；729原索引字节全不变。只为12精确原日志属性加blank-at-eol例外，保留raw诊断/原index；初诊断header计数assert误计traceback正文，写前拒绝，纠正锚定Git header后实际12路径。新index733工件（原729+诊断3+旧index1）、63JSON/394AST，功能源码不改不重测；正常Git以739精确路径resume，结果待原handle。

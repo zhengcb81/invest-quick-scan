@@ -1,0 +1,260 @@
+FFFF..FF                                                                 [100%]
+================================== FAILURES ===================================
+_ test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair[prepared] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-final-attempt-red-01/test_q10_checkpoint_requires_f0')
+latest_phase = 'prepared'
+
+    @pytest.mark.parametrize("latest_phase", [
+        "prepared", "send_intent", "response_available", "confirmed_failure", "unknown", "late_lease",
+    ])
+    def test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair(
+        tmp_path, latest_phase
+    ):
+        now = [1_800_000_000.0]
+        store = _store(tmp_path, now)
+        item = _created(store)
+        work_id = item["work_item_id"]
+        lease, first, first_receipt = _successful_search_attempt(store, work_id)
+        second, second_receipt = _q10_repair_attempt(store, item, lease)
+        if latest_phase != "prepared":
+            store.mark_send_intent(work_id, lease, second["attempt_id"])
+        if latest_phase == "response_available":
+            _q10_record_success(store, item, lease, second, second_receipt)
+        elif latest_phase == "confirmed_failure":
+            failed = {**second_receipt, "http_status_code": 401, "search_status": "unverified",
+                      "response_status": None, "source_urls": []}
+            store.record_attempt_outcome(
+                work_id, lease, second["attempt_id"], outcome="confirmed_failure",
+                http_status_code=401, failure_category="authentication_rejected",
+                request_id=failed["request_id"], receipt_sha256=quick_scan_receipt_sha256(failed),
+                execution_receipt=failed,
+            )
+        elif latest_phase == "unknown":
+            store.record_attempt_outcome(work_id, lease, second["attempt_id"], outcome="unknown")
+        elif latest_phase == "late_lease":
+            now[0] += 61
+            assert store.recover_expired(work_id) == "uncertain"
+            store.note_late_receipt(
+                work_id, lease, second["attempt_id"],
+                receipt_sha256=quick_scan_receipt_sha256(second_receipt),
+                execution_receipt=second_receipt,
+            )
+        with closing(store._connect()) as connection:
+            before = tuple(connection.iterdump())
+        expected_error = LeaseFencedError if latest_phase in {"unknown", "late_lease"} else WorkConflictError
+>       with pytest.raises(expected_error):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE WorkConflictError
+
+tests\unit\test_quick_scan_work_store.py:981: Failed
+_ test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair[send_intent] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-final-attempt-red-01/test_q10_checkpoint_requires_f1')
+latest_phase = 'send_intent'
+
+    @pytest.mark.parametrize("latest_phase", [
+        "prepared", "send_intent", "response_available", "confirmed_failure", "unknown", "late_lease",
+    ])
+    def test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair(
+        tmp_path, latest_phase
+    ):
+        now = [1_800_000_000.0]
+        store = _store(tmp_path, now)
+        item = _created(store)
+        work_id = item["work_item_id"]
+        lease, first, first_receipt = _successful_search_attempt(store, work_id)
+        second, second_receipt = _q10_repair_attempt(store, item, lease)
+        if latest_phase != "prepared":
+            store.mark_send_intent(work_id, lease, second["attempt_id"])
+        if latest_phase == "response_available":
+            _q10_record_success(store, item, lease, second, second_receipt)
+        elif latest_phase == "confirmed_failure":
+            failed = {**second_receipt, "http_status_code": 401, "search_status": "unverified",
+                      "response_status": None, "source_urls": []}
+            store.record_attempt_outcome(
+                work_id, lease, second["attempt_id"], outcome="confirmed_failure",
+                http_status_code=401, failure_category="authentication_rejected",
+                request_id=failed["request_id"], receipt_sha256=quick_scan_receipt_sha256(failed),
+                execution_receipt=failed,
+            )
+        elif latest_phase == "unknown":
+            store.record_attempt_outcome(work_id, lease, second["attempt_id"], outcome="unknown")
+        elif latest_phase == "late_lease":
+            now[0] += 61
+            assert store.recover_expired(work_id) == "uncertain"
+            store.note_late_receipt(
+                work_id, lease, second["attempt_id"],
+                receipt_sha256=quick_scan_receipt_sha256(second_receipt),
+                execution_receipt=second_receipt,
+            )
+        with closing(store._connect()) as connection:
+            before = tuple(connection.iterdump())
+        expected_error = LeaseFencedError if latest_phase in {"unknown", "late_lease"} else WorkConflictError
+>       with pytest.raises(expected_error):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE WorkConflictError
+
+tests\unit\test_quick_scan_work_store.py:981: Failed
+_ test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair[response_available] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-final-attempt-red-01/test_q10_checkpoint_requires_f2')
+latest_phase = 'response_available'
+
+    @pytest.mark.parametrize("latest_phase", [
+        "prepared", "send_intent", "response_available", "confirmed_failure", "unknown", "late_lease",
+    ])
+    def test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair(
+        tmp_path, latest_phase
+    ):
+        now = [1_800_000_000.0]
+        store = _store(tmp_path, now)
+        item = _created(store)
+        work_id = item["work_item_id"]
+        lease, first, first_receipt = _successful_search_attempt(store, work_id)
+        second, second_receipt = _q10_repair_attempt(store, item, lease)
+        if latest_phase != "prepared":
+            store.mark_send_intent(work_id, lease, second["attempt_id"])
+        if latest_phase == "response_available":
+            _q10_record_success(store, item, lease, second, second_receipt)
+        elif latest_phase == "confirmed_failure":
+            failed = {**second_receipt, "http_status_code": 401, "search_status": "unverified",
+                      "response_status": None, "source_urls": []}
+            store.record_attempt_outcome(
+                work_id, lease, second["attempt_id"], outcome="confirmed_failure",
+                http_status_code=401, failure_category="authentication_rejected",
+                request_id=failed["request_id"], receipt_sha256=quick_scan_receipt_sha256(failed),
+                execution_receipt=failed,
+            )
+        elif latest_phase == "unknown":
+            store.record_attempt_outcome(work_id, lease, second["attempt_id"], outcome="unknown")
+        elif latest_phase == "late_lease":
+            now[0] += 61
+            assert store.recover_expired(work_id) == "uncertain"
+            store.note_late_receipt(
+                work_id, lease, second["attempt_id"],
+                receipt_sha256=quick_scan_receipt_sha256(second_receipt),
+                execution_receipt=second_receipt,
+            )
+        with closing(store._connect()) as connection:
+            before = tuple(connection.iterdump())
+        expected_error = LeaseFencedError if latest_phase in {"unknown", "late_lease"} else WorkConflictError
+>       with pytest.raises(expected_error):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE WorkConflictError
+
+tests\unit\test_quick_scan_work_store.py:981: Failed
+_ test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair[confirmed_failure] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-final-attempt-red-01/test_q10_checkpoint_requires_f3')
+latest_phase = 'confirmed_failure'
+
+    @pytest.mark.parametrize("latest_phase", [
+        "prepared", "send_intent", "response_available", "confirmed_failure", "unknown", "late_lease",
+    ])
+    def test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair(
+        tmp_path, latest_phase
+    ):
+        now = [1_800_000_000.0]
+        store = _store(tmp_path, now)
+        item = _created(store)
+        work_id = item["work_item_id"]
+        lease, first, first_receipt = _successful_search_attempt(store, work_id)
+        second, second_receipt = _q10_repair_attempt(store, item, lease)
+        if latest_phase != "prepared":
+            store.mark_send_intent(work_id, lease, second["attempt_id"])
+        if latest_phase == "response_available":
+            _q10_record_success(store, item, lease, second, second_receipt)
+        elif latest_phase == "confirmed_failure":
+            failed = {**second_receipt, "http_status_code": 401, "search_status": "unverified",
+                      "response_status": None, "source_urls": []}
+            store.record_attempt_outcome(
+                work_id, lease, second["attempt_id"], outcome="confirmed_failure",
+                http_status_code=401, failure_category="authentication_rejected",
+                request_id=failed["request_id"], receipt_sha256=quick_scan_receipt_sha256(failed),
+                execution_receipt=failed,
+            )
+        elif latest_phase == "unknown":
+            store.record_attempt_outcome(work_id, lease, second["attempt_id"], outcome="unknown")
+        elif latest_phase == "late_lease":
+            now[0] += 61
+            assert store.recover_expired(work_id) == "uncertain"
+            store.note_late_receipt(
+                work_id, lease, second["attempt_id"],
+                receipt_sha256=quick_scan_receipt_sha256(second_receipt),
+                execution_receipt=second_receipt,
+            )
+        with closing(store._connect()) as connection:
+            before = tuple(connection.iterdump())
+        expected_error = LeaseFencedError if latest_phase in {"unknown", "late_lease"} else WorkConflictError
+>       with pytest.raises(expected_error):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE WorkConflictError
+
+tests\unit\test_quick_scan_work_store.py:981: Failed
+__ test_q10_latest_unregistered_response_cannot_downgrade_to_earlier_success __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-final-attempt-red-01/test_q10_latest_unregistered_r0')
+
+    def test_q10_latest_unregistered_response_cannot_downgrade_to_earlier_success(tmp_path):
+        store = _store(tmp_path, [1_800_000_000.0])
+        item = _created(store)
+        lease, first, first_receipt = _successful_search_attempt(store, item["work_item_id"])
+        second, second_receipt = _q10_repair_attempt(store, item, lease, actual_model="unregistered")
+        store.mark_send_intent(item["work_item_id"], lease, second["attempt_id"])
+        _q10_record_success(store, item, lease, second, second_receipt)
+        with closing(store._connect()) as connection:
+            before = tuple(connection.iterdump())
+        for attempt, receipt in ((first, first_receipt), (second, second_receipt)):
+>           with pytest.raises(WorkConflictError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE WorkConflictError
+
+tests\unit\test_quick_scan_work_store.py:1012: Failed
+_______ test_q10_checkpoint_read_cannot_rebind_to_intermediate_attempt ________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-final-attempt-red-01/test_q10_checkpoint_read_canno0')
+
+    def test_q10_checkpoint_read_cannot_rebind_to_intermediate_attempt(tmp_path):
+        store = _store(tmp_path, [1_800_000_000.0])
+        item = _created(store)
+        work_id = item["work_item_id"]
+        lease, first, first_receipt = _successful_search_attempt(store, work_id)
+        second, second_receipt = _q10_repair_attempt(store, item, lease)
+        store.mark_send_intent(work_id, lease, second["attempt_id"])
+        _q10_record_success(store, item, lease, second, second_receipt)
+        checkpoint = store.save_answer_checkpoint(
+            work_id, lease, second["attempt_id"], answer=_answer_for(item), execution_receipt=second_receipt,
+        )
+        payload = copy.deepcopy(checkpoint["payload"])
+        payload["attempt_id"] = first["attempt_id"]
+        payload["provenance"].update(
+            work_prompt_sha256=first["prompt_sha256"], request_id=first_receipt["request_id"],
+            response_id=first_receipt["response_id"], provider_attempt_id=first_receipt["attempt_id"],
+            response_sha256=first_receipt["response_sha256"],
+            receipt_sha256=quick_scan_receipt_sha256(first_receipt),
+        )
+        encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+        with closing(store._connect()) as connection, connection:
+            guard = connection.execute(
+                "SELECT sql FROM sqlite_master WHERE name='answer_checkpoint_no_update'"
+            ).fetchone()[0]
+            connection.execute("DROP TRIGGER answer_checkpoint_no_update")
+            connection.execute(
+                "UPDATE answer_checkpoint SET attempt_id=?,payload_json=?,payload_sha256=?",
+                (first["attempt_id"], encoded, hashlib.sha256(encoded.encode("utf-8")).hexdigest()),
+            )
+            connection.execute(guard)
+>       with pytest.raises((ValueError, WorkConflictError), match="final attempt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE any of (ValueError, WorkConflictError)
+
+tests\unit\test_quick_scan_work_store.py:1052: Failed
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair[prepared]
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair[send_intent]
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair[response_available]
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_checkpoint_requires_final_attempt_without_downgrading_after_repair[confirmed_failure]
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_latest_unregistered_response_cannot_downgrade_to_earlier_success
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_checkpoint_read_cannot_rebind_to_intermediate_attempt
+6 failed, 2 passed, 93 deselected in 2.16s

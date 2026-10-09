@@ -407,13 +407,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前状态（2026-10-08 Phase108）**：三个[外包大包](docs/implementation/parallel-lanes/packages/2026-10-07-wave2/README.md)整改交付的有限软件范围已分别签收；真实QA→SW生成/导入已有正例，ACK闭环被JR1–JR3阻断，见本批验收。总控本批只写IQS；新StockWiki四文件授权等待用户，StockQA历史全仓授权有效。Phase96准确性实验已收口，人类gold/完整校准不据来源复核冒签；G3/F05/L03/THIN未放行。历史Phase93为186模型/24搜索、0未知、上界USD2.877381，不因本批93次合成HTTP重复收费实验或启动200家。
+**当前状态（2026-10-09 Phase110）**：Q10来源追溯有限范围已交StockQA42a517c（正常钩子／push，24精确路径、原七未知项保留）。final04实际606P／14文件、source02 SHA387dc2442e88a192ce45ec497cb7aba41d40f7a84476777d502055f091b99506，117原源不变／141终态匹配；5492自有文件／2530目录严格清，根已无。单一下一动作：本IQS归档正常提交推送及PWF实际回执收口。其后JR1/JR3仍待StockWiki四文件确切写许可／owner交付，两端齐按既有集中卡回验。G3/L03/F05/THIN及真实gold门保持，不用软件通过代替真实答案准确性，不重跑full/UI/收费矩阵或退役回执。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
 复核发现原报告的prompt token合计与回执不符（10,008,297 vs. 约6.5M）、重跑36个同值答案的来源/生成参数无法独立绑定、合并引用率88%分母不明，缓存节省和服务端非确定性也有过度归因风险。已在`reviews/B01/phase1-report-2026-10-07.md` §9追加更正和证据边界；MiniMax控制台用量/费用对账及历史重跑来源缺口仍开放。
 
-**单一下一步（2026-10-08 Phase109完成）**：接续Q10中已记录的requested/resolved模型追溯缺口，先按当前StockQA `86b1e8a`重查writer/输入并报备既有四源码及受影响测试，TDD保存独立请求模型与真实HTTP解析模型、receipt绑定和注册alias策略；不能直接删相等断言或把actual改成requested。JR2事前目标绑定已在[本批有限验收](docs/implementation/reviews/G3/jr2-2026-10-08/acceptance.md)签收，真实七文件commit/push及2419自有清理已完成，不重做本批/full/UI。StockWiki四文件新增范围已问用户、未答前只读，JR1/JR3沿用[唯一集中整改卡](docs/implementation/reviews/G3/joint-2026-10-08/remediation.md)；许可后两owner实际结果齐再一次公开链回验。G3/L03/F05/事实gold/THIN不自动放行。
+**单一下一步（2026-10-09 Phase110进行中）**：固定StockQA `86b1e8a`隔离副本，接续Q10 requested/resolved追溯，以TDD实现事前冻结的显式模型别名许可、真实HTTP模型与回执的耐久绑定，再一次集中验证冷跑/恢复/封包。默认仍严格同名；不注册任意替换、不由requested回填actual。JR2七文件commit/push及2419自有清理已完成，不重做本批/full/UI。StockWiki四文件新增范围未答前只读，JR1/JR3沿用[唯一集中整改卡](docs/implementation/reviews/G3/joint-2026-10-08/remediation.md)；许可后两owner实际结果齐再公开链回验。G3/L03/F05/事实gold/THIN不自动放行。
 
 **自动目标等待（2026-10-08 18:25 UTC）**：同一“原writer的新正式交付未到”前置已连续出现三轮；可独立完成的联合验收准备已交付，当前没有可安全继续的实现／验收输入。将目标置blocked以避免自动空转，不停止三个外部harness、不宣布任务完成。任一新commit/handoff到达后，先独立验该包；QA/SW都满足输入条件再联合执行，无须等Lab才做QA/SW。恢复目标后重新核实际状态，不沿用旧dirty清单或已消失的进程PID。
 
@@ -1523,3 +1523,14 @@ Status: complete_for_jr2_single_owner_software_scope; source_and_IQS_committed_a
 - [x] 保存22真实RED及首次135P/1F，实施耐久绑定/迁移/历史兼容；最终五受影响文件136 passed/24.91s/pytest0，七执行SHA不变，不将旧ACK store当目标、不改公共wire。schema7保留旧终态exact replay，旧pending不学ACK。
 - [x] 同批一次集中独审及格式附记可发布七最终字节；owner静态九命令0/mypy56源无问题，format AST/import-scope与已审源相同，当前136源无漂移才发布。StockQA真实86b1e8a commit/push/正常钩子0，原七项保留；strict lstat/单硬链/set-SHA/CIM0 dry→Apply清2419文件/487目录，根不存在。IQS实际Git仍待回执，JR1/JR3/SW许可及全局门独立等待。
 - 实际IQS交付：107精确路径提交`a262c32cc9bde3e7f404feb85136f5cdf160f696`，101工件+索引staged原字节核对、diff检查通过，正常推送既有origin/master且HEAD相同，仅原opencode未跟踪保留。此前diff2的三raw guard EOF例外与PWF尾空行修正已留时序，不改被审源/日志；随后仅追加PWF本Git实际回执。
+
+## Phase110：Q10请求／实际模型耐久追溯
+Status: source_delivered_and_private_cleanup_complete; IQS_archive_delivery_pending; whole_project_gates_still_open
+- [x] IQS bc6e63a／StockQA86b1e8a当前已跟踪树无改动；原opencode及QA七未跟踪保留。resolver成功为空，沿用根PWF；不回放会话历史。上一工程目标回合完成JR2交付，属于progress；期间heartbeat只读监控不计工程进展。
+- [x] 独立只读调用链勘察已完成：请求实值与route未在发送边界核对、成功attempt缺durable actual、三个原生parser及checkpoint有相等门。C06原字段已有requested/resolved；不削弱封包重建或用正文推断模型。
+- [x] 固定独占副本并保存真实RED；严格显式alias配置纳入策略指纹，派发前冻结许可，HTTP模型／response摘要／receipt／durable checkpoint同一来源链已实施但仍待整批验证。
+- [x] 实施空表迁移、旧历史exact读取、不由requested回填；冷跑／warm／seal／fallback／repair／late lease／未知计费与最终attempt/异步POST窗口反例已覆盖。606受影响测试及一次集中独审通过；正常钩子统一11 EOL后final04再次606P，source02已冻结，等同批最终字节附记后正常Git，不重开小节点门。
+- [ ] hash核对后报备并发布获授权StockQA精确路径，正常提交／推送，严格清理本批自有根；更新PWF和实际回执。StockWiki四文件许可和全局门不随本批关闭。
+- 控制器记录：第一次PWF补丁含不存在的`## Phase109`单独匹配行，工具整批拒绝未写；已改为真实精确段落，不报产品失败。
+
+- Phase110源交付已为42a517c，最终606P／同批独审／新字节续收及正常Git完成；原5492文件／2530目录strict dry→Apply清、自有根已无。本IQS归档实际Git尚待本批回执，不提前标完成。

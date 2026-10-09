@@ -1,0 +1,50 @@
+{
+  "schema": "model_resolution_source_git/1",
+  "baseline_head": "86b1e8ab1221e085f08718ed31d18e792e526d34",
+  "result_commit": "42a517c4bd6bc8219f926957c6c332944da3278a",
+  "staged_files": 24,
+  "commands": [
+    {
+      "command": [
+        "git",
+        "-C",
+        "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM",
+        "commit",
+        "--quiet",
+        "-m",
+        "fix(quick-scan): preserve frozen requested and resolved model provenance"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM",
+        "push",
+        "origin",
+        "HEAD:master"
+      ],
+      "returncode": 0
+    }
+  ],
+  "pushed_origin_master": true,
+  "source_status_preserved": true,
+  "original_untracked": "?? .codegraph/\n?? .workbuddy-ai/\n?? nul\n?? pilot_runs/b2a_2026-10-03/\n?? pilot_runs/g2b_alphabet_2026-10-04/\n?? pilot_runs/l02_2026-10-04/\n?? progress_update.txt\n",
+  "release_file": "approval-for-publish-eol.json",
+  "release_sha256": "0f4c0408225490360d2922917962248b92dc9fab9b95c699e81adc11ffbd4c3f",
+  "reviewed_source_sha256": "387dc2442e88a192ce45ec497cb7aba41d40f7a84476777d502055f091b99506",
+  "eol_reconciliation": true,
+  "previous_failed_git_log": "verification/source-git"
+}

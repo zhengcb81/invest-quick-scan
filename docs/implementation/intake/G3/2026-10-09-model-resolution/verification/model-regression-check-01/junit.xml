@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="19" skipped="0" tests="74" time="43.501" timestamp="2026-10-09T00:40:38.992599+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_complete_standard_answer_seals_one_revision_and_replays_idempotently" time="0.439" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_a_second_frozen_context_for_the_same_task_is_refused" time="0.213" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_missing_standard_answer_blocks_then_supplements_with_zero_model_calls" time="0.328" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_compact_package_is_superseded_and_the_old_head_ack_cannot_settle_it" time="0.293" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_send_uncertain_is_reconciled_before_a_new_head_is_written" time="0.258" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_legacy_checkpoint_without_inputs_keeps_its_historical_package_read_only" time="0.143" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_schema_v7_keeps_v6_side_tables_and_adds_consumer_binding" time="0.005"><failure message="assert 8 == 7">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_schema_v7_keeps_v6_side_t0')
+
+    def test_schema_v7_keeps_v6_side_tables_and_adds_consumer_binding(tmp_path):
+&gt;       assert SCHEMA_VERSION == 7
+E       assert 8 == 7
+
+tests\unit\test_quick_scan_c06_complete_seal.py:383: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_save_persists_the_frozen_run_scan_mapping_for_the_actual_work" time="0.115" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_foreign_run_and_scan_context_cannot_seal_this_checkpoint" time="0.188" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_context_attached_after_the_checkpoint_seals_when_its_run_is_known" time="0.201" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_independent_runs_and_attempts_keep_distinct_ids_after_mapping" time="0.115" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_supersede_rejects_each_forged_complete_observation_field[claim]" time="0.210" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_supersede_rejects_each_forged_complete_observation_field[typed_metric]" time="0.207" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_supersede_rejects_each_forged_complete_observation_field[metadata]" time="0.200" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_supersede_rejects_each_forged_complete_observation_field[started_at]" time="0.211" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_supersede_rejects_each_forged_complete_observation_field[claim_and_start]" time="0.203" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_supersede_rejects_each_forged_complete_observation_field[model_resolved]" time="0.196" /><testcase classname="tests.unit.test_quick_scan_c06_complete_seal" name="test_prepare_refuses_a_forged_complete_observation_before_any_head_exists" time="0.192" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_canonical_json_and_package_addresses_are_stable" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_package_rejects_incomplete_duplicate_or_document_bearing_envelopes[&lt;lambda&gt;0]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_package_rejects_incomplete_duplicate_or_document_bearing_envelopes[&lt;lambda&gt;1]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_package_rejects_incomplete_duplicate_or_document_bearing_envelopes[&lt;lambda&gt;2]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_package_rejects_incomplete_duplicate_or_document_bearing_envelopes[&lt;lambda&gt;3]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_package_rejects_incomplete_duplicate_or_document_bearing_envelopes[&lt;lambda&gt;4]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_package_rejects_incomplete_duplicate_or_document_bearing_envelopes[&lt;lambda&gt;5]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_package_rejects_incomplete_duplicate_or_document_bearing_envelopes[&lt;lambda&gt;6]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_llm16_package_rejects_forged_authority_fields[source_manifest]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_llm16_package_rejects_forged_authority_fields[source_manifest_id]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_llm16_package_rejects_forged_authority_fields[raw_document]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_exact_ack_status_and_error_semantics_are_accepted[accepted-None]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_exact_ack_status_and_error_semantics_are_accepted[already_present-None]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_exact_ack_status_and_error_semantics_are_accepted[rejected-invalid_payload]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_exact_ack_status_and_error_semantics_are_accepted[conflict-immutable_key_hash_conflict]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_ack_rejects_identity_drift_and_invalid_error_semantics[changes0]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_ack_rejects_identity_drift_and_invalid_error_semantics[changes1]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_ack_rejects_identity_drift_and_invalid_error_semantics[changes2]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_ack_rejects_identity_drift_and_invalid_error_semantics[changes3]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_ack_rejects_identity_drift_and_invalid_error_semantics[changes4]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_ack_rejects_identity_drift_and_invalid_error_semantics[changes5]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_ack_rejects_identity_drift_and_invalid_error_semantics[changes6]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_ack_rejects_identity_drift_and_invalid_error_semantics[changes7]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_ack_rejects_identity_drift_and_invalid_error_semantics[changes8]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_package_payload_hash_detects_mutation" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_jr2_ack_compares_operator_configured_target_without_changing_wire" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_jr2_ack_rejects_invalid_expected_consumer[target0]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_jr2_ack_rejects_invalid_expected_consumer[target1]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_jr2_ack_rejects_invalid_expected_consumer[target2]" time="0.001" /><testcase classname="tests.unit.test_quick_scan_result_outbox" name="test_jr2_ack_rejects_invalid_expected_consumer[target3]" time="0.001" /><testcase classname="tests.unit.test_q10_delivery" name="test_db_07_missing_authority_blocks_and_never_fabricates" time="0.124"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_db_07_missing_authority_b0')
+
+    def test_db_07_missing_authority_blocks_and_never_fabricates(tmp_path: Path) -&gt; None:
+        """DB-07: with StockWiki unavailable / authority fields missing, the
+        adapter classifies the gap as a durable BLOCK (work stays result_ready,
+        no re-ask, nothing fabricated); once the authority becomes available the
+        blocked delivery proceeds to a sealed package (blocked-&gt;ready)."""
+        from src.utils.quick_scan_c06_adapter import MissingC06Fields, build_c06_package
+    
+        store = _store(tmp_path)
+        lifecycle = _lifecycle(store)
+&gt;       seeded = _seed_checkpoint(store, lifecycle, "IQS_05")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:253: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C3EA1A80&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5CAECB0&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_job_07_delivery_recovery_zero_llm_and_idempotent_ack" time="0.076"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_job_07_delivery_recovery_0')
+
+    def test_job_07_delivery_recovery_zero_llm_and_idempotent_ack(tmp_path: Path) -&gt; None:
+        """JOB-07: result_ready + sealed package, StockWiki unavailable then back —
+        a PROVEN-unsent connection failure re-arms the SAME bytes/key; an unknown
+        outcome resolves via the exact ACK only; zero LLM calls during recovery
+        (structural: no provider exists in this test); ACK before delivery is
+        impossible and repeated ACKs are idempotent."""
+        store = _store(tmp_path)
+        lifecycle = _lifecycle(store)
+&gt;       seeded = _seed_checkpoint(store, lifecycle, "IQS_05")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:293: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C59D36A0&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C968F0&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_job_08_wrong_ack_and_illegal_transition_are_refused" time="0.076"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_job_08_wrong_ack_and_ille0')
+
+    def test_job_08_wrong_ack_and_illegal_transition_are_refused(tmp_path: Path) -&gt; None:
+        """JOB-08: an ACK matching a DIFFERENT item/hash is refused, illegal state
+        jumps are refused, the original receipt/outbox row is preserved, and no
+        delivered state is fabricated."""
+        store = _store(tmp_path)
+        lifecycle = _lifecycle(store)
+&gt;       seeded_a = _seed_checkpoint(store, lifecycle, "IQS_05")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:331: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C59D3790&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C96020&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_par_10_fake_ack_never_resolves_uncertainty" time="0.074"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_par_10_fake_ack_never_res0')
+
+    def test_par_10_fake_ack_never_resolves_uncertainty(tmp_path: Path) -&gt; None:
+        """PAR-10: send-intent with unknown outcome + a WELL-FORMED but
+        hash-mismatched fake ACK — refused, the delivery stays send_uncertain,
+        no automatic re-POST (claim/refusal semantics; no second model call is
+        even possible structurally), the original observation is not overwritten;
+        only the EXACT ack (or authoritative reconciliation) can resolve it."""
+        store = _store(tmp_path)
+        lifecycle = _lifecycle(store)
+&gt;       seeded = _seed_checkpoint(store, lifecycle, "IQS_05")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:374: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DEC220&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C95150&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_adapter_missing_authority_and_unknown_status_are_blocks" time="0.083"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_adapter_missing_authority0')
+
+    def test_adapter_missing_authority_and_unknown_status_are_blocks(tmp_path: Path) -&gt; None:
+        """Adapter unit pins (r1 pre-emptive): unknown answer status cannot be
+        packaged (Q10 binding vocabulary), and the adapter's block classification
+        covers every non-derivable authority field."""
+        from src.utils.quick_scan_c06_adapter import MissingC06Fields, build_c06_package
+    
+        store = _store(tmp_path)
+        lifecycle = _lifecycle(store)
+&gt;       seeded = _seed_checkpoint(store, lifecycle, "IQS_05")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:415: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DECF40&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C97FA0&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_low_1_cross_byte_seal_is_refused" time="0.079"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_low_1_cross_byte_seal_is_0')
+
+    def test_low_1_cross_byte_seal_is_refused(tmp_path: Path) -&gt; None:
+        """r1 LOW-1: the same checkpoint sealed under DIFFERENT authority (a
+        different byte stream) must be refused as immutable — the sealed package
+        and the original observation stay untouched."""
+        store = _store(tmp_path)
+        lifecycle = _lifecycle(store)
+&gt;       seeded = _seed_checkpoint(store, lifecycle, "IQS_05")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:437: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DEDA80&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5CA0580&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_missing_target_refuses_before_any_state_change[begin]" time="0.073"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_missing_target_refuse0')
+action = 'begin'
+
+    @pytest.mark.parametrize("action", ["begin", "ack"])
+    def test_jr2_missing_target_refuses_before_any_state_change(tmp_path, action):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:483: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C3EA1300&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C979D0&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_missing_target_refuses_before_any_state_change[ack]" time="0.071"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_missing_target_refuse1')
+action = 'ack'
+
+    @pytest.mark.parametrize("action", ["begin", "ack"])
+    def test_jr2_missing_target_refuses_before_any_state_change(tmp_path, action):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:483: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C59D36A0&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C97490&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent[False]" time="0.072"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_wrong_store_after_pre0')
+sent = False
+
+    @pytest.mark.parametrize("sent", [False, True])
+    def test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent(tmp_path, sent):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:495: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DEDE40&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C964A0&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent[True]" time="0.074"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_wrong_store_after_pre1')
+sent = True
+
+    @pytest.mark.parametrize("sent", [False, True])
+    def test_jr2_wrong_store_after_prebind_is_atomic_in_ready_and_send_intent(tmp_path, sent):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:495: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DEE200&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C96DA0&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[accepted-None-delivered]" time="0.077"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_correct_prebound_targ0')
+status = 'accepted', error = None, state = 'delivered'
+
+    @pytest.mark.parametrize(
+        "status,error,state",
+        [
+            ("accepted", None, "delivered"),
+            ("already_present", None, "delivered"),
+            ("rejected", "missing_entity", "rejected"),
+            ("conflict", "immutable_key_hash_conflict", "conflict"),
+        ],
+    )
+    def test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack(
+        tmp_path, status, error, state
+    ):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:519: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DEE4D0&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5CA30D0&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[already_present-None-delivered]" time="0.061"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_correct_prebound_targ1')
+status = 'already_present', error = None, state = 'delivered'
+
+    @pytest.mark.parametrize(
+        "status,error,state",
+        [
+            ("accepted", None, "delivered"),
+            ("already_present", None, "delivered"),
+            ("rejected", "missing_entity", "rejected"),
+            ("conflict", "immutable_key_hash_conflict", "conflict"),
+        ],
+    )
+    def test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack(
+        tmp_path, status, error, state
+    ):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:519: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DEDD50&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5CA1030&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[rejected-missing_entity-rejected]" time="0.070"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_correct_prebound_targ2')
+status = 'rejected', error = 'missing_entity', state = 'rejected'
+
+    @pytest.mark.parametrize(
+        "status,error,state",
+        [
+            ("accepted", None, "delivered"),
+            ("already_present", None, "delivered"),
+            ("rejected", "missing_entity", "rejected"),
+            ("conflict", "immutable_key_hash_conflict", "conflict"),
+        ],
+    )
+    def test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack(
+        tmp_path, status, error, state
+    ):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:519: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C3EA1A80&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C94370&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack[conflict-immutable_key_hash_conflict-conflict]" time="0.062"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_correct_prebound_targ3')
+status = 'conflict', error = 'immutable_key_hash_conflict', state = 'conflict'
+
+    @pytest.mark.parametrize(
+        "status,error,state",
+        [
+            ("accepted", None, "delivered"),
+            ("already_present", None, "delivered"),
+            ("rejected", "missing_entity", "rejected"),
+            ("conflict", "immutable_key_hash_conflict", "conflict"),
+        ],
+    )
+    def test_jr2_correct_prebound_target_keeps_package_hashes_and_exact_ack(
+        tmp_path, status, error, state
+    ):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:519: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C59D3F10&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C97790&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_binding_is_idempotent_and_never_retargets_existing_head[ready]" time="0.074"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_binding_is_idempotent0')
+phase = 'ready'
+
+    @pytest.mark.parametrize("phase", ["ready", "send_uncertain", "terminal"])
+    def test_jr2_binding_is_idempotent_and_never_retargets_existing_head(tmp_path, phase):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:547: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DECF40&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5C95540&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_binding_is_idempotent_and_never_retargets_existing_head[send_uncertain]" time="0.082"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_binding_is_idempotent1')
+phase = 'send_uncertain'
+
+    @pytest.mark.parametrize("phase", ["ready", "send_uncertain", "terminal"])
+    def test_jr2_binding_is_idempotent_and_never_retargets_existing_head(tmp_path, phase):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:547: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DEC5E0&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5CA1240&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_binding_is_idempotent_and_never_retargets_existing_head[terminal]" time="0.078"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_binding_is_idempotent2')
+phase = 'terminal'
+
+    @pytest.mark.parametrize("phase", ["ready", "send_uncertain", "terminal"])
+    def test_jr2_binding_is_idempotent_and_never_retargets_existing_head(tmp_path, phase):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:547: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DEF4C0&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5CA3E80&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.unit.test_q10_delivery" name="test_jr2_superseded_head_needs_its_own_binding_and_rejects_old_ack" time="0.078"><failure message="src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-regression-check-01/test_jr2_superseded_head_needs0')
+
+    def test_jr2_superseded_head_needs_its_own_binding_and_rejects_old_ack(tmp_path):
+&gt;       store, wid, ready = _jr2_ready(tmp_path)
+                            ^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q10_delivery.py:570: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q10_delivery.py:470: in _jr2_ready
+    seeded = _seed_checkpoint(store, _lifecycle(store), "IQS_05")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_q10_delivery.py:101: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:2951: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = &lt;class 'src.utils.quick_scan_work_store.QuickScanWorkStore'&gt;
+connection = &lt;sqlite3.Connection object at 0x000001E9C5DEF2E0&gt;
+attempt = &lt;sqlite3.Row object at 0x000001E9C5CA2920&gt;
+receipt_sha256 = 'd19521f17f99efe55280e9720a168d4465ad769cfe09568905b3d84a1b39b69f'
+
+    @classmethod
+    def _response_for_checkpoint(cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str) -&gt; dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)).fetchone()
+        if row is None:
+&gt;           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1564: WorkConflictError</failure></testcase><testcase classname="tests.integration.test_qa_c06_02_e2e" name="test_cli_e2e_complete_standard_c06_seals_warms_and_settles" time="7.960" /><testcase classname="tests.integration.test_qa_c06_02_e2e" name="test_cli_e2e_tampered_v2_authority_is_refused_before_any_http" time="0.100" /><testcase classname="tests.integration.test_qa_c06_02_e2e" name="test_cli_e2e_authority_manifest_binding_is_checked_before_any_http" time="0.115" /><testcase classname="tests.integration.test_qa_c06_02_subprocess_cli" name="test_real_subprocess_cold_warm_and_seal_with_the_stub_only_at_http" time="9.409" /><testcase classname="tests.integration.test_qa_c06_02_subprocess_cli" name="test_real_subprocess_wrong_template_metadata_is_rejected_before_key_http" time="0.889" /><testcase classname="tests.integration.test_qa_c06_02_subprocess_cli" name="test_real_subprocess_duplicate_authority_json_key_is_rejected_before_key_http" time="0.788" /><testcase classname="tests.integration.test_qa_c06_02_subprocess_cli" name="test_real_subprocess_corrupt_standard_body_is_rejected_without_reasking" time="6.166" /><testcase classname="tests.integration.test_qa_c06_02_subprocess_cli" name="test_q10_real_subprocess_alias_cold_then_independent_warm_and_seal" time="10.214" /></testsuite></testsuites>

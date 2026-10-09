@@ -1,0 +1,119 @@
+........................................................................ [ 11%]
+........................................................................ [ 23%]
+........................................................................ [ 35%]
+........................................................................ [ 47%]
+........................................................................ [ 59%]
+........................................................................ [ 71%]
+.....................F.................................................. [ 83%]
+........................................................................ [ 95%]
+..............................                                           [100%]
+================================== FAILURES ===================================
+_ test_q10_unsent_repair_after_prior_response_remains_uncertain_without_replay _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-affected-final-02/test_q10_unsent_repair_after_p0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D7B5498DE0>
+
+    def test_q10_unsent_repair_after_prior_response_remains_uncertain_without_replay(
+        tmp_path, monkeypatch
+    ):
+        from unittest.mock import Mock
+    
+        from src.providers.llm_client import LLMClient
+        from src.utils.quick_scan_work_transport import (
+            QuickScanWorkPersistenceError,
+            bind_quick_scan_budget,
+            bind_quick_scan_route,
+            bind_quick_scan_work,
+        )
+    
+        now = [1_800_000_000.0]
+        store = _store(tmp_path, now)
+        item = _created(store)
+        work_id = item["work_item_id"]
+        model = "mimo-v2.6-flash"
+        policy = {
+            "configured": True,
+            "policy_id": "synthetic-repair-budget",
+            "policy_version": "synthetic-repair-budget@v1",
+            "budget": {"currency": "USD", "max_cost": 20, "max_requests": 5, "max_cost_per_attempt": 2},
+            "cost_policy": {
+                "pricing_basis": "verified_rate_card",
+                "pricing_ref": "synthetic-rates",
+                "reserve_before_dispatch": True,
+                "unknown_actual_cost_action": "retain_reservation_and_pause",
+            },
+            "dispatch": {"max_in_flight_total": 1},
+            "quota_groups": [{"id": "synthetic-account", "max_in_flight": 1}],
+            "routes": [
+                {
+                    "id": "route-1",
+                    "provider_config_ref": "mimo",
+                    "model": model,
+                    "quota_group": "synthetic-account",
+                    "max_in_flight": 1,
+                    "eligible": True,
+                }
+            ],
+        }
+        old_lease = store.claim(work_id, lease_seconds=60)
+        assert old_lease is not None
+        first = _prepared(store, work_id, old_lease)
+>       store.mark_send_intent(
+            work_id,
+            old_lease,
+            first["attempt_id"],
+            budget_policy=policy,
+            budget_route={
+                "route_id": "route-1",
+                "provider": "mimo",
+                "model_requested": model,
+                "quota_group": "synthetic-account",
+            },
+        )
+
+tests\unit\test_quick_scan_work_store.py:1206: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:2446: in mark_send_intent
+    self._reserve_budget_attempt_tx(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlite3.Connection object at 0x000001D7B544ED40>
+normalized_policy = {'policy_id': 'synthetic-repair-budget', 'policy_version': 'synthetic-repair-budget@v1', 'currency': 'USD', 'pricing_basis': 'verified_rate_card', ...}
+budget_attempt_id = 'ATTEMPT_730ba1483ff349e5b47e5a857772e404'
+work_attempt_id = 'ATTEMPT_730ba1483ff349e5b47e5a857772e404'
+route_id = 'route-1', provider = 'mimo', model_requested = 'mimo-v2.6-flash'
+quota_group = 'synthetic-account', now = 1800000000.0, model_resolution = None
+
+    @staticmethod
+    def _reserve_budget_attempt_tx(
+        connection: sqlite3.Connection,
+        *,
+        normalized_policy: dict,
+        budget_attempt_id: str,
+        work_attempt_id: Optional[str],
+        route_id: str,
+        provider: str,
+        model_requested: str,
+        quota_group: str,
+        now: float,
+        model_resolution: Optional[dict] = None,
+    ) -> dict:
+        _safe(budget_attempt_id, "budget_attempt_id")
+        if work_attempt_id is not None:
+            _safe(work_attempt_id, "work_attempt_id")
+        route_id = _safe_text(route_id, "route_id", maximum=200)
+        provider = _safe_text(provider, "provider", maximum=200)
+        model_requested = _safe_text(model_requested, "model_requested", maximum=200)
+        quota_group = _safe_text(quota_group, "quota_group", maximum=200)
+        policy_id = normalized_policy["policy_id"]
+        current = connection.execute(
+            "SELECT * FROM quick_scan_budget_policy WHERE policy_id=?", (policy_id,)
+        ).fetchone()
+        if current is None:
+>           raise BudgetAdmissionError("budget_policy_not_configured")
+E           src.utils.quick_scan_work_store.BudgetAdmissionError: budget_policy_not_configured
+
+src\utils\quick_scan_work_store.py:1749: BudgetAdmissionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_unsent_repair_after_prior_response_remains_uncertain_without_replay
+1 failed, 605 passed in 76.73s (0:01:16)

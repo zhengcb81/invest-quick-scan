@@ -1701,3 +1701,21 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 目标记录独立于旧consumer_store_id，按delivery/head/package/revision耐久且不可改；旧v6终态原ACK精确重放保留，旧pending不得由历史或新ACK自动推导目标。JR1原StockWiki ACK格式、JR3严格JSON与G3/F05依然独立未关闭。
 - JR2 schema7/API/immutable SQL guard和旧迁移已落实；首次135P/1F发现新consumer guard抢先破坏旧terminal ACK错误语义，限制首次非terminal转换后原assert/不可变trigger保持。最终格式字节136P/24.91s、mypy56源/九静态全0，同批集中独审无阻断，StockQA86b1e8a已正常提交推送；并非跨仓ACK或真实owner golden签收。
 - 合成E2E确实读取自建offline-fixture-key配置，不能写key-file reads0。v1六相对名ledger仅有固定fixture来源解释；v2十二绝对自有tmp读取且根外同名文件先拒，移除真实key环境、network0，但Python audit不是完整OS读隔离。
+
+## 2026-10-09 — Q10模型来源链勘察
+- HTTP POST model来自LLMClient.self.model，durable requested来自route ContextVar，发送边界尚未比较二者。HTTP actual仅来自payload.model；MiniMax Responses／Anthropic及MiMo解析器强制同名，OpenAI解析虽允许异名，checkpoint和legacy lifecycle仍拒。
+- 成功attempt只有requested／receipt SHA／request/status；checkpoint已分别保存requested和actual，C06已映射model_requested／model_resolved。模型正文／repair合并metadata不是模型来源权威；无需改公共Observation格式或删封包与durable输入重建检查。
+- 当前receipt hash没有完整HTTP body摘要，不能声称已经绑定原响应。新旁表须同事务保存sanitize receipt和仅摘要，私有原正文不落库。migration创建空表，旧actual缺失不从requested制造。
+- 现有v2 policy route不允许新字段，alias应采用独立严格版本化配置并纳入run指纹；默认空许可保持旧exact语义。有限逐项注册按canonical provider／协议／requested／actual匹配，禁止通配、前缀或任意同provider互认；当次许可在派发前冻结，恢复不读新配置追认。
+- 未知actual价格维持unknown和费用预留，不能拿requested价或0代替。需要冷跑／独立warm-seal、未注册及跨provider拒绝、伪造body/receipt、fallback/repair最终attempt、late lease和迁移缺失的集中反例；synthetic正例不冒充真实owner golden。
+- 本轮真实RED三项不是只有缺新API：既有OpenAI native parser仍把未注册B标search_verified=True；既有store裸response_available可无durable实际model/response直接checkpoint。alias constructor缺接口第三项同时留档。禁autoload时异步插件须显式加载，避免仅收集异步方法却未执行而虚报覆盖。
+- 并行设计审读（非额外批准门）指出同链遗漏风险：失败receipt不能只因usage有效才存actual；budget-only亦有来源绑定义务；fallback legacy gate不能拿初始route比最终actual；async format repair缺同步路径的显式repair上下文、且不应吞uncertain/persistence而重发。已交同批worker；scope已含异步provider，集中测试应覆盖这些分支。
+- 异步提升复验4RED已实证上述邻接链：repair未形成最终合法durable两attempt，uncertain／persistence被捕获成unknown结果而未传播。原沙箱300秒空输出超时不是产品失败，且源码重叠使其验证无效；新轮源码冻结、原始输出与完整执行源归档、无超时。批准器此前将只读上下文延续到新实施轮，提供当前真实人类授权后同一命令复核通过，不通过换label／工具避审批。
+- MR08不能由“最终transport是第二attempt”推断“第一attempt不能存checkpoint”。主worker与集中审查读到save仅核所给response_available/hash/lease，未核max ordinal；同lease中间HTTP可抢占immutable checkpoint。必须直接调用旧receipt验证拒绝/无部分写，且durable-response-v1读取/封包保持最终来源，历史exact分支不追溯补证。
+- MR12已有supersede实际模型篡改反例，prepare原只直接改started_at；缺usage原payload虽真实无usage，但其一断言用了错误字段provider_usage。将这些如实列为测试区分力缺口，同批完善，不凭590通过宣称全部场景直接覆盖。migration直接起点1/2/4/6/7、3/5仅迁移链覆盖；canonical JSON摘要不是raw network bytes，native doubles不等于真实厂商/准确性验收。
+
+- Phase110源owner正常commit的换行钩子改11文件，24条current raw归一LF均等于旧批准normLF；这是预期文本归一，不能用旧raw SHA声称测试了新字节。原approval/source.json/publish receipt与failed Git logs保持不可变，显式EOL分支保留原beforeSHA、原117不变、24精确staged/原七状态，用新snapshot与final04和同批审查附记闭环。生产功能/160边界/alias策略没有因换行改动而变。
+
+- Phase110最终source02／final04 606P与原审批逐项续收，11EOL不等于新功能／新小节点审查。source42a517c正常owner钩子和push后141已实比，原117保护不变；严格清5492自有文件／2530目录，没有追认过去共享TEMP取证。软件可用范围是冻结requested/actual来源、恢复和计费诚实性；真实厂商映射、准确性gold及StockWiki/G3/F05仍独立缺口，公共DTO和v2优先policy未变。
+
+- IQS原始pytest错误trace自带尾空白，不能格式化日志来通过diff。只给实际12 stdout/JUnit文件精确属性例外，原729归档SHA全部保留；补3真实diff诊断和原index字节到新733清单，不删旧审证据、不关闭检查或跳正常钩子。

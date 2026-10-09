@@ -1,0 +1,295 @@
+........................................................................ [ 13%]
+........................................................................ [ 27%]
+...............................................................FF....... [ 41%]
+........................................................................ [ 55%]
+........................................................................ [ 69%]
+........................................................................ [ 83%]
+....F....F.............................................................. [ 97%]
+............                                                             [100%]
+================================== FAILURES ===================================
+_____ test_sync_redirect_with_fake_completed_search_body_is_not_verified ______
+
+mock_manager = <MagicMock name='http_client_manager' id='2267743924112'>
+
+    @patch("src.providers.llm_client.http_client_manager")
+    def test_sync_redirect_with_fake_completed_search_body_is_not_verified(mock_manager):
+        payload = _minimax_search_response(source="action").json()
+        payload["output"][-1]["content"][0]["text"] = '{"score":8,"description":"secret redirect body"}'
+        response = requests.Response()
+        response.status_code = 302
+        response.url = "https://api.minimaxi.com/v1/responses"
+        response.headers["Location"] = "https://example.invalid/redirected"
+        response._content = json.dumps(payload).encode("utf-8")
+        session = Mock()
+        session.post.return_value = response
+        mock_manager.get_sync_session.return_value = session
+    
+        client = LLMClient(
+            "offline-fixture-key",
+            "MiniMax-M3",
+            "https://api.minimaxi.com/v1/responses",
+            provider_name="minimax",
+        )
+        with pytest.raises(LLMTransportAttemptError) as raised:
+            client.send_search_request("fixture")
+    
+        receipt = raised.value.attempt_receipt
+        assert receipt["provider"] == "minimax"
+        assert receipt["http_status_code"] == 302
+        assert receipt["search_status"] == "unverified"
+>       assert receipt["response_id"] is None
+E       AssertionError: assert 'resp_mm_01' is None
+
+tests\unit\test_llm_client.py:948: AssertionError
+_____ test_async_redirect_with_fake_completed_search_body_is_not_verified _____
+
+mock_manager = <MagicMock name='http_client_manager' id='2267744151808'>
+
+    @pytest.mark.asyncio
+    @patch("src.providers.llm_client.http_client_manager")
+    async def test_async_redirect_with_fake_completed_search_body_is_not_verified(
+        mock_manager,
+    ):
+        payload = _minimax_search_response(source="action").json()
+        payload["output"][-1]["content"][0]["text"] = '{"score":8,"description":"secret redirect body"}'
+        response = httpx.Response(
+            302,
+            headers={"Location": "https://example.invalid/redirected"},
+            json=payload,
+            request=httpx.Request("POST", "https://api.minimaxi.com/v1/responses"),
+        )
+        http_client = AsyncMock()
+        http_client.post.return_value = response
+        mock_manager.get_async_client = AsyncMock(return_value=http_client)
+    
+        client = AsyncLLMClient(
+            "offline-fixture-key",
+            "MiniMax-M3",
+            "https://api.minimaxi.com/v1/responses",
+            provider_name="minimax",
+        )
+        with pytest.raises(LLMTransportAttemptError) as raised:
+            await client.send_search_request_async("fixture")
+    
+        receipt = raised.value.attempt_receipt
+        assert receipt["provider"] == "minimax"
+        assert receipt["http_status_code"] == 302
+        assert receipt["search_status"] == "unverified"
+>       assert receipt["response_id"] is None
+E       AssertionError: assert 'resp_mm_01' is None
+
+tests\unit\test_llm_client.py:989: AssertionError
+__________ test_q10_same_request_key_cannot_change_frozen_permission __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-core-check-01/test_q10_same_request_key_cann0')
+
+    def test_q10_same_request_key_cannot_change_frozen_permission(tmp_path):
+        store = _store(tmp_path, [1_800_000_000.0])
+        item = _created(store)
+        lease = store.claim(item["work_item_id"], lease_seconds=60)
+        first = _prepared(store, item["work_item_id"], lease, model="model-a", model_resolution=_q10_alias_policy())
+        store.mark_send_intent(item["work_item_id"], lease, first["attempt_id"])
+>       store.record_attempt_outcome(item["work_item_id"], lease, first["attempt_id"], outcome="confirmed_failure", http_status_code=429, receipt_sha256="f" * 64, failure_category="rate_limited")
+
+tests\unit\test_quick_scan_work_store.py:772: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000021000063150>
+work_item_id = 'WORK_59302a43e59d41929b034d17c3ab8dd8'
+lease = Lease(lease_token='5d19f61d930945ee91759dd85938b959', lease_epoch=1)
+attempt_id = 'ATTEMPT_db8e100dcf294752b2c05f7f906b3834'
+outcome = 'confirmed_failure', http_status_code = 429
+receipt_sha256 = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+failure_category = 'rate_limited', provider_error_code = None, request_id = None
+actual_cost = None, cost_source_ref = None, execution_receipt = None
+
+    def record_attempt_outcome(
+        self,
+        work_item_id: str,
+        lease: Lease,
+        attempt_id: str,
+        *,
+        outcome: str,
+        http_status_code: Optional[int] = None,
+        receipt_sha256: Optional[str] = None,
+        failure_category: Optional[str] = None,
+        provider_error_code: Optional[str] = None,
+        request_id: Optional[str] = None,
+        actual_cost: Optional[object] = None,
+        cost_source_ref: Optional[str] = None,
+        execution_receipt: Optional[dict] = None,
+    ) -> None:
+        """Record a sanitized transport outcome; answer checkpoint is Q07."""
+        if outcome not in {"confirmed_failure", "response_available", "unknown"}:
+            raise ValueError("invalid attempt outcome")
+        if http_status_code is not None and (
+            type(http_status_code) is not int or not 100 <= http_status_code <= 599
+        ):
+            raise ValueError("invalid http_status_code")
+        if receipt_sha256 is not None:
+            _sha256(receipt_sha256, "receipt_sha256")
+        if failure_category is not None:
+            _safe(failure_category, "failure_category")
+        if provider_error_code is not None:
+            _safe(provider_error_code, "provider_error_code")
+        if request_id is not None:
+            _safe(request_id, "request_id")
+        actual_cost_micros = (
+            None
+            if actual_cost is None
+            else _cost_to_micros(actual_cost, "actual_cost", allow_zero=True)
+        )
+        if actual_cost_micros is not None and cost_source_ref is None:
+            raise ValueError("exact actual cost requires a source reference")
+        if cost_source_ref is not None:
+            cost_source_ref = _safe_text(cost_source_ref, "cost_source_ref", maximum=300)
+        confirmed_auth_refusal = (
+            http_status_code in {401, 403}
+            and receipt_sha256 is not None
+            and failure_category == "authentication_rejected"
+        )
+        confirmed_model_refusal = (
+            http_status_code == 404
+            and receipt_sha256 is not None
+            and failure_category == "model_or_endpoint_unavailable"
+        )
+        confirmed_quota_refusal = (
+            http_status_code == 429
+            and receipt_sha256 is not None
+            and (
+                (
+                    failure_category == "rate_limited"
+                    and provider_error_code
+                    in {"rate_limit_exceeded", "too_many_requests", "rate_limited"}
+                )
+                or (
+                    failure_category == "quota_exhausted"
+                    and provider_error_code
+                    in {
+                        "insufficient_quota",
+                        "quota_exceeded",
+                        "billing_hard_limit_reached",
+                        "account_quota_exceeded",
+                        "insufficient_funds",
+                    }
+                )
+            )
+        )
+        confirmed_refusal = (
+            confirmed_auth_refusal or confirmed_model_refusal or confirmed_quota_refusal
+        )
+        if outcome == "confirmed_failure" and not confirmed_refusal:
+>           raise ValueError("confirmed refusal requires a recognized provider rejection")
+E           ValueError: confirmed refusal requires a recognized provider rejection
+
+src\utils\quick_scan_work_store.py:2443: ValueError
+______ test_q10_v7_old_request_cannot_be_authorized_by_new_alias_config _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-core-check-01/test_q10_v7_old_request_cannot0')
+
+    def test_q10_v7_old_request_cannot_be_authorized_by_new_alias_config(tmp_path):
+        store = _store(tmp_path, [1_800_000_000.0])
+        item = _created(store)
+        lease = store.claim(item["work_item_id"], lease_seconds=60)
+        first = _prepared(store, item["work_item_id"], lease, model="model-a")
+        store.mark_send_intent(item["work_item_id"], lease, first["attempt_id"])
+>       store.record_attempt_outcome(item["work_item_id"], lease, first["attempt_id"], outcome="confirmed_failure", http_status_code=429, receipt_sha256="f" * 64, failure_category="rate_limited")
+
+tests\unit\test_quick_scan_work_store.py:861: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000021000993EE0>
+work_item_id = 'WORK_6035c6ee45814c3f8213f8491983aadd'
+lease = Lease(lease_token='22ad0cbe35be4dcc9fd3c2f81177e819', lease_epoch=1)
+attempt_id = 'ATTEMPT_26755d46d6e6418ea525a985aaca049d'
+outcome = 'confirmed_failure', http_status_code = 429
+receipt_sha256 = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+failure_category = 'rate_limited', provider_error_code = None, request_id = None
+actual_cost = None, cost_source_ref = None, execution_receipt = None
+
+    def record_attempt_outcome(
+        self,
+        work_item_id: str,
+        lease: Lease,
+        attempt_id: str,
+        *,
+        outcome: str,
+        http_status_code: Optional[int] = None,
+        receipt_sha256: Optional[str] = None,
+        failure_category: Optional[str] = None,
+        provider_error_code: Optional[str] = None,
+        request_id: Optional[str] = None,
+        actual_cost: Optional[object] = None,
+        cost_source_ref: Optional[str] = None,
+        execution_receipt: Optional[dict] = None,
+    ) -> None:
+        """Record a sanitized transport outcome; answer checkpoint is Q07."""
+        if outcome not in {"confirmed_failure", "response_available", "unknown"}:
+            raise ValueError("invalid attempt outcome")
+        if http_status_code is not None and (
+            type(http_status_code) is not int or not 100 <= http_status_code <= 599
+        ):
+            raise ValueError("invalid http_status_code")
+        if receipt_sha256 is not None:
+            _sha256(receipt_sha256, "receipt_sha256")
+        if failure_category is not None:
+            _safe(failure_category, "failure_category")
+        if provider_error_code is not None:
+            _safe(provider_error_code, "provider_error_code")
+        if request_id is not None:
+            _safe(request_id, "request_id")
+        actual_cost_micros = (
+            None
+            if actual_cost is None
+            else _cost_to_micros(actual_cost, "actual_cost", allow_zero=True)
+        )
+        if actual_cost_micros is not None and cost_source_ref is None:
+            raise ValueError("exact actual cost requires a source reference")
+        if cost_source_ref is not None:
+            cost_source_ref = _safe_text(cost_source_ref, "cost_source_ref", maximum=300)
+        confirmed_auth_refusal = (
+            http_status_code in {401, 403}
+            and receipt_sha256 is not None
+            and failure_category == "authentication_rejected"
+        )
+        confirmed_model_refusal = (
+            http_status_code == 404
+            and receipt_sha256 is not None
+            and failure_category == "model_or_endpoint_unavailable"
+        )
+        confirmed_quota_refusal = (
+            http_status_code == 429
+            and receipt_sha256 is not None
+            and (
+                (
+                    failure_category == "rate_limited"
+                    and provider_error_code
+                    in {"rate_limit_exceeded", "too_many_requests", "rate_limited"}
+                )
+                or (
+                    failure_category == "quota_exhausted"
+                    and provider_error_code
+                    in {
+                        "insufficient_quota",
+                        "quota_exceeded",
+                        "billing_hard_limit_reached",
+                        "account_quota_exceeded",
+                        "insufficient_funds",
+                    }
+                )
+            )
+        )
+        confirmed_refusal = (
+            confirmed_auth_refusal or confirmed_model_refusal or confirmed_quota_refusal
+        )
+        if outcome == "confirmed_failure" and not confirmed_refusal:
+>           raise ValueError("confirmed refusal requires a recognized provider rejection")
+E           ValueError: confirmed refusal requires a recognized provider rejection
+
+src\utils\quick_scan_work_store.py:2443: ValueError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_llm_client.py::test_sync_redirect_with_fake_completed_search_body_is_not_verified
+FAILED tests/unit/test_llm_client.py::test_async_redirect_with_fake_completed_search_body_is_not_verified
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_same_request_key_cannot_change_frozen_permission
+FAILED tests/unit/test_quick_scan_work_store.py::test_q10_v7_old_request_cannot_be_authorized_by_new_alias_config
+4 failed, 512 passed in 37.13s

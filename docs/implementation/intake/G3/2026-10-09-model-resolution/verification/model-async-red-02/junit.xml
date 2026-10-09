@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="1.131" timestamp="2026-10-09T00:27:43.540147+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_async_llm_provider" name="test_async_format_repair_records_two_attempts_and_only_final_http_identity[False]" time="0.115"><failure message="AssertionError: assert 'unknown' == 'scored'&#10;  &#10;  - scored&#10;  + unknown">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-async-red-02/test_async_format_repair_recor0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000213352B03E0&gt;
+alias = False
+
+    @pytest.mark.parametrize("alias", [False, True])
+    def test_async_format_repair_records_two_attempts_and_only_final_http_identity(tmp_path, monkeypatch, alias):
+        provider, resolution = _provider(tmp_path, alias=alias)
+        store, work_id, lease = _claimed(tmp_path)
+        resolved = "model-b" if alias else "model-a"
+        session = _install_http(monkeypatch, [_response("initial"), _response("repaired", valid=True, model=resolved)])
+        route = {"route_id": "openai-route", "provider": "openai", "model_requested": "model-a"}
+        if alias:
+            route["model_resolution"] = resolution
+        with bind_quick_scan_work(store, work_id, lease), bind_quick_scan_route(**route):
+            results = asyncio.run(provider.search_question_async(Question("Synthetic question", question_id="CORE_01")))
+&gt;       assert results[0].status == "scored"
+E       AssertionError: assert 'unknown' == 'scored'
+E         
+E         - scored
+E         + unknown
+
+tests\unit\test_async_llm_provider.py:105: AssertionError</failure></testcase><testcase classname="tests.unit.test_async_llm_provider" name="test_async_format_repair_records_two_attempts_and_only_final_http_identity[True]" time="0.115"><failure message="AssertionError: assert 'unknown' == 'scored'&#10;  &#10;  - scored&#10;  + unknown">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-async-red-02/test_async_format_repair_recor1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000213351356E0&gt;
+alias = True
+
+    @pytest.mark.parametrize("alias", [False, True])
+    def test_async_format_repair_records_two_attempts_and_only_final_http_identity(tmp_path, monkeypatch, alias):
+        provider, resolution = _provider(tmp_path, alias=alias)
+        store, work_id, lease = _claimed(tmp_path)
+        resolved = "model-b" if alias else "model-a"
+        session = _install_http(monkeypatch, [_response("initial"), _response("repaired", valid=True, model=resolved)])
+        route = {"route_id": "openai-route", "provider": "openai", "model_requested": "model-a"}
+        if alias:
+            route["model_resolution"] = resolution
+        with bind_quick_scan_work(store, work_id, lease), bind_quick_scan_route(**route):
+            results = asyncio.run(provider.search_question_async(Question("Synthetic question", question_id="CORE_01")))
+&gt;       assert results[0].status == "scored"
+E       AssertionError: assert 'unknown' == 'scored'
+E         
+E         - scored
+E         + unknown
+
+tests\unit\test_async_llm_provider.py:105: AssertionError</failure></testcase><testcase classname="tests.unit.test_async_llm_provider" name="test_async_repair_uncertain_outcome_propagates_without_third_post" time="0.110"><failure message="Failed: DID NOT RAISE QuickScanWorkUncertainError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-async-red-02/test_async_repair_uncertain_ou0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000021336719010&gt;
+
+    def test_async_repair_uncertain_outcome_propagates_without_third_post(tmp_path, monkeypatch):
+        provider, _ = _provider(tmp_path)
+        store, work_id, lease = _claimed(tmp_path)
+        session = _install_http(monkeypatch, [_response("initial"), httpx.ReadTimeout("synthetic uncertain repair")])
+        with bind_quick_scan_work(store, work_id, lease), bind_quick_scan_route(route_id="openai-route", provider="openai", model_requested="model-a"):
+&gt;           with pytest.raises(QuickScanWorkUncertainError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE QuickScanWorkUncertainError
+
+tests\unit\test_async_llm_provider.py:128: Failed</failure></testcase><testcase classname="tests.unit.test_async_llm_provider" name="test_async_repair_persistence_error_propagates_without_retry_or_success" time="0.111"><failure message="Failed: DID NOT RAISE QuickScanWorkPersistenceError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-async-red-02/test_async_repair_persistence_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002133565E580&gt;
+
+    def test_async_repair_persistence_error_propagates_without_retry_or_success(tmp_path, monkeypatch):
+        provider, _ = _provider(tmp_path)
+        store, work_id, lease = _claimed(tmp_path)
+        session = _install_http(monkeypatch, [_response("initial"), _response("repaired", valid=True)])
+        original = QuickScanSendAttempt.record_response
+        written = []
+    
+        def record_response(attempt, **kwargs):
+            written.append(attempt.attempt_id)
+            if len(written) == 2:
+                raise QuickScanWorkPersistenceError("synthetic repair receipt write failed")
+            return original(attempt, **kwargs)
+    
+        monkeypatch.setattr(QuickScanSendAttempt, "record_response", record_response)
+        with bind_quick_scan_work(store, work_id, lease), bind_quick_scan_route(route_id="openai-route", provider="openai", model_requested="model-a"):
+&gt;           with pytest.raises(QuickScanWorkPersistenceError, match="synthetic repair"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE QuickScanWorkPersistenceError
+
+tests\unit\test_async_llm_provider.py:152: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,314 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_q10_async_model_mutation_after_begin_cannot_change_frozen_http_request _
+
+self = QuickScanSendAttempt(binding=QuickScanWorkBinding(store=<src.utils.quick_scan_work_store.QuickScanWorkStore object at ...'ATTEMPT_a06866476597451ca387f6af512c4a60', _consumed=True, _lock=<unlocked _thread.lock object at 0x000001D8832CC790>)
+http_status_code = 200, request_id = 'q10-request'
+receipt = {'provider': 'openai', 'search_status': 'unverified', 'request_id': 'q10-request', 'response_id': 'q10-response', ...}
+
+    def record_response(
+        self,
+        *,
+        http_status_code: Optional[int],
+        request_id: Optional[str],
+        receipt: Any,
+    ) -> None:
+        if not self._consumed:
+            raise QuickScanWorkPersistenceError("HTTP response arrived without a consumed permit")
+        if type(http_status_code) is not int or not 200 <= http_status_code < 300:
+            self.record_failure(
+                {
+                    "http_status_code": http_status_code,
+                    "request_id": request_id,
+                    "failure_type": "unexpected_response_status",
+                }
+            )
+            raise QuickScanWorkUncertainError(self.attempt_id)
+        receipt_sha256 = _receipt_sha256(receipt)
+        actual_cost, cost_source_ref = _resolved_cost(self.budget_binding, receipt)
+        try:
+            if self.binding is not None:
+>               self.binding.store.record_attempt_outcome(
+                    self.binding.work_item_id,
+                    self.binding.lease,
+                    self.attempt_id,
+                    outcome="response_available",
+                    http_status_code=http_status_code,
+                    receipt_sha256=receipt_sha256,
+                    request_id=request_id,
+                    actual_cost=actual_cost,
+                    cost_source_ref=cost_source_ref,
+                    execution_receipt=_sanitized_receipt(receipt),
+
+src\utils\quick_scan_work_transport.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:2561: in record_attempt_outcome
+    self._persist_response_tx(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8834A3970>
+attempt_id = 'ATTEMPT_a06866476597451ca387f6af512c4a60'
+receipt = {'provider': 'openai', 'request_id': 'q10-request', 'response_id': 'q10-response', 'actual_model': 'fixture-requested', ...}
+receipt_sha256 = 'ba591563ce725b6ce4dad8a80f04af9a19a34d90f56410b5cea137c48cb3dd12'
+now = 1791503652.006179
+
+    @classmethod
+    def _persist_response_tx(
+        cls,
+        connection: sqlite3.Connection,
+        attempt_id: str,
+        receipt: object,
+        *,
+        receipt_sha256: Optional[str],
+        now: float,
+    ) -> None:
+        safe = _sanitized_receipt(receipt)
+        if safe.get("response_sha256") is None:
+            return  # No decodable HTTP JSON, not a fabricated response.
+        resolution = connection.execute(
+            "SELECT * FROM quick_scan_attempt_resolution WHERE attempt_id=?", (attempt_id,)
+        ).fetchone()
+        if resolution is None:
+            raise WorkConflictError("durable response requires a frozen dispatch")
+        frozen = cls._resolution_record(resolution)
+        actual_hash = quick_scan_receipt_sha256(safe)
+        if receipt_sha256 is not None and receipt_sha256 != actual_hash:
+            raise WorkConflictError("durable response receipt hash mismatch")
+        if (
+            safe.get("requested_model") != frozen["model_requested"]
+            or safe.get("model_resolution_sha256") != frozen["policy_sha256"]
+        ):
+>           raise WorkConflictError("durable response does not match frozen request")
+E           src.utils.quick_scan_work_store.WorkConflictError: durable response does not match frozen request
+
+src\utils\quick_scan_work_store.py:1591: WorkConflictError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-async-model-red-01/test_q10_async_model_mutation_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D884B89F30>
+
+    def test_q10_async_model_mutation_after_begin_cannot_change_frozen_http_request(
+        tmp_path, monkeypatch
+    ):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore
+        from src.utils.quick_scan_work_transport import (
+            bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work,
+        )
+    
+        requested = "fixture-requested"
+        store = QuickScanWorkStore(tmp_path / "synthetic-model-mutation.sqlite")
+        item = store.create_or_attach(
+            entity_id="ENT_SYNTHETIC", question_id="CORE_01", generation=1,
+            scope="entity", scope_id="ENT_SYNTHETIC", identity_revision=1,
+            source_binding_version=1, identity_state="verified", source_binding_ref="BND_SYNTHETIC",
+            source_binding_refs=["BND_SYNTHETIC"], identity_snapshot_sha256="a" * 64,
+            question_fingerprint="b" * 64, routing_fingerprint="c" * 64,
+            run_id="RUN_SYNTHETIC", scan_id="SCAN_SYNTHETIC",
+        )
+        work_id = item["work_item_id"]
+        lease = store.claim(work_id, lease_seconds=60)
+        assert lease is not None
+        route = {"id": "mutation-route", "provider_config_ref": "openai", "model": requested,
+                 "quota_group": "synthetic-account", "max_in_flight": 1, "eligible": True}
+        policy = {
+            "configured": True, "policy_id": "synthetic-mutation-budget",
+            "policy_version": "synthetic-mutation-budget@v1",
+            "budget": {"currency": "USD", "max_cost": 20, "max_requests": 5, "max_cost_per_attempt": 2},
+            "cost_policy": {"pricing_basis": "verified_rate_card", "pricing_ref": "synthetic-rates",
+                            "reserve_before_dispatch": True,
+                            "unknown_actual_cost_action": "retain_reservation_and_pause"},
+            "dispatch": {"max_in_flight_total": 1},
+            "quota_groups": [{"id": "synthetic-account", "max_in_flight": 1}], "routes": [route],
+        }
+        client = AsyncLLMClient("synthetic", requested, "https://api.openai.com/v1/responses")
+        session = Mock()
+        session.post = AsyncMock(return_value=_q10_response(requested))
+    
+        async def get_client():
+            attempt = store.list_attempts(work_id)[0]
+            assert attempt["phase"] == "send_intent"
+            assert attempt["model_requested"] == requested
+            assert store.get_quick_scan_budget_status(policy["policy_id"])["requests"] == 1
+            client.model = "mutated-after-durable-intent"
+            return session
+    
+        monkeypatch.setattr(
+            "src.providers.llm_client.http_client_manager.get_async_client", get_client
+        )
+        try:
+            with bind_quick_scan_work(store, work_id, lease), bind_quick_scan_budget(store, policy):
+                with bind_quick_scan_route(
+                    route_id=route["id"], provider="openai", model_requested=requested,
+                    quota_group="synthetic-account",
+                ):
+>                   result = asyncio.run(client.send_search_request_async("synthetic prompt"))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_llm_client.py:279: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\asyncio\runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+src\providers\llm_client.py:1446: in send_search_request_async
+    work_attempt.record_response(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = QuickScanSendAttempt(binding=QuickScanWorkBinding(store=<src.utils.quick_scan_work_store.QuickScanWorkStore object at ...'ATTEMPT_a06866476597451ca387f6af512c4a60', _consumed=True, _lock=<unlocked _thread.lock object at 0x000001D8832CC790>)
+http_status_code = 200, request_id = 'q10-request'
+receipt = {'provider': 'openai', 'search_status': 'unverified', 'request_id': 'q10-request', 'response_id': 'q10-response', ...}
+
+    def record_response(
+        self,
+        *,
+        http_status_code: Optional[int],
+        request_id: Optional[str],
+        receipt: Any,
+    ) -> None:
+        if not self._consumed:
+            raise QuickScanWorkPersistenceError("HTTP response arrived without a consumed permit")
+        if type(http_status_code) is not int or not 200 <= http_status_code < 300:
+            self.record_failure(
+                {
+                    "http_status_code": http_status_code,
+                    "request_id": request_id,
+                    "failure_type": "unexpected_response_status",
+                }
+            )
+            raise QuickScanWorkUncertainError(self.attempt_id)
+        receipt_sha256 = _receipt_sha256(receipt)
+        actual_cost, cost_source_ref = _resolved_cost(self.budget_binding, receipt)
+        try:
+            if self.binding is not None:
+                self.binding.store.record_attempt_outcome(
+                    self.binding.work_item_id,
+                    self.binding.lease,
+                    self.attempt_id,
+                    outcome="response_available",
+                    http_status_code=http_status_code,
+                    receipt_sha256=receipt_sha256,
+                    request_id=request_id,
+                    actual_cost=actual_cost,
+                    cost_source_ref=cost_source_ref,
+                    execution_receipt=_sanitized_receipt(receipt),
+                )
+            elif self.budget_binding is not None and self.budget_attempt_id is not None:
+                self.budget_binding.store.record_budget_outcome(
+                    self.budget_attempt_id,
+                    outcome="response_available",
+                    http_status_code=http_status_code,
+                    actual_cost=actual_cost,
+                    cost_source_ref=cost_source_ref,
+                    execution_receipt=_sanitized_receipt(receipt),
+                )
+        except LeaseFencedError as error:
+            if self.binding is None:
+                raise RuntimeError("record_response: work binding is not bound")
+            try:
+                self.binding.store.note_late_receipt(
+                    self.binding.work_item_id,
+                    self.binding.lease,
+                    self.attempt_id,
+                    receipt_sha256=receipt_sha256,
+                    execution_receipt=_sanitized_receipt(receipt),
+                    **self._late_budget_details(
+                        outcome="response_available",
+                        http_status_code=http_status_code,
+                        actual_cost=actual_cost,
+                        cost_source_ref=cost_source_ref,
+                    ),
+                )
+            except Exception as late_error:
+                raise QuickScanWorkPersistenceError(
+                    "could not retain late quick-scan response receipt"
+                ) from late_error
+            raise QuickScanWorkUncertainError(
+                self.attempt_id, _sanitized_receipt(receipt)
+            ) from error
+        except Exception as error:
+>           raise QuickScanWorkPersistenceError(
+                "could not persist quick-scan response receipt"
+            ) from error
+E           src.utils.quick_scan_work_transport.QuickScanWorkPersistenceError: could not persist quick-scan response receipt
+
+src\utils\quick_scan_work_transport.py:183: QuickScanWorkPersistenceError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/model-resolution-2026-10-09-01/tmp/model-async-model-red-01/test_q10_async_model_mutation_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D884B89F30>
+
+    def test_q10_async_model_mutation_after_begin_cannot_change_frozen_http_request(
+        tmp_path, monkeypatch
+    ):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore
+        from src.utils.quick_scan_work_transport import (
+            bind_quick_scan_budget, bind_quick_scan_route, bind_quick_scan_work,
+        )
+    
+        requested = "fixture-requested"
+        store = QuickScanWorkStore(tmp_path / "synthetic-model-mutation.sqlite")
+        item = store.create_or_attach(
+            entity_id="ENT_SYNTHETIC", question_id="CORE_01", generation=1,
+            scope="entity", scope_id="ENT_SYNTHETIC", identity_revision=1,
+            source_binding_version=1, identity_state="verified", source_binding_ref="BND_SYNTHETIC",
+            source_binding_refs=["BND_SYNTHETIC"], identity_snapshot_sha256="a" * 64,
+            question_fingerprint="b" * 64, routing_fingerprint="c" * 64,
+            run_id="RUN_SYNTHETIC", scan_id="SCAN_SYNTHETIC",
+        )
+        work_id = item["work_item_id"]
+        lease = store.claim(work_id, lease_seconds=60)
+        assert lease is not None
+        route = {"id": "mutation-route", "provider_config_ref": "openai", "model": requested,
+                 "quota_group": "synthetic-account", "max_in_flight": 1, "eligible": True}
+        policy = {
+            "configured": True, "policy_id": "synthetic-mutation-budget",
+            "policy_version": "synthetic-mutation-budget@v1",
+            "budget": {"currency": "USD", "max_cost": 20, "max_requests": 5, "max_cost_per_attempt": 2},
+            "cost_policy": {"pricing_basis": "verified_rate_card", "pricing_ref": "synthetic-rates",
+                            "reserve_before_dispatch": True,
+                            "unknown_actual_cost_action": "retain_reservation_and_pause"},
+            "dispatch": {"max_in_flight_total": 1},
+            "quota_groups": [{"id": "synthetic-account", "max_in_flight": 1}], "routes": [route],
+        }
+        client = AsyncLLMClient("synthetic", requested, "https://api.openai.com/v1/responses")
+        session = Mock()
+        session.post = AsyncMock(return_value=_q10_response(requested))
+    
+        async def get_client():
+            attempt = store.list_attempts(work_id)[0]
+            assert attempt["phase"] == "send_intent"
+            assert attempt["model_requested"] == requested
+            assert store.get_quick_scan_budget_status(policy["policy_id"])["requests"] == 1
+            client.model = "mutated-after-durable-intent"
+            return session
+    
+        monkeypatch.setattr(
+            "src.providers.llm_client.http_client_manager.get_async_client", get_client
+        )
+        try:
+            with bind_quick_scan_work(store, work_id, lease), bind_quick_scan_budget(store, policy):
+                with bind_quick_scan_route(
+                    route_id=route["id"], provider="openai", model_requested=requested,
+                    quota_group="synthetic-account",
+                ):
+                    result = asyncio.run(client.send_search_request_async("synthetic prompt"))
+        finally:
+            assert session.post.await_count == 1
+>           assert session.post.call_args.kwargs["json"]["model"] == requested
+E           AssertionError: assert 'mutated-after-durable-intent' == 'fixture-requested'
+E             
+E             - fixture-requested
+E             + mutated-after-durable-intent
+
+tests\unit\test_llm_client.py:282: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_llm_client.py::test_q10_async_model_mutation_after_begin_cannot_change_frozen_http_request
+1 failed, 127 deselected in 0.96s
