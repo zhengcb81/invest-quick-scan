@@ -2573,3 +2573,5 @@
 - 实际回执Git原9efea1已终态exit0：57d7a6d42bbe36cc123a87a93ca27d200fda94b6已推送，IQS只剩原opencode未跟踪，sourcebc41908和root不存在再次核实。之后独立同步本目录三份搜索/准确性手册与无密钥inventory的发布状态，原软件/1379冻结工件及实验不改，template_only/execution_enabled与模型顺位不动。从StockQA bc41908公开handoff只读核CLI flags和实际范围；tests/scripts字面检索无inventory引用，不把它升级为生效配置。新增文档版本playbook1.2、inventory1.2、accuracy1.1；分开披露隔离实现、历史REST拒绝/MCP成功与未重新live核验，仍需轻量格式/JSON及实际提交，无额外小节点review。
 
 - 文档同步轻量核查实际exit0：inventory JSON合法、26个内部手册链接存在、参考provider_order仍null、非执行模板/原模型连接profile的JSON和Git变更均不变；frozen final-delivery-index原字节不变，付费请求0。首核查错误地要求未修改profile的Windows CRLF与Git LF原字节相等而失败，改为正面比较规范EOL/JSON并git diff exit0，未修改profile。后补日志patch误写锚点从/原被拒且零写，改按当前文件明确追加；这些是文档控制诊断，不是产品/金融测试失败。只交这8件本地文档/参考数据，不追加测试或独审小节点。
+
+- 搜索规范同步正常Git原3b12ff实际exit0：92b0fd0f6af49c51f654649d57c895ce4fa93265已推送，8件精确变化、远端HEAD一致、工作树仅原opencode未跟踪，旧owned root不存在；没有改变受审软件/冻结index或原生模型策略，也没有收费API。当前只补本实际回执与单一下一步PWF；StockWiki四路径授权未答，其他门保持。完整目标仍active，本轮不是全项目完成。
