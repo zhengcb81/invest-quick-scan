@@ -1,0 +1,76 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_ test_coordinator_observed_retry_after_controls_existing_health_not_a_guessed_reset[401-insufficient_quota-600] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-health-red-01/test_coordinator_observed_retr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001771657EC40>
+status = 401, code = 'insufficient_quota', seconds = 600
+
+    @pytest.mark.parametrize("status,code,seconds", [(401, "insufficient_quota", 600), (429, "rate_limit_exceeded", 120)])
+    def test_coordinator_observed_retry_after_controls_existing_health_not_a_guessed_reset(tmp_path, monkeypatch, status, code, seconds):
+        from tests.unit.test_external_search_provider import _response
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, second_route=True)
+        rejected = _response(json.dumps({"error": {"code": code}}).encode(), status=status)
+        rejected.headers["Retry-After"] = str(seconds)
+        session.request.side_effect = [rejected, session.request.return_value]
+        _retrieve(args)
+        decision = args["health_store"].admit(route_id="brave-primary", group_id="search-brave", unknown_reset_cooldown_seconds=60)
+>       assert not decision.allowed and decision.wait_seconds == seconds and decision.reset_at_source == "retry_after"
+E       AssertionError: assert (not False and 60.0 == 600)
+E        +  where False = HealthDecision(allowed=False, reason='quota_group_cooldown', wait_seconds=60.0, next_probe_at='2027-01-15T08:01:00Z', reset_at_source='unknown', probe_token=None).allowed
+E        +  and   60.0 = HealthDecision(allowed=False, reason='quota_group_cooldown', wait_seconds=60.0, next_probe_at='2027-01-15T08:01:00Z', reset_at_source='unknown', probe_token=None).wait_seconds
+
+tests\unit\test_quick_scan_external_context.py:1087: AssertionError
+_ test_coordinator_observed_retry_after_controls_existing_health_not_a_guessed_reset[429-rate_limit_exceeded-120] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-health-red-01/test_coordinator_observed_retr1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017714ABEEA0>
+status = 429, code = 'rate_limit_exceeded', seconds = 120
+
+    @pytest.mark.parametrize("status,code,seconds", [(401, "insufficient_quota", 600), (429, "rate_limit_exceeded", 120)])
+    def test_coordinator_observed_retry_after_controls_existing_health_not_a_guessed_reset(tmp_path, monkeypatch, status, code, seconds):
+        from tests.unit.test_external_search_provider import _response
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, second_route=True)
+        rejected = _response(json.dumps({"error": {"code": code}}).encode(), status=status)
+        rejected.headers["Retry-After"] = str(seconds)
+        session.request.side_effect = [rejected, session.request.return_value]
+        _retrieve(args)
+        decision = args["health_store"].admit(route_id="brave-primary", group_id="search-brave", unknown_reset_cooldown_seconds=60)
+>       assert not decision.allowed and decision.wait_seconds == seconds and decision.reset_at_source == "retry_after"
+E       AssertionError: assert (not False and 20.0 == 120)
+E        +  where False = HealthDecision(allowed=False, reason='route_rate_limited', wait_seconds=20.0, next_probe_at='2027-01-15T08:00:20Z', reset_at_source='unknown', probe_token=None).allowed
+E        +  and   20.0 = HealthDecision(allowed=False, reason='route_rate_limited', wait_seconds=20.0, next_probe_at='2027-01-15T08:00:20Z', reset_at_source='unknown', probe_token=None).wait_seconds
+
+tests\unit\test_quick_scan_external_context.py:1087: AssertionError
+_ test_coordinator_over_bound_usage_cannot_restart_in_a_new_generation_under_same_price _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-health-red-01/test_coordinator_over_bound_us0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017717411910>
+
+    def test_coordinator_over_bound_usage_cannot_restart_in_a_new_generation_under_same_price(tmp_path, monkeypatch):
+        from tests.unit.test_external_search_provider import _response
+        def credits(document):
+            route = document["external_routes"][0]
+            route.update(kind="tavily", endpoint="https://api.tavily.com/search")
+            route["pricing"]["basis"] = "per_search"
+            route["metering"].update(charge_policy="provider_usage", usage_unit="credits")
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, mutate=credits, second_route=True)
+        session.request.return_value = _response(b'{"usage":{"credits":2},"results":[{"url":"https://fixture.example/ir","content":"Margin","published_date":"2026-10-01"}]}')
+        with pytest.raises(Exception, match="external_pricing_bound_exceeded"):
+            _retrieve(args)
+        assert session.request.call_count == 1
+        fresh = _created(args["store"], generation=2)
+        args.update(work_item_id=fresh["work_item_id"], lease=args["store"].claim(fresh["work_item_id"], lease_seconds=60))
+        with pytest.raises(Exception, match="external_pricing_bound_exceeded"):
+            _retrieve(args)
+>       assert session.request.call_count == 1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = <Mock name='mock.request' id='1611002033696'>.call_count
+E        +    where <Mock name='mock.request' id='1611002033696'> = <Mock id='1611002032352'>.request
+
+tests\unit\test_quick_scan_external_context.py:1110: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_coordinator_observed_retry_after_controls_existing_health_not_a_guessed_reset[401-insufficient_quota-600]
+FAILED tests/unit/test_quick_scan_external_context.py::test_coordinator_observed_retry_after_controls_existing_health_not_a_guessed_reset[429-rate_limit_exceeded-120]
+FAILED tests/unit/test_quick_scan_external_context.py::test_coordinator_over_bound_usage_cannot_restart_in_a_new_generation_under_same_price
+3 failed, 106 deselected in 2.18s

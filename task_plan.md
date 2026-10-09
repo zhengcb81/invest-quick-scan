@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前下一动作（2026-10-09 Phase111）**：接外部检索调度与既有LLM回答路径，绑定实际prompt/attempt的独立context-use proof，并覆盖跨两阶段恢复与公开CLI。v1.1冻结查询/计价、共享Q09预算投影、实际Tavily用量与短上下文已在私有副本完成本批247相关回归；不相加此前批次计独立覆盖率，不重做已通过基础或提前发布。预算版本仅绑定共享模型预算/检索路由与计价，不能因不同公司查询而互相fence；同轮共用查询，新轮可刷新，未知发送跨轮仍不得重发。完整生产链尚需MCP/两阶段恢复、受影响最终批次和一次集中审查，原生/Q10不重做。StockQA按旧全仓授权先报备；StockWiki JR1/JR3四新路径、G3/L03/F05/真实identity/facts golden/THIN授权原门未齐，不启动收费API/200家live或刷新退役工程回执。
+**当前下一动作（2026-10-09 Phase111）**：把已实现的外部检索调度接入既有LLM回答路径，绑定实际prompt/attempt与独立context-use proof，再验证两阶段恢复/MCP/公开CLI。私有六受影响文件最终276P/20.36s；其中检索调度可冷跑、warm零HTTP、已知且已计价失败换下一搜索路由、未知发送/计价停机，同一live lease下未发送意图可原预留续接。收到Retry-After才记已知等待；实际用量超界不可通过新generation绕过。同网页不同查询保留各自短摘要/检索时点/operation，来源数据仍不是事实认证。见本批[接线接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/coordinator-interface.md)。原REST调度未实现的历史已更新，LLM/来源proof/MCP/公开CLI、最终静态/一次集中review/源发布/严格清理仍待执行；Phase111保持in_progress，模型cascade继续只用原模型policy，Q09共享投影只作会计。StockQA旧全仓授权须先报备；StockWiki JR1/JR3四新路径、G3/L03/F05/真实identity/facts golden/THIN授权原门不变，不启动收费API/200家live、不刷新退役工程回执。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
@@ -1552,3 +1552,9 @@ Status: in_progress_private_implementation_not_published
 
 - 本次配置/计价/来源数据段已在私有副本实作，最终六受影响文件247P/20.94s；新轮刷新、逐query缺口和多公司共用预算有独立RED→GREEN。源仓仍42a517c/schema8，schema9/执行policy1.1仍私有；REST调度、回答proof、MCP和公开CLI尚未完成。新IQS留档checkpoint以progress真实Git回执为准；旧index01和原失败均不覆写，不添helper级审查。
 - 新checkpoint02真实交付为`537a174a7c024a59dbe0b6159660df77a1cabd40`，357精确路径/351归档及index02正常Git/push与原字节核对通过，118支持文件不变，仅原opencode保留；StockQA未写/发布。仍按唯一下一动作实施REST/回答proof/MCP/公开CLI，Phase111不标complete，不清理未完成自有环境或其他进程的文件。
+
+## Phase111 检索调度接续：2026-10-09
+- 私有检索协调入口已实施，真实SQLite/Q08/Q09＋HTTP边界替身验证；五个现有报备路径变化，无源仓发布。最终coordinator-health-green-01为276P/20.36s（controller21.007s），0失败/错误/跳过。
+- 冷跑、缓存/重复恢复、确认且可计价的拒绝/坏JSON/错实体/空结果转下一route、unknown/无usage/保存失败停机、并发一次许可、同查询跨题共享、TTL新轮刷新、两query之间真实持久中断及Retry-After/超价界均覆盖。20项初RED是协调入口尚缺，不冒充20个独立旧漏洞；原中间失败保留。
+- 同URL跨查询去重曾丢第二query覆盖，是真实新增反例；复用既有normalizer按query处理、最终URL去重并保留各次短摘要/日期/operation/检索时间，metadata仍受总cap。两处中间fixture错误是未配对pricing basis/usage unit使主route不准入，已修正并断言全部预期route准入，不扩大产品口径。
+- 当前无活测试或Git handle：27720和35856均已实际终态exit0。runs/n111a保留供完整Phase111接线，不能清理或重启旧helper。新IQS checkpoint03以实际Git回执为准；这不是集中签收，不发布schema9，也不关闭其他门。

@@ -1,0 +1,83 @@
+....................FF...                                                [100%]
+================================== FAILURES ===================================
+______ test_coordinator_restart_between_two_queries_reuses_first_result _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-green-02/test_coordinator_restart_betwe0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025E84ADC7D0>
+
+    def test_coordinator_restart_between_two_queries_reuses_first_result(tmp_path, monkeypatch):
+        def extra_query(document):
+            document["execution_plan"]["queries"].append({"query_id": "cashflow", "query": "Synthetic issuer cash flow", "question_ids": ["IQS_05"], "top_k": 3})
+        args, session, clock = _coordinator_fixture(tmp_path, monkeypatch, mutate=extra_query)
+        record = args["store"].record_external_search
+        saved = []
+        def stop_after_durable_result(*a, **kw):
+            saved.append(record(*a, **kw))
+            raise KeyboardInterrupt("synthetic process interruption after durable search settlement")
+        monkeypatch.setattr(args["store"], "record_external_search", stop_after_durable_result)
+        with pytest.raises(KeyboardInterrupt):
+            _retrieve(args)
+        assert session.request.call_count == 1 and len(saved) == 1
+        monkeypatch.setattr(args["store"], "record_external_search", record)
+        clock[0] += 1
+        context = _retrieve(args)
+        assert session.request.call_count == 2 and len(context["retrievals"]) == 2
+        assert context["retrievals"][0]["operation_id"] == saved[0]["operation_id"]
+        assert context["retrievals"][0]["retrieved_at"] != context["retrievals"][1]["retrieved_at"]
+>       assert context["query_coverage"]["missing"] == []
+E       AssertionError: assert ['cashflow'] == []
+E         
+E         Left contains one more item: 'cashflow'
+E         Use -v to get more diff
+
+tests\unit\test_quick_scan_external_context.py:1007: AssertionError
+_ test_coordinator_rejected_request_without_verified_price_keeps_reservation __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-green-02/test_coordinator_rejected_requ0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025E84F1A740>
+
+    def test_coordinator_rejected_request_without_verified_price_keeps_reservation(tmp_path, monkeypatch):
+        from tests.unit.test_external_search_provider import _response
+>       args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, second_route=True,
+            mutate=lambda d: d["external_routes"][0]["metering"].update(charge_policy="successful_search_only"))
+
+tests\unit\test_quick_scan_external_context.py:1013: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-green-02/test_coordinator_rejected_requ0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025E84F1A740>
+mutate = <function test_coordinator_rejected_request_without_verified_price_keeps_reservation.<locals>.<lambda> at 0x0000025E841CBE20>
+second_route = True
+
+    def _coordinator_fixture(tmp_path, monkeypatch, *, mutate=None, second_route=False):
+        """Real store/journal/accounting with HTTP replaced only at session.request."""
+        from unittest.mock import Mock
+        from src.utils.quick_scan_provider_health import QuickScanProviderHealth
+        from tests.unit.test_quick_scan_budget import _policy as model_policy
+        from tests.unit.test_external_search_provider import _response
+    
+        def change(document):
+            document["external_routes"][0]["credential_env"] = "IQS_SYNTHETIC_SEARCH_TOKEN"
+            if second_route:
+                second = copy.deepcopy(document["external_routes"][0])
+                second["route_id"] = "brave-secondary"
+                second["dispatch"]["quota_group"] = "search-secondary"
+                document["external_routes"].append(second)
+                document["selection"]["external_search_priority"].append({"route_id": second["route_id"]})
+            if mutate:
+                mutate(document)
+    
+        monkeypatch.setenv("IQS_SYNTHETIC_SEARCH_TOKEN", "synthetic-test-only")
+        policy = _execution_policy(tmp_path, monkeypatch, change)
+>       assert policy.admitted == (("brave-primary", "brave-secondary") if second_route else ("brave-primary",))
+E       AssertionError: assert ('brave-secondary',) == ('brave-prima...ve-secondary')
+E         
+E         At index 0 diff: 'brave-secondary' != 'brave-primary'
+E         Right contains one more item: 'brave-secondary'
+E         Use -v to get more diff
+
+tests\unit\test_quick_scan_external_context.py:802: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_coordinator_restart_between_two_queries_reuses_first_result
+FAILED tests/unit/test_quick_scan_external_context.py::test_coordinator_rejected_request_without_verified_price_keeps_reservation
+2 failed, 23 passed, 80 deselected in 4.93s

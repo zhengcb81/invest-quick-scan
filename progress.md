@@ -2417,3 +2417,12 @@
 - shared-owner-green-01原62647终态exit0：247P/20.94s（controller21.526s），失败/错误/跳过0、执行源不变；同一真实SQLite预算可同时接两家公司不同冻结计划，原现金/请求上限不扩大、费用不重置。原所有RED/96P4F夹具诊断保留。读取source-snapshot诊断误以为dict、实际list导致AttributeError，未写入；按list结构核对即可，非产品失败。
 - 本轮没有StockQA源发布、付费API或整Phase111验收；接续REST调度→实际LLM上下文和来源proof/MCP/公开CLI，同一个完整批次结束才集中review、正常源Git与严格自有根清理。当前全部测试handle终态，runs/n111a继续保留，不用旧checkpoint.py或清理其他进程的文件。
 - 本轮checkpoint02已实际正常提交并推送`537a174a7c024a59dbe0b6159660df77a1cabd40`：357精确IQS路径，351归档/控制器与index02的staged/committed原字节均核对，11批原始执行、118非写范围支持文件不变。prepare原39044、Git原72340均终态exit0；origin/master与HEAD一致，仅原opencode未跟踪。StockQA仍42a517c/原七条，未发布本批源代码；旧index01原字节核对、未覆写。随后仅补本PWF实际回执提交，私有环境与完整生产接线继续，未关闭其他门。
+
+## Phase111 检索调度接续：2026-10-09
+- 上一工程goal有配置/计价/数据TDD与checkpoint02实际537a174a及后续PWF67bf570，属于progress；其间heartbeat仅只读查门，无实施/测试/Git写。当前沿同根PWF和28路径范围，五私有源码/测试变化，不写StockQA或其他源仓。
+- coordinator-red-01：20F/80deselected/3.28s（controller3.953），协调入口未实现；green-01：19P/1F，Tavily fixture未将basis改per_search导致主route未准入；补断言完整admitted route。green-02：23P/2F，1真实同URL跨query丢coverage、1success-only fixture没配per_search/search_calls。原stdout/JUnit/执行字节均保留，不算成三产品失败。
+- green-03：26P/80deselected/4.61s（controller5.529）。受影响六文件coordinator-affected-green-01原27720终态exit0：273P/22.28s（controller22.850），0失败/错误/跳过，不与此前批次相加。
+- health-red-01：3F/106deselected/2.18s（controller2.924），实证收到Retry-After但仍用默认cooldown，以及超verified usage换generation又发送。接既有Q08已知等待；同一计价预算版本的超界历史阻断新轮，保留真实6000费用，不称免费。
+- coordinator-health-green-01原35856终态exit0：六文件276P/20.36s（controller21.007），0失败/错误/跳过，全部执行源SHA不变。真实私有SQLite/Q09/Q08与HTTP替身；真实API、密钥、下载、生产库和外仓写均0。未创建回答attempt，检索不是LLM回答。
+- 仅相同有效lease的无dispatch意图能复用原operation/预留继续；dispatch存在或结果/费用未知不重发/不failover。过期旧lease的未发送意图安全停机，跨owner接续尚待完整两阶段恢复，不称已完成。MCP明确before-reservation block，仍必须实施分阶段计费握手，不把REST通过当MCP通过。
+- 已更新PWF/接线接口/接手说明；下一动作原LLM发送边界及context-use proof，最终受影响/静态/公开CLI和一次集中review留到完整批次。不新增小节点审查门，G3/F05/THIN/StockWiki四新路径许可不变；当前自有根不清理。IQS checkpoint03 Git实际结果随后追加。

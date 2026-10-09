@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="20" skipped="0" tests="20" time="3.152" timestamp="2026-10-09T06:06:01.285761+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_cold_links_real_transport_charge_and_question_context" time="0.140"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_cold_links_re0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D643C1E780&gt;
+
+    def test_coordinator_cold_links_real_transport_charge_and_question_context(tmp_path, monkeypatch):
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch)
+&gt;       context = _retrieve(args)
+                  ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:829: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D6449F41A0&gt;, 'work_item_id': 'WORK_af2...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_restart_warm_without_key_is_free_and_preserves_retrieval_time" time="0.070"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_restart_warm_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D64211EEA0&gt;
+
+    def test_coordinator_restart_warm_without_key_is_free_and_preserves_retrieval_time(tmp_path, monkeypatch):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore
+        args, session, clock = _coordinator_fixture(tmp_path, monkeypatch)
+&gt;       first = _retrieve(args)
+                ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:841: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D644ADFC50&gt;, 'work_item_id': 'WORK_d29...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_priced_failure_or_unusable_data_uses_next_route_once[{&quot;error&quot;:{&quot;code&quot;:&quot;insufficient_quota&quot;}}-401]" time="0.074"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_priced_failur0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D6449703B0&gt;
+first_body = b'{"error":{"code":"insufficient_quota"}}', status = 401
+
+    @pytest.mark.parametrize("first_body,status", [
+        (b'{"error":{"code":"insufficient_quota"}}', 401),
+        (b'{"error":{"code":"rate_limit_exceeded"}}', 429),
+        (b'{"web":{"results":[],"results":[]}}', 200),
+        (b'{"web":{"results":[]}}', 200),
+        (b'{"web":{"results":[{"url":"https://other.example/ir","description":"Wrong issuer","page_age":"2026-10-01"}]}}', 200),
+    ])
+    def test_coordinator_priced_failure_or_unusable_data_uses_next_route_once(tmp_path, monkeypatch, first_body, status):
+        from tests.unit.test_external_search_provider import _response
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, second_route=True)
+        success = session.request.return_value
+        session.request.side_effect = [_response(first_body, status=status), success]
+&gt;       context = _retrieve(args)
+                  ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:864: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D644960A50&gt;, 'work_item_id': 'WORK_1e3...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_priced_failure_or_unusable_data_uses_next_route_once[{&quot;error&quot;:{&quot;code&quot;:&quot;rate_limit_exceeded&quot;}}-429]" time="0.068"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_priced_failur1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D644A469C0&gt;
+first_body = b'{"error":{"code":"rate_limit_exceeded"}}', status = 429
+
+    @pytest.mark.parametrize("first_body,status", [
+        (b'{"error":{"code":"insufficient_quota"}}', 401),
+        (b'{"error":{"code":"rate_limit_exceeded"}}', 429),
+        (b'{"web":{"results":[],"results":[]}}', 200),
+        (b'{"web":{"results":[]}}', 200),
+        (b'{"web":{"results":[{"url":"https://other.example/ir","description":"Wrong issuer","page_age":"2026-10-01"}]}}', 200),
+    ])
+    def test_coordinator_priced_failure_or_unusable_data_uses_next_route_once(tmp_path, monkeypatch, first_body, status):
+        from tests.unit.test_external_search_provider import _response
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, second_route=True)
+        success = session.request.return_value
+        session.request.side_effect = [_response(first_body, status=status), success]
+&gt;       context = _retrieve(args)
+                  ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:864: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D6449EA190&gt;, 'work_item_id': 'WORK_d4f...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_priced_failure_or_unusable_data_uses_next_route_once[{&quot;web&quot;:{&quot;results&quot;:[],&quot;results&quot;:[]}}-200]" time="0.067"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_priced_failur2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D644A47020&gt;
+first_body = b'{"web":{"results":[],"results":[]}}', status = 200
+
+    @pytest.mark.parametrize("first_body,status", [
+        (b'{"error":{"code":"insufficient_quota"}}', 401),
+        (b'{"error":{"code":"rate_limit_exceeded"}}', 429),
+        (b'{"web":{"results":[],"results":[]}}', 200),
+        (b'{"web":{"results":[]}}', 200),
+        (b'{"web":{"results":[{"url":"https://other.example/ir","description":"Wrong issuer","page_age":"2026-10-01"}]}}', 200),
+    ])
+    def test_coordinator_priced_failure_or_unusable_data_uses_next_route_once(tmp_path, monkeypatch, first_body, status):
+        from tests.unit.test_external_search_provider import _response
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, second_route=True)
+        success = session.request.return_value
+        session.request.side_effect = [_response(first_body, status=status), success]
+&gt;       context = _retrieve(args)
+                  ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:864: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D6449EAEA0&gt;, 'work_item_id': 'WORK_38c...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_priced_failure_or_unusable_data_uses_next_route_once[{&quot;web&quot;:{&quot;results&quot;:[]}}-200]" time="0.065"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_priced_failur3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D643D42C50&gt;
+first_body = b'{"web":{"results":[]}}', status = 200
+
+    @pytest.mark.parametrize("first_body,status", [
+        (b'{"error":{"code":"insufficient_quota"}}', 401),
+        (b'{"error":{"code":"rate_limit_exceeded"}}', 429),
+        (b'{"web":{"results":[],"results":[]}}', 200),
+        (b'{"web":{"results":[]}}', 200),
+        (b'{"web":{"results":[{"url":"https://other.example/ir","description":"Wrong issuer","page_age":"2026-10-01"}]}}', 200),
+    ])
+    def test_coordinator_priced_failure_or_unusable_data_uses_next_route_once(tmp_path, monkeypatch, first_body, status):
+        from tests.unit.test_external_search_provider import _response
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, second_route=True)
+        success = session.request.return_value
+        session.request.side_effect = [_response(first_body, status=status), success]
+&gt;       context = _retrieve(args)
+                  ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:864: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D6449715B0&gt;, 'work_item_id': 'WORK_192...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_priced_failure_or_unusable_data_uses_next_route_once[{&quot;web&quot;:{&quot;results&quot;:[{&quot;url&quot;:&quot;https://other.example/ir&quot;,&quot;description&quot;:&quot;Wrong issuer&quot;,&quot;page_age&quot;:&quot;2026-10-01&quot;}]}}-200]" time="0.070"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_priced_failur4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D643D42E50&gt;
+first_body = b'{"web":{"results":[{"url":"https://other.example/ir","description":"Wrong issuer","page_age":"2026-10-01"}]}}'
+status = 200
+
+    @pytest.mark.parametrize("first_body,status", [
+        (b'{"error":{"code":"insufficient_quota"}}', 401),
+        (b'{"error":{"code":"rate_limit_exceeded"}}', 429),
+        (b'{"web":{"results":[],"results":[]}}', 200),
+        (b'{"web":{"results":[]}}', 200),
+        (b'{"web":{"results":[{"url":"https://other.example/ir","description":"Wrong issuer","page_age":"2026-10-01"}]}}', 200),
+    ])
+    def test_coordinator_priced_failure_or_unusable_data_uses_next_route_once(tmp_path, monkeypatch, first_body, status):
+        from tests.unit.test_external_search_provider import _response
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, second_route=True)
+        success = session.request.return_value
+        session.request.side_effect = [_response(first_body, status=status), success]
+&gt;       context = _retrieve(args)
+                  ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:864: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D644A478A0&gt;, 'work_item_id': 'WORK_978...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_unknown_send_or_charge_stops_fallback_and_restart[timeout]" time="0.069"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'external_search_unresolved'&#10;  Actual message: &quot;cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)&quot;">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_unknown_send_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D644981B80&gt;
+failure = 'timeout'
+
+    @pytest.mark.parametrize("failure", ["timeout", "http500", "plain429", "missing_usage"])
+    def test_coordinator_unknown_send_or_charge_stops_fallback_and_restart(tmp_path, monkeypatch, failure):
+        from requests import Timeout
+        from tests.unit.test_external_search_provider import _response
+        def mutate(document):
+            if failure == "missing_usage":
+                route = document["external_routes"][0]
+                route.update(kind="tavily", endpoint="https://api.tavily.com/search")
+                route["metering"].update(charge_policy="provider_usage", usage_unit="credits")
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, mutate=mutate, second_route=True)
+        if failure == "timeout":
+            session.request.side_effect = Timeout("synthetic failure; must never persist this message")
+        else:
+            status = {"http500": 500, "plain429": 429, "missing_usage": 200}[failure]
+            body = {"results": [{"url": "https://fixture.example/ir", "content": "Margin", "published_date": "2026-10-01"}]} if failure == "missing_usage" else {"error": {"code": "unknown"}}
+            session.request.return_value = _response(json.dumps(body).encode(), status=status)
+        for expected_calls in (1, 1):
+&gt;           with pytest.raises(Exception, match="external_search_unresolved"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Regex pattern did not match.
+E             Expected regex: 'external_search_unresolved'
+E             Actual message: "cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)"
+
+tests\unit\test_quick_scan_external_context.py:889: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_unknown_send_or_charge_stops_fallback_and_restart[http500]" time="0.064"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'external_search_unresolved'&#10;  Actual message: &quot;cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)&quot;">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_unknown_send_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D644982210&gt;
+failure = 'http500'
+
+    @pytest.mark.parametrize("failure", ["timeout", "http500", "plain429", "missing_usage"])
+    def test_coordinator_unknown_send_or_charge_stops_fallback_and_restart(tmp_path, monkeypatch, failure):
+        from requests import Timeout
+        from tests.unit.test_external_search_provider import _response
+        def mutate(document):
+            if failure == "missing_usage":
+                route = document["external_routes"][0]
+                route.update(kind="tavily", endpoint="https://api.tavily.com/search")
+                route["metering"].update(charge_policy="provider_usage", usage_unit="credits")
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, mutate=mutate, second_route=True)
+        if failure == "timeout":
+            session.request.side_effect = Timeout("synthetic failure; must never persist this message")
+        else:
+            status = {"http500": 500, "plain429": 429, "missing_usage": 200}[failure]
+            body = {"results": [{"url": "https://fixture.example/ir", "content": "Margin", "published_date": "2026-10-01"}]} if failure == "missing_usage" else {"error": {"code": "unknown"}}
+            session.request.return_value = _response(json.dumps(body).encode(), status=status)
+        for expected_calls in (1, 1):
+&gt;           with pytest.raises(Exception, match="external_search_unresolved"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Regex pattern did not match.
+E             Expected regex: 'external_search_unresolved'
+E             Actual message: "cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)"
+
+tests\unit\test_quick_scan_external_context.py:889: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_unknown_send_or_charge_stops_fallback_and_restart[plain429]" time="0.066"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'external_search_unresolved'&#10;  Actual message: &quot;cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)&quot;">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_unknown_send_2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D6449C3690&gt;
+failure = 'plain429'
+
+    @pytest.mark.parametrize("failure", ["timeout", "http500", "plain429", "missing_usage"])
+    def test_coordinator_unknown_send_or_charge_stops_fallback_and_restart(tmp_path, monkeypatch, failure):
+        from requests import Timeout
+        from tests.unit.test_external_search_provider import _response
+        def mutate(document):
+            if failure == "missing_usage":
+                route = document["external_routes"][0]
+                route.update(kind="tavily", endpoint="https://api.tavily.com/search")
+                route["metering"].update(charge_policy="provider_usage", usage_unit="credits")
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, mutate=mutate, second_route=True)
+        if failure == "timeout":
+            session.request.side_effect = Timeout("synthetic failure; must never persist this message")
+        else:
+            status = {"http500": 500, "plain429": 429, "missing_usage": 200}[failure]
+            body = {"results": [{"url": "https://fixture.example/ir", "content": "Margin", "published_date": "2026-10-01"}]} if failure == "missing_usage" else {"error": {"code": "unknown"}}
+            session.request.return_value = _response(json.dumps(body).encode(), status=status)
+        for expected_calls in (1, 1):
+&gt;           with pytest.raises(Exception, match="external_search_unresolved"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Regex pattern did not match.
+E             Expected regex: 'external_search_unresolved'
+E             Actual message: "cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)"
+
+tests\unit\test_quick_scan_external_context.py:889: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_unknown_send_or_charge_stops_fallback_and_restart[missing_usage]" time="0.092"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'external_search_unresolved'&#10;  Actual message: &quot;cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)&quot;">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_unknown_send_3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D6421F0670&gt;
+failure = 'missing_usage'
+
+    @pytest.mark.parametrize("failure", ["timeout", "http500", "plain429", "missing_usage"])
+    def test_coordinator_unknown_send_or_charge_stops_fallback_and_restart(tmp_path, monkeypatch, failure):
+        from requests import Timeout
+        from tests.unit.test_external_search_provider import _response
+        def mutate(document):
+            if failure == "missing_usage":
+                route = document["external_routes"][0]
+                route.update(kind="tavily", endpoint="https://api.tavily.com/search")
+                route["metering"].update(charge_policy="provider_usage", usage_unit="credits")
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, mutate=mutate, second_route=True)
+        if failure == "timeout":
+            session.request.side_effect = Timeout("synthetic failure; must never persist this message")
+        else:
+            status = {"http500": 500, "plain429": 429, "missing_usage": 200}[failure]
+            body = {"results": [{"url": "https://fixture.example/ir", "content": "Margin", "published_date": "2026-10-01"}]} if failure == "missing_usage" else {"error": {"code": "unknown"}}
+            session.request.return_value = _response(json.dumps(body).encode(), status=status)
+        for expected_calls in (1, 1):
+&gt;           with pytest.raises(Exception, match="external_search_unresolved"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Regex pattern did not match.
+E             Expected regex: 'external_search_unresolved'
+E             Actual message: "cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)"
+
+tests\unit\test_quick_scan_external_context.py:889: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_wrong_frozen_authority_fails_before_any_reservation[ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff]" time="0.074"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_wrong_frozen_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D6444D3790&gt;
+manifest = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+
+    @pytest.mark.parametrize("manifest", ["f" * 64, None])
+    def test_coordinator_wrong_frozen_authority_fails_before_any_reservation(tmp_path, monkeypatch, manifest):
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        args["question_manifest_sha256"] = manifest
+        with pytest.raises(ValueError, match="authority"):
+&gt;           _retrieve(args)
+
+tests\unit\test_quick_scan_external_context.py:905: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D644982990&gt;, 'work_item_id': 'WORK_8e0...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_wrong_frozen_authority_fails_before_any_reservation[None]" time="0.049"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_wrong_frozen_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D64241F050&gt;
+manifest = None
+
+    @pytest.mark.parametrize("manifest", ["f" * 64, None])
+    def test_coordinator_wrong_frozen_authority_fails_before_any_reservation(tmp_path, monkeypatch, manifest):
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        args["question_manifest_sha256"] = manifest
+        with pytest.raises(ValueError, match="authority"):
+&gt;           _retrieve(args)
+
+tests\unit\test_quick_scan_external_context.py:905: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D6421C7310&gt;, 'work_item_id': 'WORK_f75...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_missing_credential_does_not_create_an_orphan_intent" time="0.048"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'credential_env_unset'&#10;  Actual message: &quot;cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)&quot;">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_missing_crede0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D6418AB050&gt;
+
+    def test_coordinator_missing_credential_does_not_create_an_orphan_intent(tmp_path, monkeypatch):
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        monkeypatch.delenv("IQS_SYNTHETIC_SEARCH_TOKEN")
+&gt;       with pytest.raises(Exception, match="credential_env_unset"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'credential_env_unset'
+E         Actual message: "cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)"
+
+tests\unit\test_quick_scan_external_context.py:912: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_unnegotiated_mcp_is_blocked_before_reservation" time="0.062"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'mcp_handshake_required'&#10;  Actual message: &quot;cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)&quot;">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_unnegotiated_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D6421C0CB0&gt;
+
+    def test_coordinator_unnegotiated_mcp_is_blocked_before_reservation(tmp_path, monkeypatch):
+        def mutate(document):
+            document["external_routes"][0].update(kind="zai_mcp_streamable", endpoint="https://api.z.ai/api/mcp/web_search_prime/mcp")
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, mutate=mutate)
+&gt;       with pytest.raises(Exception, match="mcp_handshake_required"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'mcp_handshake_required'
+E         Actual message: "cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)"
+
+tests\unit\test_quick_scan_external_context.py:921: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_resumes_only_proven_unsent_intent_without_second_reservation[False]" time="0.068"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_resumes_only_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D63FD05A70&gt;
+consumed = False
+
+    @pytest.mark.parametrize("consumed", [False, True])
+    def test_coordinator_resumes_only_proven_unsent_intent_without_second_reservation(tmp_path, monkeypatch, consumed):
+        from src.config.quick_scan_search_policy import execution_query_plans
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        original = args["store"].begin_external_search(args["work_item_id"], args["lease"],
+            policy=build_shared_external_budget_policy(args["model_policy"], args["policy"]),
+            plan=execution_query_plans(args["policy"])[0], route_id="brave-primary", provider="brave",
+            quota_group="search-brave", adapter_version="stockqa.external_retrieval/1.0.0",
+            search_policy_sha256=args["policy"].policy_sha256, endpoint="https://api.search.brave.com/res/v1/web/search")
+        if consumed:
+            args["store"].consume_external_search(original["operation_id"], budget_attempt_id=original["budget_attempt_id"])
+            with pytest.raises(Exception, match="external_search_unresolved"):
+                _retrieve(args)
+            assert session.request.call_count == 0
+        else:
+&gt;           context = _retrieve(args)
+                      ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:942: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D644AE6150&gt;, 'work_item_id': 'WORK_741...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_resumes_only_proven_unsent_intent_without_second_reservation[True]" time="0.078"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'external_search_unresolved'&#10;  Actual message: &quot;cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)&quot;">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_resumes_only_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D64497A530&gt;
+consumed = True
+
+    @pytest.mark.parametrize("consumed", [False, True])
+    def test_coordinator_resumes_only_proven_unsent_intent_without_second_reservation(tmp_path, monkeypatch, consumed):
+        from src.config.quick_scan_search_policy import execution_query_plans
+        from src.utils.quick_scan_external_context import build_shared_external_budget_policy
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch)
+        original = args["store"].begin_external_search(args["work_item_id"], args["lease"],
+            policy=build_shared_external_budget_policy(args["model_policy"], args["policy"]),
+            plan=execution_query_plans(args["policy"])[0], route_id="brave-primary", provider="brave",
+            quota_group="search-brave", adapter_version="stockqa.external_retrieval/1.0.0",
+            search_policy_sha256=args["policy"].policy_sha256, endpoint="https://api.search.brave.com/res/v1/web/search")
+        if consumed:
+            args["store"].consume_external_search(original["operation_id"], budget_attempt_id=original["budget_attempt_id"])
+&gt;           with pytest.raises(Exception, match="external_search_unresolved"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Regex pattern did not match.
+E             Expected regex: 'external_search_unresolved'
+E             Actual message: "cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\n111a\\qa\\src\\utils\\quick_scan_external_context.py)"
+
+tests\unit\test_quick_scan_external_context.py:938: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_shared_query_serves_a_second_question_with_zero_http" time="0.060"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_shared_query_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D644979A90&gt;
+
+    def test_coordinator_shared_query_serves_a_second_question_with_zero_http(tmp_path, monkeypatch):
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch,
+            mutate=lambda d: d["execution_plan"]["queries"][0]["question_ids"].append("IQS_06"))
+&gt;       first = _retrieve(args)
+                ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:951: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D644AC0680&gt;, 'work_item_id': 'WORK_510...[{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05', 'IQS_06'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_old_generation_requires_explicit_refresh_and_keeps_prior_fees" time="0.061"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_old_generatio0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D644AF74A0&gt;
+
+    def test_coordinator_old_generation_requires_explicit_refresh_and_keeps_prior_fees(tmp_path, monkeypatch):
+        args, session, clock = _coordinator_fixture(tmp_path, monkeypatch,
+            mutate=lambda d: d["retrieval"].update(search_ttl_seconds=1))
+&gt;       first = _retrieve(args)
+                ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:962: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D644AC0260&gt;, 'work_item_id': 'WORK_e2b...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_coordinator_result_persistence_failure_never_falls_back_or_repeats_http" time="0.062"><failure message="ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-red-01/test_coordinator_result_persis0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D643FB2E50&gt;
+
+    def test_coordinator_result_persistence_failure_never_falls_back_or_repeats_http(tmp_path, monkeypatch):
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, second_route=True)
+        with closing(args["store"]._connect()) as connection:
+            connection.execute("CREATE TRIGGER injected_save_failure BEFORE INSERT ON quick_scan_external_result BEGIN SELECT RAISE(ABORT,'synthetic save failure'); END")
+        with pytest.raises(sqlite3.IntegrityError, match="synthetic save failure"):
+&gt;           _retrieve(args)
+
+tests\unit\test_quick_scan_external_context.py:980: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kwargs = {'store': &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001D644979310&gt;, 'work_item_id': 'WORK_b9c...queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]}), ...}
+
+    def _retrieve(kwargs):
+&gt;       from src.utils.quick_scan_external_context import retrieve_external_question_context
+E       ImportError: cannot import name 'retrieve_external_question_context' from 'src.utils.quick_scan_external_context' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_external_context.py)
+
+tests\unit\test_quick_scan_external_context.py:817: ImportError</failure></testcase></testsuite></testsuites>

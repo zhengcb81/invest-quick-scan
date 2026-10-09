@@ -1,0 +1,35 @@
+..........F.........                                                     [100%]
+================================== FAILURES ===================================
+_ test_coordinator_unknown_send_or_charge_stops_fallback_and_restart[missing_usage] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/coordinator-green-01/test_coordinator_unknown_send_3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025395CBFAF0>
+failure = 'missing_usage'
+
+    @pytest.mark.parametrize("failure", ["timeout", "http500", "plain429", "missing_usage"])
+    def test_coordinator_unknown_send_or_charge_stops_fallback_and_restart(tmp_path, monkeypatch, failure):
+        from requests import Timeout
+        from tests.unit.test_external_search_provider import _response
+        def mutate(document):
+            if failure == "missing_usage":
+                route = document["external_routes"][0]
+                route.update(kind="tavily", endpoint="https://api.tavily.com/search")
+                route["metering"].update(charge_policy="provider_usage", usage_unit="credits")
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, mutate=mutate, second_route=True)
+        if failure == "timeout":
+            session.request.side_effect = Timeout("synthetic failure; must never persist this message")
+        else:
+            status = {"http500": 500, "plain429": 429, "missing_usage": 200}[failure]
+            body = {"results": [{"url": "https://fixture.example/ir", "content": "Margin", "published_date": "2026-10-01"}]} if failure == "missing_usage" else {"error": {"code": "unknown"}}
+            session.request.return_value = _response(json.dumps(body).encode(), status=status)
+        for expected_calls in (1, 1):
+>           with pytest.raises(Exception, match="external_search_unresolved"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AssertionError: Regex pattern did not match.
+E             Expected regex: 'external_search_unresolved'
+E             Actual message: 'external_evidence_insufficient'
+
+tests\unit\test_quick_scan_external_context.py:889: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_coordinator_unknown_send_or_charge_stops_fallback_and_restart[missing_usage]
+1 failed, 19 passed, 80 deselected in 4.23s

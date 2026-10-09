@@ -1,0 +1,1251 @@
+{
+  "phase": 111,
+  "state": "in_progress_private_implementation_not_published",
+  "iqs_baseline": "67bf570e0c306590057e16d3c66671e393b8a2e0",
+  "source_head": "42a517c4bd6bc8219f926957c6c332944da3278a",
+  "production_schema_version": 8,
+  "private_schema_version": 9,
+  "support_files_unchanged": 118,
+  "test_batches": [
+    {
+      "label": "coordinator-red-01",
+      "returncode": 1,
+      "wall_s": 3.953,
+      "tests": 20,
+      "failures": 20,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "label": "coordinator-green-01",
+      "returncode": 1,
+      "wall_s": 5.081,
+      "tests": 20,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "label": "coordinator-green-02",
+      "returncode": 1,
+      "wall_s": 5.61,
+      "tests": 25,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "label": "coordinator-green-03",
+      "returncode": 0,
+      "wall_s": 5.529,
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "label": "coordinator-affected-green-01",
+      "returncode": 0,
+      "wall_s": 22.85,
+      "tests": 273,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "label": "coordinator-health-red-01",
+      "returncode": 1,
+      "wall_s": 2.924,
+      "tests": 3,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "label": "coordinator-health-green-01",
+      "returncode": 0,
+      "wall_s": 21.007,
+      "tests": 276,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "latest_executed_source_hashes": {
+    ".gitignore": "b66b0c296753b183cc51c3b5e9b15a9357ee21cc963c5b3628b0dd08c2bae69f",
+    "src/config/quick_scan_search_policy.py": "8b9dc718eddcf8cd7f27fa53cba68e58784e78d4ae02515b97555ba058aa7b98",
+    "src/config/quick_scan_search_policy_v1_1.schema.json": "453ee74711fc2972ca7ea6025bba4e5b6ab7e277f1cc6482ebf37690828781ec",
+    "src/providers/external_search_parsers.py": "17a4096223a49771780aad59ecbf89012748f4a770f475cc70ec9963d7fa6b2b",
+    "src/providers/search_capability.py": "2e6cf52ca9d12a1d4529ca84ee948eace92faa29ef72a59efde56bad0512c710",
+    "src/providers/external_search_provider.py": "7416abd5c0cd9adb7146b23fa898a9de5664ef3e748a5cfb8057eac91ac714ce",
+    "src/providers/llm_client.py": "87d180dd8b15c8e85a2427296081b5c5a889c8205ac3a0c5fbd25f7a0de7bc82",
+    "src/providers/base_llm_provider.py": "f7be002a501f57dbe707860366dff7548c91dc1882c2d7da2163aa88c4f259b4",
+    "src/providers/llm_provider.py": "8ed4e554816ceb7f4330f9f9c9cb8ba733ed823f47f166fd7aed576cb3913d14",
+    "src/utils/llm_integration.py": "67313745cc6d5c22e6d528c912ab4e9d14a0eafeddc63d4ff86aaac0dc8fa123",
+    "src/utils/http_client.py": "23704d18f98297c967bd661ef623858be79ab1f0acbc237603fdadcec27bb60b",
+    "src/utils/quick_scan_evidence.py": "6562b7e934372ad9ebfda0e7ed256ff540d5f8445b20f40f1632e88ecad6f36c",
+    "src/utils/quick_scan_external_context.py": "416e5dea54a8440017509edc94db624d3789fb0ef52defc1c2b910d21bb3cb57",
+    "src/utils/quick_scan_external_journal.py": "7e7d41817f51781696ab5a1afabf1ef0285ced4370df05fb474a399102466954",
+    "src/utils/quick_scan_work_transport.py": "6216340ee88387d42b1a0c9715519414bfb7999dd7c64d6a8c2652ca0a9f1e3f",
+    "src/utils/quick_scan_work_store.py": "a5205ef19c4bfb5e5735e1d7972da6740fba247b60bf80bfa809cffaf1b0b1bc",
+    "src/utils/quick_scan_cost_resolver.py": "9992a83bdd92a5b5e0fe61f5292960ee31f144804c4529205a6ddd41a87fdc24",
+    "src/runners/llm_runner.py": "d0f372057d4a0bc11d4563de4ab544607596b52510a8b1a84893aa51d7e579a8",
+    "src/core/models.py": "d98f7613fcfabc0d5d1f1fe0b403eaa734a6948b8c9fad492a993f70bdf00cf1",
+    "src/utils/quick_scan_observation_context.py": "586deae394e0f0faedf3e639258497d6aa7fbde0c963db06d73728a4819ad910",
+    "src/utils/quick_scan_c06_adapter.py": "a1c9bdb005fb41626f8d23d5f22a1a6cf164517e87131121ba5ad8bb44fd21b2",
+    "tests/unit/test_quick_scan_external_context.py": "1f3135e6809b2c27e9f5a1baefd92e30c2dacc21bd3f213afe9b2be1451454cd",
+    "tests/unit/test_quick_scan_work_store.py": "ac45c8c59972fd786095da9826caf3ee85c1c7e806261b93481087f02ff18772",
+    "tests/unit/test_quick_scan_budget.py": "d40dc9f4176e26e6ee83194636d8cc366b42081f377cd55fb7e47022629c7e06",
+    "tests/unit/test_qa_net01_search_boundary.py": "dda382bb1a6114898600d7a8b06341e344949f22ecd412068fe104a5a8e942aa",
+    "tests/unit/test_external_search_provider.py": "89bcaa6c6e22ff3e81a9daaeb395ec9d39b13114057b06a0e1fd61bbe3f43479"
+  },
+  "records": [
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-guard.py",
+      "bytes": 3976,
+      "sha256": "c47c7b3cb00f30d3ea6464157b9bf8a112511eb9f3111211413c7fe478042a5f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-runner.py",
+      "bytes": 3607,
+      "sha256": "fa4f21e8884d949291e21a98616eaf7564e4b566ca84db951634a6a4a4c7d273"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/.gitignore",
+      "bytes": 2850,
+      "sha256": "b66b0c296753b183cc51c3b5e9b15a9357ee21cc963c5b3628b0dd08c2bae69f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/config/quick_scan_search_policy.py",
+      "bytes": 23409,
+      "sha256": "8b9dc718eddcf8cd7f27fa53cba68e58784e78d4ae02515b97555ba058aa7b98"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/config/quick_scan_search_policy_v1_1.schema.json",
+      "bytes": 13279,
+      "sha256": "453ee74711fc2972ca7ea6025bba4e5b6ab7e277f1cc6482ebf37690828781ec"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/core/models.py",
+      "bytes": 22457,
+      "sha256": "d98f7613fcfabc0d5d1f1fe0b403eaa734a6948b8c9fad492a993f70bdf00cf1"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/providers/base_llm_provider.py",
+      "bytes": 15964,
+      "sha256": "f7be002a501f57dbe707860366dff7548c91dc1882c2d7da2163aa88c4f259b4"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/providers/external_search_parsers.py",
+      "bytes": 11429,
+      "sha256": "17a4096223a49771780aad59ecbf89012748f4a770f475cc70ec9963d7fa6b2b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/providers/external_search_provider.py",
+      "bytes": 11867,
+      "sha256": "9ab0405bec9cfa5d402c50ca20b3d1eb10c529644a909925be6bd2afb9f42478"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/providers/llm_client.py",
+      "bytes": 55354,
+      "sha256": "87d180dd8b15c8e85a2427296081b5c5a889c8205ac3a0c5fbd25f7a0de7bc82"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/providers/llm_provider.py",
+      "bytes": 16491,
+      "sha256": "8ed4e554816ceb7f4330f9f9c9cb8ba733ed823f47f166fd7aed576cb3913d14"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/providers/search_capability.py",
+      "bytes": 6826,
+      "sha256": "2e6cf52ca9d12a1d4529ca84ee948eace92faa29ef72a59efde56bad0512c710"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/runners/llm_runner.py",
+      "bytes": 85150,
+      "sha256": "d0f372057d4a0bc11d4563de4ab544607596b52510a8b1a84893aa51d7e579a8"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/http_client.py",
+      "bytes": 6461,
+      "sha256": "23704d18f98297c967bd661ef623858be79ab1f0acbc237603fdadcec27bb60b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/llm_integration.py",
+      "bytes": 72834,
+      "sha256": "67313745cc6d5c22e6d528c912ab4e9d14a0eafeddc63d4ff86aaac0dc8fa123"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/quick_scan_c06_adapter.py",
+      "bytes": 11925,
+      "sha256": "a1c9bdb005fb41626f8d23d5f22a1a6cf164517e87131121ba5ad8bb44fd21b2"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/quick_scan_cost_resolver.py",
+      "bytes": 11686,
+      "sha256": "9992a83bdd92a5b5e0fe61f5292960ee31f144804c4529205a6ddd41a87fdc24"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/quick_scan_evidence.py",
+      "bytes": 7154,
+      "sha256": "6562b7e934372ad9ebfda0e7ed256ff540d5f8445b20f40f1632e88ecad6f36c"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/quick_scan_external_context.py",
+      "bytes": 23676,
+      "sha256": "4da6a383b1886069291d36e1477df01158dc7cf32fdbe9c5695b198f7b163af9"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/quick_scan_external_journal.py",
+      "bytes": 31438,
+      "sha256": "5fcd339c23032c2028cb00270fcf616ff74ed9edcecd50ce9dedf818aae40a9f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/quick_scan_observation_context.py",
+      "bytes": 22528,
+      "sha256": "586deae394e0f0faedf3e639258497d6aa7fbde0c963db06d73728a4819ad910"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/quick_scan_work_store.py",
+      "bytes": 213658,
+      "sha256": "a5205ef19c4bfb5e5735e1d7972da6740fba247b60bf80bfa809cffaf1b0b1bc"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/src/utils/quick_scan_work_transport.py",
+      "bytes": 22913,
+      "sha256": "6216340ee88387d42b1a0c9715519414bfb7999dd7c64d6a8c2652ca0a9f1e3f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/tests/unit/test_external_search_provider.py",
+      "bytes": 17243,
+      "sha256": "89bcaa6c6e22ff3e81a9daaeb395ec9d39b13114057b06a0e1fd61bbe3f43479"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/tests/unit/test_qa_net01_search_boundary.py",
+      "bytes": 23200,
+      "sha256": "dda382bb1a6114898600d7a8b06341e344949f22ecd412068fe104a5a8e942aa"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/tests/unit/test_quick_scan_budget.py",
+      "bytes": 22409,
+      "sha256": "d40dc9f4176e26e6ee83194636d8cc366b42081f377cd55fb7e47022629c7e06"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/tests/unit/test_quick_scan_external_context.py",
+      "bytes": 64951,
+      "sha256": "45b2f5e7a27ac8c6f4c277de434c15203ed92a96c218c6aee4e3c36cf54dde62"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/executed-source/tests/unit/test_quick_scan_work_store.py",
+      "bytes": 110280,
+      "sha256": "ac45c8c59972fd786095da9826caf3ee85c1c7e806261b93481087f02ff18772"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/junit.xml",
+      "bytes": 44273,
+      "sha256": "a29ee6bb7c951aa5f0bc85fa1b021833bf323d7fe9982d693c78d963cc0795cf"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/process.json",
+      "bytes": 3903,
+      "sha256": "09ec9a68e1ce9d097d76756ec8ae3d50d48915b5a09c8ac4cf33f2a7899b16ae"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-affected-green-01/stdout.log",
+      "bytes": 346,
+      "sha256": "23c45e93b756ae0b49bff7fba90f101ee211912783f2d5f04978d5d632bc274e"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-guard.py",
+      "bytes": 3976,
+      "sha256": "c47c7b3cb00f30d3ea6464157b9bf8a112511eb9f3111211413c7fe478042a5f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-runner.py",
+      "bytes": 3607,
+      "sha256": "fa4f21e8884d949291e21a98616eaf7564e4b566ca84db951634a6a4a4c7d273"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/.gitignore",
+      "bytes": 2850,
+      "sha256": "b66b0c296753b183cc51c3b5e9b15a9357ee21cc963c5b3628b0dd08c2bae69f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/config/quick_scan_search_policy.py",
+      "bytes": 23409,
+      "sha256": "8b9dc718eddcf8cd7f27fa53cba68e58784e78d4ae02515b97555ba058aa7b98"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/config/quick_scan_search_policy_v1_1.schema.json",
+      "bytes": 13279,
+      "sha256": "453ee74711fc2972ca7ea6025bba4e5b6ab7e277f1cc6482ebf37690828781ec"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/core/models.py",
+      "bytes": 22457,
+      "sha256": "d98f7613fcfabc0d5d1f1fe0b403eaa734a6948b8c9fad492a993f70bdf00cf1"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/providers/base_llm_provider.py",
+      "bytes": 15964,
+      "sha256": "f7be002a501f57dbe707860366dff7548c91dc1882c2d7da2163aa88c4f259b4"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/providers/external_search_parsers.py",
+      "bytes": 11429,
+      "sha256": "17a4096223a49771780aad59ecbf89012748f4a770f475cc70ec9963d7fa6b2b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/providers/external_search_provider.py",
+      "bytes": 11867,
+      "sha256": "9ab0405bec9cfa5d402c50ca20b3d1eb10c529644a909925be6bd2afb9f42478"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/providers/llm_client.py",
+      "bytes": 55354,
+      "sha256": "87d180dd8b15c8e85a2427296081b5c5a889c8205ac3a0c5fbd25f7a0de7bc82"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/providers/llm_provider.py",
+      "bytes": 16491,
+      "sha256": "8ed4e554816ceb7f4330f9f9c9cb8ba733ed823f47f166fd7aed576cb3913d14"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/providers/search_capability.py",
+      "bytes": 6826,
+      "sha256": "2e6cf52ca9d12a1d4529ca84ee948eace92faa29ef72a59efde56bad0512c710"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/runners/llm_runner.py",
+      "bytes": 85150,
+      "sha256": "d0f372057d4a0bc11d4563de4ab544607596b52510a8b1a84893aa51d7e579a8"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/http_client.py",
+      "bytes": 6461,
+      "sha256": "23704d18f98297c967bd661ef623858be79ab1f0acbc237603fdadcec27bb60b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/llm_integration.py",
+      "bytes": 72834,
+      "sha256": "67313745cc6d5c22e6d528c912ab4e9d14a0eafeddc63d4ff86aaac0dc8fa123"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/quick_scan_c06_adapter.py",
+      "bytes": 11925,
+      "sha256": "a1c9bdb005fb41626f8d23d5f22a1a6cf164517e87131121ba5ad8bb44fd21b2"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/quick_scan_cost_resolver.py",
+      "bytes": 11686,
+      "sha256": "9992a83bdd92a5b5e0fe61f5292960ee31f144804c4529205a6ddd41a87fdc24"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/quick_scan_evidence.py",
+      "bytes": 7154,
+      "sha256": "6562b7e934372ad9ebfda0e7ed256ff540d5f8445b20f40f1632e88ecad6f36c"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/quick_scan_external_context.py",
+      "bytes": 22711,
+      "sha256": "d3eea5fbc63319951292cf8acb920d5ef79e25cfb6c39f705d7c8b027c711742"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/quick_scan_external_journal.py",
+      "bytes": 31438,
+      "sha256": "5fcd339c23032c2028cb00270fcf616ff74ed9edcecd50ce9dedf818aae40a9f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/quick_scan_observation_context.py",
+      "bytes": 22528,
+      "sha256": "586deae394e0f0faedf3e639258497d6aa7fbde0c963db06d73728a4819ad910"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/quick_scan_work_store.py",
+      "bytes": 213658,
+      "sha256": "a5205ef19c4bfb5e5735e1d7972da6740fba247b60bf80bfa809cffaf1b0b1bc"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/src/utils/quick_scan_work_transport.py",
+      "bytes": 22913,
+      "sha256": "6216340ee88387d42b1a0c9715519414bfb7999dd7c64d6a8c2652ca0a9f1e3f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/tests/unit/test_external_search_provider.py",
+      "bytes": 17243,
+      "sha256": "89bcaa6c6e22ff3e81a9daaeb395ec9d39b13114057b06a0e1fd61bbe3f43479"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/tests/unit/test_qa_net01_search_boundary.py",
+      "bytes": 23200,
+      "sha256": "dda382bb1a6114898600d7a8b06341e344949f22ecd412068fe104a5a8e942aa"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/tests/unit/test_quick_scan_budget.py",
+      "bytes": 22409,
+      "sha256": "d40dc9f4176e26e6ee83194636d8cc366b42081f377cd55fb7e47022629c7e06"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/tests/unit/test_quick_scan_external_context.py",
+      "bytes": 59192,
+      "sha256": "6bf8455da751a276568042e71ab1e7b8ac8c602df9eb6301c528bf3e5c12293a"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/executed-source/tests/unit/test_quick_scan_work_store.py",
+      "bytes": 110280,
+      "sha256": "ac45c8c59972fd786095da9826caf3ee85c1c7e806261b93481087f02ff18772"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/junit.xml",
+      "bytes": 6182,
+      "sha256": "f89ea5af4c3e657d18e588a9aecf03603babefa8060e6be2448e670d033a58e4"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/process.json",
+      "bytes": 3666,
+      "sha256": "3ec23b7ad5b28a323d288520d2701bf6327e30e6e3eb4fa1ef685c418d9b2b61"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-01/stdout.log",
+      "bytes": 2475,
+      "sha256": "308fcfab3af9070d1c56a9061cf3f05360d43b8a4d3622727254ab36bea6876f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-guard.py",
+      "bytes": 3976,
+      "sha256": "c47c7b3cb00f30d3ea6464157b9bf8a112511eb9f3111211413c7fe478042a5f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-runner.py",
+      "bytes": 3607,
+      "sha256": "fa4f21e8884d949291e21a98616eaf7564e4b566ca84db951634a6a4a4c7d273"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/.gitignore",
+      "bytes": 2850,
+      "sha256": "b66b0c296753b183cc51c3b5e9b15a9357ee21cc963c5b3628b0dd08c2bae69f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/config/quick_scan_search_policy.py",
+      "bytes": 23409,
+      "sha256": "8b9dc718eddcf8cd7f27fa53cba68e58784e78d4ae02515b97555ba058aa7b98"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/config/quick_scan_search_policy_v1_1.schema.json",
+      "bytes": 13279,
+      "sha256": "453ee74711fc2972ca7ea6025bba4e5b6ab7e277f1cc6482ebf37690828781ec"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/core/models.py",
+      "bytes": 22457,
+      "sha256": "d98f7613fcfabc0d5d1f1fe0b403eaa734a6948b8c9fad492a993f70bdf00cf1"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/providers/base_llm_provider.py",
+      "bytes": 15964,
+      "sha256": "f7be002a501f57dbe707860366dff7548c91dc1882c2d7da2163aa88c4f259b4"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/providers/external_search_parsers.py",
+      "bytes": 11429,
+      "sha256": "17a4096223a49771780aad59ecbf89012748f4a770f475cc70ec9963d7fa6b2b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/providers/external_search_provider.py",
+      "bytes": 11867,
+      "sha256": "9ab0405bec9cfa5d402c50ca20b3d1eb10c529644a909925be6bd2afb9f42478"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/providers/llm_client.py",
+      "bytes": 55354,
+      "sha256": "87d180dd8b15c8e85a2427296081b5c5a889c8205ac3a0c5fbd25f7a0de7bc82"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/providers/llm_provider.py",
+      "bytes": 16491,
+      "sha256": "8ed4e554816ceb7f4330f9f9c9cb8ba733ed823f47f166fd7aed576cb3913d14"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/providers/search_capability.py",
+      "bytes": 6826,
+      "sha256": "2e6cf52ca9d12a1d4529ca84ee948eace92faa29ef72a59efde56bad0512c710"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/runners/llm_runner.py",
+      "bytes": 85150,
+      "sha256": "d0f372057d4a0bc11d4563de4ab544607596b52510a8b1a84893aa51d7e579a8"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/http_client.py",
+      "bytes": 6461,
+      "sha256": "23704d18f98297c967bd661ef623858be79ab1f0acbc237603fdadcec27bb60b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/llm_integration.py",
+      "bytes": 72834,
+      "sha256": "67313745cc6d5c22e6d528c912ab4e9d14a0eafeddc63d4ff86aaac0dc8fa123"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/quick_scan_c06_adapter.py",
+      "bytes": 11925,
+      "sha256": "a1c9bdb005fb41626f8d23d5f22a1a6cf164517e87131121ba5ad8bb44fd21b2"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/quick_scan_cost_resolver.py",
+      "bytes": 11686,
+      "sha256": "9992a83bdd92a5b5e0fe61f5292960ee31f144804c4529205a6ddd41a87fdc24"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/quick_scan_evidence.py",
+      "bytes": 7154,
+      "sha256": "6562b7e934372ad9ebfda0e7ed256ff540d5f8445b20f40f1632e88ecad6f36c"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/quick_scan_external_context.py",
+      "bytes": 22711,
+      "sha256": "d3eea5fbc63319951292cf8acb920d5ef79e25cfb6c39f705d7c8b027c711742"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/quick_scan_external_journal.py",
+      "bytes": 31438,
+      "sha256": "5fcd339c23032c2028cb00270fcf616ff74ed9edcecd50ce9dedf818aae40a9f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/quick_scan_observation_context.py",
+      "bytes": 22528,
+      "sha256": "586deae394e0f0faedf3e639258497d6aa7fbde0c963db06d73728a4819ad910"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/quick_scan_work_store.py",
+      "bytes": 213658,
+      "sha256": "a5205ef19c4bfb5e5735e1d7972da6740fba247b60bf80bfa809cffaf1b0b1bc"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/src/utils/quick_scan_work_transport.py",
+      "bytes": 22913,
+      "sha256": "6216340ee88387d42b1a0c9715519414bfb7999dd7c64d6a8c2652ca0a9f1e3f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/tests/unit/test_external_search_provider.py",
+      "bytes": 17243,
+      "sha256": "89bcaa6c6e22ff3e81a9daaeb395ec9d39b13114057b06a0e1fd61bbe3f43479"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/tests/unit/test_qa_net01_search_boundary.py",
+      "bytes": 23200,
+      "sha256": "dda382bb1a6114898600d7a8b06341e344949f22ecd412068fe104a5a8e942aa"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/tests/unit/test_quick_scan_budget.py",
+      "bytes": 22409,
+      "sha256": "d40dc9f4176e26e6ee83194636d8cc366b42081f377cd55fb7e47022629c7e06"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/tests/unit/test_quick_scan_external_context.py",
+      "bytes": 63582,
+      "sha256": "cbffc5518bc78ce114ef69c96305108e3f3667935241e91286e141dbf5e6d5d1"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/executed-source/tests/unit/test_quick_scan_work_store.py",
+      "bytes": 110280,
+      "sha256": "ac45c8c59972fd786095da9826caf3ee85c1c7e806261b93481087f02ff18772"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/junit.xml",
+      "bytes": 9872,
+      "sha256": "33be619c8a63e6b9bdcd63bb0dc2148a0664acc1733132cdd87c6f5d25370f57"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/process.json",
+      "bytes": 3665,
+      "sha256": "e56e4d8cced2d203048b2e791c0d313fb1a22d0d800e900b13425b2553d91b7a"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-02/stdout.log",
+      "bytes": 5277,
+      "sha256": "a5d141aa5b2c06b2910ac9f5a8dd644535aee86dc2e789459a01380bbabee55c"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-guard.py",
+      "bytes": 3976,
+      "sha256": "c47c7b3cb00f30d3ea6464157b9bf8a112511eb9f3111211413c7fe478042a5f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-runner.py",
+      "bytes": 3607,
+      "sha256": "fa4f21e8884d949291e21a98616eaf7564e4b566ca84db951634a6a4a4c7d273"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/.gitignore",
+      "bytes": 2850,
+      "sha256": "b66b0c296753b183cc51c3b5e9b15a9357ee21cc963c5b3628b0dd08c2bae69f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/config/quick_scan_search_policy.py",
+      "bytes": 23409,
+      "sha256": "8b9dc718eddcf8cd7f27fa53cba68e58784e78d4ae02515b97555ba058aa7b98"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/config/quick_scan_search_policy_v1_1.schema.json",
+      "bytes": 13279,
+      "sha256": "453ee74711fc2972ca7ea6025bba4e5b6ab7e277f1cc6482ebf37690828781ec"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/core/models.py",
+      "bytes": 22457,
+      "sha256": "d98f7613fcfabc0d5d1f1fe0b403eaa734a6948b8c9fad492a993f70bdf00cf1"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/providers/base_llm_provider.py",
+      "bytes": 15964,
+      "sha256": "f7be002a501f57dbe707860366dff7548c91dc1882c2d7da2163aa88c4f259b4"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/providers/external_search_parsers.py",
+      "bytes": 11429,
+      "sha256": "17a4096223a49771780aad59ecbf89012748f4a770f475cc70ec9963d7fa6b2b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/providers/external_search_provider.py",
+      "bytes": 11867,
+      "sha256": "9ab0405bec9cfa5d402c50ca20b3d1eb10c529644a909925be6bd2afb9f42478"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/providers/llm_client.py",
+      "bytes": 55354,
+      "sha256": "87d180dd8b15c8e85a2427296081b5c5a889c8205ac3a0c5fbd25f7a0de7bc82"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/providers/llm_provider.py",
+      "bytes": 16491,
+      "sha256": "8ed4e554816ceb7f4330f9f9c9cb8ba733ed823f47f166fd7aed576cb3913d14"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/providers/search_capability.py",
+      "bytes": 6826,
+      "sha256": "2e6cf52ca9d12a1d4529ca84ee948eace92faa29ef72a59efde56bad0512c710"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/runners/llm_runner.py",
+      "bytes": 85150,
+      "sha256": "d0f372057d4a0bc11d4563de4ab544607596b52510a8b1a84893aa51d7e579a8"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/http_client.py",
+      "bytes": 6461,
+      "sha256": "23704d18f98297c967bd661ef623858be79ab1f0acbc237603fdadcec27bb60b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/llm_integration.py",
+      "bytes": 72834,
+      "sha256": "67313745cc6d5c22e6d528c912ab4e9d14a0eafeddc63d4ff86aaac0dc8fa123"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/quick_scan_c06_adapter.py",
+      "bytes": 11925,
+      "sha256": "a1c9bdb005fb41626f8d23d5f22a1a6cf164517e87131121ba5ad8bb44fd21b2"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/quick_scan_cost_resolver.py",
+      "bytes": 11686,
+      "sha256": "9992a83bdd92a5b5e0fe61f5292960ee31f144804c4529205a6ddd41a87fdc24"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/quick_scan_evidence.py",
+      "bytes": 7154,
+      "sha256": "6562b7e934372ad9ebfda0e7ed256ff540d5f8445b20f40f1632e88ecad6f36c"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/quick_scan_external_context.py",
+      "bytes": 23676,
+      "sha256": "4da6a383b1886069291d36e1477df01158dc7cf32fdbe9c5695b198f7b163af9"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/quick_scan_external_journal.py",
+      "bytes": 31438,
+      "sha256": "5fcd339c23032c2028cb00270fcf616ff74ed9edcecd50ce9dedf818aae40a9f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/quick_scan_observation_context.py",
+      "bytes": 22528,
+      "sha256": "586deae394e0f0faedf3e639258497d6aa7fbde0c963db06d73728a4819ad910"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/quick_scan_work_store.py",
+      "bytes": 213658,
+      "sha256": "a5205ef19c4bfb5e5735e1d7972da6740fba247b60bf80bfa809cffaf1b0b1bc"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/src/utils/quick_scan_work_transport.py",
+      "bytes": 22913,
+      "sha256": "6216340ee88387d42b1a0c9715519414bfb7999dd7c64d6a8c2652ca0a9f1e3f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/tests/unit/test_external_search_provider.py",
+      "bytes": 17243,
+      "sha256": "89bcaa6c6e22ff3e81a9daaeb395ec9d39b13114057b06a0e1fd61bbe3f43479"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/tests/unit/test_qa_net01_search_boundary.py",
+      "bytes": 23200,
+      "sha256": "dda382bb1a6114898600d7a8b06341e344949f22ecd412068fe104a5a8e942aa"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/tests/unit/test_quick_scan_budget.py",
+      "bytes": 22409,
+      "sha256": "d40dc9f4176e26e6ee83194636d8cc366b42081f377cd55fb7e47022629c7e06"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/tests/unit/test_quick_scan_external_context.py",
+      "bytes": 64951,
+      "sha256": "45b2f5e7a27ac8c6f4c277de434c15203ed92a96c218c6aee4e3c36cf54dde62"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/executed-source/tests/unit/test_quick_scan_work_store.py",
+      "bytes": 110280,
+      "sha256": "ac45c8c59972fd786095da9826caf3ee85c1c7e806261b93481087f02ff18772"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/junit.xml",
+      "bytes": 4996,
+      "sha256": "3172c4429df760a861949950788d57f57369abd0df79684b2b4df33d5a2df466"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/process.json",
+      "bytes": 3666,
+      "sha256": "0a2ac76568e75558e28dd9953d09a34f79f062922697c29ce0b5585d72490739"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-green-03/stdout.log",
+      "bytes": 116,
+      "sha256": "1d07bb674a47c5e9ea2574af416bec1f1da40eba485b83fe8f508b29cbf93062"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-guard.py",
+      "bytes": 3976,
+      "sha256": "c47c7b3cb00f30d3ea6464157b9bf8a112511eb9f3111211413c7fe478042a5f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-runner.py",
+      "bytes": 3607,
+      "sha256": "fa4f21e8884d949291e21a98616eaf7564e4b566ca84db951634a6a4a4c7d273"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/.gitignore",
+      "bytes": 2850,
+      "sha256": "b66b0c296753b183cc51c3b5e9b15a9357ee21cc963c5b3628b0dd08c2bae69f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/config/quick_scan_search_policy.py",
+      "bytes": 23409,
+      "sha256": "8b9dc718eddcf8cd7f27fa53cba68e58784e78d4ae02515b97555ba058aa7b98"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/config/quick_scan_search_policy_v1_1.schema.json",
+      "bytes": 13279,
+      "sha256": "453ee74711fc2972ca7ea6025bba4e5b6ab7e277f1cc6482ebf37690828781ec"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/core/models.py",
+      "bytes": 22457,
+      "sha256": "d98f7613fcfabc0d5d1f1fe0b403eaa734a6948b8c9fad492a993f70bdf00cf1"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/providers/base_llm_provider.py",
+      "bytes": 15964,
+      "sha256": "f7be002a501f57dbe707860366dff7548c91dc1882c2d7da2163aa88c4f259b4"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/providers/external_search_parsers.py",
+      "bytes": 11429,
+      "sha256": "17a4096223a49771780aad59ecbf89012748f4a770f475cc70ec9963d7fa6b2b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/providers/external_search_provider.py",
+      "bytes": 12428,
+      "sha256": "7416abd5c0cd9adb7146b23fa898a9de5664ef3e748a5cfb8057eac91ac714ce"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/providers/llm_client.py",
+      "bytes": 55354,
+      "sha256": "87d180dd8b15c8e85a2427296081b5c5a889c8205ac3a0c5fbd25f7a0de7bc82"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/providers/llm_provider.py",
+      "bytes": 16491,
+      "sha256": "8ed4e554816ceb7f4330f9f9c9cb8ba733ed823f47f166fd7aed576cb3913d14"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/providers/search_capability.py",
+      "bytes": 6826,
+      "sha256": "2e6cf52ca9d12a1d4529ca84ee948eace92faa29ef72a59efde56bad0512c710"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/runners/llm_runner.py",
+      "bytes": 85150,
+      "sha256": "d0f372057d4a0bc11d4563de4ab544607596b52510a8b1a84893aa51d7e579a8"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/http_client.py",
+      "bytes": 6461,
+      "sha256": "23704d18f98297c967bd661ef623858be79ab1f0acbc237603fdadcec27bb60b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/llm_integration.py",
+      "bytes": 72834,
+      "sha256": "67313745cc6d5c22e6d528c912ab4e9d14a0eafeddc63d4ff86aaac0dc8fa123"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/quick_scan_c06_adapter.py",
+      "bytes": 11925,
+      "sha256": "a1c9bdb005fb41626f8d23d5f22a1a6cf164517e87131121ba5ad8bb44fd21b2"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/quick_scan_cost_resolver.py",
+      "bytes": 11686,
+      "sha256": "9992a83bdd92a5b5e0fe61f5292960ee31f144804c4529205a6ddd41a87fdc24"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/quick_scan_evidence.py",
+      "bytes": 7154,
+      "sha256": "6562b7e934372ad9ebfda0e7ed256ff540d5f8445b20f40f1632e88ecad6f36c"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/quick_scan_external_context.py",
+      "bytes": 23942,
+      "sha256": "416e5dea54a8440017509edc94db624d3789fb0ef52defc1c2b910d21bb3cb57"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/quick_scan_external_journal.py",
+      "bytes": 32153,
+      "sha256": "7e7d41817f51781696ab5a1afabf1ef0285ced4370df05fb474a399102466954"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/quick_scan_observation_context.py",
+      "bytes": 22528,
+      "sha256": "586deae394e0f0faedf3e639258497d6aa7fbde0c963db06d73728a4819ad910"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/quick_scan_work_store.py",
+      "bytes": 213658,
+      "sha256": "a5205ef19c4bfb5e5735e1d7972da6740fba247b60bf80bfa809cffaf1b0b1bc"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/src/utils/quick_scan_work_transport.py",
+      "bytes": 22913,
+      "sha256": "6216340ee88387d42b1a0c9715519414bfb7999dd7c64d6a8c2652ca0a9f1e3f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/tests/unit/test_external_search_provider.py",
+      "bytes": 17243,
+      "sha256": "89bcaa6c6e22ff3e81a9daaeb395ec9d39b13114057b06a0e1fd61bbe3f43479"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/tests/unit/test_qa_net01_search_boundary.py",
+      "bytes": 23200,
+      "sha256": "dda382bb1a6114898600d7a8b06341e344949f22ecd412068fe104a5a8e942aa"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/tests/unit/test_quick_scan_budget.py",
+      "bytes": 22409,
+      "sha256": "d40dc9f4176e26e6ee83194636d8cc366b42081f377cd55fb7e47022629c7e06"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/tests/unit/test_quick_scan_external_context.py",
+      "bytes": 67519,
+      "sha256": "1f3135e6809b2c27e9f5a1baefd92e30c2dacc21bd3f213afe9b2be1451454cd"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/executed-source/tests/unit/test_quick_scan_work_store.py",
+      "bytes": 110280,
+      "sha256": "ac45c8c59972fd786095da9826caf3ee85c1c7e806261b93481087f02ff18772"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/junit.xml",
+      "bytes": 44846,
+      "sha256": "7d50b7adf00ed6b369cc75e080f3c8bb163ff068ecda2386cdf128cf2f6b39d8"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/process.json",
+      "bytes": 3900,
+      "sha256": "07e9dbb627a010a3360aa722bee184e69efc357c07de802de734c2cc5cc2db70"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-green-01/stdout.log",
+      "bytes": 346,
+      "sha256": "aa547c2ca2c7937cf6d14041d45fae0a6470ca6440365be750475ee8eee1cd35"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-guard.py",
+      "bytes": 3976,
+      "sha256": "c47c7b3cb00f30d3ea6464157b9bf8a112511eb9f3111211413c7fe478042a5f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-runner.py",
+      "bytes": 3607,
+      "sha256": "fa4f21e8884d949291e21a98616eaf7564e4b566ca84db951634a6a4a4c7d273"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/.gitignore",
+      "bytes": 2850,
+      "sha256": "b66b0c296753b183cc51c3b5e9b15a9357ee21cc963c5b3628b0dd08c2bae69f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/config/quick_scan_search_policy.py",
+      "bytes": 23409,
+      "sha256": "8b9dc718eddcf8cd7f27fa53cba68e58784e78d4ae02515b97555ba058aa7b98"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/config/quick_scan_search_policy_v1_1.schema.json",
+      "bytes": 13279,
+      "sha256": "453ee74711fc2972ca7ea6025bba4e5b6ab7e277f1cc6482ebf37690828781ec"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/core/models.py",
+      "bytes": 22457,
+      "sha256": "d98f7613fcfabc0d5d1f1fe0b403eaa734a6948b8c9fad492a993f70bdf00cf1"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/providers/base_llm_provider.py",
+      "bytes": 15964,
+      "sha256": "f7be002a501f57dbe707860366dff7548c91dc1882c2d7da2163aa88c4f259b4"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/providers/external_search_parsers.py",
+      "bytes": 11429,
+      "sha256": "17a4096223a49771780aad59ecbf89012748f4a770f475cc70ec9963d7fa6b2b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/providers/external_search_provider.py",
+      "bytes": 11867,
+      "sha256": "9ab0405bec9cfa5d402c50ca20b3d1eb10c529644a909925be6bd2afb9f42478"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/providers/llm_client.py",
+      "bytes": 55354,
+      "sha256": "87d180dd8b15c8e85a2427296081b5c5a889c8205ac3a0c5fbd25f7a0de7bc82"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/providers/llm_provider.py",
+      "bytes": 16491,
+      "sha256": "8ed4e554816ceb7f4330f9f9c9cb8ba733ed823f47f166fd7aed576cb3913d14"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/providers/search_capability.py",
+      "bytes": 6826,
+      "sha256": "2e6cf52ca9d12a1d4529ca84ee948eace92faa29ef72a59efde56bad0512c710"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/runners/llm_runner.py",
+      "bytes": 85150,
+      "sha256": "d0f372057d4a0bc11d4563de4ab544607596b52510a8b1a84893aa51d7e579a8"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/http_client.py",
+      "bytes": 6461,
+      "sha256": "23704d18f98297c967bd661ef623858be79ab1f0acbc237603fdadcec27bb60b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/llm_integration.py",
+      "bytes": 72834,
+      "sha256": "67313745cc6d5c22e6d528c912ab4e9d14a0eafeddc63d4ff86aaac0dc8fa123"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/quick_scan_c06_adapter.py",
+      "bytes": 11925,
+      "sha256": "a1c9bdb005fb41626f8d23d5f22a1a6cf164517e87131121ba5ad8bb44fd21b2"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/quick_scan_cost_resolver.py",
+      "bytes": 11686,
+      "sha256": "9992a83bdd92a5b5e0fe61f5292960ee31f144804c4529205a6ddd41a87fdc24"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/quick_scan_evidence.py",
+      "bytes": 7154,
+      "sha256": "6562b7e934372ad9ebfda0e7ed256ff540d5f8445b20f40f1632e88ecad6f36c"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/quick_scan_external_context.py",
+      "bytes": 23676,
+      "sha256": "4da6a383b1886069291d36e1477df01158dc7cf32fdbe9c5695b198f7b163af9"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/quick_scan_external_journal.py",
+      "bytes": 31438,
+      "sha256": "5fcd339c23032c2028cb00270fcf616ff74ed9edcecd50ce9dedf818aae40a9f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/quick_scan_observation_context.py",
+      "bytes": 22528,
+      "sha256": "586deae394e0f0faedf3e639258497d6aa7fbde0c963db06d73728a4819ad910"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/quick_scan_work_store.py",
+      "bytes": 213658,
+      "sha256": "a5205ef19c4bfb5e5735e1d7972da6740fba247b60bf80bfa809cffaf1b0b1bc"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/src/utils/quick_scan_work_transport.py",
+      "bytes": 22913,
+      "sha256": "6216340ee88387d42b1a0c9715519414bfb7999dd7c64d6a8c2652ca0a9f1e3f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/tests/unit/test_external_search_provider.py",
+      "bytes": 17243,
+      "sha256": "89bcaa6c6e22ff3e81a9daaeb395ec9d39b13114057b06a0e1fd61bbe3f43479"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/tests/unit/test_qa_net01_search_boundary.py",
+      "bytes": 23200,
+      "sha256": "dda382bb1a6114898600d7a8b06341e344949f22ecd412068fe104a5a8e942aa"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/tests/unit/test_quick_scan_budget.py",
+      "bytes": 22409,
+      "sha256": "d40dc9f4176e26e6ee83194636d8cc366b42081f377cd55fb7e47022629c7e06"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/tests/unit/test_quick_scan_external_context.py",
+      "bytes": 67519,
+      "sha256": "1f3135e6809b2c27e9f5a1baefd92e30c2dacc21bd3f213afe9b2be1451454cd"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/executed-source/tests/unit/test_quick_scan_work_store.py",
+      "bytes": 110280,
+      "sha256": "ac45c8c59972fd786095da9826caf3ee85c1c7e806261b93481087f02ff18772"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/junit.xml",
+      "bytes": 7371,
+      "sha256": "a47c3265b5650326a3b3c7be3c4f0ccc0b1a1d13a5f3dfbd8cc8b451178ddf64"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/process.json",
+      "bytes": 3720,
+      "sha256": "d25663225f093a52f3583f76175b4d35a9de05a2e424f39a617ee7b9d11322ae"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-health-red-01/stdout.log",
+      "bytes": 6380,
+      "sha256": "0470e024be1ce2b71e33211cbd47c7d749780a13170baa727b009cdc7b299c83"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-guard.py",
+      "bytes": 3976,
+      "sha256": "c47c7b3cb00f30d3ea6464157b9bf8a112511eb9f3111211413c7fe478042a5f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-runner.py",
+      "bytes": 3607,
+      "sha256": "fa4f21e8884d949291e21a98616eaf7564e4b566ca84db951634a6a4a4c7d273"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/.gitignore",
+      "bytes": 2850,
+      "sha256": "b66b0c296753b183cc51c3b5e9b15a9357ee21cc963c5b3628b0dd08c2bae69f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/config/quick_scan_search_policy.py",
+      "bytes": 23409,
+      "sha256": "8b9dc718eddcf8cd7f27fa53cba68e58784e78d4ae02515b97555ba058aa7b98"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/config/quick_scan_search_policy_v1_1.schema.json",
+      "bytes": 13279,
+      "sha256": "453ee74711fc2972ca7ea6025bba4e5b6ab7e277f1cc6482ebf37690828781ec"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/core/models.py",
+      "bytes": 22457,
+      "sha256": "d98f7613fcfabc0d5d1f1fe0b403eaa734a6948b8c9fad492a993f70bdf00cf1"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/providers/base_llm_provider.py",
+      "bytes": 15964,
+      "sha256": "f7be002a501f57dbe707860366dff7548c91dc1882c2d7da2163aa88c4f259b4"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/providers/external_search_parsers.py",
+      "bytes": 11429,
+      "sha256": "17a4096223a49771780aad59ecbf89012748f4a770f475cc70ec9963d7fa6b2b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/providers/external_search_provider.py",
+      "bytes": 11867,
+      "sha256": "9ab0405bec9cfa5d402c50ca20b3d1eb10c529644a909925be6bd2afb9f42478"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/providers/llm_client.py",
+      "bytes": 55354,
+      "sha256": "87d180dd8b15c8e85a2427296081b5c5a889c8205ac3a0c5fbd25f7a0de7bc82"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/providers/llm_provider.py",
+      "bytes": 16491,
+      "sha256": "8ed4e554816ceb7f4330f9f9c9cb8ba733ed823f47f166fd7aed576cb3913d14"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/providers/search_capability.py",
+      "bytes": 6826,
+      "sha256": "2e6cf52ca9d12a1d4529ca84ee948eace92faa29ef72a59efde56bad0512c710"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/runners/llm_runner.py",
+      "bytes": 85150,
+      "sha256": "d0f372057d4a0bc11d4563de4ab544607596b52510a8b1a84893aa51d7e579a8"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/http_client.py",
+      "bytes": 6461,
+      "sha256": "23704d18f98297c967bd661ef623858be79ab1f0acbc237603fdadcec27bb60b"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/llm_integration.py",
+      "bytes": 72834,
+      "sha256": "67313745cc6d5c22e6d528c912ab4e9d14a0eafeddc63d4ff86aaac0dc8fa123"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/quick_scan_c06_adapter.py",
+      "bytes": 11925,
+      "sha256": "a1c9bdb005fb41626f8d23d5f22a1a6cf164517e87131121ba5ad8bb44fd21b2"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/quick_scan_cost_resolver.py",
+      "bytes": 11686,
+      "sha256": "9992a83bdd92a5b5e0fe61f5292960ee31f144804c4529205a6ddd41a87fdc24"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/quick_scan_evidence.py",
+      "bytes": 7154,
+      "sha256": "6562b7e934372ad9ebfda0e7ed256ff540d5f8445b20f40f1632e88ecad6f36c"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/quick_scan_external_context.py",
+      "bytes": 13566,
+      "sha256": "ac0d2b34b6e2d463e797ff3c0248c1c6e48d6e76f30b690e8399ef579f9734ad"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/quick_scan_external_journal.py",
+      "bytes": 29003,
+      "sha256": "8358426b14753fe68c35d27abc3c5e3e283275efd1d0edd3b53b925dd26e143e"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/quick_scan_observation_context.py",
+      "bytes": 22528,
+      "sha256": "586deae394e0f0faedf3e639258497d6aa7fbde0c963db06d73728a4819ad910"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/quick_scan_work_store.py",
+      "bytes": 212952,
+      "sha256": "b7f887479771f012d5700bf4bf3c582a95b4296a29db6b45564b68f9c0a2f17a"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/src/utils/quick_scan_work_transport.py",
+      "bytes": 22913,
+      "sha256": "6216340ee88387d42b1a0c9715519414bfb7999dd7c64d6a8c2652ca0a9f1e3f"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/tests/unit/test_external_search_provider.py",
+      "bytes": 17243,
+      "sha256": "89bcaa6c6e22ff3e81a9daaeb395ec9d39b13114057b06a0e1fd61bbe3f43479"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/tests/unit/test_qa_net01_search_boundary.py",
+      "bytes": 23200,
+      "sha256": "dda382bb1a6114898600d7a8b06341e344949f22ecd412068fe104a5a8e942aa"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/tests/unit/test_quick_scan_budget.py",
+      "bytes": 22409,
+      "sha256": "d40dc9f4176e26e6ee83194636d8cc366b42081f377cd55fb7e47022629c7e06"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/tests/unit/test_quick_scan_external_context.py",
+      "bytes": 59192,
+      "sha256": "6bf8455da751a276568042e71ab1e7b8ac8c602df9eb6301c528bf3e5c12293a"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/executed-source/tests/unit/test_quick_scan_work_store.py",
+      "bytes": 110280,
+      "sha256": "ac45c8c59972fd786095da9826caf3ee85c1c7e806261b93481087f02ff18772"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/junit.xml",
+      "bytes": 45126,
+      "sha256": "fecaac8377f1babe0611f5d95f104ad20c32ab222c7ca5fa1cae598a36872d80"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/process.json",
+      "bytes": 3662,
+      "sha256": "0144e5ba06003502e501cc2fdfa5cd72630c510de622b9a431c4eee1bac3b582"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/implementation/intake/QA-NET-01/2026-10-09-external-context/verification/coordinator-red-01/stdout.log",
+      "bytes": 40080,
+      "sha256": "b3457f1548fc2a620f420455b46155b5a8aaaf0b07b928f56a842659f0f45bce"
+    },
+    {
+      "path": "docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/checkpoint_03.py",
+      "bytes": 7624,
+      "sha256": "d1aa87f4fa983062c6e06bf93daee1dbadf8e2a06cb4e07fd476b36f3978bee4"
+    },
+    {
+      "path": "docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/coordinator-interface.md",
+      "bytes": 5499,
+      "sha256": "930c63d057e71816d2aba6cae5a62c46a9478e2a63cd0f86fb22d0f114e12d52"
+    },
+    {
+      "path": "docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/record_coordinator_progress.py",
+      "bytes": 10834,
+      "sha256": "440d43115aaf4724d5bd12edb0c96e288e5bd5ff1a3d2617bb499133bf1c21f8"
+    }
+  ],
+  "pending": [
+    "runner_coordinator_wiring",
+    "actual_llm_context_and_use_proof",
+    "two_stage_recovery",
+    "cross_lease_recovery",
+    "mcp_handshake",
+    "public_cli",
+    "final_static_and_concentrated_review",
+    "source_publish",
+    "strict_cleanup"
+  ],
+  "whole_project_gates_closed": false
+}

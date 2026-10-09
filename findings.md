@@ -1740,3 +1740,10 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 上下文需要生产者独立冻结的manifest SHA作为必填参数，不从search policy自称的版本推定；真实Q09费用也重新对冻结外部计价核对。来源日期接受明确ISO/RFC含时区格式，拒绝仅截前十字符伪日期；来源host/path和检索时间逐条保留，snippet始终是不可信数据，提供来源不等于自动证明答案准确。
 - 缓存去掉单题ID是共享查询所需，但去掉扫描generation会使新轮永远命中过期唯一键；本批私有9反例已实证。采用同轮共享、明确新轮新操作/原费用不重置，发送未知跨轮仍保持阻断。正常近期跳过由上层刷新规划决定，不能靠把旧retrieved_at改成当前时间。相同冻结query不同ID应合并题篮，不能双收费。
 - 多公司并行不能将含entity/query/manifest的整个search policy SHA用于共享预算版本，否则Q09会在另一家公司费用在途时拒绝换版。真实两公司同库RED已复现；预算版本只绑原模型预算及外部route/dispatch/计价，检索意图独立绑完整search policy SHA。两条轴分开，但仍同一费用owner/计数器，未增加第二账本或额度。
+
+## Phase111 检索调度接续：2026-10-09
+- durable cache查找必须先于credential/health/新预算预留；否则warm依赖key、credential不足或尚未MCP握手会留下孤儿付费意图。lookup只核原SQLite/哈希/身份/计划，不创建新预算owner。实际begin/consume事务仍是唯一发送授权，双worker即使同取未发送意图，只有一次能过consume。
+- 原scope下sent unknown即使已知某个HTTP费用也不能当确认拒绝换route；缺usage保留Q09预留并停。已计价401/已知429/坏JSON/错issuer/空数据的原操作保持，恢复只能继续下一个已准入route，不能重复问同一路。
+- 公司网页URL可被不同query返回不同短摘要/报告日期；URL去重不是抹掉查询及检索来源。按query复用既有normalizer，context URL单列、retrieval_provenance保留每个实际operation的原摘要与时点；不得给旧摘要加上新retrieved_at，最终上下文及metadata统一cap。
+- Retry-After仅解析实际delta秒、无原headers保存；日期/非法header暂按unknown等待，不声称已知quota reset。超verified usage仍按observed units结算，但同计价版本不能凭换generation再跑；修改并获准的计价版本是另一显式配置动作，未扩大额度或重置历史费用。
+- 当前实现只解决私有检索调度。真实回答prompt/attempt/use-proof、原生＋external混合来源隔离、publicCLI和MCP/跨lease恢复尚缺，不能把276P扩大成完整Phase111或答案准确性验收。
