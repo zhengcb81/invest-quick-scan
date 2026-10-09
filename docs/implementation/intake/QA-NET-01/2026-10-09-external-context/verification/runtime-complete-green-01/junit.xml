@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="6" time="3.205" timestamp="2026-10-09T07:30:16.804247+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_actual_runner_external_complete_body_binds_sources_and_seals[False-False]" time="0.525"><failure message="AssertionError: assert 'blocked' == 'sealed'&#10;  &#10;  - sealed&#10;  + blocked">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-complete-green-01/test_actual_runner_external_co0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000021B48CDEEA0&gt;
+hybrid = False, foreign_source = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("foreign_source", [False, True])
+    def test_actual_runner_external_complete_body_binds_sources_and_seals(tmp_path, monkeypatch, hybrid, foreign_source):
+        from types import SimpleNamespace
+        from src.core.models import Answer, Question
+        from src.core.exceptions import ProcessingError
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        from src.utils.quick_scan_delivery_seal import seal_result_delivery
+        from src.utils.quick_scan_result_outbox import canonical_sha256
+        from tests.unit.test_quick_scan_c06_complete_seal import CONTEXT, V1_AUTHORITY, _standard_body
+    
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        item = args["store"].get_item(args["work_item_id"])
+        frozen = copy.deepcopy(CONTEXT)
+        question = copy.deepcopy(frozen["questions"]["IQS_05"])
+        question["metadata"].update(entity_id=item["entity_id"], question_id=item["question_id"],
+            information_cutoff="2026-10-08")
+        question["work_prompt_sha256"] = item["question_fingerprint"]
+        frozen["identity_snapshot_sha256"] = item["identity_snapshot_sha256"]
+        frozen["questions"] = {item["question_id"]: question}
+        body = _standard_body()
+        body.update(question_id=item["question_id"], score=6, information_as_of="2026-10-01")
+        body["evidence"][0].update(url="https://foreign.example/ir" if foreign_source else "https://fixture.example/ir",
+            published_at="2026-10-01")
+        # Independent synthetic owner inputs are frozen before the answer HTTP.
+        frozen_hash, body_json = canonical_sha256(frozen), json.dumps(body)
+        http_body = sync.post.return_value.json.return_value
+        http_body["output"][-1]["content"][0]["text"] = json.dumps({"entity_id": item["entity_id"],
+            "question_id": item["question_id"], "status": "scored", "score": 6, "description": body_json})
+        sync.post.return_value.content = json.dumps(http_body).encode()
+        sync.post.return_value.text = sync.post.return_value.content.decode()
+        response = _send_external_answer(args, context, model, url)
+        actual_answer = json.loads(response.content)
+        lifecycle = QuickScanWorkLifecycle(args["store"], entity_id=item["entity_id"],
+            run_id="RUN_RUNTIME", scan_id="SCAN_RUNTIME", identity={}, model_requested=model,
+            transport_managed=True, observation_context=frozen)
+        result = SimpleNamespace(question=Question("Answer IQS_05", question_id=item["question_id"]),
+            answer=Answer(text=actual_answer["description"], score=6, status="scored",
+                metadata={"execution": response.execution_metadata, "search_status": response.execution_metadata["search_status"]}))
+        handle = {"work_item_id": args["work_item_id"], "lease": args["lease"]}
+        if foreign_source:
+            with pytest.raises(ProcessingError):
+                lifecycle.after_question(handle, result)
+            assert args["store"].get_answer_checkpoint(args["work_item_id"]) is None
+            assert args["store"].get_standard_answer(args["work_item_id"]) is None
+        else:
+            lifecycle.after_question(handle, result)
+            checkpoint = args["store"].get_answer_checkpoint(args["work_item_id"])
+            standard = args["store"].get_standard_answer(args["work_item_id"])
+            bound = args["store"].get_observation_context(args["work_item_id"])
+            authority = copy.deepcopy(V1_AUTHORITY)
+            authority.update(schema_version="2.0.0", observation_context_sha256=frozen_hash)
+            authority["contract_versions"]["observation_schema"] = "1.1.0"
+            sealed = seal_result_delivery(args["store"], args["work_item_id"], authority=authority)
+&gt;           assert sealed["action"] == "sealed"
+E           AssertionError: assert 'blocked' == 'sealed'
+E             
+E             - sealed
+E             + blocked
+
+tests\unit\test_quick_scan_external_context.py:310: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_actual_runner_external_complete_body_binds_sources_and_seals[False-True]" time="0.293"><failure message="AssertionError: assert 'blocked' == 'sealed'&#10;  &#10;  - sealed&#10;  + blocked">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-complete-green-01/test_actual_runner_external_co1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000021B4855AEA0&gt;
+hybrid = True, foreign_source = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("foreign_source", [False, True])
+    def test_actual_runner_external_complete_body_binds_sources_and_seals(tmp_path, monkeypatch, hybrid, foreign_source):
+        from types import SimpleNamespace
+        from src.core.models import Answer, Question
+        from src.core.exceptions import ProcessingError
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        from src.utils.quick_scan_delivery_seal import seal_result_delivery
+        from src.utils.quick_scan_result_outbox import canonical_sha256
+        from tests.unit.test_quick_scan_c06_complete_seal import CONTEXT, V1_AUTHORITY, _standard_body
+    
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        item = args["store"].get_item(args["work_item_id"])
+        frozen = copy.deepcopy(CONTEXT)
+        question = copy.deepcopy(frozen["questions"]["IQS_05"])
+        question["metadata"].update(entity_id=item["entity_id"], question_id=item["question_id"],
+            information_cutoff="2026-10-08")
+        question["work_prompt_sha256"] = item["question_fingerprint"]
+        frozen["identity_snapshot_sha256"] = item["identity_snapshot_sha256"]
+        frozen["questions"] = {item["question_id"]: question}
+        body = _standard_body()
+        body.update(question_id=item["question_id"], score=6, information_as_of="2026-10-01")
+        body["evidence"][0].update(url="https://foreign.example/ir" if foreign_source else "https://fixture.example/ir",
+            published_at="2026-10-01")
+        # Independent synthetic owner inputs are frozen before the answer HTTP.
+        frozen_hash, body_json = canonical_sha256(frozen), json.dumps(body)
+        http_body = sync.post.return_value.json.return_value
+        http_body["output"][-1]["content"][0]["text"] = json.dumps({"entity_id": item["entity_id"],
+            "question_id": item["question_id"], "status": "scored", "score": 6, "description": body_json})
+        sync.post.return_value.content = json.dumps(http_body).encode()
+        sync.post.return_value.text = sync.post.return_value.content.decode()
+        response = _send_external_answer(args, context, model, url)
+        actual_answer = json.loads(response.content)
+        lifecycle = QuickScanWorkLifecycle(args["store"], entity_id=item["entity_id"],
+            run_id="RUN_RUNTIME", scan_id="SCAN_RUNTIME", identity={}, model_requested=model,
+            transport_managed=True, observation_context=frozen)
+        result = SimpleNamespace(question=Question("Answer IQS_05", question_id=item["question_id"]),
+            answer=Answer(text=actual_answer["description"], score=6, status="scored",
+                metadata={"execution": response.execution_metadata, "search_status": response.execution_metadata["search_status"]}))
+        handle = {"work_item_id": args["work_item_id"], "lease": args["lease"]}
+        if foreign_source:
+            with pytest.raises(ProcessingError):
+                lifecycle.after_question(handle, result)
+            assert args["store"].get_answer_checkpoint(args["work_item_id"]) is None
+            assert args["store"].get_standard_answer(args["work_item_id"]) is None
+        else:
+            lifecycle.after_question(handle, result)
+            checkpoint = args["store"].get_answer_checkpoint(args["work_item_id"])
+            standard = args["store"].get_standard_answer(args["work_item_id"])
+            bound = args["store"].get_observation_context(args["work_item_id"])
+            authority = copy.deepcopy(V1_AUTHORITY)
+            authority.update(schema_version="2.0.0", observation_context_sha256=frozen_hash)
+            authority["contract_versions"]["observation_schema"] = "1.1.0"
+            sealed = seal_result_delivery(args["store"], args["work_item_id"], authority=authority)
+&gt;           assert sealed["action"] == "sealed"
+E           AssertionError: assert 'blocked' == 'sealed'
+E             
+E             - sealed
+E             + blocked
+
+tests\unit\test_quick_scan_external_context.py:310: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_actual_runner_external_complete_body_binds_sources_and_seals[True-False]" time="0.243" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_actual_runner_external_complete_body_binds_sources_and_seals[True-True]" time="0.261" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_provider_preserves_native_receipt_and_projects_actual_external_use[False]" time="0.221" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_provider_preserves_native_receipt_and_projects_actual_external_use[True]" time="0.277" /></testsuite></testsuites>

@@ -2437,3 +2437,15 @@
 - 新私有schema10使用意图不可改写，原实际回答记录派生proof；schema9付费搜索迁移后不变/无假使用。落库失败未发送或发送后未知不重发，原预留守恒。原checkpoint/C06生产投影尚未接，不把客户端GREEN称完整公开CLI或公司答案准确性。
 - 活跃回归中提前读取OUT stdout路径报不存在：runner capture尚未完成，原79500仍活且只继续poll，没有重启；终态后raw正常归档。该错误是控制器读取时机，不是产品失败。
 - 已更新计划/发现/接手与实际接口；完整Phase111仍in_progress，集中review留到完整批次。源42a517c/schema8及原七未知项不动，runs/n111a保留；checkpoint04正常IQS Git实际结果随后追加，旧01–03索引/原工件不得覆写。
+
+## Phase111 检查点与执行器接续：2026-10-09
+- 上一用户进度说明为只读状态说明，无新增工程成果；本goal已重核当前a6691beb及实际源/失败，继续可安全实施的链，不重复小节点审查。checkpoint04实际Git完成：233精确路径/227工件/7批次/118支持不变，HEAD=origin/master；原源码42a517c/schema8未写发布。
+- checkpoint-red-01真实9F；green-01为8P/1F（sanitizer按旧契约省略空native URLs，fixture不能硬取键）；green-02为9P。新增迁移故障/旧use1.0/来源重哈希越界等后，affected-green-01为486P/4F，旧schema硬编码及旧metadata未覆盖当前HTTP来源。binding-red-01为2F：实际outbox拒checkpoint2，非adapter假正例。
+- 先报备追加outbox、complete-seal/qa-net-seal两个测试，scope31。affected-green-02为485P/5F：新版URL排序错误、旧转换丢协议/requested字段，以及并发fixture未识别原consume边界的具名拒绝。新增metadata-red-01真实1F；补原转换字段、保留native-first URL顺序、并发断言已消费一次；affected-green-03为491P/38.19s（controller38.873）。不放宽原模型/实际响应条件。
+- runtime-projection-red-01真实10F：新owner投影接口尚缺、外部runner丢proof。get_external_context_use与实际final_receipt再次同源核验，外来/缺失/重哈希proof不接纳；green-01为11P。实际runner保存checkpoint2并阻断缺authority封包，重启不增HTTP。
+- runtime-complete-red-01为4F/2P，其中两正例fixture猜不存在get_checkpoint_context；改为既有get_observation_context/seal_result_delivery后red-02仍4F/2P，确认完整adapter拒2和同步provider未投影外部URL。green-01为4P/2F，原synthetic SQLite时钟晚于电脑HTTP时间，正确触发execution time/cutoff拒绝；仅fixture统一时钟，不改产品时间门。green-02为6P；外来URL无checkpoint/标准body部分写，真实全body保留并封存。
+- 最终原72663终态exit0：runtime-checkpoint-affected-green-01十四文件672P/pytest58.19s/controller58.868s，0失败错误跳过/执行源码SHA不变。包含models/provider/runner/integration原回归；真实SQLite/客户端/封包函数，HTTP仅替身，收费/真实密钥/下载/外仓写0。
+- 通用公开result1.0和IQS ROUTE_02消费者仍要求原生web_search_calls；当前仅同步provider metadata已投影，不能由672P推断公开JSON/CLI已通。下一段需显式版本/消费者兼容，保留原native回执/源URL与模型，禁止制造工具事件。async投影、真实检索dispatch、两阶段/跨lease、逐HTTP MCP和集中最终验收仍待。
+- 更新PWF/findings/新接口/接手；旧04接口与writer不改，source仍42a517c/schema8，runs/n111a保留。checkpoint05正常IQS Git实际结果随后追加，不提前声称发布、完成或严格清理；G3/F05/THIN/StockWiki四新路径仍独立未齐，退役工程回执不刷新。
+
+- checkpoint05首prepare在暂存前拒绝：旧index01把可继续编辑的plan.md/scope.json也列在records，新helper误要求它们当前仍等于旧原文。只读差异核仅这两件；修正为按index01真实6ee1abd提交核历史字节，其他旧工件与所有旧索引当前字节仍逐项校验。没有改旧工件/索引、源或测试，也未形成新Git提交。

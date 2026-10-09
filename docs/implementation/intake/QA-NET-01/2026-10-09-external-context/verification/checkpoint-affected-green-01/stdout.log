@@ -1,0 +1,74 @@
+........................................................................ [ 14%]
+........................................................................ [ 29%]
+........................................................................ [ 44%]
+........................................................................ [ 58%]
+........................................................................ [ 73%]
+........................................................................ [ 88%]
+.........................................F............FF.F               [100%]
+================================== FAILURES ===================================
+______ test_schema_v8_keeps_v6_v7_side_tables_and_adds_model_resolution _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-affected-green-01/test_schema_v8_keeps_v6_v7_sid0')
+
+    def test_schema_v8_keeps_v6_v7_side_tables_and_adds_model_resolution(tmp_path):
+>       assert SCHEMA_VERSION == 8
+E       assert 11 == 8
+
+tests\unit\test_quick_scan_c06_complete_seal.py:392: AssertionError
+_____________ test_runner_seals_checkpoint_into_valid_c06_package _____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-affected-green-01/test_runner_seals_checkpoint_i0')
+
+    def test_runner_seals_checkpoint_into_valid_c06_package(tmp_path: Path) -> None:
+        authority = load_c06_authority(_write_authority(tmp_path))
+        store = QuickScanWorkStore(tmp_path / "work.sqlite")
+        lifecycle = _lifecycle(store, authority=authority)
+    
+        work_item_id = _settle(store, lifecycle, "IQS_05")
+    
+        delivery = store.get_result_delivery(work_item_id)
+>       assert delivery is not None
+E       assert None is not None
+
+tests\unit\test_qa_net01_c06_seal.py:139: AssertionError
+_____ test_missing_authority_records_durable_block_then_seals_on_restart ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-affected-green-01/test_missing_authority_records0')
+
+    def test_missing_authority_records_durable_block_then_seals_on_restart(
+        tmp_path: Path,
+    ) -> None:
+        """DB-07: no authority -> durable block, work stays result_ready, nothing
+        fabricated; the restart entry seals the SAME checkpoint with model_calls=0."""
+        store = QuickScanWorkStore(tmp_path / "work.sqlite")
+        lifecycle = _lifecycle(store, authority=None)
+        work_item_id = _settle(store, lifecycle, "IQS_05")
+    
+        delivery = store.get_result_delivery(work_item_id)
+>       assert delivery is not None and delivery["state"] == "blocked"
+E       assert (None is not None)
+
+tests\unit\test_qa_net01_c06_seal.py:159: AssertionError
+________________ test_unknown_answer_status_cannot_be_packaged ________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-affected-green-01/test_unknown_answer_status_can0')
+
+    def test_unknown_answer_status_cannot_be_packaged(tmp_path: Path) -> None:
+        """An answer the C06 adapter refuses to package must raise — the store
+        then keeps the durable block instead of an invented envelope."""
+        authority = load_c06_authority(_write_authority(tmp_path))
+        store = QuickScanWorkStore(tmp_path / "work.sqlite")
+        lifecycle = _lifecycle(store, authority=None)
+        work_item_id = _settle(store, lifecycle, "IQS_05")
+    
+        checkpoint = store.get_answer_checkpoint(work_item_id)
+>       assert checkpoint is not None
+E       assert None is not None
+
+tests\unit\test_qa_net01_c06_seal.py:214: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_c06_complete_seal.py::test_schema_v8_keeps_v6_v7_side_tables_and_adds_model_resolution
+FAILED tests/unit/test_qa_net01_c06_seal.py::test_runner_seals_checkpoint_into_valid_c06_package
+FAILED tests/unit/test_qa_net01_c06_seal.py::test_missing_authority_records_durable_block_then_seals_on_restart
+FAILED tests/unit/test_qa_net01_c06_seal.py::test_unknown_answer_status_cannot_be_packaged
+4 failed, 486 passed in 46.95s

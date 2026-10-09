@@ -1752,3 +1752,11 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 ## Phase111 实际LLM上下文使用接续：2026-10-09
 - 实际HTTP和原记录绑定才证明context使用，不能由回答JSON补一个search=true。hybrid原生完成仍必须核外部proof；provider/type/actual模型/实际work_transport attempt及六个检索引用字段都需同源。原receipt_sha256不包含私有proof，保留native历史原字节；最终检查点必须回读owner，而不能仅认自洽hash。
 - 原checkpoint schema1从SQL CHECK到恢复/标准body/C06 adapter都有版本1假设。后续需显式版本化兼容及原子迁移反例，不能绕过native成功条件或把额外键暗塞进旧版。当前455P是软件隔离覆盖，不认证真实issuer gold、事实正确性或真实厂商计价。
+
+## Phase111 检查点与执行器接续：2026-10-09
+- checkpoint2的generic搜索执行仅来自实际已保存外部use1.1；原native状态/事件/URL/receipt SHA保持。read/save均回读实际owner/最后回答attempt，不能认调用方自洽hash。来源URL来自实际eligible检索，不能只检查proof有一个URL字段；use1.0旧历史不补URL，不伪升级。
+- schema11显式重建SQLite CHECK且保留旧行全部字节；事务中途失败恢复旧schema/rows/user_version。旧fixture必须真实重建旧DDL后再降PRAGMA，不能靠篡版本号声称覆盖真实迁移。
+- 旧execution_receipt_for_checkpoint在非transport分支丢protocol/requested_model/response SHA等当前必需字段，是真实转换缺口；应保留HTTP来源字段，不能把缺字段的回答强标已验证。owner投影和checkpoint入口保留原完整receipt hash，generic源集合按native-first稳定去重。
+- 并发begin允许同一有效lease重取尚未发送意图，但consume唯一；race loser的具名WorkConflict正是安全围栏。测试须核dispatch实际只有一行/预算只有一次，不能把围栏拒绝当成第二HTTP或通过重试洗绿。
+- 完整body/source/cutoff校验不能仅在compact adapter做。actual runner→standard side tables→完整C06→outbox已覆盖，foreign URL拒绝且不部分落库；缺authority保留blocked，并不制造owner golden。fixture的实际发送/响应时点必须处于同一时钟，不能删时间门满足测试。
+- 672P只支持私有当前14文件范围，非付费厂商/金融事实准确性或全CLI验收。StockQA public result1.0与IQS ROUTE_02依赖native calls来源集合；对external必须设计显式公共版本/消费者绑定，不能向web_search_calls添加假的native事件。公开C06 generic字段无需改，但生产caller、外仓ACK及真实gold仍各自验收。

@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前下一动作（2026-10-09 Phase111）**：接通真实store验证的上下文使用proof、来源URL与通用结果/检查点/C06投影，再接runner、两阶段/跨租约恢复、MCP和公开CLI。实际LLM同步/异步四接口已绑定外部短context，external-only不发送native工具，explicit hybrid保留独立原生事件。私有schema10；八受影响文件455P/36.24s，0失败错误跳过，执行源码不变；不与历史重叠批次相加。原native回执和实际model/SHA保持，proof仅由实际检索与回答记录派生。原checkpoint1的CHECK/读取/恢复仍只认native，下一段须显式版本/原子迁移并保留历史字节，不能暗改旧解释。读[实际回答接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/answer-use-interface.md)。Phase111保持in_progress，StockQA42a517c/schema8未发布；完整批次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
+**当前下一动作（2026-10-09 Phase111）**：接通公开结果序列化与实际runner/cascade检索调度，再接两阶段/跨租约恢复、逐HTTP计费MCP和公开CLI。私有schema11/checkpoint2已核实际store使用proof，transport-managed runner、同步provider通用metadata、完整标准答案/C06和交付绑定已接线；14受影响文件672P/58.19s，0失败错误跳过，执行源码不变。原native回执、实际model/响应SHA保持，旧checkpoint1原payload/hash迁移保留且迁移故障整笔回滚。读[检查点与执行器接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/checkpoint-interface.md)。公开quick_scan_result/1.0.0与IQS ROUTE_02仍假设原生web_search_calls，不得伪造事件或把内部metadata通过冒充公开链完成；下一段须明确版本与消费者兼容。Phase111保持in_progress，StockQA42a517c/schema8未发布；完整批次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
@@ -1559,3 +1559,10 @@ Status: in_progress_private_implementation_not_published
 - 同URL跨查询去重曾丢第二query覆盖，是真实新增反例；复用既有normalizer按query处理、最终URL去重并保留各次短摘要/日期/operation/检索时间，metadata仍受总cap。两处中间fixture错误是未配对pricing basis/usage unit使主route不准入，已修正并断言全部预期route准入，不扩大产品口径。
 - 当前无活测试或Git handle：27720和35856均已实际终态exit0。runs/n111a保留供完整Phase111接线，不能清理或重启旧helper。新IQS checkpoint03以实际Git回执为准；这不是集中签收，不发布schema9，也不关闭其他门。
 - 本轮checkpoint03已实际正常提交推送`35df1184c028b7c2a79446004d32c439c791316d`：233精确路径、227归档/控制器工件及index03 staged/committed原字节一致；七批原执行留档、118非写范围支持文件不变。prepare12477与Git73365均终态exit0，HEAD/远端跟踪一致，仅原opencode未跟踪。StockQA仍42a517c/原七条未写未发布；Phase111继续接LLM/proof/MCP/公开CLI，随后仅补此PWF实际回执，不改冻结工件。
+
+## Phase111 检查点与执行器接续：2026-10-09
+- checkpoint04已实际正常提交推送a6691beb4f1b1d87234f076bc8cd659cf3a1ec99：233精确路径/227工件原字节、7原批次/118支持文件不变；这是私有留档，不是StockQA发布。旧01–04索引与源字节不覆写。
+- 私有schema11原子重建answer_checkpoint以显式支持1/2，旧payload/hash/已封包和费用保留；故障回滚、旧1.0使用intent读取、不补来源和实际URL越界反例通过。
+- 当前31路径均已先报备，仅IQS私有副本；新增三路径为outbox及两份旧C06 fixture测试。实际owner重读使用proof，transport-managed runner/同步provider投影、完整standard body→C06→outbox、来源越界拒绝与重启零HTTP已覆盖。
+- 最终runtime-checkpoint-affected-green-01为14文件672P/58.19s（controller58.868s），无失败错误跳过/源码不变；不与491或此前455重叠批次相加。API/下载/外仓写0，原RED与fixture/控制器错误保留。
+- 完整Phase111仍in_progress：公开JSON及IQS消费者显式版本兼容、实际runner/cascade检索调度、async provider投影、两阶段/跨lease/MCP/公开CLI、最终静态/一次集中review/源发布/严格清理待执行。StockWiki新授权及G3/F05/THIN原门不动。checkpoint05真实Git待progress回执，不提前标完成。

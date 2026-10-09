@@ -1,0 +1,223 @@
+...............F........................................................ [ 14%]
+...........................................................F............ [ 29%]
+........................................................................ [ 44%]
+........................................................................ [ 58%]
+........................................................................ [ 73%]
+........................................................................ [ 88%]
+......................................................FF.F               [100%]
+================================== FAILURES ===================================
+_________ test_concurrent_workers_obtain_only_one_search_send_intent __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-affected-green-02/test_concurrent_workers_obtain0')
+
+    def test_concurrent_workers_obtain_only_one_search_send_intent(tmp_path):
+        store, item, lease, _ = _journal(tmp_path)
+        def start(_):
+            try:
+                return _begin_search(store, item, lease)["send_required"]
+            except BudgetAdmissionError as error:
+                assert error.reason == "external_search_unresolved"
+                return False
+        with ThreadPoolExecutor(max_workers=4) as pool:
+>           assert sum(pool.map(start, range(4))) == 1
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\concurrent\futures\_base.py:619: in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\concurrent\futures\_base.py:317: in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Miniconda\Lib\concurrent\futures\thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_quick_scan_external_context.py:170: in start
+    return _begin_search(store, item, lease)["send_required"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_quick_scan_external_context.py:116: in _begin_search
+    store.consume_external_search(operation["operation_id"], budget_attempt_id=operation["budget_attempt_id"])
+src\utils\quick_scan_work_store.py:1959: in consume_external_search
+    consume(self, operation_id, budget_attempt_id=budget_attempt_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000020715DA8C30>
+operation_id = 'SEARCH_1518d0c3b4536eb8284ae20f7637f0362136d5d41f7e27e78a43401a8e700ba2'
+budget_attempt_id = 'DISPATCH_d523cb1ce4e7e5809478f1a056211e7f0450f76987d0b588c33daff1ed8268a7'
+
+    def consume(store: "QuickScanWorkStore", operation_id: str, *, budget_attempt_id: str) -> None:
+        from src.utils.quick_scan_work_store import Lease, WorkConflictError
+        with store._transaction() as connection:
+            row = connection.execute("SELECT * FROM quick_scan_external_operation WHERE operation_id=?", (operation_id,)).fetchone()
+            if row is None:
+                raise KeyError("unknown external operation")
+            record = read_record(connection, row)
+            if record["budget_attempt_id"] != budget_attempt_id or record["dispatch"] is not None or record["budget"]["status"] != "in_flight":
+>               raise WorkConflictError("external send intent already consumed or mismatched")
+E               src.utils.quick_scan_work_store.WorkConflictError: external send intent already consumed or mismatched
+
+src\utils\quick_scan_external_journal.py:449: WorkConflictError
+_ test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-affected-green-02/test_external_checkpoint_v2_pr1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000207138B9BE0>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore, quick_scan_receipt_sha256
+        from src.utils.quick_scan_c06_adapter import build_c06_package
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt = args["store"].list_attempts(args["work_item_id"])[-1]
+        proof = result.execution_metadata["external_context_use"]
+        assert proof["source_urls"] == ["https://fixture.example/ir"]
+        checkpoint = args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt["attempt_id"],
+            answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+        assert checkpoint["checkpoint_schema_version"] == checkpoint["payload"]["checkpoint_schema_version"] == 2
+        provenance = checkpoint["payload"]["provenance"]
+        assert provenance["search_status"] == "executed" and provenance["search_receipt_id"] == proof["use_id"]
+        assert provenance["search_binding"] == "external-context-use-v1_1"
+        assert provenance["native_search_status"] == ("executed" if hybrid else "unverified")
+        assert provenance["native_search_receipt_id"] == ("actual-native-call" if hybrid else None)
+        assert provenance["source_urls"] == (["https://native.example/ir", "https://fixture.example/ir"] if hybrid else ["https://fixture.example/ir"])
+        assert provenance["receipt_sha256"] == quick_scan_receipt_sha256(result.execution_metadata) == attempt["receipt_sha256"]
+        original_response = args["store"].get_attempt_response(attempt["attempt_id"])
+        assert original_response["receipt"].get("source_urls", []) == (["https://native.example/ir"] if hybrid else [])
+        assert original_response["receipt"]["search_status"] == ("executed" if hybrid else "unverified")
+        from tests.unit.test_qa_net01_c06_seal import _authority_document
+        document = _authority_document()
+        authority = {"contract_versions": document["contract_versions"], "capabilities": document["capabilities"],
+            "producer_component_version": document["producer"]["component_version"], "producer_build_id": document["producer"]["build_id"]}
+        package = build_c06_package(checkpoint["payload"], authority=authority)
+        assert package["items"][0]["observation"]["execution"]["search_receipt_id"] == proof["use_id"]
+>       delivery = args["store"].prepare_result_delivery(args["work_item_id"], package)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1373: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:4068: in prepare_result_delivery
+    validate_checkpoint_binding(validated, checkpoint)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+package = {'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': '1.0.0', 'build_id': 'stock...Wiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-10-09T06:15:41.123877Z', ...}
+checkpoint = {'checkpoint_id': 'CHECKPOINT_9adefb67eec145fd978033623f44edc1', 'work_item_id': 'WORK_8ce605b86aed455fae66c4857e1a6b2a', 'attempt_id': 'ATTEMPT_ac8433490ffe4cbebff5c6f29f0c454b', 'checkpoint_schema_version': 2, ...}
+
+    def validate_checkpoint_binding(package: dict, checkpoint: dict) -> None:
+        """Bind exchange fields present in Q07's checkpoint without inventing others."""
+        payload = checkpoint.get("payload")
+        if not isinstance(payload, dict):
+            raise ValueError("checkpoint payload is missing")
+        work = payload.get("work")
+        saved_answer = payload.get("answer")
+        provenance = payload.get("provenance")
+        observation = package["items"][0]["observation"]
+        if (
+            payload.get("checkpoint_schema") != "quick-scan-answer"
+            or type(payload.get("checkpoint_schema_version")) is not int
+            or payload.get("checkpoint_schema_version") not in {1, 2}
+            or not isinstance(work, dict)
+            or not isinstance(saved_answer, dict)
+            or not isinstance(provenance, dict)
+        ):
+            raise ValueError("checkpoint binding fields are missing")
+        if payload["checkpoint_schema_version"] == 2:
+            # The store re-reads durable retrieval and answer rows before exposing
+            # this checkpoint. Here bind that projection without rewriting the
+            # original native-search receipt or claiming to authenticate a hash.
+            proof = provenance.get("external_context_use")
+            if (
+                provenance.get("search_binding") != "external-context-use-v1_1"
+                or not isinstance(proof, dict)
+                or proof.get("schema") != "stockqa.external_context_use/1.1.0"
+                or proof.get("state") != "request_and_response_bound"
+                or proof.get("work_item_id") != payload.get("work_item_id")
+                or proof.get("work_attempt_id") != payload.get("attempt_id")
+                or proof.get("provider") != provenance.get("actual_provider")
+                or proof.get("actual_model") != provenance.get("actual_model")
+                or proof.get("llm_receipt_sha256") != provenance.get("receipt_sha256")
+                or proof.get("request_prompt_sha256") != provenance.get("work_prompt_sha256")
+                or proof.get("use_id") != provenance.get("search_receipt_id")
+                or provenance.get("search_status") != "executed"
+                or proof.get("proof_sha256") != canonical_sha256(
+                    {key: value for key, value in proof.items() if key != "proof_sha256"}
+                )
+            ):
+                raise ValueError("external checkpoint use projection mismatch")
+            external_urls = proof.get("source_urls")
+            native_urls = provenance.get("native_source_urls") or []
+            if (
+                not isinstance(external_urls, list)
+                or not external_urls
+                or not isinstance(native_urls, list)
+                or any(not isinstance(url, str) or not url.strip() for url in external_urls + native_urls)
+                or provenance.get("source_urls") != sorted(set(external_urls + native_urls))
+            ):
+>               raise ValueError("external checkpoint source projection mismatch")
+E               ValueError: external checkpoint source projection mismatch
+
+src\utils\quick_scan_result_outbox.py:300: ValueError
+_____________ test_runner_seals_checkpoint_into_valid_c06_package _____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-affected-green-02/test_runner_seals_checkpoint_i0')
+
+    def test_runner_seals_checkpoint_into_valid_c06_package(tmp_path: Path) -> None:
+        authority = load_c06_authority(_write_authority(tmp_path))
+        store = QuickScanWorkStore(tmp_path / "work.sqlite")
+        lifecycle = _lifecycle(store, authority=authority)
+    
+        work_item_id = _settle(store, lifecycle, "IQS_05")
+    
+        delivery = store.get_result_delivery(work_item_id)
+>       assert delivery is not None
+E       assert None is not None
+
+tests\unit\test_qa_net01_c06_seal.py:137: AssertionError
+_____ test_missing_authority_records_durable_block_then_seals_on_restart ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-affected-green-02/test_missing_authority_records0')
+
+    def test_missing_authority_records_durable_block_then_seals_on_restart(
+        tmp_path: Path,
+    ) -> None:
+        """DB-07: no authority -> durable block, work stays result_ready, nothing
+        fabricated; the restart entry seals the SAME checkpoint with model_calls=0."""
+        store = QuickScanWorkStore(tmp_path / "work.sqlite")
+        lifecycle = _lifecycle(store, authority=None)
+        work_item_id = _settle(store, lifecycle, "IQS_05")
+    
+        delivery = store.get_result_delivery(work_item_id)
+>       assert delivery is not None and delivery["state"] == "blocked"
+E       assert (None is not None)
+
+tests\unit\test_qa_net01_c06_seal.py:157: AssertionError
+________________ test_unknown_answer_status_cannot_be_packaged ________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-affected-green-02/test_unknown_answer_status_can0')
+
+    def test_unknown_answer_status_cannot_be_packaged(tmp_path: Path) -> None:
+        """An answer the C06 adapter refuses to package must raise — the store
+        then keeps the durable block instead of an invented envelope."""
+        authority = load_c06_authority(_write_authority(tmp_path))
+        store = QuickScanWorkStore(tmp_path / "work.sqlite")
+        lifecycle = _lifecycle(store, authority=None)
+        work_item_id = _settle(store, lifecycle, "IQS_05")
+    
+        checkpoint = store.get_answer_checkpoint(work_item_id)
+>       assert checkpoint is not None
+E       assert None is not None
+
+tests\unit\test_qa_net01_c06_seal.py:212: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_concurrent_workers_obtain_only_one_search_send_intent
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[True]
+FAILED tests/unit/test_qa_net01_c06_seal.py::test_runner_seals_checkpoint_into_valid_c06_package
+FAILED tests/unit/test_qa_net01_c06_seal.py::test_missing_authority_records_durable_block_then_seals_on_restart
+FAILED tests/unit/test_qa_net01_c06_seal.py::test_unknown_answer_status_cannot_be_packaged
+5 failed, 485 passed in 41.32s

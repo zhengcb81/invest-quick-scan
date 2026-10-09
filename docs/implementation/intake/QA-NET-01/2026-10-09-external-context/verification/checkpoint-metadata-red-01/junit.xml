@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.453" timestamp="2026-10-09T07:17:40.028178+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_generic_checkpoint_conversion_preserves_actual_response_identity" time="0.029"><failure message="AssertionError: assert None == 'mimo_chat_completions'&#10; +  where None = &lt;built-in method get of dict object at 0x000002C0C7983900&gt;('search_protocol')&#10; +    where &lt;built-in method get of dict object at 0x000002C0C7983900&gt; = {'provider': 'mimo', 'request_id': 'req_net01_01', 'response_id': 'resp_net01_01', 'actual_model': 'mimo-v2.6-flash', ...}.get">def test_generic_checkpoint_conversion_preserves_actual_response_identity():
+        from src.core.models import execution_receipt_for_checkpoint
+        from tests.unit.test_qa_net01_c06_seal import _metadata
+    
+        metadata = _metadata()
+        receipt = execution_receipt_for_checkpoint(metadata)
+        assert receipt is not None
+        for field in ("search_protocol", "requested_model", "response_sha256",
+                      "response_json_basis", "model_resolution_sha256"):
+&gt;           assert receipt.get(field) == metadata["execution"][field]
+E           AssertionError: assert None == 'mimo_chat_completions'
+E            +  where None = &lt;built-in method get of dict object at 0x000002C0C7983900&gt;('search_protocol')
+E            +    where &lt;built-in method get of dict object at 0x000002C0C7983900&gt; = {'provider': 'mimo', 'request_id': 'req_net01_01', 'response_id': 'resp_net01_01', 'actual_model': 'mimo-v2.6-flash', ...}.get
+
+tests\unit\test_quick_scan_external_context.py:195: AssertionError</failure></testcase></testsuite></testsuites>

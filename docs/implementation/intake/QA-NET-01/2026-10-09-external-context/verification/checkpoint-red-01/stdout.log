@@ -1,0 +1,223 @@
+FFFFFFFFF                                                                [100%]
+================================== FAILURES ===================================
+_ test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-red-01/test_external_checkpoint_v2_pr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000197EB3F6EA0>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore, quick_scan_receipt_sha256
+        from src.utils.quick_scan_c06_adapter import build_c06_package
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt = args["store"].list_attempts(args["work_item_id"])[-1]
+        proof = result.execution_metadata["external_context_use"]
+>       assert proof["source_urls"] == ["https://fixture.example/ir"]
+               ^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'source_urls'
+
+tests\unit\test_quick_scan_external_context.py:1351: KeyError
+_ test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-red-01/test_external_checkpoint_v2_pr1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000197EAE6EEA0>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore, quick_scan_receipt_sha256
+        from src.utils.quick_scan_c06_adapter import build_c06_package
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt = args["store"].list_attempts(args["work_item_id"])[-1]
+        proof = result.execution_metadata["external_context_use"]
+>       assert proof["source_urls"] == ["https://fixture.example/ir"]
+               ^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'source_urls'
+
+tests\unit\test_quick_scan_external_context.py:1351: KeyError
+_ test_external_checkpoint_requires_owner_proof_without_native_downgrade[missing-False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-red-01/test_external_checkpoint_requi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000197ED744CB0>
+hybrid = False, mutation = 'missing'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("mutation", ["missing", "foreign", "rehashed"])
+    def test_external_checkpoint_requires_owner_proof_without_native_downgrade(tmp_path, monkeypatch, hybrid, mutation):
+        import copy, hashlib
+        args, context, _, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        proof = copy.deepcopy(result.execution_metadata["external_context_use"])
+        if mutation == "missing":
+            proof = None
+        else:
+            proof["work_attempt_id" if mutation == "foreign" else "context_sha256"] = "ATTEMPT_foreign" if mutation == "foreign" else "f" * 64
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises((ValueError, WorkConflictError)):
+>           args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt_id,
+                answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+E           TypeError: QuickScanWorkStore.save_answer_checkpoint() got an unexpected keyword argument 'external_context_use'
+
+tests\unit\test_quick_scan_external_context.py:1389: TypeError
+_ test_external_checkpoint_requires_owner_proof_without_native_downgrade[missing-True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-red-01/test_external_checkpoint_requi1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000197ED72B460>
+hybrid = True, mutation = 'missing'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("mutation", ["missing", "foreign", "rehashed"])
+    def test_external_checkpoint_requires_owner_proof_without_native_downgrade(tmp_path, monkeypatch, hybrid, mutation):
+        import copy, hashlib
+        args, context, _, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        proof = copy.deepcopy(result.execution_metadata["external_context_use"])
+        if mutation == "missing":
+            proof = None
+        else:
+            proof["work_attempt_id" if mutation == "foreign" else "context_sha256"] = "ATTEMPT_foreign" if mutation == "foreign" else "f" * 64
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises((ValueError, WorkConflictError)):
+>           args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt_id,
+                answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+E           TypeError: QuickScanWorkStore.save_answer_checkpoint() got an unexpected keyword argument 'external_context_use'
+
+tests\unit\test_quick_scan_external_context.py:1389: TypeError
+_ test_external_checkpoint_requires_owner_proof_without_native_downgrade[foreign-False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-red-01/test_external_checkpoint_requi2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000197ED72B8A0>
+hybrid = False, mutation = 'foreign'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("mutation", ["missing", "foreign", "rehashed"])
+    def test_external_checkpoint_requires_owner_proof_without_native_downgrade(tmp_path, monkeypatch, hybrid, mutation):
+        import copy, hashlib
+        args, context, _, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        proof = copy.deepcopy(result.execution_metadata["external_context_use"])
+        if mutation == "missing":
+            proof = None
+        else:
+            proof["work_attempt_id" if mutation == "foreign" else "context_sha256"] = "ATTEMPT_foreign" if mutation == "foreign" else "f" * 64
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises((ValueError, WorkConflictError)):
+>           args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt_id,
+                answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+E           TypeError: QuickScanWorkStore.save_answer_checkpoint() got an unexpected keyword argument 'external_context_use'
+
+tests\unit\test_quick_scan_external_context.py:1389: TypeError
+_ test_external_checkpoint_requires_owner_proof_without_native_downgrade[foreign-True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-red-01/test_external_checkpoint_requi3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000197ED83CA50>
+hybrid = True, mutation = 'foreign'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("mutation", ["missing", "foreign", "rehashed"])
+    def test_external_checkpoint_requires_owner_proof_without_native_downgrade(tmp_path, monkeypatch, hybrid, mutation):
+        import copy, hashlib
+        args, context, _, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        proof = copy.deepcopy(result.execution_metadata["external_context_use"])
+        if mutation == "missing":
+            proof = None
+        else:
+            proof["work_attempt_id" if mutation == "foreign" else "context_sha256"] = "ATTEMPT_foreign" if mutation == "foreign" else "f" * 64
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises((ValueError, WorkConflictError)):
+>           args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt_id,
+                answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+E           TypeError: QuickScanWorkStore.save_answer_checkpoint() got an unexpected keyword argument 'external_context_use'
+
+tests\unit\test_quick_scan_external_context.py:1389: TypeError
+_ test_external_checkpoint_requires_owner_proof_without_native_downgrade[rehashed-False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-red-01/test_external_checkpoint_requi4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000197ED83C950>
+hybrid = False, mutation = 'rehashed'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("mutation", ["missing", "foreign", "rehashed"])
+    def test_external_checkpoint_requires_owner_proof_without_native_downgrade(tmp_path, monkeypatch, hybrid, mutation):
+        import copy, hashlib
+        args, context, _, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        proof = copy.deepcopy(result.execution_metadata["external_context_use"])
+        if mutation == "missing":
+            proof = None
+        else:
+            proof["work_attempt_id" if mutation == "foreign" else "context_sha256"] = "ATTEMPT_foreign" if mutation == "foreign" else "f" * 64
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises((ValueError, WorkConflictError)):
+>           args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt_id,
+                answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+E           TypeError: QuickScanWorkStore.save_answer_checkpoint() got an unexpected keyword argument 'external_context_use'
+
+tests\unit\test_quick_scan_external_context.py:1389: TypeError
+_ test_external_checkpoint_requires_owner_proof_without_native_downgrade[rehashed-True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-red-01/test_external_checkpoint_requi5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000197ED86A4E0>
+hybrid = True, mutation = 'rehashed'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("mutation", ["missing", "foreign", "rehashed"])
+    def test_external_checkpoint_requires_owner_proof_without_native_downgrade(tmp_path, monkeypatch, hybrid, mutation):
+        import copy, hashlib
+        args, context, _, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt_id = args["store"].list_attempts(args["work_item_id"])[-1]["attempt_id"]
+        proof = copy.deepcopy(result.execution_metadata["external_context_use"])
+        if mutation == "missing":
+            proof = None
+        else:
+            proof["work_attempt_id" if mutation == "foreign" else "context_sha256"] = "ATTEMPT_foreign" if mutation == "foreign" else "f" * 64
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises((ValueError, WorkConflictError)):
+>           args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt_id,
+                answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+E           TypeError: QuickScanWorkStore.save_answer_checkpoint() got an unexpected keyword argument 'external_context_use'
+
+tests\unit\test_quick_scan_external_context.py:1389: TypeError
+_ test_external_checkpoint_v11_migration_keeps_native_v1_payload_hash_and_cash _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-red-01/test_external_checkpoint_v11_m0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000197ED86B2F0>
+
+    def test_external_checkpoint_v11_migration_keeps_native_v1_payload_hash_and_cash(tmp_path, monkeypatch):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore, SCHEMA_VERSION
+        from tests.unit.test_quick_scan_work_store import _successful_search_attempt, _answer_for
+        args, _, search, sync, _, _, _, _, clock = _external_answer_fixture(tmp_path, monkeypatch)
+        other = _created(args["store"], question_id="IQS_06", question_fingerprint="c" * 64)
+        lease, attempt, receipt = _successful_search_attempt(args["store"], other["work_item_id"])
+        checkpoint = args["store"].save_answer_checkpoint(other["work_item_id"], lease, attempt["attempt_id"], answer=_answer_for(other), execution_receipt=receipt)
+        assert checkpoint["checkpoint_schema_version"] == 1
+        before_cash = args["store"].get_quick_scan_budget_status("q09-fixture")
+        _install_checkpoint_v10(args["store"])
+        with closing(args["store"]._connect()) as connection:
+            before_row = tuple(connection.execute("SELECT * FROM answer_checkpoint").fetchone())
+        reopened = QuickScanWorkStore(args["store"].path, clock=lambda: clock[0])
+>       assert SCHEMA_VERSION == 11
+E       assert 10 == 11
+
+tests\unit\test_quick_scan_external_context.py:1421: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[True]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_requires_owner_proof_without_native_downgrade[missing-False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_requires_owner_proof_without_native_downgrade[missing-True]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_requires_owner_proof_without_native_downgrade[foreign-False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_requires_owner_proof_without_native_downgrade[foreign-True]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_requires_owner_proof_without_native_downgrade[rehashed-False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_requires_owner_proof_without_native_downgrade[rehashed-True]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_v11_migration_keeps_native_v1_payload_hash_and_cash
+9 failed, 130 deselected in 3.96s

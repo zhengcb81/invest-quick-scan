@@ -1,0 +1,383 @@
+FFFFFFFFFF                                                               [100%]
+================================== FAILURES ===================================
+______ test_runtime_external_projection_rechecks_the_actual_owner[False] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_runtime_external_projecti0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C016CAEA0>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_runtime_external_projection_rechecks_the_actual_owner(tmp_path, monkeypatch, hybrid):
+>       from src.utils.quick_scan_work_transport import project_quick_scan_search
+E       ImportError: cannot import name 'project_quick_scan_search' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:200: ImportError
+______ test_runtime_external_projection_rechecks_the_actual_owner[True] _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_runtime_external_projecti1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C7FA8EEA0>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_runtime_external_projection_rechecks_the_actual_owner(tmp_path, monkeypatch, hybrid):
+>       from src.utils.quick_scan_work_transport import project_quick_scan_search
+E       ImportError: cannot import name 'project_quick_scan_search' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:200: ImportError
+_ test_runtime_external_projection_refuses_caller_proof_drift[missing-False] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_runtime_external_projecti2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C037C8B90>
+hybrid = False, change = 'missing'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("change", ["missing", "foreign", "rehash"])
+    def test_runtime_external_projection_refuses_caller_proof_drift(tmp_path, monkeypatch, hybrid, change):
+        import hashlib
+>       from src.utils.quick_scan_work_transport import project_quick_scan_search, QuickScanWorkPersistenceError
+E       ImportError: cannot import name 'project_quick_scan_search' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:218: ImportError
+__ test_runtime_external_projection_refuses_caller_proof_drift[missing-True] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_runtime_external_projecti3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C016358C0>
+hybrid = True, change = 'missing'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("change", ["missing", "foreign", "rehash"])
+    def test_runtime_external_projection_refuses_caller_proof_drift(tmp_path, monkeypatch, hybrid, change):
+        import hashlib
+>       from src.utils.quick_scan_work_transport import project_quick_scan_search, QuickScanWorkPersistenceError
+E       ImportError: cannot import name 'project_quick_scan_search' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:218: ImportError
+_ test_runtime_external_projection_refuses_caller_proof_drift[foreign-False] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_runtime_external_projecti4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C01635370>
+hybrid = False, change = 'foreign'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("change", ["missing", "foreign", "rehash"])
+    def test_runtime_external_projection_refuses_caller_proof_drift(tmp_path, monkeypatch, hybrid, change):
+        import hashlib
+>       from src.utils.quick_scan_work_transport import project_quick_scan_search, QuickScanWorkPersistenceError
+E       ImportError: cannot import name 'project_quick_scan_search' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:218: ImportError
+__ test_runtime_external_projection_refuses_caller_proof_drift[foreign-True] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_runtime_external_projecti5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C03740450>
+hybrid = True, change = 'foreign'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("change", ["missing", "foreign", "rehash"])
+    def test_runtime_external_projection_refuses_caller_proof_drift(tmp_path, monkeypatch, hybrid, change):
+        import hashlib
+>       from src.utils.quick_scan_work_transport import project_quick_scan_search, QuickScanWorkPersistenceError
+E       ImportError: cannot import name 'project_quick_scan_search' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:218: ImportError
+__ test_runtime_external_projection_refuses_caller_proof_drift[rehash-False] __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_runtime_external_projecti6')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C03740350>
+hybrid = False, change = 'rehash'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("change", ["missing", "foreign", "rehash"])
+    def test_runtime_external_projection_refuses_caller_proof_drift(tmp_path, monkeypatch, hybrid, change):
+        import hashlib
+>       from src.utils.quick_scan_work_transport import project_quick_scan_search, QuickScanWorkPersistenceError
+E       ImportError: cannot import name 'project_quick_scan_search' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:218: ImportError
+__ test_runtime_external_projection_refuses_caller_proof_drift[rehash-True] ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_runtime_external_projecti7')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C038805F0>
+hybrid = True, change = 'rehash'
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    @pytest.mark.parametrize("change", ["missing", "foreign", "rehash"])
+    def test_runtime_external_projection_refuses_caller_proof_drift(tmp_path, monkeypatch, hybrid, change):
+        import hashlib
+>       from src.utils.quick_scan_work_transport import project_quick_scan_search, QuickScanWorkPersistenceError
+E       ImportError: cannot import name 'project_quick_scan_search' from 'src.utils.quick_scan_work_transport' (C:\Users\郑曾波\Projects\invest-quick-scan\runs\n111a\qa\src\utils\quick_scan_work_transport.py)
+
+tests\unit\test_quick_scan_external_context.py:218: ImportError
+_ test_actual_runner_checkpoints_external_answer_without_native_fabrication[False] _
+
+self = <src.runners.llm_runner.QuickScanWorkLifecycle object at 0x0000024C03854830>
+handle = {'work_item_id': 'WORK_1a566251b25946f689cae2fbb5ed691a', 'lease': Lease(lease_token='89982133a30f4fc7b2614003414624b1', lease_epoch=1)}
+result = namespace(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 7, 23, 45, 410380), questi... 'proof_sha256': '697267d7b340be516bd23efb0c882b6bccc43df79b9a16ba10ead77aa1ce9c66'}}, 'search_status': 'unverified'}))
+
+    def _save_transport_checkpoint(self, handle: Dict[str, Any], result: Any) -> None:
+        """Save only the transport's final successful attempt; never record it twice."""
+        try:
+            from src.core.models import execution_receipt_for_checkpoint
+    
+            answer = getattr(result, "answer", None)
+            metadata = getattr(answer, "metadata", None)
+            metadata = metadata if isinstance(metadata, dict) else {}
+            execution = metadata.get("execution")
+            execution = execution if isinstance(execution, dict) else {}
+            transport = execution.get("work_transport")
+            if not isinstance(transport, dict):
+                raise ValueError("missing authoritative transport binding")
+            attempt_id = transport.get("work_attempt_id")
+            receipt = execution_receipt_for_checkpoint(metadata)
+            if not isinstance(attempt_id, str) or receipt is None:
+>               raise ValueError("missing final successful transport receipt")
+E               ValueError: missing final successful transport receipt
+
+src\runners\llm_runner.py:498: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_actual_runner_checkpoints0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C03883200>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_actual_runner_checkpoints_external_answer_without_native_fabrication(tmp_path, monkeypatch, hybrid):
+        from types import SimpleNamespace
+        from src.core.models import Answer, Question
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        response = _send_external_answer(args, context, model, url)
+        answer = json.loads(response.content)
+        lifecycle = QuickScanWorkLifecycle(args["store"], entity_id=answer["entity_id"],
+            run_id="RUN_RUNTIME", scan_id="SCAN_RUNTIME", identity={}, model_requested=model, transport_managed=True)
+        result = SimpleNamespace(question=Question("Answer IQS_05", question_id=answer["question_id"]),
+            answer=Answer(text=answer["description"], score=answer["score"], status=answer["status"],
+                metadata={"execution": response.execution_metadata, "search_status": response.execution_metadata["search_status"]}))
+>       lifecycle.after_question({"work_item_id": args["work_item_id"], "lease": args["lease"]}, result)
+
+tests\unit\test_quick_scan_external_context.py:246: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\runners\llm_runner.py:527: in after_question
+    self._save_transport_checkpoint(handle, result)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.runners.llm_runner.QuickScanWorkLifecycle object at 0x0000024C03854830>
+handle = {'work_item_id': 'WORK_1a566251b25946f689cae2fbb5ed691a', 'lease': Lease(lease_token='89982133a30f4fc7b2614003414624b1', lease_epoch=1)}
+result = namespace(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 7, 23, 45, 410380), questi... 'proof_sha256': '697267d7b340be516bd23efb0c882b6bccc43df79b9a16ba10ead77aa1ce9c66'}}, 'search_status': 'unverified'}))
+
+    def _save_transport_checkpoint(self, handle: Dict[str, Any], result: Any) -> None:
+        """Save only the transport's final successful attempt; never record it twice."""
+        try:
+            from src.core.models import execution_receipt_for_checkpoint
+    
+            answer = getattr(result, "answer", None)
+            metadata = getattr(answer, "metadata", None)
+            metadata = metadata if isinstance(metadata, dict) else {}
+            execution = metadata.get("execution")
+            execution = execution if isinstance(execution, dict) else {}
+            transport = execution.get("work_transport")
+            if not isinstance(transport, dict):
+                raise ValueError("missing authoritative transport binding")
+            attempt_id = transport.get("work_attempt_id")
+            receipt = execution_receipt_for_checkpoint(metadata)
+            if not isinstance(attempt_id, str) or receipt is None:
+                raise ValueError("missing final successful transport receipt")
+            description, standard_body = self._standard_transport(getattr(answer, "text", ""))
+            payload = {
+                "entity_id": self._entity_id,
+                "question_id": getattr(getattr(result, "question", None), "question_id", None),
+                "status": getattr(answer, "status", None),
+                "score": getattr(answer, "score", None),
+                "description": description,
+            }
+            _preflight_checkpoint(payload, receipt)
+            self._preflight_standard_answer(payload, receipt, standard_body)
+            # Store checks same work/lease/model/request/hash and successful
+            # phase atomically. A forged final ID or receipt cannot save.
+            self._store.save_answer_checkpoint(
+                handle["work_item_id"],
+                handle["lease"],
+                attempt_id,
+                answer=payload,
+                execution_receipt=receipt,
+                observation_context=self._observation_context,
+                standard_answer=standard_body,
+            )
+            self._seal_delivery(handle["work_item_id"])
+        except Exception as exc:  # noqa: BLE001 - retain authoritative transport state
+            logger.warning("transport checkpoint 拒绝（%s）——原请求状态保留", exc)
+>           raise ProcessingError("快扫答案未能保存检查点；请恢复或核对本次回执") from exc
+E           src.core.exceptions.ProcessingError: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+
+src\runners\llm_runner.py:523: ProcessingError
+---------------------------- Captured stdout call -----------------------------
+WARNING - transport checkpoint 拒绝（missing final successful transport receipt）——原请求状态保留
+_ test_actual_runner_checkpoints_external_answer_without_native_fabrication[True] _
+
+self = <src.runners.llm_runner.QuickScanWorkLifecycle object at 0x0000024C03823610>
+handle = {'work_item_id': 'WORK_e6d33d147bea4672992f5e65ba7f7997', 'lease': Lease(lease_token='864ed386872944c99638ee5a7966c627', lease_epoch=1)}
+result = namespace(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 7, 23, 45, 687439), questi...], 'proof_sha256': '4ee26ac86bec16fdda14f0f2cebc989e42fe87f08ba3e872277de76ba4179768'}}, 'search_status': 'executed'}))
+
+    def _save_transport_checkpoint(self, handle: Dict[str, Any], result: Any) -> None:
+        """Save only the transport's final successful attempt; never record it twice."""
+        try:
+            from src.core.models import execution_receipt_for_checkpoint
+    
+            answer = getattr(result, "answer", None)
+            metadata = getattr(answer, "metadata", None)
+            metadata = metadata if isinstance(metadata, dict) else {}
+            execution = metadata.get("execution")
+            execution = execution if isinstance(execution, dict) else {}
+            transport = execution.get("work_transport")
+            if not isinstance(transport, dict):
+                raise ValueError("missing authoritative transport binding")
+            attempt_id = transport.get("work_attempt_id")
+            receipt = execution_receipt_for_checkpoint(metadata)
+            if not isinstance(attempt_id, str) or receipt is None:
+                raise ValueError("missing final successful transport receipt")
+            description, standard_body = self._standard_transport(getattr(answer, "text", ""))
+            payload = {
+                "entity_id": self._entity_id,
+                "question_id": getattr(getattr(result, "question", None), "question_id", None),
+                "status": getattr(answer, "status", None),
+                "score": getattr(answer, "score", None),
+                "description": description,
+            }
+            _preflight_checkpoint(payload, receipt)
+            self._preflight_standard_answer(payload, receipt, standard_body)
+            # Store checks same work/lease/model/request/hash and successful
+            # phase atomically. A forged final ID or receipt cannot save.
+>           self._store.save_answer_checkpoint(
+                handle["work_item_id"],
+                handle["lease"],
+                attempt_id,
+                answer=payload,
+                execution_receipt=receipt,
+                observation_context=self._observation_context,
+                standard_answer=standard_body,
+            )
+
+src\runners\llm_runner.py:511: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:3141: in save_answer_checkpoint
+    external_projection = self._external_checkpoint_projection(connection, attempt_id, external_context_use)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlite3.Connection object at 0x0000024C03882C50>
+attempt_id = 'ATTEMPT_54e26d8e8a064da382e6aa5ae9007761', supplied = None
+
+    @staticmethod
+    def _external_checkpoint_projection(connection: sqlite3.Connection, attempt_id: str, supplied: Optional[dict]) -> Optional[dict]:
+        """Read owner proof, never accept a caller's self-signed replacement."""
+        from src.utils.quick_scan_external_journal import read_use
+    
+        row = None
+        if connection.execute("PRAGMA user_version").fetchone()[0] >= 10:
+            row = connection.execute("SELECT * FROM quick_scan_external_use_intent WHERE attempt_id=?", (attempt_id,)).fetchone()
+        if row is None:
+            if supplied is not None:
+                raise WorkConflictError("external proof has no actual context-use intent")
+            return None
+        use = read_use(connection, row)
+        proof = use["proof"]
+        if (proof is None or proof.get("schema") != "stockqa.external_context_use/1.1.0"
+            or supplied != proof):
+>           raise WorkConflictError("checkpoint requires the actual external context-use proof")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the actual external context-use proof
+
+src\utils\quick_scan_work_store.py:2899: WorkConflictError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/runtime-projection-red-01/test_actual_runner_checkpoints1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024C038AB4D0>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_actual_runner_checkpoints_external_answer_without_native_fabrication(tmp_path, monkeypatch, hybrid):
+        from types import SimpleNamespace
+        from src.core.models import Answer, Question
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        response = _send_external_answer(args, context, model, url)
+        answer = json.loads(response.content)
+        lifecycle = QuickScanWorkLifecycle(args["store"], entity_id=answer["entity_id"],
+            run_id="RUN_RUNTIME", scan_id="SCAN_RUNTIME", identity={}, model_requested=model, transport_managed=True)
+        result = SimpleNamespace(question=Question("Answer IQS_05", question_id=answer["question_id"]),
+            answer=Answer(text=answer["description"], score=answer["score"], status=answer["status"],
+                metadata={"execution": response.execution_metadata, "search_status": response.execution_metadata["search_status"]}))
+>       lifecycle.after_question({"work_item_id": args["work_item_id"], "lease": args["lease"]}, result)
+
+tests\unit\test_quick_scan_external_context.py:246: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\runners\llm_runner.py:527: in after_question
+    self._save_transport_checkpoint(handle, result)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <src.runners.llm_runner.QuickScanWorkLifecycle object at 0x0000024C03823610>
+handle = {'work_item_id': 'WORK_e6d33d147bea4672992f5e65ba7f7997', 'lease': Lease(lease_token='864ed386872944c99638ee5a7966c627', lease_epoch=1)}
+result = namespace(question=Question(text='Answer IQS_05', created_at=datetime.datetime(2026, 10, 9, 7, 23, 45, 687439), questi...], 'proof_sha256': '4ee26ac86bec16fdda14f0f2cebc989e42fe87f08ba3e872277de76ba4179768'}}, 'search_status': 'executed'}))
+
+    def _save_transport_checkpoint(self, handle: Dict[str, Any], result: Any) -> None:
+        """Save only the transport's final successful attempt; never record it twice."""
+        try:
+            from src.core.models import execution_receipt_for_checkpoint
+    
+            answer = getattr(result, "answer", None)
+            metadata = getattr(answer, "metadata", None)
+            metadata = metadata if isinstance(metadata, dict) else {}
+            execution = metadata.get("execution")
+            execution = execution if isinstance(execution, dict) else {}
+            transport = execution.get("work_transport")
+            if not isinstance(transport, dict):
+                raise ValueError("missing authoritative transport binding")
+            attempt_id = transport.get("work_attempt_id")
+            receipt = execution_receipt_for_checkpoint(metadata)
+            if not isinstance(attempt_id, str) or receipt is None:
+                raise ValueError("missing final successful transport receipt")
+            description, standard_body = self._standard_transport(getattr(answer, "text", ""))
+            payload = {
+                "entity_id": self._entity_id,
+                "question_id": getattr(getattr(result, "question", None), "question_id", None),
+                "status": getattr(answer, "status", None),
+                "score": getattr(answer, "score", None),
+                "description": description,
+            }
+            _preflight_checkpoint(payload, receipt)
+            self._preflight_standard_answer(payload, receipt, standard_body)
+            # Store checks same work/lease/model/request/hash and successful
+            # phase atomically. A forged final ID or receipt cannot save.
+            self._store.save_answer_checkpoint(
+                handle["work_item_id"],
+                handle["lease"],
+                attempt_id,
+                answer=payload,
+                execution_receipt=receipt,
+                observation_context=self._observation_context,
+                standard_answer=standard_body,
+            )
+            self._seal_delivery(handle["work_item_id"])
+        except Exception as exc:  # noqa: BLE001 - retain authoritative transport state
+            logger.warning("transport checkpoint 拒绝（%s）——原请求状态保留", exc)
+>           raise ProcessingError("快扫答案未能保存检查点；请恢复或核对本次回执") from exc
+E           src.core.exceptions.ProcessingError: [ProcessingError] 快扫答案未能保存检查点；请恢复或核对本次回执
+
+src\runners\llm_runner.py:523: ProcessingError
+---------------------------- Captured stdout call -----------------------------
+WARNING - transport checkpoint 拒绝（checkpoint requires the actual external context-use proof）——原请求状态保留
+------------------------------ Captured log call ------------------------------
+WARNING  src.runners.llm_runner:llm_runner.py:522 transport checkpoint 拒绝（checkpoint requires the actual external context-use proof）——原请求状态保留
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_external_projection_rechecks_the_actual_owner[False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_external_projection_rechecks_the_actual_owner[True]
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_external_projection_refuses_caller_proof_drift[missing-False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_external_projection_refuses_caller_proof_drift[missing-True]
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_external_projection_refuses_caller_proof_drift[foreign-False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_external_projection_refuses_caller_proof_drift[foreign-True]
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_external_projection_refuses_caller_proof_drift[rehash-False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_runtime_external_projection_refuses_caller_proof_drift[rehash-True]
+FAILED tests/unit/test_quick_scan_external_context.py::test_actual_runner_checkpoints_external_answer_without_native_fabrication[False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_actual_runner_checkpoints_external_answer_without_native_fabrication[True]
+10 failed, 143 deselected in 3.18s

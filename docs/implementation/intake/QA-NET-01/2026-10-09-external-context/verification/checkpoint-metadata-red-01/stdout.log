@@ -1,0 +1,22 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_generic_checkpoint_conversion_preserves_actual_response_identity ____
+
+    def test_generic_checkpoint_conversion_preserves_actual_response_identity():
+        from src.core.models import execution_receipt_for_checkpoint
+        from tests.unit.test_qa_net01_c06_seal import _metadata
+    
+        metadata = _metadata()
+        receipt = execution_receipt_for_checkpoint(metadata)
+        assert receipt is not None
+        for field in ("search_protocol", "requested_model", "response_sha256",
+                      "response_json_basis", "model_resolution_sha256"):
+>           assert receipt.get(field) == metadata["execution"][field]
+E           AssertionError: assert None == 'mimo_chat_completions'
+E            +  where None = <built-in method get of dict object at 0x000002C0C7983900>('search_protocol')
+E            +    where <built-in method get of dict object at 0x000002C0C7983900> = {'provider': 'mimo', 'request_id': 'req_net01_01', 'response_id': 'resp_net01_01', 'actual_model': 'mimo-v2.6-flash', ...}.get
+
+tests\unit\test_quick_scan_external_context.py:195: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_generic_checkpoint_conversion_preserves_actual_response_identity
+1 failed, 142 deselected in 1.57s

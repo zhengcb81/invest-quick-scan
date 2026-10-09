@@ -1,0 +1,58 @@
+F........                                                                [100%]
+================================== FAILURES ===================================
+_ test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-green-01/test_external_checkpoint_v2_pr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001FBF8A82EA0>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore, quick_scan_receipt_sha256
+        from src.utils.quick_scan_c06_adapter import build_c06_package
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt = args["store"].list_attempts(args["work_item_id"])[-1]
+        proof = result.execution_metadata["external_context_use"]
+        assert proof["source_urls"] == ["https://fixture.example/ir"]
+>       checkpoint = args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt["attempt_id"],
+            answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+
+tests\unit\test_quick_scan_external_context.py:1352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:3141: in save_answer_checkpoint
+    external_projection = self._external_checkpoint_projection(connection, attempt_id, external_context_use)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlite3.Connection object at 0x000001FBFAEAEC50>
+attempt_id = 'ATTEMPT_5af0b271379646e3bc634cd57af430a6'
+supplied = {'schema': 'stockqa.external_context_use/1.1.0', 'state': 'request_and_response_bound', 'use_id': 'EXTUSE_f79b000b6b68e4db36bf6d55b8db4c0581c76de07a508c324457473fe67db236', 'work_item_id': 'WORK_38985c70d783481fb20ad10fe1aedaf7', ...}
+
+    @staticmethod
+    def _external_checkpoint_projection(connection: sqlite3.Connection, attempt_id: str, supplied: Optional[dict]) -> Optional[dict]:
+        """Read owner proof, never accept a caller's self-signed replacement."""
+        from src.utils.quick_scan_external_journal import read_use
+    
+        row = None
+        if connection.execute("PRAGMA user_version").fetchone()[0] >= 10:
+            row = connection.execute("SELECT * FROM quick_scan_external_use_intent WHERE attempt_id=?", (attempt_id,)).fetchone()
+        if row is None:
+            if supplied is not None:
+                raise WorkConflictError("external proof has no actual context-use intent")
+            return None
+        use = read_use(connection, row)
+        proof = use["proof"]
+        if (proof is None or proof.get("schema") != "stockqa.external_context_use/1.1.0"
+            or supplied != proof):
+            raise WorkConflictError("checkpoint requires the actual external context-use proof")
+        response_row = connection.execute("SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt_id,)).fetchone()
+        original = QuickScanWorkStore._response_record(connection, response_row)["receipt"]
+>       urls = _canonical_source_urls(list(original["source_urls"]) + proof["source_urls"])
+                                           ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'source_urls'
+
+src\utils\quick_scan_work_store.py:2902: KeyError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[False]
+1 failed, 8 passed, 130 deselected in 6.27s

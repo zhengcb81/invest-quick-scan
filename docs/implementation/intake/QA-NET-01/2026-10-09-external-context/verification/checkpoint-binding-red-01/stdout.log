@@ -1,0 +1,138 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[False] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-binding-red-01/test_external_checkpoint_v2_pr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002BBCEA8EEA0>
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore, quick_scan_receipt_sha256
+        from src.utils.quick_scan_c06_adapter import build_c06_package
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt = args["store"].list_attempts(args["work_item_id"])[-1]
+        proof = result.execution_metadata["external_context_use"]
+        assert proof["source_urls"] == ["https://fixture.example/ir"]
+        checkpoint = args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt["attempt_id"],
+            answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+        assert checkpoint["checkpoint_schema_version"] == checkpoint["payload"]["checkpoint_schema_version"] == 2
+        provenance = checkpoint["payload"]["provenance"]
+        assert provenance["search_status"] == "executed" and provenance["search_receipt_id"] == proof["use_id"]
+        assert provenance["search_binding"] == "external-context-use-v1_1"
+        assert provenance["native_search_status"] == ("executed" if hybrid else "unverified")
+        assert provenance["native_search_receipt_id"] == ("actual-native-call" if hybrid else None)
+        assert provenance["source_urls"] == (["https://native.example/ir", "https://fixture.example/ir"] if hybrid else ["https://fixture.example/ir"])
+        assert provenance["receipt_sha256"] == quick_scan_receipt_sha256(result.execution_metadata) == attempt["receipt_sha256"]
+        original_response = args["store"].get_attempt_response(attempt["attempt_id"])
+        assert original_response["receipt"].get("source_urls", []) == (["https://native.example/ir"] if hybrid else [])
+        assert original_response["receipt"]["search_status"] == ("executed" if hybrid else "unverified")
+        from tests.unit.test_qa_net01_c06_seal import _authority_document
+        document = _authority_document()
+        authority = {"contract_versions": document["contract_versions"], "capabilities": document["capabilities"],
+            "producer_component_version": document["producer"]["component_version"], "producer_build_id": document["producer"]["build_id"]}
+        package = build_c06_package(checkpoint["payload"], authority=authority)
+        assert package["items"][0]["observation"]["execution"]["search_receipt_id"] == proof["use_id"]
+>       delivery = args["store"].prepare_result_delivery(args["work_item_id"], package)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1373: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:4068: in prepare_result_delivery
+    validate_checkpoint_binding(validated, checkpoint)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+package = {'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': '1.0.0', 'build_id': 'stock...Wiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-10-09T06:08:47.723648Z', ...}
+checkpoint = {'checkpoint_id': 'CHECKPOINT_f6b6e2a662314468a50a9b931ba7294f', 'work_item_id': 'WORK_3b389e1f43644e1984cfad0b4173d478', 'attempt_id': 'ATTEMPT_b233ad742d074c439c66b11153631fda', 'checkpoint_schema_version': 2, ...}
+
+    def validate_checkpoint_binding(package: dict, checkpoint: dict) -> None:
+        """Bind exchange fields present in Q07's checkpoint without inventing others."""
+        payload = checkpoint.get("payload")
+        if not isinstance(payload, dict):
+            raise ValueError("checkpoint payload is missing")
+        work = payload.get("work")
+        saved_answer = payload.get("answer")
+        provenance = payload.get("provenance")
+        observation = package["items"][0]["observation"]
+        if (
+            payload.get("checkpoint_schema") != "quick-scan-answer"
+            or payload.get("checkpoint_schema_version") != 1
+            or not isinstance(work, dict)
+            or not isinstance(saved_answer, dict)
+            or not isinstance(provenance, dict)
+        ):
+>           raise ValueError("checkpoint binding fields are missing")
+E           ValueError: checkpoint binding fields are missing
+
+src\utils\quick_scan_result_outbox.py:266: ValueError
+_ test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[True] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/checkpoint-binding-red-01/test_external_checkpoint_v2_pr1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002BBCE51EEA0>
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import QuickScanWorkStore, quick_scan_receipt_sha256
+        from src.utils.quick_scan_c06_adapter import build_c06_package
+        args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        result = _send_external_answer(args, context, model, url)
+        attempt = args["store"].list_attempts(args["work_item_id"])[-1]
+        proof = result.execution_metadata["external_context_use"]
+        assert proof["source_urls"] == ["https://fixture.example/ir"]
+        checkpoint = args["store"].save_answer_checkpoint(args["work_item_id"], args["lease"], attempt["attempt_id"],
+            answer=json.loads(result.content), execution_receipt=result.execution_metadata, external_context_use=proof)
+        assert checkpoint["checkpoint_schema_version"] == checkpoint["payload"]["checkpoint_schema_version"] == 2
+        provenance = checkpoint["payload"]["provenance"]
+        assert provenance["search_status"] == "executed" and provenance["search_receipt_id"] == proof["use_id"]
+        assert provenance["search_binding"] == "external-context-use-v1_1"
+        assert provenance["native_search_status"] == ("executed" if hybrid else "unverified")
+        assert provenance["native_search_receipt_id"] == ("actual-native-call" if hybrid else None)
+        assert provenance["source_urls"] == (["https://native.example/ir", "https://fixture.example/ir"] if hybrid else ["https://fixture.example/ir"])
+        assert provenance["receipt_sha256"] == quick_scan_receipt_sha256(result.execution_metadata) == attempt["receipt_sha256"]
+        original_response = args["store"].get_attempt_response(attempt["attempt_id"])
+        assert original_response["receipt"].get("source_urls", []) == (["https://native.example/ir"] if hybrid else [])
+        assert original_response["receipt"]["search_status"] == ("executed" if hybrid else "unverified")
+        from tests.unit.test_qa_net01_c06_seal import _authority_document
+        document = _authority_document()
+        authority = {"contract_versions": document["contract_versions"], "capabilities": document["capabilities"],
+            "producer_component_version": document["producer"]["component_version"], "producer_build_id": document["producer"]["build_id"]}
+        package = build_c06_package(checkpoint["payload"], authority=authority)
+        assert package["items"][0]["observation"]["execution"]["search_receipt_id"] == proof["use_id"]
+>       delivery = args["store"].prepare_result_delivery(args["work_item_id"], package)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_external_context.py:1373: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:4068: in prepare_result_delivery
+    validate_checkpoint_binding(validated, checkpoint)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+package = {'schema_version': '1.0.0', 'producer': {'component': 'StockQAbyLLM', 'component_version': '1.0.0', 'build_id': 'stock...Wiki', 'namespace': 'quick_scan', 'minimum_schema_version': '1.0.0'}, 'created_at': '2026-10-09T06:08:48.234461Z', ...}
+checkpoint = {'checkpoint_id': 'CHECKPOINT_125a183ecacf49408a97a04c28cdf23e', 'work_item_id': 'WORK_d60af51c71d54e439c347461659db1e0', 'attempt_id': 'ATTEMPT_3cf43f9150df4c1598a043359f9e937b', 'checkpoint_schema_version': 2, ...}
+
+    def validate_checkpoint_binding(package: dict, checkpoint: dict) -> None:
+        """Bind exchange fields present in Q07's checkpoint without inventing others."""
+        payload = checkpoint.get("payload")
+        if not isinstance(payload, dict):
+            raise ValueError("checkpoint payload is missing")
+        work = payload.get("work")
+        saved_answer = payload.get("answer")
+        provenance = payload.get("provenance")
+        observation = package["items"][0]["observation"]
+        if (
+            payload.get("checkpoint_schema") != "quick-scan-answer"
+            or payload.get("checkpoint_schema_version") != 1
+            or not isinstance(work, dict)
+            or not isinstance(saved_answer, dict)
+            or not isinstance(provenance, dict)
+        ):
+>           raise ValueError("checkpoint binding fields are missing")
+E           ValueError: checkpoint binding fields are missing
+
+src\utils\quick_scan_result_outbox.py:266: ValueError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[False]
+FAILED tests/unit/test_quick_scan_external_context.py::test_external_checkpoint_v2_preserves_native_receipt_and_restarts_without_http[True]
+2 failed, 140 deselected in 2.00s
