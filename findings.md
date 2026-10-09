@@ -1777,3 +1777,10 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 新schema12迁移必须防止事后填充：空表升级本身不补历史，但原_persist_response_tx重放分支仍能给旧HTTP补事件，真实新增反例1F已定位。事件插入现在只允许同事务的新HTTP响应；原行有事件只精确重放，原行缺事件保持缺失。最新16文件776P覆盖迁移/回滚、保存上限与原native调用，没有收费请求或真实身份/事实认证。
 - 跨租约工作行回到pending不等于检索可重发：已结算搜索可在TTL内由新lease复用原证据；unknown外部operation仍由原journal/Q09保持阻断/预留。实际五项恢复追加已GREEN，旧lease不能发送、晚到模型仅留actual响应和费用不发布答案。过期且未发送检索意图保持保守hold，公开子进程杀停/恢复与MCP仍待；不将五项低层覆盖扩大为全部自动恢复。
 - 2026-10-09官方MCP资料核对：[Z.ai devpack](https://docs.z.ai/devpack/mcp/search-mcp-server)明确Streamable HTTP官方endpoint和webSearchPrime工具；通用web-search指南里的legacy SSE示例不替代它。按[MCP lifecycle](https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle)，初始化成功后必须发送initialized通知；[transports](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports)规定接受notification返回202空body，session ID若由server返回须用于后续请求。下一实现每个真实HTTP均经原Q09，不隐含通知、重连、删除或GET费用；本次仅文档，不认证Z.ai实际费用/额度或当前连通，任何免费假设均须独立计价依据。
+
+## Phase111 MCP账本、控制HTTP与完整检索：2026-10-09
+
+- MCP不能只按文档硬编码：旧真实probe实际2024-11-05/web_search_prime，新私有实现明确支持它及2025-03-26/webSearchPrime，采用实际协商/发现值。真实schema没有count，只传已验证search_query，top_k在客户端截断；不扩为任意工具、协议或远程schema引用。参见[接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/mcp-interface.md)中的官方资料与旧探针链接。
+- 控制HTTP各入原Q09，不是模型回答attempt或公司来源；三控制记录实际一次派发和已结算hash才允许正式搜索。unknown即使已核对现金仍未知，换route/预算/恢复不能消除同scope阻断。保存失败回滚结算，已耗发送许可保持，禁止重发洗绿。
+- 私有schema13空表升级保留旧HTTP/native/现金、不造历史；旧fixture需完整移除新四表。Session有限私有保存、不进公司context/公共回执，已知API key echo拒绝。SSE收到关联回应立即关闭，无隐含GET/DELETE/旧SSE回退、不执行server requests；RPC错ID/工具result.isError不作证据。
+- 六文件397P/1F唯一旧未实施断言改为畸形初始化只计一次控制费用、禁止正式search并warm不重发，追加1P；不写成单次398P。OS CLI/整批集中审查/源发布仍待。每冻结query三协商＋search的成本须计，不宣称全池共一次握手、真实厂商计价或金融事实已认证。

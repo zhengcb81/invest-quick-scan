@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="35" time="5.705" timestamp="2026-10-09T10:53:41.799449+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_intent_and_q09_reservation_are_atomic_before_send" time="0.157" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_stage_order_cannot_be_forged_before_initialization[initialized]" time="0.087" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_stage_order_cannot_be_forged_before_initialization[discovery]" time="0.081" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_response_cannot_be_accepted_before_actual_dispatch" time="0.087" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_all_three_controls_are_separately_charged_and_reused_after_reopen" time="0.218" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_unknown_control_holds_reservation_and_blocks_next_stage_without_replay" time="0.126" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_missing_control_price_cannot_advance_even_with_valid_protocol" time="0.114" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_two_handles_can_consume_only_one_durable_send_permit" time="0.107" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_result_and_budget_settlement_roll_back_together_on_save_failure" time="0.116" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_rows_are_immutable[UPDATE quick_scan_mcp_result SET control_sha256=control_sha256]" time="0.108" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_rows_are_immutable[DELETE FROM quick_scan_mcp_stage]" time="0.116" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_session_and_control_hash_corruption_cannot_create_a_binding" time="0.128" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_observed_but_unknown_control_is_not_reusable_even_when_price_settled" time="0.108" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_unknown_mcp_also_blocks_fresh_search_route_before_any_new_reservation" time="0.096" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_frozen_owner_and_creation_time_are_bound_to_metadata[lease_epoch-lease_epoch+1]" time="0.086" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_frozen_owner_and_creation_time_are_bound_to_metadata[created_at-created_at+1]" time="0.087" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control0]" time="0.093" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control1]" time="0.090" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control2]" time="0.087" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control3]" time="0.097" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control4]" time="0.101" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_late_control_keeps_known_cash_but_cannot_advance_protocol" time="0.136" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_paid_rejection_is_cached_as_failure_without_resend" time="0.104" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_v12_upgrade_keeps_actual_http_events_cash_and_creates_no_control_history" time="0.331" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_v13_migration_interruption_rolls_back_to_exact_v12_schema_and_rows" time="0.127" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_negotiated_known_protocol_and_actual_discovered_name_are_retained[2024-11-05-web_search_prime]" time="0.107"><failure message="ValueError: MCP protocol binding mismatch">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-protocol-transport-red-01/test_mcp_negotiated_known_prot0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000225610BB7E0&gt;
+protocol = '2024-11-05', tool = 'web_search_prime'
+
+    @pytest.mark.parametrize("protocol,tool", [("2024-11-05", "web_search_prime"), ("2025-03-26", "webSearchPrime")])
+    def test_mcp_negotiated_known_protocol_and_actual_discovered_name_are_retained(tmp_path, monkeypatch, protocol, tool):
+        args, request, _, _ = _mcp_fixture(tmp_path, monkeypatch)
+&gt;       first = _finish(args, _stage(args, request, "initialize"), {"protocol_version": protocol, "session_id": None})
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_mcp.py:308: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_mcp.py:51: in _finish
+    return args["store"].record_mcp_stage(stage["stage_id"], receipt=_control_receipt(stage, status=status),
+src\utils\quick_scan_work_store.py:2075: in record_mcp_stage
+    return record_result(self, stage_id, receipt=receipt, control=control,
+src\utils\quick_scan_mcp_journal.py:316: in record_result
+    safe_control = _control(control, record["stage"], safe)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'protocol_version': '2024-11-05', 'session_id': None}
+stage = 'initialize'
+receipt = {'adapter_version': 'stockqa.external_retrieval/1.0.0', 'attempt_id': 'DISPATCH_78f7ece2b75e90fd6c60d1689cbf748a28e294b890c3421b0d59a37c779ea7ec', 'entries': [], 'http_request_count': 1, ...}
+
+    def _control(value: Any, stage: str, receipt: dict) -&gt; dict | None:
+        success = receipt["outcome"] == "response_available" and receipt.get("parse_status") == "ok"
+        if receipt.get("entries") or receipt.get("provider_result_count", 0) != 0:
+            raise ValueError("MCP control cannot contain search evidence")
+        if not success:
+            if value is not None:
+                raise ValueError("failed MCP control cannot bind a session")
+            return None
+        if not isinstance(value, dict):
+            raise ValueError("MCP control binding missing")
+        safe = strict_search_json(_canonical(value))
+        if stage == "initialize":
+            if set(safe) != {"protocol_version", "session_id"} or safe["protocol_version"] != PROTOCOL_VERSION:
+&gt;               raise ValueError("MCP protocol binding mismatch")
+E               ValueError: MCP protocol binding mismatch
+
+src\utils\quick_scan_mcp_journal.py:112: ValueError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_negotiated_known_protocol_and_actual_discovered_name_are_retained[2025-03-26-webSearchPrime]" time="0.309" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_initialize_transport_uses_actual_rpc_id_and_keeps_negotiated_session_private" time="0.100"><failure message="AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-protocol-transport-red-01/test_mcp_initialize_transport_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000022560886970&gt;
+
+    def test_mcp_initialize_transport_uses_actual_rpc_id_and_keeps_negotiated_session_private(tmp_path, monkeypatch):
+        args, request, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage, handle = _control_permit(args, request, "initialize")
+        response = _mcp_response({"jsonrpc": "2.0", "id": stage["stage_id"], "result": {
+            "protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "synthetic", "version": "1"}}},
+            headers={"Mcp-Session-Id": "SYNTHETIC_SESSION"})
+        provider = _mcp_transport(args, session, monkeypatch, response)
+&gt;       result = provider.fetch_mcp_control(handle)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'
+
+tests\unit\test_quick_scan_mcp.py:349: AttributeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_initialized_notification_sends_private_parent_session_and_accepts_202_empty" time="0.144"><failure message="AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-protocol-transport-red-01/test_mcp_initialized_notificat0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000225606FB7E0&gt;
+
+    def test_mcp_initialized_notification_sends_private_parent_session_and_accepts_202_empty(tmp_path, monkeypatch):
+        args, request, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        _initialize(args, request)
+        stage, handle = _control_permit(args, request, "initialized")
+        response = _mcp_response(None, status=202)
+&gt;       result = _mcp_transport(args, session, monkeypatch, response).fetch_mcp_control(handle)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'
+
+tests\unit\test_quick_scan_mcp.py:365: AttributeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_discovery_accepts_real_zai_query_only_schema_without_invented_count_argument" time="0.169"><failure message="AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-protocol-transport-red-01/test_mcp_discovery_accepts_rea0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000225606B9470&gt;
+
+    def test_mcp_discovery_accepts_real_zai_query_only_schema_without_invented_count_argument(tmp_path, monkeypatch):
+        args, request, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        _initialize(args, request)
+        _finish(args, _stage(args, request, "initialized"), {"initialized": True}, status=202)
+        stage, handle = _control_permit(args, request, "discovery")
+        schema = {"type": "object", "properties": {"search_query": {"type": "string"}, "content_size": {"type": "string"}},
+                  "required": ["search_query"], "additionalProperties": False}
+        response = _mcp_response({"jsonrpc": "2.0", "id": stage["stage_id"], "result": {
+            "tools": [{"name": "web_search_prime", "inputSchema": schema}]}})
+&gt;       result = _mcp_transport(args, session, monkeypatch, response).fetch_mcp_control(handle)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'
+
+tests\unit\test_quick_scan_mcp.py:383: AttributeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_bad_binding_is_a_paid_parse_failure_without_private_metadata[rpc_id]" time="0.081"><failure message="AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-protocol-transport-red-01/test_mcp_control_bad_binding_i0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000225606BA270&gt;
+defect = 'rpc_id'
+
+    @pytest.mark.parametrize("defect", ["rpc_id", "protocol", "tools_capability", "session_echo"])
+    def test_mcp_control_bad_binding_is_a_paid_parse_failure_without_private_metadata(tmp_path, monkeypatch, defect):
+        args, request, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage, handle = _control_permit(args, request, "initialize")
+        body = {"jsonrpc": "2.0", "id": stage["stage_id"], "result": {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}}
+        headers = {}
+        if defect == "rpc_id":
+            body["id"] = "FOREIGN_ID"
+        elif defect == "protocol":
+            body["result"]["protocolVersion"] = "unsupported"
+        elif defect == "tools_capability":
+            body["result"]["capabilities"] = {}
+        else:
+            headers["Mcp-Session-Id"] = "synthetic-test-only"
+&gt;       result = _mcp_transport(args, session, monkeypatch, _mcp_response(body, headers=headers)).fetch_mcp_control(handle)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'
+
+tests\unit\test_quick_scan_mcp.py:404: AttributeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_bad_binding_is_a_paid_parse_failure_without_private_metadata[protocol]" time="0.076"><failure message="AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-protocol-transport-red-01/test_mcp_control_bad_binding_i1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000225606BA5F0&gt;
+defect = 'protocol'
+
+    @pytest.mark.parametrize("defect", ["rpc_id", "protocol", "tools_capability", "session_echo"])
+    def test_mcp_control_bad_binding_is_a_paid_parse_failure_without_private_metadata(tmp_path, monkeypatch, defect):
+        args, request, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage, handle = _control_permit(args, request, "initialize")
+        body = {"jsonrpc": "2.0", "id": stage["stage_id"], "result": {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}}
+        headers = {}
+        if defect == "rpc_id":
+            body["id"] = "FOREIGN_ID"
+        elif defect == "protocol":
+            body["result"]["protocolVersion"] = "unsupported"
+        elif defect == "tools_capability":
+            body["result"]["capabilities"] = {}
+        else:
+            headers["Mcp-Session-Id"] = "synthetic-test-only"
+&gt;       result = _mcp_transport(args, session, monkeypatch, _mcp_response(body, headers=headers)).fetch_mcp_control(handle)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'
+
+tests\unit\test_quick_scan_mcp.py:404: AttributeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_bad_binding_is_a_paid_parse_failure_without_private_metadata[tools_capability]" time="0.079"><failure message="AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-protocol-transport-red-01/test_mcp_control_bad_binding_i2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000225606B8B40&gt;
+defect = 'tools_capability'
+
+    @pytest.mark.parametrize("defect", ["rpc_id", "protocol", "tools_capability", "session_echo"])
+    def test_mcp_control_bad_binding_is_a_paid_parse_failure_without_private_metadata(tmp_path, monkeypatch, defect):
+        args, request, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage, handle = _control_permit(args, request, "initialize")
+        body = {"jsonrpc": "2.0", "id": stage["stage_id"], "result": {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}}
+        headers = {}
+        if defect == "rpc_id":
+            body["id"] = "FOREIGN_ID"
+        elif defect == "protocol":
+            body["result"]["protocolVersion"] = "unsupported"
+        elif defect == "tools_capability":
+            body["result"]["capabilities"] = {}
+        else:
+            headers["Mcp-Session-Id"] = "synthetic-test-only"
+&gt;       result = _mcp_transport(args, session, monkeypatch, _mcp_response(body, headers=headers)).fetch_mcp_control(handle)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'
+
+tests\unit\test_quick_scan_mcp.py:404: AttributeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_bad_binding_is_a_paid_parse_failure_without_private_metadata[session_echo]" time="0.085"><failure message="AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-protocol-transport-red-01/test_mcp_control_bad_binding_i3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000225606BBD90&gt;
+defect = 'session_echo'
+
+    @pytest.mark.parametrize("defect", ["rpc_id", "protocol", "tools_capability", "session_echo"])
+    def test_mcp_control_bad_binding_is_a_paid_parse_failure_without_private_metadata(tmp_path, monkeypatch, defect):
+        args, request, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage, handle = _control_permit(args, request, "initialize")
+        body = {"jsonrpc": "2.0", "id": stage["stage_id"], "result": {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}}
+        headers = {}
+        if defect == "rpc_id":
+            body["id"] = "FOREIGN_ID"
+        elif defect == "protocol":
+            body["result"]["protocolVersion"] = "unsupported"
+        elif defect == "tools_capability":
+            body["result"]["capabilities"] = {}
+        else:
+            headers["Mcp-Session-Id"] = "synthetic-test-only"
+&gt;       result = _mcp_transport(args, session, monkeypatch, _mcp_response(body, headers=headers)).fetch_mcp_control(handle)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'
+
+tests\unit\test_quick_scan_mcp.py:404: AttributeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_sse_stops_after_matching_response_and_closes_without_waiting_for_stream_end" time="0.074"><failure message="AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-protocol-transport-red-01/test_mcp_sse_stops_after_match0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000225606BAC80&gt;
+
+    def test_mcp_sse_stops_after_matching_response_and_closes_without_waiting_for_stream_end(tmp_path, monkeypatch):
+        args, request, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage, handle = _control_permit(args, request, "initialize")
+        body = {"jsonrpc": "2.0", "id": stage["stage_id"], "result": {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}}}}
+        event = b"data: " + json.dumps(body).encode() + b"\n\n"
+        def chunks():
+            yield b': keepalive\n\n'
+            yield event[:19]
+            yield event[19:]
+            raise AssertionError("must not drain open stream after matching response")
+        response = _mcp_response(None, headers={"Content-Type": "text/event-stream"}, chunks=chunks())
+&gt;       result = _mcp_transport(args, session, monkeypatch, response).fetch_mcp_control(handle)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'ExternalSearchProvider' object has no attribute 'fetch_mcp_control'
+
+tests\unit\test_quick_scan_mcp.py:421: AttributeError</failure></testcase></testsuite></testsuites>

@@ -22,6 +22,7 @@
     "src/utils/quick_scan_evidence.py",
     "src/utils/quick_scan_external_context.py",
     "src/utils/quick_scan_external_journal.py",
+    "src/utils/quick_scan_mcp_journal.py",
     "src/utils/quick_scan_work_transport.py",
     "src/utils/quick_scan_work_store.py",
     "src/utils/quick_scan_cost_resolver.py",
@@ -31,6 +32,7 @@
     "src/utils/quick_scan_observation_context.py",
     "src/utils/quick_scan_c06_adapter.py",
     "tests/unit/test_quick_scan_external_context.py",
+    "tests/unit/test_quick_scan_mcp.py",
     "tests/unit/test_quick_scan_work_store.py",
     "tests/unit/test_quick_scan_budget.py",
     "tests/unit/test_qa_net01_search_boundary.py",
@@ -43,5 +45,5 @@
   ],
   "external_publish_status": "not_published",
   "real_api_calls_authorized_for_this_batch": false,
-  "scope_addition_reason": "Advance report: checkpoint2, async and QAEngine recovery, exact DeepSeek external text protocol/model resolution 1.1 with tests; 36 paths in IQS private copy only, production not published."
+  "scope_addition_reason": "Advance report: original 36 paths plus MCP control journal and focused tests (38). Local edits to existing store/transport/provider/policy/cost/coordinator/journal and affected fixtures; private IQS copy only, production not published."
 }

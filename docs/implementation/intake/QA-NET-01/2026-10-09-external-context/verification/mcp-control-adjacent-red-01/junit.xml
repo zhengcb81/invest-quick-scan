@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="25" time="5.114" timestamp="2026-10-09T10:47:59.460734+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_intent_and_q09_reservation_are_atomic_before_send" time="0.183" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_stage_order_cannot_be_forged_before_initialization[initialized]" time="0.088" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_stage_order_cannot_be_forged_before_initialization[discovery]" time="0.084" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_response_cannot_be_accepted_before_actual_dispatch" time="0.105" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_all_three_controls_are_separately_charged_and_reused_after_reopen" time="0.283" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_unknown_control_holds_reservation_and_blocks_next_stage_without_replay" time="0.166" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_missing_control_price_cannot_advance_even_with_valid_protocol" time="0.155" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_two_handles_can_consume_only_one_durable_send_permit" time="0.135" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_result_and_budget_settlement_roll_back_together_on_save_failure" time="0.151" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_rows_are_immutable[UPDATE quick_scan_mcp_result SET control_sha256=control_sha256]" time="0.134" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_control_rows_are_immutable[DELETE FROM quick_scan_mcp_stage]" time="0.160" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_session_and_control_hash_corruption_cannot_create_a_binding" time="0.136" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_observed_but_unknown_control_is_not_reusable_even_when_price_settled" time="0.122"><failure message="Failed: DID NOT RAISE BudgetAdmissionError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-control-adjacent-red-01/test_observed_but_unknown_cont0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000025948488350&gt;
+
+    def test_observed_but_unknown_control_is_not_reusable_even_when_price_settled(tmp_path, monkeypatch):
+        args, request, _, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage = _stage(args, request, "initialize")
+        args["store"].consume_mcp_stage(stage["stage_id"], budget_attempt_id=stage["budget_attempt_id"])
+        args["store"].record_mcp_stage(stage["stage_id"], receipt=_control_receipt(stage, outcome="unknown", status=503),
+                                     control=None, actual_cost=Decimal("0.003"), cost_source_ref="operator-synthetic-pricing/1")
+        assert args["store"].get_quick_scan_budget_status("q09-fixture")["spent_micros"] == 3000
+&gt;       with pytest.raises(BudgetAdmissionError, match="mcp_control_unresolved"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE BudgetAdmissionError
+
+tests\unit\test_quick_scan_mcp.py:189: Failed</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_unknown_mcp_also_blocks_fresh_search_route_before_any_new_reservation" time="0.126"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'mcp_control_unresolved'&#10;  Actual message: 'budget_reconciliation_required'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-control-adjacent-red-01/test_unknown_mcp_also_blocks_f0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000025948513E90&gt;
+
+    def test_unknown_mcp_also_blocks_fresh_search_route_before_any_new_reservation(tmp_path, monkeypatch):
+        args, request, _, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage = _stage(args, request, "initialize")
+        args["store"].consume_mcp_stage(stage["stage_id"], budget_attempt_id=stage["budget_attempt_id"])
+        args["store"].record_mcp_stage(stage["stage_id"], receipt=_control_receipt(stage, outcome="unknown", status=None), control=None)
+&gt;       with pytest.raises(BudgetAdmissionError, match="mcp_control_unresolved"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'mcp_control_unresolved'
+E         Actual message: 'budget_reconciliation_required'
+
+tests\unit\test_quick_scan_mcp.py:198: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_frozen_owner_and_creation_time_are_bound_to_metadata[lease_epoch-lease_epoch+1]" time="0.102"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-control-adjacent-red-01/test_mcp_frozen_owner_and_crea0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000025947025D30&gt;
+field = 'lease_epoch', sql_value = 'lease_epoch+1'
+
+    @pytest.mark.parametrize("field,sql_value", [("lease_epoch", "lease_epoch+1"), ("created_at", "created_at+1")])
+    def test_mcp_frozen_owner_and_creation_time_are_bound_to_metadata(tmp_path, monkeypatch, field, sql_value):
+        args, request, _, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage = _stage(args, request, "initialize")
+        with closing(args["store"]._connect()) as connection:
+            connection.execute("DROP TRIGGER quick_scan_mcp_stage_no_update")
+            connection.execute(f"UPDATE quick_scan_mcp_stage SET {field}={sql_value}")
+&gt;       with pytest.raises(ValueError, match="MCP.*binding"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_mcp.py:210: Failed</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_frozen_owner_and_creation_time_are_bound_to_metadata[created_at-created_at+1]" time="0.108"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-control-adjacent-red-01/test_mcp_frozen_owner_and_crea1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000025947026410&gt;
+field = 'created_at', sql_value = 'created_at+1'
+
+    @pytest.mark.parametrize("field,sql_value", [("lease_epoch", "lease_epoch+1"), ("created_at", "created_at+1")])
+    def test_mcp_frozen_owner_and_creation_time_are_bound_to_metadata(tmp_path, monkeypatch, field, sql_value):
+        args, request, _, _ = _mcp_fixture(tmp_path, monkeypatch)
+        stage = _stage(args, request, "initialize")
+        with closing(args["store"]._connect()) as connection:
+            connection.execute("DROP TRIGGER quick_scan_mcp_stage_no_update")
+            connection.execute(f"UPDATE quick_scan_mcp_stage SET {field}={sql_value}")
+&gt;       with pytest.raises(ValueError, match="MCP.*binding"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_mcp.py:210: Failed</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control0]" time="0.107" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control1]" time="0.115" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control2]" time="0.118" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control3]" time="0.104" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_invalid_protocol_or_private_session_is_not_persisted_or_settled[control4]" time="0.126" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_late_control_keeps_known_cash_but_cannot_advance_protocol" time="0.149"><failure message="TypeError: QuickScanWorkStore.claim() got an unexpected keyword argument 'worker_id'. Did you mean 'work_item_id'?">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-control-adjacent-red-01/test_mcp_late_control_keeps_kn0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000259484FB8C0&gt;
+
+    def test_mcp_late_control_keeps_known_cash_but_cannot_advance_protocol(tmp_path, monkeypatch):
+        args, request, _, clock = _mcp_fixture(tmp_path, monkeypatch)
+        stage = _stage(args, request, "initialize")
+        args["store"].consume_mcp_stage(stage["stage_id"], budget_attempt_id=stage["budget_attempt_id"])
+        clock[0] += 61
+        result = _finish(args, stage, {"protocol_version": "2025-03-26", "session_id": None}, consume=False)
+        assert result["result"]["late"] is True
+&gt;       args["store"].claim(args["work_item_id"], worker_id="synthetic-recovery", lease_seconds=60)
+E       TypeError: QuickScanWorkStore.claim() got an unexpected keyword argument 'worker_id'. Did you mean 'work_item_id'?
+
+tests\unit\test_quick_scan_mcp.py:238: TypeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_mcp" name="test_mcp_paid_rejection_is_cached_as_failure_without_resend" time="0.135" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_v12_upgrade_keeps_actual_http_events_cash_and_creates_no_control_history" time="0.347" /><testcase classname="tests.unit.test_quick_scan_mcp" name="test_v13_migration_interruption_rolls_back_to_exact_v12_schema_and_rows" time="0.171" /></testsuite></testsuites>

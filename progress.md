@@ -2511,3 +2511,13 @@
 - recovery-interface.md明确这五条边界与未覆盖部分；过期但未发送检索意图仍保守等待明确处理。下一步MCP逐HTTP计费、真正OS子进程CLI/恢复，然后完整Phase111一次集中静态/回归/独审/正常源发布与严格清理；全局门及外仓许可不变。checkpoint08仅追加私有测试证据，Git完成须等实际回执。
 - checkpoint08 prepare和正常Git均实际exit0：43原工件、50精确选择（scope.json字节未变故49实际变化），提交并推送c8f414edc432c3308392c5706234fab4d4f1e4ca；staged/committed工件和索引原字节核对通过，HEAD=origin/master，仅原opencode未跟踪。旧07/补充/index未修改，源仓未写/发布、自有环境保留。随后只补PWF实际回执与官方协议发现，不改冻结工件或重跑测试。
 - 已只读核Z.ai官方devpack Web Search MCP文档和MCP 2025-03-26 lifecycle/transports，为下一实施段明确initialized通知/202空body、会话header及JSON/SSE响应边界；不是服务连通验证，没有调用收费MCP或读真实key。首搜索site.docs写法不准确，返回第三方材料仅作官方URL定位，不采用其技术结论；以最终官方页面为依据。
+
+## Phase111 MCP账本、控制HTTP与完整检索：2026-10-09
+
+- 上一用户进度答复是只读、无新增工程进展；本目标回合重核PWF/实际代码后继续。resolver成功为空，沿用根PWF、不回放会话。先报备原36+新journal/测试=38路径，仅IQS独占副本；生产StockQA仍42a517c/schema8，真实API/密钥/下载/外仓源写/生产库0。
+- mcp-control-journal-red-01实际12F，均缺同一begin_mcp_stage未实现入口，不算12旧漏洞；实现原Q09事务内控制意图/预留/一次consume/原子result＋费用，green-01为12P。邻接red-01为20P/5F：unknown已计价却可重用、冻结租约/时间未绑定；fresh search已被Q09挡住但缺MCP具名归属；claim worker_id错误是fixture。修产品、scope联动和实际claim/recover fixture后，mcp-journal-owner-affected-green-01四文件345P/wall65.494s，0失败错误跳过。
+- 核官方资料再核真实旧probe，实际2024-11-05/web_search_prime；初版只认新协议/文档名字会拒绝已成功服务。明确两协议/两名字，采用实际协商/发现值，不假造任意支持。mcp-protocol-transport-red-01为26P/9F（旧真实兼容缺口＋控制入口尚缺）；复用REST单次HTTP、通知202空body、关联RPC ID、schema、session echo拒绝、SSE收到回应即关闭；mcp-control-transport-green-01两文件55P/wall8.355s。
+- 完整协调链red-01为35P/9F；三控制POST＋原search第四POST，最终意图私有绑定实际三控制记录/hash。冷4HTTP，warm/reopen/key移除0增量；四发送位置unknown停机/保留预留/重开0重发，确认付费拒绝可按搜索顺位fallback；foreign RPC/未知schema/nested tool error不成为证据。第一次green-01为74P/1F：fixture timeout_method=None误把REST fallback也设为超时，非产品失败，仅修fixture。
+- mcp-retrieval-owner-affected-green-01六文件398实例实际397P/1F、0errors/skips、pytest54.01s/controller54.618s，MCP文件47项全部通过。唯一旧测试要求MCP未实现所以零HTTP/预留；改验畸形initialize只消费一次控制费用、不准入search/warm不重发。mcp-old-blocker-fixture-green-01为1P/199 deselected/pytest1.50s/controller2.089s，只有该测试文件SHA变化，产品源及其他36执行文件不变，不重跑397、不合成同次398P。
+- 新mcp-interface.md固定private schema13、真实工具/参数/会话/费用/恢复边界；每冻结query当前分别协商，不能说全池只握手一次，成本实验须计四HTTP。只准核验来源的all_http_requests/per_request计价，只有搜索计价不准入、不默认免费。
+- 本轮只读路径定位误猜index-08.json/guarded_static.py不存在；另一次PWF整批补丁末尾误匹配独立标题，工具拒绝、全批零写，已用本控制器按真实段落更新。未制造替代owner工件或重测。当前所有测试handle已终态，旧01–08/原日志冻结；下一步OS子进程CLI/恢复→完整Phase111一次集中静态/独审/源Git/严格清理。StockWiki四路径/G3/F05/真实gold/TH-IN/L03保持。checkpoint09只留档私有进度，commit/push等实际Git回执。

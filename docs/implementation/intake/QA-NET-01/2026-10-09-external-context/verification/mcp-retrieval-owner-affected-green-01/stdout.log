@@ -1,0 +1,26 @@
+........................................................................ [ 18%]
+........................................................................ [ 36%]
+........................F............................................... [ 54%]
+........................................................................ [ 72%]
+........................................................................ [ 90%]
+......................................                                   [100%]
+================================== FAILURES ===================================
+_______ test_coordinator_unnegotiated_mcp_is_blocked_before_reservation _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-retrieval-owner-affected-green-01/test_coordinator_unnegotiated_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000222C801AE40>
+
+    def test_coordinator_unnegotiated_mcp_is_blocked_before_reservation(tmp_path, monkeypatch):
+        def mutate(document):
+            document["external_routes"][0].update(kind="zai_mcp_streamable", endpoint="https://api.z.ai/api/mcp/web_search_prime/mcp")
+        args, session, _ = _coordinator_fixture(tmp_path, monkeypatch, mutate=mutate)
+>       with pytest.raises(Exception, match="mcp_handshake_required"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'mcp_handshake_required'
+E         Actual message: 'mcp_control_unusable'
+
+tests\unit\test_quick_scan_external_context.py:1234: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_external_context.py::test_coordinator_unnegotiated_mcp_is_blocked_before_reservation
+1 failed, 397 passed in 54.01s

@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**最新唯一下一动作（2026-10-09，MCP接线后；优先于下文历史）**：真正独立OS子进程CLI冷暖/中断恢复，含MCP四HTTP→LLM→公共结果；然后完整Phase111同一大节点静态/受影响回归/一次集中独审/正常源发布/严格自有根清理。MCP现已在38路径报备的私有副本接线，schema13；读[实际接口与边界](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/mcp-interface.md)。六文件397P/1F（MCP47项全通过），唯一旧未实现断言更新后追加1P，产品源码未变，不合并成一次398P。最新归档Git以progress实际回执为准。StockQA生产仍42a517c/schema8，非真实MCP/厂商计价/金融准确性认证；StockWiki四文件许可、G3/L03/F05/真实gold/TH-IN原门开放。不刷新退役工程回执、不启动200家扫描。
+
 **当前下一动作（2026-10-09 Phase111）**：逐HTTP计费MCP接线，随后真正OS子进程CLI冷暖/中断恢复。16文件776P验证私有schema12/runtime；另新增五项真实store/client跨租约路径5P，覆盖已付费搜索→新租约回答→checkpoint、unknown搜索不重发、旧lease fence及迟到模型仅留账。该追加只有一测试文件变化，不重复776也不跨批相加，读[恢复边界](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/recovery-interface.md)。过期且未发送的旧检索意图仍保守等待明确处理，不声称任意断点自动恢复。checkpoint07已正常提交推送4884e7b，732原工件/735 Git blob核对一致；checkpoint08实际Git看progress。所有运行仍是HTTP替身与synthetic身份，独立进程CLI/金融事实/真实厂商计价未验。Phase111保持in_progress，StockQA42a517c/schema8未发布；整批静态/一次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
@@ -1568,3 +1570,11 @@ Status: in_progress_private_implementation_not_published
 - 完整Phase111仍in_progress：公开JSON及IQS消费者显式版本兼容、实际runner/cascade检索调度、async provider投影、两阶段/跨lease/MCP/公开CLI、最终静态/一次集中review/源发布/严格清理待执行。StockWiki新授权及G3/F05/THIN原门不动。checkpoint05真实Git待progress回执，不提前标完成。
 
 - checkpoint05已实际提交并推送033d77a53a3c9a9596b7f73a53e2af2a42bb3aa3：523精确路径/516工件/15批次/115支持文件不变。仅IQS私有进度留档，StockQA源仍42a517c/schema8；继续公开结果/消费者链，完整Phase111未关闭。
+
+## Phase111 MCP账本、控制HTTP与完整检索：2026-10-09
+
+- [x] 先报备38路径，仅IQS独占副本；新增MCP journal/测试，复用Q09/Q08/单次HTTP适配器，不新造账本或通用MCP客户端。
+- [x] 私有schema13空表迁移保留旧HTTP、native事件和费用；initialize/initialized/discovery独立预留、一次派发、原子结算，正式search绑定三个真实已完成控制；unknown不因换route/预算/恢复而重发。
+- [x] 旧真实探针实际2024-11-05/web_search_prime与文档不同，两协议/两名字显式支持，以实际schema决定query-only参数、不猜count；JSON/SSE有界、通知202空body、session私有、工具错误不作证据。
+- [x] 四文件345P、控制/REST两文件55P；六文件397P/1F，MCP47项全通过。唯一旧MCP未实现断言只改测试后追加1P，产品源不变、不机械重跑397无变化项、不跨批合成GREEN；原RED及fixture错误保留。
+- [ ] OS子进程CLI、整Phase111集中审查/源发布/严格清理仍待；本段不关闭全局门。新IQS留档实际Git以progress回执为准，不提前宣称发布或清理。

@@ -1,0 +1,42 @@
+...........................................F............................ [ 96%]
+...                                                                      [100%]
+================================== FAILURES ===================================
+_ test_mcp_priced_control_rejection_can_use_next_search_route_without_repeating_handshake _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-green-01/test_mcp_priced_control_reject0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E4262147C0>
+
+    def test_mcp_priced_control_rejection_can_use_next_search_route_without_repeating_handshake(tmp_path, monkeypatch):
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, _ = _mcp_fixture(tmp_path, monkeypatch, second_route=True)
+        session.request.side_effect = _mcp_replies(reject_init=True)
+>       context = _retrieve(args)
+                  ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_mcp.py:517: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_external_context.py:1130: in _retrieve
+    return retrieve_external_question_context(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_external_context.py:437: in retrieve_external_question_context
+    if _eligible_priced_record(operation, policy, store._now()):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = {'operation_id': 'SEARCH_874df3fd720c86de3836ed15ffcaafbe4255dd5a8a46a53bff09553acd924ce8', 'cache_key': 'a62181239d7f...7d0cfa68ef04571c6439d32171532528e79b50d17ed34f469f9b885', 'work_item_id': 'WORK_d76c8b812bb84de5861e5643cc1b6e98', ...}
+policy = SearchPolicy(policy_id='quick-scan-search-offline', schema_id='stockqa.quick_scan_search_policy/1.1.0', policy_sha256=...'}], 'queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]})
+now = 1800000000.0
+
+    def _eligible_priced_record(record: dict[str, Any], policy: SearchPolicy, now: float) -> bool:
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+        from src.utils.quick_scan_work_store import BudgetAdmissionError
+    
+        result = record["result"]
+        if result is None or record["budget"]["status"] != "settled":
+>           raise ExternalRetrievalBlocked("external_search_unresolved")
+E           src.utils.quick_scan_external_context.ExternalRetrievalBlocked: external_search_unresolved
+
+src\utils\quick_scan_external_context.py:266: ExternalRetrievalBlocked
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_priced_control_rejection_can_use_next_search_route_without_repeating_handshake
+1 failed, 74 passed in 9.48s

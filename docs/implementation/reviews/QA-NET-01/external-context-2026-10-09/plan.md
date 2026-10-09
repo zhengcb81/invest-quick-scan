@@ -62,3 +62,9 @@ runner/cascade检索协调与async投影已私有实现。独立identity/manifes
 checkpoint07已正常提交推送4884e7b。追加五项真实client/store恢复路径5P/195 deselected/2.53s，无产品变更，原776执行源只新增一测试文件，不重复全套。已结算搜索跨lease保留context和费用，unknown检索不重发、旧lease在HTTP前fence、晚到模型只留响应与账务；读recovery-interface.md。不是公开OS进程杀停/恢复，过期未发送外部意图仍保守hold。
 
 下一动作逐HTTP计费MCP，必须把initialize、initialized通知（若协议要求）、tools/list和tools/call各自记为真实发送及费用操作，不把工具会话协商隐藏在一次检索中；unknown任一步都停、已有结果恢复不重复计费。随后真正子进程CLI/恢复，最终完整Phase111集中一次审查/源发布/严格清理。当前只是私有进度，不关闭任何跨仓或准确性门。
+
+## Phase111 MCP账本、控制HTTP与完整检索：2026-10-09
+
+MCP控制及正式检索已在private schema13接线，38报备/37执行文件，源仍42a517c/schema8。读mcp-interface.md：三控制独立HTTP/Q09，正式search绑定真实三记录，采用已协商协议/实际发现名字与query-only schema，unknown保持原预留不重发。四文件345P、控制/REST两文件55P；六文件397P/1F中MCP47全通过，唯一旧未实现断言只改测试后追加1P，不合成398P、不加小节点review。旧01–08/原RED冻结。
+
+下一动作OS子进程CLI冷暖/中断恢复（含MCP→LLM/public），随后完整Phase111一次集中静态/回归/独审/正常源Git/严格清理。当前仍私有实施、没有收费API/下载/外仓源写，不关闭金融准确性或任何跨仓门；实际新IQS Git看progress回执。

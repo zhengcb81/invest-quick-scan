@@ -1,0 +1,334 @@
+...................................FFFFFFFFF                             [100%]
+================================== FAILURES ===================================
+___ test_mcp_complete_search_cold_and_reopen_warm_have_four_then_zero_http ____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-red-01/test_mcp_complete_search_cold_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001753A9B2510>
+
+    def test_mcp_complete_search_cold_and_reopen_warm_have_four_then_zero_http(tmp_path, monkeypatch):
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        session.request.side_effect = _mcp_replies()
+>       context = _retrieve(args)
+                  ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_mcp.py:463: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_external_context.py:1130: in _retrieve
+    return retrieve_external_question_context(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = <src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x000001753A9D3290>
+work_item_id = 'WORK_5e6ad12f965249ab9fab331924b3ea4d'
+lease = Lease(lease_token='b67d073981e9470cb3d238a0b6a00663', lease_epoch=1)
+policy = SearchPolicy(policy_id='quick-scan-search-offline', schema_id='stockqa.quick_scan_search_policy/1.1.0', policy_sha256=...'}], 'queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]})
+model_policy = {'configured': True, 'policy_id': 'q09-fixture', 'policy_version': 'q09-fixture@v1', 'budget': {'currency': 'USD', 'max_cost': 100, 'max_requests': 20, 'max_cost_per_attempt': 6}, ...}
+question_manifest_sha256 = 'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd'
+health_store = <src.utils.quick_scan_provider_health.QuickScanProviderHealth object at 0x000001753A9D2810>
+unknown_reset_cooldown_seconds = 60, rate_limit_cooldown_seconds = 20
+probe_lease_seconds = 180
+
+    def retrieve_external_question_context(
+        store: QuickScanWorkStore, work_item_id: str, lease: Lease, policy: SearchPolicy,
+        model_policy: dict[str, Any], *, question_manifest_sha256: str,
+        health_store: Any, unknown_reset_cooldown_seconds: int,
+        rate_limit_cooldown_seconds: int, probe_lease_seconds: int = 180,
+    ) -> dict[str, Any]:
+        """Execute frozen queries in search priority, reusing Q08/Q09 and the journal.
+    
+        Each candidate route sends at most once. A received, priced, known failure
+        can move to the next route; an uncertain send/charge or failed persistence
+        stops the whole question. No model dispatch or native receipt is made here.
+        Only a matching, live-owner intent without a durable dispatch is resumable.
+        """
+        from src.providers.external_search_provider import ADAPTER_VERSION, ExternalSearchProvider, ExternalSearchTransportError
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+        from src.utils.quick_scan_external_journal import _resumable_unsent
+        from src.utils.quick_scan_provider_health import QuickScanProviderHealth
+        from src.utils.quick_scan_work_store import BudgetAdmissionError, SendPermit
+        from src.utils.quick_scan_work_transport import QuickScanBudgetBinding, QuickScanSendAttempt
+    
+        plans = execution_query_plans(policy)
+        if not isinstance(store, QuickScanWorkStore) or not isinstance(lease, Lease):
+            raise ValueError("external context requires a durable work store and lease")
+        if not isinstance(health_store, QuickScanProviderHealth):
+            raise ValueError("external retrieval requires the existing durable provider health owner")
+        for name, value in (("unknown_reset_cooldown_seconds", unknown_reset_cooldown_seconds),
+                            ("rate_limit_cooldown_seconds", rate_limit_cooldown_seconds),
+                            ("probe_lease_seconds", probe_lease_seconds)):
+            QuickScanProviderHealth._positive_seconds(value, name)
+        item = store.get_item(work_item_id)
+        store._assert_lease(item, lease, store._now())
+        expected = policy.execution_plan
+        if (expected is None or expected["entity_id"] != item["entity_id"]
+            or expected["identity_snapshot_sha256"] != item["identity_snapshot_sha256"]
+            or expected["question_manifest_sha256"] != question_manifest_sha256):
+            raise ValueError("external policy does not match the independently frozen work authority")
+        required = [plan for plan in plans if item["question_id"] in plan["question_ids"]]
+        if not required:
+            raise ValueError("external policy has no frozen queries for this question")
+        shared = build_shared_external_budget_policy(model_policy, policy)
+        resolver = ExternalSearchCostResolver(policy)
+        operation_ids = []
+        for plan in required:
+            last_reason = "external_evidence_insufficient"
+            for route_id in policy.admitted:  # Loader preserves the user's search priority.
+                route = next(route for route in policy.routes if route["route_id"] == route_id)
+                group_id = route["dispatch"]["quota_group"]
+                request = dict(policy=shared, plan=plan, route_id=route_id, provider=route["kind"],
+                               quota_group=group_id, adapter_version=ADAPTER_VERSION,
+                               search_policy_sha256=policy.policy_sha256, endpoint=route["endpoint"])
+                try:
+                    previous = store.lookup_external_search(work_item_id, lease, **request)
+                except BudgetAdmissionError as error:
+                    raise ExternalRetrievalBlocked(error.reason) from None
+                if previous is not None and not _resumable_unsent(previous, work_item_id, lease):
+                    if _eligible_priced_record(previous, policy, store._now()):
+                        operation_ids.append(previous["operation_id"])
+                        break
+                    continue
+                # Fail before a new intent/reservation. MCP requires a separately
+                # metered handshake/discovery path and cannot stand in for REST.
+                if route["kind"] == "zai_mcp_streamable":
+                    last_reason = "mcp_handshake_required"
+                    continue
+                try:
+                    provider = ExternalSearchProvider(policy, route_id)
+                except ValueError as error:
+                    if str(error) == "credential_env_unset":
+                        last_reason = "credential_env_unset"
+                        continue
+                    raise
+                decision = health_store.admit(route_id=route_id, group_id=group_id,
+                    unknown_reset_cooldown_seconds=unknown_reset_cooldown_seconds,
+                    probe_lease_seconds=probe_lease_seconds)
+                if not decision.allowed:
+                    last_reason = decision.reason
+                    continue
+                try:
+                    operation = store.begin_external_search(work_item_id, lease, **request)
+                    if operation["send_required"]:
+                        attempt_id = operation["budget_attempt_id"]
+                        permit = QuickScanSendAttempt(None, attempt_id, SendPermit(attempt_id, operation["created_at"], 0),
+                            budget_binding=QuickScanBudgetBinding(store, shared), budget_attempt_id=attempt_id,
+                            external_operation_id=operation["operation_id"])
+                        try:
+                            receipt = provider.fetch(permit, query=plan["query"], top_k=plan["top_k"], locale=plan["locale"])
+                        except ExternalSearchTransportError as error:
+                            receipt = error.receipt
+                        price = resolver(receipt)
+                        operation = store.record_external_search(operation["operation_id"], receipt=receipt,
+                            actual_cost=None if price is None else price["actual_cost"],
+                            cost_source_ref=None if price is None else price["source_ref"])
+                        code = receipt.get("provider_error_code")
+                        retry_after = receipt.get("retry_after_seconds")
+                        if code in {"insufficient_quota", "quota_exceeded", "billing_hard_limit_reached", "account_quota_exceeded", "insufficient_funds"}:
+                            health_store.quota_exhausted(group_id, unknown_reset_cooldown_seconds=unknown_reset_cooldown_seconds,
+                                                         retry_after_seconds=retry_after)
+                        elif receipt["http_status_code"] == 429:
+                            health_store.rate_limited(route_id, cooldown_seconds=retry_after or rate_limit_cooldown_seconds,
+                                                      source="retry_after" if retry_after is not None else "unknown")
+                        if receipt["outcome"] == "response_available" and price is not None:
+                            health_store.probe_succeeded(group_id, decision.probe_token)
+                    if _eligible_priced_record(operation, policy, store._now()):
+                        operation_ids.append(operation["operation_id"])
+                        break
+                except BudgetAdmissionError as error:
+                    raise ExternalRetrievalBlocked(error.reason) from None
+                finally:
+                    # Does nothing for a normal route or a probe already settled;
+                    # on a persistence failure it prevents a free immediate probe.
+                    health_store.probe_failed(group_id, decision.probe_token,
+                                             unknown_reset_cooldown_seconds=unknown_reset_cooldown_seconds)
+            else:
+>               raise ExternalRetrievalBlocked(last_reason)
+E               src.utils.quick_scan_external_context.ExternalRetrievalBlocked: mcp_handshake_required
+
+src\utils\quick_scan_external_context.py:398: ExternalRetrievalBlocked
+_ test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend[initialize-0] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-red-01/test_mcp_unknown_at_each_actua0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001753A18FEE0>
+method = 'initialize', index = 0
+
+    @pytest.mark.parametrize("method,index", [("initialize", 0), ("notifications/initialized", 1), ("tools/list", 2), ("tools/call", 3)])
+    def test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend(tmp_path, monkeypatch, method, index):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        session.request.side_effect = _mcp_replies(timeout_method=method)
+>       with pytest.raises(ExternalRetrievalBlocked, match="unresolved"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'unresolved'
+E         Actual message: 'mcp_handshake_required'
+
+tests\unit\test_quick_scan_mcp.py:486: AssertionError
+_ test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend[notifications/initialized-1] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-red-01/test_mcp_unknown_at_each_actua1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001753A373A10>
+method = 'notifications/initialized', index = 1
+
+    @pytest.mark.parametrize("method,index", [("initialize", 0), ("notifications/initialized", 1), ("tools/list", 2), ("tools/call", 3)])
+    def test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend(tmp_path, monkeypatch, method, index):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        session.request.side_effect = _mcp_replies(timeout_method=method)
+>       with pytest.raises(ExternalRetrievalBlocked, match="unresolved"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'unresolved'
+E         Actual message: 'mcp_handshake_required'
+
+tests\unit\test_quick_scan_mcp.py:486: AssertionError
+_ test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend[tools/list-2] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-red-01/test_mcp_unknown_at_each_actua2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001753A370EC0>
+method = 'tools/list', index = 2
+
+    @pytest.mark.parametrize("method,index", [("initialize", 0), ("notifications/initialized", 1), ("tools/list", 2), ("tools/call", 3)])
+    def test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend(tmp_path, monkeypatch, method, index):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        session.request.side_effect = _mcp_replies(timeout_method=method)
+>       with pytest.raises(ExternalRetrievalBlocked, match="unresolved"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'unresolved'
+E         Actual message: 'mcp_handshake_required'
+
+tests\unit\test_quick_scan_mcp.py:486: AssertionError
+_ test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend[tools/call-3] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-red-01/test_mcp_unknown_at_each_actua3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001753A3714E0>
+method = 'tools/call', index = 3
+
+    @pytest.mark.parametrize("method,index", [("initialize", 0), ("notifications/initialized", 1), ("tools/list", 2), ("tools/call", 3)])
+    def test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend(tmp_path, monkeypatch, method, index):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, clock = _mcp_fixture(tmp_path, monkeypatch)
+        session.request.side_effect = _mcp_replies(timeout_method=method)
+>       with pytest.raises(ExternalRetrievalBlocked, match="unresolved"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'unresolved'
+E         Actual message: 'mcp_handshake_required'
+
+tests\unit\test_quick_scan_mcp.py:486: AssertionError
+_ test_mcp_bad_search_or_discovery_never_becomes_financial_evidence[wrong_search_id] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-red-01/test_mcp_bad_search_or_discove0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001753A372740>
+defect = 'wrong_search_id'
+
+    @pytest.mark.parametrize("defect", ["wrong_search_id", "tool_error", "extra_required"])
+    def test_mcp_bad_search_or_discovery_never_becomes_financial_evidence(tmp_path, monkeypatch, defect):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        session.request.side_effect = _mcp_replies(**{defect: True})
+        with pytest.raises(ExternalRetrievalBlocked):
+            _retrieve(args)
+        expected = 3 if defect == "extra_required" else 4
+>       assert session.request.call_count == expected
+E       AssertionError: assert 0 == 4
+E        +  where 0 = <Mock name='mock.request' id='1603006528688'>.call_count
+E        +    where <Mock name='mock.request' id='1603006528688'> = <Mock id='1602984631936'>.request
+
+tests\unit\test_quick_scan_mcp.py:506: AssertionError
+_ test_mcp_bad_search_or_discovery_never_becomes_financial_evidence[tool_error] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-red-01/test_mcp_bad_search_or_discove1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001753A373070>
+defect = 'tool_error'
+
+    @pytest.mark.parametrize("defect", ["wrong_search_id", "tool_error", "extra_required"])
+    def test_mcp_bad_search_or_discovery_never_becomes_financial_evidence(tmp_path, monkeypatch, defect):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        session.request.side_effect = _mcp_replies(**{defect: True})
+        with pytest.raises(ExternalRetrievalBlocked):
+            _retrieve(args)
+        expected = 3 if defect == "extra_required" else 4
+>       assert session.request.call_count == expected
+E       AssertionError: assert 0 == 4
+E        +  where 0 = <Mock name='mock.request' id='1603006524320'>.call_count
+E        +    where <Mock name='mock.request' id='1603006524320'> = <Mock id='1603006528016'>.request
+
+tests\unit\test_quick_scan_mcp.py:506: AssertionError
+_ test_mcp_bad_search_or_discovery_never_becomes_financial_evidence[extra_required] _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-red-01/test_mcp_bad_search_or_discove2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001753A373690>
+defect = 'extra_required'
+
+    @pytest.mark.parametrize("defect", ["wrong_search_id", "tool_error", "extra_required"])
+    def test_mcp_bad_search_or_discovery_never_becomes_financial_evidence(tmp_path, monkeypatch, defect):
+        from src.utils.quick_scan_external_context import ExternalRetrievalBlocked
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, _ = _mcp_fixture(tmp_path, monkeypatch)
+        session.request.side_effect = _mcp_replies(**{defect: True})
+        with pytest.raises(ExternalRetrievalBlocked):
+            _retrieve(args)
+        expected = 3 if defect == "extra_required" else 4
+>       assert session.request.call_count == expected
+E       AssertionError: assert 0 == 3
+E        +  where 0 = <Mock name='mock.request' id='1603006522976'>.call_count
+E        +    where <Mock name='mock.request' id='1603006522976'> = <Mock id='1603006525328'>.request
+
+tests\unit\test_quick_scan_mcp.py:506: AssertionError
+_ test_mcp_priced_control_rejection_can_use_next_search_route_without_repeating_handshake _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/mcp-full-retrieval-red-01/test_mcp_priced_control_reject0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001753A16F5B0>
+
+    def test_mcp_priced_control_rejection_can_use_next_search_route_without_repeating_handshake(tmp_path, monkeypatch):
+        from tests.unit.test_quick_scan_external_context import _retrieve
+        args, _, session, _ = _mcp_fixture(tmp_path, monkeypatch, second_route=True)
+        session.request.side_effect = _mcp_replies(reject_init=True)
+>       context = _retrieve(args)
+                  ^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_mcp.py:517: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_external_context.py:1130: in _retrieve
+    return retrieve_external_question_context(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_external_context.py:387: in retrieve_external_question_context
+    if _eligible_priced_record(operation, policy, store._now()):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+record = {'operation_id': 'SEARCH_ffc989006f1c1b43a2ba3c7172b4564357e22028de5eeba76e9c6173866be7a9', 'cache_key': 'a62181239d7f...7d0cfa68ef04571c6439d32171532528e79b50d17ed34f469f9b885', 'work_item_id': 'WORK_87dc311f99bd43369eba8f363b6667a1', ...}
+policy = SearchPolicy(policy_id='quick-scan-search-offline', schema_id='stockqa.quick_scan_search_policy/1.1.0', policy_sha256=...'}], 'queries': [{'query_id': 'margins', 'query': 'Synthetic issuer margin', 'question_ids': ['IQS_05'], 'top_k': 3}]})
+now = 1800000000.0
+
+    def _eligible_priced_record(record: dict[str, Any], policy: SearchPolicy, now: float) -> bool:
+        from src.utils.quick_scan_cost_resolver import ExternalSearchCostResolver
+        from src.utils.quick_scan_work_store import BudgetAdmissionError
+    
+        result = record["result"]
+        if result is None or record["budget"]["status"] != "settled":
+>           raise ExternalRetrievalBlocked("external_search_unresolved")
+E           src.utils.quick_scan_external_context.ExternalRetrievalBlocked: external_search_unresolved
+
+src\utils\quick_scan_external_context.py:266: ExternalRetrievalBlocked
+=========================== short test summary info ===========================
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_complete_search_cold_and_reopen_warm_have_four_then_zero_http
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend[initialize-0]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend[notifications/initialized-1]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend[tools/list-2]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_unknown_at_each_actual_http_stops_and_reopens_without_any_resend[tools/call-3]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_bad_search_or_discovery_never_becomes_financial_evidence[wrong_search_id]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_bad_search_or_discovery_never_becomes_financial_evidence[tool_error]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_bad_search_or_discovery_never_becomes_financial_evidence[extra_required]
+FAILED tests/unit/test_quick_scan_mcp.py::test_mcp_priced_control_rejection_can_use_next_search_route_without_repeating_handshake
+9 failed, 35 passed in 5.70s
