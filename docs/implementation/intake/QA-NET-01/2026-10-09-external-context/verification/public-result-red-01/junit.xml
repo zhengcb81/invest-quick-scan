@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="2.895" timestamp="2026-10-09T07:51:06.368418+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_is_explicitly_versioned_and_owner_bound[False]" time="0.285"><failure message="TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-result-red-01/test_public_external_result_is0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACE7C21BA0&gt;
+hybrid = False
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_result_is_explicitly_versioned_and_owner_bound(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        response = _send_external_answer(args, context, model, url)
+        original = copy.deepcopy(response.execution_metadata)
+        batch = _public_batch(response)
+&gt;       result = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name="Synthetic issuer",
+            provider_name="openai", requested_model=model, work_store=args["store"])
+E       TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'
+
+tests\unit\test_quick_scan_external_context.py:213: TypeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_is_explicitly_versioned_and_owner_bound[True]" time="0.172"><failure message="TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-result-red-01/test_public_external_result_is1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACE6C1AEA0&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_external_result_is_explicitly_versioned_and_owner_bound(tmp_path, monkeypatch, hybrid):
+        from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
+        args, context, search, sync, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid)
+        response = _send_external_answer(args, context, model, url)
+        original = copy.deepcopy(response.execution_metadata)
+        batch = _public_batch(response)
+&gt;       result = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name="Synthetic issuer",
+            provider_name="openai", requested_model=model, work_store=args["store"])
+E       TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'
+
+tests\unit\test_quick_scan_external_context.py:213: TypeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[missing_owner]" time="0.160"><failure message="TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-result-red-01/test_public_external_result_re0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACE742EB10&gt;
+kind = 'missing_owner'
+
+    @pytest.mark.parametrize("kind", ["missing_owner", "wrong_entity", "wrong_question", "self_signed"])
+    def test_public_external_result_rejects_unbound_owner_or_identity(tmp_path, monkeypatch, kind):
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        response = _send_external_answer(args, context, model, url)
+        batch = _public_batch(response, question_id="IQS_99" if kind == "wrong_question" else "IQS_05")
+        if kind == "self_signed":
+            proof = batch.results[0].answer.metadata["execution"]["external_context_use"]
+            proof["source_urls"] = ["https://foreign.example/ir"]
+            import hashlib
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises(ValueError):
+&gt;           batch.to_quick_scan_dict(entity_id="ENT_OTHER" if kind == "wrong_entity" else "ENT_BYD",
+                company_name="Synthetic issuer", provider_name="openai", requested_model=model,
+                work_store=None if kind == "missing_owner" else args["store"])
+E           TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'
+
+tests\unit\test_quick_scan_external_context.py:245: TypeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[wrong_entity]" time="0.163"><failure message="TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-result-red-01/test_public_external_result_re1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACE744ACF0&gt;
+kind = 'wrong_entity'
+
+    @pytest.mark.parametrize("kind", ["missing_owner", "wrong_entity", "wrong_question", "self_signed"])
+    def test_public_external_result_rejects_unbound_owner_or_identity(tmp_path, monkeypatch, kind):
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        response = _send_external_answer(args, context, model, url)
+        batch = _public_batch(response, question_id="IQS_99" if kind == "wrong_question" else "IQS_05")
+        if kind == "self_signed":
+            proof = batch.results[0].answer.metadata["execution"]["external_context_use"]
+            proof["source_urls"] = ["https://foreign.example/ir"]
+            import hashlib
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises(ValueError):
+&gt;           batch.to_quick_scan_dict(entity_id="ENT_OTHER" if kind == "wrong_entity" else "ENT_BYD",
+                company_name="Synthetic issuer", provider_name="openai", requested_model=model,
+                work_store=None if kind == "missing_owner" else args["store"])
+E           TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'
+
+tests\unit\test_quick_scan_external_context.py:245: TypeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[wrong_question]" time="0.159"><failure message="TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-result-red-01/test_public_external_result_re2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACE744AE00&gt;
+kind = 'wrong_question'
+
+    @pytest.mark.parametrize("kind", ["missing_owner", "wrong_entity", "wrong_question", "self_signed"])
+    def test_public_external_result_rejects_unbound_owner_or_identity(tmp_path, monkeypatch, kind):
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        response = _send_external_answer(args, context, model, url)
+        batch = _public_batch(response, question_id="IQS_99" if kind == "wrong_question" else "IQS_05")
+        if kind == "self_signed":
+            proof = batch.results[0].answer.metadata["execution"]["external_context_use"]
+            proof["source_urls"] = ["https://foreign.example/ir"]
+            import hashlib
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises(ValueError):
+&gt;           batch.to_quick_scan_dict(entity_id="ENT_OTHER" if kind == "wrong_entity" else "ENT_BYD",
+                company_name="Synthetic issuer", provider_name="openai", requested_model=model,
+                work_store=None if kind == "missing_owner" else args["store"])
+E           TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'
+
+tests\unit\test_quick_scan_external_context.py:245: TypeError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[self_signed]" time="0.163"><failure message="TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-result-red-01/test_public_external_result_re3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACE9580550&gt;
+kind = 'self_signed'
+
+    @pytest.mark.parametrize("kind", ["missing_owner", "wrong_entity", "wrong_question", "self_signed"])
+    def test_public_external_result_rejects_unbound_owner_or_identity(tmp_path, monkeypatch, kind):
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        response = _send_external_answer(args, context, model, url)
+        batch = _public_batch(response, question_id="IQS_99" if kind == "wrong_question" else "IQS_05")
+        if kind == "self_signed":
+            proof = batch.results[0].answer.metadata["execution"]["external_context_use"]
+            proof["source_urls"] = ["https://foreign.example/ir"]
+            import hashlib
+            proof["proof_sha256"] = hashlib.sha256(json.dumps({k: v for k, v in proof.items() if k != "proof_sha256"}, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+        with pytest.raises(ValueError):
+&gt;           batch.to_quick_scan_dict(entity_id="ENT_OTHER" if kind == "wrong_entity" else "ENT_BYD",
+                company_name="Synthetic issuer", provider_name="openai", requested_model=model,
+                work_store=None if kind == "missing_owner" else args["store"])
+E           TypeError: QABatchResult.to_quick_scan_dict() got an unexpected keyword argument 'work_store'
+
+tests\unit\test_quick_scan_external_context.py:245: TypeError</failure></testcase></testsuite></testsuites>

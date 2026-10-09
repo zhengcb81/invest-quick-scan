@@ -2449,3 +2449,27 @@
 - 更新PWF/findings/新接口/接手；旧04接口与writer不改，source仍42a517c/schema8，runs/n111a保留。checkpoint05正常IQS Git实际结果随后追加，不提前声称发布、完成或严格清理；G3/F05/THIN/StockWiki四新路径仍独立未齐，退役工程回执不刷新。
 
 - checkpoint05首prepare在暂存前拒绝：旧index01把可继续编辑的plan.md/scope.json也列在records，新helper误要求它们当前仍等于旧原文。只读差异核仅这两件；修正为按index01真实6ee1abd提交核历史字节，其他旧工件与所有旧索引当前字节仍逐项校验。没有改旧工件/索引、源或测试，也未形成新Git提交。
+
+- checkpoint05实际交付：prepare原94449终态exit0，516工件/523精确路径/15实际批次/115保护支持文件；normal Git原87981终态exit0，正常提交033d77a53a3c9a9596b7f73a53e2af2a42bb3aa3并推送origin/master，staged/committed原字节与旧索引核对通过，仅原opencode未跟踪保留。StockQA42a517c/schema8及七未知项未写未发布，私有schema11与runs/n111a继续保留。上一用户进度答复仅只读，无工程进展；本目标回合继续公开结果版本和消费者链，非Phase111或全局门关闭。
+
+## Phase111 公开结果与IQS消费者接续：2026-10-09
+
+- 按既有授权先报备：仅私有StockQA的models/外部上下文测试；IQS adapter/routing/route schema和对应测试。本批无外仓源写、真实API、下载或正式库迁移，旧checkpoint01–05/接口/原执行字节保持。
+- public-result-red-01实际6F，缺显式work_store接口；green-01为6P。新public1.1在实际owner回读后表达external use和原native receipt；native-only继续1.0，外部题身份/题目/原native保存与使用proof拒绝自签漂移，不把meta当审计。
+- public-consumer-red-01实际6F/2P（pytest subtest口径），green-01为4P/23子例，兼容旧1.0/native1.1，并验证external/hybrid、来源、哈希、时间、provider/model和重哈希邻接反例。格式支持不等于金融事实认证。
+- public-binding-red-01实际3F/7P：outer metadata覆盖actual/requested、原native漂移被接受、真实hybrid调用的sources短日期元数据被route schema拒绝。前两产品缺口修复为使用真实owner HTTP provenance；schema仅添加原native sources可选字段，不伪造web_search_calls。green-01实际10P，真实client/SQLite→公开JSON→IQS route，HTTP/模型内容synthetic，QAResult在原答案边界构造，非公开CLI。
+- public-route-adjacent-red-01实际1F/1P：独立identity snapshot被routing丢弃；低置信度已正确校验，不算缺陷。将第二反例改为unknown/无候选后red-02实际2F，确认归档receipt未验证的缺口；现所有external receipt均验证，并转交caller独立snapshot。旧无binding历史保留，新binding限router2.3+。
+- public-producer-affected-green-01原68446实际终态exit0：14相关文件682P/pytest71.45s/controller72.312s，0失败错误跳过，两侧冻结源码无漂移。消费者四文件完整相关批次public-consumer-affected-green-01原9625仍在运行，只继续poll原handle，不提前声称GREEN或重启。
+- 两次只读控制器错误已纠正：PowerShell转义造成rg未闭合正则；按函数名前缀Select-String得到多行后数组不能减1，改精确括号+First1/int。没有产品/外仓写入，不把它们算测试失败。原RED/日志都保留。
+- 新接口public-result-interface.md明确1.0/1.1、真实owner与纯消费者边界、HTTP/work attempt两个ID和两种canonical digest。完整Phase111仍缺实际runner/cascade dispatch、async投影、跨阶段/跨lease、MCP/公开CLI、最终静态/一次独审/源发布/严格清理，G3/F05/StockWiki新授权/真实gold/THIN不自动关闭。
+
+- IQS原9625已终态timeout=true/300.037s，无最终JUnit；stdout有1F及进度点，不能记通过。严格只读提升CIM核本独占根Python0，未杀进程/清共享TEMP；相同源/guard的沙箱外4533终态exit1/238.880s，实际110P/1F/216子例（pytest238.30s）。collection-01只是111项收集诊断，不计验收。
+- 唯一失败为既有test_actual_stockqa_cli：增加合成stdout/stderr诊断和STOCKQA_REPO显式指向隔离副本后，native-cli-diagnostic-01真实1F/1.67s，入口status2/spend_authorization_missing/mock HTTP0。这是旧fixture未更新费用授权，不跳过产品预检；补独占临时synthetic授权和HTTP.content/text，native-cli-fixture-green-01实际1P/1.97s（controller2.488s），原分数8、24题、manifest、receipt/status、cleanup/无新bytecode断言全保持。原110P未变部分不重复，整批表述为110P/1F＋整改1P，不虚称同一调用111P；fixture/所有临时文件原finally恢复，生产库/钥匙/外仓写0。
+- 682P的private/protocol/SQLite源码保持，消费者修正只有上述单个既有测试的fixture/诊断和controller隔离repo变量，不改变runtime边界。新checkpoint06以正常Git实际回执为准；旧索引原件保留，当前无活测试handle，runs/n111a仍保留供完整Phase111，最终集中review不在本小段增加。
+- 更新PWF时误附不存在的handoff单独`#`匹配行，整批apply_patch原子拒绝；只读重核三root均未写，按实际首段修正。该控制器错误不是产品失败，未改旧工件或多跑测试。
+
+## 用户进度核对：2026-10-09
+
+- 本次只读核对当前根PWF（resolver为空/legacy fallback）、交接、有限验收及实际Git；不新增产品实施或测试，不关闭Phase111/G3/F05。StockQA实际HEAD仍42a517c；StockWiki已从已验输入d253fea推进至c40de21，新增d98acdc及merge只涉及README、ui_jobs、app.js及两份UI测试，共五文件；既有import/observations不在新增差异中。新UI范围尚未由本总控验收，下一次联合验收需固定新HEAD，不重复旧存储验收。
+- 默认沙箱只读外仓Git发生Permission denied；改用已授权的提升只读查询成功，没有外仓写入、网络或付费请求。IQS实际HEAD/origin仍033d77a，本段消费者改动未提交。
+- 续收原checkpoint06 prepare会话95998：实际exit1，失败为控制器把consumer JUnit计数硬编码为111导致断言；并非新增产品测试失败。未执行其git模式，不宣称checkpoint06提交/推送，不覆盖旧索引/日志。后续先按真实JUnit口径修归档断言，再正常精确提交；682P与110P/1F＋原失败整改1P的原始证据保持。

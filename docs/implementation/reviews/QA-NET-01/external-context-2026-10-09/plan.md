@@ -34,3 +34,9 @@
 ## Phase111 检查点与执行器接续：2026-10-09
 私有schema11/checkpoint2/use-proof1.1保留原native响应与旧checkpoint1字节；实际runner/同步provider metadata、完整standard body/C06/outbox通过672项相关回归。读checkpoint-interface.md；这不是源发布或完整验收。
 下一段先补明确公开result版本和IQS ROUTE_02消费者的external来源规则，再接真实runner/cascade调度、异步provider、两阶段/跨lease/MCP/公开CLI。现有public1.0仅native来源，不能暗改历史解释或造web_search_calls。整个Phase111齐备后一次集中审查/正常源Git/严格清理；当前自有根保持，不另建工程回执或小节点门。
+
+## Phase111 公开结果接续：2026-10-09
+
+公开producer1.1与IQS消费者兼容已经接线：actual store/原HTTP/use proof验证后才输出external binding，native-only仍1.0；actual client/SQLite→JSON→IQS route的external/hybrid通过，原模型/receipt hash/真实native事件保留。读public-result-interface.md。StockQA十四相关文件682P/71.45s；IQS完整相关110P/1F及过期native CLI fixture修正后的原失败1P，原timeout/失败均留档，不声称同一调用111P，也不新增小节点独审。
+
+下一实际动作：原runner/cascade检索协调和async provider投影；随后跨阶段/跨lease恢复、逐HTTP MCP init/discovery/search、公开CLI冷/暖/恢复/失败，最后完整批次一次集中相关回归/静态/审查/正常源发布及严格自有根清理。source仍42a517c/schema8，当前新public1.1仅私有producer；其他外仓、新授权和全局门不自动关闭。

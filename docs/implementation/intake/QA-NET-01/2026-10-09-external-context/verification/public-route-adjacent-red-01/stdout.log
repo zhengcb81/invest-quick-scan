@@ -1,0 +1,18 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+_ ExternalSearchRoutingTests.test_trusted_caller_identity_snapshot_is_checked_before_routing _
+
+self = <test_external_search_result_contract.ExternalSearchRoutingTests testMethod=test_trusted_caller_identity_snapshot_is_checked_before_routing>
+
+    def test_trusted_caller_identity_snapshot_is_checked_before_routing(self):
+        fixture = self.fixture
+        request = routing.build_route_request(fixture.identity, package_id=fixture.package_id, root=fixture.root)
+        result = external_result(identity=fixture.identity, candidates=fixture.normal(), question_sha=request["prompt_sha256"])
+>       with self.assertRaises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: ValueError not raised
+
+tests\test_external_search_result_contract.py:183: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_external_search_result_contract.py::ExternalSearchRoutingTests::test_trusted_caller_identity_snapshot_is_checked_before_routing
+1 failed, 1 passed, 4 deselected in 8.78s

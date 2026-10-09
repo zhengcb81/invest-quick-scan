@@ -1760,3 +1760,13 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 并发begin允许同一有效lease重取尚未发送意图，但consume唯一；race loser的具名WorkConflict正是安全围栏。测试须核dispatch实际只有一行/预算只有一次，不能把围栏拒绝当成第二HTTP或通过重试洗绿。
 - 完整body/source/cutoff校验不能仅在compact adapter做。actual runner→standard side tables→完整C06→outbox已覆盖，foreign URL拒绝且不部分落库；缺authority保留blocked，并不制造owner golden。fixture的实际发送/响应时点必须处于同一时钟，不能删时间门满足测试。
 - 672P只支持私有当前14文件范围，非付费厂商/金融事实准确性或全CLI验收。StockQA public result1.0与IQS ROUTE_02依赖native calls来源集合；对external必须设计显式公共版本/消费者绑定，不能向web_search_calls添加假的native事件。公开C06 generic字段无需改，但生产caller、外仓ACK及真实gold仍各自验收。
+
+- checkpoint05的523条精确路径正常提交/推送已实际完成，冻结516工件和原01–04索引保留；这是私有实现可恢复证据，仍不认证公开输出、生产启用或金融事实。下一链应由store认证external use后输出显式新版本，纯IQS消费者只验证该producer输出的绑定一致性，不能宣称独立认证来源真实或审计公司事实。
+
+- 公开输出需以真实保存的原HTTP receipt提供actual/requested/provider/request/response，不能再从outer metadata拿模型归属；external raw receipt本身也必须与实际保存值相同。真实client/JSON/router邻接测试复现了两个缺口。真实hybrid另暴露native sources日期字段的schema不兼容，需保留原字段且允许其有限形状，不丢掉来源/伪造事件。
+- 归档unknown分类仍有真实搜索和回答，不可因没有searched_llm候选而跳过原external binding检查。Low-confidence分支已有检查，与unknown分支区分，原1F/1P及新2F如实保留。caller独立identity_snapshot_sha256是额外可信约束，routing必须传给adapter而非静默丢弃。
+- StockQA原HTTP attempt UUID与耐久work attempt ID不同，request_prompt_sha256(system+prompt)也不同于原HTTP prompt text hash；模型/ID/hash只能核实际对应关系，不能为凑同名而改写。Public1.1增加显式binding、native1.0原行为保持；纯消费者不能因两个自洽hash升级金融check level或认定来源真实。
+
+- 既有IQS S02 native CLI fixture缺当前强制spend_authorization，入口明确status2/HTTP0，不能删产品费用预检来恢复测试。fixture应提供标注synthetic的临时授权、完整HTTP.body/文本，并在原finally恢复环境/文件/模块/bytecode。完整consumer批次110P/1F，针对该唯一旧fixture整改1P；不用为此再重复110个无变化case，也不把两批合成单次111P。
+
+- 2026-10-09状态核对：StockWiki新HEAD c40de21仅追加UI启动意图相关五文件；旧验收输入d253fea仍保留，新增范围须在下一大节点固定并纳入，不据此关闭ACK/事实查询/研究联动门。checkpoint06 prepare的JUnit计数断言失败属于归档控制器，实际产品执行日志不应为适配硬编码而修改。

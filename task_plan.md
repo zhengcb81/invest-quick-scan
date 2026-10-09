@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前下一动作（2026-10-09 Phase111）**：接通公开结果序列化与实际runner/cascade检索调度，再接两阶段/跨租约恢复、逐HTTP计费MCP和公开CLI。私有schema11/checkpoint2已核实际store使用proof，transport-managed runner、同步provider通用metadata、完整标准答案/C06和交付绑定已接线；14受影响文件672P/58.19s，0失败错误跳过，执行源码不变。原native回执、实际model/响应SHA保持，旧checkpoint1原payload/hash迁移保留且迁移故障整笔回滚。读[检查点与执行器接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/checkpoint-interface.md)。公开quick_scan_result/1.0.0与IQS ROUTE_02仍假设原生web_search_calls，不得伪造事件或把内部metadata通过冒充公开链完成；下一段须明确版本与消费者兼容。Phase111保持in_progress，StockQA42a517c/schema8未发布；完整批次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
+**当前下一动作（2026-10-09 Phase111）**：接实际runner/cascade检索调度与async provider投影，再接两阶段/跨租约恢复、逐HTTP计费MCP和公开CLI。公开producer1.1已在私有副本由真实store认证use/native receipt；IQS消费者支持1.0/1.1并核来源、模型、时间及独立identity snapshot，actual client/SQLite→JSON→IQS route的external/hybrid正例通过。14受影响StockQA文件682P/71.45s；IQS四文件110P/1F＋修正过期CLI fixture后原失败1P，原300秒timeout保留、不称单次111全绿。原native与历史行为保持，金融事实/真实API未认证。读[公开结果接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/public-result-interface.md)。Phase111保持in_progress，StockQA42a517c/schema8未发布；完整批次集中review/源Git/严格自有根清理待执行。StockWiki四新路径、G3/L03/F05/真实gold/THIN授权原门不变，收费API/200家live/工程回执刷新0。
 
 **历史B01-b phase-1**：初版报告与[`独立复核`](docs/implementation/reviews/G3/B01-phase1-independent-review-2026-10-07.md)保留；终版540行矩阵覆盖61.3%，低于95%，原结论inconclusive不改。后续Phase89/93新实验单独归档，不回写旧矩阵。
 
@@ -1566,3 +1566,5 @@ Status: in_progress_private_implementation_not_published
 - 当前31路径均已先报备，仅IQS私有副本；新增三路径为outbox及两份旧C06 fixture测试。实际owner重读使用proof，transport-managed runner/同步provider投影、完整standard body→C06→outbox、来源越界拒绝与重启零HTTP已覆盖。
 - 最终runtime-checkpoint-affected-green-01为14文件672P/58.19s（controller58.868s），无失败错误跳过/源码不变；不与491或此前455重叠批次相加。API/下载/外仓写0，原RED与fixture/控制器错误保留。
 - 完整Phase111仍in_progress：公开JSON及IQS消费者显式版本兼容、实际runner/cascade检索调度、async provider投影、两阶段/跨lease/MCP/公开CLI、最终静态/一次集中review/源发布/严格清理待执行。StockWiki新授权及G3/F05/THIN原门不动。checkpoint05真实Git待progress回执，不提前标完成。
+
+- checkpoint05已实际提交并推送033d77a53a3c9a9596b7f73a53e2af2a42bb3aa3：523精确路径/516工件/15批次/115支持文件不变。仅IQS私有进度留档，StockQA源仍42a517c/schema8；继续公开结果/消费者链，完整Phase111未关闭。

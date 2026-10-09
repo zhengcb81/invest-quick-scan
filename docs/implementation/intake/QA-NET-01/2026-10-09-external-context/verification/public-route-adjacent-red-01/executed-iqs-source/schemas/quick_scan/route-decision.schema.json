@@ -1,0 +1,1172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:quick-scan:route-decision:1",
+  "title": "QuickScanModuleRouteDecision",
+  "description": "S06 versioned route decisions. Version 1 remains historical; version 2 binds the published package and policy.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/LegacyRoute"
+    },
+    {
+      "$ref": "#/$defs/RouteV2"
+    }
+  ],
+  "$defs": {
+    "Source": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        "published_at": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date"
+            },
+            {
+              "const": "unknown"
+            }
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "url",
+        "published_at"
+      ],
+      "additionalProperties": false
+    },
+    "SourceV2": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        "published_at": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date"
+            },
+            {
+              "const": "unknown"
+            }
+          ]
+        },
+        "entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "title",
+        "url",
+        "published_at",
+        "entity_id",
+        "claim"
+      ],
+      "additionalProperties": false
+    },
+    "LegacyRoute": {
+      "title": "QuickScanModuleRouteDecision",
+      "description": "S04 route decision shape. S06 supplies classification rules and receipt generation.",
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^route_[a-f0-9]{64}$"
+        },
+        "release_id": {
+          "type": "string",
+          "pattern": "^modrel_[a-f0-9]{64}$"
+        },
+        "router_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date"
+        },
+        "decided_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "enum": [
+            "resolved",
+            "partial",
+            "unresolved"
+          ]
+        },
+        "module_decisions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "module_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "module_version": {
+                "type": "string",
+                "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+              },
+              "decision": {
+                "enum": [
+                  "selected",
+                  "rejected",
+                  "uncertain"
+                ]
+              },
+              "basis": {
+                "enum": [
+                  "deterministic",
+                  "searched_llm",
+                  "manual"
+                ]
+              },
+              "confidence": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Source"
+                }
+              },
+              "manual_override": {
+                "type": "object",
+                "properties": {
+                  "actor": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "valid_until": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "actor",
+                  "reason",
+                  "valid_until"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "module_id",
+              "module_version",
+              "decision",
+              "basis",
+              "confidence",
+              "rationale",
+              "sources"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "basis": {
+                      "const": "manual"
+                    }
+                  },
+                  "required": [
+                    "basis"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "manual_override"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "basis": {
+                      "enum": [
+                        "deterministic",
+                        "searched_llm"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "basis"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "sources": {
+                      "minItems": 1
+                    }
+                  },
+                  "not": {
+                    "required": [
+                      "manual_override"
+                    ]
+                  }
+                }
+              }
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "decision_id",
+        "release_id",
+        "router_version",
+        "entity_id",
+        "as_of",
+        "decided_at",
+        "status",
+        "module_decisions"
+      ],
+      "additionalProperties": false
+    },
+    "RouteV2": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "2.0.0"
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^route_[a-f0-9]{64}$"
+        },
+        "release_id": {
+          "type": "string",
+          "pattern": "^modrel_[a-f0-9]{64}$"
+        },
+        "router_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "classification_confidence": {
+          "type": "object",
+          "properties": {
+            "status": {"enum": ["not_run", "scored", "unknown", "insufficient_evidence"]},
+            "score": {
+              "anyOf": [
+                {"type": "integer", "minimum": 1, "maximum": 10},
+                {"type": "null"}
+              ]
+            },
+            "minimum_score": {"type": "integer", "minimum": 1, "maximum": 10},
+            "llm_candidates_eligible": {"type": "boolean"}
+          },
+          "required": ["status", "score", "minimum_score", "llm_candidates_eligible"],
+          "allOf": [
+            {
+              "if": {"properties": {"status": {"const": "scored"}}, "required": ["status"]},
+              "then": {"properties": {"score": {"type": "integer", "minimum": 1, "maximum": 10}}},
+              "else": {"properties": {"score": {"const": null}}}
+            }
+          ],
+          "additionalProperties": false
+        },
+        "entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date"
+        },
+        "decided_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "enum": [
+            "resolved",
+            "partial",
+            "unresolved"
+          ]
+        },
+        "module_decisions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "module_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "module_version": {
+                "type": "string",
+                "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+              },
+              "decision": {
+                "enum": [
+                  "selected",
+                  "rejected",
+                  "uncertain"
+                ]
+              },
+              "basis": {
+                "enum": [
+                  "deterministic",
+                  "searched_llm",
+                  "manual",
+                  "policy",
+                  "unavailable"
+                ]
+              },
+              "confidence": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/SourceV2"
+                }
+              },
+              "manual_override": {
+                "type": "object",
+                "properties": {
+                  "actor": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "valid_until": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "actor",
+                  "reason",
+                  "valid_until"
+                ],
+                "additionalProperties": false
+              },
+              "rule_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "reason_code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "evidence_context": {
+                "type": "object",
+                "required": [
+                  "evidence_type"
+                ],
+                "properties": {
+                  "evidence_type": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "materiality": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "revenue_share": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "gross_profit_share": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "invested_capital_share": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "committed_capex_share": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "binding_backlog_share": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1
+                      },
+                      "survival_critical": {
+                        "type": "boolean"
+                      },
+                      "primary_development_project": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "cycle_position": {
+                    "enum": [
+                      "upturn",
+                      "peak",
+                      "downturn",
+                      "trough",
+                      "recovery",
+                      "unknown"
+                    ]
+                  },
+                  "period_count": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "major_event": {
+                    "type": "boolean"
+                  },
+                  "business_id": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "module_id",
+              "module_version",
+              "decision",
+              "basis",
+              "confidence",
+              "rationale",
+              "sources",
+              "rule_id",
+              "reason_code"
+            ],
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "basis": {
+                      "const": "manual"
+                    }
+                  },
+                  "required": [
+                    "basis"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "manual_override"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "basis": {
+                      "enum": [
+                        "deterministic",
+                        "searched_llm"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "basis"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "sources": {
+                      "minItems": 1
+                    }
+                  },
+                  "not": {
+                    "required": [
+                      "manual_override"
+                    ]
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "basis": {
+                      "const": "unavailable"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "decision": {
+                      "const": "uncertain"
+                    },
+                    "confidence": {
+                      "const": "low"
+                    },
+                    "sources": {
+                      "maxItems": 0
+                    }
+                  },
+                  "not": {
+                    "required": [
+                      "manual_override"
+                    ]
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "basis": {
+                      "const": "policy"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "decision": {
+                      "enum": [
+                        "selected",
+                        "rejected"
+                      ]
+                    },
+                    "sources": {
+                      "maxItems": 0
+                    }
+                  },
+                  "not": {
+                    "required": [
+                      "manual_override"
+                    ]
+                  }
+                }
+              }
+            ],
+            "additionalProperties": false
+          }
+        },
+        "module_package_id": {
+          "type": "string",
+          "pattern": "^pkg_[a-f0-9]{64}$"
+        },
+        "routing_policy_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "identity_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "scope": {
+          "enum": [
+            "entity",
+            "segment"
+          ]
+        },
+        "segment_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "previous_decision_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^route_[a-f0-9]{64}$"
+            }
+          ]
+        },
+        "execution": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "provider": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "model_requested": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "model_resolved": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "attempt_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "search_receipt_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "web_search_calls": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": ["string", "null"] },
+                      "status": { "type": ["string", "null"] },
+                      "action_type": { "type": ["string", "null"] },
+                      "source_urls": {
+                        "type": "array",
+                        "items": { "type": "string", "format": "uri", "pattern": "^https?://" },
+                        "uniqueItems": true
+                      },
+                      "sources": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "url": {"type": "string", "format": "uri", "pattern": "^https?://"},
+                            "title": {"type": ["string", "null"]},
+                            "published_date": {"anyOf": [{"type": "null"}, {"type": "string", "format": "date"}]}
+                          },
+                          "required": ["url", "title", "published_date"],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": ["id", "status", "action_type", "source_urls"],
+                    "additionalProperties": false
+                  }
+                },
+                "search_binding": {
+                  "description": "Public StockQA 1.1 external-use binding. Runtime validates the exact producer proof, original response hash, identities, times and sources; hashes alone do not authenticate facts.",
+                  "type": "object",
+                  "properties": {
+                    "schema": {"const": "stockqa.search_binding/1.1.0"},
+                    "entity_id": {"type": "string", "minLength": 1},
+                    "question_id": {"const": "ROUTE_02"},
+                    "identity_snapshot_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                    "external_context_use": {"type": "object"},
+                    "native_receipt": {"type": "object"}
+                  },
+                  "required": ["schema", "entity_id", "question_id", "identity_snapshot_sha256", "external_context_use", "native_receipt"],
+                  "additionalProperties": false
+                },
+                "entity_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "request_id": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "model_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "search_status": {
+                  "const": "executed"
+                },
+                "classification_status": {
+                  "enum": ["scored", "unknown", "insufficient_evidence"]
+                },
+                "answer_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "classification_score": {
+                  "anyOf": [
+                    {"type": "integer", "minimum": 1, "maximum": 10},
+                    {"type": "null"}
+                  ]
+                },
+                "prompt_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "as_of": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "answered_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {"classification_status": {"const": "scored"}},
+                    "required": ["classification_status"]
+                  },
+                  "then": {
+                    "required": ["classification_score"],
+                    "properties": {
+                      "classification_score": {"type": "integer", "minimum": 1, "maximum": 10}
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "classification_status": {"enum": ["unknown", "insufficient_evidence"]}
+                    },
+                    "required": ["classification_status"]
+                  },
+                  "then": {
+                    "required": ["classification_score"],
+                    "properties": {"classification_score": {"type": "null"}}
+                  }
+                }
+              ],
+              "required": [
+                "provider",
+                "model_requested",
+                "model_resolved",
+                "attempt_id",
+                "search_receipt_id",
+                "entity_id",
+                "request_id",
+                "model_revision",
+                "search_status",
+                "prompt_sha256",
+                "as_of",
+                "answered_at"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "profile_context": {
+          "type": "object",
+          "properties": {
+            "company": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "ticker": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "exchange": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "entity_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "as_of": {
+              "type": "string",
+              "format": "date"
+            },
+            "security_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "segment_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "company_type": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "stage": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "business_subtype": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "industry_modules": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "uniqueItems": true
+            },
+            "cycle_sensitive": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "cycle_position": {
+              "enum": [
+                "upturn",
+                "peak",
+                "downturn",
+                "trough",
+                "recovery",
+                "unknown"
+              ]
+            },
+            "recovery_review": {
+              "type": "boolean"
+            },
+            "recovery_rationale": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "overlays": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "uniqueItems": true
+            },
+            "diagnostic_modules": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "uniqueItems": true
+            },
+            "investment_lenses": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "uniqueItems": true
+            },
+            "diagnostic_rationale": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              }
+            },
+            "lens_rationale": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              }
+            },
+            "security_class": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "reporting_currency": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "quote_currency": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "quote_date": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "accounting_standard": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "fiscal_year_end": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            }
+          },
+          "required": [
+            "company",
+            "ticker",
+            "exchange",
+            "entity_id",
+            "as_of",
+            "security_id",
+            "segment_id",
+            "company_type",
+            "stage",
+            "business_subtype",
+            "industry_modules",
+            "cycle_sensitive",
+            "cycle_position",
+            "recovery_review",
+            "recovery_rationale",
+            "overlays",
+            "diagnostic_modules",
+            "investment_lenses",
+            "diagnostic_rationale",
+            "lens_rationale"
+          ],
+          "additionalProperties": false
+        },
+        "dispatch_plan": {
+          "type": "object",
+          "properties": {
+            "requested_mode": {
+              "enum": [
+                "quick",
+                "full"
+              ]
+            },
+            "resolved_mode": {
+              "enum": [
+                "quick",
+                "full"
+              ]
+            },
+            "status": {
+              "enum": [
+                "ready",
+                "requires_full_or_segments",
+                "requires_segments",
+                "ready_common_and_risk",
+                "needs_review"
+              ]
+            },
+            "mandatory_question_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              },
+              "uniqueItems": true
+            },
+            "minimum_questions": {
+              "type": "integer",
+              "minimum": 24
+            },
+            "coverage_gaps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              "uniqueItems": true
+            },
+            "segment_requests": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "uniqueItems": true
+            },
+            "business_scope_compatible": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "eligible_module_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "uniqueItems": true,
+              "minItems": 0
+            }
+          },
+          "required": [
+            "requested_mode",
+            "resolved_mode",
+            "status",
+            "mandatory_question_ids",
+            "minimum_questions",
+            "coverage_gaps",
+            "segment_requests",
+            "business_scope_compatible"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "decision_id",
+        "release_id",
+        "router_version",
+        "entity_id",
+        "as_of",
+        "decided_at",
+        "status",
+        "module_decisions",
+        "module_package_id",
+        "routing_policy_sha256",
+        "identity_ref",
+        "scope",
+        "segment_id",
+        "previous_decision_id",
+        "execution",
+        "profile_context",
+        "dispatch_plan"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "router_version": {"not": {"const": "2.0.0"}}
+            },
+            "required": ["router_version"]
+          },
+          "then": {
+            "properties": {
+              "execution": {
+                "anyOf": [
+                  {"type": "null"},
+                  {"type": "object", "required": ["web_search_calls"]}
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {"router_version": {"pattern": "^2\\.(?:[2-9]|[1-9][0-9]+)\\.[0-9]+$"}},
+            "required": ["router_version"]
+          },
+          "then": {
+            "required": ["classification_confidence"],
+            "properties": {
+              "execution": {
+                "anyOf": [
+                  {"type": "null"},
+                  {"type": "object", "required": ["classification_status", "classification_score"]}
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {"router_version": {"pattern": "^2\\.(?:3|[4-9]|[1-9][0-9]+)\\.[0-9]+$"}},
+            "required": ["router_version"]
+          },
+          "then": {
+            "properties": {
+              "execution": {
+                "anyOf": [
+                  {"type": "null"},
+                  {"type": "object", "required": ["answer_sha256"]}
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {"router_version": {"enum": ["2.0.0", "2.1.0"]}},
+            "required": ["router_version"]
+          },
+          "then": {
+            "not": {"required": ["classification_confidence"]}
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

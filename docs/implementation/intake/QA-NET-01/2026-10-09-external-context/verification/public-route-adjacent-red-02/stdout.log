@@ -1,0 +1,41 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_ ExternalSearchRoutingTests.test_trusted_caller_identity_snapshot_is_checked_before_routing _
+
+self = <test_external_search_result_contract.ExternalSearchRoutingTests testMethod=test_trusted_caller_identity_snapshot_is_checked_before_routing>
+
+    def test_trusted_caller_identity_snapshot_is_checked_before_routing(self):
+        fixture = self.fixture
+        request = routing.build_route_request(fixture.identity, package_id=fixture.package_id, root=fixture.root)
+        result = external_result(identity=fixture.identity, candidates=fixture.normal(), question_sha=request["prompt_sha256"])
+>       with self.assertRaises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: ValueError not raised
+
+tests\test_external_search_result_contract.py:184: AssertionError
+_ ExternalSearchRoutingTests.test_unknown_route_cannot_skip_external_receipt_validation _
+
+self = <test_external_search_result_contract.ExternalSearchRoutingTests testMethod=test_unknown_route_cannot_skip_external_receipt_validation>
+
+    def test_unknown_route_cannot_skip_external_receipt_validation(self):
+        fixture = self.fixture
+        request = routing.build_route_request(fixture.identity, package_id=fixture.package_id, root=fixture.root)
+        result = external_result(identity=fixture.identity, candidates=fixture.normal(), question_sha=request["prompt_sha256"])
+        answer = result["answers"]["ROUTE_02"]
+        answer.update(status="unknown", score=None,
+            description=json.dumps({"schema_version": "2.0.0", "question_id": "ROUTE_02", "candidates": []}))
+        result["execution_receipts"]["ROUTE_02"]["answer_sha256"] = mc.digest(answer)
+        decision = routing.resolve_route_decision({**fixture.identity, "verified_facts": []},
+            package_id=fixture.package_id, root=fixture.root, route_response=result, now_utc=fixture.now)
+        self.assertNotIn("semiconductors", fixture.selected(decision))
+        decision["execution"]["search_binding"]["external_context_use"]["proof_sha256"] = "0" * 64
+        decision = mc.seal_route_decision({k: v for k, v in decision.items() if k != "decision_id"})
+>       with self.assertRaises(ValueError): routing.validate_route_snapshot(decision, root=fixture.root)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: ValueError not raised
+
+tests\test_external_search_result_contract.py:178: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_external_search_result_contract.py::ExternalSearchRoutingTests::test_trusted_caller_identity_snapshot_is_checked_before_routing
+FAILED tests/test_external_search_result_contract.py::ExternalSearchRoutingTests::test_unknown_route_cannot_skip_external_receipt_validation
+2 failed, 4 deselected in 5.71s

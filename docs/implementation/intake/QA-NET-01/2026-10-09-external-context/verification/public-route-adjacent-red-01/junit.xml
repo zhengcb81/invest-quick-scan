@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="8.652" timestamp="2026-10-09T08:05:26.822765+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_external_search_result_contract.ExternalSearchRoutingTests" name="test_low_confidence_route_cannot_skip_external_receipt_validation" time="5.846" /><testcase classname="tests.test_external_search_result_contract.ExternalSearchRoutingTests" name="test_trusted_caller_identity_snapshot_is_checked_before_routing" time="2.207"><failure message="AssertionError: ValueError not raised">self = &lt;test_external_search_result_contract.ExternalSearchRoutingTests testMethod=test_trusted_caller_identity_snapshot_is_checked_before_routing&gt;
+
+    def test_trusted_caller_identity_snapshot_is_checked_before_routing(self):
+        fixture = self.fixture
+        request = routing.build_route_request(fixture.identity, package_id=fixture.package_id, root=fixture.root)
+        result = external_result(identity=fixture.identity, candidates=fixture.normal(), question_sha=request["prompt_sha256"])
+&gt;       with self.assertRaises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: ValueError not raised
+
+tests\test_external_search_result_contract.py:183: AssertionError</failure></testcase></testsuite></testsuites>

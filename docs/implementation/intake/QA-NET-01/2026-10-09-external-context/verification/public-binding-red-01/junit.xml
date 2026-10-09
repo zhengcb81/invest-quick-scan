@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="10" time="12.231" timestamp="2026-10-09T08:02:50.241014+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_is_explicitly_versioned_and_owner_bound[False]" time="0.514" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_is_explicitly_versioned_and_owner_bound[True]" time="0.457" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[missing_owner]" time="0.338" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[wrong_entity]" time="0.239" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[wrong_question]" time="0.275" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_unbound_owner_or_identity[self_signed]" time="0.274" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_uses_actual_model_instead_of_outer_metadata" time="0.267"><failure message="AssertionError: assert ('wrong' == 'gpt-4.1'&#10;  &#10;  - gpt-4.1&#10;  + wrong)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-binding-red-01/test_public_external_result_us0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000021A258D6850&gt;
+
+    def test_public_external_result_uses_actual_model_instead_of_outer_metadata(tmp_path, monkeypatch):
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        response = _send_external_answer(args, context, model, url)
+        batch = _public_batch(response)
+        batch.results[0].answer.metadata.update(actual_model="wrong", model_requested="wrong", request_id="wrong")
+        result = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name="Synthetic issuer",
+            provider_name="openai", requested_model="wrong", work_store=args["store"])
+        receipt = result["execution_receipts"]["IQS_05"]
+&gt;       assert receipt["actual_model"] == model and receipt["requested_model"] == model
+E       AssertionError: assert ('wrong' == 'gpt-4.1'
+E         
+E         - gpt-4.1
+E         + wrong)
+
+tests\unit\test_quick_scan_external_context.py:260: AssertionError</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_external_result_rejects_raw_native_receipt_drift" time="0.284"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-binding-red-01/test_public_external_result_re4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000021A2584DB80&gt;
+
+    def test_public_external_result_rejects_raw_native_receipt_drift(tmp_path, monkeypatch):
+        args, context, _, _, _, model, url, _, _ = _external_answer_fixture(tmp_path, monkeypatch)
+        response = _send_external_answer(args, context, model, url)
+        batch = _public_batch(response)
+        batch.results[0].answer.metadata["execution"]["response_sha256"] = "0" * 64
+&gt;       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\unit\test_quick_scan_external_context.py:269: Failed</failure></testcase><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_actual_producer_to_iqs_routing_preserves_binding[False]" time="4.173" /><testcase classname="tests.unit.test_quick_scan_external_context" name="test_public_actual_producer_to_iqs_routing_preserves_binding[True]" time="3.236"><failure message="jsonschema.exceptions.ValidationError: Additional properties are not allowed ('sources' was unexpected)&#10;&#10;Failed validating 'additionalProperties' in schema['properties']['web_search_calls']['items']:&#10;    {'type': 'object',&#10;     'properties': {'id': {'type': ['string', 'null']},&#10;                    'status': {'type': ['string', 'null']},&#10;                    'action_type': {'type': ['string', 'null']},&#10;                    'source_urls': {'type': 'array',&#10;                                    'items': {'type': 'string',&#10;                                              'format': 'uri',&#10;                                              'pattern': '^https?://'},&#10;                                    'uniqueItems': True}},&#10;     'required': ['id', 'status', 'action_type', 'source_urls'],&#10;     'additionalProperties': False}&#10;&#10;On instance['web_search_calls'][0]:&#10;    {'id': 'actual-native-call',&#10;     'status': 'completed',&#10;     'action_type': 'search',&#10;     'source_urls': ['https://native.example/ir'],&#10;     'sources': [{'url': 'https://native.example/ir',&#10;                  'title': None,&#10;                  'published_date': None}]}">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/n111a/tmp/public-binding-red-01/test_public_actual_producer_to1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000021A25818BB0&gt;
+hybrid = True
+
+    @pytest.mark.parametrize("hybrid", [False, True])
+    def test_public_actual_producer_to_iqs_routing_preserves_binding(tmp_path, monkeypatch, hybrid):
+        """Real durable producer -&gt; public JSON -&gt; pure consumer; HTTP only is fake."""
+        import sys
+        from pathlib import Path
+        from datetime import datetime, timezone
+        from src.providers.llm_client import LLMClient
+        root = Path(__file__).resolve().parents[5]
+        monkeypatch.syspath_prepend(str(root / "scripts"))
+        monkeypatch.syspath_prepend(str(root / "tests"))
+        import routing
+        import test_routing as fixtures
+        fixture = fixtures.RoutingFixture()
+        fixture.setUp()
+        try:
+            identity = {**fixture.identity, "entity_id": "ENT_BYD", "company": "Synthetic issuer", "as_of": "2026-10-08"}
+            request = routing.build_route_request(identity, package_id=fixture.package_id, root=fixture.root)
+            prompt = request["questions"][0]["questions"][0]["text"]
+            args, context, search, sync, _, model, url, _, clock = _external_answer_fixture(tmp_path, monkeypatch, hybrid=hybrid, question_id="ROUTE_02")
+            facts = fixture.normal()
+            for fact in facts:
+                for source in fact["sources"]:
+                    source.update(entity_id="ENT_BYD", url="https://fixture.example/ir", published_at="2026-10-01")
+            body = sync.post.return_value.json.return_value
+            answer = {"entity_id": "ENT_BYD", "company_name": identity["company"], "question_id": "ROUTE_02", "status": "scored", "score": 8,
+                "description": json.dumps({"schema_version": "2.0.0", "question_id": "ROUTE_02", "candidates": facts})}
+            body["output"][-1]["content"][0]["text"] = json.dumps(answer)
+            sync.post.return_value.content = json.dumps(body).encode()
+            sync.post.return_value.text = sync.post.return_value.content.decode()
+            clock[0] += 1
+            class FixtureDateTime(datetime):
+                @classmethod
+                def now(cls, tz=None): return datetime.fromtimestamp(clock[0], tz or timezone.utc)
+            monkeypatch.setattr("src.providers.llm_client.datetime", FixtureDateTime)
+            with _external_answer_bindings(args, context, "openai", model):
+                response = LLMClient("synthetic-test-only", model, url, provider_name="openai").send_search_request(prompt)
+            batch = _public_batch(response, question_id="ROUTE_02", question_text=prompt, score=8)
+            batch.results[0].answer.text = answer["description"]  # Same provider-parser output boundary.
+            public = batch.to_quick_scan_dict(entity_id="ENT_BYD", company_name=identity["company"], provider_name="openai",
+                requested_model=model, work_store=args["store"])
+            # JSON serialization is the actual cross-process wire, with no Python owner object.
+            wire = json.loads(json.dumps(public, ensure_ascii=False))
+&gt;           decision = routing.resolve_route_decision({**identity, "verified_facts": []}, package_id=fixture.package_id,
+                root=fixture.root, route_response=wire, now_utc=datetime.fromtimestamp(clock[0]+2, timezone.utc).isoformat())
+
+tests\unit\test_quick_scan_external_context.py:316: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\scripts\routing.py:499: in resolve_route_decision
+    mc._validate(receipt_schema, execution_receipt)
+..\..\..\scripts\module_contract.py:55: in _validate
+    Draft202012Validator(schema, format_checker=FormatChecker()).validate(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Draft202012Validator(schema={'additionalProperties': False, 'allOf': [{'if': {'properties': {'classification_status': ...mail', 'idn-email', 'idn-hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uuid']&gt;)
+args = ({'provider': 'openai', 'model_requested': 'gpt-4.1', 'model_resolved': 'gpt-4.1', 'model_revision': 'gpt-4.1', ...},)
+kwargs = {}
+
+    def validate(self, *args, **kwargs):
+        for error in self.iter_errors(*args, **kwargs):
+&gt;           raise error
+E           jsonschema.exceptions.ValidationError: Additional properties are not allowed ('sources' was unexpected)
+E           
+E           Failed validating 'additionalProperties' in schema['properties']['web_search_calls']['items']:
+E               {'type': 'object',
+E                'properties': {'id': {'type': ['string', 'null']},
+E                               'status': {'type': ['string', 'null']},
+E                               'action_type': {'type': ['string', 'null']},
+E                               'source_urls': {'type': 'array',
+E                                               'items': {'type': 'string',
+E                                                         'format': 'uri',
+E                                                         'pattern': '^https?://'},
+E                                               'uniqueItems': True}},
+E                'required': ['id', 'status', 'action_type', 'source_urls'],
+E                'additionalProperties': False}
+E           
+E           On instance['web_search_calls'][0]:
+E               {'id': 'actual-native-call',
+E                'status': 'completed',
+E                'action_type': 'search',
+E                'source_urls': ['https://native.example/ir'],
+E                'sources': [{'url': 'https://native.example/ir',
+E                             'title': None,
+E                             'published_date': None}]}
+
+C:\Miniconda\Lib\site-packages\jsonschema\validators.py:450: ValidationError</failure></testcase></testsuite></testsuites>

@@ -677,11 +677,38 @@
                         "type": "array",
                         "items": { "type": "string", "format": "uri", "pattern": "^https?://" },
                         "uniqueItems": true
+                      },
+                      "sources": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "url": {"type": "string", "format": "uri", "pattern": "^https?://"},
+                            "title": {"type": ["string", "null"]},
+                            "published_date": {"anyOf": [{"type": "null"}, {"type": "string", "format": "date"}]}
+                          },
+                          "required": ["url", "title", "published_date"],
+                          "additionalProperties": false
+                        }
                       }
                     },
                     "required": ["id", "status", "action_type", "source_urls"],
                     "additionalProperties": false
                   }
+                },
+                "search_binding": {
+                  "description": "Public StockQA 1.1 external-use binding. Runtime validates the exact producer proof, original response hash, identities, times and sources; hashes alone do not authenticate facts.",
+                  "type": "object",
+                  "properties": {
+                    "schema": {"const": "stockqa.search_binding/1.1.0"},
+                    "entity_id": {"type": "string", "minLength": 1},
+                    "question_id": {"const": "ROUTE_02"},
+                    "identity_snapshot_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                    "external_context_use": {"type": "object"},
+                    "native_receipt": {"type": "object"}
+                  },
+                  "required": ["schema", "entity_id", "question_id", "identity_snapshot_sha256", "external_context_use", "native_receipt"],
+                  "additionalProperties": false
                 },
                 "entity_id": {
                   "type": "string",
@@ -1078,6 +1105,15 @@
         "dispatch_plan"
       ],
       "allOf": [
+        {
+          "if": {
+            "properties": {"execution": {"type": "object", "required": ["search_binding"]}},
+            "required": ["execution"]
+          },
+          "then": {
+            "properties": {"router_version": {"pattern": "^2\\.(?:[3-9]|[1-9][0-9]+)\\.[0-9]+$"}}
+          }
+        },
         {
           "if": {
             "properties": {

@@ -1,0 +1,140 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ QuestionSetTests.test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline _
+
+self = <test_question_sets.QuestionSetTests testMethod=test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline>
+
+    def test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline(self):
+        repo = Path(os.environ.get('STOCKQA_REPO', str(ROOT.parent / 'StockQAbyLLM')))
+        self.assertTrue((repo / 'src/config/json_config_manager.py').exists(),
+                        'StockQAbyLLM is required for S02 contract acceptance; configure STOCKQA_REPO')
+        old_cwd = Path.cwd()
+        old_argv = sys.argv[:]
+        old_sys_path = sys.path[:]
+        old_dont_write_bytecode = sys.dont_write_bytecode
+        old_bytecode_env = os.environ.get('PYTHONDONTWRITEBYTECODE')
+        bytecode_before = _stockqa_bytecode_snapshot(repo)
+        preexisting_src_modules = {name for name in sys.modules if name == 'src' or name.startswith('src.')}
+        preexisting_main = sys.modules.get('main_with_llm')
+        sys.dont_write_bytecode = True
+        os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
+        sys.path.insert(0, str(repo))
+        try:
+            temp_context = tempfile.TemporaryDirectory(prefix='iqs-stockqa-s02-')
+            tmp = temp_context.name
+            try:
+                os.chdir(tmp)  # upstream logger writes here, never into the external repository
+                loader = importlib.import_module('src.config.json_config_manager').JSONConfigManager
+                parser = importlib.import_module('src.providers.llm_response_parser').LLMResponseParser
+                models = importlib.import_module('src.core.models')
+                generator = importlib.import_module('src.services.answer_generator').AnswerGenerator
+                questions = loader(str(ROOT / 'main_questions.json')).load_questions()
+                self.assertEqual(len(questions), len(self.modules['common']['questions']))
+                q = self.make_manifest()['questions'][0]
+                raw = self.good_answer(q, score=8)
+                score, description = parser().parse_response(json.dumps(raw))
+                self.assertEqual(score, 8)
+                self.assertEqual(json.loads(description)['score'], 8)
+                # The real Q01 path must preserve the provider's score exactly.
+                answer = generator().generate_answer(models.Question('offline test'), [
+                    models.SearchResult(title='test', snippet=description, score=8)])
+                self.assertEqual(answer.score, 8)
+    
+                profile = {**copy.deepcopy(self.profile), 'entity_id': 'ENTITY_FIXTURE'}
+                run_dir = Path(tmp) / 'composed-screening'
+                qs.compose(profile, 'quick', run_dir, answer_format='screening-1')
+                manifest = qs.read_json(run_dir / 'manifest.json')
+                config_path = run_dir / 'questions.json'
+                result_path = Path(tmp) / 'stockqa-result.json'
+                config_json = json.loads(config_path.read_text(encoding='utf-8'))
+                self.assertTrue(all(isinstance(item, dict) and item.get('question_id') and item.get('text')
+                                    for group in config_json for item in group['questions']))
+                Path(tmp, 'llm_apis.json').write_text(json.dumps({
+                    'default_provider': 'openai',
+                    'providers': {'openai': {'api_key': 'TEST_KEY_LOCAL_ONLY',
+                                             'base_url': 'https://api.openai.com/v1/responses',
+                                             'model': 'fixture-model', 'max_retries': 1,
+                                             'format_repair_budget': 0}},
+                }), encoding='utf-8')
+                client_module = importlib.import_module('src.providers.llm_client')
+                main_cli = importlib.import_module('main_with_llm')
+    
+                class OfflineResponse:
+                    def __init__(self, payload, request_id):
+                        self.status_code = 200
+                        self.headers = {'x-request-id': request_id}
+                        self.payload = payload
+    
+                    def raise_for_status(self):
+                        return None
+    
+                    def json(self):
+                        return self.payload
+    
+                class OfflineSession:
+                    def __init__(self):
+                        self.prompts = []
+    
+                    def post(self, endpoint, *, headers, timeout, **kwargs):
+                        json_body = kwargs['json']
+                        prompt = json_body['input']
+                        self.prompts.append(prompt)
+                        question_match = re.search(r'Target question_id: ([A-Z0-9_]+)', prompt)
+                        if question_match is None:
+                            raise AssertionError('StockQA omitted the bound question ID')
+                        qid = question_match.group(1)
+                        expected = next(item for item in manifest['questions'] if item['id'] == qid)
+                        if expected['prompt'] not in prompt:
+                            raise AssertionError('StockQA sent a different prompt than the manifest')
+                        url = f'https://example.com/source/{qid.lower()}'
+                        content = {
+                            'id': qid, 'status': 'scored', 'score': 8, 'confidence': 'high',
+                            'rationale': 'offline CLI fixture', 'information_as_of': profile['as_of'],
+                            'period_start': None, 'period_end': None, 'basis': 'current',
+                            'evidence': [{'claim': 'fixture source supports the score', 'title': 'Fixture source',
+                                          'url': url, 'published_at': None, 'period': 'not_applicable'}],
+                            'counterevidence': 'fixture counterevidence', 'sensitivity': 'fixture downside',
+                            'metrics': {},
+                        }
+                        response_content = json.dumps({
+                            'question_id': qid, 'entity_id': profile['entity_id'],
+                            'company_name': profile['company'], 'status': 'scored', 'score': 8,
+                            'description': json.dumps(content, ensure_ascii=False),
+                        }, ensure_ascii=False)
+                        payload = {
+                            'id': f'resp-{qid}', 'status': 'completed', 'model': 'fixture-model',
+                            'output': [
+                                {'id': f'search-{qid}', 'type': 'web_search_call', 'status': 'completed',
+                                 'action': {'type': 'search', 'sources': [{'url': url}]}},
+                                {'type': 'message', 'content': [{'type': 'output_text', 'text': response_content}]},
+                            ],
+                        }
+                        return OfflineResponse(payload, f'req-{qid}')
+    
+                offline_session = OfflineSession()
+    
+                sys.argv = ['main_with_llm.py', '--company', profile['company'], '--provider', 'openai',
+                            '--config', str(config_path), '--output', str(result_path),
+                            '--require-search', '--entity-id', profile['entity_id']]
+                try:
+                    cli_stdout, cli_stderr = io.StringIO(), io.StringIO()
+                    with mock.patch.object(client_module.http_client_manager, 'get_sync_session',
+                                           return_value=offline_session), \
+                         contextlib.redirect_stdout(cli_stdout), \
+                         contextlib.redirect_stderr(cli_stderr):
+                        cli_status = main_cli.main()
+>                   self.assertTrue(result_path.is_file(), {
+                        'cli_status': cli_status, 'mock_http_calls': len(offline_session.prompts),
+                        'stdout_tail': cli_stdout.getvalue()[-1800:],
+                        'stderr_tail': cli_stderr.getvalue()[-1800:],
+                    })
+E                   AssertionError: False is not true : {'cli_status': 2, 'mock_http_calls': 0, 'stdout_tail': '{"blocked": true, "reason": "spend_authorization_missing", "run_id": "run-20261009T072010Z-fa54de", "schema": "stockqa.spend_preflight/1.0.0", "status": "needs_configuration"}\n', 'stderr_tail': ''}
+
+tests\test_question_sets.py:1153: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\main_questions.json
+INFO - 成功从JSON配置加载 24 个问题
+INFO - 成功解析LLM响应（直接JSON），评分: 8/10
+=========================== short test summary info ===========================
+FAILED tests/test_question_sets.py::QuestionSetTests::test_actual_stockqa_cli_emits_manifest_question_receipt_and_is_accepted_offline
+1 failed, 110 deselected in 1.67s

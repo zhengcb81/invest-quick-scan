@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="8" time="6.176" timestamp="2026-10-09T07:56:21.870669+01:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_external_search_result_contract.ExternalSearchAdapterTests" name="test_consumer_rejects_neighboring_binding_corruption_even_when_rehashed" time="0.001"><failure message="ValueError: unsupported StockQA quick-scan result version">self = &lt;test_external_search_result_contract.ExternalSearchAdapterTests testMethod=test_consumer_rejects_neighboring_binding_corruption_even_when_rehashed&gt;
+
+    def test_consumer_rejects_neighboring_binding_corruption_even_when_rehashed(self):
+        # Baseline must be accepted first: version-wide rejection proves no negative.
+&gt;       stockqa_adapter.adapt_quick_scan_result(external_result(), native_fixtures.IDENTITY)
+
+tests\test_external_search_result_contract.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+result = {'schema_version': 'stockqa.quick_scan_result/1.1.0', 'entity': {'entity_id': 'E_ADAPTER', 'name': 'Fixture Semiconduc...bserved_at': '2026-09-20T12:00:00Z', 'provider': {'name': 'openai', 'requested_model': 'fixture-model-requested'}, ...}
+identity = {'entity_id': 'E_ADAPTER', 'identity_ref': 'fixture:E_ADAPTER:v1', 'company': 'Fixture Semiconductor Co.', 'ticker': 'FIXTURE', ...}
+
+    def adapt_quick_scan_result(result: dict, identity: dict) -&gt; dict:
+        """Validate and project a StockQA public result containing ROUTE_02.
+    
+        The receipt's ``answer_sha256`` is defined over the complete serialized
+        public answer object, not an implementation-specific provider response.
+        """
+        if not isinstance(result, dict) or result.get("schema_version") != QUICK_SCAN_RESULT_V1:
+&gt;           raise ValueError("unsupported StockQA quick-scan result version")
+E           ValueError: unsupported StockQA quick-scan result version
+
+scripts\stockqa_adapter.py:40: ValueError</failure></testcase><testcase classname="tests.test_external_search_result_contract.ExternalSearchAdapterTests" name="test_external_and_hybrid_keep_native_events_separate" time="0.020"><failure message="ValueError: unsupported StockQA quick-scan result version">self = &lt;test_external_search_result_contract.ExternalSearchAdapterTests testMethod=test_external_and_hybrid_keep_native_events_separate&gt;
+
+    def test_external_and_hybrid_keep_native_events_separate(self):
+        for hybrid in (False, True):
+            with self.subTest(hybrid=hybrid):
+                result = external_result(hybrid=hybrid)
+                original = copy.deepcopy(result)
+&gt;               adapted = stockqa_adapter.adapt_quick_scan_result(result, native_fixtures.IDENTITY)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_external_search_result_contract.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+result = {'schema_version': 'stockqa.quick_scan_result/1.1.0', 'entity': {'entity_id': 'E_ADAPTER', 'name': 'Fixture Semiconduc...bserved_at': '2026-09-20T12:00:00Z', 'provider': {'name': 'openai', 'requested_model': 'fixture-model-requested'}, ...}
+identity = {'entity_id': 'E_ADAPTER', 'identity_ref': 'fixture:E_ADAPTER:v1', 'company': 'Fixture Semiconductor Co.', 'ticker': 'FIXTURE', ...}
+
+    def adapt_quick_scan_result(result: dict, identity: dict) -&gt; dict:
+        """Validate and project a StockQA public result containing ROUTE_02.
+    
+        The receipt's ``answer_sha256`` is defined over the complete serialized
+        public answer object, not an implementation-specific provider response.
+        """
+        if not isinstance(result, dict) or result.get("schema_version") != QUICK_SCAN_RESULT_V1:
+&gt;           raise ValueError("unsupported StockQA quick-scan result version")
+E           ValueError: unsupported StockQA quick-scan result version
+
+scripts\stockqa_adapter.py:40: ValueError</failure><failure message="ValueError: unsupported StockQA quick-scan result version">self = &lt;test_external_search_result_contract.ExternalSearchAdapterTests testMethod=test_external_and_hybrid_keep_native_events_separate&gt;
+
+    def test_external_and_hybrid_keep_native_events_separate(self):
+        for hybrid in (False, True):
+            with self.subTest(hybrid=hybrid):
+                result = external_result(hybrid=hybrid)
+                original = copy.deepcopy(result)
+&gt;               adapted = stockqa_adapter.adapt_quick_scan_result(result, native_fixtures.IDENTITY)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_external_search_result_contract.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+result = {'schema_version': 'stockqa.quick_scan_result/1.1.0', 'entity': {'entity_id': 'E_ADAPTER', 'name': 'Fixture Semiconduc...bserved_at': '2026-09-20T12:00:00Z', 'provider': {'name': 'openai', 'requested_model': 'fixture-model-requested'}, ...}
+identity = {'entity_id': 'E_ADAPTER', 'identity_ref': 'fixture:E_ADAPTER:v1', 'company': 'Fixture Semiconductor Co.', 'ticker': 'FIXTURE', ...}
+
+    def adapt_quick_scan_result(result: dict, identity: dict) -&gt; dict:
+        """Validate and project a StockQA public result containing ROUTE_02.
+    
+        The receipt's ``answer_sha256`` is defined over the complete serialized
+        public answer object, not an implementation-specific provider response.
+        """
+        if not isinstance(result, dict) or result.get("schema_version") != QUICK_SCAN_RESULT_V1:
+&gt;           raise ValueError("unsupported StockQA quick-scan result version")
+E           ValueError: unsupported StockQA quick-scan result version
+
+scripts\stockqa_adapter.py:40: ValueError</failure></testcase><testcase classname="tests.test_external_search_result_contract.ExternalSearchAdapterTests" name="test_native_v1_and_native_v1_1_keep_the_existing_projection" time="0.001"><failure message="ValueError: unsupported StockQA quick-scan result version">self = &lt;test_external_search_result_contract.ExternalSearchAdapterTests testMethod=test_native_v1_and_native_v1_1_keep_the_existing_projection&gt;
+
+    def test_native_v1_and_native_v1_1_keep_the_existing_projection(self):
+        result = native_fixtures.public_result()
+        original = stockqa_adapter.adapt_quick_scan_result(result, native_fixtures.IDENTITY)
+        result["schema_version"] = "stockqa.quick_scan_result/1.1.0"
+&gt;       self.assertEqual(stockqa_adapter.adapt_quick_scan_result(result, native_fixtures.IDENTITY), original)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_external_search_result_contract.py:96: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+result = {'schema_version': 'stockqa.quick_scan_result/1.1.0', 'entity': {'entity_id': 'E_ADAPTER', 'name': 'Fixture Semiconduc...bserved_at': '2026-09-20T12:00:00Z', 'provider': {'name': 'openai', 'requested_model': 'fixture-model-requested'}, ...}
+identity = {'entity_id': 'E_ADAPTER', 'identity_ref': 'fixture:E_ADAPTER:v1', 'company': 'Fixture Semiconductor Co.', 'ticker': 'FIXTURE', ...}
+
+    def adapt_quick_scan_result(result: dict, identity: dict) -&gt; dict:
+        """Validate and project a StockQA public result containing ROUTE_02.
+    
+        The receipt's ``answer_sha256`` is defined over the complete serialized
+        public answer object, not an implementation-specific provider response.
+        """
+        if not isinstance(result, dict) or result.get("schema_version") != QUICK_SCAN_RESULT_V1:
+&gt;           raise ValueError("unsupported StockQA quick-scan result version")
+E           ValueError: unsupported StockQA quick-scan result version
+
+scripts\stockqa_adapter.py:40: ValueError</failure></testcase><testcase classname="tests.test_external_search_result_contract.ExternalSearchRoutingTests" name="test_public_external_result_drives_existing_module_routing_and_replays" time="5.537"><failure message="ValueError: ROUTE_02 requires the exact native response envelope">self = &lt;test_external_search_result_contract.ExternalSearchRoutingTests testMethod=test_public_external_result_drives_existing_module_routing_and_replays&gt;
+
+    def test_public_external_result_drives_existing_module_routing_and_replays(self):
+        fixture = self.fixture
+        request = routing.build_route_request(fixture.identity, package_id=fixture.package_id, root=fixture.root)
+        for hybrid in (False, True):
+            with self.subTest(hybrid=hybrid):
+                result = external_result(hybrid=hybrid, identity=fixture.identity,
+                    candidates=fixture.normal(), question_sha=request["prompt_sha256"])
+&gt;               decision = routing.resolve_route_decision({**fixture.identity, "verified_facts": []},
+                    package_id=fixture.package_id, root=fixture.root, route_response=result, now_utc=fixture.now)
+
+tests\test_external_search_result_contract.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\routing.py:457: in resolve_route_decision
+    parsed_response = parse_route_response(route_response, route_input) if route_response is not None else None
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'schema_version': 'stockqa.quick_scan_result/1.1.0', 'entity': {'entity_id': 'E_SEMI', 'name': 'Fictional dual-listed...bserved_at': '2026-09-20T12:00:00Z', 'provider': {'name': 'openai', 'requested_model': 'fixture-model-requested'}, ...}
+route_input = {'entity_id': 'E_SEMI', 'identity_ref': 'trusted:E_SEMI:v1', 'company': 'Fictional dual-listed equipment company', 'ticker': '600TEST', ...}
+
+    def parse_route_response(value, route_input):
+        """Read the existing StockQA native envelope; never interpret its score as company quality."""
+        identity = _identity(route_input)
+        if isinstance(value, str):
+            value = json.loads(value, object_pairs_hook=mc._unique_object)
+        if isinstance(value, dict) and value.get("schema_version") == "stockqa.quick_scan_result/1.0.0":
+            import stockqa_adapter
+            return stockqa_adapter.adapt_quick_scan_result(value, identity)
+        required = {"question_id", "entity_id", "company_name", "status", "score", "description"}
+        if not isinstance(value, dict) or set(value) != required:
+&gt;           raise ValueError("ROUTE_02 requires the exact native response envelope")
+E           ValueError: ROUTE_02 requires the exact native response envelope
+
+scripts\routing.py:326: ValueError</failure><failure message="ValueError: ROUTE_02 requires the exact native response envelope">self = &lt;test_external_search_result_contract.ExternalSearchRoutingTests testMethod=test_public_external_result_drives_existing_module_routing_and_replays&gt;
+
+    def test_public_external_result_drives_existing_module_routing_and_replays(self):
+        fixture = self.fixture
+        request = routing.build_route_request(fixture.identity, package_id=fixture.package_id, root=fixture.root)
+        for hybrid in (False, True):
+            with self.subTest(hybrid=hybrid):
+                result = external_result(hybrid=hybrid, identity=fixture.identity,
+                    candidates=fixture.normal(), question_sha=request["prompt_sha256"])
+&gt;               decision = routing.resolve_route_decision({**fixture.identity, "verified_facts": []},
+                    package_id=fixture.package_id, root=fixture.root, route_response=result, now_utc=fixture.now)
+
+tests\test_external_search_result_contract.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\routing.py:457: in resolve_route_decision
+    parsed_response = parse_route_response(route_response, route_input) if route_response is not None else None
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'schema_version': 'stockqa.quick_scan_result/1.1.0', 'entity': {'entity_id': 'E_SEMI', 'name': 'Fictional dual-listed...bserved_at': '2026-09-20T12:00:00Z', 'provider': {'name': 'openai', 'requested_model': 'fixture-model-requested'}, ...}
+route_input = {'entity_id': 'E_SEMI', 'identity_ref': 'trusted:E_SEMI:v1', 'company': 'Fictional dual-listed equipment company', 'ticker': '600TEST', ...}
+
+    def parse_route_response(value, route_input):
+        """Read the existing StockQA native envelope; never interpret its score as company quality."""
+        identity = _identity(route_input)
+        if isinstance(value, str):
+            value = json.loads(value, object_pairs_hook=mc._unique_object)
+        if isinstance(value, dict) and value.get("schema_version") == "stockqa.quick_scan_result/1.0.0":
+            import stockqa_adapter
+            return stockqa_adapter.adapt_quick_scan_result(value, identity)
+        required = {"question_id", "entity_id", "company_name", "status", "score", "description"}
+        if not isinstance(value, dict) or set(value) != required:
+&gt;           raise ValueError("ROUTE_02 requires the exact native response envelope")
+E           ValueError: ROUTE_02 requires the exact native response envelope
+
+scripts\routing.py:326: ValueError</failure></testcase></testsuite></testsuites>
