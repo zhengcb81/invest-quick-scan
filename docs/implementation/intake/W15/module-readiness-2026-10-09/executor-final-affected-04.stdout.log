@@ -1,0 +1,75 @@
+........................................................................ [ 23%]
+........................................................................ [ 46%]
+...............................F........................................ [ 70%]
+........................................................................ [ 93%]
+....................                                                     [100%]
+================================== FAILURES ===================================
+________ test_par_04_resume_keeps_original_checkpoints_and_provenance _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-final-affected-04/test_par_04_resume_keeps_origi0')
+
+    def test_par_04_resume_keeps_original_checkpoints_and_provenance(tmp_path: Path) -> None:
+        """PAR-04: pack returned q1-q4, then crash; resume with the NEXT model.
+        q1-q4 keep their unique success checkpoints with original execution time
+        and model; only q5/q6 are refilled; the original four gain no new sends;
+        no new pack id mints new logical questions; attempt/prompt hashes stay."""
+        store = _store(tmp_path)
+        lifecycle_a = _lifecycle(store, run_id="RUN_1", model_requested="model-a")
+        seeded = {}
+        for qid in ("IQS_05", "IQS_06", "IQS_07", "IQS_08"):
+>           seeded[qid] = _seed_checkpoint(
+                store,
+                lifecycle_a,
+                qid,
+                actual_model="model-a",
+                completed_at="2026-10-06T01:00:00Z",
+            )
+
+tests\unit\test_q07_checkpoint.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q07_checkpoint.py:96: in _seed_checkpoint
+    store.record_attempt_outcome(
+src\utils\quick_scan_work_store.py:2978: in record_attempt_outcome
+    self._persist_response_tx(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x0000020888EE25C0>
+attempt_id = 'ATTEMPT_a17013537f364f0ea252434277b561f1'
+receipt = {'provider': 'mimo', 'request_id': 'req_q07_01', 'response_id': 'resp_q07_01', 'actual_model': 'model-a', ...}
+receipt_sha256 = 'db3573fbfe7c33ce54195bd91056122f8b83ac0e3c1b5d659e2a4b6ca1752039'
+now = 1791580877.238269
+
+    @classmethod
+    def _persist_response_tx(
+        cls,
+        connection: sqlite3.Connection,
+        attempt_id: str,
+        receipt: object,
+        *,
+        receipt_sha256: Optional[str],
+        now: float,
+    ) -> None:
+        safe = _sanitized_receipt(receipt)
+        if safe.get("response_sha256") is None:
+            return  # No decodable HTTP JSON, not a fabricated response.
+        resolution = connection.execute(
+            "SELECT * FROM quick_scan_attempt_resolution WHERE attempt_id=?", (attempt_id,)
+        ).fetchone()
+        if resolution is None:
+            raise WorkConflictError("durable response requires a frozen dispatch")
+        frozen = cls._resolution_record(resolution)
+        actual_hash = quick_scan_receipt_sha256(safe)
+        if receipt_sha256 is not None and receipt_sha256 != actual_hash:
+            raise WorkConflictError("durable response receipt hash mismatch")
+        if (
+            safe.get("requested_model") != frozen["model_requested"]
+            or safe.get("model_resolution_sha256") != frozen["policy_sha256"]
+        ):
+>           raise WorkConflictError("durable response does not match frozen request")
+E           src.utils.quick_scan_work_store.WorkConflictError: durable response does not match frozen request
+
+src\utils\quick_scan_work_store.py:1841: WorkConflictError
+=========================== short test summary info ===========================
+FAILED tests\unit\test_q07_checkpoint.py::test_par_04_resume_keeps_original_checkpoints_and_provenance
+1 failed, 307 passed in 72.30s (0:01:12)

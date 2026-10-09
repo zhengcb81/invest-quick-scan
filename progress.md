@@ -2645,3 +2645,50 @@
 - resume工具91cf29的push原PID3676终态128：源仓没有origin；只读1920b8证实remote_names=[]，既有PWF决定7本就保持StockWiki本地无remote。保留原失败而不新加远端，不重复commit；finalize工具59f487实际exit0，result明确source_published=true/pushed=false/local_only_existing_owner_decision_7。软件交付完成不冒充远端发布、金融准确性或全局门。
 - 独占runtime inventory真实os.lstat核9缓存文件/4子目录，0链接/0reparse。native dry工具18e90d和Apply工具5fca24均终态exit0，CIM0活进程、331源执行文件SHA不变，逐个仅清runs/s13p/root；共享TEMP、其他仓库、DB/名单、未知opencode均保留。正常钩子已装仍保留Git本地基础设施，cache清完。新本仓Git尚待本次实际回执。
 - 后续只读盘点明确实际缺口：W15模块增量刷新、公共query/refresh envelope及当前真实owner golden先于L03/G3；B01仍无准确性结论，facts/relations未生产、F05和TH/IN未解锁。先按W15原卡核W06/W11/Q13，不重做G2b、已签收W11/W12或JR软件。
+
+- IQS实际提交/push工具16cb93终态exit0：469d11b127dc908fd0713f1e944459b60bff0a1d，32精确变化/28归档原字节staged及Git blob一致，远端master同HEAD，仅原opencode保留。StockWiki6c46f03按决定7本地交付，不再尝试缺失origin。
+- W15只读接口核查：CodeGraph当前索引未覆盖新quick_scan模块，已查具体路径后读源；首次rg误把Windows路径通配符作为参数、猜不存在conftest/handoff及一次错误cwd读取IQS脚本，只发生只读缺文件/参数错误，已改为正确仓根、真实文件和rg -g；不记成产品RED。现有W06可做语义/TTL纯缺口、W11只补基础缺字段，Q13实际manifest派发可新增/未知对账，但完整持久路由与独立decision锚点尚缺。先复用IQS原release/route/manifest验证器，做公开离线路由bundle校验接口，再由StockWiki存储消费；不在SW复制整套路由算法、不把新摘要当来源认证。
+
+- W15公开离线adapter先保存handoff-red01实际pytest2/collection1error（新模块缺失，不称13个产品漏洞），原47080终态；复用原S06/QS/manifest完整validator实施后，handoff-green01原71256实际13P/73.31s。增加DTO schema及归档/prompt/时间/绑定反例后handoff-green02原79640实际17P/68.90s，0失败/skip，实际OS CLI stdout正反原件在自有测试根。两个GREEN属不同源码，不相加；仅合成公司+真实离线producer工件，不是真实公司身份/金融golden。凭据剥离、Python网络/外部SQLiteguard，自有根runs/w15a保留供整批后续，不能现在盲清。
+- 同一连续W15实现尚未签收/提交：接收服务应从自身可信transport调用新公开CLI，不接受任意输入DTO当认证；schema6存储须绑定analysis subject/revision/perimeter及独立current route CAS，不仅entity/ticker。随后模块/逐题TTL缺口和原Q13代际接线，再一次集中review；不为本小入口单独新增审查门、不关闭W15/G3/F05/L03/TH-IN。
+
+- 接续W15：handoff-scope01当前2P/16 deselected只覆盖新增route schema2 guard及执行时间，不称当前18项全绿。StockWiki6c46f03非秘密331件只读原文导入本仓独占runs/w15a/sw，外仓源0写。storage-red01因测试import旧CLI触发缺config而collection失败，改为纯身份/主体fixture；storage-red02真实3F/2 deselected（schema5、新模块不存在），storage-red03真实7F（新增表/功能不存在）。另一次误读私有副本不存在AGENTS、猜providers.py及不存在task-cards路径仅为只读勘察错误，非产品RED。
+- schema6/route store候选实施在私有副本：冻结主体revision/perimeter及身份原快照、公开IQS subprocess校验，保存route/manifest原bytes与双SHA；当前指针按subject/scope CAS，历史追加。新增stockwiki.route_subject/1.0.0是owner路由输入引用，不替换Identity DTO；任意自报identity_ref被拒。schema/backup上界同时提升6，读PRAGMA前持BEGIN锁。storage-green01实际7P/1.14s；storage-green02实际31P/2.81s（9新route例及22既有store，含两个真实SQLite竞争writer/CAS、旧身份保真与迁移回滚），0失败/skip。均实际PID终态，源码中途未改；仍未整包独审、未发布/迁移源，真实API0。下一步增量刷新与实际公开CLI联调，不新增小节点审查。
+
+- 实际IQS CLI联调cli01为1P/1F（backup测试误用关键字，fixture/controller失败保留）；cli02为2P/12F，隔离guard错拒自有SQLite只读URI，不算12产品漏洞。归档guard-v1后修正URL解码/无authority/绝对own边界核验，只允许自有URI；cli03真实14P/26.59s（actual IQS subprocess validate/store/activate/refuse及schema6 SQLite native backup/独立root恢复+12既有backup例）。所有进程终态；收费0、生产0。
+- 模块增量refresh-red01四fixture错误identity_store参数已按真实签名修正，不算产品RED；refresh-red02真实4F为新planner缺失。实现后refresh-green01真实24P/2.07s（4增量+20既有W06）：24核心复用仅2新增题待办、退出模块留历史、精确TTL/model/meaning、unknown cooldown及未决paid优先。旧manifest找到才复用，按单题semantic与subject/scope而非全template版号。CLI04真实2P/1F暴露actual common内有1 security题，不能将全卷当entity：已改为逐题owner scope绑定，缺证券ID定向defer，不选第一个ticker或拒掉全卷；CLI05在验证该修复中。
+- 获授权只读结构agent w15_execution_design 已勘察实际Q13接线：现runner只用generation/router映射、不消费action；不能只生成SW plan就宣布TTL/零重复收费全链完成。需要固定owner CLI transport重取current/原bundle及自主work projection，原durable事务跨generation未决请求与refresh幂等绑定，再以原Observation引用复用。该agent非新增审查门，无代码/API/测试写入；整包集中review仍一次。
+
+## 2026-10-09 W15执行桥接接续（未集中签收/源发布）
+
+- 用户再次给予全部后续所需授权；不重复按路径询问。源仍StockWiki6c46f03 clean、StockQA bc41908/11原unknown保留；147跟踪非秘密QA输入以当前HEAD和-uall状态只读冻结，executor-input-01原SHA已存，不读密钥/未知文件、外仓产品0写。CodeGraph context返回的是IQS旧归档位置，不能当作最新QA符号索引；已查具体现行runner/store路径读取。
+- storage-current-07原59844真实终态0，38P/44.95s，覆盖上轮未复跑的schema guard/producer owned-root与refresh空fields；后续owner桥接改动不由该GREEN自动覆盖。guard仍Python网络/自有SQLite约束，不称whole-OS隔离。
+- Q13执行库v14候选仅在私有147输入副本加法迁移：版本登记、不可变owner refresh binding、重启稳定work键、两writer一lease、跨全部generations未决扫描、send-intent与原费用预留事务前复查；不建第二费用账本。初RED01为测试helper import错误，RED02真实5F（新增API/登记模块缺失）。green01为97P/12F：11旧schema降级fixture未删除新v14空表、1测试租约到期错误；green02为108P/1F，反向legacy发送也被新guard正确拦下，修改反例为双向阻断且原attempt均prepared。不称上述fixture问题是旧产品漏洞。
+- green03为114P/3F；另外以完全原bc41908的147件运行baseline-receipt-control-01，原105928终态1/同样3F+5P，证实QA-NET旧fixture回执缺少已发布Phase111实际model/protocol/response hash。保留原对照，改测试使其显式使用已有synthetic HTTP receipt helper，不降低产品校验。green04原5600终态0，117P/20.03s，覆盖v14、104既有work-store及8manifest例；这不是整个W15最终签收。
+- 新first-party owner transport只能配置固定StockWiki公开CLI/明确工作区/subject/scope；不接受外来refresh-plan文件当执行授权。先完整current/原bundle验证，再以QA自主projection请求owner refresh并重核current；逐题reuse在hydrate前引用原Observation，dispatch绑定原generation/费用/租约，未决/送达沿原context暂缓并指向恢复。新增轻量anchor查询仅检测已验bundle的owner漂移，明确new_execution_authorized=false；不能单独作执行许可。启动/逐题/HTTP边界还需完整集中验证。
+- storage-owner-bridge-01已实际终态0，4P/62.37s；不是仍在运行。executor-boundary-red01为10P/1F，真实发现相同绑定未发送租约到期无法接续；修复后green01实际128P/21.93s。后续local config/result schemas及来源绑定匹配加入后，storage-owner-bridge-02实际67540终态0，73P/73.96s，涵盖完整owner/route/refresh/备份/既有store；不同版本批次不加总。
+- 新公开module-refresh与route-store-cli两schema集中放在IQS，保持`c06_envelope_validated=false`；StockQA仅读配置代码根中的静态JSON contracts，三个本地registry资源不联网解析、不导入外仓Python。实际SW各action OS CLI与新QA transport核验storage-wire-contract-01原14356终态0，4P/83.84s。当前executor-complete-affected-01正在验证11个受影响测试文件，真实厂商HTTP0、生产迁移0；任何新失败保留原证据并按其归属处理。
+- 上述均是合成公司/答案storage boundary，不能冒充金融准确性或真实owner identity/query golden。自有runs/w15a仍在用；候选未集中冻结/审查/源发布。后续一次整包review；真实query/C06投影与owner golden单独明确接续，不能给W09 read primitive改标C06已验证。
+
+## 2026-10-09 W15基础链同次集中收尾（当前，覆盖上段运行状态）
+
+- 首完整SW诊断full-sw-support-fixed原5808实际returncode1，1063P/64F/18skip/21error；不标running/passed。独审full-sw-classification-01逐组归因，包括缺非秘密support/过长基准根/guard限制、旧v5版本断言、两个已发布短ID夹具和格式删除共享fixture。首次full collection缺regenerate、两次猜错不存在的backup_manifest/import测试路径及所有原错误都保留，不声称测试已执行。
+- 一次集中独审发现P1 F1：真实双SQLite capacity-anchor-01实际1F，owner current等待时A→B仍获得A许可；正式四组合RED4F。修复两发送路径每次准入前重查，不新增费用预留，guard拒绝具名保留prepared；没有宣称分布式原子一致性。同一个agent限定复核待收，无新小节点review。
+- 当前storage-final-09原10952终态0，91P/59.41s，包含真正producer/公开OS CLI/备份恢复及完整真实v4 staged原行保留；static格式丢fixture已显式re-export，当前SHA补测。两旧profile期望转为实际标准输入ID后storage-profiles-final-11原10748终态0，90P/16.73s；不同/重叠范围不加总。
+- executor-final-affected-03原43304为248P/5F；完全原bc41908基线control72048同样5F，四旧Q07缺durable HTTP回执、一个Windows stdlib IPC被guard拒。修fixture及IPC隔离后final-affected-04原67172实际307P/1F/72.30s，唯一新维护Q07 model-a夹具的requested默认未跟进；仅改该fixture后完整checkpoint-final-05原36492为8P/3.44s，所有产品SHA保持。不机械重跑307或把批次拼成一次308GREEN。
+- 新guard v3仅对标准库fallback socketpair真实csock→自有listen lsock放行本地IPC，普通localhost HTTP/远端/外来SQLite仍拒；四guard案例和真实async budget在307P内通过。旧guard v2原件另存，不覆盖原过程。static-qa-03沙箱IPC挂起，经CIM核34028/47936后仅停止自身Black；static-qa-05实际四门0、mypy63、Bandit原阈值不变。两个固定第一方无shell subprocess只精确B404/B603说明；其余同文件assert改显式异常，不放宽阈值。SW新fixtureRuff0，提交时仍走原正常static hook。
+- 已冻结candidate02（SW15/QA16/IQS5）与原01并存；源码只读preflight确认SW6c46f03 clean、QAbc41908原11unknown完全保留、全部输入执行SHA不变。用户总授权有效，待同次限定复核后精确发布，不读/覆盖未知opencode或外仓其他工作。
+- 真实26结构metadata/四只读native备份仅为隔离诊断，不归档公司数据/文档，不迁移生产库。费用API/公司文档下载/生产名单写入0。基础链软件不关闭整个W15步骤4；C06 query/refresh envelope、真实owner serializer golden及生成命令→L03/G3/B01准确性→facts/F05→TH/IN继续保持原门。
+
+- 同一集中独审最终concentrated-recheck-02已签收基础软件范围：36候选与candidate02原字节匹配、开放软件发现0，F1独立真实双SQLite复验capacity-anchor-02为1P/1.28s，0新预留/0 send-intent/0 HTTP；不再新开审查门。StockWiki已正常钩子提交a5a97d6efbf5f0ee79122a1ec375def388700690，15精确路径、原保护路径不变，本地无remote决定保持。StockQA16路径已精确暂存、diff检查0，正常提交钩子正在自有publication-temp安装依赖；实际Git终态/推送仍待，不提前标发布。自有w15a继续保留，不能在钩子仍活时清理。
+- 本次恢复误把交接文件简称handoff.md及StockWiki query CLI猜为不存在的quick_scan_query.py；两次只读缺文件，随后读取真实docs/implementation/handoff-for-new-agent.md与已有query模块。CodeGraph当前query context未返回该新模块，不能把无关符号当当前调用链；不计产品RED或测试失败。
+
+
+## 2026-10-09 W15基础软件实际交付与严格清理（当前）
+
+- 同次集中审查开放软件发现0；StockWiki正常提交a5a97d6efbf5f0ee79122a1ec375def388700690、15路径/本地无remote，StockQA正常提交及推送6aafc32eae5339668e893b8a2b246d0655075584、16路径/远端同HEAD。原未知项与保护源码保留，真实API/公司文档/生产名单或数据库迁移0；正常钩子未跳过。
+- QA首正常提交communicate600s超时，CIM精确核原PID/父子链/UTC创建时间后仅结束自有遗留进程；原控制器没有TimeoutExpired原stdout/stderr落档分支，不伪造其未捕获日志，工具终态与timeout-descendants实际回执分开留档。复用五组既有准确版本hook缓存，安装metadata SHA前后一致。接续01全部静态通过、仅mixed-line-ending规范化.gitignore失败；raw受审/新LF/Git三域已记录，02正常钩子/commit/push终态0。
+- 三项控制器误差均在实际动作前拒绝：PowerShell DateTime本地/UTC比较、只读cache SQLite缺uri=True、Git文本过滤使EOL-only不出现在diff；按实际口径修正，没有错杀外来进程、读密钥、放宽产品校验或重复测试。只读cache查询的两次失败及最初谓词拒绝保留在progress，不称产品RED。
+- 自有runs/w15a实际清理20051文件/13167目录，真实lstat单硬链/无reparse、精确集合与SHA、CIM0，dry→Apply；根已不存在。20件真正OS producer合成原文已归档，不归档真实SQLite/公司metadata克隆/配置，不清共享TEMP或其他仓未知项。
+- 更新Next Step/Phase113基础步骤与唯一当前handoff；下一项原步骤4正式query/refresh及真实owner golden继续实施。本仓IQS正常Git/push实际回执待本批工具完成，暂不写虚构commit；不由基础软件关闭W15/G3/L03/B01/F05/TH-IN或200家live。
+- 本批IQS发布首次在任何stage/commit前按allowlist拒绝：Git默认将未跟踪工件折叠为上级目录；改为-uall逐路径核验，仍保留相同精确写范围，不放宽整个父目录。原source publication与清理结果不变，接续实际Git待工具回执。

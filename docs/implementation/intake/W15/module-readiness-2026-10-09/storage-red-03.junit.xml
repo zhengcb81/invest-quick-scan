@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="7" time="0.802" timestamp="2026-10-09T20:44:04.734485+01:00" hostname="DESKTOP-156V213"><testcase classname="sw.tests.test_quick_scan_routes" name="test_route_schema6_adds_tables_without_rewriting_identity" time="0.081"><failure message="assert 5 == 6&#10; +  where 5 = migrate()&#10; +    where migrate = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3C7878C0&gt;.migrate">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_route_schema6_adds_tables0')
+
+    def test_route_schema6_adds_tables_without_rewriting_identity(tmp_path):
+        identity, subject = _workspace(tmp_path)
+&gt;       assert identity.migrate() == 6
+E       assert 5 == 6
+E        +  where 5 = migrate()
+E        +    where migrate = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3C7878C0&gt;.migrate
+
+tests\test_quick_scan_routes.py:90: AssertionError</failure></testcase><testcase classname="sw.tests.test_quick_scan_routes" name="test_classification_raw_and_subject_binding_survive_storage[True]" time="0.077"><failure message="ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_classification_raw_and_su0')
+confidence = True
+
+    @pytest.mark.parametrize("confidence", [True, False])
+    def test_classification_raw_and_subject_binding_survive_storage(tmp_path, confidence):
+        identity, subject = _workspace(tmp_path)
+&gt;       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3CFE5310&gt;
+
+    def _routes(identity):
+&gt;       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError</failure></testcase><testcase classname="sw.tests.test_quick_scan_routes" name="test_classification_raw_and_subject_binding_survive_storage[False]" time="0.071"><failure message="ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_classification_raw_and_su1')
+confidence = False
+
+    @pytest.mark.parametrize("confidence", [True, False])
+    def test_classification_raw_and_subject_binding_survive_storage(tmp_path, confidence):
+        identity, subject = _workspace(tmp_path)
+&gt;       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3CFE6210&gt;
+
+    def _routes(identity):
+&gt;       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError</failure></testcase><testcase classname="sw.tests.test_quick_scan_routes" name="test_independent_current_anchor_rejects_resealed_candidate_and_stale_cas" time="0.066"><failure message="ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_independent_current_ancho0')
+
+    def test_independent_current_anchor_rejects_resealed_candidate_and_stale_cas(tmp_path):
+        identity, subject = _workspace(tmp_path)
+&gt;       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3C7A7A80&gt;
+
+    def _routes(identity):
+&gt;       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError</failure></testcase><testcase classname="sw.tests.test_quick_scan_routes" name="test_changed_snapshot_bytes_are_named_refusal_not_history_rewrite" time="0.080"><failure message="ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_changed_snapshot_bytes_ar0')
+
+    def test_changed_snapshot_bytes_are_named_refusal_not_history_rewrite(tmp_path):
+        identity, subject = _workspace(tmp_path)
+&gt;       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3D1003E0&gt;
+
+    def _routes(identity):
+&gt;       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError</failure></testcase><testcase classname="sw.tests.test_quick_scan_routes" name="test_subject_perimeter_and_identity_ref_cannot_be_selected_by_route" time="0.057"><failure message="ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_subject_perimeter_and_ide0')
+
+    def test_subject_perimeter_and_identity_ref_cannot_be_selected_by_route(tmp_path):
+        identity, subject = _workspace(tmp_path)
+&gt;       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3D079250&gt;
+
+    def _routes(identity):
+&gt;       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError</failure></testcase><testcase classname="sw.tests.test_quick_scan_routes" name="test_migration_rolls_back_route_tables_and_preserves_v5_data" time="0.058"><failure message="sqlite3.OperationalError: no such table: quick_scan_route_current_history">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_migration_rolls_back_rout0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000012E3D100B00&gt;
+
+    def test_migration_rolls_back_route_tables_and_preserves_v5_data(tmp_path, monkeypatch):
+        from stockwiki import quick_scan_schema
+        identity, subject = _workspace(tmp_path)
+        with sqlite3.connect(identity.database_path) as con:
+&gt;           con.execute("DROP TABLE quick_scan_route_current_history")
+E           sqlite3.OperationalError: no such table: quick_scan_route_current_history
+
+tests\test_quick_scan_routes.py:165: OperationalError</failure></testcase></testsuite></testsuites>

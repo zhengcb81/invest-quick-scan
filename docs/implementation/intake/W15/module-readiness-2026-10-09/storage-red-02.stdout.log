@@ -1,0 +1,61 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+__________ test_route_schema6_adds_tables_without_rewriting_identity __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-02/test_route_schema6_adds_tables0')
+
+    def test_route_schema6_adds_tables_without_rewriting_identity(tmp_path):
+        identity, subject = _workspace(tmp_path)
+>       assert identity.migrate() == 6
+E       assert 5 == 6
+E        +  where 5 = migrate()
+E        +    where migrate = <stockwiki.quick_scan_store.QuickScanStore object at 0x000001162D7BB8C0>.migrate
+
+tests\test_quick_scan_routes.py:89: AssertionError
+______ test_classification_raw_and_subject_binding_survive_storage[True] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-02/test_classification_raw_and_su0')
+confidence = True
+
+    @pytest.mark.parametrize("confidence", [True, False])
+    def test_classification_raw_and_subject_binding_survive_storage(tmp_path, confidence):
+        identity, subject = _workspace(tmp_path)
+>       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = <stockwiki.quick_scan_store.QuickScanStore object at 0x000001162F60D310>
+
+    def _routes(identity):
+>       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:83: ModuleNotFoundError
+_____ test_classification_raw_and_subject_binding_survive_storage[False] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-02/test_classification_raw_and_su1')
+confidence = False
+
+    @pytest.mark.parametrize("confidence", [True, False])
+    def test_classification_raw_and_subject_binding_survive_storage(tmp_path, confidence):
+        identity, subject = _workspace(tmp_path)
+>       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:99: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = <stockwiki.quick_scan_store.QuickScanStore object at 0x000001162F60E210>
+
+    def _routes(identity):
+>       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:83: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests\test_quick_scan_routes.py::test_route_schema6_adds_tables_without_rewriting_identity
+FAILED tests\test_quick_scan_routes.py::test_classification_raw_and_subject_binding_survive_storage[True]
+FAILED tests\test_quick_scan_routes.py::test_classification_raw_and_subject_binding_survive_storage[False]
+3 failed, 2 deselected in 0.72s

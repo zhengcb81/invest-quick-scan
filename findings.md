@@ -1831,3 +1831,21 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 本次StockWiki实际暂存阶段只规范化delivery测试的496个CRLF，执行与Git两域分别b50ef0e4/bda18d2e；四其他文件完全原字节，五工作树执行SHA不变。独立核查确认该测试无源码字节读取/哈希依赖且AST一致。这是Git文本存储差异，原失败记录保留，后续提交显式绑定两域，不放宽生产包/ACK原字节规则，也不篡改冻结受审档案。
 
 - StockWiki无remote是既有owner决定7，不是新权限阻塞。实际6c46f03正常static-only钩子通过，源工作区clean；发布软件支持schema2/ACK1.0.0但没有迁移生产DB。不能由全部后续写授权擅增远端或把0收费的62合成HTTP包算成200真实公司验收。下一主线为W15及真实query契约/owner golden，然后L03/G3、事实/F05及研究消费者。
+
+- W15 identity_ref本身是旧契约允许的opaque字符串，不应假装它已有主体认证。新owner先从已存主体/回执/发行人生成stockwiki.route_subject/1.0.0绑定引用，然后由IQS把同一引用封入route；存储与执行再次对照owner状态。该引用内容摘要不是签名，信任仍来自已有owner库与固定公开validator transport。旧consolidated身份snapshot builder仍有null anchor限制，不能拿新路由绑定声称已修复该历史DTO缺口。
+- W15按完整subject key和perimeter隔离current，当前单decision只归一个subject；不能仅entity匹配便将同一路由重挂另一主体。历史router缺置信度不补值。逐题刷新须复用W06，但不能直接采用旧meta_from_observation_row的全template routing fingerprint，否则无关模块升级会重新询问核心题；TTL代际还需原Q13持久执行器显式接线，不能只产纯计划便声称避免重复收费已通过。
+
+### 2026-10-09 W15执行端实查
+- 原Q13 plan存在不等于action已执行；hydrate/create和generation独立UNIQUE能让旧unknown与新任务并存。owner增量需要hydration前动作门和原send事务内跨代检查，不能只更新SW计划JSON。
+- refresh_id含now，仅审计标记；重启幂等用绑定原请求身份/目标generation的持久work。owner transport/配置根是信任边界，hash自洽不是认证；旧主体或其他报表范围不能偷偷回填。
+- bc41908的QA-NET问卷3项回执fixture确实已经不适配Phase111严格model/HTTP JSON证据：原冻结147文件对照同样失败。修复的是明确合成fixture证据，保留旧失败原件且不放宽生产验收。
+- 全部真实收费/下载/生产名单或数据库迁移仍0。W15候选GREEN只证明软件链；G3/L03/F05/B01准确性和真实query/identity golden继续开放。
+
+### W15同次集中审查与最终基础链：2026-10-09
+- 独立真实双SQLite反例发现容量等待期间current变更仍可发旧题（P1 F1）；修复为两发送路径每次准入前重读锚点。正式四组合RED4F，当前主回归四项GREEN，owner变更时prepared保留、无新费用预留；不声称两个owner之间存在分布式原子锁。
+- fullSW原1063P/64F/18skip/21error不是通过证据。同次分类证明旧schema5断言、已发布profile短ID fixture不一致、格式丢fixture，以及隔离/support/长路径等各自归属；只补受影响范围。当前StockWiki基础包91P及profiles/观察导入90P各绑定自身执行SHA，不累加重复项。
+- QA最终主批307P/1F，唯一失败是新维护Q07合成model-a回执requested默认未跟进；只改fixture后完整Q07补测8P，产品SHA未再变化。不机械重跑全部307，不合成“308P全绿”。Black/isort/mypy63/Bandit原阈值均0；精确固定第一方无shell subprocess说明，与全局放宽安全检查不同。
+- 标准库socketpair本地IPC与联网不同。测试guard v3只允许stdlib fallback当前csock连接其自有listen lsock，拒普通localhost HTTP、远端和外来SQLite，四案例实测；静态Windows IPC在沙箱内挂起已核PID后停止，只读/静态在沙箱外重跑，原失败保留。不把Python guard称全OS隔离。
+- 真实26 metadata/四只读备份克隆只用于诊断，不保存真实观察golden或公司文档；源schema5不迁移。正式pure-information answered复用/relations/C06事实投影尚未接线，F05保持开放。
+
+- W15正常源发布实际完成：QA6aafc32远端同HEAD、SWa5a97d6本地无remote。钩子安装超时属于控制/工具故障，精确结束自有树后复用已安装同版本hook；.gitignore唯一变化为正常hook换行规范化，原审字节与新执行/Git摘要明确分域。既有cache不删除/恢复覆盖，公共安装metadata前后SHA相同；隔离测试与TEMP仍自有，不能把工具故障改称产品测试通过。基础软件及自有清理完成，真实query v2/owner golden、金融准确性与facts仍未完成。

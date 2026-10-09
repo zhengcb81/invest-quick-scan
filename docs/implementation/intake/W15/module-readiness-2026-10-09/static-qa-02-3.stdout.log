@@ -1,0 +1,118 @@
+Run started:2026-10-09 21:07:47.332222+00:00
+
+Test results:
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.3/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: src\utils\quick_scan_owner_refresh.py:15:0
+14	import os
+15	import subprocess
+16	import sys
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.3/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: src\utils\quick_scan_owner_refresh.py:197:24
+196	        try:
+197	            completed = subprocess.run(
+198	                command,
+199	                cwd=c["stockwiki_code_root"],
+200	                env=env,
+201	                capture_output=True,
+202	                timeout=120,
+203	                check=False,
+204	                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+205	            )
+206	        except (OSError, subprocess.TimeoutExpired) as error:
+
+--------------------------------------------------
+>> Issue: [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+   Severity: Low   Confidence: High
+   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.3/plugins/b101_assert_used.html
+   Location: src\utils\quick_scan_work_store.py:1431:16
+1430	                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+1431	                assert match is not None
+1432	                expected[(match[1].lower(), match[2])] = statement
+
+--------------------------------------------------
+>> Issue: [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+   Severity: Low   Confidence: High
+   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.3/plugins/b101_assert_used.html
+   Location: src\utils\quick_scan_work_store.py:1436:16
+1435	                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+1436	                assert match is not None
+1437	                expected[(match[1].lower(), match[2])] = statement
+
+--------------------------------------------------
+>> Issue: [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+   Severity: Low   Confidence: High
+   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.3/plugins/b101_assert_used.html
+   Location: src\utils\quick_scan_work_store.py:1441:16
+1440	                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+1441	                assert match is not None
+1442	                expected[(match[1].lower(), match[2])] = statement
+
+--------------------------------------------------
+>> Issue: [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+   Severity: Low   Confidence: High
+   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.3/plugins/b101_assert_used.html
+   Location: src\utils\quick_scan_work_store.py:1446:16
+1445	                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+1446	                assert match is not None
+1447	                expected[(match[1].lower(), match[2])] = statement
+
+--------------------------------------------------
+>> Issue: [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+   Severity: Low   Confidence: High
+   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.3/plugins/b101_assert_used.html
+   Location: src\utils\quick_scan_work_store.py:1451:16
+1450	                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+1451	                assert match is not None
+1452	                expected[(match[1].lower(), match[2])] = statement
+
+--------------------------------------------------
+>> Issue: [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+   Severity: Low   Confidence: High
+   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.3/plugins/b101_assert_used.html
+   Location: src\utils\quick_scan_work_store.py:1456:16
+1455	                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+1456	                assert match is not None
+1457	                expected[(match[1].lower(), match[2])] = statement
+
+--------------------------------------------------
+>> Issue: [B101:assert_used] Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+   Severity: Low   Confidence: High
+   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.3/plugins/b101_assert_used.html
+   Location: src\utils\quick_scan_work_store.py:4891:12
+4890	            binding = self._consumer_binding_for_delivery(connection, row, required=True)
+4891	            assert binding is not None
+4892	            self._result_delivery_record(row, connection=connection)
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 24193
+	Total lines skipped (#nosec): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 9
+		Medium: 0
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 0
+		High: 9
+Files skipped (0):

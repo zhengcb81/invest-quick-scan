@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**2026-10-09 最新授权与唯一下一动作：** 用户“给你全部后续所需的授权”覆盖计划内必要跨仓写入、测试与正常提交推送，不重复逐路径申请；其他进程改动、用户216挂牌候选、轻量不下载文档、唯一writer及大节点集中审查约束不变。JR1/JR3五件已由正常static-only钩子提交StockWiki `6c46f03b486d215d696d32bee618793bc7fcb410`，源工作区clean，326保护路径不变；按既有决定7维持本地无remote，不新增远端。原113P/18P绑定执行字节，sole delivery测试Git换行差异由同次独审双域附记承接；本次9临时缓存/4子目录及root已严格清完。先正常提交推送本仓发布/PWF回执，再实施 **W15模块路由持久化与增量刷新**（依赖核实、隔离TDD、一次大节点审查），继而L03/G3→事实/F05→TH/IN；许可解除不关闭证据门。以下等待/未发布段落为历史，不据其重复JR修复、已绿测试或退役回执。
+**2026-10-09 当前唯一下一动作：** 全部计划内必要跨仓写入、测试及正常Git已授权，root唯一writer，其他进程工作、216挂牌候选和轻量不下载文档保持。W15基础软件步骤1–3已由同一次集中审查签收，StockWiki a5a97d6efbf5f0ee79122a1ec375def388700690本地提交、按决定7无remote，StockQA 6aafc32eae5339668e893b8a2b246d0655075584已正常推送；36受审候选和受影响测试/失败分类已归档，自有runs/w15a已严格清理，旧一次性helper不能盲跑。IQS本批交付以progress与iqs-publication/result.json实际回执为准，未提交前不预报成功。下一步接续原W15步骤4：[正式query/refresh与真实owner golden](docs/implementation/reviews/W15/module-readiness-2026-10-09/c06-next.md)，先在新独占根定义显式query v2及主体/范围/水位语义，保留v1/UI原协议；随后owner公共只读producer、受控刷新、真实serializer golden和公开CLI正反例。基础软件不关闭整个W15、L03/G3/B01准确性、facts/F05、TH/IN或200家公司live，已通过未改范围不重测全仓/UI、不增小节点审查。以下旧状态仅为历史。
 
 
 **JR1/JR3 最新接管进展（2026-10-09，优先于以下快照）：** 四文件修复候选与同次集中独审已完成：affected-final04 113P/14.88s、static05成功、joint07 18P/131.36s，当前五SHA一致且source_changed为空；F1–F5软件发现全关闭。最终76原件含两模型各31合成原包、480非秘密源依赖锁、253独审原件已验证；唯一自有 runs/r13a 已严格清除5029文件/2151子目录，所有实际进程终态。StockWiki仍c40de21/clean、源未写；第五路径 backup manifest单行cap1→2仍待明确许可，原四路径授权不重复问，也不发布已知破坏备份的半批。接续先读 [验收](docs/implementation/reviews/G3/jr13-2026-10-09/acceptance.md) 与 [发布交接](docs/implementation/reviews/G3/jr13-2026-10-09/publication-handoff.md)，获许可后重核源树→精确五候选→正常外仓Git/hooks/push→追加实际PWF回执；不可盲跑已清理固定根/旧helpers。IQS候选/证据已正常提交推送a0b4838a8eb9e4d6560364e0d165981c5a37ea82，3101精确路径staged/committed原字节核验一致、HEAD/远端相同；本实际PWF回执随即单独提交。G3/F05/L03/真实gold/金融准确性/TH-IN仍各按原门，不刷新退役回执、不增小节点审查。
@@ -1612,6 +1612,9 @@ Status: private_implementation_verified_for_os_cli_scope_not_source_published
 - [x] 五文件313P与实际OS冷暖/11强杀/完整标准封包，原失败及子进程轨迹留档。
 - [ ] 最终整个Phase111集中静态/回归/独审、源发布及严格清理。
 
+历史Phase111检查点（后续源发布已由progress最新记录覆盖）：
+- IQS实际已正常提交推送`345fbd13e51100636577c5a6ec59c864d2d0f008`：1361精确选择/1360实际变化、1354工件及索引原字节核对通过；scope.json未变化故未计变化，原opencode保留。StockQA未发布，自有环境供最终集中节点继续使用。
+
 ### Phase 112: JR1/JR3严格ACK与历史重放软件发布
 Status: complete_for_limited_software_delivery
 
@@ -1622,7 +1625,7 @@ Status: complete_for_limited_software_delivery
 ### Phase 113: W15模块路由持久化与增量刷新
 Status: in_progress
 
-- [ ] 核实W06/W11/Q13实际接口与依赖，固定现行路由/发布锁/观察锚点；不以任务模板验证替代实际源交付。
-- [ ] 在全新独占环境先写模块新增/退役、语义时效、路由锚点、历史只读及事务回滚反例，再实现W15。
-- [ ] 完成受影响单元/集成和公开入口E2E、一次集中审查、正常源交付与自有清理；不得由此关闭L03/G3/F05/金融准确性。
-- IQS实际已正常提交推送`345fbd13e51100636577c5a6ec59c864d2d0f008`：1361精确选择/1360实际变化、1354工件及索引原字节核对通过；scope.json未变化故未计变化，原opencode保留。StockQA未发布，自有环境供最终集中节点继续使用。
+- [x] 核实W06/W11/Q13实际接口与依赖，固定现行路由/发布锁/观察锚点；确认Q13原runner未消费action，不能仅凭刷新计划关闭门。
+- [x] 在全新独占环境TDD实现评分基础链：模块新增/退役、语义时效、路由锚点、历史只读、事务回滚、真实公开CLI与Q13动作接线。
+- [x] 基础范围完成受影响单元/集成和公开入口E2E、同一次集中审查、正常源交付与严格自有清理；整个W15/C06/L03/G3/F05/金融准确性仍开放。
+- [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。

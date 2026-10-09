@@ -1,0 +1,323 @@
+{
+  "review_date": "2026-10-09",
+  "review_identity": "same_W15_concentrated_review_final_addendum",
+  "outcome": "limited_foundation_signed_off",
+  "software_open_findings": 0,
+  "candidate_index_sha256": "f28a33b27de7de7b30016fc35acecd1f56015f1725946b691137fb34c39bea5a",
+  "candidate_index": "docs/implementation/intake/W15/module-readiness-2026-10-09/candidate-index-02.json",
+  "candidate_counts": {
+    "StockWiki": 15,
+    "StockQAbyLLM": 16,
+    "invest-quick-scan": 5
+  },
+  "all_36_current_and_frozen_snapshot_bytes_match": true,
+  "software_scope": [
+    "IQS producer handoff",
+    "StockWiki route and original Observation storage/refresh",
+    "QA original work/budget/send transaction integration"
+  ],
+  "closed_findings": [
+    {
+      "id": "F1",
+      "priority": "P1",
+      "kind": "product",
+      "description": "Owner current drift during capacity wait must reject before every fee admission retry",
+      "resolution": "Named owner guard at entry and both work/budget-only retry loops",
+      "final_transport_sha256": "69ec8dce71337a9c359a49302e2739cb217e60371b964907ae1843a6d70b1fc4",
+      "final_locations": [
+        "src/utils/quick_scan_work_transport.py:651",
+        "src/utils/quick_scan_work_transport.py:665",
+        "src/utils/quick_scan_work_transport.py:770",
+        "src/utils/quick_scan_work_transport.py:797"
+      ],
+      "original_RED_preserved": true,
+      "independent_recheck": {
+        "label": "capacity-anchor-02",
+        "pid": 37400,
+        "returncode": 0,
+        "terminal_confirmed": true,
+        "passed": 1,
+        "pytest_wall_s": 1.28,
+        "controller_wall_s": 1.829,
+        "source_unchanged": true,
+        "executed_product_schema_hashes": 19,
+        "facts": {
+          "HTTP_calls": 0,
+          "OS_owner_transport": "typed substitution; actual SQLite anchor reads",
+          "actual_decision_id": "route_16367aacb67a4a017c8da8ab95682ccb390863780f7114dda0a0e0c55644c7c4",
+          "anchor_checks": 3,
+          "attempt_phases": [
+            "prepared"
+          ],
+          "capacity_waits": 1,
+          "expected_decision_id": "route_a7937b64b8caa58f03721bb6bacf5c78cb235febe0e70b1b84cd99541461a08e",
+          "external_IQS_validator": "existing UnitValidator storage-boundary substitute",
+          "permit_returned": false,
+          "real_QA_budget_admission": true,
+          "real_owner_SQLite": true,
+          "rejection": "owner_refresh_guard_rejected"
+        },
+        "budget_rows": [
+          [
+            "DISPATCH_busy",
+            null,
+            "settled",
+            0
+          ]
+        ],
+        "attempt_rows": [
+          [
+            "prepared",
+            null
+          ]
+        ],
+        "new_work_budget_reservations": 0,
+        "send_intent_rows": 0,
+        "process_sha256": "db30e64f22d015a8fed893e09c22684705ae1067b292d3654726ed8335a4839c",
+        "probe_source_sha256": "56aa89d888b905990c723a252ed95d66d9501b57a1d5506b6ecc5f360e0589fd",
+        "boundary_substitutes": [
+          "IQS UnitValidator",
+          "typed CLI transport"
+        ],
+        "real_storage": [
+          "StockWiki SQLite current anchor",
+          "QA SQLite fee admission and settlement",
+          "QA attempt/send-intent ledger"
+        ]
+      },
+      "formal_F1_cases_passed": [
+        {
+          "name": "test_capacity_retry_rechecks_owner_before_reservation[True-True]",
+          "classname": "qa.tests.unit.test_w15_owner_refresh_transport",
+          "passed": true
+        },
+        {
+          "name": "test_capacity_retry_rechecks_owner_before_reservation[True-False]",
+          "classname": "qa.tests.unit.test_w15_owner_refresh_transport",
+          "passed": true
+        },
+        {
+          "name": "test_capacity_retry_rechecks_owner_before_reservation[False-True]",
+          "classname": "qa.tests.unit.test_w15_owner_refresh_transport",
+          "passed": true
+        },
+        {
+          "name": "test_capacity_retry_rechecks_owner_before_reservation[False-False]",
+          "classname": "qa.tests.unit.test_w15_owner_refresh_transport",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "existing_terminal_records": [
+    {
+      "label": "storage-final-09",
+      "pid": 10952,
+      "returncode": 0,
+      "terminal_confirmed": true,
+      "process_sha256": "bf8f88cec898cabecc2b2d5b27459d0091f40bbc5f315316b6236d0e76c604f4",
+      "candidate_paths_with_different_or_missing_execution_sha": [
+        "tests/test_quick_scan_profiles.py",
+        "tests/test_swr_profiles.py"
+      ],
+      "capacity_and_guard_cases": [],
+      "passed": 91,
+      "failed": 0,
+      "pytest_wall_s": 59.41
+    },
+    {
+      "label": "storage-profiles-final-11",
+      "pid": 10748,
+      "returncode": 0,
+      "terminal_confirmed": true,
+      "process_sha256": "fd83264952a1a487a49369a9174bc6a0807ae15914795d4fd3c73771107b96ae",
+      "candidate_paths_with_different_or_missing_execution_sha": [],
+      "capacity_and_guard_cases": [],
+      "passed": 90,
+      "failed": 0,
+      "pytest_wall_s": 16.73
+    },
+    {
+      "label": "executor-final-affected-04",
+      "pid": 67172,
+      "returncode": 1,
+      "terminal_confirmed": true,
+      "process_sha256": "395e518868dca285c0a22191f2d3be34ea4867bc7df92f01cf679c49caf1c61c",
+      "candidate_paths_with_different_or_missing_execution_sha": [
+        ".gitignore",
+        "tests/unit/test_q07_checkpoint.py"
+      ],
+      "capacity_and_guard_cases": [
+        {
+          "name": "test_capacity_retry_rechecks_owner_before_reservation[True-True]",
+          "classname": "qa.tests.unit.test_w15_owner_refresh_transport",
+          "passed": true
+        },
+        {
+          "name": "test_capacity_retry_rechecks_owner_before_reservation[True-False]",
+          "classname": "qa.tests.unit.test_w15_owner_refresh_transport",
+          "passed": true
+        },
+        {
+          "name": "test_capacity_retry_rechecks_owner_before_reservation[False-True]",
+          "classname": "qa.tests.unit.test_w15_owner_refresh_transport",
+          "passed": true
+        },
+        {
+          "name": "test_capacity_retry_rechecks_owner_before_reservation[False-False]",
+          "classname": "qa.tests.unit.test_w15_owner_refresh_transport",
+          "passed": true
+        },
+        {
+          "name": "test_ordinary_network_connect_is_denied[127.0.0.1]",
+          "classname": "",
+          "passed": true
+        },
+        {
+          "name": "test_ordinary_network_connect_is_denied[192.0.2.1]",
+          "classname": "",
+          "passed": true
+        },
+        {
+          "name": "test_windows_stdlib_socketpair_ipc_is_allowed_and_closed",
+          "classname": "",
+          "passed": true
+        },
+        {
+          "name": "test_foreign_sqlite_never_opens",
+          "classname": "",
+          "passed": true
+        }
+      ],
+      "passed": 307,
+      "failed": 1,
+      "pytest_wall_s": 72.3
+    },
+    {
+      "label": "executor-checkpoint-final-05",
+      "pid": 36492,
+      "returncode": 0,
+      "terminal_confirmed": true,
+      "process_sha256": "a71b9a4b98f5275c2cf3856af6f92ac3fd039c63c8f9827ab818a429c4bf362c",
+      "candidate_paths_with_different_or_missing_execution_sha": [
+        ".gitignore"
+      ],
+      "capacity_and_guard_cases": [],
+      "passed": 8,
+      "failed": 0,
+      "pytest_wall_s": 3.44
+    },
+    {
+      "label": "handoff-final-01",
+      "pid": 75248,
+      "returncode": 0,
+      "terminal_confirmed": true,
+      "process_sha256": "adfe52f9ae7c98255ce54259aa6027473a6c78ed3ac7db21ae48551d75eb7a36",
+      "candidate_paths_with_different_or_missing_execution_sha": [],
+      "capacity_and_guard_cases": [],
+      "passed": 18,
+      "failed": 0,
+      "pytest_wall_s": 103.01
+    }
+  ],
+  "counts_aggregated": false,
+  "executor_307P_1F_preserved": true,
+  "Q07_failure_classification": "fixture requested model default was inconsistent with model-a response; product rejected durable response mismatch",
+  "Q07_fixture_followup": "executor-checkpoint-final-05: independent 8P, products unchanged; no claim of 308P suite",
+  "static_QA_05": {
+    "all_four_terminal_zero": true,
+    "tools": [
+      "Black",
+      "isort",
+      "mypy",
+      "Bandit"
+    ],
+    "mypy_source_files": 63,
+    "product_python_sha_matches_final": true,
+    "later_fixture_not_attested_by_this_old_static_record": [
+      "tests/unit/test_q07_checkpoint.py"
+    ]
+  },
+  "static_SW_01": {
+    "terminal_zero": true,
+    "all_eight_product_SHA_match_final": true,
+    "later_fixture_SHA_not_retroactively_attested": true
+  },
+  "publication_hooks": "controller will run normal source hooks; no success predicted by reviewer",
+  "isolation": {
+    "guard_sha256": "28c141822093777bbc503603e8ba16aec20b3f1f664db57ac926c1979c994b58",
+    "guard_revision": "v3",
+    "stdlib_socketpair_allowance": "only exact fallback_socketpair frame local csock to its own listening lsock",
+    "ordinary_loopback_and_remote_denied": true,
+    "foreign_SQLite_denied": true,
+    "four_actual_guard_cases_passed": [
+      {
+        "name": "test_ordinary_network_connect_is_denied[127.0.0.1]",
+        "classname": "",
+        "passed": true
+      },
+      {
+        "name": "test_ordinary_network_connect_is_denied[192.0.2.1]",
+        "classname": "",
+        "passed": true
+      },
+      {
+        "name": "test_windows_stdlib_socketpair_ipc_is_allowed_and_closed",
+        "classname": "",
+        "passed": true
+      },
+      {
+        "name": "test_foreign_sqlite_never_opens",
+        "classname": "",
+        "passed": true
+      }
+    ],
+    "guard_is_private_support_not_product": true,
+    "whole_OS_guard_claim": false,
+    "v2_original_preserved": true
+  },
+  "before_publication_preflight_sha256": "0f04f0c17c87c497f0d7cf2ff331d5c7744e88c144e1586b939473c27706188e",
+  "source_preflight_heads": {
+    "StockWiki": "6c46f03b486d215d696d32bee618793bc7fcb410",
+    "StockQAbyLLM": "bc41908e4cdc44c13fefda97f3118e5434aed5f8"
+  },
+  "preflight_review_scope": "read existing controller evidence and match candidate index; no new whole external-source inventory run",
+  "full_non_green_preserved": true,
+  "full_SW_original_terminal": {
+    "label": "full-sw-support-fixed",
+    "pid": 5808,
+    "returncode": 1,
+    "passed": 1063,
+    "failed": 64,
+    "skipped": 18,
+    "errors": 21,
+    "pytest_wall_s": 225.22,
+    "coverage_80_percent_is_diagnostic": true
+  },
+  "full_classification_reference": "full-sw-classification-01.md",
+  "c06_envelope_validated": false,
+  "uncompleted_original_evidence": [
+    "real C06/query serializer/envelope",
+    "actual owner query golden",
+    "financial facts and accuracy"
+  ],
+  "original_gates_not_closed": [
+    "G3/L03",
+    "F05",
+    "B01",
+    "TH-IN",
+    "whole W15"
+  ],
+  "real_owner_input_is_not_query_or_financial_golden": true,
+  "historical_router_2_1_2_2_is_unit_storage_boundary_only": true,
+  "review_product_source_PWF_writes": 0,
+  "review_full_reruns": 0,
+  "review_model_API_HTTP_calls": 0,
+  "evidence": {
+    "verification_sha256": "cbb47024bc285bb6803e9844faf9387cbd15ea1b433d14bc21fc304f6a244e21",
+    "markdown_sha256": "04637995387e7fb6bc88a4818cefd089f7f8a184b240376f8e5be29773ba536b",
+    "initial_review_sha256": "c717857f3019c98c80c5bd5247b491ad307ca87e550a45439736eda77730b079",
+    "full_classification_sha256": "431412aa7baabe0c0097834d4303e6bb47f4b9db5e9fffb1f6df1dd0ae5b11ac",
+    "published_profiles_readonly_comparison_sha256": "eb2cffc892d22fc910917a4bc674c24c487ca51c35462dcfd43f811e93844f6d"
+  }
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.258" timestamp="2026-10-09T21:55:35.025045+01:00" hostname="DESKTOP-156V213"><testcase classname="qa_baseline.tests.integration.test_qa_net01_cli_e2e" name="test_cli_e2e_search_policy_admission_gates_before_any_http" time="0.175"><failure message="assert '&quot;external_dispatch_enabled&quot;: false' in ''&#10; +  where '' = CaptureResult(out='', err='').out">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F92057CD60&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/baseline-search-admission-01/test_cli_e2e_search_policy_adm0')
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x000001F91C9ED010&gt;
+
+    def test_cli_e2e_search_policy_admission_gates_before_any_http(
+        monkeypatch, tmp_path, capsys
+    ) -&gt; None:
+        """An external mode whose routes are not admitted fails closed with zero
+        HTTP; an admitted route prints its admission receipt before dispatch."""
+        import os
+    
+        files = _setup(tmp_path, with_authority=False)
+        policy_file = tmp_path / "search_policy.json"
+        policy_file.write_text(json.dumps(_search_policy()), encoding="utf-8")
+    
+        monkeypatch.delenv("BRAVE_API_KEY", raising=False)
+        code, session = _run(
+            monkeypatch,
+            tmp_path,
+            files,
+            manifest=False,
+            with_authority=False,
+            extra=["--search-policy", str(policy_file)],
+        )
+        captured = capsys.readouterr()
+        assert code == 1
+        assert session.post.call_count == 0
+&gt;       assert '"external_dispatch_enabled": false' in captured.out
+E       assert '"external_dispatch_enabled": false' in ''
+E        +  where '' = CaptureResult(out='', err='').out
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa_baseline\tests\integration\test_qa_net01_cli_e2e.py:404: AssertionError</failure></testcase></testsuite></testsuites>

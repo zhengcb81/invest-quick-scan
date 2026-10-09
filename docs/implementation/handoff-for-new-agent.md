@@ -1,4 +1,8 @@
-**当前接续（2026-10-09，优先于全部下文历史）：** 用户已给出全部后续所需授权；无需逐仓/路径重问。StockWiki JR1/JR3五件已正常钩子提交 `6c46f03b486d215d696d32bee618793bc7fcb410`，源clean；仓库按决定7保持本地无remote，不因推送失败新增远端。五执行SHA与326保护路径一致，sole delivery测试Git CRLF→LF的两域由同一独审[附记](reviews/G3/jr13-2026-10-09/publication-eol-note.md)承接；发布[实际交付](reviews/G3/jr13-2026-10-09/publication-delivery.md)与result记录0API/0生产迁移。原runs/r13a和本次runs/s13p均不存在，不盲跑一次性helper。先完成本仓正常Git回执归档，再推进 **W15路由快照/模块增量刷新**，后续L03/G3→事实/F05→TH/IN；W06/W11/Q13实际依赖须先核实。保留其他进程工作、216候选、轻量不下载文档与大节点一次集中审查，G3/F05/L03/真实gold/金融准确性仍开放，退役回执不刷新。以下旧授权等待/未发布状态不得用来重复施工。
+**当前交接（2026-10-09，优先于全部历史）：W15基础软件已交付，整个W15仍in_progress。** StockWiki master/a5a97d6efbf5f0ee79122a1ec375def388700690正常静态hook本地提交，按既有决定7无remote；StockQA master/6aafc32eae5339668e893b8a2b246d0655075584正常钩子提交并推送origin/master。IQS本批归档提交看progress最新实际回执；受审candidate02及同次review已归档，36候选匹配、开放软件发现0。IQS18P、SW91P与profiles90P是独立/重叠批次；QA主批307P/1F保留，唯一Q07 fixture修正后8P，不能拼成一次308GREEN；原完整SW1063P/64F/18skip/21error及分类仍保留。真实API/公司文档/生产库迁移/名单写入0。runs/w15a已按真实lstat/set/SHA/CIM严格清理，不盲跑旧固定根；原opencode及QA11未知项不读不动。用户全部后续必要授权持续有效，root唯一writer，只在大节点集中审查。
+
+唯一下一动作按[c06-next.md](reviews/W15/module-readiness-2026-10-09/c06-next.md)接续原步骤4，新独占根实施显式query v2/主体范围/水位/缺覆盖，保留legacy v1与W09/UI；随后owner只读CLI、受控刷新和实际serializer golden/生成命令。当前c06_envelope_validated=false，不能仅翻标记；facts answered/relations、F05、L03/G3/B01准确性和TH/IN前置未关闭。看[基础交付](reviews/W15/module-readiness-2026-10-09/delivery.md)、task_plan的Next Step和progress最后记录。
+
+以下均是保留的历史快照；其中等待授权、未发布、活测试根或旧“下一动作”不覆盖本段。
 
 **2026-10-09 最新授权与唯一下一动作：** 用户明确“给你全部后续所需的授权”，覆盖既有计划所需跨仓写入、测试及正常提交推送；不再逐文件/逐仓请求相同许可。其他进程的改动、用户已确认的216挂牌候选、轻量不下载文档、唯一writer及大节点集中审查约束继续有效。StockWiki当前仍c40de21/clean，JR1/JR3五文件候选已经113P＋18P和同次独审签收，原独占测试根已清；现在直接依据最终原字节快照发布这五路径（含备份上界1→2），保留历史source_written=false原件、先重核完整源状态并正常hooks/commit/push。源发布后盘点最近可实施的原G3/F05/真实gold/L03/TH-IN步骤，权限解除不等于证据门自动关闭；已绿未改代码不重复全仓/UI测试、不刷新退役回执。实际Git和完成状态以progress最新回执为准。
 

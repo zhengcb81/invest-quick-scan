@@ -1,0 +1,324 @@
+FFFFF                                                                    [100%]
+================================== FAILURES ===================================
+_____________ test_job_03_hydrates_saved_and_only_refills_missing _____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/baseline-checkpoint-control-01/test_job_03_hydrates_saved_and0')
+
+    def test_job_03_hydrates_saved_and_only_refills_missing(tmp_path: Path) -> None:
+        """JOB-03: a 6-question pack with 4 persisted, 1 missing, 1 structurally
+        failed — after interruption+resume the 4 stored results are hydrated (no
+        new dispatch), only the 2 missing are refilled, the pack is neither
+        discarded nor faked as fully successful."""
+        store = _store(tmp_path)
+        lifecycle = _lifecycle(store)
+        for score, qid in zip((7, 8, 9, 10), ("IQS_05", "IQS_06", "IQS_07", "IQS_08")):
+>           _seed_checkpoint(store, lifecycle, qid, score=score)
+
+tests\unit\test_q07_checkpoint.py:158: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q07_checkpoint.py:102: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:3541: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x0000027A45BF84F0>
+attempt = <sqlite3.Row object at 0x0000027A41FEA5C0>
+receipt_sha256 = '4cf1cd81b916b16de31cc0e25c610663586d3338bed4ade3e3b903ac659e0ada'
+
+    @classmethod
+    def _response_for_checkpoint(
+        cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str
+    ) -> dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        final_attempt = connection.execute(
+            "SELECT attempt_id FROM attempt WHERE work_item_id=? ORDER BY ordinal DESC LIMIT 1",
+            (attempt["work_item_id"],),
+        ).fetchone()
+        if final_attempt is None or final_attempt["attempt_id"] != attempt["attempt_id"]:
+            raise WorkConflictError("checkpoint requires the final attempt")
+        row = connection.execute(
+            "SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)
+        ).fetchone()
+        if row is None:
+>           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1864: WorkConflictError
+________ test_par_04_resume_keeps_original_checkpoints_and_provenance _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/baseline-checkpoint-control-01/test_par_04_resume_keeps_origi0')
+
+    def test_par_04_resume_keeps_original_checkpoints_and_provenance(tmp_path: Path) -> None:
+        """PAR-04: pack returned q1-q4, then crash; resume with the NEXT model.
+        q1-q4 keep their unique success checkpoints with original execution time
+        and model; only q5/q6 are refilled; the original four gain no new sends;
+        no new pack id mints new logical questions; attempt/prompt hashes stay."""
+        store = _store(tmp_path)
+        lifecycle_a = _lifecycle(store, run_id="RUN_1", model_requested="model-a")
+        seeded = {}
+        for qid in ("IQS_05", "IQS_06", "IQS_07", "IQS_08"):
+>           seeded[qid] = _seed_checkpoint(
+                store,
+                lifecycle_a,
+                qid,
+                actual_model="model-a",
+                completed_at="2026-10-06T01:00:00Z",
+            )
+
+tests\unit\test_q07_checkpoint.py:191: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q07_checkpoint.py:102: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:3541: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x0000027A45BFBE20>
+attempt = <sqlite3.Row object at 0x0000027A45B96800>
+receipt_sha256 = 'd6f22a230e1df8438051059ed82ac16407a0fe9202355be8f6d045ed498ea7bf'
+
+    @classmethod
+    def _response_for_checkpoint(
+        cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str
+    ) -> dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        final_attempt = connection.execute(
+            "SELECT attempt_id FROM attempt WHERE work_item_id=? ORDER BY ordinal DESC LIMIT 1",
+            (attempt["work_item_id"],),
+        ).fetchone()
+        if final_attempt is None or final_attempt["attempt_id"] != attempt["attempt_id"]:
+            raise WorkConflictError("checkpoint requires the final attempt")
+        row = connection.execute(
+            "SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)
+        ).fetchone()
+        if row is None:
+>           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1864: WorkConflictError
+__________ test_job_04_recovery_partitions_all_states_no_silent_loss __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/baseline-checkpoint-control-01/test_job_04_recovery_partition0')
+
+    def test_job_04_recovery_partitions_all_states_no_silent_loss(tmp_path: Path) -> None:
+        """JOB-04: crash at four points — pre-dispatch (no cost), post-send
+        (unknown, listed separately), post-persist (never re-asked), pre-import
+        ACK (Q10 domain, annotated). Every item lands in exactly one bucket:
+        no silent task loss."""
+        from src.runners.llm_runner import recovery_report
+    
+        clock = {"now": 1000.0}
+        store = _store(tmp_path, clock=lambda: clock["now"])
+        lifecycle = _lifecycle(store)
+    
+        # A: pre-dispatch — created only
+        row_a = _raw_attach(store, "IQS_05")
+        # B: post-send — claimed, intent marked, response lost, lease expired
+        short_lifecycle = _lifecycle(store, lease_seconds=10.0)
+        handle_b = short_lifecycle.before_question(_q("IQS_06", "问题 IQS_06"))
+        assert handle_b["claimed"] is True
+        clock["now"] += 11.0
+        assert store.recover_expired(handle_b["work_item_id"]) == "uncertain"
+        # C: post-persist — checkpoint saved
+>       seeded_c = _seed_checkpoint(store, lifecycle, "IQS_07")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q07_checkpoint.py:271: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q07_checkpoint.py:102: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:3541: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x0000027A45BFB5B0>
+attempt = <sqlite3.Row object at 0x0000027A45B97670>
+receipt_sha256 = '4cf1cd81b916b16de31cc0e25c610663586d3338bed4ade3e3b903ac659e0ada'
+
+    @classmethod
+    def _response_for_checkpoint(
+        cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str
+    ) -> dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        final_attempt = connection.execute(
+            "SELECT attempt_id FROM attempt WHERE work_item_id=? ORDER BY ordinal DESC LIMIT 1",
+            (attempt["work_item_id"],),
+        ).fetchone()
+        if final_attempt is None or final_attempt["attempt_id"] != attempt["attempt_id"]:
+            raise WorkConflictError("checkpoint requires the final attempt")
+        row = connection.execute(
+            "SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)
+        ).fetchone()
+        if row is None:
+>           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1864: WorkConflictError
+________ test_p1_2_hydration_keeps_original_time_and_envelope_receipt _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/baseline-checkpoint-control-01/test_p1_2_hydration_keeps_orig0')
+
+    def test_p1_2_hydration_keeps_original_time_and_envelope_receipt(
+        tmp_path: Path,
+    ) -> None:
+        """r1 P1-2 regression: hydrated answers carry the ORIGINAL execution time
+        (not the hydration wall clock) and the output envelope keeps the original
+        receipt — provider / search_status / answered_at survive hydration."""
+        from datetime import datetime as _dt
+    
+        store = _store(tmp_path)
+        lifecycle = _lifecycle(store)
+>       seeded = _seed_checkpoint(store, lifecycle, "IQS_05", completed_at="2026-10-06T01:00:00Z")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_q07_checkpoint.py:633: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_q07_checkpoint.py:102: in _seed_checkpoint
+    record = store.save_answer_checkpoint(
+src\utils\quick_scan_work_store.py:3541: in save_answer_checkpoint
+    response = self._response_for_checkpoint(connection, attempt, receipt_sha256)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x0000027A45BFAF20>
+attempt = <sqlite3.Row object at 0x0000027A45B964D0>
+receipt_sha256 = '78c59aac371130aff418e0a445dc12a7795e0f78c82e947044f2a0a9491a2b38'
+
+    @classmethod
+    def _response_for_checkpoint(
+        cls, connection: sqlite3.Connection, attempt: sqlite3.Row, receipt_sha256: str
+    ) -> dict:
+        from src.providers.model_resolution import model_resolution_allowed
+    
+        final_attempt = connection.execute(
+            "SELECT attempt_id FROM attempt WHERE work_item_id=? ORDER BY ordinal DESC LIMIT 1",
+            (attempt["work_item_id"],),
+        ).fetchone()
+        if final_attempt is None or final_attempt["attempt_id"] != attempt["attempt_id"]:
+            raise WorkConflictError("checkpoint requires the final attempt")
+        row = connection.execute(
+            "SELECT * FROM quick_scan_attempt_response WHERE attempt_id=?", (attempt["attempt_id"],)
+        ).fetchone()
+        if row is None:
+>           raise WorkConflictError("checkpoint requires the durable response")
+E           src.utils.quick_scan_work_store.WorkConflictError: checkpoint requires the durable response
+
+src\utils\quick_scan_work_store.py:1864: WorkConflictError
+__________ test_async_search_settles_the_same_durable_budget_ledger ___________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/baseline-checkpoint-control-01/test_async_search_settles_the_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000027A45C35BA0>
+
+    def test_async_search_settles_the_same_durable_budget_ledger(tmp_path, monkeypatch):
+        store = QuickScanWorkStore(tmp_path / "budget.sqlite")
+        policy = _policy(max_cost=10, max_cost_per_attempt=2)
+        response = Mock()
+        response.status_code = 200
+        response.headers = {"x-request-id": "async-budget-fixture"}
+        response.json.return_value = {
+            "id": "async-budget-response",
+            "status": "completed",
+            "model": "fixture-a",
+            "output": [
+                {
+                    "type": "web_search_call",
+                    "id": "async-budget-search",
+                    "status": "completed",
+                    "action": {
+                        "type": "search",
+                        "sources": [{"type": "url", "url": "https://example.test/async-budget"}],
+                    },
+                },
+                {
+                    "type": "message",
+                    "content": [{"type": "output_text", "text": "fixture"}],
+                },
+            ],
+        }
+        http_client = Mock()
+        http_client.post = AsyncMock(return_value=response)
+        monkeypatch.setattr(
+            "src.providers.llm_client.http_client_manager.get_async_client",
+            AsyncMock(return_value=http_client),
+        )
+        client = AsyncLLMClient(
+            api_key="fixture-only",
+            model="fixture-a",
+            base_url="https://api.openai.com/v1/responses",
+            provider_name="openai",
+        )
+    
+        async def dispatch():
+            with bind_quick_scan_budget(
+                store,
+                policy,
+                cost_resolver=lambda _receipt: {
+                    "actual_cost": 0.75,
+                    "pricing_ref": "fixture-price-v1",
+                    "source_ref": "async-provider-usage-fixture",
+                },
+            ):
+                with bind_quick_scan_route(
+                    route_id="route-a1",
+                    provider="provider-a1",
+                    model_requested="fixture-a",
+                    quota_group="A",
+                ):
+                    return await client.send_search_request_async("fixture question")
+    
+>       result = asyncio.run(dispatch())
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_budget.py:607: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Miniconda\Lib\asyncio\runners.py:194: in run
+    with Runner(debug=debug, loop_factory=loop_factory) as runner:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\runners.py:58: in __enter__
+    self._lazy_init()
+C:\Miniconda\Lib\asyncio\runners.py:137: in _lazy_init
+    self._loop = events.new_event_loop()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\events.py:837: in new_event_loop
+    return get_event_loop_policy().new_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\events.py:734: in new_event_loop
+    return self._loop_factory()
+           ^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\asyncio\windows_events.py:316: in __init__
+    super().__init__(proactor)
+C:\Miniconda\Lib\asyncio\proactor_events.py:639: in __init__
+    self._make_self_pipe()
+C:\Miniconda\Lib\asyncio\proactor_events.py:786: in _make_self_pipe
+    self._ssock, self._csock = socket.socketpair()
+                               ^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\socket.py:623: in _fallback_socketpair
+    csock.connect((addr, port))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (<socket.socket [closed] fd=-1, family=2, type=1, proto=0>, ('127.0.0.1', 64223))
+kwargs = {}
+
+>   def denied(*args, **kwargs): raise RuntimeError("W15 offline: network denied")
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   RuntimeError: W15 offline: network denied
+
+..\guard\sitecustomize.py:5: RuntimeError
+=========================== short test summary info ===========================
+FAILED tests\unit\test_q07_checkpoint.py::test_job_03_hydrates_saved_and_only_refills_missing
+FAILED tests\unit\test_q07_checkpoint.py::test_par_04_resume_keeps_original_checkpoints_and_provenance
+FAILED tests\unit\test_q07_checkpoint.py::test_job_04_recovery_partitions_all_states_no_silent_loss
+FAILED tests\unit\test_q07_checkpoint.py::test_p1_2_hydration_keeps_original_time_and_envelope_receipt
+FAILED tests\unit\test_quick_scan_budget.py::test_async_search_settles_the_same_durable_budget_ledger
+5 failed in 2.16s

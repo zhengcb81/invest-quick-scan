@@ -1,0 +1,16 @@
+
+=================================== ERRORS ====================================
+__________ ERROR collecting qa/tests/unit/test_w15_owner_refresh.py ___________
+ImportError while importing test module 'C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa\tests\unit\test_w15_owner_refresh.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Miniconda\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\unit\test_w15_owner_refresh.py:10: in <module>
+    from test_quick_scan_work_store import _created, _prepared, _spec
+E   ModuleNotFoundError: No module named 'test_quick_scan_work_store'
+=========================== short test summary info ===========================
+ERROR tests\unit\test_w15_owner_refresh.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.46s

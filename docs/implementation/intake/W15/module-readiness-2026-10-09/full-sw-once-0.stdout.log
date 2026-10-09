@@ -1,0 +1,40 @@
+StockWiki checks — mode=full
+workspace root: C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\sw
+=== ruff ===
+  $ C:\Miniconda\python.exe -m ruff check stockwiki tests scripts
+All checks passed!
+PASS  ruff (0.2s)
+=== validate-framework ===
+  $ C:\Miniconda\python.exe -B -m stockwiki.cli --root C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\sw validate-framework --static
+[warning] stockwiki\quick_scan_backup.py: 模块 656 行（>600）：偏大，建议分解为 <600 行的子模块（诊断项，不阻断）
+[warning] stockwiki\quick_scan_import.py: 模块 668 行（>600）：偏大，建议分解为 <600 行的子模块（诊断项，不阻断）
+[warning] stockwiki\quick_scan_observations.py: 模块 771 行（>600）：偏大，建议分解为 <600 行的子模块（诊断项，不阻断）
+[warning] stockwiki\quick_scan_store.py: 模块 972 行（>600）：偏大，建议分解为 <600 行的子模块（诊断项，不阻断）
+Framework validation passed with 4 warning(s).
+PASS  validate-framework (0.9s)
+=== coverage-run ===
+  $ C:\Miniconda\python.exe -B -m coverage run -m pytest -q
+
+=================================== ERRORS ====================================
+_______________ ERROR collecting tests/test_regenerate_wiki.py ________________
+ImportError while importing test module 'C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\sw\tests\test_regenerate_wiki.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Miniconda\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_regenerate_wiki.py:26: in <module>
+    from regenerate_wiki import regenerate_all  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'regenerate_wiki'
+=========================== short test summary info ===========================
+ERROR tests/test_regenerate_wiki.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 6.43s
+FAIL  coverage-run (12.1s)
+=== coverage-report ===
+  $ C:\Miniconda\python.exe -B -m coverage report
+DIAGNOSTIC coverage total (informational only): TOTAL                                         21377  16544   7582     68    17%
+DIAGNOSTIC ui.py coverage (informational only): stockwiki\ui.py                                 145    121     66      0    11%   55-63, 67-287
+PASS  coverage-report (5.5s)
+SOME CHECKS FAILED: coverage-run

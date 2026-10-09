@@ -1,0 +1,101 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_________ test_cli_e2e_search_policy_admission_gates_before_any_http __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F92057CD60>
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/baseline-search-admission-01/test_cli_e2e_search_policy_adm0')
+capsys = <_pytest.capture.CaptureFixture object at 0x000001F91C9ED010>
+
+    def test_cli_e2e_search_policy_admission_gates_before_any_http(
+        monkeypatch, tmp_path, capsys
+    ) -> None:
+        """An external mode whose routes are not admitted fails closed with zero
+        HTTP; an admitted route prints its admission receipt before dispatch."""
+        import os
+    
+        files = _setup(tmp_path, with_authority=False)
+        policy_file = tmp_path / "search_policy.json"
+        policy_file.write_text(json.dumps(_search_policy()), encoding="utf-8")
+    
+        monkeypatch.delenv("BRAVE_API_KEY", raising=False)
+        code, session = _run(
+            monkeypatch,
+            tmp_path,
+            files,
+            manifest=False,
+            with_authority=False,
+            extra=["--search-policy", str(policy_file)],
+        )
+        captured = capsys.readouterr()
+        assert code == 1
+        assert session.post.call_count == 0
+>       assert '"external_dispatch_enabled": false' in captured.out
+E       assert '"external_dispatch_enabled": false' in ''
+E        +  where '' = CaptureResult(out='', err='').out
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa_baseline\tests\integration\test_qa_net01_cli_e2e.py:404: AssertionError
+---------------------------- Captured stdout call -----------------------------
+INFO - ======================================================================
+INFO - 公司分析 - Fixture Corp
+INFO - ======================================================================
+INFO - 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\baseline-search-admission-01\test_cli_e2e_search_policy_adm0\questions.json
+INFO - 成功从JSON配置加载 2 个问题
+ERROR - 运行失败: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa_baseline\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa_baseline\src\runners\llm_runner.py", line 1344, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa_baseline\src\runners\llm_runner.py", line 1488, in _run_single_company
+    raise ValueError("external_search_routes_unadmitted: " + rejections)
+ValueError: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route
+------------------------------ Captured log call ------------------------------
+INFO     src.runners.llm_runner:llm_runner.py:1340 ======================================================================
+INFO     src.runners.llm_runner:llm_runner.py:1342 公司分析 - Fixture Corp
+INFO     src.runners.llm_runner:llm_runner.py:1343 ======================================================================
+INFO     src.config.json_config_manager:json_config_manager.py:37 正在加载JSON配置文件: C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\baseline-search-admission-01\test_cli_e2e_search_policy_adm0\questions.json
+INFO     src.config.json_config_manager:json_config_manager.py:63 成功从JSON配置加载 2 个问题
+ERROR    main_with_llm:main_with_llm.py:350 运行失败: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa_baseline\main_with_llm.py", line 331, in main
+    return runner.run(
+           ~~~~~~~~~~^
+        company=args.company,
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<14 lines>...
+        search_policy=args.search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa_baseline\src\runners\llm_runner.py", line 1344, in run
+    return self._run_single_company(
+           ~~~~~~~~~~~~~~~~~~~~~~~~^
+        company=company,
+        ^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+        search_policy=search_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa_baseline\src\runners\llm_runner.py", line 1488, in _run_single_company
+    raise ValueError("external_search_routes_unadmitted: " + rejections)
+ValueError: external_search_routes_unadmitted: brave-primary:credential_env_unset,*:no_admitted_external_route
+=========================== short test summary info ===========================
+FAILED tests\integration\test_qa_net01_cli_e2e.py::test_cli_e2e_search_policy_admission_gates_before_any_http
+1 failed in 1.41s

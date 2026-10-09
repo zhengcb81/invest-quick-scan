@@ -1,0 +1,1956 @@
+{
+  "schema_version": "3.1",
+  "template_version": "3.2.0",
+  "renderer_version": "1.0.0",
+  "mode": "quick",
+  "answer_format": "screening-1",
+  "module_package_id": "pkg_b5a41d8c9f89adba8d57cce1792b1cac8db5378509996f6614472a691cfb5fba",
+  "module_release_id": "modrel_fc5de4a3dcce55866c8a2a83d82cdaa8caf8a3c59b6406d3a0ea75e7c9e01e74",
+  "method_id": "core-constructs-v1/0a4a35e37d72921f",
+  "aggregation_policy": "core-constructs-v1",
+  "profile": {
+    "entity_id": "ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc",
+    "company": "Synthetic W15 company",
+    "ticker": "TEST",
+    "exchange": "TEST",
+    "as_of": "2026-10-08",
+    "industry_modules": [],
+    "cycle_position": "unknown",
+    "recovery_review": false,
+    "recovery_rationale": "",
+    "overlays": [],
+    "diagnostic_modules": [],
+    "diagnostic_rationale": {},
+    "investment_lenses": [],
+    "lens_rationale": {}
+  },
+  "modules": [
+    "common"
+  ],
+  "module_locks": [
+    {
+      "module_id": "common",
+      "version": "3.0.0",
+      "artifact_ref": "questions/releases/artifacts/common/3_0_0-6900922fc077b0558df49631c2f79e7677b2888c159d29e230d269f23adfdbe3.json",
+      "artifact_sha256": "6900922fc077b0558df49631c2f79e7677b2888c159d29e230d269f23adfdbe3"
+    }
+  ],
+  "replacements": {},
+  "deferred_questions": [],
+  "max_questions": null,
+  "source_sha256": {
+    "questions/releases/artifacts/common/3_0_0-6900922fc077b0558df49631c2f79e7677b2888c159d29e230d269f23adfdbe3.json": "6900922fc077b0558df49631c2f79e7677b2888c159d29e230d269f23adfdbe3",
+    "module_package_id": "pkg_b5a41d8c9f89adba8d57cce1792b1cac8db5378509996f6614472a691cfb5fba",
+    "questions/scoring-contexts.json": "e8391900357f328911cb48215afa2061ec133dc5d9a3147ada4ca8b5edc48018",
+    "questions/releases/routing/router_2_3_0-05f2cf6ccc4b86b3f3a3219105aeceacc92570520cb8f71ba028d3bf7c903086.json": "05f2cf6ccc4b86b3f3a3219105aeceacc92570520cb8f71ba028d3bf7c903086",
+    "schemas/quick_scan/metric.schema.json": "9f3e14b438e1f9d7e31c9d4db1d5e846b896a46703293f3b8be62ef78ba30d87",
+    "schemas/quick_scan/score.schema.json": "8669e291bcc75d0bb8efc1b62af6717de24072d5826f9ccdd70919d7642f86b7"
+  },
+  "question_count": 24,
+  "quality_weights": {
+    "business": 20,
+    "moat": 20,
+    "execution": 15,
+    "financial": 20,
+    "governance": 15,
+    "resilience": 10
+  },
+  "metric_contract_version": "1.0.0",
+  "question_metric_mappings": [
+    {
+      "question_id": "IQS_01",
+      "primary_metric_ref": "score.iqs_01",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_02",
+      "primary_metric_ref": "score.iqs_02",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_03",
+      "primary_metric_ref": "score.iqs_03",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_04",
+      "primary_metric_ref": "score.iqs_04",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_05",
+      "primary_metric_ref": "score.iqs_05",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_06",
+      "primary_metric_ref": "score.iqs_06",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_07",
+      "primary_metric_ref": "score.iqs_07",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_08",
+      "primary_metric_ref": "score.iqs_08",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_09",
+      "primary_metric_ref": "score.iqs_09",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_10",
+      "primary_metric_ref": "score.iqs_10",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_11",
+      "primary_metric_ref": "score.iqs_11",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_12",
+      "primary_metric_ref": "score.iqs_12",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": true,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_13",
+      "primary_metric_ref": "score.iqs_13",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": true,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_14",
+      "primary_metric_ref": "score.iqs_14",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_15",
+      "primary_metric_ref": "score.iqs_15",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_16",
+      "primary_metric_ref": "score.iqs_16",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": true,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_17",
+      "primary_metric_ref": "score.iqs_17",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_18",
+      "primary_metric_ref": "score.iqs_18",
+      "dimension": "quality",
+      "aggregation_role": "quality_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_19",
+      "primary_metric_ref": "score.iqs_19",
+      "dimension": "growth",
+      "aggregation_role": "growth_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": true,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_20",
+      "primary_metric_ref": "score.iqs_20",
+      "dimension": "growth",
+      "aggregation_role": "growth_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": true,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_21",
+      "primary_metric_ref": "score.iqs_21",
+      "dimension": "growth",
+      "aggregation_role": "growth_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": true,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_22",
+      "primary_metric_ref": "score.iqs_22",
+      "dimension": "valuation",
+      "aggregation_role": "valuation_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_23",
+      "primary_metric_ref": "score.iqs_23",
+      "dimension": "valuation",
+      "aggregation_role": "valuation_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    },
+    {
+      "question_id": "IQS_24",
+      "primary_metric_ref": "score.iqs_24",
+      "dimension": "valuation",
+      "aggregation_role": "valuation_core",
+      "critical_risk": false,
+      "replacement_for": null,
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": "IQS_01",
+      "dimension": "business",
+      "priority": 1,
+      "question": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+      "evidence": [
+        "客户实际解决的问题",
+        "总使用成本",
+        "独立客户复购与付费",
+        "停止使用的后果"
+      ],
+      "anchors": {
+        "1": "产品价值不足，主要靠补贴或推销维持需求",
+        "5": "客户价值成立但可轻易替换、支付意愿一般",
+        "10": "客户价值清楚且有行为证据，付费与复购可持续"
+      },
+      "metric_id": "score.iqs_01",
+      "construct_id": "IQS_01",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_01",
+        "primary_metric_ref": "score.iqs_01",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_01] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？\n证据关注：客户实际解决的问题；总使用成本；独立客户复购与付费；停止使用的后果\n评分锚点：1分=产品价值不足，主要靠补贴或推销维持需求；5分=客户价值成立但可轻易替换、支付意愿一般；10分=客户价值清楚且有行为证据，付费与复购可持续。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "be29428251a87a6abf85af707311ede6b1cb1e2b554d96267a7b7a8c7b64e1da",
+      "semantic_sha256": "afa1616f327f764c26cffee6ef3d1515592fa02af31efe104b4c8c8c65ba4af8",
+      "definition_sha256": "e49b91646870da125d3e4a03e7cadd2ffb93e24638e7c0cb801dfb5909e3bebc"
+    },
+    {
+      "id": "IQS_02",
+      "dimension": "business",
+      "priority": 1,
+      "question": "现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？",
+      "evidence": [
+        "客户留存或重复需求",
+        "订单取消与履约",
+        "获客维护成本",
+        "不只看合同名义期限"
+      ],
+      "anchors": {
+        "1": "每期收入都需高成本重新购买且可见性很低",
+        "5": "有稳定存量但仍需较多投入维持",
+        "10": "存量需求、履约与收款可预测且维护成本合理，不限订阅模式"
+      },
+      "metric_id": "score.iqs_02",
+      "construct_id": "IQS_02",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_02",
+        "primary_metric_ref": "score.iqs_02",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_02] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？\n证据关注：客户留存或重复需求；订单取消与履约；获客维护成本；不只看合同名义期限\n评分锚点：1分=每期收入都需高成本重新购买且可见性很低；5分=有稳定存量但仍需较多投入维持；10分=存量需求、履约与收款可预测且维护成本合理，不限订阅模式。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "bd827a6aa4964728fd464661e0eb4da9c07f14d6849ad4af636833c8a6059521",
+      "semantic_sha256": "a8b18f0f0afe138cd5d68365f5d1116a457eff87e38b55c74df253785f480d49",
+      "definition_sha256": "e466bfe76d2c2933a967d4714b4c203840026b60b8515455125f8a04da400042"
+    },
+    {
+      "id": "IQS_03",
+      "dimension": "business",
+      "priority": 1,
+      "question": "成熟产品、客户或项目在计入全部必要成本后，单位经济是否成立？",
+      "evidence": [
+        "获客交付维护售后",
+        "退货与损失",
+        "资本占用",
+        "补贴和总部成本分摊"
+      ],
+      "anchors": {
+        "1": "成熟单元仍持续毁损价值，放大规模无法解决",
+        "5": "全成本后可盈利，但回报或回收期一般",
+        "10": "不同成熟批次均有可靠全成本回报，规模增加不会扩大隐性亏损"
+      },
+      "metric_id": "score.iqs_03",
+      "construct_id": "IQS_03",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_03",
+        "primary_metric_ref": "score.iqs_03",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_03] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n成熟产品、客户或项目在计入全部必要成本后，单位经济是否成立？\n证据关注：获客交付维护售后；退货与损失；资本占用；补贴和总部成本分摊\n评分锚点：1分=成熟单元仍持续毁损价值，放大规模无法解决；5分=全成本后可盈利，但回报或回收期一般；10分=不同成熟批次均有可靠全成本回报，规模增加不会扩大隐性亏损。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "97b520f19218a5454492aa3c10915348f4b3c376ab4d7a14fc7f610963a53913",
+      "semantic_sha256": "efc1f3021f86c6ae2b09728cf72d1a25d026e08c69aff6884cc08b2893713448",
+      "definition_sha256": "e2ddb640d2fcd4b437ab9161a2bb5ded0055e4472f0f9385eb0cd6a51ec47336"
+    },
+    {
+      "id": "IQS_04",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "行业的供需和价值链分配，是否允许这家公司长期留下合理利润？",
+      "evidence": [
+        "供给扩张与退出",
+        "价格纪律",
+        "客户和供应商议价",
+        "利润池归属"
+      ],
+      "anchors": {
+        "1": "过剩竞争或强势交易方长期挤走公司利润",
+        "5": "能留下合理利润但容易被新增供给或交易方侵蚀",
+        "10": "供给纪律或差异价值使公司持续保留合理利润，不唯市场集中度"
+      },
+      "metric_id": "score.iqs_04",
+      "construct_id": "IQS_04",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_04",
+        "primary_metric_ref": "score.iqs_04",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": true,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_04] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n行业的供需和价值链分配，是否允许这家公司长期留下合理利润？\n证据关注：供给扩张与退出；价格纪律；客户和供应商议价；利润池归属\n评分锚点：1分=过剩竞争或强势交易方长期挤走公司利润；5分=能留下合理利润但容易被新增供给或交易方侵蚀；10分=供给纪律或差异价值使公司持续保留合理利润，不唯市场集中度。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "e7aa2584190e67b540b302d9f3318388a266e9061f0fc7cfa4b60c1d6ce55495",
+      "semantic_sha256": "6bb8381541926bb692cc0e8bfd40ea412364b9b13e6b6e4a8f17707d9d414bd4",
+      "definition_sha256": "cbf5f4c64e3221f82a37864bf20f00ef8a4e627baa2b6a6015d38757facbdb6f"
+    },
+    {
+      "id": "IQS_05",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？",
+      "evidence": [
+        "优势适用的具体业务/客户场景与利润来源",
+        "优势成立所依赖的条件、有效范围与明确失效信号",
+        "同等投入的性能成本",
+        "转换障碍",
+        "规模或网络机制",
+        "对手复制与客户选择，以及可能推翻优势判断的反证"
+      ],
+      "anchors": {
+        "1": "缺少可验证优势，对手可迅速复制或低价替代",
+        "5": "有优势，但竞争者数年内可能追上",
+        "10": "优势机制和经济回报均有长期证据，复制代价显著且不依赖口号"
+      },
+      "metric_id": "score.iqs_05",
+      "construct_id": "IQS_05",
+      "comparison_role": "core",
+      "rubric_version": "2.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_05",
+        "primary_metric_ref": "score.iqs_05",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": true,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_05] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？\n证据关注：优势适用的具体业务/客户场景与利润来源；优势成立所依赖的条件、有效范围与明确失效信号；同等投入的性能成本；转换障碍；规模或网络机制；对手复制与客户选择，以及可能推翻优势判断的反证\n评分锚点：1分=缺少可验证优势，对手可迅速复制或低价替代；5分=有优势，但竞争者数年内可能追上；10分=优势机制和经济回报均有长期证据，复制代价显著且不依赖口号。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "c070e8513b812c4ddda59fdf72c5e55cbe4448a982fb9d2e180c212bf965249c",
+      "semantic_sha256": "8e07bb9106eea2516f4b5cdbb481a186d61b36c64718cfefcc23dcca4ebffc90",
+      "definition_sha256": "1a69a9ad5639348badc9bac39e5826046ab52ff8b9c2d04387da9705c248e435"
+    },
+    {
+      "id": "IQS_06",
+      "dimension": "moat",
+      "priority": 1,
+      "question": "公司的竞争地位有多稳固，变化趋势是否支持这种稳固性？单列增强/稳定/恶化，不因上升速度本身加分。",
+      "evidence": [
+        "剔除补贴后的经济份额",
+        "相对价格与回报",
+        "客户迁移",
+        "替代方案进展",
+        "趋势improving/stable/deteriorating与竞争地位强度分开"
+      ],
+      "anchors": {
+        "1": "关键份额/客户与盈利能力持续受侵蚀，缺少有效防御",
+        "5": "地位可维持但优势普通或容易受冲击，改善尚未证明持久",
+        "10": "在竞争压力下长期保持关键客户和经济利益，优势稳固且无实质侵蚀证据"
+      },
+      "metric_id": "score.iqs_06",
+      "construct_id": "IQS_06",
+      "comparison_role": "core",
+      "rubric_version": "2.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_06",
+        "primary_metric_ref": "score.iqs_06",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": true,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_06] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n公司的竞争地位有多稳固，变化趋势是否支持这种稳固性？单列增强/稳定/恶化，不因上升速度本身加分。\n证据关注：剔除补贴后的经济份额；相对价格与回报；客户迁移；替代方案进展；趋势improving/stable/deteriorating与竞争地位强度分开\n评分锚点：1分=关键份额/客户与盈利能力持续受侵蚀，缺少有效防御；5分=地位可维持但优势普通或容易受冲击，改善尚未证明持久；10分=在竞争压力下长期保持关键客户和经济利益，优势稳固且无实质侵蚀证据。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "20e1703453538b2527f05e9b365d26edad876913f44c72887d051321b630156b",
+      "semantic_sha256": "3d0a3df9b28f29f48f8f18081b90210968111a327b90a16f20e026228221c5cf",
+      "definition_sha256": "0ae309b36dc08ef082a89c16007888a01f65cb758016690e22959037d349769b"
+    },
+    {
+      "id": "IQS_07",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "管理层过去对经营目标和重大项目的承诺，兑现得如何？",
+      "evidence": [
+        "过去三至五年承诺与实际",
+        "承诺难度",
+        "延期和纠偏",
+        "有无移动目标"
+      ],
+      "anchors": {
+        "1": "反复失约、转移口径或回避责任",
+        "5": "大体兑现合理目标，部分偏差可解释",
+        "10": "合理且有挑战的目标持续兑现，失败披露和纠正及时"
+      },
+      "metric_id": "score.iqs_07",
+      "construct_id": "IQS_07",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_07",
+        "primary_metric_ref": "score.iqs_07",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_07] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n管理层过去对经营目标和重大项目的承诺，兑现得如何？\n证据关注：过去三至五年承诺与实际；承诺难度；延期和纠偏；有无移动目标\n评分锚点：1分=反复失约、转移口径或回避责任；5分=大体兑现合理目标，部分偏差可解释；10分=合理且有挑战的目标持续兑现，失败披露和纠正及时。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "2fe5692a254767eb1263190bbd19f8b637bb808e150de4a450a3a307f4502ed6",
+      "semantic_sha256": "e18ba79a2ef6190ed9fbc741c47ddc6b7a10fdfc1b9b858246721273af9ed6d4",
+      "definition_sha256": "8327ef0d01e524f841b4391ffbf4c1f7be8a2bc77204c0ee8ae95bddac34604b"
+    },
+    {
+      "id": "IQS_08",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "扩大规模或遇到需求波动时，公司能否保持交付质量与成本纪律？",
+      "evidence": [
+        "扩张批次",
+        "质量事故",
+        "交付周期",
+        "固定成本弹性",
+        "爬坡损失"
+      ],
+      "anchors": {
+        "1": "规模或需求变化就导致质量和成本失控",
+        "5": "正常经营可靠，但扩张或波动时瓶颈明显",
+        "10": "多个扩张或压力周期证实质量、交付与成本可以同步受控"
+      },
+      "metric_id": "score.iqs_08",
+      "construct_id": "IQS_08",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_08",
+        "primary_metric_ref": "score.iqs_08",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_08] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n扩大规模或遇到需求波动时，公司能否保持交付质量与成本纪律？\n证据关注：扩张批次；质量事故；交付周期；固定成本弹性；爬坡损失\n评分锚点：1分=规模或需求变化就导致质量和成本失控；5分=正常经营可靠，但扩张或波动时瓶颈明显；10分=多个扩张或压力周期证实质量、交付与成本可以同步受控。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "18471eefbb5e89e9fcd0ebc2d1031fcd0e1614be48a45331984d849571dba29d",
+      "semantic_sha256": "610d46355151415f7e3ba5d8de668379683c2b9f0d35c3edf0653f38dd7be098",
+      "definition_sha256": "012248c99571e9ae4ac1d621f34a06211edaca8415dfa04bb71bd999729c5340"
+    },
+    {
+      "id": "IQS_09",
+      "dimension": "execution",
+      "priority": 1,
+      "question": "组织能力是否足以延续，而不过度依赖少数关键个人？",
+      "evidence": [
+        "核心岗位梯队",
+        "人员流失",
+        "接班",
+        "制度化研发和销售",
+        "授权记录"
+      ],
+      "anchors": {
+        "1": "核心个人流失即可破坏经营且没有接班能力",
+        "5": "岗位基本齐备，但关键能力仍依赖少数人",
+        "10": "人才与流程已形成可复制组织能力，关键人员更替有成功记录"
+      },
+      "metric_id": "score.iqs_09",
+      "construct_id": "IQS_09",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_09",
+        "primary_metric_ref": "score.iqs_09",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_09] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n组织能力是否足以延续，而不过度依赖少数关键个人？\n证据关注：核心岗位梯队；人员流失；接班；制度化研发和销售；授权记录\n评分锚点：1分=核心个人流失即可破坏经营且没有接班能力；5分=岗位基本齐备，但关键能力仍依赖少数人；10分=人才与流程已形成可复制组织能力，关键人员更替有成功记录。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "10d6c0bac47ca3d844d2b0439ef014546d12d09fc6be1fc969566fd38db759b6",
+      "semantic_sha256": "d10f449761743fea5418e18ff4d54ad7d7a5b6dbffa0e135e1396d57f32bf6f8",
+      "definition_sha256": "a27556dbb12c4bd848cd5cd55c77e083e4c866c6b16e2f55a6a7d8247bc9967c"
+    },
+    {
+      "id": "IQS_10",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？",
+      "evidence": [
+        "中周期税后经营回报与投入资本",
+        "金融企业适用的权益资本回报",
+        "商誉租赁与研发调整",
+        "资本成本区间"
+      ],
+      "anchors": {
+        "1": "正常经营回报长期低于合理资金成本，或高回报主要来自失真分母与激进杠杆",
+        "5": "回报大致覆盖合理资金成本，优势有限",
+        "10": "可比且保守口径下长期赚取明显超额回报，非依赖周期峰值或少投必要资本"
+      },
+      "metric_id": "score.iqs_10",
+      "construct_id": "IQS_10",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_10",
+        "primary_metric_ref": "score.iqs_10",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_10] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？\n证据关注：中周期税后经营回报与投入资本；金融企业适用的权益资本回报；商誉租赁与研发调整；资本成本区间\n评分锚点：1分=正常经营回报长期低于合理资金成本，或高回报主要来自失真分母与激进杠杆；5分=回报大致覆盖合理资金成本，优势有限；10分=可比且保守口径下长期赚取明显超额回报，非依赖周期峰值或少投必要资本。 区分全公司存量资本回报与单位经济、增量投资回报；金融企业使用合适的权益资本口径，正常化和资本成本只给有证据的合理区间；商业化前没有经济含义时标not_applicable。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "0ce4aa984ae673df7c51a640934edad48891707683083d28a203785e6341802b",
+      "semantic_sha256": "2e4ff478e04d2af5b6adc0659c91f81b69842e1ea51be8bb8c23a29a4335090e",
+      "definition_sha256": "4800eb076987025b72335eba8c40ad5cea87bbb10b370c333bbb1fe0b16b5170"
+    },
+    {
+      "id": "IQS_11",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "账面经营成果有多少能在必要再投入后，转成股东可获得的现金或可分配资本？",
+      "evidence": [
+        "经营现金与利润核对",
+        "维护性投入",
+        "正常营运资本",
+        "金融监管资本留存",
+        "一次性占款释放"
+      ],
+      "anchors": {
+        "1": "利润不能兑现，现金主要来自延付、出售或少做必要投入",
+        "5": "中周期可形成真实可分配资源，但转化一般",
+        "10": "多年真实转化强，必要维护和资本留存后仍有可靠余量"
+      },
+      "metric_id": "score.iqs_11",
+      "construct_id": "IQS_11",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_11",
+        "primary_metric_ref": "score.iqs_11",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_11] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n账面经营成果有多少能在必要再投入后，转成股东可获得的现金或可分配资本？\n证据关注：经营现金与利润核对；维护性投入；正常营运资本；金融监管资本留存；一次性占款释放\n评分锚点：1分=利润不能兑现，现金主要来自延付、出售或少做必要投入；5分=中周期可形成真实可分配资源，但转化一般；10分=多年真实转化强，必要维护和资本留存后仍有可靠余量。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "cf9bc62bcf868687a1290d15d46dbf4d65d43825d1c3ac037612b5ba48d41c5b",
+      "semantic_sha256": "6aa514dd6ae120fab799f524c4e573d413971841e516401aecb75dd8ebeda450",
+      "definition_sha256": "0ede6062f3080d5ddcc20d42fd558dad58b2ac599b13aab43dac91da18ea9d4d"
+    },
+    {
+      "id": "IQS_12",
+      "dimension": "financial",
+      "priority": 1,
+      "question": "资产、负债和利润的披露，是否足以可信地反映真实经济状况？",
+      "evidence": [
+        "审计与监管事项",
+        "应收存货或金融资产质量",
+        "费用资本化",
+        "表外义务",
+        "非经常调整"
+      ],
+      "anchors": {
+        "1": "重大失真、隐性义务或审计疑虑未解决",
+        "5": "主要口径可解释，但调整与估计不确定性较多",
+        "10": "关键口径透明且资产、利润、现金相互印证，风险确认及时"
+      },
+      "critical": true,
+      "metric_id": "score.iqs_12",
+      "construct_id": "IQS_12",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_12",
+        "primary_metric_ref": "score.iqs_12",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": true,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_12] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n资产、负债和利润的披露，是否足以可信地反映真实经济状况？\n证据关注：审计与监管事项；应收存货或金融资产质量；费用资本化；表外义务；非经常调整\n评分锚点：1分=重大失真、隐性义务或审计疑虑未解决；5分=主要口径可解释，但调整与估计不确定性较多；10分=关键口径透明且资产、利润、现金相互印证，风险确认及时。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "7ce8db312e43314e3ff6cc52976af9e1651d5ce5cbc63d01e4ecae3d1183efea",
+      "semantic_sha256": "4fe1a8ee8969db10e349c39b492ef44a2cac227a3489119383dea97ea9391902",
+      "definition_sha256": "0656fea768b457f922529f4efcd08dfca46f8cad622bff7a791df98cd8cff0d4"
+    },
+    {
+      "id": "IQS_13",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "管理层和控制人是否有公平对待普通股东的实际记录？",
+      "evidence": [
+        "关联交易",
+        "资金占用",
+        "控制权与现金权",
+        "资产转移",
+        "少数股东保护"
+      ],
+      "anchors": {
+        "1": "存在重大侵占、利益输送或权利缺陷且未解决",
+        "5": "基本权益受保护，但制衡或交易公平性仍有疑问",
+        "10": "长期交易与治理记录证明普通股东能公平分享经济利益"
+      },
+      "critical": true,
+      "metric_id": "score.iqs_13",
+      "construct_id": "IQS_13",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_13",
+        "primary_metric_ref": "score.iqs_13",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": true,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_13] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n管理层和控制人是否有公平对待普通股东的实际记录？\n证据关注：关联交易；资金占用；控制权与现金权；资产转移；少数股东保护\n评分锚点：1分=存在重大侵占、利益输送或权利缺陷且未解决；5分=基本权益受保护，但制衡或交易公平性仍有疑问；10分=长期交易与治理记录证明普通股东能公平分享经济利益。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "8e71e41349438ae4bdf7cc6c92cdea7f616805645afcc068c20dc45e2cb5fc1e",
+      "semantic_sha256": "bcf93c0f6438771e010af5d291409fc4ab07f96bb7d9d1a483702f51c03285f4",
+      "definition_sha256": "5734a8370a3c0f13bd51b8e6cbd6f115992007b378f47736f0991ec295047c88"
+    },
+    {
+      "id": "IQS_14",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "历次再投资、并购、分红和回购，是否真正增加了每股经济价值？",
+      "evidence": [
+        "投入后的实际回报",
+        "并购减值",
+        "回购价格",
+        "全部摊薄股数",
+        "失败项目退出"
+      ],
+      "anchors": {
+        "1": "规模扩大却反复毁损每股价值，低回报投入长期不退出",
+        "5": "主要配置回报接近要求，成功失败并存",
+        "10": "配置纪律经多个周期验证，敢于停止低效扩张并提升每股价值"
+      },
+      "metric_id": "score.iqs_14",
+      "construct_id": "IQS_14",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_14",
+        "primary_metric_ref": "score.iqs_14",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_14] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n历次再投资、并购、分红和回购，是否真正增加了每股经济价值？\n证据关注：投入后的实际回报；并购减值；回购价格；全部摊薄股数；失败项目退出\n评分锚点：1分=规模扩大却反复毁损每股价值，低回报投入长期不退出；5分=主要配置回报接近要求，成功失败并存；10分=配置纪律经多个周期验证，敢于停止低效扩张并提升每股价值。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "d7f74708f8951a090494cb07f20cf16264c16e05b8bf48df36c052b7dae17b84",
+      "semantic_sha256": "7d97b9d44ed4444c4d22943ad0efd1de5bbb4bc5a5419535bd92c62130bc5bf6",
+      "definition_sha256": "4144be6d00b921e5435781eb09d71add607131899b6fadd83693002c1438fd7d"
+    },
+    {
+      "id": "IQS_15",
+      "dimension": "governance",
+      "priority": 1,
+      "question": "薪酬、股权激励和监督机制，是否鼓励长期每股回报而非短期做大数字？",
+      "evidence": [
+        "考核指标",
+        "稀释",
+        "管理层实际风险承担",
+        "追索约束",
+        "董事会监督记录"
+      ],
+      "anchors": {
+        "1": "激励鼓励做量、冒险或持续稀释，监督无效",
+        "5": "激励基本合理，但指标与股东回报并不完全一致",
+        "10": "激励与真实长期每股回报一致，稀释可控且监督能纠正问题"
+      },
+      "metric_id": "score.iqs_15",
+      "construct_id": "IQS_15",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_15",
+        "primary_metric_ref": "score.iqs_15",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_15] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n薪酬、股权激励和监督机制，是否鼓励长期每股回报而非短期做大数字？\n证据关注：考核指标；稀释；管理层实际风险承担；追索约束；董事会监督记录\n评分锚点：1分=激励鼓励做量、冒险或持续稀释，监督无效；5分=激励基本合理，但指标与股东回报并不完全一致；10分=激励与真实长期每股回报一致，稀释可控且监督能纠正问题。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "8caf4b1991c58efa2edc6828db754162b83440a58d942c4b644c3bcd6b5561f7",
+      "semantic_sha256": "542ece7f60b922b732b31cec8ea75956df09f644f523d8ea309ea1b5c7206db9",
+      "definition_sha256": "048ff192b19ed0c777cca82798447375ef12e76e4d6d7e6f61a6b37adc090e39"
+    },
+    {
+      "id": "IQS_16",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？",
+      "evidence": [
+        "可用现金",
+        "保守经营流入",
+        "债务租赁和承诺投入",
+        "担保",
+        "资本与契约约束"
+      ],
+      "anchors": {
+        "1": "存在未落实资金覆盖的刚性缺口，可能被迫违约或严重摊薄",
+        "5": "正常情景可覆盖，压力情景依赖融资或资产出售",
+        "10": "保守压力下仍有落实的资金与资本缓冲，可履约并维护核心业务"
+      },
+      "critical": true,
+      "metric_id": "score.iqs_16",
+      "construct_id": "IQS_16",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_16",
+        "primary_metric_ref": "score.iqs_16",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": true,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": true,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_16] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？\n证据关注：可用现金；保守经营流入；债务租赁和承诺投入；担保；资本与契约约束\n评分锚点：1分=存在未落实资金覆盖的刚性缺口，可能被迫违约或严重摊薄；5分=正常情景可覆盖，压力情景依赖融资或资产出售；10分=保守压力下仍有落实的资金与资本缓冲，可履约并维护核心业务。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "ff7c9c8218331eb8a1af7289556ba886c5a560b4c15824f054e7df30c0e4e822",
+      "semantic_sha256": "8af7d18024c89047a0cd7c673bcdc328826f09bd76adc57aa60e01c8bc55d0c4",
+      "definition_sha256": "e7bdfca8d2db0fa6c0a4b863c4607514614c324206ca0cffe0de43bbf0ee1d32"
+    },
+    {
+      "id": "IQS_17",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "失去关键客户、供应来源、产地或系统时，公司能否在可承受代价内恢复？",
+      "evidence": [
+        "关键依赖及经济影响",
+        "替代认证与周期",
+        "客户流失情景",
+        "库存或合同保护"
+      ],
+      "anchors": {
+        "1": "单点失效可长期破坏经营，缺乏可行替代",
+        "5": "存在替代但过渡时间、成本或损失较大",
+        "10": "替代和恢复措施有验证，过渡损失与时间可承受；分散本身不自动高分"
+      },
+      "metric_id": "score.iqs_17",
+      "construct_id": "IQS_17",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_17",
+        "primary_metric_ref": "score.iqs_17",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": true,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_17] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n失去关键客户、供应来源、产地或系统时，公司能否在可承受代价内恢复？\n证据关注：关键依赖及经济影响；替代认证与周期；客户流失情景；库存或合同保护\n评分锚点：1分=单点失效可长期破坏经营，缺乏可行替代；5分=存在替代但过渡时间、成本或损失较大；10分=替代和恢复措施有验证，过渡损失与时间可承受；分散本身不自动高分。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "5a9003ba117f66db4f8d66ca7fada0cbbaaebe529bccc4ab9377ad1036fd3e80",
+      "semantic_sha256": "77aa9b176fb9d965823c77414a08b4b04570a182b490723d6a9c7122d1b1b8f4",
+      "definition_sha256": "e00046ebe61d44cf13e8e4a6345cf22e2c68d0bcc887de1cbe3a0e7e5764cb51"
+    },
+    {
+      "id": "IQS_18",
+      "dimension": "resilience",
+      "priority": 1,
+      "question": "最可能永久损害核心业务价值的一至两项实质变化，哪些会绕过现有优势，公司有哪些经验证的防御？",
+      "evidence": [
+        "最重要的一至两项技术替代、渠道迁移、监管/环境约束或商业模式失效，不按热点词罗列",
+        "受影响的分部、客户场景及其当前利润/资产敞口",
+        "替代路径、可能速度、公司防御或转移能力及所需投入",
+        "能推翻结构性损害判断的反证和观察期限"
+      ],
+      "anchors": {
+        "1": "核心价值已面临重大不可逆损害，缺少可行防御",
+        "5": "风险可识别且有应对，但有效性与缓冲尚未充分验证",
+        "10": "主要失效路径的暴露有限或防御经验证，能在压力下保持核心价值"
+      },
+      "metric_id": "score.iqs_18",
+      "construct_id": "IQS_18",
+      "comparison_role": "core",
+      "rubric_version": "2.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_18",
+        "primary_metric_ref": "score.iqs_18",
+        "dimension": "quality",
+        "aggregation_role": "quality_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": true,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_18] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n最可能永久损害核心业务价值的一至两项实质变化，哪些会绕过现有优势，公司有哪些经验证的防御？\n证据关注：最重要的一至两项技术替代、渠道迁移、监管/环境约束或商业模式失效，不按热点词罗列；受影响的分部、客户场景及其当前利润/资产敞口；替代路径、可能速度、公司防御或转移能力及所需投入；能推翻结构性损害判断的反证和观察期限\n评分锚点：1分=核心价值已面临重大不可逆损害，缺少可行防御；5分=风险可识别且有应对，但有效性与缓冲尚未充分验证；10分=主要失效路径的暴露有限或防御经验证，能在压力下保持核心价值。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "9205851dcf42196dda78adf1b02fe266fe8bea6393925f10ce3b7efd6d1674db",
+      "semantic_sha256": "d48b97778ba2bf67a5e0f8fb109f1d18d6ed20c446e93fb91e41b500880ab212",
+      "definition_sha256": "6f03dbaaf8f4dd9514fa043d7a9844f3f86c7ae904b0a6f2a8c28ef39985f271"
+    },
+    {
+      "id": "IQS_19",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "未来三至五年，公司真正能触达且客户付得起的新增需求有多大？",
+      "evidence": [
+        "具体客户预算",
+        "可进入市场",
+        "渗透与替代边界",
+        "量价分解",
+        "避免直接套用宏大TAM"
+      ],
+      "anchors": {
+        "1": "可触达需求持续萎缩或没有支付基础",
+        "5": "可触达需求温和增长，增量空间有限",
+        "10": "有支付与渠道证据支持的显著增量空间，边界和约束清楚"
+      },
+      "metric_id": "score.iqs_19",
+      "construct_id": "IQS_19",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_19",
+        "primary_metric_ref": "score.iqs_19",
+        "dimension": "growth",
+        "aggregation_role": "growth_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": true,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_19] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n未来三至五年，公司真正能触达且客户付得起的新增需求有多大？\n证据关注：具体客户预算；可进入市场；渗透与替代边界；量价分解；避免直接套用宏大TAM\n评分锚点：1分=可触达需求持续萎缩或没有支付基础；5分=可触达需求温和增长，增量空间有限；10分=有支付与渠道证据支持的显著增量空间，边界和约束清楚。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "4a533c84096d4679e03a3db2a7e766b17941f08bf86877d215b039d96784a7b8",
+      "semantic_sha256": "4fc54b070ec83169f1c02ba0f9fe04cf14bc884f1f1609ccef70dd1cf14bdc65",
+      "definition_sha256": "c63424dc2b6ffc1524de56af107ca9e4064d7119b3fd7b368a0657fb1dc2aa63"
+    },
+    {
+      "id": "IQS_20",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "未来增长的主要驱动是否已被验证能从客户需求转为可持续利润，并扣除对存量业务、必要投入与股权融资的影响？",
+      "evidence": [
+        "自然量价与并购汇率拆分",
+        "从产品/试点、付费采用、重复购买到收入和利润的实际阶段与证据",
+        "新增业务的利润池归属、客户议价及可持续单位经济",
+        "对存量业务的替代/蚕食和损失的利润贡献",
+        "必要转型投入、融资需求及摊薄后的净股东经济效果"
+      ],
+      "anchors": {
+        "1": "增长主要依赖叙事、并表或远期假设；或可见的新业务收益不足以弥补存量利润损失与必要投入",
+        "5": "客户需求和转化路径有部分验证，但新旧业务合并后的利润与每股净效果仍不确定",
+        "10": "主要驱动有连续可核实的付费、收入和利润转化；考虑存量业务变化、必要投入与摊薄后仍能持续增厚股东经济利益"
+      },
+      "metric_id": "score.iqs_20",
+      "construct_id": "IQS_20",
+      "comparison_role": "core",
+      "rubric_version": "2.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_20",
+        "primary_metric_ref": "score.iqs_20",
+        "dimension": "growth",
+        "aggregation_role": "growth_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": true,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_20] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n未来增长的主要驱动是否已被验证能从客户需求转为可持续利润，并扣除对存量业务、必要投入与股权融资的影响？\n证据关注：自然量价与并购汇率拆分；从产品/试点、付费采用、重复购买到收入和利润的实际阶段与证据；新增业务的利润池归属、客户议价及可持续单位经济；对存量业务的替代/蚕食和损失的利润贡献；必要转型投入、融资需求及摊薄后的净股东经济效果\n评分锚点：1分=增长主要依赖叙事、并表或远期假设；或可见的新业务收益不足以弥补存量利润损失与必要投入；5分=客户需求和转化路径有部分验证，但新旧业务合并后的利润与每股净效果仍不确定；10分=主要驱动有连续可核实的付费、收入和利润转化；考虑存量业务变化、必要投入与摊薄后仍能持续增厚股东经济利益。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "d223861cae3db783d863b81ee56ac5a6f5f072467223fad2b69bb7742a1f63e3",
+      "semantic_sha256": "43ae262fe8eb1b05f82f4f626b20a91e2c5d9361aaba502015ae6bebd636e238",
+      "definition_sha256": "f0b94ca96c7e82be38547bc0306752c630360ebdb9c5fdf4a35fda5c5831e860"
+    },
+    {
+      "id": "IQS_21",
+      "dimension": "growth",
+      "priority": 1,
+      "question": "新增资本在扣除存量业务被替代、转型投入和融资摊薄后，是否仍有吸引力的每股回报与足够再投资空间？",
+      "evidence": [
+        "增量而非历史资本回报",
+        "新批次经济性",
+        "存量业务被替代时损失的利润与资产退出成本",
+        "转型资本开支、营运资金、融资条件和股权摊薄",
+        "新增回报扣除上述代价后能否归属现有普通股东",
+        "人才与融资约束",
+        "饱和边界"
+      ],
+      "anchors": {
+        "1": "新增投入回报不足，或增长带来的收益被存量利润损失、转型成本和融资摊薄抵消，持续毁损每股价值",
+        "5": "有可盈利机会，但增量回报、存量替代、融资条件或股东净效果仍受重要约束",
+        "10": "增量回报与再投资空间已有验证；扣除存量替代、转型投入和摊薄后，保守情形仍支持每股价值增长"
+      },
+      "metric_id": "score.iqs_21",
+      "construct_id": "IQS_21",
+      "comparison_role": "core",
+      "rubric_version": "2.0.0",
+      "scope": "entity",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_21",
+        "primary_metric_ref": "score.iqs_21",
+        "dimension": "growth",
+        "aggregation_role": "growth_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": true,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_21] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n新增资本在扣除存量业务被替代、转型投入和融资摊薄后，是否仍有吸引力的每股回报与足够再投资空间？\n证据关注：增量而非历史资本回报；新批次经济性；存量业务被替代时损失的利润与资产退出成本；转型资本开支、营运资金、融资条件和股权摊薄；新增回报扣除上述代价后能否归属现有普通股东；人才与融资约束；饱和边界\n评分锚点：1分=新增投入回报不足，或增长带来的收益被存量利润损失、转型成本和融资摊薄抵消，持续毁损每股价值；5分=有可盈利机会，但增量回报、存量替代、融资条件或股东净效果仍受重要约束；10分=增量回报与再投资空间已有验证；扣除存量替代、转型投入和摊薄后，保守情形仍支持每股价值增长。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "b7ac9d52034c6f91d5ebb2c7a33af2d61dbd34fbde19d88a0fa20df76aa96013",
+      "semantic_sha256": "2e669c91219a0f82ca1ad3c60291776f83dd01ca2599e02d33052f2e60568305",
+      "definition_sha256": "8b02a0479dbc822ee1f8457d0bb85eb52e6526a42bfc4b43e9e7eeca52644f7a"
+    },
+    {
+      "id": "IQS_22",
+      "dimension": "valuation",
+      "priority": 1,
+      "question": "当前价格隐含的增长、利润率和资本回报要求，是否在证据支持的能力范围内？",
+      "evidence": [
+        "报价日与股权边界",
+        "适用估值",
+        "反推基本面要求",
+        "资本结构",
+        "可比差异"
+      ],
+      "anchors": {
+        "1": "需要多项激进假设同时成立才能支持价格",
+        "5": "价格大致对应可实现的基准情景，余地一般",
+        "10": "保守且有证据的经营表现即可支持价格，并有合理余地"
+      },
+      "metric_id": "score.iqs_22",
+      "construct_id": "IQS_22",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_22",
+        "primary_metric_ref": "score.iqs_22",
+        "dimension": "valuation",
+        "aggregation_role": "valuation_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_22] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n当前价格隐含的增长、利润率和资本回报要求，是否在证据支持的能力范围内？\n证据关注：报价日与股权边界；适用估值；反推基本面要求；资本结构；可比差异\n评分锚点：1分=需要多项激进假设同时成立才能支持价格；5分=价格大致对应可实现的基准情景，余地一般；10分=保守且有证据的经营表现即可支持价格，并有合理余地。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "1ffa6a7bfd56530163b0d0d26872e4f41b98c7674887ee5fd4cfafa81c6d0f87",
+      "semantic_sha256": "66ed784ab8fd8599c7997d76d0232633f2ae2224fa84a4963c3598ee44c4f14c",
+      "definition_sha256": "a9b61b2ca78ded226bf48b1cc6796222905455573eaf467c8a19c556baf4a389"
+    },
+    {
+      "id": "IQS_23",
+      "dimension": "valuation",
+      "priority": 1,
+      "question": "在有依据的悲观情景下，普通股永久损失的可能性和幅度是否可承受？",
+      "evidence": [
+        "周期正常化",
+        "资产可回收性",
+        "债权顺序",
+        "摊薄",
+        "业务失效",
+        "情景依据"
+      ],
+      "anchors": {
+        "1": "轻微不及预期或合理压力就可能造成重大永久损失",
+        "5": "有一定缓冲，但明显不利情景仍可能重创权益",
+        "10": "保守收益或回收价值与完整义务分析支持较强缓冲，不依赖强行反弹"
+      },
+      "metric_id": "score.iqs_23",
+      "construct_id": "IQS_23",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_23",
+        "primary_metric_ref": "score.iqs_23",
+        "dimension": "valuation",
+        "aggregation_role": "valuation_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_23] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n在有依据的悲观情景下，普通股永久损失的可能性和幅度是否可承受？\n证据关注：周期正常化；资产可回收性；债权顺序；摊薄；业务失效；情景依据\n评分锚点：1分=轻微不及预期或合理压力就可能造成重大永久损失；5分=有一定缓冲，但明显不利情景仍可能重创权益；10分=保守收益或回收价值与完整义务分析支持较强缓冲，不依赖强行反弹。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "bca34492008fcf419feacb256cc5c433f78f23e403c79c5fdf4d5ea39c5fd223",
+      "semantic_sha256": "6f83b3bf27d0c19737607682314bfd9ef63889ac947996ce25fa27e907050767",
+      "definition_sha256": "fe767d3e8bcf281a3fe007b382775a17e02d9799ef8dc4486b5efc88ab669bbe"
+    },
+    {
+      "id": "IQS_24",
+      "dimension": "valuation",
+      "priority": 1,
+      "question": "基本面价值通过什么机制、在多长时间内转成普通股东的实际回报，这条路径是否可靠？",
+      "evidence": [
+        "可持续每股现金或盈利增长",
+        "分红",
+        "合理回购",
+        "资产释放",
+        "汇出限制",
+        "持有时间与机会成本"
+      ],
+      "anchors": {
+        "1": "价值长期无法归属或兑现给普通股东，且资金不断被消耗或稀释",
+        "5": "有合理回报路径，但时间、约束或资金分配仍不明确",
+        "10": "持续每股价值累积或现金分配机制可靠，期限可接受；不要求必须有短期催化剂"
+      },
+      "metric_id": "score.iqs_24",
+      "construct_id": "IQS_24",
+      "comparison_role": "core",
+      "rubric_version": "1.0.0",
+      "scope": "security",
+      "module_id": "common",
+      "metric_contract": {
+        "question_id": "IQS_24",
+        "primary_metric_ref": "score.iqs_24",
+        "dimension": "valuation",
+        "aggregation_role": "valuation_core",
+        "critical_risk": false,
+        "replacement_for": null,
+        "evidence_demands": {
+          "require_durability_conditions": false,
+          "require_net_economic_effect": false,
+          "counter_evidence_required": true
+        }
+      },
+      "prompt": "[IQS_24] 对象与口径={\"company\": \"Synthetic W15 company\", \"ticker\": \"TEST\", \"exchange\": \"TEST\", \"as_of\": \"2026-10-08\", \"industry_modules\": [], \"cycle_position\": \"unknown\", \"recovery_review\": false, \"recovery_rationale\": \"\", \"entity_id\": \"ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc\"}\n基本面价值通过什么机制、在多长时间内转成普通股东的实际回报，这条路径是否可靠？\n证据关注：可持续每股现金或盈利增长；分红；合理回购；资产释放；汇出限制；持有时间与机会成本\n评分锚点：1分=价值长期无法归属或兑现给普通股东，且资金不断被消耗或稀释；5分=有合理回报路径，但时间、约束或资金分配仍不明确；10分=持续每股价值累积或现金分配机制可靠，期限可接受；不要求必须有短期催化剂。\n口径：分数衡量经济能力，不是行业内百分位；同业须同商业模式/阶段/期间/会计边界。；分别记录当前表现、已验证正常化能力、尚未兑现假设；亏损或低谷不自动否定壁垒，也不消除资金风险。；1/5/10锚点间给整数；8分需可核验多期或可比证据，高置信度不是高分；未知留空而非5。；评分与趋势分开：成熟稳固可高分，增长快但损毁价值仍低分。；分类待核实：只判断已确认的实体和问题，不套用未经证实的公司类型、行业或生命周期。\n此题使用invest-quick-scan screening-1协议。StockQA执行器会在模型响应外层绑定question_id、entity_id和company_name；不要在答案中自行声明accepted_ids、search_verified、check_level或任何审核资格。status只能为scored/unknown/insufficient_evidence/not_applicable；status=scored时score为1至10严格整数，其余状态score=null。description必须是JSON对象序列化后的字符串，且内层id必须等于题目ID、status和score必须与外层一致。内层对象必须有id、status、score、confidence、rationale、information_as_of、period_start、period_end、basis、evidence、counterevidence、sensitivity、metrics。information_as_of必须为2026-10-08（YYYY-MM-DD）；期间起止都为日期或同时为null，不能晚于截止日；仅forward口径可描述截止日之后的期间。每条evidence包含claim/title/url/published_at/period，日期只用YYYY-MM-DD或null，且不能晚于截止日；score状态至少一条实际来源。模型报告分只表示待核查观点；运行层搜索回执通过后才成为screening_checked，仍不代表StockWiki或深度研究正式接受。未知、搜索失败和低置信度不得伪装成中等分。",
+      "prompt_sha256": "d40589ea4409d42fd5a5da2c7dafb7bfde9e0aea7a5aefb4b04a7d8c203b0f83",
+      "semantic_sha256": "f1415c754a9a7448f6191d4888148beb14ec2612bfa467b8d39a92a3e2e2cb09",
+      "definition_sha256": "d82114b9fd3821125b3f49103d864956d0554f5ad683d70ecdb30b3b43d350d3"
+    }
+  ],
+  "route_decision": {
+    "schema_version": "2.0.0",
+    "module_package_id": "pkg_b5a41d8c9f89adba8d57cce1792b1cac8db5378509996f6614472a691cfb5fba",
+    "release_id": "modrel_fc5de4a3dcce55866c8a2a83d82cdaa8caf8a3c59b6406d3a0ea75e7c9e01e74",
+    "router_version": "2.3.0",
+    "routing_policy_sha256": "05f2cf6ccc4b86b3f3a3219105aeceacc92570520cb8f71ba028d3bf7c903086",
+    "identity_ref": "stockwiki.route_subject/1.0.0:b46ccc08ea7195edddb4183c48579fa4cdc319676fd1a6460d118ee139e22412",
+    "entity_id": "ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc",
+    "as_of": "2026-10-08",
+    "scope": "entity",
+    "segment_id": null,
+    "decided_at": "2026-10-09T12:00:00Z",
+    "status": "partial",
+    "previous_decision_id": null,
+    "execution": null,
+    "profile_context": {
+      "entity_id": "ENT_ebd9c591-f9ce-4f6f-95ad-50417ea69dbc",
+      "company": "Synthetic W15 company",
+      "ticker": "TEST",
+      "exchange": "TEST",
+      "as_of": "2026-10-08",
+      "security_id": null,
+      "segment_id": null,
+      "company_type": null,
+      "industry_modules": [],
+      "stage": null,
+      "business_subtype": null,
+      "cycle_sensitive": null,
+      "cycle_position": "unknown",
+      "recovery_review": false,
+      "recovery_rationale": "",
+      "overlays": [],
+      "diagnostic_modules": [],
+      "diagnostic_rationale": {},
+      "investment_lenses": [],
+      "lens_rationale": {}
+    },
+    "module_decisions": [
+      {
+        "module_id": "acquisitive",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "attribute_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "agriculture",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "auto",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "bank",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "type_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "capital_markets",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "type_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "commercialization",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "lifecycle_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "common",
+        "module_version": "3.0.0",
+        "decision": "selected",
+        "basis": "policy",
+        "confidence": "high",
+        "rationale": "Universal core",
+        "sources": [],
+        "rule_id": "always",
+        "reason_code": "universal_core"
+      },
+      {
+        "module_id": "concentrated",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "attribute_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "construction",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "consumer",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "controlled",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "attribute_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "cross_border",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "attribute_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "cyclical",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "cycle_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "declining",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "lifecycle_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "distressed",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "attribute_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "dupont",
+        "module_version": "3.0.0",
+        "decision": "rejected",
+        "basis": "policy",
+        "confidence": "high",
+        "rationale": "No explicit user research request",
+        "sources": [],
+        "rule_id": "user_diagnostic",
+        "reason_code": "not_requested"
+      },
+      {
+        "module_id": "energy_transition",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "hardware",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "healthcare",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "holding",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "type_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "industrial",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "insurer",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "type_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "internet",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "leisure_media",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "listing_structure",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "attribute_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "materials",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "mature",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "lifecycle_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "medtech",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "operating",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "type_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "other",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "porter",
+        "module_version": "3.0.0",
+        "decision": "rejected",
+        "basis": "policy",
+        "confidence": "high",
+        "rationale": "No explicit user research request",
+        "sources": [],
+        "rule_id": "user_diagnostic",
+        "reason_code": "not_requested"
+      },
+      {
+        "module_id": "pre_revenue",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "type_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "professional_services",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "property_developer",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "type_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "property_owner",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "type_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "recent_listing",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "attribute_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "recovery",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "recovery_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "resources",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "retail",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "scaling",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "lifecycle_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "semiconductors",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "software",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "subsidized",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "attribute_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "telecom",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "transport",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "turnaround",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "lifecycle_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "utilities",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "industry_evidence",
+        "reason_code": "missing_evidence"
+      },
+      {
+        "module_id": "validation",
+        "module_version": "3.0.0",
+        "decision": "uncertain",
+        "basis": "unavailable",
+        "confidence": "low",
+        "rationale": "No verified classification evidence",
+        "sources": [],
+        "rule_id": "lifecycle_evidence",
+        "reason_code": "missing_evidence"
+      }
+    ],
+    "dispatch_plan": {
+      "requested_mode": "quick",
+      "resolved_mode": "quick",
+      "business_scope_compatible": null,
+      "status": "ready_common_and_risk",
+      "mandatory_question_ids": [],
+      "minimum_questions": 24,
+      "coverage_gaps": [
+        "company_type_unresolved",
+        "lifecycle_unresolved"
+      ],
+      "segment_requests": [],
+      "eligible_module_ids": [
+        "common"
+      ]
+    },
+    "classification_confidence": {
+      "status": "not_run",
+      "score": null,
+      "minimum_score": 7,
+      "llm_candidates_eligible": false
+    },
+    "decision_id": "route_461a84939b1ef038cdab10ed1cf1d81f34f55d508a2f3bdbf05782233a4ec23b"
+  },
+  "route_decision_id": "route_461a84939b1ef038cdab10ed1cf1d81f34f55d508a2f3bdbf05782233a4ec23b",
+  "routing_execution": {
+    "checked_at": "2026-10-09T12:00:00Z",
+    "expected_decision_id": "route_461a84939b1ef038cdab10ed1cf1d81f34f55d508a2f3bdbf05782233a4ec23b"
+  },
+  "screening_protocol_version": "1.0.0"
+}

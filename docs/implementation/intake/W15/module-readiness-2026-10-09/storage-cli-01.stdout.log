@@ -1,0 +1,19 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+______ test_schema6_native_backup_and_restore_keep_raw_routes_and_anchor ______
+
+actual_bundle = (<stockwiki.quick_scan_routes.QuickScanRouteStore object at 0x000001871A38E0D0>, {'analysis_subject_schema_version': '...be6183c8cf0510402aa9eee9897a4', <stockwiki.quick_scan_route_validation.IqsRouteValidator object at 0x000001871A38E210>)
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-01/test_schema6_native_backup_and0')
+
+    def test_schema6_native_backup_and_restore_keep_raw_routes_and_anchor(actual_bundle, tmp_path):
+        routes, subject, raw, manifest, decision_id, validator = actual_bundle
+        routes.record_snapshot(raw, manifest, subject_key=receipt_key(subject), expected_decision_id=decision_id)
+        routes.set_current(decision_id, subject_key=receipt_key(subject), expected_current_decision_id=None, now_utc=NOW)
+>       report = create_backup(routes.identity.paths, backup_root=tmp_path / "backups", now=NOW)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: create_backup() got an unexpected keyword argument 'backup_root'
+
+tests\test_quick_scan_route_integration.py:74: TypeError
+=========================== short test summary info ===========================
+FAILED tests\test_quick_scan_route_integration.py::test_schema6_native_backup_and_restore_keep_raw_routes_and_anchor
+1 failed, 1 passed in 20.58s

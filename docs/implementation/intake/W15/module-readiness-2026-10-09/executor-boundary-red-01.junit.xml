@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="11" time="1.206" timestamp="2026-10-09T21:39:28.051861+01:00" hostname="DESKTOP-156V213"><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[provider-P2]" time="0.558" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[model-M2]" time="0.052" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[anchor_version-2]" time="0.047" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[manifest_raw_sha256-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]" time="0.046" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_incomplete_and_duplicate_question_plan_refused" time="0.039" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{&quot;a&quot;:1,&quot;a&quot;:2}]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{&quot;a&quot;:NaN}]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{&quot;a&quot;:1e400}]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[[1]]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_unresolved_work_keeps_original_context_and_expired_unsent_lease_resumes" time="0.130"><failure message="assert (False is True)">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-boundary-red-01/test_unresolved_work_keeps_ori0')
+
+    def test_unresolved_work_keeps_original_context_and_expired_unsent_lease_resumes(tmp_path):
+        from src.core.models import Question
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        client, manifest, store, identity = _fixture(tmp_path)
+        clock = [1800000000.0]
+        store.clock = lambda: clock[0]
+        session = client.prepare(manifest, store, identity=identity, provider="P1", model="M1", now=NOW)
+        q = Question(text=manifest["questions"][0]["prompt"], question_id="IQS_01")
+        lifecycle = QuickScanWorkLifecycle(store, entity_id=UUID_ENTITY, identity=identity, run_id="RUN_1", scan_id="SCAN_1",
+                                          owner_refresh_session=session, scope_by_question=session.scope_bindings, transport_managed=True, lease_seconds=1)
+        first = lifecycle.before_question(q)
+        assert first["claimed"] is True
+        client.plan_fixture["fields"][0].update(decision="resume_existing_work", freshness_status=None)
+        client.plan_fixture["refresh_id"] = "refresh_"+canonical_sha256({k:v for k,v in client.plan_fixture.items() if k not in {"refresh_id", "reused_observations"}})
+        clock[0] += 2
+        resumed = client.prepare(manifest, store, identity=identity, provider="P1", model="M1", now=NOW)
+        next_lifecycle = QuickScanWorkLifecycle(store, entity_id=UUID_ENTITY, identity=identity, run_id="RUN_2", scan_id="SCAN_1",
+                                             owner_refresh_session=resumed, scope_by_question=resumed.scope_bindings, transport_managed=True)
+        again = next_lifecycle.before_question(q)
+&gt;       assert again["claimed"] is True and again["work_item_id"]==first["work_item_id"]
+E       assert (False is True)
+
+tests\unit\test_w15_owner_refresh_transport.py:103: AssertionError</failure></testcase></testsuite></testsuites>

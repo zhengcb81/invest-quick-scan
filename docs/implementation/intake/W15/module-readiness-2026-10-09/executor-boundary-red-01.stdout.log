@@ -1,0 +1,32 @@
+..........F                                                              [100%]
+================================== FAILURES ===================================
+_ test_unresolved_work_keeps_original_context_and_expired_unsent_lease_resumes _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-boundary-red-01/test_unresolved_work_keeps_ori0')
+
+    def test_unresolved_work_keeps_original_context_and_expired_unsent_lease_resumes(tmp_path):
+        from src.core.models import Question
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        client, manifest, store, identity = _fixture(tmp_path)
+        clock = [1800000000.0]
+        store.clock = lambda: clock[0]
+        session = client.prepare(manifest, store, identity=identity, provider="P1", model="M1", now=NOW)
+        q = Question(text=manifest["questions"][0]["prompt"], question_id="IQS_01")
+        lifecycle = QuickScanWorkLifecycle(store, entity_id=UUID_ENTITY, identity=identity, run_id="RUN_1", scan_id="SCAN_1",
+                                          owner_refresh_session=session, scope_by_question=session.scope_bindings, transport_managed=True, lease_seconds=1)
+        first = lifecycle.before_question(q)
+        assert first["claimed"] is True
+        client.plan_fixture["fields"][0].update(decision="resume_existing_work", freshness_status=None)
+        client.plan_fixture["refresh_id"] = "refresh_"+canonical_sha256({k:v for k,v in client.plan_fixture.items() if k not in {"refresh_id", "reused_observations"}})
+        clock[0] += 2
+        resumed = client.prepare(manifest, store, identity=identity, provider="P1", model="M1", now=NOW)
+        next_lifecycle = QuickScanWorkLifecycle(store, entity_id=UUID_ENTITY, identity=identity, run_id="RUN_2", scan_id="SCAN_1",
+                                             owner_refresh_session=resumed, scope_by_question=resumed.scope_bindings, transport_managed=True)
+        again = next_lifecycle.before_question(q)
+>       assert again["claimed"] is True and again["work_item_id"]==first["work_item_id"]
+E       assert (False is True)
+
+tests\unit\test_w15_owner_refresh_transport.py:103: AssertionError
+=========================== short test summary info ===========================
+FAILED tests\unit\test_w15_owner_refresh_transport.py::test_unresolved_work_keeps_original_context_and_expired_unsent_lease_resumes
+1 failed, 10 passed in 1.34s

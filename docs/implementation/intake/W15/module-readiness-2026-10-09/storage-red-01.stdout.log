@@ -1,0 +1,35 @@
+
+=================================== ERRORS ====================================
+_____________ ERROR collecting sw/tests/test_quick_scan_routes.py _____________
+tests\test_quick_scan_routes.py:19: in <module>
+    from test_quick_scan_analysis import _entity, _receipt, _subject
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_analysis.py:20: in <module>
+    from stockwiki.cli_registry import build_parser
+stockwiki\cli_registry.py:7: in <module>
+    from stockwiki.cli_parsers import (
+stockwiki\cli_parsers\company.py:5: in <module>
+    from stockwiki.llm_review import DEFAULT_DEEPSEEK_MODEL
+stockwiki\llm_review.py:22: in <module>
+    DEFAULT_DEEPSEEK_MODEL = default_model()
+                             ^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:96: in default_model
+    providers = load_providers()
+                ^^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:61: in load_providers
+    data = read_yaml(_config_path(), default={}) or {}
+                     ^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:53: in _config_path
+    raise FileNotFoundError("config/llm_providers.yaml not found")
+E   FileNotFoundError: config/llm_providers.yaml not found
+=========================== short test summary info ===========================
+ERROR tests\test_quick_scan_routes.py - FileNotFoundError: config/llm_provide...
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.82s

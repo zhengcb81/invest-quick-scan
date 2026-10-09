@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="1.180" timestamp="2026-10-09T20:55:21.040181+01:00" hostname="DESKTOP-156V213"><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_added_module_only_dispatches_added_questions_and_keeps_core_observations" time="0.191"><failure message="TypeError: QuickScanObservationStore.apply_decisions() got an unexpected keyword argument 'identity_store'. Did you mean 'identity_lookup'?">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-refresh-red-01/test_added_module_only_dispatc0')
+
+    def test_added_module_only_dispatches_added_questions_and_keeps_core_observations(tmp_path):
+        identity, subject, routes, observations = _setup(tmp_path)
+        core = [_question(f"IQS_{i:02d}") for i in range(1,25)]
+        first = _activate(routes, identity, subject, core)
+&gt;       ids = [_observe(observations, identity, subject, q) for q in core]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_module_refresh.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = &lt;stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x0000025413319010&gt;
+identity = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x0000025413318830&gt;
+subject = {'analysis_subject_schema_version': '1.0.0', 'analysis_subject_id': 'ASJ_d4e8c9a0-df47-44ec-a70c-08de50bfb2ee', 'analysis_subject_revision': 1, 'display_name': 'Synthetic W15 reporting group', ...}
+question = {'id': 'IQS_01', 'module_id': 'common', 'scope': 'entity', 'rubric_version': '1.0.0', ...}
+model = 'M1', info = '2025-12-31', status = 'scored'
+
+    def _observe(store, identity, subject, question, *, model="M1", info="2025-12-31", status="scored"):
+        # This boundary seeds actual observation storage; it does not certify a
+        # released producer package or grant formal qualification.
+        obs = {"observation_id": "obs_" + hashlib.sha256((question["id"]+model+info+status).encode()).hexdigest(),
+               "entity_id": subject["primary_issuer_id"], "identity_revision": 1,
+               "analysis_subject": copy.deepcopy(subject), "field_id": question["metric_id"],
+               "question_id": question["id"], "question_version": "1.0.0", "scope": "entity",
+               "observed_at": "2026-01-01T12:00:00Z", "information_cutoff": info,
+               "question_definition_sha256": question["definition_sha256"],
+               "question_semantic_sha256": question["semantic_sha256"],
+               "execution": {"provider": "P1", "model_resolved": model},
+               "answer": {"status": status, "score": 8 if status=="scored" else None, "information_as_of": info}}
+        digest = canonical_sha256(obs)
+        decision = {"status": "accepted", "package_id": "pkg_"+digest, "item_id": "itm_"+digest,
+                    "observation_id": obs["observation_id"], "payload_sha256": digest,
+                    "exec_key": digest, "observation": obs, "error_code": None}
+&gt;       store.apply_decisions([decision], identity_store=identity)
+E       TypeError: QuickScanObservationStore.apply_decisions() got an unexpected keyword argument 'identity_store'. Did you mean 'identity_lookup'?
+
+tests\test_quick_scan_module_refresh.py:52: TypeError</failure></testcase><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_ttl_exact_boundary_new_model_and_removed_modules" time="0.143"><failure message="TypeError: QuickScanObservationStore.apply_decisions() got an unexpected keyword argument 'identity_store'. Did you mean 'identity_lookup'?">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-refresh-red-01/test_ttl_exact_boundary_new_mo0')
+
+    def test_ttl_exact_boundary_new_model_and_removed_modules(tmp_path):
+        identity, subject, routes, observations = _setup(tmp_path)
+        core, overlay = _question("IQS_01"), _question("GROW_01", "stage_growth")
+        first = _activate(routes, identity, subject, [core, overlay])
+&gt;       _observe(observations, identity, subject, core)
+
+tests\test_quick_scan_module_refresh.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = &lt;stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x0000025411137B10&gt;
+identity = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x0000025411137750&gt;
+subject = {'analysis_subject_schema_version': '1.0.0', 'analysis_subject_id': 'ASJ_fc125f4e-ab63-452d-80cb-01820450ab04', 'analysis_subject_revision': 1, 'display_name': 'Synthetic W15 reporting group', ...}
+question = {'id': 'IQS_01', 'module_id': 'common', 'scope': 'entity', 'rubric_version': '1.0.0', ...}
+model = 'M1', info = '2025-12-31', status = 'scored'
+
+    def _observe(store, identity, subject, question, *, model="M1", info="2025-12-31", status="scored"):
+        # This boundary seeds actual observation storage; it does not certify a
+        # released producer package or grant formal qualification.
+        obs = {"observation_id": "obs_" + hashlib.sha256((question["id"]+model+info+status).encode()).hexdigest(),
+               "entity_id": subject["primary_issuer_id"], "identity_revision": 1,
+               "analysis_subject": copy.deepcopy(subject), "field_id": question["metric_id"],
+               "question_id": question["id"], "question_version": "1.0.0", "scope": "entity",
+               "observed_at": "2026-01-01T12:00:00Z", "information_cutoff": info,
+               "question_definition_sha256": question["definition_sha256"],
+               "question_semantic_sha256": question["semantic_sha256"],
+               "execution": {"provider": "P1", "model_resolved": model},
+               "answer": {"status": status, "score": 8 if status=="scored" else None, "information_as_of": info}}
+        digest = canonical_sha256(obs)
+        decision = {"status": "accepted", "package_id": "pkg_"+digest, "item_id": "itm_"+digest,
+                    "observation_id": obs["observation_id"], "payload_sha256": digest,
+                    "exec_key": digest, "observation": obs, "error_code": None}
+&gt;       store.apply_decisions([decision], identity_store=identity)
+E       TypeError: QuickScanObservationStore.apply_decisions() got an unexpected keyword argument 'identity_store'. Did you mean 'identity_lookup'?
+
+tests\test_quick_scan_module_refresh.py:52: TypeError</failure></testcase><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_unknown_cooldown_and_unresolved_paid_work_take_priority" time="0.150"><failure message="TypeError: QuickScanObservationStore.apply_decisions() got an unexpected keyword argument 'identity_store'. Did you mean 'identity_lookup'?">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-refresh-red-01/test_unknown_cooldown_and_unre0')
+
+    def test_unknown_cooldown_and_unresolved_paid_work_take_priority(tmp_path):
+        identity, subject, routes, observations = _setup(tmp_path)
+        question = _question("IQS_01")
+        _activate(routes, identity, subject, [question])
+&gt;       _observe(observations, identity, subject, question, status="insufficient_evidence")
+
+tests\test_quick_scan_module_refresh.py:110: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = &lt;stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000254133AC550&gt;
+identity = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x00000254133AC410&gt;
+subject = {'analysis_subject_schema_version': '1.0.0', 'analysis_subject_id': 'ASJ_1f8af51b-a944-4479-82be-1fa459aac2fe', 'analysis_subject_revision': 1, 'display_name': 'Synthetic W15 reporting group', ...}
+question = {'id': 'IQS_01', 'module_id': 'common', 'scope': 'entity', 'rubric_version': '1.0.0', ...}
+model = 'M1', info = '2025-12-31', status = 'insufficient_evidence'
+
+    def _observe(store, identity, subject, question, *, model="M1", info="2025-12-31", status="scored"):
+        # This boundary seeds actual observation storage; it does not certify a
+        # released producer package or grant formal qualification.
+        obs = {"observation_id": "obs_" + hashlib.sha256((question["id"]+model+info+status).encode()).hexdigest(),
+               "entity_id": subject["primary_issuer_id"], "identity_revision": 1,
+               "analysis_subject": copy.deepcopy(subject), "field_id": question["metric_id"],
+               "question_id": question["id"], "question_version": "1.0.0", "scope": "entity",
+               "observed_at": "2026-01-01T12:00:00Z", "information_cutoff": info,
+               "question_definition_sha256": question["definition_sha256"],
+               "question_semantic_sha256": question["semantic_sha256"],
+               "execution": {"provider": "P1", "model_resolved": model},
+               "answer": {"status": status, "score": 8 if status=="scored" else None, "information_as_of": info}}
+        digest = canonical_sha256(obs)
+        decision = {"status": "accepted", "package_id": "pkg_"+digest, "item_id": "itm_"+digest,
+                    "observation_id": obs["observation_id"], "payload_sha256": digest,
+                    "exec_key": digest, "observation": obs, "error_code": None}
+&gt;       store.apply_decisions([decision], identity_store=identity)
+E       TypeError: QuickScanObservationStore.apply_decisions() got an unexpected keyword argument 'identity_store'. Did you mean 'identity_lookup'?
+
+tests\test_quick_scan_module_refresh.py:52: TypeError</failure></testcase><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_changed_meaning_is_incomparable_and_legacy_subjectless_does_not_reuse" time="0.186"><failure message="TypeError: QuickScanObservationStore.apply_decisions() got an unexpected keyword argument 'identity_store'. Did you mean 'identity_lookup'?">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-refresh-red-01/test_changed_meaning_is_incomp0')
+
+    def test_changed_meaning_is_incomparable_and_legacy_subjectless_does_not_reuse(tmp_path):
+        identity, subject, routes, observations = _setup(tmp_path)
+        question = _question("IQS_01")
+        first = _activate(routes, identity, subject, [question])
+&gt;       _observe(observations, identity, subject, question)
+
+tests\test_quick_scan_module_refresh.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = &lt;stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x00000254114BF950&gt;
+identity = &lt;stockwiki.quick_scan_store.QuickScanStore object at 0x00000254114BF5C0&gt;
+subject = {'analysis_subject_schema_version': '1.0.0', 'analysis_subject_id': 'ASJ_9f553c3d-d046-4a18-9993-2dcb9be4f152', 'analysis_subject_revision': 1, 'display_name': 'Synthetic W15 reporting group', ...}
+question = {'id': 'IQS_01', 'module_id': 'common', 'scope': 'entity', 'rubric_version': '1.0.0', ...}
+model = 'M1', info = '2025-12-31', status = 'scored'
+
+    def _observe(store, identity, subject, question, *, model="M1", info="2025-12-31", status="scored"):
+        # This boundary seeds actual observation storage; it does not certify a
+        # released producer package or grant formal qualification.
+        obs = {"observation_id": "obs_" + hashlib.sha256((question["id"]+model+info+status).encode()).hexdigest(),
+               "entity_id": subject["primary_issuer_id"], "identity_revision": 1,
+               "analysis_subject": copy.deepcopy(subject), "field_id": question["metric_id"],
+               "question_id": question["id"], "question_version": "1.0.0", "scope": "entity",
+               "observed_at": "2026-01-01T12:00:00Z", "information_cutoff": info,
+               "question_definition_sha256": question["definition_sha256"],
+               "question_semantic_sha256": question["semantic_sha256"],
+               "execution": {"provider": "P1", "model_resolved": model},
+               "answer": {"status": status, "score": 8 if status=="scored" else None, "information_as_of": info}}
+        digest = canonical_sha256(obs)
+        decision = {"status": "accepted", "package_id": "pkg_"+digest, "item_id": "itm_"+digest,
+                    "observation_id": obs["observation_id"], "payload_sha256": digest,
+                    "exec_key": digest, "observation": obs, "error_code": None}
+&gt;       store.apply_decisions([decision], identity_store=identity)
+E       TypeError: QuickScanObservationStore.apply_decisions() got an unexpected keyword argument 'identity_store'. Did you mean 'identity_lookup'?
+
+tests\test_quick_scan_module_refresh.py:52: TypeError</failure></testcase></testsuite></testsuites>

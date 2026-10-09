@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="1.915" timestamp="2026-10-09T20:55:42.127623+01:00" hostname="DESKTOP-156V213"><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_added_module_only_dispatches_added_questions_and_keeps_core_observations" time="0.746"><failure message="ModuleNotFoundError: No module named 'stockwiki.quick_scan_module_refresh'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-refresh-red-02/test_added_module_only_dispatc0')
+
+    def test_added_module_only_dispatches_added_questions_and_keeps_core_observations(tmp_path):
+        identity, subject, routes, observations = _setup(tmp_path)
+        core = [_question(f"IQS_{i:02d}") for i in range(1,25)]
+        first = _activate(routes, identity, subject, core)
+        ids = [_observe(observations, identity, subject, q) for q in core]
+        extra = [_question("SEMI_01", "industry_semiconductor"), _question("GROW_01", "stage_growth")]
+        _activate(routes, identity, subject, core+extra, tag="route2", previous=first)
+        before = observations.counts()
+&gt;       plan = _plan(routes, observations, subject)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_module_refresh.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+routes = &lt;stockwiki.quick_scan_routes.QuickScanRouteStore object at 0x000001C616BE8D70&gt;
+observations = &lt;stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x000001C616BE9010&gt;
+subject = {'analysis_subject_schema_version': '1.0.0', 'analysis_subject_id': 'ASJ_5a437c65-016f-4dbd-b6b7-48ac8b9de8c2', 'analysis_subject_revision': 1, 'display_name': 'Synthetic W15 reporting group', ...}
+kwargs = {}
+
+    def _plan(routes, observations, subject, **kwargs):
+&gt;       from stockwiki.quick_scan_module_refresh import plan_module_refresh
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_module_refresh'
+
+tests\test_quick_scan_module_refresh.py:65: ModuleNotFoundError</failure></testcase><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_ttl_exact_boundary_new_model_and_removed_modules" time="0.191"><failure message="ModuleNotFoundError: No module named 'stockwiki.quick_scan_module_refresh'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-refresh-red-02/test_ttl_exact_boundary_new_mo0')
+
+    def test_ttl_exact_boundary_new_model_and_removed_modules(tmp_path):
+        identity, subject, routes, observations = _setup(tmp_path)
+        core, overlay = _question("IQS_01"), _question("GROW_01", "stage_growth")
+        first = _activate(routes, identity, subject, [core, overlay])
+        _observe(observations, identity, subject, core)
+        _observe(observations, identity, subject, overlay)
+&gt;       assert _plan(routes, observations, subject)["totals"]["reuse"] == 2
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_module_refresh.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+routes = &lt;stockwiki.quick_scan_routes.QuickScanRouteStore object at 0x000001C6163AE9E0&gt;
+observations = &lt;stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x000001C614A17890&gt;
+subject = {'analysis_subject_schema_version': '1.0.0', 'analysis_subject_id': 'ASJ_f3ddacf8-4b2b-444d-9fe1-8ed04f82b7dd', 'analysis_subject_revision': 1, 'display_name': 'Synthetic W15 reporting group', ...}
+kwargs = {}
+
+    def _plan(routes, observations, subject, **kwargs):
+&gt;       from stockwiki.quick_scan_module_refresh import plan_module_refresh
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_module_refresh'
+
+tests\test_quick_scan_module_refresh.py:65: ModuleNotFoundError</failure></testcase><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_unknown_cooldown_and_unresolved_paid_work_take_priority" time="0.157"><failure message="ModuleNotFoundError: No module named 'stockwiki.quick_scan_module_refresh'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-refresh-red-02/test_unknown_cooldown_and_unre0')
+
+    def test_unknown_cooldown_and_unresolved_paid_work_take_priority(tmp_path):
+        identity, subject, routes, observations = _setup(tmp_path)
+        question = _question("IQS_01")
+        _activate(routes, identity, subject, [question])
+        _observe(observations, identity, subject, question, status="insufficient_evidence")
+        work = {question["id"]: {"generation": 3, "status": "complete", "next_retry_at": "2026-01-03T12:00:00Z"}}
+&gt;       plan = _plan(routes, observations, subject, work_items=work)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_module_refresh.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+routes = &lt;stockwiki.quick_scan_routes.QuickScanRouteStore object at 0x000001C614A68710&gt;
+observations = &lt;stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x000001C616C442D0&gt;
+subject = {'analysis_subject_schema_version': '1.0.0', 'analysis_subject_id': 'ASJ_04a62c79-9c7b-4ea9-9296-3bddaae58b06', 'analysis_subject_revision': 1, 'display_name': 'Synthetic W15 reporting group', ...}
+kwargs = {'work_items': {'IQS_01': {'generation': 3, 'status': 'complete', 'next_retry_at': '2026-01-03T12:00:00Z'}}}
+
+    def _plan(routes, observations, subject, **kwargs):
+&gt;       from stockwiki.quick_scan_module_refresh import plan_module_refresh
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_module_refresh'
+
+tests\test_quick_scan_module_refresh.py:65: ModuleNotFoundError</failure></testcase><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_changed_meaning_is_incomparable_and_legacy_subjectless_does_not_reuse" time="0.433"><failure message="ModuleNotFoundError: No module named 'stockwiki.quick_scan_module_refresh'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-refresh-red-02/test_changed_meaning_is_incomp0')
+
+    def test_changed_meaning_is_incomparable_and_legacy_subjectless_does_not_reuse(tmp_path):
+        identity, subject, routes, observations = _setup(tmp_path)
+        question = _question("IQS_01")
+        first = _activate(routes, identity, subject, [question])
+        _observe(observations, identity, subject, question)
+        changed = copy.deepcopy(question)
+        changed["semantic_sha256"] = "e" * 64
+        _activate(routes, identity, subject, [changed], tag="route2", previous=first)
+&gt;       plan = _plan(routes, observations, subject)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_module_refresh.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+routes = &lt;stockwiki.quick_scan_routes.QuickScanRouteStore object at 0x000001C6163B69C0&gt;
+observations = &lt;stockwiki.quick_scan_observations.QuickScanObservationStore object at 0x000001C6163AFA80&gt;
+subject = {'analysis_subject_schema_version': '1.0.0', 'analysis_subject_id': 'ASJ_25263b60-08f6-4b8e-a945-26107c3cbe73', 'analysis_subject_revision': 1, 'display_name': 'Synthetic W15 reporting group', ...}
+kwargs = {}
+
+    def _plan(routes, observations, subject, **kwargs):
+&gt;       from stockwiki.quick_scan_module_refresh import plan_module_refresh
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_module_refresh'
+
+tests\test_quick_scan_module_refresh.py:65: ModuleNotFoundError</failure></testcase></testsuite></testsuites>

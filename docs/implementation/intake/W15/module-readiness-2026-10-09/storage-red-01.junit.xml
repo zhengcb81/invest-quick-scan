@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.669" timestamp="2026-10-09T20:37:30.555799+01:00" hostname="DESKTOP-156V213"><testcase classname="" name="sw.tests.test_quick_scan_routes" time="0.000"><error message="collection failure">tests\test_quick_scan_routes.py:19: in &lt;module&gt;
+    from test_quick_scan_analysis import _entity, _receipt, _subject
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1331: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:935: in _load_unlocked
+    ???
+C:\Miniconda\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_quick_scan_analysis.py:20: in &lt;module&gt;
+    from stockwiki.cli_registry import build_parser
+stockwiki\cli_registry.py:7: in &lt;module&gt;
+    from stockwiki.cli_parsers import (
+stockwiki\cli_parsers\company.py:5: in &lt;module&gt;
+    from stockwiki.llm_review import DEFAULT_DEEPSEEK_MODEL
+stockwiki\llm_review.py:22: in &lt;module&gt;
+    DEFAULT_DEEPSEEK_MODEL = default_model()
+                             ^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:96: in default_model
+    providers = load_providers()
+                ^^^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:61: in load_providers
+    data = read_yaml(_config_path(), default={}) or {}
+                     ^^^^^^^^^^^^^^
+stockwiki\llm_provider.py:53: in _config_path
+    raise FileNotFoundError("config/llm_providers.yaml not found")
+E   FileNotFoundError: config/llm_providers.yaml not found</error></testcase></testsuite></testsuites>

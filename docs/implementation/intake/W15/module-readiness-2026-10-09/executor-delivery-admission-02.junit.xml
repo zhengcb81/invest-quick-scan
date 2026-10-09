@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="16" time="2.344" timestamp="2026-10-09T21:56:12.993012+01:00" hostname="DESKTOP-156V213"><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[provider-P2]" time="0.072" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[model-M2]" time="0.061" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[anchor_version-2]" time="0.058" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[manifest_raw_sha256-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]" time="0.050" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_incomplete_and_duplicate_question_plan_refused" time="0.043" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{&quot;a&quot;:1,&quot;a&quot;:2}]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{&quot;a&quot;:NaN}]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{&quot;a&quot;:1e400}]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[[1]]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_unresolved_work_keeps_original_context_and_expired_unsent_lease_resumes" time="0.131" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_public_wire_refuses_unregistered_versions_or_authority[change0]" time="0.127" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_public_wire_refuses_unregistered_versions_or_authority[change1]" time="0.005" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_public_wire_refuses_unregistered_versions_or_authority[change2]" time="0.006" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_partial_delivery_resume_uses_original_outbox_and_missing_owner_ack_never_reasks" time="0.340"><failure message="ValueError: invalid not-sent reason">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-delivery-admission-02/test_partial_delivery_resume_u0')
+
+    def test_partial_delivery_resume_uses_original_outbox_and_missing_owner_ack_never_reasks(tmp_path):
+        """Actual Q10 persistence; owner transport is the explicitly typed boundary.
+    
+        The original result-ready item may be ACKed while another item is still
+        pending. W15 cannot relabel that old checkpoint as a new-owner dispatch.
+        """
+        from src.core.models import Question
+        from src.runners.llm_runner import QuickScanWorkLifecycle
+        from tests.unit.test_q10_delivery import _jr2_ready, _ack_for, _seed_checkpoint, _lifecycle, JR2_CONSUMER, JR2_SOURCE
+    
+        client, manifest, store, identity = _fixture(tmp_path, qid="IQS_05")
+        original_store, wid, ready = _jr2_ready(tmp_path)
+        pending = _seed_checkpoint(original_store, _lifecycle(original_store), "IQS_06")["handle"]["work_item_id"]
+        original_store.bind_result_delivery_consumer(wid, JR2_CONSUMER, source_ref=JR2_SOURCE)
+        begun = original_store.begin_result_delivery(wid)
+        original = (begun["request_bytes"], begun["idempotency_key"], begun["package_sha256"])
+        q = Question(text=manifest["questions"][0]["prompt"], question_id="IQS_05")
+        client.plan_fixture["fields"][0].update(decision="resume_existing_work", freshness_status=None)
+        client.plan_fixture["refresh_id"] = "refresh_"+canonical_sha256({k:v for k,v in client.plan_fixture.items() if k not in {"refresh_id", "reused_observations"}})
+        session = client.prepare(manifest, store, identity=identity, provider="P1", model="M1", now=NOW)
+        lifecycle = QuickScanWorkLifecycle(store, entity_id=UUID_ENTITY, identity=identity, run_id="RUN_2", scan_id="SCAN_1",
+                                          owner_refresh_session=session, scope_by_question=session.scope_bindings, transport_managed=True)
+        blocked = lifecycle.before_question(q)
+        assert blocked == {"claimed": False, "reason": "resume_original_work_context_required", "work_item_id": wid}
+&gt;       original_store.confirm_result_delivery_not_sent(wid, "synthetic_connection_refused_before_write")
+
+tests\unit\test_w15_owner_refresh_transport.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;src.utils.quick_scan_work_store.QuickScanWorkStore object at 0x0000024F32A54490&gt;
+work_item_id = 'WORK_43a1d7bf19cf4bfe8ac7ab4831518f9f'
+reason_code = 'synthetic_connection_refused_before_write'
+
+    def confirm_result_delivery_not_sent(self, work_item_id: str, reason_code: str) -&gt; dict:
+        """Re-arm only when the transport proves no request bytes were dispatched."""
+        _safe(work_item_id, "work_item_id")
+        reason_code = _safe_text(reason_code, "not-sent reason", maximum=160)
+        if reason_code not in _DELIVERY_NOT_SENT_REASONS:
+&gt;           raise ValueError("invalid not-sent reason")
+E           ValueError: invalid not-sent reason
+
+src\utils\quick_scan_work_store.py:4827: ValueError</failure></testcase><testcase classname="qa.tests.integration.test_qa_net01_cli_e2e" name="test_cli_e2e_search_policy_admission_gates_before_any_http" time="0.068"><failure message="assert '&quot;admitted_routes&quot;: [&quot;brave-primary&quot;]' in ''&#10; +  where '' = CaptureResult(out='', err='').out">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000024F32860C30&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-delivery-admission-02/test_cli_e2e_search_policy_adm0')
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x0000024F325352B0&gt;
+caplog = &lt;_pytest.logging.LogCaptureFixture object at 0x0000024F325357F0&gt;
+
+    def test_cli_e2e_search_policy_admission_gates_before_any_http(
+        monkeypatch, tmp_path, capsys, caplog
+    ) -&gt; None:
+        """An external mode whose routes are not admitted fails closed with zero
+        HTTP; an admitted route prints its admission receipt before dispatch."""
+        import os
+    
+        files = _setup(tmp_path, with_authority=False)
+        policy_file = tmp_path / "search_policy.json"
+        policy_file.write_text(json.dumps(_search_policy()), encoding="utf-8")
+    
+        monkeypatch.delenv("BRAVE_API_KEY", raising=False)
+        code, session = _run(
+            monkeypatch,
+            tmp_path,
+            files,
+            manifest=False,
+            with_authority=False,
+            extra=["--search-policy", str(policy_file)],
+        )
+        captured = capsys.readouterr()
+        assert code == 1
+        assert session.post.call_count == 0
+        assert "external_search_routes_unadmitted" in caplog.text
+        assert "no_admitted_external_route" in caplog.text
+    
+        monkeypatch.setenv("BRAVE_API_KEY", "offline-fixture-key")
+        code, admitted_session = _run(
+            monkeypatch,
+            tmp_path,
+            files,
+            manifest=False,
+            with_authority=False,
+            extra=["--search-policy", str(policy_file)],
+        )
+        captured = capsys.readouterr()
+        assert code == 1, captured.out
+        assert admitted_session.post.call_count == 0
+&gt;       assert '"admitted_routes": ["brave-primary"]' in captured.out
+E       assert '"admitted_routes": ["brave-primary"]' in ''
+E        +  where '' = CaptureResult(out='', err='').out
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa\tests\integration\test_qa_net01_cli_e2e.py:419: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,751 @@
+.F.FFFFFFFFFFF                                                           [100%]
+================================== FAILURES ===================================
+______ test_schema6_native_backup_and_restore_keep_raw_routes_and_anchor ______
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_schema6_native_...:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_schema6_native_backup_and0/workspace/runs/state'))
+name = 'w15-roundtrip'
+
+    def create_backup(paths: WorkspacePaths, *, name: str | None = None) -> BackupResult:
+        """Snapshot ``data/quick_scan`` into ``backups/quick_scan/<name>`` atomically.
+    
+        Publish order (SWR-03): copy → manifest written LAST inside staging →
+        staging re-verifies → the owner registry records ``name ↔ manifest_sha256``
+        → ``staging.rename(final_dir)`` is the single commit point, INSIDE the
+        failure handler. No success-bearing state is visible before that rename, and
+        a failed rename removes staging and rolls the registry entry back, so a
+        partial can never be listed, verified or pruned as a finished backup.
+        """
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        resolved_name = f"qsbackup_{stamp}" if name is None else name
+        final_dir = resolve_backup_dir(paths, resolved_name)
+        if final_dir.exists():
+            raise _bad("backup_target_exists", str(final_dir))
+        data_dir = quick_scan_data_dir(paths)
+        rel_files = _source_files(data_dir)
+        if not rel_files:
+            raise _bad("backup_source_empty", str(data_dir))
+    
+        backup_root = quick_scan_backup_root(paths)
+        backup_root.mkdir(parents=True, exist_ok=True)
+        staging = backup_root / f".{resolved_name}{_PARTIAL_MARKER}{uuid.uuid4().hex[:8]}"
+        staging.mkdir(parents=True, exist_ok=False)
+        registered = False
+        try:
+            for rel in rel_files:
+                source = data_dir / rel
+                destination = staging / rel
+                if rel.suffix == ".sqlite":
+                    _copy_database_file(source, destination)
+                else:
+                    _copy_plain_file(source, destination)
+>           manifest = build_manifest(paths, name=resolved_name, staging=staging, rel_files=rel_files)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+stockwiki\quick_scan_backup.py:219: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup_manifest.py:446: in build_manifest
+    report = _report_database(snapshot)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup_manifest.py:259: in _report_database
+    con = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\w15a\\storage-cli-02\\test_schema6_native_backup_and0\\workspace\\backups\\quick_scan\\.w15-roundtrip.partial-987a2b29\\analysis_subjects.sqlite?mode=ro'
+args = (), kwargs = {'uri': True}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+
+The above exception was the direct cause of the following exception:
+
+actual_bundle = (<stockwiki.quick_scan_routes.QuickScanRouteStore object at 0x000001E9B59ADBD0>, {'analysis_subject_schema_version': '...fe9f89c0edeb2afb1e3f2d29f7a81', <stockwiki.quick_scan_route_validation.IqsRouteValidator object at 0x000001E9B59AE210>)
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_schema6_native_backup_and0')
+
+    def test_schema6_native_backup_and_restore_keep_raw_routes_and_anchor(actual_bundle, tmp_path):
+        routes, subject, raw, manifest, decision_id, validator = actual_bundle
+        routes.record_snapshot(raw, manifest, subject_key=receipt_key(subject), expected_decision_id=decision_id)
+        routes.set_current(decision_id, subject_key=receipt_key(subject), expected_current_decision_id=None, now_utc=NOW)
+>       report = create_backup(routes.identity.paths, name="w15-roundtrip")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_route_integration.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_schema6_native_...:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_schema6_native_backup_and0/workspace/runs/state'))
+name = 'w15-roundtrip'
+
+    def create_backup(paths: WorkspacePaths, *, name: str | None = None) -> BackupResult:
+        """Snapshot ``data/quick_scan`` into ``backups/quick_scan/<name>`` atomically.
+    
+        Publish order (SWR-03): copy → manifest written LAST inside staging →
+        staging re-verifies → the owner registry records ``name ↔ manifest_sha256``
+        → ``staging.rename(final_dir)`` is the single commit point, INSIDE the
+        failure handler. No success-bearing state is visible before that rename, and
+        a failed rename removes staging and rolls the registry entry back, so a
+        partial can never be listed, verified or pruned as a finished backup.
+        """
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        resolved_name = f"qsbackup_{stamp}" if name is None else name
+        final_dir = resolve_backup_dir(paths, resolved_name)
+        if final_dir.exists():
+            raise _bad("backup_target_exists", str(final_dir))
+        data_dir = quick_scan_data_dir(paths)
+        rel_files = _source_files(data_dir)
+        if not rel_files:
+            raise _bad("backup_source_empty", str(data_dir))
+    
+        backup_root = quick_scan_backup_root(paths)
+        backup_root.mkdir(parents=True, exist_ok=True)
+        staging = backup_root / f".{resolved_name}{_PARTIAL_MARKER}{uuid.uuid4().hex[:8]}"
+        staging.mkdir(parents=True, exist_ok=False)
+        registered = False
+        try:
+            for rel in rel_files:
+                source = data_dir / rel
+                destination = staging / rel
+                if rel.suffix == ".sqlite":
+                    _copy_database_file(source, destination)
+                else:
+                    _copy_plain_file(source, destination)
+            manifest = build_manifest(paths, name=resolved_name, staging=staging, rel_files=rel_files)
+            manifest["manifest_sha256"] = manifest_digest(
+                {k: v for k, v in manifest.items() if k != "manifest_sha256"}
+            )
+            # Manifest last: until this write the staging dir is not a backup.
+            (staging / MANIFEST_NAME).write_text(
+                json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2),
+                encoding="utf-8",
+            )
+            _verify_dir(staging, manifest, expect_name=resolved_name)
+            _registry_add(
+                backup_root,
+                name=resolved_name,
+                manifest_sha256=manifest["manifest_sha256"],
+                created_at_utc=manifest["created_at_utc"],
+                workspace_root=manifest["workspace_root"],
+            )
+            registered = True
+            staging.rename(final_dir)
+        except QuickScanBackupError:
+            if registered:
+                _registry_remove(backup_root, resolved_name)
+            shutil.rmtree(staging, ignore_errors=True)
+            raise
+        except Exception as exc:  # noqa: BLE001 — any mid-run failure leaves no half backup
+            if registered:
+                _registry_remove(backup_root, resolved_name)
+            shutil.rmtree(staging, ignore_errors=True)
+>           raise _bad("backup_failed", str(exc)) from exc
+E           stockwiki.quick_scan_backup_manifest.QuickScanBackupError: backup_failed: W15 offline: URI database denied
+
+stockwiki\quick_scan_backup.py:247: QuickScanBackupError
+____________ test_db05_backup_restore_roundtrip_preserves_history _____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_backup_restore_round0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E9B3413820>
+
+    def test_db05_backup_restore_roundtrip_preserves_history(tmp_path: Path, monkeypatch) -> None:
+        _no_network(monkeypatch)
+>       source = _seed_source(tmp_path / "source")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:174: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_backup.py:120: in _seed_source
+    import_package(
+stockwiki\quick_scan_import.py:608: in import_package
+    replay = observation_store.replay_decisions(
+stockwiki\quick_scan_observations.py:675: in replay_decisions
+    sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_backup_restore_round0/source/data/quick_scan/scan_observations.sqlite?mode=ro'
+args = (), kwargs = {'uri': True, 'timeout': 30.0}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+__________ test_db05_wal_pages_missed_by_raw_copy_are_in_the_backup ___________
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_wal_pages_...h('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_wal_pages_missed_by_0/walws/runs/state'))
+name = 'wal'
+
+    def create_backup(paths: WorkspacePaths, *, name: str | None = None) -> BackupResult:
+        """Snapshot ``data/quick_scan`` into ``backups/quick_scan/<name>`` atomically.
+    
+        Publish order (SWR-03): copy → manifest written LAST inside staging →
+        staging re-verifies → the owner registry records ``name ↔ manifest_sha256``
+        → ``staging.rename(final_dir)`` is the single commit point, INSIDE the
+        failure handler. No success-bearing state is visible before that rename, and
+        a failed rename removes staging and rolls the registry entry back, so a
+        partial can never be listed, verified or pruned as a finished backup.
+        """
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        resolved_name = f"qsbackup_{stamp}" if name is None else name
+        final_dir = resolve_backup_dir(paths, resolved_name)
+        if final_dir.exists():
+            raise _bad("backup_target_exists", str(final_dir))
+        data_dir = quick_scan_data_dir(paths)
+        rel_files = _source_files(data_dir)
+        if not rel_files:
+            raise _bad("backup_source_empty", str(data_dir))
+    
+        backup_root = quick_scan_backup_root(paths)
+        backup_root.mkdir(parents=True, exist_ok=True)
+        staging = backup_root / f".{resolved_name}{_PARTIAL_MARKER}{uuid.uuid4().hex[:8]}"
+        staging.mkdir(parents=True, exist_ok=False)
+        registered = False
+        try:
+            for rel in rel_files:
+                source = data_dir / rel
+                destination = staging / rel
+                if rel.suffix == ".sqlite":
+                    _copy_database_file(source, destination)
+                else:
+                    _copy_plain_file(source, destination)
+>           manifest = build_manifest(paths, name=resolved_name, staging=staging, rel_files=rel_files)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+stockwiki\quick_scan_backup.py:219: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup_manifest.py:446: in build_manifest
+    report = _report_database(snapshot)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup_manifest.py:259: in _report_database
+    con = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\w15a\\storage-cli-02\\test_db05_wal_pages_missed_by_0\\walws\\backups\\quick_scan\\.wal.partial-98a84962\\scan.sqlite?mode=ro'
+args = (), kwargs = {'uri': True}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_wal_pages_missed_by_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E9B5B41A70>
+
+    def test_db05_wal_pages_missed_by_raw_copy_are_in_the_backup(tmp_path: Path, monkeypatch) -> None:
+        """DB-05: a live WAL must not be ignored by copying only the main file."""
+        _no_network(monkeypatch)
+        paths = WorkspacePaths.from_root(tmp_path / "walws")
+        store = QuickScanStore(paths)
+        store.migrate()
+        db = store.database_path
+        con = sqlite3.connect(db)
+        con.execute("PRAGMA journal_mode=WAL")
+        con.execute("PRAGMA wal_checkpoint=TRUNCATE")
+        con.execute("BEGIN")
+        con.execute(
+            "INSERT INTO quick_scan_universe (universe_id, name, soft_target_capacity) "
+            "VALUES ('UV_WAL', 'wal universe', NULL)"
+        )
+        con.commit()
+        wal_path = Path(str(db) + "-wal")
+        assert wal_path.exists() and wal_path.stat().st_size > 0, "committed pages still in WAL"
+    
+        naive = tmp_path / "naive_copy.sqlite"
+        shutil.copyfile(db, naive)
+        assert not any(
+            row[0] == "UV_WAL"
+            for row in sqlite3.connect(naive).execute("SELECT universe_id FROM quick_scan_universe")
+        ), "raw copy of the main file loses WAL pages"
+    
+>       result = create_backup(paths, name="wal")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:268: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_wal_pages_...h('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_wal_pages_missed_by_0/walws/runs/state'))
+name = 'wal'
+
+    def create_backup(paths: WorkspacePaths, *, name: str | None = None) -> BackupResult:
+        """Snapshot ``data/quick_scan`` into ``backups/quick_scan/<name>`` atomically.
+    
+        Publish order (SWR-03): copy → manifest written LAST inside staging →
+        staging re-verifies → the owner registry records ``name ↔ manifest_sha256``
+        → ``staging.rename(final_dir)`` is the single commit point, INSIDE the
+        failure handler. No success-bearing state is visible before that rename, and
+        a failed rename removes staging and rolls the registry entry back, so a
+        partial can never be listed, verified or pruned as a finished backup.
+        """
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        resolved_name = f"qsbackup_{stamp}" if name is None else name
+        final_dir = resolve_backup_dir(paths, resolved_name)
+        if final_dir.exists():
+            raise _bad("backup_target_exists", str(final_dir))
+        data_dir = quick_scan_data_dir(paths)
+        rel_files = _source_files(data_dir)
+        if not rel_files:
+            raise _bad("backup_source_empty", str(data_dir))
+    
+        backup_root = quick_scan_backup_root(paths)
+        backup_root.mkdir(parents=True, exist_ok=True)
+        staging = backup_root / f".{resolved_name}{_PARTIAL_MARKER}{uuid.uuid4().hex[:8]}"
+        staging.mkdir(parents=True, exist_ok=False)
+        registered = False
+        try:
+            for rel in rel_files:
+                source = data_dir / rel
+                destination = staging / rel
+                if rel.suffix == ".sqlite":
+                    _copy_database_file(source, destination)
+                else:
+                    _copy_plain_file(source, destination)
+            manifest = build_manifest(paths, name=resolved_name, staging=staging, rel_files=rel_files)
+            manifest["manifest_sha256"] = manifest_digest(
+                {k: v for k, v in manifest.items() if k != "manifest_sha256"}
+            )
+            # Manifest last: until this write the staging dir is not a backup.
+            (staging / MANIFEST_NAME).write_text(
+                json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2),
+                encoding="utf-8",
+            )
+            _verify_dir(staging, manifest, expect_name=resolved_name)
+            _registry_add(
+                backup_root,
+                name=resolved_name,
+                manifest_sha256=manifest["manifest_sha256"],
+                created_at_utc=manifest["created_at_utc"],
+                workspace_root=manifest["workspace_root"],
+            )
+            registered = True
+            staging.rename(final_dir)
+        except QuickScanBackupError:
+            if registered:
+                _registry_remove(backup_root, resolved_name)
+            shutil.rmtree(staging, ignore_errors=True)
+            raise
+        except Exception as exc:  # noqa: BLE001 — any mid-run failure leaves no half backup
+            if registered:
+                _registry_remove(backup_root, resolved_name)
+            shutil.rmtree(staging, ignore_errors=True)
+>           raise _bad("backup_failed", str(exc)) from exc
+E           stockwiki.quick_scan_backup_manifest.QuickScanBackupError: backup_failed: W15 offline: URI database denied
+
+stockwiki\quick_scan_backup.py:247: QuickScanBackupError
+________ test_db05_open_writer_transaction_does_not_leak_into_snapshot ________
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_open_write...C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_open_writer_transact0/inflight/runs/state'))
+name = 'inflight'
+
+    def create_backup(paths: WorkspacePaths, *, name: str | None = None) -> BackupResult:
+        """Snapshot ``data/quick_scan`` into ``backups/quick_scan/<name>`` atomically.
+    
+        Publish order (SWR-03): copy → manifest written LAST inside staging →
+        staging re-verifies → the owner registry records ``name ↔ manifest_sha256``
+        → ``staging.rename(final_dir)`` is the single commit point, INSIDE the
+        failure handler. No success-bearing state is visible before that rename, and
+        a failed rename removes staging and rolls the registry entry back, so a
+        partial can never be listed, verified or pruned as a finished backup.
+        """
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        resolved_name = f"qsbackup_{stamp}" if name is None else name
+        final_dir = resolve_backup_dir(paths, resolved_name)
+        if final_dir.exists():
+            raise _bad("backup_target_exists", str(final_dir))
+        data_dir = quick_scan_data_dir(paths)
+        rel_files = _source_files(data_dir)
+        if not rel_files:
+            raise _bad("backup_source_empty", str(data_dir))
+    
+        backup_root = quick_scan_backup_root(paths)
+        backup_root.mkdir(parents=True, exist_ok=True)
+        staging = backup_root / f".{resolved_name}{_PARTIAL_MARKER}{uuid.uuid4().hex[:8]}"
+        staging.mkdir(parents=True, exist_ok=False)
+        registered = False
+        try:
+            for rel in rel_files:
+                source = data_dir / rel
+                destination = staging / rel
+                if rel.suffix == ".sqlite":
+                    _copy_database_file(source, destination)
+                else:
+                    _copy_plain_file(source, destination)
+>           manifest = build_manifest(paths, name=resolved_name, staging=staging, rel_files=rel_files)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+stockwiki\quick_scan_backup.py:219: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_backup_manifest.py:446: in build_manifest
+    report = _report_database(snapshot)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_backup_manifest.py:259: in _report_database
+    con = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\w15a\\storage-cli-02\\test_db05_open_writer_transact0\\inflight\\backups\\quick_scan\\.inflight.partial-2a7b9f3b\\scan.sqlite?mode=ro'
+args = (), kwargs = {'uri': True}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_open_writer_transact0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E9B5C01490>
+
+    def test_db05_open_writer_transaction_does_not_leak_into_snapshot(
+        tmp_path: Path, monkeypatch
+    ) -> None:
+        _no_network(monkeypatch)
+        paths = WorkspacePaths.from_root(tmp_path / "inflight")
+        store = QuickScanStore(paths)
+        store.migrate()
+        con = sqlite3.connect(store.database_path)
+        con.execute("BEGIN IMMEDIATE")
+        con.execute(
+            "INSERT INTO quick_scan_universe (universe_id, name, soft_target_capacity) "
+            "VALUES ('UV_UNCOMMITTED', 'in flight', NULL)"
+        )
+>       result = create_backup(paths, name="inflight")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:301: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+paths = WorkspacePaths(root=WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_open_write...C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_db05_open_writer_transact0/inflight/runs/state'))
+name = 'inflight'
+
+    def create_backup(paths: WorkspacePaths, *, name: str | None = None) -> BackupResult:
+        """Snapshot ``data/quick_scan`` into ``backups/quick_scan/<name>`` atomically.
+    
+        Publish order (SWR-03): copy → manifest written LAST inside staging →
+        staging re-verifies → the owner registry records ``name ↔ manifest_sha256``
+        → ``staging.rename(final_dir)`` is the single commit point, INSIDE the
+        failure handler. No success-bearing state is visible before that rename, and
+        a failed rename removes staging and rolls the registry entry back, so a
+        partial can never be listed, verified or pruned as a finished backup.
+        """
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        resolved_name = f"qsbackup_{stamp}" if name is None else name
+        final_dir = resolve_backup_dir(paths, resolved_name)
+        if final_dir.exists():
+            raise _bad("backup_target_exists", str(final_dir))
+        data_dir = quick_scan_data_dir(paths)
+        rel_files = _source_files(data_dir)
+        if not rel_files:
+            raise _bad("backup_source_empty", str(data_dir))
+    
+        backup_root = quick_scan_backup_root(paths)
+        backup_root.mkdir(parents=True, exist_ok=True)
+        staging = backup_root / f".{resolved_name}{_PARTIAL_MARKER}{uuid.uuid4().hex[:8]}"
+        staging.mkdir(parents=True, exist_ok=False)
+        registered = False
+        try:
+            for rel in rel_files:
+                source = data_dir / rel
+                destination = staging / rel
+                if rel.suffix == ".sqlite":
+                    _copy_database_file(source, destination)
+                else:
+                    _copy_plain_file(source, destination)
+            manifest = build_manifest(paths, name=resolved_name, staging=staging, rel_files=rel_files)
+            manifest["manifest_sha256"] = manifest_digest(
+                {k: v for k, v in manifest.items() if k != "manifest_sha256"}
+            )
+            # Manifest last: until this write the staging dir is not a backup.
+            (staging / MANIFEST_NAME).write_text(
+                json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2),
+                encoding="utf-8",
+            )
+            _verify_dir(staging, manifest, expect_name=resolved_name)
+            _registry_add(
+                backup_root,
+                name=resolved_name,
+                manifest_sha256=manifest["manifest_sha256"],
+                created_at_utc=manifest["created_at_utc"],
+                workspace_root=manifest["workspace_root"],
+            )
+            registered = True
+            staging.rename(final_dir)
+        except QuickScanBackupError:
+            if registered:
+                _registry_remove(backup_root, resolved_name)
+            shutil.rmtree(staging, ignore_errors=True)
+            raise
+        except Exception as exc:  # noqa: BLE001 — any mid-run failure leaves no half backup
+            if registered:
+                _registry_remove(backup_root, resolved_name)
+            shutil.rmtree(staging, ignore_errors=True)
+>           raise _bad("backup_failed", str(exc)) from exc
+E           stockwiki.quick_scan_backup_manifest.QuickScanBackupError: backup_failed: W15 offline: URI database denied
+
+stockwiki\quick_scan_backup.py:247: QuickScanBackupError
+____________ test_verify_rejects_tamper_missing_and_unknown_schema ____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_verify_rejects_tamper_mis0')
+
+    def test_verify_rejects_tamper_missing_and_unknown_schema(tmp_path: Path) -> None:
+>       paths = _seed_source(tmp_path / "verify")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:332: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_backup.py:120: in _seed_source
+    import_package(
+stockwiki\quick_scan_import.py:608: in import_package
+    replay = observation_store.replay_decisions(
+stockwiki\quick_scan_observations.py:675: in replay_decisions
+    sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_verify_rejects_tamper_mis0/verify/data/quick_scan/scan_observations.sqlite?mode=ro'
+args = (), kwargs = {'uri': True, 'timeout': 30.0}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+_________________ test_verify_rejects_tampered_manifest_body __________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_verify_rejects_tampered_m0')
+
+    def test_verify_rejects_tampered_manifest_body(tmp_path: Path) -> None:
+>       paths = _seed_source(tmp_path / "manifest_tamper")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:399: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_backup.py:120: in _seed_source
+    import_package(
+stockwiki\quick_scan_import.py:608: in import_package
+    replay = observation_store.replay_decisions(
+stockwiki\quick_scan_observations.py:675: in replay_decisions
+    sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_verify_rejects_tampered_m0/manifest_tamper/data/quick_scan/scan_observations.sqlite?mode=ro'
+args = (), kwargs = {'uri': True, 'timeout': 30.0}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+____________________ test_restore_refuses_non_empty_target ____________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_restore_refuses_non_empty0')
+
+    def test_restore_refuses_non_empty_target(tmp_path: Path) -> None:
+>       paths = _seed_source(tmp_path / "ne_source")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:413: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_backup.py:120: in _seed_source
+    import_package(
+stockwiki\quick_scan_import.py:608: in import_package
+    replay = observation_store.replay_decisions(
+stockwiki\quick_scan_observations.py:675: in replay_decisions
+    sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_restore_refuses_non_empty0/ne_source/data/quick_scan/scan_observations.sqlite?mode=ro'
+args = (), kwargs = {'uri': True, 'timeout': 30.0}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+_____________ test_restore_refuses_backup_that_fails_verification _____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_restore_refuses_backup_th0')
+
+    def test_restore_refuses_backup_that_fails_verification(tmp_path: Path) -> None:
+>       paths = _seed_source(tmp_path / "vr_source")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:432: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_backup.py:120: in _seed_source
+    import_package(
+stockwiki\quick_scan_import.py:608: in import_package
+    replay = observation_store.replay_decisions(
+stockwiki\quick_scan_observations.py:675: in replay_decisions
+    sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_restore_refuses_backup_th0/vr_source/data/quick_scan/scan_observations.sqlite?mode=ro'
+args = (), kwargs = {'uri': True, 'timeout': 30.0}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+_________ test_store03_watermark_gap_replay_is_idempotent_and_frozen __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_store03_watermark_gap_rep0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E9B5C578A0>
+
+    def test_store03_watermark_gap_replay_is_idempotent_and_frozen(tmp_path: Path, monkeypatch) -> None:
+        _no_network(monkeypatch)
+>       paths = _seed_source(tmp_path / "wm_source")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:452: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_backup.py:120: in _seed_source
+    import_package(
+stockwiki\quick_scan_import.py:608: in import_package
+    replay = observation_store.replay_decisions(
+stockwiki\quick_scan_observations.py:675: in replay_decisions
+    sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_store03_watermark_gap_rep0/wm_source/data/quick_scan/scan_observations.sqlite?mode=ro'
+args = (), kwargs = {'uri': True, 'timeout': 30.0}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+___________ test_rev04_retention_only_removes_own_verified_backups ____________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_rev04_retention_only_remo0')
+
+    def test_rev04_retention_only_removes_own_verified_backups(tmp_path: Path) -> None:
+>       paths = _seed_source(tmp_path / "retention")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:519: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_backup.py:120: in _seed_source
+    import_package(
+stockwiki\quick_scan_import.py:608: in import_package
+    replay = observation_store.replay_decisions(
+stockwiki\quick_scan_observations.py:675: in replay_decisions
+    sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_rev04_retention_only_remo0/retention/data/quick_scan/scan_observations.sqlite?mode=ro'
+args = (), kwargs = {'uri': True, 'timeout': 30.0}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+__________ test_names_outside_the_workspace_backup_root_are_refused ___________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_names_outside_the_workspa0')
+
+    def test_names_outside_the_workspace_backup_root_are_refused(tmp_path: Path) -> None:
+>       paths = _seed_source(tmp_path / "names")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:547: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_backup.py:120: in _seed_source
+    import_package(
+stockwiki\quick_scan_import.py:608: in import_package
+    replay = observation_store.replay_decisions(
+stockwiki\quick_scan_observations.py:675: in replay_decisions
+    sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_names_outside_the_workspa0/names/data/quick_scan/scan_observations.sqlite?mode=ro'
+args = (), kwargs = {'uri': True, 'timeout': 30.0}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+______________________ test_create_is_atomic_on_failure _______________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_create_is_atomic_on_failu0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E9B5B1A8B0>
+
+    def test_create_is_atomic_on_failure(tmp_path: Path, monkeypatch) -> None:
+>       paths = _seed_source(tmp_path / "atomic")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_backup.py:555: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_backup.py:120: in _seed_source
+    import_package(
+stockwiki\quick_scan_import.py:608: in import_package
+    replay = observation_store.replay_decisions(
+stockwiki\quick_scan_observations.py:675: in replay_decisions
+    sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+database = 'file:///C:/Users/%E9%83%91%E6%9B%BE%E6%B3%A2/Projects/invest-quick-scan/runs/w15a/storage-cli-02/test_create_is_atomic_on_failu0/atomic/data/quick_scan/scan_observations.sqlite?mode=ro'
+args = (), kwargs = {'uri': True, 'timeout': 30.0}
+
+    def connect(database, *args, **kwargs):
+        if database != ":memory:":
+            text=str(database)
+>           if text.startswith("file:"): raise RuntimeError("W15 offline: URI database denied")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: W15 offline: URI database denied
+
+..\guard\sitecustomize.py:12: RuntimeError
+=========================== short test summary info ===========================
+FAILED tests\test_quick_scan_route_integration.py::test_schema6_native_backup_and_restore_keep_raw_routes_and_anchor
+FAILED tests\test_quick_scan_backup.py::test_db05_backup_restore_roundtrip_preserves_history
+FAILED tests\test_quick_scan_backup.py::test_db05_wal_pages_missed_by_raw_copy_are_in_the_backup
+FAILED tests\test_quick_scan_backup.py::test_db05_open_writer_transaction_does_not_leak_into_snapshot
+FAILED tests\test_quick_scan_backup.py::test_verify_rejects_tamper_missing_and_unknown_schema
+FAILED tests\test_quick_scan_backup.py::test_verify_rejects_tampered_manifest_body
+FAILED tests\test_quick_scan_backup.py::test_restore_refuses_non_empty_target
+FAILED tests\test_quick_scan_backup.py::test_restore_refuses_backup_that_fails_verification
+FAILED tests\test_quick_scan_backup.py::test_store03_watermark_gap_replay_is_idempotent_and_frozen
+FAILED tests\test_quick_scan_backup.py::test_rev04_retention_only_removes_own_verified_backups
+FAILED tests\test_quick_scan_backup.py::test_names_outside_the_workspace_backup_root_are_refused
+FAILED tests\test_quick_scan_backup.py::test_create_is_atomic_on_failure - Ru...
+12 failed, 2 passed in 22.07s

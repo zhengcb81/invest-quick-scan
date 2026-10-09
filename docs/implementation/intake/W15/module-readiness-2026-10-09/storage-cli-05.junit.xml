@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="7" time="42.079" timestamp="2026-10-09T21:03:53.288256+01:00" hostname="DESKTOP-156V213"><testcase classname="sw.tests.test_quick_scan_route_integration" name="test_actual_public_cli_validate_store_activate_and_refuse_resealed_route" time="11.225" /><testcase classname="sw.tests.test_quick_scan_route_integration" name="test_schema6_native_backup_and_restore_keep_raw_routes_and_anchor" time="10.971" /><testcase classname="sw.tests.test_quick_scan_route_integration" name="test_stockwiki_public_os_cli_binding_import_activate_read_and_refresh" time="17.470"><failure message="assert 21 == 23">actual_bundle = (&lt;stockwiki.quick_scan_routes.QuickScanRouteStore object at 0x000002222F87C9D0&gt;, {'analysis_subject_schema_version': '...f846d41d60ff16286dc52a2dfde1e', &lt;stockwiki.quick_scan_route_validation.IqsRouteValidator object at 0x000002222D617750&gt;)
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-cli-05/test_stockwiki_public_os_cli_b0')
+
+    def test_stockwiki_public_os_cli_binding_import_activate_read_and_refresh(actual_bundle, tmp_path):
+        routes, subject, raw, manifest, decision_id, validator = actual_bundle
+        common = [sys.executable, "-B", "-X", "utf8", "-m", "stockwiki.cli", "--root", str(routes.identity.paths.root)]
+        flags = ["--subject-key", receipt_key(subject), "--iqs-code-root", str(validator.code_root),
+                 "--iqs-release-root", str(validator.release_root)]
+        def cli(action, extra, expected=0):
+            result = subprocess.run(common+["quick-scan-route-"+action]+flags+extra, capture_output=True, timeout=90, check=False)
+            (tmp_path / (action+".stdout.log")).write_bytes(result.stdout)
+            (tmp_path / (action+".stderr.log")).write_bytes(result.stderr)
+            assert result.returncode == expected, result.stderr.decode("utf-8", errors="replace")
+            return json.loads(result.stdout)
+        binding = cli("binding", [])
+        assert binding["payload"]["route_identity_ref"] == json.loads(raw)["identity_ref"]
+        route_path, manifest_path = tmp_path / "incoming-route.json", tmp_path / "incoming-manifest.json"
+        route_path.write_bytes(raw)
+        manifest_path.write_bytes(manifest)
+        assert cli("record", ["--route", str(route_path), "--manifest", str(manifest_path), "--expected-decision-id", decision_id])["payload"]["status"] == "recorded"
+        cli("activate", ["--expected-decision-id", decision_id, "--expect-no-current", "--now-utc", NOW])
+        key = ["--scope", "entity", "--scope-id", subject["primary_issuer_id"]]
+        current = cli("current", key+["--now-utc", NOW, "--include-raw-bundle"])
+        import base64
+        assert base64.b64decode(current["payload"]["snapshot"]["route_raw_base64"]) == raw
+        assert current["payload"]["expected_decision_id"] == decision_id
+        refresh = cli("refresh", key+["--now-utc", NOW, "--provider", "P1", "--model", "M1", "--ttl-hours", "120"])
+        assert refresh["payload"]["totals"]["fields"] == 24
+&gt;       assert refresh["payload"]["totals"]["planned_dispatches"] == 23
+E       assert 21 == 23
+
+tests\test_quick_scan_route_integration.py:113: AssertionError</failure></testcase><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_added_module_only_dispatches_added_questions_and_keeps_core_observations" time="0.812" /><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_ttl_exact_boundary_new_model_and_removed_modules" time="0.750" /><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_unknown_cooldown_and_unresolved_paid_work_take_priority" time="0.240" /><testcase classname="sw.tests.test_quick_scan_module_refresh" name="test_changed_meaning_is_incomparable_and_legacy_subjectless_does_not_reuse" time="0.250" /></testsuite></testsuites>

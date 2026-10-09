@@ -1,0 +1,47 @@
+...F.................................................................... [ 66%]
+.....................................                                    [100%]
+================================== FAILURES ===================================
+__________ test_late_legacy_unknown_blocks_bound_send_before_intent ___________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-02/test_late_legacy_unknown_block0')
+
+    def test_late_legacy_unknown_blocks_bound_send_before_intent(tmp_path):
+        clock = [1800000000.0]
+        store = QuickScanWorkStore(tmp_path / "work.sqlite", clock=lambda: clock[0])
+        new = store.create_or_attach(**_spec(generation=2), run_id="RUN_2", scan_id="SCAN_1", owner_refresh_binding=_binding())
+        new_lease = store.claim(new["work_item_id"], lease_seconds=300)
+        new_attempt = _prepared(store, new["work_item_id"], new_lease)
+        old = _created(store)
+        old_lease = store.claim(old["work_item_id"], lease_seconds=60)
+        old_attempt = _prepared(store, old["work_item_id"], old_lease)
+>       store.mark_send_intent(old["work_item_id"], old_lease, old_attempt["attempt_id"])
+
+tests\unit\test_w15_owner_refresh.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:2829: in mark_send_intent
+    guard_send(connection, dict(item))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlite3.Connection object at 0x000002750D99E2F0>
+item = {'work_item_id': 'WORK_d4e942bf01e84fd48062b9afbd73851d', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+
+    def guard_send(connection: sqlite3.Connection, item: dict) -> None:
+        if read(connection, item["work_item_id"]) is not None:
+            guard_unresolved(connection, item, exclude_work_id=item["work_item_id"])
+        else:
+            # A legacy worker must not undercut a bound owner's send in the same
+            # logical scope. Legacy-only databases retain their historical behavior.
+            bound = connection.execute(
+                "SELECT 1 FROM quick_scan_owner_refresh_binding b JOIN work_item w USING(work_item_id) "
+                "WHERE w.entity_id=? AND w.question_id=? AND w.scope=? AND w.scope_id=? "
+                "AND w.work_item_id!=? AND w.status IN ('pending','leased','uncertain','result_ready') LIMIT 1",
+                (item["entity_id"], item["question_id"], item["scope"], item["scope_id"], item["work_item_id"])).fetchone()
+            if bound is not None:
+                from src.utils.quick_scan_work_store import WorkConflictError
+>               raise WorkConflictError("owner_refresh_prior_work_unresolved")
+E               src.utils.quick_scan_work_store.WorkConflictError: owner_refresh_prior_work_unresolved
+
+src\utils\quick_scan_owner_refresh_journal.py:123: WorkConflictError
+=========================== short test summary info ===========================
+FAILED tests\unit\test_w15_owner_refresh.py::test_late_legacy_unknown_blocks_bound_send_before_intent
+1 failed, 108 passed in 18.73s

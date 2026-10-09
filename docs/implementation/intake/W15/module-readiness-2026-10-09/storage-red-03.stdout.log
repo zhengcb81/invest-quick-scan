@@ -1,0 +1,135 @@
+FFFFFFF                                                                  [100%]
+================================== FAILURES ===================================
+__________ test_route_schema6_adds_tables_without_rewriting_identity __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_route_schema6_adds_tables0')
+
+    def test_route_schema6_adds_tables_without_rewriting_identity(tmp_path):
+        identity, subject = _workspace(tmp_path)
+>       assert identity.migrate() == 6
+E       assert 5 == 6
+E        +  where 5 = migrate()
+E        +    where migrate = <stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3C7878C0>.migrate
+
+tests\test_quick_scan_routes.py:90: AssertionError
+______ test_classification_raw_and_subject_binding_survive_storage[True] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_classification_raw_and_su0')
+confidence = True
+
+    @pytest.mark.parametrize("confidence", [True, False])
+    def test_classification_raw_and_subject_binding_survive_storage(tmp_path, confidence):
+        identity, subject = _workspace(tmp_path)
+>       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = <stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3CFE5310>
+
+    def _routes(identity):
+>       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError
+_____ test_classification_raw_and_subject_binding_survive_storage[False] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_classification_raw_and_su1')
+confidence = False
+
+    @pytest.mark.parametrize("confidence", [True, False])
+    def test_classification_raw_and_subject_binding_survive_storage(tmp_path, confidence):
+        identity, subject = _workspace(tmp_path)
+>       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = <stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3CFE6210>
+
+    def _routes(identity):
+>       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError
+__ test_independent_current_anchor_rejects_resealed_candidate_and_stale_cas ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_independent_current_ancho0')
+
+    def test_independent_current_anchor_rejects_resealed_candidate_and_stale_cas(tmp_path):
+        identity, subject = _workspace(tmp_path)
+>       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = <stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3C7A7A80>
+
+    def _routes(identity):
+>       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError
+______ test_changed_snapshot_bytes_are_named_refusal_not_history_rewrite ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_changed_snapshot_bytes_ar0')
+
+    def test_changed_snapshot_bytes_are_named_refusal_not_history_rewrite(tmp_path):
+        identity, subject = _workspace(tmp_path)
+>       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = <stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3D1003E0>
+
+    def _routes(identity):
+>       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError
+_____ test_subject_perimeter_and_identity_ref_cannot_be_selected_by_route _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_subject_perimeter_and_ide0')
+
+    def test_subject_perimeter_and_identity_ref_cannot_be_selected_by_route(tmp_path):
+        identity, subject = _workspace(tmp_path)
+>       routes = _routes(identity)
+                 ^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_routes.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+identity = <stockwiki.quick_scan_store.QuickScanStore object at 0x0000012E3D079250>
+
+    def _routes(identity):
+>       from stockwiki.quick_scan_routes import QuickScanRouteStore
+E       ModuleNotFoundError: No module named 'stockwiki.quick_scan_routes'
+
+tests\test_quick_scan_routes.py:84: ModuleNotFoundError
+________ test_migration_rolls_back_route_tables_and_preserves_v5_data _________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/storage-red-03/test_migration_rolls_back_rout0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000012E3D100B00>
+
+    def test_migration_rolls_back_route_tables_and_preserves_v5_data(tmp_path, monkeypatch):
+        from stockwiki import quick_scan_schema
+        identity, subject = _workspace(tmp_path)
+        with sqlite3.connect(identity.database_path) as con:
+>           con.execute("DROP TABLE quick_scan_route_current_history")
+E           sqlite3.OperationalError: no such table: quick_scan_route_current_history
+
+tests\test_quick_scan_routes.py:165: OperationalError
+=========================== short test summary info ===========================
+FAILED tests\test_quick_scan_routes.py::test_route_schema6_adds_tables_without_rewriting_identity
+FAILED tests\test_quick_scan_routes.py::test_classification_raw_and_subject_binding_survive_storage[True]
+FAILED tests\test_quick_scan_routes.py::test_classification_raw_and_subject_binding_survive_storage[False]
+FAILED tests\test_quick_scan_routes.py::test_independent_current_anchor_rejects_resealed_candidate_and_stale_cas
+FAILED tests\test_quick_scan_routes.py::test_changed_snapshot_bytes_are_named_refusal_not_history_rewrite
+FAILED tests\test_quick_scan_routes.py::test_subject_perimeter_and_identity_ref_cannot_be_selected_by_route
+FAILED tests\test_quick_scan_routes.py::test_migration_rolls_back_route_tables_and_preserves_v5_data
+7 failed in 0.97s

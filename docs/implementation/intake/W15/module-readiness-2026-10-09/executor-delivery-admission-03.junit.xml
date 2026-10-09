@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="16" time="1.990" timestamp="2026-10-09T21:56:39.405432+01:00" hostname="DESKTOP-156V213"><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[provider-P2]" time="0.067" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[model-M2]" time="0.062" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[anchor_version-2]" time="0.060" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_self_resealed_plan_binding_conflict_refused_before_work[manifest_raw_sha256-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]" time="0.045" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_incomplete_and_duplicate_question_plan_refused" time="0.040" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{&quot;a&quot;:1,&quot;a&quot;:2}]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{&quot;a&quot;:NaN}]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{&quot;a&quot;:1e400}]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[[1]]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_json_is_strict_and_never_chooses_last_value[{]" time="0.001" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_unresolved_work_keeps_original_context_and_expired_unsent_lease_resumes" time="0.122" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_public_wire_refuses_unregistered_versions_or_authority[change0]" time="0.101" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_public_wire_refuses_unregistered_versions_or_authority[change1]" time="0.004" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_owner_public_wire_refuses_unregistered_versions_or_authority[change2]" time="0.004" /><testcase classname="qa.tests.unit.test_w15_owner_refresh_transport" name="test_partial_delivery_resume_uses_original_outbox_and_missing_owner_ack_never_reasks" time="0.385" /><testcase classname="qa.tests.integration.test_qa_net01_cli_e2e" name="test_cli_e2e_search_policy_admission_gates_before_any_http" time="0.050"><failure message="AssertionError: assert 'external_context_not_implemented' in ''&#10; +  where '' = CaptureResult(out='', err='').out">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018FBB743E10&gt;
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-delivery-admission-03/test_cli_e2e_search_policy_adm0')
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x0000018FBB6A4980&gt;
+caplog = &lt;_pytest.logging.LogCaptureFixture object at 0x0000018FBB6A52B0&gt;
+
+    def test_cli_e2e_search_policy_admission_gates_before_any_http(
+        monkeypatch, tmp_path, capsys, caplog
+    ) -&gt; None:
+        """Missing credentials and a missing frozen plan both refuse before HTTP.
+    
+        Phase111 made the production retrieval chain executable. A credential
+        alone no longer yields the old disabled-stub admission output.
+        """
+    
+        files = _setup(tmp_path, with_authority=False)
+        policy_file = tmp_path / "search_policy.json"
+        policy_file.write_text(json.dumps(_search_policy()), encoding="utf-8")
+    
+        monkeypatch.delenv("BRAVE_API_KEY", raising=False)
+        code, session = _run(
+            monkeypatch,
+            tmp_path,
+            files,
+            manifest=False,
+            with_authority=False,
+            extra=["--search-policy", str(policy_file)],
+        )
+        captured = capsys.readouterr()
+        assert code == 1
+        assert session.post.call_count == 0
+        assert "external_search_routes_unadmitted" in caplog.text
+        assert "no_admitted_external_route" in caplog.text
+    
+        monkeypatch.setenv("BRAVE_API_KEY", "offline-fixture-key")
+        code, admitted_session = _run(
+            monkeypatch,
+            tmp_path,
+            files,
+            manifest=False,
+            with_authority=False,
+            extra=["--search-policy", str(policy_file)],
+        )
+        captured = capsys.readouterr()
+        assert code == 1, captured.out
+        assert admitted_session.post.call_count == 0
+        assert "frozen_execution_plan_required" in caplog.text
+&gt;       assert "external_context_not_implemented" in captured.out
+E       AssertionError: assert 'external_context_not_implemented' in ''
+E        +  where '' = CaptureResult(out='', err='').out
+
+C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\qa\tests\integration\test_qa_net01_cli_e2e.py:422: AssertionError</failure></testcase></testsuite></testsuites>

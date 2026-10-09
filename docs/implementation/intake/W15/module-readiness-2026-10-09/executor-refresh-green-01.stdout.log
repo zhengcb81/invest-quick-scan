@@ -1,0 +1,2065 @@
+...F............................................FFFF.................... [ 66%]
+.........................FFFFFF.....F                                    [100%]
+================================== FAILURES ===================================
+__________ test_late_legacy_unknown_blocks_bound_send_before_intent ___________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_late_legacy_unknown_block0')
+
+    def test_late_legacy_unknown_blocks_bound_send_before_intent(tmp_path):
+        clock = [1800000000.0]
+        store = QuickScanWorkStore(tmp_path / "work.sqlite", clock=lambda: clock[0])
+        new = store.create_or_attach(**_spec(generation=2), run_id="RUN_2", scan_id="SCAN_1", owner_refresh_binding=_binding())
+        new_lease = store.claim(new["work_item_id"], lease_seconds=60)
+        new_attempt = _prepared(store, new["work_item_id"], new_lease)
+        old = _created(store)
+        old_lease = store.claim(old["work_item_id"], lease_seconds=60)
+        old_attempt = _prepared(store, old["work_item_id"], old_lease)
+>       store.mark_send_intent(old["work_item_id"], old_lease, old_attempt["attempt_id"])
+
+tests\unit\test_w15_owner_refresh.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\utils\quick_scan_work_store.py:2829: in mark_send_intent
+    guard_send(connection, dict(item))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlite3.Connection object at 0x000001D8D812E2F0>
+item = {'work_item_id': 'WORK_e2881c81d7524ff3b3a6f69d2f208dec', 'entity_id': 'ENT_BYD', 'question_id': 'IQS_05', 'generation': 1, ...}
+
+    def guard_send(connection: sqlite3.Connection, item: dict) -> None:
+        if read(connection, item["work_item_id"]) is not None:
+            guard_unresolved(connection, item, exclude_work_id=item["work_item_id"])
+        else:
+            # A legacy worker must not undercut a bound owner's send in the same
+            # logical scope. Legacy-only databases retain their historical behavior.
+            bound = connection.execute(
+                "SELECT 1 FROM quick_scan_owner_refresh_binding b JOIN work_item w USING(work_item_id) "
+                "WHERE w.entity_id=? AND w.question_id=? AND w.scope=? AND w.scope_id=? "
+                "AND w.work_item_id!=? AND w.status IN ('pending','leased','uncertain','result_ready') LIMIT 1",
+                (item["entity_id"], item["question_id"], item["scope"], item["scope_id"], item["work_item_id"])).fetchone()
+            if bound is not None:
+                from src.utils.quick_scan_work_store import WorkConflictError
+>               raise WorkConflictError("owner_refresh_prior_work_unresolved")
+E               src.utils.quick_scan_work_store.WorkConflictError: owner_refresh_prior_work_unresolved
+
+src\utils\quick_scan_owner_refresh_journal.py:123: WorkConflictError
+__ test_q10_v7_migration_adds_empty_tables_without_backfilling_bare_attempt ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_q10_v7_migration_adds_emp0')
+
+    def test_q10_v7_migration_adds_empty_tables_without_backfilling_bare_attempt(tmp_path):
+        store = _store(tmp_path, [1_800_000_000.0])
+        item = _created(store)
+        lease, attempt, receipt = _successful_search_attempt(store, item["work_item_id"], durable=False)
+        with closing(store._connect()) as connection, connection:
+            _q10_reconstruct_old_schema(connection, 7)
+            before = tuple(connection.execute("SELECT * FROM attempt").fetchone())
+>       migrated = _store(tmp_path, [1_800_000_000.0])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:1305: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1186: in _initialize
+    cls._validate_schema(connection, schema_version=7)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB5BBF10>
+schema_version = 7
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+___ test_q10_v7_exact_checkpoint_remains_readable_without_new_response_rows ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_q10_v7_exact_checkpoint_r0')
+
+    def test_q10_v7_exact_checkpoint_remains_readable_without_new_response_rows(tmp_path):
+        store = _store(tmp_path, [1_800_000_000.0])
+        item = _created(store)
+        lease, attempt, receipt = _successful_search_attempt(store, item["work_item_id"])
+        store.save_answer_checkpoint(
+            item["work_item_id"],
+            lease,
+            attempt["attempt_id"],
+            answer=_answer_for(item),
+            execution_receipt=receipt,
+        )
+        with closing(store._connect()) as connection, connection:
+            legacy_hash = _q10_reconstruct_old_schema(connection, 7)[item["work_item_id"]]
+>       migrated = _store(tmp_path, [1_800_000_000.0])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:1336: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1186: in _initialize
+    cls._validate_schema(connection, schema_version=7)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB795120>
+schema_version = 7
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+______ test_q10_v7_old_request_cannot_be_authorized_by_new_alias_config _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_q10_v7_old_request_cannot0')
+
+    def test_q10_v7_old_request_cannot_be_authorized_by_new_alias_config(tmp_path):
+        store = _store(tmp_path, [1_800_000_000.0])
+        item = _created(store)
+        lease = store.claim(item["work_item_id"], lease_seconds=60)
+        first = _prepared(store, item["work_item_id"], lease, model="model-a")
+        store.mark_send_intent(item["work_item_id"], lease, first["attempt_id"])
+        store.record_attempt_outcome(
+            item["work_item_id"],
+            lease,
+            first["attempt_id"],
+            outcome="confirmed_failure",
+            http_status_code=429,
+            receipt_sha256="f" * 64,
+            failure_category="rate_limited",
+            provider_error_code="rate_limit_exceeded",
+        )
+        with closing(store._connect()) as connection, connection:
+            _q10_reconstruct_old_schema(connection, 7)
+>       migrated = _store(tmp_path, [1_800_000_000.0])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:1362: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1186: in _initialize
+    cls._validate_schema(connection, schema_version=7)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB797F10>
+schema_version = 7
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+_________ test_q10_failed_v8_migration_rolls_back_original_v7_schema __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_q10_failed_v8_migration_r0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D8DC350640>
+
+    def test_q10_failed_v8_migration_rolls_back_original_v7_schema(tmp_path, monkeypatch):
+        from src.utils import quick_scan_work_store as module
+    
+        store = _store(tmp_path, [1_800_000_000.0])
+        _created(store)
+        with closing(store._connect()) as connection, connection:
+            _q10_reconstruct_old_schema(connection, 7)
+            before = tuple(connection.iterdump())
+        monkeypatch.setattr(
+            module, "_DDL_V8_ADDITIONS", (*module._DDL_V8_ADDITIONS, "CREATE TABLE broken(")
+        )
+        with pytest.raises(sqlite3.DatabaseError):
+>           _store(tmp_path, [1_800_000_000.0])
+
+tests\unit\test_quick_scan_work_store.py:1388: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1186: in _initialize
+    cls._validate_schema(connection, schema_version=7)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB639990>
+schema_version = 7
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+___ test_schema_v4_upgrade_preserves_checkpoint_and_creates_delivery_ledger ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_schema_v4_upgrade_preserv0')
+
+    def test_schema_v4_upgrade_preserves_checkpoint_and_creates_delivery_ledger(tmp_path):
+        store, item, checkpoint, clock = _checkpointed_work_item(tmp_path)
+        with closing(store._connect()) as connection, connection:
+            legacy_checkpoint_hash = _q10_reconstruct_old_schema(connection, 4)[item["work_item_id"]]
+            connection.execute("DROP TABLE quick_scan_delivery_consumer_binding")
+            connection.execute("DROP TABLE quick_scan_result_delivery_event")
+            connection.execute("DROP TABLE quick_scan_result_delivery")
+            # strip the v5/v6 objects too: this fixture must be a real v4 database
+            for table in (
+                "quick_scan_work_context",
+                "quick_scan_standard_answer",
+                "quick_scan_delivery_revision",
+                "quick_scan_observation_context",
+            ):
+                connection.execute(f"DROP TABLE {table}")
+            connection.execute("PRAGMA user_version=4")
+>       migrated = _store(tmp_path, clock)
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:2531: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1171: in _initialize
+    cls._validate_schema(connection, schema_version=4)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB63A7A0>
+schema_version = 4
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+________ test_jr2_v6_migration_never_learns_target_from_old_ack[ready] ________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_jr2_v6_migration_never_le0')
+state = 'ready'
+
+    @pytest.mark.parametrize("state", ["ready", "send_uncertain", "delivered", "rejected", "conflict"])
+    def test_jr2_v6_migration_never_learns_target_from_old_ack(tmp_path, state):
+        store, wid, ack, clock = _jr2_legacy_v6_delivery(tmp_path, state)
+        with closing(store._connect()) as connection:
+            before = dict(
+                connection.execute(
+                    "SELECT * FROM quick_scan_result_delivery WHERE work_item_id=?", (wid,)
+                ).fetchone()
+            )
+>       migrated = _store(tmp_path, clock)
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:2608: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1182: in _initialize
+    cls._validate_schema(connection, schema_version=6)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB638D60>
+schema_version = 6
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+___ test_jr2_v6_migration_never_learns_target_from_old_ack[send_uncertain] ____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_jr2_v6_migration_never_le1')
+state = 'send_uncertain'
+
+    @pytest.mark.parametrize("state", ["ready", "send_uncertain", "delivered", "rejected", "conflict"])
+    def test_jr2_v6_migration_never_learns_target_from_old_ack(tmp_path, state):
+        store, wid, ack, clock = _jr2_legacy_v6_delivery(tmp_path, state)
+        with closing(store._connect()) as connection:
+            before = dict(
+                connection.execute(
+                    "SELECT * FROM quick_scan_result_delivery WHERE work_item_id=?", (wid,)
+                ).fetchone()
+            )
+>       migrated = _store(tmp_path, clock)
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:2608: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1182: in _initialize
+    cls._validate_schema(connection, schema_version=6)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB63A3E0>
+schema_version = 6
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+______ test_jr2_v6_migration_never_learns_target_from_old_ack[delivered] ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_jr2_v6_migration_never_le2')
+state = 'delivered'
+
+    @pytest.mark.parametrize("state", ["ready", "send_uncertain", "delivered", "rejected", "conflict"])
+    def test_jr2_v6_migration_never_learns_target_from_old_ack(tmp_path, state):
+        store, wid, ack, clock = _jr2_legacy_v6_delivery(tmp_path, state)
+        with closing(store._connect()) as connection:
+            before = dict(
+                connection.execute(
+                    "SELECT * FROM quick_scan_result_delivery WHERE work_item_id=?", (wid,)
+                ).fetchone()
+            )
+>       migrated = _store(tmp_path, clock)
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:2608: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1182: in _initialize
+    cls._validate_schema(connection, schema_version=6)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB797880>
+schema_version = 6
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+______ test_jr2_v6_migration_never_learns_target_from_old_ack[rejected] _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_jr2_v6_migration_never_le3')
+state = 'rejected'
+
+    @pytest.mark.parametrize("state", ["ready", "send_uncertain", "delivered", "rejected", "conflict"])
+    def test_jr2_v6_migration_never_learns_target_from_old_ack(tmp_path, state):
+        store, wid, ack, clock = _jr2_legacy_v6_delivery(tmp_path, state)
+        with closing(store._connect()) as connection:
+            before = dict(
+                connection.execute(
+                    "SELECT * FROM quick_scan_result_delivery WHERE work_item_id=?", (wid,)
+                ).fetchone()
+            )
+>       migrated = _store(tmp_path, clock)
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:2608: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1182: in _initialize
+    cls._validate_schema(connection, schema_version=6)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB797C40>
+schema_version = 6
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+______ test_jr2_v6_migration_never_learns_target_from_old_ack[conflict] _______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_jr2_v6_migration_never_le4')
+state = 'conflict'
+
+    @pytest.mark.parametrize("state", ["ready", "send_uncertain", "delivered", "rejected", "conflict"])
+    def test_jr2_v6_migration_never_learns_target_from_old_ack(tmp_path, state):
+        store, wid, ack, clock = _jr2_legacy_v6_delivery(tmp_path, state)
+        with closing(store._connect()) as connection:
+            before = dict(
+                connection.execute(
+                    "SELECT * FROM quick_scan_result_delivery WHERE work_item_id=?", (wid,)
+                ).fetchone()
+            )
+>       migrated = _store(tmp_path, clock)
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\test_quick_scan_work_store.py:2608: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\unit\test_quick_scan_work_store.py:33: in _store
+    return QuickScanWorkStore(tmp_path / "quick_scan_work.sqlite", clock=lambda: clock[0])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\utils\quick_scan_work_store.py:1115: in __init__
+    self._initialize(connection)
+src\utils\quick_scan_work_store.py:1182: in _initialize
+    cls._validate_schema(connection, schema_version=6)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'src.utils.quick_scan_work_store.QuickScanWorkStore'>
+connection = <sqlite3.Connection object at 0x000001D8DB796F20>
+schema_version = 6
+
+    @classmethod
+    def _validate_schema(
+        cls, connection: sqlite3.Connection, *, schema_version: int = SCHEMA_VERSION
+    ) -> None:
+        actual = cls._schema_objects(connection)
+        expected = {
+            ("table", "work_item"): _DDL_V1[0],
+            ("table", "work_run_ref"): _DDL_V1[1],
+            ("table", "attempt"): _DDL_V1[2],
+            ("table", "work_event"): _DDL_V1[3],
+            ("index", "work_item_status_expiry_idx"): _DDL_V1[4],
+            ("index", "attempt_work_phase_idx"): _DDL_V1[5],
+            ("index", "attempt_request_cache_key_idx"): _DDL_V1[6],
+        }
+        if schema_version >= 2:
+            expected.update(
+                {
+                    ("table", "answer_checkpoint"): (
+                        _DDL_CHECKPOINT_V11 if schema_version >= 11 else _DDL_V2_ADDITIONS[0]
+                    ),
+                    ("trigger", "answer_checkpoint_no_update"): _DDL_V2_ADDITIONS[1],
+                    ("trigger", "answer_checkpoint_no_delete"): _DDL_V2_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 3:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_policy"): _DDL_V3_ADDITIONS[0],
+                    ("table", "quick_scan_budget_attempt"): _DDL_V3_ADDITIONS[1],
+                    (
+                        "index",
+                        "quick_scan_budget_attempt_policy_idx",
+                    ): _DDL_V3_ADDITIONS[2],
+                    ("index", "quick_scan_budget_attempt_slots_idx"): _DDL_V3_ADDITIONS[3],
+                }
+            )
+        if schema_version >= 4:
+            expected.update(
+                {
+                    ("table", "quick_scan_budget_terminal"): _DDL_V4_ADDITIONS[0],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_update",
+                    ): _DDL_V4_ADDITIONS[1],
+                    (
+                        "trigger",
+                        "quick_scan_budget_terminal_no_delete",
+                    ): _DDL_V4_ADDITIONS[2],
+                }
+            )
+        if schema_version >= 5:
+            expected.update(
+                {
+                    ("table", "quick_scan_result_delivery"): _DDL_V5_ADDITIONS[0],
+                    ("index", "quick_scan_delivery_state_idx"): _DDL_V5_ADDITIONS[1],
+                    ("table", "quick_scan_result_delivery_event"): _DDL_V5_ADDITIONS[2],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_package_immutable",
+                    ): (_DDL_V6_ADDITIONS[1] if schema_version >= 6 else _DDL_V5_ADDITIONS[3]),
+                    (
+                        "trigger",
+                        "quick_scan_delivery_state_transition",
+                    ): _DDL_V5_ADDITIONS[4],
+                    ("trigger", "quick_scan_delivery_no_delete"): _DDL_V5_ADDITIONS[5],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_update",
+                    ): _DDL_V5_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_event_no_delete",
+                    ): _DDL_V5_ADDITIONS[7],
+                    ("trigger", "quick_scan_delivery_ack_immutable"): _DDL_V5_ADDITIONS[8],
+                }
+            )
+        elif schema_version not in {1, 2, 3, 4}:
+            raise ValueError("unsupported quick-scan work database schema version")
+        if schema_version >= 6:
+            expected.update(
+                {
+                    ("table", "quick_scan_observation_context"): _DDL_V6_ADDITIONS[2],
+                    ("table", "quick_scan_work_context"): _DDL_V6_ADDITIONS[3],
+                    ("table", "quick_scan_standard_answer"): _DDL_V6_ADDITIONS[4],
+                    ("table", "quick_scan_delivery_revision"): _DDL_V6_ADDITIONS[5],
+                    (
+                        "index",
+                        "quick_scan_delivery_revision_head_idx",
+                    ): _DDL_V6_ADDITIONS[6],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_update",
+                    ): _DDL_V6_ADDITIONS[7],
+                    (
+                        "trigger",
+                        "quick_scan_observation_context_no_delete",
+                    ): _DDL_V6_ADDITIONS[8],
+                    ("trigger", "quick_scan_work_context_no_update"): _DDL_V6_ADDITIONS[9],
+                    ("trigger", "quick_scan_work_context_no_delete"): _DDL_V6_ADDITIONS[10],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_update",
+                    ): _DDL_V6_ADDITIONS[11],
+                    (
+                        "trigger",
+                        "quick_scan_standard_answer_no_delete",
+                    ): _DDL_V6_ADDITIONS[12],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_update",
+                    ): _DDL_V6_ADDITIONS[13],
+                    (
+                        "trigger",
+                        "quick_scan_delivery_revision_no_delete",
+                    ): _DDL_V6_ADDITIONS[14],
+                }
+            )
+        if schema_version >= 7:
+            expected.update(
+                {
+                    ("table", "quick_scan_delivery_consumer_binding"): _DDL_V7_ADDITIONS[0],
+                    ("trigger", "quick_scan_consumer_binding_insert_guard"): _DDL_V7_ADDITIONS[1],
+                    ("trigger", "quick_scan_consumer_binding_no_update"): _DDL_V7_ADDITIONS[2],
+                    ("trigger", "quick_scan_consumer_binding_no_delete"): _DDL_V7_ADDITIONS[3],
+                    ("trigger", "quick_scan_delivery_consumer_guard"): _DDL_V7_ADDITIONS[4],
+                }
+            )
+        if schema_version >= 8:
+            for statement in _DDL_V8_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 9:
+            for statement in _DDL_V9_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 10:
+            for statement in _DDL_V10_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 12:
+            for statement in _DDL_V12_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 13:
+            for statement in _DDL_V13_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if schema_version >= 14:
+            for statement in _DDL_V14_ADDITIONS:
+                match = re.match(r"CREATE (TABLE|TRIGGER) ([A-Za-z_]+)", statement)
+                assert match is not None
+                expected[(match[1].lower(), match[2])] = statement
+        if actual.keys() != expected.keys() or any(
+            _normalized_sql(actual[key]) != _normalized_sql(statement)
+            for key, statement in expected.items()
+        ):
+>           raise ValueError("quick-scan work database schema mismatch")
+E           ValueError: quick-scan work database schema mismatch
+
+src\utils\quick_scan_work_store.py:1461: ValueError
+_________ test_jr2_failed_v7_migration_rolls_back_original_v6_schema __________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/w15a/executor-refresh-green-01/test_jr2_failed_v7_migration_r0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D8DBA672F0>
+
+    def test_jr2_failed_v7_migration_rolls_back_original_v6_schema(tmp_path, monkeypatch):
+        from src.utils import quick_scan_work_store as module
+    
+        store, wid, _, clock = _jr2_legacy_v6_delivery(tmp_path, "ready")
+        with closing(store._connect()) as connection:
+            before = tuple(connection.iterdump())
+        monkeypatch.setattr(
+            module, "_DDL_V7_ADDITIONS", (*module._DDL_V7_ADDITIONS, "CREATE TABLE broken(")
+        )
+>       with pytest.raises(ValueError, match="consumer binding migration"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'consumer binding migration'
+E         Actual message: 'quick-scan work database schema mismatch'
+
+tests\unit\test_quick_scan_work_store.py:2738: AssertionError
+=========================== short test summary info ===========================
+FAILED tests\unit\test_w15_owner_refresh.py::test_late_legacy_unknown_blocks_bound_send_before_intent
+FAILED tests\unit\test_quick_scan_work_store.py::test_q10_v7_migration_adds_empty_tables_without_backfilling_bare_attempt
+FAILED tests\unit\test_quick_scan_work_store.py::test_q10_v7_exact_checkpoint_remains_readable_without_new_response_rows
+FAILED tests\unit\test_quick_scan_work_store.py::test_q10_v7_old_request_cannot_be_authorized_by_new_alias_config
+FAILED tests\unit\test_quick_scan_work_store.py::test_q10_failed_v8_migration_rolls_back_original_v7_schema
+FAILED tests\unit\test_quick_scan_work_store.py::test_schema_v4_upgrade_preserves_checkpoint_and_creates_delivery_ledger
+FAILED tests\unit\test_quick_scan_work_store.py::test_jr2_v6_migration_never_learns_target_from_old_ack[ready]
+FAILED tests\unit\test_quick_scan_work_store.py::test_jr2_v6_migration_never_learns_target_from_old_ack[send_uncertain]
+FAILED tests\unit\test_quick_scan_work_store.py::test_jr2_v6_migration_never_learns_target_from_old_ack[delivered]
+FAILED tests\unit\test_quick_scan_work_store.py::test_jr2_v6_migration_never_learns_target_from_old_ack[rejected]
+FAILED tests\unit\test_quick_scan_work_store.py::test_jr2_v6_migration_never_learns_target_from_old_ack[conflict]
+FAILED tests\unit\test_quick_scan_work_store.py::test_jr2_failed_v7_migration_rolls_back_original_v6_schema
+12 failed, 97 passed in 21.33s

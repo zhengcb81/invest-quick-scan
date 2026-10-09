@@ -1,0 +1,60 @@
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\site-packages\black\concurrency.py", line 43, in maybe_use_uvloop
+    import winloop
+ModuleNotFoundError: No module named 'winloop'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Miniconda\Lib\site-packages\black\__main__.py", line 3, in <module>
+    patched_main()
+    ~~~~~~~~~~~~^^
+  File "src\black\__init__.py", line 1702, in patched_main
+  File "C:\Miniconda\Lib\site-packages\click\core.py", line 1631, in __call__
+    return self.main(*args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\site-packages\click\core.py", line 1552, in main
+    rv = self.invoke(ctx)
+  File "C:\Miniconda\Lib\site-packages\click\core.py", line 1415, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Miniconda\Lib\site-packages\click\core.py", line 910, in invoke
+    return callback(*args, **kwargs)
+  File "C:\Miniconda\Lib\site-packages\click\decorators.py", line 34, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "src\black\__init__.py", line 744, in main
+  File "C:\Miniconda\Lib\site-packages\black\concurrency.py", line 118, in reformat_many
+    loop = maybe_use_uvloop()
+  File "C:\Miniconda\Lib\site-packages\black\concurrency.py", line 47, in maybe_use_uvloop
+    return asyncio.new_event_loop()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\asyncio\events.py", line 837, in new_event_loop
+    return get_event_loop_policy().new_event_loop()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\asyncio\events.py", line 734, in new_event_loop
+    return self._loop_factory()
+           ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\asyncio\windows_events.py", line 316, in __init__
+    super().__init__(proactor)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Miniconda\Lib\asyncio\proactor_events.py", line 639, in __init__
+    self._make_self_pipe()
+    ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\asyncio\proactor_events.py", line 786, in _make_self_pipe
+    self._ssock, self._csock = socket.socketpair()
+                               ~~~~~~~~~~~~~~~~~^^
+  File "C:\Miniconda\Lib\socket.py", line 623, in _fallback_socketpair
+    csock.connect((addr, port))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\w15a\guard\sitecustomize.py", line 5, in denied
+    def denied(*args, **kwargs): raise RuntimeError("W15 offline: network denied")
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: W15 offline: network denied
+Exception ignored in: <function BaseEventLoop.__del__ at 0x000001A862B53C40>
+Traceback (most recent call last):
+  File "C:\Miniconda\Lib\asyncio\base_events.py", line 766, in __del__
+  File "C:\Miniconda\Lib\asyncio\proactor_events.py", line 696, in close
+  File "C:\Miniconda\Lib\asyncio\proactor_events.py", line 778, in _close_self_pipe
+AttributeError: 'ProactorEventLoop' object has no attribute '_ssock'
