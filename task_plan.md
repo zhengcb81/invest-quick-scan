@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**Phase111实际Git收尾已到（2026-10-09，优先于下文）：** IQS本批证据已正常提交推送`c5562157815a9dd886b52a1d5d7cfacf344dc0c4`，1384精确变化/1379工件及index Git blob一致，4578旧tracked工件不变。StockQA源码已推送bc41908，严格自有清理完成；当前只补本实际Git回执和PWF，不改冻结软件/工件。StockWiki刚只读核c40de21、clean，JR1/JR3四路径相对原d253fea未变；已向用户申请这四文件及本批唯一writer授权，未答前只读。后续在授权后执行已有联合整改卡，不重复三包/Phase111或收费实验；金融准确性/真实gold/G3/F05/L03/TH-IN原门继续开放。
+
 **Phase111有限软件已发布并清理（2026-10-09，优先于下文历史）：** static04全部exit0/mypy61源、regression02实际861 passed；同一次独审关闭两P2，38路径全部有限批准。StockQA已正常提交推送`bc41908e4cdc44c13fefda97f3118e5434aed5f8`，38 Git blob与受审SHA一致，111保护文件及原7未知项不变。schema13是源码迁移能力，没有迁移真实库。20,025自有文件/8,999目录已严格清除，必要日志/独审程序/执行快照保留，见[交付说明](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。IQS本批证据/PWF最后Git交付尚待实际回执，最近已推送5f4e518。随后唯一跨仓下一动作：只读重核StockWiki当前接口/唯一writer，取得四路径明确许可后收口JR1/JR3和公开CLI联合ACK；未获许可不写StockWiki。金融准确性、真实厂商计价、真实gold/G3/F05/L03/TH-IN仍开放，不启动200家扫描或刷新退役回执。
 
 **最新唯一下一动作（OS CLI自动恢复后，优先于以下历史）：** 完整Phase111同一大节点最终静态/全受影响回归/一次集中独审，满足标准后精确源Git发布并严格自有清理。五文件313P/pytest102.41s/controller103.027s，37执行SHA不变，38已报备路径。真正OS CLI冷暖、24新OS场景含11强杀断点现由CLI自己恢复，MCP→LLM→公共结果/完整标准C06已验证；读[CLI恢复接口](docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/cli-recovery-interface.md)。仍仅private schema13，生产StockQA42a517c/schema8未发布；StockWiki四路径许可/联合ACK/G3/L03/F05/真实gold/TH-IN原门保持，不刷新退役回执或启动200家live。IQS归档提交以progress实际回执为准。
@@ -1545,7 +1547,7 @@ Status: complete_for_model_provenance_software_scope; source_and_IQS_committed_a
 
 
 ### Phase 111: QA-NET-01外部证据生产链接续
-Status: complete_for_limited_software_delivery_IQS_git_receipt_pending
+Status: complete_for_limited_software_delivery
 
 - [x] 只读确认现行external路径尚未接通，属于原QA-NET步骤3–6；调整执行顺序，不改变上游关闭门。
 - [x] 固定42a517c输入并逐批报备范围；C06保留公共schema，以私有external context-use proof链接真实检索和回答，预算复用Q09。

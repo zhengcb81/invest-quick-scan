@@ -1804,3 +1804,5 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 
 - 2026-10-09后续真实发布已完成：StockQA bc41908e4cdc44c13fefda97f3118e5434aed5f8已推送、38受审Git blob精确一致；schema13是已发布源码迁移支持，不是已改真实库。111保护文件的工作树SHA和7未知项保持；原scope/input不覆写，当前发布以publication/result和delivery为准。
 - Windows os.DirEntry.stat会从目录枚举返回nlink=0缓存值，不能用作无硬链接证明，也不能把0放宽成1。实际os.lstat/os.stat给出1，严格清理使用真实os.lstat逐文件正面证明；20,025文件/8,999目录已native逐项清除。后续复现必须新root/非秘密allowlist/归档guard，不能因历史固定根消失而重启或清理其他环境。
+
+- Phase111最终IQS归档已实际提交推送c556215：1384变化，1379 raw工件及index Git byte核对一致；4578历史tracked工件未变。StockWiki当前c40de21且clean，JR1/JR3四路径与d253fea相同，不因为后续UI提交猜测这些缺陷已修复。四路径许可待用户回答，公开搜索手册的旧“外部生产adapter未实现”文字需按bc41908有限交付同步，真实互通/收费授权/金融准确性仍分开披露。
