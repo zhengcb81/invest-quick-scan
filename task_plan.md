@@ -407,7 +407,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**最新联调准备（2026-10-09）：** 本仓新版[输入与适配说明](docs/implementation/reviews/G3/joint-2026-10-09-rebase/README.md)及只读 `inputs-01.json` 已完成；实际freeze exit0，12外仓Git文件/接口签名、6既有依赖、4新文件SHA与AST核验，7本地链接有效。已确认StockQA begin前必须预绑consumer，旧驱动不得盲跑；新薄适配器先取得合成接收工作区的真实store_id再调用公开binding API，不从ACK补目标。仅准备、0运行时软件测试、0收费请求、无源仓/生产DB写入；StockQA bc41908与StockWiki c40de21/clean未变。唯一下一跨仓动作仍是收到StockWiki四文件＋唯一writer授权，按JR1/JR3卡修复后新执行锁/一次联合公开CLI ACK；授权未答，不反复重问或模拟已批准。G3/F05/L03/金融准确性/真实gold/TH-IN原门开放；不新增小节点审查、不刷新退役回执。
+**最新联调准备（2026-10-09）：** 本仓新版[输入与适配说明](docs/implementation/reviews/G3/joint-2026-10-09-rebase/README.md)及只读 `inputs-01.json` 已完成并提交推送 `fa99bce9916154f71d9d79e54a4f9ee94f963706`：12精确变化路径，7新工件staged/committed原字节一致，远端master一致，原opencode保留。实际freeze exit0，12外仓Git文件/接口签名、6既有依赖、4新文件SHA与AST核验，7本地链接有效。已确认StockQA begin前必须预绑consumer，旧驱动不得盲跑；新薄适配器先取得合成接收工作区的真实store_id再调用公开binding API，不从ACK补目标。仅准备、0运行时软件测试、0收费请求、无源仓/生产DB写入；StockQA bc41908与StockWiki c40de21/clean未变。唯一下一跨仓动作仍是收到StockWiki四文件＋唯一writer授权，按JR1/JR3卡修复后新执行锁/一次联合公开CLI ACK；授权未答，不反复重问或模拟已批准。G3/F05/L03/金融准确性/真实gold/TH-IN原门开放；不新增小节点审查、不刷新退役回执。
 
 **最新交付回执（2026-10-09）：** 搜索规范/准确性手册/无密钥清单同步已正常提交推送92b0fd0f6af49c51f654649d57c895ce4fa93265，8件精确路径；26内部链接/JSON核查通过，无付费请求、有效配置或用户顺位改变。Phase111软件/1379受审归档、StockQAbc41908与清理事实不变。唯一下一跨仓动作仍是收StockWiki四路径＋唯一writer授权，按已有JR1/JR3卡实施后做一次联合公开CLI ACK；当前问题未答，不写StockWiki，不把等待问题当存活进程。G3/F05/L03/金融准确性/真实gold/TH-IN原门开放，本目标未完成。
 
