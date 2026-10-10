@@ -39,3 +39,11 @@ python -B -X utf8 -m stockwiki.quick_scan_subject_dispatch_cli --operation initi
 
 **2026-10-10 当前唯一接续（checkpoint07，以下均为历史）：** 独占runs/c15a已有原生owner交互确认入口与不可变幂等工件，公共CLI会拒绝管道/自报确认；确认前后重核精确预览、当前主体/成员/路由/政策/原预算，scope变动要求新预览。另有固定owner只读同意检查入口与原Q13单事务批量登记原语（复用原表/算法、不另建队列）。最新同批实际36P/74.04s、子进程7660/exit0/source_changed为空；保留之前30P/6F的计数fixture表名错误原件。原语本身permission_authenticated=false，公共确认仍handoff_pending/registered_with_executor=false；真实owner读桥正例使用明确合成的同意工件，实际人类确认/收费提交/公开Q13接线尚未发生。67私有候选checkpoint07已固定，未集中审查/源码发布，0API/生产库/名单写，guard不变。唯一下一工程动作：固定QA OS桥读取owner原件，绑定完整authority3/context2及精确question/subject范围，再耐久幂等登记/公开重放/原主执行器消费，Q09仍在实际发送前扣账；之后其余原C06操作并同节点一次集中审查，不增helper审查。7份获明确许可的第一方文档已实际推送a0d283de665f91740190b2371b4722a2af25e557，远端一致；本次后续同7文档的实际Git结果按documentation-publication-02.json核对，代码/数据库/golden不在该导出范围。C06/W15/G3/F05/L03/B01/事实/UI/TH-IN/全池门仍开放，活根不清、内容包未派发、目标active。
 
+
+## checkpoint09：实际公开admission测试与时间边界
+
+producer-adm-e3实际37920/exit0、1P/217.24s：真实三组件OS/native CLI与原serializer/producer，所有身份/确认明确合成；冷登记1题/重启原任务/撤权、owner DB原字节不变、work attempt与budget attempt0。producer-adm-a1实际39780/exit0、四受影响文件52P/6.30s；两个批次source map相同。原17/25项子集、e1 JSON日志失败、e2聚合超时不叠加成金融通过率，也不删原失败。
+
+原guard raw abc0128dc92a2bf99e57dbbbfe2355aea376b584f67e9e51c0bd0ebbc871e682保持。native原子os.link仍需授权沙箱外同owned runtime；不用降低发布算法。每个native调用仍80秒；聚合测试admission180/整组300显式有界，控制器支持--test-timeout-seconds 60..360，默认仍180。所有shell等待分段返回，不用长阻塞隐藏进度。
+
+最后实际CIM只读成功且这两批owned Python0；活c15a/real-owner-01继续供完整C06，不能清理它们或共享TEMP/其他harness。checkpoint09固定75候选与8原终态批次，未整个节点集中review/源发布。下一动作接原主执行器，不再重复此无变化软件实验；吞吐/真实金融准确性/价格实验另按原计划。

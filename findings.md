@@ -1961,3 +1961,14 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 公开OS read与内部存储已经能在合成E2E按原确认的1题创建/重放同一原work，不新建attempt或预算attempt，原owner库不改；策略变化拒绝。完整authority3/context2映射目前是在显式集成fixture中演练，不能把测试组装spec充当生产admission服务。下一步必须由可信服务读取原producer输入并独立映射，不能让消费者上传spec JSON。
 - 143原受影响测试/22权限测试/1真实CLI E2E分别是软件范围；测试生成同意不是实际用户TTY确认。新proof1.1的current_permissions只能供已有action重放或提交末尾稳定重核，新动作必须先fresh_registration。
 - 历史迁移测试需要实际旧DDL，保留schema16空表却只改user_version不是旧库；只修fixture不降低产品校验。重封记录必须继续核原work/binding/run refs，canonical JSON比较也区分bool与整数。
+
+### 2026-10-10 公共admission接续恢复
+- 上回合原生桥/不可变action/实际CLI E2E及143受影响测试与PWF正常push731e064改变了工程状态，属于progress；本回合沿同Phase113步骤4，不重复两外包验收或派发R1。
+- 当前原runner的owner路径逐题routing_fingerprint使用subject_key+原request_identity_key，与上回合仅演练的整体题面hash不同；生产admission必须按原runner算法生成，不能把fixture拼出的spec当实际运行输入。已有原session参考/续传/unknown语义继续复用。
+- 固定原producer bundle按完整SubjectRef选择，原manifest必须完整校验，随后才过滤已确认题目；先裁掉manifest会损坏历史hash/模块锁和外部检索绑定。只有执行集合可裁剪，历史/authority保持原件。
+- CodeGraph生产索引仍返回旧main/runner节点；已知私有路径接续。一次读取runs/c15a/qa/main.py发现该副本没有该入口，未创建替代主程序，实际已知OS测试入口是main_with_llm.py；错误保留，不据此宣称产品缺入口。
+
+- 两包后续状态以实际文件为准：EVID当前无新产品改动，FACT有未提交R1施工与仅RED交接，不能将“已收到原包”扩成整改已完成；不复验活writer半成品。原受审成果与独立整改卡保留，版本变更后再包级续收。
+
+- 私有公开admission入口现已由真实OS CLI演练原确认→完整原producer bundle→原Q13登记/重启/撤权。不能把此软件正例称人类实际同意或财务真值。零新增引用使用原receipt 1.1，保留1.0读兼容和原队列/预算表；没有新执行器。
+- 原JSONConfigManager在导入时初始化stdout日志handler，公开JSON必须在stderr重定向内导入和执行，而非事后忽略脏stdout。聚合服务会调用多个原生80秒有界CLI，测试分别给服务180和整组300秒，不放大原native时限或删权限重核。完整单主体冷/重启/撤权合成E2E217.24秒表明仍有OS启动开销，不能据此承诺2000家公司吞吐；真实模型准确性/价格/速度实验尚待合格基准与完整执行链。

@@ -62,3 +62,36 @@
 
 **2026-10-10 当前唯一接续（checkpoint07，以下均为历史）：** 独占runs/c15a已有原生owner交互确认入口与不可变幂等工件，公共CLI会拒绝管道/自报确认；确认前后重核精确预览、当前主体/成员/路由/政策/原预算，scope变动要求新预览。另有固定owner只读同意检查入口与原Q13单事务批量登记原语（复用原表/算法、不另建队列）。最新同批实际36P/74.04s、子进程7660/exit0/source_changed为空；保留之前30P/6F的计数fixture表名错误原件。原语本身permission_authenticated=false，公共确认仍handoff_pending/registered_with_executor=false；真实owner读桥正例使用明确合成的同意工件，实际人类确认/收费提交/公开Q13接线尚未发生。67私有候选checkpoint07已固定，未集中审查/源码发布，0API/生产库/名单写，guard不变。唯一下一工程动作：固定QA OS桥读取owner原件，绑定完整authority3/context2及精确question/subject范围，再耐久幂等登记/公开重放/原主执行器消费，Q09仍在实际发送前扣账；之后其余原C06操作并同节点一次集中审查，不增helper审查。7份获明确许可的第一方文档已实际推送a0d283de665f91740190b2371b4722a2af25e557，远端一致；本次后续同7文档的实际Git结果按documentation-publication-02.json核对，代码/数据库/golden不在该导出范围。C06/W15/G3/F05/L03/B01/事实/UI/TH-IN/全池门仍开放，活根不清、内容包未派发、目标active。
 
+
+## checkpoint09：公共登记入口已接线，原主执行器仍待
+
+当前仅runs/c15a私有候选，未源发布/整个C06签收。公开CLI严格只接operator部署配置与原native confirmation ID；不接consumer specs/confirmed布尔值，不执行模型，不建第二队列或预算。固定5文件bundle先完整校验，再与原完整SubjectRef/field/question对应；只有原Q13提交并重读后公开accepted，原存储receipt仍permission_authenticated=false。新登记重核fresh_registration，耐久重放核current_permissions，原pending work保持；撤权拒绝。
+
+从QA代码根运行（在原生owner确认已经存在、原Q13已显式设置后）：
+
+```powershell
+python -B -X utf8 -m src.utils.quick_scan_refresh_admission_cli --config C:/path/admission-config.json --confirmation-id rc1_<native-64hex>
+```
+
+operator配置模板（填实际绝对路径；只有非秘密设置，没有API key）：
+
+```json
+{
+  "protocol": "stockqa.refresh_admission_config/1.0.0",
+  "stockwiki_code_root": "C:/path/StockWiki",
+  "stockwiki_workspace_root": "C:/path/owner-workspace",
+  "iqs_code_root": "C:/path/invest-quick-scan",
+  "iqs_release_root": "C:/path/frozen-release",
+  "execution_inputs_root": "C:/path/producer-inputs",
+  "work_store": "C:/path/executor.sqlite",
+  "budget_policy_file": "C:/path/nonsecret-model-policy.json",
+  "consumer_id": "invest-quick-scan",
+  "runs_dir": "C:/path/owned-runtime"
+}
+```
+
+所有目录需已存在；原Q13须当前schema16，日常admission不创建/迁移库。ledger/policy/代码根/模型与原native owner policy必须匹配。inputs根每个完整SubjectRef按原canonical_sha256放在subject_<64hex>目录，固定manifest.json、identity.json、authority.json、owner-config.json、questions.json。它们是原producer问卷/身份/authority3-context2原件，不能手工缩小manifest或改hash；questions用原IQS subject_dispatch_cli questions导出。跨市场/证券/主体修订不以名称或ticker join。
+
+公开返回stockqa.refresh_admission/1.0.0，accepted或already_registered；registration为原immutable action receipt，API_requests=0、dispatch_started=false。拒绝exit2；未知flag也拒绝；stdout只有JSON、原配置加载日志在stderr。已登记动作仍要当前权限，不以消费者registered/authenticated字段放行。
+
+下一步原main_with_llm/LLMRunner消费这个action：完整manifest/search policy/authority先验证，执行集合后筛选。Q09原发送边界扣账、fallback沿原冻结模型策略；reuse/result_ready只读原引用/交付，uncertain不重问。该主执行器接线和全C06审查仍待，不将本入口当一键全池已交付。

@@ -407,6 +407,10 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**2026-10-10 最新状态（checkpoint09，以下checkpoint08及更早段落是历史）：** 私有公开admission已接真实native同意读取、完整原producer输入和原Q13原子登记；75候选已冻结。最终真实公开CLI合成E2E1P与受影响unit52P分别留档，没有收费请求或真实人类确认。原主扫描执行器尚未消费action，C06/W15及下游门未关闭。两外包原验收仍changes_requested；EVID没有新版，FACT已出现R1活writer/RED阶段，避开其目录，不能称R1已签收。
+
+**唯一下一动作：** 在runs/c15a的原main_with_llm/LLMRunner接入admission config与confirmation ID，核原耐久登记并仅执行获准的完整SubjectRef/题目范围；原完整问卷/search policy先验、执行子集后选。发送仍走原Q09，引用/已答待交付不再问模型、不重封旧答案，未知发送仍核对。完成其余原C06操作后同节点一次集中审查/源码发布/严格自有清理，不新增helper审查。
+
 **2026-10-10 当前主线接续（checkpoint08；下面旧“当前”记录均为历史）：** 两外包集中验收保留changes_requested，R1尚未派发；总控只写runs/c15a私有副本。71候选/13变化/12终态批次已固定到producer-checkpoint-08.json，原guard abc0128…不变。固定StockQA→StockWiki原生OS同意读取已实际实现，1.1明确fresh_registration/current_permissions，原1.0不变；原Q13 schema16仅增加不可变action控制表，与原work/run refs/owner binding同事务，重放保持原work。最新受影响五文件143P/21.14s（45356/exit0），权限22P/2.62s（43764/exit0），真正三组件公开CLI E2E1P/125.50s（23892/exit0）分别记录，不相加为准确率。E2E明确合成同意/身份，以实际serializer、authority3/context2精确1题登记原队列；原owner DB不变，attempt/预算attempt0，策略变化拒绝，队列变化后只读当前权限可重放。存储原语仍permission_authenticated=false，尚无公共accepted admission服务/主执行器消费，没有实际人类确认或收费调用，也未整C06独审/源发布。
 
 **唯一下一工程动作：** 在原Phase113步骤4，把这些现有组件接成可信公共admission服务：从部署固定的原producer bundle读取/验证完整manifest、身份、authority3/context2，逐项与原确认的完整SubjectRef/field/question/generation/provider/model/route核对；不能公开caller specifications/confirmed/registered布尔值。新动作完整重核、已登记动作按原耐久记录重核当前权限，Q13提交成功后才accepted；原主runner只消费该已确认精确范围，发送仍经Q09。复用与result_ready只接原引用/续传、0新LLM，不确定发送仍保留原停机/核对语义。完成其余原C06操作后整节点一次集中审查、源发布与strict自有清理；不加helper门，不跑全池、不写Lab整改或生产库/名单。c15a及真实身份克隆real-owner-01仍在用。C06/W15/G3/F05/L03/B01/事实/UI/TH-IN/全池门保持开放。四份PWF/接手及三份W15说明的获准文档可正常Git到既有origin，源码/真实golden/数据库/新跨仓快照未扩入导出范围；实际Git只按终态回执记，不盲跑旧publisher。
@@ -1657,6 +1661,7 @@ Status: in_progress
 - [x] 基础范围完成受影响单元/集成和公开入口E2E、同一次集中审查、正常源交付与严格自有清理；整个W15/C06/L03/G3/F05/金融准确性仍开放。
 - [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。
 - 最新checkpoint08累计71私有候选，原生同意OS读取/原Q13 action原子登记与重放已实现并有真实三组件CLI合成E2E；143P与22P/1P各自分母留档。尚需可信公共admission精确bundle/context映射、原主执行器消费/其余操作及同节点集中审查/源发布；原步骤4和下游门保持。实际人类确认/金融gold/收费0，c15a及real-owner-01保留。
+- checkpoint09接续：累计75私有候选，公共admission完整bundle/context3/2映射已通过真实公开CLI合成1P及受影响52P；原主执行器消费仍是下一动作。旧08缺公共入口描述仅属历史；整个步骤4/集中审查/源发布及全局门不提前关闭。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
 Status: concentrated_acceptance_completed_changes_requested; two_independent_remediation_cards_ready
@@ -1667,3 +1672,4 @@ Status: concentrated_acceptance_completed_changes_requested; two_independent_rem
 - [x] 用户明确授权Lab CodeGraph后实际init exit0，30文件/611节点/581边；保留两新增索引设施，不覆盖旧Lab或混进产品提交。新FACT仓未创建、无收费请求或harness派发。
 - [x] 实际收到两包；固定241受控文件/213锁原件/73工件SHA，产品commit祖先、Git前后不变。隔离原回归182P/77P、两次独审与集中反例（EVID10/FACT6）完成，均changes_requested；638文件/123目录strict自有清理终态完成。
 - [ ] 两张独立R1卡已具体编制，未自动派发；按新交付固定输入后同次包级复验，不能用原软件GREEN关闭资格/分母/语义门。原Phase113已接续checkpoint08，公共admission/主执行器仍待，F01/F05/F06/G3/L03/TH-IN/全池门保持。
+- 最新只读观察：EVID仍原HEAD；FACT有R1未提交改动/RED日志，尚无新完整handoff。原验收保持，避免活writer，修订版齐备后再包级续收；不重跑原验收或自动接管Lab。

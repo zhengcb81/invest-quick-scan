@@ -2863,3 +2863,24 @@
 - 下一动作是可信公共admission精确bundle/context3/2范围与原主runner消费，存储原语仍permission_authenticated=false；没有公共accepted、真正人类确认或整C06源发布/独审。原Q09实际发送时扣账、原引用/result_ready/unknown语义保持。各全局门开放，目标active；七已获准第一方文档正常提交推送只据新实际回执记，不导出源快照/DB/golden。
 - 沙箱外只读checkpoint08-source-git-after真实核QA6aafc32/master原七未跟踪、SWa5a97d6/master clean，与本轮开始逐字段相同；没有生产源写。12批终态/输入source SHA前后不变，不清理仍供后续使用的c15a，也不触他人目录。
 - checkpoint08七获准第一方Markdown已实际正常钩子提交推送50840b24f7a044b68c940ad7563094bd5bb540fa，origin/master相同，7条staged/committed SHA逐件一致；公开导出仅文档，私有候选、真实golden/DB、源仓及README原未提交改动不包含。终态见documentation-publication-04.json。下一目标回合按有效progress从可信公共admission/原主runner消费接续，不重跑旧publisher或重复外包验收。
+
+### 2026-10-10 checkpoint08后公共admission实施启动
+- 恢复真实731e064/原README未提交变化，原71私有候选与终态保留。上一回合新增原生桥、schema16 action/迁移与公开合成E2E，属于progress；目标仍active。
+- 私有报备范围：QA新增quick_scan_refresh_admission.py/cli.py与其unit/独占integration测试；原refresh_consent、refresh_batch、admission_journal支持零新工作/原观察引用；原owner_refresh抽取其runner路由指纹函数，原runner/已存在main_with_llm.py接两个明确admission参数，原同包tests回归补充。所有写入仅runs/c15a，生产QA/SW、Lab R1、真实DB/名单不动，不另建执行器或账本；整C06仍一次集中审查。
+- 全问卷先验后选执行集合；每个完整SubjectRef由固定输入根下hash目录加载原manifest/identity/authority/owner-config/questions原件，先严格JSON/原字节固定，再用原加载器校验，不提供consumer spec或自报confirmed接口。参考与result_ready接原件/原队列，unknown仍不重问。准备输入/本次执行分组ID与原C06 run/scan元数据分开，保留原时间与hash。
+
+### 2026-10-10 两外包通知复核与活 writer 边界
+- 只读核实际源状态：EVID仍1597a08e38a485264b94b4528761a3d5dcf02cec，仅原CodeGraph未跟踪；FACT仍f7fb07895e36ebff67f2ba8932a592fd569cb9cd，但已有R1分支的源码/schema改动与remediation-01目录。其新PWF仍列Phase1 RED、后续pending，只有首轮RED日志，没有新handoff/summary/最终回归/真实result commit。不能把进行中的改动当新交付签收。
+- 原集中验收changes_requested保留；不重复原182P/77P或反例、不在源仓运行测试、不改活writer内容。EVID-REF-02-R1/FACT-CONTENT-01-R1已具名可交给harness；本控制器没有派发。下一主线继续C06私有admission，其他全局门不动。
+- 上次输出截断已通过producer-adm-r1.process.json恢复真实44028/exit2/2.853s/terminal，源码不变、原guard raw一致、API0；新service尚缺导致收集RED，未因丢输出重跑。前面producer-ref-r1 15P/4F与producer-ref-g1 25P分母分列保留。一次已知FACT AGENTS.md读取不存在，无源写；本次组合恢复输出仍过大，后续改分次小摘要。
+
+- 公共admission原型已在私有QA接原producer loader/原native bridge/原Q13，consumer只有confirmation_id，无上传spec或confirmed；17项校验producer-adm-g1实际33532/exit0。新真正CLI producer-adm-e1实际45520/exit1、1F/103.64s，原队列已登记，但原JSONConfigManager stdout日志污染机器JSON，不能称E2E通过；修正仅CLI导入和执行的日志stderr边界，保留原错误原件，准备同场景复验。一次猜consent测试/quote文件不存在，已改读实际现有preview测试；不据此新造解析器。当前无该活测试handle，原源仓/库/名单/API0。
+- e2实际44012/exit1、1F/125.95s：旧fixture把整个admission的多次原生调用也限80秒，触发子进程超时；测试聚合期限改为公开service180/整组300，原各native调用80不变、raw guard不动。升级只读CIM成功且该owned路径Python后代确实0，再修改测试；没有用不可访问查询的零替代终态证明。原失败保留，尚不能称JSON与重放已经通过。
+
+### 2026-10-10 checkpoint09：公开登记入口的软件接线通过
+- 最终producer-adm-e3真实37920/exit0、1P/217.24s（controller220.639s），完整三组件公开CLI以实际OS/native records/原producer questions/identity serializer/authority3/context2验证：原确认仅1题进原Q13；公开stdout严格JSON、重启同一action/work、owner DB原字节不变、政策版本变化拒绝。attempt与budget_attempt均0。输入和同意明确合成，不是实际人类确认或金融准确性。原e1/e2失败、零新调用引用测试RED等全部保留。
+- 同批四受影响unit文件producer-adm-a1真实39780/exit0、52P/6.30s（controller7.847s），无失败/错误/跳过；与最终E2E的source map SHA一致21346da2…。17纯校验和原25引用/批量测试是较早子集，不相加为94或金融通过率。guard原raw abc0128…不变，0API/收费/下载/生产DB或名单写。
+- producer-checkpoint-09.json真实固定75累计候选/9变化/8原终态批次；原08/全部旧原件保留。公开admission只收固定部署config与原confirmation ID，严格读取原5份bundle、逐完整SubjectRef核字段/题目/authority3-context2；不接受consumer specs或confirmed。只有原Q13原子提交并重读后公开permission_authenticated=true/registered_with_executor=true；内部存储receipt仍false，dispatch_started=false。
+- 沙箱外只读源复核：QA仍6aafc32/master、原七未跟踪；SW仍a5a97d6/master clean，与08基线相同。实际CIM成功/两新最终测试owned Python0；c15a及real-owner-01仍供完整节点使用，不清活环境或外部writer。
+- 唯一下一工程动作：原main_with_llm/LLMRunner验证两admission参数并消费原耐久action的精确题目/主体范围；完整manifest/search policy先校验，执行集合后筛选；复用/result_ready走原引用/续传，uncertain不重问，Q09仍只在实际发送时预留。原主执行器尚未消费、整个C06未集中review/源码发布、各全局门仍开放。此次7获准第一方文档正常Git回执待实际终态，源码/真实golden/DB不入导出范围。
+- 本次checkpoint09四文档组合patch因handoff首行实际是长整段、给定局部首行不能匹配，整批验证拒绝且未写。已确认四文件均无新marker，改分开精确段落和具名prepend，不重试同一失配hunk；这是控制器编辑错误，不是产品反例。

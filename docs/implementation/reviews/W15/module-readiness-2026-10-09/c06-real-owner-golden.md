@@ -46,3 +46,9 @@ python <IQS>/scripts/query_contract_cli.py --operation response --input <query-v
 
 **2026-10-10 当前唯一接续（checkpoint07，以下均为历史）：** 独占runs/c15a已有原生owner交互确认入口与不可变幂等工件，公共CLI会拒绝管道/自报确认；确认前后重核精确预览、当前主体/成员/路由/政策/原预算，scope变动要求新预览。另有固定owner只读同意检查入口与原Q13单事务批量登记原语（复用原表/算法、不另建队列）。最新同批实际36P/74.04s、子进程7660/exit0/source_changed为空；保留之前30P/6F的计数fixture表名错误原件。原语本身permission_authenticated=false，公共确认仍handoff_pending/registered_with_executor=false；真实owner读桥正例使用明确合成的同意工件，实际人类确认/收费提交/公开Q13接线尚未发生。67私有候选checkpoint07已固定，未集中审查/源码发布，0API/生产库/名单写，guard不变。唯一下一工程动作：固定QA OS桥读取owner原件，绑定完整authority3/context2及精确question/subject范围，再耐久幂等登记/公开重放/原主执行器消费，Q09仍在实际发送前扣账；之后其余原C06操作并同节点一次集中审查，不增helper审查。7份获明确许可的第一方文档已实际推送a0d283de665f91740190b2371b4722a2af25e557，远端一致；本次后续同7文档的实际Git结果按documentation-publication-02.json核对，代码/数据库/golden不在该导出范围。C06/W15/G3/F05/L03/B01/事实/UI/TH-IN/全池门仍开放，活根不清、内容包未派发、目标active。
 
+
+## checkpoint09：新增合成同意软件E2E的资格边界
+
+公开admission的1P是使用实际OS账户、native控制记录、真实owner serializer和原producer的合成身份/确认软件实验。它不改变原四份真实轻量身份库克隆/真实owner golden，未创建真实公司的财务观察或实际人类确认。原真实query unavailable/scores=false/facts=false保留，不借新空库或合成记录伪造金融正例。
+
+真实owner golden/生成命令及负例原件继续保留于本地real-owner-01和同批intake；无API/付费/公司文档下载。源码、真实golden和DB不在当前七文档Git导出许可范围。原主执行器消费、剩余C06操作、整节点集中审查/源交付与G3/F05/L03/B01/事实/UI/TH-IN/全池门仍开放。
