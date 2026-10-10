@@ -2884,3 +2884,4 @@
 - 沙箱外只读源复核：QA仍6aafc32/master、原七未跟踪；SW仍a5a97d6/master clean，与08基线相同。实际CIM成功/两新最终测试owned Python0；c15a及real-owner-01仍供完整节点使用，不清活环境或外部writer。
 - 唯一下一工程动作：原main_with_llm/LLMRunner验证两admission参数并消费原耐久action的精确题目/主体范围；完整manifest/search policy先校验，执行集合后筛选；复用/result_ready走原引用/续传，uncertain不重问，Q09仍只在实际发送时预留。原主执行器尚未消费、整个C06未集中review/源码发布、各全局门仍开放。此次7获准第一方文档正常Git回执待实际终态，源码/真实golden/DB不入导出范围。
 - 本次checkpoint09四文档组合patch因handoff首行实际是长整段、给定局部首行不能匹配，整批验证拒绝且未写。已确认四文件均无新marker，改分开精确段落和具名prepend，不重试同一失配hunk；这是控制器编辑错误，不是产品反例。
+- checkpoint09精确七份获准第一方Markdown已实际正常钩子提交推送75c0bf409c23cff21459b11516ae9bc9fab3e7a1，origin/master一致；每件staged/committed SHA逐件相同，实际终态见documentation-publication-06.json。没有导出私有75候选、源快照/真实golden/DB或README既有改动。结束前只读两Lab的R1 handoff.json均仍不存在，原changes_requested保持，不复验活writer。这里只追加该真实Git回执，下一仍原主执行器消费，不关闭全局门。
