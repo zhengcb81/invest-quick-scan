@@ -1,0 +1,221 @@
+.............FFFFFFFF                                                    [100%]
+================================== FAILURES ===================================
+_ test_actual_store_original_unbound_answer_is_separate_history_not_current_coverage _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-01/test_actual_store_original_unb0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018C5E55E520>
+
+    def test_actual_store_original_unbound_answer_is_separate_history_not_current_coverage(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+>       obs,ack=imported_observation(store,monkeypatch)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:194: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_query_v2.py:188: in imported_observation
+    ack=store.apply_decisions([decision])[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_observations.py:363: in apply_decisions
+    validate_ack_addresses(decision)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'package_id': 'pkg_4444444444444444444444444444444444444444444444444444444444444444', 'item_id': 'item_f3011868c3f903...910a56f54c8cd258fb7c49fff3', 'payload_sha256': 'f3011868c3f903fafe2b9a95474e7a5c7d55611855eb0554ef6ea1ed87bdf922', ...}
+
+    def validate_ack_addresses(value: dict[str, Any]) -> None:
+        """Refuse unaddressable new deliveries; never manufacture public IDs."""
+        for field, pattern in _ACK_ADDRESS_PATTERNS.items():
+            address = value.get(field)
+            if not isinstance(address, str) or not pattern.fullmatch(address):
+>               raise ObservationImportError("ack_address_invalid", field)
+E               stockwiki.quick_scan_observations.ObservationImportError: ack_address_invalid: item_id
+
+stockwiki\quick_scan_observations.py:143: ObservationImportError
+______ test_history_off_does_not_reassign_legacy_rows_to_current_subject ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-01/test_history_off_does_not_reas0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018C5E5DD370>
+
+    def test_history_off_does_not_reassign_legacy_rows_to_current_subject(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+>       imported_observation(store,monkeypatch)
+
+tests\test_quick_scan_query_v2.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_query_v2.py:188: in imported_observation
+    ack=store.apply_decisions([decision])[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_observations.py:363: in apply_decisions
+    validate_ack_addresses(decision)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'package_id': 'pkg_4444444444444444444444444444444444444444444444444444444444444444', 'item_id': 'item_f3011868c3f903...910a56f54c8cd258fb7c49fff3', 'payload_sha256': 'f3011868c3f903fafe2b9a95474e7a5c7d55611855eb0554ef6ea1ed87bdf922', ...}
+
+    def validate_ack_addresses(value: dict[str, Any]) -> None:
+        """Refuse unaddressable new deliveries; never manufacture public IDs."""
+        for field, pattern in _ACK_ADDRESS_PATTERNS.items():
+            address = value.get(field)
+            if not isinstance(address, str) or not pattern.fullmatch(address):
+>               raise ObservationImportError("ack_address_invalid", field)
+E               stockwiki.quick_scan_observations.ObservationImportError: ack_address_invalid: item_id
+
+stockwiki\quick_scan_observations.py:143: ObservationImportError
+_ test_legacy_model_filter_uses_actual_model_and_field_filter_excludes_other_answers _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-01/test_legacy_model_filter_uses_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018C5E61C6B0>
+
+    def test_legacy_model_filter_uses_actual_model_and_field_filter_excludes_other_answers(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+>       imported_observation(store,monkeypatch,model='actual-a')
+
+tests\test_quick_scan_query_v2.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_query_v2.py:188: in imported_observation
+    ack=store.apply_decisions([decision])[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_observations.py:363: in apply_decisions
+    validate_ack_addresses(decision)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'package_id': 'pkg_4444444444444444444444444444444444444444444444444444444444444444', 'item_id': 'item_f3011868c3f903...910a56f54c8cd258fb7c49fff3', 'payload_sha256': 'f3011868c3f903fafe2b9a95474e7a5c7d55611855eb0554ef6ea1ed87bdf922', ...}
+
+    def validate_ack_addresses(value: dict[str, Any]) -> None:
+        """Refuse unaddressable new deliveries; never manufacture public IDs."""
+        for field, pattern in _ACK_ADDRESS_PATTERNS.items():
+            address = value.get(field)
+            if not isinstance(address, str) or not pattern.fullmatch(address):
+>               raise ObservationImportError("ack_address_invalid", field)
+E               stockwiki.quick_scan_observations.ObservationImportError: ack_address_invalid: item_id
+
+stockwiki\quick_scan_observations.py:143: ObservationImportError
+_____ test_duplicate_delivery_keeps_original_ack_and_observation_sequence _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-01/test_duplicate_delivery_keeps_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018C5E52F8A0>
+
+    def test_duplicate_delivery_keeps_original_ack_and_observation_sequence(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+>       obs,first=imported_observation(store,monkeypatch)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:237: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_query_v2.py:188: in imported_observation
+    ack=store.apply_decisions([decision])[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_observations.py:363: in apply_decisions
+    validate_ack_addresses(decision)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'package_id': 'pkg_4444444444444444444444444444444444444444444444444444444444444444', 'item_id': 'item_f3011868c3f903...910a56f54c8cd258fb7c49fff3', 'payload_sha256': 'f3011868c3f903fafe2b9a95474e7a5c7d55611855eb0554ef6ea1ed87bdf922', ...}
+
+    def validate_ack_addresses(value: dict[str, Any]) -> None:
+        """Refuse unaddressable new deliveries; never manufacture public IDs."""
+        for field, pattern in _ACK_ADDRESS_PATTERNS.items():
+            address = value.get(field)
+            if not isinstance(address, str) or not pattern.fullmatch(address):
+>               raise ObservationImportError("ack_address_invalid", field)
+E               stockwiki.quick_scan_observations.ObservationImportError: ack_address_invalid: item_id
+
+stockwiki\quick_scan_observations.py:143: ObservationImportError
+_____ test_existing_subject_columns_are_not_a_before_send_binding_receipt _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-01/test_existing_subject_columns_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018C5E57E150>
+
+    def test_existing_subject_columns_are_not_a_before_send_binding_receipt(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+>       imported_observation(store,monkeypatch)
+
+tests\test_quick_scan_query_v2.py:249: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_query_v2.py:188: in imported_observation
+    ack=store.apply_decisions([decision])[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_observations.py:363: in apply_decisions
+    validate_ack_addresses(decision)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'package_id': 'pkg_4444444444444444444444444444444444444444444444444444444444444444', 'item_id': 'item_f3011868c3f903...910a56f54c8cd258fb7c49fff3', 'payload_sha256': 'f3011868c3f903fafe2b9a95474e7a5c7d55611855eb0554ef6ea1ed87bdf922', ...}
+
+    def validate_ack_addresses(value: dict[str, Any]) -> None:
+        """Refuse unaddressable new deliveries; never manufacture public IDs."""
+        for field, pattern in _ACK_ADDRESS_PATTERNS.items():
+            address = value.get(field)
+            if not isinstance(address, str) or not pattern.fullmatch(address):
+>               raise ObservationImportError("ack_address_invalid", field)
+E               stockwiki.quick_scan_observations.ObservationImportError: ack_address_invalid: item_id
+
+stockwiki\quick_scan_observations.py:143: ObservationImportError
+_ test_captured_snapshot_replay_uses_original_data_even_when_request_time_and_store_change _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-01/test_captured_snapshot_replay_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018C5E57F650>
+
+    def test_captured_snapshot_replay_uses_original_data_even_when_request_time_and_store_change(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+>       imported_observation(store,monkeypatch)
+
+tests\test_quick_scan_query_v2.py:259: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_quick_scan_query_v2.py:188: in imported_observation
+    ack=store.apply_decisions([decision])[0]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+stockwiki\quick_scan_observations.py:363: in apply_decisions
+    validate_ack_addresses(decision)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'package_id': 'pkg_4444444444444444444444444444444444444444444444444444444444444444', 'item_id': 'item_f3011868c3f903...910a56f54c8cd258fb7c49fff3', 'payload_sha256': 'f3011868c3f903fafe2b9a95474e7a5c7d55611855eb0554ef6ea1ed87bdf922', ...}
+
+    def validate_ack_addresses(value: dict[str, Any]) -> None:
+        """Refuse unaddressable new deliveries; never manufacture public IDs."""
+        for field, pattern in _ACK_ADDRESS_PATTERNS.items():
+            address = value.get(field)
+            if not isinstance(address, str) or not pattern.fullmatch(address):
+>               raise ObservationImportError("ack_address_invalid", field)
+E               stockwiki.quick_scan_observations.ObservationImportError: ack_address_invalid: item_id
+
+stockwiki\quick_scan_observations.py:143: ObservationImportError
+__ test_snapshot_for_a_different_query_is_rejected_before_any_database_read ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-01/test_snapshot_for_a_different_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000018C5E66CE60>
+
+    def test_snapshot_for_a_different_query_is_rejected_before_any_database_read(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        original=reader.get_profiles(request)
+        request['payload']['snapshot_id']=original['result']['watermark']['snapshot_id']
+        request['payload']['field_ids']=['IQS_02']
+        monkeypatch.setattr(sqlite3,'connect',lambda *a,**kw:(_ for _ in ()).throw(AssertionError('no live fallback')))
+>       with pytest.raises(QueryReadError,match='snapshot_query_mismatch'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'snapshot_query_mismatch'
+E         Actual message: 'snapshot_unavailable'
+
+tests\test_quick_scan_query_v2.py:283: AssertionError
+_ test_owner_subject_columns_and_original_json_must_have_the_same_subject_id __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-01/test_owner_subject_columns_and0')
+
+    def test_owner_subject_columns_and_original_json_must_have_the_same_subject_id(tmp_path):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        foreign='ASJ_44444444-4444-4444-8444-444444444444'
+        with sqlite3.connect(subjects.database_path) as con:
+            con.execute('UPDATE analysis_subject SET analysis_subject_id=?',(foreign,))
+        request['payload']['subject_refs'][0]['analysis_subject_id']=foreign
+>       with pytest.raises(QueryReadError,match='owner_subject_read_error'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueryReadError
+
+tests\test_quick_scan_query_v2.py:293: Failed
+=========================== short test summary info ===========================
+FAILED tests\test_quick_scan_query_v2.py::test_actual_store_original_unbound_answer_is_separate_history_not_current_coverage
+FAILED tests\test_quick_scan_query_v2.py::test_history_off_does_not_reassign_legacy_rows_to_current_subject
+FAILED tests\test_quick_scan_query_v2.py::test_legacy_model_filter_uses_actual_model_and_field_filter_excludes_other_answers
+FAILED tests\test_quick_scan_query_v2.py::test_duplicate_delivery_keeps_original_ack_and_observation_sequence
+FAILED tests\test_quick_scan_query_v2.py::test_existing_subject_columns_are_not_a_before_send_binding_receipt
+FAILED tests\test_quick_scan_query_v2.py::test_captured_snapshot_replay_uses_original_data_even_when_request_time_and_store_change
+FAILED tests\test_quick_scan_query_v2.py::test_snapshot_for_a_different_query_is_rejected_before_any_database_read
+FAILED tests\test_quick_scan_query_v2.py::test_owner_subject_columns_and_original_json_must_have_the_same_subject_id
+8 failed, 13 passed in 2.18s

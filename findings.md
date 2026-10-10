@@ -1868,3 +1868,8 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 ### C06真实只读捕获边界
 - 仅mode=ro不意味着可以把缺库/未知schema/读失败当零行；当前私有reader三个namespace明确区分available/missing/schema_unavailable/read_error并保留水位，复用actual AnalysisSubject/perimeter pure validator，不调用owner迁移连接器。
 - SQLite immutable=1可能忽略活WAL，不适合作生产只读捷径；当前私有scope遇WAL/shm/journal拒读待owner checkpoint，未宣称支持所有并发模式。13合成真实组件测试不证明跨owner原子一致性、非空C06投影或真实投资准确性。
+
+### C06历史原件与快照读取接续
+- 已验证实际owner保存的原结构化payload/最初accepted ACK与序列可用于legacy_unbound历史投影，不能据数据库的subject列追认执行前的绑定。重复delivery仍保持观察/原ACK序列1，全局ACK可增至5,002；只有读原列、原JSON与原回执一致性后才提供可信引用。
+- 新subject反例显示仅校验JSON/hash不够：索引analysis_subject_id可被改为另一ID而原JSON/hash仍自洽。当前私有reader把主体/receipt索引字段与原JSON核对；不改真实owner数据或历史记录。
+- 指定snapshot复读要保留旧read_at，但response_at须不早于本次request；fresh请求仍不能用旧watermark。当前有界进程捕获支持该行为，重启明确不可用，不能把进程cache称公共耐久freeze。真实source serializer/sidecar/受控刷新仍原完整C06同批实施。

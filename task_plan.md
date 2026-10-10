@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**唯一当前动作（2026-10-10，覆盖下方所有历史快照）：** 原Phase113/C06步骤4继续实施事前subject sidecar生产/事务导入与当前主体投影，再原route/refresh的资格/TTL、公共query CLI/耐久snapshot和实际owner serializer golden。最新私有reader已33P/20.22s，原答案契约65P/0.89s，两组为真实组件合成数据/独立批次、不合成金融准确率；非空旧记录可保留原字节/模型/时间和原ACK作为独立legacy_unbound历史，不计当前主体覆盖。冻结snapshot现在仅同reader进程内32份/16MiB/一小时，未知/过期/不同query或重启不读live替换；尚非公开耐久快照。原件见owner-reader-checkpoint-02，当前测试handle均终态；178原SW/64原IQS输入及生产源不变，0API，c15a仍在使用不可清。完整C06同节点集中审查尚待，W15/G3/F05/L03/TH-IN/金融准确性/全池门不变。两独立支撑施工包已交付文档，未派发；总目标实际active、无预算设置，继续完成原计划，不以本段私有软件进展签收全链。
+
 **2026-10-10 主线最新：** 两个独立施工包和PWF实际回执已正常提交推送24743f3/bc41b25，尚未替harness派发。C06私有原答案契约62P保留；新真实SQLite只读owner reader最终13P/1.62s，修复缺身份/subject库错误解引用，逐源拒绝缺库/未知schema/读失败/活WAL，无迁移写入。原RED和执行SHA绑定的两候选已存owner-reader-checkpoint-01，不是产品发布/真实公司golden，也未增加独审小门。下一工程动作继续原Phase113的非空原Observation/独立未绑定历史投影与有效冻结snapshot，再事前subject sidecar、当前资格/TTL、受控刷新/实际owner serializer golden，同一完整节点集中审查。178原SW/64原IQS输入及生产源不变，0API；c15a仍在使用不能清。下段collection RED等为历史，原G3/F05/L03/TH-IN/200家live门保持。
 
 **2026-10-10 新并行包已备好，主线接续不变：** [两个独立大包](docs/implementation/parallel-lanes/packages/2026-10-10/README.md)及完整交接规范/模板/213份输入锁已编制，文档级验证通过。EVID-REF-02只写iqs-evidence-lab，补三市场真实候选参考与离线评测；FACT-CONTENT-01只写新iqs-fact-content-lab，补61题内容/术语/关系语义验收资料。两者不互相依赖、不写IQS/QA/SW生产源，未自动派发；人类分派后核唯一writer与当前输入即可做本卡限定支撑范围，不能代关原G3/F05或重做TH/IN预研。用户授权的Lab CodeGraph已实际初始化，两个索引设施保留、不混产品提交。总控下一工程动作仍是C06/W15实际只读owner producer与执行前主体sidecar接线；owner-reader-red-01实际pytest2，缺新模块造成1 collection error/2.03s，不称已执行10个反例。私有62P、公有接口未发布及真实gold/准确性/事实/消费者原门保持；runs/c15a继续保留。
@@ -1635,7 +1637,7 @@ Status: in_progress
 - [x] 在全新独占环境TDD实现评分基础链：模块新增/退役、语义时效、路由锚点、历史只读、事务回滚、真实公开CLI与Q13动作接线。
 - [x] 基础范围完成受影响单元/集成和公开入口E2E、同一次集中审查、正常源交付与严格自有清理；整个W15/C06/L03/G3/F05/金融准确性仍开放。
 - [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。
-- 当前私有原答案契约62P与真实SQLite合成空覆盖/读取故障reader13P均已留原件；非空原观察、旧未绑定历史、有效snapshot、事前subject sidecar/TTL资格/公开CLI仍同一节点接续。两原执行候选保存到owner-reader-checkpoint-01，178原SW/64原IQS输入与生产源不变，0API。未审未发布，不作为真实公司golden；c15a仍在使用。
+- 当前私有原答案契约65P与真实SQLite合成历史/读取故障reader33P均已留执行原件；旧未绑定非空历史可读但不计当前覆盖，有效snapshot仅支持同reader进程内有界重读，尚待耐久公共freeze。事前subject sidecar/当前投影、TTL资格/公开CLI与实际golden仍同一节点接续。六候选及guard原字节保存到owner-reader-checkpoint-02，178原SW/64原IQS输入与生产源不变，0API。未审未发布，不作为真实公司golden；c15a仍在使用。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
 Status: complete_for_package_design_only; workers_not_dispatched

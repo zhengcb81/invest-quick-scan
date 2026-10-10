@@ -1,0 +1,82 @@
+{
+  "state": "private_not_reviewed_not_published",
+  "scope": "actual_component_synthetic_unbound_history_and_process_retained_snapshot",
+  "source_candidates": [
+    {
+      "source_namespace": "StockWiki",
+      "source_path": "stockwiki/quick_scan_query_v2.py",
+      "snapshot_path": "private-owner-reader-02/StockWiki/stockwiki/quick_scan_query_v2.py",
+      "bytes": 21239,
+      "sha256": "6b2c9660e718685de28b2ac1b864600ca318a2d639b66cfe64c01ef11817b348"
+    },
+    {
+      "source_namespace": "StockWiki",
+      "source_path": "tests/test_quick_scan_query_v2.py",
+      "snapshot_path": "private-owner-reader-02/StockWiki/tests/test_quick_scan_query_v2.py",
+      "bytes": 22069,
+      "sha256": "65389543e568b9d4812b43061e89cf3301d33eb170757697a41cc0ccb94f7761"
+    },
+    {
+      "source_namespace": "IQS",
+      "source_path": "scripts/query_contract.py",
+      "snapshot_path": "private-owner-reader-02/IQS/scripts/query_contract.py",
+      "bytes": 17825,
+      "sha256": "07c8f176ca1e9cf67e76dd9ae2b2dbab003fd2f2c32e08a5a5b6ddb3b837fd47"
+    },
+    {
+      "source_namespace": "IQS",
+      "source_path": "tests/test_query_contract_v2.py",
+      "snapshot_path": "private-owner-reader-02/IQS/tests/test_query_contract_v2.py",
+      "bytes": 19987,
+      "sha256": "09780501b2a3325a2b1dd8fb69df3ad1c653b1c6b29014896d64923013e91d49"
+    },
+    {
+      "source_namespace": "IQS",
+      "source_path": "schemas/quick_scan/query-v2.schema.json",
+      "snapshot_path": "private-owner-reader-02/IQS/schemas/quick_scan/query-v2.schema.json",
+      "bytes": 18325,
+      "sha256": "53f4b76b3915d0316d1ca9b3bb31d681fb5b35f8d178b2acb1336ef8a3d7f029"
+    },
+    {
+      "source_namespace": "IQS",
+      "source_path": "questions/metric-registry.json",
+      "snapshot_path": "private-owner-reader-02/IQS/questions/metric-registry.json",
+      "bytes": 3521,
+      "sha256": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75"
+    }
+  ],
+  "tests": [
+    {
+      "label": "owner-history-fault-01",
+      "pytest_passed": 33,
+      "pytest_wall_s": 20.22,
+      "child_pid": 22152,
+      "child_returncode": 0,
+      "process_sha256": "420b5c1bc5e76bdadb29fbc27ab4116f1eac5e37439a668d626f27b5bd44996a",
+      "sources_sha256": "53f7c8d8289b8a2884117fa88d89e8b4b6ede5d8f34390c169309dd682e3a15b"
+    },
+    {
+      "label": "contract-snapshot-01",
+      "pytest_passed": 65,
+      "pytest_wall_s": 0.89,
+      "child_pid": 5688,
+      "child_returncode": 0,
+      "process_sha256": "41dc27a3783186c53db2bc1ae78c5ce87ad938f855b147eceaed36370dde1c12",
+      "sources_sha256": "b69ea853171ce88aeb6aae5972c63141debd2a457bcee795752c1c5ee6b43f29"
+    }
+  ],
+  "counts_not_a_combined_accuracy_rate": true,
+  "guard_raw_sha256": "abc0128dc92a2bf99e57dbbbfe2355aea376b584f67e9e51c0bd0ebbc871e682",
+  "original_StockWiki_files_unchanged": 178,
+  "original_IQS_files_unchanged": 64,
+  "nonempty_legacy_original_history": true,
+  "current_bound_observation_projection": false,
+  "before_send_subject_sidecar_implemented": false,
+  "snapshot_scope": "bounded_process_only",
+  "durable_public_snapshot_supported": false,
+  "public_c06_envelope_validated": false,
+  "source_published": false,
+  "real_company_golden": false,
+  "API_requests": 0,
+  "temporary_root_retained_for_same_node": "runs/c15a"
+}

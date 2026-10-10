@@ -1,0 +1,260 @@
+.............FFFFFFFF                                                    [100%]
+================================== FAILURES ===================================
+_ test_actual_store_original_unbound_answer_is_separate_history_not_current_coverage _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-02/test_actual_store_original_unb0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A4063FE520>
+
+    def test_actual_store_original_unbound_answer_is_separate_history_not_current_coverage(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        obs,ack=imported_observation(store,monkeypatch)
+        with sqlite3.connect(store.database_path) as con:
+            raw=con.execute('SELECT payload_json FROM quick_scan_observation').fetchone()[0].encode()
+        before=snapshot(paths.root)
+>       response=reader.get_profiles(request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:198: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A4064791D0>
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_OWNER', 'consumer_id': 'invest-quick-scan', ...}
+
+    def get_profiles(self, request):
+        self.contract.validate_request(request)
+        self._owner_context = {"store_id": self.observations.store_id, "observation_refs": {}}
+        if request["payload"]["snapshot_id"] is not None:
+            raise QueryReadError("snapshot_unavailable")
+        identity_mark, identity_data = self._capture("identity", self.identity.database_path, {5, 6},
+            ("quick_scan_entity", "quick_scan_security", "quick_scan_segment"))
+        subject_mark, subject_data = self._capture("analysis_subjects", self.subjects.database_path, {1},
+            ("analysis_subject", "reporting_perimeter_receipt"))
+        observation_mark, observation_data = self._capture("observations", self.observations.database_path, {2},
+            ("quick_scan_observation", "quick_scan_import_item"))
+        marks = [identity_mark, subject_mark, observation_mark]
+        if observation_data and observation_data["quick_scan_observation"]:
+>           raise QueryReadError("observation_projection_pending")
+E           stockwiki.quick_scan_query_v2.QueryReadError: observation_projection_pending
+
+stockwiki\quick_scan_query_v2.py:197: QueryReadError
+______ test_history_off_does_not_reassign_legacy_rows_to_current_subject ______
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-02/test_history_off_does_not_reas0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A406469250>
+
+    def test_history_off_does_not_reassign_legacy_rows_to_current_subject(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        imported_observation(store,monkeypatch)
+        request['payload']['include_history']=False
+>       response=reader.get_profiles(request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:217: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A406489E60>
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_OWNER', 'consumer_id': 'invest-quick-scan', ...}
+
+    def get_profiles(self, request):
+        self.contract.validate_request(request)
+        self._owner_context = {"store_id": self.observations.store_id, "observation_refs": {}}
+        if request["payload"]["snapshot_id"] is not None:
+            raise QueryReadError("snapshot_unavailable")
+        identity_mark, identity_data = self._capture("identity", self.identity.database_path, {5, 6},
+            ("quick_scan_entity", "quick_scan_security", "quick_scan_segment"))
+        subject_mark, subject_data = self._capture("analysis_subjects", self.subjects.database_path, {1},
+            ("analysis_subject", "reporting_perimeter_receipt"))
+        observation_mark, observation_data = self._capture("observations", self.observations.database_path, {2},
+            ("quick_scan_observation", "quick_scan_import_item"))
+        marks = [identity_mark, subject_mark, observation_mark]
+        if observation_data and observation_data["quick_scan_observation"]:
+>           raise QueryReadError("observation_projection_pending")
+E           stockwiki.quick_scan_query_v2.QueryReadError: observation_projection_pending
+
+stockwiki\quick_scan_query_v2.py:197: QueryReadError
+_ test_legacy_model_filter_uses_actual_model_and_field_filter_excludes_other_answers _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-02/test_legacy_model_filter_uses_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A4064BC380>
+
+    def test_legacy_model_filter_uses_actual_model_and_field_filter_excludes_other_answers(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        imported_observation(store,monkeypatch,model='actual-a')
+        selected,_=imported_observation(store,monkeypatch,model='actual-b',package_digit='5')
+        imported_observation(store,monkeypatch,model='actual-b',field_id='IQS_02',package_digit='6')
+        request['payload']['model_filter']={'provider':'synthetic-provider','model_resolved':'actual-b'}
+>       response=reader.get_profiles(request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:229: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A4063F7590>
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_OWNER', 'consumer_id': 'invest-quick-scan', ...}
+
+    def get_profiles(self, request):
+        self.contract.validate_request(request)
+        self._owner_context = {"store_id": self.observations.store_id, "observation_refs": {}}
+        if request["payload"]["snapshot_id"] is not None:
+            raise QueryReadError("snapshot_unavailable")
+        identity_mark, identity_data = self._capture("identity", self.identity.database_path, {5, 6},
+            ("quick_scan_entity", "quick_scan_security", "quick_scan_segment"))
+        subject_mark, subject_data = self._capture("analysis_subjects", self.subjects.database_path, {1},
+            ("analysis_subject", "reporting_perimeter_receipt"))
+        observation_mark, observation_data = self._capture("observations", self.observations.database_path, {2},
+            ("quick_scan_observation", "quick_scan_import_item"))
+        marks = [identity_mark, subject_mark, observation_mark]
+        if observation_data and observation_data["quick_scan_observation"]:
+>           raise QueryReadError("observation_projection_pending")
+E           stockwiki.quick_scan_query_v2.QueryReadError: observation_projection_pending
+
+stockwiki\quick_scan_query_v2.py:197: QueryReadError
+_____ test_duplicate_delivery_keeps_original_ack_and_observation_sequence _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-02/test_duplicate_delivery_keeps_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A4064BC270>
+
+    def test_duplicate_delivery_keeps_original_ack_and_observation_sequence(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        obs,first=imported_observation(store,monkeypatch)
+        same,again=imported_observation(store,monkeypatch,package_digit='5')
+        assert again['status']=='already_present' and same==obs
+>       response=reader.get_profiles(request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:240: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A4063F65D0>
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_OWNER', 'consumer_id': 'invest-quick-scan', ...}
+
+    def get_profiles(self, request):
+        self.contract.validate_request(request)
+        self._owner_context = {"store_id": self.observations.store_id, "observation_refs": {}}
+        if request["payload"]["snapshot_id"] is not None:
+            raise QueryReadError("snapshot_unavailable")
+        identity_mark, identity_data = self._capture("identity", self.identity.database_path, {5, 6},
+            ("quick_scan_entity", "quick_scan_security", "quick_scan_segment"))
+        subject_mark, subject_data = self._capture("analysis_subjects", self.subjects.database_path, {1},
+            ("analysis_subject", "reporting_perimeter_receipt"))
+        observation_mark, observation_data = self._capture("observations", self.observations.database_path, {2},
+            ("quick_scan_observation", "quick_scan_import_item"))
+        marks = [identity_mark, subject_mark, observation_mark]
+        if observation_data and observation_data["quick_scan_observation"]:
+>           raise QueryReadError("observation_projection_pending")
+E           stockwiki.quick_scan_query_v2.QueryReadError: observation_projection_pending
+
+stockwiki\quick_scan_query_v2.py:197: QueryReadError
+_____ test_existing_subject_columns_are_not_a_before_send_binding_receipt _____
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-02/test_existing_subject_columns_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A4063EAF50>
+
+    def test_existing_subject_columns_are_not_a_before_send_binding_receipt(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        imported_observation(store,monkeypatch)
+        with sqlite3.connect(store.database_path) as con:
+            con.execute('UPDATE quick_scan_observation SET analysis_subject_id=?,analysis_subject_revision=1,primary_issuer_id=?',(ASJ,ENTITY))
+>       response=reader.get_profiles(request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:252: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A4063F2D00>
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_OWNER', 'consumer_id': 'invest-quick-scan', ...}
+
+    def get_profiles(self, request):
+        self.contract.validate_request(request)
+        self._owner_context = {"store_id": self.observations.store_id, "observation_refs": {}}
+        if request["payload"]["snapshot_id"] is not None:
+            raise QueryReadError("snapshot_unavailable")
+        identity_mark, identity_data = self._capture("identity", self.identity.database_path, {5, 6},
+            ("quick_scan_entity", "quick_scan_security", "quick_scan_segment"))
+        subject_mark, subject_data = self._capture("analysis_subjects", self.subjects.database_path, {1},
+            ("analysis_subject", "reporting_perimeter_receipt"))
+        observation_mark, observation_data = self._capture("observations", self.observations.database_path, {2},
+            ("quick_scan_observation", "quick_scan_import_item"))
+        marks = [identity_mark, subject_mark, observation_mark]
+        if observation_data and observation_data["quick_scan_observation"]:
+>           raise QueryReadError("observation_projection_pending")
+E           stockwiki.quick_scan_query_v2.QueryReadError: observation_projection_pending
+
+stockwiki\quick_scan_query_v2.py:197: QueryReadError
+_ test_captured_snapshot_replay_uses_original_data_even_when_request_time_and_store_change _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-02/test_captured_snapshot_replay_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A4063EB650>
+
+    def test_captured_snapshot_replay_uses_original_data_even_when_request_time_and_store_change(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        imported_observation(store,monkeypatch)
+>       original=reader.get_profiles(request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:260: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A4063F3EE0>
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_OWNER', 'consumer_id': 'invest-quick-scan', ...}
+
+    def get_profiles(self, request):
+        self.contract.validate_request(request)
+        self._owner_context = {"store_id": self.observations.store_id, "observation_refs": {}}
+        if request["payload"]["snapshot_id"] is not None:
+            raise QueryReadError("snapshot_unavailable")
+        identity_mark, identity_data = self._capture("identity", self.identity.database_path, {5, 6},
+            ("quick_scan_entity", "quick_scan_security", "quick_scan_segment"))
+        subject_mark, subject_data = self._capture("analysis_subjects", self.subjects.database_path, {1},
+            ("analysis_subject", "reporting_perimeter_receipt"))
+        observation_mark, observation_data = self._capture("observations", self.observations.database_path, {2},
+            ("quick_scan_observation", "quick_scan_import_item"))
+        marks = [identity_mark, subject_mark, observation_mark]
+        if observation_data and observation_data["quick_scan_observation"]:
+>           raise QueryReadError("observation_projection_pending")
+E           stockwiki.quick_scan_query_v2.QueryReadError: observation_projection_pending
+
+stockwiki\quick_scan_query_v2.py:197: QueryReadError
+__ test_snapshot_for_a_different_query_is_rejected_before_any_database_read ___
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-02/test_snapshot_for_a_different_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A406504410>
+
+    def test_snapshot_for_a_different_query_is_rejected_before_any_database_read(tmp_path,monkeypatch):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        original=reader.get_profiles(request)
+        request['payload']['snapshot_id']=original['result']['watermark']['snapshot_id']
+        request['payload']['field_ids']=['IQS_02']
+        monkeypatch.setattr(sqlite3,'connect',lambda *a,**kw:(_ for _ in ()).throw(AssertionError('no live fallback')))
+>       with pytest.raises(QueryReadError,match='snapshot_query_mismatch'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'snapshot_query_mismatch'
+E         Actual message: 'snapshot_unavailable'
+
+tests\test_quick_scan_query_v2.py:283: AssertionError
+_ test_owner_subject_columns_and_original_json_must_have_the_same_subject_id __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-history-red-02/test_owner_subject_columns_and0')
+
+    def test_owner_subject_columns_and_original_json_must_have_the_same_subject_id(tmp_path):
+        paths,identity,subjects,store,request,reader=workspace(tmp_path)
+        foreign='ASJ_44444444-4444-4444-8444-444444444444'
+        with sqlite3.connect(subjects.database_path) as con:
+            con.execute('UPDATE analysis_subject SET analysis_subject_id=?',(foreign,))
+        request['payload']['subject_refs'][0]['analysis_subject_id']=foreign
+>       with pytest.raises(QueryReadError,match='owner_subject_read_error'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE QueryReadError
+
+tests\test_quick_scan_query_v2.py:293: Failed
+=========================== short test summary info ===========================
+FAILED tests\test_quick_scan_query_v2.py::test_actual_store_original_unbound_answer_is_separate_history_not_current_coverage
+FAILED tests\test_quick_scan_query_v2.py::test_history_off_does_not_reassign_legacy_rows_to_current_subject
+FAILED tests\test_quick_scan_query_v2.py::test_legacy_model_filter_uses_actual_model_and_field_filter_excludes_other_answers
+FAILED tests\test_quick_scan_query_v2.py::test_duplicate_delivery_keeps_original_ack_and_observation_sequence
+FAILED tests\test_quick_scan_query_v2.py::test_existing_subject_columns_are_not_a_before_send_binding_receipt
+FAILED tests\test_quick_scan_query_v2.py::test_captured_snapshot_replay_uses_original_data_even_when_request_time_and_store_change
+FAILED tests\test_quick_scan_query_v2.py::test_snapshot_for_a_different_query_is_rejected_before_any_database_read
+FAILED tests\test_quick_scan_query_v2.py::test_owner_subject_columns_and_original_json_must_have_the_same_subject_id
+8 failed, 13 passed in 2.45s

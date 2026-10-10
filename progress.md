@@ -2735,3 +2735,13 @@
 - 临时root c15a仍在使用不清；0模型/收费搜索/生产库迁移/名单写。接下去同节点完成非空原观察与冻结snapshot、真实事前绑定/公开CLI，再一次集中审查。私有进度Git留档以实际回执为准。
 - 接手更新脚本已先成功同步handoff，随后因把组合读取输出中findings的历史21P行误认为task_plan行而断言拒绝，未重写task_plan或产品源；原失败保留，改在确切Phase113条目补当前62P/13P。无需重跑已绿测试；后续文件读取以明确文件对象分开记录。
 - 私有owner checkpoint已实际正常提交推送d0abd5d3d5207d09d0887311fd8448e5ad6cb9da：30精确路径，26原执行/准备/候选工件staged字节一致，origin/master同HEAD；仅原opencode未跟踪保留。13P范围不发布生产代码，c15a保留用于原节点接续。本条仅实际Git补记。
+
+### 2026-10-10 C06非空历史与冻结捕获接续
+- 真实起点IQS13d263ed85d1d7b0ba1caf0ce070d23a6d23605d，原goal查询此前null，按用户明确全计划目标实际create_goal建立active无预算目标；不是暂停/完结。新CodeGraph只读定位仍指旧源码片段，未据此猜当前实现；已知实际模块继续只读读取，生产QA/SW不写。
+- owner-history-red-01原PID7184终态1，13P/8F/2.18s/controller2.777s；六项是新增fixture item_拼写不符owner的itm_规范，不算产品缺陷。修正fixture后red-02原3660终态1，13P/8F/2.45s/controller3.103s，六项达到非空投影拒绝，另两项达到snapshot不同query拒绝码和主体索引/JSON错ID。旧日志全部保留，不重跑原标签。
+- 实现实际owner旧观察原字节/ID/hash/模型/时间、原accepted ACK及独立owner refs。legacy_unbound与当前profiles分离；旧subject列不是事前绑定证据，不计当前覆盖。query按请求实体/字段/cutoff选原记录及原ACK，全局序号在同库read事务中取，不被模型筛选或重复delivery重置。严格查subject/receipt索引与JSON一致、回执/列/原文hash和时间，缺库/错schema/读错/WAL仍显式故障。
+- 初GREEN原23528终态0，21P/2.37s/controller3.068s；新增损坏回执/原文、snapshot过期/重启/容量、信息cutoff与5,001实际owner事务重复delivery后，owner-history-fault-01原22152终态0，33P/20.22s/controller21.104s。原ACK1与观察1不变，全局ACK5,002；读取前后自有DB文件SHA一致。33包括原21/13，不相加。
+- 纯契约补显式旧snapshot与新request/response时间、fresh旧watermark拒绝、内存/文件统一8MiB上限。contract-snapshot-01原5688终态0，65P/0.89s/controller1.700s；65包括原62，不与33拼成金融准确率。两run源SHA前后稳定、原178SW/64IQS字节与guard abc0128d不变，实际收费API0，均终态。
+- snapshot本段限定同reader进程内32份/16MiB/一小时，原结果和owner refs深拷贝；明确query不符/未知/过期/重启拒绝，不读live替代。公共耐久freeze、事前sidecar/当前绑定投影、资格TTL/受控刷新/公开CLI与真实owner golden还未实施，本段私有未审未发布，原全局门不变；继续原完整节点后一次集中审查，不加小门。
+- owner-reader-checkpoint-02实际保存六原执行候选与guard，绑定两最终.sources/process SHA；旧private-owner-reader-01及62P/13P档案不改。第一次读checkpoint误用reviews路径，实际文件在intake，未改/补造不存在内容。根PWF/唯一handoff已更新；c15a继续保留，Git本批留档待实际工具回执，不预报成功。
+- 当前-uall只读状态另见新未跟踪nul，归属未确认，内容未读/不删除/不暂存；与原opencode一起保留，不能猜测为本次组件产物或临时垃圾。正常Git本批仅精确私有checkpoint/PWF范围。
