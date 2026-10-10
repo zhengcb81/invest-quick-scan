@@ -1929,3 +1929,20 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 原Q13 create_or_attach能够在同一个原事务内组合，不需要第二队列或预算账本。末尾重核失败时全批回滚，避免一半登记；这种软件存储正确性不能代替公开owner权限接线。
 - 下一接线须区别新请求与已经耐久登记的幂等重放：自己的pending工作改变预算/工作摘要后，不应卡死旧action，但也不能借旧同意扩大scope或跳过当前权限。既有result_ready只续传，仍不得再次提问。
 - 当前公开confirmation response必须保留pending/registered_with_executor=false，accepted只可在真实Q13耐久登记完成后产生。实际未有人类确认、未收费、未闭合完整C06或金融证据门。
+
+
+### 2026-10-10 两个独立施工包集中验收启动
+- 用户通知EVID-REF-02与FACT-CONTENT-01交付；只读固定实际HEAD 1597a08/f7fb078和241受控文件，213输入锁逐件核对。两个源仓均无remote，Lab原CodeGraph两设施保留。
+- IQS独占runs/p114a运行副本，源仓不运行测试、不修改；每包一次集中独审与回归/公开CLI反例。初步handoff公开校验EVID exit1/schema_invalid、FACT exit0，仅结构结论；已发现准确性资格/分母与内容hash/负例独立性疑点，待真实复现不预报签收。
+- 前一只读信息脚本把字符串当Path.name导致exit1，无源写入；PWF首次空patch因标题不匹配被拒，task_plan有效改动保留。原C06 checkpoint07/活根和全局门不动，0付费API/公司文档下载。
+
+
+### 2026-10-10 两个内容/准确性施工包集中查收完成
+- EVID源1597a08/产品369d17d、FACT源f7fb078/产品3ffedfc真实commit与祖先关系已核，两仓无remote，241受控字节/213输入锁/73工件SHA前后不变；源仓只读，原设施/他人未知项保留。
+- 实际隔离回归EVID182P（reference64）/FACT77P，无失败错误跳过；各一次集中静态独审发现实质阻断，集中真实CLI/函数反例确认EVID10项、FACT6项。控制器counterexample exit0是复现程序成功，不是产品安全通过；静态内容问题不混进执行数。
+- EVID未核数字/unknown计正确、无ROIC/WACC仍给评分区间、请求六题缺F02降分母、双方同步错发行人被接受、文字/basis误支持、嵌套假秘密和旧目录输出边界；FACT错源hash放行、原负例因旧view漂移而GREEN、验证后重读覆盖自有哨兵、explicit_absent/非法日期放行、schema override扩大根。详情与原日志在docs/implementation/reviews/parallel-packages/2026-10-10/acceptance.md和intake同批目录。
+- 均changes_requested，原成果保留；独立EVID-REF-02-R1/FACT-CONTENT-01-R1卡已写清根、实际基线、TDD断言、兼容版本、无网络/费用、单次包级回验和标准handoff，未向其他harness发消息/自动派发，未代改源仓。
+- 第一次秘密路径反例ref_id格式错提前exit2，保留原件，只修合法fixture后真公开CLI复现；第一次CIM在沙箱不可访问却输出零，该零不是证据，实际升级只读CIM0/原5PID不存在后才清。早期只读信息脚本Path.name/cases键误读及PWF标题patch错误无源写入；EVIDhandoff起始exit1转述更正为实际公开原回执exit2/schema_invalid。
+- 7个实际记录进程均终态，外层socket尝试0/HTTP和收费API0/公司文档下载0；主控公开网页读取2次、1成功1失败，不称联网0。CATL原HTML内相互冲突份额保留，SEC工具打开失败不否定原采集或冒充独立核实。
+- 原source Git和工件复核后，严格lstat/reparse/单硬链/set-size-SHA清本轮638文件/123目录，p114a确实不存在；原源仓、共享TEMP、c15a/real-owner-01、生产库/名单/未知nul/opencode不动。机器结果acceptance-result.json/cleanup.json已存，源handoff原件私有留档。
+- 原C06 checkpoint07/67候选保留，下一主线仍固定owner->QA实际读桥与原Q13/执行器消费；本轮不关闭任何全局门。已明确获准四份第一方PWF/接手文档正常提交推送仅记实际回执，不扩为Lab源码/真实golden/数据库导出。

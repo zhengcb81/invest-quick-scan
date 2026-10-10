@@ -2826,3 +2826,20 @@
 - 初始两个缺模块RED及后续30P/6F原件保留；6F来自新计数fixture错误表名，修复为原attempt/quick_scan_budget_attempt后，同次受影响36P/74.04s，子进程7660/exit0、源SHA稳定、0API。前21P/22P为各自实际批次，不拼接金融准确率。
 - producer-checkpoint-07.json固定67候选/7变化、六个终态执行回执和原guard SHA；尚未整节点独审/发布，原源QA/SW未写、生产库/名单不改。下一接真实owner->QA固定桥、精确已确认范围、耐久idempotent admission/replay及原执行器消费，保留result_ready零LLM费用接续和原Q09发送时扣账。
 - 精确7文档旧commit a0d283d已真实push/remote一致。当前同7文档补记仍按已给授权正常提交推送，实际结果独立存documentation-publication-02.json；本地新详解和源码/数据库/golden不自动扩入此范围。整体门保持，目标active，不新增小节点独审。
+
+
+### 2026-10-10 两个独立施工包集中验收启动
+- 用户通知EVID-REF-02与FACT-CONTENT-01交付；只读固定实际HEAD 1597a08/f7fb078和241受控文件，213输入锁逐件核对。两个源仓均无remote，Lab原CodeGraph两设施保留。
+- IQS独占runs/p114a运行副本，源仓不运行测试、不修改；每包一次集中独审与回归/公开CLI反例。初步handoff公开校验EVID exit1/schema_invalid、FACT exit0，仅结构结论；已发现准确性资格/分母与内容hash/负例独立性疑点，待真实复现不预报签收。
+- 前一只读信息脚本把字符串当Path.name导致exit1，无源写入；PWF首次空patch因标题不匹配被拒，task_plan有效改动保留。原C06 checkpoint07/活根和全局门不动，0付费API/公司文档下载。
+
+
+### 2026-10-10 两个内容/准确性施工包集中查收完成
+- EVID源1597a08/产品369d17d、FACT源f7fb078/产品3ffedfc真实commit与祖先关系已核，两仓无remote，241受控字节/213输入锁/73工件SHA前后不变；源仓只读，原设施/他人未知项保留。
+- 实际隔离回归EVID182P（reference64）/FACT77P，无失败错误跳过；各一次集中静态独审发现实质阻断，集中真实CLI/函数反例确认EVID10项、FACT6项。控制器counterexample exit0是复现程序成功，不是产品安全通过；静态内容问题不混进执行数。
+- EVID未核数字/unknown计正确、无ROIC/WACC仍给评分区间、请求六题缺F02降分母、双方同步错发行人被接受、文字/basis误支持、嵌套假秘密和旧目录输出边界；FACT错源hash放行、原负例因旧view漂移而GREEN、验证后重读覆盖自有哨兵、explicit_absent/非法日期放行、schema override扩大根。详情与原日志在docs/implementation/reviews/parallel-packages/2026-10-10/acceptance.md和intake同批目录。
+- 均changes_requested，原成果保留；独立EVID-REF-02-R1/FACT-CONTENT-01-R1卡已写清根、实际基线、TDD断言、兼容版本、无网络/费用、单次包级回验和标准handoff，未向其他harness发消息/自动派发，未代改源仓。
+- 第一次秘密路径反例ref_id格式错提前exit2，保留原件，只修合法fixture后真公开CLI复现；第一次CIM在沙箱不可访问却输出零，该零不是证据，实际升级只读CIM0/原5PID不存在后才清。早期只读信息脚本Path.name/cases键误读及PWF标题patch错误无源写入；EVIDhandoff起始exit1转述更正为实际公开原回执exit2/schema_invalid。
+- 7个实际记录进程均终态，外层socket尝试0/HTTP和收费API0/公司文档下载0；主控公开网页读取2次、1成功1失败，不称联网0。CATL原HTML内相互冲突份额保留，SEC工具打开失败不否定原采集或冒充独立核实。
+- 原source Git和工件复核后，严格lstat/reparse/单硬链/set-size-SHA清本轮638文件/123目录，p114a确实不存在；原源仓、共享TEMP、c15a/real-owner-01、生产库/名单/未知nul/opencode不动。机器结果acceptance-result.json/cleanup.json已存，源handoff原件私有留档。
+- 原C06 checkpoint07/67候选保留，下一主线仍固定owner->QA实际读桥与原Q13/执行器消费；本轮不关闭任何全局门。已明确获准四份第一方PWF/接手文档正常提交推送仅记实际回执，不扩为Lab源码/真实golden/数据库导出。
