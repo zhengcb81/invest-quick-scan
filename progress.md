@@ -2862,3 +2862,4 @@
 - checkpoint08真实固定71候选/13变化与12原执行终态，旧07/失败/源快照不覆写。原guard raw abc0128dc92a2bf99e57dbbbfe2355aea376b584f67e9e51c0bd0ebbc871e682，0API/源生产库/名单写。c15a及real-owner-01供同一未完节点继续使用，不能清掉；两Lab R1未派发且未代改。
 - 下一动作是可信公共admission精确bundle/context3/2范围与原主runner消费，存储原语仍permission_authenticated=false；没有公共accepted、真正人类确认或整C06源发布/独审。原Q09实际发送时扣账、原引用/result_ready/unknown语义保持。各全局门开放，目标active；七已获准第一方文档正常提交推送只据新实际回执记，不导出源快照/DB/golden。
 - 沙箱外只读checkpoint08-source-git-after真实核QA6aafc32/master原七未跟踪、SWa5a97d6/master clean，与本轮开始逐字段相同；没有生产源写。12批终态/输入source SHA前后不变，不清理仍供后续使用的c15a，也不触他人目录。
+- checkpoint08七获准第一方Markdown已实际正常钩子提交推送50840b24f7a044b68c940ad7563094bd5bb540fa，origin/master相同，7条staged/committed SHA逐件一致；公开导出仅文档，私有候选、真实golden/DB、源仓及README原未提交改动不包含。终态见documentation-publication-04.json。下一目标回合按有效progress从可信公共admission/原主runner消费接续，不重跑旧publisher或重复外包验收。
