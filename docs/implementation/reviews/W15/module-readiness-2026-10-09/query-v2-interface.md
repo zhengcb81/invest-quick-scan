@@ -13,3 +13,15 @@
 - owner真实数据库以只读mode打开，查询不migrate、不写数据/名单、不发LLM；读取错误不转空列表。真实golden生成要记录实际命令/HEAD/schema/capabilities/水位和输入输出SHA，真实评分未覆盖可如实返回coverage_gap；empty正例不关闭金融准确性或F05。
 
 本约定中尚未冻结的水位扩展与分页/刷新细节随本节点实际代码和TDD同步，不新增小卡或重复预研。当前legacy query/C06门仍开放；TH/IN继续等待原G3/F05/W11及真实query交付条件。
+
+## 非空投影的原始来源边界（同批实施中）
+
+新查询不改写原Observation。投影保存原JSON的base64、原字节hash、canonical payload hash、Observation ID和owner入库/ACK序号。原模型requested/resolved、时间、问题/字段、分数与未知状态只从原JSON读取。该base64只允许限长的结构化Observation，禁止公司文档或网页正文；解析后仍严格验证标准答案结构。
+
+主体绑定使用具名轻量sidecar `stockwiki.observation_subject_binding/1.0.0`，独立绑定原观察ID/hash、执行request/attempt、派发前冻结identity/manifest摘要、SubjectRef和事前记录时间。消费者校验时必须有独立owner保存的Observation引用及binding摘要，不允许仅从被验报文构造信任输入。该sidecar的生产/导入尚待接线，不从现有无subject的标准答案或当前route临时推导。读取器明示portable observation dialect，只在新查询入口适配真实UUID拼法，不改旧Observation schema。
+
+旧无绑定的合格原Observation放在result的`legacy_unbound_observations`，与任何subject profile分离，仅作原模型/时间历史查看；不能算当前subject字段覆盖或白名单资格。同一entity多个主体不能因此复制出多份当前答案。查询availability与独立证据资格分开，不能由模型正文或本查询授予资格。
+
+水位增加原query语义摘要、冻结结果内容摘要和逐owner库的schema/状态/序号/读取时间/内容摘要；明确`sequential_owner_reads`。读取失败不得返回完整空覆盖。snapshot摘要可以发现内容漂移，但不是owner认证；指定旧snapshot必须匹配，不能悄悄用live页替代。
+
+上述格式为私有TDD阶段，实际owner sidecar、查询serializer与跨仓接线仍未交付；不使用合成范围绑定签收真实golden，不新增独立审查节点。

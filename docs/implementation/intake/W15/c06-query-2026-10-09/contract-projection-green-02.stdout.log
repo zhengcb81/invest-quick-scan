@@ -1,0 +1,283 @@
+.....................FFF.............................F........           [100%]
+================================== FAILURES ===================================
+____ test_original_bound_answer_keeps_requested_and_actual_model_separate _____
+
+row = {'observation_id': 'obs_3a7370acf7bf7c26020bf4de04d189d14b06c72bec593db75399046ddea5fedc', 'payload_sha256': 'bdd99063...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+>           ORIGINAL_VALIDATOR.validate(obs)
+
+scripts\query_contract.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Draft202012Validator(schema={'$id': 'urn:iqs:stoc...observation:1', '$schema': 'https://json...020-12/schema', 'additi...mail', 'idn-email', 'idn-hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uuid']>)
+args = ({'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason... 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...},)
+kwargs = {}
+
+    def validate(self, *args, **kwargs):
+        for error in self.iter_errors(*args, **kwargs):
+>           raise error
+E           jsonschema.exceptions.ValidationError: 'rel_5555555555555555555555555555555555555555555555555555555555555555' does not match '^modrel_[a-f0-9]{64}$'
+E           
+E           Failed validating 'pattern' in schema['properties']['module_release_id']:
+E               {'type': 'string', 'pattern': '^modrel_[a-f0-9]{64}$'}
+E           
+E           On instance['module_release_id']:
+E               'rel_5555555555555555555555555555555555555555555555555555555555555555'
+
+C:\Miniconda\Lib\site-packages\jsonschema\validators.py:450: ValidationError
+
+The above exception was the direct cause of the following exception:
+
+    def test_original_bound_answer_keeps_requested_and_actual_model_separate():
+        req,res,owner=advanced_pair()
+>       validate(req,res,owner)
+
+tests\test_query_contract_v2.py:244: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_query_contract_v2.py:56: in validate
+    qc.validate_response(response,expected_request=request,expected_owner=owner)
+scripts\query_contract.py:286: in validate_response
+    obs=_original(row)
+        ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+row = {'observation_id': 'obs_3a7370acf7bf7c26020bf4de04d189d14b06c72bec593db75399046ddea5fedc', 'payload_sha256': 'bdd99063...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+            ORIGINAL_VALIDATOR.validate(obs)
+            if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
+                raise ValueError('query_original_reference_mismatch')
+            if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):
+                raise ValueError('query_original_immutable_hash_mismatch')
+            return obs
+        except (ValueError,TypeError,UnicodeError,ValidationError,RecursionError) as exc:
+>           raise ValueError('query_original_observation_invalid') from exc
+E           ValueError: query_original_observation_invalid
+
+scripts\query_contract.py:134: ValueError
+___ test_legacy_unbound_history_is_visible_but_not_current_subject_coverage ___
+
+row = {'observation_id': 'obs_3a7370acf7bf7c26020bf4de04d189d14b06c72bec593db75399046ddea5fedc', 'payload_sha256': 'bdd99063...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+>           ORIGINAL_VALIDATOR.validate(obs)
+
+scripts\query_contract.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Draft202012Validator(schema={'$id': 'urn:iqs:stoc...observation:1', '$schema': 'https://json...020-12/schema', 'additi...mail', 'idn-email', 'idn-hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uuid']>)
+args = ({'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason... 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...},)
+kwargs = {}
+
+    def validate(self, *args, **kwargs):
+        for error in self.iter_errors(*args, **kwargs):
+>           raise error
+E           jsonschema.exceptions.ValidationError: 'rel_5555555555555555555555555555555555555555555555555555555555555555' does not match '^modrel_[a-f0-9]{64}$'
+E           
+E           Failed validating 'pattern' in schema['properties']['module_release_id']:
+E               {'type': 'string', 'pattern': '^modrel_[a-f0-9]{64}$'}
+E           
+E           On instance['module_release_id']:
+E               'rel_5555555555555555555555555555555555555555555555555555555555555555'
+
+C:\Miniconda\Lib\site-packages\jsonschema\validators.py:450: ValidationError
+
+The above exception was the direct cause of the following exception:
+
+    def test_legacy_unbound_history_is_visible_but_not_current_subject_coverage():
+>       validate(*advanced_pair(bound=False))
+
+tests\test_query_contract_v2.py:253: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_query_contract_v2.py:56: in validate
+    qc.validate_response(response,expected_request=request,expected_owner=owner)
+scripts\query_contract.py:305: in validate_response
+    obs=_original(row)
+        ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+row = {'observation_id': 'obs_3a7370acf7bf7c26020bf4de04d189d14b06c72bec593db75399046ddea5fedc', 'payload_sha256': 'bdd99063...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+            ORIGINAL_VALIDATOR.validate(obs)
+            if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
+                raise ValueError('query_original_reference_mismatch')
+            if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):
+                raise ValueError('query_original_immutable_hash_mismatch')
+            return obs
+        except (ValueError,TypeError,UnicodeError,ValidationError,RecursionError) as exc:
+>           raise ValueError('query_original_observation_invalid') from exc
+E           ValueError: query_original_observation_invalid
+
+scripts\query_contract.py:134: ValueError
+__________ test_unavailable_original_answer_stays_null_and_uncovered __________
+
+row = {'observation_id': 'obs_ec2212bf9cbb3ac7aaea41377b8ea8c3347f59dc4441eb43fcaba410a4c9e6c4', 'payload_sha256': 'd0f887e8...ZCI6bnVsbCwic2VnbWVudF9pZCI6bnVsbCwidGFza19tb2RlIjoicHJpbWFyeSIsInRlbXBsYXRlX3ZlcnNpb24iOiJzeW50aGV0aWMtdjEifQ==', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+>           ORIGINAL_VALIDATOR.validate(obs)
+
+scripts\query_contract.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Draft202012Validator(schema={'$id': 'urn:iqs:stoc...observation:1', '$schema': 'https://json...020-12/schema', 'additi...mail', 'idn-email', 'idn-hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uuid']>)
+args = ({'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason... 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...},)
+kwargs = {}
+
+    def validate(self, *args, **kwargs):
+        for error in self.iter_errors(*args, **kwargs):
+>           raise error
+E           jsonschema.exceptions.ValidationError: 'rel_5555555555555555555555555555555555555555555555555555555555555555' does not match '^modrel_[a-f0-9]{64}$'
+E           
+E           Failed validating 'pattern' in schema['properties']['module_release_id']:
+E               {'type': 'string', 'pattern': '^modrel_[a-f0-9]{64}$'}
+E           
+E           On instance['module_release_id']:
+E               'rel_5555555555555555555555555555555555555555555555555555555555555555'
+
+C:\Miniconda\Lib\site-packages\jsonschema\validators.py:450: ValidationError
+
+The above exception was the direct cause of the following exception:
+
+    def test_unavailable_original_answer_stays_null_and_uncovered():
+>       validate(*advanced_pair(status='insufficient_evidence'))
+
+tests\test_query_contract_v2.py:257: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_query_contract_v2.py:56: in validate
+    qc.validate_response(response,expected_request=request,expected_owner=owner)
+scripts\query_contract.py:286: in validate_response
+    obs=_original(row)
+        ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+row = {'observation_id': 'obs_ec2212bf9cbb3ac7aaea41377b8ea8c3347f59dc4441eb43fcaba410a4c9e6c4', 'payload_sha256': 'd0f887e8...ZCI6bnVsbCwic2VnbWVudF9pZCI6bnVsbCwidGFza19tb2RlIjoicHJpbWFyeSIsInRlbXBsYXRlX3ZlcnNpb24iOiJzeW50aGV0aWMtdjEifQ==', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+            ORIGINAL_VALIDATOR.validate(obs)
+            if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
+                raise ValueError('query_original_reference_mismatch')
+            if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):
+                raise ValueError('query_original_immutable_hash_mismatch')
+            return obs
+        except (ValueError,TypeError,UnicodeError,ValidationError,RecursionError) as exc:
+>           raise ValueError('query_original_observation_invalid') from exc
+E           ValueError: query_original_observation_invalid
+
+scripts\query_contract.py:134: ValueError
+______________ test_model_filter_is_applied_to_actual_model_only ______________
+
+row = {'observation_id': 'obs_3a7370acf7bf7c26020bf4de04d189d14b06c72bec593db75399046ddea5fedc', 'payload_sha256': 'bdd99063...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+>           ORIGINAL_VALIDATOR.validate(obs)
+
+scripts\query_contract.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Draft202012Validator(schema={'$id': 'urn:iqs:stoc...observation:1', '$schema': 'https://json...020-12/schema', 'additi...mail', 'idn-email', 'idn-hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uuid']>)
+args = ({'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason... 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...},)
+kwargs = {}
+
+    def validate(self, *args, **kwargs):
+        for error in self.iter_errors(*args, **kwargs):
+>           raise error
+E           jsonschema.exceptions.ValidationError: 'rel_5555555555555555555555555555555555555555555555555555555555555555' does not match '^modrel_[a-f0-9]{64}$'
+E           
+E           Failed validating 'pattern' in schema['properties']['module_release_id']:
+E               {'type': 'string', 'pattern': '^modrel_[a-f0-9]{64}$'}
+E           
+E           On instance['module_release_id']:
+E               'rel_5555555555555555555555555555555555555555555555555555555555555555'
+
+C:\Miniconda\Lib\site-packages\jsonschema\validators.py:450: ValidationError
+
+The above exception was the direct cause of the following exception:
+
+    def test_model_filter_is_applied_to_actual_model_only():
+        req,res,owner=advanced_pair()
+        req['payload']['model_filter']={'provider':'synthetic-provider','model_resolved':'requested-a'}
+        seal(req,res)
+        with pytest.raises(ValueError): validate(req,res,owner)
+        req['payload']['model_filter']['model_resolved']='actual-a'
+        seal(req,res)
+>       validate(req,res,owner)
+
+tests\test_query_contract_v2.py:340: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_query_contract_v2.py:56: in validate
+    qc.validate_response(response,expected_request=request,expected_owner=owner)
+scripts\query_contract.py:286: in validate_response
+    obs=_original(row)
+        ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+row = {'observation_id': 'obs_3a7370acf7bf7c26020bf4de04d189d14b06c72bec593db75399046ddea5fedc', 'payload_sha256': 'bdd99063...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+            ORIGINAL_VALIDATOR.validate(obs)
+            if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
+                raise ValueError('query_original_reference_mismatch')
+            if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):
+                raise ValueError('query_original_immutable_hash_mismatch')
+            return obs
+        except (ValueError,TypeError,UnicodeError,ValidationError,RecursionError) as exc:
+>           raise ValueError('query_original_observation_invalid') from exc
+E           ValueError: query_original_observation_invalid
+
+scripts\query_contract.py:134: ValueError
+=========================== short test summary info ===========================
+FAILED tests\test_query_contract_v2.py::test_original_bound_answer_keeps_requested_and_actual_model_separate
+FAILED tests\test_query_contract_v2.py::test_legacy_unbound_history_is_visible_but_not_current_subject_coverage
+FAILED tests\test_query_contract_v2.py::test_unavailable_original_answer_stays_null_and_uncovered
+FAILED tests\test_query_contract_v2.py::test_model_filter_is_applied_to_actual_model_only
+4 failed, 58 passed in 1.03s

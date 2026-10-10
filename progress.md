@@ -2708,3 +2708,11 @@
 - 当前原步骤4在新独占runs/c15a连续实施，64原IQS输入不变；私有query v2首批21P只覆盖get_profiles空覆盖/主体绑定/严格JSON，未审未发布且非空Observation故意拒绝。唯一下一动作补原Observation/模型时间/范围/水位及legacy读取反例，再公共只读producer/受控刷新/真实serializer golden，同一完整查询节点结束集中审查。不能把private-source-01发布或把C06标通过；根仍在使用，不能清理。 legacy query/W09/UI/三仓生产源未变；金融准确性、F05/G3/L03/THIN/200家live原门仍开放。本私有进度checkpoint只归档/提交，实际Git以工具回执为准，不新设小节点审查。
 - checkpoint首执行在任何归档写入前因Windows sources键的反斜杠与逻辑路径斜杠不同拒绝；改为当前平台Path键后原执行SHA精确匹配，三候选/guard原字节已归档，原测试不重跑。此为控制器路径口径错误，不称产品失败。
 - 本私有checkpoint实际正常提交推送9d110a360950ea2f6bace55ff1fadf2b4e8f87d9：29精确路径、原工件staged字节一致、远端origin/master同HEAD，仅原opencode保留。公开query v1及64原输入不变、外仓源未写，runs/c15a保留用于完整步骤4接续；21P不升级成生产接口/真实golden或独审签收。本条仅补实际Git回执，不改冻结inputs/checkpoint或重测。
+
+### 2026-10-10 — C06原始答案投影TDD接续
+- 当前IQS起点f87f9ec已为实际正常推送的PWF补记；用户全部后续所需授权保持，根PWF sole writer。StockWiki/StockQA此段只读，无API/文档/生产DB操作。
+- 实查完整标准Observation不带analysis_subject，owner_refresh却要求该metadata；不能把W15直接store fixture当完整生产链。冻结查询投影边界：原结构化JSON/原字节和canonical摘要、独立owner引用、执行前具名subject sidecar；旧无绑定记录只能在独立历史区查看，不进入当前主体覆盖。sidecar真实生产/导入尚未接线，本段不虚构真实公司golden。
+- 实际contract-projection-red-01为5F/57P/0.82s：四种非空/模型正例和显式读失败格式尚未实现；57含原21与形状拒绝，不能称57已证明新增语义。两个中间GREEN标签实际失败原件保留：旧双subject fixture未重封snapshot、合成package/release ID未使用冻结schema格式；仅修测试，不放宽生产格式。最终contract-projection-green-03原73744/pytest0，62P/0.66s/controller1.322s，执行SHA前后不变。
+- 私有代码复用原standard_answers.validate_content与canonical metric registry；只新复制1件非秘密registry资源，独立metric-input-01留SHA。64原IQS输入不改，schema/query/test仍私有未审未发布；guard原字节不变，环境/库/TEMP继续自有隔离。该62P是合成软件边界测试，不证明金融答案正确、真实owner golden、可一键运行或F05/G3关闭。
+- 下一动作同一W15步骤4接实际只读owner serializer及事前sidecar来源，再当前资格/TTL、受控刷新/真实golden；不增小节点审查，不重复旧全仓/UI回归。不清理仍在用的runs/c15a。新工件Git留档尚未执行，后续以真实Git回执为准。
+- private-source-02/checkpoint-02已实际保存四候选/资源与原guard字节，匹配green03执行SHA；64公开/私有原输入同时核对不变。旧private-source-01/inputs-01/全部失败日志不覆盖。handoff顶部同步62P和真实owner sidecar未实施边界；Git尚未执行，不提前写提交或推送成功。

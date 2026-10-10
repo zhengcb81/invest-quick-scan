@@ -1851,3 +1851,10 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - W15正常源发布实际完成：QA6aafc32远端同HEAD、SWa5a97d6本地无remote。钩子安装超时属于控制/工具故障，精确结束自有树后复用已安装同版本hook；.gitignore唯一变化为正常hook换行规范化，原审字节与新执行/Git摘要明确分域。既有cache不删除/恢复覆盖，公共安装metadata前后SHA相同；隔离测试与TEMP仍自有，不能把工具故障改称产品测试通过。基础软件及自有清理完成，真实query v2/owner golden、金融准确性与facts仍未完成。
 
 - C06私有query v2首21项通过仅证明空覆盖结构/精确主体和范围/原request与独立owner地址绑定；法律issuer与快扫entity可不同，不能互相猜填。原Observation、模型/时间/水位与分页尚待同批TDD，maxItems0故意拒非空输出，不声称正式C06已实现。新runs/c15a保持独占，原64公开输入不变；Windows guard两域摘要明确，未修改guard安全内容，当前外仓源不写/0API。
+
+### C06原观察主体来源实查：2026-10-09
+- 当前StockQA完整standard Observation生产器（observation_context/1.0.0，Observation1.1.0）严格使用冻结schema，metadata与完整原答案均不含analysis_subject。StockWiki存储的subject列来自原payload中可选nested analysis_subject；W15基础fixture是直接存储边界合成例，不是全canonical Observation生产正例。不能将该fixture冒充完整生产链。
+- 查询须保留原Observation ID/hash/内容/模型/时间；旧无主体记录不能查询时挂上当前subject/revision/perimeter进入评分。主体绑定应来自执行前冻结且owner验收的版本化来源；无绑定历史须明确展示为legacy_unbound且不提供当前评分覆盖。这是原W15步骤4的必要接线，同批TDD与集中审查，不新增helper验收门。
+- 外仓CodeGraph此区域缺新模块；已在结构查询未命中后读取实时已知路径。尚未把上述格式差异判为全链漏洞，下一步核实owner_refresh与import的实际不可变绑定，再冻结非空projection契约。
+- 进一步确认owner_refresh准备阶段明确要求metadata.analysis_subject等于owner subject，而完整context冻结schema不含该属性。这是原W15完整C06链尚未接通的真实格式缺口，不能通过去掉scope guard洗绿。采用版本化事前subject sidecar，原Observation原字节/ID不变，查询须有独立owner保存的绑定摘要；sidecar生产/导入仍待实际接线。
+- 2026-10-10第一组私有投影TDD最终62P（原73744），支持完整原结构化答案、原requested/resolved模型分离、原时间/搜索引用、严格hash/JSON、独立owner地址/引用、未绑定历史区和snapshot水位。此前中间错误属于合成fixture ID格式和snapshot未重封，不修改冻结schema或重写原日志。availability只描述返回资料，不等于当前可用于白名单；实际producer还须接TTL/当前资格/只读DB故障语义。

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="62" time="1.052" timestamp="2026-10-10T15:07:03.272434+01:00" hostname="DESKTOP-156V213"><testcase classname="iqs.tests.test_query_contract_v2" name="test_real_uuid_spelling_and_distinct_scan_entity_vs_legal_issuer" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_two_reporting_subjects_for_one_entity_are_two_profiles" time="0.002"><failure message="ValueError: query_snapshot_content_mismatch">def test_two_reporting_subjects_for_one_entity_are_two_profiles():
+        request, response, owner = pair()
+        other = copy.deepcopy(SUBJECT)
+        other['analysis_subject_id']='ASJ_44444444-4444-4444-8444-444444444444'
+        other['perimeter_sha256']='b'*64
+        request['payload']['subject_refs'].append(other)
+        response['result']['profiles'].append({'subject_ref':copy.deepcopy(other),
+                                               'canonical_name':'Synthetic C06','observations':[]})
+&gt;       validate(request,response,owner)
+
+tests\test_query_contract_v2.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_query_contract_v2.py:56: in validate
+    qc.validate_response(response,expected_request=request,expected_owner=owner)
+scripts\query_contract.py:263: in validate_response
+    source_failed=_watermark(value,expected_request)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'message_type': 'response', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_C06', 'operation': 'get_profiles', ...}
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_C06', 'consumer_id': 'invest-quick-scan', ...}
+
+    def _watermark(value,request):
+        result=value['result']
+        w=result['watermark']
+        if _utc(w['read_at'])&lt;_utc(request['requested_at']) or _utc(w['read_at'])&gt;_utc(value['response_at']):
+            raise ValueError('query_watermark_time_mismatch')
+        if w['query_sha256']!=query_sha256(request) or w['snapshot_content_sha256']!=snapshot_content_sha256(result):
+&gt;           raise ValueError('query_snapshot_content_mismatch')
+E           ValueError: query_snapshot_content_mismatch
+
+scripts\query_contract.py:224: ValueError</failure></testcase><testcase classname="iqs.tests.test_query_contract_v2" name="test_profile_cannot_drift_from_requested_subject[analysis_subject_revision-2]" time="0.002" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_profile_cannot_drift_from_requested_subject[perimeter_sha256-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]" time="0.002" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_profile_cannot_drift_from_requested_subject[primary_issuer_id-ENT_55555555-5555-4555-8555-555555555555]" time="0.002" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_profile_cannot_drift_from_requested_subject[entity_id-ENT_66666666-6666-4666-8666-666666666666]" time="0.005" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_profile_cannot_drift_from_requested_subject[scope_id-ENT_66666666-6666-4666-8666-666666666666]" time="0.002" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_conflicting_perimeters_for_same_subject_are_not_two_requests" time="0.001" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_response_cannot_return_same_profile_twice" time="0.002" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_field_coverage_is_an_exact_partition_of_request[complete]" time="0.002" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_field_coverage_is_an_exact_partition_of_request[overlap]" time="0.002" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_field_coverage_is_an_exact_partition_of_request[unrequested]" time="0.004" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_response_store_must_match_independent_owner" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_response_requires_explicit_independent_owner" time="0.001" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_response_does_not_silently_change_request_or_protocol[request_id-REQ_FOREIGN]" time="0.002" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_response_does_not_silently_change_request_or_protocol[schema_version-1.0.0]" time="0.002" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_response_does_not_silently_change_request_or_protocol[operation-search]" time="0.004" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_strict_input_rejects_duplicate_nonfinite_and_truncated_json[{&quot;request_id&quot;:&quot;one&quot;,&quot;request_id&quot;:&quot;two&quot;}]" time="0.030" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_strict_input_rejects_duplicate_nonfinite_and_truncated_json[{&quot;x&quot;:NaN}]" time="0.013" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_strict_input_rejects_duplicate_nonfinite_and_truncated_json[{&quot;x&quot;:1e400}]" time="0.012" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_strict_input_rejects_duplicate_nonfinite_and_truncated_json[{&quot;truncated&quot;:]" time="0.012" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_original_bound_answer_keeps_requested_and_actual_model_separate" time="0.005"><failure message="ValueError: query_original_observation_invalid">row = {'observation_id': 'obs_9da54949acf4359014a1ecd9fcf9e1fbeb332e75d562dbff7b99271f31668bff', 'payload_sha256': '4bbd81eb...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)&gt;MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+&gt;           ORIGINAL_VALIDATOR.validate(obs)
+
+scripts\query_contract.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Draft202012Validator(schema={'$id': 'urn:iqs:stoc...observation:1', '$schema': 'https://json...020-12/schema', 'additi...mail', 'idn-email', 'idn-hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uuid']&gt;)
+args = ({'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason... 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...},)
+kwargs = {}
+
+    def validate(self, *args, **kwargs):
+        for error in self.iter_errors(*args, **kwargs):
+&gt;           raise error
+E           jsonschema.exceptions.ValidationError: 'SYN_PACKAGE' does not match '^pkg_[a-f0-9]{64}$'
+E           
+E           Failed validating 'pattern' in schema['properties']['module_package_id']:
+E               {'type': 'string', 'pattern': '^pkg_[a-f0-9]{64}$'}
+E           
+E           On instance['module_package_id']:
+E               'SYN_PACKAGE'
+
+C:\Miniconda\Lib\site-packages\jsonschema\validators.py:450: ValidationError
+
+The above exception was the direct cause of the following exception:
+
+    def test_original_bound_answer_keeps_requested_and_actual_model_separate():
+        req,res,owner=advanced_pair()
+&gt;       validate(req,res,owner)
+
+tests\test_query_contract_v2.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_query_contract_v2.py:56: in validate
+    qc.validate_response(response,expected_request=request,expected_owner=owner)
+scripts\query_contract.py:286: in validate_response
+    obs=_original(row)
+        ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+row = {'observation_id': 'obs_9da54949acf4359014a1ecd9fcf9e1fbeb332e75d562dbff7b99271f31668bff', 'payload_sha256': '4bbd81eb...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)&gt;MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+            ORIGINAL_VALIDATOR.validate(obs)
+            if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
+                raise ValueError('query_original_reference_mismatch')
+            if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):
+                raise ValueError('query_original_immutable_hash_mismatch')
+            return obs
+        except (ValueError,TypeError,UnicodeError,ValidationError,RecursionError) as exc:
+&gt;           raise ValueError('query_original_observation_invalid') from exc
+E           ValueError: query_original_observation_invalid
+
+scripts\query_contract.py:134: ValueError</failure></testcase><testcase classname="iqs.tests.test_query_contract_v2" name="test_legacy_unbound_history_is_visible_but_not_current_subject_coverage" time="0.003"><failure message="ValueError: query_original_observation_invalid">row = {'observation_id': 'obs_9da54949acf4359014a1ecd9fcf9e1fbeb332e75d562dbff7b99271f31668bff', 'payload_sha256': '4bbd81eb...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)&gt;MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+&gt;           ORIGINAL_VALIDATOR.validate(obs)
+
+scripts\query_contract.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Draft202012Validator(schema={'$id': 'urn:iqs:stoc...observation:1', '$schema': 'https://json...020-12/schema', 'additi...mail', 'idn-email', 'idn-hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uuid']&gt;)
+args = ({'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason... 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...},)
+kwargs = {}
+
+    def validate(self, *args, **kwargs):
+        for error in self.iter_errors(*args, **kwargs):
+&gt;           raise error
+E           jsonschema.exceptions.ValidationError: 'SYN_PACKAGE' does not match '^pkg_[a-f0-9]{64}$'
+E           
+E           Failed validating 'pattern' in schema['properties']['module_package_id']:
+E               {'type': 'string', 'pattern': '^pkg_[a-f0-9]{64}$'}
+E           
+E           On instance['module_package_id']:
+E               'SYN_PACKAGE'
+
+C:\Miniconda\Lib\site-packages\jsonschema\validators.py:450: ValidationError
+
+The above exception was the direct cause of the following exception:
+
+    def test_legacy_unbound_history_is_visible_but_not_current_subject_coverage():
+&gt;       validate(*advanced_pair(bound=False))
+
+tests\test_query_contract_v2.py:252: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_query_contract_v2.py:56: in validate
+    qc.validate_response(response,expected_request=request,expected_owner=owner)
+scripts\query_contract.py:305: in validate_response
+    obs=_original(row)
+        ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+row = {'observation_id': 'obs_9da54949acf4359014a1ecd9fcf9e1fbeb332e75d562dbff7b99271f31668bff', 'payload_sha256': '4bbd81eb...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)&gt;MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+            ORIGINAL_VALIDATOR.validate(obs)
+            if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
+                raise ValueError('query_original_reference_mismatch')
+            if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):
+                raise ValueError('query_original_immutable_hash_mismatch')
+            return obs
+        except (ValueError,TypeError,UnicodeError,ValidationError,RecursionError) as exc:
+&gt;           raise ValueError('query_original_observation_invalid') from exc
+E           ValueError: query_original_observation_invalid
+
+scripts\query_contract.py:134: ValueError</failure></testcase><testcase classname="iqs.tests.test_query_contract_v2" name="test_unavailable_original_answer_stays_null_and_uncovered" time="0.003"><failure message="ValueError: query_original_observation_invalid">row = {'observation_id': 'obs_82a568a9e43e9a291f9e9143bc89f359fe22ebe780b45229b3e10c851c6b0f11', 'payload_sha256': '87dd5637...ZCI6bnVsbCwic2VnbWVudF9pZCI6bnVsbCwidGFza19tb2RlIjoicHJpbWFyeSIsInRlbXBsYXRlX3ZlcnNpb24iOiJzeW50aGV0aWMtdjEifQ==', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)&gt;MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+&gt;           ORIGINAL_VALIDATOR.validate(obs)
+
+scripts\query_contract.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Draft202012Validator(schema={'$id': 'urn:iqs:stoc...observation:1', '$schema': 'https://json...020-12/schema', 'additi...mail', 'idn-email', 'idn-hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uuid']&gt;)
+args = ({'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason... 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...},)
+kwargs = {}
+
+    def validate(self, *args, **kwargs):
+        for error in self.iter_errors(*args, **kwargs):
+&gt;           raise error
+E           jsonschema.exceptions.ValidationError: 'SYN_PACKAGE' does not match '^pkg_[a-f0-9]{64}$'
+E           
+E           Failed validating 'pattern' in schema['properties']['module_package_id']:
+E               {'type': 'string', 'pattern': '^pkg_[a-f0-9]{64}$'}
+E           
+E           On instance['module_package_id']:
+E               'SYN_PACKAGE'
+
+C:\Miniconda\Lib\site-packages\jsonschema\validators.py:450: ValidationError
+
+The above exception was the direct cause of the following exception:
+
+    def test_unavailable_original_answer_stays_null_and_uncovered():
+&gt;       validate(*advanced_pair(status='insufficient_evidence'))
+
+tests\test_query_contract_v2.py:256: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_query_contract_v2.py:56: in validate
+    qc.validate_response(response,expected_request=request,expected_owner=owner)
+scripts\query_contract.py:286: in validate_response
+    obs=_original(row)
+        ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+row = {'observation_id': 'obs_82a568a9e43e9a291f9e9143bc89f359fe22ebe780b45229b3e10c851c6b0f11', 'payload_sha256': '87dd5637...ZCI6bnVsbCwic2VnbWVudF9pZCI6bnVsbCwidGFza19tb2RlIjoicHJpbWFyeSIsInRlbXBsYXRlX3ZlcnNpb24iOiJzeW50aGV0aWMtdjEifQ==', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)&gt;MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+            ORIGINAL_VALIDATOR.validate(obs)
+            if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
+                raise ValueError('query_original_reference_mismatch')
+            if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):
+                raise ValueError('query_original_immutable_hash_mismatch')
+            return obs
+        except (ValueError,TypeError,UnicodeError,ValidationError,RecursionError) as exc:
+&gt;           raise ValueError('query_original_observation_invalid') from exc
+E           ValueError: query_original_observation_invalid
+
+scripts\query_contract.py:134: ValueError</failure></testcase><testcase classname="iqs.tests.test_query_contract_v2" name="test_bound_answer_refuses_foreign_subject_even_when_presented_hashes_are_resigned[analysis_subject_revision-2]" time="0.005" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bound_answer_refuses_foreign_subject_even_when_presented_hashes_are_resigned[perimeter_sha256-9999999999999999999999999999999999999999999999999999999999999999]" time="0.005" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bound_answer_refuses_foreign_subject_even_when_presented_hashes_are_resigned[primary_issuer_id-ENT_55555555-5555-4555-8555-555555555555]" time="0.007" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bound_answer_refuses_foreign_subject_even_when_presented_hashes_are_resigned[scope-security]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bound_answer_refuses_foreign_subject_even_when_presented_hashes_are_resigned[scope_id-SEC_FOREIGN]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_dispatch_binding_cannot_be_reconstructed_from_current_route[execution_request_id-FOREIGN]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_dispatch_binding_cannot_be_reconstructed_from_current_route[execution_attempt_id-FOREIGN]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_dispatch_binding_cannot_be_reconstructed_from_current_route[recorded_before_send_at-2026-10-09T20:02:00Z]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_dispatch_binding_cannot_be_reconstructed_from_current_route[dispatch_identity_snapshot_sha256-9999999999999999999999999999999999999999999999999999999999999999]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_dispatch_binding_cannot_be_reconstructed_from_current_route[dispatch_manifest_sha256-9999999999999999999999999999999999999999999999999999999999999999]" time="0.004" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_owner_observation_refs_are_required_for_nonempty_answers" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_original_answer_reference_integrity[raw]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_original_answer_reference_integrity[payload_hash]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_original_answer_reference_integrity[immutable_id]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_original_answer_reference_integrity[qualification]" time="0.004" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_original_answer_reference_integrity[ack_sequence]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_original_answer_reference_integrity[duplicate]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[future_cutoff]" time="0.006" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[future_information]" time="0.006" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[reversed_time]" time="0.006" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[different_observed]" time="0.004" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[future_answer]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[missing_actual_model]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[wrong_question]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[bool_score]" time="0.005" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[unknown_with_score]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[source_after_cutoff]" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[detached_fact]" time="0.005" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_bad_original_answer_remains_bad_with_new_self_consistent_presentation[model_self_qualification]" time="0.006" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_model_filter_is_applied_to_actual_model_only" time="0.010"><failure message="ValueError: query_original_observation_invalid">row = {'observation_id': 'obs_9da54949acf4359014a1ecd9fcf9e1fbeb332e75d562dbff7b99271f31668bff', 'payload_sha256': '4bbd81eb...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)&gt;MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+&gt;           ORIGINAL_VALIDATOR.validate(obs)
+
+scripts\query_contract.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = Draft202012Validator(schema={'$id': 'urn:iqs:stoc...observation:1', '$schema': 'https://json...020-12/schema', 'additi...mail', 'idn-email', 'idn-hostname', 'ipv4', 'ipv6', 'json-pointer', 'regex', 'relative-json-pointer', 'time', 'uuid']&gt;)
+args = ({'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason... 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...},)
+kwargs = {}
+
+    def validate(self, *args, **kwargs):
+        for error in self.iter_errors(*args, **kwargs):
+&gt;           raise error
+E           jsonschema.exceptions.ValidationError: 'SYN_PACKAGE' does not match '^pkg_[a-f0-9]{64}$'
+E           
+E           Failed validating 'pattern' in schema['properties']['module_package_id']:
+E               {'type': 'string', 'pattern': '^pkg_[a-f0-9]{64}$'}
+E           
+E           On instance['module_package_id']:
+E               'SYN_PACKAGE'
+
+C:\Miniconda\Lib\site-packages\jsonschema\validators.py:450: ValidationError
+
+The above exception was the direct cause of the following exception:
+
+    def test_model_filter_is_applied_to_actual_model_only():
+        req,res,owner=advanced_pair()
+        req['payload']['model_filter']={'provider':'synthetic-provider','model_resolved':'requested-a'}
+        seal(req,res)
+        with pytest.raises(ValueError): validate(req,res,owner)
+        req['payload']['model_filter']['model_resolved']='actual-a'
+        seal(req,res)
+&gt;       validate(req,res,owner)
+
+tests\test_query_contract_v2.py:339: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_query_contract_v2.py:56: in validate
+    qc.validate_response(response,expected_request=request,expected_owner=owner)
+scripts\query_contract.py:286: in validate_response
+    obs=_original(row)
+        ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+row = {'observation_id': 'obs_9da54949acf4359014a1ecd9fcf9e1fbeb332e75d562dbff7b99271f31668bff', 'payload_sha256': '4bbd81eb...aWQiOm51bGwsInNlZ21lbnRfaWQiOm51bGwsInRhc2tfbW9kZSI6InByaW1hcnkiLCJ0ZW1wbGF0ZV92ZXJzaW9uIjoic3ludGhldGljLXYxIn0=', ...}
+
+    def _original(row):
+        try:
+            raw=base64.b64decode(row['original_json_base64'],validate=True)
+            if len(raw)&gt;MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
+                raise ValueError('query_original_bytes_mismatch')
+            obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
+            module_contract.canonical_bytes(obs)
+            ORIGINAL_VALIDATOR.validate(obs)
+            if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
+                raise ValueError('query_original_reference_mismatch')
+            if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):
+                raise ValueError('query_original_immutable_hash_mismatch')
+            return obs
+        except (ValueError,TypeError,UnicodeError,ValidationError,RecursionError) as exc:
+&gt;           raise ValueError('query_original_observation_invalid') from exc
+E           ValueError: query_original_observation_invalid
+
+scripts\query_contract.py:134: ValueError</failure></testcase><testcase classname="iqs.tests.test_query_contract_v2" name="test_unbound_history_cannot_be_moved_inside_a_subject_profile" time="0.003" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_snapshot_and_owner_watermark_are_not_live_page_decorations[digest]" time="0.004" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_snapshot_and_owner_watermark_are_not_live_page_decorations[old_snapshot]" time="0.009" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_snapshot_and_owner_watermark_are_not_live_page_decorations[negative_sequence]" time="0.007" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_snapshot_and_owner_watermark_are_not_live_page_decorations[read_error]" time="0.008" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_snapshot_and_owner_watermark_are_not_live_page_decorations[foreign_query]" time="0.007" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_snapshot_and_owner_watermark_are_not_live_page_decorations[read_before_answer]" time="0.008" /><testcase classname="iqs.tests.test_query_contract_v2" name="test_explicit_read_failure_cannot_be_reported_as_complete_empty" time="0.011" /></testsuite></testsuites>

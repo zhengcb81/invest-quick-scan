@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**2026-10-10 当前接续（优先于以下历史）：** W15步骤1–3基础交付保留。原步骤4在独占runs/c15a继续；新query v2原答案投影已完成第一组私有TDD（contract-projection-green-03：62P/0.66s，pytest0），覆盖原字节/ID/hash、独立owner引用、主体绑定、原模型与时间、历史未绑定分离、冻结snapshot和读取故障。该scope未独审/未生产发布，不能关闭C06或把合成sidecar当真实owner绑定。唯一下一动作接实际StockWiki只读producer与执行前主体sidecar生产/导入来源；保留原标准Observation/旧schema，补实际owner水位和TTL/当前可用资格，不允许读时回填旧主体或把availability当白名单资格。之后同批受控刷新、真实owner serializer golden和一次大节点集中审查。64原IQS输入及两外仓源未改、无收费调用；自有c15a仍在使用，不能清理。用户全部后续授权已覆盖计划内必要工作，不重复询问；G3/L03/B01/F05/TH-IN/200家公司live仍按原前置。
+
 **2026-10-09 当前唯一下一动作：** 全部计划内必要跨仓写入、测试及正常Git已授权，root唯一writer，其他进程工作、216挂牌候选和轻量不下载文档保持。W15基础软件步骤1–3已由同一次集中审查签收，StockWiki a5a97d6efbf5f0ee79122a1ec375def388700690本地提交、按决定7无remote，StockQA 6aafc32eae5339668e893b8a2b246d0655075584已正常推送；36受审候选和受影响测试/失败分类已归档，自有runs/w15a已严格清理，旧一次性helper不能盲跑。IQS基础归档929d76226dc2efa8b02e094312baa51fe71076c8已正常推送，555精确路径/原字节核对通过；后续仅PWF与实际Git回执补记不改变受审产品。当前原步骤4在新独占runs/c15a连续实施，64原IQS输入不变；私有query v2首批21P只覆盖get_profiles空覆盖/主体绑定/严格JSON，未审未发布且非空Observation故意拒绝。唯一下一动作补原Observation/模型时间/范围/水位及legacy读取反例，再公共只读producer/受控刷新/真实serializer golden，同一完整查询节点结束集中审查。不能把private-source-01发布或把C06标通过；根仍在使用，不能清理。基础软件不关闭整个W15、L03/G3/B01准确性、facts/F05、TH/IN或200家公司live，已通过未改范围不重测全仓/UI、不增小节点审查。以下旧状态仅为历史。
 
 
