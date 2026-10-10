@@ -1,3 +1,8 @@
+**2026-10-11 EVID R1续验收口（下方旧未接收描述为历史；C06工程仍checkpoint11）：** EVID完整R1收到70498e4，产品44aa204，258原源/91工件/213输入锁均匹配且结束未变。交接公开CLI结构exit0不等于验收；原样隔离修正回归150P/64F，源根绝对绑定令正常输入先拒绝，不能把无关exit2当反例通过。以213项原字节验证的明确合成重定位锁区分语义缺陷，16案中4正控通过，11缺陷案复现；真实Windows junction单项接续复现，共九类根因，另两内容口径静态，仍changes_requested。R1成果保留，本地EVID-REF-02-R2卡准备好，未自动派发/代改源仓，不增加helper门。520文件/183目录strict自有清理完成，实际CIM0；原C06活根/外仓/共享TEMP不动，socket/API/下载0。FACT d00e2b64活动R2，用户授权的CodeGraph已存在，不重复init/验收半成品。9c2f5fed checkpoint11四份获准PWF文档此前已正常提交并非强推到origin，原回执11证明远端一致；私有源码/本次Lab证据与整改卡不自动导出。
+
+**唯一下一动作仍是Phase113步骤4：** 接原compact pool与有界QueryCaptureStore，完成具名search/candidate_set wire、固定snapshot/分页/完整SubjectRef/规则/字段资格与时效；2.0 get_profiles保持。这里只完成外包续验，不关闭C06/W15/G3/F05/L03/B01/facts/UI/TH-IN/全池门；c15a和real-owner-01继续保留，同一整个C06节点完成后集中审查/源发布/strict清理一次。不要重跑EVID旧包或上述已执行控制器，不以150P或合成CLI声称金融准确；先前214P是交付者源环境自报，本轮实际150P/64F二者分别留档。
+
+
 **2026-10-11 checkpoint11：原零派发接续与完整名单读投影（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** 原ACK引用/撤权、活租约与不确定发送逐项已验证，unknown不重问、不读新模型凭据；unc2实际pytest 1P而wrapper因当日新脱敏日志exit1，原失败和独立精确源核验分开保留，没有覆盖或重跑。原按需读完整主体成员闭包及latest完整可比性修复已113P。OwnerPoolReader复用原owner universe/active membership、原C06 <=100批读及实际OS原绑定验证，只保留原观察引用/共享口径；121条2批和真实native正例8P，另2000条全合成容量1P/89.26s、20批不截断，退池历史容量反例修复后3P。83累计私有候选/10变化/20原终态批次真实固定producer-checkpoint-11.json，0API/生产库或名单写，原guard raw不变；这些测试组有重叠，不累加为金融准确率。全局门保持开放，整个C06未集中审查/源发布，公开capabilities仍仅get_profiles，c15a/real-owner-01继续保留。
 
 **唯一下一工程动作：** 在同一Phase113步骤4把内部compact pool索引接原QueryCaptureStore的有界持久化和具名search/candidate_set wire；旧2.0 get_profiles原件保持，固定snapshot/query/规则/完整SubjectRef/原观察ID与模型时间。字段有效期/资格不得从availability、导入ACK或未判定时效推断；新接口不能提前宣布ready。随后补原C06剩余操作并仅做整个节点一次集中审查、源发布与strict自有清理，不加helper审查。不要再跑已绿引用/活租约/unknown/2000容量，除非相关行为发生新的变更。最近真实冻结是11，原10/失败/360秒超时全部保留；没有真实人类同意或金融准确性通过。
