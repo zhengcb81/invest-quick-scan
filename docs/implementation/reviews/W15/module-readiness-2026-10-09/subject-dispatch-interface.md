@@ -1,0 +1,19 @@
+# C06事前主体绑定接续：实际时序与不可变来源
+
+原Phase113同一节点实施，不新增审查门。当前起点e0e50cb，原SW/QA源分别a5a97d6/6aafc32；只在自有c15a做候选与TDD，生产源未发布。
+
+实查StockQA begin_quick_scan_send先prepare_attempt，再mark_send_intent，服务request_id通过record_response后才写入。原标准Observation只能在回答后取得ID/hash；因此不得制造一个“发送前已含答案hash”的事件。
+
+实施采用两个不可变对象：
+1. owner在发送前登记dispatch receipt，绑定本地work/request-cache/attempt、完整SubjectRef、原问题/字段/语义与定义hash、identity/manifest/prompt摘要、实际选择的provider/model_requested及信息截止日。registered_at由owner产生，请求不能自填过去时间。独立可信输入来自当前route/原frozen context，不接收LLM正文作为authority；公共CLI接线必须在owner侧重新核当前route，不给请求自填expected参数。
+2. 原答案到达后，既有import验证原package/item/Observation；同一Observation/ACK事务根据已保存attempt+question登记事后binding，关联原Observation ID/hash/服务request_id与事前receipt。其recorded_before_send_at只表示所引用的事前登记时间，实际事后绑定另存bound_at。答案原JSON/ID/hash不加主体字段或重写。
+
+存储复用现有scan_observations.sqlite，用显式schema3新增dispatch/binding表与不可变trigger；不创建另一个权威公司库。当前候选先用扩展owner store复用原迁移/import/ACK代码，原178文件不改；公开consumer接线后须唯一选择扩展store，不混用旧schema2 writer。旧schema2只读历史兼容保留；旧程序面对新schema明确拒绝，不能降级写入。
+
+实际继承接线的最小必要修订：原store的replay_decisions写死schema2，增加READ_SCHEMA_VERSION类级读取扩展点，默认2不改原迁移/写上界；schema3子类声明3。只有这一私有原源候选发生hunk修改，subject-candidate-inputs-01同时记录旧/新raw SHA，其他177原依赖不变，生产源未改。不得复制整个replay实现或修改module全局常量让旧writer降级新库。
+
+实际标准Observation1.1 schema不含identity_revision、listing_id、analysis_subject属性；当前StockQA完整producer也不含，不能补进原JSON或强要求原答案带这些字段。它们由事前owner/context冻结并按attempt关联；原答案现有entity/security/segment/scope、模块/问题/定义/语义版本、provider/requested模型、prompt、cutoff等必须逐项匹配。原registry/context根仍是独立可信来源，不从答案生成expected；公共adapter尚待接线。
+
+已导入旧答案不得事后注册/挂新subject；没有事前receipt的记录依然legacy_unbound。重复dispatch是原事件精确重放，重复package返回原ACK/旧绑定。绑定的scope、字段/问题、provider/requested模型/attempt、版本/hash、时间与原答案不一致必须整包rollback。当前owner read投影需同时对照保存的pre-receipt、post-binding与原ACK，而非仅信query自带hash；current coverage与独立证据/TTL资格仍分开。
+
+下一接线顺序保持连续：登记/事务绑定primitive及读投影→原StockQA context2/实际begin boundary和可信OS CLI登记、持久引用→原consumer/route-refresh接入、TTL/公共query/耐久snapshot→实际owner golden→同一完整节点集中审查。primitive合成SQLite测试不证明真实事前HTTP生产、金融准确性、G3/F05或全链已完成。

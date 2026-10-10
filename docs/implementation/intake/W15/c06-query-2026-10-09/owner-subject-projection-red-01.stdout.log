@@ -1,0 +1,74 @@
+............FFF                                                          [100%]
+================================== FAILURES ===================================
+_ test_actual_pre_and_post_owner_records_produce_bound_original_current_projection _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-projection-red-01/test_actual_pre_and_post_owner0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D75845ED50>
+
+    def test_actual_pre_and_post_owner_records_produce_bound_original_current_projection(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        pre=register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+        store.apply_decisions([decision])
+        reader,request=query(paths,dispatch,history=False)
+        response=reader.get_profiles(request)
+>       assert response['result']['status']=='ok'
+E       AssertionError: assert 'unavailable' == 'ok'
+E         
+E         - ok
+E         + unavailable
+
+tests\test_quick_scan_subject_dispatch.py:178: AssertionError
+_ test_bound_original_is_never_reassigned_to_requested_later_subject_revision _
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-projection-red-01/test_bound_original_is_never_r0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D75839EA50>
+
+    def test_bound_original_is_never_reassigned_to_requested_later_subject_revision(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+        store.apply_decisions([decision])
+        reader,request=query(paths,dispatch)
+        request['payload']['subject_refs'][0]['analysis_subject_revision']=2
+        response=reader.get_profiles(request)
+>       assert response['result']['status']=='coverage_gap'
+E       AssertionError: assert 'unavailable' == 'coverage_gap'
+E         
+E         - coverage_gap
+E         + unavailable
+
+tests\test_quick_scan_subject_dispatch.py:195: AssertionError
+_ test_bound_and_unbound_originals_remain_separate_in_the_same_schema3_store __
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-projection-red-01/test_bound_and_unbound_origina0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D7583A78B0>
+
+    def test_bound_and_unbound_originals_remain_separate_in_the_same_schema3_store(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+        store.apply_decisions([decision])
+        legacy=copy.deepcopy(decision)
+        obs=legacy['observation']
+        obs['execution']['attempt_id']='LEGACY_ATT'
+        obs['observation_id']='obs_'+qc._digest({k:v for k,v in obs.items() if k!='observation_id'})
+        legacy['observation_id']=obs['observation_id']
+        legacy['payload_sha256']=qc._digest(obs)
+        legacy['item_id']='itm_'+qc._digest({k:legacy[k] for k in ('observation_id','payload_sha256')})
+        legacy['exec_key']=qc._digest(obs['execution'])
+        store.apply_decisions([legacy])
+        reader,request=query(paths,dispatch)
+        response=reader.get_profiles(request)
+>       assert response['result']['status']=='ok'
+E       AssertionError: assert 'unavailable' == 'ok'
+E         
+E         - ok
+E         + unavailable
+
+tests\test_quick_scan_subject_dispatch.py:216: AssertionError
+=========================== short test summary info ===========================
+FAILED tests\test_quick_scan_subject_dispatch.py::test_actual_pre_and_post_owner_records_produce_bound_original_current_projection
+FAILED tests\test_quick_scan_subject_dispatch.py::test_bound_original_is_never_reassigned_to_requested_later_subject_revision
+FAILED tests\test_quick_scan_subject_dispatch.py::test_bound_and_unbound_originals_remain_separate_in_the_same_schema3_store
+3 failed, 12 passed in 5.23s

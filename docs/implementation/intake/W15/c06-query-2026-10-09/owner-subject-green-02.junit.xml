@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="12" time="2.259" timestamp="2026-10-10T16:46:27.464835+01:00" hostname="DESKTOP-156V213"><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_pre_receipt_exists_before_answer_and_after_binding_does_not_rewrite_original" time="0.227"><failure message="stockwiki.quick_scan_observations.ObservationImportError: observation_store_newer_schema: 3">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-02/test_pre_receipt_exists_before0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001AD5C6D82B0&gt;
+
+    def test_pre_receipt_exists_before_answer_and_after_binding_does_not_rewrite_original(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        pre=register(store,dispatch)
+        assert 'observation_id' not in pre and 'execution_request_id' not in pre
+        assert store.counts()['observations']==0
+        clock[0]='2026-10-10T08:59:00Z'
+&gt;       ack=store.apply_decisions([decision])[0]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_subject_dispatch.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:359: in apply_decisions
+    replay = self.replay_decisions(decisions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001AD5C71D940&gt;
+decisions = [{'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b25...251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}]
+
+    def replay_decisions(self, decisions: list[dict[str, Any]]) -&gt; list[dict[str, Any]] | None:
+        """Return only an exact ALL-item ledger replay, using read-only SQLite.
+    
+        This reconciles historical wire bytes; it never generates a new ACK,
+        upgrades a store, backfills audit or reinterprets the old outcome.
+        """
+        if not decisions or not self.database_path.exists():
+            return None
+        fields = ("package_id", "item_id", "observation_id", "payload_sha256")
+        if any(
+            not isinstance(value, dict)
+            or any(not isinstance(value.get(field), str) for field in fields)
+            for value in decisions
+        ):
+            return None
+        with closing(
+            sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+        ) as con:
+            con.row_factory = sqlite3.Row
+            con.execute("BEGIN")
+            version = int(con.execute("PRAGMA user_version").fetchone()[0])
+            if version &gt; SCHEMA_VERSION:
+&gt;               raise ObservationImportError("observation_store_newer_schema", str(version))
+E               stockwiki.quick_scan_observations.ObservationImportError: observation_store_newer_schema: 3
+
+stockwiki\quick_scan_observations.py:681: ObservationImportError</failure></testcase><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_registration_and_package_restart_replay_preserve_both_original_receipts" time="0.126"><failure message="stockwiki.quick_scan_observations.ObservationImportError: observation_store_newer_schema: 3">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-02/test_registration_and_package_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001AD5C567BB0&gt;
+
+    def test_registration_and_package_restart_replay_preserve_both_original_receipts(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        pre=register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+&gt;       first=store.apply_decisions([decision])[0]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_subject_dispatch.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:359: in apply_decisions
+    replay = self.replay_decisions(decisions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001AD5C5EFB10&gt;
+decisions = [{'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b25...251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}]
+
+    def replay_decisions(self, decisions: list[dict[str, Any]]) -&gt; list[dict[str, Any]] | None:
+        """Return only an exact ALL-item ledger replay, using read-only SQLite.
+    
+        This reconciles historical wire bytes; it never generates a new ACK,
+        upgrades a store, backfills audit or reinterprets the old outcome.
+        """
+        if not decisions or not self.database_path.exists():
+            return None
+        fields = ("package_id", "item_id", "observation_id", "payload_sha256")
+        if any(
+            not isinstance(value, dict)
+            or any(not isinstance(value.get(field), str) for field in fields)
+            for value in decisions
+        ):
+            return None
+        with closing(
+            sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+        ) as con:
+            con.row_factory = sqlite3.Row
+            con.execute("BEGIN")
+            version = int(con.execute("PRAGMA user_version").fetchone()[0])
+            if version &gt; SCHEMA_VERSION:
+&gt;               raise ObservationImportError("observation_store_newer_schema", str(version))
+E               stockwiki.quick_scan_observations.ObservationImportError: observation_store_newer_schema: 3
+
+stockwiki\quick_scan_observations.py:681: ObservationImportError</failure></testcase><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[subject_ref-value0]" time="0.103" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[question_id-IQS_02]" time="0.108" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[provider-foreign]" time="0.095" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[model_requested-foreign]" time="0.120" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[dispatch_prompt_sha256-9999999999999999999999999999999999999999999999999999999999999999]" time="0.109" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_old_import_cannot_be_retroactively_registered_or_bound" time="0.124"><failure message="stockwiki.quick_scan_observations.ObservationImportError: observation_store_newer_schema: 3">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-02/test_old_import_cannot_be_retr0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001AD5C798B90&gt;
+
+    def test_old_import_cannot_be_retroactively_registered_or_bound(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        clock[0]='2026-10-10T08:59:00Z'
+&gt;       store.apply_decisions([decision])
+
+tests\test_quick_scan_subject_dispatch.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:359: in apply_decisions
+    replay = self.replay_decisions(decisions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001AD5C75BCE0&gt;
+decisions = [{'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b25...251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}]
+
+    def replay_decisions(self, decisions: list[dict[str, Any]]) -&gt; list[dict[str, Any]] | None:
+        """Return only an exact ALL-item ledger replay, using read-only SQLite.
+    
+        This reconciles historical wire bytes; it never generates a new ACK,
+        upgrades a store, backfills audit or reinterprets the old outcome.
+        """
+        if not decisions or not self.database_path.exists():
+            return None
+        fields = ("package_id", "item_id", "observation_id", "payload_sha256")
+        if any(
+            not isinstance(value, dict)
+            or any(not isinstance(value.get(field), str) for field in fields)
+            for value in decisions
+        ):
+            return None
+        with closing(
+            sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+        ) as con:
+            con.row_factory = sqlite3.Row
+            con.execute("BEGIN")
+            version = int(con.execute("PRAGMA user_version").fetchone()[0])
+            if version &gt; SCHEMA_VERSION:
+&gt;               raise ObservationImportError("observation_store_newer_schema", str(version))
+E               stockwiki.quick_scan_observations.ObservationImportError: observation_store_newer_schema: 3
+
+stockwiki\quick_scan_observations.py:681: ObservationImportError</failure></testcase><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_registration_after_actual_send_time_rolls_back_answer_and_ack" time="0.128"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'subject_dispatch_original_mismatch'&#10;  Actual message: 'observation_store_newer_schema: 3'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-02/test_registration_after_actual0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001AD5C783C50&gt;
+
+    def test_registration_after_actual_send_time_rolls_back_answer_and_ack(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        clock[0]='2026-10-10T08:58:00Z'
+        register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+&gt;       with pytest.raises(ObservationImportError,match='subject_dispatch_original_mismatch'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'subject_dispatch_original_mismatch'
+E         Actual message: 'observation_store_newer_schema: 3'
+
+tests\test_quick_scan_subject_dispatch.py:109: AssertionError</failure></testcase><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_same_attempt_question_cannot_register_two_subject_revisions" time="0.133" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_sidecars_are_sqlite_immutable_and_old_writer_refuses_schema3" time="0.136"><failure message="stockwiki.quick_scan_observations.ObservationImportError: observation_store_newer_schema: 3">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-02/test_sidecars_are_sqlite_immut0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001AD5C76F3F0&gt;
+
+    def test_sidecars_are_sqlite_immutable_and_old_writer_refuses_schema3(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+&gt;       store.apply_decisions([decision])
+
+tests\test_quick_scan_subject_dispatch.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:359: in apply_decisions
+    replay = self.replay_decisions(decisions)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001AD5C780D70&gt;
+decisions = [{'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b25...251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}]
+
+    def replay_decisions(self, decisions: list[dict[str, Any]]) -&gt; list[dict[str, Any]] | None:
+        """Return only an exact ALL-item ledger replay, using read-only SQLite.
+    
+        This reconciles historical wire bytes; it never generates a new ACK,
+        upgrades a store, backfills audit or reinterprets the old outcome.
+        """
+        if not decisions or not self.database_path.exists():
+            return None
+        fields = ("package_id", "item_id", "observation_id", "payload_sha256")
+        if any(
+            not isinstance(value, dict)
+            or any(not isinstance(value.get(field), str) for field in fields)
+            for value in decisions
+        ):
+            return None
+        with closing(
+            sqlite3.connect(self.database_path.as_uri() + "?mode=ro", uri=True, timeout=30.0)
+        ) as con:
+            con.row_factory = sqlite3.Row
+            con.execute("BEGIN")
+            version = int(con.execute("PRAGMA user_version").fetchone()[0])
+            if version &gt; SCHEMA_VERSION:
+&gt;               raise ObservationImportError("observation_store_newer_schema", str(version))
+E               stockwiki.quick_scan_observations.ObservationImportError: observation_store_newer_schema: 3
+
+stockwiki\quick_scan_observations.py:681: ObservationImportError</failure></testcase><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_atomic_batch_does_not_keep_first_answer_when_second_binding_is_wrong" time="0.137"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'subject_dispatch_original_mismatch'&#10;  Actual message: 'observation_store_newer_schema: 3'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-02/test_atomic_batch_does_not_kee0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001AD5C677E10&gt;
+
+    def test_atomic_batch_does_not_keep_first_answer_when_second_binding_is_wrong(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        register(store,dispatch)
+        other_dispatch=copy.deepcopy(dispatch)
+        other_dispatch['execution_attempt_id']='SYN_ATT_2'
+        register(store,other_dispatch)
+        other=copy.deepcopy(decision)
+        other['observation']['execution']['attempt_id']='SYN_ATT_2'
+        other['observation']['execution']['model_requested']='foreign'
+        obs=other['observation']
+        obs['observation_id']='obs_'+qc._digest({k:v for k,v in obs.items() if k!='observation_id'})
+        other['observation_id']=obs['observation_id']
+        other['payload_sha256']=qc._digest(obs)
+        other['item_id']='itm_'+qc._digest({k:other[k] for k in ('observation_id','payload_sha256')})
+        other['exec_key']=qc._digest(obs['execution'])
+        clock[0]='2026-10-10T08:59:00Z'
+&gt;       with pytest.raises(ObservationImportError,match='subject_dispatch_original_mismatch'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'subject_dispatch_original_mismatch'
+E         Actual message: 'observation_store_newer_schema: 3'
+
+tests\test_quick_scan_subject_dispatch.py:156: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1873,3 +1873,8 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 已验证实际owner保存的原结构化payload/最初accepted ACK与序列可用于legacy_unbound历史投影，不能据数据库的subject列追认执行前的绑定。重复delivery仍保持观察/原ACK序列1，全局ACK可增至5,002；只有读原列、原JSON与原回执一致性后才提供可信引用。
 - 新subject反例显示仅校验JSON/hash不够：索引analysis_subject_id可被改为另一ID而原JSON/hash仍自洽。当前私有reader把主体/receipt索引字段与原JSON核对；不改真实owner数据或历史记录。
 - 指定snapshot复读要保留旧read_at，但response_at须不早于本次request；fresh请求仍不能用旧watermark。当前有界进程捕获支持该行为，重启明确不可用，不能把进程cache称公共耐久freeze。真实source serializer/sidecar/受控刷新仍原完整C06同批实施。
+
+### 两阶段主体来源的实际接线边界
+- 原标准Observation1.1确实不含identity_revision/listing_id/analysis_subject，EntityId是bounded string，并非旧摘要猜的ENT无连字符regex。身份/挂牌从独立事前receipt/context冻结，不补原JSON；题目/模块/定义/语义、实际选择的provider/requested模型、prompt、cutoff等与原字段逐项匹配。
+- 发送前只已有本地工作/attempt；服务request_id和答案hash在响应后才有，不能制造含这些内容的过去事件。实际owner事务已支持事后不可变绑定、重启精确重放和整批rollback；primitive合成测试不代替公共authority或真实HTTP前生产。
+- provider/题目改写不能因查不到自己的pre-receipt降成legacy逃逸。当前按本地attempt+question关联并拒已登记attempt的未登记题目，未登记的真正旧attempt继续历史只读。当前availability仍不是TTL/白名单或金融准确性签收。

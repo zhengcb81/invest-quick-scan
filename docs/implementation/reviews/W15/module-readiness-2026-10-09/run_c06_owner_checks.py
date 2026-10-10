@@ -25,8 +25,15 @@ def main():
     label=sys.argv[1]
     assert re.fullmatch(r'owner-[a-z][a-z0-9-]{1,65}',label)
     assert not (OUT/(label+'.process.json')).exists()
+    candidates_path=OUT/'subject-candidate-inputs-01.json'
+    candidates=json.loads(candidates_path.read_bytes()) if candidates_path.exists() else {'StockWiki':{}}
+    assert set(candidates['StockWiki'])<={'stockwiki/quick_scan_observations.py'}
     for row in json.loads((OUT/'stockwiki-inputs-01.json').read_bytes())['files']:
-        assert sha((OWN/'sw'/row['path']).read_bytes())==row['execution_sha256']
+        candidate=candidates['StockWiki'].get(row['path'])
+        if candidate is not None:
+            assert candidate['original_sha256']==row['execution_sha256']
+        expected=row['execution_sha256'] if candidate is None else candidate['candidate_sha256']
+        assert sha((OWN/'sw'/row['path']).read_bytes())==expected
     for row in json.loads((OUT/'inputs-01.json').read_bytes())['IQS_nonsecret_inputs']:
         assert sha((OWN/'iqs'/row['path']).read_bytes())==row['execution_sha256']
     domains=json.loads((OUT/'guard-byte-domains-01.json').read_bytes())
@@ -40,9 +47,11 @@ def main():
         PYTEST_DISABLE_PLUGIN_AUTOLOAD='1',IQS_C06_OWN=str(OWN),
         PYTHONPATH=os.pathsep.join((str(OWN/'guard'),str(OWN/'sw'),str(OWN/'iqs/scripts'))),
         TEMP=str(OWN/'tmp'),TMP=str(OWN/'tmp'),TMPDIR=str(OWN/'tmp'))
+    test_file=('tests/test_quick_scan_subject_dispatch.py' if label.startswith('owner-subject-')
+               else 'tests/test_quick_scan_query_v2.py')
     command=[sys.executable,'-B','-X','utf8','-m','pytest','-c',str(OWN/'pytest.ini'),'-q',
         '--basetemp='+str(OWN/label),'--junitxml='+str(OUT/(label+'.junit.xml')),
-        'tests/test_quick_scan_query_v2.py']
+        test_file]
     start=time.monotonic()
     process=subprocess.Popen(command,cwd=OWN/'sw',env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     print(json.dumps({'label':label,'pid':process.pid}),flush=True)
@@ -54,7 +63,9 @@ def main():
         'wall_s':round(time.monotonic()-start,3),'command':command,'source_unchanged':True,
         'sources_sha256':sha(sources.read_bytes()),'stdout_sha256':sha(stdout),'stderr_sha256':sha(stderr),
         'actual_guard_raw_sha256':domains['raw_execution_sha256'],'source_written':False,
-        'API_requests':0,'real_company_golden':False}
+        'API_requests':0,'real_company_golden':False,
+        'declared_modified_baseline_paths':list(candidates['StockWiki']),
+        'candidate_input_sha256':sha(candidates_path.read_bytes()) if candidates_path.exists() else None}
     (OUT/(label+'.process.json')).write_text(json.dumps(result,indent=2)+'\n','utf-8')
     print((stdout+stderr).decode(errors='replace')[-2300:])
     print(json.dumps(result))

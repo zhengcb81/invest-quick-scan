@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**唯一当前动作更新（2026-10-10，以下快照均为历史）：** 在仍独占c15a接StockQA context2/实际before-send、可信固定OS CLI登记与持久receipt引用，再接consumer/route-refresh、TTL资格、公共query CLI/耐久snapshot及实际owner golden。原C06同节点两阶段owner primitive/事务绑定/读投影已私有23P/6.62s，历史读取回归33P/45.93s、纯契约65P/1.49s，各组均终态、不能相加为金融准确率。事前只登记本地attempt/主体/题目/版本与摘要，答案后在原Observation/ACK事务里关联原ID/hash/服务request_id；原JSON不改、旧答案不补绑。schema3复用原观察库，仅1原SW私有候选声明读取扩展点，177原SW/64原IQS依赖及guard保持，本段生产源未写、0API。原件subject-checkpoint-01/private-subject-01；真实HTTP发送前producer与公共authority adapter仍未接，不能从public request自填expected_dispatch。完整C06收尾才同一大节点集中审查，所有原证据门开放；c15a不能清，两内容施工包未派发，全计划active目标保持。
+
 **唯一当前动作（2026-10-10，覆盖下方所有历史快照）：** 原Phase113/C06步骤4继续实施事前subject sidecar生产/事务导入与当前主体投影，再原route/refresh的资格/TTL、公共query CLI/耐久snapshot和实际owner serializer golden。最新私有reader已33P/20.22s，原答案契约65P/0.89s，两组为真实组件合成数据/独立批次、不合成金融准确率；非空旧记录可保留原字节/模型/时间和原ACK作为独立legacy_unbound历史，不计当前主体覆盖。冻结snapshot现在仅同reader进程内32份/16MiB/一小时，未知/过期/不同query或重启不读live替换；尚非公开耐久快照。原件见owner-reader-checkpoint-02，当前测试handle均终态；178原SW/64原IQS输入及生产源不变，0API，c15a仍在使用不可清。完整C06同节点集中审查尚待，W15/G3/F05/L03/TH-IN/金融准确性/全池门不变。两独立支撑施工包已交付文档，未派发；总目标实际active、无预算设置，继续完成原计划，不以本段私有软件进展签收全链。
 
 **2026-10-10 主线最新：** 两个独立施工包和PWF实际回执已正常提交推送24743f3/bc41b25，尚未替harness派发。C06私有原答案契约62P保留；新真实SQLite只读owner reader最终13P/1.62s，修复缺身份/subject库错误解引用，逐源拒绝缺库/未知schema/读失败/活WAL，无迁移写入。原RED和执行SHA绑定的两候选已存owner-reader-checkpoint-01，不是产品发布/真实公司golden，也未增加独审小门。下一工程动作继续原Phase113的非空原Observation/独立未绑定历史投影与有效冻结snapshot，再事前subject sidecar、当前资格/TTL、受控刷新/实际owner serializer golden，同一完整节点集中审查。178原SW/64原IQS输入及生产源不变，0API；c15a仍在使用不能清。下段collection RED等为历史，原G3/F05/L03/TH-IN/200家live门保持。
@@ -1637,7 +1639,7 @@ Status: in_progress
 - [x] 在全新独占环境TDD实现评分基础链：模块新增/退役、语义时效、路由锚点、历史只读、事务回滚、真实公开CLI与Q13动作接线。
 - [x] 基础范围完成受影响单元/集成和公开入口E2E、同一次集中审查、正常源交付与严格自有清理；整个W15/C06/L03/G3/F05/金融准确性仍开放。
 - [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。
-- 当前私有原答案契约65P与真实SQLite合成历史/读取故障reader33P均已留执行原件；旧未绑定非空历史可读但不计当前覆盖，有效snapshot仅支持同reader进程内有界重读，尚待耐久公共freeze。事前subject sidecar/当前投影、TTL资格/公开CLI与实际golden仍同一节点接续。六候选及guard原字节保存到owner-reader-checkpoint-02，178原SW/64原IQS输入与生产源不变，0API。未审未发布，不作为真实公司golden；c15a仍在使用。
+- 最新subject-checkpoint-01冻结两阶段owner primitive/事务绑定/当前读投影23P、旧历史回归33P、纯契约65P；各批独立合成软件范围，未审未发布。schema3旧writer不降级写，原答案不改/旧记录不补绑。仍待真实StockQA before-send/context2、公共authority/consumer/refresh、TTL/query CLI/耐久snapshot与实际golden，同节点收尾集中审查。只有1原SW私有候选声明读取扩展点，177原SW/64原IQS依赖保持；旧checkpoint不覆盖，0API，c15a仍在用。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
 Status: complete_for_package_design_only; workers_not_dispatched

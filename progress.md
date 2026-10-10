@@ -2747,3 +2747,14 @@
 - 当前-uall只读状态另见新未跟踪nul，归属未确认，内容未读/不删除/不暂存；与原opencode一起保留，不能猜测为本次组件产物或临时垃圾。正常Git本批仅精确私有checkpoint/PWF范围。
 - 历史/冻结捕获私有checkpoint实际正常提交推送ccd3b464c34af2c810309e2ed57598fe4bb6e0b4：41精确路径，原工件staged字节核对通过，origin/master同HEAD；原opencode与新未知nul均未读/未删除/未暂存。此为私有进度留档，产品未发布、整C06/W15原门不变，自有c15a仍保留。实际commit/push PID10988/11344均终态0。
 - 后续只读源码勘察发现事前receipt与事后Observation ID/hash必须分开：答案hash尚未产生时不能声称已在发送前保存；后续sidecar应链接真实事前冻结事件及事后原答引用，不能临时制造过去时间。原owner_refresh/transport只读当前文件确认，未改生产源。一次源码Get-Content工具只打印output而未保存返回handle，不能据半段输出认定完整读取成功；独立具名Python只读读取已终态0，后续全部exec返回session/exit metadata。沙箱CIM资源不可访问，未据此断言旧shell无活进程、未kill其他进程；无收费或数据写操作。
+
+### 2026-10-10 C06两阶段主体登记／事务导入及读取接续
+- 上一目标回合为progress，真实起点e0e50cb/uall仅原opencode和未知nul；根PWF sole writer，既有全授权有效。两个内容包不重做、不派发，生产QA/SW本段未写。
+- 实查begin先prepare再mark，服务request_id及Observation ID/hash在回答后才有。subject-dispatch-interface固定两个不可变对象：owner事前receipt、本地attempt与完整SubjectRef/题目/模块/版本/摘要；事后binding在原Observation/ACK事务里引用前事件，另存bound_at。旧记录不补绑、原JSON不添加subject/身份字段。
+- 原继承replay写死schema2，私有最小hunk提供READ_SCHEMA_VERSION（默认2），原迁移写上界不变；子类显式schema3。subject-candidate-inputs-01保存1原SW旧/新SHA，177原SW/64原IQS依赖保持。没有复制import/ACK/replay或改global常量让旧writer降级新库。
+- owner-subject-red-01原5312终态2，1 collection error/0.64s，不称执行12漏洞。green01实际5P/7F（internal consumer enum），green02 6P/6F（继承reader拒3与fixture误用import_items而原名acked_items），green03 9P/3F（实现错误要求原schema没有的identity_revision），green04 9P/3F（共享validator调用漏payload_sha），失败原件全保留。green05原10360终态0，12P/4.32s。
+- schema3投影projection-red01原10360终态1，3F/12P/5.23s；projection-green01原21772终态0，15P/4.14s。重复PID属于前进程已终态后的新进程，不能只据PID认作同handle。新增provider/题目逃逸、版本/prompt不符、触发器缺失和bound_at早于ACK反例；owner-subject-final-01原21772终态0，23P/6.62s/controller8.217s。按本地attempt+question冻结，不因provider改写或未登记题目逃逸成legacy。
+- 同批必要回归因reader/QC分组有改动：owner-history-regression-01原10256终态0，33P/45.93s/controller47.285s；contract-subject-01原22488终态0，65P/1.49s/controller2.659s。三批源SHA稳定、guard abc0128d不变、0API/合成真实组件，各分母独立，不相加为金融准确率。
+- primitive expected_dispatch只属于可信adapter独立输入，公共CLI不能由请求自填；实际StockQA context2/HTTP边界、owner authority/consumer/refresh、TTL/query CLI/耐久snapshot/真实golden仍待。原所有门保持，完整C06大节点结束才集中审查，不增加helper审查。
+- subject-checkpoint-01/private-subject-01已冻结10候选、原SW旧基线/guard，绑定三final .sources/process SHA，旧档案不覆盖。PWF首次整批apply_patch因handoff长行只取前缀被原子拒绝，实查四文件均未写；改为完整读取/一次性具名更新，不重跑测试。c15a仍用，未知nul/opencode不读不动，正常Git待真实回执，不预报成功。
+- 正常Git首次执行在创建进程/stage前被自动审批拒绝，理由是含外仓StockWiki源码且目的地披露/私有性证据不足。没有绕过拒绝。gh只读工具缺失，不能声称已核私有；随后获准只读git show/ls-remote证明该完整原StockWiki文件已在同一既有origin交付快照，原/新baseline raw SHA均d0e0b5e且字节完全相同，origin/master仍e0e50cb。本批新module/测试为本助手编写的合成软件、core仅读取扩展点；destination-source-check-01保留事实与可见性未核限制，再据低风险证据请求自动复核原正常动作，未更换目的地/删证据或强推。

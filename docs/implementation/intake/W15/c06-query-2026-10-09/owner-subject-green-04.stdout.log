@@ -1,0 +1,413 @@
+FF........F.                                                             [100%]
+================================== FAILURES ===================================
+_ test_pre_receipt_exists_before_answer_and_after_binding_does_not_rewrite_original _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001A64246D940>
+con = <sqlite3.Connection object at 0x000001A64239FB50>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+>           binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+
+stockwiki\quick_scan_subject_dispatch.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\iqs\scripts\subject_dispatch_contract.py:97: in bind_original
+    qc._validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+obs = {'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason'...', 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...}
+row = {'binding_status': 'bound', 'subject_binding': {'protocol': 'stockwiki.observation_subject_binding/1.0.0', 'subject_re...'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}, 'observation_sequence': 1, 'ack_sequence': 1}
+owner_ref = {'question_contract': {'id': 'IQS_01', 'response_kind': 'score'}}
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_LOCAL_SYNTHETIC', 'consumer_id': 'invest-quick-scan', ...}
+watermark = {'read_at': '2026-10-10T08:59:00Z', 'observation_sequence': 1, 'ack_sequence': 1}
+subject_ref = {'analysis_subject_id': 'ASJ_22222222-2222-4222-8222-222222222222', 'analysis_subject_revision': 1, 'entity_id': 'ENT_11111111-1111-4111-8111-111111111111', 'listing_id': None, ...}
+
+    def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_ref):
+        execution=obs['execution']
+        answer=obs['answer']
+        start,end=_utc(execution['started_at']),_utc(execution['answered_at'])
+        if end<start or _utc(obs['observed_at'])!=end or end>_utc(watermark['read_at']):
+            raise ValueError('query_original_time_mismatch')
+        if obs['information_cutoff']>request['payload']['information_cutoff'] or obs['information_cutoff']>end.date().isoformat():
+            raise ValueError('query_original_after_information_cutoff')
+        if answer['question_id']!=obs['question_id']:
+            raise ValueError('query_original_question_mismatch')
+        # Reuse the answer owner's semantic validator. Fact contracts must come
+        # from the independently retained frozen question, never the answer.
+        contract=owner_ref.get('question_contract')
+        if answer['response_kind']=='fact':
+            if not isinstance(contract,dict) or contract.get('response_kind')!='fact':
+                raise ValueError('query_fact_question_contract_required')
+            question=contract
+        else:
+            question={'id':obs['question_id'],'response_kind':'score'}
+        registry=json.loads((ROOT/'questions/metric-registry.json').read_bytes())
+        try:
+            standard_answers.validate_content(answer,question,obs['information_cutoff'],
+                answer_schema=ANSWER_SCHEMA,metric_registry=registry)
+        except (ValueError,ValidationError,TypeError,KeyError) as exc:
+            raise ValueError('query_original_answer_semantics_invalid') from exc
+        if execution['search_status']=='executed' and not execution['search_receipt_id']:
+            raise ValueError('query_original_search_reference_missing')
+        if answer['status'] in ('scored','answered') and execution['search_status']!='executed':
+            raise ValueError('query_original_success_without_search')
+        if obs['task_mode']=='comparison' and not obs['comparison_group_id']:
+            raise ValueError('query_original_comparison_group_missing')
+        if row['observation_sequence']>watermark['observation_sequence'] or row['ack_sequence']>watermark['ack_sequence']:
+            raise ValueError('query_original_beyond_watermark')
+        if obs['field_id'] not in request['payload']['field_ids']:
+            raise ValueError('query_unrequested_observation_field')
+        model_filter=request['payload']['model_filter']
+        if model_filter is not None and any(execution[k]!=model_filter[k] for k in ('provider','model_resolved')):
+            raise ValueError('query_original_model_filter_mismatch')
+        if subject_ref is not None:
+            if row['binding_status']!='bound' or row['subject_binding'] is None:
+                raise ValueError('query_unbound_history_in_current_profile')
+            binding=row['subject_binding']
+            if binding['subject_ref']!=subject_ref:
+                raise ValueError('query_original_subject_binding_mismatch')
+>           if (binding['observation_id']!=obs['observation_id'] or binding['payload_sha256']!=row['payload_sha256']
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^
+                or binding['execution_request_id']!=execution['request_id']
+                or binding['execution_attempt_id']!=execution['attempt_id']
+                or _utc(binding['recorded_before_send_at'])>start):
+E               KeyError: 'payload_sha256'
+
+..\iqs\scripts\query_contract.py:200: KeyError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-04/test_pre_receipt_exists_before0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A6424282B0>
+
+    def test_pre_receipt_exists_before_answer_and_after_binding_does_not_rewrite_original(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        pre=register(store,dispatch)
+        assert 'observation_id' not in pre and 'execution_request_id' not in pre
+        assert store.counts()['observations']==0
+        clock[0]='2026-10-10T08:59:00Z'
+>       ack=store.apply_decisions([decision])[0]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_subject_dispatch.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:385: in apply_decisions
+    acks.append(self._apply_one(con, decision))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001A64246D940>
+con = <sqlite3.Connection object at 0x000001A64239FB50>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+            binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+        except (ValueError,TypeError,KeyError,RecursionError) as error:
+>           raise ObservationImportError('subject_dispatch_original_mismatch') from error
+E           stockwiki.quick_scan_observations.ObservationImportError: subject_dispatch_original_mismatch
+
+stockwiki\quick_scan_subject_dispatch.py:174: ObservationImportError
+_ test_registration_and_package_restart_replay_preserve_both_original_receipts _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001A642343D90>
+con = <sqlite3.Connection object at 0x000001A6424CD990>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+>           binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+
+stockwiki\quick_scan_subject_dispatch.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\iqs\scripts\subject_dispatch_contract.py:97: in bind_original
+    qc._validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+obs = {'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason'...', 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...}
+row = {'binding_status': 'bound', 'subject_binding': {'protocol': 'stockwiki.observation_subject_binding/1.0.0', 'subject_re...'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}, 'observation_sequence': 1, 'ack_sequence': 1}
+owner_ref = {'question_contract': {'id': 'IQS_01', 'response_kind': 'score'}}
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_LOCAL_SYNTHETIC', 'consumer_id': 'invest-quick-scan', ...}
+watermark = {'read_at': '2026-10-10T08:59:00Z', 'observation_sequence': 1, 'ack_sequence': 1}
+subject_ref = {'analysis_subject_id': 'ASJ_22222222-2222-4222-8222-222222222222', 'analysis_subject_revision': 1, 'entity_id': 'ENT_11111111-1111-4111-8111-111111111111', 'listing_id': None, ...}
+
+    def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_ref):
+        execution=obs['execution']
+        answer=obs['answer']
+        start,end=_utc(execution['started_at']),_utc(execution['answered_at'])
+        if end<start or _utc(obs['observed_at'])!=end or end>_utc(watermark['read_at']):
+            raise ValueError('query_original_time_mismatch')
+        if obs['information_cutoff']>request['payload']['information_cutoff'] or obs['information_cutoff']>end.date().isoformat():
+            raise ValueError('query_original_after_information_cutoff')
+        if answer['question_id']!=obs['question_id']:
+            raise ValueError('query_original_question_mismatch')
+        # Reuse the answer owner's semantic validator. Fact contracts must come
+        # from the independently retained frozen question, never the answer.
+        contract=owner_ref.get('question_contract')
+        if answer['response_kind']=='fact':
+            if not isinstance(contract,dict) or contract.get('response_kind')!='fact':
+                raise ValueError('query_fact_question_contract_required')
+            question=contract
+        else:
+            question={'id':obs['question_id'],'response_kind':'score'}
+        registry=json.loads((ROOT/'questions/metric-registry.json').read_bytes())
+        try:
+            standard_answers.validate_content(answer,question,obs['information_cutoff'],
+                answer_schema=ANSWER_SCHEMA,metric_registry=registry)
+        except (ValueError,ValidationError,TypeError,KeyError) as exc:
+            raise ValueError('query_original_answer_semantics_invalid') from exc
+        if execution['search_status']=='executed' and not execution['search_receipt_id']:
+            raise ValueError('query_original_search_reference_missing')
+        if answer['status'] in ('scored','answered') and execution['search_status']!='executed':
+            raise ValueError('query_original_success_without_search')
+        if obs['task_mode']=='comparison' and not obs['comparison_group_id']:
+            raise ValueError('query_original_comparison_group_missing')
+        if row['observation_sequence']>watermark['observation_sequence'] or row['ack_sequence']>watermark['ack_sequence']:
+            raise ValueError('query_original_beyond_watermark')
+        if obs['field_id'] not in request['payload']['field_ids']:
+            raise ValueError('query_unrequested_observation_field')
+        model_filter=request['payload']['model_filter']
+        if model_filter is not None and any(execution[k]!=model_filter[k] for k in ('provider','model_resolved')):
+            raise ValueError('query_original_model_filter_mismatch')
+        if subject_ref is not None:
+            if row['binding_status']!='bound' or row['subject_binding'] is None:
+                raise ValueError('query_unbound_history_in_current_profile')
+            binding=row['subject_binding']
+            if binding['subject_ref']!=subject_ref:
+                raise ValueError('query_original_subject_binding_mismatch')
+>           if (binding['observation_id']!=obs['observation_id'] or binding['payload_sha256']!=row['payload_sha256']
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^
+                or binding['execution_request_id']!=execution['request_id']
+                or binding['execution_attempt_id']!=execution['attempt_id']
+                or _utc(binding['recorded_before_send_at'])>start):
+E               KeyError: 'payload_sha256'
+
+..\iqs\scripts\query_contract.py:200: KeyError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-04/test_registration_and_package_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A6422B3BB0>
+
+    def test_registration_and_package_restart_replay_preserve_both_original_receipts(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        pre=register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+>       first=store.apply_decisions([decision])[0]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_subject_dispatch.py:75: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:385: in apply_decisions
+    acks.append(self._apply_one(con, decision))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001A642343D90>
+con = <sqlite3.Connection object at 0x000001A6424CD990>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+            binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+        except (ValueError,TypeError,KeyError,RecursionError) as error:
+>           raise ObservationImportError('subject_dispatch_original_mismatch') from error
+E           stockwiki.quick_scan_observations.ObservationImportError: subject_dispatch_original_mismatch
+
+stockwiki\quick_scan_subject_dispatch.py:174: ObservationImportError
+______ test_sidecars_are_sqlite_immutable_and_old_writer_refuses_schema3 ______
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001A6425746E0>
+con = <sqlite3.Connection object at 0x000001A642575210>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+>           binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+
+stockwiki\quick_scan_subject_dispatch.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\iqs\scripts\subject_dispatch_contract.py:97: in bind_original
+    qc._validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+obs = {'answer': {'basis': 'current', 'confidence': 'low', 'counterevidence': 'synthetic uncertainty', 'coverage': {'reason'...', 'industries': [], 'stage': 'unclassified', 'subtype': None}, 'comparison_group_id': None, 'construct_id': None, ...}
+row = {'binding_status': 'bound', 'subject_binding': {'protocol': 'stockwiki.observation_subject_binding/1.0.0', 'subject_re...'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}, 'observation_sequence': 1, 'ack_sequence': 1}
+owner_ref = {'question_contract': {'id': 'IQS_01', 'response_kind': 'score'}}
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_LOCAL_SYNTHETIC', 'consumer_id': 'invest-quick-scan', ...}
+watermark = {'read_at': '2026-10-10T08:59:00Z', 'observation_sequence': 1, 'ack_sequence': 1}
+subject_ref = {'analysis_subject_id': 'ASJ_22222222-2222-4222-8222-222222222222', 'analysis_subject_revision': 1, 'entity_id': 'ENT_11111111-1111-4111-8111-111111111111', 'listing_id': None, ...}
+
+    def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_ref):
+        execution=obs['execution']
+        answer=obs['answer']
+        start,end=_utc(execution['started_at']),_utc(execution['answered_at'])
+        if end<start or _utc(obs['observed_at'])!=end or end>_utc(watermark['read_at']):
+            raise ValueError('query_original_time_mismatch')
+        if obs['information_cutoff']>request['payload']['information_cutoff'] or obs['information_cutoff']>end.date().isoformat():
+            raise ValueError('query_original_after_information_cutoff')
+        if answer['question_id']!=obs['question_id']:
+            raise ValueError('query_original_question_mismatch')
+        # Reuse the answer owner's semantic validator. Fact contracts must come
+        # from the independently retained frozen question, never the answer.
+        contract=owner_ref.get('question_contract')
+        if answer['response_kind']=='fact':
+            if not isinstance(contract,dict) or contract.get('response_kind')!='fact':
+                raise ValueError('query_fact_question_contract_required')
+            question=contract
+        else:
+            question={'id':obs['question_id'],'response_kind':'score'}
+        registry=json.loads((ROOT/'questions/metric-registry.json').read_bytes())
+        try:
+            standard_answers.validate_content(answer,question,obs['information_cutoff'],
+                answer_schema=ANSWER_SCHEMA,metric_registry=registry)
+        except (ValueError,ValidationError,TypeError,KeyError) as exc:
+            raise ValueError('query_original_answer_semantics_invalid') from exc
+        if execution['search_status']=='executed' and not execution['search_receipt_id']:
+            raise ValueError('query_original_search_reference_missing')
+        if answer['status'] in ('scored','answered') and execution['search_status']!='executed':
+            raise ValueError('query_original_success_without_search')
+        if obs['task_mode']=='comparison' and not obs['comparison_group_id']:
+            raise ValueError('query_original_comparison_group_missing')
+        if row['observation_sequence']>watermark['observation_sequence'] or row['ack_sequence']>watermark['ack_sequence']:
+            raise ValueError('query_original_beyond_watermark')
+        if obs['field_id'] not in request['payload']['field_ids']:
+            raise ValueError('query_unrequested_observation_field')
+        model_filter=request['payload']['model_filter']
+        if model_filter is not None and any(execution[k]!=model_filter[k] for k in ('provider','model_resolved')):
+            raise ValueError('query_original_model_filter_mismatch')
+        if subject_ref is not None:
+            if row['binding_status']!='bound' or row['subject_binding'] is None:
+                raise ValueError('query_unbound_history_in_current_profile')
+            binding=row['subject_binding']
+            if binding['subject_ref']!=subject_ref:
+                raise ValueError('query_original_subject_binding_mismatch')
+>           if (binding['observation_id']!=obs['observation_id'] or binding['payload_sha256']!=row['payload_sha256']
+                                                                                               ^^^^^^^^^^^^^^^^^^^^^
+                or binding['execution_request_id']!=execution['request_id']
+                or binding['execution_attempt_id']!=execution['attempt_id']
+                or _utc(binding['recorded_before_send_at'])>start):
+E               KeyError: 'payload_sha256'
+
+..\iqs\scripts\query_contract.py:200: KeyError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-04/test_sidecars_are_sqlite_immut0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A6424DF150>
+
+    def test_sidecars_are_sqlite_immutable_and_old_writer_refuses_schema3(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+>       store.apply_decisions([decision])
+
+tests\test_quick_scan_subject_dispatch.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:385: in apply_decisions
+    acks.append(self._apply_one(con, decision))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001A6425746E0>
+con = <sqlite3.Connection object at 0x000001A642575210>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+            binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+        except (ValueError,TypeError,KeyError,RecursionError) as error:
+>           raise ObservationImportError('subject_dispatch_original_mismatch') from error
+E           stockwiki.quick_scan_observations.ObservationImportError: subject_dispatch_original_mismatch
+
+stockwiki\quick_scan_subject_dispatch.py:174: ObservationImportError
+=========================== short test summary info ===========================
+FAILED tests\test_quick_scan_subject_dispatch.py::test_pre_receipt_exists_before_answer_and_after_binding_does_not_rewrite_original
+FAILED tests\test_quick_scan_subject_dispatch.py::test_registration_and_package_restart_replay_preserve_both_original_receipts
+FAILED tests\test_quick_scan_subject_dispatch.py::test_sidecars_are_sqlite_immutable_and_old_writer_refuses_schema3
+3 failed, 9 passed in 5.39s

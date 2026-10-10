@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="15" time="5.067" timestamp="2026-10-10T16:52:41.068101+01:00" hostname="DESKTOP-156V213"><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_pre_receipt_exists_before_answer_and_after_binding_does_not_rewrite_original" time="0.234" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_registration_and_package_restart_replay_preserve_both_original_receipts" time="0.193" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[subject_ref-value0]" time="0.180" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[question_id-IQS_02]" time="0.211" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[provider-foreign]" time="0.199" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[model_requested-foreign]" time="0.207" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_request_cannot_replace_independent_owner_expected_dispatch[dispatch_prompt_sha256-9999999999999999999999999999999999999999999999999999999999999999]" time="0.204" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_old_import_cannot_be_retroactively_registered_or_bound" time="0.230" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_registration_after_actual_send_time_rolls_back_answer_and_ack" time="0.212" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_same_attempt_question_cannot_register_two_subject_revisions" time="0.191" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_sidecars_are_sqlite_immutable_and_old_writer_refuses_schema3" time="0.230" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_atomic_batch_does_not_keep_first_answer_when_second_binding_is_wrong" time="0.241" /><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_actual_pre_and_post_owner_records_produce_bound_original_current_projection" time="0.216"><failure message="AssertionError: assert 'unavailable' == 'ok'&#10;  &#10;  - ok&#10;  + unavailable">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-projection-red-01/test_actual_pre_and_post_owner0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D75845ED50&gt;
+
+    def test_actual_pre_and_post_owner_records_produce_bound_original_current_projection(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        pre=register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+        store.apply_decisions([decision])
+        reader,request=query(paths,dispatch,history=False)
+        response=reader.get_profiles(request)
+&gt;       assert response['result']['status']=='ok'
+E       AssertionError: assert 'unavailable' == 'ok'
+E         
+E         - ok
+E         + unavailable
+
+tests\test_quick_scan_subject_dispatch.py:178: AssertionError</failure></testcase><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_bound_original_is_never_reassigned_to_requested_later_subject_revision" time="0.238"><failure message="AssertionError: assert 'unavailable' == 'coverage_gap'&#10;  &#10;  - coverage_gap&#10;  + unavailable">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-projection-red-01/test_bound_original_is_never_r0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D75839EA50&gt;
+
+    def test_bound_original_is_never_reassigned_to_requested_later_subject_revision(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+        store.apply_decisions([decision])
+        reader,request=query(paths,dispatch)
+        request['payload']['subject_refs'][0]['analysis_subject_revision']=2
+        response=reader.get_profiles(request)
+&gt;       assert response['result']['status']=='coverage_gap'
+E       AssertionError: assert 'unavailable' == 'coverage_gap'
+E         
+E         - coverage_gap
+E         + unavailable
+
+tests\test_quick_scan_subject_dispatch.py:195: AssertionError</failure></testcase><testcase classname="sw.tests.test_quick_scan_subject_dispatch" name="test_bound_and_unbound_originals_remain_separate_in_the_same_schema3_store" time="0.217"><failure message="AssertionError: assert 'unavailable' == 'ok'&#10;  &#10;  - ok&#10;  + unavailable">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-projection-red-01/test_bound_and_unbound_origina0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D7583A78B0&gt;
+
+    def test_bound_and_unbound_originals_remain_separate_in_the_same_schema3_store(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+        store.apply_decisions([decision])
+        legacy=copy.deepcopy(decision)
+        obs=legacy['observation']
+        obs['execution']['attempt_id']='LEGACY_ATT'
+        obs['observation_id']='obs_'+qc._digest({k:v for k,v in obs.items() if k!='observation_id'})
+        legacy['observation_id']=obs['observation_id']
+        legacy['payload_sha256']=qc._digest(obs)
+        legacy['item_id']='itm_'+qc._digest({k:legacy[k] for k in ('observation_id','payload_sha256')})
+        legacy['exec_key']=qc._digest(obs['execution'])
+        store.apply_decisions([legacy])
+        reader,request=query(paths,dispatch)
+        response=reader.get_profiles(request)
+&gt;       assert response['result']['status']=='ok'
+E       AssertionError: assert 'unavailable' == 'ok'
+E         
+E         - ok
+E         + unavailable
+
+tests\test_quick_scan_subject_dispatch.py:216: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,302 @@
+FF........F.                                                             [100%]
+================================== FAILURES ===================================
+_ test_pre_receipt_exists_before_answer_and_after_binding_does_not_rewrite_original _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001820887D940>
+con = <sqlite3.Connection object at 0x00000182087AFB50>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+>           binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+
+stockwiki\quick_scan_subject_dispatch.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'dispatch_request': {'dispatch_identity_snapshot_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...: 'sdr_4f20e8cace719d6234f2eccc38f644ee38ac33ae581a17e9f8e7cdf267e21003', 'registered_at': '2026-10-09T19:59:00Z', ...}
+observation = {'schema_version': '1.1.0', 'entity_id': 'ENT_11111111-1111-4111-8111-111111111111', 'security_id': None, 'segment_id': None, ...}
+payload_sha256 = 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b'
+observation_sequence = 1, ack_sequence = 1, bound_at = '2026-10-10T08:59:00Z'
+
+    def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_sequence,bound_at):
+        """Post-answer binding references a real PREVIOUS owner registration."""
+        d=receipt['dispatch_request']
+        raw=module_contract.canonical_bytes(observation)
+        original=qc._original({'original_json_base64':base64.b64encode(raw).decode('ascii'),
+            'raw_sha256':hashlib.sha256(raw).hexdigest(),'payload_sha256':payload_sha256,
+            'observation_id':observation['observation_id']})
+        execution=original['execution']
+        ref=d['subject_ref']
+        if (any(original.get(k)!=ref[k] for k in ('entity_id','security_id','segment_id','scope'))
+            or original.get('listing_id')!=ref['listing_id']
+            or any(original.get(k)!=d[k] for k in ('question_id','field_id','identity_revision',
+                  'information_cutoff','question_definition_sha256','question_semantic_sha256'))
+            or any(execution[k]!=d[k] for k in ('provider','model_requested'))
+            or execution['attempt_id']!=d['execution_attempt_id']
+            or execution['prompt_sha256']!=d['dispatch_prompt_sha256']):
+>           raise ValueError('subject_dispatch_original_mismatch')
+E           ValueError: subject_dispatch_original_mismatch
+
+..\iqs\scripts\subject_dispatch_contract.py:81: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-03/test_pre_receipt_exists_before0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000182088342B0>
+
+    def test_pre_receipt_exists_before_answer_and_after_binding_does_not_rewrite_original(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        pre=register(store,dispatch)
+        assert 'observation_id' not in pre and 'execution_request_id' not in pre
+        assert store.counts()['observations']==0
+        clock[0]='2026-10-10T08:59:00Z'
+>       ack=store.apply_decisions([decision])[0]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_subject_dispatch.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:385: in apply_decisions
+    acks.append(self._apply_one(con, decision))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001820887D940>
+con = <sqlite3.Connection object at 0x00000182087AFB50>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+            binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+        except (ValueError,TypeError,KeyError,RecursionError) as error:
+>           raise ObservationImportError('subject_dispatch_original_mismatch') from error
+E           stockwiki.quick_scan_observations.ObservationImportError: subject_dispatch_original_mismatch
+
+stockwiki\quick_scan_subject_dispatch.py:174: ObservationImportError
+_ test_registration_and_package_restart_replay_preserve_both_original_receipts _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001820878BD90>
+con = <sqlite3.Connection object at 0x00000182088DD990>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+>           binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+
+stockwiki\quick_scan_subject_dispatch.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'dispatch_request': {'dispatch_identity_snapshot_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...: 'sdr_2722cfe3c31801558f5c3ce3d1e83f27dea2da612b7c8dfac9b310d84dc9df5e', 'registered_at': '2026-10-09T19:59:00Z', ...}
+observation = {'schema_version': '1.1.0', 'entity_id': 'ENT_11111111-1111-4111-8111-111111111111', 'security_id': None, 'segment_id': None, ...}
+payload_sha256 = 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b'
+observation_sequence = 1, ack_sequence = 1, bound_at = '2026-10-10T08:59:00Z'
+
+    def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_sequence,bound_at):
+        """Post-answer binding references a real PREVIOUS owner registration."""
+        d=receipt['dispatch_request']
+        raw=module_contract.canonical_bytes(observation)
+        original=qc._original({'original_json_base64':base64.b64encode(raw).decode('ascii'),
+            'raw_sha256':hashlib.sha256(raw).hexdigest(),'payload_sha256':payload_sha256,
+            'observation_id':observation['observation_id']})
+        execution=original['execution']
+        ref=d['subject_ref']
+        if (any(original.get(k)!=ref[k] for k in ('entity_id','security_id','segment_id','scope'))
+            or original.get('listing_id')!=ref['listing_id']
+            or any(original.get(k)!=d[k] for k in ('question_id','field_id','identity_revision',
+                  'information_cutoff','question_definition_sha256','question_semantic_sha256'))
+            or any(execution[k]!=d[k] for k in ('provider','model_requested'))
+            or execution['attempt_id']!=d['execution_attempt_id']
+            or execution['prompt_sha256']!=d['dispatch_prompt_sha256']):
+>           raise ValueError('subject_dispatch_original_mismatch')
+E           ValueError: subject_dispatch_original_mismatch
+
+..\iqs\scripts\subject_dispatch_contract.py:81: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-03/test_registration_and_package_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000182086BBBB0>
+
+    def test_registration_and_package_restart_replay_preserve_both_original_receipts(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        pre=register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+>       first=store.apply_decisions([decision])[0]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_subject_dispatch.py:74: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:385: in apply_decisions
+    acks.append(self._apply_one(con, decision))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001820878BD90>
+con = <sqlite3.Connection object at 0x00000182088DD990>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+            binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+        except (ValueError,TypeError,KeyError,RecursionError) as error:
+>           raise ObservationImportError('subject_dispatch_original_mismatch') from error
+E           stockwiki.quick_scan_observations.ObservationImportError: subject_dispatch_original_mismatch
+
+stockwiki\quick_scan_subject_dispatch.py:174: ObservationImportError
+______ test_sidecars_are_sqlite_immutable_and_old_writer_refuses_schema3 ______
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001820891C500>
+con = <sqlite3.Connection object at 0x000001820891D030>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+>           binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+
+stockwiki\quick_scan_subject_dispatch.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+receipt = {'dispatch_request': {'dispatch_identity_snapshot_sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...: 'sdr_07a95fa6b809dcf596d691552f86d755f07b7579507f35d55bf18cd5640dbf9c', 'registered_at': '2026-10-09T19:59:00Z', ...}
+observation = {'schema_version': '1.1.0', 'entity_id': 'ENT_11111111-1111-4111-8111-111111111111', 'security_id': None, 'segment_id': None, ...}
+payload_sha256 = 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b'
+observation_sequence = 1, ack_sequence = 1, bound_at = '2026-10-10T08:59:00Z'
+
+    def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_sequence,bound_at):
+        """Post-answer binding references a real PREVIOUS owner registration."""
+        d=receipt['dispatch_request']
+        raw=module_contract.canonical_bytes(observation)
+        original=qc._original({'original_json_base64':base64.b64encode(raw).decode('ascii'),
+            'raw_sha256':hashlib.sha256(raw).hexdigest(),'payload_sha256':payload_sha256,
+            'observation_id':observation['observation_id']})
+        execution=original['execution']
+        ref=d['subject_ref']
+        if (any(original.get(k)!=ref[k] for k in ('entity_id','security_id','segment_id','scope'))
+            or original.get('listing_id')!=ref['listing_id']
+            or any(original.get(k)!=d[k] for k in ('question_id','field_id','identity_revision',
+                  'information_cutoff','question_definition_sha256','question_semantic_sha256'))
+            or any(execution[k]!=d[k] for k in ('provider','model_requested'))
+            or execution['attempt_id']!=d['execution_attempt_id']
+            or execution['prompt_sha256']!=d['dispatch_prompt_sha256']):
+>           raise ValueError('subject_dispatch_original_mismatch')
+E           ValueError: subject_dispatch_original_mismatch
+
+..\iqs\scripts\subject_dispatch_contract.py:81: ValueError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-subject-green-03/test_sidecars_are_sqlite_immut0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000182088AF4D0>
+
+    def test_sidecars_are_sqlite_immutable_and_old_writer_refuses_schema3(tmp_path,monkeypatch):
+        paths,store,dispatch,decision,clock,old=workspace(tmp_path,monkeypatch)
+        register(store,dispatch)
+        clock[0]='2026-10-10T08:59:00Z'
+>       store.apply_decisions([decision])
+
+tests\test_quick_scan_subject_dispatch.py:128: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_observations.py:385: in apply_decisions
+    acks.append(self._apply_one(con, decision))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <stockwiki.quick_scan_subject_dispatch.SubjectBoundObservationStore object at 0x000001820891C500>
+con = <sqlite3.Connection object at 0x000001820891D030>
+decision = {'package_id': 'pkg_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'item_id': 'itm_c48004bdc02b252...6251a4433586933bfb7273c848', 'payload_sha256': 'b8ee5738b3f13a0b1782f3411bf2f80f17e8970926036ace1efde3c5fd4f494b', ...}
+
+    def _apply_one(self,con,decision):
+        ack=super()._apply_one(con,decision)
+        if ack['status']!='accepted':
+            return ack  # Never promote an existing legacy record on replay.
+        obs=decision['observation']
+        row=con.execute('SELECT * FROM quick_scan_subject_dispatch '
+            'WHERE provider=? AND execution_attempt_id=? AND question_id=?',
+            (obs['execution']['provider'],obs['execution']['attempt_id'],obs['question_id'])).fetchone()
+        if row is None:
+            return ack  # Genuine legacy import remains unbound, no guessed scope.
+        receipt=self._receipt(row)
+        original=con.execute('SELECT import_sequence FROM quick_scan_observation WHERE observation_id=?',
+                             (obs['observation_id'],)).fetchone()
+        now=self.clock()
+        try:
+            binding=self.contract.bind_original(receipt,obs,payload_sha256=decision['payload_sha256'],
+                observation_sequence=original['import_sequence'],ack_sequence=original['import_sequence'],bound_at=now)
+        except (ValueError,TypeError,KeyError,RecursionError) as error:
+>           raise ObservationImportError('subject_dispatch_original_mismatch') from error
+E           stockwiki.quick_scan_observations.ObservationImportError: subject_dispatch_original_mismatch
+
+stockwiki\quick_scan_subject_dispatch.py:174: ObservationImportError
+=========================== short test summary info ===========================
+FAILED tests\test_quick_scan_subject_dispatch.py::test_pre_receipt_exists_before_answer_and_after_binding_does_not_rewrite_original
+FAILED tests\test_quick_scan_subject_dispatch.py::test_registration_and_package_restart_replay_preserve_both_original_receipts
+FAILED tests\test_quick_scan_subject_dispatch.py::test_sidecars_are_sqlite_immutable_and_old_writer_refuses_schema3
+3 failed, 9 passed in 2.41s

@@ -1,0 +1,122 @@
+{
+  "state": "private_not_reviewed_not_published",
+  "scope": "two_phase_owner_dispatch_primitive_atomic_import_and_read_projection",
+  "source_candidates": [
+    {
+      "source_namespace": "StockWiki",
+      "source_path": "stockwiki/quick_scan_observations.py",
+      "snapshot_path": "private-subject-01/StockWiki/stockwiki/quick_scan_observations.py",
+      "bytes": 32911,
+      "sha256": "d813aa90656c649d6bc31883d138c3a1eb44a6643551ed6a3cc5fd19a0d04900"
+    },
+    {
+      "source_namespace": "StockWiki",
+      "source_path": "stockwiki/quick_scan_subject_dispatch.py",
+      "snapshot_path": "private-subject-01/StockWiki/stockwiki/quick_scan_subject_dispatch.py",
+      "bytes": 10852,
+      "sha256": "1638a753c3501c46eed783a533f1da7f33ef71d07892549ebbfa683335fd947e"
+    },
+    {
+      "source_namespace": "StockWiki",
+      "source_path": "stockwiki/quick_scan_query_v2.py",
+      "snapshot_path": "private-subject-01/StockWiki/stockwiki/quick_scan_query_v2.py",
+      "bytes": 26694,
+      "sha256": "113f00c1ccfa14fb0e22adf762afe02bdeb0e5b0e7ee61616b0b5bf41a3d266c"
+    },
+    {
+      "source_namespace": "StockWiki",
+      "source_path": "tests/test_quick_scan_subject_dispatch.py",
+      "snapshot_path": "private-subject-01/StockWiki/tests/test_quick_scan_subject_dispatch.py",
+      "bytes": 14253,
+      "sha256": "32ce740e6001d32621e4a508988f45f3af0991fcdd9c9a902e214ed9854edbf6"
+    },
+    {
+      "source_namespace": "StockWiki",
+      "source_path": "tests/test_quick_scan_query_v2.py",
+      "snapshot_path": "private-subject-01/StockWiki/tests/test_quick_scan_query_v2.py",
+      "bytes": 22069,
+      "sha256": "65389543e568b9d4812b43061e89cf3301d33eb170757697a41cc0ccb94f7761"
+    },
+    {
+      "source_namespace": "IQS",
+      "source_path": "scripts/query_contract.py",
+      "snapshot_path": "private-subject-01/IQS/scripts/query_contract.py",
+      "bytes": 17961,
+      "sha256": "ebe7aade2073032c0c2a505b9f11b81f7cb503f9b954ba5afe8f24a1fe2cbf4a"
+    },
+    {
+      "source_namespace": "IQS",
+      "source_path": "scripts/subject_dispatch_contract.py",
+      "snapshot_path": "private-subject-01/IQS/scripts/subject_dispatch_contract.py",
+      "bytes": 6214,
+      "sha256": "8b4151708ed8111334788e7f801f7028abc51aaef3f629db24e15f5d233e1908"
+    },
+    {
+      "source_namespace": "IQS",
+      "source_path": "tests/test_query_contract_v2.py",
+      "snapshot_path": "private-subject-01/IQS/tests/test_query_contract_v2.py",
+      "bytes": 19987,
+      "sha256": "09780501b2a3325a2b1dd8fb69df3ad1c653b1c6b29014896d64923013e91d49"
+    },
+    {
+      "source_namespace": "IQS",
+      "source_path": "schemas/quick_scan/query-v2.schema.json",
+      "snapshot_path": "private-subject-01/IQS/schemas/quick_scan/query-v2.schema.json",
+      "bytes": 18325,
+      "sha256": "53f4b76b3915d0316d1ca9b3bb31d681fb5b35f8d178b2acb1336ef8a3d7f029"
+    },
+    {
+      "source_namespace": "IQS",
+      "source_path": "questions/metric-registry.json",
+      "snapshot_path": "private-subject-01/IQS/questions/metric-registry.json",
+      "bytes": 3521,
+      "sha256": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75"
+    }
+  ],
+  "tests": [
+    {
+      "label": "owner-subject-final-01",
+      "pytest_passed": 23,
+      "pytest_wall_s": 6.62,
+      "child_pid": 21772,
+      "child_returncode": 0,
+      "process_sha256": "893fd29c22eaa8430d12d3f6c20a2ab59664ec25510a8413361bea231971724c",
+      "sources_sha256": "7e163c959c83c22d0f3c08b53127b7513643822305a629b30dd87ef10c4eb473"
+    },
+    {
+      "label": "owner-history-regression-01",
+      "pytest_passed": 33,
+      "pytest_wall_s": 45.93,
+      "child_pid": 10256,
+      "child_returncode": 0,
+      "process_sha256": "9ff4576bd4593b328767d96bb5db91df925175bdb72f9def1c37f5c75d852ce1",
+      "sources_sha256": "7e163c959c83c22d0f3c08b53127b7513643822305a629b30dd87ef10c4eb473"
+    },
+    {
+      "label": "contract-subject-01",
+      "pytest_passed": 65,
+      "pytest_wall_s": 1.49,
+      "child_pid": 22488,
+      "child_returncode": 0,
+      "process_sha256": "892d2565bdda54b3915b014dace47637abff18b730d1540a5fdd15b540987df7",
+      "sources_sha256": "dc300b251cd37c6decb28cc76742201e73a56e1dd6934cc80b0ae9395649c2c5"
+    }
+  ],
+  "counts_are_separate_software_batches_not_accuracy_rate": true,
+  "guard_raw_sha256": "abc0128dc92a2bf99e57dbbbfe2355aea376b584f67e9e51c0bd0ebbc871e682",
+  "original_StockWiki_inputs": 178,
+  "unchanged_original_StockWiki_inputs": 177,
+  "declared_original_candidate_paths": [
+    "stockwiki/quick_scan_observations.py"
+  ],
+  "original_IQS_inputs_unchanged": 64,
+  "schema_version": 3,
+  "actual_owner_transaction_bound_projection": true,
+  "before_send_HTTP_producer_integrated": false,
+  "public_expected_authority_adapter_integrated": false,
+  "public_C06_validated": false,
+  "source_published": false,
+  "real_company_golden": false,
+  "API_requests": 0,
+  "owned_runtime_keep": "runs/c15a"
+}
