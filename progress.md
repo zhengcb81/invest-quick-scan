@@ -2725,3 +2725,4 @@
 - 用户明确授权Lab索引后codegraph init -i实际exit0、30files/611nodes/581edges，Git原HEAD2c0efb6不变；仅两索引新文件保留，其他Lab源码只读、新FACT目录未建、0收费/模型请求。只读结构查找首次not initialized后按AGENTS询问并获准，没有擅自忽略规则。
 - C06当前owner-reader-red-01原12800实际pytest2，缺quick_scan_query_v2导致1 collection error/2.03s，控制器终态0并真实记child2；原178 SW/64 IQS私有输入SHA不变。尚无owner GREEN，不能把collection error当10个产品漏洞；原62P不升级成生产query/golden。runs/c15a保留，无活测试handle。
 - PWF首次patch因为只用长行的截断前缀作上下文被拒、未写；改为确切NextStep heading插入，保留原历史。新增Phase114只关闭文档编制，不关原G3/F05/TH-IN/真实实验门。接下来正常Git提交/推送以实际回执为准，不预报commit。
+- 本批文档已实际正常提交推送24743f31e3a9402fc725fe628ef31e4cd5815c84：17精确路径，11索引工件及index staged原字节一致，origin/master与HEAD相同。主线未完C06的9个只读准备/RED文件和原opencode均保留未暂存；未修改QA/SW生产源，不重复测试或新增审查门。本条仅补实际交付回执。
