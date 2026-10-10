@@ -1,3 +1,10 @@
+**2026-10-11 checkpoint11：原零派发接续与完整名单读投影（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** 原ACK引用/撤权、活租约与不确定发送逐项已验证，unknown不重问、不读新模型凭据；unc2实际pytest 1P而wrapper因当日新脱敏日志exit1，原失败和独立精确源核验分开保留，没有覆盖或重跑。原按需读完整主体成员闭包及latest完整可比性修复已113P。OwnerPoolReader复用原owner universe/active membership、原C06 <=100批读及实际OS原绑定验证，只保留原观察引用/共享口径；121条2批和真实native正例8P，另2000条全合成容量1P/89.26s、20批不截断，退池历史容量反例修复后3P。83累计私有候选/10变化/20原终态批次真实固定producer-checkpoint-11.json，0API/生产库或名单写，原guard raw不变；这些测试组有重叠，不累加为金融准确率。全局门保持开放，整个C06未集中审查/源发布，公开capabilities仍仅get_profiles，c15a/real-owner-01继续保留。
+
+**唯一下一工程动作：** 在同一Phase113步骤4把内部compact pool索引接原QueryCaptureStore的有界持久化和具名search/candidate_set wire；旧2.0 get_profiles原件保持，固定snapshot/query/规则/完整SubjectRef/原观察ID与模型时间。字段有效期/资格不得从availability、导入ACK或未判定时效推断；新接口不能提前宣布ready。随后补原C06剩余操作并仅做整个节点一次集中审查、源发布与strict自有清理，不加helper审查。不要再跑已绿引用/活租约/unknown/2000容量，除非相关行为发生新的变更。最近真实冻结是11，原10/失败/360秒超时全部保留；没有真实人类同意或金融准确性通过。
+
+**外包最新实况（2026-10-11，只读复核）：** EVID-REF-02-R1 HEAD 572fa269、result 44aa2040及新版remediation-01/handoff.json现已实际出现，转为`R1_received_unaccepted`，待锁定新原件后包级集中续验，不能继续用旧“无handoff”状态，也不能直接accept。实际尚有5份未跟踪的最终测试/清理日志和CodeGraph，属于该writer的待核交接范围，不清理/代提交。FACT HEAD仍d00e2b64但已切codex/fact-content-01-r2，上一115P/八机械漏检/旧版兼容/三内容问题changes_requested保留，不复验活R2半成品。用户授权的FACT CodeGraph已实际存在，不重复初始化。两个包不关闭F05/G3/金融门。获准Git导出仅7份第一方Markdown中的必要更新；私有83候选、原交接/golden/数据库未扩入导出范围。
+
+
 **2026-10-10 最新接续（checkpoint10；以下09/08及更早“当前”记录是历史）：** 原main_with_llm/LLMRunner已在私有runs/c15a消费原Q13耐久action，只执行native当前权限确认的完整SubjectRef/题目范围；完整原manifest/身份/authority3-context2先验后选题。79累计候选/7变化/5原终态批次已固定producer-checkpoint-10.json，原guard raw不变。最终原公开main合成E2E48032/exit0、1P/235.74s（controller241.766s）：完整24题release保留，两请求预算下只派发获准1题；原Q09实际发送1笔，result_ready后删除模型配置与花费授权，重启0新增HTTP/凭据读取，原work/package ID/hash/bytes不变。四受影响unit46720/exit0、66P/4.84s（controller6.313s）与E2E源SHA一致；早期60P与66P重叠，原e1范围回执缺失1F保留，不相加或称金融准确率。新范围sidecar明确授权分母/全manifest分母，一题成功不叫整公司完成；legacy答案格式保留。生产QA6aafc32原七未跟踪/SWa5a97d6 clean未动，真实API/费用/生产库/名单写0，无实际人类确认。
 
 

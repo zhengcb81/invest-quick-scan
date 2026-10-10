@@ -2929,3 +2929,22 @@
 - R1源/输入最后SHA不变、全部五子进程终态及实际CIM0后，先只rmdir自建junction本身且其目标SHA保持，再strict lstat/单硬链/set-size-SHA逐件清727文件/182目录；p114r1a已不存在。轻量原handoff/原日志/反例结果在intake remediation-01留档；源仓/共享TEMP/原c15a和real-owner-01不动。actual cleanup.json已存在。
 - 主线恢复信息：原ACK后的无凭据引用/撤权ack3真实1P；defer1活租约1P，但uncertain fixture在原subject_dispatch_context2_required前置守卫失败，缺真实冻结context/原生dispatch receipt，尚需补齐该用例。resume-e1整组360秒超时不能算GREEN；最近冻结仍checkpoint10，不造11。下一主线先修fixture只跑未过项，再其余原全poolC06操作和整个节点一次集中审查。
 - 第一次外仓Git沙箱拒读已由授权只读升级解决；一次PWF空anchor patch拒绝无修改，后按明确追加/已验证marker更新。只正常发布已获准第一方PWF/接手Markdown到既有origin，新增R2/原交接/反例/源码/数据库不扩入远端导出。
+
+### 2026-10-11 原不确定发送用例接续
+- 上回合两外包续验/完整R2与PWF正常push74c8e35是progress，主线仍Phase113原C06。恢复root唯一计划，c15a/原guard保留，不写两Lab或生产库/名单。
+- 本轮只修原未过uncertain integration fixture：先冻结真实context2、按原work题面准备attempt、调用原生owner registrar产生发送前receipt并持久化，再原Q09 send intent/unknown outcome；不用假回执或弱化守卫。第一次producer-resume-unc1实际51280exit1/109.32s，真实原context/receipt守卫已通过，后因fixture传了policy route形状而非budget_route形状被拒；源SHA稳定/API0。实际成功CIM owned Python0后仅修测试预算路由映射，准备unc2；不重跑已绿引用/活租约。
+- 本轮曾误读src/core两个已知私有文件导致missing，随后CodeGraph明确src/utils再读；一次组合输出截断以有界后续恢复，未据丢输出重启测试。另猜docs/implementation/task-contracts.md不存在，实际已发布契约为contracts/exchange-and-query.md；不新建替代执行器/接口。
+
+
+### 2026-10-11 checkpoint11：原零派发接续与完整名单读投影
+**2026-10-11 checkpoint11：原零派发接续与完整名单读投影（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** 原ACK引用/撤权、活租约与不确定发送逐项已验证，unknown不重问、不读新模型凭据；unc2实际pytest 1P而wrapper因当日新脱敏日志exit1，原失败和独立精确源核验分开保留，没有覆盖或重跑。原按需读完整主体成员闭包及latest完整可比性修复已113P。OwnerPoolReader复用原owner universe/active membership、原C06 <=100批读及实际OS原绑定验证，只保留原观察引用/共享口径；121条2批和真实native正例8P，另2000条全合成容量1P/89.26s、20批不截断，退池历史容量反例修复后3P。83累计私有候选/10变化/20原终态批次真实固定producer-checkpoint-11.json，0API/生产库或名单写，原guard raw不变；这些测试组有重叠，不累加为金融准确率。全局门保持开放，整个C06未集中审查/源发布，公开capabilities仍仅get_profiles，c15a/real-owner-01继续保留。
+
+**唯一下一工程动作：** 在同一Phase113步骤4把内部compact pool索引接原QueryCaptureStore的有界持久化和具名search/candidate_set wire；旧2.0 get_profiles原件保持，固定snapshot/query/规则/完整SubjectRef/原观察ID与模型时间。字段有效期/资格不得从availability、导入ACK或未判定时效推断；新接口不能提前宣布ready。随后补原C06剩余操作并仅做整个节点一次集中审查、源发布与strict自有清理，不加helper审查。不要再跑已绿引用/活租约/unknown/2000容量，除非相关行为发生新的变更。最近真实冻结是11，原10/失败/360秒超时全部保留；没有真实人类同意或金融准确性通过。
+
+**外包最新实况（2026-10-11，只读复核）：** EVID-REF-02-R1 HEAD 572fa269、result 44aa2040及新版remediation-01/handoff.json现已实际出现，转为`R1_received_unaccepted`，待锁定新原件后包级集中续验，不能继续用旧“无handoff”状态，也不能直接accept。实际尚有5份未跟踪的最终测试/清理日志和CodeGraph，属于该writer的待核交接范围，不清理/代提交。FACT HEAD仍d00e2b64但已切codex/fact-content-01-r2，上一115P/八机械漏检/旧版兼容/三内容问题changes_requested保留，不复验活R2半成品。用户授权的FACT CodeGraph已实际存在，不重复初始化。两个包不关闭F05/G3/金融门。获准Git导出仅7份第一方Markdown中的必要更新；私有83候选、原交接/golden/数据库未扩入导出范围。
+
+- 原unc1 51280exit1/109.32s是fixture budget_route字段映射错误；unc2 51904pytest exit0/165.74s，wrapper只有精确daily log误判，原source_changed与新source-audit原件均留档。控制器只单列StockQA logs/stock_qa_[0-9]{8}.log及其SHA，其他全部路径照查，并传播pytest实际退出码；原生产守卫和代码日志配置未放宽。
+- 原容量RED 2P/2F→37P；latest键RED 10F/1P→三受影响文件113P/42.11s（51368exit0）。pool原6P后新native原绑定8P/7.65s（52012exit0）；2000容量38432exit0、1P/89.26s/controller90.094s；退池历史占限RED1F后定向3P/1.17s（17444exit0）。各源SHA在本批执行中稳定，0API；不重复未受改动的2000或旧大组，不将重叠分母累加。
+- checkpoint11真实83累计/10变化/20终态批次，原e1整组超时及各fixture/参数失败完整保留。实际成功CIM owned Python0；当前c15a/real-owner-01为本节点活输入，按整节点收尾清理，不删共享TEMP/外部源/未知文件。
+- 控制器错误：几次猜不存在的私有路径/回执文件、一次CodeGraph context参数query而非task、-k被只支持nodeID的runner当路径致exit4（随后仅改精确nodeID取真实RED），以及两次PWF长整行/空anchor组合patch验证拒绝无写。均保留记录，使用实际inventory/已知文件和本具名脚本修正，不计产品缺陷或据丢输出重启测试。
+- 第一方四份PWF/交接文档正常Git发布待实际结果；不使用旧一次性publisher、不暂存README既有改动或私有源码/交接/DB。下次按这里当前动作接续，目标仍active，不提前关闭C06/W15/G3/F05/L03/B01/facts/UI/TH-IN/全池。

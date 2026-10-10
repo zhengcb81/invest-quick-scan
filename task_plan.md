@@ -407,6 +407,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**2026-10-11 checkpoint11：原零派发接续与完整名单读投影（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** 原ACK引用/撤权、活租约与不确定发送逐项已验证，unknown不重问、不读新模型凭据；unc2实际pytest 1P而wrapper因当日新脱敏日志exit1，原失败和独立精确源核验分开保留，没有覆盖或重跑。原按需读完整主体成员闭包及latest完整可比性修复已113P。OwnerPoolReader复用原owner universe/active membership、原C06 <=100批读及实际OS原绑定验证，只保留原观察引用/共享口径；121条2批和真实native正例8P，另2000条全合成容量1P/89.26s、20批不截断，退池历史容量反例修复后3P。83累计私有候选/10变化/20原终态批次真实固定producer-checkpoint-11.json，0API/生产库或名单写，原guard raw不变；这些测试组有重叠，不累加为金融准确率。全局门保持开放，整个C06未集中审查/源发布，公开capabilities仍仅get_profiles，c15a/real-owner-01继续保留。
+
+**唯一下一工程动作：** 在同一Phase113步骤4把内部compact pool索引接原QueryCaptureStore的有界持久化和具名search/candidate_set wire；旧2.0 get_profiles原件保持，固定snapshot/query/规则/完整SubjectRef/原观察ID与模型时间。字段有效期/资格不得从availability、导入ACK或未判定时效推断；新接口不能提前宣布ready。随后补原C06剩余操作并仅做整个节点一次集中审查、源发布与strict自有清理，不加helper审查。不要再跑已绿引用/活租约/unknown/2000容量，除非相关行为发生新的变更。最近真实冻结是11，原10/失败/360秒超时全部保留；没有真实人类同意或金融准确性通过。
+
+**外包最新实况（2026-10-11，只读复核）：** EVID-REF-02-R1 HEAD 572fa269、result 44aa2040及新版remediation-01/handoff.json现已实际出现，转为`R1_received_unaccepted`，待锁定新原件后包级集中续验，不能继续用旧“无handoff”状态，也不能直接accept。实际尚有5份未跟踪的最终测试/清理日志和CodeGraph，属于该writer的待核交接范围，不清理/代提交。FACT HEAD仍d00e2b64但已切codex/fact-content-01-r2，上一115P/八机械漏检/旧版兼容/三内容问题changes_requested保留，不复验活R2半成品。用户授权的FACT CodeGraph已实际存在，不重复初始化。两个包不关闭F05/G3/金融门。获准Git导出仅7份第一方Markdown中的必要更新；私有83候选、原交接/golden/数据库未扩入导出范围。
+
+
 **2026-10-10最新外包R1查收（优先于下面的writer历史）：** FACT-CONTENT-01新HEAD d00e2b64/result b227b335及完整handoff已实收，109源文件/106artifact SHA/213锁原件一致；隔离115P、原六机械修复正反例通过。但八新机械漏检、旧版公开只读兼容和三原内容问题仍阻断，维持changes_requested，续卡为本地 docs/implementation/reviews/parallel-packages/2026-10-10/FACT-CONTENT-01-R2.md。EVID仍1597a08/R1未提交且新版handoff不存在，handoff_pending，不复验活writer或拿旧交接冒充新交付。独立审查一次、API/文档下载0；严格清727文件/182目录及一个自建junction，p114r1a不存在，原c15a/real-owner-01保留。此包级查收不关闭F05/G3/其他全局门，原成绩保留。
 
 **唯一下一主线动作：** 回原Phase113/C06步骤4：原ACK后的无凭据引用/撤权实际producer-resume-ack3已1P，活租约实际defer1的该例1P；uncertain另一例被原subject_dispatch_context2_required守卫正确挡在发送前（fixture未冻结真实上下文/原生回执，不是产品缺陷）。补齐原真实context及发送前receipt，只复验该未过用例；不重跑已绿引用/活租约。整组resume-e1的360秒超时不称GREEN，沿原保留fixture接续，不重复新模型调用。再完成原search/candidate_set等全pool操作，整个C06一次集中审查/源发布；不增加小节点审查。checkpoint10仍为最近冻结工程清单，最新接续日志不假称已有checkpoint11。七获准Markdown正常Git可做，新私有验收原件/源码/真实DB/golden不扩为远端导出。
@@ -1668,9 +1675,10 @@ Status: in_progress
 - 最新checkpoint08累计71私有候选，原生同意OS读取/原Q13 action原子登记与重放已实现并有真实三组件CLI合成E2E；143P与22P/1P各自分母留档。尚需可信公共admission精确bundle/context映射、原主执行器消费/其余操作及同节点集中审查/源发布；原步骤4和下游门保持。实际人类确认/金融gold/收费0，c15a及real-owner-01保留。
 - checkpoint09接续：累计75私有候选，公共admission完整bundle/context3/2映射已通过真实公开CLI合成1P及受影响52P；原主执行器消费仍是下一动作。旧08缺公共入口描述仅属历史；整个步骤4/集中审查/源发布及全局门不提前关闭。
 - checkpoint10接续：原公开main仅派发获准范围及无凭据result_ready接续已通过合成E2E；79私有候选固定。原引用/uncertain/租约与其余操作、整个节点集中审查/源发布继续，真实金融/全局门不提前关闭。
+- checkpoint11接续：83私有候选，原三种零新增派发接续已逐项验证；完整可比性113P，全pool轻量读投影含原OS绑定8P及2000合成容量1P/20批。公开search/candidate_set/具名wire/有界持久化/字段有效期与资格仍待，步骤4不勾选；同节点集中审查未执行。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
-Status: R1_concentrated_acceptance_FACT_changes_requested; EVID_new_handoff_pending
+Status: FACT_R2_active_writer_changes_requested; EVID_R1_received_unaccepted
 
 - [x] 核原PWF与已交付各线，避开总控C06/W15、QA/SW生产接线、原TH/IN门；只读独立拆包建议收齐，不重做旧UI/备份/强杀回归。
 - [x] 编制EVID-REF-02与FACT-CONTENT-01大卡、共同交接/隔离规则、具名产出/CLI目标/退出码、集中测试case-map、manifest和未执行handoff模板；两独占源仓互不包含，与总控三生产根互斥。

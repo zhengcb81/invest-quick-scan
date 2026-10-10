@@ -1993,3 +1993,14 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - R1源/输入最后SHA不变、全部五子进程终态及实际CIM0后，先只rmdir自建junction本身且其目标SHA保持，再strict lstat/单硬链/set-size-SHA逐件清727文件/182目录；p114r1a已不存在。轻量原handoff/原日志/反例结果在intake remediation-01留档；源仓/共享TEMP/原c15a和real-owner-01不动。actual cleanup.json已存在。
 - 主线恢复信息：原ACK后的无凭据引用/撤权ack3真实1P；defer1活租约1P，但uncertain fixture在原subject_dispatch_context2_required前置守卫失败，缺真实冻结context/原生dispatch receipt，尚需补齐该用例。resume-e1整组360秒超时不能算GREEN；最近冻结仍checkpoint10，不造11。下一主线先修fixture只跑未过项，再其余原全poolC06操作和整个节点一次集中审查。
 - 第一次外仓Git沙箱拒读已由授权只读升级解决；一次PWF空anchor patch拒绝无修改，后按明确追加/已验证marker更新。只正常发布已获准第一方PWF/接手Markdown到既有origin，新增R2/原交接/反例/源码/数据库不扩入远端导出。
+
+- 2026-10-11：原uncertain发送守卫要求durable context2与真实native预派发回执；budget_route原存储边界使用route_id/provider/model_requested/quota_group，不接受policy routes中的id/provider_config_ref/model原字段。只修fixture映射，不放宽原Q09或subject守卫。
+
+
+**2026-10-11 checkpoint11：原零派发接续与完整名单读投影（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** 原ACK引用/撤权、活租约与不确定发送逐项已验证，unknown不重问、不读新模型凭据；unc2实际pytest 1P而wrapper因当日新脱敏日志exit1，原失败和独立精确源核验分开保留，没有覆盖或重跑。原按需读完整主体成员闭包及latest完整可比性修复已113P。OwnerPoolReader复用原owner universe/active membership、原C06 <=100批读及实际OS原绑定验证，只保留原观察引用/共享口径；121条2批和真实native正例8P，另2000条全合成容量1P/89.26s、20批不截断，退池历史容量反例修复后3P。83累计私有候选/10变化/20原终态批次真实固定producer-checkpoint-11.json，0API/生产库或名单写，原guard raw不变；这些测试组有重叠，不累加为金融准确率。全局门保持开放，整个C06未集中审查/源发布，公开capabilities仍仅get_profiles，c15a/real-owner-01继续保留。
+
+**唯一下一工程动作：** 在同一Phase113步骤4把内部compact pool索引接原QueryCaptureStore的有界持久化和具名search/candidate_set wire；旧2.0 get_profiles原件保持，固定snapshot/query/规则/完整SubjectRef/原观察ID与模型时间。字段有效期/资格不得从availability、导入ACK或未判定时效推断；新接口不能提前宣布ready。随后补原C06剩余操作并仅做整个节点一次集中审查、源发布与strict自有清理，不加helper审查。不要再跑已绿引用/活租约/unknown/2000容量，除非相关行为发生新的变更。最近真实冻结是11，原10/失败/360秒超时全部保留；没有真实人类同意或金融准确性通过。
+
+**外包最新实况（2026-10-11，只读复核）：** EVID-REF-02-R1 HEAD 572fa269、result 44aa2040及新版remediation-01/handoff.json现已实际出现，转为`R1_received_unaccepted`，待锁定新原件后包级集中续验，不能继续用旧“无handoff”状态，也不能直接accept。实际尚有5份未跟踪的最终测试/清理日志和CodeGraph，属于该writer的待核交接范围，不清理/代提交。FACT HEAD仍d00e2b64但已切codex/fact-content-01-r2，上一115P/八机械漏检/旧版兼容/三内容问题changes_requested保留，不复验活R2半成品。用户授权的FACT CodeGraph已实际存在，不重复初始化。两个包不关闭F05/G3/金融门。获准Git导出仅7份第一方Markdown中的必要更新；私有83候选、原交接/golden/数据库未扩入导出范围。
+
+- 原latest口径包含问题/模块/会计期间/cohort/范围/实际模型；信息时间和分数不作口径，只在相同口径内决定最新行。完整pool只读所有active成员，暂停扫描成员仍可见，退池历史不耗尽active capture；未知主体/缺库/超限不能伪装为市场无标的。内部索引的validity_status=not_assessed，不当作fresh或白名单资格。
