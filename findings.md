@@ -1864,3 +1864,7 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 新两个大包分别为三市场真实参考资料/离线评测（既有iqs-evidence-lab）和61题事实内容/术语/关系语义验收资料（新iqs-fact-content-lab）；候选资料与正式发布、来源核实与人类gold严格分开，原生产唯一writer保留。
 - 新包互不依赖，213份稳定只读文件SHA固定、根路径互斥；EVID可由harness公开网页只读取短事实，不调用收费服务，自动工具/旧replay仍离线。FACT全离线。用户通授持续有效，派发认领/唯一writer与真实证据门分开。
 - Lab用户授权CodeGraph初始化实际成功，新增.codegraph/.gitignore及config.json是索引基础设施，不读key、不删、不一并产品提交。旧Lab原HEAD2c0efb6不变；FACT目录仍不存在。
+
+### C06真实只读捕获边界
+- 仅mode=ro不意味着可以把缺库/未知schema/读失败当零行；当前私有reader三个namespace明确区分available/missing/schema_unavailable/read_error并保留水位，复用actual AnalysisSubject/perimeter pure validator，不调用owner迁移连接器。
+- SQLite immutable=1可能忽略活WAL，不适合作生产只读捷径；当前私有scope遇WAL/shm/journal拒读待owner checkpoint，未宣称支持所有并发模式。13合成真实组件测试不证明跨owner原子一致性、非空C06投影或真实投资准确性。

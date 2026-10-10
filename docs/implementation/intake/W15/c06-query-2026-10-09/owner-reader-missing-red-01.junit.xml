@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="13" time="1.300" timestamp="2026-10-10T15:54:28.879652+01:00" hostname="DESKTOP-156V213"><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_existing_owner_databases_return_true_empty_coverage_without_any_file_change" time="0.082" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_missing_observation_database_is_not_created_or_laundered_as_empty" time="0.064" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_owner_read_failure_is_explicit_and_never_triggers_migration[unknown_schema]" time="0.072" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_owner_read_failure_is_explicit_and_never_triggers_migration[missing_table]" time="0.074" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_owner_read_failure_is_explicit_and_never_triggers_migration[bad_bytes]" time="0.064" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_request_does_not_assign_an_existing_company_to_a_different_subject[analysis_subject_revision-2]" time="0.064" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_request_does_not_assign_an_existing_company_to_a_different_subject[perimeter_sha256-9999999999999999999999999999999999999999999999999999999999999999]" time="0.058" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_request_does_not_assign_an_existing_company_to_a_different_subject[primary_issuer_id-ENT_33333333-3333-4333-8333-333333333333]" time="0.069" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_owner_serializer_is_content_addressed_and_returns_independent_copies" time="0.071" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_an_unknown_snapshot_is_rejected_before_database_access" time="0.051" /><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_missing_other_owner_namespace_returns_named_unavailable_not_a_crash[identity]" time="0.062"><failure message="AttributeError: 'NoneType' object has no attribute 'get_entity'">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-reader-missing-red-01/test_missing_other_owner_names0')
+namespace = 'identity'
+
+    @pytest.mark.parametrize('namespace',['identity','analysis_subjects'])
+    def test_missing_other_owner_namespace_returns_named_unavailable_not_a_crash(tmp_path,namespace):
+        paths,identity,subjects,observations,request,reader=workspace(tmp_path)
+        database=identity.database_path if namespace=='identity' else subjects.database_path
+        database.unlink()  # Only the explicit owned fixture.
+        before=snapshot(paths.root)
+&gt;       response=reader.get_profiles(request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+stockwiki\quick_scan_query_v2.py:201: in get_profiles
+    profile = self._profile(ref, identity, subject_data, request["payload"]["information_cutoff"])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A3EDDD1A90&gt;
+ref = {'entity_id': 'ENT_11111111-1111-4111-8111-111111111111', 'analysis_subject_id': 'ASJ_22222222-2222-4222-8222-222222222222', 'analysis_subject_revision': 1, 'primary_issuer_id': 'ENT_11111111-1111-4111-8111-111111111111', ...}
+identity = None
+subject_data = {'analysis_subject': [{'subject_key': 'ASJ_22222222-2222-4222-8222-222222222222@1', 'analysis_subject_id': 'ASJ_222222... 'receipt_id': 'PRC_SYNTHETIC', 'status': 'verified', 'evidence_ref': 'https://example.com/synthetic-perimeter', ...}]}
+cutoff = '2026-10-09'
+
+    def _profile(self, ref, identity, subject_data, cutoff):
+&gt;       entity = identity.get_entity(ref["entity_id"])
+                 ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'get_entity'
+
+stockwiki\quick_scan_query_v2.py:143: AttributeError</failure></testcase><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_missing_other_owner_namespace_returns_named_unavailable_not_a_crash[analysis_subjects]" time="0.057"><failure message="stockwiki.quick_scan_query_v2.QueryReadError: owner_subject_read_error">self = &lt;stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A3EDDD2E40&gt;
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_OWNER', 'consumer_id': 'invest-quick-scan', ...}
+
+    def get_profiles(self, request):
+        self.contract.validate_request(request)
+        self._owner_context = {"store_id": self.observations.store_id, "observation_refs": {}}
+        if request["payload"]["snapshot_id"] is not None:
+            raise QueryReadError("snapshot_unavailable")
+        identity_mark, identity_data = self._capture("identity", self.identity.database_path, {5, 6},
+            ("quick_scan_entity", "quick_scan_security", "quick_scan_segment"))
+        subject_mark, subject_data = self._capture("analysis_subjects", self.subjects.database_path, {1},
+            ("analysis_subject", "reporting_perimeter_receipt"))
+        observation_mark, observation_data = self._capture("observations", self.observations.database_path, {2},
+            ("quick_scan_observation", "quick_scan_import_item"))
+        marks = [identity_mark, subject_mark, observation_mark]
+        if observation_data and observation_data["quick_scan_observation"]:
+            raise QueryReadError("observation_projection_pending")
+        profiles, missing = [], []
+        identity = _IdentityView(identity_data) if identity_data is not None else None
+        for ref in request["payload"]["subject_refs"]:
+            try:
+&gt;               profile = self._profile(ref, identity, subject_data, request["payload"]["information_cutoff"])
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+stockwiki\quick_scan_query_v2.py:201: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A3EDDD2E40&gt;
+ref = {'entity_id': 'ENT_11111111-1111-4111-8111-111111111111', 'analysis_subject_id': 'ASJ_22222222-2222-4222-8222-222222222222', 'analysis_subject_revision': 1, 'primary_issuer_id': 'ENT_11111111-1111-4111-8111-111111111111', ...}
+identity = &lt;stockwiki.quick_scan_query_v2._IdentityView object at 0x000001A3EDDD2C60&gt;
+subject_data = None, cutoff = '2026-10-09'
+
+    def _profile(self, ref, identity, subject_data, cutoff):
+        entity = identity.get_entity(ref["entity_id"])
+        if entity is None:
+            return None
+&gt;       rows = [row for row in subject_data["analysis_subject"]
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                if row["analysis_subject_id"] == ref["analysis_subject_id"]
+                and row["analysis_subject_revision"] == ref["analysis_subject_revision"]]
+E       TypeError: 'NoneType' object is not subscriptable
+
+stockwiki\quick_scan_query_v2.py:146: TypeError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/c15a/owner-reader-missing-red-01/test_missing_other_owner_names1')
+namespace = 'analysis_subjects'
+
+    @pytest.mark.parametrize('namespace',['identity','analysis_subjects'])
+    def test_missing_other_owner_namespace_returns_named_unavailable_not_a_crash(tmp_path,namespace):
+        paths,identity,subjects,observations,request,reader=workspace(tmp_path)
+        database=identity.database_path if namespace=='identity' else subjects.database_path
+        database.unlink()  # Only the explicit owned fixture.
+        before=snapshot(paths.root)
+&gt;       response=reader.get_profiles(request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_quick_scan_query_v2.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;stockwiki.quick_scan_query_v2.QueryReader object at 0x000001A3EDDD2E40&gt;
+request = {'message_type': 'request', 'schema_version': '2.0.0', 'request_id': 'REQ_SYNTHETIC_OWNER', 'consumer_id': 'invest-quick-scan', ...}
+
+    def get_profiles(self, request):
+        self.contract.validate_request(request)
+        self._owner_context = {"store_id": self.observations.store_id, "observation_refs": {}}
+        if request["payload"]["snapshot_id"] is not None:
+            raise QueryReadError("snapshot_unavailable")
+        identity_mark, identity_data = self._capture("identity", self.identity.database_path, {5, 6},
+            ("quick_scan_entity", "quick_scan_security", "quick_scan_segment"))
+        subject_mark, subject_data = self._capture("analysis_subjects", self.subjects.database_path, {1},
+            ("analysis_subject", "reporting_perimeter_receipt"))
+        observation_mark, observation_data = self._capture("observations", self.observations.database_path, {2},
+            ("quick_scan_observation", "quick_scan_import_item"))
+        marks = [identity_mark, subject_mark, observation_mark]
+        if observation_data and observation_data["quick_scan_observation"]:
+            raise QueryReadError("observation_projection_pending")
+        profiles, missing = [], []
+        identity = _IdentityView(identity_data) if identity_data is not None else None
+        for ref in request["payload"]["subject_refs"]:
+            try:
+                profile = self._profile(ref, identity, subject_data, request["payload"]["information_cutoff"])
+            except (AnalysisSubjectError, QueryReadError, KeyError, TypeError, ValueError) as exc:
+&gt;               raise QueryReadError("owner_subject_read_error") from exc
+E               stockwiki.quick_scan_query_v2.QueryReadError: owner_subject_read_error
+
+stockwiki\quick_scan_query_v2.py:203: QueryReadError</failure></testcase><testcase classname="sw.tests.test_quick_scan_query_v2" name="test_active_wal_is_not_ignored_or_mutated_to_claim_an_empty_database" time="0.111" /></testsuite></testsuites>

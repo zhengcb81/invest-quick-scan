@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**2026-10-10 主线最新：** 两个独立施工包和PWF实际回执已正常提交推送24743f3/bc41b25，尚未替harness派发。C06私有原答案契约62P保留；新真实SQLite只读owner reader最终13P/1.62s，修复缺身份/subject库错误解引用，逐源拒绝缺库/未知schema/读失败/活WAL，无迁移写入。原RED和执行SHA绑定的两候选已存owner-reader-checkpoint-01，不是产品发布/真实公司golden，也未增加独审小门。下一工程动作继续原Phase113的非空原Observation/独立未绑定历史投影与有效冻结snapshot，再事前subject sidecar、当前资格/TTL、受控刷新/实际owner serializer golden，同一完整节点集中审查。178原SW/64原IQS输入及生产源不变，0API；c15a仍在使用不能清。下段collection RED等为历史，原G3/F05/L03/TH-IN/200家live门保持。
+
 **2026-10-10 新并行包已备好，主线接续不变：** [两个独立大包](docs/implementation/parallel-lanes/packages/2026-10-10/README.md)及完整交接规范/模板/213份输入锁已编制，文档级验证通过。EVID-REF-02只写iqs-evidence-lab，补三市场真实候选参考与离线评测；FACT-CONTENT-01只写新iqs-fact-content-lab，补61题内容/术语/关系语义验收资料。两者不互相依赖、不写IQS/QA/SW生产源，未自动派发；人类分派后核唯一writer与当前输入即可做本卡限定支撑范围，不能代关原G3/F05或重做TH/IN预研。用户授权的Lab CodeGraph已实际初始化，两个索引设施保留、不混产品提交。总控下一工程动作仍是C06/W15实际只读owner producer与执行前主体sidecar接线；owner-reader-red-01实际pytest2，缺新模块造成1 collection error/2.03s，不称已执行10个反例。私有62P、公有接口未发布及真实gold/准确性/事实/消费者原门保持；runs/c15a继续保留。
 
 **2026-10-10 当前接续（优先于以下历史）：** W15步骤1–3基础交付保留。原步骤4在独占runs/c15a继续；新query v2原答案投影已完成第一组私有TDD（contract-projection-green-03：62P/0.66s，pytest0），覆盖原字节/ID/hash、独立owner引用、主体绑定、原模型与时间、历史未绑定分离、冻结snapshot和读取故障。该scope未独审/未生产发布，不能关闭C06或把合成sidecar当真实owner绑定。唯一下一动作接实际StockWiki只读producer与执行前主体sidecar生产/导入来源；保留原标准Observation/旧schema，补实际owner水位和TTL/当前可用资格，不允许读时回填旧主体或把availability当白名单资格。之后同批受控刷新、真实owner serializer golden和一次大节点集中审查。64原IQS输入及两外仓源未改、无收费调用；自有c15a仍在使用，不能清理。用户全部后续授权已覆盖计划内必要工作，不重复询问；G3/L03/B01/F05/TH-IN/200家公司live仍按原前置。
@@ -1633,6 +1635,7 @@ Status: in_progress
 - [x] 在全新独占环境TDD实现评分基础链：模块新增/退役、语义时效、路由锚点、历史只读、事务回滚、真实公开CLI与Q13动作接线。
 - [x] 基础范围完成受影响单元/集成和公开入口E2E、同一次集中审查、正常源交付与严格自有清理；整个W15/C06/L03/G3/F05/金融准确性仍开放。
 - [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。
+- 当前私有原答案契约62P与真实SQLite合成空覆盖/读取故障reader13P均已留原件；非空原观察、旧未绑定历史、有效snapshot、事前subject sidecar/TTL资格/公开CLI仍同一节点接续。两原执行候选保存到owner-reader-checkpoint-01，178原SW/64原IQS输入与生产源不变，0API。未审未发布，不作为真实公司golden；c15a仍在使用。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
 Status: complete_for_package_design_only; workers_not_dispatched

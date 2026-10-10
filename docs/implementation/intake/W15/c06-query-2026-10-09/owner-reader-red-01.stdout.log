@@ -1,0 +1,16 @@
+
+=================================== ERRORS ====================================
+____________ ERROR collecting sw/tests/test_quick_scan_query_v2.py ____________
+ImportError while importing test module 'C:\Users\郑曾波\Projects\invest-quick-scan\runs\c15a\sw\tests\test_quick_scan_query_v2.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Miniconda\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_quick_scan_query_v2.py:14: in <module>
+    from stockwiki.quick_scan_query_v2 import QueryReader, QueryReadError
+E   ModuleNotFoundError: No module named 'stockwiki.quick_scan_query_v2'
+=========================== short test summary info ===========================
+ERROR tests\test_quick_scan_query_v2.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 2.03s

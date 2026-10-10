@@ -2725,4 +2725,12 @@
 - 用户明确授权Lab索引后codegraph init -i实际exit0、30files/611nodes/581edges，Git原HEAD2c0efb6不变；仅两索引新文件保留，其他Lab源码只读、新FACT目录未建、0收费/模型请求。只读结构查找首次not initialized后按AGENTS询问并获准，没有擅自忽略规则。
 - C06当前owner-reader-red-01原12800实际pytest2，缺quick_scan_query_v2导致1 collection error/2.03s，控制器终态0并真实记child2；原178 SW/64 IQS私有输入SHA不变。尚无owner GREEN，不能把collection error当10个产品漏洞；原62P不升级成生产query/golden。runs/c15a保留，无活测试handle。
 - PWF首次patch因为只用长行的截断前缀作上下文被拒、未写；改为确切NextStep heading插入，保留原历史。新增Phase114只关闭文档编制，不关原G3/F05/TH-IN/真实实验门。接下来正常Git提交/推送以实际回执为准，不预报commit。
-- 本批文档已实际正常提交推送24743f31e3a9402fc725fe628ef31e4cd5815c84：17精确路径，11索引工件及index staged原字节一致，origin/master与HEAD相同。主线未完C06的9个只读准备/RED文件和原opencode均保留未暂存；未修改QA/SW生产源，不重复测试或新增审查门。本条仅补实际交付回执。
+- 本批文档已实际正常提交推送24743f31e3a9402fc725fe628ef31e4cd5815c84：17精确路径，11索引工件及index staged原字节一致，origin/master与HEAD相同。主线未完C06的8个只读准备/RED文件和原opencode均保留未暂存；未修改QA/SW生产源，不重复测试或新增审查门。本条仅补实际交付回执。
+
+### 2026-10-10 C06私有只读owner reader接续
+- 两个施工包及实际回执已正常推送24743f3/bc41b25；本PWF修正发布回执中的准备文件计数9→8，实际列表与保护opencode不变，不重复文档检查或审查。
+- 新StockWiki reader仅在独占runs/c15a/sw实现，178原SW源/64原IQS源、生产三仓不变。复用真实owner路径/纯subject/receipt校验，以mode=ro+query_only读取三namespace；无migrate/创建缺库，三个源顺序水位不冒充跨SQLite原子事务；遇WAL/shared-memory/rollback journal明确拒读，不用immutable静默忽略WAL。
+- 第一次owner-reader-green-01原832实际10P/1.12s。新missing反例red-01原23016实际2F/11P/1.45s，发现身份/subject库缺失被错误解引用；修复后missing-green-01原5164实际13P/1.62s/controller2.222s，执行source SHA前后不变。13含原10，不相加；62纯契约测试也不合并成金融准确率。
+- owner-reader-checkpoint-01及private-owner-reader-01保存两原执行字节，与绿色.sources逐个SHA绑定；所有真实子进程终态。该范围只支持真实store合成身份的空覆盖/具名故障，非空原观察仍observation_projection_pending、有效冻结snapshot重放/事前sidecar/TTL资格尚未接；整C06/W15未审未发布，不能关闭真实owner golden/G3/F05/L03/TH-IN。
+- 临时root c15a仍在使用不清；0模型/收费搜索/生产库迁移/名单写。接下去同节点完成非空原观察与冻结snapshot、真实事前绑定/公开CLI，再一次集中审查。私有进度Git留档以实际回执为准。
+- 接手更新脚本已先成功同步handoff，随后因把组合读取输出中findings的历史21P行误认为task_plan行而断言拒绝，未重写task_plan或产品源；原失败保留，改在确切Phase113条目补当前62P/13P。无需重跑已绿测试；后续文件读取以明确文件对象分开记录。
