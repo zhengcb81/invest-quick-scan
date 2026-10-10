@@ -2734,3 +2734,4 @@
 - owner-reader-checkpoint-01及private-owner-reader-01保存两原执行字节，与绿色.sources逐个SHA绑定；所有真实子进程终态。该范围只支持真实store合成身份的空覆盖/具名故障，非空原观察仍observation_projection_pending、有效冻结snapshot重放/事前sidecar/TTL资格尚未接；整C06/W15未审未发布，不能关闭真实owner golden/G3/F05/L03/TH-IN。
 - 临时root c15a仍在使用不清；0模型/收费搜索/生产库迁移/名单写。接下去同节点完成非空原观察与冻结snapshot、真实事前绑定/公开CLI，再一次集中审查。私有进度Git留档以实际回执为准。
 - 接手更新脚本已先成功同步handoff，随后因把组合读取输出中findings的历史21P行误认为task_plan行而断言拒绝，未重写task_plan或产品源；原失败保留，改在确切Phase113条目补当前62P/13P。无需重跑已绿测试；后续文件读取以明确文件对象分开记录。
+- 私有owner checkpoint已实际正常提交推送d0abd5d3d5207d09d0887311fd8448e5ad6cb9da：30精确路径，26原执行/准备/候选工件staged字节一致，origin/master同HEAD；仅原opencode未跟踪保留。13P范围不发布生产代码，c15a保留用于原节点接续。本条仅实际Git补记。
