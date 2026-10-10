@@ -1,0 +1,75 @@
+{
+  "format_version": "1.0.0",
+  "observed_at_utc": "2026-10-10T14:40:27.267730Z",
+  "task_source": "../../../tasks.json",
+  "coordinator_write_scope": "C:/Users/郑曾波/Projects/invest-quick-scan",
+  "workers_dispatched": false,
+  "default_live_enabled": false,
+  "packages": [
+    {
+      "id": "EVID-REF-02",
+      "lane_id": "iqs",
+      "document": "EVID-REF-02.md",
+      "task_ids": [
+        "L02",
+        "B01"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-evidence-lab",
+      "authorized_relative_paths": [
+        "src/iqs_evidence_lab/reference",
+        "schemas/reference-pack-v1.schema.json",
+        "schemas/reference-evaluation-v1.schema.json",
+        "tests/reference",
+        "fixtures/reference",
+        "tools/reference_entry.py",
+        "docs/handoff/EVID-REF-02"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "reference_candidate_and_offline_evaluation_only",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "harness_public_read_only_evidence_collection_only"
+    },
+    {
+      "id": "FACT-CONTENT-01",
+      "lane_id": "iqs",
+      "document": "FACT-CONTENT-01.md",
+      "task_ids": [
+        "F01",
+        "F03",
+        "F04",
+        "F05",
+        "F06",
+        "V03",
+        "V07"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-fact-content-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src/iqs_fact_content_lab",
+        "schemas",
+        "content",
+        "tests",
+        "fixtures",
+        "tools",
+        "docs/handoff/FACT-CONTENT-01"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "fact_content_candidate_and_semantic_acceptance_data_only",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none"
+    }
+  ],
+  "held_packages": [
+    "TH-IMPL-01",
+    "IN-IMPL-01"
+  ],
+  "previous_deliveries_preserved": true
+}

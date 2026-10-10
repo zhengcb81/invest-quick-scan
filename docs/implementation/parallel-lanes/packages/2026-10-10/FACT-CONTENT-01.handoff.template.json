@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "iqs",
+  "package_id": "FACT-CONTENT-01",
+  "status": "partial",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/iqs-fact-content-lab",
+    "base_ref": "NEW_REPOSITORY_TEMPLATE_ONLY",
+    "base_commit": "NEW_REPOSITORY_TEMPLATE_ONLY",
+    "result_ref": "",
+    "result_commit": null,
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": null
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": null
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "F01",
+      "F03",
+      "F04",
+      "F05",
+      "F06",
+      "V03",
+      "V07"
+    ],
+    "authorization_scope_ref": "human_all_followup_grant; TEMPLATE_ONLY_NOT_DISPATCHED",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/iqs-fact-content-lab"
+    ],
+    "authorized_paths": [],
+    "changed_paths": [],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [],
+  "verification": {
+    "checks": [],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": []
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "TEMPLATE ONLY, not executed; replace every before/after and result field with actual worker evidence.",
+    "lane_id=iqs does not grant IQS repository write access; only the package directory is owned.",
+    "No full task completion or G3/F05/TH-IN/live approval delegated.",
+    "Human reference qualification and source evidence are separate from software tests."
+  ],
+  "next_action": "Read this card and common handoff rules; sole-writer preflight, input SHA check, then independent scoped implementation."
+}

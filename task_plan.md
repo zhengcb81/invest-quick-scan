@@ -407,6 +407,8 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**2026-10-10 新并行包已备好，主线接续不变：** [两个独立大包](docs/implementation/parallel-lanes/packages/2026-10-10/README.md)及完整交接规范/模板/213份输入锁已编制，文档级验证通过。EVID-REF-02只写iqs-evidence-lab，补三市场真实候选参考与离线评测；FACT-CONTENT-01只写新iqs-fact-content-lab，补61题内容/术语/关系语义验收资料。两者不互相依赖、不写IQS/QA/SW生产源，未自动派发；人类分派后核唯一writer与当前输入即可做本卡限定支撑范围，不能代关原G3/F05或重做TH/IN预研。用户授权的Lab CodeGraph已实际初始化，两个索引设施保留、不混产品提交。总控下一工程动作仍是C06/W15实际只读owner producer与执行前主体sidecar接线；owner-reader-red-01实际pytest2，缺新模块造成1 collection error/2.03s，不称已执行10个反例。私有62P、公有接口未发布及真实gold/准确性/事实/消费者原门保持；runs/c15a继续保留。
+
 **2026-10-10 当前接续（优先于以下历史）：** W15步骤1–3基础交付保留。原步骤4在独占runs/c15a继续；新query v2原答案投影已完成第一组私有TDD（contract-projection-green-03：62P/0.66s，pytest0），覆盖原字节/ID/hash、独立owner引用、主体绑定、原模型与时间、历史未绑定分离、冻结snapshot和读取故障。该scope未独审/未生产发布，不能关闭C06或把合成sidecar当真实owner绑定。唯一下一动作接实际StockWiki只读producer与执行前主体sidecar生产/导入来源；保留原标准Observation/旧schema，补实际owner水位和TTL/当前可用资格，不允许读时回填旧主体或把availability当白名单资格。之后同批受控刷新、真实owner serializer golden和一次大节点集中审查。64原IQS输入及两外仓源未改、无收费调用；自有c15a仍在使用，不能清理。用户全部后续授权已覆盖计划内必要工作，不重复询问；G3/L03/B01/F05/TH-IN/200家公司live仍按原前置。
 
 **2026-10-09 当前唯一下一动作：** 全部计划内必要跨仓写入、测试及正常Git已授权，root唯一writer，其他进程工作、216挂牌候选和轻量不下载文档保持。W15基础软件步骤1–3已由同一次集中审查签收，StockWiki a5a97d6efbf5f0ee79122a1ec375def388700690本地提交、按决定7无remote，StockQA 6aafc32eae5339668e893b8a2b246d0655075584已正常推送；36受审候选和受影响测试/失败分类已归档，自有runs/w15a已严格清理，旧一次性helper不能盲跑。IQS基础归档929d76226dc2efa8b02e094312baa51fe71076c8已正常推送，555精确路径/原字节核对通过；后续仅PWF与实际Git回执补记不改变受审产品。当前原步骤4在新独占runs/c15a连续实施，64原IQS输入不变；私有query v2首批21P只覆盖get_profiles空覆盖/主体绑定/严格JSON，未审未发布且非空Observation故意拒绝。唯一下一动作补原Observation/模型时间/范围/水位及legacy读取反例，再公共只读producer/受控刷新/真实serializer golden，同一完整查询节点结束集中审查。不能把private-source-01发布或把C06标通过；根仍在使用，不能清理。基础软件不关闭整个W15、L03/G3/B01准确性、facts/F05、TH/IN或200家公司live，已通过未改范围不重测全仓/UI、不增小节点审查。以下旧状态仅为历史。
@@ -1631,3 +1633,12 @@ Status: in_progress
 - [x] 在全新独占环境TDD实现评分基础链：模块新增/退役、语义时效、路由锚点、历史只读、事务回滚、真实公开CLI与Q13动作接线。
 - [x] 基础范围完成受影响单元/集成和公开入口E2E、同一次集中审查、正常源交付与严格自有清理；整个W15/C06/L03/G3/F05/金融准确性仍开放。
 - [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。
+
+### Phase 114: 两个独立内容与准确性支撑施工包
+Status: complete_for_package_design_only; workers_not_dispatched
+
+- [x] 核原PWF与已交付各线，避开总控C06/W15、QA/SW生产接线、原TH/IN门；只读独立拆包建议收齐，不重做旧UI/备份/强杀回归。
+- [x] 编制EVID-REF-02与FACT-CONTENT-01大卡、共同交接/隔离规则、具名产出/CLI目标/退出码、集中测试case-map、manifest和未执行handoff模板；两独占源仓互不包含，与总控三生产根互斥。
+- [x] 实际固定213份只读输入、原61题与3公司30题槽；15本地链接/JSON/AST/输入SHA/根互斥及两模板公开CLI预检通过，均仅文档层，无产品实现或金融准确性证明。
+- [x] 用户明确授权Lab CodeGraph后实际init exit0，30文件/611节点/581边；保留两新增索引设施，不覆盖旧Lab或混进产品提交。新FACT仓未创建、无收费请求或harness派发。
+- [ ] 各包待人类分派后的唯一writer预检、独立实施与一次包级集中交接；此项不阻断总控原Phase113接续，不升级F01/F05/F06/G3/L03/TH-IN或全池门。

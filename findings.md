@@ -1858,3 +1858,9 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 外仓CodeGraph此区域缺新模块；已在结构查询未命中后读取实时已知路径。尚未把上述格式差异判为全链漏洞，下一步核实owner_refresh与import的实际不可变绑定，再冻结非空projection契约。
 - 进一步确认owner_refresh准备阶段明确要求metadata.analysis_subject等于owner subject，而完整context冻结schema不含该属性。这是原W15完整C06链尚未接通的真实格式缺口，不能通过去掉scope guard洗绿。采用版本化事前subject sidecar，原Observation原字节/ID不变，查询须有独立owner保存的绑定摘要；sidecar生产/导入仍待实际接线。
 - 2026-10-10第一组私有投影TDD最终62P（原73744），支持完整原结构化答案、原requested/resolved模型分离、原时间/搜索引用、严格hash/JSON、独立owner地址/引用、未绑定历史区和snapshot水位。此前中间错误属于合成fixture ID格式和snapshot未重封，不修改冻结schema或重写原日志。availability只描述返回资料，不等于当前可用于白名单；实际producer还须接TTL/当前资格/只读DB故障语义。
+
+### 2026-10-10 并行施工范围与输入冻结
+- QA/SW正在由总控接完整query/事前subject sidecar，不能在同源目录派第二实现writer；私有v2未发布，不给消费者当稳定公共输入。TH/IN旧门不改。
+- 新两个大包分别为三市场真实参考资料/离线评测（既有iqs-evidence-lab）和61题事实内容/术语/关系语义验收资料（新iqs-fact-content-lab）；候选资料与正式发布、来源核实与人类gold严格分开，原生产唯一writer保留。
+- 新包互不依赖，213份稳定只读文件SHA固定、根路径互斥；EVID可由harness公开网页只读取短事实，不调用收费服务，自动工具/旧replay仍离线。FACT全离线。用户通授持续有效，派发认领/唯一writer与真实证据门分开。
+- Lab用户授权CodeGraph初始化实际成功，新增.codegraph/.gitignore及config.json是索引基础设施，不读key、不删、不一并产品提交。旧Lab原HEAD2c0efb6不变；FACT目录仍不存在。
