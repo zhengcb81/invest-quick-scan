@@ -2745,3 +2745,5 @@
 - snapshot本段限定同reader进程内32份/16MiB/一小时，原结果和owner refs深拷贝；明确query不符/未知/过期/重启拒绝，不读live替代。公共耐久freeze、事前sidecar/当前绑定投影、资格TTL/受控刷新/公开CLI与真实owner golden还未实施，本段私有未审未发布，原全局门不变；继续原完整节点后一次集中审查，不加小门。
 - owner-reader-checkpoint-02实际保存六原执行候选与guard，绑定两最终.sources/process SHA；旧private-owner-reader-01及62P/13P档案不改。第一次读checkpoint误用reviews路径，实际文件在intake，未改/补造不存在内容。根PWF/唯一handoff已更新；c15a继续保留，Git本批留档待实际工具回执，不预报成功。
 - 当前-uall只读状态另见新未跟踪nul，归属未确认，内容未读/不删除/不暂存；与原opencode一起保留，不能猜测为本次组件产物或临时垃圾。正常Git本批仅精确私有checkpoint/PWF范围。
+- 历史/冻结捕获私有checkpoint实际正常提交推送ccd3b464c34af2c810309e2ed57598fe4bb6e0b4：41精确路径，原工件staged字节核对通过，origin/master同HEAD；原opencode与新未知nul均未读/未删除/未暂存。此为私有进度留档，产品未发布、整C06/W15原门不变，自有c15a仍保留。实际commit/push PID10988/11344均终态0。
+- 后续只读源码勘察发现事前receipt与事后Observation ID/hash必须分开：答案hash尚未产生时不能声称已在发送前保存；后续sidecar应链接真实事前冻结事件及事后原答引用，不能临时制造过去时间。原owner_refresh/transport只读当前文件确认，未改生产源。一次源码Get-Content工具只打印output而未保存返回handle，不能据半段输出认定完整读取成功；独立具名Python只读读取已终态0，后续全部exec返回session/exit metadata。沙箱CIM资源不可访问，未据此断言旧shell无活进程、未kill其他进程；无收费或数据写操作。
