@@ -1878,3 +1878,40 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 原标准Observation1.1确实不含identity_revision/listing_id/analysis_subject，EntityId是bounded string，并非旧摘要猜的ENT无连字符regex。身份/挂牌从独立事前receipt/context冻结，不补原JSON；题目/模块/定义/语义、实际选择的provider/requested模型、prompt、cutoff等与原字段逐项匹配。
 - 发送前只已有本地工作/attempt；服务request_id和答案hash在响应后才有，不能制造含这些内容的过去事件。实际owner事务已支持事后不可变绑定、重启精确重放和整批rollback；primitive合成测试不代替公共authority或真实HTTP前生产。
 - provider/题目改写不能因查不到自己的pre-receipt降成legacy逃逸。当前按本地attempt+question关联并拒已登记attempt的未登记题目，未登记的真正旧attempt继续历史只读。当前availability仍不是TTL/白名单或金融准确性签收。
+
+### C06真实客户端接线发现（producer-checkpoint-01）
+- 真实服务执行UUID直到旧begin之后才生成，配置provider名与实际服务适配器不同，原响应prompt摘要只涵盖prompt而工作摘要包括system；必须分别保存和核对，不能用旧fixture的单字段假设改写原Observation。
+- 原响应白名单没有started_at。时间绑定使用原durable send_intent，不新增猜出的provider时间；实际response completed_at和owner registered_at仍按独立时钟/UTC顺序核查。题目JSON对象顺序不是manifest顺序；新测试应按checkpoint的题目ID取题。
+- 原owner subject_key用ASJ@revision，DTO有scope_as_of，perimeter是独立receipt；不伪造updated_at或在subject中添perimeter_sha256。旧QuickScanStore不提供canonical listing查询，security pre登记明确拒绝，必须接真实canonical owner桥后才具备完整E2E。
+- 单元/组件真实SQLite、固定OS契约和真实同步异步客户端HTTP fixture均为合成软件边界；仍未证明公开current-route完整授权链或真实公司信息准确。当前34份候选/测试输入只做可接续存档，同一C06大节点完成再审，不增helper审查。
+
+### C06公开链与耐久性发现（producer-checkpoint-02）
+- 原owner已有canonical挂牌serializer，targeted桥应复用实体/SEC/LST和源绑定，而不是新主档或名称唯一性猜测。标准证券UUID连字符应可走完整工作链。
+- 完整C06 envelope的package_sha256不是全envelope canonical hash，须用原verify_package_integrity；测试自造accepted绕过正式导入，不能算端到端。
+- context2/schema3真实微秒不能截掉；否则owner登记/事后bind会被原正确时间顺序拒绝。旧formatter/记录不重写。网络失败仍有本地配置事实，没有服务实际模型/费用事实；ledger必须持久明确或uncertain状态。
+- 跨仓边界必须在真正独立进程移除IQS PYTHONPATH后验证。fixed OS按批检查原件/主体，不能为大量Observation逐项启动进程。
+- 进程内snapshot不支持接续；独立owner缓存需UTC年龄、query/owner/hash绑定、原水位、事务容量/淘汰和幂等，失败无live替代。缓存TTL不是答案新鲜度/路由当前资格，后者待原步骤4完成。
+- 实际274P/2F后定向2P是两批；合成软件不证明金融真值/真实公司golden或完整C06门。大节点集中review尚待。
+
+
+### C06受控刷新与主入口接续边界（2026-10-10）
+- 新事前subject绑定不在原Observation里。owner提供原binding/PRE receipt/current watermark的独立reuse descriptor，consumer验证不可变回执、原模型/题义/身份和原答案TTL，不能要求原JSON事后添subject，也不能以query缓存TTL替代答案TTL。
+- 刷新绑定需要显式版本：旧v1保留既有行为，新v2才要求context2；同键v1不能重注册成v2。真实公开G2b serializer在合成owned库运行是软件证据，不等于真实金融golden。
+- 旧问卷导出为string，主入口要求stable IDs；新增明确identified transport，不推断题目ID、不修改原question text，接收端发送前核完整选择和题面SHA。
+- SQLite连接context只提交/回滚，未自动close；Windows隔离测试所有自有连接显式close，文件故障finally恢复，禁止用杀外部进程或忽略产品拒绝来洗绿。
+- 一次请求预算+正式import/ACK+重启原引用证明部分扫描可接续。全公司完成、首次统一schema3初始化、真实owner golden与完整C06大节点仍待；不增加helper审查、不重复未改范围测试。
+
+
+### 真实owner golden与冷启动边界（2026-10-10）
+- 普通读/登记不能偷偷迁移旧owner库；首次空库初始化是明确公开setup动作，旧1/2由后续受控升级处理。单仓测试不导入外仓产品，独立RUN_INTEGRATION开关保留隔离guard所需OWN；显式必需集成批次零skip，默认collection skip不是测试覆盖。
+- 总CLI import阶段加载无关LLM YAML会阻断只读身份导出；薄入口复用原G2b parser/handler解决独立使用，未复制身份规则或改变模型默认值。capabilities提供配置下独立store_id，不能用查询响应自己给期望owner。
+- 真正现有四库与唯一subject已通过owner公开导出与IQS公开CLI；原观察库缺失必须显示unavailable，不能以空库初始化或合成数据洗出真实评分正例。真实数据来源证明和金融准确性证明分开。当前模型反例只覆盖cache模型筛选绑定，不声称真实模型答案交叉比较。
+- 13拒绝/1capture重启的实际CLI原件齐全，错误subject/perimeter副本重新封摘要仍拒绝；自有TTL故障finally恢复缓存原字节。C06剩余操作/授权确认尚待，capability依旧get_profiles/full_C06=false，其他原门不自动关闭。
+- 自动审批复核对仅7文档的安全替代发布也拒绝，要求这些具体内部文档与GitHub目的地的导出确认。广泛工程授权不等于该复核已允许敏感egress；Git发布停在进程创建前，本地实施可继续。不能通过缩小到另一文档子集、换目的地、间接执行或盲跑publisher绕过此拒绝。
+
+
+### 2026-10-10 刷新报价与信任边界
+- 原QA budget表只持有规则限额/策略快照SHA，不保存完整provider/model映射。只读预览必须重新核owner配置的完整原策略及快照，不能从消费者自报model或仅SHA自洽推断实际路由。
+- 可保守返回原共享预算余量作为费用上界，明确不等于本公司估价；预览不创建预留，确认和原派发仍须再查额度并经Q09扣账。多库分次读取不能宣称原子快照。
+- 独立refresh预览版本不能授予确认权限；公有纯CLI明确permission_authenticated=false。认证确认和耐久提交尚待实现，25P/8P只能证明对应软件规则和只读账本行为。
+- 此前文档egress拒绝已有用户对精确7路径与origin的新明确授权，不再反复询问同一范围；跨仓源码旧问题仍单独待答，不能将本次许可扩大到真实数据或源码。

@@ -407,7 +407,11 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**唯一当前动作更新（2026-10-10，以下快照均为历史）：** 在仍独占c15a接StockQA context2/实际before-send、可信固定OS CLI登记与持久receipt引用，再接consumer/route-refresh、TTL资格、公共query CLI/耐久snapshot及实际owner golden。原C06同节点两阶段owner primitive/事务绑定/读投影已私有23P/6.62s，历史读取回归33P/45.93s、纯契约65P/1.49s，各组均终态、不能相加为金融准确率。事前只登记本地attempt/主体/题目/版本与摘要，答案后在原Observation/ACK事务里关联原ID/hash/服务request_id；原JSON不改、旧答案不补绑。schema3复用原观察库，仅1原SW私有候选声明读取扩展点，177原SW/64原IQS依赖及guard保持，本段生产源未写、0API。原件subject-checkpoint-01/private-subject-01；真实HTTP发送前producer与公共authority adapter仍未接，不能从public request自填expected_dispatch。完整C06收尾才同一大节点集中审查，所有原证据门开放；c15a不能清，两内容施工包未派发，全计划active目标保持。
+**2026-10-10 刷新接续补记：** 在独占c15a新增独立refresh/1.0.0纯预览契约，保留Query2.0与legacy行为。实际纯契约25P、原QA账本只读检查8P；fixture import错误保留失败日志并修复。StockWiki预览适配器刚新增、尚未验证，认证确认/耐久提交/原Q13消费仍待，不能称C06完成。该次全部0API，不改生产库/名单，不重复小节点独审。用户已明确授权7份第一方文档向既有github.com/zhengcb81/invest-quick-scan.git提交推送；跨仓源码/数据库/真实golden不在此范围。此前自动审批拒绝发生在进程创建前，当前已有新授权，发布结果以实际commit与remote终态核对为准。
+
+
+
+**唯一当前动作更新（2026-10-10，producer-checkpoint-05；以下均为历史）：** 在独占 runs/c15a 继续原C06剩余公开操作和明确授权的刷新预览/确认链；完成本大节点后集中审查、源发布。实际 authority3 主入口的部分扫描/import/ACK/重启复用、owner refresh/原答案TTL已接通，新增显式冷启动schema3设置与可移植测试；旧schema1/2升级要求受控备份，不在日常query/登记时自动升级。冷启动+主入口7P、受影响集成75P、显式opt-in公开全链18P、owner能力9P、薄身份入口7P，各为实际独立批次，不合并为准确率。真实StockWiki原四身份库逐份只读克隆，实际现有唯一主体的package2.2经CLI1.1 valid；query2经公开CLI validated，但源观察库确实缺失，返回unavailable/无评分或事实。6生成调用+14跨进程正反例终态齐全，13拒绝/1原capture重放、原库/golden/缓存保持；没有伪造公司或答案。49私有候选最新checkpoint05、0API/生产库/名单写、原JSON/旧导出不改，未审未发布。capabilities目前只声明get_profiles和full_C06=false；C06/W15/G3/F05/L03/B01/TH-IN/全池门仍开放。c15a与real-owner-01仍用不清，两内容包未派发、Lab索引已完成。跨仓快照向既有origin的具体导出问题仍待，旧34份publisher过时不可重试；总目标active，其他工程继续。
 
 **唯一当前动作（2026-10-10，覆盖下方所有历史快照）：** 原Phase113/C06步骤4继续实施事前subject sidecar生产/事务导入与当前主体投影，再原route/refresh的资格/TTL、公共query CLI/耐久snapshot和实际owner serializer golden。最新私有reader已33P/20.22s，原答案契约65P/0.89s，两组为真实组件合成数据/独立批次、不合成金融准确率；非空旧记录可保留原字节/模型/时间和原ACK作为独立legacy_unbound历史，不计当前主体覆盖。冻结snapshot现在仅同reader进程内32份/16MiB/一小时，未知/过期/不同query或重启不读live替换；尚非公开耐久快照。原件见owner-reader-checkpoint-02，当前测试handle均终态；178原SW/64原IQS输入及生产源不变，0API，c15a仍在使用不可清。完整C06同节点集中审查尚待，W15/G3/F05/L03/TH-IN/金融准确性/全池门不变。两独立支撑施工包已交付文档，未派发；总目标实际active、无预算设置，继续完成原计划，不以本段私有软件进展签收全链。
 
@@ -1639,7 +1643,7 @@ Status: in_progress
 - [x] 在全新独占环境TDD实现评分基础链：模块新增/退役、语义时效、路由锚点、历史只读、事务回滚、真实公开CLI与Q13动作接线。
 - [x] 基础范围完成受影响单元/集成和公开入口E2E、同一次集中审查、正常源交付与严格自有清理；整个W15/C06/L03/G3/F05/金融准确性仍开放。
 - [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。
-- 最新subject-checkpoint-01冻结两阶段owner primitive/事务绑定/当前读投影23P、旧历史回归33P、纯契约65P；各批独立合成软件范围，未审未发布。schema3旧writer不降级写，原答案不改/旧记录不补绑。仍待真实StockQA before-send/context2、公共authority/consumer/refresh、TTL/query CLI/耐久snapshot与实际golden，同节点收尾集中审查。只有1原SW私有候选声明读取扩展点，177原SW/64原IQS依赖保持；旧checkpoint不覆盖，0API，c15a仍在用。
+- 最新 checkpoint05累计49私有候选。首次显式schema3设置、独立opt-in测试、实际owner身份/缺观察查询golden及6+14公开CLI终态完成；原库/golden/缓存字节保持，0API/源生产库/名单写。公开capabilities仅get_profiles，full_C06=false。仍需原剩余操作/明确授权刷新预览确认、同一大节点集中审查和源发布；原步骤4/下游门保持。c15a/real-owner-01保留，具体远端快照导出待答，旧publisher不用。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
 Status: complete_for_package_design_only; workers_not_dispatched

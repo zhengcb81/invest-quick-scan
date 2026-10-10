@@ -2759,3 +2759,53 @@
 - subject-checkpoint-01/private-subject-01已冻结10候选、原SW旧基线/guard，绑定三final .sources/process SHA，旧档案不覆盖。PWF首次整批apply_patch因handoff长行只取前缀被原子拒绝，实查四文件均未写；改为完整读取/一次性具名更新，不重跑测试。c15a仍用，未知nul/opencode不读不动，正常Git待真实回执，不预报成功。
 - 正常Git首次执行在创建进程/stage前被自动审批拒绝，理由是含外仓StockWiki源码且目的地披露/私有性证据不足。没有绕过拒绝。gh只读工具缺失，不能声称已核私有；随后获准只读git show/ls-remote证明该完整原StockWiki文件已在同一既有origin交付快照，原/新baseline raw SHA均d0e0b5e且字节完全相同，origin/master仍e0e50cb。本批新module/测试为本助手编写的合成软件、core仅读取扩展点；destination-source-check-01保留事实与可见性未核限制，再据低风险证据请求自动复核原正常动作，未更换目的地/删证据或强推。
 - 两阶段主体primitive私有checkpoint已实际正常提交推送f4e05452656752f53f8973ac72b999a65a314d1e：81精确路径、staged原工件字节一致、origin/master与HEAD相同；commit5084/push9860均终态0。自动复核在已收新只读原码同目的地证据后放行同一正常动作，没有换目的地/绕钩子或强推。repo可见性仍未核，未虚称private。两未知nul/opencode保留、本段产品未发布、完整节点尚未审，c15a仍用于实际before-send接续。
+
+### 2026-10-10 C06实际producer context2／发送前持久回执接续
+- 起点IQS HEAD/origin 96d18d676d725e98c2f19ed6ec361d545a3c2c15；源QA6aafc32/SWa5a97d6只读冻结，未写生产源。150份QA非秘密源码/契约和4份原合成fixture独立留原SHA；两个内容施工包不重做/不派发。Lab CodeGraph实际核30files/611nodes/1297edges，已有数据库不重复初始化。
+- context2在attempt前冻结、work schema15增加不可变receipt，authority3与旧1/2兼容；真实LLMClient/AsyncLLMClient在begin前生成服务执行UUID，实际HTTP fixture调用时pre-receipt已持久。失败/错主体/未来回执不产生send intent或reserve；原答案及服务UUID不重写。固定第一方OS纯契约CLI实际运行，owner当前权威重建unit用显式stub，不能冒充完整current-route E2E。
+- 发现并区分本地ATTEMPT_与服务UUID、配置provider与实际provider、work组合摘要与原prompt-only摘要。实际sanitized响应没有started_at；使用durable send_intent真实时间，completed_at仍原响应实际时点。新版sidecar独立identity/主体/perimeter/完整题目契约，原Observation1.1不增字段，旧历史不回填。
+- producer-subject-final-01原24268终态1，107P/1F/21.74s；新测试错把JSON对象第一题等同manifest第一题，修正fixture选题后producer-original-preservation-01原6956终态0、1P/1.57s。不能改记108全绿。producer-work-regression-01原15536终态1、123P/11F/40.96s；旧schema fixture忘删v15表，新表/trigger显式移除后producer-legacy-fixtures-01原24888终态0、11P/7.89s，保留原产品严格schema校验。
+- 全部12份已捕获实际child终态及源SHA原件保留；red01控制器在pytest后因自有空日志变化拒绝，integrated02控制器180秒超时未捕获child returncode，均不能编造。后来只读确认原子/控制器PID已消失；条件Stop因identity不符被拒，没有执行Stop。native异步边界在沙箱外仍带同一socket/SQLite守卫后19P及时结束，runner后续超时仅杀自己的Popen句柄。fixture冻结前缀假设和只读inventory probe错误也已记录，未写源/生产库。
+- producer-checkpoint-01/private-producer-01冻结34候选与合成输入、原guard abc0128d和12份实际执行摘要，旧checkpoint不覆盖。此范围API/生产数据库/名单写0，私有软件并非金融准确性。public security登记明确拒subject_dispatch_listing_authority_unavailable，因旧QuickScanStore没有canonical listing接口；下一步真实owner桥和实际current-route公开全链，再consumer/refresh/TTL/query CLI/耐久snapshot/真实golden，同一完整C06大节点集中审查。
+- 根PWF已更新当前动作和弱模型接手边界，原G3/F05/L03/B01/TH-IN/全池门保持开放，全计划active；c15a仍有后续用途不能清，未知nul/opencode不读不动。当前新增进度正常提交推送待实际Git回执，不预报成功。
+- 最新checkpoint正常Git在CreateProcess/stage前被自动审批拒绝：本批34份跨仓源码候选/合成输入向远端目的地的具体授权未被识别。只读确认origin为github.com/zhengcb81/invest-quick-scan.git、HEAD仍96d18d6、index为空；仓库可见性未核，不能称private。本次未创建Git写进程/未暂存/未提交/未推送，也未换目的地或间接绕过；git-publication-rejection-producer-01如实留档。已请用户对这批具体内容/目的地确认；此发布动作等答复，其他计划内实施和全目标active保持，不能反复盲跑publisher。
+
+### 2026-10-10 C06实际公开查询与跨进程捕获接续（producer-checkpoint-02）
+- 用户要求的两内容包保持，未替harness派发。Lab既有CodeGraph只读确认30files/611nodes/1297edges，不重复init。根为唯一PWF owner，全部计划目标active。
+- route-inputs-01冻结63份路由/静态输入、57新复制。targeted listing桥复用原serializer及identity/source-binding状态和有效期，不建主档、不用名称；listing红灯15F为缺接口，绿15P/1.19s。
+- 实际E2E走真正route记录/current、IQS公开authority3、StockWiki公开pre登记、真正同步客户端（仅HTTP替换）、checkpoint/seal和原import_package；移除测试自造accepted decision。正式import/read首绿2P/36.95s，均为合成公司/证据，不是real-company golden。
+- 真缺口：默认screening-1/C06 standard-1、标准SEC连字符、adapter context2与schema3投影、send/owner时钟截小数秒。分别显式选择标准格式、新版时间保精度且旧默认/formatter保持，原Observation/ID/hash不变。诊断02用实际answered_at证明截秒会倒序，诊断01错用不存在completed_at如实保留。
+- 失败RED原29432为4F/4P/7.14s：timeout/坏JSON缺requested_model导致失败ledger拒绝。已知本地配置移到解析前，实际模型/hash/usage/费用未知保持。green01/02各4F/4P仅测试对uncertain异常/字段误读，修fixture后green03原27080、28P/8.68s；认证/额度confirm失败，超时/坏JSON持久uncertain，不盲重发。
+- 公开query RED实际缺入口1F/0.49s；首绿原21104、6P/6.84s。独立owner捕获schema1仅写runs/c06-query-captures，32份/16MiB/一小时。重启/缺源可重放原捕获；错query/owner、未知/过期/未来/篡改/schema拒绝，无live替代。原源库字节不变、合成临时改名finally恢复；另验证真实32份淘汰/字节上限与幂等不延长TTL。
+- 取消reader内部外仓Python导入。非空公开query主进程PYTHONPATH只有guard/StockWiki，原件及subject批量经固定IQS离线OS CLI，不能按每条答案启动多进程；水位仍是分库顺序捕获，不是跨库原子或当前投资资格。
+- 集中受影响query-chain-green-01原9028终态1：274P/2F/69.37s，两F仅新测试误把invoke已返回dict当CompletedProcess。只修测试后定向green02原19440终态0：2P/38.06s，公司/证券正式导入→公开query→第二进程原capture重放通过。不拼成一次276全绿，未重复未改274项或全仓/UI。
+- checkpoint02/private-producer-02冻结41源候选、21新增终态与原guard abc0128d，匹配执行SHA。63静态输入和4原fixture计入baseline，未当新产品代码；原checkpoint01/失败原件不覆盖。控制器-k当路径exit4/未运行测试、只读AST引号/猜路径错误、PWF首次patch缺+被拒且0写都记录，不称产品漏洞。
+- 下一动作actual authority3 consumer/受控refresh、当前资格/答案TTL、真实owner golden及整个C06一次集中审查。API/源生产库/名单写0，无网页/公司文档下载，c15a仍用不能清。先前34份Git具体授权问题仍等答复，未重试或绕过，最新进度未提交推送。
+- checkpoint02后实际只读复核源QA6aafc32/SWa5a97d6仍同基线，SW clean，QA仅既有未知顶层项（normal折叠目录口径，不声称逐文件11项重审）；未知内容不读不动。41归档候选逐份匹配实际执行SHA，根git diff --check实际exit0，未进行任何Git写入/网络。具体回执source-git-readonly-checkpoint-02.json。
+
+
+### 2026-10-10 C06实际主入口与受控刷新（producer-checkpoint-03）
+- Lab CodeGraph已按用户许可建立并核30files/611nodes/1297edges，不重复init。主体绑定的公开刷新公司/证券首组2P；修复实际consumer复用及legacy-v1误要求context2，v2显式标记且不可降级。原答案bytes/ID/hash/model/时点不重写。
+- 新identified questions公开导出保留旧string导出；从实际冻结manifest验证全部ID/顺序/题面哈希，主入口authority3接标准封装。实际 main4 原29292终态0、1P/111.56s：完整24题预算只发1次，正式owner import和ACK后重启同一原引用，HTTP总1；是部分扫描接续，不称整家公司完成。
+- consumer首批44P/7F/2error涉及Windows长路径、旧schema fixture、测试code-root缺失和真legacy兼容问题；rf2原24388终态0、54P/56.84s。主入口红灯1/2/3的日志目录、旧题目字符串、合成source URL不符全部保留并区分产品/fixture。
+- 最终受影响 rfinal1 原26812终态1、85P/2F/84.54s；rfinal2 原34472终态1、1P/1F/56.83s。失败为SQLite fixture with仅结束事务未close导致Windows自有文件改名拒绝，显式关闭尾部及HTTP callback连接；证券定向 rfinal3 原18500终态0、1P/29.03s。各批不拼成全绿/金融准确率。
+- checkpoint03一次冻结47候选/11新增终态，所有源SHA稳定，原guard abc0128d不变，0API/生产库/名单写。原观察/旧导出不改，保留失败原件及runs/c15a。已捕获真实软件G2b serializer合成DTO，不冒充真实公司 golden。
+- 下一步统一冷启动显式schema3、可移植测试、真实owner golden和完整C06集中审查/源发布；原步骤4及C06/W15/G3/F05/L03/B01/TH-IN/全池门保持。具体Git导出待答，未暂存/提交/推送、未重试旧publisher。输出过大后已改读结构化小摘要；只读猜路径/格式错误无写入。
+
+
+### 2026-10-10 C06首次设置、可移植测试与真实owner golden（checkpoint04/05）
+- 新公开initialize仅首次空库0→3和既有3验证；旧1/2明确要求受控备份升级，坏库/未来/旧expected/已有未标版本库拒绝并保持原字节。日常事前登记不自动升级。init-red原34752终态1、6F/1.59s为新operation缺失；init-green原34344终态0、7P/114.41s包含原主入口部分扫描/import/ACK/重启，非完整公司扫描。
+- portable-green原31932终态0、75P/18.50s；独立opt-in最终optin-green原33236终态0、18P/63.28s，均无skip。正常单仓collection03原QA26872/SW35376分别预期5/0，仅明确跳过3/5集成模块及收集15独立case，执行0tests，不计已通过测试。前collection01漏守卫必需OWN、02误读quiet skip总数如实保留；守卫abc0128d未改。
+- checkpoint04 delta9/cumulative48实际冻结，4新pytest批次终态保留。新增owner capability独立store_id，cap-red原32208终态1、1F/0.60s；cap-green原33960终态0、9P/5.63s。新薄identity_g2b_cli复用原parser/handler、无LLM配置依赖；identity-cli原27916终态0、7P/2.13s。普通总CLI未改。
+- 真实source只读Git HEAD最初被沙箱拒在克隆前；获放行的同一已授权只读动作才复制4现存轻量身份DB到自有real-owner-01，逐份源/克隆SHA相同、无WAL，真实唯一subject由实际主档取。源仍a5a97d6，没有新主体/receipt/观察/名单。
+- 第一实际owner export原日志因总CLI import阶段要求无关LLM YAML终态1，保留real-owner-golden-01。薄入口generation02六公开CLI实际0；package2.2/CLI1.1 valid，query2 validated，源观察namespace确实missing所以status=unavailable、scores/facts=false。没有借创建空观察库伪造真实正例。
+- 真实golden副本14公开CLI终态：13负例拒绝、1跨进程原capture重放；错实体/ticker binding、重复/截断JSON、重新封摘要的错主体/perimeter/owner、水位、模型cache筛选、未知/过期snapshot均覆盖。controller在13条之后误用不存在qc._bytes，finally恢复自有cache；只补expiry，不重跑13已绿。原golden/四库和ownedcache保持；model仅cache绑定，expiry仅自有元数据故障注入，非真实金融答案/两小时实等。
+- checkpoint05累计49/delta4与三个新pytest批次、6+14实际CLI原件冻结。0API/费用/生产库/名单写、不下载文档、源QA/SW该段未发布，未关C06大节点。c15a及real-owner-01仍用，不清未知内容。下一原剩余公开操作/授权刷新链，之后一次集中review/源发布；原G3/F05/L03/B01/TH-IN/全池门保持，跨仓origin导出具体问题待答。
+- 尝试更安全的仅7份本助手Markdown文档提交推送，自动审批复核仍在CreateProcess前拒绝：内部进度/交接文档向未核可见性的既有GitHub origin导出，未被识别为具体授权。publisher未启动、没有add/commit/push、不改目的地或绕行；已提具体7路径+目的地问题。获准只读确认HEAD仍96d18d6、index空、diff-check0。本地工程/目标active继续，原49源码快照也未发布；rejection原件已留档。
+
+
+### 2026-10-10 原C06受控刷新预览继续施工
+- 独立refresh/1.0.0契约使用原Query2 SubjectRef/Request约束，不变更旧schema；scope必须是原snapshot主体/字段子集。25实际测试通过，包括重新封摘要后的费用/模型/owner政策/名单版本冲突、重复问题、缺失范围、预算拒绝和expiry严格边界。不是认证或金融准确性验收。
+- 原Q09/Q13账本读取适配器复用get_quick_scan_budget_status与owner_refresh_projection，在单个只读SQL事务里读取并核实际schema15/原策略快照。8实际测试通过、原库字节不变；没有建库、迁移、预留或HTTP。费用是共享预算剩余额度上界，不是每公司官网单价预测。
+- 初始契约/检查缺实现的RED日志和一次fixture导入错误全部保留；修复导入后8P。StockWiki preview服务/固定IQS验证桥刚新增，尚待验证和公共owner配置入口。确认/耐久提交/原执行器消费未完成，完整C06与其他原门保持。
+- 用户明确授权精确7第一方文档提交推送到指定origin；不扩成源码/真实数据导出。不侵入独立内容包writer，活根c15a不清。发布结果按本地documentation-publication-01.json与实际remote核实；尚未执行成功时不称已发布。
