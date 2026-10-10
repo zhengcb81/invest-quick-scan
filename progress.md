@@ -2906,3 +2906,26 @@
 - 随后本地准备命令因PowerShell/内嵌Python引号解析错误而未执行，未生成retry或修改末尾；改用具名Python准备文件及普通调用，不再重复嵌套shell转义。审批拒绝的宽断言不会落盘或执行。
 - 七获准第一方文档已正常钩子提交推送aad7aab66d2755f3c67835ebe6269bf6c1fe3930，origin/master一致；提交前精确七路径与提交后空暂存强校验均通过，逐件staged/committed SHA一致。实际终态documentation-publication-09.json，第一次空白失败08原件保留。私有79候选/数据库/真实golden/README既有变更未导出；自动审批拒绝已按更强检查解决，没有再请求重复授权。
 - 收尾只读两Lab的remediation-01/handoff.json仍均不存在；原两包changes_requested及活writer边界保持，不重复原集中验收。下一目标回合从checkpoint10剩余原引用/uncertain/租约接续，不盲跑旧发布器或复用已结束测试handle。全部目标仍active，未关闭全C06/金融准确性/全局门。
+
+### 2026-10-10 原引用与不确定发送接续
+- 前回合原公开main接通、66P/真实合成OS E2E1P/79私有候选和9ccae89文档交付是progress，不是等待/无进展。恢复root唯一PWF、实际9ccae89/空暂存与原README既有改动；没有活旧测试handle，不盲重跑旧controller。
+- 私有报备：同包QA quick_scan_refresh_execution.py/原unit和integration续补引用标准格式、真实原库活/过期lease/uncertain/旧generation控制以及公开main导入ACK后复用/撤权反例；不新增队列或预算、不复制原答案，不改两个Lab活动writer或生产仓库/DB/名单。整个C06仍一次集中审查，没有helper门。
+- producer-resume-r1实际48604/exit1、24P/1F/4.58s：原库lease与send_intent过期/新generation反例已通过，引用回执却返回内部payload字段，缺既有公开original_observation字段。原失败保留；在原owner_refresh抽取同一个公开descriptor供旧结果和零模型接续复用，格式/原时间/原模型/hash不变，不造新包。
+- formatter修复后的五受影响文件producer-resume-u1实际50760/exit0、77P/8.24s（controller10.646s），source不变/原guard raw/API0。延长公开main→待交付→owner import/ACK→引用→撤权场景producer-resume-e1实际51012/exit1、360.559s整组超时；stdout/stderr空、无完整JUnit，不能把前半状态或77P当E2E通过。原超时回执保留，不再从头重问；核原合成task/owner阶段后拆成有界接续，仍使用同一原封包/原队列。
+- 实际CIM复核成功且e1 owned Python0；源执行代码字节不变。接续fixture首轮ack1实际50708/exit1、1F/1.54s，在synthetic guard处误取context.run，而原C06 run信息按题位于metadata，尚未到import/main。更正为检查全题metadata的原INPUT_SYNTHETIC，原失败留档；没有新模型请求。接续测试先存原DB bytes和阶段日志，输出到新测试根，原失败输出不覆盖；临时撤权政策用finally恢复。
+- ack2实际37168/exit1、1F/1.43s，在测试实体名称guard误假定display_name。已读真实seeded和context：Synthetic是analysis subject标签而非实体字段；改为原entity ID与固定合成ASJ/full metadata核验，不用名称猜身份。两次fixture KeyError都在导入/主调用前终止，未改产品或重发模型，不把它们称生产缺陷。
+- ack3实际48152/exit0、1P/57.04s（controller58.502s）：接同一e1已停止原任务，实际状态已delivered，原DB bytes在新根先存；真实OS main无配置/凭据复用原ID/hash/payload/时间/模型，attempt原1条不变；原政策撤权真实拒绝，finally恢复原政策。旧e1仍超时，不用这个接续1P改写原360秒失败；无新增HTTP/队列/金融gold。
+
+### 2026-10-10 两外包R1通知后的实际接收
+- 用户通知两包完成。只读核 FACT 新 HEAD d00e2b64/result b227b335、完整 remediation-01/handoff.json；EVID 仍1597a08、R1未提交代码且新版handoff不存在，保留活writer成果，不重复原验收或误签收。
+- 用户明确同意 FACT CodeGraph 后实际 init exit0，29文件/472节点/443边；仅索引基础设施新增，不属产品提交。首次外仓Git沙箱Permission denied后升级只读成功；一次空锚PWF patch拒绝无修改，改为明确追加。
+- 固定 FACT 109受控文件、106工件raw SHA匹配、213输入锁无漂移到独占runs/p114r1a，源仓不执行测试。真实隔离整包115P/0F/E/S、50728/exit0/91.548s；handoff公开入口35324/exit0仅形状结论。独立内容审查和同批真实CLI反例仍在进行，未提前签收。原c15a/real-owner-01、生产源/库/名单不动，API/下载0。
+
+
+### 2026-10-10 外包R1集中续验完成
+- FACT d00e2b64/result b227b335完整交接真实收到，产品提交是HEAD祖先，无remote；109受控源文件/106artifact原件/213输入锁复核不变。新CodeGraph仅用户明确授权设施，源产品/真实库/名单未写。EVID仍1597a08/R1未提交，新handoff缺失，原成果/活writer保留，不能说两个均已交付签收。
+- 实际隔离115P/0F/E/S（JUnit90.061s/controller91.548s/50728exit0）；公开handoff35324exit0仅结构。原六整改反例与正常控制确实通过；新八机械反例仍exit0，旧1.0公开入口exit2，另三原内容问题独立静态复核。均同一次包级验收，FACT changes_requested/R2续卡，不新增helper审查。0收费API/公司文档下载，不关闭金融或全局门。
+- 控制器错误更正：FC08首次非法basis=historical导致exit2，不计产品行为；仅改合法trailing后47288真实CLI exit0确认2025证据支持2020目标的缺口。首次junction在沙箱创建拒绝不计缺陷；授权同一自有根实际创建后50816真实CLI exit0确认先resolve绕过。第一次CIM匹配1是查询自身，成功复核单列查询PID并记录其他0，最后五已知测试PID均不存在。失败原件保留，没有覆盖日志或重跑已绿全套。
+- R1源/输入最后SHA不变、全部五子进程终态及实际CIM0后，先只rmdir自建junction本身且其目标SHA保持，再strict lstat/单硬链/set-size-SHA逐件清727文件/182目录；p114r1a已不存在。轻量原handoff/原日志/反例结果在intake remediation-01留档；源仓/共享TEMP/原c15a和real-owner-01不动。actual cleanup.json已存在。
+- 主线恢复信息：原ACK后的无凭据引用/撤权ack3真实1P；defer1活租约1P，但uncertain fixture在原subject_dispatch_context2_required前置守卫失败，缺真实冻结context/原生dispatch receipt，尚需补齐该用例。resume-e1整组360秒超时不能算GREEN；最近冻结仍checkpoint10，不造11。下一主线先修fixture只跑未过项，再其余原全poolC06操作和整个节点一次集中审查。
+- 第一次外仓Git沙箱拒读已由授权只读升级解决；一次PWF空anchor patch拒绝无修改，后按明确追加/已验证marker更新。只正常发布已获准第一方PWF/接手Markdown到既有origin，新增R2/原交接/反例/源码/数据库不扩入远端导出。

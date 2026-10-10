@@ -1,5 +1,11 @@
 **2026-10-10 最新接续（checkpoint10；以下09/08及更早“当前”记录是历史）：** 原main_with_llm/LLMRunner已在私有runs/c15a消费原Q13耐久action，只执行native当前权限确认的完整SubjectRef/题目范围；完整原manifest/身份/authority3-context2先验后选题。79累计候选/7变化/5原终态批次已固定producer-checkpoint-10.json，原guard raw不变。最终原公开main合成E2E48032/exit0、1P/235.74s（controller241.766s）：完整24题release保留，两请求预算下只派发获准1题；原Q09实际发送1笔，result_ready后删除模型配置与花费授权，重启0新增HTTP/凭据读取，原work/package ID/hash/bytes不变。四受影响unit46720/exit0、66P/4.84s（controller6.313s）与E2E源SHA一致；早期60P与66P重叠，原e1范围回执缺失1F保留，不相加或称金融准确率。新范围sidecar明确授权分母/全manifest分母，一题成功不叫整公司完成；legacy答案格式保留。生产QA6aafc32原七未跟踪/SWa5a97d6 clean未动，真实API/费用/生产库/名单写0，无实际人类确认。
 
+
+**2026-10-10最新实收，覆盖后面的R1 writer历史：** FACT-CONTENT-01-R1完整handoff已收到，codex/fact-content-01-r1@d00e2b64、result b227b335，109源/106artifact/213锁一致，115P与原六缺陷修复有效；同次独立集中审查/真实CLI仍找到八机械漏检、旧版只读入口缺口和三内容问题，维持changes_requested。本地验收与完整独立续卡在 reviews/parallel-packages/2026-10-10/FACT-CONTENT-01-R1-acceptance.md、FACT-CONTENT-01-R2.md。R2只写FACT唯一根，不自动派发。EVID仍1597a08、未提交R1代码且remediation-01/handoff.json缺失，等待完整新交接，不代改、不重复旧包验收。727文件/182目录和一个自建junction已strict清理，p114r1a不存在；源成果、共享TEMP与原c15a/real-owner-01保留。0API/下载，所有全局门保持。
+
+**下一工程动作仍是原C06，不加门：** 原producer-resume-ack3的无凭据原引用/撤权1P已实际通过；defer1活租约1P，uncertain该例在原subject_dispatch_context2_required守卫失败，因fixture缺真实冻结context/原native发送前receipt。只补该fixture并复验未过项，保留守卫，不能凭测试stub授权；原360秒resume-e1超时不称GREEN，沿保留原fixture继续，不新问模型。最近冻结仍checkpoint10，未生成checkpoint11。随后原search/candidate_set必须覆盖完整owner名单、不可变snapshot分页/原观察引用，不把100批读当全pool上限；整个C06一次集中审查/源发布/严格清理。新验收私有证据/源码/golden/DB没有自动进入远端，四PWF/接手属于原七Markdown许可范围。
+
+
 **唯一下一工程动作：** 沿同一原C06步骤4补齐原引用、uncertain与活租约的零新派发接续及整链负例，再完成其余原C06操作和整个节点一次集中审查/源码发布/严格自有清理；不增逐helper审查、不重复已绿未改入口。保留c15a/real-owner-01，不清共享TEMP。EVID和FACT原集中验收changes_requested，当前均有R1未提交writer且缺新版完整handoff，不代改或复验半成品。7获准第一方Markdown可正常Git到既有origin，源码/真实golden/DB未扩入导出范围；C06/W15/G3/F05/L03/B01/facts/UI/TH-IN/全池门仍按原条件开放。
 
 以下为保留的历史记录，不覆盖本段。

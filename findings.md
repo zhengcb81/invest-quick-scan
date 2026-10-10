@@ -1978,3 +1978,18 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 本次通知后再次只读核两Lab：EVID已进入R1且reference代码/新版本schema未提交，FACT也有R1内容/判定/测试改动；两者均无新版完整handoff。此前“EVID无新改动”只属旧时点，不覆盖当前writer。原集中验收不重复，活动源码不冻结作最终交付。
 
 - 原公开main接线经真实三组件软件E2E：预算有余时仍仅1授权题发送，删除模型配置后原result_ready可接续，原package bytes/hash保持。主结果仍原owner-refresh格式，独立scope回执区分授权分母与整manifest；unknown完成回答不代表准确或资格合格。完整合成fixture+两个主入口实际235.74s，不从66单元4.84s推断股票池吞吐。其余原引用/uncertain/活租约与整链反例仍待，不提前关闭整个C06。
+- 原C06公共query候选实际只支持get_profiles（显式最多100个SubjectRef），原2.0 schema也只接该操作；search/candidate_set尚未接主体契约。下一步必须覆盖owner确认的完整pool，而不是把100个批读上限当总名单上限；分页绑定原snapshot/规则/观察ID，不能live重排或聚合不同比较组。QueryReader已经按requested entity/field/cutoff限读观察，必须复用这条只读原始绑定链。
+- 原QueryCaptureStore目前保留完整原答案response，32 captures/16MiB/1h有界。全pool搜索需要控制重复答案保存，固定原观察引用与分页索引，仍从原owner按不可变ID/hash读取，不靠提高所有上限或新建事实/评分数据库规避容量；超限/缺覆盖必须显式返回，不能说市场没有公司。这个缺口是原计划操作接线，不增加helper验收门。
+
+### 2026-10-10 R1接收实际状态
+- FACT 新交付109文件/106artifact SHA与锁213均一致、真实隔离回归115P；EVID没有新版handoff、R1仍未提交，不将用户通知扩成已具备可验收输入。
+- FACT当前文档承认新validator拒所有1.0.0，只有schema归档不能自动等同有公开旧版只读解释；嵌套case路径先resolve可能丢原reparse链。集中审查中，待原公开CLI确定性反例，不额外加小节点审查门。
+
+
+### 2026-10-10 外包R1集中续验完成
+- FACT d00e2b64/result b227b335完整交接真实收到，产品提交是HEAD祖先，无remote；109受控源文件/106artifact原件/213输入锁复核不变。新CodeGraph仅用户明确授权设施，源产品/真实库/名单未写。EVID仍1597a08/R1未提交，新handoff缺失，原成果/活writer保留，不能说两个均已交付签收。
+- 实际隔离115P/0F/E/S（JUnit90.061s/controller91.548s/50728exit0）；公开handoff35324exit0仅结构。原六整改反例与正常控制确实通过；新八机械反例仍exit0，旧1.0公开入口exit2，另三原内容问题独立静态复核。均同一次包级验收，FACT changes_requested/R2续卡，不新增helper审查。0收费API/公司文档下载，不关闭金融或全局门。
+- 控制器错误更正：FC08首次非法basis=historical导致exit2，不计产品行为；仅改合法trailing后47288真实CLI exit0确认2025证据支持2020目标的缺口。首次junction在沙箱创建拒绝不计缺陷；授权同一自有根实际创建后50816真实CLI exit0确认先resolve绕过。第一次CIM匹配1是查询自身，成功复核单列查询PID并记录其他0，最后五已知测试PID均不存在。失败原件保留，没有覆盖日志或重跑已绿全套。
+- R1源/输入最后SHA不变、全部五子进程终态及实际CIM0后，先只rmdir自建junction本身且其目标SHA保持，再strict lstat/单硬链/set-size-SHA逐件清727文件/182目录；p114r1a已不存在。轻量原handoff/原日志/反例结果在intake remediation-01留档；源仓/共享TEMP/原c15a和real-owner-01不动。actual cleanup.json已存在。
+- 主线恢复信息：原ACK后的无凭据引用/撤权ack3真实1P；defer1活租约1P，但uncertain fixture在原subject_dispatch_context2_required前置守卫失败，缺真实冻结context/原生dispatch receipt，尚需补齐该用例。resume-e1整组360秒超时不能算GREEN；最近冻结仍checkpoint10，不造11。下一主线先修fixture只跑未过项，再其余原全poolC06操作和整个节点一次集中审查。
+- 第一次外仓Git沙箱拒读已由授权只读升级解决；一次PWF空anchor patch拒绝无修改，后按明确追加/已验证marker更新。只正常发布已获准第一方PWF/接手Markdown到既有origin，新增R2/原交接/反例/源码/数据库不扩入远端导出。
