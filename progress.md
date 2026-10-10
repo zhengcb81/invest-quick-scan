@@ -2904,3 +2904,5 @@
 - 七文档第一次正常Git提交预检因task_plan.md末尾新增空行被diff --cached --check拒绝（exit2），未commit/push；实际失败保留documentation-publication-08.json。只修该末尾空白后继续自己已暂存的精确七文件，重新核staged白名单，不跳过检查/钩子、不重跑旧一次性publisher。
 - 首次重试命令在执行前被自动审批复核拒绝：字符串替换会同时放宽提交前与提交后暂存断言；该命令没有执行，末尾尚未修，retry文件未生成。改为只替换第一处且提交前要求正好等于七获准路径，提交后仍必须为空，并验证脚本只含原post强断言；不扩大授权、不用间接执行绕过。
 - 随后本地准备命令因PowerShell/内嵌Python引号解析错误而未执行，未生成retry或修改末尾；改用具名Python准备文件及普通调用，不再重复嵌套shell转义。审批拒绝的宽断言不会落盘或执行。
+- 七获准第一方文档已正常钩子提交推送aad7aab66d2755f3c67835ebe6269bf6c1fe3930，origin/master一致；提交前精确七路径与提交后空暂存强校验均通过，逐件staged/committed SHA一致。实际终态documentation-publication-09.json，第一次空白失败08原件保留。私有79候选/数据库/真实golden/README既有变更未导出；自动审批拒绝已按更强检查解决，没有再请求重复授权。
+- 收尾只读两Lab的remediation-01/handoff.json仍均不存在；原两包changes_requested及活writer边界保持，不重复原集中验收。下一目标回合从checkpoint10剩余原引用/uncertain/租约接续，不盲跑旧发布器或复用已结束测试handle。全部目标仍active，未关闭全C06/金融准确性/全局门。
