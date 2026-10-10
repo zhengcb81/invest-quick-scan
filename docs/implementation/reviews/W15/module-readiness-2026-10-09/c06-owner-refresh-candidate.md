@@ -45,3 +45,15 @@
 ## 2026-10-10 接续补记
 
 当前新增独立refresh/1.0.0预览契约与原QA预算/待办只读检查，分别25P/8P。StockWiki适配器仍在施工、未验收；原确认/耐久提交/执行器消费未完成。用户已明确许可本文等精确7文档到指定origin；此次不包含源码或真实数据。
+
+
+## checkpoint06实际接续
+
+**2026-10-10 当前接续（checkpoint06，覆盖下方历史）：** 精确7份第一方文档已正常提交推送a0d283de665f91740190b2371b4722a2af25e557，远端master相同；未导出跨仓源码/真实golden/数据库。独占runs/c15a的StockWiki公共刷新预览已走实际OS账户、当前主体/成员/模块锚、冻结Query2 capture和原Q09/Q13只读账本，并保存不可变owner控制工件。当前63份私有候选，未集中审查/源码发布。最新35纯契约＋1公共CLI为同次36P；受影响账本/工件/公共CLI另批19P。此前128项为126P/2F，坏JSON已拒绝但错误边界未归一，修复后19P；不能拼成128全绿或金融准确率。result_ready只需导入续传时新增HTTP/费用为0，不因模型额度耗尽阻断。动态名单/模块须owner显式current_owner_members/current_manifest配置，身份仍由真实serializer独立验证，不以名称join。全部测试终态、guard原字节不变、0API/生产库/名单写。唯一下一工程动作是已认证owner对精确预览的独立确认、耐久幂等交给原Q13并在原Q09发送时扣账，再其余原C06操作；完成整个节点后一次集中审查，不增小节点审查。实际用户确认/收费提交尚未发生，C06/W15/G3/F05/L03/B01/事实/UI/TH-IN/全池门保持开放。c15a与real-owner-01仍用不清；两个内容包未派发。
+
+
+
+## checkpoint07实际接续
+
+**2026-10-10 当前唯一接续（checkpoint07，以下均为历史）：** 独占runs/c15a已有原生owner交互确认入口与不可变幂等工件，公共CLI会拒绝管道/自报确认；确认前后重核精确预览、当前主体/成员/路由/政策/原预算，scope变动要求新预览。另有固定owner只读同意检查入口与原Q13单事务批量登记原语（复用原表/算法、不另建队列）。最新同批实际36P/74.04s、子进程7660/exit0/source_changed为空；保留之前30P/6F的计数fixture表名错误原件。原语本身permission_authenticated=false，公共确认仍handoff_pending/registered_with_executor=false；真实owner读桥正例使用明确合成的同意工件，实际人类确认/收费提交/公开Q13接线尚未发生。67私有候选checkpoint07已固定，未集中审查/源码发布，0API/生产库/名单写，guard不变。唯一下一工程动作：固定QA OS桥读取owner原件，绑定完整authority3/context2及精确question/subject范围，再耐久幂等登记/公开重放/原主执行器消费，Q09仍在实际发送前扣账；之后其余原C06操作并同节点一次集中审查，不增helper审查。7份获明确许可的第一方文档已实际推送a0d283de665f91740190b2371b4722a2af25e557，远端一致；本次后续同7文档的实际Git结果按documentation-publication-02.json核对，代码/数据库/golden不在该导出范围。C06/W15/G3/F05/L03/B01/事实/UI/TH-IN/全池门仍开放，活根不清、内容包未派发、目标active。
+

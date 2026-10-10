@@ -2809,3 +2809,20 @@
 - 原Q09/Q13账本读取适配器复用get_quick_scan_budget_status与owner_refresh_projection，在单个只读SQL事务里读取并核实际schema15/原策略快照。8实际测试通过、原库字节不变；没有建库、迁移、预留或HTTP。费用是共享预算剩余额度上界，不是每公司官网单价预测。
 - 初始契约/检查缺实现的RED日志和一次fixture导入错误全部保留；修复导入后8P。StockWiki preview服务/固定IQS验证桥刚新增，尚待验证和公共owner配置入口。确认/耐久提交/原执行器消费未完成，完整C06与其他原门保持。
 - 用户明确授权精确7第一方文档提交推送到指定origin；不扩成源码/真实数据导出。不侵入独立内容包writer，活根c15a不清。发布结果按本地documentation-publication-01.json与实际remote核实；尚未执行成功时不称已发布。
+
+
+### 2026-10-10 checkpoint06：公开预览通过，7文档已推送
+- documentation-publication-01.json记录实际7路径commit/push/remote终态：a0d283de665f91740190b2371b4722a2af25e557。不包括私有源码、真实golden或四身份库。旧自动审批拒绝为历史，不再作为同一7文档的阻塞。
+- producer-checkpoint-06.json冻结63私有候选（QA23/SW25/IQS15），与实际最新执行输入及逐件快照SHA核对；原guard abc0128…不变。所有测试进程终态，0API，未改生产源、库、名单。
+- 实际公共预览跨进程1P之后，合并候选128项为126P/2F（损坏JSON正确拒绝但异常未归一），修复后受影响19P；最新动态权限策略/纯契约与公共CLI同批36P。保留所有失败原件，不合并独立批次，不声称真实金融准确性。
+- 预览保存独立不可变轻量控制工件，保留原答案/队列/账本；original result_ready仅导入续传时0新增HTTP/费用。动态名单与当前模块字段显式owner opt-in，默认旧allowlist保持。
+- 下一动作为独立认证确认、精确预览重核、耐久幂等交给原Q13、Q09原发送前扣账，以及其余原C06操作。当前actual_user_confirmation=false、paid_submission_or_dispatch=false、full_C06_milestone_accepted=false；原各证据门不变。详见本地c06-controlled-refresh-preview.md（非本次7文档导出范围）。
+
+
+### 2026-10-10 checkpoint07：确认软件与原Q13原子登记组合
+- 原生owner控制台显示精确预览/主体ID/字段/模型/原共享预算上限，必须真实TTY输入对应短语。没有消费者confirmed bool或--yes；确认前后独立重核，工件耐久且按稳定action ID幂等。公共CLI真实拒绝管道输入；并发同action保留首确认时间、不同范围不重绑。
+- 固定owner --inspect-confirmation入口读原同意/预览并重核策略/范围/时间；跨进程正例为测试直接创建的合成同意工件，不称真实用户确认。策略变化拒绝，原SQLite字节保持。公开确认仍pending，不能说accepted或已交原执行器。
+- 新QA内部存储原语组合原create_or_attach/owner绑定/原run refs于一个原SQLite事务，整批回滚/重启幂等/并发共用通过；不claim、不attempt、不预留、不建新队列、不迁移，permission_authenticated=false。真实用户来源与精确manifest/context2映射仍由下一公共接线完成，不能直接暴露spec JSON。
+- 初始两个缺模块RED及后续30P/6F原件保留；6F来自新计数fixture错误表名，修复为原attempt/quick_scan_budget_attempt后，同次受影响36P/74.04s，子进程7660/exit0、源SHA稳定、0API。前21P/22P为各自实际批次，不拼接金融准确率。
+- producer-checkpoint-07.json固定67候选/7变化、六个终态执行回执和原guard SHA；尚未整节点独审/发布，原源QA/SW未写、生产库/名单不改。下一接真实owner->QA固定桥、精确已确认范围、耐久idempotent admission/replay及原执行器消费，保留result_ready零LLM费用接续和原Q09发送时扣账。
+- 精确7文档旧commit a0d283d已真实push/remote一致。当前同7文档补记仍按已给授权正常提交推送，实际结果独立存documentation-publication-02.json；本地新详解和源码/数据库/golden不自动扩入此范围。整体门保持，目标active，不新增小节点独审。
