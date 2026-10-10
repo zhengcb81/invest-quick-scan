@@ -1,3 +1,9 @@
+**2026-10-10 最新接续（checkpoint10；以下09/08及更早“当前”记录是历史）：** 原main_with_llm/LLMRunner已在私有runs/c15a消费原Q13耐久action，只执行native当前权限确认的完整SubjectRef/题目范围；完整原manifest/身份/authority3-context2先验后选题。79累计候选/7变化/5原终态批次已固定producer-checkpoint-10.json，原guard raw不变。最终原公开main合成E2E48032/exit0、1P/235.74s（controller241.766s）：完整24题release保留，两请求预算下只派发获准1题；原Q09实际发送1笔，result_ready后删除模型配置与花费授权，重启0新增HTTP/凭据读取，原work/package ID/hash/bytes不变。四受影响unit46720/exit0、66P/4.84s（controller6.313s）与E2E源SHA一致；早期60P与66P重叠，原e1范围回执缺失1F保留，不相加或称金融准确率。新范围sidecar明确授权分母/全manifest分母，一题成功不叫整公司完成；legacy答案格式保留。生产QA6aafc32原七未跟踪/SWa5a97d6 clean未动，真实API/费用/生产库/名单写0，无实际人类确认。
+
+**唯一下一工程动作：** 沿同一原C06步骤4补齐原引用、uncertain与活租约的零新派发接续及整链负例，再完成其余原C06操作和整个节点一次集中审查/源码发布/严格自有清理；不增逐helper审查、不重复已绿未改入口。保留c15a/real-owner-01，不清共享TEMP。EVID和FACT原集中验收changes_requested，当前均有R1未提交writer且缺新版完整handoff，不代改或复验半成品。7获准第一方Markdown可正常Git到既有origin，源码/真实golden/DB未扩入导出范围；C06/W15/G3/F05/L03/B01/facts/UI/TH-IN/全池门仍按原条件开放。
+
+以下为保留的历史记录，不覆盖本段。
+
 **2026-10-10 最新接续（checkpoint09；以下checkpoint08及更早“当前”段落均为历史）：** 公共admission服务/CLI已在私有runs/c15a接通原生同意与完整原producer bundle，并原子登记原Q13；75累计候选/9变化/8终态批次在producer-checkpoint-09.json，原raw guard不变。实际公开CLI合成E2E37920/exit0、1P/217.24s与四受影响unit39780/exit0、52P/6.30s分列，不相加为金融准确率；原失败原件保留。没有实际人类确认/API/生产DB或名单写，QA6aafc32原七未跟踪与SWa5a97d6 clean未动。原队列登记后才能公开accepted/authenticated，存储自身仍false，尚未发送。
 
 **唯一下一工程动作：** 原main_with_llm/LLMRunner新增两admission参数并消费原不可变action精确范围；共享原owner路由指纹，完整manifest/身份/authority3/context2/search policy先验，再筛选执行题目。原Q09发送时预留；reuse/result_ready沿原引用/交付，无新模型和旧包重封；uncertain继续核对而非重问。整个C06尚未集中review/源码发布/strict自有清理，不增加小节点门。保持c15a/real-owner-01，外包EVID原交付需整改、FACT有R1活writer/RED阶段，不能代改或复验半成品。7获准第一方文档正常Git按新实际回执，不扩大到源码/真实golden/DB导出。

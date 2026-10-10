@@ -1,5 +1,11 @@
 # C06 真实 owner 身份与查询 golden
 
+**2026-10-10 最新接续（checkpoint10；以下09/08及更早“当前”记录是历史）：** 原main_with_llm/LLMRunner已在私有runs/c15a消费原Q13耐久action，只执行native当前权限确认的完整SubjectRef/题目范围；完整原manifest/身份/authority3-context2先验后选题。79累计候选/7变化/5原终态批次已固定producer-checkpoint-10.json，原guard raw不变。最终原公开main合成E2E48032/exit0、1P/235.74s（controller241.766s）：完整24题release保留，两请求预算下只派发获准1题；原Q09实际发送1笔，result_ready后删除模型配置与花费授权，重启0新增HTTP/凭据读取，原work/package ID/hash/bytes不变。四受影响unit46720/exit0、66P/4.84s（controller6.313s）与E2E源SHA一致；早期60P与66P重叠，原e1范围回执缺失1F保留，不相加或称金融准确率。新范围sidecar明确授权分母/全manifest分母，一题成功不叫整公司完成；legacy答案格式保留。生产QA6aafc32原七未跟踪/SWa5a97d6 clean未动，真实API/费用/生产库/名单写0，无实际人类确认。
+
+**唯一下一工程动作：** 沿同一原C06步骤4补齐原引用、uncertain与活租约的零新派发接续及整链负例，再完成其余原C06操作和整个节点一次集中审查/源码发布/严格自有清理；不增逐helper审查、不重复已绿未改入口。保留c15a/real-owner-01，不清共享TEMP。EVID和FACT原集中验收changes_requested，当前均有R1未提交writer且缺新版完整handoff，不代改或复验半成品。7获准第一方Markdown可正常Git到既有origin，源码/真实golden/DB未扩入导出范围；C06/W15/G3/F05/L03/B01/facts/UI/TH-IN/全池门仍按原条件开放。
+
+历史原件/记录保留如下。
+
 **2026-10-10 当前主线接续（checkpoint08；下面旧“当前”记录均为历史）：** 两外包集中验收保留changes_requested，R1尚未派发；总控只写runs/c15a私有副本。71候选/13变化/12终态批次已固定到producer-checkpoint-08.json，原guard abc0128…不变。固定StockQA→StockWiki原生OS同意读取已实际实现，1.1明确fresh_registration/current_permissions，原1.0不变；原Q13 schema16仅增加不可变action控制表，与原work/run refs/owner binding同事务，重放保持原work。最新受影响五文件143P/21.14s（45356/exit0），权限22P/2.62s（43764/exit0），真正三组件公开CLI E2E1P/125.50s（23892/exit0）分别记录，不相加为准确率。E2E明确合成同意/身份，以实际serializer、authority3/context2精确1题登记原队列；原owner DB不变，attempt/预算attempt0，策略变化拒绝，队列变化后只读当前权限可重放。存储原语仍permission_authenticated=false，尚无公共accepted admission服务/主执行器消费，没有实际人类确认或收费调用，也未整C06独审/源发布。
 
 **唯一下一工程动作：** 在原Phase113步骤4，把这些现有组件接成可信公共admission服务：从部署固定的原producer bundle读取/验证完整manifest、身份、authority3/context2，逐项与原确认的完整SubjectRef/field/question/generation/provider/model/route核对；不能公开caller specifications/confirmed/registered布尔值。新动作完整重核、已登记动作按原耐久记录重核当前权限，Q13提交成功后才accepted；原主runner只消费该已确认精确范围，发送仍经Q09。复用与result_ready只接原引用/续传、0新LLM，不确定发送仍保留原停机/核对语义。完成其余原C06操作后整节点一次集中审查、源发布与strict自有清理；不加helper门，不跑全池、不写Lab整改或生产库/名单。c15a及真实身份克隆real-owner-01仍在用。C06/W15/G3/F05/L03/B01/事实/UI/TH-IN/全池门保持开放。四份PWF/接手及三份W15说明的获准文档可正常Git到既有origin，源码/真实golden/数据库/新跨仓快照未扩入导出范围；实际Git只按终态回执记，不盲跑旧publisher。

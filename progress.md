@@ -2885,3 +2885,22 @@
 - 唯一下一工程动作：原main_with_llm/LLMRunner验证两admission参数并消费原耐久action的精确题目/主体范围；完整manifest/search policy先校验，执行集合后筛选；复用/result_ready走原引用/续传，uncertain不重问，Q09仍只在实际发送时预留。原主执行器尚未消费、整个C06未集中review/源码发布、各全局门仍开放。此次7获准第一方文档正常Git回执待实际终态，源码/真实golden/DB不入导出范围。
 - 本次checkpoint09四文档组合patch因handoff首行实际是长整段、给定局部首行不能匹配，整批验证拒绝且未写。已确认四文件均无新marker，改分开精确段落和具名prepend，不重试同一失配hunk；这是控制器编辑错误，不是产品反例。
 - checkpoint09精确七份获准第一方Markdown已实际正常钩子提交推送75c0bf409c23cff21459b11516ae9bc9fab3e7a1，origin/master一致；每件staged/committed SHA逐件相同，实际终态见documentation-publication-06.json。没有导出私有75候选、源快照/真实golden/DB或README既有改动。结束前只读两Lab的R1 handoff.json均仍不存在，原changes_requested保持，不复验活writer。这里只追加该真实Git回执，下一仍原主执行器消费，不关闭全局门。
+
+### 2026-10-10 原主执行器接续启动
+- 前回合公共admission/真正CLI/52受影响测试及04fe51e实际文档交付属于progress。恢复同一root PWF，生产CodeGraph仍旧run签名，按已知私有原文件接续；不重跑旧验收或外包R1。
+- 私有追加报备：新增QA quick_scan_refresh_execution.py/对应unit，原admission提取共享原输入核验方法；原main_with_llm/llm_runner加两admission参数和仅获准范围guard，同包integration续接。只写runs/c15a；不写源QA/SW、Lab活writer、生产DB/名单，不另建执行器/队列，不添helper审查。
+- 最新“两包完成”通知只读核验：EVID/FACT均已转入R1分支，HEAD仍1597a08/f7fb078，动态工作树有源码/测试/日志改动但remediation-01完整handoff仍缺。原changes_requested和原交付保留，不能签收正在进行的整改或重复原回归；不接管两个writer。
+- 丢失输出已由真实producer-exec-g1回执恢复：30320/exit0、60P/12.40s、controller17.28s；source_unchanged=true、guard原raw一致、API0。原main/runner补丁已在私有树，未因截断重跑。60为本批分母，不与原52重叠批相加。
+- 控制器一次空patch引用findings整段中的子句，无法匹配，验证拒绝且未写；读取实际整段后追加新观察。尚在执行的producer-exec-e1日志在controller结束前不存在，未把该读取当产品失败或重新启动；真实26264及原生权限检查子进程继续有界运行。
+- 原run在任务状态判断前要求花费授权并加载模型凭据；新admission模式必须先核真实耐久action/完整原manifest+身份+authority，零新派发可不加载模型和新花费授权。pending仍原Q09/模型优先级，已答待交付只调用原seal_result_delivery单任务入口，不能用全库seal扩大范围。未知发送/活租约只返回接续状态，不重问；原sealed package/ID/hash/时点保持。
+- 一次猜quick_scan_delivery_outbox路径不存在，改用实际已开quick_scan_delivery_seal.seal_result_delivery和原work store，未创建替代outbox。主执行器scope辅助函数的纯测试不当真实认证证明，真实native正例沿原同节点OS E2E验证。
+
+
+### 2026-10-10 checkpoint10：原主扫描入口接通确认范围
+- **2026-10-10 最新接续（checkpoint10；以下09/08及更早“当前”记录是历史）：** 原main_with_llm/LLMRunner已在私有runs/c15a消费原Q13耐久action，只执行native当前权限确认的完整SubjectRef/题目范围；完整原manifest/身份/authority3-context2先验后选题。79累计候选/7变化/5原终态批次已固定producer-checkpoint-10.json，原guard raw不变。最终原公开main合成E2E48032/exit0、1P/235.74s（controller241.766s）：完整24题release保留，两请求预算下只派发获准1题；原Q09实际发送1笔，result_ready后删除模型配置与花费授权，重启0新增HTTP/凭据读取，原work/package ID/hash/bytes不变。四受影响unit46720/exit0、66P/4.84s（controller6.313s）与E2E源SHA一致；早期60P与66P重叠，原e1范围回执缺失1F保留，不相加或称金融准确率。新范围sidecar明确授权分母/全manifest分母，一题成功不叫整公司完成；legacy答案格式保留。生产QA6aafc32原七未跟踪/SWa5a97d6 clean未动，真实API/费用/生产库/名单写0，无实际人类确认。
+- **唯一下一工程动作：** 沿同一原C06步骤4补齐原引用、uncertain与活租约的零新派发接续及整链负例，再完成其余原C06操作和整个节点一次集中审查/源码发布/严格自有清理；不增逐helper审查、不重复已绿未改入口。保留c15a/real-owner-01，不清共享TEMP。EVID和FACT原集中验收changes_requested，当前均有R1未提交writer且缺新版完整handoff，不代改或复验半成品。7获准第一方Markdown可正常Git到既有origin，源码/真实golden/DB未扩入导出范围；C06/W15/G3/F05/L03/B01/facts/UI/TH-IN/全池门仍按原条件开放。
+- producer-exec-e1实际26264/exit1、1F/177.78s（controller178.929s），只派发获准1题并保存原答案，缺明确范围回执导致FileNotFound；补sidecar和缺答/重复/越界输出断言后u2/e2 GREEN。原r1模块缺失收集RED/g1 60P保留。readonly主入口回执与sidecar一起更新，不把旧answered sidecar留在新的待交付输出旁。
+- e2/u2实际CIM查询成功、owned Python0；两个生产源状态与08/09一致。guard raw abc0128…保持，c15a活环境供剩余步骤，不能清掉。79候选为本地冻结，未源发布或全C06集中review。Git文档回执待真实终态。
+- 七文档第一次正常Git提交预检因task_plan.md末尾新增空行被diff --cached --check拒绝（exit2），未commit/push；实际失败保留documentation-publication-08.json。只修该末尾空白后继续自己已暂存的精确七文件，重新核staged白名单，不跳过检查/钩子、不重跑旧一次性publisher。
+- 首次重试命令在执行前被自动审批复核拒绝：字符串替换会同时放宽提交前与提交后暂存断言；该命令没有执行，末尾尚未修，retry文件未生成。改为只替换第一处且提交前要求正好等于七获准路径，提交后仍必须为空，并验证脚本只含原post强断言；不扩大授权、不用间接执行绕过。
+- 随后本地准备命令因PowerShell/内嵌Python引号解析错误而未执行，未生成retry或修改末尾；改用具名Python准备文件及普通调用，不再重复嵌套shell转义。审批拒绝的宽断言不会落盘或执行。

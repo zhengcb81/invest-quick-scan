@@ -1972,3 +1972,9 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 
 - 私有公开admission入口现已由真实OS CLI演练原确认→完整原producer bundle→原Q13登记/重启/撤权。不能把此软件正例称人类实际同意或财务真值。零新增引用使用原receipt 1.1，保留1.0读兼容和原队列/预算表；没有新执行器。
 - 原JSONConfigManager在导入时初始化stdout日志handler，公开JSON必须在stderr重定向内导入和执行，而非事后忽略脏stdout。聚合服务会调用多个原生80秒有界CLI，测试分别给服务180和整组300秒，不放大原native时限或删权限重核。完整单主体冷/重启/撤权合成E2E217.24秒表明仍有OS启动开销，不能据此承诺2000家公司吞吐；真实模型准确性/价格/速度实验尚待合格基准与完整执行链。
+
+- 主执行器绑定必须来自原Q13不可变action和native当前权限，不能只凭admission公开JSON里的registered字段；原bundle五件原字节匹配后才选题。同一完整manifest包含多种SubjectRef时按实际context逐题核对，不能以entity/qid合并不同证券或scope。
+- 旧action不能因当前route-refresh产生新generation而变成新扫描许可。原work ID/generation/binding优先，result_ready/delivered继续原交付，uncertain继续核对；引用若已过期或换成另一观察不静默替换原引用。新增零派发控制回执应与原公司答案格式明确分开，并记录授权题目分母与完整manifest分母，不把一题接续称整家公司扫描完成。
+- 本次通知后再次只读核两Lab：EVID已进入R1且reference代码/新版本schema未提交，FACT也有R1内容/判定/测试改动；两者均无新版完整handoff。此前“EVID无新改动”只属旧时点，不覆盖当前writer。原集中验收不重复，活动源码不冻结作最终交付。
+
+- 原公开main接线经真实三组件软件E2E：预算有余时仍仅1授权题发送，删除模型配置后原result_ready可接续，原package bytes/hash保持。主结果仍原owner-refresh格式，独立scope回执区分授权分母与整manifest；unknown完成回答不代表准确或资格合格。完整合成fixture+两个主入口实际235.74s，不从66单元4.84s推断股票池吞吐。其余原引用/uncertain/活租约与整链反例仍待，不提前关闭整个C06。

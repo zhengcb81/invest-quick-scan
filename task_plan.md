@@ -407,9 +407,9 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**2026-10-10 最新状态（checkpoint09，以下checkpoint08及更早段落是历史）：** 私有公开admission已接真实native同意读取、完整原producer输入和原Q13原子登记；75候选已冻结。最终真实公开CLI合成E2E1P与受影响unit52P分别留档，没有收费请求或真实人类确认。原主扫描执行器尚未消费action，C06/W15及下游门未关闭。两外包原验收仍changes_requested；EVID没有新版，FACT已出现R1活writer/RED阶段，避开其目录，不能称R1已签收。
+**2026-10-10 最新接续（checkpoint10；以下09/08及更早“当前”记录是历史）：** 原main_with_llm/LLMRunner已在私有runs/c15a消费原Q13耐久action，只执行native当前权限确认的完整SubjectRef/题目范围；完整原manifest/身份/authority3-context2先验后选题。79累计候选/7变化/5原终态批次已固定producer-checkpoint-10.json，原guard raw不变。最终原公开main合成E2E48032/exit0、1P/235.74s（controller241.766s）：完整24题release保留，两请求预算下只派发获准1题；原Q09实际发送1笔，result_ready后删除模型配置与花费授权，重启0新增HTTP/凭据读取，原work/package ID/hash/bytes不变。四受影响unit46720/exit0、66P/4.84s（controller6.313s）与E2E源SHA一致；早期60P与66P重叠，原e1范围回执缺失1F保留，不相加或称金融准确率。新范围sidecar明确授权分母/全manifest分母，一题成功不叫整公司完成；legacy答案格式保留。生产QA6aafc32原七未跟踪/SWa5a97d6 clean未动，真实API/费用/生产库/名单写0，无实际人类确认。
 
-**唯一下一动作：** 在runs/c15a的原main_with_llm/LLMRunner接入admission config与confirmation ID，核原耐久登记并仅执行获准的完整SubjectRef/题目范围；原完整问卷/search policy先验、执行子集后选。发送仍走原Q09，引用/已答待交付不再问模型、不重封旧答案，未知发送仍核对。完成其余原C06操作后同节点一次集中审查/源码发布/严格自有清理，不新增helper审查。
+**唯一下一工程动作：** 沿同一原C06步骤4补齐原引用、uncertain与活租约的零新派发接续及整链负例，再完成其余原C06操作和整个节点一次集中审查/源码发布/严格自有清理；不增逐helper审查、不重复已绿未改入口。保留c15a/real-owner-01，不清共享TEMP。EVID和FACT原集中验收changes_requested，当前均有R1未提交writer且缺新版完整handoff，不代改或复验半成品。7获准第一方Markdown可正常Git到既有origin，源码/真实golden/DB未扩入导出范围；C06/W15/G3/F05/L03/B01/facts/UI/TH-IN/全池门仍按原条件开放。
 
 **2026-10-10 当前主线接续（checkpoint08；下面旧“当前”记录均为历史）：** 两外包集中验收保留changes_requested，R1尚未派发；总控只写runs/c15a私有副本。71候选/13变化/12终态批次已固定到producer-checkpoint-08.json，原guard abc0128…不变。固定StockQA→StockWiki原生OS同意读取已实际实现，1.1明确fresh_registration/current_permissions，原1.0不变；原Q13 schema16仅增加不可变action控制表，与原work/run refs/owner binding同事务，重放保持原work。最新受影响五文件143P/21.14s（45356/exit0），权限22P/2.62s（43764/exit0），真正三组件公开CLI E2E1P/125.50s（23892/exit0）分别记录，不相加为准确率。E2E明确合成同意/身份，以实际serializer、authority3/context2精确1题登记原队列；原owner DB不变，attempt/预算attempt0，策略变化拒绝，队列变化后只读当前权限可重放。存储原语仍permission_authenticated=false，尚无公共accepted admission服务/主执行器消费，没有实际人类确认或收费调用，也未整C06独审/源发布。
 
@@ -1662,6 +1662,7 @@ Status: in_progress
 - [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。
 - 最新checkpoint08累计71私有候选，原生同意OS读取/原Q13 action原子登记与重放已实现并有真实三组件CLI合成E2E；143P与22P/1P各自分母留档。尚需可信公共admission精确bundle/context映射、原主执行器消费/其余操作及同节点集中审查/源发布；原步骤4和下游门保持。实际人类确认/金融gold/收费0，c15a及real-owner-01保留。
 - checkpoint09接续：累计75私有候选，公共admission完整bundle/context3/2映射已通过真实公开CLI合成1P及受影响52P；原主执行器消费仍是下一动作。旧08缺公共入口描述仅属历史；整个步骤4/集中审查/源发布及全局门不提前关闭。
+- checkpoint10接续：原公开main仅派发获准范围及无凭据result_ready接续已通过合成E2E；79私有候选固定。原引用/uncertain/租约与其余操作、整个节点集中审查/源发布继续，真实金融/全局门不提前关闭。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
 Status: concentrated_acceptance_completed_changes_requested; two_independent_remediation_cards_ready
