@@ -407,6 +407,11 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**2026-10-10 当前主线接续（checkpoint08；下面旧“当前”记录均为历史）：** 两外包集中验收保留changes_requested，R1尚未派发；总控只写runs/c15a私有副本。71候选/13变化/12终态批次已固定到producer-checkpoint-08.json，原guard abc0128…不变。固定StockQA→StockWiki原生OS同意读取已实际实现，1.1明确fresh_registration/current_permissions，原1.0不变；原Q13 schema16仅增加不可变action控制表，与原work/run refs/owner binding同事务，重放保持原work。最新受影响五文件143P/21.14s（45356/exit0），权限22P/2.62s（43764/exit0），真正三组件公开CLI E2E1P/125.50s（23892/exit0）分别记录，不相加为准确率。E2E明确合成同意/身份，以实际serializer、authority3/context2精确1题登记原队列；原owner DB不变，attempt/预算attempt0，策略变化拒绝，队列变化后只读当前权限可重放。存储原语仍permission_authenticated=false，尚无公共accepted admission服务/主执行器消费，没有实际人类确认或收费调用，也未整C06独审/源发布。
+
+**唯一下一工程动作：** 在原Phase113步骤4，把这些现有组件接成可信公共admission服务：从部署固定的原producer bundle读取/验证完整manifest、身份、authority3/context2，逐项与原确认的完整SubjectRef/field/question/generation/provider/model/route核对；不能公开caller specifications/confirmed/registered布尔值。新动作完整重核、已登记动作按原耐久记录重核当前权限，Q13提交成功后才accepted；原主runner只消费该已确认精确范围，发送仍经Q09。复用与result_ready只接原引用/续传、0新LLM，不确定发送仍保留原停机/核对语义。完成其余原C06操作后整节点一次集中审查、源发布与strict自有清理；不加helper门，不跑全池、不写Lab整改或生产库/名单。c15a及真实身份克隆real-owner-01仍在用。C06/W15/G3/F05/L03/B01/事实/UI/TH-IN/全池门保持开放。四份PWF/接手及三份W15说明的获准文档可正常Git到既有origin，源码/真实golden/数据库/新跨仓快照未扩入导出范围；实际Git只按终态回执记，不盲跑旧publisher。
+
+
 **2026-10-10 最新外包验收，优先于下面的派发历史：** EVID-REF-02与FACT-CONTENT-01两包交付已经查收并完成各一次集中独审/隔离相关回归，结论均为changes_requested，成果保留。实际原回归EVID182P/FACT77P；独立反例确认EVID10项、FACT6项机械缺陷，内容矛盾另列静态审查，不能用原GREEN掩盖。参考资格/缺答分母、来源hash/阴性测试兜底和验证后重读越界是主要阻断。读[验收与证据](docs/implementation/reviews/parallel-packages/2026-10-10/acceptance.md)、[EVID独立整改卡](docs/implementation/reviews/parallel-packages/2026-10-10/EVID-REF-02-R1.md)、[FACT独立整改卡](docs/implementation/reviews/parallel-packages/2026-10-10/FACT-CONTENT-01-R1.md)；两卡只写各自Lab、尚未自动派发。241受控源/213输入/73工件SHA及源Git前后无漂移，正常产品commit均为接收HEAD祖先，两仓无remote；638文件/123目录strict清理已完成，仅本轮p114a不存在，源仓、共享TEMP、原c15a/real-owner-01和未知项不动。0收费API/文档下载；主控公共网页工具2次（1成功/1失败），与离线socket/HTTP0分列。两卡修复后回本次各一次包级复验，不增小节点审查。主线仍从checkpoint07接固定QA OS桥读取owner同意原件、完整authority3/context2/精确范围与原Q13耐久登记/主执行器消费；本轮不代改外包、不关闭C06/W15/G3/F05/L03/B01/TH-IN/全池门。四份已明确获准第一方PWF/接手文档正常Git结果仅按本批实际回执，源码/真实数据/新源交接快照未扩入导出范围。下面checkpoint07是保留的工程基线，其当时内容包未派发状态已由本段覆盖。
 
 **2026-10-10 当前唯一接续（checkpoint07，以下均为历史）：** 独占runs/c15a已有原生owner交互确认入口与不可变幂等工件，公共CLI会拒绝管道/自报确认；确认前后重核精确预览、当前主体/成员/路由/政策/原预算，scope变动要求新预览。另有固定owner只读同意检查入口与原Q13单事务批量登记原语（复用原表/算法、不另建队列）。最新同批实际36P/74.04s、子进程7660/exit0/source_changed为空；保留之前30P/6F的计数fixture表名错误原件。原语本身permission_authenticated=false，公共确认仍handoff_pending/registered_with_executor=false；真实owner读桥正例使用明确合成的同意工件，实际人类确认/收费提交/公开Q13接线尚未发生。67私有候选checkpoint07已固定，未集中审查/源码发布，0API/生产库/名单写，guard不变。唯一下一工程动作：固定QA OS桥读取owner原件，绑定完整authority3/context2及精确question/subject范围，再耐久幂等登记/公开重放/原主执行器消费，Q09仍在实际发送前扣账；之后其余原C06操作并同节点一次集中审查，不增helper审查。7份获明确许可的第一方文档已实际推送a0d283de665f91740190b2371b4722a2af25e557，远端一致；本次后续同7文档的实际Git结果按documentation-publication-02.json核对，代码/数据库/golden不在该导出范围。C06/W15/G3/F05/L03/B01/事实/UI/TH-IN/全池门仍开放，活根不清、内容包未派发、目标active。
@@ -1651,7 +1656,7 @@ Status: in_progress
 - [x] 在全新独占环境TDD实现评分基础链：模块新增/退役、语义时效、路由锚点、历史只读、事务回滚、真实公开CLI与Q13动作接线。
 - [x] 基础范围完成受影响单元/集成和公开入口E2E、同一次集中审查、正常源交付与严格自有清理；整个W15/C06/L03/G3/F05/金融准确性仍开放。
 - [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。
-- 最新 checkpoint05累计49私有候选。首次显式schema3设置、独立opt-in测试、实际owner身份/缺观察查询golden及6+14公开CLI终态完成；原库/golden/缓存字节保持，0API/源生产库/名单写。公开capabilities仅get_profiles，full_C06=false。仍需原剩余操作/明确授权刷新预览确认、同一大节点集中审查和源发布；原步骤4/下游门保持。c15a/real-owner-01保留，具体远端快照导出待答，旧publisher不用。
+- 最新checkpoint08累计71私有候选，原生同意OS读取/原Q13 action原子登记与重放已实现并有真实三组件CLI合成E2E；143P与22P/1P各自分母留档。尚需可信公共admission精确bundle/context映射、原主执行器消费/其余操作及同节点集中审查/源发布；原步骤4和下游门保持。实际人类确认/金融gold/收费0，c15a及real-owner-01保留。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
 Status: concentrated_acceptance_completed_changes_requested; two_independent_remediation_cards_ready
@@ -1661,4 +1666,4 @@ Status: concentrated_acceptance_completed_changes_requested; two_independent_rem
 - [x] 实际固定213份只读输入、原61题与3公司30题槽；15本地链接/JSON/AST/输入SHA/根互斥及两模板公开CLI预检通过，均仅文档层，无产品实现或金融准确性证明。
 - [x] 用户明确授权Lab CodeGraph后实际init exit0，30文件/611节点/581边；保留两新增索引设施，不覆盖旧Lab或混进产品提交。新FACT仓未创建、无收费请求或harness派发。
 - [x] 实际收到两包；固定241受控文件/213锁原件/73工件SHA，产品commit祖先、Git前后不变。隔离原回归182P/77P、两次独审与集中反例（EVID10/FACT6）完成，均changes_requested；638文件/123目录strict自有清理终态完成。
-- [ ] 两张独立R1卡已具体编制，未自动派发；按新交付固定输入后同次包级复验，不能用原软件GREEN关闭资格/分母/语义门。原Phase113仍checkpoint07下一接线，F01/F05/F06/G3/L03/TH-IN/全池门保持。
+- [ ] 两张独立R1卡已具体编制，未自动派发；按新交付固定输入后同次包级复验，不能用原软件GREEN关闭资格/分母/语义门。原Phase113已接续checkpoint08，公共admission/主执行器仍待，F01/F05/F06/G3/L03/TH-IN/全池门保持。

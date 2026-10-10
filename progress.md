@@ -2843,3 +2843,22 @@
 - 7个实际记录进程均终态，外层socket尝试0/HTTP和收费API0/公司文档下载0；主控公开网页读取2次、1成功1失败，不称联网0。CATL原HTML内相互冲突份额保留，SEC工具打开失败不否定原采集或冒充独立核实。
 - 原source Git和工件复核后，严格lstat/reparse/单硬链/set-size-SHA清本轮638文件/123目录，p114a确实不存在；原源仓、共享TEMP、c15a/real-owner-01、生产库/名单/未知nul/opencode不动。机器结果acceptance-result.json/cleanup.json已存，源handoff原件私有留档。
 - 原C06 checkpoint07/67候选保留，下一主线仍固定owner->QA实际读桥与原Q13/执行器消费；本轮不关闭任何全局门。已明确获准四份第一方PWF/接手文档正常提交推送仅记实际回执，不扩为Lab源码/真实golden/数据库导出。
+
+
+### 2026-10-10 C06 checkpoint07主线接续启动
+- 上回合两个包实质验收/整改卡/源保护与严格清理/PWF正常推送929fe2a属于有效进展；本回合回原Phase113固定owner->QA批准范围接线。两Lab整改未自动派发、不写它们。
+- resolver实际为空success，沿用root PWF；最新67私有候选和原受控确认/Q13存储原语已恢复。CodeGraph实际两生产源context仅返回旧main/config等公共节点，新增私有文件用已具名路径读取；不建第二执行器/队列/预算账本。0API/生产库/名单写，原c15a/guard保留，TDD受影响范围后整C06一次集中审查。
+- 本次私有写范围：SW现有quick_scan_refresh_preview/approval/owner_cli与对应approval测试；QA原quick_scan_work_store/refresh_batch，新增quick_scan_refresh_admission_journal、quick_scan_refresh_consent及各自unit测试；原公开preview集成测试补固定OS桥反例。代码仅runs/c15a，不写源仓。先RED后GREEN，所有新回执用独立标签保留；同一个C06大节点最终统一审查。
+- admission-journal-red-01实际38952/exit2/0.69s：新入口尚缺的collection error，不算产品反例通过或12个旧漏洞。初实施green-01实际42668/exit1，12P/6F/3.06s；原spec tuple跨JSON重启成为list导致幂等冲突，改用原canonical JSON边界归一。失败原件保留，不覆写标签；暂未新公共accepted入口。
+- journal-green-02实际45248/exit0，18P/4.07s，原库schema16仅新增不可变action控制表；工作/run refs/action同事务、重启/并发幂等、故障整体回滚、v15迁移/未来版拒绝及篡改拒绝通过。原Q09/attempt无新增，不证明真实同意。
+- permission-red-01/apr-r2均22F，实际WinError5拒绝原自有os.link发布；缩短标签未解决，不当成22产品缺陷。沿原守卫/自有root升级离线运行apr-r3才得到真实13P/9新接口F；实现后apr-g1实际43764/exit0，22P/2.62s。原1.0检查保留；1.1新增新登记/当前权限只读模式，旧动作重放不重新报价/受捕获expiry阻断，账户/策略/成员/锚点/全主体/题/字段漂移仍拒绝。消费者模式不能宣称已登记或授权新动作。
+- consent-r1实际36896/exit2为新增模块缺失collection；g1实际36148/exit0，10P/1.19s，固定module/argv/配置root、坏ID/未知mode/拒绝/超时/超量/坏UTF8/重复key/旧protocol/自报bool拒绝，密钥不传子进程。仅负例不能认证真实owner来源，继续真正OS E2E。
+- producer-consent-e1实际23892/exit0、1P/125.50s（controller126.162s）。真实三组件公开CLI构造明确合成身份/原serializer/authority3/context2/原Q09预算与owner控制工件；QA固定OS桥读取原同意，精确1题登记到原Q13，action/work/binding原子提交，重启同action不重复，policy变化拒绝。首次登记改变报价后fresh拒绝而current_permissions同范围重放通过；队列1/pending，attempt与预算attempt均0，所有owner DB前后SHA不变。此正例合成同意且内部存储permission_authenticated=false，公开admission服务和原主执行器消费仍未完成，不宣称已有人类确认或金融准确性。
+- 原库受影响批admission-a2实际40432/exit1，130P/13F/22.91s；12F为旧v4/v6/v7/v13重建fixture未移除新16空表，另1F仍硬断言15；未修改产品迁移让伪旧库通过。报备只调整原两测试中的后缀删除fixture，并让原schema15 restart测试真正构造15再迁到当前16；首次失败原件保留，补迁移故障原字节回滚/重封错work/JSON bool代整数的针对断言。
+
+
+### 2026-10-10 checkpoint08实际留档
+- journal新反例与原库受影响五文件admission-a3实际45356/exit0、143P/21.14s（controller22.083s），无失败/错误/跳过；重封错work、bool代整数、迁移失败保持原文件字节均验证。原旧schema fixture修正不改变产品严格迁移。scope/权限22P与OS E2E1P分列，不叠加或称金融准确率。
+- checkpoint08真实固定71候选/13变化与12原执行终态，旧07/失败/源快照不覆写。原guard raw abc0128dc92a2bf99e57dbbbfe2355aea376b584f67e9e51c0bd0ebbc871e682，0API/源生产库/名单写。c15a及real-owner-01供同一未完节点继续使用，不能清掉；两Lab R1未派发且未代改。
+- 下一动作是可信公共admission精确bundle/context3/2范围与原主runner消费，存储原语仍permission_authenticated=false；没有公共accepted、真正人类确认或整C06源发布/独审。原Q09实际发送时扣账、原引用/result_ready/unknown语义保持。各全局门开放，目标active；七已获准第一方文档正常提交推送只据新实际回执记，不导出源快照/DB/golden。
+- 沙箱外只读checkpoint08-source-git-after真实核QA6aafc32/master原七未跟踪、SWa5a97d6/master clean，与本轮开始逐字段相同；没有生产源写。12批终态/输入source SHA前后不变，不清理仍供后续使用的c15a，也不触他人目录。

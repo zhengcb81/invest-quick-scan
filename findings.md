@@ -1946,3 +1946,18 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 - 7个实际记录进程均终态，外层socket尝试0/HTTP和收费API0/公司文档下载0；主控公开网页读取2次、1成功1失败，不称联网0。CATL原HTML内相互冲突份额保留，SEC工具打开失败不否定原采集或冒充独立核实。
 - 原source Git和工件复核后，严格lstat/reparse/单硬链/set-size-SHA清本轮638文件/123目录，p114a确实不存在；原源仓、共享TEMP、c15a/real-owner-01、生产库/名单/未知nul/opencode不动。机器结果acceptance-result.json/cleanup.json已存，源handoff原件私有留档。
 - 原C06 checkpoint07/67候选保留，下一主线仍固定owner->QA实际读桥与原Q13/执行器消费；本轮不关闭任何全局门。已明确获准四份第一方PWF/接手文档正常提交推送仅记实际回执，不扩为Lab源码/真实golden/数据库导出。
+
+### 2026-10-10 C06登记接续的幂等边界
+- 再次恢复同一root PWF及929fe2a；两外包原集中验收保留changes_requested，不重跑、未代改或派发R1。最新目标继续active。
+- 原生确认严格重核会读取当前工作/报价；登记自己的pending任务后该摘要必然变化。耐久登记重放必须区别于新登记：已登记动作只重核当前账户、策略、成员、路由及完整主体/字段权限，新动作仍核原报价/预览有效期。不能用消费者的registered布尔值授权新动作。
+- 耐久action记录应留在原Q13 SQLite同一事务内，与原work/run refs原子写入，不能新建队列或预算库。accepted只在提交完成后产生；发送仍经原执行器/Q09。
+- 本轮只编辑runs/c15a私有候选，生产源/库/名单/密钥不改，原guard字节保持。上一恢复时两次猜测identity模块路径不存在，改为实际已知llm_runner.load_identity_snapshot，不创建重复身份解析器；本次过量组合读取截断已改为有界分文件恢复。
+- 一个真实原SQLite写事务中，写入work后会出现rollback journal。若末尾再从子进程做旧完整报价检查，原只读守卫会正确拒读自己的未提交库。顺序应为写前完整检查、写后当前权限/锚点检查；原Q13写锁保护本事务期间的同库预算/队列写入。不会把多库读声称原子事务，实际发送仍要Q09预留。
+- private schema16的action元数据与原work/run refs同事务，原15库先校验再空表迁移，未来版拒绝。存储receipt仍permission_authenticated=false：原生读取bridge和精确authority3/context2映射接通前，内部原语不能对消费者开放accepted。
+- 原子不可变owner记录的os.link在沙箱内WinError5，短路径重试无效；不削弱发布算法，改在授权的同一自有root/原socket守卫中运行离线测试。失败原日志和实际新9接口RED均保留。
+
+
+### 2026-10-10 原生读取/原子action软件验证结论
+- 公开OS read与内部存储已经能在合成E2E按原确认的1题创建/重放同一原work，不新建attempt或预算attempt，原owner库不改；策略变化拒绝。完整authority3/context2映射目前是在显式集成fixture中演练，不能把测试组装spec充当生产admission服务。下一步必须由可信服务读取原producer输入并独立映射，不能让消费者上传spec JSON。
+- 143原受影响测试/22权限测试/1真实CLI E2E分别是软件范围；测试生成同意不是实际用户TTY确认。新proof1.1的current_permissions只能供已有action重放或提交末尾稳定重核，新动作必须先fresh_registration。
+- 历史迁移测试需要实际旧DDL，保留schema16空表却只改user_version不是旧库；只修fixture不降低产品校验。重封记录必须继续核原work/binding/run refs，canonical JSON比较也区分bool与整数。
