@@ -1,3 +1,19 @@
+**2026-10-11 checkpoint23：同一C06整节点四项整改收口及完整main重入（唯一当前接续；下面旧状态均为历史）：** 原独审F1—F4在冻结的136个私有软件候选中全部关闭，没有新的返工阻断。原报告与新增收口报告分别保留，不再增设helper审查。Phase113步骤4仍未勾选：完整源码layout检查、实际源码发布及strict自有清理尚未完成。
+
+**已经完成，不要重复：** schema4登记、有界100×30原件读取、具名2.5 entity/security/segment及精确市场/覆盖分母、具名capabilities1.1真实源/接口预检均通过同一次整节点复核。52P、97P、cap-g2的22P加原失败fixture修复后的1P分别有实际日志，不虚称一次23P。真实owner golden04的12CLI/8负例仍为当前有效证据，真实回答库仍缺失，不能由身份数据推断金融覆盖。
+
+**最终完整顺序：** 新reentry-g2实际1P/268.34秒（控制器墙钟268.981秒）：24题完整manifest→原public main首次扫描→精确ACK→原生schema4 execution grade→第二个获准字段事前public register耐久落库→原main第二次扫描→精确ACK。第二个字段为generation1，没有重复刷新仍fresh的原字段；POST之前登记已经落库、两个attempt/原件不同，第一份payload/绑定/ACK不变。g1因模拟调用没有价格而被原budget正确阻断，g2用原reconcile_budget_attempt记录明确合成US$0.25；预算与模型策略保持原值。该项全程仅vendor HTTP/身份/同意/计费fixture合成，API0，不是金融准确性或现实人类确认。
+
+**当前冻结：** producer-checkpoint-23.json；136候选仅比22新增StockWiki/tests/test_c06_schema4_main_reentry.py，原202输入/guard/Q13账本均未漂移，终态CIM自有Python0。source回执producer-whole-reentry-g2.sources.json SHA 2f858a3514a545e43346804e8ebc1256ada5979866da6c4d076dbba960fa7fad。同一审查收口报告whole-c06-remediation-closeout-2026-10-11.md SHA c96a2999fc270d9374d5af86fc7b73ed88034ed33280d87522f92638f4f4c307。
+
+**唯一下一工程动作：** 已从三源仓Git跟踪文件构建完整隔离发布layout runs/c15r，3119文件、136候选叠加，未复制公司文档/真实DB/密钥/用户未跟踪文件。release-layout-01.json记录逐文件SHA与源Git基线。用各owner既有scripts/checks.py检查，修复实际格式/类型/测试可复现问题，不降低规则/跳钩子；静态修正后仅在该大节点运行一次完整离线批次，失败再针对原失败项处理。部分unit仍借用明确合成旧SQLite输入，必须补可复现的fixture/运行说明，不能把保留实验目录当源发布的长期前提。源基线稳定不代表独占writer，交付前再核当前源HEAD/逐文件SHA和活动writer，保留其他进程的非任务改动。正式最小源码交付/正常Git终态与strict终态清理之后，才可以关闭步骤4；不得提前关闭整个C06或金融门。
+
+**EVID与并行线：** 用户提供的docs/handoff/EVID-REF-02/remediation-01是原R1，258文件和91 artifacts与上次完全相同、HEAD70498e4，remediation-02未见。因此旧R1 changes_requested（9根因+2内容口径、实际150P/64F）保留，待真正R2；不重复旧验收、不改Lab。FACT fact-r2继续每小时只读已指定remediation-02，既知两planning哈希问题不重复通知；首次完整交接再主控同一整包验收。G3/F05/L03/B01/金融准确性/facts/UI/TH-IN/全池仍开放，完整目标继续，不停在软件交付。
+
+**提交边界：** 四份第一方PWF/handoff的前次正常commit/push为c4c876e；本次23更新尚待正常提交。仅精确四路径交付该文档批次，保留并行README与未知nul/opencode，不导出私有intake/DB/真实golden/Lab资料。136源码发布属于随后独立正常源码批次，不能以PWF已推送假称软件已部署。
+
+以下checkpoint22及更早均为历史，以checkpoint23及同一次整节点收口报告接续。
+
 **2026-10-11 checkpoint22：同一C06整节点F4能力预检与真实owner校验（唯一当前接续；下面旧“当前/下一步”均为历史）：** 原整节点独审四项集中整改已完成实现及对应定向验证；不新加逐helper审查。整个C06/Phase113步骤4尚未签收、候选尚未源发布。唯一下一工程动作是原公开main在schema4之后再次发送的完整串联，再核真实源writer/基线与正常源码交付；不是继续重做F1—F4。
 
 **F4公开使用与兼容：** 原StockWiki入口python -m stockwiki.quick_scan_query_v2_cli --root OWNER --iqs-code-root IQS --capabilities --capabilities-version 1.1.0，按需加--capabilities-request JSON。旧无版本参数或显式1.0.0保持旧静态输出/原schema字节，新1.1.0有独立封闭query-capabilities.schema.json。请求selection可为null，或选择universe_id/field_ids/information_cutoff/model_filter/逐字段field_scope_selection；required_operations/required_query_versions/required_market_filters/required_native_purposes逐项报告缺失，未知要求不能假称已支持。六种query wire 2.0—2.5与八类native入口映射覆盖刷新/确认、QA admission/执行、事前主体注册、operator审核、execution inspection/qualification，接口目录不授予权限、不派发任务。
