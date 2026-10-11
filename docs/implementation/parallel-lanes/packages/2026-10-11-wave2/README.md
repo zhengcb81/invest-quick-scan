@@ -39,3 +39,5 @@ python -B -X utf8 C:/Users/郑曾波/Projects/invest-quick-scan/scripts/parallel
 2026-10-11最新FIN：remediation-02集中续验changes_requested，73P和37/37既有CLI对保留，公开handoff exit0/开发环境声明已关；9已研究/9缺口/72未开始仍不足原研究范围，历史兼容/账绑定/读边界只续[同包四组余项R3](../../../reviews/parallel-packages/2026-10-11/FIN-REF-01-R3.md)。VIEW余项R2、OPS三组R2仍原writer独占；不改冻结manifest/inputs.lock/validation，不关闭主线金融/生产门。
 
 2026-10-11最新FIN R3：81P/47原CLI对通过，前10边界已修、R2历史兼容关闭；R1研究/来源同步、R3方法语义两项、R4累计预算/声明仅续[同包三组余项R4](../../../reviews/parallel-packages/2026-10-11/FIN-REF-01-R4.md)。72如实deferred可partial保留，原研究范围未自动缩减。VIEW/OPS余项R2仍原writer，冻结catalog/inputs.lock/validation不变，不关闭金融/生产门。
+
+2026-10-11最新VIEW：按用户新要求总控直接接管修复而非再派卡，[软件签收](../../../reviews/parallel-packages/2026-10-11/VIEW-01-R2-acceptance.md)。源产品cd7bf1a/交接cfdfd70，173项172P/1skip（24真实Chromium）、223工件匹配；原R1清单恢复，本轮清单实交。真实owner/生产UI仍pending。FIN/OPS未交接writer不抢；后续交接验收失败由总控直接修，不追加卡。原manifest/inputs.lock/validation保持编制快照，不回写结果。

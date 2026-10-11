@@ -4,7 +4,7 @@
 
 | 包 | 实际状态 | 下一步 |
 | --- | --- | --- |
-| VIEW-01 | remediation-01集中续验，changes_requested；G1核心/G3比较关闭 | 原harness只续[原G2—G5余项R2](../../../reviews/parallel-packages/2026-10-11/VIEW-01-R2.md)，保留129P/1skip（21真实浏览器） |
+| VIEW-01 | R2验收缺口已总控直接修复，软件签收 | [最终验收](../../../reviews/parallel-packages/2026-10-11/VIEW-01-R2-acceptance.md)；173项172P/1skip（24浏览器）、223工件匹配，真实StockWiki/生产接线待主线，不再派卡 |
 | FIN-REF-01 | remediation-03集中续验，changes_requested；R2历史兼容关闭 | 原harness仅续[原三组余项R4](../../../reviews/parallel-packages/2026-10-11/FIN-REF-01-R4.md)，保留81P/47原CLI对和partial事实，72未研究仍pending |
 | OPS-DESK-01 | remediation-01集中续验，changes_requested；R4已关闭 | 原harness仅续[唯一三组R2](../../../reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)，保留103P/1skip与旧协议 |
 
@@ -20,3 +20,5 @@ VIEW产品dcf53057/HEAD dff41052；124业务/122工件/18输入匹配，公共ha
 最新FIN R2：产品c354859/HEAD775b6a8，109跟踪/31工件/20锁匹配，旧交接及原5日志未变。73P/37既有CLI对全绿，公开handoff exit0；9已研究/9缺口/72未开始，全90评分null。新10组9缺口和3真实读边界只续原四组R3，见[R2续验](../../../reviews/parallel-packages/2026-10-11/FIN-REF-01-R2-acceptance.md)。258自有文件154目录已清理，源Lab未变。前文FIN初验/R1数字为历史，不作本轮状态。
 
 最新FIN R3：product b86b25f/HEAD04633a7，131跟踪/33工件/20锁匹配；81P、前47对全绿，public handoff exit0。原R2已关；2具名方法控制仍0/0误发布和2/2误拒，原R1/R3/R4余项见[R3续验](../../../reviews/parallel-packages/2026-10-11/FIN-REF-01-R3-acceptance.md)。223自有文件153目录已清理，源Lab未改，72deferred不算原研究完成。前文R1/R2数字为历史。
+
+最新VIEW直接修复：用户明确不再追加整改卡；产品cd7bf1a、交接HEADcfdfd70，226跟踪/18锁/223工件匹配。原158/155矛盾已同步为原158历史和最终173，R1清单恢复原字节。G2—G5软件余项签收，真实owner/生产UI不自签。自有初清3346/303、修复后15259/1100，六端口释放；其它writer根保持。旧VIEW R1/R2派卡描述仅历史。

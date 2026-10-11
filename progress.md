@@ -1,3 +1,14 @@
+> 当前主线（2026-10-11 checkpoint37）：VIEW R2验收缺口已按用户最新要求由总控直接修复并签收软件范围，不再追加整改卡。源产品cd7bf1a/交接HEADcfdfd70；173项172P/1skip（24真实Chromium），223工件哈希匹配。真实owner/生产UI仍pending。FIN原研究/三组余项与OPS原包仍待接续，不抢并发writer。B01沿checkpoint31隔离候选唯一工程动作，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；金融/G3/F05/facts/一键/全池仍开放。旧当前段为历史，以本段及唯一Next Step为准。
+
+## 2026-10-11 checkpoint37 — VIEW总控直接修复签收
+
+- 用户明确“验收不通过就直接修复，不再给整改施工卡”；原VIEW R2实际HEAD ec62e13、214跟踪/18锁，原158项157P/1skip（23真实Chromium）通过但G3供数/G4完整范围与API/G5清单/计数仍欠。原工件清单缺失，R1 manifest被改写，两个冻结尝试原件保留，不假称清单已匹配。
+- 总控同一隔离候选接管：初始10RED、原scope三项RED、定向GREEN与独立agent同包审查；修复caps自签formal、owner/full-ref/池身份覆盖、op/universe/水位/范围选择、opaque cursor、完整perimeter API和verified raw缓存。最后172→173完整回归173项172P/1权限skip，unit128/integration21/真实Chromium24，PID24348/exit0/63.39秒。旧查询隔离正例同步expected owner使其真正同owner，独立坏owner反例守拒，不降期望。
+- 精确写回唯一VIEW Lab：产品10文件正常commit cd7bf1a6545c2b51f65ac6b02d10c90e77cdcb50、交接20文件commit/HEAD cfdfd705cb66859a3d2f123bae6ac0a7954795c9；226跟踪/223工件bytes/raw SHA匹配，源仅既有.codegraph/、无remote不造push。旧R1清单恢复原SHA；本轮173计数、实际manifest及字段映射同步，原158/130/124日志历史保留。最终公开handoff PID76564/exit0只验shape/声明，不授金融/owner资格。
+- 自有根初清3346文件303目录、修复后再清15259文件1100目录，精确范围/ID/硬链接闭合集合/raw SHA核实；六明确端口释放、owned命令行进程0。保留小反例/原失败日志/截图trace/source和候选，不清安装浏览器/源个人设施/B01/其他writerREADME；后续CLI仅重建空TEMP。模型/付费搜索/公司文档下载/生产DB/名单写0；外仓源码写仅用户新授权VIEW接管。
+- VIEW软件G2—G5签收，G1/比较已绿保留；Lab display增量2.1可选完整view_key、owner wire不变，真实StockWiki接线/正式facts/比较供数/生产UI仍not_run或pending。主线B01工程动作不变，不能由软件绿关闭金融/G3/F05/全池。
+- 交付：[集中验收与修复](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R2-acceptance.md)、[独立记录](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R2-independent-review.md)、[源仓交付明细](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-coordinator-repair.md)。本轮9份总控文档正常本地提交，hash见自有publication-local-result.json；向既有IQS origin推送仍受此前范围自动审批拒绝而pending，不绕过、不能称全同步。后续已交接验收失败默认总控直接修，不追加卡；未交接并发writer不抢写。
+
 > 当前主线（2026-10-11 checkpoint36）：FIN remediation-03集中续验changes_requested；81P、47/47既有CLI对保留，上一轮10边界全修，R2历史兼容关闭。只续R1研究/来源同步、R3两个方法语义问题、R4累计预算/声明余项同包R4。72not_started如实deferred但原范围仍pending。VIEW/OPS R2归原writer。B01沿checkpoint31隔离候选唯一工程动作未部署，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；金融/G3/F05/facts/生产UI/一键/全池仍开放。旧当前段为历史，以本段及唯一Next Step为准。
 
 ## 2026-10-11 checkpoint36 — FIN R3集中续验完成
