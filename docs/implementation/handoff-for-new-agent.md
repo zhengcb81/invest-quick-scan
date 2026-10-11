@@ -1,3 +1,15 @@
+**2026-10-11 checkpoint16：当前资格、时效与全池查询接线（唯一当前状态；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续，未缩小目标或勾选整步完成。原2.0/2.1保持；新具名2.2 search/candidate_set将完整SubjectRef、原模型/期间/方法口径、原分数与独立当前审核/信息日TTL结合。原同一观察库/schema4及不可变审核链只读事务捕获真实原件元数据，按≤5000项复用C03/C04；W07原三值/关键风险规则计算，原raw等级与值不改写。另列field_assessments与独立审核序列、原输入/回执集合、固定政策SHA/期限。复用有界QueryCaptureStore/schema1；旧raw快照不能重标已审核。2.2重放需当前源，撤销/政策变更/TTL到期明确要求重新查询；慢校验期间原审核变更也拒绝发布。缺审核、缺政策、过期和冲突不当pass，阈值确实未过与证据不足分别显示空结果/coverage_gap。
+
+**实际验证与容量：** 保留21F初始RED；首次新旧合组103P；边界批1P/8F中七项为测试视图误用all（真实接口all_relevant），一项实际并发撤销竞态；修正后含operator/原codec合组68P。继而实际OS 2k×30传输1F复现重复资格元数据超过80MiB；保持原64MiB缓存/80MiB传输上限，用原生独立摘要绑定单份元数据，最终五文件104P/63.51s，0失败错误跳过，原源hash不变。2,000×30合成codec：索引64,308,530字节、重复原传输88,969,348字节、改后实际OS传输64,309,427字节；公开CLI冷查询/重放/撤销、false digest拒绝和政策/字段到期边界覆盖。并行规则ANY、ALL、NOT及关键风险均用原引擎，未另造评分器。此为软件/合成容量证据，不是60,000条真实观察或公司准确性；不相加重叠批次称金融通过率。
+
+**唯一下一工程动作：** 同一Phase113步骤4完成schema4原base reader/UI/backup的实际DDL兼容，不能只加user_version允许值；继而处理已知原release publisher Windows长路径、其余原C06操作及真实owner serializer golden。现109累计候选/13变化/6终态冻结于producer-checkpoint-16.json，Python AST/新schema静态校验通过，原guard及旧公开main账本SHA不变、实际CIM自有Python0。当前仍私有候选；整个C06一次集中审查/源发布/strict自有清理，不新增helper审查。金融、真实用户审核、真实owner golden、G3/F05/L03/B01/facts/UI/TH-IN/全池原门保持，完整目标不缩小。
+
+**交接/发布边界：** FACT每小时只读fact-r2 ACTIVE，remediation-02两planning清单不一致为既有未变基线，不重复验半成品；齐备后一次通知/停止轮询，再主控整包验收。EVID新交付位置仍待答，不代写活动Lab。c15a/real-owner-01仍为必要输入，不清共享TEMP/未知项。上批四已获准PWF/handoff正常提交推送eae8eb6e431564760bce3b125e0985880a5be904。本批仍仅发布同四第一方Markdown，实际Git见documentation-publication-checkpoint16-01.json，不导出私有源/原件/数据库/golden/Lab。当前执行源集合SHA f0d78fd4e54f4be74a73c6ce698b08aaa92e41dfca8522ad5abf85e01f9d7fdd；旧checkpoint12–15/所有RED与终态保持。
+
+---
+
+以下历史状态保留，以顶部checkpoint16接续。
+
 **2026-10-11 checkpoint15：原执行证明与原生分级接线（唯一当前状态；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续。原2.1 raw全池search/candidate_set、独立C03回执/C04信息日TTL、原生operator审核/撤销均保留。现已接StockQA精确原件的原执行证明与StockWiki原生execution_verified回执producer：原schema16只读事务复用原完整Observation重建，检查耐久标准回答/context2/run-scan/真实请求与模型解析/派发前owner回执；固定owner部署配置和真实OS账户调用QA公开CLI，批量核对完整SubjectRef、原store/observation/payload/字段/题目/execution/manifest与派发回执，不改绑screen_ ID。原不可变publisher先保存来源引用与权限摘要，同一观察DB/schema4再整批原子追加，崩溃可接续。已有更高等级或撤销保留，重跑不覆盖人工撤销、不延长信息日TTL，不存另一份答案或队列。producer-checkpoint-15.json实际104累计候选/8变化/11终态，原guard和旧公开main账本SHA不变，实际CIM自有Python0；无收费/生产库/名单写。
 
 **实际验证：** 原执行只读33P；执行核验/权限/错源/恢复/整批SQL回滚及原operator与字段时效合组84P；原存储/派发兼容35P；完整公开main→原ACK→新OS核验/replay→原只读assessment的单个E2E实际1P/166.18s。后者新建派发前绑定和原库，只替换vendor HTTP，主体/事实/人类确认明确合成；不能据此关闭金融准确性、真实owner golden或用户审核门。查询实际只获得execution_verified，缺字段policy时仍不具筛选资格。原所有失败均留档：无模块RED33F、错误-k控制器exit4/未测、沙箱WinError5的32P/3F，以及旧release publisher长路径WinError3的1E。相应修正控制器用node IDs、离开沙箱执行、采用短自有测试根；没有削弱断言。旧发布器长路径仍须在部署一键启动前修复/明确拦截，不能把短根GREEN认证为任意路径通过。不相加重叠批次为金融通过率，不新增helper独审。

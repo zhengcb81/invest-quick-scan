@@ -2055,3 +2055,18 @@ execution_verified必须来自真实耐久执行关联，不能从raw score/revi
 实际受影响84P、原存储35P、只读执行33P与完整公开main/原ACK/新OS分级/replay/readonly assessment E2E1P分别记录。原RED、控制器-k误用/未测、沙箱WinError5和旧release长路径1E保留，末者仅换短自有根走完整同断言；一键部署前需修复/明确拒绝真实长路径，不把短根GREEN外推。原固定账本raw SHA与guard不变，freeze15实际104/8变化/11终态、CIM自有Python0；合成软件进展不等于金融准确率，不加小节点独审。
 
 native operator和execution producer现均具备；下一接pool独立资格watermark+固定policy/TTL投影，旧2.0/2.1 raw契约保持。schema4原UI/base/backup兼容、release长路径、其余C06操作/真实golden、整节点集中审查/正式源交付和所有G3/F05/L03/B01/facts/UI/TH-IN/全池门仍开放。只导出四获准第一方PWF Markdown，源码/原件/intake/golden/Lab留本地；实际Git以publication-checkpoint15回执为准。FACT ACTIVE每小时只读原指定目录，已知两清单不一致不重复通知；EVID新位置仍待。
+
+
+### 2026-10-11 checkpoint16：当前资格、时效与全池查询接线
+
+**2026-10-11 checkpoint16：当前资格、时效与全池查询接线（唯一当前状态；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续，未缩小目标或勾选整步完成。原2.0/2.1保持；新具名2.2 search/candidate_set将完整SubjectRef、原模型/期间/方法口径、原分数与独立当前审核/信息日TTL结合。原同一观察库/schema4及不可变审核链只读事务捕获真实原件元数据，按≤5000项复用C03/C04；W07原三值/关键风险规则计算，原raw等级与值不改写。另列field_assessments与独立审核序列、原输入/回执集合、固定政策SHA/期限。复用有界QueryCaptureStore/schema1；旧raw快照不能重标已审核。2.2重放需当前源，撤销/政策变更/TTL到期明确要求重新查询；慢校验期间原审核变更也拒绝发布。缺审核、缺政策、过期和冲突不当pass，阈值确实未过与证据不足分别显示空结果/coverage_gap。
+
+**实际验证与容量：** 保留21F初始RED；首次新旧合组103P；边界批1P/8F中七项为测试视图误用all（真实接口all_relevant），一项实际并发撤销竞态；修正后含operator/原codec合组68P。继而实际OS 2k×30传输1F复现重复资格元数据超过80MiB；保持原64MiB缓存/80MiB传输上限，用原生独立摘要绑定单份元数据，最终五文件104P/63.51s，0失败错误跳过，原源hash不变。2,000×30合成codec：索引64,308,530字节、重复原传输88,969,348字节、改后实际OS传输64,309,427字节；公开CLI冷查询/重放/撤销、false digest拒绝和政策/字段到期边界覆盖。并行规则ANY、ALL、NOT及关键风险均用原引擎，未另造评分器。此为软件/合成容量证据，不是60,000条真实观察或公司准确性；不相加重叠批次称金融通过率。
+
+**唯一下一工程动作：** 同一Phase113步骤4完成schema4原base reader/UI/backup的实际DDL兼容，不能只加user_version允许值；继而处理已知原release publisher Windows长路径、其余原C06操作及真实owner serializer golden。现109累计候选/13变化/6终态冻结于producer-checkpoint-16.json，Python AST/新schema静态校验通过，原guard及旧公开main账本SHA不变、实际CIM自有Python0。当前仍私有候选；整个C06一次集中审查/源发布/strict自有清理，不新增helper审查。金融、真实用户审核、真实owner golden、G3/F05/L03/B01/facts/UI/TH-IN/全池原门保持，完整目标不缩小。
+
+**交接/发布边界：** FACT每小时只读fact-r2 ACTIVE，remediation-02两planning清单不一致为既有未变基线，不重复验半成品；齐备后一次通知/停止轮询，再主控整包验收。EVID新交付位置仍待答，不代写活动Lab。c15a/real-owner-01仍为必要输入，不清共享TEMP/未知项。上批四已获准PWF/handoff正常提交推送eae8eb6e431564760bce3b125e0985880a5be904。本批仍仅发布同四第一方Markdown，实际Git见documentation-publication-checkpoint16-01.json，不导出私有源/原件/数据库/golden/Lab。当前执行源集合SHA f0d78fd4e54f4be74a73c6ce698b08aaa92e41dfca8522ad5abf85e01f9d7fdd；旧checkpoint12–15/所有RED与终态保持。
+
+**本轮错误记录：** 恢复时一次批量读输出过大，后改为有界选段；只读CIM在沙箱无法访问，已离开沙箱成功核实。上轮错误文件名/控制器-k问题不重跑。边界用例误用all而非all_relevant只改测试，原actual并发审核变化缺 fence 已按同库审核序列复核；实际跨进程重复资格数据超过上限已用独立digest改造。原21F、1P/8F、传输1F与全部原始日志均保留，不以改断言或增预算上限洗绿。
+
+本次只修改owned c15a私有源/本仓计划说明，未写外仓、真实库、名单或文档缓存；收费API/文档下载0。实际发布由下述一次控制器和回执证明，不把本段文字当已完成源码交付。checkpoint16静态是工程冻结检查，不是新独审门；下一完整C06节点才集中一次独审。
