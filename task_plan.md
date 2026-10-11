@@ -419,7 +419,7 @@ Status: complete_for_planning_only
 
 本批并行文档交付已完成；主控已完成checkpoint26软件源交付/清理，下一动作以本节当前段为准。三包的实施/认领在各自新根进行，未自动启动，也不是新的主线审查门。
 
-**唯一当前动作（2026-10-11 checkpoint26）：** 正常提交/推送本批7份已授权文档，然后接原B01当前公开生产链的三公司小批次预检与输入冻结；复用既有执行/费用/ACK，不立即发200家或重复旧实验。EVID-R2/FACT-R3等实际新交接，三新Lab由用户认领，金融/G3/F05/facts/UI/一键/全池门保持。
+**唯一当前动作（2026-10-11 checkpoint26）：** 接原B01当前公开生产链的三公司小批次预检与输入冻结；复用既有执行/费用/ACK，不立即发200家或重复旧实验。EVID-R2/FACT-R3等实际新交接，三新Lab由用户认领，金融/G3/F05/facts/UI/一键/全池门保持。
 
 **历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 
@@ -1889,12 +1889,12 @@ Status: complete_for_package_preparation_only; workers_not_dispatched; product_i
 原完整QA1737P/31F/8E、SW1564P/50F/23E/22skip保持原失败；受影响QA85P/1明确skip、SW64P后剩余24P保持各原分母。正常hooks通过不是整仓pytest或金融准确性通过。一次公共main完整重入、100×30、真实owner04证据仍引用原件，不伪造新golden。准备清理只针对runs/c15a和runs/c15r；保留原guard/原public-main账本的精确原字节与全部既有过程日志，不碰共享TEMP、生产库/名单、Lab或他人文件。Windows长路径必须用原生前缀和lstat，不信普通os.walk会漏长目录；第一次普通路径盘点报WinError3，没有删除动作。strict清理终态前，Phase113步骤4仍未关闭。
 
 ### Phase116: 同一C06/W15节点源码发布收尾
-Status: source_and_cleanup_complete_for_software_scope; documentation_publication_pending; full_financial_gates_open
+Status: complete_for_software_delivery_and_documentation_scope; full_financial_gates_open
 - [x] 155精确源交付与逐字/HEAD/CAS，保留外来改动。
 - [x] QA/SW/IQS正常源码提交；QA/IQS正常推送并核实际remote SHA，SW无remote本地交付。
 - [x] 原hooks照常，7项纯文本卫生更正，失败和续接日志分别保存；没有新helper审查。
 - [x] 两自有根原生长路径/文件ID/单链接/精确集合与bytes/SHA清理；dry/Apply真实终态及编译根单独清理留档。
-- [ ] 同步最终PWF/交接和正常提交推送；之后回到原尚未完成工程/真实金融/facts/UI/全池主线。
+- [x] 最终7份PWF/交接正常提交推送dd045f30并核实际remote；回到原B01公开链预检和尚未完成真实金融/facts/UI/一键/全池主线。
 
 
 ## 2026-10-11 checkpoint26 — C06/W15软件交付与隔离清理终态
@@ -1906,3 +1906,8 @@ strict dry真实会话10083 exit0，原生逐字/文件ID/单链接43936项全�
 原QA完整1737P/31F/8E、SW1564P/50F/23E/22skip不改；受影响QA85P/1明确skip、SW64P后剩余24P与原静态/smoke、公开main/schema4第二获准字段链、真实owner04结果保持各自原分母。测试fixture现在使用源仓tests/fixtures/c06_execution_ledger.sql（SHA1772a5544c2322f881fb8075730a22b19b5db423f85a9aff780105216fc5632e），不得重新创建已清的c15a/c15r或把旧真实owner输出伪称当前新生成。现C06能力1.1、query2.0—2.5、authority3/context2的软件交付成立；真实数据覆盖/研究证据资格仍按实际unknown呈现。
 
 下一主线为原B01当前公开入口小规模实验的前置/输入冻结：沿用已授权三公司和30题，复用StockQA客户端/账本/预算与StockWiki公开导入/ACK，不新造执行器、不立刻扫200家。EVID-R2/FACT-R3未见新完整handoff，不重复旧测试、不占原owner。MATRIX/LOAD/IDENT三卡41输入仍匹配，新根均不存在；由用户分派、不自动开工。整个金融准确性、G3/F05/L03/facts/UI/TH-IN/全局目标未完成。
+
+
+## 2026-10-11 checkpoint26 — 正常文档发布已核实
+
+7份已授权Markdown已实际正常提交并推送dd045f3074baaf4d34cee90bd123b3947263eebb，真实ls-remote master一致；release-planning-publication-01.json绑定16个原生Git命令、真实PID/终态/原stdout/stderr。仅这7路径入提交，原hooks正常，私有原件/DB/golden/运行根和他人2026-10-10 README未入。Phase116软件源交付、strict清理和该文档发布现已有实际证据；金融/G3/F05/B01/L03/facts/UI/一键/全池仍未完成。下一步只接原B01当前生产入口三公司小批次预检/输入冻结，旧B01/Phase93/96实验不重跑、200家不立即启动。所有七个既知key名在当前进程中均检测到，仅bool检查，无key读取/记录/收费请求；必须使用本run配置并保留用户顺位。原CLI batch_file是多公司输入，不凭它声称题目pack已生产接线；先核实际题包/检查点/ACK契约再对照，复用StockQA执行器，不造第二客户端。

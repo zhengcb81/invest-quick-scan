@@ -3209,3 +3209,8 @@ strict dry真实会话10083 exit0，原生逐字/文件ID/单链接43936项全�
 
 
 checkpoint26文档收尾：三份C06说明仅新增当前header，旧CRLF历史正文逐字节保留；避免将历史解释成新施工要求。第一文档控制器曾归一化旧行尾，随后精确恢复Git原历史body；一次inline循环误将receipt写入for内，在第二文件后exit1，原01部分记录保留，02实际完成三文件。均为文档控制器错误，无源码/API/生产库变更。41独立包冻结输入仍0漂移；七个已授权Markdown正常Git待本批实际终态，不提交私有golden/DB/源副本/运行清单或他人README。
+
+
+## 2026-10-11 checkpoint26 — 正常文档发布已核实
+
+7份已授权Markdown已实际正常提交并推送dd045f3074baaf4d34cee90bd123b3947263eebb，真实ls-remote master一致；release-planning-publication-01.json绑定16个原生Git命令、真实PID/终态/原stdout/stderr。仅这7路径入提交，原hooks正常，私有原件/DB/golden/运行根和他人2026-10-10 README未入。Phase116软件源交付、strict清理和该文档发布现已有实际证据；金融/G3/F05/B01/L03/facts/UI/一键/全池仍未完成。下一步只接原B01当前生产入口三公司小批次预检/输入冻结，旧B01/Phase93/96实验不重跑、200家不立即启动。所有七个既知key名在当前进程中均检测到，仅bool检查，无key读取/记录/收费请求；必须使用本run配置并保留用户顺位。原CLI batch_file是多公司输入，不凭它声称题目pack已生产接线；先核实际题包/检查点/ACK契约再对照，复用StockQA执行器，不造第二客户端。
