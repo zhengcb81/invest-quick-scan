@@ -407,6 +407,15 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**2026-10-11 checkpoint13：全池候选与独立字段审核读入口（唯一当前工程状态；下方旧“当前/下一步”均为历史）：** Phase113步骤4持续实施。checkpoint12已固定89累计私有候选/12变化/9终态批次：原同一QueryCaptureStore有界持久化、2.1 search/candidate_set、完整SubjectRef、19共享口径、固定snapshot/query/分页/候选原观察与模型时间；旧2.0 get_profiles保持。checkpoint13已固定95累计候选/11变化/9终态批次：IQS独立回执/C04原信息日期时效投影，StockWiki同一原观察库schema4仅追加审核/撤销记录，以及固定owner policy的公开只读assessment OS CLI。原值、导入ACK和主体绑定不修改；请求方不能提交自己的资格回执或TTL。公共读入口单次63P，实际四数据库路径隔离加强后仅该例1P；原RED及22P/1F、pool123P/1F与对应单项修复均保留，不把重叠批次相加或冒充真实公司准确率。原guard SHA不变，两次实际CIM自有Python0，0收费API/生产库或名单写。所有新增工程仍在runs/c15a，未整节点集中审查、未源发布，不关闭C06/W15及下游门。
+
+**唯一下一工程动作：** 在同一Phase113步骤4接可信原生审核/StockQA执行回执生产与当前pool字段资格投影。现有QualificationStore只接部署可信authority/principal回调，测试明确SYNTHETIC_OWNER；尚无真实操作员授予adapter、StockQA执行回执producer，也没有将assessment并入原2.1 pool wire。先复用原OS principal和原C03/C04规范，精确绑定原C06 payload/完整SubjectRef/store/观察ID，不能把normalize_screening的另一个screen_观察ID直接改绑。资格与原值分开，复核时间不延长原information_as_of有效期，撤销不覆盖原记录。随后在源发布前补schema4与原UI/base reader/backup的实际DDL兼容（现有backup max2不能简单增号）、其余原C06操作和真实owner golden；整个C06仅一次集中审查/源发布/strict自有清理，不加helper审查，不重复已绿未改入口。c15a/real-owner-01继续保留，未改共享TEMP、外仓writer或真实名单。
+
+**外包与跟进：** FACT指定remediation-02的handoff已出现，最后实核HEAD 1ece6b2/result fb187d92祖先、137项中135匹配，planning/progress.md与planning/task_plan.md两项不一致；每小时只读heartbeat fact-r2已启用并通过工具查看，未有新变化安静，首次齐全一致才通知并停止轮询，仍待主控整包验收。EVID新完成通知仍未带新交付位置，实际上一轮R1保留changes_requested，R2卡准备好，已问目录/handoff/commit，不重问、复验旧包或代改活动源仓。G3/F05/L03/B01/facts/UI/TH-IN/全池门继续按原证据保持，软件/交接GREEN不等于金融准确性。
+
+**接续原件：** docs/implementation/intake/W15/c06-query-2026-10-09/producer-checkpoint-12.json与producer-checkpoint-13.json及对应private-producer-12/13、原process/JUnit/stdout/stderr/sources保留；不是新helper审查门。正常Git只发布已获准四份第一方PWF/handoff Markdown，终态以documentation-publication-checkpoint13-01.json为准；新源码、私有回执/数据库/golden、Lab输入及新增本地说明不扩大为远端导出范围。
+
+
 **2026-10-11 EVID R1续验收口（下方旧未接收描述为历史；C06工程仍checkpoint11）：** EVID完整R1收到70498e4，产品44aa204，258原源/91工件/213输入锁均匹配且结束未变。交接公开CLI结构exit0不等于验收；原样隔离修正回归150P/64F，源根绝对绑定令正常输入先拒绝，不能把无关exit2当反例通过。以213项原字节验证的明确合成重定位锁区分语义缺陷，16案中4正控通过，11缺陷案复现；真实Windows junction单项接续复现，共九类根因，另两内容口径静态，仍changes_requested。R1成果保留，本地EVID-REF-02-R2卡准备好，未自动派发/代改源仓，不增加helper门。520文件/183目录strict自有清理完成，实际CIM0；原C06活根/外仓/共享TEMP不动，socket/API/下载0。FACT d00e2b64活动R2，用户授权的CodeGraph已存在，不重复init/验收半成品。9c2f5fed checkpoint11四份获准PWF文档此前已正常提交并非强推到origin，原回执11证明远端一致；私有源码/本次Lab证据与整改卡不自动导出。
 
 **唯一下一动作仍是Phase113步骤4：** 接原compact pool与有界QueryCaptureStore，完成具名search/candidate_set wire、固定snapshot/分页/完整SubjectRef/规则/字段资格与时效；2.0 get_profiles保持。这里只完成外包续验，不关闭C06/W15/G3/F05/L03/B01/facts/UI/TH-IN/全池门；c15a和real-owner-01继续保留，同一整个C06节点完成后集中审查/源发布/strict清理一次。不要重跑EVID旧包或上述已执行控制器，不以150P或合成CLI声称金融准确；先前214P是交付者源环境自报，本轮实际150P/64F二者分别留档。
@@ -1681,14 +1690,15 @@ Status: in_progress
 - checkpoint09接续：累计75私有候选，公共admission完整bundle/context3/2映射已通过真实公开CLI合成1P及受影响52P；原主执行器消费仍是下一动作。旧08缺公共入口描述仅属历史；整个步骤4/集中审查/源发布及全局门不提前关闭。
 - checkpoint10接续：原公开main仅派发获准范围及无凭据result_ready接续已通过合成E2E；79私有候选固定。原引用/uncertain/租约与其余操作、整个节点集中审查/源发布继续，真实金融/全局门不提前关闭。
 - checkpoint11接续：83私有候选，原三种零新增派发接续已逐项验证；完整可比性113P，全pool轻量读投影含原OS绑定8P及2000合成容量1P/20批。公开search/candidate_set/具名wire/有界持久化/字段有效期与资格仍待，步骤4不勾选；同节点集中审查未执行。
+- checkpoint12/13接续：原2.1 search/candidate_set与同一有界capture已接；独立字段回执/原信息日TTL、同一观察DB追加审核/撤销、公开只读OS assessment CLI已实际测试。95累计候选/11变化/9新终态已固定checkpoint13；实际63P和隔离加强单项1P分别留档。可信原生授予/执行回执producer、pool资格wire及schema4旧reader/UI/backup兼容仍待，步骤4不勾选；整节点集中审查/源发布未执行。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
-Status: FACT_R2_active_writer_changes_requested; EVID_R1_changes_requested_R2_card_ready
+Status: FACT_R2_handoff_present_manifest_inconsistent_hourly_watch_active; EVID_R1_changes_requested_R2_card_ready
 
 - [x] 核原PWF与已交付各线，避开总控C06/W15、QA/SW生产接线、原TH/IN门；只读独立拆包建议收齐，不重做旧UI/备份/强杀回归。
 - [x] 编制EVID-REF-02与FACT-CONTENT-01大卡、共同交接/隔离规则、具名产出/CLI目标/退出码、集中测试case-map、manifest和未执行handoff模板；两独占源仓互不包含，与总控三生产根互斥。
 - [x] 实际固定213份只读输入、原61题与3公司30题槽；15本地链接/JSON/AST/输入SHA/根互斥及两模板公开CLI预检通过，均仅文档层，无产品实现或金融准确性证明。
 - [x] 用户明确授权Lab CodeGraph后实际init exit0，30文件/611节点/581边；保留两新增索引设施，不覆盖旧Lab或混进产品提交。新FACT仓未创建、无收费请求或harness派发。
 - [x] 实际收到两包；固定241受控文件/213锁原件/73工件SHA，产品commit祖先、Git前后不变。隔离原回归182P/77P、两次独审与集中反例（EVID10/FACT6）完成，均changes_requested；638文件/123目录strict自有清理终态完成。
-- [ ] 两张独立R1卡已具体编制，未自动派发；按新交付固定输入后同次包级复验，不能用原软件GREEN关闭资格/分母/语义门。原Phase113已接续checkpoint08，公共admission/主执行器仍待，F01/F05/F06/G3/L03/TH-IN/全池门保持。
+- [ ] 独立整改按新完整交付固定输入后做一次包级复验；FACT R2交接清单尚不一致、只读每小时跟进中，EVID R1维持changes_requested且R2卡准备好。不能用原软件GREEN关闭资格/分母/语义门；主线已接续checkpoint13，F01/F05/F06/G3/L03/TH-IN/全池门保持。
 - 最新R1实收/续验（2026-10-11）：FACT d00e2b64仍为活动R2 writer，已有CodeGraph不重复init；EVID完整交接收到70498e4（产品44aa204）。258源/91工件/213锁匹配，handoff结构exit0；原样隔离修正回归150P/64F，集中反例复现九类根因，另两项内容证据问题静态。维持changes_requested，具体EVID-R2卡已留本地，不自动派发；520文件/183目录strict自有清理，源和原C06活根不变、0收费。详见EVID-REF-02-R1-acceptance.md及EVID-REF-02-R2.md；旧“handoff缺失”仅历史。

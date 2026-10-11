@@ -2963,3 +2963,25 @@
 九类根因：文字共现冒充语义支持、unknown残留值/分计正确、definition绕资本题义、评分端点来源不闭合、staging祖先junction、答案缩请求分母、旧一致性升级accuracy、passed资格无检查记录、正常原样copy的绝对根锁不支持重定位。财务citation语义和Alphabet护城河4..9端点为同轮静态内容问题，不冒充联网复核或新增金融gold。更新Phase114的当前状态，Phase113步骤4仍in_progress；除四份获准PWF/handoff，本轮新增本地验收/整改档案不进origin发布范围。
 
 - 本轮四份获准文档publisher首次在git diff --cached --check发现新增EOF空行而停止，尚未commit/push；失败回执原样保留。仅修正该两份文档末尾并用新重试记录续发，不绕过check/hooks、不重复运行原单次publisher。
+
+### 2026-10-11 EVID新完成通知：待明确新交付位置
+
+用户再次通知EVID-REF-02完成。只读实际HEAD仍70498e4/codex/evid-ref-02-r1，原258项字节无变化，唯一工作树亦为原Lab；实际没有remediation-02，新handoff未见。保留上轮changes_requested，不重复旧回归或重新独审；已向用户询问这次新目录/handoff/commit，C06工程checkpoint11与所有全局门不变。实际记录 docs/implementation/intake/parallel-packages/2026-10-10/evid-remediation-01/delivery-notification-20261010T234811Z.json。本轮尝试读本机AGENTS.md时文件不存在，采用用户已提供的AGENTS指令；CodeGraph仍不覆盖runs私有副本，转读已知文件，不误用不相关符号结果。外仓/生产库/名单写、API/下载0。
+
+### 2026-10-11 FACT R2交接每小时只读跟进
+
+用户要求每小时检查指定交接目录直到完成交接。首检发现 remediation-02/handoff.json 已存在，分支 codex/fact-content-01-r2、实际 HEAD 1ece6b2b49195dc5a4514c8b263192cb017eed55，result fb187d92a5b267f8ec7bcbef10bfc8b396f4bb8e 为祖先；两 commit 之间只有本轮交接目录变化，升级只读 Git 确认工作树干净。137 条工件清单中 135 条字节数/SHA 匹配，planning/progress.md 与 planning/task_plan.md 两项不一致，暂记 handoff_present_manifest_inconsistent，不标完整签收。交付者原 JUnit 为 135/0F/E/S，仅交付者证据，主控未执行测试或产品验收。
+
+已通过应用工具创建并查看 ACTIVE heartbeat `fact-r2`（每小时）；没有新变化时安静，清单齐全一致后通知用户并暂停本跟进，已知两项不一致不反复提醒。只读观察、不改源仓、不执行交付代码/测试、不派发 harness，不增加小节点审查或关闭任何工程/金融门。初检留档 docs/implementation/intake/parallel-packages/2026-10-10/fact-remediation-02/monitor-initial-20261010T235158Z.json；Phase113 checkpoint11 与下一工程动作保持。PWF 仅记录本次事实；原 EVID 新交付位置问题仍待答复。
+
+### 2026-10-11 checkpoint13：全池候选与独立字段审核读入口
+
+上一轮只确认每小时跟进，没有主线工程推进；本轮恢复Phase113步骤4，实际完成checkpoint12原有界pool wire和checkpoint13原owner独立审核读投影。原2.0/2.1 raw值不升格；固定owner policy路径config/quick_scan_query_fields.json。same scan_observations.sqlite schema4新增不可变审核链，独立principal/authority回调才能写；readonly capture不自动迁移。当前公开CLI只读，不能授予审核等级，测试合成授予不冒充实际用户审核。原信息日较早于cutoff时TTL仍用原日期；未知policy/缺回执/撤销明确unknown或不合格，不把扫描成功变成白名单资格。
+
+测试均为隔离离线实际终态，原记录只追加不覆盖：pool wire从15F、13P/2F、43P/3F到48P；codec原7P/3F修复后真实Windows junction单项1P及原轴111P，最后整批123P/1F是JSON tuple/list测试表示误比，测试断言修复后仅该项1P。字段assessment原23F，首实现22P/1F是fixture把cutoff冒充真实information_as_of，按原Oct8日期修正测试并补边界后受影响98P。qualification原10F后57P，补两案及原reader兼容92P；public CLI原3F后63P/29.89s，随后只改隔离测试采用实际owner store路径、断言四库均存在且原字节不变，单项1P/4.05s，不假称整组重跑。以上批次重叠，不相加为通过率/金融准确性，没有新增独立helper审查。
+
+实际controller进程/退出码/JUnit/原sources均固定在intake/W15/c06-query-2026-10-09；checkpoint12累计89/变化12/终态9，checkpoint13累计95/变化11/终态9，两次成功CIM自有Python0，原guard abc0128dc92a2bf99e57dbbbfe2355aea376b584f67e9e51c0bd0ebbc871e682不变。最新producer-assessment-isolation-g1 source SHA 15d9f7c89b05f2b0cb057c1b57f4af241cf3f96f5f72fccb39bc07c8df7ca88d。没有存活测试会话。私有95候选未源发布；实际API/生产DB/名单写0，c15a和real-owner-01留作同一C06未完成输入，未清共享TEMP。
+
+尚需可信原生操作员审核与StockQA执行回执adapter、pool当前资格/有效期具名wire、schema4原UI/base reader/backup兼容、其余原C06操作/真实golden；然后整个C06一次集中审查/源发布/strict自有清理。Phase113步骤4仍in_progress，全局门不提前关闭。FACT fact-r2 ACTIVE小时跟进已复核，已知137项135匹配不重复通知，完整一致后主控整包验收；EVID新交付位置问题仍待。四获准PWF/handoff正常Git终态单独记录documentation-publication-checkpoint13-01.json，其余新本地说明/私有源码和证据不导出。
+
+本轮恢复错误仅是控制器/查找，不掩饰产品错误：PowerShell rg位置glob quick_scan*.py/metric*报OS123/3，改-g与已知路径；猜测freeze_c06_producer_11.py、quick_scan_refresh_cli.py、quick_scan_refresh_preview_cli.py不存在，使用实际checkpoint_original_resume_and_pool.py和quick_scan_refresh_owner_cli.py，未盲启动其他程序。长输出截断后只读原终态摘要，不重启已完成测试；Git status未跟踪量大转tracked diff，不删未知nul/opencode/README改动。

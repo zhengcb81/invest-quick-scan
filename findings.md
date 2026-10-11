@@ -2019,3 +2019,21 @@ Phase103：SW五组有实质进展，96相关/旧12/11浏览器均GREEN，默认
 九类根因：文字共现冒充语义支持、unknown残留值/分计正确、definition绕资本题义、评分端点来源不闭合、staging祖先junction、答案缩请求分母、旧一致性升级accuracy、passed资格无检查记录、正常原样copy的绝对根锁不支持重定位。财务citation语义和Alphabet护城河4..9端点为同轮静态内容问题，不冒充联网复核或新增金融gold。更新Phase114的当前状态，Phase113步骤4仍in_progress；除四份获准PWF/handoff，本轮新增本地验收/整改档案不进origin发布范围。
 
 - 本轮四份获准文档publisher首次在git diff --cached --check发现新增EOF空行而停止，尚未commit/push；失败回执原样保留。仅修正该两份文档末尾并用新重试记录续发，不绕过check/hooks、不重复运行原单次publisher。
+
+### 2026-10-11 EVID新完成通知：待明确新交付位置
+
+用户再次通知EVID-REF-02完成。只读实际HEAD仍70498e4/codex/evid-ref-02-r1，原258项字节无变化，唯一工作树亦为原Lab；实际没有remediation-02，新handoff未见。保留上轮changes_requested，不重复旧回归或重新独审；已向用户询问这次新目录/handoff/commit，C06工程checkpoint11与所有全局门不变。实际记录 docs/implementation/intake/parallel-packages/2026-10-10/evid-remediation-01/delivery-notification-20261010T234811Z.json。本轮尝试读本机AGENTS.md时文件不存在，采用用户已提供的AGENTS指令；CodeGraph仍不覆盖runs私有副本，转读已知文件，不误用不相关符号结果。外仓/生产库/名单写、API/下载0。
+
+### 2026-10-11 FACT R2交接观察
+
+R2 handoff 已出现且结果 commit 属于当前干净 HEAD，但 137 条清单中两份 remediation-02/planning 文档的字节数或 SHA 不一致。因此交接观察状态为 handoff_present_manifest_inconsistent，不能凭 status=complete 或交付者 135P 宣布主控验收通过。每小时只读 heartbeat `fact-r2` 已创建并查看，齐全一致后一次通知并暂停；不复验半成品、不增 helper 门。主线 checkpoint11 和其他门保持；只读 Git 沙箱 not work tree 经升级核实解决，未修改源仓。
+
+### 2026-10-11 checkpoint13：全池候选与独立字段审核读入口
+
+raw search/candidate_set的完整主体与原19共享可比口径已具名2.1.0，原2.0 get_profiles保持；同一QueryCaptureStore/schema1总逻辑payload64MiB、32份、1h，旧capture16MiB保持。固定snapshot/query/consumer/规则与分页不跨口径替换，不把cache耐久/availability/ACK当资格。checkpoint12 actual89候选，private容量2000×30是合成引用codec、不是6万真实财务记录。
+
+新增独立field assessment复用原C03/C04：回执同时绑定owner store、原payload hash/full SubjectRef/observation ID/entity/question、issuer与签发时间；active/revoked追加链不覆盖答案。字段TTL固定owner policy，使用原information_as_of与原观察时间较早者；missing policy不默认fresh，复核/导入/cutoff不延长有效期。same原观察库schema4审核表独立权限回调写入，公开OS CLI只读取原观察/当前审核记录/部署固定policy，consumer不能提交自签回执或TTL。
+
+checkpoint13 actual95候选/11变化/9终态，最终公开读63P和强化实际四库路径只读隔离单项1P分别留档；23F、22P/1F、10F、3F及原pool123P/1F未覆盖，test RED/软件GREEN不冒充金融通过率。测试明确SYNTHETIC_OWNER，没有真实用户审核、原生grant或StockQA execution receipt adapter；pool assessment尚未接线，schema4原UI/base/backup兼容仍待，完整C06未集中审查/源发布。原guard不变、CIM自有Python0、API和生产库/名单写0。只读FACT hourly跟进保持ACTIVE，EVID仍待新交付路径；这不改变主线下一动作和全局门。
+
+路径/glob查找失败改已知路径/-g，输出截断改只读摘要，旧单次控制器不重跑。第一方四获准文档可正常Git，其余本地私有接口说明、原件/真实golden/数据库不扩为origin导出；实际结果以documentation-publication-checkpoint13-01.json为准。
