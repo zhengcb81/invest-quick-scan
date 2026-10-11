@@ -2308,3 +2308,12 @@ issuer存储版、serializer投影版和listing consumer准入版可不同。兼
 - 原primary参考保留30题各证据/反证、expected_score均null，不是金融人工gold。三未知题对应源实际为其他issuer，拒绝评分正确；另一未知题仅有Alphabet Q1来源仍不足。没有依据把0可评分说成100%准确。
 - 两指定已结束binding测试/发布临时根精确清理2860文件/385目录，53必要证据留存；live、owner克隆和原账本保留待修复接续。生产StockWiki4DB与SOURCE_OWNER/旧输入总14保护项SHA全部未变；不清外部Lab或他人2026-10-10 README。
 - 新结论与实操次序见 [B01首轮报告](docs/implementation/reviews/B01/native-pro-first-live-2026-10-11.md)。这是原B01大节点接续，不新增Phase/helper门；真实金融、G3/F05/facts/UI/一键/全池仍未完成。
+
+
+## 2026-10-11 — OPS验收的四个根因
+
+结构模板和原测试通过不能证明CLI闭合：手工校验遗漏容器/长度/日期/交叉标记，render因此可在validate成功后崩溃；1MiB只控制是否检测secret反而使超限证据绕过检查。链接安全必须覆盖主bundle，不只证据。直接插入诊断摘录能伪造资格段或激活媒体标记，需要字面展示，未发生实际外部执行。
+
+partial不能强迫占位假证据：旧schema minItems=1保留原bytes，新零证据能力必须具名版本/profile。通用Web UI不是快扫设置可用的证据，旧preview授权不能替代新permit耐久消费，provisional的资格由owner具名能力决定。四组归同一R1，不重做有效目录或增加小节点门。
+
+本次源98/工件96/锁12闭合；原57项实际含验收guard环境错误，修后只续受影响9CLI和2链接项，累计56P/1skip；14独立控制2符合/12缺口，另2语义控制独立记载。CodeGraph按本轮用户授权建14文件索引，仅.codegraph/未跟踪变化。最终源字节未变、API0，自有54文件/29目录已精确清理。见同日OPS集中验收/R1与progress，不把软件诊断签收成金融准确性。

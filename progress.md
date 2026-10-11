@@ -3281,3 +3281,16 @@ StockWiki旧持久化2.0 verified identity由原G2b投影2.1，挂牌接口原�
 - 原primary参考保留30题各证据/反证、expected_score均null，不是金融人工gold。三未知题对应源实际为其他issuer，拒绝评分正确；另一未知题仅有Alphabet Q1来源仍不足。没有依据把0可评分说成100%准确。
 - 两指定已结束binding测试/发布临时根精确清理2860文件/385目录，53必要证据留存；live、owner克隆和原账本保留待修复接续。生产StockWiki4DB与SOURCE_OWNER/旧输入总14保护项SHA全部未变；不清外部Lab或他人2026-10-10 README。
 - 新结论与实操次序见 [B01首轮报告](docs/implementation/reviews/B01/native-pro-first-live-2026-10-11.md)。这是原B01大节点接续，不新增Phase/helper门；真实金融、G3/F05/facts/UI/一键/全池仍未完成。
+
+
+## 2026-10-11 — OPS-DESK-01集中验收与R1交接
+
+已收到OPS产品79b4217d/HEAD dec3942f/分支codex/ops-desk-01（无remote），98跟踪文件、96工件和12原锁输入全部bytes/raw SHA匹配。原handoff公开CLI exit0仅证明交接结构。十family/26incident/17命令/47锁引用与基本诊断设计保留。
+
+自有ops-acceptance-2026-10-11-01副本实际原57项exit1：46P/9验收guard环境E/2skip；修Windows subprocess audit executable=None后仅原九CLI exit0/9P，再原两链接项exit0/1P1symlink权限skip，累计56P/1skip，不虚称一次全绿。14新公开CLI控制仅2正常符合，12错误放行/崩溃；另真正零证据partial被拒、活Markdown/HTML原样进入报告，未发生网络图片请求或script执行。一个独立agent只读审查，与本次集中验收合并，不新增helper门。
+
+结论changes_requested，唯一四组R1续做：closed验证/稳定失败与synthetic一致性；有界读取/主输入链接/短文本及敏感展示；安全纯文本与具名零证据partial；手册已知能力/W16 permit/provisional范围。原1.0 schema/锁/交接保留，扩展新版本显式选择，已绿部分不返工。原harness续做，主控不代改产品、不自动发送消息。
+
+用户明确授权CodeGraph，实际init exit0：14文件/282节点/268边；源仅新增未跟踪.codegraph/设施。最终真实源HEAD不变、98源和98副本原字节全部匹配；CIM自有活动Python0。精确清理54生成文件/29目录，两个硬链接均在闭合自有集合；保留小case、原stdout/stderr/PID/guard/控制器和98冻结源。无收费API、生产库/名单写或公司文档下载，未清源Lab或活跃B01根。私有原件closeout.json不随Markdown发布。
+
+公开[验收](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-acceptance.md)、[R1](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1.md)、[独审](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-independent-review.md)及wave2 dispatch已更新。VIEW/FIN尚未收到完成交接，不推断尚未开工。原Phase118是支撑范围，金融/G3/F05/UI/一键/全池仍开放；B01 checkpoint30同节点工程接续不变。正常文档提交/推送待本批终态，保留他人2026-10-10 README。

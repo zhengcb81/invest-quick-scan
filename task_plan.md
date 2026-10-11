@@ -421,7 +421,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2的VIEW-01/FIN-REF-01/OPS-DESK-01施工包已完成编制核验，尚未派发/实施；分别使用三个新独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作仍以下checkpoint30段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
+旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS-DESK-01已收到并集中验收为changes_requested，原harness只续四组R1，VIEW-01/FIN-REF-01尚未收到交接。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作仍以下checkpoint30段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
 
 **唯一当前动作（2026-10-11 checkpoint30）：** 原main PID71104已终态exit1，13原HTTP均有收执且预算settled；不得再次执行run_native_pro_resume03.py、删原work.sqlite、清live/owner或伪造ACK。先在同一B01大节点补三项真实链缺口：已知response_available但无有效答案的durable逻辑终态/原owner retry与comparison决议；vendor request_id允许明确未知并与真实response_id/physical attempt分开、旧schema/hash/结果保留；CNY账本的具名refresh quote能力与旧USD兼容。4标准答案当前仅QA检查点且投递blocked，不填response_id冒充request_id，不改旧payload/context/收执以绕校验；旧generation与新生成材料显式分开。完成受影响TDD/一次集中回归和正常源交付后，使用原公开owner preview→已授权operator真实TTY确认→Q13 admission及原main/同账本，先原IQS_01/02/04仅max32768的pack3，再同32768的pack1。完整原30题分母保留；同policy_id按原方法增加cap/version、保留13次/CNY1.268162及历史350模型/200搜索，至少计入新增4请求且按owner quote预留更充足余量，不能换新账本或币种。思考保持开启，提示词/工具先不一起改；后续再独立比较官方来源导航、原生参数和其他已获授权模型/外部搜索。实际ACK取公开import的原回执，由原Store API消费；无可封存包则保持ACK0。CATL/CSC仍provisional且缺真实subject，不能造owner正例凑三市场。MATRIX R1/LOAD R1/EVID R3/IDENT R1由用户原harness续做，总控只读、不自动派发或代写；FACT R3不重做。不得把软件GREEN/保守弃答当金融准确性、G3/F05或上线门关闭，不增helper审查。
 
@@ -1985,10 +1985,24 @@ B01大节点实际626P/2新断言F后仅受影响模块25P；原真实owner-per-
 
 ## Phase118：独立UI、金融参考与运维施工包
 
-Status: package_preparation_complete; not_dispatched; product_implementation_and_owner_integration_pending
+Status: package_preparation_complete; OPS_acceptance_changes_requested_R1; VIEW_FIN_awaiting_handoff; owner_integration_pending
 
-- [x] 按用户要求编制 VIEW-01、FIN-REF-01、OPS-DESK-01 三个较大且互不依赖的施工包；入口 [2026-10-11-wave2](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。工作根为 iqs-viewer-lab、iqs-financial-reference-lab、iqs-operations-lab，编制及终态核查均不存在，不由总控创建或派发。
+- [x] 按用户要求编制 VIEW-01、FIN-REF-01、OPS-DESK-01 三个较大且互不依赖的施工包；入口 [2026-10-11-wave2](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。工作根为 iqs-viewer-lab、iqs-financial-reference-lab、iqs-operations-lab，编制时目录均不存在（历史快照），不由总控创建或派发；后来OPS已有交接，当前状态见下方接收项。
 - [x] 自包含卡/共同规则明确只写自身新根，PWF/输入冻结/closed产物协议/CLI/一次集中TDD测试审查/strict清理/正常产品与交接提交；不占三生产仓或 EVID/FACT/MATRIX/LOAD/IDENT writer，不引入第二公司库、评分器、客户端、预算或启动器。
 - [x] 41个不同原始输入文件实际锁定：VIEW18、FIN20、OPS12。FIN实际三份正式manifest各30唯一题核验，无新身份golden；保留CATL/中信建投真实subject缺口和主观参考非金融真值边界。
 - [x] 本批18条本地链接、目录互斥、任务ID/原字节/SHA及三次现有公开handoff CLI模板均通过。validation.json仅文档编制验证，产品/浏览器/金融实验未运行，收费/外仓写/生产库/名单变更0。
-- [ ] 由用户分别交harness认领后，各自独立实现和交回；总控只读包级验收并将VIEW接StockWiki、FIN接B01盲评、OPS接发布后的唯一运维入口。不自行关闭U/G3/F05/G5/G6/TH-IN/一键/全池门，不另设helper审查。主线工程仍为Next Step的B01修复和真实对照。
+- [x] OPS已集中只读验收：98跟踪/96工件/12输入匹配，原测试累计56P/1skip；14独立控制仅2正常符合，另2语义反例，四组R1已成卡。授权CodeGraph实际14文件/282节点/268边；不修改Lab产品。
+- [ ] OPS由原harness续做[唯一R1卡](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1.md)，保留有效部分；VIEW/FIN尚未收到交接，各自独立交回后一次包级验收。总控将VIEW接StockWiki、FIN接B01盲评、OPS接发布后的唯一运维入口。不自行关闭U/G3/F05/G5/G6/TH-IN/一键/全池门，不另设helper审查。主线工程仍为Next Step的B01修复和真实对照。
+
+
+## 2026-10-11 — OPS-DESK-01集中验收与R1交接
+
+已收到OPS产品79b4217d/HEAD dec3942f/分支codex/ops-desk-01（无remote），98跟踪文件、96工件和12原锁输入全部bytes/raw SHA匹配。原handoff公开CLI exit0仅证明交接结构。十family/26incident/17命令/47锁引用与基本诊断设计保留。
+
+自有ops-acceptance-2026-10-11-01副本实际原57项exit1：46P/9验收guard环境E/2skip；修Windows subprocess audit executable=None后仅原九CLI exit0/9P，再原两链接项exit0/1P1symlink权限skip，累计56P/1skip，不虚称一次全绿。14新公开CLI控制仅2正常符合，12错误放行/崩溃；另真正零证据partial被拒、活Markdown/HTML原样进入报告，未发生网络图片请求或script执行。一个独立agent只读审查，与本次集中验收合并，不新增helper门。
+
+结论changes_requested，唯一四组R1续做：closed验证/稳定失败与synthetic一致性；有界读取/主输入链接/短文本及敏感展示；安全纯文本与具名零证据partial；手册已知能力/W16 permit/provisional范围。原1.0 schema/锁/交接保留，扩展新版本显式选择，已绿部分不返工。原harness续做，主控不代改产品、不自动发送消息。
+
+用户明确授权CodeGraph，实际init exit0：14文件/282节点/268边；源仅新增未跟踪.codegraph/设施。最终真实源HEAD不变、98源和98副本原字节全部匹配；CIM自有活动Python0。精确清理54生成文件/29目录，两个硬链接均在闭合自有集合；保留小case、原stdout/stderr/PID/guard/控制器和98冻结源。无收费API、生产库/名单写或公司文档下载，未清源Lab或活跃B01根。私有原件closeout.json不随Markdown发布。
+
+公开[验收](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-acceptance.md)、[R1](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1.md)、[独审](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-independent-review.md)及wave2 dispatch已更新。VIEW/FIN尚未收到完成交接，不推断尚未开工。原Phase118是支撑范围，金融/G3/F05/UI/一键/全池仍开放；B01 checkpoint30同节点工程接续不变。正常文档提交/推送待本批终态，保留他人2026-10-10 README。

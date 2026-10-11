@@ -2,7 +2,7 @@
 
 ## 2026-10-11 checkpoint30 — 接手先读这一段
 
-**新增可独立派发包（2026-10-11-wave2）：** [三包总览](parallel-lanes/packages/2026-10-11-wave2/README.md)中的VIEW-01、FIN-REF-01、OPS-DESK-01已完成文档/41输入锁/三模板集中核验，尚未由用户派发或实施。各只写自己的新Lab（iqs-viewer-lab、iqs-financial-reference-lab、iqs-operations-lab），不能占三生产仓和旧Labs；使用本卡自己的PWF。VIEW交只读界面组件，FIN交正式三公司90题的事实/候选参考，OPS交手册/离线诊断展示；真实owner接线留总控，软件/资料不能关闭金融/UI上线/一键门。用户认领状态未更新前不自动开工或重复派发。此文档批不替换下方B01主线。
+**新增可独立派发包（2026-10-11-wave2）：** [三包总览](parallel-lanes/packages/2026-10-11-wave2/README.md)中的VIEW-01、FIN-REF-01、OPS-DESK-01已完成文档/41输入锁/三模板集中核验；当前OPS已交回且集中验收changes_requested，VIEW/FIN尚未收到交接，不能把原编制快照当当前未实施。各只写自己的新Lab（iqs-viewer-lab、iqs-financial-reference-lab、iqs-operations-lab），不能占三生产仓和旧Labs；使用本卡自己的PWF。VIEW交只读界面组件，FIN交正式三公司90题的事实/候选参考，OPS交手册/离线诊断展示；真实owner接线留总控，软件/资料不能关闭金融/UI上线/一键门。OPS原writer续做[唯一四组R1](reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1.md)，有效56P/1skip保留；总控不要代改Lab或自动派发。OPS用户授权CodeGraph已建立，源仅未跟踪.codegraph/；98原跟踪字节未变。VIEW/FIN无交接不等于未开工，不占其writer。此支撑包不替换下方B01主线。
 
 原完整30题首轮已经实跑，不能照下方checkpoint29再次启动。主main PID71104终态exit1、13次HTTP/26搜索；0评分、4合法不足证据QA检查点、26失败。13物理预算全部settled且无held/inflight，原work.sqlite与所有原件继续保留；4outbox均blocked，没有sealed package也没有ACK。实际量价/失败分类见新的B01首轮报告，不能用成功HTTP或parser日志充当准确性。
 
