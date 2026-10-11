@@ -2070,3 +2070,18 @@ native operator和execution producer现均具备；下一接pool独立资格wate
 **本轮错误记录：** 恢复时一次批量读输出过大，后改为有界选段；只读CIM在沙箱无法访问，已离开沙箱成功核实。上轮错误文件名/控制器-k问题不重跑。边界用例误用all而非all_relevant只改测试，原actual并发审核变化缺 fence 已按同库审核序列复核；实际跨进程重复资格数据超过上限已用独立digest改造。原21F、1P/8F、传输1F与全部原始日志均保留，不以改断言或增预算上限洗绿。
 
 本次只修改owned c15a私有源/本仓计划说明，未写外仓、真实库、名单或文档缓存；收费API/文档下载0。实际发布由下述一次控制器和回执证明，不把本段文字当已完成源码交付。checkpoint16静态是工程冻结检查，不是新独审门；下一完整C06节点才集中一次独审。
+
+
+### 2026-10-11 checkpoint17：schema4旧入口兼容与Windows原子发布修复
+
+**2026-10-11 checkpoint17：schema4旧入口兼容与Windows原子发布修复（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续，完整目标不缩小。原2.0/2.1/2.2查询、原审核链/当前资格与时效均保留；这批补齐schema4原base reader、旧UI与backup/verify/restore的实际DDL检查。基础只读入口不迁移、不为缺库创建数据库，未来版本/缺表/缺不可变约束明确拒绝；原base writer仍schema2，schema3/4扩展各自负责。旧UI仍显示原raw分数，不把导入或可读取当筛选资格。备份在快照及验证时检查原扩展约束，保留审核水位；same-root恢复维持原绑定/审核链，跨root不重签owner或提升等级。Windows原release publisher使用extended path仅作本地IO，对外相对引用不变；不可变档用同目录完整临时文件与不覆盖的原子link，遇并发先写者保留原字节，相同内容可重放、不同内容拒绝。只有current指针允许原子replace。
+
+**实际结果与边界：** schema4原RED1P/16F、首修46P/6F保留；后批3个collection error因隔离layout缺dummy模型配置，实际0个用例执行，不算产品金融失败或通过；补仅合成无key配置并修正错误类型/漏传审核水位后，四文件98P/16.74s。Windows真实长路径及并发5F后5P/2.76s，实际长root完整48模块/222题publish及重读通过。原module registry回归23P/2F：两历史原件漏拷导致失败；补59份第一方历史原字节后只续测两失败项2P，不重复23个已绿项、不伪称一次25全绿。此前长路径会失败的完整公开main→原ACK→原生execution分级→只读assessment现同断言1P/167.39s，controller168.269s；vendor HTTP/公司身份/人类确认仍明确合成，0收费/下载。结果不是金融准确性或真实用户审核。
+
+**唯一下一工程动作：** 同一C06步骤4补公开nominate/report_conflict的轻量线索登记，复用StockWiki原候选/冲突设施；提名不自动入池，冲突不改身份。随后通过实际owner serializer/公开CLI重生成当前版本真实身份与缺覆盖golden及错主体/范围/水位/模型/TTL/重复键负例，不能创建假财务观察填正例。全部原C06操作完成后只做整个节点一次集中审查、正式源交付与strict自有清理，不增加helper审查；G3/F05/L03/B01/facts/UI/TH-IN/全池门继续按原前置。
+
+**固定证据与交接：** producer-checkpoint-17.json实际115累计私有候选/7变化/9终态批次，201份借入回归/layout/合成配置逐字绑定，AST通过，原guard和旧main账本SHA不变，实际CIM自有Python0。当前source集合SHA bb590bee486b1a1c560da72cf56f08af027e40188fd740ead74c6ffae54ddca8，仍未发布生产源或整C06签收。FACT fact-r2 ACTIVE每小时只读remediation-02，已知两planning清单不一致不重复通知，完整一致后通知并停止轮询，再主控整包验收；不改活动Lab。EVID新R2交接位置仍待答，旧changes_requested保留。c15a/real-owner-01仍必要，不删共享TEMP、未知nul/opencode或并行README改动。上批四PWF/handoff已正常推送987c6537ad282c5d1a19e4cc1b197db62e0b2b8a；本次仅同四明确获准第一方Markdown，实际Git看documentation-publication-checkpoint17-01.json，不扩大源码/intake/数据库/golden/Lab导出范围。
+
+**本轮错误与处理：** 恢复时一次技能/多文件读取输出过大，改有界选段；误猜.stdout.txt不存在，实际为.stdout.log，按原记录定位而未重启终态测试。首次PWF更新因实际CRLF与匹配串LF不一致在任何写入前断言退出，统一读取换行及显式LF写入后续行，未丢失旧计划。所有真实RED与collection错误留档。隔离原回归漏放两历史题库原件已补，不改产品断言；静态测试源码副本与实际候选逐字相同，发布临时文件仅自有范围。前一goal turn仅复核小时监控，没有主线工程变化，本轮已实际完成上述修复与完整链验证，目标active。
+
+本轮仅写自有候选、本地控制器及本仓PWF；未写任何外仓/生产库/公司名单/公司文档缓存。完成同一C06节点后统一集中审查/源交付和strict清理，201份输入绑定与检查点不是新增独审门。各批分母和失败分列，不相加重叠测试作准确率。正常Git只发布四获明确许可Markdown，其余原件/源码保留本地；实际终态以下述一次publisher回执为准。

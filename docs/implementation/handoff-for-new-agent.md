@@ -1,3 +1,15 @@
+**2026-10-11 checkpoint17：schema4旧入口兼容与Windows原子发布修复（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续，完整目标不缩小。原2.0/2.1/2.2查询、原审核链/当前资格与时效均保留；这批补齐schema4原base reader、旧UI与backup/verify/restore的实际DDL检查。基础只读入口不迁移、不为缺库创建数据库，未来版本/缺表/缺不可变约束明确拒绝；原base writer仍schema2，schema3/4扩展各自负责。旧UI仍显示原raw分数，不把导入或可读取当筛选资格。备份在快照及验证时检查原扩展约束，保留审核水位；same-root恢复维持原绑定/审核链，跨root不重签owner或提升等级。Windows原release publisher使用extended path仅作本地IO，对外相对引用不变；不可变档用同目录完整临时文件与不覆盖的原子link，遇并发先写者保留原字节，相同内容可重放、不同内容拒绝。只有current指针允许原子replace。
+
+**实际结果与边界：** schema4原RED1P/16F、首修46P/6F保留；后批3个collection error因隔离layout缺dummy模型配置，实际0个用例执行，不算产品金融失败或通过；补仅合成无key配置并修正错误类型/漏传审核水位后，四文件98P/16.74s。Windows真实长路径及并发5F后5P/2.76s，实际长root完整48模块/222题publish及重读通过。原module registry回归23P/2F：两历史原件漏拷导致失败；补59份第一方历史原字节后只续测两失败项2P，不重复23个已绿项、不伪称一次25全绿。此前长路径会失败的完整公开main→原ACK→原生execution分级→只读assessment现同断言1P/167.39s，controller168.269s；vendor HTTP/公司身份/人类确认仍明确合成，0收费/下载。结果不是金融准确性或真实用户审核。
+
+**唯一下一工程动作：** 同一C06步骤4补公开nominate/report_conflict的轻量线索登记，复用StockWiki原候选/冲突设施；提名不自动入池，冲突不改身份。随后通过实际owner serializer/公开CLI重生成当前版本真实身份与缺覆盖golden及错主体/范围/水位/模型/TTL/重复键负例，不能创建假财务观察填正例。全部原C06操作完成后只做整个节点一次集中审查、正式源交付与strict自有清理，不增加helper审查；G3/F05/L03/B01/facts/UI/TH-IN/全池门继续按原前置。
+
+**固定证据与交接：** producer-checkpoint-17.json实际115累计私有候选/7变化/9终态批次，201份借入回归/layout/合成配置逐字绑定，AST通过，原guard和旧main账本SHA不变，实际CIM自有Python0。当前source集合SHA bb590bee486b1a1c560da72cf56f08af027e40188fd740ead74c6ffae54ddca8，仍未发布生产源或整C06签收。FACT fact-r2 ACTIVE每小时只读remediation-02，已知两planning清单不一致不重复通知，完整一致后通知并停止轮询，再主控整包验收；不改活动Lab。EVID新R2交接位置仍待答，旧changes_requested保留。c15a/real-owner-01仍必要，不删共享TEMP、未知nul/opencode或并行README改动。上批四PWF/handoff已正常推送987c6537ad282c5d1a19e4cc1b197db62e0b2b8a；本次仅同四明确获准第一方Markdown，实际Git看documentation-publication-checkpoint17-01.json，不扩大源码/intake/数据库/golden/Lab导出范围。
+
+---
+
+以下历史状态保留，以顶部checkpoint17接续。
+
 **2026-10-11 checkpoint16：当前资格、时效与全池查询接线（唯一当前状态；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续，未缩小目标或勾选整步完成。原2.0/2.1保持；新具名2.2 search/candidate_set将完整SubjectRef、原模型/期间/方法口径、原分数与独立当前审核/信息日TTL结合。原同一观察库/schema4及不可变审核链只读事务捕获真实原件元数据，按≤5000项复用C03/C04；W07原三值/关键风险规则计算，原raw等级与值不改写。另列field_assessments与独立审核序列、原输入/回执集合、固定政策SHA/期限。复用有界QueryCaptureStore/schema1；旧raw快照不能重标已审核。2.2重放需当前源，撤销/政策变更/TTL到期明确要求重新查询；慢校验期间原审核变更也拒绝发布。缺审核、缺政策、过期和冲突不当pass，阈值确实未过与证据不足分别显示空结果/coverage_gap。
 
 **实际验证与容量：** 保留21F初始RED；首次新旧合组103P；边界批1P/8F中七项为测试视图误用all（真实接口all_relevant），一项实际并发撤销竞态；修正后含operator/原codec合组68P。继而实际OS 2k×30传输1F复现重复资格元数据超过80MiB；保持原64MiB缓存/80MiB传输上限，用原生独立摘要绑定单份元数据，最终五文件104P/63.51s，0失败错误跳过，原源hash不变。2,000×30合成codec：索引64,308,530字节、重复原传输88,969,348字节、改后实际OS传输64,309,427字节；公开CLI冷查询/重放/撤销、false digest拒绝和政策/字段到期边界覆盖。并行规则ANY、ALL、NOT及关键风险均用原引擎，未另造评分器。此为软件/合成容量证据，不是60,000条真实观察或公司准确性；不相加重叠批次称金融通过率。
