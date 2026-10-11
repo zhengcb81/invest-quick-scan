@@ -1,3 +1,7 @@
+> 当前状态（2026-10-11，checkpoint24与FACT R2）：C06发布差异同节点复核无新增阻断；155候选（QA51/SW74/IQS30）尚待精确源交付/正常Git和strict清理。原完整批失败保留，受影响QA85P/1skip、SW64P后剩余24P分别留档，不虚称完整全绿。FACT R2实际135P，但两项未来正常输入被拒，另旧版测试遮挡与两planning清单不一致，维持changes_requested；补丁卡FACT-CONTENT-01-R3.md。下面旧“运行中/下一步/监测ACTIVE”是历史，以本段及Next Step为准。
+
+> 发布收尾最新状态（2026-10-11，release whole-g2）：QA静态全绿，完整pytest1737P/31F/8E；已按环境8、历史迁移fixture11、缺旧接续输入1、模型alias fixture16、真实回执丢失3分类。SW同批仍运行；等待终态后仅修根因/跑受影响项，不重跑1737已绿。详见 docs/implementation/reviews/W15/module-readiness-2026-10-09/release-g2-diagnosis-2026-10-11.md。139发布副本候选尚未写源仓，原136冻结保持，步骤4及金融/facts/UI/全局门仍开放。
+
 **2026-10-11 checkpoint23：同一C06整节点四项整改收口及完整main重入（唯一当前接续；下面旧状态均为历史）：** 原独审F1—F4在冻结的136个私有软件候选中全部关闭，没有新的返工阻断。原报告与新增收口报告分别保留，不再增设helper审查。Phase113步骤4仍未勾选：完整源码layout检查、实际源码发布及strict自有清理尚未完成。
 
 **已经完成，不要重复：** schema4登记、有界100×30原件读取、具名2.5 entity/security/segment及精确市场/覆盖分母、具名capabilities1.1真实源/接口预检均通过同一次整节点复核。52P、97P、cap-g2的22P加原失败fixture修复后的1P分别有实际日志，不虚称一次23P。真实owner golden04的12CLI/8负例仍为当前有效证据，真实回答库仍缺失，不能由身份数据推断金融覆盖。
@@ -518,3 +522,16 @@ shape/82工件工作树hash、三归档复算和34fixtures通过，已有54唯�
 **2026-10-09 Phase111当前实施，优先于下文历史：** 下一动作已调整为原QA-NET-01步骤3–6外部搜索→有界证据context→LLM生产链，见[连续批次计划](reviews/QA-NET-01/external-context-2026-10-09/plan.md)和[精确范围](reviews/QA-NET-01/external-context-2026-10-09/scope.json)。StockQA源仍42a517c/schema8，本批只改IQS自有runs/n111a/qa副本，尚未发布或签收。24基础边界及60传输相关测试通过；实际journal-red-01为20F，主要证明新API/表尚缺，不能说20项既有产品缺陷。正在补schema9检索意图/单次dispatch/短结果及同事务Q09预留/结算，不建第二预算账本、不把检索当模型答案attempt。后续还需多题共享查询缓存、公司级总保存上限、冻结v1.1计划、MCP握手、回答proof和真实公开CLI回归；单元GREEN不代表整个生产链完成。
 
 **本批进程与隔离：** journal-green-01（原session86609）已终态timeout300.041s，原输出保留；CIM确认原73580/47136及直接子进程已无，不得复用或等待旧handle。journal-green-02在严格guard/剥离密钥/自有TEMP下沙箱外执行，原session17210尚待终态；恢复时先检查其真实handle，不盲目另起测试。无收费API、本批StockQA源仓写入、生产库或名单改动；guard仅Python审计边界，不冒充OS完整隔离认证。StockWiki四新路径授权与G3/F05/真实owner gold/THIN原门不变。完整批次只做一次集中审查，保留原RED/超时，不刷新退役任务回执。当前PWF改动和本批归档尚未提交。
+
+
+### FACT R2集中续验（2026-10-11）
+
+用户通知FACT-CONTENT-01-R2完成。只读实际源codex/fact-content-01-r2@1ece6b2b49195dc5a4514c8b263192cb017eed55，产品fb187d92a5b267f8ec7bcbef10bfc8b396f4bb8e是祖先，工作树干净；HEAD与上次监测一致。140受控文件在IQS独占runs/fc2a固定，213锁输入无漂移。137工件中135匹配，原两planning大小/raw SHA仍不一致；不能因通知而称清单已修复或完整签收。
+
+本次实际原生pytest135P/0F/E/S（controller41.354秒），公开handoff exit0仅结构；独立真实CLI25例，原控制器22项断言匹配，一个脱敏消息marker写错的产品正确拒绝单独更正后23符合、2实质失败。旧八缺口、公开旧版只读与三内容修复已核关闭；两真实失败是非primary未来补充误杀现有关系、forward候选unknown仍被拒。另一旧版测试用legacy-secret父目录+1.1包，虽然通过却未覆盖真实旧版nested路径；主控中性根真实1.0控制exit0、嵌套假api_key.json exit6说明产品guard有效，只修测试。一次集中独审，无新helper门，无源码代改。结论changes_requested及唯一补丁卡见docs/implementation/reviews/parallel-packages/2026-10-10/FACT-CONTENT-01-R2-acceptance.md、FACT-CONTENT-01-R3.md。
+
+原控制器初始化误挡Windows NUL设备（未入测试）、重复future import解析失败（未入产品）、过严错误消息marker均保留原日志/分开更正，不冒充产品RED。同次所有登记进程终态、成功CIM自有Python0；保留交接原件/日志后按精确集合/lstat/单链接/bytes/raw SHA清理898文件/220目录，真实junction只删链接后核目标字节，runs/fc2a已不存在。140源文件/213锁前后不变，API/联网/文档下载0，未动C06活根、共享TEMP、生产DB或名单。权威intake fact-remediation-02/acceptance-result-01.json及cleanup-01.json。原fact-r2本机automation.toml当前不存在，不能继续声称已核ACTIVE；本次不重建重复监测。46case仍synthetic/not_mapped/not_run，金融/F05/G3/正式题库/词表/TH-IN/全池门不关。
+
+C06同一整节点发布delta只读复核已收到：155候选0漂移、当前六终态日志hash匹配，未新增阻断；报告release-source-closeout-2026-10-11.md SHA5094eab10e6466eacd98a29468f7ffba049162143c2c3fe06ec32430c7810b0f。原QA完整1737P/31F/8E、SW1564P/50F/23E/22skip保持失败事实；受影响QA85P/1skip，SW先64P/12F/12E再剩余24P（一一对应，无遗漏），不是一次完整全绿。QA静态53.861秒、SW最终静态1.599秒、原生smoke1.281秒均通过。源码仍未发布；唯一主线下一步为155精确文件重核writer/HEAD/CAS、正常源码交付和strict清理，StockWiki无origin仅正常本地提交，不猜远端。
+
+本次四份PWF/handoff正常提交推送终态以 `docs/implementation/intake/parallel-packages/2026-10-10/fact-remediation-02/documentation-publication-fact-r2-01.json` 为准；验收卡、原件、数据库、Lab源码不随该四文档批次导出。

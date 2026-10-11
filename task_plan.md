@@ -1,3 +1,7 @@
+> 当前状态（2026-10-11，checkpoint24与FACT R2）：C06发布差异同节点复核无新增阻断；155候选（QA51/SW74/IQS30）尚待精确源交付/正常Git和strict清理。原完整批失败保留，受影响QA85P/1skip、SW64P后剩余24P分别留档，不虚称完整全绿。FACT R2实际135P，但两项未来正常输入被拒，另旧版测试遮挡与两planning清单不一致，维持changes_requested；补丁卡FACT-CONTENT-01-R3.md。下面旧“运行中/下一步/监测ACTIVE”是历史，以本段及Next Step为准。
+
+> 发布收尾最新状态（2026-10-11，release whole-g2）：QA静态全绿，完整pytest1737P/31F/8E；已按环境8、历史迁移fixture11、缺旧接续输入1、模型alias fixture16、真实回执丢失3分类。SW同批仍运行；等待终态后仅修根因/跑受影响项，不重跑1737已绿。详见 docs/implementation/reviews/W15/module-readiness-2026-10-09/release-g2-diagnosis-2026-10-11.md。139发布副本候选尚未写源仓，原136冻结保持，步骤4及金融/facts/UI/全局门仍开放。
+
 > 当前主线（2026-10-11，checkpoint23）：C06同一次审查F1—F4已关闭，schema4后原public main第二获准字段完整链1P；136私有候选固定。接完整源码layout原生发布检查、正常源交付和strict清理，不重做已绿链。EVID所给仍是原R1，待真正R2；Phase113步骤4及金融/facts/UI/全局目标未完成，下方旧状态为历史。
 
 # 大股票池快速扫描与产业链检索：总体规划
@@ -408,6 +412,8 @@ Status: complete_for_planning_only
 - [x] 同步README、test-strategy、review-and-handoff、task-receipts及进度记录；未增删任务/验收场景/固定约束，未更改外仓授权。
 
 ## Next Step
+
+**唯一当前动作（2026-10-11 checkpoint24）：** C06大节点回归整改和同次发布delta复核已终态，无新增软件阻断。155候选仅在runs/c15r，重核writer/HEAD/CAS后精确源交付、正常Git、strict清理；StockWiki无origin只本地提交。不要重做F1—F4或已绿测试，不虚称原完整失败批全绿。FACT R2已集中续验changes_requested，按FACT-CONTENT-01-R3小补丁卡接续，不能以135P关闭F05。以下checkpoint23及更早为原证据/历史，不再作为未完成测试日程。
 
 **2026-10-11 checkpoint23：同一C06整节点四项整改收口及完整main重入（唯一当前接续；下面旧状态均为历史）：** 原独审F1—F4在冻结的136个私有软件候选中全部关闭，没有新的返工阻断。原报告与新增收口报告分别保留，不再增设helper审查。Phase113步骤4仍未勾选：完整源码layout检查、实际源码发布及strict自有清理尚未完成。
 
@@ -1815,15 +1821,29 @@ Status: in_progress
 - checkpoint21接续：F3具名2.5字段/范围选择、独立native范围清单、挂牌市场与空范围分母已实现；实际100×30/3000原件新公开接口和受影响回归最终97P，131累计候选固定。接F4真实capabilities及同节点第二main/真实golden/正常源交付；步骤4及全局目标仍未完成。
 - checkpoint22接续：F4具名1.1封闭能力/市场/实际覆盖/源水位预检与8类native入口已实现，有效23/23、真实owner12CLI/8负例、135累计候选固定。F1—F4实现保留，接schema4后第二获准generation完整main/ACK串联及当前源writer/基线正常交付；步骤4与全局门仍开放。EVID给出的是原R1相同交付，待真实R2，未重复旧测试。
 
-- checkpoint23接续：同一整节点F1—F4已复核关闭，136私有候选固定；原public main/schema4后第二获准字段完整链实际1P。接完整layout原生静态/大节点检查、源码交付和strict清理，步骤4及金融/事实/UI/全局门保持未完成。
+- checkpoint23接续：同一整节点F1—F4已复核关闭，136私有候选固定；原public main/schema4后第二获准字段完整链实际1P。
+- checkpoint24接续：155发布候选，原完整批失败及受影响修复分批记录；QA85P/1skip、SW64P后剩余24P，原生静态/smoke通过，同次发布delta复核无新增阻断。待精确源交付/正常Git和strict清理，步骤4及金融/事实/UI/全局门保持未完成。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
-Status: FACT_R2_handoff_present_manifest_inconsistent_hourly_watch_active; EVID_R1_changes_requested_R2_card_ready
+Status: FACT_R2_concentrated_acceptance_changes_requested_R3_patch_card_ready; EVID_R1_changes_requested_R2_card_ready
 
 - [x] 核原PWF与已交付各线，避开总控C06/W15、QA/SW生产接线、原TH/IN门；只读独立拆包建议收齐，不重做旧UI/备份/强杀回归。
 - [x] 编制EVID-REF-02与FACT-CONTENT-01大卡、共同交接/隔离规则、具名产出/CLI目标/退出码、集中测试case-map、manifest和未执行handoff模板；两独占源仓互不包含，与总控三生产根互斥。
 - [x] 实际固定213份只读输入、原61题与3公司30题槽；15本地链接/JSON/AST/输入SHA/根互斥及两模板公开CLI预检通过，均仅文档层，无产品实现或金融准确性证明。
 - [x] 用户明确授权Lab CodeGraph后实际init exit0，30文件/611节点/581边；保留两新增索引设施，不覆盖旧Lab或混进产品提交。新FACT仓未创建、无收费请求或harness派发。
 - [x] 实际收到两包；固定241受控文件/213锁原件/73工件SHA，产品commit祖先、Git前后不变。隔离原回归182P/77P、两次独审与集中反例（EVID10/FACT6）完成，均changes_requested；638文件/123目录strict自有清理终态完成。
-- [ ] 独立整改按新完整交付固定输入后做一次包级复验；FACT R2交接清单尚不一致、只读每小时跟进中，EVID R1维持changes_requested且R2卡准备好。不能用原软件GREEN关闭资格/分母/语义门；主线已接续checkpoint13，F01/F05/F06/G3/L03/TH-IN/全池门保持。
+- [ ] 按同一次验收补丁卡接续：FACT R2实际135P、独立CLI23符合/2误伤，旧版测试覆盖与两planning清单仍须补；见FACT-CONTENT-01-R3。EVID R1维持changes_requested，等真实R2。软件GREEN不关闭金融/F05/G3/正式内容/TH-IN/全池门；主线接checkpoint24正常源码交付。
 - 最新R1实收/续验（2026-10-11）：FACT d00e2b64仍为活动R2 writer，已有CodeGraph不重复init；EVID完整交接收到70498e4（产品44aa204）。258源/91工件/213锁匹配，handoff结构exit0；原样隔离修正回归150P/64F，集中反例复现九类根因，另两项内容证据问题静态。维持changes_requested，具体EVID-R2卡已留本地，不自动派发；520文件/183目录strict自有清理，源和原C06活根不变、0收费。详见EVID-REF-02-R1-acceptance.md及EVID-REF-02-R2.md；旧“handoff缺失”仅历史。
+
+
+### FACT R2集中续验（2026-10-11）
+
+用户通知FACT-CONTENT-01-R2完成。只读实际源codex/fact-content-01-r2@1ece6b2b49195dc5a4514c8b263192cb017eed55，产品fb187d92a5b267f8ec7bcbef10bfc8b396f4bb8e是祖先，工作树干净；HEAD与上次监测一致。140受控文件在IQS独占runs/fc2a固定，213锁输入无漂移。137工件中135匹配，原两planning大小/raw SHA仍不一致；不能因通知而称清单已修复或完整签收。
+
+本次实际原生pytest135P/0F/E/S（controller41.354秒），公开handoff exit0仅结构；独立真实CLI25例，原控制器22项断言匹配，一个脱敏消息marker写错的产品正确拒绝单独更正后23符合、2实质失败。旧八缺口、公开旧版只读与三内容修复已核关闭；两真实失败是非primary未来补充误杀现有关系、forward候选unknown仍被拒。另一旧版测试用legacy-secret父目录+1.1包，虽然通过却未覆盖真实旧版nested路径；主控中性根真实1.0控制exit0、嵌套假api_key.json exit6说明产品guard有效，只修测试。一次集中独审，无新helper门，无源码代改。结论changes_requested及唯一补丁卡见docs/implementation/reviews/parallel-packages/2026-10-10/FACT-CONTENT-01-R2-acceptance.md、FACT-CONTENT-01-R3.md。
+
+原控制器初始化误挡Windows NUL设备（未入测试）、重复future import解析失败（未入产品）、过严错误消息marker均保留原日志/分开更正，不冒充产品RED。同次所有登记进程终态、成功CIM自有Python0；保留交接原件/日志后按精确集合/lstat/单链接/bytes/raw SHA清理898文件/220目录，真实junction只删链接后核目标字节，runs/fc2a已不存在。140源文件/213锁前后不变，API/联网/文档下载0，未动C06活根、共享TEMP、生产DB或名单。权威intake fact-remediation-02/acceptance-result-01.json及cleanup-01.json。原fact-r2本机automation.toml当前不存在，不能继续声称已核ACTIVE；本次不重建重复监测。46case仍synthetic/not_mapped/not_run，金融/F05/G3/正式题库/词表/TH-IN/全池门不关。
+
+C06同一整节点发布delta只读复核已收到：155候选0漂移、当前六终态日志hash匹配，未新增阻断；报告release-source-closeout-2026-10-11.md SHA5094eab10e6466eacd98a29468f7ffba049162143c2c3fe06ec32430c7810b0f。原QA完整1737P/31F/8E、SW1564P/50F/23E/22skip保持失败事实；受影响QA85P/1skip，SW先64P/12F/12E再剩余24P（一一对应，无遗漏），不是一次完整全绿。QA静态53.861秒、SW最终静态1.599秒、原生smoke1.281秒均通过。源码仍未发布；唯一主线下一步为155精确文件重核writer/HEAD/CAS、正常源码交付和strict清理，StockWiki无origin仅正常本地提交，不猜远端。
+
+本次四份PWF/handoff正常提交推送终态以 `docs/implementation/intake/parallel-packages/2026-10-10/fact-remediation-02/documentation-publication-fact-r2-01.json` 为准；验收卡、原件、数据库、Lab源码不随该四文档批次导出。
