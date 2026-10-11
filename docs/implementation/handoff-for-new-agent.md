@@ -1,3 +1,21 @@
+> 当前主线（2026-10-11 checkpoint30）：MATRIX/LOAD已集中验收，均changes_requested，R1已交付；FACT R3已签收，EVID R3/IDENT R1等原harness。StockQA真实BIND兼容两文件已正常commit/push0a0493e。原Alphabet完整30题、Pro/thinking-on/pack3/8192实跑终态：13模型HTTP、26native搜索、4合法insufficient_evidence QA检查点、0评分；项目账本CNY1.268162全部结算，缓存0。4结果因真实vendor request_id缺失而C06投递blocked、ACK0；26已收响应仍leased。原运行不能重放/删库；下一步同B01节点修已知响应逻辑对账、vendor ID兼容和CNY refresh，再做32768及pack1对照。金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段均为历史，以本段与唯一Next Step为准。
+
+## 2026-10-11 checkpoint30 — 接手先读这一段
+
+原完整30题首轮已经实跑，不能照下方checkpoint29再次启动。主main PID71104终态exit1、13次HTTP/26搜索；0评分、4合法不足证据QA检查点、26失败。13物理预算全部settled且无held/inflight，原work.sqlite与所有原件继续保留；4outbox均blocked，没有sealed package也没有ACK。实际量价/失败分类见新的B01首轮报告，不能用成功HTTP或parser日志充当准确性。
+
+StockQA最新已正常发布0a0493e（真实binding兼容两文件）；authority由原public c06_authority生成，当前是native-owner-alphabet-01/authority-chain-05/authority3.json，producer actual build同commit；authority-chain-03与旧控制是历史原件。当前真实运行控制是native-live-pro-01/run-control-resume03.json，controller/execution-start/logs/final都已存在且one-shot，不重放。早期resume02无HTTP故障不能算本轮13之外的30付费请求。
+
+下一工程动作只在同B01节点补：已收到但无有效答案的逻辑对账及真实durable retry/comparison决议、vendor header request ID未知的具名兼容（response ID与attempt保持区别）、CNY refresh quote与旧USD兼容。旧4context/答案/收执/hash均保留，不能手造ID/ACK或改旧schema来强行封存。所有source改动继续最小允许范围、隔离TDD+受影响集中回归，当前外部Lab仍外部writer保留。原质量与预算/subject/身份冻结防线不减。
+
+工程接续后才可原公开owner preview/真实授权operator TTY确认/Q13 admission/原main再次执行。三题对照固定IQS_01/02/04（field score.iqs_01/02/04），先保持原prompt/tool/thinking/cutoff只提高max-output32768做pack3，再同32768做pack1。首轮30题分母不换。实际13已用，新增至少4物理HTTP；原policy_id同一账本升级版本/cap，保留累计且按owner题数保守quote有充分余量。不得新空ledger、新policy_id清零、伪造过去retry_at或confirmation。当前clone尚需真实principal/权限的refresh部署配置；已获全部必要授权，公共TTY挑战由授权operator在原命令中真实录入，不手造receipt，不另问已获许可。
+
+本机原件集中于intake/B01/current-public-chain-2026-10-11/native-live-pro-01：receipt-review-02（真实终态/内存schema诊断/保护项），refresh-comparison-plan-01（只读接续模板，14:01旧快照不得当终态），native-search-prompt-review-01（静态改进未实施），binding-compat-01/publication-01/cleanup-01（已结束）。来源导航/每题检索计划、max_keyword2→3及重复schema优化另作单变量，不归功于输出上限；不得把题1外context proof复制给整包。
+
+MATRIX/LOAD均changes_requested，各R1已提交；EVID R3/IDENT R1仍等交接。FACT R3已签收不重做。金融oracle仍不存在；CATL/CSC缺真实subject不造正例，G3/F05/facts/UI/一键/全池未关闭，goal继续active。
+
+> 以下为历史，不能重放旧one-shot运行。
+
 > 当前主线（2026-10-11 checkpoint29）：MATRIX与LOAD交接已集中验收，均changes_requested，各只一张R1续做卡，Lab仍为外部writer保留根；FACT R3已签收，EVID R3/IDENT R1等待整改交接。StockQA原生多题包20文件已正常提交推送24b6f30；StockWiki旧身份挂牌兼容两文件已正常本地提交2d0f1db。真实Alphabet克隆的挂牌/authority3/route登记启用/结果库初始化已通过，费用API0；下一步原main真实Pro thinking-on、完整30题/pack3及精确ACK，保留scope分包和unknown/uncertain停止语义。金融/G3/F05/facts/UI/一键/全池未完成。下方更早当前段为历史，以本段与唯一Next Step为准。
 
 ## 2026-10-11 checkpoint29 — 新harness直接接续

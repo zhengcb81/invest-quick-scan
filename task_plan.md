@@ -1,3 +1,5 @@
+> 当前主线（2026-10-11 checkpoint30）：MATRIX/LOAD已集中验收，均changes_requested，R1已交付；FACT R3已签收，EVID R3/IDENT R1等原harness。StockQA真实BIND兼容两文件已正常commit/push0a0493e。原Alphabet完整30题、Pro/thinking-on/pack3/8192实跑终态：13模型HTTP、26native搜索、4合法insufficient_evidence QA检查点、0评分；项目账本CNY1.268162全部结算，缓存0。4结果因真实vendor request_id缺失而C06投递blocked、ACK0；26已收响应仍leased。原运行不能重放/删库；下一步同B01节点修已知响应逻辑对账、vendor ID兼容和CNY refresh，再做32768及pack1对照。金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段均为历史，以本段与唯一Next Step为准。
+
 > 当前主线（2026-10-11 checkpoint29）：MATRIX与LOAD交接已集中验收，均changes_requested，各只一张R1续做卡，Lab仍为外部writer保留根；FACT R3已签收，EVID R3/IDENT R1等待整改交接。StockQA原生多题包20文件已正常提交推送24b6f30；StockWiki旧身份挂牌兼容两文件已正常本地提交2d0f1db。真实Alphabet克隆的挂牌/authority3/route登记启用/结果库初始化已通过，费用API0；下一步原main真实Pro thinking-on、完整30题/pack3及精确ACK，保留scope分包和unknown/uncertain停止语义。金融/G3/F05/facts/UI/一键/全池未完成。下方更早当前段为历史，以本段与唯一Next Step为准。
 
 > 当前主线（2026-10-11 checkpoint28）：FACT R3三项原整改已签收，独立公开CLI25/25符合预期；EVID R2与IDENT集中验收仍需整改，保留已绿并只续做原包缺口。MATRIX/LOAD等待交接，各Lab仍为外部writer保留根。B01原生搜索题包的store/transport/provider/顺位/CLI已实现并完成定向离线回归；正在同一大节点做发布静态收尾，源码尚未提交，当前新run收费API0。真实三公司身份和正式30题已冻结；下一步正常源码交付后做真实小样本对照和原owner ACK。金融准确性/G3/F05/facts/UI/一键/全池仍开放。以下较早当前/下一步均为历史，以本段与Next Step为准。
@@ -421,7 +423,7 @@ Status: complete_for_planning_only
 
 本批并行文档交付已完成；主控已完成checkpoint26软件源交付/清理，下一动作以本节当前段为准。三包已由用户派发，各自在独占新根实施和交接；总控不重复派发或占用writer，也不是新的主线审查门。
 
-**唯一当前动作（2026-10-11 checkpoint29）：** 不再实现或重复发布已交付题包和身份兼容。复用c16b当前真实Alphabet owner克隆/原authority3、完整30题、原main_with_llm及同一原账本，首Pro thinking=true、pack3、max_output8192。其中3个security题singleton，正常预计13HTTP，首cell技术max_requests15（总历史350及用户超范围授权不改），未知费用/uncertain按原账本暂停，已成功题不重复发；执行后走原精确ACK并留实际模型/时点/来源、有效/缺失/错误、费用/耗时/缓存。CATL/CSC仍provisional且缺真实subject，不伪造owner正例来凑三市场。随后按原准确性优先实验对照接线其他已获授权模型与搜索方案。MATRIX R1、LOAD R1、EVID R3、IDENT R1由用户原harness续做，总控不代写Lab或自动派发，不再重做FACT R3。仍需真实financial oracle/范围核对，软件GREEN不关闭G3/F05/facts/UI/一键/全池；不增小节点审查。
+**唯一当前动作（2026-10-11 checkpoint30）：** 原main PID71104已终态exit1，13原HTTP均有收执且预算settled；不得再次执行run_native_pro_resume03.py、删原work.sqlite、清live/owner或伪造ACK。先在同一B01大节点补三项真实链缺口：已知response_available但无有效答案的durable逻辑终态/原owner retry与comparison决议；vendor request_id允许明确未知并与真实response_id/physical attempt分开、旧schema/hash/结果保留；CNY账本的具名refresh quote能力与旧USD兼容。4标准答案当前仅QA检查点且投递blocked，不填response_id冒充request_id，不改旧payload/context/收执以绕校验；旧generation与新生成材料显式分开。完成受影响TDD/一次集中回归和正常源交付后，使用原公开owner preview→已授权operator真实TTY确认→Q13 admission及原main/同账本，先原IQS_01/02/04仅max32768的pack3，再同32768的pack1。完整原30题分母保留；同policy_id按原方法增加cap/version、保留13次/CNY1.268162及历史350模型/200搜索，至少计入新增4请求且按owner quote预留更充足余量，不能换新账本或币种。思考保持开启，提示词/工具先不一起改；后续再独立比较官方来源导航、原生参数和其他已获授权模型/外部搜索。实际ACK取公开import的原回执，由原Store API消费；无可封存包则保持ACK0。CATL/CSC仍provisional且缺真实subject，不能造owner正例凑三市场。MATRIX R1/LOAD R1/EVID R3/IDENT R1由用户原harness续做，总控只读、不自动派发或代写；FACT R3不重做。不得把软件GREEN/保守弃答当金融准确性、G3/F05或上线门关闭，不增helper审查。
 
 **历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 
@@ -1968,3 +1970,15 @@ MATRIX166/27锁、LOAD143/15锁前后不变，共同锁原字节不改；LOAD60�
 B01大节点实际626P/2新断言F后仅受影响模块25P；原真实owner-per-question routing/gen不同反例已修，不能声称一次628全绿。正常hooks通过，源码交付说明reviews/B01/native-question-pack-publication-2026-10-11.md。真实owner克隆输出不等于金融gold，旧subject scope_as_of2025-12-31/not_enumerated保留。原mandatory核心覆盖不允许三题manifest；30题分scope预计13次而非简单10。Pro官方费率和无密钥配置仅契约预检；首paid cell尚未运行，所有本checkpoint收费API0。
 
 历史Phase113/C06完整pytest失败计数与定向通过原件不改；不重建已清c15a/c15r/c15d、不清active c16b/真实owner/运行账本、不清外部Lab。IQS他人2026-10-10 README改动继续保留。G3/F05/B01/L03/facts/UI/一键/全池仍开放。
+
+## 2026-10-11 checkpoint30 — 原30题真实首轮终态与同节点接续
+
+- StockQA两文件正常commit/push `0a0493ecc4bcc01cc7001ea7a47b4c526fff1d07`：仅真实BIND UUID4与既有BND格式兼容及原单元测试；不改绑定身份、DDL或其他writer。原RED 2F/16P、同文件扩展125P/12F（18新例均通过），11旧迁移fixture在原基线也失败，另1为隔离副本缺旧harness；局部fixture/副本修正后仅原12失败选择器12P。格式AST不变、正常hooks，不宣称全仓137一次全绿。
+- 同原账本的早期guard故障与binding故障均未发HTTP，原错误日志保留。实际第三次原main PID71104，13:39:17.526411Z至14:03:09.323328Z，exit1；该exit表示26题失败且保留部分报告，不能当主程序完全成功或网络全部失败。
+- 全30题分母固定：15题missing（6个length HTTP包覆盖），9题invalid（3个completed包），2题checkpoint拒绝，4题合法insufficient_evidence。模型评分0；4题仍QA result_ready、C06投递blocked，26无有效答案仍leased。原预算13/13 settled、held/inflight0。
+- 真实实际模型均mimo-v2.6-pro；26原生搜索，input120432、output81811（reasoning70488）、cached/cache_creation0。项目账本按冻结公开费率算CNY1.268162＝token0.852162＋搜索0.416，与独立公式逐包一致；未核供应商账户账单，不能称已对账账户扣款。
+- 4封存错误以原schema/实际checkpoint+标准body纯内存复现，精确path execution.request_id、validator type、实际None；其他frozen schema/resource SHA匹配。保留真实header request ID未知，不能拿response.id或自造UUID补字段。无可封存正式包，故无公开import/ACK；原StockWiki observation-import和QA apply_result_delivery_ack是后续可复用入口，不冒称已有未发现的ACK CLI。
+- 当前原逻辑缺口：已收且结算的无效答案仍leased，不能直接重问；全库无durable retry时间；refresh quote源与两IQS旧schema为USD-only，原CNY不能换币/造汇率绕过。原configure_quick_scan_budget支持同policy_id的新policy_version并保留spent/reserved/历史请求，未结算时不更改配置。
+- 原primary参考保留30题各证据/反证、expected_score均null，不是金融人工gold。三未知题对应源实际为其他issuer，拒绝评分正确；另一未知题仅有Alphabet Q1来源仍不足。没有依据把0可评分说成100%准确。
+- 两指定已结束binding测试/发布临时根精确清理2860文件/385目录，53必要证据留存；live、owner克隆和原账本保留待修复接续。生产StockWiki4DB与SOURCE_OWNER/旧输入总14保护项SHA全部未变；不清外部Lab或他人2026-10-10 README。
+- 新结论与实操次序见 [B01首轮报告](docs/implementation/reviews/B01/native-pro-first-live-2026-10-11.md)。这是原B01大节点接续，不新增Phase/helper门；真实金融、G3/F05/facts/UI/一键/全池仍未完成。
