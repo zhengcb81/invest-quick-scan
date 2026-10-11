@@ -1,3 +1,5 @@
+> 当前主线（2026-10-11，checkpoint20）：C06整节点审查已结束；F1/F2已集中整改，最终受影响52P。下一步F3范围/覆盖分母与F4真实capabilities，然后同节点最终串联/源码交付。Phase113步骤4仍未完成；旧日期及旧“当前/下一步”段落均为历史。详细接续见docs/implementation/handoff-for-new-agent.md的checkpoint20。
+
 ## 2026-09-23：G0 独立审查与外部只读核查
 - 用户授权读取StockQAbyLLM、StockWiki、company-wiki及研究skill，并明确外部写入必须先询问；本轮没有外部写入。
 - 已生成 `docs/implementation/reviews/G0/external-interface-snapshot.md`，用工作树文件SHA绑定实际接口观察，并更新G0预审包消除“本轮未重读外部仓库”的陈旧描述。
@@ -3058,6 +3060,22 @@ TDD原件终态全部保留：inspect-r1 23F缺模块RED；inspect-g1 22P/1F是f
 
 ### 2026-10-11 checkpoint19：研究线索与当前真实owner CLI
 
+**2026-10-11 checkpoint20：整节点审查后F1/F2集中整改（唯一当前接续；下面旧“当前/下一步”均为历史）：** 原C06/W15步骤4整节点独审已终态changes_requested，不再等待或重开helper审查。唯一报告whole-c06-review-2026-10-11.md，SHA42814582b3fafde2e3169846d09b3bf643c1ad7247641d3041f8b221dbc3758b，2项P1/2项P2；四项全部关闭前步骤4保持未完成。
+
+**已实际整改与验证：** F1公开register接受现有schema3/4，并复用原dispatch/qualification扩展DDL检查；缺库、旧版、损坏、未来版本仍拒绝，不初始化/降级。新合成独立expected-route注入的真实SQLite测试含第二次登记/精确ACK、原件及绑定不变、重放与坏扩展，RED5F/6P，受影响34P/5.08s；这是原生存储/入口的单元集成证明，审核后第二个获准generation的完整公开main串联仍留到同一节点收尾，不能称真实人类授权或金融正确。
+
+**F2实际已填充容量：** 保留原8MiB/5000行/统一capture预算，仅对明确owner_capture_limit按主体再按字段有界拆分；每个叶请求维持原2.0校验，整请求分母不变，所有原件/ACK/主体binding/模型/期间和latest variant保留。原2.0 get_profiles行为不改。私有pool SQL先选择精确scope与模型，避免另一个模型历史耗尽本次预算；无法再分的单字段明确pool_observation_capture_limit，实际源ACK/观察水位变化仍直接拒绝，未改成自动重试。新100×30真实SQLite实际3000原件与ACK已通过原公开search三页/跨进程固定watermark/candidate_set，两成员各30原件；另单主体拆字段、27条历史中仅请求另一模型、期间/模型latest不折叠、实际追加ACK漂移拒绝通过。最终四文件合组52P/136.25s，无skip/error/timeout/API；含重复的F1用例，不与34P累加成金融通过率。
+
+**失败与边界留档：** pool-r1为3F/1P实际RED，model-r1为1F实际RED；pool-g1为3P/1F，后三页已成功，失败的candidate fixture删除了协议本来必需的page_size/cursor，修正请求并先公开纯契约校验，没有放宽产品要求。独审capacity首次exit1及setup错误、全部原日志继续保留。两次具体测试路径猜测不存在已改用实际sw/test_c06_execution_qualification.py和已知实际CLI文件；恢复读输出超限后改小段。原guard、202逐字输入及旧Q13公开main账本SHA保持。
+
+**唯一下一工程动作：** 同一原C06步骤4按唯一整节点报告继续F3/F4：补普通issuer的security/listing/segment完整SubjectRef及真实范围市场筛选，明示各字段请求scope/覆盖分母和公司/主体/范围行计数，candidate不跨scope/caliber混分，不删空行假称覆盖；复用本轮有界批次而非抬限。旧wire/schema保留，新语义须具名封闭契约。接版本化capabilities的支持市场与实际覆盖/缺源原因/水位预检，补原刷新/确认、QA admission/执行及execution资格公开接口映射，真实owner仍如实缺观察库。随后同一节点收尾审核后第二个获准generation的完整公开main→事前注册→ACK、受影响回归和当前真实owner serializer/公开CLI golden；不复跑未改整组、不另加helper审查。再核实际源writer/基线、正常源码交付与strict自有清理。
+
+**冻结与交接：** producer-checkpoint-20.json实际126累计私有候选/5变化/6终态批次，当前source回执producer-whole-pool-g2.sources.json SHA9fa466bd4186effe15b79f59f2477952d2d79d7403629964a9c80a7249e1b0bd；CIM明确自有Python0。源仍为runs/c15a三个私有候选，未生产发布或完整C06签收；整个目标及G3/F05/L03/B01/真实金融准确性/facts/UI/TH-IN/全池门保持。可直接接当前候选，不重执行once-only控制器/快照器；保留实际3000原件测试现场供后续只读对照，不清仍需用的real-owner-01或共享TEMP。正常Git仅同四已明确获准第一方PWF/handoff文档，实际提交/推送看documentation-publication-checkpoint20-01.json；README并行改动、nul/opencode和Lab私有资料保留。
+
+FACT fact-r2每小时只读指定remediation-02，两个既知planning清单不一致不重复提示，完整一致后通知/停轮询再主控整包验收；EVID新R2位置仍待答。不得代改活动Lab或用其自报GREEN关闭金融门。
+
+以下checkpoint19及更早均为历史，以checkpoint20和唯一整节点报告接续。
+
 **2026-10-11 checkpoint19：研究线索与当前真实owner CLI（唯一当前接续；下面旧“当前/下一步”均为历史）：** Phase113步骤4仍in_progress。具名query 2.4 research_context已复用原get_profiles 2.0完整SubjectRef/原件bytes/hash/ACK/模型/时点/URL和原schema1有界capture表；无新公司回答库、无schema迁移。rsnap1同时绑定交接任务、目的、原件选择、目标、公司范围、模型及截止日，原1h/32项/16MiB/64MiB总限保持；跨进程重放原件与read_at不变，改语义/损坏/越时明确拒绝。旧1.0/2.0/2.1/2.2/2.3 schema原字节未变。实际capabilities列2.0–2.4查询wire及原生preview/OS确认、执行前注册、操作员review入口，不把只读查询变成派发。
 
 **关键限制：** 原1.x/2.0 Observation和现有派发/执行输入没有上游Observation列表。原生reader明确lineage_source_status=not_recorded、closure_status=unknown、独立支持false；不能从缺字段推断根、不能用inputset/model/URL猜父节点。纯契约具备有界完整闭包及原independent_support复用，缺祖先/循环/目标回流/深度超限保守拒绝；合成recorded图只测算法，当前upstream_producer_ready=false。研究线索和模型检查等级均不能授予formal_evidence_accepted或financial_accuracy_proven。是否还需原生上游producer属整个C06节点的实际范围审查，不以返回unknown偷换完整目标。
@@ -3065,6 +3083,8 @@ TDD原件终态全部保留：inspect-r1 23F缺模块RED；inspect-g1 22P/1F是f
 **实际证据：** 原缺模块38F RED保留；实现首组38P/11.31s。加入真实原件库缺失、精确模型选择、旧unbound原件、缓存损坏/重签/未来schema等，与受影响原查询/cache/public CLI/review lead/v2契约六文件203P/114.55s（新接口47P），无跳过/超时/API。current real-owner-golden-03实际15个公开CLI终态、6负例：真实StockWiki HEAD a5a97d6及4库源/克隆原SHA保持，当前原生identity export/subject binding/capabilities/profile/research及独立IQS CLI校验/新进程重放成功。真实库快扫回答namespace确实缺失，profile/research如实unavailable、无评分/事实正例；负例仅是明确坏输入，不制造正golden或用户池/同意。
 
 **唯一下一动作：** 整个原C06/W15步骤4的一次集中独审已交用户授权的whole_c06_step4_review agent，冻结producer-checkpoint-19.json（124累计候选/8变化/3终态批次、202逐字输入、CIM自有Python0，源SHA ba802444c5945138150077994b44cecd55efb96da7319f73cca5b197b2d16141）。读取整节点报告whole-c06-review-2026-10-11.md，按具体反例集中修正；随后核实际源仓writer/基线、正式源码交付与strict自有清理。不能再给各helper加审查或先勾完成步骤4。G3/F05/L03/B01/真实金融准确性/facts/UI/TH-IN/全池仍开放，目标不缩小。
+
+**整节点审查实读补充（2026-10-11，审查仍在进行）：** 主线已读取 runs/c15a/whole-review-01 的 security-result.json、capacity-result.json、schema4-result.json 与 final-integrity.json。合法证券范围原件 ACK accepted/get_profiles ok且1条，全pool只枚举entity而漏掉该原件；100家公司×30字段的原生SQLite实际3000条，单家公司30条ok，但整批8MiB读取限制导致unavailable并被pool误报源漂移，源字节未变；已有原生schema4库的下一次发送前登记实际child exit2/subject_dispatch_explicit_initialization_required，源库字节未变。final-integrity记录124候选/202输入无不一致、原guard SHA不变、自有Python0；原失败控制器和全部回执保留。候选仍冻结，不先改源或重跑复现；等待唯一whole_c06_step4_review完整终态报告，合并其全部结论后按scope隔离、原有读取上限和旧schema兼容集中修复及受影响测试。上述均为隔离软件反例、0 API/下载/生产写入，不能证明金融准确性或关闭步骤4/任何全局门。
 
 **交接与发布：** 源仍为runs/c15a私有候选，未发布生产源或接受完整C06。本地research-context-interface.md和具名生成命令/原始日志为接手资料，不扩大远端导出范围。只正常提交推送同四已明确获准第一方PWF/handoff文档，实际结果看documentation-publication-checkpoint19-01.json；上批a314c7d已推送。FACT fact-r2 ACTIVE每小时只读remediation-02，已知两个planning清单不一致不重复提示，完整一致后通知/停轮询再整包验收；EVID新R2路径仍待答，不改活动Lab。real-owner-01仍有用；保留未知nul/opencode、并行README改动与共享TEMP。
 
