@@ -1,3 +1,17 @@
+**2026-10-11 checkpoint19：研究线索与当前真实owner CLI（唯一当前接续；下面旧“当前/下一步”均为历史）：** Phase113步骤4仍in_progress。具名query 2.4 research_context已复用原get_profiles 2.0完整SubjectRef/原件bytes/hash/ACK/模型/时点/URL和原schema1有界capture表；无新公司回答库、无schema迁移。rsnap1同时绑定交接任务、目的、原件选择、目标、公司范围、模型及截止日，原1h/32项/16MiB/64MiB总限保持；跨进程重放原件与read_at不变，改语义/损坏/越时明确拒绝。旧1.0/2.0/2.1/2.2/2.3 schema原字节未变。实际capabilities列2.0–2.4查询wire及原生preview/OS确认、执行前注册、操作员review入口，不把只读查询变成派发。
+
+**关键限制：** 原1.x/2.0 Observation和现有派发/执行输入没有上游Observation列表。原生reader明确lineage_source_status=not_recorded、closure_status=unknown、独立支持false；不能从缺字段推断根、不能用inputset/model/URL猜父节点。纯契约具备有界完整闭包及原independent_support复用，缺祖先/循环/目标回流/深度超限保守拒绝；合成recorded图只测算法，当前upstream_producer_ready=false。研究线索和模型检查等级均不能授予formal_evidence_accepted或financial_accuracy_proven。是否还需原生上游producer属整个C06节点的实际范围审查，不以返回unknown偷换完整目标。
+
+**实际证据：** 原缺模块38F RED保留；实现首组38P/11.31s。加入真实原件库缺失、精确模型选择、旧unbound原件、缓存损坏/重签/未来schema等，与受影响原查询/cache/public CLI/review lead/v2契约六文件203P/114.55s（新接口47P），无跳过/超时/API。current real-owner-golden-03实际15个公开CLI终态、6负例：真实StockWiki HEAD a5a97d6及4库源/克隆原SHA保持，当前原生identity export/subject binding/capabilities/profile/research及独立IQS CLI校验/新进程重放成功。真实库快扫回答namespace确实缺失，profile/research如实unavailable、无评分/事实正例；负例仅是明确坏输入，不制造正golden或用户池/同意。
+
+**唯一下一动作：** 整个原C06/W15步骤4的一次集中独审已交用户授权的whole_c06_step4_review agent，冻结producer-checkpoint-19.json（124累计候选/8变化/3终态批次、202逐字输入、CIM自有Python0，源SHA ba802444c5945138150077994b44cecd55efb96da7319f73cca5b197b2d16141）。读取整节点报告whole-c06-review-2026-10-11.md，按具体反例集中修正；随后核实际源仓writer/基线、正式源码交付与strict自有清理。不能再给各helper加审查或先勾完成步骤4。G3/F05/L03/B01/真实金融准确性/facts/UI/TH-IN/全池仍开放，目标不缩小。
+
+**交接与发布：** 源仍为runs/c15a私有候选，未发布生产源或接受完整C06。本地research-context-interface.md和具名生成命令/原始日志为接手资料，不扩大远端导出范围。只正常提交推送同四已明确获准第一方PWF/handoff文档，实际结果看documentation-publication-checkpoint19-01.json；上批a314c7d已推送。FACT fact-r2 ACTIVE每小时只读remediation-02，已知两个planning清单不一致不重复提示，完整一致后通知/停轮询再整包验收；EVID新R2路径仍待答，不改活动Lab。real-owner-01仍有用；保留未知nul/opencode、并行README改动与共享TEMP。
+
+---
+
+历史状态保留，以顶部checkpoint19接续。
+
 **2026-10-11 checkpoint18：复用W13的提名与冲突线索登记（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续。新增具名query 2.3 wire，仅nominate/report_conflict；原1.0/2.0/2.1/2.2 schema原字节和语义保持。复用StockWiki原scan.sqlite/schema6的quick_scan_nomination表及W13事务，不另建数据库、队列或sidecar；必须指向已存在的用户pool，不迁移/创建库或名单。固定owner派生consumer/operation来源命名空间，同键同业务内容重放原row/time，同键异内容明确拒绝；新的request_id/time不会改变原业务ID。原业务claim/来源/OS principal/store及摘要保持，人工review与apply_auto只更新后续理由/状态，不能抹掉原线索；原备份/same-root恢复保留完整轻量内容。近似名/同ticker不合并，全部unresolved、proposed_entity_id=null，auto_admitted/identity_changed/automatic_work_created/identity_attested/formal_evidence_accepted全部false。
 
 **实际结果：** 缺新模块30F RED保留；实现后30P/3.53s。扩充真实SQL ABORT/并发、三市场、不同来源与同键异内容、原自动维护、原备份恢复、真实Windows root junction、独立响应替换；与原W13、旧public query与旧v2契约四文件124P/13.85s。新增公开CLI明确拒绝码后，新接口全组40P/4.92s，最新源SHA d36b5f34dc93ca568dc04167f406599dd5f85e4a3d1d9031cf4b82d724a95f0e。C06只通过固定OS纯校验CLI，无跨仓Python import；三市场/身份/人类理由均合成软件用例，不是公司准确性或真实owner正例，不累计批次作金融通过率。0收费/下载/生产库/名单写。
