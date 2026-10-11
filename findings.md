@@ -1,4 +1,4 @@
-> 当前主线（2026-10-11 checkpoint27）：B01新run已从未改动的真实StockWiki库生成三份身份输入，并在自有实验release发布router2.3；6次公开route/compose均终态成功，三家公司正式30题已冻结，源current未改。严格题包解析89P、客户端思考控制180P、实际payload指纹12P；均隔离离线，不是金融准确性验收。正在同一题包节点补原生搜索的多题成员/一次预算/每题检查点执行链，尚未发收费API。三个外包已由用户派发，各Lab等待交接；总控不占其writer。C06金融/G3/F05/facts/UI/一键/全池目标仍开放。下面较早“当前/唯一下一步”均为历史，以Next Step最新段为准。
+> 当前主线（2026-10-11 checkpoint28）：FACT R3三项原整改已签收，独立公开CLI25/25符合预期；EVID R2与IDENT集中验收仍需整改，保留已绿并只续做原包缺口。MATRIX/LOAD等待交接，各Lab仍为外部writer保留根。B01原生搜索题包的store/transport/provider/顺位/CLI已实现并完成定向离线回归；正在同一大节点做发布静态收尾，源码尚未提交，当前新run收费API0。真实三公司身份和正式30题已冻结；下一步正常源码交付后做真实小样本对照和原owner ACK。金融准确性/G3/F05/facts/UI/一键/全池仍开放。以下较早当前/下一步均为历史，以本段与Next Step为准。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 
@@ -2267,3 +2267,13 @@ strict dry真实会话10083 exit0，原生逐字/文件ID/单链接43936项全�
 native题包必须先为全部logical work冻结成员并各自pre-POST主体登记，一个physical预算/容量/HTTP，多条原题checkpoint。真实partial只存有效成员；request结果不明全部uncertain，不能顺位换模型后盲重问。外检索context_v1原为单题绑定，不能第一份proof挪作全包；当前native实现先显式拒它，再按既有owner协议扩展。late lease保存合法original receipt与一次physical实际费用，而不制造可复用答案；错执行id/payload/model不绑定foreign receipt，原预算held、禁止自动重试。
 
 CATL实际同表2026H1动力/储能/总收入已有官方搜索短摘录，不下载文档；Alphabet software用Q1 IT服务规模且保留Q2 TPU产品混入；周期/生命周期是source-bound分析判断而非公司自报gold。模型公开价/思考能力与账户实际套餐费用分开：套餐余额/覆盖未知保留null，不摊月费。当前所有费用请求0，89P/180P/12P是软件范围而非准确性。
+
+## 2026-10-11 checkpoint28 — 验收结论与执行边界
+
+软件测试全绿不能代表候选内容闭合或金融准确。FACT R3原三项已由独立公开CLI25/25关闭，可以接收当前产品字节；交接自述数量与分支不准在新接收记录纠正，不把行政口径变成新的产品gate。旧Git对象不可读只证明当前不可读，不证明原因/永久不可恢复。
+
+EVID R2公共正常控制还未走通，16绿色用例有被无关锁错误提前挡住的情况；纯函数观察与公开CLI必须分开。词共现、source存在、非空检查ref、删小显式题目分母均不能证明准确性；绑定真实record/subject/锚点/check bytes/冻结cutoff/独立完整请求，无法证明则not_verifiable。保留已有效修复，不要求重做旧214项。
+
+IDENT的43P与三公开错误放行并存：alias引不存在fact、valid_from前active、duplicate JSON键未来版本被吞。内容还必须区分停牌、挂牌起始、退市具体时点、ADR比例事件和双柜台上线；现有网页确有Apple编号，问题是保存短事实/一级来源/资格闭合，不能称编号伪造。23工件条目是metadata不完整（bytes/fullSHA/目录展开），不能误称23实际hash错误。
+
+B01题包应只共享一次physical请求，不共享掉每题原owner登记和logical checkpoint。明确HTTP拒绝才允许原顺位备用；结构差、低分、unknown和已有效partial不当自动fallback理由；uncertain不盲发。thinking开启从真实payload入cache key，reasoning不进入持久答案。当前外部search证明仍为逐题，native pack外不能偷用首题proof。入口stub forwarding及mock owner/vendor集成不等于真实multi-repo CLI/live；接下来继续当前公共链真实实验，不能用离线数关闭金融门。

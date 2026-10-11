@@ -1,4 +1,4 @@
-> 当前主线（2026-10-11 checkpoint27）：B01新run已从未改动的真实StockWiki库生成三份身份输入，并在自有实验release发布router2.3；6次公开route/compose均终态成功，三家公司正式30题已冻结，源current未改。严格题包解析89P、客户端思考控制180P、实际payload指纹12P；均隔离离线，不是金融准确性验收。正在同一题包节点补原生搜索的多题成员/一次预算/每题检查点执行链，尚未发收费API。三个外包已由用户派发，各Lab等待交接；总控不占其writer。C06金融/G3/F05/facts/UI/一键/全池目标仍开放。下面较早“当前/唯一下一步”均为历史，以Next Step最新段为准。
+> 当前主线（2026-10-11 checkpoint28）：FACT R3三项原整改已签收，独立公开CLI25/25符合预期；EVID R2与IDENT集中验收仍需整改，保留已绿并只续做原包缺口。MATRIX/LOAD等待交接，各Lab仍为外部writer保留根。B01原生搜索题包的store/transport/provider/顺位/CLI已实现并完成定向离线回归；正在同一大节点做发布静态收尾，源码尚未提交，当前新run收费API0。真实三公司身份和正式30题已冻结；下一步正常源码交付后做真实小样本对照和原owner ACK。金融准确性/G3/F05/facts/UI/一键/全池仍开放。以下较早当前/下一步均为历史，以本段与Next Step为准。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 
@@ -419,7 +419,7 @@ Status: complete_for_planning_only
 
 本批并行文档交付已完成；主控已完成checkpoint26软件源交付/清理，下一动作以本节当前段为准。三包已由用户派发，各自在独占新根实施和交接；总控不重复派发或占用writer，也不是新的主线审查门。
 
-**唯一当前动作（2026-10-11 checkpoint27）：** B01真实身份与正式30题输入已冻结，继续同一native题包生产执行节点：原store多logical成员/一次physical budget、每题事前主体注册与checkpoint、provider/公开入口接线，集中检查原单题兼容、partial/unknown/lease/缓存。当前不再重复preflight或旧实验；节点通过即按既有live授权运行三家公司小规模准确性对照及owner ACK。三新Lab由外部harness实施，等待handoff；G3/F05/facts/UI/一键/全池仍开放。
+**唯一当前动作（2026-10-11 checkpoint28）：** 同一B01题包节点的20个精确源/test路径完成发布静态收尾后，正常提交获批源码，不跳hook、不混入其他writer改动；随后用当前公开owner/runtime/consent与冻结的三公司正式30题，执行既有授权的小规模真实原生搜索、thinking开启的准确性/耗时/费用对照及精确ACK。不重做89P/180P等已绿批次，不把mock链当真实CLI或金融gold。外部检索题包仍需每成员proof契约，不能复制第一题context。FACT R3当前补丁已签收；EVID R3和IDENT R1卡交用户原harness续做，总控不代写Lab或自动派发；MATRIX/LOAD等待handoff。全局门保持原计划，不增小节点审查。
 
 **历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 
@@ -1927,3 +1927,25 @@ Status: input_freeze_complete; native_question_pack_execution_in_progress; live_
 - [ ] 完成上述执行链后才用已获live授权运行当前三公司小样本对照，记录真实准确性、耗时、费用与缓存。不是再等权限；目前是可复用软件路径尚在补齐。G3/F05等按真实证据关闭。
 
 证据入口为本机docs/implementation/intake/B01/current-public-chain-2026-10-11/（identity-inputs、release-publish-02、formal-route-freeze、parser/思考/payload各原始回执）。私有DTO/数据库/原始golden/运行目录不随PWF发布。自有runs/c16b仍被本实验使用，不清整个root；agent只清各自结束的临时子根。
+
+## 2026-10-11 checkpoint28 — 同批交接验收与B01题包执行链
+
+沿用B01和原包级验收节点，不新增Phase或helper门。上一批PWF正常commit/push为`42189da`；本次新公文与计划更新尚待正常提交。
+
+| 线 | 当前实际状态 | 接续 |
+| --- | --- | --- |
+| FACT-CONTENT-01-R3 | accepted_on_frozen_bytes；25独立公开CLI全部符合；29工件/213输入锁匹配 | 当前三补丁关闭；46 synthetic/not_mapped/not_run、4proposals/7unresolved保留，原owner后续集成 |
+| EVID-REF-02-R2 | changes_requested；新增29测试实际16P/13F，原输入公共校验exit2；21纯语义补充保留7反例 | 同包R3集中续做重定位、语义与来源/时点/完整分母绑定；已有效部分不返工 |
+| IDENT-EDGE-01 | changes_requested；集中原43P，但3个独立公开CLI错误放行 | 同包R1修引用闭合、事件/有效期、重复JSON键、pack与工件交接；候选资料保留 |
+| MATRIX-CASE-01 / LOAD-CASE-01 | human_dispatched / awaiting_handoff | 不占写根、不自动派发 |
+| B01原生题包执行 | store、transport、provider、现有顺位、QAEngine/Runner/main正式入口已实现；当前发布静态收尾 | 20精确路径正常源码交付后继续真实三公司小样本及owner ACK |
+
+主线现有离线证据分批记载、不相加为准确率：parser89P；客户端180P；payload绑定12P；store44P及5项受影响续验；transport44P；provider连旧单题64P；顺位连旧接口89P；正式入口受影响106P。各自原RED/失败/实际终态保留。入口回归部分为stubbed CLI forwarding，其耐久链从QAEngine开始用真实store/client但vendor及owner transport合成；真实跨仓公开CLI与金融准确性尚待运行。
+
+默认仍逐题；显式`--question-pack-size 1..30`、`--thinking-enabled true|false`、`--max-output-tokens 1..32768`；题包默认thinking=true。同主体/scope的相邻待问组成一包，每题仍独立事前登记、logical attempt及checkpoint，一次physical HTTP预算；missing/invalid不补分、不落成功checkpoint。已完成者重跑不再HTTP；明确额度拒绝用原模型顺位，uncertain保留原尝试不盲重试。原生搜索以外目前显式拒绝题包，不能借题1检索proof证明题2。
+
+本次三个Lab均只读接收，凭据环境不传、收费API0、生产库/名单0。FACT自有far3和IDENT自有ia01已按精确SHA清单删除；EVID自有副本/缓存/target已清理，独立原始日志保留。两个Lab旧Git对象当前缺失如实留档，不重建历史、不覆盖原handoff。FACT实际分支r2、R3产品与HEAD区分清楚；工件自述数量与实际差异写新接收记录，业务补丁不用再返工。
+
+公开接收与续做卡：`docs/implementation/reviews/parallel-packages/2026-10-11/FACT-CONTENT-01-R3-acceptance.md`、`EVID-REF-02-R2-acceptance.md`、`EVID-REF-02-R3.md`、`IDENT-EDGE-01-acceptance.md`、`IDENT-EDGE-01-R1.md`。完整独立raw证据在本机`docs/implementation/intake/parallel-acceptance-2026-10-11/`；不把私有DB/golden/源网页正文推远端。
+
+金融准确性、F05真实内容oracle、G3、C06/W15金融资格、TH/IN、正式facts/词表/题库、UI、一键与全池目标仍未关闭。三公司路径与route冻结不等于批量名单许可；不自行选2000家公司。

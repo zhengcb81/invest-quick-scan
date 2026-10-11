@@ -1,4 +1,16 @@
-> 当前主线（2026-10-11 checkpoint27）：B01新run已从未改动的真实StockWiki库生成三份身份输入，并在自有实验release发布router2.3；6次公开route/compose均终态成功，三家公司正式30题已冻结，源current未改。严格题包解析89P、客户端思考控制180P、实际payload指纹12P；均隔离离线，不是金融准确性验收。正在同一题包节点补原生搜索的多题成员/一次预算/每题检查点执行链，尚未发收费API。三个外包已由用户派发，各Lab等待交接；总控不占其writer。C06金融/G3/F05/facts/UI/一键/全池目标仍开放。下面较早“当前/唯一下一步”均为历史，以Next Step最新段为准。
+> 当前主线（2026-10-11 checkpoint28）：FACT R3三项原整改已签收，独立公开CLI25/25符合预期；EVID R2与IDENT集中验收仍需整改，保留已绿并只续做原包缺口。MATRIX/LOAD等待交接，各Lab仍为外部writer保留根。B01原生搜索题包的store/transport/provider/顺位/CLI已实现并完成定向离线回归；正在同一大节点做发布静态收尾，源码尚未提交，当前新run收费API0。真实三公司身份和正式30题已冻结；下一步正常源码交付后做真实小样本对照和原owner ACK。金融准确性/G3/F05/facts/UI/一键/全池仍开放。以下较早当前/下一步均为历史，以本段与Next Step为准。
+
+## 2026-10-11 checkpoint28 — 新harness唯一接续
+
+先读task_plan.md首段与Next Step。本轮FACT R3已签收当前三业务补丁，不再返工；EVID R2和IDENT未签收，同包续做卡位于reviews/parallel-packages/2026-10-11，不要替harness写Lab。MATRIX/LOAD用户已派发，仍等交接。真实财务oracle、G3/F05、TH/IN等旧门未变，不用三Lab候选关闭它们。
+
+主控继续B01题包的同一发布节点，不重做已绿parser89P/client180P/store44P/transport44P/provider64P/cascade89P/入口106P。当前20源/test精确路径和静态manifest由intake/B01/current-public-chain-2026-10-11/pack-publication-checks交回后正常Git；没有真实API调用，没有源码commit。确认原源writer/HEAD/hash、stage仅本批路径、不跳hook。保留IQS中2026-10-10/README.md其他writer改动及未知nul/opencode/private intake，不add -A/clean。
+
+随后从已有runs/c16b的真实身份原库克隆、实验router2.3及三份正式30题冻结继续，走当前原owner/runtime/consent/事前public register、main_with_llm显式题包与thinking控制、一次physical费用及每题检查点、原精确ACK。CATL/CSC/Alphabet的selected listing与scope不能混用；财务路径/routebasis只是输入，不是financial gold。保持原native优先；外部search pack须另具每成员proof，不能复制题1 context。不要重新构建已清理c15a/c15r/c15d，也不要重跑单次控制器。
+
+本轮新接收公文及5卡均在reviews/parallel-packages/2026-10-11；独立raw日志/哈希/清理原件在intake/parallel-acceptance-2026-10-11，仅本机保留。FACT167源、EVID287源/32锁、IDENT81根快照/15锁前后未变；自有测试根清理不等于源Lab临时文件已清理。所有API/生产DB/名单写入0。上一正常IQS PWF提交42189da；本次最新提交必须读实际Git，不能照抄尚未产生的commit。
+
+> 以下checkpoint27及更早均为历史，已清理和已签收项目不得重复实现。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 

@@ -1,4 +1,4 @@
-> 当前主线（2026-10-11 checkpoint27）：B01新run已从未改动的真实StockWiki库生成三份身份输入，并在自有实验release发布router2.3；6次公开route/compose均终态成功，三家公司正式30题已冻结，源current未改。严格题包解析89P、客户端思考控制180P、实际payload指纹12P；均隔离离线，不是金融准确性验收。正在同一题包节点补原生搜索的多题成员/一次预算/每题检查点执行链，尚未发收费API。三个外包已由用户派发，各Lab等待交接；总控不占其writer。C06金融/G3/F05/facts/UI/一键/全池目标仍开放。下面较早“当前/唯一下一步”均为历史，以Next Step最新段为准。
+> 当前主线（2026-10-11 checkpoint28）：FACT R3三项原整改已签收，独立公开CLI25/25符合预期；EVID R2与IDENT集中验收仍需整改，保留已绿并只续做原包缺口。MATRIX/LOAD等待交接，各Lab仍为外部writer保留根。B01原生搜索题包的store/transport/provider/顺位/CLI已实现并完成定向离线回归；正在同一大节点做发布静态收尾，源码尚未提交，当前新run收费API0。真实三公司身份和正式30题已冻结；下一步正常源码交付后做真实小样本对照和原owner ACK。金融准确性/G3/F05/facts/UI/一键/全池仍开放。以下较早当前/下一步均为历史，以本段与Next Step为准。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 
@@ -3233,3 +3233,12 @@ checkpoint26文档收尾：三份C06说明仅新增当前header，旧CRLF历史�
 隔离原件如实保留：parser默认日志设备路径与大pytest自动nodeid的Windows环境长度错误已收敛到owned日志/短ID；client sandbox GREEN1 180秒及两stdlib asyncio 10秒probe timeout均保留。相同原guard在unsandboxed default Proactor/Selector probe实际约0.3秒成功，随后GREEN成功；没有修改生产loop或开放localhost。手工旧Cloud派生小数已用Decimal在发送前纠正并保留原source-basis和-02；正式路由使用最终source-facts-and-proposals-02 SHA42c179858f10e83bc098bf66cc6bc8298d54eba7bff9426e048c20f7b1ef85d8。两次相对路径读错cwd和过量status截断只读错误，后改绝对/限定读取，不改变源码与证据。
 
 当前group store/transport/provider由本主控的互斥文件agent推进，schema17只用隔离库；不创建第二执行器、每题自己的lease/attempt/checkpoint、physical一次预算。尚未完成该生产能力、收费实验或金融/G3/F05/facts/UI/一键/全池验收；正常Git将在此节点完成后精确路径提交，当前source working change不能当已发布。旧c15a/c15r/c15d不重建，整个c16b在用不能清。
+
+## 2026-10-11 checkpoint28 — 三包接收与题包执行节点
+
+- 用户交回EVID R2、IDENT及FACT R3，按原大节点一次集中只读验收，没有Lab源码写入或重复旧整包。FACT三项原缺口关闭：公开CLI25/25；产品3f1565fd、HEAD4ee03942，实际分支codex/fact-content-01-r2，29工件和213锁输入匹配。签收当前冻结字节，旧Git对象缺失及说明数量差异原样留档，不新增产品返工。
+- EVID R2实际16P/13F，公共正常控制仍被原锁重定位挡住；21纯语义补充分开记载，7反例仍在。已有效unknown残值/资本题义/旧摘要/真实junction保护保留；R3集中卡只续未收口项。IDENT原43P，但不存在的名称证据、挂牌开始前active、重复版本键覆盖三个公开CLI错误放行；另有事件类型/时点及交接不完整，归并同一R1卡，不增加四个gate。
+- 三Lab源raw字节均前后保持；无凭据、收费API0、生产DB/名单0、公司文档下载0。自有FACT361文件、IDENT81文件精确清理，EVID330文件/61目录清理并保留独立logs；没有删除源仓临时文件或外部writer产物。
+- 主线原生题包store一次physical预算+每题logical/事前登记、transport、provider、现有顺位、正式入口已实现。分批离线实际store44P、transport44P、provider64P、cascade89P、入口106P，不相加成金融率；parser/client/payload原通过批次不重复。20精确源/test发布静态收尾正在同节点进行，尚未commit/live，不假称公共三仓CLI已实跑。
+- 用户派发的MATRIX/LOAD仍等待交接；IDENT协调状态更新changes_requested。新接收与整改卡集中在reviews/parallel-packages/2026-10-11；不自动派发、不占用Lab writer。
+- 下一工程动作：发布静态终态及正常精确源码commit，然后原公开owner/runtime/consent的三公司30题小规模真实thinking-on实验与ACK。B01、金融/G3/F05/facts/UI/一键/全池继续未完成。
