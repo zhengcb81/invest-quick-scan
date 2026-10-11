@@ -1,3 +1,14 @@
+> 当前主线（2026-10-11 checkpoint33）：FIN remediation-01已集中续验changes_requested，保留CATL新增事实、部分Alphabet口径、58P和旧25/25独立CLI；78行研究仍占位，原绑定/计算/交接四组只续同包R2。OPS只续三组R2且R4已关，VIEW仍原R1，所有Lab归原writer。B01仍沿checkpoint31隔离候选的唯一工程动作，未部署，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0保持。金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段为历史，以本段和唯一Next Step为准。
+
+## 2026-10-11 checkpoint33 — FIN R1集中续验完成
+
+- 实际FIN Lab分支codex/fin-ref-01、产品601be8b、HEAD655e906；84跟踪原件/20原锁匹配。新29本机工件bytes/SHA都匹配，5日志/manifest被ignore且不在commit，已只读补冻；旧schema/交接原bytes保留。Git还多一个未声明产品工具gen_artifacts_remediation.py，逐文件范围需补齐。
+- 原完整pytest58P（PID46032/exit0）；先前两个NUL/默认logging guard启动失败留原记录，不计产品RED。旧25个独立validate/export对全部符合，12新增原根因控制仅2符合，另10复现supported缺issuer关联、错reference_id、20锁遗漏核对、旧1.0不可读，以及计算跨公司/题义/period/单位/年份/空fact绑定。额外读观测原CLI对5,583,067-byte合成空白JSON read(-1)/exit0；没有假设已公布5MiB阈值。
+- 独立官方事实审查：CATL新增数字与两债务口径/NOPAT等局部改正可保留；78行仍SRC-SKELETON/no research conducted（72非深核＋6中信建投深核），90定向查证的声明不实。Alphabet深核attempt都绑营收concept；历史FCF仍answerable/维护占比错句，ROIC旧current遗漏说法未同步。90分数/区间仍null，不能把9含facts行或58软件P当金融准确率。
+- 原R1—R4只续唯一R2，不重做已绿内容/再加小节点门。公共handoff PID23892/exit2，仍temporary_root_not_cleaned（保留dev环境列在临时根）；原件不删除/不假填cleaned。一次原包官方核源审查，不新增逐题审批。
+- 自有runs/fin-r1-acceptance-2026-10-11-01清理196文件/96目录，删除5MiB合成临时输入，保留冻结副本/小控制/原日志。84源＋副本和5补充原件SHA、HEAD/status未变；CIM owned Python进程0。测试offline，独立审查只在线读官方HTML；模型/付费搜索/公司文档下载/生产库/外仓业务写入0。
+- 交付：[集中报告](reviews/parallel-packages/2026-10-11/FIN-REF-01-R1-acceptance.md)、[独立事实审查](reviews/parallel-packages/2026-10-11/FIN-REF-01-R1-independent-review.md)、[原四组唯一R2](reviews/parallel-packages/2026-10-11/FIN-REF-01-R2.md)。主线B01工程动作不变；本轮9文档正常本地提交，向既有origin推送仍需明确范围确认；之前4794412四处OPS状态补录同样未推，不能称远端已全同步。原3d979a2九文档已推送的事实保持。
+
 > 当前主线（2026-10-11 checkpoint32）：OPS remediation-01已集中续验，R4手册组关闭，R1—R3仅边界续做同包唯一R2；原103P/1Windows skip、144原件/82工件/12锁及旧1.0保持。FIN/VIEW原R1仍归原writer，其他Lab同样不代改。B01 checkpoint31具名Observation1.2等软件候选与唯一工程动作保持，尚未部署，旧30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变。本轮收费API/生产DB/外仓业务写入0；金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段为历史，以本段及唯一Next Step为准。
 
 ## 2026-10-11 checkpoint32 — OPS R1集中续验完成

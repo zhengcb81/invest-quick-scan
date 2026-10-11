@@ -2,7 +2,7 @@
 
 编制日期：2026-10-11。状态：文档已准备，未由总控创建工作仓、派发或实施。主线仍在 B01 首轮真实扫描后的修复与联调；本批不改变金融准确性、G3/F05、UI/一键上线门状态。
 
-后续实际状态：OPS、FIN与VIEW均已收到并集中验收为changes_requested；OPS remediation-01现已续验，R4关闭，原writer只续同包三组R2；FIN四组/VIEW五组仍续原R1。见[实时交接状态](dispatch-status.md)。以下目录不存在/未派发是原编制快照，不代表当前OPS/FIN仓不存在；原manifest/输入锁/模板不回写。
+后续实际状态：OPS、FIN与VIEW均已收到并集中验收为changes_requested；OPS remediation-01现已续验，R4关闭，原writer只续同包三组R2；FIN remediation-01亦已续验，只续原四组R2；VIEW五组仍续原R1。见[实时交接状态](dispatch-status.md)。以下目录不存在/未派发是原编制快照，不代表当前OPS/FIN仓不存在；原manifest/输入锁/模板不回写。
 
 | 施工包 | 完成后交付 | 唯一工作目录 | 现在可以做什么 |
 | --- | --- | --- | --- |
