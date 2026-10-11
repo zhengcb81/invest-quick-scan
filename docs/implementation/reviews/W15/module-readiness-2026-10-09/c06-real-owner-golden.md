@@ -1,3 +1,7 @@
+> 当前主线（2026-10-11 checkpoint26）：C06/W15步骤4的软件交付已完成。155源码正常提交（QA9830f46/SW6c4ee58/IQSf95550f），QA/IQS远端已核；SW无remote只本地提交。两个自有测试根已严格清除43936文件/31127子目录/6链接/2根，编译临时根也已清除；原guard/合成账本、原RED/逐批GREEN及真实owner输出保留。没有收费API、生产DB/名单写入。整体C06金融资格、G3/F05、真实准确性、facts/UI/一键/全池门仍开放。下一动作是B01当前公开链三公司小批次预检/冻结；EVID-R2与FACT-R3等真实新交接，三新Lab由用户认领未自动派发。本批文档Git终态以progress实际回执为准；下方较早当前/唯一下一步均为历史。
+
+**历史原文：** 下方checkpoint10及更早记录保持原字节；源码交付/清理已完成，不重复旧施工。当前真实证据、未完成金融门和下一动作以根PWF checkpoint26为准。
+
 # C06 真实 owner 身份与查询 golden
 
 **2026-10-10 最新接续（checkpoint10；以下09/08及更早“当前”记录是历史）：** 原main_with_llm/LLMRunner已在私有runs/c15a消费原Q13耐久action，只执行native当前权限确认的完整SubjectRef/题目范围；完整原manifest/身份/authority3-context2先验后选题。79累计候选/7变化/5原终态批次已固定producer-checkpoint-10.json，原guard raw不变。最终原公开main合成E2E48032/exit0、1P/235.74s（controller241.766s）：完整24题release保留，两请求预算下只派发获准1题；原Q09实际发送1笔，result_ready后删除模型配置与花费授权，重启0新增HTTP/凭据读取，原work/package ID/hash/bytes不变。四受影响unit46720/exit0、66P/4.84s（controller6.313s）与E2E源SHA一致；早期60P与66P重叠，原e1范围回执缺失1F保留，不相加或称金融准确率。新范围sidecar明确授权分母/全manifest分母，一题成功不叫整公司完成；legacy答案格式保留。生产QA6aafc32原七未跟踪/SWa5a97d6 clean未动，真实API/费用/生产库/名单写0，无实际人类确认。

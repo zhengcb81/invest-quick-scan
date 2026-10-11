@@ -1,3 +1,5 @@
+> 当前主线（2026-10-11 checkpoint26）：C06/W15步骤4的软件交付已完成。155源码正常提交（QA9830f46/SW6c4ee58/IQSf95550f），QA/IQS远端已核；SW无remote只本地提交。两个自有测试根已严格清除43936文件/31127子目录/6链接/2根，编译临时根也已清除；原guard/合成账本、原RED/逐批GREEN及真实owner输出保留。没有收费API、生产DB/名单写入。整体C06金融资格、G3/F05、真实准确性、facts/UI/一键/全池门仍开放。下一动作是B01当前公开链三公司小批次预检/冻结；EVID-R2与FACT-R3等真实新交接，三新Lab由用户认领未自动派发。本批文档Git终态以progress实际回执为准；下方较早当前/唯一下一步均为历史。
+
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 
 > 当前状态（2026-10-11，checkpoint24与FACT R2）：C06发布差异同节点复核无新增阻断；155候选（QA51/SW74/IQS30）尚待精确源交付/正常Git和strict清理。原完整批失败保留，受影响QA85P/1skip、SW64P后剩余24P分别留档，不虚称完整全绿。FACT R2实际135P，但两项未来正常输入被拒，另旧版测试遮挡与两planning清单不一致，维持changes_requested；补丁卡FACT-CONTENT-01-R3.md。下面旧“运行中/下一步/监测ACTIVE”是历史，以本段及Next Step为准。
@@ -415,9 +417,11 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-本批并行文档交付已完成；主控的唯一下一工程动作仍是下述checkpoint24。三包的实施/认领在各自新根进行，未自动启动，也不是新的主线审查门。
+本批并行文档交付已完成；主控已完成checkpoint26软件源交付/清理，下一动作以本节当前段为准。三包的实施/认领在各自新根进行，未自动启动，也不是新的主线审查门。
 
-**唯一当前动作（2026-10-11 checkpoint24）：** C06大节点回归整改和同次发布delta复核已终态，无新增软件阻断。155候选仅在runs/c15r，重核writer/HEAD/CAS后精确源交付、正常Git、strict清理；StockWiki无origin只本地提交。不要重做F1—F4或已绿测试，不虚称原完整失败批全绿。FACT R2已集中续验changes_requested，按FACT-CONTENT-01-R3小补丁卡接续，不能以135P关闭F05。以下checkpoint23及更早为原证据/历史，不再作为未完成测试日程。
+**唯一当前动作（2026-10-11 checkpoint26）：** 正常提交/推送本批7份已授权文档，然后接原B01当前公开生产链的三公司小批次预检与输入冻结；复用既有执行/费用/ACK，不立即发200家或重复旧实验。EVID-R2/FACT-R3等实际新交接，三新Lab由用户认领，金融/G3/F05/facts/UI/一键/全池门保持。
+
+**历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 
 **2026-10-11 checkpoint23：同一C06整节点四项整改收口及完整main重入（唯一当前接续；下面旧状态均为历史）：** 原独审F1—F4在冻结的136个私有软件候选中全部关闭，没有新的返工阻断。原报告与新增收口报告分别保留，不再增设helper审查。Phase113步骤4仍未勾选：完整源码layout检查、实际源码发布及strict自有清理尚未完成。
 
@@ -1804,12 +1808,12 @@ Status: complete_for_limited_software_delivery
 - [x] 真实Git/hook/push尝试终态原日志、发布result和独占缓存9文件/4目录严格清理回执留档，原冻结source_written=false档案不覆写。IQS提交推送以progress实际回执为准。
 
 ### Phase 113: W15模块路由持久化与增量刷新
-Status: in_progress
+Status: complete_for_software_delivery_scope; financial_and_downstream_gates_open
 
 - [x] 核实W06/W11/Q13实际接口与依赖，固定现行路由/发布锁/观察锚点；确认Q13原runner未消费action，不能仅凭刷新计划关闭门。
 - [x] 在全新独占环境TDD实现评分基础链：模块新增/退役、语义时效、路由锚点、历史只读、事务回滚、真实公开CLI与Q13动作接线。
 - [x] 基础范围完成受影响单元/集成和公开入口E2E、同一次集中审查、正常源交付与严格自有清理；整个W15/C06/L03/G3/F05/金融准确性仍开放。
-- [ ] 基础链交付后接通真正C06 query/refresh投影及真实owner serializer golden/生成命令；当前wire明确c06_envelope_validated=false，不能把它当成步骤4已完成。
+- [x] 步骤4完整软件链、真实owner serializer/query/capabilities输出与生成命令、同节点审查、155源码正常交付及strict清理已完成；金融资格/G3/F05和下游任务另有真实证据门，不因本项关闭。
 - 最新checkpoint08累计71私有候选，原生同意OS读取/原Q13 action原子登记与重放已实现并有真实三组件CLI合成E2E；143P与22P/1P各自分母留档。尚需可信公共admission精确bundle/context映射、原主执行器消费/其余操作及同节点集中审查/源发布；原步骤4和下游门保持。实际人类确认/金融gold/收费0，c15a及real-owner-01保留。
 - checkpoint09接续：累计75私有候选，公共admission完整bundle/context3/2映射已通过真实公开CLI合成1P及受影响52P；原主执行器消费仍是下一动作。旧08缺公共入口描述仅属历史；整个步骤4/集中审查/源发布及全局门不提前关闭。
 - checkpoint10接续：原公开main仅派发获准范围及无凭据result_ready接续已通过合成E2E；79私有候选固定。原引用/uncertain/租约与其余操作、整个节点集中审查/源发布继续，真实金融/全局门不提前关闭。
@@ -1873,3 +1877,32 @@ Status: complete_for_package_preparation_only; workers_not_dispatched; product_i
 - [ ] 用户各自认领后，由各独立harness在对应新根实施并交接；总控接收和权威owner集成尚未运行。
 
 本批首次正常Git预检因原生stdout的CRLF被diff --check当尾随空白而停在commit前；原日志保留byte SHA，以仅本批verification/*.log的binary归档属性表示原证据，未跳hooks或改产品规则，随后正常重试提交预检。
+
+## 2026-10-11 checkpoint25 — C06/W15精确源码交付与正常Git
+
+已在沙箱外重新只读核三源HEAD/155原字节/暂存区；QA与SW原跟踪clean，IQS仅他人2026-10-10 README既有变化。当前CIM相关Python/pytest/Git0，app只读任务状态未发现QA/SW活动写入线；不据此声称已证明全局独占。全部候选写入前和逐文件最后写入前核HEAD/原SHA，新文件用no-clobber link，已有文件原子replace。release-source-copy-01.json记录实际155：QA51/SW74/IQS30，外来改动保持，临时文件全部清理，生产DB/名单/API0。
+
+三个源正常提交实际为：StockQA9830f468c74e7eec16d69d4ee29d14ac0492dd21；StockWiki6c4ee58946b787d8f75d17808391493c3d16bb4f；IQSf95550f3ab6605f67bcec902877f3ff29707b3a8。QA和IQS正常推送各自已核origin，真实ls-remote master与提交一致；SW没有remote，只正常本地提交，不增设远端。源提交分别只51/74/30路径，PWF、他人README、私有intake/DB/golden没有混入源码批。所有原hooks照常执行，密钥和网络关闭，依赖用现成健康环境只读、临时pre-commit store和缓存归自有根。
+
+保留正常失败与定向续接：沙箱Git worktree/CIM读取受限后沙箱外只读复核；隔离hook控制器先误挡Windows NUL，后误用pre-commit旧函数名，均未进产品；cache-check03实际14已安装/健康。QA hook01自动规范两个文件CRLF并因isort精确.isorted临时路径被隔离guard拒绝而失败；确认原始文本只换行、仅开放已审Python文件对应且原不存在的临时路径，QA02原钩子全部通过。SW01/IQS01分别3/2文件EOF空行diff检查失败；只清尾空行且AST一致，SW02/IQS02正常提交通过。5个EOF+2个LF共7项格式变化记录于release-source-final-candidates-03.json；原checkpoint24、冻结c15a与RED日志不改，不重复已绿测试或增设helper门。
+
+原完整QA1737P/31F/8E、SW1564P/50F/23E/22skip保持原失败；受影响QA85P/1明确skip、SW64P后剩余24P保持各原分母。正常hooks通过不是整仓pytest或金融准确性通过。一次公共main完整重入、100×30、真实owner04证据仍引用原件，不伪造新golden。准备清理只针对runs/c15a和runs/c15r；保留原guard/原public-main账本的精确原字节与全部既有过程日志，不碰共享TEMP、生产库/名单、Lab或他人文件。Windows长路径必须用原生前缀和lstat，不信普通os.walk会漏长目录；第一次普通路径盘点报WinError3，没有删除动作。strict清理终态前，Phase113步骤4仍未关闭。
+
+### Phase116: 同一C06/W15节点源码发布收尾
+Status: source_and_cleanup_complete_for_software_scope; documentation_publication_pending; full_financial_gates_open
+- [x] 155精确源交付与逐字/HEAD/CAS，保留外来改动。
+- [x] QA/SW/IQS正常源码提交；QA/IQS正常推送并核实际remote SHA，SW无remote本地交付。
+- [x] 原hooks照常，7项纯文本卫生更正，失败和续接日志分别保存；没有新helper审查。
+- [x] 两自有根原生长路径/文件ID/单链接/精确集合与bytes/SHA清理；dry/Apply真实终态及编译根单独清理留档。
+- [ ] 同步最终PWF/交接和正常提交推送；之后回到原尚未完成工程/真实金融/facts/UI/全池主线。
+
+
+## 2026-10-11 checkpoint26 — C06/W15软件交付与隔离清理终态
+
+155源文件交付/正常提交实际为StockQA9830f468c74e7eec16d69d4ee29d14ac0492dd21、StockWiki6c4ee58946b787d8f75d17808391493c3d16bb4f、IQSf95550f3ab6605f67bcec902877f3ff29707b3a8。QA/IQS原origin已push并核实际master；SW无remote保持本地。七项仅LF/EOF文本卫生差异已核原文本或AST，原hooks正常执行；未新增helper审查或重复原已绿全组。
+
+strict dry真实会话10083 exit0，原生逐字/文件ID/单链接43936项全部匹配，零删除。Apply真实终态以release-cleanup-applied-01.json及原stdout/stderr为准：43936文件、31127子目录、6个同根junction只unlink自身、2个根均清除；链接目标在unlink后经原字节重核，再作为普通自有文件清理。Add-Type独占临时根runs/c15d单独精确清除。两次真实CIM自有匹配0；不清共享TEMP、不删除源/生产库/名单/Lab。基线ac92314746144ac601d2e9220b916aee8cc44272f74ccae51f64fafb150cf7bd，归档manifest及原guard/合成public-main账本匹配保存于既有intake/software-publication-retained-inputs。归档是私有软件证据，不是生产DB、金融gold或人类审批，不随本Markdown发布。长路径原生API与精确路径/大小/SHA/文件ID检查没有放宽；Apply仅将Child路径构造换为等价.NET Combine，避免逐文件PowerShell provider开销，全部重新逐字校验后删除。
+
+原QA完整1737P/31F/8E、SW1564P/50F/23E/22skip不改；受影响QA85P/1明确skip、SW64P后剩余24P与原静态/smoke、公开main/schema4第二获准字段链、真实owner04结果保持各自原分母。测试fixture现在使用源仓tests/fixtures/c06_execution_ledger.sql（SHA1772a5544c2322f881fb8075730a22b19b5db423f85a9aff780105216fc5632e），不得重新创建已清的c15a/c15r或把旧真实owner输出伪称当前新生成。现C06能力1.1、query2.0—2.5、authority3/context2的软件交付成立；真实数据覆盖/研究证据资格仍按实际unknown呈现。
+
+下一主线为原B01当前公开入口小规模实验的前置/输入冻结：沿用已授权三公司和30题，复用StockQA客户端/账本/预算与StockWiki公开导入/ACK，不新造执行器、不立刻扫200家。EVID-R2/FACT-R3未见新完整handoff，不重复旧测试、不占原owner。MATRIX/LOAD/IDENT三卡41输入仍匹配，新根均不存在；由用户分派、不自动开工。整个金融准确性、G3/F05/L03/facts/UI/TH-IN/全局目标未完成。
