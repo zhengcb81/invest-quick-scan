@@ -1,0 +1,114 @@
+{
+  "format_version": "1.0.0",
+  "observed_at_utc": "2026-10-11T15:39:35.941815+00:00",
+  "task_source": "../../../tasks.json",
+  "coordinator_write_scope": "C:/Users/郑曾波/Projects/invest-quick-scan",
+  "workers_dispatched": false,
+  "default_live_enabled": false,
+  "packages": [
+    {
+      "id": "VIEW-01",
+      "lane_id": "iqs",
+      "document": "VIEW-01.md",
+      "task_ids": [
+        "U01",
+        "U02",
+        "U03",
+        "U04",
+        "O05",
+        "X09"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-viewer-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src",
+        "schemas",
+        "content",
+        "fixtures",
+        "tests",
+        "tools",
+        "runs",
+        "docs/handoff/VIEW-01",
+        "web",
+        "package.json",
+        "package-lock.json"
+      ],
+      "readiness": "ready_for_scoped_implementation_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; this_card_new_root_only",
+      "delivery_scope": "fixture_backed_read_only_viewer_components",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none_except_scoped_dependency_setup"
+    },
+    {
+      "id": "FIN-REF-01",
+      "lane_id": "iqs",
+      "document": "FIN-REF-01.md",
+      "task_ids": [
+        "B01",
+        "F05"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-financial-reference-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src",
+        "schemas",
+        "content",
+        "fixtures",
+        "tests",
+        "tools",
+        "runs",
+        "docs/handoff/FIN-REF-01"
+      ],
+      "readiness": "ready_for_scoped_implementation_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; this_card_new_root_only",
+      "delivery_scope": "source_based_financial_reference_candidates",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "manual_official_public_web_research_only"
+    },
+    {
+      "id": "OPS-DESK-01",
+      "lane_id": "iqs",
+      "document": "OPS-DESK-01.md",
+      "task_ids": [
+        "O02",
+        "X02",
+        "X03",
+        "X04",
+        "X05",
+        "X06",
+        "X07",
+        "X08",
+        "X09"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-operations-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src",
+        "schemas",
+        "content",
+        "fixtures",
+        "tests",
+        "tools",
+        "runs",
+        "docs/handoff/OPS-DESK-01"
+      ],
+      "readiness": "ready_for_scoped_implementation_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; this_card_new_root_only",
+      "delivery_scope": "operating_handbook_and_offline_diagnostic_presentation",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none_except_scoped_dependency_setup"
+    }
+  ]
+}

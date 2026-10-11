@@ -421,7 +421,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-本批并行文档交付已完成；主控已完成checkpoint26软件源交付/清理，下一动作以本节当前段为准。三包已由用户派发，各自在独占新根实施和交接；总控不重复派发或占用writer，也不是新的主线审查门。
+旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2的VIEW-01/FIN-REF-01/OPS-DESK-01施工包已完成编制核验，尚未派发/实施；分别使用三个新独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作仍以下checkpoint30段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
 
 **唯一当前动作（2026-10-11 checkpoint30）：** 原main PID71104已终态exit1，13原HTTP均有收执且预算settled；不得再次执行run_native_pro_resume03.py、删原work.sqlite、清live/owner或伪造ACK。先在同一B01大节点补三项真实链缺口：已知response_available但无有效答案的durable逻辑终态/原owner retry与comparison决议；vendor request_id允许明确未知并与真实response_id/physical attempt分开、旧schema/hash/结果保留；CNY账本的具名refresh quote能力与旧USD兼容。4标准答案当前仅QA检查点且投递blocked，不填response_id冒充request_id，不改旧payload/context/收执以绕校验；旧generation与新生成材料显式分开。完成受影响TDD/一次集中回归和正常源交付后，使用原公开owner preview→已授权operator真实TTY确认→Q13 admission及原main/同账本，先原IQS_01/02/04仅max32768的pack3，再同32768的pack1。完整原30题分母保留；同policy_id按原方法增加cap/version、保留13次/CNY1.268162及历史350模型/200搜索，至少计入新增4请求且按owner quote预留更充足余量，不能换新账本或币种。思考保持开启，提示词/工具先不一起改；后续再独立比较官方来源导航、原生参数和其他已获授权模型/外部搜索。实际ACK取公开import的原回执，由原Store API消费；无可封存包则保持ACK0。CATL/CSC仍provisional且缺真实subject，不能造owner正例凑三市场。MATRIX R1/LOAD R1/EVID R3/IDENT R1由用户原harness续做，总控只读、不自动派发或代写；FACT R3不重做。不得把软件GREEN/保守弃答当金融准确性、G3/F05或上线门关闭，不增helper审查。
 
@@ -1982,3 +1982,13 @@ B01大节点实际626P/2新断言F后仅受影响模块25P；原真实owner-per-
 - 原primary参考保留30题各证据/反证、expected_score均null，不是金融人工gold。三未知题对应源实际为其他issuer，拒绝评分正确；另一未知题仅有Alphabet Q1来源仍不足。没有依据把0可评分说成100%准确。
 - 两指定已结束binding测试/发布临时根精确清理2860文件/385目录，53必要证据留存；live、owner克隆和原账本保留待修复接续。生产StockWiki4DB与SOURCE_OWNER/旧输入总14保护项SHA全部未变；不清外部Lab或他人2026-10-10 README。
 - 新结论与实操次序见 [B01首轮报告](docs/implementation/reviews/B01/native-pro-first-live-2026-10-11.md)。这是原B01大节点接续，不新增Phase/helper门；真实金融、G3/F05/facts/UI/一键/全池仍未完成。
+
+## Phase118：独立UI、金融参考与运维施工包
+
+Status: package_preparation_complete; not_dispatched; product_implementation_and_owner_integration_pending
+
+- [x] 按用户要求编制 VIEW-01、FIN-REF-01、OPS-DESK-01 三个较大且互不依赖的施工包；入口 [2026-10-11-wave2](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。工作根为 iqs-viewer-lab、iqs-financial-reference-lab、iqs-operations-lab，编制及终态核查均不存在，不由总控创建或派发。
+- [x] 自包含卡/共同规则明确只写自身新根，PWF/输入冻结/closed产物协议/CLI/一次集中TDD测试审查/strict清理/正常产品与交接提交；不占三生产仓或 EVID/FACT/MATRIX/LOAD/IDENT writer，不引入第二公司库、评分器、客户端、预算或启动器。
+- [x] 41个不同原始输入文件实际锁定：VIEW18、FIN20、OPS12。FIN实际三份正式manifest各30唯一题核验，无新身份golden；保留CATL/中信建投真实subject缺口和主观参考非金融真值边界。
+- [x] 本批18条本地链接、目录互斥、任务ID/原字节/SHA及三次现有公开handoff CLI模板均通过。validation.json仅文档编制验证，产品/浏览器/金融实验未运行，收费/外仓写/生产库/名单变更0。
+- [ ] 由用户分别交harness认领后，各自独立实现和交回；总控只读包级验收并将VIEW接StockWiki、FIN接B01盲评、OPS接发布后的唯一运维入口。不自行关闭U/G3/F05/G5/G6/TH-IN/一键/全池门，不另设helper审查。主线工程仍为Next Step的B01修复和真实对照。

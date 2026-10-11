@@ -30,6 +30,15 @@
 
 # 进度记录
 
+## 2026-10-11 — 新三包编制完成，待用户派发
+
+- 用户要求新的互不干扰施工包。交VIEW-01（只读结果界面）、FIN-REF-01（三公司90题官方金融参考/候选校准）、OPS-DESK-01（实操手册/离线故障诊断展示）；唯一新根分别iqs-viewer-lab、iqs-financial-reference-lab、iqs-operations-lab。实际核查均不存在，未创建/派发，不占当前三生产仓或活动Labs。
+- 已完成详细卡、共同写入/隔离/交接规则、manifest、41原件输入锁、三个handoff1.0.0模板；VIEW18/FIN20/OPS12。每包独立协议/CLI、明确unit/integration/E2E和一次集中review，修复仅续跑受影响项；真实owner接线留总控。
+- 集中编制核验实际exit0：18本地链接、41原件bytes/SHA、写根互斥/任务ID有效、三公司manifest各30唯一题；三次现有公开parallel_handoff_cli真实exit0，原PID/终态/stdout/stderr保存在本批verification。validation_scope仅documents_inputs_and_handoff_templates_only，产品测试未运行，API/收费/外仓源码/生产DB/名单0。
+- 初次准备引用猜测contracts/work.md不存在，exit1；原manifest未覆盖，改为实际freshness-and-jobs.md并精确字节相等才接续，成功完成。其他早期只读猜测templates子目录、query_capabilities_cli.py和templates/config目录不存在；改用实际同目录模板、query_contract_cli capabilities操作与已列出问题目录。没有按猜测执行生产操作、没有放宽验证规则。
+- PWF Next Step已区分旧三包接收/整改与本批尚未派发，并保留B01当前工程动作。文档入口docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md；本次不声称UI上线、金融准确性或一键完成。
+- 正常Git暂存26文件时，diff检查对保留原bytes的Windows CRLF日志/元数据报告cr-at-eol；仅在本批.gitattributes明确该EOL规则，保持stdout/SHA原件，不禁用其他空白检查。未碰他人README或生产源码。
+
 ## 2026-09-26 — Milestone review cadence clarified
 
 - Audited the live implementation plan, test strategy, receipt contract, README, and handoff rules. Confirmed that recent execution already batches checks: P00 one focused check batch/one review; C01–C07 one shared regression/one combined review/one recursive verifier; Phase 27 one G0 review.
