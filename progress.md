@@ -3039,3 +3039,18 @@ TDD原件终态全部保留：inspect-r1 23F缺模块RED；inspect-g1 22P/1F是f
 **本轮错误与处理：** 恢复时一次技能/多文件读取输出过大，改有界选段；误猜.stdout.txt不存在，实际为.stdout.log，按原记录定位而未重启终态测试。首次PWF更新因实际CRLF与匹配串LF不一致在任何写入前断言退出，统一读取换行及显式LF写入后续行，未丢失旧计划。所有真实RED与collection错误留档。隔离原回归漏放两历史题库原件已补，不改产品断言；静态测试源码副本与实际候选逐字相同，发布临时文件仅自有范围。前一goal turn仅复核小时监控，没有主线工程变化，本轮已实际完成上述修复与完整链验证，目标active。
 
 本轮仅写自有候选、本地控制器及本仓PWF；未写任何外仓/生产库/公司名单/公司文档缓存。完成同一C06节点后统一集中审查/源交付和strict清理，201份输入绑定与检查点不是新增独审门。各批分母和失败分列，不相加重叠测试作准确率。正常Git只发布四获明确许可Markdown，其余原件/源码保留本地；实际终态以下述一次publisher回执为准。
+
+
+### 2026-10-11 checkpoint18：复用W13的提名与冲突线索登记
+
+**2026-10-11 checkpoint18：复用W13的提名与冲突线索登记（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续。新增具名query 2.3 wire，仅nominate/report_conflict；原1.0/2.0/2.1/2.2 schema原字节和语义保持。复用StockWiki原scan.sqlite/schema6的quick_scan_nomination表及W13事务，不另建数据库、队列或sidecar；必须指向已存在的用户pool，不迁移/创建库或名单。固定owner派生consumer/operation来源命名空间，同键同业务内容重放原row/time，同键异内容明确拒绝；新的request_id/time不会改变原业务ID。原业务claim/来源/OS principal/store及摘要保持，人工review与apply_auto只更新后续理由/状态，不能抹掉原线索；原备份/same-root恢复保留完整轻量内容。近似名/同ticker不合并，全部unresolved、proposed_entity_id=null，auto_admitted/identity_changed/automatic_work_created/identity_attested/formal_evidence_accepted全部false。
+
+**实际结果：** 缺新模块30F RED保留；实现后30P/3.53s。扩充真实SQL ABORT/并发、三市场、不同来源与同键异内容、原自动维护、原备份恢复、真实Windows root junction、独立响应替换；与原W13、旧public query与旧v2契约四文件124P/13.85s。新增公开CLI明确拒绝码后，新接口全组40P/4.92s，最新源SHA d36b5f34dc93ca568dc04167f406599dd5f85e4a3d1d9031cf4b82d724a95f0e。C06只通过固定OS纯校验CLI，无跨仓Python import；三市场/身份/人类理由均合成软件用例，不是公司准确性或真实owner正例，不累计批次作金融通过率。0收费/下载/生产库/名单写。
+
+**唯一下一工程动作：** 同一原C06步骤4接原research_context：以原完整SubjectRef和不可变观察/上游关系/URL指针生成研究线索，复用原完整上游闭包防循环/缺祖先/同源转述重复规则，formal_evidence_accepted=false；完善实际capabilities/公开操作清单。随后用当前真实owner serializer/公开CLI生成真实身份与实际缺覆盖golden及具名负例，不能填假财务回答。原所有C06操作完成后整个节点一次集中审查、正式源交付和strict自有清理；不新增helper审查，原G3/F05/L03/B01/facts/UI/TH-IN/全池门不提前关闭。研究线索是原契约已列的research_context操作，不是新增目标或审查门。
+
+**交接与固定：** producer-checkpoint-18.json实际120累计私有候选/8变化/4终态批次，202份隔离输入逐字绑定、AST/新schema静态校验通过，原guard和旧main账本SHA不变，实际CIM自有Python0。当前仍私有候选，未发布生产源/签收完整C06。详细接口和原调用/存储/错误语义在本地review-lead-interface.md；该新增说明/源码/intake/DB/golden/Lab不扩大导出范围。FACT fact-r2 ACTIVE每小时只读remediation-02，已知两planning清单不一致不重复提醒，齐备一致后通知/停止轮询再整包验收；不改活动Lab。EVID新R2位置仍待答，旧changes_requested保留。c15a/real-owner-01和原证据还需用，不清共享TEMP、未知nul/opencode或并行README。上一四PWF/handoff已正常推送ffb8623a3d3c86f7688134ddc50c53ef0100c9c7；本次同四明确获准文档发布终态看documentation-publication-checkpoint18-01.json。
+
+本轮恢复一批读取输出过大，后改有界选段；没有重跑上轮终态控制器或将断言失败隐藏。CodeGraph此前StockWiki nominate/report_conflict/QuickScanStore无结果，使用已知私有文件与schema定位到原W13提名设施，不新造主档/队列。新30F仅是缺模块RED，原日志保持；最新四终态皆原源码不变，无超时/跳过。所选原W13回归只读借入，源HEAD前后a5a97d6及原件字节一致；没有去源仓执行测试或写入。
+
+上一goal turn为实际schema4/Windows修复与完整链验证progress，本轮继续完成原C06业务登记与兼容验证，目标active，未缩小目标或把工程GREEN当金融结果。SQL并发/回滚、原claim在维护及备份中保留和真实junction均有实际用例；所有自有测试进程终态。检查点仅同节点工程记录，不是独审或小节点门；下一整个C06节点才集中一次审查/源码交付/严格自有清理。

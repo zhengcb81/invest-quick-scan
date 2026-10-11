@@ -407,6 +407,16 @@ Status: complete_for_planning_only
 
 ## Next Step
 
+**2026-10-11 checkpoint18：复用W13的提名与冲突线索登记（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续。新增具名query 2.3 wire，仅nominate/report_conflict；原1.0/2.0/2.1/2.2 schema原字节和语义保持。复用StockWiki原scan.sqlite/schema6的quick_scan_nomination表及W13事务，不另建数据库、队列或sidecar；必须指向已存在的用户pool，不迁移/创建库或名单。固定owner派生consumer/operation来源命名空间，同键同业务内容重放原row/time，同键异内容明确拒绝；新的request_id/time不会改变原业务ID。原业务claim/来源/OS principal/store及摘要保持，人工review与apply_auto只更新后续理由/状态，不能抹掉原线索；原备份/same-root恢复保留完整轻量内容。近似名/同ticker不合并，全部unresolved、proposed_entity_id=null，auto_admitted/identity_changed/automatic_work_created/identity_attested/formal_evidence_accepted全部false。
+
+**实际结果：** 缺新模块30F RED保留；实现后30P/3.53s。扩充真实SQL ABORT/并发、三市场、不同来源与同键异内容、原自动维护、原备份恢复、真实Windows root junction、独立响应替换；与原W13、旧public query与旧v2契约四文件124P/13.85s。新增公开CLI明确拒绝码后，新接口全组40P/4.92s，最新源SHA d36b5f34dc93ca568dc04167f406599dd5f85e4a3d1d9031cf4b82d724a95f0e。C06只通过固定OS纯校验CLI，无跨仓Python import；三市场/身份/人类理由均合成软件用例，不是公司准确性或真实owner正例，不累计批次作金融通过率。0收费/下载/生产库/名单写。
+
+**唯一下一工程动作：** 同一原C06步骤4接原research_context：以原完整SubjectRef和不可变观察/上游关系/URL指针生成研究线索，复用原完整上游闭包防循环/缺祖先/同源转述重复规则，formal_evidence_accepted=false；完善实际capabilities/公开操作清单。随后用当前真实owner serializer/公开CLI生成真实身份与实际缺覆盖golden及具名负例，不能填假财务回答。原所有C06操作完成后整个节点一次集中审查、正式源交付和strict自有清理；不新增helper审查，原G3/F05/L03/B01/facts/UI/TH-IN/全池门不提前关闭。研究线索是原契约已列的research_context操作，不是新增目标或审查门。
+
+**交接与固定：** producer-checkpoint-18.json实际120累计私有候选/8变化/4终态批次，202份隔离输入逐字绑定、AST/新schema静态校验通过，原guard和旧main账本SHA不变，实际CIM自有Python0。当前仍私有候选，未发布生产源/签收完整C06。详细接口和原调用/存储/错误语义在本地review-lead-interface.md；该新增说明/源码/intake/DB/golden/Lab不扩大导出范围。FACT fact-r2 ACTIVE每小时只读remediation-02，已知两planning清单不一致不重复提醒，齐备一致后通知/停止轮询再整包验收；不改活动Lab。EVID新R2位置仍待答，旧changes_requested保留。c15a/real-owner-01和原证据还需用，不清共享TEMP、未知nul/opencode或并行README。上一四PWF/handoff已正常推送ffb8623a3d3c86f7688134ddc50c53ef0100c9c7；本次同四明确获准文档发布终态看documentation-publication-checkpoint18-01.json。
+
+以下checkpoint17及更早为保留历史，以checkpoint18接续。
+
 **2026-10-11 checkpoint17：schema4旧入口兼容与Windows原子发布修复（唯一当前工程接续；下方旧“当前/下一步”均为历史）：** Phase113步骤4继续，完整目标不缩小。原2.0/2.1/2.2查询、原审核链/当前资格与时效均保留；这批补齐schema4原base reader、旧UI与backup/verify/restore的实际DDL检查。基础只读入口不迁移、不为缺库创建数据库，未来版本/缺表/缺不可变约束明确拒绝；原base writer仍schema2，schema3/4扩展各自负责。旧UI仍显示原raw分数，不把导入或可读取当筛选资格。备份在快照及验证时检查原扩展约束，保留审核水位；same-root恢复维持原绑定/审核链，跨root不重签owner或提升等级。Windows原release publisher使用extended path仅作本地IO，对外相对引用不变；不可变档用同目录完整临时文件与不覆盖的原子link，遇并发先写者保留原字节，相同内容可重放、不同内容拒绝。只有current指针允许原子replace。
 
 **实际结果与边界：** schema4原RED1P/16F、首修46P/6F保留；后批3个collection error因隔离layout缺dummy模型配置，实际0个用例执行，不算产品金融失败或通过；补仅合成无key配置并修正错误类型/漏传审核水位后，四文件98P/16.74s。Windows真实长路径及并发5F后5P/2.76s，实际长root完整48模块/222题publish及重读通过。原module registry回归23P/2F：两历史原件漏拷导致失败；补59份第一方历史原字节后只续测两失败项2P，不重复23个已绿项、不伪称一次25全绿。此前长路径会失败的完整公开main→原ACK→原生execution分级→只读assessment现同断言1P/167.39s，controller168.269s；vendor HTTP/公司身份/人类确认仍明确合成，0收费/下载。结果不是金融准确性或真实用户审核。
@@ -1715,6 +1725,7 @@ Status: in_progress
 - checkpoint15接续：原StockQA完整原件执行证明与StockWiki原生execution_verified producer已接，耐久来源记录先于同一schema4原子追加，旧更高等级/撤销不覆盖。104累计/8变化/11终态固定；33P、84P、原存储35P及完整软件E2E1P分别留档。pool资格wire、schema4旧读/备份、旧release长路径及完整C06集中审查/源发布仍待；步骤4不勾选，不冒充金融/真实gold通过。
 - checkpoint16接续：具名2.2当前资格/TTL/query分页已接，旧wire保留；109累计/13变化/6终态及实际OS 2k×30有界摘要传输固定。最终104P，原并发撤销和重复传输RED保留。当前仍须schema4旧读/UI/backup实际DDL兼容、旧release长路径、完整C06原操作/真实gold与一次集中审查/源发布；步骤4不勾选，不冒充金融资格。
 - checkpoint17接续：115累计私有候选/7变化/9终态固定；schema4旧reader/UI/backup实际DDL兼容98P，Windows长路径与不覆盖发布5P，原历史回归23P及两缺输入项补齐后2P，原长root完整软件链1P。继续nominate/report_conflict与当前真实owner golden，随后整个C06一次集中审查/源交付/strict清理；步骤4仍不勾选，不以软件GREEN关闭金融门。
+- checkpoint18接续：原W13表/事务已接具名2.3 nominate/report_conflict，无新库或自动入池/工作；120累计候选/8变化/4终态固定，受影响合组124P及最终接口40P。下一接原research_context的完整上游闭包与实际能力清单，然后当前真实owner golden/全C06一次集中审查/源交付/strict清理；步骤4仍未勾选，不关闭金融/事实/全局门。
 
 ### Phase 114: 两个独立内容与准确性支撑施工包
 Status: FACT_R2_handoff_present_manifest_inconsistent_hourly_watch_active; EVID_R1_changes_requested_R2_card_ready
