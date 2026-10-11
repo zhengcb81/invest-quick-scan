@@ -1,3 +1,14 @@
+> 当前主线（2026-10-11 checkpoint32）：OPS remediation-01已集中续验，R4手册组关闭，R1—R3仅边界续做同包唯一R2；原103P/1Windows skip、144原件/82工件/12锁及旧1.0保持。FIN/VIEW原R1仍归原writer，其他Lab同样不代改。B01 checkpoint31具名Observation1.2等软件候选与唯一工程动作保持，尚未部署，旧30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变。本轮收费API/生产DB/外仓业务写入0；金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段为历史，以本段及唯一Next Step为准。
+
+## 2026-10-11 checkpoint32 — OPS R1集中续验完成
+
+- 实际Lab分支codex/ops-desk-01、产品0867efb、HEAD bab279f；144跟踪原件/82工件/12锁匹配，Git38项产品差异与声明相等，base/result清单80/107项均核对。公开handoff exit0只验形状/声明。旧schema/交接/fixture/desk-01/原测试原件不变，源仅此前未跟踪.codegraph/。
+- 原suite实跑103P/1Windows权限skip。25独立validate/render对中20组退出码符合；5错误退出，另2Markdown活动标记、1合成凭据回显。额外4控制复现父目录junction两条绕过、5000位版本异常、总量16MiB事后才拒（实际17MiB读取）。真实CommonMark AST只证明活动标记，没有浏览器/图片请求/script执行。单次独立包级审查与总控反例一致。
+- R4手册能力/permit/provisional说明关闭；其余全是原R1—R3边界，只续同包R2，不再重写十family/手册或新增helper门。FIN/VIEW仍由原writer做R1，不将其动态工作树当本轮冻结对象。
+- 自有隔离根runs/ops-r1-acceptance-2026-10-11-01：两个owned junction仅入口移除，再逐文件清理83文件/43目录；144源与副本SHA、HEAD/status保护。沙箱CIM被拒的空管道未充作证明，随后提权只读成功核owned Python进程0。小合成反例/真实原日志保留，API/公司文档下载/生产库/外仓业务写入0。
+- 发布限制：自动审批拒绝9份内部验收/续做/PWF文档向既有GitHub origin推送；只识别此前7份具体授权，新增OPS三份文档及本次范围未识别到明确外传授权。原合并发布命令未启动，没有通过其他方式绕过；可正常本地提交，远端pending需人类具体确认。
+- 验收与续做：[集中报告](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1-acceptance.md)、[独立审查](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1-independent-review.md)、[唯一R2](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)。原B01候选、原live/checkpoint/账本不重放、不清零；这次支撑包接收不关闭主线金融或生产门。
+
 > 当前主线（2026-10-11 checkpoint31）：VIEW/FIN/OPS均已集中验收为changes_requested，原writer各续唯一R1；VIEW CodeGraph已可用，不重复init。B01 vendor-http-identity-v1已在自有隔离副本形成具名Observation1.2候选，IQS与StockQA上下文显式版本/哈希校验已通过受影响测试；尚未部署，完整回执、事前登记、封存/入库/query、已知响应逻辑对账及CNY refresh仍待同一B01节点接续。原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；没有新收费调用，不重放原运行。金融/G3/F05/facts/UI/一键/全池仍开放。以下更早当前段均为历史，以本段与唯一Next Step为准。
 
 > 当前主线（2026-10-11 checkpoint30）：MATRIX/LOAD已集中验收，均changes_requested，R1已交付；FACT R3已签收，EVID R3/IDENT R1等原harness。StockQA真实BIND兼容两文件已正常commit/push0a0493e。原Alphabet完整30题、Pro/thinking-on/pack3/8192实跑终态：13模型HTTP、26native搜索、4合法insufficient_evidence QA检查点、0评分；项目账本CNY1.268162全部结算，缓存0。4结果因真实vendor request_id缺失而C06投递blocked、ACK0；26已收响应仍leased。原运行不能重放/删库；下一步同B01节点修已知响应逻辑对账、vendor ID兼容和CNY refresh，再做32768及pack1对照。金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段均为历史，以本段与唯一Next Step为准。
@@ -423,13 +434,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS-DESK-01、FIN-REF-01与VIEW-01均已集中验收为changes_requested，由原harness各续同包唯一R1（OPS/FIN四组，VIEW五组）；保留已有成果。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作以checkpoint31和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
+旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS remediation-01已续验，手册R4关闭，只续同包[唯一三组R2](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)；FIN/VIEW维持原唯一R1（四组/五组），保留已有成果。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作以checkpoint32状态和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
 
-**唯一当前动作（2026-10-11 checkpoint31）：** 接续[具名协议候选报告](docs/implementation/reviews/B01/vendor-http-identity-candidate-2026-10-11.md)与自有runs/b01-engineering-2026-10-11-01，不重建/重跑已绿上下文测试。先从Store.get_attempt_response的耐久原件核receipt，把真实response ID、physical attempt及request/response/receipt摘要接进Observation1.2；再贯通事前preregister1.2、binding1.1、StockWiki import、query2.6/capabilities1.2和inspection。候选当前只证明格式/冻结资源选择，尚未部署或授权执行；旧4blocked保持，不改其context/hash/收执、不补造ID，也不retroactive登记。
+**唯一当前动作（2026-10-11 checkpoint32，工程动作沿checkpoint31候选）：** 接续[具名协议候选报告](docs/implementation/reviews/B01/vendor-http-identity-candidate-2026-10-11.md)与自有runs/b01-engineering-2026-10-11-01，不重建/重跑已绿上下文测试。先从Store.get_attempt_response的耐久原件核receipt，把真实response ID、physical attempt及request/response/receipt摘要接进Observation1.2；再贯通事前preregister1.2、binding1.1、StockWiki import、query2.6/capabilities1.2和inspection。候选当前只证明格式/冻结资源选择，尚未部署或授权执行；旧4blocked保持，不改其context/hash/收执、不补造ID，也不retroactive登记。
 
 **同一B01节点随后完成：** 已知response_available但无有效答案的耐久逻辑终态、原owner retry/comparison决议，以及CNY refresh quote与旧USD兼容。整个软件候选完成后一次集中审查与受影响回归，核各源writer/HEAD/字节后正常精确源码交付；不增加helper门。原main PID71104已终态exit1，原13HTTP/26搜索、CNY1.268162全部settled、30题分母及原live/owner/work.sqlite保留，禁止重放one-shot控制器或重置账本。
 
-**软件工程通过后才运行：** 原公开owner preview→授权operator真实TTY确认→Q13 admission→原main/同账本及精确原ACK。固定IQS_01/02/04先保持原prompt/tool/thinking/cutoff仅max32768的pack3，再同32768的pack1，至少新增4物理请求；同policy_id升级cap/version并按owner quote留足余量，保留原13次及历史350模型/200搜索。此后再单变量比较来源导航、原生参数及其他模型/外部搜索，不能归功于一起改动。CATL/CSC缺真实subject不能造正例；金融/G3/F05/facts/UI/一键/全池仍开放。并行R1均由用户原harness接续，总控不自动派发或代改Lab，FACT R3不重做。
+**软件工程通过后才运行：** 原公开owner preview→授权operator真实TTY确认→Q13 admission→原main/同账本及精确原ACK。固定IQS_01/02/04先保持原prompt/tool/thinking/cutoff仅max32768的pack3，再同32768的pack1，至少新增4物理请求；同policy_id升级cap/version并按owner quote留足余量，保留原13次及历史350模型/200搜索。此后再单变量比较来源导航、原生参数及其他模型/外部搜索，不能归功于一起改动。CATL/CSC缺真实subject不能造正例；金融/G3/F05/facts/UI/一键/全池仍开放。OPS R2与其余并行R1均由用户原harness接续，总控不自动派发或代改Lab，FACT R3不重做。
 
 **历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 

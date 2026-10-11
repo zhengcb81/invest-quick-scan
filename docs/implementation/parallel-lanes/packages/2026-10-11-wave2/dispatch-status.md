@@ -6,9 +6,9 @@
 | --- | --- | --- |
 | VIEW-01 | 已集中验收，changes_requested | 原harness续做[唯一五组R1](../../../reviews/parallel-packages/2026-10-11/VIEW-01-R1.md)，保留组件和原71P/1skip |
 | FIN-REF-01 | 已集中验收，changes_requested | 原harness续做[唯一四组R1](../../../reviews/parallel-packages/2026-10-11/FIN-REF-01-R1.md)，保留90行和有效数字 |
-| OPS-DESK-01 | 已集中验收，changes_requested | 原harness续做[唯一四组整改卡](../../../reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1.md) |
+| OPS-DESK-01 | remediation-01集中续验，changes_requested；R4已关闭 | 原harness仅续[唯一三组R2](../../../reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)，保留103P/1skip与旧协议 |
 
-OPS产品79b4217/HEAD dec3942；原96工件/12输入锁有效，累计56P/1skip，独立CLI/文档四组缺口见[验收报告](../../../reviews/parallel-packages/2026-10-11/OPS-DESK-01-acceptance.md)。本批交付不替代总控B01主线或关闭原生产/金融门。
+OPS最新R1产品0867efb/HEAD bab279f；144原件/82工件/12锁和38项产品差异匹配，原suite103P/1Windows skip。25独立CLI对及4补验复现原三组边界；R4手册已关闭，见[R1续验](../../../reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1-acceptance.md)。只续同包R2，不改原输入锁/1.0/交接。原产品79b4217/HEAD dec3942与56P/1skip为保留的历史[初次验收](../../../reviews/parallel-packages/2026-10-11/OPS-DESK-01-acceptance.md)。本批不替代B01主线或关闭生产/金融门。
 
 FIN产品97e5a26/HEAD b5852aa；20输入锁/65跟踪文件冻结，原31P保留，但25独立CLI控制和另一个原ROIC合成零分子控制复现缺口；57工件中isolation.md一项漂移，公共handoff因临时根未清理exit2。内容90行仅4行18数字facts，18深核标签未代表实质完成；见[集中验收](../../../reviews/parallel-packages/2026-10-11/FIN-REF-01-acceptance.md)。CodeGraph用户授权已建，不代写Lab或关闭F05/G3。
 
