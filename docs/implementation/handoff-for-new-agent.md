@@ -1,3 +1,14 @@
+> 当前主线（2026-10-12 checkpoint38）：FIN R4余项已按用户要求总控直接修复并签收软件/来源说明范围，不派新整改卡。源产品6ff65e8/交接HEAD1e7d617；103P，167跟踪/90工件SHA匹配，研究仍partial（9已研究/9缺口/72未开始），原90题范围未缩。VIEW软件签收保持，OPS仍原writer。B01沿checkpoint31隔离候选唯一工程动作，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；金融/G3/F05/facts/生产UI/一键/全池仍开放。旧当前段为历史，以本段及唯一Next Step为准。
+
+## 2026-10-12 checkpoint38 — FIN R4总控直接修复签收
+
+- 原HEADf4dffda/152跟踪/34工件/20锁匹配、85P保留；实际数字派生两公开CLI反例仍0/0发布。总控按用户授权直接修经济角色/起终余额期间/arity/共享strict JSON/CSC范围说明，独立agent同包只读认可，不派R5或增加小门。
+- 最终103P/0skip，PID56876/exit0/19.82785秒；两个坏语义/期间控制2/2不发布、合法零NOPAT ROIC0/0。原47对46旧期望保持，原零OCF/capex→FCF所谓正例本身非法、现正确拒绝，原日志不改，合法零分子替代正例通过；不伪称47原预期全部相同。
+- 17精确产品正常commit6ff65e89dd662c36a313c1d2177bac29fdbc69aa；22当前R4交接正常commit/HEAD1e7d61717661e1dbf9f24801df3afa6500ea941c。167源跟踪与候选全SHA、90工件bytes/raw SHA匹配，98历史/schema1.0/fixture字节保持；source仅原.codegraph/、无remote。pack1.1 optional role/ledger1.0/CLI声明1.4.1，公开handoff PID17448/exit0只shape与声明。
+- 精确清理257文件247目录，CIM owned Python0；留小反例/原失败日志/冻结source与候选，后续handoff仅空TEMP。源开发环境/B01/其他writer README不碰。模型/收费搜索/公司文档下载/生产DB/名单写0。
+- 软件与来源说明闭合，原研究90行仍partial：9completed/9gap/72not_started，26facts/18深核题位/19writer访问摘要，所有分数null。原范围未縮、不授金融准确性或owner资格；F05/G3/生产门和原B01工程动作保持。
+- [集中验收](reviews/parallel-packages/2026-10-12/FIN-REF-01-R4-acceptance.md)、[独立记录](reviews/parallel-packages/2026-10-12/FIN-REF-01-R4-independent-review.md)、[源交付](reviews/parallel-packages/2026-10-12/FIN-REF-01-coordinator-repair.md)。本批9文档正常本地提交，具体hash见自有publication-local-result.json；IQS远端仍因此前自动审批范围拒绝而pending，不绕过或称全同步。FIN软件不再等原writer整改；其它未交接writer不抢，后续验收不通过直接修。
+
 > 当前主线（2026-10-11 checkpoint37）：VIEW R2验收缺口已按用户最新要求由总控直接修复并签收软件范围，不再追加整改卡。源产品cd7bf1a/交接HEADcfdfd70；173项172P/1skip（24真实Chromium），223工件哈希匹配。真实owner/生产UI仍pending。FIN原研究/三组余项与OPS原包仍待接续，不抢并发writer。B01沿checkpoint31隔离候选唯一工程动作，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；金融/G3/F05/facts/一键/全池仍开放。旧当前段为历史，以本段及唯一Next Step为准。
 
 ## 2026-10-11 checkpoint37 — VIEW总控直接修复签收

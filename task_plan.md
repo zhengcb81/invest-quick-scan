@@ -1,3 +1,14 @@
+> 当前主线（2026-10-12 checkpoint38）：FIN R4余项已按用户要求总控直接修复并签收软件/来源说明范围，不派新整改卡。源产品6ff65e8/交接HEAD1e7d617；103P，167跟踪/90工件SHA匹配，研究仍partial（9已研究/9缺口/72未开始），原90题范围未缩。VIEW软件签收保持，OPS仍原writer。B01沿checkpoint31隔离候选唯一工程动作，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；金融/G3/F05/facts/生产UI/一键/全池仍开放。旧当前段为历史，以本段及唯一Next Step为准。
+
+## 2026-10-12 checkpoint38 — FIN R4总控直接修复签收
+
+- 原HEADf4dffda/152跟踪/34工件/20锁匹配、85P保留；实际数字派生两公开CLI反例仍0/0发布。总控按用户授权直接修经济角色/起终余额期间/arity/共享strict JSON/CSC范围说明，独立agent同包只读认可，不派R5或增加小门。
+- 最终103P/0skip，PID56876/exit0/19.82785秒；两个坏语义/期间控制2/2不发布、合法零NOPAT ROIC0/0。原47对46旧期望保持，原零OCF/capex→FCF所谓正例本身非法、现正确拒绝，原日志不改，合法零分子替代正例通过；不伪称47原预期全部相同。
+- 17精确产品正常commit6ff65e89dd662c36a313c1d2177bac29fdbc69aa；22当前R4交接正常commit/HEAD1e7d61717661e1dbf9f24801df3afa6500ea941c。167源跟踪与候选全SHA、90工件bytes/raw SHA匹配，98历史/schema1.0/fixture字节保持；source仅原.codegraph/、无remote。pack1.1 optional role/ledger1.0/CLI声明1.4.1，公开handoff PID17448/exit0只shape与声明。
+- 精确清理257文件247目录，CIM owned Python0；留小反例/原失败日志/冻结source与候选，后续handoff仅空TEMP。源开发环境/B01/其他writer README不碰。模型/收费搜索/公司文档下载/生产DB/名单写0。
+- 软件与来源说明闭合，原研究90行仍partial：9completed/9gap/72not_started，26facts/18深核题位/19writer访问摘要，所有分数null。原范围未縮、不授金融准确性或owner资格；F05/G3/生产门和原B01工程动作保持。
+- [集中验收](docs/implementation/reviews/parallel-packages/2026-10-12/FIN-REF-01-R4-acceptance.md)、[独立记录](docs/implementation/reviews/parallel-packages/2026-10-12/FIN-REF-01-R4-independent-review.md)、[源交付](docs/implementation/reviews/parallel-packages/2026-10-12/FIN-REF-01-coordinator-repair.md)。本批9文档正常本地提交，具体hash见自有publication-local-result.json；IQS远端仍因此前自动审批范围拒绝而pending，不绕过或称全同步。FIN软件不再等原writer整改；其它未交接writer不抢，后续验收不通过直接修。
+
 > 当前主线（2026-10-11 checkpoint37）：VIEW R2验收缺口已按用户最新要求由总控直接修复并签收软件范围，不再追加整改卡。源产品cd7bf1a/交接HEADcfdfd70；173项172P/1skip（24真实Chromium），223工件哈希匹配。真实owner/生产UI仍pending。FIN原研究/三组余项与OPS原包仍待接续，不抢并发writer。B01沿checkpoint31隔离候选唯一工程动作，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；金融/G3/F05/facts/一键/全池仍开放。旧当前段为历史，以本段及唯一Next Step为准。
 
 ## 2026-10-11 checkpoint37 — VIEW总控直接修复签收
@@ -489,13 +500,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS remediation-01已续验，手册R4关闭，只续同包[唯一三组R2](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)；FIN remediation-03已续验，81P/47既有对保留且R2历史兼容关闭，只续[原三组余项R4](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R4.md)；VIEW remediation-02验收缺口已由总控直接修复，[软件签收](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R2-acceptance.md)，173项172P/1skip；真实owner/生产接线待主线，不再派整改卡。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作以checkpoint37状态和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
+旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS remediation-01已续验，手册R4关闭，只续同包[唯一三组R2](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)；FIN remediation-04已由总控直接修复，[软件/来源说明签收](docs/implementation/reviews/parallel-packages/2026-10-12/FIN-REF-01-R4-acceptance.md)，103P；原90研究仍partial（72未开始），不派新卡；VIEW remediation-02验收缺口已由总控直接修复，[软件签收](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R2-acceptance.md)，173项172P/1skip；真实owner/生产接线待主线，不再派整改卡。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作以checkpoint38状态和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
 
-**唯一当前动作（2026-10-11 checkpoint37，工程动作沿checkpoint31候选）：** 接续[具名协议候选报告](docs/implementation/reviews/B01/vendor-http-identity-candidate-2026-10-11.md)与自有runs/b01-engineering-2026-10-11-01，不重建/重跑已绿上下文测试。先从Store.get_attempt_response的耐久原件核receipt，把真实response ID、physical attempt及request/response/receipt摘要接进Observation1.2；再贯通事前preregister1.2、binding1.1、StockWiki import、query2.6/capabilities1.2和inspection。候选当前只证明格式/冻结资源选择，尚未部署或授权执行；旧4blocked保持，不改其context/hash/收执、不补造ID，也不retroactive登记。
+**唯一当前动作（2026-10-12 checkpoint38，工程动作沿checkpoint31候选）：** 接续[具名协议候选报告](docs/implementation/reviews/B01/vendor-http-identity-candidate-2026-10-11.md)与自有runs/b01-engineering-2026-10-11-01，不重建/重跑已绿上下文测试。先从Store.get_attempt_response的耐久原件核receipt，把真实response ID、physical attempt及request/response/receipt摘要接进Observation1.2；再贯通事前preregister1.2、binding1.1、StockWiki import、query2.6/capabilities1.2和inspection。候选当前只证明格式/冻结资源选择，尚未部署或授权执行；旧4blocked保持，不改其context/hash/收执、不补造ID，也不retroactive登记。
 
 **同一B01节点随后完成：** 已知response_available但无有效答案的耐久逻辑终态、原owner retry/comparison决议，以及CNY refresh quote与旧USD兼容。整个软件候选完成后一次集中审查与受影响回归，核各源writer/HEAD/字节后正常精确源码交付；不增加helper门。原main PID71104已终态exit1，原13HTTP/26搜索、CNY1.268162全部settled、30题分母及原live/owner/work.sqlite保留，禁止重放one-shot控制器或重置账本。
 
-**软件工程通过后才运行：** 原公开owner preview→授权operator真实TTY确认→Q13 admission→原main/同账本及精确原ACK。固定IQS_01/02/04先保持原prompt/tool/thinking/cutoff仅max32768的pack3，再同32768的pack1，至少新增4物理请求；同policy_id升级cap/version并按owner quote留足余量，保留原13次及历史350模型/200搜索。此后再单变量比较来源导航、原生参数及其他模型/外部搜索，不能归功于一起改动。CATL/CSC缺真实subject不能造正例；金融/G3/F05/facts/UI/一键/全池仍开放。VIEW已由总控接管签收；OPS/FIN及其他尚未交接writer不抢写，收到交接验收若仍失败按用户最新要求总控直接修复、不追加卡。此前卡留历史，FACT R3不重做。
+**软件工程通过后才运行：** 原公开owner preview→授权operator真实TTY确认→Q13 admission→原main/同账本及精确原ACK。固定IQS_01/02/04先保持原prompt/tool/thinking/cutoff仅max32768的pack3，再同32768的pack1，至少新增4物理请求；同policy_id升级cap/version并按owner quote留足余量，保留原13次及历史350模型/200搜索。此后再单变量比较来源导航、原生参数及其他模型/外部搜索，不能归功于一起改动。CATL/CSC缺真实subject不能造正例；金融/G3/F05/facts/UI/一键/全池仍开放。VIEW与FIN软件已由总控接管签收；FIN原研究仍待主线接续；OPS及其他尚未交接writer不抢写，收到交接验收若仍失败按用户最新要求总控直接修复、不追加卡。此前卡留历史，FACT R3不重做。
 
 **历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 
@@ -2057,7 +2068,10 @@ B01大节点实际626P/2新断言F后仅受影响模块25P；原真实owner-per-
 
 ## Phase118：独立UI、金融参考与运维施工包
 
-Status: package_preparation_complete; VIEW_software_signedoff_coordinator_repair; OPS_pending_R2; FIN_pending_R4_R2_closed; owner_integration_pending
+Status: package_preparation_complete; VIEW_software_signedoff_coordinator_repair; OPS_pending_R2; FIN_software_source_signedoff_research_partial; owner_integration_pending
+
+- [x] 最新FIN R4直接修复软件/来源说明余项，103P；产品6ff65e8/交接1e7d617，167跟踪/90工件匹配，旧入口/锁不改；VIEW签收保持。
+- [ ] FIN原90题轻量研究尚72not_started，独立事实→评分、owner/生产接线与原B01实测未关闭。
 
 - [x] 按用户要求编制 VIEW-01、FIN-REF-01、OPS-DESK-01 三个较大且互不依赖的施工包；入口 [2026-10-11-wave2](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。工作根为 iqs-viewer-lab、iqs-financial-reference-lab、iqs-operations-lab，编制时目录均不存在（历史快照），不由总控创建或派发；后来OPS、FIN与VIEW均已有交接，当前状态见下方接收项。
 - [x] 自包含卡/共同规则明确只写自身新根，PWF/输入冻结/closed产物协议/CLI/一次集中TDD测试审查/strict清理/正常产品与交接提交；不占三生产仓或 EVID/FACT/MATRIX/LOAD/IDENT writer，不引入第二公司库、评分器、客户端、预算或启动器。
@@ -2066,7 +2080,7 @@ Status: package_preparation_complete; VIEW_software_signedoff_coordinator_repair
 - [x] OPS已集中只读验收：98跟踪/96工件/12输入匹配，原测试累计56P/1skip；14独立控制仅2正常符合，另2语义反例，四组R1已成卡。授权CodeGraph实际14文件/282节点/268边；不修改Lab产品。
 - [x] FIN集中只读验收：65跟踪/20输入匹配；57工件56匹配、isolation.md漂移，原31P；25独立CLI控制及另一个合成ROIC零分子控制、官方HTML核源发现未收口。CodeGraph已按用户授权建立，源业务字节不变。
 - [x] VIEW集中只读验收：124跟踪/122工件/18锁输入匹配，原71P/1skip（含真实Chromium）；15组CLI/6浏览器场景复现展示信任、原wire、比较证据、快照分页与详情交互五组根因，changes_requested。
-- [ ] OPS、FIN及VIEW由原harness各续[OPS R1](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1.md)/[FIN R1](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R1.md)/[VIEW R1](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R1.md)，保留有效部分；每包同候选一次集中验收，不增加小门。总控将VIEW接StockWiki、FIN接B01盲评、OPS接发布后的唯一运维入口。不自行关闭U/G3/F05/G5/G6/TH-IN/一键/全池门，不另设helper审查。主线工程仍为Next Step的B01修复和真实对照。
+- [ ] 历史初轮分派（已被checkpoint38的VIEW/FIN软件签收替代，OPS仍原writer；真实接线与研究未完）：OPS、FIN及VIEW由原harness各续[OPS R1](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1.md)/[FIN R1](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R1.md)/[VIEW R1](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R1.md)，保留有效部分；每包同候选一次集中验收，不增加小门。总控将VIEW接StockWiki、FIN接B01盲评、OPS接发布后的唯一运维入口。不自行关闭U/G3/F05/G5/G6/TH-IN/一键/全池门，不另设helper审查。主线工程仍为Next Step的B01修复和真实对照。
 
 
 ## 2026-10-11 — OPS-DESK-01集中验收与R1交接

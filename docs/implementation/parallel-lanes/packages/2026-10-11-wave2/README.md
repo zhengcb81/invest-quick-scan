@@ -41,3 +41,5 @@ python -B -X utf8 C:/Users/郑曾波/Projects/invest-quick-scan/scripts/parallel
 2026-10-11最新FIN R3：81P/47原CLI对通过，前10边界已修、R2历史兼容关闭；R1研究/来源同步、R3方法语义两项、R4累计预算/声明仅续[同包三组余项R4](../../../reviews/parallel-packages/2026-10-11/FIN-REF-01-R4.md)。72如实deferred可partial保留，原研究范围未自动缩减。VIEW/OPS余项R2仍原writer，冻结catalog/inputs.lock/validation不变，不关闭金融/生产门。
 
 2026-10-11最新VIEW：按用户新要求总控直接接管修复而非再派卡，[软件签收](../../../reviews/parallel-packages/2026-10-11/VIEW-01-R2-acceptance.md)。源产品cd7bf1a/交接cfdfd70，173项172P/1skip（24真实Chromium）、223工件匹配；原R1清单恢复，本轮清单实交。真实owner/生产UI仍pending。FIN/OPS未交接writer不抢；后续交接验收失败由总控直接修，不追加卡。原manifest/inputs.lock/validation保持编制快照，不回写结果。
+
+2026-10-12最新FIN R4：[总控直接修复签收](../../../reviews/parallel-packages/2026-10-12/FIN-REF-01-R4-acceptance.md)，不派R5。产品6ff65e8/交接HEAD1e7d617，103P、167跟踪/90工件SHA匹配；旧47对46旧期望保持，原非法零OCF/capex→FCF正例正确拒，合法零NOPAT ROIC0/0替代。研究9completed/9gap/72not_started，原90范围仍pending，金融/F05/G3/owner生产门不关闭。VIEW软件保持，OPS未交接writer不抢。冻catalog/锁/编制validation不回写。
