@@ -1,3 +1,14 @@
+> 当前主线（2026-10-11 checkpoint36）：FIN remediation-03集中续验changes_requested；81P、47/47既有CLI对保留，上一轮10边界全修，R2历史兼容关闭。只续R1研究/来源同步、R3两个方法语义问题、R4累计预算/声明余项同包R4。72not_started如实deferred但原范围仍pending。VIEW/OPS R2归原writer。B01沿checkpoint31隔离候选唯一工程动作未部署，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；金融/G3/F05/facts/生产UI/一键/全池仍开放。旧当前段为历史，以本段及唯一Next Step为准。
+
+## 2026-10-11 checkpoint36 — FIN R3集中续验完成
+
+- FIN实际branch codex/fin-ref-01，product b86b25f为祖先、delivery2b9b993、HEAD04633a7；131跟踪/33工件/20原锁bytes/raw SHA匹配，源仅既有.codegraph/，无remote。pack1.1.0/ledger1.0.0/CLI声明1.3.0；原交接/1.0 schema/锁保持。公开handoff PID50628/exit0只shape/声明范围。
+- 完整原suite PID62548/exit0，81P/0skip、进程14.10秒（pytest13.20秒）；旧37对和前10边界47/47全部符合，R2旧hash/1.1读取/导出reader关闭，1e999及过限锁读取前拒亦关闭。98次公开validate/export含额外2控制，不作金融准确率。
+- 原R3语义余项仍真实复现：FCF改metric/ref成ROIC可发布（0/0），合法同比inputs数组换序被误拒（2/2）。R4原超限实例关闭，但累计读取预算未公布/实施；Git实际37路径/声明29漏8元数据/工具。只续原三组余项R4，不重做已绿兼容/81测试或加helper门。
+- 一次原包独立agent官方HTML审查：9completed/9gap/72not_started、90题/18深核/26facts保留，72如实deferred可partial接收，原研究范围未缩、仍pending。19访问摘要和7unique-source-ID映射分开，但Item1A截断与Note6已读、CSC PDF-only及未研究review旧句仍需同步。原评分null不强填、不授owner金融资格。
+- 自有runs/fin-r3-acceptance-2026-10-11-01清理223文件153目录；超限JSON/复制锁根/导出/pytest产物已删，留小反例/原日志/副本。131源与副本/HEAD/status未变，CIM owned Python0。源.venv/.codegraph/其他writer README/B01保持；模型/付费搜索/公司文档下载/生产DB/外仓业务写0。
+- 交付：[R3集中报告](reviews/parallel-packages/2026-10-11/FIN-REF-01-R3-acceptance.md)、[独立核源](reviews/parallel-packages/2026-10-11/FIN-REF-01-R3-independent-review.md)、[仅三组余项R4](reviews/parallel-packages/2026-10-11/FIN-REF-01-R4.md)。9份文档正常本地提交，hash以自有publication-local-result.json为准；远端仍pending_scope_authorization_after_prior_rejection，不绕过自动审批或称全同步。主线B01工程动作保持，原writer继续独占Lab。
+
 > 当前主线（2026-10-11 checkpoint35）：FIN remediation-02已集中续验changes_requested；73P和37/37既有独立CLI对保留，9已研究/9缺口/72未开始据实分开，原四组余项只续同包R3。VIEW余项R2、OPS三组R2仍归原writer；B01沿checkpoint31隔离候选唯一工程动作，未部署。原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变。金融/G3/F05/facts/生产UI/一键/全池仍开放。以下旧当前段为历史，以本段与唯一Next Step为准。
 
 ## 2026-10-11 checkpoint35 — FIN R2集中续验完成
