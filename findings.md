@@ -1,4 +1,4 @@
-> 当前主线（2026-10-11 checkpoint26）：C06/W15步骤4的软件交付已完成。155源码正常提交（QA9830f46/SW6c4ee58/IQSf95550f），QA/IQS远端已核；SW无remote只本地提交。两个自有测试根已严格清除43936文件/31127子目录/6链接/2根，编译临时根也已清除；原guard/合成账本、原RED/逐批GREEN及真实owner输出保留。没有收费API、生产DB/名单写入。整体C06金融资格、G3/F05、真实准确性、facts/UI/一键/全池门仍开放。下一动作是B01当前公开链三公司小批次预检/冻结；EVID-R2与FACT-R3等真实新交接，三新Lab由用户认领未自动派发。本批文档Git终态以progress实际回执为准；下方较早当前/唯一下一步均为历史。
+> 当前主线（2026-10-11 checkpoint26）：C06/W15步骤4的软件交付已完成。155源码正常提交（QA9830f46/SW6c4ee58/IQSf95550f），QA/IQS远端已核；SW无remote只本地提交。两个自有测试根已严格清除43936文件/31127子目录/6链接/2根，编译临时根也已清除；原guard/合成账本、原RED/逐批GREEN及真实owner输出保留。没有收费API、生产DB/名单写入。整体C06金融资格、G3/F05、真实准确性、facts/UI/一键/全池门仍开放。下一动作是B01当前公开链三公司小批次预检/冻结；EVID-R2与FACT-R3等真实新交接，三新Lab已由用户派发，等待各owner交接。本批文档Git终态以progress实际回执为准；下方较早当前/唯一下一步均为历史。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 
@@ -2250,3 +2250,10 @@ strict dry真实会话10083 exit0，原生逐字/文件ID/单链接43936项全�
 ## 2026-10-11 checkpoint26 — 正常文档发布已核实
 
 7份已授权Markdown已实际正常提交并推送dd045f3074baaf4d34cee90bd123b3947263eebb，真实ls-remote master一致；release-planning-publication-01.json绑定16个原生Git命令、真实PID/终态/原stdout/stderr。仅这7路径入提交，原hooks正常，私有原件/DB/golden/运行根和他人2026-10-10 README未入。Phase116软件源交付、strict清理和该文档发布现已有实际证据；金融/G3/F05/B01/L03/facts/UI/一键/全池仍未完成。下一步只接原B01当前生产入口三公司小批次预检/输入冻结，旧B01/Phase93/96实验不重跑、200家不立即启动。所有七个既知key名在当前进程中均检测到，仅bool检查，无key读取/记录/收费请求；必须使用本run配置并保留用户顺位。原CLI batch_file是多公司输入，不凭它声称题目pack已生产接线；先核实际题包/检查点/ACK契约再对照，复用StockQA执行器，不造第二客户端。
+
+
+## 2026-10-11 — 三个独立包已由用户派发
+
+用户直接确认MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01三个包已发出，状态为human_dispatched/awaiting_handoff；尚无产品交接或实际测试结果。总控避开三个Lab写根，不自动重复派发、不代实现。README与dispatch-status.md记录当前协调状态，原manifest/锁/validation保留编制时事实。41锁内文件bytes/raw SHA全部匹配；本次零产品测试、收费API及外仓写入。主线仍为B01当前公开链三公司小批次预检和冻结，不因派发关闭G3/F05/facts/UI/一键/全池门。
+
+恢复读取时首次输出包含过量未跟踪状态而截断，改为限定标题/跟踪状态读取；一次按带空格Phase 115标题定位失败，按真实Phase115标题继续，零产品写入。

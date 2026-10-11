@@ -1,4 +1,4 @@
-> 当前主线（2026-10-11 checkpoint26）：C06/W15步骤4的软件交付已完成。155源码正常提交（QA9830f46/SW6c4ee58/IQSf95550f），QA/IQS远端已核；SW无remote只本地提交。两个自有测试根已严格清除43936文件/31127子目录/6链接/2根，编译临时根也已清除；原guard/合成账本、原RED/逐批GREEN及真实owner输出保留。没有收费API、生产DB/名单写入。整体C06金融资格、G3/F05、真实准确性、facts/UI/一键/全池门仍开放。下一动作是B01当前公开链三公司小批次预检/冻结；EVID-R2与FACT-R3等真实新交接，三新Lab由用户认领未自动派发。本批文档Git终态以progress实际回执为准；下方较早当前/唯一下一步均为历史。
+> 当前主线（2026-10-11 checkpoint26）：C06/W15步骤4的软件交付已完成。155源码正常提交（QA9830f46/SW6c4ee58/IQSf95550f），QA/IQS远端已核；SW无remote只本地提交。两个自有测试根已严格清除43936文件/31127子目录/6链接/2根，编译临时根也已清除；原guard/合成账本、原RED/逐批GREEN及真实owner输出保留。没有收费API、生产DB/名单写入。整体C06金融资格、G3/F05、真实准确性、facts/UI/一键/全池门仍开放。下一动作是B01当前公开链三公司小批次预检/冻结；EVID-R2与FACT-R3等真实新交接，三新Lab已由用户派发，等待各owner交接。本批文档Git终态以progress实际回执为准；下方较早当前/唯一下一步均为历史。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 
@@ -417,9 +417,9 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-本批并行文档交付已完成；主控已完成checkpoint26软件源交付/清理，下一动作以本节当前段为准。三包的实施/认领在各自新根进行，未自动启动，也不是新的主线审查门。
+本批并行文档交付已完成；主控已完成checkpoint26软件源交付/清理，下一动作以本节当前段为准。三包已由用户派发，各自在独占新根实施和交接；总控不重复派发或占用writer，也不是新的主线审查门。
 
-**唯一当前动作（2026-10-11 checkpoint26）：** 接原B01当前公开生产链的三公司小批次预检与输入冻结；复用既有执行/费用/ACK，不立即发200家或重复旧实验。EVID-R2/FACT-R3等实际新交接，三新Lab由用户认领，金融/G3/F05/facts/UI/一键/全池门保持。
+**唯一当前动作（2026-10-11 checkpoint26）：** 接原B01当前公开生产链的三公司小批次预检与输入冻结；复用既有执行/费用/ACK，不立即发200家或重复旧实验。EVID-R2/FACT-R3等实际新交接，三新Lab已由用户派发，等待交接；金融/G3/F05/facts/UI/一键/全池门保持。
 
 **历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 
@@ -1869,12 +1869,13 @@ C06同一整节点发布delta只读复核已收到：155候选0漂移、当前�
 编制错误保留：先猜schema路径不存在，按公开CLI引用定位；元数据控制器误用golden.file而原字段是path，在输出前失败后修正；一次apply_patch把整行锚点写成前缀被拒，零写入。均为文档控制器错误，不是产品RED。既有2026-10-10/README.md他人改动、私有intake/运行根与nul/opencode均保留。主线继续checkpoint24；TH/IN、G3/F05、真实准确性、facts/UI、200家公司试点与全池门不因本批关闭。
 
 ### Phase115: 独立比较、负载与身份边界施工包
-Status: complete_for_package_preparation_only; workers_not_dispatched; product_implementation_not_started
+Status: package_preparation_complete; human_dispatched_awaiting_worker_handoff; product_acceptance_pending
 - [x] 只读核计划/现有接口，选择三个新根并明示任务支撑与实际owner边界。
 - [x] 写独立施工卡、共同规则、41输入锁、manifest及三个1.0.0交接模板。
 - [x] 一次集中文档核验：原字节/根隔离/17链接及三个公开handoff CLI exit0，原过程终态留档。
 - [x] 同步PWF和新agent交接；保留主线checkpoint24及既有EVID/FACT整改，不新增小节点审查。
-- [ ] 用户各自认领后，由各独立harness在对应新根实施并交接；总控接收和权威owner集成尚未运行。
+- [x] 2026-10-11用户确认三个包均已派发；总控避开三个Lab写根。
+- [ ] 各独立harness实施并交接；总控包级接收和权威owner集成尚未运行。
 
 本批首次正常Git预检因原生stdout的CRLF被diff --check当尾随空白而停在commit前；原日志保留byte SHA，以仅本批verification/*.log的binary归档属性表示原证据，未跳hooks或改产品规则，随后正常重试提交预检。
 
