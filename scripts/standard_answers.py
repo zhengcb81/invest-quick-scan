@@ -302,6 +302,11 @@ def validate_observation(record, *, require_published=False, expected_observatio
     return record
 
 
+def question_field_id(question):
+    """One original field mapping for observations and frozen import contracts."""
+    return question.get('field_id', question.get('metric_id'))
+
+
 def observation_metadata(manifest, question, run_context):
     """Derive metadata from an already validated frozen manifest, without execution.
 
@@ -316,7 +321,7 @@ def observation_metadata(manifest, question, run_context):
     record = dict(schema_version='1.1.0' if published else '1.0.0', entity_id=profile['entity_id'],
                   security_id=profile.get('security_id') if question['scope'] == 'security' else None,
                   segment_id=profile.get('segment_id'),
-                  field_id=question.get('field_id', question.get('metric_id')),
+                  field_id=question_field_id(question),
                   construct_id=question.get('construct_id'), question_id=question['id'],
                   question_version=question['rubric_version'], template_version=manifest['template_version'],
                   method_id=('module-locked-v1/' if published else '') + manifest['method_id'] + '/' + method_tail,

@@ -1,0 +1,693 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:quick-scan:refresh:1",
+  "title": "Exact-snapshot controlled refresh preview; no authentication or approval authority",
+  "$defs": {
+    "Request": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "iqs.refresh_request/1.0.0"
+        },
+        "operation": {
+          "const": "request_refresh"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "consumer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "source_query": {
+          "$ref": "urn:iqs:quick-scan:query:2#/$defs/Request"
+        },
+        "subject_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "urn:iqs:quick-scan:query:2#/$defs/SubjectRef"
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "field_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "minItems": 1,
+          "maxItems": 200,
+          "uniqueItems": true
+        },
+        "origin_task_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "request_id",
+        "consumer_id",
+        "requested_at",
+        "source_query",
+        "subject_refs",
+        "field_ids",
+        "origin_task_id",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "OwnerState": {
+      "type": "object",
+      "properties": {
+        "store_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "policy_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "policy_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "ttl_hours": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "member_versions": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 100,
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "anchors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject_ref": {
+                "$ref": "urn:iqs:quick-scan:query:2#/$defs/SubjectRef"
+              },
+              "decision_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "anchor_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "manifest_raw_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "identity_revision": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "subject_ref",
+              "decision_id",
+              "anchor_version",
+              "manifest_raw_sha256",
+              "identity_revision"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject_ref": {
+                "$ref": "urn:iqs:quick-scan:query:2#/$defs/SubjectRef"
+              },
+              "field_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "question_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "decision": {
+                "enum": [
+                  "reuse",
+                  "dispatch_new_work",
+                  "dispatch_new_generation",
+                  "resume_existing_work",
+                  "deferred_unknown",
+                  "deferred_scope_unbound",
+                  "manual_refresh_required"
+                ]
+              },
+              "generation": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "reuse_observation_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^obs_[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "existing_work_status": {
+                "enum": [
+                  null,
+                  "pending",
+                  "leased",
+                  "uncertain",
+                  "result_ready",
+                  "delivered",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "subject_ref",
+              "field_id",
+              "question_id",
+              "decision",
+              "generation",
+              "reuse_observation_id",
+              "existing_work_status"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 20000,
+          "uniqueItems": true
+        },
+        "quote": {
+          "type": "object",
+          "properties": {
+            "currency": {
+              "const": "USD"
+            },
+            "max_cost_micros": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_http_requests": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "budget_state_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "budget_available": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "currency",
+            "max_cost_micros",
+            "max_http_requests",
+            "budget_state_sha256",
+            "budget_available"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "store_id",
+        "policy_id",
+        "policy_version",
+        "policy_sha256",
+        "provider",
+        "model",
+        "ttl_hours",
+        "member_versions",
+        "anchors",
+        "items",
+        "quote"
+      ],
+      "additionalProperties": false
+    },
+    "Preview": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "stockwiki.refresh_preview/1.0.0"
+        },
+        "operation": {
+          "const": "request_refresh"
+        },
+        "preview_id": {
+          "type": "string",
+          "pattern": "^rv1_[a-f0-9]{64}$"
+        },
+        "request_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "scope_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "owner_state_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_snapshot_id": {
+          "type": "string",
+          "pattern": "^snap2_[a-f0-9]{64}$"
+        },
+        "store_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "policy_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "policy_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject_ref": {
+                "$ref": "urn:iqs:quick-scan:query:2#/$defs/SubjectRef"
+              },
+              "field_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "question_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "decision": {
+                "enum": [
+                  "reuse",
+                  "dispatch_new_work",
+                  "dispatch_new_generation",
+                  "resume_existing_work",
+                  "deferred_unknown",
+                  "deferred_scope_unbound",
+                  "manual_refresh_required"
+                ]
+              },
+              "generation": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "reuse_observation_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^obs_[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "existing_work_status": {
+                "enum": [
+                  null,
+                  "pending",
+                  "leased",
+                  "uncertain",
+                  "result_ready",
+                  "delivered",
+                  "failed",
+                  "cancelled"
+                ]
+              }
+            },
+            "required": [
+              "subject_ref",
+              "field_id",
+              "question_id",
+              "decision",
+              "generation",
+              "reuse_observation_id",
+              "existing_work_status"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 20000,
+          "uniqueItems": true
+        },
+        "quote": {
+          "type": "object",
+          "properties": {
+            "currency": {
+              "const": "USD"
+            },
+            "max_cost_micros": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max_http_requests": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "budget_state_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "budget_available": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "currency",
+            "max_cost_micros",
+            "max_http_requests",
+            "budget_state_sha256",
+            "budget_available"
+          ],
+          "additionalProperties": false
+        },
+        "status": {
+          "enum": [
+            "ready",
+            "noop",
+            "blocked"
+          ]
+        },
+        "requires_user_confirmation": {
+          "type": "boolean"
+        },
+        "dispatch_started": {
+          "const": false
+        },
+        "API_requests": {
+          "const": 0
+        }
+      },
+      "required": [
+        "protocol",
+        "operation",
+        "preview_id",
+        "request_sha256",
+        "scope_sha256",
+        "owner_state_sha256",
+        "source_snapshot_id",
+        "store_id",
+        "policy_id",
+        "policy_version",
+        "policy_sha256",
+        "provider",
+        "model",
+        "created_at",
+        "expires_at",
+        "items",
+        "quote",
+        "status",
+        "requires_user_confirmation",
+        "dispatch_started",
+        "API_requests"
+      ],
+      "additionalProperties": false
+    },
+    "OwnerPolicy": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "stockwiki.refresh_owner_policy/1.0.0"
+        },
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "policy_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "owner_principal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "allowed_consumer_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "minItems": 1,
+          "maxItems": 20,
+          "uniqueItems": true
+        },
+        "universe_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "field_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "minItems": 0,
+          "maxItems": 4096,
+          "uniqueItems": true
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "ttl_hours": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8760
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject_ref": {
+                "$ref": "urn:iqs:quick-scan:query:2#/$defs/SubjectRef"
+              },
+              "subject_key": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "scope": {
+                "enum": [
+                  "entity",
+                  "segment"
+                ]
+              },
+              "scope_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              }
+            },
+            "required": [
+              "subject_ref",
+              "subject_key",
+              "scope",
+              "scope_id"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "qa": {
+          "type": "object",
+          "properties": {
+            "code_root": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "work_store": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "budget_policy_file": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1024
+            },
+            "policy_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "route_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "provider_config_ref": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            }
+          },
+          "required": [
+            "code_root",
+            "work_store",
+            "budget_policy_file",
+            "policy_id",
+            "route_id",
+            "provider_config_ref"
+          ],
+          "additionalProperties": false
+        },
+        "route_resolution": {
+          "enum": [
+            "explicit_routes",
+            "current_owner_members"
+          ]
+        },
+        "field_permission": {
+          "enum": [
+            "explicit_fields",
+            "current_manifest"
+          ]
+        }
+      },
+      "required": [
+        "protocol",
+        "policy_id",
+        "policy_version",
+        "owner_principal",
+        "allowed_consumer_ids",
+        "universe_id",
+        "field_ids",
+        "provider",
+        "model",
+        "ttl_hours",
+        "routes",
+        "qa"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Request"
+    },
+    {
+      "$ref": "#/$defs/OwnerState"
+    },
+    {
+      "$ref": "#/$defs/Preview"
+    },
+    {
+      "$ref": "#/$defs/OwnerPolicy"
+    }
+  ]
+}

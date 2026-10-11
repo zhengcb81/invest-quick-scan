@@ -33,8 +33,17 @@ LEGACY_BASELINE_IDS = frozenset(
 )
 
 
+def _filesystem_path(path: Path) -> Path:
+    """Use Windows extended paths only for native I/O, never wire references."""
+    absolute = os.path.abspath(path)
+    if os.name == "nt" and not absolute.startswith("\\\\?\\"):
+        absolute = ("\\\\?\\UNC\\" + absolute[2:] if absolute.startswith("\\\\")
+                    else "\\\\?\\" + absolute)
+    return Path(absolute)
+
+
 def _read_json(path: Path) -> dict:
-    return json.loads(path.read_bytes().decode("utf-8-sig"),
+    return json.loads(_filesystem_path(path).read_bytes().decode("utf-8-sig"),
                       object_pairs_hook=contract._unique_object)
 
 
@@ -46,8 +55,9 @@ def _reject_symlink_components(path: Path, root: Path, message: str) -> None:
         raise ValueError(message)
     candidate = path_abs
     while candidate != root_abs:
-        is_junction = getattr(candidate, "is_junction", None)
-        if candidate.is_symlink() or (callable(is_junction) and is_junction()):
+        native = _filesystem_path(candidate)
+        is_junction = getattr(native, "is_junction", None)
+        if native.is_symlink() or (callable(is_junction) and is_junction()):
             raise ValueError(message)
         candidate = candidate.parent
 
@@ -60,41 +70,48 @@ def _safe_path(root: Path, reference: str) -> Path:
     path = root / reference
     releases = root / "questions" / "releases"
     _reject_symlink_components(path, root, "release archive symlink is forbidden")
-    if not path.resolve().is_relative_to(releases.resolve()):
+    if not _filesystem_path(path).resolve().is_relative_to(_filesystem_path(releases).resolve()):
         raise ValueError("release artifact leaves the archive directory")
     return path
 
 
 def _atomic_json(path: Path, obj: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+    native = _filesystem_path(path)
+    native.parent.mkdir(parents=True, exist_ok=True)
     raw = json.dumps(obj, ensure_ascii=False, sort_keys=True, indent=2).encode("utf-8") + b"\n"
-    with tempfile.NamedTemporaryFile(dir=path.parent, prefix=".publish-", delete=False) as handle:
+    with tempfile.NamedTemporaryFile(dir=native.parent, prefix=".publish-", delete=False) as handle:
         handle.write(raw)
+        handle.flush()
+        os.fsync(handle.fileno())
         temp_path = Path(handle.name)
     try:
-        os.replace(temp_path, path)
+        os.replace(temp_path, native)
     finally:
         if temp_path.exists():
             temp_path.unlink()
 
 
 def _write_immutable(path: Path, raw: bytes) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if path.exists():
-        if path.read_bytes() != raw:
+    native = _filesystem_path(path)
+    native.parent.mkdir(parents=True, exist_ok=True)
+    if native.exists():
+        if native.read_bytes() != raw:
             raise ValueError(f"immutable release artifact changed: {path.name}")
         return
-    with tempfile.NamedTemporaryFile(dir=path.parent, prefix=".publish-", delete=False) as handle:
+    with tempfile.NamedTemporaryFile(dir=native.parent, prefix=".publish-", delete=False) as handle:
         handle.write(raw)
+        handle.flush()
+        os.fsync(handle.fileno())
         temp_path = Path(handle.name)
     try:
-        # The caller checks for an existing artifact before publishing; this
-        # replace is only of a newly created content-addressed path.
-        if path.exists():
-            if path.read_bytes() != raw:
+        # Link an already complete same-directory temporary file without
+        # replacing a concurrent winner. An unsupported filesystem fails
+        # closed; there is no destructive replace fallback for archives.
+        try:
+            os.link(temp_path, native)
+        except FileExistsError:
+            if native.read_bytes() != raw:
                 raise ValueError("immutable release artifact changed concurrently")
-        else:
-            os.replace(temp_path, path)
     finally:
         if temp_path.exists():
             temp_path.unlink()
@@ -116,9 +133,11 @@ def source_catalog(root: Path = ROOT) -> tuple[dict, dict[str, dict], dict[str, 
             raise ValueError("duplicate module ID or invalid catalog path")
         path = root / reference
         _reject_symlink_components(path, root, "catalog module symlink is forbidden")
-        if not path.resolve().is_relative_to((root / "questions").resolve()) or path.is_symlink():
+        native = _filesystem_path(path)
+        if (not native.resolve().is_relative_to(_filesystem_path(root / "questions").resolve())
+                or native.is_symlink()):
             raise ValueError("catalog module path leaves questions/ or is a symlink")
-        raw = path.read_bytes()
+        raw = native.read_bytes()
         module = json.loads(raw.decode("utf-8-sig"), object_pairs_hook=contract._unique_object)
         if (module.get("module_id") != module_id or module.get("kind") != item.get("kind")
                 or item.get("question_count") != len(module.get("questions", []))):
@@ -129,7 +148,7 @@ def source_catalog(root: Path = ROOT) -> tuple[dict, dict[str, dict], dict[str, 
 
 def _artifact_loader(root: Path):
     def load(reference: str) -> bytes:
-        return _safe_path(root, reference).read_bytes()
+        return _filesystem_path(_safe_path(root, reference)).read_bytes()
     return load
 
 
@@ -158,7 +177,7 @@ def _legacy_baseline_hashes(root: Path) -> dict[str, str]:
     path = Path(root) / "schemas" / "quick_scan" / "module-legacy-baseline.json"
     _reject_symlink_components(path, root, "legacy module baseline symlink is forbidden")
     try:
-        raw = path.read_bytes()
+        raw = _filesystem_path(path).read_bytes()
     except OSError as exc:
         raise ValueError("legacy module baseline unavailable") from exc
     if hashlib.sha256(raw).hexdigest() != LEGACY_BASELINE_SHA256:
@@ -279,7 +298,7 @@ def load_package(package_id: str, *, root: Path = ROOT) -> tuple[dict, dict[str,
 
 def _load_routing_policy(root: Path, release: dict, modules: dict) -> dict:
     from routing import validate_policy
-    raw = _safe_path(root, release["routing_policy_ref"]).read_bytes()
+    raw = _filesystem_path(_safe_path(root, release["routing_policy_ref"])).read_bytes()
     if hashlib.sha256(raw).hexdigest() != release["routing_policy_sha256"]:
         raise ValueError("routing policy archive hash mismatch")
     policy = json.loads(raw.decode("utf-8"), object_pairs_hook=contract._unique_object)
@@ -312,7 +331,7 @@ def observation_ingest_ready(package: dict) -> bool:
 
 
 def _historical_packages(root: Path) -> list[tuple[dict, dict[str, dict], dict, dict]]:
-    package_dir = root / "questions" / "releases" / "packages"
+    package_dir = _filesystem_path(root / "questions" / "releases" / "packages")
     if not package_dir.exists():
         return []
     packages = []

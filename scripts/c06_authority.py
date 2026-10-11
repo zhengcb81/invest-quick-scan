@@ -48,7 +48,8 @@ def _run(context):
 
 
 def create_authority(manifest, *, manifest_file_sha256, identity_snapshot_sha256,
-                     run_context, contract_versions, producer):
+                     run_context, contract_versions, producer, subject_binding=None,
+                     listing_bindings=None, root=ROOT):
     """Export IQS-owned metadata; the receiver independently checks both file hashes.
 
     Identity hash is a binding, never a verified identity attestation. No answer
@@ -59,8 +60,8 @@ def create_authority(manifest, *, manifest_file_sha256, identity_snapshot_sha256
         raise ValueError('standard-1 frozen manifest required')
     if 'module_package_id' not in manifest:
         raise ValueError('released scoring module package required')
-    question_manifest.validate_manifest_metric_contract(manifest, root=ROOT)
-    package, _, _, _ = module_registry.load_package(manifest['module_package_id'], root=ROOT)
+    question_manifest.validate_manifest_metric_contract(manifest, root=root)
+    package, _, _, _ = module_registry.load_package(manifest['module_package_id'], root=root)
     if not module_registry.observation_ingest_ready(package):
         raise ValueError('historical release cannot issue new observations')
     for value, label in ((manifest_file_sha256, 'manifest file hash'),
@@ -117,8 +118,11 @@ def create_authority(manifest, *, manifest_file_sha256, identity_snapshot_sha256
         'metric_registry_sha256': answers.digest(resources['questions/metric-registry.json']),
         'questions': questions,
     }
+    if subject_binding is not None:
+        from subject_context_export import attach_subject_context
+        context=attach_subject_context(context,manifest,subject_binding,listing_bindings=listing_bindings)
     return {
-        'schema_version': '2.0.0',
+        'schema_version': '3.0.0' if subject_binding is not None else '2.0.0',
         'contract_versions': copy.deepcopy(contract_versions),
         'capabilities': ['entity_security_identity_v1', 'standard_observation_v1', 'score_v1'],
         'producer': copy.deepcopy(producer),
@@ -165,6 +169,9 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description='Export IQS frozen context for StockQA authority v2; no identity attestation/HTTP.')
     for name in ('manifest', 'identity', 'run', 'versions', 'producer', 'output'):
         parser.add_argument('--' + name, required=True)
+    parser.add_argument('--subject-binding')
+    parser.add_argument('--listing-bindings')
+    parser.add_argument('--release-root',type=Path,default=ROOT)
     args = parser.parse_args(argv)
     try:
         manifest, manifest_hash = _read(args.manifest)
@@ -176,13 +183,16 @@ def main(argv=None):
         producer, _ = _read(args.producer)
         document = create_authority(manifest, manifest_file_sha256=manifest_hash,
                                     identity_snapshot_sha256=identity_hash,
-                                    run_context=run, contract_versions=versions, producer=producer)
+                                    run_context=run, contract_versions=versions, producer=producer,
+                                    subject_binding=_read(args.subject_binding)[0] if args.subject_binding else None,
+                                    listing_bindings=_read(args.listing_bindings)[0] if args.listing_bindings else None,
+                                    root=args.release_root)
         _publish(args.output, document)
     except (OSError, ValueError) as error:
         # No source bodies, company answers or credential bytes in diagnostics.
         print(f'c06_authority_export_refused: {type(error).__name__}', file=sys.stderr)
         return 2
-    print(json.dumps({'status': 'exported', 'schema_version': '2.0.0',
+    print(json.dumps({'status': 'exported', 'schema_version': document['schema_version'],
                       'observation_context_sha256': document['observation_context_sha256'],
                       'network_calls': 0, 'identity_attested': False}, sort_keys=True))
     return 0

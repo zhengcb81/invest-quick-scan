@@ -28,7 +28,8 @@ def main():
     route = routing.resolve_route_decision(request["identity"], package_id=package["package_id"],
                                           now_utc=request["now"], root=root)
     qs.ROOT = root  # Isolated owner configuration, no mocked product behavior.
-    qs.compose_from_route(route, root / "run", now_utc=request["now"], expected_route_decision_id=route["decision_id"])
+    qs.compose_from_route(route, root / "run", now_utc=request["now"], expected_route_decision_id=route["decision_id"],
+                          answer_format=request.get('answer_format','screening-1'))
     (root / "run/route.json").write_bytes(json.dumps(route, ensure_ascii=False, indent=2).encode("utf-8") + b"\r\n")
     print(json.dumps({"decision_id": route["decision_id"], "synthetic_company": True, "model_API_requests": 0}))
 

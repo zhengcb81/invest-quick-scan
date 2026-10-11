@@ -1,0 +1,1049 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://invest-quick-scan.local/schemas/query-pool-qualified-2.2.0.json",
+  "title": "Current independently qualified pool query 2.2.0",
+  "$defs": {
+    "RuleOutcome": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "unknown"
+      ]
+    },
+    "ComparisonOperator": {
+      "type": "string",
+      "enum": [
+        ">",
+        ">=",
+        "<",
+        "<=",
+        "==",
+        "!="
+      ]
+    },
+    "FieldThresholdCondition": {
+      "type": "object",
+      "required": [
+        "field",
+        "op",
+        "value"
+      ],
+      "properties": {
+        "field": {
+          "type": "string",
+          "minLength": 1
+        },
+        "op": {
+          "$ref": "#/$defs/ComparisonOperator"
+        },
+        "value": {
+          "type": "number"
+        },
+        "critical_risk_gate": {
+          "type": "boolean",
+          "default": false,
+          "description": "若为true，无论其它条件如何，此字段不满足时必须为fail并标记致命风险（SC-09, RULE-02）。"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CompositeRule": {
+      "type": "object",
+      "oneOf": [
+        {
+          "required": [
+            "all"
+          ]
+        },
+        {
+          "required": [
+            "any"
+          ]
+        },
+        {
+          "required": [
+            "not"
+          ]
+        },
+        {
+          "required": [
+            "condition"
+          ]
+        }
+      ],
+      "properties": {
+        "all": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/CompositeRule"
+          },
+          "description": "合取条件（三值逻辑优先级：fail > unknown > pass）"
+        },
+        "any": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/CompositeRule"
+          },
+          "description": "析取条件（三值逻辑优先级：pass > unknown > fail）"
+        },
+        "not": {
+          "$ref": "#/$defs/CompositeRule",
+          "description": "否定条件（pass<->fail, unknown保持unknown）"
+        },
+        "condition": {
+          "$ref": "#/$defs/FieldThresholdCondition"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ScreeningPolicy": {
+      "type": "object",
+      "required": [
+        "policy_id",
+        "version",
+        "name",
+        "root_rule"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_]+$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string"
+        },
+        "root_rule": {
+          "$ref": "#/$defs/CompositeRule"
+        },
+        "critical_gates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FieldThresholdCondition"
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "SubjectRef": {
+      "type": "object",
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "analysis_subject_id": {
+          "type": "string",
+          "pattern": "^ASJ_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "analysis_subject_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "primary_issuer_id": {
+          "type": "string",
+          "pattern": "^ENT_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "perimeter_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "scope": {
+          "enum": [
+            "entity",
+            "security",
+            "segment"
+          ]
+        },
+        "scope_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "security_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "listing_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "segment_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 160
+        }
+      },
+      "required": [
+        "entity_id",
+        "analysis_subject_id",
+        "analysis_subject_revision",
+        "primary_issuer_id",
+        "perimeter_sha256",
+        "scope",
+        "scope_id",
+        "security_id",
+        "listing_id",
+        "segment_id"
+      ],
+      "additionalProperties": false
+    },
+    "SearchPayload": {
+      "type": "object",
+      "properties": {
+        "universe_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "field_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "maxItems": 200,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "information_cutoff": {
+          "type": "string",
+          "format": "date"
+        },
+        "model_filter": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "provider": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "model_resolved": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                }
+              },
+              "required": [
+                "provider",
+                "model_resolved"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "filters": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "markets": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "CN",
+                  "HK",
+                  "US"
+                ]
+              },
+              "maxItems": 3,
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "industries": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 30,
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "stages": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 20,
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "company_types": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 20,
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "score_policy": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ScreeningPolicy"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "text",
+            "markets",
+            "industries",
+            "stages",
+            "company_types",
+            "score_policy"
+          ],
+          "additionalProperties": false
+        },
+        "view": {
+          "enum": [
+            "all_relevant",
+            "qualified",
+            "pending"
+          ]
+        },
+        "page_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "snapshot_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^psnap1_[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cursor": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "universe_id",
+        "field_ids",
+        "information_cutoff",
+        "model_filter",
+        "filters",
+        "view",
+        "page_size",
+        "snapshot_id",
+        "cursor"
+      ],
+      "additionalProperties": false
+    },
+    "CandidatePayload": {
+      "type": "object",
+      "properties": {
+        "universe_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "field_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "maxItems": 200,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "information_cutoff": {
+          "type": "string",
+          "format": "date"
+        },
+        "model_filter": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "provider": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "model_resolved": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                }
+              },
+              "required": [
+                "provider",
+                "model_resolved"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "filters": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "markets": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "CN",
+                  "HK",
+                  "US"
+                ]
+              },
+              "maxItems": 3,
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "industries": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 30,
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "stages": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 20,
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "company_types": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "maxItems": 20,
+              "minItems": 0,
+              "uniqueItems": true
+            },
+            "score_policy": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ScreeningPolicy"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "text",
+            "markets",
+            "industries",
+            "stages",
+            "company_types",
+            "score_policy"
+          ],
+          "additionalProperties": false
+        },
+        "view": {
+          "enum": [
+            "all_relevant",
+            "qualified",
+            "pending"
+          ]
+        },
+        "page_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "snapshot_id": {
+          "type": "string",
+          "pattern": "^psnap1_[a-f0-9]{64}$"
+        },
+        "cursor": {
+          "type": "null"
+        },
+        "subject_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubjectRef"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "query_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "universe_id",
+        "field_ids",
+        "information_cutoff",
+        "model_filter",
+        "filters",
+        "view",
+        "page_size",
+        "snapshot_id",
+        "cursor",
+        "subject_refs",
+        "query_sha256",
+        "label"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "2.2.0"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "operation": {
+          "const": "search"
+        },
+        "message_type": {
+          "const": "request"
+        },
+        "consumer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "$ref": "#/$defs/SearchPayload"
+        }
+      },
+      "required": [
+        "schema_version",
+        "request_id",
+        "operation",
+        "message_type",
+        "consumer_id",
+        "requested_at",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "2.2.0"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "operation": {
+          "const": "search"
+        },
+        "message_type": {
+          "const": "response"
+        },
+        "response_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "ok",
+                "empty",
+                "partial",
+                "coverage_gap",
+                "unavailable"
+              ]
+            },
+            "rows": {
+              "type": "array",
+              "maxItems": 100
+            },
+            "total_subject_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "matched_subject_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "condition_counts": {
+              "type": "object",
+              "properties": {
+                "pass": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "fail": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "unknown": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "pass",
+                "fail",
+                "unknown"
+              ],
+              "additionalProperties": false
+            },
+            "coverage": {
+              "type": "object"
+            },
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "store_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "snapshot_id": {
+                  "type": "string",
+                  "pattern": "^psnap1_[a-f0-9]{64}$"
+                },
+                "query_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "pool_index_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "read_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "source_watermarks": {
+                  "type": "array",
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "source_consistency": {
+                  "const": "sequential_owner_reads"
+                },
+                "qualification_watermark": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "store_id",
+                "snapshot_id",
+                "query_sha256",
+                "pool_index_sha256",
+                "read_at",
+                "source_watermarks",
+                "source_consistency",
+                "qualification_watermark"
+              ],
+              "additionalProperties": false
+            },
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 512
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "candidate_set": {
+              "anyOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "screening_coverage_status": {
+              "enum": [
+                "not_requested",
+                "not_covered",
+                "partial",
+                "complete",
+                "unknown"
+              ]
+            },
+            "financial_accuracy_proven": {
+              "const": false
+            },
+            "facts_producer_ready": {
+              "const": false
+            },
+            "full_C06_milestone_accepted": {
+              "const": false
+            },
+            "API_requests": {
+              "type": "integer",
+              "const": 0
+            },
+            "calibers": {
+              "type": "object",
+              "maxProperties": 20000,
+              "additionalProperties": {
+                "type": "object"
+              }
+            }
+          },
+          "required": [
+            "status",
+            "rows",
+            "total_subject_count",
+            "matched_subject_count",
+            "condition_counts",
+            "coverage",
+            "watermark",
+            "next_cursor",
+            "candidate_set",
+            "screening_coverage_status",
+            "financial_accuracy_proven",
+            "facts_producer_ready",
+            "full_C06_milestone_accepted",
+            "API_requests",
+            "calibers"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "request_id",
+        "operation",
+        "message_type",
+        "response_at",
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "2.2.0"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "operation": {
+          "const": "candidate_set"
+        },
+        "message_type": {
+          "const": "request"
+        },
+        "consumer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "payload": {
+          "$ref": "#/$defs/CandidatePayload"
+        }
+      },
+      "required": [
+        "schema_version",
+        "request_id",
+        "operation",
+        "message_type",
+        "consumer_id",
+        "requested_at",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "2.2.0"
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "operation": {
+          "const": "candidate_set"
+        },
+        "message_type": {
+          "const": "response"
+        },
+        "response_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "ok",
+                "empty",
+                "partial",
+                "coverage_gap",
+                "unavailable"
+              ]
+            },
+            "rows": {
+              "type": "array",
+              "maxItems": 100
+            },
+            "total_subject_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "matched_subject_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "condition_counts": {
+              "type": "object",
+              "properties": {
+                "pass": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "fail": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "unknown": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "pass",
+                "fail",
+                "unknown"
+              ],
+              "additionalProperties": false
+            },
+            "coverage": {
+              "type": "object"
+            },
+            "watermark": {
+              "type": "object",
+              "properties": {
+                "store_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "snapshot_id": {
+                  "type": "string",
+                  "pattern": "^psnap1_[a-f0-9]{64}$"
+                },
+                "query_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "pool_index_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "read_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "source_watermarks": {
+                  "type": "array",
+                  "minItems": 4,
+                  "maxItems": 4
+                },
+                "source_consistency": {
+                  "const": "sequential_owner_reads"
+                },
+                "qualification_watermark": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "store_id",
+                "snapshot_id",
+                "query_sha256",
+                "pool_index_sha256",
+                "read_at",
+                "source_watermarks",
+                "source_consistency",
+                "qualification_watermark"
+              ],
+              "additionalProperties": false
+            },
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 512
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "candidate_set": {
+              "anyOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "screening_coverage_status": {
+              "enum": [
+                "not_requested",
+                "not_covered",
+                "partial",
+                "complete",
+                "unknown"
+              ]
+            },
+            "financial_accuracy_proven": {
+              "const": false
+            },
+            "facts_producer_ready": {
+              "const": false
+            },
+            "full_C06_milestone_accepted": {
+              "const": false
+            },
+            "API_requests": {
+              "type": "integer",
+              "const": 0
+            },
+            "calibers": {
+              "type": "object",
+              "maxProperties": 20000,
+              "additionalProperties": {
+                "type": "object"
+              }
+            }
+          },
+          "required": [
+            "status",
+            "rows",
+            "total_subject_count",
+            "matched_subject_count",
+            "condition_counts",
+            "coverage",
+            "watermark",
+            "next_cursor",
+            "candidate_set",
+            "screening_coverage_status",
+            "financial_accuracy_proven",
+            "facts_producer_ready",
+            "full_C06_milestone_accepted",
+            "API_requests",
+            "calibers"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "request_id",
+        "operation",
+        "message_type",
+        "response_at",
+        "result"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}
