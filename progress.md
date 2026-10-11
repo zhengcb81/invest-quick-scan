@@ -2995,3 +2995,17 @@ TDD实际终态：producer-qualification-review-r1的17360/exit1，23F预期缺�
 公开正例实际用Windows账户、原数据库/serializer/固定IQS OS契约校验器，新OS进程无交互准确重放原确认；人类终端仅明确模拟，没有真实用户审核/公司gold/金融正确证明。另真实OS管道输入/环境confirmed与USERNAME冒充被拒绝，模拟method由native入口拒绝。所有API/生产库/名单写0。实际freeze14累计98私有候选/5变化/7终态，两旧checkpoint不覆盖；全98存档hash一致，原guard abc0128dc92a2bf99e57dbbbfe2355aea376b584f67e9e51c0bd0ebbc871e682不变，成功CIM自有Python0，无存活测试句柄。latest source SHA2f125ea37ed6be4b446e6b2291caa63771670579a49de00f3354dbe4ca0842e8。
 
 下一接StockQA真实执行receipt producer与pool当前资格/有效期投影，再补schema4原reader/UI/backup及原C06剩余操作/golden。Phase113步骤4、完整C06源发布/一次集中审查和全局门仍开放；c15a/real-owner-01继续保留，私有controller/接口说明及原件不扩进Git远端导出。FACT hourly只读交接不与其writer冲突，EVID待新位置回答；本轮不复验Lab半成品或重复其验收。四获准PWF/handoff正常Git终态将按documentation-publication-checkpoint14-01.json记录，不把私有源码称已提交。
+
+### 2026-10-11 checkpoint15：原执行证明与原生分级接线
+
+上一轮仅确认现有每小时监控，没有主线工程变更，按no progress处理；本轮重新读选定legacy PWF及实际工作树，先只读找回输出截断的producer-execution-inspect-g3终态49392/exit0/33P/4.898s，未重启完成测试。此前StockQA只读原执行器新增/改动4件在本轮一起固定：同一ReadOnlyWorkView/schema16事务、原完整Observation/context2/标准body/派发前回执重建、公开只读CLI与真实junction/整批拒绝；原固定账本raw SHA1318ffc7012fcb1715d127469dc048827f712252b44b8aa625db27eecd4594d2不变。原question工作指纹、实际system+NUL+prompt SHA和provider prompt SHA分别具名，不能要求跨域相等。
+
+新增StockWiki execution qualification service/公开CLI/集中测试，且将原append_check委托同一append_checks：fixed config/quick_scan_execution_qualification.json、真实OS principal、原QueryReader/serializer及原PRE receipt内work ID，固定QA无凭据OS CLI证明精确原payload/full SubjectRef/store/observation/field/question/execution及派发回执。核验前后重新读原件和权限；来源元数据复用原immutable publisher、先耐久再原SQLite/schema4批量追加，崩溃续传不换签发时间。最大execution_verified，不授予screening_audited/金融准确性；旧更高等级、现有execution级和撤销均保留，无另一份回答库/队列/文档/TTL。
+
+TDD原件终态全部保留：inspect-r1 23F缺模块RED；inspect-g1 22P/1F是fixture用了SQL不接受的uncertain_outcome，修正为原enum uncertain，g2 31P、g3追加实际Windows junction/有效首项无效次项拒整批33P。新grade-r1 54156/exit4，错误把-k当路径，实际未执行测试；不算产品RED。grade-r2 43252/exit1，33F/180.36s，全部为新增模块/CLI缺失RED（新main/ACKfixture实际先走完）。grade-g1 48360/exit1，32P/3F是已知Windows扩展publisher在沙箱WinError5；grade-g2升级56604/exit0，84P/26.63s/controller27.595s，含新故障/恢复和真实SQL第二条ABORT回滚第一条、原operator/field兼容。native-g1 54508/exit1，1E，旧release publisher在长标签自有根WinError3，发生在fixture未进入新等级逻辑；仅缩短新自有测试根，同断言producer-grade-e2 51664/exit0，完整软件1P/166.18s/controller166.863s。新公开main→派发前主体登记→一次合成vendor HTTP→原import ACK→新OS execution核验及新进程无重复分级→只读assessment全部实际贯通；QA账本/原payload/ACK/主体绑定不变，缺字段policy仍screening_eligible=false。最后原qualification/subject存储53460/exit0，35P/4.85s/controller5.49s。批次各有交叠，不合成金融准确率。
+
+实际freeze15完成104累计私有候选/8变化/11终态，latest source SHA15c40693320e40a6de8f2b82dae446d9dd2e63ac06d4c0e581bf4fb5521426e8；原guard abc0128dc92a2bf99e57dbbbfe2355aea376b584f67e9e51c0bd0ebbc871e682不变，成功CIM自有Python0，所有测试句柄终态。新node级选择仅TDD/受影响测试，不新增独立helper审查；整个C06集中独审仍待。真实API/收费/生产库/名单写0，主体/事实/人类确认合成，不冒充真实金融证据。
+
+工程下一动作为pool独立当前资格/有效期wire；之后schema4旧UI/base/backup实际DDL、旧release Windows长路径（短根通过不代表任意部署路径）、其余C06操作/真实golden，整节点一次集中审查和正式源交付。Phase113步骤4及全部全局门保持未完成，完整用户目标不缩小，c15a/real-owner-01保留。FACT定时只读已确认ACTIVE，不复验活动writer；EVID新位置待答。查找期间猜测quick_scan_refresh_qa_bridge.py、test_c06_public_main.py、test_c06_qualification_records.py不存在，改用原已知具体文件/私有索引缺失后的文件清单；CodeGraph返回外仓不相关符号未拿来伪证私有副本。无源仓写、无新agent派发。
+
+本批四已获准第一方PWF/handoff正常Git发布以documentation-publication-checkpoint15-01.json为准，前批实际71ffc52已推送；其余新增私有代码、controller/接口说明和intake原件/golden/Lab不导出。原未知nul/opencode/并行README改动保留。

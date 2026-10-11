@@ -2045,3 +2045,13 @@ checkpoint13 actual95候选/11变化/9终态，最终公开读63P和强化实际
 真实Windows长文件名揭示共用publisher的link和read均需原生扩展路径；只修link不充分。保留34P/4F、沙箱WinError5和升级后32P/4F的不同原因，完整修复后71P及公开入口2P/junction1P分开记录。公开接线用真实OS/原serializer/固定IQS校验进程，人类输入明确模拟；junction清理只删除本次非递归链接，目标哨兵/原DB字节未变。
 
 freeze14实际98累计/5变化/7终态，original guard不变，CIM自有Python0，API/生产库/名单写0。operator adapter现已实现；StockQA execution receipt producer、pool资格wire及schema4旧UI/base/backup兼容仍待，整C06审查/源发布未完成。原测试/失败/原件不覆盖，不新加小节点审查或关闭任何金融门。四第一方获准Markdown正常Git证据以documentation-publication-checkpoint14-01.json为准；新增私有代码/原件与本地说明不自动导出。
+
+### 2026-10-11 checkpoint15：原执行证明与原生分级接线
+
+execution_verified必须来自真实耐久执行关联，不能从raw score/review_status/ACK/SHA或screen_ ID推定。现复用StockQA原完整Observation重建与readonly schema16事务证明实际原回答来源，再由owner固定部署/实际OS账户、原QueryReader/serializer和派发前回执核对精确store/full SubjectRef/原payload/观察/field/question/execution。三种prompt摘要不同域，具名保留，不能跨域相等。模型HTTP仅合成，正例不认证真实公司事实。
+
+原QualificationStore批量API复用单一不可变审核表/schema4和C03校验，一次原子append最多100条；实际后项SQLite ABORT不留下前项等级。来源引用/权限元数据先沿用原控制publisher耐久存储，崩溃可恢复同一签发时间；原operator撤销和更高等级始终保留。API凭据、消费者自签receipt/actor/QA路径/TTL都不进入核验请求，执行等级仍独立于信息日TTL、来源支持和评分准确性，不自动赋予筛选资格。
+
+实际受影响84P、原存储35P、只读执行33P与完整公开main/原ACK/新OS分级/replay/readonly assessment E2E1P分别记录。原RED、控制器-k误用/未测、沙箱WinError5和旧release长路径1E保留，末者仅换短自有根走完整同断言；一键部署前需修复/明确拒绝真实长路径，不把短根GREEN外推。原固定账本raw SHA与guard不变，freeze15实际104/8变化/11终态、CIM自有Python0；合成软件进展不等于金融准确率，不加小节点独审。
+
+native operator和execution producer现均具备；下一接pool独立资格watermark+固定policy/TTL投影，旧2.0/2.1 raw契约保持。schema4原UI/base/backup兼容、release长路径、其余C06操作/真实golden、整节点集中审查/正式源交付和所有G3/F05/L03/B01/facts/UI/TH-IN/全池门仍开放。只导出四获准第一方PWF Markdown，源码/原件/intake/golden/Lab留本地；实际Git以publication-checkpoint15回执为准。FACT ACTIVE每小时只读原指定目录，已知两清单不一致不重复通知；EVID新位置仍待。
