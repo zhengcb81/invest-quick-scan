@@ -2037,3 +2037,11 @@ raw search/candidate_set的完整主体与原19共享可比口径已具名2.1.0�
 checkpoint13 actual95候选/11变化/9终态，最终公开读63P和强化实际四库路径只读隔离单项1P分别留档；23F、22P/1F、10F、3F及原pool123P/1F未覆盖，test RED/软件GREEN不冒充金融通过率。测试明确SYNTHETIC_OWNER，没有真实用户审核、原生grant或StockQA execution receipt adapter；pool assessment尚未接线，schema4原UI/base/backup兼容仍待，完整C06未集中审查/源发布。原guard不变、CIM自有Python0、API和生产库/名单写0。只读FACT hourly跟进保持ACTIVE，EVID仍待新交付路径；这不改变主线下一动作和全局门。
 
 路径/glob查找失败改已知路径/-g，输出截断改只读摘要，旧单次控制器不重跑。第一方四获准文档可正常Git，其余本地私有接口说明、原件/真实golden/数据库不扩为origin导出；实际结果以documentation-publication-checkpoint13-01.json为准。
+
+### 2026-10-11 checkpoint14：原生字段审核与撤销接线
+
+审核等级需要独立owner操作来源，SHA/原分/ACK不是权限。现已复用原OS principal和控制publisher，严格固定owner policy/完整SubjectRef/原观察hash/题目与全部原证据引用，真实终端挑战前后重新读取；五项检查笔记只表达审核者结论，不是自动金融准确性证明。确认先耐久保存再追加原审核表，可以恢复中断而不重问；旧授权不能绕过撤销。消费者不能提交自签receipt/confirmed/TTL，模拟确认method不能由native入口重放。
+
+真实Windows长文件名揭示共用publisher的link和read均需原生扩展路径；只修link不充分。保留34P/4F、沙箱WinError5和升级后32P/4F的不同原因，完整修复后71P及公开入口2P/junction1P分开记录。公开接线用真实OS/原serializer/固定IQS校验进程，人类输入明确模拟；junction清理只删除本次非递归链接，目标哨兵/原DB字节未变。
+
+freeze14实际98累计/5变化/7终态，original guard不变，CIM自有Python0，API/生产库/名单写0。operator adapter现已实现；StockQA execution receipt producer、pool资格wire及schema4旧UI/base/backup兼容仍待，整C06审查/源发布未完成。原测试/失败/原件不覆盖，不新加小节点审查或关闭任何金融门。四第一方获准Markdown正常Git证据以documentation-publication-checkpoint14-01.json为准；新增私有代码/原件与本地说明不自动导出。

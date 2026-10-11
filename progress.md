@@ -2985,3 +2985,13 @@
 尚需可信原生操作员审核与StockQA执行回执adapter、pool当前资格/有效期具名wire、schema4原UI/base reader/backup兼容、其余原C06操作/真实golden；然后整个C06一次集中审查/源发布/strict自有清理。Phase113步骤4仍in_progress，全局门不提前关闭。FACT fact-r2 ACTIVE小时跟进已复核，已知137项135匹配不重复通知，完整一致后主控整包验收；EVID新交付位置问题仍待。四获准PWF/handoff正常Git终态单独记录documentation-publication-checkpoint13-01.json，其余新本地说明/私有源码和证据不导出。
 
 本轮恢复错误仅是控制器/查找，不掩饰产品错误：PowerShell rg位置glob quick_scan*.py/metric*报OS123/3，改-g与已知路径；猜测freeze_c06_producer_11.py、quick_scan_refresh_cli.py、quick_scan_refresh_preview_cli.py不存在，使用实际checkpoint_original_resume_and_pool.py和quick_scan_refresh_owner_cli.py，未盲启动其他程序。长输出截断后只读原终态摘要，不重启已完成测试；Git status未跟踪量大转tracked diff，不删未知nul/opencode/README改动。
+
+### 2026-10-11 checkpoint14：原生字段审核与撤销接线
+
+上一目标轮已更新权威PWF并正常提交/推送c8ea660，属于progress，不是等待或状态复述。本轮实际接StockWiki operator审核/撤销：固定config/quick_scan_qualification.json、真实OS principal、完整原C06主体/原payload/题目/字段/全部原证据ID及五项笔记，原终端挑战，确认前后重读，不能接受request的actor/receipt/confirmed/TTL。复用RefreshRecordStore不可变控制publisher与同一scan_observations.sqlite/schema4，不保存另一份答案；确认先耐久发布，append前崩溃可按原权限/原件/当前状态续传，原撤销链保留且旧grant重放拒绝。native与synthetic_injected_confirmer具名隔离，后者不能从原生CLI重放升级。原信息日期/TTL与答案/ACK/主体绑定不变。
+
+TDD实际终态：producer-qualification-review-r1的17360/exit1，23F预期缺模块RED。g1 54912/exit1，34P/4F，真实Windows目标文件长于260导致硬链接失败；改扩展链接后g2 54516/exit1，34P/4F是沙箱WinError5拒绝，未冒称产品通过。g3沙箱外55104/exit1，32P/4F明确复现读长路径失败；改原共用publisher的原生目录、读与link一致，g4 55224/exit0，71P/15.20s（controller15.751s）覆盖新审核与原刷新/记录/readonly资格。再只补两个公开入口接线用例：native-g1 53296/exit0，2P/7.82s；真实Windows junction拒绝及非递归移除自建link、目标哨兵不变：junction-g1 20152/exit0，1P/1.07s。全部原stdout/stderr/process/JUnit/source SHA保留，不覆盖RED，不把重叠批次累加为金融准确率，不新增独立helper审查。
+
+公开正例实际用Windows账户、原数据库/serializer/固定IQS OS契约校验器，新OS进程无交互准确重放原确认；人类终端仅明确模拟，没有真实用户审核/公司gold/金融正确证明。另真实OS管道输入/环境confirmed与USERNAME冒充被拒绝，模拟method由native入口拒绝。所有API/生产库/名单写0。实际freeze14累计98私有候选/5变化/7终态，两旧checkpoint不覆盖；全98存档hash一致，原guard abc0128dc92a2bf99e57dbbbfe2355aea376b584f67e9e51c0bd0ebbc871e682不变，成功CIM自有Python0，无存活测试句柄。latest source SHA2f125ea37ed6be4b446e6b2291caa63771670579a49de00f3354dbe4ca0842e8。
+
+下一接StockQA真实执行receipt producer与pool当前资格/有效期投影，再补schema4原reader/UI/backup及原C06剩余操作/golden。Phase113步骤4、完整C06源发布/一次集中审查和全局门仍开放；c15a/real-owner-01继续保留，私有controller/接口说明及原件不扩进Git远端导出。FACT hourly只读交接不与其writer冲突，EVID待新位置回答；本轮不复验Lab半成品或重复其验收。四获准PWF/handoff正常Git终态将按documentation-publication-checkpoint14-01.json记录，不把私有源码称已提交。
