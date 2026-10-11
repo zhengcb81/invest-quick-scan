@@ -1,0 +1,112 @@
+{
+  "format_version": "1.0.0",
+  "observed_at_utc": "2026-10-11T08:30:50.716518Z",
+  "task_source": "../../../tasks.json",
+  "coordinator_write_scope": "C:/Users/郑曾波/Projects/invest-quick-scan",
+  "workers_dispatched": false,
+  "default_live_enabled": false,
+  "packages": [
+    {
+      "id": "MATRIX-CASE-01",
+      "lane_id": "iqs",
+      "document": "MATRIX-CASE-01.md",
+      "task_ids": [
+        "W14",
+        "V02",
+        "V17",
+        "V18",
+        "U03",
+        "U04"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-comparison-case-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src/iqs_comparison_case_lab",
+        "schemas",
+        "content",
+        "fixtures",
+        "tests",
+        "tools",
+        "docs/handoff/MATRIX-CASE-01",
+        "runs"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "comparison_candidate_artifacts_and_offline_validation_only",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none"
+    },
+    {
+      "id": "LOAD-CASE-01",
+      "lane_id": "iqs",
+      "document": "LOAD-CASE-01.md",
+      "task_ids": [
+        "O02",
+        "L03",
+        "X09"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-load-case-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src/iqs_load_case_lab",
+        "schemas",
+        "content",
+        "fixtures",
+        "tests",
+        "tools",
+        "docs/handoff/LOAD-CASE-01",
+        "runs"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "synthetic_workload_and_offline_trace_analysis_only",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none"
+    },
+    {
+      "id": "IDENT-EDGE-01",
+      "lane_id": "iqs",
+      "document": "IDENT-EDGE-01.md",
+      "task_ids": [
+        "W02",
+        "W03",
+        "W13",
+        "O01"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-identity-case-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src/iqs_identity_case_lab",
+        "schemas",
+        "content",
+        "fixtures",
+        "tests",
+        "tools",
+        "docs/handoff/IDENT-EDGE-01",
+        "runs"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "identity_edge_candidate_artifacts_only",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "harness_public_read_only_evidence_collection_only"
+    }
+  ],
+  "held_packages": [
+    "TH-IMPL-01",
+    "IN-IMPL-01"
+  ],
+  "previous_deliveries_preserved": true
+}

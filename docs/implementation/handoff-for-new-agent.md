@@ -1,3 +1,5 @@
+> 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
+
 > 当前状态（2026-10-11，checkpoint24与FACT R2）：C06发布差异同节点复核无新增阻断；155候选（QA51/SW74/IQS30）尚待精确源交付/正常Git和strict清理。原完整批失败保留，受影响QA85P/1skip、SW64P后剩余24P分别留档，不虚称完整全绿。FACT R2实际135P，但两项未来正常输入被拒，另旧版测试遮挡与两planning清单不一致，维持changes_requested；补丁卡FACT-CONTENT-01-R3.md。下面旧“运行中/下一步/监测ACTIVE”是历史，以本段及Next Step为准。
 
 > 发布收尾最新状态（2026-10-11，release whole-g2）：QA静态全绿，完整pytest1737P/31F/8E；已按环境8、历史迁移fixture11、缺旧接续输入1、模型alias fixture16、真实回执丢失3分类。SW同批仍运行；等待终态后仅修根因/跑受影响项，不重跑1737已绿。详见 docs/implementation/reviews/W15/module-readiness-2026-10-09/release-g2-diagnosis-2026-10-11.md。139发布副本候选尚未写源仓，原136冻结保持，步骤4及金融/facts/UI/全局门仍开放。
@@ -535,3 +537,19 @@ shape/82工件工作树hash、三归档复算和34fixtures通过，已有54唯�
 C06同一整节点发布delta只读复核已收到：155候选0漂移、当前六终态日志hash匹配，未新增阻断；报告release-source-closeout-2026-10-11.md SHA5094eab10e6466eacd98a29468f7ffba049162143c2c3fe06ec32430c7810b0f。原QA完整1737P/31F/8E、SW1564P/50F/23E/22skip保持失败事实；受影响QA85P/1skip，SW先64P/12F/12E再剩余24P（一一对应，无遗漏），不是一次完整全绿。QA静态53.861秒、SW最终静态1.599秒、原生smoke1.281秒均通过。源码仍未发布；唯一主线下一步为155精确文件重核writer/HEAD/CAS、正常源码交付和strict清理，StockWiki无origin仅正常本地提交，不猜远端。
 
 本次四份PWF/handoff正常提交推送终态以 `docs/implementation/intake/parallel-packages/2026-10-10/fact-remediation-02/documentation-publication-fact-r2-01.json` 为准；验收卡、原件、数据库、Lab源码不随该四文档批次导出。
+
+## 2026-10-11 — 三个独立新Lab施工包
+
+按用户要求完成MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01，可分别交不同harness。工作根依次为iqs-comparison-case-lab、iqs-load-case-lab、iqs-identity-case-lab，均在C:/Users/郑曾波/Projects下，实际核查互不包含、与既有仓不重叠且尚不存在。没有创建或自动派发；同一包只允许一个writer。每卡自带上下文、输入/输出、schema与CLI要求、集中TDD和unit/integration/真实本包CLI E2E、清理及标准交接。主控收到后负责真正owner接线；资料与离线工具不移交整个任务或关闭生产门。
+
+冻结41个不同输入文件的原bytes/raw SHA；消费者数量MATRIX27、LOAD15、IDENT15。模板沿用handoff1.0.0，三次现有公开CLI均exit0/真实终态；锁原字节和17条相对链接通过。身份历史三golden与原manifest逐byte/hash匹配，本轮没有生成新真实owner正例。validation.json只证明文档/输入/结构，product_tests_run=false。外仓写入、API/收费/搜索、生产DB/名单变更均0。
+
+开工可将锁内本包输入冻结到自身fixtures/locked-inputs，之后不依赖浮动主线，开工前漂移必须报告总控，不恢复源、不自行改锁。新schema都具名1.0.0且候选与owner资格分开：MATRIX没有第二比较/评分引擎，LOAD没有第二调度/预算/client，IDENT不发权威ID/DTO、不选生产公司。IDENT仅人工资料阶段允许公开官方网页只读浏览，CLI和自动测试仍离线。重用现有config模板，不另造重复配置产品。
+
+完整入口：docs/implementation/parallel-lanes/packages/2026-10-11/README.md；共同规则handoff-rules.md；输入inputs.lock.json；manifest.json；三张卡与对应handoff.template.json；preparation.md；validation.json和verification原过程记录。本批编制基线cf1d05558827d70df23b2268d21a79afb89cd39c。PWF由总控维护，worker pin各自docs/handoff/<package-id>/planning，不改IQS根或共享active selector。只在稳定包节点一次集中回归/审查，修复定向续验，不加逐helper门。
+
+编制错误保留：先猜schema路径不存在，按公开CLI引用定位；元数据控制器误用golden.file而原字段是path，在输出前失败后修正；一次apply_patch把整行锚点写成前缀被拒，零写入。均为文档控制器错误，不是产品RED。既有2026-10-10/README.md他人改动、私有intake/运行根与nul/opencode均保留。主线继续checkpoint24；TH/IN、G3/F05、真实准确性、facts/UI、200家公司试点与全池门不因本批关闭。
+
+接手先读本批README与总控唯一Next Step。不要代建三Lab、重做EVID/FACT、实现第二owner或把模板exit0当交付。用户交卡给harness才认领；收到真实handoff后一次包级接收，未交回前继续155源码交付主线。
+
+本批首次正常Git预检因原生stdout的CRLF被diff --check当尾随空白而停在commit前；原日志保留byte SHA，以仅本批verification/*.log的binary归档属性表示原证据，未跳hooks或改产品规则，随后正常重试提交预检。

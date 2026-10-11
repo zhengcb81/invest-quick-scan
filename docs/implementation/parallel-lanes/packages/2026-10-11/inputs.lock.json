@@ -1,0 +1,518 @@
+{
+  "format_version": "1.0.0",
+  "observed_at_utc": "2026-10-11T08:30:50.716518Z",
+  "external_source_written": false,
+  "api_requests": 0,
+  "coordinator_reserved_roots": [
+    "C:/Users/郑曾波/Projects/invest-quick-scan",
+    "C:/Users/郑曾波/Projects/StockQAbyLLM",
+    "C:/Users/郑曾波/Projects/StockWiki"
+  ],
+  "repositories": [
+    {
+      "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "head": "cf1d05558827d70df23b2268d21a79afb89cd39c",
+      "branch": "master",
+      "status_scope": "tracked_paths_only; private_untracked_inventory_not_exported",
+      "status_porcelain": [
+        " M docs/implementation/parallel-lanes/packages/2026-10-10/README.md"
+      ]
+    }
+  ],
+  "new_repositories": [
+    {
+      "root": "C:/Users/郑曾波/Projects/iqs-comparison-case-lab",
+      "exists": false,
+      "created_by_coordinator": false,
+      "package_id": "MATRIX-CASE-01"
+    },
+    {
+      "root": "C:/Users/郑曾波/Projects/iqs-load-case-lab",
+      "exists": false,
+      "created_by_coordinator": false,
+      "package_id": "LOAD-CASE-01"
+    },
+    {
+      "root": "C:/Users/郑曾波/Projects/iqs-identity-case-lab",
+      "exists": false,
+      "created_by_coordinator": false,
+      "package_id": "IDENT-EDGE-01"
+    }
+  ],
+  "files": [
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/acceptance-cases.json",
+      "bytes": 255167,
+      "sha256": "6793d24ce5704dddd1297852315acc807127c9870d6bcc18ed4d828b21ea9d37",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01",
+        "LOAD-CASE-01",
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_contract_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/composable-evolution-plan.md",
+      "bytes": 27164,
+      "sha256": "aa1a2106e442dd316afd8a954338d5fab6d922299af6911bd78908e7ede84a0f",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/exchange-and-query.md",
+      "bytes": 11680,
+      "sha256": "9f2559ba91c49210906fa3c1c75606f3c403e6ca7d5f896908fb1371675f398b",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "historical_public_query_boundary_not_new_c06"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/freshness-and-jobs.md",
+      "bytes": 12143,
+      "sha256": "2d8f6d4be7ae05ef996e7cdb71f58dff355bf3229de4241b6a0dc8acbeee3f93",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "LOAD-CASE-01",
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_work_and_freshness_contract"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/goldens/stockwiki-real-alphabet-2026-10-07.json",
+      "bytes": 8689,
+      "sha256": "5ad1a45e287c945680fc4c23db7b4dcf32959a6c0021daea4ba226ebd4365278",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01"
+      ],
+      "input_role": "historical_real_owner_bytes_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/goldens/stockwiki-real-catl-2026-10-07.json",
+      "bytes": 2976,
+      "sha256": "6929f0868243a271ccc35ab7b16005b11fe968f43f18213929d0651c3bf66db7",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01"
+      ],
+      "input_role": "historical_real_owner_bytes_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/goldens/stockwiki-real-cncb_h-2026-10-07.json",
+      "bytes": 2947,
+      "sha256": "884855433a431292da3e1dbf7382e757aab9dea41be8f321b464c79303ad908a",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01"
+      ],
+      "input_role": "historical_real_owner_bytes_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/goldens/stockwiki-real-identity-2026-10-07.manifest.json",
+      "bytes": 2293,
+      "sha256": "32398dd7b4c4168cd20c8bd8a0d7212d44b6184ced580d729cc548315c1b2dc4",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01"
+      ],
+      "input_role": "historical_owner_evidence_manifest_not_new_generation"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/identity.md",
+      "bytes": 21387,
+      "sha256": "9408e7445f65b70425c0285edc51a0d210a986c9bcf7699f89c7efe52895fc04",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01",
+        "LOAD-CASE-01",
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_contract_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/metrics.md",
+      "bytes": 4428,
+      "sha256": "531f0f7e7e6d8c3ae19b96f381b5f7038bf078c58857492da5818ab7963509e0",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/providers-and-budget.md",
+      "bytes": 10607,
+      "sha256": "ccb50c59972a542d710e107d05f7ec0f08718bb9e48c8a146af14ba9af6119a0",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "LOAD-CASE-01"
+      ],
+      "input_role": "existing_work_budget_definition_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/question-modules.md",
+      "bytes": 6957,
+      "sha256": "039f789b0905c69705798288fbbfa8dc884b0fa70b7b2af9e1f221be804512a6",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/scoring-rubric-evolution.md",
+      "bytes": 5695,
+      "sha256": "562c9db8ff56e203e93513ff87a44eed0e861c6f05ca556a9ac0de1d562810d1",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/contracts/scoring.md",
+      "bytes": 5602,
+      "sha256": "b42825295bc1449c38a7d56094aac681750781420a5aebccc33f201c3f7af0a7",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/parallel-lanes/handoff.schema.json",
+      "bytes": 5598,
+      "sha256": "ed38a65aafed82649a071acbc9e6ee5b47c92120ad958713db4d7261a4b15c0e",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01",
+        "LOAD-CASE-01",
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_contract_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/reviews/IQS-lane/B01b-prereq-import-evidence-2026-10-07.md",
+      "bytes": 7232,
+      "sha256": "b1c0e0b911d9c25d1f204703640307db50e87b5b56b72583ef20e796848bf064",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01"
+      ],
+      "input_role": "historical_owner_generation_evidence_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/implementation/tasks.json",
+      "bytes": 292749,
+      "sha256": "a7c6167d4bf9aca56b529bd85bd70b0ae01a99125033e06dcbcdcbb06731bf60",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01",
+        "LOAD-CASE-01",
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_contract_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "docs/universe-and-operations-design.md",
+      "bytes": 24912,
+      "sha256": "c710d255c1be81d630dc059bdc0769fa44c6dbca5d781e87508cd9cc1e07976f",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "LOAD-CASE-01"
+      ],
+      "input_role": "existing_work_budget_definition_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "examples/model-policy.template.json",
+      "bytes": 3026,
+      "sha256": "215fa6a7defedbf7d24fc5083f31849849839dece9728499b2b5791f7012b013",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "LOAD-CASE-01"
+      ],
+      "input_role": "existing_work_budget_definition_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "questions/catalog.json",
+      "bytes": 14739,
+      "sha256": "252dab9e3f71868a71147ecb7dac64cc187d7d56002b28b266a74f406facaf10",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "questions/common.json",
+      "bytes": 21803,
+      "sha256": "6900922fc077b0558df49631c2f79e7677b2888c159d29e230d269f23adfdbe3",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "questions/diagnostics/recovery.json",
+      "bytes": 5016,
+      "sha256": "7c169010401555458330f2d0008b297db2e3e2f4466a52f2aa8a158e306fcdaa",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "questions/metric-registry.json",
+      "bytes": 3521,
+      "sha256": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "questions/scoring-contexts.json",
+      "bytes": 6271,
+      "sha256": "1408aa4a154efabd79f8c575e27204d921124777dd666c6b04154e16b9215ef3",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "questions/scoring-rubrics/README.md",
+      "bytes": 542,
+      "sha256": "751ae7fe5a1109eebbd5f97c22cf0e63217e3c51f7c82296b8fbc393dc6c3439",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "questions/scoring-rubrics/rubrel_1ae5bfbf4c63bb197bde53d9058ca50ff631aae1a9525e0ec8578f4495379d02.json",
+      "bytes": 5622,
+      "sha256": "88af96451741a8fcdd1b69d07d4de21c665c549c2d077aa6866f2d74fa9909ae",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "references/identity-wire-compatibility.md",
+      "bytes": 4897,
+      "sha256": "0fe0e202dae48cd9f9d012007906e62eac07baeffdaa58e5ad2116683d5caea6",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01",
+        "LOAD-CASE-01",
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_contract_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "references/model-policy.md",
+      "bytes": 6230,
+      "sha256": "a971c429055934dd4beaeb267a5a1875641ede489fc83d0f909ac1f643645aa7",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "LOAD-CASE-01"
+      ],
+      "input_role": "existing_work_budget_definition_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "references/recovery-watch.md",
+      "bytes": 6949,
+      "sha256": "ed2d1f3a72058fe125c689a1ca62dd990fcb04e1c5b1ada6922eb52fbb14461a",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "references/standard-output.md",
+      "bytes": 6613,
+      "sha256": "2545f8e9001a794f9d05f0a0c642d965b2709f160cf3a12dd8910b1502c6731b",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "schemas/answer-content.schema.json",
+      "bytes": 14152,
+      "sha256": "a83236c2aba50115038cd2d404d5810bd50791c2b3f089f252b77b6a6d322547",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "schemas/model-policy.schema.json",
+      "bytes": 9830,
+      "sha256": "e6188237ef0fd07c4ee63c1eab25ab250426ba7c12e6d0bc71a9d4ab1d7d0455",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "LOAD-CASE-01"
+      ],
+      "input_role": "existing_work_budget_definition_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "schemas/quick_scan/identity-cli-request.schema.json",
+      "bytes": 3167,
+      "sha256": "d63afdf4420d1432fc3cb0be2f6f27c3ff3d1524e17a6fbffd1a3a3c2a51effc",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01"
+      ],
+      "input_role": "published_identity_schema_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "schemas/quick_scan/identity-mapping-dto.schema.json",
+      "bytes": 3304,
+      "sha256": "86e82d0a453d9741cde15d3030cbf33d8b8393afbb6497a64aae3d1a4e9ab2fb",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01"
+      ],
+      "input_role": "published_identity_schema_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "schemas/quick_scan/identity-wire-profile.schema.json",
+      "bytes": 718,
+      "sha256": "ca4759c309dcdfc5f91992686add06f73d052760ddbf9664618280b4572789f2",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01"
+      ],
+      "input_role": "published_identity_schema_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "schemas/quick_scan/identity.schema.json",
+      "bytes": 60345,
+      "sha256": "671292a60bf1656b73009877a59c49c8585935b11d42b7fef5e021fc275fc2e3",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01",
+        "LOAD-CASE-01",
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_contract_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "schemas/quick_scan/query.schema.json",
+      "bytes": 23536,
+      "sha256": "e7fc264b43d85e4cdd5c82a71b9fedb579dd0fc1196f3c5fde661f14fa1756f8",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "historical_public_query_boundary_not_new_c06"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "schemas/quick_scan/scoring-rubric.schema.json",
+      "bytes": 6525,
+      "sha256": "92a4cd652949b07a6ac5541ea0825c422cbb53b44574c3e5cdfd47cd0153c3fc",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_definition_or_uncalibrated_rubric_candidate"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "schemas/quick_scan/work.schema.json",
+      "bytes": 17244,
+      "sha256": "8a5054eb82f204ae15b78da18b60d7a12db8c1b6fac40d7bbe80195a32c0ac81",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "LOAD-CASE-01",
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_work_and_freshness_contract"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "scripts/parallel_handoff_cli.py",
+      "bytes": 7005,
+      "sha256": "21e58aa56fe4680673c209cef88f8eaa5f67aad47cdfc7d1dd3177766ef28bda",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "IDENT-EDGE-01",
+        "LOAD-CASE-01",
+        "MATRIX-CASE-01"
+      ],
+      "input_role": "published_contract_read_only"
+    },
+    {
+      "source_root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "path": "scripts/work_contract.py",
+      "bytes": 14601,
+      "sha256": "05afd95708a9954ebe5b811cf101ef8928f1a1d05354cfce8aa693d52732732c",
+      "hash_domain": "working_tree_raw_bytes",
+      "consumers": [
+        "LOAD-CASE-01"
+      ],
+      "input_role": "existing_work_budget_definition_read_only"
+    }
+  ],
+  "notes": [
+    "Metadata-only lock; does not copy source files or owner goldens.",
+    "HEAD is an observation; unchanged locked bytes permit advancement without source reset.",
+    "Root PWF is dynamic and not hard-locked.",
+    "Rubric candidate is uncalibrated; historical query/goldens do not qualify new C06 or financial coverage.",
+    "No production membership, synthetic owner success, or owner write authority is granted."
+  ]
+}
