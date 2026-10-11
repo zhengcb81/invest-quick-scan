@@ -638,3 +638,6 @@ strict dry真实会话10083 exit0，原生逐字/文件ID/单链接43936项全�
 已绿范围为parser89、client180、payload12，各原RED/timeout/exit/分母保留。当前所有付费API0；source current pointer未变。group store/transport/provider未收口，不能把QuestionPack parser接口当公开批量已可跑。各题须自己logicalattempt/lease/checkpoint，physical一次budget；native先行、external_context_v1明确拒，不能复制第一题contextproof。省略thinking保持旧默认，实验必须显式True；未确认MiniMax Responses显式控制在budget/HTTP前拒，已有Anthropic可用。
 
 仍在用的runs/c16b不可整根删；每个agent只清自己的已结束testsubroot，private原日志/DTO/manifest保留，不进Git。不要重建已删除c15a/c15r/c15d、重跑1737全绿或再加helper审查。仅同一题包变更节点集中验证后正常精确Git；当前未完成源码不得假称commit/push。下一实际动作是group执行链接线/受影响测试，随后真实三公司小样本和owner ACK。金融/G3/F05/facts/UI/一键/全池门仍开放。
+
+
+OPS验收文档发布终态（2026-10-11）：本批9份公开Markdown已正常提交并推送 `d50c70be2c712bd62a0da088df4a0f77864a9e4d`，实际origin/master SHA一致，原hooks正常执行；源Lab/私有证据/他人2026-10-10 README未入提交。上文“待本批终态”是发布前记录，此项现已完成；OPS仍changes_requested，主线和其他门状态不变。

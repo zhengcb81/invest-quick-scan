@@ -2317,3 +2317,6 @@ issuer存储版、serializer投影版和listing consumer准入版可不同。兼
 partial不能强迫占位假证据：旧schema minItems=1保留原bytes，新零证据能力必须具名版本/profile。通用Web UI不是快扫设置可用的证据，旧preview授权不能替代新permit耐久消费，provisional的资格由owner具名能力决定。四组归同一R1，不重做有效目录或增加小节点门。
 
 本次源98/工件96/锁12闭合；原57项实际含验收guard环境错误，修后只续受影响9CLI和2链接项，累计56P/1skip；14独立控制2符合/12缺口，另2语义控制独立记载。CodeGraph按本轮用户授权建14文件索引，仅.codegraph/未跟踪变化。最终源字节未变、API0，自有54文件/29目录已精确清理。见同日OPS集中验收/R1与progress，不把软件诊断签收成金融准确性。
+
+
+OPS验收文档发布终态（2026-10-11）：本批9份公开Markdown已正常提交并推送 `d50c70be2c712bd62a0da088df4a0f77864a9e4d`，实际origin/master SHA一致，原hooks正常执行；源Lab/私有证据/他人2026-10-10 README未入提交。上文“待本批终态”是发布前记录，此项现已完成；OPS仍changes_requested，主线和其他门状态不变。
