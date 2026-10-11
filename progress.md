@@ -3297,3 +3297,18 @@ StockWiki旧持久化2.0 verified identity由原G2b投影2.1，挂牌接口原�
 
 
 OPS验收文档发布终态（2026-10-11）：本批9份公开Markdown已正常提交并推送 `d50c70be2c712bd62a0da088df4a0f77864a9e4d`，实际origin/master SHA一致，原hooks正常执行；源Lab/私有证据/他人2026-10-10 README未入提交。上文“待本批终态”是发布前记录，此项现已完成；OPS仍changes_requested，主线和其他门状态不变。
+
+
+## 2026-10-11 — FIN-REF-01集中验收，保留有效部分并交回R1
+
+FIN源分支codex/fin-ref-01、HEAD b5852aac、产品97e5a26d（实际祖先、无remote），65原跟踪和20冻结输入匹配。90行30/30/30、14来源、全部expected_score=null/independent_review=not_run保留；57工件中isolation.md声明2265bytes/53a53c30，实际3311/cc652c24，其余56匹配。公共handoff CLI PID41472实际exit2/temporary_root_not_cleaned，partial并不豁免清理声明。
+
+仅在IQS自有fin-acceptance-2026-10-11-01副本测试；前两次collection前guard与Windows NUL读/写设备不兼容exit1/3，原件保留，改pytest -s及自有log后PID43880 exit0，31P/5.44秒。25独立公开validate+export控制正确重算pack摘要后，只有2项exit预期匹配，20坏输入被导出、2坏容器崩溃、自定义合成零分子控制被拒；另用原ROIC公式/合成OI=0消除口径歧义，PID63824/41340仍exit2/empty_denominator。合成控制非真实金融或owner正例，测试分母不相加作准确率。
+
+一个独立agent只读事实先于评分查证，与本次包级审查合并。实际90行仅4行18数字facts，86无facts、72skeleton；deep_verified前缀不证明18实质深核。CATL 2026-03-10官方HTML可支持FY2025部分现金/收入/资金/研发事实，原“只能PDF”应收窄；中信建投访问受限保留为尝试范围。Alphabet4算术按原输入正确，但总面值含当期与非流动账面债混称、cash题answerable及维护capex falsifier需修正。原公司/期间/金额来源不能以模板标签自证。
+
+changes_requested，唯一四组[FIN R1](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R1.md)：补定向研究与事实口径；锁/90题唯一集合/发行人/时间闭合；计算与facts绑定及独立可复算结果；严格JSON/稳定CLI和实际工件/临时根交接。保留原31P/固定90/null/旧1.0和第一轮记录，不增加小审查门、不强行给分，由原writer续做，不代改Lab或自动派发。
+
+用户明确授权CodeGraph实际init exit0：17文件/227节点/210边，源仅新增未跟踪.codegraph/；65源和65副本raw SHA/HEAD全部保持。CIM自有活动Python0，按原字节/大小/文件ID/单链接精确清理216生成文件/62目录，26组结构输入/原stdout/stderr/PID/guard/控制器留存。无收费API、生产DB/名单写、公司PDF/文档下载；官方HTML在线核源不保存网页全文，CLI父子无key、无网。源Lab自己的未清临时环境不代删。私有snapshot/closeout/输入不随公文发布。
+
+公开[验收](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-acceptance.md)、R1、wave2 README/dispatch与本PWF更新；一处公文patch锚点不匹配零改，按实际文本修正，没有放宽产品规则。VIEW尚无交接；OPS原R1继续。B01 checkpoint30工程接续/金融/G3/F05/UI/一键/全池仍开放，不用参考资料验收代关闭。文档按既有origin正常提交/推送，实际终态以Git及本机publication-result.json为准；仅本批8个精确Markdown，不含私有金融原件、Lab或他人2026-10-10 README。
