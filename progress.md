@@ -1,4 +1,4 @@
-> 当前主线（2026-10-11，checkpoint20）：C06整节点审查已结束；F1/F2已集中整改，最终受影响52P。下一步F3范围/覆盖分母与F4真实capabilities，然后同节点最终串联/源码交付。Phase113步骤4仍未完成；旧日期及旧“当前/下一步”段落均为历史。详细接续见docs/implementation/handoff-for-new-agent.md的checkpoint20。
+> 当前主线（2026-10-11，checkpoint21）：同一C06审查后的F3范围/分母及实际100×30新接口已整改，最终97P；F1/F2保持。下一步F4具名capabilities与真实owner预检，再同节点最终main串联/源码交付。Phase113步骤4及金融/facts/UI/全局目标继续未完成；旧“当前/下一步”为历史。详细接续见docs/implementation/handoff-for-new-agent.md的checkpoint21。
 
 ## 2026-09-23：G0 独立审查与外部只读核查
 - 用户授权读取StockQAbyLLM、StockWiki、company-wiki及研究skill，并明确外部写入必须先询问；本轮没有外部写入。
@@ -3059,6 +3059,24 @@ TDD原件终态全部保留：inspect-r1 23F缺模块RED；inspect-g1 22P/1F是f
 
 
 ### 2026-10-11 checkpoint19：研究线索与当前真实owner CLI
+
+**2026-10-11 checkpoint21：同一C06整节点F3范围整改（唯一当前接续；下面旧“当前/下一步”均为历史）：** 原整节点独审报告及F1/F2修复均保留，没有新增逐helper门。F3已在原三组件私有候选中实现并集中验证，整个C06及Phase113步骤4仍未正式签收；下一工程动作为F4。
+
+**实际范围语义：** 新封闭wire query 2.5，以field_scope_selection逐字段明确请求entity/security/segment范围；这是用户/消费者选择，不是LLM或查询器宣称该字段适用/N/A。旧1.0/2.0/2.1/2.2/2.3/2.4 schema原字节保持，不暗改旧查询。普通issuer从实际身份证券/原listing serializer/业务分部枚举完整SubjectRef；provisional只保留原anchor挂牌，不提升实体权限。security行只带自身挂牌市场，entity/segment保留issuer市场关联。新消费者需要全范围时明确用2.5，不能依赖旧2.1默认entity语义。
+
+**覆盖与比较：** 公司数、已画像公司数、不同analysis subject数、profile范围行数分别报告；旧total_subject_count仍为范围行数，并以scope_counts消除歧义。各字段逐scope给请求/已有回答分母和分子、空范围引用及absent_requested_scopes，缺行/缺源/不存在的请求范围不隐式N/A、不删空行凑全覆盖。原件/ACK、field/question、期间/口径、原模型和信息日均保留；不同范围不求均分、不同模型/口径仍non_comparable。score policy原W07和当前C03/C04资格/TTL继续独立使用，不能从读取到原高分获得筛选资格。
+
+**独立范围核对：** 新native scope_only只读原名单/身份/主体及perimeter，当前原serializer验证完整范围，返回具名scope_context的逐完整ref/原metadata hash；它由固定owner入口生成，不接受查询JSON提供。纯契约对scope_inventory_sha256、当前清单和每行metadata逐项比对。快照删空分部后即使重封hash/分母为complete仍拒绝，改挂牌市场/布尔假计数/小分母/缺清单均拒绝；原会员或身份范围变更要求重新查询。仍用原schema1有界capture，不造新答案库或原件ID。
+
+**本轮实际证据：** scope-r1为错误辅助函数导入导致1 collection error，保留而不称业务RED；修正后scope-r2为实际8F。scope-g1为8P，补独立清单与空/缺源/不存在scope后scope-g2为92P。增加真实填充100公司×30题的SQLite新范围公开CLI及变造反例后，scope-g3最终97P/190.067s，无failure/error/skip/timeout，原8MiB/5000行单次预算及有界拆包保持。实际3000原件、ACK、完整ref与current assessment全部保留，字段分母各100；没有审核回执时仍unverified_model_output，financial/full_C06=false。两地挂牌/两个业务分部、跨进程分页、精确证券candidate、HK筛选、空分部与会员变更拒绝实际通过。重叠批次不相加为金融通过率；未增加小节点独审。
+
+**范围与错误留档：** 仅runs/c15a的StockWiki/IQS候选变化，StockQA未动；外仓、生产数据库、名单、活动Lab均未写，HTTP/收费/下载0。原guard、202逐字输入与旧Q13公开main账本保持。读错quick_scan_query_cli.py/test_c06_pool_qualified.py后已定位实际quick_scan_query_v2_cli.py/test_c06_qualified_pool.py；scope-r1的call/utc来自test_c06_public_query而非test_c06_pool_query。一次apply_patch的metadata换行上下文不符未应用，按实际最小hunk修正；无test/hook绕过，原RED/错误日志均保留。尚未运行F4真实owner新golden或schema4审核后完整第二main；不能据工程GREEN推断金融正确。
+
+**冻结与唯一下一动作：** producer-checkpoint-21.json实际131累计候选/12变化/5终态批次，source回执producer-whole-scope-g3.sources.json SHA826a1103744be5284bc04dfb979e41b32f250d263241e1d5f4c8633dd2e3f014；实际CIM自有Python0。先接具名封闭capabilities：支持市场与真实已覆盖市场分开，缺源原因/水位/当前coverage可预检，完整列原刷新/确认、QA admission/执行、事前注册、operator及execution资格公开入口；真实owner仍缺observations，不造答案。随后同一原C06节点收尾schema4审核后第二获准generation的完整公开main→事前注册→精确ACK、受影响回归/当前真实owner CLI golden，再核源writer/基线正常交付与strict自有清理。旧once-only控制器不重执行，保留真实填充与real-owner-01必要现场，不清共享TEMP或未知项。
+
+**目标和并行线：** 所有PWF未完成目标继续，G3/F05/L03/B01/真实公司准确性/facts/UI/TH-IN/全池门不变。FACT fact-r2已确认ACTIVE，每小时只读指定remediation-02，既知两planning清单不一致不重复提醒；完整一致后通知/停轮询，再主控整包验收。EVID新R2位置仍待答，不改活动Lab。正常Git仅同四已明确获准第一方PWF/handoff文档，实际终态看documentation-publication-checkpoint21-01.json；README并行改动及其他未知文件保留，私有源/原件/库/golden/Lab不随四文档导出。
+
+以下checkpoint20及更早均为历史，以checkpoint21和唯一整节点报告接续。
 
 **2026-10-11 checkpoint20：整节点审查后F1/F2集中整改（唯一当前接续；下面旧“当前/下一步”均为历史）：** 原C06/W15步骤4整节点独审已终态changes_requested，不再等待或重开helper审查。唯一报告whole-c06-review-2026-10-11.md，SHA42814582b3fafde2e3169846d09b3bf643c1ad7247641d3041f8b221dbc3758b，2项P1/2项P2；四项全部关闭前步骤4保持未完成。
 
