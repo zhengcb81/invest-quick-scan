@@ -1,3 +1,5 @@
+> 当前主线（2026-10-11 checkpoint31）：VIEW/FIN/OPS均已集中验收为changes_requested，原writer各续唯一R1；VIEW CodeGraph已可用，不重复init。B01 vendor-http-identity-v1已在自有隔离副本形成具名Observation1.2候选，IQS与StockQA上下文显式版本/哈希校验已通过受影响测试；尚未部署，完整回执、事前登记、封存/入库/query、已知响应逻辑对账及CNY refresh仍待同一B01节点接续。原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；没有新收费调用，不重放原运行。金融/G3/F05/facts/UI/一键/全池仍开放。以下更早当前段均为历史，以本段与唯一Next Step为准。
+
 > 当前主线（2026-10-11 checkpoint30）：MATRIX/LOAD已集中验收，均changes_requested，R1已交付；FACT R3已签收，EVID R3/IDENT R1等原harness。StockQA真实BIND兼容两文件已正常commit/push0a0493e。原Alphabet完整30题、Pro/thinking-on/pack3/8192实跑终态：13模型HTTP、26native搜索、4合法insufficient_evidence QA检查点、0评分；项目账本CNY1.268162全部结算，缓存0。4结果因真实vendor request_id缺失而C06投递blocked、ACK0；26已收响应仍leased。原运行不能重放/删库；下一步同B01节点修已知响应逻辑对账、vendor ID兼容和CNY refresh，再做32768及pack1对照。金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段均为历史，以本段与唯一Next Step为准。
 
 > 当前主线（2026-10-11 checkpoint29）：MATRIX与LOAD交接已集中验收，均changes_requested，各只一张R1续做卡，Lab仍为外部writer保留根；FACT R3已签收，EVID R3/IDENT R1等待整改交接。StockQA原生多题包20文件已正常提交推送24b6f30；StockWiki旧身份挂牌兼容两文件已正常本地提交2d0f1db。真实Alphabet克隆的挂牌/authority3/route登记启用/结果库初始化已通过，费用API0；下一步原main真实Pro thinking-on、完整30题/pack3及精确ACK，保留scope分包和unknown/uncertain停止语义。金融/G3/F05/facts/UI/一键/全池未完成。下方更早当前段为历史，以本段与唯一Next Step为准。
@@ -421,9 +423,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS-DESK-01、FIN-REF-01与VIEW-01均已集中验收为changes_requested，由原harness各续同包唯一R1（OPS/FIN四组，VIEW五组）；保留已有成果。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作仍以下checkpoint30段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
+旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS-DESK-01、FIN-REF-01与VIEW-01均已集中验收为changes_requested，由原harness各续同包唯一R1（OPS/FIN四组，VIEW五组）；保留已有成果。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作以checkpoint31和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
 
-**唯一当前动作（2026-10-11 checkpoint30）：** 原main PID71104已终态exit1，13原HTTP均有收执且预算settled；不得再次执行run_native_pro_resume03.py、删原work.sqlite、清live/owner或伪造ACK。先在同一B01大节点补三项真实链缺口：已知response_available但无有效答案的durable逻辑终态/原owner retry与comparison决议；vendor request_id允许明确未知并与真实response_id/physical attempt分开、旧schema/hash/结果保留；CNY账本的具名refresh quote能力与旧USD兼容。4标准答案当前仅QA检查点且投递blocked，不填response_id冒充request_id，不改旧payload/context/收执以绕校验；旧generation与新生成材料显式分开。完成受影响TDD/一次集中回归和正常源交付后，使用原公开owner preview→已授权operator真实TTY确认→Q13 admission及原main/同账本，先原IQS_01/02/04仅max32768的pack3，再同32768的pack1。完整原30题分母保留；同policy_id按原方法增加cap/version、保留13次/CNY1.268162及历史350模型/200搜索，至少计入新增4请求且按owner quote预留更充足余量，不能换新账本或币种。思考保持开启，提示词/工具先不一起改；后续再独立比较官方来源导航、原生参数和其他已获授权模型/外部搜索。实际ACK取公开import的原回执，由原Store API消费；无可封存包则保持ACK0。CATL/CSC仍provisional且缺真实subject，不能造owner正例凑三市场。MATRIX R1/LOAD R1/EVID R3/IDENT R1由用户原harness续做，总控只读、不自动派发或代写；FACT R3不重做。不得把软件GREEN/保守弃答当金融准确性、G3/F05或上线门关闭，不增helper审查。
+**唯一当前动作（2026-10-11 checkpoint31）：** 接续[具名协议候选报告](docs/implementation/reviews/B01/vendor-http-identity-candidate-2026-10-11.md)与自有runs/b01-engineering-2026-10-11-01，不重建/重跑已绿上下文测试。先从Store.get_attempt_response的耐久原件核receipt，把真实response ID、physical attempt及request/response/receipt摘要接进Observation1.2；再贯通事前preregister1.2、binding1.1、StockWiki import、query2.6/capabilities1.2和inspection。候选当前只证明格式/冻结资源选择，尚未部署或授权执行；旧4blocked保持，不改其context/hash/收执、不补造ID，也不retroactive登记。
+
+**同一B01节点随后完成：** 已知response_available但无有效答案的耐久逻辑终态、原owner retry/comparison决议，以及CNY refresh quote与旧USD兼容。整个软件候选完成后一次集中审查与受影响回归，核各源writer/HEAD/字节后正常精确源码交付；不增加helper门。原main PID71104已终态exit1，原13HTTP/26搜索、CNY1.268162全部settled、30题分母及原live/owner/work.sqlite保留，禁止重放one-shot控制器或重置账本。
+
+**软件工程通过后才运行：** 原公开owner preview→授权operator真实TTY确认→Q13 admission→原main/同账本及精确原ACK。固定IQS_01/02/04先保持原prompt/tool/thinking/cutoff仅max32768的pack3，再同32768的pack1，至少新增4物理请求；同policy_id升级cap/version并按owner quote留足余量，保留原13次及历史350模型/200搜索。此后再单变量比较来源导航、原生参数及其他模型/外部搜索，不能归功于一起改动。CATL/CSC缺真实subject不能造正例；金融/G3/F05/facts/UI/一键/全池仍开放。并行R1均由用户原harness接续，总控不自动派发或代改Lab，FACT R3不重做。
 
 **历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 
@@ -2041,3 +2047,15 @@ changes_requested，唯一四组[FIN R1](docs/implementation/reviews/parallel-pa
 用户明确授权CodeGraph实际init exit0，23文件431节点408边；源仅.codegraph/未跟踪，124源/124副本raw SHA/HEAD全部保护。匹配自有根活动Python/Node/Chrome0，独立浏览器5服务端口实际释放；按bytes/SHA/文件ID/单链接先核后清自有794生成文件110目录，保留案例/raw日志/PID/截图/trace/controller。Python父子无key、限loopback；独立浏览器context路由先拦外部请求，实际清单全本机，不将Pythonhook宣称OS浏览器防火墙。无付费API、真实DB/名单写或公司文档下载，不删源Lab runs。
 
 公开[验收](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-acceptance.md)/[独立记录](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-independent-review.md)/R1及PWF、wave2 README/dispatch更新，正常提交推送既有origin；实际终态以Git与本机publication-result.json为准。本批9个精确Markdown，不含私有案例原件/Lab/他人2026-10-10 README。OPS/FIN原R1继续；B01 checkpoint30工程接续/金融/G3/F05/UI/一键/全池仍开放。
+
+
+## 2026-10-11 checkpoint31 — B01具名执行协议的隔离实现接续
+
+- 用户本条授权VIEW CodeGraph；确认原索引已经存在且健康（23文件、431节点、当前1119边），不重复运行init。原124业务文件验收保护证据保留；本次Lab已有16项未提交改动、HEAD仍dff4105，不能套用上次clean快照，全部按原writer范围保留。VIEW/FIN/OPS仍changes_requested，Lab不代改。
+- 在runs/b01-engineering-2026-10-11-01冻结IQS255、QA197、SW360原跟踪文本输入；没有复制真实DB、密钥、vendor正文或reasoning。三个源HEAD分别6ce86d3、0a0493e、2d0f1db，checkpoint31重新逐文件核对均未变。examples/profile.json和main_questions.json是后来明确补入的原兼容fixture，不算初始255输入。
+- IQS仅候选新增Observation1.2及vendor-http-identity-v1注册，修改export/validation显式选择；旧Observation1.1、answer、metric、模块归档字节不改。新request_id必须有键，值仅真实非空header或null；response_id与request/response/receipt摘要必需。版本选择不授予执行/金融资格；旧null继续拒绝。
+- StockQA候选按显式metadata.schema_version与整个context的实际schema SHA选择1.1/1.2，混版本/未来版本/错误哈希/自签review拒绝；新schema是IQS候选逐字副本。原上下文1/2的外形和旧默认不变，尚未实现真实receipt到新execution的装配/下游入库。
+- 原profile-red是7项guard setup error（Windows扩展路径），不当产品RED；修环境后的profile-red-actual顶层5F/2P，pytest含子测试显示7failed/2passed/15subtests passed。profile-green40P/2F/41subtests P保留：两项分别sandbox原hardlink发布权限与缺旧fixture；只修运行权限/原fixture后profile-affected-env2P，不能虚称一次42P。新增QA RED2F/7P，GREEN64P（含55原兼容）；IQS追加profile-affected-strict10P/27subtests P，不累加重叠为准确率。
+- 网络拒绝、无key环境、临时目录均留在自有guard控制下；当前三个candidate为未完成的活动工程保留，未删除它们或原c16b账本。没有新API、预算预留、生产DB/名单变化；同节点不增加helper审查。
+- 下一步完整receipt验证、事前主体登记与binding新版本、StockWiki封存/导入/query/inspection后，才能同节点集中独审和正式源部署；已知response逻辑终态与CNY refresh也仍待实施。原4blocked不可改context/ID/旧hash回填；原13请求与30题失败分母保留，金融门仍开放。
+- 本次checkpoint首次两次在外仓Git status受sandbox限制时提前终止；清理子进程Git环境没有解决权限，使用只读所需权限后成功读取。第三次旧clean断言被VIEW原writer动态16项变化拦下，仍未写PWF/attestation；改为记录当前HEAD/status与本控制器外仓写0，而不要求别人仓库clean。三次均非产品失败。另一次猜测test_quick_scan_subject_bound_context.py不存在，随后只读取已定位旧上下文fixture，不按猜测实施。

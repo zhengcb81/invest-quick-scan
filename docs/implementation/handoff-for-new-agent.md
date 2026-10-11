@@ -1,3 +1,15 @@
+> 当前主线（2026-10-11 checkpoint31）：VIEW/FIN/OPS均已集中验收为changes_requested，原writer各续唯一R1；VIEW CodeGraph已可用，不重复init。B01 vendor-http-identity-v1已在自有隔离副本形成具名Observation1.2候选，IQS与StockQA上下文显式版本/哈希校验已通过受影响测试；尚未部署，完整回执、事前登记、封存/入库/query、已知响应逻辑对账及CNY refresh仍待同一B01节点接续。原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；没有新收费调用，不重放原运行。金融/G3/F05/facts/UI/一键/全池仍开放。以下更早当前段均为历史，以本段与唯一Next Step为准。
+
+## 2026-10-11 checkpoint31 — 唯一当前工程接续
+
+先读[候选报告](reviews/B01/vendor-http-identity-candidate-2026-10-11.md)。仅自有runs/b01-engineering-2026-10-11-01中有9个产品/测试候选路径；三个真实源仓未部署。checkpoint31.json记录255/197/360源文件SHA保护、全部原测试PID/终态及候选新增/差异；profile.json/main_questions是后补原fixture。不要删除活动candidate，不重跑已绿项、原main或旧oneshot控制器。
+
+当前QA上下文acceptance只证明IQS新export与冻结schema的显式选择。下一步读已定位quick_scan_delivery_seal._complete_package、quick_scan_c06_adapter.build_complete_c06_package、quick_scan_observation_context.build_observation；从原Store.get_attempt_response读经过_response_record校验的receipt，校checkpoint physical attempt、model、header/response、原时间和三摘要，不能从模型或新metadata补造。原checkpoint不含request_payload_sha256，真实receipt/pack journal已有；1.2必须依赖这些原件。external context的search proof按原独立逻辑核，不能拿native receipt复制为external。
+
+随后同节点做subject_dispatch_request1.2、binding1.1、query2.6和capabilities1.2，旧文件字节/默认协议不变；旧4blocked保持，不能retroactive preregister。完整合成跨仓公开CLI正反例只验软件执行，不是金融gold。候选完成后一次集中独审与受影响回归，再核各源writer/HEAD/文件hash，正常精确源码发布；新QA JSON须精确.gitignore例外，不能add-A。durable逻辑失败/owner retry-comparison决议与CNY refresh同B01其余两组继续，三题32768/pack1实验要等这一整条完成。
+
+VIEW此次授权索引实际已健康，不再init；VIEW/FIN/OPS原R1由用户原harness续做。所有Lab保留writer，既有全局门开放。
+
 > 当前主线（2026-10-11 checkpoint30）：MATRIX/LOAD已集中验收，均changes_requested，R1已交付；FACT R3已签收，EVID R3/IDENT R1等原harness。StockQA真实BIND兼容两文件已正常commit/push0a0493e。原Alphabet完整30题、Pro/thinking-on/pack3/8192实跑终态：13模型HTTP、26native搜索、4合法insufficient_evidence QA检查点、0评分；项目账本CNY1.268162全部结算，缓存0。4结果因真实vendor request_id缺失而C06投递blocked、ACK0；26已收响应仍leased。原运行不能重放/删库；下一步同B01节点修已知响应逻辑对账、vendor ID兼容和CNY refresh，再做32768及pack1对照。金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段均为历史，以本段与唯一Next Step为准。
 
 ## 2026-10-11 checkpoint30 — 接手先读这一段

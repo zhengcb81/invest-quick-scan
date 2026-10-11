@@ -1,3 +1,5 @@
+> 当前主线（2026-10-11 checkpoint31）：VIEW/FIN/OPS均已集中验收为changes_requested，原writer各续唯一R1；VIEW CodeGraph已可用，不重复init。B01 vendor-http-identity-v1已在自有隔离副本形成具名Observation1.2候选，IQS与StockQA上下文显式版本/哈希校验已通过受影响测试；尚未部署，完整回执、事前登记、封存/入库/query、已知响应逻辑对账及CNY refresh仍待同一B01节点接续。原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；没有新收费调用，不重放原运行。金融/G3/F05/facts/UI/一键/全池仍开放。以下更早当前段均为历史，以本段与唯一Next Step为准。
+
 > 当前主线（2026-10-11 checkpoint30）：MATRIX/LOAD已集中验收，均changes_requested，R1已交付；FACT R3已签收，EVID R3/IDENT R1等原harness。StockQA真实BIND兼容两文件已正常commit/push0a0493e。原Alphabet完整30题、Pro/thinking-on/pack3/8192实跑终态：13模型HTTP、26native搜索、4合法insufficient_evidence QA检查点、0评分；项目账本CNY1.268162全部结算，缓存0。4结果因真实vendor request_id缺失而C06投递blocked、ACK0；26已收响应仍leased。原运行不能重放/删库；下一步同B01节点修已知响应逻辑对账、vendor ID兼容和CNY refresh，再做32768及pack1对照。金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段均为历史，以本段与唯一Next Step为准。
 
 > 当前主线（2026-10-11 checkpoint29）：MATRIX与LOAD交接已集中验收，均changes_requested，各只一张R1续做卡，Lab仍为外部writer保留根；FACT R3已签收，EVID R3/IDENT R1等待整改交接。StockQA原生多题包20文件已正常提交推送24b6f30；StockWiki旧身份挂牌兼容两文件已正常本地提交2d0f1db。真实Alphabet克隆的挂牌/authority3/route登记启用/结果库初始化已通过，费用API0；下一步原main真实Pro thinking-on、完整30题/pack3及精确ACK，保留scope分包和unknown/uncertain停止语义。金融/G3/F05/facts/UI/一键/全池未完成。下方更早当前段为历史，以本段与唯一Next Step为准。
@@ -2336,3 +2338,15 @@ CLI虽31P，但25独立公开控制在摘要正确重算后仍暴露row/manifest
 71P/1skip只能证明原合成用例；15公开CLI控制与6独立浏览器场景补出了不可覆盖演示/非评分状态、原wire形状、比较/事实证据、快照revision/cursor及实际详情交互五组根因。unknown5不能用数值合法掩盖状态矛盾，self/owner字符串不能自签比较，sid不能当跨时点唯一索引，已加载rows不等于完整owner匹配。冻结2.0 ObservationProjection本不供比较/入库/挂牌扩展，缺口必须具名，不靠替换API口号承诺兼容。
 
 原122工件/18输入与124源文件匹配，handoff公共shape exit0保留；正确按锁映射pool2.5/review-lead2.3不算问题。原可用组件不重做，唯一五组VIEW R1交原writer；source仅用户授权CodeGraph设施新增，未代写Lab。所有自有临时/profile/性能生成物794文件110目录精确清理、5端口释放/活动进程0，纯合成案例/log/screenshots私有留存，零付费/真实DB/文档下载。不能把UI软件验收或2000行分页性能当金融准确性/生产门。
+
+
+## 2026-10-11 checkpoint31 — B01具名执行协议的隔离实现接续
+
+- 用户本条授权VIEW CodeGraph；确认原索引已经存在且健康（23文件、431节点、当前1119边），不重复运行init。原124业务文件验收保护证据保留；本次Lab已有16项未提交改动、HEAD仍dff4105，不能套用上次clean快照，全部按原writer范围保留。VIEW/FIN/OPS仍changes_requested，Lab不代改。
+- 在runs/b01-engineering-2026-10-11-01冻结IQS255、QA197、SW360原跟踪文本输入；没有复制真实DB、密钥、vendor正文或reasoning。三个源HEAD分别6ce86d3、0a0493e、2d0f1db，checkpoint31重新逐文件核对均未变。examples/profile.json和main_questions.json是后来明确补入的原兼容fixture，不算初始255输入。
+- IQS仅候选新增Observation1.2及vendor-http-identity-v1注册，修改export/validation显式选择；旧Observation1.1、answer、metric、模块归档字节不改。新request_id必须有键，值仅真实非空header或null；response_id与request/response/receipt摘要必需。版本选择不授予执行/金融资格；旧null继续拒绝。
+- StockQA候选按显式metadata.schema_version与整个context的实际schema SHA选择1.1/1.2，混版本/未来版本/错误哈希/自签review拒绝；新schema是IQS候选逐字副本。原上下文1/2的外形和旧默认不变，尚未实现真实receipt到新execution的装配/下游入库。
+- 原profile-red是7项guard setup error（Windows扩展路径），不当产品RED；修环境后的profile-red-actual顶层5F/2P，pytest含子测试显示7failed/2passed/15subtests passed。profile-green40P/2F/41subtests P保留：两项分别sandbox原hardlink发布权限与缺旧fixture；只修运行权限/原fixture后profile-affected-env2P，不能虚称一次42P。新增QA RED2F/7P，GREEN64P（含55原兼容）；IQS追加profile-affected-strict10P/27subtests P，不累加重叠为准确率。
+- 网络拒绝、无key环境、临时目录均留在自有guard控制下；当前三个candidate为未完成的活动工程保留，未删除它们或原c16b账本。没有新API、预算预留、生产DB/名单变化；同节点不增加helper审查。
+- 下一步完整receipt验证、事前主体登记与binding新版本、StockWiki封存/导入/query/inspection后，才能同节点集中独审和正式源部署；已知response逻辑终态与CNY refresh也仍待实施。原4blocked不可改context/ID/旧hash回填；原13请求与30题失败分母保留，金融门仍开放。
+- 本次checkpoint首次两次在外仓Git status受sandbox限制时提前终止；清理子进程Git环境没有解决权限，使用只读所需权限后成功读取。第三次旧clean断言被VIEW原writer动态16项变化拦下，仍未写PWF/attestation；改为记录当前HEAD/status与本控制器外仓写0，而不要求别人仓库clean。三次均非产品失败。另一次猜测test_quick_scan_subject_bound_context.py不存在，随后只读取已定位旧上下文fixture，不按猜测实施。
