@@ -1,3 +1,14 @@
+> 当前主线（2026-10-11 checkpoint35）：FIN remediation-02已集中续验changes_requested；73P和37/37既有独立CLI对保留，9已研究/9缺口/72未开始据实分开，原四组余项只续同包R3。VIEW余项R2、OPS三组R2仍归原writer；B01沿checkpoint31隔离候选唯一工程动作，未部署。原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变。金融/G3/F05/facts/生产UI/一键/全池仍开放。以下旧当前段为历史，以本段与唯一Next Step为准。
+
+## 2026-10-11 checkpoint35 — FIN R2集中续验完成
+
+- 实际FIN Lab codex/fin-ref-01、产品c354859为祖先、HEAD775b6a8；109跟踪/31工件/20原锁全匹配。34旧交接/schema/锁和5原忽略日志raw SHA不变，新跟踪不等于重写历史。无remote，源仅既有.codegraph/。公开handoff PID40720/exit0；保留开发.venv明确不再作临时根，原环境声明问题关闭。
+- 完整原suite PID26440/exit0，73P/0skip、31.46秒；旧25和上一轮12独立validate/export对37/37符合，20锁/issuer/ID/旧1.0入口及原计算修复保留。新10组边界中9组仍不符，94次公开validate/export调用，不把软件通过率当金融准确率。
+- 原R1余72not_started、官方HTML覆盖泛化与旧债务/PDF说明；R2旧1.0错hash仍发布、前版1.1同版本变更不可读、legacy导出标记遗漏；R3 served字段可删/自改绕过题义、开始日倒序和年度同比换比较年仍发布；R4两版本1e999变inf导出Infinity、过限锁先read完整求hash、变更声明缺12项。只续原四组R3，不回炉73已绿防线或加小门。
+- 一次独立agent官方HTML核源与总控集中反例合并。90行/18深核/全部评分null保留；9已研究/9缺口/72未研究与18attempt/7source-ID映射分别记录，不能称7次已验证真实访问。CATL事实、Alphabet部分算术/历史FCF partial保留，研究状态更诚实但原范围未全完成。
+- 自有runs/fin-r2-acceptance-2026-10-11-01先核范围/文件ID/单链接/bytes/SHA，再清理258文件154目录，超限JSON/复制锁根/导出/pytest临时文件已删；保留小输入/副本/原日志。109源与副本/HEAD/status未变，CIM owned Python0；未清Lab/.venv/.codegraph/B01/他人README。模型/付费搜索/文档下载/生产DB/外仓业务写0。
+- 交付：[集中续验](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R2-acceptance.md)、[独立核源](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R2-independent-review.md)、[原四组余项R3](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R3.md)。本轮9份文档正常本地提交，具体hash见自有publication-local-result.json；推送仍pending_scope_authorization_after_prior_rejection，不绕过此前自动审批拒绝，不称远端已同步。主线工程动作不变，Lab继续原writer独占。
+
 > 当前主线（2026-10-11 checkpoint34）：VIEW remediation-01已集中续验changes_requested，原130项129P/1skip（21真实Chromium）保留；G1核心与G3比较关闭，只续原G2—G5余项同包R2。FIN原四组R2、OPS三组R2各归原writer。B01仍沿checkpoint31隔离候选唯一工程动作，未部署；原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变。金融/G3/F05/facts/生产UI/一键/全池仍开放。以下旧当前段为历史，以本段和唯一Next Step为准。
 
 ## 2026-10-11 checkpoint34 — VIEW R1集中续验完成

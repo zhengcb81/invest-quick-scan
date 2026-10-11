@@ -35,3 +35,5 @@ python -B -X utf8 C:/Users/郑曾波/Projects/invest-quick-scan/scripts/parallel
 另两包替换 package-id 和自身路径。结构通过只证明形状和声明范围，实际验收仍核原始输入、Git、测试和产品行为。本批 `validation.json` 仅为文档编制验证。
 
 2026-10-11最新续验：VIEW R1原130项129P/1skip通过，G1核心/G3比较关闭；原G2—G5余项只续[唯一R2](../../../reviews/parallel-packages/2026-10-11/VIEW-01-R2.md)。FIN四组R2、OPS三组R2继续，均原writer独占Lab；真实owner接线与主线门仍开放，原manifest/inputs.lock/validation不回写。
+
+2026-10-11最新FIN：remediation-02集中续验changes_requested，73P和37/37既有CLI对保留，公开handoff exit0/开发环境声明已关；9已研究/9缺口/72未开始仍不足原研究范围，历史兼容/账绑定/读边界只续[同包四组余项R3](../../../reviews/parallel-packages/2026-10-11/FIN-REF-01-R3.md)。VIEW余项R2、OPS三组R2仍原writer独占；不改冻结manifest/inputs.lock/validation，不关闭主线金融/生产门。

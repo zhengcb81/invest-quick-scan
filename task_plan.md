@@ -1,3 +1,14 @@
+> 当前主线（2026-10-11 checkpoint35）：FIN remediation-02已集中续验changes_requested；73P和37/37既有独立CLI对保留，9已研究/9缺口/72未开始据实分开，原四组余项只续同包R3。VIEW余项R2、OPS三组R2仍归原writer；B01沿checkpoint31隔离候选唯一工程动作，未部署。原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变。金融/G3/F05/facts/生产UI/一键/全池仍开放。以下旧当前段为历史，以本段与唯一Next Step为准。
+
+## 2026-10-11 checkpoint35 — FIN R2集中续验完成
+
+- 实际FIN Lab codex/fin-ref-01、产品c354859为祖先、HEAD775b6a8；109跟踪/31工件/20原锁全匹配。34旧交接/schema/锁和5原忽略日志raw SHA不变，新跟踪不等于重写历史。无remote，源仅既有.codegraph/。公开handoff PID40720/exit0；保留开发.venv明确不再作临时根，原环境声明问题关闭。
+- 完整原suite PID26440/exit0，73P/0skip、31.46秒；旧25和上一轮12独立validate/export对37/37符合，20锁/issuer/ID/旧1.0入口及原计算修复保留。新10组边界中9组仍不符，94次公开validate/export调用，不把软件通过率当金融准确率。
+- 原R1余72not_started、官方HTML覆盖泛化与旧债务/PDF说明；R2旧1.0错hash仍发布、前版1.1同版本变更不可读、legacy导出标记遗漏；R3 served字段可删/自改绕过题义、开始日倒序和年度同比换比较年仍发布；R4两版本1e999变inf导出Infinity、过限锁先read完整求hash、变更声明缺12项。只续原四组R3，不回炉73已绿防线或加小门。
+- 一次独立agent官方HTML核源与总控集中反例合并。90行/18深核/全部评分null保留；9已研究/9缺口/72未研究与18attempt/7source-ID映射分别记录，不能称7次已验证真实访问。CATL事实、Alphabet部分算术/历史FCF partial保留，研究状态更诚实但原范围未全完成。
+- 自有runs/fin-r2-acceptance-2026-10-11-01先核范围/文件ID/单链接/bytes/SHA，再清理258文件154目录，超限JSON/复制锁根/导出/pytest临时文件已删；保留小输入/副本/原日志。109源与副本/HEAD/status未变，CIM owned Python0；未清Lab/.venv/.codegraph/B01/他人README。模型/付费搜索/文档下载/生产DB/外仓业务写0。
+- 交付：[集中续验](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R2-acceptance.md)、[独立核源](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R2-independent-review.md)、[原四组余项R3](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R3.md)。本轮9份文档正常本地提交，具体hash见自有publication-local-result.json；推送仍pending_scope_authorization_after_prior_rejection，不绕过此前自动审批拒绝，不称远端已同步。主线工程动作不变，Lab继续原writer独占。
+
 > 当前主线（2026-10-11 checkpoint34）：VIEW remediation-01已集中续验changes_requested，原130项129P/1skip（21真实Chromium）保留；G1核心与G3比较关闭，只续原G2—G5余项同包R2。FIN原四组R2、OPS三组R2各归原writer。B01仍沿checkpoint31隔离候选唯一工程动作，未部署；原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变。金融/G3/F05/facts/生产UI/一键/全池仍开放。以下旧当前段为历史，以本段和唯一Next Step为准。
 
 ## 2026-10-11 checkpoint34 — VIEW R1集中续验完成
@@ -456,13 +467,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS remediation-01已续验，手册R4关闭，只续同包[唯一三组R2](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)；FIN remediation-01亦已续验，只续[原四组唯一R2](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R2.md)；VIEW remediation-01已续验，G1核心与G3比较关闭，仅续[原G2—G5余项R2](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R2.md)，保留已绿130分母。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作以checkpoint34状态和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
+旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS remediation-01已续验，手册R4关闭，只续同包[唯一三组R2](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)；FIN remediation-02已续验，保留73P/37既有CLI对，仅续[原四组余项R3](docs/implementation/reviews/parallel-packages/2026-10-11/FIN-REF-01-R3.md)；VIEW remediation-01已续验，G1核心与G3比较关闭，仅续[原G2—G5余项R2](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R2.md)，保留已绿130分母。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作以checkpoint35状态和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
 
-**唯一当前动作（2026-10-11 checkpoint34，工程动作沿checkpoint31候选）：** 接续[具名协议候选报告](docs/implementation/reviews/B01/vendor-http-identity-candidate-2026-10-11.md)与自有runs/b01-engineering-2026-10-11-01，不重建/重跑已绿上下文测试。先从Store.get_attempt_response的耐久原件核receipt，把真实response ID、physical attempt及request/response/receipt摘要接进Observation1.2；再贯通事前preregister1.2、binding1.1、StockWiki import、query2.6/capabilities1.2和inspection。候选当前只证明格式/冻结资源选择，尚未部署或授权执行；旧4blocked保持，不改其context/hash/收执、不补造ID，也不retroactive登记。
+**唯一当前动作（2026-10-11 checkpoint35，工程动作沿checkpoint31候选）：** 接续[具名协议候选报告](docs/implementation/reviews/B01/vendor-http-identity-candidate-2026-10-11.md)与自有runs/b01-engineering-2026-10-11-01，不重建/重跑已绿上下文测试。先从Store.get_attempt_response的耐久原件核receipt，把真实response ID、physical attempt及request/response/receipt摘要接进Observation1.2；再贯通事前preregister1.2、binding1.1、StockWiki import、query2.6/capabilities1.2和inspection。候选当前只证明格式/冻结资源选择，尚未部署或授权执行；旧4blocked保持，不改其context/hash/收执、不补造ID，也不retroactive登记。
 
 **同一B01节点随后完成：** 已知response_available但无有效答案的耐久逻辑终态、原owner retry/comparison决议，以及CNY refresh quote与旧USD兼容。整个软件候选完成后一次集中审查与受影响回归，核各源writer/HEAD/字节后正常精确源码交付；不增加helper门。原main PID71104已终态exit1，原13HTTP/26搜索、CNY1.268162全部settled、30题分母及原live/owner/work.sqlite保留，禁止重放one-shot控制器或重置账本。
 
-**软件工程通过后才运行：** 原公开owner preview→授权operator真实TTY确认→Q13 admission→原main/同账本及精确原ACK。固定IQS_01/02/04先保持原prompt/tool/thinking/cutoff仅max32768的pack3，再同32768的pack1，至少新增4物理请求；同policy_id升级cap/version并按owner quote留足余量，保留原13次及历史350模型/200搜索。此后再单变量比较来源导航、原生参数及其他模型/外部搜索，不能归功于一起改动。CATL/CSC缺真实subject不能造正例；金融/G3/F05/facts/UI/一键/全池仍开放。OPS/FIN/VIEW R2与其余并行R1均由用户原harness接续，总控不自动派发或代改Lab，FACT R3不重做。
+**软件工程通过后才运行：** 原公开owner preview→授权operator真实TTY确认→Q13 admission→原main/同账本及精确原ACK。固定IQS_01/02/04先保持原prompt/tool/thinking/cutoff仅max32768的pack3，再同32768的pack1，至少新增4物理请求；同policy_id升级cap/version并按owner quote留足余量，保留原13次及历史350模型/200搜索。此后再单变量比较来源导航、原生参数及其他模型/外部搜索，不能归功于一起改动。CATL/CSC缺真实subject不能造正例；金融/G3/F05/facts/UI/一键/全池仍开放。OPS/VIEW R2、FIN R3与其余并行R1均由用户原harness接续，总控不自动派发或代改Lab，FACT R3不重做。
 
 **历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 
@@ -2024,7 +2035,7 @@ B01大节点实际626P/2新断言F后仅受影响模块25P；原真实owner-per-
 
 ## Phase118：独立UI、金融参考与运维施工包
 
-Status: package_preparation_complete; OPS_FIN_VIEW_remediation_acceptance_changes_requested_R2; owner_integration_pending
+Status: package_preparation_complete; OPS_VIEW_changes_requested_R2; FIN_changes_requested_R3; owner_integration_pending
 
 - [x] 按用户要求编制 VIEW-01、FIN-REF-01、OPS-DESK-01 三个较大且互不依赖的施工包；入口 [2026-10-11-wave2](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。工作根为 iqs-viewer-lab、iqs-financial-reference-lab、iqs-operations-lab，编制时目录均不存在（历史快照），不由总控创建或派发；后来OPS、FIN与VIEW均已有交接，当前状态见下方接收项。
 - [x] 自包含卡/共同规则明确只写自身新根，PWF/输入冻结/closed产物协议/CLI/一次集中TDD测试审查/strict清理/正常产品与交接提交；不占三生产仓或 EVID/FACT/MATRIX/LOAD/IDENT writer，不引入第二公司库、评分器、客户端、预算或启动器。
