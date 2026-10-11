@@ -1,3 +1,5 @@
+> 当前主线（2026-10-11 checkpoint29）：MATRIX与LOAD交接已集中验收，均changes_requested，各只一张R1续做卡，Lab仍为外部writer保留根；FACT R3已签收，EVID R3/IDENT R1等待整改交接。StockQA原生多题包20文件已正常提交推送24b6f30；StockWiki旧身份挂牌兼容两文件已正常本地提交2d0f1db。真实Alphabet克隆的挂牌/authority3/route登记启用/结果库初始化已通过，费用API0；下一步原main真实Pro thinking-on、完整30题/pack3及精确ACK，保留scope分包和unknown/uncertain停止语义。金融/G3/F05/facts/UI/一键/全池未完成。下方更早当前段为历史，以本段与唯一Next Step为准。
+
 > 当前主线（2026-10-11 checkpoint28）：FACT R3三项原整改已签收，独立公开CLI25/25符合预期；EVID R2与IDENT集中验收仍需整改，保留已绿并只续做原包缺口。MATRIX/LOAD等待交接，各Lab仍为外部writer保留根。B01原生搜索题包的store/transport/provider/顺位/CLI已实现并完成定向离线回归；正在同一大节点做发布静态收尾，源码尚未提交，当前新run收费API0。真实三公司身份和正式30题已冻结；下一步正常源码交付后做真实小样本对照和原owner ACK。金融准确性/G3/F05/facts/UI/一键/全池仍开放。以下较早当前/下一步均为历史，以本段与Next Step为准。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
@@ -419,7 +421,7 @@ Status: complete_for_planning_only
 
 本批并行文档交付已完成；主控已完成checkpoint26软件源交付/清理，下一动作以本节当前段为准。三包已由用户派发，各自在独占新根实施和交接；总控不重复派发或占用writer，也不是新的主线审查门。
 
-**唯一当前动作（2026-10-11 checkpoint28）：** 同一B01题包节点的20个精确源/test路径完成发布静态收尾后，正常提交获批源码，不跳hook、不混入其他writer改动；随后用当前公开owner/runtime/consent与冻结的三公司正式30题，执行既有授权的小规模真实原生搜索、thinking开启的准确性/耗时/费用对照及精确ACK。不重做89P/180P等已绿批次，不把mock链当真实CLI或金融gold。外部检索题包仍需每成员proof契约，不能复制第一题context。FACT R3当前补丁已签收；EVID R3和IDENT R1卡交用户原harness续做，总控不代写Lab或自动派发；MATRIX/LOAD等待handoff。全局门保持原计划，不增小节点审查。
+**唯一当前动作（2026-10-11 checkpoint29）：** 不再实现或重复发布已交付题包和身份兼容。复用c16b当前真实Alphabet owner克隆/原authority3、完整30题、原main_with_llm及同一原账本，首Pro thinking=true、pack3、max_output8192。其中3个security题singleton，正常预计13HTTP，首cell技术max_requests15（总历史350及用户超范围授权不改），未知费用/uncertain按原账本暂停，已成功题不重复发；执行后走原精确ACK并留实际模型/时点/来源、有效/缺失/错误、费用/耗时/缓存。CATL/CSC仍provisional且缺真实subject，不伪造owner正例来凑三市场。随后按原准确性优先实验对照接线其他已获授权模型与搜索方案。MATRIX R1、LOAD R1、EVID R3、IDENT R1由用户原harness续做，总控不代写Lab或自动派发，不再重做FACT R3。仍需真实financial oracle/范围核对，软件GREEN不关闭G3/F05/facts/UI/一键/全池；不增小节点审查。
 
 **历史接续区：** 下列checkpoint23及更早的‘唯一下一工程动作’已执行，不重建c15a/c15r，不重新复制155源码或重复已绿测试。
 
@@ -1923,7 +1925,8 @@ Status: input_freeze_complete; native_question_pack_execution_in_progress; live_
 - [x] StockQA严格题包parser复用原单题规则，原RED52F和GREEN整模块89P分别保留。缺题/坏单项不补分；重复/extra题号、错公司及根污染拒整包。
 - [x] 现有sync/async客户端显式thinking_enabled/max_output_tokens，None保持旧调用；MiMo enabled/M3 Anthropic adaptive/DeepSeek high。最终回答含think标签拒绝；中间reasoning不进入标准答案。新增52P、整client180P实际终态；MiniMax Responses显式思考未核实则请求前拒，不乱套协议。
 - [x] 显式控制的实际完整HTTP payload canonical SHA绑定耐久request key；默认键字节不变。定向原RED11F/1P、GREEN12P；不用模型自报控制状态或只拿prompt hash混用缓存。
-- [ ] 同一题包节点完成native group原子成员/一次physical预算/每题原始回执与checkpoint、partial/uncertain/lease恢复、provider实际透传及公开执行入口；外context_v1先明确拒，随后按原搜索context契约接入，不复制第一题proof。
+- [x] native group原子成员/一次physical预算/每题回执与checkpoint、partial/uncertain/lease恢复、provider与正式入口已交付24b6f30（checkpoint29）；外context_v1题包目前显式拒绝。
+- [ ] 外部检索多题包未来按每成员proof契约接入，不能复制第一题证明，单题原路径保留。
 - [ ] 完成上述执行链后才用已获live授权运行当前三公司小样本对照，记录真实准确性、耗时、费用与缓存。不是再等权限；目前是可复用软件路径尚在补齐。G3/F05等按真实证据关闭。
 
 证据入口为本机docs/implementation/intake/B01/current-public-chain-2026-10-11/（identity-inputs、release-publish-02、formal-route-freeze、parser/思考/payload各原始回执）。私有DTO/数据库/原始golden/运行目录不随PWF发布。自有runs/c16b仍被本实验使用，不清整个root；agent只清各自结束的临时子根。
@@ -1949,3 +1952,19 @@ Status: input_freeze_complete; native_question_pack_execution_in_progress; live_
 公开接收与续做卡：`docs/implementation/reviews/parallel-packages/2026-10-11/FACT-CONTENT-01-R3-acceptance.md`、`EVID-REF-02-R2-acceptance.md`、`EVID-REF-02-R3.md`、`IDENT-EDGE-01-acceptance.md`、`IDENT-EDGE-01-R1.md`。完整独立raw证据在本机`docs/implementation/intake/parallel-acceptance-2026-10-11/`；不把私有DB/golden/源网页正文推远端。
 
 金融准确性、F05真实内容oracle、G3、C06/W15金融资格、TH/IN、正式facts/词表/题库、UI、一键与全池目标仍未关闭。三公司路径与route冻结不等于批量名单许可；不自行选2000家公司。
+
+## 2026-10-11 checkpoint29 — 两包验收与主线源码交付
+
+| 线 | 最新实际结论 | 接续 |
+| --- | --- | --- |
+| MATRIX-CASE-01 | 正常32例与两次无损导出有效；12个坏输入exit0；原runner43P/1安装检查not_run；changes_requested | 同包R1四组引用/口径/未知/值边界及真实提交，保留正常边界 |
+| LOAD-CASE-01 | 原77P；20CLI+1SHA控制13满足/8不满足；四手算算术对；changes_requested | 同包R1预算/限额/资格/锁闭合及产品commit角色 |
+| FACT/EVID/IDENT | FACT R3已签收；EVID R2与IDENT仍原changes_requested | 不重做FACT；EVID R3/IDENT R1等用户harness真实交接 |
+| B01 native题包 | StockQA20源/test正常commit/push24b6f306258153d6182e7123a107d951466a97c4 | 原公开main真实小样本，不重复离线整批 |
+| Alphabet owner | StockWiki两文件本地2d0f1db5d4f8c2eb053ccb02e6f97dd862e9d617；真实克隆public listing/authority3/record/activate/current/initialize通过 | 完整30题/原scope和原owner、thinking-on真实调用与ACK |
+
+MATRIX166/27锁、LOAD143/15锁前后不变，共同锁原字节不改；LOAD60工件hash匹配。MATRIX原交接partial/result_commit null/102dirty，LOAD把交接commit误当产品commit，均明确留档，不替作者修Git。四份公开验收/R1位于reviews/parallel-packages/2026-10-11；每包仅一次集中review，不开helper门。
+
+B01大节点实际626P/2新断言F后仅受影响模块25P；原真实owner-per-question routing/gen不同反例已修，不能声称一次628全绿。正常hooks通过，源码交付说明reviews/B01/native-question-pack-publication-2026-10-11.md。真实owner克隆输出不等于金融gold，旧subject scope_as_of2025-12-31/not_enumerated保留。原mandatory核心覆盖不允许三题manifest；30题分scope预计13次而非简单10。Pro官方费率和无密钥配置仅契约预检；首paid cell尚未运行，所有本checkpoint收费API0。
+
+历史Phase113/C06完整pytest失败计数与定向通过原件不改；不重建已清c15a/c15r/c15d、不清active c16b/真实owner/运行账本、不清外部Lab。IQS他人2026-10-10 README改动继续保留。G3/F05/B01/L03/facts/UI/一键/全池仍开放。

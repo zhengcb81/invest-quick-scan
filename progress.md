@@ -1,3 +1,5 @@
+> 当前主线（2026-10-11 checkpoint29）：MATRIX与LOAD交接已集中验收，均changes_requested，各只一张R1续做卡，Lab仍为外部writer保留根；FACT R3已签收，EVID R3/IDENT R1等待整改交接。StockQA原生多题包20文件已正常提交推送24b6f30；StockWiki旧身份挂牌兼容两文件已正常本地提交2d0f1db。真实Alphabet克隆的挂牌/authority3/route登记启用/结果库初始化已通过，费用API0；下一步原main真实Pro thinking-on、完整30题/pack3及精确ACK，保留scope分包和unknown/uncertain停止语义。金融/G3/F05/facts/UI/一键/全池未完成。下方更早当前段为历史，以本段与唯一Next Step为准。
+
 > 当前主线（2026-10-11 checkpoint28）：FACT R3三项原整改已签收，独立公开CLI25/25符合预期；EVID R2与IDENT集中验收仍需整改，保留已绿并只续做原包缺口。MATRIX/LOAD等待交接，各Lab仍为外部writer保留根。B01原生搜索题包的store/transport/provider/顺位/CLI已实现并完成定向离线回归；正在同一大节点做发布静态收尾，源码尚未提交，当前新run收费API0。真实三公司身份和正式30题已冻结；下一步正常源码交付后做真实小样本对照和原owner ACK。金融准确性/G3/F05/facts/UI/一键/全池仍开放。以下较早当前/下一步均为历史，以本段与Next Step为准。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
@@ -3242,3 +3244,17 @@ checkpoint26文档收尾：三份C06说明仅新增当前header，旧CRLF历史�
 - 主线原生题包store一次physical预算+每题logical/事前登记、transport、provider、现有顺位、正式入口已实现。分批离线实际store44P、transport44P、provider64P、cascade89P、入口106P，不相加成金融率；parser/client/payload原通过批次不重复。20精确源/test发布静态收尾正在同节点进行，尚未commit/live，不假称公共三仓CLI已实跑。
 - 用户派发的MATRIX/LOAD仍等待交接；IDENT协调状态更新changes_requested。新接收与整改卡集中在reviews/parallel-packages/2026-10-11；不自动派发、不占用Lab writer。
 - 下一工程动作：发布静态终态及正常精确源码commit，然后原公开owner/runtime/consent的三公司30题小规模真实thinking-on实验与ACK。B01、金融/G3/F05/facts/UI/一键/全池继续未完成。
+
+## 2026-10-11 checkpoint29 — MATRIX/LOAD收到并完成集中验收，主线题包已发布
+
+两新包只读冻结并并行集中验收：MATRIX正常32例/两导出/覆盖保护/真实junction边界有效，12固定坏输入仍exit0；自定义runner最终43P/1安装检查因主动剥离guard而not_run。LOAD稳定77P/exit0/PID67152，20独立CLI+1生成SHA控制13满足/8不满足；四手算算术吻合，但预算预留/重复结算/未知金额、超限、资格分母/信息日期和锁/member绑定未收口。均changes_requested，各只一张四组R1，不把重叠分母累加或坏输入exit0当测试通过。MATRIX166源/27锁、LOAD143源/15锁及60工件匹配，Lab不写、API0，不因候选关闭owner/金融门。
+
+StockQA原生题包20精确路径正常提交并push24b6f30，实际origin master匹配，14原hooks全部正常。新真实owner每题routing fingerprint/generation不同，journal只取消两字段包级相等要求，各成员冻结检查保留。RED两失败；集中626P/2F的两新断言读取了简化projection，修后只续QApack模块25P，不虚称一次628全绿。hook首次isort自动排序失败和控制器NUL错误均保留；最后source AST/导入绑定或格式-only复核，无跳hooks、无重复全批。
+
+StockWiki旧持久化2.0 verified identity由原G2b投影2.1，挂牌接口原硬要求2.1导致真实Alphabet拒绝。两文件最小兼容保留所有原2.1行为，旧2.0仅在原完整receipt/属性/issuer/security/listing/source核对通过后可读取，未来/缺aux/退役/冲突仍拒绝；未改真实数据。新增原RED、集中67P/1F的MIC原serializer差异修复后仅续该项1P，Ruff通过。正常source-cwd hook01发现导入空行、hook02自有控制器误挡继承环境，失败保留；只加一空行且AST相同，hook03全过，本地commit2d0f1db5，无remote不添加。该节点10自有根/201文件/294目录精确清理，保留合成完整aux和原guard/PID/log；真实四库及旧owner4库未变。
+
+真实owner原listing serializer选manifest的GOOGL SEC而非第一个preferred行，PID33468 exit0；原authority PID76500 exit0；route record67124、activate2036、current67788、subject observation initialize37160均exit0。独占真实克隆迁移/记录与原生产库分开；源库/旧冻结未变。先前沙箱os.link权限、guard误拦原publisher staging nlink2 cleanup及Windows Popen字符串argv误判都保留原日志，只续失败步；仅修改自有guard/控制器，原产品校验/出版原子规则未改。
+
+完整30题mandatory覆盖不允许max3；scope分包为19entity约7包、3security singleton、8entity约3包，首预计13请求，技术max_requests15。thinking开启/maxout8192、原物理预算一次/每题checkpoint/owner prereg/ACK、未知费用与uncertain暂停，已成功者重启不反复问。MiMo Pro唯一启用路线，原顺位配置保留；PAYG费率只是官方参考，实际usage与账户账单仍待真实请求。用户历史350/200搜索/US25软范围及超范围报备授权不变，不把CNY技术止损当美元换算或人类新授权。
+
+截至本checkpoint实际live0、未获得真实金融答案；CATL/CSC provisional/缺subject不制造正例。MATRIX/LOAD R1只编制未派发，EVID R3/IDENT R1等用户原harness，FACT R3不再返工。证据在各私有intake；公共四验收/R1及B01交付说明与PWF同批正常发布，不导出key/真实DB/golden/vendor body/reasoning，不混他人README。Next Step为原生产链真实小实验和精确ACK，目标active。

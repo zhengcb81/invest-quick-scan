@@ -1,3 +1,15 @@
+> 当前主线（2026-10-11 checkpoint29）：MATRIX与LOAD交接已集中验收，均changes_requested，各只一张R1续做卡，Lab仍为外部writer保留根；FACT R3已签收，EVID R3/IDENT R1等待整改交接。StockQA原生多题包20文件已正常提交推送24b6f30；StockWiki旧身份挂牌兼容两文件已正常本地提交2d0f1db。真实Alphabet克隆的挂牌/authority3/route登记启用/结果库初始化已通过，费用API0；下一步原main真实Pro thinking-on、完整30题/pack3及精确ACK，保留scope分包和unknown/uncertain停止语义。金融/G3/F05/facts/UI/一键/全池未完成。下方更早当前段为历史，以本段与唯一Next Step为准。
+
+## 2026-10-11 checkpoint29 — 新harness直接接续
+
+先读task_plan首段与唯一Next Step。StockQA20文件已commit/push24b6f306258153d6182e7123a107d951466a97c4；StockWiki身份兼容两文件本地2d0f1db5d4f8c2eb053ccb02e6f97dd862e9d617（无remote），不要重复实现/发布或重跑626已绿。真实owner全链前置已在c16b/native-owner-alphabet-01/owner-workspace独占克隆完成；authority3是authority-chain-03/authority3.json，原正式standard/manifest.json、inputs/identity.original-envelope.json、standard/questions.stockqa.json保留。过程与原命令见intake/B01/current-public-chain-2026-10-11/native-owner-alphabet-01/continuation-public-owner-04.json。收费API0；这是输入准备不是金融gold或最终ACK。
+
+继续原main_with_llm、原owner-config/preregister/工作账本/预算/receipt/outbox/ACK，不手造session/client或ApprovedRefresh。首Pro thinking=true8192、30题/pack3（3security题singleton且实际selected SEC来自manifest）；预计13HTTP，技术max_requests15，同账本未知成本或uncertain暂停，不删库或重发已绿题。第一cell配置与执行控制器以本run native-live-pro-01实际handoff为准；此前native-runtime-templates-01仍是未执行候选，不能照模板宣称paid-ready。官方费率不证明账户收费资格。其他两公司缺verified/subject材料，不制造正例。
+
+FACT R3已签收；MATRIX/LOAD均changes_requested，各集中R1在reviews/parallel-packages/2026-10-11。MATRIX原102dirty/result_commit null，LOAD产品5403847/交接1496c75/final d232965角色不同，开工重核实际writer/HEAD/bytes，不重写旧输入锁或帮作者提交。EVID R3/IDENT R1仍等原harness交回。各Lab只读，整改由用户派发，总控不自动派发/代写。先前旧当前段均历史。
+
+本节点正常hooks失败、控制器环境错误与测试fixture错误均有原日志，最终成功范围逐批保留，不合并成全仓/金融GREEN。保留IQS他人2026-10-10 README/未知文件；严禁add-A/force/skip-hook/清active c16b。已清c15a/c15r/c15d、listing10stage和验收lc01/mc01不重建。真实库、钥匙、raw vendor body与reasoning不发布。目标继续active，G3/F05/facts/UI/一键/全池不能凭本次软件通过关闭。
+
 > 当前主线（2026-10-11 checkpoint28）：FACT R3三项原整改已签收，独立公开CLI25/25符合预期；EVID R2与IDENT集中验收仍需整改，保留已绿并只续做原包缺口。MATRIX/LOAD等待交接，各Lab仍为外部writer保留根。B01原生搜索题包的store/transport/provider/顺位/CLI已实现并完成定向离线回归；正在同一大节点做发布静态收尾，源码尚未提交，当前新run收费API0。真实三公司身份和正式30题已冻结；下一步正常源码交付后做真实小样本对照和原owner ACK。金融准确性/G3/F05/facts/UI/一键/全池仍开放。以下较早当前/下一步均为历史，以本段与Next Step为准。
 
 ## 2026-10-11 checkpoint28 — 新harness唯一接续

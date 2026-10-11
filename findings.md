@@ -1,3 +1,5 @@
+> 当前主线（2026-10-11 checkpoint29）：MATRIX与LOAD交接已集中验收，均changes_requested，各只一张R1续做卡，Lab仍为外部writer保留根；FACT R3已签收，EVID R3/IDENT R1等待整改交接。StockQA原生多题包20文件已正常提交推送24b6f30；StockWiki旧身份挂牌兼容两文件已正常本地提交2d0f1db。真实Alphabet克隆的挂牌/authority3/route登记启用/结果库初始化已通过，费用API0；下一步原main真实Pro thinking-on、完整30题/pack3及精确ACK，保留scope分包和unknown/uncertain停止语义。金融/G3/F05/facts/UI/一键/全池未完成。下方更早当前段为历史，以本段与唯一Next Step为准。
+
 > 当前主线（2026-10-11 checkpoint28）：FACT R3三项原整改已签收，独立公开CLI25/25符合预期；EVID R2与IDENT集中验收仍需整改，保留已绿并只续做原包缺口。MATRIX/LOAD等待交接，各Lab仍为外部writer保留根。B01原生搜索题包的store/transport/provider/顺位/CLI已实现并完成定向离线回归；正在同一大节点做发布静态收尾，源码尚未提交，当前新run收费API0。真实三公司身份和正式30题已冻结；下一步正常源码交付后做真实小样本对照和原owner ACK。金融准确性/G3/F05/facts/UI/一键/全池仍开放。以下较早当前/下一步均为历史，以本段与Next Step为准。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
@@ -2277,3 +2279,11 @@ EVID R2公共正常控制还未走通，16绿色用例有被无关锁错误提�
 IDENT的43P与三公开错误放行并存：alias引不存在fact、valid_from前active、duplicate JSON键未来版本被吞。内容还必须区分停牌、挂牌起始、退市具体时点、ADR比例事件和双柜台上线；现有网页确有Apple编号，问题是保存短事实/一级来源/资格闭合，不能称编号伪造。23工件条目是metadata不完整（bytes/fullSHA/目录展开），不能误称23实际hash错误。
 
 B01题包应只共享一次physical请求，不共享掉每题原owner登记和logical checkpoint。明确HTTP拒绝才允许原顺位备用；结构差、低分、unknown和已有效partial不当自动fallback理由；uncertain不盲发。thinking开启从真实payload入cache key，reasoning不进入持久答案。当前外部search证明仍为逐题，native pack外不能偷用首题proof。入口stub forwarding及mock owner/vendor集成不等于真实multi-repo CLI/live；接下来继续当前公共链真实实验，不能用离线数关闭金融门。
+
+## 2026-10-11 checkpoint29 — 比较资料、轨迹语义和版本接线
+
+MATRIX应校验资料自身声明与原锁事实一致，不能把双方同假hash当定义已认证，或把保留unknown却改值5/单位期间冲突且授权数值派生当有效案例；不新增第二比较器。不同release可兼容，不能无依据一刀拒绝；缺真实来源保持unknown。LOAD的unknown提示不挽救完整额度假0/假守恒，capture重复与semantic event幂等必须分开；预发送reservation即使没有send也是真实声明暴露。窗口配额与并发不同，公平性和freshness需实际资格/信息日期分母，blocked不能被默认eligible。四类集中同卡续修，不增小gate。
+
+issuer存储版、serializer投影版和listing consumer准入版可不同。兼容应复用当前完整原receipt/属性与serializer核对，不靠批量改数据库tag或单独放宽版本；原两个binding serializer的MIC派生差异仅在同投影比较归一，公开原输出不变。题包只共享physical运输与预算，不能要求各题routing/gen相同；per-question原owner校验必须留。正式核心题coverage不能用max3截断；security singleton使30/3算式失真，先记录原scope预计13和实际请求，再研究费用/速度，不盲称所有30题都一次完成。
+
+软件/原owner接线成功仍不是金融准确性通过；实际费用/搜索proof/模型标签/现金未知/ACK必须由本run真实请求产生。CATL和CSC原provisional状态不能为了三市场演示改verified。原金融、G3/F05、facts/UI/一键/全池门继续按证据推进。
