@@ -6,7 +6,7 @@
 - 原suite实跑103P/1Windows权限skip。25独立validate/render对中20组退出码符合；5错误退出，另2Markdown活动标记、1合成凭据回显。额外4控制复现父目录junction两条绕过、5000位版本异常、总量16MiB事后才拒（实际17MiB读取）。真实CommonMark AST只证明活动标记，没有浏览器/图片请求/script执行。单次独立包级审查与总控反例一致。
 - R4手册能力/permit/provisional说明关闭；其余全是原R1—R3边界，只续同包R2，不再重写十family/手册或新增helper门。FIN/VIEW仍由原writer做R1，不将其动态工作树当本轮冻结对象。
 - 自有隔离根runs/ops-r1-acceptance-2026-10-11-01：两个owned junction仅入口移除，再逐文件清理83文件/43目录；144源与副本SHA、HEAD/status保护。沙箱CIM被拒的空管道未充作证明，随后提权只读成功核owned Python进程0。小合成反例/真实原日志保留，API/公司文档下载/生产库/外仓业务写入0。
-- 发布限制：自动审批拒绝9份内部验收/续做/PWF文档向既有GitHub origin推送；只识别此前7份具体授权，新增OPS三份文档及本次范围未识别到明确外传授权。原合并发布命令未启动，没有通过其他方式绕过；可正常本地提交，远端pending需人类具体确认。
+- 发布记录：自动审批曾只识别旧7份授权而拒绝新9文档推送；用户随后针对该范围/目的地明确回复“给你全部授权”，未绕过审核。9份文档正常本地提交3d979a2ef1ce86a43e7b292a85c05d8ce59e5046并推送至既有origin github.com/zhengcb81/invest-quick-scan.git，远端HEAD一致；无其他writer文件或私有样例入提交。首次9文档推送已完成；本次4份状态补录正常本地提交，推送pending。自动审批再次把新增的一行视为另次外传，精确差异检查后仍拒绝，须用户具体确认这4份向同origin推送；未绕过。
 - 验收与续做：[集中报告](reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1-acceptance.md)、[独立审查](reviews/parallel-packages/2026-10-11/OPS-DESK-01-R1-independent-review.md)、[唯一R2](reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)。原B01候选、原live/checkpoint/账本不重放、不清零；这次支撑包接收不关闭主线金融或生产门。
 
 > 当前主线（2026-10-11 checkpoint31）：VIEW/FIN/OPS均已集中验收为changes_requested，原writer各续唯一R1；VIEW CodeGraph已可用，不重复init。B01 vendor-http-identity-v1已在自有隔离副本形成具名Observation1.2候选，IQS与StockQA上下文显式版本/哈希校验已通过受影响测试；尚未部署，完整回执、事前登记、封存/入库/query、已知响应逻辑对账及CNY refresh仍待同一B01节点接续。原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；没有新收费调用，不重放原运行。金融/G3/F05/facts/UI/一键/全池仍开放。以下更早当前段均为历史，以本段与唯一Next Step为准。
