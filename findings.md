@@ -1,4 +1,4 @@
-> 当前主线（2026-10-11 checkpoint26）：C06/W15步骤4的软件交付已完成。155源码正常提交（QA9830f46/SW6c4ee58/IQSf95550f），QA/IQS远端已核；SW无remote只本地提交。两个自有测试根已严格清除43936文件/31127子目录/6链接/2根，编译临时根也已清除；原guard/合成账本、原RED/逐批GREEN及真实owner输出保留。没有收费API、生产DB/名单写入。整体C06金融资格、G3/F05、真实准确性、facts/UI/一键/全池门仍开放。下一动作是B01当前公开链三公司小批次预检/冻结；EVID-R2与FACT-R3等真实新交接，三新Lab已由用户派发，等待各owner交接。本批文档Git终态以progress实际回执为准；下方较早当前/唯一下一步均为历史。
+> 当前主线（2026-10-11 checkpoint27）：B01新run已从未改动的真实StockWiki库生成三份身份输入，并在自有实验release发布router2.3；6次公开route/compose均终态成功，三家公司正式30题已冻结，源current未改。严格题包解析89P、客户端思考控制180P、实际payload指纹12P；均隔离离线，不是金融准确性验收。正在同一题包节点补原生搜索的多题成员/一次预算/每题检查点执行链，尚未发收费API。三个外包已由用户派发，各Lab等待交接；总控不占其writer。C06金融/G3/F05/facts/UI/一键/全池目标仍开放。下面较早“当前/唯一下一步”均为历史，以Next Step最新段为准。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 
@@ -2257,3 +2257,13 @@ strict dry真实会话10083 exit0，原生逐字/文件ID/单链接43936项全�
 用户直接确认MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01三个包已发出，状态为human_dispatched/awaiting_handoff；尚无产品交接或实际测试结果。总控避开三个Lab写根，不自动重复派发、不代实现。README与dispatch-status.md记录当前协调状态，原manifest/锁/validation保留编制时事实。41锁内文件bytes/raw SHA全部匹配；本次零产品测试、收费API及外仓写入。主线仍为B01当前公开链三公司小批次预检和冻结，不因派发关闭G3/F05/facts/UI/一键/全池门。
 
 恢复读取时首次输出包含过量未跟踪状态而截断，改为限定标题/跟踪状态读取；一次按带空格Phase 115标题定位失败，按真实Phase115标题继续，零产品写入。
+
+## 2026-10-11 checkpoint27 — 快速对照先把生产题包接实
+
+实际生产batch_file是多公司输入，QAEngine此前仍逐题；不能用旧实验自写observer冒充多题共用原HTTP/账本的生产能力。当前默认current package仍router1.0，与作者router2.3不同；因此本轮在唯一实验release通过原publisher实际发布并冻结，不静默换源pointer。三份真实owner输入、6次公开route/compose和每公司30题已成功，并不是模型作答或筛选资格。
+
+当前客户端MiMo原生搜索之前硬coded thinking disabled，MiniMax Anthropic省略thinking实际默认off。现在显式实验选项走真实payload，旧调用None兼容；实际payloadSHA必须进入request key，否则不同思考/输出上限/工具控制会混作同一请求。思考输出与final文本分离；带think标签的final拒绝。未知/缺项不补5，pack跨公司/重复/extra题号不接受。
+
+native题包必须先为全部logical work冻结成员并各自pre-POST主体登记，一个physical预算/容量/HTTP，多条原题checkpoint。真实partial只存有效成员；request结果不明全部uncertain，不能顺位换模型后盲重问。外检索context_v1原为单题绑定，不能第一份proof挪作全包；当前native实现先显式拒它，再按既有owner协议扩展。late lease保存合法original receipt与一次physical实际费用，而不制造可复用答案；错执行id/payload/model不绑定foreign receipt，原预算held、禁止自动重试。
+
+CATL实际同表2026H1动力/储能/总收入已有官方搜索短摘录，不下载文档；Alphabet software用Q1 IT服务规模且保留Q2 TPU产品混入；周期/生命周期是source-bound分析判断而非公司自报gold。模型公开价/思考能力与账户实际套餐费用分开：套餐余额/覆盖未知保留null，不摊月费。当前所有费用请求0，89P/180P/12P是软件范围而非准确性。

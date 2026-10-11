@@ -1,4 +1,4 @@
-> 当前主线（2026-10-11 checkpoint26）：C06/W15步骤4的软件交付已完成。155源码正常提交（QA9830f46/SW6c4ee58/IQSf95550f），QA/IQS远端已核；SW无remote只本地提交。两个自有测试根已严格清除43936文件/31127子目录/6链接/2根，编译临时根也已清除；原guard/合成账本、原RED/逐批GREEN及真实owner输出保留。没有收费API、生产DB/名单写入。整体C06金融资格、G3/F05、真实准确性、facts/UI/一键/全池门仍开放。下一动作是B01当前公开链三公司小批次预检/冻结；EVID-R2与FACT-R3等真实新交接，三新Lab已由用户派发，等待各owner交接。本批文档Git终态以progress实际回执为准；下方较早当前/唯一下一步均为历史。
+> 当前主线（2026-10-11 checkpoint27）：B01新run已从未改动的真实StockWiki库生成三份身份输入，并在自有实验release发布router2.3；6次公开route/compose均终态成功，三家公司正式30题已冻结，源current未改。严格题包解析89P、客户端思考控制180P、实际payload指纹12P；均隔离离线，不是金融准确性验收。正在同一题包节点补原生搜索的多题成员/一次预算/每题检查点执行链，尚未发收费API。三个外包已由用户派发，各Lab等待交接；总控不占其writer。C06金融/G3/F05/facts/UI/一键/全池目标仍开放。下面较早“当前/唯一下一步”均为历史，以Next Step最新段为准。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 
@@ -586,3 +586,11 @@ strict dry真实会话10083 exit0，原生逐字/文件ID/单链接43936项全�
 ## 2026-10-11 — 并行writer保留边界
 
 用户已派发MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01。三个Lab由各自harness独占；主控只在交接后接收，不创建/修改/清理其目录。最新状态见docs/implementation/parallel-lanes/packages/2026-10-11/dispatch-status.md。输入锁41文件仍匹配；历史manifest/validation不回写。B01主线和原大节点验收标准不变。
+
+## 2026-10-11 checkpoint27 — 三个外包在外，B01当前链继续
+
+用户已发MATRIX/LOAD/IDENT；三个Lab保留给外部writer，不代建/代写/自动派发。当前主控只接B01同一生产题包节点：真实身份3次CLI、实验2.3包和3家正式30题已经完成，不再重做preflight或旧实验。看task_plan Next Step及本机intake/B01/current-public-chain-2026-10-11/formal-route-freeze.json、parser-checks/green.result.json、thinking-checks/handoff.md、payload-binding-checks/green.result.json。
+
+已绿范围为parser89、client180、payload12，各原RED/timeout/exit/分母保留。当前所有付费API0；source current pointer未变。group store/transport/provider未收口，不能把QuestionPack parser接口当公开批量已可跑。各题须自己logicalattempt/lease/checkpoint，physical一次budget；native先行、external_context_v1明确拒，不能复制第一题contextproof。省略thinking保持旧默认，实验必须显式True；未确认MiniMax Responses显式控制在budget/HTTP前拒，已有Anthropic可用。
+
+仍在用的runs/c16b不可整根删；每个agent只清自己的已结束testsubroot，private原日志/DTO/manifest保留，不进Git。不要重建已删除c15a/c15r/c15d、重跑1737全绿或再加helper审查。仅同一题包变更节点集中验证后正常精确Git；当前未完成源码不得假称commit/push。下一实际动作是group执行链接线/受影响测试，随后真实三公司小样本和owner ACK。金融/G3/F05/facts/UI/一键/全池门仍开放。

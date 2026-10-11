@@ -1,4 +1,4 @@
-> 当前主线（2026-10-11 checkpoint26）：C06/W15步骤4的软件交付已完成。155源码正常提交（QA9830f46/SW6c4ee58/IQSf95550f），QA/IQS远端已核；SW无remote只本地提交。两个自有测试根已严格清除43936文件/31127子目录/6链接/2根，编译临时根也已清除；原guard/合成账本、原RED/逐批GREEN及真实owner输出保留。没有收费API、生产DB/名单写入。整体C06金融资格、G3/F05、真实准确性、facts/UI/一键/全池门仍开放。下一动作是B01当前公开链三公司小批次预检/冻结；EVID-R2与FACT-R3等真实新交接，三新Lab已由用户派发，等待各owner交接。本批文档Git终态以progress实际回执为准；下方较早当前/唯一下一步均为历史。
+> 当前主线（2026-10-11 checkpoint27）：B01新run已从未改动的真实StockWiki库生成三份身份输入，并在自有实验release发布router2.3；6次公开route/compose均终态成功，三家公司正式30题已冻结，源current未改。严格题包解析89P、客户端思考控制180P、实际payload指纹12P；均隔离离线，不是金融准确性验收。正在同一题包节点补原生搜索的多题成员/一次预算/每题检查点执行链，尚未发收费API。三个外包已由用户派发，各Lab等待交接；总控不占其writer。C06金融/G3/F05/facts/UI/一键/全池目标仍开放。下面较早“当前/唯一下一步”均为历史，以Next Step最新段为准。
 
 > 2026-10-11新增并行交付（Phase115）：MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01施工文档/输入锁/模板已准备并通过集中文档核验，可在三个独立新Lab限定范围认领；未创建或派发worker，未运行产品测试。入口 docs/implementation/parallel-lanes/packages/2026-10-11/README.md。主线仍是checkpoint24的155精确源码交付/正常Git/strict清理；EVID-R2、FACT-R3及原全局门不变。下方更早“当前”段均为历史。
 
@@ -3221,3 +3221,15 @@ checkpoint26文档收尾：三份C06说明仅新增当前header，旧CRLF历史�
 用户直接确认MATRIX-CASE-01、LOAD-CASE-01、IDENT-EDGE-01三个包已发出，状态为human_dispatched/awaiting_handoff；尚无产品交接或实际测试结果。总控避开三个Lab写根，不自动重复派发、不代实现。README与dispatch-status.md记录当前协调状态，原manifest/锁/validation保留编制时事实。41锁内文件bytes/raw SHA全部匹配；本次零产品测试、收费API及外仓写入。主线仍为B01当前公开链三公司小批次预检和冻结，不因派发关闭G3/F05/facts/UI/一键/全池门。
 
 恢复读取时首次输出包含过量未跟踪状态而截断，改为限定标题/跟踪状态读取；一次按带空格Phase 115标题定位失败，按真实Phase115标题继续，零产品写入。
+
+## 2026-10-11 checkpoint27 — 当前真实身份/正式题单与题包生产基础
+
+三新Lab状态仍human_dispatched/awaiting_handoff，未访问其写根。主控创建唯一自有runs/c16b，从真实StockWiki scan/subjects/identity-receipts/market-registry四库复制并生成3个当前public identity-export-g2b，所有源/副本SHA相同，API0。保留provisional/verified真实状态，未把身份输入说成研究结论或金融覆盖。
+
+实验release158个既有输入/1,718,502bytes，经实际原publish-routing --activate发布pkg_b5a41d8c9f89adba8d57cce1792b1cac8db5378509996f6614472a691cfb5fba、router2.3、48模块222题；源current不变。首PID51748终态exit2/WinError5硬链接权限失败原件保留，same public publisher获批正常PID67136 exit0；不是改publisher或绕过校验。原30题候选保持，再按短官方同期间事实和分析分类运行6个公开route/compose CLI，三家均resolved/ready、30题，API0。正式manifest/rawSHA和caller独立持有decision ID见formal-route-freeze.json；没有发送模型prompt/生成金融gold。
+
+当前StockQA同一题包节点连续实施：严格parser原RED52F、GREEN整模块89P（PID54116）；现有client新增思考/输出上限与final-only控制，新增52P（PID70444）、整模块180P（PID78064）；实际payload hash传入预算边界和request key，原RED11F/1P（PID916）到GREEN12P（PID57220）。各组是不同范围/原分母，不合并成金融成功率；原单题默认兼容。所有过程无key传给离线child，复用原guard abc0128d，HTTP Mock、SQLite和普通文件写限各自owned根，收费API0。
+
+隔离原件如实保留：parser默认日志设备路径与大pytest自动nodeid的Windows环境长度错误已收敛到owned日志/短ID；client sandbox GREEN1 180秒及两stdlib asyncio 10秒probe timeout均保留。相同原guard在unsandboxed default Proactor/Selector probe实际约0.3秒成功，随后GREEN成功；没有修改生产loop或开放localhost。手工旧Cloud派生小数已用Decimal在发送前纠正并保留原source-basis和-02；正式路由使用最终source-facts-and-proposals-02 SHA42c179858f10e83bc098bf66cc6bc8298d54eba7bff9426e048c20f7b1ef85d8。两次相对路径读错cwd和过量status截断只读错误，后改绝对/限定读取，不改变源码与证据。
+
+当前group store/transport/provider由本主控的互斥文件agent推进，schema17只用隔离库；不创建第二执行器、每题自己的lease/attempt/checkpoint、physical一次预算。尚未完成该生产能力、收费实验或金融/G3/F05/facts/UI/一键/全池验收；正常Git将在此节点完成后精确路径提交，当前source working change不能当已发布。旧c15a/c15r/c15d不重建，整个c16b在用不能清。
