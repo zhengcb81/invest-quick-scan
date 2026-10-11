@@ -1,3 +1,14 @@
+> 当前主线（2026-10-11 checkpoint34）：VIEW remediation-01已集中续验changes_requested，原130项129P/1skip（21真实Chromium）保留；G1核心与G3比较关闭，只续原G2—G5余项同包R2。FIN原四组R2、OPS三组R2各归原writer。B01仍沿checkpoint31隔离候选唯一工程动作，未部署；原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变。金融/G3/F05/facts/生产UI/一键/全池仍开放。以下旧当前段为历史，以本段和唯一Next Step为准。
+
+## 2026-10-11 checkpoint34 — VIEW R1集中续验完成
+
+- 实际VIEW Lab codex/view-01、产品7069420为祖先、HEAD4d7662b；181跟踪和18原锁匹配，原交接字节未变。新manifest183项含5个动态CodeGraph设施，不归档它的DB；其余178稳定工件匹配。公共handoff PID71684/exit0仅证明shape/声明范围，README旧124和最终JUnit130需同步。
+- 完整原suite PID78052/exit0/64.51秒，130项129P/1Windows skip：unit89（88P/1skip）、integration20P、真实Chromium21P。两个初始sandbox实例分别220.24/120.69秒本机socketpair等待，真实栈和终止日志保留；提权解除本机通信限制后同套件通过，不算产品RED或重复三次全绿。
+- 20独立公开CLI合成控制与五真实浏览器场景：G1强制banner/固定未知分和恢复不加分改善成立，比较仅demo且按ID绑定关闭；但缺ID两端None仍supported、五坏形状exit1/traceback、caps实际facts未就绪仍available、响应S2观察挂请求S1、异owner/perimeter混入同键、100+50断cursor仍称完整。缺失态/接口清单亦只续原G5，不回炉已绿卡片/两挂牌/日期/键盘/真实Back。
+- 一次原包独立agent只读审查与集中反例合并，不加小节点门。原五组只有G2—G5余项续唯一R2；Lab仍归原writer，总控不代写StockWiki或自造owner能力/正例。真实owner_integration=not_run保持，软件绿不关闭金融/生产门。
+- 自有runs/view-r1-acceptance-2026-10-11-01按ID/hash/硬链接闭合集合清理2079文件/200目录；181源和副本/HEAD/status未变，自有Python/Node/Chrome0，四独立端口释放。保留小输入/原日志/截图trace/副本，不清源Lab/安装浏览器/B01/他人README。API/付费搜索/公司文档下载/生产DB/外仓业务写0。
+- 交付：[集中报告](reviews/parallel-packages/2026-10-11/VIEW-01-R1-acceptance.md)、[独立记录](reviews/parallel-packages/2026-10-11/VIEW-01-R1-independent-review.md)、[只续原四组余项R2](reviews/parallel-packages/2026-10-11/VIEW-01-R2.md)。本轮9个文档正常本地提交，向既有origin推送仍等待明确范围授权；之前4794412/9be1ab9同样未推，不能称远端全同步。原3d979a2已推事实不变。
+
 > 当前主线（2026-10-11 checkpoint33）：FIN remediation-01已集中续验changes_requested，保留CATL新增事实、部分Alphabet口径、58P和旧25/25独立CLI；78行研究仍占位，原绑定/计算/交接四组只续同包R2。OPS只续三组R2且R4已关，VIEW仍原R1，所有Lab归原writer。B01仍沿checkpoint31隔离候选的唯一工程动作，未部署，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0保持。金融/G3/F05/facts/UI/一键/全池仍开放。以下旧当前段为历史，以本段和唯一Next Step为准。
 
 ## 2026-10-11 checkpoint33 — FIN R1集中续验完成
