@@ -1,3 +1,15 @@
+> 最新进展（2026-10-12 checkpoint44）：三个新的PRIMARY官方来源核验大包可在独立新根启动，43依赖/90独占题位/31链接/三公开handoff模板预检通过，仅文档编制、未派发/研究。主线B01具名request1.2/binding1.1/query2.6已在隔离候选推进：IQS78P、StockWiki真实临时库/固定OS CLI69P；caps1.2相关23P/1F后受影响1P修闭。尚未部署源或完成完整subject-bound QA/inspection与金融资格。原FIN114P正式合并、原live13HTTP/26搜索/CNY1.268162/0评分/ACK0保持；金融/G3/F05/生产门仍开放，以下旧“当前”为历史。
+
+## 2026-10-12 checkpoint44 — B01具名下游候选与三个独立核源包
+
+- [主线下游候选](docs/implementation/reviews/B01/vendor-http-identity-owner-candidate-2026-10-12.md)：显式request1.2锁execution_profile，binding1.1区分header/response/physical attempt/三SHA；query2.6独立wire/profile和版本query hash，旧schema不改。owner descriptor由固定IQS CLI从独立已存manifest+归档资源取得，不复制client profile；cap1.2不宣称金融/owner-ready。
+- IQS新13＋旧65共78P、PID32080/exit0；StockWiki新3＋旧66共69P、PID396/exit0/33.470576秒，包含真实临时SQLite/固定OS CLI/不可变pre-post/新查询与持久重放。caps相关23P1F、源schema旧6wire上限问题修新版本7条并仅复测受影响1P、PID52280；不伪称完整一次绿。默认log guard/类导入误收集/不存在测试文件等失败保留，均在同节点，无新小审查门。
+- QA实际SQL72P保留，主线仅隔离iqs/qa/sw未回写源；下一步完整subject-context2+Observation1.2实际QA pre-send/封存/owner导入/inspection及其它消费读取，然后同节点终态/retry/CNY兼容。金融/G3/F05/生产UI/一键/全池未授，原live分母不改；源码只在整节点审查/源writer与SHA重核后精确部署。
+- [新三个PRIMARY大包](docs/implementation/parallel-lanes/packages/2026-10-12-primary/README.md)：Alphabet/宁德时代/中信建投H，各自30既有题、RPA/RPC/RPS独占增量，各写新iqs-primary-*-lab，不写主线/原FIN/已有Lab。允许限定研究现在开工，开工重核根唯一writer；互无前置，不等B01/另一包，不自动派发。原金融参考90评分null，官方原件/口径/反证核验会推进原F05。
+- 共同HEAD1e88d867/actual FIN1.5.0、pack1.2/ledger1.0；43raw字节冻结于本机runs/parallel-primary-2026-10-12-01，旧原件/20题锁/parent map/archive齐全。90唯一目标/外60及原Source/账hash、严格qualification/changes未执行模板、TDD单位/集成/公开CLI0/2/3/清理/一次包级审查和交接规范明确。模型/付费搜索/下载/生产DB/名单写不启用；测试模板不授financial/owner-gold。
+- 一次编制预检43SHA/根互斥不存在/31本地链接/三shapeCLI PID27644/45224/68052 exit0；validation只package_preparation，product_tests/substantive_research=false。生成器research.state/status错误在原文件实际research_status修正，未造成源写；不隐藏编制失败或拿模板当交付。
+- PWF/新卡正常本地提交，不把私有FIN数据/候选源码/DB/他人2026-10-10 README混入，远端仍此前自动审批范围pending。用户可直接各发一张独立卡；总控接收冲突比对与来源复核，可修失败直接修，不再发返工卡。
+
 > 最新进展（2026-10-12 checkpoint43）：FIN90题合并已正式软件交付保持；B01同一隔离候选现已贯通真实临时SQLite的Observation1.2回执封存，受影响72P/0skip、重启重放/六字段重hash伪造拒绝/缺记录恢复0模型调用/旧1.1拒null。尚未部署QA/IQS/SW，仍需事前request1.2/binding1.1与query2.6/caps1.2/inspection接线。原13HTTP/26搜索/CNY1.268162/0评分/ACK0及金融/G3/F05/生产门保持；下文旧“当前”为历史。
 
 ## 2026-10-12 checkpoint43 — B01实际SQLite封存候选

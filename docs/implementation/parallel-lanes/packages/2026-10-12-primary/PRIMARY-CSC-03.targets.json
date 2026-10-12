@@ -1,0 +1,3225 @@
+{
+  "format_version": "1.0.0",
+  "package_id": "PRIMARY-CSC-03",
+  "company": {
+    "company_key": "cncb_h",
+    "legal_issuer_name": "中信建投证券股份有限公司",
+    "ticker": "06066",
+    "exchange": "XHKG",
+    "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+    "company_type": "capital_markets",
+    "information_cutoff": "2026-10-11",
+    "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+    "question_count": 30
+  },
+  "baseline_pack_id": "frpack_a664741f1e3fe3e697b7902cd9aa0be15651c24723f401ffa5740c66927982e7",
+  "baseline_pack_raw_sha256": "f76eb644ab68c13145fff9104031ccd6606792afbb1b16311fbb685ad035bd23",
+  "frozen_input_file_count": 43,
+  "new_id_namespace": "RPS",
+  "rows": [
+    {
+      "reference_id": "FR-CNCB_H-IQS_01",
+      "question_id": "IQS_01",
+      "baseline_row_sha256": "28e93693ac8de54df5be8f2d2622cb5aa0e9a1e4924700cb8adafffceca586cc",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "e49b91646870da125d3e4a03e7cadd2ffb93e24638e7c0cb801dfb5909e3bebc",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节 重要事项（二）财富管理业务板块 1. 经纪及财富管理业务",
+            "sought": "客户价值与付费：客户数、开户、产品保有、投顾覆盖、买方投顾规模",
+            "outcome": "supported",
+            "note": "读得客户总量 1,712.31 万户、新增开户 173.25 万户、产品时点规模 4,100 亿元(+60.27%)、投顾覆盖 108.52 万人(+71.95%)。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 手续费及佣金净收入 明细",
+            "sought": "客户付费的会计口径与两期对比",
+            "outcome": "supported",
+            "note": "经纪手续费净收入 7,970,452,944.89 vs 5,817,636,024.83。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（二）财富管理业务板块（客户留存/流失）",
+            "sought": "客户留存率、流失率、单客获客成本",
+            "outcome": "not_covered",
+            "note": "年报摘要未披露留存率或获客成本；这些指标不在法定披露强制口径内。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（二）1 经纪及财富管理业务（停止使用的后果）",
+            "sought": "转户成本、账户迁移比例等『停止使用后果』证据",
+            "outcome": "not_covered",
+            "note": "公开披露无此项；不据推测填充。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "fact_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: fee_business client value and payment willingness"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "客户价值与付费规模有官方证据（客户数、产品保有、经纪费用收入），但题义要求的「总使用成本」与「停止使用的后果」没有可读到的官方披露，且 2025 年的增长处在成交量 +70.34% 的高活跃行情中，无法把客户价值与行情贡献分开。落在锚点 5 附近：客户价值成立但可替换、支付意愿一般；不足以支持 10。expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露客户留存率/流失率与转户成本，且在高活跃行情退去后客户资产仍净流入，可上调。",
+          "若佣金与代销费率持续下行而客户数不增，则客户价值判断应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Draft from official disclosure HTML. Customer scale and fee revenue verified; retention/transfer-cost evidence is genuinely not disclosed.",
+        "limitations": [
+          "No client retention rate or acquisition cost disclosed; cannot compute total cost of use.",
+          "Growth coincided with an exceptionally active market (+70.34% turnover), so value vs. cycle cannot be separated.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-CLIENTS25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-PRODSIZE25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-FUNDDIST25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-BROKERFEE25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-BROKERFEE24__FR-CNCB_H-IQS_01",
+        "FACT-RFS-ADVISOR25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-MARGIN25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-PBCLIENT25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-MKTINDEX25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-IQS_01",
+        "FACT-RFS-AMFEE24__FR-CNCB_H-IQS_01"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_02",
+      "question_id": "IQS_02",
+      "baseline_row_sha256": "1ece4641278b36aa45fb64e54ab8fc37b22c6a863891aec743be998994421b1d",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "e466bfe76d2c2933a967d4714b4c203840026b60b8515455125f8a04da400042",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（二）财富管理业务板块（存量与获客投入）",
+            "sought": "存量客户基础、产品保有与获客投入",
+            "outcome": "supported",
+            "note": "读得客户总量 1,712.31 万户、新增开户 173.25 万户、产品 4,100 亿元、非货保有 1,432 亿元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 经纪/资管手续费净收入 两期对比",
+            "sought": "存量收入的费率趋势",
+            "outcome": "supported",
+            "note": "经纪 79.70 亿元 vs 58.18 亿元(+37.0%)；资管及基金 13.452 亿元 vs 13.432 亿元(+0.15%)。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（三）4 主经纪商业务 / 托管业务",
+            "sought": "存量黏性服务规模",
+            "outcome": "supported",
+            "note": "托管公募基金 122 只；托管及运营服务总规模 14,044.29 亿元(+45.03%)；PB 客户 23,394 户(+25.34%)。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（二）1 经纪及财富管理业务（净流入）",
+            "sought": "客户资产自然净流入数据",
+            "outcome": "not_covered",
+            "note": "摘要未披露客户资产净流入口径；不据推测填充。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "fact_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: fee_business revenue durability and fee-rate pressure"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "有稳定且可观的存量客户基础与存量服务规模，但费率下行证据明确（经纪收入增速 37.0% 远低于市场交易量增速 70.34%；资管收入几乎零增长而规模 +5.99%），说明延续收入需要持续让利与投入。符合锚点 5『有稳定存量但仍需较多投入维持』。expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若后续披露存量客户资产净流入为正且费率企稳，可上调。",
+          "若佣金率继续下行且客户数增长停滞，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Two-period fee comparison supports the fee-rate-pressure counterevidence.",
+        "limitations": [
+          "Client-asset net inflow is not disclosed; fee-rate levels are not disclosed in absolute terms.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-CLIENTS25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-PRODSIZE25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-FUNDDIST25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-BROKERFEE25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-BROKERFEE24__FR-CNCB_H-IQS_02",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-AMFEE24__FR-CNCB_H-IQS_02",
+        "FACT-RFS-AUM25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-CUSTODY25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-PBCLIENT25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-REVENUE25__FR-CNCB_H-IQS_02",
+        "FACT-RFS-REVENUE24__FR-CNCB_H-IQS_02"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_04",
+      "question_id": "IQS_04",
+      "baseline_row_sha256": "8b1d87d8d80a75265d45b9d8b18be9143cca633700ff35f0ee40433928e0c3fb",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "cbf5f4c64e3221f82a37864bf20f00ef8a4e627baa2b6a6015d38757facbdb6f",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_04",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节（一）投资银行业务板块 1/2/3（市场供给与公司份额）",
+            "sought": "供给扩张、项目家数与募资规模",
+            "outcome": "supported",
+            "note": "境内股权融资 255 家/8,561.01 亿元(+308.26%)；公司 33 家/917.73 亿元(第3/第5名)。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 手续费及佣金净收入 明细（费率读数）",
+            "sought": "价格纪律与费率趋势",
+            "outcome": "supported",
+            "note": "经纪 79.70 亿元(+37.0%) vs 市场交易量 +70.34%；投行 31.29 亿元(+25.7%)。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（一）2 债务融资业务（行业承销规模）",
+            "sought": "行业层面承销规模与竞争格局",
+            "outcome": "supported",
+            "note": "全市场证券公司承销 15.97 万亿元(+12.97%)；公司 17,334.90 亿元，行业第 2。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "证券业协会行业利润池年度汇总",
+            "sought": "行业整体利润池与归属的官方可比数据",
+            "outcome": "not_covered",
+            "note": "本次未定位到发布日在 cutoff 内的可读官方行业利润池 HTML 汇总页；不据搜索摘要填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: industry supply, fee discipline and profit pool"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若官方行业数据或后续披露显示费率企稳且公司份额提升，可上调。",
+          "若佣金与承销费率继续下行且份额不升，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Fee-rate compression evidenced from official two-period figures; industry profit pool remains a gap.",
+        "limitations": [
+          "No official industry profit-pool or absolute fee-rate level obtained within the cutoff.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-EQ25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-BONDFEE25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-IBFEE25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-IBFEE24__FR-CNCB_H-IQS_04",
+        "FACT-RFS-BROKERFEE25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-SEGTRD25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-SEGWM25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-SEGIB25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-SEGAM25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-NP25__FR-CNCB_H-IQS_04",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-IQS_04-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_05",
+      "question_id": "IQS_05",
+      "baseline_row_sha256": "fe3135a9e509500c044dca37ab037f451e1a785da0a8f5e4c342b17cb5569136",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "1a69a9ad5639348badc9bac39e5826046ab52ff8b9c2d04387da9705c248e435",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_05",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节（一）投资银行业务板块 /（三）交易及机构客户服务 /（四）资产管理",
+            "sought": "优势的业务场景、资质与排名",
+            "outcome": "supported",
+            "note": "IPO 12 家/196.61 亿元(第3/第2)；债务融资 5,131 单/17,334.90 亿元(第2)；并购 12 单(第1)；场外期权一级交易商；北向通优秀做市商 4 连。"
+          },
+          {
+            "source_id": "SRC-RFS-004",
+            "locator_phrase": "深证函〔2025〕857号 全文",
+            "sought": "可推翻优势判断的反证（官方监管措施）",
+            "outcome": "supported",
+            "note": "书面警示：保荐项目未核查股东出资来源异常与收入确认/采购不规范，仍发表肯定核查意见。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（三）5 QFI 和 WFOE 业务 / 3 投资研究业务",
+            "sought": "网络/规模机制与转换障碍证据",
+            "outcome": "partial",
+            "note": "有分析师 181 名、覆盖 1,600 余家、研报 5,083 篇等规模事实，但无转换障碍量化。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "同业对标：同等投入的性能成本",
+            "sought": "对手以合理成本复制的代价",
+            "outcome": "not_covered",
+            "note": "无可读官方对标披露；不自行构造同业成本比较。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "fact_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: competitive advantage durability and replication cost"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "多条可核实的行业排名与资质（IPO 第 3/第 2、债务融资第 2、并购第 1、场外期权一级交易商、北向通优秀做市商 4 连）构成真实优势证据；但对手复制成本的量化、转换障碍与失效信号均无披露，且官方监管措施直接质疑投行执业质量。介于锚点 1 与 5 之间偏 5：优势存在但可能被数年内追上。expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若后续期次排名与费率同步改善、且无新增投行执业质量监管措施，可上调。",
+          "若再出现同类保荐执业质量监管措施或投行排名下滑，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Advantage evidence and its official counterevidence are both recorded; replication cost remains undisclosed.",
+        "limitations": [
+          "No peer like-for-like cost benchmark; transition-cost quantification not disclosed.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-IPO25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-EQ25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-BONDFEE25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-MA25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-PIPELINE25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-CLIENTS25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-FUNDDIST25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-CUSTODY25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-SZSE25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-IBFEE25__FR-CNCB_H-IQS_05",
+        "FACT-RFS-IBFEE24__FR-CNCB_H-IQS_05",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-IQS_05"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_06",
+      "question_id": "IQS_06",
+      "baseline_row_sha256": "48bc8b4ff47b5e5c9e178c3ae31d74e12182997898badf72e96c16e94e4093f2",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "0ae309b36dc08ef082a89c16007888a01f65cb758016690e22959037d349769b",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_06",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节（一）（二）（三）（四）各板块排名与份额",
+            "sought": "份额与相对地位（多业务口径）",
+            "outcome": "supported",
+            "note": "IPO 第3/第2；A股股权融资第3/第5；债务融资第2；并购第1/第2；两融市占 3.35%。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 各手续费明细 两期对比",
+            "sought": "趋势 improving/stable/deteriorating 的读数",
+            "outcome": "supported",
+            "note": "经纪 +37.0%、投行 +25.7%、资管及基金 +0.15%。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "3 年以上份额序列（历史年报/协会数据）",
+            "sought": "趋势持久性",
+            "outcome": "not_covered",
+            "note": "本次未取得 cutoff 内可读的多期官方份额序列；不做趋势外推。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "同业相对价格对比（佣金率/承销费率）",
+            "sought": "相对价格与回报",
+            "outcome": "not_covered",
+            "note": "公司未披露绝对费率，亦无可读官方同业费率对比；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: competitive position strength vs trend"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "单期份额与增速显示多数业务处于行业前列、趋势 improving；但只有两期数据、无相对价格水平、无客户迁移数据，趋势的持久性未被验证，且金额口径排名弱于家数口径。按题义把趋势与地位强度分开：趋势=improving（有据），地位强度=中等。落在锚点 5：地位可维持但优势普通或容易受冲击，改善尚未证明持久。expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若取得 3 年以上份额序列且份额稳定或上升，可上调。",
+          "若金额口径排名继续走弱或出现客户净流出证据，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Trend and position strength recorded separately as the question demands.",
+        "limitations": [
+          "Only two periods available; no absolute fee-rate or customer-migration data.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-IPO25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-EQ25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-BONDFEE25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-MA25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-MARGIN25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-BROKERFEE25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-BROKERFEE24__FR-CNCB_H-IQS_06",
+        "FACT-RFS-IBFEE25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-IBFEE24__FR-CNCB_H-IQS_06",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-AMFEE24__FR-CNCB_H-IQS_06",
+        "FACT-RFS-SEGIB25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-SEGWM25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-SEGTRD25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-SEGAM25__FR-CNCB_H-IQS_06",
+        "FACT-RFS-SZSE25__FR-CNCB_H-IQS_06"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_07",
+      "question_id": "IQS_07",
+      "baseline_row_sha256": "bae5e2f25e6b2a69fa6de00ce5e7a6935d527318e4dbdfd881e6f08c09714dd0",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "8327ef0d01e524f841b4391ffbf4c1f7be8a2bc77204c0ee8ae95bddac34604b",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_07",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三届董事会第二十二次会议决议公告 二、董事会会议审议情况（一）—（二十）",
+            "sought": "管理层承诺事项与实际审议结果",
+            "outcome": "supported",
+            "note": "20 项议案全部 15 票通过；含财务决算、利润分配、年度报告、内控评价、风险管理政策、续聘会计师。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "2025年度利润分配方案公告 一、利润分配方案内容",
+            "sought": "分红承诺的兑现（中期已实施）",
+            "outcome": "supported",
+            "note": "中期每 10 股 1.65 元、总额 1,279,854,641.51 元已实施完毕。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（一）（二）（三）（四）各板块「2026年发展展望」",
+            "sought": "可考核的量化目标与承诺难度",
+            "outcome": "not_covered",
+            "note": "展望均为定性表述，无可核对的量化目标；无法评估承诺难度。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "过去三至五年承诺与实际对照",
+            "sought": "历史承诺完成率",
+            "outcome": "not_covered",
+            "note": "本次未定位到 cutoff 内可读的历史承诺清单与逐项对照；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: management execution against commitments"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "能核实若干承诺的兑现（中期分红实施、审计机构续聘且费用持平、多项治理报告按期审议），但缺少有挑战性的量化经营目标与 3-5 年逐项对照，也看不到延期与纠偏的披露。证据不足以判断「承诺难度」，落在锚点 5 附近但未给整数。expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若能取得 3-5 年前设定的量化目标（如 ROE、AUM、国际收入占比）及实际值，可上调或下调。",
+          "若后续出现未兑现的分红或资本承诺，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Procedural commitment fulfilment verified; strategic target track record is a genuine gap.",
+        "limitations": [
+          "No quantified strategic targets disclosed, so commitment difficulty cannot be assessed.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-BOARD25__FR-CNCB_H-IQS_07",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_07",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_07-CORR1",
+        "FACT-RFS-AUDITFEE26__FR-CNCB_H-IQS_07",
+        "FACT-RFS-AUDITOP25__FR-CNCB_H-IQS_07",
+        "FACT-RFS-STRATEGY30__FR-CNCB_H-IQS_07",
+        "FACT-RFS-PAY25__FR-CNCB_H-IQS_07"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_08",
+      "question_id": "IQS_08",
+      "baseline_row_sha256": "a453e6d158ae05a6020e9c3a5ae323a17d414a037ee1cd7cacc3ec1df2491b81",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "012248c99571e9ae4ac1d621f34a06211edaca8415dfa04bb71bd999729c5340",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_08",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 营业收入 与 业务及管理费 两期对比",
+            "sought": "成本纪律与固定成本弹性",
+            "outcome": "supported",
+            "note": "营业收入 233.22 亿元(+22.41%)；业务及管理费 110.20 亿元 vs 100.31 亿元(+9.86%)。"
+          },
+          {
+            "source_id": "SRC-RFS-004",
+            "locator_phrase": "深证函〔2025〕857号 全文",
+            "sought": "扩张期的质量与执业纪律",
+            "outcome": "supported",
+            "note": "书面警示：核查程序明显不到位、发表的核查意见不准确。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 信用减值损失 两期对比",
+            "sought": "规模扩张下的资产质量压力",
+            "outcome": "supported",
+            "note": "299,391,561.91 元 vs 90,597,600.07 元(+230.5%)。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（三）1 股票销售及交易业务（信息系统与业务连续性）",
+            "sought": "交付周期、爬坡损失与系统中断记录",
+            "outcome": "not_covered",
+            "note": "金融企业无该口径的标准披露；摘要未提供业务中断或客户赔付事件记录。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: cost discipline vs quality control under expansion"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若后续期次无新增投行/合规监管措施且减值回落，可上调。",
+          "若再出现执业质量监管措施或信用减值继续大幅上升，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Cost discipline and quality-control failure are evidenced separately and both retained.",
+        "limitations": [
+          "No standard financial-sector equivalent of delivery lead time or ramp-up loss.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-REVENUE25__FR-CNCB_H-IQS_08",
+        "FACT-RFS-REVENUE24__FR-CNCB_H-IQS_08",
+        "FACT-RFS-OPEX25__FR-CNCB_H-IQS_08",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-IQS_08",
+        "FACT-RFS-SZSE25__FR-CNCB_H-IQS_08",
+        "FACT-RFS-CLIENTS25__FR-CNCB_H-IQS_08",
+        "FACT-RFS-CUSTODY25__FR-CNCB_H-IQS_08",
+        "FACT-RFS-PBCLIENT25__FR-CNCB_H-IQS_08",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-IQS_08-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_09",
+      "question_id": "IQS_09",
+      "baseline_row_sha256": "514ddd45a724c2c1a504fa65ceaf136b7d0d32d6422302590aeed1a8aa36ae4b",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "a27556dbb12c4bd848cd5cd55c77e083e4c866c6b16e2f55a6a7d8247bc9967c",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_09",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三届董事会第二十二次会议决议公告 一、董事会会议召开情况 /（十九）关于变更联席公司秘书的议案",
+            "sought": "治理结构、人员更替与授权记录",
+            "outcome": "supported",
+            "note": "15 名董事全部出席；麦宝文接替黄慧玲任联席公司秘书，附简历。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（三）3 投资研究业务 / 4 主经纪商业务",
+            "sought": "制度化研发与销售能力",
+            "outcome": "supported",
+            "note": "分析师 181 名、1,600 余家覆盖、5,083 篇研报；PB 存续客户 23,394 户。"
+          },
+          {
+            "source_id": "SRC-RFS-001",
+            "locator_phrase": "第二节 四、股东情况",
+            "sought": "控制权结构与治理基础",
+            "outcome": "supported",
+            "note": "A 股股东 122,259 户、H 股登记股东 59 户；北京金融控股集团持股列示。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "关键岗位继任计划与流失率",
+            "sought": "核心岗位梯队、接班与人员流失",
+            "outcome": "not_covered",
+            "note": "公司未披露继任计划或人员流失数据；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: organisational capability and key-person dependence"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "有制度化能力的间接证据（专业委员会、研究/技术平台、编制化的秘书交接程序），但关键岗位梯队、人员流失与接班记录均无披露。落在锚点 5 附近但证据不足；expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露关键岗位继任计划或核心人员流失数据，可上调或下调。",
+          "若出现核心高管非正常离任且无接班安排，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Only procedural and structural evidence obtained; succession depth is genuinely undisclosed.",
+        "limitations": [
+          "No succession plan, attrition rate or key-person dependency disclosure.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-BOARD25__FR-CNCB_H-IQS_09",
+        "FACT-RFS-HOLDERS25__FR-CNCB_H-IQS_09",
+        "FACT-RFS-BJFG25__FR-CNCB_H-IQS_09",
+        "FACT-RFS-SZSE2_25__FR-CNCB_H-IQS_09",
+        "FACT-RFS-AUDITFEE26__FR-CNCB_H-IQS_09"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_10",
+      "question_id": "IQS_10",
+      "baseline_row_sha256": "18c7c18eca6b460765aa14201752a3cb46462b5bb56f0c4354de9dc5adb1c8ea",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "4800eb076987025b72335eba8c40ad5cea87bbb10b370c333bbb1fe0b16b5170",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_10",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 归母净利润 / 每股收益；公司资产负债表 股东权益、其他权益工具",
+            "sought": "金融企业权益回报的分子分母",
+            "outcome": "supported",
+            "note": "归母净利润 9,439,423,821.46 元；母公司股东权益 111,880,641,196.99 元；永续债 36,145,018,867.93 元；EPS 1.09 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司利润表 公允价值变动损益",
+            "sought": "回报波动与风险资本占用",
+            "outcome": "supported",
+            "note": "母公司公允价值变动损益 -2,999,092,330.63 元（2024 年 +481,303,774.89 元）。"
+          },
+          {
+            "source_id": "SRC-FAIL-HKEXNEWS-PDF",
+            "locator_phrase": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0326/2026032602856.pdf",
+            "sought": "H 股业绩公告中的净资本、风险覆盖率、加权平均 ROE",
+            "outcome": "not_covered",
+            "note": "该官方载体为 PDF，抓取返回 unsupported content type application/pdf。按轻量政策不下载 PDF，故其内表格不可用。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "资本成本区间（无风险利率 + 风险溢价）",
+            "sought": "资金成本的官方或可比依据",
+            "outcome": "not_covered",
+            "note": "未定位到 cutoff 内可读的官方资本成本口径；不自行设定折现率。"
+          },
+          {
+            "source_id": "SRC-RFS-007",
+            "locator_phrase": "第二节（二）主要财务指标 加权平均净资产收益率",
+            "sought": "金融企业适用的权益资本回报（官方口径）",
+            "outcome": "supported",
+            "note": "2025 年加权平均 ROE 10.51%，扣非 10.54%；2024 年 8.22%。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: return on capital under financial-sector definitions"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "FIN1.2已显式恢复上市主体母公司单体净资本/风险指标，与合并及普通股回报明确分开。ROE10.51%不能由含永续债的全部归母净利/权益倒推；原件、普通股资本桥、资金成本与周期正常化仍待核实，不评分。",
+        "assumptions": [],
+        "falsifiers": [
+          "若能取得官方加权平均 ROE 与净资本/风险覆盖率，可给出区间判断。",
+          "若自营摆动与信用减值继续放大，即使名义 ROE 不低也应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Deliberately avoided computing an industrial ROIC or registering an ROE ledger entry: no registered method covers financial-sector ROE. Ratio discussion lives in calc-notes.md.",
+        "limitations": [
+          "No official or comparable cost-of-capital range was obtained; none was assumed.",
+          "ROE is deliberately NOT registered as a computed ledger entry (no registered financial-sector method).",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-NP25__FR-CNCB_H-IQS_10",
+        "FACT-RFS-NP24__FR-CNCB_H-IQS_10",
+        "FACT-RFS-EPS25__FR-CNCB_H-IQS_10",
+        "FACT-RFS-EPS24__FR-CNCB_H-IQS_10",
+        "FACT-RFS-PERP25__FR-CNCB_H-IQS_10",
+        "FACT-RFS-PERP24__FR-CNCB_H-IQS_10",
+        "FACT-RFS-SHARES25__FR-CNCB_H-IQS_10",
+        "FACT-RFS-SHARES24__FR-CNCB_H-IQS_10",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-IQS_10",
+        "FACT-RFS-REVENUE25__FR-CNCB_H-IQS_10",
+        "FACT-RFS-ROE25__FR-CNCB_H-IQS_10",
+        "FACT-RFS-ROE25__FR-CNCB_H-IQS_10-CORR1",
+        "FACT-RFS-ROE24__FR-CNCB_H-IQS_10",
+        "FACT-RFS-ROE_EX25__FR-CNCB_H-IQS_10",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-IQS_10-PARENT12",
+        "FACT-RFS-EQUITY24__FR-CNCB_H-IQS_10-PARENT12",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-IQS_10-PARENT12",
+        "FACT-RFS-NETCAP25__FR-CNCB_H-IQS_10-PARENT12",
+        "FACT-RFS-NETCAP24__FR-CNCB_H-IQS_10-PARENT12",
+        "FACT-RFS-RISKCOVER25__FR-CNCB_H-IQS_10-PARENT12",
+        "FACT-RFS-RISKCOVER24__FR-CNCB_H-IQS_10-PARENT12",
+        "FACT-RFS-LEVERRATIO25__FR-CNCB_H-IQS_10-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_12",
+      "question_id": "IQS_12",
+      "baseline_row_sha256": "ea2d123ed691090853108f9b1c1631ecfd49b9cdc1dde0555798f4ff02cd8c91",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "0656fea768b457f922529f4efcd08dfca46f8cad622bff7a791df98cd8cff0d4",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_12",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "审计报告 一、审计意见 / 二、形成审计意见的基础 / 三、关键审计事项 / 四、其他信息",
+            "sought": "审计与监管事项、披露可信度",
+            "outcome": "supported",
+            "note": "标准无保留意见；三项关键审计事项；其他信息无事项需报告。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并资产负债表（融出资金、买入返售、金融投资）；合并利润表（信用减值损失）",
+            "sought": "金融资产质量",
+            "outcome": "supported",
+            "note": "融出资金 84,384,373,129.14 元；买入返售 6,494,291,116.03 元；信用减值 299,391,561.91 元。"
+          },
+          {
+            "source_id": "SRC-RFS-001",
+            "locator_phrase": "第二节 五、公司债券情况（永续次级债券权益工具列报）",
+            "sought": "表外义务与权益/负债边界",
+            "outcome": "supported",
+            "note": "多期永续次级债券归类为权益工具，列于所有者权益。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "财务报表附注十四 第三层次公允价值计量",
+            "sought": "第三层次估值参数与敏感性",
+            "outcome": "not_covered",
+            "note": "附注正文不在本次实际读得的页面范围内（页面被截断）；不据推测填充具体金额与参数。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: disclosure credibility and financial-asset quality"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露第三层次估值敏感性且减值覆盖率改善，可上调。",
+          "若出现审计意见变化、监管问询或减值大幅补提，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Audit opinion and KAMs verified; third-level valuation sensitivity is not in the read range.",
+        "limitations": [
+          "Third-level fair-value sensitivity and impairment staging detail not read.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-AUDITOP25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-KAM25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-OTHERINFO25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-AUDITORREC25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-AUDITFEE26__FR-CNCB_H-IQS_12",
+        "FACT-RFS-PLEDGE25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-PERP25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-NONREC25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-FVIMPACT25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-FVASSET25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-ACCT25__FR-CNCB_H-IQS_12",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-IQS_12-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_13",
+      "question_id": "IQS_13",
+      "baseline_row_sha256": "dc1b8ee67d2ea3a5a64c69f0caac0111c40261583e39bba75c86890c12123cf3",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "5734a8370a3c0f13bd51b8e6cbd6f115992007b378f47736f0991ec295047c88",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_13",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-001",
+            "locator_phrase": "第二节 四、股东情况（一）（二）（三）（四）",
+            "sought": "控制权结构、股东户数与持股分布",
+            "outcome": "supported",
+            "note": "A 股股东 122,259 户、H 股登记股东 59 户；北京金融控股集团持 2,684,309,017 股 A 股 + 93,080,000 股 H 股；镜湖控股转让 351,647,000 股 H 股至中国中信金融控股。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "2025年度利润分配方案公告 一、利润分配方案内容",
+            "sought": "同股同利与分红安排",
+            "outcome": "supported",
+            "note": "中期每 10 股 1.65 元、末期拟每 10 股 1.75 元；A 股以人民币、H 股以港币支付。"
+          },
+          {
+            "source_id": "SRC-RFS-001",
+            "locator_phrase": "第一节 五、董事会决议通过的本报告期利润分配预案",
+            "sought": "分红限制与未弥补亏损",
+            "outcome": "supported",
+            "note": "母公司未弥补亏损相关情况选「不适用」。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "关联交易清单与定价公允性",
+            "sought": "关联交易、资金占用",
+            "outcome": "not_covered",
+            "note": "本次未定位到 cutoff 内可读的关联交易专项公告 HTML；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: control, minority protection and fair treatment"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "能核实同股同利的分红安排、无未弥补亏损、同一控制下股东变动等结构性事实；但关联交易定价公允性、资金占用与少数股东保护机制的具体条款未在可读范围内披露，且 H 股公众股东基础极薄（登记 59 户）。落在锚点 5 附近但证据不足，未给整数。expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露关联交易明细与定价依据、确认无资金占用，可上调。",
+          "若出现大额非公允关联交易或资金占用，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Ownership and dividend facts verified; related-party fairness is a genuine gap.",
+        "limitations": [
+          "No related-party transaction list or pricing-fairness disclosure read.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-HOLDERS25__FR-CNCB_H-IQS_13",
+        "FACT-RFS-BJFG25__FR-CNCB_H-IQS_13",
+        "FACT-RFS-HTRANSFER25__FR-CNCB_H-IQS_13",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_13",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_13-CORR1",
+        "FACT-RFS-PERP25__FR-CNCB_H-IQS_13",
+        "FACT-RFS-PERP24__FR-CNCB_H-IQS_13",
+        "FACT-RFS-PERPISSUE25__FR-CNCB_H-IQS_13",
+        "FACT-RFS-PERPREDEEM25__FR-CNCB_H-IQS_13"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_14",
+      "question_id": "IQS_14",
+      "baseline_row_sha256": "af024349bc497a973b850f297f4286a85a0a5173a028afe39d4a1a0aea5b6308",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "4144be6d00b921e5435781eb09d71add607131899b6fadd83693002c1438fd7d",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_14",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司资产负债表 股本、其他权益工具；合并利润表 每股收益",
+            "sought": "摊薄股数与每股价值",
+            "outcome": "supported",
+            "note": "股本 7,756,694,797 股（两期相同）；EPS 1.09 vs 0.79；永续债 36,145,018,867.93 vs 29,825,830,188.69。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "2025年度利润分配方案公告；第三节（四）3 私募股权投资业务 /（三）6 另类投资业务",
+            "sought": "股东回报与再投资投入",
+            "outcome": "supported",
+            "note": "全年分红 2,637,276,230.98 元(31.24%)；中信建投资本投资 35 亿元、新增规模 77.81 亿元；中信建投投资 26 个项目、10.67 亿元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司利润表 公允价值变动损益",
+            "sought": "自有资金投资的当期回报",
+            "outcome": "supported",
+            "note": "母公司公允价值变动损益 -2,999,092,330.63 元。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "商誉减值、回购记录与项目退出回报",
+            "sought": "并购减值、回购价格、失败项目退出",
+            "outcome": "not_covered",
+            "note": "本次未定位到 cutoff 内可读的相关披露 HTML；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: capital allocation and per-share value accretion"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露投资项目退出回报与商誉减值情况，可上调或下调。",
+          "若后续普通股增发或可转债转股导致股本扩张而 EPS 不增，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Per-share accretion evidenced; reinvestment outcome transparency remains a gap.",
+        "limitations": [
+          "No goodwill impairment, buyback price or investment exit-return disclosure read.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-SHARES25__FR-CNCB_H-IQS_14",
+        "FACT-RFS-SHARES24__FR-CNCB_H-IQS_14",
+        "FACT-RFS-EPS25__FR-CNCB_H-IQS_14",
+        "FACT-RFS-EPS24__FR-CNCB_H-IQS_14",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_14",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_14-CORR1",
+        "FACT-RFS-PERP25__FR-CNCB_H-IQS_14",
+        "FACT-RFS-PERP24__FR-CNCB_H-IQS_14",
+        "FACT-RFS-NP25__FR-CNCB_H-IQS_14",
+        "FACT-RFS-NP24__FR-CNCB_H-IQS_14",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-IQS_14-PARENT12",
+        "FACT-RFS-EQUITY24__FR-CNCB_H-IQS_14-PARENT12",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-IQS_14-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_15",
+      "question_id": "IQS_15",
+      "baseline_row_sha256": "123b032d0cd18fd61f80aa0a917550b47b91f32ea0de7a8175cb9512b448b253",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "048ff192b19ed0c777cca82798447375ef12e76e4d6d7e6f61a6b37adc090e39",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_15",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三届董事会第二十二次会议决议公告 二、（十三）关于对合规负责人2025年度考核的议案",
+            "sought": "考核指标与董事会监督",
+            "outcome": "supported",
+            "note": "议案已经董事会薪酬与提名委员会审核通过；20 项议案全部通过。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "2025年度可持续发展暨环境、社会及管治（ESG）报告摘要 2、可持续发展治理体系（3）",
+            "sought": "薪酬与考核机制、追索约束",
+            "outcome": "supported",
+            "note": "将合规、风控、廉洁从业、投资者适当性等 ESG 指标纳入管理层及员工考核，推进 ESG 绩效与薪酬机制衔接。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "2025年度利润分配方案公告；审计委员会履职监督报告",
+            "sought": "审计委员会对会计师事务所的监督记录",
+            "outcome": "supported",
+            "note": "审计委员会对续聘 2026 年会计师事前认可；对其 2025 年度履职监督情况形成专项报告。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "高管薪酬金额、股权激励方案与追索扣回条款",
+            "sought": "考核指标、稀释、追索约束的量化条款",
+            "outcome": "not_covered",
+            "note": "本次未定位到 cutoff 内可读的薪酬或激励方案公告 HTML；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: incentive alignment and board oversight"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "有治理程序证据（薪酬与提名委员会对合规负责人考核、ESG 指标与考核衔接、审计委员会监督、无股权激励摊薄），但薪酬结构、激励考核指标与追索条款的量化条款不可得，且合规考核未能阻止 2025 年投行执业质量监管措施。落在锚点 5 附近；expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露高管薪酬结构、递延比例与追索条款，可上调。",
+          "若出现激励方案鼓励做量/冒险或持续稀释，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Governance-process evidence obtained; incentive quantum and clawback clauses remain gaps.",
+        "limitations": [
+          "No executive compensation figures, equity-incentive terms or clawback clauses read.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-BOARD25__FR-CNCB_H-IQS_15",
+        "FACT-RFS-SHARES25__FR-CNCB_H-IQS_15",
+        "FACT-RFS-SHARES24__FR-CNCB_H-IQS_15",
+        "FACT-RFS-SZSE25__FR-CNCB_H-IQS_15",
+        "FACT-RFS-AUDITFEE26__FR-CNCB_H-IQS_15",
+        "FACT-RFS-AUDITORREC25__FR-CNCB_H-IQS_15",
+        "FACT-RFS-PAY25__FR-CNCB_H-IQS_15"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_17",
+      "question_id": "IQS_17",
+      "baseline_row_sha256": "4fb215f07c834e05350e0856a7edc062b1c62f6b01a043f4e483a7359f82361e",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "e00046ebe61d44cf13e8e4a6345cf22e2c68d0bcc887de1cbe3a0e7e5764cb51",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_17",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（三）1 股票销售及交易业务 / 2 固定收益产品销售及交易业务 / 4 主经纪商业务",
+            "sought": "牌照资质与关键系统依赖",
+            "outcome": "supported",
+            "note": "场外期权一级交易商；北向通优秀做市商(4 连)；PB 系统与机构专用柜台；算法交易平台。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（二）1 经纪及财富管理业务（客户分散度）",
+            "sought": "客户集中度与流失情景",
+            "outcome": "supported",
+            "note": "客户总量 1,712.31 万户（零售分散）；30 家公募 + 13 家保险资管使用算法交易；资管产品 1,041 只。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三届董事会第二十二次会议决议公告（十七）关于2026年风险管理政策的议案",
+            "sought": "风险治理与合同保护",
+            "outcome": "supported",
+            "note": "议案经董事会风险管理委员会事前认可并审议通过。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "灾难恢复与业务连续性演练",
+            "sought": "替代认证与恢复周期",
+            "outcome": "not_covered",
+            "note": "公司未披露灾难恢复能力或演练结果；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "可核实关键依赖清单（牌照、托管资格、自研系统）与零售客户高度分散的事实，但灾难恢复能力、渠道/客户集中度与牌照中断情景均无披露，替代周期与恢复代价无法评估。落在锚点 5 附近；expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露业务连续性演练结果与系统可用性指标，可上调。",
+          "若出现重大系统故障、牌照暂停或关键渠道断裂，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Dependency inventory obtained; recovery capability is genuinely undisclosed.",
+        "limitations": [
+          "No disaster-recovery, system-availability or licence-suspension scenario disclosure.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-CLIENTS25__FR-CNCB_H-IQS_17",
+        "FACT-RFS-PBCLIENT25__FR-CNCB_H-IQS_17",
+        "FACT-RFS-CUSTODY25__FR-CNCB_H-IQS_17",
+        "FACT-RFS-MARGIN25__FR-CNCB_H-IQS_17",
+        "FACT-RFS-AUM25__FR-CNCB_H-IQS_17",
+        "FACT-RFS-SZSE25__FR-CNCB_H-IQS_17"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_18",
+      "question_id": "IQS_18",
+      "baseline_row_sha256": "2b8366a14e3766428671c44873fd4098a2bbfdc1d9c335e755c9365313ac219e",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "6f03dbaaf8f4dd9514fa043d7a9844f3f86c7ae904b0a6f2a8c28ef39985f271",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_18",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节（一）（二）（三）（四）各板块收入与「2026年发展展望」",
+            "sought": "结构性威胁、受影响分部与敞口、公司防御",
+            "outcome": "supported",
+            "note": "板块收入与增速；买方投顾 110.39 亿元(+189.81%)；产品时点规模 4,100 亿元(+60.27%)；衍生品/做市/跨境扩容。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 手续费明细；公司利润表 公允价值变动损益",
+            "sought": "敞口量化与自营摆动",
+            "outcome": "supported",
+            "note": "经纪 79.70 亿元；投行 31.29 亿元；资管及基金 13.45 亿元；投资收益 83.55 亿元；母公司公允价值变动 -29.99 亿元。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（三）2 固定收益业务 /（三）3 投资研究业务（公募佣金新规）",
+            "sought": "监管约束对收入的量化影响",
+            "outcome": "partial",
+            "note": "提及 2025 年是公募佣金新规落地首个完整年度并促使行业「回归研究本源」，但未给出量化收入影响。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "防御投入金额与回收期",
+            "sought": "替代路径速度与防御投入",
+            "outcome": "not_covered",
+            "note": "公司未披露防御投入的单独资本开支或费用金额；不据推测填充。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "推翻「费率结构性损害」：经纪费率企稳且财富管理收入持续覆盖经纪费率损失。",
+          "推翻「自营摆动为常态风险」：母公司公允价值变动损益恢复正值且波动收窄。",
+          "观察期限：2026 年年度报告披露时复核上述两项读数；不设即时结论。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Two structural threats identified with quantified exposure and explicit reversal evidence.",
+        "limitations": [
+          "Defence-spend amounts and substitution speed are not disclosed; no non-boom validation yet.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-BROKERFEE25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-BROKERFEE24__FR-CNCB_H-IQS_18",
+        "FACT-RFS-IBFEE25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-IBFEE24__FR-CNCB_H-IQS_18",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-INVINC25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-FVTPL25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-FEE25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-REVENUE25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-PRODSIZE25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-SEGWM25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-SEGIB25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-ADVISOR25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-GM_TRD25__FR-CNCB_H-IQS_18",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-IQS_18-PARENT12",
+        "FACT-RFS-COMPCOST25__FR-CNCB_H-IQS_18-PARENT12",
+        "FACT-RFS-ITCOST25__FR-CNCB_H-IQS_18-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_19",
+      "question_id": "IQS_19",
+      "baseline_row_sha256": "f031c73f84c08ae31187bf15654942b7acce0edd698c2200c65e7397af833233",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "c63424dc2b6ffc1524de56af107ca9e4064d7119b3fd7b368a0657fb1dc2aa63",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_19",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节（二）财富管理业务板块（产品保有、投顾、养老基金代销）",
+            "sought": "可触达市场与支付基础",
+            "outcome": "supported",
+            "note": "产品时点规模 4,100 亿元(+60.27%)；非货保有 1,432 亿元(第5)；投顾覆盖 108.52 万人(+71.95%)；养老基金 308 只。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（三）4 主经纪商业务（托管规模）/（四）资产管理业务板块",
+            "sought": "机构侧可触达市场",
+            "outcome": "supported",
+            "note": "托管及运营服务 14,044.29 亿元(+45.03%)；资管受托资金 5,245.08 亿元(+5.99%)。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 资管及基金管理手续费净收入",
+            "sought": "量价分解（规模增长能否转化为收入）",
+            "outcome": "supported",
+            "note": "资管及基金手续费 1,345,201,515.47 vs 1,343,227,951.96(+0.15%)，而受托规模 +5.99% —— 费率下行。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "可触达市场规模测算与渗透率",
+            "sought": "具体客户预算与渗透边界",
+            "outcome": "not_covered",
+            "note": "公司未披露可触达市场测算或渗透率；不直接套用宏大 TAM 数字。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "fact_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "有实际可触达市场与支付基础的公司级证据（产品保有、投顾覆盖、托管规模、两融、跨境客户），但没有可核对的可触达市场规模测算、渗透率或量价分解；增长发生在罕见活跃行情中。落在锚点 5：可触达需求温和增长、增量空间有限且边界不清。expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露可触达市场测算与渗透率，或在高活跃行情退去后产品保有仍增长，可上调。",
+          "若资管与产品规模增长而收入不增（费率继续下行），应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Reachable-market evidence recorded from actual segment revenue; no TAM extrapolation made.",
+        "limitations": [
+          "No penetration rate or addressable-market sizing disclosed; volume/price split only partial.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-CLIENTS25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-PRODSIZE25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-FUNDDIST25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-ADVISOR25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-AUM25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-CUSTODY25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-PBCLIENT25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-MARGIN25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-AMFEE24__FR-CNCB_H-IQS_19",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-IQS_19",
+        "FACT-RFS-IPO25__FR-CNCB_H-IQS_19"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_20",
+      "question_id": "IQS_20",
+      "baseline_row_sha256": "bae0f3acaf5b7089800a0c66c6b89f7770afa1f72891c0ac958ebd627cedab5c",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "f0b94ca96c7e82be38547bc0306752c630360ebdb9c5fdf4a35fda5c5831e860",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_20",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节（二）财富管理 /（三）交易及机构客户服务 /（四）资产管理（新业务阶段证据）",
+            "sought": "从产品到付费采用、重复购买的收入转化",
+            "outcome": "supported",
+            "note": "产品时点规模 4,100 亿元(+60.27%)；买方业务 110.39 亿元(+189.81%)；投顾覆盖 108.52 万人；板块收入增速 24.37%/20.75%/13.75%。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 手续费明细与投资收益、公允价值变动",
+            "sought": "可持续利润的会计读数与摆动",
+            "outcome": "supported",
+            "note": "投行手续费 +25.7%；资管及基金 +0.15%；投资收益 83.55 亿元；母公司公允价值变动 -29.99 亿元。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "中信建投国际业务段落（跨境增长）",
+            "sought": "跨境新增业务的付费采用与利润贡献",
+            "outcome": "supported",
+            "note": "港股 IPO 保荐 7 家/458.39 亿港元；债券承销 222 单/4,591.27 亿港元；跨境资管突破 100 亿港元。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "分部利润与蚕食损失的独立披露",
+            "sought": "新增业务利润池归属与对存量的替代损失",
+            "outcome": "not_covered",
+            "note": "公司按收入披露分部但未披露分部利润与蚕食损失；不据推测推算。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露新业务分部利润且连续多期为正、且无重大蚕食损失，可上调。",
+          "若规模继续增长而利润率继续被费率下行侵蚀，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Revenue-stage evidence for each driver recorded; profit conversion is the unresolved half of the question.",
+        "limitations": [
+          "No segment profit, cannibalisation loss or M&A/FX split disclosed.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-PRODSIZE25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-ADVISOR25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-FUNDDIST25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-FUNDAUM25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-SEGWM25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-SEGTRD25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-SEGIB25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-SEGAM25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-IBFEE25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-IBFEE24__FR-CNCB_H-IQS_20",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-AMFEE24__FR-CNCB_H-IQS_20",
+        "FACT-RFS-INVINC25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-EPS25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-EPS24__FR-CNCB_H-IQS_20",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_20-CORR1",
+        "FACT-RFS-PERPISSUE25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-PERPREDEEM25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-SHARES25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-GM_IB25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-GM_WM25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-GM_TRD25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-GM_AM25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-GM_TOTAL25__FR-CNCB_H-IQS_20",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-IQS_20-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_21",
+      "question_id": "IQS_21",
+      "baseline_row_sha256": "090c9a903606b191192c8c1ffdf554c031bcd841532ab7c469f99537e1f407d1",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "8b02a0479dbc822ee1f8457d0bb85eb52e6526a42bfc4b43e9e7eeca52644f7a",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_21",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并现金流量表 筹资活动（永续债发行/赎回）；合并资产负债表 其他权益工具",
+            "sought": "新增资本的规模、来源与摊薄",
+            "outcome": "supported",
+            "note": "发行永续债 11,300,000,000.00 元、赎回 5,000,000,000.00 元；其他权益工具 36,145,018,867.93 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并资产负债表 其他权益工具投资、融出资金、交易性金融资产 两期对比",
+            "sought": "新增资本去向（新批次经济性的载体）",
+            "outcome": "supported",
+            "note": "其他权益工具投资 52,222,808,703.51 vs 14,821,664,946.78；融出资金 84,384,373,129.14 vs 62,948,803,815.64。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司利润表 公允价值变动损益；合并利润表 归母净利润、每股收益",
+            "sought": "新增资本当期回报与股东净效果",
+            "outcome": "supported",
+            "note": "母公司公允价值变动 -2,999,092,330.63 元；归母净利润 9,439,423,821.46 元；EPS 1.09 元。"
+          },
+          {
+            "source_id": "SRC-FAIL-HKEXNEWS-PDF",
+            "locator_phrase": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0326/2026032602856.pdf",
+            "sought": "净资本与风险覆盖率（再投资空间上限）",
+            "outcome": "not_covered",
+            "note": "官方载体为 PDF，抓取返回 unsupported content type application/pdf；按轻量政策不下载。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "增量资本回报率与资产退出成本",
+            "sought": "新批次经济性与替代成本",
+            "outcome": "not_covered",
+            "note": "公司未披露增量资本回报率或资产退出成本；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露增量资本回报率与净资本/风险覆盖率且增量回报高于资金成本，可上调。",
+          "若新增投资继续录得大额公允价值损失，或永续债占比继续上升，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Capital source/deployment and per-share effect verified; incremental return remains a gap.",
+        "limitations": [
+          "No incremental-capital return, net-capital ratio or asset-exit cost disclosed.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-PERPISSUE25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-PERPREDEEM25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-PERP25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-PERP24__FR-CNCB_H-IQS_21",
+        "FACT-RFS-NP25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-NP24__FR-CNCB_H-IQS_21",
+        "FACT-RFS-EPS25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-EPS24__FR-CNCB_H-IQS_21",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_21-CORR1",
+        "FACT-RFS-SHARES25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-SHARES24__FR-CNCB_H-IQS_21",
+        "FACT-RFS-GM_TOTAL25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-EQPARENT25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-ROE25__FR-CNCB_H-IQS_21",
+        "FACT-RFS-ROE25__FR-CNCB_H-IQS_21-CORR1",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-IQS_21-PARENT12",
+        "FACT-RFS-EQUITY24__FR-CNCB_H-IQS_21-PARENT12",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-IQS_21-PARENT12",
+        "FACT-RFS-NETCAP25__FR-CNCB_H-IQS_21-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_23",
+      "question_id": "IQS_23",
+      "baseline_row_sha256": "4aa2a4c2726d5c8abf8500005601d9aba98922d297c2db13d3a640e6fdbf61fa",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "fe767d3e8bcf281a3fe007b382775a17e02d9799ef8dc4486b5efc88ab669bbe",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_23",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司资产负债表 股东权益、股本、其他权益工具；合并资产负债表 客户资金存款、客户备付金",
+            "sought": "权益缓冲与客户/自有资产边界",
+            "outcome": "supported",
+            "note": "股东权益 111,880,641,196.99 元；股本 7,756,694,797 股；永续债 36,145,018,867.93 元；客户资金存款 133,715,710,556.94 元、客户备付金 28,914,613,700.01 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并资产负债表 融出资金、买入返售、金融投资；合并利润表 信用减值损失",
+            "sought": "资产可回收性与风险敞口",
+            "outcome": "supported",
+            "note": "融出资金 84,384,373,129.14 元；买入返售 6,494,291,116.03 元；信用减值 299,391,561.91 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司利润表 公允价值变动损益",
+            "sought": "业务失效/自营损失情景依据",
+            "outcome": "supported",
+            "note": "母公司公允价值变动 -2,999,092,330.63 元 vs 2024 年 +481,303,774.89 元。"
+          },
+          {
+            "source_id": "SRC-FAIL-HKEXNEWS-PDF",
+            "locator_phrase": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0326/2026032602856.pdf",
+            "sought": "净资本、风险覆盖率、流动性覆盖率",
+            "outcome": "not_covered",
+            "note": "官方载体为 PDF，抓取返回 unsupported content type application/pdf；按轻量政策不下载。"
+          },
+          {
+            "source_id": "SRC-RFS-007",
+            "locator_phrase": "第二节（三）母公司的净资本及风险控制指标",
+            "sought": "悲观情景下的资本缓冲",
+            "outcome": "supported",
+            "note": "净资本 795.99 亿元、风险覆盖率 236.50%、流动性覆盖率 266.44%、净稳定资金率 190.75%。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "报价记录给出2026-10-09 H股11.17HKD，但人民币A年报数据配H股报价仍缺FX、剔除永续债后的普通股权益和一致盈利口径，不能计算有效PB/PE或折让。周期利润未充分正常化；不作价格已隐含低估/高估判断，不评分。",
+        "assumptions": [
+          "报价是单一历史日期，非最新或全期价格；A年报PRCGAAP不自证H公告IFRS一致。",
+          "永续债36145018867.93CNY属于其他权益工具，普通股剩余权益需单独界定。"
+        ],
+        "falsifiers": [
+          "独立核实报价、匹配FX、普通股权益/收益与周期正常化后才可反推隐含预期。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Balance-sheet buffer and asset boundary verified; no pessimistic-scenario range offered without capital ratios.",
+        "limitations": [
+          "No company stress-test result or third-level fair-value sensitivity, so no loss-magnitude range is claimed.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-SHARES25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-PERP25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-CLIENTDEPOSIT25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-CLIENTRESERVE25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-TOTALASSETS25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-TOTALASSETS24__FR-CNCB_H-IQS_23",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_23-CORR1",
+        "FACT-RFS-NP25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-LEVADJ25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-EQPARENT25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-RISKCOMPLY25__FR-CNCB_H-IQS_23",
+        "FACT-RFS-PRICE-1009__FR-CNCB_H-IQS_23",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-IQS_23-PARENT12",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-IQS_23-PARENT12",
+        "FACT-RFS-NETCAP25__FR-CNCB_H-IQS_23-PARENT12",
+        "FACT-RFS-RISKCOVER25__FR-CNCB_H-IQS_23-PARENT12",
+        "FACT-RFS-LCR25__FR-CNCB_H-IQS_23-PARENT12",
+        "FACT-RFS-NSFR25__FR-CNCB_H-IQS_23-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-IQS_24",
+      "question_id": "IQS_24",
+      "baseline_row_sha256": "fa24e616facf6dcc9567f32366eb89d444e17313d1022d0ba1275f54327a7f2d",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "d82114b9fd3821125b3f49103d864956d0554f5ad683d70ecdb30b3b43d350d3",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.iqs_24",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "2025年度利润分配方案公告 一、利润分配方案内容",
+            "sought": "分红金额、基数与派息率",
+            "outcome": "supported",
+            "note": "中期 1,279,854,641.51 元已实施；末期拟 1,357,421,589.47 元；合计 2,637,276,230.98 元(31.24%)；母公司未分配利润 28,418,758,548.10 元。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三届董事会第二十二次会议决议公告（六）2025年度利润分配方案的议案",
+            "sought": "监管强制提取对可分配性的影响",
+            "outcome": "supported",
+            "note": "法定公积金/一般风险准备金/交易风险准备金各按净利润 10% 提取(各 775,287,164.36 元)及三项专项风险准备。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "2025年度利润分配方案公告（币种与时限）",
+            "sought": "H 股股东的现金收取路径与汇出",
+            "outcome": "supported",
+            "note": "A 股以人民币、H 股以港币支付；汇率按股东会前一周人民银行中间价平均值；股东会后两个月内派发。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "H 股股息预提税与回购执行记录",
+            "sought": "汇出限制与合理回购",
+            "outcome": "not_covered",
+            "note": "本次未定位到 cutoff 内可读的 H 股股息税细则或回购记录 HTML；不据推测填充。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "分红包括已付中期与末期预案，预案批准/支付须后续证据；不把全部26.37亿元称已派。回购、分配与再投资的执行和普通股稀释仍需核实，不评分。",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露可持续派息率指引、H 股股息税安排与回购记录，可上调。",
+          "若永续债继续扩张导致普通股可分利润被进一步压缩，或分红比例下降，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Value-realisation path evidenced from official dividend announcement, including the H-share currency mechanism.",
+        "limitations": [
+          "H-share dividend withholding detail and buyback record not obtained; no sustainable payout guidance.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-EPS25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-EPS24__FR-CNCB_H-IQS_24",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-IQS_24-CORR1",
+        "FACT-RFS-GENRESERVE25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-TRADERESERVE25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-LEGALRESERVE25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-PERP25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-PERP24__FR-CNCB_H-IQS_24",
+        "FACT-RFS-SHARES25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-SHARES24__FR-CNCB_H-IQS_24",
+        "FACT-RFS-NP25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-PRICE-1009__FR-CNCB_H-IQS_24",
+        "FACT-RFS-EQPARENT25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-ROE25__FR-CNCB_H-IQS_24",
+        "FACT-RFS-ROE25__FR-CNCB_H-IQS_24-CORR1",
+        "FACT-RFS-UNDIST25__FR-CNCB_H-IQS_24-PARENT12",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-IQS_24-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CAPITAL_MARKETS_01",
+      "question_id": "CAPITAL_MARKETS_01",
+      "baseline_row_sha256": "3583f3ec2e12471af04106a1584c295e2b2e261c658bc99898cebacca912b418",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "2e54635285e1ddd35a3a001eb500b515cb8bc29cc7d49e1966446a5e245631e9",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.capital_markets_01",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 手续费及佣金净收入 明细 / 投资收益 / 公允价值变动损益 / 利息净收入 / 业务及管理费 / 信用减值损失",
+            "sought": "收费与自营分部的收入、全成本与风险成本",
+            "outcome": "supported",
+            "note": "手续费净收入 13,166,864,556.93 元（经纪 7,970,452,944.89、投行 3,129,174,861.65、资管及基金 1,345,201,515.47）；投资收益 8,354,896,641.25 元；业务及管理费 11,019,562,515.30 元；信用减值 299,391,561.91 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并资产负债表 客户资金存款、客户备付金",
+            "sought": "客户资产与自有资金分开",
+            "outcome": "supported",
+            "note": "客户资金存款 133,715,710,556.94 元；客户备付金 28,914,613,700.01 元。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（三）1 股票销售及交易业务 / 2 固定收益业务（做市与衍生品）",
+            "sought": "做市/衍生品的业务实质与资质",
+            "outcome": "supported",
+            "note": "行业首批场外期权一级交易商；连续 4 年北向通优秀做市商；债券销售规模市场第 2。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "分部利润、资本占用与尾部损失",
+            "sought": "风险调整后收益与尾部损失",
+            "outcome": "not_covered",
+            "note": "公司未披露分部利润、分部资本占用或压力情景；不据推测推算。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: unit economics by fee vs principal-trading substance"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露分部利润与资本占用并显示压力期仍覆盖全成本，可上调。",
+          "若自营连续年度亏损或信用减值持续放大，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Business-substance split done explicitly; exchange/clearing declared not applicable.",
+        "limitations": [
+          "No segment profit, capital charge, hedge cost or tail-loss data.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-FEE25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-FEE24__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-BROKERFEE25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-IBFEE25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-INVINC25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-FVTPL25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-INTERESTNET25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-OPEX25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-NP25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-CLIENTDEPOSIT25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-CLIENTRESERVE25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-REVENUE25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-SEGTRD25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-GM_IB25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-GM_WM25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-GM_TRD25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-GM_AM25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-GM_TOTAL25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-FVIMPACT25__FR-CNCB_H-CAPITAL_MARKETS_01",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-CAPITAL_MARKETS_01-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CAPITAL_MARKETS_02",
+      "question_id": "CAPITAL_MARKETS_02",
+      "baseline_row_sha256": "113e9f0afa35ef738b2dd17370203f132ffd53205c964003f4160cb5bea091c4",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "ee1cdef5b7bc4029fd34e053b9ae3abddec7f7081fbbe614299b29a81a3bffa4",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.capital_markets_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并资产负债表 客户资金存款、客户备付金、代理买卖证券款；公司资产负债表 股东权益、一般风险准备",
+            "sought": "客户资金隔离与自有权益缓冲",
+            "outcome": "supported",
+            "note": "客户资金存款 133,715,710,556.94 元、客户备付金 28,914,613,700.01 元、代理买卖证券款 139,586,768,546.33 元；股东权益 111,880,641,196.99 元。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三届董事会第二十二次会议决议公告（六）（2025年度利润分配方案）",
+            "sought": "监管储备提取（风险资本留存）",
+            "outcome": "supported",
+            "note": "按净利润 10% 提取一般风险准备金与交易风险准备金各 775,287,164.36 元。"
+          },
+          {
+            "source_id": "SRC-FAIL-HKEXNEWS-PDF",
+            "locator_phrase": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0326/2026032602856.pdf",
+            "sought": "净资本、风险覆盖率、流动性覆盖率、净稳定资金率",
+            "outcome": "not_covered",
+            "note": "官方载体为 PDF，抓取返回 unsupported content type application/pdf；按轻量政策不下载，故监管指标表不可用。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "流动性压力测试",
+            "sought": "流动性压力情景",
+            "outcome": "not_covered",
+            "note": "公司未公开披露压力测试结果；不据推测填充。"
+          },
+          {
+            "source_id": "SRC-RFS-007",
+            "locator_phrase": "第二节（三）母公司的净资本及风险控制指标",
+            "sought": "净资本、风险覆盖率、资本杠杆率、流动性覆盖率、净稳定资金率",
+            "outcome": "supported",
+            "note": "读得净资本 79,598,680,087.45 元、风险覆盖率 236.50%、资本杠杆率 15.46%、流动性覆盖率 266.44%、净稳定资金率 190.75%，公司声明无触及预警标准。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": "regulatory capital ratios (net capital / risk coverage / LCR / NSFR) are carried only in a PDF the lightweight policy forbids downloading; no substitute HTML was found. Concrete attempts recorded.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: client-asset segregation and own-funds adequacy"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若能取得净资本与风险覆盖率，且指标高于监管标准并留有缓冲，可上调。",
+          "若风险覆盖率接近监管下限或客户资金隔离出现缺陷，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Client-asset segregation evidenced; the question's core metric (net capital) stayed PDF-only and is recorded as a concrete gap.",
+        "limitations": [
+          "Company-level liquidity stress-test results and limit utilisation are not disclosed.",
+          "Note: 2024 comparatives were restated under the CSRC 2024-09 risk-metric standard effective 2025-01-01.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-CLIENTDEPOSIT25__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-CLIENTRESERVE25__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-GENRESERVE25__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-TRADERESERVE25__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-GENRESERVE24__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-MARGIN25__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-PLEDGE25__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-TOTALASSETS25__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-RISKCOMPLY25__FR-CNCB_H-CAPITAL_MARKETS_02",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-UNDIST25__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-NETCAP25__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-NETCAP24__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-RISKCOVER25__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-RISKCOVER24__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-LEVERRATIO25__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-LCR25__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-NSFR25__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-RISKCAP25__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12",
+        "FACT-RFS-NETCAPEQUITY25__FR-CNCB_H-CAPITAL_MARKETS_02-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CAPITAL_MARKETS_03",
+      "question_id": "CAPITAL_MARKETS_03",
+      "baseline_row_sha256": "3df3593ec168909ddd9ae27e013f6417f7bfb68f7d96f1928f2bfadcd117c6d6",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "e31d7584bc9cbe59055cc4621f287b6957f0c02d2fe173379bcaa725dde150f7",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.capital_markets_03",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司利润表 净利润、营业收入；公司资产负债表 未分配利润",
+            "sought": "母公司可分配基础",
+            "outcome": "supported",
+            "note": "母公司净利润 7,752,871,643.62 元；未分配利润 28,418,758,548.10 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 归母净利润 vs 公司利润表 净利润",
+            "sought": "子公司盈利与母公司盈利的差额",
+            "outcome": "supported",
+            "note": "合并归母净利润 9,439,423,821.46 元 vs 母公司净利润 7,752,871,643.62 元。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "董事会决议（六）2025年度利润分配方案的议案（提取顺序）",
+            "sought": "资本留存与强制提取",
+            "outcome": "supported",
+            "note": "法定公积金/一般风险准备金/交易风险准备金各 775,287,164.36 元；三项专项风险准备。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并现金流量表 经营活动明细",
+            "sought": "自有现金口径（排除客户资金）",
+            "outcome": "partial",
+            "note": "OCF 净额 83,051,673,233.71 元来自交易性金融工具净减少、回购资金净增加与代理买卖证券款，属客户/交易性资金，不能当自有可分配现金。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "子公司上缴政策与业绩费回拨",
+            "sought": "子公司上缴与业绩费回拨机制",
+            "outcome": "not_covered",
+            "note": "公司未披露子公司分红上缴政策或业绩报酬回拨安排；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: distributable funds from sustainable earnings"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露子公司上缴政策与实际金额、且母公司可分配现金充足，可上调。",
+          "若母公司净利润持续显著低于合并口径或强制提取进一步扩大，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Explicitly avoided presenting consolidated OCF as distributable cash; parent/consolidated gap recorded.",
+        "limitations": [
+          "No subsidiary dividend-upstream policy, performance-fee clawback or own-cash definition disclosed.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-GENRESERVE25__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-TRADERESERVE25__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-LEGALRESERVE25__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-NP25__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-CAPITAL_MARKETS_03-CORR1",
+        "FACT-RFS-OCF25__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-OCF24__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-PERP25__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-CLIENTDEPOSIT25__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-CLIENTRESERVE25__FR-CNCB_H-CAPITAL_MARKETS_03",
+        "FACT-RFS-UNDIST25__FR-CNCB_H-CAPITAL_MARKETS_03-PARENT12",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-CAPITAL_MARKETS_03-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CAPITAL_MARKETS_04",
+      "question_id": "CAPITAL_MARKETS_04",
+      "baseline_row_sha256": "bc836c8dc608dc8333caee2ea3a396fedddb24c0c8f342f6120e6a312c94df95",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "e9f52ce024ba4374869181007ad04f0b76fcb66a5058b02a4de31e26e8e87219",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.capital_markets_04",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（二）财富管理业务板块（产品保有、投顾、两融份额）",
+            "sought": "客户资产留存与竞争份额",
+            "outcome": "supported",
+            "note": "产品时点规模 4,100 亿元(+60.27%)；非货保有 1,432 亿元(第5)、增量 606 亿元(第2)；两融市占 3.35%。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（三）4 主经纪商业务 / 托管业务；第三节（四）资产管理业务板块",
+            "sought": "结构性存量服务与转换成本",
+            "outcome": "supported",
+            "note": "托管公募基金 122 只；托管及运营服务 14,044.29 亿元(+45.03%)；资管受托资金 5,245.08 亿元(+5.99%)；PB 客户 23,394 户。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 手续费明细两期对比",
+            "sought": "费率压力",
+            "outcome": "supported",
+            "note": "经纪手续费 +37.0% vs 市场交易量 +70.34%；资管及基金手续费 +0.15% vs 规模 +5.99%。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "客户资产自然净流入与转户成本",
+            "sought": "自然净流入与转换成本",
+            "outcome": "not_covered",
+            "note": "公司未披露客户资产净流入或转户成本数据；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: client-asset and flow retention durability"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "托管、资管与 PB 等存量服务规模大且增长，构成结构性留存的间接证据；但客户资产自然净流入与转换成本均无披露，且费率压力有明确读数，两融份额与客户体量不匹配。落在锚点 5：流量稳定但差异有限。expected_score 保持 null。",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露客户资产净流入为正且费率企稳，可上调。",
+          "若两融与产品保有份额停滞而费率继续下行，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Retention proxies (custody, AUM, PB) plus explicit fee-rate pressure recorded.",
+        "limitations": [
+          "Natural net inflow and switching-cost data not disclosed.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-CLIENTS25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-PRODSIZE25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-FUNDDIST25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-MARGIN25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-MKTMARGIN25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-CUSTODY25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-AUM25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-PBCLIENT25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-BROKERFEE25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-BROKERFEE24__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-AMFEE24__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-CAPITAL_MARKETS_04",
+        "FACT-RFS-ADVISOR25__FR-CNCB_H-CAPITAL_MARKETS_04"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CAPITAL_MARKETS_05",
+      "question_id": "CAPITAL_MARKETS_05",
+      "baseline_row_sha256": "88cc4fc6c0fe378d0907aa72c7d6839131d4692673f4bb0d033ff5c47b620795",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "652ee9614e2b03d840c16f2c64055783a2f08c64445e7e4b0b09d05be5d107ba",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.capital_markets_05",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司资产负债表 负债合计/股东权益；合并资产负债表 衍生金融资产、融出资金、买入返售、交易性金融资产、存出保证金",
+            "sought": "杠杆与对手方/市场敞口",
+            "outcome": "supported",
+            "note": "母公司负债 464,731,367,387.37 元 vs 权益 111,880,641,196.99 元；融出资金 84,384,373,129.14 元；买入返售 6,494,291,116.03 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "审计报告 关键审计事项（预期信用损失准备；结构化主体合并）",
+            "sought": "风控与减值的官方关注点",
+            "outcome": "supported",
+            "note": "两项关键审计事项及毕马威金融风险管理专家参与。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "（二）2 融资融券业务 / 3 回购业务（担保比例）",
+            "sought": "风险缓释与限额",
+            "outcome": "supported",
+            "note": "两融维持担保比例 261.38%；股票质押表内平均履约保障 339.50%。"
+          },
+          {
+            "source_id": "SRC-RFS-004",
+            "locator_phrase": "深证函〔2025〕857号 全文",
+            "sought": "风控失效的反证",
+            "outcome": "supported",
+            "note": "保荐执业核查程序明显不到位、发表不准确核查意见，被书面警示。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "VaR、压力测试与发行人诉讼赔付",
+            "sought": "尾部风险与赔付/追索",
+            "outcome": "not_covered",
+            "note": "公司未披露 VaR 或压力测试；本次未定位到发行人层面诉讼赔付的可读专项披露。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若披露压力测试结果与限额使用率并显示尾部可控，可上调。",
+          "若出现重大风控失效、客户赔付或敞口异常放大，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Leverage/exposure and official risk-governance evidence recorded; tail metrics not disclosed.",
+        "limitations": [
+          "No VaR, stress-test, limit-utilisation or issuer-level litigation disclosure.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-TOTALASSETS25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-MARGIN25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-PLEDGE25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-KAM25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-SZSE25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-BOARD25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-AUDITORREC25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-FVIMPACT25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-LEVADJ25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-LIAB25__FR-CNCB_H-CAPITAL_MARKETS_05",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-CAPITAL_MARKETS_05-PARENT12",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-CAPITAL_MARKETS_05-PARENT12",
+        "FACT-RFS-LEVERRATIO25__FR-CNCB_H-CAPITAL_MARKETS_05-PARENT12",
+        "FACT-RFS-PROPRISK25__FR-CNCB_H-CAPITAL_MARKETS_05-PARENT12",
+        "FACT-RFS-RISKCOVER25__FR-CNCB_H-CAPITAL_MARKETS_05-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CAPITAL_MARKETS_06",
+      "question_id": "CAPITAL_MARKETS_06",
+      "baseline_row_sha256": "27a4213714226a641d8c5eed9bdb3b2aa5022f41a3dcec137b1a0a0b2122034a",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "5e4c2181e6492dbfd4aa59469f4dcccf1a628f855c439f241df76725abd903f8",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.capital_markets_06",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 手续费及佣金净收入 / 投资收益 / 公允价值变动损益",
+            "sought": "正常化费收入与自营损益的分离",
+            "outcome": "supported",
+            "note": "手续费净收入 13,166,864,556.93 元；投资收益 8,354,896,641.25 元；合并公允价值变动 339,821,460.26 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司资产负债表 股东权益、股本",
+            "sought": "每股净资产（估值分母的粗算基础）",
+            "outcome": "supported",
+            "note": "股东权益 111,880,641,196.99 元；股本 7,756,694,797 股。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节 市场环境段落（行情背景）",
+            "sought": "识别 2025 年是否为峰值年份",
+            "outcome": "supported",
+            "note": "日均股基交易量 +70.34%；上证指数 +18.40%；深证成指 +30.38%。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "H 股 06066 在 cutoff 内的股价（官方交易所 HTML）",
+            "sought": "股价日期与估值余地",
+            "outcome": "not_covered",
+            "note": "本次未定位到 cutoff 内可读的官方交易所报价 HTML；搜索摘要不得当正文，故不采用。缺价格即无法判断余地。"
+          },
+          {
+            "source_id": "SRC-RFS-008",
+            "locator_phrase": "QUOTATIONS 行 6066 CSC（2026-10-09）",
+            "sought": "cutoff 内 H 股股价",
+            "outcome": "supported",
+            "note": "收盘 11.17 港元、最高 11.21、最低 10.91；列语义经同页 10 MOST ACTIVES 表 10/10 交叉验证。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": "FX/common-equity/A-H basis and through-cycle earnings unresolved; historical price evidence recorded, not missing globally.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_markets: valuation on normalised rather than peak earnings"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "报价记录给出2026-10-09 H股11.17HKD，但人民币A年报数据配H股报价仍缺FX、剔除永续债后的普通股权益和一致盈利口径，不能计算有效PB/PE或折让。周期利润未充分正常化；不作价格已隐含低估/高估判断，不评分。",
+        "assumptions": [
+          "报价是单一历史日期，非最新或全期价格；A年报PRCGAAP不自证H公告IFRS一致。",
+          "永续债36145018867.93CNY属于其他权益工具，普通股剩余权益需单独界定。"
+        ],
+        "falsifiers": [
+          "独立核实报价、匹配FX、普通股权益/收益与周期正常化后才可反推隐含预期。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Normalisation inputs verified; valuation deliberately withheld because the price leg is missing.",
+        "limitations": [
+          "No peer H-share broker multiples; normalisation of proprietary trading income is judgemental.",
+          "2025 sat at the active end of the cycle (turnover +70.34%), so multiples on 2025 earnings flatter the stock.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-FEE25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-FEE24__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-BROKERFEE25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-IBFEE25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-INVINC25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-FVTPL25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-NP25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-EPS25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-SHARES25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-OPEX25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-MKTINDEX25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-PERPISSUE25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-PRICE-1009__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-GM_TOTAL25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-ROE25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-ROE25__FR-CNCB_H-CAPITAL_MARKETS_06-CORR1",
+        "FACT-RFS-EQPARENT25__FR-CNCB_H-CAPITAL_MARKETS_06",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-CAPITAL_MARKETS_06-PARENT12",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-CAPITAL_MARKETS_06-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CYCLICAL_01",
+      "question_id": "CYCLICAL_01",
+      "baseline_row_sha256": "7fdde4a8ebeb6ddf16a3d269979f13bc54e5ff3b86cc6baebd4631a32325a1a1",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "39eaff48729b13e42d16166cddbeff138ba076bd3a24f17e9475248873136726",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.cyclical_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 两期营业收入、归母净利润、每股收益",
+            "sought": "全周期收益对照",
+            "outcome": "supported",
+            "note": "营业收入 23,321,714,460.73 vs 19,052,706,802.04；归母净利润 9,439,423,821.46 vs 7,223,221,368.58；EPS 1.09 vs 0.79。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节（一）（二）市场环境段落",
+            "sought": "周期位置识别（2025 是否为峰值）",
+            "outcome": "supported",
+            "note": "日均股基交易量 +70.34%；上证 +18.40%；深证成指 +30.38%；境内股权融资募资 +308.26%。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司利润表 公允价值变动损益 两期对比",
+            "sought": "峰谷摆动幅度",
+            "outcome": "supported",
+            "note": "母公司公允价值变动 -2,999,092,330.63 元 vs +481,303,774.89 元。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "低谷年份（成交萎缩年）收益序列",
+            "sought": "全周期与中周期回报",
+            "outcome": "not_covered",
+            "note": "本次未取得 cutoff 内可读的多年（含低谷年）官方序列；不做跨期外推。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "cyclical: mid-cycle value creation for a capital-markets firm"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若取得含低谷年份的多年序列并显示中周期 ROE 高于资金成本，可上调。",
+          "若低谷年份出现亏损或减值大幅吞掉利润，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Peak-position identified explicitly so 2025 figures are not treated as normalised.",
+        "limitations": [
+          "No trough-year series; mid-cycle return cannot be computed from two periods.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-REVENUE25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-REVENUE24__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-NP25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-NP24__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-EPS25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-EPS24__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-OPEX25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-MKTINDEX25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-ROE25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-ROE25__FR-CNCB_H-CYCLICAL_01-CORR1",
+        "FACT-RFS-ROE24__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-GM_TOTAL25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-FVIMPACT25__FR-CNCB_H-CYCLICAL_01",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-CYCLICAL_01-PARENT12",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-CYCLICAL_01-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CYCLICAL_02",
+      "question_id": "CYCLICAL_02",
+      "baseline_row_sha256": "fd0c8df71704fb188bdddc9f05fc76a8d1e052f5ea8e64470f282ac157b2b70e",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "f86dbc9bab6dbb196b1d43d6cdb07e81d6749ead382b2dcb5eb81d245e701b17",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.cyclical_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司资产负债表 负债明细与股东权益；合并现金流量表 年末现金及现金等价物余额",
+            "sought": "债务、现金与权益缓冲",
+            "outcome": "supported",
+            "note": "负债合计 464,731,367,387.37 元；股东权益 111,880,641,196.99 元；年末现金及现金等价物 216,644,969,805.95 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 业务及管理费、利息支出；合并现金流量表 支付给职工及为职工支付的现金",
+            "sought": "刚性开支规模",
+            "outcome": "supported",
+            "note": "业务及管理费 11,019,562,515.30 元；利息支出 7,761,044,527.88 元；职工现金 7,463,952,470.68 元。"
+          },
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "公司利润表 公允价值变动损益；S2 分红公告",
+            "sought": "压力下的盈利与分配能力",
+            "outcome": "supported",
+            "note": "母公司公允价值变动 -2,999,092,330.63 元；母公司净利润 7,752,871,643.62 元；中期分红 1,279,854,641.51 元已实施。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "历史可比低谷年份的收入-成本缺口",
+            "sought": "低谷情景下的存续能力",
+            "outcome": "not_covered",
+            "note": "本次未取得 cutoff 内可读的多年低谷对比数据；不做历史外推。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "cyclical: survival and necessary investment at a comparable trough"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若取得低谷年份的收入-成本缺口与净资本/流动性覆盖率，可上调或下调。",
+          "若短期融资在压力下难以滚动或职工现金支出被迫大幅削减，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Buffer and rigidity verified; the trough comparison the question demands is not available.",
+        "limitations": [
+          "No trough-year gap data, no net capital or LCR under the no-PDF policy.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-OCF25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-OPEX25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-INTERESTNET25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-NP25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-CYCLICAL_02-CORR1",
+        "FACT-RFS-MARGIN25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-PLEDGE25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-GENRESERVE25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-LEVADJ25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-RISKCOMPLY25__FR-CNCB_H-CYCLICAL_02",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-CYCLICAL_02-PARENT12",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-CYCLICAL_02-PARENT12",
+        "FACT-RFS-LCR25__FR-CNCB_H-CYCLICAL_02-PARENT12",
+        "FACT-RFS-NSFR25__FR-CNCB_H-CYCLICAL_02-PARENT12",
+        "FACT-RFS-RISKCOVER25__FR-CNCB_H-CYCLICAL_02-PARENT12",
+        "FACT-RFS-NETCAP25__FR-CNCB_H-CYCLICAL_02-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CYCLICAL_03",
+      "question_id": "CYCLICAL_03",
+      "baseline_row_sha256": "1fde6f71414b744635d74ff2bb5daec0211497031d6d476bf7fe947125e77132",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "bd47eedfa7fbb0a71ce300cb30eb25532cbf68b9ec47a58405e96bbc3f5df16d",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.cyclical_03",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并资产负债表 其他权益工具投资、融出资金、交易性金融资产、买入返售金融资产 两期对比",
+            "sought": "峰值期的扩产与收缩（顺周期行为）",
+            "outcome": "supported",
+            "note": "其他权益工具投资 52,222,808,703.51 vs 14,821,664,946.78；融出资金 84,384,373,129.14 vs 62,948,803,815.64；交易性金融资产 186,664,850,677.89 vs 201,971,415,945.84。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "2025年度利润分配方案公告 / 董事会决议（六）",
+            "sought": "股东回报的周期一致性",
+            "outcome": "supported",
+            "note": "中期 1,279,854,641.51 元已实施；末期拟 1,357,421,589.47 元；全年 2,637,276,230.98 元(31.24%)。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三届董事会第二十二次会议决议公告（十七）关于2026年风险管理政策的议案；各板块2026年发展展望",
+            "sought": "风险管理政策与前瞻纪律",
+            "outcome": "supported",
+            "note": "风险管理政策经风险管理委员会事前认可；展望以功能性、基础开户、双轮获客等定性表述为主，未宣示大幅扩表。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "套保对沖政策与低谷削减记录",
+            "sought": "套保与低谷削减",
+            "outcome": "not_covered",
+            "note": "公司未披露套保比例或对冲政策，亦无低谷期削减记录；不据推测填充。"
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "directional research complete but a specific limitation remains (authored status 'partial'): see evidence_boundary.missing_evidence and review.limitations; this is a stated gap, not an un-attempted row.",
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Named parent_company scope explicitly distinguishes listed-parent financial/risk measures from consolidated/common-share measures. Republication facts are preliminary source inputs; operating/risk/valuation judgments still require original-source/period/basis and independent score qualification. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "若取得多年敞口序列并显示低谷期主动收缩，可上调。",
+          "若后续在活跃端继续大幅扩表而在低谷被动处置，应下调。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Pro-cyclical deployment demonstrated from official balance-sheet two-period comparison.",
+        "limitations": [
+          "No multi-year exposure series, hedging policy or trough cut-back record.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-PERPISSUE25__FR-CNCB_H-CYCLICAL_03",
+        "FACT-RFS-PERPREDEEM25__FR-CNCB_H-CYCLICAL_03",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-CYCLICAL_03",
+        "FACT-RFS-DIVTOTAL25__FR-CNCB_H-CYCLICAL_03-CORR1",
+        "FACT-RFS-NP25__FR-CNCB_H-CYCLICAL_03",
+        "FACT-RFS-MARGIN25__FR-CNCB_H-CYCLICAL_03",
+        "FACT-RFS-PLEDGE25__FR-CNCB_H-CYCLICAL_03",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-CYCLICAL_03",
+        "FACT-RFS-BOARD25__FR-CNCB_H-CYCLICAL_03",
+        "FACT-RFS-TOTALASSETS25__FR-CNCB_H-CYCLICAL_03",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-CYCLICAL_03-PARENT12"
+      ]
+    },
+    {
+      "reference_id": "FR-CNCB_H-CYCLICAL_04",
+      "question_id": "CYCLICAL_04",
+      "baseline_row_sha256": "c81cc1628054eb95473c2a1fcce3ba0c81cb6bd611ed07b0b80180af360018d3",
+      "binding": {
+        "company_key": "cncb_h",
+        "legal_issuer_name": "中信建投证券股份有限公司",
+        "listing_note": "06066 listed on XHKG (HKEX); H-share of 中信建投证券股份有限公司 (not 中信证券).",
+        "question_text_sha256": "7887a4353e928afc56e0aa2b724d1d5f3353d812869eaf9b48774b81b1148717",
+        "manifest_raw_sha256": "61ec7c82f41e6fb2a0278197476515c63973db1666188c28005b7b0d6a9b282b",
+        "metric_id": "score.cyclical_04",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP (企业会计准则), consolidated unless stated",
+          "unit": "yuan",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFS-003",
+            "locator_phrase": "合并利润表 手续费及佣金净收入与投资收益；公司资产负债表 股东权益、股本",
+            "sought": "反推正常盈利所需的分子与分母",
+            "outcome": "supported",
+            "note": "手续费净收入 13,166,864,556.93 元；股东权益 111,880,641,196.99 元；股本 7,756,694,797 股。"
+          },
+          {
+            "source_id": "SRC-RFS-002",
+            "locator_phrase": "第三节（一）市场环境与供给变化",
+            "sought": "供给变化与周期位置",
+            "outcome": "supported",
+            "note": "境内股权融资 255 家/募资 +308.26%；香港 450 家/+174.62%；证券公司债券承销 15.97 万亿元(+12.97%)。"
+          },
+          {
+            "source_id": "SRC-RFS-006",
+            "locator_phrase": "H 股 06066 在 cutoff 内的股价",
+            "sought": "价格腿（反推隐含周期假设）",
+            "outcome": "not_covered",
+            "note": "本次未定位到 cutoff 内可读的官方交易所报价 HTML；搜索摘要不得当正文。缺价格即无法反推，故不给估值判断。"
+          },
+          {
+            "source_id": "SRC-RFS-008",
+            "locator_phrase": "QUOTATIONS 行 6066 CSC（2026-10-09）",
+            "sought": "反推隐含周期假设所需的价格腿",
+            "outcome": "supported",
+            "note": "收盘 11.17 港元，已交叉验证。"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": "FX/common-equity/A-H basis and through-cycle earnings unresolved; historical price evidence recorded, not missing globally.",
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "报价记录给出2026-10-09 H股11.17HKD，但人民币A年报数据配H股报价仍缺FX、剔除永续债后的普通股权益和一致盈利口径，不能计算有效PB/PE或折让。周期利润未充分正常化；不作价格已隐含低估/高估判断，不评分。",
+        "assumptions": [
+          "报价是单一历史日期，非最新或全期价格；A年报PRCGAAP不自证H公告IFRS一致。",
+          "永续债36145018867.93CNY属于其他权益工具，普通股剩余权益需单独界定。"
+        ],
+        "falsifiers": [
+          "独立核实报价、匹配FX、普通股权益/收益与周期正常化后才可反推隐含预期。"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-CSC-02 worker (single writer, codex/fin-csc-02)",
+        "independent_review": "needs_revision",
+        "review_notes": "Deliberately no valuation inference: the price leg is missing and search snippets are inadmissible.",
+        "limitations": [
+          "No peer cycle-position or valuation comparison.",
+          "Coordinator source review found corrections; quoted republication, price and A/H consistency are not independently qualified financial gold.",
+          "Named FIN1.2 parent_company scope now represents listed issuer standalone facts; exact official-original and H/PRCGAAP consistency/score qualification still pending. Parent risk capital is not group equity or generic ROIC."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFS-FEE25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-BROKERFEE25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-IBFEE25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-AMFEE25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-EPS25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-SHARES25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-INVINC25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-MKTTURNOVER25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-MKTINDEX25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-OPEX25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-CREDITIMP25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-PERPISSUE25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-PRICE-1009__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-ROE25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-ROE25__FR-CNCB_H-CYCLICAL_04-CORR1",
+        "FACT-RFS-EQPARENT25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-GM_TOTAL25__FR-CNCB_H-CYCLICAL_04",
+        "FACT-RFS-EQUITY25__FR-CNCB_H-CYCLICAL_04-PARENT12",
+        "FACT-RFS-FVTPL_PARENT25__FR-CNCB_H-CYCLICAL_04-PARENT12"
+      ]
+    }
+  ],
+  "foreign_reference_hashes": {
+    "FR-ALPHABET-IQS_01": "3d005942779d9ebe32d4dea48a00d8a6c1134176f419ce92aaaae51490113cb7",
+    "FR-ALPHABET-IQS_02": "4d90239d7a173d3bcbef5f32dd19405327485ed3bf34066fc4f3cb5710616740",
+    "FR-ALPHABET-IQS_04": "39d047abbca8a7b35dd2c8238186ee0dc3331b90f62c79b12a85d74a881b5106",
+    "FR-ALPHABET-IQS_05": "9c2ad50cec31e3d3472430235a92f216ea582ff0fb983bed1f4a295b36b9cc0d",
+    "FR-ALPHABET-IQS_06": "738bb353cd33fe209cad2cab8573d4193ba096e3a1590f720b9bbd3a1fcff8d8",
+    "FR-ALPHABET-IQS_07": "77065b188c152359a560ed085952da988c3d9494744c017cc0b30180cb720344",
+    "FR-ALPHABET-IQS_08": "549a425a07a2bae3f7ca0bf535a4f83d3689037cdd1637513e5694b237c644b2",
+    "FR-ALPHABET-IQS_09": "1fe003fb91e45df1f5a48ae4e91e427e8a9f8c110c10846bb231b5df600491ed",
+    "FR-ALPHABET-IQS_10": "5a4713e257a1ef02d6bee2e89b0d4b39d60aa23d3da4c893ec137dcdd7e0f0fe",
+    "FR-ALPHABET-IQS_12": "4fdd85d5ef47e7424cbf40d46ef5ce7956c6ee71183cec4830f5b46591f46445",
+    "FR-ALPHABET-IQS_13": "19143bf3b5b05ea26c87f70a4463707779daec4844cd1259174386a02e0c08df",
+    "FR-ALPHABET-IQS_14": "d7391eb9990a5c6431b629db23fc91977c3578008a69e92b44556649bc5787ad",
+    "FR-ALPHABET-IQS_15": "d23cb466d8894bcf44ff8d30f6e5e56f403fe5a9b8c3f8a9c8b5c77825f64392",
+    "FR-ALPHABET-IQS_16": "43f06b14091924a4ab52436cd72f48f4d3d53252211ec14687a0a90bd1f78d9f",
+    "FR-ALPHABET-IQS_17": "e2440f53af6e296315f4b9cd98fd0309d42186b424223003fe4e835cedf80406",
+    "FR-ALPHABET-IQS_18": "5bf38c1e02b3579d815a7dd800686fba115c39998c2726ad2b155ae4c0d22788",
+    "FR-ALPHABET-IQS_19": "98ca1e9169658a8b860099b887493f4a6b94b4f26311e0a7686965048fea303c",
+    "FR-ALPHABET-IQS_20": "d87e49927c13c9fbb348d9e17b093fa1d134c84fedf02b170279236cb00f071b",
+    "FR-ALPHABET-IQS_21": "28eb08d3c8d5979253fbfcae34b02b220db0fbbc5c97b567ca64383393c28bb4",
+    "FR-ALPHABET-IQS_22": "b9d088b1a1007e42f674fe40d9067b5656bff2e1378caeba75517eff87e00ea2",
+    "FR-ALPHABET-IQS_23": "17cd1b268b907c81f110dda4766ca93522628584cb2cfa05c43c2bd7c726180a",
+    "FR-ALPHABET-IQS_24": "d319be4cbff9e95fbfd80ab875f5b7195eac86044a13f99ad8199aedb4df129a",
+    "FR-ALPHABET-OPERATING_01": "1f8930638b19dc50723754a078971be7f37aecb8a14615e2d5e2df901e8dc1e5",
+    "FR-ALPHABET-OPERATING_02": "678937feab33471c9ad393c45812717a693ff0ff8bd9f48fa4332c9d8dd300ac",
+    "FR-ALPHABET-INTERNET_01": "15dd63c04d991a51d360d97e96505a42c106f57f1086e0081c1f44e631c5d1ea",
+    "FR-ALPHABET-INTERNET_02": "b7b893603b549fb1c08b43dd333cf90ab068d0908622aab941e54b03abe9b047",
+    "FR-ALPHABET-SOFTWARE_01": "4b0774dec284955f4e8e75ca601aeca332e6fccc25b6a109e250ef00f28768c0",
+    "FR-ALPHABET-SOFTWARE_02": "1ecee80936c05e1d260501c74b69ab6dd7017e20f11dc08799c1fd787d19e7e1",
+    "FR-ALPHABET-SCALING_01": "3431d513732938979f7b5891f91b3071940c722d63ab55b2475f5f54ba5aa915",
+    "FR-ALPHABET-SCALING_02": "36b0e95bd59f884c745c0c5d9da797e56d2a5ad9d25f7e13b25d43f0eeb7de2a",
+    "FR-CATL-IQS_01": "a49ad660736b8e89ed8fadf626a72451e5ddf167850a61a456547e305de7cc29",
+    "FR-CATL-IQS_02": "7be60b9d60d2c6940e06ee4d6f6e5307c8cd33a77b22f3c1ff1c1e1de8452879",
+    "FR-CATL-IQS_04": "7f75f08653b91d08c077348343f18139d214925036dda7200521b4dd4219295b",
+    "FR-CATL-IQS_05": "a71878f4488834b414a8401df54dc00e91bc57848b85330095ca9290857c3a62",
+    "FR-CATL-IQS_06": "d9c8857a5d2ac7e62c74486e6f45e79364e6358b59dfe8140c06903936cc6c59",
+    "FR-CATL-IQS_07": "1e67c7507b636e217c8990d3d9ce360b832c5a4698c3ec49663cbbd8f3f11b78",
+    "FR-CATL-IQS_08": "29f3e5b16f368429c76c004ec6ca1d069a53ef3842a89cf3e9dff999fde260c5",
+    "FR-CATL-IQS_09": "aa1764572649d8ad75f5dac149592be0a75325488b94c59989b8458a4028aa08",
+    "FR-CATL-IQS_10": "dc68a75e826b6a1a65c9468a3ebfcc94889bac33ff547fdb83606d6755d7da52",
+    "FR-CATL-IQS_12": "6387ac3b9fa9e5dd1447601329905318bf40592ba4e369660fdf76ed13463531",
+    "FR-CATL-IQS_13": "25414ccc6bf38fbb71bf80a67ceed9fcdf19b2ecf69e5438617c9b609c33612d",
+    "FR-CATL-IQS_14": "e9a5884a4775f2fd6ad31021f6679a25eea9a8d1e4a1d355999efabec111cf41",
+    "FR-CATL-IQS_15": "1762852c3b4ff45fdfddd20aaba7ae9eddb4bb9bf08a0abf7edfbab685e4be48",
+    "FR-CATL-IQS_16": "792185d96ad3eb096392166355473b1bb5b78b7f22cce5883b6c61cd235d5ac2",
+    "FR-CATL-IQS_17": "a958d4cbdcc9adb729934a031baae329236765cf524b1e54be697dec9a50c8d8",
+    "FR-CATL-IQS_18": "97ed49ba3d9aee84e7778a504457236238738556b42b91b2de25c23b7f5bf1cb",
+    "FR-CATL-IQS_19": "3316766f0ecc32343ee536224d3e28b6f18872df247f3c7aa27f1a3acd8d2103",
+    "FR-CATL-IQS_20": "d8a8d2c379bf5197412f68cdc4e14cfb5214e414228fbad47532355881930a5b",
+    "FR-CATL-IQS_21": "5ad540cd7de2312992fd435a7fe10f2b3690e09008dd4b82ad704da00c0d1718",
+    "FR-CATL-IQS_22": "06eebd956e9f60c7298937dcde2b97fb6952b2be03cd25f6236cc53839a454ac",
+    "FR-CATL-IQS_23": "b656016ff837ff63bdb5b58289b5defe5f96084fa06f9a45cfb3710faa290f38",
+    "FR-CATL-IQS_24": "abbf32865eeabf80cc992ada8a017603e6e20c4acd8d16c158abd2a0164b8b93",
+    "FR-CATL-OPERATING_01": "c8b0f84a7fe535c62a64ae5074f3f7d1dfd280d1b09449eef68a474bc829cea5",
+    "FR-CATL-OPERATING_02": "dfd959bbbfaedc245e1d04c895ab9a79764f16bf0ae1be8c7bb9a99c1aa83370",
+    "FR-CATL-AUTO_01": "4048f7af8f9aa8d596be984a4087f4604199b6afc16a37cdc94452a6bc8444a0",
+    "FR-CATL-AUTO_02": "d22f9d2234825f4e91077843f9dbb596880e0cb84c89d5ab14f467519c0e4c2f",
+    "FR-CATL-ENERGY_TRANSITION_01": "eb8dd62f39034935b35d04cee1444e901e41de91384c386b6b3fbfcdf46fac11",
+    "FR-CATL-ENERGY_TRANSITION_02": "1bee1eae57e443b4e3ba3d3a608408876433c82f6599d0f9f0c88b8aedb4e4c2",
+    "FR-CATL-SCALING_01": "ccf1fe78f92c8b53bca9143e8a1e0f2660ef2bc6867a4f79785d987e057e5fec",
+    "FR-CATL-SCALING_02": "23278af0d357a9a1d58f371d2b62125ea501ba480fdd02a22e33585c1608dea8"
+  },
+  "baseline_source_hashes": {
+    "SRC-CATL-CNINFO": "8d3185f0fd909286cb08da936210521bf3032c2b0804aff5e9ab8b2b82fb0ba8",
+    "SRC-CATL-IR": "4afb3253d2677cfe82f39826bd50ed7a919c1c235fd6b648cdd9b129665c4968",
+    "SRC-CATL-NEWS": "f87ade3760aeb0761305b855ab877329dec7a6e6b6ca4ad6475ae802357662f2",
+    "SRC-CNCB-CSC": "6770fb139383aaa627d91d370295deca13161ef73c7f12289e12934ffbd9f230",
+    "SRC-CNCB-HKEX": "c92cb7302e9d83e5c5b37cbda01d3e13480eaf81ccfa7b69f7dc91dcd584e56d",
+    "SRC-RFA-10K-BUYBACK": "937e5178dd16ef730772c3c76cc3b0be604978ca72d725382c136a5cfeef1d57",
+    "SRC-RFA-10K-COMMIT": "e07198816a040398ed7d80186251fc897d1a72e2983cb55c4e2cd81958aee4de",
+    "SRC-RFA-10K-CONTING": "24be8a117b081d4c4e069961e64aa249840a442b59d33c8073a796029edcd38d",
+    "SRC-RFA-10K-DEBTMAT": "bb3fe1940b466a348033c8faf08a6e35372e30a45aa14505acaa78928c8cc691",
+    "SRC-RFA-10K-DEFREV": "769e3f20b776c59f294a1b6515bb9b8b2a2cecea6f4ba6cc89a5683cbeaac419",
+    "SRC-RFA-10K-EQUITY": "d3f64487b4b7a69d703aef88ad4e47ad598ca480f3f219a64620a95ed848c055",
+    "SRC-RFA-10K-LEASE": "aff2d5789d696890fc16e6372520fc96da37dab762593f85e47a86d7489ce5ec",
+    "SRC-RFA-10K-NOTE6HTML": "ab34ac67e21c2d0342769a51095744883e2ada7f8959fe8e60a15fac66dbf23c",
+    "SRC-RFA-10K-REVTYPE": "6b1e82e8ab26917a98f2cd9020e718c3b28d810026f6c3e7eab22d6c6dc42b20",
+    "SRC-RFA-10K-RPO": "a9a8e2493f22df1089f5d6236abd0e90c0be3d27f8138fb1c2720de20d858a1d",
+    "SRC-RFA-10K-SEGMENT": "dbeeb4947896934695777104438b59fc6bcf8a26012aca11d01b584546cbcfc9",
+    "SRC-RFA-10K-SUBSEQ": "66500773f0edaad53291feb3136534953da1b3cc3bf17dff2ad34ccbc990e835",
+    "SRC-RFA-8K-Q4FY25": "77bdb1ef992d168c264d95baed110eb6ceef3f1c70afd654bfdf7291008c51c9",
+    "SRC-RFA-DEF14A-2026": "f4d8ad52405581e9fe0582a3279ecac59a2d298ba80490a5d649f42edb2077b5",
+    "SRC-RFA-XBRL-FIN": "82f3a997b5bcb8d4a639363106249411b7086bb191196af755a2961b7b0bb194",
+    "SRC-RFC-AR2025": "cc010a046c317d7a143c89e30d4076d52d56ce83cb138d5cab1e9e075f48f135",
+    "SRC-RFC-AR2025-ABSTRACT": "55be31aa99345dc52300b2e3f5c8cf64d7c37ec43efc1af9816d942946af9637",
+    "SRC-RFC-H1-2026": "d7931f39098f86ce9c7dae7acdf09f4c4b2a73b434e4c50bb073428990663c64",
+    "SRC-RFC-IR-2026-03": "249a1931becb6d77120be15a429f1597866146f332084d85b80aee2d3fb1f5e9",
+    "SRC-RFC-IR-2026-07": "725d1cb5bc196f15609a4ae4a2a95688f09c852e2a2ab34bc08a1c660aa72899",
+    "SRC-RFC-NEWS-FY2025": "93a08002fb67ce109359bb935c522839270bcabdd3c48a083067043d404d4738",
+    "SRC-RFC-NEWS-FY2025-EN": "49b82bc81fd24b609bfe41fb6bcd4932a67232fac87630708ea25178cfafa512",
+    "SRC-RFS-001": "365432f9a06caf1bc776acd873a677d5b1716f5f2e97b117f7b27ebc44e2c252",
+    "SRC-RFS-002": "9a6799bfd593816999986006ca36f7dca16c18b96efe993ba8e82ab8ab98b9a4",
+    "SRC-RFS-003": "65ac56e83ea33486348c6b4f045b30a778ecf417ec1523193b67f0b7eb49acc8",
+    "SRC-RFS-004": "abf3410756303255fd6e7a3b478fe08894f5414cf366ed8fd35d84d7923e6c90",
+    "SRC-RFS-005": "726f4c65054121c71194612f77187c2d345021214e85b0716013b451641b4600",
+    "SRC-RFS-006": "186ef577541ba480a20cc88112a0e967eace009e90c274cdd6fcda0dcd855f94",
+    "SRC-RFS-007": "76f585cbdcdc01c13bc120ed81825228e90c4fc384cf572649962579e9dbd604",
+    "SRC-RFS-008": "98bffe6ca54ff638fdf1bbef0e3cd4e576b42251a7b410f2fdee61ba57d6316e",
+    "SRC-SEC-10K-HTML": "d09a8a8dee70e5a9371c9a158a2c8301b1ce55dd09763694bbe941f0642fb665",
+    "SRC-SEC-CAPEX": "f26550db374fbf3db43783f69aed8de4f0dc520e282802e07093890a80be9cc6",
+    "SRC-SEC-CASH": "1cae51c8496c69369100de976dd0555eeebd70ba90b36c6be9977c3c07241b51",
+    "SRC-SEC-DEBT": "3e1bfef882450501dca022efcc78095be93ad2ab92507531328aa97933e890c6",
+    "SRC-SEC-EQ": "47bde370ffe9efa625a70599315b84c47b3aeeac3ae2a1a08dc0604d89b17d1e",
+    "SRC-SEC-MKTS": "bc990f8a5d711efd163921a29ccd4e32d0177a9b7d481a9e8ffa77b177d5936d",
+    "SRC-SEC-NI": "5e3c0b839033ddb2aab5ee6d7c17d5bc18fd35c073a6170778337c07a4b1ca68",
+    "SRC-SEC-OCF": "751173a4abe252a408e7b857014157487c26c98db9bc5616dae6d226fc49c0b8",
+    "SRC-SEC-OI": "310a68b2a4af7844362f132746e845a840c5115bdf046974f5c2ba25eea3c9cb",
+    "SRC-SEC-REV": "6706a0557f498eba6904bd1dc27eeec18946eade30d442c15c22120ce82bcdc9",
+    "SRC-SEC-TAX": "e0bf2e3e2633aaf9302b9b8c599327987a253465e24741348df12ab158f51831",
+    "SRC-SKELETON": "4be05d229d7d91e511f00b800680a57daf29abb86ed97a60061be386fc5b4005"
+  },
+  "baseline_ledger_hashes": {
+    "CALC-ALPH-FCF-2025": "64f86db21a4afd629c14fef0367d2865a71b690a844318635f29e4182efd647a",
+    "CALC-ALPH-NETCASH-2025": "14c6adce8b60bd4f387050473d585665fb4df7d1493377336e53563607fe6899",
+    "CALC-ALPH-REVGROWTH-2025": "cd11682241224055701e21ab178c45481c2a66fe4f46a478994d2da4c01af0b0",
+    "CALC-ALPH-ROIC-2025": "21e8b6b89f533138eb17913cbf9c90b8fc9478bcf90fa68ef0671aee9970e7f5",
+    "CALC-RFC-FCF-2025": "30e5d1675a8ff1bde16d238ee90d28b5f9be911a93da17a7aeb224bc4506ccea",
+    "CALC-RFC-REVGROWTH-2025": "ad0f12b12624238d1b8afb9f46efca6d72b364a6c8f0526da3838485882e17f2",
+    "CALC-RFC-ROIC-2025": "ddfd7107a075cf5254bcdf3bab4c5de45fb70811a94ef84cbfbdffa215143f71",
+    "CALC-RFS-REVENUE-YOY-FY2025": "080130d8afa5e190b26b6dee0c26401668fce374776bcc92043fd1c972e66246"
+  }
+}

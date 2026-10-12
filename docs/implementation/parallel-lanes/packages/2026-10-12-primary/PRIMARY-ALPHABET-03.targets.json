@@ -1,0 +1,2730 @@
+{
+  "format_version": "1.0.0",
+  "package_id": "PRIMARY-ALPHABET-03",
+  "company": {
+    "company_key": "alphabet",
+    "legal_issuer_name": "Alphabet Inc.",
+    "ticker": "GOOGL",
+    "exchange": "XNAS",
+    "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+    "company_type": "operating",
+    "information_cutoff": "2026-10-11",
+    "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+    "question_count": 30
+  },
+  "baseline_pack_id": "frpack_a664741f1e3fe3e697b7902cd9aa0be15651c24723f401ffa5740c66927982e7",
+  "baseline_pack_raw_sha256": "f76eb644ab68c13145fff9104031ccd6606792afbb1b16311fbb685ad035bd23",
+  "frozen_input_file_count": 43,
+  "new_id_namespace": "RPA",
+  "rows": [
+    {
+      "reference_id": "FR-ALPHABET-IQS_01",
+      "question_id": "IQS_01",
+      "baseline_row_sha256": "3d005942779d9ebe32d4dea48a00d8a6c1134176f419ce92aaaae51490113cb7",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "e49b91646870da125d3e4a03e7cadd2ffb93e24638e7c0cb801dfb5909e3bebc",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-REVTYPE",
+            "locator_phrase": "10-K R44.htm revenue by type, FY2023-FY2025",
+            "sought": "客户实际解决的问题; 总使用成本; 独立客户复购与付费; 停止使用的后果",
+            "outcome": "partial",
+            "note": "R44 gives advertising revenue by type and its scale/mix (Search & other 224,532; YouTube ads 40,367; Network 29,792 of 294,691 advertising) but is a financial statement table: it does not state customer-level value, total cost of use, independent repeat purchase, or switching consequences."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "客户实际解决的问题; 独立客户复购与付费; 停止使用的后果",
+            "outcome": "partial",
+            "note": "Management asserts over 325 million paid consumer subscriptions and YouTube revenue > $60bn across ads and subscriptions - behavioural evidence of repeat paying demand - but it is unaudited management commentary, not advertiser-level retention data."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Advertising value is evidenced at scale with sustained growth (ads $264,590M -> $294,691M) and 325M+ paying consumer subscriptions, which is real behavioural evidence of repeat payment; but the required evidence on advertiser-level total cost of use and switching consequences is not disclosed, and Network revenue is shrinking. Row recorded partial with no score (unknown is not a 5).",
+        "assumptions": [],
+        "falsifiers": [
+          "if advertiser concentration or auction pressure were disclosed and deteriorating, the durability reading weakens",
+          "if Search & other growth decelerates toward the declining Network line, the customer-value case narrows"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Deep theme advertised value tested with segment/type disclosure rather than totals only.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-ADS-FY25-I01",
+        "FACT-RFA-ADS-FY24-I01",
+        "FACT-RFA-Q-ADSTRUCT-I01",
+        "FACT-RFA-Q-YTSUBS-I01"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_02",
+      "question_id": "IQS_02",
+      "baseline_row_sha256": "4d90239d7a173d3bcbef5f32dd19405327485ed3bf34066fc4f3cb5710616740",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "e466bfe76d2c2933a967d4714b4c203840026b60b8515455125f8a04da400042",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-REVTYPE",
+            "locator_phrase": "10-K R44.htm revenue by type FY2023-FY2025",
+            "sought": "客户留存或重复需求; 订单取消与履约; 获客维护成本; 不只看合同名义期限",
+            "outcome": "partial",
+            "note": "This NARROWS the baseline gap the row originally reported: segment/type revenue split IS now retrieved (Search & other, YouTube ads, Network, subscriptions), so revenue durability can be decomposed. Advertiser-level retention and the FY total TAC figure remain unavailable (the 8-K supplemental table is quarterly only)."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "获客维护成本; 不只看合同名义期限",
+            "outcome": "partial",
+            "note": "Q4 2025 total TAC $16,597M vs $14,848M shows traffic-acquisition cost is rising with revenue; but the FY2025 total TAC amount is not presented in this table, so the annual acquisition-cost ratio cannot be computed from it."
+          },
+          {
+            "source_id": "SRC-RFA-10K-DEFREV",
+            "locator_phrase": "XBRL company-concept ContractWithCustomerLiability at 2025-12-31",
+            "sought": "订单取消与履约",
+            "outcome": "partial",
+            "note": "Deferred revenue of $8,600M ($6,578M current) is modest versus $402,836M revenue, consistent with advertising being billed and recognized close to consumption rather than a long contract book."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "revenue_structure"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Baseline row already carried total-revenue facts and called the missing piece 'segment/concentration detail'. That gap is now PARTLY closed with official FY2025 revenue-by-type data, which shows a diversified and still-growing advertising base plus a faster-growing subscription line. Advertiser retention and FY-level TAC remain unavailable and Network is declining, so no score interval is proposed.",
+        "assumptions": [
+          "FY2025 advertising totals are as reported in the 10-K revenue-by-type table"
+        ],
+        "falsifiers": [
+          "if a large share of ad revenue came from a small number of advertisers, recurring share would be materially lower than the mix implies",
+          "if FY TAC grows faster than ad revenue, maintenance cost is rising"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Extends the existing deep revenue_structure row; original facts preserved, new type-level facts appended. Baseline gap statement superseded in evidence_boundary.missing_evidence.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-ALPH-REV-2025",
+        "FACT-ALPH-REV-2024",
+        "FACT-RFA-ADS-FY25-I02",
+        "FACT-RFA-ADS-FY24-I02",
+        "FACT-RFA-SEARCH-FY25-I02",
+        "FACT-RFA-NETWORK-FY25-I02",
+        "FACT-RFA-NETWORK-FY24-I02",
+        "FACT-RFA-Q-ADSTRUCT-I02",
+        "FACT-RFA-DEFREV-25-I02",
+        "FACT-RFA-Q-YTSUBS-I02",
+        "FACT-RFA-TAC-FY25-IQS-02-CORR1",
+        "FACT-RFA-TAC-FY24-IQS-02-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_04",
+      "question_id": "IQS_04",
+      "baseline_row_sha256": "39d047abbca8a7b35dd2c8238186ee0dc3331b90f62c79b12a85d74a881b5106",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "cbf5f4c64e3221f82a37864bf20f00ef8a4e627baa2b6a6015d38757facbdb6f",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_04",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm segment revenue and operating income FY2023-FY2025",
+            "sought": "供给扩张与退出; 价格纪律; 客户和供应商议价; 利润池归属",
+            "outcome": "partial",
+            "note": "Segment operating income shows the profit pool: Google Services OI $139,404M on $342,721M revenue; Google Cloud OI $13,910M on $58,705M; Other Bets -$7,515M; Alphabet-level -$16,760M. Profit is retained at the group level, but supply-side discipline of the wider industry is not disclosed in structured data."
+          },
+          {
+            "source_id": "SRC-RFA-10K-CONTING",
+            "locator_phrase": "10-K R77.htm contingency detail",
+            "sought": "客户和供应商议价",
+            "outcome": "partial",
+            "note": "Regulatory/contingent exposures (EU antitrust amounts across periods; $5,700M guarantee ceiling) show a powerful counterparty (regulators) that can extract value, but nothing on supplier/customer bargaining power."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The value chain does let Alphabet retain substantial profit: 32% group operating margin, $139.4bn of Services operating income and a Cloud segment that turned from $1,716M (FY2023) to $13,910M (FY2025). But the question asks about industry supply discipline and bargaining power, which official structured filings quantify only indirectly. Partial, no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if AI infrastructure capacity additions across the industry outrun demand, the profit pool available to Alphabet narrows",
+          "if regulators impose remedies that remove distribution or default placement, Services economics change"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-GSVCS-OI-FY25-I04",
+        "FACT-RFA-CLOUD-OI-FY25-I04",
+        "FACT-RFA-OI-FY25-I04",
+        "FACT-RFA-MKTG-FY25-I04",
+        "FACT-RFA-RD-FY25-I04",
+        "FACT-RFA-Q-EUANTITRUST-I04",
+        "FACT-RFA-GSVCS-OI-FY25-I04-CORR1",
+        "FACT-RFA-CLOUD-OI-FY25-I04-CORR1",
+        "FACT-RFA-Q-EUANTITRUST-I04-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_05",
+      "question_id": "IQS_05",
+      "baseline_row_sha256": "9c2ad50cec31e3d3472430235a92f216ea582ff0fb983bed1f4a295b36b9cc0d",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "1a69a9ad5639348badc9bac39e5826046ab52ff8b9c2d04387da9705c248e435",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_05",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-REVTYPE",
+            "locator_phrase": "10-K R44.htm revenue by type (advertising mechanism mix), FY2025",
+            "sought": "优势适用的具体业务/客户场景与利润来源",
+            "outcome": "partial",
+            "note": "This NARROWS the baseline gap_terminated reason ('not in the retrieved portion'): the profit source IS now located - advertising of $294,691M (73.2% of revenue) with Search & other alone at $224,532M, i.e. the advantage is concentrated in query monetization and distribution, not in the whole company."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "优势成立所依赖的条件、有效范围与明确失效信号; 规模或网络机制; 对手复制与客户选择，以及可能推翻优势判断的反证",
+            "outcome": "partial",
+            "note": "Management evidence on the mechanism is qualitative only: 'Search saw more usage than ever before', Gemini >750M MAU, 325M+ paid subscriptions, YouTube >$60bn. No market-share series, no cost-to-copy figure, no switching-cost measurement is disclosed."
+          },
+          {
+            "source_id": "SRC-RFA-10K-CONTING",
+            "locator_phrase": "10-K R77.htm: EU antitrust amounts and 2 open investigations",
+            "sought": "优势成立所依赖的条件、有效范围与明确失效信号",
+            "outcome": "partial",
+            "note": "Regulatory exposure is a real condition on the advantage: repeated EU antitrust losses across periods and open investigations show the mechanism depends on distribution/placement that regulators can constrain."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "sustained_advantage"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The baseline gap was 'the specific item is not in the retrieved portion'. That is now partly superseded: the profit source and scale of the advantage ARE sourced, and its regulatory contingency IS sourced. What is still missing is the quantitative moat evidence (share, switching cost, cost-to-copy), so this moves from gap_terminated to research_completed-with-gaps. Partial; no score or interval is proposed.",
+        "assumptions": [
+          "advertising revenue is the reported proxy for the scale of the search/ads advantage"
+        ],
+        "falsifiers": [
+          "if rivals can replicate query monetization economics at materially lower cost, the advantage case weakens",
+          "if antitrust remedies force open default placement or data sharing, the distribution condition fails"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Baseline row was gap_terminated because the retrieved 10-K portion did not reach the item. This package retrieved segment/type and contingency disclosures, so the row is upgraded to research_completed with explicitly listed residuals. Baseline termination reason preserved in changes.md; no old fact was redefined (baseline had no facts).",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-GSVCS-OI-FY25-I05",
+        "FACT-RFA-ADS-FY25-I05",
+        "FACT-RFA-Q-ADSTRUCT-I05",
+        "FACT-RFA-Q-AIUSAGE-I05",
+        "FACT-RFA-Q-YTSUBS-I05",
+        "FACT-RFA-Q-EUANTITRUST-I05",
+        "FACT-RFA-Q-OPENINV-I05",
+        "FACT-RFA-GSVCS-OI-FY25-I05-CORR1",
+        "FACT-RFA-Q-EUANTITRUST-I05-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_06",
+      "question_id": "IQS_06",
+      "baseline_row_sha256": "738bb353cd33fe209cad2cab8573d4193ba096e3a1590f720b9bbd3a1fcff8d8",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "0ae309b36dc08ef082a89c16007888a01f65cb758016690e22959037d349769b",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_06",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm segment revenue/OI FY2023-FY2025",
+            "sought": "剔除补贴后的经济份额; 相对价格与回报; 客户迁移; 替代方案进展; 趋势与竞争地位强度分开",
+            "outcome": "partial",
+            "note": "Official series shows the trajectory: Cloud revenue $33,088M -> $43,229M -> $58,705M with OI $1,716M -> $6,112M -> $13,910M (clearly improving); advertising $237,855M -> $264,590M -> $294,691M. Economic share versus competitors is not disclosed."
+          },
+          {
+            "source_id": "SRC-RFA-10K-REVTYPE",
+            "locator_phrase": "10-K R44.htm revenue by type FY2023-FY2025",
+            "sought": "趋势improving/stable/deteriorating与竞争地位强度分开",
+            "outcome": "partial",
+            "note": "Google Network is the one deteriorating line: $31,312M -> $30,359M -> $29,792M over FY2023-FY2025, while Search & other and YouTube ads grow. Trend by line is therefore mixed, not uniformly improving."
+          },
+          {
+            "source_id": "SRC-RFA-DEF14A-2026",
+            "locator_phrase": "2026 DEF 14A accn 0001308179-26-000342 (filed 2026-04-24): sections on Compensation Discussion and Analysis, beneficial ownership / total voting power, Certain Relationships and Related Transactions, Management Succession Planning, insider trading/hedging/pledging policies, and Pay versus Performance",
+            "sought": "剔除补贴后的经济份额; 相对价格与回报; 替代方案进展",
+            "outcome": "partial",
+            "note": "The proxy supplies a relative-performance datapoint that is not a company self-assessment: Alphabet's cumulative TSR on a $100 investment reached $360.95 versus $138.27 for the peer group, and relative TSR ranked at the 92.86th percentile of the S&P 100 over 2023-2025. That is market-based evidence of relative strength, though it is a capital-markets measure rather than an operating market-share series."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Trend must be reported separately from strength, as the rubric requires. On the sourced evidence the direction is MIXED: Cloud and Search improve and Cloud profitability rose sharply, while Google Network declined for three consecutive years; market-based relative performance was strong (92.86th percentile TSR). Competitive strength versus named rivals still cannot be measured from company filings alone. Partial; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if Network-style decline spread to Search & other, the position would be deteriorating overall",
+          "if Cloud growth decelerated while capex kept rising, the improving trend would reverse",
+          "an independent share series showing losses to rivals would contradict the market-based strength signal"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Trend direction recorded as mixed; strength not scored because an independent operating share series is absent.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-ADS-FY25-I06",
+        "FACT-RFA-ADS-FY24-I06",
+        "FACT-RFA-ADS-FY23-I06",
+        "FACT-RFA-NETWORK-FY25-I06",
+        "FACT-RFA-NETWORK-FY24-I06",
+        "FACT-RFA-NETWORK-FY23-I06",
+        "FACT-RFA-REV-FY23-I06",
+        "FACT-RFA-CLOUD-FY25-I06",
+        "FACT-RFA-CLOUD-FY24-I06",
+        "FACT-RFA-CLOUD-FY23-I06",
+        "FACT-RFA-CLOUD-OI-FY25-I06",
+        "FACT-RFA-CLOUD-OI-FY24-I06",
+        "FACT-RFA-CLOUD-OI-FY23-I06",
+        "FACT-RFA-Q-EUANTITRUST-I06",
+        "FACT-RFA-Q-AIUSAGE-I06",
+        "FACT-RFA-Q-CAPTABLE-I06",
+        "FACT-RFA-Q-GOVCOMMITTEE-I06",
+        "FACT-RFA-CLOUD-FY25-I06-CORR1",
+        "FACT-RFA-CLOUD-FY24-I06-CORR1",
+        "FACT-RFA-CLOUD-FY23-I06-CORR1",
+        "FACT-RFA-CLOUD-OI-FY25-I06-CORR1",
+        "FACT-RFA-CLOUD-OI-FY24-I06-CORR1",
+        "FACT-RFA-CLOUD-OI-FY23-I06-CORR1",
+        "FACT-RFA-Q-EUANTITRUST-I06-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_07",
+      "question_id": "IQS_07",
+      "baseline_row_sha256": "77065b188c152359a560ed085952da988c3d9494744c017cc0b30180cb720344",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "8327ef0d01e524f841b4391ffbf4c1f7be8a2bc77204c0ee8ae95bddac34604b",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_07",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "过去三至五年承诺与实际; 承诺难度; 延期和纠偏; 有无移动目标",
+            "outcome": "partial",
+            "note": "The release gives a forward 2026 capex range of $175-185bn against FY2025 actual capex of $91,447M. That is a stated target, but a 3-5 year realised-versus-promised track record requires comparing earlier guidance to outcomes, which is not in this release."
+          },
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm three-year segment actuals",
+            "sought": "过去三至五年承诺与实际",
+            "outcome": "partial",
+            "note": "Three years of actuals are available (revenue, segment OI) and let actual delivery be measured, but the corresponding original promises/guidance for those years were not retrieved."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Only the forward promise and recent actuals are sourced; the 3-5 year promise-versus-outcome ledger needed by this question is not available in the retrieved official material. Partial; no score, because a track record cannot be scored from one guidance point.",
+        "assumptions": [],
+        "falsifiers": [
+          "if 2026 capex lands materially below the $175-185bn range, that is a concrete delivery miss to record",
+          "if prior-year targets were repeatedly revised, the execution reading weakens"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-Q-CAPEX2026-I07",
+        "FACT-RFA-CAPEX-FY25-I07",
+        "FACT-RFA-CAPEX-FY24-I07",
+        "FACT-RFA-Q-CLOUDRATE-I07",
+        "FACT-RFA-Q-PEOPLE-I07"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_08",
+      "question_id": "IQS_08",
+      "baseline_row_sha256": "549a425a07a2bae3f7ca0bf535a4f83d3689037cdd1637513e5694b237c644b2",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "012248c99571e9ae4ac1d621f34a06211edaca8415dfa04bb71bd999729c5340",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_08",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "扩张批次; 质量事故; 交付周期; 固定成本弹性; 爬坡损失",
+            "outcome": "partial",
+            "note": "Margin held at 32% in FY2025 while capex rose 74% ($52,535M -> $91,447M) and revenue grew 15% - cost discipline is visible at the group level during a very large build-out. No quality-incident or delivery-cycle data is disclosed in this source."
+          },
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm: segment cost blocks and Alphabet-level costs",
+            "sought": "固定成本弹性; 爬坡损失",
+            "outcome": "partial",
+            "note": "Segment cost tables exist, but Alphabet does not disclose utilization, ramp losses, or quality metrics; 'Other costs and expenses' growth in Cloud (16,598 -> 22,717) is the closest available proxy for scaling cost."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Cost discipline during a very large expansion is supported at the group level (32% margin held), but the question's specific asks (quality incidents, delivery cycle, ramp losses) are not disclosed. Partial; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if margin compresses while capex keeps rising, scaling discipline failed",
+          "a disclosed outage or delivery failure would be direct negative evidence"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-Q-CAPEX2026-I08",
+        "FACT-RFA-CAPEX-FY25-I08",
+        "FACT-RFA-OI-FY25-I08",
+        "FACT-RFA-OI-FY24-I08",
+        "FACT-RFA-RD-FY25-I08",
+        "FACT-RFA-Q-PEOPLE-I08"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_09",
+      "question_id": "IQS_09",
+      "baseline_row_sha256": "1fe003fb91e45df1f5a48ae4e91e427e8a9f8c110c10846bb231b5df600491ed",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "a27556dbb12c4bd848cd5cd55c77e083e4c866c6b16e2f55a6a7d8247bc9967c",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_09",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "核心岗位梯队; 人员流失; 接班; 制度化研发和销售; 授权记录",
+            "outcome": "partial",
+            "note": "Only headcount (190,820 vs 183,323) and a $2.1bn Waymo-related compensation charge are disclosed. No succession, turnover, or key-person data appears in the earnings release."
+          },
+          {
+            "source_id": "SRC-RFA-XBRL-FIN",
+            "locator_phrase": "XBRL companyfacts: ResearchAndDevelopmentExpense, ShareBasedCompensation",
+            "sought": "制度化研发和销售",
+            "outcome": "partial",
+            "note": "R&D of $61,087M and share-based compensation of $24,953M evidence a large, institutionalized research organization and broad equity participation, but say nothing about succession or dependence on specific individuals."
+          },
+          {
+            "source_id": "SRC-RFA-DEF14A-2026",
+            "locator_phrase": "2026 DEF 14A accn 0001308179-26-000342 (filed 2026-04-24): sections on Compensation Discussion and Analysis, beneficial ownership / total voting power, Certain Relationships and Related Transactions, Management Succession Planning, insider trading/hedging/pledging policies, and Pay versus Performance",
+            "sought": "核心岗位梯队; 接班; 授权记录",
+            "outcome": "partial",
+            "note": "The proxy DOES document succession as a formal governance responsibility: the Nominating and Corporate Governance Committee oversees director and management succession-planning risk, and the compensation committee reviews senior management development, retention and succession plans. It also shows the CEO's scope was expanded to Bet Performance Units for Waymo and Wing, i.e. key-person concentration is increasing, not diluting. What the proxy does NOT give is a named successor, a pipeline roster, or executive turnover rates."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The baseline position was that this question was unanswerable because the proxy was not retrieved. That retrieval gap is now CLOSED: the 2026 proxy (filed 2026-04-24, inside the cutoff) is readable and confirms succession planning is a formal, standing board-committee responsibility, while also showing key-person dependency at the CEO level is being reinforced rather than reduced. The residual gap is qualitative depth - no successor, roster or turnover data - so the row moves from insufficient_evidence to partial. No score: a documented process is not the same as proven bench strength.",
+        "assumptions": [],
+        "falsifiers": [
+          "a disclosed succession event handled smoothly would support organizational depth",
+          "executive turnover or a failed internal promotion would falsify it",
+          "if key decisions continued to require the CEO personally, bench depth is thin"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Upgraded from insufficient_evidence to partial after actually retrieving the 2026 proxy statement; the earlier 'proxy not retrieved' limitation is superseded.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-Q-PEOPLE-I09",
+        "FACT-RFA-RD-FY25-I09",
+        "FACT-RFA-SBC-FY25-I09",
+        "FACT-RFA-Q-SUCCESSION-I09",
+        "FACT-RFA-Q-GOVCOMMITTEE-I09",
+        "FACT-RFA-VOTEPOWER-GROUP-I09",
+        "FACT-RFA-SBC-FY25-I09-CORR1",
+        "FACT-RFA-VOTEPOWER-GROUP-I09-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_10",
+      "question_id": "IQS_10",
+      "baseline_row_sha256": "5a4713e257a1ef02d6bee2e89b0d4b39d60aa23d3da4c893ec137dcdd7e0f0fe",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "4800eb076987025b72335eba8c40ad5cea87bbb10b370c333bbb1fe0b16b5170",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_10",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-XBRL-FIN",
+            "locator_phrase": "XBRL companyfacts: Goodwill, OperatingLeaseLiability, ShareBasedCompensation, ResearchAndDevelopmentExpense at/in FY2025",
+            "sought": "商誉租赁与研发调整; 资本成本区间",
+            "outcome": "partial",
+            "note": "This NARROWS the baseline missing-evidence item 'goodwill/intangibles and operating-lease capital adjustments not isolated': goodwill $33,380M and operating lease liability $15,954M ARE now retrieved, and are immaterial relative to $415,265M equity, so the IC definition is not materially distorted by omitting them. The cost-of-capital range itself is still not sourced from an official filing."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "中周期税后经营回报与投入资本",
+            "outcome": "partial",
+            "note": "Confirms the FY2024/FY2025 operating income and margin inputs independently from the earnings release, and shows a stable 32% margin across both years."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_efficiency"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "28.74% is a declared accounting proxy under its selected tax/capital definition, without demonstrated robustness across alternative economic-capital definitions. Economic R&D capital, leases, goodwill, non-operating investments, history and cost of capital require adjustment/sensitivity; no score.",
+        "assumptions": [
+          "baseline ROIC definition retained: NOPAT with effective tax rate = tax/(NI+tax); invested capital = equity + notes face value - cash & equivalents; beginning-end averaging"
+        ],
+        "falsifiers": [
+          "if WACC exceeds the computed ROIC, the value-creation claim fails",
+          "if operating margin normalizes toward the historical average, ROIC falls"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Baseline facts untouched; new goodwill/lease/R&D facts appended to narrow the stated gap.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-ALPH-OI-2025",
+        "FACT-ALPH-TAX-2025",
+        "FACT-ALPH-NI-2025",
+        "FACT-ALPH-IC-EQ-2025",
+        "FACT-ALPH-IC-DEBT-2025",
+        "FACT-ALPH-IC-CASH-2025",
+        "FACT-ALPH-IC-EQ-2024",
+        "FACT-ALPH-IC-DEBT-2024",
+        "FACT-ALPH-IC-CASH-2024",
+        "FACT-RFA-OI-FY25-I10",
+        "FACT-RFA-OI-FY24-I10",
+        "FACT-RFA-EQ-25-I10",
+        "FACT-RFA-EQ-24-I10",
+        "FACT-RFA-LTD-FACE-25-I10",
+        "FACT-RFA-CASH-25-I10",
+        "FACT-RFA-GOODWILL-25-I10",
+        "FACT-RFA-OPLEASE-25-I10",
+        "FACT-RFA-SBC-FY25-I10",
+        "FACT-RFA-RD-FY25-I10",
+        "FACT-RFA-MKTS-25-I10",
+        "FACT-RFA-SBC-FY25-I10-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_12",
+      "question_id": "IQS_12",
+      "baseline_row_sha256": "4fdd85d5ef47e7424cbf40d46ef5ce7956c6ee71183cec4830f5b46591f46445",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "0656fea768b457f922529f4efcd08dfca46f8cad622bff7a791df98cd8cff0d4",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_12",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-XBRL-FIN",
+            "locator_phrase": "XBRL companyfacts: Goodwill, LongTermDebt vs LongTermDebtNoncurrent, ShareBasedCompensation",
+            "sought": "审计与监管事项; 应收存货或金融资产质量; 费用资本化; 表外义务; 非经常调整",
+            "outcome": "partial",
+            "note": "Two distinct debt bases coexist in the official tags ($49,085M total notes face value including current vs $46,547M noncurrent carrying). They are NOT interchangeable, and conflating them would misstate leverage - this is a concrete disclosure-clarity issue the reader must handle explicitly."
+          },
+          {
+            "source_id": "SRC-RFA-10K-CONTING",
+            "locator_phrase": "10-K R77.htm contingency detail",
+            "sought": "表外义务; 非经常调整",
+            "outcome": "partial",
+            "note": "Contingent items are disclosed but only partly quantified: $5,700M maximum guarantee exposure, $7,700M content commitments, and EU antitrust amounts in mixed currencies/periods that are not additive."
+          },
+          {
+            "source_id": "SRC-RFA-10K-SUBSEQ",
+            "locator_phrase": "10-K R26.htm subsequent event",
+            "sought": "非经常调整",
+            "outcome": "partial",
+            "note": "A ~$32.0bn January-2026 unrealized gain on non-marketable investments is disclosed as a subsequent event and remains subject to change - evidence that reported earnings can be materially affected by non-operating revaluation; recorded but NOT used as support for any in-window fact (post-cutoff)."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Disclosure quality is good in structure (fully tagged audited statements; consistent three-year series) but the row's demand for audit/regulatory matters, off-balance-sheet obligations, and non-recurring adjustments is only partly satisfiable under the lightweight policy, and the debt-basis duality is a real interpretive risk. Partial; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "an unresolved audit qualification or restatement would change this materially",
+          "if contingent exposures were far larger than the disclosed ceiling, reported financial condition would be overstated"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-Q-EUANTITRUST-I12",
+        "FACT-RFA-Q-OPENINV-I12",
+        "FACT-RFA-GOODWILL-25-I12",
+        "FACT-RFA-Q-NOTE6SCOPE-I12",
+        "FACT-RFA-LTD-FACE-25-I12",
+        "FACT-RFA-LTD-CARRY-25-I12",
+        "FACT-RFA-SBC-FY25-I12",
+        "FACT-RFA-Q-SUBSEQ-JAN26-I12",
+        "FACT-RFA-Q-EUANTITRUST-I12-CORR1",
+        "FACT-RFA-SBC-FY25-I12-CORR1",
+        "FACT-RFA-Q-SUBSEQ-JAN26-I12-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_13",
+      "question_id": "IQS_13",
+      "baseline_row_sha256": "19143bf3b5b05ea26c87f70a4463707779daec4844cd1259174386a02e0c08df",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "5734a8370a3c0f13bd51b8e6cbd6f115992007b378f47736f0991ec295047c88",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_13",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-EQUITY",
+            "locator_phrase": "10-K R21.htm: three authorized share classes and repurchase table",
+            "sought": "关联交易; 资金占用; 控制权与现金权; 资产转移; 少数股东保护",
+            "outcome": "partial",
+            "note": "The three-class structure (Class A/Class B common, Class C capital) with unequal voting rights is confirmed from the official filing - this is the core control-versus-cash-flow fact. Related-party transactions, fund occupation, and asset transfers are not covered in this note."
+          },
+          {
+            "source_id": "SRC-RFA-10K-BUYBACK",
+            "locator_phrase": "10-K R79.htm repurchases by class FY2023-FY2025",
+            "sought": "少数股东保护",
+            "outcome": "partial",
+            "note": "Repurchases are split by class (FY2025: Class A $6,501M/37M shares; Class C $38,897M/203M shares) and are proportionate across traded classes, which is a shareholder-return fact rather than proof of fair treatment."
+          },
+          {
+            "source_id": "SRC-RFA-DEF14A-2026",
+            "locator_phrase": "2026 DEF 14A accn 0001308179-26-000342 (filed 2026-04-24): sections on Compensation Discussion and Analysis, beneficial ownership / total voting power, Certain Relationships and Related Transactions, Management Succession Planning, insider trading/hedging/pledging policies, and Pay versus Performance",
+            "sought": "控制权与现金权; 关联交易; 少数股东保护",
+            "outcome": "partial",
+            "note": "This CLOSES the baseline 'proxy not retrieved' gap on the control question: the founders hold 52.7% of total voting power (Page 27.4%, Brin 25.3%) through ten-vote Class B shares, and all officers and directors as a group hold 54.3%. So economic ownership and voting control are separated by design, and ordinary Class A holders cannot outvote the founders on any matter. The proxy also contains a related-party transactions policy and states no compensation-committee member is or has been an Alphabet officer or employee, but the specific transaction amounts were not extracted."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The control-versus-cash-flow facts are now properly sourced (52.7% founder voting power on ten-vote shares; no votes for Class C). Financial treatment of ordinary shareholders looks even-handed on the evidence available - equal per-share dividends across all three classes, repurchases allocated across traded classes, an independent auditor with pre-approved services, and a related-party policy. But the question asks for an actual record of fair dealing, and the transaction-level detail was not extracted. Partial; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "a disclosed related-party transaction on non-arm's-length terms would change the assessment",
+          "differential dividends or buyback pricing across classes would indicate unfair treatment"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Control evidence upgraded from 10-K disclosure to the 2026 proxy's voting-power table; the baseline 'proxy not retrieved' limitation is superseded for the control question.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-Q-SHARECLASS-I13",
+        "FACT-RFA-BUYBACK-FY25-I13",
+        "FACT-RFA-Q-PEOPLE-I13",
+        "FACT-RFA-VOTEPOWER-FOUNDERS-I13",
+        "FACT-RFA-VOTEPOWER-GROUP-I13",
+        "FACT-RFA-Q-RELATEDPARTY-I13",
+        "FACT-RFA-Q-AUDITOR-I13",
+        "FACT-RFA-VOTEPOWER-FOUNDERS-I13-CORR1",
+        "FACT-RFA-VOTEPOWER-GROUP-I13-CORR1",
+        "FACT-RFA-Q-AUDITOR-I13-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_14",
+      "question_id": "IQS_14",
+      "baseline_row_sha256": "d7391eb9990a5c6431b629db23fc91977c3578008a69e92b44556649bc5787ad",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "4144be6d00b921e5435781eb09d71add607131899b6fadd83693002c1438fd7d",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_14",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-BUYBACK",
+            "locator_phrase": "10-K R79.htm repurchase amounts and share counts FY2023-FY2025",
+            "sought": "投入后的实际回报; 并购减值; 回购价格; 全部摊薄股数; 失败项目退出",
+            "outcome": "partial",
+            "note": "Repurchase spend fell from $62,184M (FY2023) to $45,398M (FY2025) while diluted shares fell 12,447M -> 12,230M, i.e. buybacks still more than offset dilution. Per-share repurchase price is not disclosed directly, so value accretion per buyback cannot be computed from this table alone."
+          },
+          {
+            "source_id": "SRC-RFA-XBRL-FIN",
+            "locator_phrase": "XBRL companyfacts: Goodwill, WeightedAverageNumberOfDilutedSharesOutstanding",
+            "sought": "并购减值; 全部摊薄股数",
+            "outcome": "partial",
+            "note": "Goodwill rose modestly to $33,380M with no impairment line item of note; diluted share count falls year over year, evidencing net buyback accretion at the share-count level."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Share-count discipline is evidenced (diluted shares declining; goodwill with no impairment), but the question requires per-share value accretion and the return on new investment, and the capex step-up is too recent to evaluate. Partial; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if diluted share count starts rising, buybacks no longer offset dilution",
+          "if the new capex program fails to earn its cost of capital, capital allocation would be value-destroying"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-BUYBACK-FY25-I14",
+        "FACT-RFA-BUYBACK-FY24-I14",
+        "FACT-RFA-BUYBACK-FY23-I14",
+        "FACT-RFA-DILSHARES-FY25-I14",
+        "FACT-RFA-DILSHARES-FY24-I14",
+        "FACT-RFA-CAPEX-FY25-I14",
+        "FACT-RFA-CAPEX-FY24-I14",
+        "FACT-RFA-Q-CAPEX2026-I14",
+        "FACT-RFA-GOODWILL-25-I14",
+        "FACT-RFA-DILSHARES-FY25-I14-CORR1",
+        "FACT-RFA-DILSHARES-FY24-I14-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_15",
+      "question_id": "IQS_15",
+      "baseline_row_sha256": "d23cb466d8894bcf44ff8d30f6e5e56f403fe5a9b8c3f8a9c8b5c77825f64392",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "048ff192b19ed0c777cca82798447375ef12e76e4d6d7e6f61a6b37adc090e39",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_15",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-XBRL-FIN",
+            "locator_phrase": "XBRL companyfacts: ShareBasedCompensation and diluted share counts FY2024-FY2025",
+            "sought": "考核指标; 稀释; 管理层实际风险承担; 追索约束; 董事会监督记录",
+            "outcome": "partial",
+            "note": "SBC of $24,953M (up from $22,785M) is quantified and diluted shares nevertheless fell 12,447M -> 12,230M, so net dilution is negative."
+          },
+          {
+            "source_id": "SRC-RFA-DEF14A-2026",
+            "locator_phrase": "2026 DEF 14A accn 0001308179-26-000342 (filed 2026-04-24): sections on Compensation Discussion and Analysis, beneficial ownership / total voting power, Certain Relationships and Related Transactions, Management Succession Planning, insider trading/hedging/pledging policies, and Pay versus Performance",
+            "sought": "考核指标; 稀释; 管理层实际风险承担; 追索约束; 董事会监督记录",
+            "outcome": "supported",
+            "note": "This CLOSES the baseline 'proxy not retrieved' gap: the incentive design IS now sourced. Pay is split between GSUs and Performance Stock Units whose payout depends on relative total shareholder return versus the S&P 100; the rubric-relevant metric is explicitly per-share-market-based rather than volume-based. For 2023-2025 Alphabet TSR was 203.65% at the 92.86th percentile, so the CEO received 200% of target PSUs. A Clawback Policy exists (adopted October 2023 under SEC Rule 10D-1 / Nasdaq). Hedging, pledging, short sales and margin holding are prohibited, and minimum share ownership requirements apply with all named executive officers compliant. Counterweight: proposal 3 seeks to add 200,000,000 Class C shares to the 2021 Stock Plan reserve."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The incentive-design question can now be answered on sourced evidence rather than deferred: the primary long-term metric is relative TSR versus the S&P 100 (explicitly a per-share measure), clawback and anti-hedging/pledging provisions exist, ownership requirements are met, and net dilution was negative in FY2025. These are all points in favour of the rubric's high end. Offsetting them, a 200,000,000-share reserve increase is being requested, and CAP far exceeds reported pay. Partial rather than higher, because the forward dilution quantum and the metric's ability to separate skill from beta are not established. No score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if the reserve increase were fully issued without offsetting repurchases, per-share value would be diluted",
+          "if the TSR metric paid out on beta rather than relative performance, the long-term-alignment claim weakens"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Upgraded from insufficient_evidence to partial after actually retrieving the 2026 proxy; the earlier 'proxy not retrieved' limitation is superseded.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-SBC-FY25-I15",
+        "FACT-RFA-DILSHARES-FY25-I15",
+        "FACT-RFA-DILSHARES-FY24-I15",
+        "FACT-RFA-Q-PEOPLE-I15",
+        "FACT-RFA-Q-SHARECLASS-I15",
+        "FACT-RFA-Q-CLAWBACK-I15",
+        "FACT-RFA-Q-HEDGEPLEDGE-I15",
+        "FACT-RFA-PSU-TSR-OUTCOME-I15",
+        "FACT-RFA-Q-CAPTABLE-I15",
+        "FACT-RFA-PLANRESERVE-INCREASE-I15",
+        "FACT-RFA-SBC-FY25-I15-CORR1",
+        "FACT-RFA-DILSHARES-FY25-I15-CORR1",
+        "FACT-RFA-DILSHARES-FY24-I15-CORR1",
+        "FACT-RFA-PSU-TSR-OUTCOME-I15-CORR1",
+        "FACT-RFA-PLANRESERVE-INCREASE-I15-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_16",
+      "question_id": "IQS_16",
+      "baseline_row_sha256": "43f06b14091924a4ab52436cd72f48f4d3d53252211ec14687a0a90bd1f78d9f",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "e7bdfca8d2db0fa6c0a4b863c4607514614c324206ca0cffe0de43bbf0ee1d32",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_16",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-DEBTMAT",
+            "locator_phrase": "10-K R68.htm long-term debt principal maturity schedule at 2025-12-31",
+            "sought": "债务租赁和承诺投入",
+            "outcome": "partial",
+            "note": "This NARROWS the baseline missing item 'debt maturity schedule (amounts due within 2 years) not in the pulled tags': the schedule IS now retrieved - only $2,000M due in 2026 and $1,000M in 2027, i.e. 6.1% of the $49,085M face value falls due within two years, with $41,645M due 2030 and thereafter."
+          },
+          {
+            "source_id": "SRC-RFA-10K-LEASE",
+            "locator_phrase": "10-K R63.htm future minimum lease payments at 2025-12-31",
+            "sought": "债务租赁和承诺投入",
+            "outcome": "partial",
+            "note": "Two-year operating lease commitments are $6,357M (2026 $3,275M + 2027 $3,082M) and finance leases add $836M over those years; total operating lease liability is $15,954M."
+          },
+          {
+            "source_id": "SRC-RFA-10K-COMMIT",
+            "locator_phrase": "10-K R20.htm content-licensing commitments and guarantees",
+            "sought": "担保; 资本与契约约束",
+            "outcome": "partial",
+            "note": "Fixed/minimum content-licensing commitments of $7,700M (mostly paid quarterly through Q1 2030) and a $5,700M maximum financial-guarantee exposure are now quantified."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "debt_survival"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Cash/securities and listed financing obligations are subset snapshots at FY2025, not a complete two-year survival test at the Oct2026 cutoff. Large purchase contracts, uncommenced leases and guarantees need timing/overlap/availability analysis. Prior subset coverage arithmetic cannot establish total coverage; no score.",
+        "assumptions": [
+          "current marketable securities treated as readily available liquidity (baseline assumption retained)",
+          "rigid obligations counted as debt principal + lease commitments + minimum content commitments, excluding discretionary capex"
+        ],
+        "falsifiers": [
+          "if a large share of current securities proved illiquid under stress, the buffer would be smaller",
+          "if the $175-185bn 2026 capex program were debt-funded at scale, the leverage picture would deteriorate materially"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Baseline facts preserved; the previously-missing maturity schedule is now appended.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-ALPH-LIQ-CASH-2025",
+        "FACT-ALPH-LIQ-MKTS-2025",
+        "FACT-ALPH-LIQ-DEBT-2025",
+        "FACT-RFA-CASH-25-I16",
+        "FACT-RFA-MKTS-25-I16",
+        "FACT-RFA-LTD-FACE-25-I16",
+        "FACT-RFA-LTD-CARRY-25-I16",
+        "FACT-RFA-DEBT-DUE-2Y-I16",
+        "FACT-RFA-DEBT-DUE-LATER-I16",
+        "FACT-RFA-LEASE-DUE-2Y-I16",
+        "FACT-RFA-CONTENT-COMMIT-I16",
+        "FACT-RFA-GUARANTEE-MAX-I16",
+        "FACT-RFA-OCF-FY25-I16",
+        "FACT-RFA-OPLEASE-25-I16",
+        "FACT-RFA-Q-CAPEX2026-I16",
+        "FACT-RFA-PURCHASE-COMMIT-TOTAL-IQS-16-CORR1",
+        "FACT-RFA-PURCHASE-COMMIT-SHORT-IQS-16-CORR1",
+        "FACT-RFA-UNCOMMENCED-LEASE-SHORT-IQS-16-CORR1",
+        "FACT-RFA-UNCOMMENCED-LEASE-LONG-IQS-16-CORR1",
+        "FACT-RFA-NOTE-INTEREST-SHORT-IQS-16-CORR1",
+        "FACT-RFA-CREDIT-DERIV-GUARANTEE-IQS-16-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_17",
+      "question_id": "IQS_17",
+      "baseline_row_sha256": "e2440f53af6e296315f4b9cd98fd0309d42186b424223003fe4e835cedf80406",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "e00046ebe61d44cf13e8e4a6345cf22e2c68d0bcc887de1cbe3a0e7e5764cb51",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_17",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-RPO",
+            "locator_phrase": "XBRL company-concept RevenueRemainingPerformanceObligation at 2025-12-31",
+            "sought": "关键依赖及经济影响; 替代认证与周期; 客户流失情景; 库存或合同保护",
+            "outcome": "partial",
+            "note": "Remaining performance obligation of $242,800M is a large contracted-demand figure, but the tag is NOT split by segment, so it cannot be attributed to Cloud alone and must not be treated as Cloud backlog."
+          },
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm: Cloud revenue and operating income; segment definitions",
+            "sought": "关键依赖及经济影响",
+            "outcome": "partial",
+            "note": "Cloud is 14.57% of revenue and 10.78% of operating income, so a Cloud-level shock is material but not existential to the group; the segment description confirms Cloud revenue is consumption-based plus subscriptions."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Some dependency structure is sourced (Cloud is a material but minority share of group profit; RPO is large but unattributed; content commitments are contracted), yet the question asks specifically about recovery from losing a key customer, supply source, facility, or system - which is not disclosed. Partial; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "a disclosed loss of a major Cloud customer or a supply constraint would be decisive",
+          "if Cloud were loss-making, dependency would be less material (it is now solidly profitable)"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-CLOUD-FY25-I17",
+        "FACT-RFA-RPO-25-I17",
+        "FACT-RFA-Q-CLOUDRATE-I17",
+        "FACT-RFA-GOODWILL-25-I17",
+        "FACT-RFA-Q-PEOPLE-I17",
+        "FACT-RFA-CONTENT-COMMIT-I17",
+        "FACT-RFA-CLOUD-FY25-I17-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_18",
+      "question_id": "IQS_18",
+      "baseline_row_sha256": "5bf38c1e02b3579d815a7dd800686fba115c39998c2726ad2b155ae4c0d22788",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "6f03dbaaf8f4dd9514fa043d7a9844f3f86c7ae904b0a6f2a8c28ef39985f271",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_18",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-REVTYPE",
+            "locator_phrase": "10-K R44.htm advertising mix FY2025 and Google Network three-year decline",
+            "sought": "受影响的分部、客户场景及其当前利润/资产敞口",
+            "outcome": "partial",
+            "note": "Exposure IS now quantifiable: Search & other is $224,532M = 55.7% of consolidated revenue, so a substitution shock to query monetization has a large, specific profit exposure. This is the concrete exposure figure the baseline row lacked."
+          },
+          {
+            "source_id": "SRC-RFA-10K-CONTING",
+            "locator_phrase": "10-K R77.htm regulatory contingency amounts",
+            "sought": "最重要的一至两项技术替代、渠道迁移、监管/环境约束或商业模式失效，不按热点词罗列",
+            "outcome": "partial",
+            "note": "Regulatory constraint is evidenced with amounts: repeated EU antitrust losses across periods/currencies and 2 open investigations, plus a $5,700M guarantee ceiling. The remedy terms themselves were not retrieved."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "替代路径、可能速度、公司防御或转移能力及所需投入; 能推翻结构性损害判断的反证和观察期限",
+            "outcome": "partial",
+            "note": "The defence-and-response side is sourced as spend: FY2025 capex $91,447M and 2026 guidance $175-185bn, i.e. Alphabet is investing heavily to own AI infrastructure and distribute its own models (Gemini >750M MAU, >10bn tokens/min). Management frames AI as expansionary for Search - a company assertion, not independent evidence."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "cyclical_structural_change"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The baseline row was gap_terminated with 'structural-change assessment needs scenario evidence beyond retrieved financials'. This package now supplies the exposure side (a specific, quantified 55.7%/73.2% revenue concentration) and the defence side (capex step-up, first-party AI assets), and names two structural vectors: AI answer substitution for query monetization, and regulatory/antitrust constraint on distribution. What remains unproven is the substitution RATE and the remedy terms, so the row is upgraded to research_completed-with-gaps and kept partial with no score. Per the card, no revenue increment is inferred from AI enthusiasm.",
+        "assumptions": [
+          "Search & other advertising is the exposure base for a query-monetization substitution scenario"
+        ],
+        "falsifiers": [
+          "verified AI-answer share gains at the expense of query monetization would confirm the structural threat",
+          "an antitrust remedy removing default placement would confirm the distribution threat",
+          "continued Search & other growth with rising usage would falsify the substitution thesis"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Baseline gap_terminated reason superseded with sourced exposure/defence facts; original termination reason kept in changes.md.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-Q-AIUSAGE-I18",
+        "FACT-RFA-ADS-FY25-I18",
+        "FACT-RFA-Q-ADSTRUCT-I18",
+        "FACT-RFA-Q-EUANTITRUST-I18",
+        "FACT-RFA-Q-OPENINV-I18",
+        "FACT-RFA-Q-CAPEX2026-I18",
+        "FACT-RFA-CAPEX-FY25-I18",
+        "FACT-RFA-SEARCH-FY25-I18",
+        "FACT-RFA-Q-EUANTITRUST-I18-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_19",
+      "question_id": "IQS_19",
+      "baseline_row_sha256": "98ca1e9169658a8b860099b887493f4a6b94b4f26311e0a7686965048fea303c",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "c63424dc2b6ffc1524de56af107ca9e4064d7119b3fd7b368a0657fb1dc2aa63",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_19",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm Cloud revenue FY2023-FY2025; segment definitions",
+            "sought": "具体客户预算; 可进入市场; 渗透与替代边界; 量价分解; 避免直接套用宏大TAM",
+            "outcome": "partial",
+            "note": "Cloud revenue grew 33,088 -> 43,229 -> 58,705 (FY2023-FY2025); the segment note describes consumption-based fees and subscriptions for enterprise customers, which identifies the budget line (enterprise IT/cloud) without a TAM claim."
+          },
+          {
+            "source_id": "SRC-RFA-10K-RPO",
+            "locator_phrase": "XBRL company-concept RevenueRemainingPerformanceObligation at 2025-12-31",
+            "sought": "具体客户预算; 可进入市场",
+            "outcome": "partial",
+            "note": "RPO $242,800M is contracted-but-unrecognized demand (not segment-split). It evidences a paying customer base with committed spend, but cannot be attributed to Cloud."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "渗透与替代边界; 量价分解",
+            "outcome": "partial",
+            "note": "Cloud 'annual run rate of over $70 billion' plus a 48% Q4 growth rate show momentum; no volume/price decomposition is provided, and run rate is not recognized revenue."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reachable incremental demand is evidenced directionally (three-year Cloud growth, $242.8bn contracted obligations, 325M+ consumer subscriptions) but cannot be sized with the required price/volume decomposition or a defensible market boundary. Partial; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if Cloud growth decelerates despite the capex build, the reachable-demand case weakens",
+          "if RPO growth stalls, contracted visibility falls"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-CLOUD-FY25-I19",
+        "FACT-RFA-CLOUD-FY24-I19",
+        "FACT-RFA-CLOUD-FY23-I19",
+        "FACT-RFA-RPO-25-I19",
+        "FACT-RFA-Q-CLOUDRATE-I19",
+        "FACT-RFA-Q-CAPEX2026-I19",
+        "FACT-RFA-SUBDEV-FY25-I19",
+        "FACT-RFA-Q-YTSUBS-I19",
+        "FACT-RFA-CLOUD-FY25-I19-CORR1",
+        "FACT-RFA-CLOUD-FY24-I19-CORR1",
+        "FACT-RFA-CLOUD-FY23-I19-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_20",
+      "question_id": "IQS_20",
+      "baseline_row_sha256": "d87e49927c13c9fbb348d9e17b093fa1d134c84fedf02b170279236cb00f071b",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "f0b94ca96c7e82be38547bc0306752c630360ebdb9c5fdf4a35fda5c5831e860",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_20",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm: Cloud revenue AND operating income FY2023-FY2025",
+            "sought": "自然量价与并购汇率拆分; 从产品/试点、付费采用、重复购买到收入和利润的实际阶段与证据; 新增业务的利润池归属、客户议价及可持续单位经济",
+            "outcome": "partial",
+            "note": "This is the strongest available conversion evidence: Cloud operating income went $1,716M -> $6,112M -> $13,910M while revenue went $33,088M -> $43,229M -> $58,705M, so the new business has moved from marginal to meaningfully profitable at the segment level - real profit conversion, not narrative."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "对存量业务的替代/蚕食和损失的利润贡献; 必要转型投入、融资需求及摊薄后的净股东经济效果",
+            "outcome": "partial",
+            "note": "Investment required is quantified (FY2025 capex $91,447M; 2026 guidance $175-185bn) and dilution is controlled (diluted shares fell to 12,230M). But the cannibalization effect on the legacy advertising business is not separately disclosed."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Growth-to-profit conversion has genuine segment-level evidence for Cloud (OI rising $1,716M -> $13,910M over three years), and required investment and dilution are quantified. The rubric's harder asks - cannibalization of the legacy business and net-of-everything shareholder effect - are not disclosed, and the capex step-up is unproven. Partial; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if Cloud margin expansion stalls while capex grows, profit conversion fails the net-effect test",
+          "if AI features cannibalize Search monetization, legacy profit loss could exceed new-business gain"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-CLOUD-OI-FY25-I20",
+        "FACT-RFA-CLOUD-OI-FY24-I20",
+        "FACT-RFA-CLOUD-OI-FY23-I20",
+        "FACT-RFA-CLOUD-FY25-I20",
+        "FACT-RFA-RD-FY25-I20",
+        "FACT-RFA-Q-CAPEX2026-I20",
+        "FACT-RFA-CAPEX-FY25-I20",
+        "FACT-RFA-Q-AIUSAGE-I20",
+        "FACT-RFA-DILSHARES-FY25-I20",
+        "FACT-RFA-CLOUD-OI-FY25-I20-CORR1",
+        "FACT-RFA-CLOUD-OI-FY24-I20-CORR1",
+        "FACT-RFA-CLOUD-OI-FY23-I20-CORR1",
+        "FACT-RFA-CLOUD-FY25-I20-CORR1",
+        "FACT-RFA-DILSHARES-FY25-I20-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_21",
+      "question_id": "IQS_21",
+      "baseline_row_sha256": "28eb08d3c8d5979253fbfcae34b02b220db0fbbc5c97b567ca64383393c28bb4",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "8b02a0479dbc822ee1f8457d0bb85eb52e6526a42bfc4b43e9e7eeca52644f7a",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_21",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "增量而非历史资本回报; 新批次经济性; 转型资本开支、营运资金、融资条件和股权摊薄; 新增回报扣除上述代价后能否归属现有普通股东; 人才与融资约束; 饱和边界",
+            "outcome": "partial",
+            "note": "Incremental investment is large and explicit: capex $52,535M -> $91,447M with 2026 guidance $175-185bn. FCF was still $73,266M in FY2025, so the program is internally funded so far, and dilution is negative (shares down to 12,230M). What is missing is the return ON this new capital - it is too recent to measure."
+          },
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm: Cloud segment economics as the main new-capital destination",
+            "sought": "增量而非历史资本回报; 新批次经济性",
+            "outcome": "partial",
+            "note": "Cloud is the clearest new-capital destination and its segment OI improved sharply, which is suggestive of adequate incremental returns; but segment OI is not a capital-charge-inclusive return measure, so it cannot prove the incremental ROIC."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reported group/segment profit, cash and volume trends are informative. They do not alone establish full-cost or cohort returns, incremental capital return, absence of subsidies, retention or fully internal funding. Shared/unallocated AI costs, pricing/cohort and capital needs remain to be verified; partial, no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if the 2025-2026 capex vintages fail to lift Cloud and AI revenue per dollar invested, incremental returns are inadequate",
+          "if the program shifts to debt funding at scale, shareholder net effect worsens"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-CAPEX-FY25-I21",
+        "FACT-RFA-CAPEX-FY24-I21",
+        "FACT-RFA-Q-CAPEX2026-I21",
+        "FACT-RFA-CLOUD-OI-FY25-I21",
+        "FACT-RFA-CLOUD-FY25-I21",
+        "FACT-RFA-OI-FY25-I21",
+        "FACT-RFA-FCF-FY25-I21",
+        "FACT-RFA-DILSHARES-FY25-I21",
+        "FACT-RFA-BUYBACK-FY25-I21",
+        "FACT-RFA-CLOUD-OI-FY25-I21-CORR1",
+        "FACT-RFA-CLOUD-FY25-I21-CORR1",
+        "FACT-RFA-DILSHARES-FY25-I21-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_22",
+      "question_id": "IQS_22",
+      "baseline_row_sha256": "b9d088b1a1007e42f674fe40d9067b5656bff2e1378caeba75517eff87e00ea2",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "a9b61b2ca78ded226bf48b1cc6796222905455573eaf467c8a19c556baf4a389",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_22",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": null,
+          "period_end": null,
+          "scope": null,
+          "accounting_basis": null,
+          "unit": null,
+          "currency": null,
+          "unavailable_reason": "share price / market capitalization not retrievable under lightweight policy"
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "报价日与股权边界; 适用估值; 反推基本面要求; 资本结构; 可比差异",
+            "outcome": "not_covered",
+            "note": "The earnings release provides fundamentals but NO share price, so the price-implied expectations required by this question cannot be derived from official filings. A market price was not retrieved, and the lightweight policy does not include a market-data source, so this remains a genuine gap rather than an estimate."
+          }
+        ],
+        "research_status": "gap_terminated",
+        "termination_reason": "Reverse-engineering price-implied growth/margin/return requires a dated share price and a comparable set; neither is available from official company/regulator filings and no market-data or valuation source is permitted under this package's lightweight policy. Fundamentals (earnings, equity, share count, capex guidance) were retrieved, so the gap is specifically the price side.",
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "insufficient_evidence",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The fundamental side is well sourced, but the price side - the whole point of this question - is not available under the lightweight policy. Recorded gap_terminated with the specific limitation; no score and no invented multiple.",
+        "assumptions": [],
+        "falsifiers": [
+          "a dated market price would allow the reverse-engineering this row requires"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "No valuation conclusion is drawn; the row does not pretend the price side was examined.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-OI-FY25-I22",
+        "FACT-RFA-CLOUD-FY25-I22",
+        "FACT-RFA-DILSHARES-FY25-I22",
+        "FACT-RFA-EQ-25-I22",
+        "FACT-RFA-Q-CAPEX2026-I22",
+        "FACT-RFA-FCF-FY25-I22",
+        "FACT-RFA-CLOUD-FY25-I22-CORR1",
+        "FACT-RFA-DILSHARES-FY25-I22-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_23",
+      "question_id": "IQS_23",
+      "baseline_row_sha256": "17cd1b268b907c81f110dda4766ca93522628584cb2cfa05c43c2bd7c726180a",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "fe767d3e8bcf281a3fe007b382775a17e02d9799ef8dc4486b5efc88ab669bbe",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_23",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-XBRL-FIN",
+            "locator_phrase": "XBRL companyfacts: cash, marketable securities, equity, debt at 2025-12-31",
+            "sought": "周期正常化; 资产可回收性; 债权顺序; 摊薄; 业务失效; 情景依据",
+            "outcome": "partial",
+            "note": "Balance-sheet buffers are quantified: $30,708M cash + $96,135M current securities against $49,085M notes face value and $415,265M equity. Equity is a large cushion ahead of creditors, which bounds permanent-loss magnitude from the capital structure."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "业务失效; 情景依据",
+            "outcome": "partial",
+            "note": "Earnings power is large and currently growing (revenue +15%, operating income $129,039M), so an idiosyncratic business-failure scenario would require a severe, unmodeled shock; no such quantified downside scenario is provided by the company."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Cash/securities and listed financing obligations are subset snapshots at FY2025, not a complete two-year survival test at the Oct2026 cutoff. Large purchase contracts, uncommenced leases and guarantees need timing/overlap/availability analysis. Prior subset coverage arithmetic cannot establish total coverage; no score.",
+        "assumptions": [
+          "book equity is treated as an upper-ish bound on recoverable value, not a liquidation estimate"
+        ],
+        "falsifiers": [
+          "if the large capex program were funded with heavy debt in a downturn, the buffer would shrink",
+          "a large non-operating writedown would reduce book equity materially"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-CASH-25-I23",
+        "FACT-RFA-MKTS-25-I23",
+        "FACT-RFA-EQ-25-I23",
+        "FACT-RFA-DEBT-DUE-2Y-I23",
+        "FACT-RFA-GUARANTEE-MAX-I23",
+        "FACT-RFA-Q-CAPEX2026-I23",
+        "FACT-RFA-ADS-FY25-I23",
+        "FACT-RFA-Q-SUBSEQ-JAN26-I23",
+        "FACT-RFA-Q-SUBSEQ-JAN26-I23-CORR1",
+        "FACT-RFA-PURCHASE-COMMIT-TOTAL-IQS-23-CORR1",
+        "FACT-RFA-PURCHASE-COMMIT-SHORT-IQS-23-CORR1",
+        "FACT-RFA-UNCOMMENCED-LEASE-SHORT-IQS-23-CORR1",
+        "FACT-RFA-UNCOMMENCED-LEASE-LONG-IQS-23-CORR1",
+        "FACT-RFA-NOTE-INTEREST-SHORT-IQS-23-CORR1",
+        "FACT-RFA-CREDIT-DERIV-GUARANTEE-IQS-23-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-IQS_24",
+      "question_id": "IQS_24",
+      "baseline_row_sha256": "d319be4cbff9e95fbfd80ab875f5b7195eac86044a13f99ad8199aedb4df129a",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "d82114b9fd3821125b3f49103d864956d0554f5ad683d70ecdb30b3b43d350d3",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.iqs_24",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-XBRL-FIN",
+            "locator_phrase": "XBRL companyfacts: PaymentsForRepurchaseOfCommonStock, diluted share counts, CommonStockDividendsPerShareDeclared",
+            "sought": "可持续每股现金或盈利增长; 分红; 合理回购; 资产释放; 汇出限制; 持有时间与机会成本",
+            "outcome": "partial",
+            "note": "The distribution mechanism is sourced: buybacks $45,398M in FY2025 and diluted shares falling 12,447M -> 12,230M, so per-share accumulation is occurring; a quarterly dividend of $0.21 (FY2025 $0.83/share declared) is also paid in cash."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "可持续每股现金或盈利增长",
+            "outcome": "partial",
+            "note": "FY2025 FCF of $73,266M and operating income $129,039M support the cash return, but the 2026 capex guidance of $175-185bn means the distributable surplus is likely to shrink near term."
+          },
+          {
+            "source_id": "SRC-RFA-DEF14A-2026",
+            "locator_phrase": "2026 DEF 14A accn 0001308179-26-000342 (filed 2026-04-24): sections on Compensation Discussion and Analysis, beneficial ownership / total voting power, Certain Relationships and Related Transactions, Management Succession Planning, insider trading/hedging/pledging policies, and Pay versus Performance",
+            "sought": "可持续每股现金或盈利增长; 持有时间与机会成本",
+            "outcome": "partial",
+            "note": "The proxy adds two-sided mechanism evidence. Alignment: PEO pay is overwhelmingly equity (FY2025 CAP $213.9M against an SCT total of $10.9M) and the TSR metric paid 200% of target after 203.65% three-year TSR, and the cumulative $100 investment reached $360.95 versus a peer group at $138.27 - i.e. per-share value did accrue to holders. Constraint: the founders hold 52.7% of voting power, so ordinary holders cannot compel a change of distribution policy, and a 200,000,000-share reserve increase is being requested."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "A functioning per-share value-accumulation mechanism is evidenced on both sides: buybacks exceeding dilution plus equal cash dividends funded from $73,266M FCF, and a board whose own pay is equity-based and tied to relative TSR, with cumulative TSR outpacing the peer group by a wide margin ($360.95 vs $138.27). The route from fundamentals to share-price return is therefore demonstrated for the recent period. Partial, not higher: policy is not committed forward, the capex step-up may absorb the surplus, and control is concentrated so the mechanism depends on the majority holders' continued preference for distributions. No score; no catalyst is required by the rubric and none is assumed.",
+        "assumptions": [],
+        "falsifiers": [
+          "if buybacks stop or shares outstanding rise, per-share accumulation fails",
+          "if capex absorbs all FCF for several years, the return path lengthens materially",
+          "a change in capital-return policy favouring perpetual reinvestment would break the alignment"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Value-realization evidence strengthened with the proxy's pay-alignment and TSR record; the concentration-of-control counterweight is recorded explicitly.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-BUYBACK-FY25-I24",
+        "FACT-RFA-DILSHARES-FY25-I24",
+        "FACT-RFA-DILSHARES-FY24-I24",
+        "FACT-RFA-FCF-FY25-I24",
+        "FACT-RFA-OI-FY25-I24",
+        "FACT-RFA-Q-CAPEX2026-I24",
+        "FACT-RFA-Q-CAPTABLE-I24",
+        "FACT-RFA-Q-HEDGEPLEDGE-I24",
+        "FACT-RFA-VOTEPOWER-FOUNDERS-I24",
+        "FACT-RFA-DILSHARES-FY25-I24-CORR1",
+        "FACT-RFA-DILSHARES-FY24-I24-CORR1",
+        "FACT-RFA-VOTEPOWER-FOUNDERS-I24-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-OPERATING_01",
+      "question_id": "OPERATING_01",
+      "baseline_row_sha256": "1f8930638b19dc50723754a078971be7f37aecb8a14615e2d5e2df901e8dc1e5",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "7f3e1d6935f2457d5648e55f82b502dadcc71e9c011ef9952126fe76cb64e3c1",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.operating_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "经营现金流; 维护与扩张资本开支; 应收存货变化",
+            "outcome": "partial",
+            "note": "Confirms and extends the baseline: OCF $164,713M, capex $91,447M, FCF $73,266M for FY2025 (company defines FCF as OCF less capital expenditures). The maintenance-versus-growth capex split is still NOT disclosed, and the 2026 guidance of $175-185bn shows the growth share is rising, not shrinking."
+          },
+          {
+            "source_id": "SRC-RFA-10K-LEASE",
+            "locator_phrase": "10-K R63.htm lease commitments 2026-2027",
+            "sought": "维护与扩张资本开支",
+            "outcome": "partial",
+            "note": "Operating lease payments of $6,357M over 2026-2027 are a fixed-cost obligation adjacent to capex, which slightly increases the true cost of maintaining the asset base beyond the reported PP&E purchases."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "cash_quality"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The baseline FCF figure is confirmed from the earnings release itself (the company reports FCF of $73,266M using exactly OCF less capex), which strengthens the historical figure. The question, however, asks for cash generation AFTER maintenance capex and necessary working capital - and the maintenance/growth split remains undisclosed while growth capex is accelerating. Partial; no score. Baseline facts preserved.",
+        "assumptions": [
+          "capex tag = total PP&E purchases, including growth/datacenter capex, not split (baseline assumption retained)"
+        ],
+        "falsifiers": [
+          "if growth capex is the large majority of the $91,447M, sustainable post-maintenance FCF is materially higher than the reported FCF",
+          "if working capital flattered OCF, normalized cash is lower"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "Baseline facts preserved; company-reported FCF and lease obligations appended.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-ALPH-OCF-2025",
+        "FACT-ALPH-CAPEX-2025",
+        "FACT-ALPH-OCF-2024",
+        "FACT-ALPH-CAPEX-2024",
+        "FACT-RFA-OCF-FY25-OP01",
+        "FACT-RFA-CAPEX-FY25-OP01",
+        "FACT-RFA-CAPEX-FY24-OP01",
+        "FACT-RFA-FCF-FY25-OP01",
+        "FACT-RFA-OI-FY25-OP01",
+        "FACT-RFA-Q-CAPEX2026-OP01",
+        "FACT-RFA-LEASE-DUE-2Y-OP01"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-OPERATING_02",
+      "question_id": "OPERATING_02",
+      "baseline_row_sha256": "678937feab33471c9ad393c45812717a693ff0ff8bd9f48fa4332c9d8dd300ac",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "191ae5eff6f6094e22254d8d8e626a97ecbbf34562a66b3382ecd80fcf1898f8",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.operating_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm: segment revenue, employee compensation, other costs, operating income FY2023-FY2025",
+            "sought": "材料人工; 获客售后; 折旧与退货; 成熟批次",
+            "outcome": "partial",
+            "note": "Segment-level full cost is partially observable: Google Cloud revenue $58,705M with employee compensation $22,078M, other costs $22,717M and operating income $13,910M, i.e. a ~23.7% segment operating margin. Google Services: revenue $342,721M, employee comp $45,124M, other costs $158,193M, OI $139,404M (~40.7% margin)."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "获客售后; 折旧与退货",
+            "outcome": "partial",
+            "note": "Group marketing expense is only $9,900M versus $402,836M revenue, so customer acquisition cost is small at group level; but no per-customer or per-contract unit economics, and no returns/refund data, are disclosed."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reported group/segment profit, cash and volume trends are informative. They do not alone establish full-cost or cohort returns, incremental capital return, absence of subsidies, retention or fully internal funding. Shared/unallocated AI costs, pricing/cohort and capital needs remain to be verified; partial, no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if Cloud margin stalled below its capital charge, unit returns would be inadequate",
+          "rising cost per unit of Cloud revenue would signal deteriorating unit economics"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-CLOUD-OI-FY25-OP02",
+        "FACT-RFA-CLOUD-FY25-OP02",
+        "FACT-RFA-GSVCS-OI-FY25-OP02",
+        "FACT-RFA-GSVCS-FY25-OP02",
+        "FACT-RFA-RD-FY25-OP02",
+        "FACT-RFA-MKTG-FY25-OP02",
+        "FACT-RFA-SBC-FY25-OP02",
+        "FACT-RFA-Q-PEOPLE-OP02",
+        "FACT-RFA-CLOUD-OI-FY25-OP02-CORR1",
+        "FACT-RFA-CLOUD-FY25-OP02-CORR1",
+        "FACT-RFA-GSVCS-OI-FY25-OP02-CORR1",
+        "FACT-RFA-GSVCS-FY25-OP02-CORR1",
+        "FACT-RFA-SBC-FY25-OP02-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-INTERNET_01",
+      "question_id": "INTERNET_01",
+      "baseline_row_sha256": "15dd63c04d991a51d360d97e96505a42c106f57f1086e0081c1f44e631c5d1ea",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "445c313b5a3f465bd41a4abd9fb33a8dbfc0aa1709bd8ff8803055403edf5982",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.internet_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "多归属; 流量质量; 交易密度; 自然留存",
+            "outcome": "partial",
+            "note": "Engagement/scale evidence is sourced qualitatively: Search usage claimed at record levels, Gemini app >750M MAU, 325M+ paid subscriptions, YouTube revenue >$60bn. These are company-reported reach metrics; no multi-homing, traffic-quality, or organic-retention measurement is provided."
+          },
+          {
+            "source_id": "SRC-RFA-10K-REVTYPE",
+            "locator_phrase": "10-K R44.htm advertising and subscription mix FY2023-FY2025",
+            "sought": "自然留存",
+            "outcome": "partial",
+            "note": "Paying subscription revenue in the subscriptions/platforms/devices line grew $34,688M -> $40,340M -> $48,030M across FY2023-FY2025, which is behavioural evidence of repeated paid retention without a subsidy mechanism being visible."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reported group/segment profit, cash and volume trends are informative. They do not alone establish full-cost or cohort returns, incremental capital return, absence of subsidies, retention or fully internal funding. Shared/unallocated AI costs, pricing/cohort and capital needs remain to be verified; partial, no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "evidence that users multi-home heavily would weaken the network-effect claim",
+          "a subsidy-funded acquisition program would undermine the 'no long-term loss subsidy' reading"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-Q-AIUSAGE-IN01",
+        "FACT-RFA-Q-YTSUBS-IN01",
+        "FACT-RFA-ADS-FY25-IN01",
+        "FACT-RFA-SUBDEV-FY25-IN01",
+        "FACT-RFA-NETWORK-FY25-IN01",
+        "FACT-RFA-NETWORK-FY24-IN01",
+        "FACT-RFA-Q-EUANTITRUST-IN01",
+        "FACT-RFA-Q-EUANTITRUST-IN01-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-INTERNET_02",
+      "question_id": "INTERNET_02",
+      "baseline_row_sha256": "b7b893603b549fb1c08b43dd333cf90ab068d0908622aab941e54b03abe9b047",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "485c1218fc6019ba8101b999b28e7e6d1d935e01b82b7e4fe620309529ce219c",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.internet_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-REVTYPE",
+            "locator_phrase": "10-K R44.htm advertising type mix FY2023-FY2025",
+            "sought": "抽佣; 获客; 履约; 退货或内容成本",
+            "outcome": "partial",
+            "note": "Revenue-side mix is fully sourced (Search & other 224,532; YouTube ads 40,367; Network 29,792; subscriptions 48,030), but the cost side of transaction/user economics is not decomposed per unit. Content cost is only visible as a commitment ($7,700M) rather than an expense line tied to a unit."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "获客; 内容成本",
+            "outcome": "partial",
+            "note": "Total TAC of $16,597M in Q4 2025 versus $14,848M is the traffic/content acquisition cost proxy and it is rising; group marketing expense is small at $9,900M. The FY2025 TAC total was not presented in the retrieved table."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reported group/segment profit, cash and volume trends are informative. They do not alone establish full-cost or cohort returns, incremental capital return, absence of subsidies, retention or fully internal funding. Shared/unallocated AI costs, pricing/cohort and capital needs remain to be verified; partial, no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if TAC growth outpaces ad revenue growth, net unit economics deteriorate",
+          "a disclosed negative-contribution product line would change the reading"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-MKTG-FY25-IN02",
+        "FACT-RFA-ADS-FY25-IN02",
+        "FACT-RFA-NETWORK-FY25-IN02",
+        "FACT-RFA-NETWORK-FY24-IN02",
+        "FACT-RFA-SBC-FY25-IN02",
+        "FACT-RFA-Q-YTSUBS-IN02",
+        "FACT-RFA-CONTENT-COMMIT-IN02",
+        "FACT-RFA-GSVCS-OI-FY25-IN02",
+        "FACT-RFA-SBC-FY25-IN02-CORR1",
+        "FACT-RFA-GSVCS-OI-FY25-IN02-CORR1",
+        "FACT-RFA-TAC-FY25-INTERNET-02-CORR1",
+        "FACT-RFA-TAC-FY24-INTERNET-02-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-SOFTWARE_01",
+      "question_id": "SOFTWARE_01",
+      "baseline_row_sha256": "4b0774dec284955f4e8e75ca601aeca332e6fccc25b6a109e250ef00f28768c0",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "8d7b6fb5c439f109a8669d22b19863b16a5710b9433f67b3a3b68c4141cd2947",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.software_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm: Google Cloud revenue and full segment cost base FY2023-FY2025",
+            "sought": "净收入留存; 流失; CAC回收; 服务毛利",
+            "outcome": "partial",
+            "note": "Cloud segment profitability improved to $13,910M on $58,705M revenue (~23.7% margin) from $1,716M on $33,088M, so mature Cloud batches are value-creating at the aggregate segment level. Net revenue retention and churn are NOT disclosed."
+          },
+          {
+            "source_id": "SRC-RFA-10K-RPO",
+            "locator_phrase": "XBRL company-concept RevenueRemainingPerformanceObligation at 2025-12-31",
+            "sought": "净收入留存; 流失",
+            "outcome": "partial",
+            "note": "RPO of $242,800M evidences contracted future revenue, but the tag is not segment-split, so Cloud-specific backlog and therefore Cloud NRR cannot be derived from it."
+          },
+          {
+            "source_id": "SRC-RFA-10K-DEFREV",
+            "locator_phrase": "XBRL company-concept ContractWithCustomerLiability at 2025-12-31",
+            "sought": "流失; 服务毛利",
+            "outcome": "partial",
+            "note": "Deferred revenue $8,600M ($6,578M current) is small relative to revenue, indicating short billing cycles rather than large prepaid software contracts."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reported group/segment profit, cash and volume trends are informative. They do not alone establish full-cost or cohort returns, incremental capital return, absence of subsidies, retention or fully internal funding. Shared/unallocated AI costs, pricing/cohort and capital needs remain to be verified; partial, no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "if Cloud margin expansion stalled, batch payback would be in doubt",
+          "rising discounting to win contracts would show up as margin compression"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-CLOUD-OI-FY25-SW01",
+        "FACT-RFA-CLOUD-FY25-SW01",
+        "FACT-RFA-CLOUD-OI-FY24-SW01",
+        "FACT-RFA-DEFREV-25-SW01",
+        "FACT-RFA-RPO-25-SW01",
+        "FACT-RFA-RD-FY25-SW01",
+        "FACT-RFA-MKTG-FY25-SW01",
+        "FACT-RFA-CLOUD-OI-FY25-SW01-CORR1",
+        "FACT-RFA-CLOUD-FY25-SW01-CORR1",
+        "FACT-RFA-CLOUD-OI-FY24-SW01-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-SOFTWARE_02",
+      "question_id": "SOFTWARE_02",
+      "baseline_row_sha256": "1ecee80936c05e1d260501c74b69ab6dd7017e20f11dc08799c1fd787d19e7e1",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "c622a723c82b018c6894c30e960251e7cf4243378ffc2910bdbf96a8f9b1964a",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.software_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm: Cloud segment definitions and economics FY2023-FY2025",
+            "sought": "迁移成本; 实际替换; 关键流程; 竞品或AI替代",
+            "outcome": "partial",
+            "note": "Cloud is defined as infrastructure/platform services, applications, and other enterprise services billed on consumption plus subscription. Profitability improved every year, consistent with embedding, but no migration-cost or replacement evidence is disclosed. AI substitution risk is explicitly present in the competitive set."
+          },
+          {
+            "source_id": "SRC-RFA-10K-DEFREV",
+            "locator_phrase": "XBRL company-concept ContractWithCustomerLiability and RPO at 2025-12-31",
+            "sought": "迁移成本; 实际替换",
+            "outcome": "partial",
+            "note": "Deferred revenue of only $8,600M against revenue of $402,836M indicates little prepayment, i.e. customers are not locked in through prepaid multi-year commitments at the consolidated level; RPO of $242,800M is the main forward-commitment signal but is unattributed."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "RPO primarily relates to Cloud, without exact split. Group deferred revenue does not prove Cloud contract duration, billing frequency, retention or customer lock-in. Segment profit trends are leads, not cohort economics or incremental capital returns; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "a disclosed major customer migration away from Cloud would be decisive negative evidence",
+          "commoditization of AI infrastructure would compress the differentiation that supports pricing"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-CLOUD-OI-FY24-SW02",
+        "FACT-RFA-CLOUD-OI-FY23-SW02",
+        "FACT-RFA-CLOUD-OI-FY25-SW02",
+        "FACT-RFA-CLOUD-FY25-SW02",
+        "FACT-RFA-DEFREV-25-SW02",
+        "FACT-RFA-GOODWILL-25-SW02",
+        "FACT-RFA-Q-AIUSAGE-SW02",
+        "FACT-RFA-RPO-25-SW02",
+        "FACT-RFA-CLOUD-OI-FY24-SW02-CORR1",
+        "FACT-RFA-CLOUD-OI-FY23-SW02-CORR1",
+        "FACT-RFA-CLOUD-OI-FY25-SW02-CORR1",
+        "FACT-RFA-CLOUD-FY25-SW02-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-SCALING_01",
+      "question_id": "SCALING_01",
+      "baseline_row_sha256": "3431d513732938979f7b5891f91b3071940c722d63ab55b2475f5f54ba5aa915",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "0e1fa14e175662d45e9c9af712f69dc3a8919af43fe930dfb17804a4e8c85db0",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.scaling_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm: Cloud revenue/operating income FY2023-FY2025 (margin trajectory)",
+            "sought": "边际批次; 产能利用; 获客成本; 渗透率",
+            "outcome": "partial",
+            "note": "Margin trajectory is the key scaling evidence: Cloud margin ~5.2% (FY2023) -> ~14.1% (FY2024, OI $6,112M on $43,229M) -> ~23.7% (FY2025). Improving returns per incremental dollar of revenue contradict the rubric's 1 anchor. Capacity utilization and penetration are not disclosed."
+          },
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "产能利用; 渗透率",
+            "outcome": "partial",
+            "note": "The 2026 capex guidance of $175-185bn implies a very large capacity build; the company says it is to 'meet customer demand', but no utilization or absorption figure is given, so whether expansion is approaching or exceeding demand is unknown."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reported group/segment profit, cash and volume trends are informative. They do not alone establish full-cost or cohort returns, incremental capital return, absence of subsidies, retention or fully internal funding. Shared/unallocated AI costs, pricing/cohort and capital needs remain to be verified; partial, no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "Cloud margin compression while capex rises would show marginal returns falling",
+          "capacity oversupply would be visible as slowing Cloud growth against a growing asset base"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-CLOUD-FY25-SC01",
+        "FACT-RFA-CLOUD-FY24-SC01",
+        "FACT-RFA-CLOUD-FY23-SC01",
+        "FACT-RFA-CLOUD-OI-FY25-SC01",
+        "FACT-RFA-Q-CAPEX2026-SC01",
+        "FACT-RFA-CAPEX-FY25-SC01",
+        "FACT-RFA-RPO-25-SC01",
+        "FACT-RFA-Q-CLOUDRATE-SC01",
+        "FACT-RFA-CLOUD-FY25-SC01-CORR1",
+        "FACT-RFA-CLOUD-FY24-SC01-CORR1",
+        "FACT-RFA-CLOUD-FY23-SC01-CORR1",
+        "FACT-RFA-CLOUD-OI-FY25-SC01-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-ALPHABET-SCALING_02",
+      "question_id": "SCALING_02",
+      "baseline_row_sha256": "36b0e95bd59f884c745c0c5d9da797e56d2a5ad9d25f7e13b25d43f0eeb7de2a",
+      "binding": {
+        "company_key": "alphabet",
+        "legal_issuer_name": "Alphabet Inc.",
+        "listing_note": "GOOGL listed on XNAS (Nasdaq); Class A common stock.",
+        "question_text_sha256": "b45566af57345a9cde7d96fff012655b43368d1df67c0f0ff15764b04cad5be9",
+        "manifest_raw_sha256": "3e9fa88c7e96d4371596a25232bbdf947f980542394af9fa602b9bbd9c8c89b7",
+        "metric_id": "score.scaling_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "US GAAP",
+          "unit": "USD_million",
+          "currency": "USD",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFA-8K-Q4FY25",
+            "locator_phrase": "8-K exhibit 99.1 Q4/FY2025 earnings release, filed 2026-02-04",
+            "sought": "管理跨度; 系统故障; 交付; 人才",
+            "outcome": "partial",
+            "note": "Organizational scale is evidenced: headcount 190,820 (from 183,323, +4.1%), R&D $61,087M, and group operating margin held at 32% while capex rose 74% - cost control kept pace during rapid expansion. No system-failure or delivery data is disclosed."
+          },
+          {
+            "source_id": "SRC-RFA-10K-SEGMENT",
+            "locator_phrase": "10-K R90.htm: segment cost growth versus revenue growth",
+            "sought": "系统故障; 交付",
+            "outcome": "partial",
+            "note": "Cloud cost growth was contained relative to revenue growth (revenue +35.8% YoY, other costs +36.9%), i.e. broadly proportionate; no outage or delivery-latency disclosure exists in the retrieved items."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Several scaling-capability indicators are positive (margin held during heavy capex, revenue per head improved, Cloud cost growth proportionate), but the question's specific asks - system failures, delivery, talent - are undisclosed in official structured data. Partial; no score.",
+        "assumptions": [],
+        "falsifiers": [
+          "a major service outage or delivery failure would be direct negative evidence",
+          "rising cost per unit of added revenue would show the organization falling behind"
+        ]
+      },
+      "current_review": {
+        "drafted_by": "FIN-ALPHABET-02:rfa-research",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research (this package); theme=None",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "expected_score left null by policy; no self-signed financial score",
+          "Coordinator source review corrected scopes/cutoff/proxies; full fact-then-score qualification remains pending, no gold score."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFA-Q-PEOPLE-SC02",
+        "FACT-RFA-RD-FY25-SC02",
+        "FACT-RFA-CAPEX-FY25-SC02",
+        "FACT-RFA-Q-CAPEX2026-SC02",
+        "FACT-RFA-SBC-FY25-SC02",
+        "FACT-RFA-OI-FY25-SC02",
+        "FACT-RFA-GOODWILL-25-SC02",
+        "FACT-RFA-SBC-FY25-SC02-CORR1"
+      ]
+    }
+  ],
+  "foreign_reference_hashes": {
+    "FR-CATL-IQS_01": "a49ad660736b8e89ed8fadf626a72451e5ddf167850a61a456547e305de7cc29",
+    "FR-CATL-IQS_02": "7be60b9d60d2c6940e06ee4d6f6e5307c8cd33a77b22f3c1ff1c1e1de8452879",
+    "FR-CATL-IQS_04": "7f75f08653b91d08c077348343f18139d214925036dda7200521b4dd4219295b",
+    "FR-CATL-IQS_05": "a71878f4488834b414a8401df54dc00e91bc57848b85330095ca9290857c3a62",
+    "FR-CATL-IQS_06": "d9c8857a5d2ac7e62c74486e6f45e79364e6358b59dfe8140c06903936cc6c59",
+    "FR-CATL-IQS_07": "1e67c7507b636e217c8990d3d9ce360b832c5a4698c3ec49663cbbd8f3f11b78",
+    "FR-CATL-IQS_08": "29f3e5b16f368429c76c004ec6ca1d069a53ef3842a89cf3e9dff999fde260c5",
+    "FR-CATL-IQS_09": "aa1764572649d8ad75f5dac149592be0a75325488b94c59989b8458a4028aa08",
+    "FR-CATL-IQS_10": "dc68a75e826b6a1a65c9468a3ebfcc94889bac33ff547fdb83606d6755d7da52",
+    "FR-CATL-IQS_12": "6387ac3b9fa9e5dd1447601329905318bf40592ba4e369660fdf76ed13463531",
+    "FR-CATL-IQS_13": "25414ccc6bf38fbb71bf80a67ceed9fcdf19b2ecf69e5438617c9b609c33612d",
+    "FR-CATL-IQS_14": "e9a5884a4775f2fd6ad31021f6679a25eea9a8d1e4a1d355999efabec111cf41",
+    "FR-CATL-IQS_15": "1762852c3b4ff45fdfddd20aaba7ae9eddb4bb9bf08a0abf7edfbab685e4be48",
+    "FR-CATL-IQS_16": "792185d96ad3eb096392166355473b1bb5b78b7f22cce5883b6c61cd235d5ac2",
+    "FR-CATL-IQS_17": "a958d4cbdcc9adb729934a031baae329236765cf524b1e54be697dec9a50c8d8",
+    "FR-CATL-IQS_18": "97ed49ba3d9aee84e7778a504457236238738556b42b91b2de25c23b7f5bf1cb",
+    "FR-CATL-IQS_19": "3316766f0ecc32343ee536224d3e28b6f18872df247f3c7aa27f1a3acd8d2103",
+    "FR-CATL-IQS_20": "d8a8d2c379bf5197412f68cdc4e14cfb5214e414228fbad47532355881930a5b",
+    "FR-CATL-IQS_21": "5ad540cd7de2312992fd435a7fe10f2b3690e09008dd4b82ad704da00c0d1718",
+    "FR-CATL-IQS_22": "06eebd956e9f60c7298937dcde2b97fb6952b2be03cd25f6236cc53839a454ac",
+    "FR-CATL-IQS_23": "b656016ff837ff63bdb5b58289b5defe5f96084fa06f9a45cfb3710faa290f38",
+    "FR-CATL-IQS_24": "abbf32865eeabf80cc992ada8a017603e6e20c4acd8d16c158abd2a0164b8b93",
+    "FR-CATL-OPERATING_01": "c8b0f84a7fe535c62a64ae5074f3f7d1dfd280d1b09449eef68a474bc829cea5",
+    "FR-CATL-OPERATING_02": "dfd959bbbfaedc245e1d04c895ab9a79764f16bf0ae1be8c7bb9a99c1aa83370",
+    "FR-CATL-AUTO_01": "4048f7af8f9aa8d596be984a4087f4604199b6afc16a37cdc94452a6bc8444a0",
+    "FR-CATL-AUTO_02": "d22f9d2234825f4e91077843f9dbb596880e0cb84c89d5ab14f467519c0e4c2f",
+    "FR-CATL-ENERGY_TRANSITION_01": "eb8dd62f39034935b35d04cee1444e901e41de91384c386b6b3fbfcdf46fac11",
+    "FR-CATL-ENERGY_TRANSITION_02": "1bee1eae57e443b4e3ba3d3a608408876433c82f6599d0f9f0c88b8aedb4e4c2",
+    "FR-CATL-SCALING_01": "ccf1fe78f92c8b53bca9143e8a1e0f2660ef2bc6867a4f79785d987e057e5fec",
+    "FR-CATL-SCALING_02": "23278af0d357a9a1d58f371d2b62125ea501ba480fdd02a22e33585c1608dea8",
+    "FR-CNCB_H-IQS_01": "28e93693ac8de54df5be8f2d2622cb5aa0e9a1e4924700cb8adafffceca586cc",
+    "FR-CNCB_H-IQS_02": "1ece4641278b36aa45fb64e54ab8fc37b22c6a863891aec743be998994421b1d",
+    "FR-CNCB_H-IQS_04": "8b1d87d8d80a75265d45b9d8b18be9143cca633700ff35f0ee40433928e0c3fb",
+    "FR-CNCB_H-IQS_05": "fe3135a9e509500c044dca37ab037f451e1a785da0a8f5e4c342b17cb5569136",
+    "FR-CNCB_H-IQS_06": "48bc8b4ff47b5e5c9e178c3ae31d74e12182997898badf72e96c16e94e4093f2",
+    "FR-CNCB_H-IQS_07": "bae5e2f25e6b2a69fa6de00ce5e7a6935d527318e4dbdfd881e6f08c09714dd0",
+    "FR-CNCB_H-IQS_08": "a453e6d158ae05a6020e9c3a5ae323a17d414a037ee1cd7cacc3ec1df2491b81",
+    "FR-CNCB_H-IQS_09": "514ddd45a724c2c1a504fa65ceaf136b7d0d32d6422302590aeed1a8aa36ae4b",
+    "FR-CNCB_H-IQS_10": "18c7c18eca6b460765aa14201752a3cb46462b5bb56f0c4354de9dc5adb1c8ea",
+    "FR-CNCB_H-IQS_12": "ea2d123ed691090853108f9b1c1631ecfd49b9cdc1dde0555798f4ff02cd8c91",
+    "FR-CNCB_H-IQS_13": "dc1b8ee67d2ea3a5a64c69f0caac0111c40261583e39bba75c86890c12123cf3",
+    "FR-CNCB_H-IQS_14": "af024349bc497a973b850f297f4286a85a0a5173a028afe39d4a1a0aea5b6308",
+    "FR-CNCB_H-IQS_15": "123b032d0cd18fd61f80aa0a917550b47b91f32ea0de7a8175cb9512b448b253",
+    "FR-CNCB_H-IQS_17": "4fb215f07c834e05350e0856a7edc062b1c62f6b01a043f4e483a7359f82361e",
+    "FR-CNCB_H-IQS_18": "2b8366a14e3766428671c44873fd4098a2bbfdc1d9c335e755c9365313ac219e",
+    "FR-CNCB_H-IQS_19": "f031c73f84c08ae31187bf15654942b7acce0edd698c2200c65e7397af833233",
+    "FR-CNCB_H-IQS_20": "bae0f3acaf5b7089800a0c66c6b89f7770afa1f72891c0ac958ebd627cedab5c",
+    "FR-CNCB_H-IQS_21": "090c9a903606b191192c8c1ffdf554c031bcd841532ab7c469f99537e1f407d1",
+    "FR-CNCB_H-IQS_23": "4aa2a4c2726d5c8abf8500005601d9aba98922d297c2db13d3a640e6fdbf61fa",
+    "FR-CNCB_H-IQS_24": "fa24e616facf6dcc9567f32366eb89d444e17313d1022d0ba1275f54327a7f2d",
+    "FR-CNCB_H-CAPITAL_MARKETS_01": "3583f3ec2e12471af04106a1584c295e2b2e261c658bc99898cebacca912b418",
+    "FR-CNCB_H-CAPITAL_MARKETS_02": "113e9f0afa35ef738b2dd17370203f132ffd53205c964003f4160cb5bea091c4",
+    "FR-CNCB_H-CAPITAL_MARKETS_03": "3df3593ec168909ddd9ae27e013f6417f7bfb68f7d96f1928f2bfadcd117c6d6",
+    "FR-CNCB_H-CAPITAL_MARKETS_04": "bc836c8dc608dc8333caee2ea3a396fedddb24c0c8f342f6120e6a312c94df95",
+    "FR-CNCB_H-CAPITAL_MARKETS_05": "88cc4fc6c0fe378d0907aa72c7d6839131d4692673f4bb0d033ff5c47b620795",
+    "FR-CNCB_H-CAPITAL_MARKETS_06": "27a4213714226a641d8c5eed9bdb3b2aa5022f41a3dcec137b1a0a0b2122034a",
+    "FR-CNCB_H-CYCLICAL_01": "7fdde4a8ebeb6ddf16a3d269979f13bc54e5ff3b86cc6baebd4631a32325a1a1",
+    "FR-CNCB_H-CYCLICAL_02": "fd0c8df71704fb188bdddc9f05fc76a8d1e052f5ea8e64470f282ac157b2b70e",
+    "FR-CNCB_H-CYCLICAL_03": "1fde6f71414b744635d74ff2bb5daec0211497031d6d476bf7fe947125e77132",
+    "FR-CNCB_H-CYCLICAL_04": "c81cc1628054eb95473c2a1fcce3ba0c81cb6bd611ed07b0b80180af360018d3"
+  },
+  "baseline_source_hashes": {
+    "SRC-CATL-CNINFO": "8d3185f0fd909286cb08da936210521bf3032c2b0804aff5e9ab8b2b82fb0ba8",
+    "SRC-CATL-IR": "4afb3253d2677cfe82f39826bd50ed7a919c1c235fd6b648cdd9b129665c4968",
+    "SRC-CATL-NEWS": "f87ade3760aeb0761305b855ab877329dec7a6e6b6ca4ad6475ae802357662f2",
+    "SRC-CNCB-CSC": "6770fb139383aaa627d91d370295deca13161ef73c7f12289e12934ffbd9f230",
+    "SRC-CNCB-HKEX": "c92cb7302e9d83e5c5b37cbda01d3e13480eaf81ccfa7b69f7dc91dcd584e56d",
+    "SRC-RFA-10K-BUYBACK": "937e5178dd16ef730772c3c76cc3b0be604978ca72d725382c136a5cfeef1d57",
+    "SRC-RFA-10K-COMMIT": "e07198816a040398ed7d80186251fc897d1a72e2983cb55c4e2cd81958aee4de",
+    "SRC-RFA-10K-CONTING": "24be8a117b081d4c4e069961e64aa249840a442b59d33c8073a796029edcd38d",
+    "SRC-RFA-10K-DEBTMAT": "bb3fe1940b466a348033c8faf08a6e35372e30a45aa14505acaa78928c8cc691",
+    "SRC-RFA-10K-DEFREV": "769e3f20b776c59f294a1b6515bb9b8b2a2cecea6f4ba6cc89a5683cbeaac419",
+    "SRC-RFA-10K-EQUITY": "d3f64487b4b7a69d703aef88ad4e47ad598ca480f3f219a64620a95ed848c055",
+    "SRC-RFA-10K-LEASE": "aff2d5789d696890fc16e6372520fc96da37dab762593f85e47a86d7489ce5ec",
+    "SRC-RFA-10K-NOTE6HTML": "ab34ac67e21c2d0342769a51095744883e2ada7f8959fe8e60a15fac66dbf23c",
+    "SRC-RFA-10K-REVTYPE": "6b1e82e8ab26917a98f2cd9020e718c3b28d810026f6c3e7eab22d6c6dc42b20",
+    "SRC-RFA-10K-RPO": "a9a8e2493f22df1089f5d6236abd0e90c0be3d27f8138fb1c2720de20d858a1d",
+    "SRC-RFA-10K-SEGMENT": "dbeeb4947896934695777104438b59fc6bcf8a26012aca11d01b584546cbcfc9",
+    "SRC-RFA-10K-SUBSEQ": "66500773f0edaad53291feb3136534953da1b3cc3bf17dff2ad34ccbc990e835",
+    "SRC-RFA-8K-Q4FY25": "77bdb1ef992d168c264d95baed110eb6ceef3f1c70afd654bfdf7291008c51c9",
+    "SRC-RFA-DEF14A-2026": "f4d8ad52405581e9fe0582a3279ecac59a2d298ba80490a5d649f42edb2077b5",
+    "SRC-RFA-XBRL-FIN": "82f3a997b5bcb8d4a639363106249411b7086bb191196af755a2961b7b0bb194",
+    "SRC-RFC-AR2025": "cc010a046c317d7a143c89e30d4076d52d56ce83cb138d5cab1e9e075f48f135",
+    "SRC-RFC-AR2025-ABSTRACT": "55be31aa99345dc52300b2e3f5c8cf64d7c37ec43efc1af9816d942946af9637",
+    "SRC-RFC-H1-2026": "d7931f39098f86ce9c7dae7acdf09f4c4b2a73b434e4c50bb073428990663c64",
+    "SRC-RFC-IR-2026-03": "249a1931becb6d77120be15a429f1597866146f332084d85b80aee2d3fb1f5e9",
+    "SRC-RFC-IR-2026-07": "725d1cb5bc196f15609a4ae4a2a95688f09c852e2a2ab34bc08a1c660aa72899",
+    "SRC-RFC-NEWS-FY2025": "93a08002fb67ce109359bb935c522839270bcabdd3c48a083067043d404d4738",
+    "SRC-RFC-NEWS-FY2025-EN": "49b82bc81fd24b609bfe41fb6bcd4932a67232fac87630708ea25178cfafa512",
+    "SRC-RFS-001": "365432f9a06caf1bc776acd873a677d5b1716f5f2e97b117f7b27ebc44e2c252",
+    "SRC-RFS-002": "9a6799bfd593816999986006ca36f7dca16c18b96efe993ba8e82ab8ab98b9a4",
+    "SRC-RFS-003": "65ac56e83ea33486348c6b4f045b30a778ecf417ec1523193b67f0b7eb49acc8",
+    "SRC-RFS-004": "abf3410756303255fd6e7a3b478fe08894f5414cf366ed8fd35d84d7923e6c90",
+    "SRC-RFS-005": "726f4c65054121c71194612f77187c2d345021214e85b0716013b451641b4600",
+    "SRC-RFS-006": "186ef577541ba480a20cc88112a0e967eace009e90c274cdd6fcda0dcd855f94",
+    "SRC-RFS-007": "76f585cbdcdc01c13bc120ed81825228e90c4fc384cf572649962579e9dbd604",
+    "SRC-RFS-008": "98bffe6ca54ff638fdf1bbef0e3cd4e576b42251a7b410f2fdee61ba57d6316e",
+    "SRC-SEC-10K-HTML": "d09a8a8dee70e5a9371c9a158a2c8301b1ce55dd09763694bbe941f0642fb665",
+    "SRC-SEC-CAPEX": "f26550db374fbf3db43783f69aed8de4f0dc520e282802e07093890a80be9cc6",
+    "SRC-SEC-CASH": "1cae51c8496c69369100de976dd0555eeebd70ba90b36c6be9977c3c07241b51",
+    "SRC-SEC-DEBT": "3e1bfef882450501dca022efcc78095be93ad2ab92507531328aa97933e890c6",
+    "SRC-SEC-EQ": "47bde370ffe9efa625a70599315b84c47b3aeeac3ae2a1a08dc0604d89b17d1e",
+    "SRC-SEC-MKTS": "bc990f8a5d711efd163921a29ccd4e32d0177a9b7d481a9e8ffa77b177d5936d",
+    "SRC-SEC-NI": "5e3c0b839033ddb2aab5ee6d7c17d5bc18fd35c073a6170778337c07a4b1ca68",
+    "SRC-SEC-OCF": "751173a4abe252a408e7b857014157487c26c98db9bc5616dae6d226fc49c0b8",
+    "SRC-SEC-OI": "310a68b2a4af7844362f132746e845a840c5115bdf046974f5c2ba25eea3c9cb",
+    "SRC-SEC-REV": "6706a0557f498eba6904bd1dc27eeec18946eade30d442c15c22120ce82bcdc9",
+    "SRC-SEC-TAX": "e0bf2e3e2633aaf9302b9b8c599327987a253465e24741348df12ab158f51831",
+    "SRC-SKELETON": "4be05d229d7d91e511f00b800680a57daf29abb86ed97a60061be386fc5b4005"
+  },
+  "baseline_ledger_hashes": {
+    "CALC-ALPH-FCF-2025": "64f86db21a4afd629c14fef0367d2865a71b690a844318635f29e4182efd647a",
+    "CALC-ALPH-NETCASH-2025": "14c6adce8b60bd4f387050473d585665fb4df7d1493377336e53563607fe6899",
+    "CALC-ALPH-REVGROWTH-2025": "cd11682241224055701e21ab178c45481c2a66fe4f46a478994d2da4c01af0b0",
+    "CALC-ALPH-ROIC-2025": "21e8b6b89f533138eb17913cbf9c90b8fc9478bcf90fa68ef0671aee9970e7f5",
+    "CALC-RFC-FCF-2025": "30e5d1675a8ff1bde16d238ee90d28b5f9be911a93da17a7aeb224bc4506ccea",
+    "CALC-RFC-REVGROWTH-2025": "ad0f12b12624238d1b8afb9f46efca6d72b364a6c8f0526da3838485882e17f2",
+    "CALC-RFC-ROIC-2025": "ddfd7107a075cf5254bcdf3bab4c5de45fb70811a94ef84cbfbdffa215143f71",
+    "CALC-RFS-REVENUE-YOY-FY2025": "080130d8afa5e190b26b6dee0c26401668fce374776bcc92043fd1c972e66246"
+  }
+}

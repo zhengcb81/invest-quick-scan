@@ -1,0 +1,2849 @@
+{
+  "format_version": "1.0.0",
+  "package_id": "PRIMARY-CATL-03",
+  "company": {
+    "company_key": "catl",
+    "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+    "ticker": "300750",
+    "exchange": "XSHE",
+    "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+    "company_type": "operating",
+    "information_cutoff": "2026-10-11",
+    "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+    "question_count": 30
+  },
+  "baseline_pack_id": "frpack_a664741f1e3fe3e697b7902cd9aa0be15651c24723f401ffa5740c66927982e7",
+  "baseline_pack_raw_sha256": "f76eb644ab68c13145fff9104031ccd6606792afbb1b16311fbb685ad035bd23",
+  "frozen_input_file_count": 43,
+  "new_id_namespace": "RPC",
+  "rows": [
+    {
+      "reference_id": "FR-CATL-IQS_01",
+      "question_id": "IQS_01",
+      "baseline_row_sha256": "a49ad660736b8e89ed8fadf626a72451e5ddf167850a61a456547e305de7cc29",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "e49b91646870da125d3e4a03e7cadd2ffb93e24638e7c0cb801dfb5909e3bebc",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, GWh, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、主营业务分析 2、收入与成本 (volume/capacity table) and 3)关键技术或性能指标",
+            "sought": "customer problem solved, cost of use, repeat purchase, consequence of stopping",
+            "outcome": "partial",
+            "note": "volume, revenue, certification and specification evidence found; TCO, per-customer retention and switching consequence are not disclosed anywhere in the report"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第7问 (价格竞争 / 优质产能)",
+            "sought": "whether customers choose on value or price",
+            "outcome": "not_covered",
+            "note": "management asserts value competition and says quality capacity is scarce, but gives no customer-level willingness-to-pay evidence"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Value delivery is evidenced at the aggregate level (audited revenue, 661GWh sold, multiple mandatory certifications cleared, named OEM adoption across power/ESS/marine/aviation). But the question's own demands — total cost of ownership, independent repeat purchase, and the consequence of stopping — are not in the disclosure. A 10 requires behavioural evidence of willingness to keep paying at a premium; a 1 requires demand held up by subsidy or promotion. Neither is established, so no score.",
+        "assumptions": [
+          "Audited consolidated figures are company-reported under PRC GAAP with a standard unqualified opinion.",
+          "Regulatory approvals are treated as evidence that the product satisfies a hard external gate, not as evidence of customer willingness to pay a premium."
+        ],
+        "falsifiers": [
+          "Evidence that OEMs dual-source purely on price and that CATL's share holds only while it is the cheapest qualifying supplier would weaken the value case.",
+          "A disclosed loss of a major platform award to a lower-priced competitor would qualify the certification-based reading."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; aggregate demand evidence gathered, TCO/retention/consequence evidence genuinely absent from disclosure; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed; unknown is not filled as 5",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-REV-2025",
+        "FACT-RFC-VOL-2025",
+        "FACT-RFC-UNITREV-2025",
+        "FACT-RFC-MIXSHIFT-2025",
+        "FACT-RFC-CERT-2025"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_02",
+      "question_id": "IQS_02",
+      "baseline_row_sha256": "7be60b9d60d2c6940e06ee4d6f6e5307c8cd33a77b22f3c1ff1c1e1de8452879",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "e466bfe76d2c2933a967d4714b4c203840026b60b8515455125f8a04da400042",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, percent, GWh)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(8)主要销售客户和主要供应商情况; (4)重大销售合同; 六、1资产构成 (合同负债)",
+            "sought": "customer concentration, order book, renewal evidence",
+            "outcome": "supported",
+            "note": "top-5 concentration and the single major contract retrieved with exact figures"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(2)5)不同产品或业务的产销情况",
+            "sought": "demand versus capacity (repeat demand behavioural evidence)",
+            "outcome": "supported",
+            "note": "capacity 772GWh, utilisation 96.9%, sales 661GWh vs production 748GWh"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "六、1资产构成重大变动情况 (合同负债)",
+            "sought": "whether the forward book grew with revenue",
+            "outcome": "partial",
+            "note": "contract liabilities fell to 36,482,664千元 at 2026-06-30 from 49,233,377 at 2025-12-31; recorded as counterevidence"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第5、7问",
+            "sought": "utilisation, order spillover, production plans",
+            "outcome": "supported",
+            "note": "management confirms capacity saturation and order spillover"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "revenue_structure"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Materially improved versus the baseline: concentration is now measured (top-5 38.96%, largest 13.73%), selling cost is 0.88% of revenue, and demand exceeded capacity at 96.9% utilisation. Those support a recurring, non-promotional revenue base. But retention/churn is undisclosed, the advance-funded book actually shrank in H1 2026, and no named multi-year contract total exists. The question asks 'what share continues without heavier acquisition or subsidy spend' — the share itself cannot be quantified from disclosure, so no score.",
+        "assumptions": [
+          "Selling expense ratio is a valid proxy for the cost of maintaining (not acquiring) revenue.",
+          "Certification cycles imply multi-year platform recurrence but do not by themselves quantify retention."
+        ],
+        "falsifiers": [
+          "Disclosure of a rising customer-acquisition cost or meaningful churn at a top-5 OEM would lower the durable share.",
+          "Continued decline in contract liabilities alongside slowing volume would suggest the recurring base is shorter than the certification cycle implies."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "deep row (revenue_structure) re-researched: baseline had only revenue/net profit; concentration, advance book, selling-cost ratio, utilisation and the order-spill statement added; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-REV-2024",
+        "FACT-RFC-TOPCUST-2025",
+        "FACT-RFC-BACKLOG-2025",
+        "FACT-RFC-MAJORCONTRACT-2025",
+        "FACT-RFC-ORDERSPILL-2025",
+        "FACT-RFC-CAPUSE-2025"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_04",
+      "question_id": "IQS_04",
+      "baseline_row_sha256": "7f75f08653b91d08c077348343f18139d214925036dda7200521b4dd4219295b",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "cbf5f4c64e3221f82a37864bf20f00ef8a4e627baa2b6a6015d38757facbdb6f",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_04",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(2)1)营业收入及营业成本整体情况; (5)营业成本构成; (8)主要销售客户和主要供应商情况",
+            "sought": "profit pool allocation, price discipline, customer and supplier bargaining",
+            "outcome": "supported",
+            "note": "segment/geography gross margins, direct-material share and both concentration ratios retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 十一、公司面临的风险和应对措施 第1、2、4项; 四、4、占比10%以上的产品或服务情况",
+            "sought": "supply expansion, competition and material-price pass-through",
+            "outcome": "supported",
+            "note": "company names capacity expansion risk and lithium price rise; H1 margins show 1.5-1.8pp erosion"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第2、3、7问; 第9问 (资本开支/在建产能)",
+            "sought": "price linkage, rebates, capacity outlook",
+            "outcome": "supported",
+            "note": "management confirms price-linkage mechanism and that rebate policy is stable absent extreme markets; 321GWh under construction"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Company-level evidence shows a retained ~24-27% gross margin band, a fragmented supplier base and a functioning cost pass-through, which supports 'can keep reasonable profit'. But the question is about whether the INDUSTRY's supply/demand and value-chain split allow it sustainably. The company itself discloses accelerating multi-party capacity expansion, admits conventional capacity is not scarce, and H1 2026 margins already eroded 1.5-1.8pp. A 10 requires supply discipline or differentiated value; a 1 requires excess competition permanently squeezing profit out. The industry-level supply/exit evidence is not obtainable from issuer disclosure, so this stays partial with no score.",
+        "assumptions": [
+          "Segment gross margin is an acceptable proxy for the profit pool retained by the company, absent price/volume disclosure.",
+          "Price-linkage arrangements are assumed to be contractually real because management asserts they operated well through the prior lithium cycle."
+        ],
+        "falsifiers": [
+          "Continued 1.5pp+ annual segment-margin erosion while the 764GWh under construction enters service would show the pool is being competed away.",
+          "Disclosure that price linkage is capped or renegotiated downward in weak demand would remove the pass-through support."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; industry supply/exit data genuinely outside issuer disclosure; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed; industry-level supply evidence unavailable from official CATL pages",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-GM-POWER-2025",
+        "FACT-RFC-GM-H1-2026",
+        "FACT-RFC-DIRECTMAT-2025",
+        "FACT-RFC-LIPRICE-2026",
+        "FACT-RFC-SUPPLIER-2025",
+        "FACT-RFC-COMPETITION-2026",
+        "FACT-RFC-OVERSEASGM-2025"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_05",
+      "question_id": "IQS_05",
+      "baseline_row_sha256": "a71878f4488834b414a8401df54dc00e91bc57848b85330095ca9290857c3a62",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "1a69a9ad5639348badc9bac39e5826046ab52ff8b9c2d04387da9705c248e435",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_05",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (percent, GWh, RMB_million, persons)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 三、核心竞争力分析 (five pillars); 四、2、(2)3)关键技术或性能指标; 四、(4)供应链及产能",
+            "sought": "advantage mechanism, scope, switching barriers and replication cost",
+            "outcome": "supported",
+            "note": "scale, R&D scale, certifications, specifications and supply-chain arrangements retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 三、核心竞争力分析; 四、(1)(2)(3); 十一、2市场竞争加剧风险",
+            "sought": "whether the advantage holds under competition",
+            "outcome": "supported",
+            "note": "share gains recorded alongside the company's own capacity-expansion warning and margin decline"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第5、7、12问",
+            "sought": "source of profitability and failure conditions",
+            "outcome": "partial",
+            "note": "management credits capacity saturation and quality-capacity scarcity; no peer benchmark or explicit failure condition"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "A multi-mechanism advantage is documented with real evidence: the industry's largest scale at 96.9% utilisation converting into a falling direct-material ratio, an R&D stock (22,901 staff, 60,319 patents, RMB 90bn cumulative) that rivals cannot assemble quickly, externally enforced switching barriers across vehicle/storage/marine/aviation certification regimes, pooled platform economics across 40+ models, and institutionalised upstream control. But the question's central test is 'equivalent-input performance/cost' and 'hard to copy at reasonable cost' — and there is NO peer benchmark, no yield figure and no stated cost gap, while margins fell and management attributes recent profit improvement to temporary capacity tightness rather than to the advantage itself. Partial, no score.",
+        "assumptions": [
+          "External certification regimes are treated as genuine switching barriers because they are enforceable by regulators and customers.",
+          "Scale and R&D stock are treated as advantage mechanisms, not automatically as durable advantages."
+        ],
+        "falsifiers": [
+          "A disclosed cost-per-kWh gap versus peers would confirm or refute the cost advantage.",
+          "A large OEM awarding a major platform to a competitor on price would show the switching barrier is surmountable."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; scale, R&D, switching barriers, platform pooling and upstream control gathered, with the missing peer/cost benchmark recorded as a limitation; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no peer cost/performance benchmark exists in disclosure",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-MOAT-SCALE",
+        "FACT-RFC-MOAT-RD",
+        "FACT-RFC-MOAT-SWITCH",
+        "FACT-RFC-MOAT-SUPPLYCHAIN",
+        "FACT-RFC-MOAT-PLATFORM",
+        "FACT-RFC-MOAT-COUNTER",
+        "FACT-RFC-MOAT-COMPETITOR"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_06",
+      "question_id": "IQS_06",
+      "baseline_row_sha256": "d9c8857a5d2ac7e62c74486e6f45e79364e6358b59dfe8140c06903936cc6c59",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "0ae309b36dc08ef082a89c16007888a01f65cb758016690e22959037d349769b",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_06",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2017-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (percent, RMB_million)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 二、2公司行业地位; 四、1概述(1)(2); (8)主要销售客户情况",
+            "sought": "share trend, customer migration, relative economics",
+            "outcome": "supported",
+            "note": "multi-region share, named customers and concentration retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 一、2公司行业地位; 四、(1)(2); 四、4占比10%以上产品; 十一、2市场竞争加剧风险",
+            "sought": "current trend versus position strength",
+            "outcome": "supported",
+            "note": "share improvements recorded together with 1.5-1.8pp margin declines and the company's capacity-abundance admission"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025-ABSTRACT",
+            "locator_phrase": "二、(三)1近三年主要会计数据",
+            "sought": "relative return on the position",
+            "outcome": "partial",
+            "note": "three-year ROE series retrieved showing flat returns; no peer comparison available"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Following the question's instruction to separate the improving TREND from position STRENGTH: the trend is unambiguously improving on independently measured volume share (global 39.2%->40.2%, overseas 30.0%->33.7%, China passenger installation 46.7%, ternary 75.2%, storage first for five years), customer relationships are broad and concentration is low, and ROE remains around 24-25%. But position STRENGTH also requires economic evidence — relative price and relative return — and there the picture is adverse: margins fell 1.5-1.8pp in both segments, ROE is flat over three years, and management itself says conventional capacity is abundant and that price competition must be resisted. So the position is strong in volume and eroding in economics. The question explicitly says rising speed alone must not add points. No score.",
+        "assumptions": [
+          "Third-party share measures cited in official disclosure are treated as independent of the company's own reporting, while their basis is not re-verified here.",
+          "Segment gross margin is used as the economic-position proxy absent peer relative-price data."
+        ],
+        "falsifiers": [
+          "Share falling while margins stabilise would suggest the company chose economics over volume — a different (better) position.",
+          "Continued share gains with further margin decline would confirm that position is being bought with price."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; share trend, customers, returns and the divergence between volume share and economics recorded; no peer relative-price data exists; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no peer comparison available; share measures are third-party",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-POS-SHARE",
+        "FACT-RFC-POS-MARGIN",
+        "FACT-RFC-POS-CUSTOMER",
+        "FACT-RFC-POS-ALTERNATIVE",
+        "FACT-RFC-POS-RETURN"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_07",
+      "question_id": "IQS_07",
+      "baseline_row_sha256": "1e67c7507b636e217c8990d3d9ce360b832c5a4698c3ec49663cbbd8f3f11b78",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "8327ef0d01e524f841b4391ffbf4c1f7be8a2bc77204c0ee8ae95bddac34604b",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_07",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2021-10-12",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, GWh, qualitative)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 七、5募集资金使用情况 (1)(2)(3); 十四、质量回报双提升 1、2",
+            "sought": "past 3-5 year commitments versus actuals, delays and corrections",
+            "outcome": "supported",
+            "note": "fundraising progress, the 2024 delay approval, the 2026 use-change, dividend execution and buyback completion all retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、1概述 (H股上市) and 四、(4)供应链及产能",
+            "sought": "listing commitment and capacity delivery",
+            "outcome": "supported",
+            "note": "H-share IPO terms and capacity trajectory confirmed"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-07",
+            "locator_phrase": "问答 第8问 (回购方案原因及是否常态化)",
+            "sought": "whether the buyback is a standing commitment",
+            "outcome": "supported",
+            "note": "management says repurchases are assessed case by case, not a standing policy — recorded as counterevidence"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "A concrete delivery record is now available: 2022 fundraising 90.48% deployed with four of six projects at or above target, H-share listing completed as announced, dividend commitment met at exactly 50% of net profit for a third year, and the 2025 buyback executed within its announced range. Against that, one project was formally delayed and RMB 4.8bn was then redirected to a new project only 4.90% complete, which is a genuine 'moving the goalposts' concern, and the new large buyback is explicitly not a standing commitment. The demands also ask about commitment DIFFICULTY, which is not established. Partial, no score.",
+        "assumptions": [
+          "Disclosed investment progress percentages are accepted as the company's own reporting of delivery against committed amounts.",
+          "Financial-policy commitments (dividend ratio, buyback range) are treated as management commitments because the company framed them as such."
+        ],
+        "falsifiers": [
+          "Evidence that the redirection became a pattern rather than a single event would materially weaken the delivery record.",
+          "Missing the newly announced buyback range or abandoning the 50% dividend ratio would be a direct contradiction."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; delivery record assembled from fundraising progress, H-share listing, dividend and buyback disclosures, with the delay and redirection recorded as counterevidence; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no consolidated multi-year guidance-versus-actual scorecard published",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-DELAY-2024",
+        "FACT-RFC-RAISEDUSE-2022",
+        "FACT-RFC-USECHANGE-2026",
+        "FACT-RFC-HIPO-2025",
+        "FACT-RFC-CAPACITYTRACK",
+        "FACT-RFC-DIVIDENDTRACK",
+        "FACT-RFC-BUYBACKTRACK"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_08",
+      "question_id": "IQS_08",
+      "baseline_row_sha256": "29f3e5b16f368429c76c004ec6ca1d069a53ef3842a89cf3e9dff999fde260c5",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "012248c99571e9ae4ac1d621f34a06211edaca8415dfa04bb71bd999729c5340",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_08",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (GWh, percent, RMB_million)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 三、核心竞争力分析 (极限制造/PSL/灯塔工厂); 四、2、(2)5)产销情况; 五、非主营业务情况 (资产减值)",
+            "sought": "expansion batches, quality, delivery, ramp losses",
+            "outcome": "partial",
+            "note": "capacity, utilisation, defect-rate claim and impairment retrieved; no absolute defect rate, recall data or lead times"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 四、2主要财务数据同比变动情况; 四、(5)不同产品或业务的产销情况",
+            "sought": "cost discipline during the H1 2026 surge",
+            "outcome": "supported",
+            "note": "revenue +54.80% vs cost +57.06%, selling +33.44%, utilisation 94.86%"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第8、11问",
+            "sought": "ramp loss, yield, write-down drivers",
+            "outcome": "supported",
+            "note": "Hungary yield ramp needs time; fixed-asset write-downs tied to line technology upgrades"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Issuer-reported expansion, iteration and inventory/production risks warrant monitoring. The fixed-asset component has a management line-upgrade explanation, but the whole impairment does not prove recurring obsolescence or establish causal economics. Source-original and operating measures remain unverified; partial, no score.",
+        "assumptions": [
+          "High utilisation with production near capacity is treated as evidence of delivery reliability, not of quality.",
+          "Impairment charges are treated as the available proxy for ramp/obsolescence losses."
+        ],
+        "falsifiers": [
+          "A disclosed field-safety event or recall would directly contradict the quality claim.",
+          "Repeated large line write-downs in future periods would show expansion is systematically value-destructive."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; utilisation, cost ratio and impairment evidence gathered; quality metrics genuinely undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no defect/recall/lead-time data disclosed",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-YIELD-CLAIM",
+        "FACT-RFC-UTILISATION",
+        "FACT-RFC-COSTDISCIPLINE",
+        "FACT-RFC-RAMPLOSS-2026",
+        "FACT-RFC-OBSOLESCENCE",
+        "FACT-RFC-INVENTORYRISK",
+        "FACT-RFC-OBSOLESCENCE-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_09",
+      "question_id": "IQS_09",
+      "baseline_row_sha256": "aa1764572649d8ad75f5dac149592be0a75325488b94c59989b8458a4028aa08",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "a27556dbb12c4bd848cd5cd55c77e083e4c866c6b16e2f55a6a7d8247bc9967c",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_09",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2024-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (persons, RMB_million, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、4、研发投入 (1)(2)(3); 三、核心竞争力分析 (研发为核)",
+            "sought": "R&D institutionalisation, staffing pipeline, critical-role depth",
+            "outcome": "supported",
+            "note": "headcount by education and age, patent count and ten-programme pipeline retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第四节 一、公司董事、高级管理人员变动情况; 第三节 七、6(2)衍生品投资 风险控制措施",
+            "sought": "management stability, delegation and control records",
+            "outcome": "partial",
+            "note": "no changes in period and the three-tier hedging governance retrieved; no succession or attrition disclosure"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第四节 三、公司股权激励计划、员工持股计划",
+            "sought": "retention and performance-gate outcomes",
+            "outcome": "supported",
+            "note": "1,939,584 restricted shares cancelled and 35,736 options voided for departures or failed performance tests"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The 'institutionalised capability' half of the question is genuinely evidenced: 22,901 R&D staff with a strengthening seniority profile, six R&D centres, a growing patent estate and a documented multi-programme pipeline, plus formal three-tier risk governance and stable named officers. But the question also asks whether the organisation can CONTINUE without depending on a few key individuals, and demands a record of successful key-person replacement. No succession plan, no attrition data and no senior-replacement history is disclosed — indeed the period had zero management change, so no replacement record exists. Founder-led strategy remains visible. Partial, no score.",
+        "assumptions": [
+          "R&D headcount, patents and pipeline are accepted as organisational-capability evidence.",
+          "Absence of management change is treated as stability evidence but explicitly NOT as succession evidence."
+        ],
+        "falsifiers": [
+          "A disclosure of key-person dependency, or an abrupt senior departure without a ready successor, would weaken the case.",
+          "Rising attrition among R&D staff would qualify the headcount growth."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; capability and governance evidence gathered; succession/attrition genuinely undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no succession or attrition disclosure exists",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-RDPERSONNEL",
+        "FACT-RFC-INSTITUTION",
+        "FACT-RFC-RDPIPELINE",
+        "FACT-RFC-KEYPERSON",
+        "FACT-RFC-BOARDSTABLE",
+        "FACT-RFC-AUTHORITY",
+        "FACT-RFC-SUCCESSION"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_10",
+      "question_id": "IQS_10",
+      "baseline_row_sha256": "dc68a75e826b6a1a65c9468a3ebfcc94889bac33ff547fdb83606d6755d7da52",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "4800eb076987025b72335eba8c40ad5cea87bbb10b370c333bbb1fe0b16b5170",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_10",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025-ABSTRACT",
+            "locator_phrase": "二、(三)1近三年主要会计数据和财务指标; (五)3近2年主要会计数据和财务指标",
+            "sought": "ROIC = NOPAT / invested capital; cost of capital",
+            "outcome": "partial",
+            "note": "The republication has reported capital components; old monetary-funds/debt definitions are corrected. Complete operating scope and original-source authentication remain pending."
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 六、1资产构成重大变动情况; 五、非主营业务情况",
+            "sought": "invested capital components and adjustment items",
+            "outcome": "supported",
+            "note": "The republication has reported capital components; old monetary-funds/debt definitions are corrected. Complete operating scope and original-source authentication remain pending."
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 五、非主营业务情况 (资产减值 -8,660,164, 其他收益 10,600,477)",
+            "sought": "whether invested capital was productive",
+            "outcome": "partial",
+            "note": "The republication has reported capital components; old monetary-funds/debt definitions are corrected. Complete operating scope and original-source authentication remain pending."
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "合并利润表；七、26/34/36/37/38/60/64/66/67",
+            "sought": "correct cash/debt, reported profit/tax and impairment scope",
+            "outcome": "partial",
+            "note": "Independent reader confirmed republication text, not official original; supplier finance 37222.781m/44362.409m remains separately classified, no guessed operating capital."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "capital_efficiency"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The old 71,292.963m average capital is withdrawn because it used monetary funds as cash equivalents and incomplete debt. Operating income and tax exist in the republication, but normalised NOPAT and coherent complete capital remain unverified. ROIC and its spread over capital cost cannot yet be stated; no score.",
+        "assumptions": [
+          "ROE is context only. No reconstructed NOPAT or adjusted capital is an audited value."
+        ],
+        "falsifiers": [
+          "Original-source components and a reproducible operating adjustment can make ROIC assessable; current or end-only capital cannot replace average capital."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "deep row (capital_efficiency) re-researched: invested capital derived and three-year ROE added; ROIC itself still not computable and recorded as a named gap rather than estimated; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed; NOPAT unavailable",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-NP-2025",
+        "FACT-RFC-DEDUCT-2025",
+        "FACT-RFC-ROE-2025",
+        "FACT-RFC-IC-EQ-2025",
+        "FACT-RFC-IC-EQ-2024",
+        "FACT-RFC-IC-CASH-2025",
+        "FACT-RFC-IC-CASH-2025-CORR1",
+        "FACT-RFC-IC-CASH-2024",
+        "FACT-RFC-IC-CASH-2024-CORR1",
+        "FACT-RFC-IC-DEBT-2025",
+        "FACT-RFC-IC-DEBT-2025-CORR1",
+        "FACT-RFC-IC-DEBT-2024",
+        "FACT-RFC-IC-DEBT-2024-CORR1",
+        "FACT-RFC-AVGIC-2025",
+        "FACT-RFC-AVGIC-2025-CORR1",
+        "FACT-RFC-ROIC-GAP-2025",
+        "FACT-RFC-ROIC-GAP-2025-CORR1",
+        "FACT-RFC-IMPAIR-2025",
+        "FACT-RFC-CASH-EQUIVALENTS-2025-CORR1",
+        "FACT-RFC-FINANCING-DEBT-2025-CORR1",
+        "FACT-RFC-CASH-EQUIVALENTS-2024-CORR1",
+        "FACT-RFC-FINANCING-DEBT-2024-CORR1",
+        "FACT-RFC-OPERATING-INCOME-2025-CORR1",
+        "FACT-RFC-INCOME-TAX-2025-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_12",
+      "question_id": "IQS_12",
+      "baseline_row_sha256": "6387ac3b9fa9e5dd1447601329905318bf40592ba4e369660fdf76ed13463531",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "0656fea768b457f922529f4efcd08dfca46f8cad622bff7a791df98cd8cff0d4",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_12",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025-ABSTRACT",
+            "locator_phrase": "一、重要提示 (三)(四); 二、(三)1",
+            "sought": "audit and regulatory matters",
+            "outcome": "supported",
+            "note": "standard unqualified opinion, auditor identified, no non-standard-opinion or control-weakness flags"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第二节 八、非经常性损益项目及金额; 第三节 五、非主营业务情况; 六、1、2资产及负债状况; 四、5现金流",
+            "sought": "non-recurring adjustments, asset quality, cash-to-profit bridge",
+            "outcome": "supported",
+            "note": "full non-recurring bridge, impairments by cause, fair-value movement table and cash-flow reconciliation retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 六、3截至报告期末的资产权利受限情况 (referral only)",
+            "sought": "restricted assets and off-balance-sheet obligations",
+            "outcome": "unavailable",
+            "note": "the report refers to 第八节 note 25 which was not retrievable online; recorded as a named gap rather than assumed zero"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reported disclosures provide useful audit and profit-quality leads. Missing corroboration and note reconciliation are package gaps, not proof that notes are unavailable or that obligations are hidden. No score.",
+        "assumptions": [
+          "Statements about audit/control posture are issuer-reported pending original corroboration."
+        ],
+        "falsifiers": [
+          "Original auditor/regulator findings or a reconciled material obligation would change the assessment."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; audit, non-recurring bridge, impairment and cash cross-check obtained; restricted assets and off-balance-sheet items remain unreachable notes; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed; restricted assets and guarantees unquantified",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-AUDIT-2025",
+        "FACT-RFC-RELATEDPARTY-2025",
+        "FACT-RFC-NONREC-2025",
+        "FACT-RFC-IMPAIRDISCLOSE",
+        "FACT-RFC-CASHBRIDGE-2025",
+        "FACT-RFC-RESTRICTED-2025",
+        "FACT-RFC-RESTRICTED-2025-CORR1",
+        "FACT-RFC-FAIRVALUE-2025",
+        "FACT-RFC-MONETARY-NONCE-GUARANTEE-2025-CORR1",
+        "FACT-RFC-MONETARY-NONCE-PLEDGED-2025-CORR1",
+        "FACT-RFC-MONETARY-NONCE-TERM-2025-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_13",
+      "question_id": "IQS_13",
+      "baseline_row_sha256": "25414ccc6bf38fbb71bf80a67ceed9fcdf19b2ecf69e5438617c9b609c33612d",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "5734a8370a3c0f13bd51b8e6cbd6f115992007b378f47736f0991ec295047c88",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_13",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (percent, shares, RMB_million)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025-ABSTRACT",
+            "locator_phrase": "二、(四)股本及股东情况 1、2; 一、(六)利润分配预案",
+            "sought": "control versus cash-flow rights, minority protection",
+            "outcome": "supported",
+            "note": "22.45% largest holder, no differential voting, no preference shares, no refinancing share lending"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 七、5(2)募集资金承诺项目情况 (违规占用不适用); 第四节 二、利润分配",
+            "sought": "funds occupation, distribution fairness, A/H treatment",
+            "outcome": "supported",
+            "note": "no misappropriation stated; equal distribution base; A/H FX conversion disclosed"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(8)主要销售客户和主要供应商情况",
+            "sought": "related-party exposure",
+            "outcome": "partial",
+            "note": "0.00% within top five counterparties verified; the complete related-party note was not retrievable"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The checkable dimensions are clean: no dual-class structure, no preference shares, no fundraising misappropriation, equal per-share distribution with only treasury stock excluded, equivalent A/H entitlement with disclosed FX, zero related-party share of commercial counterparties, separately recognised minority interests, and no major-holder refinancing-based share lending. Under the question, a 1 would require major expropriation or unresolved rights defects — none is disclosed. But the demands also include associated transaction detail and asset-transfer scrutiny, and those notes were not retrievable, so the assessment rests partly on the absence of a negative flag rather than on affirmative verification. Partial, no score.",
+        "assumptions": [
+          "Concentration-based related-party disclosures are accepted as the available evidence in lieu of the full note.",
+          "Absence of disclosed disputes is treated as neutral, not as proof of fair dealing."
+        ],
+        "falsifiers": [
+          "A disclosed related-party transaction on non-arm's-length terms would directly contradict this assessment.",
+          "Any reported occupation of listed-company funds by the controlling shareholder would be decisive."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; control, distribution equality, related-party concentration and minority treatment verified; full related-party note unreachable; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-CONTROL-2025",
+        "FACT-RFC-NOPLEDGE-2025",
+        "FACT-RFC-CASHBAR-2025",
+        "FACT-RFC-EQUALDIV-2025",
+        "FACT-RFC-HSHARE-2026",
+        "FACT-RFC-RELATEDPARTY-BASE",
+        "FACT-RFC-MINORITY-2025"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_14",
+      "question_id": "IQS_14",
+      "baseline_row_sha256": "e9a5884a4775f2fd6ad31021f6679a25eea9a8d1e4a1d355999efabec111cf41",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "4144be6d00b921e5435781eb09d71add607131899b6fadd83693002c1438fd7d",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_14",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2022-06-21",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, shares, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025-ABSTRACT",
+            "locator_phrase": "二、(三)1近三年主要会计数据 (EPS/ROE); (四)1股东情况",
+            "sought": "per-share value accretion versus dilution",
+            "outcome": "supported",
+            "note": "three-year EPS and ROE retrieved, share count and treasury stock identified"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 七、5募集资金使用; 十四、质量回报双提升 1、2",
+            "sought": "capital allocation record including buybacks and dividends",
+            "outcome": "supported",
+            "note": "fundraising progress, dividend amounts, both buyback programmes and the cancellation intent retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 五、非主营业务情况 (资产减值); 四、2、(6)合并范围变动",
+            "sought": "acquisition impairment and project exits",
+            "outcome": "partial",
+            "note": "impairment by type retrieved; goodwill detail and exited projects are not in the readable sections"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "There is now real per-share evidence: EPS rose 39.38% to 16.14 RMB with no basic/diluted gap, three-year ROE held at 24-25% while equity grew 70%, cash returned to shareholders approaches RMB 100bn cumulatively, and the new RMB 20-40bn buyback is explicitly for cancellation to lift EPS. That is a strong per-share record. But the question asks whether reinvestment, M&A, dividends AND buybacks truly added per-share value. Buyback prices, goodwill/M&A outcomes and exited projects are all undisclosed, while the recurring line write-downs show some capital was destroyed. Partial, no score.",
+        "assumptions": [
+          "EPS progression is used as the primary per-share value test because it directly captures dilution.",
+          "Impairments are treated as the available proxy for failed/replaced investment."
+        ],
+        "falsifiers": [
+          "Evidence that the new buyback is executed at prices above intrinsic value would turn it from accretive to value-destructive.",
+          "A large acquisition impairment would materially change the assessment."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; EPS, ROE, payout, share count and buyback structure verified; buyback prices and M&A outcomes undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-SHARECOUNT",
+        "FACT-RFC-EPS-2025",
+        "FACT-RFC-BUYBACKCANCEL-2026",
+        "FACT-RFC-PAYOUT",
+        "FACT-RFC-DILUTION-2022",
+        "FACT-RFC-ROE-3Y"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_15",
+      "question_id": "IQS_15",
+      "baseline_row_sha256": "1762852c3b4ff45fdfddd20aaba7ae9eddb4bb9bf08a0abf7edfbab685e4be48",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "048ff192b19ed0c777cca82798447375ef12e76e4d6d7e6f61a6b37adc090e39",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_15",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2021-11-19",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (shares, RMB, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第四节 三、1股权激励; 2员工持股计划的实施情况 (1)(2)(6)",
+            "sought": "incentive metrics, dilution, oversight",
+            "outcome": "supported",
+            "note": "three plans with prices and vesting windows, forfeitures for company and individual test failures, ESOP scope and recovery terms retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第四节 二、利润分配; 第三节 十四、质量回报双提升 2",
+            "sought": "dilution offset and per-share return mechanisms",
+            "outcome": "supported",
+            "note": "buyback for cancellation to raise EPS identified"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第一节 一; 第二节 一 (signatures and officers)",
+            "sought": "management risk-bearing and certification",
+            "outcome": "partial",
+            "note": "officer certifications and pledges found; management ownership amounts and any clawback provision absent"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Several concrete mechanisms are verified: long vesting periods, gates that actually forfeit awards (including company-level failures), an ESOP that excludes executives and returns withdrawn shares at cost, total dilution under roughly 0.2%, and buybacks — one of which is designated for cancellation to lift EPS. That is materially better than a bare incentive plan. But the question asks specifically whether incentives reward LONG-TERM PER-SHARE RETURN rather than short-term scale. The vesting metrics are undisclosed, there is no clawback provision, and no board-correction record is disclosed. Partial, no score.",
+        "assumptions": [
+          "Disclosed vesting periods are treated as horizon evidence while noting the metrics themselves are unknown.",
+          "Buyback-for-cancellation is treated as a per-share-aligned mechanism."
+        ],
+        "falsifiers": [
+          "Disclosure that vesting metrics are volume- or revenue-based rather than return-based would weaken alignment with the question's standard.",
+          "A future large grant at prices far below market without tightening gates would indicate dilution without alignment."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; incentive instruments, gate failures, ESOP scope and buyback offsets verified; vesting metrics and clawback undefined in disclosure; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed; vesting metrics undisclosed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-EQUITYPLANS",
+        "FACT-RFC-PERFORMANCEFAIL",
+        "FACT-RFC-ESOP-2026",
+        "FACT-RFC-DILUTIONSMALL",
+        "FACT-RFC-MGMTRISK",
+        "FACT-RFC-DILUTIONOFFSET",
+        "FACT-RFC-CLWBACK-GAP"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_16",
+      "question_id": "IQS_16",
+      "baseline_row_sha256": "792185d96ad3eb096392166355473b1bb5b78b7f22cce5883b6c61cd235d5ac2",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "e7bdfca8d2db0fa6c0a4b863c4607514614c324206ca0cffe0de43bbf0ee1d32",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_16",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-12-31",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 六、1资产构成重大变动情况 (货币资金/交易性金融资产/借款/租赁负债)",
+            "sought": "usable cash, debt and leases for a two-year stress test",
+            "outcome": "supported",
+            "note": "each balance-sheet component retrieved separately, allowing net liquidity and total debt to be computed"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025-ABSTRACT",
+            "locator_phrase": "二、(五)在年度报告批准报出日存续的债券情况 1、2、3",
+            "sought": "maturity schedule, covenants, guarantees",
+            "outcome": "partial",
+            "note": "outstanding bonds with maturity and coupon retrieved and 2025 repayments confirmed; no full maturity ladder, covenants or guarantee disclosure"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第六节 六、1资产构成重大变动情况; 十四、质量回报双提升",
+            "sought": "current liquidity and discretionary outflows",
+            "outcome": "supported",
+            "note": "2026-06-30 cash 372,053,275 + trading assets 68,158,325; buyback and dividend outflows recorded as counterpressure"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "debt_survival"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Cash-like assets and operating inflow provide leads, but incomplete debt and unverified availability cannot establish a two-year obligation buffer. No total-debt coverage, net debt or score is asserted.",
+        "assumptions": [
+          "No gross liquidity balance is treated as unrestricted cash."
+        ],
+        "falsifiers": [
+          "A complete maturity/commitment schedule and restricted-cash reconciliation may change the conclusion."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "deep row (debt_survival) re-researched: cash split, total borrowings, solvency ratios, bond schedule and demonstrated repayment added; maturity ladder and commitments still unavailable; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed; two-year obligation ladder not derivable",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-CASH-2025",
+        "FACT-RFC-DEBT-2025",
+        "FACT-RFC-DEBT-2025-CORR1",
+        "FACT-RFC-LIQUIDITY-2025",
+        "FACT-RFC-BONDS-2025",
+        "FACT-RFC-SUBSEQUENT-CASH-2026",
+        "FACT-RFC-BUYBACK-2026"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_17",
+      "question_id": "IQS_17",
+      "baseline_row_sha256": "a958d4cbdcc9adb729934a031baae329236765cf524b1e54be697dec9a50c8d8",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "e00046ebe61d44cf13e8e4a6345cf22e2c68d0bcc887de1cbe3a0e7e5764cb51",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_17",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (percent, qualitative)",
+          "currency": null,
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(8)主要销售客户和主要供应商情况; 2、(1)分地区",
+            "sought": "key dependencies and their concentration",
+            "outcome": "supported",
+            "note": "customer 38.96% / supplier 10.38% concentration and geography split retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 十一、1、4 (宏观及地缘政治风险, 原材料供应风险); 四、(4)供应链及产能",
+            "sought": "dependency mitigation and recovery path",
+            "outcome": "supported",
+            "note": "geopolitical and material risks with named mitigations; minerals platform and overseas plants identified"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第3、4、10、11问",
+            "sought": "substitution, overseas investment intensity, ramp timeline",
+            "outcome": "partial",
+            "note": "lithium supply view, overseas higher unit investment, Hungary ramp needs time; no requalification cycle or loss scenario"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Diversification is now evidenced rather than asserted: customer concentration 38.96% with the largest at 13.73%, supplier concentration 10.38%, roughly 31% overseas revenue, a dedicated minerals platform, flexible lithium/sodium lines and a demonstrated ability to clear multiple independent certification regimes. Under the question's own rule, dispersion alone does not earn a high score — what is missing is the verification of recovery cost and time. Re-qualification lead times, customer-loss scenarios and site-level concentration are all undisclosed, and overseas ramp is admitted to be slow. Partial, no score.",
+        "assumptions": [
+          "Low concentration ratios are treated as structural evidence against single-point failure, not as proof of recovery capability.",
+          "Certification breadth is treated as evidence of a proven ability to re-qualify, while acknowledging the cycle length is undisclosed."
+        ],
+        "falsifiers": [
+          "Evidence of heavy single-plant or single-region production concentration would raise the loss magnitude.",
+          "A disclosed multi-year customer requalification cycle would undermine the recoverability claim."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; dispersion measured from audited disclosure, recovery cost/time genuinely undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-CUSTCONC-2025",
+        "FACT-RFC-GEO-2025",
+        "FACT-RFC-GEO-RISK-2025",
+        "FACT-RFC-MINERAL-2026",
+        "FACT-RFC-OVERSEASPLANT-2026",
+        "FACT-RFC-SWITCHFLEX-2026"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_18",
+      "question_id": "IQS_18",
+      "baseline_row_sha256": "97ed49ba3d9aee84e7778a504457236238738556b42b91b2de25c23b7f5bf1cb",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "6f03dbaaf8f4dd9514fa043d7a9844f3f86c7ae904b0a6f2a8c28ef39985f271",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_18",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, percent, GWh, qualitative)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 十一、3新产品和新技术开发风险; 十一、2市场竞争加剧风险; 四、(1)(2)动力/储能业务",
+            "sought": "the 1-2 most likely permanent value-damaging structural changes and their exposure",
+            "outcome": "supported",
+            "note": "technology-route risk named with specific chemistries; capacity-expansion risk named; segment revenue exposure retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第1、3、12问 (钠电量产节奏, 锂价传导, 固态电池进展)",
+            "sought": "substitution path, speed and defence capability",
+            "outcome": "partial",
+            "note": "sodium commercialisation partly achieved and tied to lithium prices; solid-state explicitly still has engineering problems and 'takes time' — no timeline given"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 三、主要法律法规及行业政策 (国内/海外政策表)",
+            "sought": "regulatory or demand-mechanism changes",
+            "outcome": "supported",
+            "note": "取消强制配储 (2025-01) and 以旧换新 re-specification identified as implemented demand-mechanism changes"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-07",
+            "locator_phrase": "问答 第6、9问",
+            "sought": "defence investment and switching capability",
+            "outcome": "partial",
+            "note": "lithium/sodium line switchability and 764GWh under construction retrieved; required defence investment not quantified"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "cyclical_structural_change"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "This deep row was previously a gap_terminated with NO facts at all, and it is now genuinely researched. Two specific, non-hot-word structural changes are identified and sourced: (1) chemistry-route substitution (sodium and solid-state, named by the company with a concession that solid-state commercialisation 'takes time'), and (2) the already-implemented removal of mandatory storage co-configuration plus price-based trade-in policy. Exposure is quantified at segment level (about 89% of revenue in the two exposed battery segments) and defences are documented with line switchability and a signed 60GWh sodium agreement. What remains missing is exactly the fourth demand: the SPEED and the verification period are not established, required defence investment is unquantified, and the company never states a falsifiable timeline. Under the anchors, a 10 needs verified defences holding under stress; a 5 needs identifiable risks with unverified effectiveness. The evidence sits at the 5-shaped end but the speed/verification gap is material, so no score.",
+        "assumptions": [
+          "Company-named risks are treated as real exposures rather than as boilerplate, because they are tied to specific named technologies and a specific implemented policy change.",
+          "Segment revenue share is accepted as the profit/asset exposure proxy, since no chemistry-level split exists."
+        ],
+        "falsifiers": [
+          "A documented solid-state or sodium share shift away from CATL would confirm the substitution path.",
+          "A published penetration timeline would allow the speed question to be answered and could move this assessment decisively.",
+          "Evidence that sodium adoption stalls because lithium prices fall would show the hedge is conditional and the exposure remains open."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "deep row (cyclical_structural_change) re-researched from gap_terminated to a sourced partial: two specific structural changes identified with named company statements, segment exposure quantified, defences and their conditions documented; speed and required investment remain undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed; substitution speed and required defence investment undisclosed",
+          "competitor-side technology progress not verified (outside issuer disclosure and this package's scope)",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-TECHRISK-2026",
+        "FACT-RFC-SOLIDSTATE-2026",
+        "FACT-RFC-SODIUM-2026",
+        "FACT-RFC-POLICYCHANGE-2025",
+        "FACT-RFC-POLICYEXPOSURE-EV",
+        "FACT-RFC-EXPANSIONEXPOSURE",
+        "FACT-RFC-CHEMIPORTFOLIO",
+        "FACT-RFC-EXPOSURE-MIX-2026"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_19",
+      "question_id": "IQS_19",
+      "baseline_row_sha256": "3316766f0ecc32343ee536224d3e28b6f18872df247f3c7aa27f1a3acd8d2103",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "c63424dc2b6ffc1524de56af107ca9e4064d7119b3fd7b368a0657fb1dc2aa63",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_19",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2026-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (GWh, percent, RMB_million)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 一、2行业发展状况 (动力/储能/材料); 2、公司行业地位; 四、(1)(2)(3)业务",
+            "sought": "reachable demand, penetration boundary, new markets",
+            "outcome": "supported",
+            "note": "sourced market volumes, share gains by region, and new-segment deployments retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-07",
+            "locator_phrase": "问答 第1、9问 (销量结构, 产能建设与投产节奏)",
+            "sought": "volume trajectory and capacity bound",
+            "outcome": "supported",
+            "note": "combined volume +60%, storage ~1/4 of mix, 525GWh effective vs 764GWh under construction"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 三、主要法律法规及行业政策",
+            "sought": "whether demand is price/policy contingent",
+            "outcome": "supported",
+            "note": "取消强制配储 and 以旧换新 re-specification recorded as demand-conditional factors"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "growth_durability"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reachable demand is well evidenced at the aggregate and segment level: sourced market growth, confirmed share gains, volume growth about 60% into 94.86% of capacity, and delivered deployments in genuinely new segments (AI data centres, marine, low-altitude, swapping) rather than a generic TAM claim. That satisfies 'meaningful incremental space with boundaries'. It does not satisfy the quantity-and-price decomposition the question demands: no customer budgets, no unit realised price, and margins are declining, so what this demand is WORTH is not established. Much of the growth is share capture against a 16.3% market, which cannot persist. Partial, no score.",
+        "assumptions": [
+          "Third-party market figures cited inside official disclosure are treated as third-party, not company-verified.",
+          "Operating at ~95% utilisation is treated as evidence that demand currently exceeds deliverable supply."
+        ],
+        "falsifiers": [
+          "Evidence that share gains stall while market growth slows would materially reduce the incremental demand case.",
+          "Disclosure that new segments (AIDC, marine, aviation) remain immaterial in revenue would show the new demand is optionality rather than reachable volume."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; market growth, share, capacity bound and new-segment deployments retrieved; customer budgets and price/volume split undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-MARKETGROWTH-2026",
+        "FACT-RFC-OWNVOLUME-2026",
+        "FACT-RFC-SHARE-2026",
+        "FACT-RFC-NEWSCENES-2026",
+        "FACT-RFC-CAPACITYBOUND-2026",
+        "FACT-RFC-PRICE-CONTINGENT"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_20",
+      "question_id": "IQS_20",
+      "baseline_row_sha256": "d8a8d2c379bf5197412f68cdc4e14cfb5214e414228fbad47532355881930a5b",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "f0b94ca96c7e82be38547bc0306752c630360ebdb9c5fdf4a35fda5c5831e860",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_20",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, percent, GWh)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 四、1概述 (1)(2)(3); 2主要财务数据同比变动; 4占比10%以上产品",
+            "sought": "growth drivers from product to profit, unit economics, cannibalisation",
+            "outcome": "partial",
+            "note": "segment revenue and margin, profit growth and cash conversion retrieved; no price bridge or unit economics"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2收入与成本 (分产品); 四、(2)储能业务 (70+项目)",
+            "sought": "commercial stage and legacy-line evolution",
+            "outcome": "supported",
+            "note": "storage integration shipped 70+ projects and grew 160%+; materials revenue fell 23.83% at better margin"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-07",
+            "locator_phrase": "问答 第1、7问 (销量结构, AIDC)",
+            "sought": "new-business demand and mix",
+            "outcome": "supported",
+            "note": "combined volume +60%, storage about one quarter of mix; AIDC positioned as a new segment"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "growth_durability"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Growth has demonstrably converted to profit and repeat commercial adoption — the drivers are past pilot stage (70+ storage projects delivered, storage revenue +87.54%), deducted non-recurring profit grew 43%+, poor-return legacy volume was cut, and EPS still grew 39.38% despite share issuance. But the question explicitly requires the decomposition and the net shareholder effect: natural volume/price/M&A/FX split, new-business unit economics, legacy cannibalisation, and post-dilution effect. None is disclosed, and the observable direction is unfavourable — profit growth lags revenue by 12.8pp, every battery segment's margin fell, the fastest-growing line is below-average margin, and OCF grew only 2.61%. Partial, no score.",
+        "assumptions": [
+          "Segment revenue and margin are accepted as profit-pool evidence absent unit economics.",
+          "The absence of a disclosed price bridge is treated as a genuine limitation, not as evidence of no price effect."
+        ],
+        "falsifiers": [
+          "A disclosed price/volume bridge showing pricing rather than mix driving revenue would improve the case.",
+          "Continued profit growth lagging revenue growth would show the increment destroys margin."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; commercial conversion and profit growth evidenced; price/volume decomposition, unit economics and cannibalisation undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-GROWTHPROFIT-2026",
+        "FACT-RFC-MARGINLAG-2026",
+        "FACT-RFC-NEWBIZ-PROFIT",
+        "FACT-RFC-OLDBIZ-EROSION",
+        "FACT-RFC-INVESTMENTDRAG",
+        "FACT-RFC-DILUTION-GROWTH",
+        "FACT-RFC-EXCHANGEDRAG-2026"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_21",
+      "question_id": "IQS_21",
+      "baseline_row_sha256": "5ad540cd7de2312992fd435a7fe10f2b3690e09008dd4b82ad704da00c0d1718",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "8b02a0479dbc822ee1f8457d0bb85eb52e6526a42bfc4b43e9e7eeca52644f7a",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_21",
+        "rubric_version": "2.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, percent, GWh)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第二节 四、主要会计数据和财务指标 (ROE); 第三节 四、4占比10%以上产品; 七、投资状况分析",
+            "sought": "incremental versus historical returns, new-batch economics",
+            "outcome": "partial",
+            "note": "ROE, segment margins and investment totals retrieved; no per-project or per-GWh incremental return"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第9、10、11问 (资本开支规划, 海外单位投资强度, 匈牙利)",
+            "sought": "marginal capital cost and ramp economics",
+            "outcome": "partial",
+            "note": "confirms order-backed additions, higher overseas capital intensity and slow overseas yield ramp; no quantified marginal return"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-07",
+            "locator_phrase": "问答 第6、9问 (锂钠切换, 产能节奏)",
+            "sought": "cannibalisation and saturation boundary",
+            "outcome": "supported",
+            "note": "line switchability and the 525GWh/764GWh boundary retrieved"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "growth_durability"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Incremental returns are still attractive on the available evidence: annualised H1 2026 ROE is roughly in line with FY2025's 24.91% while equity grew, so new capital has not yet diluted returns, and reinvestment is order-backed with strong internal funding. But the question demands the incremental return NET of cannibalisation, transition capex, working capital and dilution — and none of that is quantifiable from disclosure: no new-batch economics, no exit/stranding cost, no transition capex. The observable direction is adverse: marginal segment margins are below base and falling, overseas capital intensity is higher, and 764GWh arrives into an industry the company calls abundantly supplied. Partial, no score.",
+        "assumptions": [
+          "Annualised H1 ROE is treated as a rough incremental-return indicator, not as a precise incremental ROIC.",
+          "Stated order-intent backing is accepted as a qualitative constraint on capacity additions."
+        ],
+        "falsifiers": [
+          "Disclosed marginal project returns below the cost of capital would show incremental value destruction.",
+          "A capacity glut after the 764GWh lands, with utilisation falling well below 90%, would confirm the saturation boundary was crossed."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; returns, funding, capacity boundary and cannibalisation evidence gathered; new-batch economics and exit costs undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-INCRETURN-2026",
+        "FACT-RFC-MARGINALCAPEX",
+        "FACT-RFC-MARGINALMARGIN",
+        "FACT-RFC-REINVESTSPACE",
+        "FACT-RFC-CANNIB",
+        "FACT-RFC-FUNDING"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_22",
+      "question_id": "IQS_22",
+      "baseline_row_sha256": "06eebd956e9f60c7298937dcde2b97fb6952b2be03cd25f6236cc53839a454ac",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "a9b61b2ca78ded226bf48b1cc6796222905455573eaf467c8a19c556baf4a389",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_22",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "security",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, RMB_per_share, percent)",
+          "currency": "CNY",
+          "unavailable_reason": "no source-verified market price retrieved within the cutoff under the lightweight official-source policy; a price would be needed to reverse-engineer implied expectations"
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第二节 四主要会计数据和财务指标; 第六节 股份变动及股东情况",
+            "sought": "quote date, equity boundary, capital structure for valuation",
+            "outcome": "partial",
+            "note": "EPS, book equity, share count and treasury stock retrieved; no market price exists in filings"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-07",
+            "locator_phrase": "问答 第8问 (回购方案原因)",
+            "sought": "management's view of the current price",
+            "outcome": "partial",
+            "note": "management states the share price has declined and that valuation does not match actual value, and cites a 573 RMB buyback ceiling — self-declared, not a verified market price"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025-ABSTRACT",
+            "locator_phrase": "二、(三)1; (四)1",
+            "sought": "any disclosed market price or capitalisation",
+            "outcome": "not_covered",
+            "note": "official filings carry no market price or market capitalisation figure"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "not_decidable",
+        "deep": true,
+        "deep_theme": "valuation_expectations"
+      },
+      "current_judgment": {
+        "answerability": "insufficient_evidence",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Information cutoff 2026-10-11 is known; a dated market-price observation with A/H listing basis is missing. This is insufficient evidence for implied expectations, not an unresolved cutoff. No third-party quote or guessed price is inserted.",
+        "assumptions": [
+          "No third-party price feed, quote page or search snippet is treated as a verified price.",
+          "A/H dual listing means a price basis would have to be specified before any valuation statement."
+        ],
+        "falsifiers": [
+          "A verified price on a dated quote basis, with the A/H basis stated, would make this row answerable and would allow the implied-expectation test to be run."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed research: fundamental inputs assembled but no official-source price within cutoff; recorded as cutoff_unresolved with the named missing input rather than filled; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no price retrieved; no score and no interval proposed",
+          "valuation itself is outside this package's evidenced scope and remains with the coordinator",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-EPS-2026H1",
+        "FACT-RFC-VAL-EPS-2025",
+        "FACT-RFC-BOOKVALUE",
+        "FACT-RFC-BUYBACKCAP-2026",
+        "FACT-RFC-NOPRICE"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_23",
+      "question_id": "IQS_23",
+      "baseline_row_sha256": "b656016ff837ff63bdb5b58289b5defe5f96084fa06f9a45cfb3710faa290f38",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "fe767d3e8bcf281a3fe007b382775a17e02d9799ef8dc4486b5efc88ab669bbe",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_23",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "security",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第六节 六、1资产构成重大变动情况; 第三节 十一、公司面临的风险和应对措施",
+            "sought": "downside exposure, asset recoverability, obligation ranking",
+            "outcome": "supported",
+            "note": "asset and debt components plus all four named risk channels retrieved; net liquidity computed"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025-ABSTRACT",
+            "locator_phrase": "二、(五)2债券评级; (五)3近2年主要会计数据和财务指标",
+            "sought": "credit standing and coverage in stress",
+            "outcome": "supported",
+            "note": "four ratings and coverage ratios retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 五、非主营业务情况 (资产减值)",
+            "sought": "evidence on recoverability of booked assets",
+            "outcome": "partial",
+            "note": "recurring impairments retrieved as counterevidence; no recoverable-amount analysis or normalised earnings"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Issuer-reported expansion, iteration and inventory/production risks warrant monitoring. The fixed-asset component has a management line-upgrade explanation, but the whole impairment does not prove recurring obsolescence or establish causal economics. Source-original and operating measures remain unverified; partial, no score.",
+        "assumptions": [
+          "Net liquidity is computed as monetary funds + trading financial assets - interest-bearing borrowings, stated explicitly and not treated as cash equivalents.",
+          "Impairments are treated as evidence about recoverability, not merely as accounting noise."
+        ],
+        "falsifiers": [
+          "A disclosed normalised mid-cycle earnings estimate would allow the recovery-value test to be completed.",
+          "A demand downcycle accompanied by large further inventory or line write-downs would materially raise permanent-loss probability."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; obligation and liquidity side quantified; conservative recovery value not derivable from disclosure; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed; no normalised earnings or recoverability analysis available",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-DOWNSIDE-CUSHION",
+        "FACT-RFC-ASSET-BACKING",
+        "FACT-RFC-CREDIT-STRENGTH",
+        "FACT-RFC-DOWNSIDE-RISK",
+        "FACT-RFC-DOWNSIDE-IMPAIR",
+        "FACT-RFC-DOWNSIDE-DILUTION",
+        "FACT-RFC-DOWNSIDE-PRICECONTINGENT",
+        "FACT-RFC-DOWNSIDE-IMPAIR-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-IQS_24",
+      "question_id": "IQS_24",
+      "baseline_row_sha256": "abbf32865eeabf80cc992ada8a017603e6e20c4acd8d16c158abd2a0164b8b93",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "d82114b9fd3821125b3f49103d864956d0554f5ad683d70ecdb30b3b43d350d3",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.iqs_24",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2023-01-01",
+          "period_end": "2026-06-30",
+          "scope": "security",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, RMB_per_share, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第四节 二、利润分配及资本公积金转增股本情况; 第三节 十四、质量回报双提升 1、2",
+            "sought": "dividend, buyback and asset-release path to shareholders",
+            "outcome": "supported",
+            "note": "both dividend settlements, payout ratios and the cancellation buyback retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025-ABSTRACT",
+            "locator_phrase": "二、(三)1 (EPS track); 一、(六)利润分配预案",
+            "sought": "sustained per-share growth",
+            "outcome": "supported",
+            "note": "three-year EPS series and the FY2025 distribution plan retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-07",
+            "locator_phrase": "问答 第8问",
+            "sought": "whether distributions are committed and the holding-period frame",
+            "outcome": "partial",
+            "note": "management confirms the buyback is decided case by case; no hurdle rate or holding-period guidance anywhere"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The transmission path is now concretely documented: multi-period per-share earnings growth, large recurring cash dividends actually paid on both share classes at 50% of net profit for three consecutive years, a new buyback explicitly for cancellation to raise EPS, and no remittance obstacle in practice. That satisfies most of the mechanism demands. It does not satisfy the timing and opportunity-cost demand — no hurdle rate or holding-period guidance exists — and the buyback is admittedly discretionary rather than a standing commitment, while historical dilution and line write-downs show part of the capital never reaches shareholders. Partial, no score.",
+        "assumptions": [
+          "Dividend practice repeated for three years is treated as evidence of intent, while noting it is not a contractual commitment.",
+          "Cancellation buybacks are treated as the per-share-accretive mechanism the question asks about."
+        ],
+        "falsifiers": [
+          "Abandonment of the 50% dividend practice or non-execution of the announced buyback would directly contradict this.",
+          "Evidence that distributions are funded by debt rather than cash generation would weaken the durability case."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; dividend, buyback-cancellation, EPS track and remittance evidence gathered; no hurdle rate or holding guidance disclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-DIVTRACK-2026",
+        "FACT-RFC-BUYBACKCANCEL2",
+        "FACT-RFC-EPSTRACK-2026",
+        "FACT-RFC-REMITTANCE",
+        "FACT-RFC-FAILEDEXIT",
+        "FACT-RFC-HOLDCOST"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-OPERATING_01",
+      "question_id": "OPERATING_01",
+      "baseline_row_sha256": "c8b0f84a7fe535c62a64ae5074f3f7d1dfd280d1b09449eef68a474bc829cea5",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "7f3e1d6935f2457d5648e55f82b502dadcc71e9c011ef9952126fe76cb64e3c1",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.operating_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、5现金流; 六、1资产构成重大变动情况 (存货/应收账款)",
+            "sought": "operating cash flow after maintenance capex and necessary working capital",
+            "outcome": "partial",
+            "note": "OCF and full working-capital movement retrieved; capex line is in 第八节 and not retrievable, maintenance/growth split absent"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 四、2主要财务数据同比变动情况; 六、1资产构成重大变动情况",
+            "sought": "most recent cash conversion",
+            "outcome": "supported",
+            "note": "H1 2026 OCF 60,216,851千元 (+2.61%) against revenue +54.80%; inventory and receivables both up"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第6问 (产量与销量差额)",
+            "sought": "whether inventory build is necessary or discretionary",
+            "outcome": "partial",
+            "note": "management explains the gap as goods in transit plus storage commissioning cycles and cites ~3-month turnover"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "合并现金流量表：经营现金净额、购建长期资产现金支出",
+            "sought": "total cash capex rather than investment outflow",
+            "outcome": "partial",
+            "note": "Reader confirmed 42344558 thousand CNY in republication; no original authentication or maintenance/growth decomposition."
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "cash_quality"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Cash capex and OCF are present in the republication; simple FCF is provisionally 90,875.424m CNY. Maintenance/growth split and original-source corroboration remain unresolved, so this does not answer cash after necessary investment and no score is proposed.",
+        "assumptions": [
+          "Total cash capex is not maintenance capex."
+        ],
+        "falsifiers": [
+          "Verified capex and working-capital decomposition can establish the relevant cash generation."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "deep row (cash_quality) re-researched: working-capital, receivables, inventory-turnover and H1 conversion added; capex still unavailable and recorded as a named gap; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed; capex and maintenance/growth split unavailable",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-OCF-2025",
+        "FACT-RFC-INV-2025",
+        "FACT-RFC-INVTURN-2026",
+        "FACT-RFC-H1OCF-2026",
+        "FACT-RFC-CAPEX-GAP-2025",
+        "FACT-RFC-CAPEX-GAP-2025-CORR1",
+        "FACT-RFC-RECEIVABLE-2025",
+        "FACT-RFC-CASH-CAPEX-2025-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-OPERATING_02",
+      "question_id": "OPERATING_02",
+      "baseline_row_sha256": "dfd959bbbfaedc245e1d04c895ab9a79764f16bf0ae1be8c7bb9a99c1aa83370",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "191ae5eff6f6094e22254d8d8e626a97ecbbf34562a66b3382ecd80fcf1898f8",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.operating_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2025-12-31",
+          "scope": "segment",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, GWh, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(2)1)营业收入及营业成本整体情况 + 四、1、概述 (动力/储能销量)",
+            "sought": "unit economics per product on a full-cycle basis",
+            "outcome": "partial",
+            "note": "segment revenue, segment cost and segment volumes retrieved; unit values derived. Selling/after-sales/warranty/depreciation per unit not disclosed"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第5、6、8问",
+            "sought": "scale economics, delivery cycle, depreciation/write-down drivers",
+            "outcome": "supported",
+            "note": "management cites scale benefits, ~3-month turnover with 6-month-plus storage cycles, and technology-upgrade write-downs"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 四、4、占比10%以上的产品或服务情况",
+            "sought": "current segment margin run-rate",
+            "outcome": "supported",
+            "note": "H1 2026 power 20.63% and storage 23.96%, both down YoY"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Issuer-reported expansion, iteration and inventory/production risks warrant monitoring. The fixed-asset component has a management line-upgrade explanation, but the whole impairment does not prove recurring obsolescence or establish causal economics. Source-original and operating measures remain unverified; partial, no score.",
+        "assumptions": [
+          "Disclosed segment volume equals segment sales volume (the report presents these under one 电池系统 volume table and states 销售量 661GWh against power 541 + storage 121).",
+          "Derived per-kWh figures are labelled as implied, never presented as company-disclosed unit prices."
+        ],
+        "falsifiers": [
+          "If a segment's volume includes cells sold into the other segment, the implied unit economics would be distorted.",
+          "Confirmed further margin compression in FY2026 would show the mature-batch spread is not repeatable."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; unit figures are explicitly derived, full-cost and payback elements genuinely undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "per-kWh values are implied proxies, not disclosed unit prices",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-SEGREV-POWER-2025",
+        "FACT-RFC-SEGREV-ESS-2025",
+        "FACT-RFC-SEGMIX-2025",
+        "FACT-RFC-SEGMARGIN-H1-2026",
+        "FACT-RFC-Q4IMPAIR-2025",
+        "FACT-RFC-SCALEUNIT-2026"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-AUTO_01",
+      "question_id": "AUTO_01",
+      "baseline_row_sha256": "4048f7af8f9aa8d596be984a4087f4604199b6afc16a37cdc94452a6bc8444a0",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "238214a7d038511c021dc45421537989c2ed51c13be37a50621ad5df82c19c59",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.auto_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "segment",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_million, RMB_per_kWh, GWh, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(2)1)营业收入及营业成本; (5)营业成本构成; 3、费用; 4、研发投入",
+            "sought": "net price, material, promotion, R&D per product lifecycle",
+            "outcome": "partial",
+            "note": "segment revenue/cost, direct material share, selling expense and R&D retrieved; warranty provision and platform amortisation absent"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 四、4占比10%以上的产品或服务; 2主要财务数据同比变动",
+            "sought": "current lifecycle spread",
+            "outcome": "supported",
+            "note": "H1 2026 power margin 20.63% (-1.78pp) retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第2、3、8问",
+            "sought": "price pass-through, rebates and warranty/quality cost",
+            "outcome": "partial",
+            "note": "price-linkage and rebate stability stated; no warranty provision or claim cost disclosed"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "A net-price-versus-material spread is now derivable and positive (139.4 RMB/kWh at 23.84% in FY2025), promotion intensity is genuinely low at 0.88% of revenue, and platform reuse is evidenced across 40+ models and 30+ truck models. So 'healthy return after promotion and R&D' is partly supportable. The question, however, explicitly requires warranty cost and platform amortisation, and NEITHER is disclosed — no warranty provision, no claim rate, no per-platform amortisation. Meanwhile the margin is compressing and prior-generation tooling is being written off. Partial, no score.",
+        "assumptions": [
+          "Implied per-kWh values are derived from disclosed segment revenue and volume and are labelled as implied, not disclosed prices.",
+          "R&D is treated as expensed lifecycle cost since no significant capitalisation change is reported."
+        ],
+        "falsifiers": [
+          "A disclosed warranty provision materially above expectations would reduce the lifecycle return.",
+          "Further margin compression at constant mix would show the spread is not defensible."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; derived net price/material cost, promotion intensity and platform reuse retrieved; warranty and amortisation genuinely undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "per-kWh values are implied proxies, not disclosed prices",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-AUTOPRICE",
+        "FACT-RFC-AUTOMARGIN-2026",
+        "FACT-RFC-AUTORND",
+        "FACT-RFC-AUTORND-CORR1",
+        "FACT-RFC-AUTOPLATFORM",
+        "FACT-RFC-AUTOPROMO",
+        "FACT-RFC-AUTOPROMO-CORR1",
+        "FACT-RFC-AUTOWARRANTY",
+        "FACT-RFC-AUTOWARRANTY-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-AUTO_02",
+      "question_id": "AUTO_02",
+      "baseline_row_sha256": "d22f9d2234825f4e91077843f9dbb596880e0cb84c89d5ab14f467519c0e4c2f",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "9c7936d80230a62c5d9b30cf80a25104dfedb522c9ccdc1178972164e1f8da84",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.auto_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2017-01-01",
+          "period_end": "2026-06-30",
+          "scope": "segment",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (percent, GWh, RMB_million)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、1概述(1)(2); 四、4研发投入(1); 二、2公司行业地位; 四、2、(2)3)关键技术指标",
+            "sought": "advantage across product and technology cycles, platform reuse, quality",
+            "outcome": "supported",
+            "note": "multi-generation products, 40+ REV models, certifications and the nine-year share record retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 三、核心竞争力分析; 四、(1)(2); 一、2公司行业地位",
+            "sought": "current-cycle durability of the advantage",
+            "outcome": "supported",
+            "note": "3rd-gen products at 15C, overseas 定点, share rising while segment margin fell 1.78pp"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第11、12、13问 (匈牙利良率, 固态电池, 587Ah)",
+            "sought": "next technology cycle and manufacturing transferability",
+            "outcome": "partial",
+            "note": "solid-state unresolved and slow; overseas yield ramp needs time — next-cycle test remains open"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": true,
+        "deep_theme": "sustained_advantage"
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reported product reuse and share history suggest durability worth examining, but issuer-reported certifications do not independently prove field quality or future-cycle advantage. Economic persistence remains partial; no score.",
+        "assumptions": [
+          "Design wins and certifications are leads, not independently verified performance."
+        ],
+        "falsifiers": [
+          "Verified customer losses, field failures or alternative technology economics can falsify the durability thesis."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "deep row (sustained_advantage) re-researched: multi-generation specifications, platform reuse across model families, nine-year share record, external certification and the declining unit economics recorded; cross-cycle economic and peer data unavailable; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no cross-cycle cost/yield data or peer comparison",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-AUTO2MULTIGEN",
+        "FACT-RFC-AUTO2CUSTOMERPOINT",
+        "FACT-RFC-AUTO2SHARE9Y",
+        "FACT-RFC-AUTO2QUALITY",
+        "FACT-RFC-AUTO2QUALITY-CORR1",
+        "FACT-RFC-AUTO2MARGIN",
+        "FACT-RFC-AUTO2MARGIN-CORR1",
+        "FACT-RFC-AUTO2TECHROUTE",
+        "FACT-RFC-AUTO2OBSOLESCENCE",
+        "FACT-RFC-AUTO2OBSOLESCENCE-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-ENERGY_TRANSITION_01",
+      "question_id": "ENERGY_TRANSITION_01",
+      "baseline_row_sha256": "eb8dd62f39034935b35d04cee1444e901e41de91384c386b6b3fbfcdf46fac11",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "164d3abab18d12bbbf81457f7664ba4ba33978212c3f7eb593d511a94825eebf",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.energy_transition_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "segment",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (RMB_per_kWh, MWh, GWh, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(2)1)营业收入及营业成本 (储能); 四、(2)储能业务; 三、主要法律法规及行业政策",
+            "sought": "project economics, subsidy dependence, cost and degradation",
+            "outcome": "partial",
+            "note": "segment revenue/cost/margin, cost-reduction mechanisms and the 取消强制配储 policy retrieved; no LCOS, IRR or field degradation"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 一、2(2)储能行业; 四、(2)储能业务; 四、4占比10%以上产品",
+            "sought": "current storage economics and demand",
+            "outcome": "supported",
+            "note": "H1 2026 storage revenue +87.54%, margin 23.96%, cost +91.46%, 486GWh market +93%"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第13问 (587Ah大电芯降本)",
+            "sought": "degree of cost reduction from cell scale-up",
+            "outcome": "partial",
+            "note": "587Ah gives ~50% higher whole-life throughput vs 314Ah and is the current capacity sweet spot; no per-MWh cost figure"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Reported growth and product improvements justify further research, but are not proof of subsidy-independent project economics. Mandatory configuration, subsidies and capacity pricing are distinct mechanisms. No LCOS/IRR or independent field-performance conclusion and no score.",
+        "assumptions": [
+          "Segment margin is not used as a project IRR/LCOS proxy."
+        ],
+        "falsifiers": [
+          "Verified projects below hurdle returns or poor utilisation would falsify the economics thesis."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; subsidy removal, derived unit economics, cost mechanisms and a named customer outcome gathered; LCOS/IRR/degradation undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "per-kWh values are implied proxies; no LCOS or IRR available",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-ESSPRICE",
+        "FACT-RFC-ESSPOLICY",
+        "FACT-RFC-ESSPOLICY-CORR1",
+        "FACT-RFC-ESSTECH",
+        "FACT-RFC-ESSDEMAND",
+        "FACT-RFC-ESSDEMAND-CORR1",
+        "FACT-RFC-ESSUTIL",
+        "FACT-RFC-ESSUTIL-CORR1",
+        "FACT-RFC-ESSMARGINRISK"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-ENERGY_TRANSITION_02",
+      "question_id": "ENERGY_TRANSITION_02",
+      "baseline_row_sha256": "1bee1eae57e443b4e3ba3d3a608408876433c82f6599d0f9f0c88b8aedb4e4c2",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "2a3ff9a4e5eaa149d1e32a4a20a486e3e4dfa8f64f0acdc0e5433bce27133ead",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.energy_transition_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "segment",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (percent, GWh, RMB_million)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、1概述(1); 四、4研发投入(1)(3); 四、2、(2)3)关键技术或性能指标; 三、核心竞争力分析",
+            "sought": "generations, yield, life, cost curve, substitute technology",
+            "outcome": "partial",
+            "note": "generations, specifications, cost mechanisms and quality claims retrieved; no yield or field-degradation data"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 三、核心竞争力分析; 四、(1)(2)动力/储能业务; 一、2公司行业地位",
+            "sought": "iteration through the expansion phase",
+            "outcome": "supported",
+            "note": "3rd-gen products at 15C, rising share 40.2%/33.7%, 587Ah scale delivery"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第11、12、13问 (匈牙利良率, 固态电池, 587Ah降本)",
+            "sought": "yield evidence and substitute technology",
+            "outcome": "partial",
+            "note": "overseas yield ramp needs time; solid-state has unresolved engineering problems; 587Ah throughput gain given but no yield number"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Issuer-reported expansion, iteration and inventory/production risks warrant monitoring. The fixed-asset component has a management line-upgrade explanation, but the whole impairment does not prove recurring obsolescence or establish causal economics. Source-original and operating measures remain unverified; partial, no score.",
+        "assumptions": [
+          "Named external certifications are treated as verified quality gates.",
+          "Product specification comparisons are accepted as iteration evidence while noting no yield data exists."
+        ],
+        "falsifiers": [
+          "A disclosed yield figure materially below peers would contradict the advantage claim.",
+          "A competitor achieving comparable specifications at lower cost would undermine the cost-curve claim."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; generations, cost mechanisms, certifications, share and obsolescence gathered; yield and field degradation undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no absolute yield data exists in disclosure",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-ET2GEN",
+        "FACT-RFC-ET2COST",
+        "FACT-RFC-ET2CERT",
+        "FACT-RFC-ET2SHARE",
+        "FACT-RFC-ET2YIELD",
+        "FACT-RFC-ET2SUBSTITUTE",
+        "FACT-RFC-ET2OBSOLESCE",
+        "FACT-RFC-ET2OBSOLESCE-CORR1"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-SCALING_01",
+      "question_id": "SCALING_01",
+      "baseline_row_sha256": "ccf1fe78f92c8b53bca9143e8a1e0f2660ef2bc6867a4f79785d987e057e5fec",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "0e1fa14e175662d45e9c9af712f69dc3a8919af43fe930dfb17804a4e8c85db0",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.scaling_01",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (GWh, RMB_million, percent)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 一、2行业发展状况; 四、4占比10%以上产品; 四、5产销情况",
+            "sought": "marginal batches, utilisation, penetration",
+            "outcome": "supported",
+            "note": "utilisation, segment margins, penetration and market growth retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(2)5)产销情况; 四、1概述",
+            "sought": "expansion absorption",
+            "outcome": "supported",
+            "note": "FY2025 utilisation 96.9% with capacity 772GWh and sales 661GWh"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-07",
+            "locator_phrase": "问答 第9问 (产能建设和投产节奏)",
+            "sought": "saturation boundary",
+            "outcome": "supported",
+            "note": "utilisation basically saturated; 764GWh mostly within two years"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "Marginal expansion is currently being absorbed (utilisation above 94.8% through the build) and is not being bought with rising acquisition cost, so expansion is not yet failing. But the question asks whether marginal RETURNS hold and whether expansion is approaching a boundary. Marginal segment margins fell 1.56-1.78pp as scale rose, overseas capital intensity is higher, core-market penetration is already 55.4%, and the company itself calls utilisation basically saturated while 764GWh arrives into an abundantly supplied industry. So expansion has not broken returns but the boundary is visibly approaching and marginal profitability is declining. Partial, no score.",
+        "assumptions": [
+          "Segment gross margin is used as the marginal profitability proxy absent batch-level disclosure.",
+          "High utilisation is treated as evidence of absorption, not of pricing power."
+        ],
+        "falsifiers": [
+          "Utilisation falling materially below 90% after the 764GWh lands would confirm the boundary was crossed.",
+          "Further margin decline with rising volume would show marginal returns deteriorating."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; utilisation, marginal margin, acquisition cost and penetration retrieved; batch-level marginal economics undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-SCALEMARGIN",
+        "FACT-RFC-SCALEUTIL",
+        "FACT-RFC-SCALEPENETRATION",
+        "FACT-RFC-SCALECOST",
+        "FACT-RFC-SCALESATURATION"
+      ]
+    },
+    {
+      "reference_id": "FR-CATL-SCALING_02",
+      "question_id": "SCALING_02",
+      "baseline_row_sha256": "23278af0d357a9a1d58f371d2b62125ea501ba480fdd02a22e33585c1608dea8",
+      "binding": {
+        "company_key": "catl",
+        "legal_issuer_name": "宁德时代新能源科技股份有限公司",
+        "listing_note": "300750 listed on XSHE (Shenzhen Stock Exchange); A-share.",
+        "question_text_sha256": "b45566af57345a9cde7d96fff012655b43368d1df67c0f0ff15764b04cad5be9",
+        "manifest_raw_sha256": "4653ba4a62ff7630a6ef67634123005b1b43788405f36088731f6edabd3be032",
+        "metric_id": "score.scaling_02",
+        "rubric_version": "1.0.0",
+        "rubric_release_hash": null,
+        "time_basis": {
+          "information_cutoff": "2026-10-11",
+          "period_start": "2025-01-01",
+          "period_end": "2026-06-30",
+          "scope": "consolidated",
+          "accounting_basis": "PRC GAAP as described by republished issuer disclosure; original audit not independently authenticated",
+          "unit": "mixed (persons, GWh, percent, RMB_million)",
+          "currency": "CNY",
+          "unavailable_reason": null
+        }
+      },
+      "current_research": {
+        "directed_attempts": [
+          {
+            "source_id": "SRC-RFC-AR2025",
+            "locator_phrase": "第三节 四、2、(2)5)产销情况; 四、4研发投入(2)研发人员; 三、核心竞争力分析",
+            "sought": "organisational capacity, delivery and talent through scale-up",
+            "outcome": "supported",
+            "note": "production, utilisation, headcount growth and R&D centre count retrieved"
+          },
+          {
+            "source_id": "SRC-RFC-H1-2026",
+            "locator_phrase": "第三节 七、6(2)衍生品投资 风险控制; 第四节 三、1股权激励",
+            "sought": "systems, controls and personnel standards",
+            "outcome": "supported",
+            "note": "three-tier hedging governance with net gain; incentive forfeitures show enforced standards"
+          },
+          {
+            "source_id": "SRC-RFC-IR-2026-03",
+            "locator_phrase": "问答 第7、11问",
+            "sought": "bottlenecks and execution limits",
+            "outcome": "supported",
+            "note": "order spillover from capacity shortage and slow Hungary yield ramp recorded as strain evidence"
+          }
+        ],
+        "research_status": "research_completed",
+        "termination_reason": null,
+        "verification_status": "partially_decidable",
+        "deep": false,
+        "deep_theme": null
+      },
+      "current_judgment": {
+        "answerability": "partial",
+        "expected_score": null,
+        "score_status": "null_default",
+        "score_interval": null,
+        "anchor_reason": "The organisation has demonstrably kept up across repeated expansion: two consecutive periods of near-full utilisation with production of 748GWh and 498GWh, headcount and R&D growing in step, formal risk governance delivering small gains rather than losses, enforced personnel standards, and no disclosed system failure or control weakness. That supports 'organisation matches growth'. But the question also demands delivery and system reliability evidence, and none of lead times, uptime, spans of control or quality metrics are disclosed. Meanwhile management itself reports order spillover from capacity shortage and an unproven overseas ramp, so the strain is admitted even if not quantified. Partial, no score.",
+        "assumptions": [
+          "Absence of a disclosed control failure is treated as neutral-to-positive, not as proof of reliability.",
+          "Production near capacity is treated as delivery evidence, not quality evidence."
+        ],
+        "falsifiers": [
+          "A disclosed delivery delay, recall or system outage would directly contradict this.",
+          "Failure to stabilise yield at the overseas plants would show organisational capability does not transfer."
+        ]
+      },
+      "current_review": {
+        "drafted_by": "iqs-reference-catl-lab:fin-catl-02",
+        "independent_review": "needs_revision",
+        "review_notes": "per-question directed official-HTML research; delivery, headcount, governance and strain evidence gathered; spans, uptime and lead times undisclosed; coordinator independent source review found corrections; repaired research remains provisional pending original-source corroboration.",
+        "limitations": [
+          "independent fact-then-score review not run; not verified gold",
+          "no score proposed",
+          "Five Sina republications are preliminary source leads, not independently authenticated official originals; supported means text-supported in the cited page only, not verified gold."
+        ]
+      },
+      "fact_ids": [
+        "FACT-RFC-SCALEORG",
+        "FACT-RFC-SCALEDELIVERY",
+        "FACT-RFC-SCALEGEOCONTROL",
+        "FACT-RFC-SCALEBOTTLENECK",
+        "FACT-RFC-SCALETALENT",
+        "FACT-RFC-SCALESYSTEMFAIL"
+      ]
+    }
+  ],
+  "foreign_reference_hashes": {
+    "FR-ALPHABET-IQS_01": "3d005942779d9ebe32d4dea48a00d8a6c1134176f419ce92aaaae51490113cb7",
+    "FR-ALPHABET-IQS_02": "4d90239d7a173d3bcbef5f32dd19405327485ed3bf34066fc4f3cb5710616740",
+    "FR-ALPHABET-IQS_04": "39d047abbca8a7b35dd2c8238186ee0dc3331b90f62c79b12a85d74a881b5106",
+    "FR-ALPHABET-IQS_05": "9c2ad50cec31e3d3472430235a92f216ea582ff0fb983bed1f4a295b36b9cc0d",
+    "FR-ALPHABET-IQS_06": "738bb353cd33fe209cad2cab8573d4193ba096e3a1590f720b9bbd3a1fcff8d8",
+    "FR-ALPHABET-IQS_07": "77065b188c152359a560ed085952da988c3d9494744c017cc0b30180cb720344",
+    "FR-ALPHABET-IQS_08": "549a425a07a2bae3f7ca0bf535a4f83d3689037cdd1637513e5694b237c644b2",
+    "FR-ALPHABET-IQS_09": "1fe003fb91e45df1f5a48ae4e91e427e8a9f8c110c10846bb231b5df600491ed",
+    "FR-ALPHABET-IQS_10": "5a4713e257a1ef02d6bee2e89b0d4b39d60aa23d3da4c893ec137dcdd7e0f0fe",
+    "FR-ALPHABET-IQS_12": "4fdd85d5ef47e7424cbf40d46ef5ce7956c6ee71183cec4830f5b46591f46445",
+    "FR-ALPHABET-IQS_13": "19143bf3b5b05ea26c87f70a4463707779daec4844cd1259174386a02e0c08df",
+    "FR-ALPHABET-IQS_14": "d7391eb9990a5c6431b629db23fc91977c3578008a69e92b44556649bc5787ad",
+    "FR-ALPHABET-IQS_15": "d23cb466d8894bcf44ff8d30f6e5e56f403fe5a9b8c3f8a9c8b5c77825f64392",
+    "FR-ALPHABET-IQS_16": "43f06b14091924a4ab52436cd72f48f4d3d53252211ec14687a0a90bd1f78d9f",
+    "FR-ALPHABET-IQS_17": "e2440f53af6e296315f4b9cd98fd0309d42186b424223003fe4e835cedf80406",
+    "FR-ALPHABET-IQS_18": "5bf38c1e02b3579d815a7dd800686fba115c39998c2726ad2b155ae4c0d22788",
+    "FR-ALPHABET-IQS_19": "98ca1e9169658a8b860099b887493f4a6b94b4f26311e0a7686965048fea303c",
+    "FR-ALPHABET-IQS_20": "d87e49927c13c9fbb348d9e17b093fa1d134c84fedf02b170279236cb00f071b",
+    "FR-ALPHABET-IQS_21": "28eb08d3c8d5979253fbfcae34b02b220db0fbbc5c97b567ca64383393c28bb4",
+    "FR-ALPHABET-IQS_22": "b9d088b1a1007e42f674fe40d9067b5656bff2e1378caeba75517eff87e00ea2",
+    "FR-ALPHABET-IQS_23": "17cd1b268b907c81f110dda4766ca93522628584cb2cfa05c43c2bd7c726180a",
+    "FR-ALPHABET-IQS_24": "d319be4cbff9e95fbfd80ab875f5b7195eac86044a13f99ad8199aedb4df129a",
+    "FR-ALPHABET-OPERATING_01": "1f8930638b19dc50723754a078971be7f37aecb8a14615e2d5e2df901e8dc1e5",
+    "FR-ALPHABET-OPERATING_02": "678937feab33471c9ad393c45812717a693ff0ff8bd9f48fa4332c9d8dd300ac",
+    "FR-ALPHABET-INTERNET_01": "15dd63c04d991a51d360d97e96505a42c106f57f1086e0081c1f44e631c5d1ea",
+    "FR-ALPHABET-INTERNET_02": "b7b893603b549fb1c08b43dd333cf90ab068d0908622aab941e54b03abe9b047",
+    "FR-ALPHABET-SOFTWARE_01": "4b0774dec284955f4e8e75ca601aeca332e6fccc25b6a109e250ef00f28768c0",
+    "FR-ALPHABET-SOFTWARE_02": "1ecee80936c05e1d260501c74b69ab6dd7017e20f11dc08799c1fd787d19e7e1",
+    "FR-ALPHABET-SCALING_01": "3431d513732938979f7b5891f91b3071940c722d63ab55b2475f5f54ba5aa915",
+    "FR-ALPHABET-SCALING_02": "36b0e95bd59f884c745c0c5d9da797e56d2a5ad9d25f7e13b25d43f0eeb7de2a",
+    "FR-CNCB_H-IQS_01": "28e93693ac8de54df5be8f2d2622cb5aa0e9a1e4924700cb8adafffceca586cc",
+    "FR-CNCB_H-IQS_02": "1ece4641278b36aa45fb64e54ab8fc37b22c6a863891aec743be998994421b1d",
+    "FR-CNCB_H-IQS_04": "8b1d87d8d80a75265d45b9d8b18be9143cca633700ff35f0ee40433928e0c3fb",
+    "FR-CNCB_H-IQS_05": "fe3135a9e509500c044dca37ab037f451e1a785da0a8f5e4c342b17cb5569136",
+    "FR-CNCB_H-IQS_06": "48bc8b4ff47b5e5c9e178c3ae31d74e12182997898badf72e96c16e94e4093f2",
+    "FR-CNCB_H-IQS_07": "bae5e2f25e6b2a69fa6de00ce5e7a6935d527318e4dbdfd881e6f08c09714dd0",
+    "FR-CNCB_H-IQS_08": "a453e6d158ae05a6020e9c3a5ae323a17d414a037ee1cd7cacc3ec1df2491b81",
+    "FR-CNCB_H-IQS_09": "514ddd45a724c2c1a504fa65ceaf136b7d0d32d6422302590aeed1a8aa36ae4b",
+    "FR-CNCB_H-IQS_10": "18c7c18eca6b460765aa14201752a3cb46462b5bb56f0c4354de9dc5adb1c8ea",
+    "FR-CNCB_H-IQS_12": "ea2d123ed691090853108f9b1c1631ecfd49b9cdc1dde0555798f4ff02cd8c91",
+    "FR-CNCB_H-IQS_13": "dc1b8ee67d2ea3a5a64c69f0caac0111c40261583e39bba75c86890c12123cf3",
+    "FR-CNCB_H-IQS_14": "af024349bc497a973b850f297f4286a85a0a5173a028afe39d4a1a0aea5b6308",
+    "FR-CNCB_H-IQS_15": "123b032d0cd18fd61f80aa0a917550b47b91f32ea0de7a8175cb9512b448b253",
+    "FR-CNCB_H-IQS_17": "4fb215f07c834e05350e0856a7edc062b1c62f6b01a043f4e483a7359f82361e",
+    "FR-CNCB_H-IQS_18": "2b8366a14e3766428671c44873fd4098a2bbfdc1d9c335e755c9365313ac219e",
+    "FR-CNCB_H-IQS_19": "f031c73f84c08ae31187bf15654942b7acce0edd698c2200c65e7397af833233",
+    "FR-CNCB_H-IQS_20": "bae0f3acaf5b7089800a0c66c6b89f7770afa1f72891c0ac958ebd627cedab5c",
+    "FR-CNCB_H-IQS_21": "090c9a903606b191192c8c1ffdf554c031bcd841532ab7c469f99537e1f407d1",
+    "FR-CNCB_H-IQS_23": "4aa2a4c2726d5c8abf8500005601d9aba98922d297c2db13d3a640e6fdbf61fa",
+    "FR-CNCB_H-IQS_24": "fa24e616facf6dcc9567f32366eb89d444e17313d1022d0ba1275f54327a7f2d",
+    "FR-CNCB_H-CAPITAL_MARKETS_01": "3583f3ec2e12471af04106a1584c295e2b2e261c658bc99898cebacca912b418",
+    "FR-CNCB_H-CAPITAL_MARKETS_02": "113e9f0afa35ef738b2dd17370203f132ffd53205c964003f4160cb5bea091c4",
+    "FR-CNCB_H-CAPITAL_MARKETS_03": "3df3593ec168909ddd9ae27e013f6417f7bfb68f7d96f1928f2bfadcd117c6d6",
+    "FR-CNCB_H-CAPITAL_MARKETS_04": "bc836c8dc608dc8333caee2ea3a396fedddb24c0c8f342f6120e6a312c94df95",
+    "FR-CNCB_H-CAPITAL_MARKETS_05": "88cc4fc6c0fe378d0907aa72c7d6839131d4692673f4bb0d033ff5c47b620795",
+    "FR-CNCB_H-CAPITAL_MARKETS_06": "27a4213714226a641d8c5eed9bdb3b2aa5022f41a3dcec137b1a0a0b2122034a",
+    "FR-CNCB_H-CYCLICAL_01": "7fdde4a8ebeb6ddf16a3d269979f13bc54e5ff3b86cc6baebd4631a32325a1a1",
+    "FR-CNCB_H-CYCLICAL_02": "fd0c8df71704fb188bdddc9f05fc76a8d1e052f5ea8e64470f282ac157b2b70e",
+    "FR-CNCB_H-CYCLICAL_03": "1fde6f71414b744635d74ff2bb5daec0211497031d6d476bf7fe947125e77132",
+    "FR-CNCB_H-CYCLICAL_04": "c81cc1628054eb95473c2a1fcce3ba0c81cb6bd611ed07b0b80180af360018d3"
+  },
+  "baseline_source_hashes": {
+    "SRC-CATL-CNINFO": "8d3185f0fd909286cb08da936210521bf3032c2b0804aff5e9ab8b2b82fb0ba8",
+    "SRC-CATL-IR": "4afb3253d2677cfe82f39826bd50ed7a919c1c235fd6b648cdd9b129665c4968",
+    "SRC-CATL-NEWS": "f87ade3760aeb0761305b855ab877329dec7a6e6b6ca4ad6475ae802357662f2",
+    "SRC-CNCB-CSC": "6770fb139383aaa627d91d370295deca13161ef73c7f12289e12934ffbd9f230",
+    "SRC-CNCB-HKEX": "c92cb7302e9d83e5c5b37cbda01d3e13480eaf81ccfa7b69f7dc91dcd584e56d",
+    "SRC-RFA-10K-BUYBACK": "937e5178dd16ef730772c3c76cc3b0be604978ca72d725382c136a5cfeef1d57",
+    "SRC-RFA-10K-COMMIT": "e07198816a040398ed7d80186251fc897d1a72e2983cb55c4e2cd81958aee4de",
+    "SRC-RFA-10K-CONTING": "24be8a117b081d4c4e069961e64aa249840a442b59d33c8073a796029edcd38d",
+    "SRC-RFA-10K-DEBTMAT": "bb3fe1940b466a348033c8faf08a6e35372e30a45aa14505acaa78928c8cc691",
+    "SRC-RFA-10K-DEFREV": "769e3f20b776c59f294a1b6515bb9b8b2a2cecea6f4ba6cc89a5683cbeaac419",
+    "SRC-RFA-10K-EQUITY": "d3f64487b4b7a69d703aef88ad4e47ad598ca480f3f219a64620a95ed848c055",
+    "SRC-RFA-10K-LEASE": "aff2d5789d696890fc16e6372520fc96da37dab762593f85e47a86d7489ce5ec",
+    "SRC-RFA-10K-NOTE6HTML": "ab34ac67e21c2d0342769a51095744883e2ada7f8959fe8e60a15fac66dbf23c",
+    "SRC-RFA-10K-REVTYPE": "6b1e82e8ab26917a98f2cd9020e718c3b28d810026f6c3e7eab22d6c6dc42b20",
+    "SRC-RFA-10K-RPO": "a9a8e2493f22df1089f5d6236abd0e90c0be3d27f8138fb1c2720de20d858a1d",
+    "SRC-RFA-10K-SEGMENT": "dbeeb4947896934695777104438b59fc6bcf8a26012aca11d01b584546cbcfc9",
+    "SRC-RFA-10K-SUBSEQ": "66500773f0edaad53291feb3136534953da1b3cc3bf17dff2ad34ccbc990e835",
+    "SRC-RFA-8K-Q4FY25": "77bdb1ef992d168c264d95baed110eb6ceef3f1c70afd654bfdf7291008c51c9",
+    "SRC-RFA-DEF14A-2026": "f4d8ad52405581e9fe0582a3279ecac59a2d298ba80490a5d649f42edb2077b5",
+    "SRC-RFA-XBRL-FIN": "82f3a997b5bcb8d4a639363106249411b7086bb191196af755a2961b7b0bb194",
+    "SRC-RFC-AR2025": "cc010a046c317d7a143c89e30d4076d52d56ce83cb138d5cab1e9e075f48f135",
+    "SRC-RFC-AR2025-ABSTRACT": "55be31aa99345dc52300b2e3f5c8cf64d7c37ec43efc1af9816d942946af9637",
+    "SRC-RFC-H1-2026": "d7931f39098f86ce9c7dae7acdf09f4c4b2a73b434e4c50bb073428990663c64",
+    "SRC-RFC-IR-2026-03": "249a1931becb6d77120be15a429f1597866146f332084d85b80aee2d3fb1f5e9",
+    "SRC-RFC-IR-2026-07": "725d1cb5bc196f15609a4ae4a2a95688f09c852e2a2ab34bc08a1c660aa72899",
+    "SRC-RFC-NEWS-FY2025": "93a08002fb67ce109359bb935c522839270bcabdd3c48a083067043d404d4738",
+    "SRC-RFC-NEWS-FY2025-EN": "49b82bc81fd24b609bfe41fb6bcd4932a67232fac87630708ea25178cfafa512",
+    "SRC-RFS-001": "365432f9a06caf1bc776acd873a677d5b1716f5f2e97b117f7b27ebc44e2c252",
+    "SRC-RFS-002": "9a6799bfd593816999986006ca36f7dca16c18b96efe993ba8e82ab8ab98b9a4",
+    "SRC-RFS-003": "65ac56e83ea33486348c6b4f045b30a778ecf417ec1523193b67f0b7eb49acc8",
+    "SRC-RFS-004": "abf3410756303255fd6e7a3b478fe08894f5414cf366ed8fd35d84d7923e6c90",
+    "SRC-RFS-005": "726f4c65054121c71194612f77187c2d345021214e85b0716013b451641b4600",
+    "SRC-RFS-006": "186ef577541ba480a20cc88112a0e967eace009e90c274cdd6fcda0dcd855f94",
+    "SRC-RFS-007": "76f585cbdcdc01c13bc120ed81825228e90c4fc384cf572649962579e9dbd604",
+    "SRC-RFS-008": "98bffe6ca54ff638fdf1bbef0e3cd4e576b42251a7b410f2fdee61ba57d6316e",
+    "SRC-SEC-10K-HTML": "d09a8a8dee70e5a9371c9a158a2c8301b1ce55dd09763694bbe941f0642fb665",
+    "SRC-SEC-CAPEX": "f26550db374fbf3db43783f69aed8de4f0dc520e282802e07093890a80be9cc6",
+    "SRC-SEC-CASH": "1cae51c8496c69369100de976dd0555eeebd70ba90b36c6be9977c3c07241b51",
+    "SRC-SEC-DEBT": "3e1bfef882450501dca022efcc78095be93ad2ab92507531328aa97933e890c6",
+    "SRC-SEC-EQ": "47bde370ffe9efa625a70599315b84c47b3aeeac3ae2a1a08dc0604d89b17d1e",
+    "SRC-SEC-MKTS": "bc990f8a5d711efd163921a29ccd4e32d0177a9b7d481a9e8ffa77b177d5936d",
+    "SRC-SEC-NI": "5e3c0b839033ddb2aab5ee6d7c17d5bc18fd35c073a6170778337c07a4b1ca68",
+    "SRC-SEC-OCF": "751173a4abe252a408e7b857014157487c26c98db9bc5616dae6d226fc49c0b8",
+    "SRC-SEC-OI": "310a68b2a4af7844362f132746e845a840c5115bdf046974f5c2ba25eea3c9cb",
+    "SRC-SEC-REV": "6706a0557f498eba6904bd1dc27eeec18946eade30d442c15c22120ce82bcdc9",
+    "SRC-SEC-TAX": "e0bf2e3e2633aaf9302b9b8c599327987a253465e24741348df12ab158f51831",
+    "SRC-SKELETON": "4be05d229d7d91e511f00b800680a57daf29abb86ed97a60061be386fc5b4005"
+  },
+  "baseline_ledger_hashes": {
+    "CALC-ALPH-FCF-2025": "64f86db21a4afd629c14fef0367d2865a71b690a844318635f29e4182efd647a",
+    "CALC-ALPH-NETCASH-2025": "14c6adce8b60bd4f387050473d585665fb4df7d1493377336e53563607fe6899",
+    "CALC-ALPH-REVGROWTH-2025": "cd11682241224055701e21ab178c45481c2a66fe4f46a478994d2da4c01af0b0",
+    "CALC-ALPH-ROIC-2025": "21e8b6b89f533138eb17913cbf9c90b8fc9478bcf90fa68ef0671aee9970e7f5",
+    "CALC-RFC-FCF-2025": "30e5d1675a8ff1bde16d238ee90d28b5f9be911a93da17a7aeb224bc4506ccea",
+    "CALC-RFC-REVGROWTH-2025": "ad0f12b12624238d1b8afb9f46efca6d72b364a6c8f0526da3838485882e17f2",
+    "CALC-RFC-ROIC-2025": "ddfd7107a075cf5254bcdf3bab4c5de45fb70811a94ef84cbfbdffa215143f71",
+    "CALC-RFS-REVENUE-YOY-FY2025": "080130d8afa5e190b26b6dee0c26401668fce374776bcc92043fd1c972e66246"
+  }
+}
