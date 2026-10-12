@@ -1,3 +1,14 @@
+> 最新进展（2026-10-12 checkpoint42）：原FIN三公司90题软件合并与具名parent_company1.2已正式集成；114P/0skip，产品c3c6ac3、交接HEAD1e88d867，298源跟踪/297清单工件匹配，旧schema/冻结输入/历史保持。实际CLI/package1.5.0，ledger1.0。62母公司数字有具名范围和前序SHA，不能与集团混算。72定向研究/18gap/0未开始、90评分null、金融gold0。回B01同一隔离receipt候选真实SQLite封存/事前主体/下游协议，不重做已绿FIN软件。原13HTTP/26搜索/CNY1.268162/0评分/ACK0不变，金融/G3/F05/生产UI/一键/全池仍开放；以下旧“当前”为历史。
+
+## 2026-10-12 checkpoint42 — 原FIN正式软件合并收口
+
+- [集中集成与接续](docs/implementation/reviews/parallel-packages/2026-10-12/FIN-company-integration.md)：15精确产品正常commit c3c6ac3aa0e6dddfe4cdf4ccdb2907f3e8aec68e；新独立交接目录正常commit/HEAD 1e88d86754f6faa6959e1cc893ddbc8f6e5b374f。157旧路径及1.0/1.1/20锁原件保持，源仅.codegraph/、无remote。
+- 原103＋新11最终114P，PID16500/exit0/24.9068894秒。单独ledger错误实体名与同时改错题目行两个RED直接修复；同次独立agent核兼容/范围/五处说明，无新卡或小节点门。Windows guard/旧数据预期/CLI参数及catalog失败日志保留。实际version1.5.0区别旧历史声明1.4.1与实际1.0.0，不篡改旧件。
+- 源公开CLI0/2/3与旧1.1读取通过；90来源独审未通过的题全部留gaps，1.2 deep_researched36不冒充verified。IQS公开handoff PID42808/exit0只shape/声明；297工件SHA/bytes和298跟踪（终端NUL非文件）匹配。
+- 90原分母，72completed/18gap/0not_started，1009含历史facts、104contradicted、8ledger、62parent新ID/前序hash。全评分null/来源needs_revision，金融gold0。source/owner/金融/G3/F05/生产门未关闭。源legacy builder只历史，不得再生成并覆盖当前1.2。
+- 自有scratch精确清310文件270目录，保留必要小例/失败日志与候选，源个人设施/活动B01/他人README保持；模型/付费搜索/财报下载/网页全文保存/生产DB/名单写0。当前FIN软件不再待整改或合并；后续源核验与评分只在原准确性节点推进。
+- 本批IQS公文只本地正常提交，remote仍此前自动审批范围拒绝pending；不导出私有财务JSON/源码/golden/库或绕过。下一动作明确回B01真实SQLite与具名下游接线，原live分母/费用/ACK保持。
+
 > 最新进展（2026-10-12 checkpoint41）：三个公司包已由总控直接修复并软件签收，CATL55P、Alphabet37P/1skip、CSC70P；正常产品/交接commit和全部工件98/156/126核对完成，source仅用户授权CodeGraph设施dirty。共同基线私有合并4P（6顺序同字节＋冲突拒绝）、公开FIN CLI0/2/3通过；90题72定向研究完成/18gap/0未开始、全部评分null，仍非金融gold。母公司62数字暂隔离，不误标合并；原FIN具名scope兼容及正式合并尚未实施。B0187P耐久receipt候选保持，原13HTTP/26搜索/CNY1.268162/0评分/ACK0不变；金融/G3/F05/生产UI/一键/全池仍开放。
 
 ## 2026-10-12 checkpoint41 — 三包直接修复与私有三方合并
