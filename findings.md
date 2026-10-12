@@ -1,3 +1,27 @@
+> 最新进展（2026-10-12 checkpoint41）：三个公司包已由总控直接修复并软件签收，CATL55P、Alphabet37P/1skip、CSC70P；正常产品/交接commit和全部工件98/156/126核对完成，source仅用户授权CodeGraph设施dirty。共同基线私有合并4P（6顺序同字节＋冲突拒绝）、公开FIN CLI0/2/3通过；90题72定向研究完成/18gap/0未开始、全部评分null，仍非金融gold。母公司62数字暂隔离，不误标合并；原FIN具名scope兼容及正式合并尚未实施。B0187P耐久receipt候选保持，原13HTTP/26搜索/CNY1.268162/0评分/ACK0不变；金融/G3/F05/生产UI/一键/全池仍开放。
+
+## 2026-10-12 checkpoint41 — 三包直接修复与私有三方合并
+
+- [集中验收和当前交接](docs/implementation/reviews/parallel-packages/2026-10-12/FIN-company-research-acceptance.md)记录三个source HEAD、真实RED/GREEN/失败分母、产品与最终交接commit、来源边界及清理；同次独立agent核源后由总控直接修复，没有再发整改卡/加小门。工件逐bytes/raw SHA匹配，源facilities据实dirty/count1，无remote不造push。
+- 原42P、26P/1skip、64P复现；新增12/10/6RED；最后55P、37P/1skip、70P。宁德时代现金/完整债务/资本开支/资本分母及转载资格，Alphabet合同义务/TAC/日期/分部/SBC/监管/代理推断，CSC FX/普通股永续债/母公司/股利/周期/来源层级已直接纠正。原失败与原claim/value保留，CORR1/前序hash或quarantine可追溯。
+- 共同基线仍原FIN1e7d617，actual只读HEAD/status已核；私有merge根按各自30目标hash三方比对，拒共享题/外公司/source/calculation越界。6种顺序同字节，4P、PID60384；公开validate0、export0、已有输出3、坏schema2且无正式输出。不是新工程门，只是本次三包合并的契约检验。
+- 私有合并90题：72completed/18gap/0not_started，947条含历史facts、104contradicted前序、8ledger项；全评分/区间null、独审needs_revision。原deep_verified_count36是旧helper的事实存在计数，不是36官方源签收，金融gold仍0。原FIN尚未覆盖；生产DB/名单/owner/LLM真实API均未运行。
+- scope parent_company无法在冻结1.1准确表达，CSC62数字保存在隔离附件且not_registered，正式1.1拒误标group/segment；原39字节不改。下一步在原F05整节点以具名可选新版本扩展原FIN、保持旧1.0/1.1读取和冻结输入，再合并/受影响回归/交付；不派新harness、不增加helper审批或小测试门。
+- 三Lab测试临时文件精确清16/5/4、目录20/1/1，CIM ownedPython0（第一次sandbox拒绝记录，按只读权限核实）；保留source/candidate/必要case与日志。合并自有导出尚待同节点收口，不清B01/源个人设施或他人README。CodeGraph按本轮授权CATL15files290nodes、Alphabet37/573、CSC33/530建立。
+- root公文本地正常提交，remote仍此前范围审批pending不绕过；仅本批公开文档/状态，不导出私有财务JSON、源码、golden或数据库。原2026-10-10 README+4行保护不改。
+
+> 最新进展（2026-10-12 checkpoint40）：三个公司研究包均由用户报交付，尚非合并或金融签收。CATL源HEAD89b10e6，原42P已复现，独审发现现金/债务/资本开支/来源与推断问题；总控按授权直接修复，12真实新反例RED，当前候选待集中GREEN与精确源交付。Alphabet源HEADa13e625、CSC源HEAD95de64e已只读接收，验收排队。三新Lab索引已按用户逐项授权建立。B01耐久receipt装配候选已87P，真实SQLite封存与新下游协议仍未接通；原13HTTP/26搜索/CNY1.268162/0评分/ACK0不变。金融/G3/F05/生产UI/一键/全池仍开放。
+
+## 2026-10-12 checkpoint40 — 三包接收与CATL直接纠错
+
+- 用户陆续报交FIN-CATL-02、FIN-ALPHABET-02、FIN-CSC-02。分别真实HEAD89b10e64c99c0f3853e7cf394a2e229d65a6466b/a13e62537a8951094d7869003590b3902c4874fb/95de64e2f44f5df25c32e0c0ca9ed4e9cc90d709，接收时工作树干净（索引随后成为设施）；不再沿“未派发/目录不存在”历史判断。冻结编制快照不回写为执行证据。
+- CATL84跟踪冻结于自有runs/fin-catl-02-acceptance-2026-10-12-01/source，42P/0skip、PID37892；同包独立agent核源与主控集中验收发现5Sina转载误作官方原件、货币资金误作现金等价物、债务漏项/权益范围混用、表内可读行误作全球缺失、减值总额与产线混用、认证/补贴因果过度推断，以及builder先写后验/测试or True/交接清单漏元数据。
+- 不发返工卡，直接在自有candidate修复。12新增反例实际全RED（PID47340），历史错误facts原claim/value保留为contradicted，CORR1新ID与前序hash记录；补现金等价物、完整借款债券租赁账面聚合、资本开支和简单FCF，均明确转载text-supported而非官方原件已认证。ROIC正常化与完整资本范围仍unknown；不凭软件绿自动赋评分。
+- 两官方新闻页只支持其自身声明；官方年报PDF仅定位未读/下载，无网页全文归档、收费API或生产DB/名单写。源码/工件只CATL自有根待精确回写，原FIN/其他writer不改。三包真实正式验收/三方合并仍pending。
+- B01同节点候选新增Store实际receipt→Observation1.2装配，逻辑attempt/physical attempt、模型/响应ID、request/response/receipt摘要和null header一致性核验；真实SQL事务从store重建不能信caller。格式及legacy受影响批87P、PID52340，不等于新1.2真实SQLite/full下游链已通过，不重复跑已绿上下文。事前preregister1.2/binding1.1/query2.6/caps1.2/inspection、已知坏答案逻辑终态/CNY refresh仍未完。
+- CATL卡一处旧6深核3/3叙述错误由总控改为实际5completed/1gap，30 targets与39冻结依赖保持；18原deep固定，worker另4deep需如实22全包，不扣掉合法额外深核。未增加小节点门。
+- 当前同批验收次序：CATL直接修复收口，再Alphabet和CSC隔离核验/有错直接修，再合并有效各自30行并回原B01工程。已知外仓writer动态状态每次实际比对，不套历史clean。远端仍之前自动审批导出范围pending，不绕过；本批先正常本地提交。旧2026-10-10 README他人+4行保留。
+
 > 最新交付（2026-10-12 checkpoint39）：三家公司参考研究包 FIN-ALPHABET-02 / FIN-CATL-02 / FIN-CSC-02已编制，39依赖文件与90题位冻结；三个新根互不包含、编制时不存在，尚未创建/派发/研究。它们拆原FIN剩余72未开始题和已有深核缺口，原FIN软件签收不重做，总控负责合并。主线仍沿checkpoint38/31的B01工程候选；金融/G3/F05/生产UI/全池门保持开放。
 
 ## 2026-10-12 checkpoint39 — 分公司参考研究并行包已准备
