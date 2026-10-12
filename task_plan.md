@@ -1,3 +1,12 @@
+> 最新进展（2026-10-12 checkpoint43）：FIN90题合并已正式软件交付保持；B01同一隔离候选现已贯通真实临时SQLite的Observation1.2回执封存，受影响72P/0skip、重启重放/六字段重hash伪造拒绝/缺记录恢复0模型调用/旧1.1拒null。尚未部署QA/IQS/SW，仍需事前request1.2/binding1.1与query2.6/caps1.2/inspection接线。原13HTTP/26搜索/CNY1.268162/0评分/ACK0及金融/G3/F05/生产门保持；下文旧“当前”为历史。
+
+## 2026-10-12 checkpoint43 — B01实际SQLite封存候选
+
+- [同节点SQLite证据](docs/implementation/reviews/B01/vendor-http-identity-sqlite-2026-10-12.md)：最终72P，PID73900/exit0/26.3779322秒；有真正SQLite持久回执/封存/重启，非仅构造dict。原格式87P与上下文64P批次保持，不相加冒充金融准确率。
+- 初次fixture缺protocol8F，补合法fixture后产品header非空8F真实复现，显式1.2修outbox；伪造值误与原值相同导致69P/1F留原日志并改真实不同值；缺键1RED后补键存在检查。只适用1.2 durable-response-v1，原1.1拒null、未知profile不放行。
+- 新10项SQL案例/原13回执/23封存/26outbox；六字段重hash伪造及caller getter替换拒绝，重启不增修订，阻断后补记录0模型调用。新测试scratch精确清138文件78目录，活跃B01/source/candidate/原live不清，无收费API/下载/生产库写。
+- QA隔离候选新增outbox与SQL测试，其它已绿变更不重做，不增加小节点审查或返工卡。原FIN已正式集成commit c3c6ac3/HEAD1e88d867、114P，不再等待软件合并。下一步仅具名事前登记与下游链，完整节点后一次审查和源状态重核才部署。
+
 > 最新进展（2026-10-12 checkpoint42）：原FIN三公司90题软件合并与具名parent_company1.2已正式集成；114P/0skip，产品c3c6ac3、交接HEAD1e88d867，298源跟踪/297清单工件匹配，旧schema/冻结输入/历史保持。实际CLI/package1.5.0，ledger1.0。62母公司数字有具名范围和前序SHA，不能与集团混算。72定向研究/18gap/0未开始、90评分null、金融gold0。回B01同一隔离receipt候选真实SQLite封存/事前主体/下游协议，不重做已绿FIN软件。原13HTTP/26搜索/CNY1.268162/0评分/ACK0不变，金融/G3/F05/生产UI/一键/全池仍开放；以下旧“当前”为历史。
 
 ## 2026-10-12 checkpoint42 — 原FIN正式软件合并收口
@@ -546,7 +555,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（checkpoint42）：** 回原B01同一隔离候选，先完成Observation1.2真实SQLite封存/存量耐久记录一致性和伪造记录拒绝，再接事前request1.2/binding1.1、StockWiki query2.6/caps1.2/inspection。原FIN合并软件已经正式交付，不重做三Lab/FIN软件、不派新卡。87P装配和原live13HTTP/26搜索/CNY1.268162/0评分/ACK0保持；金融/G3/F05/生产门未授。checkpoint41及下文旧接续均是历史。
+**当前唯一接续（checkpoint43）：** 在原B01同一隔离候选贯通具名事前request1.2/binding1.1、StockWiki query2.6/caps1.2/inspection。真实SQLite封存72P已经完成，不重做原FIN/QA已绿软件、不派新卡、不增小门；完整节点后集中审查、源writer/SHA重核再精确部署。原live13HTTP/26搜索/CNY1.268162/0评分/ACK0及金融/G3/F05/生产门保持。checkpoint42及下文旧接续均是历史。
 
 **当前唯一接续（checkpoint40）：** 收口正在进行的CATL直接修复集中验收与精确交付，再按各自冻结快照验收刚报交的Alphabet/CSC，三方比对后合并。B0187P装配候选保留，随后回到其真实SQLite封存/具名下游协议工程；以下checkpoint38/39接续是历史，不重建或重跑原live账本。
 
