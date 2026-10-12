@@ -1,3 +1,14 @@
+> 最新交付（2026-10-12 checkpoint39）：三家公司参考研究包 FIN-ALPHABET-02 / FIN-CATL-02 / FIN-CSC-02已编制，39依赖文件与90题位冻结；三个新根互不包含、编制时不存在，尚未创建/派发/研究。它们拆原FIN剩余72未开始题和已有深核缺口，原FIN软件签收不重做，总控负责合并。主线仍沿checkpoint38/31的B01工程候选；金融/G3/F05/生产UI/全池门保持开放。
+
+## 2026-10-12 checkpoint39 — 分公司参考研究并行包已准备
+
+- 从原FIN已签收commit1e7d617读取并冻结39个必要code/schema/短参考/20原题集输入，不复制整仓/数据库/密钥/公司文档；worktree raw SHA与Git blob SHA分别留档，LF/CRLF差异只有精确命中原raw hash才恢复，源不被改写。
+- [三包总览](docs/implementation/parallel-lanes/packages/2026-10-12-reference/README.md)：Alphabet、宁德时代、中信建投H各完整30題，24not_started各归一包；新根分别iqs-reference-alphabet-lab/catl-lab/csc-lab，编制时均不存在，开工重查writer。无互相依赖，可同时用户分派；总控未创建或派发。
+- 每包只更新本公司30行与专属RFA/RFC/RFS来源/事实/账，另外60保持canonical hash；沿用原pack1.1/ledger1.0与FIN公开校验器，不重复造金融/LLM/身份/评分引擎。[接口契约](docs/implementation/parallel-lanes/packages/2026-10-12-reference/integration-contract.md)固定输入、时间/题义、增量抽取、旧记录版本化纠错、三方冲突/合并交换性与接B01盲评的边界。
+- 每卡有独立上下文/实际30题列表/轻量核源优先级、PWF/产品＋交接commit、unit/integration/公开CLI E2E和一次包级事实审查、严格自有清理/交接模板。只人工读官方公开网页，不收费API、不保存财报/PDF/网页全文；缺口和评分null据实，访问摘要不是事实认证，不加小节点门。
+- 本批一次文档预检：39raw SHA/90唯一题位/72not_started/18deep、目录互斥与不存在、7本地链接、3现有公开handoff模板CLI均通过。validation.json仅编制结构与输入快照，research/product_tests=not_started/not_run，不授金融或owner门。一次预检后只核文档字节更新，不重复全套。
+- 新Phase119为本批分配与后续接收，主线唯一B01动作不变；三包未完成，原FIN90研究范围不缩。收到研究交接后由总控独立验收/合并；可修复缺口按用户要求总控直接修，不再发新整改卡。公开文档正常本地提交，remote仍此前范围审批pending，不绕过；不触碰他人2026-10-10 README/旧Lab writer/活动账本。
+
 > 当前主线（2026-10-12 checkpoint38）：FIN R4余项已按用户要求总控直接修复并签收软件/来源说明范围，不派新整改卡。源产品6ff65e8/交接HEAD1e7d617；103P，167跟踪/90工件SHA匹配，研究仍partial（9已研究/9缺口/72未开始），原90题范围未缩。VIEW软件签收保持，OPS仍原writer。B01沿checkpoint31隔离候选唯一工程动作，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；金融/G3/F05/facts/生产UI/一键/全池仍开放。旧当前段为历史，以本段及唯一Next Step为准。
 
 ## 2026-10-12 checkpoint38 — FIN R4总控直接修复签收
@@ -500,7 +511,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS remediation-01已续验，手册R4关闭，只续同包[唯一三组R2](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)；FIN remediation-04已由总控直接修复，[软件/来源说明签收](docs/implementation/reviews/parallel-packages/2026-10-12/FIN-REF-01-R4-acceptance.md)，103P；原90研究仍partial（72未开始），不派新卡；VIEW remediation-02验收缺口已由总控直接修复，[软件签收](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R2-acceptance.md)，173项172P/1skip；真实owner/生产接线待主线，不再派整改卡。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。主线下一动作以checkpoint38状态和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
+旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS remediation-01已续验，手册R4关闭，只续同包[唯一三组R2](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)；FIN remediation-04已由总控直接修复，[软件/来源说明签收](docs/implementation/reviews/parallel-packages/2026-10-12/FIN-REF-01-R4-acceptance.md)，103P；原90研究仍partial（72未开始），不派新卡；VIEW remediation-02验收缺口已由总控直接修复，[软件签收](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R2-acceptance.md)，173项172P/1skip；真实owner/生产接线待主线，不再派整改卡。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。新[分公司研究三包](docs/implementation/parallel-lanes/packages/2026-10-12-reference/README.md)已准备，可由用户同时分派到三个新根，未创建/派发；不占原FIN或主线writer。主线下一动作以checkpoint38状态（checkpoint39仅新增并行准备）和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
 
 **唯一当前动作（2026-10-12 checkpoint38，工程动作沿checkpoint31候选）：** 接续[具名协议候选报告](docs/implementation/reviews/B01/vendor-http-identity-candidate-2026-10-11.md)与自有runs/b01-engineering-2026-10-11-01，不重建/重跑已绿上下文测试。先从Store.get_attempt_response的耐久原件核receipt，把真实response ID、physical attempt及request/response/receipt摘要接进Observation1.2；再贯通事前preregister1.2、binding1.1、StockWiki import、query2.6/capabilities1.2和inspection。候选当前只证明格式/冻结资源选择，尚未部署或授权执行；旧4blocked保持，不改其context/hash/收执、不补造ID，也不retroactive登记。
 
@@ -2139,3 +2150,16 @@ changes_requested，唯一四组[FIN R1](docs/implementation/reviews/parallel-pa
 - 网络拒绝、无key环境、临时目录均留在自有guard控制下；当前三个candidate为未完成的活动工程保留，未删除它们或原c16b账本。没有新API、预算预留、生产DB/名单变化；同节点不增加helper审查。
 - 下一步完整receipt验证、事前主体登记与binding新版本、StockWiki封存/导入/query/inspection后，才能同节点集中独审和正式源部署；已知response逻辑终态与CNY refresh也仍待实施。原4blocked不可改context/ID/旧hash回填；原13请求与30题失败分母保留，金融门仍开放。
 - 本次checkpoint首次两次在外仓Git status受sandbox限制时提前终止；清理子进程Git环境没有解决权限，使用只读所需权限后成功读取。第三次旧clean断言被VIEW原writer动态16项变化拦下，仍未写PWF/attestation；改为记录当前HEAD/status与本控制器外仓写0，而不要求别人仓库clean。三次均非产品失败。另一次猜测test_quick_scan_subject_bound_context.py不存在，随后只读取已定位旧上下文fixture，不按猜测实施。
+
+
+## Phase119：三家公司完整参考研究分工
+
+Status: package_preparation_complete; workers_not_dispatched; research_pending; coordinator_merge_pending
+
+- [x] 以已签收FIN commit1e7d617冻结39输入，三包互斥新根/各30题精确绑定/24not_started/专属ID命名空间/另外60只读；卡/接口/规则/模板/targets/manifest/锁已完成。
+- [x] 一次编制预检：39文件SHA、90题位、72未开始、18deep、7链接、3公开模板CLI；只是文档结构，不是产品或金融通过。
+- [ ] 用户选择harness分派，各新根sole-writer/PWF pin/输入冻结后实施研究；当前未自动创建或派发。
+- [ ] 各包集中unit/integration/公开CLI E2E与实际事实review、精确清理/正常提交/完整handoff；未完成项如实partial，不新增小节点门。
+- [ ] 总控收到后提取各自30行/来源/账；按baseline hash三方比对，拒同ID冲突/后写覆盖，按统一merge时间完成一次集中FIN公开validate/export与事实核查；沿原B01盲评关闭真实金融门，不能凭三份90候选说270题或全部准确。
+
+入口：[分公司研究三包](docs/implementation/parallel-lanes/packages/2026-10-12-reference/README.md)。新工作根不与原FIN/VIEW/OPS/EVID/FACT/MATRIX/LOAD/IDENT或生产仓重叠。source前进不偷换冻结输入，未派发/未研究的编制快照保持。原B01/金融/G3/F05/owner/生产UI/一键/全池门未关闭。

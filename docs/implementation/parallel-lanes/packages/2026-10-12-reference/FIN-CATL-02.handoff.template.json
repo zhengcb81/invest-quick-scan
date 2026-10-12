@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "lane_id": "iqs",
+  "package_id": "FIN-CATL-02",
+  "status": "partial",
+  "snapshot": {
+    "repository": "C:/Users/郑曾波/Projects/iqs-reference-catl-lab",
+    "base_ref": "NEW_REPOSITORY_TEMPLATE_ONLY",
+    "base_commit": "NEW_REPOSITORY_TEMPLATE_ONLY",
+    "result_ref": "",
+    "result_commit": null,
+    "worktree_before": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": null
+    },
+    "worktree_after": {
+      "state": "clean",
+      "dirty_path_count": 0,
+      "manifest_sha256": null
+    }
+  },
+  "scope": {
+    "task_ids": [
+      "B01",
+      "F05"
+    ],
+    "authorization_scope_ref": "human_requested_independent_packages; TEMPLATE_ONLY_NOT_DISPATCHED; new_root_only",
+    "owned_paths": [
+      "C:/Users/郑曾波/Projects/iqs-reference-catl-lab"
+    ],
+    "authorized_paths": [
+      "README.md",
+      ".gitignore",
+      "pyproject.toml",
+      "src",
+      "tools",
+      "content",
+      "fixtures",
+      "tests",
+      "runs",
+      "docs/handoff"
+    ],
+    "changed_paths": [],
+    "out_of_scope_writes": []
+  },
+  "interfaces": [],
+  "verification": {
+    "checks": [],
+    "external_writes": false,
+    "network_calls": false,
+    "paid_calls": false,
+    "temporary_roots": []
+  },
+  "review": {
+    "status": "not_run",
+    "snapshot_commit": null,
+    "findings": []
+  },
+  "open_items": [
+    "TEMPLATE: no execution or substantive research yet; replace actual commits/tests/cleanup.",
+    "Only catl reference rows may differ; foreign60 and frozen FIN dependency read-only.",
+    "Financial/source independent review, production owner and global gates remain coordinator responsibility."
+  ],
+  "next_action": "Read this card, common-rules.md and integration-contract.md; freeze39 checked files in your own root then research exact30 rows."
+}

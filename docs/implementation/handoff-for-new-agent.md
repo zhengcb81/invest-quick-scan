@@ -1,3 +1,14 @@
+> 最新交付（2026-10-12 checkpoint39）：三家公司参考研究包 FIN-ALPHABET-02 / FIN-CATL-02 / FIN-CSC-02已编制，39依赖文件与90题位冻结；三个新根互不包含、编制时不存在，尚未创建/派发/研究。它们拆原FIN剩余72未开始题和已有深核缺口，原FIN软件签收不重做，总控负责合并。主线仍沿checkpoint38/31的B01工程候选；金融/G3/F05/生产UI/全池门保持开放。
+
+## 2026-10-12 checkpoint39 — 分公司参考研究并行包已准备
+
+- 从原FIN已签收commit1e7d617读取并冻结39个必要code/schema/短参考/20原题集输入，不复制整仓/数据库/密钥/公司文档；worktree raw SHA与Git blob SHA分别留档，LF/CRLF差异只有精确命中原raw hash才恢复，源不被改写。
+- [三包总览](parallel-lanes/packages/2026-10-12-reference/README.md)：Alphabet、宁德时代、中信建投H各完整30題，24not_started各归一包；新根分别iqs-reference-alphabet-lab/catl-lab/csc-lab，编制时均不存在，开工重查writer。无互相依赖，可同时用户分派；总控未创建或派发。
+- 每包只更新本公司30行与专属RFA/RFC/RFS来源/事实/账，另外60保持canonical hash；沿用原pack1.1/ledger1.0与FIN公开校验器，不重复造金融/LLM/身份/评分引擎。[接口契约](parallel-lanes/packages/2026-10-12-reference/integration-contract.md)固定输入、时间/题义、增量抽取、旧记录版本化纠错、三方冲突/合并交换性与接B01盲评的边界。
+- 每卡有独立上下文/实际30题列表/轻量核源优先级、PWF/产品＋交接commit、unit/integration/公开CLI E2E和一次包级事实审查、严格自有清理/交接模板。只人工读官方公开网页，不收费API、不保存财报/PDF/网页全文；缺口和评分null据实，访问摘要不是事实认证，不加小节点门。
+- 本批一次文档预检：39raw SHA/90唯一题位/72not_started/18deep、目录互斥与不存在、7本地链接、3现有公开handoff模板CLI均通过。validation.json仅编制结构与输入快照，research/product_tests=not_started/not_run，不授金融或owner门。一次预检后只核文档字节更新，不重复全套。
+- 新Phase119为本批分配与后续接收，主线唯一B01动作不变；三包未完成，原FIN90研究范围不缩。收到研究交接后由总控独立验收/合并；可修复缺口按用户要求总控直接修，不再发新整改卡。公开文档正常本地提交，remote仍此前范围审批pending，不绕过；不触碰他人2026-10-10 README/旧Lab writer/活动账本。
+
 > 当前主线（2026-10-12 checkpoint38）：FIN R4余项已按用户要求总控直接修复并签收软件/来源说明范围，不派新整改卡。源产品6ff65e8/交接HEAD1e7d617；103P，167跟踪/90工件SHA匹配，研究仍partial（9已研究/9缺口/72未开始），原90题范围未缩。VIEW软件签收保持，OPS仍原writer。B01沿checkpoint31隔离候选唯一工程动作，原30题13HTTP/26搜索/CNY1.268162/4不足证据/0评分/ACK0不变；金融/G3/F05/facts/生产UI/一键/全池仍开放。旧当前段为历史，以本段及唯一Next Step为准。
 
 ## 2026-10-12 checkpoint38 — FIN R4总控直接修复签收
