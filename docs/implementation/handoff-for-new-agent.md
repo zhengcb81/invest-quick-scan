@@ -1,3 +1,23 @@
+> 当前接续checkpoint51，勿重做68源码提交、17→18原迁移、已绿原批次及PRIMARY/FIN。
+
+## 2026-10-13 checkpoint51 — owner控制公开CLI候选贯通，重试调度仍待接线
+
+沿同一B01候选，不重做已交付68源码、原17→18迁移或PRIMARY/FIN。新work决议19仍只在自有候选，源QA仍18；真实旧26/4和13HTTP/26搜索/CNY1.268162/30题分母/0评分/ACK0不变。
+
+复用九个旧草稿接口/测试后，移除未发布native-currency profile，用当前显式refresh1.0/1.1及query2.0/2.6 schema。owner控制仍独立于付费dispatch；公开原refresh CLI新增work-decision三个入口，保持旧入口。首次apply必须fresh-registration；只有实际19 SQL内完全相同的不可变request+grant可过期后读取current-permissions，用户JSON不能自报重放；两次读取变化拒绝。PRE1.2由真正owner contract核profile，不编造其不存在的payloadSHA；真实请求摘要仍由QA原pack/receipt核。
+
+候选集中接口/owner/readonly/apply测试PID24296 exit0/61P/22.79秒。原PID16788 30P/1F是旧合成fixture漏当前protocol；补fixture后PID24944 30P/1F为sandbox原子硬链接权限，不放宽发布，续原权限完成61P。新增PID63700 4P/3.60秒验证精确SQL才能重放、首次过期不授予grant、当前撤权仍拒绝、1.2不造PRE字段；全部合成数据，不当真实issuer/金融gold。
+
+完整native临时库＋真实公开CLI整链：PID14316先在fixture未知return键request失败；只改读取原持久refresh Request。PID58160实际owner1.2预览因入口漏configured release_root失败，这是产品集成RED。复用旧CLI并传原配置release_root后，PID64712 exit0/1P/135.68秒：真实before-send原件/冻结pack/已settled合成响应→公开owner预览→明确fixture-only同意→QA公开apply/精确重放，原physical/receipt/budget/PRE全部保持、一个逻辑work failed、决议仅一行、无checkpoint或HTTP。软件E2E不证明真实人确认或金融准确性，测试SQL过期仅作用于合成tmp。
+
+真实数据边界实验：原真实ledger18副本的IQS_01，通过现有LLMConfig.get_quick_scan_model_policy规范化后，policy snapshot SHA与原账本完全匹配；公开inspect CLI实际exit0/API0/DBwrites0，识别原length/completed物理终态且原库/副本未变。原配置models不是规范化routes，直接送原配置第一次拒invalid policy_version；错误猜嵌套policy断言零写，使用原配置器解决，不手编policy_version或价格。相对路径as_uri准备错误原日志保留。
+
+复制五个真实轻量owner SQLite及原release到自有根，原五库SHA保护、不复制公司文档。clone新增仅原试点公司一个隔离测试成员及新owner配置，不修改原名单。真实旧PRE在纯原validator通过，且复制owner行完全匹配；公开owner却明确拒绝新路径store_id，因为当前QuickScanObservationStore以数据库绝对路径派生namespace。该负例是正确隔离：同公司/同DB字节不能冒充原owner namespace，不能改旧receipt、替换store_id或伪造正例。真实控制正式执行应使用原已配置owner namespace；隔离clone只作负例与原件读取。
+
+当前唯一下一步：候选中的retry/comparison意图还没有接进planner/preview/admission/runner。继续同一节点用显式新wire绑定真实决议引用、cooldown、目标generation、comparison cohort及pack/thinking/max_output_tokens；无可用旧答案也可独立比较，但不变成scored baseline、不需要伪造旧投递；旧1.0/1.1和原审批范围保持。整个节点集中验收/核最新源writer差异后才交付19并在原owner namespace合法处理真实旧任务、批准新实验；不自动重放旧控制器或以FixtureAuthority处理原26。
+
+本阶段新接口/同意/价格/公司事实均未金融签收，F05/G3/生产UI/一键/全池继续开放。主线候选、真实副本和原日志只本机留档，公文只本地提交、远端未推。checkpoint50的清理统计是当时终态；本次又产生临时整链库，待此节点结束再精准清理，不假称当前temp仍空。
+
 > 当前唯一接续是checkpoint50的owner控制候选；不要重复68源码部署、17→18迁移或PRIMARY/FIN。source18与candidate19必须区分。
 
 ## 2026-10-13 checkpoint50 — 源码提交终态、真实旧账本备份迁移及owner恢复候选
@@ -846,3 +866,5 @@ strict dry真实会话10083 exit0，原生逐字/文件ID/单链接43936项全�
 
 
 OPS验收文档发布终态（2026-10-11）：本批9份公开Markdown已正常提交并推送 `d50c70be2c712bd62a0da088df4a0f77864a9e4d`，实际origin/master SHA一致，原hooks正常执行；源Lab/私有证据/他人2026-10-10 README未入提交。上文“待本批终态”是发布前记录，此项现已完成；OPS仍changes_requested，主线和其他门状态不变。
+
+checkpoint51本轮终态补记：实际CIM自有Python0后，核绝对路径/reparse/硬链接闭合及SHA，精准清理新生成temp594文件/578目录（67,777,862 bytes），temp剩余0；保留候选、原日志、必要真实只读副本及备份作为接续输入。原五owner库、真实work18和他人2026-10-10 README当前SHA再次全部保持。无新HTTP/搜索或生产名单修改。本批6份PWF/报告正常本地提交，实际commit以Git为准；19仍未源交付，下一步仍是retry/comparison调度控制接线，不将源18与候选19混淆。
