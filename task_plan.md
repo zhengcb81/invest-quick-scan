@@ -1,3 +1,17 @@
+> 当前 checkpoint54：原 main 的 pack3 一成员尾包与移除配置后的零新请求恢复已通过（PID62364，1P/704.17秒），session9268已终态。显式跨模型决议1.1与refresh1.3正在自有候选接原生owner、预算检查和binding；source18/candidate19尚未部署。三个质量包已由用户派出，避开其writer。以下旧“当前/运行中”是历史记录。
+
+## 2026-10-13 checkpoint54 — 收取原 main 正例并推进跨模型目标
+
+- 原公开 main 正例：配置 pack_size=3，仅有一个获批成员，是一成员尾包。一次 fake HTTP 完成原检查点和 C06 封存；移除合成模型配置/费用文件后，无生成参数恢复仍零新请求。PID62364 exit0/704.88秒（pytest 704.17秒），既有 session9268已结束，不再重启。合成身份、合成许可、合成回答，不能证明金融准确性或一请求三题。
+- 跨模型候选：旧 physical/PRE/费用保留，新受信 grant 可携带六字段 comparison_target，显式 stockqa.owner_work_decision/1.1.0；旧1.0形状/同模型约束不扩权。原生新旧22P/PID28484；新refresh1.3与旧1.0–1.2合同57P/PID41344。版本不是生产接通声明；binding4/完整公开跨模型 main 正反例尚待完成。
+- 同一 B01 节点正在接实际 StockWiki owner、QA 固定 inspector 与当前预算路线，双验旧来源及新目标，不建立第二队列/费用账本。跨模型目标只从已确认的实际当前 owner policy取得，调用者目标 JSON 不是批准。新只读路线反例 PID21632 RED1F（缺 comparison_target 接口）；原生只读新旧32P/PID77260，owner与旧授权52P/PID16744；binding4/旧执行联合77P/PID74432，目标路线选择与旧执行47P/PID31508。保留初版35P/7F：测试在原bind_budget配置前取DB字节，已将比较基线移到配置后，真实检查函数仍零attempt/费用写；不合并各测试分母作准确率。新公开Flash→Pro主程序测试session95650/实际pytest75104仍运行，不能清其temp或重启。
+- 实际 CIM 2026-10-13T20:01:44Z 自有 Python 0 后，归档两份原生合成 fixture及每文件SHA；归档只供证明，不冒称新位置owner namespace。清理隔离temp715文件/486目录/90,960,140 bytes，剩余0；之后本轮新测试重新使用自有temp，未删他人文件。原运行失败/timeout和源码/日志/原件/备份保留。
+- 原真实试点仍13HTTP/26native搜索/CNY1.268162/30题/26expired/4blocked/0评分/ACK0；本轮真实API、收费搜索、公司文档下载、生产名单/数据库写0。Financial/G3/F05/UI/一键/全池继续开放。
+
+同节点一次独立审查确认target授权链未见越权，找出1.3多主体refs广播及非comparison声明不符。PID75204实际3F已覆盖，修复已编制在本机close_target_review54.py；为避免并发修改公开测试依赖，待session95650终态后才应用，再复测对应范围。新1.3明确仅comparison、目标非空；普通retry继续1.2。多主体跳过前验证每个原生doc/费用/目标，按entity/qid/scope/scope_id选择本主体，最终IQS全局refs恰好覆盖一次。
+
+唯一接续：完成显式1.3目标的原生owner端口、绑定4和原admission/runner/实际请求体校验；跑同节点集中受影响测试和公开跨模型正反例。源writer/HEAD/原字节核对后才精确部署19，再沿原owner恢复26/4及小规模真实准确性实验。避开三个已派出质量Lab，不重复既有68源码交付/金融包/原17→18迁移。
+
 > 当前checkpoint53：1.2批准→原admission的公开登记/重放/错参数拒绝已实际接通；正向pack3尾包测试exec session9268/PID62364仍在运行，不重启或清其temp。跨LLM新目标与旧物理来源尚待分离，source18/candidate19未部署。三个质量包用户已派出，避开其writer。
 
 ## 2026-10-13 checkpoint53 — 控制准入/执行候选与公开原生接续
@@ -683,7 +697,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（checkpoint53）：** 先跟进原main pack3尾包测试exec9268/实际PID62364，未终态不重启/清temp；收反例后分离旧physical来源与新获批target route/model，使跨LLM对照真实可运行。binding3/native19、公开准入/重放/错参数拒绝已成候选，源18保持；同整个节点集中回归/源writer和SHA核再部署、原owner真实恢复和小样本，原费用/30题/0评分不改。
+**当前唯一接续（checkpoint54）：** 原main尾包测试PID62364已终态1P，不重跑或寻找活动session9268。完成显式refresh1.3/目标grant1.1的原生owner检查、binding4、原admission/runner和实际目标路线/请求体约束；同节点集中受影响回归及公开跨模型正反例后核源writer/HEAD/字节、精确部署19。随后原owner真实恢复26/4及小样本准确性实验。source18/candidate19分开，原费用/30题/0评分不改，避开已派出的三个质量Lab。
 
 **历史接续（checkpoint47，实施中）：** 沿同一B01候选完成默认请求摘要捕获及新profile内部读取/inspection/field assessment；整链公开CLI、真实临时SQL与旧格式集中回归后再源writer/SHA核对部署。不增小节点审查，不重跑PRIMARY/FIN或旧live。checkpoint46接续范围继续有效。
 
