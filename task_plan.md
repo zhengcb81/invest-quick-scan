@@ -1,3 +1,21 @@
+> 当前接续以checkpoint52为准：控制刷新1.2合同和原件读取已成候选，正在接admission/runner；未部署19或启动新收费实验。不要重复68源码交付、17→18迁移或已绿历史批次。
+
+## 2026-10-13 checkpoint52 — 显式控制刷新1.2候选，尚未接新工作创建及runner
+
+沿原B01同一候选。source QA18/candidate19保持；checkpoint51公开owner-control apply/重放1P与68源码交付不重复。原真实26expired、4blocked、13HTTP/26搜索/CNY1.268162/30题/0评分/ACK0不变，付费调用0。
+
+新增纯project_owner_control：只能消费已由实际native journal读取并验证、另行原owner复核的决议，本函数不认证owner、不写库、不发HTTP。准确绑定原work/代次/scope/model及固定controls；无Observation也在cooldown内deferred_unknown，到期才派下一generation；retry_unknown未投递仍manual_refresh_required，独立comparison不需伪造旧score/旧ACK。cohort由新的刷新申请选择并在批准中绑定。PID64612 RED1F缺函数→PID46548 GREEN10P；随后将伪造case重算摘要，测试语义拒绝，不只测hash mismatch。
+
+只新增refresh-v1.2.schema.json，原1.0/1.1字节不改：Request强制cohort_id/work_decision_refs，OwnerState/Preview每题强制owner_control（真实决议ID/文档hash/来源work+generation/confirmation/purpose/冷却/target/controls）。全覆盖拒多余或漏掉refs、跨cohort和错generation；cohort+refs进入scope_sha256，固定pack/thinking/token为严格int/bool。到期与旧结果投递条件决定ready/blocked，预览不是授权。新OwnerPolicy要求quote_schema_version=1.2。PID25484 RED1F→PID21268 新旧合同/投影联合60P，含真整数/重hash语义控制；各分母不合并作金融准确率。
+
+QA inspect_refresh/公开CLI显式1.2才读实际19决议，重核native source_work/最新逻辑scope/route/model，返回控制投影并把它纳入原budget_state_sha256；旧1.0/1.1仍原三字段projection，不隐式升级、不迁库、不预留费用。PID31996 RED1F→PID35396 8P（7新增+原币种），正确拒陌生决议、重复ref/错work/错scope/漏ref及旧dialect；到期时间变化会改变quote快照。
+
+StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通reuse吞掉已批准独立comparison。每个控制由WorkDecisionOwnerService读取原confirmation/当前权限/PRE，要求purpose/target/controls/subject/consumer/policy相符；没有该原owner port或已撤权不造预览。权限-only请求允许旧1.0/1.1 scope读取已配置1.2 policy，避免决议创建与新ref的循环依赖；不授旧批准新权限，policy/preview原SHA匹配仍必须。公开入口复用同一服务并传configured release_root。QA control authority按实际policy/permission各自显式schema注册，不用已废草稿profile。PID47008 原control/旧审批/记录兼容94P；PID10308 新owner回调2P为明确合成端口，不能当完整1.2公开整链通过。
+
+**唯一下一步：** 在同一候选把新1.2 preview items接进原Q13 admission及原runner。须将owner_control作为显式新3.0 binding（保持旧1/2的形状）或同等受保护的原admission lineage持久化；native写事务验证实际19决议与引用，只有明确独立comparison能保留旧result_ready同时创建新generation，不能广泛绕过guard_unresolved。执行前/每包都核获批cohort、pack_size、thinking_enabled、max_output_tokens；旧动作不得创建新批次。补真正公开preview→confirm→admission→main正反例并同节点集中审查/受影响回归后，才核源writer部署19、原owner处理历史工作和固定三题真实实验。
+
+本阶段不关闭Financial/G3/F05/UI/一键/全池，不以94/60等软件测试证明答案准确。未源部署19或1.2接口；候选/日志/实际ledger副本仅本机，原件保护不变。完成实际CIM自有Python0后精准清理本轮temp141文件/409目录（47,891,034 bytes），temp剩余0；候选/输入/失败日志/真实原件和备份保留。无下载公司文档、模型HTTP、收费搜索、生产DB或名单修改。正常本地提交PWF/公开报告，远端仍未推。
+
 > 当前进展以checkpoint51为准：owner恢复候选的公开CLI已贯通；正在接重试/独立对照到调度执行。source18/candidate19需区分，尚未处理原真实26或新收费问答。
 
 ## 2026-10-13 checkpoint51 — owner控制公开CLI候选贯通，重试调度仍待接线
@@ -644,7 +662,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（checkpoint51）：** 19决议核心和公开owner→QA apply/重放已在同一候选通过，源仍18，不重复61P/完整1P。现在贯通真实retry/comparison决议到planner/preview/admission/runner，显式版本绑定冷却、generation、cohort和pack/thinking/token controls。旧真实数据public readonly读取已通过；复制owner路径namespace必须拒绝旧PRE，不伪造clone正例。完整控制节点验收后才精确交付19并在原owner namespace处理旧26、新批准下跑IQS_01/02/04 pack3/32768→pack1。原费用/分母/4旧blocked/金融门保持，PRIMARY/FIN不重做。
+**当前唯一接续（checkpoint52）：** 显式refresh1.2 refs/cohort/controls、native19只读投影和owner预览回调已成候选（新旧60P、native8P、旧兼容94P、回调合成2P）。现在接原Q13 admission→原runner：显式新binding/原件lineage绑定决议及cohort，写事务按原grant创建目标generation，只有独立comparison可保留旧未投递答案；每包强制获批pack/thinking/token。然后同一控制节点真正公开整链正反例/集中审查/源writer重核再部署。source18/candidate19别混淆，真实历史26/4及费用不改；PRIMARY/FIN不重做，金融和生产门开放。
 
 **历史接续（checkpoint47，实施中）：** 沿同一B01候选完成默认请求摘要捕获及新profile内部读取/inspection/field assessment；整链公开CLI、真实临时SQL与旧格式集中回归后再源writer/SHA核对部署。不增小节点审查，不重跑PRIMARY/FIN或旧live。checkpoint46接续范围继续有效。
 
