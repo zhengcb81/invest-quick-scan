@@ -1,3 +1,23 @@
+> 最新进展（2026-10-13 checkpoint50）：三个源仓改动已提交，旧实验账本已备份并原生升18且原数据不变。正在补真实owner授权的历史恢复/独立对照实验路径；schema19只在隔离候选，未处理旧26或发新请求。下面旧“下一步迁18”是已完成的历史。
+
+## 2026-10-13 checkpoint50 — 源码提交终态、真实旧账本备份迁移及owner恢复候选
+
+checkpoint49源码交付已完成正常本地提交：IQS `29f49d3ff59974ecbe25ec9e7e7438a774cb1a63`、StockQA `21b2c5f9caa4db8adafb7bc74d69ce75aed4c9fe`、StockWiki `5b11f55909efdbd724fb07e1e7f298631c4200cb`。远端未推；不重做68文件部署或已签收PRIMARY/FIN。
+
+真实实验原work.sqlite先只读核实，schema17、30个work/attempt、4 checkpoint、26 leased（已到期）、13 physical budget全settled/completed，原SHA60d4446d…。在自有实验目录做完整SQLite backup后，用已部署原生QuickScanWorkStore升级18，只添两个work_event不可变trigger；所有原表逐行摘要/计数完全保持，完整性及外键检查通过。原schema17备份SHA f3e6101f…，迁后236e5aa4…；没有改状态、答案、费用、旧context/PRE或补造header ID，也没有HTTP。备份与原件仅留本机，不上传数据库。
+
+同节点只读审查未部署work-decision旧草稿，不能整树复用：草稿18与已交付18同号异构；旧native-currency profile不等于当前refresh1.1；当前PRE1.2不含回答后的payloadSHA；首次apply过期确认漏洞；comparison限制合法checkpoint导致旧26不可实验；retry时间/controls尚无planner/admission/runner消费。对无accepted answer只能作owner中性结案，不以诊断hash自证具体parser错误。全部纳入同一原B01实施，不新开小审查门。
+
+仅自有runs/b01-engineering-2026-10-11-01候选复用原journal，显式schema19保留原18；未部署源、未迁真实账本19、未结束真实旧26。候选resolve取锁后clock，双读owner权限后以真实commit clock持久化，倒退拒绝；物理receipt/attempt/pack/预算保持，已有checkpoint拒绝resolve。独立comparison可接已授权failed-resolution，不伪造旧score/checkpoint或要求先伪造旧投递；只保存独立意图，尚未创造新work/HTTP。扩展projection显式include_owner_decisions=True，旧默认shape保持；新旧只读quote不偷偷迁18。
+
+TDD与续测保留原分母：PID60796原目标RED1F（缺resolve方法）；移植脚本两次重复锚点断言零store写，先跑批次PID45108仍34F，不算已实现后的产品回归。真正当前移植后PID66732 31P/3F（漏显式投影）；直接修后PID62972 34P/5deselected。其余五项适配当前真实1.1/schema18→19及guard：PID56168 4P/1F，发现SQLite C层绕原open hook在runs创建空foreign.sqlite；已按实际创建时刻/绝对路径/0bytes确认仅该自有文件并删除，加sqlite3.connect有界审计后PID10648 1P。新commit-clock/旧默认shape/币种/迁移联合PID50592 9P/35deselected，含5项新控制和原4项，不相加冒充一次全绿或金融准确率。子进程无key、外部网络拒绝，原日志/PID/SHA保留。
+
+下一步唯一动作：继续同一候选将真实owner预览/TTY确认/首次fresh-registration与既有精确决议重放接通当前refresh1.1/query2.6，随后将已授权retry/comparison引用、冷却时间、目标generation及固定controls贯通原planner→preview→admission→runner。需要扩展wire时用显式新版本，不暗改旧1.0/1.1。完成整个owner控制节点再一次集中原生CLI/SQLite/TDD与既有同节点独审、核源差异后交付；不要用FixtureAuthority处理真实26、重放旧one-shot、放宽旧批准或把4旧blocked补成新结果。之后才IQS_01/02/04 pack3/32768→pack1收费实验。
+
+本轮金融gold0、已接受评分0/ACK0，原13HTTP/26搜索/CNY1.268162/30题分母保持；工程完成不授Financial/G3/F05/生产UI/一键/全池。私有候选、备份、日志和真实材料不随公文发布。
+
+隔离清理已在实际CIM自有Python0后核绝对路径/reparse/硬链接闭合和逐文件SHA；删除自有temp 4176文件/3012目录，剩余0。保留候选/冻结输入/原日志/交付备份与真实实验；没有删除源仓或其他进程文件。旧长路径第一次清理在只读枚举阶段退出，改原生扩展路径后才执行。
+
 > 最新进展（2026-10-13 checkpoint49）：B01完整新旧协议整链、确定逻辑失败和CNY刷新已从隔离候选交付三个源仓68文件；QA/SW正常本地提交、正常hooks/静态检查通过。现在进入原真实账本对账及新批准后的少量真实问答实验；还没有新的准确性结论或生产门通过。下文旧checkpoint的“未部署”为历史。
 
 ## 2026-10-13 checkpoint49 — B01源码交付与正常本地提交
@@ -604,7 +624,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（checkpoint49）：** B01三个源仓68文件已精确部署，StockQA/StockWiki已正常本地提交；同节点集中测试与正常静态检查通过，软件接线不授金融准确性。现在只读核原真实owner/work账本与公开恢复路径，先备份后原生升级18；旧26expired不得强制terminal或重放旧controller，4旧blocked不得补造ID/context。按原owner取得显式1.1 CNY quote、新批准/admission，再固定IQS_01/02/04 pack3/32768→pack1真实实验。原13HTTP/26搜索/CNY1.268162/30题/0评分/ACK0保持；PRIMARY/FIN不重做，金融/G3/F05/生产门仍开放。
+**当前唯一接续（checkpoint50）：** 68源码已部署并正常本地提交，原实验17已备份并原生迁18、原表数据未变；不重做这些步骤。沿同一自有候选完成schema19 owner控制的真实确认/fresh重放、显式新旧wire及retry/comparison到planner/admission/runner的固定controls接线。候选核心34P，兼容/clock9P及guard受影响1P；仍未源部署19或处理真实26。整个控制节点一次集中验收后，才原owner新批准下IQS_01/02/04 pack3/32768→pack1；4旧blocked不可追认，原费用/分母保持。PRIMARY/FIN不重做，金融/生产门开放。
 
 **历史接续（checkpoint47，实施中）：** 沿同一B01候选完成默认请求摘要捕获及新profile内部读取/inspection/field assessment；整链公开CLI、真实临时SQL与旧格式集中回归后再源writer/SHA核对部署。不增小节点审查，不重跑PRIMARY/FIN或旧live。checkpoint46接续范围继续有效。
 
