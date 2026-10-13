@@ -1,3 +1,15 @@
+> 当前checkpoint53：1.2批准→原admission的公开登记/重放/错参数拒绝已实际接通；正向pack3尾包测试exec session9268/PID62364仍在运行，不重启或清其temp。跨LLM新目标与旧物理来源尚待分离，source18/candidate19未部署。三个质量包用户已派出，避开其writer。
+
+## 2026-10-13 checkpoint53 — 控制准入/执行候选与公开原生接续
+
+[证据与剩余动作](docs/implementation/reviews/B01/owner-control-dispatch-2026-10-13.md)。同B01大节点新增binding3.0，旧1/2形状不变；原写事务验证实际19决议/物理/PRE/费用并绑定cohort/target/controls，只有明确独立comparison可保留原result_ready，其他未决/冷却/旧投递仍拒。原admission、原action、原runner及实际请求体都消费控制，不建第二队列/账本。native17P，执行旧新联合61P，实际payload9P，分批原分母保留、不合并作准确率。
+
+保留公开测试原失败：sandbox硬链接WinError5、组合80秒timeout、PID65124在已完成1.2预览后漏测试owner_principal。修测试后在该已终态原namespace接续，PID60344 exit0/287.77秒，实际公开preview→fixture-only确认记录→admission→精确replay→原执行检查→main错token拒绝；一新generation2/pending、无attempt/HTTP/费用，八原物理表保持。不是整项pytest全绿、正向main或金融gold。
+
+一次节点独审发现approved pack>1误建第二同路径store对象，候选改复用原service.store，保持原身份检查。新原main pack3一成员尾包fake HTTP+无key恢复测试在运行：exec session9268、CIM实际pytest62364及其子进程（2026-10-13T19:44:27Z）。先poll同句柄或核实际CIM/日志，未终态不重启、不清其temp；不把尾包说成一请求三题。源19/1.2未部署、原真实26/4及13HTTP/26搜索/CNY1.268162/30题/0评分/ACK0不改。
+
+唯一接续：收该正向测试并修真实反例；将不可变旧physical来源与新owner批准的目标route/model分开，当前同route comparison不能假称跨LLM已支持。完成整个节点集中受影响回归及源writer/SHA检查后才部署/原owner真实恢复/少量收费实验。金融/G3/F05/UI/一键/全池保持开放，不新增helper门。三个质量包已由用户全部派出，只更动态分派记录，不重写原manifest/锁/validation或占三个新根。
+
 > 当前主线checkpoint52，最新质量三包仅已编制；下面checkpoint46等为历史。新包不能关闭真实金融/G3/F05/生产门。
 
 ## 2026-10-13 — 可并行部分与主线边界
