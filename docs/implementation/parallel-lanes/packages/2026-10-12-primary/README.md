@@ -1,3 +1,5 @@
+> 当前状态（2026-10-13）：本轮三个PRIMARY包已交回，总控直接修复并软件签收，有效增量合并原FIN；来源仍partial、评分null/金融gold0。[当前验收与交接](../../../reviews/parallel-packages/2026-10-13/PRIMARY-three-package-acceptance.md)列实际HEAD/测试/剩余gap。下面编制时的“目录不存在/可开工/未派发”均为历史，不再照它新建目录或重复实现。各源Lab当前说明在docs/handoff/<package-id>/controller-acceptance-2026-10-13/；新工作只按明确补证范围认领，不自动重新启动旧卡。原manifest/43锁是不可变编制证据，不是动态调度状态。
+
 # 官方来源核验：三个可独立开工的大包
 
 2026-10-12编制，原FIN实际交接HEAD `1e88d86754f6faa6959e1cc893ddbc8f6e5b374f`，CLI/package1.5.0、财务参考pack1.2.0、ledger1.0.0。三个新Lab编制时不存在；未创建/派发/研究。用户可同时交不同harness，开工重查唯一writer即可，不依赖B01部署或另外两包。

@@ -1,3 +1,26 @@
+> 最新进展（2026-10-13 checkpoint46）：三个PRIMARY包的软件与资料候选已由总控修复并签收；有效增量正式合并原FIN。最终Alphabet57P＋20CLI、CATL84P、CSC78P、合并后FIN121P，6项三方合并控制通过。FIN实际CLI1.5.1，pack1.2/ledger1.0；源公开0/2/3与旧1.1读取已核。来源仍partial、90评分/区间null、金融gold0，不能把整题confirmed撤回误解为所有官方数字都无效。已正常本地产品/交接提交，主线回B01完整事前主体→封存→owner导入→inspection等后续；已绿包不重做，金融/G3/F05/生产门仍开放。
+
+## 2026-10-13 checkpoint46 — PRIMARY三包和FIN正式交接收口
+
+- [集中验收与直接修复](docs/implementation/reviews/parallel-packages/2026-10-13/PRIMARY-three-package-acceptance.md)、[一次独立核源](docs/implementation/reviews/parallel-packages/2026-10-13/PRIMARY-independent-source-review.md)。原31/54/46P真实复现仍漏语义；独立17/17/21等RED后修错绑、转载自签、口径/期间/日期/短摘录hash/严格JSON和冻结检查。不是拿模板通过或测试覆盖率当金融准确率，没有每题小审查门。
+- 正常产品/交接：Alphabet3bfb5e6→514e9ba、CATLbb4fba9→5686091、CSC21f1916→5a72395、FINcc91670→212eba6；各205/124/122/348工件SHA/bytes匹配，源仅既有.codegraph/设施，无业务dirty。原件/旧自审与HEAD分开保存为intake-handoff.json；5个原缺scratch不重建。各Lab当前PWF和交接均更新。
+- Source公开续验发现CSC漏引导FIN模块、Alphabet验证写代码根固定temp，新增真实反例后修；最终57P(PID70936)、78P(PID55308)，Alphabet独立CLI20/20(PID35212)，CATL84P(PID40088)保持，全部exit0。源公共validate0，原mean漏洞由真正owner1.5.1修，不以wrapper不可变检查遮住；旧frozen1.5.0/43依赖仍保持。
+- FIN121P(PID66724)在合并后通过；初版过严拒旧mean正例5F保留，最终只拒显式period_end/beginning_balance与平均公式冲突，not_applicable/unspecified旧metadata按真实平均公式可读＋legacy warning，不授金融资格。公开version1.5.1、旧1.1读0、export0/已有3、坏平均声明validate/export2且无正式输出。
+- 三方6顺序同字节、6P(PID65200)，旧Source/外60/20原题锁/62母公司事实/原8账保持。90题72定向研究完成/18gap/0未开始，1058含历史facts/109contradicted/62Sources/9ledger。原36存在计数不是官方确认，1.2使用deep_researched；评分null、来源needs_revision，金融gold0。三qualification仍绑各自候选文件，不伪造绑定合并文件。
+- Alphabet撤87错绑，保15proof，293gap；CATL16 licensed精确proof、30limited/251gap；CSC24proof、20unconfirmed/10limited，原16confirmed撤回。条件遗漏/数字冲突旧claim和值保留反证及前序hash；官方数字、周期风险与恢复条件不因缺资料被删。未来只补具名原件缺口，用户允许大型补证交独立harness，本轮机械小修不再派返工卡。
+- 自有temp按绝对路径/reparse/硬链接检查后精确清理，统计见runs/primary-acceptance-2026-10-13-01/cleanup-receipt.json；保留必要反例/原失败日志、源码副本，B01活动根/源设施/他人2026-10-10 README不动。模型HTTP/付费搜索/公司文档下载/网页全文保存/生产DB/名单写0。
+- 本轮PWF/验收公文仅正常本地提交，远端仍此前自动审批范围pending，不混入私有数据/源码/golden或覆盖他人文件。原live13HTTP/26native搜索/CNY1.268162/0评分/ACK0不变；Financial/G3/F05/生产UI/一键/全池未由此关闭。
+
+> 最新进展（2026-10-13 checkpoint45）：三个PRIMARY包已实际交回并冻结接收，不再是未派发。各43 FIN依赖匹配；Alphabet清单含5个已删除测试临时文件，另两包工件匹配。一次集中独立核源发现Alphabet官方证据错绑事实、优先股条件遗漏，以及CSC转载被标整题官方确认/ROE自审口径错误；正在自有隔离候选直接修复并集中测试，尚未签收或合并。CATL30题limited状态如实保留。三新Lab索引已按用户授权建立。主线B01原隔离候选和下一动作保持，金融/G3/F05/生产门未关闭。用户允许工作量大的来源补读另发独占修正包，不强造官方确认。
+
+## 2026-10-13 checkpoint45 — PRIMARY三包实际接收与集中验收
+
+- 实际HEAD：Alphabet1c929b61495104f30f2aac2ce15fb7013fd32a71、CATL83592aa75db7c76f983558d8dd73740e9124b9ca、CSCa6291f8e9c22a27e7a336240dd67e338becbf9d9；三源仅.codegraph/设施、无remote，157/86/107跟踪文件。不可变source和可写candidate均在自有runs/primary-acceptance-2026-10-13-01，各43输入SHA全匹配。
+- 原声明均partial；140/70/87工件匹配，Alphabet另5个清单路径是已删scratch，不恢复临时垃圾或假称清单完整。原31/54/46 pytest与Alphabet额外CLI20尚待总控实际复现，声明不是验收结果。
+- 同次独立agent只读官方正文与指定映射：Alphabet2026零回购、现金加证券242474m和融资49.6bn有SEC原件支持，不能因异常大小删去；优先股股利限制存在例外和支付/预留条件，多个真实官方proof却绑错年份/期间/指标/分部。CSC16 confirmed_primary不满足全部事实官方原件覆盖；转载普通股ROE10.51本pack正确，自审/proof含永续债断言错误。CATL官方新闻不能替代完整附注，转载仍limited。
+- 本次原包一次集中审查，由三个独立审查agent在互斥自有candidate运行原测试和新增反例并最小修复；外部source/PWF由总控独占，不增加每题/小节点门。评分null、资格false、62母公司记录/旧Source/外60/43冻结保持。
+- 本轮尚未部署外Lab/原FIN或启动收费调用/生产库/名单写；原B01主线、原13HTTP/26搜索/CNY1.268162/0评分/ACK0保持。远端仍此前自动审批导出范围pending，本地文档可正常提交；他人2026-10-10 README保持。
+
 > 最新进展（2026-10-12 checkpoint44）：三个新的PRIMARY官方来源核验大包可在独立新根启动，43依赖/90独占题位/31链接/三公开handoff模板预检通过，仅文档编制、未派发/研究。主线B01具名request1.2/binding1.1/query2.6已在隔离候选推进：IQS78P、StockWiki真实临时库/固定OS CLI69P；caps1.2相关23P/1F后受影响1P修闭。尚未部署源或完成完整subject-bound QA/inspection与金融资格。原FIN114P正式合并、原live13HTTP/26搜索/CNY1.268162/0评分/ACK0保持；金融/G3/F05/生产门仍开放，以下旧“当前”为历史。
 
 ## 2026-10-12 checkpoint44 — B01具名下游候选与三个独立核源包
@@ -567,7 +590,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（checkpoint44）：** 完成原B01同一隔离候选subject-context2/authority3+Observation1.2的实际QA pre-send→完整封存→owner公开导入→inspection正反例，并核qualified/pool消费者新profile读取；继续同节点无有效答案逻辑终态/retry/CNY与旧USD兼容。request/binding/query/caps原已绿批次与FIN软件不重做，完整节点一次审查/源writer-SHA重核再精确部署。三个PRIMARY包可由用户分配新独占根，主控不自动派发。原live分母/费用/ACK及金融/G3/F05/生产门保持；旧Next Step均历史。
+**当前唯一接续（checkpoint46）：** PRIMARY三包及FIN软件/增量已修复、提交、正式合并；不要重复实施、重建Lab或重跑已绿历史批次。沿checkpoint44的原B01同一隔离候选，完成subject-context2/authority3+Observation1.2实际QA pre-send→完整封存→owner公开导入→inspection正反例，并核qualified/pool新profile读取；同节点无有效答案逻辑终态/retry/CNY与旧USD兼容。完整节点一次审查/源writer与SHA重核再精确部署。资料部分官方原件/截止/经济口径具名gap仍开放，分数null/金融gold0；可在明确独占范围后交harness补大缺口，不重复机械小修或自动派发。原live分母/费用/ACK及金融/G3/F05/生产门保持；旧Next Step均历史。
 
 **当前唯一接续（checkpoint40）：** 收口正在进行的CATL直接修复集中验收与精确交付，再按各自冻结快照验收刚报交的Alphabet/CSC，三方比对后合并。B0187P装配候选保留，随后回到其真实SQLite封存/具名下游协议工程；以下checkpoint38/39接续是历史，不重建或重跑原live账本。
 

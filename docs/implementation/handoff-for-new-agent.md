@@ -1,3 +1,16 @@
+> 最新进展（2026-10-13 checkpoint46）：三个PRIMARY包的软件与资料候选已由总控修复并签收；有效增量正式合并原FIN。最终Alphabet57P＋20CLI、CATL84P、CSC78P、合并后FIN121P，6项三方合并控制通过。FIN实际CLI1.5.1，pack1.2/ledger1.0；源公开0/2/3与旧1.1读取已核。来源仍partial、90评分/区间null、金融gold0，不能把整题confirmed撤回误解为所有官方数字都无效。已正常本地产品/交接提交，主线回B01完整事前主体→封存→owner导入→inspection等后续；已绿包不重做，金融/G3/F05/生产门仍开放。
+
+## 2026-10-13 checkpoint46 — PRIMARY三包和FIN正式交接收口
+
+- [集中验收与直接修复](docs/implementation/reviews/parallel-packages/2026-10-13/PRIMARY-three-package-acceptance.md)、[一次独立核源](docs/implementation/reviews/parallel-packages/2026-10-13/PRIMARY-independent-source-review.md)。原31/54/46P真实复现仍漏语义；独立17/17/21等RED后修错绑、转载自签、口径/期间/日期/短摘录hash/严格JSON和冻结检查。不是拿模板通过或测试覆盖率当金融准确率，没有每题小审查门。
+- 正常产品/交接：Alphabet3bfb5e6→514e9ba、CATLbb4fba9→5686091、CSC21f1916→5a72395、FINcc91670→212eba6；各205/124/122/348工件SHA/bytes匹配，源仅既有.codegraph/设施，无业务dirty。原件/旧自审与HEAD分开保存为intake-handoff.json；5个原缺scratch不重建。各Lab当前PWF和交接均更新。
+- Source公开续验发现CSC漏引导FIN模块、Alphabet验证写代码根固定temp，新增真实反例后修；最终57P(PID70936)、78P(PID55308)，Alphabet独立CLI20/20(PID35212)，CATL84P(PID40088)保持，全部exit0。源公共validate0，原mean漏洞由真正owner1.5.1修，不以wrapper不可变检查遮住；旧frozen1.5.0/43依赖仍保持。
+- FIN121P(PID66724)在合并后通过；初版过严拒旧mean正例5F保留，最终只拒显式period_end/beginning_balance与平均公式冲突，not_applicable/unspecified旧metadata按真实平均公式可读＋legacy warning，不授金融资格。公开version1.5.1、旧1.1读0、export0/已有3、坏平均声明validate/export2且无正式输出。
+- 三方6顺序同字节、6P(PID65200)，旧Source/外60/20原题锁/62母公司事实/原8账保持。90题72定向研究完成/18gap/0未开始，1058含历史facts/109contradicted/62Sources/9ledger。原36存在计数不是官方确认，1.2使用deep_researched；评分null、来源needs_revision，金融gold0。三qualification仍绑各自候选文件，不伪造绑定合并文件。
+- Alphabet撤87错绑，保15proof，293gap；CATL16 licensed精确proof、30limited/251gap；CSC24proof、20unconfirmed/10limited，原16confirmed撤回。条件遗漏/数字冲突旧claim和值保留反证及前序hash；官方数字、周期风险与恢复条件不因缺资料被删。未来只补具名原件缺口，用户允许大型补证交独立harness，本轮机械小修不再派返工卡。
+- 自有temp按绝对路径/reparse/硬链接检查后精确清理，统计见runs/primary-acceptance-2026-10-13-01/cleanup-receipt.json；保留必要反例/原失败日志、源码副本，B01活动根/源设施/他人2026-10-10 README不动。模型HTTP/付费搜索/公司文档下载/网页全文保存/生产DB/名单写0。
+- 本轮PWF/验收公文仅正常本地提交，远端仍此前自动审批范围pending，不混入私有数据/源码/golden或覆盖他人文件。原live13HTTP/26native搜索/CNY1.268162/0评分/ACK0不变；Financial/G3/F05/生产UI/一键/全池未由此关闭。
+
 > 最新进展（2026-10-12 checkpoint44）：三个新的PRIMARY官方来源核验大包可在独立新根启动，43依赖/90独占题位/31链接/三公开handoff模板预检通过，仅文档编制、未派发/研究。主线B01具名request1.2/binding1.1/query2.6已在隔离候选推进：IQS78P、StockWiki真实临时库/固定OS CLI69P；caps1.2相关23P/1F后受影响1P修闭。尚未部署源或完成完整subject-bound QA/inspection与金融资格。原FIN114P正式合并、原live13HTTP/26搜索/CNY1.268162/0评分/ACK0保持；金融/G3/F05/生产门仍开放，以下旧“当前”为历史。
 
 ## 2026-10-12 checkpoint44 — B01具名下游候选与三个独立核源包

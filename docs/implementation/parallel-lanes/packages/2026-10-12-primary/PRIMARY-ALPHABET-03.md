@@ -1,3 +1,5 @@
+> 当前状态（2026-10-13）：本轮三个PRIMARY包已交回，总控直接修复并软件签收，有效增量合并原FIN；来源仍partial、评分null/金融gold0。[当前验收与交接](../../../reviews/parallel-packages/2026-10-13/PRIMARY-three-package-acceptance.md)列实际HEAD/测试/剩余gap。下面编制时的“目录不存在/可开工/未派发”均为历史，不再照它新建目录或重复实现。各源Lab当前说明在docs/handoff/<package-id>/controller-acceptance-2026-10-13/；新工作只按明确补证范围认领，不自动重新启动旧卡。原manifest/43锁是不可变编制证据，不是动态调度状态。
+
 # PRIMARY-ALPHABET-03：Alphabet / GOOGL官方来源与经济口径核验
 
 **可由一个独立harness认领并立即做限定研究**，不依赖另两包或主线B01完成。唯一可写根 `C:/Users/郑曾波/Projects/iqs-primary-alphabet-lab`，编制时尚不存在；不自动派发。与其它包唯一的共同项是只读冻结输入。先读本卡及同目录[共同规则](common-rules.md)、[接口/测试契约](integration-contract.md)、[PRIMARY-ALPHABET-03.targets.json](PRIMARY-ALPHABET-03.targets.json)、[43文件锁](inputs.lock.json)、[manifest](manifest.json)及[PRIMARY-ALPHABET-03.handoff.template.json](PRIMARY-ALPHABET-03.handoff.template.json)。这些文件是完整施工上下文；不要求阅读主线全部历史对话。
