@@ -1,0 +1,3250 @@
+{
+  "protocol": "iqs.chain_source_targets/1.0.0",
+  "information_cutoff": "2026-10-13",
+  "source_file": "chain/content/chain-reference.json",
+  "source_sha256": "4d540d35439c1225422110391a8e354b951353634190dc1b41a66623bef7c5b8",
+  "records": [
+    {
+      "record_id": "CC02-R001",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R001",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "business_segment",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_01",
+            "question_object_sha256": "c075e9d65700da491ac79585d826516e7f67bc51ff8288a4b45cc54cd9fc9092"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_02",
+            "question_object_sha256": "bd5480fb4bdcaf3baa636a92d8f49b6c64ebe3fe2ffe68646a9ab6920a173251"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "capital_markets",
+            "question_id": "FACT_CAPITAL_MARKETS",
+            "question_object_sha256": "e0fdd81ba4a875ac13e182534ca79a2869d0034efe12361ba130060fa943084a"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C001",
+            "statement": "公司披露其业务分为四个板块：投资银行业务、财富管理业务、交易及机构客户服务业务、资产管理业务。",
+            "relation_code": "operates_segment",
+            "source_role": "resale",
+            "target": {
+              "name": "投资银行/财富管理/交易及机构客户服务/资产管理 四个业务板块",
+              "kind": "service_class",
+              "disambiguation": "年报摘要自述的四个板块划分，非工业产品分部。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-27",
+            "source_refs": [
+              "CC02-S001"
+            ],
+            "counterevidence": [
+              "板块划分属管理层口径，与审计利润表科目不可直接相加。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C002",
+            "statement": "2025年四个板块营业收入分别约为31.32亿元、82.21亿元、97.24亿元、14.28亿元，营业收入合计233.22亿元。",
+            "relation_code": "operates_segment",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "2025年分板块营业收入",
+              "kind": "industry_segment",
+              "disambiguation": "管理层讨论与分析口径的分板块收入，非审计合并利润表科目。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-27",
+            "source_refs": [
+              "CC02-S001"
+            ],
+            "counterevidence": [
+              "管理层口径与审计口径并存，混用会产生重复计算。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G201",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R002",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R002",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "sub_industry",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_02",
+            "question_object_sha256": "bd5480fb4bdcaf3baa636a92d8f49b6c64ebe3fe2ffe68646a9ab6920a173251"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C014",
+            "statement": "公司英文名称为 China Securities Co., Ltd. 及 CSC Financial Co., Ltd.，中文名称为中信建投证券股份有限公司。",
+            "relation_code": "participates_in",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "中国境内综合类证券公司上市主体",
+              "kind": "industry_segment",
+              "disambiguation": "以公司章程登记名称为准，区别于中信证券(600030)。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2025-11-22",
+            "source_refs": [
+              "CC02-S008"
+            ],
+            "counterevidence": [
+              "英文名 China Securities Co., Ltd. 亦被其他无关主体使用，仅凭英文名可能误配。"
+            ],
+            "confidence": "high"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G202",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R003",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R003",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "product",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_03",
+            "question_object_sha256": "66a0f77e38ec85a38a0017b7d7668c7eef87f4995af5e4fc8e8ec1556f90aae3"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "capital_markets",
+            "question_id": "FACT_CAPITAL_MARKETS",
+            "question_object_sha256": "e0fdd81ba4a875ac13e182534ca79a2869d0034efe12361ba130060fa943084a"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C012",
+            "statement": "投资银行业务包括股权融资、债务融资及财务顾问业务；财富管理业务包括经纪及财富管理、融资融券、回购业务。",
+            "relation_code": "sells",
+            "source_role": "resale",
+            "target": {
+              "name": "投行与财富管理服务线",
+              "kind": "service_class",
+              "disambiguation": "服务线而非实物产品，对应手续费及佣金收入。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-27",
+            "source_refs": [
+              "CC02-S006"
+            ],
+            "counterevidence": [
+              "服务线收入受市场发行节奏影响，年度间波动大。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G101",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "原 C006 的5245.08亿元引用2008国务院条例，不能证明2025公司数值；撤下该claim，产品槽位不删除。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          },
+          {
+            "gap_id": "CC02-G203",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R004",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R004",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "key_material",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_07",
+            "question_object_sha256": "e6343614582709c09b75b9aca68808c6ec39762f1db6545f814dd8495ad12948"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_18",
+            "question_object_sha256": "cf48330397fe95bac7ba24565a07c97bfa950619937644958c91572d4d8e5300"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "not_applicable",
+        "claims": [],
+        "gaps": [
+          {
+            "gap_id": "CC02-G032",
+            "looked_for": "证券公司是否存在关键原材料/耗材投入",
+            "actual_result": "公司为综合类证券公司，其已披露的成本与营运资本结构为业务及管理费、信息技术投入与合规风控投入等，未见原材料、耗材或能源采购；该槽位判定为不适用。",
+            "stop_reason": "「不适用」本身即为结论：证券公司不存在实物原材料投入，继续按材料类别检索只会得到行业泛泛描述而非公司事实。",
+            "next_evidence_needed": "若总控认为该主体不应进入工业材料题，应由总控在题目适用范围上处理，而非由本包编造材料清单。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R005",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R005",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "key_equipment",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_06",
+            "question_object_sha256": "6597bb3da67458f64ab0a692004e7c59c2c2ec8a8ecd3d5cec340e188cbac684"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C007",
+            "statement": "交易清算类系统涉及集中交易、快速交易、集中运营、账户管理、法人清算、交易前端等领域，公司以定制化软件开发服务入围方式采购。",
+            "relation_code": "uses_equipment",
+            "source_role": "procurement",
+            "target": {
+              "name": "交易与清算类信息系统",
+              "kind": "service_class",
+              "disambiguation": "信息系统的功能领域划分；证券公司的「设备」是系统与软件，不是产线装备。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": null,
+            "public_at": "2025-09-24",
+            "source_refs": [
+              "CC02-S004"
+            ],
+            "counterevidence": [
+              "招标人不承诺实际工作量及采购金额，入围不等于已实际采购。",
+              "该系统属信息技术投入，不等同制造业生产设备。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G010",
+            "looked_for": "公司是否存在实物生产设备、厂房或工业 BOM 依赖",
+            "actual_result": "公司为综合类证券公司，公开披露中未见生产设备、原材料采购或实物 BOM；信息系统的功能领域被披露为交易、清算、账户管理等。",
+            "stop_reason": "证券公司业务模式不含实物生产环节，继续按工业 BOM 检索不会产生真实关系。",
+            "next_evidence_needed": "若确需工业口径，应由总控明确该主体不适用工业产业链题，而非补造设备清单。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R006",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R006",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "upstream_supply",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_04",
+            "question_object_sha256": "e632231befb2369c0fd998990e904e9097d10bf0d7a678cb2aca398b5fa5c87c"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_09",
+            "question_object_sha256": "26adf2359aef0972d1f23071053da75571a0c9c8e0ade66f0c5b9f622c71bf2b"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_21",
+            "question_object_sha256": "63169f161e9de58db887aee05413e1482ca664d2873f8da3f1f9f8e7798f6998"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C008",
+            "statement": "交易清算类系统定制化开发服务的中标人之一为深圳市金证科技股份有限公司。",
+            "relation_code": "buys_input_from",
+            "source_role": "procurement",
+            "target": {
+              "name": "深圳市金证科技股份有限公司",
+              "kind": "listed_company",
+              "disambiguation": "中标名单中的软件开发服务供应商之一（沪市上市主体）；与其他中标人为各自独立的不同主体，不可合并为同一供应商。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-09-24",
+            "period_end": null,
+            "public_at": "2025-09-24",
+            "source_refs": [
+              "CC02-S004"
+            ],
+            "counterevidence": [
+              "来源为第三方招标聚合站，非发行人官网原文。",
+              "名单为入围资格，实际工作量与金额未披露。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C072",
+            "statement": "同一项目中标人还包括恒生电子股份有限公司与深圳市赢时胜信息技术股份有限公司，与金证科技为各自独立主体。",
+            "relation_code": "buys_input_from",
+            "source_role": "procurement",
+            "target": {
+              "name": "恒生电子股份有限公司",
+              "kind": "listed_company",
+              "disambiguation": "同一中标名单中的另一家独立软件开发服务供应商（沪市上市主体）；常在检索中被笼统称为「券商IT供应商」，但各家是不同主体、不同上市发行人。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-09-24",
+            "period_end": null,
+            "public_at": "2025-09-24",
+            "source_refs": [
+              "CC02-S004"
+            ],
+            "counterevidence": [
+              "来源为第三方招标聚合站，非发行人官网原文。",
+              "本条同时提及赢时胜，但仅以恒生电子为靶标；两者不是同一家公司。",
+              "名单为入围资格，未披露各家实际承接金额。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C015",
+            "statement": "公司经营范围经登记包括证券业务、结汇售汇、外汇业务、证券投资咨询、证券投资基金托管、公募证券投资基金销售等，须以审批机关核定为准。",
+            "relation_code": "depends_on",
+            "source_role": "regulatory_oversight",
+            "target": {
+              "name": "证券业务经营许可与登记经营范围",
+              "kind": "regulator",
+              "disambiguation": "牌照与经营范围构成业务前提，是证券公司的「投入」而非实物原料。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2025-11-22",
+            "source_refs": [
+              "CC02-S008"
+            ],
+            "counterevidence": [
+              "经营范围以审批机关核定为准，登记文本不保证已全部实际开展。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C019",
+            "statement": "客户交易结算资金必须全额存入具备存管资格的商业银行并单独立户管理，严禁挪用；公司须确定主办存管银行。",
+            "relation_code": "depends_on",
+            "source_role": "regulatory_oversight",
+            "target": {
+              "name": "指定商业银行存管安排",
+              "kind": "unknown_entity",
+              "disambiguation": "存管银行为业务必需环节，但公开可读来源未点名具体银行，故不填具体机构名。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2002-01-01",
+            "period_end": null,
+            "public_at": "2001-05-16",
+            "source_refs": [
+              "CC02-S010"
+            ],
+            "counterevidence": [
+              "法规要求存管，但公司具体存管银行名称本轮未在可读来源中找到。"
+            ],
+            "confidence": "high"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G011",
+            "looked_for": "公司具体的主办存管银行名称",
+            "actual_result": "法规明确要求确定主办存管银行（证监会令第3号第六条），但可读的年度报告摘要与公开页面未点名具体银行。",
+            "stop_reason": "可达来源未披露具体银行名称，不以行业常识补填工商银行/建设银行等。",
+            "next_evidence_needed": "需财务报告附注或客户资金存管协议披露，方可确认具体银行。"
+          },
+          {
+            "gap_id": "CC02-G012",
+            "looked_for": "交易所与登记结算机构作为业务通道的合同关系与费率",
+            "actual_result": "公司披露以上交所、深交所、北交所、全国股转公司等为业务场所与数据来源，并说明在中国证券登记结算有限责任公司上海分公司办理股份登记。",
+            "stop_reason": "公开页面仅体现业务场所与数据来源引用，未披露可核验的合同条款或费率。",
+            "next_evidence_needed": "需交易所会员协议或清算协议披露，才能把「业务场所」升级为已证明的合同关系。"
+          },
+          {
+            "gap_id": "CC02-G206",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R007",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R007",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "downstream_application",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_05",
+            "question_object_sha256": "742709eccb8b67a71f92b1275eafa562e2a9e8f5376489c104d826f018581bd9"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_10",
+            "question_object_sha256": "66b481cbbbb16d830a14f94989ae9af5ba8d16553056271d8ec97077e142c44e"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C010",
+            "statement": "投资银行业务的服务对象为发行人客户，公司披露其作为保荐机构或主承销商协助中国银行、建设银行、交通银行、邮储银行完成向特定对象发行A股股票。",
+            "relation_code": "serves",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "银行类发行人客户（中国银行、建设银行、交通银行、邮储银行）",
+              "kind": "customer_category",
+              "disambiguation": "此处银行为投行服务的发行人客户，不是公司上游供应商，也不是产品终端用户。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-27",
+            "source_refs": [
+              "CC02-S006"
+            ],
+            "counterevidence": [
+              "投行业务存在项目周期性，单一年度客户名单不构成长期收入保证。",
+              "发行人客户关系不同于工业品销售，交付物是保荐承销服务。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G207",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R008",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R008",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "customer_role",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_10",
+            "question_object_sha256": "66b481cbbbb16d830a14f94989ae9af5ba8d16553056271d8ec97077e142c44e"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_11",
+            "question_object_sha256": "e2a7ca8c890e086856e19754143154298a09395dac4995892558df09e87ebb39"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C013",
+            "statement": "截至2025年末客户总量1712.31万户，新增开户173.25万户；通过线上线下一体化渠道获客，实体网点覆盖境内30个省、自治区、直辖市和香港地区。",
+            "relation_code": "sells_to",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "零售与高净值个人客户群",
+              "kind": "customer_category",
+              "disambiguation": "客户为付费方，使用公司经纪、财富管理与投顾服务。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-27",
+            "source_refs": [
+              "CC02-S006"
+            ],
+            "counterevidence": [
+              "客户总量为累计开户数，不等于活跃客户或资产规模。",
+              "开户数受市场行情驱动，不能线性外推。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C066",
+            "statement": "公司通过「蜻蜓点金」APP 与实体营业网点提供线上线下一体化服务，实体网点以北京为总部、上海深圳为区域中心。",
+            "relation_code": "distributes_via",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "线上APP与实体营业部渠道",
+              "kind": "service_class",
+              "disambiguation": "渠道描述，公司拥有终端客户关系并直接收费。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-27",
+            "source_refs": [
+              "CC02-S006"
+            ],
+            "counterevidence": [
+              "未披露各渠道的客户与收入占比。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G208",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R009",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R009",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "supply_role",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "operating",
+            "question_id": "FACT_OPERATING",
+            "question_object_sha256": "22e9aaea81fa23215dd439b1bcf38e7152e8bde25fd88106266dfe4e2f1a7978"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "capital_markets",
+            "question_id": "FACT_CAPITAL_MARKETS",
+            "question_object_sha256": "e0fdd81ba4a875ac13e182534ca79a2869d0034efe12361ba130060fa943084a"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C003",
+            "statement": "监管口径下，计算风险控制指标时「负债」不含代理买卖证券款等，「资产」指自有资产、不含客户资产；客户交易结算资金与委托资产应与公司自有资产相互独立、分别管理。",
+            "relation_code": "has_operating_context",
+            "source_role": "regulatory_oversight",
+            "target": {
+              "name": "客户资产与自有资产的法定边界",
+              "kind": "regulator",
+              "disambiguation": "区分客户资产与自有资产的监管依据；避免把客户资金当作公司可动用资金或工业负债。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2020-03-20",
+            "source_refs": [
+              "CC02-S002",
+              "CC02-S003",
+              "CC02-S010"
+            ],
+            "counterevidence": [
+              "这是口径规定，不等于公司实际风险控制指标达标数值。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C016",
+            "statement": "公司章程载明发起人包含中信证券股份有限公司，持股427,000,000股（7%），即中信证券为股东而非同一主体。",
+            "relation_code": "has_operating_context",
+            "source_role": "capital_provision",
+            "target": {
+              "name": "中信证券股份有限公司（作为股东）",
+              "kind": "listed_company",
+              "disambiguation": "中信证券(600030)为股东之一，与中信建投证券(601066)为不同法律主体与不同上市发行人。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2025-11-22",
+            "source_refs": [
+              "CC02-S008"
+            ],
+            "counterevidence": [
+              "章程记载为发起时股本结构，现行持股比例可能已变化。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C004",
+            "statement": "公司资产项下单独列示「客户资金存款」，负债项下单独列示「代理买卖证券款」，客户资金在报表中与自有资产分列。",
+            "relation_code": "has_operating_context",
+            "source_role": "capital_provision",
+            "target": {
+              "name": "客户资金存款与代理买卖证券款科目",
+              "kind": "industry_segment",
+              "disambiguation": "会计科目层面的客户资金与自有资金分列，属客户资金过渡性质。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-27",
+            "source_refs": [
+              "CC02-S009",
+              "CC02-S002"
+            ],
+            "counterevidence": [
+              "转载财务报表文本，非审计报告 PDF 原件，具体金额未逐项复核。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G209",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R010",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R010",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "first_curve",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_12",
+            "question_object_sha256": "e3790a76935262ac7488a8a2e7b3f34fa60821c8c044685986f4ce89bcfc4831"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_17",
+            "question_object_sha256": "7b6c1c7537d0281adb410f7e4ab74439cd8158472a7b244f107224bed3ab5f59"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C017",
+            "statement": "2025年手续费及佣金净收入131.67亿元，其中经纪业务手续费净收入79.70亿元；营业收入合计233.22亿元。",
+            "relation_code": "has_core_business",
+            "source_role": "resale",
+            "target": {
+              "name": "手续费及佣金收入驱动的境内综合证券业务",
+              "kind": "service_class",
+              "disambiguation": "第一曲线为境内全牌照证券服务，收入以手续费佣金与投资收益为主。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-27",
+            "source_refs": [
+              "CC02-S009"
+            ],
+            "counterevidence": [
+              "经纪与投行收入与市场行情高度相关，具有周期性。",
+              "转载数据未与审计报告 PDF 逐项复核。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G210",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R011",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R011",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "second_curve",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_13",
+            "question_object_sha256": "9dab88790be6b84c1bd396cba1f5efed16eec3c92e4fe65e8a1ec73968856a82"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C018",
+            "statement": "公司明确将国际业务表述为第二增长引擎，并对中信建投国际增资15亿港元，使其资本金由40亿港元增至55亿港元。",
+            "relation_code": "develops_business",
+            "source_role": "capital_provision",
+            "target": {
+              "name": "中信建投国际（境外业务平台）",
+              "kind": "unlisted_company",
+              "disambiguation": "国际业务子公司为第二曲线载体；增资由董事会批准。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-04-02",
+            "source_refs": [
+              "CC02-S006",
+              "CC02-S007"
+            ],
+            "counterevidence": [
+              "第二曲线尚未在收入结构上超越境内主体业务。",
+              "增资为董事会批准事项，实际到位与产出需后续验证。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C011",
+            "statement": "国际业务升级为第二增长引擎；中信建投国际2025年营业收入同比增长103%，净利润同比增长177%。",
+            "relation_code": "develops_business",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "境外机构与发行人客户群",
+              "kind": "customer_category",
+              "disambiguation": "国际业务客户群，具体客户名称未在可读来源中披露。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-04-02",
+            "source_refs": [
+              "CC02-S006",
+              "CC02-S007"
+            ],
+            "counterevidence": [
+              "业绩说明会为媒体转述，非公告原文。",
+              "国际业务基数较小，同比高增速不代表绝对规模。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G211",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R012",
+      "company_key": "csc",
+      "baseline": {
+        "record_id": "CC02-R012",
+        "company_key": "csc",
+        "subject_descriptor": {
+          "issuer_name": "中信建投证券股份有限公司 (CSC Financial Co., Ltd.)",
+          "listing_hints": [
+            "601066.SH",
+            "6066.HK"
+          ],
+          "scope": "中国境内综合类证券公司上市主体；不含中信证券等同名近似主体。",
+          "segment": "资本市场服务 / 证券"
+        },
+        "topic": "commercialization",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_03",
+            "question_object_sha256": "66a0f77e38ec85a38a0017b7d7668c7eef87f4995af5e4fc8e8ec1556f90aae3"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "commercialization",
+            "question_id": "FACT_COMMERCIALIZATION",
+            "question_object_sha256": "e9c07d7a26c6c82f022f3c8f753e8f68e300f31e45bc83e34f0517d4ee1946e8"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C009",
+            "statement": "2025年8月证监会发布实施《证券公司分类评价规定》，取消营业总收入加分指标并提高净资产收益率加分力度，评价框架为风险管理能力、持续合规状况、业务发展和功能发挥状况。",
+            "relation_code": "has_operating_context",
+            "source_role": "regulatory_oversight",
+            "target": {
+              "name": "证券公司分类评价制度",
+              "kind": "regulator",
+              "disambiguation": "监管评价规则本身已生效；公司自身评级结果未在可读来源中逐家披露。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2025-08-23",
+            "source_refs": [
+              "CC02-S005"
+            ],
+            "counterevidence": [
+              "公司自身2025年分类评级结果未知，不假设为AA级。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G013",
+            "looked_for": "中信建投证券自身2025年分类评价等级",
+            "actual_result": "公开来源仅披露行业层面结果（A类53家、B类43家、C类11家，其中AA级14家），未逐家点名。",
+            "stop_reason": "无公开逐家名单，不以行业常识或他公司评级推断本公司评级。",
+            "next_evidence_needed": "需证监会或公司公告逐家披露方可确认。"
+          },
+          {
+            "gap_id": "CC02-G212",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "本轮CSC官网/监管正文不可达；保留Lab二手内容声明，未独立确认为公司一手事实。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R013",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R013",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "business_segment",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_01",
+            "question_object_sha256": "c075e9d65700da491ac79585d826516e7f67bc51ff8288a4b45cc54cd9fc9092"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "internet",
+            "question_id": "FACT_INTERNET",
+            "question_object_sha256": "ec0d9d691d46546f71bd050c7095149a13de24b7d23f86bda12f8abf04991939"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C023",
+            "statement": "Alphabet 按 Google Services、Google Cloud 与 Other Bets 三个可报告分部披露分部结果。",
+            "relation_code": "operates_segment",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "Google Services / Google Cloud / Other Bets 三个可报告分部",
+              "kind": "industry_segment",
+              "disambiguation": "Alphabet 层面可报告分部划分，非子公司法人列表。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-02-05",
+            "source_refs": [
+              "CC02-S012"
+            ],
+            "counterevidence": [
+              "来源为第三方归档站收录的10-K分部附注，非SEC EDGAR原件。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C032",
+            "statement": "Google Services 收入主要来自广告，以及 YouTube TV、YouTube Music/Premium、NFL Sunday Ticket、Google One 等消费者订阅；Google Cloud 收入主要来自云平台服务与 Workspace 的用量费与订阅费。",
+            "relation_code": "operates_segment",
+            "source_role": "resale",
+            "target": {
+              "name": "分部收入模式（广告/订阅 与 云用量/订阅）",
+              "kind": "industry_segment",
+              "disambiguation": "收入模式描述；两类分部的计费基础不同，不可直接比较。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-02-05",
+            "source_refs": [
+              "CC02-S012"
+            ],
+            "counterevidence": [
+              "收入模式为10-K自述，具体金额原文本轮未逐项取得。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G001",
+            "looked_for": "Alphabet 各分部收入的原文数字与页内定位",
+            "actual_result": "已确认三分部披露框架与收入模式表述，但 abc.xyz 与 sec.gov 对本轮工具返回403，未取得可复核的原文收入数字。",
+            "stop_reason": "仅凭第三方归档与检索摘要不足以当作已核实原文，停止在此。",
+            "next_evidence_needed": "需在可读的官方申报页面上取得分部收入段落及其页内定位。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R014",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R014",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "sub_industry",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_02",
+            "question_object_sha256": "bd5480fb4bdcaf3baa636a92d8f49b6c64ebe3fe2ffe68646a9ab6920a173251"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "internet",
+            "question_id": "FACT_INTERNET",
+            "question_object_sha256": "ec0d9d691d46546f71bd050c7095149a13de24b7d23f86bda12f8abf04991939"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C024",
+            "statement": "Google Cloud 以用量计费与订阅方式对外销售云平台服务、Workspace 协作工具及企业服务，属对外商业销售的云服务细分行业。",
+            "relation_code": "participates_in",
+            "source_role": "resale",
+            "target": {
+              "name": "云基础设施与平台服务（IaaS/PaaS）",
+              "kind": "industry_segment",
+              "disambiguation": "对外商业销售的云服务，与 Alphabet 内部自用的模型研发算力区分。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-02-05",
+            "source_refs": [
+              "CC02-S012"
+            ],
+            "counterevidence": [
+              "未在可读来源中取得各细分服务的收入构成原文。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": []
+      }
+    },
+    {
+      "record_id": "CC02-R015",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R015",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "product",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_03",
+            "question_object_sha256": "66a0f77e38ec85a38a0017b7d7668c7eef87f4995af5e4fc8e8ec1556f90aae3"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "hardware",
+            "question_id": "FACT_HARDWARE",
+            "question_object_sha256": "0eabed92450be62f36ca197ac8fe82f6c835abbd6ea2063e707a4e0822f753d7"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C020",
+            "statement": "Alphabet 的技术基础设施使用并向客户提供专用 GPU 与自研 TPU；自研的表述明确归于 TPU，不证明 GPU 自研或晶圆自制。",
+            "relation_code": "sells",
+            "source_role": "resale",
+            "target": {
+              "name": "自研 TPU 与 AI 优化基础设施",
+              "kind": "product_family",
+              "disambiguation": "自研加速器产品家族；此处指产品能力，不指代工方。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-02-05",
+            "source_refs": [
+              "CC02-S012"
+            ],
+            "counterevidence": [
+              "10-K Item 1 描述产品能力，未披露各加速器的收入贡献。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C021",
+            "statement": "TPU7x 属 Ironwood 家族、为 Google Cloud 第七代 TPU，2025年11月24日进入 Preview，2026年3月31日转为正式可用(GA)。",
+            "relation_code": "sells",
+            "source_role": "resale",
+            "target": {
+              "name": "Ironwood / TPU7x（第七代 TPU）",
+              "kind": "product_family",
+              "disambiguation": "以官方产品文档的可用状态为商业化证据；不指代制造方。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-11-24",
+            "period_end": null,
+            "public_at": "2026-03-31",
+            "source_refs": [
+              "CC02-S011"
+            ],
+            "counterevidence": [
+              "官方文档说明可用状态，未披露出货量、收入贡献或代工方。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C031",
+            "statement": "此前世代 Trillium(v6e) 于2024年12月16日正式可用；TPU 于2026年6月1日在 Compute Engine 中正式可用。",
+            "relation_code": "sells",
+            "source_role": "resale",
+            "target": {
+              "name": "Trillium(v6e) 与 Compute Engine 中的 TPU",
+              "kind": "product_family",
+              "disambiguation": "既有世代与集成方式的可用状态，用于说明产品线成熟度。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2024-12-16",
+            "period_end": null,
+            "public_at": "2026-06-01",
+            "source_refs": [
+              "CC02-S011"
+            ],
+            "counterevidence": [
+              "发布说明按条目滚动更新，未给出各世代收入贡献。"
+            ],
+            "confidence": "high"
+          }
+        ],
+        "gaps": []
+      }
+    },
+    {
+      "record_id": "CC02-R016",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R016",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "key_material",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_07",
+            "question_object_sha256": "e6343614582709c09b75b9aca68808c6ec39762f1db6545f814dd8495ad12948"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C067",
+            "statement": "Alphabet 与 Kairos Power 合作部署 500MW 清洁电力发电，用于支撑数据中心用电需求。",
+            "relation_code": "uses_input",
+            "source_role": "procurement",
+            "target": {
+              "name": "Kairos Power（核电）",
+              "kind": "unlisted_company",
+              "disambiguation": "电力供应合作方；500MW为部署目标，非已建成容量。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "pilot",
+            "period_start": "2024-10-14",
+            "period_end": null,
+            "public_at": "2024-10-14",
+            "source_refs": [
+              "CC02-S033"
+            ],
+            "counterevidence": [
+              "交易对手方官网页面，本轮仅读到标题与日期，正文被截断。",
+              "500MW 为部署目标，非已建成发电容量。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C039",
+            "statement": "Alphabet 与 Brookfield Asset Management 及其可再生能源子公司签署水电框架协议(HFA)，锁定最多3GW无碳水电，包含两处宾州设施20年购电协议共670MW。",
+            "relation_code": "uses_input",
+            "source_role": "application",
+            "target": {
+              "name": "Brookfield Renewable（水电）",
+              "kind": "listed_company",
+              "disambiguation": "电力供应合作方；框架协议含20年购电安排。Kairos 与 Brookfield 为不同法律主体，不可合并为同一电力供应商。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-07-16",
+            "period_end": null,
+            "public_at": "2025-07-16",
+            "source_refs": [
+              "CC02-S034"
+            ],
+            "counterevidence": [
+              "第三方行业媒体转述，非 Google 或 Brookfield 官方公告。",
+              "3GW 为框架上限，非已投产容量。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G002",
+            "looked_for": "Alphabet 数据中心服务器、网络设备、光模块、液冷与 HBM 的具名供应方",
+            "actual_result": "10-K 说明其依赖合约制造商生产服务器与网络设备，且关键部件来源单一或有限，但未点名任何厂商；官方液冷相关博客正文本轮抓取为空。",
+            "stop_reason": "行业常识中「数据中心需要散热与内存」不等于 Google 已证明向某公司采购，停止在描述层。",
+            "next_evidence_needed": "需官方或监管披露中出现具名供应方及其供货内容与时期。"
+          },
+          {
+            "gap_id": "CC02-G028",
+            "looked_for": "Alphabet 数据中心用地的租赁与自有结构细节",
+            "actual_result": "10-K 提及与第三方运营方签订重大租赁安排，并指出电力、水与土地供给构成扩张约束，但未披露具体租赁对手方与地点明细。",
+            "stop_reason": "缺少可读原文的交易对手方信息，停止并保留缺口。",
+            "next_evidence_needed": "需官方申报文件中的租赁承诺附注与主要租赁方披露。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R017",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R017",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "key_equipment",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_06",
+            "question_object_sha256": "6597bb3da67458f64ab0a692004e7c59c2c2ec8a8ecd3d5cec340e188cbac684"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C025",
+            "statement": "Alphabet 自述其依赖合约制造商制造或组装设备以及技术基础设施所用的服务器与网络设备，其中部分部件由其自行提供。",
+            "relation_code": "uses_equipment",
+            "source_role": "procurement",
+            "target": {
+              "name": "合约制造商（服务器与网络设备）",
+              "kind": "equipment_class",
+              "disambiguation": "公司为设备使用与采购方，依赖合约制造；使用设备不等于制造该设备。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-02-05",
+            "source_refs": [
+              "CC02-S012"
+            ],
+            "counterevidence": [
+              "10-K 确认合约制造这一类别存在，但未点名任何制造商。",
+              "关键部件来源单一或有限，存在供应集中风险。"
+            ],
+            "confidence": "high"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G003",
+            "looked_for": "Alphabet 服务器整机、网络设备与液冷系统的具名供应方与型号",
+            "actual_result": "10-K 仅说明依赖合约制造商且来源集中，未点名厂商；官方液冷博客正文本轮抓取为空。",
+            "stop_reason": "设备供应关系需要具名来源确认，不以行业常识补填。",
+            "next_evidence_needed": "需官方披露或监管文件中出现具名设备供应方及供货内容与时期。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R018",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R018",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "upstream_supply",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_04",
+            "question_object_sha256": "e632231befb2369c0fd998990e904e9097d10bf0d7a678cb2aca398b5fa5c87c"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_08",
+            "question_object_sha256": "77ebfb9c791f4e550ad7a2344a2651f26daf532a85081cfdac2d22722cb2c198"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_09",
+            "question_object_sha256": "26adf2359aef0972d1f23071053da75571a0c9c8e0ade66f0c5b9f622c71bf2b"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C036",
+            "statement": "Broadcom 与 Google LLC 签订长期协议，由 Broadcom 为 Google 未来世代 TPU 进行开发与供应。",
+            "relation_code": "buys_input_from",
+            "source_role": "procurement",
+            "target": {
+              "name": "Broadcom Inc.",
+              "kind": "listed_company",
+              "disambiguation": "以 Broadcom 8-K 申报文件为据的 TPU 开发与供应方；协议未披露金额与数量。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2026-04-06",
+            "period_end": null,
+            "public_at": "2026-04-06",
+            "source_refs": [
+              "CC02-S013"
+            ],
+            "counterevidence": [
+              "为 Broadcom 的申报文件（交易对手方公告），非 Alphabet 自身申报。",
+              "协议未披露金额、数量或分成条款。",
+              "本轮未找到 Alphabet 侧对同一协议的并行披露。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C037",
+            "statement": "同一协议包含供应保障安排，由 Broadcom 为 Google 下一代 AI 机架供应网络及其他组件，期限至2031年。",
+            "relation_code": "buys_input_from",
+            "source_role": "procurement",
+            "target": {
+              "name": "Broadcom Inc.（AI 机架网络与其他组件）",
+              "kind": "listed_company",
+              "disambiguation": "机架级网络与组件供应方；与 TPU 供应为同一 8-K 中的两项独立安排。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2026-04-06",
+            "period_end": "2026-10-13",
+            "public_at": "2026-04-06",
+            "source_refs": [
+              "CC02-S013"
+            ],
+            "counterevidence": [
+              "未披露组件具体品类、金额或排他性。",
+              "期限「up to 2031」为上限表述。"
+            ],
+            "confidence": "high"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G004",
+            "looked_for": "Alphabet 自研芯片的晶圆制造与封装测试承接方",
+            "actual_result": "Alphabet 自身申报文件仅使用通用风险表述提及代工与封测厂商，从未点名；检索到的晶圆厂相关说法均为二手媒体推测，未采信为原文。",
+            "stop_reason": "代工关系属关键事实，必须由可读原文确认，停止在推测层面。",
+            "next_evidence_needed": "需 Alphabet、代工方或封测方的官方公告或监管申报中出现具名承接关系。"
+          },
+          {
+            "gap_id": "CC02-G029",
+            "looked_for": "Alphabet 自研芯片的 HBM 内存供应方",
+            "actual_result": "可读来源仅以芯片规格形式提及 HBM 容量，未点名任何内存供应方。",
+            "stop_reason": "规格参数不等于供应关系，缺少具名原文，停止并保留缺口。",
+            "next_evidence_needed": "需官方披露或内存厂商公告中出现具名供货关系与时期。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R019",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R019",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "downstream_application",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_05",
+            "question_object_sha256": "742709eccb8b67a71f92b1275eafa562e2a9e8f5376489c104d826f018581bd9"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_10",
+            "question_object_sha256": "66b481cbbbb16d830a14f94989ae9af5ba8d16553056271d8ec97077e142c44e"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C034",
+            "statement": "Anthropic 将可使用最多100万个 TPU 芯片及额外 Google Cloud 服务，2026年将有远超1吉瓦容量上线，双方自2023年建立战略合作。",
+            "relation_code": "serves",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "Anthropic",
+              "kind": "unlisted_company",
+              "disambiguation": "云与 TPU 容量客户；容量为上限表述，非已交付数量。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "unknown",
+            "period_start": "2023-01-01",
+            "period_end": null,
+            "public_at": "2025-10-23",
+            "source_refs": [
+              "CC02-S032"
+            ],
+            "counterevidence": [
+              "公告主体为 Anthropic，属供应商侧新闻稿。",
+              "「up to one million TPU chips」与「well over a gigawatt」为容量上限与前瞻表述。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C035",
+            "statement": "Google Cloud 官方新闻稿点名 Figma、Palo Alto Networks、Cursor 等为通过 Google Cloud 使用 Claude 的下游用户。",
+            "relation_code": "serves",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "Figma / Palo Alto Networks / Cursor（经 Google Cloud 使用 Claude）",
+              "kind": "customer_category",
+              "disambiguation": "下游最终用户类别；其为通过云平台使用模型服务的用户，非直接向 Google 采购 TPU。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2025-10-23",
+            "source_refs": [
+              "CC02-S032"
+            ],
+            "counterevidence": [
+              "该等主体为 Anthropic 模型的使用方，链条角色与直接采购 TPU 的客户不同。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G006",
+            "looked_for": "Google Cloud 具名企业客户及其采购的具体产品",
+            "actual_result": "业绩电话会点名了若干客户，但电话会文字稿为第三方转录，且未逐客户说明采购的产品与金额。",
+            "stop_reason": "缺少数额与产品对应关系，且来源为转录稿，停止并保留缺口。",
+            "next_evidence_needed": "需官方客户案例或客户方公告披露具体采购产品与规模。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R020",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R020",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "customer_role",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_10",
+            "question_object_sha256": "66b481cbbbb16d830a14f94989ae9af5ba8d16553056271d8ec97077e142c44e"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_11",
+            "question_object_sha256": "e2a7ca8c890e086856e19754143154298a09395dac4995892558df09e87ebb39"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C068",
+            "statement": "Alphabet 管理层表示正与 Apple 合作，作为其首选云服务提供商，并基于 Gemini 技术开发下一代 Apple 基础模型。",
+            "relation_code": "sells_to",
+            "source_role": "service_delivery",
+            "target": {
+              "name": "Apple Inc.",
+              "kind": "listed_company",
+              "disambiguation": "云服务与模型技术合作方；表述来自业绩电话会，属管理层口径。Apple 为独立第三方，不可与 Alphabet 合并。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-02-04",
+            "source_refs": [
+              "CC02-S035"
+            ],
+            "counterevidence": [
+              "来源为第三方转录的业绩电话会，非公司公告原文。",
+              "未披露合作金额、期限或排他性。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G007",
+            "looked_for": "Alphabet 各业务的客户角色细分（广告主、订阅付费方、云用量付费方、渠道）",
+            "actual_result": "10-K 自述了广告主、代理商、发布商、云企业客户等类别及其付费方向，但未按角色给出收入或规模明细。",
+            "stop_reason": "仅有类别描述而无规模数据，停止在角色层面。",
+            "next_evidence_needed": "需官方披露按客户角色的收入构成或渠道规模数据。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R021",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R021",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "supply_role",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "operating",
+            "question_id": "FACT_OPERATING",
+            "question_object_sha256": "22e9aaea81fa23215dd439b1bcf38e7152e8bde25fd88106266dfe4e2f1a7978"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "semiconductors",
+            "question_id": "FACT_SEMICONDUCTORS",
+            "question_object_sha256": "b3016ceb0bcab161b82dd1cf8471117f33ef8babb684f4218d1a76b5fe499515"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C041",
+            "statement": "Alphabet 在10-K中说明其自研 TPU 属自建加速器，并向客户提供基于该加速器的云服务，同时依赖合约制造商生产相关服务器与网络设备。",
+            "relation_code": "has_operating_context",
+            "source_role": "application",
+            "target": {
+              "name": "自研自用加速器设计与云服务供给",
+              "kind": "product_family",
+              "disambiguation": "公司自研并用自有加速器对外提供云服务；不等于自行制造晶圆，也不等于对外单独销售芯片。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-02-05",
+            "source_refs": [
+              "CC02-S012",
+              "CC02-S013"
+            ],
+            "counterevidence": [
+              "10-K 未说明 TPU 是否作为独立芯片产品对外销售。",
+              "Broadcom 8-K 表明未来世代 TPU 由合作方开发与供应，与「完全自研」的表述需区分世代理解。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G008",
+            "looked_for": "TPU 是否作为独立产品对外销售",
+            "actual_result": "可读官方来源仅说明 TPU 用于承载 Google Cloud 工作负载与对外提供云服务，未说明是否单独对外销售芯片。",
+            "stop_reason": "对外销售形态无原文，停止在「自研并用于自有云服务」这一可证层面。",
+            "next_evidence_needed": "需官方明确说明 TPU 的销售形态（芯片销售 / 仅云服务）。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R022",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R022",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "first_curve",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_12",
+            "question_object_sha256": "e3790a76935262ac7488a8a2e7b3f34fa60821c8c044685986f4ce89bcfc4831"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "internet",
+            "question_id": "FACT_INTERNET",
+            "question_object_sha256": "ec0d9d691d46546f71bd050c7095149a13de24b7d23f86bda12f8abf04991939"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C028",
+            "statement": "Google Services 为 Alphabet 三个可报告分部之一，其收入主要来自广告与消费者订阅，构成成熟的第一曲线业务。",
+            "relation_code": "has_core_business",
+            "source_role": "resale",
+            "target": {
+              "name": "Google Services 成熟业务",
+              "kind": "industry_segment",
+              "disambiguation": "第一曲线为成熟服务分部；10-K 另述2025年超过70%总收入来自线上广告。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-02-05",
+            "source_refs": [
+              "CC02-S012"
+            ],
+            "counterevidence": [
+              "未取得分部收入原文数字，不能量化第一曲线的规模与增速。",
+              "广告收入占比高意味着第一曲线对广告周期敏感。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G009",
+            "looked_for": "Alphabet 第一曲线的分部收入与增速原文",
+            "actual_result": "已确认分部框架与广告占比表述，但 abc.xyz 与 sec.gov 返回403，未取得可复核的分部收入数字。",
+            "stop_reason": "缺少可读原文数字，停止并保留缺口。",
+            "next_evidence_needed": "需官方申报页面上的分部收入段落及定位。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R023",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R023",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "second_curve",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_13",
+            "question_object_sha256": "9dab88790be6b84c1bd396cba1f5efed16eec3c92e4fe65e8a1ec73968856a82"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C033",
+            "statement": "Google Cloud 为独立可报告分部，以用量计费与订阅方式对外提供云平台与企业服务，属 Alphabet 成熟服务分部之外的成长业务。",
+            "relation_code": "develops_business",
+            "source_role": "resale",
+            "target": {
+              "name": "Google Cloud 成长业务",
+              "kind": "industry_segment",
+              "disambiguation": "第二曲线候选；商业化状态为对外商业销售。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-02-05",
+            "source_refs": [
+              "CC02-S012"
+            ],
+            "counterevidence": [
+              "未取得 Google Cloud 分部收入的原文数字，无法判断其相对规模。",
+              "Other Bets 同为独立分部但处于投资阶段，与 Google Cloud 的成熟度不同。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G030",
+            "looked_for": "Google Cloud 与 Other Bets 的收入规模、增速与亏损情况原文",
+            "actual_result": "分部框架已确认，但原始申报页面不可读，无法取得各分部的收入、经营利润与增速数字。",
+            "stop_reason": "缺少可读原文数字，无法量化第二曲线与投资阶段业务的差异，停止。",
+            "next_evidence_needed": "需官方申报页面上的分部收入与经营利润段落及定位。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R024",
+      "company_key": "alphabet",
+      "baseline": {
+        "record_id": "CC02-R024",
+        "company_key": "alphabet",
+        "subject_descriptor": {
+          "issuer_name": "Alphabet Inc. (Google 上市集团)",
+          "listing_hints": [
+            "NASDAQ:GOOGL",
+            "NASDAQ:GOOG"
+          ],
+          "scope": "Alphabet 上市集团合并范围；区分 Alphabet 与独立第三方企业。",
+          "segment": "互联网服务 / Google Cloud 与自研加速器"
+        },
+        "topic": "commercialization",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_03",
+            "question_object_sha256": "66a0f77e38ec85a38a0017b7d7668c7eef87f4995af5e4fc8e8ec1556f90aae3"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "commercialization",
+            "question_id": "FACT_COMMERCIALIZATION",
+            "question_object_sha256": "e9c07d7a26c6c82f022f3c8f753e8f68e300f31e45bc83e34f0517d4ee1946e8"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C022",
+            "statement": "TPU7x(Ironwood) 与 Trillium(v6e) 等世代已按官方发布说明达到正式可用(GA)状态，属已商业化对外提供的云基础设施能力。",
+            "relation_code": "has_operating_context",
+            "source_role": "resale",
+            "target": {
+              "name": "Google Cloud TPU 产品线的商业化状态",
+              "kind": "product_family",
+              "disambiguation": "以官方可用状态条目为据认定已商业化；具体可用区域与计费细节未在可读来源中取得。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2024-12-16",
+            "period_end": null,
+            "public_at": "2026-06-01",
+            "source_refs": [
+              "CC02-S011"
+            ],
+            "counterevidence": [
+              "发布说明未逐项说明各世代在各区域的可用范围。",
+              "GA 状态说明可对外提供，不代表具体收入规模。"
+            ],
+            "confidence": "high"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G031",
+            "looked_for": "Alphabet 模型研发算力与对外云服务算力的成本归属划分",
+            "actual_result": "10-K 说明存在未分摊至分部的 Alphabet 层 AI 研发成本，但未披露该等成本的具体金额或与对外服务算力的划分方法。",
+            "stop_reason": "缺少可读的金额与划分口径，无法据此区分研发投入与商业服务成本，停止。",
+            "next_evidence_needed": "需官方申报文件中 Alphabet 层未分摊成本的金额与构成披露。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R025",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R025",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "business_segment",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_01",
+            "question_object_sha256": "c075e9d65700da491ac79585d826516e7f67bc51ff8288a4b45cc54cd9fc9092"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "energy_transition",
+            "question_id": "FACT_ENERGY_TRANSITION",
+            "question_object_sha256": "899a06c2d67594975b187dc7e549cc94d4db2f3e1bae112d6e973216651ac834"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C062",
+            "statement": "2025年营业收入中排名前三的产品线分别为动力电池系统、储能电池系统、电池材料及回收，合计构成公司主要收入来源。",
+            "relation_code": "operates_segment",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "动力电池系统/储能电池系统/电池材料及回收 三条产品线",
+              "kind": "industry_segment",
+              "disambiguation": "产品线口径的业务结构；第四条产品线未在该来源中单独列示。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-05-10",
+            "source_refs": [
+              "CC02-S030"
+            ],
+            "counterevidence": [
+              "来源为第三方研究机构对年报数据的整理，非年报原文。",
+              "仅列示前三项产品线，未覆盖电池矿产资源等其他口径。",
+              "公司官网新闻稿为发行人自述，两条来源的统计口径不完全一致。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C054",
+            "statement": "2025年公司锂离子电池销量661GWh，同比增长39%。",
+            "relation_code": "operates_segment",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "2025年锂离子电池销量",
+              "kind": "industry_segment",
+              "disambiguation": "销量口径的经营规模，非收入口径。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-09",
+            "source_refs": [
+              "CC02-S024",
+              "CC02-S014"
+            ],
+            "counterevidence": [
+              "媒体转述口径，未与年报 PDF 原件逐项复核。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G014",
+            "looked_for": "宁德时代各产品线的原文收入、成本与毛利率数字",
+            "actual_result": "已取得第三方整理的2025年产品线收入与毛利率，但未能读到年度报告 PDF 原文本体以逐项复核。",
+            "stop_reason": "PDF 不可解析、公告聚合页为 JS 空模板，缺少可复核原文，停止在此。",
+            "next_evidence_needed": "需以可读的年度报告原文页面上产品线收入段落及页内定位复核。"
+          },
+          {
+            "gap_id": "CC02-G025",
+            "looked_for": "宁德时代前五名供应商合计采购金额及占比、客户集中度、境外收入拆分",
+            "actual_result": "年度报告正文不可读（PDF 被拒、cnfin 公告页为空模板），上述年报附注类指标本轮未取得。",
+            "stop_reason": "缺少可读原文，且这些指标无法由行业常识推断，停止并保留缺口。",
+            "next_evidence_needed": "需年度报告原文附注中供应商与客户集中度段落及境外收入拆分。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R026",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R026",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "sub_industry",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_02",
+            "question_object_sha256": "bd5480fb4bdcaf3baa636a92d8f49b6c64ebe3fe2ffe68646a9ab6920a173251"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "energy_transition",
+            "question_id": "FACT_ENERGY_TRANSITION",
+            "question_object_sha256": "899a06c2d67594975b187dc7e549cc94d4db2f3e1bae112d6e973216651ac834"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C055",
+            "statement": "2025年公司全球动力电池使用量市占率39.2%，连续九年排名全球第一；储能电池出货量市占率30.4%，连续五年全球第一。",
+            "relation_code": "participates_in",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "动力电池与储能电池制造",
+              "kind": "industry_segment",
+              "disambiguation": "公司在电池制造细分行业的份额地位；市占率为第三方统计口径。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-03-09",
+            "source_refs": [
+              "CC02-S024",
+              "CC02-S014"
+            ],
+            "counterevidence": [
+              "市占率为第三方统计机构口径，与公司自身口径可能存在差异。",
+              "份额领先不等于盈利水平领先。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": []
+      }
+    },
+    {
+      "record_id": "CC02-R027",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R027",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "product",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_03",
+            "question_object_sha256": "66a0f77e38ec85a38a0017b7d7668c7eef87f4995af5e4fc8e8ec1556f90aae3"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "hardware",
+            "question_id": "FACT_HARDWARE",
+            "question_object_sha256": "0eabed92450be62f36ca197ac8fe82f6c835abbd6ea2063e707a4e0822f753d7"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C069",
+            "statement": "公司2025年发布 Naxtra 钠离子电池，并称实现钠离子电池的大规模量产；同年推出 Freevoy 双核电池。",
+            "relation_code": "sells",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "Naxtra 钠离子电池 / Freevoy 双核电池",
+              "kind": "product_family",
+              "disambiguation": "产品家族级别；公司自述已大规模量产，具体装车规模未披露。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": null,
+            "source_refs": [
+              "CC02-S015"
+            ],
+            "counterevidence": [
+              "官网里程碑页为发行人自述，未逐条标注发布日期。",
+              "「大规模量产」为发行人表述，未提供产量或装车量明细。"
+            ],
+            "confidence": "low"
+          },
+          {
+            "claim_id": "CC02-C060",
+            "statement": "麒麟电池（CTP 3.0）全球量产首发搭载极氪009车型并正式交付。",
+            "relation_code": "sells",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "麒麟电池（CTP 3.0）",
+              "kind": "product_family",
+              "disambiguation": "具体产品家族；以量产首发交付为商业化证据。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2023-04-17",
+            "source_refs": [
+              "CC02-S028"
+            ],
+            "counterevidence": [
+              "单车型首发交付不等于该产品的整体装机规模。",
+              "媒体转述公司官方公众号内容，非公告原文。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C061",
+            "statement": "公司在 IAA Transportation 2026 发布 TECTRANS II 商用车下一代电池方案。",
+            "relation_code": "sells",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "TECTRANS II 商用车电池",
+              "kind": "product_family",
+              "disambiguation": "对外发布的新一代商用车电池产品；未说明量产时间表。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-09-14",
+            "source_refs": [
+              "CC02-S029"
+            ],
+            "counterevidence": [
+              "产品发布为对外亮相，未说明量产时间表或已获订单。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G129",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "动态profile/recycling页面有内容但首次公开日无法核实，不能成为截止日完整支持。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R028",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R028",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "key_material",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_07",
+            "question_object_sha256": "e6343614582709c09b75b9aca68808c6ec39762f1db6545f814dd8495ad12948"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "materials",
+            "question_id": "FACT_MATERIALS",
+            "question_object_sha256": "85c4841342d509e1b97c39e4be8287e25d5a292f10214289cf718c11d6171f6a"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C070",
+            "statement": "公司与铜箔供应方西安泰金新能科技股份有限公司、深圳惠科新材料有限公司等签署战略合作协议。",
+            "relation_code": "uses_input",
+            "source_role": "procurement",
+            "target": {
+              "name": "西安泰金新能科技股份有限公司 / 深圳惠科新材料有限公司",
+              "kind": "listed_company",
+              "disambiguation": "铜箔供应方；西安泰金为科创板上市主体，深圳惠科为非上市主体，两者不可等同。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2026-09-06",
+            "period_end": null,
+            "public_at": "2026-09-06",
+            "source_refs": [
+              "CC02-S016"
+            ],
+            "counterevidence": [
+              "战略合作协议为框架性约定，不等同于已完成的采购金额或最终供货量。",
+              "仅覆盖铜箔一类材料，不能外推至正极、负极、电解液或隔膜。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C064",
+            "statement": "公司在钠离子电池体系已具备正极与负极材料（NFPP 等）的自制能力，可供应数万吨级材料。",
+            "relation_code": "uses_input",
+            "source_role": "application",
+            "target": {
+              "name": "钠离子电池正负极材料自制能力",
+              "kind": "material_class",
+              "disambiguation": "材料自制能力，说明该体系并非完全外购；不代表其他材料体系同样自制。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "pilot",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-06-22",
+            "source_refs": [
+              "CC02-S031"
+            ],
+            "counterevidence": [
+              "仅说明钠离子体系的材料自制能力，不代表其他材料体系同样自制。",
+              "「数万吨级」为产能表述，非实际产量。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G016",
+            "looked_for": "宁德时代正极、负极、电解液、隔膜、铝箔与外部锂盐的具名供应商",
+            "actual_result": "本轮仅证实铜箔一类材料的具名合作方；行业常见供应商名单未获得原文确认，M3P 相关页面正文未加载成功。",
+            "stop_reason": "把行业材料依赖当成已证明采购关系会制造虚假供应链，停止在已证实的铜箔范围。",
+            "next_evidence_needed": "需公司披露、供应方公告或监管文件出现具名材料供货关系与时期。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R029",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R029",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "key_equipment",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_06",
+            "question_object_sha256": "6597bb3da67458f64ab0a692004e7c59c2c2ec8a8ecd3d5cec340e188cbac684"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "industrial",
+            "question_id": "FACT_INDUSTRIAL",
+            "question_object_sha256": "6def978fcc01cb79bc1037afa9b172d8918eff45d61dfdf1e25f0a42a52638de"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C043",
+            "statement": "公司电芯核心生产设备覆盖涂布、辊压、模切、卷绕、叠片、物流、化成容量等工序，并与设备供应方签署优先采购安排。",
+            "relation_code": "uses_equipment",
+            "source_role": "procurement",
+            "target": {
+              "name": "电芯核心生产设备（涂布/辊压/模切/卷绕/叠片/物流/化成容量）",
+              "kind": "equipment_class",
+              "disambiguation": "以工序划分的设备类别，公司为使用方；不据此认定其制造该设备。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2024-11-29",
+            "period_end": null,
+            "public_at": "2024-11-29",
+            "source_refs": [
+              "CC02-S017"
+            ],
+            "counterevidence": [
+              "公告主体为设备供应方先导智能，非宁德时代自身公告。",
+              "协议为框架性优先采购安排，不等于已下达订单金额。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C044",
+            "statement": "宁德时代与先导智能的战略合作协议约定优先采购其电芯核心生产设备，合作期限自签署之日起三年。",
+            "relation_code": "uses_equipment",
+            "source_role": "procurement",
+            "target": {
+              "name": "无锡先导智能装备股份有限公司",
+              "kind": "listed_company",
+              "disambiguation": "创业板上市设备供应方(300450.SZ)；同时为宁德时代关联方，存在股权关系。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2024-11-29",
+            "period_end": "2026-10-13",
+            "public_at": "2024-11-29",
+            "source_refs": [
+              "CC02-S017"
+            ],
+            "counterevidence": [
+              "宁德时代为先导智能关联方，存在股权关系，需注意利益关联。",
+              "「优先考虑采购」为框架性表述，不构成强制采购义务。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C058",
+            "statement": "历史期间宁德时代对先导智能的设备采购金额：2017年73,224万元、2018年28,003万元、2019年176,607万元、2020年1-9月97,313万元。",
+            "relation_code": "uses_equipment",
+            "source_role": "procurement",
+            "target": {
+              "name": "无锡先导智能装备股份有限公司（历史采购金额）",
+              "kind": "listed_company",
+              "disambiguation": "以历史披露金额证明实际采购已发生；数据期间截至2020年9月。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2017-01-01",
+            "period_end": "2020-09-30",
+            "public_at": "2021-02-26",
+            "source_refs": [
+              "CC02-S027"
+            ],
+            "counterevidence": [
+              "数据期间截至2020年9月，不代表2026年现状。",
+              "来源为律师补充法律意见书，属第三方中介文件。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C059",
+            "statement": "战略合作协议约定在同等条件下按不低于电芯生产核心设备新投资额50%的额度给予供应方优先权，并预计三年内增加订单规模247.44亿元。",
+            "relation_code": "uses_equipment",
+            "source_role": "procurement",
+            "target": {
+              "name": "优先采购额度与预计订单规模",
+              "kind": "equipment_class",
+              "disambiguation": "合同条款与预计影响，属前瞻性测算，非已实现金额。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "pilot",
+            "period_start": "2021-02-26",
+            "period_end": "2024-02-25",
+            "public_at": "2021-02-26",
+            "source_refs": [
+              "CC02-S027"
+            ],
+            "counterevidence": [
+              "247.44亿元为当时预计值，非实际实现订单。",
+              "优先权以产品质量、服务、技术、价格具备竞争力为前提。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C045",
+            "statement": "双方合作范围包含在固态电池、钙钛矿等新领域开展合作。",
+            "relation_code": "uses_equipment",
+            "source_role": "research_cooperation",
+            "target": {
+              "name": "固态电池与钙钛矿等新领域合作",
+              "kind": "equipment_class",
+              "disambiguation": "研发合作范围，属研究阶段，不等于量产供货。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "research",
+            "period_start": "2024-11-29",
+            "period_end": null,
+            "public_at": "2024-11-29",
+            "source_refs": [
+              "CC02-S017"
+            ],
+            "counterevidence": [
+              "研发合作不等于已实现量产供货。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G017",
+            "looked_for": "杭可科技、赢合科技、先惠技术等其他产线设备供应方与宁德时代的关系",
+            "actual_result": "仅见二手评论性内容提及相关公司，未见可读的一手文件确认宁德时代与其的供货关系；相关招股书为不可解析 PDF。",
+            "stop_reason": "具名设备供应关系需原文确认，二手评论不足以采信，停止。",
+            "next_evidence_needed": "需公司公告、供应方招股书或监管文件出现具名供货关系与时期。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R030",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R030",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "upstream_supply",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_04",
+            "question_object_sha256": "e632231befb2369c0fd998990e904e9097d10bf0d7a678cb2aca398b5fa5c87c"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_08",
+            "question_object_sha256": "77ebfb9c791f4e550ad7a2344a2651f26daf532a85081cfdac2d22722cb2c198"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_09",
+            "question_object_sha256": "26adf2359aef0972d1f23071053da75571a0c9c8e0ade66f0c5b9f622c71bf2b"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C042",
+            "statement": "公司计划与铜箔合作方在三年内共同建设40万吨新产能，并采用集中采购铜箔设备、基于成本的定价与固定加工费、长期数量承诺等方式。",
+            "relation_code": "buys_input_from",
+            "source_role": "procurement",
+            "target": {
+              "name": "铜箔产能共建与长期采购安排",
+              "kind": "material_class",
+              "disambiguation": "产能共建与采购安排条款；属框架约定。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "pilot",
+            "period_start": "2026-09-06",
+            "period_end": "2026-10-13",
+            "public_at": "2026-09-06",
+            "source_refs": [
+              "CC02-S016"
+            ],
+            "counterevidence": [
+              "40万吨为共同建设产能目标，非已建成或已采购数量。",
+              "公司以预付款方式支持合作方，存在资金占用。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C052",
+            "statement": "公司拟设立全资子公司时代资源集团（厦门）有限公司，注册资本300亿元，定位为新能源矿产领域的投资运营与管理平台。",
+            "relation_code": "depends_on",
+            "source_role": "capital_provision",
+            "target": {
+              "name": "时代资源集团（厦门）有限公司（全资子公司）",
+              "kind": "unlisted_company",
+              "disambiguation": "全资子公司，非母公司本体；用于矿产资源配置。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "pilot",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-04-15",
+            "source_refs": [
+              "CC02-S023"
+            ],
+            "counterevidence": [
+              "为拟设立事项，实际出资与运营进度需后续验证。",
+              "子公司层面的资源配置不等于上市公司直接持有矿权。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C053",
+            "statement": "子公司运营的宜春枧下窝锂云母矿设计满产年碳酸锂产能约10万吨，2025年8月9日采矿证到期后停产，2026年8月环评受理公示被撤销。",
+            "relation_code": "depends_on",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "宜春枧下窝锂云母矿（子公司运营）",
+              "kind": "unlisted_company",
+              "disambiguation": "由子公司宜春时代新能源矿业运营，非上市公司本体直接持有；复产进度存在不确定性。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "research",
+            "period_start": "2025-08-09",
+            "period_end": "2026-10-13",
+            "public_at": "2026-08-26",
+            "source_refs": [
+              "CC02-S023"
+            ],
+            "counterevidence": [
+              "停产状态与环评撤销意味着当前未处于生产状态，故不标 commercial。",
+              "「约占全国总产量8%—10%」为停产前媒体口径。",
+              "「research」表示该矿当前未产出，不代表公司在进行研发活动。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C056",
+            "statement": "公司通过子公司邦普开展电池回收业务，构建「电池生产→使用→回收再生→资源再生」闭环，具备27万吨废旧电池处理能力。",
+            "relation_code": "depends_on",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "邦普循环（子公司回收业务）",
+              "kind": "unlisted_company",
+              "disambiguation": "回收由子公司邦普承担，不等于母公司直接经营。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": "2024-12-31",
+            "public_at": null,
+            "source_refs": [
+              "CC02-S025"
+            ],
+            "counterevidence": [
+              "运营数据标注 as of 2024-12-31，非最新期数据。",
+              "子公司的回收能力不等于母公司报表口径的资源自给率。"
+            ],
+            "confidence": "low"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G018",
+            "looked_for": "宁德时代正极、负极、电解液、隔膜等材料类别的具名上游供应方",
+            "actual_result": "本轮仅证实铜箔一类材料存在具名合作方；其余材料类别的具名供应关系未取得可读原文。",
+            "stop_reason": "在缺乏具名原文的情况下继续检索只会放大猜测，停止并保留缺口。",
+            "next_evidence_needed": "需公司披露、供应方公告或监管文件出现具名供货关系、供货内容与时期。"
+          },
+          {
+            "gap_id": "CC02-G026",
+            "looked_for": "锂、镍、钴等矿产资源的外部合作方与采购安排",
+            "actual_result": "公司自述在锂、镍、钴等矿产上「两条腿走路」并依托合作伙伴，但可读来源未点名具体外部合作方或采购协议。",
+            "stop_reason": "访谈为概括性表述，未点名交易对手，不足以建立具名关系，停止。",
+            "next_evidence_needed": "需公司公告或合作方公告中出现具名矿产采购或合作安排。"
+          },
+          {
+            "gap_id": "CC02-G132",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "动态profile/recycling页面有内容但首次公开日无法核实，不能成为截止日完整支持。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R031",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R031",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "downstream_application",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_05",
+            "question_object_sha256": "742709eccb8b67a71f92b1275eafa562e2a9e8f5376489c104d826f018581bd9"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "auto",
+            "question_id": "FACT_AUTO",
+            "question_object_sha256": "de117b2dc12692f94e63bac8c4e1d5bcc945dead45c528bde98bbe56fbd58451"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "utilities",
+            "question_id": "FACT_UTILITIES",
+            "question_object_sha256": "24eef3a7848a184022313dcc349e1341bcb06ada959822519e230f72a5a4c0f8"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C047",
+            "statement": "公司自2018年起为大众汽车 MEB 平台供应 NCM 电芯，累计交付超过200GWh，覆盖八个品牌45款车型，2026年合作延伸至大众统一电芯量产。",
+            "relation_code": "serves",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "Volkswagen 大众汽车集团",
+              "kind": "listed_company",
+              "disambiguation": "整车厂客户，按平台供应电芯；累计交付量为发行人自述口径。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": "2018-01-01",
+            "period_end": null,
+            "public_at": "2026-07-12",
+            "source_refs": [
+              "CC02-S019"
+            ],
+            "counterevidence": [
+              "发行人自述的供货历史与获奖信息，未见大众方独立公告交叉印证。",
+              "未披露对大众的年供货量与金额。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C046",
+            "statement": "宇通集团过去15年电池100%来自宁德时代，并被其认定为独家战略电池供应商。",
+            "relation_code": "serves",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "宇通集团 Yutong Group",
+              "kind": "listed_company",
+              "disambiguation": "商用车整车厂客户；「100%」为发行人表述。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-05-13",
+            "source_refs": [
+              "CC02-S018"
+            ],
+            "counterevidence": [
+              "「100%」为发行人表述，未提供逐年采购金额明细。",
+              "未见宇通方独立公告交叉印证。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C048",
+            "statement": "赛力斯问界(AITO)全系车型搭载宁德时代电池，累计交付超过120万辆，双方签署长期战略合作协议。",
+            "relation_code": "serves",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "赛力斯 SERES / 问界 AITO",
+              "kind": "listed_company",
+              "disambiguation": "整车厂客户；累计交付为发行人统计口径。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": "2026-10-10",
+            "public_at": "2026-10-10",
+            "source_refs": [
+              "CC02-S020"
+            ],
+            "counterevidence": [
+              "「累计交付超120万辆」未说明统计截止日与统计方法。",
+              "战略合作协议属框架性，未见采购金额。"
+            ],
+            "confidence": "high"
+          },
+          {
+            "claim_id": "CC02-C049",
+            "statement": "公司作为澳大利亚 Supernode 项目三个阶段的核心储能系统供应方，前三期规划规模780MW/3,074MWh。",
+            "relation_code": "serves",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "Quinbrook / Supernode 储能项目（澳大利亚）",
+              "kind": "unlisted_company",
+              "disambiguation": "储能项目业主方；项目规模为规划口径。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "pilot",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-08-14",
+            "source_refs": [
+              "CC02-S021"
+            ],
+            "counterevidence": [
+              "项目规模为规划口径，分期建设与最终投产存在不确定性。",
+              "发行人自述供货角色，未见项目业主方独立公告。"
+            ],
+            "confidence": "medium"
+          },
+          {
+            "claim_id": "CC02-C057",
+            "statement": "公司与海博思创签署钠离子储能战略合作，三年期合作覆盖60GWh钠离子电池供应。",
+            "relation_code": "serves",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "海博思创 HyperStrong",
+              "kind": "listed_company",
+              "disambiguation": "储能系统集成商客户；60GWh为框架合作规模。",
+              "identity_status": "unresolved"
+            },
+            "commercialization": "pilot",
+            "period_start": "2026-04-27",
+            "period_end": "2026-10-13",
+            "public_at": "2026-05-06",
+            "source_refs": [
+              "CC02-S026"
+            ],
+            "counterevidence": [
+              "60GWh 为三年框架合作规模，非已确认订单或已实现收入。",
+              "钠离子储能尚处商业化早期，实际执行存在不确定性。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G019",
+            "looked_for": "特斯拉、梅赛德斯-奔驰、福特、现代等整车厂与宁德时代的关系性质",
+            "actual_result": "仅在设备供应方先导智能2021年文件中出现第三方表述提及上述整车厂，未见宁德时代或整车厂方在2025-2026年的独立声明。",
+            "stop_reason": "第三方2021年文件不足以确认为当前供货关系，且未区分量产/合作/样品，停止。",
+            "next_evidence_needed": "需宁德时代或整车厂方公告明确供货性质（量产/合作/样品）与时期。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R032",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R032",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "customer_role",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_10",
+            "question_object_sha256": "66b481cbbbb16d830a14f94989ae9af5ba8d16553056271d8ec97077e142c44e"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_11",
+            "question_object_sha256": "e2a7ca8c890e086856e19754143154298a09395dac4995892558df09e87ebb39"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C065",
+            "statement": "公司客户以整车厂（动力电池）与储能系统集成商及项目业主（储能）为主，属企业级采购方，非终端消费者。",
+            "relation_code": "sells_to",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "整车厂与储能集成商/项目业主客户群",
+              "kind": "customer_category",
+              "disambiguation": "客户角色类别；不据此扩展具名客户。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-05-13",
+            "source_refs": [
+              "CC02-S018",
+              "CC02-S026"
+            ],
+            "counterevidence": [
+              "客户角色分类由已披露的具名客户性质归纳，未取得公司自身的客户结构披露。"
+            ],
+            "confidence": "low"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G020",
+            "looked_for": "宁德时代客户集中度与前五名客户占比",
+            "actual_result": "年度报告正文不可读，客户集中度指标未取得。",
+            "stop_reason": "缺少可读原文，停止并保留缺口。",
+            "next_evidence_needed": "需年度报告原文附注中客户集中度段落。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R033",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R033",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "supply_role",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "operating",
+            "question_id": "FACT_OPERATING",
+            "question_object_sha256": "22e9aaea81fa23215dd439b1bcf38e7152e8bde25fd88106266dfe4e2f1a7978"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "energy_transition",
+            "question_id": "FACT_ENERGY_TRANSITION",
+            "question_object_sha256": "899a06c2d67594975b187dc7e549cc94d4db2f3e1bae112d6e973216651ac834"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C071",
+            "statement": "公司在产业链中处于电芯与电池系统制造供应角色，向整车厂与储能客户供货，并通过换电品牌提供补能服务。",
+            "relation_code": "has_operating_context",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "电芯与电池系统制造供应角色",
+              "kind": "industry_segment",
+              "disambiguation": "公司自身在产业链中的供应角色，区别于其采购角色。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": null,
+            "period_end": null,
+            "public_at": null,
+            "source_refs": [
+              "CC02-S015"
+            ],
+            "counterevidence": [
+              "该角色描述基于公司业务性质与已披露客户，未取得逐客户的份额数据。"
+            ],
+            "confidence": "low"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G135",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "动态profile/recycling页面有内容但首次公开日无法核实，不能成为截止日完整支持。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    },
+    {
+      "record_id": "CC02-R034",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R034",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "first_curve",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_12",
+            "question_object_sha256": "e3790a76935262ac7488a8a2e7b3f34fa60821c8c044685986f4ce89bcfc4831"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "energy_transition",
+            "question_id": "FACT_ENERGY_TRANSITION",
+            "question_object_sha256": "899a06c2d67594975b187dc7e549cc94d4db2f3e1bae112d6e973216651ac834"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C063",
+            "statement": "2025年动力电池系统收入3,165.06亿元、毛利率23.84%，为公司收入占比最高的第一曲线业务。",
+            "relation_code": "has_core_business",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "动力电池系统业务",
+              "kind": "industry_segment",
+              "disambiguation": "第一曲线；收入与毛利率为第三方整理口径。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-05-10",
+            "source_refs": [
+              "CC02-S030"
+            ],
+            "counterevidence": [
+              "第三方整理数据，未与年报 PDF 原件逐项复核。",
+              "动力电池毛利率低于储能与材料回收，收入占比高不等于盈利贡献同比例高。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": []
+      }
+    },
+    {
+      "record_id": "CC02-R035",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R035",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "second_curve",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_13",
+            "question_object_sha256": "9dab88790be6b84c1bd396cba1f5efed16eec3c92e4fe65e8a1ec73968856a82"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "energy_transition",
+            "question_id": "FACT_ENERGY_TRANSITION",
+            "question_object_sha256": "899a06c2d67594975b187dc7e549cc94d4db2f3e1bae112d6e973216651ac834"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "candidate_supported",
+        "claims": [
+          {
+            "claim_id": "CC02-C050",
+            "statement": "储能系统业务为公司第二曲线，2025年储能电池系统收入624.40亿元、毛利率26.71%，储能系统集成业务增长160%。",
+            "relation_code": "develops_business",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "储能电池系统业务",
+              "kind": "industry_segment",
+              "disambiguation": "第二曲线；收入与毛利率为第三方整理口径，「第二曲线」为媒体转述公司口径。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "commercial",
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "public_at": "2026-05-10",
+            "source_refs": [
+              "CC02-S030",
+              "CC02-S024"
+            ],
+            "counterevidence": [
+              "「第二曲线」为新闻发布会话术，非审计分部标题。",
+              "储能收入规模仍显著低于动力电池。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": []
+      }
+    },
+    {
+      "record_id": "CC02-R036",
+      "company_key": "catl",
+      "baseline": {
+        "record_id": "CC02-R036",
+        "company_key": "catl",
+        "subject_descriptor": {
+          "issuer_name": "宁德时代新能源科技股份有限公司 (CATL)",
+          "listing_hints": [
+            "300750.SZ",
+            "3750.HK"
+          ],
+          "scope": "宁德时代上市主体；子公司不当作母公司，其他「宁德」主体不并入。",
+          "segment": "能源转型 / 动力电池与储能系统"
+        },
+        "topic": "commercialization",
+        "question_refs": [
+          {
+            "path": "questions/facts.json",
+            "module_id": "facts_common",
+            "question_id": "FACT_03",
+            "question_object_sha256": "66a0f77e38ec85a38a0017b7d7668c7eef87f4995af5e4fc8e8ec1556f90aae3"
+          },
+          {
+            "path": "questions/facts.json",
+            "module_id": "commercialization",
+            "question_id": "FACT_COMMERCIALIZATION",
+            "question_object_sha256": "e9c07d7a26c6c82f022f3c8f753e8f68e300f31e45bc83e34f0517d4ee1946e8"
+          }
+        ],
+        "fixture_class": "public_source_reference",
+        "owner_mapping_status": "not_mapped",
+        "production_execution": "not_run",
+        "status": "partial",
+        "claims": [
+          {
+            "claim_id": "CC02-C051",
+            "statement": "2026-06-22公告自述钠离子储能产线能力，并预计2026年底1GWh、2027年6月国际交付；这些为计划，截止日实际累计交付量未核实。",
+            "relation_code": "has_operating_context",
+            "source_role": "manufacturing",
+            "target": {
+              "name": "钠离子储能系统（TENER Sodium）",
+              "kind": "product_family",
+              "disambiguation": "产品化早期阶段；出货与交付为前瞻性计划。",
+              "identity_status": "descriptive_only"
+            },
+            "commercialization": "unknown",
+            "period_start": null,
+            "period_end": null,
+            "public_at": "2026-06-22",
+            "source_refs": [
+              "CC02-S022"
+            ],
+            "counterevidence": [
+              "「2026年底累计出货约1GWh」为预期值，非已实现数据。",
+              "产能与交付计划尚未兑现。"
+            ],
+            "confidence": "medium"
+          }
+        ],
+        "gaps": [
+          {
+            "gap_id": "CC02-G027",
+            "looked_for": "固态电池等前沿路线的当前技术成熟度与商业化时间表",
+            "actual_result": "公司管理层在访谈中表述固态电池处于 TRL 4 阶段且「百万级的车的可能性很小」，但未见公司正式公告给出节点。",
+            "stop_reason": "管理层访谈为概括性表述，缺乏正式公告支撑具体时间表，停止。",
+            "next_evidence_needed": "需公司公告或定期报告中明确固态电池的技术节点与商业化条件。"
+          },
+          {
+            "gap_id": "CC02-G140",
+            "looked_for": "原文、角色方向与公开日期的独立核验",
+            "actual_result": "产线/订单/产品宣布可核，截止日已兑现的交付量未核；不能将规划容量变成实际出货。",
+            "stop_reason": "本轮保留已读证据边界，不用声明补足事实。",
+            "next_evidence_needed": "截止前的发行人/监管公开HTML，逐条对应已读正文。"
+          }
+        ]
+      }
+    }
+  ]
+}

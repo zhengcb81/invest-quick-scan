@@ -1,3 +1,16 @@
+## 2026-10-13 — 三个后续独立施工包已准备，尚未派发
+
+主线仍为checkpoint55的原B01真实恢复和小样本准确性实验；本批只是并行补真实v2案例、主源资料和盲评工具，不增加小节点门。
+
+- [x] 编制[三包总览](parallel-lanes/packages/2026-10-13-wave2/README.md)、逐包步骤/接口/反例/清理/交接模板；6仓1194文件冻结锁，47路由案例与36产业链槽位固定目标，目录不重叠和3模板原公开校验通过（只是准备检查）。
+- [ ] [ROUTE-E2E-03](parallel-lanes/packages/2026-10-13-wave2/ROUTE-E2E-03.md)：新独占C:/Users/郑曾波/Projects/iqs-route-e2e-lab，把原47例接原v2公开请求/resolve/compose；沿原fixture复用synthetic release，不自造router或改正式指针。
+- [ ] [CHAIN-SOURCE-03](parallel-lanes/packages/2026-10-13-wave2/CHAIN-SOURCE-03.md)：新独占C:/Users/郑曾波/Projects/iqs-chain-source-lab，只研究已选三公司的36槽位/18partial及未独立核证具名关系；允许人工公开HTML核源，不下载文档或用付费API。
+- [ ] [BLIND-REVIEW-03](parallel-lanes/packages/2026-10-13-wave2/BLIND-REVIEW-03.md)：新独占C:/Users/郑曾波/Projects/iqs-blind-review-lab，匿名公开包/分离私有映射、同答案双审裁决、准确性与coverage各分母；复用EVID/FIN/SCORE，零模型请求，不授金融gold。
+
+三个新根编制时均不存在，未创建或自动启动；开工重查writer、按锁复制到自身fixtures，现有各仓与共享PWF只读。三包没有彼此前置，可以由用户同时发给三个harness。收到交付后每包一次集中审查，修后只测受影响范围；源接线/付费实验/原26与4恢复/生产入库/UI/一键由总控单writer负责。
+
+截止2026-10-13仍原30题/13HTTP/26搜索/CNY1.268162/0评分/ACK0，financial/G3/F05/生产UI/一键/全池门未关闭。本批收费API、生产DB/名单写0；所有以前已接收包不重复派发。
+
 > 当前唯一状态（2026-10-13 checkpoint55）：B01跨模型控制源码已正常交付提交，IQS67c0db5、QA205b749、SW9d411c7；source支持19，但原真实work仍18未迁移。ROUTE/CHAIN/SCORE三个返回包已集中验收、直接修复、CAS回写并正常提交，均仅研究候选，CHAIN仍partial。所有本轮测试temp已清空。旧“未部署/待三包/运行中”等段均为历史，以本段和Next Step为准。
 
 ## checkpoint55 — 源交付与三个质量包接收完成

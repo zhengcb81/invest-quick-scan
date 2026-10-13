@@ -1,0 +1,121 @@
+{
+  "format_version": "1.0.0",
+  "observed_at_utc": "2026-10-13T21:41:53.081063+00:00",
+  "source_commit": "55c2ef53e146a9f413f1df9e87b82c3519f606c7",
+  "workers_dispatched": false,
+  "default_live_enabled": false,
+  "packages": [
+    {
+      "id": "ROUTE-E2E-03",
+      "lane_id": "iqs",
+      "document": "ROUTE-E2E-03.md",
+      "task_ids": [
+        "C01"
+      ],
+      "write_scope": "C:\\Users\\郑曾波\\Projects\\iqs-route-e2e-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "task_plan.md",
+        "progress.md",
+        "findings.md",
+        "src",
+        "schemas",
+        "content",
+        "fixtures",
+        "tools",
+        "tests",
+        "runs",
+        "docs/handoff"
+      ],
+      "root_existed_at_preparation": false,
+      "readiness": "ready_after_human_dispatch_and_unique_writer_preflight",
+      "network_scope": "offline_synthetic_only",
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "delivery_scope": "candidate_support_only_no_global_gate_grant",
+      "input_repositories": [
+        "iqs",
+        "route"
+      ]
+    },
+    {
+      "id": "CHAIN-SOURCE-03",
+      "lane_id": "iqs",
+      "document": "CHAIN-SOURCE-03.md",
+      "task_ids": [
+        "F03",
+        "F04",
+        "F05",
+        "F06"
+      ],
+      "write_scope": "C:\\Users\\郑曾波\\Projects\\iqs-chain-source-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "task_plan.md",
+        "progress.md",
+        "findings.md",
+        "src",
+        "schemas",
+        "content",
+        "fixtures",
+        "tools",
+        "tests",
+        "runs",
+        "docs/handoff"
+      ],
+      "root_existed_at_preparation": false,
+      "readiness": "ready_after_human_dispatch_and_unique_writer_preflight",
+      "network_scope": "manual_primary_web_only",
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "delivery_scope": "candidate_support_only_no_global_gate_grant",
+      "input_repositories": [
+        "iqs",
+        "chain"
+      ]
+    },
+    {
+      "id": "BLIND-REVIEW-03",
+      "lane_id": "iqs",
+      "document": "BLIND-REVIEW-03.md",
+      "task_ids": [
+        "B01",
+        "L02",
+        "F05"
+      ],
+      "write_scope": "C:\\Users\\郑曾波\\Projects\\iqs-blind-review-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "task_plan.md",
+        "progress.md",
+        "findings.md",
+        "src",
+        "schemas",
+        "content",
+        "fixtures",
+        "tools",
+        "tests",
+        "runs",
+        "docs/handoff"
+      ],
+      "root_existed_at_preparation": false,
+      "readiness": "ready_after_human_dispatch_and_unique_writer_preflight",
+      "network_scope": "offline_review_tool_only",
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "delivery_scope": "candidate_support_only_no_global_gate_grant",
+      "input_repositories": [
+        "iqs",
+        "evid",
+        "fin",
+        "score"
+      ]
+    }
+  ]
+}
