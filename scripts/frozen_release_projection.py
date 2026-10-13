@@ -42,3 +42,11 @@ def create_projection(manifest, *, root):
         'catalog_version': release['catalog_version'],
         'semantic_fingerprint_version': package.get('semantic_fingerprint_version', '1.0.0'),
         'questions': questions}
+
+
+def create_execution_profile(manifest,*,root,observation_schema_version):
+    if observation_schema_version!='1.2.0':raise ValueError('subject_dispatch_execution_profile_unavailable')
+    create_projection(manifest,root=root)
+    package,_,_,_=module_registry.load_package(manifest['module_package_id'],root=root)
+    from observation_profiles import profile_descriptor
+    return profile_descriptor(package['format_resources'])

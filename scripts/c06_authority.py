@@ -49,7 +49,7 @@ def _run(context):
 
 def create_authority(manifest, *, manifest_file_sha256, identity_snapshot_sha256,
                      run_context, contract_versions, producer, subject_binding=None,
-                     listing_bindings=None, root=ROOT):
+                     listing_bindings=None, root=ROOT, observation_schema_version='1.1.0'):
     """Export IQS-owned metadata; the receiver independently checks both file hashes.
 
     Identity hash is a binding, never a verified identity attestation. No answer
@@ -74,7 +74,8 @@ def create_authority(manifest, *, manifest_file_sha256, identity_snapshot_sha256
     for key, value in contract_versions.items():
         _text(value, key, 80)
     if (contract_versions['question_catalog'] != manifest['template_version']
-            or contract_versions['observation_schema'] != '1.1.0'
+            or observation_schema_version not in ('1.1.0', '1.2.0')
+            or contract_versions['observation_schema'] != observation_schema_version
             or contract_versions['answer_schema'] != '1.0.0'):
         raise ValueError('contract versions disagree with released observation/answer/catalog')
     if not isinstance(producer, dict) or set(producer) != {'component_version', 'build_id'}:
@@ -83,7 +84,8 @@ def create_authority(manifest, *, manifest_file_sha256, identity_snapshot_sha256
     _text(producer['build_id'], 'build_id', 160)
 
     resources = package['format_resources']
-    observation_schema = resources['schemas/observation.schema.json']
+    from observation_profiles import schema_for
+    observation_schema = schema_for(observation_schema_version, resources)
     # Validate metadata against the SAME archived observation schema, minus the
     # fields only an actual answer/HTTP execution can supply.
     unavailable = {'observation_id', 'observed_at', 'execution', 'answer'}
@@ -93,6 +95,7 @@ def create_authority(manifest, *, manifest_file_sha256, identity_snapshot_sha256
     questions = {}
     for question in manifest['questions']:
         metadata = answers.observation_metadata(manifest, question, run)
+        metadata['schema_version'] = observation_schema_version
         if metadata['scope'] == 'security' and not metadata['security_id']:
             raise ValueError('security scope requires an authoritative security ID')
         if metadata['scope'] == 'segment' and not metadata['segment_id']:
@@ -171,6 +174,7 @@ def main(argv=None):
         parser.add_argument('--' + name, required=True)
     parser.add_argument('--subject-binding')
     parser.add_argument('--listing-bindings')
+    parser.add_argument('--observation-schema-version',default='1.1.0',choices=('1.1.0','1.2.0'))
     parser.add_argument('--release-root',type=Path,default=ROOT)
     args = parser.parse_args(argv)
     try:
@@ -186,7 +190,7 @@ def main(argv=None):
                                     run_context=run, contract_versions=versions, producer=producer,
                                     subject_binding=_read(args.subject_binding)[0] if args.subject_binding else None,
                                     listing_bindings=_read(args.listing_bindings)[0] if args.listing_bindings else None,
-                                    root=args.release_root)
+                                    root=args.release_root, observation_schema_version=args.observation_schema_version)
         _publish(args.output, document)
     except (OSError, ValueError) as error:
         # No source bodies, company answers or credential bytes in diagnostics.

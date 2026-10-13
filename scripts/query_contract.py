@@ -25,11 +25,11 @@ ANSWER_REGISTRY=Registry().with_resource(ANSWER_SCHEMA['$id'],Resource.from_cont
 ORIGINAL_VALIDATOR=Draft202012Validator(PORTABLE_SCHEMA,registry=ANSWER_REGISTRY,format_checker=FormatChecker())
 
 
-def _validate_shape(value,kind):
+def _validate_shape(value,kind,*,validator=None):
     try:
         if len(module_contract.canonical_bytes(value))>MAX_INPUT_BYTES:
             raise ValueError('query_input_too_large')
-        VALIDATOR.validate(value)
+        (VALIDATOR if validator is None else validator).validate(value)
     except (ValidationError,TypeError,ValueError,RecursionError) as exc:
         raise ValueError('query_document_invalid') from exc
     if value['message_type']!=kind:
@@ -98,7 +98,9 @@ def _utc(value):
 
 def query_sha256(request):
     payload={k:v for k,v in request['payload'].items() if k!='snapshot_id'}
-    return _digest({'consumer_id':request['consumer_id'],'operation':request['operation'],'payload':payload})
+    core={'consumer_id':request['consumer_id'],'operation':request['operation'],'payload':payload}
+    if request.get('schema_version')=='2.6.0':core['schema_version']='2.6.0'
+    return _digest(core)
 
 
 def snapshot_content_sha256(result):
@@ -118,14 +120,14 @@ def seal_response(value,*,request):
     return value
 
 
-def _original(row):
+def _original(row,*,validator=None):
     try:
         raw=base64.b64decode(row['original_json_base64'],validate=True)
         if len(raw)>MAX_OBSERVATION_BYTES or hashlib.sha256(raw).hexdigest()!=row['raw_sha256']:
             raise ValueError('query_original_bytes_mismatch')
         obs=json.loads(raw.decode('utf-8'),object_pairs_hook=module_contract._unique_object)
         module_contract.canonical_bytes(obs)
-        ORIGINAL_VALIDATOR.validate(obs)
+        (ORIGINAL_VALIDATOR if validator is None else validator).validate(obs)
         if row['payload_sha256']!=_digest(obs) or row['observation_id']!=obs['observation_id']:
             raise ValueError('query_original_reference_mismatch')
         if obs['observation_id']!='obs_'+_digest({k:v for k,v in obs.items() if k!='observation_id'}):
@@ -195,6 +197,17 @@ def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_r
         if row['binding_status']!='bound' or row['subject_binding'] is None:
             raise ValueError('query_unbound_history_in_current_profile')
         binding=row['subject_binding']
+        if obs.get('schema_version')=='1.2.0':
+            from observation_profiles import validate_profile_descriptor
+            if binding.get('protocol')!='stockwiki.observation_subject_binding/1.1.0':
+                raise ValueError('query_vendor_subject_binding_required')
+            validate_profile_descriptor(binding.get('execution_profile'))
+            mapping={'execution_response_id':'response_id','execution_request_payload_sha256':'request_payload_sha256',
+                     'execution_response_sha256':'response_sha256','execution_receipt_sha256':'receipt_sha256'}
+            if any(binding.get(k)!=execution.get(v) for k,v in mapping.items()):
+                raise ValueError('query_vendor_execution_binding_mismatch')
+        elif binding.get('protocol')!='stockwiki.observation_subject_binding/1.0.0':
+            raise ValueError('query_legacy_subject_binding_required')
         if binding['subject_ref']!=subject_ref:
             raise ValueError('query_original_subject_binding_mismatch')
         if (binding['observation_id']!=obs['observation_id'] or binding['payload_sha256']!=row['payload_sha256']
@@ -270,8 +283,13 @@ def observation_variant_key(obs):
 
 
 def validate_response(value,*,expected_request,expected_owner):
-    validate_request(expected_request)
-    _validate_shape(value,'response')
+    return _validate_response(value,expected_request=expected_request,expected_owner=expected_owner)
+
+
+def _validate_response(value,*,expected_request,expected_owner,request_validator=None,shape_validator=None,original_reader=None):
+    (validate_request if request_validator is None else request_validator)(expected_request)
+    (_validate_shape if shape_validator is None else shape_validator)(value,'response')
+    read_original=_original if original_reader is None else original_reader
     if (not isinstance(expected_owner,dict) or not {'store_id'}<=set(expected_owner)
         or set(expected_owner)-{'store_id','observation_refs'}
         or not isinstance(expected_owner['store_id'],str) or not expected_owner['store_id'].strip()):
@@ -312,7 +330,7 @@ def validate_response(value,*,expected_request,expected_owner):
             if row['observation_id'] in seen:
                 raise ValueError('query_duplicate_original_observation')
             seen.add(row['observation_id'])
-            obs=_original(row)
+            obs=read_original(row)
             owner_ref=_reference(row,expected_owner)
             _validate_original_semantics(obs,row=row,owner_ref=owner_ref,request=expected_request,
                 watermark=result['watermark'],subject_ref=profile['subject_ref'])
@@ -330,7 +348,7 @@ def validate_response(value,*,expected_request,expected_owner):
         if row['observation_id'] in seen:
             raise ValueError('query_duplicate_original_observation')
         seen.add(row['observation_id'])
-        obs=_original(row)
+        obs=read_original(row)
         _validate_original_semantics(obs,row=row,owner_ref=_reference(row,expected_owner),
             request=expected_request,watermark=result['watermark'],subject_ref=None)
     actual_covered=set.intersection(*field_sets) if field_sets and not missing else set()

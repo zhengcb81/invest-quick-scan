@@ -2517,3 +2517,33 @@ CLI虽31P，但25独立公开控制在摘要正确重算后仍暴露row/manifest
 - 网络拒绝、无key环境、临时目录均留在自有guard控制下；当前三个candidate为未完成的活动工程保留，未删除它们或原c16b账本。没有新API、预算预留、生产DB/名单变化；同节点不增加helper审查。
 - 下一步完整receipt验证、事前主体登记与binding新版本、StockWiki封存/导入/query/inspection后，才能同节点集中独审和正式源部署；已知response逻辑终态与CNY refresh也仍待实施。原4blocked不可改context/ID/旧hash回填；原13请求与30题失败分母保留，金融门仍开放。
 - 本次checkpoint首次两次在外仓Git status受sandbox限制时提前终止；清理子进程Git环境没有解决权限，使用只读所需权限后成功读取。第三次旧clean断言被VIEW原writer动态16项变化拦下，仍未写PWF/attestation；改为记录当前HEAD/status与本控制器外仓写0，而不要求别人仓库clean。三次均非产品失败。另一次猜测test_quick_scan_subject_bound_context.py不存在，随后只读取已定位旧上下文fixture，不按猜测实施。
+
+
+## 2026-10-13 checkpoint47 — B01 同候选整链接续（实施中）
+
+继续 checkpoint46，PRIMARY/FIN 不重做。独立下游只读审查发现内部 query 2.0、inspection 1.1、field assessment 旧 original 三组兼容缺口，合并本节点处理。真实公开整链 fixture 修正后 PID23260 实际封存因默认 client 未捕获 request body SHA 被拒，候选已修同步/异步 POST 前始终捕获；新回归进行中。此前四次输入/权限/合成 citation 环境故障原日志保留，不计产品 RED。无真实 API、源仓业务/生产DB/名单写，既有 live 分母及费用不变。见 docs/implementation/reviews/B01/vendor-profile-downstream-2026-10-13.md；B01仍未部署/未关闭。
+
+
+## 2026-10-13 checkpoint48 — B01 整链、逻辑失败与CNY候选
+
+同一隔离候选已贯通Observation1.2事前登记→真实客户端回执→封存→实际owner导入→公开query2.6/replay→inspection→刷新复用；新实体/挂牌2P，旧2P。source main→owner ACK→native execution_verified→公开assessment PID63468，1P/177.41秒；不是金融或真实identity gold。
+
+default request SHA按已冻结1.2/pack或显式controls捕获，旧无绑定默认外形保留、思考默认行为不变。244P＋独立5P客户端/inspection控制；owner72P/1环境F后原1P；native18扩大372P/12legacy fixtureF，修mutable old fixture后原12＋新分类1，共13P；pack69P/2fixtureF后原2P；锁等待/终态/engine35P，实际partial状态2P。各原分母保留，不相加作金融准确率。
+
+逻辑失败只确定missing/invalid/member-rejected，不改成功物理response、费用和其他成员，不自动重问。schema18只加原event两immutable trigger，17先原校验再迁移；generic storage/lease、过期、uncertain、已有checkpoint/delivery保持原恢复，旧真实26leased未改。owner仍决定新generation，旧approval不扩大。
+
+CNY新refresh1.1/query2.6显式接线，旧v1 schema未改。RED2F/4P→旧新49P，实际nativepreview/合成consent/公开admission/replay PID61124 1P/100.46秒、API0、无预算reserve/attempt；USD替换拒绝。另发现admission缺schema17thread-local事务状态，候选最小内存初始化修复，不调用store迁移initializer。Windows长路径fixture错误改成唯一固定长短temp根，原失败日志保留。
+
+同节点独立复核新增无PRE legacy分支、typed reason丢失、锁前clock，均直接修复/负例，不发小返工卡。私有候选已补真实文件inventory（旧checkpoint44空candidate_files不当SHA证明）。报告 docs/implementation/reviews/B01/vendor-profile-downstream-2026-10-13.md 和 downstream-independent-review-2026-10-13.md。未源部署/收费API/生产DB或名单写；原live13HTTP/26搜索/CNY1.268162/0评分/ACK0保持。下一步源writer/HEAD/SHA重核及精确部署，然后原owner对账、批准重试及真实小实验；不重做PRIMARY/FIN，不自动重放旧控制器。根remote仍原审批范围pending。
+
+## 2026-10-13 checkpoint49 — B01源码交付与正常本地提交
+
+此前checkpoint47/48的“未源部署”是历史。本节点68个精确文件已部署：IQS20、StockQA32（含新schema的精确Git忽略例外）、StockWiki16。部署前逐文件及HEAD核对无目标并发漂移；原文件备份和实际交付SHA留在本机，当前68目标再次匹配。其他进程的2026-10-10 README不覆盖、不提交；生产数据库、名单、旧实验账本均未修改。
+
+StockQA正常本地提交`21b2c5f9caa4db8adafb7bc74d69ce75aed4c9fe`；首次正常hook修正四个文件的混合换行而拒绝提交，保留日志后只重暂存同32文件，第二次black/isort/mypy/secret及其它正常hooks全通过。StockWiki正常本地提交`5b11f55909efdbd724fb07e1e7f298631c4200cb`，正常静态hook通过。独立源静态检查QA PID76912/exit0、SW PID34484/exit0；均未跳过检查。换行只改变raw bytes，原schema canonical SHA一致，候选镜像和交付摘要已同步，不把canonical相同声称为raw相同。
+
+公开协议：Observation1.2/profile vendor-http-identity-v1；事前主体request1.2/binding1.1；query2.6/capabilities1.2；refresh显式1.1接受CNY、旧1.0继续USD；work store18。新旧整链、逻辑terminal、原件恢复与CNY admission的集中测试见[本节点报告](docs/implementation/reviews/B01/vendor-profile-downstream-2026-10-13.md)。同节点独审发现的缺PRE、typed reason、锁前clock已直接修复；最后源只读复核未发现这三处遗漏，不新增小审查门。
+
+下一动作：只读核对原真实owner/work账本和当前公开恢复路径，保留13物理HTTP、26原生搜索、已settled CNY1.268162、30题分母、4旧blocked/26旧expired、0评分/ACK0。schema18升级需原账本备份及原生迁移；无答案的旧expired不能用新terminal强改，不补造事前记录或header ID。由原owner生成当前显式1.1 CNY quote/新的批准与admission后，才对固定IQS_01/02/04做pack3/32768→pack1真实小实验；旧approval不扩大、不重放one-shot控制器。
+
+软件接线完成不等于答案准确：本轮API/付费搜索0，金融gold0，Financial/G3/F05/生产UI/一键/全池仍开放。PRIMARY/FIN已交付不重做。源码与本批公文只正常本地提交，尚未推远端；此前自动审批导出范围pending保持，私有日志/数据/golden/密钥不随公文发布。

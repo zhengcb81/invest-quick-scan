@@ -197,7 +197,7 @@ def _published_observation_source(record):
             or record['construct_id'] != question['construct_id']):
         raise ValueError('observation question version, construct, or method mismatch')
     if package.get('semantic_fingerprint_version') == '2.0.0':
-        if record.get('schema_version') != '1.1.0' or not isinstance(record.get('cycle_sensitive'), bool):
+        if record.get('schema_version') not in ('1.1.0', '1.2.0') or not isinstance(record.get('cycle_sensitive'), bool):
             raise ValueError('published observation requires schema 1.1 and cycle context')
         cohort = record['cohort']
         semantic_profile = {'industry_modules': cohort['industries'],
@@ -245,19 +245,21 @@ def validate_observation(record, *, require_published=False, expected_observatio
     if expected_observation_id is not None and record.get('observation_id') != expected_observation_id:
         raise ValueError('observation differs from immutable stored identity')
     published = 'module_package_id' in record
-    if (record.get('schema_version') == '1.1.0'
+    if (record.get('schema_version') in ('1.1.0', '1.2.0')
             or str(record.get('method_id', '')).startswith('module-locked-v1/')) and not published:
         raise ValueError('published observation missing package binding')
     if require_published and not published:
         raise ValueError('published ingest requires a frozen package binding')
     if published:
         question, resources = _published_observation_source(record)
-        if require_published and record['schema_version'] != '1.1.0':
+        if require_published and record['schema_version'] not in ('1.1.0', '1.2.0'):
             raise ValueError('published ingest requires current frozen observation contract')
         registry = Registry().with_resource(
             resources['schemas/answer-content.schema.json']['$id'],
             Resource.from_contents(resources['schemas/answer-content.schema.json']))
-        Draft202012Validator(resources['schemas/observation.schema.json'],
+        from observation_profiles import schema_for
+        observation_schema = schema_for(record['schema_version'], resources)
+        Draft202012Validator(observation_schema,
                              registry=registry, format_checker=FormatChecker()).validate(record)
     else:
         if any(key in record for key in ('module_release_id', 'question_definition_sha256',

@@ -14,7 +14,10 @@ import module_contract
 import query_contract as query
 
 SCHEMA=json.loads((Path(__file__).resolve().parents[1]/'schemas/quick_scan/refresh-v1.schema.json').read_bytes())
-REGISTRY=Registry().with_resources([(s['$id'],Resource.from_contents(s)) for s in (SCHEMA,query.SCHEMA)])
+CURRENCY_SCHEMA=json.loads((Path(__file__).resolve().parents[1]/'schemas/quick_scan/refresh-v1.1.schema.json').read_bytes())
+from query_vendor_contract import SCHEMA as VENDOR_QUERY_SCHEMA
+REGISTRY=Registry().with_resources([(s['$id'],Resource.from_contents(s)) for s in
+    (SCHEMA,CURRENCY_SCHEMA,query.SCHEMA,VENDOR_QUERY_SCHEMA)])
 MAX_BYTES=8*1024*1024
 DISPATCH={'dispatch_new_work','dispatch_new_generation','resume_existing_work'}
 HELD={'deferred_unknown','deferred_scope_unbound','manual_refresh_required'}
@@ -30,11 +33,15 @@ def paid_work_count(items):
 def digest(value):return query._digest(value)
 
 
-def _shape(value,kind):
+def _shape(value,kind,*,currency_dialect=False):
+    if kind!='OwnerState':
+        currency_dialect = isinstance(value,dict) and value.get('protocol') in {
+            'iqs.refresh_request/1.1.0','stockwiki.refresh_preview/1.1.0','stockwiki.refresh_owner_policy/1.1.0'}
+    schema=CURRENCY_SCHEMA if currency_dialect else SCHEMA
     try:
         if len(module_contract.canonical_bytes(value))>MAX_BYTES:
             raise ValueError('refresh_input_too_large')
-        Draft202012Validator({'$ref':SCHEMA['$id']+'#/$defs/'+kind},
+        Draft202012Validator({'$ref':schema['$id']+'#/$defs/'+kind},
             registry=REGISTRY,format_checker=FormatChecker()).validate(value)
     except (ValidationError,TypeError,ValueError,RecursionError) as error:
         raise ValueError('refresh_document_invalid') from error
@@ -43,7 +50,10 @@ def _shape(value,kind):
 def validate_request(request):
     _shape(request,'Request')
     source=request['source_query']
-    query.validate_request(source)
+    selected=query
+    if request['protocol']=='iqs.refresh_request/1.1.0' and source.get('schema_version')=='2.6.0':
+        import query_vendor_contract as selected
+    selected.validate_request(source)
     if source['payload']['snapshot_id'] is None:
         raise ValueError('refresh_frozen_snapshot_required')
     if request['consumer_id']!=source['consumer_id']:
@@ -87,7 +97,7 @@ def validate_policy(policy):
 
 
 def _check_state(request,state):
-    _shape(state,'OwnerState')
+    _shape(state,'OwnerState',currency_dialect=request['protocol']=='iqs.refresh_request/1.1.0')
     numbers=[state['policy_version'],state['ttl_hours'],*state['member_versions'].values(),
         *[a[k] for a in state['anchors'] for k in ('anchor_version','identity_revision')],
         state['quote']['max_cost_micros'],state['quote']['max_http_requests'],
@@ -140,7 +150,7 @@ def create_preview(request,owner_state,*,created_at,expires_at):
     scope=dict(source_snapshot_id=request['source_query']['payload']['snapshot_id'],
         subject_refs=request['subject_refs'],field_ids=request['field_ids'],
         consumer_id=request['consumer_id'],origin_task_id=request['origin_task_id'])
-    result=dict(protocol='stockwiki.refresh_preview/1.0.0',operation='request_refresh',
+    result=dict(protocol='stockwiki.refresh_preview/'+('1.1.0' if request['protocol']=='iqs.refresh_request/1.1.0' else '1.0.0'),operation='request_refresh',
         request_sha256=digest(request),scope_sha256=digest(scope),owner_state_sha256=digest(state),
         source_snapshot_id=scope['source_snapshot_id'],
         **{k:state[k] for k in ('store_id','policy_id','policy_version','policy_sha256','provider','model','items','quote')},

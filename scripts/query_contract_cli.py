@@ -29,6 +29,8 @@ def main(argv=None):
         if not isinstance(value,dict):raise ValueError('query_object_required')
         if args.operation.startswith('capabilities-'):
             import query_capabilities_contract as capabilities
+            if isinstance(value.get('request'),dict) and value['request'].get('schema_version')=='1.2.0':
+                import query_capabilities_vendor_contract as capabilities
             if args.operation=='capabilities-request':
                 if set(value)!={'request'}:raise ValueError('query_contract_input_fields')
                 result=capabilities.validate_request(value['request'])
@@ -85,10 +87,16 @@ def main(argv=None):
                     raise ValueError('query_contract_input_fields')
                 result=qualified.validate_response(**value)
         elif args.operation=='field-assessment':
-            if set(value)!={'rows','store_id','at_utc','trusted_check_level_receipts','field_policy'}:
-                raise ValueError('query_contract_input_fields')
-            from query_field_assessment import assess_originals
-            result=assess_originals(**value)
+            selector=value.get('query_schema_version')
+            expected={'rows','store_id','at_utc','trusted_check_level_receipts','field_policy'}
+            if selector is None:
+                if set(value)!=expected:raise ValueError('query_contract_input_fields')
+                from query_field_assessment import assess_originals as selected_assessment
+            elif selector=='2.6.0':
+                if set(value)!=expected|{'query_schema_version'}:raise ValueError('query_contract_input_fields')
+                from query_field_assessment import assess_vendor_originals as selected_assessment
+            else:raise ValueError('query_contract_input_fields')
+            result=selected_assessment(**{k:v for k,v in value.items() if k!='query_schema_version'})
         elif args.operation.startswith('pool-'):
             import query_pool_contract as pool
             if args.operation in {'pool-request','pool-query-hash'}:
@@ -109,13 +117,21 @@ def main(argv=None):
                 result=pool.validate_response(**value)
         elif args.operation in ('request','query-hash'):
             if set(value)!={'request'}:raise ValueError('query_contract_input_fields')
-            contract.validate_request(value['request'])
-            result=(value['request'] if args.operation=='request' else contract.query_sha256(value['request']))
+            selected=contract
+            if value['request'].get('schema_version')=='2.6.0':
+                import query_vendor_contract as selected
+            selected.validate_request(value['request'])
+            result=(value['request'] if args.operation=='request' else selected.query_sha256(value['request']))
         elif args.operation=='originals':
-            if set(value)!={'rows'} or not isinstance(value['rows'],list):raise ValueError('query_contract_input_fields')
+            selected=contract
+            if value.get('query_schema_version')=='2.6.0':
+                if set(value)!={'rows','query_schema_version'}:raise ValueError('query_contract_input_fields')
+                import query_vendor_contract as selected
+            elif set(value)!={'rows'}:raise ValueError('query_contract_input_fields')
+            if not isinstance(value['rows'],list):raise ValueError('query_contract_input_fields')
             result=[]
             for row in value['rows']:
-                original=contract._original(row)
+                original=selected._original(row)
                 result.append({'row_sha256':contract._digest(row),'original':original,
                     'variant_key':contract.observation_variant_key(original)})
         elif args.operation=='bindings':
@@ -132,9 +148,12 @@ def main(argv=None):
                     'receipt':receipt,'binding_input_sha256':contract._digest(binding_input),'binding':binding})
         else:
             if set(value)!={'response','request','owner'}:raise ValueError('query_contract_input_fields')
-            response=(contract.seal_response(value['response'],request=value['request'])
+            selected=contract
+            if value['request'].get('schema_version')=='2.6.0':
+                import query_vendor_contract as selected
+            response=(selected.seal_response(value['response'],request=value['request'])
                 if args.operation=='seal' else value['response'])
-            contract.validate_response(response,expected_request=value['request'],expected_owner=value['owner'])
+            selected.validate_response(response,expected_request=value['request'],expected_owner=value['owner'])
             result=response
         output={'protocol':PROTOCOL,'operation':args.operation,'status':'validated',
             'input_sha256':contract._digest(value),'result':result,

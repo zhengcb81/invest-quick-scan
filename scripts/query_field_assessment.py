@@ -45,16 +45,20 @@ def validate_policy(value,at_utc):
     return copy.deepcopy(value)
 
 
-def _bound(row):
-    original=originals._original(row)
+def _bound(row, original_reader=originals._original):
+    original=original_reader(row)
     binding=row.get('subject_binding')
     if (not isinstance(binding,dict) or binding.get('observation_id')!=original['observation_id']
         or binding.get('payload_sha256')!=row['payload_sha256']):
         raise ValueError('field_assessment_bound_original_required')
     ref=binding['subject_ref']
     originals._subject_map([ref])
+    # Standard originals keep listing authority in the independently captured
+    # subject sidecar. Do not demand a listing field forbidden by their schema;
+    # an original that actually carries it must still match exactly.
     if (ref['entity_id']!=original['entity_id'] or ref['scope']!=original['scope']
-        or any(ref[k]!=original.get(k) for k in ('security_id','listing_id','segment_id'))):
+        or any(ref[k]!=original.get(k) for k in ('security_id','segment_id'))
+        or ('listing_id' in original and ref['listing_id']!=original['listing_id'])):
         raise ValueError('field_assessment_original_scope_mismatch')
     return original,ref
 
@@ -142,6 +146,13 @@ def _assess(rows,*,store_id,at_utc,trusted_check_level_receipts,field_policy,bou
 def assess_originals(rows,*,store_id,at_utc,trusted_check_level_receipts,field_policy):
     return _assess(rows,store_id=store_id,at_utc=at_utc,trusted_check_level_receipts=trusted_check_level_receipts,
         field_policy=field_policy,bound_original=_bound)
+
+
+def assess_vendor_originals(rows,*,store_id,at_utc,trusted_check_level_receipts,field_policy):
+    import query_vendor_contract as vendor
+    return _assess(rows,store_id=store_id,at_utc=at_utc,
+        trusted_check_level_receipts=trusted_check_level_receipts,field_policy=field_policy,
+        bound_original=lambda row:_bound(row, vendor._original))
 
 
 def _pool_original(value):

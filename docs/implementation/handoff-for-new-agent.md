@@ -1,3 +1,19 @@
+> 当前接手以checkpoint49为准；旧checkpoint48“未部署”不再是当前动作。不要重新部署、重建候选或重复PRIMARY/FIN。
+
+## 2026-10-13 checkpoint49 — B01源码交付与正常本地提交
+
+此前checkpoint47/48的“未源部署”是历史。本节点68个精确文件已部署：IQS20、StockQA32（含新schema的精确Git忽略例外）、StockWiki16。部署前逐文件及HEAD核对无目标并发漂移；原文件备份和实际交付SHA留在本机，当前68目标再次匹配。其他进程的2026-10-10 README不覆盖、不提交；生产数据库、名单、旧实验账本均未修改。
+
+StockQA正常本地提交`21b2c5f9caa4db8adafb7bc74d69ce75aed4c9fe`；首次正常hook修正四个文件的混合换行而拒绝提交，保留日志后只重暂存同32文件，第二次black/isort/mypy/secret及其它正常hooks全通过。StockWiki正常本地提交`5b11f55909efdbd724fb07e1e7f298631c4200cb`，正常静态hook通过。独立源静态检查QA PID76912/exit0、SW PID34484/exit0；均未跳过检查。换行只改变raw bytes，原schema canonical SHA一致，候选镜像和交付摘要已同步，不把canonical相同声称为raw相同。
+
+公开协议：Observation1.2/profile vendor-http-identity-v1；事前主体request1.2/binding1.1；query2.6/capabilities1.2；refresh显式1.1接受CNY、旧1.0继续USD；work store18。新旧整链、逻辑terminal、原件恢复与CNY admission的集中测试见[本节点报告](docs/implementation/reviews/B01/vendor-profile-downstream-2026-10-13.md)。同节点独审发现的缺PRE、typed reason、锁前clock已直接修复；最后源只读复核未发现这三处遗漏，不新增小审查门。
+
+下一动作：只读核对原真实owner/work账本和当前公开恢复路径，保留13物理HTTP、26原生搜索、已settled CNY1.268162、30题分母、4旧blocked/26旧expired、0评分/ACK0。schema18升级需原账本备份及原生迁移；无答案的旧expired不能用新terminal强改，不补造事前记录或header ID。由原owner生成当前显式1.1 CNY quote/新的批准与admission后，才对固定IQS_01/02/04做pack3/32768→pack1真实小实验；旧approval不扩大、不重放one-shot控制器。
+
+软件接线完成不等于答案准确：本轮API/付费搜索0，金融gold0，Financial/G3/F05/生产UI/一键/全池仍开放。PRIMARY/FIN已交付不重做。源码与本批公文只正常本地提交，尚未推远端；此前自动审批导出范围pending保持，私有日志/数据/golden/密钥不随公文发布。
+
+> 最新接续 checkpoint48（2026-10-13）：B01同一自有候选完整Observation1.2主体/回执/导入/query2.6/replay/native inspection/刷新已通；新1.1 CNY preview/admission及确定失败逻辑终态（schema18事件guard）已隔离验证。**尚未源部署**。唯一下一步最新writer/HEAD/原字节核对后精确交付，再原owner对账/批准重试及真实实验。旧真实26leased不可自动分类/换代，原13HTTP/26搜索/CNY1.268162/0评分/ACK0保持。不要重跑已绿批次或PRIMARY/FIN；本轮公开报告见B01/vendor-profile-downstream-2026-10-13.md，实际source部署证据尚待。
+
 > 最新进展（2026-10-13 checkpoint46）：三个PRIMARY包的软件与资料候选已由总控修复并签收；有效增量正式合并原FIN。最终Alphabet57P＋20CLI、CATL84P、CSC78P、合并后FIN121P，6项三方合并控制通过。FIN实际CLI1.5.1，pack1.2/ledger1.0；源公开0/2/3与旧1.1读取已核。来源仍partial、90评分/区间null、金融gold0，不能把整题confirmed撤回误解为所有官方数字都无效。已正常本地产品/交接提交，主线回B01完整事前主体→封存→owner导入→inspection等后续；已绿包不重做，金融/G3/F05/生产门仍开放。
 
 ## 2026-10-13 checkpoint46 — PRIMARY三包和FIN正式交接收口

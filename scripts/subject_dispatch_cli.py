@@ -8,7 +8,7 @@ import query_contract as qc
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--operation',choices=('request','receipt','bind','release','questions'),required=True)
+    parser.add_argument('--operation',choices=('request','receipt','bind','release','questions','execution-profile','vendor-original'),required=True)
     parser.add_argument('--input',required=True)
     parser.add_argument('--release-root',default=str(Path(__file__).resolve().parents[1]))
     args=parser.parse_args(argv)
@@ -24,6 +24,22 @@ def main(argv=None):
             if set(value)!={'receipt','observation','payload_sha256','observation_sequence','ack_sequence','bound_at'}:
                 raise ValueError('subject_contract_input_fields')
             result=contract.bind_original(**value)
+        elif args.operation=='vendor-original':
+            if set(value)!={'observation'}:raise ValueError('subject_contract_input_fields')
+            import base64
+            import module_contract
+            import query_vendor_contract as vendor
+            observation=value['observation'];raw=module_contract.canonical_bytes(observation)
+            if observation.get('schema_version')!='1.2.0':raise ValueError('subject_original_profile_mismatch')
+            import hashlib
+            result=vendor._original({'original_json_base64':base64.b64encode(raw).decode('ascii'),
+                'raw_sha256':hashlib.sha256(raw).hexdigest(),'payload_sha256':contract.digest(observation),
+                'observation_wire_profile':'stockwiki-portable-observation/1.1.0',
+                'observation_id':observation['observation_id']})
+        elif args.operation=='execution-profile':
+            if set(value)!={'manifest','observation_schema_version'}:raise ValueError('subject_contract_input_fields')
+            from frozen_release_projection import create_execution_profile
+            result=create_execution_profile(root=Path(args.release_root),**value)
         else:
             if set(value)!={'manifest'}:raise ValueError('subject_contract_input_fields')
             from frozen_release_projection import create_projection,create_question_config

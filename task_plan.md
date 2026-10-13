@@ -1,3 +1,17 @@
+> 最新进展（2026-10-13 checkpoint49）：B01完整新旧协议整链、确定逻辑失败和CNY刷新已从隔离候选交付三个源仓68文件；QA/SW正常本地提交、正常hooks/静态检查通过。现在进入原真实账本对账及新批准后的少量真实问答实验；还没有新的准确性结论或生产门通过。下文旧checkpoint的“未部署”为历史。
+
+## 2026-10-13 checkpoint49 — B01源码交付与正常本地提交
+
+此前checkpoint47/48的“未源部署”是历史。本节点68个精确文件已部署：IQS20、StockQA32（含新schema的精确Git忽略例外）、StockWiki16。部署前逐文件及HEAD核对无目标并发漂移；原文件备份和实际交付SHA留在本机，当前68目标再次匹配。其他进程的2026-10-10 README不覆盖、不提交；生产数据库、名单、旧实验账本均未修改。
+
+StockQA正常本地提交`21b2c5f9caa4db8adafb7bc74d69ce75aed4c9fe`；首次正常hook修正四个文件的混合换行而拒绝提交，保留日志后只重暂存同32文件，第二次black/isort/mypy/secret及其它正常hooks全通过。StockWiki正常本地提交`5b11f55909efdbd724fb07e1e7f298631c4200cb`，正常静态hook通过。独立源静态检查QA PID76912/exit0、SW PID34484/exit0；均未跳过检查。换行只改变raw bytes，原schema canonical SHA一致，候选镜像和交付摘要已同步，不把canonical相同声称为raw相同。
+
+公开协议：Observation1.2/profile vendor-http-identity-v1；事前主体request1.2/binding1.1；query2.6/capabilities1.2；refresh显式1.1接受CNY、旧1.0继续USD；work store18。新旧整链、逻辑terminal、原件恢复与CNY admission的集中测试见[本节点报告](docs/implementation/reviews/B01/vendor-profile-downstream-2026-10-13.md)。同节点独审发现的缺PRE、typed reason、锁前clock已直接修复；最后源只读复核未发现这三处遗漏，不新增小审查门。
+
+下一动作：只读核对原真实owner/work账本和当前公开恢复路径，保留13物理HTTP、26原生搜索、已settled CNY1.268162、30题分母、4旧blocked/26旧expired、0评分/ACK0。schema18升级需原账本备份及原生迁移；无答案的旧expired不能用新terminal强改，不补造事前记录或header ID。由原owner生成当前显式1.1 CNY quote/新的批准与admission后，才对固定IQS_01/02/04做pack3/32768→pack1真实小实验；旧approval不扩大、不重放one-shot控制器。
+
+软件接线完成不等于答案准确：本轮API/付费搜索0，金融gold0，Financial/G3/F05/生产UI/一键/全池仍开放。PRIMARY/FIN已交付不重做。源码与本批公文只正常本地提交，尚未推远端；此前自动审批导出范围pending保持，私有日志/数据/golden/密钥不随公文发布。
+
 > 最新进展（2026-10-13 checkpoint46）：三个PRIMARY包的软件与资料候选已由总控修复并签收；有效增量正式合并原FIN。最终Alphabet57P＋20CLI、CATL84P、CSC78P、合并后FIN121P，6项三方合并控制通过。FIN实际CLI1.5.1，pack1.2/ledger1.0；源公开0/2/3与旧1.1读取已核。来源仍partial、90评分/区间null、金融gold0，不能把整题confirmed撤回误解为所有官方数字都无效。已正常本地产品/交接提交，主线回B01完整事前主体→封存→owner导入→inspection等后续；已绿包不重做，金融/G3/F05/生产门仍开放。
 
 ## 2026-10-13 checkpoint46 — PRIMARY三包和FIN正式交接收口
@@ -590,7 +604,11 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（checkpoint46）：** PRIMARY三包及FIN软件/增量已修复、提交、正式合并；不要重复实施、重建Lab或重跑已绿历史批次。沿checkpoint44的原B01同一隔离候选，完成subject-context2/authority3+Observation1.2实际QA pre-send→完整封存→owner公开导入→inspection正反例，并核qualified/pool新profile读取；同节点无有效答案逻辑终态/retry/CNY与旧USD兼容。完整节点一次审查/源writer与SHA重核再精确部署。资料部分官方原件/截止/经济口径具名gap仍开放，分数null/金融gold0；可在明确独占范围后交harness补大缺口，不重复机械小修或自动派发。原live分母/费用/ACK及金融/G3/F05/生产门保持；旧Next Step均历史。
+**当前唯一接续（checkpoint49）：** B01三个源仓68文件已精确部署，StockQA/StockWiki已正常本地提交；同节点集中测试与正常静态检查通过，软件接线不授金融准确性。现在只读核原真实owner/work账本与公开恢复路径，先备份后原生升级18；旧26expired不得强制terminal或重放旧controller，4旧blocked不得补造ID/context。按原owner取得显式1.1 CNY quote、新批准/admission，再固定IQS_01/02/04 pack3/32768→pack1真实实验。原13HTTP/26搜索/CNY1.268162/30题/0评分/ACK0保持；PRIMARY/FIN不重做，金融/G3/F05/生产门仍开放。
+
+**历史接续（checkpoint47，实施中）：** 沿同一B01候选完成默认请求摘要捕获及新profile内部读取/inspection/field assessment；整链公开CLI、真实临时SQL与旧格式集中回归后再源writer/SHA核对部署。不增小节点审查，不重跑PRIMARY/FIN或旧live。checkpoint46接续范围继续有效。
+
+**历史接续（checkpoint46）：** PRIMARY三包及FIN软件/增量已修复、提交、正式合并；不要重复实施、重建Lab或重跑已绿历史批次。沿checkpoint44的原B01同一隔离候选，完成subject-context2/authority3+Observation1.2实际QA pre-send→完整封存→owner公开导入→inspection正反例，并核qualified/pool新profile读取；同节点无有效答案逻辑终态/retry/CNY与旧USD兼容。完整节点一次审查/源writer与SHA重核再精确部署。资料部分官方原件/截止/经济口径具名gap仍开放，分数null/金融gold0；可在明确独占范围后交harness补大缺口，不重复机械小修或自动派发。原live分母/费用/ACK及金融/G3/F05/生产门保持；旧Next Step均历史。
 
 **当前唯一接续（checkpoint40）：** 收口正在进行的CATL直接修复集中验收与精确交付，再按各自冻结快照验收刚报交的Alphabet/CSC，三方比对后合并。B0187P装配候选保留，随后回到其真实SQLite封存/具名下游协议工程；以下checkpoint38/39接续是历史，不重建或重跑原live账本。
 
