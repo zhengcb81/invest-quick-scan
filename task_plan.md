@@ -1,3 +1,30 @@
+> 当前唯一状态（2026-10-13 checkpoint55）：B01跨模型控制源码已正常交付提交，IQS67c0db5、QA205b749、SW9d411c7；source支持19，但原真实work仍18未迁移。ROUTE/CHAIN/SCORE三个返回包已集中验收、直接修复、CAS回写并正常提交，均仅研究候选，CHAIN仍partial。所有本轮测试temp已清空。旧“未部署/待三包/运行中”等段均为历史，以本段和Next Step为准。
+
+## checkpoint55 — 源交付与三个质量包接收完成
+
+- 三包修后提交：ROUTE6829cc6、CHAIN4ea3579、SCORE993e0a9，各Lab tracked业务clean；原handoff历史保留，总控报告独立落档。详见 docs/implementation/reviews/parallel-packages/2026-10-13/quality-three-pack-acceptance.md。
+- ROUTE166独立tests另7native subtests；CHAIN全集117P/末次受影响38P/退役入口7P；SCORE全集132P/最后细化受影响86P。不同批次不相加为金融准确率。真实owner与正式发布仍无资格。
+- 55源码IQS5/QA43/SW7已精确原HEAD/SHA CAS交付；正常hooks首次只因Black/isort/Ruff格式/导入拒绝，精准修后正常提交，QA全src mypy和密钥检查、SW静态均通过。IQS首次提交命令被审批拦截因未强制暂存范围，改强制断言+commit --only精确5路径后通过，未覆盖其他writer README。
+- 格式后QA受影响单元用例接续验证：180秒批次XML保存121个完成用例并记录runner超时/内部错误；只续未完成节点83P/1F（漏设隔离根环境变量），补变量仅重跑该guard例1P，共205个不同用例最终通过，非一次全绿suite。SW原生硬链接在沙箱被拒，保持无key/禁网护栏在沙箱外受影响34P。失败日志保留，不伪造历史回执。
+- 清理已完成：质量三lane空temp，B01闭包0后自有temp空；仅删除验证过绝对路径/链接闭合的本轮临时文件。原13HTTP/26搜索/CNY1.268162/30题/26expired/4blocked/0评分/ACK0及真实账本SHA236e5aa…保持；本轮真实API/收费搜索/文档下载/生产名单或DB写0。
+- 已接收材料只供C01路由、C02标尺候选和F03–F06/B01真实核证消费。原题/正式schema/FIN90个null/金融gold0不改。G3/F05、生产UI、一键、全池仍开放，没有从候选结构/测试通过关闭门。
+
+唯一下一步：沿源已交付的原B01公开owner入口，先只读核实际上下文/权限/旧26与4项恢复边界，备份与参数预览后按真实批准恢复；再小批次对比LLM/搜索/题包准确性。保留原费用/身份/时间线，不SQL改旧状态、不把合成确认当真实owner、不重新派发三包。
+
+> 当前 checkpoint54 收口：跨模型候选的公开 Flash→Pro 链路1P、审查修复122P、类型修正48P、17源文件mypy已通过；公开精确重放/无key恢复API0且账本字节不变。source18/candidate19未部署；55文件预部署无漂移。用户已告知三个质量包全部交回，下一步集中隔离验收，不再视为等待交付。下面旧“运行中/当前”是历史，不能重跑其终态句柄。
+
+## 2026-10-13 — 控制刷新候选收口，转三包集中验收
+
+- 全链实际 PID41636（之前CIM75104是嵌套子进程，现按controller回执纠正）：Flash旧physical→新owner policy1.3批准Pro→决议1.1/绑定4→公开准入与重放→原main一次fake HTTP/检查点/C06封存→删测试配置后API0恢复，1P/726.28秒，exec95650终态。只有一成员pack3尾包，不是三题准确率；金融gold/实际人工确认仍false。
+- 同节点独审两问题直接修复：1.3只声明comparison且非空目标，普通retry继续1.2；全局refs先验证原生doc/费用/目标，再按entity/qid/scope/scope_id选择本主体，IQS最终全局恰好覆盖一次。RED3F/PID75204→新旧122P/PID17252。原1.0–1.2 schema原件保持；确认终端清晰显示旧/新模型、路线和pack/thinking/token。
+- 30个Python固定路径单进程Black18.78秒完成；普通多进程CLI180秒timeout和最初外部gitignore读取拒绝原件保留，不放宽任何应用测试guard。mypy初版3个类型错误直接修为只读时钟明确Callable、执行控制必须dict；PID56904/17源文件0问题，实际受影响48P/PID34348。格式后相关50P/PID61432，不合并重复分母作准确率。
+- 当前修复/格式候选在原合成namespace用公开CLI精确重放（PID2668/34.99秒）、无配置main恢复（PID27664/37.39秒）均exit0，API0、原账本字节不变。不是重建owner正例。必要原生合成工件及逐文件SHA已归档，仅供历史证明，不可执行为新namespace。
+- 20:53:01Z实际CIM自有子进程闭包0后，严格清理temp2280文件/795目录/214,792,388 bytes，剩余0。真实C16b SHA236e5aa…仍不变：13HTTP/26native搜索/CNY1.268162/30题/26expired/4blocked/0评分/ACK0。无新收费API/搜索/公司文档下载/生产库或名单写。
+- 外仓真实HEAD仍QA21b2c5f/SW5b11f55、tracked业务clean；IQS6cfb122仅他人2026-10-10 README脏且SHA b2af52c…保持。55精确候选（IQS5/QA43/SW7）原字节CAS无漂移，代码未回写源/未迁真实19。后续任何commit或writer变化须重新核HEAD/目标字节，不直接执行旧预部署清单。
+- 用户已报ROUTE-COVER-02、CHAIN-CONTENT-02、SCORE-ANCHOR-02全部完成；先冻结各Lab当前HEAD/交接工件/输入锁，在隔离副本一次包级测试与内容审查，失败直接修，不凭handoff或模板通过签收。已获用户授权建立三个Lab CodeGraph索引，设施变化与业务交付分开记录。
+
+接续：总控先收三包并接其路由覆盖/真实关系内容/盲评基准；并行保留B01已验收候选，重新核源writer/HEAD/字节后精确交付55文件、正常source hooks/提交，再沿原owner处理26/4及真实小样本准确性实验。Financial/G3/F05/生产UI/一键/全池仍开放，不新增逐helper门，不重复12分钟整链、68旧源码交付或金融包。
+
 > 当前 checkpoint54：原 main 的 pack3 一成员尾包与移除配置后的零新请求恢复已通过（PID62364，1P/704.17秒），session9268已终态。显式跨模型决议1.1与refresh1.3正在自有候选接原生owner、预算检查和binding；source18/candidate19尚未部署。三个质量包已由用户派出，避开其writer。以下旧“当前/运行中”是历史记录。
 
 ## 2026-10-13 checkpoint54 — 收取原 main 正例并推进跨模型目标
@@ -697,13 +724,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（checkpoint54）：** 原main尾包测试PID62364已终态1P，不重跑或寻找活动session9268。完成显式refresh1.3/目标grant1.1的原生owner检查、binding4、原admission/runner和实际目标路线/请求体约束；同节点集中受影响回归及公开跨模型正反例后核源writer/HEAD/字节、精确部署19。随后原owner真实恢复26/4及小样本准确性实验。source18/candidate19分开，原费用/30题/0评分不改，避开已派出的三个质量Lab。
+**当前唯一接续（checkpoint55）：** 沿源已交付的原B01公开owner入口只读核上下文/权限与旧26/4项恢复边界，保留原账本和费用；备份及实际参数预览后按真实批准恢复，再用已收ROUTE/CHAIN/SCORE和FIN/PRIMARY小批次做模型/搜索/题包准确性盲评。19只是源能力，原真实work18未迁移；不SQL改旧状态、不伪造真人确认、ACK或金融gold，不重跑已绿合成长链或重派三包，仍按一个大节点检验。Financial/G3/F05/生产UI/一键/全池开放。
 
 **历史接续（checkpoint47，实施中）：** 沿同一B01候选完成默认请求摘要捕获及新profile内部读取/inspection/field assessment；整链公开CLI、真实临时SQL与旧格式集中回归后再源writer/SHA核对部署。不增小节点审查，不重跑PRIMARY/FIN或旧live。checkpoint46接续范围继续有效。
 
 **历史接续（checkpoint46）：** PRIMARY三包及FIN软件/增量已修复、提交、正式合并；不要重复实施、重建Lab或重跑已绿历史批次。沿checkpoint44的原B01同一隔离候选，完成subject-context2/authority3+Observation1.2实际QA pre-send→完整封存→owner公开导入→inspection正反例，并核qualified/pool新profile读取；同节点无有效答案逻辑终态/retry/CNY与旧USD兼容。完整节点一次审查/源writer与SHA重核再精确部署。资料部分官方原件/截止/经济口径具名gap仍开放，分数null/金融gold0；可在明确独占范围后交harness补大缺口，不重复机械小修或自动派发。原live分母/费用/ACK及金融/G3/F05/生产门保持；旧Next Step均历史。
 
-**当前唯一接续（checkpoint40）：** 收口正在进行的CATL直接修复集中验收与精确交付，再按各自冻结快照验收刚报交的Alphabet/CSC，三方比对后合并。B0187P装配候选保留，随后回到其真实SQLite封存/具名下游协议工程；以下checkpoint38/39接续是历史，不重建或重跑原live账本。
+**历史接续（checkpoint40，已完成）：** 收口正在进行的CATL直接修复集中验收与精确交付，再按各自冻结快照验收刚报交的Alphabet/CSC，三方比对后合并。B0187P装配候选保留，随后回到其真实SQLite封存/具名下游协议工程；以下checkpoint38/39接续是历史，不重建或重跑原live账本。
 
 旧MATRIX/LOAD/IDENT三包已由用户派发并集中接收，需整改者仍由原writer接续。新增2026-10-11-wave2三包已完成编制；OPS remediation-01已续验，手册R4关闭，只续同包[唯一三组R2](docs/implementation/reviews/parallel-packages/2026-10-11/OPS-DESK-01-R2.md)；FIN remediation-04已由总控直接修复，[软件/来源说明签收](docs/implementation/reviews/parallel-packages/2026-10-12/FIN-REF-01-R4-acceptance.md)，103P；原90研究仍partial（72未开始），不派新卡；VIEW remediation-02验收缺口已由总控直接修复，[软件签收](docs/implementation/reviews/parallel-packages/2026-10-11/VIEW-01-R2-acceptance.md)，173项172P/1skip；真实owner/生产接线待主线，不再派整改卡。各自独占Lab，不占主线或旧Lab，不增加主线审查门。入口 [新三包总览](docs/implementation/parallel-lanes/packages/2026-10-11-wave2/README.md)。新[分公司研究三包](docs/implementation/parallel-lanes/packages/2026-10-12-reference/README.md)已准备，可由用户同时分派到三个新根，未创建/派发；不占原FIN或主线writer。主线下一动作以checkpoint38状态（checkpoint39仅新增并行准备）和以下唯一当前动作段为准，本批文档交付不能替代修复、真实准确性或UI生产接线。
 
