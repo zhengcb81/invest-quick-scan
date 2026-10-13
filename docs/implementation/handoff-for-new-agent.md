@@ -1,4 +1,4 @@
-> 当前checkpoint52：唯一下一动作是1.2控制预览到原Q13/admission/runner的接线。source18/candidate19及“合成回调2P≠公开整链”必须分清。
+> 当前checkpoint52：唯一主线下一动作是1.2控制预览到原Q13/admission/runner的接线。source18/candidate19及“合成回调2P≠公开整链”必须分清。辅助[2026-10-13质量三包](parallel-lanes/packages/2026-10-13-quality/README.md)已编制、未派发，三个新Lab仅各自候选范围；不要据模板或锁通过认定实施/全局门完成。
 
 ## 2026-10-13 checkpoint52 — 显式控制刷新1.2候选，尚未接新工作创建及runner
 

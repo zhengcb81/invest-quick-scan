@@ -1,4 +1,13 @@
-> 当前接续以checkpoint52为准：控制刷新1.2合同和原件读取已成候选，正在接admission/runner；未部署19或启动新收费实验。不要重复68源码交付、17→18迁移或已绿历史批次。
+> 当前接续仍以checkpoint52为准：控制刷新1.2合同和原件读取已成候选，正在接admission/runner；未部署19或启动新收费实验。2026-10-13质量三包已编制、待用户分派，不改变主线下一步，不新增验收门。
+
+## 2026-10-13 — 三个互不重叠的质量施工包已准备
+
+- [总入口与三个施工卡](docs/implementation/parallel-lanes/packages/2026-10-13-quality/README.md)：ROUTE-COVER-02（组合适用性/C01）、CHAIN-CONTENT-02（三公司真实关系内容/F03–F06）、SCORE-ANCHOR-02（24核心构念插值解释/C02及B01盲评）。独占三个新Lab，不写已有主线或其他Lab，不自动派发、不返工已签收包。
+- 源HEAD `29f64581f4f74ecb0c9e439dd734ade981b956c5` 的223份输入（2,571,158 bytes）冻结在本机 runs/parallel-quality-2026-10-13-01/inputs/iqs；锁含原SHA/bytes/源跟踪状态。三根实际未创建；开工重新核writer，不把编制时不存在当持续保证。
+- 每卡具备上下文、明确候选协议、原件引用、CLI/测试与恢复、一次包级审查、交接路径/模板和总控接入责任。离线准备校验223锁、三个根边界、链接及公开handoff模板全部通过，仅文档准备，不是产品/金融/生产门通过。
+- [ ] 用户选择并分派harness；本轮未派发。各包交回后总控集中验收/统一合入，源变化用原对象SHA核冲突，不last-write-wins。原他人2026-10-10 README保持。
+
+主线继续下面checkpoint52的1.2控制预览→原Q13 admission/runner；Financial/G3/F05/生产UI/一键/全池保持开放。
 
 ## 2026-10-13 checkpoint52 — 显式控制刷新1.2候选，尚未接新工作创建及runner
 
