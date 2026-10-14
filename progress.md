@@ -1,3 +1,11 @@
+## 2026-10-14 晚 — 首条真实确认已消费，原work已升级19并完成IQS_01结案
+
+用户已在真实终端确认，实际rc1原件与stdout/preview/request核验后，StockQA原public apply进程25624 exit0、status=recorded；只完成原IQS_01的output_length中性结案。原work现19，SHA a5e77ef5aa427b630a0a463e2cb9088a38ab7619f38b0a0d27eadbe572dafb05，状态**25leased+1failed+4result_ready**。不要再等待首次确认、运行旧helper、修改其旧SHA或重复已提交apply。
+
+逐行后验通过：其余29work、31张非work/event/sequence原表（含4checkpoint、预算和13物理请求/terminal）保持；原184事件不变，仅追加对应known_response_resolved及event sequence+1；新真实决议1条，原6个owner库rawSHA保持。费用仍CNY1.268162，本轮API0、未重新评分/发模型请求/改名单。父级最初漏算事件及序号而assert失败，实际成功/失败收据均保留，后续仅只读核验，不重放动作。[实际结果与证据](docs/implementation/reviews/W15/b01-native-apply-2026-10-14.md)。
+
+下一步转[有界批量恢复设计](docs/implementation/plans/b01-native-batch-recovery-2026-10-14.md)：剩余25是14length/11completed，原4个insufficient checkpoint保留，已完成IQS01排除。复用原authority/证明/单项决议，减少逐题TTY和重复纯验证；当前单项CLI尚不支持批量，显式新carrier/真实整批批准与逐项恢复，不能伪造确认或同版塞数组。只在大节点TDD/契约/集成/E2E集中检验，不新增helper门。owner policy仍仅1.1原IQS01/Pro；旧13费用保留、cap15剩2，后续Q13/报价和1.2/1.3控制仍需准确绑定。COMPANY-AGENT-01外包根避开，Financial/G3/F05/UI/一键/全池继续开放。
+
 ## 2026-10-14 晚 — B01真实首条owner预览ready，待用户原生终端确认
 
 三包已验收并推送a701725；随后回原B01：26旧leased真实请求全部由原public API派生（15length/11completed中性诊断），4result_ready/insufficient checkpoint保留。真实18库副本原生升19，34原表逐行不变、13检查通过，副本已清理。
