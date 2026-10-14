@@ -1,3 +1,11 @@
+## 2026-10-14 晚 — B01真实首条owner预览ready，待用户原生终端确认
+
+三包已验收并推送a701725；随后回原B01：26旧leased真实请求全部由原public API派生（15length/11completed中性诊断），4result_ready/insufficient checkpoint保留。真实18库副本原生升19，34原表逐行不变、13检查通过，副本已清理。
+
+原namespace已备份并补一公司实验universe/member及原IQS_01/Pro的最小owner policy，真实principal来自公开OS令牌接口；没有复制隔离clone身份。实际get_profiles capture=coverage_gap，原生work预览ready。原work SHA236e5aa…/schema18/26leased+4result_ready/13HTTP/CNY1.268162/0评分/ACK0不变；owner仅成员三表、配置与capture/preview是明确真实本地写，不能再称本阶段生产全零写。收费API0、未创建confirmation、未apply。原生记录硬链接发布需沙箱外，已成功，不改源码。
+
+**当前接续：用户在真实PowerShell运行本机confirm_first_native_work.py，按原生提示完成首条IQS_01确认后回复“已确认”。** helper自动重取未过期预览，不自动输入挑战；只确认、不迁移/收费。完整命令、实际证据与收到确认后QA apply参数见[接续报告](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)。这是现有TTY认证要求，已有泛授权不需重问。COMPANY-AGENT-01外包施工中；金融/G3/F05/UI/一键/全池开放，不重跑三包或新增helper门。
+
 ## 2026-10-14 — 输入三包验收修复与提交完成，COMPANY-AGENT-01外包施工中
 
 本段与task_plan唯一Next Step为当前状态；下方按日期保留的“验收中/未派发/未修复”等是当时记录，不能覆盖本次签收。
@@ -809,7 +817,9 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（2026-10-14，三包已签收）：** 原B01只读producer inspector与真实owner配置核对；以本轮next-main-preparation的新实证为准，先准备缺少的实际配置/显式预览，再按原公开批准迁移/恢复。COMPANY-AGENT-01用户已派外包，避开其根；收到后显式版本接BLIND并执行注册实验，不假造metadata/参考资格，不重派或重验三包。
+**当前唯一接续（2026-10-14 晚，原生预览已ready）：** 等用户在真实终端运行本机 `runs/b01-resume-2026-10-14-01/confirm_first_native_work.py` 并完成原生CONFIRM，再核原namespace实际rc1记录，按[精确参数与隔离边界](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)走原QA apply；不能自动填写挑战、构造confirmation或提前迁移/重发。原work仍18，26请求可派生不代表已批准；当前policy仅原IQS_01/Pro。用户后续总体授权持续有效，不再泛问权限；Company外包root继续避开，金融与生产其他门保持。
+
+**历史接续（三包后只读准备已执行）：** 原B01只读producer inspector与真实owner配置核对；以本轮next-main-preparation的新实证为准，先准备缺少的实际配置/显式预览，再按原公开批准迁移/恢复。COMPANY-AGENT-01用户已派外包，避开其根；收到后显式版本接BLIND并执行注册实验，不假造metadata/参考资格，不重派或重验三包。
 
 **历史接续（输入三包验收已收口）：** 完成BLIND-INPUT-04/FIN-PROVENANCE-03/CHAIN-VERIFY-04隔离反例与直接修复，包级集中验证后按实际源HEAD/rawSHA精确交付并提交、清理自有temp，再回原B01真实恢复与准确性实验。COMPANY-AGENT-01由用户已派外包，避开其writer，不重复实现；不把卡形状/软件通过当金融gold。
 

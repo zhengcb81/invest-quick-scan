@@ -1,3 +1,11 @@
+## 2026-10-14 晚 — B01真实首条owner预览ready，待用户原生终端确认
+
+三包已验收并推送a701725；随后回原B01：26旧leased真实请求全部由原public API派生（15length/11completed中性诊断），4result_ready/insufficient checkpoint保留。真实18库副本原生升19，34原表逐行不变、13检查通过，副本已清理。
+
+原namespace已备份并补一公司实验universe/member及原IQS_01/Pro的最小owner policy，真实principal来自公开OS令牌接口；没有复制隔离clone身份。实际get_profiles capture=coverage_gap，原生work预览ready。原work SHA236e5aa…/schema18/26leased+4result_ready/13HTTP/CNY1.268162/0评分/ACK0不变；owner仅成员三表、配置与capture/preview是明确真实本地写，不能再称本阶段生产全零写。收费API0、未创建confirmation、未apply。原生记录硬链接发布需沙箱外，已成功，不改源码。
+
+**当前接续：用户在真实PowerShell运行本机confirm_first_native_work.py，按原生提示完成首条IQS_01确认后回复“已确认”。** helper自动重取未过期预览，不自动输入挑战；只确认、不迁移/收费。完整命令、实际证据与收到确认后QA apply参数见[接续报告](reviews/W15/b01-native-resume-2026-10-14.md)。这是现有TTY认证要求，已有泛授权不需重问。COMPANY-AGENT-01外包施工中；金融/G3/F05/UI/一键/全池开放，不重跑三包或新增helper门。
+
 ## 2026-10-14 — 输入三包验收修复与提交完成，COMPANY-AGENT-01外包施工中
 
 本段与task_plan唯一Next Step为当前状态；下方按日期保留的“验收中/未派发/未修复”等是当时记录，不能覆盖本次签收。
