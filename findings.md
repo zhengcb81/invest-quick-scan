@@ -1,3 +1,27 @@
+## 2026-10-14 晚 — COMPANY-AGENT-01 工程签收、直接修复并提交完成
+
+收到交付后冻结268文件/3487627 bytes，179 artifact原字节核验通过；总控按反例直接修复证据未真正喂模型、工具不回传、固定4题限制、计量/检查点/题号/单位/修订/证据失效与公开CLI边界。当前0.2.0默认execution_revision=2，model/search request1.0、ResearchRun/checkpoint1.1，旧1.0题库/schema/events/handoff保持原字节并按rev1兼容回放。
+
+最终发布字节隔离整包113P/2skip，另真实Windows junction1P，共114不同用例通过；包括两家虚构公司×三策略和当前/历史公开CLI正反例。源代码提交94b2d181c349b831c46d02740b09d9adc5ae40d9，清理交接HEAD51b5b3e18ef3d30c1f240b988d64a0b28fc001b1（master）；tracked业务clean，原未跟踪测试board保留。先HEAD/rawSHA核对后精确写回，无覆盖并行文件。真实API/下载/生产库/名单写0；本轮temp清空3261文件/59173570 bytes，CIM相关进程0。
+
+**只签收离线工程，不签真实准确性/缓存经济性或S0–S2。** StockQA研究端口adapter、owner发送前token/费用预留与超时取消、BLIND1.1归因桥和真实参考资格仍待接；不能用旧IQS01原生确认批准新12题研究。原work19/a5e77ef…/25leased+1failed+4result_ready、13次历史请求/CNY1.268162/4checkpoint不变。金融/G3/F05/生产UI/一键/全池继续开放。下一步回原B01剩余25项有界批量恢复，再接研究端口及小样本真实实验；不重派或重验已绿包、不增加小节点审查。
+
+详见[总控验收记录](docs/implementation/reviews/parallel-packages/2026-10-14/company-agent-acceptance.md)。旧“Company外包施工中/验收中”和原单项确认等待是历史，不覆盖本次状态。
+
+## COMPANY-AGENT-01 总控反例与版本修复（2026-10-14，候选未发布）
+
+冻结原件268文件/3487627 bytes，179 artifact无差异。隔离基线79P/1skip/4fail中，1项为禁shell的junction测试限制，3项为Windows长路径搬迁失败。首轮新增10反例全红，随后新执行版本补出7项失败根因，均保留raw日志，不把开发批当最终通过。
+
+核心实证：模型原请求没有excerpt、read工具不回传，free_agent固定4题；相同物理receipt的tokens/时长重复，query=0变1；checkpoint遗失压缩/URL冲突索引且原pending receipt或tool args可能留思考；声明题号不符/重复JSON工具参数被接受；单位冲突先完成再自审，成功attempt历史为空；重复patch吞最后值、null抬分绕闸、length终态误完成；替代证据不使依赖答案失效、reasoning在output中仍双计预算。新版以execution_revision=2、新runtime model/search request协议、checkpoint1.1显式修复；1.0原题/schema/events/旧handoff不改，原行为测试明确作为rev1兼容性，新测试独立验证rev2。没有改生产端口或发HTTP。
+
+当前软件能力与真实性边界分开：真实owner/live adapter、dispatch前精确token/费用预留与超时取消仍由StockQA原运行时实现，Lab不另造HTTP/队列；S0–S2/真实金融gold/缓存计费收益均未执行或授予。即使软件通过也不称策略胜出。实际保护库a5e77ef…及他人README b2af52c…保持。证据位于runs/company-agent-acceptance-2026-10-14-01/logs/company/。
+
+## 2026-10-14 晚 — COMPANY-AGENT-01 已交回，集中验收中
+
+用户确认交付。实际源HEAD 366001f8c451a6df08ee02c3ba33a68c8599d64f，代码结果a12cfc7，另有1个未跟踪测试生成board，不删除/误归为已提交交付。已冻结268文件/3487627 bytes，179条artifact原始字节核验无偏差；源/候选分离于 runs/company-agent-acceptance-2026-10-14-01。交付声明83P/1skip，尚非总控复验结论；三策略均为synthetic，S0–S2、准确性、缓存经济性和真实owner接线未完成。顶层免安装launcher的申报偏差由总控按公开CLI要求纳入验收，不扩大其他仓边界。
+
+按一个包级节点完成隔离无密钥/禁网测试与实质审查，必要时直接修复，再按源HEAD/rawSHA交付。当前work19 SHA a5e77ef5aa427b630a0a463e2cb9088a38ab7619f38b0a0d27eadbe572dafb05（25leased+1failed+4result_ready），收费API本轮0；剩余25原生批量恢复设计保留，旧单项确认不重复。金融门与生产上线仍开放。
+
 ## 2026-10-14 晚 — 首条真实确认已消费，原work已升级19并完成IQS_01结案
 
 用户已在真实终端确认，实际rc1原件与stdout/preview/request核验后，StockQA原public apply进程25624 exit0、status=recorded；只完成原IQS_01的output_length中性结案。原work现19，SHA a5e77ef5aa427b630a0a463e2cb9088a38ab7619f38b0a0d27eadbe572dafb05，状态**25leased+1failed+4result_ready**。不要再等待首次确认、运行旧helper、修改其旧SHA或重复已提交apply。
