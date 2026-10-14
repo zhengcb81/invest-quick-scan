@@ -1,3 +1,27 @@
+## 2026-10-14 — 输入三包验收修复与提交完成，COMPANY-AGENT-01外包施工中
+
+本段与task_plan唯一Next Step为当前状态；下方按日期保留的“验收中/未派发/未修复”等是当时记录，不能覆盖本次签收。
+
+- BLIND-INPUT-04已提交281b7a64：稳定91P/1skip，随后脱敏7P，共98唯一通过/1skip；12场景重建，参考事实/评分oracle资格0。显式Observation/wrapper可接，ResearchRun和vendor原JSON不能猜格式。
+- FIN-PROVENANCE-03已提交5dc988bd：最终稳定53P/1skip，原90题/1058facts/62sources/90null保留；原FIN真validate/export、搬迁执行来源/再导出/缺依赖拒回源通过。旧失败、600秒timeout与变动批不算最终绿。
+- CHAIN-VERIFY-04已提交f9a47a47：73不同用例最终通过，36槽/59claim/52gap保持，11corr/41partial/7unverified；11sources/46处置记录不冒HTTP次数，C051供货关系保持partial。
+
+各源tracked业务clean、旧fixture/handoff rawSHA保持；三个CodeGraph索引完成。真实PID+创建UTC闭包0，三个本轮temp为空；源旧CHAIN测试tmp及其历史清理声明偏差保留说明。原真实库SHA236e5aa…/schema18/13HTTP/26搜索/CNY1.268162/0评分/ACK0与他人README不变，本轮收费API/生产库/名单写0。[完整报告](docs/implementation/reviews/parallel-packages/2026-10-14/input-three-package-acceptance.md)。
+
+COMPANY-AGENT-01已由用户派外包，不进入其writer。下一步回原B01真正只读inspector/owner配置核对，不能直接调用会写的preview；实际26leased+4result_ready与旧“4blocked”描述分开，原owner缺刷新配置，原预算15已用13剩2，按既有授权调整版本与上限但不重置账本。收到Company真实样本后再显式接BLIND和S0–S2实验，搜索归因未知不填0。ResearchRun格式、搜索metadata归因和独立参考资格仍有接线边界，不因三包运输/软件通过关闭Financial/G3/F05/UI/一键/全池，不新增helper门。
+
+## 2026-10-14 — 输入三包验收阶段进度：BLIND/CHAIN已提交，FIN最终回归中
+
+BLIND-INPUT-04已按HEAD/rawSHA精确交付并正常提交281b7a6：稳定91P/1skip，公开回执脱敏后7P，共98唯一通过/1skip；12场景重建，事实与评分oracle资格0。CHAIN-VERIFY-04已交付提交f9a47a4：73不同用例最终通过，36槽/59claim/52gap保持，11corr/41partial/7unverified；C051降partial，11sources/46处置记录不是HTTP次数。两包源tracked业务clean，旧fixtures/handoff不改；本轮temp/blind与temp/chain已清空。
+
+FIN-PROVENANCE-03已补真实反例与代码修复，3个真实搬迁关键用例稳定通过，最终整包/Windows路径兼容仍在确认，不预先签收。输入snapshot4626文件/73482137 bytes；fixture/handoff数量以candidate-protected-closure.json的blind1632/fin1635/chain894为准，均rawSHA不变。三个CodeGraph索引已完成；源旧CHAIN测试tmp残留与交接清理偏差单列，不删历史。COMPANY-AGENT-01由外包施工中，避开其目录。原真实库/名单与金融门不变，本轮收费API0。
+
+## 2026-10-14 — 三包已交回验收，COMPANY-AGENT-01已由用户派出
+
+用户确认BLIND-INPUT-04、FIN-PROVENANCE-03、CHAIN-VERIFY-04完成，已定位三份实际handoff。当前源HEAD分别5611af2、a6b27e6、94c185f，tracked业务clean；先冻结原件/提交差异，再在隔离副本做各包一次集中审查与测试，发现问题按既有授权直接修。尚未签收，不把交接声明或形状校验当产品与金融通过。
+
+COMPANY-AGENT-01已交独立harness，主线避开其新根与候选；之前“未派发”均为准备时历史。用户已授权为这三个交回Lab建CodeGraph索引，设施变更与交付字节分开。原B01真实账本/名单与金融门保持；本轮不发收费API、不重做包、不增加helper审查门。
+
 ## 2026-10-14 — 公司agent研究方案与独立执行器卡交付
 
 已复核旧三组实验：同增强证据逐题/三题包均15/15数值、12/15引用支持，后者参考费降47.9%；不能推广为投资评分准确率。两名只读agent分别审旧证据和新设计，结论为值得试的工程假设，不是新实测赢家。

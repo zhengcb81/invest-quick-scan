@@ -1,3 +1,21 @@
+## 2026-10-14 — 输入三包验收修复与提交完成，COMPANY-AGENT-01外包施工中
+
+本段与task_plan唯一Next Step为当前状态；下方按日期保留的“验收中/未派发/未修复”等是当时记录，不能覆盖本次签收。
+
+- BLIND-INPUT-04已提交281b7a64：稳定91P/1skip，随后脱敏7P，共98唯一通过/1skip；12场景重建，参考事实/评分oracle资格0。显式Observation/wrapper可接，ResearchRun和vendor原JSON不能猜格式。
+- FIN-PROVENANCE-03已提交5dc988bd：最终稳定53P/1skip，原90题/1058facts/62sources/90null保留；原FIN真validate/export、搬迁执行来源/再导出/缺依赖拒回源通过。旧失败、600秒timeout与变动批不算最终绿。
+- CHAIN-VERIFY-04已提交f9a47a47：73不同用例最终通过，36槽/59claim/52gap保持，11corr/41partial/7unverified；11sources/46处置记录不冒HTTP次数，C051供货关系保持partial。
+
+各源tracked业务clean、旧fixture/handoff rawSHA保持；三个CodeGraph索引完成。真实PID+创建UTC闭包0，三个本轮temp为空；源旧CHAIN测试tmp及其历史清理声明偏差保留说明。原真实库SHA236e5aa…/schema18/13HTTP/26搜索/CNY1.268162/0评分/ACK0与他人README不变，本轮收费API/生产库/名单写0。[完整报告](reviews/parallel-packages/2026-10-14/input-three-package-acceptance.md)。
+
+COMPANY-AGENT-01已由用户派外包，不进入其writer。下一步回原B01真正只读inspector/owner配置核对，不能直接调用会写的preview；实际26leased+4result_ready与旧“4blocked”描述分开，原owner缺刷新配置，原预算15已用13剩2，按既有授权调整版本与上限但不重置账本。收到Company真实样本后再显式接BLIND和S0–S2实验，搜索归因未知不填0。ResearchRun格式、搜索metadata归因和独立参考资格仍有接线边界，不因三包运输/软件通过关闭Financial/G3/F05/UI/一键/全池，不新增helper门。
+
+## 2026-10-14 — 输入三包验收阶段进度：BLIND/CHAIN已提交，FIN最终回归中
+
+BLIND-INPUT-04已按HEAD/rawSHA精确交付并正常提交281b7a6：稳定91P/1skip，公开回执脱敏后7P，共98唯一通过/1skip；12场景重建，事实与评分oracle资格0。CHAIN-VERIFY-04已交付提交f9a47a4：73不同用例最终通过，36槽/59claim/52gap保持，11corr/41partial/7unverified；C051降partial，11sources/46处置记录不是HTTP次数。两包源tracked业务clean，旧fixtures/handoff不改；本轮temp/blind与temp/chain已清空。
+
+FIN-PROVENANCE-03已补真实反例与代码修复，3个真实搬迁关键用例稳定通过，最终整包/Windows路径兼容仍在确认，不预先签收。输入snapshot4626文件/73482137 bytes；fixture/handoff数量以candidate-protected-closure.json的blind1632/fin1635/chain894为准，均rawSHA不变。三个CodeGraph索引已完成；源旧CHAIN测试tmp残留与交接清理偏差单列，不删历史。COMPANY-AGENT-01由外包施工中，避开其目录。原真实库/名单与金融门不变，本轮收费API0。
+
 ## 2026-10-14 — 三个新独立施工包已准备，未派发
 
 用户要求再给独立大包，已编制[三包总览](parallel-lanes/packages/2026-10-14/README.md)。只准备卡/接口/输入锁/targets/交接模板，未创建三个worker仓、未启动harness。四仓2213个文件/32,790,040 bytes冻结，含金融原Lab实际六件manifest/questions，source后变动不要求工人转latest。

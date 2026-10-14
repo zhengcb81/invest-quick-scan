@@ -1,3 +1,27 @@
+## 2026-10-14 — 输入三包验收修复与提交完成，COMPANY-AGENT-01外包施工中
+
+本段与task_plan唯一Next Step为当前状态；下方按日期保留的“验收中/未派发/未修复”等是当时记录，不能覆盖本次签收。
+
+- BLIND-INPUT-04已提交281b7a64：稳定91P/1skip，随后脱敏7P，共98唯一通过/1skip；12场景重建，参考事实/评分oracle资格0。显式Observation/wrapper可接，ResearchRun和vendor原JSON不能猜格式。
+- FIN-PROVENANCE-03已提交5dc988bd：最终稳定53P/1skip，原90题/1058facts/62sources/90null保留；原FIN真validate/export、搬迁执行来源/再导出/缺依赖拒回源通过。旧失败、600秒timeout与变动批不算最终绿。
+- CHAIN-VERIFY-04已提交f9a47a47：73不同用例最终通过，36槽/59claim/52gap保持，11corr/41partial/7unverified；11sources/46处置记录不冒HTTP次数，C051供货关系保持partial。
+
+各源tracked业务clean、旧fixture/handoff rawSHA保持；三个CodeGraph索引完成。真实PID+创建UTC闭包0，三个本轮temp为空；源旧CHAIN测试tmp及其历史清理声明偏差保留说明。原真实库SHA236e5aa…/schema18/13HTTP/26搜索/CNY1.268162/0评分/ACK0与他人README不变，本轮收费API/生产库/名单写0。[完整报告](docs/implementation/reviews/parallel-packages/2026-10-14/input-three-package-acceptance.md)。
+
+COMPANY-AGENT-01已由用户派外包，不进入其writer。下一步回原B01真正只读inspector/owner配置核对，不能直接调用会写的preview；实际26leased+4result_ready与旧“4blocked”描述分开，原owner缺刷新配置，原预算15已用13剩2，按既有授权调整版本与上限但不重置账本。收到Company真实样本后再显式接BLIND和S0–S2实验，搜索归因未知不填0。ResearchRun格式、搜索metadata归因和独立参考资格仍有接线边界，不因三包运输/软件通过关闭Financial/G3/F05/UI/一键/全池，不新增helper门。
+
+## 2026-10-14 — 输入三包验收阶段进度：BLIND/CHAIN已提交，FIN最终回归中
+
+BLIND-INPUT-04已按HEAD/rawSHA精确交付并正常提交281b7a6：稳定91P/1skip，公开回执脱敏后7P，共98唯一通过/1skip；12场景重建，事实与评分oracle资格0。CHAIN-VERIFY-04已交付提交f9a47a4：73不同用例最终通过，36槽/59claim/52gap保持，11corr/41partial/7unverified；C051降partial，11sources/46处置记录不是HTTP次数。两包源tracked业务clean，旧fixtures/handoff不改；本轮temp/blind与temp/chain已清空。
+
+FIN-PROVENANCE-03已补真实反例与代码修复，3个真实搬迁关键用例稳定通过，最终整包/Windows路径兼容仍在确认，不预先签收。输入snapshot4626文件/73482137 bytes；fixture/handoff数量以candidate-protected-closure.json的blind1632/fin1635/chain894为准，均rawSHA不变。三个CodeGraph索引已完成；源旧CHAIN测试tmp残留与交接清理偏差单列，不删历史。COMPANY-AGENT-01由外包施工中，避开其目录。原真实库/名单与金融门不变，本轮收费API0。
+
+## 2026-10-14 — 三包已交回验收，COMPANY-AGENT-01已由用户派出
+
+用户确认BLIND-INPUT-04、FIN-PROVENANCE-03、CHAIN-VERIFY-04完成，已定位三份实际handoff。当前源HEAD分别5611af2、a6b27e6、94c185f，tracked业务clean；先冻结原件/提交差异，再在隔离副本做各包一次集中审查与测试，发现问题按既有授权直接修。尚未签收，不把交接声明或形状校验当产品与金融通过。
+
+COMPANY-AGENT-01已交独立harness，主线避开其新根与候选；之前“未派发”均为准备时历史。用户已授权为这三个交回Lab建CodeGraph索引，设施变更与交付字节分开。原B01真实账本/名单与金融门保持；本轮不发收费API、不重做包、不增加helper审查门。
+
 ## 2026-10-14 — 公司级 agent 新策略已设计；新实验未执行
 
 用户提出每公司一个自主agent。旧实验复核支持共享证据与适度打包节费，不支持“完整JSON/多模型一致即准确”。已形成[架构判断](docs/implementation/experiments/company-agent-design-2026-10-14.md)、[实验预注册](docs/implementation/experiments/company-agent-registration-2026-10-14.md)与[COMPANY-AGENT-01独立包](docs/implementation/parallel-lanes/packages/2026-10-14-agent/COMPANY-AGENT-01.md)。
@@ -785,9 +809,13 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**本次新策略接续（2026-10-14）：** COMPANY-AGENT-01已准备且未派发，可由独立harness只在新Lab实现；总控继续下述原B01恢复与真实端口接线，再按新预注册S0–S2执行公司agent配对实验。新实验未运行，不把卡/25文件锁验证当金融通过；BLIND/FIN/CHAIN三个既有卡不重做。
+**当前唯一接续（2026-10-14，三包已签收）：** 原B01只读producer inspector与真实owner配置核对；以本轮next-main-preparation的新实证为准，先准备缺少的实际配置/显式预览，再按原公开批准迁移/恢复。COMPANY-AGENT-01用户已派外包，避开其根；收到后显式版本接BLIND并执行注册实验，不假造metadata/参考资格，不重派或重验三包。
 
-**当前唯一接续（2026-10-14，后三包已收口）：** 回到checkpoint55原B01，先只读核真实上下文/owner及26/4恢复边界，备份与参数预览后按真实批准走原公开入口；小样本准确性对照接明确真实答案/参考集盲评adapter，FIN锁/来源缺口和null保留。原work18未迁19；禁止SQL补状态、合成确认冒真人或把软件测试当金融gold。已收三包不重复派发、已绿长链不重跑、仍只在大节点审查。Financial/G3/F05/生产UI/一键/全池开放。
+**历史接续（输入三包验收已收口）：** 完成BLIND-INPUT-04/FIN-PROVENANCE-03/CHAIN-VERIFY-04隔离反例与直接修复，包级集中验证后按实际源HEAD/rawSHA精确交付并提交、清理自有temp，再回原B01真实恢复与准确性实验。COMPANY-AGENT-01由用户已派外包，避开其writer，不重复实现；不把卡形状/软件通过当金融gold。
+
+**并行策略线（2026-10-14，用户已派发）：** COMPANY-AGENT-01已交独立harness，只在其新Lab实施；总控继续下述原B01恢复与真实端口接线，再按新预注册S0–S2执行公司agent配对实验。新实验未运行，不把卡/25文件锁验证当金融通过；BLIND/FIN/CHAIN三个既有卡不重做。
+
+**原主线依据（被本次最新只读准备细化）：** 回到checkpoint55原B01，先只读核真实上下文/owner及26/4恢复边界，备份与参数预览后按真实批准走原公开入口；小样本准确性对照接明确真实答案/参考集盲评adapter，FIN锁/来源缺口和null保留。原work18未迁19；禁止SQL补状态、合成确认冒真人或把软件测试当金融gold。已收三包不重复派发、已绿长链不重跑、仍只在大节点审查。Financial/G3/F05/生产UI/一键/全池开放。
 
 **主线边界（checkpoint55，继续有效）：** 沿源已交付的原B01公开owner入口只读核上下文/权限与旧26/4项恢复边界，保留原账本和费用；备份及实际参数预览后按真实批准恢复，再用已收ROUTE/CHAIN/SCORE和FIN/PRIMARY小批次做模型/搜索/题包准确性盲评。19只是源能力，原真实work18未迁移；不SQL改旧状态、不伪造真人确认、ACK或金融gold，不重跑已绿合成长链或重派三包，仍按一个大节点检验。Financial/G3/F05/生产UI/一键/全池开放。
 
