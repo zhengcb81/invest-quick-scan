@@ -1,0 +1,143 @@
+{
+  "protocol": "iqs.company-agent-registration/1.0.0",
+  "status": "design_registered_not_executed",
+  "package_id": "COMPANY-AGENT-01",
+  "strategy_ids": [
+    "fixed3",
+    "free_agent",
+    "evidence_agent"
+  ],
+  "questions_per_company": 12,
+  "question_ids": [
+    "IQS_01",
+    "IQS_02",
+    "IQS_04",
+    "IQS_05",
+    "IQS_06",
+    "IQS_07",
+    "IQS_10",
+    "IQS_11",
+    "IQS_12",
+    "IQS_16",
+    "IQS_18",
+    "IQS_20"
+  ],
+  "development_company_keys": [
+    "catl",
+    "cncb_h",
+    "alphabet"
+  ],
+  "primary_model": "deepseek-flash",
+  "confirmation_model": "mimo-v2.6-pro",
+  "extension_models": [
+    "mimo-v2.6-flash",
+    "MiniMax-M3"
+  ],
+  "production_priority_changed": false,
+  "thinking": "enabled",
+  "information_cutoff": "2026-10-13",
+  "publication_cutoff_exclusive_utc": "2026-10-14T00:00:00Z",
+  "temperature_policy": "omit_unless_qualified_and_identical_within_model",
+  "default_live_enabled": false,
+  "registration_is_live_authorization": false,
+  "phases": {
+    "S0": {
+      "max_models": 4,
+      "max_model_http_per_model": 6,
+      "max_model_http": 24,
+      "includes_cache_and_tool_protocol_probes": true
+    },
+    "S1": {
+      "mode": "frozen_evidence",
+      "companies": 3,
+      "arms": 3,
+      "repeats": 2,
+      "sessions": 18,
+      "max_model_http_per_session": 8,
+      "max_model_http": 144,
+      "max_search_queries": 0,
+      "slots_per_arm": 72,
+      "all_arm_slots": 216
+    },
+    "S2": {
+      "mode": "live_retrieval",
+      "companies": 3,
+      "arms": 3,
+      "repeats": 1,
+      "sessions": 9,
+      "max_model_http_per_session": 10,
+      "max_model_http": 90,
+      "max_search_queries_per_session": 10,
+      "max_search_queries": 90,
+      "primary_search": "brave",
+      "silent_fallback": false,
+      "slots_per_arm": 36,
+      "all_arm_slots": 108
+    },
+    "numeric_diagnostic": {
+      "max_model_http": 24,
+      "known_numeric_slots": 15,
+      "evidence_insufficient_controls": 3,
+      "not_score_accuracy": true
+    },
+    "auxiliary_blind_review": {
+      "max_model_http": 36,
+      "human_gold": false
+    },
+    "S3": {
+      "status": "matrix_to_be_registered_before_requests",
+      "holdout_companies_target": 6,
+      "holdout_source": "previously_user_approved_pool_only",
+      "max_selected_strategies": 2
+    }
+  },
+  "first_wave_model_http_cap": 318,
+  "limits": {
+    "per_session_output_tokens_including_reasoning": 48000,
+    "per_session_input_tokens": 240000,
+    "logical_max_output_tokens_including_reasoning_per_request": 16384,
+    "evidence_context_chars": 12000,
+    "excerpt_chars_per_source": 2000,
+    "company_wall_seconds": 900,
+    "no_progress_rounds": 2,
+    "companies_parallel": 2,
+    "model_requests_parallel_per_company": 2,
+    "global_model_requests_parallel": 4,
+    "native_runtime_stricter_limits_win": true
+  },
+  "reminder_thresholds": {
+    "usd": 25,
+    "model_http": 350,
+    "all_search_related_http": 200,
+    "user_authorized_continuation_with_notice": true,
+    "per_session_trial_caps_remain_binding": true
+  },
+  "quality": {
+    "noninferiority_margin_percentage_points": 2,
+    "pilot_proves_noninferiority": false,
+    "selection_order": [
+      "material_errors",
+      "grounded_correct_coverage",
+      "score_evidence_and_rubric",
+      "cost_per_qualified_answer",
+      "company_wall"
+    ],
+    "force_winner": false,
+    "separate_stage_denominators": true
+  },
+  "cache": {
+    "missing_usage": "unknown_not_zero",
+    "provider_cold_state": "unknown_unless_observed",
+    "warmup_cost_included": true,
+    "cross_route_sharing_assumed": false
+  },
+  "required_before_live": [
+    "actual_owner_subject_and_authority",
+    "accepted_runtime_adapter",
+    "frozen_evidence_and_question_objects",
+    "independent_reference_eligibility_and_blind_input_bridge",
+    "actual_provider_wire_controls_and_price_quote"
+  ],
+  "paid_model_calls_this_registration": 0,
+  "paid_search_calls_this_registration": 0
+}

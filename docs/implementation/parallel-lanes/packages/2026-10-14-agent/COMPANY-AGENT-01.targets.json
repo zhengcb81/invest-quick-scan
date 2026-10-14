@@ -1,0 +1,383 @@
+{
+  "protocol": "iqs.company-agent-targets/1.0.0",
+  "package_id": "COMPANY-AGENT-01",
+  "development_companies": [
+    {
+      "label": "宁德时代",
+      "market": "A",
+      "ticker_hint": "300750"
+    },
+    {
+      "label": "中信建投",
+      "market": "HK",
+      "ticker_hint": "06066"
+    },
+    {
+      "label": "Alphabet",
+      "market": "US",
+      "ticker_hint": "GOOGL"
+    }
+  ],
+  "identity_status": "ticker_hints_only_real_owner_binding_required_before_live",
+  "question_count_per_company": 12,
+  "records": [
+    {
+      "question_id": "IQS_01",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "e49b91646870da125d3e4a03e7cadd2ffb93e24638e7c0cb801dfb5909e3bebc",
+      "question": {
+        "id": "IQS_01",
+        "dimension": "business",
+        "priority": 1,
+        "question": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+        "evidence": [
+          "客户实际解决的问题",
+          "总使用成本",
+          "独立客户复购与付费",
+          "停止使用的后果"
+        ],
+        "anchors": {
+          "1": "产品价值不足，主要靠补贴或推销维持需求",
+          "5": "客户价值成立但可轻易替换、支付意愿一般",
+          "10": "客户价值清楚且有行为证据，付费与复购可持续"
+        },
+        "metric_id": "score.iqs_01",
+        "construct_id": "IQS_01",
+        "comparison_role": "core",
+        "rubric_version": "1.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_02",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "e466bfe76d2c2933a967d4714b4c203840026b60b8515455125f8a04da400042",
+      "question": {
+        "id": "IQS_02",
+        "dimension": "business",
+        "priority": 1,
+        "question": "现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？",
+        "evidence": [
+          "客户留存或重复需求",
+          "订单取消与履约",
+          "获客维护成本",
+          "不只看合同名义期限"
+        ],
+        "anchors": {
+          "1": "每期收入都需高成本重新购买且可见性很低",
+          "5": "有稳定存量但仍需较多投入维持",
+          "10": "存量需求、履约与收款可预测且维护成本合理，不限订阅模式"
+        },
+        "metric_id": "score.iqs_02",
+        "construct_id": "IQS_02",
+        "comparison_role": "core",
+        "rubric_version": "1.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_04",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "cbf5f4c64e3221f82a37864bf20f00ef8a4e627baa2b6a6015d38757facbdb6f",
+      "question": {
+        "id": "IQS_04",
+        "dimension": "moat",
+        "priority": 1,
+        "question": "行业的供需和价值链分配，是否允许这家公司长期留下合理利润？",
+        "evidence": [
+          "供给扩张与退出",
+          "价格纪律",
+          "客户和供应商议价",
+          "利润池归属"
+        ],
+        "anchors": {
+          "1": "过剩竞争或强势交易方长期挤走公司利润",
+          "5": "能留下合理利润但容易被新增供给或交易方侵蚀",
+          "10": "供给纪律或差异价值使公司持续保留合理利润，不唯市场集中度"
+        },
+        "metric_id": "score.iqs_04",
+        "construct_id": "IQS_04",
+        "comparison_role": "core",
+        "rubric_version": "1.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_05",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "1a69a9ad5639348badc9bac39e5826046ab52ff8b9c2d04387da9705c248e435",
+      "question": {
+        "id": "IQS_05",
+        "dimension": "moat",
+        "priority": 1,
+        "question": "公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？",
+        "evidence": [
+          "优势适用的具体业务/客户场景与利润来源",
+          "优势成立所依赖的条件、有效范围与明确失效信号",
+          "同等投入的性能成本",
+          "转换障碍",
+          "规模或网络机制",
+          "对手复制与客户选择，以及可能推翻优势判断的反证"
+        ],
+        "anchors": {
+          "1": "缺少可验证优势，对手可迅速复制或低价替代",
+          "5": "有优势，但竞争者数年内可能追上",
+          "10": "优势机制和经济回报均有长期证据，复制代价显著且不依赖口号"
+        },
+        "metric_id": "score.iqs_05",
+        "construct_id": "IQS_05",
+        "comparison_role": "core",
+        "rubric_version": "2.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_06",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "0ae309b36dc08ef082a89c16007888a01f65cb758016690e22959037d349769b",
+      "question": {
+        "id": "IQS_06",
+        "dimension": "moat",
+        "priority": 1,
+        "question": "公司的竞争地位有多稳固，变化趋势是否支持这种稳固性？单列增强/稳定/恶化，不因上升速度本身加分。",
+        "evidence": [
+          "剔除补贴后的经济份额",
+          "相对价格与回报",
+          "客户迁移",
+          "替代方案进展",
+          "趋势improving/stable/deteriorating与竞争地位强度分开"
+        ],
+        "anchors": {
+          "1": "关键份额/客户与盈利能力持续受侵蚀，缺少有效防御",
+          "5": "地位可维持但优势普通或容易受冲击，改善尚未证明持久",
+          "10": "在竞争压力下长期保持关键客户和经济利益，优势稳固且无实质侵蚀证据"
+        },
+        "metric_id": "score.iqs_06",
+        "construct_id": "IQS_06",
+        "comparison_role": "core",
+        "rubric_version": "2.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_07",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "8327ef0d01e524f841b4391ffbf4c1f7be8a2bc77204c0ee8ae95bddac34604b",
+      "question": {
+        "id": "IQS_07",
+        "dimension": "execution",
+        "priority": 1,
+        "question": "管理层过去对经营目标和重大项目的承诺，兑现得如何？",
+        "evidence": [
+          "过去三至五年承诺与实际",
+          "承诺难度",
+          "延期和纠偏",
+          "有无移动目标"
+        ],
+        "anchors": {
+          "1": "反复失约、转移口径或回避责任",
+          "5": "大体兑现合理目标，部分偏差可解释",
+          "10": "合理且有挑战的目标持续兑现，失败披露和纠正及时"
+        },
+        "metric_id": "score.iqs_07",
+        "construct_id": "IQS_07",
+        "comparison_role": "core",
+        "rubric_version": "1.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_10",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "4800eb076987025b72335eba8c40ad5cea87bbb10b370c333bbb1fe0b16b5170",
+      "question": {
+        "id": "IQS_10",
+        "dimension": "financial",
+        "priority": 1,
+        "question": "在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？",
+        "evidence": [
+          "中周期税后经营回报与投入资本",
+          "金融企业适用的权益资本回报",
+          "商誉租赁与研发调整",
+          "资本成本区间"
+        ],
+        "anchors": {
+          "1": "正常经营回报长期低于合理资金成本，或高回报主要来自失真分母与激进杠杆",
+          "5": "回报大致覆盖合理资金成本，优势有限",
+          "10": "可比且保守口径下长期赚取明显超额回报，非依赖周期峰值或少投必要资本"
+        },
+        "metric_id": "score.iqs_10",
+        "construct_id": "IQS_10",
+        "comparison_role": "core",
+        "rubric_version": "1.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_11",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "0ede6062f3080d5ddcc20d42fd558dad58b2ac599b13aab43dac91da18ea9d4d",
+      "question": {
+        "id": "IQS_11",
+        "dimension": "financial",
+        "priority": 1,
+        "question": "账面经营成果有多少能在必要再投入后，转成股东可获得的现金或可分配资本？",
+        "evidence": [
+          "经营现金与利润核对",
+          "维护性投入",
+          "正常营运资本",
+          "金融监管资本留存",
+          "一次性占款释放"
+        ],
+        "anchors": {
+          "1": "利润不能兑现，现金主要来自延付、出售或少做必要投入",
+          "5": "中周期可形成真实可分配资源，但转化一般",
+          "10": "多年真实转化强，必要维护和资本留存后仍有可靠余量"
+        },
+        "metric_id": "score.iqs_11",
+        "construct_id": "IQS_11",
+        "comparison_role": "core",
+        "rubric_version": "1.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_12",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "0656fea768b457f922529f4efcd08dfca46f8cad622bff7a791df98cd8cff0d4",
+      "question": {
+        "id": "IQS_12",
+        "dimension": "financial",
+        "priority": 1,
+        "question": "资产、负债和利润的披露，是否足以可信地反映真实经济状况？",
+        "evidence": [
+          "审计与监管事项",
+          "应收存货或金融资产质量",
+          "费用资本化",
+          "表外义务",
+          "非经常调整"
+        ],
+        "anchors": {
+          "1": "重大失真、隐性义务或审计疑虑未解决",
+          "5": "主要口径可解释，但调整与估计不确定性较多",
+          "10": "关键口径透明且资产、利润、现金相互印证，风险确认及时"
+        },
+        "critical": true,
+        "metric_id": "score.iqs_12",
+        "construct_id": "IQS_12",
+        "comparison_role": "core",
+        "rubric_version": "1.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_16",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "e7bdfca8d2db0fa6c0a4b863c4607514614c324206ca0cffe0de43bbf0ee1d32",
+      "question": {
+        "id": "IQS_16",
+        "dimension": "resilience",
+        "priority": 1,
+        "question": "在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？",
+        "evidence": [
+          "可用现金",
+          "保守经营流入",
+          "债务租赁和承诺投入",
+          "担保",
+          "资本与契约约束"
+        ],
+        "anchors": {
+          "1": "存在未落实资金覆盖的刚性缺口，可能被迫违约或严重摊薄",
+          "5": "正常情景可覆盖，压力情景依赖融资或资产出售",
+          "10": "保守压力下仍有落实的资金与资本缓冲，可履约并维护核心业务"
+        },
+        "critical": true,
+        "metric_id": "score.iqs_16",
+        "construct_id": "IQS_16",
+        "comparison_role": "core",
+        "rubric_version": "1.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_18",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "6f03dbaaf8f4dd9514fa043d7a9844f3f86c7ae904b0a6f2a8c28ef39985f271",
+      "question": {
+        "id": "IQS_18",
+        "dimension": "resilience",
+        "priority": 1,
+        "question": "最可能永久损害核心业务价值的一至两项实质变化，哪些会绕过现有优势，公司有哪些经验证的防御？",
+        "evidence": [
+          "最重要的一至两项技术替代、渠道迁移、监管/环境约束或商业模式失效，不按热点词罗列",
+          "受影响的分部、客户场景及其当前利润/资产敞口",
+          "替代路径、可能速度、公司防御或转移能力及所需投入",
+          "能推翻结构性损害判断的反证和观察期限"
+        ],
+        "anchors": {
+          "1": "核心价值已面临重大不可逆损害，缺少可行防御",
+          "5": "风险可识别且有应对，但有效性与缓冲尚未充分验证",
+          "10": "主要失效路径的暴露有限或防御经验证，能在压力下保持核心价值"
+        },
+        "metric_id": "score.iqs_18",
+        "construct_id": "IQS_18",
+        "comparison_role": "core",
+        "rubric_version": "2.0.0",
+        "scope": "entity"
+      }
+    },
+    {
+      "question_id": "IQS_20",
+      "module_id": "common",
+      "module_version": "3.0.0",
+      "source_path": "questions/common.json",
+      "question_object_sha256": "f0b94ca96c7e82be38547bc0306752c630360ebdb9c5fdf4a35fda5c5831e860",
+      "question": {
+        "id": "IQS_20",
+        "dimension": "growth",
+        "priority": 1,
+        "question": "未来增长的主要驱动是否已被验证能从客户需求转为可持续利润，并扣除对存量业务、必要投入与股权融资的影响？",
+        "evidence": [
+          "自然量价与并购汇率拆分",
+          "从产品/试点、付费采用、重复购买到收入和利润的实际阶段与证据",
+          "新增业务的利润池归属、客户议价及可持续单位经济",
+          "对存量业务的替代/蚕食和损失的利润贡献",
+          "必要转型投入、融资需求及摊薄后的净股东经济效果"
+        ],
+        "anchors": {
+          "1": "增长主要依赖叙事、并表或远期假设；或可见的新业务收益不足以弥补存量利润损失与必要投入",
+          "5": "客户需求和转化路径有部分验证，但新旧业务合并后的利润与每股净效果仍不确定",
+          "10": "主要驱动有连续可核实的付费、收入和利润转化；考虑存量业务变化、必要投入与摊薄后仍能持续增厚股东经济利益"
+        },
+        "metric_id": "score.iqs_20",
+        "construct_id": "IQS_20",
+        "comparison_role": "core",
+        "rubric_version": "2.0.0",
+        "scope": "entity"
+      }
+    }
+  ],
+  "qualification_granted": false
+}

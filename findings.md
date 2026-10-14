@@ -1,3 +1,13 @@
+## 2026-10-14 — 独立公司agent：可行性与缓存结论
+
+[完整设计](docs/implementation/experiments/company-agent-design-2026-10-14.md)；[预注册](docs/implementation/experiments/company-agent-registration-2026-10-14.md)。核心判断：收益来自证据复用、缺口驱动搜索和定点修复，不来自agent名称或无限聊天。首选假设为公司协调器+证据依赖分包，但未实测，不能说已优于自由agent或fixed3。
+
+旧数值实验15/15正确却仅12/15引用支持、多模型一致仍可共享缺口；结构完整和已答精确率必须与有依据覆盖分列。供应商KV、检索缓存、证据缓存、答案检查点是四层；共享沙盒不等于prompt cache。实际cached字段缺失是unknown，套餐并非零成本，输入命中率也不等于总费节省率。
+
+官方DeepSeek/MiMo多轮工具思考字段可能必须回传，不能为了隐藏思考将其从协议历史删掉；内存保留、输出/日志隔离，崩溃从公开证据开新segment。MiMo报价示例只演算非实测。MiniMax当前说明侧重新型号，M3具体路线与cache字段仍须探针；官方缓存页两次超时不推断功能不支持。
+
+实验先拆同证据与真实检索，不同时铺模型×搜索×策略全矩阵。开发3公司12题，首轮318模型HTTP封顶，各种辅助调用都计；确认再扩MiMo Pro、批准池留出及其他路线。已有三并行包职责独立，新COMPANY-AGENT-01仅新Lab调度候选与离线复现。所有金融/生产资格保持原状态。
+
 ## 2026-10-14 — 三个新独立施工包已准备，未派发
 
 用户要求再给独立大包，已编制[三包总览](docs/implementation/parallel-lanes/packages/2026-10-14/README.md)。只准备卡/接口/输入锁/targets/交接模板，未创建三个worker仓、未启动harness。四仓2213个文件/32,790,040 bytes冻结，含金融原Lab实际六件manifest/questions，source后变动不要求工人转latest。

@@ -1,3 +1,14 @@
+## 2026-10-14 — 公司级 agent 新策略已设计；新实验未执行
+
+用户提出每公司一个自主agent。旧实验复核支持共享证据与适度打包节费，不支持“完整JSON/多模型一致即准确”。已形成[架构判断](docs/implementation/experiments/company-agent-design-2026-10-14.md)、[实验预注册](docs/implementation/experiments/company-agent-registration-2026-10-14.md)与[COMPANY-AGENT-01独立包](docs/implementation/parallel-lanes/packages/2026-10-14-agent/COMPANY-AGENT-01.md)。
+
+- [x] 设计/旧证据复核/官方缓存与思考协议核对，独立审查修正分母、探针预算、wire语义及partial退出。25文件/398533 bytes冻结，12道原题与完整对象hash，318模型HTTP首轮算术、公开handoff模板和目录不重叠检查通过；这是准备，不是产品或金融实测。
+- [ ] 独立包实施：新根C:/Users/郑曾波/Projects/iqs-company-agent-lab，尚未创建/派发；fixed3/free_agent/evidence_agent共用研究端口，离线测试与重放，不另造StockQA客户端/费用账本/队列。
+- [ ] 总控接既有真实owner/StockQA、盲评桥及独立参考，执行S0资格、S1同证据、S2真实检索；新agent是否改善准确性尚无实测结论。S1/S2截止2026-10-13，三旧公司开发集，后续从已批准池取留出集。
+- [ ] 按质量→经济→速度形成实操结论；保留未知/失败/严重错误，允许固定小包胜出或证据不足，不为“有结论”强选赢家。
+
+与刚准备的BLIND-INPUT-04、FIN-PROVENANCE-03、CHAIN-VERIFY-04目录/职责均不重叠，不自动启动harness。三个旧包的准备状态不变。总控原B01实际owner/26与4恢复继续有效；本次paid API/生产库/名单写0，Financial/G3/F05/UI/一键/全池仍开放，不新增helper审查门。
+
 ## 2026-10-14 — 三个新独立施工包已准备，未派发
 
 用户要求再给独立大包，已编制[三包总览](docs/implementation/parallel-lanes/packages/2026-10-14/README.md)。只准备卡/接口/输入锁/targets/交接模板，未创建三个worker仓、未启动harness。四仓2213个文件/32,790,040 bytes冻结，含金融原Lab实际六件manifest/questions，source后变动不要求工人转latest。
@@ -773,6 +784,8 @@ Status: complete_for_planning_only
 - [x] 同步README、test-strategy、review-and-handoff、task-receipts及进度记录；未增删任务/验收场景/固定约束，未更改外仓授权。
 
 ## Next Step
+
+**本次新策略接续（2026-10-14）：** COMPANY-AGENT-01已准备且未派发，可由独立harness只在新Lab实现；总控继续下述原B01恢复与真实端口接线，再按新预注册S0–S2执行公司agent配对实验。新实验未运行，不把卡/25文件锁验证当金融通过；BLIND/FIN/CHAIN三个既有卡不重做。
 
 **当前唯一接续（2026-10-14，后三包已收口）：** 回到checkpoint55原B01，先只读核真实上下文/owner及26/4恢复边界，备份与参数预览后按真实批准走原公开入口；小样本准确性对照接明确真实答案/参考集盲评adapter，FIN锁/来源缺口和null保留。原work18未迁19；禁止SQL补状态、合成确认冒真人或把软件测试当金融gold。已收三包不重复派发、已绿长链不重跑、仍只在大节点审查。Financial/G3/F05/生产UI/一键/全池开放。
 

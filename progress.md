@@ -1,3 +1,13 @@
+## 2026-10-14 — 公司agent研究方案与独立执行器卡交付
+
+已复核旧三组实验：同增强证据逐题/三题包均15/15数值、12/15引用支持，后者参考费降47.9%；不能推广为投资评分准确率。两名只读agent分别审旧证据和新设计，结论为值得试的工程假设，不是新实测赢家。
+
+新增设计、Markdown/JSON预注册、COMPANY-AGENT-01卡/接口/12题targets/输入锁/交接模板。新根iqs-company-agent-lab未创建或派发，前一批三包不动。冻结IQS29a49ff与QA205b749的25个指定文件398533 bytes，QA片段仅接口定位非完整可导入runtime；真实传输仍由总控复用StockQA。准备校验通过，产品tests/live/金融评分均未执行。
+
+独审已修：缓存探针计入S0、逻辑输出上限映射wire、S1每臂72/S2每臂36分母、324执行只有36公司题组合、不强凑两赢家、来源提示注入、固定30基准非全题库、合法partial与CLI执行成功区分。新增统一cutoff2026-10-13。MiMo/DeepSeek多轮thinking必要字段仅内存回传，最终JSON/日志不存思考；M3缓存页超时保持未验证。
+
+过程错误保留：一次字面路径查询用了不存在的question_sets/templates，改查实际questions；StockQA常规sandbox Git只读被拒后，使用获准只读escalation取HEAD/7固定源码。MiniMax缓存文档两次超时，没有据此判定M3无缓存。本轮未读密钥/未发收费API/未动原试点或名单；自有产物与他人2026-10-10 README分开。
+
 ## 2026-10-14 — 三个新独立施工包已准备，未派发
 
 用户要求再给独立大包，已编制[三包总览](docs/implementation/parallel-lanes/packages/2026-10-14/README.md)。只准备卡/接口/输入锁/targets/交接模板，未创建三个worker仓、未启动harness。四仓2213个文件/32,790,040 bytes冻结，含金融原Lab实际六件manifest/questions，source后变动不要求工人转latest。
