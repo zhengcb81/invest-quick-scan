@@ -1,3 +1,17 @@
+## 2026-10-14 — 三个新独立施工包已准备，未派发
+
+用户要求再给独立大包，已编制[三包总览](parallel-lanes/packages/2026-10-14/README.md)。只准备卡/接口/输入锁/targets/交接模板，未创建三个worker仓、未启动harness。四仓2213个文件/32,790,040 bytes冻结，含金融原Lab实际六件manifest/questions，source后变动不要求工人转latest。
+
+- [ ] BLIND-INPUT-04：独占C:/Users/郑曾波/Projects/iqs-blind-input-lab；12输入边界场景，显式Observation/回答/公开candidate参考集适配，复用已修BLIND，失败槽位分母保持。不运行真实LLM，不自授参考资格。
+- [ ] FIN-PROVENANCE-03：独占C:/Users/郑曾波/Projects/iqs-fin-provenance-lab；90原题、1058facts、62sources原序，定位原FIN完整根与旧BLIND嵌套副本9错误的差异，形成同字节可搬迁bundle。不是重做金融题或重签旧handoff。
+- [ ] CHAIN-VERIFY-04：独占C:/Users/郑曾波/Projects/iqs-chain-verify-lab；36槽位/59claims/52gaps完整处置，优先具名关系/日期/计划实绩/历史股权，人工官方HTML核证。缺资料可partial，不下载文档。
+
+三包没有彼此新交付依赖，所有源仓/旧Labs/PWF/快照/真实DB/名单只读。总控保留原B01 owner/26与4恢复、真实调用、真正金融盲评和最终源接线；包准备期间不同时自己实施它们的候选。新根开工必须重查唯一writer；正常本地提交，收到后只在大节点集中审查，不增加逐helper门。
+
+真实区分：上轮9项FIN错误来自BLIND冻结FIN副本，六个原件在当前金融原Lab存在；尚未由本轮preparation验证原FIN金融内容或宣布原包valid。工人需实际复现两根和搬迁路径，严禁用新manifest给旧缺失原件洗白。准备实际PID/exit/stdoutSHA见该批validation.json；3模板形状和锁/链接/目标检查通过，不是worker产品测试。
+
+首次freeze因Git状态首行strip丢前导空格，任何输入/worker创建前拒绝；改按显示状态正规化后重新冻结成功。本批paid API/收费搜索/源仓写/生产DB与名单写0；原30题/13HTTP/26搜索/0评分/ACK0保持。主线Next Step继续有效，不因新卡关闭Financial/G3/F05/UI/一键/全池。
+
 ## 当前唯一状态 — 2026-10-14，后三包验收修复与提交完成
 
 ROUTE-E2E-03、CHAIN-SOURCE-03、BLIND-REVIEW-03已完成包级独审、真实反例、直接修复、源HEAD/rawSHA CAS回写与正常提交。不再等待交付或重复派发。下面“验收中/尚未派发”等为日期历史，以本段和Next Step为准。
