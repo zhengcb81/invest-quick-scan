@@ -1,3 +1,11 @@
+## 2026-10-15 — 真资料接线发现profile缺口被忽略
+
+原QueryReader.get_profiles在实际Alphabet库回coverage_gap、12 missing field、0观察；VIEW原适配器只处理pool coverage，忽略profile coverage。现profile聚合缺口按query级显示，不把多主体aggregate归给每家公司，也不创建未知题答案或默认分数。旧synthetic Q_NEWS不是请求field，保留越界字符串并显式标注；坏类型独立拒绝。recovery旧反例夹带坏coverage已拆开，原异常语义保持。最终158项157P/1skip，真实浏览器另1P，源8ceb0d4/其他字节不变。默认Git检查把既有CRLF当尾空白，临时增加cr-at-eol且保留默认规则后正常提交，不改全局配置。首次沙箱浏览器超时原因未定，沙箱外有界loopback成功，原PID核已不匹配且未杀外部进程；不编造启动根因。测试tmp清理完成。
+
+## 2026-10-15 — 外包在建期间的独立真实查看器接线
+
+三个约定handoff路径尚未见handoff.json，非交付，不根据目录猜测完成。活动RUN/REF/EVAL根避开；不重做SDK或generation_scope候选。总控可独立接已签收VIEW组件的真实StockWiki只读供数：QueryReader.get_profiles配原IqsQueryContract可在自有临时目录校验，不调用会写capture的公开query CLI；bundle仍owner_export_unqualified，不能以hash/JSON完整度授金融资格。首次误读不存在VIEW integration-notes.md/StockWiki quick_scan_query_cli.py，改按README的integration-map与实际文件清单定位quick_scan_query_v2_cli.py；错误均只读、未改源。
+
 ## 2026-10-15 — 原生record与activate分离，回退不复活旧授权
 
 新route可通过原record_snapshot只追加到真实库，保持旧current/anchor1/history和policy不变；已实际执行，非合成DTO。旧scan库SHA变化有精确backup及新owner-files-after基线，其他9原件/旧账/新预算不变。原Q13 inspect给出144请求/USD14.40共享上限，非12题预计价；第一家公司另受六会话×8=48限额。原刷新申请必须实际捕获snapshot_id，不能以已通过query合同但snapshot_id=null的候选冒preview。最重要：current anchor版本递增，之后切回旧ID/还原policy也不能复活anchor1绑定的旧确认；应沿原生新预览/确认，不能备份覆盖历史。实际运行桥/cohort绑定未交齐前不提前切换、创建短TTL capture或伪原生TTY。

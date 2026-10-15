@@ -1,3 +1,9 @@
+## 2026-10-15 最新接续：三包在建，owner和真实查看器准备已落地
+
+AGENT-RUN-02/REF-02/EVAL-02由用户正式派发，三个Lab写边界保持；约定handoff尚未交，不因目录存在宣称完成，也不重做其候选。以root唯一Next Step为准：真实owner新route只record未activate，旧current/anchor1及policy保持；最新owner文件基线在runs/company-agent-owner-2026-10-15-01/owner-stage-01/owner-files-after.json。旧original-owner-before是追加前历史，不要重跑一次性脚本或要求scan库继续旧SHA。新S1预算144/US$14.40、首家公司6会话/72槽/48请求均未准入。
+
+独立VIEW接线新增实证见[报告](experiments/view-native-owner-integration-2026-10-15.md)：实际Alphabet1主体/12缺口/0观察，VIEW源8ceb0d4，157P/1skip+真实浏览器1P。只读snapshot bundle保存在runs/view-owner-integration-2026-10-15-01/native-export-01；它是未获金融资格导出，未接生产query2.6/全池/一键。旧VIEW cfdfd705是历史签收基线；不要覆盖新profile coverage修复。三个施工包与公司实验接口不受此UI改动影响，S0不用重跑。
+
 ## 最新owner接续 — 2026-10-15，实际主体已核，S1预算为0次未准入
 
 本轮根runs/company-agent-owner-2026-10-15-01。不要重跑configure_budget.py或删除execution/quick_scan_work.sqlite：原Q13 API已初始化work19/144次S1上限/14.4USD/每次0.1预留，requests/费用/预留/并发/未对账全0，没有owner grant。native-read-3为真实StockWiki/原IQS CLI读核，actual Alphabet verified/perimeter/current principal一致，旧路由层可执行不等于新12题收费授权。

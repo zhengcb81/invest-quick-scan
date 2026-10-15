@@ -1,3 +1,7 @@
+## 2026-10-15 — 三包施工期间完成真实只读查看器接线及缺口修复
+
+未见三包正式handoff，活动Lab保持不写；未重复SDK/策略/参考/盲评。独立推进已签收VIEW：原生QueryReader+原IQS合同从真实Alphabet owner读得1主体/12缺口/0观察，接原bundle/组件。直接修复profile coverage不显示，保留错字段原值为诊断、不造答案分数；最终158项157P/1skip，另真实Chromium页/390宽度/POST405/外网0验证通过。VIEW3文件正常提交8ceb0d4（无remote），其余原源码、owner10文件、旧work/新预算/他人README保持。自有测试临时清16375文件110132165 bytes，实际导出/失败与成功证据留存。详见[实证与边界](docs/implementation/experiments/view-native-owner-integration-2026-10-15.md)。生产query2.6/全池UI与一键未关闭；主线仍接三包后真实S1，不拿界面测试替代准确性。
+
 ## 2026-10-15 — 真实owner追加新快照，六会话范围已准备
 
 沿原record_snapshot向真实owner仅追加截止13日快照，原始字节回读一致；未activate，当前仍旧route/anchor1/current_history不变。旧policy及另外9owner文件、旧work/新S1预算/他人README rawSHA保持；原scan库因真实追加而改SHA，备份与owner-files-after记录为新基线，不再声称10文件全不变。原生DeepSeek 12field只读检查通过，报价是S1共享144 HTTP/USD14.40上限，非预计账单。六会话72槽/最多48 HTTP及查询/policy候选已按原合同准备；无新capture/confirmation/admission/收费，缺worker桥/参考与策略cohort绑定。详见[本轮原生结果](docs/implementation/experiments/company-agent-native-owner-stage-2026-10-15.md)。
