@@ -1,3 +1,7 @@
+## 2026-10-15 — 原生路由更新与worker边界
+
+用户正式确认三包外包施工，覆盖先前仅见目录的推断；不需要查看其活进程才能尊重writer边界。总控新route13候选沿真实API由原deterministic历史事实生成，previous_decision指向原route，classification仍not_run，绝不重签旧LLM回执或宣称新来源核查。原ROOT有模块artifact不代表具备同package描述：首次module package unavailable，随后显式选择原不可变release资源根成功；只配置compose资源ROOT，无权限/校验mock。真实CLI通过、两混绑反例拒绝，owner与预算未写；本机失败/成功原件均保留。
+
 ## 2026-10-15 — Native owner揭示通用题到类型题的真实投影
 
 原Alphabet主体/周界和route由真正StockWiki公共API及原IQS CLI重新核验，未用复制fixture。登记12原题有11个对象逐字段相同；IQS_11实际由OPERATING_01取代（construct IQS_11，但field score.operating_01、题干/锚点/语义不同）。旧cutoff10-11不能冒新登记10-13。直接用原12raw id发正式owner流程会缺题/误绑定，不能为了缓存/凑12题强插通用题或给答案改名。

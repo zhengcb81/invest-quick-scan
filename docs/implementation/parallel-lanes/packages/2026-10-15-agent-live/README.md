@@ -1,8 +1,8 @@
 # 真实公司 agent 实验：三个独立施工包
 
-准备日期：2026-10-15。**可由用户分别派发，尚未派发；总控没有创建三个新仓或启动 harness。** 把下面某张卡的完整路径交给一个 harness 即可；卡内包含共同规则、输入锁、接口及交接链接，不需要复制聊天上下文。
+准备日期：2026-10-15。**最新：用户已确认下面三包均在外包施工；三个Lab为活动writer保留范围。** 总控不代写、不自动派发。各harness沿自己卡、共同接口和已锁输入实施，完整交付后集中验收。
 
-后续观察：总控已只读见REF/EVAL新根出现，按可能活动writer避开；这不代表在本线程确认了其活进程、正式派发或交付。manifest的workers_dispatched=false/root_existed=false描述准备时状态，不能当实时施工台账。总控没有创建/派发它们，也不同时开发其候选。
+manifest的workers_dispatched=false/root_existed=false保留为准备时快照，不是实时台账。当前施工状态以本段用户确认及总控PWF为准。总控已生成截止13日的新路由候选，但未安装/授权；见[总控接续](../../../experiments/company-agent-route13-candidate-2026-10-15.md)。新候选不修改worker的原输入锁，不要求追latest。
 
 | 施工包 | 做什么 | 唯一可写工作目录 |
 |---|---|---|
@@ -20,6 +20,6 @@
 
 **开工还须读[owner对齐补充](owner-alignment-addendum.md)。** 真实预检发现IQS_11按类型替换为OPERATING_01，原逻辑槽与实际题须外置显式投影，原targets/输入锁保持。额外只读诊断输入锁与当前cutoff不符边界均在该补充内，不是新执行授权。
 
-准备校验：`python -B -X utf8 verify_preparation.py`。它只验证输入字节、36槽目标、目录边界及交接模板，不代表三个产品已经实现或金融验收通过。用户派发后，工人检查新根当前归属再初始化自己的仓/PWF；准备时不存在不等于永远不存在。
+准备校验：`python -B -X utf8 verify_preparation.py`。它只验证输入字节、36槽目标、目录边界及交接模板，不代表三个产品已经实现或金融验收通过。工人检查自己工作根归属，沿自己已初始化的仓/PWF继续；准备时不存在不等于永远不存在。
 
 每包都有独立 targets 与 handoff template。统一交接流程和公开形状校验见[共同接口](integration-contract.md)。只在整包完成时集中审查一次；关键机制用TDD、最后整包验证，不增加逐helper审查/回执制度。

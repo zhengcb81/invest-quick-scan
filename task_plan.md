@@ -1,3 +1,7 @@
+## 2026-10-15 — 三包已由用户派发，总控新截止路由候选完成
+
+用户确认AGENT-RUN-02/REF-02/EVAL-02正在外包施工，三个Lab均为活动writer保留范围；总控不写其根、候选或输入锁。沿原routing/compose生成Alphabet截止13日的新候选，30题/12有效槽（11直接、IQS_11→OPERATING_01）；原公开CLI通过，错误anchor与跨bundle两个反例拒绝。只复用原已核deterministic历史事实，不声称新检索/新金融准确率。原owner10文件、旧账本、新S1预算及他人README rawSHA均不变，未安装anchor/改policy/确认/准入/收费。详见[本轮结果](docs/implementation/experiments/company-agent-route13-candidate-2026-10-15.md)。
+
 ## 2026-10-15 — 首家公司原生主体已核，新S1预算已建，题目/截止对齐待完成
 
 Alphabet实际StockWiki owner公共API读核通过：真实identity/perimeter、当前principal匹配、原route执行层校验通过，原30题中登记12题有11原对象相同。IQS_11被OPERATING_01按类型替换，construct相同但metric/题义不同；旧manifest截止11日，新试验截止13日。不能只改日期/题号或把旧route授权当新12题收费许可。[实际准备](docs/implementation/experiments/company-agent-owner-preparation-2026-10-15.md)。
@@ -871,7 +875,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（2026-10-15，真实主体/独立预算已准备）：** 沿原公共routing/compose生成截止13日的新route/manifest，保留旧11日anchor历史，显式锁routed12-v1有效题投影（IQS_11类型替代不改名）；再准备实际有效field/DeepSeek/新S1预算的原生owner scope、预览/确认及QA admission，不直接覆盖旧唯一policy或借旧IQS01批准。保留三个包的writer：REF/EVAL新根已出现而正式进程/派发状态未在本线程确认，按可能活动施工避开；不据目录等待或宣称完成。收到交接后一次集中集成真实RuntimePort/owner_public、Run1.1盲评与独立参考；先一家公司S1三策略核源即交小结果，再三公司S1/S2及手册。预算库不可重置，S0不重跑，原旧账/4checkpoint/费用和金融/G3/F05/生产UI/一键/全池门保持。
+**当前唯一接续（2026-10-15，三包施工中/新截止候选已完成）：** 以route13-candidate-2及其原字节锁为准，准备12个实际field、DeepSeek和独立S1预算的原生owner配置、保留原policy/anchor历史的明确切换/恢复方案，再走真实公开预览、原生确认及QA admission；新route未安装，不以格式校验代替权限，不静默覆盖旧唯一policy或借旧IQS01批准。AGENT-RUN-02/REF-02/EVAL-02已由用户正式派外包，三个Lab/candidate及冻结输入均避开；收到交接后一次集中集成真实RuntimePort/owner_public、Run1.1盲评及独立参考。先一家公司S1三策略核源即交小结果，再三公司S1/S2及手册。新预算不重置，S0不重跑，原旧账/4checkpoint/费用和金融/G3/F05/生产UI/一键/全池门保持。
 
 **历史接续（用户确认及首条apply已完成）：** 等用户在真实终端运行本机 `runs/b01-resume-2026-10-14-01/confirm_first_native_work.py` 并完成原生CONFIRM，再核原namespace实际rc1记录，按[精确参数与隔离边界](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)走原QA apply；不能自动填写挑战、构造confirmation或提前迁移/重发。原work仍18，26请求可派生不代表已批准；当前policy仅原IQS_01/Pro。用户后续总体授权持续有效，不再泛问权限；Company外包root继续避开，金融与生产其他门保持。
 

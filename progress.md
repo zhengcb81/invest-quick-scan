@@ -1,3 +1,7 @@
+## 2026-10-15 — 三包已由用户派发，总控新截止路由候选完成
+
+用户确认AGENT-RUN-02/REF-02/EVAL-02正在外包施工，三个Lab均为活动writer保留范围；总控不写其根、候选或输入锁。沿原routing/compose生成Alphabet截止13日的新候选，30题/12有效槽（11直接、IQS_11→OPERATING_01）；原公开CLI通过，错误anchor与跨bundle两个反例拒绝。只复用原已核deterministic历史事实，不声称新检索/新金融准确率。原owner10文件、旧账本、新S1预算及他人README rawSHA均不变，未安装anchor/改policy/确认/准入/收费。详见[本轮结果](docs/implementation/experiments/company-agent-route13-candidate-2026-10-15.md)。
+
 ## 2026-10-15 — Alphabet真实owner预检与S1独立预算准备完成
 
 未写源仓/worker根。真实native identity_binding/get_for_execution+原IQS route CLI通过（native-read-3，PID1692/exit0）；11个原题对象完全匹配，IQS_11→OPERATING_01是实际类型替代，旧cutoff11日与新13日不符。先前sqlite audit hook过早执行PRAGMA、导出bytes时TypeError两失败保留且不作为产品阻断。StockWiki唯一生效policy仍是旧Q01/MiMo，未覆盖/假准入。
