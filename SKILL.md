@@ -49,7 +49,7 @@ python scripts/question_sets.py compose --profile "examples/profile.json" --mode
 python scripts/question_sets.py normalize --manifest "runs/example/manifest.json" --answers "runs/example/raw_answers.json" --review "runs/example/evidence_review.json" --output "runs/example/portrait.json"
 ```
 
-标准评分、事实及三维比较的离线命令见[标准输出](references/standard-output.md)。新模式依赖requirements.txt中的jsonschema；不含客户端、密钥或调度器。首次生产运行、自动/手动加公司、持续维护和简洁UI统一由StockWiki入口提供，仍待[跨项目实施包](docs/implementation/README.md)接通，不能把本地编排成功称作一键扫描已上线。
+标准评分、事实及三维比较的离线命令见[标准输出](references/standard-output.md)。新模式依赖requirements.txt中的jsonschema；不含客户端、密钥或调度器。已有导出可用 `python -B -X utf8 scripts/view_quick_scan.py --bundle "导出/bundle.json" --open` 复用VIEW只读服务，无需配置PYTHONPATH；只查看既有数据，不能代替扫描/更新。独立目录用`--viewer-root`指定，见[启动与导航实证](docs/implementation/experiments/view-launch-and-navigation-2026-10-15.md)。首次生产运行、自动/手动加公司、持续维护和简洁UI统一由StockWiki入口提供，仍待[跨项目实施包](docs/implementation/README.md)接通，不能把本地编排成功称作一键扫描已上线。
 
 `examples/profile.json` 是虚构的路线演示，使用时替换为真实分类。`quick` 保留24道核心题的全部判断，并加高优先级专属题；`full` 展开所选模块。两种模式都不自动增加杜邦和五力。实际题数在manifest中列明，不承诺固定执行分钟数。多业务集团按有实质影响的分部单独选题，不用最大收入分部代表全部业务，也不在本skill中做SOTP。
 

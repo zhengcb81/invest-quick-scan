@@ -1,3 +1,9 @@
+## 2026-10-15 — 既有导出的便捷启动与企业导航已交付
+
+新增scripts/view_quick_scan.py薄入口，复用VIEW原服务，无需用户配置PYTHONPATH；可选--open，浏览器打不开仍可访问。顶栏按完整subject_key选择企业/快照，profile-only默认详情，错误显式键不自动换公司。真实延迟反例发现并修复旧响应串公司，所有异步结果/错误按页面代次隔离。VIEW源9文件提交847bcbe（package0.2.0/协议1.0.0），其他220原文件保持。163项162P/1权限skip，整组浏览器26P，根入口3P，真实Alphabet公开薄入口+Chromium1P（12缺口/0分数/390宽/外网0/POST405/端口释放）。
+
+[使用、实证、失败边界与接续](docs/implementation/experiments/view-launch-and-navigation-2026-10-15.md)。所有测试keyless/loopback；自有temp/profile清4001文件30067467 bytes，240保持核对通过。无收费/文档下载/生产库/名单变更。先前8ceb0d4为历史UI源基线，现以847bcbe接续。只读导出启动可用，完整生产UI/query2.6/扫描更新/全池仍未关闭；RUN/EVAL约定handoff仍未出现，保持其writer，主线接收后做真实S1，不重跑已交付工程或S0。
+
 ## 2026-10-15 — REF核源与直接修复已提交，RUN/EVAL仍待正式交接
 
 AGENT-REF-02正式交付后总控冻结原版及外包追加修复，三方合并保留锂价/ESS修复；按5a6aacb与91文件CAS接管31项源差异。修复跨公司/槽、默认export绕校验、私有note泄漏、hash/日期/非有限数等，真实交付源55P，双板/portable replay实际CLI通过。核源纠正Cloud63%→82%、CNCB157→158、租赁范围、未核精度及私有评分推断；原件/所有before-after保留。源payload a179149、交接cc51a26（无remote）；package0.1.1/schema1.0.0。36逻辑槽不变，OPERATING_01私有投影独立绑定；所有qualification=false，reference_authority=null，19checked-candidate/16partial/1unverified不是金融评分通过。

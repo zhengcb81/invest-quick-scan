@@ -1,3 +1,9 @@
+## 2026-10-15 — 既有导出的便捷启动与企业导航已交付
+
+新增scripts/view_quick_scan.py薄入口，复用VIEW原服务，无需用户配置PYTHONPATH；可选--open，浏览器打不开仍可访问。顶栏按完整subject_key选择企业/快照，profile-only默认详情，错误显式键不自动换公司。真实延迟反例发现并修复旧响应串公司，所有异步结果/错误按页面代次隔离。VIEW源9文件提交847bcbe（package0.2.0/协议1.0.0），其他220原文件保持。163项162P/1权限skip，整组浏览器26P，根入口3P，真实Alphabet公开薄入口+Chromium1P（12缺口/0分数/390宽/外网0/POST405/端口释放）。
+
+[使用、实证、失败边界与接续](docs/implementation/experiments/view-launch-and-navigation-2026-10-15.md)。所有测试keyless/loopback；自有temp/profile清4001文件30067467 bytes，240保持核对通过。无收费/文档下载/生产库/名单变更。先前8ceb0d4为历史UI源基线，现以847bcbe接续。只读导出启动可用，完整生产UI/query2.6/扫描更新/全池仍未关闭；RUN/EVAL约定handoff仍未出现，保持其writer，主线接收后做真实S1，不重跑已交付工程或S0。
+
 ## 2026-10-15 — REF核源与直接修复已提交，RUN/EVAL仍待正式交接
 
 AGENT-REF-02正式交付后总控冻结原版及外包追加修复，三方合并保留锂价/ESS修复；按5a6aacb与91文件CAS接管31项源差异。修复跨公司/槽、默认export绕校验、私有note泄漏、hash/日期/非有限数等，真实交付源55P，双板/portable replay实际CLI通过。核源纠正Cloud63%→82%、CNCB157→158、租赁范围、未核精度及私有评分推断；原件/所有before-after保留。源payload a179149、交接cc51a26（无remote）；package0.1.1/schema1.0.0。36逻辑槽不变，OPERATING_01私有投影独立绑定；所有qualification=false，reference_authority=null，19checked-candidate/16partial/1unverified不是金融评分通过。
@@ -889,7 +895,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（2026-10-15，REF工程修复已交付/金融资格未授）：** 以[REF验收](docs/implementation/experiments/agent-reference-acceptance-2026-10-15.md)的源a179149/交接cc51a26为准，保留其独立纠错与OPERATING_01私有投影，接收尚未正式handoff的RUN/EVAL后集中完成RuntimePort/owner_public、Run1.1→盲评和参考显式资格范围绑定。不能将19checked-candidate槽/55P当数值oracle或F05/G3关闭。原owner-stage-01实际snapshot已record未activate，policy/query六会话准备保留；先核策略cohort/generation能落在原生work/pack授权，再核owner-files-after/旧current/成员，CAS激活并安装policy，沿真实capture→预览/确认→QA admission。anchor版本变化后旧授权不复活，不重置历史/budget，不重跑S0；首家公司S1三策略各2次核源即交小结果，再扩三公司S1/S2与手册。RUN/EVAL活动writer避开，旧账/4checkpoint/生产UI/一键/全池门保持。
+**当前唯一接续（2026-10-15，REF工程修复已交付/金融资格未授）：** 已交付只读启动/导航VIEW847bcbe及IQS薄入口，勿重复实现或将其误作生产扫描入口。 以[REF验收](docs/implementation/experiments/agent-reference-acceptance-2026-10-15.md)的源a179149/交接cc51a26为准，保留其独立纠错与OPERATING_01私有投影，接收尚未正式handoff的RUN/EVAL后集中完成RuntimePort/owner_public、Run1.1→盲评和参考显式资格范围绑定。不能将19checked-candidate槽/55P当数值oracle或F05/G3关闭。原owner-stage-01实际snapshot已record未activate，policy/query六会话准备保留；先核策略cohort/generation能落在原生work/pack授权，再核owner-files-after/旧current/成员，CAS激活并安装policy，沿真实capture→预览/确认→QA admission。anchor版本变化后旧授权不复活，不重置历史/budget，不重跑S0；首家公司S1三策略各2次核源即交小结果，再扩三公司S1/S2与手册。RUN/EVAL活动writer避开，旧账/4checkpoint/生产UI/一键/全池门保持。
 
 **历史接续（用户确认及首条apply已完成）：** 等用户在真实终端运行本机 `runs/b01-resume-2026-10-14-01/confirm_first_native_work.py` 并完成原生CONFIRM，再核原namespace实际rc1记录，按[精确参数与隔离边界](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)走原QA apply；不能自动填写挑战、构造confirmation或提前迁移/重发。原work仍18，26请求可派生不代表已批准；当前policy仅原IQS_01/Pro。用户后续总体授权持续有效，不再泛问权限；Company外包root继续避开，金融与生产其他门保持。
 

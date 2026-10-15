@@ -1,3 +1,21 @@
+## 2026-10-15 — 既有导出的便捷启动与企业导航已交付
+
+新增scripts/view_quick_scan.py薄入口，复用VIEW原服务，无需用户配置PYTHONPATH；可选--open，浏览器打不开仍可访问。顶栏按完整subject_key选择企业/快照，profile-only默认详情，错误显式键不自动换公司。真实延迟反例发现并修复旧响应串公司，所有异步结果/错误按页面代次隔离。VIEW源9文件提交847bcbe（package0.2.0/协议1.0.0），其他220原文件保持。163项162P/1权限skip，整组浏览器26P，根入口3P，真实Alphabet公开薄入口+Chromium1P（12缺口/0分数/390宽/外网0/POST405/端口释放）。
+
+[使用、实证、失败边界与接续](docs/implementation/experiments/view-launch-and-navigation-2026-10-15.md)。所有测试keyless/loopback；自有temp/profile清4001文件30067467 bytes，240保持核对通过。无收费/文档下载/生产库/名单变更。先前8ceb0d4为历史UI源基线，现以847bcbe接续。只读导出启动可用，完整生产UI/query2.6/扫描更新/全池仍未关闭；RUN/EVAL约定handoff仍未出现，保持其writer，主线接收后做真实S1，不重跑已交付工程或S0。
+
+## 2026-10-15 — 新导航完整浏览器26P
+
+页面代次隔离后，原24项+新2项浏览器完整26P，首次Failed-to-fetch的根因尚未确定，不宣称专门治愈此网络失败。真实owner首次测试误期待非法subject产生HTTP加载错误；实际subjectRequired在本地先拒收，符合安全边界但旧文案误导到不存在的股票池。现给明确未载入/不自动替换提示，profile-only详情提供顶部切换，不引导空股票池。原失败原件保留，再用正确产品预期验证。
+
+## 2026-10-15 — 企业切换迟到响应复现
+
+真实Chromium+原服务器受控延迟复现：已选择H股scope后，前一企业响应迟到会把详情标题覆盖回原企业。已用页面代次隔离所有异步结果/错误，并在切换时清旧主体内容，不改原数据或身份键。前一导航测试有Playwright参数错误/重叠route回调错误；red2错误分支跑到launcher2P，不是导航通过。red3为真实产品反例1P/1F。首次全旧E2E23P/1F（Failed to fetch）原因未定，新增失败网络日志，修复后再整包验证，不降断言或靠重复通过掩盖。沙箱内RED4项--open缺失，已有默认serve另1项socket10013属于环境；沙箱外163项162P/1权限skip。
+
+## 2026-10-15 — 查看器启动/导航接续
+
+RUN/EVAL约定handoff仍不存在，未作为活动进程等待证据；仅尊重用户外包写边界。VIEW源8ceb0d4且tracked clean，冻结后在自有副本推进--open和根薄入口/企业选择导航，复用原服务，不复制读取器。CodeGraph需camelCase projectPath才查外仓；早先project_path写法可能被忽略，现已修正调用参数。误猜VIEW tests/e2e/conftest.py与tests/integration/test_server.py不存在，改从索引目录取实际路径，不据不存在猜测产品失败。技能入口更新使用skill-creator，不新增重复手册层。
+
 ## 2026-10-15 — REF核源与直接修复已提交，RUN/EVAL仍待正式交接
 
 AGENT-REF-02正式交付后总控冻结原版及外包追加修复，三方合并保留锂价/ESS修复；按5a6aacb与91文件CAS接管31项源差异。修复跨公司/槽、默认export绕校验、私有note泄漏、hash/日期/非有限数等，真实交付源55P，双板/portable replay实际CLI通过。核源纠正Cloud63%→82%、CNCB157→158、租赁范围、未核精度及私有评分推断；原件/所有before-after保留。源payload a179149、交接cc51a26（无remote）；package0.1.1/schema1.0.0。36逻辑槽不变，OPERATING_01私有投影独立绑定；所有qualification=false，reference_authority=null，19checked-candidate/16partial/1unverified不是金融评分通过。
