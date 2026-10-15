@@ -1,3 +1,9 @@
+## 2026-10-15 — REF核源与直接修复已提交，RUN/EVAL仍待正式交接
+
+AGENT-REF-02正式交付后总控冻结原版及外包追加修复，三方合并保留锂价/ESS修复；按5a6aacb与91文件CAS接管31项源差异。修复跨公司/槽、默认export绕校验、私有note泄漏、hash/日期/非有限数等，真实交付源55P，双板/portable replay实际CLI通过。核源纠正Cloud63%→82%、CNCB157→158、租赁范围、未核精度及私有评分推断；原件/所有before-after保留。源payload a179149、交接cc51a26（无remote）；package0.1.1/schema1.0.0。36逻辑槽不变，OPERATING_01私有投影独立绑定；所有qualification=false，reference_authority=null，19checked-candidate/16partial/1unverified不是金融评分通过。
+
+[完整实证与接续](experiments/agent-reference-acceptance-2026-10-15.md)。未写RUN/EVAL，仍未见正式handoff；三包“全部在建/均未交付”段落仅为历史。主线接收其后完成真实桥/盲评与参考显式资格，再进行首家公司S1；不重跑S0、不拿本轮55P关闭F05/G3/准确率。194保持核对通过；自有temp清320文件27354250 bytes，原账/owner/新空预算/他人README保持，无收费API/文档下载。
+
 ## 2026-10-15 最新接续：三包在建，owner和真实查看器准备已落地
 
 AGENT-RUN-02/REF-02/EVAL-02由用户正式派发，三个Lab写边界保持；约定handoff尚未交，不因目录存在宣称完成，也不重做其候选。以root唯一Next Step为准：真实owner新route只record未activate，旧current/anchor1及policy保持；最新owner文件基线在runs/company-agent-owner-2026-10-15-01/owner-stage-01/owner-files-after.json。旧original-owner-before是追加前历史，不要重跑一次性脚本或要求scan库继续旧SHA。新S1预算144/US$14.40、首家公司6会话/72槽/48请求均未准入。

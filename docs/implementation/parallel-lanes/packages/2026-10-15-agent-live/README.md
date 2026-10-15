@@ -1,6 +1,6 @@
 # 真实公司 agent 实验：三个独立施工包
 
-准备日期：2026-10-15。**最新：用户已确认下面三包均在外包施工；三个Lab为活动writer保留范围。** 总控不代写、不自动派发。各harness沿自己卡、共同接口和已锁输入实施，完整交付后集中验收。
+准备日期：2026-10-15。**最新：REF已正式交付，总控核源并直接修复，payload a179149/交接cc51a26，真实源55P；仍为部分参考，未授金融资格。RUN/EVAL尚未见正式handoff，继续保留活动writer边界。** 各包原输入锁保持，不自动派发；REF实证见[验收报告](../../../experiments/agent-reference-acceptance-2026-10-15.md)。
 
 manifest的workers_dispatched=false/root_existed=false保留为准备时快照，不是实时台账。当前施工状态以本段用户确认及总控PWF为准。总控已生成截止13日的新路由候选，但未安装/授权；见[总控接续](../../../experiments/company-agent-route13-candidate-2026-10-15.md)。新候选不修改worker的原输入锁，不要求追latest。
 

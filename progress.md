@@ -1,3 +1,9 @@
+## 2026-10-15 — REF核源与直接修复已提交，RUN/EVAL仍待正式交接
+
+AGENT-REF-02正式交付后总控冻结原版及外包追加修复，三方合并保留锂价/ESS修复；按5a6aacb与91文件CAS接管31项源差异。修复跨公司/槽、默认export绕校验、私有note泄漏、hash/日期/非有限数等，真实交付源55P，双板/portable replay实际CLI通过。核源纠正Cloud63%→82%、CNCB157→158、租赁范围、未核精度及私有评分推断；原件/所有before-after保留。源payload a179149、交接cc51a26（无remote）；package0.1.1/schema1.0.0。36逻辑槽不变，OPERATING_01私有投影独立绑定；所有qualification=false，reference_authority=null，19checked-candidate/16partial/1unverified不是金融评分通过。
+
+[完整实证与接续](docs/implementation/experiments/agent-reference-acceptance-2026-10-15.md)。未写RUN/EVAL，仍未见正式handoff；三包“全部在建/均未交付”段落仅为历史。主线接收其后完成真实桥/盲评与参考显式资格，再进行首家公司S1；不重跑S0、不拿本轮55P关闭F05/G3/准确率。194保持核对通过；自有temp清320文件27354250 bytes，原账/owner/新空预算/他人README保持，无收费API/文档下载。
+
 ## 2026-10-15 — 三包施工期间完成真实只读查看器接线及缺口修复
 
 未见三包正式handoff，活动Lab保持不写；未重复SDK/策略/参考/盲评。独立推进已签收VIEW：原生QueryReader+原IQS合同从真实Alphabet owner读得1主体/12缺口/0观察，接原bundle/组件。直接修复profile coverage不显示，保留错字段原值为诊断、不造答案分数；最终158项157P/1skip，另真实Chromium页/390宽度/POST405/外网0验证通过。VIEW3文件正常提交8ceb0d4（无remote），其余原源码、owner10文件、旧work/新预算/他人README保持。自有测试临时清16375文件110132165 bytes，实际导出/失败与成功证据留存。详见[实证与边界](docs/implementation/experiments/view-native-owner-integration-2026-10-15.md)。生产query2.6/全池UI与一键未关闭；主线仍接三包后真实S1，不拿界面测试替代准确性。

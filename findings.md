@@ -1,3 +1,21 @@
+## 2026-10-15 — REF核源与直接修复已提交，RUN/EVAL仍待正式交接
+
+AGENT-REF-02正式交付后总控冻结原版及外包追加修复，三方合并保留锂价/ESS修复；按5a6aacb与91文件CAS接管31项源差异。修复跨公司/槽、默认export绕校验、私有note泄漏、hash/日期/非有限数等，真实交付源55P，双板/portable replay实际CLI通过。核源纠正Cloud63%→82%、CNCB157→158、租赁范围、未核精度及私有评分推断；原件/所有before-after保留。源payload a179149、交接cc51a26（无remote）；package0.1.1/schema1.0.0。36逻辑槽不变，OPERATING_01私有投影独立绑定；所有qualification=false，reference_authority=null，19checked-candidate/16partial/1unverified不是金融评分通过。
+
+[完整实证与接续](docs/implementation/experiments/agent-reference-acceptance-2026-10-15.md)。未写RUN/EVAL，仍未见正式handoff；三包“全部在建/均未交付”段落仅为历史。主线接收其后完成真实桥/盲评与参考显式资格，再进行首家公司S1；不重跑S0、不拿本轮55P关闭F05/G3/准确率。194保持核对通过；自有temp清320文件27354250 bytes，原账/owner/新空预算/他人README保持，无收费API/文档下载。
+
+## 2026-10-15 — REF租赁口径与网页查找失配
+
+R63实际18251/15954 USD million为经营租赁，不含融资租赁2869/2500；原total leases称谓须收窄并明示融资租赁。网页find对中文/数字返回无匹配，但open的355/733行包含客户数与31.24%分红口径，不能把查找失配当事实不存在。误读候选tests/conftest.py不存在，已改实际测试文件。
+
+## 2026-10-15 — REF实际核源发现63%与82%冲突
+
+再次实际读取SEC Q2 2026公告（7月22日）：Cloud收入24768 USD million、增长82%，不是交付事实中的63%；必须纠正来源摘录/事实/关联私有锚点，不能用错误参考评模型。中信建投233.22亿元营收、94.39亿元净利在法定披露承载158页，157引用不能代其支持，圆整数不证明精确9439423821.46元。原始90文件冻结保留；新候选格式49P不替代金融资格。实际网页访问与差异已存自有coordinator-source-audit.json，未下载公司文档、未发收费模型请求。
+
+## 2026-10-15 — AGENT-REF-02交付已出现，集中验收转回实验主线
+
+REF正式handoff complete，实际HEAD d0dd719；已冻结90文件5573856 bytes，RUN/EVAL仍无handoff，不写其根。REF CodeGraph按本轮用户明确授权已初始化16文件/193nodes。9项交接artifact有1项真实raw漂移：source-verification.jsonl声明10267 bytes/18d4…，实际11074 bytes/4829…，LF规范化仍11074，不是CRLF误差。created_at_utc固定为明日2026-10-16T00:00:00Z而当前仍15日。源码显示默认export不带targets只验schema，slot/fact关联、摘录hash、public判断边界需集中反例；不能靠34P/shape承诺授金融oracle。已通过内置浏览器实际读CATL官方9654、法定披露承载157/158及SEC R44/R90/Q4/Q2，未下载文档；数值支持与完整reference资格待分开记录。
+
 ## 2026-10-15 — 真资料接线发现profile缺口被忽略
 
 原QueryReader.get_profiles在实际Alphabet库回coverage_gap、12 missing field、0观察；VIEW原适配器只处理pool coverage，忽略profile coverage。现profile聚合缺口按query级显示，不把多主体aggregate归给每家公司，也不创建未知题答案或默认分数。旧synthetic Q_NEWS不是请求field，保留越界字符串并显式标注；坏类型独立拒绝。recovery旧反例夹带坏coverage已拆开，原异常语义保持。最终158项157P/1skip，真实浏览器另1P，源8ceb0d4/其他字节不变。默认Git检查把既有CRLF当尾空白，临时增加cr-at-eol且保留默认规则后正常提交，不改全局配置。首次沙箱浏览器超时原因未定，沙箱外有界loopback成功，原PID核已不匹配且未杀外部进程；不编造启动根因。测试tmp清理完成。
