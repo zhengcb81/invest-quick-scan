@@ -1,3 +1,17 @@
+## 2026-10-15 — DeepSeek原生受控发送兼容已推送
+
+StockQA研究SDK的DeepSeek Chat与原comparison校验存在协议缺口：合法请求在attempt前被拒。已直接修复精确分支，owner/路由/预算/pack/思考/token检查保留；三文件正常提交并推送ee1f8c7896c98722e345161a6108499869a24ef3，原234冻结中其余232保持。真实RED3F/12P→最终受影响整组81P/0skip；正常hook发现类型/格式问题已修正，全hooks通过，未跳过。不是金融准确率或真实RuntimePort已接通。本轮HTTP/搜索/下载0，245保持核对通过；自有temp/cache清133文件115552727 bytes/剩余0，原owner/旧账/新空预算/他人README保持。
+
+[完整证据与接续](docs/implementation/experiments/research-native-deepseek-chat-2026-10-15.md)。外包输入锁41763bf不改，最终集成显式用ee1f8c7。EVAL正式handoff已出现但声明commit与实际HEAD不符、工作树仍51项变化，未冻结验收，继续避开writer；RUN仍无handoff。两个Lab按用户明确批准已建立CodeGraph。后续接稳定RUN/EVAL再做真实首家公司S1，不重跑已签收工程或S0。
+
+## 2026-10-15 — 提交检查及EVAL活动边界
+
+StockQA正常hook首次修正docs/test混合换行并发现新DeepSeek分支dict.get的mypy参数Any|None；未跳过hook，候选显式检查thinking.type为str，增加缺type与list反例，重跑同受影响整组。此前79P是修正前工程结果，不能代新分母。沙箱Black双/单worker无输出，核实际自有PID后结束，沙箱外原StockQA配置2文件check3秒通过；不是产品测试失败。EVAL正式handoff首次出现但result f219bc6/sidecar09a2ca6与观察HEAD48dc6c4不同，工作树仍46项业务变化，按活动writer只读不接管、不将旧79P当最新签收。用户授权EVAL CodeGraph后init完成708files/15847nodes/15139edges。RUN仍无正式handoff。
+
+## 2026-10-15 — 首家公司原生DeepSeek发送协议前置
+
+RUN/EVAL仍无正式handoff；RUN进度显示桥/合成E2E已实现但仍在补交付，不等于完成或活进程。原Company Lab按用户明确授权CodeGraph init -i已完成115files/2208nodes/2093edges。独立实际源预检发现ResearchChatSession用deepseek_chat_completions+thinking.type enabled+max_tokens，assert_controlled_generation_payload仅有mimo_chat/anthropic/responses分支；受控v3/v4 owner工作必然protocol_unverified，S0 budget-only通过不覆盖。StockQA41763bf干净，冻结234当前选择文件与原锁相同，在自有副本做RED/修复，不改外包冻结输入或提前admission/POST。
+
 ## 2026-10-15 — 既有导出的便捷启动与企业导航已交付
 
 新增scripts/view_quick_scan.py薄入口，复用VIEW原服务，无需用户配置PYTHONPATH；可选--open，浏览器打不开仍可访问。顶栏按完整subject_key选择企业/快照，profile-only默认详情，错误显式键不自动换公司。真实延迟反例发现并修复旧响应串公司，所有异步结果/错误按页面代次隔离。VIEW源9文件提交847bcbe（package0.2.0/协议1.0.0），其他220原文件保持。163项162P/1权限skip，整组浏览器26P，根入口3P，真实Alphabet公开薄入口+Chromium1P（12缺口/0分数/390宽/外网0/POST405/端口释放）。

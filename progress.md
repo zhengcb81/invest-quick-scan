@@ -1,3 +1,9 @@
+## 2026-10-15 — DeepSeek原生受控发送兼容已推送
+
+StockQA研究SDK的DeepSeek Chat与原comparison校验存在协议缺口：合法请求在attempt前被拒。已直接修复精确分支，owner/路由/预算/pack/思考/token检查保留；三文件正常提交并推送ee1f8c7896c98722e345161a6108499869a24ef3，原234冻结中其余232保持。真实RED3F/12P→最终受影响整组81P/0skip；正常hook发现类型/格式问题已修正，全hooks通过，未跳过。不是金融准确率或真实RuntimePort已接通。本轮HTTP/搜索/下载0，245保持核对通过；自有temp/cache清133文件115552727 bytes/剩余0，原owner/旧账/新空预算/他人README保持。
+
+[完整证据与接续](docs/implementation/experiments/research-native-deepseek-chat-2026-10-15.md)。外包输入锁41763bf不改，最终集成显式用ee1f8c7。EVAL正式handoff已出现但声明commit与实际HEAD不符、工作树仍51项变化，未冻结验收，继续避开writer；RUN仍无handoff。两个Lab按用户明确批准已建立CodeGraph。后续接稳定RUN/EVAL再做真实首家公司S1，不重跑已签收工程或S0。
+
 ## 2026-10-15 — 既有导出的便捷启动与企业导航已交付
 
 新增scripts/view_quick_scan.py薄入口，复用VIEW原服务，无需用户配置PYTHONPATH；可选--open，浏览器打不开仍可访问。顶栏按完整subject_key选择企业/快照，profile-only默认详情，错误显式键不自动换公司。真实延迟反例发现并修复旧响应串公司，所有异步结果/错误按页面代次隔离。VIEW源9文件提交847bcbe（package0.2.0/协议1.0.0），其他220原文件保持。163项162P/1权限skip，整组浏览器26P，根入口3P，真实Alphabet公开薄入口+Chromium1P（12缺口/0分数/390宽/外网0/POST405/端口释放）。

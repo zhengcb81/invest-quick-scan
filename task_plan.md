@@ -1,3 +1,9 @@
+## 2026-10-15 — DeepSeek原生受控发送兼容已推送
+
+StockQA研究SDK的DeepSeek Chat与原comparison校验存在协议缺口：合法请求在attempt前被拒。已直接修复精确分支，owner/路由/预算/pack/思考/token检查保留；三文件正常提交并推送ee1f8c7896c98722e345161a6108499869a24ef3，原234冻结中其余232保持。真实RED3F/12P→最终受影响整组81P/0skip；正常hook发现类型/格式问题已修正，全hooks通过，未跳过。不是金融准确率或真实RuntimePort已接通。本轮HTTP/搜索/下载0，245保持核对通过；自有temp/cache清133文件115552727 bytes/剩余0，原owner/旧账/新空预算/他人README保持。
+
+[完整证据与接续](docs/implementation/experiments/research-native-deepseek-chat-2026-10-15.md)。外包输入锁41763bf不改，最终集成显式用ee1f8c7。EVAL正式handoff已出现但声明commit与实际HEAD不符、工作树仍51项变化，未冻结验收，继续避开writer；RUN仍无handoff。两个Lab按用户明确批准已建立CodeGraph。后续接稳定RUN/EVAL再做真实首家公司S1，不重跑已签收工程或S0。
+
 ## 2026-10-15 — 既有导出的便捷启动与企业导航已交付
 
 新增scripts/view_quick_scan.py薄入口，复用VIEW原服务，无需用户配置PYTHONPATH；可选--open，浏览器打不开仍可访问。顶栏按完整subject_key选择企业/快照，profile-only默认详情，错误显式键不自动换公司。真实延迟反例发现并修复旧响应串公司，所有异步结果/错误按页面代次隔离。VIEW源9文件提交847bcbe（package0.2.0/协议1.0.0），其他220原文件保持。163项162P/1权限skip，整组浏览器26P，根入口3P，真实Alphabet公开薄入口+Chromium1P（12缺口/0分数/390宽/外网0/POST405/端口释放）。
@@ -895,7 +901,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（2026-10-15，REF工程修复已交付/金融资格未授）：** 已交付只读启动/导航VIEW847bcbe及IQS薄入口，勿重复实现或将其误作生产扫描入口。 以[REF验收](docs/implementation/experiments/agent-reference-acceptance-2026-10-15.md)的源a179149/交接cc51a26为准，保留其独立纠错与OPERATING_01私有投影，接收尚未正式handoff的RUN/EVAL后集中完成RuntimePort/owner_public、Run1.1→盲评和参考显式资格范围绑定。不能将19checked-candidate槽/55P当数值oracle或F05/G3关闭。原owner-stage-01实际snapshot已record未activate，policy/query六会话准备保留；先核策略cohort/generation能落在原生work/pack授权，再核owner-files-after/旧current/成员，CAS激活并安装policy，沿真实capture→预览/确认→QA admission。anchor版本变化后旧授权不复活，不重置历史/budget，不重跑S0；首家公司S1三策略各2次核源即交小结果，再扩三公司S1/S2与手册。RUN/EVAL活动writer避开，旧账/4checkpoint/生产UI/一键/全池门保持。
+**当前唯一接续（2026-10-15，StockQA受控DeepSeek修复ee1f8c7已推送；REF工程已交付/金融资格未授）：** 已交付只读启动/导航VIEW847bcbe及IQS薄入口，勿重复实现或将其误作生产扫描入口。 以[REF验收](docs/implementation/experiments/agent-reference-acceptance-2026-10-15.md)的源a179149/交接cc51a26为准，保留其独立纠错与OPERATING_01私有投影，接收RUN及尚在变化、声明commit未对齐的EVAL稳定交付后集中完成RuntimePort/owner_public、Run1.1→盲评和参考显式资格范围绑定。不能将19checked-candidate槽/55P当数值oracle或F05/G3关闭。原owner-stage-01实际snapshot已record未activate，policy/query六会话准备保留；先核策略cohort/generation能落在原生work/pack授权，再核owner-files-after/旧current/成员，CAS激活并安装policy，沿真实capture→预览/确认→QA admission。anchor版本变化后旧授权不复活，不重置历史/budget，不重跑S0；首家公司S1三策略各2次核源即交小结果，再扩三公司S1/S2与手册。RUN/EVAL活动writer避开，旧账/4checkpoint/生产UI/一键/全池门保持。
 
 **历史接续（用户确认及首条apply已完成）：** 等用户在真实终端运行本机 `runs/b01-resume-2026-10-14-01/confirm_first_native_work.py` 并完成原生CONFIRM，再核原namespace实际rc1记录，按[精确参数与隔离边界](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)走原QA apply；不能自动填写挑战、构造confirmation或提前迁移/重发。原work仍18，26请求可派生不代表已批准；当前policy仅原IQS_01/Pro。用户后续总体授权持续有效，不再泛问权限；Company外包root继续避开，金融与生产其他门保持。
 
