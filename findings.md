@@ -1,3 +1,7 @@
+## 2026-10-15 — 原生record与activate分离，回退不复活旧授权
+
+新route可通过原record_snapshot只追加到真实库，保持旧current/anchor1/history和policy不变；已实际执行，非合成DTO。旧scan库SHA变化有精确backup及新owner-files-after基线，其他9原件/旧账/新预算不变。原Q13 inspect给出144请求/USD14.40共享上限，非12题预计价；第一家公司另受六会话×8=48限额。原刷新申请必须实际捕获snapshot_id，不能以已通过query合同但snapshot_id=null的候选冒preview。最重要：current anchor版本递增，之后切回旧ID/还原policy也不能复活anchor1绑定的旧确认；应沿原生新预览/确认，不能备份覆盖历史。实际运行桥/cohort绑定未交齐前不提前切换、创建短TTL capture或伪原生TTY。
+
 ## 2026-10-15 — 原生路由更新与worker边界
 
 用户正式确认三包外包施工，覆盖先前仅见目录的推断；不需要查看其活进程才能尊重writer边界。总控新route13候选沿真实API由原deterministic历史事实生成，previous_decision指向原route，classification仍not_run，绝不重签旧LLM回执或宣称新来源核查。原ROOT有模块artifact不代表具备同package描述：首次module package unavailable，随后显式选择原不可变release资源根成功；只配置compose资源ROOT，无权限/校验mock。真实CLI通过、两混绑反例拒绝，owner与预算未写；本机失败/成功原件均保留。

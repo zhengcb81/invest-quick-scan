@@ -1,3 +1,7 @@
+## 2026-10-15 — 真实owner追加新快照，六会话范围已准备
+
+沿原record_snapshot向真实owner仅追加截止13日快照，原始字节回读一致；未activate，当前仍旧route/anchor1/current_history不变。旧policy及另外9owner文件、旧work/新S1预算/他人README rawSHA保持；原scan库因真实追加而改SHA，备份与owner-files-after记录为新基线，不再声称10文件全不变。原生DeepSeek 12field只读检查通过，报价是S1共享144 HTTP/USD14.40上限，非预计账单。六会话72槽/最多48 HTTP及查询/policy候选已按原合同准备；无新capture/confirmation/admission/收费，缺worker桥/参考与策略cohort绑定。详见[本轮原生结果](docs/implementation/experiments/company-agent-native-owner-stage-2026-10-15.md)。
+
 ## 2026-10-15 — 三包已由用户派发，总控新截止路由候选完成
 
 用户确认AGENT-RUN-02/REF-02/EVAL-02正在外包施工，三个Lab均为活动writer保留范围；总控不写其根、候选或输入锁。沿原routing/compose生成Alphabet截止13日的新候选，30题/12有效槽（11直接、IQS_11→OPERATING_01）；原公开CLI通过，错误anchor与跨bundle两个反例拒绝。只复用原已核deterministic历史事实，不声称新检索/新金融准确率。原owner10文件、旧账本、新S1预算及他人README rawSHA均不变，未安装anchor/改policy/确认/准入/收费。详见[本轮结果](docs/implementation/experiments/company-agent-route13-candidate-2026-10-15.md)。
@@ -875,7 +879,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（2026-10-15，三包施工中/新截止候选已完成）：** 以route13-candidate-2及其原字节锁为准，准备12个实际field、DeepSeek和独立S1预算的原生owner配置、保留原policy/anchor历史的明确切换/恢复方案，再走真实公开预览、原生确认及QA admission；新route未安装，不以格式校验代替权限，不静默覆盖旧唯一policy或借旧IQS01批准。AGENT-RUN-02/REF-02/EVAL-02已由用户正式派外包，三个Lab/candidate及冻结输入均避开；收到交接后一次集中集成真实RuntimePort/owner_public、Run1.1盲评及独立参考。先一家公司S1三策略核源即交小结果，再三公司S1/S2及手册。新预算不重置，S0不重跑，原旧账/4checkpoint/费用和金融/G3/F05/生产UI/一键/全池门保持。
+**当前唯一接续（2026-10-15，真实快照已record/当前未切换）：** 以owner-stage-01的原生入库、policy/query候选、六会话48请求执行配置和transition-plan为准，沿三个包交付后的RuntimePort/owner_public、Run1.1盲评与独立参考完成大节点集成；先核实际策略cohort/generation与多轮发送授权能落在原生work/pack边界，再重新核最新owner-files-after、旧current与成员，CAS激活新route并显式安装新policy，获取真实capture→原生预览/确认→QA admission。不把旧policy字节恢复等同旧授权恢复（anchor版本递增后须重核/新确认），不重置历史或budget。三包活动writer/candidate和冻结输入均避开，不重复实现。首家公司S1三策略各2次核源即交小结果，再三公司S1/S2及手册。S0不重跑，原旧账/4checkpoint/费用与金融/G3/F05/生产UI/一键/全池门保持。
 
 **历史接续（用户确认及首条apply已完成）：** 等用户在真实终端运行本机 `runs/b01-resume-2026-10-14-01/confirm_first_native_work.py` 并完成原生CONFIRM，再核原namespace实际rc1记录，按[精确参数与隔离边界](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)走原QA apply；不能自动填写挑战、构造confirmation或提前迁移/重发。原work仍18，26请求可派生不代表已批准；当前policy仅原IQS_01/Pro。用户后续总体授权持续有效，不再泛问权限；Company外包root继续避开，金融与生产其他门保持。
 

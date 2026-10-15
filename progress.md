@@ -1,3 +1,7 @@
+## 2026-10-15 — 真实owner追加新快照，六会话范围已准备
+
+沿原record_snapshot向真实owner仅追加截止13日快照，原始字节回读一致；未activate，当前仍旧route/anchor1/current_history不变。旧policy及另外9owner文件、旧work/新S1预算/他人README rawSHA保持；原scan库因真实追加而改SHA，备份与owner-files-after记录为新基线，不再声称10文件全不变。原生DeepSeek 12field只读检查通过，报价是S1共享144 HTTP/USD14.40上限，非预计账单。六会话72槽/最多48 HTTP及查询/policy候选已按原合同准备；无新capture/confirmation/admission/收费，缺worker桥/参考与策略cohort绑定。详见[本轮原生结果](docs/implementation/experiments/company-agent-native-owner-stage-2026-10-15.md)。
+
 ## 2026-10-15 — 三包已由用户派发，总控新截止路由候选完成
 
 用户确认AGENT-RUN-02/REF-02/EVAL-02正在外包施工，三个Lab均为活动writer保留范围；总控不写其根、候选或输入锁。沿原routing/compose生成Alphabet截止13日的新候选，30题/12有效槽（11直接、IQS_11→OPERATING_01）；原公开CLI通过，错误anchor与跨bundle两个反例拒绝。只复用原已核deterministic历史事实，不声称新检索/新金融准确率。原owner10文件、旧账本、新S1预算及他人README rawSHA均不变，未安装anchor/改policy/确认/准入/收费。详见[本轮结果](docs/implementation/experiments/company-agent-route13-candidate-2026-10-15.md)。
