@@ -1,3 +1,9 @@
+## 2026-10-15 — REF后续修复已保全，独立核源六组残留已收口
+
+用户提示REF后续bug修复时尚未写源；重新核全部分支/状态/109文件，工人499de66的锂价、ESS链、artifact及路径修复已在cc51a26基线，本次保留。在该基线上独立只读agent实际核SEC HTML，直接纠正Cloud旧63字段、Services/广告利润范围、有限期间趋势、复合可得日期、数值门槛及会计/流动性漏gap；真实RED6F→完整61P，实际双板CLI/portable replay通过，独立复核六组已解决。REF源18精确差异正常提交b547d8dc4d3fb3ec972800061dceff66baa044ee（无remote），其他97原文件保持；36槽/43facts不变、gap27→29、资格仍false，无评分golden。128保持核对，自有temp64文件5282443 bytes清理/0剩余，API/下载/owner/预算变更0。
+
+[实证与接续](docs/implementation/experiments/alphabet-reference-independent-review-2026-10-15.md)。当前使用新slice6428a963/新public f1865f60，不混旧板。EVAL仍变动、RUN仍无正式handoff；原生pack只支持native_search且响应后的同work不能直接做新工具轮次，ee1f8c7仅修payload，Runtime仍需明确多轮scope/原始登记/cohort/generation，不能用budget-only或format-repair冒接通。不重做S0/已交工程，不新增helper门。
+
 ## 2026-10-15 — DeepSeek原生受控发送兼容已推送
 
 StockQA研究SDK的DeepSeek Chat与原comparison校验存在协议缺口：合法请求在attempt前被拒。已直接修复精确分支，owner/路由/预算/pack/思考/token检查保留；三文件正常提交并推送ee1f8c7896c98722e345161a6108499869a24ef3，原234冻结中其余232保持。真实RED3F/12P→最终受影响整组81P/0skip；正常hook发现类型/格式问题已修正，全hooks通过，未跳过。不是金融准确率或真实RuntimePort已接通。本轮HTTP/搜索/下载0，245保持核对通过；自有temp/cache清133文件115552727 bytes/剩余0，原owner/旧账/新空预算/他人README保持。
@@ -901,7 +907,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（2026-10-15，StockQA受控DeepSeek修复ee1f8c7已推送；REF工程已交付/金融资格未授）：** 已交付只读启动/导航VIEW847bcbe及IQS薄入口，勿重复实现或将其误作生产扫描入口。 以[REF验收](docs/implementation/experiments/agent-reference-acceptance-2026-10-15.md)的源a179149/交接cc51a26为准，保留其独立纠错与OPERATING_01私有投影，接收RUN及尚在变化、声明commit未对齐的EVAL稳定交付后集中完成RuntimePort/owner_public、Run1.1→盲评和参考显式资格范围绑定。不能将19checked-candidate槽/55P当数值oracle或F05/G3关闭。原owner-stage-01实际snapshot已record未activate，policy/query六会话准备保留；先核策略cohort/generation能落在原生work/pack授权，再核owner-files-after/旧current/成员，CAS激活并安装policy，沿真实capture→预览/确认→QA admission。anchor版本变化后旧授权不复活，不重置历史/budget，不重跑S0；首家公司S1三策略各2次核源即交小结果，再扩三公司S1/S2与手册。RUN/EVAL活动writer避开，旧账/4checkpoint/生产UI/一键/全池门保持。
+**当前唯一接续（2026-10-15，StockQA受控DeepSeek修复ee1f8c7已推送；REF独立纠错b547d8d已交付/金融资格未授）：** 已交付只读启动/导航VIEW847bcbe及IQS薄入口，勿重复实现或将其误作生产扫描入口。 以[REF独立纠错](docs/implementation/experiments/alphabet-reference-independent-review-2026-10-15.md)的新源b547d8d为准（a179149/cc51a26是历史），保留其独立纠错与OPERATING_01私有投影，接收RUN及尚在变化、声明commit未对齐的EVAL稳定交付后集中完成RuntimePort/owner_public、Run1.1→盲评和参考显式资格范围绑定。不能将19checked-candidate槽/55P当数值oracle或F05/G3关闭。原owner-stage-01实际snapshot已record未activate，policy/query六会话准备保留；先核策略cohort/generation能落在原生work/pack授权，再核owner-files-after/旧current/成员，CAS激活并安装policy，沿真实capture→预览/确认→QA admission。anchor版本变化后旧授权不复活，不重置历史/budget，不重跑S0；首家公司S1三策略各2次核源即交小结果，再扩三公司S1/S2与手册。RUN/EVAL活动writer避开，旧账/4checkpoint/生产UI/一键/全池门保持。
 
 **历史接续（用户确认及首条apply已完成）：** 等用户在真实终端运行本机 `runs/b01-resume-2026-10-14-01/confirm_first_native_work.py` 并完成原生CONFIRM，再核原namespace实际rc1记录，按[精确参数与隔离边界](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)走原QA apply；不能自动填写挑战、构造confirmation或提前迁移/重发。原work仍18，26请求可派生不代表已批准；当前policy仅原IQS_01/Pro。用户后续总体授权持续有效，不再泛问权限；Company外包root继续避开，金融与生产其他门保持。
 

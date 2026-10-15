@@ -1,3 +1,9 @@
+## 2026-10-15 — REF后续修复已保全，独立核源六组残留已收口
+
+用户提示REF后续bug修复时尚未写源；重新核全部分支/状态/109文件，工人499de66的锂价、ESS链、artifact及路径修复已在cc51a26基线，本次保留。在该基线上独立只读agent实际核SEC HTML，直接纠正Cloud旧63字段、Services/广告利润范围、有限期间趋势、复合可得日期、数值门槛及会计/流动性漏gap；真实RED6F→完整61P，实际双板CLI/portable replay通过，独立复核六组已解决。REF源18精确差异正常提交b547d8dc4d3fb3ec972800061dceff66baa044ee（无remote），其他97原文件保持；36槽/43facts不变、gap27→29、资格仍false，无评分golden。128保持核对，自有temp64文件5282443 bytes清理/0剩余，API/下载/owner/预算变更0。
+
+[实证与接续](experiments/alphabet-reference-independent-review-2026-10-15.md)。当前使用新slice6428a963/新public f1865f60，不混旧板。EVAL仍变动、RUN仍无正式handoff；原生pack只支持native_search且响应后的同work不能直接做新工具轮次，ee1f8c7仅修payload，Runtime仍需明确多轮scope/原始登记/cohort/generation，不能用budget-only或format-repair冒接通。不重做S0/已交工程，不新增helper门。
+
 ## 2026-10-15 — DeepSeek原生受控发送兼容已推送
 
 StockQA研究SDK的DeepSeek Chat与原comparison校验存在协议缺口：合法请求在attempt前被拒。已直接修复精确分支，owner/路由/预算/pack/思考/token检查保留；三文件正常提交并推送ee1f8c7896c98722e345161a6108499869a24ef3，原234冻结中其余232保持。真实RED3F/12P→最终受影响整组81P/0skip；正常hook发现类型/格式问题已修正，全hooks通过，未跳过。不是金融准确率或真实RuntimePort已接通。本轮HTTP/搜索/下载0，245保持核对通过；自有temp/cache清133文件115552727 bytes/剩余0，原owner/旧账/新空预算/他人README保持。
