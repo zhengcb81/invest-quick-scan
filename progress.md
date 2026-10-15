@@ -1,4 +1,18 @@
+## 2026-10-15 — 多轮传输已交付，真实 S0 两模型完成
+
+StockQA提交41763bf1e933578f4cc214b354680950b973fdf5，仅新增研究传输/测试/说明和原transport6行预算断言。源HEAD/rawSHA核对后回写，正常hook先自动格式化、再指出7处类型约束，修正后完整black/isort/mypy/secret等全过；未绕过hook。最终源字节镜像隔离42P/2明确deselect（日志offline-013），旧两失败在未改source复现，未称全仓绿。CLI Black因沙箱执行挂起仅精确停自有PID，改纯函数格式化；最终按仓库line100/isort接受原hook格式。
+
+真实S0首段PID28952于17:35:06.798134Z exit0；DeepSeek有价回调缺started_at暂停，经原预算API核原响应/usage结算，按请求前登记在同一原6次cap剩5次接续，PID12688于17:38:47.235706Z exit0。两模型各6次/两原生预算库各6 response+6terminal，合计12HTTP、0搜索HTTP，in_flight及unreconciled均0。官网价估算USD0.004517，现金账单未知；不是金融准确性。DeepSeek4/4、MiMo5/5仅确定值协议最终答案，两者工具回传与缓存正/对照成立。[报告](docs/implementation/experiments/company-agent-s0-results-2026-10-15.md)。
+
+DeepSeek原结果、回执和首次计量错误保留；未保存思考正文。接续采用2次精确记录重复，MiMo3次，不作同样本速度/缓存优劣结论；DeepSeek全过程含修复等待259.4秒，不能以分段6.92秒冒无中断全程。旧13HTTP/CNY1.268162与原work/4checkpoint仍不变。
+
+下一步真实RuntimePort/owner_public、对应新admission及盲评/独立参考，复用已交付SDK，先一家公司S1三策略；S0已用完两模型各6次，不重做。原G3/F05等门仍开放。下面running及未发API为历史记录，以本段/真实terminal证据为准。
+
 ## 2026-10-15 — 真实 Company agent 实验提为当前主线
+
+同日继续实施：StockQA 源236文件/4359897 bytes已冻结至 runs/company-agent-live-2026-10-15-01，候选新增多轮研究传输及24个反例用例、最小必需预算断言。最终当前适用集中批38P/2明确deselect（24研究+14旧预算），日志offline-007；旧迁移用例原schema不完整与异步loop被离线socket guard拒绝，均在未改source独立复现，未算绿。初批缺resolution hash导致10F已修；守卫拒pytest默认devnull改自有log；Black CLI挂起仅按CIM精确PID/创建时间停自有进程，改纯函数格式化。所有失败日志保留。
+
+真实S0现已启动：2026-10-15T17:34:26.835248Z，子PID28952，exec会话94934，过程文件 logs/live-s0.process.json（以上述run根为前缀）。DeepSeek/MiMo普通密钥存在，只有presence落盘。预注册补充 docs/implementation/experiments/company-agent-s0-probe-addendum-2026-10-15.json 已在首HTTP前冻结：两模型各最多6次、无外搜/公司题、最多USD0.60预留，计入原S0，实际使用StockQA预算和metered pool，思考仅内存。当前在运行，不能因观察等待重启；源仓此时尚未写回，无真实公司准确性结论。后续以真实terminal/收费账本更新，不拿本段running意图当存活证据。
 
 用户追问何时实测，已纠正此前“先旧25项结案、再实验”的排序。旧结案不是新隔离实验硬前置；当前接续是 StockQA 多轮研究端口/新 admission/真实参考与盲评桥 → S0 → 一家公司逐题核源的小结果 → 三公司 S1/S2。第一家公司完成即交实际质量/费用/耗时，不等全部工程完工。[执行顺序](docs/implementation/experiments/company-agent-live-sequencing-2026-10-15.md)。
 

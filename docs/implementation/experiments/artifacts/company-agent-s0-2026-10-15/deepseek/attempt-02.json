@@ -1,0 +1,54 @@
+{
+  "label": "tool-start-rebuild",
+  "status": "response",
+  "result": {
+    "protocol": "stockqa.research-step/1.0.0",
+    "content": "",
+    "tool_calls": [
+      {
+        "id": "call_00_BZ3YrDGc9JkfWdnWETnv1249",
+        "name": "lookup",
+        "arguments": {
+          "key": "HIDDEN"
+        }
+      }
+    ],
+    "finish_reason": "tool_calls",
+    "receipt": {
+      "provider": "deepseek",
+      "attempt_id": "35aae018-b3b5-47fb-ab0b-be71fe652539",
+      "work_attempt_id": "DISPATCH_d22379708a9a4ff0bce452db46574751",
+      "requested_model": "deepseek-flash",
+      "actual_model": "deepseek-flash",
+      "response_id": "38296461-9068-4c93-891e-4463a5bf22e5",
+      "request_id": null,
+      "http_status_code": 200,
+      "search_protocol": "deepseek_chat_completions",
+      "search_status": "not_requested",
+      "started_at": "2026-10-15T17:38:42.103217Z",
+      "completed_at": "2026-10-15T17:38:43.555881Z",
+      "request_payload_sha256": "f36b81a78ea5a7a42dde23780aa6f1cee8d543a5983c52556d23c93cfe60acca",
+      "prompt_sha256": "ac83ff7251216df7370557bf5a023dd736539205006ca99cfde5efc03f7c689b",
+      "response_sha256": "98ea47500444ff9f43b48e612728899597c99fc284ba216a2cb6cf1a0f05daef",
+      "response_json_basis": "strict_http_json",
+      "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+      "usage": {
+        "schema": "quick-scan-usage-v1",
+        "input_tokens": 173,
+        "cached_input_tokens": 2688,
+        "cache_creation_input_tokens": 0,
+        "output_tokens": 64,
+        "reasoning_output_tokens": 24,
+        "search_tool_calls": 0
+      }
+    },
+    "usage_observation": {
+      "prompt_tokens": 2861,
+      "cached_input_tokens": 2688,
+      "output_tokens_including_reasoning": 64,
+      "reasoning_output_tokens": 24
+    },
+    "elapsed_seconds": 1.469582800011267,
+    "stable_prefix_sha256": "7f79dade9d50ba847017ef92430f21074eb25d1e8c013326fd96a90aa815ced3"
+  }
+}

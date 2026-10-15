@@ -1,0 +1,48 @@
+{
+  "protocol": "iqs.company-agent-s0-probe-addendum/1.0.0",
+  "registered_at_local_date": "2026-10-15",
+  "original_registration": "company-agent-registration-2026-10-14.json",
+  "scope": "S0 technical protocol and cache qualification only; no issuer research or scores",
+  "company_live_prerequisites_unchanged": true,
+  "new_company_send_authority_granted_by_this_file": false,
+  "user_paid_experiment_authorization": "Existing user authorization for model/search experiments and continuation with budget notice",
+  "namespace": "company-agent-live-2026-10-15-01/live-s0",
+  "models": [
+    {"provider": "deepseek", "model": "deepseek-flash", "credential_env": "DEEPSEEK_API_KEY", "endpoint": "https://api.deepseek.com/chat/completions"},
+    {"provider": "mimo", "model": "mimo-v2.6-pro", "credential_env": "MIMO_API_KEY", "endpoint": "https://api.xiaomimimo.com/v1/chat/completions"}
+  ],
+  "max_physical_http_per_model": 6,
+  "max_physical_http_total_this_addendum": 12,
+  "original_s0_max_physical_http": 24,
+  "counts_toward_original_s0_cap": true,
+  "max_external_search_http": 0,
+  "thinking": "enabled",
+  "max_output_tokens_per_request_including_reasoning": 2048,
+  "timeout_seconds_per_request": 90,
+  "max_parallel_models": 2,
+  "per_model_reservation_usd": 0.3,
+  "per_attempt_reservation_usd": 0.05,
+  "probe_order": [
+    "model-produced lookup function call with stable prefix A",
+    "actual tool result continuation, if previous step returned one valid lookup call",
+    "new session with stable prefix A and fixed record question",
+    "exact repeat of fixed record request A",
+    "third exact fixed record request A",
+    "same fixed record question with prefix B first-character control"
+  ],
+  "no_hidden_retries": true,
+  "missing_key": "record unavailable without attempting alternate credentials",
+  "unpriced_or_unknown_outcome": "retain reservation and stop that model; no blind resend",
+  "cache_cold_state": "unknown unless observed; do not infer independent cold samples",
+  "accuracy_claim": "Only deterministic protocol fixtures, never financial accuracy",
+  "retention": "safe final content, validated function arguments, hashes, counters and timing only; hidden reasoning stays in memory",
+  "price_basis": {
+    "kind": "official published USD rate-card estimate; actual billed cash and grants unknown",
+    "checked_at": "2026-10-15",
+    "deepseek_source": "https://api-docs.deepseek.com/quick_start/pricing/?helper=penn&method=individual",
+    "deepseek_per_million_usd": {"off_peak_uncached": 0.15, "off_peak_cached": 0.003, "off_peak_output": 0.6, "peak_uncached": 0.3, "peak_cached": 0.006, "peak_output": 1.2},
+    "deepseek_peak_utc": "Monday-Friday 01:00-04:00 and 06:00-10:00; otherwise off-peak; receipt interval straddling a boundary stays unpriced",
+    "mimo_source": "https://mimo.mi.com/models/en-US/mimo-v2.6-pro",
+    "mimo_per_million_usd": {"uncached": 0.435, "cached": 0.0036, "output": 0.87}
+  }
+}

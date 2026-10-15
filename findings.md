@@ -1,4 +1,16 @@
+## 2026-10-15 — S0真实发现：缓存有效，脱敏收据计价必须兼容
+
+DeepSeek和MiMo Pro思考模式真实工具回传通过，稳定前缀记录请求分别缓存2688/2860、3200/3320输入token，首字符变更对照均0；不能据此推算公司准确率或完整agent费用。12真实HTTP/0搜索，公开价估算USD0.004517，实际账单未知。[结果](docs/implementation/experiments/company-agent-s0-results-2026-10-15.md)。
+
+真实薄弱点：计价resolver输入是原StockQA脱敏收据，保留completed_at而去掉started_at；回调读取后者触发保留预留并暂停。应使用完整有界admission窗口判价，跨区仍未知；不能加字段改变旧hash口径，也不能将缺值当0。原DeepSeek响应保留，原API结算再有限接续，没有SQL补账或重置。首次报告器将工具轮次判最终答案的false也保留原件，在衍生报告区分。
+
+新ResearchChatSession仅传输原语，支持实际tools/results、私有内存reasoning、无重试metered pool、强制预算、模型/JSON/未知计量拒绝、远程schema引用拒绝；不等于Lab真实RuntimePort/owner_public/盲评桥已接通。源提交41763bf、正常hooks全过，最终精确候选42P/2既有基线deselect，原SDK不重造。
+
 ## 2026-10-15 — 真实实验与旧恢复任务可以隔离推进
+
+本轮接线核源：StockQA HEAD205b74903b112f9e41218efb71f84a14353f8375、Company Lab HEAD51b5b3e18ef3d30c1f240b988d64a0b28fc001b1，tracked业务无变动。外仓沙箱内 `git -C` 读状态曾 Permission denied，沙箱外只读成功，不把它误判为活动writer。DeepSeek thinking文档直接open/click两次超时，改官方站内搜索获取同页内容；官方说明携带tools时历史reasoning_content需回传。MiMo官方deep-thinking/API页同样要求多轮回传；只在私有进程内保留，不导出正文。DeepSeek与MiMo均用function工具实际结果回传，不伪插模型未生成的tool call。
+
+技术来源：[DeepSeek thinking](https://api-docs.deepseek.com/guides/thinking_mode/)、[DeepSeek tools](https://api-docs.deepseek.com/guides/tool_calls/)、[MiMo thinking](https://mimo.mi.com/docs/zh-CN/quick-start/usage-guide/text-generation/deep-thinking)。官方协议核对不是live资格通过。研究端口在 runs/company-agent-live-2026-10-15-01/candidate 隔离开发，外仓源代码此时尚未改动。
 
 旧25项已发送任务的结案不应阻挡新 Company agent 开发实验：使用新命名空间、admission 与计费记录，保持原账本及其真实确认不变。当前 StockQA `LLMClient.send_search_request` 是单 prompt 传输，`send_request` 只返回字符串；尚不能直接承接 Lab 的完整上下文、多轮工具及计量协议。现有 metered session 禁自动付费重试、既有 durable budget/send 边界可复用，不应在 Lab 另造客户端。
 

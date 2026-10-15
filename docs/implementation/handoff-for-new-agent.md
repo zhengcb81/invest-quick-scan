@@ -1,3 +1,11 @@
+## 最新实证覆盖 — 2026-10-15，真实 S0 已完成
+
+不要重做S0或传输SDK。StockQA源码41763bf1e933578f4cc214b354680950b973fdf5已正常提交，原hooks/mypy/secret全过，tracked业务clean；新增ResearchChatSession并复用原预算/HTTP，原transport仅6行断言。最终精确候选集中42P/2旧基线问题明确排除，日志 runs/company-agent-live-2026-10-15-01/logs/offline-013.*。
+
+DeepSeek flash与MiMo Pro真实各6HTTP/总12、无搜索，工具回传/思考/缓存正对照通过，公开价估算USD0.004517、现金账单未知；仅合成协议题，不是公司准确率。DeepSeek首段计价错误已用原API核真实usage结算，原件保留，随后同一cap剩5次接续，实际两预算库均6 response/6terminal、无inflight/未定价。原首段/接续进程均exit0，无后台任务可等待。[实测报告](../experiments/company-agent-s0-results-2026-10-15.md)。
+
+下一动作：已交付SDK之上接Lab真实RuntimePort/owner_public及新主体/admission、ResearchRun1.1→盲评显式桥和独立参考；先原三公司开发集取一家公司三策略S1，计入原组/分母，核源即交小结果。不能借旧IQS01批准发新12题；S0两模型各6次已用完，补测须新登记而非重置。原work19/旧13请求与CNY1.268162/4checkpoint及他人README原SHA保持，旧25项后置，所有金融/生产门未关闭。不重验Lab工程、不重派包或新增helper门。
+
 ## 最新接续覆盖 — 2026-10-15，先运行真实 Company agent 对照
 
 用户追问为何真实准确性/成本/速度尚未验证。旧“先25项结案、再实验”的安排已后置，不要再照旧顺序推进。下一动作：补 StockQA versioned RuntimePort 并接真实新 admission/独立参考及盲评桥，S0 后先跑已选开发集一家公司三策略，核源后立刻交小结果，再完成三公司 S1/S2及手册。详见[执行说明](../experiments/company-agent-live-sequencing-2026-10-15.md)与 root task_plan 唯一 Next Step。

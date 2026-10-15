@@ -1,0 +1,54 @@
+{
+  "label": "tool-start",
+  "status": "response",
+  "result": {
+    "protocol": "stockqa.research-step/1.0.0",
+    "content": "",
+    "tool_calls": [
+      {
+        "id": "call_6d6d24b101a64c60864c763c",
+        "name": "lookup",
+        "arguments": {
+          "key": "HIDDEN"
+        }
+      }
+    ],
+    "finish_reason": "tool_calls",
+    "receipt": {
+      "provider": "mimo",
+      "attempt_id": "8bb3742a-0dcf-4fc9-b525-cf3a6ddf3b6a",
+      "work_attempt_id": "DISPATCH_c15d0450e9134808bbfb52d69a2c7404",
+      "requested_model": "mimo-v2.6-pro",
+      "actual_model": "mimo-v2.6-pro",
+      "response_id": "62333e21-ddf8-4ba5-a0a1-01e1e4e840db_9e43d4b15c1b4b429afaba0704af2412",
+      "request_id": null,
+      "http_status_code": 200,
+      "search_protocol": "mimo_chat_completions",
+      "search_status": "not_requested",
+      "started_at": "2026-10-15T17:34:27.819783Z",
+      "completed_at": "2026-10-15T17:34:33.860261Z",
+      "request_payload_sha256": "3247838056e92f465af5051a7a3f550ca911dd139174c0deb5434d1e46f0e673",
+      "prompt_sha256": "ac83ff7251216df7370557bf5a023dd736539205006ca99cfde5efc03f7c689b",
+      "response_sha256": "ca8d8e0f337d36b7e3097a750eb01225481f586a1209b87e690cbd2fd197963e",
+      "response_json_basis": "strict_http_json",
+      "model_resolution_sha256": "33fd553ae77196f16dfaaa2ec95719a90bab948a46f6aad799eace9b797d8f76",
+      "usage": {
+        "schema": "quick-scan-usage-v1",
+        "input_tokens": 3319,
+        "cached_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "output_tokens": 36,
+        "reasoning_output_tokens": 18,
+        "search_tool_calls": 0
+      }
+    },
+    "usage_observation": {
+      "prompt_tokens": 3319,
+      "cached_input_tokens": 0,
+      "output_tokens_including_reasoning": 36,
+      "reasoning_output_tokens": 18
+    },
+    "elapsed_seconds": 6.056995499995537,
+    "stable_prefix_sha256": "7f79dade9d50ba847017ef92430f21074eb25d1e8c013326fd96a90aa815ced3"
+  }
+}
