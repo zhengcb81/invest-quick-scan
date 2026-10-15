@@ -1,3 +1,9 @@
+## 2026-10-15 — 可独立并行的下一层边界
+
+执行桥、独立参考内容、盲评/比较消费者可按三个新物理根拆分。RUN复用真实SDK与原三策略，不造HTTP/队列；REF复用旧FIN线索但针对原36槽真核官方网页，expected_score不造；EVAL消费共同ResearchRun1.1，复用原BLIND，不猜Observation。共享接口在准备时冻结，内部扩展新版本不破坏旧schema，工人互不读对方新目录即可开发。
+
+真实授权与oracle资格不宜外包给样例生成：总控保留原生主体/admission及最终核源签收；参考资格接缝缺省not_qualified，不能JSON自填true。快照含完整选定源码/fixtures依赖，但不是完整Git checkout；FIN原缺口/null与S0仅技术数据都明确保留。新卡准备不等于已派发，不增加逐helper门。
+
 ## 2026-10-15 — S0真实发现：缓存有效，脱敏收据计价必须兼容
 
 DeepSeek和MiMo Pro思考模式真实工具回传通过，稳定前缀记录请求分别缓存2688/2860、3200/3320输入token，首字符变更对照均0；不能据此推算公司准确率或完整agent费用。12真实HTTP/0搜索，公开价估算USD0.004517，实际账单未知。[结果](docs/implementation/experiments/company-agent-s0-results-2026-10-15.md)。

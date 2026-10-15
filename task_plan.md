@@ -1,3 +1,11 @@
+## 2026-10-15 — 三个真实实验后续独立施工包已准备，未派发
+
+用户要求可独立交harness的大包，已形成[本波总览](docs/implementation/parallel-lanes/packages/2026-10-15-agent-live/README.md)及统一接口、锁、targets、交接模板。AGENT-RUN-02独占iqs-agent-runtime-lab（真实执行桥/owner_public候选），AGENT-REF-02独占iqs-agent-reference-lab（36槽核源参考），AGENT-EVAL-02独占iqs-agent-evaluation-lab（Run1.1盲评与比较）。三个新根准备时均不存在，未创建、未自动派发；各包不写任何源仓、其他包或共享PWF，默认不发收费请求。只有REF允许harness自带官方HTML检索，禁止文档下载。
+
+冻结5来源3703文件/58173840 bytes，包含StockQA41763bf、Company51b5b3e、BLIND281b7a6、FIN5dc988b及IQS54d44a0选定输入和真实S0安全回执；原三公司×12题与原question hash保持。各包以冻结接口/合成测试独立开发，不等另一包的新交付，不伪造真实owner/金融gold。形状/准备校验仅说明卡可交，不关闭任何产品或金融门。
+
+总控保留真实StockWiki主体/新admission、实际收费派发、独立参考资格签收和最终集成；不同时开发这三包候选。主线继续为一家公司真实S1三策略对照；先做与三包不重叠的新实验主体/原生准入准备，不拿新卡推迟实验或重做S0。S0交付/root54d44a0与StockQA41763bf均已推送。用户派发后再登记活动writer，不将“准备”当“开工”。
+
 ## 当前进度 — 2026-10-15，真实 S0 已完成，下一步公司级对照接线
 
 已交付 StockQA 多轮思考/函数工具传输原语，正常提交41763bf1e933578f4cc214b354680950b973fdf5（原hooks含mypy/secret全过，源tracked业务clean）。最终精确交付候选集中42P，2项旧基线问题明确排除并保留；25研究反例+14预算+3计量/报告，不称全仓绿。
@@ -855,7 +863,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（2026-10-15，S0已真实完成）：** 复用已提交StockQA ResearchChatSession与原发送前预留/计费，接 Company Lab 的真实 RuntimePort及owner_public任务/回执、对应新主体/admission、ResearchRun1.1→盲评显式adapter与独立参考资格。先原开发集一家公司三策略S1小结果（归入原组/分母），核源后即交结果，再三公司S1/S2及手册。S0两模型各6次已用完，不重跑/重置；12次HTTP仅协议题，不能宣称公司准确性/经济性胜出。旧25项结案后置，旧work19/4checkpoint/13次费用保持，不借旧IQS01批准发新12题。既有工程不重验/重派，只在大节点集中检验；金融/G3/F05/生产UI/一键/全池继续开放。
+**当前唯一接续（2026-10-15，S0已完成/三包已准备未派发）：** 总控先准备与三包不重叠的一家公司新实验真实主体/owner配置、原生admission与独立收费namespace/预算；只读预检后按既有授权走真实入口，不借旧IQS01批准。RUN/REF/EVAL候选留给用户选择派发，不创建其writer；收到后按冻结合同一次集中验收/集成。最终仍须接真实RuntimePort/owner_public、Run1.1盲评与独立参考，先一家公司S1三策略并核源即交小结果，再三公司S1/S2及手册；这些尚未完成。复用ResearchChatSession，不重做S0（两模型各6次已用完）或已签收工程。旧25项后置，原work19/4checkpoint/13次CNY费用不动；金融/G3/F05/生产UI/一键/全池保持开放。
 
 **历史接续（用户确认及首条apply已完成）：** 等用户在真实终端运行本机 `runs/b01-resume-2026-10-14-01/confirm_first_native_work.py` 并完成原生CONFIRM，再核原namespace实际rc1记录，按[精确参数与隔离边界](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)走原QA apply；不能自动填写挑战、构造confirmation或提前迁移/重发。原work仍18，26请求可派生不代表已批准；当前policy仅原IQS_01/Pro。用户后续总体授权持续有效，不再泛问权限；Company外包root继续避开，金融与生产其他门保持。
 

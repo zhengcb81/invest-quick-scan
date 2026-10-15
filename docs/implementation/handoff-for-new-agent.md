@@ -1,3 +1,11 @@
+## 最新并行接续 — 2026-10-15，三包已准备未派发
+
+[独立包总览](../parallel-lanes/packages/2026-10-15-agent-live/README.md)：AGENT-RUN-02→iqs-agent-runtime-lab、AGENT-REF-02→iqs-agent-reference-lab、AGENT-EVAL-02→iqs-agent-evaluation-lab，均在Projects下新根，准备时不存在。3703文件/58173840 bytes冻结于runs/agent-wave-2026-10-15/inputs；每卡有共同接口、targets、锁与handoff模板。不要将准备当派发，也不要创建或同时开发三个候选；用户发出后再登记writer。所有源仓/原Lab/共享PWF对工人只读，无收费API/下载，REF仅官方网页核源。
+
+总控主线仍是真实公司S1小结果；可先准备新主体/owner配置/admission与独立预算namespace，不能拿旧IQS01批准发新12题。RUN/EVAL/REF分别交执行桥/盲评/参考候选后集中集成，不重造已交付ResearchChatSession、不重跑S0或已绿工程；金融/生产门仍未关闭。
+
+已推送IQS54d44a0与QA41763bf；测试temp296文件/134938624 bytes清理完，原235源文件及旧真实账本/他人README rawSHA保持。下面S0实测状态继续有效。
+
 ## 最新实证覆盖 — 2026-10-15，真实 S0 已完成
 
 不要重做S0或传输SDK。StockQA源码41763bf1e933578f4cc214b354680950b973fdf5已正常提交，原hooks/mypy/secret全过，tracked业务clean；新增ResearchChatSession并复用原预算/HTTP，原transport仅6行断言。最终精确候选集中42P/2旧基线问题明确排除，日志 runs/company-agent-live-2026-10-15-01/logs/offline-013.*。
