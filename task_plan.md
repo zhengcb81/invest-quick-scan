@@ -1,3 +1,11 @@
+## 2026-10-15 — 首家公司原生主体已核，新S1预算已建，题目/截止对齐待完成
+
+Alphabet实际StockWiki owner公共API读核通过：真实identity/perimeter、当前principal匹配、原route执行层校验通过，原30题中登记12题有11原对象相同。IQS_11被OPERATING_01按类型替换，construct相同但metric/题义不同；旧manifest截止11日，新试验截止13日。不能只改日期/题号或把旧route授权当新12题收费许可。[实际准备](docs/implementation/experiments/company-agent-owner-preparation-2026-10-15.md)。
+
+已用原Q13 API创建独立S1 work19预算库：144 HTTP/USD14.4/每次0.1预留，requests/费用/预留/并发/未对账全0；原owner policy未覆盖，未confirmation/admission/POST。原owner10文件含6库、旧work/费用与他人README rawSHA保持。
+
+已在第一条公司请求前显式登记[routed12-v1投影变体](docs/implementation/experiments/company-agent-routed12-amendment-2026-10-15.json)：原12逻辑槽/原题不改，实际题保留真实ID+外置映射，同公司三策略用同一有效题；预算/截止/重复不变，当前effective bundle未finalized/live=false。三包卡补必读owner对齐说明及独立8文件504180 bytes诊断锁；旧3703输入锁原样保留。随后只读观察REF/EVAL新根已出现，按可能活动writer避开，未自动创建/派发或据目录宣称进程活跃/交付完成；RUN在观察时尚不存在。此前“根均未创建”为准备时历史。正常模块替代对齐不要求补造真实gold或重做已签收工程。
+
 ## 2026-10-15 — 三个真实实验后续独立施工包已准备，未派发
 
 用户要求可独立交harness的大包，已形成[本波总览](docs/implementation/parallel-lanes/packages/2026-10-15-agent-live/README.md)及统一接口、锁、targets、交接模板。AGENT-RUN-02独占iqs-agent-runtime-lab（真实执行桥/owner_public候选），AGENT-REF-02独占iqs-agent-reference-lab（36槽核源参考），AGENT-EVAL-02独占iqs-agent-evaluation-lab（Run1.1盲评与比较）。三个新根准备时均不存在，未创建、未自动派发；各包不写任何源仓、其他包或共享PWF，默认不发收费请求。只有REF允许harness自带官方HTML检索，禁止文档下载。
@@ -863,7 +871,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（2026-10-15，S0已完成/三包已准备未派发）：** 总控先准备与三包不重叠的一家公司新实验真实主体/owner配置、原生admission与独立收费namespace/预算；只读预检后按既有授权走真实入口，不借旧IQS01批准。RUN/REF/EVAL候选留给用户选择派发，不创建其writer；收到后按冻结合同一次集中验收/集成。最终仍须接真实RuntimePort/owner_public、Run1.1盲评与独立参考，先一家公司S1三策略并核源即交小结果，再三公司S1/S2及手册；这些尚未完成。复用ResearchChatSession，不重做S0（两模型各6次已用完）或已签收工程。旧25项后置，原work19/4checkpoint/13次CNY费用不动；金融/G3/F05/生产UI/一键/全池保持开放。
+**当前唯一接续（2026-10-15，真实主体/独立预算已准备）：** 沿原公共routing/compose生成截止13日的新route/manifest，保留旧11日anchor历史，显式锁routed12-v1有效题投影（IQS_11类型替代不改名）；再准备实际有效field/DeepSeek/新S1预算的原生owner scope、预览/确认及QA admission，不直接覆盖旧唯一policy或借旧IQS01批准。保留三个包的writer：REF/EVAL新根已出现而正式进程/派发状态未在本线程确认，按可能活动施工避开；不据目录等待或宣称完成。收到交接后一次集中集成真实RuntimePort/owner_public、Run1.1盲评与独立参考；先一家公司S1三策略核源即交小结果，再三公司S1/S2及手册。预算库不可重置，S0不重跑，原旧账/4checkpoint/费用和金融/G3/F05/生产UI/一键/全池门保持。
 
 **历史接续（用户确认及首条apply已完成）：** 等用户在真实终端运行本机 `runs/b01-resume-2026-10-14-01/confirm_first_native_work.py` 并完成原生CONFIRM，再核原namespace实际rc1记录，按[精确参数与隔离边界](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)走原QA apply；不能自动填写挑战、构造confirmation或提前迁移/重发。原work仍18，26请求可派生不代表已批准；当前policy仅原IQS_01/Pro。用户后续总体授权持续有效，不再泛问权限；Company外包root继续避开，金融与生产其他门保持。
 

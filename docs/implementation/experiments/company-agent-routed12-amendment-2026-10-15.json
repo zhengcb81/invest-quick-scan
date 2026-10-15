@@ -1,0 +1,41 @@
+{
+  "protocol": "iqs.company-agent-registration-amendment/1.0.0",
+  "registered_before_company_requests": true,
+  "recorded_local_date": "2026-10-15",
+  "original_registration": "company-agent-registration-2026-10-14.json",
+  "benchmark_variant": "routed12-v1",
+  "applies_to": ["S1", "S2"],
+  "original_raw12_company_trials_observed": 0,
+  "original_registration_and_targets_preserved": true,
+  "reason": "Native owner manifest correctly replaces generic IQS_11 with a company-type-specific effective question. Executing the generic question under the replacement field would misbind semantics and authority.",
+  "development_company_keys": ["catl", "cncb_h", "alphabet"],
+  "logical_construct_question_ids": ["IQS_01", "IQS_02", "IQS_04", "IQS_05", "IQS_06", "IQS_07", "IQS_10", "IQS_11", "IQS_12", "IQS_16", "IQS_18", "IQS_20"],
+  "logical_slots_per_company": 12,
+  "information_cutoff": "2026-10-13",
+  "publication_cutoff_exclusive_utc": "2026-10-14T00:00:00Z",
+  "projection_protocol": "iqs.agent-question-projection/1.0.0",
+  "projection_rule": {
+    "direct": "Use the original registered question only when present in the native effective manifest with the original question meaning and hash verified.",
+    "replacement": "If absent, require exactly one native effective question with construct_id equal to the original id and replaces explicitly containing it.",
+    "missing_or_ambiguous": "Keep the logical slot as an explicit gap; never infer from names or inject a replaced generic question.",
+    "answer_identity": "ResearchRun1.1 and original answer_content retain the actual effective question_id; a separate bound sidecar preserves the logical benchmark mapping."
+  },
+  "effective_question_bundles_finalized": false,
+  "required_before_first_company_request": [
+    "current native route and immutable owner manifest with cutoff 2026-10-13",
+    "actual subject and effective field permissions plus fresh native admission",
+    "frozen effective question objects, projection and original logical targets",
+    "shared effective questions across all strategies for the same company",
+    "explicit evaluation variant and independent eligible reference handling"
+  ],
+  "comparison_policy": "Pair strategies within the same company, model, phase and effective question definition. Do not pool raw12 history with routed12-v1, or automatically compare scores across different effective semantics.",
+  "budgets_and_repeats_changed": false,
+  "original_s1_model_http_cap": 144,
+  "original_s2_model_http_cap": 90,
+  "original_first_wave_model_http_cap": 318,
+  "s0_model_http_already_used": 12,
+  "first_company_scope": {"company_key": "alphabet", "s1_sessions": 6, "max_model_http": 48, "counts_toward_s1_144": true},
+  "live_enabled": false,
+  "permission_granted_by_this_file": false,
+  "financial_qualification_granted": false
+}

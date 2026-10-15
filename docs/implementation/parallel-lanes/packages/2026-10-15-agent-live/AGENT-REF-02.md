@@ -1,5 +1,7 @@
 # AGENT-REF-02：三公司12题的独立参考事实与评分依据
 
+**开工补充阅读：[实际owner题目投影](owner-alignment-addendum.md)。** 原36逻辑槽保留；区分通用构念与实际类型题，不把不同题/锚点当同义，不按Alphabet的经营企业变体推断证券公司。额外诊断原件仍不授oracle资格。
+
 状态：准备完成，待用户派发。唯一可写根：`C:/Users/郑曾波/Projects/iqs-agent-reference-lab`，准备时不存在。外仓、其他包、冻结输入、总控PWF及真实库均只读；开工重新核唯一writer。
 
 ## 先读与任务定位

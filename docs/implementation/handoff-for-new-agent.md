@@ -1,3 +1,11 @@
+## 最新owner接续 — 2026-10-15，实际主体已核，S1预算为0次未准入
+
+本轮根runs/company-agent-owner-2026-10-15-01。不要重跑configure_budget.py或删除execution/quick_scan_work.sqlite：原Q13 API已初始化work19/144次S1上限/14.4USD/每次0.1预留，requests/费用/预留/并发/未对账全0，没有owner grant。native-read-3为真实StockWiki/原IQS CLI读核，actual Alphabet verified/perimeter/current principal一致，旧路由层可执行不等于新12题收费授权。
+
+关键新增：旧route截止11日，注册13日；IQS_11由OPERATING_01替代，11个原题完全匹配。不得将原始12raw id强塞正式路由/改答案题号。下一步用公共routing/compose生成新的13日快照和真实anchor，按[routed12请求前变体](../experiments/company-agent-routed12-amendment-2026-10-15.json)锁有效题/投影，再准备真正owner scope/预览及QA admission。旧唯一policy未覆盖，原owner10文件/6库、旧work和他人README原字节保持。
+
+三张施工卡已加[owner对齐必读补充](../parallel-lanes/packages/2026-10-15-agent-live/owner-alignment-addendum.md)和独立8文件输入锁，原3703锁/36逻辑槽不改；额外诊断不是新授权或金融gold。最新只读观察REF/EVAL新目录已出现，按可能活动writer避开，不自开发其候选、不发消息；未据目录判定进程活跃/交付或正式派发。RUN观察时尚不存在，不擅自创建。此前guard/bytes导出错误保留日志，不把旧TypeError当当前产品阻断。完整[owner准备报告](../experiments/company-agent-owner-preparation-2026-10-15.md)。
+
 ## 最新并行接续 — 2026-10-15，三包已准备未派发
 
 [独立包总览](../parallel-lanes/packages/2026-10-15-agent-live/README.md)：AGENT-RUN-02→iqs-agent-runtime-lab、AGENT-REF-02→iqs-agent-reference-lab、AGENT-EVAL-02→iqs-agent-evaluation-lab，均在Projects下新根，准备时不存在。3703文件/58173840 bytes冻结于runs/agent-wave-2026-10-15/inputs；每卡有共同接口、targets、锁与handoff模板。不要将准备当派发，也不要创建或同时开发三个候选；用户发出后再登记writer。所有源仓/原Lab/共享PWF对工人只读，无收费API/下载，REF仅官方网页核源。

@@ -1,4 +1,16 @@
+## 2026-10-15 — Native owner揭示通用题到类型题的真实投影
+
+原Alphabet主体/周界和route由真正StockWiki公共API及原IQS CLI重新核验，未用复制fixture。登记12原题有11个对象逐字段相同；IQS_11实际由OPERATING_01取代（construct IQS_11，但field score.operating_01、题干/锚点/语义不同）。旧cutoff10-11不能冒新登记10-13。直接用原12raw id发正式owner流程会缺题/误绑定，不能为了缓存/凑12题强插通用题或给答案改名。
+
+采用显式外置question-projection与routed12-v1登记变体，保留原12逻辑槽/旧targets/raw12历史，Run1.1按实际id，不跨变体/语义混算。源和旧policy/10owner原件完全未改，新S1独立Q13预算已配置但无准入/收费。SQLite guard应在真实connect返回后设query_only；audit handle回调早于Connection初始化。原native snapshot含bytes，导出需原字节file_ref，不能把JSON序列化TypeError当route被拒。
+
+原3703输入锁rawSHA仍为已观测4e531233…；提交对象是LF（6255e11c…），工作区为CRLF，逐字节对比Git blob曾误报漂移。复核换行之外字节/JSON对象均相同，用原工作区raw基线核不变，不改原锁或把canonical相同冒raw相同。REF/EVAL目录先后出现，只读观察后按可能活动writer避开，不据目录宣称正式派发/活进程。
+
 ## 2026-10-15 — 可独立并行的下一层边界
+
+新实验owner准备已开始，三新worker根仍不存在。StockWiki当前9d411c7、StockQA41763bf，tracked业务clean；CodeGraph旧索引未覆盖新owner接口，读取已知import实际文件。确认现有owner CLI固定读workspace/config/quick_scan_refresh.json且是单一policy，不支持任意按消费者切换；不能直接覆写旧policy并声称旧scope无影响。新实验先保留实际原namespace/主体原件，独立准备参数和预算，安装时明确记录变化。
+
+读文件阶段曾误猜quick_scan_refresh_owner.py、quick_scan_refresh_policy.py和IQS quick_scan_subject_authority_cli.py，均不存在；改从实际import的IqsSubjectContract/IqsRefreshContract定位公开命令，不继续猜文件名。这些失败没有修改源仓或发API。
 
 执行桥、独立参考内容、盲评/比较消费者可按三个新物理根拆分。RUN复用真实SDK与原三策略，不造HTTP/队列；REF复用旧FIN线索但针对原36槽真核官方网页，expected_score不造；EVAL消费共同ResearchRun1.1，复用原BLIND，不猜Observation。共享接口在准备时冻结，内部扩展新版本不破坏旧schema，工人互不读对方新目录即可开发。
 

@@ -1,5 +1,7 @@
 # AGENT-RUN-02：真实研究端口与策略引擎执行桥
 
+**开工补充阅读：[实际owner题目投影](owner-alignment-addendum.md)。** 原逻辑12槽不改；task2.0显式支持原生类型替代题和旁路projection_ref，不能将OPERATING_01重命名为IQS_11。原raw12保留历史/合成兼容，真实执行按当前native题/截止/授权。
+
 状态：准备完成，待用户派发。唯一可写根：`C:/Users/郑曾波/Projects/iqs-agent-runtime-lab`。准备时不存在；开工重新核归属。**所有其他仓库、新包、快照、生产库和总控PWF只读。** 不能直接修改 StockQA 或原 Company Lab。
 
 ## 先读与范围

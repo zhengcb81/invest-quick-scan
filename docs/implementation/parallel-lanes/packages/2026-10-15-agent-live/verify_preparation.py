@@ -12,6 +12,7 @@ from pathlib import Path
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--input-root', type=Path)
+    parser.add_argument('--owner-input-root', type=Path)
     args = parser.parse_args()
     base = Path(__file__).resolve().parent
     root = base.parents[4]
@@ -62,10 +63,25 @@ def main():
         for link in re.findall(r'\]\(([^)]+)\)',p.read_text(encoding='utf-8')):
             if '://' in link or link.startswith('#'): continue
             assert (p.parent/link.split('#')[0]).is_file(),(p.name,link)
+    owner_lock = json.loads((base/'owner-alignment.inputs.lock.json').read_text(encoding='utf-8'))
+    owner_root = (args.owner_input_root or Path(owner_lock['default_input_root'])).resolve()
+    for item in owner_lock['files']:
+        p=owner_root/item['path']
+        assert p.resolve().is_relative_to(owner_root)
+        blob=p.read_bytes()
+        assert len(blob)==item['bytes'] and hashlib.sha256(blob).hexdigest()==item['sha256']
+    projection=json.loads((owner_root/'question-projection.json').read_text(encoding='utf-8'))
+    assert projection['execution_ready'] is False and projection['qualification_granted'] is False
+    assert len(projection['slots'])==12
+    assert {s['benchmark_question_id'] for s in projection['slots']}==set(expected_questions)
+    replacement=next(s for s in projection['slots'] if s['benchmark_question_id']=='IQS_11')
+    assert replacement['effective_question_id']=='OPERATING_01'
+    assert replacement['effective_field_id']=='score.operating_01' and replacement['construct_id']=='IQS_11'
     print(json.dumps({'status':'valid','scope':'preparation_only_not_worker_acceptance',
         'packages':sorted(expected_ids),'input_files':len(seen),'input_bytes':total_bytes,
         'slots_per_package':36,'template_shape_checks':3,'worker_roots_created':0,
-        'paid_calls':0,'financial_qualification':False}))
+        'paid_calls':0,'financial_qualification':False,'owner_diagnostic_files':len(owner_lock['files']),
+        'owner_diagnostic_not_execution_ready':True}))
 
 
 if __name__ == '__main__':

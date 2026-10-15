@@ -2,6 +2,8 @@
 
 准备日期：2026-10-15。**可由用户分别派发，尚未派发；总控没有创建三个新仓或启动 harness。** 把下面某张卡的完整路径交给一个 harness 即可；卡内包含共同规则、输入锁、接口及交接链接，不需要复制聊天上下文。
 
+后续观察：总控已只读见REF/EVAL新根出现，按可能活动writer避开；这不代表在本线程确认了其活进程、正式派发或交付。manifest的workers_dispatched=false/root_existed=false描述准备时状态，不能当实时施工台账。总控没有创建/派发它们，也不同时开发其候选。
+
 | 施工包 | 做什么 | 唯一可写工作目录 |
 |---|---|---|
 | [AGENT-RUN-02](AGENT-RUN-02.md) | 把已验收策略引擎与 StockQA 真实研究传输接起来；补真实任务和恢复边界 | `C:/Users/郑曾波/Projects/iqs-agent-runtime-lab` |
@@ -15,6 +17,8 @@
 现状：[S0报告](../../../experiments/company-agent-s0-results-2026-10-15.md)已真实完成12模型HTTP；两模型思考/工具回传/缓存已核验，SDK已提交并推送 StockQA `41763bf`。这不是公司准确性通过。不要重做 COMPANY-AGENT-01 或重新发 S0。原 B01 旧25项后置且账本保持。
 
 固定输入：[inputs.lock.json](inputs.lock.json)，默认快照根 `C:/Users/郑曾波/Projects/invest-quick-scan/runs/agent-wave-2026-10-15/inputs`。这是按目录选择的冻结源码/数据，不是完整 Git checkout。上游即使有新commit也继续用已锁字节；搬机器时把快照一并交接，显式传新根，不回源补文件。输入遗漏可以报告，不能默默追 latest。
+
+**开工还须读[owner对齐补充](owner-alignment-addendum.md)。** 真实预检发现IQS_11按类型替换为OPERATING_01，原逻辑槽与实际题须外置显式投影，原targets/输入锁保持。额外只读诊断输入锁与当前cutoff不符边界均在该补充内，不是新执行授权。
 
 准备校验：`python -B -X utf8 verify_preparation.py`。它只验证输入字节、36槽目标、目录边界及交接模板，不代表三个产品已经实现或金融验收通过。用户派发后，工人检查新根当前归属再初始化自己的仓/PWF；准备时不存在不等于永远不存在。
 

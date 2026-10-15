@@ -1,5 +1,7 @@
 # AGENT-EVAL-02：ResearchRun真实输入盲评桥与三策略比较
 
+**开工补充阅读：[实际owner题目投影](owner-alignment-addendum.md)。** 原12逻辑槽与Run实际qid通过显式sidecar映射，raw12与routed12-v1变体分组，不能改原答案题号或混算不同语义。公共Run1.1不改，其他两公司实际投影未提供时保留未决。
+
 状态：准备完成，待用户派发。唯一可写根：`C:/Users/郑曾波/Projects/iqs-agent-evaluation-lab`，准备时不存在，开工重查归属。任何源仓、RUN/REF新根、共享快照、总控PWF及生产数据均只读。
 
 ## 先读与已有成果
