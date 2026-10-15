@@ -1,3 +1,13 @@
+## 当前接续 — 2026-10-15：EVAL工程签收，RUN等外部审核
+
+用户最新指示：RUN先等等，那边仍在审核；总控先完成EVAL。RUN已按批准建立CodeGraph索引，仅保留初始化日志，不冻结、不验收、不改源、不启动真实调用。其正式交接已出现，不再沿用下文“RUN未交付”的历史判断。
+
+EVAL最新93c13cf交付及工人追加修复已保全；独审、真实反例、直接修复、源CAS及正常提交完成：`01956bdec2790525188451aefad0f2f6546765c0`，package0.2.0，tracked clean，无remote。完整217P、最终受影响52P、实际生成pack四CLI通过；真实Alphabet12题投影只读合同核验通过。新增显式phase/repeat/model/endpoint/cohort/raw12-routed12配对、完整盲评答案、native日志/证据/未知计量与全派生回放。314精确差异、2118原文件保持，原fixtures/旧schema不变。[总控验收](docs/implementation/experiments/agent-eval-acceptance-2026-10-15.md)。工程签收不代金融准确率，accuracy/winner仍null，Financial/G3/F05开放。
+
+## Next Step
+
+等待RUN外部审核的正式最新交接，再接真实owner/cohort/generation与多轮执行，之后才运行公司级S1对照。当前不接管RUN，不重跑S0、不提前改owner/预算/准入，不拿EVAL工程测试替代真实答案准确性。
+
 ## 2026-10-15 — REF后续修复已保全，独立核源六组残留已收口
 
 用户提示REF后续bug修复时尚未写源；重新核全部分支/状态/109文件，工人499de66的锂价、ESS链、artifact及路径修复已在cc51a26基线，本次保留。在该基线上独立只读agent实际核SEC HTML，直接纠正Cloud旧63字段、Services/广告利润范围、有限期间趋势、复合可得日期、数值门槛及会计/流动性漏gap；真实RED6F→完整61P，实际双板CLI/portable replay通过，独立复核六组已解决。REF源18精确差异正常提交b547d8dc4d3fb3ec972800061dceff66baa044ee（无remote），其他97原文件保持；36槽/43facts不变、gap27→29、资格仍false，无评分golden。128保持核对，自有temp64文件5282443 bytes清理/0剩余，API/下载/owner/预算变更0。

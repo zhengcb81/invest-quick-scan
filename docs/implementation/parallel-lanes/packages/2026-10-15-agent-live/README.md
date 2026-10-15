@@ -1,6 +1,10 @@
 # 真实公司 agent 实验：三个独立施工包
 
-准备日期：2026-10-15。**最新：REF已正式交付，总控核源并直接修复，最新独立核源纠错b547d8d/61P（原a179149/cc51a26为历史），保留工人后续bug修复，36槽/43facts不变、gap29；仍为部分参考，未授金融资格。EVAL已出现正式handoff但声明commit与当前HEAD/变动工作树未对齐，尚未冻结签收；RUN仍无约定handoff，继续保留writer边界。** 各包原输入锁保持，不自动派发；REF最新实证见[独立核源纠错](../../../experiments/alphabet-reference-independent-review-2026-10-15.md)。
+## 总控接收状态 — 2026-10-15（优先于下文历史准备状态）
+
+REF已签收b547d8d，仍无金融评分golden；EVAL工程已签收01956bdec2790525188451aefad0f2f6546765c0/package0.2.0，完整217P、末次52P及pack四CLI通过，真实12题投影仅合同校验通过，accuracy/winner仍null。原锁与原handoff不重写，新清单见EVAL coordinator-acceptance。用户最新要求RUN先等外部审核，当前不接管，不自动派发/启动，也不提前收费/owner准入。详见总控[验收记录](../../../experiments/agent-eval-acceptance-2026-10-15.md)。
+
+准备日期：2026-10-15。当前状态见上方总控接收记录；下文保留施工包原准备接口，原输入锁不追latest。
 
 总控已独立修复StockQA原生DeepSeek Chat受控发送（ee1f8c7/81P），详见[实证](../../../experiments/research-native-deepseek-chat-2026-10-15.md)。工人输入锁41763bf原样保留，最终集成显式使用新源，不默改冻结输入。
 

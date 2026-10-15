@@ -1,4 +1,10 @@
-## 2026-10-15 — REF后续修复已保全，独立核源六组残留已收口
+## 当前交接 — 2026-10-15：EVAL已提交，RUN按用户要求等待
+
+EVAL目录 `C:/Users/郑曾波/Projects/iqs-agent-evaluation-lab`，分支codex/agent-eval-02，HEAD `01956bdec2790525188451aefad0f2f6546765c0`，package0.2.0、tracked clean、无remote。工人93c13cf交付与后续修复保留；当前清单见该仓docs/handoff/AGENT-EVAL-02/coordinator-acceptance，不重签原handoff。新增compare-context/validate-context、matrix1.1/context1.0/context-bundle1.0；原ResearchRun1.0/1.1、bundle1.0和原fixtures/旧schema保持。完整217P、末次52P、生成pack四CLI、真实Alphabet12题投影纯合同通过，源314精确差异、2118保持。工程可接，实际准确率/winner仍null。
+
+[总控验收、命令位置与失败记录](experiments/agent-eval-acceptance-2026-10-15.md)。不要重复实现或派整改卡。RUN仍在外部审核，用户明确“RUN先等等，先做EVAL”；不冻结/改其业务文件，不提前收费。待其正式最新交接才做owner/cohort/generation多轮接缝；ee1f8c7只是payload兼容，不代表native单答pack已支持研究多轮。不得伪造TTY、重跑S0、提前activate/admission或据工程绿灯关Financial/G3/F05。
+
+## 2026-10-15 — REF后续修复已保全，独立核源六组残留已收口（历史）
 
 用户提示REF后续bug修复时尚未写源；重新核全部分支/状态/109文件，工人499de66的锂价、ESS链、artifact及路径修复已在cc51a26基线，本次保留。在该基线上独立只读agent实际核SEC HTML，直接纠正Cloud旧63字段、Services/广告利润范围、有限期间趋势、复合可得日期、数值门槛及会计/流动性漏gap；真实RED6F→完整61P，实际双板CLI/portable replay通过，独立复核六组已解决。REF源18精确差异正常提交b547d8dc4d3fb3ec972800061dceff66baa044ee（无remote），其他97原文件保持；36槽/43facts不变、gap27→29、资格仍false，无评分golden。128保持核对，自有temp64文件5282443 bytes清理/0剩余，API/下载/owner/预算变更0。
 

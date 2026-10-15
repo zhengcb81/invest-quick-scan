@@ -1,3 +1,11 @@
+## 2026-10-15 — EVAL工程收尾已提交，RUN继续等外部审核
+
+EVAL01956bdec2790525188451aefad0f2f6546765c0（0.2.0，无remote）已正常提交，tracked clean。保全93c13cf及工人后续修复，原版165P→10反例RED；最终完整217P/0skip、末次受影响52P、生成pack四CLI通过。真实Alphabet12题投影只读合同通过，非owner/模型准确率正例。314精确回写、2118原文件保持，原fixtures/旧schema不变。显式context解决phase/重复/模型/端点/题义配对及native日志/证据/崩溃计量、全派生回放；accuracy/winner仍null。13项保护SHA通过，自有temp/cwd清39835文件334074863 bytes/剩余0。API/搜索/下载/生产写0。[完整验收与失败记录](docs/implementation/experiments/agent-eval-acceptance-2026-10-15.md)。RUN不接管，等待审核正式交回后再接真实执行。
+
+## 2026-10-15 — 用户调整：RUN等审核，先收尾EVAL（历史过程）
+
+RUN仅完成获准的CodeGraph初始化（110files/1523nodes/1413edges）；未冻结验收或写业务文件。EVAL最新93c13cf clean交付已冻结（2289files/38081738bytes，147artifact字节与hash吻合），原版165P。独审7组问题、新10反例RED10F；候选最近整组174P/1F（消息缺ID已修，未复跑），上下文及计量改进仍在同一大节点进行。源EVAL未改，API/搜索/文档下载/生产写0。后续以本段优先于历史“EVAL仍dirty/RUN无handoff”。
+
 ## 2026-10-15 — REF后续修复已保全，独立核源六组残留已收口
 
 用户提示REF后续bug修复时尚未写源；重新核全部分支/状态/109文件，工人499de66的锂价、ESS链、artifact及路径修复已在cc51a26基线，本次保留。在该基线上独立只读agent实际核SEC HTML，直接纠正Cloud旧63字段、Services/广告利润范围、有限期间趋势、复合可得日期、数值门槛及会计/流动性漏gap；真实RED6F→完整61P，实际双板CLI/portable replay通过，独立复核六组已解决。REF源18精确差异正常提交b547d8dc4d3fb3ec972800061dceff66baa044ee（无remote），其他97原文件保持；36槽/43facts不变、gap27→29、资格仍false，无评分golden。128保持核对，自有temp64文件5282443 bytes清理/0剩余，API/下载/owner/预算变更0。

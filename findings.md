@@ -1,3 +1,15 @@
+## 2026-10-15 — EVAL工程已签收，真实准确率仍待测
+
+0.2.0/01956bd保全工人追加修复，补齐显式样本分层、完整答案、原生action/journal/证据语义和原件派生回放；完整217P、末次52P、实际pack四CLI，真实12题投影纯合同通过。原native semantic输入含module_id，单按released definition重算会错误拒绝真实投影，现调用冻结原fingerprint/renderer/metric mapper与新增独立release资源。未知崩溃保留分母、实际请求总数未知；参考可用不等于答案答对。RUN继续等待外部审核，未触业务源，真实cohort/owner多轮与金融准确率仍开放。
+
+## 2026-10-15 — 用户接续边界：RUN等待，EVAL先行（历史过程）
+
+RUN还在外部审核；初始化CodeGraph批准已执行，但不冻结、不验收、不修改其业务交付。EVAL候选只在总控自有副本修复，源93c13cf保持不写直到集中验收和CAS核对。新上下文需显式分离阶段与策略、重复/模型/初始证据/题集变体；历史合成板可读不等于native合格，不用参考“存在”代替答案准确率，不把请求数当价格。
+
+## 2026-10-15 — EVAL后续改进冻结接收
+
+按用户提醒核最新EVAL93c13cf4029d408d247a5b0182cd65facbc04808，工作树已干净；handoff payload6c65799→HEAD只改handoff元数据，是防自引用正常收尾，不沿用此前48dc6c4/51dirty结论。2289跟踪文件38081738 bytes已冻结到runs/agent-eval-acceptance-2026-10-15-01，147个artifact raw/size全部匹配。首次普通Windows路径副本写入MAX_PATH失败，在同自有根改扩展路径并验证已有片段字节相同后续完，不是产品失败。最新tests.json声称165P，progress仍79、integration-notes仍119，待实际整组验证；用户所说新增BLIND链、join collision/company derivation、正文盲化边界修复全部包含，未改源。已启动同一大节点独立只读审查与隔离整包验证，不新增helper门，不发模型/搜索或改生产数据。
+
 ## 2026-10-15 — REF后续修复已保全，独立核源六组残留已收口
 
 用户提示REF后续bug修复时尚未写源；重新核全部分支/状态/109文件，工人499de66的锂价、ESS链、artifact及路径修复已在cc51a26基线，本次保留。在该基线上独立只读agent实际核SEC HTML，直接纠正Cloud旧63字段、Services/广告利润范围、有限期间趋势、复合可得日期、数值门槛及会计/流动性漏gap；真实RED6F→完整61P，实际双板CLI/portable replay通过，独立复核六组已解决。REF源18精确差异正常提交b547d8dc4d3fb3ec972800061dceff66baa044ee（无remote），其他97原文件保持；36槽/43facts不变、gap27→29、资格仍false，无评分golden。128保持核对，自有temp64文件5282443 bytes清理/0剩余，API/下载/owner/预算变更0。
