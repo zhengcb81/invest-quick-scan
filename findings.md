@@ -1,3 +1,9 @@
+## 2026-10-15 — 真实实验与旧恢复任务可以隔离推进
+
+旧25项已发送任务的结案不应阻挡新 Company agent 开发实验：使用新命名空间、admission 与计费记录，保持原账本及其真实确认不变。当前 StockQA `LLMClient.send_search_request` 是单 prompt 传输，`send_request` 只返回字符串；尚不能直接承接 Lab 的完整上下文、多轮工具及计量协议。现有 metered session 禁自动付费重试、既有 durable budget/send 边界可复用，不应在 Lab 另造客户端。
+
+原预注册 required_before_live 仍有效；纯协议探针与公司金融准确性资格应分清，探针也需明确有限预算并计入 S0，不可借分类绕过发送控制。当前首要交付改为接线后实际 S0 及一家公司三策略结果，随后三公司对照；不再先实现旧批量恢复。完整顺序、分母和缓存/费用未知处理见[执行说明](docs/implementation/experiments/company-agent-live-sequencing-2026-10-15.md)。本次无真实请求、无新实测结论。
+
 ## 2026-10-14 晚 — COMPANY-AGENT-01 工程签收、直接修复并提交完成
 
 收到交付后冻结268文件/3487627 bytes，179 artifact原字节核验通过；总控按反例直接修复证据未真正喂模型、工具不回传、固定4题限制、计量/检查点/题号/单位/修订/证据失效与公开CLI边界。当前0.2.0默认execution_revision=2，model/search request1.0、ResearchRun/checkpoint1.1，旧1.0题库/schema/events/handoff保持原字节并按rev1兼容回放。

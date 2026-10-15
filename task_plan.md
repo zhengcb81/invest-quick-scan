@@ -1,3 +1,9 @@
+## 当前优先级 — 2026-10-15，先做 Company agent 真实对照
+
+用户追问真实准确性、成本和速度何时验证，主线即日起调整为：StockQA 研究端口及新实验 admission/真实盲评接线 → S0 → 开发集一家公司三策略小结果 → 三公司 S1/S2 → 实操手册。第一家公司核源后即交阶段结果，不等全项目完工。详见[执行顺序与口径](docs/implementation/experiments/company-agent-live-sequencing-2026-10-15.md)。
+
+**旧 B01 剩余25项结案暂后置，不是新实验的硬前置。** 旧 work19、4 checkpoint、13 HTTP 与 CNY1.268162 不变，不复用旧 IQS01 批准。工程已签收，真实 S0–S2 尚未运行；端口/新授权/独立参考与盲评桥仍须接通，不能拿 JSON 完整率代替准确性。本次只调整主线，收费 API 0，不新增 helper 审查门。下面旧日期中的“先回B01”均为历史安排，以本段和唯一 Next Step 为准。
+
 ## 2026-10-14 晚 — COMPANY-AGENT-01 工程签收、直接修复并提交完成
 
 收到交付后冻结268文件/3487627 bytes，179 artifact原字节核验通过；总控按反例直接修复证据未真正喂模型、工具不回传、固定4题限制、计量/检查点/题号/单位/修订/证据失效与公开CLI边界。当前0.2.0默认execution_revision=2，model/search request1.0、ResearchRun/checkpoint1.1，旧1.0题库/schema/events/handoff保持原字节并按rev1兼容回放。
@@ -841,7 +847,7 @@ Status: complete_for_planning_only
 
 ## Next Step
 
-**当前唯一接续（2026-10-14，Company工程已签收）：** 按[B01有界批量恢复设计](docs/implementation/plans/b01-native-batch-recovery-2026-10-14.md)实施剩余25项的有限批次与纯验证复用，先集中TDD/组合验证，再由真实原生终端批准明确批次。原IQS01不重跑，work19/4checkpoint/13次历史费用不动。Company代码94b2d181、交接51b5b3e已完成，不再等待外包/重复验收；后续接StockQA versioned RuntimePort、BLIND1.1和真实S0–S2仍待实施。Financial/G3/F05/生产UI/一键/全池保持开放；不新增helper门，不伪造确认或参考资格。
+**当前唯一接续（2026-10-15）：** 按[真实实验执行顺序](docs/implementation/experiments/company-agent-live-sequencing-2026-10-15.md)补 StockQA versioned RuntimePort，复用实际发送前预留、HTTP 和计费；接新实验自己的真实 admission 与独立参考/盲评桥，先 S0 再一家公司三策略小结果，之后完成三公司 S1/S2。当前未发真实研究请求，不能宣称准确性或缓存经济性胜出。旧25项批量结案后置，旧 work19/4checkpoint/13次费用不动，不借旧 IQS01 确认发新12题。Company工程已签收，不重复验收或派包；只在大节点集中检验，Financial/G3/F05/生产UI/一键/全池继续开放。
 
 **历史接续（用户确认及首条apply已完成）：** 等用户在真实终端运行本机 `runs/b01-resume-2026-10-14-01/confirm_first_native_work.py` 并完成原生CONFIRM，再核原namespace实际rc1记录，按[精确参数与隔离边界](docs/implementation/reviews/W15/b01-native-resume-2026-10-14.md)走原QA apply；不能自动填写挑战、构造confirmation或提前迁移/重发。原work仍18，26请求可派生不代表已批准；当前policy仅原IQS_01/Pro。用户后续总体授权持续有效，不再泛问权限；Company外包root继续避开，金融与生产其他门保持。
 

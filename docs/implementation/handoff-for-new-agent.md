@@ -1,3 +1,9 @@
+## 最新接续覆盖 — 2026-10-15，先运行真实 Company agent 对照
+
+用户追问为何真实准确性/成本/速度尚未验证。旧“先25项结案、再实验”的安排已后置，不要再照旧顺序推进。下一动作：补 StockQA versioned RuntimePort 并接真实新 admission/独立参考及盲评桥，S0 后先跑已选开发集一家公司三策略，核源后立刻交小结果，再完成三公司 S1/S2及手册。详见[执行说明](../experiments/company-agent-live-sequencing-2026-10-15.md)与 root task_plan 唯一 Next Step。
+
+Company工程已签收，不重验/重派。当前真实阶段未执行；不报准确率、缓存收益或未启动的 ETA。旧25项不是新隔离实验的硬前置，但原 work19/4checkpoint/13HTTP/CNY1.268162 与旧确认保持；新12题不能消费旧 IQS01 批准。既有用户总体授权持续有效，底层原生确认如确需应准备具体批次后说明，不反复泛问。复用 StockQA HTTP/预算，不在 IQS/Lab 造新客户端，不增加 helper 审查门。
+
 ## 2026-10-14 晚 — COMPANY-AGENT-01 工程签收、直接修复并提交完成
 
 收到交付后冻结268文件/3487627 bytes，179 artifact原字节核验通过；总控按反例直接修复证据未真正喂模型、工具不回传、固定4题限制、计量/检查点/题号/单位/修订/证据失效与公开CLI边界。当前0.2.0默认execution_revision=2，model/search request1.0、ResearchRun/checkpoint1.1，旧1.0题库/schema/events/handoff保持原字节并按rev1兼容回放。

@@ -1,3 +1,9 @@
+## 2026-10-15 — 真实 Company agent 实验提为当前主线
+
+用户追问何时实测，已纠正此前“先旧25项结案、再实验”的排序。旧结案不是新隔离实验硬前置；当前接续是 StockQA 多轮研究端口/新 admission/真实参考与盲评桥 → S0 → 一家公司逐题核源的小结果 → 三公司 S1/S2。第一家公司完成即交实际质量/费用/耗时，不等全部工程完工。[执行顺序](docs/implementation/experiments/company-agent-live-sequencing-2026-10-15.md)。
+
+本次只读核对现有端口与原预注册，未写外仓、未发收费请求、未启动后台实验。原12题/三公司/截止日/318模型HTTP首轮预算保持；旧 work19/a5e77ef…/25leased+1failed+4result_ready 与费用不变。真实研究 adapter、对应新授权和真实参考资格仍未完成，不把离线114用例通过算作实测。PWF 与新agent交接已统一优先级，不增加小节点审查。
+
 ## 2026-10-14 晚 — COMPANY-AGENT-01 工程签收、直接修复并提交完成
 
 收到交付后冻结268文件/3487627 bytes，179 artifact原字节核验通过；总控按反例直接修复证据未真正喂模型、工具不回传、固定4题限制、计量/检查点/题号/单位/修订/证据失效与公开CLI边界。当前0.2.0默认execution_revision=2，model/search request1.0、ResearchRun/checkpoint1.1，旧1.0题库/schema/events/handoff保持原字节并按rev1兼容回放。
