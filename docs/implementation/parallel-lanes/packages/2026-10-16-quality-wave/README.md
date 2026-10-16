@@ -1,3 +1,7 @@
+## 最新验收状态 — 2026-10-16
+
+本目录三包已由用户交回，总控直接修复后签收package1.0.1并分别提交；不再等待writer或重新派发。见[六包最终验收](../../../experiments/six-tools-acceptance-2026-10-16.md)的当前commit、测试与边界。旧handoff/输入锁保留历史，不代表最新状态；金融准确率和生产owner未由此通过。
+
 # 新一轮独立施工包：会话、论据、补证据
 
 2026-10-16准备，**尚未派发**。上一轮ANSWER-CODEC-03 / RESEARCH-JUDGE-03 / CACHE-PLAN-03已派发，三个旧Lab仍由其harness写入，本轮不占用这些目录。

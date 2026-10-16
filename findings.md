@@ -1,3 +1,15 @@
+## 2026-10-16 最新状态 — 六包工程已签收并提交
+
+两轮六包已正式接收，独立审查发现的问题直接修复，均升package1.0.1。最终整组426P + 跨包7P，零失败/跳过；原工人365P留历史。六仓当前commit见[总控验收](docs/implementation/experiments/six-tools-acceptance-2026-10-16.md)，均master/clean/无remote；CodeGraph已按授权初始化。原件238文件/1658956bytes及199artifact吻合，双快照764项保持。未向Lab重发施工卡；旧author_data会回写错误的再生风险也已只读化并加反例。
+
+工程签收不代金融结论：新工具离线重放保留T0 4/72及T1 15/72、T1只3场输入adapter的范围；accuracy/winner仍null。EVID撤回Chrome提案误作法院出售命令，53维before42missing/7proxy/4partial、after21missing/16proxy/16partial，充分0，不虚报24项覆盖。真实模型/搜索调用0，财报/PDF/全文下载0，生产写0。
+
+唯一主线下一步：沿原native账本处理未知请求和显式续行，再以新工具/证据/phase冻结新登记的小样本T2；不重做六包、不用旧handoff覆盖新签收、不伪造费用0或重置预算。原35attempt/USD0.207993已知小计+USD0.10未知预留保持，T2仍未跑。生产owner/金融/G3/F05仍开放。下文“施工中/未派发/验收进行中”均为历史。
+
+## 2026-10-16 六包验收：原365项通过，独立边界反例整改中
+
+六仓原件238文件/1658956bytes、199artifact SHA吻合。副本禁网/无key整组365P。已发现未知usage归零、映射/上下文未绑定、会话墙钟/恢复以及证据维度误覆盖等反例，三组独立审查和直接修复进行中；候选未签收。总控官方HTML核源发现EVID把DOJ提案标题Chrome Divestiture误作法院已命令出售，正在撤回并降级对应覆盖，见runs/six-tools-acceptance-2026-10-16-01/reviews/official-source-check.md。未下载文档/未收费调用/未改原预算和生产。
+
 ## 2026-10-16 — 新三包可独立开工，上一轮三包仍在施工
 
 按用户再次请求，已准备[新三包](docs/implementation/parallel-lanes/packages/2026-10-16-quality-wave/README.md)：SESSION-PACK-04→iqs-session-packing-lab（公司共享证据、问题包短会话/累计额度与恢复）；CLAIM-GUARD-04→iqs-claim-guard-lab（会计口径/论据检查及纯数据critic输入）；EVID-GAP-04→iqs-evidence-gap-lab（逐题缺口、官方短证据增补及离线计划）。395文件/5598707bytes已冻结；独立发布审查3项接口歧义修正后无阻断，搬迁/篡改/缺文件/旧writer重叠反例及链接通过，测试副本406文件5700689bytes清理/剩余0。三个新根准备时不存在，尚未派发；旧CODEC/JUDGE/CACHE已派发，六根互不重叠，不写任何活动Lab。
