@@ -1,3 +1,17 @@
+## 2026-10-16 — 三个独立包已可分发，真实T2接线继续
+
+[施工包总入口](docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/README.md) 已完成397输入冻结、全量/子集/搬迁及四个拒绝反例，清理398测试文件/8866481bytes、剩余0；三根不存在、未派发。锁SHA6b8d7e88df3cbc4aa9fb92bf7a181d4bee67f9bc098a59fa1bedd1e4591ce591。新研究控制器真实SDK注入/六工具接线，旧11+新8项隔离测试19P；尚未发T2请求。原native显式未知封存/单调策略扩展候选19P，原完整回归进行中。下一步部署已验证native最小变更，冻结首批两模型三策略登记并真实发包；旧未知不归零不重试，准确性盲评后才解盲经济性。
+
+## 2026-10-16 — 六工具真实对照与独立施工包（进行中）
+
+用户明确继续真实模型准确性/成本/速度对照，准确性第一，并要求结论固化实操手册及独立施工包。总控保留六包1.0.1签收，开始新T2研究分支；不是重跑旧T1或开启2000公司扫描。三线并行：原native账未知封存候选（只写隔离副本，原USD0.10保留）、总控六工具接线/分阶段真实对照、三张互不重叠的外包卡编制（未派发）。
+
+四个大阶段：①原生显式独立任务续行和实验协议/输入锁；②新driver离线关键回归及小批真实canary；③按准确性先行规则扩展不同模型、打包、critic和检索证据处理组并独立盲评；④费用/耗时/缓存解盲分析、明确结论和实操手册，提交/PWF归档。只在这些整组节点集中检查，不逐helper审批。独立包为两司经营参考与离线实验查看器，不与主线driver/native SDK争写。
+
+当前已有DEEPSEEK/MIMO/MIMO_PLAN/MINIMAX/BRAVE/TAVILY/ZAI环境变量，仅读取是否存在，不落key。官方MiMo Pro和MiniMax M3价表已读，DeepSeek价表首次读取timeout将换官方页面入口核实。ResearchChatSession现仅准入DeepSeek和MiMo，不凭API兼容臆测MiniMax可接；不同模型实测能力范围分别记录。原policy144请求/14.40美元先沿用，未生效提高上限，不新建store/policy绕过；用户原350/$25及后来超额报备授权仍保留。
+
+本轮真实请求尚未发；原S1累计35attempt/207993micros已知/100000micros未知预留不变。唯一下一步：完成原native未知seal的隔离回归及明确任务scope接入，再按新登记发首批T2。
+
 ## 2026-10-16 最新状态 — 六包工程已签收并提交
 
 两轮六包已正式接收，独立审查发现的问题直接修复，均升package1.0.1。最终整组426P + 跨包7P，零失败/跳过；原工人365P留历史。六仓当前commit见[总控验收](docs/implementation/experiments/six-tools-acceptance-2026-10-16.md)，均master/clean/无remote；CodeGraph已按授权初始化。原件238文件/1658956bytes及199artifact吻合，双快照764项保持。未向Lab重发施工卡；旧author_data会回写错误的再生风险也已只读化并加反例。

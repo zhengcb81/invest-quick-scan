@@ -1,0 +1,4112 @@
+{
+  "protocol": "iqs.parallel-source-requests/1.0.0",
+  "status": "proposed_inputs_not_frozen",
+  "prepared_on": "2026-10-16",
+  "default_snapshot_root": "C:/Users/郑曾波/Projects/invest-quick-scan/runs/real-experiment-parallel-2026-10-16/inputs",
+  "cutoff": "2026-10-13",
+  "base_question_cutoff": "2026-10-11",
+  "workers_dispatched": false,
+  "source_roots": {
+    "iqs": {
+      "root": "C:/Users/郑曾波/Projects/invest-quick-scan",
+      "authority": "exact selected raw working-tree bytes"
+    },
+    "financial-parent": {
+      "root": "C:/Users/郑曾波/Projects/iqs-financial-reference-lab",
+      "expected_pack_protocol": "iqs.financial_reference_pack/1.2.0"
+    },
+    "financial-catl": {
+      "root": "C:/Users/郑曾波/Projects/iqs-reference-catl-lab",
+      "expected_pack_protocol": "iqs.financial_reference_pack/1.1.0"
+    },
+    "financial-csc": {
+      "root": "C:/Users/郑曾波/Projects/iqs-reference-csc-lab",
+      "expected_pack_protocol": "iqs.financial_reference_pack/1.1.0"
+    },
+    "tool-codec": {
+      "root": "C:/Users/郑曾波/Projects/iqs-answer-codec-lab",
+      "expected_commit": "fdff607e8bc4401b8a908472761d072c3e0c9ef2",
+      "expected_package_version": "1.0.1",
+      "authority": "accepted report; stop on HEAD drift, no latest fallback"
+    },
+    "tool-judge": {
+      "root": "C:/Users/郑曾波/Projects/iqs-research-judge-lab",
+      "expected_commit": "4c674ae1b1e054fdfd40a7307c30fd317152c64f",
+      "expected_package_version": "1.0.1",
+      "authority": "accepted report; stop on HEAD drift, no latest fallback"
+    },
+    "tool-cache": {
+      "root": "C:/Users/郑曾波/Projects/iqs-cache-planner-lab",
+      "expected_commit": "245ee603ba9e1a90ff514b996e8ab33d26fecdf7",
+      "expected_package_version": "1.0.1",
+      "authority": "accepted report; stop on HEAD drift, no latest fallback"
+    },
+    "tool-session": {
+      "root": "C:/Users/郑曾波/Projects/iqs-session-packing-lab",
+      "expected_commit": "fee65997a456cae0cef8fc9a53ebe36ba70f2dd2",
+      "expected_package_version": "1.0.1",
+      "authority": "accepted report; stop on HEAD drift, no latest fallback"
+    },
+    "tool-claim": {
+      "root": "C:/Users/郑曾波/Projects/iqs-claim-guard-lab",
+      "expected_commit": "e383e6cb65b72c740a0da9c4e318335de5e819c8",
+      "expected_package_version": "1.0.1",
+      "authority": "accepted report; stop on HEAD drift, no latest fallback"
+    },
+    "tool-evidence": {
+      "root": "C:/Users/郑曾波/Projects/iqs-evidence-gap-lab",
+      "expected_commit": "af0bdea55b03a41e0a452fef71e68dc00f13eaf0",
+      "expected_package_version": "1.0.1",
+      "authority": "accepted report; stop on HEAD drift, no latest fallback"
+    }
+  },
+  "packages": [
+    {
+      "package_id": "OPERATING-CATL-05",
+      "workspace": "C:/Users/郑曾波/Projects/iqs-operating-catl-lab",
+      "workspace_existed_at_card_preparation": false
+    },
+    {
+      "package_id": "OPERATING-CSC-05",
+      "workspace": "C:/Users/郑曾波/Projects/iqs-operating-csc-lab",
+      "workspace_existed_at_card_preparation": false
+    },
+    {
+      "package_id": "EXPERIMENT-DESK-05",
+      "workspace": "C:/Users/郑曾波/Projects/iqs-experiment-desk-lab",
+      "workspace_existed_at_card_preparation": false
+    }
+  ],
+  "instructions": [
+    "Coordinator freezes each exact byte and records actual HEAD, bytes, raw SHA256 and consumers in inputs.lock.json before release.",
+    "No wildcard or latest fallback; required missing source is a release error, never fabricate it.",
+    "Do not include private unblind maps, keys, provider raw/hidden reasoning, budget DBs or production stores.",
+    "Single-card handoff includes common docs, lock and all consumers subset; other-package-only files need not travel.",
+    "This request is not an executed snapshot, software test result or dispatch authorization."
+  ],
+  "files": [
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/contracts/goldens/stockwiki-real-catl-2026-10-07.json",
+      "destination_path": "identity/catl.json",
+      "consumers": [
+        "OPERATING-CATL-05"
+      ],
+      "purpose": "real read-only StockWiki DTO; preserve provisional state",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/c16b/formal-routes/catl-questions/manifest.json",
+      "destination_path": "questions/catl/manifest.json",
+      "consumers": [
+        "OPERATING-CATL-05"
+      ],
+      "purpose": "original 2026-10-11 question set; preserve bytes and cutoff",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/c16b/formal-routes/catl-questions/questions.json",
+      "destination_path": "questions/catl/questions.json",
+      "consumers": [
+        "OPERATING-CATL-05"
+      ],
+      "purpose": "original 2026-10-11 question set; preserve bytes and cutoff",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/contracts/goldens/stockwiki-real-cncb_h-2026-10-07.json",
+      "destination_path": "identity/cncb_h.json",
+      "consumers": [
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "real read-only StockWiki DTO; preserve provisional state",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/c16b/formal-routes/cncb_h-questions/manifest.json",
+      "destination_path": "questions/cncb_h/manifest.json",
+      "consumers": [
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "original 2026-10-11 question set; preserve bytes and cutoff",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/c16b/formal-routes/cncb_h-questions/questions.json",
+      "destination_path": "questions/cncb_h/questions.json",
+      "consumers": [
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "original 2026-10-11 question set; preserve bytes and cutoff",
+      "required": true
+    },
+    {
+      "source_root": "financial-parent",
+      "source_path": "content/reference-pack.json",
+      "destination_path": "financial/parent/reference-pack.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "accepted partial parent financial reference, no scalar recomputation",
+      "required": true
+    },
+    {
+      "source_root": "financial-parent",
+      "source_path": "content/calculation-ledger.json",
+      "destination_path": "financial/parent/calculation-ledger.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "accepted partial parent financial reference, no scalar recomputation",
+      "required": true
+    },
+    {
+      "source_root": "financial-parent",
+      "source_path": "content/parent-scope-restoration.json",
+      "destination_path": "financial/parent/parent-scope-restoration.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "accepted partial parent financial reference, no scalar recomputation",
+      "required": true
+    },
+    {
+      "source_root": "financial-parent",
+      "source_path": "schemas/calculation_ledger.schema.json",
+      "destination_path": "financial/parent/schemas/calculation_ledger.schema.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "financial carrier schemas",
+      "required": true
+    },
+    {
+      "source_root": "financial-parent",
+      "source_path": "schemas/financial_reference_pack-1.1.0.schema.json",
+      "destination_path": "financial/parent/schemas/financial_reference_pack-1.1.0.schema.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "financial carrier schemas",
+      "required": true
+    },
+    {
+      "source_root": "financial-parent",
+      "source_path": "schemas/financial_reference_pack-1.2.0.schema.json",
+      "destination_path": "financial/parent/schemas/financial_reference_pack-1.2.0.schema.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "financial carrier schemas",
+      "required": true
+    },
+    {
+      "source_root": "financial-parent",
+      "source_path": "schemas/financial_reference_pack.schema.json",
+      "destination_path": "financial/parent/schemas/financial_reference_pack.schema.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "financial carrier schemas",
+      "required": true
+    },
+    {
+      "source_root": "financial-parent",
+      "source_path": "README.md",
+      "destination_path": "financial/parent/README.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "current qualification and runtime version",
+      "required": true
+    },
+    {
+      "source_root": "financial-catl",
+      "source_path": "content/reference-pack.json",
+      "destination_path": "financial/catl/reference-pack.json",
+      "consumers": [
+        "OPERATING-CATL-05"
+      ],
+      "purpose": "read-only child reference; conflicts become gaps",
+      "required": true
+    },
+    {
+      "source_root": "financial-catl",
+      "source_path": "content/calculation-ledger.json",
+      "destination_path": "financial/catl/calculation-ledger.json",
+      "consumers": [
+        "OPERATING-CATL-05"
+      ],
+      "purpose": "read-only child reference; conflicts become gaps",
+      "required": true
+    },
+    {
+      "source_root": "financial-catl",
+      "source_path": "README.md",
+      "destination_path": "financial/catl/README.md",
+      "consumers": [
+        "OPERATING-CATL-05"
+      ],
+      "purpose": "child correction and qualification boundary",
+      "required": true
+    },
+    {
+      "source_root": "financial-csc",
+      "source_path": "content/reference-pack.json",
+      "destination_path": "financial/cncb_h/reference-pack.json",
+      "consumers": [
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "read-only child reference; conflicts become gaps",
+      "required": true
+    },
+    {
+      "source_root": "financial-csc",
+      "source_path": "content/calculation-ledger.json",
+      "destination_path": "financial/cncb_h/calculation-ledger.json",
+      "consumers": [
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "read-only child reference; conflicts become gaps",
+      "required": true
+    },
+    {
+      "source_root": "financial-csc",
+      "source_path": "README.md",
+      "destination_path": "financial/cncb_h/README.md",
+      "consumers": [
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "child correction and qualification boundary",
+      "required": true
+    },
+    {
+      "source_root": "financial-csc",
+      "source_path": "content/parent-scope-quarantine.json",
+      "destination_path": "financial/cncb_h/parent-scope-quarantine.json",
+      "consumers": [
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "parent/group negative boundary, not new truth",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "schemas/quick_scan/identity.schema.json",
+      "destination_path": "identity/schemas/identity.schema.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "identity schema, no formal upgrade",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "schemas/quick_scan/identity-mapping-dto.schema.json",
+      "destination_path": "identity/schemas/identity-mapping-dto.schema.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "identity schema, no formal upgrade",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "schemas/quick_scan/identity-wire-profile.schema.json",
+      "destination_path": "identity/schemas/identity-wire-profile.schema.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05"
+      ],
+      "purpose": "identity schema, no formal upgrade",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/experiments/six-tools-acceptance-2026-10-16.md",
+      "destination_path": "rules/six-tools-acceptance-2026-10-16.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed measurement and acceptance limits",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/experiments/company-agent-isolated-t0-results-2026-10-16.md",
+      "destination_path": "rules/company-agent-isolated-t0-results-2026-10-16.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed measurement and acceptance limits",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/experiments/company-agent-bounded3-results-2026-10-16.md",
+      "destination_path": "rules/company-agent-bounded3-results-2026-10-16.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed measurement and acceptance limits",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "references/common-framework.md",
+      "destination_path": "rules/common-framework.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "original answer and rating semantics",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "references/scoring.md",
+      "destination_path": "rules/scoring.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "original answer and rating semantics",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "references/standard-output.md",
+      "destination_path": "rules/standard-output.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "original answer and rating semantics",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/answer-schema.json",
+      "destination_path": "trial-t0/answer-schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/evidence-board.json",
+      "destination_path": "trial-t0/evidence-board.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-evidence_agent-r1/events.jsonl",
+      "destination_path": "trial-t0/execution/s1r-alphabet-evidence_agent-r1/events.jsonl",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-evidence_agent-r1/result.json",
+      "destination_path": "trial-t0/execution/s1r-alphabet-evidence_agent-r1/result.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-evidence_agent-r2/events.jsonl",
+      "destination_path": "trial-t0/execution/s1r-alphabet-evidence_agent-r2/events.jsonl",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-evidence_agent-r2/result.json",
+      "destination_path": "trial-t0/execution/s1r-alphabet-evidence_agent-r2/result.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-fixed3-r1/events.jsonl",
+      "destination_path": "trial-t0/execution/s1r-alphabet-fixed3-r1/events.jsonl",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-fixed3-r1/result.json",
+      "destination_path": "trial-t0/execution/s1r-alphabet-fixed3-r1/result.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-fixed3-r2/events.jsonl",
+      "destination_path": "trial-t0/execution/s1r-alphabet-fixed3-r2/events.jsonl",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-fixed3-r2/result.json",
+      "destination_path": "trial-t0/execution/s1r-alphabet-fixed3-r2/result.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-free_agent-r1/events.jsonl",
+      "destination_path": "trial-t0/execution/s1r-alphabet-free_agent-r1/events.jsonl",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-free_agent-r1/result.json",
+      "destination_path": "trial-t0/execution/s1r-alphabet-free_agent-r1/result.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-free_agent-r2/events.jsonl",
+      "destination_path": "trial-t0/execution/s1r-alphabet-free_agent-r2/events.jsonl",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/execution/s1r-alphabet-free_agent-r2/result.json",
+      "destination_path": "trial-t0/execution/s1r-alphabet-free_agent-r2/result.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/measurements.json",
+      "destination_path": "trial-t0/measurements.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/metrics.json",
+      "destination_path": "trial-t0/metrics.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/questions.json",
+      "destination_path": "trial-t0/questions.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/routing/composed/manifest.json",
+      "destination_path": "trial-t0/routing/composed/manifest.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/routing/effective-questions.json",
+      "destination_path": "trial-t0/routing/effective-questions.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/trial/routing/question-projection.json",
+      "destination_path": "trial-t0/routing/question-projection.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "curated fixed public T0 inputs/results/events",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/context-ref.json",
+      "destination_path": "trial-t1/context-ref.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/execution/s1r2-alphabet-evidence_agent-r1/events.jsonl",
+      "destination_path": "trial-t1/execution/s1r2-alphabet-evidence_agent-r1/events.jsonl",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/execution/s1r2-alphabet-evidence_agent-r1/result.json",
+      "destination_path": "trial-t1/execution/s1r2-alphabet-evidence_agent-r1/result.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/execution/s1r2-alphabet-fixed3-r1/events.jsonl",
+      "destination_path": "trial-t1/execution/s1r2-alphabet-fixed3-r1/events.jsonl",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/execution/s1r2-alphabet-fixed3-r1/result.json",
+      "destination_path": "trial-t1/execution/s1r2-alphabet-fixed3-r1/result.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/execution/s1r2-alphabet-free_agent-r1/events.jsonl",
+      "destination_path": "trial-t1/execution/s1r2-alphabet-free_agent-r1/events.jsonl",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/execution/s1r2-alphabet-free_agent-r1/result.json",
+      "destination_path": "trial-t1/execution/s1r2-alphabet-free_agent-r1/result.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/execution/summary.json",
+      "destination_path": "trial-t1/execution/summary.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/measurements.json",
+      "destination_path": "trial-t1/measurements.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/planned-sessions.json",
+      "destination_path": "trial-t1/planned-sessions.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/trial-t1/subject-provenance.json",
+      "destination_path": "trial-t1/subject-provenance.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed T1 started and planned sessions, no future dependency",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/reviews/independent-review-01.json",
+      "destination_path": "quality-reviews/independent-review-01.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "anonymous independent reviews; no inferred private slot mapping",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-quality-wave-2026-10-16/inputs/reviews/independent-review-02.json",
+      "destination_path": "quality-reviews/independent-review-02.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "anonymous independent reviews; no inferred private slot mapping",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/pricing/historical-rate-card.json",
+      "destination_path": "pricing/historical-rate-card.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "fixed historical rate card; bills unknown",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/catalog.json",
+      "destination_path": "frozen-iqs/questions/catalog.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/common.json",
+      "destination_path": "frozen-iqs/questions/common.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/diagnostics/dupont.json",
+      "destination_path": "frozen-iqs/questions/diagnostics/dupont.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/diagnostics/porter.json",
+      "destination_path": "frozen-iqs/questions/diagnostics/porter.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/diagnostics/recovery.json",
+      "destination_path": "frozen-iqs/questions/diagnostics/recovery.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/facts.json",
+      "destination_path": "frozen-iqs/questions/facts.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/agriculture.json",
+      "destination_path": "frozen-iqs/questions/industries/agriculture.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/auto.json",
+      "destination_path": "frozen-iqs/questions/industries/auto.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/construction.json",
+      "destination_path": "frozen-iqs/questions/industries/construction.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/consumer.json",
+      "destination_path": "frozen-iqs/questions/industries/consumer.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/energy_transition.json",
+      "destination_path": "frozen-iqs/questions/industries/energy_transition.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/hardware.json",
+      "destination_path": "frozen-iqs/questions/industries/hardware.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/healthcare.json",
+      "destination_path": "frozen-iqs/questions/industries/healthcare.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/industrial.json",
+      "destination_path": "frozen-iqs/questions/industries/industrial.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/internet.json",
+      "destination_path": "frozen-iqs/questions/industries/internet.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/leisure_media.json",
+      "destination_path": "frozen-iqs/questions/industries/leisure_media.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/materials.json",
+      "destination_path": "frozen-iqs/questions/industries/materials.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/medtech.json",
+      "destination_path": "frozen-iqs/questions/industries/medtech.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/other.json",
+      "destination_path": "frozen-iqs/questions/industries/other.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/professional_services.json",
+      "destination_path": "frozen-iqs/questions/industries/professional_services.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/resources.json",
+      "destination_path": "frozen-iqs/questions/industries/resources.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/retail.json",
+      "destination_path": "frozen-iqs/questions/industries/retail.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/semiconductors.json",
+      "destination_path": "frozen-iqs/questions/industries/semiconductors.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/software.json",
+      "destination_path": "frozen-iqs/questions/industries/software.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/telecom.json",
+      "destination_path": "frozen-iqs/questions/industries/telecom.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/transport.json",
+      "destination_path": "frozen-iqs/questions/industries/transport.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/industries/utilities.json",
+      "destination_path": "frozen-iqs/questions/industries/utilities.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/metric-registry.json",
+      "destination_path": "frozen-iqs/questions/metric-registry.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/overlays/acquisitive.json",
+      "destination_path": "frozen-iqs/questions/overlays/acquisitive.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/overlays/concentrated.json",
+      "destination_path": "frozen-iqs/questions/overlays/concentrated.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/overlays/controlled.json",
+      "destination_path": "frozen-iqs/questions/overlays/controlled.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/overlays/cross_border.json",
+      "destination_path": "frozen-iqs/questions/overlays/cross_border.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/overlays/distressed.json",
+      "destination_path": "frozen-iqs/questions/overlays/distressed.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/overlays/listing_structure.json",
+      "destination_path": "frozen-iqs/questions/overlays/listing_structure.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/overlays/recent_listing.json",
+      "destination_path": "frozen-iqs/questions/overlays/recent_listing.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/overlays/subsidized.json",
+      "destination_path": "frozen-iqs/questions/overlays/subsidized.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/acquisitive/3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/acquisitive/3_0_0-a4b152e238a2cf011290a19a943b75726c0218c913b4ff35db7148be647809c3.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/agriculture/3_0_0-1e96fa76068cc7e3f5af162525c0d63c9557cca6b330f5a3fa97d3c1f7b8b5e3.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/agriculture/3_0_0-1e96fa76068cc7e3f5af162525c0d63c9557cca6b330f5a3fa97d3c1f7b8b5e3.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/auto/3_0_0-c5473b0c8e961913b589de1a541f667969e2fcdac8d2cc4be2d60d280780f40d.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/auto/3_0_0-c5473b0c8e961913b589de1a541f667969e2fcdac8d2cc4be2d60d280780f40d.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/bank/3_0_0-acbde8c2b439fa17ecf4b7d1b5778aa0d2976ce1d2df10be9f20dddc0828ba07.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/bank/3_0_0-acbde8c2b439fa17ecf4b7d1b5778aa0d2976ce1d2df10be9f20dddc0828ba07.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/capital_markets/3_0_0-c36455dde5c3c037b5c55a3a6a76ab71dda9f3892af7997df5cfa3fbd6b2ef09.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/capital_markets/3_0_0-c36455dde5c3c037b5c55a3a6a76ab71dda9f3892af7997df5cfa3fbd6b2ef09.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/commercialization/3_0_0-bc404077787eb2482da70cd6d5575172bb259ad862f6add46b8959f6efbb2ae7.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/commercialization/3_0_0-bc404077787eb2482da70cd6d5575172bb259ad862f6add46b8959f6efbb2ae7.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/common/3_0_0-6900922fc077b0558df49631c2f79e7677b2888c159d29e230d269f23adfdbe3.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/common/3_0_0-6900922fc077b0558df49631c2f79e7677b2888c159d29e230d269f23adfdbe3.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/concentrated/3_0_0-2e1a0877d5de37c4a30fdfda15382a12bd967e121f4d9e9eec3cb46dea637268.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/concentrated/3_0_0-2e1a0877d5de37c4a30fdfda15382a12bd967e121f4d9e9eec3cb46dea637268.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/construction/3_0_0-dff2719ec3931ec787a09d00c17dc383ab7e4dc3750293d21f4dbde3371badef.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/construction/3_0_0-dff2719ec3931ec787a09d00c17dc383ab7e4dc3750293d21f4dbde3371badef.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/consumer/3_0_0-a9fbd08fb25c5652aa0f8b9dbd70cc89efcd9d9b84ec81d8e415192220536167.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/consumer/3_0_0-a9fbd08fb25c5652aa0f8b9dbd70cc89efcd9d9b84ec81d8e415192220536167.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/controlled/3_0_0-dd7865cb57980b6a70beadaa7df059f62d07942d12edbfdab591a589e1ce8bec.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/controlled/3_0_0-dd7865cb57980b6a70beadaa7df059f62d07942d12edbfdab591a589e1ce8bec.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/cross_border/3_0_0-1f578a9a1b8ce232bad72cd6bed4ffc4b38a61d529e1e59fe2e7f5322b44e88d.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/cross_border/3_0_0-1f578a9a1b8ce232bad72cd6bed4ffc4b38a61d529e1e59fe2e7f5322b44e88d.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/cyclical/3_0_0-3b60a73d32b454a34d1c9292d28114dfff446a13ef28b2971e36cb81f9740569.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/cyclical/3_0_0-3b60a73d32b454a34d1c9292d28114dfff446a13ef28b2971e36cb81f9740569.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/declining/3_0_0-898fc02538a4a6c60f7bca75b3aa21930392863cec07d6f601bcee86ead919e2.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/declining/3_0_0-898fc02538a4a6c60f7bca75b3aa21930392863cec07d6f601bcee86ead919e2.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/distressed/3_0_0-63d83389f9ff499d75659b846e26f2d9794df066f4b0ec2b9e9fa009066fbd23.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/distressed/3_0_0-63d83389f9ff499d75659b846e26f2d9794df066f4b0ec2b9e9fa009066fbd23.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/dupont/3_0_0-4e7b347de35c046abc5edbba8fb789ebd63a5f73ec2c9cfd9c275ae65eab76da.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/dupont/3_0_0-4e7b347de35c046abc5edbba8fb789ebd63a5f73ec2c9cfd9c275ae65eab76da.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/energy_transition/3_0_0-8142462503687ba6ad03363be38399f609945c174ff36a40f17fa37d7135165a.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/energy_transition/3_0_0-8142462503687ba6ad03363be38399f609945c174ff36a40f17fa37d7135165a.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/hardware/3_0_0-8b16d4b67c46f5cb7a0ef528d59a7c9422346ce1d60124c9c65b7ea7b93d0f1c.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/hardware/3_0_0-8b16d4b67c46f5cb7a0ef528d59a7c9422346ce1d60124c9c65b7ea7b93d0f1c.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/healthcare/3_0_0-c2193e1476fb8d555335f154bd772a254767bcce85d81a4b6864fd79ce69d769.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/healthcare/3_0_0-c2193e1476fb8d555335f154bd772a254767bcce85d81a4b6864fd79ce69d769.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/holding/3_0_0-f0bd04df47e55fbd8610205d93ce961f2ef9ff25a9f2a4de2111eb9390af6395.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/holding/3_0_0-f0bd04df47e55fbd8610205d93ce961f2ef9ff25a9f2a4de2111eb9390af6395.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/industrial/3_0_0-d8785039c9bfba72c7d91f0bca4c67236730e87b20f5a8c67a57cd0fc2f8cf47.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/industrial/3_0_0-d8785039c9bfba72c7d91f0bca4c67236730e87b20f5a8c67a57cd0fc2f8cf47.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/insurer/3_0_0-11643527ac31ac3c98394ff84c3450f469842401fa76db3334411af6201571ad.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/insurer/3_0_0-11643527ac31ac3c98394ff84c3450f469842401fa76db3334411af6201571ad.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/internet/3_0_0-83e50d37ffc2280835c7af5bf9e8d7e0a46a62de6455892fa129c71f1a5604c4.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/internet/3_0_0-83e50d37ffc2280835c7af5bf9e8d7e0a46a62de6455892fa129c71f1a5604c4.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/leisure_media/3_0_0-f34ad9cc846927128489b168617eb92fcd34f9e2c1d90255d1a84594c8ed82a7.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/leisure_media/3_0_0-f34ad9cc846927128489b168617eb92fcd34f9e2c1d90255d1a84594c8ed82a7.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/listing_structure/3_0_0-e5094e21540a73fe777b9bff615497cec5e75e72326541f080d0f986821d77ba.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/listing_structure/3_0_0-e5094e21540a73fe777b9bff615497cec5e75e72326541f080d0f986821d77ba.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/materials/3_0_0-5375e7c4623c0c54f081eb3c4607b974cdc426081a6182b194d5015989546b2e.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/materials/3_0_0-5375e7c4623c0c54f081eb3c4607b974cdc426081a6182b194d5015989546b2e.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/mature/3_0_0-b0eb8ef0b99692835a051080d21a0d604fc99899df28a69e1066a6ad61bf356b.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/mature/3_0_0-b0eb8ef0b99692835a051080d21a0d604fc99899df28a69e1066a6ad61bf356b.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/medtech/3_0_0-ac54ae9e8c53384595250775ce2330b357640790389f40f0d1e9c65642f3629d.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/medtech/3_0_0-ac54ae9e8c53384595250775ce2330b357640790389f40f0d1e9c65642f3629d.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/operating/3_0_0-eb226c7923039db899de875557d7e18f32689cf8599c5957432921810b90d5d9.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/operating/3_0_0-eb226c7923039db899de875557d7e18f32689cf8599c5957432921810b90d5d9.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/other/3_0_0-44107a7b57386b783012b2a0ef077a57aadbddfddaec102bc04c7fbbac661405.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/other/3_0_0-44107a7b57386b783012b2a0ef077a57aadbddfddaec102bc04c7fbbac661405.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/porter/3_0_0-bf24920ebdabb70c4ccc68a7bd3d12213aa937344771bf4c317d8a3e4923f44d.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/porter/3_0_0-bf24920ebdabb70c4ccc68a7bd3d12213aa937344771bf4c317d8a3e4923f44d.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/pre_revenue/3_0_0-df9a8c51ae1b330ad22a1fd0b035a3df9a6d536140dd8d8f1a12dc4104b1f55c.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/pre_revenue/3_0_0-df9a8c51ae1b330ad22a1fd0b035a3df9a6d536140dd8d8f1a12dc4104b1f55c.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/professional_services/3_0_0-e2416b58b021c5dab8215f603ca2a88bb394e121b0e8f57ecf3b8437afa052db.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/professional_services/3_0_0-e2416b58b021c5dab8215f603ca2a88bb394e121b0e8f57ecf3b8437afa052db.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/property_developer/3_0_0-fae62eabe21ba1190a008f87d24c004a0e026dd722727f9e8376e066bc7dcf7a.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/property_developer/3_0_0-fae62eabe21ba1190a008f87d24c004a0e026dd722727f9e8376e066bc7dcf7a.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/property_owner/3_0_0-5e173296f09162c276bad3914bdd22310839963f30a1d3412b1384b8bf822b52.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/property_owner/3_0_0-5e173296f09162c276bad3914bdd22310839963f30a1d3412b1384b8bf822b52.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/recent_listing/3_0_0-107a8700f20ff6545152a9bd751491f4aa2577fcdb80083f5be5f68710a6f396.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/recent_listing/3_0_0-107a8700f20ff6545152a9bd751491f4aa2577fcdb80083f5be5f68710a6f396.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/recovery/3_0_0-7c169010401555458330f2d0008b297db2e3e2f4466a52f2aa8a158e306fcdaa.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/recovery/3_0_0-7c169010401555458330f2d0008b297db2e3e2f4466a52f2aa8a158e306fcdaa.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/resources/3_0_0-b5f5ebec03ebc39b0f8f34bdefd7c28bd52e24a1339aed9abffe02c86e944d43.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/resources/3_0_0-b5f5ebec03ebc39b0f8f34bdefd7c28bd52e24a1339aed9abffe02c86e944d43.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/retail/3_0_0-6f3ee9d2bfc703d0772167c500ac8ac093838885f423975b55187dd035350fab.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/retail/3_0_0-6f3ee9d2bfc703d0772167c500ac8ac093838885f423975b55187dd035350fab.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/scaling/3_0_0-682685e19cb86ec2615d1a0e543213ca4190954a08cb9d5b76edb8b94049e1f1.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/scaling/3_0_0-682685e19cb86ec2615d1a0e543213ca4190954a08cb9d5b76edb8b94049e1f1.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/semiconductors/3_0_0-5924b3398d208dbf355a17069bc649cdf3b2936d22633065f059f80282ccb180.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/semiconductors/3_0_0-5924b3398d208dbf355a17069bc649cdf3b2936d22633065f059f80282ccb180.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/software/3_0_0-20a3ca35177853596f6aa2bd67aefcb3c99cc003c18e5973b747145b0b7389e7.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/software/3_0_0-20a3ca35177853596f6aa2bd67aefcb3c99cc003c18e5973b747145b0b7389e7.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/subsidized/3_0_0-b1937cda5f401e2436b40c77c108d2ea5ffa5d32cf76098039fe1bb5a4e809b5.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/subsidized/3_0_0-b1937cda5f401e2436b40c77c108d2ea5ffa5d32cf76098039fe1bb5a4e809b5.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/telecom/3_0_0-3858afe6e41e621cbaceeb123e5bf24b8f57209a7ee23fd1a0020439fb0760d2.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/telecom/3_0_0-3858afe6e41e621cbaceeb123e5bf24b8f57209a7ee23fd1a0020439fb0760d2.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/transport/3_0_0-254df1e98979b9f7422fc39088e1c677a3ace0adecd54ec96b7eeb8bb76a46d1.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/transport/3_0_0-254df1e98979b9f7422fc39088e1c677a3ace0adecd54ec96b7eeb8bb76a46d1.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/turnaround/3_0_0-2f037de28d4beab69519bef7dc062e0e98a60de58e3827c91939da33e49f088d.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/turnaround/3_0_0-2f037de28d4beab69519bef7dc062e0e98a60de58e3827c91939da33e49f088d.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/utilities/3_0_0-a417a15bdbce282f72e58b673e19480e57bfd411effb51e978886713d50d4326.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/utilities/3_0_0-a417a15bdbce282f72e58b673e19480e57bfd411effb51e978886713d50d4326.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/artifacts/validation/3_0_0-8f1bfd4f84c6390d3dbde8e92e594f9eb2e635f266f16c90b6b2289585e273bc.json",
+      "destination_path": "frozen-iqs/questions/releases/artifacts/validation/3_0_0-8f1bfd4f84c6390d3dbde8e92e594f9eb2e635f266f16c90b6b2289585e273bc.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/current.json",
+      "destination_path": "frozen-iqs/questions/releases/current.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/locks/modrel_18c097b26b82746d3b48d9f2da4858a15ce216bce39c2572d10c2dcef23d32b9.json",
+      "destination_path": "frozen-iqs/questions/releases/locks/modrel_18c097b26b82746d3b48d9f2da4858a15ce216bce39c2572d10c2dcef23d32b9.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/locks/modrel_8f5c8bf1b28e6e36e650af246b0e6730bb3c86265b38cbea1d5c1b81c624f945.json",
+      "destination_path": "frozen-iqs/questions/releases/locks/modrel_8f5c8bf1b28e6e36e650af246b0e6730bb3c86265b38cbea1d5c1b81c624f945.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/locks/modrel_e12314434ad50692ed0a8a16ee2834e528cf47a9ebb6a7e9a692e71e3cf42741.json",
+      "destination_path": "frozen-iqs/questions/releases/locks/modrel_e12314434ad50692ed0a8a16ee2834e528cf47a9ebb6a7e9a692e71e3cf42741.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/packages/pkg_24f07923f23cf0a2be5d7fb4b36a11925c779a8f4a68bdc9c81457084ded080f.json",
+      "destination_path": "frozen-iqs/questions/releases/packages/pkg_24f07923f23cf0a2be5d7fb4b36a11925c779a8f4a68bdc9c81457084ded080f.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/packages/pkg_5c7facbfd9b772130e3fb5150d2c4d390083e72570b28c82cc4ab67151fd881f.json",
+      "destination_path": "frozen-iqs/questions/releases/packages/pkg_5c7facbfd9b772130e3fb5150d2c4d390083e72570b28c82cc4ab67151fd881f.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/packages/pkg_92fc696506725d96746db07a308cb171e0c52f2c0c100b15e8085785de283006.json",
+      "destination_path": "frozen-iqs/questions/releases/packages/pkg_92fc696506725d96746db07a308cb171e0c52f2c0c100b15e8085785de283006.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/packages/pkg_be20531b533d7db712c4ff8d42d21b6889bdbf3a65c4ee399bfbe860bb0e8418.json",
+      "destination_path": "frozen-iqs/questions/releases/packages/pkg_be20531b533d7db712c4ff8d42d21b6889bdbf3a65c4ee399bfbe860bb0e8418.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/packages/pkg_c569ac9753d6b2848264ace794e99e64e21c688ac550fb56d7fd1a9088ce28dd.json",
+      "destination_path": "frozen-iqs/questions/releases/packages/pkg_c569ac9753d6b2848264ace794e99e64e21c688ac550fb56d7fd1a9088ce28dd.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/routing/router_2_0_0-0c834ed20a8a87dc0fb95f315c7154d1cb949b13f10f4d298f1875a031bdcf8c.json",
+      "destination_path": "frozen-iqs/questions/releases/routing/router_2_0_0-0c834ed20a8a87dc0fb95f315c7154d1cb949b13f10f4d298f1875a031bdcf8c.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/releases/routing/router_2_1_0-eef827ab1c7dedd671cd6d40eb7e044c0b9c3e19a9727288493abb453f2c7096.json",
+      "destination_path": "frozen-iqs/questions/releases/routing/router_2_1_0-eef827ab1c7dedd671cd6d40eb7e044c0b9c3e19a9727288493abb453f2c7096.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/routing-policy.v2.json",
+      "destination_path": "frozen-iqs/questions/routing-policy.v2.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/scoring-contexts.json",
+      "destination_path": "frozen-iqs/questions/scoring-contexts.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/scoring-rubrics/rubrel_1ae5bfbf4c63bb197bde53d9058ca50ff631aae1a9525e0ec8578f4495379d02.json",
+      "destination_path": "frozen-iqs/questions/scoring-rubrics/rubrel_1ae5bfbf4c63bb197bde53d9058ca50ff631aae1a9525e0ec8578f4495379d02.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/stages/commercialization.json",
+      "destination_path": "frozen-iqs/questions/stages/commercialization.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/stages/cyclical.json",
+      "destination_path": "frozen-iqs/questions/stages/cyclical.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/stages/declining.json",
+      "destination_path": "frozen-iqs/questions/stages/declining.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/stages/mature.json",
+      "destination_path": "frozen-iqs/questions/stages/mature.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/stages/scaling.json",
+      "destination_path": "frozen-iqs/questions/stages/scaling.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/stages/turnaround.json",
+      "destination_path": "frozen-iqs/questions/stages/turnaround.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/stages/validation.json",
+      "destination_path": "frozen-iqs/questions/stages/validation.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/types/bank.json",
+      "destination_path": "frozen-iqs/questions/types/bank.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/types/capital_markets.json",
+      "destination_path": "frozen-iqs/questions/types/capital_markets.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/types/holding.json",
+      "destination_path": "frozen-iqs/questions/types/holding.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/types/insurer.json",
+      "destination_path": "frozen-iqs/questions/types/insurer.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/types/operating.json",
+      "destination_path": "frozen-iqs/questions/types/operating.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/types/pre_revenue.json",
+      "destination_path": "frozen-iqs/questions/types/pre_revenue.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/types/property_developer.json",
+      "destination_path": "frozen-iqs/questions/types/property_developer.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/questions/types/property_owner.json",
+      "destination_path": "frozen-iqs/questions/types/property_owner.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/answer-content.schema.json",
+      "destination_path": "frozen-iqs/schemas/answer-content.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/model-policy.schema.json",
+      "destination_path": "frozen-iqs/schemas/model-policy.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/observation-execution-profiles.json",
+      "destination_path": "frozen-iqs/schemas/observation-execution-profiles.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/observation-v1.2.schema.json",
+      "destination_path": "frozen-iqs/schemas/observation-v1.2.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/observation-v2.schema.json",
+      "destination_path": "frozen-iqs/schemas/observation-v2.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/observation.schema.json",
+      "destination_path": "frozen-iqs/schemas/observation.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/provider-connectivity-profiles.schema.json",
+      "destination_path": "frozen-iqs/schemas/provider-connectivity-profiles.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/deployment.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/deployment.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/exchange.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/exchange.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/identity-cli-request.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/identity-cli-request.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/identity-mapping-dto.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/identity-mapping-dto.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/identity-wire-profile.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/identity-wire-profile.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/identity.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/identity.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/metric.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/metric.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/module-legacy-baseline.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/module-legacy-baseline.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/module-refresh.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/module-refresh.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/module-release.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/module-release.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query-capabilities-v1.2.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query-capabilities-v1.2.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query-capabilities.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query-capabilities.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query-pool-qualified.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query-pool-qualified.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query-pool-scoped.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query-pool-scoped.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query-pool.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query-pool.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query-research.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query-research.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query-review-lead.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query-review-lead.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query-v2.6.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query-v2.6.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query-v2.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query-v2.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/query.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/query.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/question-module.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/question-module.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/refresh-v1.1.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/refresh-v1.1.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/refresh-v1.2.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/refresh-v1.2.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/refresh-v1.3.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/refresh-v1.3.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/refresh-v1.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/refresh-v1.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/route-decision.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/route-decision.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/route-store-cli.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/route-store-cli.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/route-store-validation.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/route-store-validation.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/rule.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/rule.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/score.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/score.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/scoring-rubric.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/scoring-rubric.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/schemas/quick_scan/work.schema.json",
+      "destination_path": "frozen-iqs/schemas/quick_scan/work.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/accuracy_assessment.py",
+      "destination_path": "frozen-iqs/scripts/accuracy_assessment.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/accuracy_followup.py",
+      "destination_path": "frozen-iqs/scripts/accuracy_followup.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/accuracy_pilot.py",
+      "destination_path": "frozen-iqs/scripts/accuracy_pilot.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/accuracy_report.py",
+      "destination_path": "frozen-iqs/scripts/accuracy_report.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/batching_benchmark.py",
+      "destination_path": "frozen-iqs/scripts/batching_benchmark.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/batching_benchmark_archive.py",
+      "destination_path": "frozen-iqs/scripts/batching_benchmark_archive.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/batching_benchmark_report.py",
+      "destination_path": "frozen-iqs/scripts/batching_benchmark_report.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/c06_authority.py",
+      "destination_path": "frozen-iqs/scripts/c06_authority.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/company_agent_research_pilot.py",
+      "destination_path": "frozen-iqs/scripts/company_agent_research_pilot.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/contract_validation.py",
+      "destination_path": "frozen-iqs/scripts/contract_validation.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/deployment_contract.py",
+      "destination_path": "frozen-iqs/scripts/deployment_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/exchange_contract.py",
+      "destination_path": "frozen-iqs/scripts/exchange_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/frozen_release_projection.py",
+      "destination_path": "frozen-iqs/scripts/frozen_release_projection.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/g0_candidate_manifest.py",
+      "destination_path": "frozen-iqs/scripts/g0_candidate_manifest.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/identity_contract_cli.py",
+      "destination_path": "frozen-iqs/scripts/identity_contract_cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/implementation_plan.py",
+      "destination_path": "frozen-iqs/scripts/implementation_plan.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/json_io.py",
+      "destination_path": "frozen-iqs/scripts/json_io.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/mimo_json_mode_probe.py",
+      "destination_path": "frozen-iqs/scripts/mimo_json_mode_probe.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/mimo_pilot_extension.py",
+      "destination_path": "frozen-iqs/scripts/mimo_pilot_extension.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/mimo_pilot_results.py",
+      "destination_path": "frozen-iqs/scripts/mimo_pilot_results.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/mimo_pilot_review_summary.py",
+      "destination_path": "frozen-iqs/scripts/mimo_pilot_review_summary.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/mimo_pro_pilot.py",
+      "destination_path": "frozen-iqs/scripts/mimo_pro_pilot.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/model_policy.py",
+      "destination_path": "frozen-iqs/scripts/model_policy.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/module_contract.py",
+      "destination_path": "frozen-iqs/scripts/module_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/module_registry.py",
+      "destination_path": "frozen-iqs/scripts/module_registry.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/observation_profiles.py",
+      "destination_path": "frozen-iqs/scripts/observation_profiles.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/parallel_handoff_cli.py",
+      "destination_path": "frozen-iqs/scripts/parallel_handoff_cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_capabilities_contract.py",
+      "destination_path": "frozen-iqs/scripts/query_capabilities_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_capabilities_vendor_contract.py",
+      "destination_path": "frozen-iqs/scripts/query_capabilities_vendor_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_contract.py",
+      "destination_path": "frozen-iqs/scripts/query_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_contract_cli.py",
+      "destination_path": "frozen-iqs/scripts/query_contract_cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_field_assessment.py",
+      "destination_path": "frozen-iqs/scripts/query_field_assessment.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_pool_assessment_contract.py",
+      "destination_path": "frozen-iqs/scripts/query_pool_assessment_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_pool_contract.py",
+      "destination_path": "frozen-iqs/scripts/query_pool_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_pool_scope_contract.py",
+      "destination_path": "frozen-iqs/scripts/query_pool_scope_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_research_contract.py",
+      "destination_path": "frozen-iqs/scripts/query_research_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_review_lead_contract.py",
+      "destination_path": "frozen-iqs/scripts/query_review_lead_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/query_vendor_contract.py",
+      "destination_path": "frozen-iqs/scripts/query_vendor_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/question_fingerprints.py",
+      "destination_path": "frozen-iqs/scripts/question_fingerprints.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/question_library.py",
+      "destination_path": "frozen-iqs/scripts/question_library.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/question_manifest.py",
+      "destination_path": "frozen-iqs/scripts/question_manifest.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/question_prompts.py",
+      "destination_path": "frozen-iqs/scripts/question_prompts.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/question_selection.py",
+      "destination_path": "frozen-iqs/scripts/question_selection.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/question_sets.py",
+      "destination_path": "frozen-iqs/scripts/question_sets.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/refresh_contract.py",
+      "destination_path": "frozen-iqs/scripts/refresh_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/refresh_contract_cli.py",
+      "destination_path": "frozen-iqs/scripts/refresh_contract_cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/route_store_handoff.py",
+      "destination_path": "frozen-iqs/scripts/route_store_handoff.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/routing.py",
+      "destination_path": "frozen-iqs/scripts/routing.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/scoring_rubrics.py",
+      "destination_path": "frozen-iqs/scripts/scoring_rubrics.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/standard_answers.py",
+      "destination_path": "frozen-iqs/scripts/standard_answers.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/stockqa_adapter.py",
+      "destination_path": "frozen-iqs/scripts/stockqa_adapter.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/stockwiki_g2b_acceptance.py",
+      "destination_path": "frozen-iqs/scripts/stockwiki_g2b_acceptance.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/stockwiki_mapping_contract.py",
+      "destination_path": "frozen-iqs/scripts/stockwiki_mapping_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/subject_context_export.py",
+      "destination_path": "frozen-iqs/scripts/subject_context_export.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/subject_dispatch_cli.py",
+      "destination_path": "frozen-iqs/scripts/subject_dispatch_cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/subject_dispatch_contract.py",
+      "destination_path": "frozen-iqs/scripts/subject_dispatch_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/task_receipts.py",
+      "destination_path": "frozen-iqs/scripts/task_receipts.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/view_quick_scan.py",
+      "destination_path": "frozen-iqs/scripts/view_quick_scan.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/work_contract.py",
+      "destination_path": "frozen-iqs/scripts/work_contract.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/research-tools-wave-2026-10-16/inputs/iqs/scripts/zai_route_diagnostic.py",
+      "destination_path": "frozen-iqs/scripts/zai_route_diagnostic.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "frozen pure validation dependencies",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/six-tools-acceptance-2026-10-16-01/logs/cross-T0.json",
+      "destination_path": "tool-products/cross-T0.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "actual fixed offline outputs; accuracy remains null",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/six-tools-acceptance-2026-10-16-01/logs/cross-T1.json",
+      "destination_path": "tool-products/cross-T1.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "actual fixed offline outputs; accuracy remains null",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "runs/six-tools-acceptance-2026-10-16-01/logs/evidence-cross-output.json",
+      "destination_path": "tool-products/evidence-cross-output.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "actual fixed offline outputs; accuracy remains null",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "iqs_answer_codec/__init__.py",
+      "destination_path": "tools/codec/iqs_answer_codec/__init__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "iqs_answer_codec/__main__.py",
+      "destination_path": "tools/codec/iqs_answer_codec/__main__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "iqs_answer_codec/canonical.py",
+      "destination_path": "tools/codec/iqs_answer_codec/canonical.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "iqs_answer_codec/cli.py",
+      "destination_path": "tools/codec/iqs_answer_codec/cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "iqs_answer_codec/codec.py",
+      "destination_path": "tools/codec/iqs_answer_codec/codec.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "iqs_answer_codec/schema_defs.py",
+      "destination_path": "tools/codec/iqs_answer_codec/schema_defs.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "iqs_answer_codec/schemas/compact-answer-batch-1.0.0.schema.json",
+      "destination_path": "tools/codec/iqs_answer_codec/schemas/compact-answer-batch-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "iqs_answer_codec/schemas/expanded-answer-batch-1.0.0.schema.json",
+      "destination_path": "tools/codec/iqs_answer_codec/schemas/expanded-answer-batch-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "pyproject.toml",
+      "destination_path": "tools/codec/pyproject.toml",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "docs/integration.md",
+      "destination_path": "tools/codec/docs/integration.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-codec",
+      "source_path": "docs/coordinator-acceptance-2026-10-16.md",
+      "destination_path": "tools/codec/docs/coordinator-acceptance-2026-10-16.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/__init__.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/__init__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/__main__.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/__main__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/adapt.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/adapt.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/blind.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/blind.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/cli.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/compare.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/compare.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/errors.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/errors.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/frozen_bridge.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/frozen_bridge.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/inputs_manifest.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/inputs_manifest.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/judgments.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/judgments.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/metering_isolated.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/metering_isolated.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/pathsafety.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/pathsafety.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/reference_score.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/reference_score.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "src/iqs_research_judge/schemas.py",
+      "destination_path": "tools/judge/src/iqs_research_judge/schemas.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "schemas/examples/example-isolated-comparison.json",
+      "destination_path": "tools/judge/schemas/examples/example-isolated-comparison.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "schemas/examples/example-isolated-evaluation.json",
+      "destination_path": "tools/judge/schemas/examples/example-isolated-evaluation.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "schemas/examples/example-isolated-judgments.json",
+      "destination_path": "tools/judge/schemas/examples/example-isolated-judgments.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "schemas/examples/example-isolated-review-bundle.json",
+      "destination_path": "tools/judge/schemas/examples/example-isolated-review-bundle.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "schemas/examples/example-private-map.json",
+      "destination_path": "tools/judge/schemas/examples/example-private-map.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "schemas/isolated-comparison-1.0.0.schema.json",
+      "destination_path": "tools/judge/schemas/isolated-comparison-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "schemas/isolated-evaluation-1.0.0.schema.json",
+      "destination_path": "tools/judge/schemas/isolated-evaluation-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "schemas/isolated-judgments-1.0.0.schema.json",
+      "destination_path": "tools/judge/schemas/isolated-judgments-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "schemas/isolated-review-bundle-1.0.0.schema.json",
+      "destination_path": "tools/judge/schemas/isolated-review-bundle-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "pyproject.toml",
+      "destination_path": "tools/judge/pyproject.toml",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "docs/integration.md",
+      "destination_path": "tools/judge/docs/integration.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-judge",
+      "source_path": "docs/coordinator-acceptance-2026-10-16.md",
+      "destination_path": "tools/judge/docs/coordinator-acceptance-2026-10-16.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "iqs_cache_planner/__init__.py",
+      "destination_path": "tools/cache/iqs_cache_planner/__init__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "iqs_cache_planner/__main__.py",
+      "destination_path": "tools/cache/iqs_cache_planner/__main__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "iqs_cache_planner/errors.py",
+      "destination_path": "tools/cache/iqs_cache_planner/errors.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "iqs_cache_planner/jsonutil.py",
+      "destination_path": "tools/cache/iqs_cache_planner/jsonutil.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "iqs_cache_planner/measure.py",
+      "destination_path": "tools/cache/iqs_cache_planner/measure.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "iqs_cache_planner/prefixes.py",
+      "destination_path": "tools/cache/iqs_cache_planner/prefixes.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "iqs_cache_planner/propose.py",
+      "destination_path": "tools/cache/iqs_cache_planner/propose.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "iqs_cache_planner/ratecard.py",
+      "destination_path": "tools/cache/iqs_cache_planner/ratecard.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "iqs_cache_planner/schemas.py",
+      "destination_path": "tools/cache/iqs_cache_planner/schemas.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "pyproject.toml",
+      "destination_path": "tools/cache/pyproject.toml",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "docs/integration.md",
+      "destination_path": "tools/cache/docs/integration.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-cache",
+      "source_path": "docs/coordinator-acceptance-2026-10-16.md",
+      "destination_path": "tools/cache/docs/coordinator-acceptance-2026-10-16.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/__init__.py",
+      "destination_path": "tools/session/iqs_session_packing/__init__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/__main__.py",
+      "destination_path": "tools/session/iqs_session_packing/__main__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/canonical.py",
+      "destination_path": "tools/session/iqs_session_packing/canonical.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/cli.py",
+      "destination_path": "tools/session/iqs_session_packing/cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/context.py",
+      "destination_path": "tools/session/iqs_session_packing/context.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/errors.py",
+      "destination_path": "tools/session/iqs_session_packing/errors.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/limits.py",
+      "destination_path": "tools/session/iqs_session_packing/limits.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/pathsafety.py",
+      "destination_path": "tools/session/iqs_session_packing/pathsafety.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/schema_defs.py",
+      "destination_path": "tools/session/iqs_session_packing/schema_defs.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/schemas/segmented-research-checkpoint-1.0.0.schema.json",
+      "destination_path": "tools/session/iqs_session_packing/schemas/segmented-research-checkpoint-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/schemas/segmented-research-scenario-1.0.0.schema.json",
+      "destination_path": "tools/session/iqs_session_packing/schemas/segmented-research-scenario-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/schemas/segmented-research-state-1.0.0.schema.json",
+      "destination_path": "tools/session/iqs_session_packing/schemas/segmented-research-state-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/session.py",
+      "destination_path": "tools/session/iqs_session_packing/session.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/state.py",
+      "destination_path": "tools/session/iqs_session_packing/state.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "iqs_session_packing/synthetic.py",
+      "destination_path": "tools/session/iqs_session_packing/synthetic.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "pyproject.toml",
+      "destination_path": "tools/session/pyproject.toml",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "docs/integration.md",
+      "destination_path": "tools/session/docs/integration.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-session",
+      "source_path": "docs/coordinator-acceptance-2026-10-16.md",
+      "destination_path": "tools/session/docs/coordinator-acceptance-2026-10-16.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/__init__.py",
+      "destination_path": "tools/claim/iqs_claim_guard/__init__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/__main__.py",
+      "destination_path": "tools/claim/iqs_claim_guard/__main__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/binding.py",
+      "destination_path": "tools/claim/iqs_claim_guard/binding.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/canonical.py",
+      "destination_path": "tools/claim/iqs_claim_guard/canonical.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/checker.py",
+      "destination_path": "tools/claim/iqs_claim_guard/checker.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/cli.py",
+      "destination_path": "tools/claim/iqs_claim_guard/cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/context.py",
+      "destination_path": "tools/claim/iqs_claim_guard/context.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/critic.py",
+      "destination_path": "tools/claim/iqs_claim_guard/critic.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/examples/example-1-findings.json",
+      "destination_path": "tools/claim/iqs_claim_guard/examples/example-1-findings.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/examples/example-2-critic-input.json",
+      "destination_path": "tools/claim/iqs_claim_guard/examples/example-2-critic-input.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/findings.py",
+      "destination_path": "tools/claim/iqs_claim_guard/findings.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/objective.py",
+      "destination_path": "tools/claim/iqs_claim_guard/objective.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/rules.py",
+      "destination_path": "tools/claim/iqs_claim_guard/rules.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/scan.py",
+      "destination_path": "tools/claim/iqs_claim_guard/scan.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/schemas/answer-claim-findings-1.0.0.schema.json",
+      "destination_path": "tools/claim/iqs_claim_guard/schemas/answer-claim-findings-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/schemas/answer-critic-input-1.0.0.schema.json",
+      "destination_path": "tools/claim/iqs_claim_guard/schemas/answer-critic-input-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/standard.py",
+      "destination_path": "tools/claim/iqs_claim_guard/standard.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/textutil.py",
+      "destination_path": "tools/claim/iqs_claim_guard/textutil.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "iqs_claim_guard/validate.py",
+      "destination_path": "tools/claim/iqs_claim_guard/validate.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-claim",
+      "source_path": "docs/coordinator-acceptance-2026-10-16.md",
+      "destination_path": "tools/claim/docs/coordinator-acceptance-2026-10-16.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/__init__.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/__init__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/__main__.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/__main__.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/canonical.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/canonical.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/claims.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/claims.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/cli.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/cli.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/coverage.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/coverage.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/mapping.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/mapping.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/paths.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/paths.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/protocols.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/protocols.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/queryplan.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/queryplan.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "iqs_evidence_gap/supplement.py",
+      "destination_path": "tools/evidence/iqs_evidence_gap/supplement.py",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "schemas/company-evidence-supplement-1.0.0.schema.json",
+      "destination_path": "tools/evidence/schemas/company-evidence-supplement-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "schemas/evidence-query-plan-1.0.0.schema.json",
+      "destination_path": "tools/evidence/schemas/evidence-query-plan-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "schemas/question-evidence-coverage-1.0.0.schema.json",
+      "destination_path": "tools/evidence/schemas/question-evidence-coverage-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "schemas/question-evidence-mapping-1.0.0.schema.json",
+      "destination_path": "tools/evidence/schemas/question-evidence-mapping-1.0.0.schema.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "data/base-context-ref.json",
+      "destination_path": "tools/evidence/data/base-context-ref.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "data/evidence-board.json",
+      "destination_path": "tools/evidence/data/evidence-board.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "data/question-evidence-mapping.json",
+      "destination_path": "tools/evidence/data/question-evidence-mapping.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "data/questions.json",
+      "destination_path": "tools/evidence/data/questions.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "data/supplement.json",
+      "destination_path": "tools/evidence/data/supplement.json",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted carrier schema/examples/pure adapter source",
+      "required": true
+    },
+    {
+      "source_root": "tool-evidence",
+      "source_path": "docs/coordinator-acceptance-2026-10-16.md",
+      "destination_path": "tools/evidence/docs/coordinator-acceptance-2026-10-16.md",
+      "consumers": [
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "accepted version and integration contract",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/EXPERIMENT-DESK-05.md",
+      "destination_path": "package/EXPERIMENT-DESK-05.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "single-card companion documentation",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/handoff.template.json",
+      "destination_path": "package/handoff.template.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "single-card companion documentation",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/integration-contract.md",
+      "destination_path": "package/integration-contract.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "single-card companion documentation",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/interface-spec.md",
+      "destination_path": "package/interface-spec.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "single-card companion documentation",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/OPERATING-CATL-05.md",
+      "destination_path": "package/OPERATING-CATL-05.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "single-card companion documentation",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/OPERATING-CSC-05.md",
+      "destination_path": "package/OPERATING-CSC-05.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "single-card companion documentation",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/README.md",
+      "destination_path": "package/README.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "single-card companion documentation",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/release-checklist.md",
+      "destination_path": "package/release-checklist.md",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "single-card companion documentation",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/source-requests.json",
+      "destination_path": "package/source-requests.json",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "explicit source requests, not an input lock",
+      "required": true
+    },
+    {
+      "source_root": "iqs",
+      "source_path": "docs/implementation/parallel-lanes/packages/2026-10-16-real-experiment-wave/verify_preparation.py",
+      "destination_path": "package/verify_preparation.py",
+      "consumers": [
+        "OPERATING-CATL-05",
+        "OPERATING-CSC-05",
+        "EXPERIMENT-DESK-05"
+      ],
+      "purpose": "portable input verification CLI",
+      "required": true
+    }
+  ],
+  "excluded": [
+    ".git",
+    ".codegraph",
+    "__pycache__",
+    "keys and secret configs",
+    "budget SQLite",
+    "provider private payloads and hidden reasoning",
+    "private unblinding maps",
+    "future T2 or other new-package artifacts"
+  ]
+}

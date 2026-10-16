@@ -1,3 +1,11 @@
+## 2026-10-16 官方计价重核完成
+
+DeepSeek官方pricing去尾斜杠入口读取成功，Flash非高峰USD/million .15/.003/.60，高峰.30/.006/1.20；UTC周一至五01–04、06–10，节假日例外不跨日猜。MiMo Pro .435/.0036/.87。Minimax-M3标准≤512k .30/.06/1.20，用户套餐现金消耗未知。原SDK已开启thinking并保留工具轮私有reasoning，不保存隐藏思考。新driver必须同公司累计预算；单题12段不能获得12倍总限额。官方来源及有界价格结构记录在runs/real-contrast-2026-10-16-01/official-pricing.json。
+
+## 2026-10-16 真实实验接线前发现
+
+原native configure同version snapshot不可变、任意未settled时换version拒绝，因此不能简单扩额。拟增加append-only显式unknown seal，仅budget-only隔离任务可继续不同task，raw状态/预留/总额保持；owner不豁免。现ResearchChatSession仅DeepSeek/MiMo，MiniMax多轮不可直接冒用。MiMo Pro当前官方USD/million uncached .435/cache .0036/output .87；MiniMax M3标准≤512k .30/.06/1.20，套餐边际现金未知。新实验须在请求前锁同一题表/证据与公司累计资源，不把单题每段重给额度。
+
 ## 2026-10-16 最新状态 — 六包工程已签收并提交
 
 两轮六包已正式接收，独立审查发现的问题直接修复，均升package1.0.1。最终整组426P + 跨包7P，零失败/跳过；原工人365P留历史。六仓当前commit见[总控验收](docs/implementation/experiments/six-tools-acceptance-2026-10-16.md)，均master/clean/无remote；CodeGraph已按授权初始化。原件238文件/1658956bytes及199artifact吻合，双快照764项保持。未向Lab重发施工卡；旧author_data会回写错误的再生风险也已只读化并加反例。
