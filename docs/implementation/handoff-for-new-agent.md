@@ -1,3 +1,21 @@
+## 2026-10-17 — T4金融人审和真实计量后处理完成，自动标量接口尚未贯通
+
+三个05工程包已正式签收，修复commit为CATL928bfedf/CSC a944200c/Desk fac8ff3b；516P/2文件symlink权限skip，真实junction通过。总控85项审查证据/PWF已随f498353正常提交并推送，原239件/397输入及他人README/旧生产库保持。不要再重审或重复实现三个05包。
+
+T4新完成：108真实初判与30槽独立二审已冻结，原JUDGE1.0.2/CACHE/CLAIM的analysis finish两次实际exit0。全144=55可读+53缺答/遮蔽+36未启动，结构交卷60；初判47部分/8审慎不足，整题充分0。二审选择样本21confirm/3revise/6disputed，不外推总体错误率或与初判命题相加。原canonical API已实核二审声明fingerprint正确，冻结validation布尔值raw/canonical混淆的错误保留并更正，不能改旧文件掩盖。
+
+新的关键缺口：38个真实结构化数值命题在原scorer均不可评；35个只做value→value_decimal精确编码投影后，仍因期间/币种或完整会计定义不能唯一定位参考，另3个维度缺失不补。正反例证明原API能区分正确值/同维度错值，但真实评审schema与scorer接缝未通。0匹配不能报0分或100%准确，不能靠补reference ID/改定义拿非零分。完整金融准确率/策略赢家仍null。
+
+9格63原生回执/62计价/1usage缺失，T4生成已知小计USD0.439421，完整费用/现金账单/批量总墙钟未知；累计原账100请求/USD0.655435已知+USD0.20预约不变。本轮后处理没有新模型/搜索请求、生产写或下载。高缓存失败也存在，不能用cache率宣布公司agent更准或更省。
+
+阶段报告：docs/implementation/experiments/company-agent-t4-results-2026-10-16.md；实操手册references/accuracy-first-operations.md更新1.2.0。实际原件/两次CLI/35机械映射/契约探针/全部hash与限制：runs/real-contrast-2026-10-16-03/financial-review/postanalysis/summary.md及final-validation-and-hashes-v2.json（原957+消费者55保持）。仓内薄归档仅统计/计量/命令/散列，不上传答文/标签全文/private/DB。结论只适用固定证据有界研究，不是自由联网agent最终结论，不改变用户模型顺位或生产逐题默认。
+
+## Next Step
+
+先在隔离候选中统一真实评审JSON与原scorer的数值、期间、币种/单位及会计身份契约，用真实样本加正反例证明端到端可评/应拒边界，不改变T4旧标签/原工具锁；随后处理原owner response_unpriced显式隔离续行并另冻新phase，才再发真实对照。保留旧费用预约、不重发、不换账绕闸；critic/搜索schema21仍候选未收费运行。06三包仍准备、无用户派发确认。只在这些整组节点审查，不给helper加门。
+
+下方为历史快照；“待导入/二审进行中”已由本段实际后处理结果取代，生产owner/金融充分性/G3/F05仍开放。
+
 ## 2026-10-16 — 三个05包正式签收、修复已提交
 
 金融二审机械元数据提醒：冻结independent-judgments.json的validation.bundle_fingerprint_match为false，系其脚本把raw文件SHA与JUDGE canonical指纹比较。原bundle_fingerprint字段为预锁dc895c2e…，不能删/改冻结包掩盖错误，也不能沿用最初“全部hash通过”口头声明；原分析后处理必须另用原JUDGE API实核，保留纠正/分歧记录。该提醒不影响三个05工程包独立签收。

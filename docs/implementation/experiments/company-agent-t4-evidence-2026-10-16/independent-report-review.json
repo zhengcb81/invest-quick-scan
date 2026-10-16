@@ -1,0 +1,478 @@
+{
+  "scope": "Independent concentrated review of T4 public results and operations-manual update; one experiment-stage review, not a new 05-package gate",
+  "status": "passed",
+  "verdict": "passed",
+  "open_findings": [],
+  "material_findings": [],
+  "reviewed_at_utc": "2026-10-16T23:05:28.306717+00:00",
+  "checks": [
+    {
+      "area": "公开结论与准入",
+      "status": "passed",
+      "evidence": [
+        "docs/implementation/experiments/company-agent-t4-results-2026-10-16.md",
+        "references/accuracy-first-operations.md"
+      ],
+      "finding": "没有策略赢家、没有全面推广通过；逐题生产默认保持，三题包仅下一轮候选，未擅改模型顺位。"
+    },
+    {
+      "area": "完整分母与结构/可读",
+      "status": "passed",
+      "actual": {
+        "planned": 144,
+        "result_input_slots": 108,
+        "not_started": 36,
+        "structurally_legal": 60,
+        "readable": 55,
+        "withheld": 5,
+        "absent": 48,
+        "missing_or_withheld": 53,
+        "repeat1_legal": 45
+      },
+      "finding": "144=55+53+36；60=55+5，108=60+48；0交卷会话保留。"
+    },
+    {
+      "area": "初判与二审分母",
+      "status": "passed",
+      "actual": {
+        "primary_slots": 108,
+        "partial": 47,
+        "prudent_insufficient": 8,
+        "missing_unresolved": 53,
+        "sufficient": 0,
+        "primary_propositions": 282,
+        "second_review_selected": 30,
+        "confirm": 21,
+        "revise": 3,
+        "disputed": 6
+      },
+      "finding": "二审按疑点选取且未并入初判，明确selection bias；命题择取不同不相加或造准确率，多数票未当真值。未重做金融判断。"
+    },
+    {
+      "area": "机器数值接口与机械投影",
+      "status": "passed",
+      "actual": {
+        "structured_numeric_occurrences": 38,
+        "encoding_aliases_added": 35,
+        "missing_dimension_atoms_unchanged": 3,
+        "automatic_distinct_matches": 0,
+        "locked_scalar_denominator": 10,
+        "precision": null
+      },
+      "finding": "独立逐项比较原合并与投影，除value_decimal编码别名外对象相同；以JSON Decimal词法核35别名精确数值。导入后108判断/282命题人工标签相同，全部自动not_assessable。0匹配不当模型错或对；合成API探针与真实分母分开，未补reference身份或金融意义。原API探针只审读未重跑。"
+    },
+    {
+      "area": "思考、检索与实际三题边界",
+      "status": "passed",
+      "finding": "冻结SDK请求明确thinking.type=enabled，可见两模型回执reasoning_output_tokens>0；未读取/展示reasoning正文。九result search_http=0，冻结driver禁止搜索，实测提交上限single=1、pack/company<=3；未外推自由搜索agent或未启动场次。"
+    },
+    {
+      "area": "费用、缓存与墙钟",
+      "status": "passed",
+      "actual": {
+        "native_receipts": 63,
+        "priced_receipts": 62,
+        "missing_usage_receipts": 1,
+        "known_estimate_usd": "0.439421",
+        "known_cached_input_tokens": 1061248,
+        "known_input_token_subset": 1269081,
+        "complete_cost": null,
+        "cash_invoice": null,
+        "batch_wall_clock": null,
+        "mimo_single_cache_session_seconds": 1807.5084447000118,
+        "mimo_single_outer_process_seconds": 1812.4217953000043
+      },
+      "finding": "独立加总九格与文档一致；全队列已知账100请求/USD0.655435/预约USD0.20另域。部分usage缓存分母、顺序热前缀、非现金账单与未计量harness成本均披露，不按失败短耗时/高缓存宣布赢家。"
+    },
+    {
+      "area": "原件与薄归档绑定",
+      "status": "passed",
+      "actual": {
+        "postanalysis_output_hashes_verified": 55,
+        "registered_input_hashes_verified": 957,
+        "consumer_input_hashes_verified": 55,
+        "thin_archive_files_verified": 6
+      },
+      "finding": "独立实际重读rawSHA/长度，1012登记项与55后处理输出均匹配；六薄归档与对应原件原字节相同。初判三个原judgment数组串接等于108合并原件；二审raw/canonical错误被明确披露而非改标签。"
+    }
+  ],
+  "reviewed_files": [
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-results-2026-10-16.md",
+      "bytes": 7656,
+      "raw_sha256": "29520c7d78507f598c8e3a6a97e70342cafb27a743f124927bf4ecf6a1b5a746"
+    },
+    {
+      "path": "references/accuracy-first-operations.md",
+      "bytes": 9506,
+      "raw_sha256": "07ce75c471b0e93c04e325a88dec67a61ffe02f1bc5b0c592fad4e1df87984e3"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/summary.md",
+      "bytes": 10469,
+      "raw_sha256": "2376f416e824330c1f2e076196a0715017b95472d5286aafae2d4dbea2ce0a71"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/summary-statistics.json",
+      "bytes": 1669,
+      "raw_sha256": "7cf4ed0cc3a552ab905e67f3c6051f6b04a00ab0813204c68d59650f656d30f2"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/nine-case-summary.json",
+      "bytes": 12519,
+      "raw_sha256": "f2f01d25ca344f9bd3bec1ee9820da6b96abd9948f9ff547db550d0a3d256764"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/final-validation-and-hashes-v2.json",
+      "bytes": 10860,
+      "raw_sha256": "9175b2be65b5816114b4417cde567fc37e256a8b9ca19a36809bb052d316561e"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/finish-execution-record.json",
+      "bytes": 4840,
+      "raw_sha256": "a7039ad53fa9a69357449bac5ff156a02cad68361cc898f34a5807b73dd26f1a"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/finish-projected-execution-record.json",
+      "bytes": 4870,
+      "raw_sha256": "b59e1302b7898e435f06253442b587ca9c70fffff9761b9acd22acc17a1e6f9c"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/input-verification.json",
+      "bytes": 278515,
+      "raw_sha256": "60147e8e01e68f56bf9ef4fe7eec6c9c2e7de1f38c7f4a383f5fd04c9a52fe0b"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/primary-judgments-merged.json",
+      "bytes": 173988,
+      "raw_sha256": "0ba4de66f5c81a2bfa02bc995bacd26bded3c61dc235f05bcf87dc7cd32dd584"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/primary-projected.json",
+      "bytes": 179610,
+      "raw_sha256": "48b01558903e166ddd95475ed4691de136faee19c979e69f272096282ceb0914"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/primary-projected-mapping.json",
+      "bytes": 40697,
+      "raw_sha256": "92ada6d42d959d2ed2f94598f4f00fb218e977a7e21197eeae727a248990ef3f"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/primary-vs-projected-metrics.json",
+      "bytes": 23389,
+      "raw_sha256": "6533910eadb6e8ac690655b38528966ee2348753aa5c630b6a92505322b16c12"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/original-scorer-contract-probes.json",
+      "bytes": 3407,
+      "raw_sha256": "a194c6080479d37c7041042d184dfa991cd0a24e6512811f81e70426701b45d3"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/second-review-overlay-reference.json",
+      "bytes": 1238,
+      "raw_sha256": "253a8aed81c5b3b934017e6dc2fa999f4a288f93aeb0d880edcdc054cd6f26e2"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/project_numeric_encoding.py",
+      "bytes": 6626,
+      "raw_sha256": "2a8b44a3e92176c07da38be600c9e88726979d5e9367be56adeab28f61100aae"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/finalize_projection.py",
+      "bytes": 10195,
+      "raw_sha256": "6e6724c295a2818d2b779e9ea0688fd4e0cd643e3a6969feaa09fa994786e1f8"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/offline_entry.py",
+      "bytes": 1536,
+      "raw_sha256": "27d9577a53bd5b9fb47b66a474efe78ccbc1e71240a357f05a003202592d929c"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/run_finish.py",
+      "bytes": 3485,
+      "raw_sha256": "d2ab56829fce30cbada43027e39519eb4428e2e18a59c500d8a456a7501a59e6"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/finish-primary/comparison.json",
+      "bytes": 14859,
+      "raw_sha256": "0b6f5d47d9b17f64f49f25598fe464b474601ded805ee14509a9e9973d0fc120"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/finish-primary/limitations.json",
+      "bytes": 436,
+      "raw_sha256": "5eb72b5e6a1f819d6c6c9312ab73a49f823564d84987d02e204fcaf49e1dcb67"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/finish-primary/reviewed.json",
+      "bytes": 233190,
+      "raw_sha256": "d1bc581e2ad93d44b8edd0e769b23c205bca46167efb141e0972949fb308acfe"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/postanalysis/finish-projected/reviewed.json",
+      "bytes": 235914,
+      "raw_sha256": "17c3da857c068a0da20726023394b054f49885d98fcc4838f7a562fc94adda40"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/registration.json",
+      "bytes": 206478,
+      "raw_sha256": "910ee299cc2be042af4a23ba2a12fa613a66949dbae0bbcdada46f96e1182020"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/analysis-tools-v2.lock.json",
+      "bytes": 10685,
+      "raw_sha256": "48551f1a45ff99a0e177a44b0337d3808674b8572dd1ecdcd27d210f162aa5ff"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/cohort-progress.json",
+      "bytes": 3218,
+      "raw_sha256": "9058a710a1f7174e539694de862a5b51827bad814291984541fc15fb7bfd3239"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/live-summary.json",
+      "bytes": 2105,
+      "raw_sha256": "bd1f9ffee5f27621ea4361ea32fc9852538aa0cb4e24f97dc801ee46c838bdb7"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-single-r1.claim.json",
+      "bytes": 1059,
+      "raw_sha256": "5f46cd247d99839bae1eee5d5616aea2c3c82ecac398b3441035d51f78ccf1d2"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-single-r1.terminal.json",
+      "bytes": 598,
+      "raw_sha256": "7344fd5323e4f356b7489a6fe8a416b0b0b463142d72d06fb337e95167a7c09c"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/live-logs/t4-alphabet-mimo-pro-single-r1.process.json",
+      "bytes": 426,
+      "raw_sha256": "635d491ff7bb222489f5366a9388d7e3f6f2f2cb9d62f11012688a0574135dec"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/inputs/stockqa/src/providers/llm_research_client.py",
+      "bytes": 24373,
+      "raw_sha256": "8e21e99685aa49daf97edadb43a4403ecb6026dbb6484d46094c8fc9ccc743a7"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/inputs/driver/company_agent_research_pilot.py",
+      "bytes": 23132,
+      "raw_sha256": "2abcdd92c30e047dac7c5588b307da15780e66d3cd5aa3b361af88895c6609f7"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/inputs/driver/company_agent_contrast.py",
+      "bytes": 12733,
+      "raw_sha256": "b61e2acf896905c2888630ab69dddd856b4a5474455eb63c81c8ac6479b9d564"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/adjudication/second-review/adjudication.json",
+      "bytes": 248061,
+      "raw_sha256": "a81e52d74d53410012b958683e1d4fafe2931ce8f1b8da468837fc682711f0f3"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/reviewer-0/judgments.json",
+      "bytes": 67918,
+      "raw_sha256": "f7152f40bd0ae4aed59ba7cdec24b6900566254a1f004629ef0d2013850598c3"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/reviewer-1/judgments.json",
+      "bytes": 59441,
+      "raw_sha256": "c07a50cf7668a51912837b592710a4e5043585be6c256ccd2ebddcdbbf05cdae"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/financial-review/reviewer-2/judgments.json",
+      "bytes": 51160,
+      "raw_sha256": "9729ef316db44831ec4b2b6c5f1fabf372a11735fe77f9c47586305109d9a552"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-company_agent-r1/case.json",
+      "bytes": 353,
+      "raw_sha256": "dca48b8727d085b94efdf35f86f4bc4c5e1a7194be28189178a234d2777641db"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-company_agent-r1/result.json",
+      "bytes": 41282,
+      "raw_sha256": "ba05d3684cb47f6db177ccf2de8450f019b9572d1863e25e7ab279430e99c9ef"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-company_agent-r1/events.jsonl",
+      "bytes": 9977,
+      "raw_sha256": "b16ebe7e736dacb3ca87cc0e36ce9d38a8baf020262ac8f3e85dfabf4dd42a37"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-company_agent-r2/case.json",
+      "bytes": 353,
+      "raw_sha256": "0e9e6c7b664e1d09c6e60a4bb762a8ae8b864252978ba9056f9e1503aa8f680a"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-company_agent-r2/result.json",
+      "bytes": 2242,
+      "raw_sha256": "5b9f9fc4b5543e513a779d7d5b4643d7b08e3ad01d9781bcaeb1acdc16c835a7"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-company_agent-r2/events.jsonl",
+      "bytes": 1501,
+      "raw_sha256": "18e1443cae15916567fa246142f3260bd7ab1be72a0276e9914cbdbe9c338d61"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-pack3-r1/case.json",
+      "bytes": 329,
+      "raw_sha256": "c3ac7f4239bef1fe0dec02b6de6d799d6908758a237b16acc1cb7acf22edaab6"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-pack3-r1/result.json",
+      "bytes": 170954,
+      "raw_sha256": "54b8977a6d468d894aef569b3cc749779d8e12160e44e277ab1b3356940e2f91"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-pack3-r1/events.jsonl",
+      "bytes": 11252,
+      "raw_sha256": "1ccff0a10eb509712cae8ed41c4a62917810d0356044fb4fef948aa29d146c87"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-single-r1/case.json",
+      "bytes": 332,
+      "raw_sha256": "c068c6d252761af929d276c9f843ef4f29f6f4772799bff7d6595415c597e1ca"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-single-r1/result.json",
+      "bytes": 229440,
+      "raw_sha256": "c20d1b242b4ef8cd3a90201fdd645d5db4c861075e0a9c3218b590293f6bda8e"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-deepseek-flash-single-r1/events.jsonl",
+      "bytes": 35138,
+      "raw_sha256": "643ce163f12777e030d0474cfc4ff11a7b86cde7506953c68086c95942656ad0"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-company_agent-r1/case.json",
+      "bytes": 335,
+      "raw_sha256": "a3615221f67d64bfca4ab654525ea588c7bedb197e6639c1d02d6bdd798f774b"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-company_agent-r1/result.json",
+      "bytes": 2259,
+      "raw_sha256": "cbddf0a0c1a790eefb02186058a7bc4aa0837750e70d50826803ccf3eba54c82"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-company_agent-r1/events.jsonl",
+      "bytes": 1522,
+      "raw_sha256": "9da3568c5642220790c8bf7a963cf6846199be001db3f68b5df454fab692ce9e"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-company_agent-r2/case.json",
+      "bytes": 335,
+      "raw_sha256": "d0c0a442b0d28574e4a8d2c22fe08403f8c8693772fa70ffd112050dcaccd218"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-company_agent-r2/result.json",
+      "bytes": 114431,
+      "raw_sha256": "2fa668a5815b2411920dacbb2cfc9ee4cf940f3b451a2f55ad2a98d06dd0c9b9"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-company_agent-r2/events.jsonl",
+      "bytes": 11733,
+      "raw_sha256": "612d85372c3e97bd77f538ff7c81f8b8e3cda6355967c37e66a9a5da336f0649"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-pack3-r1/case.json",
+      "bytes": 311,
+      "raw_sha256": "65d39b34095389f235b2d617165e1114869b06ac651def7ed41a41be1f0f6ce7"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-pack3-r1/result.json",
+      "bytes": 74057,
+      "raw_sha256": "b9c10d93e79e53b32b8359ec8151bf1dce9c1ef3937456bc30bbe8b211d8f0ca"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-pack3-r1/events.jsonl",
+      "bytes": 9094,
+      "raw_sha256": "0da5a59699d76d3dae2f34bfc38d6eb12d64d7c0f2b1bf1884c290d13e4fb2a4"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-pack3-r2/case.json",
+      "bytes": 311,
+      "raw_sha256": "80b43c947113b2f52ff62736653b5f3b42bc10cdce2a145a0a93ee60018dda33"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-pack3-r2/result.json",
+      "bytes": 32708,
+      "raw_sha256": "c76cc6082ecf39d54f5014ea8f2cb6fa79de538ef9afb8dbffd965514806cd0f"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-pack3-r2/events.jsonl",
+      "bytes": 7050,
+      "raw_sha256": "afb6a40357f5630d24260f8220502cb9baf539b0362158f87323cb84d656ada5"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-single-r1/case.json",
+      "bytes": 314,
+      "raw_sha256": "e0087c630719841b0d8318752b20753c2329d4f47964f8ec50644e676040d911"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-single-r1/result.json",
+      "bytes": 188159,
+      "raw_sha256": "f3f288994d700e86dd7516a49d1621d92281d2140544a2a6d7ee4c640aee56c7"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/execution/t4-alphabet-mimo-pro-single-r1/events.jsonl",
+      "bytes": 29312,
+      "raw_sha256": "ca7f09eb14f62f5cc053a9648383d394e55e2a7fe73b705866e78753fa78a1d9"
+    },
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-evidence-2026-10-16/.gitattributes",
+      "bytes": 29,
+      "raw_sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d"
+    },
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-evidence-2026-10-16/final-validation-and-hashes-v2.json",
+      "bytes": 10860,
+      "raw_sha256": "9175b2be65b5816114b4417cde567fc37e256a8b9ca19a36809bb052d316561e"
+    },
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-evidence-2026-10-16/finish-execution-record.json",
+      "bytes": 4840,
+      "raw_sha256": "a7039ad53fa9a69357449bac5ff156a02cad68361cc898f34a5807b73dd26f1a"
+    },
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-evidence-2026-10-16/finish-projected-execution-record.json",
+      "bytes": 4870,
+      "raw_sha256": "b59e1302b7898e435f06253442b587ca9c70fffff9761b9acd22acc17a1e6f9c"
+    },
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-evidence-2026-10-16/manifest.json",
+      "bytes": 1167,
+      "raw_sha256": "ef35d509cf9c0cc3518919aa8de8e6b896c3a3fe855e82620eb96dfbdf084b00"
+    },
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-evidence-2026-10-16/nine-case-summary.json",
+      "bytes": 12519,
+      "raw_sha256": "f2f01d25ca344f9bd3bec1ee9820da6b96abd9948f9ff547db550d0a3d256764"
+    },
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-evidence-2026-10-16/README.md",
+      "bytes": 711,
+      "raw_sha256": "16174becfb3ef4266e99fe94c5f179d39859b6888d0988829abb020b2b6108cf"
+    },
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-evidence-2026-10-16/second-review-overlay-reference.json",
+      "bytes": 1238,
+      "raw_sha256": "253a8aed81c5b3b934017e6dc2fa999f4a288f93aeb0d880edcdc054cd6f26e2"
+    },
+    {
+      "path": "docs/implementation/experiments/company-agent-t4-evidence-2026-10-16/summary-statistics.json",
+      "bytes": 1669,
+      "raw_sha256": "7cf4ed0cc3a552ab905e67f3c6051f6b04a00ab0813204c68d59650f656d30f2"
+    }
+  ],
+  "source_writes": 0,
+  "model_api_calls": 0,
+  "search_api_calls": 0,
+  "judge_or_paid_execution_rerun": false,
+  "new_financial_judgments": 0,
+  "database_or_key_reads": 0,
+  "limits": [
+    "Only this fixed T4 stage and the identified document update were reviewed; no re-evaluation of each financial proposition or validation of public filings.",
+    "Execution records and byte bindings corroborated; live provider invoices and current pricing/health were not fetched.",
+    "Thinking reviewed through request code/configuration and observable usage fields, not hidden reasoning text.",
+    "Automatic numeric identity remains unresolved by design; this document pass does not close that interface, certify a complete financial accuracy measure, select a winner, or authorize promotion."
+  ]
+}
