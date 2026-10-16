@@ -1,3 +1,13 @@
+## 2026-10-16 — T3 canary收口，修复回执丢失/任务验证边界
+
+T3首场1个实际HTTP200、native已结算USD0.003618，0合法答案；SDK回包处理异常被SESSION包装后吞掉safe attempt_receipt，因此result缺usage，不能把已确认HTTP算未知/免费，也不能重建缺失tokens。原生累计37attempt/216014micros已知/100000micros旧预留，无新native未知。T3其余11场停未启动，144槽保持。SDK续轮修dfc6cd91正常hooks已推送（isort只加导入空行，原修复实质不变）。
+
+下一步T4共同修正：原SDK默认strict不变，显式controller模式只将非执行submit_answers内部schema交CODEC/AnswerSink校验以允许安全反馈；SESSION保留postresponse异常回执及known usage，绝不自动重试。同步跑实际SDK+临时native账+SESSION+CODEC+CLAIM mockHTTP跨层反例后再收费启动。三种策略共同连续3次无进展停止、有效进展重置但公司24step总额不增；新增关键回归后IQS31P。外包三根活动writer继续避让。
+
+## 2026-10-16 — T2真实canary揭示SDK续轮接缝，保留并切新phase
+
+原SDK/原账真实首场已跑：1个HTTP200、2SDKstep（第二步发送前拒绝），0合法答案；首payload duplicate_metric_id拒绝，SDK成功响应后的raw unreconciled检查又忽略已seal旧unknown，导致续轮被阻断。native实际已结算，无新unknown；累计36attempt/212396micros已知/100000micros旧预留。T2原12场144槽完整保留，只有1场启动，其余不再发，不用MiMo补洞。将直接最小修SDK隔离态检查与回归，prompt明确每答metric_id唯一后新phase全新登记；不修改旧冻结输入/结果。原schema20审计seal/amend和35旧attempt每列已核保持；StockQA2d9aa325已正常hooks提交推送。下一步：SDK续轮反例收口并启动新phase真实两模型三策略。
+
 ## 2026-10-16 官方计价重核完成
 
 DeepSeek官方pricing去尾斜杠入口读取成功，Flash非高峰USD/million .15/.003/.60，高峰.30/.006/1.20；UTC周一至五01–04、06–10，节假日例外不跨日猜。MiMo Pro .435/.0036/.87。Minimax-M3标准≤512k .30/.06/1.20，用户套餐现金消耗未知。原SDK已开启thinking并保留工具轮私有reasoning，不保存隐藏思考。新driver必须同公司累计预算；单题12段不能获得12倍总限额。官方来源及有界价格结构记录在runs/real-contrast-2026-10-16-01/official-pricing.json。
