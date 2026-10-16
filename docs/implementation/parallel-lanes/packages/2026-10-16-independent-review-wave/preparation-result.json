@@ -1,0 +1,117 @@
+{
+  "prepared_at": "2026-10-16T21:03:15.772903+00:00",
+  "status": "prepared_not_dispatched",
+  "workers_dispatched": false,
+  "input_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\independent-review-wave-2026-10-16\\inputs",
+  "lock": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-16-independent-review-wave\\inputs.lock.json",
+  "lock_raw_sha256": "968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233",
+  "files": 516,
+  "bytes": 6352074,
+  "positive_checks": [
+    {
+      "valid": true,
+      "package_id": null,
+      "files_checked": 516,
+      "bytes_checked": 6352074,
+      "lock_raw_sha256": "968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233",
+      "scope": "input integrity only; not product/financial acceptance"
+    },
+    {
+      "valid": true,
+      "package_id": "CONTEXT-PACK-06",
+      "files_checked": 366,
+      "bytes_checked": 4359090,
+      "lock_raw_sha256": "968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233",
+      "scope": "input integrity only; not product/financial acceptance"
+    },
+    {
+      "valid": true,
+      "package_id": "REVIEW-CAL-06",
+      "files_checked": 387,
+      "bytes_checked": 4512375,
+      "lock_raw_sha256": "968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233",
+      "scope": "input integrity only; not product/financial acceptance"
+    },
+    {
+      "valid": true,
+      "package_id": "RESUME-CHAOS-06",
+      "files_checked": 456,
+      "bytes_checked": 5877448,
+      "lock_raw_sha256": "968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233",
+      "scope": "input integrity only; not product/financial acceptance"
+    },
+    {
+      "valid": true,
+      "package_id": null,
+      "files_checked": 516,
+      "bytes_checked": 6352074,
+      "lock_raw_sha256": "968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233",
+      "scope": "input integrity only; not product/financial acceptance"
+    }
+  ],
+  "negative_checks": [
+    {
+      "case": "tampered_input",
+      "rejected": true,
+      "error": "input raw hash mismatch: driver/company_agent_contrast.py"
+    },
+    {
+      "case": "missing_input",
+      "rejected": true,
+      "error": "[Errno 2] No such file or directory: 'C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\independent-review-wave-2026-10-16\\\\.release-test\\\\moved\\\\driver\\\\company_agent_contrast.py'"
+    },
+    {
+      "case": "expected_lock_sha_mismatch",
+      "rejected": true,
+      "error": "lock hash mismatch"
+    },
+    {
+      "case": "overlap_writer_roots",
+      "rejected": true,
+      "error": "overlapping writer roots"
+    },
+    {
+      "case": "escape_path",
+      "rejected": true,
+      "error": "path escape"
+    },
+    {
+      "case": "windows_case_collision",
+      "rejected": true,
+      "error": "duplicate or Windows-colliding path"
+    },
+    {
+      "case": "unknown_protocol",
+      "rejected": true,
+      "error": "unknown input protocol"
+    },
+    {
+      "case": "bad_consumer",
+      "rejected": true,
+      "error": "bad consumer set"
+    }
+  ],
+  "cleanup": {
+    "files": 522,
+    "bytes": 7438757,
+    "remaining_files": 0,
+    "test_root_exists": false
+  },
+  "model_http": 0,
+  "search_http": 0,
+  "lab_roots_created": 0,
+  "verify_argv": [
+    "C:\\Miniconda\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-16-independent-review-wave\\verify_preparation.py",
+    "--inputs",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\independent-review-wave-2026-10-16\\inputs",
+    "--lock",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\parallel-lanes\\packages\\2026-10-16-independent-review-wave\\inputs.lock.json",
+    "--expected-lock-sha256",
+    "968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233"
+  ],
+  "subset_instruction": "Append --package-id <your package ID>; only its locked consumer subset is required."
+}

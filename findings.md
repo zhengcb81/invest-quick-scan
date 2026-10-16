@@ -1,4 +1,14 @@
+## 2026-10-16 — 可独立施工的接口与独审闭环
+
+三张新卡CONTEXT-PACK-06（上下文编译）、REVIEW-CAL-06（金融评审校准）、RESUME-CHAOS-06（原SDK故障接续）准备完成、尚未派发；各自唯一新Lab根，与活动OPERATING-CATL/CSC及EXPERIMENT-DESK无交叠。全部离线、不依赖彼此新交付，不改活动源/账本。用户新增硬要求已写进每卡和共同独审规范：必须实际调用另一个独立agent全面检查，修完全部有效发现并由独立agent复审passed后才正式交接，留调用/round/fixes/final与最终payload commit绑定；只设一个整包闭环，不加小节点审批。
+
+516文件/6352074bytes冻结，锁968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233；5正例/8拒绝反例通过，含原字节搬迁；522临时文件7438757bytes已清、剩余0。独立发布审查F01匿名map绑定及C01原CACHE多scenario处理已修复并复审通过。0 API/0下载/0生产写/0新Lab创建。
+
+匿名评审不能只信labels自报hash，必须核casebook→私有map→实际公开assignment→labels的内容绑定；公开去掉family/pair/expected提示。原CACHE单次最多一scenario，薄工具须逐次调用或显式拒绝。静态schema/示例不等于live预算登记。新上下文编译只裁题表、不删证据或registry；CHAOS只mock原HTTP边界、不复制状态机/账本，发现上游真缺陷诚实blocked。
+
 ## 2026-10-16 — 共享上下文需要实测，独立评审与生成版本分离
+
+MiMo逐题组实测外层1812.422秒，不能把1800配置当严格总CLI墙钟；原SDK是下一轮准入/HTTP读超时边界，已准入响应仍可能晚完成。报告真实时间不截断为1800。该格16次回执/12合法答；DeepSeek19次/12答，质量仍待盲评，少HTTP不等于低成本/更快/更准。新搜索候选通过209P+15subtests但仍不部署：当前schema20源必须保持到基线及critic终态；公开价≠账号余额或检索留存/评测权利，Brave/Tavily实际资格记录另存本地隔离研究目录。
 
 首个DeepSeek逐题会话已在真实SDK同累计账本收齐12题，但合法结构不能证明分数合理。MiMo Pro早期请求可达约196秒、output含11519思考token；后续实际缓存/思考量会变化，不能由“共享agent沙盒”推定命中或质量。完整质量评审先于策略经济性推荐。
 

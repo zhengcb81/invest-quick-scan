@@ -29,3 +29,9 @@
 后处理消费者另存`runs/real-contrast-2026-10-16-03/analysis-tool-inputs/`，53文件/424335bytes，锁为同目录上级`analysis-tools.lock.json`。JUDGE1.0.2源commit `ee66517`：普通公共词与私有策略标识冲突修复，81项及真实旧W1接缝通过；没有修改生成期schema、证据、题目、phase或SDK。分析薄入口和critic源码也冻结于该锁；后续修复需另记版本，不回写生成输入。
 
 基线运行中。当前只确认DeepSeek首场12/12合法答案、19实际请求；未做本轮金融盲评，不作准确性或策略推荐。搜索增补不混入本T4，另登记独立treatment后才可比较检索方案。
+
+### 同次集中审查后的消费者v2
+
+消费者v1保持原字节。critic集中审查实证修复“baseline在任意答案字符串自报模型泄漏”和“prepared.before与原始raw分离”两项根因；普通Gemini产品/公司成本用语仍允许，17P。新树`analysis-tool-inputs-v2`为55文件434148bytes，锁`analysis-tools-v2.lock.json` raw SHA `48551f1a45ff99a0e177a44b0337d3808674b8572dd1ecdcd27d210f162aa5ff`；JUDGE和analysis正文与v1相同，957项生成输入仍不动。
+
+原SDK/one-key/liveguard外层薄接线另有9P，42个测试临时文件清理、0 HTTP。固定四格登记`runs/real-contrast-2026-10-16-01/critic-launch-candidate/cohort-v2.json` raw SHA `db26ba9a7b2487ba034c30057d6ab7e7d82937d6c49a57297a00853a85501914`；静态预检通过，不读before。全部12个baseline终态后方可显式发送；跨UTC2026-10-16即停止重核价卡，不自动追“最新”lock。匿名性被拒或没有carrier的格仍保留12槽，不能仅凭没文件推断0 HTTP。该v2是后续复核/分析消费者的新冻结，不重跑或改造T4基线。

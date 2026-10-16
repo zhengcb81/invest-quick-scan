@@ -1,3 +1,17 @@
+## 2026-10-16 — 独立整包审查要求与新三包已发布准备
+
+[新三包总入口](docs/implementation/parallel-lanes/packages/2026-10-16-independent-review-wave/README.md)。
+
+三张新卡CONTEXT-PACK-06（上下文编译）、REVIEW-CAL-06（金融评审校准）、RESUME-CHAOS-06（原SDK故障接续）准备完成、尚未派发；各自唯一新Lab根，与活动OPERATING-CATL/CSC及EXPERIMENT-DESK无交叠。全部离线、不依赖彼此新交付，不改活动源/账本。用户新增硬要求已写进每卡和共同独审规范：必须实际调用另一个独立agent全面检查，修完全部有效发现并由独立agent复审passed后才正式交接，留调用/round/fixes/final与最终payload commit绑定；只设一个整包闭环，不加小节点审批。
+
+516文件/6352074bytes冻结，锁968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233；5正例/8拒绝反例通过，含原字节搬迁；522临时文件7438757bytes已清、剩余0。独立发布审查F01匿名map绑定及C01原CACHE多scenario处理已修复并复审通过。0 API/0下载/0生产写/0新Lab创建。
+
+真实T4继续同一cohort12792/session64011，未另起：21:03UTC第一重复6场终态，57/72合法答；single两组各12，pack3为12/6，agent为3/0。失败完整保留，不能把格式完整当金融准确。第二重复MiMo agent运行中；完整计划仍12场144槽。最新已终态native累计89请求/527532micros已知估算，旧100000micros未知预留保留、effective0，无新阻断。四格固定critic未发；CODEC1.0.2安全反馈候选71P仅候选，不能改T4锁；搜索schema21候选仍等T4和critic全终态再部署。下一步完成登记基线，按已冻结v2协议做独立全分母金融盲评/固定critic，再评价格速度缓存并固化手册，尚无金融赢家。
+
+## Next Step
+
+完成正在运行的T4登记基线；不重复已启动case，不修改生成输入。
+
 ## 2026-10-16 — T4基线真实对照运行、消费者冻结
 
 DeepSeek首个逐题组终态12/12合法答、19次真实请求；尚未做本轮金融准确性盲评。MiMo Pro逐题组运行中，原12场144槽登记不变。三张OPERATING/EXPERIMENT-DESK卡已开工，三个独占Lab按活动writer避让。JUDGE1.0.2精确5文件CAS部署/正常提交ee66517，81P及真实旧W1接缝通过；53文件消费者独立冻结，不回写957项生成输入。详见[质量评审与交叉复核协议](docs/implementation/experiments/real-contrast-t4-analysis-protocol-2026-10-16.md)。四格critic预选不依答案好坏；新搜索为后续独立treatment，未混入T4。当前下一步仍是完成登记基线，再匿名独立金融评审；不能把JSON合法或高缓存率视为准确。

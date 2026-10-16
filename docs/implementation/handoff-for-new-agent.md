@@ -1,4 +1,20 @@
+## 2026-10-16 — 最新接续：新三包尚未派发、主线真实实验活动
+
+[三包入口](parallel-lanes/packages/2026-10-16-independent-review-wave/README.md)。
+
+三张新卡CONTEXT-PACK-06（上下文编译）、REVIEW-CAL-06（金融评审校准）、RESUME-CHAOS-06（原SDK故障接续）准备完成、尚未派发；各自唯一新Lab根，与活动OPERATING-CATL/CSC及EXPERIMENT-DESK无交叠。全部离线、不依赖彼此新交付，不改活动源/账本。用户新增硬要求已写进每卡和共同独审规范：必须实际调用另一个独立agent全面检查，修完全部有效发现并由独立agent复审passed后才正式交接，留调用/round/fixes/final与最终payload commit绑定；只设一个整包闭环，不加小节点审批。
+
+516文件/6352074bytes冻结，锁968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233；5正例/8拒绝反例通过，含原字节搬迁；522临时文件7438757bytes已清、剩余0。独立发布审查F01匿名map绑定及C01原CACHE多scenario处理已修复并复审通过。0 API/0下载/0生产写/0新Lab创建。
+
+真实T4继续同一cohort12792/session64011，未另起：21:03UTC第一重复6场终态，57/72合法答；single两组各12，pack3为12/6，agent为3/0。失败完整保留，不能把格式完整当金融准确。第二重复MiMo agent运行中；完整计划仍12场144槽。最新已终态native累计89请求/527532micros已知估算，旧100000micros未知预留保留、effective0，无新阻断。四格固定critic未发；CODEC1.0.2安全反馈候选71P仅候选，不能改T4锁；搜索schema21候选仍等T4和critic全终态再部署。下一步完成登记基线，按已冻结v2协议做独立全分母金融盲评/固定critic，再评价格速度缓存并固化手册，尚无金融赢家。
+
+只用analysis-tools-v2.lock.json/analysis-tool-inputs-v2，不能误回v1；原三个活动writer仍避让。下方旧时间快照均历史。
+
 ## 2026-10-16 — T4续行指针：不得启动第二份cohort
+
+20:33UTC状态更新：首两个single终态各12/12，DeepSeek19HTTP、MiMo16HTTP；MiMo外层1812.422秒，1800是session准入限额非严格完成墙钟。第三格DeepSeek pack3运行。最新已终态native72请求/400462micros已知/100000旧reserve/effective0。搜索schema21候选另存...01/search-native-candidate/deployment-manifest.json（七文件209P+15subtests、temp0、外源21cf8b05未动），禁止在T4或critic活动时部署/开原库。实测搜索/并入新证据是下一独立phase，资格不能用known price伪造；当前质量尚无结论。
+
+后处理后续用consumer v2：analysis-tool-inputs-v2 + analysis-tools-v2.lock.json（48551f1a45ff99a0e177a44b0337d3808674b8572dd1ecdcd27d210f162aa5ff，55文件）。v1保留历史，JUDGE/analysis未变，critic经集中17P修匿名/对象绑定；外层critic-launch-candidate/cohort-v2.json（db26ba9a7b2487ba034c30057d6ab7e7d82937d6c49a57297a00853a85501914）静态预检0 HTTP、9P/42临时文件清理。必须等12场基线终态再--live-cohort，UTC跨日拒绝沿用旧价；当前未发送任何critic。不要误用旧v1 consumer_review_ref=null登记。
 
 当前运行runs/real-contrast-2026-10-16-03/cohort-progress.json（cohort PID12792，工具session64011）；首个DeepSeek逐题终态12/12、19真实请求，MiMo Pro逐题仍运行。用同根show_progress.py仅读取安全运行计数。已有claim/runtime不得重发；所有新请求仍原native累计账，旧USD0.10未知保留。完整12场144槽终态后才用analysis-tool-inputs/analysis/analyze.py和独立锁住的JUDGE1.0.2准备匿名包；消费者53文件424335bytes/ee66517，锁analysis-tools.lock.json，不能替换inputs内旧JUDGE以破坏生成锁。评审和四格critic规则见[协议](experiments/real-contrast-t4-analysis-protocol-2026-10-16.md)。三外包OPERATING-CATL/CSC与EXPERIMENT-DESK已派发施工，禁止写三根。下一步完成基线→独立全分母盲评/固定critic→CACHE→实操手册，尚无本轮金融赢家。
 
