@@ -1,0 +1,241 @@
+FFFFFFFFF                                                                [100%]
+================================== FAILURES ===================================
+__________________ test_shared_lock_contract[invalid_commit] __________________
+
+dataset = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case...4373334', 'dataset_id': 'synthetic-desk-fixture-001', ...}, <function dataset.<locals>.finalize at 0x00000211A787C9A0>)
+case = 'invalid_commit'
+
+    @pytest.mark.parametrize('case', ['invalid_commit','null_commit_without_reason','non_utc_clock','unknown_consumer','windows_reserved_source_path','trailing_dot_source_path'])
+    def test_shared_lock_contract(dataset,case):
+     _,lock,_,finalize=dataset
+     root=next(iter(lock['source_roots'].values()))
+     if case=='invalid_commit': root['commit']='not-a-git-sha'
+     elif case=='null_commit_without_reason':
+      for key in list(root):
+       if key not in ('root','commit'):root.pop(key)
+      root['commit']=None
+     elif case=='non_utc_clock':lock['prepared_at']='2026-10-16T12:00:00+08:00'
+     elif case=='unknown_consumer':lock['files'][-1]['consumers'].append('UNREGISTERED-PACKAGE')
+     elif case=='windows_reserved_source_path':lock['files'][-1]['source_path']='AUX.json'
+     elif case=='trailing_dot_source_path':lock['files'][-1]['source_path']='folder./x.json'
+>    with pytest.raises(DeskError):derive_view_and_details(**finalize())
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE DeskError
+
+tests\test_final_independent.py:23: Failed
+____________ test_shared_lock_contract[null_commit_without_reason] ____________
+
+dataset = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case...e87f5be', 'dataset_id': 'synthetic-desk-fixture-001', ...}, <function dataset.<locals>.finalize at 0x00000211A787C900>)
+case = 'null_commit_without_reason'
+
+    @pytest.mark.parametrize('case', ['invalid_commit','null_commit_without_reason','non_utc_clock','unknown_consumer','windows_reserved_source_path','trailing_dot_source_path'])
+    def test_shared_lock_contract(dataset,case):
+     _,lock,_,finalize=dataset
+     root=next(iter(lock['source_roots'].values()))
+     if case=='invalid_commit': root['commit']='not-a-git-sha'
+     elif case=='null_commit_without_reason':
+      for key in list(root):
+       if key not in ('root','commit'):root.pop(key)
+      root['commit']=None
+     elif case=='non_utc_clock':lock['prepared_at']='2026-10-16T12:00:00+08:00'
+     elif case=='unknown_consumer':lock['files'][-1]['consumers'].append('UNREGISTERED-PACKAGE')
+     elif case=='windows_reserved_source_path':lock['files'][-1]['source_path']='AUX.json'
+     elif case=='trailing_dot_source_path':lock['files'][-1]['source_path']='folder./x.json'
+>    with pytest.raises(DeskError):derive_view_and_details(**finalize())
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE DeskError
+
+tests\test_final_independent.py:23: Failed
+__________________ test_shared_lock_contract[non_utc_clock] ___________________
+
+dataset = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case...36c8e42', 'dataset_id': 'synthetic-desk-fixture-001', ...}, <function dataset.<locals>.finalize at 0x00000211A787CB80>)
+case = 'non_utc_clock'
+
+    @pytest.mark.parametrize('case', ['invalid_commit','null_commit_without_reason','non_utc_clock','unknown_consumer','windows_reserved_source_path','trailing_dot_source_path'])
+    def test_shared_lock_contract(dataset,case):
+     _,lock,_,finalize=dataset
+     root=next(iter(lock['source_roots'].values()))
+     if case=='invalid_commit': root['commit']='not-a-git-sha'
+     elif case=='null_commit_without_reason':
+      for key in list(root):
+       if key not in ('root','commit'):root.pop(key)
+      root['commit']=None
+     elif case=='non_utc_clock':lock['prepared_at']='2026-10-16T12:00:00+08:00'
+     elif case=='unknown_consumer':lock['files'][-1]['consumers'].append('UNREGISTERED-PACKAGE')
+     elif case=='windows_reserved_source_path':lock['files'][-1]['source_path']='AUX.json'
+     elif case=='trailing_dot_source_path':lock['files'][-1]['source_path']='folder./x.json'
+>    with pytest.raises(DeskError):derive_view_and_details(**finalize())
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE DeskError
+
+tests\test_final_independent.py:23: Failed
+_________________ test_shared_lock_contract[unknown_consumer] _________________
+
+dataset = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case...77336be', 'dataset_id': 'synthetic-desk-fixture-001', ...}, <function dataset.<locals>.finalize at 0x00000211A787C720>)
+case = 'unknown_consumer'
+
+    @pytest.mark.parametrize('case', ['invalid_commit','null_commit_without_reason','non_utc_clock','unknown_consumer','windows_reserved_source_path','trailing_dot_source_path'])
+    def test_shared_lock_contract(dataset,case):
+     _,lock,_,finalize=dataset
+     root=next(iter(lock['source_roots'].values()))
+     if case=='invalid_commit': root['commit']='not-a-git-sha'
+     elif case=='null_commit_without_reason':
+      for key in list(root):
+       if key not in ('root','commit'):root.pop(key)
+      root['commit']=None
+     elif case=='non_utc_clock':lock['prepared_at']='2026-10-16T12:00:00+08:00'
+     elif case=='unknown_consumer':lock['files'][-1]['consumers'].append('UNREGISTERED-PACKAGE')
+     elif case=='windows_reserved_source_path':lock['files'][-1]['source_path']='AUX.json'
+     elif case=='trailing_dot_source_path':lock['files'][-1]['source_path']='folder./x.json'
+>    with pytest.raises(DeskError):derive_view_and_details(**finalize())
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE DeskError
+
+tests\test_final_independent.py:23: Failed
+___________ test_shared_lock_contract[windows_reserved_source_path] ___________
+
+dataset = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case...d3ed113', 'dataset_id': 'synthetic-desk-fixture-001', ...}, <function dataset.<locals>.finalize at 0x00000211A787D1C0>)
+case = 'windows_reserved_source_path'
+
+    @pytest.mark.parametrize('case', ['invalid_commit','null_commit_without_reason','non_utc_clock','unknown_consumer','windows_reserved_source_path','trailing_dot_source_path'])
+    def test_shared_lock_contract(dataset,case):
+     _,lock,_,finalize=dataset
+     root=next(iter(lock['source_roots'].values()))
+     if case=='invalid_commit': root['commit']='not-a-git-sha'
+     elif case=='null_commit_without_reason':
+      for key in list(root):
+       if key not in ('root','commit'):root.pop(key)
+      root['commit']=None
+     elif case=='non_utc_clock':lock['prepared_at']='2026-10-16T12:00:00+08:00'
+     elif case=='unknown_consumer':lock['files'][-1]['consumers'].append('UNREGISTERED-PACKAGE')
+     elif case=='windows_reserved_source_path':lock['files'][-1]['source_path']='AUX.json'
+     elif case=='trailing_dot_source_path':lock['files'][-1]['source_path']='folder./x.json'
+>    with pytest.raises(DeskError):derive_view_and_details(**finalize())
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE DeskError
+
+tests\test_final_independent.py:23: Failed
+_____________ test_shared_lock_contract[trailing_dot_source_path] _____________
+
+dataset = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case...7c3b125', 'dataset_id': 'synthetic-desk-fixture-001', ...}, <function dataset.<locals>.finalize at 0x00000211A787CAE0>)
+case = 'trailing_dot_source_path'
+
+    @pytest.mark.parametrize('case', ['invalid_commit','null_commit_without_reason','non_utc_clock','unknown_consumer','windows_reserved_source_path','trailing_dot_source_path'])
+    def test_shared_lock_contract(dataset,case):
+     _,lock,_,finalize=dataset
+     root=next(iter(lock['source_roots'].values()))
+     if case=='invalid_commit': root['commit']='not-a-git-sha'
+     elif case=='null_commit_without_reason':
+      for key in list(root):
+       if key not in ('root','commit'):root.pop(key)
+      root['commit']=None
+     elif case=='non_utc_clock':lock['prepared_at']='2026-10-16T12:00:00+08:00'
+     elif case=='unknown_consumer':lock['files'][-1]['consumers'].append('UNREGISTERED-PACKAGE')
+     elif case=='windows_reserved_source_path':lock['files'][-1]['source_path']='AUX.json'
+     elif case=='trailing_dot_source_path':lock['files'][-1]['source_path']='folder./x.json'
+>    with pytest.raises(DeskError):derive_view_and_details(**finalize())
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE DeskError
+
+tests\test_final_independent.py:23: Failed
+_______________ test_serve_rejects_unknown_core_protocol[view] ________________
+
+dataset = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case...53e4d91', 'dataset_id': 'synthetic-desk-fixture-001', ...}, <function dataset.<locals>.finalize at 0x00000211A787D300>)
+scratch = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case-21137c7f')
+core = 'view'
+
+    @pytest.mark.parametrize('core',['view','manifest','details'])
+    def test_serve_rejects_unknown_core_protocol(dataset,scratch,core):
+     output=scratch/'bundle';build_bundle(output_root=str(output),**dataset[3]())
+     path=output/(core+'.json');obj=json.loads(path.read_text(encoding='utf-8'))
+     obj['protocol']='iqs.unknown/9.9.9'
+     if 'content_sha256' in obj:obj['content_sha256']=content_sha256(obj)
+     if core=='view':
+      dpath=output/'details.json';details=json.loads(dpath.read_text(encoding='utf-8'));details['view_content_sha256']=obj['content_sha256'];dpath.write_text(canonical_json(details),encoding='utf-8')
+     path.write_text(canonical_json(obj),encoding='utf-8')
+     bundle=json.loads((output/'bundle.json').read_text(encoding='utf-8'))
+     if core=='view':bundle['view_content_sha256']=obj['content_sha256']
+     if core=='manifest':
+      bundle['source_manifest_sha256']=obj['content_sha256']
+      vp=output/'view.json';view=json.loads(vp.read_text(encoding='utf-8'));view['source_manifest_sha256']=obj['content_sha256'];view['content_sha256']=content_sha256(view);vp.write_text(canonical_json(view),encoding='utf-8');bundle['view_content_sha256']=view['content_sha256']
+      dp=output/'details.json';details=json.loads(dp.read_text(encoding='utf-8'));details['view_content_sha256']=view['content_sha256'];dp.write_text(canonical_json(details),encoding='utf-8')
+     for ref in bundle['files']:
+      b=(output/ref['path']).read_bytes();ref.update(bytes=len(b),raw_sha256=hashlib.sha256(b).hexdigest())
+     for name in ('manifest','view','details'):bundle[name]=next(x for x in bundle['files'] if x['path']==name+'.json')
+     bundle['content_sha256']=content_sha256(bundle);(output/'bundle.json').write_text(canonical_json(bundle),encoding='utf-8')
+>    with pytest.raises(DeskError):load_bundle(output)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE DeskError
+
+tests\test_final_independent.py:44: Failed
+_____________ test_serve_rejects_unknown_core_protocol[manifest] ______________
+
+dataset = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case...53e4d91', 'dataset_id': 'synthetic-desk-fixture-001', ...}, <function dataset.<locals>.finalize at 0x00000211A787E980>)
+scratch = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case-a1f93822')
+core = 'manifest'
+
+    @pytest.mark.parametrize('core',['view','manifest','details'])
+    def test_serve_rejects_unknown_core_protocol(dataset,scratch,core):
+     output=scratch/'bundle';build_bundle(output_root=str(output),**dataset[3]())
+     path=output/(core+'.json');obj=json.loads(path.read_text(encoding='utf-8'))
+     obj['protocol']='iqs.unknown/9.9.9'
+     if 'content_sha256' in obj:obj['content_sha256']=content_sha256(obj)
+     if core=='view':
+      dpath=output/'details.json';details=json.loads(dpath.read_text(encoding='utf-8'));details['view_content_sha256']=obj['content_sha256'];dpath.write_text(canonical_json(details),encoding='utf-8')
+     path.write_text(canonical_json(obj),encoding='utf-8')
+     bundle=json.loads((output/'bundle.json').read_text(encoding='utf-8'))
+     if core=='view':bundle['view_content_sha256']=obj['content_sha256']
+     if core=='manifest':
+      bundle['source_manifest_sha256']=obj['content_sha256']
+      vp=output/'view.json';view=json.loads(vp.read_text(encoding='utf-8'));view['source_manifest_sha256']=obj['content_sha256'];view['content_sha256']=content_sha256(view);vp.write_text(canonical_json(view),encoding='utf-8');bundle['view_content_sha256']=view['content_sha256']
+      dp=output/'details.json';details=json.loads(dp.read_text(encoding='utf-8'));details['view_content_sha256']=view['content_sha256'];dp.write_text(canonical_json(details),encoding='utf-8')
+     for ref in bundle['files']:
+      b=(output/ref['path']).read_bytes();ref.update(bytes=len(b),raw_sha256=hashlib.sha256(b).hexdigest())
+     for name in ('manifest','view','details'):bundle[name]=next(x for x in bundle['files'] if x['path']==name+'.json')
+     bundle['content_sha256']=content_sha256(bundle);(output/'bundle.json').write_text(canonical_json(bundle),encoding='utf-8')
+>    with pytest.raises(DeskError):load_bundle(output)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE DeskError
+
+tests\test_final_independent.py:44: Failed
+______________ test_serve_rejects_unknown_core_protocol[details] ______________
+
+dataset = (WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case...53e4d91', 'dataset_id': 'synthetic-desk-fixture-001', ...}, <function dataset.<locals>.finalize at 0x00000211A787E340>)
+scratch = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/accept-05-2026-10-16/final-review/desk/.test-work/unit/case-4425fa41')
+core = 'details'
+
+    @pytest.mark.parametrize('core',['view','manifest','details'])
+    def test_serve_rejects_unknown_core_protocol(dataset,scratch,core):
+     output=scratch/'bundle';build_bundle(output_root=str(output),**dataset[3]())
+     path=output/(core+'.json');obj=json.loads(path.read_text(encoding='utf-8'))
+     obj['protocol']='iqs.unknown/9.9.9'
+     if 'content_sha256' in obj:obj['content_sha256']=content_sha256(obj)
+     if core=='view':
+      dpath=output/'details.json';details=json.loads(dpath.read_text(encoding='utf-8'));details['view_content_sha256']=obj['content_sha256'];dpath.write_text(canonical_json(details),encoding='utf-8')
+     path.write_text(canonical_json(obj),encoding='utf-8')
+     bundle=json.loads((output/'bundle.json').read_text(encoding='utf-8'))
+     if core=='view':bundle['view_content_sha256']=obj['content_sha256']
+     if core=='manifest':
+      bundle['source_manifest_sha256']=obj['content_sha256']
+      vp=output/'view.json';view=json.loads(vp.read_text(encoding='utf-8'));view['source_manifest_sha256']=obj['content_sha256'];view['content_sha256']=content_sha256(view);vp.write_text(canonical_json(view),encoding='utf-8');bundle['view_content_sha256']=view['content_sha256']
+      dp=output/'details.json';details=json.loads(dp.read_text(encoding='utf-8'));details['view_content_sha256']=view['content_sha256'];dp.write_text(canonical_json(details),encoding='utf-8')
+     for ref in bundle['files']:
+      b=(output/ref['path']).read_bytes();ref.update(bytes=len(b),raw_sha256=hashlib.sha256(b).hexdigest())
+     for name in ('manifest','view','details'):bundle[name]=next(x for x in bundle['files'] if x['path']==name+'.json')
+     bundle['content_sha256']=content_sha256(bundle);(output/'bundle.json').write_text(canonical_json(bundle),encoding='utf-8')
+>    with pytest.raises(DeskError):load_bundle(output)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+E    Failed: DID NOT RAISE DeskError
+
+tests\test_final_independent.py:44: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_final_independent.py::test_shared_lock_contract[invalid_commit]
+FAILED tests/test_final_independent.py::test_shared_lock_contract[null_commit_without_reason]
+FAILED tests/test_final_independent.py::test_shared_lock_contract[non_utc_clock]
+FAILED tests/test_final_independent.py::test_shared_lock_contract[unknown_consumer]
+FAILED tests/test_final_independent.py::test_shared_lock_contract[windows_reserved_source_path]
+FAILED tests/test_final_independent.py::test_shared_lock_contract[trailing_dot_source_path]
+FAILED tests/test_final_independent.py::test_serve_rejects_unknown_core_protocol[view]
+FAILED tests/test_final_independent.py::test_serve_rejects_unknown_core_protocol[manifest]
+FAILED tests/test_final_independent.py::test_serve_rejects_unknown_core_protocol[details]
+9 failed in 4.37s

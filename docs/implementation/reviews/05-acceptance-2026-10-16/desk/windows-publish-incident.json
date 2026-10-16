@@ -1,0 +1,23 @@
+{
+  "incident": "structure-final-full: WinError 5 at os.rename, before load_bundle",
+  "test": "test_resealed_details_all_owned_containers_are_typed[answers_unregistered-value9]",
+  "source": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-05-2026-10-16\\iqs-experiment-desk-lab\\.test-work\\unit\\case-0b4ec545\\.typed.iqs-desk-staging-6c233215e2",
+  "target": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-05-2026-10-16\\iqs-experiment-desk-lab\\.test-work\\unit\\case-0b4ec545\\typed",
+  "post_teardown": {
+    "parent_exists": false,
+    "staging_exists": false,
+    "output_exists": false
+  },
+  "scope_evidence": [
+    "This case calls build_bundle directly before modifying details or invoking load_bundle; it starts no server for this unique scratch root.",
+    "scratch uses a newly mkdir-created UUID case directory. build_bundle checks output absence both before deriving and immediately before os.rename.",
+    "No product code or validation logic was changed between the failure, the 12-pass affected group, and the full rerun.",
+    "The build finally removes staging and the scratch fixture removes its case tree on failure; no complete output was preserved."
+  ],
+  "unknowns": [
+    "No contemporaneous OS open-handle trace was captured; an external file handle, security scanner, or OS access denial cannot be proven or ruled out retrospectively.",
+    "No same-name output collision was observed; the pre-rename absence check does not mathematically exclude an external race between check and rename."
+  ],
+  "classification": "recorded intermittent Windows publication access failure; cause unconfirmed, not closed merely because rerun passed",
+  "recorded_at": "2026-10-16T22:49:20.641294+00:00"
+}

@@ -1,0 +1,161 @@
+test_full_chain_on_fresh_root (tests.e2e.test_cli_e2e.FreshRootTests.test_full_chain_on_fresh_root) ... ok
+test_version_command (tests.e2e.test_cli_e2e.FreshRootTests.test_version_command) ... ok
+test_chain_with_sockets_blocked (tests.e2e.test_cli_e2e.OfflineTests.test_chain_with_sockets_blocked) ... ok
+test_no_writes_outside_lab_root (tests.e2e.test_cli_e2e.OfflineTests.test_no_writes_outside_lab_root)
+The frozen inputs still hash to the lock after the whole E2E batch. ... ok
+test_duplicate_json_key_refused (tests.e2e.test_cli_e2e.RefusalTests.test_duplicate_json_key_refused) ... ok
+test_existing_output_refused (tests.e2e.test_cli_e2e.RefusalTests.test_existing_output_refused) ... ok
+test_future_date_document_refused_and_no_bundle (tests.e2e.test_cli_e2e.RefusalTests.test_future_date_document_refused_and_no_bundle) ... ok
+test_missing_input_refused (tests.e2e.test_cli_e2e.RefusalTests.test_missing_input_refused) ... ok
+test_missing_query_log_refused (tests.e2e.test_cli_e2e.RefusalTests.test_missing_query_log_refused) ... ok
+test_tampered_input_refused (tests.e2e.test_cli_e2e.RefusalTests.test_tampered_input_refused) ... ok
+test_tampered_query_log_refused (tests.e2e.test_cli_e2e.RefusalTests.test_tampered_query_log_refused) ... ok
+test_unknown_lock_protocol_refused (tests.e2e.test_cli_e2e.RefusalTests.test_unknown_lock_protocol_refused) ... ok
+test_unknown_version_refused_with_exit_4 (tests.e2e.test_cli_e2e.RefusalTests.test_unknown_version_refused_with_exit_4) ... ok
+test_wrong_company_document_refused (tests.e2e.test_cli_e2e.RefusalTests.test_wrong_company_document_refused) ... ok
+test_expected_lock_sha_mismatch_refused (tests.e2e.test_cli_e2e.RelocationTests.test_expected_lock_sha_mismatch_refused) ... ok
+test_relocated_inputs_same_content_digest (tests.e2e.test_cli_e2e.RelocationTests.test_relocated_inputs_same_content_digest) ... ok
+test_caps_respected (tests.integration.test_frozen_chain.AuditRecordTests.test_caps_respected) ... ok
+test_cost_stays_unknown_not_zero (tests.integration.test_frozen_chain.AuditRecordTests.test_cost_stays_unknown_not_zero) ... ok
+test_query_log_counts_match_the_reference (tests.integration.test_frozen_chain.AuditRecordTests.test_query_log_counts_match_the_reference) ... ok
+test_commitment_track_is_at_most_five (tests.integration.test_frozen_chain.ChainTests.test_commitment_track_is_at_most_five) ... ok
+test_coverage_before_after_structure (tests.integration.test_frozen_chain.ChainTests.test_coverage_before_after_structure) ... ok
+test_export_bundle_contains_only_own_artifacts (tests.integration.test_frozen_chain.ChainTests.test_export_bundle_contains_only_own_artifacts) ... ok
+test_new_tech_news_cannot_override_retention_or_roic (tests.integration.test_frozen_chain.ChainTests.test_new_tech_news_cannot_override_retention_or_roic)
+The 12-day GBA material and technology-route material must not flip ... ok
+test_parent_child_difference_is_reported_not_merged (tests.integration.test_frozen_chain.ChainTests.test_parent_child_difference_is_reported_not_merged) ... ok
+test_reference_rebuild_is_byte_identical (tests.integration.test_frozen_chain.ChainTests.test_reference_rebuild_is_byte_identical)
+The builder is deterministic: re-running over the same inputs is a no-op. ... ok
+test_traceable_chain_for_a_real_source_proposition (tests.integration.test_frozen_chain.ChainTests.test_traceable_chain_for_a_real_source_proposition)
+At least one actual proposition must be traceable source -> claim -> dimension. ... ok
+test_validate_real_document (tests.integration.test_frozen_chain.ChainTests.test_validate_real_document) ... ok
+test_all_consumer_files_match_the_lock_now (tests.integration.test_frozen_chain.FrozenInputsTests.test_all_consumer_files_match_the_lock_now) ... ok
+test_consumer_subset_is_the_expected_33_files (tests.integration.test_frozen_chain.FrozenInputsTests.test_consumer_subset_is_the_expected_33_files) ... ok
+test_dual_cutoff_dates (tests.integration.test_frozen_chain.FrozenInputsTests.test_dual_cutoff_dates) ... ok
+test_frozen_identity_stays_provisional_a_share (tests.integration.test_frozen_chain.FrozenInputsTests.test_frozen_identity_stays_provisional_a_share) ... ok
+test_lock_matches_release_receipt (tests.integration.test_frozen_chain.FrozenInputsTests.test_lock_matches_release_receipt) ... ok
+test_frozen_inputs_unchanged_after_chain (tests.integration.test_frozen_chain.PreservationTests.test_frozen_inputs_unchanged_after_chain) ... ok
+test_reference_document_is_canonical_bytes (tests.integration.test_frozen_chain.PreservationTests.test_reference_document_is_canonical_bytes) ... ok
+test_claim_observation_after_question_cutoff (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_claim_observation_after_question_cutoff) ... ok
+test_coverage_rejects_late_source_direct_api (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_coverage_rejects_late_source_direct_api) ... ok
+test_coverage_rejects_wrong_context (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_coverage_rejects_wrong_context) ... ok
+test_export_both_files_self_assert_other_company (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_export_both_files_self_assert_other_company) ... ok
+test_export_rejects_cross_company_coverage (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_export_rejects_cross_company_coverage) ... ok
+test_export_rejects_erased_remaining_gaps (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_export_rejects_erased_remaining_gaps) ... ok
+test_export_rejects_forged_source_independence (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_export_rejects_forged_source_independence) ... ok
+test_export_rejects_forged_sufficient_counts (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_export_rejects_forged_sufficient_counts) ... ok
+test_export_rejects_invalid_reference_material (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_export_rejects_invalid_reference_material) ... ok
+test_export_rejects_promoted_before_view (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_export_rejects_promoted_before_view) ... ok
+test_gap_question_binding (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_gap_question_binding) ... ok
+test_impossible_publication_date (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_impossible_publication_date) ... ok
+test_json_exponent_overflow (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_json_exponent_overflow) ... ok
+test_malformed_container_returns_diagnostic (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_malformed_container_returns_diagnostic) ... ok
+test_non_utc_access_clock (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_non_utc_access_clock) ... ok
+test_numeric_zero_cannot_impersonate_false_qualification (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_numeric_zero_cannot_impersonate_false_qualification) ... ok
+test_public_coverage_rejects_mirror_double_independence (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_public_coverage_rejects_mirror_double_independence) ... ok
+test_publication_race_preserves_existing_output (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_publication_race_preserves_existing_output) ... ok
+test_question_ineligible_premise_laundering (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_question_ineligible_premise_laundering) ... ok
+test_research_false_question_true (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_research_false_question_true) ... ok
+test_same_id_financial_content_tamper_coverage (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_same_id_financial_content_tamper_coverage) ... ok
+test_same_id_financial_content_tamper_validation (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_same_id_financial_content_tamper_validation) ... ok
+test_self_proving_inference (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_self_proving_inference) ... ok
+test_shared_lock_alias_path (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_shared_lock_alias_path) ... ok
+test_shared_lock_unknown_source_root (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_shared_lock_unknown_source_root) ... ok
+test_sufficient_question_ineligible_dimension (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_sufficient_question_ineligible_dimension) ... ok
+test_transient_windows_publication_lock (tests.unit.test_acceptance_regressions.AcceptanceRegressions.test_transient_windows_publication_lock) ... ok
+test_coverage_digest_stable_across_runs (tests.unit.test_core_units.CoverageTests.test_coverage_digest_stable_across_runs) ... ok
+test_financial_dimensions_stay_unmoved_by_operating_news (tests.unit.test_core_units.CoverageTests.test_financial_dimensions_stay_unmoved_by_operating_news) ... ok
+test_partial_claims_never_sufficient (tests.unit.test_core_units.CoverageTests.test_partial_claims_never_sufficient) ... ok
+test_research_only_claims_never_enter_question_view (tests.unit.test_core_units.CoverageTests.test_research_only_claims_never_enter_question_view) ... ok
+test_views_keep_complete_dimension_set (tests.unit.test_core_units.CoverageTests.test_views_keep_complete_dimension_set) ... ok
+test_existing_output_refused (tests.unit.test_core_units.ExportTests.test_existing_output_refused) ... ok
+test_export_is_deterministic_and_atomic (tests.unit.test_core_units.ExportTests.test_export_is_deterministic_and_atomic) ... ok
+test_case_colliding_paths_refused (tests.unit.test_core_units.LockTests.test_case_colliding_paths_refused) ... ok
+test_expected_lock_sha_mismatch_refused (tests.unit.test_core_units.LockTests.test_expected_lock_sha_mismatch_refused) ... ok
+test_missing_input_refused (tests.unit.test_core_units.LockTests.test_missing_input_refused) ... ok
+test_path_escape_refused (tests.unit.test_core_units.LockTests.test_path_escape_refused) ... ok
+test_tampered_input_refused (tests.unit.test_core_units.LockTests.test_tampered_input_refused) ... ok
+test_unknown_lock_protocol_refused (tests.unit.test_core_units.LockTests.test_unknown_lock_protocol_refused) ... ok
+test_closed_schema_rejects_extra_property (tests.unit.test_core_units.SchemaCheckTests.test_closed_schema_rejects_extra_property) ... ok
+test_enum_and_pattern (tests.unit.test_core_units.SchemaCheckTests.test_enum_and_pattern) ... ok
+test_local_ref_resolution (tests.unit.test_core_units.SchemaCheckTests.test_local_ref_resolution) ... ok
+test_all_paraphrases_are_bounded_and_hashed (tests.unit.test_core_units.SourceRowHygieneTests.test_all_paraphrases_are_bounded_and_hashed) ... ok
+test_no_score_fields_anywhere (tests.unit.test_core_units.SourceRowHygieneTests.test_no_score_fields_anywhere) ... ok
+test_canonical_json_is_stable (tests.unit.test_core_units.StrictJsonTests.test_canonical_json_is_stable) ... ok
+test_content_sha256_excludes_own_field (tests.unit.test_core_units.StrictJsonTests.test_content_sha256_excludes_own_field) ... ok
+test_duplicate_keys_refused (tests.unit.test_core_units.StrictJsonTests.test_duplicate_keys_refused) ... ok
+test_nan_and_infinity_refused (tests.unit.test_core_units.StrictJsonTests.test_nan_and_infinity_refused) ... ok
+test_access_date_as_page_date (tests.unit.test_material_consistency.MaterialConsistencyTests.test_access_date_as_page_date) ... ok
+test_all_public_apis_call_one_material_entry (tests.unit.test_material_consistency.MaterialConsistencyTests.test_all_public_apis_call_one_material_entry) ... ok
+test_company_statement_observed_subject (tests.unit.test_material_consistency.MaterialConsistencyTests.test_company_statement_observed_subject) ... ok
+test_dated_date_unknown (tests.unit.test_material_consistency.MaterialConsistencyTests.test_dated_date_unknown) ... ok
+test_failed_open_count (tests.unit.test_material_consistency.MaterialConsistencyTests.test_failed_open_count) ... ok
+test_false_source_count (tests.unit.test_material_consistency.MaterialConsistencyTests.test_false_source_count) ... ok
+test_inverted_period (tests.unit.test_material_consistency.MaterialConsistencyTests.test_inverted_period) ... ok
+test_out_of_scope_with_claims (tests.unit.test_material_consistency.MaterialConsistencyTests.test_out_of_scope_with_claims) ... ok
+test_query_overcap (tests.unit.test_material_consistency.MaterialConsistencyTests.test_query_overcap) ... ok
+test_reference_only_with_claims (tests.unit.test_material_consistency.MaterialConsistencyTests.test_reference_only_with_claims) ... ok
+test_total_cost_below_subtotal (tests.unit.test_material_consistency.MaterialConsistencyTests.test_total_cost_below_subtotal) ... ok
+test_unbounded_paraphrase (tests.unit.test_material_consistency.MaterialConsistencyTests.test_unbounded_paraphrase) ... ok
+test_unknown_cost_as_zero (tests.unit.test_material_consistency.MaterialConsistencyTests.test_unknown_cost_as_zero) ... ok
+test_unknown_date_verified (tests.unit.test_material_consistency.MaterialConsistencyTests.test_unknown_date_verified) ... ok
+test_document_is_deterministic (tests.unit.test_reference_negatives.BaselineTests.test_document_is_deterministic) ... ok
+test_real_document_is_valid (tests.unit.test_reference_negatives.BaselineTests.test_real_document_is_valid) ... ok
+test_capacity_to_sales_refused (tests.unit.test_reference_negatives.ClaimTests.test_capacity_to_sales_refused) ... ok
+test_claim_without_source_refused (tests.unit.test_reference_negatives.ClaimTests.test_claim_without_source_refused) ... ok
+test_company_parameters_to_customer_roi_refused (tests.unit.test_reference_negatives.ClaimTests.test_company_parameters_to_customer_roi_refused)
+Company release parameters cannot be graded as customer economic outcome. ... ok
+test_company_statement_as_operating_reality_fact_refused (tests.unit.test_reference_negatives.ClaimTests.test_company_statement_as_operating_reality_fact_refused) ... ok
+test_dangling_counterevidence_refused (tests.unit.test_reference_negatives.ClaimTests.test_dangling_counterevidence_refused) ... ok
+test_dangling_source_refused (tests.unit.test_reference_negatives.ClaimTests.test_dangling_source_refused) ... ok
+test_forbidden_score_field_refused (tests.unit.test_reference_negatives.ClaimTests.test_forbidden_score_field_refused) ... ok
+test_framework_cooperation_to_locked_revenue_refused (tests.unit.test_reference_negatives.ClaimTests.test_framework_cooperation_to_locked_revenue_refused) ... ok
+test_inference_without_premise_refused (tests.unit.test_reference_negatives.ClaimTests.test_inference_without_premise_refused) ... ok
+test_question_eligibility_leak_refused (tests.unit.test_reference_negatives.ClaimTests.test_question_eligibility_leak_refused) ... ok
+test_12day_material_into_11day_question_context_refused (tests.unit.test_reference_negatives.CutoffTests.test_12day_material_into_11day_question_context_refused)
+GBA item (2026-10-12) marked question-eligible must fail. ... ok
+test_13day_material_is_research_only (tests.unit.test_reference_negatives.CutoffTests.test_13day_material_is_research_only) ... ok
+test_14day_material_refused_for_both_cutoffs (tests.unit.test_reference_negatives.CutoffTests.test_14day_material_refused_for_both_cutoffs) ... ok
+test_base_question_as_of_cannot_be_hard_filled_with_13 (tests.unit.test_reference_negatives.CutoffTests.test_base_question_as_of_cannot_be_hard_filled_with_13) ... ok
+test_unknown_date_faked_as_access_date_refused (tests.unit.test_reference_negatives.CutoffTests.test_unknown_date_faked_as_access_date_refused) ... ok
+test_direct_sufficiency_needs_manual_reason (tests.unit.test_reference_negatives.DimensionAndGapTests.test_direct_sufficiency_needs_manual_reason) ... ok
+test_gap_cannot_claim_sufficient (tests.unit.test_reference_negatives.DimensionAndGapTests.test_gap_cannot_claim_sufficient) ... ok
+test_missing_question_dimension_refused (tests.unit.test_reference_negatives.DimensionAndGapTests.test_missing_question_dimension_refused) ... ok
+test_out_of_scope_dimension_with_claims_refused (tests.unit.test_reference_negatives.DimensionAndGapTests.test_out_of_scope_dimension_with_claims_refused) ... ok
+test_partial_dimension_declared_sufficient_refused (tests.unit.test_reference_negatives.DimensionAndGapTests.test_partial_dimension_declared_sufficient_refused) ... ok
+test_unknown_financial_fact_refused (tests.unit.test_reference_negatives.DimensionAndGapTests.test_unknown_financial_fact_refused) ... ok
+test_unknown_financial_reference_refused (tests.unit.test_reference_negatives.DimensionAndGapTests.test_unknown_financial_reference_refused) ... ok
+test_expected_context_with_other_questions_refused (tests.unit.test_reference_negatives.ExpectedContextTests.test_expected_context_with_other_questions_refused) ... ok
+test_mispassed_foreign_context_refused (tests.unit.test_reference_negatives.ExpectedContextTests.test_mispassed_foreign_context_refused)
+A board self-attestation for another company cannot be passed as expected context. ... ok
+test_binding_ref_mismatch_refused (tests.unit.test_reference_negatives.HashAndVersionTests.test_binding_ref_mismatch_refused) ... ok
+test_content_hash_error_refused (tests.unit.test_reference_negatives.HashAndVersionTests.test_content_hash_error_refused) ... ok
+test_non_finite_number_refused (tests.unit.test_reference_negatives.HashAndVersionTests.test_non_finite_number_refused) ... ok
+test_scalar_copy_warns (tests.unit.test_reference_negatives.HashAndVersionTests.test_scalar_copy_warns)
+Re-stating a frozen financial fact value as a scalar is a warning. ... ok
+test_unknown_version_refused (tests.unit.test_reference_negatives.HashAndVersionTests.test_unknown_version_refused) ... ok
+test_claim_citing_unknown_dimension_refused (tests.unit.test_reference_negatives.IdentityTests.test_claim_citing_unknown_dimension_refused) ... ok
+test_claim_question_not_matching_its_dimension_refused (tests.unit.test_reference_negatives.IdentityTests.test_claim_question_not_matching_its_dimension_refused) ... ok
+test_provisional_upgraded_to_formal_refused (tests.unit.test_reference_negatives.IdentityTests.test_provisional_upgraded_to_formal_refused) ... ok
+test_same_legal_name_but_other_entity_refused (tests.unit.test_reference_negatives.IdentityTests.test_same_legal_name_but_other_entity_refused)
+Same issuer name, different entity/security (a homonym-style forgery) must fail. ... ok
+test_same_name_company_but_other_dto_refused (tests.unit.test_reference_negatives.IdentityTests.test_same_name_company_but_other_dto_refused)
+A document cannot re-point its identity binding at another frozen DTO. ... ok
+test_supported_direct_without_direct_claim_refused (tests.unit.test_reference_negatives.IdentityTests.test_supported_direct_without_direct_claim_refused) ... ok
+test_wrong_company_entity_refused (tests.unit.test_reference_negatives.IdentityTests.test_wrong_company_entity_refused)
+CSC-style identity (another pilot company) must be refused. ... ok
+test_wrong_security_same_company_refused (tests.unit.test_reference_negatives.IdentityTests.test_wrong_security_same_company_refused) ... ok
+test_mirror_rows_split_into_two_groups_refused (tests.unit.test_reference_negatives.SourceTests.test_mirror_rows_split_into_two_groups_refused) ... ok
+test_mirrored_same_draft_double_independence_refused (tests.unit.test_reference_negatives.SourceTests.test_mirrored_same_draft_double_independence_refused)
+The EN/ZH SERES pair is one original draft: requiring 2 origins must fail. ... ok
+test_outside_link_refused (tests.unit.test_reference_negatives.SourceTests.test_outside_link_refused) ... ok
+test_overcapped_acquisition_refused (tests.unit.test_reference_negatives.SourceTests.test_overcapped_acquisition_refused) ... ok
+test_paraphrase_hash_mismatch_refused (tests.unit.test_reference_negatives.SourceTests.test_paraphrase_hash_mismatch_refused) ... ok
+test_paraphrase_over_bound_refused (tests.unit.test_reference_negatives.SourceTests.test_paraphrase_over_bound_refused) ... ok
+test_unverified_source_marked_eligible_refused (tests.unit.test_reference_negatives.SourceTests.test_unverified_source_marked_eligible_refused) ... ok
+test_zero_cost_without_disclosure_refused (tests.unit.test_reference_negatives.SourceTests.test_zero_cost_without_disclosure_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 144 tests in 47.997s
+
+OK

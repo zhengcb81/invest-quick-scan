@@ -1,3 +1,31 @@
+## 2026-10-16 — 三个05包正式签收、修复已提交
+
+OPERATING-CATL-05、OPERATING-CSC-05、EXPERIMENT-DESK-05均已完成同一整包内直接修复、另一fresh独立agent复审passed及精确CAS写回，包版本1.0.1。最终提交、测试及已应用文件如下；三个原Lab无remote，因此仅本地正常提交，总控归档/PWF另推既有IQS origin。原工人handoff及239原始文件不覆盖。
+
+| 包 | 包版本 | 最终commit | 独立完整整组 | CAS文件 |
+|---|---|---|---|---|
+| OPERATING-CATL-05 | 1.0.1 | `928bfedfc814b2c529d44ec7e4c0482eef5deda4` | 144 passed / 0 skipped | 18 |
+| OPERATING-CSC-05 | 1.0.1 | `a944200cf31d77f5fd7114c96338dc33f89507d4` | 143 passed / 1 skipped | 19 |
+| EXPERIMENT-DESK-05 | 1.0.1 | `fac8ff3b1536a1978d53c371ce4121488f7d2f0a` | 229 passed / 1 skipped | 23 |
+
+两个skip均为Windows文件symlink权限，真实junction反例实际通过。经营包公开validate/coverage/export共用完整校验，来源/日期/会计口径/不支持推断已保守修正；Desk实际单元、冻结真实输入、CLI及桌面/手机Chromium检查通过，重封hash也不能绕过core协议/结构和完整共享锁。真实usage未知仍null，匿名aggregate不擅自逐行关联，结构合法不等于金融正确。生产资格、金融充分性和评分gold未授予。
+
+正式记录见 `docs/implementation/experiments/operating-desk-acceptance-2026-10-16.md`，最终独审/实际测试日志/已应用CAS/提交/清理归档见 `docs/implementation/reviews/05-acceptance-2026-10-16/`。原始239文件及共享397输入逐项rawSHA保持；他人2026-10-10 README、旧生产SQLite保持。测试仅清自有临时目录，保留证据与冻结原件。
+
+主线T4仍已停止：60/144结构合法、9场108槽启动、36未启动。原生累计100请求、已知估算USD0.655435、USD0.20未知预约，不改账/补零/重发。108匿名槽金融一审已全部完成：47部分覆盖、8审慎不足、53缺答/遮蔽，30槽重大或争议已完成fresh独立二审：21confirm/3revise/6disputed，双方原判断保留，金融准确率及赢家仍null。不能把这些一审覆盖数字当最终准确率。
+
+## Next Step
+
+经冻结v2原分析/JUDGE/CACHE链导入108真实初判并解盲费用/耗时/缓存，30槽二审作为独立overlay保留，不合并不同命题分母；生成全144分母报告；随后在原累计账内处理response_unpriced的正式隔离续行设计，以新登记推进真实对照与实操手册。禁止重启旧T4或修改其957冻结项。06三个独立包仍仅准备、尚无用户派发确认。
+
+下方为历史快照，均不得覆盖本段正式签收与停止状态。
+
+## 2026-10-16 — CATL/CSC两个05包已正式签收
+
+CATL 1.0.1已按18文件CAS写回并正常提交928bfedfc814b2c529d44ec7e4c0482eef5deda4，最终144/144+CLI13/13；CSC 1.0.1按19文件CAS写回并正常提交a944200cf31d77f5fd7114c96338dc33f89507d4，最终143P/1个file-symlink权限skip，真实junction已跑，CLI18/18+21/21。另一fresh独立agent实核原漏洞闭合、open_findings=[]；每个已审raw SHA=最终工作树=Git blob，源仓版本冒烟通过，旧handoff历史保持。源码无未提交改动，仅授权.codegraph索引未跟踪；无remote不推送Lab。
+
+Desk仍在同闭环修复core协议/schema与完整共享锁校验，未签收/未写回原仓。主线T4仍保留60/144结构合法、费用response_unpriced阻断；已完成金融一审36/108匿名槽，第二份36正在fresh盲评，余下未完成，整体金融准确率/赢家仍null。当前唯一下一步是Desk同闭环独立复审收口并统一归档三个05包；详见docs/implementation/experiments/operating-desk-acceptance-2026-10-16.md。下方旧“均未签收/副本修复中”为历史。
+
 ## 2026-10-16 — 三个05包交回，隔离验收进行中
 
 用户确认OPERATING-CATL-05/OPERATING-CSC-05/EXPERIMENT-DESK-05交付。总控已冻结239文件/17779539bytes，213项声明artifact逐项raw bytes/SHA一致；原HEAD分别4a07d7f/20a5b9d/ffd84f1，初始化CodeGraph前Git clean，之后仅新增授权.codegraph目录，不误算成工人脏改。按已有全目录初始化授权建索引22/18/29文件。三路fresh独立agent各审一包，在自有IQS副本跑无密钥/禁网/限制外写的单元、真实输入集成、公开CLI E2E及反例；内容包另外核公开来源支持/日期/推断，UI核真实分母/未知费用/只读交互。尚未签收、未改原Lab，普通问题直接修候选，不再发整改卡。证据runs/accept-05-2026-10-16/。

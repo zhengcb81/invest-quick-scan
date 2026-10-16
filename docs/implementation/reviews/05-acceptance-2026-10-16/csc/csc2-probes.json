@@ -1,0 +1,48 @@
+[
+  {
+    "case": "observation_after_question_cutoff",
+    "validate_ok": false,
+    "errors": [
+      "CLAIM-IB-02: eligible_for_question_cutoff requires eligible premise CLAIM-IB-01",
+      "CLAIM-IB-06: eligible_for_question_cutoff requires eligible premise CLAIM-IB-01",
+      "CLAIM-IB-01: eligible_for_question_cutoff=True does not match the derived value False",
+      "CLAIM-IB-02: eligible_for_question_cutoff=True does not match the derived value False",
+      "CLAIM-IB-06: eligible_for_question_cutoff=True does not match the derived value False"
+    ],
+    "derive_error": "invalid reference before coverage",
+    "export_published": false,
+    "export_error": "invalid reference before export",
+    "output_exists": false
+  },
+  {
+    "case": "observation_start_after_question_cutoff",
+    "validate_ok": false,
+    "errors": [
+      "CLAIM-IB-02: eligible_for_question_cutoff requires eligible premise CLAIM-IB-01",
+      "CLAIM-IB-06: eligible_for_question_cutoff requires eligible premise CLAIM-IB-01",
+      "CLAIM-IB-01: eligible_for_question_cutoff=True does not match the derived value False",
+      "CLAIM-IB-02: eligible_for_question_cutoff=True does not match the derived value False",
+      "CLAIM-IB-06: eligible_for_question_cutoff=True does not match the derived value False"
+    ],
+    "derive_error": "invalid reference before coverage",
+    "export_published": false,
+    "export_error": "invalid reference before export",
+    "output_exists": false
+  },
+  {
+    "case": "unknown_cost_zero",
+    "validate_ok": false,
+    "errors": [
+      "cost values require a disclosed cost basis; unknown is not a zero receipt",
+      "known cost subtotal must stay null while usage is unknown"
+    ],
+    "derive_error": "invalid reference before coverage",
+    "export_published": false,
+    "export_error": "invalid reference before export",
+    "output_exists": false
+  },
+  {
+    "case": "nonfinite_cost",
+    "hash_reject": "Out of range float values are not JSON compliant: inf"
+  }
+]

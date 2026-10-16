@@ -1,3 +1,37 @@
+## 2026-10-16 — 三个05包正式签收、修复已提交
+
+金融二审机械元数据提醒：冻结independent-judgments.json的validation.bundle_fingerprint_match为false，系其脚本把raw文件SHA与JUDGE canonical指纹比较。原bundle_fingerprint字段为预锁dc895c2e…，不能删/改冻结包掩盖错误，也不能沿用最初“全部hash通过”口头声明；原分析后处理必须另用原JUDGE API实核，保留纠正/分歧记录。该提醒不影响三个05工程包独立签收。
+
+OPERATING-CATL-05、OPERATING-CSC-05、EXPERIMENT-DESK-05均已完成同一整包内直接修复、另一fresh独立agent复审passed及精确CAS写回，包版本1.0.1。最终提交、测试及已应用文件如下；三个原Lab无remote，因此仅本地正常提交，总控归档/PWF另推既有IQS origin。原工人handoff及239原始文件不覆盖。
+
+| 包 | 包版本 | 最终commit | 独立完整整组 | CAS文件 |
+|---|---|---|---|---|
+| OPERATING-CATL-05 | 1.0.1 | `928bfedfc814b2c529d44ec7e4c0482eef5deda4` | 144 passed / 0 skipped | 18 |
+| OPERATING-CSC-05 | 1.0.1 | `a944200cf31d77f5fd7114c96338dc33f89507d4` | 143 passed / 1 skipped | 19 |
+| EXPERIMENT-DESK-05 | 1.0.1 | `fac8ff3b1536a1978d53c371ce4121488f7d2f0a` | 229 passed / 1 skipped | 23 |
+
+两个skip均为Windows文件symlink权限，真实junction反例实际通过。经营包公开validate/coverage/export共用完整校验，来源/日期/会计口径/不支持推断已保守修正；Desk实际单元、冻结真实输入、CLI及桌面/手机Chromium检查通过，重封hash也不能绕过core协议/结构和完整共享锁。真实usage未知仍null，匿名aggregate不擅自逐行关联，结构合法不等于金融正确。生产资格、金融充分性和评分gold未授予。
+
+正式记录见 `docs/implementation/experiments/operating-desk-acceptance-2026-10-16.md`，最终独审/实际测试日志/已应用CAS/提交/清理归档见 `docs/implementation/reviews/05-acceptance-2026-10-16/`。原始239文件及共享397输入逐项rawSHA保持；他人2026-10-10 README、旧生产SQLite保持。测试仅清自有临时目录，保留证据与冻结原件。
+
+主线T4仍已停止：60/144结构合法、9场108槽启动、36未启动。原生累计100请求、已知估算USD0.655435、USD0.20未知预约，不改账/补零/重发。108匿名槽金融一审已全部完成：47部分覆盖、8审慎不足、53缺答/遮蔽，30槽重大或争议已完成fresh独立二审：21confirm/3revise/6disputed，双方原判断保留，金融准确率及赢家仍null。不能把这些一审覆盖数字当最终准确率。
+
+## Next Step
+
+经冻结v2原分析/JUDGE/CACHE链导入108真实初判并解盲费用/耗时/缓存，30槽二审作为独立overlay保留，不合并不同命题分母；生成全144分母报告；随后在原累计账内处理response_unpriced的正式隔离续行设计，以新登记推进真实对照与实操手册。禁止重启旧T4或修改其957冻结项。06三个独立包仍仅准备、尚无用户派发确认。
+
+下方为历史快照，均不得覆盖本段正式签收与停止状态。
+
+## 2026-10-16 — 接手首先读此段：05验收收口，T4已停止
+
+本段覆盖下方历史运行快照。三个05交付已收，CATL/CSC包1.0.1已独立复审passed并精确写回/正常提交：CATL `928bfedfc814b2c529d44ec7e4c0482eef5deda4`（144P）；CSC `a944200cf31d77f5fd7114c96338dc33f89507d4`（143P/1文件symlink权限skip，真实junction已测）。Desk仍在同一整包闭环：完整204P/1S不能关闭额外3个core结构反例，正在修复并等待独立复审，尚未写回原Lab。不要重复实现经营包或另发整改卡。总控证据及CAS在 `runs/accept-05-2026-10-16/`，正式状态见 [05验收记录](experiments/operating-desk-acceptance-2026-10-16.md)。
+
+T4进程已于21:29UTC结束，**不要再次启动旧cohort**。12场144计划槽，9场108槽启动、60结构合法答，后36槽未启动；第一重复45/72，旧57/72是手工加总错误。原登记/答案不改。原累计账100请求、已知估算USD0.655435、USD0.20未知预约保留；新 `DISPATCH_86004529874040469881f32f71aa5a55` 为HTTP200但不完整输出/无完整usage的`response_unpriced`，旧未知另1。现有seal只接受HTTP未知的outcome_uncertain，不能拿来封这条，不能猜费用0、重发、换账本或新policy绕过。完整费用和金融赢家均未知。
+
+后处理仅用 `runs/real-contrast-2026-10-16-03/analysis-tool-inputs-v2/`，锁 `analysis-tools-v2.lock.json` raw SHA `48551f1a45ff99a0e177a44b0337d3808674b8572dd1ecdcd27d210f162aa5ff`。停止阶段prepare已实际通过，匿名108槽为55可读/48缺答/5盲性遮蔽，另36未启动保留在144分母；三份各36槽独立金融评审正在收齐。路径为同根 `financial-review/reviewer-{0,1,2}/`，每份必须有真实judgments及验证；重大/争议先另一个fresh盲评复核，保留初判，再经原分析CLI解盲费用/耗时/CACHE，不能以JSON合法、引用存在或主观高分代替准确性。
+
+06三包仍仅准备、未获本轮派发消息；独占根/锁及独立审查要求见下方入口。CODEC安全反馈、搜索schema21、四格critic皆候选未收费运行；不能修改T4冻结957项。当前唯一下一步为Desk同闭环收口并归档三个05包，随后继续主线金融分析与正式原生续行设计。另一个进程修改的 `packages/2026-10-10/README.md` 保留，不纳入总控提交。
+
 ## 2026-10-16 — 最新接续：新三包尚未派发、主线真实实验活动
 
 [三包入口](parallel-lanes/packages/2026-10-16-independent-review-wave/README.md)。

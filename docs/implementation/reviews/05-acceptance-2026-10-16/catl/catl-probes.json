@@ -1,0 +1,119 @@
+[
+  {
+    "case": "inverted_period",
+    "validate_valid": false,
+    "error_codes": [
+      "CLAIM_PERIOD"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "unknown_cost_as_zero",
+    "validate_valid": false,
+    "error_codes": [
+      "COST_ZERO_WITHOUT_DISCLOSURE"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "false_source_count",
+    "validate_valid": false,
+    "error_codes": [
+      "ACQ_SOURCE_COUNT"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "company_statement_observed_subject",
+    "validate_valid": false,
+    "error_codes": [
+      "OBSERVED_SUBJECT_UNEXPECTED"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "unbounded_paraphrase",
+    "validate_valid": false,
+    "error_codes": [
+      "PARAPHRASE_LIMIT"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "unknown_date_verified",
+    "validate_valid": false,
+    "error_codes": [
+      "DATE_UNKNOWN_STATE"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "dated_date_unknown",
+    "validate_valid": false,
+    "error_codes": [
+      "DATE_UNKNOWN_STATE"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "access_date_as_page_date",
+    "validate_valid": false,
+    "error_codes": [
+      "DATE_BASIS_IS_ACCESS"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "query_overcap",
+    "validate_valid": false,
+    "error_codes": [
+      "ACQ_CAP_EXCEEDED",
+      "SCHEMA"
+    ],
+    "coverage_error": "reference schema/hash invalid"
+  },
+  {
+    "case": "failed_open_count",
+    "validate_valid": false,
+    "error_codes": [
+      "ACQ_COUNTS"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "total_cost_below_subtotal",
+    "validate_valid": false,
+    "error_codes": [
+      "COST_INCONSISTENT"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "out_of_scope_with_claims",
+    "validate_valid": false,
+    "error_codes": [
+      "OUT_OF_SCOPE_CLAIMS"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  },
+  {
+    "case": "reference_only_with_claims",
+    "validate_valid": false,
+    "error_codes": [
+      "REFERENCE_ONLY_WITH_CLAIMS"
+    ],
+    "coverage_accepted": true,
+    "export_published": true
+  }
+]

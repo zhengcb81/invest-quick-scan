@@ -1,6 +1,6 @@
 # OPERATING / EXPERIMENT-DESK 三包总控验收
 
-状态：**独立验收及直接修复中，尚未签收**。本记录对应用户交回的三个05包，不是后来发布的三个06包。
+状态：**三个包均已正式签收，1.0.1修复已正常提交；独立复审passed，无未关闭发现**。本记录对应用户交回的三个05包，不是后来发布的三个06包。
 
 | 包 | 原始 HEAD | 冻结文件 / bytes | 声明 artifact 核验 |
 |---|---|---|---|
@@ -9,6 +9,15 @@
 | EXPERIMENT-DESK-05 | ffd84f118c238a830c37163447482c13394cf4c8 | 123 / 16335712 | 117/117 吻合 |
 
 原始快照共239文件/17779539bytes，位于本机`runs/accept-05-2026-10-16/`，`snapshot.json`保留原文件清单、原始SHA和声明artifact逐项核对。三仓在授权初始化索引前Git clean；此后新增`.codegraph/`仅为总控开发索引，不归属工人交付。原件与工人旧handoff保留，不能用修复后结果覆写历史原声明。
+
+原始字节另存该根`originals/<Lab>/`，与可编辑候选分开；`originals-manifest.json`映射239原件，全部重新按snapshot核过。已签收两包如下，原API及1.0.0载体结构保持，包版本均1.0.1：
+
+| 包 | 最终提交 | 最终整组 | 公开CLI独立检查 | 独立复审 |
+|---|---|---|---|---|
+| CATL | 928bfedfc814b2c529d44ec7e4c0482eef5deda4 | 144/144，0 skip | 13/13 | passed，12例遗漏及共享核心已闭合 |
+| CSC | a944200cf31d77f5fd7114c96338dc33f89507d4 | 143 passed / 1 file-symlink skip；真实junction已跑 | 原18/18及追加21/21 | passed，观察期间双cutoff和费用诚实已闭合 |
+
+分别精确写回18/19文件，正常hooks提交；每份已审after raw SHA与写回文件、最终Git blob逐一相同，原仓版本CLI冒烟1.0.1通过。未创建remote、不推送无remote的Lab。工作树仅授权开发索引`.codegraph/`未跟踪，源码无未提交改动。签收是工程及有界候选资料签收，production_ready/financial_qualification_granted/rating_gold仍false。
 
 ## 范围与审查方式
 
@@ -26,7 +35,7 @@
 
 各项在原失败证据上直接修复候选，包版本拟升1.0.1；修复后的集中检查与另一独立agent复审仍属于同一个整包闭环，不逐helper加门。最终签收、测试数字、精确写回CAS/commit和清理证明须以实际完成记录补充，本节不是已通过声明。
 
-第二独立审查已实证CATL共有12例full validator拒绝但公共coverage/export仍发布，归入原A01共同校验未闭合；正统一共享material语义核心。CSC观察期间落在12–13日却仍进入11日题视图、unknown费用写0的两组规则也在原闭环修复。原130P/131P不能代替这些接口反例。Desk修复候选167P/1skip及真实浏览器已完成，17文件CAS冻结，正在第二独立复审。三原Lab至此均未写回。
+修复中的历史快照：第二独立审查实证CATL共有12例full validator拒绝但公共coverage/export仍发布，归入原A01共同校验未闭合；后来统一共享material语义核心。CSC观察期间落在12–13日却仍进入11日题视图、unknown费用写0的两组规则也在原闭环修复。原130P/131P不能代替这些接口反例。Desk曾以167P/1skip和17文件CAS送复审；这些旧数字及当时未写回状态不代表最终交付，当前状态以文首正式表及最终归档为准。
 
 ## 原始字节与Git检出兼容
 
@@ -41,3 +50,17 @@
 原账累计100请求，已知估算USD0.655435，保留USD0.20预约（旧outcome_uncertain与新response_unpriced各USD0.10）；完整费用/现金账单未知。没有重发或补零，也未冒用仅允许outcome_uncertain的隔离许可。原JUDGE消费者v2已经对停止阶段成功prepare，原样匿名108槽及预锁10标量参考已准备三份各36槽的独立评审分工，尚未派发/生成金融标签；完整144分母独立报告。四格critic未发。
 
 后续更新：第一份36槽真实盲评已完成并自检通过，原判断在`financial-review/reviewer-0/`。其余72槽尚待评，重大或争议命题仍需第二独立盲评，未生成整个cohort准确率或策略赢家。前述“未派发”仅是prepare时状态。公共包实际55个可读答案、48缺答、5个因盲性自揭示而遮蔽槽；不回写原60份结构合法答案，也不删除5个遮蔽槽缩分母。
+
+## 最终收口
+
+| 包 | 版本 | 最终提交 | 独立完整整组 | 精确应用文件 |
+|---|---|---|---|---|
+| OPERATING-CATL-05 | 1.0.1 | `928bfedfc814b2c529d44ec7e4c0482eef5deda4` | 144 passed / 0 skipped | 18 |
+| OPERATING-CSC-05 | 1.0.1 | `a944200cf31d77f5fd7114c96338dc33f89507d4` | 143 passed / 1 skipped | 19 |
+| EXPERIMENT-DESK-05 | 1.0.1 | `fac8ff3b1536a1978d53c371ce4121488f7d2f0a` | 229 passed / 1 skipped | 23 |
+
+工程签收与数据候选资格分开：不授予金融充分性、评分gold或生产资格。最终独立结果、实际命令/UTC/exit和日志、CAS、部署及清理记录见 [归档](../reviews/05-acceptance-2026-10-16/README.md)。原件239项、输入397项及受保护他人文件/旧数据库经最终归档核验保持；每个已审after SHA=原仓工作文件=最终Git blob，版本CLI1.0.1通过。Lab无remote，未添加remote或推送。
+
+Desk结构修复直接复用packaged manifest/view closed schema，details复用相同row/session/event/ref类型并校验自有wrapper及镜像索引；不以hash完整代替结构正确，原始非法答案保持诊断可见而非删行。完整组出现过一次Windows os.rename WinError5的测试写盘失败，原失败日志保留，最终结果及原因/限制以独审报告实际记录为准，没有更改输入或跳过失败测试。
+
+金融后处理更新：108匿名槽一审全部完成，47部分/8审慎不足/53缺答或盲性遮蔽，30槽重大或争议已由另一个fresh二审完成（21confirm/3revise/6disputed），双方原始判断保留。完整144计划分母不缩减，当前准确率/赢家仍null，T4未继续发请求。下方早期未完成/未签收叙述均为时间快照。
