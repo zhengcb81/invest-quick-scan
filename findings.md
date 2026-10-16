@@ -1,3 +1,15 @@
+## 2026-10-16 — 三个05包交回，隔离验收进行中
+
+用户确认OPERATING-CATL-05/OPERATING-CSC-05/EXPERIMENT-DESK-05交付。总控已冻结239文件/17779539bytes，213项声明artifact逐项raw bytes/SHA一致；原HEAD分别4a07d7f/20a5b9d/ffd84f1，初始化CodeGraph前Git clean，之后仅新增授权.codegraph目录，不误算成工人脏改。按已有全目录初始化授权建索引22/18/29文件。三路fresh独立agent各审一包，在自有IQS副本跑无密钥/禁网/限制外写的单元、真实输入集成、公开CLI E2E及反例；内容包另外核公开来源支持/日期/推断，UI核真实分母/未知费用/只读交互。尚未签收、未改原Lab，普通问题直接修候选，不再发整改卡。证据runs/accept-05-2026-10-16/。
+
+主线T4不是仍在运行：21:29UTC在第9场因MiMo HTTP200但输出不完整/无usage而停止，60/144计划槽合法，后3场未发。原生第100次为response_unpriced/in_flight=0，实际成本null，旧outcome_uncertain另1；累计已知655435micros+200000micros预约保留。没有原生对response_unpriced的隔离续行许可，不能冒用仅outcome_uncertain的seal、补零、换policy或新库绕过。12场144分母和原回执完整保留；未重发/未迁库/未改生成锁，四格critic仍未发。先完成05整包验收，再沿原账本与独立新登记处理后续真实对照。
+
+更正此前进度快照的手工加总：第一重复6场为45/72合法（12+12+12+6+3+0），不是57/72；第二重复已启动3场为15/36，合计60/144计划槽。原result未改。停止后的JUDGE原公开链已实测prepare成功，9个结果/108匿名槽、另36未启动槽独立保留，金融标签尚未生成。
+
+## Next Step
+
+完成三个05包集中独立验收，修复实质发现并复核后统一签收。
+
 ## 2026-10-16 — 可独立施工的接口与独审闭环
 
 三张新卡CONTEXT-PACK-06（上下文编译）、REVIEW-CAL-06（金融评审校准）、RESUME-CHAOS-06（原SDK故障接续）准备完成、尚未派发；各自唯一新Lab根，与活动OPERATING-CATL/CSC及EXPERIMENT-DESK无交叠。全部离线、不依赖彼此新交付，不改活动源/账本。用户新增硬要求已写进每卡和共同独审规范：必须实际调用另一个独立agent全面检查，修完全部有效发现并由独立agent复审passed后才正式交接，留调用/round/fixes/final与最终payload commit绑定；只设一个整包闭环，不加小节点审批。
@@ -3016,3 +3028,6 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 **唯一下一步：** 在同一候选把新1.2 preview items接进原Q13 admission及原runner。须将owner_control作为显式新3.0 binding（保持旧1/2的形状）或同等受保护的原admission lineage持久化；native写事务验证实际19决议与引用，只有明确独立comparison能保留旧result_ready同时创建新generation，不能广泛绕过guard_unresolved。执行前/每包都核获批cohort、pack_size、thinking_enabled、max_output_tokens；旧动作不得创建新批次。补真正公开preview→confirm→admission→main正反例并同节点集中审查/受影响回归后，才核源writer部署19、原owner处理历史工作和固定三题真实实验。
 
 本阶段不关闭Financial/G3/F05/UI/一键/全池，不以94/60等软件测试证明答案准确。未源部署19或1.2接口；候选/日志/实际ledger副本仅本机，原件保护不变。完成实际CIM自有Python0后精准清理本轮temp141文件/409目录（47,891,034 bytes），temp剩余0；候选/输入/失败日志/真实原件和备份保留。无下载公司文档、模型HTTP、收费搜索、生产DB或名单修改。正常本地提交PWF/公开报告，远端仍未推。
+
+
+05/06包Git raw-byte兼容已实际修复：保留已发布锁6b8d7e88/968fc8a4不改SHA，仅对应两目录属性禁止换行转换、局部声明CR换行合法；autocrlf true/false六项实际检出与index/原件字节一致，6文件771786bytes已清。首轮diff将CR误报空白，局部属性修正后正常diff检查通过，不改全局配置/不跳hooks。详见operating-desk-acceptance-2026-10-16.md及runs/accept-05-2026-10-16/checkout-proof.json。
