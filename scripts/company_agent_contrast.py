@@ -129,7 +129,9 @@ def execute_case(*,case,questions,board,answer_schema,metrics,identity,limits,
             except Exception as error:
                 receipt=getattr(error,'attempt_receipt',None)
                 if receipt:receipts.append(receipt)
-                journal({'event':'request_failed','sequence':steps,'exception_type':type(error).__name__,'native_receipt':receipt})
+                journal({'event':'request_failed','sequence':steps,'exception_type':type(error).__name__,'native_receipt':receipt,
+                    'validation_diagnostic':getattr(error,'validation_diagnostic',None),
+                    'failure_type':getattr(error,'failure_type',None)})
                 terminal='failed_no_automatic_resend';break
             receipts.append(step['receipt']);usage.append(step['usage_observation'])
             journal({'event':'receipt_observed','sequence':steps,'native_receipt':step['receipt'],

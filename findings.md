@@ -1,3 +1,17 @@
+## 2026-10-16 — 共享上下文需要实测，独立评审与生成版本分离
+
+首个DeepSeek逐题会话已在真实SDK同累计账本收齐12题，但合法结构不能证明分数合理。MiMo Pro早期请求可达约196秒、output含11519思考token；后续实际缓存/思考量会变化，不能由“共享agent沙盒”推定命中或质量。完整质量评审先于策略经济性推荐。
+
+JUDGE原私有词scanner误伤预先公共证据single-period：修复只从冻结公共题面/证据识别普通歧义策略词，明确策略自揭示仍拒绝，模型/provider/endpoint/session/receipt标识保持严格。实际型号缺失为null，不用requested代替observed。消费者1.0.2/ee66517独立冻结，不影响T4生成期公平性；四格交叉复核另作有来源overlay，不能把baseline旧答当critic新生成或免费。
+
+## 2026-10-16 — T4真实运行中（快照2026-10-16T20:02:19.918482+00:00）
+
+T4已通过完整跨层6P后启动首场DeepSeek逐题；此刻安全事件已观察18个完整回执、11题结构合法提交，尚无金融准确性判定。T4登记12场/144槽、957锁定文件，registration rawSHA910ee299cc2be042af4a23ba2a12fa613a66949dbae0bbcdada46f96e1182020；原37次前账继续累计，不归零。StockQA21cf8b05已正常hooks提交推送；SESSION1.0.2/796e14df已正常提交（无remote）。IQS控制器/兼容登记与三包派发状态f99cebc/4005706已推送；自动复核对卡片目录writer的误判经卡片独占根证据已解除，无待用户授权。
+
+CODEC/SESSION/CLAIM已进入实际发包校验；EVID覆盖/搜索计划已实测，JUDGE/CACHE后处理就绪。发现single与合法公共single-period用语冲突，独立候选修JUDGE消费者，不停止/改变T4生成锁，不读新答案选规则；独立金融审查仍在真实结果完成后。另准备按登记预选4个before的交叉模型critic配对，不按好坏挑样，尚未发critic请求。三外包根均活动writer，总控避让。
+
+下一步完成原登记T4两模型×三策略×两重复，处理任何原生未知时不自动重发；全144槽独立盲评后才解盲价格/速度/缓存，并写实操手册。详细命令和PID/真实进度看runs/real-contrast-2026-10-16-03/，不把本快照当最终结果。
+
 ## 2026-10-16 — T3 canary收口，修复回执丢失/任务验证边界
 
 T3首场1个实际HTTP200、native已结算USD0.003618，0合法答案；SDK回包处理异常被SESSION包装后吞掉safe attempt_receipt，因此result缺usage，不能把已确认HTTP算未知/免费，也不能重建缺失tokens。原生累计37attempt/216014micros已知/100000micros旧预留，无新native未知。T3其余11场停未启动，144槽保持。SDK续轮修dfc6cd91正常hooks已推送（isort只加导入空行，原修复实质不变）。

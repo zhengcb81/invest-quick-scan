@@ -1,3 +1,15 @@
+## 2026-10-16 — T4续行指针：不得启动第二份cohort
+
+当前运行runs/real-contrast-2026-10-16-03/cohort-progress.json（cohort PID12792，工具session64011）；首个DeepSeek逐题终态12/12、19真实请求，MiMo Pro逐题仍运行。用同根show_progress.py仅读取安全运行计数。已有claim/runtime不得重发；所有新请求仍原native累计账，旧USD0.10未知保留。完整12场144槽终态后才用analysis-tool-inputs/analysis/analyze.py和独立锁住的JUDGE1.0.2准备匿名包；消费者53文件424335bytes/ee66517，锁analysis-tools.lock.json，不能替换inputs内旧JUDGE以破坏生成锁。评审和四格critic规则见[协议](experiments/real-contrast-t4-analysis-protocol-2026-10-16.md)。三外包OPERATING-CATL/CSC与EXPERIMENT-DESK已派发施工，禁止写三根。下一步完成基线→独立全分母盲评/固定critic→CACHE→实操手册，尚无本轮金融赢家。
+
+## 2026-10-16 — T4真实运行中（快照2026-10-16T20:02:19.918482+00:00）
+
+T4已通过完整跨层6P后启动首场DeepSeek逐题；此刻安全事件已观察18个完整回执、11题结构合法提交，尚无金融准确性判定。T4登记12场/144槽、957锁定文件，registration rawSHA910ee299cc2be042af4a23ba2a12fa613a66949dbae0bbcdada46f96e1182020；原37次前账继续累计，不归零。StockQA21cf8b05已正常hooks提交推送；SESSION1.0.2/796e14df已正常提交（无remote）。IQS控制器/兼容登记与三包派发状态f99cebc/4005706已推送；自动复核对卡片目录writer的误判经卡片独占根证据已解除，无待用户授权。
+
+CODEC/SESSION/CLAIM已进入实际发包校验；EVID覆盖/搜索计划已实测，JUDGE/CACHE后处理就绪。发现single与合法公共single-period用语冲突，独立候选修JUDGE消费者，不停止/改变T4生成锁，不读新答案选规则；独立金融审查仍在真实结果完成后。另准备按登记预选4个before的交叉模型critic配对，不按好坏挑样，尚未发critic请求。三外包根均活动writer，总控避让。
+
+下一步完成原登记T4两模型×三策略×两重复，处理任何原生未知时不自动重发；全144槽独立盲评后才解盲价格/速度/缓存，并写实操手册。详细命令和PID/真实进度看runs/real-contrast-2026-10-16-03/，不把本快照当最终结果。
+
 ## 2026-10-16 最新状态 — 六包工程已签收并提交
 
 两轮六包已正式接收，独立审查发现的问题直接修复，均升package1.0.1。最终整组426P + 跨包7P，零失败/跳过；原工人365P留历史。六仓当前commit见[总控验收](experiments/six-tools-acceptance-2026-10-16.md)，均master/clean/无remote；CodeGraph已按授权初始化。原件238文件/1658956bytes及199artifact吻合，双快照764项保持。未向Lab重发施工卡；旧author_data会回写错误的再生风险也已只读化并加反例。
