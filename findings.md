@@ -1,3 +1,29 @@
+## 2026-10-16 — 新三包可独立开工，上一轮三包仍在施工
+
+按用户再次请求，已准备[新三包](docs/implementation/parallel-lanes/packages/2026-10-16-quality-wave/README.md)：SESSION-PACK-04→iqs-session-packing-lab（公司共享证据、问题包短会话/累计额度与恢复）；CLAIM-GUARD-04→iqs-claim-guard-lab（会计口径/论据检查及纯数据critic输入）；EVID-GAP-04→iqs-evidence-gap-lab（逐题缺口、官方短证据增补及离线计划）。395文件/5598707bytes已冻结；独立发布审查3项接口歧义修正后无阻断，搬迁/篡改/缺文件/旧writer重叠反例及链接通过，测试副本406文件5700689bytes清理/剩余0。三个新根准备时不存在，尚未派发；旧CODEC/JUDGE/CACHE已派发，六根互不重叠，不写任何活动Lab。
+
+总控继续原生预算恢复、真实模型试验及最终集成，不重复开发上述候选。T1独立盲评现已完成：15答=14部分/1审慎不足/0充分，57缺；主标量28/60机会正确、32未覆盖，但有2答WC口径错误和3槽4处引用不足，不能称100%金融准确或策略赢家。原始判定192346bytes/be14e240留档，公开规则保持；测量快照旧pending不回写。T1收费运行已停止，仍保留累计35attempt/USD0.207993已知估算+USD0.10未知预留，T2未启动。
+
+本轮没有重发未知请求/重置预算/下载财报/写正式评分。239实际输入原件保持，旧work和他人README原SHA保持；已清理源验收自有temp16877文件469971852bytes及T0/T1空temp，全部所列temp剩余0，冻结输入与必要证据保留。研究driver1.1已实测且原11项离线通过，resource1.2仅自有候选5P，未装活动源。
+
+## 2026-10-16 最新状态：T1结束，未知请求保留，继续盲评/原生恢复
+
+三个工具包已由用户派发，活动Lab只读避让。T1进程12748已于UTC06:39:09终止，不再有待跑后台实验。实际3/6会话启动、15/72合法答案、57缺失；16SDK step、13已收HTTP响应+1结果未知派发。已知估算USD0.107693增量，完整费用未知；累计S1 35attempt/USD0.207993已估算+USD0.10预留，in_flight1/unreconciled1。原预算retain_reservation_and_pause真实触发，后3会话未启动，不重发、不重置、不换policy绕闸。
+
+T0独立盲评4答均部分覆盖，存在OCF写成FCF的实质口径错误及数项无直接证据高分；没有策略金融赢家。原始审查32087bytes/d06e0600留档；T1匿名全72槽/15答已交另一个独立盲评agent，未读private。新T2资源profile候选旧限额兼容/未知版本/前缀保持5P，仅自有runs候选，未装driver/未发请求。详见[真实T1结果](docs/implementation/experiments/company-agent-bounded3-results-2026-10-16.md)。
+
+原生恢复口径已核：reconcile必须有可验证供应商cost/outcome，configure在未对账时不得换版本；不伪造actual_cost=0。官方已核余额/响应usage接口不足以确认这条无response_id请求，未发私有余额API。后续优先收T1质量判定并在原SDK/累计账本内实现或核实显式未知隔离/独立续行，不能把问题退给用户重复授权或声称原生已支持。旧work及他人README raw SHA保持；生产owner/金融/一键门仍开放。
+
+## 2026-10-16 — T1真实六会话已启动，独立盲评T0并行
+
+T1已通过无密钥禁网预检：12题/6来源/34838前缀bytes；四个模型固定输入与T0字节完全一致。239项原始输入/231独立blob已冻结，新增源schema inventory。真实进程PID12748于UTC06:32:11启动，状态见runs/company-agent-isolated-2026-10-16-02/live.process.json；本轮最多48HTTP/0搜索，预算before为21请求/100300micros/预留并发未对账0，不重置。运行中不改冻结脚本/规则/源。
+
+已用明确manual-isolated-review-packet（不冒充新EVAL适配器）准备T0完整72槽匿名数据，答案本身保留，模型/策略/耗时/费用和原路径排除；解盲映射单独private目录。独立审查agent只读public目录，未看私有映射；实际金融判定返回后再记录，不把现有4个合法答案当准确率。三个新工具Lab继续保持writer，未写入。
+
+## 2026-10-16 — 三包已由用户派发，主线继续真实对照
+
+用户明确“施工包发出去了”：ANSWER-CODEC-03、RESEARCH-JUDGE-03、CACHE-PLAN-03三个Lab全部视为有独立writer。总控不创建/修改它们、不重复开发候选；收到正式handoff再只读冻结验收。共享输入锁、模板和原准备状态保持历史原件，当前派发状态见施工包README。本线继续Alphabet标准JSON bounded3/具体反馈试验，复用累计21次/USD0.100300的S1预算，先核预检再发真实请求。生产owner与金融门仍开放。
+
 ## 2026-10-16 最新状态：T0结束，三张独立工具卡准备完成
 
 用户已明确选择“先跑隔离研究实验，再接生产owner”，不再等待这项偏好答复。T0已结束：21真实HTTP/25SDK step，4/72合法标准答案、0/6完整会话；输入缓存92.23%，USD0.100300公开价估算，金融准确率与现金账单未知。原S1共享预算已用21次，不能重置。详见[真实首轮结果](docs/implementation/experiments/company-agent-isolated-t0-results-2026-10-16.md)。
