@@ -1,0 +1,147 @@
+{
+  "protocol": "iqs.objective-reference-subset/1.0.0",
+  "scope": "historical_scalar_accuracy_only",
+  "company_key": "alphabet",
+  "information_cutoff": "2026-10-13",
+  "independent_review_agent": "/root/accuracy_reference_review",
+  "review_record": {
+    "path": "docs/implementation/experiments/alphabet-objective-reference-2026-10-16.md",
+    "bytes": 3634,
+    "sha256": "e323c4e02da1b40fe47e544375d1c128b518d52245fd17d0d97ed3eae624bb1d"
+  },
+  "parent_reference_sha256": "6428a963a82865c3e52241d59c0e100013e8aef5718038fe77c189a99bfea483",
+  "qualified_parent_records": false,
+  "production_qualification_granted": false,
+  "unique_fact_denominator": 10,
+  "numeric_score_gold": null,
+  "facts": [
+    {
+      "atom_id": "ALPH-MAIN-ADS25",
+      "parent_fact_id": "RF1-ALPH-ADS25",
+      "claim": "FY2025 Google advertising revenue",
+      "expected_value_decimal": "294691",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-10K-R44",
+      "published_at": "2026-02-05"
+    },
+    {
+      "atom_id": "ALPH-MAIN-ADS24",
+      "parent_fact_id": "RF1-ALPH-ADS24",
+      "claim": "FY2024 Google advertising revenue",
+      "expected_value_decimal": "264590",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "source_id": "RS-6-ALPH-10K-R44",
+      "published_at": "2026-02-05"
+    },
+    {
+      "atom_id": "ALPH-MAIN-OI25",
+      "parent_fact_id": "RF1-ALPH-OI25",
+      "claim": "FY2025 consolidated operating income",
+      "expected_value_decimal": "129039",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-NI25",
+      "parent_fact_id": "RF1-ALPH-NI25",
+      "claim": "FY2025 consolidated net income",
+      "expected_value_decimal": "132170",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-OCF25",
+      "parent_fact_id": "RF1-ALPH-OCF25",
+      "claim": "FY2025 cash provided by operating activities",
+      "expected_value_decimal": "164713",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-CAPEX25",
+      "parent_fact_id": "RF1-ALPH-CAPEX25",
+      "claim": "FY2025 cash purchases of PP&E, expenditure magnitude",
+      "expected_value_decimal": "91447",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-CAPOI25",
+      "parent_fact_id": "RF1-ALPH-CAPOI25",
+      "claim": "FY2025 Google Cloud segment revenue, not operating income",
+      "expected_value_decimal": "58705",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-10K-R44",
+      "published_at": "2026-02-05"
+    },
+    {
+      "atom_id": "ALPH-MAIN-CASH25",
+      "parent_fact_id": "RF1-ALPH-CASH25",
+      "claim": "Consolidated cash and cash equivalents",
+      "expected_value_decimal": "30708",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": null,
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-MKTS25",
+      "parent_fact_id": "RF1-ALPH-MKTS25",
+      "claim": "Current marketable securities",
+      "expected_value_decimal": "96135",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": null,
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-DEBT25",
+      "parent_fact_id": "RF1-ALPH-DEBT25",
+      "claim": "Total long-term debt principal face value, including current maturities",
+      "expected_value_decimal": "49085",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": null,
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-10K-R68",
+      "published_at": "2026-02-05"
+    }
+  ],
+  "rules": [
+    "Match subject, metric, period, unit, currency and accounting definition.",
+    "A parent composite claim is not qualified by this scalar subset.",
+    "Deduplicate atoms across questions; report truth, citation support, coverage and refusal separately.",
+    "Not mentioned is missing coverage, never a correct answer.",
+    "No subjective score gold and no production owner authority.",
+    "Do not choose new denominator atoms after reading model answers."
+  ]
+}

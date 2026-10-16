@@ -1,0 +1,33 @@
+{
+  "protocol": "iqs.historical-rate-card-reference/1.0.0",
+  "scope": "T0 historical replay only; published estimate, not invoice",
+  "provider": "deepseek",
+  "requested_model": "deepseek-flash",
+  "receipt_model": "deepseek-flash",
+  "official_model_description": "DeepSeek-V4.1-Flash",
+  "currency": "USD",
+  "denominator_tokens": 1000000,
+  "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "checked_on": "2026-10-16",
+  "valid_for_utc_date": "2026-10-16",
+  "effective_from_official": null,
+  "nonholiday_date_scope_only": true,
+  "holiday_calendar_for_other_dates": null,
+  "rates": {
+    "off_peak": {"uncached_input": "0.15", "cached_input": "0.003", "output_including_reasoning": "0.60"},
+    "peak": {"uncached_input": "0.30", "cached_input": "0.006", "output_including_reasoning": "1.20"}
+  },
+  "utc_windows_for_scoped_date": [
+    {"from": "00:00:00", "to": "01:00:00", "rate": "off_peak"},
+    {"from": "01:00:00", "to": "04:00:00", "rate": "peak"},
+    {"from": "04:00:00", "to": "06:00:00", "rate": "off_peak"},
+    {"from": "06:00:00", "to": "10:00:00", "rate": "peak"},
+    {"from": "10:00:00", "to": "24:00:00", "rate": "off_peak"}
+  ],
+  "interval_semantics": "[from,to)",
+  "cross_window_official_billing_rule": null,
+  "cross_window_estimate_policy": "unknown; report bounds; no automatic settlement",
+  "native_estimator_rounding": {"per_request_usd_quantum": "0.000001", "rounding": "ROUND_CEILING"},
+  "receipt_usage_definition": {"input_tokens": "uncached_input", "cached_input_tokens": "cached_input", "output_tokens": "output_including_reasoning", "reasoning_output_tokens": "subset of output_tokens; never add twice"},
+  "cash_invoice": null
+}

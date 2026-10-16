@@ -1,3 +1,13 @@
+## 2026-10-16 最新状态：T0结束，三张独立工具卡准备完成
+
+用户已明确选择“先跑隔离研究实验，再接生产owner”，不再等待这项偏好答复。T0已结束：21真实HTTP/25SDK step，4/72合法标准答案、0/6完整会话；输入缓存92.23%，USD0.100300公开价估算，金融准确率与现金账单未知。原S1共享预算已用21次，不能重置。详见[真实首轮结果](experiments/company-agent-isolated-t0-results-2026-10-16.md)。
+
+按用户新请求交付[三张独立施工卡](parallel-lanes/packages/2026-10-16-research-tools/README.md)：ANSWER-CODEC-03→iqs-answer-codec-lab；RESEARCH-JUDGE-03→iqs-research-judge-lab；CACHE-PLAN-03→iqs-cache-planner-lab。准备时三个根均不存在，尚未派发；369文件/4540761bytes冻结，工人各写自己的新根，其他仓及IQS PWF只读。接口/版本/测试/清理/交接模板在包内，不依赖聊天或另外两包新交付。主线保留标准JSON bounded3真实试验，不重复实现codec/新评测适配/缓存分析候选；生产接线仍开放。
+
+RUN已修复提交d0cc47af（0.1.1），Company4cb4e3d，SDK8557d862已推送。RUN整组126P/1历史pin断言F/1权限skip后，修正该测试的历史边界并受影响6P；Company121P/2权限skip、SDK31P、跨仓8P。研究驱动显式1.1候选11P，原1.0前缀字节保持，**尚不算1.1真实实验完成**。下文较早“RUN待审核/偏好未答复/S1全0”均为历史状态，不能覆盖本段。
+
+本次三卡发布完成独立包级复核；原SHA/搬迁正例、篡改/缺文件反例及卡片链接校验均通过，测试副本清理380文件/4662079bytes、剩余0。准备结果不是产品测试。初始TEMP/MAX_PATH设置失败及修复留档于施工包preparation-review.md；未创建工人目录、未改外仓/生产数据或发收费请求。
+
 ## 当前交接 — 2026-10-15：EVAL已提交，RUN按用户要求等待
 
 EVAL目录 `C:/Users/郑曾波/Projects/iqs-agent-evaluation-lab`，分支codex/agent-eval-02，HEAD `01956bdec2790525188451aefad0f2f6546765c0`，package0.2.0、tracked clean、无remote。工人93c13cf交付与后续修复保留；当前清单见该仓docs/handoff/AGENT-EVAL-02/coordinator-acceptance，不重签原handoff。新增compare-context/validate-context、matrix1.1/context1.0/context-bundle1.0；原ResearchRun1.0/1.1、bundle1.0和原fixtures/旧schema保持。完整217P、末次52P、生成pack四CLI、真实Alphabet12题投影纯合同通过，源314精确差异、2118保持。工程可接，实际准确率/winner仍null。

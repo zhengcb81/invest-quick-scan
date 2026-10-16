@@ -1,4 +1,28 @@
-## 2026-10-15 — EVAL工程收尾已提交，RUN继续等外部审核
+## 2026-10-16 最新状态：T0结束，三张独立工具卡准备完成
+
+用户已明确选择“先跑隔离研究实验，再接生产owner”，不再等待这项偏好答复。T0已结束：21真实HTTP/25SDK step，4/72合法标准答案、0/6完整会话；输入缓存92.23%，USD0.100300公开价估算，金融准确率与现金账单未知。原S1共享预算已用21次，不能重置。详见[真实首轮结果](docs/implementation/experiments/company-agent-isolated-t0-results-2026-10-16.md)。
+
+按用户新请求交付[三张独立施工卡](docs/implementation/parallel-lanes/packages/2026-10-16-research-tools/README.md)：ANSWER-CODEC-03→iqs-answer-codec-lab；RESEARCH-JUDGE-03→iqs-research-judge-lab；CACHE-PLAN-03→iqs-cache-planner-lab。准备时三个根均不存在，尚未派发；369文件/4540761bytes冻结，工人各写自己的新根，其他仓及IQS PWF只读。接口/版本/测试/清理/交接模板在包内，不依赖聊天或另外两包新交付。主线保留标准JSON bounded3真实试验，不重复实现codec/新评测适配/缓存分析候选；生产接线仍开放。
+
+RUN已修复提交d0cc47af（0.1.1），Company4cb4e3d，SDK8557d862已推送。RUN整组126P/1历史pin断言F/1权限skip后，修正该测试的历史边界并受影响6P；Company121P/2权限skip、SDK31P、跨仓8P。研究驱动显式1.1候选11P，原1.0前缀字节保持，**尚不算1.1真实实验完成**。下文较早“RUN待审核/偏好未答复/S1全0”均为历史状态，不能覆盖本段。
+
+本次三卡发布完成独立包级复核；原SHA/搬迁正例、篡改/缺文件反例及卡片链接校验均通过，测试副本清理380文件/4662079bytes、剩余0。准备结果不是产品测试。初始TEMP/MAX_PATH设置失败及修复留档于施工包preparation-review.md；未创建工人目录、未改外仓/生产数据或发收费请求。
+
+## 2026-10-16 — S1R真实调用已启动
+
+PID23456，UTC05:31:30；runs/company-agent-isolated-2026-10-16-01/live.process.json记录真实状态。无生产owner/名单变更、无搜索。固定3首重复收到6次response，仅3/12题合法提交，随后第7次SDK调用在发送前被资源/状态闸门拒绝；Free首重复一次HTTP200输出16384token后未通过协议校验，不能当“免费失败”或准确率0/100。原生费用保留；后续会话仍按原登记执行。不修改运行中脚本/上下文。新增准确性评估规则，先盲评质量再解盲经济性；格式失败与事实错误分开。原生预算将在本轮真实调用中按已授权变动，旧S0账与生产owner仍保护。
+
+## 2026-10-16 最新推进：新增隔离研究S1R，生产接线另行保留
+
+用户已有真实实验及后续实施授权；实验路径偏好未答复，充分等待后按推荐隔离研究推进。新增[S1R请求前登记](docs/implementation/experiments/company-agent-isolated-registration-2026-10-16.md)：独立isolated-research载体，不冒用owner_runtime/ResearchRun、不声称原生产准入；复用StockQA真实SDK与既有S1预算，先Alphabet三策略两重复，48HTTP上限且计入144共享总额。生产Task2实际路由题载体、原生多轮owner/耐久恢复仍未接通。SDK8557d862已推送；RUN65b2b254已提交（package0.1.1），Company4cb4e3d已提交。公司完整121P/2链接权限skip，SDK31P，显式源/工具续轮跨仓8P，研究驱动7P；金融准确率仍未生成。
+
+## 2026-10-16 — RUN审核交回，接收最新提交并推进真实实验
+
+独立增量核源完成：Alphabet10个主标量有官方SEC支持，已在[实验前参考范围](docs/implementation/experiments/alphabet-objective-reference-2026-10-16.md)锁定；不是评分golden。RUN独审发现实际替代题策略报错、pending后新指令丢失、恢复引用未durable等接缝，正在直接修复；SDK新上下文真实RED4F→原SDK+反例29P（断网/临时范围）。生产owner多轮尚未接通；已向用户提出先隔离研究或先生产全链路的选择，答复前不启动依赖的真实调用。
+
+用户解除RUN等待，要求真实准确性/成本/速度对照。只读核033a7a8 clean、实现pin28d20b2；外包最终审核离线ACCEPT/122项，真实owner与收费均not_run。已开始同一大节点自有副本验收，不覆上游旧DeepSeek候选patch（StockQA已有ee1f8c7）。首轮clone与源raw换行不同，未改源，改为源工作树和commit blob分别冻结并记录域；最终冻结/测试仍在进行。费用调用0，原账/owner/预算不变。
+
+## 2026-10-15 — EVAL工程收尾已提交，RUN继续等外部审核（历史）
 
 EVAL01956bdec2790525188451aefad0f2f6546765c0（0.2.0，无remote）已正常提交，tracked clean。保全93c13cf及工人后续修复，原版165P→10反例RED；最终完整217P/0skip、末次受影响52P、生成pack四CLI通过。真实Alphabet12题投影只读合同通过，非owner/模型准确率正例。314精确回写、2118原文件保持，原fixtures/旧schema不变。显式context解决phase/重复/模型/端点/题义配对及native日志/证据/崩溃计量、全派生回放；accuracy/winner仍null。13项保护SHA通过，自有temp/cwd清39835文件334074863 bytes/剩余0。API/搜索/下载/生产写0。[完整验收与失败记录](docs/implementation/experiments/agent-eval-acceptance-2026-10-15.md)。RUN不接管，等待审核正式交回后再接真实执行。
 

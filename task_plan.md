@@ -1,4 +1,26 @@
-## 当前接续 — 2026-10-15：EVAL工程签收，RUN等外部审核
+## 2026-10-16 最新状态：T0结束，三张独立工具卡准备完成
+
+用户已明确选择“先跑隔离研究实验，再接生产owner”，不再等待这项偏好答复。T0已结束：21真实HTTP/25SDK step，4/72合法标准答案、0/6完整会话；输入缓存92.23%，USD0.100300公开价估算，金融准确率与现金账单未知。原S1共享预算已用21次，不能重置。详见[真实首轮结果](docs/implementation/experiments/company-agent-isolated-t0-results-2026-10-16.md)。
+
+按用户新请求交付[三张独立施工卡](docs/implementation/parallel-lanes/packages/2026-10-16-research-tools/README.md)：ANSWER-CODEC-03→iqs-answer-codec-lab；RESEARCH-JUDGE-03→iqs-research-judge-lab；CACHE-PLAN-03→iqs-cache-planner-lab。准备时三个根均不存在，尚未派发；369文件/4540761bytes冻结，工人各写自己的新根，其他仓及IQS PWF只读。接口/版本/测试/清理/交接模板在包内，不依赖聊天或另外两包新交付。主线保留标准JSON bounded3真实试验，不重复实现codec/新评测适配/缓存分析候选；生产接线仍开放。
+
+RUN已修复提交d0cc47af（0.1.1），Company4cb4e3d，SDK8557d862已推送。RUN整组126P/1历史pin断言F/1权限skip后，修正该测试的历史边界并受影响6P；Company121P/2权限skip、SDK31P、跨仓8P。研究驱动显式1.1候选11P，原1.0前缀字节保持，**尚不算1.1真实实验完成**。下文较早“RUN待审核/偏好未答复/S1全0”均为历史状态，不能覆盖本段。
+
+本次三卡发布完成独立包级复核；原SHA/搬迁正例、篡改/缺文件反例及卡片链接校验均通过，测试副本清理380文件/4662079bytes、剩余0。准备结果不是产品测试。初始TEMP/MAX_PATH设置失败及修复留档于施工包preparation-review.md；未创建工人目录、未改外仓/生产数据或发收费请求。
+
+## 2026-10-16 最新推进：新增隔离研究S1R，生产接线另行保留
+
+用户已有真实实验及后续实施授权；实验路径偏好未答复，充分等待后按推荐隔离研究推进。新增[S1R请求前登记](docs/implementation/experiments/company-agent-isolated-registration-2026-10-16.md)：独立isolated-research载体，不冒用owner_runtime/ResearchRun、不声称原生产准入；复用StockQA真实SDK与既有S1预算，先Alphabet三策略两重复，48HTTP上限且计入144共享总额。生产Task2实际路由题载体、原生多轮owner/耐久恢复仍未接通。SDK8557d862已推送；RUN65b2b254已提交（package0.1.1），Company4cb4e3d已提交。公司完整121P/2链接权限skip，SDK31P，显式源/工具续轮跨仓8P，研究驱动7P；金融准确率仍未生成。
+
+## 当前接续 — 2026-10-16：RUN已审核交回，接真实公司对照
+
+独立增量核源完成：Alphabet10个主标量有官方SEC支持，已在[实验前参考范围](docs/implementation/experiments/alphabet-objective-reference-2026-10-16.md)锁定；不是评分golden。RUN独审发现实际替代题策略报错、pending后新指令丢失、恢复引用未durable等接缝，正在直接修复；SDK新上下文真实RED4F→原SDK+反例29P（断网/临时范围）。生产owner多轮尚未接通；已向用户提出先隔离研究或先生产全链路的选择，答复前不启动依赖的真实调用。
+
+用户确认RUN审核完成并要求推进真实公司准确性/成本/速度实验；此前等待指令已解除。RUN最新HEAD033a7a8、实现28d20b2、tracked clean；外包离线审核122项通过，真实owner/收费实验not_run，不能据此关闭金融门。总控在自有 `runs/agent-run-acceptance-2026-10-16-01/` 冻结并验收；源工作树有Git允许的CRLF而commit为LF，分别保留源raw字节与实际Git blob，不将换行差异误作产品错误或直接重写源。
+
+本轮唯一下一步：核最新RUN公开桥与新routed12/已签收EVAL接缝，复用原owner/预算/发送登记，随后先运行Alphabet三策略×两重复的小样本S1并独立核准确性、费用、耗时与缓存。真实执行前沿原生接口完成必要批准，不伪造TTY/身份/参考，不重跑S0，不另造账本。
+
+## 2026-10-15历史接续：EVAL工程签收，RUN等外部审核
 
 用户最新指示：RUN先等等，那边仍在审核；总控先完成EVAL。RUN已按批准建立CodeGraph索引，仅保留初始化日志，不冻结、不验收、不改源、不启动真实调用。其正式交接已出现，不再沿用下文“RUN未交付”的历史判断。
 
@@ -6,7 +28,7 @@ EVAL最新93c13cf交付及工人追加修复已保全；独审、真实反例、
 
 ## Next Step
 
-等待RUN外部审核的正式最新交接，再接真实owner/cohort/generation与多轮执行，之后才运行公司级S1对照。当前不接管RUN，不重跑S0、不提前改owner/预算/准入，不拿EVAL工程测试替代真实答案准确性。
+登记并运行新的Alphabet bounded3/具体反馈隔离处理组，复用原S1累计预算，再按固定规则盲评；三张工具卡待用户派发，总控不重复开发，生产owner接线后续保留。
 
 ## 2026-10-15 — REF后续修复已保全，独立核源六组残留已收口
 

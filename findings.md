@@ -1,3 +1,27 @@
+## 2026-10-16 最新状态：T0结束，三张独立工具卡准备完成
+
+用户已明确选择“先跑隔离研究实验，再接生产owner”，不再等待这项偏好答复。T0已结束：21真实HTTP/25SDK step，4/72合法标准答案、0/6完整会话；输入缓存92.23%，USD0.100300公开价估算，金融准确率与现金账单未知。原S1共享预算已用21次，不能重置。详见[真实首轮结果](docs/implementation/experiments/company-agent-isolated-t0-results-2026-10-16.md)。
+
+按用户新请求交付[三张独立施工卡](docs/implementation/parallel-lanes/packages/2026-10-16-research-tools/README.md)：ANSWER-CODEC-03→iqs-answer-codec-lab；RESEARCH-JUDGE-03→iqs-research-judge-lab；CACHE-PLAN-03→iqs-cache-planner-lab。准备时三个根均不存在，尚未派发；369文件/4540761bytes冻结，工人各写自己的新根，其他仓及IQS PWF只读。接口/版本/测试/清理/交接模板在包内，不依赖聊天或另外两包新交付。主线保留标准JSON bounded3真实试验，不重复实现codec/新评测适配/缓存分析候选；生产接线仍开放。
+
+RUN已修复提交d0cc47af（0.1.1），Company4cb4e3d，SDK8557d862已推送。RUN整组126P/1历史pin断言F/1权限skip后，修正该测试的历史边界并受影响6P；Company121P/2权限skip、SDK31P、跨仓8P。研究驱动显式1.1候选11P，原1.0前缀字节保持，**尚不算1.1真实实验完成**。下文较早“RUN待审核/偏好未答复/S1全0”均为历史状态，不能覆盖本段。
+
+本次三卡发布完成独立包级复核；原SHA/搬迁正例、篡改/缺文件反例及卡片链接校验均通过，测试副本清理380文件/4662079bytes、剩余0。准备结果不是产品测试。初始TEMP/MAX_PATH设置失败及修复留档于施工包preparation-review.md；未创建工人目录、未改外仓/生产数据或发收费请求。
+
+## 2026-10-16 — 首轮真实传输的初步限制
+
+S1R初始上下文约9651 prompt tokens。后续实际缓存观测11264/14773、19072/19359，不能据此宣称金融准确率高。完整standard-1输出携带较多逐题重复字段；Free首轮真实输出16384token且协议拒绝。Fixed3格式修复多次，反馈目前仅error_type，早期失败草稿仅hash，不能逐条重审其金融内容。后续应单独试验共享语义约束/具体安全错误码，以及紧凑答案引用后确定性展开，保留问题定义/锚点和标准最终输出；不得临时改本轮已冻结代码或把工程失败混作金融正确率。RUN干净副本128项为126P/1历史冻结断言F/1链接skip；旧test错误地禁止未来HEAD演进，候选已将比较边界固定为原交付033a7a8，正在只测受影响历史pin组，不重签旧审核。
+
+## 2026-10-16 最新推进：新增隔离研究S1R，生产接线另行保留
+
+用户已有真实实验及后续实施授权；实验路径偏好未答复，充分等待后按推荐隔离研究推进。新增[S1R请求前登记](docs/implementation/experiments/company-agent-isolated-registration-2026-10-16.md)：独立isolated-research载体，不冒用owner_runtime/ResearchRun、不声称原生产准入；复用StockQA真实SDK与既有S1预算，先Alphabet三策略两重复，48HTTP上限且计入144共享总额。生产Task2实际路由题载体、原生多轮owner/耐久恢复仍未接通。SDK8557d862已推送；RUN65b2b254已提交（package0.1.1），Company4cb4e3d已提交。公司完整121P/2链接权限skip，SDK31P，显式源/工具续轮跨仓8P，研究驱动7P；金融准确率仍未生成。
+
+## 2026-10-16 — RUN最新交付与真实接线边界
+
+独立增量核源完成：Alphabet10个主标量有官方SEC支持，已在[实验前参考范围](docs/implementation/experiments/alphabet-objective-reference-2026-10-16.md)锁定；不是评分golden。RUN独审发现实际替代题策略报错、pending后新指令丢失、恢复引用未durable等接缝，正在直接修复；SDK新上下文真实RED4F→原SDK+反例29P（断网/临时范围）。生产owner多轮尚未接通；已向用户提出先隔离研究或先生产全链路的选择，答复前不启动依赖的真实调用。
+
+033a7a8为外包审核后收尾HEAD，原实现28d20b2；28→最新仅docs/tools，离线122项且真实owner not_run。task2仍声明原raw12，不能把OPERATING_01改名接入；services.generation_scope是待总控实现的注入缝，不是现成原生多轮owner实现。原native单答pack仍有native_search及同work多轮限制，需沿真实登记协议明确定义研究轮次。源raw文件CRLF但commit LF，验收须分域保存，不能混用hash或覆写活动源。
+
 ## 2026-10-15 — EVAL工程已签收，真实准确率仍待测
 
 0.2.0/01956bd保全工人追加修复，补齐显式样本分层、完整答案、原生action/journal/证据语义和原件派生回放；完整217P、末次52P、实际pack四CLI，真实12题投影纯合同通过。原native semantic输入含module_id，单按released definition重算会错误拒绝真实投影，现调用冻结原fingerprint/renderer/metric mapper与新增独立release资源。未知崩溃保留分母、实际请求总数未知；参考可用不等于答案答对。RUN继续等待外部审核，未触业务源，真实cohort/owner多轮与金融准确率仍开放。
