@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:neutral-industry-tree:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "iqs.neutral-industry-tree/1.0.0"
+    },
+    "release_id": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "effective_from": {
+      "$ref": "#/$defs/date"
+    },
+    "effective_to": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/date"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 30,
+      "items": {
+        "$ref": "#/$defs/node"
+      },
+      "contains": {
+        "properties": {
+          "level": {
+            "const": 1
+          }
+        },
+        "required": [
+          "level"
+        ]
+      },
+      "minContains": 30
+    }
+  },
+  "required": [
+    "protocol",
+    "release_id",
+    "effective_from",
+    "effective_to",
+    "nodes"
+  ],
+  "$defs": {
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "industry_id": {
+          "type": "string",
+          "pattern": "^IQS-[A-Z0-9][A-Z0-9._-]{1,63}$"
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^IQS-[A-Z0-9][A-Z0-9._-]{1,63}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "label_zh": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label_en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "valid_from": {
+          "$ref": "#/$defs/date"
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "industry_id",
+        "parent_id",
+        "level",
+        "label_zh",
+        "label_en",
+        "definition",
+        "aliases",
+        "valid_from",
+        "valid_to"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "properties": {
+        "nodes": {
+          "contains": {
+            "properties": {
+              "level": {
+                "enum": [
+                  2,
+                  3
+                ]
+              }
+            },
+            "required": [
+              "level"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:taxonomy-release-manifest:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {"const": "iqs.taxonomy-release-manifest/1.0.0"},
+    "release_id": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "created_at_utc": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "hash_algorithm": {"const": "sha256_raw_file_bytes"},
+    "files": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"$ref": "#/$defs/file"}}
+  },
+  "required": ["protocol", "release_id", "created_at_utc", "hash_algorithm", "files"],
+  "allOf": [
+    {"properties": {"files": {"contains": {"properties": {"role": {"const": "canonical_tree"}}, "required": ["role"]}}}},
+    {"properties": {"files": {"contains": {"properties": {"role": {"const": "source_taxonomies"}}, "required": ["role"]}}}},
+    {"properties": {"files": {"contains": {"properties": {"role": {"const": "crosswalk"}}, "required": ["role"]}}}},
+    {"properties": {"files": {"contains": {"properties": {"role": {"const": "coverage_report"}}, "required": ["role"]}}}}
+  ],
+  "$defs": {
+    "file": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "path": {"enum": ["canonical-industry-tree.json", "source-taxonomies.jsonl", "crosswalk.jsonl", "coverage-report.json"]},
+        "role": {"enum": ["canonical_tree", "source_taxonomies", "crosswalk", "coverage_report"]},
+        "bytes": {"type": "integer", "minimum": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "required": ["path", "role", "bytes", "sha256"],
+      "allOf": [
+        {"if": {"properties": {"role": {"const": "canonical_tree"}}}, "then": {"properties": {"path": {"const": "canonical-industry-tree.json"}}}},
+        {"if": {"properties": {"role": {"const": "source_taxonomies"}}}, "then": {"properties": {"path": {"const": "source-taxonomies.jsonl"}}}},
+        {"if": {"properties": {"role": {"const": "crosswalk"}}}, "then": {"properties": {"path": {"const": "crosswalk.jsonl"}}}},
+        {"if": {"properties": {"role": {"const": "coverage_report"}}}, "then": {"properties": {"path": {"const": "coverage-report.json"}}}}
+      ]
+    }
+  }
+}

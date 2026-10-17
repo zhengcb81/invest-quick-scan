@@ -1,3 +1,21 @@
+## 2026-10-17 — 三个独立研究施工包通过发布审查
+
+新增包 `TAXONOMY-CROSSWALK-09`、`LOCALE-ROBUSTNESS-09`、`PROMPT-TRUST-09` 分别使用三个互不重叠的新Lab，只做分类体系映射、双语表述稳健性和合成检索注入安全实验。与现有题库/路由/实验任务去重后，原周期、转型、银行评分草案已撤回。
+
+独立发布reviewer对最终规范作完整复核，正式结论 `passed`、`open_findings=[]`。所有问题均已修复，其中包括taxonomy coverage计数/比例必须由唯一源行重算，以及每条crosswalk的来源taxonomy/version/code/hash必须绑定到唯一原始样本。reviewer还确认locale题目/单元/rubric锁定、prompt八类攻击与良性配对/计划结果闭合、预算/隔离和每包实施完成前的独立复核环均有明确约束。
+
+当前离线检查：11个JSON Schema通过Draft 2020-12元校验；所有相对文档链接有效；taxonomy跨记录规则和拒绝反例已明确写入卡片；新增卡片无尾随空格或格式破损。此前canonical-tree正负schema fixture、lock边界正负fixture、locale/prompt计划结果fixture均已通过。无模型/搜索请求、无新Lab和dispatch-lock创建。待精确提交/推送本批文档后，再由总控根据模型、输入和预算制作三份实际dispatch-lock；发给执行harness前重新检查Lab路径。
+
+---
+
+## 2026-10-17 — 新独立施工包首稿，等待独立发布审查
+
+经核对现有题库和已交付施工卡，撤回周期、转型、银行三种评分模块草案；对应`cyclical`、`turnaround`、`bank`、`recovery`题组及ROUTE-COVER-02/SCORE-ANCHOR-02已有实质覆盖。新目录 `docs/implementation/parallel-lanes/packages/2026-10-17-independent-research-wave/` 当前含三卡：TAXONOMY-CROSSWALK-09、LOCALE-ROBUSTNESS-09、PROMPT-TRUST-09及共同契约、lock JSON schema。三条写根当前均不存在，代码/测试/模型预算彼此不共享；真实模型调用受各自总控锁约束。
+
+Draft 2020-12 lock schema在jsonschema 4.26.0下通过模式校验；3个有效lock例和taxonomy live、prompt超额、无live budget 3个拒绝例通过。独立审查agent正在只读检查职责去重、接口、执行预算与schema/卡片一致性；未出最终审查前不是可分发卡。下一步按 finding修复/复审，再提交/推送精确文件并生成绑定已提交包文档commit的dispatch locks。
+
+---
+
 ## 2026-10-17 — 最终独审前又修复 REVIEW-CAL 证据板绑定问题
 
 五包的已知修复均已通过各自测试并提交；QUERY、SOURCE、RESUME 的独立反例审查已闭环。最终独审还差 REVIEW-CAL-06 与 RETRIEVAL-AUDIT-07 两包，以及将五个最终源码提交和本次PWF字节绑定并完成签收。本条新增的 REVIEW-CAL 修复须一并纳入独立复核。

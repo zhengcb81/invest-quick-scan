@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:industry-taxonomy-coverage:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "iqs.industry-taxonomy-coverage/1.0.0"
+    },
+    "release_id": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "$ref": "#/$defs/sourceCoverage"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "protocol",
+    "release_id",
+    "generated_at_utc",
+    "sources",
+    "notes"
+  ],
+  "$defs": {
+    "sourceCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_taxonomy_id": {
+          "enum": [
+            "CSRC_LISTED_COMPANY",
+            "HK_HSIC",
+            "US_SEC_SIC",
+            "US_NAICS"
+          ]
+        },
+        "source_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage_state": {
+          "enum": [
+            "complete",
+            "partial",
+            "not_available"
+          ]
+        },
+        "official_total_codes": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sampled_codes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mapped_codes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ambiguous_codes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unmapped_codes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sampled_fraction_of_official": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mapped_fraction_of_sample": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gap_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "source_taxonomy_id",
+        "source_version",
+        "coverage_state",
+        "official_total_codes",
+        "sampled_codes",
+        "mapped_codes",
+        "ambiguous_codes",
+        "unmapped_codes",
+        "sampled_fraction_of_official",
+        "mapped_fraction_of_sample",
+        "gap_reason"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "coverage_state": {
+                "const": "not_available"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "official_total_codes": {
+                "type": "null"
+              },
+              "sampled_fraction_of_official": {
+                "type": "null"
+              },
+              "gap_reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "coverage_state": {
+                "const": "complete"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "official_total_codes": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sampled_fraction_of_official": {
+                "type": "number"
+              },
+              "gap_reason": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "coverage_state": {
+                "const": "partial"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "gap_reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "sampled_codes": {
+                "const": 0
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "mapped_fraction_of_sample": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "sampled_codes": {
+                "minimum": 1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "mapped_fraction_of_sample": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "properties": {
+        "sources": {
+          "contains": {
+            "properties": {
+              "source_taxonomy_id": {
+                "const": "CSRC_LISTED_COMPANY"
+              }
+            },
+            "required": [
+              "source_taxonomy_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "sources": {
+          "contains": {
+            "properties": {
+              "source_taxonomy_id": {
+                "const": "HK_HSIC"
+              }
+            },
+            "required": [
+              "source_taxonomy_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "sources": {
+          "contains": {
+            "properties": {
+              "source_taxonomy_id": {
+                "const": "US_SEC_SIC"
+              }
+            },
+            "required": [
+              "source_taxonomy_id"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "sources": {
+          "contains": {
+            "properties": {
+              "source_taxonomy_id": {
+                "const": "US_NAICS"
+              }
+            },
+            "required": [
+              "source_taxonomy_id"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

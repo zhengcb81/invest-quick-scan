@@ -1,3 +1,9 @@
+## 2026-10-17 — 新一轮独立施工包规划开始
+
+用户要求再设计若干互不冲突的项目施工包；完成文档后必须由独立agent审查完整度/质量，并修复审查发现后才能作为正式交接。现有PWF主线的五包验收仍有两包最终独审待平台额度恢复（提示时间10月22日18:08），该阻塞不取消新规划。
+
+当前包目录已见日期至 `2026-10-17-search-source-wave` 的并行施工波次。CodeGraph 对 `docs/implementation/parallel-lanes/packages` 返回的结构不完整，故后续以精确文件清单核对现有包/仓库边界，避免重复任务。新包要有独立工作根、写入路径清单、输入/输出契约、依赖与禁止范围、交接清单、测试计划和独立复核要求；在独审通过前只标为draft。
+
 ## 2026-10-17 — 最终独审前又修复 REVIEW-CAL 证据板绑定问题
 
 五包的已知修复均已通过各自测试并提交；QUERY、SOURCE、RESUME 的独立反例审查已闭环。最终独审还差 REVIEW-CAL-06 与 RETRIEVAL-AUDIT-07 两包，以及将五个最终源码提交和本次PWF字节绑定并完成签收。本条新增的 REVIEW-CAL 修复须一并纳入独立复核。
@@ -3193,3 +3199,19 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 
 
 05/06包Git raw-byte兼容已实际修复：保留已发布锁6b8d7e88/968fc8a4不改SHA，仅对应两目录属性禁止换行转换、局部声明CR换行合法；autocrlf true/false六项实际检出与index/原件字节一致，6文件771786bytes已清。首轮diff将CR误报空白，局部属性修正后正常diff检查通过，不改全局配置/不跳hooks。详见operating-desk-acceptance-2026-10-16.md及runs/accept-05-2026-10-16/checkout-proof.json。
+
+## 2026-10-17 — scoring-wave草案已撤回，原因是与当前产品重复
+
+前稿提出的周期、转型、银行新增评分模块均不分发。复查当前 `questions/stages/cyclical.json`、`questions/stages/turnaround.json`、`questions/types/bank.json`、`questions/diagnostics/recovery.json`、`questions/common.json`，以及 ROUTE-COVER-02、ROUTE-E2E-03、SCORE-ANCHOR-02，确认这些现有实现/验收已覆盖相关构念和路由。原 `2026-10-17-independent-scoring-wave` 草稿已删除，未提交或分发；首次文档审查发现的输入锁、接口、review artifact证据问题已吸收到新共同契约，不复用旧题目方向。
+
+## 2026-10-17 — 新施工包方向与独立边界
+
+替代方向为三条隔离研究线：`TAXONOMY-CROSSWALK-09`只做A/HK/US官方行业分类体系的代码本体与多对多交叉映射，不给真实公司打行业/主题标签；`LOCALE-ROBUSTNESS-09`固定一个模型和18个已验收三市场题目，做中文/英文问题与证据的2×2配对稳定性实验；`PROMPT-TRUST-09`只测合成搜索摘录里的恶意指令是否诱导越权。三根 Lab 不写入共同源仓，模型试验不调用search/Fetch，必须由总控dispatch-lock冻结输入、具体模型及预算。官方分类源需在施工包标注：CSRC分类指引、香港C&SD HSIC V2.0、SEC SIC、Census NAICS；商业HSICS/GICS不默认抓取或再发布。
+
+共同合同要求单元/集成/E2E与隔离清理；每包完工前必须由实际不同的reviewer agent对最终payload做一次整包审查，所有有效发现修复并复审到`passed/open_findings=[]`，接收者能从原始review task/artifact独立核验。当前只有方案/输入锁schema草案，未分发、未建Lab、未调用模型/搜索；仍待本波次文档独立审查及总控锁制作。
+
+现仓仍有其他writer的脏文件与大量无关临时/未跟踪工件；只修改本任务拥有的 `findings.md` 和新增波次文档，绝不覆盖 `packages/2026-10-10/README.md`，提交时按确切路径暂存。
+
+## 2026-10-17 — 三个独立研究施工包发布审查通过
+
+独立reviewer对完整最终包返回 `passed`、`open_findings=[]`。最后一轮新发现的taxonomy两个跨文件语义问题已修：coverage的分类计数与比例不能只靠schema逐字段放行，必须从唯一source/crosswalk记录重算；crosswalk引用的taxonomy/version/code/hash须逐项指向同一条合法source记录。新增了完整性约束与相应负例。此前locale rubric/题目/计划单元绑定、prompt配对运行与结果集合、摘要重算、blocked状态等也均闭合。新施工包可交给独立harness准备实施；正式调用前仍需总控提交本波次文件并生成通过wave-level校验的dispatch-lock。三个Lab路径发放前需重新检查。

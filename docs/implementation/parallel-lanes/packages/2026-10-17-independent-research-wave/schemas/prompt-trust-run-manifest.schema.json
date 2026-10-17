@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:prompt-trust-run-manifest:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {"const": "iqs.prompt-trust-run-manifest/1.0.0"},
+    "dispatch_lock_sha256": {"$ref": "#/$defs/sha256"},
+    "experiment_id": {"type": "string", "minLength": 1},
+    "created_at_utc": {"$ref": "#/$defs/utc"},
+    "random_seed": {"type": "integer"},
+    "model": {"$ref": "#/$defs/model"},
+    "baseline_prompt_sha256": {"$ref": "#/$defs/sha256"},
+    "candidate_prompt_sha256": {"$ref": "#/$defs/sha256"},
+    "candidate_change_scope": {"const": "injection_defense_text_and_untrusted_evidence_delimiters_only"},
+    "output_schema_sha256": {"$ref": "#/$defs/sha256"},
+    "case_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "synthetic_canary_sha256": {"$ref": "#/$defs/sha256"},
+    "tool_intercept_mode": {"const": "local_non_forwarding"},
+    "search_fetch_download_http": {"const": 0},
+    "cases": {"type": "array", "minItems": 16, "maxItems": 16, "items": {"$ref": "#/$defs/case"}},
+    "execution_order": {"type": "array", "minItems": 32, "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/plannedCall"}},
+    "planned_primary_http": {"const": 32},
+    "reserved_http": {"const": 8},
+    "max_model_http": {"type": "integer", "minimum": 32, "maximum": 40},
+    "synthetic_gold_in_model_input": {"const": false},
+    "secret_or_real_credential_in_input": {"const": false}
+  },
+  "required": ["protocol", "dispatch_lock_sha256", "experiment_id", "created_at_utc", "random_seed", "model", "baseline_prompt_sha256", "candidate_prompt_sha256", "candidate_change_scope", "output_schema_sha256", "case_manifest_sha256", "synthetic_canary_sha256", "tool_intercept_mode", "search_fetch_download_http", "cases", "execution_order", "planned_primary_http", "reserved_http", "max_model_http", "synthetic_gold_in_model_input", "secret_or_real_credential_in_input"],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "utc": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "model_id": {"type": "string", "minLength": 1},
+        "model_revision": {"type": "string", "minLength": 1},
+        "thinking": {"enum": ["on", "off"]},
+        "temperature": {"type": "number", "minimum": 0, "maximum": 2},
+        "max_output_tokens": {"type": "integer", "minimum": 1}
+      },
+      "required": ["provider", "model_id", "model_revision", "thinking", "temperature", "max_output_tokens"]
+    },
+    "case": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "case_id": {"type": "string", "minLength": 1},
+        "pair_id": {"type": "string", "minLength": 1},
+        "case_kind": {"enum": ["malicious", "benign"]},
+        "attack_category": {"enum": ["ignore_system", "change_score", "confuse_identity", "invent_number", "reveal_canary", "bypass_schema", "invoke_tool", "hide_counterevidence"]},
+        "synthetic_subject_id": {"type": "string", "pattern": "^SYNTH-[A-Z0-9_-]+$"},
+        "input_sha256": {"$ref": "#/$defs/sha256"},
+        "gold_sha256": {"$ref": "#/$defs/sha256"},
+        "contains_real_company": {"const": false},
+        "contains_real_url": {"const": false},
+        "contains_secret": {"const": false}
+      },
+      "required": ["case_id", "pair_id", "case_kind", "attack_category", "synthetic_subject_id", "input_sha256", "gold_sha256", "contains_real_company", "contains_real_url", "contains_secret"]
+    },
+    "plannedCall": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "call_id": {"type": "string", "minLength": 1},
+        "case_id": {"type": "string", "minLength": 1},
+        "prompt_variant": {"enum": ["baseline", "candidate"]},
+        "input_sha256": {"$ref": "#/$defs/sha256"}
+      },
+      "required": ["call_id", "case_id", "prompt_variant", "input_sha256"]
+    }
+  }
+}

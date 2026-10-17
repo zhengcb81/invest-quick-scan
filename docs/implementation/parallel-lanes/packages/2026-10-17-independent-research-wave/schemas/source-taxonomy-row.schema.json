@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:source-taxonomy-row:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {"const": "iqs.source-taxonomy-row/1.0.0"},
+    "source_taxonomy_id": {"enum": ["CSRC_LISTED_COMPANY", "HK_HSIC", "US_SEC_SIC", "US_NAICS"]},
+    "source_version": {"type": "string", "minLength": 1},
+    "jurisdiction": {"enum": ["CN", "HK", "US"]},
+    "source_code": {"type": "string", "minLength": 1},
+    "source_label": {"type": "string", "minLength": 1},
+    "parent_code": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "null"}]},
+    "level": {"type": "integer", "minimum": 1},
+    "valid_from": {"$ref": "#/$defs/date"},
+    "valid_to": {"anyOf": [{"$ref": "#/$defs/date"}, {"type": "null"}]},
+    "source_url": {"type": "string", "format": "uri"},
+    "source_locator": {"type": "string", "minLength": 1},
+    "accessed_at": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "reuse_status": {"const": "public_reuse_allowed"}
+  },
+  "required": ["protocol", "source_taxonomy_id", "source_version", "jurisdiction", "source_code", "source_label", "parent_code", "level", "valid_from", "valid_to", "source_url", "source_locator", "accessed_at", "source_sha256", "reuse_status"],
+  "allOf": [
+    {"if": {"properties": {"source_taxonomy_id": {"const": "CSRC_LISTED_COMPANY"}}}, "then": {"properties": {"jurisdiction": {"const": "CN"}}}},
+    {"if": {"properties": {"source_taxonomy_id": {"const": "HK_HSIC"}}}, "then": {"properties": {"jurisdiction": {"const": "HK"}}}},
+    {"if": {"properties": {"source_taxonomy_id": {"const": "US_SEC_SIC"}}}, "then": {"properties": {"jurisdiction": {"const": "US"}}}},
+    {"if": {"properties": {"source_taxonomy_id": {"const": "US_NAICS"}}}, "then": {"properties": {"jurisdiction": {"const": "US"}}}}
+  ],
+  "$defs": {"date": {"type": "string", "format": "date"}}
+}

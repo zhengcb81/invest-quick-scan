@@ -1,0 +1,516 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:locale-run-manifest:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "iqs.locale-run-manifest/1.0.0"
+    },
+    "dispatch_lock_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "experiment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at_utc": {
+      "$ref": "#/$defs/utc"
+    },
+    "information_cutoff": {
+      "type": "string",
+      "format": "date"
+    },
+    "random_seed": {
+      "type": "integer"
+    },
+    "model": {
+      "$ref": "#/$defs/model"
+    },
+    "search_fetch_http": {
+      "const": 0
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 18,
+      "items": {
+        "$ref": "#/$defs/question"
+      }
+    },
+    "planned_cells": {
+      "type": "array",
+      "minItems": 78,
+      "maxItems": 78,
+      "items": {
+        "$ref": "#/$defs/cell"
+      }
+    },
+    "execution_order": {
+      "type": "array",
+      "minItems": 78,
+      "maxItems": 78,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "planned_primary_http": {
+      "const": 72
+    },
+    "planned_repeat_http": {
+      "const": 6
+    },
+    "planned_total_http": {
+      "const": 78
+    },
+    "reserved_http": {
+      "const": 12
+    },
+    "max_model_http": {
+      "type": "integer",
+      "minimum": 78,
+      "maximum": 90
+    },
+    "gold_included_in_model_input": {
+      "const": false
+    },
+    "locked_files": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "$ref": "#/$defs/lockedFile"
+      }
+    },
+    "derived_files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/derivedFile"
+      }
+    }
+  },
+  "required": [
+    "protocol",
+    "dispatch_lock_sha256",
+    "experiment_id",
+    "created_at_utc",
+    "information_cutoff",
+    "random_seed",
+    "model",
+    "search_fetch_http",
+    "questions",
+    "planned_cells",
+    "execution_order",
+    "planned_primary_http",
+    "planned_repeat_http",
+    "planned_total_http",
+    "reserved_http",
+    "max_model_http",
+    "gold_included_in_model_input",
+    "locked_files",
+    "derived_files"
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "thinking": {
+          "enum": [
+            "on",
+            "off"
+          ]
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "output_schema_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "provider",
+        "model_id",
+        "model_revision",
+        "thinking",
+        "temperature",
+        "max_output_tokens",
+        "output_schema_sha256"
+      ]
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "market": {
+          "enum": [
+            "CN",
+            "HK",
+            "US"
+          ]
+        },
+        "question_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rubric_release": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_question_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "gold_record_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "source_question_lock_ref": {
+          "$ref": "#/$defs/lockRef"
+        },
+        "source_evidence_lock_ref": {
+          "$ref": "#/$defs/lockRef"
+        },
+        "gold_record_lock_ref": {
+          "$ref": "#/$defs/lockRef"
+        },
+        "rubric_lock_ref": {
+          "$ref": "#/$defs/lockRef"
+        }
+      },
+      "required": [
+        "subject_id",
+        "market",
+        "question_id",
+        "rubric_release",
+        "source_question_sha256",
+        "source_evidence_sha256",
+        "gold_record_sha256",
+        "evidence_ids",
+        "source_question_lock_ref",
+        "source_evidence_lock_ref",
+        "gold_record_lock_ref",
+        "rubric_lock_ref"
+      ]
+    },
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cell_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "market": {
+          "enum": [
+            "CN",
+            "HK",
+            "US"
+          ]
+        },
+        "question_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prompt_locale": {
+          "enum": [
+            "zh",
+            "en"
+          ]
+        },
+        "evidence_locale": {
+          "enum": [
+            "zh",
+            "en"
+          ]
+        },
+        "cell_kind": {
+          "enum": [
+            "primary",
+            "repeat"
+          ]
+        },
+        "repeat_of_cell_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_question_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "translated_question_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "translated_evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "input_bundle_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "translated_question_file_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "translated_evidence_file_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input_bundle_file_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "cell_id",
+        "subject_id",
+        "market",
+        "question_id",
+        "prompt_locale",
+        "evidence_locale",
+        "cell_kind",
+        "repeat_of_cell_id",
+        "source_question_sha256",
+        "translated_question_sha256",
+        "source_evidence_sha256",
+        "translated_evidence_sha256",
+        "input_bundle_sha256",
+        "translated_question_file_id",
+        "translated_evidence_file_id",
+        "input_bundle_file_id"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "cell_kind": {
+                "const": "primary"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "repeat_of_cell_id": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "cell_kind": {
+                "const": "repeat"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "repeat_of_cell_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "safeRelativePath": {
+      "type": "string",
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(^|/)\\.{1,2}(/|$))(?!.*//)(?!.*/$)[^\\\\:]+$"
+    },
+    "lockRef": {
+      "type": "string",
+      "pattern": "^(input_files|source_snapshots):.+$"
+    },
+    "lockedFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lock_ref": {
+          "$ref": "#/$defs/lockRef"
+        },
+        "role": {
+          "enum": [
+            "source_question",
+            "source_evidence",
+            "gold_record",
+            "rubric",
+            "prompt_builder",
+            "sdk_adapter",
+            "output_schema",
+            "other"
+          ]
+        },
+        "relative_path": {
+          "$ref": "#/$defs/safeRelativePath"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "subject_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "question_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "lock_ref",
+        "role",
+        "relative_path",
+        "bytes",
+        "sha256",
+        "subject_id",
+        "question_id"
+      ]
+    },
+    "derivedFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "file_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "translated_question",
+            "translated_evidence",
+            "cell_input_bundle"
+          ]
+        },
+        "relative_path": {
+          "$ref": "#/$defs/safeRelativePath"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prompt_locale": {
+          "anyOf": [
+            {
+              "enum": [
+                "zh",
+                "en"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_locale": {
+          "anyOf": [
+            {
+              "enum": [
+                "zh",
+                "en"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "file_id",
+        "role",
+        "relative_path",
+        "bytes",
+        "sha256",
+        "subject_id",
+        "question_id",
+        "prompt_locale",
+        "evidence_locale"
+      ]
+    }
+  }
+}

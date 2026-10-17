@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:industry-crosswalk-row:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {"const": "iqs.industry-crosswalk-row/1.0.0"},
+    "mapping_id": {"type": "string", "minLength": 1},
+    "source_taxonomy_id": {"enum": ["CSRC_LISTED_COMPANY", "HK_HSIC", "US_SEC_SIC", "US_NAICS"]},
+    "source_version": {"type": "string", "minLength": 1},
+    "source_code": {"type": "string", "minLength": 1},
+    "canonical_industry_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^IQS-[A-Z0-9][A-Z0-9._-]{1,63}$"}},
+    "mapping_relation": {"enum": ["exact", "source_broader_than_target", "source_narrower_than_target", "partial", "ambiguous", "unmapped"]},
+    "mapping_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "rationale": {"type": "string", "minLength": 1},
+    "valid_from": {"$ref": "#/$defs/date"},
+    "valid_to": {"anyOf": [{"$ref": "#/$defs/date"}, {"type": "null"}]},
+    "evidence_ref": {"$ref": "#/$defs/evidenceRef"},
+    "reviewer_status": {"enum": ["unreviewed", "reviewed_supported", "disputed"]}
+  },
+  "required": ["protocol", "mapping_id", "source_taxonomy_id", "source_version", "source_code", "canonical_industry_ids", "mapping_relation", "mapping_confidence", "rationale", "valid_from", "valid_to", "evidence_ref", "reviewer_status"],
+  "allOf": [
+    {"if": {"properties": {"mapping_relation": {"const": "unmapped"}}}, "then": {"properties": {"canonical_industry_ids": {"maxItems": 0}}}},
+    {"if": {"properties": {"mapping_relation": {"enum": ["exact", "source_broader_than_target", "source_narrower_than_target", "partial"]}}}, "then": {"properties": {"canonical_industry_ids": {"minItems": 1}}}}
+  ],
+  "$defs": {
+    "date": {"type": "string", "format": "date"},
+    "evidenceRef": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "source_taxonomy_id": {"type": "string", "minLength": 1},
+        "source_version": {"type": "string", "minLength": 1},
+        "source_code": {"type": "string", "minLength": 1},
+        "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "required": ["source_taxonomy_id", "source_version", "source_code", "source_sha256"]
+    }
+  }
+}

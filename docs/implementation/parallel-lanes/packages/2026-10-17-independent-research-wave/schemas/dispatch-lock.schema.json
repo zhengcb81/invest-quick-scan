@@ -1,0 +1,654 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:parallel-package-dispatch-lock:1.1.0",
+  "title": "IQS Independent Package Dispatch Lock",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "iqs.parallel-package-dispatch-lock/1.1.0"
+    },
+    "package_id": {
+      "enum": [
+        "TAXONOMY-CROSSWALK-09",
+        "LOCALE-ROBUSTNESS-09",
+        "PROMPT-TRUST-09"
+      ]
+    },
+    "issued_at_utc": {
+      "$ref": "#/$defs/utcTimestamp"
+    },
+    "coordinator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "package_docs_commit": {
+      "$ref": "#/$defs/gitCommit"
+    },
+    "work_root": {
+      "enum": [
+        "C:/Users/郑曾波/Projects/iqs-taxonomy-crosswalk-lab/",
+        "C:/Users/郑曾波/Projects/iqs-locale-robustness-lab/",
+        "C:/Users/郑曾波/Projects/iqs-prompt-trust-lab/"
+      ]
+    },
+    "input_files": {
+      "type": "object",
+      "minProperties": 4,
+      "propertyNames": {
+        "$ref": "#/$defs/safeRelativePath"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/lockedFile"
+      }
+    },
+    "source_snapshots": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[A-Z][A-Z0-9_-]{1,63}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/sourceSnapshot"
+      }
+    },
+    "external_sources": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "publisher": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "version_or_edition": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "permitted_use_checked": {
+            "type": "boolean"
+          },
+          "reuse_status": {
+            "enum": [
+              "public_reuse_allowed",
+              "view_only",
+              "permission_unclear",
+              "not_reused"
+            ]
+          }
+        },
+        "required": [
+          "publisher",
+          "title",
+          "url",
+          "version_or_edition",
+          "permitted_use_checked",
+          "reuse_status"
+        ]
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "offline_only",
+            "bounded_live_model"
+          ]
+        },
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model_revision": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "thinking": {
+          "enum": [
+            "on",
+            "off",
+            "not_applicable"
+          ]
+        },
+        "temperature": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 2
+        },
+        "max_model_http": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_search_fetch_http": {
+          "const": 0
+        },
+        "cash_currency": {
+          "enum": [
+            "USD",
+            "CNY",
+            "none"
+          ]
+        },
+        "max_cash_micros": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "subscription_meter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "max_subscription_units": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "budget_owner_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "quota_group_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "execution_window_utc": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/executionWindow"
+            }
+          ]
+        },
+        "retry_ambiguous_send": {
+          "const": false
+        }
+      },
+      "required": [
+        "mode",
+        "provider",
+        "model",
+        "model_revision",
+        "thinking",
+        "temperature",
+        "max_model_http",
+        "max_search_fetch_http",
+        "cash_currency",
+        "max_cash_micros",
+        "subscription_meter",
+        "max_subscription_units",
+        "budget_owner_ref",
+        "quota_group_ref",
+        "execution_window_utc",
+        "retry_ambiguous_send"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "offline_only"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "provider": {
+                "type": "null"
+              },
+              "model": {
+                "type": "null"
+              },
+              "model_revision": {
+                "type": "null"
+              },
+              "thinking": {
+                "const": "not_applicable"
+              },
+              "temperature": {
+                "type": "null"
+              },
+              "max_model_http": {
+                "const": 0
+              },
+              "max_search_fetch_http": {
+                "const": 0
+              },
+              "cash_currency": {
+                "const": "none"
+              },
+              "max_cash_micros": {
+                "const": 0
+              },
+              "subscription_meter": {
+                "type": "null"
+              },
+              "max_subscription_units": {
+                "type": "null"
+              },
+              "budget_owner_ref": {
+                "type": "null"
+              },
+              "quota_group_ref": {
+                "type": "null"
+              },
+              "execution_window_utc": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "bounded_live_model"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "provider": {
+                "type": "string",
+                "minLength": 1
+              },
+              "model": {
+                "type": "string",
+                "minLength": 1
+              },
+              "model_revision": {
+                "type": "string",
+                "minLength": 1
+              },
+              "thinking": {
+                "enum": [
+                  "on",
+                  "off"
+                ]
+              },
+              "temperature": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "max_model_http": {
+                "minimum": 1
+              },
+              "cash_currency": {
+                "enum": [
+                  "USD",
+                  "CNY"
+                ]
+              },
+              "budget_owner_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "quota_group_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "execution_window_utc": {
+                "$ref": "#/$defs/executionWindow"
+              }
+            },
+            "anyOf": [
+              {
+                "properties": {
+                  "max_cash_micros": {
+                    "minimum": 1
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "max_subscription_units": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "subscription_meter": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "purpose_and_non_claims": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "protocol",
+    "package_id",
+    "issued_at_utc",
+    "coordinator",
+    "package_docs_commit",
+    "work_root",
+    "input_files",
+    "source_snapshots",
+    "external_sources",
+    "execution",
+    "purpose_and_non_claims"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "package_id": {
+            "const": "TAXONOMY-CROSSWALK-09"
+          }
+        },
+        "required": [
+          "package_id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "work_root": {
+            "const": "C:/Users/郑曾波/Projects/iqs-taxonomy-crosswalk-lab/"
+          },
+          "external_sources": {
+            "minItems": 4,
+            "maxItems": 4,
+            "allOf": [
+              {
+                "contains": {
+                  "properties": {
+                    "url": {
+                      "const": "https://www.csrc.gov.cn/csrc/c101864/c1024632/content.shtml"
+                    },
+                    "version_or_edition": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "permitted_use_checked": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "version_or_edition",
+                    "permitted_use_checked",
+                    "reuse_status"
+                  ]
+                }
+              },
+              {
+                "contains": {
+                  "properties": {
+                    "url": {
+                      "const": "https://www.censtatd.gov.hk/en/page_698.html"
+                    },
+                    "version_or_edition": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "permitted_use_checked": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "version_or_edition",
+                    "permitted_use_checked",
+                    "reuse_status"
+                  ]
+                }
+              },
+              {
+                "contains": {
+                  "properties": {
+                    "url": {
+                      "const": "https://www.sec.gov/search-filings/standard-industrial-classification-sic-code-list"
+                    },
+                    "version_or_edition": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "permitted_use_checked": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "version_or_edition",
+                    "permitted_use_checked",
+                    "reuse_status"
+                  ]
+                }
+              },
+              {
+                "contains": {
+                  "properties": {
+                    "url": {
+                      "const": "https://www.census.gov/naics/"
+                    },
+                    "version_or_edition": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "permitted_use_checked": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "version_or_edition",
+                    "permitted_use_checked",
+                    "reuse_status"
+                  ]
+                }
+              }
+            ]
+          },
+          "execution": {
+            "properties": {
+              "mode": {
+                "const": "offline_only"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "package_id": {
+            "const": "LOCALE-ROBUSTNESS-09"
+          }
+        },
+        "required": [
+          "package_id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "work_root": {
+            "const": "C:/Users/郑曾波/Projects/iqs-locale-robustness-lab/"
+          },
+          "source_snapshots": {
+            "minProperties": 1
+          },
+          "external_sources": {
+            "maxItems": 0
+          },
+          "execution": {
+            "properties": {
+              "max_model_http": {
+                "minimum": 1,
+                "maximum": 90
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "package_id": {
+            "const": "PROMPT-TRUST-09"
+          }
+        },
+        "required": [
+          "package_id"
+        ]
+      },
+      "then": {
+        "properties": {
+          "work_root": {
+            "const": "C:/Users/郑曾波/Projects/iqs-prompt-trust-lab/"
+          },
+          "source_snapshots": {
+            "minProperties": 1
+          },
+          "external_sources": {
+            "maxItems": 0
+          },
+          "execution": {
+            "properties": {
+              "max_model_http": {
+                "minimum": 1,
+                "maximum": 40
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "gitCommit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "safeRelativePath": {
+      "type": "string",
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*(^|/)\\.{1,2}(/|$))(?!.*//)(?!.*/$)[^\\\\:]+$"
+    },
+    "utcTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "lockedFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "bytes",
+        "sha256"
+      ]
+    },
+    "sourceSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository_or_archive": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit_or_release": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "$ref": "#/$defs/safeRelativePath"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "use": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "repository_or_archive",
+        "commit_or_release",
+        "path",
+        "bytes",
+        "sha256",
+        "use"
+      ]
+    },
+    "executionWindow": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "start_utc": {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        "end_utc": {
+          "$ref": "#/$defs/utcTimestamp"
+        }
+      },
+      "required": [
+        "start_utc",
+        "end_utc"
+      ]
+    }
+  }
+}

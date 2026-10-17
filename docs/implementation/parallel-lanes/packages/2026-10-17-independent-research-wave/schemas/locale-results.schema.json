@@ -1,0 +1,1043 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:locale-results:1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "protocol": {
+      "const": "iqs.locale-results/1.0.0"
+    },
+    "dispatch_lock_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "run_manifest_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "completed_at_utc": {
+      "$ref": "#/$defs/utc"
+    },
+    "preflight_translation_review": {
+      "$ref": "#/$defs/reviewApproval"
+    },
+    "completion_status": {
+      "enum": [
+        "complete",
+        "incomplete",
+        "blocked"
+      ]
+    },
+    "stability_verdict": {
+      "enum": [
+        "stable",
+        "not_stable",
+        "not_assessed"
+      ]
+    },
+    "http_attempts": {
+      "type": "array",
+      "maxItems": 90,
+      "items": {
+        "$ref": "#/$defs/httpAttempt"
+      }
+    },
+    "cell_outcomes": {
+      "type": "array",
+      "maxItems": 78,
+      "items": {
+        "$ref": "#/$defs/cellOutcome"
+      }
+    },
+    "metrics": {
+      "$ref": "#/$defs/metrics"
+    },
+    "search_fetch_http": {
+      "const": 0
+    },
+    "gold_included_in_model_input": {
+      "const": false
+    }
+  },
+  "required": [
+    "protocol",
+    "dispatch_lock_sha256",
+    "run_manifest_sha256",
+    "completed_at_utc",
+    "preflight_translation_review",
+    "completion_status",
+    "stability_verdict",
+    "http_attempts",
+    "cell_outcomes",
+    "metrics",
+    "search_fetch_http",
+    "gold_included_in_model_input"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "completion_status": {
+            "const": "complete"
+          }
+        },
+        "required": [
+          "completion_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "stability_verdict": {
+            "enum": [
+              "stable",
+              "not_stable"
+            ]
+          },
+          "http_attempts": {
+            "minItems": 78
+          },
+          "cell_outcomes": {
+            "minItems": 78
+          },
+          "metrics": {
+            "properties": {
+              "critical_error_count": {
+                "type": "integer"
+              },
+              "status_flip_count": {
+                "type": "integer"
+              },
+              "unstable_group_count": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "completion_status": {
+            "enum": [
+              "incomplete",
+              "blocked"
+            ]
+          }
+        },
+        "required": [
+          "completion_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "stability_verdict": {
+            "const": "not_assessed"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "completion_status": {
+            "enum": [
+              "complete",
+              "incomplete"
+            ]
+          }
+        },
+        "required": [
+          "completion_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "preflight_translation_review": {
+            "properties": {
+              "approved": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "completion_status": {
+            "const": "complete"
+          }
+        },
+        "required": [
+          "completion_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "preflight_translation_review": {
+            "properties": {
+              "approved": {
+                "const": true
+              }
+            }
+          },
+          "cell_outcomes": {
+            "items": {
+              "properties": {
+                "selected_attempt_id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "completion_status": {
+            "const": "blocked"
+          }
+        },
+        "required": [
+          "completion_status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "preflight_translation_review": {
+            "properties": {
+              "approved": {
+                "const": false
+              }
+            }
+          },
+          "http_attempts": {
+            "maxItems": 0
+          },
+          "cell_outcomes": {
+            "maxItems": 0
+          },
+          "stability_verdict": {
+            "const": "not_assessed"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "reviewApproval": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reviewer_task_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "artifact_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "artifact_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "approved_manifest_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "approved": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "reviewer_task_id",
+        "artifact_ref",
+        "artifact_sha256",
+        "approved_manifest_sha256",
+        "approved"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "approved": {
+                "const": true
+              }
+            },
+            "required": [
+              "approved"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reviewer_task_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "artifact_ref": {
+                "type": "string",
+                "minLength": 1
+              },
+              "artifact_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "approved_manifest_sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cached_input_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reported_by": {
+          "enum": [
+            "provider_native",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "input_tokens",
+        "cached_input_tokens",
+        "output_tokens",
+        "reported_by"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reported_by": {
+                "const": "unknown"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input_tokens": {
+                "type": "null"
+              },
+              "cached_input_tokens": {
+                "type": "null"
+              },
+              "output_tokens": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "cash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "enum": [
+            "USD",
+            "CNY",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "amount_micros": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reported_by": {
+          "enum": [
+            "provider_native",
+            "billing_invoice",
+            "unknown",
+            "not_applicable"
+          ]
+        }
+      },
+      "required": [
+        "currency",
+        "amount_micros",
+        "reported_by"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reported_by": {
+                "const": "unknown"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "currency": {
+                "const": "unknown"
+              },
+              "amount_micros": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "reported_by": {
+                "const": "not_applicable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "currency": {
+                "const": "not_applicable"
+              },
+              "amount_micros": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "reported_by": {
+                "enum": [
+                  "provider_native",
+                  "billing_invoice"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "currency": {
+                "enum": [
+                  "USD",
+                  "CNY"
+                ]
+              },
+              "amount_micros": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "subscription": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meter": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "units": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reported_by": {
+          "enum": [
+            "provider_native",
+            "account_meter",
+            "unknown",
+            "not_applicable"
+          ]
+        }
+      },
+      "required": [
+        "meter",
+        "units",
+        "reported_by"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reported_by": {
+                "const": "unknown"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "units": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "reported_by": {
+                "const": "not_applicable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "units": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "reported_by": {
+                "enum": [
+                  "provider_native",
+                  "account_meter"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "units": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "httpAttempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "attempt_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cell_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attempt_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "request_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "started_at_utc": {
+          "$ref": "#/$defs/utc"
+        },
+        "finished_at_utc": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/utc"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "attempt_status": {
+          "enum": [
+            "success",
+            "provider_error",
+            "timeout_known",
+            "send_unknown"
+          ]
+        },
+        "response_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "provider_request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "usage": {
+          "$ref": "#/$defs/usage"
+        },
+        "cash": {
+          "$ref": "#/$defs/cash"
+        },
+        "subscription": {
+          "$ref": "#/$defs/subscription"
+        }
+      },
+      "required": [
+        "attempt_id",
+        "cell_id",
+        "attempt_number",
+        "request_sha256",
+        "started_at_utc",
+        "finished_at_utc",
+        "attempt_status",
+        "response_sha256",
+        "provider_request_id",
+        "latency_ms",
+        "usage",
+        "cash",
+        "subscription"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "attempt_status": {
+                "enum": [
+                  "provider_error",
+                  "timeout_known",
+                  "send_unknown"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "response_sha256": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "cellOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cell_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "answer_status": {
+          "enum": [
+            "scored",
+            "unknown",
+            "conflicted",
+            "refused",
+            "failed"
+          ]
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "visible_answer_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "visible_answer_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "concise_rationale": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "gold_alignment": {
+          "enum": [
+            "supported",
+            "partially_supported",
+            "unsupported",
+            "not_assessed"
+          ]
+        },
+        "critical_error_types": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "wrong_entity",
+              "wrong_numeric_fact",
+              "wrong_period",
+              "unsupported_claim",
+              "risk_omission",
+              "other"
+            ]
+          }
+        },
+        "selected_attempt_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "counterevidence_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "cell_id",
+        "answer_status",
+        "score",
+        "visible_answer_sha256",
+        "visible_answer_ref",
+        "concise_rationale",
+        "evidence_refs",
+        "gold_alignment",
+        "critical_error_types",
+        "selected_attempt_id",
+        "counterevidence_refs"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "answer_status": {
+                "const": "scored"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "score": {
+                "type": "integer"
+              },
+              "visible_answer_sha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "visible_answer_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "answer_status": {
+                "enum": [
+                  "unknown",
+                  "conflicted",
+                  "refused",
+                  "failed"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "score": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "critical_error_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status_flip_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unstable_group_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 18
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gold_support_rate": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mean_absolute_score_error": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 9
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "median_latency_ms": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total_input_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cached_input_tokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cash_amount_micros": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cash_currency": {
+          "enum": [
+            "USD",
+            "CNY",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "subscription_units": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cost_confidence": {
+          "enum": [
+            "complete",
+            "partial",
+            "unknown",
+            "not_applicable"
+          ]
+        }
+      },
+      "required": [
+        "critical_error_count",
+        "status_flip_count",
+        "unstable_group_count",
+        "gold_support_rate",
+        "mean_absolute_score_error",
+        "median_latency_ms",
+        "total_input_tokens",
+        "cached_input_tokens",
+        "cash_amount_micros",
+        "cash_currency",
+        "subscription_units",
+        "cost_confidence"
+      ]
+    }
+  }
+}

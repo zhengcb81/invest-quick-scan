@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:iqs:taxonomy-cli-success:1.0.0",
+  "oneOf": [
+    {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "status": {"const": "valid"},
+        "release_id": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "files_checked": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "required": ["status", "release_id", "files_checked", "manifest_sha256"]
+    },
+    {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "status": {"enum": ["mapped", "ambiguous", "unmapped"]},
+        "taxonomy_id": {"enum": ["CSRC_LISTED_COMPANY", "HK_HSIC", "US_SEC_SIC", "US_NAICS"]},
+        "source_version": {"type": "string", "minLength": 1},
+        "source_code": {"type": "string", "minLength": 1},
+        "as_of": {"type": "string", "format": "date"},
+        "mappings": {"type": "array", "items": {"$ref": "#/$defs/mapping"}}
+      },
+      "required": ["status", "taxonomy_id", "source_version", "source_code", "as_of", "mappings"],
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "unmapped"}}},
+          "then": {"properties": {"mappings": {"maxItems": 0}}}
+        },
+        {
+          "if": {"properties": {"status": {"const": "mapped"}}},
+          "then": {
+            "properties": {
+              "mappings": {
+                "minItems": 1,
+                "contains": {
+                  "properties": {"mapping_relation": {"enum": ["exact", "source_broader_than_target", "source_narrower_than_target", "partial"]}},
+                  "required": ["mapping_relation"]
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "ambiguous"}}},
+          "then": {
+            "properties": {
+              "mappings": {
+                "minItems": 1,
+                "contains": {
+                  "properties": {"mapping_relation": {"const": "ambiguous"}},
+                  "required": ["mapping_relation"]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "$defs": {
+    "mapping": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "mapping_id": {"type": "string", "minLength": 1},
+        "canonical_industry_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^IQS-[A-Z0-9][A-Z0-9._-]{1,63}$"}},
+        "mapping_relation": {"enum": ["exact", "source_broader_than_target", "source_narrower_than_target", "partial", "ambiguous"]},
+        "mapping_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "reviewer_status": {"enum": ["unreviewed", "reviewed_supported", "disputed"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "evidence_ref": {"type": "object", "additionalProperties": false, "properties": {"source_taxonomy_id": {"type": "string", "minLength": 1}, "source_version": {"type": "string", "minLength": 1}, "source_code": {"type": "string", "minLength": 1}, "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}, "required": ["source_taxonomy_id", "source_version", "source_code", "source_sha256"]}
+      },
+      "required": ["mapping_id", "canonical_industry_ids", "mapping_relation", "mapping_confidence", "reviewer_status", "rationale", "evidence_ref"]
+    }
+  }
+}
