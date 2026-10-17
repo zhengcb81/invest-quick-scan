@@ -1,3 +1,15 @@
+## 2026-10-17 — 最终独审前又修复 REVIEW-CAL 证据板绑定问题
+
+五包的已知修复均已通过各自测试并提交；QUERY、SOURCE、RESUME 的独立反例审查已闭环。最终独审还差 REVIEW-CAL-06 与 RETRIEVAL-AUDIT-07 两包，以及将五个最终源码提交和本次PWF字节绑定并完成签收。本条新增的 REVIEW-CAL 修复须一并纳入独立复核。
+
+总控静态预检发现 REVIEW-CAL 1.1 的 `source_context` 校验在实际调用方未提供 evidence board 时，仍接受输出自报的哈希；调用方提供了哈希时，缺失哈希也能通过，`evidence_board_reason` 亦未与调用方绑定。新回归先重算两个摘要并复现“未抛出 CalibrationError”，修复后覆盖伪造、遗漏、正确绑定和错误 reason 四种情况。REVIEW-CAL-06 新提交为 `9817dcbc5a44a8b0dcca7b3bc69fae4ef98985d4`；全包离线测试 `124 passed`，23.17秒。输入锁 `968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233` 未改，516个锁定文件只复制到隔离测试根，测试后已清理。
+
+完整测试须给子进程 `PYTHONPATH=<lab>/src`；Windows下加 `PYTHONUTF8=1` 后 124 项通过且无编码告警。首次全包命令缺少源码路径时有9个子进程导入/设置失败，正确环境下复跑通过，这不是代码缺陷。证据见 `runs/remaining-package-final-review-2026-10-17/root-review-review-board-evidence-2026-10-17.json`。检索审计包本轮只作静态检查，没有发现新的确定缺陷或改动；其此前159 passed/1 skipped和独立反例GREEN仍需最后独立复核。
+
+独立审查子进程因平台使用额度上限中断。平台提示额度于 **2026-10-22 18:08** 恢复（显示时区未确认）；在此之前不把总控自审冒充独立签收。若恢复后没有新发现，预计同日完成两包复核、最终绑定和PWF提交推送；若发现新问题，则修复后再由同一独立审查者复核，完成日顺延一个修复周期。当前状态细节见 `docs/implementation/reviews/remaining-packages-live-status-2026-10-17.json`；旧 `controller-status.json` 因被归档manifest绑定而保留为历史检查点。
+
+下一步：额度恢复后让真正独立的 reviewer 完成 REVIEW-CAL-06 与 RETRIEVAL-AUDIT-07 的最终源码/测试/commit复核，并检查三个已关闭包的当前提交；输出真实 `passed` 且 `open_findings=[]` 后绑定五个源码commit和当前PWF，再正常提交并推送IQS既有origin。
+
 ## 2026-10-17 — 已提交推送检查点728face；最终独审待额度恢复
 
 63份PWF/交接/测试与薄证据已正常提交并推送`728facecd2d00d36f1ca31f0358559043d2c2587`到既有IQS origin/master，远端已核一致；五Lab修复各自已本地正常提交、没有remote，不新建。实际交付证据见`docs/implementation/reviews/remaining-packages-delivery-2026-10-17.json`。本段仅交付状态记账；下方五包源码/测试/剩余独审动作不变。
