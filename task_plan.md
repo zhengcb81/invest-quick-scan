@@ -1,3 +1,39 @@
+## 2026-10-17 — DeepSeek接入及两轮四源实测完成；转入外包交付验收
+
+本轮DeepSeek Search/Fetch已用环境DEEPSEEK_API_KEY真实跑通，StockQA19文件正常hooks提交并推送master e63a79f6698d60b398ed4c0c2e67979d051cd93e。原SDK/账本/owner复用，策略1.2/1.3显式启用，旧契约不改。109P/19subtests为最终源码候选集中回归，不与重叠套件相加。整包审查的最终签收范围与hash以docs/implementation/experiments/artifacts/deepseek-search-2026-10-17/review.json为准，不授生产或金融gold资格。
+
+实际36搜索工具+3Fetch+24模型HTTP，含MCP控制共90物理HTTP；三司各2事实+1证据拒答控制，4来源。A4096与统一B16384各12组，同证据/模型/思考开启；A11/12结构提交，B12/12，两次模型warm均零新请求。B的24事实中10值有完整片段支持、1缺单位仅部分、13审慎unknown；12控制全合理unknown。DeepSeek/Brave/Tavily/ZAI各支持5/6、2/6、2/6、1/6，不是原始披露认证或全市场准确率。A曾有理由单位等式错、拒答理由混淆发行人，保留原结果/标签，不能以数字匹配或结构accepted计白名单。B成功不足归因更大上限：原失败组B只用2138<4096，顺序/随机/缓存混杂。
+
+官网/保守汇率参考合计CNY1.096401，另保留Brave未知1+ZAI现金未知36=CNY37上界，不是实扣。ZAI按9成功工具×官网1.2登记10.8credits，未查询账户实际扣减/余额；Tavily真实reported9credits。原T4和生产库raw SHA复核均保持。A总prompt36203/cache7552=20.86%，B同prompt/cache33917=93.68%；仅观察真实usage，不外推新公司。汇总初稿曾把规范化未缓存input当total，已保留并被v2替代，费用/原账不改。Fetch三条均成功，但选错期间/泛页与前缀截短未含事实，未混Search-only，原all-arm commonFetch没有实施。
+
+实操结论已写references/search-and-llm-playbook.md §11与实验报告：DeepSeek可作低成本候选发现，但精确题需完整主体/期间/表头/单位/原文定位与理由一致性；不足unknown，不靠多问/多模型一致补不存在的证据。未实现相关段落抽取，不把500字前缀说成已解决。未开2000家公司扫描、未改用户顺位/名单/生产库；旧未知请求不重发。
+
+用户最新明确“所有外包施工包都做好了”。已只读见三个07正式目录：iqs-search-source-lab/docs/handoff/SOURCE-TIME-07、iqs-query-identity-lab/docs/handoff/QUERY-ENTITY-07、iqs-search-annotation-lab/docs/handoff/RETRIEVAL-AUDIT-07；还见此前待交的REVIEW-CAL-06、RESUME-CHAOS-06正式handoff。当前仅“已收到待验”，不以ready_for_acceptance/作者自报当签收。CONTEXT-PACK-06此前1.0.1已签，不重复实现。先冻结各独占Lab当前payload、input-lock、真实不同agent审查与测试/清理证据，再隔离公开CLI/反例验收；各仓只读避并发，不污染生产。QUERY-ENTITY-07独立验收已启动。三个07施工卡及接口已在docs/implementation/parallel-lanes/packages/2026-10-17-search-source-wave/完整留档，不再给重复卡。
+
+之前CONTEXT75份文档经用户精确授权后，89af4ba/c0688d7已实际推送；下方旧handoff的“等待推送授权/未见06交接”仅历史，不继续当现状。当前本轮IQS文档提交以最后实际Git回执为准。总项目仍按原PWF继续，不将本轮研究关闭标成整个项目完成。
+
+以下保留历史检查点，恢复工作优先本段和后续实际验收回执。
+
+## 2026-10-17 — 四源搜索与Fetch实测已完成；统一模型对照进行中
+
+StockQA接入已提交e63a79f6698d60b398ed4c0c2e67979d051cd93e，19文件正常hooks通过，隔离109P/19subtests；本轮并未接通生产owner或改变用户顺位。原前三源27搜索、ZAI9次工具搜索（36个物理HTTP）均已发送；Brave旧1条落账失败保留CNY1且禁重发。ZAI实际GLM Coding Plan消耗10.8credits，现金未知、36CNY保守预约保持，不报免费。DeepSeek Fetch独立pilot3条真实200/非空、参考共CNY0.015；仅短摘录，无整页/PDF落盘。Fetch链接/前缀不足以证明目标事实，未混入Search-only，也未冒称完成原all-arm common-Fetch。
+
+12组真实Search-only证据板已冻结，manifest dbbc16ea2a0060580e951a6d1e06af36b8febee7013f12c71ad29a6b288bae49；来源类型防改标/删字段、Fetch混臂及最小环境测试问题均由独立agent复测关闭。模型新phase使用同一deepseek-flash、thinking开启、无native search、原SDK/预算；首CATL/DeepSeek包已提交答案并计价，第二CATL/Brave包4096输出全为思考而未提交，已计价终态保留，不算金融错误确定回答，不重发。正在补只续未发送独立包的显式接续；未完成12包前不给四源准确率胜负。
+
+下一步：保留已发送两包与费用，继续原未发送包，独立逐引用判读后汇总准确性/成本/端到端耗时；若做更大输出预算，统一另登记组，不只放宽某一臂。最终整包独审、搜索规范/PWF更新、正常提交；三个07独占离线施工包已交用户，未自动派发。详细本机证据runs/deepseek-search-compare-2026-10-17/，旧T4、生产库、其他writer不改。
+
+以下是更早检查点，最新状态以本段及后续明确记录为准。
+
+## 2026-10-17 — StockQA接入已提交；前三源完成，ZAI/模型对照继续
+
+当前事实：StockQA master已正常提交e63a79f6698d60b398ed4c0c2e67979d051cd93e，19文件、tracked clean。独立审查关闭坏收据落账P1、策略重标重发P1和Fetch/Search错配P2。正常Git hooks曾发现EOF/LF、Black/isort与6项局部类型问题，全部直接修复，没有skip；最终格式、mypy（87源码）、密钥检查等通过。格式/类型修订后的冻结副本又集中109P/19subtests（34.02s），source19文件raw与受检candidate逐byte相同。未推送外仓，整个实验尚未最终交接。
+
+原36搜索格：前三源27条真实HTTP已执行完，26条settled，1条CSC Brave q2未定已按原研究API隔离且禁止重发；已知官网/保守FX参考成本CNY0.941、未知预约CNY1完整保留，实际发票未知。同库仅续原10条未发送工作，重复接续新增HTTP0。已冻结9个真实三源证据板，没有拿其他源结果补齐Brave缺项。ZAI9格仍HTTP0，固定模型HTTP0；不能宣称四源准确性胜负或完成Fetch实测。
+
+下一步：GLM Coding Plan按MCP/工具credits另记，使用显式具名新工作子owner（原搜索cap20、新ZAI cap60、新model cap20，总allocation100CNY；含旧T4最坏预约上界106.843480<200）。保留原“含work_item不可amend”限制，不弱化；新2owner已按公开SDK初始化0请求，旧27原账完全保持。统一不可变registry+共享OS互斥/每次发送累计准入，不另造账本，不借新库重试原工作。ZAI真正新provider9查询、固定模型12包、Fetch独立小pilot继续准备；未来证据board hash另行真实冻结，不能填假hash。三张07卡已独立文档审查通过并把链接交用户，尚未自动派发。
+
+Root文档提交2ca49cd已保留。详细记录runs/deepseek-search-compare-2026-10-17/stockqa-apply-receipt.json、final-tests-03/、benchmark/continuation-live-01/、benchmark/boards-three-source-v1/、allocation-subowner-decision.json；precision amendment在模型HTTP0前追加，原gold不改。以下为更早检查点及历史，不覆盖本段。
+
 ## 2026-10-17 — 真实搜索已启动；付费响应落账边界修复中
 
 最新状态覆盖下方本轮早期“0真实HTTP”记录：首条DeepSeek Search已真实成功（约1.715秒，官网参考价CNY0.005）。同一冻结SDK/查询/原生账本累计17条搜索发送，其中16条settled、参考成本CNY0.55；第17条CSC Brave q2在响应后被journal的HTTPS短记录校验拒绝，未保存完整回执，仍保留CNY1预约和in-flight，不重发、不填0、不伪造HTTP状态。原进程已停止。模型HTTP仍0，ZAI尚未发起。原T4账本未改。
@@ -20,9 +56,7 @@ ZAI补充：用户已确认GLM Coding Plan/MCP；官方每次搜索工具1.2cred
 
 ## Next Step
 
-先定位StockQA当前外部搜索实现和现有公开研究SDK，核API文档与增量文件范围，冻结可测候选；两个活动06包仍只读避让。真实费用按单独实验实际账本登记，不迁移或抹平旧T4 response_unpriced。
-
-以下为此前阶段历史。
+完成本轮真实研究整包签收与精确文档提交；并行冻结验收三个07及新到的REVIEW-CAL-06/RESUME-CHAOS-06，隔离跑公开CLI和实质反例，问题直接修复后再签收。之后回到原T4金融review/scorer契约与owner续行主线，不重复已签CONTEXT。
 
 ## 2026-10-17 — CONTEXT-PACK-06正式签收1.0.1，原仓已提交
 

@@ -1,35 +1,72 @@
 # DeepSeek Search/Fetch与四源小样本对照
 
-状态：真实搜索已启动，工程边界修复中；尚未完成固定模型回答及四源比较，不预设赢家。
+Search/Fetch已真实跑通并接入StockQA；三家公司、四个搜索来源的两轮真实模型对照及独立逐题评审完成。StockQA代码已提交推送。结论：DeepSeek本次在短证据支持覆盖、公开参考成本和检索速度上最有希望，但没有任何来源达到自动可靠财务评分要求；优先改进证据定位与完整口径核验，不能用多问几次模型代替缺失证据。最终工程/研究交接签收见本目录薄归档`artifacts/deepseek-search-2026-10-17/review.json`；不授生产或金融gold资格。
 
-首阶段实际17条搜索发送，16条原生账本settled，官网参考成本CNY0.55。首条DeepSeek Search约1.715秒，参考CNY0.005。第17条CSC Brave q2响应抵达后因短记录URL校验不一致无法落账；CNY1预约保持，原进程已停止，不重发该槽、不伪造HTTP状态或费用。模型HTTP仍0，ZAI MCP尚未发送。细节和逐请求状态在本机`runs/deepseek-search-compare-2026-10-17/live-status.json`。下述36槽设计保持原分母；早期SDK/配置/账本不改写。
+## 已经完成什么
 
-用户确认ZAI为GLM Coding Plan，主要使用MCP。新显式prepaid组件分别登记工具额度、现金未知和保留现金预约；不得把credits写成CNY或现金0。初步证据已见官方URL对应访问限制提示、查询跨期间及混入其他公司，进一步说明URL命中和数字命中不能代替引用支持审查。
+StockQA master提交`e63a79f6698d60b398ed4c0c2e67979d051cd93e`已推送既有origin。19文件新增显式1.2独立Search/Fetch与1.3套餐额度计量，旧schema与行为保留；未知费用不填0，仍用原SDK、permit、Q09账本、journal和研究任务注册，不在IQS另造付费客户端/账本。正常hooks通过，冻结源隔离109项测试及19个subtests通过；独立工程审查关闭坏记录丢付费回执、策略重标重发、来源类型改标及Fetch混臂等发现。旧T4及生产库没有改动。
 
-用户授权2026-10-17：接入StockQA，使用环境DEEPSEEK_API_KEY做真实小样本，与Brave/Tavily/ZAI比较；准确性第一，费用与速度其次；更新PWF、搜索规范，交付互不重叠外包卡，最终独立agent审查修复后交接。
+用户确认ZAI为GLM Coding Plan，主要使用MCP。三家公司各3条固定查询、4个来源，共36个搜索工具调用已执行，包含63次物理HTTP；ZAI的9次搜索另含27次握手/通知/发现请求。原Brave中一条响应落账失败，保留CNY1未知预约且禁止重发；其余原始来源26条settled。合法有限接续只发送原10条未发送搜索槽，暖恢复零新增HTTP。
 
-## 固定设计
+|来源|实际搜索工具调用|物理HTTP|搜索官网/保守汇率参考|另保留的未知现金上界|检索计时中位数|
+|---|---:|---:|---|---|---|
+|DeepSeek Search|9|9|CNY0.045|0|0.569秒，9条|
+|Brave|9|9|CNY0.32，仅8条已计价|CNY1，1条|0.632秒，仅8条|
+|Tavily|9|9|CNY0.576，PAYG参考；报告9credits|0|1.537秒，9条|
+|ZAI MCP|9|36|现金未知；按成功工具调用与官方费率登记10.8credits（账户实际扣减未查询）|CNY36，未伪结算|5.548秒，含冷握手全链9条|
 
-复用已有宁德时代300750、Alphabet、CSC Financial06066三个公司样本，不新增股票池成员。每司两道精确事实题与一道证据内ROIC−WACC拒答控制；合计9题。宁德时代/Alphabet参考官方HTML本轮只读重核，CSC使用2026-10-07已审HKEX参考，明确未新下载PDF，不冒称今日重核。provisional身份保持provisional，不借研究派发授生产身份资格。
+REST计时为原生发送到记录的包络，含传输/解析/落账，非纯服务器耗时；MCP按实际原生阶段时间另算完整冷链，不能只拿tools/call的2.680秒排名。原与续行runner的wall计时范围不同，不混算均值；Brave缺失时间不填0。表内费用不是账户发票，套餐余额和免费额度剩余未知。ZAI成功的真实配额凭证允许本轮显式研究继续，但现金预约保留，不推广为其他未计价请求豁免。
 
-每司3条查询、每源count=5，四源逐字相同，查询不含参考数值。36次冷搜索、12个公司/来源证据板；臂间不共享证据，不用失败路由的对手结果补齐该臂。实际返回数、错误、非空率、截断和发表日期缺失分别记录。固定一款deepseek-flash开启思考、无原生搜索，按同一三题包/答案schema生成12次；参考值与人工标签绝不进入模型context。
+## 准确性如何比较
 
-Fetch是独立增量组，所有搜索臂都可使用相同DeepSeek Fetch：只选本臂已落账搜索返回的最多两个唯一HTTPS HTML链接；禁止PDF/附件/私网/带凭据URL，不为凑样本改查询。只保留有界必要片段、元数据和hash，原网页/Markdown仅内存处理，不下载财报或存整页。Search-only与Search+common-Fetch分开报告；同一URL被多个臂命中时可按明确缓存契约复用，但分别列冷/暖增量，不伪造本次HTTP。
+宁德时代300750、Alphabet、CSC Financial06066沿用真实只读StockWiki身份；CATL/CSC仍为provisional，不授生产资格、不加股票池。每司2题财务事实、1题证据范围内ROIC−WACC控制。每个来源独立证据板，同一查询/count/片段上限/固定回答模型；不拿其他来源补齐失败臂。12组证据板已冻结，manifest SHA256 `dbbc16ea2a0060580e951a6d1e06af36b8febee7013f12c71ad29a6b288bae49`。
 
-主指标为全部24个已知数值槽中，被证据完整支持且主体/期间/币种/单位/会计定义正确的回答数。另列已答准确率、覆盖率、错误确定回答和12个证据依赖控制的审慎拒答。ROIC-WACC控制不是断言世界上不存在数据；若本次证据真的充分，按实际证据判断。参考数字相同但所引来源缺表头/口径，不算完整支持。独审保留争议，不用多数票或模型自评代替来源核验。失败/未启动保留原分母，零可评不是零准确率。
+首轮A：deepseek-flash开启思考、无原生搜索、同一三题submit_answers工具、输出上限4096。12组共12次实际模型HTTP，11组结构accepted，CATL/Brave一组已计价但无答案；用量显示4096输出token全为思考，推断输出空间耗尽，但原件未保存finish_reason，不能补造直接length证据。原失败和费用完整保留，只以显式有限证明继续原未发包，未重发该包。全部完成后暖恢复返回processed_this_call=0，模型原账仍12请求。
 
-费用分为接口请求、套餐credits、公布费率参考与实际现金；未读控制台账单，现金未知不填零。计入失败、协议握手/发现、重试、Fetch、模型tokens（含思考）和等待时间。冷/暖缓存分开，缓存命中仅用真实usage，不由输入相似推定。DeepSeek模型官方映射今天已更新为DeepSeek-V4.1-Flash-1017，旧实验不回写新费率。
+统一16384输出预算的B是观察上述失败后另登记的自适应工程对照；12组使用原同证据/题目/模型/思考/prefix/tool，只统一改变输出空间，新phase与config/hash。旧结果不改、不混组，不为某来源单独放宽，不重新搜索。仍用同一模型owner的原40请求/20CNY及总allocation100CNY/150请求，旧T4计入累计200CNY保守上限，不增加新预算或绕过旧未知发送。B实际12/12组结构提交、12次模型HTTP；A为11/12组结构提交、12次HTTP。B的Brave/CATL成功输出仅2138tokens，低于A的4096上限，故不能证明提高上限造成恢复；顺序、随机生成与缓存也混杂。两轮只是自适应小样本工程观察，不是随机因果比较。A/B各自暖恢复均processed_this_call=0，原生模型总请求仍24。
 
-## 登记与稳健性
+独立审查共72槽，保留两轮原36槽各自分母；B结果如下。“有据”指所给短证据支持数值、主体、期间、单位与口径，**不代表所有摘要均已原始披露精确复核**。
 
-真实请求仅用StockQA原ExternalSearchProvider、单次HTTPpermit、Q09预算和journal；不在IQS另造客户端或账本。新增独立source研究工作与注册不重放T4旧任务；旧owner只读核98笔已结算USD0.655435、两笔未知各USD0.1预约，总上界USD0.855435保持，并计入累计预算检查。CNY/美元换算仅为冻结参考：ECB2026-10-16 EURUSD1.1253/EURCNY7.5240；保守预算8CNY/USD不当成交价或实际扣费。
+|来源|A数值有据/6|A数值及理由无已发现错误/6|B数值有据/6|B其他事实槽|B控制合理拒答/3|
+|---|---:|---:|---:|---|---:|
+|DeepSeek Search|5|4|5|1部分支持，缺金额单位表头|3|
+|Brave|1|1|2|4证据不足unknown|3|
+|Tavily|2|2|2|4证据不足unknown|3|
+|ZAI MCP|1|1|1|5证据不足unknown|3|
 
-未知发送/未计价保留预约、不盲重发；明确可重试失败才新登记有界退避，不覆盖原attempt。DeepSeek账号Search/Fetch各5QPS，独立类别与目标域名限制如实实现/注明作用域。ZAI REST/MCP协议不同；真实当前余额未知，无法计价或准入时记录阻断，不能设置免费以绕闸。
+A合计24事实：9值有据、1部分有据、12审慎unknown、2协议缺失；有据9题中1题理由换算等式错，因此数值及理由无已发现错误仅8。12控制为11审慎unknown、1缺失。另有一条unknown理由混淆发行人，不能因未报数字而忽略身份错误。B合计24事实为10有据、1部分、13审慎unknown；12控制全部合理unknown，原两处理由错误未再出现。一条理由有多余自纠正措辞，仍标呈现问题，不能把合法JSON视为最终文风合格。
 
-## 原件与交付
+两轮Alphabet/DeepSeek capex都恰好52535，但引用缺million单位表头，仍不通过完整支持；不以参考数一致放行。没有观察到明确错误数值，不等于所有数值/理由/来源都合格。原始回答和评判hash不改；缺证据、理由/身份矛盾或呈现缺陷分别标待补证/待审，不进入自动白名单分数。B的10/24只是本批短证据支持覆盖，不能称整体准确率100%或推2000家公司。
 
-本机登记根：runs/deepseek-search-compare-2026-10-17/，preregistration.json、questions.json、reference-private.json与pricing-snapshot.json分离；后续actual runner/source输入另锁hash，不改已冻结旧实验。暂定搜索策略新1.2显式启用Search/Fetch，旧1.0/1.1 schema与行为保持。原StockQA起点21cf8b05b0a388af08425d685c079451bc3012dd，tracked clean；候选只在自有隔离根修复，未写源。
+金融指标以全部24个数值槽为分母，逐引用检查主体、期间、币种、单位、会计定义、数值精度和证据支持；另列已答准确率、缺答、错误确定回答与12个控制。结构accepted、数字碰巧正确、URL存在都不是金融正确。供应商摘要支持与原始披露验证分层，不能把summary改标原文。控制的unknown不意味着世界上不存在数据，实际期间/计算口径充分才能答。三司只有6个独立事实，不能将24个相关槽当24个独立样本推全市场胜率。
 
-三张互不相交施工卡入口：[搜索来源波次](../parallel-lanes/packages/2026-10-17-search-source-wave/README.md)。不自动派发、不创建其Lab，不写活动REVIEW-CAL/RESUME仓。只设本轮整包独审：检查接入、真实证据/计量/实验分母、规范与施工卡完整度，修复全部有效发现再签收；不新增逐helper审批。
+CATL官方一位小数OCF44.7的精度修订在模型发送前追加，原gold不改：[44.65,44.75)仅为假设舍入兼容，不证明区间中任一精确值；44.709等额外小数须自身引用支持。Alphabet/CSC整数百万元不统一放宽误差。官方CATL与SEC HTML本轮只读核验；CSC沿用已审HKEX参考，未新下载PDF。private reference与标签从未进入模型context。
 
-官方依据：[Search/Fetch](https://api-docs.deepseek.com/zh-cn/guides/search/)、[模型费率](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)、[Brave](https://brave.com/search/api/)、[Tavily](https://docs.tavily.com/documentation/api-credits)、[ZAI Coding Plan](https://docs.z.ai/devpack/overview)、[ECB参考汇率](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html)。本页方法不是实测完成证明。
+## Fetch独立pilot与已确认的实操教训
+
+另外3次DeepSeek Fetch真实HTTP200、非空、settled，官网参考合计CNY0.015；这是同owner真实ZAI父收据绑定的连通性pilot，未混Search-only，不是原拟议all-arm common-Fetch组。只保留500字符必要摘录/hash，整页仅内存处理，不下载PDF/附件或财报文档。
+
+首个HTML候选并不可靠：CATL实际为2025年报告、CSC为IAS34通用准则；Alphabet虽是目标2024全年页面，前500字仍只有Q4介绍。三次成功不能证明补齐任何目标精确事实，更不能证明Fetch改善准确性。实际流程须先筛主体/期间/披露类型，再在内存中定位所需段落和表头；当前前缀500设计不等于已实现这种定位。原文缺单位/年度列就留gap；不靠多问模型补缺的事实。
+
+## 费用、缓存与稳健性
+
+Search/Fetch独立于回答模型，可把同一冻结短证据包传给不同LLM；本次固定模型用于隔离检索来源影响。模型思考只在原SDK必要续轮内存中流转，未输出/存储隐藏思考。用量中output已经含reasoning，不能重复加价。实际响应返回别名deepseek-flash；官网映射DeepSeek-V4.1-Flash-1017另记，不谎称响应证明了唯一服务端修订。
+
+首轮A模型官网参考价合计CNY0.085016；总prompt36,203tokens（未缓存28,651+命中7,552），实际命中约20.86%，包含失败包用量。按实际usage报告，不因prefix相同就推定命中或节省。搜索缓存、模型prompt缓存、答案/断点缓存分别计；本次搜索/模型warm只读原回执，零新增调用不伪造新检索证明。
+
+B模型参考合计CNY0.055385；同36,203 prompttokens中实际hit33,917，约93.68%。缓存率是顺序重复同一证据后的观察，不代表独立新公司也有此命中率，更不能说明B更准。SDK规范化input_tokens是未缓存输入，汇总必须加cached再作分母；初稿错把未缓存量当总量，已保留原稿并以model-metrics-A-v2/B-v2替代，原账/费用未改。输出预算是上限，不按16384全部计费；reasoning已包含在output，不双算。
+
+本轮总计36次搜索工具、3次Fetch、24次模型HTTP，含MCP控制共90次物理HTTP。已计量官网/保守汇率参考合计CNY1.096401；另保留Brave1+ZAI36=CNY37未知现金上界，账户发票仍未知，不能把上界说成实际花费。旧T4费用与预约不改、不揉进本轮金额。未测连续生产批次端到端总墙钟；本表只是实际已计量搜索包络与模型阶段耗时，不把中途开发、审查等待或阶段和冒充生产吞吐。
+
+
+首17次搜索中的坏URL/日期导致回执落账失败，已修parser与journal契约不一致：逐条过滤非法链接、日期未知留空、保留原始返回count和响应hash，不能把过滤后空列表当未收费。DeepSeek本次原始45条而可保留9条、3槽原始非空但无可保留项，未存原体不能据此猜丢项原因；因此比较的是本冻结adapter+过滤+片段+模型链，不是裸引擎准确率。原未知请求不因换SDK/配置/task或数据库重发。研究有限接续不是对账，不是生产豁免。
+
+## 原件、规则和独立施工包
+
+本机原件根`runs/deepseek-search-compare-2026-10-17/`：冻结输入、真实原生账本、四源短证据板、模型结果、用量/费用/时间、测试RED与通过记录、独审、清理记录分别保存。该目录默认Git忽略；远端薄归档不包含原生数据库、短证据正文、原始回答或private参考，单独克隆远端不构成完整可重放fixture。真实费用不随清理回滚。只清理自有临时测试目录，其他writer文件不清理。
+
+三张互不相交的离线大包在[搜索来源波次](../parallel-lanes/packages/2026-10-17-search-source-wave/README.md)：SOURCE-TIME-07、QUERY-ENTITY-07、RETRIEVAL-AUDIT-07，各有独占Lab、版本化接口、测试/清理、不同agent全面审查并修完所有有效发现才能交接。没有自动派发，不写活动06仓或StockQA/StockWiki/IQS。
+
+实操规范见[搜索与LLM手册](../../../references/search-and-llm-playbook.md)；最终整包独审覆盖真实标签、成本/速度、文档/PWF和交接完整度；实际签收证据以薄归档review.json为准，不把金融样本缺陷伪装成全部正确。
+
+官方依据：[Search/Fetch](https://api-docs.deepseek.com/zh-cn/guides/search/)、[模型费率](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)、[Brave](https://brave.com/search/api/)、[Tavily](https://docs.tavily.com/documentation/api-credits)、[ZAI Coding Plan](https://docs.z.ai/devpack/overview)。

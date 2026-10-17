@@ -1,6 +1,6 @@
 # 联网搜索与LLM统一使用规范
 
-规范版本：1.3.0；日期：2026-10-17。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
+规范版本：1.4.0；日期：2026-10-17。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
 
 StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检查点和费用账本；IQS只维护题面与规范；StockWiki提供名单、缺口及观察入库，不能另包请求重试。[配置参考模板](../examples/search-and-llm-policy.template.json)仅供填写需求，执行器尚不读取；`template_only=true`、`execution_enabled=false`保持不变，不是第二份生效配置或调用授权。
 
@@ -141,7 +141,7 @@ max_keyword/max_uses/count不是已验证硬限额：DeepSeek实测max_uses1→3
 
 ## 10. 独立Search/Fetch与公平搜索对照
 
-DeepSeek独立HTTP Search/Fetch归StockQA外部adapter，不等于回答模型内建搜索。新能力须显式新版本plan；旧1.0/1.1保持旧契约。只有真实搜索receipt里同主体/同计划已结算URL才可作为Fetch父引用；父receipt hash、有效期、身份/题面与所选URL均需核对。缺父记录、已过期、跨主体或跨计划均在HTTP前拒绝。不能把重复URL的抓取登记成另一公司的新搜索事件。
+DeepSeek独立HTTP Search/Fetch归StockQA外部adapter，不等于回答模型内建搜索。新能力须显式新版本plan；旧1.0/1.1保持旧契约。只有真实搜索receipt里同主体/同计划已结算，或经显式prepaid真实配额凭证验证且现金预约仍保留的URL，才可作为Fetch父引用；父receipt hash、有效期、身份/题面与所选URL均需核对。缺父记录、已过期、跨主体或跨计划均在HTTP前拒绝。不能把重复URL的抓取登记成另一公司的新搜索事件。
 
 Search的query长度、count和字段按厂商协议本地校验；DeepSeek localization是IP意图，不直接塞locale字符串。默认need_content=false。summary/snippet是供应商生成/裁剪证据，不自动成为原始披露的逐字引用；保留语义类型，关键财务事实须另核原文和表头。Fetch只读公开HTML/Markdown入内存，响应受byte cap约束；仅保留必要短片段/hash，不落整页，不抓PDF/附件，输出日期缺失不以抓取时间补齐。片段不包含所需事实就留gap，不推断文档不存在。
 
@@ -156,3 +156,20 @@ DeepSeek账号Search/Fetch各5QPS且Fetch另受目标域名限制。共享owner�
 供应商响应中的单条坏URL或过长日期不能导致整份已付收据在落账前丢失。解析器必须与耐久短记录契约一致：逐条过滤不合法链接，未知日期留空，保留实际响应hash和厂商原始结果数；不能用过滤后的空列表推断供应商未收费。实际已发送而回执未保存时，保留原预约并停止自动重发，不能更换SDK、配置hash或工作ID再次发送同一逻辑槽。显式研究隔离只能允许审查后冻结的其他未发送工作继续，不能充当对账或生产豁免。
 
 ZAI账户类型须在配置中声明。GLM Coding Plan MCP的套餐额度与按量REST现金计价不能混用；搜索工具额度和initialize/通知/discovery的HTTP请求分开记录。显式prepaid成功凭证须绑定真实同账户/同工作/同工具派发和策略，现金未知仍保留保守预约；发送结果未知、没有合法额度凭证或其他供应商的未计价请求，仍执行原停止规则。
+
+
+## 11. 2026-10-17实测后的执行规则
+
+StockQA独立Search/Fetch与prepaid能力已在e63a79f提交推送，显式策略1.2/1.3启用，不能仅修改IQS库存表便当生产已启用。实际三司四源两轮记录见[报告](../docs/implementation/experiments/deepseek-search-comparison-2026-10-17.md)。本次DeepSeek短证据支持覆盖最高且公开参考价低，适合作为候选检索来源；不自动修改用户搜索/模型顺位，也不凭该三司结果固定全市场赢家。
+
+执行顺序：核发行人/挂牌/期间与题义→核各层有效缓存→按用户配置搜索→逐条筛主体、期间、披露类型和证据支持范围→必要时对真实父收据URL做有界Fetch→给回答模型同一冻结证据包→逐题检查单位、会计定义、数字与理由→不足unknown/待补证。某来源空/缺证据不是回答模型故障，不能无上限换模型直到说出数字。换查询、补证或交叉模型必须各有明确新意图、上限和原证据绑定；跨模型同意不等于事实正确。
+
+Fetch必须在内存定位问题相关段落、保留年度列/金额单位/表头后，才形成有用短证据。当前adapter的前缀500字符并未实现相关段落提取；不能宣称已具备此能力。首次HTML链接可能错期或仅通用准则，不能见200就送模型评分。未被所引证据支持的单位或精度，不得从gold、记忆或URL参数补齐；值对而理由换算错、发行人混淆仍待审。供应商summary明确标其类型，不冒充原文；同一引文被多个模型重复不增加独立证据数。
+
+保持thinking开启，最终只收规定JSON/submit_answers的短理由；隐藏reasoning_content留SDK必要续轮内存，不输出/持久化。输出上限包含思考，4096在本次出现已付费无答案；统一16384组提交完整，但失败组重测只用2138，因此不能归因上限或承诺修好所有截断。按模型/题包设明确预算，收到已计价的不完整结果保留失败；只续不同未发送包。若做统一新参数对照，另登记phase，旧结果不覆盖、不混组。短理由仍若出现自纠正过程、单位等式错或错公司，标呈现/理由缺陷再审，不把禁止think标签当语义防泄漏保证。
+
+缓存优化优先稳定系统前缀、题目schema/工具、固定公司证据版及题包关联；应用层复用已验短证据、只补缺题。prompt缓存从usage算：本SDK input_tokens为未缓存量，总输入=未缓存+cached+cache_creation，hit分母是总输入；output包含reasoning，不再加一次。A约20.86%、后续相同证据B约93.68%为实际观察，不能投射到新公司或当精度证明；应用暖恢复两轮均零模型HTTP。上限不等于实际生成量，reference价、套餐credits、真实账单、未知预约分列。
+
+ZAI此次按实际9次成功工具调用×官网1.2登记10.8credits，不表示已查询供应商账户实际扣减或剩余配额。36个MCP物理HTTP的未知现金预约保持，不能称免费；Tavily使用量与PAYG参考也不能假定等于套餐实际新增现金。第三方短记录过滤后无条目不证明原始响应为空或不收费。未经对账的发送不重发，合法prepaid特例只适用其明确策略与真实凭证。
+
+本轮只完成隔离研究与SDK能力验证，未把结果写正式评分库、未开启2000家扫描。精确财务题的自动准入仍须证据充分性与理由一致性质量门；没有做到就保留缺口，不以低价、快或更多问题已返回替代。

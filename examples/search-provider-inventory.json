@@ -26,7 +26,7 @@
         "registration": "listed",
         "historical_probe": "B01-b retriever experiment executed on 2026-10-07",
         "production_integration": "implemented_offline_verified_not_live_certified",
-        "current_connectivity": "real_success_2026-10-17_later_receipt_validation_failure_under_repair"
+        "current_connectivity": "real_success_2026-10-17_one_old_receipt_unknown_retained_parser_fix_committed_e63a79f"
       },
       "evidence_reference": "StockQAbyLLM/pilot_runs/b01b_retriever_2026-10-07/retriever_compare_report.json",
       "owner_reported_plan": {
@@ -66,7 +66,7 @@
         "registration": "listed",
         "historical_probe": "REST search and Streamable HTTP MCP search passed on 2026-10-07; legacy SSE not probed.",
         "production_integration": "implemented_offline_verified_not_live_certified",
-        "current_connectivity": "not_reprobed_2026-10-09; last_2026-10-07T22:13_REST_429_error1113_MCP_success",
+        "current_connectivity": "MCP_real_success_2026-10-17; REST_not_retested_last_known_2026-10-07T22:13_429_error1113",
         "mcp_tool_exposed_in_this_session": false,
         "session_exposure_observed_on": "2026-10-07",
         "current_session_exposure_rechecked": false,
@@ -157,6 +157,21 @@
         "actual_cash_cost": null,
         "remaining_quota_verified": false,
         "source": "https://docs.z.ai/devpack/overview"
+      },
+      "latest_research_observation": {
+        "as_of": "2026-10-17",
+        "account_type": "GLM Coding Plan",
+        "interface": "streamable-http MCP",
+        "search_tool_calls": 9,
+        "physical_http_requests": 36,
+        "protocol_control_requests": 27,
+        "locally_accounted_tool_credits": "10.8",
+        "quota_calculation_basis": "9 observed successful tools multiplied by published 1.2 credits per tool",
+        "vendor_actual_account_credit_deduction_verified": false,
+        "actual_cash": null,
+        "retained_cash_cap_cny": "36",
+        "remaining_quota_verified": false,
+        "reference": "../docs/implementation/experiments/deepseek-search-comparison-2026-10-17.md"
       }
     },
     {
@@ -169,7 +184,7 @@
       ],
       "status": {
         "registration": "listed",
-        "production_integration": "isolated_candidate_in_progress",
+        "production_integration": "adapter_committed_e63a79f_not_production_owner_certification",
         "current_connectivity": "real_success_2026-10-17_isolated_research_not_production"
       },
       "activation": "requires explicit StockQA1.2 frozen execution policy and metered permit; not enabled by inventory",
@@ -196,8 +211,8 @@
       ],
       "status": {
         "registration": "listed",
-        "production_integration": "isolated_candidate_in_progress",
-        "current_connectivity": "not_probed_this_run"
+        "production_integration": "adapter_committed_e63a79f_not_production_owner_certification",
+        "current_connectivity": "real_success_2026-10-17_isolated_research_not_production"
       },
       "activation": "requires explicit StockQA1.2 frozen execution policy and metered permit; not enabled by inventory",
       "published_reference_pricing": {

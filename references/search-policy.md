@@ -1,6 +1,12 @@
+## 2026-10-17当前实装与研究状态
+
+独立DeepSeek Search/Fetch已在StockQA master e63a79f提交并推送，显式搜索策略1.2、prepaid1.3；IQS本表不自动启用生产配置。三司四源两轮真实比较、金额/套餐/缓存/故障分层见[报告](../docs/implementation/experiments/deepseek-search-comparison-2026-10-17.md)与[规范§11](search-and-llm-playbook.md)。ZAI为GLM Coding Plan MCP，9次成功工具按公开费率登记10.8credits，现金/账户余额未查询；36HTTP未知现金预约保持。DeepSeek可作低价候选来源，但有据覆盖不足以授自动评分资格，用户顺位不改。以下历史接口探针不覆盖本轮事实。
+
 # 搜索来源、执行规则与接入状态
 
-## 2026-10-17新增能力：DeepSeek独立Search/Fetch（接入与实测中）
+## 2026-10-17早期设计快照：DeepSeek独立Search/Fetch
+
+本节保留开工时设计描述；“尚未形成实测结论”等状态已被页首及最终实验报告覆盖，不代表当前仍在接入或未跑通。
 
 本轮依据[官方独立API](https://api-docs.deepseek.com/zh-cn/guides/search/)接入StockQA的外部搜索链：`POST https://api.deepseek.com/v1/tools/search`与`POST https://api.deepseek.com/v1/tools/fetch`，凭据仅引用环境`DEEPSEEK_API_KEY`。这不是在Chat/Responses请求中加入内建web_search；10月7日旧Responses/Anthropic探针保持历史，不用它否定或证明新接口。
 

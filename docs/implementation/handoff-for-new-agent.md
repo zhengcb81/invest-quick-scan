@@ -1,3 +1,19 @@
+## 2026-10-17 — DeepSeek接入及两轮四源实测完成；转入外包交付验收
+
+本轮DeepSeek Search/Fetch已用环境DEEPSEEK_API_KEY真实跑通，StockQA19文件正常hooks提交并推送master e63a79f6698d60b398ed4c0c2e67979d051cd93e。原SDK/账本/owner复用，策略1.2/1.3显式启用，旧契约不改。109P/19subtests为最终源码候选集中回归，不与重叠套件相加。整包审查的最终签收范围与hash以docs/implementation/experiments/artifacts/deepseek-search-2026-10-17/review.json为准，不授生产或金融gold资格。
+
+实际36搜索工具+3Fetch+24模型HTTP，含MCP控制共90物理HTTP；三司各2事实+1证据拒答控制，4来源。A4096与统一B16384各12组，同证据/模型/思考开启；A11/12结构提交，B12/12，两次模型warm均零新请求。B的24事实中10值有完整片段支持、1缺单位仅部分、13审慎unknown；12控制全合理unknown。DeepSeek/Brave/Tavily/ZAI各支持5/6、2/6、2/6、1/6，不是原始披露认证或全市场准确率。A曾有理由单位等式错、拒答理由混淆发行人，保留原结果/标签，不能以数字匹配或结构accepted计白名单。B成功不足归因更大上限：原失败组B只用2138<4096，顺序/随机/缓存混杂。
+
+官网/保守汇率参考合计CNY1.096401，另保留Brave未知1+ZAI现金未知36=CNY37上界，不是实扣。ZAI按9成功工具×官网1.2登记10.8credits，未查询账户实际扣减/余额；Tavily真实reported9credits。原T4和生产库raw SHA复核均保持。A总prompt36203/cache7552=20.86%，B同prompt/cache33917=93.68%；仅观察真实usage，不外推新公司。汇总初稿曾把规范化未缓存input当total，已保留并被v2替代，费用/原账不改。Fetch三条均成功，但选错期间/泛页与前缀截短未含事实，未混Search-only，原all-arm commonFetch没有实施。
+
+实操结论已写references/search-and-llm-playbook.md §11与实验报告：DeepSeek可作低成本候选发现，但精确题需完整主体/期间/表头/单位/原文定位与理由一致性；不足unknown，不靠多问/多模型一致补不存在的证据。未实现相关段落抽取，不把500字前缀说成已解决。未开2000家公司扫描、未改用户顺位/名单/生产库；旧未知请求不重发。
+
+用户最新明确“所有外包施工包都做好了”。已只读见三个07正式目录：iqs-search-source-lab/docs/handoff/SOURCE-TIME-07、iqs-query-identity-lab/docs/handoff/QUERY-ENTITY-07、iqs-search-annotation-lab/docs/handoff/RETRIEVAL-AUDIT-07；还见此前待交的REVIEW-CAL-06、RESUME-CHAOS-06正式handoff。当前仅“已收到待验”，不以ready_for_acceptance/作者自报当签收。CONTEXT-PACK-06此前1.0.1已签，不重复实现。先冻结各独占Lab当前payload、input-lock、真实不同agent审查与测试/清理证据，再隔离公开CLI/反例验收；各仓只读避并发，不污染生产。QUERY-ENTITY-07独立验收已启动。三个07施工卡及接口已在docs/implementation/parallel-lanes/packages/2026-10-17-search-source-wave/完整留档，不再给重复卡。
+
+之前CONTEXT75份文档经用户精确授权后，89af4ba/c0688d7已实际推送；下方旧handoff的“等待推送授权/未见06交接”仅历史，不继续当现状。当前本轮IQS文档提交以最后实际Git回执为准。总项目仍按原PWF继续，不将本轮研究关闭标成整个项目完成。
+
+以下保留历史检查点，恢复工作优先本段和后续实际验收回执。
+
 ## 2026-10-17 — CONTEXT-PACK-06正式签收1.0.1，原仓已提交
 
 总控推送状态：验收/PWF/68份薄证据已正常本地提交89af4ba，但git push被自动审批复核拒绝，尚未推送。拒绝理由是未识别到这75份内部文档向既有GitHub origin的具体导出授权；不是测试或源码失败。等待用户针对实际75文件清单确认，不以其他命令/通道绕过。源Lab修复commit6054c88及正式工程签收不受影响。

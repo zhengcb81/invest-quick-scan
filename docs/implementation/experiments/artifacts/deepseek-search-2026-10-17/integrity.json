@@ -1,0 +1,675 @@
+{
+  "protocol": "iqs.final-integrity/1.0.0",
+  "status": "passed",
+  "scope": "research metadata only; no production approval or accuracy labels",
+  "protected_originals": {
+    "old_T4": {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\company-agent-owner-2026-10-15-01\\execution\\quick_scan_work.sqlite",
+      "expected_raw_sha256": "79ae4b84e293a63c762025e326753d78d998e6a5a2d54b5d83245923f03ae85e",
+      "actual_raw_sha256": "79ae4b84e293a63c762025e326753d78d998e6a5a2d54b5d83245923f03ae85e",
+      "unchanged": true
+    },
+    "production": {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\c16b\\native-live-pro-01\\quick_scan_work.sqlite",
+      "expected_raw_sha256": "a5e77ef5aa427b630a0a463e2cb9088a38ab7619f38b0a0d27eadbe572dafb05",
+      "actual_raw_sha256": "a5e77ef5aa427b630a0a463e2cb9088a38ab7619f38b0a0d27eadbe572dafb05",
+      "unchanged": true,
+      "prior_witness_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\docs\\implementation\\reviews\\05-acceptance-2026-10-16\\archive-check.json",
+        "bytes": 15432,
+        "sha256": "fbd1aded58b8f5414723e6991b9fd132878733814d4e1d7431e2bdf21206d156"
+      }
+    }
+  },
+  "input_lock_checks": [
+    {
+      "input_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\config.json",
+        "bytes": 17338,
+        "sha256": "db369b30dd5613bba863c6612b29f53e74e798798b432a12b11f48a59c27bb7f"
+      },
+      "checked_embedded_refs": 6
+    },
+    {
+      "input_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\zai-config-live-r3.json",
+        "bytes": 7146,
+        "sha256": "a7bfa48f8b955e02b8bace7b652c88508ca8bd770b16368046a14f8ce9660413"
+      },
+      "checked_embedded_refs": 9
+    },
+    {
+      "input_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\boards-all-search-v1\\manifest.json",
+        "bytes": 4923,
+        "sha256": "dbbc16ea2a0060580e951a6d1e06af36b8febee7013f12c71ad29a6b288bae49"
+      },
+      "checked_embedded_refs": 12
+    },
+    {
+      "input_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-inputs\\config-live.json",
+        "bytes": 7189,
+        "sha256": "fcbf216e7aa5715c33a6b7d7a1c177ed77905c1c72865b245281293cb1c9d8eb"
+      },
+      "checked_embedded_refs": 23
+    },
+    {
+      "input_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-inputs\\config-B16k.json",
+        "bytes": 8806,
+        "sha256": "2e34fc24869bcc740081e38afc94cdf65d4f62e52f3b063be31ce7838569c701"
+      },
+      "checked_embedded_refs": 29
+    },
+    {
+      "input_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\sdk-lock-live-v1_2.json",
+        "bytes": 17460,
+        "sha256": "82bd20abf5deaa604fd4c2adf44e95fdc48f823445ab9f34e7d3617a32afcf6b"
+      },
+      "checked_sdk_files": 101
+    },
+    {
+      "input_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\sdk-lock-live-v22.json",
+        "bytes": 18534,
+        "sha256": "d1fcad8e701f5d3e06d1a45d0ae07c1eea65757e4db38bd861d47a1c0a4e3f6d"
+      },
+      "checked_sdk_files": 104
+    }
+  ],
+  "distinct_embedded_refs_verified": 34,
+  "owners": {
+    "original_search": {
+      "native_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\live-01\\native.sqlite",
+        "bytes": 897024,
+        "sha256": "72c5a2d04890922f9216f2a69dba1f86bc51a9664b1fb3946d07aa17cfc78e9e"
+      },
+      "before_sha256": "72c5a2d04890922f9216f2a69dba1f86bc51a9664b1fb3946d07aa17cfc78e9e",
+      "after_sha256": "72c5a2d04890922f9216f2a69dba1f86bc51a9664b1fb3946d07aa17cfc78e9e",
+      "policy": [
+        {
+          "policy_id": "DSSEARCH20261017-independent-research",
+          "max_cost_micros": 20000000,
+          "max_requests": 150
+        }
+      ],
+      "attempts": 27,
+      "request_counted": 27,
+      "in_flight": 1,
+      "statuses": {
+        "settled": 26,
+        "outcome_uncertain": 1
+      },
+      "native_priced_reference_cny": "0.941",
+      "retained_unknown_cash_cap_cny": "1",
+      "known_reference_plus_retained_cap_cny": "1.941",
+      "provider_invoice_cash_actual": null
+    },
+    "zai_search": {
+      "native_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\zai-live-01\\native.sqlite",
+        "bytes": 860160,
+        "sha256": "63ad0be6a09b3f02a3900c67bc9adcad669c397ca9fcc820e9b0202ef7c6dbac"
+      },
+      "before_sha256": "63ad0be6a09b3f02a3900c67bc9adcad669c397ca9fcc820e9b0202ef7c6dbac",
+      "after_sha256": "63ad0be6a09b3f02a3900c67bc9adcad669c397ca9fcc820e9b0202ef7c6dbac",
+      "policy": [
+        {
+          "policy_id": "DSSEARCH20261017-zai-subowner",
+          "max_cost_micros": 60000000,
+          "max_requests": 80
+        }
+      ],
+      "attempts": 39,
+      "request_counted": 39,
+      "in_flight": 0,
+      "statuses": {
+        "response_unpriced": 36,
+        "settled": 3
+      },
+      "native_priced_reference_cny": "0.015",
+      "retained_unknown_cash_cap_cny": "36",
+      "known_reference_plus_retained_cap_cny": "36.015",
+      "provider_invoice_cash_actual": null
+    },
+    "model": {
+      "native_ref": {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-01\\native.sqlite",
+        "bytes": 630784,
+        "sha256": "7e6dd04d5d7f5956092885cd2100b3e1d00ee2abb0c78efa0b794d1fce4ba12a"
+      },
+      "before_sha256": "7e6dd04d5d7f5956092885cd2100b3e1d00ee2abb0c78efa0b794d1fce4ba12a",
+      "after_sha256": "7e6dd04d5d7f5956092885cd2100b3e1d00ee2abb0c78efa0b794d1fce4ba12a",
+      "policy": [
+        {
+          "policy_id": "DSSEARCH20261017-model-subowner",
+          "max_cost_micros": 20000000,
+          "max_requests": 40
+        }
+      ],
+      "attempts": 24,
+      "request_counted": 24,
+      "in_flight": 0,
+      "statuses": {
+        "settled": 24
+      },
+      "native_priced_reference_cny": "0.140401",
+      "retained_unknown_cash_cap_cny": "0",
+      "known_reference_plus_retained_cap_cny": "0.140401",
+      "provider_invoice_cash_actual": null
+    }
+  },
+  "phase_A": {
+    "config_ref": {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-inputs\\config-live.json",
+      "bytes": 7189,
+      "sha256": "fcbf216e7aa5715c33a6b7d7a1c177ed77905c1c72865b245281293cb1c9d8eb"
+    },
+    "registered_packs": 12,
+    "results": [
+      {
+        "company": "catl",
+        "source_route_kind": "deepseek_search",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\catl.deepseek_search\\result.json",
+          "bytes": 3518,
+          "sha256": "4c7683efb1ebb6cbcfffc821a90417ae7ccfad51d054ac1486eeb6773772dae9"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_98473acf838e4b779a7052e78a568a65"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "catl",
+        "source_route_kind": "brave",
+        "status": "sdk_failure_no_replay",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\catl.brave\\result.json",
+          "bytes": 2597,
+          "sha256": "0f623f91a652820e54b0952a15adc851f1afff85b400698c214b20859685cdc6"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_ca59a68da1024c2d9f25c66e50efc69b"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "catl",
+        "source_route_kind": "tavily",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\catl.tavily\\result.json",
+          "bytes": 3805,
+          "sha256": "8847f5060047254628a814c3a53888ea946d648ad744e3d4080022c921c5ec12"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_a5509009d2584ed4947de04d6cc07db7"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "alphabet",
+        "source_route_kind": "deepseek_search",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\alphabet.deepseek_search\\result.json",
+          "bytes": 3632,
+          "sha256": "11e1fff2f88b155221488b6e78549c0e3f5f768da66fbc9b477f7c684a74cf0b"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_a10863b3e92f497898e90cb4e8f17a5e"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "alphabet",
+        "source_route_kind": "brave",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\alphabet.brave\\result.json",
+          "bytes": 3691,
+          "sha256": "a6bcdb0c6f6b089a8ea5c895fdfd53cf7d6258d98aae1b40703e0f5d0591f6f2"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_c4ea2747a3dc451ea380e8e6194ff51a"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "alphabet",
+        "source_route_kind": "tavily",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\alphabet.tavily\\result.json",
+          "bytes": 3733,
+          "sha256": "1fbf55ccb9cc5bfcc113dc4c9a005c3f17c4887622457172d9f90de6e71cf0a6"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_00874d8295174d6bb8b4b08c7b1966d0"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "cncb_h",
+        "source_route_kind": "deepseek_search",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\cncb_h.deepseek_search\\result.json",
+          "bytes": 3612,
+          "sha256": "8d197533a269995736dfd53880f530ee69c62fcf51f06fc4fc0da491c1158a50"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_134865f33b3e48868ed273f12b80999c"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "cncb_h",
+        "source_route_kind": "brave",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\cncb_h.brave\\result.json",
+          "bytes": 3751,
+          "sha256": "139934fba42e38b052698f0281b208c3145b0f00932e2df408d3b6b51fcb654a"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_c45b43499f204b44ae39fa4d4bcb29a9"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "cncb_h",
+        "source_route_kind": "tavily",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\cncb_h.tavily\\result.json",
+          "bytes": 3808,
+          "sha256": "fae895a3dbe39db7103fe6ee28e72d4e825a4c5873605e60a72221b53b656660"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_0702d912d0d549b285c93564bce1b477"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "catl",
+        "source_route_kind": "zai_mcp_streamable",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\catl.zai_mcp_streamable\\result.json",
+          "bytes": 3814,
+          "sha256": "fde905320a4f87be6cb7fb5a9c6f6f02748071026258048d3f0e65ba8536ca2c"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_7ac2f692f792466b81421646cefdcfdc"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "alphabet",
+        "source_route_kind": "zai_mcp_streamable",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\alphabet.zai_mcp_streamable\\result.json",
+          "bytes": 3712,
+          "sha256": "ced377d346adf3c30c970c8a31f19fa736ee5c670d3557fced741ab183fcddbe"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_bb5c3e33d7a848b88b99383b0179605e"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "cncb_h",
+        "source_route_kind": "zai_mcp_streamable",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-01\\cncb_h.zai_mcp_streamable\\result.json",
+          "bytes": 3998,
+          "sha256": "c485794e332681d5dee2cb90925ca80dd383bf15854787f763714ea4154a7958"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_711ff0c52a7b4c8fb8b39ad06648c0cb"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      }
+    ],
+    "statuses": {
+      "accepted": 11,
+      "sdk_failure_no_replay": 1
+    },
+    "observed_model_http": 12,
+    "usage": {
+      "uncached_input_tokens": 28651,
+      "cached_input_tokens": 7552,
+      "prompt_tokens_total": 36203,
+      "output_tokens_including_reasoning": 14052,
+      "reasoning_output_tokens": 10081
+    },
+    "observed_prompt_cache_fraction": 0.20860149711349887,
+    "cache_denominator": "uncached_input_tokens + cached_input_tokens; canonical input_tokens alone is uncached",
+    "provider_invoice_cash_actual": null,
+    "native_attempts": 12,
+    "native_statuses": {
+      "settled": 12
+    },
+    "native_priced_reference_cny": "0.085016",
+    "retained_unknown_cash_cap_cny": "0"
+  },
+  "phase_B16k": {
+    "config_ref": {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-inputs\\config-B16k.json",
+      "bytes": 8806,
+      "sha256": "2e34fc24869bcc740081e38afc94cdf65d4f62e52f3b063be31ce7838569c701"
+    },
+    "registered_packs": 12,
+    "results": [
+      {
+        "company": "catl",
+        "source_route_kind": "deepseek_search",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\catl.deepseek_search\\result.json",
+          "bytes": 3820,
+          "sha256": "ba119fd7074089c325f7683451bc4d3005e01ebfcaa7663a3a174ede8aa4b09b"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_f40fb5decf9745998370230319d67de1"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "catl",
+        "source_route_kind": "brave",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\catl.brave\\result.json",
+          "bytes": 4047,
+          "sha256": "57d3cdc65f6439994f5d518b16aea94c577d8645c6cf82ab87f06d5240bccd37"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_481575bde2014dd0a3c195ac75aff5de"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "catl",
+        "source_route_kind": "tavily",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\catl.tavily\\result.json",
+          "bytes": 3916,
+          "sha256": "44e0b16af0c3a5ebc088469932d5b4396e0978292c2d339942f399ff50202ca2"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_1ef006ac2f074ffab094f1b82f0911ab"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "alphabet",
+        "source_route_kind": "deepseek_search",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\alphabet.deepseek_search\\result.json",
+          "bytes": 3825,
+          "sha256": "a5768446c81e137800627c83eb45adf53161c2b3ed2d3646933527448f25a9e5"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_913be87e2d4a4dcc956046356f17103c"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "alphabet",
+        "source_route_kind": "brave",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\alphabet.brave\\result.json",
+          "bytes": 3866,
+          "sha256": "6aed79f272bd7c6a285a673a506448fb2d4a8346801ccd6869ab365e4ff9a54f"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_e1c597e4d08c43bebbe8c92221d875e0"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "alphabet",
+        "source_route_kind": "tavily",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\alphabet.tavily\\result.json",
+          "bytes": 3869,
+          "sha256": "75bea20001e97932a8fc0cd4b31c53a63126286601f3ab455546c6849a740506"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_1f61b93c52a74c7286755fc2a68a8a82"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "cncb_h",
+        "source_route_kind": "deepseek_search",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\cncb_h.deepseek_search\\result.json",
+          "bytes": 3851,
+          "sha256": "698b2a3cedfabd4c7b9b2c74933a91583aa914bbbf9094bea2099158d105b762"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_f9b5ddfa4e6343248dc725f920a00253"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "cncb_h",
+        "source_route_kind": "brave",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\cncb_h.brave\\result.json",
+          "bytes": 3991,
+          "sha256": "6e69797e59fc27c51b2bb2ede00150bdabc96ae0cf8172470f259e3d61190f07"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_f77881566b6147fd8ea64c4b41bf9ec2"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "cncb_h",
+        "source_route_kind": "tavily",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\cncb_h.tavily\\result.json",
+          "bytes": 3995,
+          "sha256": "4e054c09ab4f0531cf20e769a5e0bc555349809f574fc856621582ddbef59b2e"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_0273bc5d87024621a8a863b03dc6bebd"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "catl",
+        "source_route_kind": "zai_mcp_streamable",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\catl.zai_mcp_streamable\\result.json",
+          "bytes": 3933,
+          "sha256": "7e6b6272312573c0e093850fd4abaf3b3a99df5f18b61acb5f5d3bbd017e4d57"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_aff040c016ab49dd9dc095b969d11a76"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "alphabet",
+        "source_route_kind": "zai_mcp_streamable",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\alphabet.zai_mcp_streamable\\result.json",
+          "bytes": 3818,
+          "sha256": "457eae7b1ed3d803a7c54adf42c37e04fb1aa9eee5738f56ab7529ffa1a122f7"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_a2d5549b90db4ee99fa31481b6834f63"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      },
+      {
+        "company": "cncb_h",
+        "source_route_kind": "zai_mcp_streamable",
+        "status": "accepted",
+        "result_ref": {
+          "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-carrier\\live-results-B16k\\cncb_h.zai_mcp_streamable\\result.json",
+          "bytes": 4080,
+          "sha256": "866b39bcc649b7379cb999939aa31edb185949fc7376cd50f2e6001020200933"
+        },
+        "native_attempt_ids": [
+          "DISPATCH_a1ccfea6274d4889bef5c8cf7a8537dc"
+        ],
+        "observed_model_http": 1,
+        "reasoning_archived": false
+      }
+    ],
+    "statuses": {
+      "accepted": 12
+    },
+    "observed_model_http": 12,
+    "usage": {
+      "uncached_input_tokens": 2286,
+      "cached_input_tokens": 33917,
+      "prompt_tokens_total": 36203,
+      "output_tokens_including_reasoning": 13104,
+      "reasoning_output_tokens": 8971
+    },
+    "observed_prompt_cache_fraction": 0.9368560616523492,
+    "cache_denominator": "uncached_input_tokens + cached_input_tokens; canonical input_tokens alone is uncached",
+    "provider_invoice_cash_actual": null,
+    "native_attempts": 12,
+    "native_statuses": {
+      "settled": 12
+    },
+    "native_priced_reference_cny": "0.055385",
+    "retained_unknown_cash_cap_cny": "0"
+  },
+  "totals": {
+    "new_native_attempts": 90,
+    "new_counted_requests": 90,
+    "native_priced_reference_cny": "1.096401",
+    "retained_unknown_cash_cap_cny": "37",
+    "known_reference_plus_retained_cap_cny": "38.096401",
+    "provider_invoice_cash_actual": null,
+    "old_T4_known_and_retained_upper_cny_at_FX8": "6.843480",
+    "new_allocation_cap_cny": "100",
+    "all_with_old_ceiling_cny": "200"
+  },
+  "glm_local_quota_accounting": {
+    "native_proof_groups": [
+      {
+        "category": "protocol_control",
+        "actual_quota_micros": 0,
+        "n": 27
+      },
+      {
+        "category": "search_tool",
+        "actual_quota_micros": 1200000,
+        "n": 9
+      }
+    ],
+    "search_credits": "10.8",
+    "meaning": "nine successful tools times official1.2 credits; legitimate local native proof, not provider balance or invoice observation"
+  },
+  "fetch_pilot": {
+    "separate_from_search_boards_and_accuracy": true,
+    "attempts": 3,
+    "statuses": {
+      "settled": 3
+    },
+    "published_reference_cny": "0.015",
+    "all_arm_common_fetch_complete": false
+  },
+  "cleanup": {
+    "owned_temporary_prefix_leftovers": [],
+    "nothing_deleted_by_this_check": true,
+    "source_or_foreign_files_modified": false
+  },
+  "interpretation_limits": [
+    "B follows A without randomization; higher cache ratio is descriptive, not a general causal effect.",
+    "Brave B recovery used fewer than4096 output tokens, so do not attribute recovery solely to16k cap.",
+    "Reference cost is not invoice cash; all unknown original and ZAI liabilities remain retained.",
+    "Original production/T4 were hash-read only; research stores used SQLite mode=ro immutable with no copy or mutation."
+  ],
+  "archive_policy": {
+    "thin_contains_only_metadata_counts_hashes": true,
+    "exclude": [
+      "context",
+      "snippets",
+      "raw answers",
+      "private gold",
+      "keys",
+      "databases"
+    ],
+    "candidate_refs": [
+      {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\boards-all-search-v1\\manifest.json",
+        "bytes": 4923,
+        "sha256": "dbbc16ea2a0060580e951a6d1e06af36b8febee7013f12c71ad29a6b288bae49"
+      },
+      {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\boards-all-search-v1\\freeze-evidence.json",
+        "bytes": 7841,
+        "sha256": "83ca7845d795b669628d19ee5899bd8db1aa396e33b93fefc969b38661e9f644"
+      },
+      {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\benchmark\\boards-all-search-v1\\search-metrics.json",
+        "bytes": 87260,
+        "sha256": "627797939f2e0b0ebb3573e9848704c493682ec1320b8e80eeebe7cce2d8bf06"
+      },
+      {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-metrics-A-v2.json",
+        "bytes": 14040,
+        "sha256": "b70c9629ee18e2277eb920ac0a44c67d160af0eb0e3a606cd590ccb4fc0abb84"
+      },
+      {
+        "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\deepseek-search-compare-2026-10-17\\model-metrics-B-v2.json",
+        "bytes": 14002,
+        "sha256": "7b403b8f2e9bee8a57b401ac06c984922c22f0ce18e17aecb2295c4e9ae43700"
+      }
+    ]
+  },
+  "private_gold_read": false,
+  "credentials_read": false,
+  "new_http": 0,
+  "production_owner_verified": false
+}
