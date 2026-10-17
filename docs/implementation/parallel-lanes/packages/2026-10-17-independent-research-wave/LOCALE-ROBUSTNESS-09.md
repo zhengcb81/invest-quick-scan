@@ -18,8 +18,6 @@
 
 逐cell记录固定`subject_id, market, question_id, question/rubric release, evidence/input manifest hash, prompt_locale, evidence_locale, provider, model, thinking, run timestamp, as_of, selected HTTP attempt id, model HTTP count, cache input/uncached input, output tokens, latency, reported usage, cash charge, subscription usage, status, score, evidence refs, counterevidence refs, concise rationale`。结果schema以`selected_attempt_id`绑定用于该cell裁决的请求，并显式保留`counterevidence_refs`。不保存reasoning trace。每个claim引用锁定证据，不拿翻译文本当新来源。独立盲评按冻结gold逐cell判：schema/问题覆盖；结论和关键事实的来源支持；题分MAE与±1一致；状态变化；实体/数值/单位/期间/风险critical error。至少报告：四种语言组合的分数差分布和状态翻转数；纯prompt语言效应、纯证据语言效应及交互效应；6个重复cell的自身波动；gold支持率与critical错误；每个cell端到端时延、真实现金、套餐额度、缓存usage。样本只有18组，因此只给配对原始值/区间，不做总体显著性或全市场外推。
 
-独立盲评按冻结gold逐cell判：schema/问题覆盖；结论和关键事实的来源支持；题分MAE与±1一致；状态变化；实体/数值/单位/期间/风险critical error。至少报告：四种语言组合的分数差分布和状态翻转数；纯prompt语言效应、纯证据语言效应及交互效应；6个重复cell的自身波动；gold支持率与critical错误；每个cell端到端时延、真实现金、套餐额度、缓存usage。样本只有18组，因此只给配对原始值/区间，不做总体显著性或全市场外推。
-
 “稳定”预注册为：无任何语言组合触发实体/关键数字/期间/风险critical错误；每组在可比的scored状态下四cell最高与最低分差不超过1，状态翻转为unknown/conflicted时单独列出；overall支持率不得因英语/中文cell下降超过10个百分点。任一条失败即报告“不稳健”，不得用均值掩盖单个critical fail。结果程序必须从逐cell与逐attempt原始记录重算所有可得metrics，并验证`stability_verdict`与上述门槛一致；complete状态下result cell ID集合须与manifest 78个planned cell ID集合完全相等且各出现一次，不得重复、漏项或增加，attempt及selected attempt引用也须逐项绑定计划cell。正确性优先，只有稳定门通过才讨论耗时/费用/缓存差异；缓存不是质量补偿。
 
 ## 测试与交接
