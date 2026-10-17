@@ -1,5 +1,17 @@
 # 搜索来源、执行规则与接入状态
 
+## 2026-10-17新增能力：DeepSeek独立Search/Fetch（接入与实测中）
+
+本轮依据[官方独立API](https://api-docs.deepseek.com/zh-cn/guides/search/)接入StockQA的外部搜索链：`POST https://api.deepseek.com/v1/tools/search`与`POST https://api.deepseek.com/v1/tools/fetch`，凭据仅引用环境`DEEPSEEK_API_KEY`。这不是在Chat/Responses请求中加入内建web_search；10月7日旧Responses/Anthropic探针保持历史，不用它否定或证明新接口。
+
+候选采用显式1.2 Search/Fetch计划，保留原1.0/1.1 schema字节与旧行为。默认Search `need_content=false`，摘要作为不可信证据，排名/authority不能当公司分数或事实真值。Fetch只从当前主体、当前计划已结算搜索的真实receipt中选择原URL，并绑定父operation/receipt hash；不允许任意URL抓取、PDF/附件下载或整页持久化。检索/正文原始响应仅有界内存处理，落盘只存短片段、元数据与散列。
+
+官方参考价为成功非空Search或Fetch每次0.005CNY；失败/空结果与未知发送分开，未知仍留预约，不根据缺usage补零。账号Search/Fetch分别5QPS，当前候选共享owner事务闸的实际覆盖范围必须披露，不能宣称跨多个独立owner全局限速。实际费率、模型新映射、套餐与FX分别冻结，不回写旧实验。
+
+[本轮四源实验](../docs/implementation/experiments/deepseek-search-comparison-2026-10-17.md)尚未形成实测结论；实施、真实连通、计量、金融准确性和生产启用分别记录。库存排列不改变用户顺位，未正式部署/准入的route不能靠本规范启用。
+
+以下为已发布旧链与历史探针。
+
 软件状态核查日期：2026-10-09；下文真实连通探针仍为各自标注的2026-10-07历史证据。搜索和模型客户端归 StockQAbyLLM；本 skill 维护题面、契约和[无密钥搜索来源清单](../examples/search-provider-inventory.json)。清单仅供参考，执行器不读取它，也没有默认搜索引擎顺序。模型的用户优先级仍由[模型策略](model-policy.md)管理；搜索来源顺序不能由清单排列暗中决定。
 
 本文件记录接口能力与实测边界；实际使用及请求失败处理统一读[联网搜索与LLM使用规范](search-and-llm-playbook.md)。它继承C05终态/费用/顺位规则，提供参考配置及同批次测试包，不另建重试器或新审查门。

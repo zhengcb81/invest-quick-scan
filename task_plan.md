@@ -1,3 +1,29 @@
+## 2026-10-17 — 真实搜索已启动；付费响应落账边界修复中
+
+最新状态覆盖下方本轮早期“0真实HTTP”记录：首条DeepSeek Search已真实成功（约1.715秒，官网参考价CNY0.005）。同一冻结SDK/查询/原生账本累计17条搜索发送，其中16条settled、参考成本CNY0.55；第17条CSC Brave q2在响应后被journal的HTTPS短记录校验拒绝，未保存完整回执，仍保留CNY1预约和in-flight，不重发、不填0、不伪造HTTP状态。原进程已停止。模型HTTP仍0，ZAI尚未发起。原T4账本未改。
+
+用户确认ZAI为GLM Coding Plan，使用MCP；额度与现金必须分列。显式1.3 prepaid候选正在隔离实现，未知现金预约不清除。DeepSeek 1.2候选相关80P、context145P、CLI12P（各范围独立，不相加；旧7迁移失败另复现）。fresh独审已独立复现parser接受HTTP/过长日期而journal拒绝这一P1；root已生成单独parser修复overlay，4条边界回归通过，未改冻结live SDK或源StockQA。最终工程尚未签收。
+
+下一步：完成显式研究任务隔离与精确未发送槽差集续行契约，保留原失败槽预约且禁止原槽重试；合并quota/parser/continuation候选，冻结新SDK，继续原登记对照及固定模型回答/Fetch补证，按证据支持评价准确性。不得用新DB/换task重发原17条，也不得把已有搜索结果或Mock通过宣称最终准确性结论。整包独立审查发现全部修复后才交接。三张独占07离线卡已通过独立文档审查，链接已交用户，可分别独立开工；没有自动派发。
+
+详细事实：runs/deepseek-search-compare-2026-10-17/live-status.json；原账benchmark/live-01/native.sqlite；源码候选implementation/、quota-accounting/，root parser-repair/，独审independent-review/。以下同日较早进展保留为历史。
+
+## 2026-10-17 — DeepSeek独立Search/Fetch接入与真实四源对比（进行中）
+
+ZAI补充：用户已确认GLM Coding Plan/MCP；官方每次搜索工具1.2credits。现SDK只支持现金实际结算，不能把cash unknown填0或credits写CNY/USD以跑矩阵。已安排独立自有quota-accounting候选最小扩原Q09的显式prepaid组件，现金最坏预约保留，旧unknown fence不放松；与DeepSeek候选不同写根，root最后合并/一次整包独审。当前本轮仍0真实HTTP，先冻结可分步runner，再实跑前三源，ZAI待合法新组件接入后追加，不隐藏缺项。
+
+本轮进展：隔离候选采用新1.2显式Search/Fetch，旧schema不改；已见28项新SQLite/单次HTTP/错误反例通过，尚未最终整组/独审/写回。实验9题/36搜索/12模型及共同Fetch补证组已预登记；实际3司StockWiki ID已只读核到，CATL/CSC仍provisional。旧T4原账98 settled+2 unknown上界USD0.855435保持。六个所需凭据仅核存在bool，未输出值、未收费调用。三张独占07卡已草成待整包审查。详细方案docs/implementation/experiments/deepseek-search-comparison-2026-10-17.md。
+
+用户已明确授权接入StockQA并用环境DEEPSEEK_API_KEY做真实小样本，比较Brave/Tavily/ZAI，准确性第一，成本速度其次；同时交付互不重叠的独立外包卡，最终fresh独立agent全面审查、修复后再交接。当前StockQA HEAD21cf8b05b0a388af08425d685c079451bc3012dd、tracked clean，开始前只读核验；Git默认沙箱只读Permission denied，已授权提升只读成功。根IQS c0688d7；上一轮75文档已获用户精确授权并实际推送，远端master核c0688d7，旧“尚未推送”仅为历史，实际回执runs/accept-context06-2026-10-17/push-receipt.json。根他人2026-10-10 README保持，不提交/覆盖。
+
+计划：1)锁定现有搜索adapter/owner预算与外仓边界；2)先补有意义的RED，复用StockQA重试/账本/证据契约接入独立Search+有界Fetch，离线整组验证；3)冻结已有三市场身份/题目/来源真值/查询和用户顺位，做四源真实小实验与必要Fetch独立补证组，记录失败/未知费用、不重发未知请求、不绕T4旧owner；4)准确性按主体/期间/单位/证据支持人工独立审核，再评现金/套餐/参考价与耗时；5)更新PWF/搜索规范/三张独占Lab施工卡，fresh整包审查修复、清理与正常提交。实现/实验只写自有候选与明确授权StockQA；不下载财报/PDF/整页档案，不改生产库/名单，不改变用户模型顺位。实际计划/登记/日志保留runs/deepseek-search-compare-2026-10-17/；不将文档支持等同API实测成功。
+
+## Next Step
+
+先定位StockQA当前外部搜索实现和现有公开研究SDK，核API文档与增量文件范围，冻结可测候选；两个活动06包仍只读避让。真实费用按单独实验实际账本登记，不迁移或抹平旧T4 response_unpriced。
+
+以下为此前阶段历史。
+
 ## 2026-10-17 — CONTEXT-PACK-06正式签收1.0.1，原仓已提交
 
 总控推送状态：验收/PWF/68份薄证据已正常本地提交89af4ba，但git push被自动审批复核拒绝，尚未推送。拒绝理由是未识别到这75份内部文档向既有GitHub origin的具体导出授权；不是测试或源码失败。等待用户针对实际75文件清单确认，不以其他命令/通道绕过。源Lab修复commit6054c88及正式工程签收不受影响。
