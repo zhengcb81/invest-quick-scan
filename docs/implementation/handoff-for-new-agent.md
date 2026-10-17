@@ -1,3 +1,9 @@
+## 2026-10-17 — 已提交推送检查点728face；最终独审待额度恢复
+
+63份PWF/交接/测试与薄证据已正常提交并推送`728facecd2d00d36f1ca31f0358559043d2c2587`到既有IQS origin/master，远端已核一致；五Lab修复各自已本地正常提交、没有remote，不新建。实际交付证据见`docs/implementation/reviews/remaining-packages-delivery-2026-10-17.json`。本段仅交付状态记账；下方五包源码/测试/剩余独审动作不变。
+
+当前960源文件/57文档的机械绑定保存的是728face检查点；本段是后续有意新增状态，不能把历史PWF hash当当前文档hash。恢复时由真正不同agent完成最后两包/整包独审，核已关闭反例及当前源码，再绑定最新PWF，不重跑未改变的全套测试、不添加小节点门、不伪造passed。平台usage limit是当前唯一已知终审阻塞；不请求重复权限。
+
 ## 2026-10-17 — 五包修复及源码提交完成，最终独审因平台额度中断
 
 用户已完整授权，不再重复问权限。五个最终源码：QUERY `dd1f5f1fc26b1296fad98fd843cff0587fc6c700`、SOURCE `e8a31c22aa9e6d19978172e1bf639b3b03a63e20`、RESUME `f76bb65e089cfb1d64af6606704dea1c390e0327`、REVIEW `e9a0ed61802bb1d45500d737f092c3e26e509ef0`（1.1兼容旧1.0）、RETRIEVAL `9324b345f4ade371177560ab774614474706d5ab`。均正常本地commit、精确CAS/working/Git blob核对，Lab无remote不新建。总控本次文档/薄证据应正常提交推送既有IQS origin。
