@@ -1,0 +1,17 @@
+{
+  "protocol": "iqs.independent-controller-review/1.0.0",
+  "reviewer": "/root/remaining_package_final_review",
+  "independent_of_implementation_and_repairs": true,
+  "status": "in_progress_not_final",
+  "scope": ["QUERY-ENTITY-07", "SOURCE-TIME-07", "RESUME-CHAOS-06", "REVIEW-CAL-06", "RETRIEVAL-AUDIT-07"],
+  "findings": [
+    {"id":"QE-FINAL-01", "priority":"P2", "state":"candidate_green_final_commit_pending", "evidence":["query-probes.json", "query-green.json"], "issue":"Lock entry point omitted ancestor junction guard"},
+    {"id":"ST-FINAL-01", "priority":"P2", "state":"candidate_green_final_commit_pending", "cases":["ST07-REAL-007","ST07-REAL-012"], "evidence":["source-candidate-review.json"], "issue":"Missing-unit claim overaccepted and directly contradicted all-record consistency claim only partially labeled"},
+    {"id":"RC-FINAL-01", "priority":"P2", "state":"initial_13_green_root_field_supplement_pending", "evidence":["resume-summary-probes.json", "resume-casebook-probes.json", "resume-green.json", "resume-root-field-red.json"], "issue":"Incomplete typed counts / casebook declared count and input version binding allows malformed reports/casebook to validate; root preserved-string and negative network counter supplement pending"}
+  ],
+  "qualifications": {"production_ready":false,"financial_qualification_granted":false,"rating_gold":false},
+  "source_writes": false,
+  "model_http_calls": 0,
+  "search_http_calls": 0,
+  "key_values_read": false
+}

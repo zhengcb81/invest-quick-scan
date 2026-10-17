@@ -1,0 +1,56 @@
+{
+  "protocol": "iqs.controller-acceptance-fix/1.0.0",
+  "package_id": "QUERY-ENTITY-07",
+  "source_head": "27dfff9e6f22aa5d7b4313cc6f0050887be45529",
+  "source_payload_commit": "2f3514c46db2e430a6b839f2f281d1c5b3f7a2c8",
+  "input_lock_sha256": "728c93b1fa5383dc95593c9495a02f698f4e7d079487b43a4d4d62b8fc9db5d2",
+  "files": [
+    {
+      "path": "src/iqs_query_entity/strictjson.py",
+      "sha256": "de1c0662308626ec8b2d50518dbcd9785cfc3f05c610fdb6656f69fd820bd11f",
+      "bytes": 2033,
+      "expected_original_sha256": "ec05fb49f6883c27c6c7a131bbc0dab5176225909918ebe59cd6b8ca81658f43"
+    },
+    {
+      "path": "src/iqs_query_entity/canonical.py",
+      "sha256": "3cd60729d077efe7c4b33e28bdfd9c9af1d48b7fe6a206f314ac714305887930",
+      "bytes": 5023,
+      "expected_original_sha256": "8d1db10b55ebccfb02de895c9358ce59bea1f6d27f7e1559bf90d4383d8ef906"
+    },
+    {
+      "path": "src/iqs_query_entity/cli.py",
+      "sha256": "8e4e1484be7bb9362a784a81ea6c6bace9c0b96cf25bd890c094a263c48ab768",
+      "bytes": 9913,
+      "expected_original_sha256": "a0b192c1b2cf2a03b119bb34a0dbd26ed2dda366014aa07de9c01ab81e302332"
+    },
+    {
+      "path": "src/iqs_query_entity/validation.py",
+      "sha256": "99c5d44b4fdaa074a5690d804fbe8664516ad6115350f915c4f04c2ee42268ba",
+      "bytes": 6194,
+      "expected_original_sha256": "19b25fb5cf24147e91a230c53654ee52bcf5f2cd953b34a16605508ccfb1f57b"
+    },
+    {
+      "path": "tests/unit/test_acceptance_regressions.py",
+      "sha256": "e05456121d5afeeffc37a5a82842ce849a705c35415c72e99b154095353874f4",
+      "bytes": 1076,
+      "expected_original_sha256": null
+    },
+    {
+      "path": "tests/e2e/test_acceptance_numeric_regression.py",
+      "sha256": "c0f058bfcc1f08d460fdd57c0999fb13a74f0c51bcdc50b72b004845e3e16fe8",
+      "bytes": 972,
+      "expected_original_sha256": null
+    }
+  ],
+  "source_unchanged_checks": 129,
+  "source_unchanged": true,
+  "tests": {
+    "original_passed": 129,
+    "original_skipped": 1,
+    "fixed_passed": 142,
+    "fixed_skipped": 1,
+    "fixture_cases": 25,
+    "production_ready": false
+  },
+  "created_utc": "2026-10-17T14:25:19.599442+00:00"
+}

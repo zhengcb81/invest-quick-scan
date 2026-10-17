@@ -1,0 +1,64 @@
+{
+  "protocol": "iqs.controller-acceptance/1.0.0",
+  "package_id": "RETRIEVAL-AUDIT-07",
+  "status": "corrected_candidate_pending_final_independent_review",
+  "controller_agent": "/root/accept_retrieval_audit07",
+  "implementer": "external DSH session, original ID not exposed",
+  "final_independent_reviewer": "/root/remaining_package_final_review",
+  "recorded_utc": "2026-10-17T15:19:43.913115+00:00",
+  "source_head": "eeca2a1f329357bbb896b4d3d2cc47c0267b052d",
+  "original_payload": "4b5fe3f4b86030f31ba665889c05fade59c48f2f",
+  "input_lock_raw_sha256": "908877374d49b3f88d0176ef95cdbe6e04cbfc9c4fc4cfd65939d41c77f09a82",
+  "candidate_cas_raw_sha256": "dae6ba4d3070ccdae4a119681b2a53f0f15763bf596966f853436b2e32cf0b88",
+  "candidate_paths": 15,
+  "original_artifact_entries_verified": 205,
+  "original_artifact_mismatches": [],
+  "source_changed_during_acceptance": false,
+  "final_test": {
+    "passed": 152,
+    "failed": 0,
+    "skipped": 1,
+    "seconds": 53.84,
+    "argv": [
+      "C:\\Miniconda\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=../tmp/final153"
+    ],
+    "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-retrieval-audit07-2026-10-17\\copy",
+    "log": "test-run-07.log",
+    "log_raw_sha256": "e750e1a3492a52d0790fa36afe2a0d51b82af118ea3e1fd2558ea5dfaf55b1ba",
+    "skip_reason": "Windows junction creation denied in restricted child; predicate regression passes, not claimed as real OS test"
+  },
+  "independent_cli": {
+    "commands": 8,
+    "all_expected": true,
+    "evidence": "independent-cli-results.json",
+    "raw_sha256": "98d103d27b851b958cfd219f7b52f864874928ccf96d09e84a93285c694fd900",
+    "network_probe": "PermissionError from process audit hook",
+    "legacy_output_byte_identical": true
+  },
+  "historical_review_evidence": {
+    "statement": "original invocation text and IDs preserved, not independently authenticated historical tool returns; final timestamp precedes some approximate invocation labels; current real review closes final corrected payload",
+    "must_not_relabel_history_passed": true
+  },
+  "limitations": [
+    "Synthetic engineering corpus only; no supplier-performance or financial qualification.",
+    "No live HTTP, no API credentials inherited.",
+    "Original early guard setup failures/SyntaxError and interrupted exploratory run are retained and not counted as protected final pass.",
+    "Pytest author subprocess helpers replace PYTHONPATH and do not inherit our sitecustomize; code is statically offline and subprocess environment remains key-free. Separately authored eight CLI calls preserve guard and verify actual network denial.",
+    "Source Git access denied in child sandbox; root verified HEAD/status and will verify final payload blobs and commit the CAS.",
+    "Candidate final review/commit still owned by root."
+  ],
+  "qualification": {
+    "production_ready": false,
+    "financial_qualification_granted": false,
+    "rating_gold": false
+  }
+}

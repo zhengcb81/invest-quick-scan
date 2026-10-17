@@ -1,0 +1,56 @@
+{
+  "reviewer": "/root/remaining_package_final_review",
+  "inputlock_raw_sha256": "728c93b1fa5383dc95593c9495a02f698f4e7d079487b43a4d4d62b8fc9db5d2",
+  "fixed_module_raw_sha256": "809ef3fc3dd484b7dd2c85da62a96c707522b517846f2ff87ae4d0a03ffab817",
+  "source_writes": false,
+  "network_calls": 0,
+  "junction_removed": true,
+  "results": [
+    {
+      "label": "ordinary-lock",
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_query_entity",
+        "validate",
+        "--inputs",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\remaining-package-final-review-2026-10-17\\query-copy\\inputs",
+        "--expected-lock-sha256",
+        "728c93b1fa5383dc95593c9495a02f698f4e7d079487b43a4d4d62b8fc9db5d2",
+        "--catalog",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\remaining-package-final-review-2026-10-17\\query-copy\\query_catalog.json",
+        "--lock",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\remaining-package-final-review-2026-10-17\\query-copy\\inputs\\input-lock.json"
+      ],
+      "exit": 0,
+      "stdout": "{\"catalog_id\": \"iqs-query-entity-candidate-v1\", \"catalog_version\": \"1.0.0\", \"checked_files\": {\"catalog_raw_sha256\": \"975a33dcae84b5e39b09bebc0e8aba85fc0a955611728cad26d2893fc9a00170\", \"lock_raw_sha256\": \"728c93b1fa5383dc95593c9495a02f698f4e7d079487b43a4d4d62b8fc9db5d2\"}, \"command\": \"validate\", \"content_sha256\": \"430f9a15da2325c3f5851dd134d9cf01c36713785b8fba903a57e0dce562d9b1\", \"distinct_template_count\": 47, \"family_counts\": {\"business_trough_repair\": 7, \"competitive_advantage_behavior\": 7, \"customers_suppliers_equipment_materials\": 8, \"industry_change_substitution\": 7, \"listing_market_scope\": 4, \"operating_metrics\": 7, \"revenue_cashflow_definitions\": 8}, \"intent_count\": 48, \"limitations\": [\"候选检索意图目录：只表达如何检索，不执行检索、不承诺覆盖率或质量，也不改变用户搜索或模型顺位。\", \"目录不增删 IQS 题目、题号或评分规则；search_purpose 与 cannot_conclude 只说明检索用途与不能推出的结论。\", \"意图里的域名只是查询建议，不是 authority 列表；工具没有截止日期过滤能力，query 文本出现年份不是网页时点证据。\", \"身份绑定由 planner 从 identity 输入解析；本目录不内置任何真实发行人代码、别名或法人关系。\", \"同义词表只做术语识别；OCF≠FCF、净利润≠经营利润等非等价关系不能被查询合并或单位换算抹掉。\"], \"protocol\": \"iqs.query-intent-catalog/1.0.0\", \"source_context\": {\"input_item_count\": 12, \"input_lock_raw_sha256\": \"728c93b1fa5383dc95593c9495a02f698f4e7d079487b43a4d4d62b8fc9db5d2\", \"tool_version\": \"1.0.0\"}, \"status\": \"valid\", \"topic_coverage\": {\"adr_mapping_disclosure\": 1, \"asp\": 1, \"capacity_utilization\": 1, \"cash_conversion\": 1, \"cash_fcf\": 1, \"cash_ocf\": 1, \"contract_award\": 1, \"customer_capex\": 1, \"customer_concentration\": 2, \"demand_shift\": 1, \"destocking\": 1, \"equipment_leadtime\": 1, \"gross_margin_premium\": 1, \"guidance\": 1, \"headcount\": 1, \"impairment\": 1, \"innovation_output\": 1, \"inventory_turnover\": 1, \"listing_price_volume\": 1, \"listing_share_class\": 1, \"listing_status_event\": 1, \"localization\": 1, \"margin_trough\": 1, \"market_share\": 1, \"material_price\": 1, \"new_capacity\": 1, \"order_backlog\": 1, \"policy_change\": 1, \"price_cycle\": 1, \"price_volume\": 1, \"pricing_power\": 1, \"receivables\": 1, \"recovery_signal\": 1, \"restructuring\": 1, \"retention\": 1, \"revenue_consolidated\": 1, \"revenue_recognition\": 1, \"revenue_segment\": 1, \"sole_source\": 1, \"subsidiary_scope\": 1, \"supplier_concentration\": 1, \"switching_cost\": 1, \"tam_growth\": 1, \"tech_substitution\": 1, \"trade_policy\": 1, \"unit_cost\": 1, \"working_capital\": 1}}\n",
+      "stderr": ""
+    },
+    {
+      "label": "ancestor-junction-lock",
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "iqs_query_entity",
+        "validate",
+        "--inputs",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\remaining-package-final-review-2026-10-17\\query-copy\\inputs",
+        "--expected-lock-sha256",
+        "728c93b1fa5383dc95593c9495a02f698f4e7d079487b43a4d4d62b8fc9db5d2",
+        "--catalog",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\remaining-package-final-review-2026-10-17\\query-copy\\query_catalog.json",
+        "--lock",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\remaining-package-final-review-2026-10-17\\junction-lock-green\\input-lock.json"
+      ],
+      "exit": 3,
+      "stdout": "",
+      "stderr": "{\"code\": \"input_link_refused\", \"detail\": \"--lock: C:\\\\Users\\\\郑曾波\\\\Projects\\\\invest-quick-scan\\\\runs\\\\remaining-package-final-review-2026-10-17\\\\junction-lock-green is a symlink or junction; this Lab does not follow links\", \"exit_code\": 3, \"status\": \"error\"}\n"
+    }
+  ]
+}

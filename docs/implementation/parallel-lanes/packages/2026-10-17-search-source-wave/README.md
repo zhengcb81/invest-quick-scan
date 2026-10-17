@@ -1,3 +1,7 @@
+## 2026-10-17总控修复检查点
+
+五包修复/源码正常提交已完成，最终整包独审因平台usage limit中断，不能读下方旧接收/编卡文字当最终passed。最新commit、测试时序及剩余具体动作见总控`docs/implementation/reviews/remaining-packages-2026-10-17/controller-status.json`及`docs/implementation/experiments/remaining-packages-acceptance-2026-10-17.md`。原CONTEXT已签不重复实现；本轮0收费API/0生产写，不给金融gold。
+
 ## 2026-10-17交付接收状态
 
 用户已确认全部外包完成，三个约定Lab正式handoff目录均已见。当前由总控冻结并隔离验收，尚不等于签收；不再将本页编卡时“不存在”误作当前目录状态。QUERY验收已启动；实际payload/独审/测试/hash以各包冻结回执为准，不追活动latest。所有源仓仍只读，未自动导入生产。下方为原施工规格。

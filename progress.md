@@ -1,3 +1,13 @@
+## 2026-10-17 — 五包修复及源码提交完成，最终独审因平台额度中断
+
+用户已完整授权，不再重复问权限。五个最终源码：QUERY `dd1f5f1fc26b1296fad98fd843cff0587fc6c700`、SOURCE `e8a31c22aa9e6d19978172e1bf639b3b03a63e20`、RESUME `f76bb65e089cfb1d64af6606704dea1c390e0327`、REVIEW `e9a0ed61802bb1d45500d737f092c3e26e509ef0`（1.1兼容旧1.0）、RETRIEVAL `9324b345f4ade371177560ab774614474706d5ab`。均正常本地commit、精确CAS/working/Git blob核对，Lab无remote不新建。总控本次文档/薄证据应正常提交推送既有IQS origin。
+
+实际测试：QUERY143P/1skip；SOURCE169原套件+6旧回归+2新语义通过（最后作者说明修订仅复跑2项及公开35case）；RESUME85集中后最后根字段修复12项通过；REVIEW123P/双根8CLI业务字节一致；RETRIEVAL159P/1skip、root真实junction3/3和独立编写反例原样复测GREEN。数字重叠不相加，不把mock当真实模型准确率。
+
+**不是最终全部签收**：真正不同agent已复现并审查多项问题，全部已知技术/标签问题直接修复；但REVIEW1.1及RETRIEVAL最终修订的整包独审/Git-PWF最后绑定尚未完成，三子agent返回平台usage limit。没有伪造passed。明确状态/依据/恢复步骤见`docs/implementation/reviews/remaining-packages-2026-10-17/controller-status.json`与`docs/implementation/experiments/remaining-packages-acceptance-2026-10-17.md`。0收费API/0下载/0生产或名单写；RESUME四精确窗口unsupported继续保留。
+
+下一步只恢复同一最终独审并完成真实新commit/文档绑定，修有效新问题再签；不重做原CONTEXT/DeepSeek、不加helper门。之后才回原T4/scorer/owner主线。不动他人2026-10-10 README及其他writer，不清未知费用/原库，不重发请求。下方旧“初始三包/两包仍编码”是历史。
+
 ## 2026-10-17 — DeepSeek接入及两轮四源实测完成；转入外包交付验收
 
 本轮DeepSeek Search/Fetch已用环境DEEPSEEK_API_KEY真实跑通，StockQA19文件正常hooks提交并推送master e63a79f6698d60b398ed4c0c2e67979d051cd93e。原SDK/账本/owner复用，策略1.2/1.3显式启用，旧契约不改。109P/19subtests为最终源码候选集中回归，不与重叠套件相加。整包审查的最终签收范围与hash以docs/implementation/experiments/artifacts/deepseek-search-2026-10-17/review.json为准，不授生产或金融gold资格。

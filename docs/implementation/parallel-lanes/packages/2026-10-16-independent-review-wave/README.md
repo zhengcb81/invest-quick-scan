@@ -1,3 +1,7 @@
+## 2026-10-17总控修复检查点
+
+五包修复/源码正常提交已完成，最终整包独审因平台usage limit中断，不能读下方旧接收/编卡文字当最终passed。最新commit、测试时序及剩余具体动作见总控`docs/implementation/reviews/remaining-packages-2026-10-17/controller-status.json`及`docs/implementation/experiments/remaining-packages-acceptance-2026-10-17.md`。原CONTEXT已签不重复实现；本轮0收费API/0生产写，不给金融gold。
+
 # 三个可同时施工的新包
 
 三个包均可独立开工，不依赖另两个包或本轮真实模型结果。总控继续真实模型/critic/后续搜索实验；这里不派发任务、不创建Lab、不调用API。开工状态以用户后续确认及独占目录实际状态为准。

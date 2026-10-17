@@ -1,0 +1,72 @@
+{
+  "protocol": "iqs.controller-repair-checkpoint/1.0.0",
+  "created_utc": "2026-10-17T15:47:36.923557+00:00",
+  "status": "repairs_and_tests_committed_final_independent_review_pending",
+  "fully_accepted": false,
+  "independent_review_status": "interrupted_platform_usage_limit",
+  "reviewer_agent": "/root/remaining_package_final_review",
+  "reviewer_was_distinct_from_all_repair_authors": true,
+  "platform_error": "Independent subagents reported usage limit; no final passed/open_findings=[] sign-off was produced.",
+  "packages": [
+    {
+      "id": "QUERY-ENTITY-07",
+      "repo": "iqs-query-identity-lab",
+      "commit": "dd1f5f1fc26b1296fad98fd843cff0587fc6c700",
+      "version": "1.0.0",
+      "tests": "143 passed / 1 skipped；真实lock父junction独立0→3",
+      "run": "accept-query-entity07-2026-10-17",
+      "cas": "fixed-payload.cas.json",
+      "supplement": "qe-lock-20261017"
+    },
+    {
+      "id": "SOURCE-TIME-07",
+      "repo": "iqs-search-source-lab",
+      "commit": "e8a31c22aa9e6d19978172e1bf639b3b03a63e20",
+      "version": "1.0.0",
+      "tests": "169原套件+6旧回归+2新语义回归通过；最后说明文字改动仅重跑2项及公开35case validate",
+      "run": "accept-source-time07-2026-10-17",
+      "cas": "patch-cas.json",
+      "supplement": "st-label-20261017"
+    },
+    {
+      "id": "RESUME-CHAOS-06",
+      "repo": "iqs-resume-chaos-lab",
+      "commit": "f76bb65e089cfb1d64af6606704dea1c390e0327",
+      "version": "1.0.0",
+      "tests": "85 passed集中；最后两个根字段校验变更后12项相关测试通过；实际28case/20 mockHTTP",
+      "run": "accept-resume-chaos06-2026-10-17",
+      "cas": "patch-cas.json",
+      "supplement": "rc-f2"
+    },
+    {
+      "id": "REVIEW-CAL-06",
+      "repo": "iqs-review-calibration-lab",
+      "commit": "e9a0ed61802bb1d45500d737f092c3e26e509ef0",
+      "version": "1.1.0（保留1.0入口）",
+      "tests": "123 passed / 0 skip；双物理根8条公开CLI、每根58项synthetic匹配、业务字节一致",
+      "run": "accept-review-cal06-2026-10-17",
+      "cas": "fixed-payload-v11.cas.json"
+    },
+    {
+      "id": "RETRIEVAL-AUDIT-07",
+      "repo": "iqs-search-annotation-lab",
+      "commit": "9324b345f4ade371177560ab774614474706d5ab",
+      "version": "1.0.0",
+      "tests": "159 passed / 1 skipped；root代执行3个真实junction全部拒绝；独立编写的空结果/finite JSON反例由root原样复测GREEN",
+      "run": "accept-retrieval-audit07-2026-10-17",
+      "cas": "candidate-cas.json"
+    }
+  ],
+  "paid_requests_this_acceptance": 0,
+  "qualification": {
+    "production_ready": false,
+    "financial_qualification_granted": false,
+    "rating_gold": false
+  },
+  "remaining_actions": [
+    "Resume a genuine different-agent final review of final REVIEW-CAL-06 1.1 and RETRIEVAL-AUDIT-07 changes, including private calibration exclusions, empty retrieval, URL case, finite JSON, and schemas.",
+    "Bind the five exact final commits and final PWF/report bytes using independent reviewer authored bind_snapshot.py; root may execute read-only Git if child sandbox blocks, transparently attributed.",
+    "Repair any newly demonstrated valid finding, run affected checks and complete the same overall review; never overwrite original reviews with a fabricated passed status.",
+    "Only after actual final sign-off change fully_accepted to true and close 06 formal-handoff monitoring when its explicit conditions are met."
+  ]
+}

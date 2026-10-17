@@ -1,0 +1,193 @@
+{
+ "all_suites_passed": true,
+ "cleanup": {
+  "files_present_before_cleanup": [
+   "logs\\cli_e2e__055cf88a.log",
+   "logs\\integration_real__c73a5205.log",
+   "logs\\schema_consistency__2aa9496d.log",
+   "logs\\unit_cases__c62aa7c1.log",
+   "logs\\unit_infra__66681f67.log"
+  ],
+  "note": "Each suite log is copied to retained_log_root before the scratch tree is removed, so every log_raw_sha256 recorded above stays verifiable. The pre-existing host environment is not claimed to have been reset.",
+  "remaining_after_cleanup": 0,
+  "retained_log_files": [
+   "../unit-author-test-logs/cli_e2e__055cf88a.log",
+   "../unit-author-test-logs/integration_real__c73a5205.log",
+   "../unit-author-test-logs/schema_consistency__2aa9496d.log",
+   "../unit-author-test-logs/unit_cases__c62aa7c1.log",
+   "../unit-author-test-logs/unit_infra__66681f67.log"
+  ],
+  "retained_log_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\unit-author-test-logs",
+  "retained_log_root_inside_payload_tree": false,
+  "retained_logs_written": true,
+  "scratch_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header",
+  "scratch_root_removed": true
+ },
+ "declared_suite_count": 5,
+ "environment_isolation": {
+  "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\cwd",
+  "home": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\home",
+  "network_requests_made": 0,
+  "note": "The suites make no network call. The CLI E2E suite additionally asserts that no proxy/key/token/secret variable is inherited and that no bytecode is written into the package tree.",
+  "pythondontwritebytecode": "1",
+  "pythonnousersite": "1",
+  "scratch_root": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header",
+  "temp": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\home\\tmp",
+  "writes_outside_scratch_root": []
+ },
+ "frozen_inputs_unchanged": {
+  "after_count": 24,
+  "before_count": 24,
+  "differing": [],
+  "identical": true
+ },
+ "package_id": "SOURCE-TIME-07",
+ "platform": "win32",
+ "protocol": "iqs.search-lab-test-report/1.0.0",
+ "python": "3.13.9",
+ "python_executable_basename": "python.exe",
+ "ran_every_declared_suite": true,
+ "run_id": "unit-header",
+ "runner_failure": null,
+ "suites": [
+  {
+   "argv": [
+    "C:\\Miniconda\\python.exe",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\tools\\_suite_runner.py",
+    "--pattern",
+    "test_unit_cases.py",
+    "--log",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\logs\\unit_cases__c62aa7c1.log"
+   ],
+   "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\cwd",
+   "errors": 0,
+   "exit_code": 0,
+   "failed_ids": [],
+   "failures": 0,
+   "log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\unit-author-test-logs\\unit_cases__c62aa7c1.log",
+   "log_raw_sha256": "c029de5b1aaf68ba8a096992e5ec5df6469084c30d21036fb31219aaa9b57a24",
+   "log_retained": true,
+   "passed": 85,
+   "pattern": "test_unit_cases.py",
+   "skipped": 0,
+   "skipped_ids": [],
+   "stderr_tail": [],
+   "suite": "unit_cases",
+   "tests_run": 85,
+   "utc_started": "2026-10-17T15:14:30Z"
+  },
+  {
+   "argv": [
+    "C:\\Miniconda\\python.exe",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\tools\\_suite_runner.py",
+    "--pattern",
+    "test_unit_infra.py",
+    "--log",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\logs\\unit_infra__66681f67.log"
+   ],
+   "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\cwd",
+   "errors": 0,
+   "exit_code": 0,
+   "failed_ids": [],
+   "failures": 0,
+   "log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\unit-author-test-logs\\unit_infra__66681f67.log",
+   "log_raw_sha256": "67a00da712afbf48ab7be13175628f4541ae5b7917e423010ac2271fc76e857e",
+   "log_retained": true,
+   "passed": 32,
+   "pattern": "test_unit_infra.py",
+   "skipped": 0,
+   "skipped_ids": [],
+   "stderr_tail": [],
+   "suite": "unit_infra",
+   "tests_run": 32,
+   "utc_started": "2026-10-17T15:14:30Z"
+  },
+  {
+   "argv": [
+    "C:\\Miniconda\\python.exe",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\tools\\_suite_runner.py",
+    "--pattern",
+    "test_schema_consistency.py",
+    "--log",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\logs\\schema_consistency__2aa9496d.log"
+   ],
+   "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\cwd",
+   "errors": 0,
+   "exit_code": 0,
+   "failed_ids": [],
+   "failures": 0,
+   "log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\unit-author-test-logs\\schema_consistency__2aa9496d.log",
+   "log_raw_sha256": "b3c8722cc50c9f0ec82aa45c7e8664d225903aa24052d656b7265e9a49b67333",
+   "log_retained": true,
+   "passed": 19,
+   "pattern": "test_schema_consistency.py",
+   "skipped": 0,
+   "skipped_ids": [],
+   "stderr_tail": [],
+   "suite": "schema_consistency",
+   "tests_run": 19,
+   "utc_started": "2026-10-17T15:14:30Z"
+  },
+  {
+   "argv": [
+    "C:\\Miniconda\\python.exe",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\tools\\_suite_runner.py",
+    "--pattern",
+    "test_integration_real.py",
+    "--log",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\logs\\integration_real__c73a5205.log"
+   ],
+   "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\cwd",
+   "errors": 0,
+   "exit_code": 0,
+   "failed_ids": [],
+   "failures": 0,
+   "log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\unit-author-test-logs\\integration_real__c73a5205.log",
+   "log_raw_sha256": "7f3234dbc9bcde72ba0015864e754e9972b6c8d91c53ff21b190ccb61ac6679c",
+   "log_retained": true,
+   "passed": 19,
+   "pattern": "test_integration_real.py",
+   "skipped": 0,
+   "skipped_ids": [],
+   "stderr_tail": [],
+   "suite": "integration_real",
+   "tests_run": 19,
+   "utc_started": "2026-10-17T15:14:30Z"
+  },
+  {
+   "argv": [
+    "C:\\Miniconda\\python.exe",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\tools\\_suite_runner.py",
+    "--pattern",
+    "test_cli_e2e.py",
+    "--log",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\logs\\cli_e2e__055cf88a.log"
+   ],
+   "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\copy\\.test-work\\unit-header\\cwd",
+   "errors": 0,
+   "exit_code": 0,
+   "failed_ids": [],
+   "failures": 0,
+   "log_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\st-label-20261017\\unit-author-test-logs\\cli_e2e__055cf88a.log",
+   "log_raw_sha256": "0df1a863872383ddd35b1b702a673547ab6820f02716b613c1bfdb7b485042e6",
+   "log_retained": true,
+   "passed": 14,
+   "pattern": "test_cli_e2e.py",
+   "skipped": 0,
+   "skipped_ids": [],
+   "stderr_tail": [],
+   "suite": "cli_e2e",
+   "tests_run": 14,
+   "utc_started": "2026-10-17T15:14:30Z"
+  }
+ ],
+ "totals": {
+  "errors": 0,
+  "failures": 0,
+  "skipped": 0,
+  "suites": 5,
+  "tests_run": 169
+ },
+ "utc_finished": "2026-10-17T15:14:57Z",
+ "utc_started": "2026-10-17T15:14:30Z"
+}

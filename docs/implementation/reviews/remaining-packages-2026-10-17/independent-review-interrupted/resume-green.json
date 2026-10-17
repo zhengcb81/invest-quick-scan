@@ -1,0 +1,96 @@
+{
+  "reviewer": "/root/remaining_package_final_review",
+  "api_raw_sha256": "f24103bbf893a83df6cdb28193fd27dded0f6b989702594c022a04b9c7c4052e",
+  "network_calls": 0,
+  "source_writes": false,
+  "results": [
+    {
+      "label": "baseline-summary",
+      "accepted": true,
+      "cases_total": 28,
+      "http_total": 20
+    },
+    {
+      "label": "negative-attempts",
+      "accepted": false,
+      "typed": true,
+      "exception": "RunError",
+      "message": "invalid observed store_counts.attempts_total"
+    },
+    {
+      "label": "negative-status",
+      "accepted": false,
+      "typed": true,
+      "exception": "RunError",
+      "message": "invalid observed store_counts.by_status count"
+    },
+    {
+      "label": "boolean-status",
+      "accepted": false,
+      "typed": true,
+      "exception": "RunError",
+      "message": "invalid observed store_counts.by_status count"
+    },
+    {
+      "label": "by-status-array",
+      "accepted": false,
+      "typed": true,
+      "exception": "RunError",
+      "message": "store_counts.by_status must be an object"
+    },
+    {
+      "label": "observed-array",
+      "accepted": false,
+      "typed": true,
+      "exception": "RunError",
+      "message": "observed must be an object"
+    },
+    {
+      "label": "case-not-object",
+      "accepted": false,
+      "typed": true,
+      "exception": "RunError",
+      "message": "report cases must be objects with string case_id"
+    },
+    {
+      "label": "cases-not-array",
+      "accepted": false,
+      "typed": true,
+      "exception": "RunError",
+      "message": "report case_count mismatch"
+    },
+    {
+      "label": "baseline-casebook",
+      "accepted": true,
+      "count": 28
+    },
+    {
+      "label": "wrong-declared-count",
+      "accepted": false,
+      "typed": true,
+      "exception": "CasebookError",
+      "message": "case_count must match cases"
+    },
+    {
+      "label": "boolean-declared-count",
+      "accepted": false,
+      "typed": true,
+      "exception": "CasebookError",
+      "message": "case_count must match cases"
+    },
+    {
+      "label": "wrong-case-version",
+      "accepted": false,
+      "typed": true,
+      "exception": "CasebookError",
+      "message": "case C02-budget-cost-limit input_versions mismatch frozen registration"
+    },
+    {
+      "label": "casebook-nondict-case",
+      "accepted": false,
+      "typed": true,
+      "exception": "CasebookError",
+      "message": "cases require object entries with string case_id"
+    }
+  ]
+}

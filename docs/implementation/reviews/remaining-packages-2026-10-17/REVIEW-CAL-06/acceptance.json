@@ -1,0 +1,29 @@
+{
+  "protocol":"iqs.controller-package-acceptance/1.0.0",
+  "package_id":"REVIEW-CAL-06",
+  "status":"core_repairs_passed_common_contract_gaps_open",
+  "source_read_only":true,
+  "source_head_at_intake":"f697bf3ea0e929fa875a636a6e1d639254ce11d4",
+  "original_payload_commit":"7fccfcc5bfc063a4415a32a9246d895fc5a56d79",
+  "input_lock_raw_sha256":"968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233",
+  "fixed_payload_cas":"fixed-payload.cas.json",
+  "fixed_payload_cas_sha256":"f224131465706f444bf19945c2f99cb36019e81c6c7070596cedbf7b9aa4440f",
+  "fixed_payload_file_count":14,
+  "source_files_unchanged":52,
+  "consumer_files_unchanged":387,
+  "original_tests_passed":58,
+  "fixed_tests":{"passed":81,"failed":0,"skipped":0,"seconds":97.30,"command_evidence":"controller_final3.result.json"},
+  "independent_public_cli":{"steps":6,"all_expected":true,"synthetic_labels_matched":58,"actual_model_accuracy":null,"evidence":"controller-cli-chain-v2.json"},
+  "closed_in_isolated_candidate":["RC06-C01","RC06-C02","RC06-C03","RC06-C04","RC06-C05","RC06-C06","RC06-C07","RC06-C08"],
+  "open_findings":[
+    {"id":"RC06-O01","severity":"P2","issue":"Common output envelopes and standalone machine schemas incomplete"},
+    {"id":"RC06-O02","severity":"P2","issue":"Absolute paths enter legacy full fingerprints; stable cross-machine content hash unresolved"}
+  ],
+  "pending_controller_actions":["Original Git HEAD/blob verification in authorized batch","Apply/commit reviewed isolated candidate after exact original-byte checks","Design backward-compatible envelope/stable-hash closure","Refresh actual new commit/review/handoff bindings"],
+  "qualification":{"production_ready":false,"financial_qualification_granted":false,"rating_gold":false},
+  "paid_http":0,
+  "api_keys_read":false,
+  "source_writes":false,
+  "report":"acceptance.md",
+  "cleanup":"cleanup.json"
+}
