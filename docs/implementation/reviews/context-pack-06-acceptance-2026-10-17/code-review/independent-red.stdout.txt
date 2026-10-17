@@ -1,0 +1,82 @@
+FFFFFFFFFFFFF                                                            [100%]
+================================== FAILURES ===================================
+______________ test_schedule_rejects_changed_context[questions] _______________
+..\relocated-tests\test_acceptance_regressions.py:24: in test_schedule_rejects_changed_context
+    with pytest.raises(InputRejected):build_schedule(**args)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+____________ test_schedule_rejects_changed_context[evidence_board] ____________
+..\relocated-tests\test_acceptance_regressions.py:24: in test_schedule_rejects_changed_context
+    with pytest.raises(InputRejected):build_schedule(**args)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+___________ test_schedule_rejects_changed_context[metric_registry] ____________
+..\relocated-tests\test_acceptance_regressions.py:24: in test_schedule_rejects_changed_context
+    with pytest.raises(InputRejected):build_schedule(**args)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+_______________ test_schedule_rejects_changed_context[identity] _______________
+..\relocated-tests\test_acceptance_regressions.py:24: in test_schedule_rejects_changed_context
+    with pytest.raises(InputRejected):build_schedule(**args)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+_____________________ test_schedule_rejects_foreign_plan ______________________
+..\relocated-tests\test_acceptance_regressions.py:31: in test_schedule_rejects_foreign_plan
+    with pytest.raises(InputRejected):build_schedule(**args,pack_plans=plans)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+__________ test_analyze_rejects_invalid_context_plan[unknown_field] ___________
+..\relocated-tests\test_acceptance_regressions.py:44: in test_analyze_rejects_invalid_context_plan
+    with pytest.raises(InputRejected):analyze_layouts([plan],scenarios=[{}])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+___________ test_analyze_rejects_invalid_context_plan[unknown_mode] ___________
+..\relocated-tests\test_acceptance_regressions.py:44: in test_analyze_rejects_invalid_context_plan
+    with pytest.raises(InputRejected):analyze_layouts([plan],scenarios=[{}])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+_________ test_analyze_rejects_invalid_context_plan[unknown_version] __________
+..\relocated-tests\test_acceptance_regressions.py:44: in test_analyze_rejects_invalid_context_plan
+    with pytest.raises(InputRejected):analyze_layouts([plan],scenarios=[{}])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+_________ test_analyze_rejects_invalid_context_plan[missing_content] __________
+..\relocated-tests\test_acceptance_regressions.py:44: in test_analyze_rejects_invalid_context_plan
+    with pytest.raises(InputRejected):analyze_layouts([plan],scenarios=[{}])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+_______ test_analyze_rejects_invalid_context_plan[wrong_selected_hash] ________
+..\relocated-tests\test_acceptance_regressions.py:44: in test_analyze_rejects_invalid_context_plan
+    with pytest.raises(InputRejected):analyze_layouts([plan],scenarios=[{}])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+_________ test_analyze_rejects_invalid_context_plan[wrong_board_hash] _________
+..\relocated-tests\test_acceptance_regressions.py:44: in test_analyze_rejects_invalid_context_plan
+    with pytest.raises(InputRejected):analyze_layouts([plan],scenarios=[{}])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+_____________ test_analysis_rejects_schedule_mismatch[stale_hash] _____________
+..\relocated-tests\test_acceptance_regressions.py:55: in test_analysis_rejects_schedule_mismatch
+    with pytest.raises(InputRejected):analyze_layouts(list(plans.values()),scenarios=[{}],schedule=schedule)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+__________ test_analysis_rejects_schedule_mismatch[wrong_reference] ___________
+..\relocated-tests\test_acceptance_regressions.py:55: in test_analysis_rejects_schedule_mismatch
+    with pytest.raises(InputRejected):analyze_layouts(list(plans.values()),scenarios=[{}],schedule=schedule)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE InputRejected
+=========================== short test summary info ===========================
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_schedule_rejects_changed_context[questions]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_schedule_rejects_changed_context[evidence_board]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_schedule_rejects_changed_context[metric_registry]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_schedule_rejects_changed_context[identity]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_schedule_rejects_foreign_plan
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_analyze_rejects_invalid_context_plan[unknown_field]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_analyze_rejects_invalid_context_plan[unknown_mode]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_analyze_rejects_invalid_context_plan[unknown_version]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_analyze_rejects_invalid_context_plan[missing_content]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_analyze_rejects_invalid_context_plan[wrong_selected_hash]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_analyze_rejects_invalid_context_plan[wrong_board_hash]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_analysis_rejects_schedule_mismatch[stale_hash]
+FAILED ..\relocated-tests\test_acceptance_regressions.py::test_analysis_rejects_schedule_mismatch[wrong_reference]
+13 failed in 1.26s

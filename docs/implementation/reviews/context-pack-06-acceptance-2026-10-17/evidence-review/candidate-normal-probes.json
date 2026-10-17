@@ -1,0 +1,139 @@
+{
+  "results": [
+    {
+      "case": "examples",
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-I",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-context06-2026-10-17\\evidence-review\\audit.py",
+        "probe",
+        "examples",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-context06-2026-10-17\\evidence-review\\candidate-frozen"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-context06-2026-10-17\\evidence-review",
+      "exit": 0,
+      "stdout_raw_sha256": "b2fe58c8728a6309b58d2c4a73ee93456076bca34778f08b0cfeb2ae83ce3d39",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment_keys": [
+        "ALL_PROXY",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "PYTHONNOUSERSITE",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE"
+      ],
+      "result": {
+        "case": "examples",
+        "plans": [
+          {
+            "path": "baseline-full.context-plan.json",
+            "original_prefix_equal": true,
+            "original_bytes": 40957,
+            "hash_valid": true,
+            "full_context_bound": true
+          },
+          {
+            "path": "evidence-first.context-plan.json",
+            "original_prefix_equal": true,
+            "original_bytes": 40957,
+            "hash_valid": true,
+            "full_context_bound": true
+          },
+          {
+            "path": "selected-questions.context-plan.json",
+            "original_prefix_equal": true,
+            "original_bytes": 34231,
+            "hash_valid": true,
+            "full_context_bound": true
+          },
+          {
+            "path": "plans-selected/pack-01.context-plan.json",
+            "original_prefix_equal": true,
+            "original_bytes": 34231,
+            "hash_valid": true,
+            "full_context_bound": true
+          },
+          {
+            "path": "plans-selected/pack-02.context-plan.json",
+            "original_prefix_equal": true,
+            "original_bytes": 34550,
+            "hash_valid": true,
+            "full_context_bound": true
+          },
+          {
+            "path": "plans-selected/pack-03.context-plan.json",
+            "original_prefix_equal": true,
+            "original_bytes": 34330,
+            "hash_valid": true,
+            "full_context_bound": true
+          },
+          {
+            "path": "plans-selected/pack-04.context-plan.json",
+            "original_prefix_equal": true,
+            "original_bytes": 35097,
+            "hash_valid": true,
+            "full_context_bound": true
+          }
+        ],
+        "cache_embedded_original_equal": true,
+        "qualification": {
+          "production_ready": false,
+          "financial_qualification_granted": false,
+          "rating_gold": false
+        }
+      }
+    },
+    {
+      "case": "codec",
+      "argv": [
+        "C:\\Miniconda\\python.exe",
+        "-I",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-context06-2026-10-17\\evidence-review\\audit.py",
+        "probe",
+        "codec",
+        "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-context06-2026-10-17\\evidence-review\\candidate-frozen"
+      ],
+      "cwd": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-context06-2026-10-17\\evidence-review",
+      "exit": 0,
+      "stdout_raw_sha256": "3aaa14fa0e95df61c9f3c97be295bb356eb2431386e1e6c8b09459999c22bed5",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "environment_keys": [
+        "ALL_PROXY",
+        "HOME",
+        "HTTPS_PROXY",
+        "HTTP_PROXY",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "PYTHONNOUSERSITE",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE"
+      ],
+      "result": {
+        "case": "codec",
+        "full_validation_context_equal": true,
+        "expanded_answers_identical": true,
+        "subset_wrong_context_refused": "IntegrityError: question_hash_mismatch: questions canonical-object hash does not match trusted context_ref",
+        "note": "same synthetic compact answer; no LLM quality comparison"
+      }
+    }
+  ],
+  "not_independently_run": [
+    "candidate bytecode injection",
+    "candidate fake modules",
+    "candidate adversarial cross-root probes"
+  ],
+  "restriction": "Source boundary reviewed from implementation and implementation-agent existing records only."
+}

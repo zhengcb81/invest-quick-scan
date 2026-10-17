@@ -1,0 +1,19 @@
+{
+  "protocol": "iqs.coordinator-independent-review-invocation/1.0.0",
+  "package_id": "CONTEXT-PACK-06",
+  "coordinator_agent": "/root",
+  "implementation_agent": "/root/accept_context06_code",
+  "independent_reviewer_agent": "/root/accept_context06_evidence",
+  "observed_utc": "2026-10-17T07:37:51Z",
+  "time_source": "clock.curr_time actual tool response",
+  "request_evidence": {
+    "kind": "actual collaboration message delivered in this session",
+    "sender": "/root",
+    "reported_request_utc": "2026-10-17T07:37:41Z",
+    "summary": "Explicit request to independent evidence agent, separate from implementation agent, to review frozen candidate CAS before/after, raw inputs, pyc/verifier/cache boundary, real concentrated tests and cleanup. Reviewer must not edit implementation. Initial spawn was fork_turns=none per coordinator's actual message."
+  },
+  "identity_limit": "Canonical identities are the actual collaboration tool identities; no UUID or exact initial-spawn time invented. This record does not authenticate or repair the prior harness review history.",
+  "status": "review_completed",
+  "completed_utc": "2026-10-17T07:53:10.990482+00:00",
+  "reviewed_candidate_freeze_raw_sha256": "361f57824c34adc0bc08848cf4bb6a0ae8705e5b5fadbea609396dc701c2bc7f"
+}

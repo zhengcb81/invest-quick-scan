@@ -1,0 +1,90 @@
+{
+  "package_version": "1.0.1",
+  "original_implementation_baseline": {
+    "passed": 64,
+    "failed": 0
+  },
+  "candidate_suite_before_final_defensive_fixes": {
+    "passed": 92,
+    "failed": 0,
+    "skipped": 0,
+    "composition": "64 original + 13 API rejects + 4 CLI rejects + 8 legacy examples + 3 source-policy regressions"
+  },
+  "final_focused_suite": {
+    "passed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "nested type regressions 3 + CLI rejection/E2E 6 + schedule/CACHE 10 + legacy compatibility 8",
+    "not_a_full_97_test_run": true
+  },
+  "static_only_final_boundary": "Foreign-root cached transitive consumer path precheck and same-root research-pilot helper source pin; final precise helper pin followed by 7 valid CLI commands only. The focused27 record precedes that final precise pin. No new adversarial payload generated or executed for either static branch.",
+  "expected_red_failures": {
+    "API": 13,
+    "CLI": 4,
+    "source_policy": 3,
+    "nested_types": 3
+  },
+  "records": [
+    {
+      "path": "code-review/original64-final.record.json",
+      "bytes": 1353,
+      "raw_sha256": "7c122cb7cff432e1fbdefc09ea735e2091420cf277b20d35a947f5b9f65e1550"
+    },
+    {
+      "path": "code-review/independent-red.record.json",
+      "bytes": 1391,
+      "raw_sha256": "be3aa2433ef51880fa8c0bcf2ac084b92dfd7e0bed4cd027476fe0738163f83f"
+    },
+    {
+      "path": "code-review/cli-original-red.record.json",
+      "bytes": 1379,
+      "raw_sha256": "8529b6597df31013083c318f9b9fc5dbaae30f4ed9555968e76784c59064f97b"
+    },
+    {
+      "path": "code-review/source-original-red.record.json",
+      "bytes": 1386,
+      "raw_sha256": "f2a9b3d8a6a8f83a9fb9b49172b6908c8abbba2e707c9b128f775ee47944aef3"
+    },
+    {
+      "path": "code-review/final92.record.json",
+      "bytes": 1328,
+      "raw_sha256": "3514a34056af6a95c72ed15d74f961f814aa58694b32e065c11846a4934d9b5d"
+    },
+    {
+      "path": "code-review/nested-types-red.record.json",
+      "bytes": 1388,
+      "raw_sha256": "0ec797152d5b18676e3fbfb8e916bf470ad87ba186a588a2f0bb86834897ca01"
+    },
+    {
+      "path": "code-review/focused27-source-final.record.json",
+      "bytes": 1830,
+      "raw_sha256": "00a1b371dd57bf54a3b26dc9168f4c73bbbcf4cc7c539107bdf3067cfb625420"
+    },
+    {
+      "path": "code-review/public-e2e-pinned-ok.record.json",
+      "bytes": 1172,
+      "raw_sha256": "cfa26d00fe000ac9a6319ca576dc9cc3e7c5e91b75bf94aacffc97adbe43fbd0"
+    },
+    {
+      "path": "code-review/guard-proof.record.json",
+      "bytes": 1128,
+      "raw_sha256": "7288f12bcc936e13463bd51399594e26660dad7b3f84ea94ebde1993c2c2b1c1"
+    }
+  ],
+  "public_cli_record": {
+    "path": "code-review/pinned-ok-e2e.record.json",
+    "bytes": 88142,
+    "raw_sha256": "a75921a71be21cb0da3e29399868d7b5fcd8fc30cdc15eabf894285949f17fa7"
+  },
+  "harness_transform": {
+    "path": "code-review/harness-transform.json",
+    "bytes": 5484,
+    "raw_sha256": "6a4af5e2e2f5c8c4acdd323bc3a8c6b10866e8d3ce658acc83dd9497c8f80e30"
+  },
+  "qualification": {
+    "production_ready": false,
+    "financial_qualification_granted": false,
+    "rating_gold": false
+  },
+  "note": "Expected RED failures are not unresolved candidate failures. 92 passed is the earlier full run; 27 passed is the final affected-scope rerun after type and static cached-source fixes. Current source-independent review belongs to the coordinator acceptance root, not the historical 1.0.0 review."
+}

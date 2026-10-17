@@ -1,0 +1,35 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_________ test_schedule_mapping_fields_reject_arrays[source_context] __________
+..\relocated-tests\test_nested_type_regressions.py:14: in test_schedule_mapping_fields_reject_arrays
+    with pytest.raises(InputRejected):analyze_layouts(list(plans.values()),scenarios=[{}],schedule=schedule)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\candidate\src\iqs_context_pack\layout_analysis.py:103: in analyze_layouts
+    validate_schedule_plans(schedule, plans, list(plan_index))
+..\..\candidate\src\iqs_context_pack\artifact_validation.py:76: in validate_schedule_plans
+    require(schedule['source_context'].get(key)==plan['source_context'].get(key),'schedule_mismatch','schedule source context differs from compiled plan')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'list' object has no attribute 'get'
+_______ test_schedule_mapping_fields_reject_arrays[cache_analysis_ref] ________
+..\relocated-tests\test_nested_type_regressions.py:14: in test_schedule_mapping_fields_reject_arrays
+    with pytest.raises(InputRejected):analyze_layouts(list(plans.values()),scenarios=[{}],schedule=schedule)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\candidate\src\iqs_context_pack\layout_analysis.py:103: in analyze_layouts
+    validate_schedule_plans(schedule, plans, list(plan_index))
+..\..\candidate\src\iqs_context_pack\artifact_validation.py:68: in validate_schedule_plans
+    expected=schedule['cache_analysis_ref'].get('prefix_items')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'list' object has no attribute 'get'
+____________________ test_plan_tool_versions_rejects_array ____________________
+..\relocated-tests\test_nested_type_regressions.py:19: in test_plan_tool_versions_rejects_array
+    with pytest.raises(InputRejected):analyze_layouts([plan],scenarios=[{}])
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\candidate\src\iqs_context_pack\layout_analysis.py:145: in analyze_layouts
+    or plans[0].get("tool_versions", {}).get("iqs_cache_planner")),
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'list' object has no attribute 'get'
+=========================== short test summary info ===========================
+FAILED ..\relocated-tests\test_nested_type_regressions.py::test_schedule_mapping_fields_reject_arrays[source_context]
+FAILED ..\relocated-tests\test_nested_type_regressions.py::test_schedule_mapping_fields_reject_arrays[cache_analysis_ref]
+FAILED ..\relocated-tests\test_nested_type_regressions.py::test_plan_tool_versions_rejects_array
+3 failed in 1.42s

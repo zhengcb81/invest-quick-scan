@@ -1,0 +1,45 @@
+{
+  "protocol": "iqs.coordinator-review-observation/1.0.0",
+  "package_id": "CONTEXT-PACK-06",
+  "parent_agent": "/root",
+  "initial_calls": [
+    {
+      "tool": "collaboration.spawn_agent",
+      "task_name": "accept_context06_code",
+      "fork_turns": "none",
+      "actual_returned_task_name": "/root/accept_context06_code",
+      "exact_initial_dispatch_utc": null,
+      "note": "Actual call and returned canonical name observed in this coordinator conversation; initial exact clock was not separately captured."
+    },
+    {
+      "tool": "collaboration.spawn_agent",
+      "task_name": "accept_context06_evidence",
+      "fork_turns": "none",
+      "actual_returned_task_name": "/root/accept_context06_evidence",
+      "exact_initial_dispatch_utc": null,
+      "note": "Independent of the code repair agent; only reviewer-owned workspace may be changed."
+    }
+  ],
+  "actual_rereview_request": {
+    "tool": "collaboration.send_message",
+    "target": "/root/accept_context06_evidence",
+    "clock_before_dispatch_utc": "2026-10-17T07:37:41Z",
+    "clock_after_dispatch_utc": "2026-10-17T07:37:53Z",
+    "reviewer_separately_observed_utc": "2026-10-17T07:37:51Z",
+    "reviewer_record": "evidence-review/current-invocation.json",
+    "note": "Times bound the actual observed request, not a reconstructed original-harness invocation. Final review result must separately bind the frozen candidate."
+  },
+  "original_harness_identity_or_time_reconstructed": false,
+  "hidden_reasoning_or_keys_retained": false,
+  "events": [
+    {
+      "observed_at_utc": "2026-10-17T07:46:21.193134+00:00",
+      "agent": "/root/accept_context06_evidence",
+      "outcome": "platform_content_check_interrupted_turn",
+      "passed": false,
+      "next_scope": "read-only candidate code and existing evidence review plus ordinary compatibility; no new injected bytecode or adversarial payloads",
+      "new_dispatch": "collaboration.followup_task",
+      "limitations_must_be_explicit": true
+    }
+  ]
+}

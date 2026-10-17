@@ -1,0 +1,90 @@
+{
+  "utc": "2026-10-17T07:39:36.959324+00:00",
+  "snapshot_file_count": 86,
+  "snapshot_mismatches": [],
+  "rounds": [
+    {
+      "round": 1,
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-context06-2026-10-17\\original\\docs\\handoff\\CONTEXT-PACK-06\\review\\round-01.md",
+      "raw_sha256": "635c7c02f1bf77bc3218d9df13d77e434ada9c4ced53b30615615372d2b3b273",
+      "invocation_report_hash_matches": true,
+      "header_reviewer_line": "- reviewer_agent_id: session-86bd9530743b（受 session-63e15a55-3334-4e0b-9768-79d02488450e 委托的独立审查子 agent，fresh 上下文，未参与实施）",
+      "declared_invocation_subagent_id": "98a90d44-2733-4fa6-a17e-30e407e30496",
+      "has_actual_invocation_time": false
+    },
+    {
+      "round": 2,
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\accept-context06-2026-10-17\\original\\docs\\handoff\\CONTEXT-PACK-06\\review\\round-02.md",
+      "raw_sha256": "e495c69cdbd510cef3b0da2d8a52d939a7924826a85ce5ce29e2e1639e207fb4",
+      "invocation_report_hash_matches": true,
+      "header_reviewer_line": "- reviewer_agent_id: **session-9b436edc-7bc9-4607-95ba-367beb6576b1**（受 session-63e15a55-3334-4e0b-9768-79d02488450e 委托的独立审查子 agent；fresh 上下文，未参与实施，与实施方非同一 agent）",
+      "declared_invocation_subagent_id": "9b436edc-7bc9-4607-95ba-367beb6576b1",
+      "has_actual_invocation_time": false
+    }
+  ],
+  "suites": [
+    {
+      "suite": "unit-inputs",
+      "pass": 13,
+      "fail": 0,
+      "skip": 0,
+      "exit": 0,
+      "stdout_matches": false,
+      "stdout_raw_sha256": "daeeeae4bf8d68b762163d903b7ff852a3427aabd71376a6286207fc2514bc75",
+      "stderr_matches": true,
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "suite": "unit-adversarial",
+      "pass": 9,
+      "fail": 0,
+      "skip": 0,
+      "exit": 0,
+      "stdout_matches": false,
+      "stdout_raw_sha256": "5cb1fc00f266cd6a5a55521b731d3e5d8cad8ec6ce30b32f3efe22fc64ab96c8",
+      "stderr_matches": true,
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "suite": "integration-compiler",
+      "pass": 20,
+      "fail": 0,
+      "skip": 0,
+      "exit": 0,
+      "stdout_matches": false,
+      "stdout_raw_sha256": "7ca2ccfb9b8013a88d9f9d0cd25c39adf540d69fd88b2c08cc4e4b98b24d47ed",
+      "stderr_matches": true,
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "suite": "integration-schedule-cache",
+      "pass": 10,
+      "fail": 0,
+      "skip": 0,
+      "exit": 0,
+      "stdout_matches": false,
+      "stdout_raw_sha256": "cb0bf0cc7edcd588541eb9114ba48b33a88f560acdf6b789f3381ee6d0f37881",
+      "stderr_matches": true,
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "suite": "cli-e2e",
+      "pass": 12,
+      "fail": 0,
+      "skip": 0,
+      "exit": 0,
+      "stdout_matches": false,
+      "stdout_raw_sha256": "ef5a66a340906cfcd79a983eb134bd9c0f6b325e78b19f2911963d6eddc82c9b",
+      "stderr_matches": true,
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "original_invocation_authenticity": "not independently established: only author-recorded subagent ID/tool-return strings preserved; no actual harness call record or invocation timestamp present",
+  "limitations": [
+    "round-01 header reviewer ID differs from invocation metadata",
+    "final.round_files lack raw SHA entries (round hashes do match invocation-evidence)",
+    "handoff.final_head placeholder",
+    "artifacts task_plan.md stale hash/bytes is separately known",
+    "source-suite-evidence copied read-only from explicitly permitted source Lab; stdout hashes do NOT match tests.json (source records identify later run-20261017T070647Z); it was not originally in the immutable original snapshot"
+  ]
+}

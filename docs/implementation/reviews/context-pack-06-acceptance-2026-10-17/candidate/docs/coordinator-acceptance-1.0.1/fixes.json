@@ -1,0 +1,62 @@
+[
+  {
+    "id": "C06-C01",
+    "finding": "Schedule accepted changed questions, evidence, registry or identity despite expected_context",
+    "fix": "Validate actual hashes and component shapes before packing; validate supplied plan context",
+    "regression": "test_schedule_rejects_changed_context / test_schedule_rejects_foreign_plan"
+  },
+  {
+    "id": "C06-C02",
+    "finding": "Plan reuse accepted missing/unknown fields, unknown versions/modes, rehashed inconsistent components",
+    "fix": "Shared closed envelope plus canonical component/selection/context/hash verification; explicit 1.0.0 and 1.0.1 support",
+    "regression": "test_analyze_rejects_invalid_context_plan / test_original_100_plan_still_supported"
+  },
+  {
+    "id": "C06-C03",
+    "finding": "CLI analyze relabeled arbitrary/foreign plans with current verified input lock",
+    "fix": "Recompile semantic plan fields from current verified original inputs and compare before analysis",
+    "regression": "test_cli_analysis_authority"
+  },
+  {
+    "id": "C06-C04",
+    "finding": "Analysis trusted stale schedule hashes and unrelated plan references",
+    "fix": "Validate schedule content, context and references before CACHE; include schedule content hash in result reference",
+    "regression": "test_analysis_rejects_schedule_mismatch / test_original_100_schedule_still_supported"
+  },
+  {
+    "id": "C06-C05",
+    "finding": "Unchecked-hash pyc could execute with intact locked .py and expected module.__file__",
+    "fix": "Root-scoped source-only loader for transitive imports; reject bypassed cached modules; dependency builder establishes policy; verifier compiles its verified raw bytes",
+    "regression": "test_source_policy.py; separate fresh reviewer replays verifier bootstrap"
+  },
+  {
+    "id": "C06-C06",
+    "finding": "Windows drive-absolute or resolved escaping schedule paths were not confined to bundle",
+    "fix": "Reject absolute/drive/parent paths and require resolved plan to remain below schedule parent",
+    "regression": "test_cli_schedule_absolute_path_refused"
+  },
+  {
+    "id": "C06-C07",
+    "finding": "CLI analysis lacked original context hashes and actual tool versions",
+    "fix": "Derive source_context hashes and tool_versions from verified binding; frozen CACHE version fallback recorded",
+    "regression": "public-final-e2e.record.json"
+  },
+  {
+    "id": "C06-C08",
+    "finding": "Historical artifact task_plan metadata stale; original report/review evidence cannot certify repaired code",
+    "fix": "Preserve historical handoff unchanged; current manifest records actual bytes; README names current report and templates accurately",
+    "regression": "current artifacts.json and candidate.freeze.json"
+  },
+  {
+    "id": "C06-C09",
+    "finding": "Array values in schedule source_context/cache_analysis_ref and plan tool_versions caused AttributeError",
+    "fix": "Validate existing mapping fields and schedule nested carrier shapes before use",
+    "regression": "nested-types-red 3 expected failures; focused27-source-final 27 passed including public CLI JSON exit2/no-residue checks"
+  },
+  {
+    "id": "C06-C10",
+    "finding": "Static review: pre-cached transitive consumer modules or same-root shadow research-pilot helper could bypass source origin binding",
+    "fix": "Derive consumer module/source inventory for cached-module precheck; pin research-pilot helper to existing frozen/iqs/scripts precedence (locked duplicate raw-identical to driver); enforce public module paths before execution",
+    "regression": "inventory/type changes followed by focused27; final helper pin followed by pinned-ok CLI7; static review only for adversarial branches, no new injected module or bytecode executed"
+  }
+]

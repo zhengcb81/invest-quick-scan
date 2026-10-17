@@ -1,3 +1,19 @@
+## 2026-10-17 — CONTEXT-PACK-06正式签收1.0.1，原仓已提交
+
+本包工程验收完成，不重复实现。原Lab main已正常提交`6054c889aa571a8559227105f04f0a2ed5bd5d66`（29项精确CAS，工作树/受审候选/Git blob逐项相同，version CLI=1.0.1）；仅保留授权.codegraph索引未跟踪，原仓无remote不推送。105文件冻结、29变更、0删除；原1.0.0交接历史不改写，DTO仍1.0.0，合法旧计划/排程兼容。
+
+真实测试时序：原版64P重放；修复中候选整组92P；随后受影响范围27P；最后helper精确来源固定后7条合法CLI全0。数字有重叠，不相加，也不冒称最后版本重跑92整组。另一独立agent实际完成旧七例prefix/CACHE/CODEC正常兼容，静读实现及实测记录后passed/open_findings=[]，另核最终source commit的29个实际blob。来源对抗候选未独立重跑：平台中断后收窄为只读防御代码/已有日志和正常兼容，限制明确留档。
+
+已修上下文/计划/排程权威绑定、损坏字段类型/引用/路径与源码执行来源边界，保持原工具复用。516锁内文件逐字节保持；consumer366/4359090bytes含14锁内pyc，不是零pyc；共享68锁外pyc保留、不导入、不删除。实施两批及独审自有临时树已清空，证据/原件有意保留。最初artifact过时、旧review身份/日志来源限制、长路径/错误0pyc假设、CRLF检查停止均如实记录；没有补造历史passed、跳hook或更改全局配置。
+
+正式记录[CONTEXT验收](docs/implementation/experiments/context-pack-acceptance-2026-10-17.md)，薄证据归档`docs/implementation/reviews/context-pack-06-acceptance-2026-10-17/`。本轮0收费API/0下载/0生产DB或名单写入；工程签收不授予实际缓存收益、模型准确率、金融充分性或生产准入。REVIEW-CAL-06/RESUME-CHAOS-06本轮尚未见正式交接，继续小时巡查，避开其活动writer。
+
+## Next Step
+
+继续统一真实金融评审JSON与原scorer的数值、期间、币种/单位和会计身份契约，以真实样本及正反例打通可评/应拒边界；不改T4旧标签和冻结锁。再按原owner处理response_unpriced显式隔离续行、另登记新phase后推进真实对照。两个余下06包只按现有巡查接收，不增加helper审查节点。
+
+以下旧“CONTEXT验收中”“06尚未派发”等段落均为历史，不覆盖本段正式签收与当前下一步。
+
 ## 2026-10-17 — T4金融人审和真实计量后处理完成，自动标量接口尚未贯通
 
 三个05工程包已正式签收，修复commit为CATL928bfedf/CSC a944200c/Desk fac8ff3b；516P/2文件symlink权限skip，真实junction通过。总控85项审查证据/PWF已随f498353正常提交并推送，原239件/397输入及他人README/旧生产库保持。不要再重审或重复实现三个05包。

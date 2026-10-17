@@ -1,0 +1,79 @@
+{
+  "protocol": "iqs.coordinator-independent-review-final/1.0.0",
+  "package_id": "CONTEXT-PACK-06",
+  "package_version": "1.0.1",
+  "status": "passed",
+  "coordinator_agent": "/root",
+  "implementation_agent": "/root/accept_context06_code",
+  "reviewer_agent": "/root/accept_context06_evidence",
+  "reviewed_cas_raw_sha256": "85228d45a2798fea0139af28bcb3f2d7b58c184e7dab6a1f0292adf7bc9f5444",
+  "reviewed_candidate_freeze_raw_sha256": "361f57824c34adc0bc08848cf4bb6a0ae8705e5b5fadbea609396dc701c2bc7f",
+  "input_lock_raw_sha256": "968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233",
+  "reviewed_files": 105,
+  "reviewed_bytes": 1344117,
+  "changed_files": 29,
+  "round_files": [
+    {
+      "path": "review.md",
+      "raw_sha256": "b6afeb98658017c1bb3b47b552c7155ad59b6a8edacbce508cbed95ac646941d"
+    }
+  ],
+  "invocation_evidence": {
+    "path": "current-invocation.json",
+    "raw_sha256": "2838d9fa47d90d2e41a3781ab27e1b5bc7cfa168be892c061b327f371aefeaaf"
+  },
+  "artifacts": {
+    "path": "artifacts.json",
+    "raw_sha256": "6a72ec357f0cb98eccfb5ced7a4315462af92704e5cebe23f88fd27a1263883c"
+  },
+  "open_findings": [],
+  "closed_findings": [
+    {
+      "id": "E01",
+      "issue": "Original loader may execute lock-external pyc despite source-path check",
+      "basis": "Original independent execution recorded; final source-only loader/verifier code reviewed and existing implementation-agent source-policy records checked. Candidate adversarial execution was not independently rerun."
+    },
+    {
+      "id": "E02",
+      "issue": "Cached transitive consumer source binding incomplete",
+      "basis": "Independent static review; final inventory precheck covers consumer module names including submodules, helper path pinned before execute; final 7 valid CLI records and reviewer normal legacy checks pass. New adversarial execution not performed."
+    }
+  ],
+  "checks_scope": [
+    "105-file manifest and 29-path original-before/candidate-after CAS conversion",
+    "new artifacts raw bytes and 9 actual test records plus raw streams",
+    "7 final public CLI argv/time/exit/log binding",
+    "context/plan/schedule authority and schema failure behavior",
+    "frozen source-only import/verifier defensive code and cached consumer inventory",
+    "normal independent 1.0.0 seven-plan prefix/CACHE/CODEC compatibility",
+    "original86 and locked consumer366/shared516 integrity with unchanged 68 shared extras",
+    "owned scratch cleanup"
+  ],
+  "executed_by_reviewer": [
+    "original seven-plan true prefix/CACHE recomputation",
+    "original full-context CODEC comparison",
+    "original E01 harmless-marker pyc probe before narrowed scope",
+    "final candidate normal seven-plan/CACHE compatibility",
+    "final candidate normal full-context CODEC comparison",
+    "raw manifest/CAS/log/input checks"
+  ],
+  "not_independently_executed_on_candidate": [
+    "bytecode injection boundary",
+    "fake-module/foreign-cache adversarial boundary",
+    "full 92 or 97 test suite"
+  ],
+  "test_evidence_timing": "Earlier full92 passed; later focused27 passed before final helper precise pin; only final 7 valid CLI were run after that pin by implementation agent. Reviewer independently executed normal legacy compatibility after the pin. Counts are not summed.",
+  "historical_evidence_limits": [
+    "Old round-01 header agent ID differs from author-recorded invocation ID; old invocation times/authentic call records unavailable.",
+    "Old tests.json stdout hashes do not match preserved later suite run; old 64 pass counts do not repair that evidence.",
+    "Original task_plan.md artifact hash/bytes stale; current manifest correct and original history preserved."
+  ],
+  "scope_restriction": "After coordinator-recorded platform interruption, only safe read-only code/evidence review and normal legacy executions; no new adversarial candidate payload generated or executed.",
+  "source_commit_binding": "Pending coordinator CAS application; confirm actual Git blobs in separate source-commit-binding.json without modifying this signed final.",
+  "qualification": {
+    "production_ready": false,
+    "financial_qualification_granted": false,
+    "rating_gold": false
+  },
+  "completed_utc": "2026-10-17T07:53:10.990482+00:00"
+}
