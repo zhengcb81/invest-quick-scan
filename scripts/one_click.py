@@ -33,6 +33,14 @@ def main(argv=None):
          "--profiles-prefix", "profiles", "--links", args.links,
          "--html", args.out/"roster.html", "--json", args.out/"roster-status.json"])
     status = json.loads((args.out/"roster-status.json").read_text(encoding="utf-8"))
+    gaps_dir = args.out/"coverage-gaps"
+    run([SCRIPTS/"coverage_gaps.py", "--roster", args.out/"roster-status.json",
+         "--json", gaps_dir/"gaps.json", "--html", gaps_dir/"index.html"])
+    gaps = json.loads((gaps_dir/"gaps.json").read_text(encoding="utf-8"))
+    gaps_card = ('<div class="card"><a href="coverage-gaps/index.html">覆盖缺口：verified 但缺 owner 路由（'
+                 + str(gaps.get("waiting_owner_admission", 0)) + ' 家 · '
+                 + json.dumps(gaps.get("by_market", {}), ensure_ascii=False) + '）</a><br><span class="muted">'
+                 + '只读清单；准入仍需 owner/route 工作</span></div>')
     fin_dir = args.out/"financial-check"
     fin_dir.mkdir(parents=True, exist_ok=True)
     run([SCRIPTS/"financial_mechanical_check.py", "--workspace", args.workspace,
@@ -96,6 +104,7 @@ a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</sty
 <div class="card"><a href="profiles/index.html">打开公司画像索引（{len(list(profiles.glob('ENT_*.html')))} 页）</a></div>
 {facts_card}
     {fin_card}
+    {gaps_card}
     {prov_card}
     {answers_card}
     {scored_card}
