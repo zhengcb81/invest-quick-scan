@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — IQS_18 completed 并入库；第二条 search-backed 观察
+
+IQS_18 走完整链路：admission accepted → driver → slot completed（answer=insufficient_evidence，模型诚实说明只检索到一条无关来源）。按 IQS_09 方式构造 1.2.0 observation（真实 attempt/response 哈希、executed receipt SEARCH_2992…），导入 accepted。owner 观察 6 条；看板 financial 6/6 pass、provenance pass 2（09/18）、research_only 4；CATL 画像 2 个 search-backed 卡片。
+
 ## 2026-10-18 — IQS_10 admission accepted；模型输出坏 JSON
 
 IQS_10（entity，已有旧 pending work）preview ready → confirm → admit accepted，说明部分旧题仍可准入。driver 跑到模型，但模型输出中段有未转义引号（invalid json: Expecting ',' delimiter line 63 col 126），raw_decode 也无法解析，slot invalid（answer_payload_not_strict_json）。这是模型输出问题，不是解析回归。未重试（缓存会复用同一响应）。
