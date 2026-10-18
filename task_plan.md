@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — security 题：capture 可用，但 subject 未授权
+
+给 IQS_22 构造 security subject_ref（scope=security, SEC_989f…, listing LST_0e45…），capture 成功。但 preview 被 refresh_subject_not_authorized 拒绝：owner 权限态只授权了 entity subject，security analysis subject 尚未注册。不是 route 字段问题，而是 subject 授权范围。下一步需要注册/授权 security analysis subject（或扩展 owner 权限 scope）。
+
 ## 2026-10-18 — 看板加入 search-backed 答案页索引
 
 one_click 现在自动发现 docs/implementation/reviews 下的 answers.html，在首页列出「Search-backed 答案页」卡片（当前 2 个：0506 research-only 与 IQS_09 completed）。审阅入口不再靠记忆路径。
