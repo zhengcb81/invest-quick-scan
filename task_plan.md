@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — IQS_10 admission accepted；模型输出坏 JSON
+
+IQS_10（entity，已有旧 pending work）preview ready → confirm → admit accepted，说明部分旧题仍可准入。driver 跑到模型，但模型输出中段有未转义引号（invalid json: Expecting ',' delimiter line 63 col 126），raw_decode 也无法解析，slot invalid（answer_payload_not_strict_json）。这是模型输出问题，不是解析回归。未重试（缓存会复用同一响应）。
+
 ## 2026-10-18 — 画像卡片标注 search-backed
 
 profile_page 在卡片 meta 行增加 search-backed 标识（execution.search_status=executed 且有 search_receipt_id）。one_click 重新生成后，CATL IQS_09 卡片显示「score: None · as_of: 2026-10-18 · cutoff: 2026-10-18 · search-backed」，research-only 观察不带该标识。
