@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — dispatch 被 reviewed-deployment 门拦住
+
+admission 已 accepted（rv1_ce80… / rc2_3fdb…），但两题驱动的部署证明校验失败：controller_delivery.verify_deployment 报 engineering_reference_path_or_hash_changed（controller CAS 漂移；reviewer id 固定，不能自签）。fresh-exposure 也不在已审 source pins。结论：现有 reviewed 门下 2 题付费 dispatch 不能合法执行。已恢复 owner policy（3239c35b…）与 delegation；新预算 policy 行保留（0 attempt）。无付费调用。报告 docs/implementation/reviews/deployment-gate-2026-10-18.md；下一步需重新交付/独立审查。
+
 ## 2026-10-18 — fresh-budget 合同 + 2 题 admission 成功
 
 owner 批 A/$30 后实现 fresh exposure 合同（snapshot 1.2.0、owner_ack_ref、attempts=[]），QA 与 IQS schema 同步；新 budget policy $30/v2（in_flight 3，旧 3 笔未结算未动）。preview rv1_ce80… ready，delegated confirm rc2_3fdb…，admit accepted（permission_authenticated、registered_with_executor、API=0）。engine dispatch 未发生：还需为 2 题 1.4 admission 构建 run config。报告 docs/implementation/reviews/fresh-budget-exposure-2026-10-18.md。
