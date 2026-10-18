@@ -26,3 +26,8 @@
 1. 分类已确认，profile.json 已提升；
 3. 注册 facts pack 并走 owner admission 才能真实运行；
 4. 运行后 import observation、刷新画像页事实区。
+## 2026-10-18 facts 上下文与授权
+
+- facts-context.json：16/16 题覆盖，facts_context_check = ready
+- facts-authority.json：facts_authority_check = valid
+- 仍需 owner/facts 执行入口注册后才能做真实 facts run
