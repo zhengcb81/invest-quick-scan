@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 清理工作树与全量测试
+
+梳理 IQS 工作树：提交 search exec policy 当前查询（IQS_12）与 refresh-v1.4 module_packs enum（02df834）；保留未提交的 questions/releases/current.json 与 parallel-lanes README（非本会话改动，待确认）；runs/ 下临时脚本不纳入。IQS 全量 pytest 已启动（后台，耗时长），QA/SW/lab 定向测试均绿：42/31/6。
+
 ## 2026-10-18 — 第二家公司 000026 analysis subject 就绪
 
 owner_admission_subject 为 000026 生成并导入 analysis subject：ASJ_67a1f0d0…@1，perimeter b5ec9001…，primary issuer ENT_a87249c5…，PRC_cce87da4…，write_status=unchanged（此前已导入）。这只解决 subject；route/policy/admission 仍缺（需要该公司的 manifest/identity bundle 与可执行 v2 routing policy）。跨仓测试：QA owner budget 42 passed（1 known）、SW work decision 31 passed、lab 6 passed。
