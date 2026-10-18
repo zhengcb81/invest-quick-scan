@@ -220,3 +220,17 @@ runs/remaining-final-review-2026-10-18/* -text whitespace=cr-at-eol,-blank-at-eo
 docs/implementation/reviews/shared-engine-production-2026-10-18/** -text whitespace=cr-at-eol
 runs/shared-engine-production-2026-10-18/*.json -text whitespace=cr-at-eol
 runs/shared-engine-production-2026-10-18/independent-review/* -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+
+# Preserve original pytest RED/GREEN diagnostics, including source-line spaces.
+runs/shared-engine-production-2026-10-18/secret-boundary-candidate/*.xml -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+
+# Nested thin evidence is hashed as raw bytes, not platform-normalized JSON.
+runs/shared-engine-production-2026-10-18/composition-candidate/* -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/owner-services-candidate/*.json -text whitespace=cr-at-eol
+runs/shared-engine-production-2026-10-18/owner-services-candidate/report.md -text whitespace=cr-at-eol
+runs/shared-engine-production-2026-10-18/real-ledger-migration-01/result.json -text whitespace=cr-at-eol
+runs/shared-engine-production-2026-10-18/secret-boundary-candidate/*.json -text whitespace=cr-at-eol
+
+# The reviewed native task factory and integration test have exact source CAS.
+scripts/shared_company_task.py -text whitespace=cr-at-eol
+tests/test_shared_company_engine_native_e2e.py -text whitespace=cr-at-eol

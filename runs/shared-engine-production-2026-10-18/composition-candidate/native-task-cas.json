@@ -1,0 +1,68 @@
+{
+  "protocol": "iqs.native-task-factory-candidate/1.0.0",
+  "status": "frozen_for_independent_whole_node_review",
+  "files": [
+    {
+      "candidate_path": "scripts/shared_company_task.py",
+      "target_repository": "invest-quick-scan",
+      "target_path": "scripts/shared_company_task.py",
+      "expected_target_exists": false,
+      "expected_target_sha256": null,
+      "candidate_sha256": "b851cb77a1b057f5e5e23312439c44725e1280cac7ec15944ce743c651767793",
+      "bytes": 8394
+    },
+    {
+      "candidate_path": "tests/test_shared_company_engine_native_e2e.py",
+      "target_repository": "invest-quick-scan",
+      "target_path": "tests/test_shared_company_engine_native_e2e.py",
+      "expected_target_exists": false,
+      "expected_target_sha256": null,
+      "candidate_sha256": "02be3847c089421de3132804f1086b39ca25099148dd1344073061443625e405",
+      "bytes": 10521
+    },
+    {
+      "candidate_path": "fixture-candidate/tests/integration/test_c06_subject_public_e2e.py",
+      "target_repository": "StockQAbyLLM",
+      "target_path": "tests/integration/test_c06_subject_public_e2e.py",
+      "expected_target_exists": true,
+      "expected_target_sha256": "9b8440fa190d2b67114f8d4530f3f680df48a054cbe9393ea9e5d245dd542181",
+      "candidate_sha256": "a61172507c1de97fca4134ee06b0d2f889a273f1b928a48b7dbe571d82b86943",
+      "bytes": 34380
+    }
+  ],
+  "supporting_files": [
+    {
+      "path": "README.md",
+      "sha256": "61b97b1529f50e1f2f9328c302eaf54f77d9c01cbc43ad5b78ee3e082e21177c"
+    },
+    {
+      "path": "run-native-e2e.ps1",
+      "sha256": "3efbf183e3763dc7fb585323536967e849283cf519852195487bf367664e54c9"
+    },
+    {
+      "path": "native-e2e-final.xml",
+      "sha256": "f513a95474151164804854f31106a2cdf90b41abeb48241907bcbbc0f3855b60"
+    },
+    {
+      "path": "native-executed-source.json",
+      "sha256": "bdfadd3a5917052a3017debfcf71ac0d1e13543dae5ce0af6ca8bdb5f8598451"
+    },
+    {
+      "path": "native-e2e-evidence.json",
+      "sha256": "47000c29c7c4721adff4d6c243d6a682b315f37016adda926a7909352fe12e69"
+    }
+  ],
+  "test_command": "& runs/shared-engine-production-2026-10-18/composition-candidate/run-native-e2e.ps1 -TempName t04 -EvidenceName native-e2e-final",
+  "scope": "task3 bound factory and original twelve-question owner/SDK/Runner/process-death recovery integration",
+  "limitations": [
+    "free_agent full-pack only",
+    "twelve authorized native questions only",
+    "information_cutoff2026-10-13 only",
+    "Mimo native one-shot only",
+    "zero search-query carrier",
+    "synthetic fixture observations only",
+    "no paid/model-financial qualification",
+    "official search-backed native checkpoints unsupported"
+  ],
+  "prior_signed_composition_source_cas_sha256": "158f3c141a651eb5dceb71cb03abcf51bdeb9c351f46f1f25547cc0f0920e6c4"
+}

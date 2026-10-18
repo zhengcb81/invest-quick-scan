@@ -1,0 +1,141 @@
+{
+  "protocol": "iqs.shared-engine-whole-node-independent-review-state/1.0.0",
+  "reviewer": "/root/production_node_review18",
+  "implementation_authors": [
+    "/root",
+    "/root/mainline_map18",
+    "/root/native_research_durability18",
+    "/root/owner_services18"
+  ],
+  "status": "engineering_source_and_scripted_restart_accepted",
+  "scope": "delivered_shared_engine_engineering_node",
+  "findings": [
+    {
+      "id": "F01",
+      "state": "fixed_independent_retest_passed",
+      "issue": "board lineage not bound to original journal"
+    },
+    {
+      "id": "F02",
+      "state": "fixed_independent_retest_passed",
+      "issue": "checkpoint task snapshot/restore nested alias"
+    },
+    {
+      "id": "F03",
+      "state": "fixed_independent_retest_passed",
+      "issue": "received pack wrong-model usage receipt lost before persistence"
+    },
+    {
+      "id": "F04",
+      "state": "fixed_independent_retest_passed_exact_scope_bound",
+      "issue": "Known safe response before receipt journal persistence has no public-resume checkpoint"
+    },
+    {
+      "id": "F05",
+      "state": "fixed_independent_retest_passed_exact_scope_bound",
+      "issue": "rehashed intent member join not checked against original physical pack members"
+    },
+    {
+      "id": "F06",
+      "state": "fixed_independent_retest_passed_exact_scope_bound",
+      "issue": "detached company reference, task limits and endpoint drift was not checked consistently before cache/observer/checkpoint paths"
+    },
+    {
+      "id": "F07",
+      "state": "fixed_independent_retest_passed_exact_scope_bound",
+      "issue": "credential prefix substring guard rejected ordinary financial and operational prose"
+    }
+  ],
+  "pending": [
+    "Real-model factual/financial accuracy, actual cost/speed and cold/warm/restart/cache experiments",
+    "Original production owner delegation/onboarding follow-up (separate candidate not accepted here)",
+    "Official search/context-proof checkpoint reconciliation and unsupported lease cases"
+  ],
+  "artifacts": [
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/company-probes-r6.xml",
+      "bytes": 1837,
+      "sha256": "e299ffb0ba4e706b9d1b955be55790374388cef245f942438563e55d83328eac"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/company-full-r2.xml",
+      "bytes": 20233,
+      "sha256": "089060dd5f1b66aab2df370de078e3b4323434bbbff5ad8bc5201dfd4372eb1b"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/native-probes-r5.xml",
+      "bytes": 1208,
+      "sha256": "8cdb24f0a26a2b3224ff2344272cd48c834eac8d3742d98dd5cacd9bd058577f"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/session-probes-r1.xml",
+      "bytes": 1721,
+      "sha256": "f2ee39215593ee84f689c042bf7500249e57c3073dbb820f66fc7960e7934606"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/company_probes.py",
+      "bytes": 6047,
+      "sha256": "a91736757fde1275429a7fc419ba90912b5e477e292b04d4d11893d1ba0bf637"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/native_probes.py",
+      "bytes": 5847,
+      "sha256": "db673cfe10180810e973c29b55af2e17a68b459099e0b2354aed28b3d30fa5f9"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/composition_probes.py",
+      "bytes": 1989,
+      "sha256": "035aa07a54d4ffd445d234f3180471e7159f6eee001fd052e28bcd4309d96213"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/composition-probes-r2.xml",
+      "bytes": 2861,
+      "sha256": "882bbd3e40256ad38c3adeafb0ab769d146c4e0b21b87137c9e3deffbef19c6e"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/native-integrated-probes-r1.xml",
+      "bytes": 1208,
+      "sha256": "1aa5dc92dfc7daedb262061207b9445a98e92c9c7f68ce781280618bdbe1200d"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/company-full-r3.xml",
+      "bytes": 20372,
+      "sha256": "fbbce280498447735c14e47b307f4f023354dd2bd2519fa1ffb268367d799403"
+    }
+  ],
+  "costs": {
+    "paid_api_calls": 0,
+    "source_repository_writes": 0,
+    "production_database_writes": 0
+  },
+  "created_at_utc": "2026-10-18T00:44:41.686863+00:00",
+  "open_findings": [],
+  "company_source_scope_acceptance": "company-scoped-acceptance.json",
+  "native_core_scope_acceptance": "native-core-scoped-acceptance.json",
+  "composition_scope_acceptance": "composition-scoped-acceptance.json",
+  "owner_services_scope_acceptance": "owner-services-scoped-acceptance.json",
+  "applied_commits": {
+    "company": "cd5e3e7ff44aa94cff3f7728c5c38811e9192b85",
+    "native_core": "52330ab633d00fa1a282492a6ca9fc809c62e182",
+    "composition": "e8a1ef02c2026d440288cab560178b24266c67a1",
+    "owner_services": "d5cfe50e5d1f0377a754a2a94e491c6b44f6f783",
+    "runtime_observer": "b732a496d5dbfd904da1acca7482df4beb521e4c",
+    "secret_boundary": "acae964c7a2fc99104b479636bdd79e789860422"
+  },
+  "secret_boundary_scope_acceptance": "secret-boundary-scoped-acceptance.json",
+  "task3_provisional_tests": {
+    "passed": 8,
+    "not_an_admitted_owner_positive": true,
+    "final_scope_pending": false
+  },
+  "original_whole_production_objective_status": "still_pending_followup_qualification",
+  "task3_scope_acceptance": "native-task3-scoped-acceptance.json",
+  "cleanup": {
+    "status": "pending_policy",
+    "executed": false,
+    "reason": "automatic policy rejected deletion before execution; no alternate route attempted",
+    "record": "runs/shared-engine-production-2026-10-18/composition-candidate/native-cleanup.json",
+    "sha256": "7d7cd8bcd708dcf7a640d907712868a181dbd185588867d3d479153daa895b21",
+    "temporary_databases_and_answer_bodies_not_publishable": true
+  }
+}

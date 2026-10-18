@@ -1,0 +1,107 @@
+{
+  "protocol": "iqs.shared-engine-final-native-task-scoped-independent-acceptance/1.0.0",
+  "status": "engineering_source_and_scripted_restart_accepted",
+  "reviewer": "/root/production_node_review18",
+  "implementation_authors": [
+    "/root",
+    "/root/shared_engine_composition18"
+  ],
+  "source_cas_sha256": "c8c6e76a325d1004be4983ddc4ee435862d7519dfe942d1fb878e4ee1e4fba8d",
+  "restore_cas_sha256": "3bda2909e725210db779b02af0ee5fb231baf9c919d642ffabf2c2936f07b3ee",
+  "files": [
+    {
+      "repository": "invest-quick-scan",
+      "path": "scripts/shared_company_task.py",
+      "sha256": "b851cb77a1b057f5e5e23312439c44725e1280cac7ec15944ce743c651767793",
+      "bytes": 8394
+    },
+    {
+      "repository": "invest-quick-scan",
+      "path": "tests/test_shared_company_engine_native_e2e.py",
+      "sha256": "02be3847c089421de3132804f1086b39ca25099148dd1344073061443625e405",
+      "bytes": 10521
+    },
+    {
+      "repository": "StockQAbyLLM",
+      "path": "tests/integration/test_c06_subject_public_e2e.py",
+      "sha256": "a61172507c1de97fca4134ee06b0d2f889a273f1b928a48b7dbe571d82b86943",
+      "bytes": 34380
+    },
+    {
+      "repository": "iqs-company-agent-lab",
+      "path": "src/iqs_company_agent_lab/task.py",
+      "sha256": "075441929a64578fe2866ff587919771ef877d85b49591aaa884d078ab246b41",
+      "bytes": 11314
+    }
+  ],
+  "open_findings": [],
+  "independent_unseen_rejection_and_restore_tests": {
+    "passed": 8,
+    "seconds": 2.95,
+    "admitted_owner_positive": false
+  },
+  "actual_original_public_owner_software_e2e": {
+    "passed": 1,
+    "seconds": 435.193,
+    "original_questions": 12,
+    "cold_scripted_posts": 1,
+    "new_posts_on_fresh_process_resume": 0,
+    "physical_budget_attempts": 1,
+    "member_attempts": 12,
+    "lease_seconds": 600,
+    "lease_extended": false,
+    "safe_visible_outputs": 1,
+    "official_answer_checkpoints": 0
+  },
+  "artifacts": [
+    {
+      "path": "runs/shared-engine-production-2026-10-18/composition-candidate/native-task-cas.json",
+      "bytes": 2876,
+      "sha256": "c8c6e76a325d1004be4983ddc4ee435862d7519dfe942d1fb878e4ee1e4fba8d"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/company-native-task-restore-cas.json",
+      "bytes": 732,
+      "sha256": "3bda2909e725210db779b02af0ee5fb231baf9c919d642ffabf2c2936f07b3ee"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/native_task3_probes.py",
+      "bytes": 3876,
+      "sha256": "07ee325eedc71c11c7ca2c1f8f51e0beb55bd6f14f47c658d75a7f2773a0fbd0"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/native-task3-independent.xml",
+      "bytes": 1820,
+      "sha256": "ef814d6880f4b72e7da6260e5682aedce5b62a6ef89bcfeac0a850a9428b05e4"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/native-task3-final-binding.json",
+      "bytes": 1519,
+      "sha256": "3d162885c3bc1c91c30b86297de464a0df1b54b0bc05356359d04c7b56da3431"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/independent-review/native-twelve-readonly-binding.json",
+      "bytes": 828,
+      "sha256": "68ba63522fddb24ad59508a1221e4f9b9b50b0449fb27bdd6b2a0ae24248ea97"
+    },
+    {
+      "path": "docs/implementation/reviews/shared-engine-production-2026-10-18/round-07.md",
+      "bytes": 4218,
+      "sha256": "e3be7209fcac14e20110d31c37662ba264a9701893fc4067c067063fa9d3922f"
+    }
+  ],
+  "source_writes_by_reviewer": 0,
+  "paid_api_calls": 0,
+  "original_database_writes": 0,
+  "production_qualification": false,
+  "financial_accuracy_assessed": false,
+  "live_cache_economics_assessed": false,
+  "cleanup": {
+    "status": "pending_policy",
+    "executed": false,
+    "reason": "automatic policy rejected deletion before execution; no alternate route attempted",
+    "record": "runs/shared-engine-production-2026-10-18/composition-candidate/native-cleanup.json",
+    "sha256": "7d7cd8bcd708dcf7a640d907712868a181dbd185588867d3d479153daa895b21",
+    "temporary_databases_and_answer_bodies_not_publishable": true
+  }
+}

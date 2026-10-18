@@ -1,6 +1,6 @@
 # 共享引擎生产接线：当前实现与验收边界
 
-本文件记录2026-10-18工程推进；生产节点仍在进行。旧施工包离线验收已完成，不能由此推导真实模型准确率、生产owner准入或全股票池已就绪。
+本文件记录2026-10-18工程推进；本轮工程范围已独立验收，真实公司和生产委托入口继续实施。旧施工包离线验收已完成，不能由此推导真实模型准确率、生产owner准入或全股票池已就绪。
 
 ```mermaid
 flowchart LR
@@ -44,3 +44,11 @@ IQS共享入口已提交推送e8a1ef0；`python -B scripts/shared_company_engine
 StockQA原生核心52330ab、owner服务d5cfe50已经正常hooks提交推送；Runtime桥在其原本地分支提交。新增task3工厂与完整12题正例仍待同节点验收，不先发布为全生产完成。
 
 所有旧收费请求/未知用量保留。真实旧账本20→23兼容验收只迁移只读备份；该结果不意味着原库已升级。新表为空不代表旧请求费用为零，也不能补造旧safe visible output。
+
+## 最终工程验收
+
+同一独立reviewer最终签收原Runner/原owner/原SDK组合，F01–F07全部关闭。Task3工厂只接受原已批准12题、完整题义/模块锁/同一主体、2026-10-13截止日、free_agent全包、零新搜索、MiMo one-shot；不能解释成所有策略/所有公司/日期已开放。Task3恢复只复制描述性owner_binding，每次实际权限仍核原owner。
+
+实际隔离软件E2E435.193秒：cold1次scripted SDK POST，native safe output原子保存后强退86；fresh process恢复12slots、新POST0/replay1/physical1。summary确实从原native回执重建，cash费用为null，owner_authority_verified/financial_qualification_granted均false。0正式搜索checkpoint。软件总墙钟包含原生重复权限检查，不能作为实际模型速度指标。测试环境最小无密钥变量、禁止外联；没有延长600秒原lease。精确source/结果/测试与独审绑定在本节点final.json及native-task3-scoped-acceptance.json。
+
+真实执行下一步是显式delegated owner版本；单纯聊天授权不会被软件误标TTY记录。原S1 unknown/unpriced预约保留，后续原预算续行必须显式实现且保持累计上限与旧任务不重发。

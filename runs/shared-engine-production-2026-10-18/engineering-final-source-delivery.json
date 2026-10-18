@@ -1,0 +1,26 @@
+{
+  "scope": "shared engine engineering source and scripted twelve-question native restart accepted",
+  "review": "docs/implementation/reviews/shared-engine-production-2026-10-18/final.json",
+  "sources": {
+    "StockQAbyLLM": {
+      "branch": "master",
+      "commit": "d739619bf7a2f00c143fab2569673155bb3751b5",
+      "remote_configured": true
+    },
+    "iqs-company-agent-lab": {
+      "branch": "master",
+      "commit": "2f853bc13966c3329ccc6b70cbabe57d12c8c9d2",
+      "remote_configured": false
+    },
+    "iqs-agent-runtime-lab": {
+      "branch": "codex/agent-run-02",
+      "commit": "b732a496d5dbfd904da1acca7482df4beb521e4c",
+      "remote_configured": false
+    }
+  },
+  "IQS_new_source_paths": [
+    "scripts/shared_company_task.py",
+    "tests/test_shared_company_engine_native_e2e.py"
+  ],
+  "no_paid_model_evaluation_this_node": true
+}

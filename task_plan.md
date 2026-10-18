@@ -1,3 +1,13 @@
+## 2026-10-18 — 共享引擎工程节点已验收，转真实运行入口
+
+**工程节点完成：** 独立reviewer在同一节点关闭F01–F07，final.json状态为engineering_source_and_scripted_restart_accepted、open_findings=[]。最终12题使用原public owner/SDK/原SQLite/同一个Company Runner，cold脚本POST1次，原安全输出落库后os._exit86，全新进程恢复12题、新POST0、原物理预算attempt仍1；435.193秒，原600秒lease未扩大。907执行源码和5overlay已绑定，Task3另有8个独立拒绝/恢复反例。此为实际软件＋合成身份/同意/响应，不能当真实公司金融正确性或付费模型成本速度。
+
+最终源码已按精确CAS应用。Company恢复Task3描述绑定提交2f853bc（含之前F07 acae964）；StockQA历史fixture正常hooks提交推送d739619（包含之前owner d5cfe50/核心52330ab），格式化后完整AST相同；Runtime b732a49原本地分支/no remote。IQS新增共享Task3工厂与12题E2E，本批正常提交推送；其他writer的2026-10-10 README不动。所有独审报告和薄证据可复核，原DB/回答正文/密钥不归档。
+
+**下一大段实施中：** delegated-owner-candidate补明确agent委托确认，保留旧TTY且不冒称人工；不重复问既有权限。真实S1旧账仍有unknown/unpriced，原预算禁止将独立研究排除规则用于owner work；新委托不是清账授权，不用新库/改费用/盲重发绕过。需在原ledger中显式保留预约与累计上限的后续能力，再推进真实公司摘要、冷暖/恢复及模型准确性费用速度对照。正式search-backed checkpoint、金融/G3/F05/UI/一键/全池未完成。
+
+清理记录真实保留：相关自有临时目录被自动策略在执行前拒绝删除，未绕过；原始日志/CAS/薄结果保留，本地临时DB和响应不发布。三张独立10包已发布、未自动派发，入口见2026-10-18-mainline-support/README.md。
+
 ## 2026-10-18 — 修复真实金融文字被密钥检查误拒
 
 原Company event/receipt检查把risk-adjusted、task-output、mask-based、disk-failure中的裸sk-子串当凭证拒绝。不能靠改测试ID掩盖真实金融叙述错误：新增共用credential_marker，只对sk-要求左侧token边界，其他原标记/短前缀拒绝与隐藏思考守卫保持。先RED4F/10P，修后14P；原整套加新测试171P/1原Windows skip，独立24个未见自然词/真实凭证边界反例全部通过，同一整节点独审已签3路径。已正常本地提交Company `acae964c7a2fc99104b479636bdd79e789860422`，Lab无remote不新建。
@@ -46,7 +56,7 @@ Company核心仍为已交付cd5e3e7。owner 服务实际原软件批准/SDK两�
 
 ## Next Step
 
-完成当前最终12题原公开owner→Task3工厂→同一Runner→真实OS进程退出→原native安全响应零重发恢复软件验收，并由当前同一独立reviewer核Task3/final证据；有效根因直接修复。Company核心cd5e3e7、StockQA核心52330ab与owner服务d5cfe50、Runtime b732a49、IQS组合e8a1ef0已交付，不重做。真实公司API/金融正确性、正式搜索checkpoint与全生产门仍未关闭。源仓/原真实账本已只读核对；旧unknown不重发。
+继续delegated-owner-candidate的原公开CLI委托安装→确认→StockQA准入→撤销前后SDK/恢复整链TDD；由不同agent整包复核后再source应用。当前共享引擎12题脚本原生恢复工程节点已独立验收，不重做、不把它当真实金融答案。并明确处理原S1未知费用的原生续行前置，保留预约和累计上限，不转新库或重发旧请求。
 
 三个主线配套新卡已完成真正不同 agent 的整包发布审查（cards_review18，passed/open_findings=[]），位于 docs/implementation/parallel-lanes/packages/2026-10-18-mainline-support/。RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10 各占一个新 Lab，输入为 d788a10 的65个已提交 Git 对象记录；零网络、零生产写入，实施末必须独立整包审查修尽后交接。尚未自动派发。
 
