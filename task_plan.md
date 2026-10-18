@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 看板与检查复核（5 条观察）
+
+移除 IQS_19 观察后重新跑 one_click：financial-check 显示 observations=5、pass=5、fail=0；首页卡片同步为「5 条观察 · pass 5 / fail 0」；画像 214 页、答案页索引 2 个。已启动独立 reviewer 审查 search-backed 路径（等待结论）。
+
 ## 2026-10-18 — 清理 uncertain work 后仍 plan_changed；停止强推 scored 重跑
 
 把 IQS_19 的 uncertain work 标为 failed（带事件），重新 capture/preview/confirm；preview 又 ready（rv1_bc93…），admission 仍报 refresh_admission_plan_changed：owner register 的 planned decision 与 confirmation 里的 item decision 不一致（binding/attempt 历史仍在，owner 认为应 resume）。结论：在不改 owner 协议的前提下无法用同一题重跑 scored。决定停止强推，把 IQS_19 的 scored 答案保留为审阅产物（不入观察库），搜索主线以 IQS_09 completed 为正式完成证据。
