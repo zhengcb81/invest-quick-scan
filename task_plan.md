@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 外部引用不再要求板上记录；IQS_21 离线 PASS
+
+scored/insufficient 答案的 binding 检查现在对空投影板的外部 URL 引用放行（citation closure 已按 URL 归一化）。IQS_21 的答案离线通过 citation + binding 两项检查（status=insufficient_evidence）。下一步用新题跑完整链路，预期得到第一个 slot=completed。
+
 ## 2026-10-18 — IQS_19 给出 scored=6 的 search-backed 答案；payload 裸对象需包装
 
 IQS_19 运行到模型，输出是合法 JSON 但没有 answers/declared_question_ids 包装，被 answer_payload_not_strict_json 拒绝。离线用新包装规则验证：status=scored、score=6、information_as_of=2026-10-18，引用经 canonical 化后 PASS。这是第一个内容上成立、引用也通过的 search-backed 评分答案。runner 已加裸答案包装。下一轮用新题跑完整链路，应得到 slot=completed。
