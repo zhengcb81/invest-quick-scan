@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_08 admission accepted；引擎执行了真实搜索
+
+IQS_08 走完 preview rv1_4f60… → confirm rc2_2c62… → admit accepted。work item WORK_bd8aa0fc… claim 后直接调 retrieve_external_question_context：引擎真实发起 DeepSeek 搜索并落盘 SEARCH_83693e6a…（operation/dispatch/result 各 1 条），随后按证据规则拒绝 external_evidence_insufficient：返回源是 stcn/cnr/sohu 等第三方媒体，而 policy 的 entity_domain_bindings 只允许 catl.com。下一步：把查询改为 site:catl.com 或增加 issuer-specific path 绑定，再走新题 admission（避免 plan_changed）。
+
 ## 2026-10-18 — USD search preview/confirm 成功；IQS_07 admission 撞已有 pending work
 
 修正 qa.admission_config 指向 catl-07 后，preview=ready（rv1_f9f9…），install grant 成功，confirm=rc2_d2011f…。admit 被 refresh_admission_plan_changed 拒绝：IQS_07 在第一次 admission 时已注册 pending work，重新预演走 resume 而 session 走 dispatch。下一步换未使用题（IQS_08）重做 exposure/policy/preview/confirm/admit。
