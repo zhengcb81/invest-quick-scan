@@ -1198,7 +1198,10 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 200,
-              "const": "free_agent"
+              "enum": [
+                "free_agent",
+                "module_packs"
+              ]
             },
             "search_policy_sha256": {
               "type": "string",
