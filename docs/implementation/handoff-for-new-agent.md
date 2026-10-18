@@ -1,3 +1,27 @@
+## 2026-10-18 — search-backed 真实运行与画像入口（最新）
+
+### 已完成（真实付费调用）
+
+- **IQS_09 完整 search-backed 运行**：DeepSeek 搜索 → external context（3 条 catl.com 来源）→ mimo 模型答案 → 引用/绑定校验 → slot completed（answer=insufficient_evidence）。导出：runs/existing-list-onboarding-2026-10-18/search-run-11/export-20261018T164946Z。
+- 答案作为 1.2.0 observation 导入 owner workspace（search_status=executed、receipt=SEARCH_26f1…），CATL 画像可见。
+- 观察库现有 **5 条**：IQS_12/16/05/06（research-only insufficient）+ IQS_09（search-backed insufficient）。
+- IQS_19 曾产出 scored=6 的模型答案；因 answer 语义（forward period）不符合 query contract，未入库，只保留审阅产物。
+- 看板：python scripts/one_click.py → 214 页画像、financial-check（5 条观察 5/5 pass）、2 个答案页索引。
+- CATL facts：facts-context.json（ready 16/16）、facts-authority.json（valid），未注册真实 facts 执行入口。
+
+### 已知限制（协议层，不是代码 bug）
+
+1. security 题 IQS_22–24：refresh policy schema 的 routes[].scope 只允许 entity/segment，security 不能授权。
+2. 同题重跑：已有 binding/attempt 的题，owner register 选 resume、session 选 dispatch → refresh_admission_plan_changed。
+3. scored 答案若 period_end 是预测区间，query_original_answer_semantics_invalid（score 题不能带 fact items；forward 期间需谨慎）。
+
+### 关键命令/路径
+
+- 单测：QA tests/unit/test_owner_budget_continuation.py（41 passed，1 个已知 schema 版本失败）；lab tests/test_free_agent_tools.py（6 passed）。
+- 搜索 policy/exposure：docs/implementation/reviews/deepseek-search-2026-10-18/
+- CATL 观察导入脚本：runs/existing-list-onboarding-2026-10-18/import-0506.py（DIR 可切换 import-09/19）
+- 金融机械检查：python scripts/financial_mechanical_check.py --workspace <ws> --json <out> --html <out>
+
 ## 2026-10-18 — search-backed 与 F05 的离线交付（最新）
 
 ### 已完成（全部离线，58 tests passed）
