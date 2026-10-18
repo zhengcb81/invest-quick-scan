@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 第一次完整 search-backed 引擎运行（IQS_15）
+
+在取消 owner exposure 对搜索 dispatch 的投影校验、fresh 预算排除 DISPATCH、并放宽 fresh 快照 hash 后，IQS_15 跑完：引擎真实搜索→external context→模型 HTTP→解析答案。slot 结果 invalid，gap=citation_not_in_evidence_store：模型给出的引用 URL 不在证据存储里。这是最后的质量层，不是链路问题。下一步：让模型只引用证据中的精确 URL（或允许同 host 归一）。
+
 ## 2026-10-18 — IQS_14 预算快照回滚的最终定位
 
 把 DB 预算行重新 configure 成文件投影 327e9a59… 后，driver 一跑又把 DB 写回 e21eda6d…；installed policy 的 control snapshot 仍是 327e，所以 dispatch 必然 mismatch。结论：admission 注册/执行链路在 prepare 时用注册 proof 的预算投影（e21e）回写 store，而 flow 的 control 用文件投影（327e）。下一步只能两阶段：先注册预算→从注册 proof 取投影生成 control→再 preview/confirm/admit；或让 admission 不回写预算。
