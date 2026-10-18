@@ -33,6 +33,22 @@
 - **Tushare**：注册 token 后可批量拿 `fullname`，覆盖北交所更稳；免费额度有限。
 - 其他商业源（Wind/iFinD/Choice）需账号。
 
+## 5 家试点预演（cninfo API，副本）
+
+用 `stock_profile_cninfo` 构建 5 份 verified payload，在真实 workspace 的副本上导入：
+
+| ticker | 法人全称 | 结果 |
+|---|---|---|
+| 000026 | 飞亚达精密科技股份有限公司 | verified / IVR_3ca69a28… |
+| 000400 | 许继电气股份有限公司 | verified / IVR_8ec63e0c… |
+| 000547 | 航天工业发展股份有限公司 | verified / IVR_74d2124b… |
+| 000596 | 安徽古井贡酒股份有限公司 | verified / IVR_3cc6e2af… |
+| 000625 | 重庆长安汽车股份有限公司 | verified / IVR_a8811c0f… |
+
+- 证据 URL 形如 `https://www.cninfo.com.cn/new/disclosure/stock?stockCode=000026&orgId=gssz0000026`（orgId 来自现有 source_binding 的 source_record_id）。
+- 副本状态：206 provisional + 8 verified（含万科A 与 2 家既有）；回执 215 provisional + 8 verified。
+- 未写真实库；真实库仍 212 provisional / 3 verified（万科A 试点后）。
+
 ## 下一步（待确认口径）
 
 1. 批准用 cninfo 逐公司概况页 + API 响应哈希作为 CN verified 证据；
