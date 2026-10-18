@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — fresh 快照计入搜索 dispatch 成本
+
+修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
+
 ## 2026-10-18 — 画像卡片标注 search-backed
 
 profile_page 在卡片 meta 行增加 search-backed 标识（execution.search_status=executed 且有 search_receipt_id）。one_click 重新生成后，CATL IQS_09 卡片显示「score: None · as_of: 2026-10-18 · cutoff: 2026-10-18 · search-backed」，research-only 观察不带该标识。
