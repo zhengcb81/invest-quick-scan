@@ -1,3 +1,7 @@
+## 2026-10-18 — 搜索供应商选项（供决策）
+
+公开价格摘录：Brave 5 美元/1k（有免费 credits）、Tavily 免费 1,000 credits/月、Serper 2,500 试用（但现有策略无 serper kind）、DeepSeek 报道 5 元/1k。StockWiki 策略支持 brave/tavily/zai；准入需 enabled、credential_env、cost_bound_verified+pricing、storage_rights.confirmed+entitlement。建议先用 Tavily 免费额度或 Brave 做 1 家 1 题试点；需要 owner 选供应商、给 key 环境变量名、确认存储权利与查询/费用上限。报告 docs/implementation/reviews/search-provider-options-2026-10-18.md。
+
 ## 2026-10-18 — owner 准入第二步探测：route 被 historical 包卡住
 
 为 000026 构建 route-input（identity_ref=stockwiki.route_subject/1.0.0:819f0627…），调用 question_sets resolve-route 返回 “historical package has no executable v2 routing policy”。即当前发布的 question package 没有可执行 v2 路由策略，**新公司的 route decision 无法由现有 CLI 生成**；CATL 的 route 是更早用可执行 routing 包冻结的。选项：发布新 routing 包（治理动作）或 owner 手工指定 route。route 之后的 universe/policy/preview/admit/付费 run 仍按原计划。报告已更新 owner-admission-000026-2026-10-18.md。
