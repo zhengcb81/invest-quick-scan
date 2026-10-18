@@ -35,10 +35,11 @@ def main(argv=None):
     status = json.loads((args.out/"roster-status.json").read_text(encoding="utf-8"))
     gaps_dir = args.out/"coverage-gaps"
     run([SCRIPTS/"coverage_gaps.py", "--roster", args.out/"roster-status.json",
-         "--json", gaps_dir/"gaps.json", "--html", gaps_dir/"index.html"])
+         "--json", gaps_dir/"gaps.json", "--html", gaps_dir/"index.html",
+         "--subjects", args.workspace/"data/quick_scan/analysis_subjects.sqlite"])
     gaps = json.loads((gaps_dir/"gaps.json").read_text(encoding="utf-8"))
     gaps_card = ('<div class="card"><a href="coverage-gaps/index.html">覆盖缺口：verified 但缺 owner 路由（'
-                 + str(gaps.get("waiting_owner_admission", 0)) + ' 家 · '
+                 + str(gaps.get("waiting_owner_admission", 0)) + ' 家 · subject ready ' + str(gaps.get("subject_ready", 0)) + ' · '
                  + json.dumps(gaps.get("by_market", {}), ensure_ascii=False) + '）</a><br><span class="muted">'
                  + '只读清单；准入仍需 owner/route 工作</span></div>')
     fin_dir = args.out/"financial-check"

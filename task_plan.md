@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 覆盖缺口显示 subject readiness
+
+coverage_gaps 现在读取 owner analysis_subjects.sqlite，标记 208 家缺路由公司中已有 analysis subject 的数量（当前 2 家，含 000026）。首页卡片显示「208 家 · subject ready 2 · US 8 / CN 200」。定向 IQS 测试在后台运行。
+
 ## 2026-10-18 — IQS 全量测试不可在本机跑完（环境耗时）
 
 IQS tests 共 916 个；无超时保护时挂起，加超时保护后在 test_g0_manifest（g0 candidate scope_paths 对超大 worktree 逐文件 stat）触发超时。这是环境/仓库体积问题，不是本次改动回归。相关跨仓定向测试已绿：QA 42、SW 31、lab 6；后续以定向测试 + 验收脚本为准。
