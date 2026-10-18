@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 路由字段范围限制：22/24 不在 subject route
+
+尝试换题再跑 scored：IQS_19 的确认已过期（refresh_consent_native_rejected）；IQS_22、IQS_24 preview 都被 refresh_field_not_in_current_subject_route 拒绝，说明当前 subject route 只覆盖 09–21 的一部分，22–24 未注册。下一步：要么给 22–24 注册 route 字段，要么 seal IQS_19 的 uncertain work 后重新 admission。
+
 ## 2026-10-18 — 第一个 slot=completed 的 search-backed 引擎答案（IQS_09）
 
 IQS_09 在修好裸/带尾随 JSON 的 raw_decode 包装后跑完：run-summary all_slots_completed=true，slot IQS_09=completed，answer=insufficient_evidence（gap 仅 insufficient_evidence_present，属提示不是失败）。这是第一次由引擎完成 搜索→external context→模型答案→引用/绑定校验 的全链路，并且答案落盘。答案页：docs/implementation/reviews/search-backed-catl-iqs09-2026-10-18/answers.html。
