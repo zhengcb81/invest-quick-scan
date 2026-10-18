@@ -1,3 +1,7 @@
+## 2026-10-18 — owner 准入第二步探测：route 被 historical 包卡住
+
+为 000026 构建 route-input（identity_ref=stockwiki.route_subject/1.0.0:819f0627…），调用 question_sets resolve-route 返回 “historical package has no executable v2 routing policy”。即当前发布的 question package 没有可执行 v2 路由策略，**新公司的 route decision 无法由现有 CLI 生成**；CATL 的 route 是更早用可执行 routing 包冻结的。选项：发布新 routing 包（治理动作）或 owner 手工指定 route。route 之后的 universe/policy/preview/admit/付费 run 仍按原计划。报告已更新 owner-admission-000026-2026-10-18.md。
+
 ## 2026-10-18 — owner 准入第一步（subject）副本跑通
 
 新增 scripts/owner_admission_subject.py，为 000026 飞亚达构建并导入 AnalysisSubject + perimeter receipt：ASJ_67a1f0d0…@1、PRC_cce87da4…、perimeter b5ec9001…、write_status=unchanged、0 网络/0 模型；只在真实 workspace 副本操作。剩余：route 决策（module package/routing）→ universe 成员 → owner policy/预算曝光 → preview/confirm/admit → 1 题付费 run；3/4 需写前报告+独立审查。报告 docs/implementation/reviews/owner-admission-000026-2026-10-18.md。

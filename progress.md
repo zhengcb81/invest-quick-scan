@@ -1,3 +1,7 @@
+## 2026-10-18 — owner 准入 route 探测失败
+
+resolve-route 报 “historical package has no executable v2 routing policy”：当前 question package 无法为新公司生成 route decision；route-input/identity_ref 已能构建。准入在 route 处被架构/治理缺口卡住。
+
 ## 2026-10-18 — owner 准入 subject 副本跑通
 
 000026：ASJ_67a1f0d0…@1 + PRC 回执导入副本，幂等 unchanged，0 网络/0 模型；新增 owner_admission_subject 工具。route/policy/admission 仍待做。
