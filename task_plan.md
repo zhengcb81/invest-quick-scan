@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_07 search exposure + admission 尝试
+
+新增 search-exposure-deepseek-iqs07.json（1 query、5000 micro-CNY、route deepseek-primary），用 1.2 policy schema 校验 valid；新建 budget iqs-catl-07-search-20261018 与 admission-config-catl-07，安装 14L（cell search hash=exposure digest、module_packs）。preview 仍被 subject_contract_output_invalid 拦住（query read 阶段，非 policy/exposure 校验），需下一步抓 query contract 具体错误。
+
 ## 2026-10-18 — DeepSeek execution policy 1.2.0 准入
 
 新增 search-policy-deepseek-exec-2026-10-18.json：schema 1.2.0，route deepseek_search，dispatch quota_group=deepseek_tools_search / in-flight 1，metering successful_nonempty_only + per_search/search_calls，execution_plan（entity/identity sha/manifest sha/cutoff、IQS_07 查询）。load_search_policy 结果：admitted=(deepseek-primary,)，execution_plan=true。下一步：exposure 引用该 policy、写 retrieval records、driver 接线。
