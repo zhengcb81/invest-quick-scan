@@ -4,7 +4,7 @@
 
 过程中从根因修复了三个真实接缝：1) publish 事务内二次 owner 往返与自身写锁冲突，改为复用同事务刚获得的 grant 并仍校验 confirmation 与存储 grant；2) 原 StockWiki CLI 的命令是扁平 observation-import（不是 quick-scan observation-import）；3) 原 IQS 合同拒绝非评分回答携带已引用数字，新增显式 research_only 通道（standard_answers.validate_content / query_contract._validate_original_semantics / subject_dispatch_contract.bind_original / subject_dispatch_cli，默认关闭），SW bind 仅对 unreviewed+unverified 观察启用，保留单位/期间/来源/截止日与分数/事实规则。
 
-源码：IQS eaf96e7、4504962 已推 origin；QA 39c150e、8c166a6、12aea00 已推；SW 1fb9efa、dcc70ce 本地提交（原仓无 remote）。三张 2026-10-18 施工包已完成第三轮（最终）独立复审并 **pass**：26/26 冻结 blob 实核一致，N1–N7 全部闭合（真实账本计数、ET-02 三条 null、单段离线 catalog、findings/observations 分离、链接与归档说明），文档归档提交 b5f99b4，仍未派发、未实施。真实部署/真库写入与 ACK 已完成，不再重跑或重发模型。本节点无剩余必做项。
+源码：IQS eaf96e7、4504962 已推 origin；QA 39c150e、8c166a6、12aea00 已推；SW 1fb9efa、dcc70ce 本地提交（原仓无 remote）。三张 2026-10-18 施工包已完成第三轮（最终）独立复审并 **pass**：26/26 冻结 blob 实核一致，N1–N7 全部闭合（真实账本计数、ET-02 三条 null、单段离线 catalog、findings/observations 分离、链接与归档说明），文档归档提交 b5f99b4，仍未派发、未实施。真实部署/真库写入与 ACK 已完成，不再重跑或重发模型。独立审查最终确认 handover approved（唯一附带项是补正候选目录 handoff-pause.md 的“未应用”历史表述，已补 execution 段并指向 post-execution CAS 与证据）。本节点无剩余必做项。
 
 ## 2026-10-18 — 真实 publication 已落库，交付被原 IQS 研究型答案校验阻断
 
