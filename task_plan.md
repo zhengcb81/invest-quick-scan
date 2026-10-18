@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — www 主机归一化后证据合格；IQS_11 external context 建成
+
+根因：policy 绑定 host=catl.com，实际返回 www.catl.com，_origin_binding 精确比较导致全部不合格。修复：host 比较时同时去掉 www. 前缀（仅主机名归一，不放宽域名/路径）。修复后 build_external_question_context 产出 3 条合格来源（catl.com 年报页），引擎复用 SEARCH_dd83a4…、0 新 HTTP，IQS_11 的 search context 建成。QA 相关测试 201 passed（2 个 routing 模块缺失为环境问题）。下一步：用该 context 跑模型评分并落 checkpoint。
+
 ## 2026-10-18 — IQS_11 site:catl.com 管线与第二次引擎搜索
 
 一键管线（search-pilot-11.py）完成：capture→request→新预算 iqs-catl-11-search→14O policy→preview rv1_5ca0…→install→confirm rc2_3a9f…→admit accepted。claim WORK_da9f42f3… 后 retrieve 再次由引擎真实搜索（SEARCH_dd83a4…），返回 catl.com 年报页（661GWh、39.2% 全球份额）。仍被 external_evidence_insufficient 拦住：provider_summary 入口没有 entity 绑定，证据层不认。下一步：决定是否放宽 issuer 域名摘要的证据资格，或补 entity 绑定字段。
