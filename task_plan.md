@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — F05 draft facts authority
+
+新增 facts_authority_build/check：把 draft context 包成带 contract_versions/capabilities/producer/run_context 的 draft authority，并校验 hash/覆盖/版本/能力。CATL 16 题 valid、coverage ready。边界：draft，不是 c06 签发 authority；真实注册仍需并入 producer + owner 流程。2 个单测通过。
+
 ## 2026-10-18 — F05 draft facts context 生成
 
 新增 scripts/facts_context_build.py：从 facts pack + identity + profile 生成 draft facts context（含字段/实体/cohort/cutoff 与各源哈希）。CATL 16 题，context check ready（0 missing）。边界：draft context，不是 owner authority/签名/admission；仍需 authority producer + 注册。2 个单测通过。
