@@ -11,6 +11,7 @@
     "search_policy_sha256",
     "max_search_queries_per_session",
     "max_search_cost_micros",
+    "currency",
     "routes",
     "storage_rights",
     "approved_by",
@@ -96,7 +97,7 @@
       ],
       "properties": {
         "confirmed": {
-          "const": true
+          "type": "boolean"
         },
         "entitlement_ref": {
           "type": "string",
@@ -113,6 +114,12 @@
     "approved_at": {
       "type": "string",
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "currency": {
+      "enum": [
+        "USD",
+        "CNY"
+      ]
     }
   }
 }

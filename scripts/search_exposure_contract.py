@@ -35,6 +35,8 @@ def validate(document, *, base_dir=None, environ=None):
         actual = hashlib.sha256(policy.read_bytes()).hexdigest()
         if actual != document["search_policy_sha256"]:
             errors.append("search_policy_sha256_mismatch")
+    if document["storage_rights"].get("confirmed") is not True:
+        errors.append("storage_rights_unconfirmed")
     if not any(route["enabled"] for route in document["routes"]):
         errors.append("no_enabled_route")
     for route in document["routes"]:
@@ -49,6 +51,7 @@ def validate(document, *, base_dir=None, environ=None):
         search_policy_sha256=document["search_policy_sha256"],
         max_search_queries_per_session=document["max_search_queries_per_session"],
         max_search_cost_micros=document["max_search_cost_micros"],
+        currency=document["currency"],
         enabled_routes=[r["route_id"] for r in document["routes"] if r["enabled"]],
         credential_presence={r["credential_env"]: (r["credential_env"] in environ) for r in document["routes"]},
         errors=errors,

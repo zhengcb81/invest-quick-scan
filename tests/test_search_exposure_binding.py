@@ -27,6 +27,7 @@ def exposure(tmp_path, **overrides):
         "search_policy_sha256": hashlib.sha256(policy.read_bytes()).hexdigest(),
         "max_search_queries_per_session": 2,
         "max_search_cost_micros": 50000,
+        "currency": "USD",
         "routes": [
             {"route_id": "brave-primary", "provider": "brave", "credential_env": "BRAVE_API_KEY",
              "enabled": True, "max_queries": 2},
