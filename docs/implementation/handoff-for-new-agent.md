@@ -1,3 +1,11 @@
+## 2026-10-18 — fresh-budget 合同 + 2 题 admission + search exposure v1（最新）
+
+- owner 批准 fresh-budget（$30）后，新增 `stockqa.owner_exposure_snapshot/1.2.0`（attempts=[]、fresh_budget、owner_ack_ref），QA + IQS schema 落地；独立审查无未授权绕过，已修 dialect/refs、quote enum [0,2]、docstring 边界；QA 6a32ac0 / IQS dd4f87f。
+- CATL IQS_01/02：preview `rv1_ce80…` ready → confirm `rc2_3fdb…` → **admit accepted**（permission_authenticated、registered_with_executor、API=0）。
+- dispatch 被 reviewed-deployment 门拦住：`controller_delivery.verify_deployment` 报 `engineering_reference_path_or_hash_changed`（controller CAS/reviewer 冻结，不能自签）。**未绕过、未付费**；owner policy 已恢复 1.5 备份（3239c35b…），新预算 policy 行保留（0 attempt）。
+- S1 首个落地件：`iqs.search_exposure/1.0.0` schema + `scripts/search_exposure_contract.py`（policy sha256、启用路由、凭据存在性、查询预算、存储权利），6 单测通过。仍缺 owner 的 Brave/Tavily 单价与存储条款，policy 不能转 executable。
+- 下一步：2 题 dispatch 需新 reviewed delivery 或另建经审查执行器；否则转 F05/G3/画像入口等不依赖该门的主线。
+
 ## 2026-10-18 — C 方向：产品入口就绪，原主线剩余项定义
 
 用户选 C（回原 PWF 主线）后，产品入口已成型：
