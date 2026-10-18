@@ -33,6 +33,15 @@ def main(argv=None):
          "--profiles-prefix", "profiles", "--links", args.links,
          "--html", args.out/"roster.html", "--json", args.out/"roster-status.json"])
     status = json.loads((args.out/"roster-status.json").read_text(encoding="utf-8"))
+    fin_dir = args.out/"financial-check"
+    fin_dir.mkdir(parents=True, exist_ok=True)
+    run([SCRIPTS/"financial_mechanical_check.py", "--workspace", args.workspace,
+         "--json", fin_dir/"check.json", "--html", fin_dir/"check.html"])
+    fin = json.loads((fin_dir/"check.json").read_text(encoding="utf-8"))
+    fin_card = ('<div class="card"><a href="financial-check/check.html">金融机械检查（'
+                + str(fin.get("observations", 0)) + ' 条观察 · pass ' + str(fin.get("mechanical_pass", 0))
+                + ' / fail ' + str(fin.get("mechanical_fail", 0)) + '）</a><br><span class="muted">'
+                + '只做结构/单位/期间/引用一致性；不是金融准确性或投资结论</span></div>')
     verdicts_dir = ROOT/"docs/implementation/reviews/financial-verdicts"
     reviewed = len(list(verdicts_dir.glob("*.json"))) if verdicts_dir.is_dir() else 0
     sys.path.insert(0, str(SCRIPTS))
@@ -56,6 +65,7 @@ a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</sty
 <div class="card"><a href="roster.html">打开 Roster（可搜索/筛选/点公司名进画像）</a></div>
 <div class="card"><a href="profiles/index.html">打开公司画像索引（{len(list(profiles.glob('ENT_*.html')))} 页）</a></div>
 {facts_card}
+    {fin_card}
 <div class="card muted">只读页面；不构成评分、投资建议或财务准确性结论。</div>
 </body></html>"""
     (args.out/"index.html").write_text(landing, encoding="utf-8")

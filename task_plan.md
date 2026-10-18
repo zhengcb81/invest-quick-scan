@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 金融机械检查接入 one_click
+
+one_click 现在每次生成都会跑 financial_mechanical_check，把 check.json/html 写到 dashboard/financial-check，并在首页加卡片显示「6 条观察 · pass 6 / fail 0」及边界声明。金融检查从此是生产看板的一部分，而不是一次性脚本。
+
 ## 2026-10-18 — 6 条观察全部通过金融机械检查
 
 financial_mechanical_check 跑 owner workspace：6 条观察、6 pass、0 fail（5 条 insufficient + IQS_19 scored）。过程中修正一个规则：basis=forward/stress 的 period_end 晚于 cutoff 属于预测窗口，不应误报 period_after_cutoff。检查只做结构/单位/期间/引用一致，不做金融准确性结论。产物：docs/implementation/reviews/financial-mechanical-catl-2026-10-18/{check.json,check.html}。
