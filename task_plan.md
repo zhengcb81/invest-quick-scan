@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_07 retrieval 尝试：跨币种预算冲突
+
+work item WORK_caa872be2a3941faae8663c21182ff34 已 claim（lease epoch 2），直接调 retrieve_external_question_context 做真实检索时被 search and answer-model budget currencies differ 拦住：DeepSeek 搜索 policy 计价 CNY，mimo 模型预算 USD，共享预算要求同币种。这是真实设计缺口（不是门禁）。下一步：确定币种策略（统一 CNY 或加换算层），再跑 retrieval。
+
 ## 2026-10-18 — IQS_07 search admission accepted
 
 preview rv1_180e… → confirm rc2_0ca3… → admit accepted（permission_authenticated、registered_with_executor、API=0）。admission 使用新预算 iqs-catl-07-search-20261018 与 admission-config-catl-07；cell 带 search exposure hash。下一步：driver 传 require_search/search_policy/search_exposure/search_service，写 retrieval records，跑 IQS_07 search-backed。
