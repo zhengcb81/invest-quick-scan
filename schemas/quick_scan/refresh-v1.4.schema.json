@@ -297,7 +297,9 @@
               "maximum": 350
             },
             "retained_unreconciled_attempts": {
-              "const": 2
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 350
             },
             "cash_actual_complete": {
               "const": false
@@ -507,7 +509,9 @@
               "maximum": 350
             },
             "retained_unreconciled_attempts": {
-              "const": 2
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 350
             },
             "cash_actual_complete": {
               "const": false
@@ -1003,7 +1007,10 @@
       "type": "object",
       "properties": {
         "protocol": {
-          "const": "stockqa.owner_exposure_snapshot/1.0.0"
+          "enum": [
+            "stockqa.owner_exposure_snapshot/1.0.0",
+            "stockqa.owner_exposure_snapshot/1.2.0"
+          ]
         },
         "policy_id": {
           "type": "string",
@@ -1019,7 +1026,6 @@
           "items": {
             "$ref": "#/$defs/RetainedBudgetAttempt"
           },
-          "minItems": 2,
           "maxItems": 2
         },
         "requests": {
@@ -1036,6 +1042,14 @@
         },
         "cash_actual_complete": {
           "const": false
+        },
+        "fresh_budget": {
+          "type": "boolean"
+        },
+        "owner_ack_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
         }
       },
       "required": [
@@ -1048,7 +1062,64 @@
         "spent_micros",
         "cash_actual_complete"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "protocol": {
+                "const": "stockqa.owner_exposure_snapshot/1.0.0"
+              }
+            },
+            "required": [
+              "protocol"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attempts": {
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "protocol": {
+                "const": "stockqa.owner_exposure_snapshot/1.2.0"
+              }
+            },
+            "required": [
+              "protocol"
+            ]
+          },
+          "then": {
+            "required": [
+              "fresh_budget",
+              "owner_ack_ref"
+            ],
+            "properties": {
+              "attempts": {
+                "maxItems": 0
+              },
+              "fresh_budget": {
+                "const": true
+              },
+              "requests": {
+                "const": 0
+              },
+              "reserved_micros": {
+                "const": 0
+              },
+              "spent_micros": {
+                "const": 0
+              }
+            }
+          }
+        }
+      ]
     },
     "ComparisonCell": {
       "type": "object",
