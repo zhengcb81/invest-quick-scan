@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 真实运行答案审阅页；导入路径分析
+
+新增 scripts/run_answers_page.py，把 recovered-export/research-run.json 的两题答案渲染为只读 HTML：docs/implementation/reviews/real-run-catl-0506-2026-10-18/answers.html（IQS_05/06，insufficient_evidence，附证据 URL，明确非金融准确率结论）。1 个单测通过。导入分析：save_answer_checkpoint 要求 verified search 或 external projection，本 run 为零搜索 research-only，需走 research-only observation 包路径（首两条 CATL 观察即如此），当前 direct driver 未产出该包；下一步按原 research-only 包格式导入。
+
 ## 2026-10-18 — 真实小样本运行完成：CATL IQS_05/06
 
 删除 storage/reviewed 门后，用无 reviewed-proof 的 scan driver 完成真实运行：IQS_05/06，module_packs，1 次真实模型 HTTP，0 搜索；cold 在安全边界退出 86，recover 从缓存完成 2/2 槽，新增模型 HTTP=0。账本：PACK_BUDGET_f294… settled、HTTP 200、actual 6676 micros。产物：actual-native-catl-0506-scan/recovered-report/report.md、recovered-export/（research-run.json 含两题答案，均为 insufficient_evidence，属如实缺失而非伪造）。尚未导入 StockWiki observation。
