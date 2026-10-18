@@ -194,4 +194,4 @@ StockQA `961884d`、StockWiki `03423ba`、Company `2561f56` 和IQS `4481c56`已�
 
 Alphabet/12题/MiMo Pro/开启思考/9条既有短来源/0新搜索：新增一次HTTP200，冷进程745.694秒，但0份安全答案、usage未知、费用仍为NULL，原预约USD0.10保留；旧100条请求及两笔未知费用原样保持。缓存恢复未开始，金融准确性不可评。456.372秒是适配层调用区间，包含原权限/持久化检查，不能当纯网络时间；此失败不证明整包准确性优于或劣于逐题。
 
-已定位两处可修工程缺口：严格响应失败的固定错误码未持久化，以及Runtime漏识别真实ResearchResponseValidationError子类。只保留有限错误码，不存正文/思考/原始错误字符串；semantic-invalid与transport-unknown分开，费用未知与是否已有答案分开。该修复不能给旧失败补造原因、usage或答案，不能解除原未知预约/允许盲重发。批量领取优化仍保留原owner/原事务/每次POST前权限校验，默认关闭；以最终独审和实际源码交付记录判断是否完成。
+两处工程缺口已修复并独立签收：严格响应失败的固定错误码未持久化，以及Runtime漏识别真实ResearchResponseValidationError子类。StockQA `27d3373` 已推送，Runtime `f83a5be` 已本地提交，见[原节点验收](../docs/implementation/reviews/real-native-runtime-2026-10-18/final.json)。只保留有限错误码，不存正文/思考/原始错误字符串；semantic-invalid与transport-unknown分开，费用未知与是否已有答案分开。该修复不能给旧失败补造原因、usage或答案，不能解除原未知预约/允许盲重发。批量领取优化仍保留原owner/原事务/每次POST前权限校验，默认关闭；以最终独审和实际源码交付记录判断是否完成。

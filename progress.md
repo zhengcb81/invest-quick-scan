@@ -8,6 +8,8 @@
 
 下一步完成已准备的默认关闭、原owner原事务批量claim优化，整节点公开测试与独审后再应用；诊断修复已经交付，保留本次真实失败现场。真实答案与恢复需后续合法新实验，不能补写本次成功。三个10号Lab已由用户发出，保持活动writer隔离。
 
+本轮diagnostic自有8个测试临时目录精确清理被自动审批在执行前拒绝（仅blocked by policy）；未删除、未换方法重试，cleanup.json记录pending_policy与精确保留路径。所有临时库仍隔离在本节点runs，未归档/发布，不能报告环境全清。实际原数据库/外包活动目录未触碰。
+
 ## 2026-10-18 — 真实Alphabet实验已原生准入并启动（结果待验收）
 
 实际原namespace已完成备份、原S1 schema20→24迁移（所有旧表全部行保持、新表初始空）、原route13 current CAS version2、真实query/quote、dg1委托/rc2确认和原StockQA admission。原100请求及两笔费用未知/预约保持，未用新库或清旧账绕过。原生确认rc2_1535b0c624e43cbd43330d1c1fe87116ecc03ccf400126d3897d3b37106fd3b2，真实工作根runs/shared-engine-production-2026-10-18/actual-native-alphabet-01。源码交付IQS4481c56、QA961884d已推；SW03423ba、Company2561f56本地无remote。
