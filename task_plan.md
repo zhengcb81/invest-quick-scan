@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 回到产品层：CATL 画像页（只读）
+
+在暂停底层准入扩张后，先用已有真实观察做一页用户可见的公司画像：scripts/profile_page.py 读取 scan_observations，渲染 CATL（宁德时代）2 条研究的题目、状态、指标/证据/缺失字段与“不构成评分”边界；输出 runs/existing-list-onboarding-2026-10-18/catl-profile.html。这是产品输出层的验证，不涉及新基础设施、不写库、不调用模型。
+
 ## 2026-10-18 — 公司画像入口缺口：owner 查询拒绝 subject 合同
 
 已建 standard-1 24 题 manifest、authority（schema 2.0.0）、context2（24 题 subject_binding + listing material）；副本 route snapshot/universe 已演练。owner query CLI 对 000026 返回 subject_contract_output_invalid（24/2/CATL 同款字段都试过），说明 subject 还没被 owner profile 合同接受；身份/route/universe 必要但不充分，仍需把 context2/question bindings 注册进 owner 侧。这是生产入口真正剩下的工程缺口。报告 docs/implementation/reviews/owner-profile-entry-gap-2026-10-18.md。未写真实 policy/route/universe，未调用模型。
