@@ -47,3 +47,16 @@ scripts/deepseek_search_client.py：
 - 不重试、不回退其他 provider、不记录 key。
 
 测试：tests/test_deepseek_search_client.py 5 个（载荷、ok、empty、503、缺 key、count 边界），与 receipt 测试合计 10 passed。
+
+
+## checkpoint 绑定（S3/S4 glue）
+
+scripts/search_checkpoint_binding.py：
+
+- 从 task 的 execution_profile.search_exposure 取 exposure；
+- 校验每条 receipt 的 exposure/费用/币种/route；
+- receipt 数 <= max_search_queries_per_session，总费用 <= max_search_cost_micros；
+- 生成 receipts_sha256 = canonical([canonical(receipt)...])；
+- 若 checkpoint 带 search_receipts_sha256，必须精确相等。
+
+输出 iqs.search_checkpoint_binding/1.0.0；失败退出码 2。5 个单测通过。该模块只做绑定校验，不授权发送。
