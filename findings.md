@@ -1,3 +1,9 @@
+## 2026-10-18 — 现有公司列表的可用数据面
+
+1. 216 家候选全部能在 company-wiki 安全主数据（cninfo/SEC）找到唯一上市记录；交易所分布 SSE 109、SZSE 99、BSE 1、NASDAQ 3、NYSE 4，无缺失、无多义。
+2. 25 家候选简称与目录正式名不同（万科 vs 万科A 等）；身份应以目录 canonical_name 为准，候选名保留为 claim，不能反向覆盖候选表或目录。
+3. provisional 导入可完全离线：官方 https 源 URL 作为 official_equity_category 证据，单证券 + ATT_ 回执即可；隔离验证覆盖四个交易所并幂等。provisional 不等于 verified，也不自动获得评分/搜索资格。
+
 ## 2026-10-18 — 真实出版完成后的可复用结论
 
 1. 零 HTTP 研究出版可以在不新增账本/服务的前提下完成：原 owner preview/confirm/inspect 提供 authority，QA 由原 task/native safe 派生答案并写 v3 checkpoint + sealed delivery，原 StockWiki import/ACK 决定 delivered。101→102 之外不新增预算/尝试/费用行。

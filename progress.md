@@ -1,3 +1,7 @@
+## 2026-10-18 — 现有列表身份前置：216/216 命中、payload 与隔离验证完成
+
+候选 216（CN-A 209、US 7）全部 unresolved。对 company-wiki 安全主数据 216/216 命中；生成 216 个 provisional payload（官方 https 证据、MIC/币种映射、ID 冻结）；空 workspace 实导 4 个交易所样本全部成功且重放一致。写前报告已写，真实 workspace 未写；等独立审查通过后按交易所分批导入并复验行数/幂等。
+
 ## 2026-10-18 — 真实保存研究出版全链完成并已 ACK
 
 真实链路两题均 delivered：preview wdp1_316c…、confirm rc1_dcb42b…、inspect 1.1.0（API 0/writes 0/request 相等/1 anchor/2 item）、apply、import、ACK accepted、重放 ACK 完全相等。StockWiki 实写 2 observation + 2 binding + 2 import item；observation 保持 insufficient_evidence/null/unreviewed/unverified。真实账本 schema25，102 预算行与备份逐行一致，attempt 14，其余 12 work 仍 leased，2 个 v3 checkpoint、2 delivery delivered，0 新预算/尝试/费用、0 HTTP。

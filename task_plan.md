@@ -1,3 +1,11 @@
+## 2026-10-18 — 新目标：现有 216 家候选的身份前置（不扩到 2000 家）
+
+用户要求继续整个项目，2000 家扩容先放一边，先做已有公司列表。现有候选表 216 行（CN-A 209、US 7）全部 unresolved/scan_eligible=0，原因均为 listing_not_in_authoritative_store；owner workspace 仅有 3 个实体、2 个成员。
+
+**已完成（离线，无真实写入）**：把 216 家逐一对到 company-wiki 安全主数据（cninfo 6137、SEC 6959），命中 216/216（SSE 109、SZSE 99、BSE 1、NASDAQ 3、NYSE 4）；25 家候选名与目录 canonical_name 不同，按目录名建实体、候选名保留为 claim。生成 216 个 provisional payload（单证券、ATT_ provisional_scope、official_equity_category + https 源 URL、MIC 映射 XSHE/XSHG/XBSE/XNAS/XNYS、CNY/USD），ID 映射冻结在 id-map.json。在空 workspace 实导 SZSE/SSE/BSE/NASDAQ 各一条：4/4 entity_saved_receipt_recorded，幂等重放 receipt 相同，库内 4/4/4。写前报告 docs/implementation/reviews/existing-list-onboarding-2026-10-18.md；真实 workspace 未写。
+
+**待办**：独立审查（进行中）通过后，备份 scan.sqlite/identity_receipts.sqlite，按交易所分批真实导入 216 条（stop-on-error、逐文件回执、行数复验、抽样幂等），再更新 PWF/提交。本批只做身份前置，不做 universe 扩员、评分或搜索。
+
 ## 2026-10-18 — 真实保存研究出版全链完成（零 HTTP、非评分、已 ACK）
 
 真实零 HTTP 出版已完整通过：真实 capability → preview wdp1_316c92c1… → delegated confirm rc1_dcb42b76… → inspect current_permissions（1.1.0、API 0、DB writes 0、request 相等、1 anchor/2 item）→ apply → begin/import → 原 StockWiki ACK → 幂等重放。两个 work 均 delivered；两 packages pkg_d3f0752a… / pkg_f2171c34…；ACK 均 accepted 且重放完全相等；StockWiki 实际写入 2 条 observation、2 条 subject binding、2 条 import item，observation 仍 insufficient_evidence/score=null、evidence_review_status=unreviewed、search_status=unverified。真实账本 schema 25，102 条预算行与迁移前备份逐行一致，attempt 仍 14、其余 12 work 仍 leased，2 个 v3 checkpoint、2 条 delivery 均 delivered，0 新预算/尝试/费用行、0 HTTP。
