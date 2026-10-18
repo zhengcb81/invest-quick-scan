@@ -1,46 +1,38 @@
-# 已验证身份（verified issuer）批 — 写前报告 — 2026-10-18
+# 已验证身份（verified issuer）批 — 写前报告（round 2）— 2026-10-18
 
-状态：**写前报告，未写真实 workspace**。目的：把现有列表里的 provisional 实体升级为 verified，解锁正式 checkpoint / 评分 / 出版；先做 1 家（万科A）试点，通过后再批量。
+状态：**审查未通过；真实 workspace 不写**。本轮确认：当前证据与数据不足以诚实完成 verified 升级，需先决定“法人全称 + 逐发行人官方证据”的来源。
 
-## 为什么需要
+## 审查结论（round 1）
 
-- 共享引擎的 checkpoint 校验、评分与 publication 都要求 `identity_state == "verified"`；provisional 只能创建 work，不能产出正式可读 checkpoint。
-- 现有 214 实体中 212 个是 provisional（本批导入），2 个既有 verified。
-- 因此“公司画像与评分生产入口”的前置是：把要扫描的公司升级为 verified。
+- **证据不足（blocker）**：公司目录 URL（cninfo `szse_stock.json`）只能证明“000002 在官方清单中叫万科A”，不能证明法人主体、不能把证券与法人绑定，也没有 ISIN/统一社会信用代码。B01b 先例对这一步用的是 SEC 10-K + owner 批准。
+- 最低要求：一家公司一份**逐发行人官方文件**（年报/招股书/cninfo 或交易所发行人页）作为 `evidence_ref`，其中同时出现证券代码与**公司全称**；目录 URL 只作次级溯源；另需 owner_approval id。
+- 因为 IVR 的 `canonical_name` 来自实体，verified 实体在 rev2 必须写**法人全称**（source_binding 保留万科A 作为交易简称），否则“verified issuer”用的是交易简称。
+- 当前既有数据（company-wiki 安全主数据、companies.yaml）**没有法人全称**；逐发行人证据也未采集。因此 211 家的批量升级目前无法诚实执行。
 
-## 试点范围与证据
+## 已确认正确的部分
 
-- 对象：`CN-A:000002` 万科A（entity `ENT_b63a2d90-5165-49a1-a36b-95a0d57ce534`），已有 1 个 provisional_scope 回执（rev1）。
-- 证据：company-wiki 安全主数据的官方目录 URL（cninfo `https://www.cninfo.com.cn/new/data/szse_stock.json`），记录该 ticker 的官方 listing 归属；**这是目录级证据，不是逐发行人公告页**，报告如实标注。
-- 方法：新构建 `IVR_` verified_issuer 回执，`same_legal_issuer=true`、`identity_revision=2`、`entity.verified_issuer_receipt_id=IVR_`、`recorded_at` 固定；实体升到 revision 2 / verified。
-- 不删除原 provisional 回执；不覆盖历史；不改候选表。
+- `save_entity` 强制 revision +1，拒绝同 revision 不同内容；完全相同重放是 no-op；回执返回同一 id。
+- 半写风险真实但可检测：实体先落 verified，回执失败时 G2b 导出会报 `receipt_missing/receipt_not_active`，无法产出 snapshot/checkpoint；仍要求写后检查 IVR 存在且 entity_id/revision 匹配，失败即停、重试或恢复。
 
-## 隔离预演（已完成）
+## 批量语义（已修正，脚本已实现）
 
-- 在真实 workspace 的副本 `runs/existing-list-onboarding-2026-10-18/verified-pilot-rehearsal` 上导入万科A verified payload：
-  - 首次 `capacity_status=entity_saved_receipt_recorded`，receipt `IVR_33408e42dd1c6ec38abe1894d540db5d`；
-  - 完全相同 payload 重放：exit 0、receipt 相同、零新增；
-  - 实体落库 `verified / revision 2 / IVR_33408e42…`；回执计数 verified_issuer 2→3。
-- 关键教训：同一 revision 改内容会被拒（`same identity revision replay with different content`），必须 bump 到 revision 2。
+- 升级**修改既有行**：entity / security / binding 计数**不变**；receipt 每条 +1；verified 计数 +1。
+- 每文件写后断言 `identity_state=verified、identity_revision=2、verified_issuer_receipt_id=IVR_`。
+- 计数：当前 212 provisional；试点 1 家后剩 **211**（报告此前的 210 是错的）；再按 ≤60/批升级 211。
+- 回滚：恢复两份 SQLite 字节；中途失败留下“部分已升级、可重跑”的混合状态，逐文件幂等。
+- `verified-batch.py` 已在 workspace 副本整跑 211：entity/security/binding 不变，verified 2→213，receipt 217→428，每批与逐文件校验通过。
 
-## 真实写入计划
+## 历史与边界（精确表述）
 
-1. 写前备份 scan.sqlite 与 identity_receipts.sqlite（字节 + 计数 + SHA），确认无 -wal/-shm。
-2. 只写 1 家：导入万科A verified payload；复验实体 state/revision/IVR、回执计数 +1、候选表与其它实体不变；重放一次确认零新增。
-3. 通过独立复审后，再按同一 payload 规则批量升级剩余 210 家（跳过 2 家既有 verified：Alphabet、CATL；中信建投 H 是 provisional，可一并升级）。
-4. 批量按 ≤60/批，逐文件回执、每批计数校验、全量校验 expected = before + N；任一不符中止。
-5. 升级后再验证 G2b 导出仍成功，并抽样确认正式 checkpoint 路径不再因 identity_state 被拒。
+- rev1 的事实只保留在 `provisional_scope` 回执里；实体行在 rev2 被覆盖；**当前没有追加 identity_event**。报告不再写“完全不覆盖历史”。
+- verified 身份只解除 checkpoint 的 identity 前置；**评分仍需要 search-backed checkpoint 与金融复核**，verified 本身不授予评分、准确性或投资结论。
 
-## 必须拒绝 / 边界
+## 下一步（需决策）
 
-- 不把目录级证据说成逐发行人公告；不在同一 revision 改身份事实；不删除 provisional 回执。
-- 不用 verified 升级替代金融准确性、search-backed 评分或正式投资结论。
-- 不做 paid 调用、不搜索、不下载公司文档。
-- 批量前必须完成独立审查；失败按备份恢复。
+1. **证据与法人名来源**：允许从官方逐发行人页面（cninfo/SZSE 公司页、年报）采集法人全称与 URL（只存 URL/名称，不存正文），还是由用户提供法人主体清单/许可数据源？
+2. 拿到来源后：先 1 家（万科A）试点 → 独立复审 → 5 家 → 211 家分批。
+3. 在来源确定前，不写 verified、不批量、不把 provisional 说成可评分。
 
-## 审查问题
+## 隔离预演（保留）
 
-1. 官方目录 URL（cninfo/SEC bulk catalog）是否足以支撑 verified_issuer 的 `same_legal_issuer` 证据？是否要求逐发行人页面？
-2. revision 2 升级是否保留了原 provisional 历史与可追溯性？重复导入是否幂等？
-3. 批量 211 的写范围、备份、分批与回滚是否足够？
-4. 是否存在“verified 等于准确/可评分”的越界表述？
+- 在副本上曾用目录 URL 完成一次 rev2 升级（IVR_33408e42…、重放幂等），仅证明**机制**可行；该证据不满足上述政策要求，不作为真实写入依据。

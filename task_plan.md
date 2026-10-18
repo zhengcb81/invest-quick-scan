@@ -2,7 +2,7 @@
 
 现状：214 实体中 212 个 provisional；checkpoint/评分/publication 都要求 identity_state=verified，所以“公司画像与评分入口”必须先升级身份。已选 1 家试点（万科A，ENT_b63a2d90…，已有 provisional_scope rev1），构建 IVR_ verified_issuer（same_legal_issuer=true、revision=2、entity.verified_issuer_receipt_id=IVR_），证据使用 company-wiki 官方目录 URL（cninfo szse_stock.json，目录级而非逐发行人页）。在真实 workspace 副本预演成功：首次 entity_saved_receipt_recorded（IVR_33408e42…）、重放同 receipt 零新增、实体 verified/rev2、verified_issuer 回执 2→3；同 revision 改内容会被拒，必须 bump。
 
-计划：先写万科A 1 家并复验；独立复审通过后按 ≤60/批升级剩余 210 家（跳过 Alphabet/CATL 两家已 verified；中信建投 H 可升级），每批校验计数、全量 expected=before+N、失败按备份恢复。未写真实 workspace，未 paid 调用。写前报告 docs/implementation/reviews/verified-identity-2026-10-18.md，审查进行中。
+round-1 审查否决了“目录级 URL 作为 verified 证据”：必须有逐发行人官方文件 + 法人全称 + owner 批准；而现有 company-wiki 主数据没有法人全称，逐发行人证据也未采集。批量语义已修正（entity/security/binding 不变、receipt/verified +1、逐文件状态断言、试点后剩 211 家），verified-batch.py 已在副本整跑 211 验证机制。**当前阻塞在证据/法人名来源决策**：需用户选择“允许采集官方逐发行人页面”或“提供法人主体清单/许可源”。在来源确定前不写 verified、不批量。写前报告已改为 round-2 并记录该阻塞。
 
 ## 2026-10-18 — 新目标：现有 216 家候选的身份前置（不扩到 2000 家）
 
