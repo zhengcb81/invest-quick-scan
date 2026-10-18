@@ -1,3 +1,7 @@
+## 2026-10-18 — owner 准入第一步（subject）副本跑通
+
+新增 scripts/owner_admission_subject.py，为 000026 飞亚达构建并导入 AnalysisSubject + perimeter receipt：ASJ_67a1f0d0…@1、PRC_cce87da4…、perimeter b5ec9001…、write_status=unchanged、0 网络/0 模型；只在真实 workspace 副本操作。剩余：route 决策（module package/routing）→ universe 成员 → owner policy/预算曝光 → preview/confirm/admit → 1 题付费 run；3/4 需写前报告+独立审查。报告 docs/implementation/reviews/owner-admission-000026-2026-10-18.md。
+
 ## 2026-10-18 — 画像就绪度：verified ≠ 可跑
 
 只读统计：214 实体、209 verified、5 provisional；但 owner policy 里只有 1 条公司路由（CATL），所以真正“可跑画像”只有 1 家，**208 家 verified 仍需 owner 准入**（subject/route/policy + ApprovedRefreshSession），5 家缺身份。新增 scripts/profile_readiness.py，roster 看板新增 needs_owner_admission 状态并修正此前把“verified”误当“可跑”的口径。报告 docs/implementation/reviews/profile-readiness-2026-10-18.md。下一步：先做 1 家（000026）owner 准入准备并在副本演练，不付费；审查后再真实准入 + 1 题非评分画像。

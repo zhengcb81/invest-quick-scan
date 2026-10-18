@@ -1,3 +1,7 @@
+## 2026-10-18 — owner 准入 subject 副本跑通
+
+000026：ASJ_67a1f0d0…@1 + PRC 回执导入副本，幂等 unchanged，0 网络/0 模型；新增 owner_admission_subject 工具。route/policy/admission 仍待做。
+
 ## 2026-10-18 — 画像就绪度修正
 
 209 verified 里只有 CATL 有 owner 路由；208 家仍需 owner 准入，5 家缺身份。roster 新增 needs_owner_admission，修正“verified=可跑”的误读；新增 profile_readiness 工具。
