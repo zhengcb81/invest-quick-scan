@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — fresh-budget 合同 + 2 题 admission 成功
+
+owner 批 A/$30 后实现 fresh exposure 合同（snapshot 1.2.0、owner_ack_ref、attempts=[]），QA 与 IQS schema 同步；新 budget policy $30/v2（in_flight 3，旧 3 笔未结算未动）。preview rv1_ce80… ready，delegated confirm rc2_3fdb…，admit accepted（permission_authenticated、registered_with_executor、API=0）。engine dispatch 未发生：还需为 2 题 1.4 admission 构建 run config。报告 docs/implementation/reviews/fresh-budget-exposure-2026-10-18.md。
+
 ## 2026-10-18 — 新题 preview 通过，最终卡在预算
 
 修好 research-only 读路径与 qa.policy_id 必须等于 budget policy id 后，1.4 owner preview 成功生成（rv1_812c5f…，IQS_01/02 均 dispatch_new_work），但 status=blocked：quote.budget_available=false，ledger 仍有 2 个 retained unreconciled attempts。owner policy 已恢复，无 confirm/admit/run、无付费。结论：不是代码，是 owner 预算决定；需结算/amend 后才能跑新题。
