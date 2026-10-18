@@ -1,3 +1,20 @@
+## 2026-10-18 — C 方向：产品入口就绪，原主线剩余项定义
+
+用户选 C（回原 PWF 主线）后，产品入口已成型：
+
+- 一条命令 `python -B -X utf8 scripts/one_click.py` 生成 dashboard：入口页 + roster（214 家、209 verified）+ 214 个公司画像页；roster 里每家公司名可点进画像页。
+- CATL 画像页同时显示：机械检查 2/2、金融复核 `passed_with_caveat`（4/4 预注册事实、评分 gold 0/0、CATL-FIN-01 保留）。
+- 金融复核 registry：`docs/implementation/reviews/financial-verdicts/catl-2026-10-18.json`。
+
+原主线剩余项（定义与状态）：
+
+1. **F05 事实链**：事实型 observation（当前是 standard-1 评分题；contract 文档明确“事实链仍待 F05”），未启动。
+2. **G3**：context producer/gate（`docs/implementation/reviews/G3/` 下的交付/审查已存在），整门仍开放。
+3. **B01 checkpoint30/31**：receipt/context 接续；与 000026 一样卡在 owner 侧 subject context 注册。
+4. **search-backed S1–S5**：owner 合同 + 工厂/profile 放开 + runner 搜索回执；key（Tavily/Brave/DeepSeek）与 policy 准入已验证，代码未接。
+
+本轮无模型调用、无业务库写入。
+
 ## 2026-10-18 — verified 身份批最终 PASS（节点已闭合）
 
 独立复审最终结论：**PASS，身份批 closed**。209 verified / 5 provisional；CN 201/205、US 11/11、HK 0/1；receipt 424。证据：200 条 cninfo（200/200 official_short、name_gate 全 equal、原始差异 2 条 NFKC 等价）、7 条 SEC + 完整 submissions、pre-existing 具名（Alphabet IVR_663efa…/CATL IVR_d5c631…）。审计 `scripts/verified_evidence_audit.py`：207 通过/0 失败/2 pre-existing；name_gate 今日仅接受 equal（contains 需未来逐条记录理由）。5 家 provisional 见 verified-gap-register，均 scoring-ineligible。

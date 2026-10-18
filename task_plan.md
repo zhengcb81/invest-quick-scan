@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — C：产品入口就绪；原主线剩余项定义
+
+one_click 生成 dashboard（214 家、209 verified、214 画像页；CATL 有机械+金融复核状态），landing 增加“金融复核 1 家”。交接文档补原主线剩余项定义：F05 事实链（未启动）、G3 context producer 门（开放）、B01 checkpoint30/31（卡 owner context 注册）、search-backed S1–S5（key/policy 已验证、代码未接）。无模型调用。
+
 ## 2026-10-18 — C：金融复核接入产品页
 
 把已有的 CATL 金融复核结论做成 registry（docs/implementation/reviews/financial-verdicts/catl-2026-10-18.json）：passed_with_caveat、4/4 预注册事实、评分 gold 0/0、CATL-FIN-01 保留、无总体准确率。profile_page 读取 registry，在画像页显示“金融复核”横幅与逐题 caveat；CATL 页面现在同时有 mechanical 与 financial 状态。无模型调用、不写业务库。
