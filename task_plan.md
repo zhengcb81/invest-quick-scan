@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_13 全链路到 model_step；预算版本不一致
+
+通用管线跑通 IQS_13：preview rv1_fae0… → confirm rc2_7b17… → admit accepted，driver 接上 search context 并进入 engine model_step。被 external_retrieval_blocked:owner_exposure_budget_policy_changed 拦住：预算文件里的 policy_version 与 work store 归一化后的 version 不一致（admission snapshot 用文件版本算，native 检查用 store 版本）。下一步：configure 后把 store 的 policy_version 回写到 budget 文件，再做新题 admission。
+
 ## 2026-10-18 — search driver 接线迭代
 
 新 driver（run_search_11_driver.py）已把 lifecycle external_retrieval、OwnerResearchServices(search_service=ExternalSearchProvider)、factory search_exposure、limits 接上。过程中修了：factory scan_limits 未传 search_exposure；lab exposure 校验不接受 currency 字段（改为 required 子集 + currency 可选）；session 目录必须新建。当前卡在 prepare_execution 的 refresh_consent_native_rejected（确认/权限状态过期或已消费），需要重新 admission/confirm 后再跑。
