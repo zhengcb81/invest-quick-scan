@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_19 给出 scored=6 的 search-backed 答案；payload 裸对象需包装
+
+IQS_19 运行到模型，输出是合法 JSON 但没有 answers/declared_question_ids 包装，被 answer_payload_not_strict_json 拒绝。离线用新包装规则验证：status=scored、score=6、information_as_of=2026-10-18，引用经 canonical 化后 PASS。这是第一个内容上成立、引用也通过的 search-backed 评分答案。runner 已加裸答案包装。下一轮用新题跑完整链路，应得到 slot=completed。
+
 ## 2026-10-18 — 引用 ID 归一化；目标上调 200 轮
 
 模型引用的 ID 与 URL 哈希不一致时，validation 现在按 URL 重新计算 src_<sha16> 并重映射（metrics/items 同步），同时保留 URL 精确/发布时间检查。用 IQS_17 的已拒答案离线验证：citation closure PASS。目标轮次已上调到 200。下一步：用新题再跑一次引擎，得到第一个 slot=completed 的 search-backed 答案。
