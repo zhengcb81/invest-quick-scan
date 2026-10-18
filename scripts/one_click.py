@@ -38,6 +38,14 @@ def main(argv=None):
     run([SCRIPTS/"financial_mechanical_check.py", "--workspace", args.workspace,
          "--json", fin_dir/"check.json", "--html", fin_dir/"check.html"])
     fin = json.loads((fin_dir/"check.json").read_text(encoding="utf-8"))
+    prov_dir = args.out/"provenance-check"
+    prov_dir.mkdir(parents=True, exist_ok=True)
+    run([SCRIPTS/"observation_provenance_check.py", "--json", prov_dir/"check.json", "--html", prov_dir/"check.html"])
+    prov = json.loads((prov_dir/"check.json").read_text(encoding="utf-8"))
+    prov_card = ('<div class="card"><a href="provenance-check/check.html">Search 引用溯源（'
+                 + str(prov.get("observations", 0)) + ' 条观察 · pass ' + str(prov.get("pass", 0))
+                 + ' · fail ' + str(prov.get("fail", 0)) + ' · research_only ' + str(prov.get("research_only", 0))
+                 + '）</a><br><span class="muted">搜索型观察的引用 URL 必须在授权它的 retreival receipt 中</span></div>')
     answer_pages = sorted(ROOT.glob("docs/implementation/reviews/**/answers.html"))
     answers_card = ""
     if answer_pages:
@@ -77,6 +85,7 @@ a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</sty
 <div class="card"><a href="profiles/index.html">打开公司画像索引（{len(list(profiles.glob('ENT_*.html')))} 页）</a></div>
 {facts_card}
     {fin_card}
+    {prov_card}
     {answers_card}
 <div class="card muted">只读页面；不构成评分、投资建议或财务准确性结论。</div>
 </body></html>"""
