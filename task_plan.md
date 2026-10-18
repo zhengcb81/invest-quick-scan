@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 引用 ID 归一化；目标上调 200 轮
+
+模型引用的 ID 与 URL 哈希不一致时，validation 现在按 URL 重新计算 src_<sha16> 并重映射（metrics/items 同步），同时保留 URL 精确/发布时间检查。用 IQS_17 的已拒答案离线验证：citation closure PASS。目标轮次已上调到 200。下一步：用新题再跑一次引擎，得到第一个 slot=completed 的 search-backed 答案。
+
 ## 2026-10-18 — 引用不匹配根因：证据板没有外部来源
 
 模型答案引用 src_05e0a0… / src_c34bdc… / src_c99a91…（catl.com URL 的哈希），但这次 task 的 evidence_board 是空的（外部 context 是另一条数据通道），所以 citation closure 找不到这些 ID。答案本身是 insufficient_evidence、内容相关。下一步：把 external context 的 sources 预先投影成 task evidence board（source_id 与 build_evidence_package 一致），再跑同题；模型就会引用板上的 ID。
