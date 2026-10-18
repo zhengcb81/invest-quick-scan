@@ -5,6 +5,7 @@
 3. 原 IQS 合同默认禁止非评分答案携带数字；真实研究型答案需要显式 research_only 通道（默认关闭），且必须保留单位/期间/来源/截止日与评分/事实规则。不能删数字或跳过校验。
 4. 真实链证据：preview wdp1_316c…、confirm rc1_dcb42b…、request 54d0e288…、apply 2 work/2 package、ACK accepted、replay 相等、StockWiki 2 observation 2 binding。任何复制 namespace 的正例仍不可行（store_id 路径派生）。
 5. 三个外部 Lab 已完成，不得再称其为活动 writer；新三包的边界只能是不消费其未交付内容。
+6. 真实执行后的字节与冻结候选并不相同（black 格式化、v25 空 DDL 与历史 fixture 还原、preauthorized_grant、research_only）。post-execution CAS 明确绑定 base/reviewed/applied 与提交号，并标注为描述性记录，不能当作执行前审查签收。
 
 ## 2026-10-18 — 真实 publication 的可交付边界
 

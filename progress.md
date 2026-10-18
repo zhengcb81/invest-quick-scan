@@ -2,7 +2,7 @@
 
 真实链路两题均 delivered：preview wdp1_316c…、confirm rc1_dcb42b…、inspect 1.1.0（API 0/writes 0/request 相等/1 anchor/2 item）、apply、import、ACK accepted、重放 ACK 完全相等。StockWiki 实写 2 observation + 2 binding + 2 import item；observation 保持 insufficient_evidence/null/unreviewed/unverified。真实账本 schema25，102 预算行与备份逐行一致，attempt 14，其余 12 work 仍 leased，2 个 v3 checkpoint、2 delivery delivered，0 新预算/尝试/费用、0 HTTP。
 
-根因修复：事务内二次 owner 鉴权改为复用同事务 grant；StockWiki CLI 用扁平 observation-import；新增 IQS 显式 research_only 通道并在 SW bind 仅对 unreviewed+unverified 观察启用（默认关闭）。QA 39c150e/8c166a6 已推；SW 1fb9efa/dcc70ce 本地；IQS seam 与 PWF 待提交。外包三包均已由用户确认完成；新三包 N1–N7 整改中。
+根因修复：事务内二次 owner 鉴权改为复用同事务 grant（新增 3 条回归，QA 12aea00 已推）；StockWiki CLI 用扁平 observation-import；新增 IQS 显式 research_only 通道并在 SW bind 仅对 unreviewed+unverified 观察启用（默认关闭）。IQS eaf96e7/4504962、QA 39c150e/8c166a6/12aea00 已推；SW 1fb9efa/dcc70ce 本地。外包三包均已由用户确认完成；新三包 N1–N7 已整改，第三轮复审中。
 
 ## 2026-10-18 — 真实 publication 落库；交付被原 IQS 研究型答案校验阻断
 

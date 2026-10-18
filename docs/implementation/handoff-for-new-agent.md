@@ -1,3 +1,13 @@
+## 2026-10-18 — 真实研究型出版已完成；只剩施工包复审与归档
+
+真实零 HTTP 研究出版已在原 owner namespace 完成：preview wdp1_316c… → delegated confirm rc1_dcb42b… → inspect 1.1.0（API 0、writes 0、request 相等、1 anchor/2 item）→ apply（2 个 v3 checkpoint + 2 条 sealed delivery）→ 原 StockWiki observation-import → ACK accepted → 幂等重放相同 → 两 work 均 delivered。StockWiki 实写 2 条 observation（insufficient_evidence/null/unreviewed/unverified）与 2 条 binding。真实账本 schema 25，102 预算行与迁移前备份逐行一致，attempt 14，其余 12 work 仍 leased，0 新增预算/尝试/费用、0 HTTP。证据见 [real-publication-2026-10-18.md](reviews/real-publication-2026-10-18.md)。
+
+提交：invest-quick-scan eaf96e7、4504962；StockQAbyLLM 39c150e、8c166a6、12aea00（已推 origin）；StockWiki 1fb9efa、dcc70ce（原仓无 remote）。
+
+执行中的偏离已记录：仓库 black 格式化；schema25 的空 `_DDL_V25_ADDITIONS` 与历史 fixture 的 pre-v25 还原；事务内复用 publisher grant（`preauthorized_grant`，仅 publish 内部可达，仍校验存储 grant/request hash/confirmation）；原 IQS 合同新增默认关闭的 `research_only` 通道；原 CLI 是扁平 `observation-import`。post-execution CAS 绑定 base/reviewed/applied 与提交号，是描述性记录，不是执行前审查签收。
+
+剩余只有：三张 2026-10-18 施工包完成最终独立复审后提交与更新归档说明；不重跑真实出版、不重发模型、不改已验证答案。三张外部 Lab（RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10）均已完成。
+
 ## 2026-10-18 — 当前明确暂停，不自动恢复实施
 
 用户最新指令是“手头做好了先暂停吧”。只在用户再次要求继续后恢复主线。已交付 IQS a05dc8b / StockQA c910ed9 的真实 CATL 两题缓存恢复，不重做、不重发模型；Runtime f8e251f 与 StockWiki 809b501 无 remote 仅本地。

@@ -4,7 +4,7 @@
 
 过程中从根因修复了三个真实接缝：1) publish 事务内二次 owner 往返与自身写锁冲突，改为复用同事务刚获得的 grant 并仍校验 confirmation 与存储 grant；2) 原 StockWiki CLI 的命令是扁平 observation-import（不是 quick-scan observation-import）；3) 原 IQS 合同拒绝非评分回答携带已引用数字，新增显式 research_only 通道（standard_answers.validate_content / query_contract._validate_original_semantics / subject_dispatch_contract.bind_original / subject_dispatch_cli，默认关闭），SW bind 仅对 unreviewed+unverified 观察启用，保留单位/期间/来源/截止日与分数/事实规则。
 
-源码：QA 39c150e、8c166a6 已推 origin；SW 1fb9efa、dcc70ce 本地提交（原仓无 remote）；IQS scripts 的 research_only seam 与本 PWF 更新待正常提交。真实部署/真库写入与 ACK 已完成，不再重跑或重发模型。
+源码：IQS eaf96e7、4504962 已推 origin；QA 39c150e、8c166a6、12aea00 已推；SW 1fb9efa、dcc70ce 本地提交（原仓无 remote）。三张 2026-10-18 施工包已完成两轮独立审查整改（含 N1–N7：26 个冻结 blob、CO-01 真实账本计数、ET-02 三条 null、单段离线 catalog、handoff 协议与链接），第三轮最终复审进行中，通过后提交并补归档说明。真实部署/真库写入与 ACK 已完成，不再重跑或重发模型。
 
 ## 2026-10-18 — 真实 publication 已落库，交付被原 IQS 研究型答案校验阻断
 
