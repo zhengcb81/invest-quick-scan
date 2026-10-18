@@ -20,9 +20,11 @@ def main() -> int:
     parser.add_argument("--subjects", type=Path)
     parser.add_argument("--html", type=Path)
     args = parser.parse_args()
-    roster = json.loads(args.roster.read_text(encoding="utf-8"))
+    roster = json.loads(args.roster.read_text(encoding="utf-8-sig"))
     subjects = set()
-    if args.subjects and args.subjects.is_file():
+    if args.subjects and not args.subjects.is_file():
+        raise SystemExit("--subjects not a file: " + str(args.subjects))
+    if args.subjects:
         connection = sqlite3.connect(args.subjects.resolve().as_uri() + "?mode=ro", uri=True)
         subjects = {row[0] for row in connection.execute("SELECT primary_issuer_id FROM analysis_subject")}
         connection.close()
@@ -49,6 +51,7 @@ def main() -> int:
     args.json.parent.mkdir(parents=True, exist_ok=True)
     args.json.write_text(json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8")
     if args.html:
+        args.html.parent.mkdir(parents=True, exist_ok=True)
         body = "".join(
             "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
                 html.escape(r["name"]), html.escape(",".join(str(t) for t in r["tickers"])),

@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 独立复审 4 项修复
+
+独立 reviewer 指出并已修复：preflight 改为逐 item 校验（items_empty 报错而非 IndexError）、hash 用 [0-9a-f]{64} 全匹配（不再接受 z*64）、score 用 type is int（排除 bool）、读取用 utf-8-sig；coverage_gaps 对缺失 --subjects 直接报错、--html 自动建父目录。边界实测：empty.json → items_empty，junk.json → prompt hash missing；fresh html 目录成功；坏 subjects 路径 exit 1。
+
 ## 2026-10-18 — 看板加入导入前置检查卡片
 
 one_click 读取 docs/implementation/reviews/observation-preflight-2026-10-18/check.json，在首页显示「观察导入前置检查：2 包 · 1 pass · 1 fail」，并列出失败包与原因（pkg-IQS_18: evidence_empty）。独立复查 subagent 仍在运行。
