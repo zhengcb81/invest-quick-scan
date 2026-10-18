@@ -1,3 +1,7 @@
+## 2026-10-18 — 正式 search-backed 评分路径：差距分析与分阶段方案
+
+只读核实现状：底层已支持 require_search + search_policy + 路由准入 + 外部搜索 provider，但三处有意锁死零外搜——公司 scan profile（scan_profile.py:21-37 硬编码 0）、共享任务工厂（shared_company_task.py:170-181）、owner 暴露合同（quick_scan_owner_budget_continuation.py:700-735 要求 NO_EXTERNAL_SEARCH_POLICY）。方案分 S1 owner 合同、S2 profile/工厂、S3 runner/回执、S4 checkpoint/seal、S5 金融闸门；试点用已 verified 的 CATL 单题，需可执行 search policy 与凭据存在性，成本在预算内。文档 docs/implementation/plans/search-backed-scoring-2026-10-18.md，未改代码、未联网。
+
 ## 2026-10-18 — 候选↔实体链接报告（离线、只读）
 
 216 候选离线对到实体/证券：212 已链接（211 provisional + 300750 既有 verified）、4 未解决（002122/002168/603300/688152）、0 错误；逐条校验 security.entity_id/security_id 与库内一致。报告 docs/implementation/reviews/candidate-entity-links-2026-10-18.md，明细在 runs/existing-list-onboarding-2026-10-18/candidate-links.json。未改候选表、未建 universe；候选↔实体正式落库仍需单独评审。
