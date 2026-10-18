@@ -1,3 +1,11 @@
+## 2026-10-18 — 原生缓存/恢复核心已交付 StockQA 52330ab
+
+StockQA 15 个精确路径已经正常提交并推送既有 origin/master：`52330ab633d00fa1a282492a6ca9fc809c62e182`。原子安全输出、原始回执锚定、显式单 work 多轮登记、single/pack intent 到原物理请求关联及只读旧 schema 兼容已交付；整个生产 owner/共享引擎节点仍在进行。独立精确范围测试50P及11个独立边界反例通过，mypy90源文件通过；测试范围重叠不相加。正常 hooks 首次仅修正5个文件CRLF→LF，全部15文件归一化/AST等价经同一独立 reviewer 核验；第二次正常 hooks 全通过，没有跳过检查。原 CAS 与换行等价附录均保留。
+
+Company核心仍为已交付cd5e3e7。owner 服务实际原软件批准/SDK两轮隔离测试3P，另有phase映射1P；Runtime observer5P/原Runtime31P。完整12题的原批准→同一Runner→进程中断→原请求恢复仍在验收。上述均是脚本wire/合成隔离身份的软件测试，本轮收费API0，不能当作真实公司模型准确性、正式搜索proof或生产准入签收。
+
+交付依据：`runs/shared-engine-production-2026-10-18/native-source-delivery.json`、`native-precommit-normalization.json` 及 `docs/implementation/reviews/shared-engine-production-2026-10-18/native-core-scoped-acceptance.json`。StockQA远端已核commit一致；IQS他人2026-10-10 README不纳入提交。旧真实未知请求、生产库和名单均未改。
+
 ## 2026-10-18 — 共享引擎恢复根因与旧包签收
 
 当前已交付源码：Company核心11路径独审后提交cd5e3e7。StockQA候选仍未应用：多轮必须显式登记且绑定原intent；pack物理请求也需同源intent关联，否则收到响应但引擎日志尚未落盘时无法零重发恢复。新关联自身哈希不是成员资格证明，读取必须回原attempt/pack表重推work成员；对应独立反例F05已修复转绿。只读owner预览不能重复BEGIN，配置provider别名与实际provider也必须分别记录和校验。公开组合已有合成OS强退恢复测试，实际12题owner+Runner正例和正式搜索检查点仍待验证，不能把两者混说。
