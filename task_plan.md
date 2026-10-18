@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — resolution 预演失败：旧 attempt 的 owner inspector 不通过
+
+为 IQS_12 建 known_response_resolution（reason=known_response_no_accepted_answer，physical 取 delivered work WORK_b476… / ATTEMPT_851…），owner CLI preview 返回 subject_contract_output_invalid。该分支要求 owner 侧 dispatch receipt + QA executor inspector 对 request 的逐字核对；旧 2026-10-11 attempt 的 receipt/inspector 关系无法在新流程中复现（work item information_cutoff 也为空）。结论：retry/resolution 路径对历史遗留 attempt 不可用；只有新近、receipt 完整的 attempt 才能走通。
+
 ## 2026-10-18 — retry decision 请求的精确字段
 
 尝试用 owner CLI --work-decision-request 为 IQS_12 建 retry decision：被 work_decision_fields_invalid 拒绝。核对 StockWiki 合同后，retry_decision 必须精确包含：kind、work_item_id、attempt_id、idempotency_key、physical（与 store._physical 完全一致）、purpose、source_resolution_id、source_checkpoint_sha256、target_generation、retry_after_seconds、comparison_controls、requires_prior_delivery。owner preview 还需要：真实 owner dispatch receipt（receipt_id 在 owner DB）、QA executor inspector 返回 request==decision 与该 receipt、permission_request 的 ref/field/cutoff 与 dispatch 完全一致。下一步：先为 IQS_12 生成/取得 source resolution（known_response_resolution）与 owner receipt，再填全字段。
