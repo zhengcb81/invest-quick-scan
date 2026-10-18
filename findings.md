@@ -1,3 +1,7 @@
+## 2026-10-18 — 计划 v2：回归简版（最高优先级）
+
+旧计划里的 owner 准入、预算、凭证、验收与看板扩张全部暂停，不再作为主线。新的主线只有一条：24 题 × 已确认公司 → 带来源的草稿分数 → 对比页。经济性改为“模型/搜索性价比排序”，不做预算审批。详见 docs/implementation/plan-v2-2026-10-18.md。
+
 ## 2026-10-18 — 新实体可用于生产入口的只读验证
 
 1. 新导入的 provisional 实体可直接被原 G2b 导出：万科A（ENT_b63a2d90…）identity-export-g2b 成功返回 2.2.0，含 listing（XSHE/000002）、provisional_scope 回执、source binding 与 market registry（CN: XSHE/XSHG）。

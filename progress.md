@@ -1,3 +1,11 @@
+## 2026-10-18 — 简版计划落地：3 家公司薄草稿
+
+按计划 v2 执行：thin_scan 去掉预算门槛，改用 docs/implementation/thin-scan-providers.json 的性价比排序（当前 DeepSeek 搜索 + MiMo 回答）。三家结果：宁德时代 13/24 有分（均 6.8）、Alphabet 18/24（均 5.4）、飞亚达 8/24（均 4.8）；每家 24 次搜索、约 $0.0168 搜索成本，模型 token 另计。对比页 docs/implementation/reviews/thin-scan-2026-10-18/compare.html。旧 owner/预算/凭证/验收主线暂停。
+
+## 2026-10-18 — 计划 v2：回归简版（最高优先级）
+
+旧计划里的 owner 准入、预算、凭证、验收与看板扩张全部暂停，不再作为主线。新的主线只有一条：24 题 × 已确认公司 → 带来源的草稿分数 → 对比页。经济性改为“模型/搜索性价比排序”，不做预算审批。详见 docs/implementation/plan-v2-2026-10-18.md。
+
 ## 2026-10-18 — owner 准入 route 探测失败
 
 resolve-route 报 “historical package has no executable v2 routing policy”：当前 question package 无法为新公司生成 route decision；route-input/identity_ref 已能构建。准入在 route 处被架构/治理缺口卡住。
