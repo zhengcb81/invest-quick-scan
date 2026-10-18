@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — search-backed 接线缺口清单
+
+真实搜索已通，但引擎侧还差：DeepSeek policy execution_plan、retrieval records、admission exposure hash、driver require_search/search_service 接线。已写入 docs/implementation/plans/search-backed-wiring-2026-10-18.md，下一步按 6 步接 1 题 IQS_07。
+
 ## 2026-10-18 — 真实 DeepSeek 搜索跑通
 
 route kind 改为 deepseek_search（QA schema 支持）。真实调用 DeepSeek Search：query=宁德时代 2025 年营业收入 归母净利润，返回 5 条相关结果（净利润 722 亿、+42.28%），status=ok，cost 5000 micro-CNY，receipt 通过 schema/费用/route 校验，checkpoint binding=bound。证据 docs/implementation/reviews/deepseek-search-2026-10-18/real-search-receipt-2026-10-18.json。下一步：把搜索结果作为 external context 接进评分 run（require_search）。
