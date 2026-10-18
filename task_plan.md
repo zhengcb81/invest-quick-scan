@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 第一个 slot=completed 的 search-backed 引擎答案（IQS_09）
+
+IQS_09 在修好裸/带尾随 JSON 的 raw_decode 包装后跑完：run-summary all_slots_completed=true，slot IQS_09=completed，answer=insufficient_evidence（gap 仅 insufficient_evidence_present，属提示不是失败）。这是第一次由引擎完成 搜索→external context→模型答案→引用/绑定校验 的全链路，并且答案落盘。答案页：docs/implementation/reviews/search-backed-catl-iqs09-2026-10-18/answers.html。
+
 ## 2026-10-18 — 外部引用不再要求板上记录；IQS_21 离线 PASS
 
 scored/insufficient 答案的 binding 检查现在对空投影板的外部 URL 引用放行（citation closure 已按 URL 归一化）。IQS_21 的答案离线通过 citation + binding 两项检查（status=insufficient_evidence）。下一步用新题跑完整链路，预期得到第一个 slot=completed。
