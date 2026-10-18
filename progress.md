@@ -1,3 +1,7 @@
+## 2026-10-18 — Roster 只读操作入口
+
+新增 scripts/roster_status.py：214 实体（2 verified、212 provisional；CN 205/US 11/HK 1），下一步 212 需 verified、1 可跑画像、1 已有观察；只读、不写库。另确认 search policy 的 route 准入必须有 owner 的价格/存储权利/启用决策，示例策略 inert，不能直接做试点。
+
 ## 2026-10-18 — search-backed 评分路径差距分析
 
 确认三处零外搜限制（scan profile/共享工厂/owner 合同）与底层已有的 search_policy、路由准入、provider、v1/v2 checkpoint 能力；给出 S1–S5 分阶段方案与 CATL 单题试点条件。只读、未改代码、未联网。

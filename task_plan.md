@@ -1,3 +1,7 @@
+## 2026-10-18 — 现有列表的只读操作入口（roster status）
+
+新增 scripts/roster_status.py：只读真实 workspace，输出 214 家实体的身份状态、市场、上市地、绑定/观察数与下一步动作（needs_verified_identity / ready_for_profile / has_observations）。当前快照：2 verified（CATL、Alphabet）、212 provisional、CN 205/US 11/HK 1；212 家需 verified、1 家可跑画像、1 家已有观察。报告 docs/implementation/reviews/roster-status-2026-10-18.md，JSON 快照在本机 runs/。另核实：search policy 的 route 准入要求 owner 提供 enabled、cost_bound_verified + 真实价格、storage_rights confirmed + entitlement；现有示例策略是 inert，不能拿来做试点，需商业条款决策。
+
 ## 2026-10-18 — 正式 search-backed 评分路径：差距分析与分阶段方案
 
 只读核实现状：底层已支持 require_search + search_policy + 路由准入 + 外部搜索 provider，但三处有意锁死零外搜——公司 scan profile（scan_profile.py:21-37 硬编码 0）、共享任务工厂（shared_company_task.py:170-181）、owner 暴露合同（quick_scan_owner_budget_continuation.py:700-735 要求 NO_EXTERNAL_SEARCH_POLICY）。方案分 S1 owner 合同、S2 profile/工厂、S3 runner/回执、S4 checkpoint/seal、S5 金融闸门；试点用已 verified 的 CATL 单题，需可执行 search policy 与凭据存在性，成本在预算内。文档 docs/implementation/plans/search-backed-scoring-2026-10-18.md，未改代码、未联网。
