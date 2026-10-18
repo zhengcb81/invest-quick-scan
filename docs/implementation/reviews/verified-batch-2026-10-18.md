@@ -37,6 +37,13 @@
 | HK | 06066 | 中信建投证券 | 需 HKEX/HKEXnews 官方页，东财 F10 被审查否决 |
 | US | 7 家 | FIG/GENB/MDB/MSFT/NVO/SNOW/TAL | 需 SEC 逐公司 submissions/CIK JSON，bulk tickers 不足 |
 
+## 美股 7 家（SEC 逐公司 submissions）
+
+- 按审查要求用 \`data.sec.gov/submissions/CIK##########.json\`（逐公司），UA 标明用途，顺序请求。
+- 7 家全部 verified/rev2：FIG、GENB、MDB、MSFT、NVO、SNOW、TAL；法人名取 SEC registrant name。
+- verified 202→209、receipt 417→424；entity/security/binding/candidate 不变；逐家重放幂等。
+- 证据归档：\`docs/implementation/evidence/verified-identity-2026-10-18/sec-profiles.jsonl\`（cik/name/tickers/sic + 响应 sha）。
+
 ## 边界
 
 - verified 仅表示身份，不代表财务准确、可评分或投资结论；评分仍需 search-backed checkpoint 与金融复核。

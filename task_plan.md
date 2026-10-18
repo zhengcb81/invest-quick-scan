@@ -1,3 +1,7 @@
+## 2026-10-18 — 美股 7 家经 SEC 逐公司 JSON 升级
+
+FIG/GENB/MDB/MSFT/NVO/SNOW/TAL 全部 verified/rev2（SEC registrant name），verified 202→209、receipt 417→424，基础计数不变、重放幂等；证据归档 sec-profiles.jsonl。剩余 provisional 仅 5 家：CN 002013/300114/688555（cninfo 空，疑似退市/重组）、CN 872808（北交所无免费官方源）、HK 06066（需 HKEX 官方页）。报告已在 verified-batch-2026-10-18.md 增补。
+
 ## 2026-10-18 — SH/SZ verified 批量完成（cninfo 口径）
 
 按审查通过的口径批量：194 份 payload 首批写入 150 家，44 家因“公司名包含简称”过严被跳过；改用官方 A股简称闸门（NFKC 归一化）后 44 家全部写入。最终 CN 201/205 verified，全库 202 verified / 214；receipt 417；entity/security/binding/candidate 不变；每批校验+抽样重放；双库备份。200 份逐公司概况响应（含 5 家试点与万科补充）存 docs/implementation/evidence/verified-identity-2026-10-18/cninfo-profiles.jsonl。剩余 12 provisional：CN 002013/300114/688555（cninfo 空，疑似退市/重组）、872808（北交所无免费源）、HK 06066（需 HKEX 官方页）、US 7 家（需 SEC 逐公司 submissions JSON）。报告 docs/implementation/reviews/verified-batch-2026-10-18.md。
