@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 看板展示外部包验收
+
+one_click 扫描 docs/implementation/parallel-lanes/acceptance-*/*.md，首页新增「外部包验收（2）」卡片，列出 EVIDENCE-TIMELINE-11 与 COST-LEDGER-11 验收记录。DELIVERY-AUDIT-11 的 lab 已有部分 handoff 文件但缺 handoff.json 且 worktree dirty，保持隔离不取。EVIDENCE 的 evidence-pack 占位仍未出现。
+
 ## 2026-10-18 — COST-LEDGER-11 验收通过
 
 外部包 COST-LEDGER-11 交付：handoff precheck valid；artifacts 155/155；input lock 11/11；unittest 124 OK；casebook 34/34；review approved（round-01 修复后复核）；worktree clean。判定 ACCEPTED（离线审计工具，非生产资格）。已知边界：controller-frozen projection 占位未出现、policy_version 未导出、budget_revision 字段未逐字核验、真实行 settled_cost_unknown。验收记录 docs/implementation/parallel-lanes/acceptance-2026-10-18/COST-LEDGER-11.md。剩 DELIVERY-AUDIT-11 待交付。

@@ -77,6 +77,18 @@ def main(argv=None):
         )
         scored_card = ('<div class="card"><b>Search-backed 评分审阅（未入库，' + str(len(scored_pages))
                        + '）</b><ul>' + links + '</ul><span class="muted">离线校验通过但未进入 owner 观察库</span></div>')
+    acceptance_pages = sorted(ROOT.glob("docs/implementation/parallel-lanes/acceptance-*/*.md"))
+    acceptance_card = ""
+    if acceptance_pages:
+        import os
+        links = "".join(
+            '<li><a href="' + os.path.relpath(page, args.out).replace("\\", "/") + '">'
+            + page.stem + "</a></li>"
+            for page in acceptance_pages
+        )
+        acceptance_card = ('<div class="card"><b>外部包验收（' + str(len(acceptance_pages))
+                           + '）</b><ul>' + links + '</ul><span class="muted">'
+                           + '离线工具交付合格，非生产资格</span></div>')
     answers_card = ""
     if answer_pages:
         import os
@@ -117,6 +129,7 @@ a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</sty
     {fin_card}
     {gaps_card}
     {prov_card}
+    {acceptance_card}
     {answers_card}
     {scored_card}
     {preflight_card}
