@@ -1,0 +1,47 @@
+{
+  "protocol": "iqs.financial-review-registry/1.0.0",
+  "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+  "entity_name": "宁德时代新能源科技股份有限公司",
+  "questions": [
+    "IQS_12",
+    "IQS_16"
+  ],
+  "verdict": "content_consistency_passed_narrow_facts_supported_with_retained_qualitative_caveat",
+  "status": "passed_with_caveat",
+  "facts": {
+    "supported": 4,
+    "total": 4,
+    "note": "4/4 only for preregistered rounded official-summary facts; not an overall financial accuracy rate"
+  },
+  "derived_ratios": {
+    "correct": 2,
+    "added_to_denominator": false
+  },
+  "score_gold": {
+    "subjective": 0,
+    "full_construct": 0
+  },
+  "overall_financial_accuracy_percent": null,
+  "caveats": [
+    {
+      "id": "CATL-FIN-01",
+      "question_id": "IQS_16",
+      "severity": "qualitative_evidence_overreach",
+      "handling": "Describe reported historical balances without a strength assessment; keep current availability/liabilities/stress unknown; never overwrite original output."
+    }
+  ],
+  "qualification": {
+    "narrow_four_fact_support": true,
+    "full_financial_acceptance": false,
+    "investment_or_subjective_score_qualification": false,
+    "complete_two_year_liquidity_assessment": false
+  },
+  "reviewer": "/root/production_task_review18",
+  "completed_at_utc": "2026-10-18T05:50:00.129024+00:00",
+  "verdict_sha256": "c6c0828ebc3fd18a962a08c3da9da6abbe4eea13269a751d76f8a45a78db69f3",
+  "artifacts": [
+    "runs/shared-engine-production-2026-10-18/actual-native-catl-financial-review/content-verdict.final.json",
+    "runs/shared-engine-production-2026-10-18/actual-native-catl-financial-review/content-verdict.final.md"
+  ],
+  "boundary": "identity/financial review only; not a rating, score or investment conclusion"
+}

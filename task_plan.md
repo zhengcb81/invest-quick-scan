@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — C：金融复核接入产品页
+
+把已有的 CATL 金融复核结论做成 registry（docs/implementation/reviews/financial-verdicts/catl-2026-10-18.json）：passed_with_caveat、4/4 预注册事实、评分 gold 0/0、CATL-FIN-01 保留、无总体准确率。profile_page 读取 registry，在画像页显示“金融复核”横幅与逐题 caveat；CATL 页面现在同时有 mechanical 与 financial 状态。无模型调用、不写业务库。
+
 ## 2026-10-18 — C：回到原主线 UI/一键，一键看板成型
 
 用户选 C（回原 PWF 主线）。落地原主线的 UI/一键：scripts/one_click.py 一条命令生成 dashboard（index + roster + 214 个公司画像页），roster 里每家公司名可点进画像页；当前 214 实体 / 209 verified / 1 家有观察。只读、本地、无新基础设施、无模型调用。产物 runs/existing-list-onboarding-2026-10-18/dashboard/index.html。下一步原主线候选：金融门（把机械检查扩成复核工作流）、B01 checkpoint30/31 接续、G3/F05、全池（暂缓）。

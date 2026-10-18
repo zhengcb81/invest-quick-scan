@@ -36,7 +36,39 @@ def load(workspace, entity_id):
     return entity, listings, observations
 
 
-def _card(obs):
+def load_reviews(entity_id):
+    root = Path("C:/Users/郑曾波/Projects/invest-quick-scan/docs/implementation/reviews/financial-verdicts")
+    found = {}
+    for path in root.glob("*.json") if root.is_dir() else []:
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        if value.get("entity_id") == entity_id:
+            found[path.stem] = value
+    return found
+
+
+def _review_banner(reviews):
+    if not reviews:
+        return ""
+    parts = []
+    for key, value in reviews.items():
+        caveats = ", ".join(c["id"] for c in value.get("caveats") or []) or "none"
+        parts.append(f"<b>{html.escape(key)}</b>：{html.escape(str(value.get('status')))} · 事实 {value.get('facts',{}).get('supported')}/{value.get('facts',{}).get('total')} · 评分 gold {value.get('score_gold',{}).get('subjective')}/{value.get('score_gold',{}).get('full_construct')} · 保留 caveat：{html.escape(caveats)}")
+    return '<div class="banner review">金融复核：' + "<br>".join(parts) + '<br><span class="muted">' + html.escape(next(iter(reviews.values())).get("boundary") or "") + "</span></div>"
+
+
+def _caveat(question_id, reviews):
+    notes = []
+    for value in reviews.values():
+        for caveat in value.get("caveats") or []:
+            if caveat.get("question_id") == question_id:
+                notes.append(f"{caveat.get('id')}: {caveat.get('handling')}")
+    return ('<p class="caveat">' + html.escape("；".join(notes)) + "</p>") if notes else ""
+
+
+def _card(obs, reviews=None):
     answer = obs["payload"].get("answer") or {}
     status = str(answer.get("status"))
     badge = "ok" if status in ("scored", "answered") else "warn"
@@ -65,10 +97,11 @@ def _card(obs):
   <h3>metrics</h3><table><thead><tr><th>metric</th><th>value</th><th>unit</th><th>period</th><th>evidence</th></tr></thead><tbody>{rows or '<tr><td colspan="5" class="muted">none</td></tr>'}</tbody></table>
   <h3>evidence</h3><ul>{evidence or '<li class="muted">none</li>'}</ul>
   <h3>missing fields</h3><p class="muted">{html.escape(', '.join(map(str, missing)) or 'none')}</p>
+  {_caveat(obs['question_id'], reviews or {})}
 </section>"""
 
 
-def build(entity, listings, observations):
+def build(entity, listings, observations, reviews=None):
     return f"""<!doctype html>
 <html lang="zh"><head><meta charset="utf-8"><title>{html.escape(entity['canonical_name'])} quick-scan profile</title>
 <style>
@@ -82,11 +115,13 @@ h1{{font-size:22px;margin:0 0 6px}} h2{{font-size:16px;margin:0}} h3{{font-size:
 .meta{{color:#6b7280;font-size:12px;margin:6px 0}}
 table{{width:100%;border-collapse:collapse;margin:6px 0}} th,td{{text-align:left;padding:6px 8px;border-bottom:1px solid #eef0f2;vertical-align:top}} th{{color:#6b7280;font-size:12px}}
 .muted{{color:#6b7280}} .banner{{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 12px;margin-bottom:16px;font-size:13px}}
+.review{{background:#eff6ff;border-color:#bfdbfe}} .caveat{{background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:8px 10px;font-size:12px;color:#991b1b}}
 </style></head><body><main>
 <h1>{html.escape(entity['canonical_name'])}</h1>
 <div class="sub">entity {html.escape(entity['entity_id'])} · {html.escape(entity['identity_state'])} rev{html.escape(str(entity['identity_revision']))} · listings {html.escape(', '.join(f"{l['market']}:{l['ticker']}" for l in listings))} · observations {len(observations)} <a href="index.html">← all profiles</a></div>
 <div class="banner">只读研究型画像：全部为 insufficient_evidence / score=null；不构成评分、投资建议或财务准确性结论。</div>
-{''.join(_card(o) for o in observations) or '<div class="card muted">暂无观察</div>'}
+{_review_banner(reviews or {})}
+{''.join(_card(o, reviews) for o in observations) or '<div class="card muted">暂无观察</div>'}
 </main></body></html>"""
 
 
@@ -95,6 +130,7 @@ def main(argv=None):
     parser.add_argument("--workspace", type=Path, default=DEFAULT_WS)
     parser.add_argument("--entity-id")
     parser.add_argument("--all", action="store_true")
+    parser.add_argument("--include-empty", action="store_true")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args(argv)
@@ -103,12 +139,16 @@ def main(argv=None):
             parser.error("--all requires --output-dir")
         args.output_dir.mkdir(parents=True, exist_ok=True)
         data = args.workspace/"data/quick_scan"
-        with closing(_open(data/"scan_observations.sqlite", True)) as con:
-            ids = [r[0] for r in con.execute("SELECT DISTINCT entity_id FROM quick_scan_observation ORDER BY entity_id")]
+        if args.include_empty:
+            with closing(_open(data/"scan.sqlite", True)) as con:
+                ids = [r[0] for r in con.execute("SELECT entity_id FROM quick_scan_entity ORDER BY canonical_name")]
+        else:
+            with closing(_open(data/"scan_observations.sqlite", True)) as con:
+                ids = [r[0] for r in con.execute("SELECT DISTINCT entity_id FROM quick_scan_observation ORDER BY entity_id")]
         rows = []
         for entity_id in ids:
             entity, listings, observations = load(args.workspace, entity_id)
-            (args.output_dir/(entity_id + ".html")).write_text(build(entity, listings, observations), encoding="utf-8")
+            (args.output_dir/(entity_id + ".html")).write_text(build(entity, listings, observations, load_reviews(entity_id)), encoding="utf-8")
             rows.append((entity["canonical_name"], entity["identity_state"], len(observations), entity_id + ".html"))
         index = "<!doctype html><html lang=\"zh\"><meta charset=\"utf-8\"><title>company profiles</title><body style=\"font:14px/1.5 'Segoe UI','Microsoft YaHei',sans-serif;max-width:900px;margin:28px auto\"><h1>公司画像</h1><p>只读研究型页面；不构成评分或投资建议。</p><table border=\"0\" cellspacing=\"0\" cellpadding=\"6\"><tr><th align=\"left\">公司</th><th align=\"left\">身份</th><th align=\"left\">观察</th></tr>" + "".join(f'<tr><td><a href="{html.escape(f)}">{html.escape(name)}</a></td><td>{html.escape(state)}</td><td>{n}</td></tr>' for name, state, n, f in rows) + "</table></body></html>"
         (args.output_dir/"index.html").write_text(index, encoding="utf-8")
@@ -117,7 +157,7 @@ def main(argv=None):
     if not args.entity_id or not args.output:
         parser.error("single mode requires --entity-id and --output")
     entity, listings, observations = load(args.workspace, args.entity_id)
-    args.output.write_text(build(entity, listings, observations), encoding="utf-8")
+    args.output.write_text(build(entity, listings, observations, load_reviews(args.entity_id)), encoding="utf-8")
     print(json.dumps({"entity": entity["canonical_name"], "observations": len(observations), "output": str(args.output)}, ensure_ascii=False))
     return 0
 
