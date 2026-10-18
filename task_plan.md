@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 旧观察是 owner 状态的一部分：删除会造成 ack_observation_missing
+
+进一步实验：删除旧观察后 preview ready，但 admission 在 prepare 时报 owner_refresh_ack_observation_missing（owner 仍需 delivered 的 ack 观察）。恢复观察后 admission 需要新确认（旧确认过期 refresh_consent_native_rejected）。结论是 catch-22：旧观察必须存在以维持 owner 状态，但它们又过不了 vendor preview。此外 admission 的 plan 比较已放宽为只比 decision/generation/reuse（existing_work_status 是预览快照，不应作为重算依据）。
+
 ## 2026-10-18 — 实验确认：移除旧观察后 preview 恢复，但 admit 仍 plan_changed
 
 备份 owner DB 后只保留 IQS_09，IQS_12b preview 立即 ready（dispatch_new_work、existing_work_status=delivered）。随即 install/confirm 成功，但 admission 仍 refresh_admission_plan_changed——说明 vendor 阻断确实是旧观察引起，而 plan 不一致来自 owner register 与 confirmation 的 decision 重算（与观察无关）。实验后已恢复 DB（5 条观察、5/5 金融、溯源 pass1）。
