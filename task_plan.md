@@ -4,6 +4,12 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — verified 身份批最终 PASS（闭合）
+
+独立复审最终 PASS：209 verified / 5 provisional、CN 201/205、US 11/11、HK 0/1、receipt 424；200 条 cninfo 全覆盖 official_short/name_gate（全 equal、原始差异 2 条 NFKC 等价）、SEC 7+7、pre-existing 具名、审计 207/0/2；name_gate 收紧为仅 equal。节点闭合，5 家 provisional 见缺口登记且 scoring-ineligible。
+
+routing 探测（治理未执行）：副本发布 pkg_b5a41d8c… 与历史包 modules/contexts 完全相同，仅路由元数据变化；000026 route 产出但 minimum_questions=24。发布 routing 包需 owner 批准；search provider 仍待选。
+
 ## 2026-10-18 — 搜索供应商选项（供决策）
 
 公开价格摘录：Brave 5 美元/1k（有免费 credits）、Tavily 免费 1,000 credits/月、Serper 2,500 试用（但现有策略无 serper kind）、DeepSeek 报道 5 元/1k。StockWiki 策略支持 brave/tavily/zai；准入需 enabled、credential_env、cost_bound_verified+pricing、storage_rights.confirmed+entitlement。建议先用 Tavily 免费额度或 Brave 做 1 家 1 题试点；需要 owner 选供应商、给 key 环境变量名、确认存储权利与查询/费用上限。报告 docs/implementation/reviews/search-provider-options-2026-10-18.md。

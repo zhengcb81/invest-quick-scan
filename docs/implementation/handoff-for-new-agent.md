@@ -1,3 +1,11 @@
+## 2026-10-18 — verified 身份批最终 PASS（节点已闭合）
+
+独立复审最终结论：**PASS，身份批 closed**。209 verified / 5 provisional；CN 201/205、US 11/11、HK 0/1；receipt 424。证据：200 条 cninfo（200/200 official_short、name_gate 全 equal、原始差异 2 条 NFKC 等价）、7 条 SEC + 完整 submissions、pre-existing 具名（Alphabet IVR_663efa…/CATL IVR_d5c631…）。审计 `scripts/verified_evidence_audit.py`：207 通过/0 失败/2 pre-existing；name_gate 今日仅接受 equal（contains 需未来逐条记录理由）。5 家 provisional 见 verified-gap-register，均 scoring-ineligible。
+
+**routing 探测（治理动作，未做真实发布）**：副本里 publish-routing 成功（pkg_b5a41d8c… / modrel_fc5de4…）；与历史包相比 **modules/contexts 完全相同**，仅 release/package 的路由元数据变化（schema 1.0→2.0、router 1.0→2.3、routing_policy_sha 新增）。000026 resolve-route 产出 route_327b3c77…（partial，common+risk），**minimum_questions=24**；max=1 compose 被 mandatory coverage 拒绝，max=24 成功。选项 A（发布 routing 包）技术上可行、确定性、不改题目，但属治理动作需 owner 批准；选项 B 手工 route 仍需 24 题覆盖或改 policy。
+
+**search provider**：仍待 owner 选 route/单价/storage rights；选项见 search-provider-options-2026-10-18.md。
+
 ## 2026-10-18 — 现有列表身份批完成（209/214），生产入口卡在 route / search
 
 **当前真实状态**：214 实体，**209 verified / 5 provisional**；identity receipt 424；观察 2 条（CATL）；真实搜索 0、模型调用 0。

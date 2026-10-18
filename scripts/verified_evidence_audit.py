@@ -102,7 +102,8 @@ for row in entities.values():
         entry["checks"].append({"name": "code_match", "ok": body.get("A股代码") == ticker, "detail": body.get("A股代码")})
         entry["checks"].append({"name": "org_match", "ok": evidence.get("org_id") == row.get("source_record_id"),
                                 "detail": evidence.get("org_id") + " vs " + str(row.get("source_record_id"))})
-        entry["checks"].append({"name": "name_gate", "ok": evidence.get("name_gate") in {"equal", "contains"},
+        # "contains" is reserved for a future row only with a recorded reason; today all 200 are "equal".
+        entry["checks"].append({"name": "name_gate", "ok": evidence.get("name_gate") == "equal",
                                 "detail": evidence.get("name_gate") + ": " + str(evidence.get("official_short")) + " vs " + str(row.get("short_name"))})
         expected = "IVR_" + hashlib.sha256(("cninfo:" + row["entity_id"] + ":" + name).encode()).hexdigest()[:32]
         entry["checks"].append({"name": "ivr_recompute", "ok": expected == ivr})
