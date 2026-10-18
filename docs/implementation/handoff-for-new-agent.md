@@ -1,3 +1,19 @@
+## 2026-10-18 — 委托原生运行大节点正式交付
+
+独立不同agent整包签收15精确路径：passed_for_exact_delegated_owner_engineering_scope、open_findings=[]。最终31契约、103 StockQA旧回归、22 StockWiki旧回归、1真实软件public E2E（248.322秒）、10独立未见反例通过；分母分别保留、不相加冒称金融正确率。实际隔离SQLite只读核对：两work、一原发送/一预算/一admission，timeout的actual NULL与reserved1000000保留，另work在撤销后0POST。rc2/record2.0与原撤销记录存在；原rc1/TTY保留。mypy92源文件通过。
+
+精确应用后走原正常hooks：StockQA `aaddcd6be6f506ca58791d7ecc375bbffa7b0c70` 已推既有origin/master；StockWiki `3fad36d1ae82333d9d1ed1eb4c55ee775d35b0df` 已本地提交，原仓无remote，push origin安全失败，未新建远端。首轮ruff测试import布局、QA CRLF/black/isort由原工具修正，第二轮正常hooks全绿；独审机械等价附录绑定最终源，不重复未变4分钟整链。真实v18只读预算缺新quota表的版本分支已修复；当前schema损坏继续拒。
+
+能力只表达当前本机OS owner固定namespace中的单action委托，不能冒称TTY或密码学agent认证；没有清理旧S1未知费用、真实公司金融资格或正式search-backed checkpoint。实际源码交付不写真实namespace/原DB，0收费API。
+
+下一主线：native-continuation候选在上述新HEAD/SHA上精确重基，完成原policy1.4 permissions-only→真实quote/原委托确认→同一原账本发送的整节点；旧S1两笔预算暴露保留actual NULL/预约/累计请求，新cohort精确绑定，旧B01的30work另留原状。随后实际公司摘要/暖缓存/进程恢复与准确性成本速度实测。真实激活准备见本节点runs/real-activation-preparation.md，旧2026-10-15 DeepSeek staging不能冒充MiMo Task3或新policy。三张独立10卡已就绪，无主线目录重叠。
+
+## 2026-10-18 — 续行方案精简与真实旧库兼容修复
+
+原只读设计中的“独立暴露决定install＋三表”提案已撤回，不作为施工要求。已确认原StockWiki current_permissions的permissions_only路径在调用executor inspector前返回原owner_policy/owner_state，可以先读取真正原受控策略，打破quote循环。当前native-continuation-candidate实施owner policy1.4内精确budget_exposure_acceptance＋原固定部署permissions-only端点读取，真正quote及原确认继续绑定完整policy/request/quote；仅保留必要单cell→原action/work不可变关联，物理计数/费用仍复用原表。不能信caller字典、任意部署路径或enable布尔值，旧默认暂停保持。旧design.md留作历史，后续以implementation-notes.md及最终CAS为准；不为未发布三表草稿增加迁移兼容。
+
+委托节点广回归将真正v15/v18旧schema构造正确后，定位get_quick_scan_budget_status在已声明只读v18上无条件读取后续quota表的真实缺陷。由owner_services18在delegated候选修最小版本能力分支，保留unknown/reserved，当前schema缺表继续拒；native-continuation后续对该大文件必须在其source交付后按新HEAD/SHA重基。原真实S1/StockWiki namespace仍未写、0收费API。当前工程节点f9f83ca已通过不重做。
+
 ## 2026-10-18 — 后续两项主线切片已具体化
 
 1. `native-continuation-design/design.md`（本节点runs下）完成只读根因设计并转独占native-continuation-candidate实施：原S1实际100次，98已settled/已知USD0.655435，2笔budget-only原未决/预约USD0.2；没有原work映射，不能猜不同公司或以hash自证独立。使用quote前原固定owner控制先安装精确旧暴露接受决定，再生成新真实quote及原确认。原单一ledger保留旧状态/actual NULL/计数和累计限制；仅明确新cohort/cells，不放行旧intent重发或原native未决work。旧版本默认继续暂停。现有25USD/350请求上限已有空间，不需扩大。

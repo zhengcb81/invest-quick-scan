@@ -1,0 +1,59 @@
+{
+  "protocol": "iqs.delegated-owner-test-record/1.0.0",
+  "finalized_at": "2026-10-18T02:01:17.875340+00:00",
+  "groups": [
+    {
+      "name": "contracts-complete",
+      "xml": "contracts-complete.xml",
+      "sha256": "a997fcfb64a8934aed3cdb77cd499eddcc630831b8abf8f2e876d531ffc0d4b5",
+      "tests": "31",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "12.255"
+    },
+    {
+      "name": "legacy-qa-complete",
+      "xml": "legacy-qa-complete.xml",
+      "sha256": "560c93675d6687f12f893ad8caad7f8b13ca77314e52fed8399b35c1f5ee5267",
+      "tests": "103",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "113.490"
+    },
+    {
+      "name": "public-e2e-complete",
+      "xml": "public-e2e-complete.xml",
+      "sha256": "e5780d6d635d2856d02e9dd16b1b8fb68e97759da68a1e7a2077271f03e85ac4",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "248.322"
+    },
+    {
+      "name": "legacy-sw",
+      "xml": "legacy-sw.xml",
+      "sha256": "a623d42837c8b5ae09c5844e7bb4c2217521d0ceed1d026a7d5b42b3d5e5004d",
+      "tests": "22",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.509"
+    }
+  ],
+  "static": "static-tests-final.json",
+  "source_lock_sha256": "d805f88c392791011ceb5cab98bee32ae61d92c87a6590d2e73ce1da7d70eee3",
+  "wire_origin": "scripted_wire",
+  "live_api_requests": 0,
+  "financial_accuracy_assessed": false,
+  "production_qualification": false,
+  "historical_failures": [
+    "public-e2e-first.xml: native uncertain status asserted incorrectly",
+    "public-e2e-final.xml: native timeout barrier correctly preceded revoke check",
+    "public-e2e-third2.xml: final revoked admit correctly raised AdmissionRejected; test expected dict",
+    "legacy-capability-red.xml: genuine v18 optional quota getter defect, repaired without reserve/DDL change"
+  ],
+  "history_not_rewritten": true
+}

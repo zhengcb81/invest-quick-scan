@@ -238,3 +238,9 @@ tests/test_shared_company_engine_native_e2e.py -text whitespace=cr-at-eol
 # Mainline design records keep the source/input hashes they were written with.
 runs/shared-engine-production-2026-10-18/native-continuation-design/* -text whitespace=cr-at-eol
 runs/shared-engine-production-2026-10-18/generic-task-design/* -text whitespace=cr-at-eol
+
+# Delegated owner acceptance artifacts bind exact original raw bytes.
+docs/implementation/reviews/delegated-owner-production-2026-10-18/** -text whitespace=cr-at-eol
+runs/shared-engine-production-2026-10-18/delegated-owner-candidate/* -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/delegated-owner-independent-review/* -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/real-activation-preparation.md -text whitespace=cr-at-eol
