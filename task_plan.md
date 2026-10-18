@@ -1,3 +1,7 @@
+## 2026-10-18 — cninfo API 口径的 5 家 verified 试点已写入真实库
+
+按 owner“用免费金融 API 验证身份”的方向，CN 证据改为 cninfo 逐公司概况 API（p_sysapi1133，返回公司全称+A股代码）+ 逐公司 cninfo 页面 URL，provenance 记录 API 响应 sha256/抓取时间/owner approval；不下载文档。真实库写入 5 家：000026 飞亚达精密科技、000400 许继电气、000547 航天工业发展、000596 安徽古井贡酒、000625 重庆长安汽车，均 verified/rev2/IVR；verified 3→8、receipt 218→223，entity/security/binding/candidate 不变，5 家重放全部幂等。下一步：独立复审该证据口径 → 余量 199 家深沪批量 → 美股 SEC → 港股 HKEX/东财 → 北交所缺口。
+
 ## 2026-10-18 — 免费金融 API 身份核验调研
 
 实测免费无需登录：cninfo webapi p_sysapi1133（AkShare stock_profile_cninfo）返回公司全称/A股代码（深沪，1-3s）；东财 F10 同样可拿 ORG_NAME（深沪）；SEC EDGAR company_tickers.json 官方（美股）；东财港股 F10 gszl.gsmc（港股）。北交所 872808 在 cninfo/东财均缺口。Tushare 需 token（未装），BaoStock 需 SDK 登录，Wind/iFinD 付费。建议 CN 证据改为“cninfo 逐公司概况页 + API 响应 sha256”，US 用 SEC，HK 用 HKEX/东财。已用该 API 构建 5 家（飞亚达/许继/航天发展/古井贡酒/长安汽车）payload 并在副本导入成功（法人名正确、verified、回执 8）；真实库未写。报告 docs/implementation/reviews/free-financial-api-identity-2026-10-18.md，待 owner 确认口径后写真实 5 家并批量。
