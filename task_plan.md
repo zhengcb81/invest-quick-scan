@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_07 search admission accepted
+
+preview rv1_180e… → confirm rc2_0ca3… → admit accepted（permission_authenticated、registered_with_executor、API=0）。admission 使用新预算 iqs-catl-07-search-20261018 与 admission-config-catl-07；cell 带 search exposure hash。下一步：driver 传 require_search/search_policy/search_exposure/search_service，写 retrieval records，跑 IQS_07 search-backed。
+
 ## 2026-10-18 — IQS_07 search admission preview ready
 
 修正导入观察的 task_mode（primary）与 execution 必填字段（prompt/request_payload sha）后，query seal 通过；IQS_07 search 预演 preview=ready（rv1_180e…），cell search hash=exposure digest、module_packs、1 次 HTTP。下一步：confirm/admit，然后 retrieval records + driver require_search 接 1 题。
