@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — CATL 画像草案 + 16 题 facts pack
+
+用 cninfo 行业/主营 + 官方来源生成 CATL profile 草案（operating / energy_transition / mature，medium，DRAFT），离线 facts_compose 得到 16 道 standard-1 事实题（FACT_01..14 + 三个模块题），source_sha256 校验通过。未注册、未运行、未调用模型；分类口径待 owner 确认。证据 docs/implementation/reviews/catl-profile-2026-10-18/。
+
 ## 2026-10-18 — F05 入口：facts pack 离线生成
 
 新增 scripts/facts_compose.py，从作者 profile 生成 standard-1 facts pack（全部 response_kind=fact），无网络/无模型；2 个单测通过。但 214 家现有公司没有结构化 profile（只有 HTML 画像页），需要 owner 批准分类口径后先做 CATL 1 家 quick pack。文档 docs/implementation/plans/f05-facts-pack-2026-10-18.md。
