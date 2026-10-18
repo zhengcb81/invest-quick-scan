@@ -1,5 +1,9 @@
 ## 2026-10-18 — 旧五包正式签收，转共享引擎主线
 
+共享核心11路径已精确独审并应用到 Company Lab，正常本地提交 cd5e3e7ff44aa94cff3f7728c5c38811e9192b85（无remote）。最终独立原全套157P/1skip、独立9反例通过；签收 company-scoped-acceptance.json 明确只涵盖该源码范围，整个生产节点仍in_progress。源文件和候选CAS逐字节一致，未混入其他writer。
+
+主线隔离集成已补：原SQLite成功响应/安全输出同事务落库、可见输出摘要进入原不可变回执、实际外部证据进入wire、错模型pack保留真实用量与未知屏障；此外添加显式单work多轮登记，以及原intent到原物理请求的持久关联来覆盖响应到达而引擎日志未写成的崩溃窗口。根因还包括原owner只读预览重复BEGIN、provider配置别名与实际供应商混淆，均在同一大节点修复中。实际owner软件的隔离正例与公开组合恢复仍待最后复核；没有把单SDK读取当全链路验收，没有本轮真实模型调用。
+
 三个互不重叠的新施工卡已就绪：RELEASE-DIFF-10（版本兼容差异）、SUMMARY-LOSS-10（摘要重要信息保真）、RELATION-DELTA-10（关系时间变化）。独立发布审查4项有效发现全部修复，最终七文件绑定 passed/open_findings=[]；65条输入 Git bytes/OID/SHA 全匹配。卡片自身不是实施交付，未创建新 Lab、未自动派发。文档入口 docs/implementation/parallel-lanes/packages/2026-10-18-mainline-support/README.md。
 
 真正独立 reviewer remaining_acceptance18 已完成整组最终复核，passed/open_findings=[]。REVIEW 56 个不同重点测试、13 个独立反例；RETRIEVAL 22 个重点测试、6 组独立反例，历史299维分母在post-hoc过滤后为297。QUERY/SOURCE/RESUME 原最终提交和960个tracked文件核对通过；不重跑已通过且未变的整套。REVIEW 唯一文档问题已修正并本地提交 b8f73bc10b13bb1d3d231f8c2a48c7fdd7bf9d8f；测试代码仍为9817dcb受检版本，仅README一行变动。

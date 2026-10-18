@@ -2,7 +2,7 @@
 
 09三包离线交付已签收；旧QUERY/SOURCE/RESUME/REVIEW/RETRIEVAL五包也已由真正独立agent remaining_acceptance18 最终签收，报告 docs/implementation/reviews/remaining-final-review-2026-10-18/final.json 为 passed/open_findings=[]。REVIEW最终 b8f73bc（源码测试9817dcb不变，仅README），RETRIEVAL9324b345，其余原绑定不变。历史“等10月22日额度/终审pending”不再是现状。PROMPT/LOCALE live实验无锁/参考输入，仍not_assessed；无生产/金融资格。
 
-用户要求继续共享引擎生产接线、真实摘要和缓存恢复。当前唯一工程节点：隔离候选复用Company Runner + RuntimeBridgePort + StockQA native owner/预算/工作账本；补Runner真实题号投影、原子保留安全可见response、按原attempt零重发恢复、真实来源/计量摘要。候选不能代替源交付或真实验收，最终整组独审修复后再应用。三张新支撑卡在2026-10-18-mainline-support草案目录，作者整改独立发布审查发现中，未派发/未创建Lab。
+用户要求继续共享引擎生产接线、真实摘要和缓存恢复。Company核心11路径已独审并应用，源提交cd5e3e7（Lab无remote）；最终独立157P/1原Windows skip与9反例通过，F01/F02闭环。当前唯一工程节点继续复用Company Runner + RuntimeBridgePort + StockQA native owner/预算/工作账本；StockQA原子安全输出、注册多轮、原intent到原物理请求映射和公开组合恢复仍在隔离候选内，尚未应用或关闭整生产门。三张新支撑卡2026-10-18-mainline-support已通过独立发布审查并随IQS f8e38dc推送；可交独立harness，尚未自动派发/创建Lab。
 
 主控拥有三份根PWF；外包/实施agent只写各自独占候选。StockQA源e63a79f原tracked clean；他人2026-10-10 README、旧T4未知请求/预约与生产数据库保持。不重复问已授权范围。
 

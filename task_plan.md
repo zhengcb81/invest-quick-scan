@@ -10,6 +10,8 @@
 
 ## Next Step
 
+当前代码交付：Company 共享核心已完成同一大节点内的精确源码独审，11路径按CAS应用并本地正常提交 cd5e3e7（Lab无remote）。独立全套157P/1原Windows skip；F01证据版本链、F02快照别名均有先失败后通过反例。StockQA原生安全输出、注册多轮、intent到原物理请求映射，以及Runtime/owner/组合入口仍在同一整节点内集成复核；未关闭生产或真实公司门，不重发旧未知请求。
+
 三个主线配套新卡已完成真正不同 agent 的整包发布审查（cards_review18，passed/open_findings=[]），位于 docs/implementation/parallel-lanes/packages/2026-10-18-mainline-support/。RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10 各占一个新 Lab，输入为 d788a10 的65个已提交 Git 对象记录；零网络、零生产写入，实施末必须独立整包审查修尽后交接。尚未自动派发。
 
 旧五包最终独审已真实通过（remaining_acceptance18，open_findings=[]）；REVIEW 最终 b8f73bc，其余四个原绑定不变。现在在隔离候选中接通单一 Runner、StockQA 原生 owner/预算/响应持久化和真实摘要；先补全已收响应的可见输出原子保存，再做同源零重发恢复验收。IQS 他人 2026-10-10 README 保留。

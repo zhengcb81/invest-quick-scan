@@ -1,5 +1,7 @@
 ## 2026-10-18 — 共享引擎恢复根因与旧包签收
 
+当前已交付源码：Company核心11路径独审后提交cd5e3e7。StockQA候选仍未应用：多轮必须显式登记且绑定原intent；pack物理请求也需同源intent关联，否则收到响应但引擎日志尚未落盘时无法零重发恢复。新关联自身哈希不是成员资格证明，读取必须回原attempt/pack表重推work成员；对应独立反例F05已修复转绿。只读owner预览不能重复BEGIN，配置provider别名与实际provider也必须分别记录和校验。公开组合已有合成OS强退恢复测试，实际12题owner+Runner正例和正式搜索检查点仍待验证，不能把两者混说。
+
 旧五包最终独审已通过；原平台额度阻塞不再作为本轮现状。实际 final.json 由不同agent产出，reviewer身份/源码commit/聚焦测试与独立反例均可核对。
 
 ResearchChatSession 现在先落native response receipt再校验模型可见答案；原WorkStore只保留receipt/hash，没有安全可见响应正文。若在SDK返回前崩溃，只有计费和响应摘要，不能还原已知答案；不能以新DB、换owner或重发来声称cache恢复。根因修复应把校验后的公开content/tool_calls与原native收执在同一事务保存，并把隐含thinking仅留内存。失败回执仍需原样计费，不用错误答案污染cache。
