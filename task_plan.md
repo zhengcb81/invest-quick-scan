@@ -1,3 +1,21 @@
+## 2026-10-18 — 接回生产主线（本轮当前）
+
+用户明确要求：全部施工包验收后继续共享引擎生产接线、真实摘要、缓存和中断恢复验收；问题直接从根因修复，及时正常提交/推送，不重复询问既有授权。三个09包的离线接收已完成，真实模型实验资格仍另列。
+
+本轮按四个大节点推进：
+1. 由真正独立 reviewer 完成旧 REVIEW-CAL-06 与 RETRIEVAL-AUDIT-07 最终源码/接口审查，核五个已记录 commit；有效发现修复并在同一整包内复审，不重做已接受的09包。
+2. 复用现有 Company Lab/StockQA 原生 SDK、owner、预算/工作账本与标准答案契约，完成共享引擎的真实生产 adapter；先失败用例再修复，保持单一事实/执行状态来源。
+3. 以已批准真实公司和小题集验收真实摘要的来源完整性、冷/暖读取和 OS 进程中断恢复。记录实际请求、缓存、成本和未知项；已发送未知结果不重发。只在整组工程/真实实验节点审查。
+4. 交付三个独占新 Lab 的支撑施工包：版本兼容差异、摘要信息丢失、产业链关系时间变化。输入固定在已提交 Git blobs，独立整包审查并修复后才交用户；不自动向外部 harness 派发。
+
+## Next Step
+
+三个主线配套新卡已完成真正不同 agent 的整包发布审查（cards_review18，passed/open_findings=[]），位于 docs/implementation/parallel-lanes/packages/2026-10-18-mainline-support/。RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10 各占一个新 Lab，输入为 d788a10 的65个已提交 Git 对象记录；零网络、零生产写入，实施末必须独立整包审查修尽后交接。尚未自动派发。
+
+旧五包最终独审已真实通过（remaining_acceptance18，open_findings=[]）；REVIEW 最终 b8f73bc，其余四个原绑定不变。现在在隔离候选中接通单一 Runner、StockQA 原生 owner/预算/响应持久化和真实摘要；先补全已收响应的可见输出原子保存，再做同源零重发恢复验收。IQS 他人 2026-10-10 README 保留。
+
+---
+
 ## 2026-10-18 — 三个独立研究包交付验收收口
 
 **范围：** 接收 PROMPT-TRUST-09、LOCALE-ROBUSTNESS-09、TAXONOMY-CROSSWALK-09 的离线交付和最终元数据；发现的问题由总控直接修复。未调用收费模型/API，未下载资料，未写 StockQA、StockWiki、生产数据库或名单。

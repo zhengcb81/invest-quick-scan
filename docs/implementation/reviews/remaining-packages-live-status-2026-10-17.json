@@ -1,7 +1,7 @@
 {
   "protocol": "iqs.remaining-packages-live-status/1.0.0",
-  "as_of_utc": "2026-10-17T16:02:47Z",
-  "fully_accepted": false,
+  "as_of_utc": "2026-10-18T00:25:31.191901+00:00",
+  "fully_accepted": true,
   "checkpoint_status_file": "docs/implementation/reviews/remaining-packages-2026-10-17/controller-status.json",
   "checkpoint_status_note": "Immutable archive-manifest-bound snapshot; not edited. Current deltas in this live status supersede its REVIEW-CAL source commit field.",
   "packages": {
@@ -18,15 +18,16 @@
       "independent_review": "closed with actual probes of reported corrections"
     },
     "REVIEW-CAL-06": {
-      "commit": "9817dcbc5a44a8b0dcca7b3bc69fae4ef98985d4",
+      "commit": "b8f73bc10b13bb1d3d231f8c2a48c7fdd7bf9d8f",
       "version": "1.1.0; 1.0 compatibility retained",
       "tests": "124 passed in 23.17 seconds after evidence-board binding regression repair",
-      "independent_final_review": "pending"
+      "independent_final_review": "passed; remaining_acceptance18",
+      "tested_source_commit": "9817dcbc5a44a8b0dcca7b3bc69fae4ef98985d4"
     },
     "RETRIEVAL-AUDIT-07": {
       "commit": "9324b345f4ade371177560ab774614474706d5ab",
       "tests": "159 passed / 1 skipped; latest root probes remain green",
-      "independent_final_review": "pending"
+      "independent_final_review": "passed; remaining_acceptance18"
     }
   },
   "controller_pre_review_finding": {
@@ -37,19 +38,18 @@
     "regression": "test_unprovided_evidence_board_cannot_be_self_declared covers self-declaration, missing expected hash, valid binding, and incorrect reason."
   },
   "independent_review": {
-    "status": "pending_platform_usage_recovery",
-    "final_passed": false,
-    "scope_remaining": [
-      "Review final REVIEW-CAL-06 1.1 changes at commit 9817dcbc5a44a8b0dcca7b3bc69fae4ef98985d4.",
-      "Review final RETRIEVAL-AUDIT-07 revisions and binding.",
-      "Bind all five exact commits and current PWF bytes; report passed only after the independent reviewer supplies passed/open_findings=[]."
-    ],
-    "platform_reported_recovery": "October 22, 2026 at 6:08 PM (platform display timezone not independently established)"
+    "status": "passed",
+    "final_passed": true,
+    "open_findings": [],
+    "reviewer": "/root/remaining_acceptance18",
+    "final": "docs/implementation/reviews/remaining-final-review-2026-10-18/final.json",
+    "report": "docs/implementation/reviews/remaining-final-review-2026-10-18/report.md"
   },
   "cleanup": {
     "isolated_locked_input_copy_and_7_pytest_temp_roots_removed": true,
     "production_db_or_universe_writes": 0,
     "paid_api_calls": 0
   },
-  "evidence": "runs/remaining-package-final-review-2026-10-17/root-review-review-board-evidence-2026-10-17.json"
+  "evidence": "runs/remaining-package-final-review-2026-10-17/root-review-review-board-evidence-2026-10-17.json",
+  "acceptance_scope": "offline engineering and candidate-content snapshots only; no production or financial qualification"
 }

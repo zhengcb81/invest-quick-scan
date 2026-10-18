@@ -1,0 +1,34 @@
+FF......................................................                 [100%]
+================================== FAILURES ===================================
+_______________ test_new_cli_build_has_explicit_minor_envelope ________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/remaining-final-review-2026-10-18/isolated/review-pytest-locked-only/test_new_cli_build_has_explici0')
+
+    def test_new_cli_build_has_explicit_minor_envelope(tmp_path):
+        output=tmp_path/'casebook.json'
+        p=subprocess.run([sys.executable,'-B','-m','iqs_review_calibration','build','--inputs',str(INPUTS_ROOT),'--lock',str(LOCK_PATH),'--expected-lock-sha256',EXPECTED_LOCK_SHA,'--out',str(output)],cwd=tmp_path,capture_output=True,text=True,encoding='utf-8',timeout=50)
+>       assert p.returncode==0,p.stderr
+E       AssertionError: ERROR: build --out: output C:\Users\郑曾波\Projects\invest-quick-scan\runs\remaining-final-review-2026-10-18\isolated\review-pytest-locked-only\test_new_cli_build_has_explici0\casebook.json resolves inside the lock's directory C:\Users\郑曾波\Projects\invest-quick-scan\runs\remaining-final-review-2026-10-18\isolated; refusing
+E         
+E       assert 3 == 0
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-m', 'iqs_review_calibration', 'build', '--inputs', 'C:\\Us... directory C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\remaining-final-review-2026-10-18\\isolated; refusing\n").returncode
+
+tests\test_v11_envelopes.py:17: AssertionError
+_________________ test_explicit_legacy_build_remains_readable _________________
+
+tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/remaining-final-review-2026-10-18/isolated/review-pytest-locked-only/test_explicit_legacy_build_rem0')
+
+    def test_explicit_legacy_build_remains_readable(tmp_path):
+        output=tmp_path/'casebook.json'
+        p=subprocess.run([sys.executable,'-B','-m','iqs_review_calibration','build','--inputs',str(INPUTS_ROOT),'--lock',str(LOCK_PATH),'--expected-lock-sha256',EXPECTED_LOCK_SHA,'--output-version','1.0.0','--out',str(output)],cwd=tmp_path,capture_output=True,text=True,encoding='utf-8',timeout=50)
+>       assert p.returncode==0,p.stderr
+E       AssertionError: ERROR: build --out: output C:\Users\郑曾波\Projects\invest-quick-scan\runs\remaining-final-review-2026-10-18\isolated\review-pytest-locked-only\test_explicit_legacy_build_rem0\casebook.json resolves inside the lock's directory C:\Users\郑曾波\Projects\invest-quick-scan\runs\remaining-final-review-2026-10-18\isolated; refusing
+E         
+E       assert 3 == 0
+E        +  where 3 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', '-m', 'iqs_review_calibration', 'build', '--inputs', 'C:\\Us... directory C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\remaining-final-review-2026-10-18\\isolated; refusing\n").returncode
+
+tests\test_v11_envelopes.py:28: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_v11_envelopes.py::test_new_cli_build_has_explicit_minor_envelope
+FAILED tests/test_v11_envelopes.py::test_explicit_legacy_build_remains_readable
+2 failed, 54 passed in 13.71s

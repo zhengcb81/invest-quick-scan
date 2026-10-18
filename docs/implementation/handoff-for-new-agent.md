@@ -1,3 +1,13 @@
+## 2026-10-18 当前接续：全部旧包离线签收后转生产引擎
+
+09三包离线交付已签收；旧QUERY/SOURCE/RESUME/REVIEW/RETRIEVAL五包也已由真正独立agent remaining_acceptance18 最终签收，报告 docs/implementation/reviews/remaining-final-review-2026-10-18/final.json 为 passed/open_findings=[]。REVIEW最终 b8f73bc（源码测试9817dcb不变，仅README），RETRIEVAL9324b345，其余原绑定不变。历史“等10月22日额度/终审pending”不再是现状。PROMPT/LOCALE live实验无锁/参考输入，仍not_assessed；无生产/金融资格。
+
+用户要求继续共享引擎生产接线、真实摘要和缓存恢复。当前唯一工程节点：隔离候选复用Company Runner + RuntimeBridgePort + StockQA native owner/预算/工作账本；补Runner真实题号投影、原子保留安全可见response、按原attempt零重发恢复、真实来源/计量摘要。候选不能代替源交付或真实验收，最终整组独审修复后再应用。三张新支撑卡在2026-10-18-mainline-support草案目录，作者整改独立发布审查发现中，未派发/未创建Lab。
+
+主控拥有三份根PWF；外包/实施agent只写各自独占候选。StockQA源e63a79f原tracked clean；他人2026-10-10 README、旧T4未知请求/预约与生产数据库保持。不重复问已授权范围。
+
+---
+
 ## 2026-10-17 — 最终独审前又修复 REVIEW-CAL 证据板绑定问题
 
 五包的已知修复均已通过各自测试并提交；QUERY、SOURCE、RESUME 的独立反例审查已闭环。最终独审还差 REVIEW-CAL-06 与 RETRIEVAL-AUDIT-07 两包，以及将五个最终源码提交和本次PWF字节绑定并完成签收。本条新增的 REVIEW-CAL 修复须一并纳入独立复核。

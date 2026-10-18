@@ -1,3 +1,23 @@
+## 2026-10-18 — 旧五包正式签收，转共享引擎主线
+
+三个互不重叠的新施工卡已就绪：RELEASE-DIFF-10（版本兼容差异）、SUMMARY-LOSS-10（摘要重要信息保真）、RELATION-DELTA-10（关系时间变化）。独立发布审查4项有效发现全部修复，最终七文件绑定 passed/open_findings=[]；65条输入 Git bytes/OID/SHA 全匹配。卡片自身不是实施交付，未创建新 Lab、未自动派发。文档入口 docs/implementation/parallel-lanes/packages/2026-10-18-mainline-support/README.md。
+
+真正独立 reviewer remaining_acceptance18 已完成整组最终复核，passed/open_findings=[]。REVIEW 56 个不同重点测试、13 个独立反例；RETRIEVAL 22 个重点测试、6 组独立反例，历史299维分母在post-hoc过滤后为297。QUERY/SOURCE/RESUME 原最终提交和960个tracked文件核对通过；不重跑已通过且未变的整套。REVIEW 唯一文档问题已修正并本地提交 b8f73bc10b13bb1d3d231f8c2a48c7fdd7bf9d8f；测试代码仍为9817dcb受检版本，仅README一行变动。
+
+正式独审 final/report 位于 docs/implementation/reviews/remaining-final-review-2026-10-18/。其自有隔离副本删除被自动策略拒绝，已保留1,406文件/20,040,462字节并披露，未绕过。全部施工包的离线交付验收现已收口；PROMPT/LOCALE真实研究和全项目生产/金融资格不因此关闭。
+
+主线根因已定位：Runner实际路径缺题号投影；真实SDK已保存回执却没有原子保存安全可见输出，进程中断后无法无HTTP恢复已收答案；报告固定synthetic。隔离候选分别修共享Runner/provenance、原StockQA响应持久化和生产service组合。源仓目前尚未应用这些候选，0本轮收费请求。
+
+---
+
+## 2026-10-18 — 主线恢复与新独立包准备
+
+已启动真正独立的 remaining_acceptance18 处理两个旧包终审；mainline_map18 只读梳理共享引擎/摘要/缓存接缝；new_packages18 仅写新的独立施工卡目录，三者不写共享 PWF。StockQA 当前 e63a79f tracked clean；IQS d788a10，仅已知他人2026-10-10 README为tracked修改。09包精确Lab HEAD不变。
+
+PWF选择器 PLAN_ID/PWF_PLAN_ROOT 均为空，项目没有 .planning，resolver返回legacy根计划。CodeGraph context 两次独立结构请求超过两分钟未返回，已停止只读工具 cell，不影响文件；后续使用已知路径读取，避免继续阻塞。项目根和StockQA没有实体AGENTS.md，用户提供的CodeGraph规则继续适用。尚无本轮收费请求/下载/生产DB或名单写。
+
+---
+
 ## 2026-10-18 — 三个独立研究包离线交付验收完成
 
 - PROMPT-TRUST-09：独立 reviewer review_prompt_trust09 对 round-7 handoff/metadata 给出 PASS，精确绑定 Lab HEAD e37755f78a29315ca97ba95367bbd00340c3211d；59 项清单、final、报告和 invocation evidence 一致。离线测试记录 34 passed。真实模型抗注入实验仍因 dispatch lock 未就绪而 blocked，指标未评估。

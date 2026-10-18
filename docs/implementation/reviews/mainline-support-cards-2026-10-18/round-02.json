@@ -1,0 +1,82 @@
+{
+  "protocol": "iqs.publication_independent_review/1.0.0",
+  "reviewer_task_id": "/root/cards_review18",
+  "author_task_id": "/root/new_packages18",
+  "reviewed_at_utc": "2026-10-18T00:26:44.607571+00:00",
+  "verdict": "passed",
+  "open_findings": [],
+  "closures": [
+    {
+      "finding_id": "MS10-R1-F01",
+      "status": "closed",
+      "evidence": "RELEASE payload now exposes seven explicit release fields and routing policy JSON-tree differences. Both exact original policy blobs are in the 65-entry catalog. Actual raw SHA values equal release.routing_policy_sha256; both forward/reverse real comparisons and missing/hash/only-policy counterexamples are required."
+    },
+    {
+      "finding_id": "MS10-R1-F02",
+      "status": "closed",
+      "evidence": "RELATION requires N original items to have exactly N unique item_refs covering /items/0..N-1, unique local IDs, per-item canonical hashes, question/field/as_of bindings; totals derive from original answer arrays. Four malicious CLI counterexamples plus valid row permutation are required."
+    },
+    {
+      "finding_id": "MS10-R1-F03",
+      "status": "closed",
+      "evidence": "Only explicit confidence plus non-null consistent identity may match. Non-null unresolved IDs map to identity_unresolved. Business-unit stable ID/null semantics are explicit; paired negative and positive tests required."
+    },
+    {
+      "finding_id": "MS10-R1-F04",
+      "status": "closed",
+      "evidence": "Request cutoff bounds both information dates; valid retrospective observed_at may be later. method_changed is enumerated over question identity/version/definition. All failed conditions are retained, fixed status precedence specified, and every item becomes unresolved with conserved denominators. Future/same/reversed dates, method and multi-failure fixtures required."
+    }
+  ],
+  "reviewed_files": {
+    "input-catalog.json": {
+      "bytes": 21888,
+      "sha256": "ffcfb2e05270f4765d2146cb54e39fdd2ce71710c9aa8390dcb8c40065a15865"
+    },
+    "integration-contract.md": {
+      "bytes": 10270,
+      "sha256": "a9ea665ad2fb331d26004f5d42c8b6330daab7c23c61977de32b1cce05d76921"
+    },
+    "preparation-check.json": {
+      "bytes": 1108,
+      "sha256": "b2f1df09b1ecb9354d43ee982c2c1f92fbb38a6ba27b260dbb8af6f6694716b2"
+    },
+    "README.md": {
+      "bytes": 2855,
+      "sha256": "27cfa07d98cee667f3aa6c549fb8a990473f54958f662e0fd77145fe72aaf282"
+    },
+    "RELATION-DELTA-10.md": {
+      "bytes": 11781,
+      "sha256": "4c6351eff46c5f7095f459727fa102cb6c36f400ba3c40daa79a3a9a05100cce"
+    },
+    "RELEASE-DIFF-10.md": {
+      "bytes": 8433,
+      "sha256": "138a03fdbb0eb13d6a87416c1d3bcddd17933b239bbb8e14e654480ee0a684c1"
+    },
+    "SUMMARY-LOSS-10.md": {
+      "bytes": 7752,
+      "sha256": "c527696bfb3827bf10b9a6091fb5e3d2b3635a5a3a356e6f35022f1a205f4d21"
+    }
+  },
+  "actual_checks": {
+    "source_commit": "d788a10e665440d68ad323f77711db83ea683e07",
+    "catalog_git_entries_checked": 65,
+    "oid_bytes_raw_sha_matches": 65,
+    "policy_ref_closure_count": 2,
+    "policy_declared_raw_hash_matches": 2,
+    "relative_links_checked": 12,
+    "missing_links": [],
+    "assigned_lab_roots_present": false,
+    "source_scripts_executed": 0,
+    "network_requests": 0,
+    "paid_api_calls": 0,
+    "source_changes": 0,
+    "expectations": "Separate expected catalog/expected files; business audit/compare prohibited from reading expected. Source catalog only committed Git bytes; fixtures use own catalog.",
+    "independent_implementation_review": "Real different-agent complete review, unseen negative/normal controls, fixes/re-review, final payload/metadata distinction and verifiable invocation evidence required.",
+    "scope_overlap": "Distinct write roots and modules; no same task/write overlap with earlier CONTEXT/CODEC/CHAIN-VERIFY/SW-READY; no new production owner runtime."
+  },
+  "limitations": [
+    "Passed documentation publication-readiness review only; implementations, test outcomes, financial accuracy, model effectiveness and production integration are not accepted by this review.",
+    "No Lab was created; no source script or test executed. Read-only source verification used git cat-file/rev-parse and standard-library hashing/parsing.",
+    "README/preparation author state can be advanced by the author after receiving this verdict; this reviewer did not change draft status."
+  ]
+}

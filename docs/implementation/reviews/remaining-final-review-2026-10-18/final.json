@@ -1,0 +1,159 @@
+{
+  "protocol": "iqs.independent-final-package-review/1.0.0",
+  "generated_utc": "2026-10-18T00:22:44.941401+00:00",
+  "reviewer": "/root/remaining_acceptance18",
+  "distinct_from_implementation_and_repairs": true,
+  "new_invocation_not_fabricated_continuation_of_interrupted_review": true,
+  "status": "passed",
+  "open_findings": [],
+  "scope": "Offline engineering/candidate-content acceptance of five final package snapshots; current-source verification of previously closed QUERY/SOURCE/RESUME and final source/CLI/negative-case review of REVIEW/RETRIEVAL.",
+  "packages": [
+    {
+      "package_id": "QUERY-ENTITY-07",
+      "repository": "iqs-query-identity-lab",
+      "commit": "dd1f5f1fc26b1296fad98fd843cff0587fc6c700",
+      "tracked_clean": true
+    },
+    {
+      "package_id": "SOURCE-TIME-07",
+      "repository": "iqs-search-source-lab",
+      "commit": "e8a31c22aa9e6d19978172e1bf639b3b03a63e20",
+      "tracked_clean": true
+    },
+    {
+      "package_id": "RESUME-CHAOS-06",
+      "repository": "iqs-resume-chaos-lab",
+      "commit": "f76bb65e089cfb1d64af6606704dea1c390e0327",
+      "tracked_clean": true
+    },
+    {
+      "package_id": "REVIEW-CAL-06",
+      "repository": "iqs-review-calibration-lab",
+      "commit": "b8f73bc10b13bb1d3d231f8c2a48c7fdd7bf9d8f",
+      "tracked_clean": true
+    },
+    {
+      "package_id": "RETRIEVAL-AUDIT-07",
+      "repository": "iqs-search-annotation-lab",
+      "commit": "9324b345f4ade371177560ab774614474706d5ab",
+      "tracked_clean": true
+    }
+  ],
+  "review_cal_tested_source_commit": "9817dcbc5a44a8b0dcca7b3bc69fae4ef98985d4",
+  "closed_findings": [
+    {
+      "id": "REMAIN-18-DOC-01",
+      "priority": "P3",
+      "fix_commit": "b8f73bc10b13bb1d3d231f8c2a48c7fdd7bf9d8f",
+      "independent_recheck": "Exactly one README lead-version line changed; source/tests unchanged; actual HEAD and tracked-clean checked."
+    }
+  ],
+  "actual_focused_tests": {
+    "review_distinct_cases_passed": 56,
+    "review_note": "54 passed in locked-input setup; 2 CLI build tests passed separately after correcting reviewer lock/output placement. Not a new 124-case full run.",
+    "retrieval_selected_cases_passed": 22,
+    "retrieval_note": "Includes public assign/validate/compare and refusal E2E; no new 159-case full-suite claim."
+  },
+  "independent_probes": {
+    "review": 13,
+    "retrieval": 6,
+    "retrieval_legacy_equal_annotation_dimensions": 299,
+    "retrieval_new_post_hoc_compared": 297,
+    "retrieval_AB_agreement_counts": {
+      "agree": 352,
+      "disagree": 6,
+      "not_comparable": 18
+    },
+    "empty_retrieval_cli": {
+      "status": "ok",
+      "targets_planned": 1,
+      "targets_received": 1,
+      "sources_planned": 0,
+      "target_level_agreements": 2
+    }
+  },
+  "input_lock_raw_sha256": "968fc8a41653e24e0701feea9bc75353bff90e923ecd96f37f6b8334818d1233",
+  "isolation": {
+    "paid_api_requests": 0,
+    "downloads": 0,
+    "secret_values_read": false,
+    "production_database_writes": 0,
+    "universe_writes": 0,
+    "source_code_writes": false,
+    "PWF_writes": false,
+    "authorized_codegraph_indexes_initialized": [
+      "iqs-review-calibration-lab",
+      "iqs-search-annotation-lab"
+    ],
+    "cleanup": {
+      "status": "retained_policy_rejected_removal",
+      "owned_tree": "runs/remaining-final-review-2026-10-18/isolated",
+      "files": 1406,
+      "bytes": 20040462,
+      "no_alternative_deletion_attempt": true
+    }
+  },
+  "qualifications": {
+    "production_ready": false,
+    "financial_qualification_granted": false,
+    "rating_gold": false,
+    "real_model_accuracy_assessed": false
+  },
+  "limitations": [
+    "Existing four precise RESUME windows remain unsupported.",
+    "Current working frozen tree contains unlisted executable caches; integration needs exact locked view, not weakened verification.",
+    "Reviewer harness setup failures remain retained and attributed; they are not product regressions.",
+    "PWF mechanical snapshot predates coordinator closure text; coordinator may execute reviewer-authored bind_current.py with explicit attribution after updating PWF. Mechanical binding is not a new independent verdict."
+  ],
+  "evidence": [
+    {
+      "path": "runs/remaining-final-review-2026-10-18/executions.json",
+      "raw_sha256": "2e0be1b15e8aaca597324c5c5e71913d5d2add2d1ff28ce636eb06cbed130fde",
+      "bytes": 11186
+    },
+    {
+      "path": "runs/remaining-final-review-2026-10-18/review-independent-probes.json",
+      "raw_sha256": "af726332490035b349a9c4553c458b5706cc75c3aea9f113acd78b129bd744f9",
+      "bytes": 2642
+    },
+    {
+      "path": "runs/remaining-final-review-2026-10-18/retrieval-independent-probes.json",
+      "raw_sha256": "d93d8e44988d45a45849d7ba7e80f04ee082249e2dc7c3f0434e9df1e1df013a",
+      "bytes": 2960
+    },
+    {
+      "path": "runs/remaining-final-review-2026-10-18/historical-source-comparison.json",
+      "raw_sha256": "c76a06d6e32bc710c3f0511473262a4323b0b9bf4ee380589483e884c6f2626d",
+      "bytes": 1189
+    },
+    {
+      "path": "runs/remaining-final-review-2026-10-18/source-bindings.json",
+      "raw_sha256": "68b6f1076f45fe96b2c936c3e216b1756fa90364b3e2bb8f7d2ef305a07448a2",
+      "bytes": 215167
+    },
+    {
+      "path": "runs/remaining-final-review-2026-10-18/reviewer-preclosure-bindings.json",
+      "raw_sha256": "e98b1b940d5bd34b119a3e0aea69351856be7ccff65d932b056b86b1ba468b9a",
+      "bytes": 226232
+    },
+    {
+      "path": "runs/remaining-final-review-2026-10-18/run_focused_review.py",
+      "raw_sha256": "a0f2a8b43c32e8959b671cd00280fb1d04dbca13e23445f96729d6020f98c41c",
+      "bytes": 5333
+    },
+    {
+      "path": "runs/remaining-final-review-2026-10-18/probe_current_payload.py",
+      "raw_sha256": "951cc198817f0ecb20308bdc1da1440f7c4839d868d0b2903544574740545cf1",
+      "bytes": 10944
+    },
+    {
+      "path": "runs/remaining-final-review-2026-10-18/bind_current.py",
+      "raw_sha256": "54a75734d854eb9bddaf759f0c5806b312e11c7aefa2189a2ecee5f47a07b06a",
+      "bytes": 2635
+    }
+  ],
+  "report": {
+    "path": "docs/implementation/reviews/remaining-final-review-2026-10-18/report.md",
+    "raw_sha256": "96db6867d7f26ca6edd8b878da7064f8031aa5b91d39956627f48c835cda315b"
+  }
+}

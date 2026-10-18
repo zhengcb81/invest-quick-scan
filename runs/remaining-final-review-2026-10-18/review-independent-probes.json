@@ -1,0 +1,82 @@
+{
+  "results": [
+    {
+      "probe": "casebook_missing_board",
+      "result": "typed_rejection_after_both_hashes_recomputed"
+    },
+    {
+      "probe": "casebook_wrong_board",
+      "result": "typed_rejection_after_both_hashes_recomputed"
+    },
+    {
+      "probe": "casebook_wrong_reason",
+      "result": "typed_rejection_after_both_hashes_recomputed"
+    },
+    {
+      "probe": "public_assignment_missing_board",
+      "result": "typed_rejection_after_both_hashes_recomputed"
+    },
+    {
+      "probe": "public_assignment_wrong_board",
+      "result": "typed_rejection_after_both_hashes_recomputed"
+    },
+    {
+      "probe": "public_assignment_wrong_reason",
+      "result": "typed_rejection_after_both_hashes_recomputed"
+    },
+    {
+      "probe": "private_map_missing_board",
+      "result": "typed_rejection_after_both_hashes_recomputed"
+    },
+    {
+      "probe": "private_map_wrong_board",
+      "result": "typed_rejection_after_both_hashes_recomputed"
+    },
+    {
+      "probe": "private_map_wrong_reason",
+      "result": "typed_rejection_after_both_hashes_recomputed"
+    },
+    {
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "probe": "review-cli-forged-board",
+      "stderr_sha256": "76bb2b9a0a5ac3ff953545631ca242109a35d226d493cd6f455604f2b91839dc",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "traceback": false
+    },
+    {
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "probe": "review-cli-compare",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d1373c0d342cd619866e0ca15869597ad6413684cb75659605f95a179a14e33e",
+      "traceback": false
+    },
+    {
+      "probe": "modern_compare",
+      "qualification": {
+        "financial_qualification_granted": false,
+        "production_ready": false,
+        "rating_gold": false
+      },
+      "summary": {
+        "disputed": 0,
+        "labels_imported": 58,
+        "match": 58,
+        "mismatch": 0,
+        "note": "missing labels are uncovered, never correct; no single accuracy number is emitted",
+        "severe_miss": 0,
+        "uncovered": 0
+      }
+    },
+    {
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "probe": "review-cli-rebound-payload",
+      "stderr_sha256": "6ed48394a072a9be223f879b7bc375a4d93041e4f0276d00ff222d89b586f975",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "traceback": false
+    }
+  ],
+  "reviewer": "/root/remaining_acceptance18"
+}

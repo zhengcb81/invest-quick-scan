@@ -1,0 +1,89 @@
+{
+  "results": [
+    {
+      "agreement_counts": {
+        "agree": 352,
+        "disagree": 6,
+        "not_comparable": 18
+      },
+      "excluded": [
+        {
+          "dimension_id": "claim_support",
+          "reason": "open_information_need_conflict_is_not_fixed_proposition_contradiction",
+          "source_id": "src_30fdf06aad2f",
+          "status": "needs_adjudication",
+          "target_id": "tgt_2674882be364"
+        },
+        {
+          "dimension_id": "dimensional_completeness",
+          "reason": "open_information_need_conflict_is_not_fixed_proposition_contradiction",
+          "source_id": "src_30fdf06aad2f",
+          "status": "needs_adjudication",
+          "target_id": "tgt_2674882be364"
+        }
+      ],
+      "legacy_equal_annotation_dimensions": 299,
+      "new_post_hoc_compared": 297,
+      "probe": "independent_denominator_recomputation"
+    },
+    {
+      "different_path_query_not_merged": true,
+      "host_case_fragment_merged": true,
+      "probe": "case_sensitive_url_duplicate_counter"
+    },
+    {
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "probe": "retrieval-cli-overflow",
+      "stderr_sha256": "e627024392a2c1561a8da7843c49c8048c79aa247f618de02bdc056403792933",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "traceback": false
+    },
+    {
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "probe": "retrieval-cli-oversized_integer",
+      "stderr_sha256": "48706b60b874eae57563b2ccd64d2542a6ceb14a7dff6344dec9d32e194e0765",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "traceback": false
+    },
+    {
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "probe": "retrieval-cli-empty-compare",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1f46fb4599ee67b7906aad9b3b8af28a795ce56d9c24ce610f84365bd198b975",
+      "traceback": false
+    },
+    {
+      "agreement_counts": {
+        "agree": 2,
+        "disagree": 0,
+        "not_comparable": 0
+      },
+      "probe": "empty_retrieval_public_cli",
+      "qualification": {
+        "financial_qualification_granted": false,
+        "production_ready": false,
+        "rating_gold": false
+      },
+      "status": "ok",
+      "target_counts": {
+        "dual_annotated_pairs": 0,
+        "duplicate_groups": 0,
+        "duplicate_source_items": 0,
+        "missing_target_ids": [],
+        "pair_groups_planned": 0,
+        "source_items_annotated": 0,
+        "source_items_missing": 0,
+        "source_items_planned": 0,
+        "targets_missing": 0,
+        "targets_planned": 1,
+        "targets_received": 1,
+        "targets_unresolved_issuer": 0,
+        "unresolved_issuer_target_ids": []
+      }
+    }
+  ],
+  "reviewer": "/root/remaining_acceptance18"
+}

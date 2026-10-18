@@ -1,0 +1,108 @@
+{
+  "protocol": "iqs.publication_independent_review/1.0.0",
+  "reviewer_task_id": "/root/cards_review18",
+  "author_task_id": "/root/new_packages18",
+  "reviewed_at_utc": "2026-10-18T00:23:31.082762+00:00",
+  "verdict": "changes_requested",
+  "open_findings": [
+    {
+      "id": "MS10-R1-F01",
+      "severity": "high",
+      "file": "RELEASE-DIFF-10.md",
+      "section": "input/API/output + input-catalog RELEASE-DIFF-10",
+      "title": "Release-level router/policy changes are invisible and required policy files are missing",
+      "evidence": "All three frozen real releases have exactly the same 48 module entries. modrel_18c... uses schema1/router1; modrel_e123... uses schema2/router2.0/policy0c834...; modrel_8f5... uses schema2/router2.1/policyeef827.... Public payload defines module/question/format changes but no release metadata changes. The two routing_policy_ref files are absent from the assigned catalog.",
+      "impact": "An implementation can meet the written payload contract while returning all modules/questions unchanged for both real version2 releases, omitting the only actual semantic version difference; it cannot inspect the referenced policies under its valid lock.",
+      "required_fix": "Add explicit versioned release-level field changes for schema/catalog/renderer/router, retirement lists and routing policy reference/hash. Include the two exact policy blobs (and any needed schema) in the assigned lock, or explicitly define locked unresolved policy handling without claiming no policy change. Require actual three-release regression to surface these changes. Preserve candidate/no routing authority boundary."
+    },
+    {
+      "id": "MS10-R1-F02",
+      "severity": "high",
+      "file": "RELATION-DELTA-10.md",
+      "section": "snapshot item_refs / counts",
+      "title": "Snapshot can silently omit or duplicate original answer items",
+      "evidence": "item_refs is only described as pointers to answer.items elements. There is no explicit requirement to cover every original element exactly once, no rejection rule for two different item_ids pointing to the same original element, and no rule tying before_total/after_total to answer.items length.",
+      "impact": "A conforming harness may drop a customer from item_refs or duplicate its pointer and still satisfy its own reported count conservation, hiding unobserved relationships or inflating candidates.",
+      "required_fix": "Make item_refs an exact one-to-one cover of original answer.items (or define an explicit selection scope/denominator contract; the simplest is full cover). Reject missing/duplicate pointers, item IDs/hash mismatch and answer.question_id versus question_ref mismatch; derive totals from validated original arrays. Require omitted-item and duplicate-pointer CLI counterexamples plus normal permutation case."
+    },
+    {
+      "id": "MS10-R1-F03",
+      "severity": "medium",
+      "file": "RELATION-DELTA-10.md",
+      "section": "identity_scope / exact matching key",
+      "title": "unresolved identity confidence is not a matching exclusion",
+      "evidence": "identity_scope permits confidence=explicit|unresolved; matching rules only send entity_id=null to unresolved. Thus a non-null caller ID with confidence=unresolved satisfies the written matching key and can be paired.",
+      "impact": "The tool advertises exact explicit identity matching yet can generate matched relationship-change candidates from explicitly unresolved identity.",
+      "required_fix": "Require explicit confidence and a non-null consistent ID for pairing; any unresolved confidence must produce unresolved with a fixed reason regardless of ID presence. Document when business_unit_ref is sufficiently explicit. Add same ID/unresolved and explicit positive counterpart cases."
+    },
+    {
+      "id": "MS10-R1-F04",
+      "severity": "medium",
+      "file": "RELATION-DELTA-10.md",
+      "section": "request as_of_date / payload status",
+      "title": "Requested cutoff and competing status outcomes are undefined",
+      "evidence": "as_of_date is required by the request but the card assigns no validation or eligibility semantics to it. status has cutoff_not_ordered, scope_mismatch and method_changed but no definition of method_changed or precedence when several failures hold.",
+      "impact": "Two independent weaker harnesses can produce different valid outcomes for future snapshot cutoffs or simultaneous scope/question/time changes; consumers cannot rely on a stable versioned interface.",
+      "required_fix": "Define request cutoff relationship to both information_as_of fields (keep observed_at retrospective collection semantics explicit), define method_changed from listed fields, and set deterministic rejection/status precedence with full item conservation and reason codes. Add future information cutoff, equal/reversed dates, definition change and multiple-failure fixtures."
+    }
+  ],
+  "reviewed_files": {
+    "input-catalog.json": {
+      "bytes": 21214,
+      "sha256": "395c9d32b0b41094cd35794da9b6921ff86cb8bfabab55dfb5c92362843c4b7c"
+    },
+    "integration-contract.md": {
+      "bytes": 10270,
+      "sha256": "a9ea665ad2fb331d26004f5d42c8b6330daab7c23c61977de32b1cce05d76921"
+    },
+    "preparation-check.json": {
+      "bytes": 670,
+      "sha256": "10c24b5fd67dadab490e886cdca05d32315c8394775f79f993b1efcbbe9639df"
+    },
+    "README.md": {
+      "bytes": 2855,
+      "sha256": "27cfa07d98cee667f3aa6c549fb8a990473f54958f662e0fd77145fe72aaf282"
+    },
+    "RELATION-DELTA-10.md": {
+      "bytes": 7659,
+      "sha256": "a6b772ad89391601bb371be22b21198ffba666f06d7bde8ec2addc0ac9ea4e97"
+    },
+    "RELEASE-DIFF-10.md": {
+      "bytes": 6076,
+      "sha256": "4e60d218403a68734da2a2ee11ef45d9488f1cb19b5aaa01e0ddf3c3386b7a9a"
+    },
+    "SUMMARY-LOSS-10.md": {
+      "bytes": 7752,
+      "sha256": "c527696bfb3827bf10b9a6091fb5e3d2b3635a5a3a356e6f35022f1a205f4d21"
+    }
+  },
+  "actual_checks": {
+    "catalog_git_entries_checked": 63,
+    "oid_bytes_raw_sha_matches": 63,
+    "source_commit": "d788a10e665440d68ad323f77711db83ea683e07",
+    "relative_links_checked": 12,
+    "missing_links": [],
+    "assigned_lab_roots_present": false,
+    "release_module_closure": {
+      "releases": 3,
+      "modules_per_release": 48,
+      "module_sets_identical": true,
+      "all_module_artifact_refs_in_catalog": true
+    },
+    "source_scripts_executed": 0,
+    "network_requests": 0,
+    "paid_api_calls": 0,
+    "source_changes": 0
+  },
+  "positive_findings": [
+    "Three unique new write roots are absent and independent. All source inputs are explicit committed Git blobs; no missing dispatch lock because all tasks are strictly offline.",
+    "Expected fixtures/catalog segregated from business inputs; public diagnostics prohibit expected lookup.",
+    "Independent real reviewer identity, two unseen counterexamples, normal non-overblocking case, full review/fix/re-review and final payload binding are required.",
+    "Meaningful unit/integration/CLI E2E, minimal process environment, no network, self-created temp ownership/finally cleanup are specified.",
+    "Compared nearby CONTEXT-PACK-06, ANSWER-CODEC-03, CHAIN-VERIFY-04 and SW-READY-01 responsibilities: no conflicting write root or identical task scope; summary diagnostics intentionally do not regenerate production summaries or semantic entailment."
+  ],
+  "limitations": [
+    "Review of unpublished documentation/contracts and frozen source inputs; no implementation acceptance, production qualification, financial accuracy or model experiment claim.",
+    "No draft schema was provided for the new protocols; implementation schemas must be delivered and reviewed at final package node."
+  ]
+}

@@ -1,3 +1,21 @@
+## 2026-10-18 — 共享引擎恢复根因与旧包签收
+
+旧五包最终独审已通过；原平台额度阻塞不再作为本轮现状。实际 final.json 由不同agent产出，reviewer身份/源码commit/聚焦测试与独立反例均可核对。
+
+ResearchChatSession 现在先落native response receipt再校验模型可见答案；原WorkStore只保留receipt/hash，没有安全可见响应正文。若在SDK返回前崩溃，只有计费和响应摘要，不能还原已知答案；不能以新DB、换owner或重发来声称cache恢复。根因修复应把校验后的公开content/tool_calls与原native收执在同一事务保存，并把隐含thinking仅留内存。失败回执仍需原样计费，不用错误答案污染cache。
+
+Company Runner共享工厂虽然支持question_projection，但真正Runner/resume/replay未传映射；独立研究脚本绕开它，容易出现演示通过而生产题号不可用。应修唯一引擎而非扩大第二研究controller。
+
+---
+
+## 2026-10-18 — 主线恢复的范围与根因方向
+
+09包离线交付接受不等于所有旧包已签收；REVIEW-CAL-06 9817dcbc 与 RETRIEVAL-AUDIT-07 9324b345 最终独审仍需真实完成。StockQA ResearchChatSession已有计费thinking/tool会话，但Company Lab/Runtime Lab交付仍声明synthetic或offline bridge；独立研究脚本不能代替生产owner接线。应复用原实现，避免新增HTTP、计费账本或并行公司答案数据库。
+
+CodeGraph context本轮请求停滞；已尝试结构工具后，已知文件采用直接读取。此为工具可用性问题，不能据此宣称索引内容或代码不存在。
+
+---
+
 ## 2026-10-18 — 三包验收发现与边界
 
 1. PROMPT-TRUST 的根部交接文档仍把旧 58 项数量写成当前值并保留过时待审语句；已更新根 HANDOFF、正式交接、final 和 inventory，最终独立元数据复核通过，HEAD e37755f78a29315ca97ba95367bbd00340c3211d。
@@ -3234,3 +3252,6 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 - Taxonomy 1.0.2 使用新增不可变 release 纠正 1.0.1 发现的范围不等价，保留旧 release 可追溯性；内容修订后保持 `reviewer_status=unreviewed`，等待新一轮独立 row-level review，不可直接沿用旧版结论。
 
 ## 2026-10-17 — 新一轮独立施工包规划开始
+## 2026-10-18 — 主线配套卡片完成发布审查
+
+选定版本兼容诊断、摘要字段保真、关系跨时点变化三个离线支撑工具；与总控引擎接线及已有工具职责分开。七文件/65条已提交输入对象经独立核验，四个发布发现已修复；每包独占新 Lab，无收费、密钥、生产库或股票池依赖。各卡均要求最终真实不同 agent 整包审查修尽后交接，不增 helper 审批节点。
