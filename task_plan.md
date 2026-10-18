@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 第一个 search-backed 观察进入画像（IQS_09）
+
+把 IQS_09 的 completed 答案（search_status=executed、search_receipt_id=SEARCH_26f1…）构造 1.2.0 observation，导入 owner store：accepted。owner DB 现有 5 条观察（12/16/05/06/09），one_click 重新生成 214 页，CATL 画像已显示 IQS_09（insufficient_evidence）。搜索→答案→观察→画像的第二条闭环打通（第一条是 05/06 的 research-only）。
+
 ## 2026-10-18 — 路由字段范围限制：22/24 不在 subject route
 
 尝试换题再跑 scored：IQS_19 的确认已过期（refresh_consent_native_rejected）；IQS_22、IQS_24 preview 都被 refresh_field_not_in_current_subject_route 拒绝，说明当前 subject route 只覆盖 09–21 的一部分，22–24 未注册。下一步：要么给 22–24 注册 route 字段，要么 seal IQS_19 的 uncertain work 后重新 admission。
