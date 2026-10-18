@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 新 generation 路径的要求（dispatch_new_generation）
+
+已定位重跑已 delivered 题的正式路径：refresh_request 1.2/1.3 + work_decision_refs 指向 quick_scan_owner_work_decision 里的 owd1_* 文档。文档必须由 owner journal 校验过的 retry_decision（request.kind=retry_decision、purpose∈{comparison,retry_unknown_answer,retry_unusable_answer}、work_item_id、target_generation=source+1、physical.work_fingerprint/subject_binding、grant.confirmation_id、next_retry_at/decided_at），decision_id 是其余字段的 canonical_sha256。当前没有生成该 retry decision 的 owner 工具，故普通 1.4 请求只能 reuse。下一步：实现 retry-decision 生成（或从 owner journal 读取已有 decision），再走 1.3 请求。
+
 ## 2026-10-18 — preview 真正错误：refresh_no_work_must_be_zero_cost
 
 追踪 refresh_contract_cli 得到真实异常：refresh_no_work_must_be_zero_cost（refresh_contract.py:317）。含义：owner state 认为该题是 no-work（已 delivered → reuse），但请求的 quote 仍有 1 次 HTTP 成本，说明 session 在请求 dispatch 而 owner 决定 reuse。root cause 是**已 delivered 的题必须走显式新 generation 控制（dispatch_new_generation），普通 1.4 请求只能 reuse**；IQS_12/16 等已有 delivered 观察，故普通请求既不能 preview 出新 work，也会在 admission plan 比较时冲突。IQS_10/18/20 能跑是因为此前没有 delivered 观察。

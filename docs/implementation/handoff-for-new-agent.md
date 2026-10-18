@@ -12,7 +12,8 @@
 
 1. security 题（22–24）被 refresh-v1.4 policy schema 排除（routes scope 只允许 entity/segment）。
 2. 有历史 binding/attempt 的题重跑会 refresh_admission_plan_changed。
-3. 旧 research-only 观察可能让 preview 报 subject_contract_output_invalid（vendor 合同比 1.2.0 导入更严格）。
+3. 已 delivered 的题普通 1.4 请求只能 reuse；重跑必须走 1.2/1.3 的 work_decision_refs（owd1_* retry decision，target_generation=source+1），当前无生成该 decision 的 owner 工具（preview 会报 refresh_no_work_must_be_zero_cost）。
+4. 旧观察本身过 vendor 校验（已逐条验证 PASS）；此前的 subject_contract_output_invalid 实为上述 no-work 错误的通用包装。
 
 ## 最近提交
 
