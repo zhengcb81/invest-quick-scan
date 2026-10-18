@@ -32,3 +32,14 @@ python scripts/search_exposure_contract.py --document <exposure.json>
 2. shared task factory：显式 search 模式写入 limits/runtime profile；
 3. runner：require_search=True + verified search receipt + v1/v2 checkpoint；
 4. 先 1 公司 1 题试点，独立复核后扩大。
+
+
+## 绑定到 owner policy cell（S1 第二件）
+
+scripts/search_exposure_binding.py 校验：
+
+- exposure 文档本身通过离线合同（policy sha256、路由、凭据存在性、存储权利）；
+- owner policy 的 cell controls.search_policy_sha256 等于 exposure 文档的 canonical sha256；
+- exposure 的 consumer_id 在 owner policy 的 allowed_consumer_ids 内。
+
+输出 iqs.search_exposure.binding/1.0.0；失败退出码 2。这样在 preview/admission 之前就能发现“文档哈希没写进 cell”的问题。
