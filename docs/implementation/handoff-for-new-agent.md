@@ -6,7 +6,7 @@
 
 执行中的偏离已记录：仓库 black 格式化；schema25 的空 `_DDL_V25_ADDITIONS` 与历史 fixture 的 pre-v25 还原；事务内复用 publisher grant（`preauthorized_grant`，仅 publish 内部可达，仍校验存储 grant/request hash/confirmation）；原 IQS 合同新增默认关闭的 `research_only` 通道；原 CLI 是扁平 `observation-import`。post-execution CAS 绑定 base/reviewed/applied 与提交号，是描述性记录，不是执行前审查签收。
 
-剩余只有：三张 2026-10-18 施工包完成最终独立复审后提交与更新归档说明；不重跑真实出版、不重发模型、不改已验证答案。三张外部 Lab（RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10）均已完成。
+三张 2026-10-18 施工包已完成第三轮（最终）独立复审：verdict pass，26/26 冻结 blob 实核一致，N1–N7 全部闭合，文档归档提交 `b5f99b4`；仍未派发、未实施。至此本节点无剩余必做项：不重跑真实出版、不重发模型、不改已验证答案。三张外部 Lab（RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10）均已完成。
 
 ## 2026-10-18 — 当前明确暂停，不自动恢复实施
 

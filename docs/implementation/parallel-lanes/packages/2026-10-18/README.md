@@ -1,6 +1,6 @@
 # 2026-10-18｜三个可独立实施的大施工包（交付完整性 / 成本账本 / 证据时点）
 
-状态：**编制完成，已通过独立复审（2026-10-18）；未派发，未实施**。本目录只描述范围与验收，不是完成记录，也不自动授权写外仓、读真实数据库、发模型或搜索请求。人类把整张卡交给某个 harness 即认领该卡范围；开工仍须核实际目录、冻结输入和唯一 writer。
+状态：**编制完成，已通过独立复审（2026-10-18）；未派发，未实施**。文档归档提交：`b5f99b4`（其后仅可能追加说明性文字，26 个输入 blob 固定在 `4e001cd`）。本目录只描述范围与验收，不是完成记录，也不自动授权写外仓、读真实数据库、发模型或搜索请求。人类把整张卡交给某个 harness 即认领该卡范围；开工仍须核实际目录、冻结输入和唯一 writer。
 
 编制依据：`2026-10-10/README.md`、`2026-10-10/EVID-REF-02.md`、`2026-10-10/FACT-CONTENT-01.md`、`2026-10-10/handoff-rules.md`、`2026-10-10/manifest.json`（格式与严格度）；`2026-10-18-mainline-support/README.md` 与 `RELEASE-DIFF-10`/`SUMMARY-LOSS-10`/`RELATION-DELTA-10`（边界）；`docs/implementation/reviews/pause-handoff-2026-10-18.md`（主线暂停点与已知缺口）；`task_plan.md` 前 240 行；`docs/implementation/parallel-lanes/README.md`、[handoff schema](../../handoff.schema.json)、`scripts/parallel_handoff_cli.py`（唯一交接协议与预检入口）。
 
