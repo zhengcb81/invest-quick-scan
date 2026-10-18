@@ -36,6 +36,8 @@ class ProviderConnectivityProfileTests(unittest.TestCase):
             "deepseek-flash-official-api": "DEEPSEEK_API_KEY",
             "deepseek-flash-openai-responses": "DEEPSEEK_API_KEY",
             "deepseek-flash-anthropic-web-search": "DEEPSEEK_API_KEY",
+            "deepseek-v4-flash-responses-recheck": "DEEPSEEK_API_KEY",
+            "mimo-pro-pay-as-you-go-cn": "MIMO_API_KEY",
         }
         profiles = {item["profile_id"]: item for item in self.profiles["profiles"]}
         self.assertEqual(set(profiles), set(expected_envs))

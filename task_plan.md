@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 定向测试：181 passed / 1 fixed
+
+定向 IQS 测试（financial/provenance/search/answers/facts/profile）181 passed、2 skipped、1 failed：provider connectivity profiles 的 expected_envs 未包含新增的 deepseek-v4-flash-responses-recheck 与 mimo-pro-pay-as-you-go-cn。补上两条期望后该文件 8 passed。失败是配置漂移，不是产品回归。
+
 ## 2026-10-18 — 覆盖缺口显示 subject readiness
 
 coverage_gaps 现在读取 owner analysis_subjects.sqlite，标记 208 家缺路由公司中已有 analysis subject 的数量（当前 2 家，含 000026）。首页卡片显示「208 家 · subject ready 2 · US 8 / CN 200」。定向 IQS 测试在后台运行。
