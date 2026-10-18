@@ -1,3 +1,7 @@
+## 2026-10-18 — 逐发行人证据提案（选项 A 可行性）
+
+对万科A 做了一次只检索、不下载的官方证据提案：法人全称候选“万科企业股份有限公司”，官方来源为深交所域名下的年报 PDF 与公告页（3 个 URL），cninfo 目录作次级溯源；提案标记 proposed_not_approved，未写 verified、未改库、未保存正文。文档 docs/implementation/reviews/issuer-evidence-proposal-2026-10-18.md，提案 JSON 在本机 runs/。若批准 A，流程为：逐公司检索官方链接 → owner 批准证据 URL/规则 → 1 家 → 5 家 → 分批；仍受同一证据与法人名政策约束。
+
 ## 2026-10-18 — 金融答案机械检查器（人工复核前的第一道门）
 
 新增 scripts/financial_mechanical_check.py：对已入库答案做确定性检查（题号、评分/状态、时间/截止日、证据 URL 与发布日期、指标单位/期间/证据绑定、缺失字段计数），输出 findings 与 mechanical_pass，明确不判断金融准确性。真实 workspace 2 条 CATL observation 机械 2/2 通过、0 findings；6 个 mutation 负例全部按预期报错。报告 docs/implementation/reviews/financial-mechanical-check-2026-10-18.md。另加 scored 必须带证据的规则，并为 roster 与检查器补 4 条单测（全过）。只读、未改库、未联网。
