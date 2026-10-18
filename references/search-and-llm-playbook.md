@@ -1,6 +1,6 @@
 # 联网搜索与LLM统一使用规范
 
-规范版本：1.5.0；日期：2026-10-18。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
+规范版本：1.6.0；日期：2026-10-18。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
 
 StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检查点和费用账本；IQS只维护题面与规范；StockWiki提供名单、缺口及观察入库，不能另包请求重试。[配置参考模板](../examples/search-and-llm-policy.template.json)仅供填写需求，执行器尚不读取；`template_only=true`、`execution_enabled=false`保持不变，不是第二份生效配置或调用授权。
 
@@ -21,6 +21,8 @@ StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检
 启动前只检查本批命名环境变量是否存在、配置ID、能力版本和预算，不展示密钥。健康/能力证据按endpoint、协议、凭据配置revision、实际模型映射及adapter/tool schema版本复用，变更后失效；不要每家公司先做收费探针。MCP按协商版本initialize→initialized→tools/list，以真实工具名/inputSchema构造调用。握手成功不证明搜索权限；schema改变先停用旧适配，不猜字段重发。
 
 填写参考模板时：`stockqa_effective_model_policy_ref`填StockQA已确认的生效策略ID，不能拿样例文件充当生效配置；`selection.mode`选择一种模式。外部顺位填StockQA搜索路由引用对象（例如`{"provider_config_ref":"YOUR_SEARCH_ROUTE_ID"}`），不能直接把厂商名称当作已部署路由；原生模式可保持该列表空。混合模式另给冻结取证计划引用。run deadline、搜索TTL、空结果cooldown的null须按任务填写；示例超时/退避数值只是起点。所有数值须与现有总预算、并发、轮次和deadline取更严格约束，未明确配置的生产调用拒发。模板始终保持非执行标记，后续由StockQA版本化导入，不在IQS创建有效配置。
+
+2026-10-18新增执行说明：continuation1.5接线实验的0新增搜索只表示该模型cell不再调用搜索；已有公开短资料仍作为有ID、未授金融资格的context。准备阶段人工4次搜索/2次官方HTML打开另列，不把整个实验说成无搜索，也不把外部context伪装模型原生web_search。完整同节点source/release/question/context锁与真实身份桥见[准确性实操](accuracy-first-operations.md#共享引擎接线与未决费用续行)。本次没有改变Brave/Tavily/ZAI/DeepSeek的已发布能力或用户模型顺位。
 
 ## 2. 工作流与接续
 

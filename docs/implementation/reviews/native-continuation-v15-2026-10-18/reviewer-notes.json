@@ -1,0 +1,57 @@
+{
+  "status": "in_progress_preparation_only",
+  "reviewer_agent_id": "/root/production_node_review18",
+  "author_agent_ids": [
+    "/root",
+    "/root/shared_engine_composition18"
+  ],
+  "source_cas": {
+    "path": "runs/shared-engine-production-2026-10-18/native-continuation-v15-candidate/candidate-cas.json",
+    "sha256": "2abe9fe5df536ae7864c390827d7cc835f9ff471a7db0fdd133d19c84c938842",
+    "paths_verified": 16
+  },
+  "controller_cas": {
+    "path": "runs/shared-engine-production-2026-10-18/real-profile-smoke-candidate/controller-cas-r1.json",
+    "sha256": "d6a30521c3455323f354cb14e8f57f36c040e839ddc34b246d010e36737089dc"
+  },
+  "independent_probes": {
+    "native_passed": 8,
+    "native_seconds": 9.11,
+    "isolated": true,
+    "outside_write_denials": 0,
+    "paid_calls": 0,
+    "controller_red": 2,
+    "controller_red_meaning": "R1 improperly accepts incomplete self-pinned source inventory and substituted self-rehashed context; expected refusal assertions fail."
+  },
+  "open_findings": [
+    {
+      "id": "V15-F01",
+      "severity": "high",
+      "area": "root controller deployment proof",
+      "finding": "Self-reported status/nonempty file pins do not prove exact reviewed source/controller CAS deployment. Both launchers need same final/CAS/delivery-addendum checker."
+    },
+    {
+      "id": "V15-F02",
+      "severity": "high",
+      "area": "root driver context boundary",
+      "finding": "Config can substitute a foreign board and rehash its refs; model context must equal controller CAS public allowlist and bridge derived after genuine native preparation."
+    },
+    {
+      "id": "V15-F03",
+      "severity": "medium",
+      "area": "actual compose release integrity",
+      "finding": "The actual RELEASE scripts and current/package/question definitions used to compose must be in delivery inventory, and selected question definitions must match financial preparation. ROOT/scripts pins alone omit actual executed release inputs."
+    }
+  ],
+  "pending": [
+    "Final controller R2 frozen CAS and independent refusal rerun",
+    "Source final public v03 scripted original CLI/SDK/Runner restart/recover evidence",
+    "Same-node mechanical actual source delivery appendix after normal hooks"
+  ],
+  "not_assessed": [
+    "actual paid model result",
+    "financial accuracy",
+    "formal search checkpoint",
+    "Cryptographic authentication of agent harness identity"
+  ]
+}

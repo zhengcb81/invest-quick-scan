@@ -1,0 +1,7 @@
+# Same-node mechanical delivery appendix
+
+Independent read-only verification accepted the delivered bytes for the already passed native1.5/controller node. The original final.json remains unchanged. All759 fixed runtime paths form the exact reviewed inventory; their candidate hashes match the reviewed lock and their delivered hashes match current files. All16 source/test targets match the recorded commits, exactly or with Git newline normalization.
+
+Seven product files differ in raw bytes after normal hooks. Six have identical full ASTs. The remaining continuation_v15 module only splits a standard-library multi-import and sorts names in the same from-import. All Python target bodies match after normalizing adjacent import organization; no import crosses executable code and no admission/SDK/budget logic changes. Four test files also contain only normal formatting/import normalization. Source targets were verified against actual QA6177b27168c658ecfb625b57aa46470bb9de6ac2, SW809b501bdecad0d89f5fa96d524f191cb2d47786, IQS03b644c32ac8d9e832ee6bff5f47670f59a65e05, and unchanged Company2561f566/Runtimef83a5be heads.
+
+No full403-second chain was repeated and no paid API or owner database write was performed by this mechanical check. This appendix proves the engineering delivery only. Original native owner permission remains required; actual paid-model accuracy, cash cost and cache recovery are still future observations.

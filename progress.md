@@ -1,3 +1,53 @@
+## 2026-10-18 — 批量协议根修集中验证，原真实响应保持
+
+同一节点的候选已覆盖未来final_json wire不带tools/tool_choice，以及历史单submit载体到原批量parser的严格转换；原工具外壳、重复JSON、声明题目、来源、安全围栏与原任务绑定都保留。原Runner白名单、原checkpoint、费用与600秒lease不修改。总控新增8项输出路径检查（4个真实CLI拒绝、4个旧partial保留），0.96秒通过；另16项既有proof测试不重复跑。四产品候选仍待作者最终冻结和不同agent整体签收，尚未应用/新调用API。
+
+三张10号外包已发出，三个Lab继续活动writer隔离。当前唯一下一动作是收口这次运输适配，应用后以全新无key、核心禁网络进程恢复同一原响应到新的输出目录。原0/2 partial与失败历史不覆盖，不将4/4参考数字提升为完整投资准确性。
+
+## 2026-10-18 — 原缓存已零POST读回，但批量运输与执行协议不一致，保留0/2现场
+
+混合正文/工具回执修复已独立签收（supplement677ba937...、delivery0614e058...），Runtime正式26P并提交d96051a（原无remote）。语义修复保留原safe双通道和安全fence，原1.5final/proof/配置/checkpoint未改。新纠正配置只替换deployment_proof；fresh无key/核心禁socket读取同一原响应76.66秒、实际新增HTTP0、重放原native1次、报告与runtime-summary一致。
+
+但实际all_slots_completed=false，2槽not_attempted，不能以进程0宣称完成：原module_packs的已签checkpoint allowed_tools=[]，Company request_context却把全部TOOL_PARAMETERS提供给Runtime/SDK，SDK因此返回submit_answers，原Runner按白名单正确拒绝。该诚实partial的recovered-session/export/report与0/2结果全部保留，不覆盖/改旧checkpoint/放宽白名单/重发LLM。
+
+不同agent核语义后同意显式批量运输适配：只认真实绑定company-scan/module_packs/one_shot_packs；原SDK声明的唯一submit_answers、原始question_ids/answers严格验证且逐值映射为原batch parser要求的declared_question_ids/answers；不补缺声明、不解其他工具/多调用/截断，free_agent原样。未来wire同时修为显式final_json/no tools，避免继续制造同一协议错误。作者在batch-carrier-recovery-candidate准备4产品；总控另在batch-carrier-controller-candidate准备保留历史的proof2、全新recover-label输出、partial返回4，16元数据+4真实CLI拒绝测试通过。尚未应用新slice/新API。
+
+独立金融评审原安全两答：4/4唯一参考事实受支持，2主观分数/完整构念gold均0；两答insufficient_evidence/partial/score null合理。1处历史资金总量被形容为较强流动性的表述越界保留为CATL-FIN-01，不能伪改原回答或自动授金融准入。实际账仍102、旧101逐行一致/原3未决保留，新增公开费率估算US$0.014537（非账单）；provider usage输入11001、输出含思考11208（思考7816）、cache0。没有策略总体赢家或缓存经济性结论。
+
+## 2026-10-18 — 真实两题已安全保存且可计价，恢复格式缺口正在根修
+
+CATL原生identity/query/quote/rc2/admission真正完成，真实MiMo Pro两题单包冷跑305.8697秒、安全保存后按计划exit86。原S1从101到102预算记录，新增1次HTTP200/actual_model=mimo-v2.6-pro；新增budget按公开费率估算14537micros（US$0.014537，published-ratecard-estimate-not-invoice），不是账单现金。原101行逐行一致、旧三笔未知不变。
+
+全新无key、核心Python进程自启动bootstrap禁socket/audit的恢复68.55秒后失败于_restore_model_receipt→model-receipt SchemaViolation，尚无正式export/完成槽数；禁止将safe响应视为恢复成功。已保存可见输出仅一份submit_answers工具结果及可见文字，无隐藏思考，原DB payload rawSHA3f67b613...一致。金融agent按事前锁定4事实/2结构、score gold0/2独立评审；不把工程回执失败当金融答案错误。
+
+当前原source作者只在priced-safe-recovery-candidate定位真实已定价回执的确切schema差异、补回归，不改原库/不调用模型；不同agent审当前实际恢复修复节点，原1.5最终签收及机械交付历史保留，语义补丁不得冒称格式等价。修复后只读同一原safe响应尝试0POST恢复，不自动重发、清账、延lease或伪造原回执。三外包10卡继续活动writer隔离。
+
+## 2026-10-18 — 续行1.5原源码已发布，真实CATL准入启动
+
+整节点真正不同agent签收final898c21a2...、open_findings=[]，源CAS36bf41d9.../controller1216ea80.../完整759文件55a7e6eb...绑定。独立8个native+9个controller检查通过。原公开合成链403.35秒：2题1包、1SDK POST→safe→86→fresh keyless禁网络0POST、两槽完成；当前新work的lease仍600秒，claim至POST76.68秒/安全落盘83.75秒/恢复159.10秒。旧错误全库MIN lease观察保留，按精确新work只读重算；旧101预算/12work/12attempt全行保持。新增合成响应仍未计价，不能称真实模型/现金结清/金融准确。
+
+12产品+4测试已精确应用。QA常规31P/19项明确private opt-in跳过；候选50集中/109旧QA（1loopback明确排除）/59旧IQS另有实际证据，不混分母。普通hooks首轮仅换行/isort修格式、mypy过，第二轮全绿，StockQA6177b27已推origin；IQS03b644c已推origin；StockWiki809b501正常静态hook本地提交，原无remote，不新建远端。不同agent机械交付附录2f8e2fff...核全部759文件、16目标commit blob与5仓提交，差异仅换行/import，业务AST保持；未重跑403秒整链。
+
+实际deployment proof已用共用checker验证完整闭包/公开资料/原题定义；当前原native CATL激活在运行，复用原S1预算与原owner、真实identity import/serializer/query/quote/rc2/admit。尚无已签收真实回答/缓存恢复，新HTTP尚待实际账本；不把启动当成功。三外包10卡保持活动writer隔离。
+
+## 2026-10-18 — 续行1.5整包审查收尾，三外包继续隔离
+
+用户已发出RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10，三Lab按活动writer对待，不接管、不改写。总控继续当前跨仓节点。1.5候选16目标已冻结；49项新检查、109项旧QA回归（1项依赖真实loopback的异步用例因整进程禁socket明确不运行）、59项旧IQS契约通过。公开v03已走原SDK scripted单POST→原safe落盘→exit86，新进程keyless/禁网络恢复仍待最终结果，不能称真实模型或金融正确性。
+
+总控真实两题controller经独审发现三个根因：自选源码pins未与整包审查绑定、重签外来context可替换、实际冻结release未纳入完整锁。已复用同节点final/CAS/delivery-addendum形成共用纯工程元数据校验，不新增权限服务；公开短资料固定白名单、桥接身份在原prepare后按真实subject核对、实际release及原题定义锁定。32项集中测试10.58秒通过，子进程全部禁网络、写入约束自有目录。R2 CAS a8f464fa...、756文件runtime候选清单b4559df7...已交真正不同agent整包复核；尚未签收、应用或真实激活。
+
+原CATL公开identity import/serializer→IQS验证→真实原route/compose仅在隔离原库副本验过；正式owner仍未写入。新真实公司模型请求0，旧101预算行/三笔未决保留；第一轮Alphabet真实失败不能被合成正例改成成功。独审后精确应用、走正常hooks提交，再真正原生准入跑两题/安全摘要/0POST缓存恢复。
+
+## 2026-10-18 — 通用续行1.5候选实施中，真实两题driver已预备
+
+IQS 91234d1已确认推送origin/master；StockQA 4d77ffb此前已推送。用户再次确认三个10号包已发出，三个外部Lab保持活动writer隔离，不代改、不索引。原README 2026-10-10的他人四行改动保留，不纳入总控提交。
+
+当前一个完整跨仓节点：composition agent独占native-continuation-v15-candidate内overlay，实施原权限/quote/rc2/admission/原预算的显式1.5，不直接改源/真库；总控在另目录real-profile-smoke-candidate准备原company-scan/profile两题单包实测driver。沿用原Task/profile/SDK/price/evidence adapter；思考开启16384、1HTTP/0新搜索、原批量claim显式开启，原safe落盘后exit86与全新无key/禁网络0POST恢复。旧失败Task3 driver字节不改，19个本地资源/包数/源码pins等拒绝测试通过，仅是未准入的准备，不是原软件整链或真实答案。
+
+金融独立参考准备只读选择已有CATL/中信建投真实StockWiki DTO及官方短来源；已知DTO仍provisional/formal_profile=null，不称verified或正式金融资格。私有gold不喂模型。本轮尚无新原生激活、付费请求或缓存恢复，原101账和三笔未决完整保持。完成候选后集中五类实质验收和不同agent整包审查，不增逐helper门；若失败继续根修并保留现场。
+
+下一单项：完成并冻结1.5完整跨仓候选、整体集中测试和独审，随后应用正常源码并跑另一个真实公司两题实验。无新权限提问。
+
 ## 2026-10-18 — 原子批量领取已交付，转原通用续行1.5
 
 批量claim独立整包签收（final SHA1b69e5...、CAS02726d...，open_findings=[]），精确4QA产品+4正式测试已应用，普通48P/1显式重型skip/8.70秒，正常hooks含mypy94全绿，StockQA已提交推送4d77ffb4e73232ef93b082900a74a731bdb256ba。原diagnostic receipt增量、旧singleton转换、600秒lease及每POST fresh权限保留。仅private helper返回Optional[Lease]注解/isort/换行修正由不同agent交付附录核等价；历史final/CAS不改。
