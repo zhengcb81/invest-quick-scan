@@ -1,3 +1,7 @@
+## 2026-10-18 — 免费金融 API 身份核验调研
+
+实测免费无需登录：cninfo webapi p_sysapi1133（AkShare stock_profile_cninfo）返回公司全称/A股代码（深沪，1-3s）；东财 F10 同样可拿 ORG_NAME（深沪）；SEC EDGAR company_tickers.json 官方（美股）；东财港股 F10 gszl.gsmc（港股）。北交所 872808 在 cninfo/东财均缺口。Tushare 需 token（未装），BaoStock 需 SDK 登录，Wind/iFinD 付费。建议 CN 证据改为“cninfo 逐公司概况页 + API 响应 sha256”，US 用 SEC，HK 用 HKEX/东财，需 owner 确认口径后再 5 家试点与批量。报告 docs/implementation/reviews/free-financial-api-identity-2026-10-18.md。
+
 ## 2026-10-18 — owner 批准证据规则；万科A verified 试点已写入
 
 用户批准：以交易所官方公告页/年报为准、逐公司一条、只存 URL/法人全称、不保存正文；approval id existing-list-verified-2026-10-18。真实 workspace 已完成万科A试点：法人全称万科企业股份有限公司、verified/rev2、IVR_02b6a702…、证据为深交所官方年报 PDF；交易简称保留；verified 2→3、receipt 217→218，entity/security/binding/candidate 不变；幂等重放计数不变。报告 docs/implementation/reviews/verified-pilot-vanke-2026-10-18.md。下一步：独立复审该试点 → 5 家 → 按 ≤60/批扩到 211（每家需官方链接+法人全称）。搜索供应商条款仍未决定，search-backed 评分暂不启动。
