@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — preview 真正错误：refresh_no_work_must_be_zero_cost
+
+追踪 refresh_contract_cli 得到真实异常：refresh_no_work_must_be_zero_cost（refresh_contract.py:317）。含义：owner state 认为该题是 no-work（已 delivered → reuse），但请求的 quote 仍有 1 次 HTTP 成本，说明 session 在请求 dispatch 而 owner 决定 reuse。root cause 是**已 delivered 的题必须走显式新 generation 控制（dispatch_new_generation），普通 1.4 请求只能 reuse**；IQS_12/16 等已有 delivered 观察，故普通请求既不能 preview 出新 work，也会在 admission plan 比较时冲突。IQS_10/18/20 能跑是因为此前没有 delivered 观察。
+
 ## 2026-10-18 — 旧观察是 owner 状态的一部分：删除会造成 ack_observation_missing
 
 进一步实验：删除旧观察后 preview ready，但 admission 在 prepare 时报 owner_refresh_ack_observation_missing（owner 仍需 delivered 的 ack 观察）。恢复观察后 admission 需要新确认（旧确认过期 refresh_consent_native_rejected）。结论是 catch-22：旧观察必须存在以维持 owner 状态，但它们又过不了 vendor preview。此外 admission 的 plan 比较已放宽为只比 decision/generation/reuse（existing_work_status 是预览快照，不应作为重算依据）。
