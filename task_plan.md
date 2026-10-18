@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 搜索计价改 USD 等值；被 owner policy 注册态拦住
+
+把 DeepSeek 搜索计价改为 USD 等值 700 micros/次（FX 7.15，pricing_ref 留痕），exposure 改为 USD 700 并重新 valid，14L 以新 exposure digest 重建安装。preview 被 owner_exposure_native_policy_deployment_changed 拒绝：安装的 policy 与 ledger 里注册的 owner policy 不一致（改 policy 后没有重新注册/换 grant）。下一步：找到 owner policy 注册/重载入口，再 preview→confirm→admit。
+
 ## 2026-10-18 — IQS_07 retrieval 尝试：跨币种预算冲突
 
 work item WORK_caa872be2a3941faae8663c21182ff34 已 claim（lease epoch 2），直接调 retrieve_external_question_context 做真实检索时被 search and answer-model budget currencies differ 拦住：DeepSeek 搜索 policy 计价 CNY，mimo 模型预算 USD，共享预算要求同币种。这是真实设计缺口（不是门禁）。下一步：确定币种策略（统一 CNY 或加换算层），再跑 retrieval。
