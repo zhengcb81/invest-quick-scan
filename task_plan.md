@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_14 预算快照回滚的最终定位
+
+把 DB 预算行重新 configure 成文件投影 327e9a59… 后，driver 一跑又把 DB 写回 e21eda6d…；installed policy 的 control snapshot 仍是 327e，所以 dispatch 必然 mismatch。结论：admission 注册/执行链路在 prepare 时用注册 proof 的预算投影（e21e）回写 store，而 flow 的 control 用文件投影（327e）。下一步只能两阶段：先注册预算→从注册 proof 取投影生成 control→再 preview/confirm/admit；或让 admission 不回写预算。
+
 ## 2026-10-18 — IQS_14 仍被 budget_policy_changed；定位到 DB 快照在 admission 后被重写
 
 IQS_14 走完 preview rv1_e14e… → confirm rc2_f2c1… → admit accepted，driver 仍报 owner_exposure_budget_policy_changed。比对：budget 文件归一化 policy_snapshot_sha256=327e9a59…，DB quick_scan_budget_policy=e21eda6d…，说明 admission 期间（或 configure）把预算行重写成了另一版快照，而 control 用的是构建时快照。下一步：让 admission 不重配预算，或把 control 快照改为 admission 注册后的 DB 快照（两阶段 admission）。
