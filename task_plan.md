@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 看板加入 search-backed 答案页索引
+
+one_click 现在自动发现 docs/implementation/reviews 下的 answers.html，在首页列出「Search-backed 答案页」卡片（当前 2 个：0506 research-only 与 IQS_09 completed）。审阅入口不再靠记忆路径。
+
 ## 2026-10-18 — CATL facts 上下文/授权转为正式并验证
 
 facts-context.draft/facts-authority.draft 经验证后提升为 facts-context.json 与 facts-authority.json：facts_context_check=ready（16/16 题覆盖）、facts_authority_check=valid。这是金融/事实入口的正式离线产物；真实 facts run 仍需 owner 注册执行入口。

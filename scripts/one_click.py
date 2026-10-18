@@ -38,6 +38,17 @@ def main(argv=None):
     run([SCRIPTS/"financial_mechanical_check.py", "--workspace", args.workspace,
          "--json", fin_dir/"check.json", "--html", fin_dir/"check.html"])
     fin = json.loads((fin_dir/"check.json").read_text(encoding="utf-8"))
+    answer_pages = sorted(ROOT.glob("docs/implementation/reviews/**/answers.html"))
+    answers_card = ""
+    if answer_pages:
+        import os
+        links = "".join(
+            '<li><a href="' + os.path.relpath(page, args.out).replace("\\", "/") + '">'
+            + page.parent.name + '</a></li>'
+            for page in answer_pages
+        )
+        answers_card = ('<div class="card"><b>Search-backed 答案页（' + str(len(answer_pages)) + '）</b>'
+                        + '<ul>' + links + '</ul></div>')
     fin_card = ('<div class="card"><a href="financial-check/check.html">金融机械检查（'
                 + str(fin.get("observations", 0)) + ' 条观察 · pass ' + str(fin.get("mechanical_pass", 0))
                 + ' / fail ' + str(fin.get("mechanical_fail", 0)) + '）</a><br><span class="muted">'
@@ -66,6 +77,7 @@ a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</sty
 <div class="card"><a href="profiles/index.html">打开公司画像索引（{len(list(profiles.glob('ENT_*.html')))} 页）</a></div>
 {facts_card}
     {fin_card}
+    {answers_card}
 <div class="card muted">只读页面；不构成评分、投资建议或财务准确性结论。</div>
 </body></html>"""
     (args.out/"index.html").write_text(landing, encoding="utf-8")
