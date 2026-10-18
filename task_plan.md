@@ -1,3 +1,7 @@
+## 2026-10-18 — verified 证据审计通过
+
+对 209 个 verified 实体逐条重算 IVR、核对法人名、校验归档证据哈希：207 通过、0 失败、2 家（Alphabet/CATL）为更早 verified 且证据在旧 run。新增 scripts/verified_evidence_audit.py，可重复审计；证据目录补 SEC 完整 submissions（7 份）。报告 docs/implementation/reviews/verified-evidence-audit-2026-10-18.md。剩余 5 家 provisional（002013/300114/688555/872808/06066）按市场证据规则暂缓。
+
 ## 2026-10-18 — 美股 7 家经 SEC 逐公司 JSON 升级
 
 FIG/GENB/MDB/MSFT/NVO/SNOW/TAL 全部 verified/rev2（SEC registrant name），verified 202→209、receipt 417→424，基础计数不变、重放幂等；证据归档 sec-profiles.jsonl。剩余 provisional 仅 5 家：CN 002013/300114/688555（cninfo 空，疑似退市/重组）、CN 872808（北交所无免费官方源）、HK 06066（需 HKEX 官方页）。报告已在 verified-batch-2026-10-18.md 增补。
