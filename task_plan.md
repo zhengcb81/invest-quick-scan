@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — S2 profile/factory 支持显式有界搜索
+
+scan_profile.scan_limits 接受 search_exposure（iqs.search_exposure/1.0.0），校验 policy sha、查询上限匹配、路由 enabled/credential_env、存储权利；build_scan_profile 携带 search_exposure 并纳入 validate_scan_task；shared_company_task.create_company_scan_task 透传。默认仍 0 查询，旧路径字节不变。Company Lab 19 个 scan_profile 测试通过（含 6 个新搜索用例）；提交 8d4cfd2（Company Lab）、18accb2（IQS）。owner 1.6 合同与 runner search receipt 仍未接。
+
 ## 2026-10-18 — S1 search exposure 合同 v1 落地
 
 新增 iqs.search_exposure/1.0.0 schema 与离线校验器 scripts/search_exposure_contract.py：校验 policy 文件 sha256、启用路由、凭据变量存在性（不读值）、路由查询预算覆盖 session 上限、存储权利确认。6 个单测通过。文档 docs/implementation/plans/search-exposure-contract-2026-10-18.md。仍缺 owner 的 Brave/Tavily 单价与存储条款，policy 不能转 executable。
