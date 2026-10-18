@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — search driver 接线迭代
+
+新 driver（run_search_11_driver.py）已把 lifecycle external_retrieval、OwnerResearchServices(search_service=ExternalSearchProvider)、factory search_exposure、limits 接上。过程中修了：factory scan_limits 未传 search_exposure；lab exposure 校验不接受 currency 字段（改为 required 子集 + currency 可选）；session 目录必须新建。当前卡在 prepare_execution 的 refresh_consent_native_rejected（确认/权限状态过期或已消费），需要重新 admission/confirm 后再跑。
+
 ## 2026-10-18 — IQS_11 search context 归档
 
 把引擎产出的 external context 落到 docs/implementation/reviews/search-context-catl-iqs11-2026-10-18/：3 条 catl.com 来源、1 次 retrieval（SEARCH_dd83a4…）、answer_search_mode=external_context_only。下一步：driver 接 require_search/search_service/external_retrieval，让引擎用该 context 作答并写 checkpoint。

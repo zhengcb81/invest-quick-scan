@@ -374,7 +374,7 @@ def create_company_scan_task(
     )
     from iqs_company_agent_lab.scan_profile import scan_limits
 
-    selected_limits = scan_limits(limits)
+    selected_limits = scan_limits(limits, search_exposure=search_exposure)
     binding = dict(
         protocol="iqs.native-company-owner-binding/1.0.0",
         synthetic=False,
