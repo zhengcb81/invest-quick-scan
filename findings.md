@@ -1,3 +1,12 @@
+## 2026-10-18 — 暂停前确认的出版边界
+
+1. Company 研究槽2/2与原 StockQA checkpoint/outbox/StockWiki ACK 是不同完成状态：后者尚未完成，真实两 work 仍 uncertain。
+2. schema24→25 时只读版本白名单需显式保留24；不能提前写真库解决 bootstrap，不能全局放松付费刷新校验。
+3. 真实 namespace 库副本改变路径会触发原 owner store-ID 拒绝；public01/02 是有效负例，不是可通过改原receipt修补的正例。下次公开正例由原软件在独立 namespace 新建，真实102副本用于迁移及内容保持测试。
+4. 非评分原答含已知财务指标，候选已做显式研究类型的局部兼容并经聚焦测试覆盖，仍待完整公开链与整包验收；原分数为空，不删除原数字、不补搜索证明，下次不重复实现。
+
+以上均随隔离候选保留，未获整节点产品签收。按用户要求暂停；详见 [暂停交接](docs/implementation/reviews/pause-handoff-2026-10-18.md)。
+
 ## 2026-10-18 — 真实CATL研究恢复节点已独立验收，转原链非评分出版
 
 当前节点已完成，不再重复实现/重跑付费样本：原safe至全新carrier02恢复75.0352秒、exit0、Company研究槽2/2 completed、新HTTP0、原native重放1次、报告与summary一致。工程最终独审a8362779.../open_findings=[]；金融一致性最终c6c0828e...确认两答逐对象与原答完全相同。实际31P、旧SDK59P、旧Runtime39P、root16+8、独立7分别有证据，不混成金融准确率。StockQA c910ed9已推origin；Runtime f8e251f无remote仅本地；累计源码/完整759文件已独立交付签收e73427d7...。原source/final/proof/config/checkpoint/0/2partial历史保留。

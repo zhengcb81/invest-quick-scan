@@ -1,3 +1,9 @@
+## 2026-10-18 — 按用户要求收尾暂停
+
+用户要求“手头做好了先暂停吧”。已完成的真实 CATL 两题缓存恢复及独审保持交付（IQS a05dc8b、StockQA c910ed9 已推送；Runtime f8e251f / StockWiki 809b501 本地无 remote）。当前非评分正式出版节点仅保存隔离候选，不做真实源应用、schema25 迁移、publisher 激活或新付费请求；本项目整体未完成。
+
+完整暂停交接见 [docs/implementation/reviews/pause-handoff-2026-10-18.md](docs/implementation/reviews/pause-handoff-2026-10-18.md)。公开候选链 public01/02 尚未通过原 owner store-ID 校验；这是复制 namespace 后应保留的拒绝，下次独立 synthetic 正例必须经原 native 软件生成，不改原 receipt 绕过。真实两条 native work 仍 uncertain，Company 2/2 不等于正式入库/ACK/delivered。三张外包10号卡继续 writer 隔离。
+
 ## 2026-10-18 — 真实CATL研究恢复节点已独立验收，转原链非评分出版
 
 当前节点已完成，不再重复实现/重跑付费样本：原safe至全新carrier02恢复75.0352秒、exit0、Company研究槽2/2 completed、新HTTP0、原native重放1次、报告与summary一致。工程最终独审a8362779.../open_findings=[]；金融一致性最终c6c0828e...确认两答逐对象与原答完全相同。实际31P、旧SDK59P、旧Runtime39P、root16+8、独立7分别有证据，不混成金融准确率。StockQA c910ed9已推origin；Runtime f8e251f无remote仅本地；累计源码/完整759文件已独立交付签收e73427d7...。原source/final/proof/config/checkpoint/0/2partial历史保留。
@@ -227,7 +233,7 @@ Company核心仍为已交付cd5e3e7。owner 服务实际原软件批准/SDK两�
 
 ## Next Step
 
-完成原链非评分历史研究出版的单一跨仓候选（原owner显式purpose、research-only checkpoint与原C06/outbox/StockWiki ACK）；集中TDD及不同agent整包审查后正常交付，再以原真实CATL safe/原owner新鲜publisher零HTTP出版到review_pending并核幂等/原账保持。原搜索/scored链不放宽、不伪造proof、不续旧lease、不更改原答。当前2/2只为Company研究完成，原native两work仍uncertain；三外包10卡保持活动writer隔离。
+保持暂停；用户恢复后，先读取暂停交接和候选 handoff，核原仓 HEAD/base SHA，再完成同一 saved-research-publication 隔离整节点。公开正例须由原 native 软件生成独立 namespace；通过集中测试和不同 agent 整包审查后，才精确应用及实际零 HTTP 非评分入库。当前不得自动激活或重发模型。
 
 ## 2026-10-18 — 三个独立研究包交付验收收口
 

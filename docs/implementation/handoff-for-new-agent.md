@@ -1,3 +1,11 @@
+## 2026-10-18 — 当前明确暂停，不自动恢复实施
+
+用户最新指令是“手头做好了先暂停吧”。只在用户再次要求继续后恢复主线。已交付 IQS a05dc8b / StockQA c910ed9 的真实 CATL 两题缓存恢复，不重做、不重发模型；Runtime f8e251f 与 StockWiki 809b501 无 remote 仅本地。
+
+先读 [完整暂停交接](reviews/pause-handoff-2026-10-18.md)，以及 `runs/shared-engine-production-2026-10-18/saved-research-publication-candidate/handoff-pause.md`。下一出版节点仅隔离候选，driver / 公开正例 / 整包独审 / 源应用 / 真库迁移 / 实际 ACK 均不能标完成；public01/02 的原 owner store-ID 拒绝必须保留，禁止改原 receipt 伪造通过。真实两 work 仍 uncertain，旧三笔费用未决保留。
+
+完整文件：`docs/implementation/reviews/pause-handoff-2026-10-18.md`。三外包10号卡保持活动 writer 隔离；忽略与保留他人 README 四行改动。
+
 ## 2026-10-18 — 真实CATL研究恢复节点已独立验收，转原链非评分出版
 
 当前节点已完成，不再重复实现/重跑付费样本：原safe至全新carrier02恢复75.0352秒、exit0、Company研究槽2/2 completed、新HTTP0、原native重放1次、报告与summary一致。工程最终独审a8362779.../open_findings=[]；金融一致性最终c6c0828e...确认两答逐对象与原答完全相同。实际31P、旧SDK59P、旧Runtime39P、root16+8、独立7分别有证据，不混成金融准确率。StockQA c910ed9已推origin；Runtime f8e251f无remote仅本地；累计源码/完整759文件已独立交付签收e73427d7...。原source/final/proof/config/checkpoint/0/2partial历史保留。
