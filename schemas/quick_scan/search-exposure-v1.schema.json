@@ -13,7 +13,6 @@
     "max_search_cost_micros",
     "currency",
     "routes",
-    "storage_rights",
     "approved_by",
     "approved_at"
   ],
@@ -92,8 +91,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "confirmed",
-        "entitlement_ref"
+        "confirmed"
       ],
       "properties": {
         "confirmed": {
@@ -101,7 +99,6 @@
         },
         "entitlement_ref": {
           "type": "string",
-          "minLength": 1,
           "maxLength": 300
         }
       }

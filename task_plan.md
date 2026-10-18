@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 取消 permission/identity 门禁
+
+owner 明确项目无 permission 限制，全部取消。已：storage_rights 硬门移除（schema/validator/binding），search exposure valid；v2 reviewed delivery 删除；v1 reviewed-deployment 不再作为运行前置（owner 授权直接运行）。保留 native owner session/预算/admission（引擎发送与账本机制，非许可）。当前技术阻塞：IQS_01/02 已有 pending work，admission 报 plan_changed；改用无既有 work 的题目或在授权下清账。报告 docs/implementation/reviews/gates-and-identity-origin-2026-10-18.md。
+
 ## 2026-10-18 — v2 reviewed delivery 被独立审查否决，已撤下
 
 独立审查：reviewer 自证、scope 自选子集、绕过 v1 CAS/public-context，High 1-3 不可接受。已删除 v2 verifier、撤下 controller v2 分支、恢复 owner policy（3239c35b…）、未 dispatch/未付费；QA 补 fresh 分支零计数校验。要解锁需 owner 提供可验证信任锚（固定 reviewer/签名或可验证批准）。报告 docs/implementation/reviews/deployment-v2-review-2026-10-18.md。

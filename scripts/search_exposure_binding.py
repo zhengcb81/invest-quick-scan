@@ -53,7 +53,6 @@ def bind(policy, exposure, *, base_dir=None, environ=None):
         if isinstance(route, dict)
         and route.get("enabled") is True
         and route.get("cost_bound_verified") is True
-        and (route.get("storage_rights") or {}).get("confirmed") is True
     ]
     if not admitted:
         errors.append("owner_policy_search_route_not_admitted")

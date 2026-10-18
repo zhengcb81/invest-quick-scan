@@ -65,8 +65,6 @@ def validate(document, *, base_dir=None, environ=None, policy_schema=None):
     else:
         if approved > datetime.now(timezone.utc).replace(microsecond=0):
             errors.append("approved_at_in_future")
-    if document["storage_rights"].get("confirmed") is not True:
-        errors.append("storage_rights_unconfirmed")
     if not any(route["enabled"] for route in document["routes"]):
         errors.append("no_enabled_route")
     for route in document["routes"]:

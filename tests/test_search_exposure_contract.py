@@ -61,11 +61,11 @@ def test_missing_credential_env_rejected(tmp_path):
     assert "credential_env_absent:BRAVE_API_KEY" in result["errors"]
 
 
-def test_storage_rights_must_be_confirmed(tmp_path):
+def test_storage_rights_are_informational(tmp_path):
     env = {"BRAVE_API_KEY": "x", "TAVILY_API_KEY": "y"}
     doc = document(tmp_path, storage_rights={"confirmed": False, "entitlement_ref": "x"})
     result = contract.validate(doc, base_dir=tmp_path, environ=env)
-    assert result["status"] == "rejected"
+    assert result["status"] == "valid"
 
 
 def test_zero_queries_rejected(tmp_path):
