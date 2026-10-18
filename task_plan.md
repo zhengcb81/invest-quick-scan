@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 新 admission 受旧观察 vendor 合同阻断（已确认）
+
+对 IQS_12b 反复 debug：capture/install 正常，失败点在 query contract 的 create_preview（subject_contract_output_invalid），不是 route/权限。结合 IQS_18（evidence=0）案例，结论：现存的旧 research-only 观察无法通过 vendor preview 合同；在把观察重建为 vendor-valid 之前，新题 admission 会被阻断。当前 owner 观察 5 条、preflight 可用、IQS_09 search-backed 正常。
+
 ## 2026-10-18 — 观察导入前置检查
 
 新增 scripts/observation_import_preflight.py：离线校验 1.2.0 包（schema/task_mode/score 一致、evidence 非空且 id=src_sha16(url)、executed 搜索必须有真实 prompt/request hash 且 receipt 在操作表）。实跑 import-09 + import-18：09 pass、18 fail(evidence_empty)——与 vendor preview 拒绝原因一致。以后 search-backed 观察先过 preflight 再入 owner 库。
