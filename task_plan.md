@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — security 路由被 policy schema 明确排除
+
+尝试用 current_owner_members 或显式 security route 授权 IQS_22，均被 refresh-v1.4 policy schema 拒绝：routes[].scope enum 只有 entity/segment，security 不在支持范围。结论：22–24 这类 security 题在当前 owner refresh 协议下不可执行，不是配置遗漏。另：导入的 IQS_19 scored 观察缺 prompt/request hash，query seal 会对该 subject 报 subject_contract_output_invalid，后续 capture 需先修观察或补真实 hash。
+
 ## 2026-10-18 — security 题：capture 可用，但 subject 未授权
 
 给 IQS_22 构造 security subject_ref（scope=security, SEC_989f…, listing LST_0e45…），capture 成功。但 preview 被 refresh_subject_not_authorized 拒绝：owner 权限态只授权了 entity subject，security analysis subject 尚未注册。不是 route 字段问题，而是 subject 授权范围。下一步需要注册/授权 security analysis subject（或扩展 owner 权限 scope）。
