@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — F05 入口：facts pack 离线生成
+
+新增 scripts/facts_compose.py，从作者 profile 生成 standard-1 facts pack（全部 response_kind=fact），无网络/无模型；2 个单测通过。但 214 家现有公司没有结构化 profile（只有 HTML 画像页），需要 owner 批准分类口径后先做 CATL 1 家 quick pack。文档 docs/implementation/plans/f05-facts-pack-2026-10-18.md。
+
 ## 2026-10-18 — DeepSeek Search 客户端（离线）
 
 新增 scripts/deepseek_search_client.py：按官方 /v1/tools/search 规范构造 query/count/need_content/ori_question，注入 transport；200 生成 receipt（5000 micros），非 200 生成 unavailable（cost 0），不重试/不回退/不记录 key。10 个相关单测通过（含 5 个客户端用例）。未发真实请求。
