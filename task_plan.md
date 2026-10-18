@@ -1,3 +1,7 @@
+## 2026-10-18 — 对比页加入维度均分
+
+thin_compare 读取 questions-24 的 8 个维度，每家按维度对“有分数的题”取均值，新增“维度均分”表。可直观看到：宁德时代 moat 9.0 最高、万科 financial 3.3 偏低、Alphabet financial 2.5 但 business 7.0 等。仍然是草稿口径。
+
 ## 2026-10-18 — DELIVERY-AUDIT-11 验收通过（三包全部验收）
 
 DELIVERY-AUDIT-11：handoff precheck valid；artifacts 364/364；pytest exit 0（2 skipped）；casebook 47/47；acceptance 14/14；review final passed（6 轮、open_findings=[]）。判定 ACCEPTED（离线交付包审计器，非生产资格）。已知边界：Windows symlink 测试 skip、frozen oracle 越界跳过、数据固定 offline_candidate、REV-DA11-012 文本修正未走第 7 轮。验收记录 docs/implementation/parallel-lanes/acceptance-2026-10-18/DELIVERY-AUDIT-11.md。三个外包包全部验收完成。

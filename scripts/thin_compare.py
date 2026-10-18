@@ -43,6 +43,13 @@ def main() -> int:
         shutil.copyfile(answers_path, target / "answers.json")
         if (directory / "index.html").is_file():
             shutil.copyfile(directory / "index.html", target / "index.html")
+    catalog_path = Path(__file__).resolve().parents[1] / "docs/implementation/questions-24.json"
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    dimension_of = {q["id"]: q["dimension"] for q in catalog["questions"]}
+    dimension_order = []
+    for q in catalog["questions"]:
+        if q["dimension"] not in dimension_order:
+            dimension_order.append(q["dimension"])
     questions = {}
     for company in companies:
         for answer in company["doc"]["answers"]:
@@ -71,6 +78,16 @@ def main() -> int:
                 html.escape(company["name"]), len(scored), len(answers),
                 "—" if average is None else f"{average:.1f}",
                 "$" + f"{cost:.4f}", company["slug"]))
+    dimension_rows = []
+    for dimension in dimension_order:
+        cells = []
+        for company in companies:
+            values = [a["score"] for a in company["doc"]["answers"]
+                      if a["status"] == "scored" and dimension_of.get(a["question_id"]) == dimension]
+            cells.append("-" if not values else f"{sum(values)/len(values):.1f}")
+        dimension_rows.append(f"<tr><td>{html.escape(dimension)}</td>{''.join('<td>'+c+'</td>' for c in cells)}</tr>")
+    dimension_table = ("<table><tr><th>维度</th>" + "".join(f"<th>{html.escape(c['name'])}</th>" for c in companies)
+                       + "</tr>" + "".join(dimension_rows) + "</table>")
     page = """<!doctype html><html lang="zh"><meta charset="utf-8"><title>薄草稿对比</title>
 <style>body{font:14px/1.6 system-ui,"Microsoft YaHei";max-width:1100px;margin:32px auto;padding:0 16px}
 table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e5e7eb;padding:6px 8px;text-align:left;vertical-align:top}
@@ -78,11 +95,13 @@ table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e5e7eb;
 <h1>薄草稿对比</h1>
 <p class="warn">草稿，非正式入账；分数只用于先看方向，不构成投资建议。</p>
 <h2>公司汇总</h2><table><tr><th>公司</th><th>已评分</th><th>平均分（已评分）</th><th>搜索成本</th><th>详情</th></tr>__SUMMARY__</table>
+<h2>维度均分（仅有分数的题）</h2>__DIMENSIONS__
 <h2>逐题</h2><table><tr><th>问题</th>__HEADER__</tr>__ROWS__</table>
 </body></html>"""
     page = (page.replace("__SUMMARY__", "".join(summary))
                 .replace("__HEADER__", header)
-                .replace("__ROWS__", "".join(rows)))
+                .replace("__ROWS__", "".join(rows))
+                .replace("__DIMENSIONS__", dimension_table))
     (args.out / "compare.html").write_text(page, encoding="utf-8")
     print(json.dumps({"companies": [c["name"] for c in companies], "out": str(args.out)}, ensure_ascii=False))
     return 0
