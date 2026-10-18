@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 看板显示 search-backed 覆盖
+
+roster_status 现在统计 search_backed_entities / search_backed_observations（读 observation payload execution.search_status），首页摘要显示「search-backed 1 家/1 条」（CATL IQS_09）。其余指标不变：214 家、209 verified、已有观察 1、需 owner 准入 208。
+
 ## 2026-10-18 — 看板新增评分审阅入口
 
 one_click 现在发现 docs/implementation/reviews/search-scored-*/index.html，在首页新增「Search-backed 评分审阅（未入库）」卡片，当前列出 IQS_20 scored=6 审阅页，并明确标注「离线校验通过但未进入 owner 观察库」。

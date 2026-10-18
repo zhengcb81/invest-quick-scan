@@ -91,7 +91,7 @@ a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</sty
 <h1>invest-quick-scan</h1>
 <div class="muted">现有公司列表的本地只读看板 · 生成于 {status.get('protocol','')}</div>
 <div class="card"><b>{status['entities']}</b> 家公司 · <b>{status['verified']}</b> verified · <b>{status['provisional']}</b> provisional<br>
-<span class="muted">可跑画像 {status['by_next_action'].get('ready_for_profile',0)} · 已有观察 {status['by_next_action'].get('has_observations',0)} · 需要 owner 准入 {status['by_next_action'].get('needs_owner_admission',0)} · 需要 verified {status['by_next_action'].get('needs_verified_identity',0)} · 金融复核 {reviewed} 家</span></div>
+<span class="muted">可跑画像 {status['by_next_action'].get('ready_for_profile',0)} · 已有观察 {status['by_next_action'].get('has_observations',0)} · search-backed {status.get('search_backed_entities',0)} 家/{status.get('search_backed_observations',0)} 条 · 需要 owner 准入 {status['by_next_action'].get('needs_owner_admission',0)} · 需要 verified {status['by_next_action'].get('needs_verified_identity',0)} · 金融复核 {reviewed} 家</span></div>
 <div class="card"><a href="roster.html">打开 Roster（可搜索/筛选/点公司名进画像）</a></div>
 <div class="card"><a href="profiles/index.html">打开公司画像索引（{len(list(profiles.glob('ENT_*.html')))} 页）</a></div>
 {facts_card}

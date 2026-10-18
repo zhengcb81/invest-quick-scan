@@ -134,10 +134,17 @@ def main(argv=None):
     policy = json.loads(policy_path.read_text(encoding="utf-8")) if policy_path.is_file() else {}
     routed = {route.get("scope_id") for route in policy.get("routes", []) if route.get("scope") == "entity"}
     observed = Counter()
+    search_backed = Counter()
     if observations.is_file():
         with closing(connect(observations)) as connection:
-            for row in connection.execute("SELECT entity_id FROM quick_scan_observation"):
+            for row in connection.execute("SELECT entity_id,payload_json FROM quick_scan_observation"):
                 observed[row["entity_id"]] += 1
+                try:
+                    payload = json.loads(row["payload_json"])
+                except (TypeError, ValueError):
+                    payload = {}
+                if (payload.get("execution") or {}).get("search_status") == "executed":
+                    search_backed[row["entity_id"]] += 1
     rows = []
     for entity in entities:
         listings = by_entity.get(entity["entity_id"], [])
@@ -162,6 +169,7 @@ def main(argv=None):
             "listings": [{"market": l["market"], "ticker": l["ticker"], "status": l["listing_status"]} for l in listings],
             "bindings": binding_count.get(entity["entity_id"], 0),
             "observations": observed.get(entity["entity_id"], 0),
+            "search_backed": search_backed.get(entity["entity_id"], 0),
             "next_action": action,
         })
     candidates = None
@@ -184,6 +192,8 @@ def main(argv=None):
         "provisional": sum(1 for r in rows if r["identity_state"] == "provisional"),
         "by_market": dict(Counter(l["market"] for r in rows for l in r["listings"])),
         "by_next_action": dict(Counter(r["next_action"] for r in rows)),
+        "search_backed_entities": sum(1 for r in rows if r["search_backed"]),
+        "search_backed_observations": sum(r["search_backed"] for r in rows),
         "candidates": candidates,
         "rows": rows,
     }
