@@ -25,8 +25,8 @@ status: rejected
 errors: ["storage_rights_unconfirmed"]
 credential_presence: {"DEEPSEEK_API_KEY": true}
 
-除存储权利未确认外，其余检查全部通过（policy sha256 精确匹配、route enabled、凭据变量存在、查询预算覆盖）。
+owner 已确认存储权利（entitlement_ref=owner-confirmed-2026-10-18）。离线校验现在 status=valid，errors=[]。
 
-## 需要 owner 的一句话
+## owner 已确认
 
-确认 DeepSeek API 的搜索结果/网页内容是否允许按本项目方式存储与引用（存储权利 / 条款引用）；确认后把 exposure 与 policy 的 storage_rights.confirmed 改为 true、填入 entitlement_ref，即可通过离线校验，进入 owner policy 1.6 绑定。
+2026-10-18：存储权利 confirmed，entitlement_ref=owner-confirmed-2026-10-18；exposure 与 policy 已更新并通过校验。

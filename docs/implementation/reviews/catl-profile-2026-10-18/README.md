@@ -2,7 +2,7 @@
 
 ## 状态
 
-**DRAFT，未获 owner 分类确认。** 仅用于 F05 离线验证，不进入生产注册或真实运行。
+**owner 已于 2026-10-18 确认分类：operating / energy_transition / mature。** profile.json 为确认版本（profile.draft.json 保留历史）。
 
 ## profile.draft.json
 
@@ -21,9 +21,8 @@
 - 生成命令：python scripts/facts_compose.py --profile <profile> --mode quick --output <fresh dir>
 - source_sha256 校验：{"questions/facts.json": true, "schemas/answer-content.schema.json": true, "questions/metric-registry.json": true}
 
-## 下一步（需 owner）
+## 下一步
 
-1. 确认 CATL 分类口径（industry/stage）；
-2. 确认后把 profile 从 draft 提升为正式 profile；
+1. 分类已确认，profile.json 已提升；
 3. 注册 facts pack 并走 owner admission 才能真实运行；
 4. 运行后 import observation、刷新画像页事实区。
