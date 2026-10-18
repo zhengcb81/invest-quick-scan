@@ -1,6 +1,6 @@
 ## 2026-10-18 — 金融答案机械检查器（人工复核前的第一道门）
 
-新增 scripts/financial_mechanical_check.py：对已入库答案做确定性检查（题号、评分/状态、时间/截止日、证据 URL 与发布日期、指标单位/期间/证据绑定、缺失字段计数），输出 findings 与 mechanical_pass，明确不判断金融准确性。真实 workspace 2 条 CATL observation 机械 2/2 通过、0 findings；6 个 mutation 负例全部按预期报错。报告 docs/implementation/reviews/financial-mechanical-check-2026-10-18.md。只读、未改库、未联网。
+新增 scripts/financial_mechanical_check.py：对已入库答案做确定性检查（题号、评分/状态、时间/截止日、证据 URL 与发布日期、指标单位/期间/证据绑定、缺失字段计数），输出 findings 与 mechanical_pass，明确不判断金融准确性。真实 workspace 2 条 CATL observation 机械 2/2 通过、0 findings；6 个 mutation 负例全部按预期报错。报告 docs/implementation/reviews/financial-mechanical-check-2026-10-18.md。另加 scored 必须带证据的规则，并为 roster 与检查器补 4 条单测（全过）。只读、未改库、未联网。
 
 ## 2026-10-18 — 现有列表的只读操作入口（roster status）
 

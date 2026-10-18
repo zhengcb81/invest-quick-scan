@@ -49,6 +49,8 @@ def check_answer(observation):
         fail("score_on_unscored", "non-scored answer must keep score null")
     if answer.get("response_kind") == "fact" and (score is not None or answer.get("items")):
         fail("fact_contract", "fact answer must not use score or items")
+    if status == "scored" and not (answer.get("evidence") or []):
+        fail("scored_without_evidence", "scored answer needs at least one evidence item")
     as_of = parse_date(answer.get("information_as_of"))
     if as_of is not None and cutoff_date is not None and as_of > cutoff_date:
         fail("information_after_cutoff", "information_as_of exceeds cutoff")
