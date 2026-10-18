@@ -1,3 +1,7 @@
+## 2026-10-18 — 金融答案机械检查器（人工复核前的第一道门）
+
+新增 scripts/financial_mechanical_check.py：对已入库答案做确定性检查（题号、评分/状态、时间/截止日、证据 URL 与发布日期、指标单位/期间/证据绑定、缺失字段计数），输出 findings 与 mechanical_pass，明确不判断金融准确性。真实 workspace 2 条 CATL observation 机械 2/2 通过、0 findings；6 个 mutation 负例全部按预期报错。报告 docs/implementation/reviews/financial-mechanical-check-2026-10-18.md。只读、未改库、未联网。
+
 ## 2026-10-18 — 现有列表的只读操作入口（roster status）
 
 新增 scripts/roster_status.py：只读真实 workspace，输出 214 家实体的身份状态、市场、上市地、绑定/观察数与下一步动作（needs_verified_identity / ready_for_profile / has_observations）。当前快照：2 verified（CATL、Alphabet）、212 provisional、CN 205/US 11/HK 1；212 家需 verified、1 家可跑画像、1 家已有观察。报告 docs/implementation/reviews/roster-status-2026-10-18.md，JSON 快照在本机 runs/；同一工具新增 --html，生成自包含只读看板（搜索/状态/下一步筛选，214 行，并读取 candidate-links.json 显示候选 216 / 已链接 212 / 未解决 4 及原因），本机 runs/existing-list-onboarding-2026-10-18/roster.html。另核实：search policy 的 route 准入要求 owner 提供 enabled、cost_bound_verified + 真实价格、storage_rights confirmed + entitlement；现有示例策略是 inert，不能拿来做试点，需商业条款决策。

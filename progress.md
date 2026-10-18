@@ -1,3 +1,7 @@
+## 2026-10-18 — 金融机械检查器
+
+新增只读机械检查：2 条真实 CATL observation 2/2 通过；6 个注入负例（score/URL/日期/证据/期间/币种）全部报警。明确不是金融复核、不给评分；可作为画像生产链的第一道门。
+
 ## 2026-10-18 — Roster 只读操作入口
 
 新增 scripts/roster_status.py：214 实体（2 verified、212 provisional；CN 205/US 11/HK 1），下一步 212 需 verified、1 可跑画像、1 已有观察；只读、不写库。另确认 search policy 的 route 准入必须有 owner 的价格/存储权利/启用决策，示例策略 inert，不能直接做试点。
