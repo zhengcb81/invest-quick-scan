@@ -47,6 +47,17 @@ def main(argv=None):
                  + ' · fail ' + str(prov.get("fail", 0)) + ' · research_only ' + str(prov.get("research_only", 0))
                  + '）</a><br><span class="muted">搜索型观察的引用 URL 必须在授权它的 retreival receipt 中</span></div>')
     answer_pages = sorted(ROOT.glob("docs/implementation/reviews/**/answers.html"))
+    scored_pages = sorted(ROOT.glob("docs/implementation/reviews/search-scored-*/index.html"))
+    scored_card = ""
+    if scored_pages:
+        import os
+        links = "".join(
+            '<li><a href="' + os.path.relpath(page, args.out).replace("\\", "/") + '">'
+            + page.parent.name + "</a></li>"
+            for page in scored_pages
+        )
+        scored_card = ('<div class="card"><b>Search-backed 评分审阅（未入库，' + str(len(scored_pages))
+                       + '）</b><ul>' + links + '</ul><span class="muted">离线校验通过但未进入 owner 观察库</span></div>')
     answers_card = ""
     if answer_pages:
         import os
@@ -87,6 +98,7 @@ a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</sty
     {fin_card}
     {prov_card}
     {answers_card}
+    {scored_card}
 <div class="card muted">只读页面；不构成评分、投资建议或财务准确性结论。</div>
 </body></html>"""
     (args.out/"index.html").write_text(landing, encoding="utf-8")
