@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — S3 起点：search receipt v1
+
+新增 iqs.search_receipt/1.0.0 schema 与 scripts/search_receipt.py：把 DeepSeek Search 原始响应映射为结构化回执，绑定 exposure canonical hash、费用上限、币种与 route；5 个单测通过。回执只证明搜索发生，不等于答案被接受；未发真实请求。文档 docs/implementation/plans/search-receipt-contract-2026-10-18.md。
+
 ## 2026-10-18 — DeepSeek Search 定为首选路由；S1 合同接受绑定 exposure
 
 按 owner 指示采用 DeepSeek Search：官方价 Search 5 CNY/1000 次成功请求（https://api-docs.deepseek.com/zh-cn/quick_start/pricing/），端点 POST https://api.deepseek.com/v1/tools/search，DEEPSEEK_API_KEY。已生成 policy（kind deepseek、CNY、unit 5000 micros）与 2 题 exposure（10,000 micro-CNY）；离线校验仅剩 storage_rights_unconfirmed（owner 需确认存储权利）。QA 搜索策略 schema 接受 deepseek kind；assert_research_task 支持带 search_exposure 的任务（要求 service 存在、hash/查询数匹配），41 passed（1 个既有 schema 版本失败）。提交 IQS 1434a1e、QA e7363f9/3d1af59。
