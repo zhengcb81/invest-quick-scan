@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — S1 search exposure 合同 v1 落地
+
+新增 iqs.search_exposure/1.0.0 schema 与离线校验器 scripts/search_exposure_contract.py：校验 policy 文件 sha256、启用路由、凭据变量存在性（不读值）、路由查询预算覆盖 session 上限、存储权利确认。6 个单测通过。文档 docs/implementation/plans/search-exposure-contract-2026-10-18.md。仍缺 owner 的 Brave/Tavily 单价与存储条款，policy 不能转 executable。
+
 ## 2026-10-18 — 独立审查修复 + 决定不再硬闯 deployment 门
 
 审查发现：fresh 模式无未授权绕过，但 owner_ack_ref 只是标签；quote retained 旧路径被弱化；fresh 忽略 dialect/refs。已修：fresh 仅允许 1.4.0 且 attempt_ids 为空；quote retained 收紧为 enum [0,2]；validate_control 标注“单独不足以授权”；补 6 个单测（41 passed，1 个既有 schema-version 失败）。QA 6a32ac0、IQS dd4f87f。结论：付费 2 题 dispatch 需要新的 reviewed delivery（controller CAS/reviewer 冻结），不再用自选 source_pins 绕过；主线转向不依赖该门的 search-backed/评分与画像入口。
