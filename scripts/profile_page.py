@@ -99,12 +99,18 @@ def _card(obs, reviews=None):
         )
         for e in (answer.get("evidence") or [])
     )
+    execution = obs["payload"].get("execution") or {}
+    search = (
+        " · search-backed"
+        if execution.get("search_status") == "executed" and execution.get("search_receipt_id")
+        else ""
+    )
     missing = answer.get("missing_fields") or []
     return f"""
 <section class="card">
   <div class="head"><h2>{html.escape(str(obs['question_id']))}</h2><span class="badge {badge}">{html.escape(status)}</span></div>
   <p>{html.escape(str(answer.get('summary') or ''))}</p>
-  <div class="meta">score: {html.escape(str(answer.get('score')))} · as_of: {html.escape(str(answer.get('information_as_of')))} · cutoff: {html.escape(str(obs.get('information_cutoff')))}</div>
+  <div class="meta">score: {html.escape(str(answer.get('score')))} · as_of: {html.escape(str(answer.get('information_as_of')))} · cutoff: {html.escape(str(obs.get('information_cutoff')))}{search}</div>
   <h3>metrics</h3><table><thead><tr><th>metric</th><th>value</th><th>unit</th><th>period</th><th>evidence</th></tr></thead><tbody>{rows or '<tr><td colspan="5" class="muted">none</td></tr>'}</tbody></table>
   <h3>evidence</h3><ul>{evidence or '<li class="muted">none</li>'}</ul>
   <h3>missing fields</h3><p class="muted">{html.escape(', '.join(map(str, missing)) or 'none')}</p>

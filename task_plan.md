@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 画像卡片标注 search-backed
+
+profile_page 在卡片 meta 行增加 search-backed 标识（execution.search_status=executed 且有 search_receipt_id）。one_click 重新生成后，CATL IQS_09 卡片显示「score: None · as_of: 2026-10-18 · cutoff: 2026-10-18 · search-backed」，research-only 观察不带该标识。
+
 ## 2026-10-18 — 外部引用溯源检查接入看板
 
 新增 observation_provenance_check：对每条带 search_receipt_id 的观察，从 quick_scan_external_result 取授权检索的 entries URL 集合，校验答案引用 URL 全部在其中；无 receipt 的观察标 research_only。CATL 5 条观察：pass 1（IQS_09）、research_only 4、fail 0。one_click 已接入该检查并加首页卡片。这是对「板外 URL 可被引用」风险（reviewer 第 3 条）的补偿控制；第 2 条（fresh 快照未计 DISPATCH 成本）仍以 budget cap 兜底，记录为待办。
