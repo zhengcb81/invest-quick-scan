@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 1.4 准入：request/policy 验证通过，真实 preview 被拒
+
+切 1.4：request（protocol 1.4.0，snapshot snap2_2bc1…）与 policy（protocol 1.4.0、control 1.0.0、snapshot 1.0.0、cell IQS_01/02）均通过离线 validate。安装 policy 后真实 owner preview 返回 refresh_owner_preview_rejected（无细节），已按备份原样恢复 policy（sha 3239c35b…）。未发付费请求，owner 状态一致。下一步：直接调用 RefreshPreviewService.preview 拿真实异常（CLI 折叠了错误），定位后修复；剩 2 轮，若无法闭环则保持 active 交接。
+
 ## 2026-10-18 — CATL 新题真实运行：请求已建好，准入卡在 exposure snapshot
 
 回归修复后，CATL 新字段 capture 成功；为 IQS_01/02 构建的 refresh request 通过 refresh_contract.validate_request（snapshot snap2_2bc1…，execution profile 1d8e97…）。构造 control/policy 时卡住：1.5 policy 要求 snapshot protocol 1.1.0（v1.5 dialect），而 v1.5 snapshot 需要两个 DISPATCH 的 complete current sources，当前 ledger 的两个 ref 不满足；1.4 snapshot 协议又只有 1.0.0。未写真实 policy、未发付费请求。下一步：对齐 policy/control/snapshot 协议（1.4 或 1.5）并选满足 complete sources 的 exposure refs，再 preview/confirm/admit。
