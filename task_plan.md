@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 新题运行尝试：executor inspection 被拒
+
+真实 preview 的异常是 refresh_executor_inspection_unavailable：preview 的 executor inspection 子进程失败。手动复现 quick_scan_refresh_inspect_cli（1.4.0，带/不带 admission config）均返回 refresh_executor_inspection_rejected，CLI 折叠了具体原因。owner policy 已按备份恢复（sha 一致），无付费调用。报告 docs/implementation/reviews/catl-new-run-attempt-2026-10-18.md，下一步直接抓 inspector 内部异常。
+
 ## 2026-10-18 — 1.4 准入：request/policy 验证通过，真实 preview 被拒
 
 切 1.4：request（protocol 1.4.0，snapshot snap2_2bc1…）与 policy（protocol 1.4.0、control 1.0.0、snapshot 1.0.0、cell IQS_01/02）均通过离线 validate。安装 policy 后真实 owner preview 返回 refresh_owner_preview_rejected（无细节），已按备份原样恢复 policy（sha 3239c35b…）。未发付费请求，owner 状态一致。下一步：直接调用 RefreshPreviewService.preview 拿真实异常（CLI 折叠了错误），定位后修复；剩 2 轮，若无法闭环则保持 active 交接。
