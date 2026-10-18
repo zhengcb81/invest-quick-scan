@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import html
 import subprocess
 import sys
 from pathlib import Path
@@ -57,6 +58,15 @@ def main(argv=None):
                  + '）</a><br><span class="muted">搜索型观察的引用 URL 必须在授权它的 retreival receipt 中</span></div>')
     answer_pages = sorted(ROOT.glob("docs/implementation/reviews/**/answers.html"))
     scored_pages = sorted(ROOT.glob("docs/implementation/reviews/search-scored-*/index.html"))
+    preflight_card = ""
+    preflight_path = ROOT/"docs/implementation/reviews/observation-preflight-2026-10-18/check.json"
+    if preflight_path.is_file():
+        preflight = json.loads(preflight_path.read_text(encoding="utf-8"))
+        failures = [r for r in preflight.get("results", []) if r.get("result") == "fail"]
+        detail = "；".join(Path(r["package"]).name + ": " + ",".join(r.get("problems", [])) for r in failures[:3])
+        preflight_card = ('<div class="card"><b>观察导入前置检查</b>：' + str(preflight.get("packages", 0))
+                          + ' 包 · ' + str(preflight.get("pass", 0)) + ' pass · ' + str(preflight.get("fail", 0))
+                          + ' fail<br><span class="muted">' + html.escape(detail) + '</span></div>')
     scored_card = ""
     if scored_pages:
         import os
@@ -109,6 +119,7 @@ a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</sty
     {prov_card}
     {answers_card}
     {scored_card}
+    {preflight_card}
 <div class="card muted">只读页面；不构成评分、投资建议或财务准确性结论。</div>
 </body></html>"""
     (args.out/"index.html").write_text(landing, encoding="utf-8")
