@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 一键画像入口：roster → profile 页
+
+profile_page.py 支持 --all：扫描所有有观察的实体，生成每家公司画像页 + index.html；roster_status.py 新增 --profiles-dir，已有观察的公司名直接链到其画像页（当前 CATL 1 家）。这就是“从列表一键看画像”的产品闭环，只读、无新基础设施、无模型调用。产物在 runs/existing-list-onboarding-2026-10-18/profiles/。
+
 ## 2026-10-18 — 回到产品层：CATL 画像页（只读）
 
 在暂停底层准入扩张后，先用已有真实观察做一页用户可见的公司画像：scripts/profile_page.py 读取 scan_observations，渲染 CATL（宁德时代）2 条研究的题目、状态、指标/证据/缺失字段与“不构成评分”边界；输出 runs/existing-list-onboarding-2026-10-18/catl-profile.html。这是产品输出层的验证，不涉及新基础设施、不写库、不调用模型。

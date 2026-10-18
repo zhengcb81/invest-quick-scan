@@ -88,7 +88,7 @@ const render = () => {
     (!q || r.name.toLowerCase().includes(q) || r.entity_id.toLowerCase().includes(q) || r.listings.some(l => (l.ticker||'').toLowerCase().includes(q)))
     && (!st || r.identity_state === st) && (!ac || r.next_action === ac));
   document.getElementById('rows').innerHTML = rows.map(r =>
-    '<tr><td>'+r.name+'</td><td>'+r.identity_state+'</td><td>'+r.listings.map(l => l.market+':'+l.ticker).join(', ')+'</td><td>'+r.observations+'</td><td>'+badge(r.next_action)+'</td><td class="mono">'+r.entity_id+'</td></tr>'
+    '<tr><td>'+(r.profile_page ? '<a href="'+r.profile_page+'">'+r.name+'</a>' : r.name)+'</td><td>'+r.identity_state+'</td><td>'+r.listings.map(l => l.market+':'+l.ticker).join(', ')+'</td><td>'+r.observations+'</td><td>'+badge(r.next_action)+'</td><td class="mono">'+r.entity_id+'</td></tr>'
   ).join('');
 };
 ['q','state','action'].forEach(id => document.getElementById(id).addEventListener('input', render));
@@ -111,6 +111,8 @@ def main(argv=None):
     parser.add_argument("--json", type=Path, default=None)
     parser.add_argument("--html", type=Path, default=None)
     parser.add_argument("--links", type=Path, default=DEFAULT_LINKS)
+    parser.add_argument("--profiles-dir", type=Path, default=None)
+    parser.add_argument("--profiles-prefix", default="profiles")
     args = parser.parse_args(argv)
     scan = args.workspace/"data/quick_scan/scan.sqlite"
     observations = args.workspace/"data/quick_scan/scan_observations.sqlite"
@@ -148,9 +150,13 @@ def main(argv=None):
             action = "ready_for_profile"
         else:
             action = "needs_owner_admission"
+        profile = None
+        if args.profiles_dir is not None and (args.profiles_dir/(entity["entity_id"] + ".html")).is_file():
+            profile = args.profiles_prefix + "/" + entity["entity_id"] + ".html"
         rows.append({
             "entity_id": entity["entity_id"],
             "name": entity["canonical_name"],
+            "profile_page": profile,
             "identity_state": entity["identity_state"],
             "identity_revision": entity["identity_revision"],
             "listings": [{"market": l["market"], "ticker": l["ticker"], "status": l["listing_status"]} for l in listings],
