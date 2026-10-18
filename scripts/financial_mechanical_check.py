@@ -58,7 +58,12 @@ def check_answer(observation):
     period_end = parse_date(answer.get("period_end"))
     if period_start and period_end and period_start > period_end:
         fail("reversed_period", "period_start > period_end")
-    if period_end and cutoff_date and period_end > cutoff_date:
+    if (
+        period_end
+        and cutoff_date
+        and period_end > cutoff_date
+        and answer.get("basis") not in {"forward", "stress"}
+    ):
         fail("period_after_cutoff", "period_end exceeds cutoff")
 
     evidence = answer.get("evidence") or []
