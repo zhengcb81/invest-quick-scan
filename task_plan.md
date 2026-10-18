@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — F05 facts pack 注册前校验
+
+新增 scripts/facts_pack_check.py：校验 manifest 3.0/standard-1、全部 fact 题、id/field 唯一、prompt、source_sha256、mode。CATL quick pack valid（16 题），3 个单测通过（篡改源哈希、非 fact 题均拒绝）。这是注册/admission 前的离线闸门。
+
 ## 2026-10-18 — S3/S4：search receipt 与 checkpoint 绑定
 
 新增 scripts/search_checkpoint_binding.py：校验 task exposure 下的 receipt 数量/费用/币种/route，生成 receipts_sha256，并与 checkpoint.search_receipts_sha256 精确比对。5 个单测通过。仅绑定校验，不授权发送。
