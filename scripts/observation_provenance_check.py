@@ -27,6 +27,7 @@ def main():
     parser.add_argument("--work", type=Path, default=WORK_DB)
     parser.add_argument("--json", type=Path, required=True)
     parser.add_argument("--html", type=Path)
+    parser.add_argument("--entity-id")
     args = parser.parse_args()
     obs = sqlite3.connect(args.observations.resolve().as_uri() + "?mode=ro", uri=True)
     obs.row_factory = sqlite3.Row
@@ -41,6 +42,7 @@ def main():
         cited = [e.get("url") for e in (answer.get("evidence") or []) if isinstance(e, dict)]
         cited = [u for u in cited if isinstance(u, str) and u]
         record = {
+            "entity_id": payload.get("entity_id"),
             "question_id": payload.get("question_id"),
             "observation_id": payload.get("observation_id"),
             "answer_status": answer.get("status"),
@@ -64,6 +66,8 @@ def main():
                 record["missing"] = [u for u in cited if u not in record["receipt_urls"]]
                 record["result"] = "pass" if not record["missing"] else "fail"
         results.append(record)
+    if args.entity_id:
+        results = [r for r in results if r.get("entity_id") == args.entity_id]
     document = {
         "protocol": "iqs.observation-provenance-check/1.0.0",
         "observations": len(results),

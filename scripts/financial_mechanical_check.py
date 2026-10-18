@@ -138,6 +138,7 @@ def main(argv=None):
     parser.add_argument("--workspace", type=Path, default=DEFAULT_WS)
     parser.add_argument("--json", type=Path, default=None)
     parser.add_argument("--html", type=Path, default=None)
+    parser.add_argument("--entity-id")
     args = parser.parse_args(argv)
     database = args.workspace/"data/quick_scan/scan_observations.sqlite"
     if not database.is_file():
@@ -148,6 +149,8 @@ def main(argv=None):
         connection.execute("PRAGMA query_only=ON")
         for row in connection.execute("SELECT observation_id, payload_json FROM quick_scan_observation ORDER BY observation_id"):
             results.append(check_answer(json.loads(row["payload_json"])))
+    if args.entity_id:
+        results = [r for r in results if r.get("entity_id") == args.entity_id]
     summary = {
         "protocol": "iqs.financial-mechanical-check/1.0.0",
         "workspace": str(args.workspace),
