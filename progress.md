@@ -1,3 +1,10 @@
+## 2026-10-18 — 后续两项主线切片已具体化
+
+1. `native-continuation-design/design.md`（本节点runs下）完成只读根因设计并转独占native-continuation-candidate实施：原S1实际100次，98已settled/已知USD0.655435，2笔budget-only原未决/预约USD0.2；没有原work映射，不能猜不同公司或以hash自证独立。使用quote前原固定owner控制先安装精确旧暴露接受决定，再生成新真实quote及原确认。原单一ledger保留旧状态/actual NULL/计数和累计限制；仅明确新cohort/cells，不放行旧intent重发或原native未决work。旧版本默认继续暂停。现有25USD/350请求上限已有空间，不需扩大。
+2. `generic-task-design/design.md`已具体列明研究入口不能限制生产：Task3保留冻结12/日期/策略；后续新增显式company-scan task/profile，先支持原批准任意题目子集、实际截止日和动态小包/单题，复用同一Runner。不能只移除工厂12题检查，EvidenceBoard publication边界及answers计划/实绩判断、fresh/replay/resume须统一真实日期。首个真实12题小实验不等待generic扩展；扩展未实施，不宣称全池已能运行。
+
+委托确认仍在同一大节点完成撤销/timeout测试和不同agent整包审查；不额外增加helper门。新能力只在各自独占候选，不写原真实库/namespace；研究用脚本响应不能冒充实际公司金融正例。
+
 ## 2026-10-18 — 共享引擎工程节点已验收，转真实运行入口
 
 **工程节点完成：** 独立reviewer在同一节点关闭F01–F07，final.json状态为engineering_source_and_scripted_restart_accepted、open_findings=[]。最终12题使用原public owner/SDK/原SQLite/同一个Company Runner，cold脚本POST1次，原安全输出落库后os._exit86，全新进程恢复12题、新POST0、原物理预算attempt仍1；435.193秒，原600秒lease未扩大。907执行源码和5overlay已绑定，Task3另有8个独立拒绝/恢复反例。此为实际软件＋合成身份/同意/响应，不能当真实公司金融正确性或付费模型成本速度。

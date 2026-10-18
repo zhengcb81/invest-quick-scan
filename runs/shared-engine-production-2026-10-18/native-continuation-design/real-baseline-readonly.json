@@ -1,0 +1,76 @@
+{
+  "protocol": "iqs.native-continuation-readonly-baseline/1.0.0",
+  "source_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\company-agent-owner-2026-10-15-01\\execution\\quick_scan_work.sqlite",
+  "source_sha256_before": "79ae4b84e293a63c762025e326753d78d998e6a5a2d54b5d83245923f03ae85e",
+  "journal_sidecars_present": {
+    "-wal": false,
+    "-shm": false,
+    "-journal": false
+  },
+  "user_version": 20,
+  "budget_rows": 100,
+  "status_counts": [
+    {
+      "status": "outcome_uncertain",
+      "count": 1,
+      "reserved_cost_micros": 100000,
+      "actual_cost_micros": null,
+      "requests": 1,
+      "in_flight": 1
+    },
+    {
+      "status": "response_unpriced",
+      "count": 1,
+      "reserved_cost_micros": 100000,
+      "actual_cost_micros": null,
+      "requests": 1,
+      "in_flight": 0
+    },
+    {
+      "status": "settled",
+      "count": 98,
+      "reserved_cost_micros": 9800000,
+      "actual_cost_micros": 655435,
+      "requests": 98,
+      "in_flight": 0
+    }
+  ],
+  "policies": [
+    {
+      "policy_id": "company-agent-s1-20261015",
+      "policy_version": "t2-reviewed-v2-20261016",
+      "currency": "USD",
+      "max_cost_micros": 25000000,
+      "max_requests": 350,
+      "max_cost_per_attempt_micros": 100000,
+      "max_in_flight_total": 2
+    }
+  ],
+  "source_work_status_counts": [],
+  "source_sha256_after": "79ae4b84e293a63c762025e326753d78d998e6a5a2d54b5d83245923f03ae85e",
+  "source_unchanged": true,
+  "api_requests": 0,
+  "writes": 0,
+  "unresolved_attempt_refs": [
+    {
+      "budget_attempt_id": "DISPATCH_86004529874040469881f32f71aa5a55",
+      "work_attempt_id": null,
+      "status": "response_unpriced",
+      "http_status_code": 200,
+      "reserved_cost_micros": 100000,
+      "actual_cost_micros": null,
+      "in_flight": 0,
+      "request_counted": 1
+    },
+    {
+      "budget_attempt_id": "DISPATCH_a11c198286874b70a7fa6de11af144ee",
+      "work_attempt_id": null,
+      "status": "outcome_uncertain",
+      "http_status_code": null,
+      "reserved_cost_micros": 100000,
+      "actual_cost_micros": null,
+      "in_flight": 1,
+      "request_counted": 1
+    }
+  ]
+}
