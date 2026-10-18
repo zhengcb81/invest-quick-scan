@@ -39,6 +39,37 @@
 4. 失败/部分完成后如何恢复，是否需要新 action key？
 5. 是否允许非评分研究型 run（无搜索），还是必须等 S1–S5 搜索接线？
 
+## round-2 审查结论：24 题不能一次 admission（blocker）
+
+独立审查指出 refresh 1.5 的硬约束：
+
+- `ComparisonCell.question_ids` 最多 **12** 题；
+- `BudgetExposureControl.cells` 最多 **1** 个；
+- `max_new_http_requests` 固定为 **1**；
+- `purpose` 固定 `independent_comparison`，`mode` 固定 `explicit_repeat_exposure`。
+
+因此：
+- 一次 admission = 1 个 cell（≤12 题）= **1 次新 HTTP 请求**；
+- 24 题必须 **2 个 cell / 2 次 admission / 2 次 policy revision**；
+- run 是 **2 次物理请求**，不是 24 次；
+- 不能把“研究型画像”标成 `independent_comparison`；研究型应走 work/research budget 路径（待定位）。
+
+## 已完成的副本演练
+
+- `record_snapshot`：在副本成功记录 `route_327b3c77…`，`get_snapshot` 可读。
+- `universe-add`：副本把 000026 加入 UNI_B01_NATIVE_RECOVERY_20261014，`membership_status=active`、`scan_enabled=true`。
+- policy 写入/校验尚未演练（等路径确定）。
+
+## 三条路（需要选）
+
+1. **2×12 comparison admissions**：2 次 policy revision、2 次 HTTP；但 purpose 是 independent_comparison，不适合叫“画像”。
+2. **research/work budget 路径**：若存在，用 24 题 2 包 + research_only，不标 comparison；需要先定位并验证它的 admission/预算模型。
+3. **暂缓画像**：先做 S1–S5 搜索接线，评分链路本身需要它。
+
+## 边界
+
+- 真实 route snapshot / universe / policy 都未写。
+- 本轮无模型调用。
 ## 边界
 
 - 本轮不写真实 policy/route/universe，不调用模型。
