@@ -21,6 +21,17 @@ def _open(path, uri=False):
     return con
 
 
+def owner_routed(workspace, entity_id):
+    policy_path = workspace/"config/quick_scan_refresh.json"
+    if not policy_path.is_file():
+        return False
+    try:
+        policy = json.loads(policy_path.read_text(encoding="utf-8"))
+    except ValueError:
+        return False
+    return any(route.get("scope") == "entity" and route.get("scope_id") == entity_id for route in policy.get("routes", []))
+
+
 def load(workspace, entity_id):
     data = workspace/"data/quick_scan"
     with closing(_open(data/"scan.sqlite", True)) as con:
@@ -101,7 +112,15 @@ def _card(obs, reviews=None):
 </section>"""
 
 
-def build(entity, listings, observations, reviews=None):
+def build(entity, listings, observations, reviews=None, routed=False):
+    if entity["identity_state"] != "verified":
+        action = "需要 verified 身份"
+    elif observations:
+        action = "已有观察"
+    elif routed:
+        action = "可跑画像（owner 已路由）"
+    else:
+        action = "需要 owner 准入"
     return f"""<!doctype html>
 <html lang="zh"><head><meta charset="utf-8"><title>{html.escape(entity['canonical_name'])} quick-scan profile</title>
 <style>
@@ -120,6 +139,7 @@ table{{width:100%;border-collapse:collapse;margin:6px 0}} th,td{{text-align:left
 <h1>{html.escape(entity['canonical_name'])}</h1>
 <div class="sub">entity {html.escape(entity['entity_id'])} · {html.escape(entity['identity_state'])} rev{html.escape(str(entity['identity_revision']))} · listings {html.escape(', '.join(f"{l['market']}:{l['ticker']}" for l in listings))} · observations {len(observations)} <a href="index.html">← all profiles</a></div>
 <div class="banner">只读研究型画像：全部为 insufficient_evidence / score=null；不构成评分、投资建议或财务准确性结论。</div>
+<div class="card"><b>状态</b>：{html.escape(entity['identity_state'])} · owner 路由：{"有" if routed else "无"} · 观察：{len(observations)} · 下一步：<b>{html.escape(action)}</b></div>
 {_review_banner(reviews or {})}
 {''.join(_card(o, reviews) for o in observations) or '<div class="card muted">暂无观察</div>'}
 </main></body></html>"""
@@ -148,7 +168,7 @@ def main(argv=None):
         rows = []
         for entity_id in ids:
             entity, listings, observations = load(args.workspace, entity_id)
-            (args.output_dir/(entity_id + ".html")).write_text(build(entity, listings, observations, load_reviews(entity_id)), encoding="utf-8")
+            (args.output_dir/(entity_id + ".html")).write_text(build(entity, listings, observations, load_reviews(entity_id), owner_routed(args.workspace, entity_id)), encoding="utf-8")
             rows.append((entity["canonical_name"], entity["identity_state"], len(observations), entity_id + ".html"))
         index = "<!doctype html><html lang=\"zh\"><meta charset=\"utf-8\"><title>company profiles</title><body style=\"font:14px/1.5 'Segoe UI','Microsoft YaHei',sans-serif;max-width:900px;margin:28px auto\"><h1>公司画像</h1><p>只读研究型页面；不构成评分或投资建议。</p><table border=\"0\" cellspacing=\"0\" cellpadding=\"6\"><tr><th align=\"left\">公司</th><th align=\"left\">身份</th><th align=\"left\">观察</th></tr>" + "".join(f'<tr><td><a href="{html.escape(f)}">{html.escape(name)}</a></td><td>{html.escape(state)}</td><td>{n}</td></tr>' for name, state, n, f in rows) + "</table></body></html>"
         (args.output_dir/"index.html").write_text(index, encoding="utf-8")
@@ -157,7 +177,7 @@ def main(argv=None):
     if not args.entity_id or not args.output:
         parser.error("single mode requires --entity-id and --output")
     entity, listings, observations = load(args.workspace, args.entity_id)
-    args.output.write_text(build(entity, listings, observations, load_reviews(args.entity_id)), encoding="utf-8")
+    args.output.write_text(build(entity, listings, observations, load_reviews(args.entity_id), owner_routed(args.workspace, args.entity_id)), encoding="utf-8")
     print(json.dumps({"entity": entity["canonical_name"], "observations": len(observations), "output": str(args.output)}, ensure_ascii=False))
     return 0
 
