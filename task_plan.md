@@ -1,3 +1,7 @@
+## 2026-10-18 — 候选↔实体链接报告（离线、只读）
+
+216 候选离线对到实体/证券：212 已链接（211 provisional + 300750 既有 verified）、4 未解决（002122/002168/603300/688152）、0 错误；逐条校验 security.entity_id/security_id 与库内一致。报告 docs/implementation/reviews/candidate-entity-links-2026-10-18.md，明细在 runs/existing-list-onboarding-2026-10-18/candidate-links.json。未改候选表、未建 universe；候选↔实体正式落库仍需单独评审。
+
 ## 2026-10-18 — verified 身份升级：解锁评分/出版的前置（试点中）
 
 现状：214 实体中 212 个 provisional；checkpoint/评分/publication 都要求 identity_state=verified，所以“公司画像与评分入口”必须先升级身份。已选 1 家试点（万科A，ENT_b63a2d90…，已有 provisional_scope rev1），构建 IVR_ verified_issuer（same_legal_issuer=true、revision=2、entity.verified_issuer_receipt_id=IVR_），证据使用 company-wiki 官方目录 URL（cninfo szse_stock.json，目录级而非逐发行人页）。在真实 workspace 副本预演成功：首次 entity_saved_receipt_recorded（IVR_33408e42…）、重放同 receipt 零新增、实体 verified/rev2、verified_issuer 回执 2→3；同 revision 改内容会被拒，必须 bump。
