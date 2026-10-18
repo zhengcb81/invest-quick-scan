@@ -1,0 +1,145 @@
+{
+  "protocol": "iqs.independent_batch_public_readonly_audit/1.0.0",
+  "db_path": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\b02\\test_batch_actual0_0\\executor.sqlite",
+  "db_sha256_before": "74c26eb695df8f8c5c627c882ef9c4309acd1abe763c442b1c34575a0cc5cf00",
+  "db_sha256_after": "74c26eb695df8f8c5c627c882ef9c4309acd1abe763c442b1c34575a0cc5cf00",
+  "sqlite_mode": "ro + query_only",
+  "counts": {
+    "work_item": 12,
+    "work_run_ref": 24,
+    "attempt": 12,
+    "work_event": 84,
+    "answer_checkpoint": 0,
+    "quick_scan_budget_attempt": 101,
+    "quick_scan_refresh_admission": 1,
+    "quick_scan_research_visible_output": 1,
+    "quick_scan_research_intent": 1,
+    "quick_scan_owner_continuation_cell": 1,
+    "quick_scan_research_session": 0,
+    "quick_scan_research_turn": 0,
+    "quick_scan_attempt_response": 13,
+    "quick_scan_research_task": 0,
+    "quick_scan_research_attempt": 0
+  },
+  "work_summary": [
+    {
+      "status": "leased",
+      "count": 12,
+      "min_lease_seconds": 600.0,
+      "max_lease_seconds": 600.0,
+      "distinct_expiries": 1,
+      "min_epoch": 1,
+      "max_epoch": 1
+    }
+  ],
+  "claimed_events": 12,
+  "budget_summary": [
+    {
+      "status": "outcome_uncertain",
+      "count": 1,
+      "known_actual_micros": null,
+      "reserved_micros": 100000
+    },
+    {
+      "status": "response_unpriced",
+      "count": 2,
+      "known_actual_micros": null,
+      "reserved_micros": 200000
+    },
+    {
+      "status": "settled",
+      "count": 98,
+      "known_actual_micros": 98000,
+      "reserved_micros": 9800000
+    }
+  ],
+  "legacy_two_actual_costs_remain_null": [
+    {
+      "budget_attempt_id": "DISPATCH_legacy_response",
+      "status": "response_unpriced",
+      "actual_cost_micros": null,
+      "reserved_cost_micros": 100000
+    },
+    {
+      "budget_attempt_id": "DISPATCH_legacy_unknown",
+      "status": "outcome_uncertain",
+      "actual_cost_micros": null,
+      "reserved_cost_micros": 100000
+    }
+  ],
+  "new_unpriced_response": [
+    {
+      "budget_attempt_id": "PACK_BUDGET_4d28560127994b8f8fd8e7f6a8aebd95",
+      "status": "response_unpriced",
+      "actual_cost_micros": null,
+      "reserved_cost_micros": 100000,
+      "http_status_code": 200,
+      "request_counted": 1,
+      "in_flight": 0
+    }
+  ],
+  "prior_no_send_state": {
+    "path": "b02\\test_batch_actual0_0\\executor.sqlite",
+    "sha256": "352712737ad90cfacfcb9084c1729160bc4b5e90eda5b20002c628d322e08bb3",
+    "work": [
+      [
+        "pending",
+        12
+      ]
+    ],
+    "leases": 0,
+    "attempts": 0,
+    "budget_count": 100
+  },
+  "public_xml": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "607.776",
+      "timestamp": "2026-10-18T04:37:36.609805+01:00",
+      "hostname": "DESKTOP-156V213"
+    }
+  ],
+  "crash_posts": 1,
+  "recovery_posts": 0,
+  "recovery_slots": 12,
+  "runtime_summary": {
+    "protocol": "iqs.company-agent-runtime-summary/1.0.0",
+    "run_id": "NATIVE_SHARED_12",
+    "research_run_sha256": "476dd03d58621dbceecddde5fcd0bb971626043ac2d8e3258e57ee42195f34aa",
+    "runtime_evidence_sha256": "13f948873e29f0bde7f6daf4359cf5d2a949c68871c4d04235497278f299481a",
+    "journal_events_sha256": "916141ea666cd7502d14d88f5eaddd365bce99cde3be305f6668589351f180c5",
+    "input_manifest_sha256": "0b542f7219dafd2104a9fa9d9f42acc328bc9d6ad294c94bac7f85187cafe5b1",
+    "runtime_origin": "scripted_wire",
+    "evidence_origin": "unobserved",
+    "model_runtime_receipt_count": 1,
+    "observed_native_physical_requests": 1,
+    "native_observation_complete": true,
+    "new_model_http": 0,
+    "new_model_http_known_subset": 0,
+    "replayed_native_attempts": 1,
+    "replayed_native_attempts_known_subset": 1,
+    "unobserved_model_runtime_receipts": 0,
+    "usage_known_native_requests": 1,
+    "usage_unknown_native_requests": 0,
+    "cached_input_tokens_known_subset": 400,
+    "total_input_tokens_known_subset": 1200,
+    "output_tokens_including_reasoning_known_subset": 1200,
+    "usage_complete": true,
+    "cash_cost": null,
+    "cost_complete": false,
+    "owner_authority_verified": false,
+    "financial_qualification_granted": false,
+    "limitations": [
+      "Adapter observations and hashes do not authenticate owner authority.",
+      "Evidence origin does not establish financial sufficiency or source authenticity.",
+      "Cache counters describe only the native receipts with complete observed usage.",
+      "No billing or rate-card evidence is carried; cash cost remains unknown."
+    ],
+    "content_sha256": "758ba591d4de220c60d6eaa35cb57c8e0932c5475b63d10788ca49a1e14e5eb3"
+  },
+  "interpretation": "12 original member attempts share 1 physical request, 1 safe visible response and 1 intent/cell; new scripted request remains response_unpriced, no new billing qualification; historical two NULL rows retained. Scripted synthetic positive only."
+}

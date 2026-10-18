@@ -1,0 +1,171 @@
+{
+  "protocol": "iqs.owner_batch_delivery_equivalence_addendum/1.0.0",
+  "status": "passed_for_mechanical_delivery_and_clarified_evidence_scope",
+  "reviewer": "/root/production_task_review18",
+  "historical_review": "final.json",
+  "historical_review_sha256": "1b69e5b5358eef270b282fc28cbc68c05d53046f732b356a9f3768058142d838",
+  "original_candidate_cas_sha256": "02726d6cdde3aedbd23a6e7181f8eae738ceab0b6aee61635eb34ddf768b6ccc",
+  "delivered_repository": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM",
+  "delivered_commit": "4d77ffb4e73232ef93b082900a74a731bdb256ba",
+  "parent_commit": "27d3373b91e1771ccfcb716973d712ca50e1756e",
+  "commit_paths_exactly_reviewed_eight": true,
+  "paths": [
+    {
+      "path": "src/runners/llm_runner.py",
+      "kind": "product",
+      "candidate_sha256": "7552d3df8e3360fe5d6b5641c56954c66df96c53e2acfef19a5dd491686895f3",
+      "delivered_worktree_sha256": "4545860baa037df89710bd3ecd1bdf5bff196007e98b818131ac53ef9757cc1c",
+      "commit_blob_oid": "0722333ec8e172e7106c64980ad966cb1353ebdf",
+      "commit_blob_sha256": "4545860baa037df89710bd3ecd1bdf5bff196007e98b818131ac53ef9757cc1c",
+      "worktree_matches_commit_ignoring_CRLF": true,
+      "full_ast_equal_under_stated_normalization": true,
+      "compile_passed": true,
+      "normalization": "Remove only helper return annotation; parse ignores line endings/Black whitespace.",
+      "text_delta": ""
+    },
+    {
+      "path": "src/utils/quick_scan_owner_research.py",
+      "kind": "product",
+      "candidate_sha256": "6ee13695e386b0bea2fd9bfbdc23ac0140d6bb493c97296bd061b06536a77b91",
+      "delivered_worktree_sha256": "f029ba83692fe972abcbb5dd0ed84ac60f73fa9d6ba2883fc8477ef270a72608",
+      "commit_blob_oid": "74fbed21367d0977f49a1e60ffca084dfddfd6bf",
+      "commit_blob_sha256": "f029ba83692fe972abcbb5dd0ed84ac60f73fa9d6ba2883fc8477ef270a72608",
+      "worktree_matches_commit_ignoring_CRLF": true,
+      "full_ast_equal_under_stated_normalization": true,
+      "compile_passed": true,
+      "normalization": "Remove only helper return annotation; parse ignores line endings/Black whitespace.",
+      "text_delta": ""
+    },
+    {
+      "path": "src/utils/quick_scan_refresh_execution.py",
+      "kind": "product",
+      "candidate_sha256": "f39309947fd6eaa9766e1a0d865a3e6d866595f0e82e5f2685370512516565f0",
+      "delivered_worktree_sha256": "4f5e3bdf141a29d141b56385ae8e9df69a378c2846f758e7a914a3253b2aa677",
+      "commit_blob_oid": "ba722cfb2adc91a9b2264dac192a0b689176d047",
+      "commit_blob_sha256": "4f5e3bdf141a29d141b56385ae8e9df69a378c2846f758e7a914a3253b2aa677",
+      "worktree_matches_commit_ignoring_CRLF": true,
+      "full_ast_equal_under_stated_normalization": true,
+      "compile_passed": true,
+      "normalization": "Remove only helper return annotation; parse ignores line endings/Black whitespace.",
+      "text_delta": ""
+    },
+    {
+      "path": "src/utils/quick_scan_work_store.py",
+      "kind": "product",
+      "candidate_sha256": "c0c9fa2b38f0eef5936c1e13e419db9a3aa945098cdcc019031629bf22fca10c",
+      "delivered_worktree_sha256": "cea75dd23417ab4e679185e78e3422e513c7c08d8bb887d41257aabf0ac1c19d",
+      "commit_blob_oid": "fd9b7dbf74edbbad02b94ecb6a8c82dc0a65ff5d",
+      "commit_blob_sha256": "cea75dd23417ab4e679185e78e3422e513c7c08d8bb887d41257aabf0ac1c19d",
+      "worktree_matches_commit_ignoring_CRLF": true,
+      "full_ast_equal_under_stated_normalization": true,
+      "compile_passed": true,
+      "normalization": "Remove only helper return annotation; parse ignores line endings/Black whitespace.",
+      "text_delta": "--- reviewed-CAS\n+++ delivered\n@@ -3118,7 +3118,9 @@\n                 self._event(connection, work_item_id, \"attached_run\", epoch, now)\n             return dict(self._item(connection, work_item_id))\n \n-    def _claim_pending_in_transaction(self, connection, work_item_id, seconds, now):\n+    def _claim_pending_in_transaction(\n+        self, connection, work_item_id, seconds, now\n+    ) -> Optional[Lease]:\n         \"\"\"Shared original claim transition; its caller owns the SQLite transaction.\"\"\"\n         row = self._item(connection, work_item_id)\n         if row[\"status\"] != \"pending\":\n"
+    },
+    {
+      "path": "tests/continuation_fixture.py",
+      "kind": "test",
+      "candidate_sha256": "739407087b71b6b610d7f17125f8c1dde8ce726a508efe96f540eb96aab6447b",
+      "delivered_worktree_sha256": "b26c73496bdc8a0bb3a962c20961698123654e1cba4f53da02915cae14b8588c",
+      "commit_blob_oid": "19ccfe4df2ceddc3d741774676d93ff8a2ca6768",
+      "commit_blob_sha256": "b26c73496bdc8a0bb3a962c20961698123654e1cba4f53da02915cae14b8588c",
+      "worktree_matches_commit_ignoring_CRLF": true,
+      "full_ast_equal_under_stated_normalization": true,
+      "compile_passed": true,
+      "normalization": "Normalize contiguous import statement/alias ordering only; parse ignores line endings/Black whitespace.",
+      "text_delta": ""
+    },
+    {
+      "path": "tests/integration/test_owner_batch_public.py",
+      "kind": "test",
+      "candidate_sha256": "1e6a26fcce9c87123c407ab44ddcc07375a542f8204d684e0d82208e5b5dd295",
+      "delivered_worktree_sha256": "e7e5d848627e67d0c887a1f9637f8a591abe91827e4f6f56ffac8879ed2b7577",
+      "commit_blob_oid": "55da6f1b436c16b07a89f2ff7e69fbcc35bcc48e",
+      "commit_blob_sha256": "e7e5d848627e67d0c887a1f9637f8a591abe91827e4f6f56ffac8879ed2b7577",
+      "worktree_matches_commit_ignoring_CRLF": true,
+      "full_ast_equal_under_stated_normalization": true,
+      "compile_passed": true,
+      "normalization": "Normalize contiguous import statement/alias ordering only; parse ignores line endings/Black whitespace.",
+      "text_delta": ""
+    },
+    {
+      "path": "tests/unit/test_owner_batch_adapters.py",
+      "kind": "test",
+      "candidate_sha256": "fdd53dcb6d719a6e1e2deaf3f6ca6de7502b5a8abfd95644c0ec7050607328bd",
+      "delivered_worktree_sha256": "60c7e9da625fa9aeb224a1115c74f217a268b0470d3976fe80bf47a2acaaf62d",
+      "commit_blob_oid": "94bbbc35a5330180bc666eee36eb81716258ae0d",
+      "commit_blob_sha256": "60c7e9da625fa9aeb224a1115c74f217a268b0470d3976fe80bf47a2acaaf62d",
+      "worktree_matches_commit_ignoring_CRLF": true,
+      "full_ast_equal_under_stated_normalization": true,
+      "compile_passed": true,
+      "normalization": "Normalize contiguous import statement/alias ordering only; parse ignores line endings/Black whitespace.",
+      "text_delta": "--- reviewed-CAS\n+++ delivered\n@@ -1,21 +1,22 @@\n \"\"\"Pure adapter seam tests; check spies are synthetic, not native owner proofs.\"\"\"\n \n-from contextlib import closing, nullcontext\n import copy\n import inspect\n import time\n+from contextlib import closing, nullcontext\n from types import SimpleNamespace\n \n import pytest\n+\n from src.core.models import Question\n from src.runners.llm_runner import QuickScanWorkLifecycle\n+from src.utils import quick_scan_refresh_admission_journal as journal\n+from src.utils.quick_scan_owner_research import OwnerResearchServices\n+from src.utils.quick_scan_refresh_admission import AdmissionRejected\n from src.utils.quick_scan_refresh_execution import ApprovedRefreshSession\n-from src.utils.quick_scan_refresh_admission import AdmissionRejected\n-from src.utils.quick_scan_owner_research import OwnerResearchServices\n-from src.utils.quick_scan_work_store import WorkConflictError, BudgetAdmissionError\n+from src.utils.quick_scan_work_store import BudgetAdmissionError, WorkConflictError\n from src.utils.quick_scan_work_transport import _OWNER_REFRESH_GUARD\n-from src.utils import quick_scan_refresh_admission_journal as journal\n-from tests.unit.test_owner_batch_claim import prepare, invoke, rows, sha\n+from tests.unit.test_owner_batch_claim import invoke, prepare, rows, sha\n \n \n def synthetic_adapter(prepared):\n"
+    },
+    {
+      "path": "tests/unit/test_owner_batch_claim.py",
+      "kind": "test",
+      "candidate_sha256": "27ed59b2796e7ddc72cb981d789edde4c583d1266ee6aee94fabf6b558a48a83",
+      "delivered_worktree_sha256": "c1cd3081dca4bee1ad8c0c2a86b5c93fe77ea3016ba2377cd9a945eef58e9e79",
+      "commit_blob_oid": "cef9bb7f92f7f39c40b1cdfd255e8aafe04a18ed",
+      "commit_blob_sha256": "c1cd3081dca4bee1ad8c0c2a86b5c93fe77ea3016ba2377cd9a945eef58e9e79",
+      "worktree_matches_commit_ignoring_CRLF": true,
+      "full_ast_equal_under_stated_normalization": true,
+      "compile_passed": true,
+      "normalization": "Normalize contiguous import statement/alias ordering only; parse ignores line endings/Black whitespace.",
+      "text_delta": "--- reviewed-CAS\n+++ delivered\n@@ -1,17 +1,18 @@\n \"\"\"Synthetic native SQLite transactions only; no native consent authority claim.\"\"\"\n \n-from concurrent.futures import ThreadPoolExecutor\n-from contextlib import closing\n import copy\n import hashlib\n import sqlite3\n import threading\n import time\n+from concurrent.futures import ThreadPoolExecutor\n+from contextlib import closing\n \n import pytest\n-from src.utils.quick_scan_work_store import QuickScanWorkStore, WorkConflictError\n+\n from src.utils import quick_scan_refresh_admission_journal as journal\n from src.utils.quick_scan_result_outbox import canonical_sha256\n+from src.utils.quick_scan_work_store import QuickScanWorkStore, WorkConflictError\n \n \n def sha(text):\n"
+    }
+  ],
+  "typing_fix": {
+    "method": "QuickScanWorkStore._claim_pending_in_transaction",
+    "old_return_annotation": null,
+    "new_return_annotation": "Optional[Lease]",
+    "cause": "Ordinary mypy rejected an Any result propagated into old claim -> Optional[Lease]. The private helper now states its already-existing return type.",
+    "behavior_change": false,
+    "product_AST_equality": "All4 products exact AST equality after deleting only this single return annotation; no import normalization needed for products."
+  },
+  "validation": {
+    "delivered_eight_in_memory_compile": "passed_without_pyc_or_source_writes",
+    "ordinary_source_regressions": {
+      "passed": 48,
+      "skipped": 1,
+      "seconds": 8.7,
+      "skip": "Explicit heavy public original runtime opt-in only.",
+      "log_sha256": "a873e229c18d296525e5582d7b8ee467ebe10cf256a0425c3f2c0a82d4eb4930"
+    },
+    "normal_hooks": {
+      "final_log": "normal-commit3.log",
+      "final_log_sha256": "894a94de4e3a32b6e37386232d6e3d3c1a587ffa68fdf1cb22abea8cfbeaae0a",
+      "black": "Passed",
+      "isort": "Passed",
+      "mypy": "Passed",
+      "mypy_source_scope_from_root": 94,
+      "detect_secrets": "Passed",
+      "all_applicable_hooks": "Passed",
+      "prior_failures_retained": [
+        "normal-commit1.log",
+        "normal-commit2.log"
+      ]
+    },
+    "public_native_chain": "Historical c01 actual observed product4 scope retained; not rerun for typing/import/newline-only delivery differences."
+  },
+  "test_lock_timing_correction": {
+    "status": "supersedes_inaccurate_test_lock_timing_wording_in_final",
+    "source": "Implementer clarification received after historical engineering signoff.",
+    "recorded_before_format_file": "executed-test-source-before-format.json",
+    "actual_capture_time": "After c01 completed, immediately before Black; not before c01 launch.",
+    "post_launch_harness_edits": [
+      "historical test_continue pytest collection-only explicit environment skip decorator",
+      "Corresponding explicit opt-in field added to SAFE_ENV allowlist"
+    ],
+    "what_is_proven": "The four product source bytes used by c01 remained frozen and are bound by original CAS; observed original owner/SDK/OS-exit86/cache-recovery assertions and independently read-only-verified final DB remain valid. Final test ASTs match the immediate pre-Black test ASTs.",
+    "what_is_not_proven": "The full final harness or recorded pre-Black test bytes were all frozen before c01 or executed byte-for-byte by c01. Final report phrases implying that are corrected by this append-only addendum.",
+    "effect_on_scope": "No product behavior change or broader qualification; historical signoff hash remains immutable. No heavy607s replay or paid API call was repeated."
+  },
+  "open_findings": [],
+  "qualification": {
+    "overall_speedup_demonstrated": false,
+    "financial_accuracy": "not_assessed",
+    "price_or_billing_qualification": false,
+    "actual_real_sample_failure_unchanged": true
+  }
+}

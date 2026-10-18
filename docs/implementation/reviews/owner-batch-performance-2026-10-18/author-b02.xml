@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="378.610" timestamp="2026-10-18T04:26:06.909139+01:00" hostname="DESKTOP-156V213"><testcase classname="qa.tests.integration.test_batch_public" name="test_batch[actual0]" time="375.761"><failure message="AssertionError: Traceback (most recent call last):&#13;&#10;    File &quot;C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\qa\tests\integration\test_batch_public.py&quot;, line 487, in &lt;module&gt;&#13;&#10;      child_run(sys.argv[2], sys.argv[1])&#13;&#10;      ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^&#13;&#10;    File &quot;C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\qa\tests\integration\test_batch_public.py&quot;, line 316, in child_run&#13;&#10;      engine.execute_shared_engine(&#13;&#10;      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^&#13;&#10;          task,&#13;&#10;          ^^^^^&#13;&#10;      ...&lt;4 lines&gt;...&#13;&#10;          transport_origin=&quot;scripted_wire&quot;,&#13;&#10;          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&#13;&#10;      )&#13;&#10;      ^&#13;&#10;    File &quot;C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\runtime\iqs\scripts\shared_company_engine.py&quot;, line 295, in execute_shared_engine&#13;&#10;      return _execute_with_port(&#13;&#10;          task,&#13;&#10;      ...&lt;4 lines&gt;...&#13;&#10;          transport_origin=transport_origin,&#13;&#10;      )&#13;&#10;    File &quot;C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\runtime\iqs\scripts\shared_company_engine.py&quot;, line 317, in _execute_with_port&#13;&#10;      runner = Runner(&#13;&#10;          task,&#13;&#10;      ...&lt;4 lines&gt;...&#13;&#10;          execution_revision=2,&#13;&#10;      )&#13;&#10;    File &quot;C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\runtime\company\src\iqs_company_agent_lab\runner.py&quot;, line 275, in __init__&#13;&#10;      from .scan_profile import task_validation_context&#13;&#10;  ModuleNotFoundError: No module named 'iqs_company_agent_lab.scan_profile'&#13;&#10;  &#10;assert 1 == 86&#10; +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-e...ile import task_validation_context\r\nModuleNotFoundError: No module named \'iqs_company_agent_lab.scan_profile\'\r\n').returncode">qa\tests\integration\test_batch_public.py:441: in test_batch
+    assert completed.returncode == expected, completed.stderr[-4000:].decode(errors="replace")
+E   AssertionError: Traceback (most recent call last):
+E       File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\qa\tests\integration\test_batch_public.py", line 487, in &lt;module&gt;
+E         child_run(sys.argv[2], sys.argv[1])
+E         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\qa\tests\integration\test_batch_public.py", line 316, in child_run
+E         engine.execute_shared_engine(
+E         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+E             task,
+E             ^^^^^
+E         ...&lt;4 lines&gt;...
+E             transport_origin="scripted_wire",
+E             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E         )
+E         ^
+E       File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\runtime\iqs\scripts\shared_company_engine.py", line 295, in execute_shared_engine
+E         return _execute_with_port(
+E             task,
+E         ...&lt;4 lines&gt;...
+E             transport_origin=transport_origin,
+E         )
+E       File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\runtime\iqs\scripts\shared_company_engine.py", line 317, in _execute_with_port
+E         runner = Runner(
+E             task,
+E         ...&lt;4 lines&gt;...
+E             execution_revision=2,
+E         )
+E       File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\shared-engine-production-2026-10-18\owner-batch-performance-candidate\runtime\company\src\iqs_company_agent_lab\runner.py", line 275, in __init__
+E         from .scan_profile import task_validation_context
+E     ModuleNotFoundError: No module named 'iqs_company_agent_lab.scan_profile'
+E     
+E   assert 1 == 86
+E    +  where 1 = CompletedProcess(args=['C:\\Miniconda\\python.exe', '-B', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-e...ile import task_validation_context\r\nModuleNotFoundError: No module named \'iqs_company_agent_lab.scan_profile\'\r\n').returncode</failure></testcase></testsuite></testsuites>

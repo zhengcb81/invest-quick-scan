@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="174.769" timestamp="2026-10-18T04:21:55.368711+01:00" hostname="DESKTOP-156V213"><testcase classname="qa.tests.integration.test_batch_public" name="test_batch[actual0]" time="170.036"><failure message="subprocess.TimeoutExpired: Command '['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'stockwiki.quick_scan_refresh_owner_cli', '--root', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\b01\\test_batch_actual0_0\\owner', '--iqs-code-root', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\runtime\\iqs', '--iqs-release-root', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\b01\\test_batch_actual0_0\\release', '--install-delegation']' timed out after 80 seconds">qa\tests\integration\test_batch_public.py:378: in test_batch
+    prepared = setup_continuation(
+runtime\qa\tests\continuation_fixture.py:326: in setup_continuation
+    grant = invoke(base + ["--install-delegation"], tmp_path, "delegated-install")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+runtime\qa\tests\integration\test_c06_subject_public_e2e.py:137: in invoke
+    result = subprocess.run(command, capture_output=True, timeout=timeout, env=env, check=False)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+qa\tests\integration\test_batch_public.py:80: in observed_subprocess
+    result = _NATIVE_SUBPROCESS_RUN(command, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:556: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1222: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Miniconda\Lib\subprocess.py:1646: in _communicate
+    raise TimeoutExpired(self.args, orig_timeout)
+E   subprocess.TimeoutExpired: Command '['C:\\Miniconda\\python.exe', '-B', '-X', 'utf8', '-m', 'stockwiki.quick_scan_refresh_owner_cli', '--root', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\b01\\test_batch_actual0_0\\owner', '--iqs-code-root', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\runtime\\iqs', '--iqs-release-root', 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\b01\\test_batch_actual0_0\\release', '--install-delegation']' timed out after 80 seconds</failure></testcase></testsuite></testsuites>

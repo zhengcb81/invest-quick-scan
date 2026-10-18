@@ -1,0 +1,164 @@
+{
+  "protocol": "iqs.owner_batch_claim_handoff/1.0.0",
+  "status": "ready_for_independent_final_engineering_review",
+  "product_files": 4,
+  "test_files": 4,
+  "unit_final": {
+    "passed": 32,
+    "seconds": 9.12,
+    "xml": "evidence/green09.xml"
+  },
+  "original_regression": {
+    "passed": 5,
+    "xml": "evidence/original-regression01.xml"
+  },
+  "public_e2e": {
+    "passed": 1,
+    "wall_seconds": 607.78,
+    "case_seconds": 606.328,
+    "xml": "evidence/c01.xml",
+    "reuses_only_original_pending_approval": true,
+    "new_model_http": 1,
+    "resume_new_model_http": 0,
+    "slots": 12,
+    "lease_seconds": 600
+  },
+  "independent_risk_probes": {
+    "passed": 11,
+    "latest_seconds": 5.25,
+    "owner": "production_task_review18"
+  },
+  "budget": {
+    "prior_count": 100,
+    "final_count": 101,
+    "settled": 98,
+    "uncertain": 1,
+    "unpriced": 2,
+    "new_physical_actual_cost": null,
+    "old_two_rows_unchanged": true,
+    "unpriced_reason": "The owned original policy cost_policy.pricing_ref is fixture-price-v1. The scripted resolver deliberately reports scripted-native-rate (source_ref synthetic-software-e2e). Original transport._resolved_cost rejects a measurement whose pricing_ref differs from the original policy; therefore this fixture does not provide matching authoritative rate-card evidence. Preserve actualNULL/reserved100000/response_unpriced. This is not a real paid-price or settled-ledger positive; production drivers must provide matching policy pricing_ref and authentic rate evidence, never reuse this scripted resolver.",
+    "policy_pricing_ref": "fixture-price-v1",
+    "scripted_measurement_pricing_ref": "scripted-native-rate"
+  },
+  "measurements": {
+    "protocol": "iqs.owner_batch_claim_measurements/1.0.0",
+    "qualification": "synthetic_company_and_scripted_vendor_only_original_public_owner_sdk_runner",
+    "paid_calls": 0,
+    "test_result": {
+      "cases": 1,
+      "failed": 0,
+      "wall_seconds": 606.328
+    },
+    "phase_walls": [
+      {
+        "kind": "phase_wall",
+        "phase": "fixture",
+        "observed_epoch": 1792295264.1733484,
+        "name": "same_original_admission_continued",
+        "seconds": 606.0076483000303
+      }
+    ],
+    "original_cli": [
+      {
+        "phase": "cache_recovery",
+        "module": "stockwiki.quick_scan_refresh_owner_cli",
+        "operation": "--inspect-confirmation",
+        "calls": 6,
+        "blocking_seconds": 51.70349200011697
+      },
+      {
+        "phase": "cache_recovery",
+        "module": "stockwiki.quick_scan_routes_cli",
+        "operation": "other",
+        "calls": 6,
+        "blocking_seconds": 2.5813230000203475
+      },
+      {
+        "phase": "cold_claim_sdk",
+        "module": "stockwiki.quick_scan_refresh_owner_cli",
+        "operation": "--inspect-confirmation",
+        "calls": 27,
+        "blocking_seconds": 297.7166727997828
+      },
+      {
+        "phase": "cold_claim_sdk",
+        "module": "stockwiki.quick_scan_routes_cli",
+        "operation": "other",
+        "calls": 51,
+        "blocking_seconds": 31.64485870010685
+      },
+      {
+        "phase": "cold_claim_sdk",
+        "module": "stockwiki.quick_scan_subject_dispatch_cli",
+        "operation": "--request",
+        "calls": 12,
+        "blocking_seconds": 91.4387238001218
+      },
+      {
+        "phase": "prepare_execution",
+        "module": "stockwiki.quick_scan_refresh_owner_cli",
+        "operation": "--inspect-confirmation",
+        "calls": 8,
+        "blocking_seconds": 77.4859235000913
+      },
+      {
+        "phase": "prepare_execution",
+        "module": "stockwiki.quick_scan_routes_cli",
+        "operation": "other",
+        "calls": 12,
+        "blocking_seconds": 28.837209900084417
+      }
+    ],
+    "claim_count": 1,
+    "claim_modes": [
+      {
+        "kind": "original_batch_claim",
+        "count": 12,
+        "seconds": 9.682981200050563
+      }
+    ],
+    "claim_wall_seconds": 9.682981200050563,
+    "lease_observations": [
+      {
+        "kind": "cache_recovery_complete",
+        "phase": "cache_recovery",
+        "observed_epoch": 1792295263.6632266,
+        "lease_active": true,
+        "original_lease_seconds": 600,
+        "earliest_claim_epoch": 1792294774.392879,
+        "earliest_expiry_epoch": 1792295374.392879,
+        "elapsed_since_first_claim": 489.2672293186188
+      },
+      {
+        "kind": "scripted_vendor_post",
+        "phase": "cold_claim_sdk",
+        "observed_epoch": 1792295133.4849885,
+        "posts": 1,
+        "lease_active": true,
+        "original_lease_seconds": 600,
+        "earliest_claim_epoch": 1792294774.392879,
+        "earliest_expiry_epoch": 1792295374.392879,
+        "elapsed_since_first_claim": 359.0906894207001
+      },
+      {
+        "kind": "native_safe_output_committed",
+        "phase": "cold_claim_sdk",
+        "observed_epoch": 1792295146.0580015,
+        "lease_active": true,
+        "original_lease_seconds": 600,
+        "earliest_claim_epoch": 1792294774.392879,
+        "earliest_expiry_epoch": 1792295374.392879,
+        "elapsed_since_first_claim": 371.66308760643005
+      }
+    ],
+    "measurement_note": "CLI blocking time overlaps claim/phase wall; do not add them together. No actual model-network latency was sampled."
+  },
+  "qualification": {
+    "real_company_accuracy": false,
+    "paid_model_benchmark": false,
+    "known_cash_cost": false,
+    "overall_speedup": false,
+    "official_search_checkpoint": false
+  },
+  "cleanup_status": "retained_for_final_independent_review"
+}

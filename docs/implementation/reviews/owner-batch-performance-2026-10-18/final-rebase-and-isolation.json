@@ -1,0 +1,74 @@
+{
+  "protocol": "iqs.independent_batch_rebase/1.0.0",
+  "base_qa_head": "27d3373b91e1771ccfcb716973d712ca50e1756e",
+  "source_pins": [
+    {
+      "path": "src/runners/llm_runner.py",
+      "candidate_path": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\qa\\src\\runners\\llm_runner.py",
+      "candidate_sha256": "7552d3df8e3360fe5d6b5641c56954c66df96c53e2acfef19a5dd491686895f3",
+      "base_sha256": "3cc142cfaf931306f3a44d53ac9e1e070549ef3b6fa428d72819a2812e9cc435",
+      "current_original_sha256": "3cc142cfaf931306f3a44d53ac9e1e070549ef3b6fa428d72819a2812e9cc435"
+    },
+    {
+      "path": "src/utils/quick_scan_owner_research.py",
+      "candidate_path": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\qa\\src\\utils\\quick_scan_owner_research.py",
+      "candidate_sha256": "6ee13695e386b0bea2fd9bfbdc23ac0140d6bb493c97296bd061b06536a77b91",
+      "base_sha256": "5b6c8249f4298f0df014078bbc00cb84f91eb2dde608194ce1f530fa95dce955",
+      "current_original_sha256": "5b6c8249f4298f0df014078bbc00cb84f91eb2dde608194ce1f530fa95dce955"
+    },
+    {
+      "path": "src/utils/quick_scan_refresh_execution.py",
+      "candidate_path": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\qa\\src\\utils\\quick_scan_refresh_execution.py",
+      "candidate_sha256": "f39309947fd6eaa9766e1a0d865a3e6d866595f0e82e5f2685370512516565f0",
+      "base_sha256": "5da9c196bec2e80ca9a9e042defccee89e8b64857a4fd4d4e437d3402b2f99b6",
+      "current_original_sha256": "5da9c196bec2e80ca9a9e042defccee89e8b64857a4fd4d4e437d3402b2f99b6"
+    },
+    {
+      "path": "src/utils/quick_scan_work_store.py",
+      "candidate_path": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\owner-batch-performance-candidate\\qa\\src\\utils\\quick_scan_work_store.py",
+      "candidate_sha256": "c0c9fa2b38f0eef5936c1e13e419db9a3aa945098cdcc019031629bf22fca10c",
+      "base_sha256": "c387d4690222d4a6b8e15ec31e821b53e19dbe3f06f359be7d631f37837846f0",
+      "current_original_sha256": "c387d4690222d4a6b8e15ec31e821b53e19dbe3f06f359be7d631f37837846f0"
+    }
+  ],
+  "prior_store_methods_count": 111,
+  "store_methods_unchanged": 110,
+  "changed_original_methods": [
+    "QuickScanWorkStore.claim"
+  ],
+  "all_diagnostic_methods_preserved": true,
+  "green05_sources_match_current_cas": true,
+  "write_audits": [
+    {
+      "path": "isolation-17684.json",
+      "all_writes_confined": true,
+      "outside_write_denials": [],
+      "network": "denied"
+    },
+    {
+      "path": "isolation-20620.json",
+      "all_writes_confined": true,
+      "outside_write_denials": [],
+      "network": "denied"
+    },
+    {
+      "path": "isolation-28948.json",
+      "all_writes_confined": true,
+      "outside_write_denials": [],
+      "network": "denied"
+    },
+    {
+      "path": "isolation-36520.json",
+      "all_writes_confined": true,
+      "outside_write_denials": [],
+      "network": "denied"
+    },
+    {
+      "path": "isolation-36928.json",
+      "all_writes_confined": true,
+      "outside_write_denials": [],
+      "network": "denied"
+    }
+  ],
+  "green03_green04": "Reviewer harness import errors only after fixture module moved to tests/unit; preserved outputs, no product execution, corrected module search path; green05 is final 11P."
+}

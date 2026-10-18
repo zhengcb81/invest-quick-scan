@@ -87,3 +87,10 @@ StockQA `961884d`、StockWiki `03423ba`、Company `2561f56` 和IQS `4481c56`已�
 Alphabet/12题/MiMo Pro/开启思考/9条既有短来源/0新搜索：新增一次HTTP200，冷进程745.694秒，但0份安全答案、usage未知、费用仍为NULL，原预约USD0.10保留；旧100条请求及两笔未知费用原样保持。缓存恢复未开始，金融准确性不可评。456.372秒是适配层调用区间，包含原权限/持久化检查，不能当纯网络时间；此失败不证明整包准确性优于或劣于逐题。
 
 两处工程缺口已修复并独立签收：严格响应失败的固定错误码未持久化，以及Runtime漏识别真实ResearchResponseValidationError子类。StockQA `27d3373` 已推送，Runtime `f83a5be` 已本地提交，见[原节点验收](../docs/implementation/reviews/real-native-runtime-2026-10-18/final.json)。只保留有限错误码，不存正文/思考/原始错误字符串；semantic-invalid与transport-unknown分开，费用未知与是否已有答案分开。该修复不能给旧失败补造原因、usage或答案，不能解除原未知预约/允许盲重发。批量领取优化仍保留原owner/原事务/每次POST前权限校验，默认关闭；以最终独审和实际源码交付记录判断是否完成。
+
+
+### 批量领取的实际边界（StockQA 4d77ffb，默认关闭）
+
+原OwnerResearchServices显式owner_batch_claim=True只把一个原已批准题组的领取合为原SQLite事务；不缓存权限、不扩大600秒lease，不省略每POST当前原权限检查。旧默认False保留。8路径独立整节点与普通48P/1显式重型skip通过，见[工程验收](../docs/implementation/reviews/owner-batch-performance-2026-10-18/final.json)。
+
+接续测试c01为同一已准入原任务、合成身份和供应方响应，607.78秒不含此前准入/失败准备：一次SDK scripted POST，safe后中断，新进程12槽/新POST0。领取9.68vs原91.57秒；claim到POST359.09vs旧319.96秒更慢，整体提速和真实模型余量均未证实。该case新费用仍NULL，因为夹具pricing_ref不匹配，不是已结算/真实付费成本正例。真实Alphabet失败状态保持。后续通用1.5仍处于计划/候选，未发布前不能使用新source列表或module_packs绕过旧1.4限制。

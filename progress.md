@@ -1,3 +1,25 @@
+## 2026-10-18 — 原子批量领取已交付，转原通用续行1.5
+
+批量claim独立整包签收（final SHA1b69e5...、CAS02726d...，open_findings=[]），精确4QA产品+4正式测试已应用，普通48P/1显式重型skip/8.70秒，正常hooks含mypy94全绿，StockQA已提交推送4d77ffb4e73232ef93b082900a74a731bdb256ba。原diagnostic receipt增量、旧singleton转换、600秒lease及每POST fresh权限保留。仅private helper返回Optional[Lease]注解/isort/换行修正由不同agent交付附录核等价；历史final/CAS不改。
+
+32单测、5原回归、11独立反例；原软件同b02原owner/ledger的c01接续case607.78秒：12work同一原子claim、一次scripted SDK POST→原safe输出落盘→exit86→新进程12槽完成/新POST0。此607.78不含此前b02准入和失败准备，不能当冷启动全程；claim9.68vs旧91.57秒局部省82秒，但claim→POST359.09vs旧319.96秒更慢，未证实总体提速或真实模型600秒内足够余量。新夹具响应仍unpriced/NULL/预约100000：synthetic resolver的scripted-native-rate与原fixture-price-v1不匹配，原计价器正确不结清，不授价格资格。原真实Alphabet12题失败/第三笔未知/金融不可评保持，不能与本工程合成12答混用。
+
+b01安装80秒timeout和b02副本漏scan_profile的失败均保留；完整闭包933+8重基后才通过c01。四产品实际运行字节可核；测试before-Black快照实际采于c01执行后，期间增加collection-only skip/SAFE_ENV，附录明确不能称完整harness启动前byte锁。原断言与原库独立只读观测支持工程范围，不为机械格式重跑607秒。私有测试库/输出留在runs，不归档；原真实DB/外包活动Lab不碰。
+
+下一单项：按已落具体方案在原continuation/permissions/quote/rc2/admission增加显式通用1.5保留暴露列表+已有company-scan单包绑定；旧1.0–1.4不放宽、不新建ledger/服务。保留原真实101账和全部三笔未知，先另一真实公司2题1包的安全摘要/禁网络keyless恢复，不解锁旧Alphabet12。设计native-continuation-v15-candidate/design.md与post-smoke-authority-review/recommendation.md；只在完整跨仓节点集中五类实质测试与一个不同agent整包审查，不加微门。用户全部后续权限已覆盖，不再提问。
+
+RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10已由用户发出，三个Lab维持活动writer隔离，只接正式交接。
+
+## 2026-10-18 — 下一真实样本复用原契约升级，不清账也不再堆临时特例
+
+只读结构审查与原函数反例确认：原known-outcome要求settled及完整response_status，本次不满足；旧研究seal仅认budget-only/noHTTP，不能收pack/intent；原continuation1.4硬性两条budget-only且free_agent-only，不能接第三笔原native未计价或现有module_packs profile。实际mode=ro前后DB SHA同031de09...，101请求/3未决均保留。证据与具体最小路线见runs/shared-engine-production-2026-10-18/post-smoke-authority-review/，不是额外审批门。
+
+在原continuation、固定namespace permissions/quote/rc2/admission里增加显式1.5通用保留暴露列表和已有company-scan profile单包绑定，保留旧1.0–1.4原行为；复用原ledger/cell/intent/owner，不增加服务、账本、调度器。源类型和原pack/work/receipt状态从原库推导，运输结果、可用答案、现金费用三维分开；任何新批准仍计入原101次/全部预约/旧inflight/原预算与并发上限。新控制只准新的明确独立action，不放行旧Alphabet12工单或用run/gen/profile改名重发。
+
+完整profile hash作防篡改；语义去重另用subject/原题面模块/实际cutoff/包策略/route/思考输出搜索控制/明确replicate，避免既被改名绕过，又永久挡住真正新日期。首个新版本只做另一个原真实身份公司、2个原题、1包、0新搜索的真实摘要/原安全输出/禁网络keyless恢复。旧Alphabet logical disposition以后复用原work-decision扩展，不阻塞独立公司首跑。集中五项大节点测试及一个不同agent整包复核即可，详见recommendation，不加逐helper门；既有全部授权继续有效，不再次问用户。
+
+当前仍先收口正在跑的批量claim公开恢复链与源码交付，再实施上述一个连贯跨仓切片。
+
 ## 2026-10-18 — 首次真实原生12题请求失败，原始费用与状态保持
 
 真实cold实际745.694秒、rc2，未到预期安全输出后退出86；原SDK新增1物理请求并收到HTTP200，实际模型mimo-v2.6-pro，但严格可见响应未形成安全输出、usage缺失、新账response_unpriced/actual NULL/预约100000保持。12个slot均answer=null/outcome_unknown，不是12份答案或合理unknown回答；金融准确性不可评，缓存恢复未启动。原100条预算记录完整一致，原两笔未知保持，新第三笔未知不清零、不自动重发。源码414 pins保持。证据可定位严格响应验证失败分支，但既有错误投影丢失具体安全诊断，不能猜为length、工具schema或服务商错误。
