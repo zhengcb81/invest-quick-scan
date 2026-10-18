@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — reviewed delivery v2：deployment proof
+
+新增 scripts/deployment_proof_v2.py：iqs.deployment_proof/2.0.0 由 reviewed scope + 独立 review 文档绑定（reviewer != authors、open_findings 空、scope_sha256 匹配），controller_delivery.verify_deployment 对 v2 proof 走新校验。4+1 个单测通过。下一步：独立 review 本轮 scope 文件 -> 生成 review final + proof -> 重走 admission/run。
+
 ## 2026-10-18 — owner 确认：存储权利 + CATL 分类
 
 ①DeepSeek 搜索结果存储权利确认（entitlement_ref=owner-confirmed-2026-10-18），policy/exposure 更新后离线校验 status=valid、errors=[]，search-backed 合同阻塞清零。②CATL 分类确认 operating/energy_transition/mature，profile.json 为正式版本并附 classification_approval；用确认 profile 重新生成 16 题 pack，facts_pack_check valid。下一步：reviewed delivery。
