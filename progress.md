@@ -1,3 +1,17 @@
+## 2026-10-18 — 真实保存研究出版全链完成并已 ACK
+
+真实链路两题均 delivered：preview wdp1_316c…、confirm rc1_dcb42b…、inspect 1.1.0（API 0/writes 0/request 相等/1 anchor/2 item）、apply、import、ACK accepted、重放 ACK 完全相等。StockWiki 实写 2 observation + 2 binding + 2 import item；observation 保持 insufficient_evidence/null/unreviewed/unverified。真实账本 schema25，102 预算行与备份逐行一致，attempt 14，其余 12 work 仍 leased，2 个 v3 checkpoint、2 delivery delivered，0 新预算/尝试/费用、0 HTTP。
+
+根因修复：事务内二次 owner 鉴权改为复用同事务 grant；StockWiki CLI 用扁平 observation-import；新增 IQS 显式 research_only 通道并在 SW bind 仅对 unreviewed+unverified 观察启用（默认关闭）。QA 39c150e/8c166a6 已推；SW 1fb9efa/dcc70ce 本地；IQS seam 与 PWF 待提交。外包三包均已由用户确认完成；新三包 N1–N7 整改中。
+
+## 2026-10-18 — 真实 publication 落库；交付被原 IQS 研究型答案校验阻断
+
+真实链路已按 reviewer 的 owner gate 执行：capability 安装 → preview wdp1_316c… → confirm rc1_dcb42b…（native_owner_delegated_agent）→ inspect 1.1.0（API 0、DB writes 0、request 相等、1 anchor/2 item）→ apply。真实账本 24→25；apply 前后 102 预算行一致、其余 work/attempt 不变、两个目标 work result_ready、2 个 v3 checkpoint、2 条 sealed delivery、0 新预算/尝试/费用、0 HTTP。迁移前有字节备份与 48 表/739 行逻辑等价演练；v3 默认读取被拒（research_only_checkpoint_does_not_satisfy_verified_search）。
+
+交付失败在 StockWiki observation-import 的原始 IQS 合同 bind：standard_answers.py:63 拒绝非评分回答携带已引用数字。首 work 已 send_uncertain 并冻结 package 字节；第二 work 仍 sealed/ready。未伪造、未改答案、未跳校验。这是暂停交接 gap 3 的未闭环部分，需显式 research_only seam（IQS validate_content/bind_original/subject_dispatch_cli + SW bind）后再 import/ACK/重放。
+
+源码：QA 39c150e + 8c166a6 已推送；SW 1fb9efa 本地（无 remote）。hooks 全绿；QA 258P/6S、SW 49P。外包三包（RELEASE-DIFF/SUMMARY-LOSS/RELATION-DELTA）均已完成；新三包 F1-F13 已修，待 delta 复审。
+
 ## 2026-10-18 — 恢复主线：publication round2 修复、真实链预飞与三施工包
 
 用户解除暂停。先按 PWF 恢复计划，唯一未交付节点仍是 saved-research-publication。只读派生真实请求 cd9de680…（真实 bundle 8446eeda…，两题 IQS_12/IQS_16，sdk 4d46a825…）。对真实账本与 owner workspace 做了备份：源 SHA 960e9eb0…、备份逻辑摘要与源相同 7d74049c…、102 预算行、user_version 24。真实账本自有副本上预飞 publish：2 个 v3 checkpoint、2 sealed delivery、两个 work result_ready、预算与其余 work 行不变、幂等重放相等；真实库未迁移、未新增 HTTP。

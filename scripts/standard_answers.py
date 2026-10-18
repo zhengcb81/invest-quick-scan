@@ -38,7 +38,9 @@ def validator(name):
                                registry=registry, format_checker=FormatChecker())
 
 
-def validate_content(answer, question, cutoff, *, answer_schema=None, metric_registry=None):
+def validate_content(
+    answer, question, cutoff, *, answer_schema=None, metric_registry=None, research_only=False
+):
     if answer_schema is None:
         validator('answer-content.schema.json').validate(answer)
     else:
@@ -60,7 +62,11 @@ def validate_content(answer, question, cutoff, *, answer_schema=None, metric_reg
         raise ValueError('score answer must use score/metrics, not fact rows')
     if kind == 'score' and ((answer['status'] == 'scored') != (answer['score'] is not None)):
         raise ValueError('score/status mismatch')
-    if not successful and (answer['score'] is not None or answer['items'] or answer['metrics']):
+    if not successful and (
+        answer['score'] is not None
+        or answer['items']
+        or (answer['metrics'] and not research_only)
+    ):
         raise ValueError('unavailable answer cannot carry asserted values')
     if successful and not answer['evidence']:
         raise ValueError('successful answer needs evidence')

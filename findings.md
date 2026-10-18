@@ -1,3 +1,19 @@
+## 2026-10-18 — 真实出版完成后的可复用结论
+
+1. 零 HTTP 研究出版可以在不新增账本/服务的前提下完成：原 owner preview/confirm/inspect 提供 authority，QA 由原 task/native safe 派生答案并写 v3 checkpoint + sealed delivery，原 StockWiki import/ACK 决定 delivered。101→102 之外不新增预算/尝试/费用行。
+2. 事务边界是真实接缝：任何在写事务内再 spawn 读进程的“新鲜鉴权”都会自锁；发布事务内必须复用同事务刚获得的 grant，仍校验 confirmation 与存储 grant。
+3. 原 IQS 合同默认禁止非评分答案携带数字；真实研究型答案需要显式 research_only 通道（默认关闭），且必须保留单位/期间/来源/截止日与评分/事实规则。不能删数字或跳过校验。
+4. 真实链证据：preview wdp1_316c…、confirm rc1_dcb42b…、request 54d0e288…、apply 2 work/2 package、ACK accepted、replay 相等、StockWiki 2 observation 2 binding。任何复制 namespace 的正例仍不可行（store_id 路径派生）。
+5. 三个外部 Lab 已完成，不得再称其为活动 writer；新三包的边界只能是不消费其未交付内容。
+
+## 2026-10-18 — 真实 publication 的可交付边界
+
+1. 原 owner gate 在真实 namespace 上可通过：preview/confirm/inspect 全链 1.1.0、API 0、DB writes 0、请求 hash 与 capability 绑定、1 anchor/2 item。15 分钟 preview TTL 是真实约束：跨窗重试会 preview_expired，必须用新的 action key 重新派生请求与 capability。
+2. 同一事务内第二次 owner 往返会与自身写锁冲突：publish 中 prepare_result_delivery 再调用 authorize 会 spawn 读进程并失败。正确修复是复用同一事务内刚获得的 grant，并仍校验 confirmation 与存储 grant，而不是放宽权限。
+3. 交付的最后一公里在原始 IQS 合同：非评分（insufficient_evidence）回答携带已引用财务数字会被 standard_answers “unavailable answer cannot carry asserted values” 拒绝。QA 的 research_only 兼容只覆盖 checkpoint 侧，observation-import 的 bind 仍用旧规则。必须加显式 research_only 通道并保留单位/期间/来源/截止日检查，不能删数字或跳过校验。
+4. 真实账本 24→25 与出版均未新增预算/尝试/费用行；send_uncertain 是诚实状态，第二个 work 仍是 ready，恢复时不得重新 begin 或重发模型。
+5. 外包边界更新：RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10 均已由用户确认完成，新三包只能声明不消费其未交付内容，不能再称其为活动 writer。
+
 ## 2026-10-18 — publication round2：可复现的真实链前置与审查结论
 
 1. 真实 publication 请求可从真实 bundle + 自有账本副本只读派生，hash cd9de680…；请求含两题成员 IQS_12/IQS_16、各自 work/attempt/generation、safe payload 与 C06 授权 hash。派生不写库，副本上 publish 预飞通过且预算 102 行不变、幂等。

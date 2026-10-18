@@ -155,7 +155,7 @@ def _reference(row,expected_owner):
     return ref
 
 
-def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_ref):
+def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_ref,research_only=False):
     execution=obs['execution']
     answer=obs['answer']
     start,end=_utc(execution['started_at']),_utc(execution['answered_at'])
@@ -177,7 +177,7 @@ def _validate_original_semantics(obs,*,row,owner_ref,request,watermark,subject_r
     registry=json.loads((ROOT/'questions/metric-registry.json').read_bytes())
     try:
         standard_answers.validate_content(answer,question,obs['information_cutoff'],
-            answer_schema=ANSWER_SCHEMA,metric_registry=registry)
+            answer_schema=ANSWER_SCHEMA,metric_registry=registry,research_only=research_only)
     except (ValueError,ValidationError,TypeError,KeyError) as exc:
         raise ValueError('query_original_answer_semantics_invalid') from exc
     if execution['search_status']=='executed' and not execution['search_receipt_id']:

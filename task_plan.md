@@ -1,3 +1,23 @@
+## 2026-10-18 — 真实保存研究出版全链完成（零 HTTP、非评分、已 ACK）
+
+真实零 HTTP 出版已完整通过：真实 capability → preview wdp1_316c92c1… → delegated confirm rc1_dcb42b76… → inspect current_permissions（1.1.0、API 0、DB writes 0、request 相等、1 anchor/2 item）→ apply → begin/import → 原 StockWiki ACK → 幂等重放。两个 work 均 delivered；两 packages pkg_d3f0752a… / pkg_f2171c34…；ACK 均 accepted 且重放完全相等；StockWiki 实际写入 2 条 observation、2 条 subject binding、2 条 import item，observation 仍 insufficient_evidence/score=null、evidence_review_status=unreviewed、search_status=unverified。真实账本 schema 25，102 条预算行与迁移前备份逐行一致，attempt 仍 14、其余 12 work 仍 leased，2 个 v3 checkpoint、2 条 delivery 均 delivered，0 新预算/尝试/费用行、0 HTTP。
+
+过程中从根因修复了三个真实接缝：1) publish 事务内二次 owner 往返与自身写锁冲突，改为复用同事务刚获得的 grant 并仍校验 confirmation 与存储 grant；2) 原 StockWiki CLI 的命令是扁平 observation-import（不是 quick-scan observation-import）；3) 原 IQS 合同拒绝非评分回答携带已引用数字，新增显式 research_only 通道（standard_answers.validate_content / query_contract._validate_original_semantics / subject_dispatch_contract.bind_original / subject_dispatch_cli，默认关闭），SW bind 仅对 unreviewed+unverified 观察启用，保留单位/期间/来源/截止日与分数/事实规则。
+
+源码：QA 39c150e、8c166a6 已推 origin；SW 1fb9efa、dcc70ce 本地提交（原仓无 remote）；IQS scripts 的 research_only seam 与本 PWF 更新待正常提交。真实部署/真库写入与 ACK 已完成，不再重跑或重发模型。
+
+## 2026-10-18 — 真实 publication 已落库，交付被原 IQS 研究型答案校验阻断
+
+真实零 HTTP 出版已实际执行（非候选）：固定 capability 安装后 preview wdp1_316c92c1…→ delegated confirm rc1_dcb42b76…→ inspect current_permissions（协议 1.1.0、API 0、DB writes 0、request 相等、1 anchor/2 item）→ apply 成功。真实账本 24→25 迁移前已有字节备份与 48 表/739 行逻辑等价演练；apply 后 102 条预算行逐行不变、其余 12 个 work/attempt/事件不变，两个目标 work 变 result_ready，新增 2 个 schema-v3 research-only checkpoint、2 条 sealed delivery、0 新预算/attempt/结算/费用行、0 HTTP。请求 hash 54d0e288…，确认 rc1_dcb42b…。
+
+交付阶段遇到真实产品缺口：begin_result_delivery 对首个 work 已提交 send_uncertain 并写出冻结 package，但原 StockWiki observation-import 的原始 IQS 合同在 bind 阶段拒绝该研究型回答——scripts/standard_answers.py:63 “unavailable answer cannot carry asserted values”。这是暂停交接已知 gap 3 的未闭环部分：QA 侧已有显式 research_only 兼容，IQS 原始合同仍按旧规则禁止非评分答案携带已引用财务数字。未伪造搜索/分数、未改原答案、未跳过校验；第二个 work 保持 sealed/ready，未再 begin。
+
+因此该节点当前状态：**源码已应用、真实非评分出版已落库、StockWiki 导入/ACK 未完成**。恢复动作是增加显式 research_only seam（IQS validate_content / bind_original / subject_dispatch_cli + SW bind 调用）并加聚焦测试，随后用已冻结 package 完成 import→ACK→幂等重放；不得只放开校验或删除原数字。
+
+源码：QA 39c150e（后 8c166a6 修复 publish 事务内重复 owner 回环）已推 origin；SW 1fb9efa 本地提交（原仓无 remote）。QA 常规 hooks 全绿、聚焦回归 258P/6S(honest skip)、SW checks 全绿、49P。真实 apply 暴露并修复了一个事务内重新鉴权缺陷：release 前在同一事务内改为复用刚获得的 grant，仍绑定 confirmation 与存储的 grant。
+
+外包状态更新：用户确认 RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10 均已完成；本批三包按“零重叠、独立工作根”编制，边界不再把三者写作活动 writer，只禁止消费其未交付内容。
+
 ## 2026-10-18 — 恢复主线：publication 节点第二轮修复与真实链预飞
 
 用户解除暂停并要求继续主线（共享引擎生产接线、真实摘要、缓存恢复验收），从根因修复、及时提交并更新 PWF，同时准备三个互不影响的独立施工包。本轮先做 publication 节点（唯一未交付节点）。
@@ -247,7 +267,7 @@ Company核心仍为已交付cd5e3e7。owner 服务实际原软件批准/SDK两�
 
 ## Next Step
 
-继续同一 publication 节点：完成 B2 的 fresh synthetic original namespace 公开正例（preview→delegated confirm→inspect→apply→deliver→import→ACK→重放），据 round2 发现做增量独立复审；通过后精确应用 18 文件到 StockQAbyLLM/StockWiki，运行正常 hooks 与既定测试，安装固定 capability，用 `run_actual_publication.py` 执行真实零 HTTP 非评分出版，保存前后账本与幂等证据。任何未知/拒绝保留现场，不重发模型、不清未决费用、不补造搜索证明。
+收口交付与审查：提交 IQS research_only seam 与 PWF（正常 hooks/测试）；对 research-only seam 与真实出版证据做一次独立 delta 复审并修复；等三张施工包 N1–N7 整改完成后做最终复审，通过后以新提交号更新包内归档说明并提交推送；最后把真实出版的 gate/apply/import/ACK/重放证据与真实账本前后对照写入同一节点报告。不得重跑真实出版、重发模型或改动已验证答案。
 
 ## 2026-10-18 — 三个独立研究包交付验收收口
 

@@ -21,7 +21,8 @@ def main(argv=None):
             if set(value)!={'receipt','store_id'}:raise ValueError('subject_contract_input_fields')
             result=contract.validate_receipt(value['receipt'],store_id=value['store_id'])
         elif args.operation=='bind':
-            if set(value)!={'receipt','observation','payload_sha256','observation_sequence','ack_sequence','bound_at'}:
+            required={'receipt','observation','payload_sha256','observation_sequence','ack_sequence','bound_at'}
+            if not required<=set(value) or set(value)-required-{'research_only'}:
                 raise ValueError('subject_contract_input_fields')
             result=contract.bind_original(**value)
         elif args.operation=='vendor-original':

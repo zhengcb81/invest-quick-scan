@@ -74,7 +74,7 @@ def validate_receipt(receipt,*,store_id):
     return copy.deepcopy(receipt)
 
 
-def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_sequence,bound_at):
+def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_sequence,bound_at,research_only=False):
     """Post-answer binding references a real PREVIOUS owner registration."""
     d=receipt['dispatch_request']
     raw=module_contract.canonical_bytes(observation)
@@ -120,5 +120,5 @@ def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_
         'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
         owner_ref={'question_contract':d['question_contract']},request=query_request(d,bound_at),
         watermark={'read_at':bound_at,'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
-        subject_ref=ref)
+        subject_ref=ref,research_only=research_only)
     return binding
