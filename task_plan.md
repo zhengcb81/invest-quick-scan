@@ -1,3 +1,9 @@
+## 2026-10-18 — verified 批复审修复完成 + routing 包探测成功
+
+复审 pass（身份结果）但要求补证据/审计：已补 200/200 官方简称与逐条 name_gate、审计增加代码/orgId/URL 绑定、pre-existing 两家标出 SEC 10-K 与 CATL 官方页及 IVR、缺口登记 5 家、G2b 样例（000026，sha256 965e166a…）。审计 207 通过/0 失败/2 pre-existing。
+
+另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
+
 ## 2026-10-18 — 搜索供应商选项（供决策）
 
 公开价格摘录：Brave 5 美元/1k（有免费 credits）、Tavily 免费 1,000 credits/月、Serper 2,500 试用（但现有策略无 serper kind）、DeepSeek 报道 5 元/1k。StockWiki 策略支持 brave/tavily/zai；准入需 enabled、credential_env、cost_bound_verified+pricing、storage_rights.confirmed+entitlement。建议先用 Tavily 免费额度或 Brave 做 1 家 1 题试点；需要 owner 选供应商、给 key 环境变量名、确认存储权利与查询/费用上限。报告 docs/implementation/reviews/search-provider-options-2026-10-18.md。

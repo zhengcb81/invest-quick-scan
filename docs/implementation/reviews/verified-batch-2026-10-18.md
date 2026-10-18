@@ -1,15 +1,15 @@
-# verified 身份批量（cninfo 口径）— 结果 — 2026-10-18
+# verified 身份批量（cninfo / SEC 口径）— 结果 — 2026-10-18
 
-状态：**SH/SZ 批量已写入真实 workspace**；US/HK/BSE 按审查意见暂不升级。
+状态：**完成**；独立复审对身份结果判 pass，5 项证据/审计必改项已闭合。
 
 ## 口径与闸门
 
-- 证据：cninfo 逐公司概况 API（`p_sysapi1133`，公司全称 + A股代码 + A股简称）+ 逐公司 cninfo 页面 URL；不下载文档。
-- 名称闸门：官方 **A股简称** 与 source_binding 的交易简称归一化后一致（NFKC、去空格）；不一致视为改名/歧义，跳过。
-- 代码闸门：API A股代码 == ticker；orgId == source_record_id。
-- 抓取：逐家、重试 ≤2、间隔 ≥1s、不并行；失败/空/歧义 → 跳过并记录。
-- 写入：逐文件、≤60/批、失败即停；写后校验 verified/rev2/IVR 与实体一致；每批计数校验 + 抽样重放；写前双库备份。
-- 证据留存：200 份逐公司概况响应 + sha256 + fetched_at + endpoint 存 `docs/implementation/evidence/verified-identity-2026-10-18/cninfo-profiles.jsonl`。
+- CN 证据：cninfo 逐公司概况 API（p_sysapi1133：公司全称 + A股代码 + A股简称）+ 逐公司 cninfo 页面 URL；不下载文档。
+- US 证据：SEC 逐公司 submissions JSON（CIK##########.json：registrant name + tickers）。
+- 名称闸门：官方 A股简称与 source_binding 交易简称 NFKC 归一化后一致（equal/contains 才写入）。
+- 代码闸门：API A股代码 == ticker；orgId == source_record_id；SEC ticker 必须在 tickers 列表。
+- 抓取：逐家、重试 ≤2、间隔 ≥1s、不并行；失败/空/歧义跳过记录。
+- 写入：逐文件、≤60/批、失败即停；写后校验 verified/rev2/IVR；每批计数 + 抽样重放；双库备份。
 
 ## 结果
 
@@ -19,33 +19,28 @@
 | security | 217 | 217 |
 | binding | 218 | 218 |
 | candidate | 216 | 216 |
-| verified | 8 | **202** |
-| identity receipt | 223 | **417** |
+| verified | 8 | **209** |
+| identity receipt | 223 | **424** |
 
-- 首批 194 份 payload：150 家写入；44 家因严格“公司名包含简称”被跳过。
-- 复核发现这 44 家是合法品牌简称（如工业富联/富士康工业互联网），改用官方 A股简称闸门后全部通过：44 家写入。
-- 最终 CN：**201 verified / 205**（4 个缺口，见下）；全库 202 verified / 214。
+CN 201/205、US 11/11、HK 0/1。
 
-## 剩余缺口（保持 provisional，不猜）
+**算术**：CN 201 = 194 家 cninfo 批量 + 5 家 cninfo 试点 + 万科A（SZSE 年报）+ CATL（更早 verified）。194 家里首批 150 写入、44 家因严格“公司名包含简称”跳过；改用官方 A股简称闸门后 44 家全部写入——**44 是 194 的子集，不是额外 44 家**。
 
-| market | ticker | 名称 | 原因 |
-|---|---|---|---|
-| CN | 002013 | 中航机电 | cninfo 概况 API 返回空（疑似已吸收合并/退市） |
-| CN | 300114 | 中航电测 | 同上（疑似已更名/重组） |
-| CN | 688555 | 退市泽达 | 已退市，概况为空 |
-| CN | 872808 | 曙光数创 | 北交所，cninfo/东财均无免费概况 |
-| HK | 06066 | 中信建投证券 | 需 HKEX/HKEXnews 官方页，东财 F10 被审查否决 |
-| US | 7 家 | FIG/GENB/MDB/MSFT/NVO/SNOW/TAL | 需 SEC 逐公司 submissions/CIK JSON，bulk tickers 不足 |
+## 证据与审计
 
-## 美股 7 家（SEC 逐公司 submissions）
+- cninfo：200 条逐公司概况（200/200 response sha 重算一致；200/200 带 official_short 与逐条 name_gate；原始字符串差异 2 条）。
+- SEC：7 条概况 + 7 份完整 submissions（sha 与归档一致）。
+- 审计脚本 `scripts/verified_evidence_audit.py`：**207 通过 / 0 失败 / 2 家 pre-existing**。
+  - 审计新增：A股代码 == ticker、orgId == source_record_id、名称 gate、万科A URL stockCode/orgId、SEC ticker_listed。
+  - pre-existing：Alphabet（SEC 10-K https://www.sec.gov/Archives/edgar/data/1652044/000165204426000018/goog-20251231.htm，IVR_663efa01…）、CATL（https://www.catl.com/about/profile/，IVR_d5c63122…）。
+- G2b 样例：000026 飞亚达导出成功（schema 2.2.0、verified、IVR_3ca69a28…、CN/XSHE），sha256 965e166a8697dfa58b2ea136a23642199f49651f72977239536b2599b036a369。
 
-- 按审查要求用 \`data.sec.gov/submissions/CIK##########.json\`（逐公司），UA 标明用途，顺序请求。
-- 7 家全部 verified/rev2：FIG、GENB、MDB、MSFT、NVO、SNOW、TAL；法人名取 SEC registrant name。
-- verified 202→209、receipt 417→424；entity/security/binding/candidate 不变；逐家重放幂等。
-- 证据归档：\`docs/implementation/evidence/verified-identity-2026-10-18/sec-profiles.jsonl\`（cik/name/tickers/sic + 响应 sha）。
+## 剩余缺口
+
+见 [verified-gap-register-2026-10-18.md](verified-gap-register-2026-10-18.md)：002013、300114（cninfo 空，复审意见为合并/更名，未独立核实）、688555（退市）、872808（北交所无免费官方源）、06066（HKEX 官方页未取得）；第三方聚合不作证据。
 
 ## 边界
 
-- verified 仅表示身份，不代表财务准确、可评分或投资结论；评分仍需 search-backed checkpoint 与金融复核。
-- 2026-10-18 真实库：202 verified / 12 provisional / 2 条观察 / 0 真实搜索。
-- 备份：`runs/existing-list-onboarding-2026-10-18/backup-verified-cninfo-batch/`；回滚 = 恢复两份 SQLite。
+- verified 仅表示身份；不代表财务准确、可评分或投资结论。
+- 2026-10-18 真实库：**209 verified / 5 provisional** / 2 条观察 / 0 真实搜索 / 0 模型调用（本轮）。
+- 备份：`runs/existing-list-onboarding-2026-10-18/backup-verified-cninfo-batch/`、`backup-verified-sec/`；回滚 = 恢复两份 SQLite。
