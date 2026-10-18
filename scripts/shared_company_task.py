@@ -441,5 +441,9 @@ def create_company_scan_task(
     )
     task.owner_binding = copy.deepcopy(binding)
     validate_scan_task(task)
+    if owner.proof["request"].get("protocol") == "iqs.refresh_request/1.5.0":
+        from src.utils.quick_scan_owner_budget_continuation import assert_research_task
+
+        assert_research_task(owner, task, search_service=None)
     owner.check()
     return task

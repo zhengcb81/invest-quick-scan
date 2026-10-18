@@ -16,30 +16,33 @@ from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 from referencing import Registry, Resource
 
 SCHEMA = json.loads(
-    (
-        Path(__file__).resolve().parents[1]
-        / "schemas/quick_scan/refresh-v1.schema.json"
-    ).read_bytes()
+    (Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.schema.json").read_bytes()
 )
 CURRENCY_SCHEMA = json.loads(
     (
-        Path(__file__).resolve().parents[1]
-        / "schemas/quick_scan/refresh-v1.1.schema.json"
+        Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.1.schema.json"
     ).read_bytes()
 )
 CONTROL_SCHEMA = json.loads(
     (
-        Path(__file__).resolve().parents[1]
-        / "schemas/quick_scan/refresh-v1.2.schema.json"
+        Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.2.schema.json"
     ).read_bytes()
 )
 TARGET_SCHEMA = json.loads(
     (
-        Path(__file__).resolve().parents[1]
-        / "schemas/quick_scan/refresh-v1.3.schema.json"
+        Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.3.schema.json"
     ).read_bytes()
 )
-EXPOSURE_SCHEMA = json.loads((Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.4.schema.json").read_bytes())
+EXPOSURE_SCHEMA = json.loads(
+    (
+        Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.4.schema.json"
+    ).read_bytes()
+)
+PROFILE_EXPOSURE_SCHEMA = json.loads(
+    (
+        Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.5.schema.json"
+    ).read_bytes()
+)
 from query_vendor_contract import SCHEMA as VENDOR_QUERY_SCHEMA
 
 REGISTRY = Registry().with_resources(
@@ -51,6 +54,7 @@ REGISTRY = Registry().with_resources(
             CONTROL_SCHEMA,
             TARGET_SCHEMA,
             EXPOSURE_SCHEMA,
+            PROFILE_EXPOSURE_SCHEMA,
             query.SCHEMA,
             VENDOR_QUERY_SCHEMA,
         )
@@ -67,8 +71,7 @@ def paid_work_count(items):
     return sum(
         i["decision"] in DISPATCH
         and not (
-            i["decision"] == "resume_existing_work"
-            and i["existing_work_status"] == "result_ready"
+            i["decision"] == "resume_existing_work" and i["existing_work_status"] == "result_ready"
         )
         for i in items
     )
@@ -79,11 +82,25 @@ def digest(value):
 
 
 def _shape(
-    value, kind, *, currency_dialect=False, control_dialect=False, target_dialect=False, exposure_dialect=False
+    value,
+    kind,
+    *,
+    currency_dialect=False,
+    control_dialect=False,
+    target_dialect=False,
+    exposure_dialect=False,
+    profile_exposure_dialect=False
 ):
     if kind != "OwnerState":
+        profile_exposure_dialect = isinstance(value, dict) and value.get("protocol") in {
+            "iqs.refresh_request/1.5.0",
+            "stockwiki.refresh_preview/1.5.0",
+            "stockwiki.refresh_owner_policy/1.5.0",
+        }
         exposure_dialect = isinstance(value, dict) and value.get("protocol") in {
-            "iqs.refresh_request/1.4.0", "stockwiki.refresh_preview/1.4.0", "stockwiki.refresh_owner_policy/1.4.0"
+            "iqs.refresh_request/1.4.0",
+            "stockwiki.refresh_preview/1.4.0",
+            "stockwiki.refresh_owner_policy/1.4.0",
         }
         currency_dialect = isinstance(value, dict) and value.get("protocol") in {
             "iqs.refresh_request/1.1.0",
@@ -100,13 +117,21 @@ def _shape(
             "stockwiki.refresh_preview/1.3.0",
             "stockwiki.refresh_owner_policy/1.3.0",
         }
-    schema = EXPOSURE_SCHEMA if exposure_dialect else (
-        TARGET_SCHEMA
-        if target_dialect
+    schema = (
+        PROFILE_EXPOSURE_SCHEMA
+        if profile_exposure_dialect
         else (
-            CONTROL_SCHEMA
-            if control_dialect
-            else CURRENCY_SCHEMA if currency_dialect else SCHEMA
+            EXPOSURE_SCHEMA
+            if exposure_dialect
+            else (
+                TARGET_SCHEMA
+                if target_dialect
+                else (
+                    CONTROL_SCHEMA
+                    if control_dialect
+                    else CURRENCY_SCHEMA if currency_dialect else SCHEMA
+                )
+            )
         )
     )
     try:
@@ -130,6 +155,7 @@ def validate_request(request):
         in {
             "iqs.refresh_request/1.1.0",
             "iqs.refresh_request/1.4.0",
+            "iqs.refresh_request/1.5.0",
             "iqs.refresh_request/1.2.0",
             "iqs.refresh_request/1.3.0",
         }
@@ -154,24 +180,13 @@ def validate_request(request):
 def validate_policy(policy):
     """Validate owner-configured structure, never a consumer permission claim."""
     _shape(policy, "OwnerPolicy")
-    if (
-        type(policy["policy_version"]) is not int
-        or type(policy["ttl_hours"]) is not int
-    ):
+    if type(policy["policy_version"]) is not int or type(policy["ttl_hours"]) is not int:
         raise ValueError("refresh_integer_required")
-    dynamic_routes = (
-        policy.get("route_resolution", "explicit_routes") == "current_owner_members"
-    )
-    dynamic_fields = (
-        policy.get("field_permission", "explicit_fields") == "current_manifest"
-    )
-    if (dynamic_routes and policy["routes"]) or (
-        not dynamic_routes and not policy["routes"]
-    ):
+    dynamic_routes = policy.get("route_resolution", "explicit_routes") == "current_owner_members"
+    dynamic_fields = policy.get("field_permission", "explicit_fields") == "current_manifest"
+    if (dynamic_routes and policy["routes"]) or (not dynamic_routes and not policy["routes"]):
         raise ValueError("refresh_policy_route_permission_ambiguous")
-    if (dynamic_fields and policy["field_ids"]) or (
-        not dynamic_fields and not policy["field_ids"]
-    ):
+    if (dynamic_fields and policy["field_ids"]) or (not dynamic_fields and not policy["field_ids"]):
         raise ValueError("refresh_policy_field_permission_ambiguous")
     seen = set()
     for row in policy["routes"]:
@@ -208,16 +223,13 @@ def _check_state(request, state):
         control_dialect=controlled,
         target_dialect=targeted,
         exposure_dialect=request["protocol"] == "iqs.refresh_request/1.4.0",
+        profile_exposure_dialect=request["protocol"] == "iqs.refresh_request/1.5.0",
     )
     numbers = [
         state["policy_version"],
         state["ttl_hours"],
         *state["member_versions"].values(),
-        *[
-            a[k]
-            for a in state["anchors"]
-            for k in ("anchor_version", "identity_revision")
-        ],
+        *[a[k] for a in state["anchors"] for k in ("anchor_version", "identity_revision")],
         state["quote"]["max_cost_micros"],
         state["quote"]["max_http_requests"],
         *[i["generation"] for i in state["items"] if i["generation"] is not None],
@@ -246,17 +258,12 @@ def _check_state(request, state):
             raise ValueError("refresh_original_reference_required")
         if item["decision"] in DISPATCH and item["generation"] is None:
             raise ValueError("refresh_work_generation_required")
-        if (
-            item["decision"] == "resume_existing_work"
-            and item["existing_work_status"] is None
-        ):
+        if item["decision"] == "resume_existing_work" and item["existing_work_status"] is None:
             raise ValueError("refresh_existing_work_status_required")
     if covered != expected:
         raise ValueError("refresh_owner_plan_incomplete")
     if controlled:
-        requested = {
-            (r["work_item_id"], r["decision_id"]) for r in request["work_decision_refs"]
-        }
+        requested = {(r["work_item_id"], r["decision_id"]) for r in request["work_decision_refs"]}
         observed = set()
         for item in state["items"]:
             control = item["owner_control"]
@@ -276,14 +283,11 @@ def _check_state(request, state):
                     and item["generation"] != control["target_generation"]
                 )
                 or (
-                    item["decision"] != "dispatch_new_generation"
-                    and item["generation"] is not None
+                    item["decision"] != "dispatch_new_generation" and item["generation"] is not None
                 )
             ):
                 raise ValueError("refresh_owner_control_mismatch")
-            if (control["purpose"] == "comparison") != (
-                control["comparison_controls"] is not None
-            ):
+            if (control["purpose"] == "comparison") != (control["comparison_controls"] is not None):
                 raise ValueError("refresh_owner_control_options_mismatch")
             if targeted and control["comparison_target"] is not None:
                 target = control["comparison_target"]
@@ -304,7 +308,7 @@ def _check_state(request, state):
         raise ValueError("refresh_selected_model_outside_snapshot_filter")
     tasks = paid_work_count(state["items"])
     quote = state["quote"]
-    if request["protocol"] == "iqs.refresh_request/1.4.0":
+    if request["protocol"] in {"iqs.refresh_request/1.4.0", "iqs.refresh_request/1.5.0"}:
         if set(request["question_ids"]) != {i["question_id"] for i in state["items"]}:
             raise ValueError("refresh_exposure_question_scope_mismatch")
         tasks = quote["planned_physical_requests"] if tasks else 0
@@ -318,9 +322,9 @@ def create_preview(request, owner_state, *, created_at, expires_at):
     validate_request(request)
     _check_state(request, owner_state)
     created, end = query._utc(created_at), query._utc(expires_at)
-    if created < query._utc(
-        request["requested_at"]
-    ) or not created < end <= created + timedelta(hours=1):
+    if created < query._utc(request["requested_at"]) or not created < end <= created + timedelta(
+        hours=1
+    ):
         raise ValueError("refresh_preview_time_invalid")
     state = copy.deepcopy(owner_state)
     if request["protocol"] in {
@@ -341,15 +345,17 @@ def create_preview(request, owner_state, *, created_at, expires_at):
             )
             if (
                 item["decision"] != expected
-                or item["existing_work_status"]
-                not in {"failed", "result_ready", "delivered"}
+                or item["existing_work_status"] not in {"failed", "result_ready", "delivered"}
                 or c["purpose"] == "retry_unusable_answer"
                 and item["existing_work_status"] != "failed"
             ):
                 raise ValueError("refresh_owner_control_schedule_mismatch")
     tasks = any(i["decision"] in DISPATCH for i in state["items"])
     paid_tasks = paid_work_count(state["items"])
-    if request["protocol"] == "iqs.refresh_request/1.4.0" and paid_tasks:
+    if (
+        request["protocol"] in {"iqs.refresh_request/1.4.0", "iqs.refresh_request/1.5.0"}
+        and paid_tasks
+    ):
         paid_tasks = state["quote"]["planned_physical_requests"]
     held = any(i["decision"] in HELD for i in state["items"])
     status = (
@@ -372,8 +378,14 @@ def create_preview(request, owner_state, *, created_at, expires_at):
             cohort_id=request["cohort_id"],
             work_decision_refs=request["work_decision_refs"],
         )
-    if request["protocol"] == "iqs.refresh_request/1.4.0":
-        scope.update(cohort_id=request["cohort_id"], continuation_decision_ref=request["continuation_decision_ref"], question_ids=request["question_ids"])
+    if request["protocol"] in {"iqs.refresh_request/1.4.0", "iqs.refresh_request/1.5.0"}:
+        scope.update(
+            cohort_id=request["cohort_id"],
+            continuation_decision_ref=request["continuation_decision_ref"],
+            question_ids=request["question_ids"],
+        )
+        if request["protocol"] == "iqs.refresh_request/1.5.0":
+            scope["execution_profile_sha256"] = request["execution_profile_sha256"]
     result = dict(
         protocol="stockwiki.refresh_preview/" + request["protocol"].split("/")[-1],
         operation="request_refresh",
@@ -408,10 +420,7 @@ def create_preview(request, owner_state, *, created_at, expires_at):
 
 def validate_preview(preview, *, request, owner_state, now=None):
     _shape(preview, "Preview")
-    if (
-        type(preview["API_requests"]) is not int
-        or type(preview["policy_version"]) is not int
-    ):
+    if type(preview["API_requests"]) is not int or type(preview["policy_version"]) is not int:
         raise ValueError("refresh_integer_required")
     expected = create_preview(
         request,
@@ -421,8 +430,8 @@ def validate_preview(preview, *, request, owner_state, now=None):
     )
     if preview != expected:
         raise ValueError("refresh_preview_owner_mismatch")
-    if now is not None and not query._utc(preview["created_at"]) <= query._utc(
-        now
-    ) < query._utc(preview["expires_at"]):
+    if now is not None and not query._utc(preview["created_at"]) <= query._utc(now) < query._utc(
+        preview["expires_at"]
+    ):
         raise ValueError("refresh_preview_expired")
     return copy.deepcopy(preview)
