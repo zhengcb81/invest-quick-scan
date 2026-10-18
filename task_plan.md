@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — retry decision 请求的精确字段
+
+尝试用 owner CLI --work-decision-request 为 IQS_12 建 retry decision：被 work_decision_fields_invalid 拒绝。核对 StockWiki 合同后，retry_decision 必须精确包含：kind、work_item_id、attempt_id、idempotency_key、physical（与 store._physical 完全一致）、purpose、source_resolution_id、source_checkpoint_sha256、target_generation、retry_after_seconds、comparison_controls、requires_prior_delivery。owner preview 还需要：真实 owner dispatch receipt（receipt_id 在 owner DB）、QA executor inspector 返回 request==decision 与该 receipt、permission_request 的 ref/field/cutoff 与 dispatch 完全一致。下一步：先为 IQS_12 生成/取得 source resolution（known_response_resolution）与 owner receipt，再填全字段。
+
 ## 2026-10-18 — 新 generation 路径的要求（dispatch_new_generation）
 
 已定位重跑已 delivered 题的正式路径：refresh_request 1.2/1.3 + work_decision_refs 指向 quick_scan_owner_work_decision 里的 owd1_* 文档。文档必须由 owner journal 校验过的 retry_decision（request.kind=retry_decision、purpose∈{comparison,retry_unknown_answer,retry_unusable_answer}、work_item_id、target_generation=source+1、physical.work_fingerprint/subject_binding、grant.confirmation_id、next_retry_at/decided_at），decision_id 是其余字段的 canonical_sha256。当前没有生成该 retry decision 的 owner 工具，故普通 1.4 请求只能 reuse。下一步：实现 retry-decision 生成（或从 owner journal 读取已有 decision），再走 1.3 请求。
