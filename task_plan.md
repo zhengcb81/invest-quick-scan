@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 新题 preview 通过，最终卡在预算
+
+修好 research-only 读路径与 qa.policy_id 必须等于 budget policy id 后，1.4 owner preview 成功生成（rv1_812c5f…，IQS_01/02 均 dispatch_new_work），但 status=blocked：quote.budget_available=false，ledger 仍有 2 个 retained unreconciled attempts。owner policy 已恢复，无 confirm/admit/run、无付费。结论：不是代码，是 owner 预算决定；需结算/amend 后才能跑新题。
+
 ## 2026-10-18 — 新题运行尝试：executor inspection 被拒
 
 真实 preview 的异常是 refresh_executor_inspection_unavailable：preview 的 executor inspection 子进程失败。手动复现 quick_scan_refresh_inspect_cli（1.4.0，带/不带 admission config）均返回 refresh_executor_inspection_rejected，CLI 折叠了具体原因。owner policy 已按备份恢复（sha 一致），无付费调用。报告 docs/implementation/reviews/catl-new-run-attempt-2026-10-18.md，下一步直接抓 inspector 内部异常。

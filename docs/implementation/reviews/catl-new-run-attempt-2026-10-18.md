@@ -49,6 +49,35 @@ python -m src.utils.quick_scan_refresh_inspect_cli --ledger <qa.work_store> --po
 3. 若是 1.4 不支持该 request 形态，改回 1.5 + 找到满足 complete current sources 的两个 exposure refs；
 4. 修复后再 preview → delegated confirm → admit → 1 个 2 题 pack。
 
+## round 2：preview 已通过 executor inspection，最终卡在预算
+
+修复两个真实问题后（research-only 读路径；`policy.qa.policy_id` 必须等于 budget policy id，而不是 owner policy id），1.4 路径的 owner preview **成功生成**：
+
+- preview_id `rv1_812c5fe976ded69eb9da3ba82fcbaffb246fbe746d17774ab2fa3cdf1322a1a9`
+- items：IQS_01、IQS_02 均为 `dispatch_new_work`
+- expires_at 2026-10-18T12:04:09Z（15 分钟）
+
+但 preview **status = blocked**，原因在 quote：
+
+```json
+{"budget_available": false, "max_cost_micros": 100000, "max_http_requests": 1,
+ "planned_physical_requests": 1, "retained_unreconciled_attempts": 2,
+ "cash_actual_complete": false}
+```
+
+即：ledger 里仍有 **2 个未对账（unreconciled/unpriced）attempt**，预算不可用；不是代码问题，是 **owner 预算决定**。
+
+## 处置
+
+- owner policy 已按备份恢复（sha 一致），没有留下 1.4 policy。
+- 没有 confirm/admit/run，没有付费调用。
+- 预览记录留在 runs（会随 policy 恢复而失效）。
+
+## 下一步
+
+1. owner 对 2 个 retained unreconciled attempts 做结算/预算 amend（这是 owner 决定，不是 agent 可代做）；
+2. 重新生成 1.4 preview；budget_available=true 后 confirm → admit → 2 题 pack；
+3. 若 owner 不愿动旧账，则新题真实运行只能暂缓。
 ## 现状
 
 - 209 verified / 5 provisional；214 画像页；CATL 2 条旧观察 + 金融复核；新题运行未发生。
