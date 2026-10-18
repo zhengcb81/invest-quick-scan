@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — v2 reviewed delivery 被独立审查否决，已撤下
+
+独立审查：reviewer 自证、scope 自选子集、绕过 v1 CAS/public-context，High 1-3 不可接受。已删除 v2 verifier、撤下 controller v2 分支、恢复 owner policy（3239c35b…）、未 dispatch/未付费；QA 补 fresh 分支零计数校验。要解锁需 owner 提供可验证信任锚（固定 reviewer/签名或可验证批准）。报告 docs/implementation/reviews/deployment-v2-review-2026-10-18.md。
+
 ## 2026-10-18 — reviewed delivery v2：deployment proof
 
 新增 scripts/deployment_proof_v2.py：iqs.deployment_proof/2.0.0 由 reviewed scope + 独立 review 文档绑定（reviewer != authors、open_findings 空、scope_sha256 匹配），controller_delivery.verify_deployment 对 v2 proof 走新校验。4+1 个单测通过。下一步：独立 review 本轮 scope 文件 -> 生成 review final + proof -> 重走 admission/run。
