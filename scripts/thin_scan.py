@@ -42,7 +42,7 @@ def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict
 
 def search(provider: dict, query: str, count: int) -> list[dict]:
     key = os.environ.get(provider["key_env"], "")
-    status, payload = post_json(provider["endpoint"], key, {"query": query, "count": count, "need_content": False}, 60)
+    status, payload = post_json(provider["endpoint"], key, {"query": query, "count": count, "need_content": False}, 30)
     if status != 200 or not isinstance(payload, dict):
         return []
     results = payload.get("results")
@@ -84,7 +84,7 @@ def ask_model(provider: dict, company: str, question: str, sources: list[dict]) 
     )
     body = {"model": provider["model"], "messages": [{"role": "user", "content": prompt}],
             "temperature": 0, "max_tokens": 1200}
-    status, payload = post_json(provider["endpoint"], key, body, 180)
+    status, payload = post_json(provider["endpoint"], key, body, 90)
     if status != 200 or not isinstance(payload, dict):
         return {"error": f"model_http_{status}"}
     choices = payload.get("choices") or []

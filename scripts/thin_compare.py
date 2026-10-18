@@ -7,7 +7,16 @@ import json
 import shutil
 from pathlib import Path
 
-NAMES = {"thin-scan-catl-2026-10-18": "宁德时代", "thin-scan-000026-2026-10-18": "飞亚达", "thin-scan-alphabet-2026-10-18": "Alphabet"}
+NAMES = {
+    "thin-scan-catl-2026-10-18": "宁德时代",
+    "thin-scan-000026-2026-10-18": "飞亚达",
+    "thin-scan-alphabet-2026-10-18": "Alphabet",
+    "thin-scan-vanke-2026-10-18": "万科",
+    "thin-scan-wanhua-2026-10-18": "万华化学",
+    "thin-scan-pingan-2026-10-18": "中国平安",
+    "thin-scan-amec-2026-10-18": "中微公司",
+    "thin-scan-microsoft-2026-10-18": "微软",
+}
 
 
 def main() -> int:
