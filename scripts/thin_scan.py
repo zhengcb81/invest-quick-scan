@@ -192,7 +192,7 @@ def main() -> int:
             record["summary"] = "dry-run：未调用搜索或模型。"
         else:
             for attempt in range(max(1, args.max_searches_per_question)):
-                query = args.company + " " + q["question"] + (" 2025 2026" if attempt else "")
+                query = (args.company + " " + q["question"] + (" 2025 2026" if attempt else ""))[:220]
                 found = search(search_provider, query, 5)
                 searches += 1
                 spent += int(search_provider.get("cost_micros", 0))
