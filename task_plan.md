@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 回归：owner 查询拒绝既有 CATL subject
+
+尝试真实小规模产品验证（CATL 新题 / 000026）时发现：即使 CATL 当初成功的字段（score.iqs_12/16），owner query CLI 现在也返回 subject_contract_output_invalid（0 API）。已排除 current package 切换、000026 subject 导入、release 校验本身；失败点在 IqsSubjectContract 的输出校验/子进程调用，尚未定位。可疑改动：routing 包发布、subject_dispatch_contract 的 research_only seam。影响：新画像运行被阻塞，既有观察/身份不受影响；无付费调用。报告 docs/implementation/reviews/owner-query-regression-2026-10-18.md；下一步二分定位 + 诊断，不猜、不付费。
+
 ## 2026-10-18 — C：公司页补“状态与下一步”
 
 profile_page 为每家公司在页首显示：identity 状态、owner 路由有无、观察数、下一步（需要 verified / 需要 owner 准入 / 可跑画像 / 已有观察）。CATL=“已有观察（路由有、2 条）”，000026=“需要 owner 准入（路由无、0 条）”。214 页重新生成；dashboard 入口不变。只读、无模型调用。
