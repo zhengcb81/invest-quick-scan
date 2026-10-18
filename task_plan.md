@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — exposure 合同增加 policy schema 校验
+
+search_exposure_contract 支持可选 policy_schema（QA 的 search policy schema）；DeepSeek 草案通过 schema + sha，仍只剩 storage_rights_unconfirmed。测试 7 passed。
+
 ## 2026-10-18 — DeepSeek client 路由修正
 
 client 不再盲取 exposure 第一条路由，而是显式选择 provider=deepseek 的 route；缺失则 deepseek_route_not_in_exposure。新增 1 个单测（6 passed）。

@@ -83,3 +83,11 @@ def test_route_budget_must_cover_session_cap(tmp_path):
     )
     assert result["status"] == "rejected"
     assert "route_query_budget_below_session_cap" in result["errors"]
+
+
+def test_policy_schema_is_enforced(tmp_path):
+    env = {"BRAVE_API_KEY": "x", "TAVILY_API_KEY": "y"}
+    schema = {"type": "object", "required": ["enabled"], "properties": {"enabled": {"const": True}}}
+    result = contract.validate(document(tmp_path), base_dir=tmp_path, environ=env, policy_schema=schema)
+    assert result["status"] == "rejected"
+    assert any(error.startswith("search_policy_schema_invalid") for error in result["errors"])

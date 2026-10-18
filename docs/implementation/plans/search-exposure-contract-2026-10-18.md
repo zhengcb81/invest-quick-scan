@@ -43,3 +43,8 @@ scripts/search_exposure_binding.py 校验：
 - exposure 的 consumer_id 在 owner policy 的 allowed_consumer_ids 内。
 
 输出 iqs.search_exposure.binding/1.0.0；失败退出码 2。这样在 preview/admission 之前就能发现“文档哈希没写进 cell”的问题。
+
+
+## policy schema 校验（补充）
+
+search_exposure_contract.validate 新增可选 policy_schema：policy 文件哈希匹配后再跑 QA 的 quick_scan_search_policy schema，失败记 search_policy_schema_invalid。CLI 增加 --policy-schema。DeepSeek 草案在该 schema 下通过，仍只报 storage_rights_unconfirmed。测试 7 passed。

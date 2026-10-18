@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = json.loads((ROOT / "schemas/quick_scan/search-exposure-v1.schema.json").read_bytes())
 
 
-def validate(document, *, base_dir=None, environ=None):
+def validate(document, *, base_dir=None, environ=None, policy_schema=None):
     environ = os.environ if environ is None else environ
     base = Path(base_dir or ".").resolve()
     errors = []
@@ -35,6 +35,12 @@ def validate(document, *, base_dir=None, environ=None):
         actual = hashlib.sha256(policy.read_bytes()).hexdigest()
         if actual != document["search_policy_sha256"]:
             errors.append("search_policy_sha256_mismatch")
+        elif policy_schema is not None:
+            try:
+                value = json.loads(policy.read_text(encoding="utf-8"))
+                Draft202012Validator(policy_schema).validate(value)
+            except Exception as error:
+                errors.append("search_policy_schema_invalid:" + str(error).splitlines()[0][:160])
     if document["storage_rights"].get("confirmed") is not True:
         errors.append("storage_rights_unconfirmed")
     if not any(route["enabled"] for route in document["routes"]):
@@ -62,6 +68,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--document", required=True, type=Path)
     parser.add_argument("--base-dir", type=Path)
+    parser.add_argument("--policy-schema", type=Path)
     args = parser.parse_args(argv)
     raw = args.document.read_bytes()
     try:
@@ -70,7 +77,8 @@ def main(argv=None):
         print(json.dumps(dict(protocol="iqs.search_exposure.validation/1.0.0", status="rejected",
                               errors=["document_not_strict_json"])))
         return 2
-    result = validate(document, base_dir=args.base_dir or args.document.parent)
+    schema = json.loads(args.policy_schema.read_text(encoding="utf-8")) if args.policy_schema else None
+    result = validate(document, base_dir=args.base_dir or args.document.parent, policy_schema=schema)
     print(json.dumps(result, ensure_ascii=False, sort_keys=True))
     return 0 if result["status"] == "valid" else 2
 
