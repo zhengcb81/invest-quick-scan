@@ -240,6 +240,7 @@ def create_company_scan_task(
     limits=None,
     pack_by="module",
     max_questions_per_pack=12,
+    search_exposure=None,
 ):
     from iqs_company_agent_lab.canonical import canonical_json, sha256_hex
     from iqs_company_agent_lab.task import LoadedTask
@@ -424,6 +425,7 @@ def create_company_scan_task(
         pack_by=pack_by,
         max_questions_per_pack=max_questions_per_pack,
         limits=selected_limits,
+        search_exposure=search_exposure,
     )
     raw["execution_profile"] = execution
     raw["execution_profile_sha256"] = sha256_hex(execution)
