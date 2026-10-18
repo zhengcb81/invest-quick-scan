@@ -39,7 +39,7 @@ def receipt(cost=5000):
     return {
         "protocol": "iqs.search_receipt/1.0.0",
         "exposure_sha256": receipts.canonical_sha256(exposure()),
-        "policy_sha256": "b" * 64,
+        "policy_sha256": exposure()["search_policy_sha256"],
         "provider": "deepseek",
         "route_id": "deepseek-primary",
         "query": "q",
@@ -86,3 +86,38 @@ def test_missing_exposure_rejected():
     result = binding.bind({"execution_profile": {}}, [receipt()])
     assert result["status"] == "rejected"
     assert "task_search_exposure_missing" in result["errors"]
+
+
+def test_empty_receipts_rejected():
+    profile = {"execution_profile": {"search_exposure": exposure()}}
+    result = binding.bind(profile, [])
+    assert result["status"] == "rejected"
+    assert "receipts_required" in result["errors"]
+
+
+def test_all_unavailable_rejected():
+    profile = {"execution_profile": {"search_exposure": exposure()}}
+    row = receipt()
+    row["status"] = "unavailable"
+    row["results"] = []
+    row["result_count"] = 0
+    row["cost_micros"] = 0
+    row["error_reason"] = "http_503"
+    result = binding.bind(profile, [row])
+    assert result["status"] == "rejected"
+    assert "receipts_without_ok_result" in result["errors"]
+
+
+def test_checkpoint_without_hash_rejected():
+    profile = {"execution_profile": {"search_exposure": exposure()}}
+    result = binding.bind(profile, [receipt()], checkpoint={})
+    assert result["status"] == "rejected"
+    assert "checkpoint_receipts_sha256_required" in result["errors"]
+
+
+def test_duplicate_receipts_rejected():
+    profile = {"execution_profile": {"search_exposure": exposure()}}
+    row = receipt()
+    result = binding.bind(profile, [row, row])
+    assert result["status"] == "rejected"
+    assert "duplicate_receipts" in result["errors"]

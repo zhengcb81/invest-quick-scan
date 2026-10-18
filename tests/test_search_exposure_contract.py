@@ -91,3 +91,39 @@ def test_policy_schema_is_enforced(tmp_path):
     result = contract.validate(document(tmp_path), base_dir=tmp_path, environ=env, policy_schema=schema)
     assert result["status"] == "rejected"
     assert any(error.startswith("search_policy_schema_invalid") for error in result["errors"])
+
+
+def test_duplicate_route_ids_rejected(tmp_path):
+    env = {"BRAVE_API_KEY": "x", "TAVILY_API_KEY": "y"}
+    doc = document(tmp_path)
+    doc["routes"][1]["route_id"] = doc["routes"][0]["route_id"]
+    result = contract.validate(doc, base_dir=tmp_path, environ=env)
+    assert result["status"] == "rejected"
+    assert "duplicate_route_ids" in result["errors"]
+
+
+def test_currency_must_match_policy_pricing(tmp_path):
+    env = {"BRAVE_API_KEY": "x", "TAVILY_API_KEY": "y"}
+    doc = document(tmp_path, currency="CNY")
+    policy = tmp_path / "search-policy.json"
+    policy.write_text('{"external_routes": [{"pricing": {"currency": "USD"}}]}', encoding="utf-8")
+    doc["search_policy_sha256"] = hashlib.sha256(policy.read_bytes()).hexdigest()
+    result = contract.validate(doc, base_dir=tmp_path, environ=env)
+    assert result["status"] == "rejected"
+    assert "search_policy_currency_mismatch" in result["errors"]
+
+
+def test_approved_at_must_be_real_date(tmp_path):
+    env = {"BRAVE_API_KEY": "x", "TAVILY_API_KEY": "y"}
+    result = contract.validate(document(tmp_path, approved_at="2026-99-99T12:00:00Z"),
+                               base_dir=tmp_path, environ=env)
+    assert result["status"] == "rejected"
+    assert "approved_at_invalid" in result["errors"]
+
+
+def test_approved_at_future_rejected(tmp_path):
+    env = {"BRAVE_API_KEY": "x", "TAVILY_API_KEY": "y"}
+    result = contract.validate(document(tmp_path, approved_at="2099-01-01T00:00:00Z"),
+                               base_dir=tmp_path, environ=env)
+    assert result["status"] == "rejected"
+    assert "approved_at_in_future" in result["errors"]

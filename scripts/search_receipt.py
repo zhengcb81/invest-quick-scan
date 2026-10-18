@@ -29,8 +29,10 @@ def canonical_sha256(value):
 
 
 def from_response(raw, *, exposure, policy_sha256, provider, route_id, query, requested_at, completed_at, cost_micros):
+    if not isinstance(raw, (bytes, bytearray, str)):
+        raise ValueError("search_response_must_be_bytes_or_text")
     try:
-        payload = json.loads(raw.decode("utf-8")) if isinstance(raw, (bytes, bytearray)) else raw
+        payload = json.loads(raw.decode("utf-8") if isinstance(raw, (bytes, bytearray)) else raw)
     except (UnicodeError, json.JSONDecodeError) as error:
         raise ValueError("search_response_not_strict_json") from error
     rows = payload.get("results") if isinstance(payload, dict) else None
@@ -40,11 +42,14 @@ def from_response(raw, *, exposure, policy_sha256, provider, route_id, query, re
     for row in rows:
         if not isinstance(row, dict) or not isinstance(row.get("url"), str) or not isinstance(row.get("title"), str):
             raise ValueError("search_response_result_invalid")
+        score = row.get("rerank_score", 0)
+        if isinstance(score, bool) or not isinstance(score, (int, float)):
+            raise ValueError("search_response_rerank_score_invalid")
         item = {
             "title": row["title"],
             "url": row["url"],
             "snippet": row.get("snippet") or "",
-            "rerank_score": float(row.get("rerank_score", 0)),
+            "rerank_score": float(score),
         }
         if isinstance(row.get("summary"), str):
             item["summary"] = row["summary"]
@@ -73,9 +78,15 @@ def from_response(raw, *, exposure, policy_sha256, provider, route_id, query, re
 
 def validate(receipt, *, exposure=None):
     VALIDATOR.validate(receipt)
+    if receipt["status"] in {"ok", "empty"} and receipt["cost_micros"] <= 0:
+        raise ValueError("search_receipt_cost_required")
+    if receipt["completed_at"] < receipt["requested_at"]:
+        raise ValueError("search_receipt_time_order_invalid")
     if exposure is not None:
         if receipt["exposure_sha256"] != canonical_sha256(exposure):
             raise ValueError("search_receipt_exposure_mismatch")
+        if receipt["policy_sha256"] != exposure["search_policy_sha256"]:
+            raise ValueError("search_receipt_policy_mismatch")
         if receipt["cost_micros"] > exposure["max_search_cost_micros"]:
             raise ValueError("search_receipt_cost_exceeds_exposure")
         if receipt["currency"] != exposure["currency"]:
@@ -92,10 +103,10 @@ def validate(receipt, *, exposure=None):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--receipt", required=True, type=Path)
-    parser.add_argument("--exposure", type=Path)
+    parser.add_argument("--exposure", required=True, type=Path)
     args = parser.parse_args(argv)
     receipt = json.loads(args.receipt.read_text(encoding="utf-8"))
-    exposure = json.loads(args.exposure.read_text(encoding="utf-8")) if args.exposure else None
+    exposure = json.loads(args.exposure.read_text(encoding="utf-8"))
     try:
         validate(receipt, exposure=exposure)
     except Exception as error:

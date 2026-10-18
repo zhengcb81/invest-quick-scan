@@ -37,7 +37,7 @@ def build(raw, **kw):
     return receipt_module.from_response(
         raw,
         exposure=exposure(),
-        policy_sha256="b" * 64,
+        policy_sha256=exposure()["search_policy_sha256"],
         provider="deepseek",
         route_id="deepseek-primary",
         query="宁德时代 2025 年报 营收",
@@ -83,7 +83,7 @@ def test_route_not_in_exposure_rejected():
     raw = response([{"title": "t", "url": "https://example.com", "snippet": "", "rerank_score": 1}])
     try:
         receipt_module.from_response(
-            raw, exposure=exposure(), policy_sha256="b" * 64, provider="brave",
+            raw, exposure=exposure(), policy_sha256=exposure()["search_policy_sha256"], provider="brave",
             route_id="brave-primary", query="q",
             requested_at="2026-10-18T12:00:00Z", completed_at="2026-10-18T12:00:01Z",
             cost_micros=1000,
@@ -101,5 +101,64 @@ def test_result_count_mismatch_rejected():
         receipt_module.validate(receipt)
     except Exception as error:
         assert "result_count" in str(error) or "minimum" in str(error)
+    else:
+        raise AssertionError("expected rejection")
+
+
+def test_ok_receipt_requires_positive_cost():
+    raw = response([{"title": "t", "url": "https://example.com", "snippet": "", "rerank_score": 1}])
+    try:
+        build(raw, cost_micros=0)
+    except ValueError as error:
+        assert "cost_required" in str(error)
+    else:
+        raise AssertionError("expected rejection")
+
+
+def test_policy_hash_must_match_exposure():
+    raw = response([{"title": "t", "url": "https://example.com", "snippet": "", "rerank_score": 1}])
+    try:
+        receipt_module.from_response(
+            raw, exposure=exposure(), policy_sha256="c" * 64, provider="deepseek",
+            route_id="deepseek-primary", query="q",
+            requested_at="2026-10-18T12:00:00Z", completed_at="2026-10-18T12:00:01Z",
+            cost_micros=5000,
+        )
+    except ValueError as error:
+        assert "policy_mismatch" in str(error)
+    else:
+        raise AssertionError("expected rejection")
+
+
+def test_raw_dict_rejected():
+    try:
+        build({"results": []})
+    except ValueError as error:
+        assert "must_be_bytes_or_text" in str(error)
+    else:
+        raise AssertionError("expected rejection")
+
+
+def test_non_numeric_rerank_rejected():
+    raw = response([{"title": "t", "url": "https://example.com", "snippet": "", "rerank_score": None}])
+    try:
+        build(raw)
+    except ValueError as error:
+        assert "rerank_score_invalid" in str(error)
+    else:
+        raise AssertionError("expected rejection")
+
+
+def test_time_order_enforced():
+    raw = response([{"title": "t", "url": "https://example.com", "snippet": "", "rerank_score": 1}])
+    try:
+        receipt_module.from_response(
+            raw, exposure=exposure(), policy_sha256=exposure()["search_policy_sha256"],
+            provider="deepseek", route_id="deepseek-primary", query="q",
+            requested_at="2026-10-18T12:00:05Z", completed_at="2026-10-18T12:00:01Z",
+            cost_micros=5000,
+        )
+    except ValueError as error:
+        assert "time_order" in str(error)
     else:
         raise AssertionError("expected rejection")

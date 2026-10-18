@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 搜索链路独立审查整改
+
+按独立审查修复 High/Medium：checkpoint 拒绝空/全 unavailable、receipt 0 费与 policy sha 绑定、checkpoint hash 必填、重复回执拒绝、client endpoint allowlist/need_content bool/非 200 validate、exposure 重复 route/币种/日期校验、binding 要求 policy 路由已准入。新增 12 个测试，search 链路 44 passed。DeepSeek 草案仍只报 storage_rights_unconfirmed。
+
 ## 2026-10-18 — exposure 合同增加 policy schema 校验
 
 search_exposure_contract 支持可选 policy_schema（QA 的 search policy schema）；DeepSeek 草案通过 schema + sha，仍只剩 storage_rights_unconfirmed。测试 7 passed。

@@ -60,3 +60,20 @@ scripts/search_checkpoint_binding.py：
 - 若 checkpoint 带 search_receipts_sha256，必须精确相等。
 
 输出 iqs.search_checkpoint_binding/1.0.0；失败退出码 2。5 个单测通过。该模块只做绑定校验，不授权发送。
+
+
+## 独立审查整改（2026-10-18）
+
+- 空/全 unavailable 回执：checkpoint binding 现在要求非空且至少 1 条 status=ok。
+- 0 费：ok/empty 回执要求 cost_micros>0；client 禁止 0 费。
+- policy 绑定：receipt.policy_sha256 必须等于 exposure.search_policy_sha256。
+- checkpoint：非 None 时必须含 64hex search_receipts_sha256。
+- 重复回执：拒绝（duplicate_receipts）。
+- client：endpoint 只允许官方地址；need_content 必须 bool；非 200 回执也走 validate。
+- receipt CLI：--exposure 必填；raw 仅接受 bytes/str；rerank_score 必须数值；completed_at >= requested_at。
+- exposure 合同：route_id 唯一；currency 必须匹配 policy pricing.currency；approved_at 必须是真实日期且不在未来。
+- binding：owner policy 必须存在 enabled + cost_bound_verified + storage_rights.confirmed 的路由，且 exposure route 必须在 policy 内。
+- schema provider enum 增加 zai。
+- 仍未做：schema 层 result_count==len(results) 绑定（运行时 validate 已强制，文档要求必须调用 validate）。
+
+测试：search 链路 44 passed。

@@ -9,6 +9,7 @@ import argparse
 import hashlib
 import json
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
@@ -35,12 +36,35 @@ def validate(document, *, base_dir=None, environ=None, policy_schema=None):
         actual = hashlib.sha256(policy.read_bytes()).hexdigest()
         if actual != document["search_policy_sha256"]:
             errors.append("search_policy_sha256_mismatch")
-        elif policy_schema is not None:
+        else:
             try:
                 value = json.loads(policy.read_text(encoding="utf-8"))
-                Draft202012Validator(policy_schema).validate(value)
-            except Exception as error:
-                errors.append("search_policy_schema_invalid:" + str(error).splitlines()[0][:160])
+            except (UnicodeError, json.JSONDecodeError):
+                errors.append("search_policy_not_strict_json")
+            else:
+                currencies = {
+                    (route.get("pricing") or {}).get("currency")
+                    for route in value.get("external_routes", [])
+                    if isinstance(route, dict)
+                }
+                currencies.discard(None)
+                if currencies and document["currency"] not in currencies:
+                    errors.append("search_policy_currency_mismatch")
+                if policy_schema is not None:
+                    try:
+                        Draft202012Validator(policy_schema).validate(value)
+                    except Exception as error:
+                        errors.append("search_policy_schema_invalid:" + str(error).splitlines()[0][:160])
+    route_ids = [route.get("route_id") for route in document["routes"]]
+    if len(set(route_ids)) != len(route_ids):
+        errors.append("duplicate_route_ids")
+    try:
+        approved = datetime.strptime(document["approved_at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except (TypeError, ValueError):
+        errors.append("approved_at_invalid")
+    else:
+        if approved > datetime.now(timezone.utc).replace(microsecond=0):
+            errors.append("approved_at_in_future")
     if document["storage_rights"].get("confirmed") is not True:
         errors.append("storage_rights_unconfirmed")
     if not any(route["enabled"] for route in document["routes"]):

@@ -44,6 +44,10 @@ def policy(tmp_path, document_sha256, consumer="invest-quick-scan"):
     return {
         "policy_id": "POLICY_TEST",
         "allowed_consumer_ids": [consumer],
+        "external_routes": [
+            {"route_id": "brave-primary", "enabled": True, "cost_bound_verified": True,
+             "storage_rights": {"confirmed": True}}
+        ],
         "budget_exposure_acceptance": {
             "control": {
                 "cells": [
@@ -91,3 +95,13 @@ def test_binding_rejects_consumer_not_allowed(tmp_path):
                           doc, base_dir=tmp_path, environ=env)
     assert result["status"] == "rejected"
     assert "consumer_not_allowed_by_owner_policy" in result["errors"]
+
+
+def test_binding_rejects_inert_policy_route(tmp_path):
+    env = {"BRAVE_API_KEY": "x"}
+    doc = exposure(tmp_path)
+    value = policy(tmp_path, binding.canonical_sha256(doc))
+    value["external_routes"][0]["cost_bound_verified"] = False
+    result = binding.bind(value, doc, base_dir=tmp_path, environ=env)
+    assert result["status"] == "rejected"
+    assert "owner_policy_search_route_not_admitted" in result["errors"]

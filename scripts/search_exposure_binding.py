@@ -46,6 +46,21 @@ def bind(policy, exposure, *, base_dir=None, environ=None):
     allowed = policy.get("allowed_consumer_ids") if isinstance(policy, dict) else None
     if not isinstance(allowed, list) or exposure["consumer_id"] not in allowed:
         errors.append("consumer_not_allowed_by_owner_policy")
+    routes = policy.get("external_routes") if isinstance(policy, dict) else None
+    admitted = [
+        route
+        for route in (routes or [])
+        if isinstance(route, dict)
+        and route.get("enabled") is True
+        and route.get("cost_bound_verified") is True
+        and (route.get("storage_rights") or {}).get("confirmed") is True
+    ]
+    if not admitted:
+        errors.append("owner_policy_search_route_not_admitted")
+    exposure_routes = {route["route_id"] for route in exposure.get("routes", [])}
+    policy_routes = {route.get("route_id") for route in (routes or []) if isinstance(route, dict)}
+    if exposure_routes - policy_routes:
+        errors.append("exposure_route_not_in_owner_policy")
     return dict(
         protocol=PROTOCOL,
         status="bound" if not errors else "rejected",

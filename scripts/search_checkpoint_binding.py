@@ -29,6 +29,8 @@ def bind(profile, receipt_rows, *, checkpoint=None):
         return dict(protocol=PROTOCOL, status="rejected", errors=["task_search_exposure_missing"])
     if not isinstance(receipt_rows, list):
         return dict(protocol=PROTOCOL, status="rejected", errors=["receipts_must_be_list"])
+    if not receipt_rows:
+        return dict(protocol=PROTOCOL, status="rejected", errors=["receipts_required"])
     limit = exposure.get("max_search_queries_per_session")
     if not isinstance(limit, int) or len(receipt_rows) > limit:
         errors.append("receipt_count_exceeds_exposure")
@@ -44,9 +46,20 @@ def bind(profile, receipt_rows, *, checkpoint=None):
         checked.append(row)
     if total_cost > exposure.get("max_search_cost_micros", 0):
         errors.append("receipt_cost_exceeds_exposure")
-    receipts_sha256 = canonical_sha256([canonical_sha256(row) for row in checked])
-    if isinstance(checkpoint, dict) and "search_receipts_sha256" in checkpoint:
-        if checkpoint["search_receipts_sha256"] != receipts_sha256:
+    if not any(row.get("status") == "ok" for row in checked):
+        errors.append("receipts_without_ok_result")
+    hashes = [canonical_sha256(row) for row in checked]
+    if len(set(hashes)) != len(hashes):
+        errors.append("duplicate_receipts")
+    receipts_sha256 = canonical_sha256(hashes)
+    if checkpoint is not None:
+        if (
+            not isinstance(checkpoint, dict)
+            or not isinstance(checkpoint.get("search_receipts_sha256"), str)
+            or len(checkpoint["search_receipts_sha256"]) != 64
+        ):
+            errors.append("checkpoint_receipts_sha256_required")
+        elif checkpoint["search_receipts_sha256"] != receipts_sha256:
             errors.append("checkpoint_receipts_hash_mismatch")
     return dict(
         protocol=PROTOCOL,

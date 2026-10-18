@@ -48,8 +48,14 @@ def search(
     timeout=30,
     cost_micros=DEFAULT_COST_MICROS,
 ):
+    if endpoint != ENDPOINT:
+        raise ValueError("deepseek_endpoint_not_allowed")
     if not isinstance(api_key, str) or not api_key.strip():
         raise ValueError("deepseek_api_key_required")
+    if type(need_content) is not bool:
+        raise ValueError("search_need_content_bool_required")
+    if type(cost_micros) is not int or cost_micros < 1:
+        raise ValueError("search_cost_micros_required")
     route = next((row for row in exposure.get("routes", []) if row.get("provider") == "deepseek"), None)
     if route is None:
         raise ValueError("deepseek_route_not_in_exposure")
@@ -67,7 +73,7 @@ def search(
     status, body = (transport or _urllib_transport)(endpoint, payload, headers, timeout)
     requested_at = receipts.utc_now()
     if status != 200:
-        return {
+        receipt = {
             "protocol": "iqs.search_receipt/1.0.0",
             "exposure_sha256": receipts.canonical_sha256(exposure),
             "policy_sha256": policy_sha256,
@@ -84,6 +90,8 @@ def search(
             "response_sha256": receipts.hashlib.sha256(body).hexdigest(),
             "error_reason": "http_" + str(status),
         }
+        receipts.validate(receipt, exposure=exposure)
+        return receipt
     receipt = receipts.from_response(
         body,
         exposure=exposure,
