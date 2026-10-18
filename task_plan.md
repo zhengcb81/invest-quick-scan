@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — routing 包发布候选（选项 A）成文
+
+副本发布结果与差异已写成 docs/implementation/reviews/routing-package-candidate-2026-10-18.md：新包 pkg_b5a41d8c…、release modrel_fc5de4…、48 模块/222 题；与历史包 modules/contexts 完全相同，仅 release 路由元数据变化；000026 route 产出但 minimum_questions=24，max=1 被拒、max=24 成功。真实发布需 owner 批准 + 独立审查，改动面是新增 release、切换 current.json；无网络/模型。备选 B 仍需 24 题覆盖或改 policy。
+
 ## 2026-10-18 — verified 身份批最终 PASS（闭合）
 
 独立复审最终 PASS：209 verified / 5 provisional、CN 201/205、US 11/11、HK 0/1、receipt 424；200 条 cninfo 全覆盖 official_short/name_gate（全 equal、原始差异 2 条 NFKC 等价）、SEC 7+7、pre-existing 具名、审计 207/0/2；name_gate 收紧为仅 equal。节点闭合，5 家 provisional 见缺口登记且 scoring-ineligible。
