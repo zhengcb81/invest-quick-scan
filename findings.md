@@ -1,3 +1,12 @@
+## 2026-10-18 — publication round2：可复现的真实链前置与审查结论
+
+1. 真实 publication 请求可从真实 bundle + 自有账本副本只读派生，hash cd9de680…；请求含两题成员 IQS_12/IQS_16、各自 work/attempt/generation、safe payload 与 C06 授权 hash。派生不写库，副本上 publish 预飞通过且预算 102 行不变、幂等。
+2. 真实 owner workspace 的 store_id 由观察库路径派生，因此任何复制 namespace 的公开正例都会被原 receipt 校验正确拒绝；公开正例必须由原软件在一次性新根生成（owner workspace + QA native 双方同时重建），不能改 receipt 或复用真实副本冒充。
+3. 审查确认：llm_runner 不需要改动，v3 的拒绝在 QuickScanWorkStore.get_answer_checkpoint 默认参数；把仅换行差异的文件当产品 delta 会污染 CAS。已从冻结集移除。
+4. 候选文件必须按目标仓换行约定归一后再冻结；否则应用即改写整个文件并破坏 hooks。round2 已归一并重冻 CAS bc2ec787…。
+5. 真实账本 24→25 迁移前必须保留可回滚备份与逻辑摘要；当前源 SHA 960e9eb0…、备份逻辑相同、user_version 24。迁移与出版只能在增量复审通过后进行。
+6. SW 能力校验是安全边界：默认关闭、配置形状封闭、路径绝对、task/authority hash 与请求绑定、过期即拒；18 项负例已覆盖，但 delegated 确认与配对 IQS roots 仍需公开正例验证。
+
 ## 2026-10-18 — 暂停前确认的出版边界
 
 1. Company 研究槽2/2与原 StockQA checkpoint/outbox/StockWiki ACK 是不同完成状态：后者尚未完成，真实两 work 仍 uncertain。

@@ -1,3 +1,17 @@
+## 2026-10-18 — 恢复主线：publication 节点第二轮修复与真实链预飞
+
+用户解除暂停并要求继续主线（共享引擎生产接线、真实摘要、缓存恢复验收），从根因修复、及时提交并更新 PWF，同时准备三个互不影响的独立施工包。本轮先做 publication 节点（唯一未交付节点）。
+
+**已完成（沙箱/自有副本，无真实写入）**：只读派生真实请求 `cd9de68078d99ab8df2d4bcf51c8c53a4cb263cb942675244c95c3cb17e3c4bc`（真实 task-bundle 8446eeda…、C06 授权 39e27d3e…、两题 IQS_12/IQS_16、sdk 4d46a825…）；真实账本与 owner workspace 已做备份并记录逻辑摘要（源 7d74049c…、备份相同、102 预算行、user_version 24）。在真实账本的**自有副本**上预飞 publish：2 个 schema-v3 checkpoint、2 条 sealed delivery、两个 work 变 result_ready、预算 102 行与其余 work 行不变、幂等重放相等。真实库未迁移、未发布、未新增 HTTP。
+
+**独立审查 round1（另一 agent，快照 9ac52b5e…）**：verdict changes_requested。B1 无真实 driver；B2 无 original-software 公开正例；M1 llm_runner 仅换行无功能差异；M2 全部候选为 CRLF 而目标为 LF；M3 无 SW 侧能力/默认关闭测试；m1 leased 行 lease_expires_at=NULL 触发 TypeError；m2 identity_state 未前置校验；m3 CAS 状态与文档矛盾。真实激活未获批准。
+
+**round2 修复（已做）**：llm_runner 从 CAS 移除（拒绝由 work_store.get_answer_checkpoint 默认实现）；17+1 文件按目标换行归一并重新冻结 CAS `bc2ec787b795c02b8876101e1c73c184a6c836b96e8cf3bee2cf2594f5868959`；新增 SW 能力负例矩阵 18P（`sw/tests/test_saved_research_publication_capability.py`）；m1/m2 增加显式拒绝；新增 `round2-status.md` 说明未获批准。QA 单测 5P（`evidence/round2-unit.xml`），SW 18P（`evidence/round2-swcap.xml`）。
+
+**进行中**：B2 由独立 agent 构建 fresh synthetic original namespace 的公开 E2E；controller driver `run_actual_publication.py` 已落地并通过预检骨架编译，真实执行待 B2 与增量复审。三个施工包已写入 `docs/implementation/parallel-lanes/packages/2026-10-18/`，待独立审查。
+
+**边界**：未应用源码、未安装 capability、未确认、未迁移真库、未付费调用。三个已派发 Lab 继续活动 writer 隔离。
+
 ## 2026-10-18 — 按用户要求收尾暂停
 
 用户要求“手头做好了先暂停吧”。已完成的真实 CATL 两题缓存恢复及独审保持交付（IQS a05dc8b、StockQA c910ed9 已推送；Runtime f8e251f / StockWiki 809b501 本地无 remote）。当前非评分正式出版节点仅保存隔离候选，不做真实源应用、schema25 迁移、publisher 激活或新付费请求；本项目整体未完成。
@@ -233,7 +247,7 @@ Company核心仍为已交付cd5e3e7。owner 服务实际原软件批准/SDK两�
 
 ## Next Step
 
-保持暂停；用户恢复后，先读取暂停交接和候选 handoff，核原仓 HEAD/base SHA，再完成同一 saved-research-publication 隔离整节点。公开正例须由原 native 软件生成独立 namespace；通过集中测试和不同 agent 整包审查后，才精确应用及实际零 HTTP 非评分入库。当前不得自动激活或重发模型。
+继续同一 publication 节点：完成 B2 的 fresh synthetic original namespace 公开正例（preview→delegated confirm→inspect→apply→deliver→import→ACK→重放），据 round2 发现做增量独立复审；通过后精确应用 18 文件到 StockQAbyLLM/StockWiki，运行正常 hooks 与既定测试，安装固定 capability，用 `run_actual_publication.py` 执行真实零 HTTP 非评分出版，保存前后账本与幂等证据。任何未知/拒绝保留现场，不重发模型、不清未决费用、不补造搜索证明。
 
 ## 2026-10-18 — 三个独立研究包交付验收收口
 

@@ -1,0 +1,106 @@
+{
+  "format_version": "1.0.0",
+  "observed_at_utc": "2026-10-18T00:00:00Z",
+  "task_source": "../../../tasks.json",
+  "coordinator_write_scope": "C:/Users/郑曾波/Projects/invest-quick-scan",
+  "workers_dispatched": false,
+  "default_live_enabled": false,
+  "packages": [
+    {
+      "id": "DELIVERY-AUDIT-11",
+      "lane_id": "iqs",
+      "document": "DELIVERY-AUDIT-11.md",
+      "task_ids": [
+        "X09"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-delivery-audit-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src/iqs_delivery_audit",
+        "schemas",
+        "content",
+        "fixtures",
+        "tests",
+        "tools",
+        ".tmp",
+        "docs/handoff/DELIVERY-AUDIT-11"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "offline_delivery_bundle_audit_candidate_only",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none"
+    },
+    {
+      "id": "COST-LEDGER-11",
+      "lane_id": "iqs",
+      "document": "COST-LEDGER-11.md",
+      "task_ids": [
+        "C05",
+        "B01"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-cost-ledger-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src/iqs_cost_ledger",
+        "schemas",
+        "content",
+        "fixtures",
+        "tests",
+        "tools",
+        ".tmp",
+        "docs/handoff/COST-LEDGER-11"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "offline_cost_ledger_audit_candidate_only",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none"
+    },
+    {
+      "id": "EVIDENCE-TIMELINE-11",
+      "lane_id": "iqs",
+      "document": "EVIDENCE-TIMELINE-11.md",
+      "task_ids": [
+        "W06",
+        "B01"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-evidence-timeline-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "src/iqs_evidence_timeline",
+        "schemas",
+        "content",
+        "fixtures",
+        "tests",
+        "tools",
+        ".tmp",
+        "docs/handoff/EVIDENCE-TIMELINE-11"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "offline_evidence_time_consistency_audit_candidate_only",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none"
+    }
+  ],
+  "held_packages": [],
+  "previous_deliveries_preserved": true,
+  "notes": [
+    "packages 为数组以兼容 scripts/parallel_handoff_cli.py 的 catalog 读取（entries 必须是 list，且每条含 id/lane_id/write_scope/readiness 字符串与 task_ids 字符串数组）。",
+    "本 manifest 只选择本批三张施工卡，不授予写 IQS/StockQA/StockWiki/既有 Lab 的权力，也不构成派发。",
+    "三包均 model_api_enabled=false、paid_search_enabled=false、network_scope=none。"
+  ]
+}

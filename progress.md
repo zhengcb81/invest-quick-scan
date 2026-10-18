@@ -1,3 +1,11 @@
+## 2026-10-18 — 恢复主线：publication round2 修复、真实链预飞与三施工包
+
+用户解除暂停。先按 PWF 恢复计划，唯一未交付节点仍是 saved-research-publication。只读派生真实请求 cd9de680…（真实 bundle 8446eeda…，两题 IQS_12/IQS_16，sdk 4d46a825…）。对真实账本与 owner workspace 做了备份：源 SHA 960e9eb0…、备份逻辑摘要与源相同 7d74049c…、102 预算行、user_version 24。真实账本自有副本上预飞 publish：2 个 v3 checkpoint、2 sealed delivery、两个 work result_ready、预算与其余 work 行不变、幂等重放相等；真实库未迁移、未新增 HTTP。
+
+独立 agent round1 审 snapshot 9ac52b5e…，verdict changes_requested：B1 无 driver、B2 无 original-software 正例、M1 llm_runner 无功能差异、M2 候选 CRLF、M3 缺 SW 测试、m1 lease NULL TypeError、m2 identity 未前置、m3 CAS 状态矛盾。round2 已修 M1（从 CAS 移除，拒绝在 work_store 默认路径）、M2（按目标换行归一，CAS 重冻 bc2ec787…）、M3（SW 能力负例 18P）、m1/m2（显式拒绝）、m3（round2-status.md 声明未获批准）。QA 单测 5P、SW 18P，证据 evidence/round2-unit.xml 与 round2-swcap.xml。
+
+controller driver run_actual_publication.py 已写入并编译；B2 由独立 agent 正在构建 fresh synthetic original namespace 公开 E2E。三个新施工包写入 docs/implementation/parallel-lanes/packages/2026-10-18/（DELIVERY-AUDIT-11 / COST-LEDGER-11 / EVIDENCE-TIMELINE-11），待独立审查。未应用源码、未安装 capability、未确认、未迁移真库、未付费。三已派 Lab 保持隔离。
+
 ## 2026-10-18 — 用户要求暂停：保存当前施工现场
 
 已完成真实 CATL 恢复节点的源码、薄证据和独审已提交/推送；暂停前再次核 IQS a05dc8b 与 StockQA c910ed9 均与既有 origin/master 一致。StockWiki 与 Runtime 原无 remote，保持已提交本地版本。
