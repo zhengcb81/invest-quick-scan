@@ -2,7 +2,7 @@
 
 用户要求继续整个项目，2000 家扩容先放一边，先做已有公司列表。现有候选表 216 行（CN-A 209、US 7）全部 unresolved/scan_eligible=0，原因均为 listing_not_in_authoritative_store；owner workspace 仅有 3 个实体、2 个成员。
 
-**已完成（离线，无真实写入）**：把 216 家逐一对到 company-wiki 安全主数据（cninfo 6137、SEC 6959），命中 216/216（SSE 109、SZSE 99、BSE 1、NASDAQ 3、NYSE 4）；25 家候选名与目录 canonical_name 不同，按目录名建实体、候选名保留为 claim。生成 216 个 provisional payload（单证券、ATT_ provisional_scope、official_equity_category + https 源 URL、MIC 映射 XSHE/XSHG/XBSE/XNAS/XNYS、CNY/USD），ID 映射冻结在 id-map.json。在空 workspace 实导 SZSE/SSE/BSE/NASDAQ 各一条：4/4 entity_saved_receipt_recorded，幂等重放 receipt 相同，库内 4/4/4。写前报告 docs/implementation/reviews/existing-list-onboarding-2026-10-18.md；真实 workspace 未写。
+**已完成（离线，无真实写入）**：把 216 家逐一对到 company-wiki 安全主数据（cninfo 6137、SEC 6959），命中 216/216（SSE 109、SZSE 99、BSE 1、NASDAQ 3、NYSE 4）；25 家候选名与目录 canonical_name 不同，按目录名建实体、候选名保留为 claim。round-1 审查后收紧：名称裁判拒绝 4 条（002122/002168/603300/688152 不同发行人），300750 已存在跳过，实际冻结 **211** 个 provisional payload（SSE107/SZSE96/BSE1/NASDAQ3/NYSE4；单证券、ATT_、official_equity_category、固定 build_at、id-map 存 payload sha、陈旧 payload 自动清理）；country 用目录值（无则 null），listing_status 由 active+“退市”推导（688555=delisted）。真实 workspace 副本预演：uv6/uv1 不迁移、原 3/6/7/6 行全保留、三条样本导入成功（含 delisted 与 null country）。写前报告已更新，真实 workspace 未写，等待增量复审。
 
 **待办**：独立审查（进行中）通过后，备份 scan.sqlite/identity_receipts.sqlite，按交易所分批真实导入 216 条（stop-on-error、逐文件回执、行数复验、抽样幂等），再更新 PWF/提交。本批只做身份前置，不做 universe 扩员、评分或搜索。
 

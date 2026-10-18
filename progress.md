@@ -1,6 +1,6 @@
 ## 2026-10-18 — 现有列表身份前置：216/216 命中、payload 与隔离验证完成
 
-候选 216（CN-A 209、US 7）全部 unresolved。对 company-wiki 安全主数据 216/216 命中；生成 216 个 provisional payload（官方 https 证据、MIC/币种映射、ID 冻结）；空 workspace 实导 4 个交易所样本全部成功且重放一致。写前报告已写，真实 workspace 未写；等独立审查通过后按交易所分批导入并复验行数/幂等。
+候选 216（CN-A 209、US 7）全部 unresolved。对 company-wiki 安全主数据 216/216 命中；round-1 审查后跳过已存在 300750、拒绝 4 条名称冲突，实际冻结 211 个 provisional payload（固定 build_at、payload sha、陈旧清理、country null、退市状态）。真实 workspace 副本预演保留原有 3/6/7/6 行且样本导入成功；真实 workspace 未写，等增量复审通过后先导 5 条再分批导入。
 
 ## 2026-10-18 — 真实保存研究出版全链完成并已 ACK
 

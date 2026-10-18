@@ -1,50 +1,56 @@
-# 现有公司列表导入批（写前报告）— 2026-10-18
+# 现有公司列表导入批（写前报告，round 2）— 2026-10-18
 
-状态：**写前报告，未写入真实 workspace**。目标是把已确认的 216 家候选从“未解决”推进到“有 provisional 身份与证券”，为后续画像/评分铺路；不扩到 2000 家，不调用模型或搜索。
+状态：**写前报告；真实 workspace 尚未写入**。本批只做身份前置（provisional entity + 单证券 + 来源绑定 + provisional_scope 回执），给后续画像/评分铺路；不扩到 2000 家，不调用模型或搜索。
 
-## 范围
+## 范围（已按 round-1 审查收敛）
 
-- 仅现有候选表：`quick_scan_candidate` 216 行（CN-A 209、US 7），全部当前 `unresolved / scan_eligible=0`，原因均为 `listing_not_in_authoritative_store`。
-- 不新增候选、不改 name claims、不删除任何候选、不做 universe 扩员以外的名单写。
-- 本批只做身份前置（provisional entity + 单证券 + 来源绑定 + provisional_scope 回执）；不做评分、不做搜索、不产生费用。
+- 候选表 216 行（CN-A 209、US 7），全部 `unresolved / scan_eligible=0`。
+- **1 条已存在、跳过**：`CN-A:300750`（宁德时代）已有 verified 实体 `ENT_99ebb735…` 与证券，绝不重复建 provisional 身份。
+- **4 条名称冲突、拒绝建档**（保持 unresolved，记录在 generation-summary）：
+  - `CN-A:002122` 候选“天马股份” vs 目录“ST汇洲”
+  - `CN-A:002168` 候选“中信建投” vs 目录“ST惠程”
+  - `CN-A:603300` 候选“华铁应急” vs 目录“海南华铁”（规则拒绝，保守）
+  - `CN-A:688152` 候选“华卓精科” vs 目录“麒麟信安”
+- **实际建档 211 条**：SSE 107、SZSE 96、BSE 1、NASDAQ 3、NYSE 4。
+- 其余 21 处名称差异按“别名/改名”接受（如 万科→万科A、茅台→贵州茅台、*ST 前缀、华虹宏力↔华虹半导体），以目录 `canonical_name` 为准，候选名保留为 claim，不覆盖候选表。
 
-## 来源与覆盖
+## 来源与诚实边界
 
-| 市场 | 来源文件 | 记录数 | 本批匹配 |
+| 市场 | 来源 | 记录数 | 本批 |
 |---|---|---|---|
-| CN | company-wiki `.source_catalog/security_master/cn.json`（cninfo） | 6137 | 209/209 |
-| US | `us.json`（SEC/NASDAQ） | 6959 | 7/7 |
+| CN | company-wiki `security_master/cn.json`（cninfo） | 6137 | 204 建档（209 − 1 已存在 − 4 名称冲突） |
+| US | `security_master/us.json`（SEC/NASDAQ） | 6959 | 7 |
 
-- 216/216 全部命中，无缺失、无多义；交易所分布：SSE 109、SZSE 99、BSE 1、NASDAQ 3、NYSE 4。
-- 25 家候选名与目录名不同（如“万科”→“万科A”）：以目录 `canonical_name` 为准，候选名作为 claim 保留，不覆盖、不改写候选表。
-- 证据：每条记录的 `source_url`（cninfo/SEC 官方 https 地址）写入 `issuer_receipt.evidence_ref`，basis=`official_equity_category`；无 https 证据的记录才退回 `user_exact_security_attestation` 并写 actor。
+- 证据是**目录级 source_url**（cninfo/SEC 发布目录），不是逐发行人页面；`issuer_receipt.evidence_ref` 如实使用该 URL，卡片不声称逐条引用。
+- `incorporation_country` 使用目录字段；目录**没有** country，因此写 `null`，不再用上市市场冒充（NVO/TAL 不再被写成 US）。
+- `listing_status` 由目录 `active` 字段与名称推导（含“退市”即 delisted）；`退市泽达 688555` 写 **delisted**，binding status 同步，不再宣称“全部 active”。
+- provisional ≠ verified；本批不宣称评分、搜索或金融资格。
 
-## 方法
+## 方法与冻结
 
-1. 每个 listing_key 生成一个 payload：`entity`（provisional、revision 1、`ENT_<uuid4>`、单证券 `SEC_<uuid4>`、market CN/US、exchange MIC：XSHE/XSHG/XBSE/XNAS/XNYS、currency CNY/USD、security_type ordinary、listing_status active）、`source_bindings`（company-wiki namespace + source_record_id）、`issuer_receipt`（`ATT_<hash32>`、kind=provisional_scope、scope=listed_operating_company、negative_scope_flag=false）。
-2. ID 映射一次生成并冻结在 `runs/existing-list-onboarding-2026-10-18/id-map.json`，重跑 payload 不产生新实体。
-3. 真实导入按交易所分批（每批 ≤60），逐文件 `entity-import`，任何非零退出立即停批并保留现场；不重试未知状态、不覆盖已有实体。
-4. 导入后只读复验：entity/security/source_binding/receipt 行数各 +N，候选表不改；再对每批做一次完全相同 payload 的幂等重放，receipt_id 必须一致且零新增。
+1. 每条生成一个 payload：provisional、revision 1、`ENT_<uuid4>`、单证券 `SEC_<uuid4>`、MIC 仅 SZSE→XSHE / SSE→XSHG / BSE→XBSE / NASDAQ→XNAS / NYSE→XNYS（未知交易所直接失败，不静默 fallback）、CNY/USD、`ATT_<hash32>`、`provisional_scope`、basis `official_equity_category`。
+2. **字节冻结**：`build_at/recorded_at` 固定 `2026-10-18T10:00:00Z`；id-map 记录每个 `payload_sha256`；生成器遇到已有 payload 字节不同即拒绝；每次生成后删除不在当前清单内的陈旧 payload（S2）。
+3. **两阶段语义**（B6）：entity-import 先写 entity 再写 receipt；若 receipt 阶段失败，返回 `entity_saved_receipt_failed`/exit 1 且 entity 已落库。处理只有两种：用**完全相同**的 payload 重放（幂等），或按写前备份恢复；绝不跳过继续。
+4. **迁移预演**（B5）：在真实 workspace 的副本上导入样本，scan.sqlite 与 identity_receipts.sqlite 的 user_version 均为当前版本（6/1，不触发迁移）；原有 3 entity / 6 security / 7 binding / 6 receipt 全部逐行保留，只各 +1；无 -wal/-shm。
 
-## 隔离验证（已完成）
+## 隔离与预演证据
 
-在空 workspace `runs/existing-list-onboarding-2026-10-18/temp-workspace` 上实际导入 4 条样本（SZSE/SSE/BSE/NASDAQ 各一）：4/4 `entity_saved_receipt_recorded`，各自重放 receipt_id 相同；库内 entity=4、security=4、receipt=4，无重复。证据：`isolated-validation.json`、`generation-summary.json`。
+- 真实 workspace 副本导入 `万科A`、`退市泽达`、`NOVO NORDISK`：3/3 `entity_saved_receipt_recorded`；落库状态分别为 active / **delisted** / active，country 均 `null`；重放 receipt 相同。
+- 证据：`runs/existing-list-onboarding-2026-10-18/` 下 `generation-summary.json`、`id-map.json`、`isolated-validation.json`、`migration-rehearsal/`。
 
-## 允许改动
+## 真实写入计划
 
-- 真实 workspace：`scan.sqlite`（entity/security/binding）、`identity_receipts.sqlite`（provisional receipts）新增 216 条；不改候选表、不改已有 3 个实体、不改政策/路由/观察。
-- 自有 staging：`runs/existing-list-onboarding-2026-10-18/`（payloads、id-map、隔离验证、导入回执）。
-- 本卡与 PWF。
+1. 写前备份 `scan.sqlite` 与 `identity_receipts.sqlite`（字节 + 逻辑行），确认无 -wal/-shm。
+2. **先导批 5 条**（每个交易所至少一条，含 1 条 delisted），逐文件回执；核对 entity/security/binding/receipt 各 +5、候选表不变、已有实体行不变。
+3. 通过后按交易所分批（每批 ≤60）导入剩余 206 条；任何非零退出立即停批，记录现场，按上述两种恢复方式处理。
+4. 全量后抽样幂等重放，验收：entity 3→214、security 6→217、binding 7→218、receipt 6→217、candidate 216 不变；`quick_scan_member` 不变。
 
-## 必须拒绝
+## 明确不做 / 后续步骤
 
-- 用 provisional 身份冒充 verified、用候选名覆盖目录名、补造 IVR 回执。
-- 写真实 workspace 前未完成独立审查；导入失败后跳过错误继续。
-- 把本批当作“可评分/可搜索”资格；评分仍要求 verified 身份与正式 search-backed 路径，另行评审。
-- 调用模型/搜索/下载公司文档。
+- 不建 universe、不扩员、不评分、不搜索、不调模型。
+- **候选↔实体链接不在本批**（S1）：候选表保持 unresolved，`candidate.entity_id` 仍为空；后续需单独评审链接步骤（用原冻结报告重算或显式 link），并把 300750 对到既有 `ENT_99ebb735…`，不得新建。
+- 回滚：恢复两份写前备份；保留所有日志与回执。
 
-## 闸门与交接
+## 审查状态
 
-1. 本卡由真正不同 agent 审查（范围/来源/ID 稳定/provisional 诚实性/幂等/回滚），open_findings=[] 后才写真实 workspace。
-2. 写入后提交导入回执、行数复验、幂等重放证据与 PWF 更新。
-3. 回滚：真实 workspace 的扫描/回执库在写前做字节备份；失败时按备份恢复并保留日志，不删其他实体。
+round-1：changes_requested（B1–B6 + S1/S2）；本报告已逐项处置，等待增量复审通过后再写真实 workspace。
