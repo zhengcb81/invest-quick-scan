@@ -1,0 +1,52 @@
+{
+  "protocol": "iqs.owner-source-normal-hook-equivalence/1.0.0",
+  "rows": [
+    {
+      "path": "src/utils/quick_scan_owner_research.py",
+      "candidate_sha256": "94d43acb6b509f57bfec6136e23e2d990f231bc1d1c4153dce7a5b178fc99035",
+      "source_after_hooks_sha256": "4e7eed8ffbf2d85f5c82647e1fccf7ae9694ba697621782ab71d14b4659da1b8",
+      "ast_identical": true,
+      "non_import_ast_identical": true,
+      "same_import_set": true
+    },
+    {
+      "path": "tests/integration/test_owner_research_services.py",
+      "candidate_sha256": "07ee9cf4e8856c1356ace11af7d858ba3b185560dea1a666e454d46052d29f04",
+      "source_after_hooks_sha256": "351e88df3592f7f960114a95d8a6a88d6c14cb65e99ccdcbd5bda516319a4b79",
+      "ast_identical": true,
+      "non_import_ast_identical": true,
+      "same_import_set": true
+    },
+    {
+      "path": "tests/unit/test_owner_native_refresh_snapshot.py",
+      "candidate_sha256": "744bd8a062a97bef84e00ed8f817d4d71f05189d7572292cefb04fe6704ad3f3",
+      "source_after_hooks_sha256": "b62cf1419e8ae6cad158239615c0561bc05feed40851e84bf229956aac4da58a",
+      "ast_identical": true,
+      "non_import_ast_identical": true,
+      "same_import_set": true
+    },
+    {
+      "path": "tests/integration/test_c06_refresh_admission.py",
+      "candidate_sha256": "071d397f454df56230759c0ee5fb2d3d08f4482100388f9715a56eae05a231db",
+      "source_after_hooks_sha256": "768e2f8cfb5d2d13b1d5814fd6cb6031281fbbfa2526d7366ed31feea7dc7821",
+      "ast_identical": false,
+      "non_import_ast_identical": true,
+      "same_import_set": true
+    },
+    {
+      "path": "tests/unit/test_owner_native_inspection.py",
+      "candidate_sha256": "a8f714e8636852b956212143b8368f9ff8b4fc367cf606b2f34c6302b73b89fb",
+      "source_after_hooks_sha256": "97d3f0172f0246acea59a4059fc3174ac79109be5f5826cd2c9149fd2813d0be",
+      "ast_identical": true,
+      "non_import_ast_identical": true,
+      "same_import_set": true
+    }
+  ],
+  "first_commit_stopped": true,
+  "normal_hooks_passed_except_normalization": [
+    "mixed-line-ending",
+    "isort"
+  ],
+  "core_service_ast_identical": true,
+  "note": "Only test fixture top-level import order changes; all other ASTs identical. Original candidate immutable; same reviewer to append precise delivery equivalence."
+}

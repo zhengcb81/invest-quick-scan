@@ -1,3 +1,11 @@
+## 2026-10-18 — owner/Runtime精确接线范围已交付
+
+StockQA owner服务5路径已正常hooks提交并推送 `d5cfe50e5d1f0377a754a2a94e491c6b44f6f783`；原SDK/原owner/原工作预算SQLite继续是唯一执行与计费来源。Runtime两路径正常本地提交 `b732a496d5dbfd904da1acca7482df4beb521e4c`（原分支codex/agent-run-02，无remote）。同一独立审查者签收7路径，45个未见漂移反例及19个最终guard回归通过；原软件批准/SDK脚本3P、Runtime31P、observer5P各保留自身分母和受测版本，不能相加当金融正确率。正常hooks仅换行/测试import整理，独立附录核等价后再次正常提交全部hooks通过。
+
+另已用真实S1账本只读backup验证原生20→23迁移：每张旧表计数/完整行摘要保持、新9表零行、integrity/FK通过，原SHA保持；没有迁移原库或回填旧回答。完整12题原public owner＋Task3＋同Runner＋OS中断恢复仍在隔离验收；本轮真实模型请求0。来源、实际代次、缓存复用、未知费用和金融判断必须分开。
+
+15个明确自有测试目录的删除被自动审批拒绝（仅返回blocked by policy），没有执行或换方式重试；路径与保留状态在cleanup-external-temps.json，不能报告环境全清。候选/DB副本不提交。下一步只完成当前12题整链及Task3独审，修有效根因，再推进真实公司运行入口；不重跑未变整套、不新增小节点门。
+
 ## 2026-10-18 — 唯一共享Runner组合入口已应用（精确两路径）
 
 已独立签收的 `scripts/shared_company_engine.py` 和 `tests/test_shared_company_engine.py` 按原CAS应用到IQS；源码工作树字节与受检候选一致。独立18项原用例和1项进程崩溃窗口反例通过；公开 `python -B scripts/shared_company_engine.py capabilities` 实际exit0。入口复用原Company Runner/RuntimeBridgePort/StockQA；不新增HTTP或账本。该精确范围交付不代表完整12题原owner/SDK整链或真实公司摘要已验收。
@@ -24,7 +32,7 @@ Company核心仍为已交付cd5e3e7。owner 服务实际原软件批准/SDK两�
 
 ## Next Step
 
-当前代码交付：Company 共享核心已完成同一大节点内的精确源码独审，11路径按CAS应用并本地正常提交 cd5e3e7（Lab无remote）。独立全套157P/1原Windows skip；F01证据版本链、F02快照别名均有先失败后通过反例。StockQA原生安全输出、注册多轮、intent到原物理请求映射已交付52330ab；接着完成Runtime/owner/Task3组合入口的12题中断恢复及同一整节点独审。未关闭生产或真实公司门，不重发旧未知请求。
+完成当前最终12题原公开owner→Task3工厂→同一Runner→真实OS进程退出→原native安全响应零重发恢复软件验收，并由当前同一独立reviewer核Task3/final证据；有效根因直接修复。Company核心cd5e3e7、StockQA核心52330ab与owner服务d5cfe50、Runtime b732a49、IQS组合e8a1ef0已交付，不重做。真实公司API/金融正确性、正式搜索checkpoint与全生产门仍未关闭。源仓/原真实账本已只读核对；旧unknown不重发。
 
 三个主线配套新卡已完成真正不同 agent 的整包发布审查（cards_review18，passed/open_findings=[]），位于 docs/implementation/parallel-lanes/packages/2026-10-18-mainline-support/。RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10 各占一个新 Lab，输入为 d788a10 的65个已提交 Git 对象记录；零网络、零生产写入，实施末必须独立整包审查修尽后交接。尚未自动派发。
 

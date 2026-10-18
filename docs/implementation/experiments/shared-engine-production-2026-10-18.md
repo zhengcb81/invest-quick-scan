@@ -36,3 +36,11 @@ flowchart LR
 本轮真实模型/收费搜索请求为0。脚本wire、合成身份和本地批准软件的工程正例，必须标注为隔离测试；下一次真实公司运行仍需原生真实批准/预算记录。旧未知请求与原生产库保持原状。
 
 测试与源码精确绑定见 `../reviews/shared-engine-production-2026-10-18/` 和 `../../../runs/shared-engine-production-2026-10-18/` 的各次CAS、原始测试记录；重叠测试数字不相加。
+
+## 当前公开操作入口与交付
+
+IQS共享入口已提交推送e8a1ef0；`python -B scripts/shared_company_engine.py capabilities`只输出真实受支持范围，exit0，不读取密钥或派发。`report --input <原导出目录> --output <新的报告目录>`重校原始日志和sidecar后生成报告，不能拿任意JSON当原生owner授权。真正execute/resume为消费已准入OwnerResearchServices的Python API；当前CLI不构造owner。
+
+StockQA原生核心52330ab、owner服务d5cfe50已经正常hooks提交推送；Runtime桥在其原本地分支提交。新增task3工厂与完整12题正例仍待同节点验收，不先发布为全生产完成。
+
+所有旧收费请求/未知用量保留。真实旧账本20→23兼容验收只迁移只读备份；该结果不意味着原库已升级。新表为空不代表旧请求费用为零，也不能补造旧safe visible output。

@@ -1,0 +1,50 @@
+{
+  "protocol": "iqs.independent-owner-normal-hook-delivery-equivalence/1.0.0",
+  "reviewer": "/root/production_node_review18",
+  "status": "passed_same_source_scope",
+  "rows": [
+    {
+      "path": "src/utils/quick_scan_owner_research.py",
+      "candidate_sha256": "94d43acb6b509f57bfec6136e23e2d990f231bc1d1c4153dce7a5b178fc99035",
+      "delivered_sha256": "4e7eed8ffbf2d85f5c82647e1fccf7ae9694ba697621782ab71d14b4659da1b8",
+      "full_ast_identical": true,
+      "non_top_level_import_ast_identical": true,
+      "complete_top_level_import_set_identical": true
+    },
+    {
+      "path": "tests/integration/test_owner_research_services.py",
+      "candidate_sha256": "07ee9cf4e8856c1356ace11af7d858ba3b185560dea1a666e454d46052d29f04",
+      "delivered_sha256": "351e88df3592f7f960114a95d8a6a88d6c14cb65e99ccdcbd5bda516319a4b79",
+      "full_ast_identical": true,
+      "non_top_level_import_ast_identical": true,
+      "complete_top_level_import_set_identical": true
+    },
+    {
+      "path": "tests/unit/test_owner_native_refresh_snapshot.py",
+      "candidate_sha256": "744bd8a062a97bef84e00ed8f817d4d71f05189d7572292cefb04fe6704ad3f3",
+      "delivered_sha256": "b62cf1419e8ae6cad158239615c0561bc05feed40851e84bf229956aac4da58a",
+      "full_ast_identical": true,
+      "non_top_level_import_ast_identical": true,
+      "complete_top_level_import_set_identical": true
+    },
+    {
+      "path": "tests/integration/test_c06_refresh_admission.py",
+      "candidate_sha256": "071d397f454df56230759c0ee5fb2d3d08f4482100388f9715a56eae05a231db",
+      "delivered_sha256": "768e2f8cfb5d2d13b1d5814fd6cb6031281fbbfa2526d7366ed31feea7dc7821",
+      "full_ast_identical": false,
+      "non_top_level_import_ast_identical": true,
+      "complete_top_level_import_set_identical": true
+    },
+    {
+      "path": "tests/unit/test_owner_native_inspection.py",
+      "candidate_sha256": "a8f714e8636852b956212143b8368f9ff8b4fc367cf606b2f34c6302b73b89fb",
+      "delivered_sha256": "97d3f0172f0246acea59a4059fc3174ac79109be5f5826cd2c9149fd2813d0be",
+      "full_ast_identical": true,
+      "non_top_level_import_ast_identical": true,
+      "complete_top_level_import_set_identical": true
+    }
+  ],
+  "fixture_import_review": "Only StockWiki refresh-record imports move before independent StockQA pure definitions/DDL modules. The module-level environment skip remains before both import groups. No assignment, function, fixture decorator, admission call or state mutation moved; complete imported names unchanged. No order-sensitive cross-package initialization or state binding in these definitions was found.",
+  "source_repository_writes": 0,
+  "tests_repeated": false
+}

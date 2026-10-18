@@ -1,0 +1,61 @@
+{
+  "schema": "iqs.owner-services-test-record/1.0.0",
+  "tests": [
+    {
+      "artifact": "owner-tests-exact-final.xml",
+      "sha256": "0be2738502ad8a6cb733c7d19fdc6a6bb8b1f68f78353a3464a451e3fcc75f1a",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 301.223,
+      "scope": "Actual original public owner + native SQLite + SDK scripted wire; before phase/input guard hardening only"
+    },
+    {
+      "artifact": "inspect-guards-final.xml",
+      "sha256": "57d2a4ee9593f8d79ac56dbf857753d62a32e5a5f73315f8211560b0fc7386d9",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 3.251,
+      "scope": "Final service phase projection and separate carrier guard regressions; no owner admission claimed"
+    },
+    {
+      "artifact": "runtime-observer-portable-final.xml",
+      "sha256": "f4319a9a998c7f6b3458b24f778c1ae6550892dd0eff186ad0dd675d28068135",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 4.289,
+      "scope": "Final optional Runtime observer mapping"
+    },
+    {
+      "artifact": "runtime-regressions-complete.xml",
+      "sha256": "e405037476b80f1814e19e642217f71e00d73487a68ac2cf912ba2ad2a9fbe3a",
+      "tests": 31,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 12.242,
+      "scope": "Original relevant Runtime regression groups"
+    }
+  ],
+  "live_API_requests": 0,
+  "model_transport": "scripted_wire",
+  "financial_accuracy_assessed": false,
+  "production_qualification": false,
+  "actual_owner_run_source_binding": "owner-final-input-bindings.json",
+  "final_source_deltas_since_actual_owner_run": [
+    "Native inspect outcome uses original attempt phase, not hardcoded success",
+    "Independent snapshots company_ref/client.base_url/task.limits; original input guard before cache/observation/checkpoint entrypoints"
+  ],
+  "actual_owner_run_not_relabelled_as_final_source_exact": true,
+  "final_happy_path_validation_delegated_to": "composition-candidate actual original 12-question Runner test, not claimed in this report",
+  "static_checks": {
+    "mypy_final_service": "Success: no issues found in 1 source file",
+    "black100_final_service_and_guard_test": "2 files would be left unchanged",
+    "check_stdout_record": "tools exec/write_stdin session 83372 completed exit 0"
+  }
+}
