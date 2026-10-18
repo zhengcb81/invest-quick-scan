@@ -1,3 +1,18 @@
+## 2026-10-18 — 三个独立研究包交付验收收口
+
+**范围：** 接收 PROMPT-TRUST-09、LOCALE-ROBUSTNESS-09、TAXONOMY-CROSSWALK-09 的离线交付和最终元数据；发现的问题由总控直接修复。未调用收费模型/API，未下载资料，未写 StockQA、StockWiki、生产数据库或名单。
+
+**验收结论：**
+- PROMPT-TRUST-09：离线实现测试记录为 34 passed；独立 round-7 元数据复核通过。最终 Lab HEAD e37755f78a29315ca97ba95367bbd00340c3211d，inventory 59 项。恶意检索内容实测因 dispatch lock 缺失而未运行，准确性/抗注入率/时延/成本均 not_assessed。
+- LOCALE-ROBUSTNESS-09：实现全套离线测试 95 passed、1 warning；最终元数据复核在 HEAD 9389f276b2b1244dde26beda3682fbac0023cc41 通过。59/59 inventory、104/104 payload、两份 payload 清单字节一致。语言对照模型实验因 dispatch lock 与已批准参考输入缺失而未运行，指标均 not_assessed。
+- TAXONOMY-CROSSWALK-09：release 1.0.2 的 173/173 行通过独立复核（12 条更正、161 条未变复核），全套离线测试 96 passed。源码 payload 964ca88b9c36a1b17d6566324837d8029c5c4f0e；元数据提交 8a96153ac88d49c2ff5a66ed59263620e8b430b8；元数据复核无待修项。原 1.0.0/1.0.1 保留；每条 release 行的 reviewer_status 仍为 unreviewed。dispatch-lock 缺失明确记录，因此只接收离线分类候选，不开放公司归类、生产路由或主题映射。
+
+本轮交接报告 docs/implementation/reviews/package-wave-09-acceptance-2026-10-18.md 对三个 Lab 的最终 HEAD、关键 artifact hashes、独立审查结论和范围边界作外部绑定，避免交接文件自引用 Git commit。Prompt Trust 最终 HEAD 为 e37755f78a29315ca97ba95367bbd00340c3211d。残留临时/缓存文件按各 Lab cleanup 记录保留，不擅自清理。
+
+**后续主线：** 三包的离线交付收口已完成；整个 invest-quick-scan 项目仍未完成。真实实验需要总控先冻结并校验相应 dispatch lock、预算窗口及真实 gold/参考输入；未满足前保持 blocked/not_assessed，不得将离线通过描述为模型有效性或生产准入。之后继续按本计划其他未关闭的大节点推进。
+
+---
+
 ## 2026-10-17 — 独立施工包侧线（不改主线顺序）
 
 **目标：** 为用户准备数个可交给独立harness的、目录互不相交且无需聊天上下文的项目卡。每包只写自己的新Lab；用户要求实施完成前由独立agent完整审查、修尽有效问题再交接。

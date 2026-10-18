@@ -1,3 +1,17 @@
+## 2026-10-18 — 三个独立研究包离线交付验收完成
+
+- PROMPT-TRUST-09：独立 reviewer review_prompt_trust09 对 round-7 handoff/metadata 给出 PASS，精确绑定 Lab HEAD e37755f78a29315ca97ba95367bbd00340c3211d；59 项清单、final、报告和 invocation evidence 一致。离线测试记录 34 passed。真实模型抗注入实验仍因 dispatch lock 未就绪而 blocked，指标未评估。
+- LOCALE-ROBUSTNESS-09：原全套实现测试 95 passed、1 warning；独立 reviewer review_locale09 对最终 Lab HEAD 元数据复核 PASS，绑定 HEAD 9389f276b2b1244dde26beda3682fbac0023cc41。59/59 inventory、104/104 payload 哈希与双 manifest 镜像通过。报告新增外部控制器绑定，解决 metadata commit 自引用问题。真实语言对照实验仍等待 dispatch lock 和 gold 输入。
+- TAXONOMY-CROSSWALK-09：release 1.0.2 修正 12 条范围错误，独立 reviewer review_taxonomy09 对 173/173 行、release 和 96 项测试给出 PASS；总控元数据复核绑定最终 HEAD 8a96153ac88d49c2ff5a66ed59263620e8b430b8，无待修项。dispatch lock 不存在仍是 live/production 阻塞，不代表公司归类已获资格。
+- 三个 Lab 元数据的本地提交：Prompt Trust e37755f78a29315ca97ba95367bbd00340c3211d；Locale 9389f276b2b1244dde26beda3682fbac0023cc41；Taxonomy 8a96153ac88d49c2ff5a66ed59263620e8b430b8。各 Lab 无需推送远端；总控验收报告将随 IQS PWF 一并提交、推送。
+- 未进行收费模型/API调用、下载、生产数据库或名单写入。各包的缓存/临时残留按 cleanup manifest 保留。范围和逐项 hashes 见总控验收报告。
+
+### 下一步
+
+转回 PWF 的下一项未关闭主线；若要运行 PROMPT-TRUST/LOCALE 真实对照，先由总控准备有效 dispatch lock 和锁定 gold/参考输入。离线验收结果不计作模型准确性数据，也不自动接入生产。
+
+---
+
 ## 2026-10-17 — 三个独立研究施工包通过发布审查
 
 新增包 `TAXONOMY-CROSSWALK-09`、`LOCALE-ROBUSTNESS-09`、`PROMPT-TRUST-09` 分别使用三个互不重叠的新Lab，只做分类体系映射、双语表述稳健性和合成检索注入安全实验。与现有题库/路由/实验任务去重后，原周期、转型、银行评分草案已撤回。

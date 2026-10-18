@@ -1,3 +1,14 @@
+## 2026-10-18 — 三包验收发现与边界
+
+1. PROMPT-TRUST 的根部交接文档仍把旧 58 项数量写成当前值并保留过时待审语句；已更新根 HANDOFF、正式交接、final 和 inventory，最终独立元数据复核通过，HEAD e37755f78a29315ca97ba95367bbd00340c3211d。
+2. LOCALE 的 final 同时有空 findings 与旧 pending 项，metadata commit 字段也容易被误读为当前 HEAD；已清空旧 pending，改为明确 round-7 注册提交并说明最终 Lab HEAD 由 IQS 控制器报告外部绑定。59/59 inventory、104/104 payload hash 与双 manifest 镜像一致，最终独立复核通过，HEAD 9389f276b2b1244dde26beda3682fbac0023cc41。
+3. TAXONOMY round-4 的 12 条映射范围误差已在不可变 release 1.0.2 修正；round-5 独立逐行复核通过。调用证据原先把 round-4 失败放在“当前 final”字段，已改成 round-5 当前结论并把 round-4 完整保留为历史；最终 JSON hash、manifest/crosswalk hashes、测试和清理记录一致，HEAD 8a96153ac88d49c2ff5a66ed59263620e8b430b8。
+4. 三包的 dispatch lock/部分 gold 前置仍未具备。记录这一缺口，不伪造锁、不把真实模型实验指标标成通过、不接入生产或名单。属于主线后续治理/实验前置，非本轮元数据复核 finding。
+
+本轮整改仅改各自 Lab 的交接元数据/报告，并提交于其本地 Git；原有代码与 release 不覆盖。
+
+---
+
 ## 2026-10-17 — 新一轮独立施工包规划开始
 
 用户要求再设计若干互不冲突的项目施工包；完成文档后必须由独立agent审查完整度/质量，并修复审查发现后才能作为正式交接。现有PWF主线的五包验收仍有两包最终独审待平台额度恢复（提示时间10月22日18:08），该阻塞不取消新规划。
@@ -3215,3 +3226,11 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 ## 2026-10-17 — 三个独立研究施工包发布审查通过
 
 独立reviewer对完整最终包返回 `passed`、`open_findings=[]`。最后一轮新发现的taxonomy两个跨文件语义问题已修：coverage的分类计数与比例不能只靠schema逐字段放行，必须从唯一source/crosswalk记录重算；crosswalk引用的taxonomy/version/code/hash须逐项指向同一条合法source记录。新增了完整性约束与相应负例。此前locale rubric/题目/计划单元绑定、prompt配对运行与结果集合、摘要重算、blocked状态等也均闭合。新施工包可交给独立harness准备实施；正式调用前仍需总控提交本波次文件并生成通过wave-level校验的dispatch-lock。三个Lab路径发放前需重新检查。
+## 2026-10-18 — 外包交付验收中的元数据一致性问题
+
+- 独立 review 的 `PASS` 只对其绑定的提交和清单版本有效。review 报告登记后 inventory 数量会变化，handoff 必须区分“被审查的 commit/计数”和“登记审查报告后的当前计数”，不能继续把旧数量写成当前状态。
+- `final.json` 中 `open_findings=[]` 与遗留 `open_findings_pending_confirmation` 并存，会让接手者无法判断签收状态；通过独立复核关闭的 findings 应清空 pending 字段，并明确 review-head 和后续登记 commit 的关系。
+- 每次 metadata-only 修订都要重算正式 inventory 与 payload manifests 的 bytes/SHA，并复核镜像一致；提交清单必须与审查结论绑定。离线 PASS 与 live experiment blocked 应分别陈述。
+- Taxonomy 1.0.2 使用新增不可变 release 纠正 1.0.1 发现的范围不等价，保留旧 release 可追溯性；内容修订后保持 `reviewer_status=unreviewed`，等待新一轮独立 row-level review，不可直接沿用旧版结论。
+
+## 2026-10-17 — 新一轮独立施工包规划开始
