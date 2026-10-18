@@ -17,6 +17,12 @@ SCHEMA = json.loads((ROOT / "schemas/quick_scan/search-receipt-v1.schema.json").
 VALIDATOR = Draft202012Validator(SCHEMA)
 
 
+def utc_now():
+    from datetime import datetime, timezone
+
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def canonical_sha256(value):
     raw = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(raw).hexdigest()

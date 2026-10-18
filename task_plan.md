@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — DeepSeek Search 客户端（离线）
+
+新增 scripts/deepseek_search_client.py：按官方 /v1/tools/search 规范构造 query/count/need_content/ori_question，注入 transport；200 生成 receipt（5000 micros），非 200 生成 unavailable（cost 0），不重试/不回退/不记录 key。10 个相关单测通过（含 5 个客户端用例）。未发真实请求。
+
 ## 2026-10-18 — S3 起点：search receipt v1
 
 新增 iqs.search_receipt/1.0.0 schema 与 scripts/search_receipt.py：把 DeepSeek Search 原始响应映射为结构化回执，绑定 exposure canonical hash、费用上限、币种与 route；5 个单测通过。回执只证明搜索发生，不等于答案被接受；未发真实请求。文档 docs/implementation/plans/search-receipt-contract-2026-10-18.md。

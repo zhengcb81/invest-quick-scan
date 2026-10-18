@@ -34,3 +34,16 @@ tests/test_search_receipt.py：5 passed（DeepSeek 响应、空结果、超费�
 2. checkpoint/seal 校验 receipt 存在且 exposure/费用匹配；
 3. 搜索不可用 → status=unavailable，不伪造来源；
 4. 仍需 owner 确认 storage_rights。
+
+
+## DeepSeek Search 客户端（离线可测）
+
+scripts/deepseek_search_client.py：
+
+- 请求：POST https://api.deepseek.com/v1/tools/search，Bearer DEEPSEEK_API_KEY；
+- 载荷：query、count（1..50，默认 5）、need_content（默认 True）、可选 ori_question（<=128）；
+- 200 -> search_receipt.from_response，费用 5000 micros（5 CNY/1000 次成功请求）；
+- 非 200 / 网络错误 -> status=unavailable、cost=0、error_reason=http_<code>；
+- 不重试、不回退其他 provider、不记录 key。
+
+测试：tests/test_deepseek_search_client.py 5 个（载荷、ok、empty、503、缺 key、count 边界），与 receipt 测试合计 10 passed。
