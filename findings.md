@@ -1,3 +1,9 @@
+## 2026-10-18 — 新实体可用于生产入口的只读验证
+
+1. 新导入的 provisional 实体可直接被原 G2b 导出：万科A（ENT_b63a2d90…）identity-export-g2b 成功返回 2.2.0，含 listing（XSHE/000002）、provisional_scope 回执、source binding 与 market registry（CN: XSHE/XSHG）。
+2. 这说明“身份前置 → 公司画像/评分入口”的读侧已经打通；真正跑公司 scan 仍需要该主体在 owner policy 中有 route/anchor 与 ApprovedRefreshSession（共享引擎工厂强制），即每家公司仍需一次 owner 准入，而不是只建实体。
+3. 下一步的主线因此是：为一家新公司（建议万科A）在隔离 owner 环境准备 subject/route，完成 owner preview/confirm/admission，再用共享引擎跑 1 题非评分包；成本、权限与写范围需先出写前报告并独立审查。
+
 ## 2026-10-18 — 现有列表身份前置完成
 
 1. 真实 workspace 已导入 211 家：先导 5 + 余量 206（skipped 5 = 同 entity 已存在）。最终 214 entity / 217 security / 218 binding / 217 receipt；候选 216 与成员 2 不变；212 provisional + 2 verified。
