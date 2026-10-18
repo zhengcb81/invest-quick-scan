@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 实验确认：移除旧观察后 preview 恢复，但 admit 仍 plan_changed
+
+备份 owner DB 后只保留 IQS_09，IQS_12b preview 立即 ready（dispatch_new_work、existing_work_status=delivered）。随即 install/confirm 成功，但 admission 仍 refresh_admission_plan_changed——说明 vendor 阻断确实是旧观察引起，而 plan 不一致来自 owner register 与 confirmation 的 decision 重算（与观察无关）。实验后已恢复 DB（5 条观察、5/5 金融、溯源 pass1）。
+
 ## 2026-10-18 — 新 admission 受旧观察 vendor 合同阻断（已确认）
 
 对 IQS_12b 反复 debug：capture/install 正常，失败点在 query contract 的 create_preview（subject_contract_output_invalid），不是 route/权限。结合 IQS_18（evidence=0）案例，结论：现存的旧 research-only 观察无法通过 vendor preview 合同；在把观察重建为 vendor-valid 之前，新题 admission 会被阻断。当前 owner 观察 5 条、preflight 可用、IQS_09 search-backed 正常。
