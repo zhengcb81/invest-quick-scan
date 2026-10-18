@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — COST-LEDGER-11 bundle 复跑
+
+验收补强：iqs_cost_ledger bundle 复跑通过（17/17 checks、4 ledgers、11/11 artifacts、findings 0，exit 0）。acceptance 记录已补该行。
+
 ## 2026-10-18 — 忽略本地 scratch 文件
 
 .gitignore 增加 .tmp_* 与 .audit_scratch_*，避免恢复/审计临时文件长期出现在 git status；不删除已有 scratch（.tmp_fact_git_recovery_record.json 等保留供追溯）。

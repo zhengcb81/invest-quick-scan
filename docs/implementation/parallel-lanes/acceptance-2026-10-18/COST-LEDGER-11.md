@@ -16,6 +16,7 @@
 | input lock | tools/input_lock_tool.py verify | 11/11 verified，exit 0 |
 | 单元/集成/E2E | unittest discover -s tests -t . | 124 tests OK，exit 0 |
 | casebook | iqs_cost_ledger evaluate（PYTHONPATH=src） | 34/34 matched，exit 0 |
+| bundle 重放 | iqs_cost_ledger bundle | 17/17 checks、4 ledgers、11/11 artifacts、findings 0，exit 0 |
 | commit 可达性 | git merge-base --is-ancestor | 6b2df76、cc2ae03 均为 HEAD 祖先 |
 | worktree | git status --porcelain | clean（0） |
 
