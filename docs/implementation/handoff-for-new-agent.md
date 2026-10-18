@@ -1,3 +1,31 @@
+## 2026-10-18 — search-backed 与 F05 的离线交付（最新）
+
+### 已完成（全部离线，58 tests passed）
+
+- S1：iqs.search_exposure/1.0.0（policy sha、路由、凭据存在性、货币、查询/费用上限、存储权利、approved_at）；cell 绑定校验；policy schema 校验。
+- S2：scan_profile/shared_company_task 接受显式 search_exposure，默认仍 0 查询。
+- S3：search_receipt/1.0.0；DeepSeek /v1/tools/search 客户端（endpoint allowlist、非 200 unavailable、费用 5000 micro-CNY）；receipt↔task exposure↔checkpoint 绑定。
+- 独立审查：High/Medium 全部整改（空/全 unavailable、0 费、policy sha、checkpoint hash、币种、重复 route、endpoint、CLI 必填、时间顺序、inert policy），新增 12 回归测试。
+- F05：facts pack 生成（CATL 16 题）、pack 校验、审阅页、索引、context 覆盖检查、draft context、draft authority（valid，coverage ready）。
+
+### 仍阻塞（只差 owner）
+
+1. **storage_rights**：DeepSeek 搜索 exposure 仍为 storage_rights_unconfirmed；确认后改 policy/exposure 的 confirmed + entitlement_ref 即可通过。
+2. **CATL 分类**：profile.draft.json 为 operating / energy_transition / mature，需 owner 确认后才能提升为正式 profile。
+
+### 真实运行门槛（未绕过）
+
+- 2 题评分 run：admission 已 accepted，但 reviewed-deployment 门要求新的 CAS/reviewer，未 dispatch；owner policy 已恢复原 1.5。
+- facts run：draft authority 未并入正式 c06 producer，未注册。
+- 真实 API/模型调用：0。
+
+### 关键入口
+
+- search 计划：docs/implementation/plans/search-exposure-contract-2026-10-18.md、search-receipt-contract-2026-10-18.md
+- DeepSeek：docs/implementation/reviews/deepseek-search-2026-10-18/README.md
+- F05：docs/implementation/plans/f05-facts-pack-2026-10-18.md；CATL 证据 docs/implementation/reviews/catl-profile-2026-10-18/
+- 看板：python scripts/one_click.py -> runs/existing-list-onboarding-2026-10-18/dashboard/index.html
+
 ## 2026-10-18 — fresh-budget 合同 + 2 题 admission + search exposure v1（最新）
 
 - owner 批准 fresh-budget（$30）后，新增 `stockqa.owner_exposure_snapshot/1.2.0`（attempts=[]、fresh_budget、owner_ack_ref），QA + IQS schema 落地；独立审查无未授权绕过，已修 dialect/refs、quote enum [0,2]、docstring 边界；QA 6a32ac0 / IQS dd4f87f。
