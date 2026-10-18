@@ -1,3 +1,5 @@
+> 历史设计已撤回：独立两阶段install/grant/三表不再实施。当前方案见 native-continuation-candidate/implementation-notes.md：原policy1.4精确budget_exposure_acceptance、原固定permissions-only读取、原最终确认、单cell原生关联。下文仅保留调查历史，不作为施工指令。
+
 # 在原账本保留旧暴露，明确批准独立新实验
 
 日期：2026-10-18。此文是总控下一大节点的实现输入，不是已交付功能，不授权任何请求，也不是外包卡。只读原源码和原 S1 SQLite；零 API、零真实库写入。主 PWF 由总控维护。

@@ -1,3 +1,15 @@
+## 2026-10-18 — 原生续行完整工程链跑通，真实运行准备中
+
+native-continuation候选最终17路径已冻结：36项集中回归、42项旧预算回归和15子测试通过；p06原公开policy1.4→quote→rc2→admit→原SDK12题一包→安全落库后退出86→全新进程同库恢复通过，冷1物理请求、恢复0。旧100次/两笔unknown与unpriced/actual NULL/预约和并发占用保持。不同agent整包复核进行中，未应用源/真实库/收费API。
+
+速度暴露明确：p06共719.63秒；首lease到POST319.96秒、safe output327.65秒、恢复完成432.22秒，原600秒lease未改，112次原内部CLI启动是主要开销。不能把脚本wire零模型延迟当真实速度达标；真实首跑根据旧MiMo单次208.79秒记录选择240秒网络超时、思考开启、16384输出上限，发送前scope后剩余lease须≥360秒（仍由原SDK执行最后权限/lease守卫），超时/未知停止且不自动重发。后续性能改进只能复用原owner批量claim并在每次POST前新读真实权限，不能延lease或缓存授权掩盖。
+
+通用production-task/profile候选原回归201P/1既存skip及IQS24P通过。公开恢复真实走到导出后暴露F04：provenance空epoch仍按legacy无日期context重算；由作者修共同初始化根因并由不同agent保留RED复测。原现场只有1物理响应安全落库，另题因该响应尚未计价被原预算正确拒绝，不能把2attempt表行当2HTTP或2题完成；后续仅同原件0POST恢复/诚实partial导出，不清未知费用、不重发或续lease。
+
+真实激活/运行脚本已起草（activate_real_native_smoke.py / run_real_admitted_smoke.py），尚待同节点独审与接口预检，不是已运行；全部真实状态操作复用原owner/身份/route CAS/quote/委托/admit/SDK/同S1账本，原始source证据只投影9短摘录，0新文档下载。旧B0130work另保留，不冒称其已收口。
+
+下一动作：完成native17路径及profile根因修复的整包独审，精确应用源并正常提交；随后一次真实Alphabet12题摘要与keyless、禁网络进程恢复，记录实际正确性/费用/时间。三张独立10卡已就绪可交harness，独占新Lab、必须不同agent全面审查修尽才交接；不自动派发。
+
 ## 2026-10-18 — 真实运行输入准备与并行生产载体
 
 委托节点已提交推送IQS10e69d9、StockQA aaddcd6，StockWiki无remote本地3fad36d。native续行正在新源精确重基后的公开原链实施，不重复原已签工程节点。并行production-task-candidate只写Company/IQS carrier候选，实现显式company-scan task/profile、实际日期与动态小包；首轮19用例通过但旧全套载体/独审未完，不宣称交付。
@@ -87,7 +99,7 @@ Company核心仍为已交付cd5e3e7。owner 服务实际原软件批准/SDK两�
 
 ## Next Step
 
-委托15路径已整包独审并交付StockQA aaddcd6/StockWiki 3fad36d。下一单项为native-continuation-candidate：基于这些新HEAD精确重基，完成原owner policy1.4固定permissions-only→真实quote/原确认→原S1账本原SDK整链，独立整节点审查修复后交付；不清旧未知费用或转干净库。继而真实公司摘要/缓存/进程恢复实测。共享引擎12题脚本工程节点保持通过，不重复、不当金融证据。
+native续行21路径（17业务/旧测试＋4新回归）已完成原公开12题1POST/进程恢复0POST，当前做整包独审；通过后精确交付源码并执行一次真实Alphabet摘要/禁网络恢复。production profile另在同节点修日期epoch根因并做最终原软件正例；不清旧费用/不延lease/不重做已签工程节点。
 
 三个主线配套新卡已完成真正不同 agent 的整包发布审查（cards_review18，passed/open_findings=[]），位于 docs/implementation/parallel-lanes/packages/2026-10-18-mainline-support/。RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10 各占一个新 Lab，输入为 d788a10 的65个已提交 Git 对象记录；零网络、零生产写入，实施末必须独立整包审查修尽后交接。尚未自动派发。
 
