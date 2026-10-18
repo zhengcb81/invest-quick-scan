@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_14 仍被 budget_policy_changed；定位到 DB 快照在 admission 后被重写
+
+IQS_14 走完 preview rv1_e14e… → confirm rc2_f2c1… → admit accepted，driver 仍报 owner_exposure_budget_policy_changed。比对：budget 文件归一化 policy_snapshot_sha256=327e9a59…，DB quick_scan_budget_policy=e21eda6d…，说明 admission 期间（或 configure）把预算行重写成了另一版快照，而 control 用的是构建时快照。下一步：让 admission 不重配预算，或把 control 快照改为 admission 注册后的 DB 快照（两阶段 admission）。
+
 ## 2026-10-18 — IQS_13 全链路到 model_step；预算版本不一致
 
 通用管线跑通 IQS_13：preview rv1_fae0… → confirm rc2_7b17… → admit accepted，driver 接上 search context 并进入 engine model_step。被 external_retrieval_blocked:owner_exposure_budget_policy_changed 拦住：预算文件里的 policy_version 与 work store 归一化后的 version 不一致（admission snapshot 用文件版本算，native 检查用 store 版本）。下一步：configure 后把 store 的 policy_version 回写到 budget 文件，再做新题 admission。
