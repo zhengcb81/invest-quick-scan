@@ -58,3 +58,11 @@
 round-1：changes_requested（B1–B6 + S1/S2）→ 已处置。
 round-2：changes_requested（C1 隔离验证过期、C2 字节冻结非字节级、C3 runner 未强制不变量；改名/分批两条非阻塞）→ 已处置：隔离验证按当前字节重跑 4 条；payload 改为字节写入并记录文件 SHA；runner 增加 sha/重复/批增量/总量/重放五道强制；002122/603300 标为“未裁定改名”，5 处改名走显式表；分批固定 ≤60。
 等待 round-3 复审通过后再写真实 workspace。
+
+## 执行结果（2026-10-18，真实 workspace 已写入）
+
+- **先导 5 条**（000002 万科A、688555 退市泽达、872808 曙光数创、GENB、FIG）：5/5 `entity_saved_receipt_recorded`，计数 3/6/7/6 → 8/11/12/11，候选表与成员不变。
+- **剩余 206 条**：同一 code path 跑完整 211（skipped 5 = 已导入、entity_id 相同），分 60/60/60/31 四批；每批 entity/security/binding/receipt 增量与导入数一致；最终 **214 entity / 217 security / 218 binding / 217 receipt**，候选 216、成员 2 不变；抽样重放前后计数完全相同。
+- 状态：212 provisional + 2 verified；市场 CN 205 / HK 1 / US 11；listing_status active 216 / delisted 1（688555）；无 -wal/-shm。
+- 写前备份：scan 与 identity_receipts 的源/备份 SHA 与计数在 `import-record-pilot.json`、`import-record-full.json`、`backup-*/文件`。
+- **边界**：候选表仍 216 unresolved、`candidate.entity_id` 仍为空；300750 只对应既有 verified 实体；未建 universe、未评分、未搜索、未调用模型。候选↔实体链接与后续扫描/评分是单独评审步骤。

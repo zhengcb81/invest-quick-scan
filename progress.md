@@ -1,6 +1,6 @@
 ## 2026-10-18 — 现有列表身份前置：216/216 命中、payload 与隔离验证完成
 
-候选 216（CN-A 209、US 7）全部 unresolved。对 company-wiki 安全主数据 216/216 命中；round-1 审查后跳过已存在 300750、拒绝 4 条名称冲突，实际冻结 211 个 provisional payload（固定 build_at、payload sha、陈旧清理、country null、退市状态）。round-2 后按当前字节重跑隔离 4 条、字节级冻结 211/211、runner 增加五道强制与 ≤60/批；002122/603300 标未裁定改名。真实 workspace 未写，等 round-3 复审通过后先导 5 条再分批导入。
+候选 216（CN-A 209、US 7）全部 unresolved。对 company-wiki 安全主数据 216/216 命中；round-1 审查后跳过已存在 300750、拒绝 4 条名称冲突，实际冻结 211 个 provisional payload（固定 build_at、payload sha、陈旧清理、country null、退市状态）。round-2 后按当前字节重跑隔离 4 条、字节级冻结 211/211、runner 增加五道强制与 ≤60/批；002122/603300 标未裁定改名。round-3 修好“已导入跳过/不同 entity 中止”后先在副本整跑验证，再真实执行：先导 5 条、余量整跑 skipped 5/imported 206，最终 214/217/218/217，候选与成员不变，重放计数不变，无 WAL。
 
 ## 2026-10-18 — 真实保存研究出版全链完成并已 ACK
 

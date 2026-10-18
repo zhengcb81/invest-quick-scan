@@ -1,3 +1,10 @@
+## 2026-10-18 — 现有列表身份前置完成
+
+1. 真实 workspace 已导入 211 家：先导 5 + 余量 206（skipped 5 = 同 entity 已存在）。最终 214 entity / 217 security / 218 binding / 217 receipt；候选 216 与成员 2 不变；212 provisional + 2 verified。
+2. 市场分布 CN 205 / HK 1 / US 11；listing_status active 216 / delisted 1（688555 退市泽达）；无 WAL，写前备份含源/备份 SHA 与计数。
+3. 本批只做身份前置：候选表仍 unresolved、candidate.entity_id 为空；300750 只对既有 verified 实体；未建 universe、未评分、未搜索。
+4. 后续必须单独评审：候选↔实体链接、成员/宇宙扩员、verified 身份与正式 search-backed 评分路径。
+
 ## 2026-10-18 — 现有公司列表的可用数据面
 
 1. 216 家候选全部能在 company-wiki 安全主数据（cninfo/SEC）找到唯一上市记录；交易所分布 SSE 109、SZSE 99、BSE 1、NASDAQ 3、NYSE 4，无缺失、无多义。
