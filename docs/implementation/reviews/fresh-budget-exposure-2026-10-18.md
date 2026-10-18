@@ -25,6 +25,24 @@ owner 批了 A（合同改动）与 $30 预算。原 1.4/1.5 exposure 合同要�
 - admit：accepted，`permission_authenticated=true`、`registered_with_executor=true`、**API_requests=0**。
 - 尚未 dispatch/付费；engine 的 2 题 run config 还未构建（driver 面向 24 题 bundle，需按 2 题 admission 适配）。
 
+## Dispatch attempt (12:20Z) — blocked at prepare_execution
+
+Cold run config built (`runs/existing-list-onboarding-2026-10-18/catl-0102-run`, 415 source pins) and launched with MIMO keys. It stopped **before any HTTP**:
+
+```
+OwnerRefreshRejected: refresh_consent_native_rejected
+  prepare_execution -> read_registered -> consent inspect
+```
+
+Likely cause: the driver's `process_env=dict(os.environ)` for the job did not carry `PYTHONPATH` for StockWiki, so the nested owner CLI used by the consent endpoint could not import its package; native consent therefore rejected. No API_requests, no reservation, no dispatch.
+
+Owner policy restored to the pre-14C backup; preview expired at 12:26Z.
+
+### Next
+
+1. Re-run preview -> delegated confirm -> admit (15 min TTL) with `PYTHONPATH=StockWiki;QA` exported to the driver process.
+2. Re-use the same cold config (confirmation id updated) and launch immediately.
+3. If consent still rejects, run the owner CLI `--permissions-request-stdin` manually for the confirmation and capture its stderr.
 ## 待办
 
 1. 为 2 题 1.4 admission 构建 `iqs.real-admitted-smoke-config/1.0.0`（bundle 5 文件、confirmation、deployment、source_pins、run_root）。
