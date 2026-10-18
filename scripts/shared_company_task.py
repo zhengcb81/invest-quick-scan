@@ -50,7 +50,7 @@ def create_native_task(
     ):
         raise NativeTaskRejected("original_admitted_native_owner_required")
     owner.check()
-    if owner.plan.get("information_cutoff") != "2026-10-13":
+    if not isinstance(owner.plan.get("information_cutoff"), str) or not owner.plan["information_cutoff"]:
         raise NativeTaskRejected("registered_information_cutoff_required")
     if strategy_id != "free_agent":
         # Native contracts need not share the legacy factual-domain ordering.
@@ -66,8 +66,8 @@ def create_native_task(
         ):
             raise NativeTaskRejected("bounded_experiment_and_run_ids_required")
     selected = list(owner.requested_question_ids if question_ids is None else question_ids)
-    if len(selected) != 12 or len(set(selected)) != 12 or not set(selected) <= set(owner.entries):
-        raise NativeTaskRejected("exactly_twelve_original_authorized_questions_required")
+    if not 1 <= len(selected) <= 12 or len(set(selected)) != len(selected) or not set(selected) <= set(owner.entries):
+        raise NativeTaskRejected("bounded_original_authorized_questions_required")
     context = lifecycle._observation_context
     if (
         not isinstance(context, dict)

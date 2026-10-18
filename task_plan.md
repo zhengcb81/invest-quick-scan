@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 2 题 direct run：去掉门禁后撞到引擎契约
+
+storage/reviewed 门已取消；03/04 的 1.4 admission 已 ready/confirmed/accepted。直接运行时发现引擎层约束：native 任务要求 question_projection 覆盖全部 12 个逻辑题（make_strategy 的 complete_one_to_one），2 题无法通过；scan 任务（module_packs）对应 1.5 合同，1.4 control 的 strategy 被 schema 固定为 free_agent。已放宽 shared_company_task 的硬编码 cutoff 与 1..12 题限制，但 2 题 native 仍被 projection 语义拒绝。结论：2 题真实运行需走 1.5 scan 路径（fresh exposure 1.1.0），或把 pack 扩到 12 题走 native。未发模型请求、未写答案。
+
 ## 2026-10-18 — 取消 permission/identity 门禁
 
 owner 明确项目无 permission 限制，全部取消。已：storage_rights 硬门移除（schema/validator/binding），search exposure valid；v2 reviewed delivery 删除；v1 reviewed-deployment 不再作为运行前置（owner 授权直接运行）。保留 native owner session/预算/admission（引擎发送与账本机制，非许可）。当前技术阻塞：IQS_01/02 已有 pending work，admission 报 plan_changed；改用无既有 work 的题目或在授权下清账。报告 docs/implementation/reviews/gates-and-identity-origin-2026-10-18.md。
