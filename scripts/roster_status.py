@@ -59,7 +59,7 @@ footer{color:var(--muted);font-size:12px;margin-top:14px}
 <div class="toolbar">
   <input id="q" placeholder="搜索公司名 / ticker / entity id">
   <select id="state"><option value="">全部状态</option><option value="verified">verified</option><option value="provisional">provisional</option></select>
-  <select id="action"><option value="">全部下一步</option><option value="needs_verified_identity">需要 verified</option><option value="ready_for_profile">可跑画像</option><option value="has_observations">已有观察</option></select>
+  <select id="action"><option value="">全部下一步</option><option value="needs_verified_identity">需要 verified</option><option value="needs_owner_admission">需要 owner 准入</option><option value="ready_for_profile">可跑画像</option><option value="has_observations">已有观察</option></select>
 </div>
 <table><thead><tr><th>公司</th><th>身份</th><th>上市地</th><th>观察</th><th>下一步</th><th>entity id</th></tr></thead><tbody id="rows"></tbody></table>
 <div id="candidates"></div>
@@ -77,6 +77,7 @@ document.getElementById('cards').innerHTML = cards.map(([k,v]) => '<div class="c
 const badge = (a) => {
   if (a === 'has_observations') return '<span class="badge ok">已有观察</span>';
   if (a === 'ready_for_profile') return '<span class="badge info">可跑画像</span>';
+  if (a === 'needs_owner_admission') return '<span class="badge warn">需要 owner 准入</span>';
   return '<span class="badge warn">需要 verified</span>';
 };
 const render = () => {
@@ -127,6 +128,9 @@ def main(argv=None):
     for row in securities:
         by_entity.setdefault(row["entity_id"], []).append(row)
     binding_count = Counter(row["entity_id"] for row in bindings)
+    policy_path = args.workspace/"config/quick_scan_refresh.json"
+    policy = json.loads(policy_path.read_text(encoding="utf-8")) if policy_path.is_file() else {}
+    routed = {route.get("scope_id") for route in policy.get("routes", []) if route.get("scope") == "entity"}
     observed = Counter()
     if observations.is_file():
         with closing(connect(observations)) as connection:
@@ -140,8 +144,10 @@ def main(argv=None):
             action = "needs_verified_identity"
         elif observed.get(entity["entity_id"], 0):
             action = "has_observations"
-        else:
+        elif entity["entity_id"] in routed:
             action = "ready_for_profile"
+        else:
+            action = "needs_owner_admission"
         rows.append({
             "entity_id": entity["entity_id"],
             "name": entity["canonical_name"],

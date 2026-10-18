@@ -1,3 +1,7 @@
+## 2026-10-18 — 画像就绪度修正
+
+209 verified 里只有 CATL 有 owner 路由；208 家仍需 owner 准入，5 家缺身份。roster 新增 needs_owner_admission，修正“verified=可跑”的误读；新增 profile_readiness 工具。
+
 ## 2026-10-18 — verified 证据审计
 
 209 verified：207 通过重算、0 失败、2 家早期证据不在本归档；SEC 完整 submissions 已归档；审计工具可重复运行。

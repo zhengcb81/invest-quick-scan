@@ -1,3 +1,7 @@
+## 2026-10-18 — 画像就绪度：verified ≠ 可跑
+
+只读统计：214 实体、209 verified、5 provisional；但 owner policy 里只有 1 条公司路由（CATL），所以真正“可跑画像”只有 1 家，**208 家 verified 仍需 owner 准入**（subject/route/policy + ApprovedRefreshSession），5 家缺身份。新增 scripts/profile_readiness.py，roster 看板新增 needs_owner_admission 状态并修正此前把“verified”误当“可跑”的口径。报告 docs/implementation/reviews/profile-readiness-2026-10-18.md。下一步：先做 1 家（000026）owner 准入准备并在副本演练，不付费；审查后再真实准入 + 1 题非评分画像。
+
 ## 2026-10-18 — verified 证据审计通过
 
 对 209 个 verified 实体逐条重算 IVR、核对法人名、校验归档证据哈希：207 通过、0 失败、2 家（Alphabet/CATL）为更早 verified 且证据在旧 run。新增 scripts/verified_evidence_audit.py，可重复审计；证据目录补 SEC 完整 submissions（7 份）。报告 docs/implementation/reviews/verified-evidence-audit-2026-10-18.md。剩余 5 家 provisional（002013/300114/688555/872808/06066）按市场证据规则暂缓。
