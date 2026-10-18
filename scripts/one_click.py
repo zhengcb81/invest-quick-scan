@@ -70,6 +70,14 @@ def main(argv=None):
     scored_card = ""
     if scored_pages:
         import os
+        import shutil
+        for page in scored_pages:
+            dest = args.out/"scored"/page.parent.name
+            dest.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(page, dest/"index.html")
+            answer = page.parent/"answer.json"
+            if answer.is_file():
+                shutil.copyfile(answer, dest/"answer.json")
         links = "".join(
             '<li><a href="' + os.path.relpath(page, args.out).replace("\\", "/") + '">'
             + page.parent.name + "</a></li>"
