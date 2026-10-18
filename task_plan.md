@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_11 search context 归档
+
+把引擎产出的 external context 落到 docs/implementation/reviews/search-context-catl-iqs11-2026-10-18/：3 条 catl.com 来源、1 次 retrieval（SEARCH_dd83a4…）、answer_search_mode=external_context_only。下一步：driver 接 require_search/search_service/external_retrieval，让引擎用该 context 作答并写 checkpoint。
+
 ## 2026-10-18 — www 主机归一化后证据合格；IQS_11 external context 建成
 
 根因：policy 绑定 host=catl.com，实际返回 www.catl.com，_origin_binding 精确比较导致全部不合格。修复：host 比较时同时去掉 www. 前缀（仅主机名归一，不放宽域名/路径）。修复后 build_external_question_context 产出 3 条合格来源（catl.com 年报页），引擎复用 SEARCH_dd83a4…、0 新 HTTP，IQS_11 的 search context 建成。QA 相关测试 201 passed（2 个 routing 模块缺失为环境问题）。下一步：用该 context 跑模型评分并落 checkpoint。
