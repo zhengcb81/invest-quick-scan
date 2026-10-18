@@ -1,3 +1,7 @@
+## 2026-10-18 — SH/SZ verified 批量完成（cninfo 口径）
+
+按审查通过的口径批量：194 份 payload 首批写入 150 家，44 家因“公司名包含简称”过严被跳过；改用官方 A股简称闸门（NFKC 归一化）后 44 家全部写入。最终 CN 201/205 verified，全库 202 verified / 214；receipt 417；entity/security/binding/candidate 不变；每批校验+抽样重放；双库备份。200 份逐公司概况响应（含 5 家试点与万科补充）存 docs/implementation/evidence/verified-identity-2026-10-18/cninfo-profiles.jsonl。剩余 12 provisional：CN 002013/300114/688555（cninfo 空，疑似退市/重组）、872808（北交所无免费源）、HK 06066（需 HKEX 官方页）、US 7 家（需 SEC 逐公司 submissions JSON）。报告 docs/implementation/reviews/verified-batch-2026-10-18.md。
+
 ## 2026-10-18 — cninfo API 口径的 5 家 verified 试点已写入真实库
 
 按 owner“用免费金融 API 验证身份”的方向，CN 证据改为 cninfo 逐公司概况 API（p_sysapi1133，返回公司全称+A股代码）+ 逐公司 cninfo 页面 URL，provenance 记录 API 响应 sha256/抓取时间/owner approval；不下载文档。真实库写入 5 家：000026 飞亚达精密科技、000400 许继电气、000547 航天工业发展、000596 安徽古井贡酒、000625 重庆长安汽车，均 verified/rev2/IVR；verified 3→8、receipt 218→223，entity/security/binding/candidate 不变，5 家重放全部幂等。下一步：独立复审该证据口径 → 余量 199 家深沪批量 → 美股 SEC → 港股 HKEX/东财 → 北交所缺口。
