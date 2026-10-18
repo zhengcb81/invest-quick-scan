@@ -1,3 +1,7 @@
+## 2026-10-18 — verified 身份试点：副本预演通过，等待审查
+
+万科A 在 workspace 副本成功升级 verified（rev2、IVR_33408e42…、重放幂等、回执 2→3）；证据为 cninfo 官方目录 URL（目录级）。写前报告已写，真实 workspace 未写；等独立复审决定“目录级证据是否足够”及是否允许先写 1 家。
+
 ## 2026-10-18 — 现有列表身份前置：216/216 命中、payload 与隔离验证完成
 
 候选 216（CN-A 209、US 7）全部 unresolved。对 company-wiki 安全主数据 216/216 命中；round-1 审查后跳过已存在 300750、拒绝 4 条名称冲突，实际冻结 211 个 provisional payload（固定 build_at、payload sha、陈旧清理、country null、退市状态）。round-2 后按当前字节重跑隔离 4 条、字节级冻结 211/211、runner 增加五道强制与 ≤60/批；002122/603300 标未裁定改名。round-3 修好“已导入跳过/不同 entity 中止”后先在副本整跑验证，再真实执行：先导 5 条、余量整跑 skipped 5/imported 206，最终 214/217/218/217，候选与成员不变，重放计数不变，无 WAL。

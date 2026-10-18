@@ -1,3 +1,9 @@
+## 2026-10-18 — verified 身份升级：解锁评分/出版的前置（试点中）
+
+现状：214 实体中 212 个 provisional；checkpoint/评分/publication 都要求 identity_state=verified，所以“公司画像与评分入口”必须先升级身份。已选 1 家试点（万科A，ENT_b63a2d90…，已有 provisional_scope rev1），构建 IVR_ verified_issuer（same_legal_issuer=true、revision=2、entity.verified_issuer_receipt_id=IVR_），证据使用 company-wiki 官方目录 URL（cninfo szse_stock.json，目录级而非逐发行人页）。在真实 workspace 副本预演成功：首次 entity_saved_receipt_recorded（IVR_33408e42…）、重放同 receipt 零新增、实体 verified/rev2、verified_issuer 回执 2→3；同 revision 改内容会被拒，必须 bump。
+
+计划：先写万科A 1 家并复验；独立复审通过后按 ≤60/批升级剩余 210 家（跳过 Alphabet/CATL 两家已 verified；中信建投 H 可升级），每批校验计数、全量 expected=before+N、失败按备份恢复。未写真实 workspace，未 paid 调用。写前报告 docs/implementation/reviews/verified-identity-2026-10-18.md，审查进行中。
+
 ## 2026-10-18 — 新目标：现有 216 家候选的身份前置（不扩到 2000 家）
 
 用户要求继续整个项目，2000 家扩容先放一边，先做已有公司列表。现有候选表 216 行（CN-A 209、US 7）全部 unresolved/scan_eligible=0，原因均为 listing_not_in_authoritative_store；owner workspace 仅有 3 个实体、2 个成员。
