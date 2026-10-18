@@ -61,7 +61,7 @@ footer{color:var(--muted);font-size:12px;margin-top:14px}
   <select id="state"><option value="">全部状态</option><option value="verified">verified</option><option value="provisional">provisional</option></select>
   <select id="action"><option value="">全部下一步</option><option value="needs_verified_identity">需要 verified</option><option value="needs_owner_admission">需要 owner 准入</option><option value="ready_for_profile">可跑画像</option><option value="has_observations">已有观察</option></select>
 </div>
-<table><thead><tr><th>公司</th><th>身份</th><th>上市地</th><th>观察</th><th>下一步</th><th>entity id</th></tr></thead><tbody id="rows"></tbody></table>
+<table><thead><tr><th>公司</th><th>身份</th><th>上市地</th><th>观察</th><th>search-backed</th><th>下一步</th><th>entity id</th></tr></thead><tbody id="rows"></tbody></table>
 <div id="candidates"></div>
 <footer>只读快照；不判断答案质量，不授予评分资格。</footer>
 </main>
@@ -88,7 +88,7 @@ const render = () => {
     (!q || r.name.toLowerCase().includes(q) || r.entity_id.toLowerCase().includes(q) || r.listings.some(l => (l.ticker||'').toLowerCase().includes(q)))
     && (!st || r.identity_state === st) && (!ac || r.next_action === ac));
   document.getElementById('rows').innerHTML = rows.map(r =>
-    '<tr><td>'+(r.profile_page ? '<a href="'+r.profile_page+'">'+r.name+'</a>' : r.name)+'</td><td>'+r.identity_state+'</td><td>'+r.listings.map(l => l.market+':'+l.ticker).join(', ')+'</td><td>'+r.observations+'</td><td>'+badge(r.next_action)+'</td><td class="mono">'+r.entity_id+'</td></tr>'
+    '<tr><td>'+(r.profile_page ? '<a href="'+r.profile_page+'">'+r.name+'</a>' : r.name)+'</td><td>'+r.identity_state+'</td><td>'+r.listings.map(l => l.market+':'+l.ticker).join(', ')+'</td><td>'+r.observations+'</td><td>'+(r.search_backed||0)+'</td><td>'+badge(r.next_action)+'</td><td class="mono">'+r.entity_id+'</td></tr>'
   ).join('');
 };
 ['q','state','action'].forEach(id => document.getElementById(id).addEventListener('input', render));

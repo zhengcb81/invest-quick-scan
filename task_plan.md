@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — roster 增加 search-backed 列
+
+roster 表格新增 search-backed 列（每家公司 search_status=executed 的观察数），CATL 显示 1，其余 0；配合已有观察列，可按覆盖类型筛选/排序。
+
 ## 2026-10-18 — 画像状态卡显示金融/溯源汇总
 
 one_click 调整顺序：先跑金融机械检查与引用溯源，再生成画像并传入两份 check.json。profile_page 按 entity/observation 匹配，在 CATL 状态卡显示「金融机械 5/5 · 引用溯源 pass 1 / research_only 4 / fail 0」。无观察公司不显示该汇总。
