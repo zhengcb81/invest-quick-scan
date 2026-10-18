@@ -47,6 +47,19 @@ def main() -> int:
         "",
         "- " + "、".join(acceptance) if acceptance else "- 无",
         "",
+        "## 已知阻塞",
+        "",
+    ]
+    blockers = []
+    if not Path(r"C:/Users/郑曾波/Projects/iqs-delivery-audit-lab/docs/handoff/DELIVERY-AUDIT-11/handoff.json").is_file():
+        blockers.append("DELIVERY-AUDIT-11：尚无正式 handoff.json，保持隔离")
+    if not Path(r"C:/Users/郑曾波/Projects/iqs-evidence-timeline-lab/docs/handoff/EVIDENCE-TIMELINE-11-evidence-pack.json").is_file():
+        blockers.append("EVIDENCE-TIMELINE-11：evidence-pack 占位未出现，出现后需复跑 baseline/evaluate")
+    blockers.append("已交付题重跑：需要 owner retry decision（owd1）与原始派发凭证，历史 attempt 不可用")
+    blockers.append("第二家公司（飞亚达 000026）：subject 就绪，但缺 route decision/manifest，route-refresh 报 route_current_unavailable")
+    lines.extend("- " + b for b in blockers)
+    lines += [
+        "",
         "## 关键入口",
         "",
         "- 看板：runs/existing-list-onboarding-2026-10-18/dashboard/index.html",

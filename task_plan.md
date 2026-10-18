@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 状态快照加入已知阻塞
+
+status_report 现在动态列出：DELIVERY-AUDIT-11 无 handoff、EVIDENCE evidence-pack 未出现、已交付题重跑缺 retry decision/凭证、000026 缺 route decision/manifest。快照已成为一页式交接：覆盖、观察、检查、验收、阻塞、入口。
+
 ## 2026-10-18 — 金融/溯源检查支持按公司过滤
 
 financial_mechanical_check 与 observation_provenance_check 新增 --entity-id；溯源结果补充 entity_id 字段。CATL 实测：金融 5/5、溯源 pass1/research_only4。这样单家公司可单独出检查结果，作为画像/操作入口。
