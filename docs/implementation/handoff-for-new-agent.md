@@ -1,3 +1,19 @@
+## 2026-10-18 — 现有列表身份批完成（209/214），生产入口卡在 route / search
+
+**当前真实状态**：214 实体，**209 verified / 5 provisional**；identity receipt 424；观察 2 条（CATL）；真实搜索 0、模型调用 0。
+
+- CN 201/205（cninfo 逐公司概况 API，194 批量 + 44 名称闸门修正 + 5 试点 + 万科A SZSE 年报）；US 11/11（SEC 逐公司 submissions）；HK 0/1（06066 仍 provisional）。
+- 证据归档：`docs/implementation/evidence/verified-identity-2026-10-18/`（200 条 cninfo 概况 + 7 条 SEC + 7 份完整 submissions）；审计 `scripts/verified_evidence_audit.py` = 207 通过 / 0 失败 / 2 家早期证据不在本归档。
+- 剩余 5：002013、300114（cninfo 空，疑似退市/重组）、688555（退市）、872808（北交所无免费源）、06066（HKEX 官方页未取得）。
+
+**为什么还不能跑画像**：verified 只解身份闸门；共享引擎还要求每家公司有 owner route + ApprovedRefreshSession。真实 policy 里目前只有 CATL 一条路由，**208 家需要 owner 准入**。准入第一步（AnalysisSubject + perimeter receipt）已在副本跑通（000026，ASJ_67a1f0d0…，0 网络/0 模型）；第二步 route 被 “historical package has no executable v2 routing policy” 卡住，需发布 routing 包（治理动作）或 owner 手工指定 route。
+
+**search-backed 评分**：S1–S5 方案已写（docs/implementation/plans/search-backed-scoring-2026-10-18.md）；供应商选项已列（Brave $5/1k、Tavily 免费 1k credits/月、Serper 试用、DeepSeek 约 ¥5/1k），需 owner 选定 route、key 环境变量名、storage rights 与限额。
+
+**工具**：`scripts/roster_status.py`（看板，含 needs_owner_admission）、`scripts/profile_readiness.py`、`scripts/owner_admission_subject.py`、`scripts/verified_evidence_audit.py`、`scripts/financial_mechanical_check.py`。ROSTER 看板：runs/existing-list-onboarding-2026-10-18/roster.html。
+
+**下一步顺序**：① 定 route 方案（发布 routing 包 / 手工 1 题 route）→ 副本演练 universe/policy/preview/admit → 真实 1 题非评分画像；② 定搜索供应商 → S1/S2 合同与工厂改造 → 1 家 1 题 search-backed 试点。
+
 ## 2026-10-18 — 真实研究型出版已完成；只剩施工包复审与归档
 
 真实零 HTTP 研究出版已在原 owner namespace 完成：preview wdp1_316c… → delegated confirm rc1_dcb42b… → inspect 1.1.0（API 0、writes 0、request 相等、1 anchor/2 item）→ apply（2 个 v3 checkpoint + 2 条 sealed delivery）→ 原 StockWiki observation-import → ACK accepted → 幂等重放相同 → 两 work 均 delivered。StockWiki 实写 2 条 observation（insufficient_evidence/null/unreviewed/unverified）与 2 条 binding。真实账本 schema 25，102 预算行与迁移前备份逐行一致，attempt 14，其余 12 work 仍 leased，0 新增预算/尝试/费用、0 HTTP。证据见 [real-publication-2026-10-18.md](reviews/real-publication-2026-10-18.md)。
