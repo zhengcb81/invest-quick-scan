@@ -1,3 +1,25 @@
+## 2026-10-18 — 首次真实原生12题请求失败，原始费用与状态保持
+
+真实cold实际745.694秒、rc2，未到预期安全输出后退出86；原SDK新增1物理请求并收到HTTP200，实际模型mimo-v2.6-pro，但严格可见响应未形成安全输出、usage缺失、新账response_unpriced/actual NULL/预约100000保持。12个slot均answer=null/outcome_unknown，不是12份答案或合理unknown回答；金融准确性不可评，缓存恢复未启动。原100条预算记录完整一致，原两笔未知保持，新第三笔未知不清零、不自动重发。源码414 pins保持。证据可定位严格响应验证失败分支，但既有错误投影丢失具体安全诊断，不能猜为length、工具schema或服务商错误。
+
+已定位的两处根因分别是严格响应错误码未落原receipt，以及Runtime按精确类名分类漏掉ResearchResponseValidationError；原pack实际members_uncertain=false，不能把本次失败归因于过期lease。修复候选仅固定code白名单/原record前写入/明确异常分类，集中RED6F8P、Runtime子类RED1F17P，最终分拆测试94P/37.92秒；独立8未见反例已通过，最终整节点审查尚待签。另原v22测试fixture漏删v24 continuation表并仍断言23已在候选根修；不改生产schema。不同仓测试保持独立，不以总控注入路径掩盖普通pytest依赖。
+
+诊断修复整节点已独立签收6目标（final=open_findings=[]，状态明确actual_smoke_failed）；原源普通QA92P/31.29秒、Runtime自身旧failure+新taxonomy测试exit0。QA正常hooks首轮仅换行/black/isort修格式、mypy通过；第二轮全绿，已提交推送27d3373。Runtime使用IQS既有作者配置仅命令级提交f83a5be，未改global；该Lab仍无remote。实际旧回执不补写新code/usage，原真实失败不因代码修复改为成功。批量claim候选另跑隔离公开整链与不同agent审查，当前未签收、未应用。
+
+下一步完成已准备的默认关闭、原owner原事务批量claim优化，整节点公开测试与独审后再应用；诊断修复已经交付，保留本次真实失败现场。真实答案与恢复需后续合法新实验，不能补写本次成功。三个10号Lab已由用户发出，保持活动writer隔离。
+
+## 2026-10-18 — 真实Alphabet实验已原生准入并启动（结果待验收）
+
+实际原namespace已完成备份、原S1 schema20→24迁移（所有旧表全部行保持、新表初始空）、原route13 current CAS version2、真实query/quote、dg1委托/rc2确认和原StockQA admission。原100请求及两笔费用未知/预约保持，未用新库或清旧账绕过。原生确认rc2_1535b0c624e43cbd43330d1c1fe87116ecc03ccf400126d3897d3b37106fd3b2，真实工作根runs/shared-engine-production-2026-10-18/actual-native-alphabet-01。源码交付IQS4481c56、QA961884d已推；SW03423ba、Company2561f56本地无remote。
+
+已启动cold真实MiMo Pro原SDK过程；通过原Task3十二题/2026-10-13/free_agent/16384开思考/0新搜索，九条既有短来源作为context；尚无付费回答/实际完成数的签收。计划只允许新物理1次，收到原安全输出后退出86，再全新不含任何API_KEY环境且禁网络的进程恢复。任何未知/诊断拒绝都停止，不按预期填写成功。原工作时间600秒不扩大，剩余时间诊断不足则0POST退出。完整运行结果等实际原账本和两个独立reviewer（工程与金融分别）核定。
+
+预先金融评审锁定：12题可审结构/理由/来源，精确1–10主观分数gold0/12，完整投资构念证据资格0/12；十个独立历史标量按唯一事实分母审覆盖、正确值、引用支持、合理unknown，缺项不算正确。没有用private gold喂模型，也不把九个短摘录自动升为已核实。当前真实样本是接线/准确性诊断，不与旧T4因果比较，不改变原逐题默认。
+
+## 2026-10-18 — 三张10号施工包已由用户发出
+
+用户已明确将RELEASE-DIFF-10、SUMMARY-LOSS-10、RELATION-DELTA-10交给外部harness。三个独占工作根分别为iqs-release-diff-lab、iqs-summary-loss-lab、iqs-relation-delta-lab，均视为有活动writer；总控不创建、不覆盖、不代改，只接收正式交接。原施工卡/65条固定Git blob输入/接口/独立agent全面审查修尽才交接的要求保持，状态不是实施完成。主线继续当前真实Alphabet原生准入和一次SDK/缓存恢复，外包不阻塞它。
+
 ## 2026-10-18 — 共享引擎两项生产接线已正式交付
 
 native续行21路径与company-scan/profile22路径均经真正不同agent整包签收，open_findings=[]。StockQA正常hooks（含mypy94）提交并推送961884d；StockWiki正常静态hooks本地提交03423ba；Company本地提交2561f56，Runtime保持b732a49。后两Lab及StockWiki原无remote，不擅自创建。QA首轮hooks修格式后仅增加2局部容器类型注解，独审确认与原签CAS执行语义等价；没有跳过hooks。

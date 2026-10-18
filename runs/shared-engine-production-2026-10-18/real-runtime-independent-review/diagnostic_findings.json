@@ -1,0 +1,33 @@
+{
+  "protocol": "iqs.independent_real_native_diagnostic_findings/1.0.0",
+  "status": "open_pending_controller_root_fix",
+  "actual_pack": {
+    "phase": "response_available",
+    "physical_outcome": "response_available",
+    "members_uncertain": false,
+    "logical_attempts": 12,
+    "logical_phase": "response_available",
+    "http_status": 200,
+    "new_cash_cost": null,
+    "visible_output_rows": 0,
+    "usage": null,
+    "specific_finish_reason_or_validation_failure": "not retained; cannot reconstruct"
+  },
+  "findings": [
+    {
+      "id": "R01",
+      "root_cause": "Original SDK computes safe validation_diagnostic only in the thrown ResearchResponseValidationError, after recording a receipt that lacks that diagnostic; it is not durably available after process exit.",
+      "requested_fix": "Before original record_response, preserve one strictly allowlisted validation code in original sanitized receipt; preserve original fee, response, lease and unknown barriers; do not add answer or reasoning text. Never backfill this historical row with a guessed code."
+    },
+    {
+      "id": "R02",
+      "root_cause": "Runtime classify_transport_failure matches only exact class name LLMTransportAttemptError, so its real ResearchResponseValidationError subclass with HTTP200 falls through to outcome_unknown/transport_outcome_uncertain.",
+      "independent_probe": "Original ResearchResponseValidationError('ValueError', {'http_status_code':200}, {'code':'research_incomplete_output'}) maps to ('outcome_unknown','transport_outcome_uncertain'). This is a synthetic taxonomy probe, not the actual missing finish reason.",
+      "requested_fix": "Classify the original explicit received-response validation subtype as semantic invalid without releasing unknown cost or native barriers; add regression. No new Runtime protocol is necessary."
+    }
+  ],
+  "reviewer_paid_calls": 0,
+  "source_or_database_writes": false,
+  "historical_http_response_body_retained": false,
+  "must_not_claim": ["safe output or successful cache recovery", "known cash cost", "actual truncation rather than another strict validation failure", "late or fenced pack without original evidence"]
+}

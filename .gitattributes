@@ -270,3 +270,15 @@ runs/shared-engine-production-2026-10-18/run_real_admitted_smoke.py -text whites
 tests/test_company_scan_native_e2e.py -text whitespace=cr-at-eol
 
 tests/test_company_scan_guards.py -text whitespace=cr-at-eol
+
+# Real native experiment and safe diagnostic evidence: exact raw artifact bytes.
+runs/shared-engine-production-2026-10-18/real-runtime-independent-review/* -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/actual-native-outcome.json -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/actual-native-alphabet-01/cold.process.json -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/actual-native-alphabet-01/cold.stdout.log -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/actual-native-alphabet-01/pre-send-lease-observation.json -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/response-diagnostic-candidate/*.json -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/response-diagnostic-candidate/source-diff.patch -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+runs/shared-engine-production-2026-10-18/response-diagnostic-candidate/run_tests.py -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+docs/implementation/reviews/real-native-runtime-2026-10-18/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+docs/implementation/reviews/real-native-summary-2026-10-18/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof

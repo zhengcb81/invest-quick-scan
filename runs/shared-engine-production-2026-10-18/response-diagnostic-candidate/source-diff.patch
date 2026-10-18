@@ -1,0 +1,187 @@
+--- StockQAbyLLM/a/src/providers/llm_research_client.py
++++ StockQAbyLLM/b/src/providers/llm_research_client.py
+@@ -609,6 +609,11 @@
+         except Exception as error:
+             # A malformed answer still consumed its physical request and tokens,
+             # but cannot acquire a replayable visible-output artifact.
++            diagnostic = _response_validation_diagnostic(error, self._validation_fields)
++            # Persist a bounded code before native bookkeeping can replace the
++            # exception with an uncertainty barrier. No provider text or field
++            # names enter the durable receipt through this diagnostic.
++            receipt["research_validation_code"] = diagnostic["code"]
+             if reported_model != self._model and permit.question_pack_binding is not None:
+                 # The original pack journal must not classify a foreign model
+                 # as response_available. Its existing unknown/failure path can
+@@ -630,7 +635,7 @@
+             raise ResearchResponseValidationError(
+                 type(error).__name__,
+                 receipt,
+-                _response_validation_diagnostic(error, self._validation_fields),
++                diagnostic,
+             ) from None
+         from src.utils.quick_scan_research_output import visible_output_sha256
+ 
+--- StockQAbyLLM/a/src/utils/quick_scan_work_store.py
++++ StockQAbyLLM/b/src/utils/quick_scan_work_store.py
+@@ -709,6 +709,24 @@
+     + _DDL_V24_ADDITIONS
+ )
+ 
++_RESEARCH_VALIDATION_CODES = frozenset(
++    {
++        'research_actual_model_mismatch',
++        'research_choices_invalid',
++        'research_role_invalid',
++        'research_incomplete_output',
++        'research_final_content_invalid',
++        'research_tool_calls_invalid',
++        'research_tool_identity_invalid',
++        'research_reasoning_protocol_invalid',
++        'research_tool_arguments_object_required',
++        'research_tool_arguments_schema_invalid',
++        'research_tool_arguments_json_invalid',
++        'research_response_validation_failed',
++    }
++)
++
++
+ _RECEIPT_FIELDS = (
+     "request_payload_sha256",
+     "research_visible_output_sha256",
+@@ -729,6 +747,7 @@
+     "prompt_sha256",
+     "search_receipt_id",
+     "failure_type",
++    "research_validation_code",
+     "provider_error_code",
+     "retry_after_seconds",
+     "completed_at",
+@@ -757,6 +776,9 @@
+             "research_intent_binding_sha256",
+         }:
+             if isinstance(value, str) and _HEX_SHA256.fullmatch(value):
++                result[key] = value
++        elif key == "research_validation_code":
++            if isinstance(value, str) and value in _RESEARCH_VALIDATION_CODES:
+                 result[key] = value
+         elif key == "usage":
+             usage = _canonical_usage(value)
+--- StockQAbyLLM/a/tests/unit/test_research_diagnostic_durability.py
++++ StockQAbyLLM/b/tests/unit/test_research_diagnostic_durability.py
+@@ -0,0 +1,63 @@
++import json
++import sqlite3
++import pytest
++from src.providers.llm_client import LLMTransportAttemptError
++from src.providers.llm_research_client import ResearchChatSession
++from src.utils.quick_scan_work_store import _sanitized_receipt
++from src.utils.quick_scan_work_transport import QuickScanSendAttempt, QuickScanWorkUncertainError
++from tests.unit.test_llm_research_client import TOOLS, budget, client, deny_network, response, transport
++
++@pytest.mark.parametrize("kind,code",[("length","research_incomplete_output"),("role","research_role_invalid"),("schema","research_tool_arguments_schema_invalid")])
++@pytest.mark.parametrize("uncertain",[False,True])
++def test_original_native_receipt_retains_code_without_output(tmp_path,transport,monkeypatch,kind,code,uncertain):
++    payload=response(tools=True,arguments='{}' if kind=='schema' else '{"key":"A"}')
++    if kind=='length': payload['choices'][0]['finish_reason']='length'
++    if kind=='role': payload['choices'][0]['message']['role']='user'
++    transport[0].payloads=[payload]
++    if uncertain:
++        original=QuickScanSendAttempt.record_response
++        def fail_after_native_commit(self,**kwargs):
++            original(self,**kwargs)
++            raise QuickScanWorkUncertainError(self.attempt_id,kwargs['receipt'])
++        monkeypatch.setattr(QuickScanSendAttempt,'record_response',fail_after_native_commit)
++    session=ResearchChatSession(client(),system_prefix='rules',tools=TOOLS)
++    with budget(tmp_path) as store:
++        with pytest.raises((LLMTransportAttemptError,QuickScanWorkUncertainError)) as caught:
++            session.step(user_context='strict diagnostic durability')
++        assert caught.value.attempt_receipt.get('research_validation_code')==code
++        with sqlite3.connect(store.path) as conn:
++            receipts=[json.loads(row[0]) for row in conn.execute('SELECT receipt_json FROM quick_scan_attempt_response')]
++            dump='\n'.join(conn.iterdump())
++        assert len(receipts)==1 and receipts[0].get('research_validation_code')==code
++        assert 'PRIVATE_REASONING_CANARY' not in dump and 'SECRET_KEY_CANARY' not in dump
++        assert store.get_quick_scan_budget_status('research-test')['spent_micros']==1000
++        with pytest.raises(RuntimeError): session.step(user_context='never resend')
++    assert len(transport[1])==1
++
++@pytest.mark.parametrize('value',['RAW_PROVIDER_CANARY','research_incomplete_output CANARY',None,True,[],{},123])
++def test_sanitizer_rejects_untrusted_diagnostic_values(value):
++    assert 'research_validation_code' not in _sanitized_receipt({'research_validation_code':value})
++
++def test_success_and_legacy_receipts_unchanged(tmp_path,transport):
++    from src.utils.quick_scan_work_store import quick_scan_receipt_sha256
++    receipt={'attempt_id':'old','http_status_code':200}
++    assert _sanitized_receipt(receipt)==receipt
++    assert quick_scan_receipt_sha256(receipt)==quick_scan_receipt_sha256({**receipt,'research_validation_code':'UNTRUSTED_CANARY'})
++    transport[0].payloads=[response()]
++    with budget(tmp_path):
++        result=ResearchChatSession(client(),system_prefix='rules',tools=TOOLS).step(user_context='valid response')
++    assert 'research_validation_code' not in result['receipt']
++
++@pytest.mark.parametrize('missing',['prompt_cache_hit_tokens','completion_tokens_details'])
++def test_missing_usage_remains_unpriced(tmp_path,transport,missing):
++    payload=response(finish='length');payload['usage'].pop(missing)
++    transport[0].payloads=[payload]
++    session=ResearchChatSession(client(),system_prefix='rules',tools=TOOLS)
++    with budget(tmp_path) as store:
++        with pytest.raises(LLMTransportAttemptError) as caught: session.step(user_context='missing usage')
++        assert caught.value.attempt_receipt['research_validation_code']=='research_incomplete_output'
++        assert 'usage' not in caught.value.attempt_receipt
++        status=store.get_quick_scan_budget_status('research-test')
++        assert status['unreconciled_attempts']==1 and status['reserved_micros']>0
++        with pytest.raises(RuntimeError): session.step(user_context='no resend')
++    assert len(transport[1])==1
+--- StockQAbyLLM/a/tests/unit/test_research_visible_output.py
++++ StockQAbyLLM/b/tests/unit/test_research_visible_output.py
+@@ -239,6 +239,7 @@
+         )
+     with sqlite3.connect(store.path) as conn:
+         original = conn.execute("SELECT * FROM quick_scan_attempt_response").fetchall()
++        conn.execute("DROP TABLE quick_scan_owner_continuation_cell")
+         conn.execute("DROP TABLE quick_scan_research_intent")
+         conn.execute("DROP TABLE quick_scan_research_turn")
+         conn.execute("DROP TABLE quick_scan_research_session")
+@@ -247,7 +248,7 @@
+     reopened = QuickScanWorkStore(store.path)
+     assert reopened.get_research_visible_output(result["receipt"]["attempt_id"]) is None
+     with sqlite3.connect(store.path) as conn:
+-        assert conn.execute("PRAGMA user_version").fetchone()[0] == 23
++        assert conn.execute("PRAGMA user_version").fetchone()[0] == 24
+         assert conn.execute("SELECT * FROM quick_scan_attempt_response").fetchall() == original
+     assert len(transport[1]) == 1
+ 
+--- iqs-agent-runtime-lab/a/src/iqs_agent_runtime_lab/receiptmap.py
++++ iqs-agent-runtime-lab/b/src/iqs_agent_runtime_lab/receiptmap.py
+@@ -122,7 +122,7 @@
+         return OUTCOME_REJECTED, f"budget_deferred:{str(reason)[:80]}"
+     if name == "QuickScanWorkPersistenceError":
+         return OUTCOME_UNKNOWN, "native_persistence_uncertain"
+-    if name == "LLMTransportAttemptError":
++    if name in {"LLMTransportAttemptError", "ResearchResponseValidationError"}:
+         inner = getattr(error, "failure_type", "")
+         native_receipt = getattr(error, "attempt_receipt", None) or {}
+         status = native_receipt.get("http_status_code")
+--- iqs-agent-runtime-lab/a/tests/test_research_response_taxonomy.py
++++ iqs-agent-runtime-lab/b/tests/test_research_response_taxonomy.py
+@@ -0,0 +1,20 @@
++"""The SDK validation subtype is a received rejection, not a lost transport."""
++from src.utils.quick_scan_work_transport import QuickScanWorkUncertainError
++
++def test_real_validation_subclass_is_semantic_rejection():
++    # The standalone Runtime suite deliberately uses its frozen SDK, which
++    # predates this subclass. This is a declared taxonomy shape fixture;
++    # a separate cross-repository integration check uses the real SDK class.
++    class ResearchResponseValidationError(Exception):
++        def __init__(self, failure_type, attempt_receipt, diagnostic):
++            self.failure_type = failure_type
++            self.attempt_receipt = attempt_receipt
++            self.validation_diagnostic = diagnostic
++    from iqs_agent_runtime_lab.receiptmap import classify_transport_failure
++    err=ResearchResponseValidationError('ValueError',{'http_status_code':200},{'code':'research_incomplete_output'})
++    assert classify_transport_failure(err)==('rejected','provider_response_semantic_invalid')
++
++def test_diagnostic_does_not_override_native_uncertainty():
++    from iqs_agent_runtime_lab.receiptmap import classify_transport_failure
++    err=QuickScanWorkUncertainError('physical',{'http_status_code':200,'research_validation_code':'research_incomplete_output'})
++    assert classify_transport_failure(err)==('outcome_unknown','transport_outcome_uncertain')

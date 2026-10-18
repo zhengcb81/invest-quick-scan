@@ -1,0 +1,512 @@
+{
+  "protocol": "iqs.real-summary-independent-preparation/1.0.0",
+  "status": "prepared_before_real_output_not_a_pass",
+  "prepared_at_utc": "2026-10-18T03:01:23.957588+00:00",
+  "reviewer_agent": "/root/production_task_review18",
+  "run_root": "runs/shared-engine-production-2026-10-18/actual-native-alphabet-01",
+  "information_cutoff": "2026-10-13",
+  "carrier": "original frozen Task3; not current-date scan profile",
+  "question_denominator": 12,
+  "structure_narrative_support_review_denominator": 12,
+  "exact_subjective_score_gold_denominator": 0,
+  "full_construct_qualification_from_visible_context_denominator": 0,
+  "historical_scalar_denominator": 10,
+  "historical_scalar_atoms": [
+    {
+      "atom_id": "ALPH-MAIN-ADS25",
+      "parent_fact_id": "RF1-ALPH-ADS25",
+      "claim": "FY2025 Google advertising revenue",
+      "expected_value_decimal": "294691",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-10K-R44",
+      "published_at": "2026-02-05"
+    },
+    {
+      "atom_id": "ALPH-MAIN-ADS24",
+      "parent_fact_id": "RF1-ALPH-ADS24",
+      "claim": "FY2024 Google advertising revenue",
+      "expected_value_decimal": "264590",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "source_id": "RS-6-ALPH-10K-R44",
+      "published_at": "2026-02-05"
+    },
+    {
+      "atom_id": "ALPH-MAIN-OI25",
+      "parent_fact_id": "RF1-ALPH-OI25",
+      "claim": "FY2025 consolidated operating income",
+      "expected_value_decimal": "129039",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-NI25",
+      "parent_fact_id": "RF1-ALPH-NI25",
+      "claim": "FY2025 consolidated net income",
+      "expected_value_decimal": "132170",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-OCF25",
+      "parent_fact_id": "RF1-ALPH-OCF25",
+      "claim": "FY2025 cash provided by operating activities",
+      "expected_value_decimal": "164713",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-CAPEX25",
+      "parent_fact_id": "RF1-ALPH-CAPEX25",
+      "claim": "FY2025 cash purchases of PP&E, expenditure magnitude",
+      "expected_value_decimal": "91447",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-CAPOI25",
+      "parent_fact_id": "RF1-ALPH-CAPOI25",
+      "claim": "FY2025 Google Cloud segment revenue, not operating income",
+      "expected_value_decimal": "58705",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": "2025-01-01",
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-10K-R44",
+      "published_at": "2026-02-05"
+    },
+    {
+      "atom_id": "ALPH-MAIN-CASH25",
+      "parent_fact_id": "RF1-ALPH-CASH25",
+      "claim": "Consolidated cash and cash equivalents",
+      "expected_value_decimal": "30708",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": null,
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-MKTS25",
+      "parent_fact_id": "RF1-ALPH-MKTS25",
+      "claim": "Current marketable securities",
+      "expected_value_decimal": "96135",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": null,
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-8K-Q4",
+      "published_at": "2026-02-04"
+    },
+    {
+      "atom_id": "ALPH-MAIN-DEBT25",
+      "parent_fact_id": "RF1-ALPH-DEBT25",
+      "claim": "Total long-term debt principal face value, including current maturities",
+      "expected_value_decimal": "49085",
+      "currency": "USD",
+      "unit_detail": "million",
+      "period_start": null,
+      "period_end": "2025-12-31",
+      "source_id": "RS-6-ALPH-10K-R68",
+      "published_at": "2026-02-05"
+    }
+  ],
+  "historical_scalar_rule": "Deduplicate these10 atoms across questions; correct/asserted, coverage/10 and citation support are separate. Missing is not correct. Do not expand scalar denominator after reading answers.",
+  "source_record_count": 9,
+  "omitted_unlinked_fact_count": 18,
+  "source_status": "projected records remain unverified; source excerpts are bounded paraphrases/quotes, not full-document or native search proof",
+  "all_financial_qualification_false": true,
+  "question_matrix": [
+    {
+      "question_id": "IQS_01",
+      "module_id": "common",
+      "original_question_object_sha256": "7772f2f025a7defc1f851a7a6533a5d15964d1d43058ee51985cbd353e66b9ed",
+      "question": "客户购买公司的产品或服务，是否获得足以支持持续付费的真实价值？",
+      "anchors": {
+        "1": "产品价值不足，主要靠补贴或推销维持需求",
+        "5": "客户价值成立但可轻易替换、支付意愿一般",
+        "10": "客户价值清楚且有行为证据，付费与复购可持续"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-EG-SUP-10K-MAIN",
+        "RS-6-ALPH-10K-R44"
+      ],
+      "source_scope_limit": "Mechanism/self-description and billed revenue only; lacks independent customer benefit, purchase cohorts and switching-outcome evidence.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_02",
+      "module_id": "common",
+      "original_question_object_sha256": "3358027351e1b9413f70adf1cdcea88e26a6d7eeb87ed4217f832bf1f1bd464f",
+      "question": "现有收入在不持续加大获客或补贴投入的情况下，有多大比例能够延续？",
+      "anchors": {
+        "1": "每期收入都需高成本重新购买且可见性很低",
+        "5": "有稳定存量但仍需较多投入维持",
+        "10": "存量需求、履约与收款可预测且维护成本合理，不限订阅模式"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-EG-SUP-10K-MAIN",
+        "RS-6-ALPH-10K-R44"
+      ],
+      "source_scope_limit": "No retention/repeat-purchase ratio, customer cohort, incremental acquisition or maintenance-cost series; revenue growth is not retention.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_04",
+      "module_id": "common",
+      "original_question_object_sha256": "e6b6b20aae8011c30bbea0c9834544b0e6ff3077bd57589c201bc68d3170df11",
+      "question": "行业的供需和价值链分配，是否允许这家公司长期留下合理利润？",
+      "anchors": {
+        "1": "过剩竞争或强势交易方长期挤走公司利润",
+        "5": "能留下合理利润但容易被新增供给或交易方侵蚀",
+        "10": "供给纪律或差异价值使公司持续保留合理利润，不唯市场集中度"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-6-ALPH-10K-R44",
+        "RS-6-ALPH-10K-R90",
+        "RS-EG-SUP-DOJ-SEARCH",
+        "RS-EG-SUP-DOJ-ADTECH"
+      ],
+      "source_scope_limit": "Current revenues/segment profits and bounded regulatory statements; lacks supply discipline, TAC/counterparty economics and durable profit-pool proof.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_05",
+      "module_id": "common",
+      "original_question_object_sha256": "5d56608f0e66aa5ad3e9ac9317d642468c48c30203976272941abf1125d4370e",
+      "question": "公司在明确业务与时间范围内最主要的竞争优势，是否有实际证据且对手难以用合理成本复制？",
+      "anchors": {
+        "1": "缺少可验证优势，对手可迅速复制或低价替代",
+        "5": "有优势，但竞争者数年内可能追上",
+        "10": "优势机制和经济回报均有长期证据，复制代价显著且不依赖口号"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-EG-SUP-10K-MAIN",
+        "RS-6-ALPH-10K-R90"
+      ],
+      "source_scope_limit": "No independently observed replication cost/customer alternatives or persistent economic-return series; mechanism cannot establish exact moat score.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_06",
+      "module_id": "common",
+      "original_question_object_sha256": "fbe7bbe77ee3e57314fddbd64c230bedd7fbf564f71f609911acce0a128e55e6",
+      "question": "公司的竞争地位有多稳固，变化趋势是否支持这种稳固性？单列增强/稳定/恶化，不因上升速度本身加分。",
+      "anchors": {
+        "1": "关键份额/客户与盈利能力持续受侵蚀，缺少有效防御",
+        "5": "地位可维持但优势普通或容易受冲击，改善尚未证明持久",
+        "10": "在竞争压力下长期保持关键客户和经济利益，优势稳固且无实质侵蚀证据"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-6-ALPH-10K-R44",
+        "RS-6-ALPH-8K-Q2",
+        "RS-EG-SUP-DOJ-SEARCH"
+      ],
+      "source_scope_limit": "No controlled economic-share, customer migration or relative-price series; growth/trend and current competitive strength must remain separate.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_07",
+      "module_id": "common",
+      "original_question_object_sha256": "eed10db4bd9b4667424c3aaf2cf0c9c2945894b8d0029986333dabdf4fb947c6",
+      "question": "管理层过去对经营目标和重大项目的承诺，兑现得如何？",
+      "anchors": {
+        "1": "反复失约、转移口径或回避责任",
+        "5": "大体兑现合理目标，部分偏差可解释",
+        "10": "合理且有挑战的目标持续兑现，失败披露和纠正及时"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-6-ALPH-8K-Q4"
+      ],
+      "source_scope_limit": "Only current disclosed investment/guidance facts; no three-to-five-year dated commitment-versus-delivery history. Forward capex guidance is not a fulfilled promise.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_10",
+      "module_id": "common",
+      "original_question_object_sha256": "2dbe1c341ce0fc4b2e4d4b49dfa2d042a2b9e9885a84ae38e30013d0645b622c",
+      "question": "在正常景气和合理杠杆下，存量业务对必需资本的回报是否持续超过资金成本？",
+      "anchors": {
+        "1": "正常经营回报长期低于合理资金成本，或高回报主要来自失真分母与激进杠杆",
+        "5": "回报大致覆盖合理资金成本，优势有限",
+        "10": "可比且保守口径下长期赚取明显超额回报，非依赖周期峰值或少投必要资本"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-6-ALPH-8K-Q4",
+        "RS-6-ALPH-10K-R90"
+      ],
+      "source_scope_limit": "Operating income/margin is not ROIC. No comparable NOPAT/invested-capital bridge, midcycle adjustments or capital-cost band.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "OPERATING_01",
+      "module_id": "operating",
+      "original_question_object_sha256": "5390d862ebc95f43c30397a04b68c58db024720af5cedbd43e41552d65ebe245",
+      "question": "扣除维护性资本开支与必要营运资本后，现金创造能力如何？",
+      "anchors": {
+        "1": "经常依赖延付或资产出售弥补缺口",
+        "5": "中周期有自由现金但转化一般",
+        "10": "多年真实自由现金充足且不牺牲维护投入"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-6-ALPH-8K-Q4"
+      ],
+      "source_scope_limit": "OCF minus total PP&E purchases is conventional FCF only. Maintenance/growth split, required working-capital detail and multiyear sustainability absent.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_12",
+      "module_id": "common",
+      "original_question_object_sha256": "0ba480e177a15bbb3b0b6044179711919846a5135df8000bc186211c9dec5371",
+      "question": "资产、负债和利润的披露，是否足以可信地反映真实经济状况？",
+      "anchors": {
+        "1": "重大失真、隐性义务或审计疑虑未解决",
+        "5": "主要口径可解释，但调整与估计不确定性较多",
+        "10": "关键口径透明且资产、利润、现金相互印证，风险确认及时"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-6-ALPH-8K-Q4",
+        "RS-6-ALPH-10K-R63",
+        "RS-6-ALPH-10K-R68"
+      ],
+      "source_scope_limit": "Can distinguish segment/group, book/face debt and discounted/undiscounted leases. Full audit opinion, asset-quality/capitalization/legal notes not retained.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_16",
+      "module_id": "common",
+      "original_question_object_sha256": "2caaa55004091fe00ab6de1879c2410b1ca7e50ae77f531891fcf81f5e16a896",
+      "question": "在合理压力情景下，不依赖乐观再融资，公司能否履行未来两年的刚性义务？",
+      "anchors": {
+        "1": "存在未落实资金覆盖的刚性缺口，可能被迫违约或严重摊薄",
+        "5": "正常情景可覆盖，压力情景依赖融资或资产出售",
+        "10": "保守压力下仍有落实的资金与资本缓冲，可履约并维护核心业务"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-6-ALPH-8K-Q4",
+        "RS-6-ALPH-10K-R63",
+        "RS-6-ALPH-10K-R68",
+        "RS-6-ALPH-8K-Q2"
+      ],
+      "source_scope_limit": "Year-end historical balances and calendar-year maturities only. Available/unrestricted cash, exact rolling two-year horizon, commitments and stress inflows missing; no blanket solvency guarantee.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_18",
+      "module_id": "common",
+      "original_question_object_sha256": "d1cecb6c6f0e80f0a8a7fbb1b19e6f86a6b1db03ca006fa06bf2bd7f60589a8a",
+      "question": "最可能永久损害核心业务价值的一至两项实质变化，哪些会绕过现有优势，公司有哪些经验证的防御？",
+      "anchors": {
+        "1": "核心价值已面临重大不可逆损害，缺少可行防御",
+        "5": "风险可识别且有应对，但有效性与缓冲尚未充分验证",
+        "10": "主要失效路径的暴露有限或防御经验证，能在压力下保持核心价值"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": true,
+        "require_net_economic_effect": false,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-EG-SUP-DOJ-SEARCH",
+        "RS-EG-SUP-DOJ-ADTECH",
+        "RS-EG-SUP-10K-MAIN",
+        "RS-6-ALPH-10K-R44"
+      ],
+      "source_scope_limit": "Search index does not prove remedy contents or Chrome divestiture; AD-TECH case differs. No verified impact magnitude/speed or proven defenses.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    },
+    {
+      "question_id": "IQS_20",
+      "module_id": "common",
+      "original_question_object_sha256": "04374eb6a195a4f681e7a7b968c544aa4e8bc2ac88d813cc396bf9f8a8588814",
+      "question": "未来增长的主要驱动是否已被验证能从客户需求转为可持续利润，并扣除对存量业务、必要投入与股权融资的影响？",
+      "anchors": {
+        "1": "增长主要依赖叙事、并表或远期假设；或可见的新业务收益不足以弥补存量利润损失与必要投入",
+        "5": "客户需求和转化路径有部分验证，但新旧业务合并后的利润与每股净效果仍不确定",
+        "10": "主要驱动有连续可核实的付费、收入和利润转化；考虑存量业务变化、必要投入与摊薄后仍能持续增厚股东经济利益"
+      },
+      "evidence_demands": {
+        "require_durability_conditions": false,
+        "require_net_economic_effect": true,
+        "counter_evidence_required": true
+      },
+      "potentially_relevant_source_ids": [
+        "RS-6-ALPH-8K-Q2",
+        "RS-6-ALPH-10K-R44",
+        "RS-6-ALPH-10K-R90",
+        "RS-6-ALPH-8K-Q4"
+      ],
+      "source_scope_limit": "Quarterly Cloud revenue growth and annual segment profit are separate periods. Neither proves AI incremental net shareholder value after cannibalization, capex and dilution.",
+      "standard_json_and_narrative_reviewable": true,
+      "full_construct_objectively_judgeable_from_visible_context": false,
+      "numeric_score_gold": null,
+      "allowed_honest_outcome": "partial explicitly scoped facts or justified insufficient_evidence/unknown; no forced1-10 score"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "runs/shared-engine-production-2026-10-18/real-native-smoke-preparation.json",
+      "bytes": 3926,
+      "sha256": "d9c61d18750631dfcf9d1968eefa1f72f3b8629d316be71f31821b8e9761e49c"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/actual-native-alphabet-01/inputs/subject_d3322e504a59c251f44c4037846cdb61550cc75c4cb22f9a0d40528f51a165b4/manifest.json",
+      "bytes": 452899,
+      "sha256": "e706ce9fc91a2c30acc0741fd216ecb00aa07ba54becbaafa613ef8940106696"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/inputs/evidence-board.json",
+      "bytes": 32046,
+      "sha256": "ad73a4d2d186824b018107a46ad1b4a57b2145f8913972ab853218e1c37df5ea"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/inputs/identity.json",
+      "bytes": 236,
+      "sha256": "32dbdab71bb77a1b0baafe8ef82ec229c622743fae7fa39096612540f62fa498"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/inputs/frozen/reference/alphabet-objective-reference-2026-10-16.json",
+      "bytes": 5124,
+      "sha256": "3846cad65c5b1e2aa819b5a52a95711d05b2f5f83ce3f4def08007ec6a49980d"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/inputs/frozen/reference/alphabet-objective-reference-2026-10-16.md",
+      "bytes": 3634,
+      "sha256": "e323c4e02da1b40fe47e544375d1c128b518d52245fd17d0d97ed3eae624bb1d"
+    },
+    {
+      "path": "runs/real-contrast-2026-10-16-03/inputs.lock.json",
+      "bytes": 371827,
+      "sha256": "11798f8ab819b860edd882c24434b2aff9ee5688a66152a6ebc68be7b8448f88"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/run_real_admitted_smoke.py",
+      "bytes": 12359,
+      "sha256": "318e30309ea84de13555664019d8a194343608d45a73cd12bfd716288413fbf6"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/actual-evidence-projection/project_existing_sources.py",
+      "bytes": 5947,
+      "sha256": "03668a4536727c3bea1a627482b0a72e5cb8455611acee32817034a9824e5615"
+    }
+  ],
+  "answer_review_axes": [
+    "Exact original question and subject binding; standard JSON shape/status/score and required fields",
+    "Each material narrative and metric claim: supported/partially supported/unsupported/contradicted/not judgeable using retained excerpt only",
+    "Historical truth separately against prelocked10 atoms with metric, period/timepoint, units, currency and accounting definition",
+    "Arithmetic consistency separately; no new independent fact denominator for derived ratios",
+    "Plan versus achieved results, annual versus quarterly, group versus segment, book versus face value, lease discounted versus undiscounted",
+    "Citation ID+URL+publication date closure, and actual quoted excerpt support for the claim; official link alone is insufficient",
+    "Missing fields, counterevidence, durability/net-effect conditions and whether confidence/coverage exceed evidence",
+    "Appropriate abstention distinguished from correct factual assertions; not_applicable is not a substitute for absent evidence",
+    "Accepted slots and structure completeness do not establish correctness; raw/accepted/rejected outputs reported separately",
+    "No causal T4 comparison: changed projection/carrier/wiring/date of execution are confounded"
+  ],
+  "no_private_gold_in_model_context": true,
+  "no_api_or_downloads": true
+}

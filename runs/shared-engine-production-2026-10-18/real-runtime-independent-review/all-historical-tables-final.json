@@ -1,0 +1,139 @@
+{
+  "protocol": "iqs.independent_real_native_engineering_snapshot/1.0.0",
+  "label": "all-historical-tables-final",
+  "observed_utc": "2026-10-18T03:22:28.746775+00:00",
+  "all_database_reads_mode_ro": true,
+  "reviewer_paid_calls": 0,
+  "original_backup_sha256": "79ae4b84e293a63c762025e326753d78d998e6a5a2d54b5d83245923f03ae85e",
+  "schema_version": 24,
+  "original_budget_rows": 100,
+  "original_full_rows_identical": true,
+  "original_budget_rows_sha256": "f4ec992bfddcbeb7fd47753c7d4f2531fa9e823c016a3c79f34663990fe88bcb",
+  "old_unresolved_count": 2,
+  "old_unresolved_actual_and_reconciliation_null": true,
+  "old_unresolved_reserved_micros": 200000,
+  "old_unresolved_inflight": 1,
+  "new_original_budget_rows": [
+    {
+      "budget_attempt_id": "PACK_BUDGET_286f07509a5a41d28cb5e11ef8e6493a",
+      "work_attempt_id": null,
+      "route_id": "mimo-pro-t2",
+      "provider": "mimo",
+      "model_requested": "mimo-v2.6-pro",
+      "quota_group": "mimo-experiment",
+      "pricing_ref": "t2-official-multimodel-2026-10-16:bc7a97198dcde9c98d08f56c59b56cce28c4f85f25551628ab69bf0fe22be55e",
+      "reserved_cost_micros": 100000,
+      "actual_cost_micros": null,
+      "request_counted": 1,
+      "in_flight": 0,
+      "status": "response_unpriced",
+      "http_status_code": 200
+    }
+  ],
+  "total_request_rows": 101,
+  "row_counts": {
+    "work_item": 12,
+    "attempt": 12,
+    "quick_scan_refresh_admission": 1,
+    "quick_scan_owner_continuation_cell": 1,
+    "quick_scan_question_pack_send": 1,
+    "quick_scan_research_intent": 1,
+    "quick_scan_research_visible_output": 0,
+    "answer_checkpoint": 0
+  },
+  "work_statuses": {
+    "leased": 12
+  },
+  "continuation_immutability_triggers": [
+    "quick_scan_owner_continuation_cell_no_update",
+    "quick_scan_owner_continuation_cell_no_delete"
+  ],
+  "file_hashes": {
+    "before.json": "09232f055eff5aad168ae5880cb5fdc50f696145b3a25c8462de11850e591c80",
+    "migration.json": "59583bdfe5061f1d8f74911e7853e7e12c74a3591bd10db14dcdb02d4a992028",
+    "worker-observation.json": "82cd248b9b5b861e2ffb9063a542cb095b7bb74ecb98036ca3866e77375c1bfd",
+    "route-activation.json": "52a7dcd7aefef6193deb6cddb15bbe1cf4c52ba8a6c82ba3175bf0d5b74b9f8a",
+    "refresh-request.json": "2579e528d0c83a09e250798429b4126e162ca4eb4d4f0166844a80fef1b9b3f8",
+    "owner-policy.installed.json": "ce3c1d3d8f2377de125799974c0344048e5fba1819c76f6b321db4d6b736f1fd",
+    "admission-result.json": "b25edc13d22dc440088249ef7f159f2eae6351e5c6fc8dcc67f837394826688d",
+    "activation-complete.json": "e5841ddccd3ad316582dc5e86a451cce3482f0e96ba766dd89e575da43bd7d9f",
+    "run-config.json": "6a497bc4b590b2bbbea48481d6d17267960a96bbd56c0c7252b3e9ead49ae4ce",
+    "pre-send-lease-observation.json": "7d010dbadf4ddf12603556b1715fea238f0716f523fc58b8533375e720f4113e"
+  },
+  "source_pins": {
+    "count": 414,
+    "all_match": true
+  },
+  "native_response_bindings": [
+    {
+      "attempt_id": "PACK_BUDGET_286f07509a5a41d28cb5e11ef8e6493a",
+      "receipt_sha256": "7d536c4e0a80c30a2eceb79822764511ca98dc7be48f62b7bc6b3f98ca0944e9",
+      "response_sha256": "c1c15aba48506102babfc32596e93cb39560239e67aa1c5092fb709d77a70af5",
+      "request_payload_sha256": "37a33cb74e302931cf2dc8ee072ef1ac64ede5d3b7bd5d1131c783149cb24ad7",
+      "visible_output_digest": null,
+      "visible_output_valid": false,
+      "member_count": 12,
+      "actual_model": "mimo-v2.6-pro",
+      "requested_model": "mimo-v2.6-pro",
+      "http_status": 200,
+      "usage": null
+    }
+  ],
+  "attempt_phases": {
+    "response_available": 12
+  },
+  "lease_timing": {
+    "original_lease_seconds": 600,
+    "safe_output_before_earliest_expiry": null,
+    "send_before_earliest_expiry": [
+      true
+    ],
+    "remaining_seconds_at_native_send": [
+      278.0653555393219
+    ]
+  },
+  "native_receipt_row_count": 112,
+  "native_usage_counting": "physical original budget attempt only; per-member receipts never summed",
+  "all_historical_table_rows_preserved_except_original_policy_updated_at": {
+    "answer_checkpoint": 0,
+    "attempt": 0,
+    "quick_scan_attempt_resolution": 100,
+    "quick_scan_attempt_response": 99,
+    "quick_scan_budget_attempt": 100,
+    "quick_scan_budget_policy": 1,
+    "quick_scan_budget_terminal": 98,
+    "quick_scan_delivery_consumer_binding": 0,
+    "quick_scan_delivery_revision": 0,
+    "quick_scan_external_dispatch": 0,
+    "quick_scan_external_operation": 0,
+    "quick_scan_external_result": 0,
+    "quick_scan_external_use_intent": 0,
+    "quick_scan_mcp_dispatch": 0,
+    "quick_scan_mcp_result": 0,
+    "quick_scan_mcp_search_binding": 0,
+    "quick_scan_mcp_stage": 0,
+    "quick_scan_native_search_events": 0,
+    "quick_scan_observation_context": 0,
+    "quick_scan_owner_refresh_binding": 0,
+    "quick_scan_owner_work_decision": 0,
+    "quick_scan_question_pack": 0,
+    "quick_scan_question_pack_member": 0,
+    "quick_scan_question_pack_outcome": 0,
+    "quick_scan_question_pack_send": 0,
+    "quick_scan_refresh_admission": 0,
+    "quick_scan_research_attempt": 65,
+    "quick_scan_research_budget_amendment": 1,
+    "quick_scan_research_task": 12,
+    "quick_scan_result_delivery": 0,
+    "quick_scan_result_delivery_event": 0,
+    "quick_scan_standard_answer": 0,
+    "quick_scan_subject_send_receipt": 0,
+    "quick_scan_uncertain_seal": 1,
+    "quick_scan_work_context": 0,
+    "sqlite_sequence": 0,
+    "work_event": 0,
+    "work_item": 0,
+    "work_run_ref": 0
+  },
+  "allowed_original_housekeeping_delta": "quick_scan_budget_policy.updated_at only; complete policy/limits/hash unchanged"
+}

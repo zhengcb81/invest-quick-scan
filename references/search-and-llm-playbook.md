@@ -1,6 +1,6 @@
 # 联网搜索与LLM统一使用规范
 
-规范版本：1.4.0；日期：2026-10-17。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
+规范版本：1.5.0；日期：2026-10-18。用于上市公司评分、事实采集与补扫。本文区分规范要求、已发布软件和历史连通探针；实现状态见[搜索接入状态](search-policy.md)与[Phase111交付](../docs/implementation/reviews/QA-NET-01/external-context-2026-10-09/delivery.md)。attempt、用户模型顺位及预算以[C05现行契约](../docs/implementation/contracts/providers-and-budget.md)尤其§1.9.3为准，厂商参数不能覆盖该契约。离线软件验收不等于当前厂商连通、费用或答案准确性认证。
 
 StockQA独占搜索/LLM客户端、生效配置、重试、限流、缓存、检查点和费用账本；IQS只维护题面与规范；StockWiki提供名单、缺口及观察入库，不能另包请求重试。[配置参考模板](../examples/search-and-llm-policy.template.json)仅供填写需求，执行器尚不读取；`template_only=true`、`execution_enabled=false`保持不变，不是第二份生效配置或调用授权。
 
@@ -173,3 +173,25 @@ Fetch必须在内存定位问题相关段落、保留年度列/金额单位/表�
 ZAI此次按实际9次成功工具调用×官网1.2登记10.8credits，不表示已查询供应商账户实际扣减或剩余配额。36个MCP物理HTTP的未知现金预约保持，不能称免费；Tavily使用量与PAYG参考也不能假定等于套餐实际新增现金。第三方短记录过滤后无条目不证明原始响应为空或不收费。未经对账的发送不重发，合法prepaid特例只适用其明确策略与真实凭证。
 
 本轮只完成隔离研究与SDK能力验证，未把结果写正式评分库、未开启2000家扫描。精确财务题的自动准入仍须证据充分性与理由一致性质量门；没有做到就保留缺口，不以低价、快或更多问题已返回替代。
+
+
+## 2026-10-18：共享引擎、结果缓存与原生恢复
+
+StockQA `961884d`、StockWiki `03423ba`、Company `2561f56` 和IQS `4481c56`已交付同一Runner的生产接口。原SDK、身份、权限和物理费用账本仍各由原owner负责。新company-scan/task/profile1.0支持原已批准题目子集、实际截止日及显式模块/维度/单题组包；原冻结Task3保持十二题、2026-10-13、free_agent/零新增搜索的首载体，不自动扩大实验条件。原native1.4旧暴露续行首片只接受MiMo/free_agent单cell，不因通用profile支持module_packs就默许该策略。
+
+收到原响应以后、引擎事件日志写完以前崩溃，先以原task/intent/work查原持久回执和安全可见输出。有原安全结果时，新进程复用该结果，单独记replayed_native_attempts与new_model_http；供应商prompt缓存另据实际usage统计，不能混称。没有安全结果、但已有原发送时停止核实，不换run ID、模型、账本或owner重发。纯研究导出的已知结果只读恢复不延lease；正式标准答案checkpoint仍须原有效lease和搜索证明，研究导出成功不等于金融合格或已入正式库。
+
+原policy1.4明确接受旧budget-only未知暴露时，旧actual NULL、预约、累计请求和并发占用保持；新cohort/cell通过固定原namespace的permissions/quote/委托确认/admission和每POST守卫。哈希、profile标签或调用者布尔值不授予权限。新未知仍停止；不能把未知当零费用或借新策略绕过已有占用。
+
+收费实验必须分开记录激活/权限检查、模型网络、解析/核验、缓存读取和总墙钟；Python内部命令启动开销也属于真实端到端耗时。工程scripted wire测不到模型速度。原600秒lease不靠延长来美化结果；发前时间诊断不足则保留状态且0POST暂停，实际原SDK守卫仍是最后准入来源。网络socket timeout不是严格总墙钟上限。
+
+原计价器返回的pricing_ref必须与本次原预算登记精确一致；官方费率复查属于另有日期的观测，不能改一个字符串就宣称原预算接受了新费率。missing usage、未匹配实际模型/计价窗口或不符引用保持unpriced，不以粗估自动结清。按量估计、套餐额度与真实现金账单分别报告。源代码/backend revision变化时标新样本，不能混进旧冷暖或发包对照。
+
+同节点工程证据见[共享引擎交付](../docs/implementation/experiments/shared-engine-production-2026-10-18.md)。真实Alphabet新样本使用九条既有短来源，0新增搜索；它既不比较Brave/Tavily/ZAI/DeepSeek检索器，也不提供十二项精确主观评分gold。标准JSON完整度、事实支持、评分依据充分性分别评价，缺项不能计为正确。真实结果未签收时不据此改变逐题默认或用户模型/搜索顺位。
+
+
+### 首次真实原生整包实测（2026-10-18，失败现场保留）
+
+Alphabet/12题/MiMo Pro/开启思考/9条既有短来源/0新搜索：新增一次HTTP200，冷进程745.694秒，但0份安全答案、usage未知、费用仍为NULL，原预约USD0.10保留；旧100条请求及两笔未知费用原样保持。缓存恢复未开始，金融准确性不可评。456.372秒是适配层调用区间，包含原权限/持久化检查，不能当纯网络时间；此失败不证明整包准确性优于或劣于逐题。
+
+已定位两处可修工程缺口：严格响应失败的固定错误码未持久化，以及Runtime漏识别真实ResearchResponseValidationError子类。只保留有限错误码，不存正文/思考/原始错误字符串；semantic-invalid与transport-unknown分开，费用未知与是否已有答案分开。该修复不能给旧失败补造原因、usage或答案，不能解除原未知预约/允许盲重发。批量领取优化仍保留原owner/原事务/每次POST前权限校验，默认关闭；以最终独审和实际源码交付记录判断是否完成。

@@ -1,0 +1,51 @@
+{
+  "protocol": "iqs.real-native-experiment-outcome/1.0.0",
+  "observed_utc": "2026-10-18T03:26:07.565694+00:00",
+  "company": "Alphabet",
+  "information_cutoff": "2026-10-13",
+  "provider": "mimo",
+  "actual_model": "mimo-v2.6-pro",
+  "thinking_enabled": true,
+  "question_count": 12,
+  "context_sources": 9,
+  "new_search_requests": 0,
+  "new_physical_model_requests": 1,
+  "http_status_code": 200,
+  "cold_returncode": 2,
+  "expected_cold_returncode": 86,
+  "cold_process_wall_seconds": 745.694,
+  "native_adapter_interval_milliseconds": 456372,
+  "native_adapter_interval_includes_pre_post_checks": true,
+  "pure_wire_seconds": null,
+  "valid_visible_outputs": 0,
+  "standard_answers": 0,
+  "financial_accuracy_rate": null,
+  "financial_accuracy_status": "not_assessed_no_safely_visible_model_answers",
+  "cache_recovery_started": false,
+  "new_budget_status": "response_unpriced",
+  "actual_cost_micros": null,
+  "reserved_cost_micros": 100000,
+  "prior100_budget_rows_unchanged": true,
+  "prior2_unknowns_retained": true,
+  "new_unknown_fee_count": 1,
+  "automatic_resend": false,
+  "source_pins_count": 414,
+  "source_pins_match": true,
+  "established_findings": [
+    "Strict response validation did not yield a safe output; exact validation code was not durable.",
+    "Runtime exact-name taxonomy omitted the original ResearchResponseValidationError subclass and classified it as transport_outcome_uncertain.",
+    "Missing usage cannot establish zero cost, no provider charge, or which counter was absent."
+  ],
+  "not_established": [
+    "specific finish_reason or malformed field",
+    "a late-response lease uncertainty (pack reports members_uncertain=false)",
+    "financial correctness or strategy superiority",
+    "successful cache recovery"
+  ],
+  "evidence": {
+    "runs/shared-engine-production-2026-10-18/actual-native-alphabet-01/cold.process.json": "6d082f68d91d9381b2f36dbffa4bd2a0f09da73bf8c01d9787cc17d7fe423b85",
+    "runs/shared-engine-production-2026-10-18/actual-native-alphabet-01/cold.stdout.log": "3e6b4ff14fd767cdb7898bff75a998631e9fb3d58a0742b0014771ffaf5c517e",
+    "runs/shared-engine-production-2026-10-18/real-runtime-independent-review/cold-stopped.json": "9f54ba248e97f0ff413eaef9dd3d5234a007f078272fdfb3d34e8343c0386b76",
+    "docs/implementation/reviews/real-native-summary-2026-10-18/observed-result.json": "017be7297cf0ad85cb8907956708d78d1e2474eee31b69b05bd0e4119f249d12"
+  }
+}

@@ -1,0 +1,11 @@
+# Final source delivery appendix
+
+Independent same-node mechanical check completed for the six reviewed paths. StockQA normal hooks passed and commit `27d3373b91e1771ccfcb716973d712ca50e1756e` was delivered; Runtime commit is `f83a5be95385d89a37c03b730284306637a72523` (that repository has no remote). The reviewer independently bound each candidate, actual working file and committed Git blob SHA256 to those exact commits.
+
+All six complete ASTs are identical across candidate, working file and committed blob when source line/column attributes are excluded. The stricter result is recorded separately from the adjacent-import normalization check, which also passes. No executable statement, annotation, branch, function or expression was removed from comparison. Two candidate/working file pairs and four working/committed pairs are byte-identical; the remaining byte differences are mechanical source formatting/line endings. Exact hashes and strict AST equality are recorded per file.
+
+StockQA's ordinary source-native run passed92 tests in31.29 seconds. Runtime's ordinary `test_failures.py` and new taxonomy test run exited0; its dot-only log does not provide a summary count, so no additional count is invented. The final StockQA hook log shows all applicable checks passed, including Black, isort, mypy and secret detection. Original unchanged expensive/paid tests were not repeated for mechanical normalization. The controller reports that Runtime's commit identity was supplied at command scope from an existing repository identity, without changing global configuration; no claim of an independently audited global-config baseline is made here.
+
+The original final remains unchanged at SHA256 `52cb18c44024b6fc78765ab35167249ea1f37a9f12d718e00f90cb38a4b8af49`. This appendix only confirms delivery equivalence for the accepted diagnostic patch. It does not turn the failed actual cold run into a successful summary/cache experiment, settle its third unpriced request, or grant financial accuracy. No source, native namespace or database was modified by the reviewer.
+
+Evidence and reproduction: `delivery-appendix.json` and `runs/shared-engine-production-2026-10-18/real-runtime-independent-review/check_final_delivery.py`. The JSON binds the ordinary test logs, hook log, original CAS, preserved final and both actual commits.
