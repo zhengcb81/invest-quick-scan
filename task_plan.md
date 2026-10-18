@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — DeepSeek execution policy 1.2.0 准入
+
+新增 search-policy-deepseek-exec-2026-10-18.json：schema 1.2.0，route deepseek_search，dispatch quota_group=deepseek_tools_search / in-flight 1，metering successful_nonempty_only + per_search/search_calls，execution_plan（entity/identity sha/manifest sha/cutoff、IQS_07 查询）。load_search_policy 结果：admitted=(deepseek-primary,)，execution_plan=true。下一步：exposure 引用该 policy、写 retrieval records、driver 接线。
+
 ## 2026-10-18 — search-backed 接线缺口清单
 
 真实搜索已通，但引擎侧还差：DeepSeek policy execution_plan、retrieval records、admission exposure hash、driver require_search/search_service 接线。已写入 docs/implementation/plans/search-backed-wiring-2026-10-18.md，下一步按 6 步接 1 题 IQS_07。

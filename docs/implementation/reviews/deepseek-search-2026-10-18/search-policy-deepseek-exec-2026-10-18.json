@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.2.0",
+  "policy_id": "deepseek-search-exec-2026-10-18",
+  "source_reference": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+  "selection": {
+    "mode": "external_context",
+    "external_search_priority": [
+      {
+        "route_id": "deepseek-primary"
+      }
+    ],
+    "answer_model_priority_source": "existing_stockqa_model_policy",
+    "hybrid_plan_reference": null
+  },
+  "external_routes": [
+    {
+      "route_id": "deepseek-primary",
+      "kind": "deepseek_search",
+      "endpoint": "https://api.deepseek.com/v1/tools/search",
+      "credential_env": "DEEPSEEK_API_KEY",
+      "enabled": true,
+      "cost_bound_verified": true,
+      "pricing": {
+        "basis": "per_search",
+        "currency": "CNY",
+        "unit_cost_micros": 5000,
+        "per_request_cap_micros": 5000,
+        "quota_group": null
+      },
+      "storage_rights": {
+        "confirmed": true,
+        "entitlement_ref": "owner-confirmed-2026-10-18"
+      },
+      "dispatch": {
+        "quota_group": "deepseek_tools_search",
+        "max_in_flight": 1,
+        "quota_group_max_in_flight": 1
+      },
+      "metering": {
+        "schema_version": "stockqa.external_metering/1.0.0",
+        "charge_policy": "successful_nonempty_only",
+        "pricing_ref": "deepseek-api-pricing-2026-10-18",
+        "source_ref": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+        "source_checked_at": "2026-10-18",
+        "rejected_request_cost_micros": 0,
+        "usage_unit": "search_calls",
+        "max_usage_units_per_request": 1
+      }
+    }
+  ],
+  "retrieval": {
+    "max_snippet_unicode_characters": 500,
+    "max_company_evidence_unicode_characters": 30000,
+    "max_json_unwrap_layers": 3,
+    "max_in_memory_response_bytes": 1000000,
+    "raw_response_persistence": false,
+    "search_ttl_seconds": 3600
+  },
+  "budget": {
+    "source": "existing_stockqa_shared_budget",
+    "include_search_model_repair_probe_and_discovery_requests": true,
+    "unknown_cost_action": "hold_reservation_and_reconcile",
+    "reset_on_restart": false
+  },
+  "execution_plan": {
+    "schema_version": "stockqa.external_execution_plan/1.0.0",
+    "entity_id": "ENT_99ebb735-f072-41e4-8545-823bc012614f",
+    "identity_snapshot_sha256": "0f6c9ea119667fed7102b9d677730679d071779df7124471dd0975fc66096da3",
+    "question_manifest_sha256": "ccdda12f89a631ecc113d2b5df4071c4e9e0f15570f8fb2ee49482abe591a8a9",
+    "information_as_of": "2026-10-18",
+    "locale": "zh-CN",
+    "answer_search_mode": "external_context_only",
+    "entity_domain_bindings": [
+      {
+        "host": "catl.com",
+        "path_prefix": "/",
+        "binding_kind": "issuer_owned_domain",
+        "source_ref": "https://www.catl.com/",
+        "identity_snapshot_sha256": "0f6c9ea119667fed7102b9d677730679d071779df7124471dd0975fc66096da3"
+      }
+    ],
+    "queries": [
+      {
+        "query_id": "Q_IQS07_1",
+        "query": "宁德时代 竞争优势 护城河 客户留存 转换成本",
+        "question_ids": [
+          "IQS_07"
+        ],
+        "top_k": 5,
+        "operation": "search",
+        "source_operation_id": null,
+        "source_receipt_sha256": null
+      }
+    ]
+  }
+}
