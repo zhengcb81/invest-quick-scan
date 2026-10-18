@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — CATL 新题真实运行：请求已建好，准入卡在 exposure snapshot
+
+回归修复后，CATL 新字段 capture 成功；为 IQS_01/02 构建的 refresh request 通过 refresh_contract.validate_request（snapshot snap2_2bc1…，execution profile 1d8e97…）。构造 control/policy 时卡住：1.5 policy 要求 snapshot protocol 1.1.0（v1.5 dialect），而 v1.5 snapshot 需要两个 DISPATCH 的 complete current sources，当前 ledger 的两个 ref 不满足；1.4 snapshot 协议又只有 1.0.0。未写真实 policy、未发付费请求。下一步：对齐 policy/control/snapshot 协议（1.4 或 1.5）并选满足 complete sources 的 exposure refs，再 preview/confirm/admit。
+
 ## 2026-10-18 — 回归已修复：research-only 读路径 + 未来时间戳
 
 两个原因：①CATL 研究型 observation 在 import 时带 research_only，读路径校验未带该标志 → 修复为严格失败后仅对同一 observation 重试一次 research_only=True（scored/answered 仍严格）；②我的探测 query requested_at 在未来（13:00 vs 11:44）→ 用当前 UTC 后通过。验证：CATL 原字段 capture 成功、新字段 score.iqs_01/02 capture 成功；回退修复后复现 rejected。无付费调用。新题真实运行还需 owner admission。报告已更新。
