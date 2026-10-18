@@ -77,6 +77,14 @@ def main(argv=None):
         )
         scored_card = ('<div class="card"><b>Search-backed 评分审阅（未入库，' + str(len(scored_pages))
                        + '）</b><ul>' + links + '</ul><span class="muted">离线校验通过但未进入 owner 观察库</span></div>')
+    status_pages = sorted(ROOT.glob("docs/implementation/status-*.md"))
+    status_card = ""
+    if status_pages:
+        import os
+        latest = status_pages[-1]
+        status_card = ('<div class="card"><a href="' + os.path.relpath(latest, args.out).replace("\\", "/")
+                       + '">状态快照：' + latest.stem + '</a><br><span class="muted">'
+                       + '由 status_report.py 从工件生成</span></div>')
     acceptance_pages = sorted(ROOT.glob("docs/implementation/parallel-lanes/acceptance-*/*.md"))
     acceptance_card = ""
     if acceptance_pages:
@@ -129,6 +137,7 @@ a{{color:#1d4ed8;text-decoration:none}}a:hover{{text-decoration:underline}}</sty
     {fin_card}
     {gaps_card}
     {prov_card}
+    {status_card}
     {acceptance_card}
     {answers_card}
     {scored_card}
