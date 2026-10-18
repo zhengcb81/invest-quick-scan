@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 回归已修复：research-only 读路径 + 未来时间戳
+
+两个原因：①CATL 研究型 observation 在 import 时带 research_only，读路径校验未带该标志 → 修复为严格失败后仅对同一 observation 重试一次 research_only=True（scored/answered 仍严格）；②我的探测 query requested_at 在未来（13:00 vs 11:44）→ 用当前 UTC 后通过。验证：CATL 原字段 capture 成功、新字段 score.iqs_01/02 capture 成功；回退修复后复现 rejected。无付费调用。新题真实运行还需 owner admission。报告已更新。
+
 ## 2026-10-18 — 回归：owner 查询拒绝既有 CATL subject
 
 尝试真实小规模产品验证（CATL 新题 / 000026）时发现：即使 CATL 当初成功的字段（score.iqs_12/16），owner query CLI 现在也返回 subject_contract_output_invalid（0 API）。已排除 current package 切换、000026 subject 导入、release 校验本身；失败点在 IqsSubjectContract 的输出校验/子进程调用，尚未定位。可疑改动：routing 包发布、subject_dispatch_contract 的 research_only seam。影响：新画像运行被阻塞，既有观察/身份不受影响；无付费调用。报告 docs/implementation/reviews/owner-query-regression-2026-10-18.md；下一步二分定位 + 诊断，不猜、不付费。

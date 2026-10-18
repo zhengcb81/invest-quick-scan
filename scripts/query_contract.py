@@ -282,6 +282,21 @@ def observation_variant_key(obs):
         module_contract.canonical_bytes(dimensions).decode('utf-8'))
 
 
+def _validate_semantics_compat(obs, **kwargs):
+    """Accept stored research-only observations on the read path.
+
+    They were admitted with research_only at import/bind time; response
+    validation does not carry that flag, so retry once with the same
+    research-only semantics. Scored/answered observations stay strict.
+    """
+    try:
+        _validate_original_semantics(obs, **kwargs)
+    except ValueError:
+        if kwargs.get("research_only"):
+            raise
+        _validate_original_semantics(obs, research_only=True, **kwargs)
+
+
 def validate_response(value,*,expected_request,expected_owner):
     return _validate_response(value,expected_request=expected_request,expected_owner=expected_owner)
 
@@ -332,7 +347,7 @@ def _validate_response(value,*,expected_request,expected_owner,request_validator
             seen.add(row['observation_id'])
             obs=read_original(row)
             owner_ref=_reference(row,expected_owner)
-            _validate_original_semantics(obs,row=row,owner_ref=owner_ref,request=expected_request,
+            _validate_semantics_compat(obs,row=row,owner_ref=owner_ref,request=expected_request,
                 watermark=result['watermark'],subject_ref=profile['subject_ref'])
             if not expected_request['payload']['include_history']:
                 key=observation_variant_key(obs)
@@ -349,7 +364,7 @@ def _validate_response(value,*,expected_request,expected_owner,request_validator
             raise ValueError('query_duplicate_original_observation')
         seen.add(row['observation_id'])
         obs=read_original(row)
-        _validate_original_semantics(obs,row=row,owner_ref=_reference(row,expected_owner),
+        _validate_semantics_compat(obs,row=row,owner_ref=_reference(row,expected_owner),
             request=expected_request,watermark=result['watermark'],subject_ref=None)
     actual_covered=set.intersection(*field_sets) if field_sets and not missing else set()
     if covered!=actual_covered or coverage['scores_available']!=scores or coverage['facts_available']!=facts:

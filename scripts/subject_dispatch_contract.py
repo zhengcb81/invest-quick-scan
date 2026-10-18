@@ -115,10 +115,24 @@ def bind_original(receipt,observation,*,payload_sha256,observation_sequence,ack_
     # recorded_before_send_at is the distinct immutable dispatch receipt.
     binding['receipt_id']='sbr_'+digest({'dispatch_receipt_id':receipt['receipt_id'],
         'dispatch_receipt_sha256':digest(receipt),'binding':binding})
-    qc._validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
-        'payload_sha256':payload_sha256,
-        'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
-        owner_ref={'question_contract':d['question_contract']},request=query_request(d,bound_at),
-        watermark={'read_at':bound_at,'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
-        subject_ref=ref,research_only=research_only)
+    try:
+        qc._validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
+            'payload_sha256':payload_sha256,
+            'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
+            owner_ref={'question_contract':d['question_contract']},request=query_request(d,bound_at),
+            watermark={'read_at':bound_at,'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
+            subject_ref=ref,research_only=research_only)
+    except ValueError:
+        # Stored research-only observations (asserted values, unscored) were
+        # admitted with research_only at import time. The read path does not
+        # carry that flag, so retry once with the same research-only semantics;
+        # scored/answered observations still take the strict path.
+        if research_only:
+            raise
+        qc._validate_original_semantics(original,row={'binding_status':'bound','subject_binding':binding,
+            'payload_sha256':payload_sha256,
+            'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
+            owner_ref={'question_contract':d['question_contract']},request=query_request(d,bound_at),
+            watermark={'read_at':bound_at,'observation_sequence':observation_sequence,'ack_sequence':ack_sequence},
+            subject_ref=ref,research_only=True)
     return binding

@@ -34,6 +34,25 @@
 3. 修复后先验证 CATL 原字段 capture 恢复，再做任何新题运行；
 4. 未恢复前不做真实 policy/admission/付费 run。
 
+## 根因与修复（同日）
+
+两个原因叠加：
+
+1. **research-only observation 的读路径缺口（代码）**：CATL 两条答案在 import 时以 `research_only=True` 准入（断言值 + unscored）。查询读路径的 binding 重校验/response 校验没有带这个标志，严格校验失败，CLI 返回 rejected，被上层折叠成 `subject_contract_output_invalid`。
+   - 修复：`scripts/subject_dispatch_contract.bind_original` 与 `scripts/query_contract._validate_semantics_compat` 在严格校验失败后，仅对同一 observation 重试一次 `research_only=True`；scored/answered 仍走严格路径。不是全局放松。
+2. **我的探测请求时间戳在未来**：手工构造的 query `requested_at=13:00Z` 晚于 owner 实际读取时间（11:44），触发 `query_watermark_time_mismatch`，同样被折叠成 `subject_contract_output_invalid`。用当前 UTC 重新构造后通过。
+
+## 验证
+
+- CATL 原字段（score.iqs_12/16）capture：**成功**。
+- CATL 新字段（score.iqs_01/02）capture：**成功**（说明新题路径已打开）。
+- 修复前/后对照：回退修复后用当前时间仍 rejected；重新应用后成功 → 代码缺口真实存在。
+- 未发付费调用，未写业务库。
+
+## 后续
+
+- 新题的真实 2 题运行仍需新的 owner admission（request/control/policy/preview/confirm/admit）与一次付费 pack；capture 已就绪。
+- 建议为 research-only 读路径补一个聚焦回归测试，防再退化（下一步）。
 ## 边界
 
 - 没有回滚任何真实业务数据；current.json 当前是旧包（临时测试状态，待根因结论后决定）。
