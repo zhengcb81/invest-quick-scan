@@ -1,3 +1,23 @@
+## 2026-10-18 — 真实CATL研究恢复节点已独立验收，转原链非评分出版
+
+当前节点已完成，不再重复实现/重跑付费样本：原safe至全新carrier02恢复75.0352秒、exit0、Company研究槽2/2 completed、新HTTP0、原native重放1次、报告与summary一致。工程最终独审a8362779.../open_findings=[]；金融一致性最终c6c0828e...确认两答逐对象与原答完全相同。实际31P、旧SDK59P、旧Runtime39P、root16+8、独立7分别有证据，不混成金融准确率。StockQA c910ed9已推origin；Runtime f8e251f无remote仅本地；累计源码/完整759文件已独立交付签收e73427d7...。原source/final/proof/config/checkpoint/0/2partial历史保留。
+
+实际原101预算/12work/12attempt全行不变，总budget102（99 settled、2 unpriced、1 uncertain），本次公开价估算US$0.014537非现金账单。输入11001、输出含思考11208/cache0。原三笔未决不清；新CATL两条原StockQA work仍uncertain、lease_expires_at=None，不能把Company完成写作正式工单完成。两答仍insufficient_evidence/partial/null，4唯一事实支持、主观分数/完整构念gold均0/2；CATL-FIN-01措辞限制保留，金融/正式搜索资格均未授予。发布内容只含薄证据/代码，不含答文/完整context/库/准入凭证。
+
+下一主线实际硬缺口已只读确认：现有标准checkpoint对所有状态要求verified search和原lease；当前只有research safe/固定board。共享engine未调用nativecommit；known_response_resolution只能将不可用结果close failed，不能当历史研究出版入口。不能补造搜索证明、续旧lease或改原body来强闯。复用原fixed owner/原库、C06/outbox和SW observation1.2，做显式默认关闭的publish_saved_research+research-only checkpoint版本，fresh publisher只负责已知safe的非scored/null/unverified出版与ACK，旧scored/search要求保持，最终SW review_pending/screening而非正式评分。
+
+作者仅在saved-research-publication-candidate准备完整跨仓overlay/TDD/CAS，原源/库未动，无付费；同节点一次集中unit/integration/public-CLI/原库副本E2E及真正不同agent整包审查后才应用并实际激活。独立金融sidecar保持，原其他101账/旧12工单/费用不动。诊断post-recovery-formal-seam-readonly/有精确源引用。三外包10卡仍各自writer隔离。
+
+本轮测试未下载文件；新3目录精确清理被policy在执行前拒绝，额外测试目录隔离保留且不绕过重试，旧8拒绝也保留，不能称环境全清。本节点PWF/规范/实验与独审薄证据正常提交、推送既有origin，实际提交以Git为准；不包含他人2026-10-10 README。
+
+## 2026-10-18 — 批量运输整节点独审通过并已交付源码，待原响应0POST恢复
+
+不同agent最终签收5de0225d...、open_findings=[]，累计6产品CAS dbe1546e...，原1.5/第一次修复全部历史保留。集中31P、旧SDK59P、旧Runtime39P、root16+8和独立7项风险检查通过；实际两答也由原validator/Runner只读验证来源/日期/epoch，未增加金融充分性。typed非batch用例仅未来选择谓词边界，现有Company没有因此获得agent_loop能力。
+
+9产品/测试精确应用。Runtime f8e251f本地无remote；StockQA c910ed9常规hooks含mypy95全部通过。mypy暴露外部Runtime模块不在QA单仓类型路径：复用同文件已有固定import_module模式，两处固定模块/函数延迟加载，模块缺失仍拒绝，无type ignore或路径fallback；这属于显式交付调整，正由同一不同agent核查，不能冒称纯格式等价。最初跨仓pytest被Runtime原locked SDK conftest误收集而失败已保留；之后禁用该依赖conftest、实际已应用源码31项通过，开启同一禁网/写审计，真实缓存只读opt-in。旧59/39兼容分母另列。
+
+当前完整759文件delivery草稿082c012e...只含6累计产品delta，其余753不变；QA/Runtime共7个产品/测试commit blob核同当前源。实际仍原0/2partial，不以源码交付冒称恢复成功。下一动作签机械交付附录、生成version2 proof和仅proof变化的配置，再原cold cp至全新label目录0POST恢复；不新调用、不重发、不清未知、不延lease。3外包继续writer隔离。
+
 ## 2026-10-18 — 批量协议根修集中验证，原真实响应保持
 
 同一节点的候选已覆盖未来final_json wire不带tools/tool_choice，以及历史单submit载体到原批量parser的严格转换；原工具外壳、重复JSON、声明题目、来源、安全围栏与原任务绑定都保留。原Runner白名单、原checkpoint、费用与600秒lease不修改。总控新增8项输出路径检查（4个真实CLI拒绝、4个旧partial保留），0.96秒通过；另16项既有proof测试不重复跑。四产品候选仍待作者最终冻结和不同agent整体签收，尚未应用/新调用API。
@@ -207,7 +227,7 @@ Company核心仍为已交付cd5e3e7。owner 服务实际原软件批准/SDK两�
 
 ## Next Step
 
-完成当前原batch运输/执行协议对齐slice（SDK未来final_json、原typed task与原native intent绑定、缓存唯一submit载体严格转原batch JSON）；连同新历史保留输出/partial exit4/proof2做同节点集中测试及真正不同agent审查，正常交付后仅用原safe/原cold checkpoint在全新输出目录0POST恢复。原0/2partial、所有proof1/原预算/未知/原金融问题均保留；不重发、不改白名单。随后汇合真实摘要/金融评审、更新规范/PWF提交推送。三个外部10卡保持writer隔离。
+完成原链非评分历史研究出版的单一跨仓候选（原owner显式purpose、research-only checkpoint与原C06/outbox/StockWiki ACK）；集中TDD及不同agent整包审查后正常交付，再以原真实CATL safe/原owner新鲜publisher零HTTP出版到review_pending并核幂等/原账保持。原搜索/scored链不放宽、不伪造proof、不续旧lease、不更改原答。当前2/2只为Company研究完成，原native两work仍uncertain；三外包10卡保持活动writer隔离。
 
 ## 2026-10-18 — 三个独立研究包交付验收收口
 

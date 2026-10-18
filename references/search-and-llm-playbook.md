@@ -204,3 +204,5 @@ Alphabet/12题/MiMo Pro/开启思考/9条既有短来源/0新搜索：新增一�
 原OwnerResearchServices显式owner_batch_claim=True只把一个原已批准题组的领取合为原SQLite事务；不缓存权限、不扩大600秒lease，不省略每POST当前原权限检查。旧默认False保留。8路径独立整节点与普通48P/1显式重型skip通过，见[工程验收](../docs/implementation/reviews/owner-batch-performance-2026-10-18/final.json)。
 
 接续测试c01为同一已准入原任务、合成身份和供应方响应，607.78秒不含此前准入/失败准备：一次SDK scripted POST，safe后中断，新进程12槽/新POST0。领取9.68vs原91.57秒；claim到POST359.09vs旧319.96秒更慢，整体提速和真实模型余量均未证实。该case新费用仍NULL，因为夹具pricing_ref不匹配，不是已结算/真实付费成本正例。真实Alphabet失败状态保持。后续通用1.5仍处于计划/候选，未发布前不能使用新source列表或module_packs绕过旧1.4限制。
+
+2026-10-18接线实测补充：真实CATL两题的原响应可在75.04秒内本地恢复2/2，新增模型HTTP0；这是本地持久化恢复，不是厂商token cache命中（实际cache0），不证明搜索质量或整体金融准确性。最终输出仍为证据不足/分数null；原费用估算非账单、未决预约不变，原正式搜索checkpoint不因共享引擎导出自动获得资格。

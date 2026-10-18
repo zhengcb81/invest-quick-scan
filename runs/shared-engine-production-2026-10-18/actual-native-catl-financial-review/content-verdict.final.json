@@ -1,0 +1,205 @@
+{
+  "artifact_type": "independent_catl_financial_content_and_recovery_consistency_verdict",
+  "status": "content_consistency_passed_narrow_facts_supported_with_retained_qualitative_caveat",
+  "reviewer": "/root/production_task_review18",
+  "completed_at_utc": "2026-10-18T05:50:00.129024+00:00",
+  "scope": "Original normalized safe submit_answers versus final recovered export, source-bounded financial content review only; no new model/search/owner/engineering gate.",
+  "historical_preregistration_sha256": "e7101fd1ea829a76ed62da6db262322d42e6abfdba5148319bef36dd289b7892",
+  "historical_pre_recovery_verdict_sha256": "34c1f5ab2f175a5d364bbcd387ba7948a3c2189f0f43abdf2c30286f8e52f3e9",
+  "original_safe_payload_sha256": "3f67b6130da82cfbf49c744ef204732673763652a00ac6ae0d28343b54c6e70e",
+  "provider_attempt_id": "4d46a825-728f-4372-8947-26ec3737ff3f",
+  "actual_model_label": "mimo-v2.6-pro",
+  "execution_profile_sha256": "247d9696e153ff2b4e3d0f6cd326d61f84f0df5a573a0500b7011e40816464de",
+  "task_sha256": "90c38242ab1ac8be6dd908425bc323b2c5af7cbfd2e38820097fcebeeb0ee452",
+  "task_bundle_sha256": "8446eedafc292069ac1b200f2a79bc126d856a659b76c83359ddf815b50ea3b5",
+  "input_manifest_sha256": "34576366d3a18cdf74aca30d8df87f68a957df169b1b9ca65ad211e24ffed7b1",
+  "information_cutoff": "2026-10-18",
+  "question_module": "common3.0.0",
+  "selected_questions": [
+    "IQS_12",
+    "IQS_16"
+  ],
+  "single_pack": true,
+  "answer_consistency": [
+    {
+      "question_id": "IQS_12",
+      "original_submitted_answer_canonical_sha256": "7dcf0f2851daa672dcb674dd71918e3a89913416bd6b91d5ecab773ad516c99a",
+      "recovered_answer_canonical_sha256": "7dcf0f2851daa672dcb674dd71918e3a89913416bd6b91d5ecab773ad516c99a",
+      "full_answer_content_canonically_identical": true,
+      "runner_wrapper_only": true,
+      "question_object_sha256": "2d42b3993877f75ea0e812c4775c79d9e7896ac73fdb9c402504bcb303b34e7d",
+      "execution_status": "completed",
+      "answer_status": "insufficient_evidence",
+      "coverage_status": "partial",
+      "score_is_null": true,
+      "retained_content_findings": []
+    },
+    {
+      "question_id": "IQS_16",
+      "original_submitted_answer_canonical_sha256": "7eccb6fa2f13e24f633bd53a0ab027e2734db72aeb9b6e4e1cd6b15ba266c8a3",
+      "recovered_answer_canonical_sha256": "7eccb6fa2f13e24f633bd53a0ab027e2734db72aeb9b6e4e1cd6b15ba266c8a3",
+      "full_answer_content_canonically_identical": true,
+      "runner_wrapper_only": true,
+      "question_object_sha256": "fd0daeb1faf5021dcbe6d5e42e1bcc195d46c60aebfffa922c830554b1bd66ce",
+      "execution_status": "completed",
+      "answer_status": "insufficient_evidence",
+      "coverage_status": "partial",
+      "score_is_null": true,
+      "retained_content_findings": [
+        "CATL-FIN-01"
+      ]
+    }
+  ],
+  "completion": {
+    "formal_recovered_export_available": true,
+    "formal_completed_slots": 2,
+    "slot_denominator": 2,
+    "all_slots_completed": true,
+    "model_answers_are_insufficient_evidence_not_transport_null": true,
+    "completed_slots_are_not_correctness_proof": true
+  },
+  "financial_content": {
+    "unique_rounded_reference_atoms": 4,
+    "asserted_unique_reference_atoms": 4,
+    "supported_unique_reference_atoms": 4,
+    "numeric_matching": "4/4 only for the preregistered rounded official-summary facts; not an overall financial accuracy rate",
+    "two_derived_ratios_arithmetically_correct": true,
+    "derived_ratios_not_added_to_reference_denominator": true,
+    "source_unit_period_currency_category_checks": "retained unchanged from original safe-content review",
+    "appropriate_partial_null_score_handling": 2,
+    "subjective_score_gold_denominator": 0,
+    "full_construct_gold_denominator": 0,
+    "subjective_score_accuracy": null,
+    "overall_financial_accuracy_percent": null,
+    "unsupported_qualitative_characterizations": 1,
+    "missing_debt_cash_restrictions_and_stress_inputs": "unknown; neither inferred nor filled"
+  },
+  "retained_findings": [
+    {
+      "id": "CATL-FIN-01",
+      "question_id": "IQS_16",
+      "field": "summary",
+      "severity": "qualitative_evidence_overreach",
+      "finding": "The summary characterizes historical gross monetary funds plus trading assets as strong immediate liquidity/internal cash generation before verifying usable cash, current balances or the obligation denominator.",
+      "why": "A rounded2025-12-31 asset pool and one historical OCF flow establish scale only. They do not establish liquidity strength at2026-10-18 or coverage of the next two years. Later missing-field caveats and a null score appropriately limit the conclusion, but do not fully qualify the leading characterization.",
+      "recommended_handling": "Describe the reported historical balances without a strength assessment; retain unknown current availability, liabilities and stress coverage. Any editorial repair should be a separately labelled derived note, never overwrite original model output or resend.",
+      "changes_numeric_four_atom_result": false
+    }
+  ],
+  "finding_disposition": "CATL-FIN-01 remains a source-support limitation in the unchanged original IQS_16 summary; recovery success does not repair or validate that wording. Do not overwrite original output or resend.",
+  "runtime_observation": {
+    "runtime_origin": "stockqa_live",
+    "evidence_origin": "fixed_public_context",
+    "new_HTTP_during_final_recovery": 0,
+    "observed_original_physical_requests": 1,
+    "replayed_native_attempts": 1,
+    "input_tokens": 11001,
+    "output_tokens_including_reasoning": 11208,
+    "provider_cache_read_tokens": 0,
+    "usage_complete": true,
+    "cash_cost_in_adapter_report": null,
+    "cost_complete": false,
+    "provider_cache_discount_or_financial_benefit_proven": false,
+    "latency_comparison_or_speedup_proven": false,
+    "wall_seconds_root_reported": {
+      "cold": 305.8697,
+      "final_recovery": 75.035
+    },
+    "prior_recovery_attempts_root_reported": [
+      {
+        "wall_seconds": 68.55,
+        "status": "failed"
+      },
+      {
+        "wall_seconds": 76.66,
+        "status": "partial"
+      }
+    ],
+    "history_note": "Earlier failed/partial recovery and the historical pre-recovery verdict remain; final carrier02 status now complete without a new HTTP. No independent wall-clock measurement claimed here."
+  },
+  "report_consistency": {
+    "report_runtime_summary_exactly_equal": true,
+    "qualification_granted": false,
+    "financial_qualification_granted": false,
+    "adapter_owner_authority_verified": false,
+    "comparison_scope": "company_scan_profile_not_frozen_experiment_comparable",
+    "financial_accuracy_assessed_by_exporter": false,
+    "official_search_checkpoint_created": false,
+    "notes": "Reporter explicitly separates completion from correctness and grants no financial qualification; cash remains null and observed provider cache reads are0. Native authority metadata is not newly adjudicated by this financial review."
+  },
+  "qualification": {
+    "narrow_four_fact_support": true,
+    "full_financial_acceptance": false,
+    "investment_or_subjective_score_qualification": false,
+    "complete_two_year_liquidity_assessment": false,
+    "invoice_or_cash_savings_qualification": false,
+    "provider_cache_benefit_qualification": false
+  },
+  "evidence_refs": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovered-export\\research-run.json",
+      "sha256": "702fda67ba2c15c4f6b75c156a8f12c0c80e292f6a7cf7794ba206d42af140a1",
+      "bytes": 16201
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovered-export\\execution-profile.json",
+      "sha256": "b5d90849ee4163c7604fc46e2d27ce1031a8e8e74937a6f757d7bdc8f964431d",
+      "bytes": 6934
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovered-export\\run-summary.json",
+      "sha256": "ba567af28824ea7313bfb538b7507f33302db231b5722734538b7749f7cb2ff2",
+      "bytes": 718
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovered-export\\runtime-summary.json",
+      "sha256": "a237c03874b72bc8c713fe17e208eb8902b202d3d80ea5bf61f0b6d0b4d60b70",
+      "bytes": 1679
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovered-export\\runtime-evidence.json",
+      "sha256": "a68d2b7886404fd16cc2cda2664156c0fb47b54be48b7397238fc077f1a056d3",
+      "bytes": 1874
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovered-export\\evidence-board.json",
+      "sha256": "48e837a38df3aa8701b631173ccc8bc38bfe2873b5b67dc50c0ab478ddd4f871",
+      "bytes": 1766
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovered-export\\metrics.json",
+      "sha256": "651c2f8ba4ed025067d8fc25d45592796df5fb71f9c86674f4c031e6132161fb",
+      "bytes": 3613
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovered-report\\report.json",
+      "sha256": "5aa917bc08e82328347ce95e0311799cdc59dd1005fee4d7d37b42e9edfad981",
+      "bytes": 14404
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovered-report\\report.md",
+      "sha256": "4f455c62b0de6272cbea0cc5976b5a820767d40935a122b4e19a5bda8ad32812",
+      "bytes": 719
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\shared-engine-production-2026-10-18\\actual-native-catl-profile-01\\recovery-carrier02\\recovery-observation.json",
+      "sha256": "6f1d7954fe5c428d83a91655b283358542997de00e67ccd4172bd4dfa82c2d26",
+      "bytes": 1839
+    }
+  ],
+  "archive_policy": {
+    "thin_aggregate_and_hashes_only": true,
+    "answer_bodies_archived": false,
+    "private_gold_archived": false,
+    "hidden_reasoning_archived": false
+  },
+  "access": {
+    "new_network_searches": 0,
+    "new_model_API_calls": 0,
+    "original_store_writes": 0,
+    "source_writes": 0,
+    "active_lab_writes": 0,
+    "original_answer_edits": 0,
+    "raw_SDK_or_hidden_reasoning_reads": 0
+  }
+}
