@@ -3,115 +3,199 @@
   "source_repository": "C:/Users/郑曾波/Projects/invest-quick-scan",
   "source_commit": "4e001cd18d229a60de54d56ce6ecd23f8bc00cae",
   "created_at_utc": "2026-10-18T00:00:00Z",
-  "note": "本文件是总控侧输入目录；各 Lab 在自己的 inputs.lock.json 中按本卡抽取本包 files 重建 iqs.support_input_lock/1.0.0 并逐项核对 blob OID/bytes/sha256。sha256 为 Git blob 解压后原字节的 SHA-256（非工作树文件，非 EOL 转换后字节）。禁止从活动工作树复制、禁止 checkout 源仓。",
+  "artifact_count": 26,
+  "note": "各 Lab 在自己的 inputs.lock.json 中按本包抽取 files 重建 iqs.support_input_lock/1.0.0 并逐项核对。sha256 是 Git blob 解压后原字节的 SHA-256（非工作树文件、非 EOL 转换后字节）。复制目标为 vendor/iqs/<path>（保持相对目录），vendor/ 只读。禁止从活动工作树复制、禁止 checkout 源仓。本批施工卡尚未归档：整改完成后由总控提交，提交号由总控事后更新，本文件不预写。",
   "packages": {
     "DELIVERY-AUDIT-11": {
       "work_root": "C:/Users/郑曾波/Projects/iqs-delivery-audit-lab",
       "files": [
         {
           "path": "docs/implementation/parallel-lanes/handoff.schema.json",
+          "vendor_path": "vendor/iqs/docs/implementation/parallel-lanes/handoff.schema.json",
           "blob_oid": "6d77c9c960f3d790f0251f6c0e365cb3db0f0313",
           "bytes": 5598,
           "sha256": "ed38a65aafed82649a071acbc9e6ee5b47c92120ad958713db4d7261a4b15c0e"
         },
         {
           "path": "scripts/parallel_handoff_cli.py",
+          "vendor_path": "vendor/iqs/scripts/parallel_handoff_cli.py",
           "blob_oid": "18eaf979d4f8717bcc1ce04a57544944a62e6f28",
           "bytes": 7005,
           "sha256": "21e58aa56fe4680673c209cef88f8eaa5f67aad47cdfc7d1dd3177766ef28bda"
         },
         {
           "path": "docs/implementation/parallel-lanes/packages/2026-10-10/handoff-rules.md",
+          "vendor_path": "vendor/iqs/docs/implementation/parallel-lanes/packages/2026-10-10/handoff-rules.md",
           "blob_oid": "0d794f6c25c3b616f6b3ac4f3e6f3247a64c1157",
           "bytes": 6997,
           "sha256": "2793c3ebf7491080ba8bcc67539efe79707ae2e12bdd3278cb3b32dc86092fa0"
         },
         {
           "path": "docs/implementation/parallel-lanes/packages/2026-10-18-mainline-support/integration-contract.md",
+          "vendor_path": "vendor/iqs/docs/implementation/parallel-lanes/packages/2026-10-18-mainline-support/integration-contract.md",
           "blob_oid": "179473a4a420bf571b8b2bfe800798815b6c44fe",
           "bytes": 10270,
           "sha256": "a9ea665ad2fb331d26004f5d42c8b6330daab7c23c61977de32b1cce05d76921"
         },
         {
           "path": "docs/implementation/intake/QA-NET-01/2026-10-07/owner-delivery/handoff.json",
+          "vendor_path": "vendor/iqs/docs/implementation/intake/QA-NET-01/2026-10-07/owner-delivery/handoff.json",
           "blob_oid": "8facebf69b55da4afc292e44e341e33db02f6f6f",
           "bytes": 14363,
           "sha256": "d9d7b2692167b4791255ffe66ab4cbed9e23df41a00f5598ae39634d6ce74729"
         },
         {
           "path": "docs/implementation/intake/SW-REPAIR-02/2026-10-08/worker/handoff.json",
+          "vendor_path": "vendor/iqs/docs/implementation/intake/SW-REPAIR-02/2026-10-08/worker/handoff.json",
           "blob_oid": "7dc33d94c0a31a50715d516055a12042decaf5f3",
           "bytes": 9235,
           "sha256": "9599f84188d64c5b0428ff5a04f054ef45c3f7792386b4ea0a48f12dd8b00048"
         },
         {
           "path": "docs/implementation/intake/EVID-LAB-01/2026-10-08/worker/handoff.json",
+          "vendor_path": "vendor/iqs/docs/implementation/intake/EVID-LAB-01/2026-10-08/worker/handoff.json",
           "blob_oid": "cc995b5d73aa70561da96362a2aa9acd004ad219",
           "bytes": 6922,
           "sha256": "97df817ceab3fc4c5559785811fb3f379cd03876dd944c15a8c49ea6f08d6a3a"
+        },
+        {
+          "path": "docs/implementation/parallel-lanes/packages/2026-10-07/manifest.json",
+          "vendor_path": "vendor/iqs/docs/implementation/parallel-lanes/packages/2026-10-07/manifest.json",
+          "blob_oid": "f306e5bda0f153cc7e9ad5735a780429c05ae4d6",
+          "bytes": 1865,
+          "sha256": "9a7662e61f22e274ebabab2887682bd48322d32e929e4480211a381c5d2e78b7"
+        },
+        {
+          "path": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/manifest.json",
+          "vendor_path": "vendor/iqs/docs/implementation/parallel-lanes/packages/2026-10-07-wave2/manifest.json",
+          "blob_oid": "3ef85eac41ae16172713810928aa4987b5d7e0eb",
+          "bytes": 2243,
+          "sha256": "b0534f7e7048cf76edfb28f035486263b7629cdf75d3ac12391c2cf1fe9e45d7"
         }
-      ]
+      ],
+      "oracle_expectations": {
+        "scope": "单段为主：把冻结的 parallel_handoff_cli.py 与 handoff.schema.json 一并复制到 <lab>/vendor/iqs/（保持 scripts/ 与 docs/implementation/parallel-lanes/ 相对路径），CLI 以自身路径推 ROOT=vendor/iqs，故 LANE_DIR/vendor 下 packages/ 内的冻结 catalog 仍满足 is_relative_to，可在 Lab 内直接 --catalog 离线执行。总控在 IQS 根另行复跑为可选交叉核对，不阻塞 Lab。",
+        "commands": [
+          {
+            "package_id": "QA-NET-01",
+            "catalog": "docs/implementation/parallel-lanes/packages/2026-10-07/manifest.json",
+            "input": "docs/implementation/intake/QA-NET-01/2026-10-07/owner-delivery/handoff.json",
+            "expected_exit": 0,
+            "expected": {
+              "status": "valid",
+              "errors": []
+            }
+          },
+          {
+            "package_id": "SW-REPAIR-02",
+            "catalog": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/manifest.json",
+            "input": "docs/implementation/intake/SW-REPAIR-02/2026-10-08/worker/handoff.json",
+            "expected_exit": 2,
+            "expected": {
+              "status": "invalid",
+              "errors": [
+                "changed_path_out_of_scope"
+              ]
+            }
+          },
+          {
+            "package_id": "EVID-LAB-01",
+            "catalog": "docs/implementation/parallel-lanes/packages/2026-10-07-wave2/manifest.json",
+            "input": "docs/implementation/intake/EVID-LAB-01/2026-10-08/worker/handoff.json",
+            "expected_exit": 0,
+            "expected": {
+              "status": "valid",
+              "errors": []
+            }
+          }
+        ],
+        "observed_at_utc": "2026-10-18T00:00:00Z",
+        "note": "以上为编制时在 IQS 根实际运行 scripts/parallel_handoff_cli.py 得到的原 verdict，作为 DA-01 的 oracle 期望；Lab 用同一冻结脚本与冻结 catalog 单段复现，必须逐字段一致。"
+      }
     },
     "COST-LEDGER-11": {
       "work_root": "C:/Users/郑曾波/Projects/iqs-cost-ledger-lab",
       "files": [
         {
           "path": "docs/implementation/experiments/accuracy-pricing-2026-10-07.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/accuracy-pricing-2026-10-07.json",
           "blob_oid": "43648ed11f3b65dcd6b13d8f87e2711d7e2dfb36",
           "bytes": 2651,
           "sha256": "403b5b9e71588f7bbaf46df4408317e623a67e9148bd2ebbb1d299f80dd5be8c"
         },
         {
           "path": "docs/implementation/experiments/accuracy-first-economics-2026-10-07.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/accuracy-first-economics-2026-10-07.json",
           "blob_oid": "a9a7b839f73b1bbc2d434303c394075018175c45",
           "bytes": 1069,
           "sha256": "9ab7dc66cde0ae17d72b57b5ebf8641bb2af465da63f7b53a4c597dfb5ef9d61"
         },
         {
           "path": "docs/implementation/experiments/artifacts/accuracy-first-2026-10-07/main/budget.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/accuracy-first-2026-10-07/main/budget.json",
           "blob_oid": "a0276357e3f317f2b9fa029371733cd4349ed6fc",
           "bytes": 78,
           "sha256": "fb790886a85349db20476bec6e9949d10be96e734eeeefb79202cc00ebe9431b"
         },
         {
           "path": "docs/implementation/experiments/artifacts/accuracy-first-2026-10-07/followup/budget.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/accuracy-first-2026-10-07/followup/budget.json",
           "blob_oid": "bacff8af8032f05618907f0640d92f8eb968d496",
           "bytes": 84,
           "sha256": "dbb8b4d14bf0c32c7a403a5f512107f4010a39392e08c7a1dfb0421219c87b81"
         },
         {
           "path": "docs/implementation/experiments/artifacts/company-agent-s0-2026-10-15/original-attempt-cost-reconciliation.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/company-agent-s0-2026-10-15/original-attempt-cost-reconciliation.json",
           "blob_oid": "6f3da8705a270aa45fd9d7003d2e61e44c435b97",
           "bytes": 353,
           "sha256": "c209af2f8812a72b12ee664b7554835d84a8dfee628ed89e94fc4f30c6a94395"
         },
         {
           "path": "docs/implementation/experiments/artifacts/company-agent-s0-2026-10-15/mimo/ledger-summary.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/company-agent-s0-2026-10-15/mimo/ledger-summary.json",
           "blob_oid": "5d2cf8cab204f7ab4d2f67b1361dfef327652617",
           "bytes": 229,
           "sha256": "eca00f345500f01c44140ce9aebd2772d02ae943b0595a9ee01f4c0d480dad68"
         },
         {
           "path": "docs/implementation/experiments/artifacts/b01-improved-2026-10-07/ledger.jsonl",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/b01-improved-2026-10-07/ledger.jsonl",
           "blob_oid": "b9c67cf7f8a75b495f438be9c83252deb17ec2e9",
           "bytes": 772983,
           "sha256": "7d1e68bbabf53dec32aa2d28abe7c4b3e1dbf200c4b048b570b22d2f0108cc3a"
         },
         {
           "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/ledger.jsonl",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-01/ledger.jsonl",
           "blob_oid": "c408e11f21d44a688facd165e2488945903e1582",
           "bytes": 259642,
           "sha256": "b071099b22236006be9119704002697d4bb8975de0113ff2a19caac2817fd85f"
         },
         {
           "path": "docs/implementation/contracts/providers-and-budget.md",
+          "vendor_path": "vendor/iqs/docs/implementation/contracts/providers-and-budget.md",
           "blob_oid": "252edb3c6526569f720ace808eb67962fb9732e0",
           "bytes": 10532,
           "sha256": "0a9df0e877a4609496fe2db228203fe22001d4b54f39210af19c028c2a294747"
+        },
+        {
+          "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/ledger.jsonl",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-jsonoff/ledger.jsonl",
+          "blob_oid": "8a98f4953bd72f2878ef059e3215cea47298fd72",
+          "bytes": 22441,
+          "sha256": "6898d15cb47af52d87f71f62ec27c5749efacc38ec715fb281cdec3f2d584322"
+        },
+        {
+          "path": "docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/ledger.jsonl",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/mimo-pro-pilot-2026-10-07-thinking-all/ledger.jsonl",
+          "blob_oid": "dc4a453d981c119dc416a79f4348f97214c52fb1",
+          "bytes": 78027,
+          "sha256": "7e89fe222ea81ba1b2c333cc8f810c5d6efd09da1c028730a9dfdfe4b4fd13af"
         }
       ],
       "placeholders": [
-        "docs/handoff/COST-LEDGER-11-ledger-projection.json：主线 saved-research publication 与 schema24/25 节点的真实预算导出（含 response_unpriced / outcome_uncertain / reserved 行）尚未生成；由总控在该节点有记录后补冻并给 blob OID，本卡不以真实 DB 代替。"
+        "docs/handoff/COST-LEDGER-11-ledger-projection.json：主线 saved-research publication 与 schema24/25 节点的真实预算导出（含 response_unpriced / outcome_uncertain / reserved 行）尚未生成；由总控在该节点有记录后补冻并给 blob OID，本卡不以真实 DB 或 runs/ 未 tracked 副本代替。"
       ]
     },
     "EVIDENCE-TIMELINE-11": {
@@ -119,50 +203,56 @@
       "files": [
         {
           "path": "docs/implementation/experiments/alphabet-objective-reference-2026-10-16.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/alphabet-objective-reference-2026-10-16.json",
           "blob_oid": "5f054e74424ed59073ecbc08188b04b94b585d72",
           "bytes": 5124,
           "sha256": "3846cad65c5b1e2aa819b5a52a95711d05b2f5f83ce3f4def08007ec6a49980d"
         },
         {
           "path": "docs/implementation/experiments/artifacts/b01-improved-2026-10-07/source-index.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/b01-improved-2026-10-07/source-index.json",
           "blob_oid": "45c6b8276c8efc029476863980a734eca528a3c7",
           "bytes": 127785,
           "sha256": "4563ca2bc558cb72d9f9c2cda34f88386532114064d086221c36227a3ae1cc44"
         },
         {
           "path": "docs/implementation/experiments/artifacts/accuracy-first-2026-10-07/followup/source-catalog.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/accuracy-first-2026-10-07/followup/source-catalog.json",
           "blob_oid": "8e34d980635173546287281a756c3170ad4ff16d",
           "bytes": 84827,
           "sha256": "cb21c2269851a690cff35f810daf126d7bc2a8a5878e8a78bf7dcc7f9d568b8b"
         },
         {
           "path": "docs/implementation/experiments/artifacts/accuracy-first-2026-10-07/main/source-catalog.json",
+          "vendor_path": "vendor/iqs/docs/implementation/experiments/artifacts/accuracy-first-2026-10-07/main/source-catalog.json",
           "blob_oid": "1865cc9f87290efd6e020f6c0aeee008b86754d9",
           "bytes": 172713,
           "sha256": "5e5fad8218d03fb984e40553e25ea15ad6e038a6d5c8edfa8bc32f070991c054"
         },
         {
           "path": "docs/implementation/contracts/receipt-Q02.json",
+          "vendor_path": "vendor/iqs/docs/implementation/contracts/receipt-Q02.json",
           "blob_oid": "22a87db7c760e04af66ae9387b811959085d2d3c",
           "bytes": 16742,
           "sha256": "cb1c40af44a629e316b7812c13b0fd6db682bddf2224e59216e1b8076152929f"
         },
         {
           "path": "schemas/observation-v1.2.schema.json",
+          "vendor_path": "vendor/iqs/schemas/observation-v1.2.schema.json",
           "blob_oid": "574d06d794a20f7e1d62b3e8b8b4109e9fc4f61b",
           "bytes": 7803,
           "sha256": "09079ded0a16ada01676d1b87bc905dbb71e6c2e353de0545155868c13a02ef3"
         }
       ],
       "placeholders": [
-        "docs/handoff/EVIDENCE-TIMELINE-11-evidence-pack.json：真实 30 槽参考包的 source_refs（含 retrieved_at / published_at / locator）在本批编制时未以 tracked 形式存在；由总控在 EVID-REF-02 后续节点补冻并给 blob OID。"
+        "docs/handoff/EVIDENCE-TIMELINE-11-evidence-pack.json：EVID-REF-02 后续 30 槽参考包的 source_refs（含 retrieved_at / published_at / locator / snippet_sha256）在本批编制时未以 tracked 形式存在；由总控在该节点补冻并给 blob OID。"
       ]
     }
   },
   "excluded_unsupported": [
     {
       "path": "docs/implementation/intake/parallel-packages/2026-10-10/received-handoff/EVID-REF-02/handoff.json",
-      "reason": "工作树存在但 git ls-files 报 pathspec did not match any file(s) known to git，即未 tracked、无 Git blob；不得作为冻结输入。派发前若总控提交它以取得 OID，须走新锁。"
+      "reason": "工作树存在但 git ls-files 报 pathspec 不匹配，即未 tracked、无 Git blob；不得作为冻结输入。"
     },
     {
       "path": "docs/implementation/intake/parallel-packages/2026-10-10/received-handoff/FACT-CONTENT-01/handoff.json",

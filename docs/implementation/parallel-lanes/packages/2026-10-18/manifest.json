@@ -18,22 +18,28 @@
         "README.md",
         ".gitignore",
         "pyproject.toml",
-        "src/iqs_delivery_audit",
+        "src",
         "schemas",
         "content",
+        "rules",
         "fixtures",
         "tests",
         "tools",
+        "vendor",
         ".tmp",
+        "src/iqs_delivery_audit",
         "docs/handoff/DELIVERY-AUDIT-11"
       ],
       "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
       "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
       "delivery_scope": "offline_delivery_bundle_audit_candidate_only",
+      "task_ids_semantics": "support_only: declares which planned tasks this card supplies offline candidate tooling for; completion of these tasks is NOT delegated and NOT claimed",
       "full_task_completion_delegated": false,
       "model_api_enabled": false,
       "paid_search_enabled": false,
-      "network_scope": "none"
+      "network_scope": "none",
+      "handoff_protocol": "docs/implementation/parallel-lanes/handoff.schema.json#1.0.0",
+      "exit_codes": "integration-contract section 2: 0/1(evaluate only)/2/3"
     },
     {
       "id": "COST-LEDGER-11",
@@ -48,59 +54,73 @@
         "README.md",
         ".gitignore",
         "pyproject.toml",
-        "src/iqs_cost_ledger",
+        "src",
         "schemas",
         "content",
+        "rules",
         "fixtures",
         "tests",
         "tools",
+        "vendor",
         ".tmp",
+        "src/iqs_cost_ledger",
         "docs/handoff/COST-LEDGER-11"
       ],
       "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
       "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
       "delivery_scope": "offline_cost_ledger_audit_candidate_only",
+      "task_ids_semantics": "support_only: declares which planned tasks this card supplies offline candidate tooling for; completion of these tasks is NOT delegated and NOT claimed",
       "full_task_completion_delegated": false,
       "model_api_enabled": false,
       "paid_search_enabled": false,
-      "network_scope": "none"
+      "network_scope": "none",
+      "handoff_protocol": "docs/implementation/parallel-lanes/handoff.schema.json#1.0.0",
+      "exit_codes": "integration-contract section 2: 0/1(evaluate only)/2/3"
     },
     {
       "id": "EVIDENCE-TIMELINE-11",
       "lane_id": "iqs",
       "document": "EVIDENCE-TIMELINE-11.md",
       "task_ids": [
-        "W06",
-        "B01"
+        "W06"
       ],
       "write_scope": "C:/Users/郑曾波/Projects/iqs-evidence-timeline-lab",
       "authorized_relative_paths": [
         "README.md",
         ".gitignore",
         "pyproject.toml",
-        "src/iqs_evidence_timeline",
+        "src",
         "schemas",
         "content",
+        "rules",
         "fixtures",
         "tests",
         "tools",
+        "vendor",
         ".tmp",
+        "src/iqs_evidence_timeline",
         "docs/handoff/EVIDENCE-TIMELINE-11"
       ],
       "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
       "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
       "delivery_scope": "offline_evidence_time_consistency_audit_candidate_only",
+      "task_ids_semantics": "support_only: declares which planned tasks this card supplies offline candidate tooling for; completion of these tasks is NOT delegated and NOT claimed",
       "full_task_completion_delegated": false,
       "model_api_enabled": false,
       "paid_search_enabled": false,
-      "network_scope": "none"
+      "network_scope": "none",
+      "handoff_protocol": "docs/implementation/parallel-lanes/handoff.schema.json#1.0.0",
+      "exit_codes": "integration-contract section 2: 0/1(evaluate only)/2/3"
     }
   ],
   "held_packages": [],
   "previous_deliveries_preserved": true,
   "notes": [
-    "packages 为数组以兼容 scripts/parallel_handoff_cli.py 的 catalog 读取（entries 必须是 list，且每条含 id/lane_id/write_scope/readiness 字符串与 task_ids 字符串数组）。",
-    "本 manifest 只选择本批三张施工卡，不授予写 IQS/StockQA/StockWiki/既有 Lab 的权力，也不构成派发。",
+    "packages 为数组以兼容 scripts/parallel_handoff_cli.py 的 catalog 读取（entries 必须是 list，每条的 id/lane_id/write_scope/readiness 为字符串，task_ids 为字符串数组）。",
+    "task_ids 仅表示支撑关系，不代表任务完成：DELIVERY-AUDIT-11 的 X09（真实组件离线端到端联调）仅指本工具可用于其交付侧形状/闭包检查，X09 不因此关闭；B01 只由 COST-LEDGER-11 声明；EVIDENCE-TIMELINE-11 不重复声明。",
+    "authorized_relative_paths 含 rules 与 vendor：rules/ 放规则表，vendor/iqs/ 按源仓相对路径只读挂载冻结输入。",
+    "交接协议固定为 2026-10-10 波使用的 handoff.schema.json 1.0.0；不使用 integration-contract §4 的 support_handoff 字段，本批不产出 input-catalog.json。",
+    "退出码采用 integration-contract §2（0/1/2/3），不再使用 4/5/6。",
     "三包均 model_api_enabled=false、paid_search_enabled=false、network_scope=none。"
   ]
 }
