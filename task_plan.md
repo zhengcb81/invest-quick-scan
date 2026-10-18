@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — facts packs 索引页
+
+新增 scripts/facts_registry.py 生成 docs/implementation/reviews/facts-packs-index.html：当前 1 个 draft pack（CATL 16 题），含校验状态与 review 链接。1 个单测通过。
+
 ## 2026-10-18 — CATL facts pack 只读审阅页
 
 新增 scripts/facts_pack_page.py，把 facts pack 渲染成带 DRAFT 横幅的 HTML（题目表 + source hash）；CATL 16 题页面已生成。2 个单测通过。仅审阅，不是评分或运行授权。
