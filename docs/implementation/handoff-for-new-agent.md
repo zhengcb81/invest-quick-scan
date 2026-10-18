@@ -1,3 +1,27 @@
+# Handoff 顶部更新（2026-10-18，当前有效）
+
+## 主线
+
+计划 v2：24 题 × 已确认公司 → 带来源的草稿分 → 对比页。owner 准入/预算/凭证/观察入库路线已暂停，不再作为主线。
+
+- 薄草稿：12 家完成，有分 177/288；对比页 docs/implementation/reviews/thin-scan-2026-10-18/compare.html
+- 外部三包：EVIDENCE-TIMELINE-11、COST-LEDGER-11、DELIVERY-AUDIT-11 全部验收，记录在 docs/implementation/parallel-lanes/acceptance-2026-10-18/
+- 旧 owner 观察 5 条仍在库里，仅供历史查看，不是当前评分来源
+
+## 常用命令
+
+- 单公司扫描：python scripts/thin_scan.py --company "宁德时代" --out runs/thin-scan-<slug>
+- 对比页：python scripts/thin_compare.py --out docs/implementation/reviews/thin-scan-2026-10-18
+- 逐题分析：python scripts/thin_analyze.py --root docs/implementation/reviews/thin-scan-2026-10-18 --markdown .../analysis.md
+- 重测中位数：python scripts/thin_median.py --runs runs --markdown .../median.md
+- 状态快照：python scripts/status_report.py --output docs/implementation/status-2026-10-18.md
+
+## 注意
+
+- 草稿非正式入账，不能当投资建议。
+- 单次分数有噪声：重测平均绝对差 0.4–0.7；横向比较建议 2–3 次取中位数。
+- 搜索成本约 $0.0168/家（24 次 × 700 micros），模型 token 另计。
+
 # handoff 顶部补充：测试现状
 
 # Handoff 顶部更新（2026-10-18）
