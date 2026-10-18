@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — 缺口清单显示 subject 标记
+
+coverage-gaps HTML 增加 subject 列（✓ 表示已有 analysis subject），当前 208 家中 2 家有 subject：Alphabet 与 000026。已独立 subagent 审查新增 preflight/coverage/roster/one_click 代码与看板输出，结果待回。
+
 ## 2026-10-18 — 定向测试：181 passed / 1 fixed
 
 定向 IQS 测试（financial/provenance/search/answers/facts/profile）181 passed、2 skipped、1 failed：provider connectivity profiles 的 expected_envs 未包含新增的 deepseek-v4-flash-responses-recheck 与 mimo-pro-pay-as-you-go-cn。补上两条期望后该文件 8 passed。失败是配置漂移，不是产品回归。

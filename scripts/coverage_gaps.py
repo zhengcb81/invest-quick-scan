@@ -50,9 +50,10 @@ def main() -> int:
     args.json.write_text(json.dumps(document, ensure_ascii=False, indent=2), encoding="utf-8")
     if args.html:
         body = "".join(
-            "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
+            "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
                 html.escape(r["name"]), html.escape(",".join(str(t) for t in r["tickers"])),
                 html.escape(",".join(str(m) for m in r["markets"])), html.escape(r["entity_id"]),
+                "✓" if r.get("subject_ready") else "",
             )
             for r in document["rows"][:500]
         )
@@ -61,7 +62,7 @@ def main() -> int:
             "<h1>Verified 但缺 owner 路由</h1>"
             f"<p>verified {document['verified_entities']} · 待 owner admission {document['waiting_owner_admission']} "
             f"· 分布 {html.escape(json.dumps(document['by_market'], ensure_ascii=False))}</p>"
-            "<table border='1' cellpadding='4'><tr><th>name</th><th>tickers</th><th>markets</th><th>entity</th></tr>"
+            "<table border='1' cellpadding='4'><tr><th>name</th><th>tickers</th><th>markets</th><th>entity</th><th>subject</th></tr>"
             + body + "</table><p>只读视图；不构成准入或投资结论。</p>",
             encoding="utf-8",
         )
