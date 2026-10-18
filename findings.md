@@ -1,3 +1,9 @@
+## 2026-10-18 — 唯一共享Runner组合入口已应用（精确两路径）
+
+已独立签收的 `scripts/shared_company_engine.py` 和 `tests/test_shared_company_engine.py` 按原CAS应用到IQS；源码工作树字节与受检候选一致。独立18项原用例和1项进程崩溃窗口反例通过；公开 `python -B scripts/shared_company_engine.py capabilities` 实际exit0。入口复用原Company Runner/RuntimeBridgePort/StockQA；不新增HTTP或账本。该精确范围交付不代表完整12题原owner/SDK整链或真实公司摘要已验收。
+
+同节点独审在owner候选中又发现task公司引用、endpoint与limits可漂移，以及恢复读入口缺少相同绑定断言；作者正从统一前置guard修复并由同一reviewer复测。真实12题fixture沿原preview/admission守卫排查，不放宽产品校验。只读复核真实owner仍为旧IQS01策略、scan库原SHA保持；S1工作库schema20/100个物理预算请求保持。首次只读URI探针漏uri=True，安全失败后改为显式mode=ro；未执行一次性stage或新增发送。
+
 ## 2026-10-18 — 原生缓存/恢复核心已交付 StockQA 52330ab
 
 StockQA 15 个精确路径已经正常提交并推送既有 origin/master：`52330ab633d00fa1a282492a6ca9fc809c62e182`。原子安全输出、原始回执锚定、显式单 work 多轮登记、single/pack intent 到原物理请求关联及只读旧 schema 兼容已交付；整个生产 owner/共享引擎节点仍在进行。独立精确范围测试50P及11个独立边界反例通过，mypy90源文件通过；测试范围重叠不相加。正常 hooks 首次仅修正5个文件CRLF→LF，全部15文件归一化/AST等价经同一独立 reviewer 核验；第二次正常 hooks 全通过，没有跳过检查。原 CAS 与换行等价附录均保留。

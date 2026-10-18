@@ -1,0 +1,52 @@
+{
+  "protocol": "iqs.shared-engine-composition-candidate/1.0.0",
+  "status": "tests_passed_pending_independent_whole_node_review",
+  "source_revision": "f8e38dc24219113f6b1ccd2b2d6543de4f1d6bd8",
+  "files": [
+    {
+      "candidate_path": "scripts/shared_company_engine.py",
+      "target_repository": "invest-quick-scan",
+      "target_path": "scripts/shared_company_engine.py",
+      "expected_target_exists": false,
+      "bytes": 20683,
+      "sha256": "5399a19d842e73c6138d58429984f3751d4c93ec4f0e952b63f896516aff0e20"
+    },
+    {
+      "candidate_path": "tests/test_shared_company_engine.py",
+      "target_repository": "invest-quick-scan",
+      "target_path": "tests/test_shared_company_engine.py",
+      "expected_target_exists": false,
+      "bytes": 21030,
+      "sha256": "928e7d5bcf5c95378360b3510482c7cd146b58bb4ebe49a2b8a69286b30c22e8"
+    }
+  ],
+  "tests": {
+    "command": "python -B -m pytest tests/test_shared_company_engine.py -q --basetemp=test-temp-cwd-final --junitxml=tests-cwd-final.xml",
+    "passed": 18,
+    "failed": 0,
+    "duration_seconds": 11.55,
+    "xml_sha256": "40ef9f295429189f96cb6381742cc9e04aed86a5818bbf5b7f27b6f7d64718a8",
+    "working_directory": "runs/shared-engine-production-2026-10-18/composition-candidate",
+    "xml": "tests-cwd-final.xml"
+  },
+  "engineering_scope": [
+    "sole_original_runner",
+    "durable_pending_checkpoint_before_http",
+    "original_native_intent_cache_read_before_send",
+    "original_receipt_crosscheck",
+    "fresh_runtime_port_after_restart",
+    "validated_native_summary_reader",
+    "real_process_exit_control_flow",
+    "fresh_service_observer_retains_native_db_state"
+  ],
+  "limitations": [
+    "scripted_or_synthetic_test_observations_only",
+    "actual_owner_twelve_question_positive_not_run_here",
+    "real_company_accuracy_not_assessed",
+    "public_cli_only_capabilities_and_report",
+    "native_multiturn_packs_refused",
+    "official_search_backed_checkpoint_not_supported"
+  ],
+  "http_requests": 0,
+  "source_repository_writes": false
+}
