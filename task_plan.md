@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — IQS_11 site:catl.com 管线与第二次引擎搜索
+
+一键管线（search-pilot-11.py）完成：capture→request→新预算 iqs-catl-11-search→14O policy→preview rv1_5ca0…→install→confirm rc2_3a9f…→admit accepted。claim WORK_da9f42f3… 后 retrieve 再次由引擎真实搜索（SEARCH_dd83a4…），返回 catl.com 年报页（661GWh、39.2% 全球份额）。仍被 external_evidence_insufficient 拦住：provider_summary 入口没有 entity 绑定，证据层不认。下一步：决定是否放宽 issuer 域名摘要的证据资格，或补 entity 绑定字段。
+
 ## 2026-10-18 — IQS_08 admission accepted；引擎执行了真实搜索
 
 IQS_08 走完 preview rv1_4f60… → confirm rc2_2c62… → admit accepted。work item WORK_bd8aa0fc… claim 后直接调 retrieve_external_question_context：引擎真实发起 DeepSeek 搜索并落盘 SEARCH_83693e6a…（operation/dispatch/result 各 1 条），随后按证据规则拒绝 external_evidence_insufficient：返回源是 stcn/cnr/sohu 等第三方媒体，而 policy 的 entity_domain_bindings 只允许 catl.com。下一步：把查询改为 site:catl.com 或增加 issuer-specific path 绑定，再走新题 admission（避免 plan_changed）。
