@@ -1,3 +1,7 @@
+## 2026-10-18 — owner 批准证据规则；万科A verified 试点已写入
+
+用户批准：以交易所官方公告页/年报为准、逐公司一条、只存 URL/法人全称、不保存正文；approval id existing-list-verified-2026-10-18。真实 workspace 已完成万科A试点：法人全称万科企业股份有限公司、verified/rev2、IVR_02b6a702…、证据为深交所官方年报 PDF；交易简称保留；verified 2→3、receipt 217→218，entity/security/binding/candidate 不变；幂等重放计数不变。报告 docs/implementation/reviews/verified-pilot-vanke-2026-10-18.md。下一步：独立复审该试点 → 5 家 → 按 ≤60/批扩到 211（每家需官方链接+法人全称）。搜索供应商条款仍未决定，search-backed 评分暂不启动。
+
 ## 2026-10-18 — 主线阻塞：等待两个 owner 决定（已连续多轮）
 
 **已完成、可复用**：211 家真实身份前置（214 实体、212 provisional/2 verified、217/218 绑定与回执）；候选↔实体链接报告（212/216）；roster 只读看板（214 行 + 216 候选）；金融答案机械检查器（2/2 通过、8 类注入负例全中、4 条单测）；search-backed 评分差距分析与 S1–S5 方案；verified 升级机制与批量脚本（副本整跑 211 通过）；万科A 官方逐发行人证据提案。
