@@ -154,8 +154,8 @@
   "artifacts": [
     {
       "path": "docs/implementation/reviews/delegated-owner-production-2026-10-18/review.md",
-      "sha256": "ef40f9121abf6347f4c0be5183f1087859ef562304436b7d974eaa1831bf619c",
-      "bytes": 6872
+      "sha256": "8f094b2c1cb67ea4652036e5c9d6eec7abb55d05ff8865cf0a1279d3fbb66f8f",
+      "bytes": 7322
     },
     {
       "path": "runs/shared-engine-production-2026-10-18/delegated-owner-independent-review/delegated_probes.py",
@@ -187,7 +187,14 @@
   "production_database_writes": 0,
   "paid_calls": 0,
   "metadata_note": "Exact15 source payload is fixed above. Ancillary author report or CAS status update does not change the accepted code bytes; any source delta requires root-cause review in this same node.",
-  "cleanup": "awaiting_author_record_no_success_claim",
+  "cleanup": {
+    "record": "runs/shared-engine-production-2026-10-18/delegated-owner-candidate/cleanup.json",
+    "sha256": "38893341952c28f47b25ce7a6e662a0c1e7f87413601d46136c948dc708a6985",
+    "complete": false,
+    "partial_initial_root": "deletion rejected before execution; retained, no workaround",
+    "review_runtime": "retained for readonly review; no deletion attempted",
+    "foreign_sqlite_exists": false
+  },
   "normal_hook_delivery_equivalence": {
     "artifact": "runs/shared-engine-production-2026-10-18/delegated-owner-independent-review/post-hook-equivalence.json",
     "sha256": "46232515f33eeb66a6849888a0f9466fabdcc3c67049c138a18911b4ecd9f037",
@@ -198,5 +205,10 @@
     "full_ast_equal_files": 14,
     "one_test_fixture_import_order_only": true,
     "same_scope_not_new_test_gate": true
+  },
+  "final_author_metadata": {
+    "cas_sha256": "7e8cceee90ff0689ae29e6686028e257a3ce7c9f1f713a6956dd08a66da038a7",
+    "source_payload_unchanged": true,
+    "archive_allowlist_sha256": "d6a075c091ccddcc4c1819fe1d7da1d7616694f8bc73a176db3994142001ef69"
   }
 }

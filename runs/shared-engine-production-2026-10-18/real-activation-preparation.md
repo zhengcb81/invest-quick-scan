@@ -4,7 +4,7 @@
 
 ## 已接受与当前切片
 
-共享Runner工程验收完成，12题真实软件链使用脚本wire，冷1POST、安全输出提交后进程退出86、全新进程恢复0POST；不作为真实公司金融证据。委托原公开链31契约/103QA旧回归/22SW旧回归/1公开E2E通过，最终静态与独审签收中。下一切片是在原S1账本保留两笔旧暴露、通过原固定owner permissions/quote/确认/预算进行有限新批次。
+共享Runner工程验收完成，12题真实软件链使用脚本wire，冷1POST、安全输出提交后进程退出86、全新进程恢复0POST；不作为真实公司金融证据。委托原公开链31契约/103QA旧回归/22SW旧回归/1公开E2E通过，最终静态与不同agent整包独审已通过，源码已交付。下一切片是在原S1账本保留两笔旧暴露、通过原固定owner permissions/quote/确认/预算进行有限新批次。
 
 ## 两份真实账本必须区分
 
@@ -13,7 +13,7 @@
 
 ## 原staged policy不是当前批次的可直接运行配置
 
-2026-10-15 owner-stage-01仅记录过route13快照，未set_current。其owner-policy.candidate为DeepSeek/deepseek-flash、policy1.1，不能冒充新policy1.4或MiMo。当前Task3只支持冻结12题/2026-10-13/free_agent/零搜索/full-pack；单包原生目前MiMo路径。不得把DeepSeek staging套到MiMo Task3、篡改供应商回执或换干净账本。
+2026-10-15 owner-stage-01仅记录过route13快照，未set_current。其owner-policy.candidate为DeepSeek/deepseek-flash、policy1.1，不能冒充新policy1.4或MiMo。当前Task3只支持冻结12题/2026-10-13/free_agent/零搜索/full-pack；单包原生目前MiMo路径。不得把DeepSeek staging套到MiMo Task3、篡改供应商回执或换干净账本。 旧stage旁budget-policy.json仅s1-v1/14.4USD144，也已过时；真实native ledger现为t2-reviewed-v2-20261016/25USD350，匹配原配置见runs/real-contrast-2026-10-16-03/inputs/budget-policy.json，已有deepseek-flash-s1和mimo-pro-t2路由。激活时必须核实际native policy/配置一致，不能照装旧file或从一份JSON推断当前预算。
 
 ## 启动步骤（完成源码节点后直接执行，不再索取已有权限）
 
@@ -27,3 +27,7 @@
 ## 同时推进的通用生产载体
 
 依据generic-task-design/design.md，新增显式company-scan task/profile并共享现有Runner/Runtime/SDK；首片原批准任意子集/实际日期/动态小包或单题，不新建LLM调用环、计费或身份库。原研究Task1/2/3字节与默认语义保持，实际日期贯穿EvidenceBoard/answers/fresh-replay-resume，不只删12题检查。此文不是新门或要求再求用户批准。
+
+## 2026-10-18价格与别名复核
+
+官方MiMo Pro公开按量费率与T2锁定值相同；仍不代表真实现金账单或Token Plan边际费用。DeepSeek官方现注明deepseek-flash后端为DeepSeek-V4.1-Flash-1017，不能假设与10-16的同名模型是同一后台版本。新实验需记录请求别名、回执模型、可见版本和日期，不能把跨版本差异归因于发包。观察记录在official-pricing-observation-2026-10-18.json；官方全文未下载/保存，旧T4记录与计价不改。

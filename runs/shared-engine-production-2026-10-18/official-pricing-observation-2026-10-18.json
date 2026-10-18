@@ -1,0 +1,57 @@
+{
+  "protocol": "iqs.official-pricing-observation/1.0.0",
+  "observed_at": "2026-10-18T02:07:33.920063+00:00",
+  "cash_invoice": null,
+  "api_calls": 0,
+  "providers": [
+    {
+      "provider": "mimo",
+      "requested_model": "mimo-v2.6-pro",
+      "source_url": "https://mimo.mi.com/models/en-US/mimo-v2.6-pro",
+      "currency": "USD",
+      "denominator_tokens": 1000000,
+      "rates": {
+        "uncached_input": "0.435",
+        "cached_input": "0.0036",
+        "output": "0.87"
+      },
+      "billing_account_scope": "published_pay_as_you_go_not_token_plan_invoice",
+      "thinking_parameter": "explicitly_enabled_in_actual_call_not_default_sample_disabled",
+      "actual_model_revision": null
+    },
+    {
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "official_model_version": "DeepSeek-V4.1-Flash-1017",
+      "source_url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "currency": "USD",
+      "denominator_tokens": 1000000,
+      "rates": {
+        "off_peak": {
+          "uncached_input": "0.15",
+          "cached_input": "0.003",
+          "output": "0.60"
+        },
+        "peak": {
+          "uncached_input": "0.30",
+          "cached_input": "0.006",
+          "output": "1.20"
+        }
+      },
+      "off_peak_weekend_applies": true,
+      "peak_utc_weekdays_excluding_cn_holidays": [
+        "01:00-04:00",
+        "06:00-10:00"
+      ],
+      "cross_window_billing_rule_not_verified": true,
+      "prior_2026_10_16_alias_not_proven_same_backend": true,
+      "search_fetch_price_scope": "standalone published successful-request rate; current server-tool promotion must be separately scoped, no inference of zero charge"
+    }
+  ],
+  "conclusions": [
+    "MiMo published rates match T2 dated inputs; native original estimator remains authoritative for retained reservations",
+    "DeepSeek alias now advertises 1017 backend, so do not attribute T4 versus new-run accuracy differences solely to question packing",
+    "Historical T4 pricing and outputs are immutable; fresh dated observation does not reprice old physical requests"
+  ],
+  "source_full_pages_stored": false
+}

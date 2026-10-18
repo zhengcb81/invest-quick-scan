@@ -43,3 +43,5 @@
 已独立核对全部15个候选、实际工作树、最终commit blob。StockWiki交付为 `3fad36d1ae82333d9d1ed1eb4c55ee775d35b0df`（正常检查，无remote）；StockQA交付为 `aaddcd6be6f506ca58791d7ecc375bbffa7b0c70`（正常hooks，原origin推送由总控完成）。14个文件完整AST与受检候选相同，包括StockWiki ruff调整的测试；仅QA `tests/delegated_fixture.py` 顶层import组排序不同。该文件非顶层import AST和完整import集合相同，integration skip仍在imports之前，无授权检查、状态变更、fixture执行或赋值移动，StockWiki/StockQA被导入定义不依赖组间顺序。所有实际工作树与commit blob的AST相同。
 
 精确hash见同一签收引用的 `delegated-owner-independent-review/post-hook-equivalence.json`。原候选/CAS不改，不把import排序误称完整AST相同；这种机械交付变更不重复运行未变的四分钟public流程，也不构成额外小节点验收。
+
+作者最终metadata已补齐且15项源码payload不变。`cleanup.json` 明确 `complete=false`：初始部分副本a在正常删除执行前被自动策略拒绝，未绕过；最终隔离运行环境b为只读复核保留，未尝试删除；foreign.sqlite不存在。最终签收记录绑定了该清理记录及21个薄文件的归档白名单，不把旧失败env trace、数据库或回答全文归档，也不声称临时环境已清空。

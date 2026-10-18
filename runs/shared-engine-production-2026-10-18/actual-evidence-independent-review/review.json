@@ -1,0 +1,68 @@
+{
+  "protocol": "iqs.actual-evidence-projection-preparation-review/1.0.0",
+  "status": "reviewed_preparation_seam_two_findings_fixed",
+  "reviewer": "/root/production_node_review18",
+  "author": "/root",
+  "not_a_separate_permission_or_production_gate": true,
+  "source_count": 9,
+  "omitted_unlinked_coordinator_facts": 18,
+  "digest_origin_counts": {
+    "original_excerpt_sha256": 6,
+    "original_content_hash": 3
+  },
+  "tests": {
+    "independent_red": {
+      "failed": 2,
+      "actual_locked_source_positive_passed": 1
+    },
+    "final_source_all_tests_including_independent_probes": {
+      "passed": 22,
+      "failed": 0,
+      "seconds": 1.19
+    }
+  },
+  "closed_findings": [
+    "old_content_hash_alias_was_ignored",
+    "explicit_ineligible_context_flag_was_ignored"
+  ],
+  "open_findings": [],
+  "files": [
+    {
+      "path": "runs/shared-engine-production-2026-10-18/actual-evidence-projection/project_existing_sources.py",
+      "bytes": 5947,
+      "sha256": "03668a4536727c3bea1a627482b0a72e5cb8455611acee32817034a9824e5615"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/actual-evidence-projection/test_projection.py",
+      "bytes": 6311,
+      "sha256": "eaba1ca1d8dee2dd46058ca8aaae5a81351805a609e2e0652a4206951c95ffdc"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/actual-evidence-independent-review/projection_probes.py",
+      "bytes": 1746,
+      "sha256": "75204a043a8a8df69533ffc9d768cecd7e903daf0088b64f660afd439bfc9cbf"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/actual-evidence-independent-review/projection-independent-red.xml",
+      "bytes": 2282,
+      "sha256": "bc90421790ab6ebb0865fb7fb6e2b61f3621332351d7324ed4a56b8bc3a7919a"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/actual-evidence-independent-review/projection-independent-green.xml",
+      "bytes": 3811,
+      "sha256": "8cc1b40b78c9ebba4b648b14dd014312bf02944c55b68da8d3a98694268ca8f3"
+    },
+    {
+      "path": "runs/shared-engine-production-2026-10-18/actual-evidence-independent-review/actual-evidence-projection-review.md",
+      "bytes": 2954,
+      "sha256": "21b502445504de373ae8866a8391768ac471612efba38c7e86d64fd35f8cca06"
+    }
+  ],
+  "authority_granted": false,
+  "financial_qualification_granted": false,
+  "native_search_proof_granted": false,
+  "old_S1_continuation_granted": false,
+  "paid_calls": 0,
+  "implementation_source_writes_by_reviewer": 0,
+  "locked_original_inputs_unchanged": true
+}

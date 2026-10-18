@@ -1,0 +1,52 @@
+{
+  "protocol": "iqs.actual-evidence-preparation-lock/1.0.0",
+  "state": "input_preparation_independently_reviewed_not_native_dispatch",
+  "source_lock_sha256": "11798f8ab819b860edd882c24434b2aff9ee5688a66152a6ebc68be7b8448f88",
+  "original_refs": {
+    "evidence-board.json": {
+      "path": "evidence-board.json",
+      "source": "derived from frozen base + accepted supplement; no new search",
+      "bytes": 32046,
+      "raw_sha256": "ad73a4d2d186824b018107a46ad1b4a57b2145f8913972ab853218e1c37df5ea"
+    },
+    "identity.json": {
+      "path": "identity.json",
+      "source": "readonly previously frozen actual Alphabet identity",
+      "bytes": 236,
+      "raw_sha256": "32dbdab71bb77a1b0baafe8ef82ec229c622743fae7fa39096612540f62fa498"
+    }
+  },
+  "files": [
+    {
+      "path": "project_existing_sources.py",
+      "sha256": "03668a4536727c3bea1a627482b0a72e5cb8455611acee32817034a9824e5615"
+    },
+    {
+      "path": "test_projection.py",
+      "sha256": "eaba1ca1d8dee2dd46058ca8aaae5a81351805a609e2e0652a4206951c95ffdc"
+    },
+    {
+      "path": "projection-tests-03.xml",
+      "sha256": "f91a9fd10438883afbfba129d7fafaa102a8c9e8c0e2a879a543de4b6b73c6ea"
+    },
+    {
+      "path": "README.md",
+      "sha256": "fa03924d2bd8a3c0107fa83da01207deddf9232274737cb346f861be49da3ae4"
+    }
+  ],
+  "tests": {
+    "original_regressions_passed": 20,
+    "independent_total_passed": 22,
+    "new_unseen_cases": 2,
+    "scope": "actual_locked_public_inputs_with_synthetic_task_data_no_owner_admission"
+  },
+  "historical_failure": "Initial5F/10P exposed a legacy hash-field alias. Intermediate15P ignored content_hash and explicit eligibility; independent two re-sealed-input probes rejected that implementation. Final original digest alias consistency and boolean eligibility regressions20P plus two unseen22P pass; original logs/results retained locally.",
+  "paid_calls": 0,
+  "source_inputs_unchanged": true,
+  "production_database_writes": 0,
+  "financial_qualification_granted": false,
+  "independent_review": {
+    "path": "../actual-evidence-independent-review/review.json",
+    "sha256": "c07cb0079c641056cc08cf5b34ad5e6065d0bfef8d8a58cf7cd350b80b55d210"
+  }
+}

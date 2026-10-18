@@ -1,3 +1,11 @@
+## 2026-10-18 — 真实运行输入准备与并行生产载体
+
+委托节点已提交推送IQS10e69d9、StockQA aaddcd6，StockWiki无remote本地3fad36d。native续行正在新源精确重基后的公开原链实施，不重复原已签工程节点。并行production-task-candidate只写Company/IQS carrier候选，实现显式company-scan task/profile、实际日期与动态小包；首轮19用例通过但旧全套载体/独审未完，不宣称交付。
+
+真实准备核对发现旧owner-stage的14.4USD/144请求配置已过时；真实S1 ledger为t2-reviewed-v2-20261016/25USD350，原匹配配置是real-contrast-2026-10-16-03/inputs/budget-policy.json。两实际模型环境变量可见，只记录存在性、不导出值、未发API。10-18官方公开MiMo费率与旧T2相同；DeepSeek别名现在标为DeepSeek-V4.1-Flash-1017，跨日期后台版本不能当同模型同版本，旧T4不重新改价。观察及来源URL见本节点official-pricing-observation-2026-10-18.json。
+
+旧实际T4公共board为18 facts/9 sources，不能直接当Company records。root在actual-evidence-projection候选显式适配原9短摘录，原URL/pub/retrieved/limitations/正文保持，未知维度保留unknown/null且unverified；18派生fact无明确source边，不自动制造支持关系。初测发现旧3源使用content_hash而非excerpt_sha256，独审又用重封hash反例确认原别名与eligible_for_context不可忽略；已修所有原digest别名一致验证和显式bool True资格，最终20回归与2未见反例合计22项独立复验通过（原9短source仍完整）。无原生owner正例/授权/金融资格。真实首跑将明确为新的输入配置、接线与准确性诊断，不能与旧T4作单一策略因果对比。source input原字节保持，0新下载/收费API。
+
 ## 2026-10-18 — 委托原生运行大节点正式交付
 
 独立不同agent整包签收15精确路径：passed_for_exact_delegated_owner_engineering_scope、open_findings=[]。最终31契约、103 StockQA旧回归、22 StockWiki旧回归、1真实软件public E2E（248.322秒）、10独立未见反例通过；分母分别保留、不相加冒称金融正确率。实际隔离SQLite只读核对：两work、一原发送/一预算/一admission，timeout的actual NULL与reserved1000000保留，另work在撤销后0POST。rc2/record2.0与原撤销记录存在；原rc1/TTY保留。mypy92源文件通过。
