@@ -1,3 +1,17 @@
+## 2026-10-18 — 共享引擎两项生产接线已正式交付
+
+native续行21路径与company-scan/profile22路径均经真正不同agent整包签收，open_findings=[]。StockQA正常hooks（含mypy94）提交并推送961884d；StockWiki正常静态hooks本地提交03423ba；Company本地提交2561f56，Runtime保持b732a49。后两Lab及StockWiki原无remote，不擅自创建。QA首轮hooks修格式后仅增加2局部容器类型注解，独审确认与原签CAS执行语义等价；没有跳过hooks。
+
+native续行集中36P、旧预算42P+15subtests、独立8反例、原12题单POST/OS中断/新进程0POST恢复均通过；公开工程case719.63秒。原100请求、旧两笔actual NULL/预约/并发占用不改，真实原S1此前只读SHA保持。新增回归4路径已随StockQA源码交付，不只存在ignored runs；私有历史库迁移测试显式opt-in，普通单测不依赖私有DB。
+
+company-scan/profile新增实际日期/明确题目子集/模块或维度小包，保留旧Task1/2/3协议和52锁定输入。F01–F04从协议派发、计划/实绩、SDK实际资源上限、统一epoch context根因修复。最终Company202P/1原skip、IQS24P、独审10项（至少2此前未见反例），真实软件原owner/SDK新fixture426.845秒：第一题已知价格settled后退出86，新进程缓存1/仅发另一题1次，2题完成/总2物理/正式checkpoint0。旧错误pricing-ref造成unpriced的原现场保留actual NULL，补验1/2完成、0POST，不能覆盖成全绿。
+
+这两项是工程源码交付，尚非真实金融/全池/正式search-backed资格；native1.4仅MiMo/free_agent单cell，不因通用profile已发布就放宽原旧暴露续行的策略。所有正式结果/实际source bindings/独审/操作手册以本节点shared-production-archive.json精确归档（无回答正文、DB、密钥）。
+
+真实Alphabet12题即将运行：真实身份/原route13 manifest/原public authority1.2导出预检成功；真实激活和运行脚本经同节点7项独立边界测试与整包复核通过。修掉相对cwd旧worker漏检；原预算精确pricing_ref、思考开启/16384、网络240秒、原lease600保持，scope后剩余<360秒则0POST停止。此诊断不是wire时剩余证明，SDK最后原权限/lease守卫仍有效。真正cache读取无需延lease，但正式答案checkpoint仍不得越过期守卫。当前还未实际激活/调用付费API。
+
+下一动作：实际备份原namespace/S1→原生20→24迁移保持所有旧行→原route CAS→真正query/quote/rc2/admit→一次MiMo12题，原安全响应后退出86→禁网络keyless进程缓存恢复；随后同一大节点独立复核真实摘要、费用/未知与时间，固化实操手册。不得从失败状态自动重发。独立10卡已可交harness，不自动派发。
+
 ## 2026-10-18 — 原生续行完整工程链跑通，真实运行准备中
 
 native-continuation候选最终17路径已冻结：36项集中回归、42项旧预算回归和15子测试通过；p06原公开policy1.4→quote→rc2→admit→原SDK12题一包→安全落库后退出86→全新进程同库恢复通过，冷1物理请求、恢复0。旧100次/两笔unknown与unpriced/actual NULL/预约和并发占用保持。不同agent整包复核进行中，未应用源/真实库/收费API。

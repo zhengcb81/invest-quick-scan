@@ -39,6 +39,7 @@ TARGET_SCHEMA = json.loads(
         / "schemas/quick_scan/refresh-v1.3.schema.json"
     ).read_bytes()
 )
+EXPOSURE_SCHEMA = json.loads((Path(__file__).resolve().parents[1] / "schemas/quick_scan/refresh-v1.4.schema.json").read_bytes())
 from query_vendor_contract import SCHEMA as VENDOR_QUERY_SCHEMA
 
 REGISTRY = Registry().with_resources(
@@ -49,6 +50,7 @@ REGISTRY = Registry().with_resources(
             CURRENCY_SCHEMA,
             CONTROL_SCHEMA,
             TARGET_SCHEMA,
+            EXPOSURE_SCHEMA,
             query.SCHEMA,
             VENDOR_QUERY_SCHEMA,
         )
@@ -77,9 +79,12 @@ def digest(value):
 
 
 def _shape(
-    value, kind, *, currency_dialect=False, control_dialect=False, target_dialect=False
+    value, kind, *, currency_dialect=False, control_dialect=False, target_dialect=False, exposure_dialect=False
 ):
     if kind != "OwnerState":
+        exposure_dialect = isinstance(value, dict) and value.get("protocol") in {
+            "iqs.refresh_request/1.4.0", "stockwiki.refresh_preview/1.4.0", "stockwiki.refresh_owner_policy/1.4.0"
+        }
         currency_dialect = isinstance(value, dict) and value.get("protocol") in {
             "iqs.refresh_request/1.1.0",
             "stockwiki.refresh_preview/1.1.0",
@@ -95,7 +100,7 @@ def _shape(
             "stockwiki.refresh_preview/1.3.0",
             "stockwiki.refresh_owner_policy/1.3.0",
         }
-    schema = (
+    schema = EXPOSURE_SCHEMA if exposure_dialect else (
         TARGET_SCHEMA
         if target_dialect
         else (
@@ -124,6 +129,7 @@ def validate_request(request):
         request["protocol"]
         in {
             "iqs.refresh_request/1.1.0",
+            "iqs.refresh_request/1.4.0",
             "iqs.refresh_request/1.2.0",
             "iqs.refresh_request/1.3.0",
         }
@@ -201,6 +207,7 @@ def _check_state(request, state):
         currency_dialect=request["protocol"] == "iqs.refresh_request/1.1.0",
         control_dialect=controlled,
         target_dialect=targeted,
+        exposure_dialect=request["protocol"] == "iqs.refresh_request/1.4.0",
     )
     numbers = [
         state["policy_version"],
@@ -297,6 +304,10 @@ def _check_state(request, state):
         raise ValueError("refresh_selected_model_outside_snapshot_filter")
     tasks = paid_work_count(state["items"])
     quote = state["quote"]
+    if request["protocol"] == "iqs.refresh_request/1.4.0":
+        if set(request["question_ids"]) != {i["question_id"] for i in state["items"]}:
+            raise ValueError("refresh_exposure_question_scope_mismatch")
+        tasks = quote["planned_physical_requests"] if tasks else 0
     if tasks and quote["budget_available"] and quote["max_http_requests"] < tasks:
         raise ValueError("refresh_quote_request_bound_insufficient")
     if not tasks and (quote["max_http_requests"] or quote["max_cost_micros"]):
@@ -338,6 +349,8 @@ def create_preview(request, owner_state, *, created_at, expires_at):
                 raise ValueError("refresh_owner_control_schedule_mismatch")
     tasks = any(i["decision"] in DISPATCH for i in state["items"])
     paid_tasks = paid_work_count(state["items"])
+    if request["protocol"] == "iqs.refresh_request/1.4.0" and paid_tasks:
+        paid_tasks = state["quote"]["planned_physical_requests"]
     held = any(i["decision"] in HELD for i in state["items"])
     status = (
         "blocked"
@@ -359,6 +372,8 @@ def create_preview(request, owner_state, *, created_at, expires_at):
             cohort_id=request["cohort_id"],
             work_decision_refs=request["work_decision_refs"],
         )
+    if request["protocol"] == "iqs.refresh_request/1.4.0":
+        scope.update(cohort_id=request["cohort_id"], continuation_decision_ref=request["continuation_decision_ref"], question_ids=request["question_ids"])
     result = dict(
         protocol="stockwiki.refresh_preview/" + request["protocol"].split("/")[-1],
         operation="request_refresh",

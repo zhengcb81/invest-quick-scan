@@ -1,0 +1,68 @@
+{
+  "reviewer_agent": "/root/production_task_review18",
+  "implementation_agent": "/root/owner_services18",
+  "status": "superseded_by_final_passed_for_exact_company_scan_engineering_scope",
+  "scope": "Company explicit company-scan task/profile, actual cutoff propagation, deterministic one-shot <=12 packs and IQS original engine composition",
+  "excluded": [
+    "native-continuation candidate",
+    "QA or StockWiki source changes",
+    "production DB/owner namespaces",
+    "paid APIs",
+    "financial qualification"
+  ],
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "high",
+      "root_cause": "IQS resume_shared_engine only accepts legacy checkpoint protocol while scan emits new protocol",
+      "author_confirmed": true,
+      "status": "closed_in_final_exact_CAS"
+    },
+    {
+      "id": "F02",
+      "severity": "high",
+      "root_cause": "plan_as_actual scan guard retains outer nonempty-period condition; null periods bypass it",
+      "independent_red": "unseen-fourth.xml",
+      "author_confirmed": true,
+      "status": "closed_in_final_exact_CAS"
+    },
+    {
+      "id": "F03",
+      "severity": "high",
+      "root_cause": "scan preflight does not compare actual SDK session config to narrowed profile/task resources across four cap dimensions",
+      "independent_red": "unseen-fifth.xml",
+      "author_confirmed": true,
+      "status": "closed_in_final_exact_CAS"
+    },
+    {
+      "id": "F04",
+      "severity": "high",
+      "root_cause": "native runtime evidence summary starts journal epoch lineage at legacy empty-board context instead of locked scan context",
+      "independent_red": "unseen-native-epoch-red.xml",
+      "native_red": "native-scan-final.xml:453.782 seconds;1 failed at export after original recovery completed",
+      "status": "closed_in_final_exact_CAS"
+    }
+  ],
+  "positive_independent_evidence": [
+    "17 fresh independent questions / 2026-10-18 cutoff / original Runner Replay export report",
+    "partial first receipt never retargets any member",
+    "outcome_unknown never retargets any member"
+  ],
+  "test_note": "Initial reviewer harness scenario contract errors were corrected and excluded from product findings; fifth run 3 passed / 5 expected defect failures.",
+  "api_requests": 0,
+  "production_writes": false,
+  "source_writes": false,
+  "cas_sha256": "7a8246b1ac0a43c49dfc59f1a64bf118974acd9592e5a84ecc915dd8391e67c4",
+  "cas_paths_verified": 22,
+  "independent_final": {
+    "tests": 10,
+    "passed": 10,
+    "failed": 0,
+    "xml": "runs\\shared-engine-production-2026-10-18\\production-task-independent-review\\unseen-green2.xml",
+    "sourcepin": "runs\\shared-engine-production-2026-10-18\\production-task-independent-review\\sourcepin-green2.json",
+    "source_stable": true
+  },
+  "cli_capabilities": "actual exit0; explicit scan task/profile, approved subset, actual owner date, pack1-12, zero search, no financial qualification",
+  "final_report": "final.json",
+  "open_findings": []
+}

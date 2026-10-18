@@ -1,0 +1,76 @@
+{
+  "protocol": "iqs.native_continuation_author_report/1.0.0",
+  "status": "ready_for_independent_review_not_production_approval",
+  "candidate_cas_sha256": "ce98d2d333b35d514c604b1e06f070574045dbb2196327829e0c228c19ccad41",
+  "source_paths": 21,
+  "changes": "explicit native owner policy1.4 prequote permissions-only read, original quote/delegated confirmation/admission, one immutable native cell binding, original ledger per-POST reserve",
+  "validation": {
+    "concentrated_tests": 36,
+    "original_budget_tests": 42,
+    "unittest_subtests": 15,
+    "unrelated_async_socketpair_not_run": 1,
+    "public_chain_passed": 1,
+    "public_suite_wall_seconds": 719.63,
+    "public_case_wall_seconds": 717.532,
+    "new_scripted_http": 1,
+    "recovery_http": 0,
+    "completed_slots": 12,
+    "prior_budget_requests": 100,
+    "final_budget_requests": 101,
+    "old_unresolved_rows_unchanged": true,
+    "old_actual_cost_null_preserved": true,
+    "true_original_schema20_readonly_backup_migration": true,
+    "source_ledger_sha256": "79ae4b84e293a63c762025e326753d78d998e6a5a2d54b5d83245923f03ae85e"
+  },
+  "independent_review_required": [
+    "whole node completeness and quality",
+    "exact final provider/strategy preflight delta equivalence to p06 supported MiMo/free_agent public positive"
+  ],
+  "limits": {
+    "cell_count": 1,
+    "subject_count": 1,
+    "model": "mimo-v2.6-pro",
+    "strategy": "free_agent",
+    "physical_send_per_cell": 1,
+    "external_search_queries": 0,
+    "official_search_checkpoint": false
+  },
+  "no_live_finance_or_latency_claim": true,
+  "prior_failed_runs": {
+    "p03": "real admission actual-vendor vs budget-alias scope mismatch, repaired",
+    "p04": "one original SDK POST/safe output; outdated child measurement module failed before os_exit, repaired",
+    "p05": "write guard correctly rejected unnormalized Win32 extended spelling for owned long path, normalization repaired",
+    "u14": "new two-cell synthetic unit fixture reused request key; native key collision correctly refused, fixture fixed in u15"
+  },
+  "evidence": [
+    "evidence/u15.xml",
+    "evidence/r12-0.xml",
+    "evidence/r12-1.xml",
+    "evidence/r12-2.xml",
+    "evidence/p06.xml",
+    "evidence/p06-measurements.json",
+    "evidence/p06-source-bindings.json",
+    "evidence/p06-write-audit-summary.json",
+    "evidence/real-migration.json",
+    "cleanup.json"
+  ],
+  "performance": {
+    "preview_confirm_seconds": 105.11759149999125,
+    "admit_seconds": 73.94860390003305,
+    "claim_count": 12,
+    "claim_seconds": 91.57266419997904,
+    "cold_direct_stockwiki_cli_count": 112,
+    "lease_seconds": 600,
+    "lease_to_post_seconds": 319.95926332473755,
+    "lease_to_safe_output_seconds": 327.6517012119293,
+    "lease_to_recovery_complete_seconds": 432.2211368083954,
+    "warning": "No model-network latency in this software test. Real model latency adds to these intervals and can exhaust the original lease; no lease extension or permission cache was used."
+  },
+  "minimal_followup_optimization": "Use one original owner-bound exact-question batch claim transaction, preserving per-work scope/lease state checks and a fresh current native owner/policy/revocation read immediately before every POST; do not cache permissions or extend the lease. This node does not implement performance changes.",
+  "controller_test_delivery_fix": "Four new regression/helper paths explicitly mapped to original StockQA; unit reuses original policy fixture; private migration is opt-in with optional exact original snapshot path. No business or public-p06 source changed.",
+  "controller_delivery_regression": {
+    "passed": 36,
+    "seconds": 14.24,
+    "path": "evidence/u16.xml"
+  }
+}

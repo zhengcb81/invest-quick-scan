@@ -1,0 +1,169 @@
+{
+  "protocol": "iqs.native_continuation_measurements/1.0.0",
+  "qualification": "synthetic_company_and_scripted_vendor_only_original_public_owner_sdk_runner",
+  "paid_calls": 0,
+  "test_result": {
+    "cases": 1,
+    "failed": 0,
+    "wall_seconds": 717.532
+  },
+  "phase_walls": [
+    {
+      "kind": "phase_wall",
+      "phase": "preview_confirm",
+      "observed_epoch": 1792290678.4711144,
+      "name": "preview_confirm",
+      "seconds": 105.11759149999125
+    },
+    {
+      "kind": "phase_wall",
+      "phase": "admit",
+      "observed_epoch": 1792290752.4238214,
+      "name": "admit",
+      "seconds": 73.94860390003305
+    }
+  ],
+  "original_cli": [
+    {
+      "phase": "admit",
+      "module": "stockwiki.quick_scan_refresh_owner_cli",
+      "operation": "--inspect-confirmation",
+      "calls": 6,
+      "blocking_seconds": 62.11764279997442
+    },
+    {
+      "phase": "admit",
+      "module": "stockwiki.quick_scan_routes_cli",
+      "operation": "other",
+      "calls": 8,
+      "blocking_seconds": 10.269306299975142
+    },
+    {
+      "phase": "cache_recovery",
+      "module": "stockwiki.quick_scan_refresh_owner_cli",
+      "operation": "--inspect-confirmation",
+      "calls": 6,
+      "blocking_seconds": 50.27759610005887
+    },
+    {
+      "phase": "cache_recovery",
+      "module": "stockwiki.quick_scan_routes_cli",
+      "operation": "other",
+      "calls": 6,
+      "blocking_seconds": 2.6777931999531575
+    },
+    {
+      "phase": "cold_claim_sdk",
+      "module": "stockwiki.quick_scan_refresh_owner_cli",
+      "operation": "--inspect-confirmation",
+      "calls": 38,
+      "blocking_seconds": 271.49836660025176
+    },
+    {
+      "phase": "cold_claim_sdk",
+      "module": "stockwiki.quick_scan_routes_cli",
+      "operation": "other",
+      "calls": 62,
+      "blocking_seconds": 23.29568319983082
+    },
+    {
+      "phase": "cold_claim_sdk",
+      "module": "stockwiki.quick_scan_subject_dispatch_cli",
+      "operation": "--request",
+      "calls": 12,
+      "blocking_seconds": 57.56363099993905
+    },
+    {
+      "phase": "fixture",
+      "module": "stockwiki.quick_scan_subject_dispatch_cli",
+      "operation": "other",
+      "calls": 1,
+      "blocking_seconds": 0.34513789997436106
+    },
+    {
+      "phase": "prepare_execution",
+      "module": "stockwiki.quick_scan_refresh_owner_cli",
+      "operation": "--inspect-confirmation",
+      "calls": 8,
+      "blocking_seconds": 62.740838000027
+    },
+    {
+      "phase": "prepare_execution",
+      "module": "stockwiki.quick_scan_routes_cli",
+      "operation": "other",
+      "calls": 12,
+      "blocking_seconds": 21.68796639982611
+    },
+    {
+      "phase": "preview_confirm",
+      "module": "stockwiki.quick_scan_query_v2_cli",
+      "operation": "--request",
+      "calls": 1,
+      "blocking_seconds": 2.055225199961569
+    },
+    {
+      "phase": "preview_confirm",
+      "module": "stockwiki.quick_scan_refresh_owner_cli",
+      "operation": "--confirm-delegated",
+      "calls": 1,
+      "blocking_seconds": 36.62266079999972
+    },
+    {
+      "phase": "preview_confirm",
+      "module": "stockwiki.quick_scan_refresh_owner_cli",
+      "operation": "--install-delegation",
+      "calls": 1,
+      "blocking_seconds": 33.56229800003348
+    },
+    {
+      "phase": "preview_confirm",
+      "module": "stockwiki.quick_scan_refresh_owner_cli",
+      "operation": "--principal",
+      "calls": 1,
+      "blocking_seconds": 0.47156890004407614
+    },
+    {
+      "phase": "preview_confirm",
+      "module": "stockwiki.quick_scan_refresh_owner_cli",
+      "operation": "--request",
+      "calls": 1,
+      "blocking_seconds": 19.228121499996632
+    }
+  ],
+  "claim_count": 12,
+  "claim_wall_seconds": 91.57266419997904,
+  "lease_observations": [
+    {
+      "kind": "cache_recovery_complete",
+      "phase": "cache_recovery",
+      "observed_epoch": 1792291273.934439,
+      "lease_active": true,
+      "original_lease_seconds": 600,
+      "earliest_claim_epoch": 1792290841.7100646,
+      "earliest_expiry_epoch": 1792291441.7100646,
+      "elapsed_since_first_claim": 432.2211368083954
+    },
+    {
+      "kind": "scripted_vendor_post",
+      "phase": "cold_claim_sdk",
+      "observed_epoch": 1792291161.6720169,
+      "posts": 1,
+      "lease_active": true,
+      "original_lease_seconds": 600,
+      "earliest_claim_epoch": 1792290841.7100646,
+      "earliest_expiry_epoch": 1792291441.7100646,
+      "elapsed_since_first_claim": 319.95926332473755
+    },
+    {
+      "kind": "native_safe_output_committed",
+      "phase": "cold_claim_sdk",
+      "observed_epoch": 1792291169.364467,
+      "lease_active": true,
+      "original_lease_seconds": 600,
+      "earliest_claim_epoch": 1792290841.7100646,
+      "earliest_expiry_epoch": 1792291441.7100646,
+      "elapsed_since_first_claim": 327.6517012119293
+    }
+  ],
+  "measurement_note": "CLI blocking time overlaps claim/phase wall; do not add them together. No actual model-network latency was sampled."
+}

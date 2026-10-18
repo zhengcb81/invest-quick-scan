@@ -1,0 +1,24 @@
+{
+  "protocol": "iqs.production-task-test-cleanup/1.0.0",
+  "owned_root": "C:/Users/郑曾波/Projects/.iqs-scan18-test-20261018a",
+  "status": "retained_for_whole_node_review",
+  "deletion_attempted": false,
+  "reason": "Exact original SQLite, native journals and source-pinned runtime retained for independent read-only verification. No real production namespace was written.",
+  "not_in_archive": [
+    "runtime source copies",
+    "SQLite and SQLite journals",
+    "native config/records/leases",
+    "full answers/evidence/context",
+    "early traceback logs"
+  ],
+  "additional_owned_red_tmp": "C:/Users/郑曾波/AppData/Local/Temp/pytest-of-郑曾波/pytest-2105",
+  "older_cleanup_rejection": "Separate delegated-a root cleanup previously rejected; not retried by this lane.",
+  "foreign_projects_sqlite_created": false,
+  "additional_red_tmp_cleanup": {
+    "attempted": true,
+    "status": "automatic_policy_rejected_before_execution",
+    "method": "verified exact native PowerShell Remove-Item -LiteralPath -Recurse",
+    "retried": false,
+    "retained": true
+  }
+}

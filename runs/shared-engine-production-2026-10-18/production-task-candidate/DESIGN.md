@@ -1,0 +1,17 @@
+# Production scan carrier: first complete slice
+
+Scope: Company Lab task/profile/context/strategy/export/replay plus IQS native task factory and public shared engine. No QA/SW/native ledger implementation changes. Original experimental Task1/2/3, research1.0/1.1 schemas, frozen12/2026-10-13 and old default board epoch/snapshot remain their existing protocols.
+
+New protocols are company-scan-task/profile/run/checkpoint and scan evidence-board1.0. Profiles bind the original question IDs/full contracts/module versions, original native-compatible pack-group digests, route, actual cutoff, deterministic grouping and explicit resource limits. Profile hashes enter task hashes/checkpoints; each request still carries all original authoritative questions. A packet has1–12 original questions; a task can have more than12. Missing dimensions fall back to separate singletons rather than inferred industry labels. Profile data never grants owner authority.
+
+The factory requires actual native QuickScanWorkLifecycle/ApprovedRefreshSession/OwnerRefreshSession, unchanged original input bytes and exact SubjectRef. Selection is an original approved nonempty unique subset. Other providers must use an explicit singleton cap; native MiMo packs are permitted only by original route/owner controls. Original comparison_controls are exact actual pack parameters, not upper bounds: every actual packet must match if controls are non-null.
+
+This slice permits one-shot direct answers, existing bounded evidence and search cap0. It does not implement multi-turn packs, lease renewal, new search proof/checkpoint, extra HTTP or budget ledgers. A received bad answer is retained as partial/invalid rather than automatically asked again. Unknown native outcomes never resend. Existing original Runner, RuntimeBridgePort and SDK perform all execution and recovery.
+
+Date context is shared by fresh/replay/checkpoint-resume, evidence intake/citation and plan/actual validation. New board snapshots/epochs explicitly bind their policy while old snapshots/epochs add no fields. Plans do not become actual results just because a date passed. The new execution-profile sidecar labels outputs as profile-specific scans; they must not be mixed into the frozen experiment comparison without aligning question/module/profile/cutoff.
+
+Testing uses pure scheduling/date counterexamples, the original shared Runner with synthetic receipts for17-question/real-date coverage and file resume, and an original public native delegated CLI/SQLite/SDK chain for a small approved2-question current-date scan. The latter intentionally uses scripted wire: first native response commits, process exits, fresh process reuses that original intent response without repeating its POST and sends the other previously unsent original work. None is a financial accuracy or real vendor cost benchmark.
+
+One independent whole-node reviewer examines the final exact source/CAS and unseen counterexamples. No per-helper approval/review gates. Historical failed runs remain local with honest version/scope notes; only final thin engineering evidence is archived. No production database, original grant/policy or source repositories are written by this candidate lane.
+
+One exact full SubjectRef is required per task. Distinct listing, segment, or business perimeters require separate original approved tasks; the scan carrier does not merge them.
