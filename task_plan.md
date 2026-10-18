@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 60/60 最终状态
+
+离线回归 58 passed；search（S1/S2/S3）与 F05 draft 链（pack/context/authority）全部就绪；独立审查 High/Medium 已关闭。未完成且需 owner/新 reviewed delivery：①storage_rights 确认；②CATL 分类确认；③2 题评分的 reviewed-deployment 门；④facts 并入正式 c06 producer 与注册。真实 API/模型调用 0，付费 0。工作区仍有既存未提交文件（docs/.../README.md、questions/releases/current.json 与 .tmp_*），非本轮改动，未清理。目标保持 active，等 owner 输入。
+
 ## 2026-10-18 — 收口：离线回归 58 passed + handoff
 
 新增 search/F05 全部单测合计 58 passed。handoff 顶部已更新：S1/S2/S3、独立审查整改、F05 draft chain、两项 owner 阻塞、真实运行门槛与入口。无真实 API/模型调用。
