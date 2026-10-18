@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="14" time="1.890" timestamp="2026-10-18T02:25:07.301049+01:00" hostname="DESKTOP-156V213"><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_natural_word_suffix_is_not_a_credential[composition-disk-failure]" time="0.376"><failure message="iqs_company_agent_lab.errors.SecretDetectedError: credential-like marker 'sk-' refused on write path">text = 'composition-disk-failure'
+
+    @pytest.mark.parametrize('text', [
+        'composition-disk-failure', 'risk-adjusted return',
+        'task-output is preserved', 'mask-based lithography',
+    ])
+    def test_natural_word_suffix_is_not_a_credential(text):
+&gt;       scan_for_secret(text)
+
+runs\shared-engine-production-2026-10-18\secret-boundary-candidate\tests\test_secret_boundary.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = 'composition-disk-failure'
+
+    def scan_for_secret(text: str) -&gt; None:
+        for marker in SECRET_MARKERS:
+            if marker in text:
+&gt;               raise SecretDetectedError(f"credential-like marker {marker!r} refused on write path")
+E               iqs_company_agent_lab.errors.SecretDetectedError: credential-like marker 'sk-' refused on write path
+
+..\iqs-company-agent-lab\src\iqs_company_agent_lab\events.py:77: SecretDetectedError</failure></testcase><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_natural_word_suffix_is_not_a_credential[risk-adjusted return]" time="0.002"><failure message="iqs_company_agent_lab.errors.SecretDetectedError: credential-like marker 'sk-' refused on write path">text = 'risk-adjusted return'
+
+    @pytest.mark.parametrize('text', [
+        'composition-disk-failure', 'risk-adjusted return',
+        'task-output is preserved', 'mask-based lithography',
+    ])
+    def test_natural_word_suffix_is_not_a_credential(text):
+&gt;       scan_for_secret(text)
+
+runs\shared-engine-production-2026-10-18\secret-boundary-candidate\tests\test_secret_boundary.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = 'risk-adjusted return'
+
+    def scan_for_secret(text: str) -&gt; None:
+        for marker in SECRET_MARKERS:
+            if marker in text:
+&gt;               raise SecretDetectedError(f"credential-like marker {marker!r} refused on write path")
+E               iqs_company_agent_lab.errors.SecretDetectedError: credential-like marker 'sk-' refused on write path
+
+..\iqs-company-agent-lab\src\iqs_company_agent_lab\events.py:77: SecretDetectedError</failure></testcase><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_natural_word_suffix_is_not_a_credential[task-output is preserved]" time="0.002"><failure message="iqs_company_agent_lab.errors.SecretDetectedError: credential-like marker 'sk-' refused on write path">text = 'task-output is preserved'
+
+    @pytest.mark.parametrize('text', [
+        'composition-disk-failure', 'risk-adjusted return',
+        'task-output is preserved', 'mask-based lithography',
+    ])
+    def test_natural_word_suffix_is_not_a_credential(text):
+&gt;       scan_for_secret(text)
+
+runs\shared-engine-production-2026-10-18\secret-boundary-candidate\tests\test_secret_boundary.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = 'task-output is preserved'
+
+    def scan_for_secret(text: str) -&gt; None:
+        for marker in SECRET_MARKERS:
+            if marker in text:
+&gt;               raise SecretDetectedError(f"credential-like marker {marker!r} refused on write path")
+E               iqs_company_agent_lab.errors.SecretDetectedError: credential-like marker 'sk-' refused on write path
+
+..\iqs-company-agent-lab\src\iqs_company_agent_lab\events.py:77: SecretDetectedError</failure></testcase><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_natural_word_suffix_is_not_a_credential[mask-based lithography]" time="0.002"><failure message="iqs_company_agent_lab.errors.SecretDetectedError: credential-like marker 'sk-' refused on write path">text = 'mask-based lithography'
+
+    @pytest.mark.parametrize('text', [
+        'composition-disk-failure', 'risk-adjusted return',
+        'task-output is preserved', 'mask-based lithography',
+    ])
+    def test_natural_word_suffix_is_not_a_credential(text):
+&gt;       scan_for_secret(text)
+
+runs\shared-engine-production-2026-10-18\secret-boundary-candidate\tests\test_secret_boundary.py:14: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+text = 'mask-based lithography'
+
+    def scan_for_secret(text: str) -&gt; None:
+        for marker in SECRET_MARKERS:
+            if marker in text:
+&gt;               raise SecretDetectedError(f"credential-like marker {marker!r} refused on write path")
+E               iqs_company_agent_lab.errors.SecretDetectedError: credential-like marker 'sk-' refused on write path
+
+..\iqs-company-agent-lab\src\iqs_company_agent_lab\events.py:77: SecretDetectedError</failure></testcase><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[sk-example]" time="0.003" /><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[&quot;sk-example&quot;]" time="0.002" /><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[token=sk-example]" time="0.002" /><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[\u5bc6\u94a5sk-example]" time="0.002" /><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[sk-]" time="0.002" /><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[Authorization: secret]" time="0.002" /><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[Bearer example]" time="0.002" /><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[api_key: example]" time="0.002" /><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[apikey: example]" time="0.002" /><testcase classname="runs.shared-engine-production-2026-10-18.secret-boundary-candidate.tests.test_secret_boundary" name="test_credential_marker_is_still_refused[eyJexample]" time="0.002" /></testsuite></testsuites>

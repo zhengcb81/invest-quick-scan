@@ -1,0 +1,28 @@
+{
+  "protocol": "iqs.company-secret-boundary-fix-cas/1.0.0",
+  "source_base_commit": "cd5e3e7ff44aa94cff3f7728c5c38811e9192b85",
+  "repository": "C:\\Users\\\u90d1\u66fe\u6ce2\\Projects\\iqs-company-agent-lab",
+  "files": [
+    {
+      "path": "src/iqs_company_agent_lab/events.py",
+      "base_sha256": "b355a8db4d23c50da3bc51132c64e2fbfc3342878b3ba09b9ee5af2fe33719df",
+      "candidate_sha256": "755a567c0a54dc1ae383f7be7ad66c2d9ca3417e6300831e057d1f2d769b0e6c",
+      "bytes": 8838
+    },
+    {
+      "path": "src/iqs_company_agent_lab/receipts.py",
+      "base_sha256": "d020a0d9ed867c45d00e34acbf34afe8cc4369ff7939f5d8218d0cd90578f71e",
+      "candidate_sha256": "3a592fc9d6d01e9d648c8db163916d0cd538b96f38cf080b76fe7f5ea4a9bf97",
+      "bytes": 5305
+    },
+    {
+      "path": "tests/test_secret_boundary.py",
+      "base_sha256": null,
+      "candidate_sha256": "4747bd16a63a2da587f7dcdf5ecd9a054fbb0515cbeae392474fdb6e0da5a428",
+      "bytes": 1253
+    }
+  ],
+  "red_result": "4 natural prose failures, 10 secret tests passed",
+  "green_result": "14 passed",
+  "note": "Only sk- requires non-ASCII-alphanumeric token start on left; other marker families unchanged. Same helper for receipts and journals."
+}

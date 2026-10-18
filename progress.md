@@ -1,3 +1,17 @@
+## 2026-10-18 — 修复真实金融文字被密钥检查误拒
+
+原Company event/receipt检查把risk-adjusted、task-output、mask-based、disk-failure中的裸sk-子串当凭证拒绝。不能靠改测试ID掩盖真实金融叙述错误：新增共用credential_marker，只对sk-要求左侧token边界，其他原标记/短前缀拒绝与隐藏思考守卫保持。先RED4F/10P，修后14P；原整套加新测试171P/1原Windows skip，独立24个未见自然词/真实凭证边界反例全部通过，同一整节点独审已签3路径。已正常本地提交Company `acae964c7a2fc99104b479636bdd79e789860422`，Lab无remote不新建。
+
+完整12题原owner链路继续使用原冻结t04源，不把本次源变动冒充其受测版本，也不为无关guard重复昂贵批准fixture。secret-boundary-candidate/owned-temp的精确清理被自动审批在执行前拒绝，仅blocked by policy；未删除、未换方法。cleanup.json记录保留文件，不能报告全清理。0真实模型请求/0生产DB或名单写入。
+
+## 2026-10-18 — 后续真实运行的明确委托确认（隔离候选实施）
+
+用户已给予全部后续授权；当前原生公共接口却只编码native_owner_terminal，不能把agent执行谎标为人类TTY，也不能使用测试confirmer冒充真实grant。只读调查确认StockWiki confirmation record/1.0与StockQA inspection验证两端均固定此方法。因此后续生产接线在独占 `runs/shared-engine-production-2026-10-18/delegated-owner-candidate/` 实施显式委托分支；不是再次索取用户权限，不写真实namespace或扩旧确认。
+
+施工范围：原rc1/record1.0/inspection1.1/TTY保持；新rc2/record2.0/inspection1.2表达native_owner_delegated_agent，single-action grant从固定owner路径读取，绑定原preview/request/scope/policy/quote/原账本、真实OS owner principal、consumer/deployment、SubjectRef/题目模块锁/模型/cohort、期限及撤销。agent来源只作可核来源记录，不能宣称同OS账户中的进程已被密码学鉴别。原预算/未知费用/当前权限/每次POST守卫保持；无消费者authorized=true、无--yes、无新费用账。未有公开原生grant前不得对真实批次发送。
+
+测试集中覆盖旧TTY兼容、缺grant/改grant/跨主体或题目模型、过期撤销、并发幂等、错误namespace、POST前撤销、已收答案与真实费用保留及公开跨仓整链。先失败再实现；完成整个委托能力节点后由不同agent整包复核，修尽有效问题再应用源码，不增helper小门。当前12题旧流程工程验收继续单独完成，不因新候选延后签收；批量claim性能问题先记录真实数据，不缓存权限或默认延长lease来掩盖。
+
 ## 2026-10-18 — owner/Runtime精确接线范围已交付
 
 StockQA owner服务5路径已正常hooks提交并推送 `d5cfe50e5d1f0377a754a2a94e491c6b44f6f783`；原SDK/原owner/原工作预算SQLite继续是唯一执行与计费来源。Runtime两路径正常本地提交 `b732a496d5dbfd904da1acca7482df4beb521e4c`（原分支codex/agent-run-02，无remote）。同一独立审查者签收7路径，45个未见漂移反例及19个最终guard回归通过；原软件批准/SDK脚本3P、Runtime31P、observer5P各保留自身分母和受测版本，不能相加当金融正确率。正常hooks仅换行/测试import整理，独立附录核等价后再次正常提交全部hooks通过。
