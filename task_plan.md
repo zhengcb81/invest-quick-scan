@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 1.4 单次路径：已确认 schema，缺 owner 查询快照
+
+按建议走 1.4 单次（24 题 1 cell、1 HTTP、1 次 policy revision）。已确认 v1.4 的 cell.question_ids<=30、max_new_http_requests 1..350；副本已完成 record_snapshot（route_327b3c77…）与 universe-add（000026 scan_enabled=true）。构造 1.4 request 时发现 validate_request 要求 source_query.payload.snapshot_id 非空（snap2_ 由 owner get_profiles 结果 seal 得到），这是下一步必须先产出的 owner 查询快照；随后才能 preview→confirm→admit。真实 policy/route/universe 未写，无模型调用。
+
 ## 2026-10-18 — 1.4 vs 1.5：24 题可走 1.4 单次 admission
 
 核对 refresh schema：1.4 的 cell.question_ids<=30、max_new_http_requests 1..350，24 题可一个 cell、一次 admission、一次 HTTP；1.5 的 cell<=12、max_new_http_requests=1，24 题必须拆 2 次。两者 purpose 都是 independent_comparison（不是研究型语义）。可行路径：A 1.4 单次（1 次 policy revision）；B 1.5 两次；C 先做 S1-S5。建议先在副本用 1.4 演练 24 题 admission。报告 docs/implementation/reviews/refresh-1.4-vs-1.5-2026-10-18.md。
