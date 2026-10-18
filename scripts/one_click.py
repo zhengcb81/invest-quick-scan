@@ -28,8 +28,19 @@ def main(argv=None):
     parser.add_argument("--links", type=Path, default=DEFAULT_LINKS)
     args = parser.parse_args(argv)
     args.out.mkdir(parents=True, exist_ok=True)
+    fin_dir = args.out/"financial-check"
+    fin_dir.mkdir(parents=True, exist_ok=True)
+    run([SCRIPTS/"financial_mechanical_check.py", "--workspace", args.workspace,
+         "--json", fin_dir/"check.json", "--html", fin_dir/"check.html"])
+    fin = json.loads((fin_dir/"check.json").read_text(encoding="utf-8"))
+    prov_dir = args.out/"provenance-check"
+    prov_dir.mkdir(parents=True, exist_ok=True)
+    run([SCRIPTS/"observation_provenance_check.py", "--json", prov_dir/"check.json", "--html", prov_dir/"check.html"])
+    prov = json.loads((prov_dir/"check.json").read_text(encoding="utf-8"))
     profiles = args.out/"profiles"
-    run([SCRIPTS/"profile_page.py", "--workspace", args.workspace, "--all", "--include-empty", "--output-dir", profiles])
+    run([SCRIPTS/"profile_page.py", "--workspace", args.workspace, "--all", "--include-empty",
+         "--output-dir", profiles, "--financial-check", fin_dir/"check.json",
+         "--provenance-check", prov_dir/"check.json"])
     run([SCRIPTS/"roster_status.py", "--workspace", args.workspace, "--profiles-dir", profiles,
          "--profiles-prefix", "profiles", "--links", args.links,
          "--html", args.out/"roster.html", "--json", args.out/"roster-status.json"])
@@ -43,15 +54,6 @@ def main(argv=None):
                  + str(gaps.get("waiting_owner_admission", 0)) + ' 家 · subject ready ' + str(gaps.get("subject_ready", 0)) + ' · '
                  + json.dumps(gaps.get("by_market", {}), ensure_ascii=False) + '）</a><br><span class="muted">'
                  + '只读清单；准入仍需 owner/route 工作</span></div>')
-    fin_dir = args.out/"financial-check"
-    fin_dir.mkdir(parents=True, exist_ok=True)
-    run([SCRIPTS/"financial_mechanical_check.py", "--workspace", args.workspace,
-         "--json", fin_dir/"check.json", "--html", fin_dir/"check.html"])
-    fin = json.loads((fin_dir/"check.json").read_text(encoding="utf-8"))
-    prov_dir = args.out/"provenance-check"
-    prov_dir.mkdir(parents=True, exist_ok=True)
-    run([SCRIPTS/"observation_provenance_check.py", "--json", prov_dir/"check.json", "--html", prov_dir/"check.html"])
-    prov = json.loads((prov_dir/"check.json").read_text(encoding="utf-8"))
     prov_card = ('<div class="card"><a href="provenance-check/check.html">Search 引用溯源（'
                  + str(prov.get("observations", 0)) + ' 条观察 · pass ' + str(prov.get("pass", 0))
                  + ' · fail ' + str(prov.get("fail", 0)) + ' · research_only ' + str(prov.get("research_only", 0))

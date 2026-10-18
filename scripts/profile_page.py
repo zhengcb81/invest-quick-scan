@@ -143,7 +143,26 @@ def _scored_links(scored):
     return '<div class="card"><b>Search-backed 评分审阅（未入库）</b><ul>' + items + '</ul></div>'
 
 
-def build(entity, listings, observations, reviews=None, routed=False, scored=None):
+def _checks_summary(entity_id, financial, provenance, obs_ids=None):
+    if not financial and not provenance:
+        return ""
+    parts = []
+    if financial:
+        rows = [r for r in financial.get("results", []) if r.get("entity_id") == entity_id]
+        if rows:
+            ok = sum(1 for r in rows if r.get("mechanical_pass"))
+            parts.append("金融机械 " + str(ok) + "/" + str(len(rows)))
+    if provenance:
+        rows = [r for r in provenance.get("results", []) if r.get("entity_id") == entity_id or (obs_ids and r.get("observation_id") in obs_ids)]
+        if rows:
+            passed = sum(1 for r in rows if r.get("result") == "pass")
+            research = sum(1 for r in rows if r.get("result") == "research_only")
+            failed = sum(1 for r in rows if r.get("result") == "fail")
+            parts.append("引用溯源 pass " + str(passed) + " / research_only " + str(research) + " / fail " + str(failed))
+    return " · ".join(parts)
+
+
+def build(entity, listings, observations, reviews=None, routed=False, scored=None, checks=""):
     if entity["identity_state"] != "verified":
         action = "需要 verified 身份"
     elif observations:
@@ -170,7 +189,7 @@ table{{width:100%;border-collapse:collapse;margin:6px 0}} th,td{{text-align:left
 <h1>{html.escape(entity['canonical_name'])}</h1>
 <div class="sub">entity {html.escape(entity['entity_id'])} · {html.escape(entity['identity_state'])} rev{html.escape(str(entity['identity_revision']))} · listings {html.escape(', '.join(f"{l['market']}:{l['ticker']}" for l in listings))} · observations {len(observations)} <a href="index.html">← all profiles</a></div>
 <div class="banner">只读研究型画像：全部为 insufficient_evidence / score=null；不构成评分、投资建议或财务准确性结论。</div>
-<div class="card"><b>状态</b>：{html.escape(entity['identity_state'])} · owner 路由：{"有" if routed else "无"} · 观察：{len(observations)} · 下一步：<b>{html.escape(action)}</b></div>
+<div class="card"><b>状态</b>：{html.escape(entity['identity_state'])} · owner 路由：{"有" if routed else "无"} · 观察：{len(observations)}{(' · ' + checks) if checks else ''} · 下一步：<b>{html.escape(action)}</b></div>
 {_review_banner(reviews or {})}
 {_scored_links(scored or [])}
 {''.join(_card(o, reviews) for o in observations) or '<div class="card muted">暂无观察</div>'}
@@ -185,7 +204,11 @@ def main(argv=None):
     parser.add_argument("--include-empty", action="store_true")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument("--financial-check", type=Path)
+    parser.add_argument("--provenance-check", type=Path)
     args = parser.parse_args(argv)
+    financial = json.loads(args.financial_check.read_text(encoding="utf-8-sig")) if args.financial_check and args.financial_check.is_file() else None
+    provenance = json.loads(args.provenance_check.read_text(encoding="utf-8-sig")) if args.provenance_check and args.provenance_check.is_file() else None
     if args.all:
         if not args.output_dir:
             parser.error("--all requires --output-dir")
@@ -200,7 +223,7 @@ def main(argv=None):
         rows = []
         for entity_id in ids:
             entity, listings, observations = load(args.workspace, entity_id)
-            (args.output_dir/(entity_id + ".html")).write_text(build(entity, listings, observations, load_reviews(entity_id), owner_routed(args.workspace, entity_id), load_scored(entity_id)), encoding="utf-8")
+            (args.output_dir/(entity_id + ".html")).write_text(build(entity, listings, observations, load_reviews(entity_id), owner_routed(args.workspace, entity_id), load_scored(entity_id), _checks_summary(entity_id, financial, provenance, [o.get("observation_id") for o in observations])), encoding="utf-8")
             rows.append((entity["canonical_name"], entity["identity_state"], len(observations), entity_id + ".html"))
         index = "<!doctype html><html lang=\"zh\"><meta charset=\"utf-8\"><title>company profiles</title><body style=\"font:14px/1.5 'Segoe UI','Microsoft YaHei',sans-serif;max-width:900px;margin:28px auto\"><h1>公司画像</h1><p>只读研究型页面；不构成评分或投资建议。</p><table border=\"0\" cellspacing=\"0\" cellpadding=\"6\"><tr><th align=\"left\">公司</th><th align=\"left\">身份</th><th align=\"left\">观察</th></tr>" + "".join(f'<tr><td><a href="{html.escape(f)}">{html.escape(name)}</a></td><td>{html.escape(state)}</td><td>{n}</td></tr>' for name, state, n, f in rows) + "</table></body></html>"
         (args.output_dir/"index.html").write_text(index, encoding="utf-8")
@@ -209,7 +232,7 @@ def main(argv=None):
     if not args.entity_id or not args.output:
         parser.error("single mode requires --entity-id and --output")
     entity, listings, observations = load(args.workspace, args.entity_id)
-    args.output.write_text(build(entity, listings, observations, load_reviews(args.entity_id), owner_routed(args.workspace, args.entity_id), load_scored(args.entity_id)), encoding="utf-8")
+    args.output.write_text(build(entity, listings, observations, load_reviews(args.entity_id), owner_routed(args.workspace, args.entity_id), load_scored(args.entity_id), _checks_summary(args.entity_id, financial, provenance, [o.get("observation_id") for o in observations])), encoding="utf-8")
     print(json.dumps({"entity": entity["canonical_name"], "observations": len(observations), "output": str(args.output)}, ensure_ascii=False))
     return 0
 
