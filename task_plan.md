@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 真实小样本运行完成：CATL IQS_05/06
+
+删除 storage/reviewed 门后，用无 reviewed-proof 的 scan driver 完成真实运行：IQS_05/06，module_packs，1 次真实模型 HTTP，0 搜索；cold 在安全边界退出 86，recover 从缓存完成 2/2 槽，新增模型 HTTP=0。账本：PACK_BUDGET_f294… settled、HTTP 200、actual 6676 micros。产物：actual-native-catl-0506-scan/recovered-report/report.md、recovered-export/（research-run.json 含两题答案，均为 insufficient_evidence，属如实缺失而非伪造）。尚未导入 StockWiki observation。
+
 ## 2026-10-18 — 2 题 direct run：去掉门禁后撞到引擎契约
 
 storage/reviewed 门已取消；03/04 的 1.4 admission 已 ready/confirmed/accepted。直接运行时发现引擎层约束：native 任务要求 question_projection 覆盖全部 12 个逻辑题（make_strategy 的 complete_one_to_one），2 题无法通过；scan 任务（module_packs）对应 1.5 合同，1.4 control 的 strategy 被 schema 固定为 free_agent。已放宽 shared_company_task 的硬编码 cutoff 与 1..12 题限制，但 2 题 native 仍被 projection 语义拒绝。结论：2 题真实运行需走 1.5 scan 路径（fresh exposure 1.1.0），或把 pack 扩到 12 题走 native。未发模型请求、未写答案。
