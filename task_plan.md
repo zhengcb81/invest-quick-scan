@@ -8,6 +8,10 @@
 
 修复 reviewer 第 2 条：fresh snapshot 不再把 DISPATCH_ 搜索尝试当「空预算」忽略。现在模型尝试/请求数仍必须为 0，但 reserved/spent 汇总所有尝试（含 DISPATCH），并要求 reserved+spent <= max_cost；validate_retained_rows 同步。测试更新：非空测试改用 ATTEMPT_ id；新增 test_fresh_snapshot_counts_dispatch_search_spend。QA 42 passed（1 个已知 schema 版本失败）。
 
+## 2026-10-18 — IQS_20 scored 答案离线验证通过
+
+IQS_20 模型答案 status=scored、score=6、5 条 evidence、5 个 metrics；validate_single_answer PASS，所有 metric evidence_id 都在答案自带 https 证据里。原 run 在旧 binding 规则下被拒；重跑 admission 被 plan_changed 拒绝。已把答案与审阅页归档到 docs/implementation/reviews/search-scored-catl-iqs20-2026-10-18/，明确标注未入库。另：IQS_18 观察因 evidence=0 在 vendor preview 校验中失败，已撤回；后续导入规则应为「非空 evidence 且 vendor 校验通过」。
+
 ## 2026-10-18 — IQS_18 观察撤回；状态补丁
 
 IQS_18 运行 completed，但导入后 preview 在 create_preview 阶段被 subject_contract_output_invalid 拒绝（observation 未通过 vendor 合同）。为恢复后续 admission，撤回 IQS_18 观察（运行导出保留）；owner 观察回到 5 条，provenance pass 1。另修 lab state._binding_findings：metric 引用的 evidence_id 若在答案 evidence 中自带 https URL，则不再报 cited_evidence_inactive（为外部搜索 scored 答案放行）；lab tests 6 passed。
