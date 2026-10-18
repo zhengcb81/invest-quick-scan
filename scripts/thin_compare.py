@@ -16,6 +16,10 @@ NAMES = {
     "thin-scan-pingan-2026-10-18": "中国平安",
     "thin-scan-amec-2026-10-18": "中微公司",
     "thin-scan-microsoft-2026-10-18": "微软",
+    "thin-scan-moutai-2026-10-18": "贵州茅台",
+    "thin-scan-wuxi-2026-10-18": "药明康德",
+    "thin-scan-gree-2026-10-18": "格力电器",
+    "thin-scan-yili-2026-10-18": "伊利股份",
 }
 
 
@@ -28,7 +32,7 @@ def main() -> int:
     companies = []
     for directory in sorted(args.runs.glob("thin-scan-*-2026-10-18")):
         answers_path = directory / "answers.json"
-        if not answers_path.is_file():
+        if not answers_path.is_file() or "-retest-" in directory.name:
             continue
         document = json.loads(answers_path.read_text(encoding="utf-8"))
         slug = directory.name
