@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — 独立审查修复 + 决定不再硬闯 deployment 门
+
+审查发现：fresh 模式无未授权绕过，但 owner_ack_ref 只是标签；quote retained 旧路径被弱化；fresh 忽略 dialect/refs。已修：fresh 仅允许 1.4.0 且 attempt_ids 为空；quote retained 收紧为 enum [0,2]；validate_control 标注“单独不足以授权”；补 6 个单测（41 passed，1 个既有 schema-version 失败）。QA 6a32ac0、IQS dd4f87f。结论：付费 2 题 dispatch 需要新的 reviewed delivery（controller CAS/reviewer 冻结），不再用自选 source_pins 绕过；主线转向不依赖该门的 search-backed/评分与画像入口。
+
 ## 2026-10-18 — dispatch 被 reviewed-deployment 门拦住
 
 admission 已 accepted（rv1_ce80… / rc2_3fdb…），但两题驱动的部署证明校验失败：controller_delivery.verify_deployment 报 engineering_reference_path_or_hash_changed（controller CAS 漂移；reviewer id 固定，不能自签）。fresh-exposure 也不在已审 source pins。结论：现有 reviewed 门下 2 题付费 dispatch 不能合法执行。已恢复 owner policy（3239c35b…）与 delegation；新预算 policy 行保留（0 attempt）。无付费调用。报告 docs/implementation/reviews/deployment-gate-2026-10-18.md；下一步需重新交付/独立审查。
