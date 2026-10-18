@@ -92,3 +92,16 @@ def test_count_bounds():
             assert "count_invalid" in str(error)
         else:
             raise AssertionError("expected rejection")
+
+
+def test_missing_deepseek_route_rejected():
+    exp = exposure()
+    exp["routes"] = [{"route_id": "brave-primary", "provider": "brave",
+                      "credential_env": "BRAVE_API_KEY", "enabled": True, "max_queries": 2}]
+    try:
+        client.search("q", exposure=exp, policy_sha256="b" * 64, api_key="k",
+                      transport=transport_for({"results": []}))
+    except ValueError as error:
+        assert "deepseek_route_not_in_exposure" in str(error)
+    else:
+        raise AssertionError("expected rejection")

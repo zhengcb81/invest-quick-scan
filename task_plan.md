@@ -4,6 +4,10 @@
 
 另：在副本里发布 routing 包成功（pkg_b5a41d8c…、modrel_fc5de4…），000026 的 resolve-route 产出 route_327b3c77…（partial，common+risk，minimum_questions=24）；compose max=1 被拒（低于 mandatory coverage），max=24 成功（manifest 137KB）。结论：选项 A（发布 routing 包）技术上可行且确定性、无模型调用，但正式 route 至少 24 题，且发布属治理动作，需批准后才能对真实仓执行。
 
+## 2026-10-18 — DeepSeek client 路由修正
+
+client 不再盲取 exposure 第一条路由，而是显式选择 provider=deepseek 的 route；缺失则 deepseek_route_not_in_exposure。新增 1 个单测（6 passed）。
+
 ## 2026-10-18 — one_click 看板接入 facts packs
 
 one_click.py 生成 landing 时扫描 facts packs，增加 “Facts packs（1 个 draft，1 个 valid）” 卡片并链接索引页；重新生成看板验证 214 家公司/209 verified/214 画像页不变，卡片相对链接正确。

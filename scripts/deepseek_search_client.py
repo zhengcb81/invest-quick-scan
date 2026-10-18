@@ -50,6 +50,10 @@ def search(
 ):
     if not isinstance(api_key, str) or not api_key.strip():
         raise ValueError("deepseek_api_key_required")
+    route = next((row for row in exposure.get("routes", []) if row.get("provider") == "deepseek"), None)
+    if route is None:
+        raise ValueError("deepseek_route_not_in_exposure")
+    route_id = route["route_id"]
     if not isinstance(query, str) or not 1 <= len(query) <= 2000:
         raise ValueError("search_query_invalid")
     if type(count) is not int or not 1 <= count <= 50:
@@ -68,7 +72,7 @@ def search(
             "exposure_sha256": receipts.canonical_sha256(exposure),
             "policy_sha256": policy_sha256,
             "provider": "deepseek",
-            "route_id": exposure["routes"][0]["route_id"],
+            "route_id": route_id,
             "query": query,
             "requested_at": requested_at,
             "completed_at": receipts.utc_now(),
@@ -85,7 +89,7 @@ def search(
         exposure=exposure,
         policy_sha256=policy_sha256,
         provider="deepseek",
-        route_id=exposure["routes"][0]["route_id"],
+        route_id=route_id,
         query=query,
         requested_at=requested_at,
         completed_at=receipts.utc_now(),
