@@ -43,6 +43,44 @@
       "network_scope": "none",
       "handoff_protocol": "docs/implementation/parallel-lanes/handoff.schema.json#1.0.0",
       "exit_codes": "integration-contract section 2: 0/1(evaluate only)/2/3"
+    },
+    {
+      "id": "UI-BANK-EXPLORER-13",
+      "lane_id": "iqs",
+      "document": "UI-BANK-EXPLORER-13.md",
+      "task_ids": [
+        "U01",
+        "U02",
+        "U03",
+        "U04"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "package.json",
+        "pyproject.toml",
+        "app",
+        "src",
+        "adapters",
+        "fixtures",
+        "tests",
+        "scripts",
+        "design",
+        "demo",
+        "docs/handoff/UI-BANK-EXPLORER-13",
+        ".tmp"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "offline_question_bank_ui_candidate_only",
+      "task_ids_semantics": "support_only: declares which planned UI tasks this card supplies a candidate for; completion of these tasks is NOT delegated and NOT claimed",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none",
+      "handoff_protocol": "docs/implementation/parallel-lanes/handoff.schema.json#1.0.0",
+      "exit_codes": "integration-contract section 2: 0/1(evaluate only)/2/3"
     }
   ]
 }
