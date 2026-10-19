@@ -1,3 +1,11 @@
+## 2026-10-19 — StockQA CI 根因修复
+
+两层根因：
+1. CI 用 pip install -e ".[dev]"，dev 依赖只写下限；requirements-lock.txt 未参与安装。black/isort/mypy/bandit 随最新版漂移，bandit 1.9 对 6 处 SQL 占位符拼接、1 处 assert、1 处 except-pass 报错，default checks 卡在 bandit。已把 dev 检查工具全部精确 pin 到 requirements-lock.txt，新增 pin 一致性测试，并修复 8 个 bandit 发现（SQL 改成仅占位符 + 参数绑定，assert 改显式异常，except-pass 改记录解析错误）。
+2. Q09 的 _OWN_RESERVATION 是 ContextVar 全局标志，before_question 置 True，只有 after_question 才复位。q09 测试只 reserve 不 complete，标志泄漏到后续 CLI 测试，导致 503 被当普通 server error 重试/切换 backup、exit code 错误。已改成 bind_own_reservation() 随 dispatch_context 进入/退出，删除 before/after 的裸 set，新增泄漏回归测试。
+
+验证：python -B scripts/checks.py（default）全绿：black/isort/mypy/bandit/pytest(265+)/smoke；StockQA commit 7dd3eb0 已推送。
+
 ## 2026-10-19 — 模型配置单一来源
 
 - 新增 config/models.json：4 个模型路由（minimax/mimo/mimo_pro/deepseek）+ 搜索路由；MiniMax 统一为 MiniMax-M3.1-Flash。
