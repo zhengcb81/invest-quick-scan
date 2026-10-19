@@ -121,7 +121,7 @@ POC 要求：
 
 POC 的用途是让用户在看到真实实现前先审阅方向；POC 代码不承诺可维护性，但界面结构、字段和交互应接近最终形态。
 
-允许主控在 G1/G2 之前先产出 POC-0 参考原型用于方向对齐；POC-0 不等同 G3 通过，正式 G3 仍需按 G1/G2 更新后提交 G4。
+**POC 是 G4 的强制前置条件，不是可选项。** 没有可运行 POC、没有四功能截图、没有 POC 标志，不得进入 G4。
 
 ### G4 用户确认（必须）
 
@@ -129,6 +129,7 @@ POC 的用途是让用户在看到真实实现前先审阅方向；POC 代码不
 
 - decision: approved / changes_requested
 - approved_design_commit: Git commit
+- approved_poc_commit: POC 的 Git commit（必须与 G3 提交一致）
 - user_feedback: 原文摘要
 - requested_changes: 列表
 - timestamp / channel
