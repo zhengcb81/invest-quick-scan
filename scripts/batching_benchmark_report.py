@@ -6,13 +6,14 @@ import statistics
 import tempfile
 import re
 from pathlib import Path
+import model_config
 
 import batching_benchmark as b
 
 
 # Explicit original pricing snapshot; adding a model must not reinterpret old runs.
 LEGACY_ROUTES={
-    'minimax':dict(model='MiniMax-M3',key_env='MINIMAX_API_KEY',endpoint='https://api.minimaxi.com/v1/chat/completions',input_rate=.6,output_rate=2.4,cache_rate=.12),
+    'minimax':model_config.routes()['minimax'],
     'mimo':dict(model='mimo-v2.6-flash',key_env='MIMO_API_KEY',endpoint='https://api.xiaomimimo.com/v1/chat/completions',input_rate=.14,output_rate=.28,cache_rate=.0028),
     'deepseek':dict(model='deepseek-flash',key_env='DEEPSEEK_API_KEY',endpoint='https://api.deepseek.com/chat/completions',input_rate=.3,output_rate=1.2,cache_rate=.006),
 }

@@ -1,3 +1,10 @@
+## 2026-10-19 — 模型配置单一来源
+
+- 新增 config/models.json：4 个模型路由（minimax/mimo/mimo_pro/deepseek）+ 搜索路由；MiniMax 统一为 MiniMax-M3.1-Flash。
+- scripts/model_config.py 统一读取；batching_benchmark、batching_benchmark_report、thin_scan 不再硬编码模型；旧的 docs/implementation/thin-scan-providers.json 删除。
+- examples/provider-connectivity-profiles.json 的 3 个 MiniMax profile 同步为新模型；测试校验 profile 与 config 一致、ROUTES 来自 config、active scripts 无旧模型名。
+- 跨仓：StockQA llm_apis.json 与 llm_client 的 MiniMax 模型校验改为读配置（MINIMAX_MODEL 可覆盖）；StockWiki config/llm_providers.yaml 同步。历史 pilot_runs/docs 实验记录不改写。
+
 ## 2026-10-19 — 题库版本化：外包包 + 主线绑定
 
 1. 新建外包包 QUESTION-BANK-UPGRADE-12（packages/2026-10-19）：48 模块/222 题全面升级、统一设计、逐模块版本/退役/兼容、三份独立审计（内容/格式/架构）。三个只读 agent 已完成基线审计：格式 1 中 3 低、内容 12 条、架构 8 条；结论与修复要求已写入包卡。

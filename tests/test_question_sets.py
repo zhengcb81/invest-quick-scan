@@ -827,13 +827,13 @@ class QuestionSetTests(unittest.TestCase):
         manifest, _ = self.make_screening_manifest()
         bundle = self.make_screening_bundle(manifest)
         qid = manifest['questions'][0]['id']
-        bundle['result']['provider'] = {'name': 'minimax', 'requested_model': 'MiniMax-M3'}
+        bundle['result']['provider'] = {'name': 'minimax', 'requested_model': 'MiniMax-M3.1-Flash'}
         for question in manifest['questions']:
             receipt = bundle['result']['execution_receipts'][question['id']]
-            receipt.update(provider='minimax', requested_model='MiniMax-M3', actual_model='MiniMax-M3')
+            receipt.update(provider='minimax', requested_model='MiniMax-M3.1-Flash', actual_model='MiniMax-M3.1-Flash')
             receipt['dispatch_outcome'] = None
             receipt['attempts'][-1].update(provider='minimax', provider_config_ref='minimax',
-                                           actual_model='MiniMax-M3')
+                                           actual_model='MiniMax-M3.1-Flash')
         receipt = bundle['result']['execution_receipts'][qid]
         receipt['request_id'] = None
         receipt['attempts'][-1]['request_id'] = None
@@ -852,7 +852,7 @@ class QuestionSetTests(unittest.TestCase):
             self.mark_screening_route(bundle, question['id'], provider='openai',
                                       requested_model='fixture-model', route_id='route-openai')
         receipt = self.mark_screening_route(bundle, q1, provider='minimax',
-                                            requested_model='MiniMax-M3', route_id='route-minimax')
+                                            requested_model='MiniMax-M3.1-Flash', route_id='route-minimax')
         receipt['request_id'] = None
         receipt['attempts'][-1]['request_id'] = None
         imported = qs.normalize_screening(manifest, bundle)

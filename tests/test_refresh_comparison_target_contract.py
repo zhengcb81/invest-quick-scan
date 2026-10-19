@@ -11,11 +11,11 @@ from test_refresh_owner_control_contract import controlled_inputs
 def targeted():
     request, state = controlled_inputs()
     request["protocol"] = "iqs.refresh_request/1.3.0"
-    state.update(provider="minimax", model="MiniMax-M3")
+    state.update(provider="minimax", model="MiniMax-M3.1-Flash")
     for item in state["items"]:
         item["owner_control"]["comparison_target"] = dict(
             provider="minimax",
-            model="MiniMax-M3",
+            model="MiniMax-M3.1-Flash",
             route_id="minimax-target",
             provider_config_ref="minimax-config",
             policy_id="shared-budget",

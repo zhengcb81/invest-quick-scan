@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "note": "Single model/provider configuration for IQS scripts. Edit model ids here only.",
+  "models": [
+    {
+      "id": "minimax",
+      "provider": "minimax",
+      "model": "MiniMax-M3.1-Flash",
+      "endpoint": "https://api.minimaxi.com/v1/chat/completions",
+      "api_key_env": "MINIMAX_API_KEY",
+      "priority": 1,
+      "input_rate": 0.6,
+      "output_rate": 2.4,
+      "cache_rate": 0.12
+    },
+    {
+      "id": "mimo",
+      "provider": "mimo",
+      "model": "mimo-v2.6-flash",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "api_key_env": "MIMO_API_KEY",
+      "priority": 2,
+      "input_rate": 0.14,
+      "output_rate": 0.28,
+      "cache_rate": 0.0028
+    },
+    {
+      "id": "mimo_pro",
+      "provider": "mimo",
+      "model": "mimo-v2.6-pro",
+      "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+      "api_key_env": "MIMO_API_KEY",
+      "priority": 3,
+      "input_rate": 0.435,
+      "output_rate": 0.87,
+      "cache_rate": 0.0036
+    },
+    {
+      "id": "deepseek",
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "priority": 4,
+      "input_rate": 0.3,
+      "output_rate": 1.2,
+      "cache_rate": 0.006
+    }
+  ],
+  "search": [
+    {
+      "id": "deepseek-search",
+      "provider": "deepseek",
+      "endpoint": "https://api.deepseek.com/v1/tools/search",
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "cost_micros": 700,
+      "priority": 1
+    }
+  ]
+}

@@ -21,9 +21,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import question_bank  # noqa: E402
+import model_config  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-PROVIDERS = ROOT / "docs/implementation/thin-scan-providers.json"
+CONFIG = ROOT / "config/models.json"
 USD_MICROS = 1_000_000
 
 
@@ -241,9 +242,8 @@ def main() -> int:
     parser.add_argument("--bank-manifest", type=Path,
                         help="composed manifest.json from scripts/question_sets.py compose")
     args = parser.parse_args()
-    providers = json.loads(PROVIDERS.read_text(encoding="utf-8-sig"))
-    search_provider = providers["search"][0]
-    models = providers["model"]
+    search_provider = model_config.search()[0]
+    models = model_config.models()
     bank = None
     if args.bank_manifest:
         bank = question_bank.load_manifest(args.bank_manifest)
