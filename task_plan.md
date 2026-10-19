@@ -1,3 +1,12 @@
+## 2026-10-19 — 题库版本化：外包包 + 主线绑定
+
+1. 新建外包包 QUESTION-BANK-UPGRADE-12（packages/2026-10-19）：48 模块/222 题全面升级、统一设计、逐模块版本/退役/兼容、三份独立审计（内容/格式/架构）。三个只读 agent 已完成基线审计：格式 1 中 3 低、内容 12 条、架构 8 条；结论与修复要求已写入包卡。
+2. 主线补齐版本化链路：
+   - compose_company_bank：调用 compose 生成带 package/release/module locks/逐题 hash 的 manifest，并对 operating/pre_revenue 缺行业时默认拒绝；
+   - question_bank：加载 manifest、core/context 拆分、manifest/dispatch prompt hash；
+   - thin_scan：--bank-manifest 模式逐题发送 manifest 完整 prompt 并校验 prompt_sha256，记录 dispatch hash、module/construct/hashes；flat 模式标 unversioned_flat_list；
+   - bank_lint：catalog↔module 漂移/rubric 混版/type critical/artifact 一致性，当前 0 errors、11 warnings；已修复 recovery applies_when 漂移。
+3. 测试：tests/test_question_bank.py + tests/test_bank_lint.py 共 10 passed。三题真实 bank 探针：2/3 scored、prompt_verified=true、importable=true。37 题完整 bank 跑仍在后台。
 ## 2026-10-18 — 大节点收尾：三包验收 + 12 家薄草稿 + 维度对比
 
 本节点完成：三个外包包全部验收（EVIDENCE/COST/DELIVERY）；薄草稿扩到 12 家、177/288 有分；对比页加入 8 维度均分；逐题分析与重测中位数已归档；status_report 增加薄草稿段落与“历史阻塞已暂停”说明；handoff 顶部改为计划 v2 的当前用法。草稿非正式入账，单次分数有噪声，比较建议中位数。

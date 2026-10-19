@@ -1,3 +1,12 @@
+## 2026-10-19 — 题库版本化：外包包 + 主线绑定
+
+1. 新建外包包 QUESTION-BANK-UPGRADE-12（packages/2026-10-19）：48 模块/222 题全面升级、统一设计、逐模块版本/退役/兼容、三份独立审计（内容/格式/架构）。三个只读 agent 已完成基线审计：格式 1 中 3 低、内容 12 条、架构 8 条；结论与修复要求已写入包卡。
+2. 主线补齐版本化链路：
+   - compose_company_bank：调用 compose 生成带 package/release/module locks/逐题 hash 的 manifest，并对 operating/pre_revenue 缺行业时默认拒绝；
+   - question_bank：加载 manifest、core/context 拆分、manifest/dispatch prompt hash；
+   - thin_scan：--bank-manifest 模式逐题发送 manifest 完整 prompt 并校验 prompt_sha256，记录 dispatch hash、module/construct/hashes；flat 模式标 unversioned_flat_list；
+   - bank_lint：catalog↔module 漂移/rubric 混版/type critical/artifact 一致性，当前 0 errors、11 warnings；已修复 recovery applies_when 漂移。
+3. 测试：tests/test_question_bank.py + tests/test_bank_lint.py 共 10 passed。三题真实 bank 探针：2/3 scored、prompt_verified=true、importable=true。37 题完整 bank 跑仍在后台。
 ## 2026-10-18 — Alphabet 重复扫描稳定性
 
 同一家公司同题再跑一次：第一次 18/24 有分，第二次 16/24；两次都有分 15 题，完全同分 9 题，相差 ≤1 共 14 题，平均绝对差 0.47。个别题在“不足/有分”间翻转。结论：单次分数有噪声，比较公司时更适合多次取中位数；当前草稿用于看方向可以，不能逐分较真。

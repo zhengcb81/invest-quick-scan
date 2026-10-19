@@ -9,13 +9,18 @@ with no budget-approval gate.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import json
 import os
+import sys
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import question_bank  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 PROVIDERS = ROOT / "docs/implementation/thin-scan-providers.json"
@@ -65,16 +70,30 @@ def search(provider: dict, query: str, count: int) -> list[dict]:
     return out
 
 
-def ask_model(provider: dict, company: str, question: str, sources: list[dict]) -> dict:
-    key = os.environ.get(provider["key_env"], "")
+def build_prompt(question: dict, company: str, sources: list[dict], as_of: str, bank_mode: bool):
     source_text = "\n".join(
         f"[{i+1}] {s['title']}\nURL: {s['url']}\n日期: {s['date']}\n摘要: {s['summary'][:300]}"
         for i, s in enumerate(sources)
     ) or "（本次没有检索到可用来源）"
+    if bank_mode and question.get("prompt"):
+        base = question["prompt"]
+        expected = question.get("prompt_sha256")
+        actual = hashlib.sha256(base.encode("utf-8")).hexdigest()
+        if expected and actual != expected:
+            raise ValueError("manifest prompt hash mismatch for " + str(question.get("id")))
+        prompt = (base + "\n\n本次真实检索结果（只可引用这些 URL）：\n" + source_text
+                  + "\n\n只输出上述外层 JSON，description 内的 evidence 只填上面出现过的 URL。")
+        return prompt, "manifest_full", True
+    qtext = question.get("question") or ""
+    extra = ""
+    if question.get("evidence"):
+        extra += "证据关注：" + "；".join(str(x) for x in question["evidence"]) + "\n"
+    if question.get("anchors"):
+        extra += "评分锚点：" + "；".join(f"{k}={v}" for k, v in question["anchors"].items()) + "\n"
     prompt = (
         "你是严谨的公司研究员。只根据下面给出的检索结果回答，不要使用记忆补充事实。\n"
         "如果证据不足，必须返回 insufficient_evidence，不要猜分数。\n\n"
-        f"公司：{company}\n问题：{question}\n信息截止：2026-10-18\n\n"
+        f"公司：{company}\n问题：{qtext}\n{extra}信息截止：{as_of}\n\n"
         f"检索结果：\n{source_text}\n\n"
         "只输出一个 JSON 对象，不要 markdown，不要解释。格式：\n"
         '{"status":"scored" 或 "insufficient_evidence","score":1-10 的整数或 null,'
@@ -82,8 +101,41 @@ def ask_model(provider: dict, company: str, question: str, sources: list[dict]) 
         "规则：status=scored 时 score 必须是 1-10 的整数且 evidence 至少 1 条；"
         "status=insufficient_evidence 时 score 为 null。"
     )
+    return prompt, "brief", False
+
+
+def normalize_bank_answer(raw: dict) -> dict:
+    inner = raw
+    description = raw.get("description")
+    if isinstance(description, str):
+        try:
+            parsed = json.loads(description)
+        except ValueError:
+            parsed = None
+        if isinstance(parsed, dict):
+            inner = parsed
+    evidence = inner.get("evidence")
+    urls = []
+    for entry in evidence or []:
+        if isinstance(entry, dict) and isinstance(entry.get("url"), str):
+            urls.append(entry["url"])
+        elif isinstance(entry, str):
+            urls.append(entry)
+    status = inner.get("status") or ("scored" if isinstance(inner.get("score"), int) else "insufficient_evidence")
+    score = inner.get("score") if status == "scored" else None
+    return {
+        "status": status,
+        "score": score,
+        "summary": inner.get("rationale") or raw.get("summary") or "",
+        "evidence": urls,
+        "counterevidence": inner.get("counterevidence"),
+    }
+
+
+def ask_model(provider: dict, prompt: str, max_tokens: int = 1200) -> dict:
+    key = os.environ.get(provider["key_env"], "")
     body = {"model": provider["model"], "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0, "max_tokens": 1200}
+            "temperature": 0, "max_tokens": max_tokens}
     status, payload = post_json(provider["endpoint"], key, body, 90)
     if status != 200 or not isinstance(payload, dict):
         return {"error": f"model_http_{status}"}
@@ -146,6 +198,16 @@ def render(company: str, answers: list[dict], meta: dict, out: Path) -> None:
                 html.escape(a["summary"]), ev or "-",
             )
         )
+    identity = meta.get("bank")
+    summary = meta.get("summary") or {}
+    if identity:
+        bank_line = ("题库：" + str(identity.get("package_id"))[:20] + "… · "
+                     + str(len(identity.get("modules") or [])) + " 模块 · "
+                     + str(summary.get("core_scored")) + "/" + str(summary.get("core_total")) + " 核心题有分 · "
+                     + str(summary.get("context_scored")) + "/" + str(summary.get("context_total")) + " 扩展题有分"
+                     + " · 均值为草稿口径（非正式聚合）")
+    else:
+        bank_line = "题库：未绑定（仅 24 题通用清单，结果不可版本化重放）"
     page = """<!doctype html><html lang="zh"><meta charset="utf-8">
 <title>__COMPANY__ 薄草稿</title>
 <style>body{font:14px/1.6 system-ui,"Microsoft YaHei";max-width:1100px;margin:32px auto;padding:0 16px;color:#1f2328}
@@ -154,6 +216,7 @@ table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e5e7eb;
 <h1>__COMPANY__ · 24 题薄草稿</h1>
 <p class="warn"><b>草稿，非正式入账</b>：没有 owner 凭证、没有预算预留、没有观察入库。分数只用于先看方向，不能当正式结论或投资建议。</p>
 <p>生成 __WHEN__ · 搜索 __SEARCHES__ 次 · 模型调用 __CALLS__ 次 · 搜索成本约 $__COST__</p>
+<p>__BANK_LINE__</p>
 <table><tr><th>问题</th><th>状态</th><th>分</th><th>结论</th><th>来源</th></tr>__ROWS__</table>
 </body></html>"""
     page = (page.replace("__COMPANY__", html.escape(company))
@@ -161,6 +224,7 @@ table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e5e7eb;
                 .replace("__SEARCHES__", str(meta["searches"]))
                 .replace("__CALLS__", str(meta["calls"]))
                 .replace("__COST__", f"{meta['cost_micros']/USD_MICROS:.4f}")
+                .replace("__BANK_LINE__", html.escape(bank_line))
                 .replace("__ROWS__", "".join(rows)))
     out.write_text(page, encoding="utf-8")
 
@@ -173,12 +237,24 @@ def main() -> int:
     parser.add_argument("--max-searches-per-question", type=int, default=1)
     parser.add_argument("--limit", type=int, default=24)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--as-of")
+    parser.add_argument("--bank-manifest", type=Path,
+                        help="composed manifest.json from scripts/question_sets.py compose")
     args = parser.parse_args()
     providers = json.loads(PROVIDERS.read_text(encoding="utf-8-sig"))
     search_provider = providers["search"][0]
     models = providers["model"]
-    catalog = json.loads(args.questions.read_text(encoding="utf-8-sig"))
-    questions = catalog["questions"][: args.limit]
+    bank = None
+    if args.bank_manifest:
+        bank = question_bank.load_manifest(args.bank_manifest)
+        questions = bank["questions"][: args.limit]
+        as_of = args.as_of or bank["identity"].get("as_of") or "2026-10-18"
+    else:
+        catalog = json.loads(args.questions.read_text(encoding="utf-8-sig"))
+        questions = catalog["questions"][: args.limit]
+        for q in questions:
+            q["core"] = True
+        as_of = args.as_of or "2026-10-18"
     args.out.mkdir(parents=True, exist_ok=True)
     spent = 0
     searches = calls = 0
@@ -186,7 +262,12 @@ def main() -> int:
     log = []
     for q in questions:
         record = {"question_id": q["id"], "question": q["question"], "status": "insufficient_evidence",
-                  "score": None, "summary": "", "evidence": [], "searches": 0, "problems": []}
+                  "score": None, "summary": "", "evidence": [], "searches": 0, "problems": [],
+                  "module_id": q.get("module_id"), "construct_id": q.get("construct_id"),
+                  "core": bool(q.get("core", True)),
+                  "prompt_sha256": q.get("prompt_sha256"),
+                  "semantic_sha256": q.get("semantic_sha256"),
+                  "definition_sha256": q.get("definition_sha256")}
         sources = []
         if args.dry_run:
             record["summary"] = "dry-run：未调用搜索或模型。"
@@ -205,10 +286,17 @@ def main() -> int:
             if not sources:
                 record["summary"] = "检索无可用来源，标为证据不足。"
             else:
+                prompt, prompt_mode, prompt_verified = build_prompt(
+                    q, args.company, sources, as_of, bank is not None)
+                record["prompt_mode"] = prompt_mode
+                record["prompt_verified"] = prompt_verified
+                record["dispatch_prompt_sha256"] = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
                 raw = None
                 for provider in models:
                     for attempt in range(2):
-                        candidate = ask_model(provider, args.company, q["question"], sources)
+                        candidate = ask_model(provider, prompt, 2400 if bank else 1200)
+                        if bank is not None:
+                            candidate = normalize_bank_answer(candidate)
                         if attempt == 0 and candidate.get("error") == "model_not_json":
                             continue
                         raw = candidate
@@ -229,15 +317,22 @@ def main() -> int:
         answers.append(record)
         log.append({"question_id": q["id"], "searches": record["searches"], "status": record["status"],
                     "problems": record["problems"]})
+    summary = question_bank.summarize(answers)
+    identity = bank["identity"] if bank else None
     meta = {"when": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "searches": searches, "calls": calls, "cost_micros": spent}
+            "searches": searches, "calls": calls, "cost_micros": spent,
+            "bank": identity, "summary": summary}
     (args.out / "answers.json").write_text(json.dumps(
-        {"company": args.company, "draft": True, "verified": False, "as_of": "2026-10-18",
-         "meta": meta, "answers": answers}, ensure_ascii=False, indent=2), encoding="utf-8")
+        {"company": args.company, "draft": True, "verified": False, "as_of": as_of,
+         "importable": bank is not None,
+         "provenance": "versioned_bank" if bank is not None else "unversioned_flat_list",
+         "bank": identity, "summary": summary, "meta": meta, "answers": answers},
+        ensure_ascii=False, indent=2), encoding="utf-8")
     (args.out / "run-log.json").write_text(json.dumps(log, ensure_ascii=False, indent=2), encoding="utf-8")
     render(args.company, answers, meta, args.out / "index.html")
     scored = sum(1 for a in answers if a["status"] == "scored")
     print(json.dumps({"company": args.company, "questions": len(answers), "scored": scored,
+                      "core": summary, "bank": None if identity is None else identity["package_id"],
                       "searches": searches, "calls": calls,
                       "search_cost_usd": round(spent / USD_MICROS, 4), "out": str(args.out)}, ensure_ascii=False))
     return 0

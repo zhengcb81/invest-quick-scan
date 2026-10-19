@@ -1,0 +1,48 @@
+{
+  "format_version": "1.0.0",
+  "observed_at_utc": "2026-10-19T20:00:00Z",
+  "task_source": "../../../tasks.json",
+  "coordinator_write_scope": "C:/Users/郑曾波/Projects/invest-quick-scan",
+  "workers_dispatched": false,
+  "default_live_enabled": false,
+  "packages": [
+    {
+      "id": "QUESTION-BANK-UPGRADE-12",
+      "lane_id": "iqs",
+      "document": "QUESTION-BANK-UPGRADE-12.md",
+      "task_ids": [
+        "S01",
+        "S04",
+        "S05",
+        "S06"
+      ],
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-question-bank-lab",
+      "authorized_relative_paths": [
+        "README.md",
+        ".gitignore",
+        "pyproject.toml",
+        "catalog.json",
+        "modules",
+        "schemas",
+        "releases",
+        "tools",
+        "tests",
+        "docs",
+        "review",
+        "vendor",
+        ".tmp",
+        "docs/handoff/QUESTION-BANK-UPGRADE-12"
+      ],
+      "readiness": "ready_for_scoped_support_after_unique_writer_preflight",
+      "authorization": "human_all_followup_authorized; human_dispatch_selects_worker; card_path_scope_only",
+      "delivery_scope": "offline_question_bank_candidate_only",
+      "task_ids_semantics": "support_only: declares which planned question-bank tasks this card supplies an offline candidate for; completion of these tasks is NOT delegated and NOT claimed",
+      "full_task_completion_delegated": false,
+      "model_api_enabled": false,
+      "paid_search_enabled": false,
+      "network_scope": "none",
+      "handoff_protocol": "docs/implementation/parallel-lanes/handoff.schema.json#1.0.0",
+      "exit_codes": "integration-contract section 2: 0/1(evaluate only)/2/3"
+    }
+  ]
+}
