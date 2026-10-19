@@ -106,9 +106,26 @@
 
 限制：此阶段不写业务实现。
 
-### G3 用户确认（必须）
+### G3 POC（假数据，必须先给用户审阅）
 
-主控把 G1+G2 提交给用户（项目所有者）确认。必须产出 design/user-approval.json：
+在用户确认最终设计之前，实现 agent C 先做一个**假数据 POC**，用于验证信息架构、交互和视觉方向，不是最终实现。
+
+POC 要求：
+
+- 只使用 fixtures 假数据，必须在界面顶部和每页标注 POC / 假数据 / 非最终设计；
+- 至少 6 家假公司、6 个题库模块（common + 2 个类型/行业 + 2 个阶段/属性 + 1 个诊断）、每个模块至少 2 个版本；
+- 必须覆盖 F1-F4：题库浏览+版本切换、公司×题库矩阵、逐题答案（分数/理由/证据/缺失）、选股器；
+- 可本地一键打开（静态 HTML 或一条启动命令），零网络；
+- 产出 poc/index.html（或等价入口）、poc/README.md、poc/screenshots/（至少 4 张）；
+- 不能读取或修改真实 IQS 数据；所有假数据字段名必须与真实数据契约一致。
+
+POC 的用途是让用户在看到真实实现前先审阅方向；POC 代码不承诺可维护性，但界面结构、字段和交互应接近最终形态。
+
+允许主控在 G1/G2 之前先产出 POC-0 参考原型用于方向对齐；POC-0 不等同 G3 通过，正式 G3 仍需按 G1/G2 更新后提交 G4。
+
+### G4 用户确认（必须）
+
+主控把 G1+G2+G3 POC 一起提交给用户（项目所有者）确认。必须产出 design/user-approval.json：
 
 - decision: approved / changes_requested
 - approved_design_commit: Git commit
@@ -116,19 +133,19 @@
 - requested_changes: 列表
 - timestamp / channel
 
-未拿到 approved，不得进入 G4。若 changes_requested，回到 G1/G2 修订并重新提交。
+未拿到 approved，不得进入 G5。若 changes_requested，回到 G1/G2/G3 修订并重新提交；POC 必须随设计变更更新。
 
-### G4 实施（实现 agent C）
+### G5 实施（实现 agent C）
 
 - agent C 不得是 G1/G2 的设计作者（避免自审）；
-- 实现 G3 批准的设计；
+- 实现 G4 批准的设计；
 - 数据只读，不写 IQS/StockWiki/StockQA；
 - 提供一条命令启动本地应用；
 - 单元测试覆盖数据适配与筛选逻辑；
 - 浏览器截图测试覆盖五个核心界面；
 - 记录所有 fixture 的 synthetic 标记。
 
-### G5 成果演示
+### G6 成果演示
 
 产出 demo/screenshots/ 至少 5 张：
 
@@ -141,10 +158,10 @@
 同时产出 demo/demo.md：启动命令、演示步骤、数据来源、已知缺口。
 主控把截图与 demo 提交用户；产出 demo/feedback.json（用户意见原文 + 分类）。
 
-### G6 迭代
+### G7 迭代
 
 每轮修改产出 demo/iteration-N.md（改了什么、为什么、影响页面、截图前后对比）。
-重复 G4-G5，直到用户明确 signoff：
+重复 G5-G6，直到用户明确 signoff：
 
 - demo/signoff.json：decision=accepted，user_feedback，timestamp，approved_commit。
 
@@ -154,8 +171,9 @@
 
 - G1 功能/技术设计：独立 agent A（只读数据，不写实现）。
 - G2 美术设计：独立 agent B（不得与 A 同一 agent）。
-- G4 实现：agent C（不得与 A/B 同一 agent；若无法完全分离，必须由主控记录并说明）。
-- G3/G5/G6 用户确认：由主控转交项目所有者，不得由 agent 自签。
+- G3 POC：agent C（假数据原型；不得与 A/B 同一 agent）。
+- G5 实现：agent C（不得与 A/B 同一 agent；若无法完全分离，必须由主控记录并说明）。
+- G4/G6/G7 用户确认：由主控转交项目所有者，不得由 agent 自签。
 
 ## 6. 页面信息架构（最低要求，设计可细化）
 
@@ -193,6 +211,7 @@
 | AC-08 | 五张演示截图与实际运行一致；demo.md 可复现 |
 | AC-09 | design/user-approval.json 与 demo/signoff.json 存在且为用户确认 |
 | AC-10 | handoff 形状通过主控 parallel_handoff_cli.py；worktree clean |
+| AC-11 | G4 之前存在假数据 POC：可本地打开、四功能可点、POC 标识明显、至少 4 张截图，且 user-approval 引用 POC commit |
 
 ## 9. 交付物
 
@@ -205,11 +224,15 @@ iqs-question-bank-ui-lab/
   fixtures/            # synthetic 标记
   tests/
   scripts/run.sh 或 run.ps1
+  poc/                  # G3：假数据 POC，不是最终实现
+    index.html
+    README.md
+    screenshots/
   design/
     functional-tech.md
     visual.md
     mockups/
-    user-approval.json
+    user-approval.json  # 必须引用 design + POC 的 commit
   demo/
     demo.md
     screenshots/
