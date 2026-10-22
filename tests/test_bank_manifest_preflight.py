@@ -144,3 +144,33 @@ def test_cli_fails_when_credentials_are_requested_and_absent(tmp_path, monkeypat
 
     assert result.returncode == 2, result.stdout + result.stderr
     assert "missing credentials" in result.stdout
+
+def test_replacements_are_reported_not_treated_as_missing(tmp_path):
+    """A type module may replace a generic question; that is not a defect.
+
+    The CATL manifest ships 22 of 24 common questions because OPERATING_01/02
+    replace IQS_11/IQS_03, keeping the core count at exactly 24. The preflight must
+    surface the mapping instead of reporting the originals as missing.
+    """
+    manifest = _manifest(
+        tmp_path,
+        questions=[_question("Q1"), _question("Q2", role="context", module="operating")],
+        modules=["common", "operating"],
+        module_locks=[{"module_id": "common", "version": "1"},
+                      {"module_id": "operating", "version": "1"}],
+        replacements={"IQS_03": "Q2"},
+    )
+
+    report = preflight.preflight(manifest)
+
+    assert report["ok"], report["problems"]
+    assert report["replacements"] == {"IQS_03": "Q2"}
+
+
+def test_replacement_target_must_actually_ship(tmp_path):
+    manifest = _manifest(tmp_path, replacements={"IQS_03": "NOT_PRESENT"})
+
+    report = preflight.preflight(manifest)
+
+    assert not report["ok"]
+    assert any("is not in the manifest" in p for p in report["problems"])

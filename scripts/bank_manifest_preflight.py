@@ -84,6 +84,19 @@ def preflight(manifest_path: Path) -> dict:
     if deferred:
         warnings.append(f"{len(deferred)} question(s) deferred by the composer")
 
+    # Replacements are intentional: a type/industry module can substitute its own
+    # question for a generic one (e.g. OPERATING_01 replaces IQS_11) so the core
+    # count stays fixed. Report them, and verify each target actually shipped.
+    replacements = document.get("replacements") or {}
+    if isinstance(replacements, dict) and replacements:
+        shipped = set(ids)
+        for replaced, replacement in sorted(replacements.items()):
+            if replacement not in shipped:
+                problems.append(f"replacement {replacement} (for {replaced}) is not in the manifest")
+        report_replacements = dict(replacements)
+    else:
+        report_replacements = {}
+
     for field in ("module_package_id", "module_release_id"):
         if not document.get(field):
             problems.append(f"manifest lacks {field}")
@@ -97,6 +110,7 @@ def preflight(manifest_path: Path) -> dict:
         "context_count": sum(1 for q in questions if q.get("comparison_role") == "context"),
         "module_count": len(modules),
         "modules": modules,
+        "replacements": report_replacements,
         "package_id": document.get("module_package_id"),
         "release_id": document.get("module_release_id"),
     }
