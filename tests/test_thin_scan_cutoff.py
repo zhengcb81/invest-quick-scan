@@ -137,3 +137,27 @@ def test_late_sources_alone_produce_the_cutoff_summary(monkeypatch):
     finally:
         import shutil
         shutil.rmtree(tmp, ignore_errors=True)
+
+def test_search_pool_is_wider_than_the_sources_used():
+    """Asking for only 5 results returns mostly the past week, which is all late.
+
+    A wider pool is filtered by cutoff and then trimmed, so an as_of in the past
+    still finds on-topic older material.
+    """
+    assert thin_scan.SEARCH_POOL_SIZE > thin_scan.SEARCH_SOURCES_USED
+    assert thin_scan.SEARCH_POOL_SIZE >= 20, "the pool must be wide enough to reach older material"
+    assert thin_scan.SEARCH_SOURCES_USED == 5
+
+
+def test_wide_pool_survives_cutoff_when_recent_half_is_late():
+    """Simulate a realistic mix: recent results late, older results usable."""
+    sources = ([_source(f"https://e.com/late{i}", "2026-10-25") for i in range(10)]
+               + [_source(f"https://e.com/ok{i}", "2026-01-15") for i in range(10)])
+
+    kept, dropped = thin_scan.filter_sources_by_cutoff(sources, "2026-10-18")
+
+    assert len(dropped) == 10
+    assert len(kept) == 10
+    assert thin_scan.cutoff_problem(dropped) == "dropped_after_cutoff:10"
+    # The caller trims to SEARCH_SOURCES_USED after filtering.
+    assert len(kept[:thin_scan.SEARCH_SOURCES_USED]) == 5

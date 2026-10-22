@@ -32,6 +32,15 @@ USD_MICROS = 1_000_000
 # a 300-character window made every question look evidence-free. Bounded so one
 # oversized page still cannot dominate the prompt.
 SOURCE_SUMMARY_LIMIT = 1200
+# Retrieval width. The search API ranks by relevance but leans recent, so asking
+# for only 5 results yields almost exclusively the last few days: with an as_of of
+# 2026-10-18 that meant every source was post-cutoff and had to be dropped. Asking
+# for a wider pool and filtering afterwards surfaces older material that is still
+# on-topic (count=20 returned 2025-12 and 2026-H1 pages where count=5 returned only
+# the past week).
+SEARCH_POOL_SIZE = 20
+# Sources actually handed to the model after cutoff filtering.
+SEARCH_SOURCES_USED = 5
 # Total evidence budget across all sources in one prompt.
 SOURCE_TOTAL_LIMIT = 6000
 # Completion budgets. Reasoning models spend tokens on hidden reasoning before
@@ -441,7 +450,7 @@ def main() -> int:
                 cutoff_year = str(as_of)[:4] if str(as_of)[:4].isdigit() else ""
                 year_hint = (cutoff_year + " " + str(int(cutoff_year) - 1)) if cutoff_year else ""
                 query = (args.company + " " + q["question"] + (" " + year_hint if year_hint else ""))[:220]
-                found, search_error = search_with_status(search_provider, query, 5)
+                found, search_error = search_with_status(search_provider, query, SEARCH_POOL_SIZE)
                 _record_search_outcome(record, found, search_error)
                 searches += 1
                 spent += int(search_provider.get("cost_micros", 0))
@@ -458,6 +467,8 @@ def main() -> int:
             cutoff_note = cutoff_problem(late_sources)
             if cutoff_note:
                 record["problems"].append(cutoff_note)
+            # Keep the best-ranked survivors, but no more than the model should see.
+            sources = sources[:SEARCH_SOURCES_USED]
             if not sources:
                 if any(str(problem).startswith("search_") for problem in record["problems"]):
                     record["summary"] = "检索调用失败（见 problems），未进入模型；不伪造结论。"
