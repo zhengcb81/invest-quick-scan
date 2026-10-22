@@ -84,7 +84,7 @@ def test_bank_mode_budget_leaves_room_for_reasoning():
     model_not_json. Across 24 questions that produced 24 zeros. The budget must
     cover reasoning plus the JSON answer.
     """
-    assert thin_scan.BANK_MAX_TOKENS >= 6000, "reasoning models need headroom above reasoning"
+    assert thin_scan.BANK_MAX_TOKENS >= 12000, "reasoning models need headroom above reasoning"
     assert thin_scan.FLAT_MAX_TOKENS >= 1200
     assert thin_scan.BANK_MAX_TOKENS > thin_scan.FLAT_MAX_TOKENS
 

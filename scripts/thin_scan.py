@@ -36,12 +36,12 @@ SOURCE_SUMMARY_LIMIT = 1200
 SOURCE_TOTAL_LIMIT = 6000
 # Completion budgets. Reasoning models spend tokens on hidden reasoning before
 # emitting any content: deepseek-flash burned a full 2400-token budget on
-# reasoning_content (5218 chars) and returned empty content with
-# finish_reason=length, which surfaced as model_not_json on every question. The
-# bank budget must cover reasoning plus the JSON answer; 6000 is the smallest
-# value observed to yield content on the 38-question CATL manifest.
-BANK_MAX_TOKENS = 6000
-FLAT_MAX_TOKENS = 1600
+# reasoning_content and returned empty content with finish_reason=length, which
+# surfaced as model_not_json on every question. A 6000-token probe produced an
+# answer once but not reliably, so the bank budget is set well above the observed
+# reasoning length and the scan retries once with a larger budget if exhausted.
+BANK_MAX_TOKENS = 12000
+FLAT_MAX_TOKENS = 2000
 
 
 def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict]:
@@ -181,6 +181,11 @@ def build_prompt(question: dict, company: str, sources: list[dict], as_of: str, 
 
 
 def normalize_bank_answer(raw: dict) -> dict:
+    # A transport or budget error must survive normalization, otherwise the retry
+    # logic in main() cannot see it: a truncated answer would be flattened into a
+    # plain insufficient_evidence result and never retried with a bigger budget.
+    if isinstance(raw, dict) and raw.get("error"):
+        return raw
     inner = raw
     description = raw.get("description")
     if isinstance(description, str):
@@ -392,7 +397,7 @@ def main() -> int:
                         if attempt == 0 and error == "model_not_json":
                             continue
                         if attempt == 0 and error == "model_truncated_no_content":
-                            budget = int(budget * 1.5)
+                            budget = int(budget * 2)
                             continue
                         raw = candidate
                         break
