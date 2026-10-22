@@ -46,14 +46,25 @@ def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict
         return error.code, payload
 
 
-def search(provider: dict, query: str, count: int) -> list[dict]:
+def search_with_status(provider: dict, query: str, count: int) -> tuple[list[dict], str | None]:
+    """Search once and distinguish an empty result from a failed call.
+
+    Returns (results, error). error is None only when the provider answered and
+    genuinely had nothing. Missing credentials, non-200 responses and malformed
+    payloads are reported instead of being flattened into an empty list, so a
+    credential outage cannot masquerade as "no usable sources".
+    """
     key = os.environ.get(provider["key_env"], "")
+    if not key:
+        return [], "search_missing_credentials:" + provider["key_env"]
     status, payload = post_json(provider["endpoint"], key, {"query": query, "count": count, "need_content": False}, 30)
-    if status != 200 or not isinstance(payload, dict):
-        return []
+    if status != 200:
+        return [], f"search_http_{status}"
+    if not isinstance(payload, dict):
+        return [], "search_bad_payload"
     results = payload.get("results")
     if not isinstance(results, list):
-        return []
+        return [], "search_bad_payload"
     out = []
     for item in results:
         if not isinstance(item, dict):
@@ -68,7 +79,19 @@ def search(provider: dict, query: str, count: int) -> list[dict]:
             "date": item.get("date") or "",
             "site": item.get("site_name") or "",
         })
-    return out
+    return out, None
+
+
+def _record_search_outcome(record: dict, results: list[dict], error: str | None) -> None:
+    """Account for one search attempt on the question record."""
+    record["searches"] = record.get("searches", 0) + 1
+    if error:
+        record.setdefault("problems", []).append(error)
+
+
+def search(provider: dict, query: str, count: int) -> list[dict]:
+    """Backwards-compatible list-shaped entrypoint."""
+    return search_with_status(provider, query, count)[0]
 
 
 def build_prompt(question: dict, company: str, sources: list[dict], as_of: str, bank_mode: bool):
@@ -274,17 +297,20 @@ def main() -> int:
         else:
             for attempt in range(max(1, args.max_searches_per_question)):
                 query = (args.company + " " + q["question"] + (" 2025 2026" if attempt else ""))[:220]
-                found = search(search_provider, query, 5)
+                found, search_error = search_with_status(search_provider, query, 5)
+                _record_search_outcome(record, found, search_error)
                 searches += 1
                 spent += int(search_provider.get("cost_micros", 0))
-                record["searches"] += 1
                 if found:
                     sources.extend(found)
                     break
             seen = set()
             sources = [s for s in sources if not (s["url"] in seen or seen.add(s["url"]))]
             if not sources:
-                record["summary"] = "检索无可用来源，标为证据不足。"
+                if any(str(problem).startswith("search_") for problem in record["problems"]):
+                    record["summary"] = "检索调用失败（见 problems），未进入模型；不伪造结论。"
+                else:
+                    record["summary"] = "检索无可用来源，标为证据不足。"
             else:
                 prompt, prompt_mode, prompt_verified = build_prompt(
                     q, args.company, sources, as_of, bank is not None)
