@@ -1,3 +1,27 @@
+## 2026-10-22 晚 — bank 模式打通：五个根因连续修复后首次出分
+
+上一条记录的"凭证缺失"只是第一层。用户要求继续后，逐层挖出并修复了 **5 个串联缺陷**，最终首次拿到真实分数。
+
+**修复链（每项都先写 RED 反例）**
+
+| # | 缺陷 | commit | 后果 |
+|---|------|--------|------|
+| 1 | `model_config.search()` 未映射 `api_key_env→key_env` | `958c9a1` | 所有 `--bank-manifest` 运行必崩 `KeyError` |
+| 2 | `search()` 把非 200 归一化成空列表 | `72c3d30` | 凭证缺失静默降级、exit 0，像"搜不到" |
+| 3 | `model_config.models()` 同样未映射 | `7a0d6d5` | 修好搜索后模型调用层再崩一次 |
+| 4 | `post_json()` 让超时逃逸 | `c52baf7` | 158 秒后一个 read timeout 炸掉整轮，已收答案全丢 |
+| 5 | `build_prompt()` 把来源截到 300 字 | `691a999` | 1363–1541 字的搜索摘要被砍掉关键数据，24 题全判"无结构性证据" |
+| 6 | `BANK_MAX_TOKENS=2400` 被推理耗尽 | `bf30b50` | deepseek-flash 用 2400 token 全做 reasoning，content 为空 → `model_not_json` |
+| 7 | `normalize_bank_answer()` 吞掉 error | `f5cea37` | 截断重试永远不触发；预算提到 12000 + 翻倍重试 |
+
+**新增离线工具**：`scripts/bank_manifest_preflight.py`（`f17c55d` + `3b51ef8`）—— 检查题数/必填字段/三个 hash/prompt hash 实算/重复 id/模块锁/role 划分/包身份，可选 `--check-credentials` 读 HKCU 环境。8+3 测试。用于避免 10-19 那种"目录空着却记成在跑"。
+
+**关键环境事实**：本机 API key 存在 **Windows User 作用域**（HKCU\Environment），当前进程不继承。`--user-scope-env` 可检出。5 个 key 全部存在且有效。
+
+**验证**：`--limit 2` 探针从 `scored:0` 变为 **`scored:1, core_mean:8.0`**，答案含 score=8、rationale、evidence。38 题完整跑已启动。
+
+**测试**：`test_thin_scan_search.py`（12）、`test_thin_scan_prompt.py`（8）、`test_bank_manifest_preflight.py`（11）、`test_model_config.py`（7）全部通过；相邻回归 57 passed。
+
 ## 2026-10-22 — bank 模式真实跑（凭证缺失，未产出数据）
 
 **做了什么**
