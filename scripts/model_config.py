@@ -23,7 +23,25 @@ def load(path: Path | None = None) -> dict:
 
 
 def models() -> list[dict]:
-    return sorted(load()["models"], key=lambda m: m.get("priority", 999))
+    """Model providers with the same field contract routes() exposes.
+
+    config/models.json stores `api_key_env`; consumers read `key_env`. Mapping it
+    here (not in each caller) keeps one field name at the boundary.
+    """
+    return [
+        {
+            "id": item["id"],
+            "provider": item.get("provider", ""),
+            "model": item["model"],
+            "endpoint": item["endpoint"],
+            "key_env": item["api_key_env"],
+            "input_rate": item.get("input_rate"),
+            "output_rate": item.get("output_rate"),
+            "cache_rate": item.get("cache_rate"),
+            "priority": item.get("priority", 999),
+        }
+        for item in sorted(load()["models"], key=lambda m: m.get("priority", 999))
+    ]
 
 
 def search() -> list[dict]:
@@ -54,10 +72,11 @@ def get(model_id: str) -> dict:
 
 
 def routes() -> dict:
+    """Keyed view over models() for callers that address a route by id."""
     return {
         item["id"]: {
             "model": item["model"],
-            "key_env": item["api_key_env"],
+            "key_env": item["key_env"],
             "endpoint": item["endpoint"],
             "input_rate": item["input_rate"],
             "output_rate": item["output_rate"],

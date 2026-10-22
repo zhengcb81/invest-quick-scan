@@ -87,3 +87,39 @@ def test_search_failure_is_recorded_in_the_question_problems(monkeypatch):
     assert results == []
     assert record["problems"] == ["search_missing_credentials:STUB_KEY"]
     assert record["searches"] == 1
+
+
+def test_model_call_reads_the_mapped_key_env(monkeypatch):
+    """RED regression: ask_model() indexed provider['key_env'] and raised KeyError.
+
+    model_config.models() returns raw config entries keyed `api_key_env`, exactly
+    like the search provider did. Fixing only the search path left every model
+    call crashing the moment a real key was present.
+    """
+    monkeypatch.setenv("STUB_KEY", "test-key")
+    captured = {}
+
+    def fake_post(url, key, body, timeout):
+        captured["key"] = key
+        captured["model"] = body.get("model")
+        return 200, {"choices": [{"message": {"content": '{"status":"insufficient_evidence","summary":"s"}'}}],
+                     "usage": {"prompt_tokens": 1, "completion_tokens": 2}}
+
+    monkeypatch.setattr(thin_scan, "post_json", fake_post)
+    provider = {"id": "stub", "model": "stub-model", "endpoint": "https://example.invalid/chat",
+                "key_env": "STUB_KEY"}
+
+    answer = thin_scan.ask_model(provider, "prompt")
+
+    assert captured["key"] == "test-key", "credentials must be resolved through key_env"
+    assert captured["model"] == "stub-model"
+    assert "error" not in answer
+
+
+def test_model_config_models_expose_key_env():
+    """model_config.models() feeds ask_model(); it must expose the mapped field."""
+    import model_config
+
+    for provider in model_config.models():
+        assert "key_env" in provider, f"model {provider.get('id')} lacks key_env"
+        assert "api_key_env" not in provider, "consumers read key_env; do not leak the raw field"
