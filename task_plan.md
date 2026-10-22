@@ -1,3 +1,15 @@
+## 2026-10-22 — bank 模式真实跑：修好必崩回归，卡在凭证
+
+用户授权跑 CATL 38 题完整 bank（真实付费）。本轮做了三件事：
+
+1. **修真实回归（`958c9a1`）**：`thin_scan.py` 在 `--bank-manifest` 模式下**必崩** `KeyError: 'key_env'`。根因是 10-19「模型配置单一来源」改动后 `config/models.json` 用 `api_key_env`，`model_config.routes()` 做了映射但 `search()` 直接返回原始条目。先写 2 条 RED 反例（search 字段契约 + thin_scan 消费一致性）→ 修复 → 7 passed，相邻回归 26 passed。影响面：所有 `--bank-manifest` 运行。
+2. **补齐 CATL profile 并组装 38 题**：原 profile `industry_modules: []`，而 `operating` 类型要求至少 1 个行业模块，compose 直接拒绝——这就是 10-19「37 题完整 bank 跑」目录为空（`runs/thin-bank-catl-2026-10-19`）的根因。补齐 `stage=mature`、`industry_modules=[industrial, auto]`、`routing_confidence=medium` + 2 个 CATL 官方来源、`routing_rationale` 后，compose full 成功：**38 题**（common 24 + operating 4 + auto 4 + industrial 4 + mature 4，5 模块锁，24 core + 14 context，逐题 prompt/semantic/definition hash 齐全），dry-run 通过零成本。
+3. **真实跑未能产出数据**：`DEEPSEEK_API_KEY` 环境变量不存在（本机无任何模型/搜索 API key）。空 key → 搜索返回非 200 → `search()` 返回 `[]` → 每题走「检索无可用来源」分支不进入模型调用。实际结果：24 次搜索记账 $0.0168、**模型调用 0 次**、24 题全部 `insufficient_evidence`。产物 `runs/thin-bank-catl-full-2026-10-22/run/` 结构正确（`importable=true`、`provenance=versioned_bank`、hash 三元组齐全），但**不是有效数据**，不得当 38 题真实结果引用。
+
+**待办**：配置 `DEEPSEEK_API_KEY`（及可选 `MIMO_API_KEY`）后重跑同一命令，输出到 `run2`；本轮空跑结果保留为凭证缺失的证据，不删除、不覆盖。
+
+**顺带实证**：全仓扫描非空 `industry_modules` 的 profile 共 13 个，全部是 fixtures/示例（`industrial` 单个），**无一家真实公司带行业分类**——这与 UI 矩阵 10058 格 not_evaluated、以及 APPLIC-RESOLVE-14 施工卡的必要性完全一致。
+
 ## 2026-10-19 — UI 施工卡加入 POC 必要步骤
 
 按用户要求，POC 不是现在交付的原型，而是施工卡中的强制步骤：G1 功能/技术设计 → G2 美术设计 → G3 假数据 POC → G4 用户确认 → G5 实施 → G6 演示 → G7 迭代 signoff。POC 必须可运行、覆盖 F1-F4、全假数据、带截图；没有 POC 不得进入 G4。卡内已删除可选 POC-0 措辞。

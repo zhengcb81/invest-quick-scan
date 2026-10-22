@@ -1,3 +1,26 @@
+## 2026-10-22 — bank 模式真实跑（凭证缺失，未产出数据）
+
+**做了什么**
+- 修 `thin_scan.py` `--bank-manifest` 必崩回归：`model_config.search()` 未映射 `api_key_env → key_env`。RED 两条 → 修 → 7 passed，相邻 26 passed。commit `958c9a1`。
+- 补 CATL profile（`stage=mature`、`industry_modules=[industrial, auto]`、`routing_confidence=medium`、2 官方来源、routing_rationale），compose full 出 **38 题**，5 模块锁，24 core + 14 context，dry-run 0 成本通过。
+- 真实跑：24 次搜索（$0.0168 记账）、**0 次模型调用**、24 题全 `insufficient_evidence`。
+
+**为什么没数据**
+`DEEPSEEK_API_KEY` 不存在。本机环境扫描：无 DEEPSEEK/MIMO/MINIMAX 等任何模型或搜索 key（仅有 Claude Code 代理变量）。空 key 使搜索端返回非 200，`search()` 归一化为 `[]`，代码正确走「检索无可用来源」分支并如实标证据不足——红线没有被破坏，但也没有真实答案。
+
+**产物状态**
+- `runs/thin-bank-catl-full-2026-10-22/composed/`：38 题 manifest + questions.json（可复用）
+- `runs/thin-bank-catl-full-2026-10-22/profile.json`：补全后的 CATL profile
+- `runs/thin-bank-catl-full-2026-10-22/run/`：空跑结果（24 题证据不足），**保留为凭证缺失证据，不作数据引用**
+- 历史 `runs/thin-bank-catl-2026-10-19/`：空目录，根因即 profile 缺行业模块
+
+**下一步（阻塞在凭证）**
+配 `DEEPSEEK_API_KEY` 后重跑：
+`python -B -X utf8 scripts\thin_scan.py --company "宁德时代" --bank-manifest runs\thin-bank-catl-full-2026-10-22\composed\manifest.json --out runs\thin-bank-catl-full-2026-10-22\run2`
+
+**旁证**
+全仓非空 `industry_modules` 的 profile 共 13 个，全是 fixtures/示例，无真实公司行业分类——与 APPLIC-RESOLVE-14 施工卡要解决的问题一致。
+
 ## 2026-10-19 — UI 施工卡加入 POC 必要步骤
 
 按用户要求，POC 不是现在交付的原型，而是施工卡中的强制步骤：G1 功能/技术设计 → G2 美术设计 → G3 假数据 POC → G4 用户确认 → G5 实施 → G6 演示 → G7 迭代 signoff。POC 必须可运行、覆盖 F1-F4、全假数据、带截图；没有 POC 不得进入 G4。卡内已删除可选 POC-0 措辞。
