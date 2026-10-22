@@ -80,3 +80,29 @@ def test_thin_scan_consumes_the_mapped_search_provider():
     # The scan must not resolve credentials through the raw config field name.
     source = (ROOT / "scripts/thin_scan.py").read_text(encoding="utf-8")
     assert 'provider["api_key_env"]' not in source
+
+def test_hardcoded_provider_tables_do_not_drift_from_the_config():
+    """Scripts with their own provider table must still agree with models.json.
+
+    company_agent_contrast_launcher.py and batching_benchmark_report.py keep local
+    tables (predating the single-source change). They are not rewritten here, but
+    their endpoint/model/key_env triples must match the canonical config so a model
+    rename cannot silently leave one script pointing at a retired model.
+    """
+    canonical = {(m["model"], m["endpoint"], m["key_env"]): m["id"]
+                 for m in model_config.models()}
+
+    import company_agent_contrast_launcher as launcher
+
+    for alias, entry in launcher.PROVIDERS.items():
+        triple = (entry["model"], entry["endpoint"], entry["key_env"])
+        assert triple in canonical, f"{alias} in contrast launcher is not in config/models.json"
+
+    # batching_benchmark_report keeps LEGACY_ROUTES: a frozen pricing snapshot for
+    # historical receipts. It is intentionally NOT required to track models.json,
+    # but its credential field must stay `key_env` so the shared readers work.
+    import batching_benchmark_report as report
+
+    for alias, entry in report.LEGACY_ROUTES.items():
+        assert "key_env" in entry, f"LEGACY_ROUTES[{alias}] lost its key_env field"
+        assert entry["key_env"].endswith("_API_KEY")
