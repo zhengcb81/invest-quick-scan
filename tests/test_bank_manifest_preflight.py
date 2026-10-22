@@ -105,3 +105,42 @@ def test_cli_exit_codes(tmp_path):
         [sys.executable, "-B", "-X", "utf8", str(ROOT / "scripts/bank_manifest_preflight.py"),
          "--manifest", str(bad)], capture_output=True, text=True, encoding="utf-8")
     assert result.returncode == 2, result.stdout + result.stderr
+
+
+def test_credential_check_reports_missing_keys(monkeypatch):
+    """A missing key must fail the preflight instead of producing an empty run."""
+    for name in ("DEEPSEEK_API_KEY", "MIMO_API_KEY", "MINIMAX_API_KEY"):
+        monkeypatch.delenv(name, raising=False)
+
+    report = preflight.check_credentials(user_scope=False)
+
+    assert not report["ok"]
+    assert "DEEPSEEK_API_KEY" in report["missing"]
+    assert all(entry["present"] is False for entry in report["checked"])
+
+
+def test_credential_check_passes_when_keys_are_present(monkeypatch):
+    for name in ("DEEPSEEK_API_KEY", "MIMO_API_KEY", "MINIMAX_API_KEY"):
+        monkeypatch.setenv(name, "present")
+
+    report = preflight.check_credentials(user_scope=False)
+
+    assert report["ok"], report["missing"]
+    assert report["missing"] == []
+    assert report["checked"], "the report must list what it looked for"
+
+
+def test_cli_fails_when_credentials_are_requested_and_absent(tmp_path, monkeypatch):
+    for name in ("DEEPSEEK_API_KEY", "MIMO_API_KEY", "MINIMAX_API_KEY"):
+        monkeypatch.delenv(name, raising=False)
+    manifest = _manifest(tmp_path)
+
+    result = subprocess.run(
+        [sys.executable, "-B", "-X", "utf8", str(ROOT / "scripts/bank_manifest_preflight.py"),
+         "--manifest", str(manifest), "--check-credentials"],
+        capture_output=True, text=True, encoding="utf-8",
+        env={k: v for k, v in __import__("os").environ.items()
+             if k not in ("DEEPSEEK_API_KEY", "MIMO_API_KEY", "MINIMAX_API_KEY")})
+
+    assert result.returncode == 2, result.stdout + result.stderr
+    assert "missing credentials" in result.stdout

@@ -102,14 +102,73 @@ def preflight(manifest_path: Path) -> dict:
     }
 
 
+def check_credentials(*, user_scope: bool = False) -> dict:
+    """Report whether the configured search and model keys are resolvable.
+
+    A missing key used to surface only as an all-questions-insufficient run with
+    exit 0. Checking up front makes the blocker explicit and free.
+
+    Windows keeps user variables out of an already-running process, so `user_scope`
+    also reads HKCU\\Environment — that is where this machine actually stores them.
+    """
+    import os
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import model_config
+
+    def user_env() -> dict:
+        if not user_scope:
+            return {}
+        try:
+            import winreg
+        except ImportError:
+            return {}
+        try:
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Environment") as key:
+                values, index = {}, 0
+                while True:
+                    try:
+                        name, value, _ = winreg.EnumValue(key, index)
+                    except OSError:
+                        break
+                    values[name] = value
+                    index += 1
+                return values
+        except OSError:
+            return {}
+
+    scope = user_env()
+    report: dict[str, object] = {"checked": [], "missing": []}
+    for kind, entries in (("search", model_config.search()), ("model", model_config.models())):
+        for entry in entries:
+            name = entry["key_env"]
+            present = bool(os.environ.get(name) or scope.get(name))
+            report["checked"].append({"kind": kind, "id": entry["id"], "key_env": name, "present": present})
+            if not present:
+                report["missing"].append(name)
+    report["missing"] = sorted(set(report["missing"]))
+    report["ok"] = not report["missing"]
+    return report
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Offline pre-flight for a composed bank manifest.")
     parser.add_argument("--manifest", type=Path, required=True)
+    parser.add_argument("--check-credentials", action="store_true",
+                        help="also verify the search/model API keys resolve (offline)")
+    parser.add_argument("--user-scope-env", action="store_true",
+                        help="with --check-credentials, also read HKCU\\Environment")
     args = parser.parse_args()
     if not args.manifest.is_file():
         print(json.dumps({"ok": False, "problems": ["manifest not found"]}, ensure_ascii=False))
         return 2
     report = preflight(args.manifest)
+    if args.check_credentials:
+        report["credentials"] = check_credentials(user_scope=args.user_scope_env)
+        if not report["credentials"]["ok"]:
+            report["ok"] = False
+            report["problems"].append(
+                "missing credentials: " + ", ".join(report["credentials"]["missing"]))
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0 if report["ok"] else 2
 
