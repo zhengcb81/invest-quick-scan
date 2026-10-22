@@ -74,3 +74,51 @@ def test_hash_mismatch_is_still_rejected():
         assert "prompt hash mismatch" in str(error)
     else:
         raise AssertionError("a tampered manifest prompt was accepted")
+
+
+def test_bank_mode_budget_leaves_room_for_reasoning():
+    """RED regression: 2400 max_tokens was consumed entirely by reasoning.
+
+    deepseek-flash spent all 2400 tokens on reasoning_content (5218 chars) and
+    returned empty content with finish_reason=length, so ask_model reported
+    model_not_json. Across 24 questions that produced 24 zeros. The budget must
+    cover reasoning plus the JSON answer.
+    """
+    assert thin_scan.BANK_MAX_TOKENS >= 6000, "reasoning models need headroom above reasoning"
+    assert thin_scan.FLAT_MAX_TOKENS >= 1200
+    assert thin_scan.BANK_MAX_TOKENS > thin_scan.FLAT_MAX_TOKENS
+
+
+def test_empty_content_with_length_finish_is_reported_distinctly(monkeypatch):
+    """An exhausted budget must not be reported as malformed JSON."""
+    monkeypatch.setenv("STUB_KEY", "test-key")
+
+    def fake_post(url, key, body, timeout):
+        return 200, {"choices": [{"message": {"content": "", "reasoning_content": "thinking..."},
+                                  "finish_reason": "length"}],
+                     "usage": {"completion_tokens": body.get("max_tokens")}}
+
+    monkeypatch.setattr(thin_scan, "post_json", fake_post)
+    provider = {"id": "stub", "model": "m", "endpoint": "https://example.invalid/chat",
+                "key_env": "STUB_KEY"}
+
+    answer = thin_scan.ask_model(provider, "prompt")
+
+    assert answer.get("error") == "model_truncated_no_content"
+
+
+def test_reasoning_only_response_is_not_silently_accepted(monkeypatch):
+    """reasoning_content must never be treated as the answer."""
+    monkeypatch.setenv("STUB_KEY", "test-key")
+
+    def fake_post(url, key, body, timeout):
+        return 200, {"choices": [{"message": {"content": "", "reasoning_content": '{"score": 9}'},
+                                  "finish_reason": "length"}]}
+
+    monkeypatch.setattr(thin_scan, "post_json", fake_post)
+    provider = {"id": "stub", "model": "m", "endpoint": "https://example.invalid/chat",
+                "key_env": "STUB_KEY"}
+
+    answer = thin_scan.ask_model(provider, "prompt")
+
+    assert "error" in answer, "a score hidden in reasoning must not be accepted"

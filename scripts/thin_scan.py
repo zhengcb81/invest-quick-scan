@@ -34,6 +34,14 @@ USD_MICROS = 1_000_000
 SOURCE_SUMMARY_LIMIT = 1200
 # Total evidence budget across all sources in one prompt.
 SOURCE_TOTAL_LIMIT = 6000
+# Completion budgets. Reasoning models spend tokens on hidden reasoning before
+# emitting any content: deepseek-flash burned a full 2400-token budget on
+# reasoning_content (5218 chars) and returned empty content with
+# finish_reason=length, which surfaced as model_not_json on every question. The
+# bank budget must cover reasoning plus the JSON answer; 6000 is the smallest
+# value observed to yield content on the 38-question CATL manifest.
+BANK_MAX_TOKENS = 6000
+FLAT_MAX_TOKENS = 1600
 
 
 def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict]:
@@ -213,7 +221,14 @@ def ask_model(provider: dict, prompt: str, max_tokens: int = 1200) -> dict:
     choices = payload.get("choices") or []
     if not choices:
         return {"error": "model_no_choice"}
-    text = ((choices[0].get("message") or {}).get("content")) or ""
+    choice = choices[0] or {}
+    text = ((choice.get("message") or {}).get("content")) or ""
+    # Reasoning models may spend the entire budget thinking. An empty content with
+    # finish_reason=length is a budget exhaustion, not malformed JSON; naming it
+    # separately keeps the cause visible in problems instead of hiding behind
+    # model_not_json. reasoning_content is never accepted as the answer.
+    if not text.strip() and choice.get("finish_reason") == "length":
+        return {"error": "model_truncated_no_content"}
     try:
         answer, _ = json.JSONDecoder().raw_decode(text.strip())
     except ValueError:
@@ -365,12 +380,19 @@ def main() -> int:
                 record["prompt_verified"] = prompt_verified
                 record["dispatch_prompt_sha256"] = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
                 raw = None
+                budget = BANK_MAX_TOKENS if bank else FLAT_MAX_TOKENS
                 for provider in models:
                     for attempt in range(2):
-                        candidate = ask_model(provider, prompt, 2400 if bank else 1200)
+                        candidate = ask_model(provider, prompt, budget)
                         if bank is not None:
                             candidate = normalize_bank_answer(candidate)
-                        if attempt == 0 and candidate.get("error") == "model_not_json":
+                        error = candidate.get("error")
+                        # Retry once on a malformed answer, and once with a larger
+                        # budget when reasoning consumed the whole allowance.
+                        if attempt == 0 and error == "model_not_json":
+                            continue
+                        if attempt == 0 and error == "model_truncated_no_content":
+                            budget = int(budget * 1.5)
                             continue
                         raw = candidate
                         break
