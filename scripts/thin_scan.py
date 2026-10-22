@@ -27,6 +27,14 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config/models.json"
 USD_MICROS = 1_000_000
 
+# Per-source evidence budget handed to the model. Search summaries routinely run
+# 1300-1500 characters and the decisive numbers usually sit past the first third;
+# a 300-character window made every question look evidence-free. Bounded so one
+# oversized page still cannot dominate the prompt.
+SOURCE_SUMMARY_LIMIT = 1200
+# Total evidence budget across all sources in one prompt.
+SOURCE_TOTAL_LIMIT = 6000
+
 
 def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict]:
     """POST JSON and never raise on transport failure.
@@ -113,11 +121,28 @@ def search(provider: dict, query: str, count: int) -> list[dict]:
     return search_with_status(provider, query, count)[0]
 
 
+def _evidence_block(sources: list[dict]) -> str:
+    """Render sources within a bounded budget, keeping as many as fit.
+
+    Each source gets up to SOURCE_SUMMARY_LIMIT characters of summary; the whole
+    block stops growing at SOURCE_TOTAL_LIMIT so a batch of long pages cannot
+    crowd out the question or exceed the model's context.
+    """
+    lines = []
+    used = 0
+    for index, source in enumerate(sources, start=1):
+        summary = source["summary"][:SOURCE_SUMMARY_LIMIT]
+        block = (f"[{index}] {source['title']}\nURL: {source['url']}\n"
+                 f"日期: {source['date']}\n摘要: {summary}")
+        if lines and used + len(block) > SOURCE_TOTAL_LIMIT:
+            break
+        lines.append(block)
+        used += len(block)
+    return "\n\n".join(lines)
+
+
 def build_prompt(question: dict, company: str, sources: list[dict], as_of: str, bank_mode: bool):
-    source_text = "\n".join(
-        f"[{i+1}] {s['title']}\nURL: {s['url']}\n日期: {s['date']}\n摘要: {s['summary'][:300]}"
-        for i, s in enumerate(sources)
-    ) or "（本次没有检索到可用来源）"
+    source_text = _evidence_block(sources) or "（本次没有检索到可用来源）"
     if bank_mode and question.get("prompt"):
         base = question["prompt"]
         expected = question.get("prompt_sha256")
