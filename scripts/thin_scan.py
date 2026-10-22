@@ -29,6 +29,13 @@ USD_MICROS = 1_000_000
 
 
 def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict]:
+    """POST JSON and never raise on transport failure.
+
+    Returns (status, payload). A timeout or connection error yields status 0 with
+    an error marker so one bad request degrades that question instead of aborting
+    a multi-question run. Before this, a single read timeout escaped urllib and
+    killed a 38-question scan 158 seconds in, discarding every collected answer.
+    """
     data = json.dumps(body, ensure_ascii=False).encode("utf-8")
     request = urllib.request.Request(url, data=data, method="POST", headers={
         "Authorization": "Bearer " + key,
@@ -44,6 +51,15 @@ def post_json(url: str, key: str, body: dict, timeout: float) -> tuple[int, dict
         except ValueError:
             payload = {"error": raw.decode("utf-8", "replace")[:500]}
         return error.code, payload
+    except TimeoutError:
+        return 0, {"error": "timeout"}
+    except urllib.error.URLError as error:
+        reason = getattr(error, "reason", error)
+        if isinstance(reason, TimeoutError):
+            return 0, {"error": "timeout"}
+        return 0, {"error": "transport", "detail": str(reason)[:200]}
+    except (OSError, ValueError) as error:
+        return 0, {"error": "transport", "detail": str(error)[:200]}
 
 
 def search_with_status(provider: dict, query: str, count: int) -> tuple[list[dict], str | None]:
@@ -58,6 +74,9 @@ def search_with_status(provider: dict, query: str, count: int) -> tuple[list[dic
     if not key:
         return [], "search_missing_credentials:" + provider["key_env"]
     status, payload = post_json(provider["endpoint"], key, {"query": query, "count": count, "need_content": False}, 30)
+    if status == 0:
+        marker = (payload or {}).get("error") if isinstance(payload, dict) else None
+        return [], "search_timeout" if marker == "timeout" else "search_transport_error"
     if status != 200:
         return [], f"search_http_{status}"
     if not isinstance(payload, dict):
@@ -161,6 +180,9 @@ def ask_model(provider: dict, prompt: str, max_tokens: int = 1200) -> dict:
     body = {"model": provider["model"], "messages": [{"role": "user", "content": prompt}],
             "temperature": 0, "max_tokens": max_tokens}
     status, payload = post_json(provider["endpoint"], key, body, 90)
+    if status == 0:
+        marker = (payload or {}).get("error") if isinstance(payload, dict) else None
+        return {"error": "model_timeout" if marker == "timeout" else "model_transport_error"}
     if status != 200 or not isinstance(payload, dict):
         return {"error": f"model_http_{status}"}
     choices = payload.get("choices") or []

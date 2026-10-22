@@ -123,3 +123,57 @@ def test_model_config_models_expose_key_env():
     for provider in model_config.models():
         assert "key_env" in provider, f"model {provider.get('id')} lacks key_env"
         assert "api_key_env" not in provider, "consumers read key_env; do not leak the raw field"
+
+
+def _raise_on_urlopen(monkeypatch, exc):
+    """Make urllib.request.urlopen raise, exercising the real post_json guard."""
+    def boom(*args, **kwargs):
+        raise exc
+    monkeypatch.setattr(thin_scan.urllib.request, "urlopen", boom)
+
+
+def test_model_timeout_is_returned_as_an_error_not_raised(monkeypatch):
+    """RED regression: a socket timeout escaped ask_model() and killed the whole run.
+
+    A 38-question scan spent 158s making real calls, then a single read timeout
+    propagated out of urllib and aborted the process, discarding every answer
+    already collected. Transport failures must degrade to a per-question error.
+    """
+    monkeypatch.setenv("STUB_KEY", "test-key")
+    _raise_on_urlopen(monkeypatch, TimeoutError("The read operation timed out"))
+    provider = {"id": "stub", "model": "m", "endpoint": "https://example.invalid/chat",
+                "key_env": "STUB_KEY"}
+
+    answer = thin_scan.ask_model(provider, "prompt")
+
+    assert answer.get("error") == "model_timeout"
+
+
+def test_model_connection_error_is_returned_as_an_error(monkeypatch):
+    monkeypatch.setenv("STUB_KEY", "test-key")
+    _raise_on_urlopen(monkeypatch, OSError("network unreachable"))
+    provider = {"id": "stub", "model": "m", "endpoint": "https://example.invalid/chat",
+                "key_env": "STUB_KEY"}
+
+    assert thin_scan.ask_model(provider, "prompt").get("error") == "model_transport_error"
+
+
+def test_search_timeout_is_reported_not_raised(monkeypatch):
+    """The search path needs the same protection as the model path."""
+    monkeypatch.setenv("STUB_KEY", "test-key")
+    _raise_on_urlopen(monkeypatch, TimeoutError("timed out"))
+
+    results, error = thin_scan.search_with_status(_provider(), "q", 5)
+
+    assert results == []
+    assert error == "search_timeout"
+
+
+def test_post_json_never_raises_on_transport_failure(monkeypatch):
+    """The guard belongs in post_json so every caller inherits it."""
+    _raise_on_urlopen(monkeypatch, TimeoutError("timed out"))
+
+    status, payload = thin_scan.post_json("https://example.invalid/x", "k", {}, 1)
+
+    assert status == 0
+    assert payload["error"] == "timeout"
