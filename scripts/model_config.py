@@ -27,7 +27,23 @@ def models() -> list[dict]:
 
 
 def search() -> list[dict]:
-    return sorted(load()["search"], key=lambda s: s.get("priority", 999))
+    """Search providers with the same field contract routes() exposes.
+
+    config/models.json stores `api_key_env`; consumers read `key_env`. Mapping it
+    here keeps a single field name at the boundary instead of every caller
+    translating (thin_scan raised KeyError('key_env') when this was missed).
+    """
+    return [
+        {
+            "id": item["id"],
+            "provider": item.get("provider", ""),
+            "endpoint": item["endpoint"],
+            "key_env": item["api_key_env"],
+            "cost_micros": item.get("cost_micros", 0),
+            "priority": item.get("priority", 999),
+        }
+        for item in sorted(load()["search"], key=lambda s: s.get("priority", 999))
+    ]
 
 
 def get(model_id: str) -> dict:
