@@ -16,7 +16,7 @@ import os
 import sys
 import urllib.error
 import urllib.request
-from datetime import datetime, timezone
+from datetime import date, datetime, time, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -122,6 +122,77 @@ def _record_search_outcome(record: dict, results: list[dict], error: str | None)
     record["searches"] = record.get("searches", 0) + 1
     if error:
         record.setdefault("problems", []).append(error)
+
+
+def _parse_source_date(value):
+    """Parse a source timestamp into an aware UTC datetime, or None.
+
+    Search results arrive as ISO 8601 with offsets (2026-10-17T16:00:00+00:00) or
+    as bare dates. Bare dates are treated as midnight UTC; anything unparseable
+    returns None so the caller can keep the source rather than silently dropping
+    it for lack of a date.
+    """
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = value.strip()
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+    except ValueError:
+        for pattern in ("%Y-%m-%d", "%Y/%m/%d", "%Y-%m-%d %H:%M:%S"):
+            try:
+                parsed = datetime.strptime(text, pattern)
+                break
+            except ValueError:
+                continue
+        else:
+            return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _cutoff_end(as_of: str):
+    """End of the cutoff day, as an aware UTC instant.
+
+    as_of is a date (2026-10-18). The cutoff covers that whole day in UTC, so a
+    source stamped 2026-10-17T16:00:00+00:00 (which is 2026-10-18 in Asia/Shanghai)
+    is kept rather than dropped by a naive string comparison.
+    """
+    try:
+        day = date.fromisoformat(str(as_of)[:10])
+    except ValueError:
+        return None
+    return datetime.combine(day, time.max, tzinfo=timezone.utc)
+
+
+def filter_sources_by_cutoff(sources: list[dict], as_of: str) -> tuple[list[dict], list[dict]]:
+    """Split sources into (kept, dropped_after_cutoff) for an information cutoff.
+
+    The search API exposes no date parameter, so the cutoff is enforced here.
+    Sources without a parseable date are kept and marked date_unknown: a missing
+    date is not evidence of being late.
+    """
+    cutoff = _cutoff_end(as_of)
+    if cutoff is None:
+        return list(sources), []
+    kept, dropped = [], []
+    for source in sources:
+        stamp = _parse_source_date(source.get("date"))
+        if stamp is None:
+            source = dict(source, date_unknown=True)
+            kept.append(source)
+        elif stamp <= cutoff:
+            kept.append(source)
+        else:
+            dropped.append(source)
+    return kept, dropped
+
+
+def cutoff_problem(dropped: list[dict]) -> str | None:
+    """Machine-readable note for the question's problems list."""
+    if not dropped:
+        return None
+    return f"dropped_after_cutoff:{len(dropped)}"
 
 
 def search(provider: dict, query: str, count: int) -> list[dict]:
@@ -363,7 +434,13 @@ def main() -> int:
             record["summary"] = "dry-run：未调用搜索或模型。"
         else:
             for attempt in range(max(1, args.max_searches_per_question)):
-                query = (args.company + " " + q["question"] + (" 2025 2026" if attempt else ""))[:220]
+                # Bias the query toward the cutoff year instead of a hardcoded
+                # "2025 2026": a scan with as_of=2026-10-18 should not invite
+                # 2027 material, and the year hint is the only date lever the
+                # search API exposes.
+                cutoff_year = str(as_of)[:4] if str(as_of)[:4].isdigit() else ""
+                year_hint = (cutoff_year + " " + str(int(cutoff_year) - 1)) if cutoff_year else ""
+                query = (args.company + " " + q["question"] + (" " + year_hint if year_hint else ""))[:220]
                 found, search_error = search_with_status(search_provider, query, 5)
                 _record_search_outcome(record, found, search_error)
                 searches += 1
@@ -373,9 +450,21 @@ def main() -> int:
                     break
             seen = set()
             sources = [s for s in sources if not (s["url"] in seen or seen.add(s["url"]))]
+            # The search API has no date parameter, so drop anything published after
+            # the information cutoff before it can reach the prompt. Otherwise the
+            # model sees only late material, refuses to cite it, and the question is
+            # recorded as evidence-free when the real problem is the retrieval window.
+            sources, late_sources = filter_sources_by_cutoff(sources, as_of)
+            cutoff_note = cutoff_problem(late_sources)
+            if cutoff_note:
+                record["problems"].append(cutoff_note)
             if not sources:
                 if any(str(problem).startswith("search_") for problem in record["problems"]):
                     record["summary"] = "检索调用失败（见 problems），未进入模型；不伪造结论。"
+                elif cutoff_note:
+                    record["summary"] = (
+                        f"检索到 {len(late_sources)} 条来源，但全部晚于截止日 {as_of}，"
+                        "按红线不予引用，标为证据不足。")
                 else:
                     record["summary"] = "检索无可用来源，标为证据不足。"
             else:
