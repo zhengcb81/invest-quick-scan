@@ -1,0 +1,118 @@
+"""Pre-flight checks for a composed bank manifest.
+
+Why this exists: the 2026-10-19 "37-question complete bank run" was recorded as
+"still running in the background" while its output directory stayed empty. The
+compose step had rejected the profile earlier (an operating company needs at
+least one industry module) and nothing verified that a runnable manifest existed
+before the scan was declared underway. These checks make that failure loud and
+cheap: no network, no credentials, no model calls.
+
+Usage:
+    python -B -X utf8 scripts/bank_manifest_preflight.py --manifest <path>
+Exit codes: 0 = runnable, 2 = manifest is not runnable.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+REQUIRED_QUESTION_FIELDS = ("id", "question", "module_id", "prompt", "prompt_sha256")
+HASH_FIELDS = ("prompt_sha256", "semantic_sha256", "definition_sha256")
+
+
+def preflight(manifest_path: Path) -> dict:
+    document = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    problems: list[str] = []
+    warnings: list[str] = []
+
+    questions = document.get("questions")
+    if not isinstance(questions, list) or not questions:
+        return {"ok": False, "problems": ["manifest has no questions"],
+                "question_count": 0, "module_count": 0, "modules": []}
+
+    modules = document.get("modules") or []
+    if not isinstance(modules, list) or not modules:
+        problems.append("manifest declares no modules")
+
+    # Every question needs the identity fields the scan records.
+    for question in questions:
+        qid = question.get("id") or "<missing id>"
+        for field in REQUIRED_QUESTION_FIELDS:
+            if not question.get(field):
+                problems.append(f"{qid}: missing {field}")
+        for field in HASH_FIELDS:
+            value = question.get(field)
+            if not value:
+                problems.append(f"{qid}: missing {field}")
+            elif len(value) != 64:
+                problems.append(f"{qid}: {field} is not a sha256")
+
+    # The prompt hash must describe the prompt text actually shipped.
+    for question in questions:
+        prompt, expected = question.get("prompt"), question.get("prompt_sha256")
+        if not prompt or not expected:
+            continue
+        actual = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+        if actual != expected:
+            problems.append(f"{question['id']}: prompt_sha256 does not match its prompt")
+
+    # Duplicate ids would silently overwrite answers.
+    ids = [q.get("id") for q in questions]
+    duplicates = sorted({i for i in ids if i and ids.count(i) > 1})
+    if duplicates:
+        problems.append("duplicate question ids: " + ", ".join(duplicates))
+
+    # Every selected module must be pinned by a lock.
+    locked = {lock.get("module_id") for lock in (document.get("module_locks") or [])}
+    unlocked = [m for m in modules if m not in locked]
+    if unlocked:
+        problems.append("modules without a lock: " + ", ".join(unlocked))
+
+    # Core/context split drives the reported core score; both must be labelled.
+    roles = {q.get("comparison_role") for q in questions}
+    if None in roles:
+        problems.append("some questions have no comparison_role")
+    if "core" not in roles:
+        problems.append("no question is marked core; the scan would report nothing")
+    if "context" not in roles:
+        warnings.append("no context questions; every question counts toward the core score")
+
+    deferred = document.get("deferred_questions") or []
+    if deferred:
+        warnings.append(f"{len(deferred)} question(s) deferred by the composer")
+
+    for field in ("module_package_id", "module_release_id"):
+        if not document.get(field):
+            problems.append(f"manifest lacks {field}")
+
+    return {
+        "ok": not problems,
+        "problems": problems,
+        "warnings": warnings,
+        "question_count": len(questions),
+        "core_count": sum(1 for q in questions if q.get("comparison_role") == "core"),
+        "context_count": sum(1 for q in questions if q.get("comparison_role") == "context"),
+        "module_count": len(modules),
+        "modules": modules,
+        "package_id": document.get("module_package_id"),
+        "release_id": document.get("module_release_id"),
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Offline pre-flight for a composed bank manifest.")
+    parser.add_argument("--manifest", type=Path, required=True)
+    args = parser.parse_args()
+    if not args.manifest.is_file():
+        print(json.dumps({"ok": False, "problems": ["manifest not found"]}, ensure_ascii=False))
+        return 2
+    report = preflight(args.manifest)
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    return 0 if report["ok"] else 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())
