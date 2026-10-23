@@ -1,3 +1,21 @@
+## 2026-10-23 — QUESTION-BANK-UPGRADE-12 R2 验收通过：两包全部收口
+
+HEAD `fd75433` 逐项验证（均 `git show HEAD:` 或独立重跑）：
+
+- **B3 修复归位且进了生成器源**：AC-07 = 26（含 31→26 口径说明）；report 新增「R1 整改记录」「R2 覆盖事件记录」两节，写明覆盖者（build_handoff.py 旧模板）、覆盖范围与已生效约束（生成器为 report/summary 唯一写入方，禁手改）
+- **B2 方案 A 闭合**：三份 final.json `reviewed_commit = 2de19ec` = handoff `result_commit` = `review.snapshot_commit`（三者一致）；`2de19ec` 是真实 commit 且为 HEAD 祖先；`r2_delta_note` 的 24 条差异清单与 `git diff ec8cd97..2de19ec --name-only` **逐条一致**，确无 modules/tools 内容语义变更（独立核对）
+- **CLI `--verify-references` exit 0 / valid**
+- **五条 check r2 日志全 OK**：validate 62/257、tests OK、compose 40 题、diff 172/26/46/24/0、simulate passed
+- B1（capital_markets 3.0.0）在 R2 提交链上未被触碰，保持修复态
+
+### 两包最终状态
+
+| 包 | 独立审查 | R1 | R2 | CLI 引用校验 |
+|---|---|---|---|---|
+| APPLIC-RESOLVE-14 | APPROVED（notes 已消） | 已验收 | — | valid |
+| QUESTION-BANK-UPGRADE-12 | CHANGES REQUESTED → 三轮整改 | 6/8 落地 | 2 项闭合 | valid |
+
+本包三次转录类事故（B1 审查记录先于修改写 fixed → R1 生成器覆盖 B3 → R2 归位）的共同根因已写入交付报告并固化为流程约束。
 ## 2026-10-23 — QUESTION-BANK-UPGRADE-12 R1 核对：实质修复落地，但 B3 被生成器覆盖回退 → R2
 
 HEAD 逐项核对（`git show HEAD:<path>`）：
