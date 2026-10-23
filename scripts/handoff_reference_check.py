@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import subprocess
 from pathlib import Path, PurePosixPath
 
@@ -75,6 +76,38 @@ def check_git_refs(handoff: dict, repo: Path) -> list[dict]:
     return problems
 
 
+def _rel_of(value: str) -> str:
+    """Normalize a declared path for existence checks.
+
+    Strip only a leading './' — lstrip('./') would also eat a leading dot, so
+    '.gitignore' would wrongly become 'gitignore' and be reported missing.
+    """
+    text = str(value).replace("\\", "/")
+    if text.startswith("./"):
+        text = text[2:]
+    return text
+
+
+def external_roots(handoff: dict) -> list[Path]:
+    """Directory paths the handoff itself points at, for cross-repo references.
+
+    An interface may legitimately name a file in another repo (a UI resolver
+    contract, for instance). Those commands are handoff claims too, so a path
+    declared inside a check command is itself a reference worth resolving:
+    only an existing directory is added, and only as a search root.
+    """
+    roots: list[Path] = []
+    for check in (handoff.get("verification") or {}).get("checks") or []:
+        command = check.get("command")
+        if not isinstance(command, str):
+            continue
+        for match in re.finditer(r'[A-Za-z]:[\\/][^\s"\'|;]+', command):
+            candidate = Path(match.group(0).replace("\\", "/"))
+            if candidate.is_dir() and candidate not in roots:
+                roots.append(candidate)
+    return roots
+
+
 def check_paths_exist(handoff: dict, repo: Path) -> list[dict]:
     """Every changed_path must exist on disk or in the repo's history."""
     problems = []
@@ -90,7 +123,7 @@ def check_paths_exist(handoff: dict, repo: Path) -> list[dict]:
             if line:
                 known.add(line.casefold())
     for value in changed:
-        rel = str(value).replace("\\", "/").lstrip("./")
+        rel = _rel_of(value)
         if (repo / rel).exists():
             continue
         if rel.casefold() in known:
@@ -98,6 +131,45 @@ def check_paths_exist(handoff: dict, repo: Path) -> list[dict]:
         problems.append({"kind": "changed_path_missing", "path": rel,
                          "detail": "absent on disk and in git history"})
     return problems
+
+
+def _index_dir(root: Path) -> dict[str, str]:
+    """sha256 -> relative path for files under root (read-only).
+
+    In a git worktree only tracked files are hashed: a delivered interface is
+    committed by definition, while untracked run artifacts here run to gigabytes.
+    Non-git roots fall back to a walk (external roots declared by a command are
+    often plain directories).
+    """
+    index: dict[str, str] = {}
+    if (root / ".git").exists():
+        code, out = _git(root, "ls-files", "-z")
+        if code == 0:
+            for rel in (entry for entry in out.split("\0") if entry):
+                path = root / rel
+                try:
+                    if not path.is_file() or path.stat().st_size > 33_554_432:
+                        continue
+                    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+                    index.setdefault(digest, rel.replace("\\", "/"))
+                except OSError:
+                    continue
+            return index
+    for path in root.rglob("*"):
+        if not path.is_file():
+            continue
+        if ".git" in path.parts or "__pycache__" in path.parts:
+            continue
+        try:
+            # 32 MiB covers the delivered UI export (8.4 MB); hashing must not
+            # silently skip a file an interface claims to hash.
+            if path.stat().st_size > 33_554_432:
+                continue
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            index.setdefault(digest, str(path.relative_to(root).as_posix()))
+        except OSError:
+            continue
+    return index
 
 
 def check_interface_hashes(handoff: dict, repo: Path) -> list[dict]:
@@ -108,25 +180,18 @@ def check_interface_hashes(handoff: dict, repo: Path) -> list[dict]:
     package read from elsewhere (the data root, another repo) — its hash will never
     match a file here, and demanding that would be a false positive. A `produced`
     or `both` interface names something this package ships, so its hash must
-    resolve locally. Only the latter are checked.
+    resolve locally or in a repo the handoff itself names in a check command.
+
+    Lookups are lazy on purpose: hash the delivery repo once, then walk external
+    roots one at a time only for hashes the repo cannot satisfy, stopping at the
+    first hit. Eagerly hashing a data-root the size of this workspace took
+    forty minutes; the lazy order takes seconds.
     """
     problems = []
     interfaces = handoff.get("interfaces") or []
     if not interfaces:
         return problems
-    local = {}
-    for path in repo.rglob("*"):
-        if not path.is_file():
-            continue
-        if ".git" in path.parts or "__pycache__" in path.parts:
-            continue
-        try:
-            if path.stat().st_size > 8_000_000:
-                continue
-            local[hashlib.sha256(path.read_bytes()).hexdigest()] = str(
-                path.relative_to(repo).as_posix())
-        except OSError:
-            continue
+    pending: list[dict] = []
     for interface in interfaces:
         direction = interface.get("direction")
         if direction == "consumed":
@@ -141,15 +206,30 @@ def check_interface_hashes(handoff: dict, repo: Path) -> list[dict]:
             problems.append({"kind": "interface_hash_not_hex",
                              "name": interface.get("name"), "value": value})
             continue
+        pending.append({**interface, "content_hash": value})
+    if not pending:
+        return problems
+
+    local = _index_dir(repo)
+    externals = [r for r in external_roots(handoff) if r != repo]
+    extern_index: dict[Path, dict[str, str]] = {}
+    for interface in pending:
+        value = interface["content_hash"]
         if value in local:
             continue
-        problems.append({
-            "kind": "interface_hash_unmatched",
-            "name": interface.get("name"),
-            "direction": direction,
-            "value": value,
-            "detail": "matches no file in the delivery repo",
-        })
+        for root in externals:
+            if root not in extern_index:
+                extern_index[root] = _index_dir(root)
+            if value in extern_index[root]:
+                break
+        else:
+            problems.append({
+                "kind": "interface_hash_unmatched",
+                "name": interface.get("name"),
+                "direction": interface.get("direction"),
+                "value": value,
+                "detail": "matches no file in the delivery repo or declared repos",
+            })
     return problems
 
 

@@ -1,3 +1,42 @@
+## 2026-10-23 — APPLIC-RESOLVE-14 R1 整改验收通过；全量测试 5 失败归因为既有问题
+
+### APPLIC-RESOLVE-14：ACCEPTED
+
+worker 按 R1 完成整改（3 提交：7c06b77 内容修正 → d75182c result_commit 真值 → e8a183a set 一致）：
+
+- D1 `result_commit=7c06b77ac19d…` 可解析，语义合规（payload commit、后续元数据另记）
+- D2 12 条幽灵路径消失，93 条全真实（含 .gitignore）
+- D3 UI 接口 hash = `d15d0a81…278b20`（UI 仓 adapters/contracts.py 实算），version 字段显式指明文件与 commit
+- N1-N7 全部处置；N4 TTL 显式 ttl_days 声明为 accepted-as-is；根因（interfaces/changed_paths 手写未走生成器）与流程教训写入 report.md §8
+- 复验：主控 CLI `--verify-references` **exit 0 / valid**；158 tests OK；8 步链日志全 exit 0、rebuild_identical ×2
+- 独立审查原结论 APPROVED WITH NOTES → 全部 notes 已解决 → **APPROVED**
+
+### 校验器三处性能/正确性修复（handoff_reference_check.py）
+
+1. `lstrip("./")` 会把 `.gitignore` 裁成 `gitignore` → 改 removeprefix 语义
+2. interface hash 只搜交付仓 → 解析 handoff 自己 check command 里声明的仓路径（UI 合约误报消除）
+3. 全仓 rglob hash 对 data-root 太贵（40 分钟）→ **lazy 按需遍历 + git ls-files 只 hash tracked 文件**（交付物必然 tracked；runs/ 未跟踪的 GB 级历史不再参与）+ 32MiB 单文件上限（覆盖 8.4MB ui-export.json）。双包终验 142 秒。
+
+### QUESTION-BANK-UPGRADE-12：worker R1 整改进行中（非退步）
+
+CLI 实时报 15 个 artifact hash mismatch = 文件已改、artifacts.json 未刷新的中间态。已确认：
+- `a2824c0` 修了 B1（capital_markets L17/L27 → 3.0.0）、N2（compose DFS 环检测）、N3（悬空事件作废+引用校验）、N5（文档 4.2.0/62/257）
+- 3 个 round-03.json 复审新产出（B2 覆盖交付快照），4 个文档与 3 个 final.json 未提交
+- 等 worker 完成后重跑终验
+
+### 主仓全量 pytest：1007 passed / 5 failed —— 全部为既有失败，非本会话回归
+
+5 失败逐个定位（均为 Antigravity 会话 10-18/10-19 提交造成、lock/fixture 未同步，本会话 10-22 起的提交从未碰这些文件）：
+
+| 测试 | 根因 |
+|---|---|
+| test_parallel_lane_plan ×2 | 10-07 lock 冻结的 `references/search-and-llm-playbook.md`(16847→33210 B, a05dc8b)、`batching_benchmark{,_report}.py`(dfb092d) 漂移，lock 未刷新 |
+| test_mimo_pilot_extension | dfb092d 加的 `historical_pricing_route_drift` 校验 vs 后续模型路由变化 |
+| test_roster_status | e6a0582 改 roster schema（payload_json 列），测试 fixture 旧 |
+| test_c06_release_publish | `module_registry` 模块缺失（ImportError，遗留测试） |
+
+处理留待所有者/对应会话决定（刷新老批次冻结 lock 涉及 10-07 批契约，不单方面改）。
+
 ## 2026-10-23 — 截止日修复后重跑：覆盖率 62.5% → 70.8%
 
 修复 `SEARCH_POOL_SIZE=20` + `filter_sources_by_cutoff()` 后完整重跑 24 题。

@@ -187,3 +187,46 @@ def test_missing_repository_is_reported(tmp_path):
     problems = refs.verify_all(handoff, path)
 
     assert any(p["kind"] == "repo_not_found" for p in problems)
+
+
+def test_dotfile_paths_keep_their_leading_dot(repo, tmp_path):
+    """'.gitignore' must not be stripped to 'gitignore' by a naive lstrip."""
+    (repo / ".gitignore").write_text("*.pyc\n", encoding="utf-8")
+
+    handoff = _handoff(repo)
+    handoff["scope"]["changed_paths"] = [".gitignore"]
+    path = tmp_path / "handoff.json"
+    path.write_text(json.dumps(handoff), encoding="utf-8")
+
+    assert refs.verify_all(handoff, path) == []
+
+
+def test_interface_hash_resolves_in_a_repo_declared_by_a_check(repo, tmp_path):
+    """A cross-repo contract (UI resolver) is found via the handoff's own command."""
+    ui = tmp_path / "ui-lab"
+    ui.mkdir()
+    (ui / "contracts.py").write_text("SHAPE = 1\n", encoding="utf-8")
+    digest = hashlib.sha256((ui / "contracts.py").read_bytes()).hexdigest()
+    handoff = _handoff(repo)
+    handoff["interfaces"] = [{"name": "ui_shape", "direction": "both",
+                              "content_hash": digest}]
+    handoff["verification"] = {"checks": [
+        {"name": "parity", "command": f"python scripts/parity.py --ui-repo {ui}"}]}
+    path = tmp_path / "handoff.json"
+    path.write_text(json.dumps(handoff), encoding="utf-8")
+
+    assert refs.verify_all(handoff, path) == []
+
+
+def test_interface_hash_unmatched_when_no_repo_declares_it(repo, tmp_path):
+    handoff = _handoff(repo)
+    handoff["interfaces"] = [{"name": "ui_shape", "direction": "both",
+                              "content_hash": "a" * 64}]
+    handoff["verification"] = {"checks": [
+        {"name": "parity", "command": "python scripts/parity.py"}]}
+    path = tmp_path / "handoff.json"
+    path.write_text(json.dumps(handoff), encoding="utf-8")
+
+    problems = refs.verify_all(handoff, path)
+
+    assert any(p["kind"] == "interface_hash_unmatched" for p in problems)
