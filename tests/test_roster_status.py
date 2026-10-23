@@ -29,8 +29,18 @@ def build_workspace(root: Path):
         )
         con.execute("INSERT INTO quick_scan_source_binding VALUES (?,?,?)", ("BIND_a", "ENT_a", "src"))
     with sqlite3.connect(data / "scan_observations.sqlite") as con:
-        con.execute("CREATE TABLE quick_scan_observation (observation_id TEXT, entity_id TEXT)")
-        con.execute("INSERT INTO quick_scan_observation VALUES (?,?)", ("obs_1", "ENT_a"))
+        # payload_json is what roster_status parses for search-backed coverage.
+        con.execute(
+            "CREATE TABLE quick_scan_observation (observation_id TEXT, entity_id TEXT, payload_json TEXT)"
+        )
+        con.execute(
+            "INSERT INTO quick_scan_observation VALUES (?,?,?)",
+            ("obs_1", "ENT_a", json.dumps({"execution": {"search_status": "executed"}})),
+        )
+        con.execute(
+            "INSERT INTO quick_scan_observation VALUES (?,?,?)",
+            ("obs_2", "ENT_a", json.dumps({"execution": {"search_status": "skipped"}})),
+        )
     return root
 
 
@@ -57,6 +67,8 @@ def test_roster_counts_and_actions(tmp_path):
     assert summary["verified"] == 1 and summary["provisional"] == 1
     assert summary["by_next_action"]["has_observations"] == 1
     assert summary["by_next_action"]["needs_verified_identity"] == 1
+    assert summary["search_backed_entities"] == 1
+    assert summary["search_backed_observations"] == 1
     assert summary["candidates"]["unresolved"] == 1
     page = html.read_text(encoding="utf-8")
     assert "Alpha Co" in page and "different issuer" in page and "未解决候选" in page

@@ -6,9 +6,12 @@ import json
 import os
 from pathlib import Path
 import shutil
+import sys
 import pytest
-import module_registry as registry
-import question_sets as qs
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+import module_registry as registry  # noqa: E402
+import question_sets as qs  # noqa: E402
 
 
 def native(path):
@@ -63,6 +66,10 @@ def test_another_writer_winning_between_probe_and_publish_is_not_overwritten(tmp
     assert not list(tmp_path.glob('.publish-*'))
 
 
+@pytest.mark.skipif(
+    "IQS_ROUTE_TEST_CODE_ROOT" not in os.environ,
+    reason="W15 module-readiness 专项测试：需 IQS_ROUTE_TEST_CODE_ROOT 指向被审代码根（含 questions/ 与 schemas/ 的 48/222 时代快照）",
+)
 def test_actual_catalog_publication_at_long_root_replays_and_keeps_logical_references(tmp_path):
     source=Path(os.environ['IQS_ROUTE_TEST_CODE_ROOT']);root=tmp_path/'owned-bank'
     # Keep source inputs readable with ordinary deployment paths, while

@@ -1,0 +1,27 @@
+{
+  "_comment": "Frozen pricing snapshot of the original three pilot routes. Historical archives are re-costed against exactly these values so a later model rename cannot reinterpret them. Do not edit; add new models to config/models.json instead.",
+  "minimax": {
+    "model": "MiniMax-M3",
+    "key_env": "MINIMAX_API_KEY",
+    "endpoint": "https://api.minimaxi.com/v1/chat/completions",
+    "input_rate": 0.6,
+    "output_rate": 2.4,
+    "cache_rate": 0.12
+  },
+  "mimo": {
+    "model": "mimo-v2.6-flash",
+    "key_env": "MIMO_API_KEY",
+    "endpoint": "https://api.xiaomimimo.com/v1/chat/completions",
+    "input_rate": 0.14,
+    "output_rate": 0.28,
+    "cache_rate": 0.0028
+  },
+  "deepseek": {
+    "model": "deepseek-flash",
+    "key_env": "DEEPSEEK_API_KEY",
+    "endpoint": "https://api.deepseek.com/chat/completions",
+    "input_rate": 0.3,
+    "output_rate": 1.2,
+    "cache_rate": 0.006
+  }
+}
