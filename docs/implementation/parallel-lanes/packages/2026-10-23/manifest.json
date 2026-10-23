@@ -1,0 +1,18 @@
+{
+  "batch": "2026-10-23",
+  "task_source": "../../../tasks.json",
+  "packages": [
+    {
+      "id": "UI-APPLIC-BRIDGE-15",
+      "lane_id": "iqs",
+      "document": "UI-APPLIC-BRIDGE-15.md",
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab",
+      "task_ids": ["U01", "U02", "U03", "U04"],
+      "depends_on": ["APPLIC-RESOLVE-14", "UI-BANK-EXPLORER-13"],
+      "readiness": "ready_for_scoped_support",
+      "workers_dispatched": false,
+      "support_only": true,
+      "note": "把 APPLIC-RESOLVE-14 的三条 interface-proposals 建议落进 UI 仓小版本；提供方与主仓均只读。G2 所有者裁定徽标语义后方可 G3。"
+    }
+  ]
+}

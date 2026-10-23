@@ -1,0 +1,55 @@
+{
+  "format_version": "1.0.0",
+  "package_id": "UI-APPLIC-BRIDGE-15",
+  "recorded_at_utc": "2026-10-23T23:05:00Z",
+  "recorded_by": "main_coordinator",
+  "inputs": [
+    {
+      "role": "consumer_baseline",
+      "repository": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab",
+      "commit": "9ab7a3398459dd92b181eb19929b753964a57bf9",
+      "note": "UI-BANK-EXPLORER-13 交付后 HEAD；本卡唯一写范围自此起"
+    },
+    {
+      "role": "consumer_file",
+      "path": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab/adapters/contracts.py",
+      "bytes": 6967,
+      "sha256": "d15d0a810daec45217a286d3ec6b02c927fe13d6faa4f068631c9f306a278b20"
+    },
+    {
+      "role": "consumer_file",
+      "path": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab/adapters/applicability_resolver.py",
+      "bytes": 4271,
+      "sha256": "373c5571db2a3ea4d8caccdcbddcb5bcc2912659ea31785abce6d2c4966d8e9c"
+    },
+    {
+      "role": "provider_export",
+      "path": "C:/Users/郑曾波/Projects/iqs-applic-lab/demo/ui-export.json",
+      "bytes": 8431811,
+      "sha256": "83f1a5e33370d031e2c52a4e92ef1eca85db4260657b59a34a0358e12cba3f63",
+      "from_snapshot": "applicsnap_d296902ca01ab20f6d62a31afdc76e66849c576f790f2bfe52607cd4b35b05ec",
+      "note": "只读；AC-07 灌入源"
+    },
+    {
+      "role": "provider_proposal",
+      "path": "C:/Users/郑曾波/Projects/iqs-applic-lab/docs/interface-proposals.md",
+      "bytes": 9908,
+      "sha256": "045822bb6d6b8175fd79f7efa6665ac02ab32ccb6a8af4962a97769baa42ea57",
+      "note": "三条建议原文；实现细节以此为准"
+    },
+    {
+      "role": "protocol",
+      "path": "docs/implementation/parallel-lanes/handoff.schema.json",
+      "bytes": 5598,
+      "sha256": "ed38a65aafed82649a071acbc9e6ee5b47c92120ad958713db4d7261a4b15c0e"
+    },
+    {
+      "role": "protocol",
+      "path": "docs/implementation/parallel-lanes/packages/2026-10-21/handoff-rules.md",
+      "bytes": 7903,
+      "sha256": "fe9a2bb4594b291abb2f28fe535be45d38d9502dbd97e91e133a535083c35eae",
+      "note": "含禁占位符 sha256、外部写入三布尔 false 等红线"
+    }
+  ],
+  "freeze": "派发后输入不得改动；任一 hash 与磁盘不符即停，先向提供方核实。本文件的 sha256 由主控外部记录，不自含。"
+}

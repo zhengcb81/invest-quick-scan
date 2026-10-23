@@ -1,5 +1,5 @@
 {
-  "version": "1.10.15",
+  "version": "1.10.16",
   "status": "acceptance_specifications_not_runtime_results",
   "example_only": true,
   "defaults": {
@@ -5915,6 +5915,40 @@
           "expected": "Input exceeds documented bounded maximum, is rejected with exit 2 without full read or mutation."
         }
       ]
-    }
-  ]
+    },
+{
+    "id": "AP-01",
+    "kind": "negative",
+    "level": "unit",
+    "given": "公司某属性 confidence=assumed 或 source_ref.kind=none（无仓内出处），对应模块谓词对该公司判假。",
+    "when": "引擎对 (entity, module) 求值。",
+    "then": [
+      "结果必须是 unknown 且 basis=negative_evidence_not_verified。",
+      "禁止输出 not_applicable 或 applicable；反例覆盖 6 种谓词组合与属性缺失形态。"
+    ],
+    "status": "specified_not_executed",
+    "owner_task": "A01",
+    "requires_tasks": [
+      "S06",
+      "W15"
+    ]
+  },
+{
+    "id": "AP-02",
+    "kind": "fault",
+    "level": "unit",
+    "given": "已发布适用性快照的 inputs（attributes_version 或 predicate_version）任一 bump，或快照文件被手改（同名异容）。",
+    "when": "重新校验或重建快照。",
+    "then": [
+      "旧快照必须失效并产出新 snapshot_id（键含双侧版本），单属性 bump 仅重算受影响格。",
+      "同名异容必须拒绝覆盖 exit 3，禁止静默沿用旧判定；两次重建 sha256 必须一致。"
+    ],
+    "status": "specified_not_executed",
+    "owner_task": "A01",
+    "requires_tasks": [
+      "S06",
+      "W15"
+    ]
+  }
+]
 }

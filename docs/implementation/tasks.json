@@ -1,5 +1,5 @@
 {
-  "version": "1.10.15",
+  "version": "1.10.16",
   "status": "implementation_plan_not_product_completion",
   "stage_order": [
     "M0",
@@ -4249,8 +4249,9 @@
         "S07",
         "S08",
         "S09",
-        "S10"
-      ],
+        "S10",
+      "A01"
+    ],
       "invariants": [
         "I01",
         "I03",
@@ -6174,8 +6175,57 @@
         "MOD-29/30/31分别覆盖unit、integration、e2e并在计划包中由S10唯一拥有；E2E只宣称本仓离线producer闭环，不宣称真实搜索、StockWiki ACK、UI或安装运行已验收。"
       ],
       "rollback": "如renderer hash、历史manifest读取、route-v2 composition或公开CLI产生漂移，保留红测，恢复question_sets中原选择/校验实现和standard_answers原调用边；不修改已发布包、历史观察或外仓文件。"
-    }
-  ],
+    },
+{
+    "id": "A01",
+    "stage": "M3",
+    "owner": "iqs",
+    "kind": "implementation",
+    "title": "公司属性×模块谓词的版本化适用性判定层（APPLIC-RESOLVE-14 支撑交付）",
+    "depends_on": [
+      "S06",
+      "W15"
+    ],
+    "invariants": [
+      "I04",
+      "I08"
+    ],
+    "read_first": [
+      "docs/implementation/parallel-lanes/packages/2026-10-21/APPLIC-RESOLVE-14.md",
+      "docs/implementation/parallel-lanes/packages/2026-10-21/APPLIC-RESOLVE-14-R1.md",
+      "docs/modular-question-bank-design.md",
+      "references/routing.md"
+    ],
+    "allowed_changes": [
+      "iqs-applic-lab/schemas/ 四资产 Schema（冻结，additionalProperties=false）",
+      "iqs-applic-lab/data/attributes/companies.v1.json（公司属性表，verified/assumed/unknown 三级）",
+      "iqs-applic-lab/data/predicates/modules.v1.json（数据化谓词规则，含 provenance.mapped_from 与 decision_ref）",
+      "iqs-applic-lab/data/snapshots/applicsnap_*.json 与 index.json（append-only 适用性快照）",
+      "iqs-applic-lab/data/overrides/overrides.v1.json（所有者覆盖台账，append-only）",
+      "iqs-applic-lab/src/、scripts/、tests/、demo/、design/、review/、docs/（引擎、校验、导出、审查与交接资料）"
+    ],
+    "steps": [
+      "真源为公司属性表×模块谓词，快照仅为派生物：键含 entity_id/module_id/predicate_version/attributes_version，任一侧 bump 自动失配；谓词是数据化 JSON 规则而非存储代码闭包，避免第二真源。",
+      "三值 Kleene 判定：unknown ≠ not_applicable；无出处属性=unknown；not_applicable 仅当谓词判假且全部被解析属性 confidence=verified（G2-3 反证门槛），否则降级 unknown 并记 negative_evidence_not_verified。",
+      "属性分级 verified/assumed/unknown 各带出处或推断依据，UI 呈琥珀「待确认」；override 为一等公民：operator/reason 原话/ttl，过期自动回归 auto 并记 supersede 链。",
+      "快照不可变且幂等可重建（run_eval 两次逐字节一致），同名异容拒绝覆盖（exit 3），失效精确到格。"
+    ],
+    "deliverables": [
+      "四资产 Schema、214 实体属性表、48 模块谓词（45 mapped+3 contract_always）、版本化快照（10272 格）与索引",
+      "纯函数引擎、UI 导出器、parity 检查、158 项测试、G0-G5 交接套件与 R1 整改记录"
+    ],
+    "case_ids": [
+      "AP-01",
+      "AP-02"
+    ],
+    "test_binding": "iqs-applic-lab tests/（158 例）为 AP-01/AP-02 的固定输入与精确断言；红线反例先行（unknown 不塌缩、缺属性不出 applicable/not_applicable）。",
+    "completion": [
+      "主控 CLI（parallel_handoff_cli --verify-references）exit 0；run_eval 幂等重建两次 sha256 一致；失效 demo 实测 21 格变动/2 翻转/目标实体外 0 变动。",
+      "属性全 assumed 的诚实披露（G2-2 所有者裁定）与 not_applicable≈0 的后果写入 signoff known_limitations；production_ready=false 不变。"
+    ],
+    "rollback": "快照 append-only：撤回仅弃新快照并回归上一 snapshot_id；不改写属性表/谓词历史，不影响 S06/W15 已交付物与 UI 仓。"
+  }
+],
   "release_requirements": {
     "final_gate": "G6",
     "required_gates": [
