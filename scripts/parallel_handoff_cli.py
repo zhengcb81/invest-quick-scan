@@ -33,12 +33,16 @@ def _unique_pairs(pairs: list[tuple[str, object]]) -> dict:
     return result
 
 
-def _outcome(package_id: str, code: str | None = None) -> tuple[int, dict]:
+def _outcome(package_id: str, code: str | None = None,
+             details: list | None = None) -> tuple[int, dict]:
     if code is None:
         return 0, {"status": "valid", "package_id": package_id,
                    "validation_scope": SCOPE, "errors": []}
+    errors = [{"code": code}]
+    if details:
+        errors[0]["details"] = details
     return 2, {"status": "invalid", "package_id": package_id,
-               "validation_scope": SCOPE, "errors": [{"code": code}]}
+               "validation_scope": SCOPE, "errors": errors}
 
 
 def _normal_path(value: str) -> str | None:
@@ -59,7 +63,8 @@ def _within(path: str, scope: str) -> bool:
 
 
 def validate_handoff(input_path: Path, package_id: str,
-                     catalog_path: Path | None = None) -> tuple[int, dict]:
+                     catalog_path: Path | None = None,
+                     verify_references: bool = False) -> tuple[int, dict]:
     package_dir = (LANE_DIR / "packages").resolve()
     selected = catalog_path if catalog_path is not None else package_dir / "manifest.json"
     try:
@@ -150,6 +155,17 @@ def validate_handoff(input_path: Path, package_id: str,
 
     if any(root["created"] and not root["cleaned"] for root in report["verification"]["temporary_roots"]):
         return _outcome(package_id, "temporary_root_not_cleaned")
+
+    # Optional: check that cited commits, paths and hashes actually exist. Shape
+    # validation cannot catch a corrupted commit id or a phantom changed_path,
+    # because the schema only enforces minLength 7. Off by default so the
+    # documented shape-only contract is unchanged.
+    if verify_references:
+        import handoff_reference_check as references
+
+        problems = references.verify_all(report, input_path)
+        if problems:
+            return _outcome(package_id, "reference_integrity_failed", problems)
     return _outcome(package_id)
 
 
@@ -159,8 +175,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--package-id", required=True)
     parser.add_argument("--catalog", type=Path,
                         help="Package catalog under this repository's parallel-lanes/packages directory.")
+    parser.add_argument("--verify-references", action="store_true",
+                        help="Also check that cited commits, changed_paths and content hashes "
+                             "actually exist in the delivery repo (offline, read-only).")
     args = parser.parse_args(argv)
-    code, result = validate_handoff(args.input, args.package_id, args.catalog)
+    code, result = validate_handoff(args.input, args.package_id, args.catalog,
+                                    verify_references=args.verify_references)
     sys.stdout.write(json.dumps(result, ensure_ascii=False, separators=(",", ":")) + "\n")
     return code
 
