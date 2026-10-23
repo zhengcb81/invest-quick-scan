@@ -161,3 +161,36 @@ def test_wide_pool_survives_cutoff_when_recent_half_is_late():
     assert thin_scan.cutoff_problem(dropped) == "dropped_after_cutoff:10"
     # The caller trims to SEARCH_SOURCES_USED after filtering.
     assert len(kept[:thin_scan.SEARCH_SOURCES_USED]) == 5
+
+def test_url_anchors_from_the_search_api_still_match():
+    """The API appends "#1" to result URLs; the model echoes them verbatim.
+
+    clean_answer matches evidence against the offered URL set, so if the anchor
+    were normalised away on one side but not the other, a correctly cited answer
+    would be discarded as no_evidence_urls.
+    """
+    offered = [{"url": "https://e.com/a#1", "title": "t", "summary": "s",
+                "date": "2026-10-01", "site": "x"}]
+    answer = {"status": "scored", "score": 8, "summary": "ok",
+              "evidence": ["https://e.com/a#1"]}
+
+    cleaned, problems = thin_scan.clean_answer(answer, offered)
+
+    assert problems == []
+    assert cleaned["status"] == "scored"
+    assert cleaned["score"] == 8
+    assert cleaned["evidence"][0]["url"] == "https://e.com/a#1"
+
+
+def test_evidence_outside_the_offered_set_is_still_rejected():
+    """The red line holds: an unoffered URL invalidates the citation."""
+    offered = [{"url": "https://e.com/a#1", "title": "t", "summary": "s",
+                "date": "2026-10-01", "site": "x"}]
+    answer = {"status": "scored", "score": 8, "summary": "ok",
+              "evidence": ["https://evil.example/x"]}
+
+    cleaned, problems = thin_scan.clean_answer(answer, offered)
+
+    assert cleaned["status"] == "insufficient_evidence"
+    assert cleaned["score"] is None
+    assert any("dropped_unknown_urls" in p for p in problems)
