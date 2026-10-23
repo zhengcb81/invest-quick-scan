@@ -1,3 +1,22 @@
+## 2026-10-23 — QUESTION-BANK-UPGRADE-12 R1 核对：实质修复落地，但 B3 被生成器覆盖回退 → R2
+
+HEAD 逐项核对（`git show HEAD:<path>`）：
+
+- ✅ B1 capital_markets L17/L27 → 3.0.0（后继题标注）
+- ✅ N2 compose.py:112-125 DFS 环检测（BankError）
+- ✅ N3 validate_bank.py:335 lifecycle ref-not-on-disk 校验
+- ✅ N5 三文档 4.2.0/62/257
+- ✅ N6 CLI --verify-references **exit 0 / valid**
+- ✅ 三份 round-03 passed @ ec8cd97
+- ❌ **B3 回退**：6ce17a4 正确改为 26 并加 R1 记录，9c08550 的 handoff file set 生成器（build_handoff.py）重建 report.md（-34/+8）→ HEAD 上 AC-07 仍 31，R1 整改记录全部丢失
+- ⚠️ **B2 差一步**：reviewed_commit=ec8cd97，其后 6ce17a4（含 N5 文档内容级变更）+ 9c08550 未被复审
+
+R2 已发（packages/2026-10-19/QUESTION-BANK-UPGRADE-12-R2.md）：
+1. B3：R1 记录并入生成器源后重生成，HEAD 上必须含 26 + R1 节 + 覆盖事件根因（第二次转录类事故，与 B1 同族：报告/记录先于或后于实际状态失真）
+2. B2：reviewed_commit 指向最终 payload（或证明其后仅元数据 —— 但 N5 文档是内容级，B 方案需先挪正）
+3. 全部在 HEAD 上验证，不接受「历史提交里存在过」
+
+**教训（跨包通用）**：手改生成器管辖的交付文件 = 下次生成必然回滚。整改必须先改生成器数据源。
 ## 2026-10-23 — APPLIC-RESOLVE-14 R1 整改验收通过；全量测试 5 失败归因为既有问题
 
 ### APPLIC-RESOLVE-14：ACCEPTED
