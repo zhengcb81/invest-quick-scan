@@ -22,7 +22,6 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = json.loads((ROOT / "schemas/quick_scan/scoring-rubric.schema.json").read_text(encoding="utf-8"))
 DIMENSIONS = ("business", "moat", "execution", "financial", "governance", "resilience", "growth", "valuation")
 QUALITY_DIMENSIONS = DIMENSIONS[:6]
-CORE_DIMENSIONS = {f"IQS_{i:02}": DIMENSIONS[(i - 1) // 3] for i in range(1, 25)}
 CRITICAL_CONSTRUCTS = frozenset({"IQS_12", "IQS_13", "IQS_16"})
 CHECK_LEVELS = ("unverified_model_output", "execution_verified", "screening_audited", "formal_research_accepted")
 SIGNATURE_FIELDS = ("schema_version", "cohort", "minimum_check_level", "dimension_min_coverage",
@@ -54,17 +53,31 @@ def _signature(rubric):
     return {key: rubric[key] for key in SIGNATURE_FIELDS}
 
 
-def validate_rubric(rubric):
-    """Validate immutable identity and the fixed 24-construct denominator."""
+def validate_rubric(rubric, *, core_constructs=None):
+    """Validate immutable identity and the derived core-construct denominator.
+
+    ``core_constructs`` is the released ``{construct_id: dimension}`` map taken
+    from the question bank. BASIC-BANK-EXPANSION-21（所有者 2026-10-24 裁定）：
+    分母由题库派生，不再写死 24；未提供该映射时只做内部一致性检查（构念唯一、
+    维度合法、权重合计 100），不臆造题库内容。
+    """
     _validate(rubric, "Release")
     body = {key: value for key, value in rubric.items() if key != "rubric_release_id"}
     if rubric["rubric_release_id"] != "rubrel_" + digest(body):
         raise ValueError("rubric content hash mismatch")
     basket = rubric["core_basket"]
-    if [q["construct_id"] for q in basket] != sorted(CORE_DIMENSIONS):
+    constructs = [q["construct_id"] for q in basket]
+    if len(constructs) != len(set(constructs)) or None in constructs:
         raise ValueError("exactly one sorted entry per core construct is required")
-    if any(q["dimension"] != CORE_DIMENSIONS[q["construct_id"]] for q in basket):
-        raise ValueError("frozen core dimension cannot change")
+    if constructs != sorted(constructs):
+        raise ValueError("exactly one sorted entry per core construct is required")
+    if core_constructs is not None:
+        if set(constructs) != set(core_constructs):
+            raise ValueError("core basket must match the released core construct set")
+        if any(q["dimension"] != core_constructs[q["construct_id"]] for q in basket):
+            raise ValueError("frozen core dimension cannot change")
+    if any(q["dimension"] not in DIMENSIONS for q in basket):
+        raise ValueError("core basket dimension is not a known dimension")
     if any(type(w) is not int for w in rubric["quality_weights"].values()):
         raise ValueError("quality weights must be strict integers")
     if sum(rubric["quality_weights"].values()) != 100:
@@ -84,7 +97,7 @@ def validate_rubric(rubric):
         raise ValueError("rubric cannot supersede itself")
 
 
-def seal_rubric(body):
+def seal_rubric(body, *, core_constructs=None):
     """Create a deterministic candidate; this never activates a release."""
     rubric = copy.deepcopy(body)
     rubric.pop("rubric_release_id", None)
@@ -92,7 +105,7 @@ def seal_rubric(body):
     rubric["critical_extensions"] = sorted(rubric.get("critical_extensions", []), key=lambda q: q.get("question_id", ""))
     rubric["calibration_sample_refs"] = sorted(rubric.get("calibration_sample_refs", []))
     rubric["rubric_release_id"] = "rubrel_" + digest(rubric)
-    validate_rubric(rubric)
+    validate_rubric(rubric, core_constructs=core_constructs)
     return rubric
 
 
@@ -231,7 +244,7 @@ def aggregate(rubric, snapshot, *, expected_snapshot_sha256, at):
             if score is None or score <= 3:
                 critical[row["id"]] = "unresolved" if score is None else "material_concern"
     dimensions = {}
-    core = evaluated[:24]
+    core = evaluated[:len(rubric["core_basket"])]
     for dimension in DIMENSIONS:
         applicable = [r for r in core if r["dimension"] == dimension and not r["excluded"]]
         valid = [r["effective_score"] for r in applicable if r["effective_score"] is not None]
@@ -251,7 +264,8 @@ def aggregate(rubric, snapshot, *, expected_snapshot_sha256, at):
               "source_observations": sorted([{"id": r["observation_id"], "sha256": r["observation_sha256"]} for r in snapshot["records"]], key=lambda r: r["id"]),
               "dimensions": dimensions, "quality_score": quality, "quality_coverage": round(coverage, 4),
               "growth_score": dimensions["growth"]["score"], "valuation_score": dimensions["valuation"]["score"],
-              "denominator": {"expected_core": 24, "quality_applicable": total, "quality_valid": valid_count},
+              "denominator": {"expected_core": len(rubric["core_basket"]),
+                              "quality_applicable": total, "quality_valid": valid_count},
               "critical_issues": [{"id": qid, "kind": critical[qid]} for qid in sorted(critical)],
               "unavailable_reasons": reasons, "comparison_inputs": core, "new_llm_calls": 0}
     result["derived_id"] = "derived_" + digest(result)

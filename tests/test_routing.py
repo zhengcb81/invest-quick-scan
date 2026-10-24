@@ -215,7 +215,8 @@ class RoutingTests(RoutingFixture):
         self.assertIn("dupont", selected_modules)
         self.assertIn("porter", selected_modules)
         self.assertEqual(sum(1 for q in chosen if q["module_id"] in ("dupont", "porter")), 12)
-        self.assertEqual(len([q for q in chosen if q["comparison_role"] == "core"]), 24)
+        self.assertEqual(len([q for q in chosen if q["comparison_role"] == "core"]),
+                         len(mc.core_construct_ids(modules["common"])))
 
     def test_mod19_v23_execution_receipt_requires_hash_of_parsed_native_answer(self):
         native = self.native_response(self.normal())
@@ -466,18 +467,23 @@ class RoutingTests(RoutingFixture):
         facts = self.normal() + [self.fact("distressed", evidence_type="covenant_breach")]
         result = self.route(facts)
         self.assertEqual(self.selected(result), {"common", "operating", "semiconductors", "scaling", "distressed", "recovery"})
-        self.assertEqual(result["dispatch_plan"]["minimum_questions"], 30)
-        self.assertEqual(len(result["dispatch_plan"]["mandatory_question_ids"]), 6)
+        # BASIC-BANK-EXPANSION-21: the dispatch floor is derived from the release.
+        _, modules, _, _ = registry.load_package(self.package_id, root=self.root)
+        core = len(mc.core_construct_ids(modules["common"]))
+        mandatory = result["dispatch_plan"]["mandatory_question_ids"]
+        self.assertEqual(result["dispatch_plan"]["minimum_questions"], core + len(mandatory))
+        self.assertEqual(len(mandatory), 6)
         with self.assertRaisesRegex(ValueError, "budget below mandatory"):
-            routing.enforce_route_budget(result, 24)
-        self.assertEqual(routing.enforce_route_budget(result, 30), 30)
+            routing.enforce_route_budget(result, core + len(mandatory) - 1)
+        self.assertEqual(routing.enforce_route_budget(result, core + len(mandatory)),
+                         core + len(mandatory))
         for mid in ("recovery", "distressed"):
             with self.subTest(mid=mid), self.assertRaisesRegex(ValueError, "cannot suppress"):
                 self.route(facts, user_policy={"manual_overrides": [{"module_id": mid, "decision": "rejected",
                     "actor": "fixture-user", "reason": "Fixture veto", "valid_until": "2026-09-21T00:00:00Z"}]})
         changed = copy.deepcopy(result)
         changed["dispatch_plan"]["mandatory_question_ids"] = []
-        changed["dispatch_plan"]["minimum_questions"] = 24
+        changed["dispatch_plan"]["minimum_questions"] = core
         with self.assertRaisesRegex(ValueError, "mandatory risk coverage"):
             routing.validate_route_snapshot(mc.seal_route_decision(changed), root=self.root)
 
@@ -516,7 +522,10 @@ class RoutingTests(RoutingFixture):
         self.assertEqual(self.item(missing, "operating")["sources"], [])
         risk = self.route([self.fact("distressed", evidence_type="default")])
         self.assertEqual(self.selected(risk), {"common", "distressed", "recovery"})
-        self.assertEqual(risk["dispatch_plan"]["minimum_questions"], 30)
+        _, modules, _, _ = registry.load_package(self.package_id, root=self.root)
+        self.assertEqual(risk["dispatch_plan"]["minimum_questions"],
+                         len(mc.core_construct_ids(modules["common"]))
+                         + len(risk["dispatch_plan"]["mandatory_question_ids"]))
         self.assertEqual(risk["status"], "partial")
         unclassified = self.fact("other", evidence_type="business_activity", materiality={"revenue_share": 1})
         self.assertNotIn("other", self.selected(self.route([unclassified])))

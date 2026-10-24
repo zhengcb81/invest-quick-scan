@@ -19,6 +19,16 @@ import scoring_rubrics as sr  # noqa: E402
 AT = "2026-10-01T12:00:00Z"
 
 
+def core_constructs():
+    """The released core construct map (construct_id -> dimension).
+
+    BASIC-BANK-EXPANSION-21: the denominator comes from the bank, never from a
+    hard-coded count or a fixed ID list.
+    """
+    _, modules, _, _ = module_registry.load_current()
+    return {q["construct_id"]: q["dimension"] for q in modules["common"]["questions"]}
+
+
 def rubric_body():
     _, modules, _, _ = module_registry.load_current()
     return {
@@ -92,7 +102,7 @@ class ScoringRubricTests(unittest.TestCase):
         self.assertEqual(raw, before)
         self.assertEqual(first["source_observations"], second["source_observations"])
         self.assertEqual(first["source_snapshot_sha256"], second["source_snapshot_sha256"])
-        self.assertEqual(first["denominator"]["expected_core"], 24)
+        self.assertEqual(first["denominator"]["expected_core"], len(core_constructs()))
         self.assertEqual(first["denominator"]["quality_applicable"], 18)
         self.assertNotEqual(first["derived_id"], second["derived_id"])
         self.assertEqual(first["new_llm_calls"], 0)
@@ -163,7 +173,7 @@ class ScoringRubricTests(unittest.TestCase):
                 bad = copy.deepcopy(self.body)
                 bad[field] = value
                 with self.assertRaises(ValueError):
-                    sr.seal_rubric(bad)
+                    sr.seal_rubric(bad, core_constructs=core_constructs())
         tampered = copy.deepcopy(rubric)
         tampered["method_id"] = "forged"
         with self.assertRaises(ValueError):

@@ -19,6 +19,18 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 import question_sets as qs
 
 
+def core_constructs(modules=None):
+    """The released core construct set.
+
+    BASIC-BANK-EXPANSION-21: the set is derived from the common module data,
+    never from a hard-coded count or a fixed ``IQS_01..IQS_24`` literal.
+    """
+    if modules is None:
+        _, modules = qs.load_library()
+    return {q['id'] for q in modules['common']['questions']
+            if q.get('comparison_role') == 'core'}
+
+
 def _stockqa_bytecode_snapshot(repo):
     roots = (repo / '__pycache__', repo / 'src')
     snapshot = {}
@@ -325,9 +337,8 @@ class QuestionSetTests(unittest.TestCase):
                         qs.compose(profile, 'quick', output)
                         manifest = qs.read_json(output / 'manifest.json')
                         core = [q for q in manifest['questions'] if q.get('comparison_role') == 'core']
-                        self.assertEqual({q.get('construct_id') for q in core},
-                                         {f'IQS_{index:02}' for index in range(1, 25)})
-                        self.assertEqual(len(core), 24)
+                        self.assertEqual({q.get('construct_id') for q in core}, core_constructs())
+                        self.assertEqual(len(core), len(core_constructs()))
                         self.assertEqual(len({q['id'] for q in manifest['questions']}),
                                          manifest['question_count'])
                         self.assertEqual(len(qs.validate_manifest_metric_contract(manifest)),
@@ -374,9 +385,8 @@ class QuestionSetTests(unittest.TestCase):
                 manifest = qs.read_json(output / 'manifest.json')
                 manifests[mode] = manifest
                 core = [q for q in manifest['questions'] if q.get('comparison_role') == 'core']
-                self.assertEqual(len(core), 24)
-                self.assertEqual({q.get('construct_id') for q in core},
-                                 {f'IQS_{index:02}' for index in range(1, 25)})
+                self.assertEqual(len(core), len(core_constructs()))
+                self.assertEqual({q.get('construct_id') for q in core}, core_constructs())
                 self.assertEqual(manifest['aggregation_policy'], 'core-constructs-v1')
                 self.assertEqual(sum(q['module_id'] == 'recovery' for q in manifest['questions']), 4)
 
@@ -587,7 +597,7 @@ class QuestionSetTests(unittest.TestCase):
             self.assertEqual({q['module_id'] for q in manifest['questions'] if q.get('framework')},
                              {'dupont', 'porter'})
             self.assertEqual(sum(question['comparison_role'] == 'core'
-                                 for question in manifest['questions']), 24)
+                                 for question in manifest['questions']), len(core_constructs()))
 
     def test_s03_current_manifest_rejects_an_unsupported_older_template_header(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -694,9 +704,9 @@ class QuestionSetTests(unittest.TestCase):
         self.assertIn('dupont', manifest['modules'])
         self.assertIn('porter', manifest['modules'])
         self.assertEqual(sum(q.get('aggregation') == 'diagnostic' for q in manifest['questions']), 12)
-        # 诊断题不进汇总：核心构念仍恰好 24 个
+        # 诊断题不进汇总：核心构念仍恰好为发布包的核心集合
         core = [q for q in manifest['questions'] if q.get('comparison_role') == 'core']
-        self.assertEqual(len(core), 24)
+        self.assertEqual(len(core), len(core_constructs()))
         self.assertEqual(sum(q['module_id'] in ('dupont', 'porter')
                              for q in core), 0)
 
@@ -712,7 +722,7 @@ class QuestionSetTests(unittest.TestCase):
                              for q in manifest['questions']))
         # 核心题集与不排除时一致
         core = [q for q in manifest['questions'] if q.get('comparison_role') == 'core']
-        self.assertEqual(len(core), 24)
+        self.assertEqual(len(core), len(core_constructs()))
         for bad in ({'diagnostic_exclusions': ['dupont']},
                     {'diagnostic_exclusions': ['recovery']},
                     {'diagnostic_exclusions': ['dupont', 'dupont']},
@@ -1422,7 +1432,8 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
                     expected_route_decision_id=kwargs.pop('expected_route_decision_id', route['decision_id']), **kwargs)
         manifest = qs.read_json(output / 'manifest.json')
         self.assertEqual(len(qs.validate_manifest_metric_contract(manifest)), result['question_count'])
-        self.assertEqual(sum(q['comparison_role'] == 'core' for q in manifest['questions']), 24)
+        self.assertEqual(sum(q['comparison_role'] == 'core' for q in manifest['questions']),
+                         len(core_constructs()))
         return manifest
 
     def cli(self, arguments, expected_code=0):
@@ -1489,7 +1500,7 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
 
     def test_s06_t5_common_only_and_known_distress_standard_output_keep_unknown_profile(self):
         common = self.compose_route(self.route([]), 'common', answer_format='standard-1')
-        self.assertEqual(common['question_count'], 24)
+        self.assertEqual(common['question_count'], len(core_constructs()))
         self.assertNotIn('company_type', common['profile'])
         risk = self.compose_route(self.route([self.fact('distressed', evidence_type='default')]), 'risk')
         self.assertEqual(risk['question_count'], 30)

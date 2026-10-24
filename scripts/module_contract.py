@@ -26,7 +26,33 @@ def _schema(name: str) -> dict:
 MODULE_SCHEMA = _schema("question-module.schema.json")
 RELEASE_SCHEMA = _schema("module-release.schema.json")
 ROUTE_SCHEMA = _schema("route-decision.schema.json")
-CORE_IDS = frozenset(f"IQS_{index:02}" for index in range(1, 25))
+
+EXTENSION_KINDS = frozenset({"common_extensions", "lenses", "industries", "stages",
+                             "overlays", "diagnostics"})
+
+
+def core_construct_ids(module: Mapping) -> frozenset[str]:
+    """Derive the release's core construct set from the common module data.
+
+    BASIC-BANK-EXPANSION-21（所有者 2026-10-24 裁定）：核心构念集合 = ``common``
+    模块中 ``comparison_role == "core"`` 的题。任何代码不得再写死题数或固定 ID 列表；
+    基本题库可以按 minor 升版追加/删除诊断扩展题，核心集合只在 major 升版时变化。
+    非 common 模块不含核心构念，返回空集合。
+    """
+    if not isinstance(module, Mapping):
+        raise ValueError("core constructs require a module object")
+    if module.get("kind") != "common":
+        return frozenset()
+    return frozenset(question["id"] for question in module.get("questions", [])
+                     if question.get("comparison_role") == "core")
+
+
+def _is_extension_question(question: Mapping) -> bool:
+    """A diagnostic extension: scored never, compared never, constructed never."""
+    return (question.get("comparison_role") == "diagnostic"
+            and question.get("aggregation") == "diagnostic"
+            and question.get("construct_id") is None
+            and not question.get("replaces"))
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -55,8 +81,14 @@ def _validate(schema: dict, value: object) -> None:
     Draft202012Validator(schema, format_checker=FormatChecker()).validate(value)
 
 
-def validate_module(module: dict) -> None:
-    """Validate one scored module's shape and duplicate IDs."""
+def validate_module(module: dict, *, core_ids: frozenset[str] | None = None) -> None:
+    """Validate one scored module's shape and duplicate IDs.
+
+    ``core_ids`` is the released core construct set (see ``core_construct_ids``).
+    For the common module it is derived from this module's own data when omitted;
+    a type module needs the caller to supply the release's set so a replacement
+    cannot target a construct the release does not carry.
+    """
     _validate(MODULE_SCHEMA, module)
     if (module["module_id"] == "common") != (module["kind"] == "common"):
         raise ValueError("common ID and kind must match")
@@ -65,22 +97,24 @@ def validate_module(module: dict) -> None:
         raise ValueError("duplicate question ID in module")
     if set(ids) & set(module.get("retired_question_ids", [])):
         raise ValueError("retired question ID cannot be active again")
-    if module["kind"] == "common" and set(ids) != CORE_IDS:
-        raise ValueError("common must contain exactly the frozen 24 core question IDs")
+    if module["kind"] == "common":
+        if core_ids is None:
+            core_ids = core_construct_ids(module)
+        if not core_ids:
+            raise ValueError("common module must declare at least one core construct")
     type_replacements: set[str] = set()
     for question in module["questions"]:
         if question["metric_id"] != "score." + question["id"].lower():
             raise ValueError("metric_id must bind the question ID")
         if question.get("supersedes") == question["id"]:
             raise ValueError("question cannot supersede itself")
-        if module["kind"] == "common" and (
-                question["comparison_role"] != "core" or question["construct_id"] != question["id"]
-                or question.get("replaces")):
-            raise ValueError("common question must preserve its core construct")
+        if module["kind"] == "common":
+            _validate_common_question(question)
         if module["kind"] == "types":
             replacements = question.get("replaces", [])
             if question["comparison_role"] == "core":
-                if (len(replacements) != 1 or replacements[0] not in CORE_IDS
+                if (len(replacements) != 1
+                        or (core_ids is not None and replacements[0] not in core_ids)
                         or question["construct_id"] != replacements[0]):
                     raise ValueError("type core question must replace one frozen core construct")
                 if replacements[0] in type_replacements:
@@ -88,10 +122,32 @@ def validate_module(module: dict) -> None:
                 type_replacements.add(replacements[0])
             elif replacements or question["construct_id"] is not None:
                 raise ValueError("type context question cannot replace a core construct")
-        if module["kind"] in {"common_extensions", "lenses", "industries", "stages", "overlays", "diagnostics"}:
+        if module["kind"] in EXTENSION_KINDS:
             if (question["comparison_role"] == "core" or question.get("replaces")
                     or question["construct_id"] is not None):
                 raise ValueError("non-type extension cannot enter core or replace a core construct")
+
+
+def _validate_common_question(question: Mapping) -> None:
+    """The common module holds core constructs plus diagnostic extensions.
+
+    BASIC-BANK-EXPANSION-21 §2.2：核心题必须 ``construct_id == id``、
+    ``comparison_role == "core"``、无 ``replaces``；扩展题必须
+    ``aggregation == "diagnostic"``、``comparison_role == "diagnostic"``、
+    ``construct_id == null``、无 ``replaces``——只做诊断，不进核心固定比较，
+    也不进质量汇总。
+    """
+    if question["comparison_role"] == "core":
+        if question["construct_id"] != question["id"] or question.get("replaces"):
+            raise ValueError("common question must preserve its core construct")
+        if question.get("aggregation") == "diagnostic":
+            raise ValueError("core common question cannot be a diagnostic extension")
+        return
+    if not _is_extension_question(question):
+        raise ValueError(
+            "common extension question must be a diagnostic extension "
+            "(comparison_role=diagnostic, aggregation=diagnostic, construct_id=null, no replaces)"
+        )
 
 
 def _validate_dependency_graph(modules: Mapping[str, dict]) -> None:
@@ -129,10 +185,13 @@ def validate_registry(modules: Mapping[str, dict], contexts: Mapping[str, object
     """Fail before export if any newly registered module lacks its full context."""
     if not modules or "common" not in modules:
         raise ValueError("registry requires the common module")
+    core_ids = core_construct_ids(modules["common"])
+    if not core_ids:
+        raise ValueError("common module must declare at least one core construct")
     question_ids: set[str] = set()
     retired_ids = set(historical_retired_ids)
     for module_id, module in modules.items():
-        validate_module(module)
+        validate_module(module, core_ids=core_ids)
         if module_id != module["module_id"]:
             raise ValueError("module ID differs from registry key")
         for question in module["questions"]:
@@ -190,6 +249,11 @@ def validate_upgrade(old: dict, new: dict) -> None:
     **至少一次 minor 版本升版**的前提下就地修订；题面、anchors 与题 ID 仍绝对不可变
     （同 ID 内容改动一律拒绝）。patch 升版或版本未升时的 scope 变更仍须走
     「后继题 ID」路径（旧规则保留）。
+
+    BASIC-BANK-EXPANSION-21（所有者 2026-10-24 裁定）：基本题库允许自身升级与扩张。
+    在 common 中**追加/删除诊断扩展题**只需 minor 升版（删除须留 ``retired_question_ids``
+    墓碑，ID 永不复用）；**核心构念**的增删或替换仍须 major + 后继 ID 映射，以保证
+    历史答案的可比性（本卡不改变这一点）。
     """
     validate_module(old)
     validate_module(new)
@@ -200,6 +264,10 @@ def validate_upgrade(old: dict, new: dict) -> None:
         raise ValueError("module version must increase")
     old_questions = {q["id"]: q for q in old["questions"]}
     new_questions = {q["id"]: q for q in new["questions"]}
+    old_core, new_core = core_construct_ids(old), core_construct_ids(new)
+    if old_core != new_core:
+        if new_version[0] <= old_version[0]:
+            raise ValueError("core construct change requires a major release with successor IDs")
     if old["applies_when"] != new["applies_when"] and old_questions.keys() & new_questions.keys():
         if not _at_least_minor(old_version, new_version):
             raise ValueError(
@@ -218,11 +286,25 @@ def validate_upgrade(old: dict, new: dict) -> None:
     if len(successors) != len(set(successors)) or not set(successors) <= old_questions.keys():
         raise ValueError("successor mapping must uniquely reference an old question")
     if removed:
-        if new_version[0] <= old_version[0]:
-            raise ValueError("question removal requires a major release")
-        superseded = {q.get("supersedes") for q in new["questions"]}
-        if not removed <= superseded:
-            raise ValueError("removed questions require explicit successor mapping")
+        extension_removal = (
+            old["kind"] == "common"
+            and not (old_core & removed)
+            and all(_is_extension_question(old_questions[qid]) for qid in removed)
+        )
+        if extension_removal:
+            # Removing a diagnostic extension is a bank contraction, not a
+            # comparability break: it needs a tombstone, never a major release.
+            if new_version[0] > old_version[0]:
+                raise ValueError(
+                    "extension removal requires only a minor release; a major release "
+                    "is reserved for core construct changes"
+                )
+        else:
+            if new_version[0] <= old_version[0]:
+                raise ValueError("question removal requires a major release")
+            superseded = {q.get("supersedes") for q in new["questions"]}
+            if not removed <= superseded:
+                raise ValueError("removed questions require explicit successor mapping")
     added = new_questions.keys() - old_questions.keys()
     if added and new_version[0] == old_version[0] and new_version[1] <= old_version[1]:
         raise ValueError("new questions require a minor or major release")
@@ -284,7 +366,6 @@ def validate_release(release: dict, artifact_loader: Callable[[str], bytes]) -> 
         module = json.loads(raw, object_pairs_hook=_unique_object)
         if module_id != module.get("module_id") or item["version"] != module.get("version") or item["kind"] != module.get("kind"):
             raise ValueError("module archive identity/version mismatch")
-        validate_module(module)
         actual = {q["id"]: (q["rubric_version"], question_definition_sha256(q))
                   for q in module["questions"]}
         locked = {q["question_id"]: (q["rubric_version"], q["definition_sha256"])
@@ -298,6 +379,13 @@ def validate_release(release: dict, artifact_loader: Callable[[str], bytes]) -> 
         modules[module_id] = module
     if "common" not in modules:
         raise ValueError("release requires common module")
+    # The released core construct set comes from the archived common module, so a
+    # type replacement can only target a construct this release actually carries.
+    core_ids = core_construct_ids(modules["common"])
+    if not core_ids:
+        raise ValueError("release common module must declare at least one core construct")
+    for module in modules.values():
+        validate_module(module, core_ids=core_ids)
     module_retired = {qid for module in modules.values() for qid in module.get("retired_question_ids", [])}
     if not module_retired <= set(release["retired_question_ids"]):
         raise ValueError("release lock omits module retirement tombstones")

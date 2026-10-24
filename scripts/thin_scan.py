@@ -371,6 +371,7 @@ def render(company: str, answers: list[dict], meta: dict, out: Path) -> None:
         )
     identity = meta.get("bank")
     summary = meta.get("summary") or {}
+    question_count = len(answers)
     if identity:
         bank_line = ("题库：" + str(identity.get("package_id"))[:20] + "… · "
                      + str(len(identity.get("modules") or [])) + " 模块 · "
@@ -378,19 +379,20 @@ def render(company: str, answers: list[dict], meta: dict, out: Path) -> None:
                      + str(summary.get("context_scored")) + "/" + str(summary.get("context_total")) + " 扩展题有分"
                      + " · 均值为草稿口径（非正式聚合）")
     else:
-        bank_line = "题库：未绑定（仅 24 题通用清单，结果不可版本化重放）"
+        bank_line = f"题库：未绑定（仅 {question_count} 题通用清单，结果不可版本化重放）"
     page = """<!doctype html><html lang="zh"><meta charset="utf-8">
 <title>__COMPANY__ 薄草稿</title>
 <style>body{font:14px/1.6 system-ui,"Microsoft YaHei";max-width:1100px;margin:32px auto;padding:0 16px;color:#1f2328}
 table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid #e5e7eb;padding:8px;text-align:left;vertical-align:top}
 .q{color:#6b7280;font-size:12px}.warn{background:#fffbeb;border:1px solid #fde68a;padding:10px 12px;border-radius:8px}</style>
-<h1>__COMPANY__ · 24 题薄草稿</h1>
+<h1>__COMPANY__ · __COUNT__ 题薄草稿</h1>
 <p class="warn"><b>草稿，非正式入账</b>：没有 owner 凭证、没有预算预留、没有观察入库。分数只用于先看方向，不能当正式结论或投资建议。</p>
 <p>生成 __WHEN__ · 搜索 __SEARCHES__ 次 · 模型调用 __CALLS__ 次 · 搜索成本约 $__COST__</p>
 <p>__BANK_LINE__</p>
 <table><tr><th>问题</th><th>状态</th><th>分</th><th>结论</th><th>来源</th></tr>__ROWS__</table>
 </body></html>"""
     page = (page.replace("__COMPANY__", html.escape(company))
+                .replace("__COUNT__", str(question_count))
                 .replace("__WHEN__", html.escape(meta["when"]))
                 .replace("__SEARCHES__", str(meta["searches"]))
                 .replace("__CALLS__", str(meta["calls"]))
@@ -406,7 +408,8 @@ def main() -> int:
     parser.add_argument("--questions", type=Path, default=ROOT / "docs/implementation/questions-24.json")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--max-searches-per-question", type=int, default=1)
-    parser.add_argument("--limit", type=int, default=24)
+    parser.add_argument("--limit", type=int, default=None,
+                        help="最多扫描多少题；默认取清单全部题目（不写死题数）")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--as-of")
     parser.add_argument("--bank-manifest", type=Path,
@@ -417,14 +420,16 @@ def main() -> int:
     bank = None
     if args.bank_manifest:
         bank = question_bank.load_manifest(args.bank_manifest)
-        questions = bank["questions"][: args.limit]
+        questions = bank["questions"]
         as_of = args.as_of or bank["identity"].get("as_of") or "2026-10-18"
     else:
         catalog = json.loads(args.questions.read_text(encoding="utf-8-sig"))
-        questions = catalog["questions"][: args.limit]
+        questions = catalog["questions"]
         for q in questions:
             q["core"] = True
         as_of = args.as_of or "2026-10-18"
+    if args.limit is not None:
+        questions = questions[: args.limit]
     args.out.mkdir(parents=True, exist_ok=True)
     spent = 0
     searches = calls = 0

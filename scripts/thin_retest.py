@@ -31,8 +31,8 @@ def main() -> int:
     same = sum(1 for s in deltas if s == 0)
     within_one = sum(1 for s in deltas if s <= 1)
     lines = ["# 同公司重复扫描（稳定性）", "",
-             f"- 第一次有分：{sum(1 for a in left.values() if a['status'] == 'scored')}/24",
-             f"- 第二次有分：{sum(1 for b in right.values() if b.get('status') == 'scored')}/24",
+             f"- 第一次有分：{sum(1 for a in left.values() if a['status'] == 'scored')}/{len(left)}",
+             f"- 第二次有分：{sum(1 for b in right.values() if b.get('status') == 'scored')}/{len(right)}",
              f"- 两次都有分：{both_scored} 题",
              f"- 完全同分：{same}；相差 ≤1：{within_one}",
              f"- 平均绝对差：{statistics.mean(deltas):.2f}" if deltas else "- 无可比分数",

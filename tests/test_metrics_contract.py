@@ -84,11 +84,16 @@ class MetricsContractTests(unittest.TestCase):
             self.assertIn("modules", catalog)
             common_mod = next((m for m in catalog["modules"] if m["id"] == "common"), None)
             self.assertIsNotNone(common_mod)
-            self.assertEqual(common_mod["question_count"], 24)
             common_file = ROOT / common_mod["path"]
-            if common_file.exists():
-                common_data = json.loads(common_file.read_text(encoding="utf-8"))
-                self.assertEqual(len(common_data["questions"]), 24)
+            self.assertTrue(common_file.exists())
+            common_data = json.loads(common_file.read_text(encoding="utf-8"))
+            # BASIC-BANK-EXPANSION-21: count the core constructs in the data; the
+            # bank may expand, so no literal size is asserted here.
+            core = [q for q in common_data["questions"]
+                    if q.get("comparison_role") == "core"]
+            self.assertTrue(core)
+            self.assertEqual(common_mod["question_count"], len(common_data["questions"]))
+            self.assertEqual(len(core), len({q["id"] for q in core}))
 
     def test_sc_11_cross_cohort_incomparability(self):
         """SC-11: Cross-cohort metrics (e.g. bank.roe vs financial.roic) must not be ranked or averaged together."""
@@ -115,15 +120,18 @@ class MetricsContractTests(unittest.TestCase):
 
     def test_sc_15_unknown_diagnostics_and_critical_risk_remain_separate(self):
         """SC-15: Unknown stays in coverage denominator; diagnostics do not enter core dimensions; critical risk stays explicit."""
-        dimensions = list(qs.DIMENSIONS)
+        # BASIC-BANK-EXPANSION-21: the fixture is projected from the released core
+        # constructs, so an expanded bank keeps this test meaningful.
+        _, modules = qs.load_library()
+        released = [q for q in modules["common"]["questions"]
+                    if q.get("comparison_role") == "core"]
         core = []
-        for index in range(1, 25):
-            dimension = dimensions[(index - 1) // 3]
+        for index, source in enumerate(released, start=1):
             core.append({
-                "id": f"IQS_{index:02}",
-                "construct_id": f"IQS_{index:02}",
+                "id": source["id"],
+                "construct_id": source["construct_id"],
                 "comparison_role": "core",
-                "dimension": dimension,
+                "dimension": source["dimension"],
                 "score": None if index == 1 else (3 if index == 2 else 8),
                 "status": "unknown" if index == 1 else "scored",
                 "aggregation": "scored",
@@ -140,10 +148,14 @@ class MetricsContractTests(unittest.TestCase):
 
         self.assertEqual(baseline["dimensions"], with_diagnostic["dimensions"])
         self.assertEqual(baseline["growth_score"], with_diagnostic["growth_score"])
-        self.assertEqual(baseline["dimensions"]["business"]["applicable"], 3)
-        self.assertEqual(baseline["dimensions"]["business"]["valid"], 2)
-        self.assertEqual(baseline["dimensions"]["business"]["coverage"], round(2 / 3, 4))
-        self.assertIn({"id": "IQS_02", "kind": "material_concern", "status": "scored", "score": 3},
+        business = [q for q in released if q["dimension"] == "business"]
+        self.assertEqual(baseline["dimensions"]["business"]["applicable"], len(business))
+        self.assertEqual(baseline["dimensions"]["business"]["valid"],
+                         len(business) - (1 if business else 0))
+        self.assertEqual(baseline["dimensions"]["business"]["coverage"],
+                         round((len(business) - 1) / len(business), 4))
+        self.assertIn({"id": released[1]["id"], "kind": "material_concern",
+                       "status": "scored", "score": 3},
                       baseline["critical_issues"])
 
     def test_dur_01_and_dur_02_evidence_demands(self):

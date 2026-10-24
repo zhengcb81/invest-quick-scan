@@ -37,13 +37,17 @@ def main() -> int:
             if present:
                 medians.append(statistics.median(present))
         name = documents[0].get("company") or key
-        summary.append((name, len(documents), len(medians), statistics.mean(medians) if medians else None))
+        total = max(len(document["answers"]) for document in documents)
+        summary.append((name, len(documents), len(medians), total,
+                        statistics.mean(medians) if medians else None))
     lines += ["| 公司 | 运行次数 | 有分题 | 中位数均值 |", "|---|---:|---:|---:|"]
-    for name, runs, count, mean in summary:
-        lines.append(f"| {name} | {runs} | {count}/24 | {'-' if mean is None else f'{mean:.1f}'} |")
+    for name, runs, count, total, mean in summary:
+        lines.append(f"| {name} | {runs} | {count}/{total} | "
+                     f"{'-' if mean is None else f'{mean:.1f}'} |")
     lines += ["", "对比页仍按单次运行展示；中位数用于降低单次噪声。"]
     args.markdown.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(json.dumps([{"name": n, "runs": r, "answered": c, "mean": round(m, 2) if m else None} for n, r, c, m in summary], ensure_ascii=False))
+    print(json.dumps([{"name": n, "runs": r, "answered": c, "total": t,
+                       "mean": round(m, 2) if m else None} for n, r, c, t, m in summary], ensure_ascii=False))
     return 0
 
 

@@ -580,7 +580,8 @@ class ModuleRegistryTests(unittest.TestCase):
                                             "lens_rationale": {"pricing_lens": "显式研究定价能力"}})
         self.assertIn("PRICING_LENS_01", {q["id"] for q in with_lens["questions"]})
         self.assertEqual(original["method_id"], with_lens["method_id"])
-        self.assertEqual(sum(q["comparison_role"] == "core" for q in with_lens["questions"]), 24)
+        self.assertEqual(sum(q["comparison_role"] == "core" for q in with_lens["questions"]),
+                         len(mc.core_construct_ids(registry.load_current(root=self.root)[1]["common"])))
         self.assertEqual(len(qs.validate_manifest_metric_contract(with_lens)), with_lens["question_count"])
 
         package, modules, release, _ = registry.load_current(root=self.root)

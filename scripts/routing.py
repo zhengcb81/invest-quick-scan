@@ -739,7 +739,8 @@ def resolve_route_decision(route_input, *, package_id, route_response=None, exec
             "dispatch_plan": {"requested_mode": requested_mode, "resolved_mode": requested_mode,
                               "business_scope_compatible": scope_compatible,
                               "status": dispatch_status, "mandatory_question_ids": mandatory,
-                              "minimum_questions": 24 + len(mandatory), "coverage_gaps": sorted(set(gaps)),
+                              "minimum_questions": minimum_question_count(modules, mandatory),
+                              "coverage_gaps": sorted(set(gaps)),
                               "segment_requests": segment_requests}}
     if policy.get("partial_dispatch") == "common_and_mandatory_risk":
         body["dispatch_plan"]["eligible_module_ids"] = eligible
@@ -754,6 +755,24 @@ def resolve_route_decision(route_input, *, package_id, route_response=None, exec
     result = mc.seal_route_decision(body)
     validate_route_snapshot(result, root=root)
     return result
+
+
+def minimum_question_count(modules, mandatory_question_ids=()) -> int:
+    """The dispatch floor: the released core construct count plus routed risks.
+
+    BASIC-BANK-EXPANSION-21（所有者 2026-10-24 裁定）：核心题数由发布包 ``common``
+    模块派生，不再写死。类型替换题占用同一个构念槽位，因此核心槽位数恒等于核心
+    构念数；强制风险题（mandatory）与核心题一起计入派发最低题数，但不进入核心评分分母。
+    """
+    core = mc.core_construct_ids(modules["common"])
+    if not core:
+        raise ValueError("common module must declare at least one core construct")
+    return len(core) + len(mandatory_question_ids)
+
+
+def _minimum_questions_for_route(decision, modules):
+    """Derive the frozen route's dispatch floor from its own release."""
+    return minimum_question_count(modules, decision["dispatch_plan"]["mandatory_question_ids"])
 
 
 def validate_route_snapshot(decision, *, root=ROOT):
@@ -838,7 +857,8 @@ def validate_route_snapshot(decision, *, root=ROOT):
             or profile["recovery_rationale"] != (by_id["recovery"]["rationale"] if "recovery" in selected else "")):
         raise ValueError("frozen profile rationale contradicts module decisions")
     mandatory = sorted({qid for mid in selected for qid in rules[mid]["mandatory_question_ids"]})
-    if decision["dispatch_plan"]["mandatory_question_ids"] != mandatory or decision["dispatch_plan"]["minimum_questions"] != 24 + len(mandatory):
+    if (decision["dispatch_plan"]["mandatory_question_ids"] != mandatory
+            or decision["dispatch_plan"]["minimum_questions"] != minimum_question_count(modules, mandatory)):
         raise ValueError("route mandatory risk coverage differs from frozen policy")
     dispatch = decision["dispatch_plan"]
     if dispatch["requested_mode"] != dispatch["resolved_mode"]:

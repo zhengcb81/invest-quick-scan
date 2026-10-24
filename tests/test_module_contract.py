@@ -273,16 +273,32 @@ class ModuleContractTests(unittest.TestCase):
             mc.validate_module(extension)
 
     def test_common_core_and_type_replacement_are_frozen(self):
+        # BASIC-BANK-EXPANSION-21（所有者 2026-10-24 裁定）：基本题库允许扩张，
+        # common 可以携带诊断扩展题；核心构念本身仍只能通过 major + 后继 ID 变化。
         common = copy.deepcopy(self.modules["common"])
         added = copy.deepcopy(common["questions"][0])
         added.update(id="IQS_25", metric_id="score.iqs_25", construct_id="IQS_25")
         common["questions"].append(added)
-        with self.assertRaisesRegex(ValueError, "frozen 24"):
-            mc.validate_module(common)
+        core = mc.core_construct_ids(common)
+        self.assertIn("IQS_25", core)
+        mc.validate_module(common, core_ids=core)
+        # 新增核心构念在升级路径上仍须 major（minor 被拒绝，见 ExpansionUpgradeTests）。
+        minor = copy.deepcopy(common)
+        minor["version"] = "3.1.0"
+        with self.assertRaisesRegex(ValueError, "core construct change requires a major"):
+            mc.validate_upgrade(self.modules["common"], minor)
+        # 诊断扩展题不是核心构念：不进核心集合，也不改变核心分母。
+        extension = copy.deepcopy(self.modules["common"]["questions"][0])
+        extension.update(id="IQS_26", metric_id="score.iqs_26", construct_id=None,
+                         comparison_role="diagnostic", aggregation="diagnostic")
+        extended = copy.deepcopy(self.modules["common"])
+        extended["questions"].append(extension)
+        self.assertEqual(mc.core_construct_ids(extended), mc.core_construct_ids(self.modules["common"]))
+        mc.validate_module(extended, core_ids=mc.core_construct_ids(extended))
         bank = copy.deepcopy(self.modules["bank"])
         bank["questions"][0].update(construct_id="IQS_25", replaces=["IQS_25"])
         with self.assertRaisesRegex(ValueError, "one frozen core construct"):
-            mc.validate_module(bank)
+            mc.validate_module(bank, core_ids=mc.core_construct_ids(self.modules["common"]))
         duplicate_type = copy.deepcopy(self.modules["operating"])
         duplicate_type["questions"][1].update(construct_id="IQS_11", replaces=["IQS_11"])
         with self.assertRaisesRegex(ValueError, "duplicate core replacement"):

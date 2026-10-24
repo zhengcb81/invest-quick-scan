@@ -34,8 +34,9 @@ def main() -> int:
             scored = [a for a in doc.get("answers", []) if a.get("status") == "scored"]
             if scored:
                 avg = sum(a["score"] for a in scored) / len(scored)
-                thin_rows.append((doc.get("company") or directory.name, len(scored), avg))
-    thin_rows.sort(key=lambda row: -row[2])
+                thin_rows.append((doc.get("company") or directory.name, len(scored),
+                                  len(doc.get("answers", [])), avg))
+    thin_rows.sort(key=lambda row: -row[3])
     lines = [
         f"# 项目状态快照（{date.today().isoformat()}）",
         "",
@@ -56,12 +57,14 @@ def main() -> int:
         f"- 金融机械检查：{fin['observations']} 条 · pass {fin['mechanical_pass']} / fail {fin['mechanical_fail']}",
         f"- 引用溯源：{prov['observations']} 条 · pass {prov['pass']} / fail {prov['fail']} / research_only {prov['research_only']}",
         "",
-        "## 薄草稿扫描（24 题）",
+        "## 薄草稿扫描",
         "",
     ]
     if thin_rows:
-        lines.append(f"- {len(thin_rows)} 家；有分题数 {sum(r[1] for r in thin_rows)}/{24 * len(thin_rows)}")
-        lines.append("- 平均分（仅有分数的题）：" + "、".join(f"{n} {a:.1f}({c})" for n, c, a in thin_rows[:6]))
+        scored_total = sum(r[1] for r in thin_rows)
+        asked_total = sum(r[2] for r in thin_rows)
+        lines.append(f"- {len(thin_rows)} 家；有分题数 {scored_total}/{asked_total}")
+        lines.append("- 平均分（仅有分数的题）：" + "、".join(f"{n} {a:.1f}({c})" for n, c, _, a in thin_rows[:6]))
         lines.append("- 完整对比：docs/implementation/reviews/thin-scan-2026-10-18/compare.html")
     else:
         lines.append("- 尚无薄草稿结果")

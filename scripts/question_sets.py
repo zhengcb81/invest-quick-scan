@@ -67,7 +67,8 @@ def validate_library():
     catalog, modules = module_registry.validate_source_registry(root=ROOT)
     assert len(modules) == len(catalog['modules']), 'duplicate module IDs'
     ids = set()
-    common_ids = {q['id'] for q in modules['common']['questions']}
+    common_ids = module_contract.core_construct_ids(modules['common'])
+    assert common_ids, 'common module must declare at least one core construct'
     for entry in catalog['modules']:
         module = modules[entry['id']]
         assert module['module_id'] == entry['id'] and module['kind'] == entry['kind']
@@ -86,6 +87,10 @@ def validate_library():
             mapping = metric_mapping(q)
             assert (mapping['aggregation_role'] == 'diagnostic_only') == (
                 q.get('aggregation', 'scored') == 'diagnostic')
+            if module['kind'] == 'common' and q['comparison_role'] != 'core':
+                # 诊断扩展题：只做诊断，不进核心固定比较，也不进质量汇总
+                assert q.get('aggregation') == 'diagnostic' and q['construct_id'] is None
+                assert not q.get('replaces')
             expected_construct = q['id'] if module['kind'] == 'common' else next(iter(q.get('replaces', [])), None)
             assert q['construct_id'] == expected_construct
             assert set(q['anchors']) == {'1', '5', '10'}
@@ -96,8 +101,9 @@ def validate_library():
                 assert module['kind'] == 'types' and target in common_ids
                 assert target not in replaced, f'duplicate replacement in {module["module_id"]}'
                 replaced.add(target)
-    assert len(common_ids) == 24 and all(q['priority'] == 1 for q in modules['common']['questions'])
-    assert {q['id'] for q in modules['common']['questions'] if q.get('critical')} == {'IQS_12', 'IQS_13', 'IQS_16'}
+    common_questions = modules['common']['questions']
+    assert all(q['priority'] == 1 for q in common_questions if q['comparison_role'] == 'core')
+    assert {q['id'] for q in common_questions if q.get('critical')} == {'IQS_12', 'IQS_13', 'IQS_16'}
     factors = {q['factor'] for q in modules['dupont']['questions']}
     assert factors == {'roe', 'net_margin', 'asset_turnover', 'equity_multiplier',
                        'operating_margin', 'interest_burden', 'tax_burden'}
@@ -107,7 +113,9 @@ def validate_library():
                for q in modules[key]['questions'])
     assert sum(QUALITY_WEIGHTS.values()) == 100
     return {'modules': len(modules), 'questions': len(ids),
-            'by_kind': dict(Counter(m['kind'] for m in modules.values()))}
+            'by_kind': dict(Counter(m['kind'] for m in modules.values())),
+            'core_constructs': len(common_ids),
+            'common_questions': len(common_questions)}
 
 
 def validate_profile(profile, modules, contexts=None):
@@ -395,15 +403,26 @@ def parse_answer(q, raw, as_of):
     return result
 
 
-def summarize(records, policy='legacy-all-questions'):
+def summarize(records, policy='legacy-all-questions', *, core_ids=None):
+    """Aggregate one run's records under the requested policy.
+
+    ``core-constructs-v1`` 是固定比较口径：每个发布版核心构念恰好一行，且行集合与
+    发布包的核心集合一致。``core_ids`` 由调用方从发布包（manifest/release）传入；
+    未提供时退化为「核心行唯一且非空」——绝不写死题数或固定 ID 列表
+    （BASIC-BANK-EXPANSION-21，所有者 2026-10-24 裁定）。
+    """
     if policy not in ('legacy-all-questions', 'core-constructs-v1'):
         raise ValueError('unknown aggregation policy')
     base_records = records
     if policy == 'core-constructs-v1':
         base_records = [r for r in records if r.get('comparison_role') == 'core']
         constructs = [r.get('construct_id') for r in base_records]
-        if len(constructs) != 24 or set(constructs) != {f'IQS_{i:02}' for i in range(1, 25)}:
-            raise ValueError('fixed comparison requires exactly one row per core construct')
+        if core_ids is None:
+            if (not constructs or None in constructs or len(constructs) != len(set(constructs))):
+                raise ValueError('fixed comparison requires one row per core construct')
+        elif (len(constructs) != len(set(constructs)) or set(constructs) != set(core_ids)
+                or None in constructs):
+            raise ValueError('fixed comparison requires one row per core construct')
     dimensions = {}
     for dimension in DIMENSIONS:
         applicable = [r for r in base_records if r['dimension'] == dimension
@@ -940,7 +959,8 @@ def normalize_screening(manifest, bundle):
             record.update({'status': 'unknown', 'score': None, 'screening_status': 'unusable',
                            'screening_error': str(exc)})
         records.append(record)
-    summary = summarize(records, manifest.get('aggregation_policy', 'legacy-all-questions'))
+    summary = summarize(records, manifest.get('aggregation_policy', 'legacy-all-questions'),
+                        core_ids=_manifest_core_ids(manifest))
     checked_count = len(issued_receipts)
     provenance_status = ('screening_checked' if checked_count == len(questions)
                          else 'partially_checked' if checked_count else 'unusable')
@@ -952,6 +972,20 @@ def normalize_screening(manifest, bundle):
             'recovery_watch': recovery_watch(records, manifest, summary),
             'formal_research_status': 'not_accepted',
             'notice': 'screening分数仅供海选；正式深研接受和原文事实审核仍由各自拥有者完成。'}
+
+
+def _manifest_core_ids(manifest):
+    """Derive the run's core construct set from its own manifest questions.
+
+    The manifest records the released question definitions verbatim, so this is
+    the release's core set without re-reading a mutable catalog.
+    """
+    questions = manifest.get('questions')
+    if not isinstance(questions, list):
+        return None
+    return frozenset(q['construct_id'] for q in questions
+                     if isinstance(q, dict) and q.get('comparison_role') == 'core'
+                     and q.get('construct_id'))
 
 
 def normalize(manifest, answers, review=None):
@@ -1004,7 +1038,8 @@ def normalize(manifest, answers, review=None):
                 record.update({'status': 'invalid', 'error': str(exc)})
         records.append(record)
     expected_prompts = {q['prompt'] for q in manifest['questions']}
-    summary = summarize(records, manifest.get('aggregation_policy', 'legacy-all-questions'))
+    summary = summarize(records, manifest.get('aggregation_policy', 'legacy-all-questions'),
+                        core_ids=_manifest_core_ids(manifest))
     return {'schema_version': manifest.get('schema_version', '2.1'), 'profile': profile, 'mode': manifest['mode'],
             'provenance_status': 'legacy_unattributed', 'model': None, 'answered_at': None,
             'template_version': manifest.get('template_version', 'unknown'),
