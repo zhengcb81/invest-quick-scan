@@ -26,7 +26,7 @@
 | 四模型 × 你 12 条裁定 | deepseek 11/12（优于规则引擎 10/12）；两处差异均源于**规则文本**而非模型能力 |
 | 4 模块 × 24 家 shadow | 96 格零错误；high 59 / medium 37 / low 0；**「快照适用但 LLM 说 no」= 0 格**，LLM 只补充 13 格 |
 | GAP-CLOSE-16 R2 前后 | 空集→no_evidence、缺格→incomplete；真实 RED 日志 4 failed / 16 passed |
-| 主仓全量回归 | 见下方（跑完补） |
+| 主仓全量回归 | **1036 passed / 3 skipped / 755 subtests**（14:30 完成，exit 0；较今日早间 1011 增加 25 项——本月新增的管线审计/复核包/LLM 探针测试） |
 
 ## 四、未决事项（需所有者）
 
