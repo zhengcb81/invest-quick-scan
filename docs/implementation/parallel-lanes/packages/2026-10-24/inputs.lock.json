@@ -1,0 +1,65 @@
+{
+  "format_version": "1.0.0",
+  "package_id": "APPLIC-GAP-CLOSE-16",
+  "recorded_at_utc": "2026-10-24T08:20:00Z",
+  "recorded_by": "main_coordinator",
+  "inputs": [
+    {
+      "role": "consumer_baseline",
+      "repository": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab",
+      "commit": "0f3dc3ee2c01ed019f32de0e37e29b16b29acac7",
+      "note": "UI-APPLIC-BRIDGE-15 交付 HEAD；本卡对其只读"
+    },
+    {
+      "role": "consumer_file",
+      "path": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab/adapters/contracts.py",
+      "bytes": 8120,
+      "sha256": "4852544f0e66addb44208daecef5b5a7338856ef20a441d632184cb0af5e54b2"
+    },
+    {
+      "role": "consumer_file",
+      "path": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab/adapters/applicability_resolver.py",
+      "bytes": 5460,
+      "sha256": "469ef2826563e56e847b51980bcb9304c5ff2998470569974c6d8e5c4b28f3a8"
+    },
+    {
+      "role": "closure_evidence",
+      "path": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab/docs/handoff/UI-APPLIC-BRIDGE-15/logs/known_gaps_assessment.log",
+      "bytes": 2563,
+      "sha256": "72908ea2b43f28123e331a373dc52382fbcb10f0212dba7af4f974c28eda449b",
+      "note": "UI 卡 U5 实测：10272 格 basis 全同值映射，改写对 0 —— ui_rewrites_basis 关闭依据"
+    },
+    {
+      "role": "provider_file",
+      "path": "C:/Users/郑曾波/Projects/iqs-applic-lab/src/applic/parity_check.py",
+      "bytes": 9655,
+      "sha256": "31a0a0b49f65e0ead5e5d15737704792cce2eb4f3adcb1a6ec5dc4bbea3b5cd6"
+    },
+    {
+      "role": "provider_file",
+      "path": "C:/Users/郑曾波/Projects/iqs-applic-lab/scripts/export_ui.py",
+      "bytes": 475,
+      "sha256": "6d55da77975761592055ddf782b867b0575404b298c46aab04b69ecd09973964"
+    },
+    {
+      "role": "provider_file",
+      "path": "C:/Users/郑曾波/Projects/iqs-applic-lab/docs/interface-proposals.md",
+      "bytes": 9908,
+      "sha256": "045822bb6d6b8175fd79f7efa6665ac02ab32ccb6a8af4962a97769baa42ea57"
+    },
+    {
+      "role": "provider_file",
+      "path": "C:/Users/郑曾波/Projects/iqs-applic-lab/demo/ui-export.json",
+      "bytes": 8431811,
+      "sha256": "83f1a5e33370d031e2c52a4e92ef1eca85db4260657b59a34a0358e12cba3f63",
+      "note": "快照 applicsnap_d296902c… 的导出；not_evaluated=0，导出切换不可观测（AC-03 过渡声明依据）"
+    },
+    {
+      "role": "provider_file",
+      "path": "C:/Users/郑曾波/Projects/iqs-applic-lab/design/functional-tech.md",
+      "bytes": 24559,
+      "sha256": "c58cf61bfab4c3f03d56cbc36e62f9e40e93424c04d711e37b87c4df99ac4629"
+    }
+  ],
+  "freeze": "派发后输入不得改动；任一 hash 与磁盘不符即停。UI 仓若因 R1 前移 HEAD，parity 以交接时点 HEAD 为准并在 report 注明（卡 §8 R1）。"
+}

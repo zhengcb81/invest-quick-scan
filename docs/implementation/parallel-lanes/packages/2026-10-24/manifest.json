@@ -1,0 +1,18 @@
+{
+  "batch": "2026-10-24",
+  "task_source": "../../../tasks.json",
+  "packages": [
+    {
+      "id": "APPLIC-GAP-CLOSE-16",
+      "lane_id": "iqs",
+      "document": "APPLIC-GAP-CLOSE-16.md",
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-applic-lab",
+      "task_ids": ["A01"],
+      "depends_on": ["APPLIC-RESOLVE-14", "UI-APPLIC-BRIDGE-15"],
+      "readiness": "ready_for_scoped_support",
+      "workers_dispatched": false,
+      "support_only": true,
+      "note": "把 parity known_gaps 从静态文字改为证据驱动；落地 UI-BRIDGE-15 已验证的 ui_rewrites_basis 关闭与 not_evaluated 过渡声明。写范围仅 applic 仓。"
+    }
+  ]
+}
