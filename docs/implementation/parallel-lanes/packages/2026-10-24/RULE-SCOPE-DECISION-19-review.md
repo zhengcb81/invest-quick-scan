@@ -60,6 +60,10 @@
 ## 5. 复核中发现（承接实施报告）
 
 - **F1（开放项，需所有者裁定）主仓真实发布库的下一次 `publish()` 会被 `validate_upgrade` 阻断**：
+  **【2026-10-24 晚更新：已关闭】** 所有者择**方案 B**（`applies_when` 就地修订须 ≥minor 升版；题面/anchors/题 ID 不可变），
+  三模块升 **3.1.0** 并发布 **v1 包 `pkg_ca11c5c3…`（current）** 与 **v2 包 `pkg_143d610a…`（router 2.4.0）**；
+  详见 [OWNER-RULINGS-R3.md](OWNER-RULINGS-R3.md)。以下为原记录：
+  主仓真实发布库的 `publish()` 曾被「applies_when 变化且新旧题 ID 相交 ⇒ 必须换后继题 ID」阻断；
   「applies_when 变化且新旧题 ID 相交 ⇒ 必须换后继题 ID」。本卡按所有者要求就地改文本、题面不动，与该校验
   冲突。已用冻结 3.0.0 归档 × 新源文件实测复现（industrial/dupont 均报
   `module applicability scope change requires successor IDs for all questions`）。测试与组装不受影响
@@ -133,4 +137,17 @@
 - **G1、G3、G4、G6 完成；G2 PARTIAL（两项待所有者裁定）；G5 所有者签收待办。**
 - 需所有者决策的开放项：**F1/R-01 发布路径冻结**、**R-02/F8 v2 路由默认诊断**、**R-04/F7 UI 生成数据重建**、
   **R-05 银行 activation/版本政策**、**R-06 卡片勘误**、**R-07 指针清理**。其余为已注明的口径/后续项。
+
+## 8. R3 更新（2026-10-24 晚，所有者追加裁定）
+
+本报告为**复核时点（2026-10-24 白天）**的记录；当晚所有者对两项开放项给出裁定，状态已变化：
+
+| 原开放项 | 裁定 | 现状态 |
+|---|---|---|
+| F1/R-01 发布契约阻断 | 所有者选**方案 B**（「1，B，做，该重构就重构」）：`applies_when` 允许就地修订，需 ≥minor 升版；题面/anchors/题 ID 不可变 | **已关闭**：三模块升 **3.1.0**，发布 **v1 包 `pkg_ca11c5c3…`（current）** + **v2 包 `pkg_143d610a…`（router 2.4.0）** |
+| R-02/F8 v2 路由默认诊断 | 所有者「2，做」 | **已关闭**：新谓词 `default_diagnostic` + router **2.4.0**；路由判定 `selected/policy/default_mandatory`，路由驱动组装 12 题（`test_default_diagnostics_are_selected_by_policy`） |
+| R3-4 基本题库扩张 / 去硬编码 24 | 所有者：「24 的限制不该有；基本题库要允许升级扩张；架构不应依赖硬编码数字」+「把本项目先收尾，这个重构另作一卡或交接主线」 | **另卡**：[BASIC-BANK-EXPANSION-21.md](BASIC-BANK-EXPANSION-21.md)（已登记 `ready_for_dispatch`） |
+| R-04/F7、R-05、R-06、R-07 | 未变 | 仍开放/已记录（见 [OWNER-RULINGS-R3.md](OWNER-RULINGS-R3.md) §2） |
+
+裁定原文与落地清单见 [OWNER-RULINGS-R3.md](OWNER-RULINGS-R3.md)。
 

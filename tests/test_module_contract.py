@@ -182,8 +182,18 @@ class ModuleContractTests(unittest.TestCase):
         same_ids_scope_change = copy.deepcopy(old)
         same_ids_scope_change["version"] = "3.0.1"
         same_ids_scope_change["applies_when"] = "适用范围已经发生实质变化"
-        with self.assertRaisesRegex(ValueError, "applicability scope change requires successor IDs"):
+        with self.assertRaisesRegex(ValueError, "at least a minor module version bump"):
             mc.validate_upgrade(old, same_ids_scope_change)
+
+        # R3-1（所有者 2026-10-24 裁定，方案 B）：minor 升版即允许就地修订 applies_when，
+        # 题面/anchors/题 ID 仍不可变。
+        scope_revision = copy.deepcopy(old)
+        scope_revision["version"] = "3.1.0"
+        scope_revision["applies_when"] = "适用范围已经发生实质变化"
+        mc.validate_upgrade(old, scope_revision)
+        scope_revision["questions"][0]["question"] += "（连同题面一起改）"
+        with self.assertRaisesRegex(ValueError, "published question content is immutable"):
+            mc.validate_upgrade(old, scope_revision)
 
         successor_release = copy.deepcopy(old)
         successor_release["version"] = "4.0.0"

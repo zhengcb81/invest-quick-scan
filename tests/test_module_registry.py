@@ -116,7 +116,7 @@ class ModuleRegistryTests(unittest.TestCase):
         self.assertEqual(len(qs.validate_manifest_metric_contract(manifest)), manifest["question_count"])
         with self.assertRaisesRegex(ValueError, "changed or rolled-back published module version"):
             self.publish()
-        changed["version"] = "3.1.0"
+        changed["version"] = "3.1.1"
         qs.write_json(editable, changed)
         with self.assertRaisesRegex(ValueError, "published question content is immutable"):
             self.publish()

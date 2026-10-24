@@ -1446,8 +1446,8 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
     def test_s06_t1_real_quick_full_and_method_preserve_24_core(self):
         quick = self.compose_route(self.route(), 'quick')
         full = self.compose_route(self.route(input_changes={'requested_mode': 'full'}), 'full')
-        self.assertEqual(quick['question_count'], 28)
-        self.assertEqual(full['question_count'], 34)
+        self.assertEqual(quick['question_count'], 40)
+        self.assertEqual(full['question_count'], 46)
         self.assertEqual(quick['method_id'], full['method_id'])
         self.assertEqual(quick['replacements'], {'IQS_03': 'OPERATING_02', 'IQS_11': 'OPERATING_01'})
 
@@ -1455,7 +1455,7 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
         facts = self.normal('mature') + [self.fact('cyclical', cycle_position='trough')]
         quick = self.compose_route(self.route(facts), 'quick')
         full = self.compose_route(self.route(facts, input_changes={'requested_mode': 'full'}), 'full')
-        self.assertEqual((quick['question_count'], full['question_count']), (34, 42))
+        self.assertEqual((quick['question_count'], full['question_count']), (46, 54))
         self.assertEqual(quick['profile']['stage'], 'mature')
         self.assertEqual(quick['method_id'], full['method_id'])
         self.assertEqual(len([q for q in quick['questions'] if q['module_id'] == 'recovery']), 4)
@@ -1463,7 +1463,7 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
 
     def test_s06_t3_budget30_exports_all_six_risk_questions_budget24_writes_nothing(self):
         decision = self.route(self.normal() + [self.fact('distressed', evidence_type='covenant_breach')])
-        self.assertEqual(self.compose_route(decision, 'complete')['question_count'], 34)
+        self.assertEqual(self.compose_route(decision, 'complete')['question_count'], 46)
         with self.assertRaisesRegex(ValueError, 'budget below mandatory'):
             self.compose_route(decision, 'invalid24', max_questions=24)
         self.assertFalse((self.root / 'outputs/invalid24').exists())
@@ -1472,7 +1472,7 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
         self.assertEqual(manifest['question_count'], 30)
         self.assertTrue(required <= {q['id'] for q in manifest['questions']})
         self.assertTrue(required.isdisjoint(q['question_id'] for q in manifest['deferred_questions']))
-        self.assertEqual(len(manifest['deferred_questions']), 4)
+        self.assertEqual(len(manifest['deferred_questions']), 16)
 
     def test_s06_t4_full_three_industries_requires_compatible_scope_and_no_legacy_relaxation(self):
         facts = self.normal() + [self.fact(m, materiality={'revenue_share': .3}) for m in ('industrial', 'software')]
@@ -1554,8 +1554,8 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
         self.cli(['compose-route', '--route-decision', route_path, '--now-utc', self.now,
                   '--expected-route-decision-id', decision['decision_id'], '--out-dir', output])
         manifest = qs.read_json(output / 'manifest.json')
-        self.assertEqual(manifest['question_count'], 28)
-        self.assertEqual(len(qs.validate_manifest_metric_contract(manifest)), 28)
+        self.assertEqual(manifest['question_count'], 40)
+        self.assertEqual(len(qs.validate_manifest_metric_contract(manifest)), 40)
         self.assertEqual(manifest['route_decision_id'], decision['decision_id'])
 
     def test_s06_stockqa_public_result_cli_adapts_and_composes_by_public_contract(self):
@@ -1605,7 +1605,7 @@ class RouteCompositionTests(_route_fixture_module.RoutingFixture):
                   '--expected-route-decision-id', decision['decision_id'], '--out-dir', output])
         manifest = qs.read_json(output / 'manifest.json')
         self.assertEqual(manifest['route_decision_id'], decision['decision_id'])
-        self.assertEqual(manifest['question_count'], 28)
+        self.assertEqual(manifest['question_count'], 40)
 
     def test_mod19_native_cli_persists_low_classification_confidence_and_keeps_verified_route(self):
         identity_path = self.root / 'identity-low.json'

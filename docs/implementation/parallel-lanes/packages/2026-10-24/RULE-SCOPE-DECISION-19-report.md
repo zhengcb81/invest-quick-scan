@@ -136,3 +136,15 @@ lane 交付：内容提交 `e8fbfbf3537031486d30d050c6c1f4c6984de0e7`（7 文件
 
 - `docs/implementation/pipeline-review/review-pack-01.jsonl` **未修改**（append-only）；R003（CATL/industrial，keep_composition，「电池制造业当然是制造业（工业）」）保留原行。
 - 注记：**R003 由 D-2026-10-24 裁定取代** —— industrial 收窄为装备制造，CATL（电池电芯）不适用；下一份 pack（pack-02）在两侧一致后不再出现该行。pack-02 需在新快照 + 修正后 CATL/Alphabet 组装之上由 `applic_pipeline_check.py` 重新生成，属后续动作（本轮不伪造 pack 数据）。
+
+## 8. R3 后续变更（2026-10-24 晚，所有者追加裁定）
+
+本报告 §1–§7 是白天交付时点的记录。当晚所有者裁定并落地（详见 [OWNER-RULINGS-R3.md](OWNER-RULINGS-R3.md)）：
+
+1. **发布契约（方案 B）**：`applies_when` 允许就地修订（≥minor 升版），题面/anchors/题 ID 不变 →
+   三模块升 **3.1.0**，发布 **v1 包 `pkg_ca11c5c3…`（current）** 与 **v2 包 `pkg_143d610a…`（router 2.4.0）**。
+   §5-F1 的「发布阻断」已关闭。
+2. **路由默认诊断**：新增谓词 `default_diagnostic`、router **2.4.0**；路由驱动组装与 profile 驱动一样恒含
+   dupont/porter（实测 12 题）。§0 AC-02 的 PARTIAL 边界（路由路径）已关闭。
+3. **基本题库扩张 / 去硬编码 24**：所有者要求另卡 → [BASIC-BANK-EXPANSION-21.md](BASIC-BANK-EXPANSION-21.md)
+   （已登记 `ready_for_dispatch`）；本轮未实施，相关半成品改动已回退。

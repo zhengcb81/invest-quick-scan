@@ -177,8 +177,20 @@ def effective_semantic_sha256(question: dict, *, applied_contexts: list[str],
                    "renderer_version": renderer_version})
 
 
+def _at_least_minor(old: tuple[int, int, int], new: tuple[int, int, int]) -> bool:
+    """是否至少升了一个 minor（major 亦算）。"""
+    return new[0] > old[0] or (new[0] == old[0] and new[1] > old[1])
+
+
 def validate_upgrade(old: dict, new: dict) -> None:
-    """Keep published questions and their applicability scope immutable in place."""
+    """Keep published questions immutable; allow rule-scope revisions with a minor bump.
+
+    R3-1（所有者 2026-10-24 裁定，方案 B）：``applies_when`` 是可修订的**适用条件说明**——
+    它不进入题面、anchors 或答案内容，历史答案的含义不因其变化而改变。因此允许在
+    **至少一次 minor 版本升版**的前提下就地修订；题面、anchors 与题 ID 仍绝对不可变
+    （同 ID 内容改动一律拒绝）。patch 升版或版本未升时的 scope 变更仍须走
+    「后继题 ID」路径（旧规则保留）。
+    """
     validate_module(old)
     validate_module(new)
     if (old["module_id"], old["kind"]) != (new["module_id"], new["kind"]):
@@ -189,7 +201,11 @@ def validate_upgrade(old: dict, new: dict) -> None:
     old_questions = {q["id"]: q for q in old["questions"]}
     new_questions = {q["id"]: q for q in new["questions"]}
     if old["applies_when"] != new["applies_when"] and old_questions.keys() & new_questions.keys():
-        raise ValueError("module applicability scope change requires successor IDs for all questions")
+        if not _at_least_minor(old_version, new_version):
+            raise ValueError(
+                "applicability scope revision requires at least a minor module version bump "
+                "(or successor IDs for all questions)"
+            )
     removed = old_questions.keys() - new_questions.keys()
     old_retired = set(old.get("retired_question_ids", []))
     new_retired = set(new.get("retired_question_ids", []))

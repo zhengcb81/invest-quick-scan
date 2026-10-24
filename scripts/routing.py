@@ -18,13 +18,16 @@ import module_contract as mc
 import module_registry as registry
 
 ROOT = Path(__file__).resolve().parents[1]
-ROUTER_VERSION = "2.3.0"
+ROUTER_VERSION = "2.4.0"
+"""2.4.0：新增 ``default_diagnostic`` 谓词——适用条件为“对所有公司必做”的诊断模块
+（当前为 dupont / porter，RULE-SCOPE-DECISION-19 + R2 所有者裁定）在路由判定中**恒被选中**，
+使路由驱动组装与 profile 驱动组装一样默认包含它们（R-02/F8 关闭）。"""
 AXES = {"common": "common", "types": "type", "industries": "industry", "stages": "lifecycle",
         "overlays": "attribute", "diagnostics": "diagnostic", "lenses": "lens",
         "common_extensions": "common_extension"}
 PREDICATES = {"always", "type_evidence", "industry_evidence", "lifecycle_evidence",
-              "cycle_evidence", "attribute_evidence", "user_diagnostic", "recovery_evidence",
-              "user_lens", "common_extension"}
+              "cycle_evidence", "attribute_evidence", "user_diagnostic", "default_diagnostic",
+              "recovery_evidence", "user_lens", "common_extension"}
 POSITION = {"upturn", "peak", "downturn", "trough", "recovery", "unknown"}
 RECOVERY_POSITIONS = {"downturn", "trough", "recovery"}
 BASE_SHARES = {"revenue_share", "gross_profit_share", "invested_capital_share"}
@@ -220,7 +223,7 @@ def validate_policy(policy, modules):
             raise ValueError("unknown routing axis or predicate")
         allowed = {"common": {"always"}, "type": {"type_evidence"}, "industry": {"industry_evidence"},
                    "lifecycle": {"lifecycle_evidence"}, "cycle": {"cycle_evidence"}, "attribute": {"attribute_evidence"},
-                   "diagnostic": {"user_diagnostic", "recovery_evidence"}, "lens": {"user_lens"},
+                   "diagnostic": {"user_diagnostic", "default_diagnostic", "recovery_evidence"}, "lens": {"user_lens"},
                    "common_extension": {"common_extension"}}
         if rule["predicate"] not in allowed[axis] or (rule["predicate"] == "recovery_evidence") != (rule["module_id"] == "recovery"):
             raise ValueError("predicate does not match module purpose")
@@ -520,7 +523,7 @@ def resolve_route_decision(route_input, *, package_id, route_response=None, exec
                 raise ValueError("duplicate candidate module")
             candidate_ids.add(fact["module_id"])
             if not trusted_urls or any(source["url"] not in trusted_urls for source in fact["sources"]):
-                if rules[fact["module_id"]]["predicate"] not in {"always", "user_diagnostic", "user_lens"}:
+                if rules[fact["module_id"]]["predicate"] not in {"always", "default_diagnostic", "user_diagnostic", "user_lens"}:
                     unbound_sources.add(fact["module_id"])
                 continue
             facts[fact["module_id"]] = (fact, "searched_llm")
@@ -549,6 +552,10 @@ def resolve_route_decision(route_input, *, package_id, route_response=None, exec
         decision(mid)
         if rule["predicate"] == "always":
             decision(mid, "selected", "policy", "high", "universal_core", "Universal core")
+        elif rule["predicate"] == "default_diagnostic":
+            # R2/R-02：对所有公司必做的诊断模块恒被选中（不依赖用户点名、不依赖检索证据）
+            decision(mid, "selected", "policy", "high", "default_mandatory",
+                     "Mandatory diagnostic for all companies (owner ruling)")
         elif rule["predicate"] in {"user_diagnostic", "user_lens"}:
             decision(mid, "rejected", "policy", "high", "not_requested", "No explicit user research request")
         elif mid in unbound_sources:
@@ -762,7 +769,9 @@ def validate_route_snapshot(decision, *, root=ROOT):
         if item["rule_id"] != rule["predicate"]:
             raise ValueError("route rule differs from frozen policy")
         if item["basis"] == "policy":
-            allowed = {("always", "selected", "universal_core"), ("user_diagnostic", "selected", "user_requested"),
+            allowed = {("always", "selected", "universal_core"),
+                       ("default_diagnostic", "selected", "default_mandatory"),
+                       ("user_diagnostic", "selected", "user_requested"),
                        ("user_diagnostic", "rejected", "not_requested"), ("user_lens", "rejected", "not_requested")}
             if (rule["predicate"], item["decision"], item["reason_code"]) not in allowed:
                 raise ValueError("policy basis cannot assert objective classification")

@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import module_contract as mc
 import module_registry as registry
+import question_selection as selection
 import question_sets as qs
 import routing
 
@@ -128,7 +129,10 @@ class RoutingFixture(unittest.TestCase):
 
     @staticmethod
     def selected(decision):
-        return {d["module_id"] for d in decision["module_decisions"] if d["decision"] == "selected"}
+        # R3：dupont/porter 由 default_diagnostic 恒选（政策行），不属于"证据驱动选择"；
+        # 单独由 test_default_diagnostics_are_selected_by_policy 断言。
+        return {d["module_id"] for d in decision["module_decisions"]
+                if d["decision"] == "selected"} - {"dupont", "porter"}
 
     @staticmethod
     def item(decision, mid):
@@ -158,7 +162,7 @@ class RoutingTests(RoutingFixture):
         _, modules, _, _ = registry.load_package(self.package_id, root=self.root)
         self.assertEqual((self.policy["schema_version"], self.policy["router_version"],
                           self.policy["request_protocol"]),
-                         ("1.3.0", "2.3.0", "stockqa-route-confidence-3"))
+                         ("1.3.0", "2.4.0", "stockqa-route-confidence-3"))
         routing.validate_policy(self.policy, modules)
         archived22 = copy.deepcopy(self.policy)
         archived22.update(schema_version="1.2.0", router_version="2.2.0",
@@ -187,6 +191,31 @@ class RoutingTests(RoutingFixture):
             invalid = copy.deepcopy(self.policy); invalid.update(change)
             with self.subTest(change=change), self.assertRaisesRegex(ValueError, "unsupported request protocol"):
                 routing.validate_policy(invalid, modules)
+
+    def test_default_diagnostics_are_selected_by_policy(self):
+        """R3（所有者 2026-10-24 裁定）：路由驱动组装也默认含 dupont/porter。
+
+        两模块的谓词为 ``default_diagnostic``：路由判定恒 selected/policy/default_mandatory，
+        不依赖用户点名与检索证据；`profile_from_route` 会带上它们，组装得到 12 道诊断题。
+        """
+        decision = self.route()
+        for mid in ("dupont", "porter"):
+            item = self.item(decision, mid)
+            self.assertEqual(item["decision"], "selected")
+            self.assertEqual(item["basis"], "policy")
+            self.assertEqual(item["reason_code"], "default_mandatory")
+        self.assertIn("dupont", decision["dispatch_plan"]["eligible_module_ids"])
+        self.assertIn("porter", decision["dispatch_plan"]["eligible_module_ids"])
+        self.assertEqual(decision["profile_context"]["diagnostic_modules"], ["dupont", "porter"])
+        _, modules, _, _ = registry.load_package(self.package_id, root=self.root)
+        profile = routing.profile_from_route(decision)
+        chosen, selected_modules, _ = selection.select_questions_for_route(
+            profile, "quick", modules, decision["dispatch_plan"]["eligible_module_ids"],
+            decision["dispatch_plan"]["mandatory_question_ids"])
+        self.assertIn("dupont", selected_modules)
+        self.assertIn("porter", selected_modules)
+        self.assertEqual(sum(1 for q in chosen if q["module_id"] in ("dupont", "porter")), 12)
+        self.assertEqual(len([q for q in chosen if q["comparison_role"] == "core"]), 24)
 
     def test_mod19_v23_execution_receipt_requires_hash_of_parsed_native_answer(self):
         native = self.native_response(self.normal())
@@ -737,11 +766,11 @@ class RoutingTests(RoutingFixture):
         catalog["version"] = "3.3.0"
         catalog_path.write_text(json.dumps(catalog), encoding="utf8")
         policy = copy.deepcopy(self.policy)
-        policy["router_version"] = "2.4.0"
+        policy["router_version"] = "2.5.0"
         policy["rules"].append({"module_id": "fixture_lens", "axis": "lens", "predicate": "user_lens",
             "minimum_confidence": "medium", "evidence_tags": ["user_request"], "excluded_tags": [], "mandatory_question_ids": []})
         policy["rules"].sort(key=lambda r: r["module_id"])
-        kwargs = {"root": self.root, "renderer_version": qs.RENDERER_VERSION, "router_version": "2.4.0",
+        kwargs = {"root": self.root, "renderer_version": qs.RENDERER_VERSION, "router_version": "2.5.0",
                   "renderer_rules_sha256": qs.renderer_rules_sha256(), "routing_policy": policy, "activate": False}
         with self.assertRaisesRegex(ValueError, "weakens declared module activation"):
             registry.publish(**kwargs)

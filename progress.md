@@ -1,3 +1,21 @@
+## 2026-10-24 — 所有者追加裁定 R3：发布契约按方案 B 落地、路由默认诊断上线、基本题库扩张另卡
+
+所有者原话（见 [OWNER-RULINGS-R3.md](docs/implementation/parallel-lanes/packages/2026-10-24/OWNER-RULINGS-R3.md)）：
+「1，B，做，该重构就重构」；「1，B，2，做，该重构就重构」；
+「必须恰好是 24 个核心题是很奇怪的限制，不应该有，基本题库要允许自身的升级和扩张」；
+「项目架构和设计也不应该依赖于一个硬编码的数字」；「把本项目先收尾，然后把这个重构另作一个卡，或者交接给主线」。
+
+| # | 裁定 | 落地 |
+|---|---|---|
+| R3-1 | 发布契约**方案 B**：`applies_when` 允许就地修订（≥minor 升版），题面/anchors/题 ID 仍不可变 | ✅ `module_contract.validate_upgrade` + 正反测试（3.0.1 拒 / 3.1.0 允 / 题面仍拒） |
+| R3-2 | 三模块升 **3.1.0** 并重新发布，使新文本进入发布包 | ✅ **v1 包 `pkg_ca11c5c3…`（current）** + **v2 包 `pkg_143d610a…`（router 2.4.0）**，均含 catalog 3.2.1 / 模块 3.1.0 |
+| R3-3 | **路由驱动组装也默认含** dupont/porter | ✅ 新谓词 `default_diagnostic` + router **2.4.0**；实测路由判定 `selected/policy/default_mandatory`、eligible 含两者、组装 12 题 |
+| R3-4 | 基本题库允许升级扩张、去掉硬编码 24 | ⏳ **另卡** [BASIC-BANK-EXPANSION-21.md](docs/implementation/parallel-lanes/packages/2026-10-24/BASIC-BANK-EXPANSION-21.md)（已登记 `ready_for_dispatch`）；本轮半成品改动已回退 |
+| R3-5 | 把选择与要求写进交接文档 | ✅ OWNER-RULINGS-R3.md |
+
+**关闭的开放项**：F1/R-01 发布阻断（方案 B + 双包发布）、R-02/F8 路由默认诊断（router 2.4.0）、R-07 指针脏态（current 指向新 v1 包）。
+**仍开放**：R-04 UI 生成数据重建、R-05 银行 activation/版本政策（G5 明示）、R-06 卡片勘误（已记 §7）、G5 签收；applic 侧如重建需**新输入锁**（policy 已 2.4.0，旧锁 fail-closed）。
+
 ## 2026-10-24 — RULE-SCOPE-DECISION-19 复核与交接：AC-01/03/04/05 通过、AC-02 PARTIAL，G1–G4/G6 完成（G5 待所有者签收）
 
 按卡 §5/§6 复核（主控独立重算 + 独立审查 agent 双线）：[复核报告](docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19-review.md)、[独立审查](docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19-independent-review.md)；卡片已加 §7 勘误。
