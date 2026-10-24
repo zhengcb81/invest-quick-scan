@@ -29,7 +29,18 @@ def _ledger_path(pack_id: str, ledger_dir: Path) -> Path:
     return ledger_dir / f"{safe}.jsonl"
 
 
-def apply_decisions(pack_path: Path, decisions_path: Path, ledger_dir: Path) -> tuple[int, dict]:
+def apply_decisions(pack_path: Path, decisions_path: Path, ledger_dir: Path,
+                    allow_partial: bool = False) -> tuple[int, dict]:
+    """Ingest owner decisions into the append-only ledger.
+
+    Strict by default: any incomplete row (missing reason or invalid decision)
+    rejects the whole batch and nothing is written. With ``allow_partial`` the
+    complete rows are written and the incomplete ones are reported as pending —
+    large review batches should not lose fifty good decisions to two blank
+    reasons. Completed rows are still idempotent and never rewritten.
+    """
+    if pack_path.is_dir():
+        pack_path = pack_path / "pack.json"
     pack = json.loads(pack_path.read_text(encoding="utf-8-sig"))
     if pack.get("schema") != PACK_SCHEMA:
         return 2, {"status": "invalid", "error": f"pack schema mismatch: {pack.get('schema')}"}
@@ -77,7 +88,7 @@ def apply_decisions(pack_path: Path, decisions_path: Path, ledger_dir: Path) -> 
             }
         )
 
-    if incomplete:
+    if incomplete and not allow_partial:
         return 2, {"status": "incomplete", "incomplete": incomplete}
 
     ledger_dir.mkdir(parents=True, exist_ok=True)
@@ -106,13 +117,18 @@ def apply_decisions(pack_path: Path, decisions_path: Path, ledger_dir: Path) -> 
     with target.open("w", encoding="utf-8", newline="\n") as handle:
         for record in existing:
             handle.write(json.dumps(record, ensure_ascii=False) + "\n")
-    return 0, {
-        "status": "ok",
+    result = {
+        "status": "partial" if incomplete else "ok",
         "ledger": str(target),
         "rows_total": len(records),
         "rows_added": added,
         "rows_idempotent": len(records) - added,
     }
+    if incomplete:
+        result["pending"] = incomplete
+        result["pending_count"] = len(incomplete)
+        return 2, result
+    return 0, result
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -120,8 +136,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--pack", required=True, type=Path)
     parser.add_argument("--decisions", required=True, type=Path)
     parser.add_argument("--ledger-dir", required=True, type=Path)
+    parser.add_argument("--allow-partial", action="store_true",
+                        help="写入已完成裁定，未完成行（缺理由/无效裁定）仅报告为 pending")
     args = parser.parse_args(argv)
-    code, result = apply_decisions(args.pack, args.decisions, args.ledger_dir)
+    code, result = apply_decisions(args.pack, args.decisions, args.ledger_dir,
+                                   allow_partial=args.allow_partial)
     json.dump(result, sys.stdout, ensure_ascii=False, indent=2)
     sys.stdout.write("\n")
     return code

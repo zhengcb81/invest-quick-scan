@@ -1,3 +1,21 @@
+## 2026-10-24 — 路线 B 首批人工裁定入库（10/12）+ GAP-CLOSE-16 发现 fail-open → R1
+
+### 裁定台账（docs/implementation/pipeline-review/review-pack-01.jsonl）
+
+所有者从复核页导出 12 行裁定，10 条完整入库、2 条缺理由挂起（R009 listing_structure、R012 software）：
+
+- **adopt_snapshot 9 条**（快照全对：cross_border×2、dupont×2、porter×2、scaling、acquisitive、mature）
+- **keep_composition 1 条**（CATL industrial：「电池制造业当然是制造业（工业）」）
+
+**结论性发现**：快照在 9/10 条上比手工 profile 更对；唯一失手的是**行业轴**（单标签 industry=[auto] 判不出工业属性）。这为 Q1「谁错得多」提供了第一批实证，也把快照的弱点精确定位到行业轴多标签问题。
+
+### GAP-CLOSE-16 的 fail-open（已复现，R1 已发）
+
+`parity_check.py` 的 `identity_pairs` 是「不是两个已知改写目标都算同值」而非验证 X==X。喂入 `predicate_true -> synthetic_fixture` 等非同值对，仍判 `closed`。本轮数据结论（10272 格确为同值）不受影响，但「closed 必须由证据门控」这一核心交付不成立 —— 与本卡要消灭的「文案声称与证据脱节」同类，只是换了形式。
+
+### 复核工具补强
+
+`pipeline_review_apply --allow-partial`：完整行入库、缺理由行进 pending（大批量复核不该因两行空理由丢掉全部裁定）；后续补一条 decisions 只带挂起行即可追加。10 测试全绿。
 ## 2026-10-24 — PIPELINE-AUDIT-17：组装×快照管线一致性审计完成（工具+报告+7 测试）
 
 **发现**：两条已验收管线（题库组装、适用性快照）的汇合点从未对齐。交叉核对仅有的 2 个可复用组装样本（CATL、Alphabet）：

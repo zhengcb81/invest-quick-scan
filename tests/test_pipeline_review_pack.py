@@ -187,6 +187,88 @@ def test_apply_is_idempotent_for_identical_resubmission(sample, tmp_path):
     assert second[1]["rows_idempotent"] == 2
 
 
+def test_apply_partial_writes_complete_rows_and_reports_pending(sample, tmp_path):
+    """A blank reason must not sink the whole batch: complete rows land, blanks stay pending."""
+    manifest, snapshot = sample
+    out = tmp_path / "review-packs" / "r1"
+    pack = prp.build_pack([manifest], snapshot, out)
+    decisions = tmp_path / "decisions.json"
+    decisions.write_text(json.dumps({
+        "schema": "pipeline-review-decisions/1.0.0",
+        "pack_id": pack["pack_id"],
+        "decisions": [
+            {"row_id": "R001", "decision": "keep_composition", "reason": "人工优先"},
+            {"row_id": "R002", "decision": "adopt_snapshot", "reason": ""},
+        ],
+    }), encoding="utf-8")
+    ledger_dir = tmp_path / "ledger"
+
+    code, result = pra.apply_decisions(out / "pack.json", decisions, ledger_dir, allow_partial=True)
+
+    assert code == 2
+    assert result["status"] == "partial"
+    assert result["rows_added"] == 1
+    assert [p["row_id"] for p in result["pending"]] == ["R002"]
+    ledger = [json.loads(l) for l in (ledger_dir / f"{pack['pack_id']}.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [r["row_id"] for r in ledger] == ["R001"]
+
+
+def test_apply_partial_then_complete_the_pending_row(sample, tmp_path):
+    """A follow-up decisions file may add the previously pending row."""
+    manifest, snapshot = sample
+    out = tmp_path / "review-packs" / "r1"
+    pack = prp.build_pack([manifest], snapshot, out)
+    ledger_dir = tmp_path / "ledger"
+    first = tmp_path / "d1.json"
+    first.write_text(json.dumps({
+        "schema": "pipeline-review-decisions/1.0.0",
+        "pack_id": pack["pack_id"],
+        "decisions": [
+            {"row_id": "R001", "decision": "keep_composition", "reason": "人工优先"},
+            {"row_id": "R002", "decision": "adopt_snapshot", "reason": ""},
+        ],
+    }), encoding="utf-8")
+    pra.apply_decisions(out / "pack.json", first, ledger_dir, allow_partial=True)
+
+    second = tmp_path / "d2.json"
+    second.write_text(json.dumps({
+        "schema": "pipeline-review-decisions/1.0.0",
+        "pack_id": pack["pack_id"],
+        "decisions": [
+            {"row_id": "R002", "decision": "adopt_snapshot", "reason": "机器学习平台是真实业务"},
+        ],
+    }), encoding="utf-8")
+    code, result = pra.apply_decisions(out / "pack.json", second, ledger_dir)
+
+    assert code == 0
+    assert result["rows_added"] == 1
+    ledger = [json.loads(l) for l in (ledger_dir / f"{pack['pack_id']}.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert {r["row_id"]: r["owner_reason_verbatim"] for r in ledger} == {
+        "R001": "人工优先", "R002": "机器学习平台是真实业务"
+    }
+
+
+def test_apply_strict_still_rejects_the_whole_batch(sample, tmp_path):
+    manifest, snapshot = sample
+    out = tmp_path / "review-packs" / "r1"
+    pack = prp.build_pack([manifest], snapshot, out)
+    decisions = tmp_path / "decisions.json"
+    decisions.write_text(json.dumps({
+        "schema": "pipeline-review-decisions/1.0.0",
+        "pack_id": pack["pack_id"],
+        "decisions": [
+            {"row_id": "R001", "decision": "keep_composition", "reason": "人工优先"},
+            {"row_id": "R002", "decision": "adopt_snapshot", "reason": ""},
+        ],
+    }), encoding="utf-8")
+    ledger_dir = tmp_path / "ledger"
+
+    code, result = pra.apply_decisions(out / "pack.json", decisions, ledger_dir)
+
+    assert code == 2 and result["status"] == "incomplete"
+    assert not ledger_dir.exists()
+
+
 def test_apply_conflicts_with_a_different_verdict_are_rejected(sample, tmp_path):
     manifest, snapshot = sample
     out = tmp_path / "review-packs" / "r1"
