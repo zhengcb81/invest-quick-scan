@@ -1,3 +1,21 @@
+## 2026-10-24 — GAP-CLOSE-16 R2 已由主控直接修完并验收（不再发施工包）
+
+按所有者指示「R2 你直接修」，在 applic 仓完成（payload `9be4d13` + 元数据 `4530118`）：
+
+| 项 | 结果 |
+|---|---|
+| **N3 空集** | `{}` → **no_evidence**（不再真空 closed） |
+| **N4 缺格** | 新增 `missing` 类；无 deviation 而有 missing → **incomplete**；deviation 优先 → open |
+| **B3 签收文案** | 新增 `demo/signoff-gap-close-16-amendment-1.json`：原表述缺口 + 修复后四态保证；签收原话未改 |
+| **N1 UTC 误标** | `decided_at_utc` 11:22:08Z → **10:22:08Z**，补 local/time_zone |
+| **N2 红相** | 撤回无据的 13/4、13/3；用真实 RED 日志替代（新测试对 R1 实现 **4 failed / 16 passed**） |
+| **N6 下标语法** | `interface-proposals.md` 两处改按 `gap` 查找 `list[dict]` |
+
+**判定四态（最终）**：deviation ⇒ open；missing ⇒ incomplete；空集 ⇒ no_evidence；全 identity 且非空 ⇒ closed。
+
+**验证**：191 passed / 234 subtests（+4）；真实 parity 对准 UI `0f3dc3e`：`state_consistent=true`、`identity_verified=true`、10272 对全同值、`missing_pairs={}`；主控 CLI `--verify-references` **exit 0**。
+
+**过程中的自我纠错**（记录）：首版把 rewrite 拆成独立类，破坏了「rewrite ⊆ deviation」的既有契约，测试立刻红 → 改回子集语义，只新增 missing 类。元数据侧两次踩 schema（worktree_after 形状、interfaces 不允许 bytes 键），均由 jsonschema 逐条定位后修正。
 ## 2026-10-24 — GAP-CLOSE-16 R1 验收通过（核心 fail-open 修复成立），R1S 余 5 项小额
 
 ### 我方实测（HEAD a13d083，187 passed + 234 subtests）
