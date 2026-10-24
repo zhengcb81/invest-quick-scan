@@ -1,5 +1,5 @@
 {
-  "version": "3.2.0",
+  "version": "3.2.1",
   "scope": "scored",
   "modules": [
     {
@@ -109,9 +109,9 @@
     {
       "id": "industrial",
       "kind": "industries",
-      "name": "工业制造、自动化与专业设备",
+      "name": "工业装备与专用设备",
       "path": "questions/industries/industrial.json",
-      "applies_when": "资本品、机械、自动化、航空航天和国防装备等。",
+      "applies_when": "资本品、专用设备、自动化装备、航空航天与国防装备的制造与销售。判定要点：以设备/项目交付与安装基数为商业模式（订单验收、质保、售后升级）；不含流程制造（化工、材料、电池、钢铁等），后者按 operating 与对应行业/主题模块评定。",
       "question_count": 4
     },
     {
@@ -367,7 +367,7 @@
       "kind": "diagnostics",
       "name": "杜邦回报来源诊断",
       "path": "questions/diagnostics/dupont.json",
-      "applies_when": "ROE变动或质量无法由核心题解释时选用；仅在因子具经济含义时评分，不进入汇总。",
+      "applies_when": "对所有公司适用（所有者 2026-10-24 裁定：杜邦分析是所有公司的必做项，不是选做题）。仅在因子具经济含义时评分，不进入汇总。",
       "question_count": 7
     },
     {
@@ -375,7 +375,7 @@
       "kind": "diagnostics",
       "name": "五力与利润池诊断",
       "path": "questions/diagnostics/porter.json",
-      "applies_when": "竞争结构或价值链利润归属不清时选用；明确真实市场边界，不进入汇总。",
+      "applies_when": "对所有公司适用（所有者 2026-10-24 裁定：波特五力是所有公司的必做项，不是选做题）。明确真实市场边界，不进入汇总。",
       "question_count": 5
     },
     {

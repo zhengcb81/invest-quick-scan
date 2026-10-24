@@ -212,7 +212,9 @@ class ModuleRegistryTests(unittest.TestCase):
 
     def test_mod_17_rehashed_current_catalog_edit_is_rejected(self):
         self.publish()
-        module_path = self.root / "questions/industries/industrial.json"
+        # industrial 已按 RULE-SCOPE-DECISION-19 补 lifecycle 元数据脱离 legacy 集；
+        # 信任锚仍须拦住「改写仍留在 legacy 集内的当前目录模块」——用 software 复核。
+        module_path = self.root / "questions/industries/software.json"
         module = qs.read_json(module_path)
         module["name"] += " 改写"
         qs.write_json(module_path, module)

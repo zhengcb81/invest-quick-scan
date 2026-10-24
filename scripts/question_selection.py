@@ -66,7 +66,11 @@ def select_questions(profile, mode, modules, contexts=None, *, root=None):
     if profile.get('cycle_sensitive'):
         selected.append('cyclical')
     selected.extend(sorted(profile.get('overlays', [])))
-    selected.extend(sorted(profile.get('diagnostic_modules', [])))
+    # RULE-SCOPE-DECISION-19（所有者 2026-10-24）：dupont/porter 对所有公司必做，
+    # 组装默认恒入；仅当 profile 在 diagnostic_exclusions 显式排除（并给理由）时缺席。
+    excluded_diagnostics = set(profile.get('diagnostic_exclusions', []))
+    selected.extend(sorted(set(profile.get('diagnostic_modules', []))
+                           | (set(library.ALWAYS_APPLICABLE_DIAGNOSTICS) - excluded_diagnostics)))
     if (profile.get('recovery_review') or profile['stage'] in ('turnaround', 'declining')
             or 'distressed' in profile.get('overlays', [])):
         selected.append('recovery')

@@ -185,7 +185,7 @@ def compose(profile, mode, output_dir, answer_format='legacy', *, package_id=Non
             route_decision=None, max_questions=None, now_utc=None, expected_route_decision_id=None):
     profile = json.loads(json.dumps(profile, ensure_ascii=False))
     for key in ('industry_modules', 'overlays', 'diagnostic_modules',
-                'investment_lenses', 'common_extension_modules'):
+                'diagnostic_exclusions', 'investment_lenses', 'common_extension_modules'):
         if isinstance(profile.get(key), list):
             profile[key] = sorted(profile[key])
     if answer_format not in ('legacy', 'standard-1', 'screening-1'):

@@ -1,3 +1,21 @@
+## 2026-10-24 — RULE-SCOPE-DECISION-19 实施完成（四仓：主仓 A/C + applic B + UI D + 银行 E）
+
+设计输入 `docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19.md`；实施报告 [RULE-SCOPE-DECISION-19-report.md](docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19-report.md)。
+
+| 阶段 | 仓 | 结果 |
+|---|---|---|
+| A 题库文本 | 主仓 | industrial 更名「工业装备与专用设备」+ 收窄口径、dupont/porter 恒适用文本；三模块 3.0.1 + lifecycle 元数据（方案 A，脱离 legacy 信任根字节约束）；catalog **3.2.0→3.2.1**；scoring-contexts 1.1.0 新增 diagnostics 映射（契约必需） |
+| C 组装默认必选 | 主仓 | `ALWAYS_APPLICABLE_DIAGNOSTICS=("dupont","porter")` 恒入；`diagnostic_exclusions` 必须逐条给理由才可排除；新增 2 测试、翻转 4 处旧「诊断选做」断言 |
+| B 谓词/快照/parity | iqs-applic-lab | `pred_6ffa4a71…→pred_6b258097d0b8…`；新快照 `applicsnap_26f494e5…`：10272 格、分布不变、**逐格 state 变化 0**、恰 428 格 basis `owner_ruled→common_always_applicable`；parity 对 UI `41be324` `state_consistent=true`/mismatch 0；提交 `e8fbfbf`（run_eval.py 选择性 staging 3 hunk，另一 lane WIP 零触碰）+ 套件 `2382aea` |
+| D 枚举/文案/图例 | iqs-question-bank-ui-lab | `40d7927` + 套件 `41be324`；resolver 逐字节未动；122 OK / 6 skip（与基线同集）；图例补两代恒适用口径说明 |
+| E 银行 lab 4.2.1 | iqs-question-bank-lab | `a1965fb`（19 文件）+ 套件/G6 修复；三模块文本与主仓逐字一致（对卡片原文交叉核对 8/8 True）；releases 纯追加（3 artifact + 1 锁 + 1 包 + 指针推进 + 1 行日志），**零改写**；52 passed / 0 failed |
+
+**验证**：主仓定论性全量回归 **1038 passed / 3 skipped / 759 subtests**（exit 0，48:32；基线 1036 → 净 +2 测试）。三仓 G6 主控 CLI `--verify-references` 全部 **exit 0**（BANK 首跑报 `temporary_root_not_cleaned`，lane 清理后重跑通过）。主控独立复核：三方文本 9/9 True；AC-03 全量逐格重算；parity 独立复跑。
+
+**台账（卡 §3）**：`review-pack-01.jsonl` 未改（append-only）；**R003（CATL/industrial keep_composition）由 D-2026-10-24 裁定取代** —— industrial 收窄为装备制造，CATL 不适用；下一份 pack-02 在两侧一致后不再出现该行。
+
+**实施中发现（待裁）**：主仓真实发布库的下一次 `publish()` 会被 `validate_upgrade`（applies_when 变化须换后继题 ID）阻断——已实测复现，测试与组装不受影响；未擅改 `module_contract.py`，需所有者择路（换 ID / 契约修订 / 接受发布冻结）。另：卡 §4.B.2「428→856」为算术笔误（state 本不变，仅 basis 换类），按 AC-03 实施。
+
 ## 2026-10-24 — UI-APPLIC-BRIDGE-15 R1 验收通过（G7 收口）
 
 R1 落盘于 UI 仓 `484db19`（metadata-only，5 个文件，代码零改动）。逐项核验：

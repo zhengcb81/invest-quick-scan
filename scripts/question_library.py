@@ -12,7 +12,14 @@ from json_io import read_json, write_json
 import module_registry
 
 ROOT = Path(__file__).resolve().parents[1]
-__all__ = ["ROOT", "read_json", "write_json", "load_library", "valid_url", "validate_profile"]
+__all__ = ["ROOT", "read_json", "write_json", "load_library", "valid_url", "validate_profile",
+           "ALWAYS_APPLICABLE_DIAGNOSTICS"]
+
+ALWAYS_APPLICABLE_DIAGNOSTICS = ("dupont", "porter")
+"""诊断默认必选集（RULE-SCOPE-DECISION-19，所有者 2026-10-24 裁定）。
+
+杜邦与波特五力对所有公司必做，不再是选做题：组装时除非 profile 在
+``diagnostic_exclusions`` 中显式排除并给出理由，否则恒入。"""
 
 
 def load_library(*, root=None):
@@ -74,6 +81,20 @@ def validate_profile(profile, modules, contexts=None, *, root=None):
             not isinstance(reasons.get(value), str) or not reasons[value].strip()
             for value in profile.get("diagnostic_modules", [])):
         raise ValueError("each optional diagnostic needs a specific unresolved question in diagnostic_rationale")
+    exclusions = profile.get("diagnostic_exclusions", [])
+    if not isinstance(exclusions, list) or not all(isinstance(value, str) for value in exclusions):
+        raise ValueError("diagnostic_exclusions must be a list of IDs")
+    if len(exclusions) != len(set(exclusions)):
+        raise ValueError("invalid duplicate diagnostic_exclusions")
+    if any(value not in ALWAYS_APPLICABLE_DIAGNOSTICS for value in exclusions):
+        raise ValueError("only default-in diagnostics dupont/porter can be excluded")
+    if set(exclusions) & set(profile.get("diagnostic_modules", [])):
+        raise ValueError("diagnostic cannot be excluded and requested at once")
+    exclusion_reasons = profile.get("diagnostic_exclusion_rationale", {})
+    if not isinstance(exclusion_reasons, dict) or any(
+            not isinstance(exclusion_reasons.get(value), str) or not exclusion_reasons[value].strip()
+            for value in exclusions):
+        raise ValueError("each excluded default diagnostic needs a diagnostic_exclusion_rationale")
     lens_reasons = profile.get("lens_rationale", {})
     if not isinstance(lens_reasons, dict) or any(
             not isinstance(lens_reasons.get(value), str) or not lens_reasons[value].strip()

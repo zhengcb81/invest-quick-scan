@@ -196,7 +196,9 @@ class QuestionSetTests(unittest.TestCase):
         self.assertGreater(stats['questions'], count)
         self.assertTrue(all(isinstance(q, str) for c in exported for q in c['questions']))
 
-    def test_quick_covers_core_judgments_without_automatic_dupont_or_porter(self):
+    def test_quick_covers_core_judgments_with_default_mandatory_diagnostics(self):
+        # RULE-SCOPE-DECISION-19（所有者 2026-10-24）：dupont/porter 对所有公司必做，
+        # quick 模式默认恒入；核心判断覆盖与关键风险标记不受影响。
         types = [k for k, m in self.modules.items() if m['kind'] == 'types']
         stages = [k for k, m in self.modules.items() if m['kind'] == 'stages' and k != 'cyclical']
         for company_type in types:
@@ -207,7 +209,10 @@ class QuestionSetTests(unittest.TestCase):
                     chosen, _, replacements = qs.select_questions(profile, 'quick', self.modules)
                     covered = {q['id'] for q in chosen} | set(replacements)
                     self.assertTrue({q['id'] for q in self.modules['common']['questions']} <= covered)
-                    self.assertFalse(any(q.get('framework') for q in chosen))
+                    # 有 framework 的题只能来自默认必选的 dupont/porter，且恰好 12 道
+                    self.assertEqual({q['module_id'] for q in chosen if q.get('framework')},
+                                     {'dupont', 'porter'})
+                    self.assertEqual(sum(bool(q.get('framework')) for q in chosen), 12)
                     self.assertEqual(len(chosen), len({q['id'] for q in chosen}))
                     for original in ('IQS_12', 'IQS_13', 'IQS_16'):
                         effective_id = replacements.get(original, original)
@@ -327,8 +332,9 @@ class QuestionSetTests(unittest.TestCase):
                                          manifest['question_count'])
                         self.assertEqual(len(qs.validate_manifest_metric_contract(manifest)),
                                          manifest['question_count'])
-                        self.assertFalse(any(q['module_id'] in ('dupont', 'porter')
-                                             for q in manifest['questions']))
+                        # RULE-SCOPE-DECISION-19：dupont/porter 对所有公司必做，默认恒入
+                        self.assertEqual(sum(q['module_id'] in ('dupont', 'porter')
+                                             for q in manifest['questions']), 12)
 
             cyclical = {**self.profile, 'company_type': 'operating', 'industry_modules': ['other'],
                         'stage': 'mature', 'cycle_sensitive': True,
@@ -570,13 +576,16 @@ class QuestionSetTests(unittest.TestCase):
         self.assertIn('付费客户', question['prompt'])
         self.assertIn('融资摊薄', question['prompt'])
 
-    def test_s03_does_not_add_unapproved_bridge_questions_or_auto_diagnostics(self):
+    def test_s03_does_not_add_unapproved_bridge_questions_or_nondefault_diagnostics(self):
         diagnostic_modules = {key for key, module in self.modules.items()
                               if module['kind'] == 'diagnostics'}
         self.assertEqual(diagnostic_modules, {'dupont', 'porter', 'recovery'})
         for mode in ('quick', 'full'):
             manifest = self.make_manifest(mode)
-            self.assertFalse(any(question.get('framework') for question in manifest['questions']))
+            # RULE-SCOPE-DECISION-19：默认必选诊断（dupont/porter）恒入；其余诊断
+            # （recovery）与任何未批准的桥接题仍不得自动出现。
+            self.assertEqual({q['module_id'] for q in manifest['questions'] if q.get('framework')},
+                             {'dupont', 'porter'})
             self.assertEqual(sum(question['comparison_role'] == 'core'
                                  for question in manifest['questions']), 24)
 
@@ -679,9 +688,47 @@ class QuestionSetTests(unittest.TestCase):
         self.assertIn('DUPONT_01', result['summary']['weak_points'])
         self.assertTrue(all(d['score'] == 8 for d in result['summary']['dimensions'].values()))
 
+    def test_default_diagnostics_are_composed_for_every_company(self):
+        """RULE-SCOPE-DECISION-19：dupont/porter 是必做项，组装默认恒入。"""
+        manifest = self.make_manifest()
+        self.assertIn('dupont', manifest['modules'])
+        self.assertIn('porter', manifest['modules'])
+        self.assertEqual(sum(q.get('aggregation') == 'diagnostic' for q in manifest['questions']), 12)
+        # 诊断题不进汇总：核心构念仍恰好 24 个
+        core = [q for q in manifest['questions'] if q.get('comparison_role') == 'core']
+        self.assertEqual(len(core), 24)
+        self.assertEqual(sum(q['module_id'] in ('dupont', 'porter')
+                             for q in core), 0)
+
+    def test_default_diagnostics_can_be_excluded_only_with_a_reason(self):
+        excluded = {**self.profile, 'diagnostic_exclusions': ['dupont', 'porter'],
+                    'diagnostic_exclusion_rationale': {
+                        'dupont': 'OFFLINE FIXTURE: 该扫描只做行业横比',
+                        'porter': 'OFFLINE FIXTURE: 该扫描只做行业横比'}}
+        manifest = self.make_manifest(profile=excluded)
+        self.assertNotIn('dupont', manifest['modules'])
+        self.assertNotIn('porter', manifest['modules'])
+        self.assertFalse(any(q['module_id'] in ('dupont', 'porter')
+                             for q in manifest['questions']))
+        # 核心题集与不排除时一致
+        core = [q for q in manifest['questions'] if q.get('comparison_role') == 'core']
+        self.assertEqual(len(core), 24)
+        for bad in ({'diagnostic_exclusions': ['dupont']},
+                    {'diagnostic_exclusions': ['recovery']},
+                    {'diagnostic_exclusions': ['dupont', 'dupont']},
+                    {'diagnostic_exclusions': ['dupont'],
+                     'diagnostic_exclusion_rationale': {'dupont': '同一份扫描里'},
+                     'diagnostic_modules': ['dupont'],
+                     'diagnostic_rationale': {'dupont': '又点名'}}):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                self.make_manifest(profile={**self.profile, **bad})
+
     def test_full_mode_also_requires_a_specific_reason_for_optional_tools(self):
         full = self.make_manifest('full')
-        self.assertFalse(any(q.get('framework') for q in full['questions']))
+        # RULE-SCOPE-DECISION-19：全量模式下默认必选诊断（dupont/porter）恒入；
+        # 其余模块仍不得隐式带出任何诊断题。
+        self.assertEqual({q['module_id'] for q in full['questions'] if q.get('framework')},
+                         {'dupont', 'porter'})
         for extra in ({'diagnostic_modules': ['dupont']}, {'diagnostic_modules': ['other']},
                       {'diagnostic_modules': ['dupont', 'dupont']}):
             with self.assertRaises(ValueError):

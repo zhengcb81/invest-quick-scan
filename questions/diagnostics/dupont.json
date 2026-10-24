@@ -1,9 +1,18 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "module_id": "dupont",
   "kind": "diagnostics",
   "name": "杜邦回报来源诊断",
-  "applies_when": "ROE变动或质量无法由核心题解释时选用；仅在因子具经济含义时评分，不进入汇总。",
+  "applies_when": "对所有公司适用（所有者 2026-10-24 裁定：杜邦分析是所有公司的必做项，不是选做题）。仅在因子具经济含义时评分，不进入汇总。",
+  "activation": {
+    "mode": "diagnostic",
+    "required_evidence": ["同口径财务报表"],
+    "exclude_when": ["财务因子不具经济含义"],
+    "minimum_confidence": "medium"
+  },
+  "dependencies": [],
+  "conflicts": [],
+  "introduced_in": "3.0.1",
   "questions": [
     {
       "id": "DUPONT_01",

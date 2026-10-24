@@ -1,9 +1,18 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "module_id": "porter",
   "kind": "diagnostics",
   "name": "五力与利润池诊断",
-  "applies_when": "竞争结构或价值链利润归属不清时选用；明确真实市场边界，不进入汇总。",
+  "applies_when": "对所有公司适用（所有者 2026-10-24 裁定：波特五力是所有公司的必做项，不是选做题）。明确真实市场边界，不进入汇总。",
+  "activation": {
+    "mode": "diagnostic",
+    "required_evidence": ["真实市场边界与竞争结构证据"],
+    "exclude_when": ["市场边界无法界定"],
+    "minimum_confidence": "medium"
+  },
+  "dependencies": [],
+  "conflicts": [],
+  "introduced_in": "3.0.1",
   "questions": [
     {
       "id": "PORTER_01",

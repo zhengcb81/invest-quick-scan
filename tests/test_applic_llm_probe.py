@@ -62,7 +62,7 @@ def _fake_model(answer):
 def test_prompt_lists_every_module_with_its_rule():
     prompt = probe.build_prompt({"name": "X", "ticker": "1", "market": "M"}, probe.load_catalog(
         Path(__file__).resolve().parents[1] / "questions" / "catalog.json"), None)
-    assert "industrial｜industries｜工业制造、自动化与专业设备｜资本品、机械、自动化、航空航天和国防装备等。" in prompt
+    assert "industrial｜industries｜工业装备与专用设备｜资本品、专用设备、自动化装备、航空航天与国防装备的制造与销售。判定要点：以设备/项目交付与安装基数为商业模式（订单验收、质保、售后升级）；不含流程制造（化工、材料、电池、钢铁等），后者按 operating 与对应行业/主题模块评定。" in prompt
     assert "必须覆盖上面列出的全部 48 个模块 id" in prompt
 
 

@@ -7,12 +7,79 @@
       "lane_id": "iqs",
       "document": "APPLIC-GAP-CLOSE-16.md",
       "write_scope": "C:/Users/郑曾波/Projects/iqs-applic-lab",
-      "task_ids": ["A01"],
-      "depends_on": ["APPLIC-RESOLVE-14", "UI-APPLIC-BRIDGE-15"],
+      "task_ids": [
+        "A01"
+      ],
+      "depends_on": [
+        "APPLIC-RESOLVE-14",
+        "UI-APPLIC-BRIDGE-15"
+      ],
       "readiness": "ready_for_scoped_support",
       "workers_dispatched": false,
       "support_only": true,
       "note": "把 parity known_gaps 从静态文字改为证据驱动；落地 UI-BRIDGE-15 已验证的 ui_rewrites_basis 关闭与 not_evaluated 过渡声明。写范围仅 applic 仓。"
+    },
+    {
+      "id": "RULE-SCOPE-19-APPLIC",
+      "lane_id": "iqs",
+      "document": "RULE-SCOPE-DECISION-19.md",
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-applic-lab",
+      "task_ids": [
+        "RULE-SCOPE-DECISION-19"
+      ],
+      "depends_on": [
+        "APPLIC-GAP-CLOSE-16"
+      ],
+      "readiness": "ready_for_scoped_support",
+      "workers_dispatched": true,
+      "support_only": false,
+      "note": "阶段 B：dupont/porter 快照 basis 从 owner_ruled_always_applicable 改为 common 类恒适用（与 common 同级，common_always_applicable）；industrial 谓词 mapped_from 随主仓 3.2.1 新文本重建；predicate_version bump、快照重建（428 格 basis 变化，10272 总数不变）、导出与 parity 复跑、8 步 CLI 链 + 交接套件。前提：主仓阶段 A 已落盘（新 inputs 锁）。"
+    },
+    {
+      "id": "RULE-SCOPE-19-UI",
+      "lane_id": "iqs",
+      "document": "RULE-SCOPE-DECISION-19.md",
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-question-bank-ui-lab",
+      "task_ids": [
+        "RULE-SCOPE-DECISION-19"
+      ],
+      "depends_on": [
+        "UI-APPLIC-BRIDGE-15"
+      ],
+      "readiness": "ready_for_scoped_support",
+      "workers_dispatched": true,
+      "support_only": false,
+      "note": "阶段 D：APPLICABILITY_BASES 枚举注释更新（common_always_applicable 自 2026-10-24 起为 dupont/porter 新快照值；owner_ruled_always_applicable 仅历史快照保留）；BASIS_LABELS 文案表与矩阵图例补一条恒适用 basis 说明；测试全绿。"
+    },
+    {
+      "id": "RULE-SCOPE-19-BANK",
+      "lane_id": "iqs",
+      "document": "RULE-SCOPE-DECISION-19.md",
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-question-bank-lab",
+      "task_ids": [
+        "RULE-SCOPE-DECISION-19"
+      ],
+      "depends_on": [],
+      "readiness": "ready_for_scoped_support",
+      "workers_dispatched": true,
+      "support_only": false,
+      "note": "阶段 E：modules/industries/industrial.json（name+applies_when）与 modules/diagnostics/{dupont,porter}.json（applies_when）同主仓 3.2.1 文本逐字同步；catalog.json 4.2.0→4.2.1（条目与 content_sha256 同步）；validate_bank.py 与一致性测试全绿。"
+    },
+    {
+      "id": "APPLIC-LLM-JUDGE-20",
+      "lane_id": "iqs",
+      "document": "APPLIC-LLM-JUDGE-20.md",
+      "write_scope": "C:/Users/郑曾波/Projects/iqs-applic-lab",
+      "task_ids": [
+        "A01"
+      ],
+      "depends_on": [
+        "APPLIC-GAP-CLOSE-16"
+      ],
+      "readiness": "ready_for_scoped_support",
+      "workers_dispatched": true,
+      "support_only": true,
+      "note": "LLM 判定通道：shadow 完成、通道默认关闭；待 G4 独立审查；启用由所有者裁定。"
     }
   ]
 }
