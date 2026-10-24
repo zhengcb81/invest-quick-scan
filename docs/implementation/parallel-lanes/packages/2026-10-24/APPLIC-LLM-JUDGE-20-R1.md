@@ -71,6 +71,23 @@
    `live_shadow_214.log` 的 111/33 一致；若无法重现，如实在 report 说明差异。
 3. 增加测试：两个存档并存时，未显式指定 archive ⇒ 拒绝或按记录规则选，并有断言。
 
+## B3（阻塞，需所有者裁定）AC-02 单调性：applicable 该不该被单一模型的 no 降级
+
+审查实测：`applicable` + LLM no ⇒ `unknown`（`llm_merge.py:296-308`，`CONFLICT_OUTCOME="unknown"`），
+`test_llm_merge.py:184-196` 断言的正是这个结果；`TestMonotonicity`（:293-305）只断言「不是 not_applicable」，
+于是放行了降级。卡 AC-02 的字面要求是「状态保持 applicable」，与 §4.2 ② 直接冲突。
+
+**这是语义分叉，不是笔误，必须所有者拍板**（三选一）：
+
+| 选项 | 行为 | 后果 |
+|---|---|---|
+| **A 现行**（§4.2 ②） | 单模型 no ⇒ applicable 降 unknown + 复核队列 | 一个模型说错就能让格子退出适用集（33 个冲突格即此类），但可见 |
+| **B AC-02 字面** | LLM no 不改 applicable，只记冲突日志 | 确定性优先；模型错了也压不动 |
+| **C 折中**（建议） | **单模型 no 不动**（保持 applicable，记冲突）；**两模型一致 no** 才降 unknown + 复核 | 呼应你原话「LLM 说 no 则用其他方法再试」：先试，试出共识才降级 |
+
+无论选哪个，都要：① AC-02 行改写为选定口径并删掉「已消解」措辞；② 补一条**能失败**的测试锁定；
+③ 冲突格全部进复核队列（与 B1 第 4 点同一条要求）。
+
 ## B4（一致性）AC-02 与 §4.2 ② 的裁决必须落到测试与文档
 
 审查实测：`applicable` + LLM no ⇒ `unknown`（`llm_merge.py:296-308`）。
@@ -91,6 +108,34 @@
 
 **要求**：LLM **不得**救活 `no_rule_fail_closed` 格（必须保持 not_evaluated / 规则补齐后才可判），
 并补一条能失败的测试。
+
+## B6（非阻塞，但要求一并处理）
+
+1. **版本键不含真实模型与模块文本**：`compute_judge_version` 用的是**路由 id**（`deepseek`）而非配置里的
+   模型（`deepseek-flash`），同一路由换模型不会 bump；模块 `applies_when`/覆盖层文本也未入版本
+   （实调档 `catalog_sha256=3d5fe072` 却与当前 `3e145130` 共用同一 `llm_judge_version`）。
+   要求：版本键纳入 model 全名 + catalog/overlay sha256。
+2. **互证档版本不校验**：corroboration 档的 template/版本与主判是否一致从未检查；
+   要求拒绝版本不一致的互证档。
+3. **实调不落逐答存档**：live 路径不写 `answer-*.json`，`answer_archive` 是个不存在的文件名，
+   覆盖层 sha 也没记。要求实调同样留逐答取证（或写明为何不留）。
+4. **replay 缺 confidence 默认 medium**：不完整的回放答案会被当成 medium 采纳（§4.3 门槛内）。
+   要求缺 confidence 时视为 `low`（不采纳）。
+5. **`--llm-corroborate` 在无 `--llm-judgments` 时被静默忽略**：应报错退出。
+6. **元数据陈旧/不全**：handoff.checks 与 summary 写 256 例、report 写 298；`changed_paths` 漏了
+   5 个 payload 文件（`llmj_550d…`、`llmj_9599…`、`logs/corroboration.log`、`golden_noise.log`、
+   `live_shadow_214.log`）。要求逐一对齐提交产物。
+7. **`model.match_versions` 忽略 `llm_judge_version`**：通道开启后的快照与旧快照比对时会漏报版本差异。
+
+8. **互证日志是回放而非新查询**：`logs/corroboration.log` 明确是
+   `runs/applic-llm-probe-2026-10-24/cross-model` 的离线回放，不是对两个模型的实时复判。
+   要求：要么做真复判并留证，要么在 report/摘要把它标成「离线回放（非实时互证）」，
+   不得让读者以为是实时三模型查询。
+9. **TTL 口径不一致**：`judge_modules` 的 merge 用**墙钟** TTL（`judge_modules.py:265`），
+   `run_eval` 用 **evidence horizon**（`run_eval.py:244-255`），过期 override 格在两条路径会得到不同合并结果。
+   要求统一口径（建议以 evidence horizon 为准）并加测试。
+10. **`cleanup.json` 的主仓读取清单不全**：漏了 `questions/catalog.json`、复核 pack、
+   新锁 `inputs.lock.rule-scope-19.json`。要求补全实际读过的路径。
 
 ## 复验清单
 
