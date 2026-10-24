@@ -9,8 +9,10 @@
 | 2026-10-21 | APPLIC-RESOLVE-14 | ✅ 已验收（APPROVED，R1 闭合） | — |
 | 2026-10-23 | UI-APPLIC-BRIDGE-15 | ✅ **已验收**（R1 落盘 `484db19`：三处声明修正 + 外部绑定 + 审查报告随包；代码零改动；CLI valid；118 OK） | — |
 | 2026-10-24 | APPLIC-GAP-CLOSE-16 | ✅ **已验收**：R1（逐对同值）由 worker 完成；R2（空集/缺格/签收文案/UTC/红相/下标语法）由主控直接修完；CLI valid；191 tests | — |
-| 2026-10-24 | APPLIC-LLM-JUDGE-20 | 🚀 **已派发**（所有者：施工卡发出去了） | applic worker 实现 shadow 通道 |
-| 2026-10-24 | RULE-SCOPE-DECISION-19 | 📋 决定已落纸，**待题库 lane 实施**（lifecycle 迁移 + 文本修正 + 谓词/快照重建） | 派发 bank lane |
+| 2026-10-24 | APPLIC-LLM-JUDGE-20 | ✅ **已验收**（R2 裁定：第一轮多数 yes 即适用；323 tests；快照 1924/8348 与独立复算一致） | — |
+| 2026-10-24 | RULE-SCOPE-DECISION-19 | ✅ **已验收**（三仓落地；四包 CLI valid；AC-02 v2 路由路径为已登记边界） | — |
+| 2026-10-24 | BASIC-BANK-EXPANSION-21 | ✅ **已验收**（三仓落地 `f606fa9`/`c3feee6`/`c45756e`；硬编码 24 清零；195+54+126 测试全绿） | — |
+| 2026-10-25 | APPLIC-REBASELINE-R3 | ✅ **已完成**（policy 2.4.0 新锁；10272 格逐格零差异，仅 inputs 变） | — |
 
 ## 二、今日决策记录
 
