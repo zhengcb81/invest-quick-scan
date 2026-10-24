@@ -57,22 +57,66 @@ data/llm_judgments/llmj_<hash>.json      # 一次判定批次的不可变存档
 
 **分块**：固定 `chunk=24`（LLM-PROBE-18 实测 48 一锅与 24 分块在一条触发规则上会翻转；固定分块才能复现）。
 
-## 4. 合并规则（三值合并，确定性优先）
+## 4. 合并规则（所有者裁定 2026-10-24）
+
+### 4.0 两条裁定（原话）
+
+> 先用 LLM 吧，然后再用其他规则
+> （置信门槛）都采纳
+> （LLM 说 no 怎么办）LLM 说 no 则用其他方法再试
+
+### 4.1 判定顺序
 
 ```
-if owner_override_active:            -> override 值（最高优先，不变）
-elif 判定来自契约恒适用模块:          -> applicable（不变）
-elif 谓词 == applicable:              -> applicable（确定性优先）
-elif 谓词 == not_applicable:         -> not_applicable（不变；LLM 不得推翻）
-elif 谓词 == unknown/not_evaluated:
-    LLM == yes 且 confidence in {high, medium}
-                                      -> applicable, basis=llm_judged_applicable,
-                                         confidence=assumed（UI 琥珀「待确认」）
-    LLM == yes 且 confidence == low   -> unknown, basis=llm_unsure_or_no
-    LLM == no / unsure / 缺失/报错     -> unknown, basis=llm_unsure_or_no（或 llm_error）
+1. 所有者 override                      （最高，不变）
+2. LLM 判定（conf ∈ {high, medium}）      （LLM 优先）
+   - yes  → applicable（basis=llm_judged_applicable, confidence=assumed）
+   - no   → 进入 4.2 升级路径（不直接下结论）
+   - unsure/出错/缺答案 → 回落谓词（见 4.4）
+3. 谓词判定（作为升级路径的仲裁证据 + LLM 失效时的兜底）
+4. 其余 → unknown
 ```
 
-**关键约束**：LLM 只能把 `unknown → applicable`（正向补充），**永远不能**把 `applicable → unknown/not_applicable`，也不能把 `unknown → not_applicable`。这样 LLM 通道是**单调增强**，不会引入反证风险。
+### 4.2 LLM 说 no 时的升级路径（本次裁定新增）
+
+「用其他方法再试」落成三条互证，任一为 yes 即视为**有争议**，不得判不适用：
+
+| 步骤 | 方法 | 结果处理 |
+|---|---|---|
+| ① 换模型复判 | 同模板同模块，另两个模型各判一次（mimo_pro、minimax） | 任一 says yes ⇒ **争议** → unknown + 记 `llm_no_conflict`，进人工复核队列 |
+| ② 谓词仲裁 | 读确定性谓词结果 | 谓词 applicable ⇒ **争议**（LLM 与规则冲突）→ unknown + 进复核队列；谓词 unknown ⇒ 进入 ③ |
+| ③ 三方一致为 no | 三个模型都说 no 且谓词非 applicable | **not_applicable**，basis=`llm_corroborated_not_applicable`，confidence=assumed，**进复核队列**（可被 override 推翻） |
+
+要点：
+- 只有「三个模型的 no + 谓词不反对」才允许产出 `not_applicable`；任一异构结论 ⇒ unknown。这取代 G2-3「必须 verified 反证」在 **LLM 通道**上的约束（G2-3 仍约束属性驱动的判定，见 §4.5）。
+- 所有产出 not_applicable 的格**强制进复核队列**（不静默生效），复核页沿用 `pipeline_review_pack` 的形式。
+- 升级只对 no 触发：本轮 shadow 96 格里 no 占 52 格（54%），需 2 个额外模型 × 52 ≈ 104 次调用；成本可接受（约 $0.01/次）。
+
+### 4.3 置信门槛（本次裁定）
+
+`high` 与 `medium` **都采纳**；`low` 丢弃并回落谓词。本轮 shadow 96 格中 high 59 / medium 37 / low 0，故实际等于全采纳。
+
+| 置信 | 处理 |
+|---|---|
+| high | 采纳 LLM 结论（yes 直接 applicable；no 进升级路径） |
+| medium | 同上，但采纳后在 basis 里保留 `confidence=assumed`（与 high 相同）；差别只在统计与复核抽样权重 |
+| low | 不采纳，回落谓词 |
+
+### 4.4 LLM 失效时的兜底
+
+`unsure` / 调用失败 / 缺该模块答案 ⇒ 回落谓词结果（不空转、不放行）：
+- 谓词 applicable ⇒ applicable（basis=`predicate_true`）
+- 谓词 unknown ⇒ unknown
+- 谓词 not_applicable ⇒ not_applicable（不变）
+
+### 4.5 与 G2-3 的关系（显式记录）
+
+原 G2-3：「`not_applicable` 必须有已核实反证（verified），否则 unknown」。本次裁定为 LLM 通道开了一条**旁路**：三方一致的语义否定可产出 `llm_corroborated_not_applicable`。因此：
+
+- 属性/谓词驱动的否定：仍受 G2-3 约束（assumed 属性判假 ⇒ unknown）；
+- LLM 通道的否定：受 §4.2 三方一致约束，且强制复核。
+
+两者并存，`basis.kind` 可区分来源，快照与 UI 不受影响（UI 侧只认 not_applicable 状态）。
 
 ## 5. 可复现性与质量门
 
@@ -115,8 +159,9 @@ elif 谓词 == unknown/not_evaluated:
 | AC-05 | 214 家 shadow 全量 | 产出分歧清单 + 成本实测；不写快照 |
 | AC-06 | 缓存键 | 仅 changed cells 重判；命中率可观测 |
 
-## 10. 开放问题（实施前须答复）
+## 10. 开放问题（所有者 2026-10-24 答复）
 
-1. 业务描述是否进提示词？（LLM-PROBE-18 此条件未跑；进则一致性更高但引入人工文本依赖）建议：**先不进**，只用名称+代码+市场，与 G2-2 的事实口径一致。
-2. 主题模块（13 个 themes）是否也走 LLM？建议：先只做 `industrial` + 3 个触发模块（recovery/turnaround/distressed），主题模块留待阶段 2 抽样后再定。
-3. LLM 判定的 confidence 由谁给？建议：模型自评 + 金标集校准（后续可加投票：同模型两次或两模型取一致）。
+1. **判定范围**：确认「先 4 个模块」——`industrial` + `recovery`/`turnaround`/`distressed`；13 个主题模块后置。
+2. **置信门槛**：确认「先跑一版看分布再定」——本轮 shadow（24 家）产出 high/medium/low 分布后由所有者定阈值。
+3. **业务描述**：沿用建议，先不进提示词（只用名称+代码+市场）。
+4. **LLM 的 no 能否产出 not_applicable**：所有者裁定「LLM 说 no 则用其他方法再试」——实现为 §4.2 三方一致升级路径；仅三方一致时才产出 `llm_corroborated_not_applicable` 且强制复核。

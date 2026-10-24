@@ -36,11 +36,11 @@ PROMPT = """你是资深的权益研究分类员。请依据你对该公司的�
 {rules}
 
 输出严格的 JSON（不要 markdown 代码块、不要解释文字），格式：
-{{"modules": {{"<模块id>": {{"applies": "yes|no|unsure", "reason": "不超过30字"}}}}}}
+{{"modules": {{"<模块id>": {{"applies": "yes|no|unsure", "confidence": "high|medium|low", "reason": "不超过30字"}}}}}}
 
 要求：
 1. 必须覆盖上面列出的全部 {count} 个模块 id，不得增删或改名。
-2. applies 只能是 yes / no / unsure 三个值之一。
+2. applies 只能是 yes / no / unsure 三个值之一；confidence 只能是 high / medium / low 之一（表示你对该判断的确定程度）。
 3. unsure 用于你确实无法判断的模块；不要为了凑答案而猜。
 4. reason 用一句中文说明依据（不超过 30 字）。"""
 
@@ -141,8 +141,10 @@ def parse_answer(raw: dict, modules: list[dict]) -> tuple[dict[str, dict], list[
         if applies not in APPLIES:
             missing.append(module["id"])
             continue
+        confidence = str(entry.get("confidence") or "").strip().lower()
         parsed[module["id"]] = {
             "applies": applies,
+            "confidence": confidence if confidence in ("high", "medium", "low") else None,
             "reason": str(entry.get("reason") or "")[:120],
         }
     return parsed, missing
@@ -160,6 +162,7 @@ def compare(company: dict, snapshot_map: dict[str, str], llm: dict[str, dict],
             "module_id": module_id,
             "snapshot": snap,
             "llm": llm_applies,
+            "llm_confidence": llm_row.get("confidence"),
             "llm_reason": llm_row.get("reason"),
             "llm_agrees_snapshot": llm_applies == snap if llm_applies else None,
         }
@@ -191,8 +194,15 @@ def compare(company: dict, snapshot_map: dict[str, str], llm: dict[str, dict],
 def run_probe(*, companies: list[dict], snapshot_path: Path, catalog_path: Path,
               ledger_path: Path | None, out_dir: Path, model_call,
               provider: dict, context: str | None = None,
-              tag: str = "A", chunk: int = 0) -> dict:
+              tag: str = "A", chunk: int = 0,
+              modules: list[str] | None = None) -> dict:
     catalog_modules = load_catalog(catalog_path)
+    if modules:
+        wanted = [m for m in catalog_modules if m["id"] in set(modules)]
+        missing_ids = sorted(set(modules) - {m["id"] for m in wanted})
+        if missing_ids:
+            raise SystemExit(f"unknown module ids: {missing_ids}")
+        catalog_modules = wanted
     snapshot_doc = json.loads(snapshot_path.read_text(encoding="utf-8-sig"))
     owner = ledger_implied(ledger_path)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -265,6 +275,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--tag", default="A")
     parser.add_argument("--chunk", type=int, default=0,
                         help="每轮询问的模块数（0=一次问全部；输出过长时用 24 分批）")
+    parser.add_argument("--modules", default=None,
+                        help="只判这些模块（逗号分隔，如 industrial,recovery,turnaround,distressed）")
     args = parser.parse_args(argv)
 
     import model_config
@@ -289,6 +301,7 @@ def main(argv: list[str] | None = None) -> int:
         context=args.context,
         tag=args.tag,
         chunk=args.chunk,
+        modules=[m.strip() for m in args.modules.split(",")] if args.modules else None,
     )
     (args.out / "report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")

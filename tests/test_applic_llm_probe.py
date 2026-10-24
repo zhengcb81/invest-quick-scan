@@ -83,12 +83,23 @@ def test_snapshot_mapping_turns_rules_into_yes_no_unsure():
 def test_parse_answer_rejects_unknown_values_and_reports_missing():
     modules = [{"id": "a"}, {"id": "b"}, {"id": "c"}]
     parsed, missing = probe.parse_answer(
-        {"modules": {"a": {"applies": "yes", "reason": "r"},
-                     "b": {"applies": "maybe", "reason": "r"}}},
+        {"modules": {"a": {"applies": "yes", "confidence": "high", "reason": "r"},
+                     "b": {"applies": "maybe", "confidence": "high", "reason": "r"}}},
         modules,
     )
-    assert parsed == {"a": {"applies": "yes", "reason": "r"}}
+    assert parsed == {"a": {"applies": "yes", "confidence": "high", "reason": "r"}}
     assert missing == ["b", "c"]
+
+
+def test_confidence_is_optional_and_normalised():
+    modules = [{"id": "a"}, {"id": "b"}]
+    parsed, _ = probe.parse_answer(
+        {"modules": {"a": {"applies": "yes", "confidence": "HIGH", "reason": "r"},
+                     "b": {"applies": "no", "confidence": "certain", "reason": "r"}}},
+        modules,
+    )
+    assert parsed["a"]["confidence"] == "high"
+    assert parsed["b"]["confidence"] is None
 
 
 def test_ledger_implies_owner_verdicts_and_skips_known_deviation(tmp_path):
