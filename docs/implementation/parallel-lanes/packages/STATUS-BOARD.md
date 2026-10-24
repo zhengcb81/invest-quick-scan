@@ -7,7 +7,7 @@
 | 2026-10-19 | QUESTION-BANK-UPGRADE-12 | ✅ 已验收（R2 闭合，CLI valid） | — |
 | 2026-10-19 | UI-BANK-EXPLORER-13 | ✅ 已验收（G7 签收 `9ab7a33`） | — |
 | 2026-10-21 | APPLIC-RESOLVE-14 | ✅ 已验收（APPROVED，R1 闭合） | — |
-| 2026-10-23 | UI-APPLIC-BRIDGE-15 | 🔄 代码级全过；**元数据 R1 待 UI worker 落盘**（HEAD 仍 `0f3dc3e`，三处声明原样） | R1 → CLI 复验 → G7 |
+| 2026-10-23 | UI-APPLIC-BRIDGE-15 | ✅ **已验收**（R1 落盘 `484db19`：三处声明修正 + 外部绑定 + 审查报告随包；代码零改动；CLI valid；118 OK） | — |
 | 2026-10-24 | APPLIC-GAP-CLOSE-16 | ✅ **已验收**：R1（逐对同值）由 worker 完成；R2（空集/缺格/签收文案/UTC/红相/下标语法）由主控直接修完；CLI valid；191 tests | — |
 | 2026-10-24 | APPLIC-LLM-JUDGE-20 | 🚀 **已派发**（所有者：施工卡发出去了） | applic worker 实现 shadow 通道 |
 | 2026-10-24 | RULE-SCOPE-DECISION-19 | 📋 决定已落纸，**待题库 lane 实施**（lifecycle 迁移 + 文本修正 + 谓词/快照重建） | 派发 bank lane |

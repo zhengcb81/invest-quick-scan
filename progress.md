@@ -1,3 +1,19 @@
+## 2026-10-24 — UI-APPLIC-BRIDGE-15 R1 验收通过（G7 收口）
+
+R1 落盘于 UI 仓 `484db19`（metadata-only，5 个文件，代码零改动）。逐项核验：
+
+| 项 | 结果 |
+|---|---|
+| A) parity 运行 3 目标改为事实（`61c1415`，非最终 HEAD） | ✅ `report.md:40` 明确写「非最终 HEAD」并附 diff 说明 |
+| B) 运行链如实（无 run-1 暗示） | ✅ |
+| C) 红相 errors 进结构化字段 | ✅ `tests.json.runs[]`：failed=60 / errors=11 / failed_total_including_errors=71；handoff 说明 schema 三标量故合并计 failed |
+| D) 最终 HEAD 外部绑定 | ✅ 选 A：`report.md §7` 出「交接元数据与外部绑定」表 |
+| N7 独立审查报告随包 | ✅ `review-report.md` 已附 |
+
+**红线**：`git diff 0f3dc3e..484db19` 仅 5 个元数据文件，`adapters/ src/ tests/` **零改动**。
+**验证**：主控 CLI `--verify-references` **exit 0**；`unittest discover` **118 OK / skipped=6**。
+
+**外部绑定**：UI-APPLIC-BRIDGE-15 最终交接 HEAD = **`484db19`**（payload `0474683`；G5 签收覆盖代码快照 `a80658b`）。包状态：**ACCEPTED / 已收口**。
 ## 2026-10-24 — GAP-CLOSE-16 R2 已由主控直接修完并验收（不再发施工包）
 
 按所有者指示「R2 你直接修」，在 applic 仓完成（payload `9be4d13` + 元数据 `4530118`）：
