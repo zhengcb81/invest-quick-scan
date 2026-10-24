@@ -1,3 +1,22 @@
+## 2026-10-24 — APPLIC-LLM-JUDGE-20 R2（所有者裁定）：匹配逻辑简化为「第一轮多数 yes 即适用」
+
+所有者原话：「一个公司是否与某一个题库匹配的逻辑太复杂了，如果第一轮LLM里面有大多数说这个公司与某个题库是匹配的，就认为匹配就好了，不用再复核或调用其他复杂逻辑了。我不介意在每个题库的公司池里多增加几家公司，没有什么坏处的。」
+
+裁定与落地（卡 [APPLIC-LLM-JUDGE-20-R2.md](docs/implementation/parallel-lanes/packages/2026-10-24/APPLIC-LLM-JUDGE-20-R2.md)）：
+
+| 项 | 结果 |
+|---|---|
+| 匹配规则 | 第一轮 LLM 多数判适用（yes **严格过半**；1/1、2/3 成立）⇒ `applicable`（basis `llm_judged_applicable`，记 `llm_ref.votes`） |
+| 其余情形 | 一律**回落谓词且不改写谓词结论**（applicable/not_applicable/unknown 原样）；多放几家公司进池由谓词兜底 |
+| 复核 | **取消**：不互证、不冲突升级、复核队列恒为 0 行；LLM 永不产出 `not_applicable` |
+| 不变 | override 最高；无规则格不得救活；置信度 high/medium 门槛；金标门（判题质量）口径 |
+| 代码 | `iqs-applic-lab` `llm_merge.py`（`MERGE_SEMANTICS=r2_owner_2026-10-24_first_round_majority_yes`，删 `_escalate_no`）、`judge_modules`/`run_eval` 文案、schema 增 `llm_ref.votes` |
+| 测试 | **323 tests OK**（pytest 同为 323 passed + 234 subtests）；反例覆盖平票不算多数、多数 no 不改写谓词、no 不产 not_applicable、复核队列恒空 |
+| 实调复跑 | 856 格（214×4 模块，回放）：applicable 1846→**1924**（+78 多数 yes）；复核队列 0 行；快照无任何 R1 冲突 basis |
+| 交接 | applic lab `4c6cbca`（R1+R2 内容）+ 元数据 `ea71818`/`f3af4fe`/…；主控 CLI `--verify-references` **exit 0** |
+
+**边界**：金标门仍是判题质量门（如需简化另裁）；UI 侧 LLM basis 图例释义仍是既有 open item（不阻塞）。
+
 ## 2026-10-24 — RULE-SCOPE-DECISION-19 实施完成（四仓：主仓 A/C + applic B + UI D + 银行 E）
 
 设计输入 `docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19.md`；实施报告 [RULE-SCOPE-DECISION-19-report.md](docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19-report.md)。主仓交付 commit **`644ae58`**（17 文件；与卡无关的预存脏态 `questions/releases/current.json`、`packages/2026-10-10/README.md` 未纳入，见报告 F4）。
