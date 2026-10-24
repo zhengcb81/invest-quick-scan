@@ -130,3 +130,20 @@
 | AC-03 | 快照 distribution | dupont/porter 的 428 格 basis 全部为 `contract_always`；总数 10272 不变 |
 | AC-04 | 文本一致性 | 主仓 catalog、applic 谓词 `mapped_from`、bank lab 4.2.1 三处文本逐字一致（可 diff） |
 | AC-05 | 回归 | 187+测试全绿；parity `state_consistent=true`；UI basis 枚举无未知值 |
+
+## 7. 复核勘误（2026-10-24，主控与独立审查共同确认；不改变本卡任何裁定语义）
+
+复核报告见 [RULE-SCOPE-DECISION-19-review.md](RULE-SCOPE-DECISION-19-review.md)、独立审查见
+[RULE-SCOPE-DECISION-19-independent-review.md](RULE-SCOPE-DECISION-19-independent-review.md)。文字层面的勘误：
+
+1. **§4.B.2 的分布数字有误**：原文「applicable 增加 428 → 856」与实际不符。复核实测：现行 applicable=1846
+   （dupont/porter 本就 applicable）；本裁定的实际效果是 **428 格 basis 换类、逐格 state 零变化**，总数 10272
+   不变——与 AC-03 一致，按 AC-03 执行。
+2. **AC-03 的「basis 全部为 `contract_always`」用词不精确**：`contract_always` 是谓词表的 *decision*
+   （dupont/porter 在本卡前就已是 contract_always）；落到快照的是 `basis.kind = common_always_applicable`。
+   §2 的「谓词改为 contract_always」同理应读作「basis 映射与 `provenance.mapped_from` 变更」。
+3. **AC-02 的执行边界**：「组装默认包含」已在 **profile 驱动组装** 落地并测试；**v2 路由驱动组装**
+   （`select_questions_for_route`，以冻结 route 的 eligible 模块为准）仍按路由策略（dupont/porter 为
+   `user_diagnostic`）；如需同为默认包含，须新路由策略 + router 升版（另卡）。
+4. **AC-01 的组装口径**：「组装应移除 industrial」以**新组装**为准（主控交付修正 profile 与复现命令，
+   见复核报告头注）；`runs/thin-bank-catl-full-2026-10-22` 属历史实跑证据，不改写。

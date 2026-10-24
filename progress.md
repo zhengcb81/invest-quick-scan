@@ -1,3 +1,18 @@
+## 2026-10-24 — RULE-SCOPE-DECISION-19 复核与交接：AC-01/03/04/05 通过、AC-02 PARTIAL，G1–G4/G6 完成（G5 待所有者签收）
+
+按卡 §5/§6 复核（主控独立重算 + 独立审查 agent 双线）：[复核报告](docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19-review.md)、[独立审查](docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19-independent-review.md)；卡片已加 §7 勘误。
+
+| 项 | 实测 |
+|---|---|
+| AC-01 | CATL `industrial = unknown`（非 applicable）；修正组装 modules = `[common, operating, auto, mature, dupont, porter]`，**不含 industrial**、默认含 dupont/porter（profile 已入 git，复现命令见复核报告头注） |
+| AC-02 | 快照 428 格 applicable+`common_always_applicable` ✅；**profile 驱动组装**默认 +12 诊断题 ✅；**v2 路由驱动组装不注入默认诊断**（冻结 route 为准）→ 复核判 **PARTIAL**，关闭需新路由策略 + router 升版 |
+| AC-03 | 10272 格、分布 {1846,0,0,8426} 不变、**逐格 state 变化 0**、basis 变化恰 428 格（214+214，owner_ruled→common_always） |
+| AC-04 | 主仓 catalog 3.2.1 == 主仓模块 == 银行 catalog/module 4.2.1 == applic mapped_from，三模块+industrial 名逐字一致（独立审查 9/9） |
+| AC-05 | 主仓全量回归见复核报告 §3；applic 323 OK、UI 122 OK/6 skip、银行 52 OK + validate_bank OK；parity `state_consistent=true`、4/4 basis 同值、`known_gaps=closed`；UI basis 枚举覆盖导出全部值 |
+| 交接 | 四份 handoff（APPLIC/UI/BANK/LLM-JUDGE-20）主控 CLI `--verify-references` 全 **exit 0**；artifact 哈希独立复算 UI 13/13、BANK 38/38、APPLIC 34/34；三 lab 仓工作树 clean |
+
+**开放项（需所有者）**：① **F1/R-01** 主仓真实发布库下一次 `publish()` 被 `validate_upgrade` 阻断（applies_when 就地变更须换后继题 ID）——已由主控与独立审查双复现，待择路；② **R-02/F8** v2 路由路径默认诊断（新路由策略卡）；③ **R-04/F7** UI `src/generated/bank.json` 旧文本需重建（另卡）；④ **R-05** 银行 `activation` 文案/version-policy 例外，G5 签收时明示；⑤ **R-06** 卡片勘误已记 §7；⑥ **R-07** `questions/releases/current.json` 预存指针脏态（发布前清理）。
+
 ## 2026-10-24 — APPLIC-LLM-JUDGE-20 R2（所有者裁定）：匹配逻辑简化为「第一轮多数 yes 即适用」
 
 所有者原话：「一个公司是否与某一个题库匹配的逻辑太复杂了，如果第一轮LLM里面有大多数说这个公司与某个题库是匹配的，就认为匹配就好了，不用再复核或调用其他复杂逻辑了。我不介意在每个题库的公司池里多增加几家公司，没有什么坏处的。」

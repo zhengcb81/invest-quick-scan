@@ -3,7 +3,10 @@
 - 日期：2026-10-24
 - 设计输入：[RULE-SCOPE-DECISION-19.md](RULE-SCOPE-DECISION-19.md)（G1：本卡即设计输入；所有者原话见其 §0）
 - 性质：跨四仓实施（主仓阶段 A/C + applic lab 阶段 B + UI lab 阶段 D + 银行 lab 阶段 E）
-- 门禁：G2 无新增裁定项（两条语义均由所有者原话给定）；G3 TDD；G4 独立审查（主控逐仓核）；G6 主控 CLI 校验
+- 门禁：G2 无新增裁定项（两条语义均由所有者原话给定）；G3 TDD；G4 独立审查（主控逐仓核 + 独立审查 agent）；G6 主控 CLI 校验
+- 复核：**2026-10-24 复核完成** —— 见 [RULE-SCOPE-DECISION-19-review.md](RULE-SCOPE-DECISION-19-review.md)（主控）与
+  [RULE-SCOPE-DECISION-19-independent-review.md](RULE-SCOPE-DECISION-19-independent-review.md)（独立审查）；
+  AC-02 复核后改判 **PARTIAL**（profile 驱动路径满足；v2 路由驱动路径为已登记边界），勘误见卡片 §7
 - 网络：全程零外网、零模型 API、零付费调用；主仓与各仓写范围严格按卡 §4
 
 ## 0. 结论摘要
@@ -21,7 +24,7 @@
 | ID | 期望 | 实际 | 判定 |
 |---|---|---|---|
 | AC-01 | CATL 的 industrial 判定不再 applicable；组装不再含 industrial | applic 侧：industrial 谓词逻辑不变（in[industrial]），CATL 属性 industry=[auto] → 判假 → `unknown`（非 applicable）✅；文本收窄使「电池制造=工业装备」的误读在题库侧被显式排除 ✅。组装侧：新组装不再把 industrial 当默认项；CATL 历史实跑 profile（手工含 industrial）为冻结证据不改写，下一次实跑按新文本重判（见 §5-F5 边界说明） | ✅（判定层面） |
-| AC-02 | dupont/porter 恒 applicable（contract_always）且组装默认包含 | 快照 428 格全部 applicable + `common_always_applicable`（§3）；组装 `select_questions` 默认恒入（§2），quick/full、8 类型×6 阶段全网格测试锁定 | ✅ |
+| AC-02 | dupont/porter 恒 applicable（contract_always）且组装默认包含 | 快照 428 格全部 applicable + `common_always_applicable`（§3）✅；**profile 驱动组装**默认恒入（§2）✅；**v2 路由驱动组装**不注入默认诊断（冻结 route 为准，路由策略仍 `user_diagnostic`）——复核判 **PARTIAL**，关闭需新路由策略 + router 升版（§5-F8） | ⚠️ PARTIAL |
 | AC-03 | dupont/porter 的 428 格 basis 全部为契约恒适用；总数 10272 不变 | 新快照 10272 格；428 格 dupont/porter basis=`common_always_applicable`；分布与旧快照逐格 state 零变化（applicable 1846 / unknown 8426）（§3） | ✅ |
 | AC-04 | 主仓 catalog、applic 谓词 mapped_from、bank lab 4.2.1 三处文本逐字一致 | 主仓 catalog（3.2.1）= 卡片 §1/§2 原文；applic `provenance.mapped_from` 由锁内 catalog 逐字重建（§3）；bank lab 4.2.1 由独立脚本对卡片原文交叉核对 8/8 True（§4） | ✅ |
 | AC-05 | 回归全绿；parity state_consistent=true；UI basis 枚举无未知值 | 主仓：见 §6 数字；applic：见 §3；UI：122 项 OK（6 skip 为既有 env 门控）；UI `APPLICABILITY_BASES` 含全部出现值（common_always_applicable 与历史 owner_ruled_always_applicable 均在册） | ✅ |
@@ -72,7 +75,7 @@ lane 交付：内容提交 `e8fbfbf3537031486d30d050c6c1f4c6984de0e7`（7 文件
 - **代码**：`run_eval.py` 的 `contract_always` 分支统一发 `common_always_applicable`；`_contract_reason` 对非 common 模块改为契约文案 `"{module_id} 模块对所有公司恒适用（题库契约规定；所有者 2026-10-24 裁定纳入必做契约，不再依赖单次裁定记录)"`（`rules.owner_quote` 依赖移除）；`rules.py` docstring 记录契约化沿革，`OWNER_DECISIONS` 历史数据未动。
 - **选择性 staging（共存纪律）**：`run_eval.py` 同树存在 APPLIC-LLM-JUDGE-20 lane 的未提交 WIP，lane 用 partial patch 仅暂存本包 3 个 hunk（+12/−12，blob 断言 0 处 llm_* 痕迹），并用索引态抽树重建快照证明「提交版代码重建结果 == 提交快照」逐字节相同；另一 lane 的 10 个 hunk 与其全部文件未被 revert/commit。
 - **TDD**：`test_redlines.py` 先红（2 failures：owner_ruled ≠ common_always）后绿；历史快照夹具（手工 owner_ruled 格）原样保留且全绿 = 历史兼容证明。
-- **重建链**（真实退出码，日志入 `docs/handoff/RULE-SCOPE-19-APPLIC/logs/`）：`verify_inputs` 8/8 ok（新锁 catalog `3e145130…`/15139B 吻合）→ `build_predicates` exit 0：**predicate_version `pred_6ffa4a71…` → `pred_6b258097d0b8…`**（48 规则 = 45 mapped + 3 contract_always；industrial `mapped_from` = 新文本 verbatim）→ `build_attributes` exit 0（attributes_version 不变 `attr_897fecae…`）→ `run_eval` **exit 1（预期：首写 unknown>0）** → 新快照 **`applicsnap_26f494e5e4faf19828c78e7ef10bcdbd563ff303f4f78b8006af8e97b94ee488`**（index 2→3 条；旧快照 `applicsnap_d296…` 前后字节不变）→ `validate` 复跑 exit 0 → `export_ui`（10272 格）→ `parity_check` vs UI `41be324…` exit 0 → `unittest` **298 OK**（基线 297，净 +1；与另一 lane 未提交测试同跑全绿）。
+- **重建链**（真实退出码，日志入 `docs/handoff/RULE-SCOPE-19-APPLIC/logs/`）：`verify_inputs` 8/8 ok（新锁 catalog `3e145130…`/15139B 吻合）→ `build_predicates` exit 0：**predicate_version `pred_6ffa4a71…` → `pred_6b258097d0b8…`**（48 规则 = 45 mapped + 3 contract_always；industrial `mapped_from` = 新文本 verbatim）→ `build_attributes` exit 0（attributes_version 不变 `attr_897fecae…`）→ `run_eval` **exit 1（预期：首写 unknown>0）** → 新快照 **`applicsnap_26f494e5e4faf19828c78e7ef10bcdbd563ff303f4f78b8006af8e97b94ee488`**（index 2→3 条；旧快照 `applicsnap_d296…` 前后字节不变）→ `validate` 复跑 exit 0 → `export_ui`（10272 格）→ `parity_check` vs UI `41be324…` exit 0 → `unittest` **298 OK**（交接时点数；基线 297，净 +1；与另一 lane 未提交测试同跑全绿。后续 LLM-JUDGE-20 提交后当前 HEAD 为 323 OK，见复核报告 AC-05/R-08）。
 - **AC-03（lane 实测 + 主控独立复核，双方结论一致）**：10272 格；分布新旧完全一致 `{applicable:1846, unknown:8426}`；**逐格 state 变化 = 0**；basis.kind 变化恰 **428 格**（dupont 214 + porter 214，`owner_ruled_always_applicable → common_always_applicable`，reason 无旧原话）；428 格全部 applicable + source=contract。诚实披露：`basis.rule_ref` 因 predicate 内容哈希变化对全部 10272 格换新 `pred_6b258097d0b8` 前缀（重建设计使然）；industrial 谓词仍 `mapped`+`in[industrial]`，CATL 判定仍 `unknown`（非 applicable）✓。
 - **parity（主控独立复跑确认）**：`state_consistent=true`、mismatch 0、`ui_repo_writes=0`；basis_gaps 四组全同值映射：`common_always_applicable→common_always_applicable` **642**（214 common + 428 dupont/porter）、`negative_evidence_not_verified` 8409、`predicate_true` 1204、`attribute_unresolved` 17；`known_gaps[0]` = **closed**、`identity_verified=true`。
 - 共存披露：另一 lane 执行期间仍在活动（脏项 26→33），最终残余 32 项全部属其 lane；本包 0 项残余。
@@ -93,7 +96,7 @@ lane 交付：内容提交 `e8fbfbf3537031486d30d050c6c1f4c6984de0e7`（7 文件
 - **F3（契约必需改动）**：模块脱离 legacy 集后，`validate_registry` 要求其 kind 在 `scoring-contexts.json` 有非空评分语境；`diagnostics` 映射原本不存在，故新增 dupont/porter 两条（顺带使 `question_prompts.applied_contexts` 已有的 diagnostics 通道生效：新发布的包中诊断题 prompt 会带该语境；冻结包不受影响）。
 - **F4（预存脏态，非本轮产生）**：主仓 `questions/releases/current.json` 在本轮开始前即为未提交修改（worktree `pkg_24f07923…` vs git HEAD `pkg_b5a41d8c…`），系前序会话遗留；本轮未触碰、不提交该文件。
 - **F5（AC-01 组装边界）**：CATL 历史实跑 manifest（`runs/thin-bank-catl-full-2026-10-22/`）是冻结证据，不改写；industrial 的移除发生在**下一次**按新文本的路由/组装。判定层（applic 快照）已按新文本重建（§3）。
-- **F6/F7（lane 登记，主控认可）**：银行 lab version-policy 行文张力（见 §4）；UI lab `src/generated/bank.json` 为构建产物，待其下次 build 自动镜像 3.2.1（UI lab 不内嵌 catalog 文本，判定行为零影响）。
+- **F6/F7（lane 登记 + 复核修正）**：银行 lab version-policy 行文张力（见 §4）与 `activation` 镜像文案仍「按需激活」，需所有者 G5 明示例外；UI lab **并非不内嵌 catalog 文本**——其构建产物 `src/generated/bank.json` 仍内嵌 catalog 3.2.0 旧文本且运行时读取，`build_data.py --check` 检测不到此漂移；登记开放项：以主仓 3.2.1 为数据根重建 `src/generated/bank.json` 并提交（另卡）。
 - **F8（后续卡候选）**：路由策略中 dupont/porter 仍为 `user_diagnostic`；若要 v2 路由驱动的组装也恒含两模块，需新路由策略制品 + router 升版（另立卡）。
 
 ## 6. 验证与数字（主控实测）
@@ -127,7 +130,7 @@ lane 交付：内容提交 `e8fbfbf3537031486d30d050c6c1f4c6984de0e7`（7 文件
 
 - UI lab：unittest **122 OK**（116 passed/0 failed/6 skip，skip 集与基线完全相同）；`build_data.py --check` exit 0。
 - 银行 lab：unittest **52 passed/0 failed/0 skipped**；pytest 52 passed；`validate_bank --releases` 三跑 exit 0；compose 冒烟 36 题 exit 0。
-- applic lab：unittest **298 OK**（基线 297，与另一 lane 未提交测试同跑）；提交内容独立树 192 OK。
+- applic lab：unittest **298 OK**（交接时点数；基线 297，与另一 lane 未提交测试同跑）；提交内容独立树 192 OK；当前 HEAD（含后续 LLM-JUDGE-20 提交）**323 OK**。
 
 ## 7. 台账影响（卡 §3）
 
