@@ -1,3 +1,16 @@
+## 2026-10-24 — PIPELINE-AUDIT-17：组装×快照管线一致性审计完成（工具+报告+7 测试）
+
+**发现**：两条已验收管线（题库组装、适用性快照）的汇合点从未对齐。交叉核对仅有的 2 个可复用组装样本（CATL、Alphabet）：
+
+- CATL：48 轴中 43 一致 / 4 快照适用而组装未选（cross_border、scaling、dupont、porter）/ 1 组装选而快照 unknown（industrial）
+- Alphabet：41 一致 / 6 未选 / 1 不符（software）
+- **两样本根因完全同构**（4 类）：真源不同（手工 profile vs 属性表谓词）、extra.* 旗标无组装通道、阶段轴单选 vs 多标签、诊断模块所有者裁定无通道
+
+**交付**：`scripts/applic_pipeline_check.py`（退出码 0/2/3；一致性= applicable 判定对齐，unknown/not_evaluated 且未组装视为双侧一致）+ `tests/test_applic_pipeline_check.py` 7 例 + 归因报告（Q1-Q4 架构问题留给所有者裁定）。56 项相邻回归全绿。
+
+**边界诚实**：可对账样本仅 2/214（其余家无可复用组装 profile）；组装器模板 3.2.0 vs 题库 4.2.0 vs 谓词 pred_6ffa4a71 的三版本不对齐记为更大管线议题（Q1 家族）。
+
+**红线**：审计卡零修复 —— 不改组装器/谓词/快照；Q1-Q4 裁定前不建「快照驱动组装」。
 ## 2026-10-24 — UI-APPLIC-BRIDGE-15 验收：代码级全过（APPROVED WITH NOTES），元数据 R1 待修
 
 ### 独立对抗审查（f2831aba）+ 总控双核结论
