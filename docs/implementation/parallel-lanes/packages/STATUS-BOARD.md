@@ -1,25 +1,39 @@
-# 批次 2026-10-23 补遗 + 2026-10-24 开批记录
+# 批次状态板（2026-10-24 收盘版）
 
-## 2026-10-24 — 批次状态板
+## 一、包状态
 
 | 批次 | 包 | 状态 | 下一步 |
 |---|---|---|---|
-| 2026-10-19 | QUESTION-BANK-UPGRADE-12 | ✅ 已验收（R2 闭合，CLI valid，独立审查 10 项过） | — |
+| 2026-10-19 | QUESTION-BANK-UPGRADE-12 | ✅ 已验收（R2 闭合，CLI valid） | — |
 | 2026-10-19 | UI-BANK-EXPLORER-13 | ✅ 已验收（G7 签收 `9ab7a33`） | — |
-| 2026-10-21 | APPLIC-RESOLVE-14 | ✅ 已验收（APPROVED，R1 闭合，CLI valid） | — |
-| 2026-10-23 | UI-APPLIC-BRIDGE-15 | 🔄 代码级全过（独立审查 APPROVED WITH NOTES）；**元数据 R1 待 UI worker**（3 处表述修正 + 1 处二选一，代码零改动） | R1 落盘 → 复验 CLI → G7 收口 |
-| 2026-10-24 | APPLIC-GAP-CLOSE-16 | 🆕 已开卡（commit `60b2a8f`） | 派发 applic worker（核锁 → G1 设计确认） |
+| 2026-10-21 | APPLIC-RESOLVE-14 | ✅ 已验收（APPROVED，R1 闭合） | — |
+| 2026-10-23 | UI-APPLIC-BRIDGE-15 | 🔄 代码级全过；**元数据 R1 待 UI worker 落盘**（HEAD 仍 `0f3dc3e`，三处声明原样） | R1 → CLI 复验 → G7 |
+| 2026-10-24 | APPLIC-GAP-CLOSE-16 | ✅ **已验收**：R1（逐对同值）由 worker 完成；R2（空集/缺格/签收文案/UTC/红相/下标语法）由主控直接修完；CLI valid；191 tests | — |
+| 2026-10-24 | APPLIC-LLM-JUDGE-20 | 🚀 **已派发**（所有者：施工卡发出去了） | applic worker 实现 shadow 通道 |
+| 2026-10-24 | RULE-SCOPE-DECISION-19 | 📋 决定已落纸，**待题库 lane 实施**（lifecycle 迁移 + 文本修正 + 谓词/快照重建） | 派发 bank lane |
 
-### UI-APPLIC-BRIDGE-15 R1 复核要点（worker 落盘后执行）
+## 二、今日决策记录
 
-1. `git show HEAD:docs/handoff/UI-APPLIC-BRIDGE-15/handoff.json` 三处声明与证据一致（run3 目标改为 `61c1415`+等同性说明 / 运行链如实 / errors=11 补齐）
-2. `unittest discover` 118 OK
-3. 主控 CLI `--verify-references` exit 0
-4. 修正仅限元数据文件（diff 不触 adapters/src/tests）
+1. **industrial 维持狭义**（装备制造），改名「工业装备与专用设备」并写明不含流程制造 —— 依据是 4 道题全部假设设备/项目商业模式。
+2. **dupont / porter 改为对所有公司必做**，由 `owner_ruled` 升为契约恒适用，组装默认必含。
+3. **复核台账 R003 被取代**：CATL 的 industrial 定为不适用（台账 append-only，未改历史）。
+4. **LLM 通道规则**：high + medium 都采纳；LLM 说 no 走**三方互证**（换模型 + 谓词仲裁），仅三方一致才产出 `llm_corroborated_not_applicable` 且强制复核。
 
-### APPLIC-GAP-CLOSE-16 派发时序
+## 三、今日实证数据
 
-- 卡、锁、manifest、README 已就绪（`60b2a8f`）
-- **依赖**：UI 卡 R1 若改动 resolver/contracts（不应发生 —— R1 是元数据-only），须重核关闭条件；GAP-CLOSE-16 的 parity 以交接时点 UI HEAD 为准
-- 写范围仅 applic 仓；G2 无新裁定项但「冒出新语义问题必须停问所有者」已写入卡
-- 元数据纪律条款（result_commit 真值 / 声明可对应 / 生成器唯一写入方）已固化进卡 §3.6 —— 这是三包元数据事故的流程闭环
+| 实验 | 结论 |
+|---|---|
+| 四模型 × 你 12 条裁定 | deepseek 11/12（优于规则引擎 10/12）；两处差异均源于**规则文本**而非模型能力 |
+| 4 模块 × 24 家 shadow | 96 格零错误；high 59 / medium 37 / low 0；**「快照适用但 LLM 说 no」= 0 格**，LLM 只补充 13 格 |
+| GAP-CLOSE-16 R2 前后 | 空集→no_evidence、缺格→incomplete；真实 RED 日志 4 failed / 16 passed |
+| 主仓全量回归 | 见下方（跑完补） |
+
+## 四、未决事项（需所有者）
+
+1. 复核台账 2 行缺理由：**R009 listing_structure**（采纳快照）、**R012 software**（保留人工）—— 各补一句即可入库。
+2. RULE-SCOPE-DECISION-19 是否现在派题库 lane。
+
+## 五、主控环境注意
+
+- 主仓 `questions/releases/current.json` 仍为他人会话遗留的未提交改动（10-18 mtime），不动。
+- 主仓题库受信任锚管辖：改内容必须补 lifecycle 元数据，否则 29 个路由/发布测试红（已实测并回滚）。
