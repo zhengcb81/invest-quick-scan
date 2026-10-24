@@ -1,3 +1,31 @@
+## 2026-10-24 — GAP-CLOSE-16 R1 验收通过（核心 fail-open 修复成立），R1S 余 5 项小额
+
+### 我方实测（HEAD a13d083，187 passed + 234 subtests）
+
+对 `_ui_rewrites_basis_entry` 逐案探针：
+
+| 输入 | 结果 | 判定 |
+|---|---|---|
+| 全部同值 | closed | ✅ |
+| 已知改写目标 | open | ✅ |
+| **未知目标非同值**（原 fail-open） | **open** | ✅ 修复成立 |
+| 混合 | open | ✅ |
+| 无分隔符畸形 | 显式抛 InputError（数据错误） | ✅ |
+| 左=改写目标名的同值对 | closed（无误报） | ✅（R1S N5 已解） |
+| **空集 {}** | **closed（total=0）** | ❌ R1S N3 未处理 |
+| `x -> None`（缺格） | open | ⚠️ 不再假闭，但未按 R1S N4 单列 missing |
+
+B2（断言 fail-open 的测试）已反转为 `test_absence_fallback_pair_is_reported_as_deviation` ✅。CLI `--verify-references` exit 0。
+
+### R1S 剩余（均小额）
+
+1. **N3 空集**：`{}` 仍判 closed（真空成立）—— 唯一残留 fail-open，建议 3 行修复 + 1 测试
+2. **N4**：缺格对按 deviation 处理（功能安全但不单列 `missing`/`incomplete`）
+3. **B3**：签收/交接文档的 fail-closed 表述经 R1 后**大部分已成真**（未知目标/混合都 open），仅空集除外；仍建议按 R1S 加 amendment 说明修正过程，不改原签收文件
+4. **N1**：`signoff.decided_at_utc=11:22:08Z` 仍是本地时间误标（应 10:22:08Z）
+5. **N2/N6**：红相计数与 `interface-proposals.md` 旧下标语法未处理
+
+结论：**R1 验收通过**；R2 只需 N3 + N1 + N2/N6 + amendment 说明，属元数据/边界加固。
 ## 2026-10-24 — 路线 B 首批人工裁定入库（10/12）+ GAP-CLOSE-16 发现 fail-open → R1
 
 ### 裁定台账（docs/implementation/pipeline-review/review-pack-01.jsonl）
