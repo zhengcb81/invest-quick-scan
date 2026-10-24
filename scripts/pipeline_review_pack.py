@@ -51,8 +51,33 @@ def _snapshot_applicable(snapshot_doc: dict, entity_id: str) -> list[str]:
     )
 
 
+def _load_catalog_titles() -> dict[str, dict]:
+    """Read module titles + applies_when from the question catalog (read-only).
+
+    Owners should never face a bare module id: every row in the review page
+    carries the catalog's Chinese title and its one-line applicability rule.
+    """
+    catalog_path = Path(__file__).resolve().parents[1] / "questions" / "catalog.json"
+    if not catalog_path.is_file():
+        return {}
+    try:
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8-sig"))
+    except (OSError, ValueError):
+        return {}
+    titles: dict[str, dict] = {}
+    for module in catalog.get("modules") or []:
+        mid = module.get("id")
+        if isinstance(mid, str):
+            titles[mid] = {
+                "title": str(module.get("title") or module.get("name") or ""),
+                "applies_when": str(module.get("applies_when") or ""),
+            }
+    return titles
+
+
 def build_pack(manifest_paths: list[Path], snapshot_path: Path, out_dir: Path) -> dict:
     snapshot_doc = json.loads(snapshot_path.read_text(encoding="utf-8-sig"))
+    catalog_titles = _load_catalog_titles()
     companies: list[dict] = []
     rows: list[dict] = []
     index = 0
@@ -65,10 +90,15 @@ def build_pack(manifest_paths: list[Path], snapshot_path: Path, out_dir: Path) -
         section_rows = []
         for disagreement in result["disagreements"] + result["unaligned"]:
             index += 1
+            module_id = disagreement["module_id"]
+            catalog = catalog_titles.get(module_id) or {}
             section_rows.append(
                 {
                     "row_id": f"R{index:03d}",
-                    "module_id": disagreement["module_id"],
+                    "module_id": module_id,
+                    "module_title": catalog.get("title") or "",
+                    "module_applies_when": catalog.get("applies_when") or "",
+                    "category": disagreement["category"],
                     "category": disagreement["category"],
                     "category_label": CATEGORY_LABELS.get(
                         disagreement["category"], disagreement["category"]
@@ -194,6 +224,7 @@ _HTML = """<!DOCTYPE html>
 </footer>
 <script>
 const PACK = __PACK_JSON__;
+const CATALOG = __CATALOG_JSON__;
 const DECISIONS = PACK.decision_options;
 const state = {};  // row_id -> {decision, reason}
 function chip(category) {
@@ -215,12 +246,13 @@ function render() {
         <span class="co-stats">组装 <b>${co.composed_modules.length}</b> 模块 · 快照适用 <b>${co.snapshot_applicable.length}</b> 模块 · 一致 <b>${co.summary.agree||0}</b> · 差异 <b>${co.rows.length}</b></span>
         <span class="co-stats">as_of ${co.as_of || '—'}</span>
       </div>
-      <div class="modules"><b>组装：</b>${co.composed_modules.map(m=>`<code>${m}</code>`).join('')}<br><b>快照适用：</b>${co.snapshot_applicable.map(m=>`<code>${m}</code>`).join('')}</div>
+      <div class="modules"><b>组装：</b>${co.composed_modules.map(m=>`<code title="${(CATALOG[m]&&CATALOG[m].applies_when)||''}">${CATALOG[m]&&CATALOG[m].title?CATALOG[m].title:m}</code>`).join('')}<br><b>快照适用：</b>${co.snapshot_applicable.map(m=>`<code title="${(CATALOG[m]&&CATALOG[m].applies_when)||''}">${CATALOG[m]&&CATALOG[m].title?CATALOG[m].title:m}</code>`).join('')}</div>
       <table>
         <tr><th style="width:16%">模块</th><th style="width:20%">差异</th><th style="width:24%">快照判定与依据</th><th style="width:40%">你的裁定（必填理由）</th></tr>
         ${co.rows.map(r => `
           <tr data-row="${r.row_id}">
-            <td><b>${r.module_id}</b><div style="font-size:11px;color:#999">${r.row_id}</div></td>
+            <td><b>${r.module_title || r.module_id}</b><div style="font-size:11px;color:#999">${r.module_id} · ${r.row_id}</div>
+                ${r.module_applies_when?`<div style="font-size:11.5px;color:#666;margin-top:4px">适用条件：${r.module_applies_when}</div>`:''}</td>
             <td>${chip(r.category)}</td>
             <td>${stateSpan(r.snapshot_state)}${r.basis_kind?`<div style="font-size:12px;color:#777">${r.basis_kind}</div>`:''}
               <details class="reason"><summary>依据原文</summary><div>${(r.reason||'').replace(/</g,'<')}</div></details></td>
@@ -311,6 +343,7 @@ def _render_html(pack: dict, out_dir: Path) -> str:
             f"python -B -X utf8 scripts\\pipeline_review_apply.py --pack {out_dir.resolve()}"
         ),
         "__PACK_JSON__": json.dumps(pack, ensure_ascii=False),
+        "__CATALOG_JSON__": json.dumps(_load_catalog_titles(), ensure_ascii=False),
     }
     for token, value in replacements.items():
         html = html.replace(token, value)
