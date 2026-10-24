@@ -10,8 +10,8 @@
 
 | 阶段 | 仓 | 状态 | 交付 commit | G6 主控 CLI |
 |---|---|---|---|---|
-| A 题库目录文本 | invest-quick-scan（主仓） | ✅ 落盘 | 见 §1（本轮主仓提交） | n/a（主仓即主控） |
-| C 组装默认必选 | invest-quick-scan（主仓） | ✅ 落盘 | 同上 | n/a |
+| A 题库目录文本 | invest-quick-scan（主仓） | ✅ 落盘 | `644ae58`（主仓 A/C 内容提交） | n/a（主仓即主控） |
+| C 组装默认必选 | invest-quick-scan（主仓） | ✅ 落盘 | `644ae58`（同上） | n/a |
 | B 谓词/快照/parity | iqs-applic-lab | ✅ 见 §3 | 见 §3 | 见 §3 |
 | D 枚举/文案/图例 | iqs-question-bank-ui-lab | ✅ 完成 | `40d7927`（内容）+ `41be324`（套件） | ✅ exit 0 |
 | E 银行 lab 文本同步 | iqs-question-bank-lab | ✅ 完成 | `a1965fb`（内容）+ `c8468a9`/`436ef2c`/`7af4119`/`96bbb4f`（套件与 G6 修复） | ✅ exit 0（修复后） |

@@ -1,6 +1,6 @@
 ## 2026-10-24 — RULE-SCOPE-DECISION-19 实施完成（四仓：主仓 A/C + applic B + UI D + 银行 E）
 
-设计输入 `docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19.md`；实施报告 [RULE-SCOPE-DECISION-19-report.md](docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19-report.md)。
+设计输入 `docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19.md`；实施报告 [RULE-SCOPE-DECISION-19-report.md](docs/implementation/parallel-lanes/packages/2026-10-24/RULE-SCOPE-DECISION-19-report.md)。主仓交付 commit **`644ae58`**（17 文件；与卡无关的预存脏态 `questions/releases/current.json`、`packages/2026-10-10/README.md` 未纳入，见报告 F4）。
 
 | 阶段 | 仓 | 结果 |
 |---|---|---|
