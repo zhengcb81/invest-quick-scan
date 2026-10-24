@@ -1,3 +1,24 @@
+## 2026-10-24 — UI-APPLIC-BRIDGE-15 验收：代码级全过（APPROVED WITH NOTES），元数据 R1 待修
+
+### 独立对抗审查（f2831aba）+ 总控双核结论
+
+**代码级 10 项全过**：AC-01/02 basis 采纳、AC-03 显式 not_evaluated、AC-05/06 decided_confidence+琥珀徽标、AC-04/06 向后兼容字节锁（硬编码 JSON 全等断言）、118 测试实跑 OK（含 IQS_UI_EXPORT_JSON 真实 8.4MB 导出 10272 格 6 项全绿、分布 1846/8426/0/0）、34/34 artifacts hash 实算全对、G2 三项所有者裁定与 G5「签收通过」原话落盘、跨仓零写入、三布尔 false、TDD 红相真实（60 failures+11 errors）。
+
+### 外部绑定（handoff-rules：metadata 提交 HEAD 由总控绑定）
+
+- UI-APPLIC-BRIDGE-15 **最终交接 HEAD = `0f3dc3e`**（payload commit `0474683`；G5 签收覆盖代码快照 `a80658b`；`61c1415..0f3dc3e` 仅文档）。
+
+### R1（元数据-only，已发 UI worker）
+
+- R1-A「parity 对准最终 HEAD」表述不实（实为 61c1415，docs-only delta 缓解）—— 必修
+- R1-B parity 运行链无 run-1 却暗示完整链 —— 必修
+- R1-C 红相 errors=11 未入结构化元数据 —— 必修
+- R1-D result_commit 外部绑定记录二选一
+- N5/N6/N7 可选（测试强度、独立审查产物未随包）
+
+### 流程注记
+
+审查员自披露：审查中误建 `_review_probe.txt` 并即删，worktree clean 复核无残留。审查员未能独立证明 G2/G5 的 GUI 交互本体（仅记录级）——与两包先例同等边界。
 ## 2026-10-23 — QUESTION-BANK-UPGRADE-12 R2 验收通过：两包全部收口
 
 HEAD `fd75433` 逐项验证（均 `git show HEAD:` 或独立重跑）：
