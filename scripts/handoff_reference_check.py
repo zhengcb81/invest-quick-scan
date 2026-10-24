@@ -172,7 +172,64 @@ def _index_dir(root: Path) -> dict[str, str]:
     return index
 
 
-def check_interface_hashes(handoff: dict, repo: Path) -> list[dict]:
+def _blob_sha256s(repo: Path, commit: str, rel: str) -> tuple[str, ...]:
+    """Every byte form ``rel`` has had at ``commit``: filtered, raw, and unfiltered.
+
+    Handoffs describe the tree at ``result_commit``, not today's worktree. A later
+    package may legitimately rewrite a shared file, so a declared hash has to be
+    judged against the commit first and the worktree second — otherwise every
+    follow-up refactor turns an already accepted handoff red.
+
+    Three forms are returned because generators differ on this machine: some hash
+    worktree bytes (CRLF after core.autocrlf), some hash the raw blob (LF), and
+    ``cat-file --filters`` reproduces the worktree form. Accepting all three keeps
+    the check about *which content* was delivered rather than *which newline form*
+    the writer happened to read.
+    """
+    if not commit:
+        return ()
+    forms: list[str] = []
+    for args in (("cat-file", "--filters", f"{commit}:{rel}"),
+                 ("show", f"{commit}:{rel}")):
+        try:
+            proc = subprocess.run(["git", *args], cwd=repo,
+                                  capture_output=True, timeout=30)
+        except (OSError, subprocess.SubprocessError):
+            break
+        if proc.returncode == 0:
+            digest = hashlib.sha256(proc.stdout).hexdigest()
+            if digest not in forms:
+                forms.append(digest)
+    return tuple(forms)
+
+
+def _blob_sha256(repo: Path, commit: str, rel: str) -> str | None:
+    """First available byte form of ``rel`` at ``commit`` (see ``_blob_sha256s``)."""
+    forms = _blob_sha256s(repo, commit, rel)
+    return forms[0] if forms else None
+
+
+def _candidate_paths(handoff: dict, handoff_path: Path) -> list[str]:
+    """Paths the handoff itself names: artifacts entries plus changed_paths."""
+    seen: list[str] = []
+    artifacts_path = handoff_path.parent / "artifacts.json"
+    try:
+        document = json.loads(artifacts_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        document = None
+    entries = document.get("artifacts") if isinstance(document, dict) else None
+    for entry in entries or []:
+        rel = entry.get("path") if isinstance(entry, dict) else None
+        if isinstance(rel, str) and rel not in seen:
+            seen.append(rel)
+    for rel in (handoff.get("scope") or {}).get("changed_paths") or []:
+        if isinstance(rel, str) and rel not in seen:
+            seen.append(rel)
+    return seen
+
+
+def check_interface_hashes(handoff: dict, repo: Path, commit: str = "",
+                           handoff_path: Path | None = None) -> list[dict]:
     """Every interface content_hash must match a local file, unless it is a
     declared external input.
 
@@ -213,6 +270,7 @@ def check_interface_hashes(handoff: dict, repo: Path) -> list[dict]:
     local = _index_dir(repo)
     externals = [r for r in external_roots(handoff) if r != repo]
     extern_index: dict[Path, dict[str, str]] = {}
+    commit_index: dict[str, str] | None = None
     for interface in pending:
         value = interface["content_hash"]
         if value in local:
@@ -223,17 +281,28 @@ def check_interface_hashes(handoff: dict, repo: Path) -> list[dict]:
             if value in extern_index[root]:
                 break
         else:
+            if commit_index is None:
+                commit_index = {}
+                candidates = (_candidate_paths(handoff, handoff_path)
+                              if handoff_path is not None
+                              else list((handoff.get("scope") or {}).get("changed_paths") or []))
+                for rel in candidates:
+                    for digest in _blob_sha256s(repo, commit, rel):
+                        commit_index.setdefault(digest, rel)
+            if value in commit_index:
+                continue
             problems.append({
                 "kind": "interface_hash_unmatched",
                 "name": interface.get("name"),
                 "direction": interface.get("direction"),
                 "value": value,
-                "detail": "matches no file in the delivery repo or declared repos",
+                "detail": "matches no file in the delivery repo, its result commit, or declared repos",
             })
     return problems
 
 
-def check_artifacts_self_hashes(handoff_path: Path, repo: Path) -> list[dict]:
+def check_artifacts_self_hashes(handoff_path: Path, repo: Path,
+                                commit: str = "") -> list[dict]:
     """artifacts.json entries must hash to what they claim.
 
     Skips the handoff metadata set itself (artifacts.json, handoff.json,
@@ -273,6 +342,10 @@ def check_artifacts_self_hashes(handoff_path: Path, repo: Path) -> list[dict]:
         except OSError:
             continue
         if actual != declared:
+            # A later package may have rewritten this file; the handoff still
+            # describes the tree at result_commit, so accept that match.
+            if declared in _blob_sha256s(repo, commit, rel.replace("\\", "/")):
+                continue
             problems.append({
                 "kind": "artifact_hash_mismatch",
                 "path": rel,
@@ -290,6 +363,12 @@ def verify_all(handoff: dict, handoff_path: Path) -> list[dict]:
     problems = []
     problems += check_git_refs(handoff, repo)
     problems += check_paths_exist(handoff, repo)
-    problems += check_interface_hashes(handoff, repo)
-    problems += check_artifacts_self_hashes(handoff_path, repo)
+    problems += check_interface_hashes(
+        handoff, repo, commit=((handoff.get("snapshot") or {}).get("result_commit") or ""),
+        handoff_path=handoff_path,
+    )
+    problems += check_artifacts_self_hashes(
+        handoff_path, repo,
+        commit=((handoff.get("snapshot") or {}).get("result_commit") or ""),
+    )
     return problems

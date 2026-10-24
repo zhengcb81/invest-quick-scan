@@ -230,3 +230,81 @@ def test_interface_hash_unmatched_when_no_repo_declares_it(repo, tmp_path):
     problems = refs.verify_all(handoff, path)
 
     assert any(p["kind"] == "interface_hash_unmatched" for p in problems)
+
+
+def test_artifact_hash_from_result_commit_survives_a_later_rewrite(repo, tmp_path):
+    """A follow-up package may rewrite a shared file; the old handoff stays valid.
+
+    The handoff describes the tree at result_commit. Judging its declared hashes
+    against today's worktree turns every later refactor into a false failure.
+    """
+    handoff_dir = tmp_path / "docs" / "handoff"
+    handoff_dir.mkdir(parents=True)
+    handoff = _handoff(repo)
+    path = handoff_dir / "handoff.json"
+    path.write_text(json.dumps(handoff), encoding="utf-8")
+    committed = hashlib.sha256((repo / "src" / "code.py").read_bytes()).hexdigest()
+    (handoff_dir / "artifacts.json").write_text(json.dumps({
+        "artifacts": [{"path": "src/code.py", "sha256": committed, "bytes": 1}]
+    }), encoding="utf-8")
+
+    (repo / "src" / "code.py").write_text("print('rewritten')\n", encoding="utf-8")
+
+    assert refs.check_artifacts_self_hashes(
+        path, repo, commit=handoff["snapshot"]["result_commit"]) == []
+    assert refs.verify_all(handoff, path) == []
+
+
+def test_interface_hash_from_result_commit_survives_a_later_rewrite(repo, tmp_path):
+    committed = hashlib.sha256((repo / "src" / "code.py").read_bytes()).hexdigest()
+    handoff = _handoff(repo)
+    handoff["interfaces"] = [{"name": "code", "direction": "produced",
+                              "content_hash": committed}]
+    path = tmp_path / "handoff.json"
+    path.write_text(json.dumps(handoff), encoding="utf-8")
+
+    (repo / "src" / "code.py").write_text("print('rewritten')\n", encoding="utf-8")
+
+    assert refs.verify_all(handoff, path) == []
+
+
+def test_artifact_hash_matching_neither_worktree_nor_commit_is_still_reported(repo, tmp_path):
+    """The commit fallback must not become a blanket pass."""
+    handoff_dir = tmp_path / "docs" / "handoff"
+    handoff_dir.mkdir(parents=True)
+    handoff = _handoff(repo)
+    path = handoff_dir / "handoff.json"
+    path.write_text(json.dumps(handoff), encoding="utf-8")
+    (handoff_dir / "artifacts.json").write_text(json.dumps({
+        "artifacts": [{"path": "src/code.py", "sha256": "f" * 64, "bytes": 1}]
+    }), encoding="utf-8")
+
+    problems = refs.check_artifacts_self_hashes(
+        path, repo, commit=handoff["snapshot"]["result_commit"])
+
+    assert [p["kind"] for p in problems] == ["artifact_hash_mismatch"]
+
+
+def test_raw_blob_hash_is_accepted_for_a_crlf_checkout(repo, tmp_path):
+    """Generators differ: some hash the raw blob, some the worktree bytes.
+
+    With core.autocrlf the two differ only by newlines. The check is about which
+    content was delivered, so either form must resolve.
+    """
+    (repo / "src" / "code.py").write_text("print('hi')\r\n", encoding="utf-8")
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-q", "-m", "crlf")
+    raw = subprocess.run(["git", "show", "HEAD:src/code.py"], cwd=repo,
+                         capture_output=True).stdout
+    filtered = subprocess.run(["git", "cat-file", "--filters", "HEAD:src/code.py"],
+                              cwd=repo, capture_output=True).stdout
+    if raw == filtered:
+        pytest.skip("checkout does not rewrite newlines")
+
+    handoff = _handoff(repo)
+    handoff["interfaces"] = [{"name": "code", "direction": "produced",
+                              "content_hash": hashlib.sha256(raw).hexdigest()}]
+    path = tmp_path / "handoff.json"
+    path.write_text(json.dumps(handoff), encoding="utf-8")
+
+    assert refs.verify_all(handoff, path) == []
