@@ -1,0 +1,60 @@
+{
+  "protocol": "iqs.subject_dispatch_readiness_implementation/1.0.0",
+  "observed_at": "2026-10-25T11:17:13.271389+00:00",
+  "scope": [
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_owner_research.py",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_owner_subject_readiness.py"
+  ],
+  "source_sha256": "388e05b06196eb68c078196e60d044c06a31692d2110361107984977078c3ed9",
+  "test_sha256": "7327d2a17117399dd73dc920d8fd72d4f1e60d1412fd651eca1f319dd4b79f32",
+  "red": {
+    "artifact": "subject-readiness-red.xml",
+    "failed": 22,
+    "cause": "public readiness seam missing; pre-search schema2 dispatch-readiness not enforced"
+  },
+  "final": {
+    "artifact": "subject-readiness-final-lf.xml",
+    "passed": 59,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 14.61,
+    "new_readiness_units": 23,
+    "original_related_units": 36,
+    "raw_sha256_unchanged_during_tests": true
+  },
+  "independent_review": {
+    "agent": "/root/fix_bank21",
+    "artifact": "../engine-review/prepared-failure-schema-review.json",
+    "new_units_replayed": 23,
+    "seconds": 3.93,
+    "open_findings": []
+  },
+  "cleanup": {
+    "TEMP_TMP": "C:/Temp/iqs-ready25-* uniquely owned TemporaryDirectory per invocation",
+    "after_each_invocation_removed": true,
+    "production_databases_touched": false,
+    "third_party_files_removed": false,
+    "final_temp_root": "C:\\Temp\\iqs-ready25-jfujajxk",
+    "final_temp_removed": true
+  },
+  "network_calls": 0,
+  "migration_performed": false,
+  "owner_guards_preserved": true,
+  "financial_accuracy_assessed": false,
+  "pre_hook_source_sha256": "388e05b06196eb68c078196e60d044c06a31692d2110361107984977078c3ed9",
+  "pre_hook_test_sha256": "7327d2a17117399dd73dc920d8fd72d4f1e60d1412fd651eca1f319dd4b79f32",
+  "intermediate_after_profile": {
+    "artifact": "subject-readiness-after-profile.xml",
+    "passed": 59,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 8.02,
+    "new_readiness_units": 23,
+    "original_related_units": 36
+  },
+  "line_ending_note": "Normal commit hook converted CRLF to LF only. Prior independent 23-unit bytes retained under old raw SHA; exact CRLF reconstruction and independent equivalence record bind the final LF bytes without claiming they had the same raw hash.",
+  "line_ending_evidence": [
+    "subject-readiness-final-lf-evidence.json",
+    "../engine-review/guard-line-ending-equivalence.json"
+  ]
+}

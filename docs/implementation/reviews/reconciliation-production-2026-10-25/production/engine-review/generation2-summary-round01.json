@@ -1,0 +1,30 @@
+{
+  "protocol": "iqs.independent-summary-review/1.0.0",
+  "reviewed_at": "2026-10-25T12:46:24.953613+00:00",
+  "status": "needs_task_bundle_binding_fix",
+  "reviewer": "/root/fix_bank21",
+  "source_sha256": "e37959cd363cd808f68c360a34907f812854fc1dafe5b4ee69553ec72d91eed5",
+  "mode": "static_source_review_before_real_result",
+  "findings": [
+    {
+      "id": "G2SUMMARY-01",
+      "priority": "P2",
+      "file": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\engine-fix\\real_summary_generation2.py",
+      "line": 126,
+      "issue": "task bundle reported hash is compared without deriving/validating its actual content; later subject/module/rubric labels come from that mutable bundle",
+      "required_fix": "Reuse original task loader/canonical derivation and bind the verified task to exported research run; reject changed subject/module retaining claimed hash",
+      "tests": "Pure offline content-mutation negative; do not call API or fabricate real positive"
+    }
+  ],
+  "other_checks": {
+    "original_ro_store_and_snapshot_reader_used": true,
+    "all_current_source_pins_required": true,
+    "old_invalid_response_and_local_not_sent_kept_separate": true,
+    "original_resolver_and_cumulative_cost_not_invoice": true,
+    "no_full_answer_or_context_body_output_intended": true,
+    "absent_result_fails_without_placeholder": true
+  },
+  "reviewer_api_calls": 0,
+  "reviewer_db_writes": 0,
+  "actual_result_accepted": false
+}

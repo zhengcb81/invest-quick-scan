@@ -1,0 +1,70 @@
+{
+  "protocol": "iqs.independent-gen2-safe-source-diagnostic/1.0.0",
+  "status": "requires_repair_no_formal_success",
+  "reviewed_at": "2026-10-25T13:07:46.370117+00:00",
+  "reviewer": "/root/fix_bank21",
+  "mode": "original_readonly_SQLite_and_original_pure_validators",
+  "generation": 2,
+  "work_item_id": "WORK_c9374943a7c44990ba69d67fa7346529",
+  "attempt_id": "ATTEMPT_7d199ff1165a4c07b7f20191ad3c3699",
+  "native_response_sha256": "6055c7df80d3fb61f617459f726a629eaf21d8125cbd6b978eb1e9f7ad41ea66",
+  "native_receipt_sha256": "193dbe3198cfe2537b2ba211c9838c074833df0182eb7d684da751147f359d6a",
+  "source_pins_sha256": "6137fafb4b4102b44a1d1f945e56d381259c5cafafe8635731450ff33bac9963",
+  "all_56_source_pins_current": true,
+  "actual_model_http": 1,
+  "http_status": 200,
+  "thinking_enabled": true,
+  "model_http_elapsed_seconds": 75.33713780000107,
+  "checks": {
+    "original_iqs_frozen_semantics": true,
+    "original_citation_closure": true,
+    "original_verified_context_projection": true,
+    "original_stockqa_standard": false,
+    "rejection": "evidence URL/date is not bound to search/cutoff"
+  },
+  "answer_shape_only": {
+    "status": "scored",
+    "response_kind": "score",
+    "items_count": 0,
+    "metrics_count": 5,
+    "evidence_count": 4
+  },
+  "source_diagnostic": {
+    "original_proof_url_count": 5,
+    "all_four_evidence_dates_within_cutoff": true,
+    "nonmember_evidence_count": 2,
+    "differences": [
+      [
+        "same_scheme_netloc_path_and_fragment",
+        "answer_removed_query",
+        "original_query_keys_trk"
+      ],
+      [
+        "same_scheme_netloc_path_and_fragment",
+        "answer_removed_query",
+        "original_query_keys_lang_type"
+      ]
+    ],
+    "cause_bound": "Exact source membership refusal is justified by current contract. Actual SDK context rendering must be checked before assigning query removal to model vs context."
+  },
+  "production_engine_all_slots_completed": false,
+  "production_engine_validation_disagreement": false,
+  "formal_checkpoint_count_for_new_work": 0,
+  "intentional_crash_proof_created": false,
+  "recovery_or_final_result_created": false,
+  "original_safe_retained": true,
+  "cumulative_ledger_priced_cost_micros": 19129,
+  "original_db_sha256_before": "355e93c2d3006bf6c0ea6c4a190c937aaea70de635ab1216eefe18fd9af1b78d",
+  "original_db_sha256_after": "355e93c2d3006bf6c0ea6c4a190c937aaea70de635ab1216eefe18fd9af1b78d",
+  "original_safe_and_answer_not_modified": true,
+  "reviewer_api_requests": 0,
+  "reviewer_db_writes": 0,
+  "financial_accuracy_assessed": false,
+  "open_findings": [
+    {
+      "id": "G2SOURCE-01",
+      "status": "needs_root_cause_investigation",
+      "requirement": "Inspect actual SDK request context full URLs; retain original safe and do not drop meaningful query keys or relax original source/cutoff gate."
+    }
+  ]
+}

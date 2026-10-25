@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="11" skipped="0" tests="11" time="1.236" timestamp="2026-10-25T11:52:47.558371+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_shared_answer_semantics" name="test_original_semantics_reject_before_company_completion[score_items]" time="0.155"><failure message="AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C7A41A90&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+kind = 'score_items'
+
+    @pytest.mark.parametrize("kind", ["score_items", "unavailable_metrics", "fact_status", "metric_unit"])
+    def test_original_semantics_reject_before_company_completion(original, kind):
+        task, qid, body, context = original
+&gt;       callback = engine._frozen_answer_semantics(task, context)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'
+
+tests\test_shared_answer_semantics.py:79: AttributeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_original_semantics_reject_before_company_completion[unavailable_metrics]" time="0.009"><failure message="AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C7A14B90&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+kind = 'unavailable_metrics'
+
+    @pytest.mark.parametrize("kind", ["score_items", "unavailable_metrics", "fact_status", "metric_unit"])
+    def test_original_semantics_reject_before_company_completion(original, kind):
+        task, qid, body, context = original
+&gt;       callback = engine._frozen_answer_semantics(task, context)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'
+
+tests\test_shared_answer_semantics.py:79: AttributeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_original_semantics_reject_before_company_completion[fact_status]" time="0.009"><failure message="AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C7A15590&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+kind = 'fact_status'
+
+    @pytest.mark.parametrize("kind", ["score_items", "unavailable_metrics", "fact_status", "metric_unit"])
+    def test_original_semantics_reject_before_company_completion(original, kind):
+        task, qid, body, context = original
+&gt;       callback = engine._frozen_answer_semantics(task, context)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'
+
+tests\test_shared_answer_semantics.py:79: AttributeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_original_semantics_reject_before_company_completion[metric_unit]" time="0.011"><failure message="AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C79A22C0&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+kind = 'metric_unit'
+
+    @pytest.mark.parametrize("kind", ["score_items", "unavailable_metrics", "fact_status", "metric_unit"])
+    def test_original_semantics_reject_before_company_completion(original, kind):
+        task, qid, body, context = original
+&gt;       callback = engine._frozen_answer_semantics(task, context)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'
+
+tests\test_shared_answer_semantics.py:79: AttributeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_original_callback_preserves_valid_answer_and_frozen_inputs" time="0.010"><failure message="AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C79A2C40&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+
+    def test_original_callback_preserves_valid_answer_and_frozen_inputs(original):
+        task, qid, body, context = original
+&gt;       callback = engine._frozen_answer_semantics(task, context)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'
+
+tests\test_shared_answer_semantics.py:94: AttributeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_missing_original_resource_version_refused[answer_schema_sha256]" time="0.015"><failure message="AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C7817530&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...0000000000000000000000', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+field = 'answer_schema_sha256'
+
+    @pytest.mark.parametrize("field", ["answer_schema_sha256", "metric_registry_sha256"])
+    def test_missing_original_resource_version_refused(original, field):
+        task, _, _, context = original
+        context[field] = "0" * 64
+        with pytest.raises(engine.SharedEngineRejected, match="frozen.*resource"):
+&gt;           engine._frozen_answer_semantics(task, context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'
+
+tests\test_shared_answer_semantics.py:107: AttributeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_missing_original_resource_version_refused[metric_registry_sha256]" time="0.010"><failure message="AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C7A0D8C0&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '0000000000000000000000000000000000000000000000000000000000000000'})
+field = 'metric_registry_sha256'
+
+    @pytest.mark.parametrize("field", ["answer_schema_sha256", "metric_registry_sha256"])
+    def test_missing_original_resource_version_refused(original, field):
+        task, _, _, context = original
+        context[field] = "0" * 64
+        with pytest.raises(engine.SharedEngineRejected, match="frozen.*resource"):
+&gt;           engine._frozen_answer_semantics(task, context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'
+
+tests\test_shared_answer_semantics.py:107: AttributeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_company_callback_cannot_rewrite_original_answer" time="0.009"><failure message="TypeError: Runner.__init__() got an unexpected keyword argument 'answer_semantic_validator'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C7A0DD00&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+
+    def test_company_callback_cannot_rewrite_original_answer(original):
+        task, qid, body, _ = original
+        before = copy.deepcopy(body)
+    
+        def mutate(copy_only, _qid):
+            copy_only["score"] = 10
+    
+&gt;       runner = Runner(task, SyntheticReplayPort(helpers.scenario_doc([]), task.raw["run_id"]),
+                        answer_semantic_validator=mutate)
+E       TypeError: Runner.__init__() got an unexpected keyword argument 'answer_semantic_validator'
+
+tests\test_shared_answer_semantics.py:117: TypeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_continued_runner_uses_same_semantic_gate" time="0.010"><failure message="AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C79FB450&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+
+    def test_continued_runner_uses_same_semantic_gate(original):
+        task, qid, body, context = original
+&gt;       callback = engine._frozen_answer_semantics(task, context)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'semantic_engine_units' has no attribute '_frozen_answer_semantics'
+
+tests\test_shared_answer_semantics.py:127: AttributeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_typed_semantic_prompt_is_explicit_without_changing_questions" time="0.010"><failure message="AttributeError: module 'question_prompts' has no attribute 'typed_semantic_rules'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C79FBD50&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+
+    def test_typed_semantic_prompt_is_explicit_without_changing_questions(original):
+        task, qid, _, _ = original
+        question = task.questions[0]["question"]
+        before = copy.deepcopy(question)
+&gt;       rules = question_prompts.typed_semantic_rules(question)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'question_prompts' has no attribute 'typed_semantic_rules'
+
+tests\test_shared_answer_semantics.py:143: AttributeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_finalizer_rechecks_original_semantics_before_native_output_match" time="0.390"><failure message="AttributeError: &lt;module 'semantic_engine_units' from 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\shared_company_engine.py'&gt; has no attribute '_production_answer_semantics'">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x00000219C7BD59A0&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000219C7C18180&gt;
+
+    def test_finalizer_rechecks_original_semantics_before_native_output_match(original, monkeypatch):
+        task, qid, body, context = original
+        # A contract-only mapper: not an admission or a sender.
+        fixture = load("semantic_finalization_fixture", ROOT / "tests/test_shared_company_engine_finalization.py")
+        single = SimpleNamespace(question_ids=[qid], questions=task.questions[:1],
+                                 raw={"run_id": "synthetic-final", "information_cutoff": task.raw["information_cutoff"]})
+        services = fixture.MapperOnlyServices(single)
+        run = {"slots": [{"question_id": qid, "execution_status": "completed", "answer": bad(body, "score_items"),
+                          "attempt_refs": ["stockqa:native_" + qid]}]}
+        from iqs_company_agent_lab.evidence import EvidenceBoard
+        monkeypatch.setattr(engine, "_verified_finalization_export", lambda *args: (run, EvidenceBoard(2000)))
+&gt;       monkeypatch.setattr(engine, "_production_answer_semantics", lambda *args: engine._frozen_answer_semantics(single, context))
+E       AttributeError: &lt;module 'semantic_engine_units' from 'C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\shared_company_engine.py'&gt; has no attribute '_production_answer_semantics'
+
+tests\test_shared_answer_semantics.py:161: AttributeError</failure></testcase></testsuite></testsuites>

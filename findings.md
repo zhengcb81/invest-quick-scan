@@ -1,3 +1,21 @@
+## 2026-10-25 13:16Z — 来源URL也属于不可随意改写的回答合同
+
+generation2原IQS语义已通过，但4条引用中2条从原检索URL删掉query，原StockQA来源门正确拒绝。原binder重建的context hash、system加NUL加prompt合成hash、原messages text hash分别在正确域与原receipt/intent全匹配；实际context逐字保留5条完整URL，包含这两个被删query的来源。不是context渲染丢参数。`trk`看似追踪参数，`lang/type`可能有内容语义，不能笼统删query放宽匹配，也不能静默给原回答补参数。
+
+根修是向新请求明确来源URL须逐字复制（含query/encoding/fragment），保持原校验和旧renderer指纹；原safe/费用/失败导出留存。原known-response resolver明确要求租约真实到期，当前到期13:30:22.486661Z；不能先调无resolution的fail_received_without_answer，因为会阻断retry_unusable_answer的合法前置。新代次仍同一账本/预算，原请求count4/6、inflight0，累计19129micros。源码、控制协调及最终实测在整节点集中独审。
+
+## 2026-10-25 12:42Z — 准入成功与执行控制校验是两个真实边界
+
+新generation2已通过原1.2授权准入，但task factory随后调用原session.check仍因approved controls被拒。独立只读定位为实验driver漏调原公开`assert_execution_controls(pack_size=1, thinking_enabled=True, max_output_tokens=16384)`；StockQA守卫正确，未改它。修复后原零HTTP预检通过，原错控/缺控拒绝保持。既不能把admission accepted写成执行成功，也不能手造批准控制绕过。所有旧响应/预算行保留，失败锁、修复锁与后续依赖锁分代记录，避免跨源码复活旧任务后伪称恢复同一版本。
+
+## 2026-10-25 11:44Z — schema合法不等于评分语义合法
+
+同一真实safe在原引用规范化后严格全等，但score题含3个fact items，违反主仓standard_answers.py现行语义。StockQA拒绝正确。应在共享引擎提交slot前注入原题目语义校验，不能在接收端删守卫或裁掉原回答字段以迎合模型。旧结果/费用保留；修答要走原明确known-response/新generation路线，不篡改冻结task增加请求限额或隐形重问。
+
+## 2026-10-25 11:30Z — 真实安全输出之后仍需验证封存
+
+真实MiMo响应已成功且原safe可恢复；但软件正例未覆盖真实输出到标准答案的最终对应反例，显式封存在native answer/member匹配处拒绝。应修精确绑定规则并继续禁网读取同一响应，不能为了得到成功标志再请求一次模型或放宽原生来源核验。原失败pins和账本均保留，后续若源码变化须显式记录修复前后版本，不能覆盖cold锁冒称同版本通过。
+
 ## 2026-10-25 — PWF 与真实状态对账（进行中）
 
 实际独审现已完成并复审通过：诊断扩展与critical不可兼得；删除扩展至少minor，混合真实核心变更允许major；整库而非单module必须承认common诊断扩展；type替代必须继承从common数据派生的critical集合；UI完整build必须随真实题数演进。六项均有能失败的反例及最终源码hash，历史输出六组合逐字节不变。
@@ -3766,3 +3784,10 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 原模型SDK和外部搜索模块引用同一个http_client_manager对象。对对象的get_metered_sync_session就地赋值，会同时改变搜索客户端；模型使用post、搜索使用request。首次真实cold的观测wrapper缺request，原provider将本地AttributeError保守记为unknown（0.06秒），模型0attempt。根因修复是重绑定仅模型SDK模块的facade，保留搜索原对象和原request，不给搜索绕开原SDK。4项离线回归覆盖搜索透传、模型计数/保密、关闭思考或恢复时拒发、native异常不伪记成功。
 
 本地代码可证明pretransport失败，不等于可以修改原不可变检索receipt或删unknown。必须使用原公开reconcile带证据记录confirmed_not_sent，再通过原lease与新检索operation规则显式重试；原模型pending没有safe response时不能冒充缓存恢复。真实结果据实待验。
+
+
+## 2026-10-25 — retry-1真实搜索成功；发现初始化能力缺口
+
+最后预检61.18秒/0HTTP，pins f69ee033…；10:48:03比原expiry早2.326秒的领取被guard正确拒绝（单独保留negative记录），到期后原recover_expired/claim成功，epoch2/gen1。DeepSeek实际HTTP200、5条、原费率估算750micros，旧not_sent预算行和unknown回执仍保留。模型只有1条prepared、send_intent/模型budget/安全响应均0。
+
+根因：新观察库经基础migrate后仍user_version2，无quick_scan_subject_dispatch表；主体派发register要求3/4，实际在注册步骤拒绝，外部use proof已保存，尚未到LLM HTTP。软件fixture已初始化更高版本所以此前正例未覆盖真实bootstrap缺项。正在使用原备份升级工具并设计前置能力检查；不把prepared算HTTP或删除原记录，不用新账本重发。

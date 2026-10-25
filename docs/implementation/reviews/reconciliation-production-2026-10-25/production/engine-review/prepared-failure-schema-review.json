@@ -1,0 +1,277 @@
+{
+  "protocol": "iqs.prepared-subject-schema-independent-review/1.0.0",
+  "reviewer": "/root/fix_bank21",
+  "reviewed_at": "2026-10-25T11:09:12.497475+00:00",
+  "status": "failure_and_schema_upgrade_facts_verified_node_still_pending",
+  "checks": {
+    "original_backup_files_match_manifest": true,
+    "manifest_internal_sha_binds_root_upgrade_record": true,
+    "backup_schema2_and_actual_schema4": true,
+    "old_5_tables_hashes_equal": true,
+    "application_ids_equal": true,
+    "all_4_identity_db_bytes_unchanged": true,
+    "actual_subject_extension_tables_exist": true,
+    "one_model_prepared_without_send_intent": true,
+    "no_model_budget_attempt": true,
+    "no_native_response_or_safe_output_or_checkpoint": true,
+    "real_search_known_success_retained": true,
+    "real_search_original_budget_cost750": true,
+    "original_local_pretransport_unknown_preserved": true,
+    "public_after_caps_observation_schema4_available": true
+  },
+  "native_attempts": [
+    {
+      "attempt_id": "ATTEMPT_b48db9f3949d4bae9280ee5322c5518e",
+      "work_item_id": "WORK_aa08087ac3994ac4b0b814707a69d243",
+      "phase": "prepared",
+      "ordinal": 1,
+      "send_intent_at": null,
+      "http_status_code": null
+    }
+  ],
+  "native_counts": {
+    "quick_scan_attempt_response": 0,
+    "quick_scan_research_visible_output": 0,
+    "answer_checkpoint": 0,
+    "quick_scan_external_use_intent": 1
+  },
+  "budget_thin_rows": [
+    {
+      "budget_attempt_id": "DISPATCH_201eea6bde743e876f92d2bbc45b839f4e9bcd210c64ed0291124ecdff327441",
+      "provider": "deepseek_search",
+      "status": "settled",
+      "actual_cost_micros": 0,
+      "request_counted": 0,
+      "in_flight": 0,
+      "http_status_code": null
+    },
+    {
+      "budget_attempt_id": "DISPATCH_de29a9b0d00d60be6e15677238a3bd4312b08f4c0dd1a62d604e65acad1d5e42",
+      "provider": "deepseek_search",
+      "status": "settled",
+      "actual_cost_micros": 750,
+      "request_counted": 1,
+      "in_flight": 0,
+      "http_status_code": 200
+    }
+  ],
+  "external_result_thin_rows": [
+    {
+      "operation_id": "SEARCH_2c4c57fbb9108efc2bbc6407cc4d6482ebd85e6f6a49d839f141d395a0e464cc",
+      "receipt_sha256": "1158ce9ad8bd4a33b53d6c474038a3a7775a4c52b76222f4b14dee2acde421a1",
+      "outcome": "unknown",
+      "http_status_code": null,
+      "http_request_count": 1,
+      "failure_type": "AttributeError",
+      "entries_count": 0
+    },
+    {
+      "operation_id": "SEARCH_cb6fe2395dd20ee975c65a9ae7415eabaddce8df7bb9cd346601f55b3bbabf00",
+      "receipt_sha256": "77150f532eaf6fe9589240127c78a44bd62c1ec9ba651c9c132b240dd61d6902",
+      "outcome": "response_available",
+      "http_status_code": 200,
+      "http_request_count": 1,
+      "failure_type": null,
+      "entries_count": 5
+    }
+  ],
+  "public_outer_failure_events": [
+    {
+      "event_type": "receipt_model",
+      "outcome": "outcome_unknown",
+      "reason_code": "native_persistence_uncertain",
+      "reason_message": "native transport failure retained; native ref=None"
+    },
+    {
+      "event_type": "recovery_decision",
+      "reason": "no_native_replay_proof_never_resend",
+      "decision": "pause_for_inspection",
+      "restored": false
+    },
+    {
+      "event_type": "finish",
+      "reason_code": "strategy_finish"
+    }
+  ],
+  "observation_before_backup_and_after_actual": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\owner-workspace\\backups\\quick_scan\\pre-subject-schema4-20261025\\scan_observations.sqlite",
+      "file_sha256": "6981753f8ca2c8c670fa1ef281852adbbef1900a36cfc2a87d7919b3237e92d7",
+      "user_version": 2,
+      "application_id": 0,
+      "old_table_rows": {
+        "quick_scan_import_audit": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "quick_scan_import_conflict": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "quick_scan_import_item": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "quick_scan_observation": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "quick_scan_observation_correction": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      },
+      "tables": [
+        "quick_scan_observation",
+        "quick_scan_import_item",
+        "quick_scan_import_conflict",
+        "sqlite_sequence",
+        "quick_scan_observation_correction",
+        "quick_scan_import_audit"
+      ]
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\r25-live\\owner-workspace\\data\\quick_scan\\scan_observations.sqlite",
+      "file_sha256": "40ba1351d6a496712d8b0f57531a60a01978f10d52cfdb41fd8e6b981c1fb6df",
+      "user_version": 4,
+      "application_id": 0,
+      "old_table_rows": {
+        "quick_scan_import_audit": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "quick_scan_import_conflict": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "quick_scan_import_item": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "quick_scan_observation": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "quick_scan_observation_correction": {
+          "rows": 0,
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      },
+      "tables": [
+        "quick_scan_observation",
+        "quick_scan_import_item",
+        "quick_scan_import_conflict",
+        "sqlite_sequence",
+        "quick_scan_observation_correction",
+        "quick_scan_import_audit",
+        "quick_scan_subject_dispatch",
+        "quick_scan_subject_binding",
+        "quick_scan_check_record"
+      ]
+    }
+  ],
+  "identity_database_sha256": {
+    "analysis_subjects.sqlite": {
+      "backup": "1bbcc460c23c85eb10c4eeb7558912b89f69175195b2ffd3263be31df7b80c27",
+      "actual": "1bbcc460c23c85eb10c4eeb7558912b89f69175195b2ffd3263be31df7b80c27"
+    },
+    "identity_receipts.sqlite": {
+      "backup": "c978de45e11da6327cc7c89517f9b95d07e9f021bb68968981c1892e56e4efa4",
+      "actual": "c978de45e11da6327cc7c89517f9b95d07e9f021bb68968981c1892e56e4efa4"
+    },
+    "market_registry.sqlite": {
+      "backup": "06e9d711acc2c1863edb450f70b3de5d00ab5b6cf7dea38f805616b284639ddd",
+      "actual": "06e9d711acc2c1863edb450f70b3de5d00ab5b6cf7dea38f805616b284639ddd"
+    },
+    "scan.sqlite": {
+      "backup": "2bdbb80c32f3bd2ac4801d45e04c24c6836153d5c79af16fddeca133a810a26d",
+      "actual": "2bdbb80c32f3bd2ac4801d45e04c24c6836153d5c79af16fddeca133a810a26d"
+    }
+  },
+  "work_database_sha256_unchanged_by_review": "dac7a37c0453a25bafd0cd3abe3a625f1e71d880ac974c985d53be82916fa87b",
+  "backup_manifest_internal_sha256": "f9665ced663b878b0de12be4d9dec538cb57b40b21614be7c0400156423597c3",
+  "backup_manifest_file_sha256": "a5a6b6d3bd0ceda5104806095f4d2ffd307cdbd8d4153694448953b2ab265294",
+  "root_upgrade_record_sha256": "ebd12b09f5daa30355568ddfe3726d27649c0021f63557c93f4833385383ef9d",
+  "public_capabilities_after_sha256": "fd53014c5b4f68bd6efcb041c188e9906361ea96fa55666ae0b5a32286f99083",
+  "source_hashes": {
+    "C:\\Users\\郑曾波\\Projects\\StockWiki\\stockwiki\\quick_scan_subject_dispatch_cli.py": "4883618562fdac1a02ac38b2e8a6e28d1f0b07eeaad2a85e3b4a3966540938bf",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_work_transport.py": "7eee1767a706f39f47796121ac7401d92c6c6e25dbe7a2dc814a3844d1089d5c",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_subject_owner.py": "b73e9f45278ad54020757978b8ef48014dbde99cc71d1c205f058bf3e1aeec03"
+  },
+  "causal_scope": [
+    "Original public subject-dispatch register explicitly rejects observation schema outside {3,4}.",
+    "Original send path persists prepared attempt and external-use intent before subject registration; model mark-send-intent and budget reserve come after registration.",
+    "Persisted outer SDK reason is generic native_persistence_uncertain. Schema-2-before-upgrade, deterministic original register gate and prepared-only state support the local admission failure diagnosis; there is no model-provider response/rejection evidence."
+  ],
+  "qualification_granted": false,
+  "reviewer_api_calls": 0,
+  "reviewer_db_writes": 0,
+  "remaining": [
+    "Fresh same-budget/task owner admission and pins with guard/schema source included.",
+    "Actual safe model response, original formal checkpoint/ready delivery, and no-new-HTTP recovery acceptance."
+  ],
+  "readiness_guard_review": {
+    "reviewed_at": "2026-10-25T11:16:23.030574+00:00",
+    "status": "passed_guard_source_and_independent_directional_unit_tests",
+    "prior_review_sha256": "7730348cfc3c5d0ebb7da3273cb1caa2d0b80dd4a05ce01f7533669794d46c3e",
+    "source_hashes": {
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_owner_research.py": "ca46abca82630573d18dfdc4f5e10c1ab05f3c97daa311355dbd11d7eb6988bc",
+      "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_owner_subject_readiness.py": "9e1732f1c5b0a0a974d960d84f7684b0ab39ed3a607bccbe8c19f95f2b62caf2",
+      "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\schemas\\quick_scan\\query-capabilities.schema.json": "800cd617ffd92b8b016834c5eb4b69ef2777f6a6b7aa9955ac8b68e774ebc950"
+    },
+    "checks": {
+      "constructor_calls_readiness_before_generation_claim_and_paid_search": true,
+      "fixed_original_public_cli_root_and_cwd": true,
+      "original_capabilities_1_1_schema_and_envelope_validated": true,
+      "empty_reference_registry_prevents_remote_schema_fetch": true,
+      "exactly_one_available_observations_schema_3_or_4": true,
+      "native_subject_registration_interface_and_zero_api_database_dispatch_markers": true,
+      "public_store_id_matches_public_watermark_store_id": true,
+      "child_environment_api_keys_excluded": true,
+      "owned_temporary_files_removed_on_all_tested_paths": true,
+      "file_backed_output_read_bounded_to_8mib": true,
+      "original_owner_registered_input_check_runs_before_and_after": true,
+      "readiness_does_not_replace_physical_registration_or_permission_budget_lease_checks": true,
+      "no_disable_bypass_or_permission_cache_added": true
+    },
+    "independent_tests": {
+      "xml": "runs\\reconcile-production-2026-10-25\\engine-review\\subject-readiness-independent.xml",
+      "xml_sha256": "a99cc730f11d478552caf94f11a794f6f159bf2fe6430092c6c526f562a8424e",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 3.92,
+      "socket_network_forbidden": true,
+      "api_key_environment_removed_for_test_process": true,
+      "cleanup_record": "runs\\reconcile-production-2026-10-25\\engine-review\\subject-readiness-independent-cleanup.json",
+      "source_before_after_unchanged": true
+    },
+    "limits": [
+      "The public CLI boundary is mocked in these 23 directional units; these are not owner-golden or real provider success evidence.",
+      "There is no original expected store_id field in approved config, so fixed configured public root plus result/watermark store-id consistency is enforced without inventing a new private anchor.",
+      "No original send-time authorization checks were removed or cached; later store/permission changes still reach original guards."
+    ],
+    "final_lf_evidence": {
+      "xml": "runs\\reconcile-production-2026-10-25\\engine-fix\\subject-readiness-final-lf.xml",
+      "xml_sha256": "9638a66e216b7184b51ca83a30deba20cf8cbfb53b78399e5b74b8ad18be3266",
+      "tests": 59,
+      "errors": 0,
+      "failures": 0,
+      "seconds": 14.603,
+      "test_run_by": "/root/inspect_production",
+      "independent_reviewer_read_xml_and_source_binding": true,
+      "line_ending_equivalence_record": "guard-line-ending-equivalence.json",
+      "same_semantics_as_independently_tested_23": true,
+      "final_lf_sources": [
+        {
+          "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_owner_research.py",
+          "sha256": "388e05b06196eb68c078196e60d044c06a31692d2110361107984977078c3ed9"
+        },
+        {
+          "path": "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_owner_subject_readiness.py",
+          "sha256": "7327d2a17117399dd73dc920d8fd72d4f1e60d1412fd651eca1f319dd4b79f32"
+        }
+      ]
+    }
+  }
+}

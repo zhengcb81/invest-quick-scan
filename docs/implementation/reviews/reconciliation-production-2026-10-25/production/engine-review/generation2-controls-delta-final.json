@@ -1,0 +1,27 @@
+{
+  "protocol": "iqs.independent-execution-controls-delta/1.0.0",
+  "status": "passed_public_control_binding_ready_for_explicit_pin_transition_and_zero_http_preflight",
+  "reviewed_at": "2026-10-25T12:51:44.116732+00:00",
+  "reviewer": "/root/fix_bank21",
+  "previous_driver_sha256": "f82415306d33cbef062ca1616970f44fe250f4fa017fc7ffe1343bdd917858d6",
+  "current_driver_sha256": "80ceecfce9099b10e7565862cde3d4961604482a31a650364f9eeacbd811955e",
+  "delta_scope": "new bind_original_execution_controls public call plus reuse declared pack/maxoutput values in actual factory/runtime",
+  "checks": {
+    "original_ApprovedRefreshSession_public_predicate_called_after_prepare_before_factory": true,
+    "no_approval_record_or_private_owner_field_written_by_driver": true,
+    "original_protocol_scope_cohort_type_and_control_mismatch_refusals_unchanged": true,
+    "exact_singleton_generation2_model_cap_one": true,
+    "declared_pack_and_maxoutput_reused_in_actual_task_and_sdk_config": true,
+    "actual_thinking_true_still_enforced_by_original_sdk_wire_guard": true,
+    "old_51_pins_and_failed_driver_preserved": true
+  },
+  "author_tests": "RED2 failures/7 passed, corrected GREEN9 passed; synthetic original-predicate cases are not actual admission positive",
+  "reviewer_api_calls": 0,
+  "reviewer_db_writes": 0,
+  "open_findings": [],
+  "limitations": [
+    "Current old51 pins still bind old driver until root explicit archive/transition; do not call them current matching.",
+    "New original zero-HTTP preflight is required and has not been granted here.",
+    "No paid cold or real gen2 result qualification is granted."
+  ]
+}

@@ -1,3 +1,37 @@
+## 2026-10-25 13:04Z — 新代次真实响应已保留，但仍被原语义/来源门拒绝
+
+- driver公开controls遗漏已修，最终原locked预检51.57秒通过；最终56项锁`6137fafb…9963`绑定driver80ceecfc及薄摘要器b47392f9，独立raw核验全匹配。发送前各失败/中间锁原样保留。
+- 实际generation2新搜索1次、新MiMo Pro请求1次，开启思考、HTTP200、模型耗时75.337秒；原safe已保存。但safe gate ValueError、原Runner同样导出invalid，未进入exit86、无正式检查点。原driver退出0表示完成失败导出，外层验收wrapper按预期86缺失返回失败，不冒充通过。
+- 累计原账本5条预算均settled、3个外部操作、2个native响应，公开价估算19129micros（非账单）；旧代无效响应及费用全部保留。作者与独立审查者正只读查精确拒因，没有自动修答或额外请求。不得照旧cold命令盲重跑；R3/R4保持开放。
+
+## 2026-10-25 12:42Z — 新代次准入完成，零HTTP预检发现批准控制接口问题
+
+- 原retry终端确认与StockQA apply已成功，目标generation2；原1.2 admission实际accepted、permission_authenticated、registered_with_executor，同账本/同预算/旧无效safe与费用全部保留。真实原控制记录已独立核验，不以自制观察JSON替代权限记录。
+- 冻结51项源后执行原preflight，12:41:17Z在`ApprovedRefreshSession.check`拒绝`refresh_execution_approved_controls_required`；没有发送新模型或搜索请求。作者和独立审查者正分别查接口根因，不注入控制对象、不放松审批。
+- 本轮51项锁、驱动与失败日志保留。修复如涉及源字节，必须在首次新付费调用前明确冻结修复后版本，不能覆写旧锁冒称同版本成功。真实合法封存、摘要和禁网恢复仍未通过。
+
+## 2026-10-25 12:31Z — 语义及来源门已提交；真实旧回答已按原owner登记无效
+
+- IQS `1730023`/`854ed55`已推送：原冻结score/fact语义、裸单题载体与原引用ID规则、精确native attempt及其原来源proof统一进入冷执行/恢复/封存；Company配套`81b64be`/`73d342b`本地提交（该仓无remote，不另建）。最终54项定向通过，独立v2来源审通过；不是金融准确性正例。
+- StockQA `24fc22f`已正常hooks提交并推送：原known-response恢复现严格支持有完整原intent/safe/receipt/subject证明的singleton，旧pack路径不变；原92项guarded通过，格式后仅23新增项重跑通过且AST等价，临时根已精确清理。
+- 真实原safe语义拒绝已再次只读执行原validate_content并绑定responseSHA；旧items3、原回答、原12049micros费用、预算全部保留。
+- 先将隔离owner策略唯一升级为1.2/quote1.2（仅3字段、预算原字节不变），再原StockWiki preview/真实TTY确认、原StockQA apply。无效登记已实际成功：原work gen1→failed，decision `owd1_010d2ac6…e15a2`；真实rc1记录由授权root操作原终端，不假称人类手输，不造confirmer或grant。
+- retry_unusable_answer的原preview已ready，原终端确认/新代次准入仍进行中。当前没有增加模型/搜索请求，也没有正式评分检查点。所有先前失败/旧锁/执行源码重建SHA均保留，不盲复活旧task。
+
+## 2026-10-25 11:44Z — 实际封存发现语义门缺口，保留失败不放宽
+
+- 裸单题/原证据ID兼容已按原规则修复（18项通过；原宽回归21通过/15项Temp环境setup错误，仅15项短Temp重跑通过）；独审确认真实原native规范化后与slot全字段相等。
+- 明确修复谱系、保留原36pins和失败export后，禁网恢复走过matcher；但原StockQA正确拒绝score题items非空。原标准答案/检查点/交付均0，安全响应1，全部预算/外部操作/8表proof哈希与crash-proof相同，未增加请求或费用。
+- 根因是Company Runner只查schema/部分score关系，缺主仓standard_answers.validate_content的score/fact语义门；不是StockQA过严。不得删除items、改safe或放宽validator。现修松耦合原语义校验接线和提示，然后走原known-response到期归类及retry_unusable_answer新generation（若原公开权限/证据允许），最多一次明确修答，累计原预算不重置。
+- 旧Cold/MiMo HTTP成功只证明传输与安全缓存，不是可封存正例。当前R3/R4仍开放，接手不得照旧recovery命令盲试或宣称生产回答成功。
+
+## 2026-10-25 11:30Z — 真实回答已取得，封存恢复发现新反例（进行中）
+
+- 原观察库经原备份验证和2→3→4迁移，旧数据/原身份库保持不变；StockQA前置能力守卫commit f88b53e已推送，最终59项通过。新库bootstrap与观测器/完整context哈希7项通过，临时目录已清理。
+- 同一原账本retry-2：epoch3/generation1，旧prepared保留为abandoned_unsent；检索复用先前真实DeepSeek结果。MiMo mimo-v2.6-pro开启思考，真实HTTP200/112.245秒，只有1次模型post。原safe保存后进程按设计退出86（11:27:33Z）。
+- 新进程撤除API key并禁网恢复，读取原回答成功，但原finalize在匹配答案/attempt时拒绝 finalization_original_native_answer_and_member_required（11:29:12Z）。没有继续发送模型/搜索；保留失败日志/原pins/导出，正由author与独立reviewer分别查根因。R3/R4尚未完成，不把HTTP200或研究导出当正式封存成功。
+- crash-proof原账本：3预算行均settled、2外部操作、1原安全响应，估算12049 micros；现金账单仍unknown。
+
 ## 2026-10-25 — 核实后接续：补独审、修正文档时点、恢复生产主线（进行中）
 
 ### 已闭合：BASIC-21整包独审与根因修复
@@ -7,9 +41,9 @@
 - 主仓六文件200 passed/245 subtests；3项Windows深Temp环境失败仅短Temp重跑→3 passed/2 subtests（不合并冒称单次203通过）；UI134 tests，6既有skip；独立反例8/8；真实重构前baseline `d5ce8e7`与当前六组合输出字节SHA一致。明确自有临时根已清理。
 - 持久证据归档：`docs/implementation/reviews/reconciliation-production-2026-10-25/basic/`（审查者、初/复审、源SHA、原日志、兼容比较）；提交后另外绑定实际commit，不回写审查历史。G5未代签，不阻塞用户已授权的工程接线。
 
-### 生产接线（源码/软件验证已通过；真实实验当前状态见下）
+### 生产接线早期快照（10:48Z前；非当前执行状态）
 
-当前：共享源码已提交23a05c8/8af0c86，实际软件scored正例通过。真实首cold因本地HTTP观察器缺request失败，model0；原账本已依据独审证据经公开API结算confirmed_not_sent，旧unknown原回执完整保留。同账本、同预算的retry-1准备中，等待原lease于10:48:06Z真实到期。真实回答及禁网缓存恢复尚未通过，不把软件正例替代它们。
+当时状态：共享源码已提交23a05c8/8af0c86，实际软件scored正例通过。真实首cold因本地HTTP观察器缺request失败，model0；原账本已依据独审证据经公开API结算confirmed_not_sent，旧unknown原回执完整保留。同账本、同预算的retry-1准备中，等待原lease于10:48:06Z真实到期。真实回答及禁网缓存恢复尚未通过，不把软件正例替代它们。
 
 - 新增显式`finalize_shared_engine`复用原StockQA封存；恢复原有效lease由StockQA公开方法承载，主仓不直接伪造私有handle。checkpoint已写而delivery封包失败的中间态可按原答案幂等补封，pending不得显示completed。
 - 真正singleton外部检索E2E复现旧Q09 scope将普通预留标志带进research SDK，模型发送前被拒（0模型HTTP）；现按显式research预算scope修复，普通Q09默认守卫不变。不是删除预算验证。
@@ -5110,3 +5144,17 @@ StockWiki新1.2预览复用原planner和真实owner-control读取，不以普通
 - 真实r25-live最终预检80.98秒/模型搜索HTTP均0，32pins独审passed_for_bounded_cold。首次cold没有模型attempt或安全响应；搜索账本出现AttributeError/outcome unknown。根因是总控实验run_live.py修改了共享HTTP manager方法，但包装只实现post，原搜索需要request，未到原native transport。不是供应商拒绝，也不能把账本unknown自动清成0。
 - 保留首次driver、pins、预检、cold-started、退出码和stderr的原字节于runs/r25-live/failed-pretransport-01/。修正为仅重绑定模型SDK模块自己的manager facade，不修改搜索共享manager；4项离线反例通过，自有测试临时目录清理。首次4个环境setup error的XML另存，未计passed。
 - 当前正在核原公开budget reconciliation与lease/retry接口；同一账本保留原失败，不另开库重置限额。真实回答/缓存恢复仍未通过，先解决这次明确未发送的本地失败。
+
+
+## 2026-10-25 — 等待原lease期间的清理与交付
+
+共享源码23a05c8、PWF/交接/独审薄证据2ed63fb已推送主仓origin/master；StockQA8af0c86已推送。7个实际源码/测试与提交blob原字节全部相同。原公开reconcile已执行成功：confirmed_not_sent、0计数/0inflight，旧unknown回执保留，预算文件原字节未改；retry-1预检88.16秒/0模型搜索HTTP且34pins独审通过。到期时间10:48:06Z前不领取或发送。
+
+清理：原软件合成runtime已删；hook后14项测试精确所属pytest-2600也已删除，父目录、current和其他编号保留。旧base-only准备live/核实attempt/response/budget/external-operation均0后精确删除，保留preparation-only-evidence/薄记录；当前真实r25-live/及其原账本保留供恢复，不清unknown。
+
+
+## 2026-10-25 — retry-1真实搜索成功；发现初始化能力缺口
+
+最后预检61.18秒/0HTTP，pins f69ee033…；10:48:03比原expiry早2.326秒的领取被guard正确拒绝（单独保留negative记录），到期后原recover_expired/claim成功，epoch2/gen1。DeepSeek实际HTTP200、5条、原费率估算750micros，旧not_sent预算行和unknown回执仍保留。模型只有1条prepared、send_intent/模型budget/安全响应均0。
+
+根因：新观察库经基础migrate后仍user_version2，无quick_scan_subject_dispatch表；主体派发register要求3/4，实际在注册步骤拒绝，外部use proof已保存，尚未到LLM HTTP。软件fixture已初始化更高版本所以此前正例未覆盖真实bootstrap缺项。正在使用原备份升级工具并设计前置能力检查；不把prepared算HTTP或删除原记录，不用新账本重发。

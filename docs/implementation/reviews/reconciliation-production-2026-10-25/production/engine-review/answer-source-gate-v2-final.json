@@ -1,0 +1,84 @@
+{
+  "protocol": "iqs.independent-source-gate-review/1.0.0",
+  "reviewed_at": "2026-10-25T12:28:49.162970+00:00",
+  "status": "passed_source_delta_pending_final_hook_bytes_and_real_driver",
+  "reviewer": "/root/fix_bank21",
+  "author": "/root/inspect_production",
+  "review_mode": "read_only_source_and_existing_test_evidence",
+  "source_file_pins": {
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\shared_company_engine.py": {
+      "expected": "f58312fb86f00e372722ff6fbff45ec5088fa1a7fecc3a3814b1d72add752cc7",
+      "actual": "f58312fb86f00e372722ff6fbff45ec5088fa1a7fecc3a3814b1d72add752cc7",
+      "matches": true
+    },
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\question_prompts.py": {
+      "expected": "7601b739f5d48b522d78d94942eb63a211d70694124cd19d196857579d9a62b7",
+      "actual": "7601b739f5d48b522d78d94942eb63a211d70694124cd19d196857579d9a62b7",
+      "matches": true
+    },
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\standard_answers.py": {
+      "expected": "323c72b7b9c77967f03f087c257349858f40fa96784266c793108add0d022ba6",
+      "actual": "323c72b7b9c77967f03f087c257349858f40fa96784266c793108add0d022ba6",
+      "matches": true
+    },
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\questions\\metric-registry.json": {
+      "expected": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75",
+      "actual": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75",
+      "matches": true
+    },
+    "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\runner.py": {
+      "expected": "5baaf3cce0ada624e393f0a24267199fb793111f8cdae4977d40bad274dd788b",
+      "actual": "5baaf3cce0ada624e393f0a24267199fb793111f8cdae4977d40bad274dd788b",
+      "matches": true
+    },
+    "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\answers.py": {
+      "expected": "1fe1eb4465291100830a654e4ec04542012a1bc530a29bd021be2e7fbbec42f9",
+      "actual": "1fe1eb4465291100830a654e4ec04542012a1bc530a29bd021be2e7fbbec42f9",
+      "matches": true
+    },
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_shared_answer_semantics.py": {
+      "expected": "6fb5547674c441af201699804aa95db5b20673e8aae1859f23cc5b0d695a17ba",
+      "actual": "6fb5547674c441af201699804aa95db5b20673e8aae1859f23cc5b0d695a17ba",
+      "matches": true
+    },
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_shared_company_engine_finalization.py": {
+      "expected": "f2446c1139c541c1495a306c9ebedda188cabcd0565b88a6381366c019e0849d",
+      "actual": "f2446c1139c541c1495a306c9ebedda188cabcd0565b88a6381366c019e0849d",
+      "matches": true
+    }
+  },
+  "all_source_pins_match": true,
+  "checks": {
+    "callback_version_explicit_default_one_production_two": true,
+    "current_attempt_ref_supplied_directly_by_apply_answers": true,
+    "board_and_answer_deepcopies_mutation_guarded": true,
+    "exact_native_inspection_not_latest_selection": true,
+    "successful_original_member_and_saved_context_bound": true,
+    "original_external_use_proof_and_source_projection_reused": true,
+    "original_standard_transport_and_standard_answer_validator_reused": true,
+    "citation_normalization_replayed_on_copy_only": true,
+    "cold_resume_finalizer_all_use_same_production_callback": true,
+    "original_validator_and_source_rules_not_relaxed": true
+  },
+  "author_test_evidence": {
+    "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\engine-fix\\answer-semantic-gate\\v2-green.xml",
+    "sha256": "2020d9c0a309b081371364290c39a7c4a7ec2ff9ff967b4c909d8bf9c70c9035",
+    "counts": {
+      "tests": 54,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "independent_rerun": false,
+    "scope": "54 unit/targeted cases; native_bound explicitly mocks projection and owner boundary, not real search admission"
+  },
+  "limitations": [
+    "New cold driver crash point must run only after v2 semantics and source acceptance; not yet reviewed here.",
+    "No paid API or database mutation was performed by reviewer.",
+    "This source review does not grant financial accuracy or production owner authorization.",
+    "Old invalid gen1 response remains rejected and unpublished."
+  ],
+  "open_findings": [],
+  "reviewer_api_requests": 0,
+  "reviewer_database_writes": 0
+}

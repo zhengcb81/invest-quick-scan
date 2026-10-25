@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="1.149" timestamp="2026-10-25T12:21:56.850892+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.test_shared_answer_semantics" name="test_v2_callback_receives_exact_current_ref_and_readonly_board" time="0.164"><failure message="TypeError: Runner.__init__() got an unexpected keyword argument 'answer_semantic_validator_version'. Did you mean 'answer_semantic_validator'?">original = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x0000025F0D4C9940&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...56a28684eecd0159434fcd', 'metric_registry_sha256': '1513f03214ebb41ae5f079997ff9d7358afb0195c1191a39a92806b26042b01b'})
+
+    def test_v2_callback_receives_exact_current_ref_and_readonly_board(original):
+        task, qid, body, _ = original
+        seen = []
+    
+        def callback(probe, question_id, *, attempt_ref, evidence_board):
+            seen.append((question_id, attempt_ref, evidence_board.snapshot()))
+    
+&gt;       runner = Runner(task, SyntheticReplayPort(helpers.scenario_doc([]), task.raw["run_id"]),
+                        answer_semantic_validator=callback, answer_semantic_validator_version=2)
+E       TypeError: Runner.__init__() got an unexpected keyword argument 'answer_semantic_validator_version'. Did you mean 'answer_semantic_validator'?
+
+tests\test_shared_answer_semantics.py:197: TypeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_production_v2_keeps_original_body_while_validating_exact_native" time="0.397"><failure message="TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'">native_bound = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x0000025F0D4E5450&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...'url': 'https://example.invalid/company'}, &lt;iqs_company_agent_lab.evidence.EvidenceBoard object at 0x0000025F0DD692B0&gt;)
+
+    def test_production_v2_keeps_original_body_while_validating_exact_native(native_bound):
+        task, qid, body, services, _, board = native_bound
+        callback = engine._production_answer_semantics(task, services)
+        before, board_before = copy.deepcopy(body), copy.deepcopy(board.snapshot())
+&gt;       callback(body, qid, attempt_ref="stockqa:UNIT_SDK_ATTEMPT", evidence_board=board)
+E       TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'
+
+tests\test_shared_answer_semantics.py:242: TypeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_production_v2_source_ref_cutoff_fail_closed[wrong_ref]" time="0.014"><failure message="TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'">native_bound = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x0000025F0ABC3610&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...'url': 'https://example.invalid/company'}, &lt;iqs_company_agent_lab.evidence.EvidenceBoard object at 0x0000025F0D4E6850&gt;)
+kind = 'wrong_ref'
+
+    @pytest.mark.parametrize("kind", ["wrong_ref", "bad_source", "missing_proof", "future_date"])
+    def test_production_v2_source_ref_cutoff_fail_closed(native_bound, kind):
+        task, qid, body, services, source, board = native_bound
+        ref = "stockqa:UNIT_SDK_ATTEMPT"
+        if kind == "wrong_ref":
+            ref = "stockqa:FOREIGN"
+        elif kind == "bad_source":
+            source["url"] = "https://example.invalid/foreign-original-receipt"
+        elif kind == "missing_proof":
+            services.store.get_external_context_use = lambda _: None
+        else:
+            body["evidence"][0]["published_at"] = "2099-01-01"
+        callback = engine._production_answer_semantics(task, services)
+        with pytest.raises(ValueError):
+&gt;           callback(body, qid, attempt_ref=ref, evidence_board=board)
+E           TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'
+
+tests\test_shared_answer_semantics.py:261: TypeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_production_v2_source_ref_cutoff_fail_closed[bad_source]" time="0.010"><failure message="TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'">native_bound = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x0000025F0ABD2190&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...xample.invalid/foreign-original-receipt'}, &lt;iqs_company_agent_lab.evidence.EvidenceBoard object at 0x0000025F0ABC3890&gt;)
+kind = 'bad_source'
+
+    @pytest.mark.parametrize("kind", ["wrong_ref", "bad_source", "missing_proof", "future_date"])
+    def test_production_v2_source_ref_cutoff_fail_closed(native_bound, kind):
+        task, qid, body, services, source, board = native_bound
+        ref = "stockqa:UNIT_SDK_ATTEMPT"
+        if kind == "wrong_ref":
+            ref = "stockqa:FOREIGN"
+        elif kind == "bad_source":
+            source["url"] = "https://example.invalid/foreign-original-receipt"
+        elif kind == "missing_proof":
+            services.store.get_external_context_use = lambda _: None
+        else:
+            body["evidence"][0]["published_at"] = "2099-01-01"
+        callback = engine._production_answer_semantics(task, services)
+        with pytest.raises(ValueError):
+&gt;           callback(body, qid, attempt_ref=ref, evidence_board=board)
+E           TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'
+
+tests\test_shared_answer_semantics.py:261: TypeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_production_v2_source_ref_cutoff_fail_closed[missing_proof]" time="0.011"><failure message="TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'">native_bound = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x0000025F0ABD3100&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...'url': 'https://example.invalid/company'}, &lt;iqs_company_agent_lab.evidence.EvidenceBoard object at 0x0000025F0ABD36F0&gt;)
+kind = 'missing_proof'
+
+    @pytest.mark.parametrize("kind", ["wrong_ref", "bad_source", "missing_proof", "future_date"])
+    def test_production_v2_source_ref_cutoff_fail_closed(native_bound, kind):
+        task, qid, body, services, source, board = native_bound
+        ref = "stockqa:UNIT_SDK_ATTEMPT"
+        if kind == "wrong_ref":
+            ref = "stockqa:FOREIGN"
+        elif kind == "bad_source":
+            source["url"] = "https://example.invalid/foreign-original-receipt"
+        elif kind == "missing_proof":
+            services.store.get_external_context_use = lambda _: None
+        else:
+            body["evidence"][0]["published_at"] = "2099-01-01"
+        callback = engine._production_answer_semantics(task, services)
+        with pytest.raises(ValueError):
+&gt;           callback(body, qid, attempt_ref=ref, evidence_board=board)
+E           TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'
+
+tests\test_shared_answer_semantics.py:261: TypeError</failure></testcase><testcase classname="tests.test_shared_answer_semantics" name="test_production_v2_source_ref_cutoff_fail_closed[future_date]" time="0.011"><failure message="TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'">native_bound = (&lt;iqs_company_agent_lab.task.LoadedTask object at 0x0000025F0ABCAE70&gt;, 'IQS_01', {'question_id': 'IQS_01', 'response_k...'url': 'https://example.invalid/company'}, &lt;iqs_company_agent_lab.evidence.EvidenceBoard object at 0x0000025F0ABD3BB0&gt;)
+kind = 'future_date'
+
+    @pytest.mark.parametrize("kind", ["wrong_ref", "bad_source", "missing_proof", "future_date"])
+    def test_production_v2_source_ref_cutoff_fail_closed(native_bound, kind):
+        task, qid, body, services, source, board = native_bound
+        ref = "stockqa:UNIT_SDK_ATTEMPT"
+        if kind == "wrong_ref":
+            ref = "stockqa:FOREIGN"
+        elif kind == "bad_source":
+            source["url"] = "https://example.invalid/foreign-original-receipt"
+        elif kind == "missing_proof":
+            services.store.get_external_context_use = lambda _: None
+        else:
+            body["evidence"][0]["published_at"] = "2099-01-01"
+        callback = engine._production_answer_semantics(task, services)
+        with pytest.raises(ValueError):
+&gt;           callback(body, qid, attempt_ref=ref, evidence_board=board)
+E           TypeError: _frozen_answer_semantics.&lt;locals&gt;.validate_original() got an unexpected keyword argument 'attempt_ref'
+
+tests\test_shared_answer_semantics.py:261: TypeError</failure></testcase></testsuite></testsuites>

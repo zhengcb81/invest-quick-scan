@@ -5,14 +5,14 @@
 | 阶段 | 交付与通过标准 | Status |
 |---|---|---|
 | R1 | 校正 handoff、包状态与 manifest；BASIC-21 实际独审6项根因已修、复审passed，兼容6/6，主仓200项+3环境重跑通过，UI134项含6既有skip | **complete** |
-| R2 | 原公开封存/恢复接口和研究预算scope已修，软件scored正例及定向回归通过；主仓`23a05c8`、StockQA`8af0c86`，后者已推送 | **complete** |
-| R3 | 首次真实cold因实验观测器漏request本地失败，模型未发送；原账本已按公开API审计confirmed_not_sent，旧unknown回执保留。修复观测器后同账本重试准备中，尚无真实成功结论 | **in_progress** |
+| R2 | 原封存/预算scope、原语义及exact native来源门、严格singleton恢复证明已修并提交；54项共享回归、92项native恢复回归及格式后23项子集通过，产品独审闭合。真实执行协调仍在R3/R4验收 | **complete** |
+| R3 | 原schema2前置能力已修；generation1旧safe语义无效并保留。generation2最终56锁预检通过，实际新搜索与MiMo Pro思考HTTP200/75.337秒，但safe gate拒绝，已保留原safe/invalid export/累计费用19129micros，无正式检查点 | **in_progress** |
 | R4 | 真实运行断点恢复：已完成工作不再发包、费用/usage 不重复累计；上下文或输入改变不得误命中；提供前后请求与摘要证据 | **pending** |
 | R5 | 整轮独立审查与修复闭环；更新 PWF 和接手入口，仅提交明确自有改动并推送既有 origin | **pending** |
 
 ### Next Step
 
-BASIC-21已推送主仓`673817e`，UI提交`5d71e1c`（无remote）；共享源码IQS`23a05c8`、StockQA`8af0c86`（已推送），相关29/36项及实际软件正例通过。真实首试的本地观测器错误已修（4项回归通过），原公开结算已确认未发送；不删除旧unknown或重置预算。等待原lease在2026-10-25 10:48:06.134260Z真实到期，经原recover_expired→原batchclaim，用`retry-1/`新session和新query_id重试同一任务/同一预算；新34pins和公开预检在核。收到新的原安全响应后才做强退/禁网恢复、正式封存及二次幂等核对。测试只集中于必要整包和真实端到端节点。
+generation2最终56pins `6137fafb…9963`预检通过后已实际发送1次新搜索/1次MiMo Pro请求。HTTP200/75.337秒，但safe gate ValueError、Runner也拒绝为invalid，13:02:39Z正常退出0而非预期86；wrapper据此判失败，正式检查点0。下一步只读复现原safe的精确拒因，作者与独立审查者分别归因；不改safe、不删字段、不盲重发、不重置预算。若为适配缺陷，先根修并明确跨版本恢复谱系，再复用原响应；若为回答本身不合法，按原known-response新代次路线处理。原source锁/driver/失败export与累计19129micros保留。R3/R4仍开放。
 
 ### 已核实边界
 

@@ -1,0 +1,49 @@
+{
+  "protocol": "iqs.independent-generation2-summary-final-review/1.0.0",
+  "status": "passed_reporter_source_fix_pending_real_acceptance_evidence",
+  "reviewed_at": "2026-10-25T12:56:34.582923+00:00",
+  "reviewer": "/root/fix_bank21",
+  "source_sha256": "b47392f95962710b94e8dcdcc06a6d137de72e4597e4edb0247e355a836e5f05",
+  "reviewed_helper_sha256": "452c281e3660c0c35bbddee0060d80399923496765b56486c5d0264299216721",
+  "driver_sha256": "80ceecfce9099b10e7565862cde3d4961604482a31a650364f9eeacbd811955e",
+  "closed_findings": [
+    {
+      "id": "G2SUMMARY-01",
+      "initial_evidence": "generation2-summary-round01.json",
+      "closure": "Explicit scan1.0 carrier required; original task_from_bundle validates raw SHA, derived company/evidence/runtime references and question bindings; original task_bundle revalidates; run input_manifest/company_ref/run_id/cutoff match original task. Legacy no-validation branch cannot be selected."
+    }
+  ],
+  "checks": {
+    "exact_original_readonly_store_and_pinned_snapshot_driver": true,
+    "actual_current_ledger_equals_original_recorded_after": true,
+    "cold_crash_sources_task_and_current_source_pins_bound": true,
+    "original_CP_standard_native_receipt_use_proof_and_runtime_report_crosschecks": true,
+    "repeated_ready_checkpoint_same_ids_and_exact_reuse_required": true,
+    "original_resolver_rate_card_estimates_not_invoice": true,
+    "new_generation_observations_separate_from_cumulative_and_invalid_history": true,
+    "old_local_unknown_and_original_zero_reconciliation_retained": true,
+    "only_allowed_public_urls_and_metadata_no_answer_or_context_body": true,
+    "absent_result_has_no_success_placeholder": true
+  },
+  "author_offline_evidence": {
+    "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\engine-fix\\generation2-summary-task-final.xml",
+    "sha256": "6fa6bd868859da401ab76fe5a8baafcfeb04e6aea521039cac037b2a84b24739",
+    "counts": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "independent_rerun": false,
+    "scope": "5 task binding negatives plus prior 4 privacy/failure units; no real positive"
+  },
+  "open_findings": [],
+  "reviewer_api_calls": 0,
+  "reviewer_database_writes": 0,
+  "actual_gen2_result_accepted": false,
+  "limitations": [
+    "Actual successful result and produced summary still require whole-node independent inspection.",
+    "Root should freeze final reporter, its original helper and original task/scan_profile/provenance dependencies in the explicit expanded source pin list.",
+    "No inference of financial accuracy or StockWiki ACK."
+  ]
+}

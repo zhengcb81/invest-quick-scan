@@ -1,0 +1,54 @@
+{
+  "protocol": "iqs.original-answer-semantic-gate-implementation/1.0.0",
+  "source_sha256": {
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\shared_company_engine.py": "a620be8c247af549fd2f625f0d0b1fa5be649c7dd837a1dc9e6733713bdcd844",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\question_prompts.py": "7601b739f5d48b522d78d94942eb63a211d70694124cd19d196857579d9a62b7",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\standard_answers.py": "323c72b7b9c77967f03f087c257349858f40fa96784266c793108add0d022ba6",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\questions\\metric-registry.json": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75",
+    "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\runner.py": "7f190fbdf1defec16c1bcd59dd636d05398bcc95e1e351447352432d925b7445",
+    "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\answers.py": "1fe1eb4465291100830a654e4ec04542012a1bc530a29bd021be2e7fbbec42f9",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_shared_answer_semantics.py": "9a7d0d1873362d62ceb600bb83c30daeae4b934e0202e78a3ce89100f1aff666",
+    "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_shared_company_engine_finalization.py": "f2446c1139c541c1495a306c9ebedda188cabcd0565b88a6381366c019e0849d"
+  },
+  "source_freeze": true,
+  "original_rules_source": "scripts/standard_answers.py::validate_content",
+  "frozen_resource_hash_basis": "original observation context canonical_sha256(JSON), not file SHA",
+  "tests": [
+    {
+      "artifact": "red.xml",
+      "failed": 11,
+      "reason": "original semantic factory/typed rules and generic callback absent"
+    },
+    {
+      "artifact": "green.xml",
+      "passed": 46,
+      "failed": 1,
+      "reason": "old fresh_observer error priority changed; corrected before next green"
+    },
+    {
+      "artifact": "green2.xml",
+      "passed": 48,
+      "seconds": 5.59,
+      "raw_company_line_endings": "CRLF"
+    },
+    {
+      "artifact": "final-lf.xml",
+      "passed": 48,
+      "seconds": 5.35,
+      "raw_company_line_endings": "LF",
+      "source_sha256_unchanged_during_tests": true
+    }
+  ],
+  "company_line_ending_equivalence": "company-line-endings.json",
+  "actual_rejection_proof": "real-readonly-rejection.json",
+  "historical_renderer_fingerprint_proof": "renderer-compatibility.json",
+  "cleanup": "cleanup-final.json",
+  "real_API_requests": 0,
+  "production_database_writes": 0,
+  "StockQA_validator_changed": false,
+  "legacy_Company_default_callback_is_optional": true,
+  "production_shared_engine_validator_is_mandatory": true,
+  "old_model_answer_changed": false,
+  "new_model_answer_generated": false,
+  "old_invalid_output_financial_accuracy_assessed": false
+}

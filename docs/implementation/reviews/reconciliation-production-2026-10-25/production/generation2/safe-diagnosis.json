@@ -1,0 +1,102 @@
+{
+  "protocol": "iqs.generation2-safe-readonly-diagnosis/1.0.0",
+  "question_id": "IQS_05",
+  "generation": 2,
+  "work_item_id": "WORK_c9374943a7c44990ba69d67fa7346529",
+  "native_attempt_id": "ATTEMPT_7d199ff1165a4c07b7f20191ad3c3699",
+  "native_reference": "stockqa:ea43eae9-f75b-4d2c-81f2-ae1bfc7fce54",
+  "response_sha256": "6055c7df80d3fb61f617459f726a629eaf21d8125cbd6b978eb1e9f7ad41ea66",
+  "native_receipt_sha256": "193dbe3198cfe2537b2ba211c9838c074833df0182eb7d684da751147f359d6a",
+  "body_sha256": "b3930fd906e2144f11c899273837dacb27635044d422bc43b7a395a5cef6c9e7",
+  "response_kind": "score",
+  "answer_status": "scored",
+  "score_is_null": false,
+  "metrics_count": 5,
+  "items_count": 0,
+  "evidence_count": 4,
+  "reasoning_or_answer_body_included": false,
+  "api_calls": 0,
+  "database_writes": 0,
+  "source_pins_sha256": "6137fafb4b4102b44a1d1f945e56d381259c5cafafe8635731450ff33bac9963",
+  "original_iqs_semantics": {
+    "status": "passed"
+  },
+  "source_counts": {
+    "original_proof_source_urls": 5,
+    "cited_urls": 4,
+    "cited_urls_absent_from_original_proof": 2,
+    "original_retrievals": 1
+  },
+  "original_native_source_gate": {
+    "status": "rejected",
+    "exception_type": "ValueError",
+    "original_static_error": "evidence URL/date is not bound to search/cutoff",
+    "message_sha256": "1951f4cde76efc2a686e51bf07224a372bf65f124a1b51784f63fcf85cde2415",
+    "non_static_message_withheld": false,
+    "trace": [
+      {
+        "file": "diagnose_generation2_safe.py",
+        "function": "<module>",
+        "line": 129
+      },
+      {
+        "file": "shared_company_engine.py",
+        "function": "_validate_native_answer_sources",
+        "line": 226
+      },
+      {
+        "file": "quick_scan_observation_context.py",
+        "function": "validate_standard_answer",
+        "line": 477
+      }
+    ]
+  },
+  "body_unchanged": true,
+  "actual_context_binding_reconstruction": {
+    "status": "passed",
+    "current_lease_unmodified": true,
+    "clock": "original_default_real_time_time.time",
+    "historical_clock_override": false,
+    "readonly_view_clock_initialized": true,
+    "source_count": 5,
+    "restored_context_sha256": "e6606976cf6610033e7a08d51b1d203df902792e5a4228192300a49f86362f3f",
+    "equals_original_sent_use_proof": true,
+    "every_original_url_present_verbatim_in_original_context_encoding": true,
+    "original_urls_with_query": 3,
+    "original_combined_system_prompt_hash_bound_to_work_attempt": true,
+    "original_messages_text_hash_bound_in_native_receipt": true,
+    "native_request_payload_sha_bound_to_saved_output": true,
+    "mismatched_citation_query_metadata": [
+      {
+        "cited_url_sha256": "4e0130d7a884a0d99966cee24fb384c9f957f001c543cc749c130d8f19d53733",
+        "same_scheme_host_path_original_count": 1,
+        "cited_query_keys": [],
+        "original_query_key_sets": [
+          [
+            "trk"
+          ]
+        ],
+        "originals_appear_verbatim_in_original_context_encoding": true
+      },
+      {
+        "cited_url_sha256": "891c6d0912290cff87acec1ffcd07fe3efb66e7b5a10ff59c225a72625f9f743",
+        "same_scheme_host_path_original_count": 1,
+        "cited_query_keys": [],
+        "original_query_key_sets": [
+          [
+            "lang",
+            "type"
+          ]
+        ],
+        "originals_appear_verbatim_in_original_context_encoding": true
+      }
+    ],
+    "method": "original readonly context/binding encoding reconstructed; pinned SDK render function appends encoding unchanged; actual send prompt guard binds same context hash; no raw request messages retained or printed",
+    "guarded_render_not_invoked_without_dispatch_owner": true
+  },
+  "database_sha256_before": "355e93c2d3006bf6c0ea6c4a190c937aaea70de635ab1216eefe18fd9af1b78d",
+  "database_sha256_after": "355e93c2d3006bf6c0ea6c4a190c937aaea70de635ab1216eefe18fd9af1b78d",
+  "formal_checkpoint_present": false,
+  "standard_answer_present": false,
+  "delivery_present": false
+}

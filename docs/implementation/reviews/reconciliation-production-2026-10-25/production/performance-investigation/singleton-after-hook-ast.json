@@ -1,0 +1,22 @@
+{
+  "protocol": "iqs.after-hook-structural-check/1.0.0",
+  "scope": "black formatting and isort import regrouping only; not a claim of semantic equivalence for arbitrary import reorderings",
+  "files": [
+    {
+      "path": "src/utils/quick_scan_known_outcome_journal.py",
+      "before_sha256": "75b8711b5a8678759c940c6862ad41f52c81a2a79224735ae34bb3b8cd068cd9",
+      "after_sha256": "48a6257956defcd57fef2f0da18a68689227b5267002db496a7bb3aaa797801a",
+      "whole_AST_exact": true,
+      "non_import_AST_exact": true,
+      "import_aliases_same_at_same_scope": true
+    },
+    {
+      "path": "tests/unit/test_known_outcome_singleton.py",
+      "before_sha256": "2d216c07846a67bbf92149e7a549b3b5d161834fd89463b04f275486e7603a04",
+      "after_sha256": "581ec30c441f81ea3bb3add55a399e32fc9d4f31046f376c0869fbfe2d8340f5",
+      "whole_AST_exact": false,
+      "non_import_AST_exact": true,
+      "import_aliases_same_at_same_scope": true
+    }
+  ]
+}

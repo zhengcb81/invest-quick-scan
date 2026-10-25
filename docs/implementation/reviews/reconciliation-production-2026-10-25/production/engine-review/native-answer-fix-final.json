@@ -1,0 +1,33 @@
+{
+  "protocol": "iqs.native-answer-fix-independent-review/1.0.0",
+  "status": "passed_strict_native_shape_and_original_citation_replay",
+  "reviewer": "/root/fix_bank21",
+  "engine_sha256": "f5832a9bdfa117205cb9f7c0ee9e3b2a1acdbf4df57eafa0cd40532d9d253a5b",
+  "test_sha256": "689fe9b232b93c337a873108bded22d5c21f0f75b150269930de0cf73b41d3e8",
+  "checks": {
+    "strict_entire_bare_json_value_exact_qid_only": true,
+    "duplicate_or_ambiguous_native_matches_rejected": true,
+    "original_verified_checkpoint_board_only": true,
+    "original_citation_rule_replayed_on_deep_copies": true,
+    "all_normalized_fields_exactly_equal": true,
+    "original_receipt_work_member_lease_checkpoint_gates_retained": true,
+    "real_original_safe_output_reviewer_matcher_call_passed": true,
+    "real_native_board_and_database_not_modified": true
+  },
+  "author_tests": {
+    "xml_path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\engine-fix\\native-bare-answer\\final.xml",
+    "xml_sha256": "8d4f86d1f9e357cc3f4a1cdc287e461c93dc3c1e8f20412697dbd37a430b6d8f",
+    "tests": 18,
+    "errors": 0,
+    "failures": 0,
+    "seconds": 1.071
+  },
+  "reviewer_new_large_tests": 0,
+  "reviewer_api_calls": 0,
+  "reviewer_db_writes": 0,
+  "open_findings": [],
+  "limitations": [
+    "This passes only strict matching; original finalize/ready delivery and fee-free recovery still need actual after-fix evidence.",
+    "The original bare-answer/citation compatibility is replayed, not an accuracy qualification or a relaxed source-proof guard."
+  ]
+}

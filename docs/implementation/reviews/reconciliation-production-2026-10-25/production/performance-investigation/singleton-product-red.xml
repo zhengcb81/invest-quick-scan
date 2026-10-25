@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.762" timestamp="2026-10-25T11:51:17.582479+00:00" hostname="DESKTOP-156V213"><testcase classname="tests.unit.test_known_outcome_singleton" name="test_native_singleton_resolves_then_derives_lawful_next_generation_without_new_send" time="0.628"><failure message="src.utils.quick_scan_work_store.WorkConflictError: owner_work_frozen_native_pack_required">tmp_path = WindowsPath('C:/Users/郑曾波/Projects/invest-quick-scan/runs/reconcile-production-2026-10-25/performance-investigation/singleton-temp-red2/test_native_singleton_resolves0')
+transport = (&lt;Mock id='2304728701920'&gt;, [{'headers': {'Content-Type': 'application/json', 'Authorization': 'Bearer SECRET_KEY_CANA...], 'tools': [{'type': 'function', 'function': {...}}], 'stream': False, ...}, 'timeout': 1, 'allow_redirects': False}])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002189CAA02B0&gt;
+
+    def test_native_singleton_resolves_then_derives_lawful_next_generation_without_new_send(
+        tmp_path, transport, monkeypatch
+    ):
+        store, clock, item, args, policy, _ = single(tmp_path, transport, monkeypatch)
+        clock[0] += 121
+        before = immutable(store)
+&gt;       read = derive_work_decision(store.path, intent_for(item, args), policy=policy, clock=lambda: clock[0])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\StockQAbyLLM\tests\unit\test_known_outcome_singleton.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\StockQAbyLLM\src\utils\quick_scan_work_decision_inspect.py:251: in derive_work_decision
+    return _inspect(path, intent, policy=policy, clock=clock, derive=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\StockQAbyLLM\src\utils\quick_scan_work_decision_inspect.py:103: in _inspect
+    original = _physical(view, con, item, attempt)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+store = &lt;src.utils.quick_scan_refresh_inspect.ReadOnlyWorkView object at 0x000002189C892270&gt;
+con = &lt;sqlite3.Connection object at 0x000002189C0258A0&gt;
+item = &lt;sqlite3.Row object at 0x000002189CABFDF0&gt;
+attempt = &lt;sqlite3.Row object at 0x000002189CABF850&gt;
+
+    def _physical(store, con, item, attempt):
+        """Re-derive settled physical evidence, not a caller receipt or status flag."""
+        from .quick_scan_question_pack_journal import _fingerprint, _read
+        from .quick_scan_subject_journal import (
+            bound_context,
+            guard_response,
+            receipt_record,
+        )
+        from .quick_scan_work_store import WorkConflictError
+    
+        latest = con.execute(
+            "SELECT attempt_id FROM attempt WHERE work_item_id=? ORDER BY ordinal DESC LIMIT 1",
+            (item["work_item_id"],),
+        ).fetchone()
+        if latest is None or latest["attempt_id"] != attempt["attempt_id"]:
+            raise WorkConflictError("owner_work_latest_attempt_required")
+        if attempt["phase"] not in {"response_available", "uncertain"}:
+            raise WorkConflictError("owner_work_known_response_required")
+        member = con.execute(
+            "SELECT * FROM quick_scan_question_pack_member WHERE attempt_id=?",
+            (attempt["attempt_id"],),
+        ).fetchone()
+        # Native packs freeze the actual request payload before POST. Older single
+        # attempts lack this pre-send payload proof and are deliberately unsupported.
+        if member is None:
+&gt;           raise WorkConflictError("owner_work_frozen_native_pack_required")
+E           src.utils.quick_scan_work_store.WorkConflictError: owner_work_frozen_native_pack_required
+
+..\StockQAbyLLM\src\utils\quick_scan_known_outcome_journal.py:163: WorkConflictError</failure></testcase></testsuite></testsuites>

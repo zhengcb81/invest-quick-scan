@@ -1,0 +1,105 @@
+{
+  "protocol": "iqs.original-answer-semantic-gate-independent-review/1.0.0",
+  "status": "passed_original_contract_gate_with_no_native_response_rewrite",
+  "reviewer": "/root/fix_bank21",
+  "reviewed_at": "2026-10-25T12:04:42.571245+00:00",
+  "open_findings": [],
+  "source_checks": [
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\shared_company_engine.py",
+      "expected_sha256": "a620be8c247af549fd2f625f0d0b1fa5be649c7dd837a1dc9e6733713bdcd844",
+      "actual_sha256": "a620be8c247af549fd2f625f0d0b1fa5be649c7dd837a1dc9e6733713bdcd844",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\question_prompts.py",
+      "expected_sha256": "7601b739f5d48b522d78d94942eb63a211d70694124cd19d196857579d9a62b7",
+      "actual_sha256": "7601b739f5d48b522d78d94942eb63a211d70694124cd19d196857579d9a62b7",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\scripts\\standard_answers.py",
+      "expected_sha256": "323c72b7b9c77967f03f087c257349858f40fa96784266c793108add0d022ba6",
+      "actual_sha256": "323c72b7b9c77967f03f087c257349858f40fa96784266c793108add0d022ba6",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\questions\\metric-registry.json",
+      "expected_sha256": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75",
+      "actual_sha256": "790d0a8295771c372d8266ab1f0883c93b2bb22f4f81ab482dd8d95054bf0e75",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\runner.py",
+      "expected_sha256": "7f190fbdf1defec16c1bcd59dd636d05398bcc95e1e351447352432d925b7445",
+      "actual_sha256": "7f190fbdf1defec16c1bcd59dd636d05398bcc95e1e351447352432d925b7445",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\iqs-company-agent-lab\\src\\iqs_company_agent_lab\\answers.py",
+      "expected_sha256": "1fe1eb4465291100830a654e4ec04542012a1bc530a29bd021be2e7fbbec42f9",
+      "actual_sha256": "1fe1eb4465291100830a654e4ec04542012a1bc530a29bd021be2e7fbbec42f9",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_shared_answer_semantics.py",
+      "expected_sha256": "9a7d0d1873362d62ceb600bb83c30daeae4b934e0202e78a3ce89100f1aff666",
+      "actual_sha256": "9a7d0d1873362d62ceb600bb83c30daeae4b934e0202e78a3ce89100f1aff666",
+      "passed": true
+    },
+    {
+      "path": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\tests\\test_shared_company_engine_finalization.py",
+      "expected_sha256": "f2446c1139c541c1495a306c9ebedda188cabcd0565b88a6381366c019e0849d",
+      "actual_sha256": "f2446c1139c541c1495a306c9ebedda188cabcd0565b88a6381366c019e0849d",
+      "passed": true
+    }
+  ],
+  "checks": {
+    "original_validate_content_reused_not_duplicated": true,
+    "original_question_kind_and_cutoff_captured_from_registered_task": true,
+    "schema_metric_registry_canonical_hashes_match_frozen_context": true,
+    "callback_deepcopy_mutation_refused": true,
+    "typed_semantic_rules_enter_actual_request_stable_prefix_and_rehash": true,
+    "main_preflight_execute_resume_finalizer_all_supply_original_hook": true,
+    "legacy_generic_research_optional_hook_compatibility_preserved": true,
+    "original_stockqa_score_items_gate_unchanged": true,
+    "real_invalid_native_score_items_body_rejected_by_exact_original_reason": true,
+    "real_body_and_original_database_not_modified": true,
+    "registered_question_renderer_functions_unchanged_new_helper_only": true
+  },
+  "tests": {
+    "author_final_xml": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\engine-fix\\answer-semantic-gate\\final-lf.xml",
+    "xml_sha256": "e304aa16929aacec8e2fb88a32d9fc9ead446c7f0aee52cc8722a692c364f1c9",
+    "tests": 48,
+    "errors": 0,
+    "failures": 0,
+    "seconds": 5.35,
+    "reviewer_read_test_source_and_xml": true,
+    "reviewer_did_not_rerun_suite": true,
+    "cases": [
+      "score+fact_items rejection before completed",
+      "unavailable asserted metrics rejection",
+      "model fact kind for score question rejection",
+      "canonical metric unit conflict",
+      "valid original callback no mutation",
+      "frozen schema or metric version mismatch",
+      "mutating callback rejection",
+      "resume uses same gate",
+      "typed prompt explicit score/items",
+      "actual request stable prefix contains rules with new hash",
+      "finalizer rechecks before restore/save"
+    ]
+  },
+  "line_ending_history": {
+    "prior_reviewed_company_crlf_sha256": "64c93be5533c86fcd96f8a3f242d6d17388e4281b3c29ebc92b5240e5866562a",
+    "current_company_lf_sha256": "7f190fbdf1defec16c1bcd59dd636d05398bcc95e1e351447352432d925b7445",
+    "current_lf_reconstructed_crlf_sha256": "64c93be5533c86fcd96f8a3f242d6d17388e4281b3c29ebc92b5240e5866562a",
+    "only_line_endings_changed": true
+  },
+  "remaining_native_boundary": "Production singleton still cannot automatically make a second model turn for the same responded work without original native-session registration; this semantic fix does not expand it.",
+  "financial_accuracy_assessed": false,
+  "reviewer_api_calls": 0,
+  "reviewer_db_writes": 0,
+  "reviewer_new_paid_or_large_tests": 0,
+  "actual_formal_node_still_pending": true
+}

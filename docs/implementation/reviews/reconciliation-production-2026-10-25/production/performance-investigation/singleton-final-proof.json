@@ -1,0 +1,41 @@
+{
+  "reviewer": "/root/review_bank21",
+  "recorded_at": "2026-10-25T12:09:09.923278+00:00",
+  "guard": "StockQAbyLLM/tests/fixtures/delegated_guard/sitecustomize.py",
+  "owned_runtime": "C:\\Users\\郑曾波\\Projects\\invest-quick-scan\\runs\\reconcile-production-2026-10-25\\performance-investigation\\singleton-guarded-final-runtime",
+  "attestations": [
+    {
+      "file": "20076.json",
+      "sha256": "cd98177a08fd88d9da665e501441bbdb28fda5c7366720ad0b12f26a4e554724",
+      "content": {
+        "authority": false,
+        "guard_loaded": true,
+        "pid": 20076,
+        "refusal_counts": {
+          "foreign_sqlite": 1,
+          "foreign_write": 1,
+          "network": 1
+        }
+      }
+    },
+    {
+      "file": "25080.json",
+      "sha256": "e23d95780d721eea846b8d57fb43ed0463718c9182f89102d8abaf8062d023a3",
+      "content": {
+        "authority": false,
+        "guard_loaded": true,
+        "pid": 25080,
+        "refusal_counts": {
+          "foreign_sqlite": 0,
+          "foreign_write": 0,
+          "network": 1
+        }
+      }
+    }
+  ],
+  "result_xml_sha256": "3da794b2b5785cd1c702ac4ae9c5aea9cfaa8b4c51fd0fd37351a373e0354baf",
+  "source_sha256": {
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\src\\utils\\quick_scan_known_outcome_journal.py": "75b8711b5a8678759c940c6862ad41f52c81a2a79224735ae34bb3b8cd068cd9",
+    "C:\\Users\\郑曾波\\Projects\\StockQAbyLLM\\tests\\unit\\test_known_outcome_singleton.py": "2d216c07846a67bbf92149e7a549b3b5d161834fd89463b04f275486e7603a04"
+  }
+}

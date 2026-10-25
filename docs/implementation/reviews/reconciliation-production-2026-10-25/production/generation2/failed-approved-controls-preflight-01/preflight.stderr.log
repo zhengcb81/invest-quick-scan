@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\run_generation2.py", line 400, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\runs\reconcile-production-2026-10-25\run_generation2.py", line 281, in main
+    task = factory.create_company_scan_task(lifecycle, experiment_id="shared-production-real-20261025",
+        run_id=config["run_id"], question_ids=config["question_ids"], limits=limits,
+        pack_by="module", max_questions_per_pack=1)
+  File "C:\Users\郑曾波\Projects\invest-quick-scan\scripts\shared_company_task.py", line 263, in create_company_scan_task
+    owner.check()
+    ~~~~~~~~~~~^^
+  File "C:\Users\郑曾波\Projects\StockQAbyLLM\src\utils\quick_scan_refresh_execution.py", line 287, in check
+    raise AdmissionRejected("refresh_execution_approved_controls_required")
+src.utils.quick_scan_refresh_admission.AdmissionRejected: refresh_execution_approved_controls_required

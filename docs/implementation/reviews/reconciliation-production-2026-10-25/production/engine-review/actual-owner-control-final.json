@@ -1,0 +1,83 @@
+{
+  "protocol": "iqs.independent-real-owner-control-review/1.0.0",
+  "status": "passed_original_control_sequence_generation2_admission_pending",
+  "reviewed_at": "2026-10-25T12:39:26.165552+00:00",
+  "reviewer": "/root/fix_bank21",
+  "review_mode": "original_files_and_sqlite_mode_ro_query_only",
+  "original_policy_transition_before_confirmations": true,
+  "policy_raw_sha256": "311e41ece1a2032070521ca5ff0c30b038279238026e9687a0c0281210a3ed70",
+  "policy_canonical_sha256": "d9b74f48b81e5820d8109271539aeef9daeed947f4922b43fc4255a18c1aa8dc",
+  "budget_policy_raw_sha256": "3906fdd4f2a534609eb65afbd7e1a57e755bf5e91261352aa1d42b6a60b13f83",
+  "records": [
+    {
+      "kind": "resolution",
+      "confirmation_id": "rc1_9372e5de3612011291b74af0298c508f23bbeb095ced8db128f1ff4e4a318cda",
+      "preview_id": "wdp1_87fe1f4bcd9d9611b3c685e34b3734fd487b6e1f4f35239d9338fe60db0f0fe9",
+      "decision_id": "owd1_010d2ac60136cb03fc527504bc162e4d3866f3343a5abf41db343fd3fb3e15a2",
+      "confirmed_at": "2026-10-25T12:24:19.684337Z",
+      "decided_at": "2026-10-25T12:26:59.866632Z",
+      "request_sha256": "753fa75e246c150892be9a9c49af27bce2b7932b4fa6dfa97b8310c3ec391544",
+      "method": "native_owner_terminal",
+      "principal_matches_fixed_native_owner_policy": true,
+      "automated_authorized_controller_not_human_manual_typing": true,
+      "original_confirmation_and_preview_records_valid": true,
+      "actual_stdout_equals_original_durable_decision": true,
+      "fixed_policy_hash_matches_both_confirmations": true,
+      "preview_before_and_after_recheck_enforced_by_original_source": true,
+      "formal_score_publication": false,
+      "artifact_sha256": {
+        "owner-workspace\\runs\\state\\quick_scan_refresh\\work_decisions\\confirmations\\rc1_9372e5de3612011291b74af0298c508f23bbeb095ced8db128f1ff4e4a318cda.json": "0a2b0736fd1566fcbdf78e1b602723cab5f366a3df3eb195b6e2075e53a1c963",
+        "owner-workspace\\runs\\state\\quick_scan_refresh\\work_decisions\\previews\\wdp1_87fe1f4bcd9d9611b3c685e34b3734fd487b6e1f4f35239d9338fe60db0f0fe9.json": "c68219273cb3f4f0785bed797f4af8c2a1e1b36f7eddd57b241db04116fa7d8d",
+        "known-response-repair\\resolution-apply.stdout.json": "5c7c8692a2e880889d36d7258bf7283ff158b9f6ed25143a72db2458359df0e4",
+        "known-response-repair\\resolution-terminal-observation.json": "40f430db1896ac7e057a61e0818aadd0c173ef39b20ea931818cb3376170ff9c",
+        "known-response-repair\\resolution-derived.json": "724e6fe88e940cdcc06178494abc874a526dfdf74dff609d63c50c157289ec63"
+      }
+    },
+    {
+      "kind": "retry",
+      "confirmation_id": "rc1_db39e8b59a104b417db4f404102d8cf09b803c2ec84eabb3ad012640c4c1c29e",
+      "preview_id": "wdp1_6ef6d05ee8fe89cb4a97cf57ee723d4e47af084fdfd95fb12febe38f314311b1",
+      "decision_id": "owd1_752bf741e6324471351f53836e183a17e1b8ea94179489d6fd15a82323d44927",
+      "confirmed_at": "2026-10-25T12:31:11.346505Z",
+      "decided_at": "2026-10-25T12:34:08.596101Z",
+      "request_sha256": "f00bf7856c344f41aa1410ee91a9702cce18fa8b03e27dcb041ece5a5ad0f2ff",
+      "method": "native_owner_terminal",
+      "principal_matches_fixed_native_owner_policy": true,
+      "automated_authorized_controller_not_human_manual_typing": true,
+      "original_confirmation_and_preview_records_valid": true,
+      "actual_stdout_equals_original_durable_decision": true,
+      "fixed_policy_hash_matches_both_confirmations": true,
+      "preview_before_and_after_recheck_enforced_by_original_source": true,
+      "formal_score_publication": false,
+      "artifact_sha256": {
+        "owner-workspace\\runs\\state\\quick_scan_refresh\\work_decisions\\confirmations\\rc1_db39e8b59a104b417db4f404102d8cf09b803c2ec84eabb3ad012640c4c1c29e.json": "89a55d0887e7f912f43504e7af49f12a8539b0773350207d758da728b2c7b086",
+        "owner-workspace\\runs\\state\\quick_scan_refresh\\work_decisions\\previews\\wdp1_6ef6d05ee8fe89cb4a97cf57ee723d4e47af084fdfd95fb12febe38f314311b1.json": "54a5d00540e05ee14e37cdc3ca3e03a186ac519ef4cbdcecadf5edf35331eacc",
+        "known-response-repair\\retry-apply.stdout.json": "9d01f65a2e14cd7720960fba20cfc1ba41482c7385052249b759e29657d6e576",
+        "known-response-repair\\retry-terminal-observation.json": "020302947a4fd80bf45082571c31504a158b9a4ee77ef3b1b63384c97bbc9e73",
+        "known-response-repair\\retry-derived.json": "fa350a08f1e3e8cf25749a984e10aabbacbf88136e964ccbe0ac7573799e6a97"
+      }
+    }
+  ],
+  "gen1_work_failed_without_checkpoint": true,
+  "original_response_and_native_receipt_sha_unchanged": true,
+  "retry_references_exact_prior_resolution_and_target_generation2": true,
+  "original_full_budget_response_search_and_eight_context_table_hashes_equal_crash_proof": true,
+  "cumulative_priced_cost_micros": 12049,
+  "original_known_invalid_response_retained_not_published": true,
+  "local_preapply_type_error_preserved": {
+    "phase": "before_original_apply_subprocess",
+    "error": "WorkspacePaths.from_root requires Path, received str",
+    "fixed": "wrap original configured owner root in Path",
+    "original_apply_started": false,
+    "API_requests": 0,
+    "work_ledger_writes": 0
+  },
+  "limitations": [
+    "Original source enforces two fresh checks around confirmation; reviewer did not rerun confirmation or read shell interaction beyond persisted terminal observations.",
+    "Controller automatically typed the original terminal challenge under user authorization; no human manual typing claim.",
+    "No gen2 admission, paid response, checkpoint, delivery or financial accuracy success is granted by this control review."
+  ],
+  "reviewer_api_calls": 0,
+  "reviewer_database_writes": 0,
+  "open_findings": []
+}
