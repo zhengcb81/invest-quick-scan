@@ -517,7 +517,9 @@ def resume_shared_engine(
         raise SharedEngineRejected("original_revision_two_checkpoint_required")
     if sha256_hex(checkpoint["task_bundle"]) != sha256_hex(task_bundle(task)):
         raise SharedEngineRejected("checkpoint_differs_from_original_registered_task")
-    _verify_snapshot_against_history(checkpoint_path, checkpoint, task)
+    semantic_validator = _production_answer_semantics(task, services)
+    _verify_snapshot_against_history(checkpoint_path, checkpoint, task,
+        answer_semantic_rules=getattr(semantic_validator, "prompt_rules", ()))
     history = journals_for_export(checkpoint_path, checkpoint, [])[:-1]
     pending_intent, pending = checkpoint.get("pending_intent"), checkpoint.get("pending_receipt")
     if pending_intent is not None:
@@ -597,7 +599,6 @@ def resume_shared_engine(
     )
     port = create_runtime_port(services, task=task, session_config=config)
     runner_ref = []
-    semantic_validator = _production_answer_semantics(task, services)
     runner = Runner.continue_from_checkpoint(
         task,
         _pending_port(
@@ -734,7 +735,7 @@ def _scan_preflight(task, services, session_config):
     return config
 
 
-def _verified_finalization_export(task, export_dir):
+def _verified_finalization_export(task, export_dir, answer_semantic_rules=()):
     """Revalidate original task/checkpoint/journals before native publication.
 
     This reads existing artifacts only. It does not run a strategy, create a
@@ -761,7 +762,8 @@ def _verified_finalization_export(task, export_dir):
         or checkpoint.get("task_bundle") != task_bundle(task)
     ):
         raise SharedEngineRejected("finalization_requires_original_completed_checkpoint")
-    _verify_snapshot_against_history(checkpoint_path, checkpoint, task)
+    _verify_snapshot_against_history(checkpoint_path, checkpoint, task,
+        answer_semantic_rules=answer_semantic_rules)
     raw = run_path.read_bytes()
     run = loads(raw)
     scan = task.raw.get("protocol") == "iqs.company-scan-task/1.0.0"
@@ -855,7 +857,7 @@ def finalize_shared_engine(task, services, export_dir):
     semantic_validator = _production_answer_semantics(task, services)
     if semantic_validator is None:
         raise SharedEngineRejected("original_production_answer_semantics_required")
-    run, evidence_board = _verified_finalization_export(task, export_dir)
+    run, evidence_board = _verified_finalization_export(task, export_dir, getattr(semantic_validator, "prompt_rules", ()))
     if any(row["execution_status"] != "completed" or row.get("answer") is None for row in run["slots"]):
         raise SharedEngineRejected("finalization_all_original_slots_must_be_completed")
     plan = []
