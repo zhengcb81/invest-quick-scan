@@ -1,3 +1,7 @@
+## 2026-10-25 — 发布核对
+
+UI2186a3c本地无remote；IQSb8163d2已推origin/master并核refs。原21个独审raw SHA均仍一致；GitCRLF/LF差异按仅换行逐文件记录，不把规范化字节说成完全相同。原机器红灯XML含pytest正常尾空白，保持raw证据，仅两精确归档路径设whitespace属性，不放宽源码/说明或跳hook。其他writer10/10README与历史未跟踪文件不在提交中，临时测试根/fixture不存在。
+
 ## 2026-10-25 — UI整改根因与终审结论
 
 原成员DTO无名称，必须按精确原entity_id联结get_entity；原runtime与coverage只证明有记录，不能当整家公司扫完。原交付终态completed必须指向结果，不能因登记仍在而重复开扫。表单要在途锁及提交snapshot，optional prepare清空删键，根路径清空保留显式空串让原validator决定，避免defaults偷偷复连。原失败已转固定独立反例，IR-01–05最终闭合。CSS独立解决textarea、size5列表、长题义flex收缩及字段堆叠，非全局隐藏overflow。整节点独审无开放发现，工程结论不授金融资格。

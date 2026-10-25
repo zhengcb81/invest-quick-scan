@@ -1,5 +1,5 @@
 {
-  "status": "ui_committed_iqs_publication_pending",
+  "status": "published",
   "ui": {
     "commit": "2186a3cc982767300a67c394fdab74b955696799",
     "branch": "master",
@@ -132,7 +132,39 @@
     "baseline": "075aa16ccc9501199fae1ada430165fddb68c291",
     "branch": "master",
     "origin": "https://github.com/zhengcb81/invest-quick-scan.git",
-    "push": "pending"
+    "push": "passed",
+    "source_and_evidence_commit": "b8163d2ada331f6fcb1351164728179454be2983",
+    "remote_master_verified": "b8163d2ada331f6fcb1351164728179454be2983",
+    "reviewed_bytes_vs_committed_blobs": [
+      {
+        "path": "scripts/dashboard_owner.py",
+        "reviewed_worktree_sha256": "6101d9c119b14ab74faf3fbf128a6eab574bd5cd46ca21ce244af31aa49c4815",
+        "committed_blob_sha256": "6101d9c119b14ab74faf3fbf128a6eab574bd5cd46ca21ce244af31aa49c4815",
+        "exact_bytes": true,
+        "only_CRLF_LF_difference": false
+      },
+      {
+        "path": "scripts/dashboard_execution.py",
+        "reviewed_worktree_sha256": "1a7fe91d310408e18c47eb8f63dff096f51b42e9dc18bc8b1a67799b5cc45ef9",
+        "committed_blob_sha256": "1a7fe91d310408e18c47eb8f63dff096f51b42e9dc18bc8b1a67799b5cc45ef9",
+        "exact_bytes": true,
+        "only_CRLF_LF_difference": false
+      },
+      {
+        "path": "tests/test_dashboard_owner.py",
+        "reviewed_worktree_sha256": "478b7fa0644040a1fae0796a8bdead88f1c45df4e7c4bf3e1145a19b5aa5daed",
+        "committed_blob_sha256": "478b7fa0644040a1fae0796a8bdead88f1c45df4e7c4bf3e1145a19b5aa5daed",
+        "exact_bytes": true,
+        "only_CRLF_LF_difference": false
+      },
+      {
+        "path": "tests/test_dashboard_execution.py",
+        "reviewed_worktree_sha256": "4a7a1b962387249c76df8de97c74609acd7e57cee1879e61359d97962fa532e7",
+        "committed_blob_sha256": "4a7a1b962387249c76df8de97c74609acd7e57cee1879e61359d97962fa532e7",
+        "exact_bytes": true,
+        "only_CRLF_LF_difference": false
+      }
+    ]
   },
   "review": "evidence/independent/final.json",
   "raw_source_sha_rechecked": 21,
@@ -145,5 +177,6 @@
       "evidence/product/root-path-red.xml"
     ],
     "source_document_whitespace_checks": "enabled and passed; no hooks skipped"
-  }
+  },
+  "publication_note": "This documentation completion update follows the verified source/evidence push; its own commit is available from Git refs, not recursively embedded."
 }

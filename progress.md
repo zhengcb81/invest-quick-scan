@@ -1,3 +1,7 @@
+## 2026-10-25 — M节点已提交并发布
+
+UI17个精确文件已正常本地commit2186a3cc982767300a67c394fdab74b955696799，无remote不虚报推送；IQS53文件源码/说明/薄证据正常提交b8163d2ada331f6fcb1351164728179454be2983并推既有origin/master，远端refs核相同。21最终源码工作树raw再次匹配独审；UI Git blob 4精确/13仅CRLF-LF差异，原文不改，双SHA见publication.json；root4文件提交字节亦核。原红灯XML机器空白精确保留，仅该两路径whitespace属性，不跳hook；其他源码/说明正常检查。PWF/交接/42件薄归档哈希清单已齐。M1–M5完成，8766可用，原业务部署/新预算仍需真实配置，不扩大r25/不授金融资格。
+
 ## 2026-10-25 — M1–M4整改验收通过，M5发布收口
 
 独立agent最终passed/open_findings=[]，锁21最终文件，43前端/8后端/6边界独立通过；原22发现逐项闭合，IR-01–05直接根修（completed、保存draft竞态、新可选路径、列表高度、根空路径不能默认复连）。后端40P、HTTP31P、foundation24P+18sub/content27P/product30P各范围通过，不相加。真实CUA核原覆盖/同名分离/返回快照/唯一历史、隔离原save+CAS+47/21锁；最后根空字段delta独立原契约复核。临时5root+1fixture核删、3tabs关、8770停；0收费/0真实配置库名单写。375/768同源iframe截图不冒称物理手机或child精确DOM、读屏、缩放。整理精确提交/既有远端发布，详情reviews/ui-remediation-2026-10-25。

@@ -1,8 +1,8 @@
 # 当前交接：UI体验整改 M 节点（2026-10-25）
 
-用户全部后续授权持续有效：直接修复、独立agent整节点审查、精确提交及既有origin推送；不要再次询问。M1–M4已通过整节点独审passed/open_findings=[]，21最终源码锁，原22发现及IR-01–05闭合；M5正按精确文件发布，下方U6段是历史基线。最新入口为根task_plan.md顶部M1–M5及[整改验收](reviews/ui-remediation-2026-10-25/README.md)。
+用户全部后续授权持续有效：直接修复、独立agent整节点审查、精确提交及既有origin推送；不要再次询问。M1–M4已通过整节点独审passed/open_findings=[]，21最终源码锁，原22发现及IR-01–05闭合；M5已完成：UI2186a3c本地提交（无remote），IQSb8163d2源码/证据已推origin/master并核refs，当前文档收口以Git日志为准，下方U6段是历史基线。最新入口为根task_plan.md顶部M1–M5及[整改验收](reviews/ui-remediation-2026-10-25/README.md)。
 
-启动仍为`python scripts/open_dashboard.py`；本机root自有新版服务127.0.0.1:8766（session71341），旧8765服务不要动。UI源码同级`iqs-question-bank-ui-lab`，该仓无remote，正常本地commit；IQS既有origin/master可推送。用户原tab不替换，最终应刷新加载新CSS/JS。临时8770仅用于隔离表单验收，交付前停止并清理runs/u7-forms，不能当成生产启动入口。
+启动仍为`python scripts/open_dashboard.py`；本机root自有新版服务127.0.0.1:8766（session71341），旧8765服务不要动。UI源码同级`iqs-question-bank-ui-lab`，该仓无remote，正常本地commit；IQS既有origin/master可推送。用户原tab不替换，最终应刷新加载新CSS/JS。临时8770已停，runs/u7-forms及其余4个自有测试根和唯一HTML fixture已清理，不能将其当生产启动入口。
 
 当前界面：五工作区/原子URL保留，名单名称和代码精确按原ID联结，可搜索分页；连接和模型/额度/预算字段表单；扫描准备→执行→交付推荐动作；题义筛选及原快照返回；唯一历史/原理由和证据分层；矩阵默认基础3列、全48可达；题库抽屉键盘焦点。214原实体=209verified+5provisional未变，原正式观察仅1家1条、213无记录，与12旧草稿分开；48评分模块222题/61信息题及基础36题题面可读不等于已收集答案。
 

@@ -8,11 +8,11 @@
 | M2 | 流程与内容：字段化连接/模型预算、可搜索实体、准备→扫描→交付、筛选回程/题义、真实历史选择与研究正文；独审增量修复 | complete |
 | M3 | 克制视觉与组织：紧凑分组导航/子路由状态、矩阵/旧筛选降噪、统一状态/排版/组件边界 | complete |
 | M4 | 定向组件/集成与实际浏览器任务，独立agent整节点终审；所有实质发现根修/复核，清理临时环境 | complete |
-| M5 | 原发现ID闭合矩阵、操作/部署边界、PWF与交接、精确提交和既有origin推送 | in_progress |
+| M5 | 原发现ID闭合矩阵、操作/部署边界、PWF与交接、精确提交和既有origin推送 | complete |
 
 ### Next Step
 
-M1–M4已集中验收通过；独审passed/open_findings=[]，21最终源码锁与6组独立反例全部绿灯。先按锁精确提交UI17文件（无remote），随后提交IQS4源码/测试与本轮文档/薄证据，推既有origin/master，最后回填实际发布refs完成M5。不改其他writer的10/10README，不入库真实回答/DB/config/key。证据：docs/implementation/reviews/ui-remediation-2026-10-25/README.md。部署仍缺prepare/新模型顺序与原费用授权，不能为按钮变绿扩大r25或造准入。
+本轮M1–M5完成：UI已正常本地提交2186a3c（该仓无remote），IQS源码/证据提交b8163d2已推origin/master且远端refs实查相同；随后当前PWF/发布记录按正常文档提交更新。独审passed/open_findings=[]、21最终源码再核，测试与清理见docs/implementation/reviews/ui-remediation-2026-10-25。现在可刷新8766工作台直接浏览/筛选/维护原名单及配置；下一业务步是在合法原部署中填写用户模型顺序、新原预算和费用授权后做小批扫描。当前prepare={}、r25旧额度耗尽，不能重发cold/伪造准入；没有将本轮UI工程通过当全池或金融准确性。保留其他writer10/10README和历史untracked，避免再开重复整改卡。
 
 ---
 
